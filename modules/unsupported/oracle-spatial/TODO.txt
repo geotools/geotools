@@ -1,0 +1,6 @@
+List of things to do for the Oracle module.
+
+*  Fast BBOX support with new Data API.
+*  Consider renaming the directory as oracle-spatial for consistency
+   with other module names and for consistency with the name artifactID
+   in project.xml and pom.xml files.

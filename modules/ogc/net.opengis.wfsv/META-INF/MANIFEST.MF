@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName: net.opengis.wfsv; singleton:=true
+Bundle-Version: 1.0.0
+Bundle-ClassPath: .
+Bundle-Vendor: %providerName
+Bundle-Localization: plugin
+Export-Package: net.opengis.wfsv,
+ net.opengis.wfsv.impl,
+ net.opengis.wfsv.util
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.emf.ecore.xmi,
+ net.opengis.ows,
+ net.opengis.wfs
+Eclipse-LazyStart: true

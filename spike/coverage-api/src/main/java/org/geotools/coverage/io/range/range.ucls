@@ -1,0 +1,531 @@
+<class-diagram version="0.9.86" icons="true" always-add-relationships="true" generalizations="true" realizations="true" 
+  associations="true" dependencies="true" nesting-relationships="true">  
+  <class corner="BOTTOM_RIGHT" language="java" name="org.geotools.coverage.io.range.RangeAxisBin.WavelengthBin" 
+    project="gt-coverage-api-2.6-SNAPSHOT" 
+    file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxisBin.java" binary="false">    
+    <position x="210" y="722" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="true" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="org.geotools.coverage.io.range.RangeAxis.WavelengthAxis" 
+    project="gt-coverage-api-2.6-SNAPSHOT" 
+    file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxis.java" binary="false">    
+    <position x="244" y="608" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="true" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="org.geotools.coverage.io.range.Band.BandKey" 
+    project="gt-coverage-api-2.6-SNAPSHOT" 
+    file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/Band.java" binary="false">    
+    <position x="301" y="36" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="true" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="org.geotools.coverage.io.range.RangeDescriptor" 
+    project="gt-coverage-api-2.6-SNAPSHOT" 
+    file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeDescriptor.java" 
+    binary="false">    
+    <position x="797" y="45" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="true" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="org.geotools.coverage.io.range.RangeAxisBin.StringAxisBin" 
+    project="gt-coverage-api-2.6-SNAPSHOT" 
+    file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxisBin.java" binary="false">    
+    <position x="595" y="302" width="136" height="45"/>    
+    <display autosize="true" package="true" initial-value="true" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="org.geotools.coverage.io.range.RangeAxis" 
+    project="gt-coverage-api-2.6-SNAPSHOT" 
+    file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxis.java" binary="false">    
+    <position x="940" y="388" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="true" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="org.geotools.coverage.io.range.RangeAxisBin" 
+    project="gt-coverage-api-2.6-SNAPSHOT" 
+    file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxisBin.java" binary="false">    
+    <position x="766" y="204" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="true" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="org.geotools.coverage.io.range.Band" 
+    project="gt-coverage-api-2.6-SNAPSHOT" 
+    file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/Band.java" binary="false">    
+    <position x="121" y="49" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="true" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <enumeration corner="BOTTOM_RIGHT" language="java" 
+    name="org.geotools.coverage.io.range.BandDescriptor.BandInterpretation" project="gt-coverage-api-2.6-SNAPSHOT" 
+    file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/BandDescriptor.java" binary="false">    
+    <position x="256" y="207" width="136" height="45"/>    
+    <display autosize="true" package="true" initial-value="true" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </enumeration>  
+  <class corner="BOTTOM_RIGHT" language="java" name="org.geotools.coverage.io.range.RangeAxis.DimensionlessAxis" 
+    project="gt-coverage-api-2.6-SNAPSHOT" 
+    file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxis.java" binary="false">    
+    <position x="845" y="513" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="true" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="org.geotools.coverage.io.range.BandDescriptor" 
+    project="gt-coverage-api-2.6-SNAPSHOT" 
+    file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/BandDescriptor.java" binary="false">    
+    <position x="392" y="140" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="true" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="org.geotools.coverage.io.range.impl.RadianceBandDescriptor" 
+    project="gt-coverage-api-2.6-SNAPSHOT" 
+    file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/impl/RadianceBandDescriptor.java" 
+    binary="false">    
+    <position x="41" y="207" width="165" height="45"/>    
+    <display autosize="true" package="true" initial-value="true" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" 
+    name="org.geotools.coverage.io.range.impl.SyntheticBandDescriptor.SyntheticBandDescriptorBuilder" 
+    project="gt-coverage-api-2.6-SNAPSHOT" 
+    file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/impl/SyntheticBandDescriptor.java" 
+    binary="false">    
+    <position x="308" y="302" width="205" height="45"/>    
+    <display autosize="true" package="true" initial-value="true" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="org.geotools.coverage.io.range.impl.SyntheticBandDescriptor" 
+    project="gt-coverage-api-2.6-SNAPSHOT" 
+    file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/impl/SyntheticBandDescriptor.java" 
+    binary="false">    
+    <position x="432" y="207" width="165" height="45"/>    
+    <display autosize="true" package="true" initial-value="true" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <generalization>    
+    <source project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.impl.RadianceBandDescriptor" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/impl/RadianceBandDescriptor.java" 
+      binary="false"/>    
+    <target project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.BandDescriptor" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/BandDescriptor.java" 
+      binary="false"/>  
+  </generalization>  
+  <association>    
+    <source project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeAxis.WavelengthAxis" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxis.java" binary="false" 
+      navigable="false">      
+      <attribute name="COLOR_RED_AXIS_BIN"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeAxisBin.WavelengthBin" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxisBin.java" binary="false" 
+      navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency>    
+    <source project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.impl.RadianceBandDescriptor" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/impl/RadianceBandDescriptor.java" 
+      binary="false"/>    
+    <target project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeAxis.WavelengthAxis" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxis.java" binary="false"/>  
+  </dependency>  
+  <association>    
+    <source project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeAxis.WavelengthAxis" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxis.java" binary="false" 
+      navigable="false">      
+      <attribute name="SWIR2_AXIS_BIN"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeAxisBin.WavelengthBin" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxisBin.java" binary="false" 
+      navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <source project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeAxis.WavelengthAxis" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxis.java" binary="false" 
+      navigable="false">      
+      <attribute name="TIR_AXIS_BIN"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeAxisBin.WavelengthBin" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxisBin.java" binary="false" 
+      navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting>    
+    <source project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.impl.SyntheticBandDescriptor" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/impl/SyntheticBandDescriptor.java" 
+      binary="false"/>    
+    <target project="gt-coverage-api-2.6-SNAPSHOT" 
+      name="org.geotools.coverage.io.range.impl.SyntheticBandDescriptor.SyntheticBandDescriptorBuilder" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/impl/SyntheticBandDescriptor.java" 
+      binary="false"/>  
+  </nesting>  
+  <association>    
+    <source project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeAxis.WavelengthAxis" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxis.java" binary="false" 
+      navigable="false">      
+      <attribute name="COLOR_GREEN_AXIS_BIN"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeAxisBin.WavelengthBin" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxisBin.java" binary="false" 
+      navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting>    
+    <source project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeAxis" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxis.java" binary="false"/>    
+    <target project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeAxis.DimensionlessAxis" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxis.java" binary="false"/>  
+  </nesting>  
+  <nesting>    
+    <source project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeAxis" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxis.java" binary="false"/>    
+    <target project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeAxis.WavelengthAxis" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxis.java" binary="false"/>  
+  </nesting>  
+  <association>    
+    <source project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeAxis.WavelengthAxis" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxis.java" binary="false" 
+      navigable="false">      
+      <attribute name="SWIR_AXIS_BIN"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeAxisBin.WavelengthBin" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxisBin.java" binary="false" 
+      navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <source project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeAxis.WavelengthAxis" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxis.java" binary="false" 
+      navigable="false">      
+      <attribute name="WAVELENGTH_AXIS_NM"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeAxis.WavelengthAxis" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxis.java" binary="false" 
+      navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization>    
+    <source project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.impl.SyntheticBandDescriptor" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/impl/SyntheticBandDescriptor.java" 
+      binary="false"/>    
+    <target project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.BandDescriptor" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/BandDescriptor.java" 
+      binary="false"/>  
+  </generalization>  
+  <association>    
+    <source project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeAxis.WavelengthAxis" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxis.java" binary="false" 
+      navigable="false">      
+      <attribute name="RED_AXIS_BIN"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeAxisBin.WavelengthBin" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxisBin.java" binary="false" 
+      navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization>    
+    <source project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeAxis.DimensionlessAxis" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxis.java" binary="false"/>    
+    <target project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeAxis" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxis.java" binary="false"/>  
+  </generalization>  
+  <dependency>    
+    <bendpoint x="782" y="302"/>    
+    <source project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeAxis" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxis.java" binary="false"/>    
+    <target project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeAxisBin" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxisBin.java" 
+      binary="false"/>  
+  </dependency>  
+  <nesting>    
+    <bendpoint x="564" y="302"/>    
+    <source project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeAxisBin" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxisBin.java" 
+      binary="false"/>    
+    <target project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeAxisBin.WavelengthBin" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxisBin.java" 
+      binary="false"/>  
+  </nesting>  
+  <nesting>    
+    <source project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.BandDescriptor" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/BandDescriptor.java" 
+      binary="false"/>    
+    <target project="gt-coverage-api-2.6-SNAPSHOT" 
+      name="org.geotools.coverage.io.range.BandDescriptor.BandInterpretation" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/BandDescriptor.java" 
+      binary="false"/>  
+  </nesting>  
+  <association>    
+    <bendpoint x="761" y="302"/>    
+    <source project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeAxisBin" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxisBin.java" binary="false" 
+      navigable="false">      
+      <attribute name="rangeAxis"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeAxis" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxis.java" binary="false" 
+      navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency>    
+    <source project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeAxisBin.WavelengthBin" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxisBin.java" 
+      binary="false"/>    
+    <target project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeAxis.WavelengthAxis" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxis.java" binary="false"/>  
+  </dependency>  
+  <association>    
+    <source project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeDescriptor" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeDescriptor.java" 
+      binary="false" navigable="false">      
+      <attribute name="bandDescriptors"/>      
+      <multiplicity minimum="0" maximum="2147483647"/>    
+    </source>    
+    <target project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.BandDescriptor" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/BandDescriptor.java" 
+      binary="false" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <source project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeAxis.WavelengthAxis" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxis.java" binary="false" 
+      navigable="false">      
+      <attribute name="GREEN_AXIS_BIN"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeAxisBin.WavelengthBin" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxisBin.java" binary="false" 
+      navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <source project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeAxis.WavelengthAxis" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxis.java" binary="false" 
+      navigable="false">      
+      <attribute name="COLOR_BLUE_AXIS_BIN"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeAxisBin.WavelengthBin" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxisBin.java" binary="false" 
+      navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <source project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeAxis.WavelengthAxis" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxis.java" binary="false" 
+      navigable="false">      
+      <attribute name="COLOR_ORANGE_AXIS_BIN"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeAxisBin.WavelengthBin" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxisBin.java" binary="false" 
+      navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <source project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeAxis.WavelengthAxis" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxis.java" binary="false" 
+      navigable="false">      
+      <attribute name="COLOR_VIOLET_AXIS_BIN"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeAxisBin.WavelengthBin" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxisBin.java" binary="false" 
+      navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <source project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.impl.RadianceBandDescriptor" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/impl/RadianceBandDescriptor.java" 
+      binary="false" navigable="false">      
+      <attribute name="LANDSAT7"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.impl.RadianceBandDescriptor" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/impl/RadianceBandDescriptor.java" 
+      binary="false" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <source project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeAxis.WavelengthAxis" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxis.java" binary="false" 
+      navigable="false">      
+      <attribute name="NIR_AXIS_BIN"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeAxisBin.WavelengthBin" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxisBin.java" binary="false" 
+      navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization>    
+    <source project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeAxisBin.StringAxisBin" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxisBin.java" 
+      binary="false"/>    
+    <target project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeAxisBin" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxisBin.java" 
+      binary="false"/>  
+  </generalization>  
+  <association>    
+    <source project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.Band.BandKey" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/Band.java" binary="false" 
+      navigable="false">      
+      <attribute name="bins"/>      
+      <multiplicity minimum="0" maximum="2147483647"/>    
+    </source>    
+    <target project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeAxisBin" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxisBin.java" binary="false" 
+      navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <source project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeAxis.WavelengthAxis" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxis.java" binary="false" 
+      navigable="false">      
+      <attribute name="COLOR_YELLOW_AXIS_BIN"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeAxisBin.WavelengthBin" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxisBin.java" binary="false" 
+      navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting>    
+    <source project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeAxisBin" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxisBin.java" 
+      binary="false"/>    
+    <target project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeAxisBin.StringAxisBin" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxisBin.java" 
+      binary="false"/>  
+  </nesting>  
+  <nesting>    
+    <source project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.Band" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/Band.java" binary="false"/>    
+    <target project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.Band.BandKey" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/Band.java" binary="false"/>  
+  </nesting>  
+  <generalization>    
+    <bendpoint x="543" y="302"/>    
+    <source project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeAxisBin.WavelengthBin" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxisBin.java" 
+      binary="false"/>    
+    <target project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeAxisBin" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxisBin.java" 
+      binary="false"/>  
+  </generalization>  
+  <association>    
+    <bendpoint x="646" y="122"/>    
+    <source project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeDescriptor" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeDescriptor.java" 
+      binary="false" navigable="false">      
+      <attribute name="defaultAxisBins"/>      
+      <multiplicity minimum="0" maximum="2147483647"/>    
+    </source>    
+    <target project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeAxisBin" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxisBin.java" binary="false" 
+      navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency>    
+    <source project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeAxisBin.StringAxisBin" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxisBin.java" 
+      binary="false"/>    
+    <target project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeAxis" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxis.java" binary="false"/>  
+  </dependency>  
+  <dependency>    
+    <source project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.Band" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/Band.java" binary="false"/>    
+    <target project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.BandDescriptor" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/BandDescriptor.java" 
+      binary="false"/>  
+  </dependency>  
+  <association>    
+    <source project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeAxis.WavelengthAxis" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxis.java" binary="false" 
+      navigable="false">      
+      <attribute name="LANDSAT7_BLUE_AXIS_BIN"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeAxisBin.WavelengthBin" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxisBin.java" binary="false" 
+      navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization>    
+    <source project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeAxis.WavelengthAxis" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxis.java" binary="false"/>    
+    <target project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeAxis" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxis.java" binary="false"/>  
+  </generalization>  
+  <association>    
+    <bendpoint x="803" y="122"/>    
+    <bendpoint x="947" y="208"/>    
+    <bendpoint x="1064" y="356"/>    
+    <source project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeDescriptor" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeDescriptor.java" 
+      binary="false" navigable="false">      
+      <attribute name="axes"/>      
+      <multiplicity minimum="0" maximum="2147483647"/>    
+    </source>    
+    <target project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.RangeAxis" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/RangeAxis.java" binary="false" 
+      navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <source project="gt-coverage-api-2.6-SNAPSHOT" name="org.geotools.coverage.io.range.BandDescriptor" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/BandDescriptor.java" 
+      binary="false" navigable="false">      
+      <attribute name="defaultBandInterpretation"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="gt-coverage-api-2.6-SNAPSHOT" 
+      name="org.geotools.coverage.io.range.BandDescriptor.BandInterpretation" 
+      file="/gt-coverage-api-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/range/BandDescriptor.java" 
+      binary="false" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <classifier-display autosize="true" package="true" initial-value="true" signature="true" visibility="true">    
+    <attributes public="false" package="false" protected="false" private="false"/>    
+    <operations public="false" package="false" protected="false" private="false"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

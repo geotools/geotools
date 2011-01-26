@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XML Spy v4.3 U (http://www.xmlspy.com) by Alexandre Robin (University of Alabama in Huntsville) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:swe="http://www.opengis.net/swe/0.0" xmlns:gml="http://www.opengis.net/gml" targetNamespace="http://www.opengis.net/swe/0.0" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:annotation>
+		<xs:documentation>Stubb schema for swe common</xs:documentation>
+	</xs:annotation>
+	<!--========================-->
+	<!--  Includes and Imports  -->
+	<!--========================-->
+	<xs:import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+	<xs:include schemaLocation="./positionData.xsd"/>
+	<!-- transitively includes paramaters -->
+	<xs:include schemaLocation="./data.xsd"/>
+	<xs:include schemaLocation="./phenomenon.xsd"/>
+	<xs:include schemaLocation="./temporalAggregates.xsd"/>
+	<!--========================-->
+	<!--common elements (might be moved to seperate schemas that will be imported)-->
+	<xs:element name="featureOfInterest" type="gml:FeaturePropertyType"/>
+</xs:schema>

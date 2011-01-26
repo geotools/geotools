@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- edited with XMLSpy v2007 sp2 (http://www.altova.com) by Eric Boisvert (Ressources naturelles Canada) -->
+<!-- IUGS/CGI GeoSciML schema, ver. 2 - draft 2007-05-16 -->
+<!-- Contains the concepts (classes), their inheritance, and relations from the CGI_Value package of the GeoSciML2 model -->
+<schema xmlns:gml="http://www.opengis.net/gml" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:gsml="http://www.cgi-iugs.org/xml/GeoSciML/2" targetNamespace="http://www.cgi-iugs.org/xml/GeoSciML/2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.1.0">
+	<annotation>
+		<documentation>Encoded by Eric Boisvert (May 2007) Geological Survey of Canada</documentation>
+	</annotation>
+	<annotation>
+		<documentation>2007-07-12 : Minor fixes and changes to fit new version of model - Eric Boisvert</documentation>
+	</annotation>
+	<annotation>
+		<documentation>CGI_Value.xsd
+	Components for recording "simple" property-values comprising numbers/measures and words
+	allowing for qualification, uncertainty, ranges, and a choice of number or word 
+	as required for transporting values commonly recorded by field geologists</documentation>
+	</annotation>
+	<!--=======================-->
+	<!--=======================-->
+	<import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+	<include schemaLocation="geosciml.xsd"/>
+	<annotation>
+		<documentation>stupid XML Spy does not validate even if geosciml already included CGI_BasicType</documentation>
+	</annotation>
+	<include schemaLocation="CGI_basicTypes.xsd"/>
+	<!--=======================-->
+	<attribute name="attributeProperty" type="anyURI">
+		<annotation>
+			<documentation>A very general name. Should this be "observationalBasis" or similar?</documentation>
+		</annotation>
+	</attribute>
+	<!-- ..................... -->
+	<attributeGroup name="EstimatedPropertyAttributeGroup">
+		<annotation>
+			<documentation>A subtype of AssociationAttribute that supports supplemental attribute to point to an Observation group</documentation>
+		</annotation>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+		<attribute ref="gsml:attributeProperty" use="optional"/>
+	</attributeGroup>
+	<!--=======================-->
+	<simpleType name="ValueQualifierCodeType">
+		<restriction base="string">
+			<enumeration value="never"/>
+			<enumeration value="rare"/>
+			<enumeration value="sometimes"/>
+			<enumeration value="common"/>
+			<enumeration value="always"/>
+			<enumeration value="greaterThan"/>
+			<enumeration value="lessThan"/>
+			<enumeration value="equalTo"/>
+			<enumeration value="approximate"/>
+			<enumeration value="nil:inapplicable"/>
+			<enumeration value="nil:missing"/>
+			<enumeration value="nil:unknown"/>
+			<enumeration value="nil:withheld"/>
+			<enumeration value="arithmetic mean"/>
+			<enumeration value="median"/>
+			<enumeration value="mode"/>
+			<enumeration value="geometric mean"/>
+		</restriction>
+	</simpleType>
+	<!--=======================-->
+	<complexType name="CGI_ValueType" abstract="true">
+		<sequence>
+			<element name="qualifier" type="gsml:ValueQualifierCodeType" default="equalTo" minOccurs="0"/>
+		</sequence>
+	</complexType>
+	<!-- ..................... -->
+	<element name="CGI_Value" type="gsml:CGI_ValueType"/>
+	<!-- ..................... -->
+	<complexType name="CGI_ValuePropertyType">
+		<sequence>
+			<element ref="gsml:CGI_Value"/>
+		</sequence>
+		<attribute ref="gsml:attributeProperty" use="optional"/>
+	</complexType>
+	<!--=======================-->
+	<complexType name="CGI_PrimitiveValueType" abstract="true">
+		<complexContent>
+			<extension base="gsml:CGI_ValueType"/>
+		</complexContent>
+	</complexType>
+	<!-- ..................... -->
+	<element name="CGI_PrimitiveValue" type="gsml:CGI_PrimitiveValueType" substitutionGroup="gsml:CGI_Value"/>
+	<!-- ..................... -->
+	<complexType name="CGI_PrimitiveValuePropertyType">
+		<sequence>
+			<element ref="gsml:CGI_PrimitiveValue"/>
+		</sequence>
+		<attribute ref="gsml:attributeProperty" use="optional"/>
+	</complexType>
+	<!--=======================-->
+	<complexType name="CGI_NumericValueType">
+		<complexContent>
+			<extension base="gsml:CGI_PrimitiveValueType">
+				<sequence>
+					<element name="principalValue" type="gml:MeasureType"/>
+					<element name="plusDelta" type="gml:MeasureType" minOccurs="0"/>
+					<element name="minusDelta" type="gml:MeasureType" minOccurs="0"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ..................... -->
+	<element name="CGI_NumericValue" type="gsml:CGI_NumericValueType" substitutionGroup="gsml:CGI_PrimitiveValue"/>
+	<!-- ..................... -->
+	<complexType name="CGI_NumericValuePropertyType">
+		<sequence>
+			<element ref="gsml:CGI_NumericValue"/>
+		</sequence>
+		<attribute ref="gsml:attributeProperty" use="optional"/>
+	</complexType>
+	<!--=======================-->
+	<complexType name="CGI_TermValueType">
+		<complexContent>
+			<extension base="gsml:CGI_PrimitiveValueType">
+				<sequence>
+					<element name="value" type="gsml:ScopedNameType"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ..................... -->
+	<element name="CGI_TermValue" type="gsml:CGI_TermValueType" substitutionGroup="gsml:CGI_PrimitiveValue"/>
+	<!-- ..................... -->
+	<complexType name="CGI_TermValuePropertyType">
+		<sequence>
+			<element ref="gsml:CGI_TermValue"/>
+		</sequence>
+		<attribute ref="gsml:attributeProperty" use="optional"/>
+	</complexType>
+	<!--=======================-->
+	<complexType name="CGI_RangeType">
+		<complexContent>
+			<extension base="gsml:CGI_ValueType">
+				<sequence>
+					<element name="lower" type="gsml:CGI_PrimitiveValuePropertyType"/>
+					<element name="upper" type="gsml:CGI_PrimitiveValuePropertyType"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ..................... -->
+	<element name="CGI_Range" type="gsml:CGI_RangeType" substitutionGroup="gsml:CGI_Value"/>
+	<!-- ..................... -->
+	<complexType name="CGI_RangePropertyType">
+		<sequence>
+			<element ref="gsml:CGI_Range"/>
+		</sequence>
+		<attribute ref="gsml:attributeProperty" use="optional"/>
+	</complexType>
+	<!--=======================-->
+	<complexType name="CGI_NumericRangeType">
+		<complexContent>
+			<extension base="gsml:CGI_ValueType">
+				<sequence>
+					<element name="lower" type="gsml:CGI_NumericValuePropertyType"/>
+					<element name="upper" type="gsml:CGI_NumericValuePropertyType"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ..................... -->
+	<element name="CGI_NumericRange" type="gsml:CGI_NumericRangeType" substitutionGroup="gsml:CGI_Value"/>
+	<!-- ..................... -->
+	<complexType name="CGI_NumericRangePropertyType">
+		<sequence>
+			<element ref="gsml:CGI_NumericRange"/>
+		</sequence>
+		<attribute ref="gsml:attributeProperty" use="optional"/>
+	</complexType>
+	<!--=======================-->
+	<complexType name="CGI_TermRangeType">
+		<complexContent>
+			<extension base="gsml:CGI_ValueType">
+				<sequence>
+					<element name="lower" type="gsml:CGI_TermValuePropertyType"/>
+					<element name="upper" type="gsml:CGI_TermValuePropertyType"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ..................... -->
+	<element name="CGI_TermRange" type="gsml:CGI_TermRangeType" substitutionGroup="gsml:CGI_Value"/>
+	<!-- ..................... -->
+	<complexType name="CGI_TermRangePropertyType">
+		<sequence>
+			<element ref="gsml:CGI_TermRange"/>
+		</sequence>
+		<attribute ref="gsml:attributeProperty" use="optional"/>
+	</complexType>
+	<!--=======================-->
+	<complexType name="CGI_TermPropertyType">
+		<annotation>
+			<documentation> Union that allows either a term or a range of terms</documentation>
+		</annotation>
+		<choice>
+			<element ref="gsml:CGI_TermValue"/>
+			<element ref="gsml:CGI_TermRange"/>
+		</choice>
+		<attribute name="unionSemantics">
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="value"/>
+					<enumeration value="range"/>
+				</restriction>
+			</simpleType>
+		</attribute>
+		<attribute ref="gsml:attributeProperty" use="optional"/>
+	</complexType>
+	<!--=======================-->
+	<complexType name="CGI_NumericPropertyType">
+		<annotation>
+			<documentation>Union that allows either a numerical value or a range of numerical values</documentation>
+		</annotation>
+		<choice>
+			<element ref="gsml:CGI_NumericValue"/>
+			<element ref="gsml:CGI_NumericRange"/>
+		</choice>
+		<attribute name="unionSemantics">
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="value"/>
+					<enumeration value="range"/>
+				</restriction>
+			</simpleType>
+		</attribute>
+		<attribute ref="gsml:attributeProperty" use="optional"/>
+	</complexType>
+	<!--=======================-->
+	<complexType name="CGI_PhysicalDescriptionType">
+		<sequence>
+			<element name="property" type="gsml:ScopedNameType"/>
+			<element name="value" type="gsml:CGI_ValuePropertyType"/>
+		</sequence>
+	</complexType>
+	<!-- ..................... -->
+	<element name="CGI_PhysicalDescription" type="gsml:CGI_PhysicalDescriptionType"/>
+	<!-- ..................... -->
+	<complexType name="CGI_PhysicalDescriptionPropertyType">
+		<sequence>
+			<element ref="gsml:CGI_PhysicalDescription"/>
+		</sequence>
+		<attribute ref="gsml:attributeProperty" use="optional"/>
+	</complexType>
+	<!--=======================-->
+	<simpleType name="ConventionCodeType">
+		<restriction base="string">
+			<enumeration value="dip dip direction"/>
+			<enumeration value="strike dip right hand rule"/>
+		</restriction>
+	</simpleType>
+	<!--=======================-->
+	<simpleType name="PlanarPolarityCodeType">
+		<restriction base="string">
+			<enumeration value="upright"/>
+			<enumeration value="overturned"/>
+			<enumeration value="vertical"/>
+			<enumeration value="not available"/>
+			<enumeration value="unknown"/>
+		</restriction>
+	</simpleType>
+	<!--=======================-->
+	<simpleType name="LinearDirectedCodeType">
+		<restriction base="string">
+			<enumeration value="directed"/>
+			<enumeration value="directed down"/>
+			<enumeration value="directed up"/>
+		</restriction>
+	</simpleType>
+	<!--=======================-->
+	<complexType name="CGI_GeometricDescriptionValueType">
+		<sequence>
+			<element name="descriptiveOrientation" type="gsml:CGI_TermPropertyType" minOccurs="0"/>
+			<element name="determinationMethod" type="gsml:CGI_TermValuePropertyType" minOccurs="0"/>
+		</sequence>
+	</complexType>
+	<!-- ..................... -->
+	<element name="CGI_GeometricDescriptionValue" type="gsml:CGI_GeometricDescriptionValueType"/>
+	<!-- ..................... -->
+	<complexType name="CGI_GeometricDescriptionValuePropertyType">
+		<sequence>
+			<element ref="gsml:CGI_GeometricDescriptionValue"/>
+		</sequence>
+		<attribute ref="gsml:attributeProperty" use="optional"/>
+	</complexType>
+	<!--=======================-->
+	<complexType name="CGI_PlanarOrientationType">
+		<complexContent>
+			<extension base="gsml:CGI_GeometricDescriptionValueType">
+				<sequence>
+					<element name="azimuth" type="gsml:CGI_ValuePropertyType" minOccurs="0"/>
+					<element name="convention" type="gsml:ConventionCodeType"/>
+					<element name="dip" type="gsml:CGI_ValuePropertyType" minOccurs="0"/>
+					<element name="polarity" type="gsml:PlanarPolarityCodeType"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ..................... -->
+	<element name="CGI_PlanarOrientation" type="gsml:CGI_PlanarOrientationType" substitutionGroup="gsml:CGI_GeometricDescriptionValue"/>
+	<!-- ..................... -->
+	<complexType name="CGI_PlanarOrientationPropertyType">
+		<sequence>
+			<element ref="gsml:CGI_PlanarOrientation"/>
+		</sequence>
+		<attribute ref="gsml:attributeProperty" use="optional"/>
+	</complexType>
+	<!--=======================-->
+	<complexType name="CGI_LinearOrientationType">
+		<complexContent>
+			<extension base="gsml:CGI_GeometricDescriptionValueType">
+				<sequence>
+					<element name="directed" type="gsml:LinearDirectedCodeType" minOccurs="0"/>
+					<element name="plunge" type="gsml:CGI_ValuePropertyType" minOccurs="0"/>
+					<element name="trend" type="gsml:CGI_ValuePropertyType" minOccurs="0"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ..................... -->
+	<element name="CGI_LinearOrientation" type="gsml:CGI_LinearOrientationType" substitutionGroup="gsml:CGI_GeometricDescriptionValue"/>
+	<!-- ..................... -->
+	<complexType name="CGI_LinearOrientationPropertyType">
+		<sequence>
+			<element ref="gsml:CGI_LinearOrientation"/>
+		</sequence>
+		<attribute ref="gsml:attributeProperty" use="optional"/>
+	</complexType>
+	<!--=======================-->
+	<complexType name="CGI_VectorType">
+		<complexContent>
+			<extension base="gsml:CGI_LinearOrientationType">
+				<sequence>
+					<element name="magnitude" type="gsml:CGI_ValuePropertyType" minOccurs="0"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ..................... -->
+	<element name="CGI_Vector" type="gsml:CGI_VectorType" substitutionGroup="gsml:CGI_LinearOrientation"/>
+	<!-- ..................... -->
+	<complexType name="CGI_VectorPropertyType">
+		<sequence>
+			<element ref="gsml:CGI_Vector"/>
+		</sequence>
+		<attribute ref="gsml:attributeProperty" use="optional"/>
+	</complexType>
+</schema>

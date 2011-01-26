@@ -1,0 +1,3 @@
+org.geotools.referencing.factory.epsg.ThreadedHsqlEpsgFactory
+# pending review
+# org.geotools.referencing.factory.epsg.HsqlDialectEpsgMediator

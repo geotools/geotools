@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema
+  targetNamespace="http://test"
+  xmlns:gml="http://www.opengis.net/gml"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:test="http://test"
+  elementFormDefault="qualified"
+  version="2006.12">
+  
+<import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/feature.xsd" />
+
+
+  <xsd:element name="PointFeature" type="test:PointFeatureType" 
+    substitutionGroup="gml:_Feature">
+    <xsd:annotation>
+    <xsd:documentation xml:lang="en">
+    Feature type with selected simple non-spatial properties and point geometry
+    </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:complexType name="PointFeatureType">
+    <xsd:complexContent>
+      <xsd:extension base="gml:AbstractFeatureType">
+        <xsd:sequence>
+          <xsd:element name="loc" minOccurs="0" type="gml:PointType" />
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+</xsd:schema>

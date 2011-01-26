@@ -1,0 +1,66 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<HTML>
+  <HEAD>
+    <TITLE>package org.geotools.image.io</TITLE>
+  </HEAD>
+  <BODY>
+    Extensions to {@link javax.imageio.ImageReader} for binary and ASCII files.
+
+    <P>{@link org.geotools.image.io.StreamImageReader} is the base
+    class for image decoders reading stream with few (if any) meta-data. Examples
+    of such streams are matrix containing the pixels values in a binary form (RAW
+    images), or ASCII files containing values written as decimal numbers. Such files
+    contain often geophysical values (e.g. temperature in Celsius degrees, elevation
+    in metres, etc.) better represented as floating point numbers than integers.</P>
+
+    <P>By default, {@link org.geotools.image.io.StreamImageReader}
+    stores decoded image using data type {@link java.awt.image.DataBuffer#TYPE_FLOAT}
+    and a grayscale color space. This politic produce images matching closely the
+    original data, i.e. it involves as few transformations as possible. But
+    displaying floating-point images is usually very slow. Users are strongly
+    encouraged to use <A HREF="http://java.sun.com/products/java-media/jai/">Java
+    Advanced Imaging</A>'s operations after reading in order to scale data as
+    they see fit. The example below reformats the {@link java.awt.image.DataBuffer#TYPE_FLOAT}
+    data into {@link java.awt.image.DataBuffer#TYPE_BYTE} and changes the grayscale
+    colors to an indexed color model.</P>
+
+    <P>&nbsp;</P>
+
+<TABLE align="center" bgcolor="#F8F8F8" border="3" cellpadding="12"><TR><TD nowrap>
+<PRE><FONT color="#0000A0">
+import {@link javax.media.jai.JAI javax.media.jai.JAI};
+import {@link javax.media.jai.ImageLayout javax.media.jai.ImageLayout};
+import {@link java.awt.RenderingHints java.awt.RenderingHints};
+import {@link java.awt.image.DataBuffer java.awt.image.DataBuffer};
+import {@link java.awt.image.IndexColorModel java.awt.image.IndexColorModel};
+import {@link java.awt.image.renderable.ParameterBlock java.awt.image.renderable.ParameterBlock};
+
+<I><FONT color="#008000">// Omitting class and method declaration...</FONT></I>
+
+<FONT color="#808080">
+/*
+ * Prepare the indexed color model. Arrays
+ * R, G and B should contains 256 RGB values.
+ */</FONT>
+final byte[] R=...
+final byte[] G=...
+final byte[] B=...
+final IndexColorModel colors = new IndexColorModel(8, 256, R,G,B);
+final ImageLayout     layout = new ImageLayout().setColorModel(colorModel);
+final RenderingHints   hints = new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout);
+<FONT color="#808080">
+/*
+ * Rescale the image.   First, all pixels values are transformed using
+ * the equation pi=CO+C1*p. Then, type float is clamp to type byte and
+ * the new index color model is set.   Displaying such an image should
+ * be much faster.
+ */</FONT>
+final double C0 = ...
+final double C1 = ...
+image = JAI.create("Rescale", new ParameterBlock().addSource(image).add(new double[]{C1}).add(new double[]{C0}));
+image = JAI.create("Format",  new ParameterBlock().addSource(image).add(DataBuffer.TYPE_BYTE), hints);
+</FONT></PRE></TD></TR></TABLE>
+
+  </BODY>
+</HTML>

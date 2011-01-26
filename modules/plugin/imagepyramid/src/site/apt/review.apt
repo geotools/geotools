@@ -1,0 +1,17 @@
+Module ImagePyramid
+~~~~~~~~~~~~~~~~~~~
+
+  IP Review:
+
+    * Simone Giannecchini
+
+    * Adrian Custer, June 2008
+
+
+  STATUS: DIRTY
+      Code is CLEAN
+      Data origin unknown: 1.5M of data from unknown origin.
+          http://jira.codehaus.org/browse/GEOT-1887
+
+  - afabiani:
+  	   * global_mosaic*.png don't remember where they come from, they should be safe though

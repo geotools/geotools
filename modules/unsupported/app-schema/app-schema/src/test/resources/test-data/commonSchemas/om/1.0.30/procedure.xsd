@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns:om="http://www.opengis.net/om" xmlns:swe="http://www.opengis.net/swe/0.0" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:gml="http://www.opengis.net/gml"
+        xmlns:xlink="http://www.w3.org/1999/xlink" targetNamespace="http://www.opengis.net/om" elementFormDefault="qualified" attributeFormDefault="unqualified" version="pre-release">
+	<annotation>
+		<documentation>procedures.xsd
+
+Components to describe procedures used in observations and measurements, and other events.
+
+Copyright (c) 2005 Open Geospatial Consortium - see http://www.opengeospatial.org/about/?page=ipr</documentation>
+	</annotation>
+	<!-- ====================================================================== -->
+	<!-- bring in other schemas -->
+	<import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+	<import namespace="http://www.opengis.net/swe/0.0" schemaLocation="../../sweCommon/1.0.30/swe.xsd"/>
+	<include schemaLocation="./event.xsd"/>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<!-- === Generic Procedure type === -->
+	<complexType name="ProcedureTypeType">
+		<annotation>
+			<documentation>Use gml:description element to describe the procedure or link to a definitive description.</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="gml:DefinitionType"/>
+		</complexContent>
+	</complexType>
+	<!-- ...................... -->
+	<element name="ProcedureType" type="om:ProcedureTypeType" abstract="true" substitutionGroup="gml:Definition">
+		<annotation>
+			<documentation>Abstract Head of substitution group. 
+			Procedures may be listed in a Dictionary (i.e. lightweight registry)</documentation>
+		</annotation>
+	</element>
+	<!-- ...................... -->
+	<complexType name="ProcedureTypePropertyType">
+		<sequence minOccurs="0">
+			<element ref="om:ProcedureType"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+	<complexType name="ProcedureSequenceType">
+		<annotation>
+			<documentation>
+			</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="om:ProcedureTypeType">
+				<sequence>
+					<element name="step" type="om:ProcedurePropertyType" maxOccurs="unbounded"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ...................... -->
+	<element name="ProcedureSequence" type="om:ProcedureSequenceType" substitutionGroup="om:ProcedureType">
+		<annotation>
+			<documentation>
+			</documentation>
+		</annotation>
+	</element>
+	<!-- ...................... -->
+	<complexType name="ProcedureSequencePropertyType">
+		<sequence minOccurs="0">
+			<element ref="om:ProcedureSequence"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+	<complexType name="ProcedurePackageType">
+		<annotation>
+			<documentation>
+			</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="om:ProcedureTypeType">
+				<sequence>
+					<element name="element" type="gml:ReferenceType" maxOccurs="unbounded"/>
+				</sequence>
+				<attribute name="count" type="positiveInteger"/>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ...................... -->
+	<element name="ProcedurePackage" type="om:ProcedurePackageType" substitutionGroup="om:ProcedureType">
+		<annotation>
+			<documentation>
+			</documentation>
+		</annotation>
+	</element>
+	<!-- ...................... -->
+	<complexType name="ProcedurePackagePropertyType">
+		<sequence minOccurs="0">
+			<element ref="om:ProcedurePackage"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<complexType name="ProcedureEventType">
+		<annotation>
+			<documentation>Description of an event involving a procedure.</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="om:EventType">
+				<sequence>
+					<element name="procedureUsed" type="om:ProcedureTypePropertyType"/>
+					<element name="termParameter" type="swe:TypedCategoryType" minOccurs="0" maxOccurs="unbounded"/>
+					<element name="countParameter" type="swe:TypedCountType" minOccurs="0" maxOccurs="unbounded"/>
+					<element name="measureParameter" type="swe:TypedMeasureType" minOccurs="0" maxOccurs="unbounded"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ...................... -->
+	<element name="ProcedureEvent" type="om:ProcedureEventType" substitutionGroup="om:Event">
+		<annotation>
+			<documentation>Description of an event involving a procedure.</documentation>
+		</annotation>
+	</element>
+	<!-- ...................... -->
+	<complexType name="ProcedureEventPropertyType">
+		<sequence minOccurs="0">
+			<element ref="om:ProcedureEvent"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+	<complexType name="ProcedureHistoryType">
+		<annotation>
+			<documentation>An ordered sequence of ProcedureEvents.</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="om:ProcedureEventType">
+				<sequence>
+					<element name="step" type="om:ProcedureEventPropertyType" maxOccurs="unbounded"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ...................... -->
+	<element name="ProcedureHistory" type="om:ProcedureHistoryType" substitutionGroup="om:ProcedureEvent">
+		<annotation>
+			<documentation>
+			</documentation>
+		</annotation>
+	</element>
+	<!-- ...................... -->
+	<complexType name="ProcedureHistoryPropertyType">
+		<sequence minOccurs="0">
+			<element ref="om:ProcedureHistory"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+	<complexType name="ProcedurePropertyType">
+		<sequence minOccurs="0">
+			<choice>
+				<element ref="om:ProcedureType"/>
+				<element ref="om:ProcedureEvent"/>
+			</choice>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+		<attribute name="unionSemantics">
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="genericProcedure"/>
+					<enumeration value="procedureInstance"/>
+				</restriction>
+			</simpleType>
+		</attribute>
+	</complexType>
+	<!-- ====================================================================== -->
+</schema>

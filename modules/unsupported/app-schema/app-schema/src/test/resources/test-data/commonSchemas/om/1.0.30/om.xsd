@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:om="http://www.opengis.net/om" targetNamespace="http://www.opengis.net/om" elementFormDefault="qualified" attributeFormDefault="unqualified" version="pre-release">
+	<annotation>
+		<documentation>om.xsd
+
+The complete Observations and Measurements schema
+
+Copyright © 2005 Open Geospatial Consortium - see http://www.opengeospatial.org/about/?page=ipr</documentation>
+	</annotation>
+	<!-- ====================================================================== -->
+	<include schemaLocation="./observationSpecializations.xsd"/>
+	<include schemaLocation="./procedureSpecializations.xsd"/>
+	<!-- ====================================================================== -->
+</schema>

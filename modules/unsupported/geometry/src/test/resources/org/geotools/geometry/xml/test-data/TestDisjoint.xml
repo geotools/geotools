@@ -1,0 +1,96 @@
+<run>
+<precisionModel type="FLOATING"/>
+
+<case>
+<desc>Two polygons</desc>
+  <a>
+    POLYGON ((160 500, 180 80, 780 80, 780 500, 620 500, 620 200, 320 200, 320 500, 320 500, 160 500))
+  </a>
+  <b>
+    POLYGON ((60 440, 840 440, 840 280, 60 280, 60 280, 60 440))
+  </b>
+  <test>
+    <op name="disjoint" arg1="A" arg2="B">false</op>
+  </test>
+</case>
+
+<case>
+<desc>Polygon inside another polygon with hole</desc>
+  <a>
+    POLYGON ((280 560, 60 180, 720 80, 280 560), 
+      (420 360, 200 360, 320 180, 420 360))
+  </a>
+  <b>
+   	POLYGON ((320 340, 260 320, 320 240, 360 320, 320 340))
+  </b>
+  <test>
+    <op name="disjoint" arg1="A" arg2="B">true</op>
+  </test>
+ </case>
+ 
+<case>
+<desc>Two lines touching at same point</desc>
+  <a>
+    LINESTRING(40 40, 120 120)
+  </a>
+  <b>
+    LINESTRING(40 40, 60 120)
+  </b>
+  <test>
+    <op name="disjoint" arg1="A" arg2="B">false</op>
+  </test>
+</case>
+
+<case>
+<desc>Line touching polygon along side</desc>
+  <a>
+    LINESTRING(40 40, 120 120)
+  </a>
+  <b>
+    POLYGON ((120 120, 40 40, 120 20, 200 80, 120 120))
+  </b>
+  <test>
+    <op name="disjoint" arg1="A" arg2="B">false</op>
+  </test>
+</case>
+
+<case>
+<desc>Two lines not touching</desc>
+  <a>
+    LINESTRING(40 40, 120 120)
+  </a>
+  <b>
+    LINESTRING(60 20, 160 100)
+  </b>
+  <test>
+    <op name="disjoint" arg1="A" arg2="B">true</op>
+  </test>
+</case>
+
+<case>
+<desc>Line with point nearby but not touching</desc>
+  <a>
+    POINT (80 40)
+  </a>
+  <b>
+    LINESTRING(60 20, 160 100)
+  </b>
+  <test>
+    <op name="disjoint" arg1="A" arg2="B">true</op>
+  </test>
+</case>
+
+<case>
+<desc>Polygon with point touching side</desc>
+  <a>
+    POINT (80 40)
+  </a>
+  <b>
+    POLYGON ((40 220, 40 0, 160 120, 40 220))
+  </b>
+  <test>
+    <op name="disjoint" arg1="A" arg2="B">false</op>
+  </test>
+</case>
+
+</run>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<!-- 
+  Mapped Feature mapping file
+-->
+<as:AppSchemaDataAccess xmlns:as="http://www.geotools.org/app-schema"
+	xmlns:ogc="http://www.opengis.net/ogc" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.geotools.org/app-schema AppSchemaDataAccess.xsd
+                      http://www.opengis.net/ogc http://schemas.opengis.net/filter/1.1.0/expr.xsd">
+	<namespaces>
+		<Namespace>
+			<prefix>xlink</prefix>
+			<uri>http://www.w3.org/1999/xlink</uri>
+		</Namespace>
+		<Namespace>
+			<prefix>gml</prefix>
+			<uri>http://www.opengis.net/gml</uri>
+		</Namespace>
+		<Namespace>
+			<prefix>test</prefix>
+			<uri>http://test</uri>
+		</Namespace>
+	</namespaces>
+	<sourceDataStores>
+		<DataStore>
+			<id>PointFeatureGeomPropertyfile</id>
+			<parameters>
+				<Parameter>
+					<name>directory</name>
+					<!-- path can be relative to this file if starts with "file: -->
+					<value>file:./</value>
+				</Parameter>
+			</parameters>
+		</DataStore>
+	</sourceDataStores>
+	<catalog>mappedPolygons.oasis.xml</catalog>
+	<targetTypes>
+		<FeatureType>
+			<schemaUri>GeometrylessTest.xsd</schemaUri>
+		</FeatureType>
+	</targetTypes>
+	<typeMappings>
+		<FeatureTypeMapping>
+			<sourceDataStore>PointFeatureGeomPropertyfile</sourceDataStore>
+			<sourceType>PointFeatureGeomPropertyfile</sourceType>
+			<targetElement>test:PointFeature</targetElement>
+			<attributeMappings>
+				<AttributeMapping>
+					<targetAttribute>test:PointFeature</targetAttribute>
+				</AttributeMapping>
+				<AttributeMapping>
+					<targetAttribute>gml:name[1]</targetAttribute>
+					<sourceExpression>
+						<OCQL>NAME</OCQL>
+					</sourceExpression>
+				</AttributeMapping>
+				<AttributeMapping>
+					<targetAttribute>test:loc</targetAttribute>
+					<sourceExpression>
+						<OCQL>SHAPE</OCQL>
+					</sourceExpression>
+				<!-- <ClientProperty>
+						<name>x</name>
+						<value>LON</value>
+					</ClientProperty>
+				<ClientProperty>
+					<name>y</name>
+					<value>LAT</value>
+				</ClientProperty>
+				 -->
+				 </AttributeMapping>
+			</attributeMappings>
+		</FeatureTypeMapping>
+	</typeMappings>
+</as:AppSchemaDataAccess>

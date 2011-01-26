@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" 
+xmlns:xlink="http://www.w3.org/1999/xlink" 
+xmlns:gml="http://www.opengis.net/gml" 
+xmlns:geo="http://www.seegrid.csiro.au/xml/geometry" 
+xmlns:sa="http://www.seegrid.csiro.au/xml/sampling" 
+xmlns:xmml="http://www.opengis.net/xmml" 
+targetNamespace="http://www.opengis.net/xmml" elementFormDefault="qualified" attributeFormDefault="unqualified" version="pre-release">
+	<annotation>
+		<documentation>
+borehole.xsd
+
+A GML conformant schema 
+for borehole descriptions with logs
+
+Copyright © 2005 CSIRO - see https://www.seegrid.csiro.au/twiki/bin/view/Xmml/LegalNotices#Software_Notice
+</documentation>
+	</annotation>
+	<!-- ====================================================================== -->
+	<!-- bring in other schemas -->
+	<import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+	<import namespace="http://www.seegrid.csiro.au/xml/sampling" schemaLocation="../../sampling/0.1.0/sampling.xsd"/>
+	<include schemaLocation="./coverage.xsd"/>
+	<!-- ====================================================================== -->
+	<element name="Borehole" type="xmml:BoreholeType" substitutionGroup="sa:Profile">
+		<annotation>
+			<documentation>An exploration well, borehole or drillhole, with logs.  </documentation>
+		</annotation>
+	</element>
+	<!-- ====================================================================== -->
+	<complexType name="BoreholeType">
+		<annotation>
+			<documentation>An exploration well, borehole or drillhole, with logs.  
+      1. A borehole or well will often have several externally assigned identifiers or names, for example given by the driller, the logging contractor, the resource company, regulators, etc
+      2. The value of the "position" property will normally be the collar-location, but may be any other representative position. N.B. The detailed geometry, including location, is given by the value of the *shape* property. </documentation>
+		</annotation>
+		<complexContent>
+			<extension base="sa:ProfileType">
+				<sequence>
+					<element name="drillMethod" type="xmml:drillCode" minOccurs="0">
+						<annotation>
+							<documentation>This element contains or points to a description of a drilling event</documentation>
+						</annotation>
+					</element>
+					<element name="collarDiameter" type="gml:MeasureType" minOccurs="0">
+						<annotation>
+							<documentation>The diameter of the borehole. </documentation>
+						</annotation>
+					</element>
+					<element name="log" type="xmml:LogPropertyType" minOccurs="0" maxOccurs="unbounded">
+						<annotation>
+							<documentation>An arbitrary set of borehole logs</documentation>
+						</annotation>
+					</element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<!-- ==================================================================        -->
+	<simpleType name="drillCode">
+		<annotation>
+			<documentation>Drilling methods</documentation>
+		</annotation>
+		<union>
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="RAB">
+						<annotation>
+							<documentation>Rotary air blast drilling</documentation>
+						</annotation>
+					</enumeration>
+					<enumeration value="RC">
+						<annotation>
+							<documentation>Reverse circulation drilling</documentation>
+						</annotation>
+					</enumeration>
+					<enumeration value="DD">
+						<annotation>
+							<documentation>HQ, NQ Diamond Drilling</documentation>
+						</annotation>
+					</enumeration>
+					<enumeration value="DD-HQ">
+						<annotation>
+							<documentation>HQ Diamond Drilling</documentation>
+						</annotation>
+					</enumeration>
+					<enumeration value="DD-NQ">
+						<annotation>
+							<documentation>NQ Diamond Drilling</documentation>
+						</annotation>
+					</enumeration>
+				</restriction>
+			</simpleType>
+			<simpleType>
+				<restriction base="string">
+					<pattern value="other:\w{2,}"/>
+				</restriction>
+			</simpleType>
+		</union>
+	</simpleType>
+	<!-- ====================================================================== -->
+</schema>

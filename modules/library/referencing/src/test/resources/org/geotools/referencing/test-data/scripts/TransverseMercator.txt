@@ -1,0 +1,768 @@
+// Test points for the Transverse Mercator Projection (EPSG 9807)
+// 
+// (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
+//
+// The following test points were calculated with ArcGIS 8.3
+// Points with an //Error: comment could not be calculated with ArcGIS, 
+// and were instead calculated with libproj4.
+//
+// Note 1: Elliptical calculations are only accurate for values near the central meridian.
+//         Points beyond +- 15 degrees from the central meridian were not tested, and
+//         the tolerance for assertions increases as you move from the central meridian.
+// Note 2: Spherical equations work for most of the globe, except at 
+//         (central meridian +- 90 degrees, latutude of origin), where x is infinity.
+//         Once you are > +- 90 degrees from the central meridian, the cylinder used to
+//         form the map is split. In these situations, for values along the latitude of origin
+//         we only calculate the positive y values (the top boundary of a map), instead of both +-. 
+// Note 3: Because of the difficulties with the above boundary case, libproj and ArcGIS 
+//         sometimes had trouble calculating correct values. For these cases, the test points 
+//         are guesses, based on an analysis of a transverse mercator plot of the earth
+//         and the values of nearby points just off the boundary. These points are noted
+//         below.
+// Note 4: Spherical equations are compared to the elliptical when asserts are enabled.
+//         Because of note 1, these comparisons are not done when we are > 15 degrees from
+//         the central meridian.
+// Note 5: The test tolerance is usually 1 centimeter, but in some occasions it is relaxed
+//         to up to 1 meter.
+//
+// Rueben Schulz - Feb, 2005
+//
+//
+// --------------------------------------------------------------------------
+// How to run this script:
+//
+//    chdir org/geotools/referencing/test-data/scripts
+//    java -ea org.geotools.referencing.ScriptRunner TransverseMercator.txt
+//
+// A test is performed every time a "target pt" statement occurs. If the target point computed
+// by Geotools is different from the target point declared in this script by an amount greater
+// than the value specified in the last "test tolerance" statement, then a failure is reported.
+// Inverse transforms are tested if java assertions are enabled.
+// If some test fails, "print" statements can be added in this script for debugging purpose:
+//
+//    print crs            (prints the source and target CRS, and the transform between them)
+//    print pts            (prints the source and target points, and their transformed points)
+
+
+set _WGS84_  =                              GEOGCS["WGS84",  DATUM["WGS84",  SPHEROID["WGS84",  6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]]
+set _sphere_ =                              GEOGCS["Sphere", DATUM["Sphere", SPHEROID["Sphere", 6370997.0, 0]],             PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]]
+
+set _Tmerc1_=PROJCS["UTM 11N", GEOGCS["WGS84", DATUM["WGS84", SPHEROID["WGS84", 6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Transverse_Mercator"], PARAMETER["central_meridian", -117.0], PARAMETER["latitude_of_origin", 0.0], PARAMETER["scale_factor", 0.9996], PARAMETER["false_easting", 500000.0], PARAMETER["false_northing", 0.0], UNIT["metre",1.0], AXIS["x",EAST], AXIS["y",NORTH]]
+set _Tmerc2_=PROJCS["UTM 33S", GEOGCS["WGS84", DATUM["WGS84", SPHEROID["WGS84", 6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Transverse_Mercator"], PARAMETER["central_meridian", 15.0], PARAMETER["latitude_of_origin", 0.0], PARAMETER["scale_factor", 0.9996], PARAMETER["false_easting", 500000.0], PARAMETER["false_northing", 10000000.0], UNIT["metre",1.0], AXIS["x",EAST], AXIS["y",NORTH]]
+set _Tmerc3_=PROJCS["TMerc", GEOGCS["WGS84", DATUM["WGS84", SPHEROID["WGS84", 6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Transverse_Mercator"], PARAMETER["central_meridian", 150.0], PARAMETER["latitude_of_origin", -30.0], PARAMETER["scale_factor", 0.9], PARAMETER["false_easting", 500000.0], PARAMETER["false_northing", 1000000.0], UNIT["metre",1.0], AXIS["x",EAST], AXIS["y",NORTH]]
+set _Tmerc4_=PROJCS["TMerc", GEOGCS["WGS84", DATUM["WGS84", SPHEROID["WGS84", 6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Transverse_Mercator"], PARAMETER["central_meridian", -53.0], PARAMETER["latitude_of_origin", 62.0], PARAMETER["scale_factor", 1.0], PARAMETER["false_easting", 0.0], PARAMETER["false_northing", 0.0], UNIT["metre",1.0], AXIS["x",EAST], AXIS["y",NORTH]]
+
+set _Tmerc5_=PROJCS["TMerc", GEOGCS["Sphere", DATUM["Sphere", SPHEROID["Sphere", 6370997.0, 0],TOWGS84[0,0,0,0,0,0,0]],PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Transverse_Mercator"], PARAMETER["central_meridian", 170.0], PARAMETER["latitude_of_origin", 50.0], PARAMETER["scale_factor", 0.95], PARAMETER["false_easting", 0.0], PARAMETER["false_northing", 0.0], UNIT["feet", 0.304800609601219], AXIS["x",EAST], AXIS["y",NORTH]]
+set _Tmerc6_=PROJCS["TMerc", GEOGCS["Sphere", DATUM["Sphere", SPHEROID["Sphere", 6370997.0, 0],TOWGS84[0,0,0,0,0,0,0]],PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Transverse_Mercator"], PARAMETER["central_meridian", 5.0], PARAMETER["latitude_of_origin", -60.0], PARAMETER["scale_factor", 1.0], PARAMETER["false_easting", 0.0], PARAMETER["false_northing", 150000.0], UNIT["metre",1.0], AXIS["x",EAST], AXIS["y",NORTH]]
+set _Tmerc7_=PROJCS["TMerc", GEOGCS["Sphere", DATUM["Sphere", SPHEROID["Sphere", 6370997.0, 0],TOWGS84[0,0,0,0,0,0,0]],PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Transverse_Mercator"], PARAMETER["central_meridian", -63.0], PARAMETER["latitude_of_origin", 70.0], PARAMETER["scale_factor", 0.86], PARAMETER["false_easting", 15000.0], PARAMETER["false_northing", 0.0], UNIT["metre",1.0], AXIS["x",EAST], AXIS["y",NORTH]]
+set _Tmerc8_=PROJCS["TMerc", GEOGCS["Sphere", DATUM["Sphere", SPHEROID["Sphere", 6370997.0, 0],TOWGS84[0,0,0,0,0,0,0]],PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Transverse_Mercator"], PARAMETER["central_meridian", -143.0], PARAMETER["latitude_of_origin", 0.0], PARAMETER["scale_factor", 1.0], PARAMETER["false_easting", 0.0], PARAMETER["false_northing", 100.0], UNIT["metre",1.0], AXIS["x",EAST], AXIS["y",NORTH]]
+set _Tmerc9_=PROJCS["TMerc", GEOGCS["Sphere", DATUM["Sphere", SPHEROID["Sphere", 6370997.0, 0],TOWGS84[0,0,0,0,0,0,0]],PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Transverse_Mercator"], PARAMETER["central_meridian", 0.0], PARAMETER["latitude_of_origin", 0.0], PARAMETER["scale_factor", 1.0], PARAMETER["false_easting", 0.0], PARAMETER["false_northing", 0.0], UNIT["metre", 1.0], AXIS["x",EAST], AXIS["y",NORTH]]
+
+set _NAD27Idaho_=PROJCS["NAD27 / Idaho Central",GEOGCS["NAD27",DATUM["North_American_Datum_1927",SPHEROID["Clarke 1866",6378206.4,294.978698213901,AUTHORITY["EPSG","7008"]],TOWGS84[-3,142,183,0,0,0,0],AUTHORITY["EPSG","6267"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Lat",NORTH],AXIS["Long",EAST],AUTHORITY["EPSG","4267"]],PROJECTION["Transverse_Mercator"],PARAMETER["latitude_of_origin",41.6666666666666],PARAMETER["central_meridian",-114],PARAMETER["scale_factor",0.999947368],PARAMETER["false_easting",152400.30480061],PARAMETER["false_northing",0],UNIT["US survey foot",0.304800609601219,AUTHORITY["EPSG","9003"]],AXIS["X",EAST],AXIS["Y",NORTH],AUTHORITY["EPSG","26769"]]
+set _NAD83Idaho_=PROJCS["NAD83 / Idaho  Central",GEOGCS["NAD83",DATUM["North_American_Datum_1983",SPHEROID["GRS 1980",6378137,298.257222101,AUTHORITY["EPSG","7019"]],TOWGS84[0,0,0,0,0,0,0],AUTHORITY["EPSG","6269"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Lat",NORTH],AXIS["Long",EAST],AUTHORITY["EPSG","4269"]],PROJECTION["Transverse_Mercator"],PARAMETER["latitude_of_origin",41.6666666666666],PARAMETER["central_meridian",-114],PARAMETER["scale_factor",0.999947368],PARAMETER["false_easting",500000],PARAMETER["false_northing",0],UNIT["metre",1,AUTHORITY["EPSG","9001"]],AXIS["X",EAST],AXIS["Y",NORTH],AUTHORITY["EPSG","26969"]]
+set _Nad83_=GEOGCS["NAD83",DATUM["North_American_Datum_1983",SPHEROID["GRS 1980",6378137,298.257222101,AUTHORITY["EPSG","7019"]],TOWGS84[0,0,0,0,0,0,0],AUTHORITY["EPSG","6269"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Lat",NORTH],AXIS["Long",EAST],AUTHORITY["EPSG","4269"]]
+
+////////////////////////////////////////////
+//Elliptical  tests
+
+source crs = _WGS84_
+target crs = _Tmerc1_
+test tolerance = (1e-2, 1e-2)
+
+source pt=(-102.405966877937, 49.2166666666)
+target pt=(1561014.86608711, 5554898.41194426)
+
+source pt=(-131.213517010212, 43.96499314)
+target pt=(-640561.362142056, 4967239.48005042)
+
+source pt=(-129.557910680771, -33.9166666666)
+target pt=(-664330.774129598, -3824805.3119912)
+
+source pt=(-103.524729669094, -15.75)
+target pt=(1955058.63568858, -1788357.81074674)
+
+source pt=(-119.624272704124, 35.6833333333)
+target pt=(262511.835860432, 3952000.16170488)
+
+source pt=(-110.558599531651, -33.9166666666)
+target pt=(1095905.73305699, -3771654.43036306)
+
+source pt=(-116.920398712158, 0.0)
+target pt=(508857.633227785, 0.0)
+
+source pt=(-126.397516429424, 0.0)
+target pt=(-550460.837471118, 0.0)
+
+source pt=(-106.199119210243, 0.0)
+target pt=(1709099.01345829, 0.0)
+
+test tolerance = (1e-1, 1e-1)
+source pt=(-104.794310867786, 0.0)
+target pt=(1868649.9149578, 0.0)
+test tolerance = (1e-2, 1e-2)
+
+source pt=(-123.542824029922, 0.0)
+target pt=(-229650.770446223, 0.0)
+
+source pt=(-106.530240476131, -55)
+target pt=(1168444.34772272, -6145051.95009776)
+
+source pt=(-103.800947070122, -15)
+target pt=(1930050.06756904, -1701515.89855545)
+
+source pt=(-126.522915422916, 6)
+target pt=(-558706.152949177, 672465.819440097)
+
+source pt=(-120.357010364532, 71)
+target pt=(378073.058248974, 7880775.23978865)
+
+source pt=(-107.854725539684, 66.67)
+target pt=(902973.601401813, 7424206.91951493)
+
+source pt=(-130.827491879463, -70)
+target pt=(-23873.5422778988, -7825633.25766495)
+
+source pt=(-107.443280994892, 90)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+target pt=(500000.000000000058, 9997964.943020997569)
+
+source pt=(-115.595913648605, -90)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+target pt=(500000.000000000000,     -9997964.943020997569)
+
+
+source crs = _WGS84_
+target crs = _Tmerc2_
+test tolerance = (1e-2, 1e-2)
+
+source pt=(1.62902837991714, 49.2166666666)
+target pt=(-472374.5008353, 15538184.201186)
+
+source pt=(14.9542022943497, 43.96499314)
+target pt=(496326.051449956, 14867985.7372436)
+
+source pt=(14.2116364836693, -33.9166666666)
+target pt=(427124.447045236, 6246804.02787094)
+
+test tolerance = (1e-1, 1e-1)
+source pt=(30.9734220504761, -15.75)
+target pt=(2230429.56926542, 8191984.78936994)
+test tolerance = (1e-2, 1e-2)
+
+source pt=(19.9210212826729, 35.6833333333)
+target pt=(945462.450404275, 13960001.0888566)
+
+source pt=(28.3793557882309, -33.9166666666)
+target pt=(1740991.44372153, 6165341.93142584)
+
+source pt=(19.9759251475334, 0)
+target pt=(1054397.9388784, 10000000)
+
+source pt=(22.419173002243, 0)
+target pt=(1327900.75721955, 10000000)
+
+source pt=(6.85647350549698, 0)
+target pt=(-409257.93664342, 10000000)
+
+source pt=(22.5445719957352, 0)
+target pt=(1341975.16733085, 10000000)
+
+test tolerance = (1e-1, 1e-1)
+source pt=(29.2473205924034, 0)
+target pt=(2102080.13415998, 10000000)
+test tolerance = (1e-2, 1e-2)
+
+source pt=(25.6049866676331, -55)
+target pt=(1177043.45776129, 3853637.7397625)
+
+source pt=(5.53198844194412, -15)
+target pt=(-521941.900492609, 8319674.25499596)
+
+source pt=(3.75098311901093, 6)
+target pt=(-752872.68994068, 10676187.0900877)
+
+source pt=(17.3269550204277, 71)
+target pt=(584535.04054657, 17879020.1257043)
+
+source pt=(30.3660833835602, 66.67)
+target pt=(1173438.3410039, 17478172.2223245)
+
+source pt=(14.0157423615456, -70)
+target pt=(462431.054613172, 2233823.62613801)
+
+source pt=(9.2997213602066, 90)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+target pt=(499999.999999999942, 19997964.943020999432)
+
+source pt=(6.98187249898911, -90)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+target pt=(499999.999999999942, 2035.056979001622)
+
+
+source crs = _WGS84_
+target crs = _Tmerc3_
+test tolerance = (1e-2, 1e-2)
+
+source pt=(148.935419082642, 49.2166666666)
+target pt=(430197.621616075, 8896944.28056429)
+
+source pt=(159.074779331684, 43.96499314)
+target pt=(1155546.90218327, 8407236.40357672)
+
+source pt=(136.889654517174, -33.9166666666)
+target pt=(-594726.541135037, 538499.141474904)
+
+source pt=(147.746161162853, -15.75)
+target pt=(282569.525283821, 2419159.81111293)
+
+source pt=(140.381170034409, 35.6833333333)
+target pt=(-284828.369142094, 7582107.80353789)
+
+source pt=(146.010231554508, -33.9166666666)
+target pt=(167839.878832328, 602666.549926295)
+
+source pt=(160.123046994209, 0)
+target pt=(1519557.64898004, 3988102.05814631)
+
+source pt=(157.017556607723, 0)
+target pt=(1204848.16082047, 3988102.05814631)
+
+source pt=(143.566983699799, 0)
+target pt=(-145875.711871511, 3988102.05814631)
+
+source pt=(144.685746490955, 0)
+target pt=(-33192.2027222244, 3988102.05814631)
+
+test tolerance = (1e-1, 1e-1)
+source pt=(164.096502184868, 0)
+target pt=(1926861.33390233, 3988102.05814631)
+test tolerance = (1e-2, 1e-2)
+
+source pt=(145.097191035748, -55)
+target pt=(217742.098184494, -1509307.70102619)
+
+source pt=(148.328080415726, -15)
+target pt=(338145.780479924, 2494400.10203207)
+
+source pt=(153.169500410557, 6)
+target pt=(815975.195209536, 4586139.25947152)
+
+source pt=(146.878196358681, 71)
+target pt=(397907.147574394, 11083226.7084428)
+
+source pt=(165.752108514309, 66.67)
+target pt=(1121302.78763721, 10724976.6279271)
+
+source pt=(140.130372047424, -70)
+target pt=(162089.124154834, -3031412.97933567)
+
+source pt=(140.461493313313, 90)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+target pt=(499999.999999999942,     12989871.214527795091)
+
+source pt=(139.468129515648, -90)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+target pt=(499999.999999999942,     -5013667.098235106096)
+
+
+source crs = _WGS84_
+target crs = _Tmerc4_
+test tolerance = (1e-2, 1e-2)
+
+source pt=(-60.5517790913582, 49.2166666666)
+target pt=(-549940.284186459, -1395691.33000879)
+
+source pt=(-48.6568329334259, 43.96499314)
+target pt=(348566.026793319, -1997817.83002428)
+
+source pt=(-44.6030544638634, -33.9166666666)
+target pt=(777560.084259101, -10663278.7484637)
+
+source pt=(-40.2984780073166, -15.75)
+target pt=(1370833.58783781, -8660650.49628566)
+
+source pt=(-53.2122073769569, 35.6833333333)
+target pt=(-19209.6134579163, -2926503.5881315)
+
+source pt=(-45.4710192680359, -33.9166666666)
+target pt=(697001.69024722, -10656990.4343806)
+
+source pt=(-45.9275395274162, 0)
+target pt=(789323.305524357, -6876930.9202052)
+
+test tolerance = (1e-1, 1e-1)
+source pt=(-67.325022816658, 0)
+target pt=(-1611648.96283018, -6876930.9202052)
+
+source pt=(-65.1325729489326, 0)
+target pt=(-1360869.93907289, -6876930.9202052)
+test tolerance = (1e-2, 1e-2)
+
+source pt=(-63.4769666194916, 0)
+target pt=(-1172889.8043455, -6876930.9202052)
+
+test tolerance = (1e-1, 1e-1)
+source pt=(-37.4437856078148, 0)
+target pt=(1753537.01461339, -6876930.9202052)
+test tolerance = (1e-2, 1e-2)
+
+source pt=(-53.5433286428452, -55)
+target pt=(-34769.6655635273, -12974296.2789229)
+
+source pt=(-44.4776554703712, -15)
+target pt=(919541.485496101, -8553716.10007135)
+
+source pt=(-48.9076309204102, 6)
+target pt=(453461.235220717, -6211766.01851653)
+
+source pt=(-58.3847486376762, 71)
+target pt=(-195513.962340128, 1012312.64156725)
+
+source pt=(-38.1863514184952, 66.67)
+target pt=(649873.231902255, 598332.58164281)
+
+source pt=(-67.7815430760384, -70)
+target pt=(-559639.216808612, -14714215.1323951)
+
+source pt=(-55.5300562381744, 90)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+target pt=(-0.000000000017, 3125034.809107470326)
+
+source pt=(-38.5174726843834, -90)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+target pt=(0.000000000099,  -16878896.649517975748)
+
+
+////////////////////////////////////////////
+//Spherical  tests
+
+source crs = _sphere_
+target crs = _Tmerc5_
+test tolerance = (1e-2, 1e-2)
+
+source pt=(-123.1, 49.2166666666)
+target pt=(13789574.5387112, 7382397.50794123)
+
+source pt=(2.33656753, 43.96499314)
+target pt=(-3078047.14958492, 29585391.1514321)
+
+source pt=(151.283333333, -33.9166666666)
+target pt=(-5418312.92336079, -29587617.9879798)
+
+source pt=(-47.95, -15.75)
+target pt=(13513964.5111291, -72890895.6259237)
+
+source pt=(139.733333333, 35.6833333333)
+target pt=(-8635552.87866394, -3554945.96723421)
+
+source pt=(18.45, -33.9166666666)
+target pt=(-8302359.97263055, -66747202.7054016)
+
+test tolerance = (1e-0, 1e-0)
+source pt=(0, 0)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+target pt=(-3483443.041999361478, 45054262.819412700832)
+test tolerance = (1e-2, 1e-2)
+
+source pt=(180, 0)
+target pt=(3483443.04199937, -17328562.8773271)
+
+source pt=(-180, 0)
+target pt=(3483443.04199937, -17328562.8773271)
+
+source pt=(90, 0)
+target pt=(-48376709.2979346, -17328562.8773271)
+
+test tolerance = (1e-0, 1e-0)
+source pt=(-90, 0)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+target pt=(48376709.297934658825, 45054262.819412700832)
+test tolerance = (1e-2, 1e-2)
+
+source pt=(-76, -55)
+target pt=(11553272.5099346, -54029404.2381212)
+
+source pt=(12, -15)
+target pt=(-7525909.03735192, -74125042.4896681)
+
+source pt=(80, 6)
+target pt=(-58552548.111824, 13862850.3018617)
+
+source pt=(-45, 71)
+target pt=(3752100.51893295, 19321853.4402069)
+
+source pt=(175, 66.67)
+target pt=(685658.424348583, 5804837.19503286)
+
+source pt=(60, -70)
+target pt=(-6616389.64024211, -50979235.1992091)
+
+source pt=(0, 90)
+target pt=(-1.98411990417064E-08, 13862850.3018618)
+
+source pt=(0, -90)
+target pt=(-1.98411990417064E-08, -48519976.056516)
+
+
+source crs = _sphere_
+target crs = _Tmerc6_
+test tolerance = (1e-2, 1e-2)
+
+source pt=(-123.1, 49.2166666666)
+target pt=(-3619915.01809819, 19945609.9068907)
+
+source pt=(2.33656753, 43.96499314)
+target pt=(-213168.110107154, 11713815.2013489)
+
+source pt=(151.283333333, -33.9166666666)
+target pt=(3173530.00299604, -8862237.94364749)
+
+source pt=(-47.95, -15.75)
+target pt=(-6471578.83631485, 4032504.56875713)
+
+source pt=(139.733333333, 35.6833333333)
+target pt=(4191980.45254639, 21768824.9669675)
+
+source pt=(18.45, -33.9166666666)
+target pt=(1245355.07995278, 2967869.48958207)
+
+source pt=(0, 0)
+target pt=(-556681.382381807, 6821692.45708087)
+
+source pt=(180, 0)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+target pt=(556681.382381802541,  26836769.828323487192)
+
+source pt=(-180, 0)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+target pt=(556681.382381813833,     26836769.828323487192)
+
+source pt=(90, 0)
+target pt=(19949511.3889019, 6821692.45708087)
+
+source pt=(-90, 0)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+target pt=(-19949511.388901866972,  26836769.828323487192)
+
+source pt=(-76, -55)
+target pt=(-4092571.68694787, -2490760.03540284)
+
+source pt=(12, -15)
+target pt=(753466.311202013, 5141814.10222135)
+
+source pt=(80, 6)
+target pt=(12449344.1910842, 9279283.42760731)
+
+source pt=(-45, 71)
+target pt=(-1623155.26794043, 15441512.7074456)
+
+source pt=(175, 66.67)
+target pt=(438821.340113329, 19388126.5597372)
+
+source pt=(60, -70)
+target pt=(1833972.68617244, -1874638.82605248)
+
+source pt=(0, 90)
+target pt=(-3.18295240164801E-09, 16829231.1427021)
+
+source pt=(0, -90)
+target pt=(-3.18295240164801E-09, -3185846.2285404)
+
+
+source crs = _sphere_
+target crs = _Tmerc7_
+test tolerance = (1e-2, 1e-2)
+
+source pt=(-123.1, 49.2166666666)
+target pt=(-3502534.62518099, -312621.901723925)
+
+source pt=(2.33656753, 43.96499314)
+target pt=(4302018.49245409, -324688.668607233)
+
+source pt=(151.283333333, -33.9166666666)
+target pt=(-2761747.70046451, -20164229.4261929)
+
+source pt=(-47.95, -15.75)
+target pt=(1413912.62008384, -8250773.32549481)
+
+source pt=(139.733333333, 35.6833333333)
+target pt=(-1764893.76899526, 6894266.73452589)
+
+source pt=(18.45, -33.9166666666)
+target pt=(6363780.15896415, -14108128.945581)
+
+source pt=(0, 0)
+target pt=(7832454.72952154, -6693931.43193781)
+
+test tolerance = (1e-1, 1e-1)
+source pt=(180, 0)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+target pt=(-7802454.729521553963, 10519035.025686521083)
+
+source pt=(-180, 0)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+target pt=(-7802454.729521531612, 10519035.025686521083)
+
+source pt=(90, 0)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+target pt=(2698178.655944796745, 10519035.025686521083)
+test tolerance = (1e-2, 1e-2)
+
+source pt=(-90, 0)
+target pt=(-2668178.6559448, -6693931.43193781)
+
+source pt=(-76, -55)
+target pt=(-695906.979181418, -12019986.3086512)
+
+source pt=(12, -15)
+target pt=(9226205.12689253, -11092128.6648434)
+
+source pt=(80, 6)
+target pt=(3800125.19778889, 9802085.2662908)
+
+source pt=(-45, 71)
+target pt=(568097.696768021, 178600.896265389)
+
+source pt=(175, 66.67)
+target pt=(-1899420.10181508, 3143636.7634581)
+
+source pt=(60, -70)
+target pt=(1631990.20790056, -16372640.8456495)
+
+source pt=(0, 90)
+target pt=(15000.0000000274, 1912551.8376965)
+
+source pt=(0, -90)
+target pt=(15000.0000000274, -15300414.7015721)
+
+
+source crs = _sphere_
+target crs = _Tmerc8_
+test tolerance = (1e-2, 1e-2)
+
+source pt=(-123.1, 49.2166666666)
+target pt=(1440560.8228628, 5665756.35606165)
+
+source pt=(2.33656753, 43.96499314)
+target pt=(2770448.45140423, 14506211.5300114)
+
+source pt=(151.283333333, -33.9166666666)
+target pt=(-6293340.03526895, -6510276.60204844)
+
+source pt=(-47.95, -15.75)
+target pt=(12294907.5987361, -11934872.5265976)
+
+source pt=(139.733333333, 35.6833333333)
+target pt=(-6864867.35271159, 8110360.84611128)
+
+source pt=(18.45, -33.9166666666)
+target pt=(1722751.36604794, -16084697.6321689)
+
+//value is an educated guess (should be same as for _tmerc9_ + false northing)
+//libproj gives incorrect (4434137.432960923761, 100)
+source pt=(0, 0)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+target pt=(4434137.432960923761,    20015177.371243)
+
+source pt=(180, 0)
+target pt=(-4434137.43296093, 100.0)
+
+source pt=(-180, 0)
+target pt=(-4434137.43296093, 100.0)
+
+//value is an educated guess (should be same as for _tmerc9_ + false northing)
+//libproj gives incorrect (-6975180.809350702912, 100)
+source pt=(90, 0)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+target pt=(-6975180.809350702912,   20015177.371243)
+
+source pt=(-90, 0)
+target pt=(6975180.80935069, 100)
+
+source pt=(-76, -55)
+target pt=(3741942.10333297, -8306015.8098193)
+
+source pt=(12, -15)
+target pt=(2761641.72476651, -18183567.4444324)
+
+source pt=(80, 6)
+target pt=(-5261735.00596522, 19105815.515088)
+
+source pt=(-45, 71)
+target pt=(2129970.31945656, 10312710.7522453)
+
+source pt=(175, 66.67)
+target pt=(-1729542.82182682, 8031574.56619459)
+
+source pt=(60, -70)
+target pt=(-856530.229676334, -12067070.5293225)
+
+source pt=(0, 90)
+target pt=(2.12196826776533E-08, 10007638.6856213)
+
+source pt=(0, -90)
+target pt=(2.12196826776533E-08, -10007438.6856213)
+
+
+source crs = _sphere_
+target crs = _Tmerc9_
+test tolerance = (1e-2, 1e-2)
+
+source pt=(0, 1)
+target pt=(0, 111194.874284681)
+
+source pt=(0, 0.1)
+target pt=(0, 11119.4874284681)
+
+source pt=(0, 0.00000001)
+target pt=(0, 1.11194874284681E-03)
+
+source pt=(0, 0)
+target pt=(0, 0)
+
+source pt=(0, -0.00000001)
+target pt=(0, -1.11194874284681E-03)
+
+source pt=(0, -0.1)
+target pt=(0, -11119.4874284681)
+
+source pt=(0, -1)
+target pt=(0, -111194.874284681)
+
+source pt=(180, 0.1)
+target pt=(-7.0732275592178E-10, 20003957.8838141)
+
+//value is an educated guess (should be slightly larger that the above point for (180,0.1))
+//libproj give incorrect (0,0)
+source pt=(180, 0.00000001)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+target pt=(0, 20015077.370131)
+
+//this is on the boundary where the cylinder is torn (we only calculate + value here)
+//value is an educated guess (should be slightly larger that the above point for (180,0.1))
+//libproj give incorrect (0,0)
+source pt=(180, 0)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+target pt=(0,20015077.370131)
+
+//value is an educated guess
+source pt=(180, -0.00000001)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+target pt=(0, -20015077.370131)
+
+source pt=(180, -0.1)
+target pt=(-7.0732275592178E-10, -20003957.8838141)
+
+source pt=(-180, 0.1)
+target pt=(-7.0732275592178E-10, 20003957.8838141)
+
+source pt=(-180, -0.1)
+target pt=(-7.0732275592178E-10, -20003957.8838141)
+
+source pt=(80, 0)
+target pt=(15521316.2994857, 0)
+
+//value here is an educated guess  (but similar to the following points that approach it)
+//libproj gives incorrect (5521316.299486, 0)
+source pt=(100, 0)
+target pt=(15521316.299486, 20015077.371243)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+source pt=(100, -0.1)
+target pt=(15520999.3998393, -19951044.8863994)
+
+source pt=(100, 0.1)
+target pt=(15520999.3998393, 19951044.8863994)
+
+source pt=(-80, 0)
+target pt=(-15521316.2994857, 0)
+
+//value here is an educated guess 
+source pt=(-100, 0)
+target pt=(-15521316.299486, 20015077.371243)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+source pt=(-100, -0.1)
+target pt=(-15520999.3998393, -19951044.8863994)
+
+source pt=(-100, 0.1)
+target pt=(-15520999.3998393, 19951044.8863994)
+
+source pt=(90, 10)
+target pt=(15521316.2994857, 10007538.6856213)
+
+source pt=(90, -10)
+target pt=(15521316.2994857, -10007538.6856213)
+
+source pt=(-90, 10)
+target pt=(-15521316.2994857, 10007538.6856213)
+
+source pt=(-90, -10)
+target pt=(-15521316.2994857, -10007538.6856213)
+
+source pt=(90, 0.1)
+target pt=(44877041.56,     10007538.69)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+//point is undefined
+//source pt=(90, 0)
+//target pt=(0,0)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+source pt=(90, -0.1)
+target pt=(44877041.56,     -10007538.69)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+source pt=(-90, 0.1)
+target pt=(-44877041.56,     10007538.69)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+source pt=(-90, -0.1)
+target pt=(-44877041.56,     -10007538.69)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+//points on the boundary
+//test that we correctly handle - northing value here
+source crs = _Tmerc9_
+target crs = _sphere_
+test tolerance = (1e-10, 1e-10)
+
+//these are correctly calculated, but commented out because of assert errors
+//source pt=(0,-20015077.370131)
+//target pt=(180, 0)
+//print pts
+
+//source pt=(-15521316.299486, -20015077.371243)
+//target pt=(-100, 0)
+//print pts
+
+
+////////////////////////////////////////////
+//Tests for an OGC test case that fails in OpenGIS.txt
+
+//set _NAD27Idaho_=PROJCS["NAD27 / Idaho Central",GEOGCS["NAD27",DATUM["North_American_Datum_1927",SPHEROID["Clarke 1866",6378206.4,294.978698213901,AUTHORITY["EPSG","7008"]],TOWGS84[-3,142,183,0,0,0,0],AUTHORITY["EPSG","6267"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Lat",NORTH],AXIS["Long",EAST],AUTHORITY["EPSG","4267"]],PROJECTION["Transverse_Mercator"],PARAMETER["latitude_of_origin",41.6666666666666],PARAMETER["central_meridian",-114],PARAMETER["scale_factor",0.999947368],PARAMETER["false_easting",152400.30480061],PARAMETER["false_northing",0],UNIT["US survey foot",0.304800609601219,AUTHORITY["EPSG","9003"]],AXIS["X",EAST],AXIS["Y",NORTH],AUTHORITY["EPSG","26769"]]
+//set _NAD83Idaho_=PROJCS["NAD83 / Idaho  Central",GEOGCS["NAD83",DATUM["North_American_Datum_1983",SPHEROID["GRS 1980",6378137,298.257222101,AUTHORITY["EPSG","7019"]],TOWGS84[0,0,0,0,0,0,0],AUTHORITY["EPSG","6269"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Lat",NORTH],AXIS["Long",EAST],AUTHORITY["EPSG","4269"]],PROJECTION["Transverse_Mercator"],PARAMETER["latitude_of_origin",41.6666666666666],PARAMETER["central_meridian",-114],PARAMETER["scale_factor",0.999947368],PARAMETER["false_easting",500000],PARAMETER["false_northing",0],UNIT["metre",1,AUTHORITY["EPSG","9001"]],AXIS["X",EAST],AXIS["Y",NORTH],AUTHORITY["EPSG","26969"]]
+
+//the source CRS with the FE in feet (assuming it is incorrectly given in meters in the original)
+//152400.30480061m == 500000.0 feet
+set _NAD27IdahoFeet_=PROJCS["NAD27 / Idaho Central",GEOGCS["NAD27",DATUM["North_American_Datum_1927",SPHEROID["Clarke 1866",6378206.4,294.978698213901,AUTHORITY["EPSG","7008"]],TOWGS84[-3,142,183,0,0,0,0],AUTHORITY["EPSG","6267"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Lat",NORTH],AXIS["Long",EAST],AUTHORITY["EPSG","4267"]],PROJECTION["Transverse_Mercator"],PARAMETER["latitude_of_origin",41.6666666666666],PARAMETER["central_meridian",-114],PARAMETER["scale_factor",0.999947368],PARAMETER["false_easting",500000.0],PARAMETER["false_northing",0],UNIT["US survey foot",0.304800609601219,AUTHORITY["EPSG","9003"]],AXIS["X",EAST],AXIS["Y",NORTH],AUTHORITY["EPSG","26769"]]
+
+source crs = _NAD27Idaho_
+target crs = _NAD83Idaho_
+test tolerance = (1e-2, 1e-2)
+
+//the original test point from OpenGIS.txt (fails)
+//source pt = (30000.0, 40000.0)
+//target pt = (356672.14701, 12183.56326)
+//print pts
+
+//the target as calculated with arcInfo (FE in source assumed to be correctly given as feet)
+source pt = (30000.0, 40000.0)
+target pt = ( 462631.7604,   12177.9660)
+
+source crs = _NAD27IdahoFeet_
+target crs = _NAD83Idaho_
+
+//source FE assumed to be given in meters (target calculated with ArcInfo)
+source pt = (30000.0, 40000.0)
+target pt = (356682.9969,  12177.9631)

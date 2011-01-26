@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://www.opengis.net/swe/1.0" xmlns:gml="http://www.opengis.net/gml" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:swe="http://www.opengis.net/swe/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.0">
+	<xs:annotation>
+		<xs:documentation>SWE Common schema for aggregate data types</xs:documentation>
+	</xs:annotation>
+	<!-- ================================================= -->
+	<xs:import namespace="http://www.w3.org/1999/xlink" schemaLocation="http://schemas.opengis.net/xlink/1.0.0/xlinks.xsd"/>
+	<xs:import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+	<xs:include schemaLocation="simpleTypes.xsd"/>
+	<xs:include schemaLocation="encoding.xsd"/>
+	<!-- ================================================= -->
+	<!--         Composite/Aggregate Components - Records and arrays            -->
+	<!-- ================================================= -->
+	<xs:element name="AbstractDataRecord" type="swe:AbstractDataRecordType" abstract="true"/>
+	<!-- ........ -->
+	<xs:complexType name="AbstractDataRecordType" abstract="true">
+		<xs:complexContent>
+			<xs:extension base="swe:AbstractDataComponentType"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ================================================= -->
+	<xs:element name="DataRecord" type="swe:DataRecordType" substitutionGroup="swe:AbstractDataRecord">
+		<xs:annotation>
+			<xs:documentation>Implementation of ISO-11404 Record datatype. This allows grouping of data components which can themselves be Records, Arrays or Simple Types</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<!-- ........ -->
+	<xs:complexType name="DataRecordType">
+		<xs:complexContent>
+			<xs:extension base="swe:AbstractDataRecordType">
+				<xs:sequence>
+					<xs:element name="field" type="swe:DataComponentPropertyType" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ........ -->
+	<xs:complexType name="DataRecordPropertyType">
+		<xs:annotation>
+			<xs:documentation>DataRecord is a data-type so usually appears "by value" rather than by reference.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="swe:DataRecord"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ================================================= -->
+	<xs:element name="SimpleDataRecord" type="swe:SimpleDataRecordType" substitutionGroup="swe:AbstractDataRecord">
+		<xs:annotation>
+			<xs:documentation>Implementation of ISO-11404 Record datatype that takes only simple scalars (i.e. no data aggregates)</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<!-- ........ -->
+	<xs:complexType name="SimpleDataRecordType">
+		<xs:complexContent>
+			<xs:extension base="swe:AbstractDataRecordType">
+				<xs:sequence>
+					<xs:element name="field" type="swe:AnyScalarPropertyType" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ........ -->
+	<xs:complexType name="SimpleDataRecordPropertyType">
+		<xs:annotation>
+			<xs:documentation>SimpleDataRecord is a data-type so usually appears "by value" rather than by reference.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="swe:SimpleDataRecord"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ================================================= -->
+	<xs:element name="AbstractDataArray" type="swe:AbstractDataArrayType" abstract="true">
+		<xs:annotation>
+			<xs:documentation>Implemetation of ISO-11404 Array datatype. This defines an array of identical data components with a elementCount. Values are given as a block and can be encoded in different ways</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<!-- ........ -->
+	<xs:complexType name="AbstractDataArrayType" abstract="true">
+		<xs:complexContent>
+			<xs:extension base="swe:AbstractDataComponentType">
+				<xs:sequence>
+					<xs:element name="elementCount">
+						<xs:annotation>
+							<xs:documentation>Specifies the size of the array (i.e. the number of elements of the defined type it contains)</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence minOccurs="0">
+								<xs:element ref="swe:Count">
+									<!-- Should this really be swe:Count rather than xs:integer??? -->
+								</xs:element>
+								<!-- maxOccurs="unbounded" to support multiple dimensions? -->
+							</xs:sequence>
+							<xs:attribute name="ref" type="xs:IDREF">
+								<xs:annotation>
+									<xs:documentation>If present, the array size is variable and should be obtained from the referenced component.
+			                    The referenced component must occur before the array values in a data stream to allow parsing.</xs:documentation>
+								</xs:annotation>
+							</xs:attribute>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ================================================= -->
+	<xs:element name="DataArray" type="swe:DataArrayType" substitutionGroup="swe:AbstractDataArray">
+		<xs:annotation>
+			<xs:documentation>Implemetation of ISO-11404 Array datatype. This defines an array of identical data components with a elementCount. Values are given as a block and can be encoded in different ways</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<!-- ........ -->
+	<xs:complexType name="DataArrayType">
+		<xs:complexContent>
+			<xs:extension base="swe:AbstractDataArrayType">
+				<xs:sequence>
+					<xs:element name="elementType" type="swe:DataComponentPropertyType"/>
+					<xs:group ref="swe:EncodedValuesGroup" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ........ -->
+	<xs:complexType name="DataArrayPropertyType">
+		<xs:annotation>
+			<xs:documentation>DataArray is a data-type so usually appears "by value" rather than by reference.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="swe:DataArray"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ================================================= -->
+	<xs:complexType name="DataValuePropertyType">
+		<xs:annotation>
+			<xs:documentation>Use to point or include data values inline</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="xs:anyType">
+				<xs:attribute name="recordCount" type="xs:positiveInteger"/>
+				<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ================================================= -->
+	<!--         Conditionals            -->
+	<!-- ================================================= -->
+	<xs:element name="ConditionalData" type="swe:ConditionalDataType" substitutionGroup="swe:AbstractDataRecord">
+		<xs:annotation>
+			<xs:documentation>List of Conditional Values for a property</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<!-- ........ -->
+	<xs:complexType name="ConditionalDataType">
+		<xs:complexContent>
+			<xs:extension base="swe:AbstractDataRecordType">
+				<xs:sequence>
+					<xs:element name="case" maxOccurs="unbounded">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element ref="swe:ConditionalValue" minOccurs="0"/>
+							</xs:sequence>
+							<xs:attribute name="name" type="xs:token" use="required"/>
+							<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ================================================= -->
+	<xs:complexType name="AbstractConditionalType">
+		<xs:complexContent>
+			<xs:extension base="swe:AbstractDataRecordType">
+				<xs:sequence>
+					<xs:element name="condition" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>Specifies one or more conditions for which the given value is valid</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:group ref="swe:AnyData" minOccurs="0"/>
+							<xs:attribute name="name" type="xs:token" use="required"/>
+							<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ================================================= -->
+	<xs:element name="ConditionalValue" type="swe:ConditionalValueType" substitutionGroup="swe:AbstractDataRecord">
+		<xs:annotation>
+			<xs:documentation>Qualifies data (scalar or not) with one or more conditions</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<!-- ........ -->
+	<xs:complexType name="ConditionalValueType">
+		<xs:complexContent>
+			<xs:extension base="swe:AbstractConditionalType">
+				<xs:sequence>
+					<xs:element name="data">
+						<xs:complexType>
+							<xs:group ref="swe:AnyData" minOccurs="0"/>
+							<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ================================================= -->
+	<!--               Data Component Groups               -->
+	<!-- ================================================= -->
+	<xs:group name="AnyData">
+		<xs:choice>
+			<xs:group ref="swe:AnyScalar"/>
+			<xs:group ref="swe:AnyRange"/>
+			<xs:element ref="swe:AbstractDataRecord"/>
+			<xs:element ref="swe:AbstractDataArray"/>
+		</xs:choice>
+	</xs:group>
+	<!-- ........ -->
+	<xs:complexType name="DataComponentPropertyType">
+		<xs:annotation>
+			<xs:documentation>Complex Type for all properties taking the AnyData Group with a "name" key</xs:documentation>
+		</xs:annotation>
+		<xs:group ref="swe:AnyData" minOccurs="0"/>
+		<xs:attribute name="name" type="xs:token" use="required"/>
+		<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</xs:complexType>
+	<!-- ........ -->
+	<xs:complexType name="AnyDataPropertyType">
+		<xs:annotation>
+			<xs:documentation>Complex Type for all properties taking the AnyData Group</xs:documentation>
+		</xs:annotation>
+		<xs:group ref="swe:AnyData" minOccurs="0"/>
+		<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</xs:complexType>
+	<!-- ================================================= -->
+	<xs:group name="EncodedValuesGroup">
+		<xs:sequence>
+			<xs:element name="encoding" type="swe:BlockEncodingPropertyType">
+				<xs:annotation>
+					<xs:documentation>Specifies an encoding for the data structure defined by the enclosing element</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="values" type="swe:DataValuePropertyType">
+				<xs:annotation>
+					<xs:documentation>Carries the block of values encoded as specified by the encoding element</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+</xs:schema>

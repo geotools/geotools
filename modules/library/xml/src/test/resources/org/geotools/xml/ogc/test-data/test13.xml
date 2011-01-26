@@ -1,0 +1,18 @@
+<Filter xmlns:gml="http://www.opengis.net/gml">
+  <And>
+    <Or>
+      <PropertyIsEqualTo>
+        <PropertyName>testInteger</PropertyName>
+        <Literal>10</Literal>
+      </PropertyIsEqualTo>
+      <PropertyIsEqualTo>
+        <PropertyName>testString</PropertyName>
+        <Literal>cows</Literal>
+      </PropertyIsEqualTo>
+    </Or>
+    <PropertyIsEqualTo>
+      <PropertyName>testInteger</PropertyName>
+      <Literal>10</Literal>
+    </PropertyIsEqualTo>
+  </And>
+</Filter>

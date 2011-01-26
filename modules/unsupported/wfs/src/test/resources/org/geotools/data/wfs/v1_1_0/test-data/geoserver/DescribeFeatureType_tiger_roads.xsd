@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:gml="http://www.opengis.net/gml" xmlns:tiger="http://www.census.gov"
+  elementFormDefault="qualified" targetNamespace="http://www.census.gov">
+  <xsd:import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd" />
+  <xsd:complexType name="tiger_roadsType">
+    <xsd:complexContent>
+      <xsd:extension base="gml:AbstractFeatureType">
+        <xsd:sequence>
+          <xsd:element maxOccurs="1" minOccurs="0" name="the_geom" nillable="true"
+            type="gml:MultiLineStringPropertyType" />
+          <xsd:element maxOccurs="1" minOccurs="0" name="CFCC" nillable="true" type="xsd:string" />
+          <xsd:element maxOccurs="1" minOccurs="0" name="NAME" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="tiger_roads" substitutionGroup="gml:_Feature" type="tiger:tiger_roadsType" />
+</xsd:schema>

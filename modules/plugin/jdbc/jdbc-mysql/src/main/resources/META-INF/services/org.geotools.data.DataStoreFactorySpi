@@ -1,0 +1,2 @@
+org.geotools.data.mysql.MySQLDataStoreFactory
+org.geotools.data.mysql.MySQLJNDIDataStoreFactory

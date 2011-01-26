@@ -1,0 +1,41 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<HTML>
+  <HEAD>
+    <TITLE></TITLE>
+  </HEAD>
+  <BODY>
+  Defines the DataStoreAPI via which all data is imported or exported.
+<p>
+  All DataStores (e.g. PostGIS, Shapefile(tm), GML...) must provide
+implementations of the DataStore interface and the DataStoreFactorySpi
+interface.  These interfaces allow new types of datastore to be plugged into
+applications which use geotools without the need to modify any code.
+<p>
+Example:</p>
+<pre>
+<code>
+FeatureStore postgis = new PostGisDataStore( ... );
+Query all = Query.ALL;
+FeatureType roadType = postgis.getFeatureType( "roads" );
+
+// reader 1 streams over all roads
+FeatureReader reader1 = postgis.getFeatureReader( roadsType, all, Transaction.AUTO_COMMIT );
+
+// allRoads = featureResults is a prepaired query of all roads
+FeatureSource roads = postgis.getFeatureSource( "roads" );
+FeatureResults allRoads = roads.getFeatures( all );
+
+// reader 2 & 3 streams over all roads in the same manner as reader 1
+FeatureReader reader2 = allRoads.reader();
+FeatureReader reader3 = allRoads.reader();
+
+// bounds1 returns the bounding box of roads, may be null depending on expense
+Envelope bounds1 = roads.getBounds( all );
+
+// bounds2 returns the bounding box of roads, may actually calculate by going over the entire dataset
+Envelope bounds 2 = allRoads.getBounds(); 
+<code>
+</pre>
+  </BODY>
+</HTML>

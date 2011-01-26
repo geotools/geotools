@@ -1,0 +1,54 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<HTML>
+  <HEAD>
+    <TITLE>package org.geotools.referencing</TITLE>
+  </HEAD>
+  <BODY>
+  {@linkplain org.geotools.referencing.AbstractReferenceSystem Reference systems} implementation. An
+  explanation for this package is provided in the {@linkplain org.opengis.referencing OpenGIS&reg; javadoc}.
+  The remaining discussion on this page is specific to the Geotools implementation.
+
+  <P ALIGN="justify">This package provides implementations for general positioning, coordinate
+  reference systems (CRS), and coordinate transformations. Coordinates can have any number of
+  dimensions. So this implementation can handle 2D and 3D coordinates, as well as 4D, 5D,
+  <CITE>etc.</CITE></P>
+  
+  <P ALIGN="justify">This package provides a special implementation of
+  {@linkplain org.geotools.referencing.NamedIdentifier identifier}, which is also a
+  {@linkplain org.opengis.util.GenericName generic name}. By implementing those two
+  interfaces, it is possible to use the same kind of object for specifying both the
+  {@linkplain org.geotools.referencing.AbstractIdentifiedObject#getName main identifier} and the
+  {@linkplain org.geotools.referencing.AbstractIdentifiedObject#getAlias aliases} of an
+  {@linkplain org.geotools.referencing.AbstractIdentifiedObject identified object}.</P>
+  
+  <P ALIGN="justify">All factory methods are capable to find an object using an
+  unscoped (or local) name. However, in order to avoid potential conflict, it is
+  recommanded to use scoped name when possible. For example even if both can work,
+  prefer "EPSG:9624" instead of "9624" for the affine transform in order to avoid
+  potential conflict with an other authority using the same code number.</P>
+  
+  <H3>Command-line tools</H3>
+  <P ALIGN="justify">A set of command lines tools is provided for performing queries.
+  The tools are implemented in the <CODE>main</CODE> method of some key classes. The
+  tools are:</P>
+
+  <TABLE>
+    <TR>
+      <TD>{@link org.geotools.referencing.FactoryFinder#main FactoryFinder}&nbsp;</TD>
+      <TD>Lists registered factories found in the class path (not only Geotools implementations).</TD>
+    </TR><TR>
+      <TD>{@link org.geotools.referencing.operation.DefaultMathTransformFactory#main DefaultMathTransformFactory}&nbsp;</TD>
+      <TD>Lists registered math transforms found in the class path.</TD>
+    </TR>
+    </TR><TR>
+      <TD>{@link org.geotools.referencing.CRS#main CRS}&nbsp;</TD>
+      <TD>Prints some informations about objects specified by their authority codes.</TD>
+    </TR>
+    </TR><TR>
+      <TD>{@link org.geotools.referencing.Console Console}&nbsp;</TD>
+      <TD>A command-line tool for testing transformations.</TD>
+    </TR>
+  </TABLE>
+  </BODY>
+</HTML>

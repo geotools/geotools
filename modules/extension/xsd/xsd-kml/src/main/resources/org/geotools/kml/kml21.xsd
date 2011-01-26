@@ -1,0 +1,1065 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2007.  Google, Inc.  All rights reserved. -->
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        xmlns:kml="http://earth.google.com/kml/2.1"
+        targetNamespace="http://earth.google.com/kml/2.1"
+        elementFormDefault="qualified"
+        version="$Revision: 1.26 $">
+
+  <annotation>
+    <documentation>
+      <![CDATA[
+      
+      KML 2.1 Reference:
+      http://code.google.com/apis/kml/documentation/kml_tags_21.html
+      
+      KML 2.1 Reference "abstract element" is a
+      W3C XML Schema substitutionGroup:
+
+        Object
+          Feature
+            Overlay
+            Container
+          Geoemtry
+          ColorStyle
+          StyleSelector
+          TimePrimitive
+      
+      Child elements are generally minOccurs="0" due to Update's Change.
+      However, it is considered good practice to explicitly set the
+      "obvious" children of a given element.  For example, north, south,
+      east and west of LatLonBox should always be set.
+
+      The <schema> version attribute will change for minor bug fixes
+      to the schema itself.
+
+      ]]>
+    </documentation>
+  </annotation>
+
+  <simpleType name="anglepos90">
+    <restriction base="double">
+      <minInclusive value="0.0"/>
+      <maxInclusive value="90.0"/>
+    </restriction>
+  </simpleType>
+
+  <simpleType name="angle90">
+    <restriction base="double">
+      <minInclusive value="-90"/>
+      <maxInclusive value="90.0"/>
+    </restriction>
+  </simpleType>
+
+  <simpleType name="angle180">
+    <restriction base="double">
+      <minInclusive value="-180"/>
+      <maxInclusive value="180"/>
+    </restriction>
+  </simpleType>
+
+  <simpleType name="angle360">
+    <restriction base="double">
+      <minInclusive value="-360"/>
+      <maxInclusive value="360"/>
+    </restriction>
+  </simpleType>
+
+  <simpleType name="altitudeModeEnum">
+    <restriction base="string">
+      <enumeration value="clampToGround"/>
+      <enumeration value="relativeToGround"/>
+      <enumeration value="absolute"/>
+    </restriction>
+  </simpleType>
+
+  <simpleType name="color">
+    <annotation>
+      <documentation>
+        <![CDATA[
+        
+        aabbggrr
+        
+        ffffffff: opaque white
+        ff000000: opaque black
+        
+        ]]>
+      </documentation>
+    </annotation>
+    <restriction base="hexBinary">
+      <length value="4"/>
+    </restriction>
+  </simpleType>
+
+  <complexType name="vec2Type" abstract="false" final="#all">
+    <attribute name="x" type="double" default="1.0"/>
+    <attribute name="y" type="double" default="1.0"/>
+    <attribute name="xunits" type="kml:unitsEnum" use="optional"
+                                                  default="fraction"/>
+    <attribute name="yunits" type="kml:unitsEnum" use="optional"
+                                                  default="fraction"/>
+  </complexType>
+
+  <simpleType name="unitsEnum">
+    <restriction base="string">
+      <enumeration value="fraction"/>
+      <enumeration value="pixels"/>
+      <enumeration value="insetPixels"/>
+    </restriction>
+  </simpleType>
+
+
+  <annotation>
+    <documentation>
+      <![CDATA[
+      
+      Declare head of Object substitutionGroup.
+      
+      ]]>
+    </documentation>
+  </annotation>
+
+  <element name="Object" type="kml:ObjectType" abstract="true"/>
+
+  <attributeGroup name="idAttributes">
+    <attribute name="id" type="ID" use="optional"/>
+    <attribute name="targetId" type="NCName" use="optional"/>
+  </attributeGroup>
+
+  <complexType name="ObjectType" abstract="true">
+    <attributeGroup ref="kml:idAttributes"/>
+  </complexType>
+
+
+  <annotation>
+    <documentation>
+      <![CDATA[
+      
+      Declare head of Feature substituionGroup.
+      
+      ]]>
+    </documentation>
+  </annotation>
+  <element name="Feature" type="kml:FeatureType" abstract="true"/>
+
+  <complexType name="FeatureType" abstract="true">
+    <complexContent>
+      <extension base="kml:ObjectType">
+        <sequence>
+          <element name="name" type="string" minOccurs="0"/>
+          <element name="visibility" type="boolean" default="1" minOccurs="0"/>
+          <element name="open" type="boolean" default="1" minOccurs="0"/>
+          <element name="address" type="string" minOccurs="0"/>
+          <element name="phoneNumber" type="string" minOccurs="0"/>
+          <element name="Snippet" type="kml:SnippetType" minOccurs="0"/>
+          <element name="description" type="string" minOccurs="0"/>
+          <element ref="kml:LookAt" minOccurs="0"/>
+          <element ref="kml:TimePrimitive" minOccurs="0"/>
+          <element ref="kml:styleUrl" minOccurs="0"/>
+          <element ref="kml:StyleSelector" minOccurs="0" maxOccurs="unbounded"/>
+          <element ref="kml:Region" minOccurs="0"/>
+          <element name="Metadata" type="kml:MetadataType" minOccurs="0"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+
+  <complexType name="SnippetType" final="#all">
+    <simpleContent>
+      <extension base="string">
+        <attribute name="maxLines" type="int" use="optional" default="2"/>
+      </extension>
+    </simpleContent>
+  </complexType>
+
+  <element name="LookAt" type="kml:LookAtType" substitutionGroup="kml:Object"/>
+
+  <complexType name="LookAtType" final="#all">
+    <complexContent>
+      <extension base="kml:ObjectType">
+        <all>
+          <element name="longitude" type="kml:angle180"
+                                    minOccurs="0" default="0"/>
+          <element name="latitude"  type="kml:angle90"
+                                    minOccurs="0" default="0"/>
+          <element name="altitude"  type="double"
+                                    minOccurs="0" default="0"/>
+          <element name="range"     type="double" minOccurs="0"/>
+          <element name="tilt"      type="kml:anglepos90"
+                                    minOccurs="0" default="0"/>
+          <element name="heading"   type="kml:angle360"
+                                    minOccurs="0" default="0"/>
+          <element name="altitudeMode" type="kml:altitudeModeEnum"
+                                       minOccurs="0" default="clampToGround"/>
+        </all>
+      </extension>
+    </complexContent>
+  </complexType>
+
+  <complexType name="MetadataType">
+    <sequence>
+      <any namespace="##any" processContents="lax"/>
+    </sequence>
+  </complexType>
+
+
+  <complexType name="ContainerType" abstract="true">
+    <complexContent>
+      <extension base="kml:FeatureType"> </extension>
+    </complexContent>
+  </complexType>
+
+
+  <annotation>
+    <documentation>
+      <![CDATA[
+      
+      Declare head of "Geometry" substitutionGroup.
+      
+      ]]>
+    </documentation>
+  </annotation>
+
+  <element name="Geometry" type="kml:GeometryType" abstract="true"/>
+
+  <complexType name="GeometryType" abstract="true">
+    <complexContent>
+      <extension base="kml:ObjectType"/>
+    </complexContent>
+  </complexType>
+
+
+  <complexType name="OverlayType" abstract="true">
+    <complexContent>
+      <extension base="kml:FeatureType">
+        <sequence>
+          <element name="color" type="kml:color" minOccurs="0"
+                                                 default="ffffffff"/>
+          <element name="drawOrder" type="int"   minOccurs="0"
+                                                 default="0" />
+          <element ref="kml:Icon" minOccurs="0"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+
+
+  <annotation>
+    <documentation>
+      <![CDATA[
+      
+      Declare head of StyleSelector substitution group.
+    
+      ]]>
+    </documentation>
+  </annotation>
+
+  <element name="StyleSelector" type="kml:StyleSelectorType" abstract="true"/>
+
+  <complexType name="StyleSelectorType" abstract="true">
+    <complexContent>
+      <extension base="kml:ObjectType"> </extension>
+    </complexContent>
+  </complexType>
+
+  <annotation>
+    <documentation>
+      <![CDATA[
+      
+      Declare head of TimePrimitive substitution group.
+    
+      ]]>
+    </documentation>
+  </annotation>
+
+  <element name="TimePrimitive" type="kml:TimePrimitiveType" abstract="true"/>
+
+  <complexType name="TimePrimitiveType" abstract="true">
+    <complexContent>
+      <extension base="kml:ObjectType"/>
+    </complexContent>
+  </complexType>
+
+
+  <complexType name="ColorStyleType" abstract="true">
+    <complexContent>
+      <extension base="kml:ObjectType">
+        <sequence>
+          <element name="color" type="kml:color"
+                                minOccurs="0" default="ffffffff"/>
+          <element name="colorMode" type="kml:colorModeEnum"
+                                minOccurs="0" default="normal"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+
+  <simpleType name="colorModeEnum">
+    <restriction base="string">
+      <enumeration value="normal"/>
+      <enumeration value="random"/>
+    </restriction>
+  </simpleType>
+
+
+
+  <annotation>
+    <documentation>
+      <![CDATA[
+      
+      Concrete elements.
+      
+      <kml> is the root element.
+      
+      ]]>
+    </documentation>
+  </annotation>
+
+  <element name="kml" type="kml:KmlType"/>
+
+  <complexType name="KmlType" final="#all">
+    <all>
+      <element name="NetworkLinkControl" type="kml:NetworkLinkControlType"
+                                         minOccurs="0"/>
+      <element ref="kml:Feature" minOccurs="0"/>
+    </all>
+  </complexType>
+
+
+  <element name="Document" type="kml:DocumentType"
+                           substitutionGroup="kml:Feature"/>
+
+  <complexType name="DocumentType" final="#all">
+    <complexContent>
+      <extension base="kml:ContainerType">
+        <sequence>
+          <element ref="kml:Feature" minOccurs="0" maxOccurs="unbounded"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+
+
+  <element name="Folder" type="kml:FolderType"
+                         substitutionGroup="kml:Feature"/>
+
+  <complexType name="FolderType" final="#all">
+    <complexContent>
+      <extension base="kml:ContainerType">
+        <sequence>
+          <element ref="kml:Feature" minOccurs="0" maxOccurs="unbounded"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+
+
+  <element name="Placemark" type="kml:PlacemarkType"
+                            substitutionGroup="kml:Feature"/>
+
+  <complexType name="PlacemarkType" final="#all">
+    <complexContent>
+      <extension base="kml:FeatureType">
+        <sequence>
+          <element ref="kml:Geometry" minOccurs="0"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+
+
+  <element name="NetworkLink" type="kml:NetworkLinkType"
+                              substitutionGroup="kml:Feature"/>
+
+  <complexType name="NetworkLinkType" final="#all">
+    <complexContent>
+      <extension base="kml:FeatureType">
+        <sequence>
+          <element name="refreshVisibility" type="boolean"
+                                            default="0" minOccurs="0"/>
+          <element name="flyToView" type="boolean" default="0" minOccurs="0"/>
+          <choice minOccurs="0">
+            <annotation>
+              <documentation>
+                <![CDATA[
+                
+                Url deprecated in 2.1.
+                
+                ]]></documentation>
+            </annotation>
+            <element ref="kml:Link"/>
+            <element name="Url" type="kml:LinkType"/>
+          </choice>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+
+
+  <element name="Region" type="kml:RegionType" substitutionGroup="kml:Object"/>
+
+  <complexType name="RegionType" final="#all">
+    <complexContent>
+      <extension base="kml:ObjectType">
+        <all>
+          <element ref="kml:LatLonAltBox"/>
+          <element ref="kml:Lod" minOccurs="0"/>
+        </all>
+      </extension>
+    </complexContent>
+  </complexType>
+
+  <element name="LatLonAltBox" type="kml:LatLonAltBoxType"/>
+
+  <complexType name="LatLonAltBoxType" final="#all">
+    <complexContent>
+      <extension base="kml:LatLonBoxType">
+        <sequence>
+          <element name="minAltitude" type="double" default="0" minOccurs="0"/>
+          <element name="maxAltitude" type="double" default="0" minOccurs="0"/>
+          <element name="altitudeMode" type="kml:altitudeModeEnum" minOccurs="0"
+            default="clampToGround"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+
+  <element name="Lod" type="kml:LodType" substitutionGroup="kml:Object"/>
+
+  <complexType name="LodType" final="#all">
+    <complexContent>
+      <extension base="kml:ObjectType">
+        <all>
+          <element name="minLodPixels" type="float" minOccurs="0" default="0"/>
+          <element name="maxLodPixels" type="float" minOccurs="0" default="-1"/>
+          <element name="minFadeExtent" type="float" minOccurs="0" default="0"/>
+          <element name="maxFadeExtent" type="float" minOccurs="0" default="0"/>
+        </all>
+      </extension>
+    </complexContent>
+  </complexType>
+
+
+  <complexType name="NetworkLinkControlType" final="#all">
+    <all>
+      <element name="minRefreshPeriod" type="float" default="0" minOccurs="0"/>
+      <element name="cookie" type="string" minOccurs="0"/>
+      <element name="message" type="string" minOccurs="0"/>
+      <element name="linkName" type="string" minOccurs="0"/>
+      <element name="linkDescription" type="string" minOccurs="0"/>
+      <element name="linkSnippet" type="kml:SnippetType" minOccurs="0"/>
+      <element name="expires" type="kml:dateTimeType" minOccurs="0"/>
+      <element name="Update" type="kml:UpdateType" minOccurs="0"/>
+      <element name="LookAt" type="kml:LookAtType" minOccurs="0"/>
+    </all>
+  </complexType>
+
+
+  <annotation>
+    <documentation>
+      <![CDATA[
+      
+      In KML 2.0 Icon is of type IconType which extends
+      LinkType with palette indexing.
+
+      Icon simply a LinkType in KML 2.1.
+      
+      ]]>
+    </documentation>
+  </annotation>
+
+  <element name="Icon" type="kml:LinkType" substitutionGroup="kml:Object"/>
+
+  <annotation>
+    <documentation>
+      <![CDATA[
+      
+      IconType unused in KML 2.1.
+      
+      Presented for reference as used in KML 2.0.
+      
+      ]]>
+    </documentation>
+  </annotation>
+
+  <complexType name="IconType" final="#all">
+    <complexContent>
+      <extension base="kml:LinkType">
+        <sequence>
+          <element name="x" type="int"/>
+          <element name="y" type="int"/>
+          <element name="w" type="int"/>
+          <element name="h" type="int"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+
+  <element name="Link" type="kml:LinkType" substitutionGroup="kml:Object"/>
+
+  <complexType name="LinkType">
+    <annotation>
+      <documentation>
+        <![CDATA[
+        
+        Not final="#all" to show how IconType extended LinkType in KML 2.0.
+        
+        ]]>
+      </documentation>
+    </annotation>
+    <complexContent>
+      <extension base="kml:ObjectType">
+        <sequence>
+          <element name="href" type="anyURI" minOccurs="0"/>
+          <element name="refreshMode"     type="kml:refreshModeEnum"
+                                          minOccurs="0" default="onChange"/>
+          <element name="refreshInterval" type="float"
+                                          minOccurs="0" default="4"/>
+          <element name="viewRefreshMode" type="kml:viewRefreshModeEnum"
+                                          minOccurs="0" default="never"/>
+          <element name="viewRefreshTime" type="float"
+                                          minOccurs="0" default="4"/>
+          <element name="viewBoundScale"  type="float"
+                                          minOccurs="0" default="1"/>
+          <element name="viewFormat"      type="string" minOccurs="0"/>
+          <element name="httpQuery"       type="string" minOccurs="0"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+
+  <simpleType name="refreshModeEnum">
+    <restriction base="string">
+      <enumeration value="onChange"/>
+      <enumeration value="onInterval"/>
+      <enumeration value="onExpire"/>
+    </restriction>
+  </simpleType>
+
+  <simpleType name="viewRefreshModeEnum">
+    <restriction base="string">
+      <enumeration value="never"/>
+      <enumeration value="onRequest"/>
+      <enumeration value="onStop"/>
+      <enumeration value="onRegion"/>
+    </restriction>
+  </simpleType>
+
+
+
+  <group name="geometryElements">
+    <sequence>
+      <element name="extrude"      type="boolean" minOccurs="0" default="0"/>
+      <element name="tessellate"   type="boolean" minOccurs="0" default="0"/>
+      <element name="altitudeMode" type="kml:altitudeModeEnum"
+                                   minOccurs="0" default="clampToGround"/>
+    </sequence>
+  </group>
+
+
+  <element name="MultiGeometry" type="kml:MultiGeometryType"
+                                substitutionGroup="kml:Geometry"/>
+
+  <complexType name="MultiGeometryType" final="#all">
+    <complexContent>
+      <extension base="kml:GeometryType">
+        <sequence>
+          <element ref="kml:Geometry" maxOccurs="unbounded"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+
+
+  <element name="coordinates" type="kml:CoordinatesType"/>
+
+  <simpleType name="CoordinatesType">
+    <list itemType="string"/>
+  </simpleType>
+
+
+  <element name="Point" type="kml:PointType" substitutionGroup="kml:Geometry"/>
+
+  <complexType name="PointType" final="#all">
+    <complexContent>
+      <extension base="kml:GeometryType">
+        <sequence>
+          <group ref="kml:geometryElements"/>
+          <element ref="kml:coordinates"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+
+
+  <element name="LineString" type="kml:LineStringType"
+                             substitutionGroup="kml:Geometry"/>
+
+  <complexType name="LineStringType" final="#all">
+    <complexContent>
+      <extension base="kml:GeometryType">
+        <sequence>
+          <group ref="kml:geometryElements"/>
+          <element ref="kml:coordinates"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+
+
+  <element name="LinearRing" type="kml:LinearRingType"
+                             substitutionGroup="kml:Geometry"/>
+
+  <complexType name="LinearRingType" final="#all">
+    <complexContent>
+      <extension base="kml:GeometryType">
+        <sequence>
+          <group ref="kml:geometryElements"/>
+          <element ref="kml:coordinates"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+
+
+  <element name="Polygon" type="kml:PolygonType"
+                          substitutionGroup="kml:Geometry"/>
+
+  <complexType name="PolygonType" final="#all">
+    <complexContent>
+      <extension base="kml:GeometryType">
+        <sequence>
+          <group ref="kml:geometryElements"/>
+          <element name="outerBoundaryIs" type="kml:boundaryType"
+                                          minOccurs="0"/>
+          <element name="innerBoundaryIs" type="kml:boundaryType"
+                                          minOccurs="0" maxOccurs="unbounded"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+
+  <complexType name="boundaryType" final="#all">
+    <all>
+      <element name="LinearRing" type="kml:LinearRingType" minOccurs="1"/>
+    </all>
+  </complexType>
+
+
+  <element name="Model" type="kml:ModelType" substitutionGroup="kml:Geometry"/>
+
+  <complexType name="ModelType" final="#all">
+    <complexContent>
+      <extension base="kml:GeometryType">
+        <sequence>
+          <element name="altitudeMode" type="kml:altitudeModeEnum"
+                                       minOccurs="0" default="clampToGround"/>
+          <element ref="kml:Location" minOccurs="0"/>
+          <element ref="kml:Orientation" minOccurs="0"/>
+          <element ref="kml:Scale" minOccurs="0"/>
+          <element ref="kml:Link" minOccurs="0"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+
+  <element name="Location" type="kml:LocationType"
+                           substitutionGroup="kml:Object"/>
+
+  <complexType name="LocationType" final="#all">
+    <complexContent>
+      <extension base="kml:ObjectType">
+        <all>
+          <element name="longitude" type="kml:angle180"
+                                    minOccurs="0" default="0"/>
+          <element name="latitude"  type="kml:angle90"
+                                    minOccurs="0" default="0"/>
+          <element name="altitude"  type="double" minOccurs="0" default="0"/>
+        </all>
+      </extension>
+    </complexContent>
+  </complexType>
+
+  <element name="Orientation" type="kml:OrientationType"
+                              substitutionGroup="kml:Object"/>
+
+  <complexType name="OrientationType" final="#all">
+    <complexContent>
+      <extension base="kml:ObjectType">
+        <all>
+          <element name="heading" type="kml:angle360"
+                                  minOccurs="0" default="0.0"/>
+          <element name="tilt"    type="kml:angle360"
+                                  minOccurs="0" default="0.0"/>
+          <element name="roll"    type="kml:angle360"
+                                  minOccurs="0" default="0.0"/>
+        </all>
+      </extension>
+    </complexContent>
+  </complexType>
+
+  <element name="Scale" type="kml:ScaleType" substitutionGroup="kml:Object"/>
+
+  <complexType name="ScaleType" final="#all">
+    <complexContent>
+      <extension base="kml:ObjectType">
+        <all>
+          <element name="x" type="double" minOccurs="0" default="1.0"/>
+          <element name="y" type="double" minOccurs="0" default="1.0"/>
+          <element name="z" type="double" minOccurs="0" default="1.0"/>
+        </all>
+      </extension>
+    </complexContent>
+  </complexType>
+
+
+  <element name="GroundOverlay" type="kml:GroundOverlayType"
+                                substitutionGroup="kml:Feature"/>
+
+  <complexType name="GroundOverlayType" final="#all">
+    <complexContent>
+      <extension base="kml:OverlayType">
+        <sequence>
+          <element name="altitude"     type="double"
+                                       minOccurs="0" default="0"/>
+          <element name="altitudeMode" type="kml:altitudeModeEnum"
+                                       minOccurs="0" default="clampToGround"/>
+          <element ref="kml:LatLonBox" minOccurs="0"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+
+  <element name="LatLonBox" type="kml:LatLonBoxType"
+                            substitutionGroup="kml:Object"/>
+
+  <complexType name="LatLonBoxType">
+    <complexContent>
+      <extension base="kml:ObjectType">
+        <sequence>
+          <annotation>
+            <documentation>
+              <![CDATA[Yes, north/south range to 180/-180]]>
+            </documentation>
+          </annotation>
+          <element name="north"    type="kml:angle180"
+                                   minOccurs="0" default="180.0"/>
+          <element name="south"    type="kml:angle180"
+                                   minOccurs="0" default="-180.0"/>
+          <element name="east"     type="kml:angle180"
+                                   minOccurs="0" default="180.0"/>
+          <element name="west"     type="kml:angle180"
+                                   minOccurs="0" default="-180.0"/>
+          <element name="rotation" type="kml:angle180"
+                                   default="0" minOccurs="0"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+
+
+  <element name="ScreenOverlay" type="kml:ScreenOverlayType"
+                                substitutionGroup="kml:Feature"/>
+
+  <complexType name="ScreenOverlayType" final="#all">
+    <complexContent>
+      <extension base="kml:OverlayType">
+        <sequence>
+          <element name="overlayXY" type="kml:vec2Type" minOccurs="0"/>
+          <element name="screenXY" type="kml:vec2Type" minOccurs="0"/>
+          <element name="rotationXY" type="kml:vec2Type" minOccurs="0"/>
+          <element name="size" type="kml:vec2Type" minOccurs="0"/>
+          <element name="rotation" type="float" default="0" minOccurs="0"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+
+
+  <element name="Style" type="kml:StyleType"
+                        substitutionGroup="kml:StyleSelector"/>
+
+  <complexType name="StyleType" final="#all">
+    <complexContent>
+      <extension base="kml:StyleSelectorType">
+        <sequence>
+          <element ref="kml:IconStyle" minOccurs="0"/>
+          <element ref="kml:LabelStyle" minOccurs="0"/>
+          <element ref="kml:LineStyle" minOccurs="0"/>
+          <element ref="kml:PolyStyle" minOccurs="0"/>
+          <element ref="kml:BalloonStyle" minOccurs="0"/>
+          <element ref="kml:ListStyle" minOccurs="0"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+
+
+  <element name="styleUrl" type="anyURI"/>
+
+
+  <element name="StyleMap" type="kml:StyleMapType"
+                           substitutionGroup="kml:StyleSelector"/>
+
+  <complexType name="StyleMapType" final="#all">
+    <complexContent>
+      <extension base="kml:StyleSelectorType">
+        <sequence>
+          <element name="Pair" type="kml:StyleMapPairType"
+                               minOccurs="1" maxOccurs="unbounded"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+
+  <complexType name="StyleMapPairType" final="#all">
+    <all>
+      <element name="key" type="kml:styleStateEnum"/>
+      <element ref="kml:styleUrl"/>
+    </all>
+  </complexType>
+
+  <simpleType name="styleStateEnum">
+    <restriction base="string">
+      <enumeration value="normal"/>
+      <enumeration value="highlight"/>
+    </restriction>
+  </simpleType>
+
+
+  <element name="IconStyle" type="kml:IconStyleType"
+                            substitutionGroup="kml:Object"/>
+
+  <complexType name="IconStyleType" final="#all">
+    <complexContent>
+      <extension base="kml:ColorStyleType">
+        <sequence>
+          <element name="scale" type="float" minOccurs="0" default="1"/>
+          <element name="heading" type="float" minOccurs="0" default="0"/>
+          <element name="Icon" type="kml:IconStyleIconType" minOccurs="0"/>
+          <element name="hotSpot" type="kml:vec2Type" minOccurs="0"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+
+  <complexType name="IconStyleIconType">
+    <complexContent>
+      <extension base="kml:ObjectType">
+        <sequence>
+          <element name="href" type="anyURI"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+
+
+  <element name="LabelStyle" type="kml:LabelStyleType"
+                             substitutionGroup="kml:Object"/>
+
+  <complexType name="LabelStyleType" final="#all">
+    <complexContent>
+      <extension base="kml:ColorStyleType">
+        <sequence>
+          <element name="scale" type="float" minOccurs="0" default="1"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+
+
+  <element name="LineStyle" type="kml:LineStyleType"
+                            substitutionGroup="kml:Object"/>
+
+  <complexType name="LineStyleType" final="#all">
+    <complexContent>
+      <extension base="kml:ColorStyleType">
+        <sequence>
+          <element name="width" type="float" minOccurs="0" default="1"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+
+
+  <element name="PolyStyle" type="kml:PolyStyleType"
+                            substitutionGroup="kml:Object"/>
+
+  <complexType name="PolyStyleType" final="#all">
+    <complexContent>
+      <extension base="kml:ColorStyleType">
+        <sequence>
+          <element name="fill" type="boolean" minOccurs="0" default="1"/>
+          <element name="outline" type="boolean" minOccurs="0" default="1"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+
+
+  <element name="BalloonStyle" type="kml:BalloonStyleType"
+                               substitutionGroup="kml:Object"/>
+
+  <complexType name="BalloonStyleType" final="#all">
+    <complexContent>
+      <extension base="kml:ObjectType">
+        <sequence>
+          <choice>
+            <annotation>
+              <documentation>
+                <![CDATA[color deprecated in 2.1]]>
+              </documentation>
+            </annotation>
+            <element name="color"   type="kml:color"
+                                    minOccurs="0" default="ffffffff"/>
+            <element name="bgColor" type="kml:color"
+                                    minOccurs="0" default="ffffffff"/>
+          </choice>
+          <element name="textColor" type="kml:color"
+                                    minOccurs="0" default="ff000000"/>
+          <element name="text"      type="string" minOccurs="0"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+
+
+  <element name="ListStyle" type="kml:ListStyleType"
+                            substitutionGroup="kml:Object"/>
+
+  <complexType name="ListStyleType" final="#all">
+    <complexContent>
+      <extension base="kml:ObjectType">
+        <sequence>
+          <element name="listItemType" type="kml:listItemTypeEnum"
+                                       minOccurs="0" default="check"/>
+          <element name="bgColor"      type="kml:color"
+                                       minOccurs="0" default="ffffffff"/>
+          <element name="ItemIcon"     type="kml:ItemIconType"
+                                       minOccurs="0" maxOccurs="unbounded"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+
+  <simpleType name="listItemTypeEnum">
+    <restriction base="string">
+      <enumeration value="radioFolder"/>
+      <enumeration value="check"/>
+      <enumeration value="checkHideChildren"/>
+      <enumeration value="checkOffOnly"/>
+    </restriction>
+  </simpleType>
+
+  <complexType name="ItemIconType" final="#all">
+    <complexContent>
+      <extension base="kml:ObjectType">
+        <sequence>
+          <element name="state" type="kml:itemIconStateType"
+                                minOccurs="0" maxOccurs="unbounded"/>
+          <element name="href" type="anyURI"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+
+  <simpleType name="itemIconStateType">
+    <list itemType="kml:itemIconStateEnum"/>
+  </simpleType>
+
+  <simpleType name="itemIconStateEnum">
+    <restriction base="string">
+      <enumeration value="open"/>
+      <enumeration value="closed"/>
+      <enumeration value="error"/>
+      <enumeration value="fetching0"/>
+      <enumeration value="fetching1"/>
+      <enumeration value="fetching2"/>
+    </restriction>
+  </simpleType>
+
+
+  <element name="TimeStamp" type="kml:TimeStampType"
+                            substitutionGroup="kml:TimePrimitive"/>
+
+  <complexType name="TimeStampType">
+    <complexContent>
+      <extension base="kml:TimePrimitiveType">
+        <sequence>
+          <element name="when" type="kml:dateTimeType" minOccurs="1"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+
+
+  <element name="TimeSpan" type="kml:TimeSpanType"
+                           substitutionGroup="kml:TimePrimitive"/>
+
+  <complexType name="TimeSpanType">
+    <complexContent>
+      <extension base="kml:TimePrimitiveType">
+        <sequence>
+          <element name="begin" type="kml:dateTimeType" minOccurs="0"/>
+          <element name="end" type="kml:dateTimeType" minOccurs="0"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+
+
+  <simpleType name="dateTimeType">
+    <union memberTypes="dateTime date gYearMonth gYear"/>
+  </simpleType>
+
+
+  <complexType name="UpdateType">
+    <sequence>
+      <element name="targetHref" type="anyURI" minOccurs="1"/>
+      <choice maxOccurs="unbounded">
+        <element name="Create" type="kml:CreateType" minOccurs="0"/>
+        <element name="Delete" type="kml:DeleteType" minOccurs="0"/>
+        <element name="Change" type="kml:ChangeType" minOccurs="0"/>
+        <element name="Replace" type="kml:ReplaceType" minOccurs="0"/>
+      </choice>
+    </sequence>
+  </complexType>
+
+  <complexType name="CreateType">
+    <sequence>
+      <element ref="kml:Folder"/>
+    </sequence>
+  </complexType>
+
+  <complexType name="DeleteType">
+    <sequence>
+      <element ref="kml:Feature" minOccurs="0" maxOccurs="unbounded"/>
+    </sequence>
+  </complexType>
+
+  <complexType name="ChangeType">
+    <choice maxOccurs="unbounded">
+      <annotation>
+        <documentation>
+          <![CDATA[
+
+            Any element ultimately derived from Object.
+
+          ]]>
+        </documentation>
+      </annotation>
+      <element ref="kml:Object" minOccurs="0"/>
+      <element ref="kml:Feature" minOccurs="0"/>
+      <element ref="kml:Geometry" minOccurs="0"/>
+      <element ref="kml:StyleSelector" minOccurs="0"/>
+      <element ref="kml:TimePrimitive" minOccurs="0"/>
+    </choice>
+  </complexType>
+  
+  <complexType name="ReplaceType">
+    <sequence>
+      <element ref="kml:Feature" minOccurs="0"/>
+    </sequence>
+  </complexType>
+
+</schema>

@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+    xmlns:mon="http://socialchange.net.au/namespaces/monitoring"
+    xmlns:cv="http://www.opengis.net/cv/0.0" xmlns:gml="http://www.opengis.net/gml"
+    xmlns:om="http://www.opengis.net/om/0.0" xmlns:sa="http://www.opengis.net/sampling/0.0"
+    xmlns:swe="http://www.opengis.net/swe/0.0" elementFormDefault="qualified"
+    targetNamespace="http://socialchange.net.au/namespaces/monitoring" version="1.0">
+    <import namespace="http://www.opengis.net/gml"
+        schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+
+    <import namespace="http://www.opengis.net/sampling/0.0"
+        schemaLocation="../sampling/0.0.0/sampling.xsd"/>
+    <import namespace="http://www.opengis.net/swe/0.0"
+        schemaLocation="../sweCommon/0.0.0/swe.xsd"/>
+    <import namespace="http://www.opengis.net/om/0.0"
+        schemaLocation="../om/1.0.30/om.xsd"/>
+    <import namespace="http://www.opengis.net/cv/0.0"
+        schemaLocation="../cv/0.0.0/compactDiscreteCoverage.xsd"/>
+    <!--XML Schema document created by ShapeChange
+
+ edited by Rob Atkinson to meet limitations of Geoserver complex-features parsing (order of declarations etc) 
+ 
+ -->
+
+
+
+    <!-- Stuff to make O&M types concrete -->
+    <complexType name="PhenomenonType">
+        <!--		<complexContent>
+            <extension base="gml:DefinitionType"/> -->
+        <sequence>
+            <element ref="gml:name"/>
+            <element ref="gml:description" minOccurs="0"/>
+            <element name="defaultUOM" type="string" minOccurs="0"/>
+
+        </sequence>
+        <!-- </complexContent> -->
+    </complexType>
+    <!-- .......... -->
+    <element name="Phenomenon" type="mon:PhenomenonType" substitutionGroup="gml:Definition">
+        <annotation>
+            <documentation>Use the generic gml:DefinitionType for basic Phenomenon definitions,
+                gml:description may be used for a more extensive description of the semantics, with
+                a link to a definitive version (if available). gml:name should be used for the
+                "short name" or label. </documentation>
+        </annotation>
+    </element>
+    <!-- .......... -->
+    <complexType name="PhenomenonPropertyType">
+        <sequence minOccurs="0">
+            <element ref="mon:Phenomenon"/>
+        </sequence>
+        <attributeGroup ref="gml:AssociationAttributeGroup"/>
+        <attribute ref="xlink:href"/>
+    </complexType>
+
+    <complexType name="monitoringDeviceType">
+        <sequence> 
+            <element name ="deviceid" type="string"/>
+            <element name="streamid" type="string"  maxOccurs="unbounded"/>
+        </sequence>   
+    </complexType>
+    
+    <complexType name="monitoringDevicesListType">
+ <sequence> 
+ <element name ="device" type="mon:monitoringDeviceType" maxOccurs="unbounded"/>
+ </sequence>   
+</complexType>
+
+    <complexType abstract="true" name="SamplingSiteType">
+        <annotation>
+            <documentation>SamplingSite implements a characterisation of the Feature of Interest,
+                through a set of observations. The key implication is that the location of the site
+                and the observation procedures provides for a representative sample of the actual
+                feature, within the scope of the sampling regime (e.g. a time
+            period)</documentation>
+        </annotation>
+        <complexContent>
+
+            <extension base="gml:AbstractFeatureType">
+
+                <sequence>
+
+                    <element ref="gml:name" maxOccurs="unbounded"/>
+                    <element ref="gml:description" minOccurs="0"/>
+                    <element name="position" type="gml:PointPropertyType"/>
+                    <element name="elevation" type="gml:DirectPositionType" minOccurs="0"/>
+                    <element name="devices" type="mon:monitoringDevicesListType"/> 
+                    <!--                   <element name="samplingRegimeType" type="mon:NRSamplingTypeCodeType"/>
+      -->
+                </sequence>
+            </extension>
+        </complexContent>
+
+    </complexType>
+    
+    
+    <element abstract="true" name="SamplingSite" substitutionGroup="sa:Station"
+    type="mon:SamplingSiteType"/>
+    
+    <complexType name="SamplingSitePropertyType">
+        <sequence minOccurs="0">
+            <element ref="mon:SamplingSite"/>
+        </sequence>
+        <attributeGroup ref="gml:AssociationAttributeGroup"/>
+    </complexType>
+
+    <element name="SiteLocation" substitutionGroup="mon:SamplingSite" type="mon:SiteLocation"/>
+    <complexType name="SiteLocation">
+        <annotation>
+            <documentation>This is a view of the sampling feature that contains no observations, and
+                can be used simply to map the spatial location, access identify and metadata
+            etc.</documentation>
+        </annotation>
+        <complexContent>
+            <extension base="mon:SamplingSiteType">
+                <sequence> </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="SiteLocationPropertyType">
+        <sequence minOccurs="0">
+            <element ref="mon:SiteLocation"/>
+        </sequence>
+        <attributeGroup ref="gml:AssociationAttributeGroup"/>
+    </complexType>
+
+
+
+
+    <!-- Observation centric stuff -->
+
+
+    <complexType name="DeterminandObservation">
+        <complexContent>
+            <extension base="gml:AbstractFeatureType">
+
+                <sequence>
+                    <element minOccurs="0" name="position" type="gml:PointPropertyType"/>
+                    <element name="procedure" type="string" minOccurs="0"/>
+
+                    <element name="observedProperty" type="mon:PhenomenonPropertyType"/>
+                    <element name="result" type="om:CompactDiscreteTimeCoveragePropertyType">
+                        <annotation>
+                            <documentation>time-instant coverage which samples a property of the
+                                feature of interest at different times</documentation>
+                        </annotation>
+                    </element>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <element name="DeterminandObservation" substitutionGroup="om:TimeSeriesObservation"
+        type="mon:DeterminandObservation"/>
+
+    <complexType name="DeterminandObservationsPropertyType">
+        <sequence minOccurs="0">
+            <element ref="mon:DeterminandObservation"/>
+        </sequence>
+        <attributeGroup ref="gml:AssociationAttributeGroup"/>
+    </complexType>
+
+
+   
+    <element name="PhenomenonTimeSeries" substitutionGroup="mon:DeterminandObservation"
+        type="mon:PhenomenonTimeSeries"/>
+    <complexType name="PhenomenonTimeSeries">
+        <complexContent>
+            <extension base="mon:DeterminandObservation">
+                <sequence>
+
+
+
+                    <element name="result">
+                        <complexType>
+                            <sequence minOccurs="0">
+                                <element ref="cv:CompactDiscreteTimeCoverage"/>
+                            </sequence>
+                            <attributeGroup ref="gml:AssociationAttributeGroup"/>
+                        </complexType>
+                    </element>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="PhenomenonTimeSeriesPropertyType">
+        <sequence minOccurs="0">
+            <element ref="mon:PhenomenonTimeSeries"/>
+        </sequence>
+        <attributeGroup ref="gml:AssociationAttributeGroup"/>
+    </complexType>
+
+
+    <element name="SiteSinglePhenomTimeSeries" substitutionGroup="mon:SamplingSite"
+        type="mon:SiteSinglePhenomTimeSeries"/>
+    <complexType name="SiteSinglePhenomTimeSeries">
+        <annotation>
+            <documentation>A view of the sampling feature with some subset of the constrained
+                observations, where the result set is a trend over the sampled time envelope.
+            </documentation>
+        </annotation>
+        <complexContent>
+            <extension base="mon:SamplingSiteType">
+                <sequence>
+                    <element maxOccurs="unbounded" minOccurs="0" name="relatedObservation"
+                        type="mon:DeterminandObservationsPropertyType"/>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="SiteSinglePhenomTimeSeriesPropertyType">
+        <sequence minOccurs="0">
+            <element ref="mon:SiteSinglePhenomTimeSeries"/>
+        </sequence>
+        <attributeGroup ref="gml:AssociationAttributeGroup"/>
+    </complexType>
+   
+
+</schema>

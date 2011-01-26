@@ -1,0 +1,217 @@
+MODULE SAMPLE DATA
+~~~~~~~~~~~~~~~~~~
+
+  Module Maintainer: none!
+
+  IP Review:
+
+    * Jody Garnett, August 6th, 2006
+
+    * Adrian Custer, June 6th 2008
+
+
+  STATUS: DIRTY
+      Code is Clean
+      Data NEEDS REVIEW  http://jira.codehaus.org/browse/GEOT-1898
+
+  James Macgill is listed as a java developer on this
+  one, but there is no official module maintainer. This
+  module has become more important as maven 2 forces us
+  into some kind of classloader induced data access madness.
+  
+  The module needs to be redone with pride, so we can stand head to head with
+  GRASS. For the future, a source of free shapefile data is the US Census at:
+      http://arcdata.esri.com/data/tiger2000/tiger_download.cfm
+  
+  For now, we need cleanup from a few hands, then to file bugs for the issues 
+  which remain (or better yet, fix them).
+  
+  
+* org.geotools
+  ~~~~~~~~~~~~
+  All three java files are clean.
+  
+  The double use of TestData.java is due to an intended cleanup which has not
+  yet happened.
+  
+  
+  
+* org.geotools.coverage.grid.test-data
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    * BATHY.gif 336x336px 207 indexed color plus alpha
+      
+      Origin unknown.
+
+    * CHL01195.png is an overview of a measure of chlorophyll concentration
+      in the western Mediterranean.
+  
+      The image was created by the University of the Canaries, Las Palmas. 
+      Committed on GeoTools SVN by Martin Desruisseaux with the permission of
+      Michel Petit, who is the chief scientist in charge of the SEASNET
+      image gathering network. For our purposes, it can be considered 
+      distributed under the same license agreement as the Geotools code.
+      
+    * QL95209.png is an overview of a Sea Surface Temperature raster
+      received at the station managed by IRD (Institut de Recherche
+      pour le Développement - France) on the Réunion island. The associated 
+      text file is for human consumption.
+      
+      Committed on GeoTools SVN by Martin Desruisseaux with the permission of
+      Michel Petit, who is the chief scientist in charge of the SEASNET
+      image gathering network. For our purposes, these can be considered 
+      distributed under the same license agreement as the Geotools code.
+
+    * world.png 227x103px  RGBA
+      
+      Origin unknown.
+    
+    * world_dem.gif 160x160px indexed Color
+      
+      Origin unknown.
+    
+    
+* org.geotools.test-data.arcgrid
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  
+    * arcgrid.zip A zipbomb full of junk that needs to be sorted out
+      
+        ** arcGrid.asc
+    
+        ** precip30min.asc in WGS84
+    
+        ** spearfish.asc.gz The compressed version of the file below. 
+        ** spearfish_dem.arx The uncompressed version of the file above. 
+           
+           Both are presumably the DEM data taken from GRASS's spearfish 
+           example data set, therefore under LGPL.
+            
+        ** SWAN_NURC_LigurianSeaL07_HSIGN.asc in WGS84
+    
+    
+    
+* org.geotools.test-data.shapes
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    
+    * archsites, 25 points in NAD_1927_UTM_Zone_13N, name for each
+      
+      Appears to be from the GRASS spearfish demo, therefore LGPL.
+      
+      
+    * bugsites, 90 points in NAD_1927_UTM_Zone_13N, no ancillary data.
+      
+      Appears to be from the GRASS spearfish demo, therefore LGPL.
+      
+      
+    * chinese_poly, 1 polygon in GCS_WGS_1984, no ancillary data.
+      
+      A grossly simplified polygon for the northeastern part of the territory 
+      claimed by mainland China, with no ancillary data.
+      
+      Origin unknown but trivial therefore probably acceptable.
+      
+      
+    * danish_point, 4 points, trivial ancillary data, _MI_0 CRS
+      
+      Four points in Kobenhavn, with a first name associated with each point.
+      
+      Origin unknown but trivial therefore probably acceptable.
+      
+      
+    * extraAtEnd.shp    Unknown, format not accesible.
+      
+      
+    * holeTouchEdge.shp, 1 polygon, no ancillary data. Missing CRS
+      
+      Origin unknown but trivial therefore probably acceptable.
+      
+      
+    * MultiPointTest.shp, 6 points, no ancillary data. Missing CRS
+      
+      Origin unknown but trivial therefore probably acceptable.
+      
+      
+    * pointtest.shp, 10 points, no ancillary data. Missing CRS
+      
+      Origin unknown but trivial therefore probably acceptable.
+      
+      
+    * polygontest.shp, 2 polygons, no ancillary data. Missing CRS.
+      
+      Origin unknown but trivial therefore probably acceptable.
+      
+      
+    * roads.shp, 825 lines in NAD_1927_UTM_Zone_13N, no ancillary data.
+      
+      Appears to be from the GRASS spearfish demo, therefore LGPL.
+      
+      
+    * rstrct.shp, 4 polygons in NAD_1927_UTM_Zone_13N, no ancillary data.
+      
+      Appears to be from the GRASS spearfish demo, therefore LGPL.
+      
+      
+    * spearfish_dem.asc.gz --- presume out of place ?DELETE?
+      
+      
+    * statepop.shp, polygon map of US in GCS_North_American_1983, plus census
+                    information for the population.
+      
+      Population of the lower 48 states plus the District of Columbia. A base 
+      polygon map plus ancillary data.
+      
+      Origin unknown.
+      
+      
+    * stream.shp, 280 lines with topology, no ancillary. Missing CRS.
+      
+      A single river network, somewhere.
+      
+      Origin unknown but quasi-trivial so may still be acceptable.
+      
+      
+    * streams.shp, 116 lines in NAD_1927_UTM_Zone_13N, each with two ancillary
+                   category descriptors.
+      
+      Appears to be from the GRASS spearfish demo, therefore LGPL.
+      
+      
+
+* org.geotools.test-data.wkt
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~
+    * cntbnd01.prj 
+      The definition for NAD_1983_StatePlane_Florida_North_FIPS_0903_Feet
+      
+      
+    * {all}.wkt
+      A series of trivial, and nonsensical, WKT files for testing. Originally,
+      committed by Ian Schneider, now need rewriting. If anyone is proud of 
+      these, let us, by all means get rid of them. 
+      
+      The contents are:
+      
+       ** holyPoly.wkt
+            MULTIPOLYGON ( 
+              ((0 0 , 20 20, 10 10, 0 0) , (1 1, 8 8, 12 12, 1 1)) 
+            )
+       ** line.wkt
+            LINESTRING ( 0 0, 1 1, 2 2 )
+       ** multiline.wkt
+            MULTILINESTRING ( ( 0 0, 1 1), ( 0 0, 1 1) )
+       ** multipoint.wkt 
+            MULTIPOINT ( 0 0, 1 1, 2 2)
+       ** multipolygon.wkt  
+            MULTIPOLYGON ( ((0 0 , 2 2, 1 1, 0 0)) , ((0 0 , 2 2, 1 1, 0 0))  )
+       ** point.wkt
+            POINT (1 1)
+       ** polygon.wkt
+            POLYGON ( (0 0 , 2 2, 1 1, 0 0) )
+       
+       
+* org.geotools.test-data.xml
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~
+    * A mega dump of twisty xml files, all alike. (punting)
+
+    
+    
+  

@@ -1,0 +1,28 @@
+MODULE SVG SUPPORT
+~~~~~~~~~~~~~~~~~~
+
+  Module Maintainer: James
+
+  IP Review:
+
+    * Jody Garnett, August 7th, 2006
+    
+  STATUS: CLEAN
+
+
+* org.geotools.svg
+  ~~~~~~~~~~~~~~~~
+  Make use of batic to generate SVG output.
+
+    * GenerateSVG only contained a (C) 2002, Centre for Computational Geography
+
+    * updated header
+
+
+
+* org.geotools.svg (test)
+  ~~~~~~~~~~~~~~~~~~~~~~~
+
+    * updated header
+
+    * data appears hand built

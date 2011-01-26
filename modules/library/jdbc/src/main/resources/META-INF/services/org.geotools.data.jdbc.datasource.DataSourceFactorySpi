@@ -1,0 +1,2 @@
+org.geotools.data.jdbc.datasource.JNDIDataSourceFactory
+org.geotools.data.jdbc.datasource.DBCPDataSourceFactory

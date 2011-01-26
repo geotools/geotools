@@ -1,0 +1,2 @@
+org.geotools.data.sqlserver.SQLServerDataStoreFactory
+org.geotools.data.sqlserver.SQLServerJNDIDataStoreFactory

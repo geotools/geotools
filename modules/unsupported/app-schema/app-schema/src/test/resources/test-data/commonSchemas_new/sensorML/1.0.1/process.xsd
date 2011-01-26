@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://www.opengis.net/sensorML/1.0.1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:sml="http://www.opengis.net/sensorML/1.0.1" xmlns:swe="http://www.opengis.net/swe/1.0.1" xmlns:gml="http://www.opengis.net/gml" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.1">
+	<xs:annotation>
+		<xs:documentation>Defines Basic Process Elements and Types for SensorML</xs:documentation>
+	</xs:annotation>
+	<!-- ================================================= -->
+	<xs:import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+	<xs:import namespace="http://www.opengis.net/swe/1.0.1" schemaLocation="http://schemas.opengis.net/sweCommon/1.0.1/swe.xsd"/>
+	<xs:include schemaLocation="./method.xsd"/>
+	<!-- ================================================= -->
+	<xs:element name="_Process" type="sml:AbstractProcessType" abstract="true">
+		<xs:annotation>
+			<xs:documentation>base substitution group for all processes</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<!-- ================================================= -->
+	<xs:complexType name="AbstractProcessType" abstract="true">
+		<xs:complexContent>
+			<xs:extension base="sml:AbstractSMLType">
+				<xs:sequence>
+					<xs:group ref="sml:metadataGroup" minOccurs="0"/>
+					<!--<xs:element name="base" minOccurs="0">
+                  <xs:annotation>
+                     <xs:documentation>
+                     Used to reference a parent object with which all properties of this object will be merged
+                     to create the final object. Properties include metadata, inputs, outputs, params and method.
+                     </xs:documentation>
+                  </xs:annotation>
+                  <xs:complexType>
+                     <xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+                  </xs:complexType>
+               </xs:element>-->
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ================================================= -->
+	<xs:group name="metadataGroup">
+		<xs:annotation>
+			<xs:documentation>Group containing all metadata information</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:group ref="sml:generalInfo" minOccurs="0"/>
+			<xs:group ref="sml:constraints" minOccurs="0"/>
+			<xs:group ref="sml:properties" minOccurs="0"/>
+			<xs:group ref="sml:references" minOccurs="0"/>
+			<xs:group ref="sml:history" minOccurs="0"/>
+		</xs:sequence>
+	</xs:group>
+	<!-- ================================================= -->
+	<xs:complexType name="AbstractRestrictedProcessType" abstract="true">
+		<xs:complexContent>
+			<xs:restriction base="sml:AbstractProcessType">
+				<xs:sequence>
+					<xs:sequence>
+						<xs:element ref="gml:description" minOccurs="0"/>
+						<xs:element ref="gml:name" minOccurs="0"/>
+					</xs:sequence>
+					<xs:group ref="sml:metadataGroup" minOccurs="0"/>
+				</xs:sequence>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ================================================= -->
+	<xs:complexType name="AbstractPureProcessType" abstract="true">
+		<xs:annotation>
+			<xs:documentation>Complex Type for all soft-typed processes</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="sml:AbstractRestrictedProcessType">
+				<xs:sequence>
+					<xs:element ref="sml:inputs" minOccurs="0"/>
+					<xs:element ref="sml:outputs" minOccurs="0"/>
+					<xs:element ref="sml:parameters" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ================================================= -->
+	<xs:element name="inputs">
+		<xs:annotation>
+			<xs:documentation>list of input signals</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence minOccurs="0">
+				<xs:element name="InputList">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="input" type="sml:IoComponentPropertyType" maxOccurs="unbounded"/>
+						</xs:sequence>
+						<xs:attribute name="id" type="xs:ID"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+		</xs:complexType>
+	</xs:element>
+	<!-- ================================================= -->
+	<xs:element name="outputs">
+		<xs:annotation>
+			<xs:documentation>list of output signals</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence minOccurs="0">
+				<xs:element name="OutputList">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="output" type="sml:IoComponentPropertyType" maxOccurs="unbounded"/>
+						</xs:sequence>
+						<xs:attribute name="id" type="xs:ID"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+		</xs:complexType>
+	</xs:element>
+	<!-- ================================================= -->
+	<xs:element name="parameters">
+		<xs:annotation>
+			<xs:documentation>list of parameters</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence minOccurs="0">
+				<xs:element name="ParameterList">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="parameter" type="swe:DataComponentPropertyType" maxOccurs="unbounded"/>
+						</xs:sequence>
+						<xs:attribute name="id" type="xs:ID"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+		</xs:complexType>
+	</xs:element>
+	<!-- ================================================= -->
+	<xs:element name="ProcessModel" type="sml:ProcessModelType" substitutionGroup="sml:_Process">
+		<xs:annotation>
+			<xs:documentation>Simple atomic process defined using a ProcessMethod</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="ProcessModelType">
+		<xs:annotation>
+			<xs:documentation>Complex Type for atomic processes</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="sml:AbstractPureProcessType">
+				<xs:sequence>
+					<xs:element ref="sml:method"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ================================================= -->
+	<xs:element name="ProcessChain" type="sml:ProcessChainType" substitutionGroup="sml:_Process">
+		<xs:annotation>
+			<xs:documentation>Process formed by chaining sub-processes</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="ProcessChainType">
+		<xs:annotation>
+			<xs:documentation>Complex Type for process chains</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="sml:AbstractPureProcessType">
+				<xs:sequence>
+					<xs:element ref="sml:components"/>
+					<xs:element ref="sml:connections"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ================================================= -->
+	<xs:element name="components">
+		<xs:annotation>
+			<xs:documentation>Collection of subprocesses that can be chained using connections</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence minOccurs="0">
+				<xs:element name="ComponentList">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="component" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence minOccurs="0">
+										<xs:element ref="sml:_Process"/>
+									</xs:sequence>
+									<xs:attribute name="name" type="xs:token" use="required"/>
+									<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+		</xs:complexType>
+	</xs:element>
+	<!-- ================================================= -->
+	<xs:element name="DataSource" type="sml:DataSourceType" substitutionGroup="sml:_Process">
+		<xs:annotation>
+			<xs:documentation>Process with no inputs representing a source of data (Tables, Observations...) for other processes to connect to.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="DataSourceType">
+		<xs:complexContent>
+			<xs:extension base="sml:AbstractProcessType">
+				<xs:sequence>
+					<xs:choice>
+						<xs:sequence>
+							<xs:element name="dataDefinition">
+								<xs:complexType>
+									<xs:choice minOccurs="0">
+										<xs:element ref="swe:DataBlockDefinition"/>
+										<xs:element ref="swe:DataStreamDefinition"/>
+									</xs:choice>
+									<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="values">
+								<xs:complexType>
+									<xs:complexContent>
+										<xs:extension base="xs:anyType"/>
+									</xs:complexContent>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+						<xs:element name="observationReference">
+							<xs:complexType>
+								<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+							</xs:complexType>
+						</xs:element>
+					</xs:choice>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ================================================= -->
+	<xs:element name="connections">
+		<xs:annotation>
+			<xs:documentation>provides links between processes or between data sources and processes</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence minOccurs="0">
+				<xs:element name="ConnectionList">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="sml:connection" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- ================================================= -->
+	<xs:element name="connection">
+		<xs:annotation>
+			<xs:documentation>Specify a connection between two elements</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice>
+				<xs:element ref="sml:Link"/>
+				<xs:element ref="sml:ArrayLink"/>
+			</xs:choice>
+			<xs:attribute name="name" type="xs:token" use="optional"/>
+		</xs:complexType>
+	</xs:element>
+	<!-- ================================================= -->
+	<xs:element name="Link">
+		<xs:annotation>
+			<xs:documentation>Link object used to make connections between processes</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="source">
+					<xs:complexType>
+						<xs:attribute name="ref" type="sml:linkRef" use="required"/>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="destination">
+					<xs:complexType>
+						<xs:attribute name="ref" type="sml:linkRef" use="required"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="type" type="xs:anyURI" use="optional"/>
+		</xs:complexType>
+	</xs:element>
+	<!-- ================================================= -->
+	<xs:simpleType name="linkRef">
+		<xs:restriction base="xs:token"/>
+	</xs:simpleType>
+	<!-- ================================================= -->
+	<xs:element name="ArrayLink">
+		<xs:annotation>
+			<xs:documentation>Special Link to handle accessing array elements sequentially</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:choice>
+					<xs:sequence>
+						<xs:element name="sourceArray">
+							<xs:complexType>
+								<xs:attribute name="ref" type="sml:linkRef"/>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="destinationIndex" minOccurs="0" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:attribute name="ref" type="sml:linkRef"/>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:sequence>
+						<xs:element name="destinationArray">
+							<xs:complexType>
+								<xs:attribute name="ref" type="sml:linkRef"/>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="sourceIndex" minOccurs="0">
+							<xs:complexType>
+								<xs:attribute name="ref" type="sml:linkRef"/>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:choice>
+				<xs:element ref="sml:connection" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- 
+		NOTE: we intend to support switch between process using special ProcessModels rather than a special Link
+		      because it provides more flexibility (though it is more verbose)
+	-->
+	<!-- =================================================================== -->
+	<!-- Complex Types used for deriving hard-typed processes by restriction -->
+	<!-- =================================================================== -->
+	<xs:complexType name="AbstractDerivableProcessType" abstract="true">
+		<xs:complexContent>
+			<xs:extension base="sml:AbstractProcessType">
+				<xs:sequence>
+					<xs:element name="inputs" type="sml:inputsPropertyType" minOccurs="0"/>
+					<xs:element name="outputs" type="sml:outputsPropertyType" minOccurs="0"/>
+					<xs:element name="parameters" type="sml:parametersPropertyType" minOccurs="0"/>
+					<xs:choice minOccurs="0">
+						<xs:element ref="sml:method"/>
+						<xs:sequence>
+							<xs:element name="components" type="sml:componentsPropertyType"/>
+							<xs:element name="dataSources" type="sml:dataSourcesPropertyType" minOccurs="0"/>
+							<xs:element name="connections" type="sml:connectionsPropertyType"/>
+						</xs:sequence>
+					</xs:choice>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ================================================= -->
+	<xs:complexType name="AbstractListType">
+		<xs:complexContent>
+			<xs:extension base="xs:anyType">
+				<xs:attribute name="id" type="xs:ID" use="optional"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ================================================= -->
+	<xs:complexType name="inputsPropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:element name="InputList" type="sml:AbstractListType"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</xs:complexType>
+	<!-- ================================================= -->
+	<xs:complexType name="outputsPropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:element name="OutputList" type="sml:AbstractListType"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</xs:complexType>
+	<!-- ================================================= -->
+	<xs:complexType name="parametersPropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:element name="ParameterList" type="sml:AbstractListType"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</xs:complexType>
+	<!-- ================================================= -->
+	<xs:complexType name="componentsPropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:element name="ProcessList" type="sml:AbstractListType"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</xs:complexType>
+	<!-- ================================================= -->
+	<xs:complexType name="dataSourcesPropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:element name="DataSourceList" type="sml:AbstractListType"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</xs:complexType>
+	<!-- ================================================= -->
+	<xs:complexType name="connectionsPropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:element name="ConnectionList" type="sml:AbstractListType"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</xs:complexType>
+	<!-- ================================================= -->
+	<xs:complexType name="IoComponentPropertyType">
+		<xs:choice minOccurs="0">
+			<xs:group ref="swe:AnyData"/>
+			<xs:element ref="swe:ObservableProperty"/>
+		</xs:choice>
+		<xs:attribute name="name" type="xs:token" use="required"/>
+		<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</xs:complexType>
+</xs:schema>

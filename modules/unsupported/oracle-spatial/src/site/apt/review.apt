@@ -1,0 +1,54 @@
+PLUGIN ORACLE SPATIAL
+~~~~~~~~~~~~~~~~~~~~~
+
+  Module Maintainer: Marc
+
+  IP Review:
+    * Jody Garnett, July 6th, 2006
+
+    * Adrian Custer, June 2008
+
+
+    STATUS: DIRTY
+        Code is CLEAN except needs clarification on testData.sql
+          http://jira.codehaus.org/browse/GEOT-1905
+
+    * module depends on a stubbed oracle jdbc driver. This allows builds to continue
+      without having permission to distribute the oracle jdbc driver directly.
+
+    * there is a testData.sql file with no indication from whence it came
+
+
+
+* org.geotools.data.oracle
+  ~~~~~~~~~~~~~~~~~~~~~~~~
+  Created as part of the datastore api push for geotools 2.0
+
+
+* org.geotools.data.oracle.attributeio
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Attribute access to SDO information. Origionally used Oracle sdo.jar but was replaced
+  with custom SDO class when it looked like oracle was going to pull it.
+
+
+* org.geotools.data.oracle.sdo
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Direct read and write of oracle MDSYS_GEOMETRY SDO types, refractions commissioned for
+  this work based on indication that oracle was going to pull support. Work donated
+  to GeoTools with permission.
+
+
+* org.geotools.filter
+  ~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.data.oracle (test)
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.filter (test)
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.data.oracle.sdo (test)
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

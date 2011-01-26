@@ -1,0 +1,389 @@
+// Test points for the Mercator Projection
+//
+// (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+//
+// The following test points were calculated with ArcGIS 8.3 
+// ArcGIS does not distinguish between Mercator_1SP and Mercator_2SP:
+// 1SP is the case where latitude_of_origin = 0.0.
+// Points with an //Error: comment could not be calculated with ArcGIS, 
+// and were instead calculated with libproj4.
+// Note: the mercator is undefined at the poles and these points have been
+// removed from the following test.
+//
+// Rueben Schulz - May 15, 2004
+//
+//
+// --------------------------------------------------------------------------
+// How to run this script:
+//
+//    chdir org/geotools/referencing/test-data/scripts
+//    java -ea org.geotools.referencing.ScriptRunner Mercator.txt
+//
+// A test is performed every time a "target pt" statement occurs. If the target point computed
+// by Geotools is different from the target point declared in this script by an amount greater
+// than the value specified in the last "test tolerance" statement, then a failure is reported.
+// Inverse transforms are tested if java assertions are enabled.
+// If some test fails, "print" statements can be added in this script for debugging purpose:
+//
+//    print crs            (prints the source and target CRS, and the transform between them)
+//    print pts            (prints the source and target points, and their transformed points)
+
+
+//geogCS's 
+set _WGS84_  = GEOGCS["WGS84",  DATUM["WGS84",  SPHEROID["WGS84",  6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]]
+set _sphere_ = GEOGCS["Sphere", DATUM["Sphere", SPHEROID["Sphere", 6370997.0,   0          ]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]]
+
+
+////////////////////////////////////////////
+//Elliptical 1SP tests
+
+set _Mercator1_ = PROJCS["Mercator_1SP", _WGS84_, PROJECTION["Mercator_1SP"], PARAMETER["central_meridian",  -20.0], PARAMETER["scale_factor", 1.0], PARAMETER["false_easting", 500000.0], PARAMETER["false_northing",    0.0], UNIT["metre",1.0], AXIS["x",EAST], AXIS["y",NORTH]]
+set _Mercator2_ = PROJCS["Mercator_1SP", _WGS84_, PROJECTION["Mercator_1SP"], PARAMETER["central_meridian", -150.0], PARAMETER["scale_factor", 1.0], PARAMETER["false_easting",      0.0], PARAMETER["false_northing", 5001.0], UNIT["metre",1.0], AXIS["x",EAST], AXIS["y",NORTH]]
+
+source crs = _WGS84_
+target crs = _Mercator1_
+test tolerance = (1e-4, 1e-4)
+
+source pt = (-123.1, 49.2166666666)
+target pt = (-10977039.5007865, 6279333.98057739)
+
+source pt = (2.33656753, 43.96499314)
+target pt = (2986495.32350917, 5430352.92479608)
+
+source pt = (151.283333333, -33.9166666666)
+target pt = (19567173.4480041, -3993776.57731192)
+
+source pt = (-47.95, -15.75)
+target pt = (-2611379.767672, -1764197.58844398)
+
+source pt = (139.733333333, 35.6833333333)
+target pt = (18281433.3293418, 4232210.85673083)
+
+source pt = (18.45, -33.9166666666)
+target pt = (4780234.42100137, -3993776.57731192)
+
+source pt = (0, 0)
+target pt = (2726389.81586547, -7.08115455161362E-10)
+
+source pt = (180, 0)
+target pt = (-17311118.5269238, -7.08115455161362E-10)
+
+source pt = (-180, 0)
+target pt = (-17311118.5269238, -7.08115455161362E-10)
+
+source pt = (90, 0)
+target pt = (12745143.9872601, -7.08115455161362E-10)
+
+source pt = (-90, 0)
+target pt = (-7292364.35552915, -7.08115455161362E-10)
+
+source pt = (-76, -55)
+target pt = (-5733891.48442332, -7326837.7150493)
+
+source pt = (12, -15)
+target pt = (4062223.70538475, -1678147.51639178)
+
+source pt = (80, 6)
+target pt = (11631949.0793274, 664677.826109218)
+
+source pt = (-45, 71)
+target pt = (-2282987.26983184, 11361819.8877012)
+
+source pt = (175, 66.67)
+target pt = (-17867715.9808901, 10023392.4920402)
+
+source pt = (60, -70)
+target pt = (9405559.26346189, -11028513.6309428)
+
+
+source crs = _WGS84_
+target crs = _Mercator2_
+test tolerance = (1e-4, 1e-4)
+
+source pt = (-123.1, 49.2166666666)
+target pt = (2994494.30233906, 6284334.98057739)
+
+source pt = (2.33656753, 43.96499314)
+target pt = (16958029.1266347, 5435353.92479608)
+
+source pt = (151.283333333, -33.9166666666)
+target pt = (-6536309.43444882, -3988775.57731192)
+
+source pt = (-47.95, -15.75)
+target pt = (11360154.0354536, -1759196.58844398)
+
+source pt = (139.733333333, 35.6833333333)
+target pt = (-7822049.55311113, 4237211.85673083)
+
+source pt = (18.45, -33.9166666666)
+target pt = (18751768.2241269, -3988775.57731192)
+
+source pt = (0, 0)
+target pt = (16697923.618991, 5000.99999999929)
+
+source pt = (180, 0)
+target pt = (-3339584.72379821, 5000.99999999929)
+
+source pt = (-180, 0)
+target pt = (-3339584.72379821, 5000.99999999929)
+
+source pt = (90, 0)
+target pt = (-13358338.8951928, 5000.99999999929)
+
+source pt = (-90, 0)
+target pt = (6679169.44759641, 5000.99999999929)
+
+source pt = (-76, -55)
+target pt = (8237642.31870224, -7321836.7150493)
+
+source pt = (12, -15)
+target pt = (18033757.5085103, -1673146.51639178)
+
+source pt = (80, 6)
+target pt = (-14471533.8031256, 669678.826109218)
+
+source pt = (-45, 71)
+target pt = (11688546.5332937, 11366820.8877012)
+
+source pt = (175, 66.67)
+target pt = (-3896182.17776457, 10028393.4920402)
+
+source pt = (60, -70)
+target pt = (-16697923.618991, -11023512.6309428)
+
+////////////////////////////////////////////
+//Elliptical 2SP tests
+set _Mercator3_ = PROJCS["Mercator_2SP", _WGS84_, PROJECTION["Mercator_2SP"], PARAMETER["central_meridian", 45.0], PARAMETER["false_easting", 0.0], PARAMETER["false_northing", 1000000.0], UNIT["metre",1.0], PARAMETER["standard_parallel_1", 49.0], AXIS["x",EAST], AXIS["y",NORTH]]
+set _Mercator4_ = PROJCS["Mercator_2SP", _WGS84_, PROJECTION["Mercator"], PARAMETER["central_meridian", -80.0], PARAMETER["false_easting", 0.0], PARAMETER["false_northing", 1000000.0], UNIT["metre",1.0], PARAMETER["standard_parallel_1", -33.0], AXIS["x",EAST], AXIS["y",NORTH]]
+
+source crs = _WGS84_
+target crs = _Mercator3_
+test tolerance = (1e-4, 1e-4)
+
+source pt = (-123.1, 49.2166666666)
+target pt = (-12300178.4624595, 5127490.38951162)
+
+source pt = (2.33656753, 43.96499314)
+target pt = (-3121759.86437889, 4569443.7623608)
+
+source pt = (151.283333333, -33.9166666666)
+target pt = (7776942.10339663, -1625162.87423143)
+
+source pt = (-47.95, -15.75)
+target pt = (-6801318.19206195, -159630.721032703)
+
+source pt = (139.733333333, 35.6833333333)
+target pt = (6931807.89018183, 3781888.92191032)
+
+source pt = (18.45, -33.9166666666)
+target pt = (-1942711.11349376, -1625162.87423143)
+
+source pt = (0, 0)
+target pt = (-3292730.70083688, 1000000)
+
+source pt = (180, 0)
+target pt = (9878192.10251063, 1000000)
+
+source pt = (-180, 0)
+target pt = (9878192.10251063, 1000000)
+
+source pt = (90, 0)
+target pt = (3292730.70083688, 1000000)
+
+source pt = (-90, 0)
+target pt = (-9878192.10251063, 1000000)
+
+source pt = (-76, -55)
+target pt = (-8853786.9955836, -3816028.63423369)
+
+source pt = (12, -15)
+target pt = (-2414669.18061371, -103068.855314011)
+
+source pt = (80, 6)
+target pt = (2561012.76731757, 1436901.64400764)
+
+source pt = (-45, 71)
+target pt = (-6585461.40167375, 8468276.49857486)
+
+source pt = (175, 66.67)
+target pt = (9512333.13575098, 7588510.23200313)
+
+source pt = (60, -70)
+target pt = (1097576.90027896, -6249189.82858889)
+
+
+source crs = _WGS84_
+target crs = _Mercator4_
+test tolerance = (1e-4, 1e-4)
+
+source pt = (-123.1, 49.2166666666)
+target pt = (-4027833.5555601, 6271529.2063239)
+
+source pt = (2.33656753, 43.96499314)
+target pt = (7694616.92684394, 5558805.77976149)
+
+source pt = (151.283333333, -33.9166666666)
+target pt = (-12028986.2914428, -2352793.45483965)
+
+source pt = (-47.95, -15.75)
+target pt = (2995175.53261487, -481051.834792435)
+
+source pt = (139.733333333, 35.6833333333)
+target pt = (-13108370.9217611, 4552960.10812379)
+
+source pt = (18.45, -33.9166666666)
+target pt = (9200468.99176082, -2352793.45483965)
+
+source pt = (0, 0)
+target pt = (7476257.17969391, 999999.999999999)
+
+source pt = (180, 0)
+target pt = (-9345321.47461739, 999999.999999999)
+
+source pt = (-180, 0)
+target pt = (-9345321.47461739, 999999.999999999)
+
+source pt = (90, 0)
+target pt = (15887046.5068496, 999999.999999999)
+
+source pt = (-90, 0)
+target pt = (-934532.147461739, 999999.999999999)
+
+source pt = (-76, -55)
+target pt = (373812.858984695, -5150913.31729522)
+
+source pt = (12, -15)
+target pt = (8597695.756648, -408812.41108404)
+
+source pt = (80, 6)
+target pt = (14952514.3593878, 1558000.03375652)
+
+source pt = (-45, 71)
+target pt = (3270862.51611609, 10538299.0553245)
+
+source pt = (175, 66.67)
+target pt = (-9812587.54834826, 9414683.21826374)
+
+source pt = (60, -70)
+target pt = (13083450.0644643, -8258486.94904268)
+
+////////////////////////////////////////////
+//Spherical 1SP tests
+set _Mercator5_ = PROJCS["Mercator_1SP", _sphere_, PROJECTION["Mercator_1SP"], PARAMETER["central_meridian", 0.0], PARAMETER["scale_factor", 1.0], PARAMETER["false_easting", 0.0], PARAMETER["false_northing", 0.0], UNIT["feet", 0.304800609601219], AXIS["x",EAST], AXIS["y",NORTH]]
+
+source crs = _sphere_
+target crs = _Mercator5_
+test tolerance = (1e-5, 1e-5)
+
+source pt = (-123.1, 49.2166666666)
+target pt = (-44908338.7410309, 20684472.5614467)
+
+source pt = (2.33656753, 43.96499314)
+target pt = (852407.523383703, 17893383.3945112)
+
+source pt = (151.283333333, -33.9166666666)
+target pt = (55189952.71479, -13166379.0404011)
+
+source pt = (-47.95, -15.75)
+target pt = (-17492728.2098492, -5819546.97027407)
+
+source pt = (139.733333333, 35.6833333333)
+target pt = (50976375.8467242, 13951316.9453942)
+
+source pt = (18.45, -33.9166666666)
+target pt = (6730778.6334039, -13166379.0404011)
+
+source pt = (0, 0)
+target pt = (0, -2.32060807505337E-09)
+
+source pt = (180, 0)
+target pt = (65666133.0088185,        -0.0000000)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+source pt = (-180, 0)
+target pt = (-65666133.0088185,       -0.0000000)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+source pt = (90, 0)
+target pt = (32833066.5044093, -2.32060807505337E-09)
+
+source pt = (-90, 0)
+target pt = (-32833066.5044093, -2.32060807505337E-09)
+
+source pt = (-76, -55)
+target pt = (-27725700.6037234, -24126017.621682)
+
+source pt = (12, -15)
+target pt = (4377742.2005879, -5535780.15531676)
+
+source pt = (80, 6)
+target pt = (29184948.0039193, 2192882.71285193)
+
+source pt = (-45, 71)
+target pt = (-16416533.2522046, 37367077.1538122)
+
+source pt = (175, 66.67)
+target pt = (63842073.7585735, 32976996.163225)
+
+source pt = (60, -70)
+target pt = (21888711.0029395, -36273958.9319831)
+
+////////////////////////////////////////////
+//Spherical 2SP tests
+set _Mercator6_ = PROJCS["Mercator_2SP", _sphere_, PROJECTION["Mercator_2SP"], PARAMETER["central_meridian", 180.0], PARAMETER["false_easting", -500000.0], PARAMETER["false_northing", -1000000.0], UNIT["metre",1.0], PARAMETER["standard_parallel_1", 60.0], AXIS["x",EAST], AXIS["y",NORTH]]
+
+source crs = _sphere_
+target crs = _Mercator6_
+test tolerance = (1e-5, 1e-5)
+
+source pt = (-123.1, 49.2166666666)
+target pt = (2663494.17339918, 2152319.92300432)
+
+source pt = (2.33656753, 43.96499314)
+target pt = (-10377631.5192433, 1726957.08323768)
+
+source pt = (151.283333333, -33.9166666666)
+target pt = (-2096573.06995608, -3006560.17887748)
+
+source pt = (-47.95, -15.75)
+target pt = (6841641.57464608, -1886900.73207123)
+
+source pt = (139.733333333, 35.6833333333)
+target pt = (-2738723.46895011, 1126184.95484798)
+
+source pt = (18.45, -33.9166666666)
+target pt = (-9481765.97034512, -3006560.17887748)
+
+source pt = (0, 0)
+target pt = (-10507538.68562131,      -1000000.00000000)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+source pt = (180, 0)
+target pt = (-500000, -1000000)
+
+source pt = (-180, 0)
+target pt = (-500000, -1000000)
+
+source pt = (90, 0)
+target pt = (-5503769.34281065, -1000000)
+
+source pt = (-90, 0)
+target pt = (4503769.34281065, -1000000)
+
+source pt = (-76, -55)
+target pt = (5282133.46280342, -4676812.43916921)
+
+source pt = (12, -15)
+target pt = (-9840369.43991322, -1843654.58297944)
+
+source pt = (80, 6)
+target pt = (-6059743.71423406, -665804.006169379)
+
+source pt = (-45, 71)
+target pt = (7005654.01421598, 4694753.94774887)
+
+source pt = (175, 66.67)
+target pt = (-777987.185711703, 4025704.26668402)
+
+source pt = (60, -70)
+target pt = (-7171692.45708087, -6528162.39755902)

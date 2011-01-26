@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx xmlns="http://www.topografix.com/GPX/1/1" version="1.1" creator="EasyGPS 2.9.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.topografix.com/GPX/gpx_overlay/0/3 http://www.topografix.com/GPX/gpx_overlay/0/3/gpx_overlay.xsd http://www.topografix.com/GPX/gpx_modified/0/1 http://www.topografix.com/GPX/gpx_modified/0/1/gpx_modified.xsd">
+<metadata>
+<bounds minlat="37.92682171" minlon="-121.34249211" maxlat="37.99149514" maxlon="-121.29680873"/>
+<extensions>
+<time xmlns="http://www.topografix.com/GPX/gpx_modified/0/1">2008-10-28T21:33:12.596Z</time>
+</extensions>
+</metadata>
+<trk>
+	<name>28-OCT-08</name>
+	<type>GPS Tracklog</type>
+	<extensions>
+		<label xmlns="http://www.topografix.com/GPX/gpx_overlay/0/3">
+			<label_text>28-OCT-08</label_text>
+		</label>
+	</extensions>
+	<trkseg>
+		<trkpt lat="37.95711995" lon="-121.31200076">
+			<ele>-7.553</ele>
+			<time>2008-10-28T20:31:34Z</time>
+		</trkpt>
+		<trkpt lat="37.95675516" lon="-121.31215097">
+			<ele>-7.553</ele>
+			<time>2008-10-28T20:32:15Z</time>
+		</trkpt>
+			<trkpt lat="37.95568228" lon="-121.31240846">
+			<ele>-7.553</ele>
+			<time>2008-10-28T20:32:40Z</time>
+		</trkpt>
+		<trkpt lat="37.95553208" lon="-121.31369592">
+			<ele>-7.553</ele>
+			<time>2008-10-28T20:32:49Z</time>
+		</trkpt>
+		<trkpt lat="37.95553208" lon="-121.31427528">
+			<ele>-7.553</ele>
+			<time>2008-10-28T20:32:53Z</time>
+			</trkpt>
+		<trkpt lat="37.95563937" lon="-121.31491901">
+			<ele>-7.553</ele>
+			<time>2008-10-28T20:32:58Z</time>
+		</trkpt>
+		<trkpt lat="37.95583248" lon="-121.31468297">
+			<ele>-7.553</ele>
+			<time>2008-10-28T20:33:03Z</time>
+		</trkpt>
+		<trkpt lat="37.95572520" lon="-121.31440402">
+			<ele>-7.553</ele>
+			<time>2008-10-28T20:33:05Z</time>
+		</trkpt>
+		<trkpt lat="37.95488835" lon="-121.31268741">
+			<ele>-7.553</ele>
+			<time>2008-10-28T20:33:15Z</time>
+		</trkpt>
+		<trkpt lat="37.95385838" lon="-121.31097079">
+			<ele>-7.553</ele>
+			<time>2008-10-28T20:33:23Z</time>
+		</trkpt>
+		<trkpt lat="37.95214177" lon="-121.30796672">
+			<ele>-6.592</ele>
+			<time>2008-10-28T20:33:35Z</time>
+		</trkpt>
+		</trkseg>
+			<trkseg>
+			<trkpt lat="37.95634747" lon="-121.31288053">
+			<ele>11.193</ele>
+			<time>2008-10-28T21:27:57Z</time>
+		</trkpt>
+	</trkseg>
+</trk>
+<extensions>
+</extensions>
+</gpx>

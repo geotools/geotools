@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- edited with XMLSpy v2007 sp2 (http://www.altova.com) by Eric Boisvert (Ressources naturelles Canada) -->
+<!-- IUGS/CGI GeoSciML schema, ver. 1 - draft 2005-10-19 -->
+<!-- Contains the concepts (classes), their inheritance, and relations from the CGI_Vocabulary package of the GeoSciML model -->
+<!-- GeoSciML Testbed-2 Model -->
+<schema xmlns:gsml="http://www.cgi-iugs.org/xml/GeoSciML/2" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:gml="http://www.opengis.net/gml" targetNamespace="http://www.cgi-iugs.org/xml/GeoSciML/2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.1.0">
+	<annotation>
+		<documentation>Encoded by Eric Boisvert (May 2007) Geological Survey of Canada</documentation>
+	</annotation>
+	<annotation>
+		<documentation>2007-07-12 : Minor fixes and changes to fit new version of model - Eric Boisvert</documentation>
+	</annotation>
+	<annotation>
+		<documentation>vocabulary.xsd
+Basic vocabulary components for GeoSciML
+covering concepts, vocabularies and relations</documentation>
+	</annotation>
+	<!--=======================-->
+	<import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+	<include schemaLocation="CGI_basicTypes.xsd"/>
+	<include schemaLocation="CGI_Value.xsd"/>
+	<include schemaLocation="earthMaterial.xsd"/>
+	<include schemaLocation="Gsml.xsd"/>
+	<!--=======================-->
+	<complexType name="GeologicVocabularyType">
+		<complexContent>
+			<extension base="gml:AbstractGMLType">
+				<sequence>
+					<element name="metadata" type="gsml:MetadataPropertyType" minOccurs="0"/>
+					<element name="member" type="gsml:VocabItemPropertyType" maxOccurs="unbounded"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ..................... -->
+	<element name="GeologicVocabulary" type="gsml:GeologicVocabularyType" substitutionGroup="gml:_GML"/>
+	<!-- ..................... -->
+	<complexType name="GeologicVocabularyPropertyType">
+		<sequence minOccurs="0">
+			<element ref="gsml:GeologicVocabulary"/>
+		</sequence>
+		<attributeGroup ref="gsml:EstimatedPropertyAttributeGroup"/>
+	</complexType>
+	<!--=======================-->
+	<complexType name="ControlledConceptType">
+		<complexContent>
+			<extension base="gml:AbstractGMLType">
+				<sequence>
+					<element name="preferredName" type="string"/>
+					<element name="prototype" type="gsml:GeologicEntityPropertyType" minOccurs="0"/>
+					<element name="vocabulary" type="gsml:GeologicVocabularyPropertyType"/>
+					<element name="metadata" type="gsml:MetadataPropertyType" minOccurs="0"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ..................... -->
+	<element name="ControlledConcept" type="gsml:ControlledConceptType" substitutionGroup="gml:_GML"/>
+	<!-- ..................... -->
+	<complexType name="ControlledConceptPropertyType">
+		<sequence minOccurs="0">
+			<element ref="gsml:ControlledConcept"/>
+		</sequence>
+		<attributeGroup ref="gsml:EstimatedPropertyAttributeGroup"/>
+	</complexType>
+	<!--=======================-->
+	<complexType name="VocabRelationType">
+		<complexContent>
+			<extension base="gml:DefinitionType">
+				<sequence>
+					<element name="role" type="gsml:ScopedNameType"/>
+					<element name="target" type="gsml:ControlledConceptPropertyType"/>
+					<element name="source" type="gsml:ControlledConceptPropertyType"/>
+					<element name="vocabulary" type="gsml:GeologicVocabularyPropertyType"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ..................... -->
+	<element name="VocabRelation" type="gsml:VocabRelationType" substitutionGroup="gml:Definition"/>
+	<!-- ..................... -->
+	<complexType name="VocabRelationPropertyType">
+		<sequence minOccurs="0">
+			<element ref="gsml:VocabRelation"/>
+		</sequence>
+		<attributeGroup ref="gsml:EstimatedPropertyAttributeGroup"/>
+	</complexType>
+	<!--=======================-->
+	<complexType name="VocabItemPropertyType">
+		<sequence minOccurs="0">
+			<choice>
+				<element ref="gsml:ControlledConcept"/>
+				<element ref="gsml:VocabRelation"/>
+			</choice>
+		</sequence>
+		<attributeGroup ref="gsml:EstimatedPropertyAttributeGroup"/>
+		<attribute name="unionSemantics">
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="conceptMember"/>
+					<enumeration value="relationMember"/>
+				</restriction>
+			</simpleType>
+		</attribute>
+	</complexType>
+	<!--=======================-->
+	<complexType name="StratigraphicLexiconType">
+		<complexContent>
+			<extension base="gsml:GeologicVocabularyType"/>
+		</complexContent>
+	</complexType>
+	<!-- ..................... -->
+	<element name="StratigraphicLexicon" type="gsml:StratigraphicLexiconType" substitutionGroup="gsml:GeologicVocabulary"/>
+	<!-- ..................... -->
+	<complexType name="StratigraphicLexiconPropertyType">
+		<sequence minOccurs="0">
+			<element ref="gsml:StratigraphicLexicon"/>
+		</sequence>
+		<attributeGroup ref="gsml:EstimatedPropertyAttributeGroup"/>
+	</complexType>
+	<!--=======================-->
+	<complexType name="GeologicEntityPropertyType">
+		<choice minOccurs="0">
+			<element ref="gsml:GeologicFeature"/>
+			<element ref="gsml:EarthMaterial"/>
+			<element name="GeologicSpecimen"/>
+		</choice>
+		<attribute name="unionSemantic">
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="featureEntity"/>
+					<enumeration value="materialEntity"/>
+					<enumeration value="specimenEntity"/>
+				</restriction>
+			</simpleType>
+		</attribute>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+</schema>

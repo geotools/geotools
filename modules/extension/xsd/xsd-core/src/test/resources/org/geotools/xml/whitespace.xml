@@ -1,0 +1,6 @@
+<collapsedString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://geotools.org/test facets.xsd"
+ xmlns="http://geotools.org/test"> this is a 
+ normal string 
+ with some whitespace and 
+ some new lines</collapsedString>

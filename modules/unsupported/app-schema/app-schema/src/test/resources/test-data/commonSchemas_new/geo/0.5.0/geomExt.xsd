@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+xmlns:geox="http://www.opengis.net/geomExt/0.0" 
+targetNamespace="http://www.opengis.net/geomExt/0.0" elementFormDefault="qualified" version="0.0.0">
+	<xs:annotation>
+		<xs:documentation>geomExt.xsd
+	Utility geometry schema</xs:documentation>
+	</xs:annotation>
+	<!-- ==============================================================
+       includes and imports
+	============================================================== -->
+	<xs:include schemaLocation="./geometryProperties.xsd"/>
+</xs:schema>

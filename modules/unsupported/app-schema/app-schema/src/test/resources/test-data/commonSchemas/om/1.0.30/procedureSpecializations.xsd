@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns:om="http://www.opengis.net/om" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:gml="http://www.opengis.net/gml" xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:xlink="http://www.w3.org/1999/xlink" targetNamespace="http://www.opengis.net/om" elementFormDefault="qualified" attributeFormDefault="unqualified" version="pre-release">
+	<annotation>
+		<documentation>procedures.xsd
+
+Components to describe procedures used in observations and measurements, and other events.
+
+Copyright (c) 2005 Open Geospatial Consortium - see http://www.opengeospatial.org/about/?page=ipr</documentation>
+	</annotation>
+	<!-- ====================================================================== -->
+	<!-- bring in other schemas -->
+	<import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+	<!--import namespace="http://www.isotc211.org/2005/gmd" schemaLocation="../../iso19139/gml3.1.1version/gmd/gmd.xsd"/-->
+	<include schemaLocation="./procedure.xsd"/>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<!-- === Specialised Procedure types === -->
+	<!-- ====================================================================== -->
+	<complexType name="ObservationProcedureType">
+		<annotation>
+			<documentation>Use gml:description element to describe the procedure or link to a definitive description.  </documentation>
+		</annotation>
+		<complexContent>
+			<extension base="om:ProcedureTypeType">
+				<sequence>
+					<element name="method" type="string">
+						<annotation>
+							<documentation>Code for the particular procedure type.  Usually an item from a list or registry of procedures, methods, instrument-types, etc.</documentation>
+						</annotation>
+					</element>
+<!-- 					<element name="resultQuality" type="gmd:DQ_DataQuality_PropertyType" minOccurs="0">
+						<annotation>
+							<documentation>Quality associated systematically with observations made using this procedure.</documentation>
+						</annotation>
+					</element>
+-->				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ...................... -->
+	<element name="ObservationProcedure" type="om:ObservationProcedureType" substitutionGroup="om:ProcedureType">
+		<annotation>
+			<documentation>Procedures may be listed in a Dictionary (i.e. lightweight registry)</documentation>
+		</annotation>
+	</element>
+	<!-- ...................... -->
+	<complexType name="ObservationProcedurePropertyType">
+		<sequence minOccurs="0">
+			<element ref="om:ObservationProcedure"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<complexType name="InstrumentType">
+		<annotation>
+			<documentation>Add one or more instrument serial numbers, in order to identify specific instances or stations</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="om:ObservationProcedureType">
+				<sequence>
+					<element name="serialNumber" type="string" minOccurs="0" maxOccurs="unbounded"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ...................... -->
+	<element name="Instrument" type="om:InstrumentType" substitutionGroup="om:ObservationProcedure"/>
+	<!-- ...................... -->
+	<complexType name="InstrumentPropertyType">
+		<sequence minOccurs="0">
+			<element ref="om:Instrument"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+	<complexType name="CalculationProcedureType">
+		<annotation>
+			<documentation>Use the "description" property to record the details of the calculation</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="om:ProcedureTypeType"/>
+		</complexContent>
+	</complexType>
+	<!-- ...................... -->
+	<element name="CalculationProcedure" type="om:CalculationProcedureType" substitutionGroup="om:ProcedureType"/>
+	<!-- ...................... -->
+	<complexType name="CalculationProcedurePropertyType">
+		<sequence minOccurs="0">
+			<element ref="om:CalculationProcedure"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+</schema>

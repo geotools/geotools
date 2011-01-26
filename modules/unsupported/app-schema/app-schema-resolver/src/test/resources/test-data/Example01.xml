@@ -1,0 +1,47 @@
+<?xml version="1.0" ?>
+    <!-- From an annex of a draft of the WFS 2.0 specification -->
+<wfs:FeatureCollection timeStamp="2008-09-07T19:00:00" numberReturned="2"
+    numberMatched="unknown" xmlns="http://www.someserver.com/myns" xmlns:myns="http://www.someserver.com/myns"
+    xmlns:wfs="http://www.opengis.net/wfs/2.0" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.opengis.net/wfs/2.0
+                        http://schemas.opengis.net/wfs/2.0.0/wfs.xsd
+                        http://www.someserver.com/myns
+                        http://schemas.example.org/wfs20/DescribeFeatureType_Example01_Response.xsd">
+    <wfs:member>
+        <TreesA_1M gml:id="TRESSA_1M.1013">
+            <extent>
+                <gml:Polygon gml:id="GID_10" srsName="urn:ogc:def:crs:EPSG::4326">
+                    <gml:exterior>
+                        <gml:LinearRing>
+                            <gml:posList srsDimension="2">65.588264 -120.000000 65.590782
+                                -120.003571 65.590965 -120.011292 65.595215 -120.022491 65.592880
+                                -120.031212 65.586121 -120.019363 65.585365 -120.030350 65.581848
+                                -120.045082 65.584938 -120.059540 65.590500 -120.067284 65.595436
+                                -120.067284 65.613441 -120.067337 65.613777 -120.067337 65.606346
+                                -120.060997 65.605545 -120.045517 65.599777 -120.022675 65.601036
+                                -120.003975 65.602081 -120.000000 65.602081 -120.000000 65.588264
+                                -120.000000</gml:posList>
+                        </gml:LinearRing>
+                    </gml:exterior>
+                </gml:Polygon>
+            </extent>
+            <id>0000000002</id>
+            <treeType>Maple</treeType>
+        </TreesA_1M>
+    </wfs:member>
+    <wfs:member>
+        <RoadL_1M gml:id="ROADL_1M.1914">
+            <centerLine>
+                <gml:LineString gml:id="GID_5" srsName="urn:ogc:def:crs:EPSG::4326">
+                    <gml:posList>-59.478340 -52.226578 -59.484871 -52.223564 -59.488991 -52.198524
+                        -59.485958 -52.169559 -59.480400 -52.152615 -59.465576 -52.141491 -59.462002
+                        -52.136417 -59.447968 -52.127190 -59.422928 -52.120701 -59.411915 -52.117844
+                        -59.397972 -52.116440 -59.371311 -52.121300</gml:posList>
+                </gml:LineString>
+            </centerLine>
+            <designation>HYW 401</designation>
+            <surfaceType>ASPHALT</surfaceType>
+            <nLanes>12</nLanes>
+        </RoadL_1M>
+    </wfs:member>
+</wfs:FeatureCollection>

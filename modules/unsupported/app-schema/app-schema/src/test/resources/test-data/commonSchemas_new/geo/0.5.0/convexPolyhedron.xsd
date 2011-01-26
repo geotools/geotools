@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:gml="http://www.opengis.net/gml" xmlns:geox="http://www.opengis.net/geomExt/0.0" targetNamespace="http://www.opengis.net/geomExt/0.0" elementFormDefault="qualified" attributeFormDefault="unqualified"
+        xmlns:sch="http://purl.oclc.org/dsdl/schematron" version="0.0.0">
+	<annotation>
+		<appinfo>
+			<sch:title>Schematron validation</sch:title>
+			<sch:ns prefix="gml" uri="http://www.opengis.net/gml"/>
+			<sch:ns prefix="geox" uri="http://www.opengis.net/geomExt/0.0"/>
+			<sch:ns prefix="xlink" uri="http://www.w3.org/1999/xlink"/>
+			<sch:ns prefix="xs" uri="http://www.w3.org/2001/XMLSchema"/>
+			<sch:ns prefix="xsi" uri="http://www.w3.org/2001/XMLSchema-instance"/>
+		</appinfo>
+		<documentation>convexPolyhedron.xsd
+
+A GML conformant schema for specialised geometries 
+simple solids
+
+Copyright (c) 2007 Open Geospatial Consortium - see http://www.opengeospatial.org/about/?page=ipr</documentation>
+	</annotation>
+	<!-- ====================================================================== -->
+	<!-- bring in other schemas -->
+	<import namespace="http://www.opengis.net/gml" schemaLocation="http://testschemas.opengis.net/gml/3.2.0/gml/gml.xsd"/>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<!-- =========================================================== -->
+	<!-- === Solids === -->
+	<!-- =========================================================== -->
+	<complexType name="ConvexPolyhedronType">
+		<complexContent>
+			<extension base="gml:AbstractSolidType">
+				<sequence>
+					<element name="vertex" type="gml:PointPropertyType" minOccurs="4" maxOccurs="unbounded"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- .............. -->
+	<element name="ConvexPolyhedron" type="geox:ConvexPolyhedronType" substitutionGroup="gml:AbstractSolid">
+		<annotation>
+			<documentation>Head of substitution group for primitive Solids with simple descriptions.</documentation>
+		</annotation>
+	</element>
+	<!-- .................. -->
+	<complexType name="ConvexPolyhedronPropertyType">
+		<sequence minOccurs="0">
+			<element ref="geox:ConvexPolyhedron"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- =========================================================== -->
+	<!-- =========================================================== -->
+	<complexType name="MultiConvexPolyhedronType">
+		<annotation>
+			<documentation>AbstractGeometricAggregateType is used as root class instead of MultiSolid to avoid derivation-by-restriction to override the inherited "solidMember" property</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="gml:AbstractGeometricAggregateType">
+				<sequence>
+					<element name="element" type="geox:ConvexPolyhedronPropertyType" minOccurs="0" maxOccurs="unbounded"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- .............. -->
+	<element name="MultiConvexPolyhedron" type="geox:MultiConvexPolyhedronType" substitutionGroup="gml:AbstractGeometricAggregate">
+		<annotation>
+			<documentation>Head of substitution group for multiSolids with simple descriptions.</documentation>
+		</annotation>
+	</element>
+	<!-- .................. -->
+	<complexType name="MultiConvexPolyhedronPropertyType">
+		<sequence minOccurs="0">
+			<element ref="geox:MultiConvexPolyhedron"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- =========================================================== -->
+	<complexType name="HexahedronType">
+		<annotation>
+			<documentation>The "Hexahedron" element is a simple solid with eight vertices and six sides.  
+Relative to a right-handed coordinate system the conventional vertex sequence is      
+   7____6
+  / |       / |
+4____5  |
+|  3  _  |  2
+| /        | /
+0____1
+
+For cases where the face order is used implicitly, then the faces are usually defined with the following vertices (in the local coordinate system)
+
+0 - 0 1 5 4
+1 - 1 2 6 5
+2 - 2 3 7 6
+3 - 3 0 4 7
+4 - 0 3 2 1
+5 - 4 5 6 7</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="geox:ConvexPolyhedronType"/>
+		</complexContent>
+	</complexType>
+	<!-- .................. -->
+	<element name="Hexahedron" type="geox:HexahedronType" substitutionGroup="geox:ConvexPolyhedron">
+		<annotation>
+			<appinfo>
+				<sch:pattern id="hex" name="Hexahedron has 8 vertices">
+					<sch:rule context="//geox:Hexahedron">
+						<sch:assert test="count(geox:vertex) = 8">Hexahedron must have 8 vertices</sch:assert>
+					</sch:rule>
+				</sch:pattern>
+			</appinfo>
+			<documentation>The "Hexahedron" element is a simple solid with eight vertices and six sides.</documentation>
+		</annotation>
+	</element>
+	<!-- =========================================================== -->
+	<complexType name="WedgeType">
+		<annotation>
+			<documentation>The "Wedge" element is a simple solid with six vertices and five sides.  
+Relative to a right-handed coordinate system the conventional vertex sequence is      
+      5
+    /  | \
+   /  4  \
+ 3 / -\- 2
+  |/     \  | 
+ 0____1
+
+For cases where the face order is used implicitly, then the faces are usually defined with the following vertices (in the local coordinate system)
+
+0 - 0 1 4
+1 - 1 2 5 4
+2 - 2 3 5
+3 - 3 0 4 5
+4 - 0 3 2 1</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="geox:ConvexPolyhedronType"/>
+		</complexContent>
+	</complexType>
+	<!-- .................. -->
+	<element name="Wedge" type="geox:WedgeType" substitutionGroup="geox:ConvexPolyhedron">
+		<annotation>
+			<appinfo>
+				<sch:pattern id="wedge" name="Wedge has 6 vertices">
+					<sch:rule context="//geox:Wedge">
+						<sch:assert test="count(geox:vertex) = 6">Wedge must have 6 vertices</sch:assert>
+					</sch:rule>
+				</sch:pattern>
+			</appinfo>
+			<documentation>The "Wedge" element is a simple solid with six vertices and five sides.</documentation>
+		</annotation>
+	</element>
+	<!-- =========================================================== -->
+	<complexType name="PyramidType">
+		<annotation>
+			<documentation>The "Pyramid" element is a simple solid with five vertices and five sides.  
+Relative to a right-handed coordinate system the conventional vertex sequence is      
+     4
+    //\\ 
+ 3 / -\- 2
+  |/     \  | 
+ 0____1
+
+For cases where the face order is used implicitly, then the faces are usually defined with the following vertices (in the local coordinate system)
+
+0 - 0 1 4
+1 - 1 2 4
+2 - 2 3 4
+3 - 3 0 4 
+4 - 0 3 2 1</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="geox:ConvexPolyhedronType"/>
+		</complexContent>
+	</complexType>
+	<!-- .................. -->
+	<element name="Pyramid" type="geox:PyramidType" substitutionGroup="geox:ConvexPolyhedron">
+		<annotation>
+			<appinfo>
+				<sch:pattern id="pyramid" name="Pyramid has 5 vertices">
+					<sch:rule context="//geox:Pyramid">
+						<sch:assert test="count(geox:vertex) = 5">Pyramid must have 5 vertices</sch:assert>
+					</sch:rule>
+				</sch:pattern>
+			</appinfo>
+			<documentation>The "Pyramid" element is a simple solid with five vertices and five sides.</documentation>
+		</annotation>
+	</element>
+	<!-- =========================================================== -->
+	<complexType name="TetrahedronType">
+		<annotation>
+			<documentation>The "Tetrahedron" element is a simple solid with four vertices and four sides.  
+Relative to a right-handed coordinate system the conventional vertex sequence is      
+      3
+   /   |  \
+ 2- -| - -1
+   \   |   /
+      0
+      
+ For cases where the face order is used implicitly, then the faces are usually defined with the following vertices (in the local coordinate system) 
+
+1 - 1 2 3
+2 - 2 0 3
+0 - 0 1 3
+3 - 0 2 1</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="geox:ConvexPolyhedronType"/>
+		</complexContent>
+	</complexType>
+	<!-- .................. -->
+	<element name="Tetrahedron" type="geox:TetrahedronType" substitutionGroup="geox:ConvexPolyhedron">
+		<annotation>
+			<appinfo>
+				<sch:pattern id="tetrahedron" name="Tetrahedron has 4 vertices">
+					<sch:rule context="//geox:Tetrahedron">
+						<sch:assert test="count(geox:vertex) = 4">Tetrahedron must have 4 vertices</sch:assert>
+					</sch:rule>
+				</sch:pattern>
+			</appinfo>
+			<documentation>The "Tetrahedron" element is a simple solid with four vertices and four sides.</documentation>
+		</annotation>
+	</element>
+	<!-- ====================================================================== -->
+</schema>

@@ -1,0 +1,12 @@
+<Filter xmlns:gml="http://www.opengis.net/gml">
+ <Or>
+  <FeatureId fid="123"/>
+  <FeatureId fid="231"/>
+   <PropertyIsNull>
+    <PropertyName>testInteger</PropertyName>
+   </PropertyIsNull>
+  <FeatureId fid="332"/>
+ </Or>
+</Filter>
+ 
+ 

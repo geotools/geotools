@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+Loughborough mapping file
+ -->
+<as:AppSchemaDataAccess xmlns:as="http://www.geotools.org/app-schema" xmlns:ogc="http://www.opengis.net/ogc"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.geotools.org/app-schema AppSchemaDataAccess.xsd
+                      http://www.opengis.net/ogc http://schemas.opengis.net/filter/1.1.0/expr.xsd">
+  <namespaces>
+    <!-- 
+         declare here the namespaces and prefixes used by the parser to
+         resolve <type> elements. 
+         i.e.:
+        <AttributeMapping>
+          <targetAttribute>Gsml/member[1]</targetAttribute>
+          <targetElement>gsml:CGI_RangeValueProperty</targetElement>
+          <sourceExpression><OCQL>null</OCQL></sourceExpression>
+        </AttributeMapping>
+    -->
+    <Namespace>
+      <prefix>gml</prefix>
+      <uri>http://www.opengis.net/gml</uri>
+    </Namespace>
+    <Namespace>
+      <prefix>gsml</prefix>
+      <uri>http://www.cgi-iugs.org/xml/GeoSciML/2</uri>
+    </Namespace>
+  </namespaces>
+  <sourceDataStores>
+    <!-- DataStore>
+      <id>sde</id>
+      <parameters>
+        <Parameter><name>dbtype</name><value>arcsde</value></Parameter>
+        <Parameter><name>server</name><value>server_name</value></Parameter>
+        <Parameter><name>port</name><value>port_number</value></Parameter>
+        <Parameter><name>instance</name><value>instance_name</value></Parameter>
+        <Parameter><name>user</name><value>user_name</value></Parameter>
+        <Parameter><name>password</name><value>password</value></Parameter>
+        <Parameter><name>pool.maxConnections</name><value>8</value></Parameter>
+      </parameters>
+    </DataStore-->
+    <DataStore>
+      <id>properties</id>
+      <parameters>
+        <Parameter>
+          <name>directory</name>
+          <!-- path can be relative to this file if starts with "file: -->
+          <value>file:./</value>
+        </Parameter>
+      </parameters>
+    </DataStore>    
+  </sourceDataStores>
+  <catalog>mappedPolygons.oasis.xml</catalog>
+  <targetTypes>
+    <FeatureType>
+      <!-- 
+        state the needed xsd schemas to be loaded in order 
+        to make the schema-to-FeatureModel parse.
+        Paths are relative to this file, or may be absolute URL's
+       -->
+      <schemaUri>commonSchemas_new/GeoSciML/Gsml.xsd</schemaUri>
+    </FeatureType>
+  </targetTypes>
+  <typeMappings>
+    <FeatureTypeMapping>
+      <sourceDataStore>properties</sourceDataStore>
+      <!-- sourceType>SDE_BGSDATA.SDE.GSML_DM50K_EW141_BEDROCK_LATLON</sourceType-->
+      <sourceType>mappedPolygons</sourceType>
+      <targetElement>gsml:MappedFeature</targetElement>
+      <groupBy/>
+      <attributeMappings>
+        <AttributeMapping>
+          <targetAttribute>gsml:MappedFeature</targetAttribute>
+          <idExpression><OCQL>getId()</OCQL></idExpression>
+        </AttributeMapping>
+          <AttributeMapping>
+            <targetAttribute>MappedFeature/gml:name[1]</targetAttribute>
+            <sourceExpression><OCQL>LEX_D</OCQL></sourceExpression>
+          </AttributeMapping>
+          <AttributeMapping>
+            <targetAttribute>MappedFeature/gml:name[2]</targetAttribute>
+            <sourceExpression><OCQL>LEX_D</OCQL></sourceExpression>
+          </AttributeMapping>
+          <AttributeMapping>
+          <targetAttribute>MappedFeature/shape</targetAttribute>
+          <sourceExpression><OCQL>SHAPE</OCQL></sourceExpression>
+        </AttributeMapping>
+      </attributeMappings>
+    </FeatureTypeMapping>
+  </typeMappings>
+</as:AppSchemaDataAccess>

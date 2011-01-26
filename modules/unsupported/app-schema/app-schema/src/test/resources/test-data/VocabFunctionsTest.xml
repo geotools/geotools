@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+  VocabFunctionsTest.java mapping file
+-->
+<as:AppSchemaDataAccess xmlns:as="http://www.geotools.org/app-schema"
+	xmlns:ogc="http://www.opengis.net/ogc" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.geotools.org/app-schema AppSchemaDataAccess.xsd
+                      http://www.opengis.net/ogc http://schemas.opengis.net/filter/1.1.0/expr.xsd">
+	<namespaces>
+		<!--
+			declare here the namespaces and prefixes used by the parser to
+			resolve <type> elements.
+		-->
+		<Namespace>
+			<prefix>ex</prefix>
+			<uri>http://example.com</uri>
+		</Namespace>
+		<Namespace>
+			<prefix>gml</prefix>
+			<uri>http://www.opengis.net/gml</uri>
+		</Namespace>
+	</namespaces>
+	<sourceDataStores>
+		<DataStore>
+			<id>TestData</id>
+			<parameters>
+				<Parameter>
+					<name>directory</name>
+					<!-- path can be relative to this file if starts with "file: -->
+					<value>file:./</value>
+				</Parameter>
+			</parameters>
+		</DataStore>
+	</sourceDataStores>
+	<targetTypes>
+		<FeatureType>
+			<!--
+				State the needed xsd schemas to be loaded in order to make the
+				schema-to-FeatureModel parse. Paths are relative to this file, or
+				may be absolute URL's. Imports and includes at the schemas will be
+				followed as long as they're relative paths.
+			-->
+			<schemaUri>simpleContent.xsd</schemaUri>
+		</FeatureType>
+	</targetTypes>
+	<typeMappings>
+		<FeatureTypeMapping>
+			<!-- This is testing chaining complex types with simple content -->
+			<sourceDataStore>TestData</sourceDataStore>
+			<sourceType>SimpleContent</sourceType>
+			<targetElement>ex:FirstParentFeature</targetElement>
+			<attributeMappings>
+				<AttributeMapping>
+					<targetAttribute>ex:FirstParentFeature</targetAttribute>
+				</AttributeMapping>
+				<AttributeMapping>
+					<!-- Lookup value used for functions -->
+					<targetAttribute>
+			            gml:name
+  		            </targetAttribute>
+					<sourceExpression>
+						<OCQL>STRING</OCQL>
+					</sourceExpression>
+				</AttributeMapping>
+				<AttributeMapping>
+					<!-- Test Categorize function -->
+					<targetAttribute>ex:someAttribute</targetAttribute>
+					<sourceExpression>
+						<OCQL>Categorize(getID(), 'missing value', 'sc.2', 'a valid value')</OCQL>
+					</sourceExpression>
+				</AttributeMapping>
+				<AttributeMapping>
+					<!-- Test Vocab function -->
+					<targetAttribute>
+			            gml:name[2]
+  		            </targetAttribute>
+					<sourceExpression>
+						<OCQL>Vocab(URN_ID, 'src/test/resources/test-data/minoc_lithology_mapping.properties')</OCQL>
+					</sourceExpression>
+				</AttributeMapping>
+				<AttributeMapping>
+					<!-- Test Recode function -->
+					<targetAttribute>
+			            gml:name[3]
+  		            </targetAttribute>
+					<sourceExpression>
+						<OCQL>Recode(STRING, 'string_one', 'a', 'string_two', 'b', 'string_three', 'c')</OCQL>
+					</sourceExpression>
+				</AttributeMapping>
+			</attributeMappings>
+		</FeatureTypeMapping>
+	</typeMappings>
+</as:AppSchemaDataAccess>

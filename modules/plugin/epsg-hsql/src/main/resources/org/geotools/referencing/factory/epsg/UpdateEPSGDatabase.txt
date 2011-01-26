@@ -1,0 +1,57 @@
+Updating the EPSG database
+---------------------------
+
+The database in the zip file is a HSQL version of the official EPSG database.
+
+1) Download from www.epsg.org the "geodetic dataset" creation scripts for the PostgreSQL database
+2) Unzip them in _this_ directory, you should get three files named EPSG_v<version>.mdb_Data_PostgreSQL.sql,
+   EPSG_v<version>.mdb_FKeys_PostgreSQL.sql and EPSG_v<version>.mdb_Tables_PostgreSQL.sql, where
+   <version> is the the version of the EPSG database ("7_1" at the time of writing)  
+3) Modify the PrepareForHSQL.xml file so that it points to the three files above 
+4) Run the PrepareForHSQL.xml file:
+   ant -f PrepareForHSQL.xml
+   (or run it directly from Eclipse, this will work too and it's handier)
+   This will create three new files, EPSG_Data.sql, EPSG_FKeys.sql and EPSG_Tables.sql whose
+   content has been (mostly) amended to respect the HSQL syntax
+5) Hand modify the EPSG_Tables.sql file so that the UNIQUE constraints are declared at the end
+   of the table definition:
+   
+   Before:
+   CREATE CACHED TABLE epsg_change (
+    change_id     DOUBLE PRECISION NOT NULL UNIQUE,
+    report_date   DATE NOT NULL,
+    action        VARCHAR);
+   
+   After:
+   CREATE CACHED TABLE epsg_change (
+    change_id     DOUBLE PRECISION NOT NULL,
+    report_date   DATE NOT NULL,
+    action        VARCHAR,
+    UNIQUE(CHANGE_ID) );
+6) Update ThreadedHsqlEpsgFactory.VERSION to the current version
+7) Run the DatabaseCreationScript.java
+8) Check the EPSG.zip file has been updated
+9) Run the build with extensive tests in the epsg-hsql module:
+   mvn clean install -Pextensive.tests
+   
+   This step might force you to amend tests or modify the referencing subsystem to handle new
+   axis direction definitions, new unit of measure and the like
+10) Remove all the sql files in this directory, keeping only EPSG_Indexes.sql (which was already
+    there when you started)
+11) Commit the changes
+12) Congratulations, you're done!
+
+
+PostgreSQL notes
+------------------------------
+
+Sometimes it is handy to have the database loaded in PostgreSQL to run random queries
+against it. In order to load it you'll have to change the psql encoding thought:
+createdb epsg<version>
+psql espg<version>
+\encoding latin9
+\i EPSG_v<version>.mdb_Tables_PostgreSQL.sql
+\i EPSG_v<version>.mdb_Data_PostgreSQL.sql
+\i EPSG_v<version>.mdb_FKeys_PostgreSQL.sql
+
+     

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!DOCTYPE catalog PUBLIC "-//OASIS//DTD Entity Resolution XML Catalog V1.0//EN" "http://www.oasis-open.org/committees/entity/release/1.0/catalog.dtd">
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">  
+    <!-- these mappings are to allow local XML IDE validation - geoserver loads these automatically and doesnt try to resolve then -->
+    
+    <rewriteSystem systemIdStartString="http://schemas.opengis.net/gml" rewritePrefix="file:///c:/repos/seegrid/xmml/OGC/branches/gml_s"/>
+    <rewriteSystem systemIdStartString="http://schemas.opengis.net/xlink" rewritePrefix="file:///c:/repos/SCHEMAS_OPENGIS_NET/xlink"/>
+    
+    <!-- these are necessary to make sure that corrected versions of schemas are used --> 
+    
+    <rewriteSystem systemIdStartString="http://schemas.opengis.net/om" rewritePrefix="./om"/>
+    <rewriteSystem systemIdStartString="http://bp.schemas.opengis.net/06-188r1/cv" rewritePrefix="./cv"/>
+    
+    <!-- these fall throughs are so that local cached copies are used rather than hitting the network, but it should work without this -->
+    <rewriteSystem  systemIdStartString="http://schemas.opengis.net/" 
+        rewritePrefix="."/>
+</catalog>

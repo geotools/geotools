@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:aw="http://www.water.gov.au/awdip" xmlns:cv="http://www.opengis.net/cv/0.2.1" xmlns:gml="http://www.opengis.net/gml" xmlns:sa="http://www.opengis.net/sampling/1.0" elementFormDefault="qualified" targetNamespace="http://www.water.gov.au/awdip" version="1.0">
+  <import namespace="http://www.opengis.net/sampling/1.0" schemaLocation="http://schemas.opengis.net/sampling/1.0.0/sampling.xsd"/>
+  <import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+  <import namespace="http://www.opengis.net/cv/0.2.1" schemaLocation="http://bp.schemas.opengis.net/06-188r1/cv/0.2.1/cv.xsd"/>
+ 
+  <!--XML Schema document created by ShapeChange-->
+  <element name="SamplingSite" substitutionGroup="sa:SamplingPoint" type="aw:SamplingSiteType"/>
+  <complexType name="SamplingSiteType">
+    <annotation>
+      <documentation>SamplingSite implements a characterisation of the Feature of Interest, through a set of observations. The key implication is that the location of the site and the observation procedures provides for a representative sample of the actual feature, within the scope of the sampling regime (e.g. a time period)
+
+This class provides the basic agreement that a sampling site exists, in relation to a sampledFeature and is given an identifier by an organisation.  Specialisations of this class can be used to implement different characterisations of the sampledFeature.
+
+This class contains the minimum structure to allow it to be realised as a convenient inline reference, promoting varfious site identification and naming concepts to be searchable in any extended specialisation.</documentation>
+    </annotation>
+    <complexContent>
+      <extension base="sa:SamplingPointType">
+        <sequence/>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="SamplingSitePropertyType">
+    <sequence minOccurs="0">
+      <element ref="aw:SamplingSite"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element abstract="true" name="SamplingSitePurpose" substitutionGroup="aw:SamplingSite" type="aw:SamplingSitePurposeType"/>
+  <complexType abstract="true" name="SamplingSitePurposeType">
+    <annotation>
+      <documentation>SamplingSite implements a characterisation of the Feature of Interest, through a set of observations. The key implication is that the location of the site and the observation procedures provides for a representative sample of the actual feature, within the scope of the sampling regime (e.g. a time period)</documentation>
+    </annotation>
+    <complexContent>
+      <extension base="aw:SamplingSiteType">
+        <sequence>
+          <element name="samplingRegimeType" type="gml:CodeType"/>
+          <element name="waterBodyType" type="gml:CodeType"/>
+          <element minOccurs="0" name="accessTypeCode" type="gml:CodeType"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="SamplingSitePurposePropertyType">
+    <sequence minOccurs="0">
+      <element ref="aw:SamplingSitePurpose"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="SiteLocation" substitutionGroup="aw:SamplingSitePurpose" type="aw:SiteLocationType"/>
+  <complexType name="SiteLocationType">
+    <annotation>
+      <documentation>This is a view of the sampling feature that contains no observations, and can be used simply to map the spatial location, access identify and metadata etc. 
+The Site Location perspective should be as rich as possible in metadata describing the location and purpose of the site.</documentation>
+    </annotation>
+    <complexContent>
+      <extension base="aw:SamplingSitePurposeType">
+        <sequence>
+          <element minOccurs="0" name="locationDesc" type="string"/>
+          <element minOccurs="0" name="catchmentName" type="string"/>
+          <element minOccurs="0" name="subCatchmentName" type="string"/>
+          <element minOccurs="0" name="catchmentCode" type="gml:CodeType"/>
+          <element minOccurs="0" name="subCatchmentCode" type="gml:CodeType"/>
+          <element minOccurs="0" name="state" type="gml:CodeType"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="SiteLocationPropertyType">
+    <sequence minOccurs="0">
+      <element ref="aw:SiteLocation"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="PhenomenonTimeSeries" substitutionGroup="aw:WaterObservation" type="aw:PhenomenonTimeSeriesType"/>
+  <complexType name="PhenomenonTimeSeriesType">
+    <complexContent>
+      <extension base="aw:WaterObservationType">
+        <sequence>
+          <element name="result" type="cv:CompactDiscreteTimeCoveragePropertyType"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="PhenomenonTimeSeriesPropertyType">
+    <sequence minOccurs="0">
+      <element ref="aw:PhenomenonTimeSeries"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+</schema>

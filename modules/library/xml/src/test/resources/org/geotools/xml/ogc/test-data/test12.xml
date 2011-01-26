@@ -1,0 +1,12 @@
+<Filter xmlns:gml="http://www.opengis.net/gml">
+  <Overlaps>
+    <PropertyName>testGeometry</PropertyName>
+    <gml:Polygon srsName="http://www.opengis.net/gml/srs/EPSG#4326">
+      <gml:outerBoundaryIs>
+        <gml:LinearRing>
+          <gml:coordinates>0,0 0,10 10,10 10,0 0,0</gml:coordinates>
+        </gml:LinearRing>
+      </gml:outerBoundaryIs>
+    </gml:Polygon>
+  </Overlaps>
+</Filter>

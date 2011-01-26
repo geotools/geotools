@@ -1,0 +1,56 @@
+PLUGIN WMS
+~~~~~~~~~~
+
+  Module Maintainer: Richard Gould
+
+  IP Review:
+
+    * Jody Garnett, August 7th, 2006
+
+    * Adrian Custer, June 2008
+
+  STATUS: DIRTY
+    Code is clean
+    Two icons of unknown origin
+    Test xml data origin unknown: http://jira.codehaus.org/browse/GEOT-1891
+
+
+
+* org.getools.catalog.wms
+  ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.data.ows
+  ~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.data.wms
+  ~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.data.wms.gce
+  ~~~~~~~~~~~~~~~~~~~~~~~~~
+  An attempt, successful, to wrap a WMS as a grid coverage exchanged (too bad it
+  was a silly idea).
+
+
+* org.geotools.data.wms.request
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.data.wms.response
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.data.wms.xml
+  ~~~~~~~~~~~~~~~~~~~~~~~~~
+  Bleah, scary classes that start with a lowercase letter.
+
+
+* org.geotools.data.ows.test (test)
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.data.wms.[gce|xml].test (test)
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  JUnit, note most of the useful tests are "online".

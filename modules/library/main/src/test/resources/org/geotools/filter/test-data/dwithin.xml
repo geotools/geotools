@@ -1,0 +1,9 @@
+<Filter>
+	<DWithin>
+		<PropertyName>the_geom</PropertyName>
+		<gml:Point xmlns:gml="http://www.opengis.net/gml">
+			<gml:coordinates decimal="." cs="," ts=" ">147,-42</gml:coordinates>
+		</gml:Point>
+		<Distance units="metre">5000</Distance>
+	</DWithin>
+</Filter>

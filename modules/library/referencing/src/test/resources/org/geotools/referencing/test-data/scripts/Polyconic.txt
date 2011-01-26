@@ -1,0 +1,61 @@
+// Test points for the Polyconic projection
+//
+// (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+//
+// The following test points were calculated with libproj4 utility "cs2cs" 
+//
+// Andrea Aime - Dec 22 2009
+//
+//
+// --------------------------------------------------------------------------
+// How to run this script:
+//
+//    chdir org/geotools/referencing/test-data/scripts
+//    java -ea org.geotools.referencing.ScriptRunner Polyconic.txt
+//
+// A test is performed every time a "target pt" statement occurs. If the target point computed
+// by Geotools is different from the target point declared in this script by an amount greater
+// than the value specified in the last "test tolerance" statement, then a failure is reported.
+// Inverse transforms are tested if java assertions are enabled.
+// If some test fails, "print" statements can be added in this script for debugging purpose:
+//
+//    print crs            (prints the source and target CRS, and the transform between them)
+//    print pts            (prints the source and target points, and their transformed points)
+
+
+// CRS used for the test 
+set _sa1969_  = GEOGCS["SAD69", DATUM["South American Datum 1969", SPHEROID["GRS 1967 Modified", 6378160.0, 298.25], TOWGS84[-66.87, 4.37, -38.52, 0.0, 0.0, 0.0, 0.0]], PRIMEM["Greenwich", 0.0], UNIT["degree", 0.017453292519943295], AXIS["Geodetic latitude", NORTH], AXIS["Geodetic longitude", EAST]]
+
+////////////////////////////////////////////
+// Brazilian Polyconic
+
+set _worldEquidistantConic_ = PROJCS["SAD69 / Brazil Polyconic", _sa1969_, PROJECTION["American Polyconic"], PARAMETER["latitude_of_origin", 0.0], PARAMETER["central_meridian", -54.0], PARAMETER["scale_factor", 1.0], PARAMETER["false_easting", 5000000.0], PARAMETER["false_northing", 10000000.0], UNIT["m", 1.0], AXIS["Easting", EAST], AXIS["Northing", NORTH]]
+
+source crs = _sa1969_
+target crs = _worldEquidistantConic_
+test tolerance = (1e-2, 1e-2)
+
+source pt = (-8, -36)
+target pt = (6983754.10, 9071970.97)
+
+source pt = (3, -61)
+target pt = (4221826.84, 10334214.86)
+
+source pt = (-8, -72)
+target pt = (3016245.90, 9071970.97)
+
+source pt = (-10, -52)
+target pt = (5219278.18, 8893476.78)
+
+source pt = (-31, -52)
+target pt = (5190998.93, 6567296.83)
+
+// some points out of Brazil
+source pt = (3, -72)
+target pt = (2999059.83, 10348176.94)
+
+source pt = (-31, -73)
+target pt = (3194221.58, 6414430.59)
+
+source pt = (-32, -36)
+target pt = (6693036.87, 6316881.31)

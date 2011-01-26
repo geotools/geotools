@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:gml="http://www.opengis.net/gml"
+xmlns:geox="http://www.opengis.net/geomExt/0.0" targetNamespace="http://www.opengis.net/geomExt/0.0" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.0.0">
+	<annotation>
+		<documentation>
+geometryProperties.xsd
+
+A GML conformant schema for some geometry extensions required for the Sampling schema
+
+Copyright (c) 2006 Open Geospatial Consortium - see http://www.opengeospatial.org/about/?page=ipr</documentation>
+	</annotation>
+	<!-- ====================================================================== -->
+	<!-- bring in other schemas -->
+	<import namespace="http://www.opengis.net/gml" schemaLocation="http://testschemas.opengis.net/gml/3.2.0/gml/gml.xsd"/>
+	<include schemaLocation="./convexPolyhedron.xsd"/>
+	<include schemaLocation="./linePlane.xsd"/>
+	<include schemaLocation="./triSurface.xsd"/>
+	<!-- ====================================================================== -->
+	<!-- =========================================================== -->
+	<!-- ====================================================================== -->
+	<!-- === Some convenience geometry aggregates === -->
+	<!-- =========================================================== -->
+	<complexType name="LineStringPropertyType">
+		<sequence minOccurs="0">
+			<element ref="gml:LineString"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- =========================================================== -->
+	<complexType name="MultiLineStringType">
+		<annotation>
+			<documentation>A MultiLineString is defined by one or more LineStrings, referenced through lineStringMember elements. </documentation>
+		</annotation>
+		<complexContent>
+			<extension base="gml:AbstractGeometricAggregateType">
+				<sequence minOccurs="0" maxOccurs="unbounded">
+					<element name="member" type="geox:LineStringPropertyType"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ...... -->
+	<element name="MultiLineString" type="geox:MultiLineStringType" substitutionGroup="gml:AbstractGeometricAggregate"/>
+	<!-- ...... -->
+	<complexType name="MultiLineStringPropertyType">
+		<sequence minOccurs="0">
+			<element ref="geox:MultiLineString"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- =========================================================== -->
+	<!-- =========================================================== -->
+	<complexType name="PolygonPropertyType">
+		<sequence minOccurs="0">
+			<element ref="gml:Polygon"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- =========================================================== -->
+	<complexType name="MultiPolygonType">
+		<annotation>
+			<documentation>A MultiPolygon is defined by one or more Polygons, referenced through polygonMember elements. </documentation>
+		</annotation>
+		<complexContent>
+			<extension base="gml:AbstractGeometricAggregateType">
+				<sequence minOccurs="0" maxOccurs="unbounded">
+					<element name="member" type="geox:PolygonPropertyType"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ...... -->
+	<element name="MultiPolygon" type="geox:MultiPolygonType" substitutionGroup="gml:AbstractGeometricAggregate"/>
+	<!-- ...... -->
+	<complexType name="MultiPolygonPropertyType">
+		<sequence minOccurs="0">
+			<element ref="geox:MultiPolygon"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- =========================================================== -->
+	<!-- =========================================================== -->
+		<complexType name="Shape1DPropertyType">
+		<sequence minOccurs="0">
+			<choice>
+				<element ref="gml:LineString"/>
+				<element ref="geox:MultiLineString"/>
+				<element ref="geox:AbstractLine"/>
+			</choice>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+		<attribute name="unionSemantics">
+			<annotation>
+				<documentation>optional XML attribute implements UML Union discriminator</documentation>
+			</annotation>
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="lineSShape"/>
+					<enumeration value="multiLineSShape"/>
+					<enumeration value="lineVShape"/>
+				</restriction>
+			</simpleType>
+		</attribute>
+	</complexType>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<complexType name="Shape2DPropertyType">
+		<sequence minOccurs="0">
+			<choice>
+				<element ref="gml:Polygon"/>
+				<element ref="geox:MultiPolygon"/>
+				<element ref="geox:TriSurface"/>
+				<element ref="geox:PlaneByVector"/>
+			</choice>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+		<attribute name="unionSemantics">
+			<annotation>
+				<documentation>optional XML attribute implements UML Union discriminator</documentation>
+			</annotation>
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="polyShape"/>
+					<enumeration value="multiPolyShape"/>
+					<enumeration value="triSShape"/>
+					<enumeration value="planeVShape"/>
+				</restriction>
+			</simpleType>
+		</attribute>
+	</complexType>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<complexType name="Shape3DPropertyType">
+		<sequence minOccurs="0">
+			<choice>
+				<element ref="geox:ConvexPolyhedron"/>
+				<element ref="geox:MultiConvexPolyhedron"/>
+			</choice>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+		<attribute name="unionSemantics">
+			<annotation>
+				<documentation>optional XML attribute implements UML Union discriminator</documentation>
+			</annotation>
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="simpleSolidShape"/>
+					<enumeration value="multiSimpleSolidShape"/>
+				</restriction>
+			</simpleType>
+		</attribute>
+	</complexType>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+</schema>

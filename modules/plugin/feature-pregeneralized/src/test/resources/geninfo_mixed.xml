@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GeneralizationInfos version="1.0">
+	<GeneralizationInfo dataSourceName="dsStreams"  featureName="GenStreams" baseFeatureName="streams" geomPropertyName="the_geom">
+		<Generalization dataSourceName="dsStreams_5_10"  distance="5" featureName="streams_5_10" geomPropertyName="the_geom"/>
+		<Generalization dataSourceName="dsStreams_5_10"  distance="10" featureName="streams_5_10" geomPropertyName="the_geom2"/>
+		<Generalization dataSourceName="dsStreams_20_50"  distance="20" featureName="streams_20_50" geomPropertyName="the_geom"/>
+		<Generalization dataSourceName="dsStreams_20_50"  distance="50" featureName="streams_20_50" geomPropertyName="the_geom2"/>		
+	</GeneralizationInfo>
+</GeneralizationInfos>

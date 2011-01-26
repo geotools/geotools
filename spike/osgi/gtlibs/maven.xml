@@ -1,0 +1,14 @@
+<project xmlns:j="jelly:core" xmlns:u="jelly:util" xmlns:ant="jelly:ant" xmlns:maven="jelly:maven" xmlns:deploy="deploy" default="build">
+
+
+	<goal name="build">
+		<ant:mkdir dir="lib"/>
+		<j:forEach var="dep" items="${pom.dependencies}">
+			<j:set var="depFile" value="${maven.repo.local}/${dep.groupId}/jars/${dep.artifactId}-${dep.version}.jar"/>
+			<available file="${depFile}" property="file.available"/>
+			<fail unless="file.available" message="Could not find ${depFile} in local repository."/>
+			<ant:copy todir="lib" file="${depFile}"/>
+		</j:forEach>
+	</goal>
+
+</project>

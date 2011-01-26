@@ -1,0 +1,3 @@
+org.geotools.renderer.style.WellKnownMarkFactory
+org.geotools.renderer.style.TTFMarkFactory
+org.geotools.renderer.style.ShapeMarkFactory

@@ -1,0 +1,542 @@
+// Test points for the Equidistant Cylindrical Projection
+//
+// (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
+//
+// The following test points were calculated with ArcGIS 9.1
+// Points with an //Error: comment could not be calculated with ArcGIS.
+//
+// Rueben Schulz - November 12, 2005
+//
+//
+// --------------------------------------------------------------------------
+// How to run this script:
+//
+//    chdir org/geotools/referencing/test-data/scripts
+//    java -ea org.geotools.referencing.ScriptRunner Mercator.txt
+//
+// A test is performed every time a "target pt" statement occurs. If the target point computed
+// by Geotools is different from the target point declared in this script by an amount greater
+// than the value specified in the last "test tolerance" statement, then a failure is reported.
+// Inverse transforms are tested if java assertions are enabled.
+// If some test fails, "print" statements can be added in this script for debugging purpose:
+//
+//    print crs            (prints the source and target CRS, and the transform between them)
+//    print pts            (prints the source and target points, and their transformed points)
+
+
+//geogCS's 
+set _sphere_1_ = GEOGCS["GCS_Sphere",DATUM["D_Sphere",SPHEROID["Sphere",6371000,0]],PRIMEM["Greenwich",0],UNIT["Degree",0.017453292519943295]]
+set _sphere_2_ = GEOGCS["Sphere", DATUM["Sphere", SPHEROID["Sphere", 6370997.0, 0]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]]
+               
+////////////////////////////////////////////
+// Equidistant Cylindrical tests
+
+set _EC1_ = PROJCS["Sphere_Equidistant_Cylindrical",GEOGCS["GCS_Sphere",DATUM["D_Sphere",SPHEROID["Sphere",6371000,0]],PRIMEM["Greenwich",0],UNIT["Degree",0.017453292519943295]],PROJECTION["Equidistant_Cylindrical"],PARAMETER["False_Easting",0],PARAMETER["False_Northing",0],PARAMETER["Central_Meridian",0],PARAMETER["Standard_Parallel_1",60],UNIT["Meter",1]]
+set _EC2_ = PROJCS["Sphere_Equidistant_Cylindrical",GEOGCS["GCS_Sphere",DATUM["D_Sphere",SPHEROID["Sphere",6371000,0]],PRIMEM["Greenwich",0],UNIT["Degree",0.017453292519943295]],PROJECTION["Equidistant_Cylindrical"],PARAMETER["False_Easting",0],PARAMETER["False_Northing",8888.5],PARAMETER["Central_Meridian",45],PARAMETER["Standard_Parallel_1",49.2],UNIT["Meter",1]]
+set _EC3_ = PROJCS["Sphere_Equidistant_Cylindrical",GEOGCS["GCS_Sphere",DATUM["D_Sphere",SPHEROID["Sphere",6371000,0]],PRIMEM["Greenwich",0],UNIT["Degree",0.017453292519943295]],PROJECTION["Equidistant_Cylindrical"],PARAMETER["False_Easting",100000.0],PARAMETER["False_Northing",0],PARAMETER["Central_Meridian",-82.3],PARAMETER["Standard_Parallel_1",-34.5],UNIT["Meter",1]]
+set _EC4_ = PROJCS["Sphere_Equidistant_Cylindrical",GEOGCS["GCS_Sphere",DATUM["D_Sphere",SPHEROID["Sphere",6371000,0]],PRIMEM["Greenwich",0],UNIT["Degree",0.017453292519943295]],PROJECTION["Equidistant_Cylindrical"],PARAMETER["False_Easting",0],PARAMETER["False_Northing",0],PARAMETER["Central_Meridian",180.0],PARAMETER["Standard_Parallel_1",-72.0],UNIT["Meter",1]]
+
+
+source crs = _sphere_1_
+target crs = _EC1_
+test tolerance = (1e-4, 1e-4)
+
+source pt=(-123.1, 49.2166666666)
+target pt=(-6844047.73497259, 5472643.63968229)
+
+source pt=(2.33656753, 43.96499314)
+target pt=(129907.227549204, 4888684.18713083)
+
+source pt=(151.283333333, -33.9166666666)
+target pt=(8410969.57625363, -3771361.26202054)
+
+source pt=(-47.95, -15.75)
+target pt=(-2665898.3663033, -1751320.0946518)
+
+source pt=(139.733333333, 35.6833333333)
+target pt=(7768818.87488131, 3967805.63242963)
+
+source pt=(18.45, -33.9166666666)
+target pt=(1025773.19829605, -3771361.26202054)
+
+source pt=(0, 0)
+target pt=(0, 0)
+
+//source pt=(180, 0)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+//source pt=(-180, 0)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+source pt=(90, 0)
+target pt=(5003771.69900514, 0)
+
+source pt=(-90, 0)
+target pt=(-5003771.69900514, 0)
+
+source pt=(-76, -55)
+target pt=(-4225407.21249323, -6115720.96545073)
+
+source pt=(12, -15)
+target pt=(667169.559867353, -1667923.89966838)
+
+source pt=(80, 6)
+target pt=(4447797.06578235, 667169.559867352)
+
+source pt=(-45, 71)
+target pt=(-2501885.84950257, 7894839.79176367)
+
+source pt=(175, 66.67)
+target pt=(9729556.08139889, 7413365.75939273)
+
+source pt=(60, -70)
+target pt=(3335847.79933676, -7783644.86511911)
+
+source pt=(0, 90)
+target pt=(0, 10007543.3980103)
+
+source pt=(0, -90)
+target pt=(0, -10007543.3980103)
+
+
+source crs = _sphere_1_
+target crs = _EC2_
+test tolerance = (1e-4, 1e-4)
+
+source pt=(-123.1, 49.2166666666)
+target pt=(-12213651.1352383, 5481532.13968229)
+
+source pt=(2.33656753, 43.96499314)
+target pt=(-3099799.40761677, 4897572.68713083)
+
+source pt=(151.283333333, -33.9166666666)
+target pt=(7722234.11552356, -3762472.76202054)
+
+source pt=(-47.95, -15.75)
+target pt=(-6753473.36716481, -1742431.5946518)
+
+source pt=(139.733333333, 35.6833333333)
+target pt=(6883045.11723681, 3976694.13242963)
+
+source pt=(18.45, -33.9166666666)
+target pt=(-1929044.8402176, -3762472.76202054)
+
+source pt=(0, 0)
+target pt=(-3269567.52579254, 8888.5)
+
+source pt=(180, 0)
+target pt=(9808702.57737761, 8888.5)
+
+source pt=(-180, 0)
+target pt=(9808702.57737761, 8888.5)
+
+source pt=(90, 0)
+target pt=(3269567.52579254, 8888.5)
+
+source pt=(-90, 0)
+target pt=(-9808702.57737761, 8888.5)
+
+source pt=(-76, -55)
+target pt=(-8791503.79157549, -6106832.46545073)
+
+source pt=(12, -15)
+target pt=(-2397682.85224786, -1659035.39966838)
+
+source pt=(80, 6)
+target pt=(2542996.96450531, 676058.059867352)
+
+source pt=(-45, 71)
+target pt=(-6539135.05158507, 7903728.29176367)
+
+source pt=(175, 66.67)
+target pt=(9445417.29673399, 7422254.25939273)
+
+source pt=(60, -70)
+target pt=(1089855.84193085, -7774756.36511911)
+
+source pt=(0, 90)
+target pt=(-3269567.52579254, 10016431.8980103)
+
+source pt=(0, -90)
+target pt=(-3269567.52579254, -9998654.89801029)
+
+
+source crs = _sphere_1_
+target crs = _EC3_
+test tolerance = (1e-4, 1e-4)
+
+source pt=(-123.1, 49.2166666666)
+target pt=(-3638856.96445914, 5472643.63968229)
+
+source pt=(2.33656753, 43.96499314)
+target pt=(7855980.88131022, 4888684.18713083)
+
+source pt=(151.283333333, -33.9166666666)
+target pt=(-11484652.8086182, -3771361.26202054)
+
+source pt=(-47.95, -15.75)
+target pt=(3247787.66493067, -1751320.0946518)
+
+source pt=(139.733333333, 35.6833333333)
+target pt=(-12543079.2287041, 3967805.63242963)
+
+source pt=(18.45, -33.9166666666)
+target pt=(9332594.09728574, -3771361.26202054)
+
+source pt=(0, 0)
+target pt=(7641860.98468106, 0)
+
+source pt=(180, 0)
+target pt=(-8853096.21146221, 0)
+
+source pt=(-180, 0)
+target pt=(-8853096.21146221, 0)
+
+source pt=(90, 0)
+target pt=(15889339.5827527, 0)
+
+source pt=(-90, 0)
+target pt=(-605617.613390574, 0)
+
+source pt=(-76, -55)
+target pt=(677323.501865013, -6115720.96545073)
+
+source pt=(12, -15)
+target pt=(8741524.79775728, -1667923.89966838)
+
+source pt=(80, 6)
+target pt=(14972953.0718558, 667169.559867352)
+
+source pt=(-45, 71)
+target pt=(3518121.68564524, 7894839.79176367)
+
+source pt=(175, 66.67)
+target pt=(-9311289.46691063, 7413365.75939273)
+
+source pt=(60, -70)
+target pt=(13140180.0500621, -7783644.86511911)
+
+source pt=(0, 90)
+target pt=(7641860.98468106, 10007543.3980103)
+
+source pt=(0, -90)
+target pt=(7641860.98468106, -10007543.3980103)
+
+
+source crs = _sphere_1_
+target crs = _EC4_
+test tolerance = (1e-4, 1e-4)
+
+source pt=(-123.1, 49.2166666666)
+target pt=(1955147.84302018, 5472643.63968229)
+
+source pt=(2.33656753, 43.96499314)
+target pt=(-6104714.8818503, 4888684.18713083)
+
+source pt=(151.283333333, -33.9166666666)
+target pt=(-986736.887393929, -3771361.26202054)
+
+source pt=(-47.95, -15.75)
+target pt=(4537386.16293172, -1751320.0946518)
+
+source pt=(139.733333333, 35.6833333333)
+target pt=(-1383607.84674161, 3967805.63242963)
+
+source pt=(18.45, -33.9166666666)
+target pt=(-5551039.26256433, -3771361.26202054)
+
+//source pt=(0, 0)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+source pt=(180, 0)
+target pt=(0, 0)
+
+source pt=(-180, 0)
+target pt=(0, 0)
+
+source pt=(90, 0)
+target pt=(-3092500.98192999, 0)
+
+source pt=(-90, 0)
+target pt=(3092500.98192999, 0)
+
+source pt=(-76, -55)
+target pt=(3573556.69023021, -6115720.96545073)
+
+source pt=(12, -15)
+target pt=(-5772668.49960264, -1667923.89966838)
+
+source pt=(80, 6)
+target pt=(-3436112.20214443, 667169.559867352)
+
+source pt=(-45, 71)
+target pt=(4638751.47289498, 7894839.79176367)
+
+source pt=(175, 66.67)
+target pt=(-171805.610107221, 7413365.75939273)
+
+source pt=(60, -70)
+target pt=(-4123334.64257332, -7783644.86511911)
+
+//source pt=(0, 90)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+//source pt=(0, -90)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+
+////////////////////////////////////////////
+// Plate Carree tests (standard_parallel_1 == 0.0)
+
+set _PC1_ = PROJCS["Sphere_Plate_Carree",GEOGCS["Sphere", DATUM["Sphere", SPHEROID["Sphere", 6370997.0, 0 ]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]],PROJECTION["Plate_Carree"],PARAMETER["False_Easting",0],PARAMETER["False_Northing",0],PARAMETER["Central_Meridian",0],UNIT["Meter",1]]
+set _PC2_ = PROJCS["Sphere_Plate_Carree",GEOGCS["Sphere", DATUM["Sphere", SPHEROID["Sphere", 6370997.0, 0 ]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]],PROJECTION["Plate_Carree"],PARAMETER["False_Easting",9999.9],PARAMETER["False_Northing",159.51],PARAMETER["Central_Meridian",-20.588],UNIT["Meter",1]]
+set _PC3_ = PROJCS["Sphere_Plate_Carree",GEOGCS["Sphere", DATUM["Sphere", SPHEROID["Sphere", 6370997.0, 0 ]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]],PROJECTION["Plate_Carree"],PARAMETER["False_Easting",0],PARAMETER["False_Northing",65464.5],PARAMETER["Central_Meridian",-125],UNIT["Meter",1]]
+set _PC4_ = PROJCS["Sphere_Plate_Carree",GEOGCS["Sphere", DATUM["Sphere", SPHEROID["Sphere", 6370997.0, 0 ]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]],PROJECTION["Plate_Carree"],PARAMETER["False_Easting",0],PARAMETER["False_Northing",0],PARAMETER["Central_Meridian",88],UNIT["Meter",1]]
+
+
+source crs = _sphere_2_
+target crs = _PC1_
+test tolerance = (1e-4, 1e-4)
+
+source pt=(-123.1, 49.2166666666)
+target pt=(-13688089.0244443, 5472641.06270364)
+
+source pt=(2.33656753, 43.96499314)
+target pt=(259814.332756018, 4888681.88512917)
+
+source pt=(151.283333333, -33.9166666666)
+target pt=(16821931.2313305, -3771359.48614802)
+
+source pt=(-47.95, -15.75)
+target pt=(-5331794.22195046, -1751319.26998373)
+
+source pt=(139.733333333, 35.6833333333)
+target pt=(15537630.4333424, 3967803.76405467)
+
+source pt=(18.45, -33.9166666666)
+target pt=(2051545.43055237, -3771359.48614802)
+
+source pt=(0, 0)
+target pt=(0, 0)
+
+//source pt=(180, 0)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+//source pt=(-180, 0)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+source pt=(90, 0)
+target pt=(10007538.6856213, 0)
+
+source pt=(-90, 0)
+target pt=(-10007538.6856213, 0)
+
+source pt=(-76, -55)
+target pt=(-8450810.44563577, -6115718.08565746)
+
+source pt=(12, -15)
+target pt=(1334338.49141617, -1667923.11427022)
+
+source pt=(80, 6)
+target pt=(8895589.94277449, 667169.245708087)
+
+source pt=(-45, 71)
+target pt=(-5003769.34281065, 7894836.07421236)
+
+source pt=(175, 66.67)
+target pt=(19459102.9998192, 7413362.26855969)
+
+source pt=(60, -70)
+target pt=(6671692.45708087, -7783641.19992768)
+
+source pt=(0, 90)
+target pt=(0, 10007538.6856213)
+
+source pt=(0, -90)
+target pt=(0, -10007538.6856213)
+
+
+source crs = _sphere_2_
+target crs = _PC2_
+test tolerance = (1e-4, 1e-4)
+
+source pt=(-123.1, 49.2166666666)
+target pt=(-11388809.0526712, 5472800.57270364)
+
+source pt=(2.33656753, 43.96499314)
+target pt=(2559094.30452903, 4888841.39512917)
+
+source pt=(151.283333333, -33.9166666666)
+target pt=(19121211.2031035, -3771199.97614802)
+
+source pt=(-47.95, -15.75)
+target pt=(-3032514.25017745, -1751159.75998373)
+
+source pt=(139.733333333, 35.6833333333)
+target pt=(17836910.4051154, 3967963.27405467)
+
+source pt=(18.45, -33.9166666666)
+target pt=(4350825.40232538, -3771199.97614802)
+
+source pt=(0, 0)
+target pt=(2299279.97177302, 159.51)
+
+source pt=(180, 0)
+target pt=(-17715797.3994696, 159.51)
+
+source pt=(-180, 0)
+target pt=(-17715797.3994696, 159.51)
+
+source pt=(90, 0)
+target pt=(12306818.6573943, 159.51)
+
+source pt=(-90, 0)
+target pt=(-7708258.71384829, 159.51)
+
+source pt=(-76, -55)
+target pt=(-6151530.47386275, -6115558.57565746)
+
+source pt=(12, -15)
+target pt=(3633618.46318919, -1667763.60427022)
+
+source pt=(80, 6)
+target pt=(11194869.9145475, 667328.755708087)
+
+source pt=(-45, 71)
+target pt=(-2704489.37103764, 7894995.58421236)
+
+source pt=(175, 66.67)
+target pt=(-18271771.770893, 7413521.77855969)
+
+source pt=(60, -70)
+target pt=(8970972.42885389, -7783481.68992768)
+
+source pt=(0, 90)
+target pt=(2299279.97177302, 10007698.1956213)
+
+source pt=(0, -90)
+target pt=(2299279.97177302, -10007379.1756213)
+
+
+source crs = _sphere_2_
+target crs = _PC3_
+test tolerance = (1e-4, 1e-4)
+
+source pt=(-123.1, 49.2166666666)
+target pt=(211270.261140895, 5538105.56270364)
+
+source pt=(2.33656753, 43.96499314)
+target pt=(14159173.6183412, 4954146.38512917)
+
+source pt=(151.283333333, -33.9166666666)
+target pt=(-9308864.22556962, -3705894.98614802)
+
+source pt=(-47.95, -15.75)
+target pt=(8567565.06363469, -1685854.76998373)
+
+source pt=(139.733333333, 35.6833333333)
+target pt=(-10593165.0235577, 4033268.26405467)
+
+source pt=(18.45, -33.9166666666)
+target pt=(15950904.7161375, -3705894.98614802)
+
+source pt=(0, 0)
+target pt=(13899359.2855851, 65464.5)
+
+source pt=(180, 0)
+target pt=(-6115718.08565746, 65464.5)
+
+source pt=(-180, 0)
+target pt=(-6115718.08565746, 65464.5)
+
+source pt=(90, 0)
+target pt=(-16123256.7712788, 65464.5)
+
+source pt=(-90, 0)
+target pt=(3891820.59996384, 65464.5)
+
+source pt=(-76, -55)
+target pt=(5448548.83994938, -6050253.58565746)
+
+source pt=(12, -15)
+target pt=(15233697.7770013, -1602458.61427022)
+
+source pt=(80, 6)
+target pt=(-17235205.5141256, 732633.745708087)
+
+source pt=(-45, 71)
+target pt=(8895589.9427745, 7960300.57421236)
+
+source pt=(175, 66.67)
+target pt=(-6671692.45708087, 7478826.76855969)
+
+source pt=(60, -70)
+target pt=(-19459102.9998192, -7718176.69992768)
+
+source pt=(0, 90)
+target pt=(13899359.2855851, 10073003.1856213)
+
+source pt=(0, -90)
+target pt=(13899359.2855851, -9942074.18562131)
+
+
+source crs = _sphere_2_
+target crs = _PC4_
+test tolerance = (1e-4, 1e-4)
+
+source pt=(-123.1, 49.2166666666)
+target pt=(16556916.780989, 5472641.06270364)
+
+source pt=(2.33656753, 43.96499314)
+target pt=(-9525334.60429593, 4888681.88512917)
+
+source pt=(151.283333333, -33.9166666666)
+target pt=(7036782.29427851, -3771359.48614802)
+
+source pt=(-47.95, -15.75)
+target pt=(-15116943.1590024, -1751319.26998373)
+
+source pt=(139.733333333, 35.6833333333)
+target pt=(5752481.49629044, 3967803.76405467)
+
+source pt=(18.45, -33.9166666666)
+target pt=(-7733603.50649958, -3771359.48614802)
+
+source pt=(0, 0)
+target pt=(-9785148.93705194, 0)
+
+source pt=(180, 0)
+target pt=(10229928.4341907, 0)
+
+source pt=(-180, 0)
+target pt=(10229928.4341907, 0)
+
+source pt=(90, 0)
+target pt=(222389.748569363, 0)
+
+source pt=(-90, 0)
+target pt=(-19792687.6226732, 0)
+
+source pt=(-76, -55)
+target pt=(-18235959.3826877, -6115718.08565746)
+
+source pt=(12, -15)
+target pt=(-8450810.44563577, -1667923.11427022)
+
+source pt=(80, 6)
+target pt=(-889558.994277449, 667169.245708087)
+
+source pt=(-45, 71)
+target pt=(-14788918.2798626, 7894836.07421236)
+
+source pt=(175, 66.67)
+target pt=(9673954.06276726, 7413362.26855969)
+
+source pt=(60, -70)
+target pt=(-3113456.47997107, -7783641.19992768)
+
+source pt=(0, 90)
+target pt=(-9785148.93705194, 10007538.6856213)
+
+source pt=(0, -90)
+target pt=(-9785148.93705194, -10007538.6856213)

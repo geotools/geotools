@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!-- ========================================================================
+
+     ANT BUILD FILE (Ref. http://jakarta.apache.org/ant )
+
+     Ant script preparing SQL scripts for HSQL. The scripts provided by EPSG
+     can't be run "as is" because of minor SQL language differences. Some
+     keywords must be replaced, and the date format must be changed from
+     "yyyy/mm/dd" to "yyyy-mm-dd". This scripts performs those changes in a
+     copy of EPSG scripts.
+
+     There is one change that this script doesn't performs. Column creation
+     in the form "columnName UNIQUE" must move the "unique" keyword at the
+     end of table creation in the form "UNIQUE (columnName)". This change
+     needs to be done by hand in the "EPSG_Tables.sql" file.
+
+     The SQL scripts must be executed in the following order:
+
+         EPSG_Tables.sql
+         EPSG_Data.sql
+         EPSG_FKeys.sql
+
+     Author:  Martin Desruisseaux
+     Version: $Id$
+     ======================================================================== -->
+
+<project name="Creates HSQL scripts" default="create">
+  <target name="create">
+    <copy file="EPSG_v7_5.mdb_Tables_PostgreSQL.sql" tofile="EPSG_Tables.sql"/>
+    <copy file="EPSG_v7_5.mdb_FKeys_PostgreSQL.sql"  tofile="EPSG_FKeys.sql" />
+    <copy file="EPSG_v7_5.mdb_Data_PostgreSQL.sql"   tofile="EPSG_Data.sql"  />
+
+    <replace file="EPSG_Tables.sql">
+      <replacefilter token="CREATE TABLE" value="CREATE CACHED TABLE"/>
+      <replacefilter token="TEXT"         value="VARCHAR"            />
+    </replace>
+
+    <replaceregexp file="EPSG_Data.sql" byline="true">
+      <regexp pattern="'(\d{4})/(\d{2})/(\d{2})',\s*"/>
+      <substitution expression="'\1-\2-\3',"/>
+    </replaceregexp>
+
+  </target>
+</project>

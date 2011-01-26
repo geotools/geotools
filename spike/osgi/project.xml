@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <pomVersion>3</pomVersion>
+  <name>skunkworks</name>
+  <id>skunkworks</id>
+  <groupId>skunkworks</groupId>
+  <currentVersion>1.0.0</currentVersion>
+
+  <organization>
+    <name>The Open Planning Project</name>
+    <url>http://www.openplans.org</url>
+  </organization>
+  <package>skunkworks</package>
+
+  <dependencies>
+    <dependency>
+      <groupId>osgi</groupId>
+      <artifactId>osgi</artifactId>
+      <version>3.0</version>
+    </dependency>
+
+		<dependency>
+			<groupId>gt2</groupId>
+			<artifactId>main</artifactId>
+			<version>2.1.1</version>
+		</dependency>
+
+		<dependency>
+			<id>JTS</id>
+			<version>1.6</version>
+		</dependency>
+
+		<dependency>
+			<id>geoapi</id>
+			<version>2.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>gt2</groupId>
+			<artifactId>catalog-core</artifactId>
+			<version>2.1.1</version>
+		</dependency>
+  </dependencies>
+
+  <build>
+    <unitTestSourceDirectory>test/</unitTestSourceDirectory>
+    <integrationUnitTestSourceDirectory/>
+    <aspectSourceDirectories/>
+    <integrationUnitTestPatterns/>
+    <sourceDirectory>src</sourceDirectory>
+
+    <resources>
+      <resource>
+        <directory>${basedir}/src</directory>
+      </resource>
+			<resource>
+				<directory>${basedir}</directory>
+				<includes>
+					<include>META-INF/**</include>
+				</includes>
+			</resource>
+    </resources>
+    <jars/>
+    <unitTest>
+      <includes>
+        <include>**/*Test.java</include>
+      </includes>
+    </unitTest>
+  </build>
+</project>

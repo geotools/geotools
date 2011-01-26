@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TransactionResponse
+	version="1.1.0"
+	xmlns="http://www.opengis.net/wfs"
+	xmlns:ogc="http://www.opengis.net/ogc"
+	xmlns:topp="http://www.openplans.org/topp"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd
+	http://www.opengis.net/ogc http://schemas.opengis.net/filter/1.1.0/filter.xsd">
+
+	<TransactionSummary>
+		<totalInserted>3</totalInserted>
+		<totalUpdated>2</totalUpdated>
+		<totalDeleted>1</totalDeleted>
+	</TransactionSummary>
+	<TransactionResults>
+		<Action locator="locator.1"><Message>success</Message></Action>
+		<Action locator="locator.2" code="errorCode">
+			<Message>failure</Message>
+		</Action>
+	</TransactionResults>
+	<InsertResults>
+		<Feature handle="handle1">
+			<ogc:FeatureId fid="fid.1" />
+			<ogc:FeatureId fid="fid.2" />
+		</Feature>
+		<Feature handle="handle2">
+			<ogc:FeatureId fid="fid.3" />
+		</Feature>
+	</InsertResults>
+</TransactionResponse>

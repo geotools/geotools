@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+    xmlns:gml="http://www.opengis.net/gml"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:gml2="http://www.safe.com/gml2"
+    targetNamespace="http://www.safe.com/gml2" elementFormDefault="qualified">
+    <import namespace="http://www.opengis.net/gml" schemaLocation="feature.xsd"/>
+    <element name="FeatureCollection" type="gml2:FeatureCollectionType" substitutionGroup="gml:_FeatureCollection"/>
+    <element name="roads" type="gml2:roadsType" substitutionGroup="gml:_Feature"/>
+    <complexType name="FeatureCollectionType">
+        <complexContent>
+            <extension base="gml:AbstractFeatureCollectionType"/>
+        </complexContent>
+    </complexType>
+    <complexType name="roadsType">
+        <complexContent>
+            <extension base="gml:AbstractFeatureType">
+                <sequence>
+                    <element name="LINE" type="string"/>
+                    <element name="LINE_OBRP" type="string"/>
+                    <element name="PIDL" type="string"/>
+                    <element name="PIDR" type="string"/>
+                    <element name="SNID" type="string"/>
+                    <element name="ENID" type="string"/>
+                    <element name="LABEL" type="string"/>
+                    <element name="EXT" type="string"/>
+                    <element name="TO_GROUND" type="string"/>
+                    <element name="RELATION" type="string"/>
+                    <element name="STATUS" type="string"/>
+                    <element name="RESTRICTIO" type="string"/>
+                    <element name="GRADE" type="string"/>
+                    <element name="RAILROAD" type="string"/>
+                    <element name="COVERED" type="string"/>
+                    <element name="HISTORICAL" type="string"/>
+                    <element name="ACCESS" type="string"/>
+                    <element name="PHOTOREVIS" type="string"/>
+                    <element name="LANES" type="long"/>
+                    <element name="ROAD_WIDTH" type="long"/>
+                    <element name="ESTIMATE" type="string"/>
+                    <element name="CLASS" type="string"/>
+                    <element name="NUMBER" type="string"/>
+                    <element name="ROUTE_TYPE" type="string"/>
+                    <choice>
+                        <element ref="gml:lineStringProperty"/>
+                        <element ref="gml:multiLineStringProperty"/>
+                    </choice>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+</schema>

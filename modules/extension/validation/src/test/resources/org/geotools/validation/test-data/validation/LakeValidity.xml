@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite xmlns="testSuiteSchema" 
+	xmlns:gml="http://www.opengis.net/gml" 
+	xmlns:ogc="http://www.opengis.net/ogc" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" 
+	xs:schemaLocation="testSuiteSchema /data/capabilities/validate/testSuiteSchema.xsd">
+	<name>Lake Integrity Checks</name>
+	<description>Checks to ensure the lakes are valid</description>
+	<test>
+		<name>Lake Valid</name>
+		<description>Checks that Lakes are represented by valid geometries</description>
+		<plugin>Is Valid Geometry</plugin>
+		<argument >
+			<name>typeRef</name>
+			<string>LAKES:lakes</string>
+		</argument>
+	</test>
+	<test>
+		<name>Stream</name>
+		<description>Stream must not crosss itself (expect on a node)</description>
+		<plugin>Line Not Self Intersection</plugin>
+		<argument>
+			<name>typeRef</name>
+			<string>STREAMS:streams</string>
+		</argument>
+	</test>
+</suite>

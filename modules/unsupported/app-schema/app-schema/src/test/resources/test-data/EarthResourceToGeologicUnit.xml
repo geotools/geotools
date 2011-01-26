@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<as:AppSchemaDataAccess xmlns:as="http://www.geotools.org/app-schema"
+	xmlns:ogc="http://www.opengis.net/ogc" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.geotools.org/app-schema AppSchemaDataAccess.xsd
+                      http://www.opengis.net/ogc http://schemas.opengis.net/filter/1.1.0/expr.xsd">
+	<!-- 
+        Mapping file for gsml:GeologicUnit where a data access containing er:EarthResource is
+        used. The complex features from the input data access is re-mapped to gsml:features.
+    -->
+	<namespaces>
+		<Namespace>
+			<prefix>gml</prefix>
+			<uri>http://www.opengis.net/gml</uri>
+		</Namespace>
+		<Namespace>
+			<prefix>gsml</prefix>
+			<uri>urn:cgi:xmlns:CGI:GeoSciML:2.0</uri>
+		</Namespace>
+		<Namespace>
+			<prefix>er</prefix>
+			<uri>urn:cgi:xmlns:GGIC:EarthResource:1.1</uri>
+		</Namespace>
+	</namespaces>
+	<includedTypes>
+        <Include>CompositionPart.xml</Include>
+        <Include>CGITermValue.xml</Include>
+    </includedTypes>	
+	<sourceDataStores>
+		<DataStore>
+			<id>EarthResource</id>
+			<parameters>
+				<Parameter>
+					<name>directory</name>
+					<!-- path can be relative to this file if starts with "file: -->
+					<value>file:./</value>
+				</Parameter>
+			</parameters>
+	        <!--
+		      This flag marks that we want to connect to the data access, instead of
+		      using the underlying data store
+	        -->
+			<isDataAccess>true</isDataAccess>
+		</DataStore>
+	</sourceDataStores>
+	<targetTypes>
+		<FeatureType>
+			<schemaUri>http://www.geosciml.org/geosciml/2.0/xsd/geosciml.xsd</schemaUri>
+		</FeatureType>
+	</targetTypes>
+	<typeMappings>
+		<FeatureTypeMapping>
+		    <mappingName>myGeologicUnit</mappingName>
+			<sourceDataStore>EarthResource</sourceDataStore>
+			<sourceType>EarthResource</sourceType>
+			<targetElement>gsml:GeologicUnit</targetElement>
+			<attributeMappings>
+				<AttributeMapping>
+					<targetAttribute>gsml:GeologicUnit</targetAttribute>
+				</AttributeMapping>
+				<AttributeMapping>
+				    <!-- All instances of gml:name should be mapped, how many is not known -->
+					<targetAttribute>gml:name</targetAttribute>
+					<sourceExpression>
+					  	<inputAttribute>gml:name</inputAttribute>
+					</sourceExpression>
+					<isMultiple>true</isMultiple>
+				</AttributeMapping>
+				<AttributeMapping>
+					<!--
+						This is used for chaining geological unit inside mapped feature as
+						specification
+					-->
+					<targetAttribute>FEATURE_LINK</targetAttribute>
+					<sourceExpression>
+						<OCQL>strConcat('gu.', getID())</OCQL>
+					</sourceExpression>
+				</AttributeMapping>
+				<AttributeMapping>
+					<targetAttribute>gsml:bodyMorphology</targetAttribute>
+					<targetAttributeNode>gsml:CGI_TermValuePropertyType</targetAttributeNode>
+				</AttributeMapping>
+				<AttributeMapping>
+					<targetAttribute>gsml:bodyMorphology/gsml:CGI_TermValue/gsml:value</targetAttribute>
+					<sourceExpression>
+					    <!-- 
+					        This input XPath expression from the input complex feature is 
+					        mapped to the output XPath expression of a different XML form.
+					      -->
+						<inputAttribute>er:form</inputAttribute>
+					</sourceExpression>
+				</AttributeMapping>
+				<AttributeMapping>
+					<targetAttribute>
+			            gsml:composition
+		            </targetAttribute>
+					<sourceExpression>
+						<inputAttribute>er:composition</inputAttribute>
+						<linkElement>gsml:CompositionPart</linkElement>
+						<linkField>FEATURE_LINK</linkField>
+					</sourceExpression>
+					<isMultiple>true</isMultiple>
+				</AttributeMapping>
+				<AttributeMapping>
+					<targetAttribute>
+		                gsml:occurrence
+		            </targetAttribute>
+					<sourceExpression>
+						<inputAttribute>er:commodityDescription</inputAttribute>
+						<linkElement>gsml:MappedFeature</linkElement>
+						<linkField>gml:name[2]</linkField>
+					</sourceExpression>
+					<isMultiple>true</isMultiple>
+				</AttributeMapping>
+			</attributeMappings>
+		</FeatureTypeMapping>
+	</typeMappings>
+</as:AppSchemaDataAccess>

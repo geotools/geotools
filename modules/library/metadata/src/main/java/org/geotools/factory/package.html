@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<HTML>
+  <HEAD>
+    <TITLE>org.geotools.factory</TITLE>
+  </HEAD>
+  <BODY>
+    Utility classes which enable dynamic binding to factory implementations at runtime.
+
+    <P>Because Geotools core API consists almost exclusively of interfaces
+    (including <A HREF="http://geoapi.sourceforge.net">GeoAPI</A>), factories play a role
+    in how developers use the API. Although the interfaces that are declared in GeoAPI are
+    implemented in various Geotools packages you should not use those classes directly.
+    Instead you should use factories.</P>
+
+    <P>J2SE's {@link javax.imageio.spi.ServiceRegistry} provides a general
+    way (even if it is defined in a {@code javax.imageio} subpackage) to instantiate and
+    manage factories (also called providers). Each factory implementation should be declared
+    in {@code META-INF/services} directory, usually bundled in every JAR file. For example
+    if a JAR file provides one or more {@link org.opengis.referencing.datum.DatumFactory}
+    implementations, then it must provide the following file:</P>
+
+    <BLOCKQUOTE><PRE><B>META-INF/services/</B>org.opengis.referencing.datum.DatumFactory</PRE></BLOCKQUOTE>
+
+    <P>with a content similar to the one below:</P>
+
+    <BLOCKQUOTE><PRE>com.mycompany.MyDatumFactory1
+com.mycompany.MyDatumFactory2
+com.mycompany.MyDatumFactory3</PRE></BLOCKQUOTE>
+
+    <P>The ordering is initially unspecified. Users can
+    {@linkplain javax.imageio.spi.ServiceRegistry#setOrdering set an ordering}
+    explicitly themselves, or implementations can do that automatically
+    {@linkplain javax.imageio.spi.RegisterableService#onRegistration on registration}.
+    The {@link org.geotools.factory.AbstractFactory} class provides a simple way to setup ordering
+    on registration on the basis of a {@linkplain org.geotools.factory.AbstractFactory#priority priority}
+    number.</P>
+
+    <P>If a user wants a specific implementation, he can
+    {@linkplain javax.imageio.spi.ServiceRegistry#getServiceProviders iterates through registered ones}
+    and pickup the desired implementation himself. An alternative is to bundle the criterions in a
+    {@linkplain org.geotools.factory.Hints map of hints} and lets the registry selects an implementation
+    accordingly. This later functionality is not provided by the standard {@link javax.imageio.spi.ServiceRegistry},
+    but is provided by Geotools's {@link org.geotools.factory.FactoryRegistry} extension. This class extends
+    the service registry API with the following functionalities:</P>
+
+    <UL>
+      <LI><P">A {@link org.geotools.factory.FactoryRegistry#scanForPlugins()
+          scanForPlugins()} method that scans for plugins in the
+          {@linkplain java.lang.Class#getClassLoader registry class loader}, the
+          {@linkplain java.lang.Thread#getContextClassLoader thread context class loader} and the
+          {@linkplain java.lang.ClassLoader#getSystemClassLoader system class loader}.
+          Additionally, {@code scanForPlugins()} looks for any implementation specified as
+          {@linkplain java.lang.System#getProperty(String) system property}.</P></LI>
+
+      <LI><P>Filters out automatically {@linkplain org.geotools.factory.OptionalFactory optional factories}
+          when they are not {@linkplain org.geotools.factory.OptionalFactory#isAvailable available}.</P></LI>
+
+      <LI><P>When more than one implementation is available for the same {@link org.geotools.factory.Factory}
+          subinterface, an optional set of {@linkplain org.geotools.factory.Hints hints} can specifies the criterions that the
+          desired implementation must meets. If a factory implementation depends on other factories, the dependencies hints
+          are checked recursively.</P></LI>
+
+      <LI><P><strong>Optionally</strong>, if no factory matches the given hints, a new instance can be
+          {@linkplain org.geotools.factory.FactoryCreator#createServiceProvider automatically created}.</P></LI>
+    </UL>
+
+    <P>Note that the {@linkplain org.geotools.factory.Hints hints}, if provided, don't need to apply
+    directly to the requested factory category. They may apply indirectly through some dependency. A typical example is
+    a request for any {@link com.vividsolutions.jts.geom.GeometryFactory} instance, providing that this instance uses a
+    particular {@link com.vividsolutions.jts.geom.CoordinateSequenceFactory} implementation.</P>
+  </BODY>
+</HTML>

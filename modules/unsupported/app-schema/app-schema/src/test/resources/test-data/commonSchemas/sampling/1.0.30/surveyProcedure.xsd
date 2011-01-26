@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns:sa="http://www.opengis.net/sampling/0.0" xmlns="http://www.w3.org/2001/XMLSchema"
+        xmlns:gml="http://www.opengis.net/gml" xmlns:gmd="http://www.isotc211.org/2005/gmd"
+        xmlns:om="http://www.opengis.net/om/0.0" targetNamespace="http://www.opengis.net/sampling/0.0"
+        elementFormDefault="qualified" attributeFormDefault="unqualified" version="pre-release">
+	<annotation>
+		<documentation>surveyProcedure.xsd
+
+Components to describe procedures used in sampling.
+
+Copyright (c) 2007 Open Geospatial Consortium - see http://www.opengeospatial.org/about/?page=ipr</documentation>
+	</annotation>
+	<!-- ====================================================================== -->
+	<!-- bring in other schemas -->
+	<import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+<!--	<import namespace="http://www.isotc211.org/2005/gmd" schemaLocation="../../../../gml/trunk/gml/3.1.1/gmd/gmd.xsd"/>-->
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<complexType name="SurveyProcedureType">
+		<annotation>
+			<documentation>Specialized procedure related to surveying positions and locations.</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="gml:AbstractFeatureType">
+				<sequence>
+					<element name="instanceIdentifier" type="gml:CodeType" minOccurs="0">
+						<annotation>
+							<documentation>Identifier or serial number of specific instance of system. 
+					If not present, then the system is a description of a generic re-usable procedure type.</documentation>
+						</annotation>
+					</element>
+					<element name="positionMethod" type="gml:ReferenceType" minOccurs="0"/>
+					<element name="positionAccuracy" type="gml:MeasureType" minOccurs="0"/>
+					<element name="elevationMethod" type="gml:ReferenceType" minOccurs="0"/>
+					<element name="elevationAccuracy" type="gml:MeasureType" minOccurs="0"/>
+					<element name="projection" type="gml:ReferenceType" minOccurs="0"/>
+					<element name="geodeticDatum" type="gml:ReferenceType" minOccurs="0"/>
+					<element name="elevationDatum" type="gml:ReferenceType" minOccurs="0"/>
+					<element name="operator" type="string" minOccurs="0">
+<!--					<element name="operator" type="gmd:CI_ResponsibleParty_PropertyType" minOccurs="0">-->
+						<annotation>
+							<documentation>Note than in other contexts the "operator" is not embedded in the procedure description. Maybe needs a tweak later?</documentation>
+						</annotation>
+					</element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ...................... -->
+	<element name="SurveyProcedure" type="sa:SurveyProcedureType" substitutionGroup="gml:_Feature">
+		<annotation>
+			<documentation>Specialized procedure related to surveying positions and locations.</documentation>
+		</annotation>
+	</element>
+	<!-- ...................... -->
+	<complexType name="SurveyProcedurePropertyType">
+		<sequence minOccurs="0">
+			<element ref="sa:SurveyProcedure"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+</schema>

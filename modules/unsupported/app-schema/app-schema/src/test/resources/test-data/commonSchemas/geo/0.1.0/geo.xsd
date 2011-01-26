@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:geo="http://www.seegrid.csiro.au/xml/geometry" targetNamespace="http://www.seegrid.csiro.au/xml/geometry" elementFormDefault="qualified" version="1.00">
+	<xs:annotation>
+		<xs:documentation>geo.xsd
+	Utility geometry schema</xs:documentation>
+	</xs:annotation>
+	<!-- ==============================================================
+       includes and imports
+	============================================================== -->
+	<xs:include schemaLocation="./geometryProperties.xsd"/>
+</xs:schema>

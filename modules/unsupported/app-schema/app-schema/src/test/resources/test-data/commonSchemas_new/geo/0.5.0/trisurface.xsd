@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:gml="http://www.opengis.net/gml" xmlns:geox="http://www.opengis.net/geomExt/0.0" 
+targetNamespace="http://www.opengis.net/geomExt/0.0" elementFormDefault="qualified" attributeFormDefault="unqualified"
+        version="pre-release">
+	<annotation>
+		<documentation>triSurface.xsd
+
+A GML conformant schema for specialised geometries 
+Triangulated surfaces
+
+Copyright (c) 2007 Open Geospatial Consortium - see http://www.opengeospatial.org/about/?page=ipr</documentation>
+	</annotation>
+	<!-- ====================================================================== -->
+	<!-- bring in other schemas -->
+	<import namespace="http://www.opengis.net/gml" schemaLocation="http://testschemas.opengis.net/gml/3.2.0/gml/gml.xsd"/>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<!-- === Compact triangulated surface encoding === -->
+	<!-- ====================================================================== -->
+	<complexType name="TriSurfaceType">
+		<complexContent>
+			<extension base="gml:AbstractSurfaceType">
+				<sequence>
+					<element name="patch" type="geox:ThreeVertexSurfacePatchPropertyType" minOccurs="1" maxOccurs="unbounded"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- .................. -->
+	<element name="TriSurface" type="geox:TriSurfaceType" substitutionGroup="gml:AbstractSurface">
+		<annotation>
+			<documentation>Compact implementation of a surface defined by set of triangle patches</documentation>
+		</annotation>
+	</element>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<!-- === Surface patches === -->
+	<!-- ====================================================================== -->
+	<complexType name="ThreeVertexSurfacePatchType">
+		<complexContent>
+			<extension base="gml:AbstractSurfacePatchType">
+				<sequence>
+					<element name="vertex" type="gml:PointPropertyType" minOccurs="3" maxOccurs="3"/>
+				</sequence>
+				<attribute name="interpolation" type="gml:SurfaceInterpolationType" fixed="planar"/>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- .................. -->
+	<element name="ThreeVertexSurfacePatch" type="geox:ThreeVertexSurfacePatchType" substitutionGroup="gml:AbstractSurfacePatch">
+		<annotation>
+			<documentation>Represents a triangle as a surface with an 
+      outer boundary defined by references to three Points. 
+      Note that this is a polygon (subtype) with no inner boundaries. 
+      Relative to a right-handed coordinate system the vertex sequence is counter-clockwise around the positive normal vector
+      A
+       |
+ 0__| __2
+   \   |   /
+    \    /
+      1</documentation>
+		</annotation>
+	</element>
+	<!-- .................. -->
+	<complexType name="ThreeVertexSurfacePatchPropertyType">
+		<sequence>
+			<element ref="geox:ThreeVertexSurfacePatch"/>
+		</sequence>
+	</complexType>
+	<!-- ====================================================================== -->
+</schema>

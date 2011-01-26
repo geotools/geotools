@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:gml="http://www.opengis.net/gml" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gml2="http://www.safe.com/gml2" targetNamespace="http://www.safe.com/gml2" elementFormDefault="qualified">
+<import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/2.1.2/feature.xsd"/>
+<element name="FeatureCollection" type="gml2:FeatureCollectionType" substitutionGroup="gml:_FeatureCollection"/>
+<element name="RIPS_DJ_polygon" type="gml2:RIPS_DJ_polygonType" substitutionGroup="gml:_Feature"/>
+
+<complexType name="FeatureCollectionType">
+<complexContent>
+<extension base="gml:AbstractFeatureCollectionType">
+</extension>
+</complexContent>
+</complexType>
+
+<complexType name="RIPS_DJ_polygonType">
+<complexContent>
+<extension base="gml:AbstractFeatureType">
+<sequence>
+<element name="OBJECTID" type="decimal"/>
+<element name="AREA" type="decimal"/>
+<element name="PERIMETER" type="decimal"/>
+<element name="RIPS_ID" type="string"/>
+<element name="RIPS_SPD_C" type="string"/>
+<element name="RIPS_SPEED" type="decimal"/>
+<element name="SHAPE_AREA" type="decimal"/>
+<element name="SHAPE_LEN" type="decimal"/>
+<choice>
+<element ref="gml:polygonProperty"/>
+<element ref="gml:multiPolygonProperty"/>
+</choice>
+</sequence>
+</extension>
+</complexContent>
+</complexType>
+</schema>

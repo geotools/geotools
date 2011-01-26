@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wfs:FeatureCollection numberOfFeatures="5" timeStamp="2007-10-19T07:15:38.641-07:00" xsi:schemaLocation="http://www.opengis.net/wfs http://localhost:8080/geoserver/schemas/wfs/1.1.0/wfs.xsd http://cite.opengeospatial.org/gmlsf http://localhost:8080/geoserver/wfs?service=WFS&amp;version=1.1.0&amp;request=DescribeFeatureType&amp;typeName=sf:PrimitiveGeoFeature" xmlns:ogc="http://www.opengis.net/ogc" xmlns:sf="http://cite.opengeospatial.org/gmlsf" xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ows="http://www.opengis.net/ows" xmlns:wfs="http://www.opengis.net/wfs">
+ <gml:featureMembers>
+  <sf:PrimitiveGeoFeature gml:id="PrimitiveGeoFeature.f001">
+   <gml:description>description-f001</gml:description>
+   <gml:name>name-f001</gml:name>
+   <gml:boundedBy>
+    <gml:Envelope srsName="urn:x-ogc:def:crs:EPSG:6.11.2:4326">
+     <gml:lowerCorner>39.73245 2.00342</gml:lowerCorner>
+     <gml:upperCorner>39.73245 2.00342</gml:upperCorner>
+    </gml:Envelope>
+   </gml:boundedBy>
+   <sf:pointProperty>
+    <gml:Point srsName="urn:x-ogc:def:crs:EPSG:6.11.2:4326">
+     <gml:pos>39.73245 2.00342</gml:pos>
+    </gml:Point>
+   </sf:pointProperty>
+   <sf:intProperty>155</sf:intProperty>
+   <sf:uriProperty>http://www.opengeospatial.org/</sf:uriProperty>
+   <sf:measurand>12765.0</sf:measurand>
+   <sf:dateProperty>2006-10-25+00:00</sf:dateProperty>
+   <sf:decimalProperty>5.03</sf:decimalProperty>
+  </sf:PrimitiveGeoFeature>
+  <sf:PrimitiveGeoFeature gml:id="PrimitiveGeoFeature.f002">
+   <gml:description>description-f002</gml:description>
+   <gml:name>name-f002</gml:name>
+   <gml:boundedBy>
+    <gml:Envelope srsName="urn:x-ogc:def:crs:EPSG:6.11.2:4326">
+     <gml:lowerCorner>59.41276 0.22601</gml:lowerCorner>
+     <gml:upperCorner>59.41276 0.22601</gml:upperCorner>
+    </gml:Envelope>
+   </gml:boundedBy>
+   <sf:pointProperty>
+    <gml:Point srsName="urn:x-ogc:def:crs:EPSG:6.11.2:4326">
+     <gml:pos>59.41276 0.22601</gml:pos>
+    </gml:Point>
+   </sf:pointProperty>
+   <sf:intProperty>154</sf:intProperty>
+   <sf:uriProperty>http://www.opengeospatial.org/</sf:uriProperty>
+   <sf:measurand>12769.0</sf:measurand>
+   <sf:dateProperty>2006-10-23+00:00</sf:dateProperty>
+   <sf:decimalProperty>4.02</sf:decimalProperty>
+  </sf:PrimitiveGeoFeature>
+  <sf:PrimitiveGeoFeature gml:id="PrimitiveGeoFeature.f003">
+   <gml:description>description-f003</gml:description>
+   <gml:name>name-f003</gml:name>
+   <gml:boundedBy>
+    <gml:Envelope srsName="urn:x-ogc:def:crs:EPSG:6.11.2:4326">
+     <gml:lowerCorner>46.074 9.799</gml:lowerCorner>
+     <gml:upperCorner>47.114 11.021</gml:upperCorner>
+    </gml:Envelope>
+   </gml:boundedBy>
+   <sf:curveProperty>
+    <gml:LineString srsName="urn:x-ogc:def:crs:EPSG:6.11.2:4326">
+     <gml:posList>46.074 9.799 46.652 10.466 47.114 11.021</gml:posList>
+    </gml:LineString>
+   </sf:curveProperty>
+   <sf:intProperty>180</sf:intProperty>
+   <sf:measurand>672.1</sf:measurand>
+   <sf:dateProperty>2006-09-01+00:00</sf:dateProperty>
+   <sf:decimalProperty>12.92</sf:decimalProperty>
+  </sf:PrimitiveGeoFeature>
+  <sf:PrimitiveGeoFeature gml:id="PrimitiveGeoFeature.f008">
+   <gml:description>description-f008</gml:description>
+   <gml:name>name-f008</gml:name>
+   <gml:boundedBy>
+    <gml:Envelope srsName="urn:x-ogc:def:crs:EPSG:6.11.2:4326">
+     <gml:lowerCorner>45.174 30.466</gml:lowerCorner>
+     <gml:upperCorner>45.891 30.899</gml:upperCorner>
+    </gml:Envelope>
+   </gml:boundedBy>
+   <sf:surfaceProperty>
+    <gml:Polygon srsName="urn:x-ogc:def:crs:EPSG:6.11.2:4326">
+     <gml:exterior>
+      <gml:LinearRing>
+       <gml:posList>45.174 30.899 45.652 30.466 45.891 30.466 45.174 30.899</gml:posList>
+      </gml:LinearRing>
+     </gml:exterior>
+    </gml:Polygon>
+   </sf:surfaceProperty>
+   <sf:intProperty>300</sf:intProperty>
+   <sf:measurand>783.5</sf:measurand>
+   <sf:dateTimeProperty>2006-06-27T22:08:00-07:00</sf:dateTimeProperty>
+   <sf:dateProperty>2006-12-12+00:00</sf:dateProperty>
+   <sf:decimalProperty>18.92</sf:decimalProperty>
+  </sf:PrimitiveGeoFeature>
+  <sf:PrimitiveGeoFeature gml:id="PrimitiveGeoFeature.f015">
+   <gml:name>name-f015</gml:name>
+   <gml:boundedBy>
+    <gml:Envelope srsName="urn:x-ogc:def:crs:EPSG:6.11.2:4326">
+     <gml:lowerCorner>34.94 -10.52</gml:lowerCorner>
+     <gml:upperCorner>34.94 -10.52</gml:upperCorner>
+    </gml:Envelope>
+   </gml:boundedBy>
+   <sf:pointProperty>
+    <gml:Point srsName="urn:x-ogc:def:crs:EPSG:6.11.2:4326">
+     <gml:pos>34.94 -10.52</gml:pos>
+    </gml:Point>
+   </sf:pointProperty>
+   <sf:intProperty>-900</sf:intProperty>
+   <sf:measurand>2.4</sf:measurand>
+   <sf:decimalProperty>7.9</sf:decimalProperty>
+  </sf:PrimitiveGeoFeature>
+ </gml:featureMembers>
+</wfs:FeatureCollection>

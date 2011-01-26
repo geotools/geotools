@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GetGmlObject
+	service="WFS"
+	version="1.1.0"
+	handle="getGmlObjectHandle"
+	outputFormat="GML3"
+	traverseXlinkDepth="*"
+	traverseXlinkExpiry="5"
+	xmlns="http://www.opengis.net/wfs"
+	xmlns:gml="http://www.opengis.net/gml"
+	xmlns:ogc="http://www.opengis.net/ogc"
+	xmlns:topp="http://www.openplans.org/topp"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd
+	http://www.opengis.net/ogc http://schemas.opengis.net/filter/1.1.0/filter.xsd
+	http://www.opengis.net/gml http://schemas.opengis.net/gml/3.1.1/base/gml.xsd">
+	
+	<ogc:GmlObjectId gml:id="id1"/>
+
+</GetGmlObject>

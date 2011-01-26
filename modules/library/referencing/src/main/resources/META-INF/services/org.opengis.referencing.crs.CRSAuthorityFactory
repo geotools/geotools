@@ -1,0 +1,9 @@
+org.geotools.referencing.factory.epsg.DefaultFactory
+org.geotools.referencing.factory.epsg.FactoryUsingWKT
+org.geotools.referencing.factory.epsg.LongitudeFirstFactory
+org.geotools.referencing.factory.wms.AutoCRSFactory
+org.geotools.referencing.factory.wms.WebCRSFactory
+org.geotools.referencing.factory.URN_AuthorityFactory
+org.geotools.referencing.factory.HTTP_AuthorityFactory
+# pending review
+org.geotools.referencing.factory.epsg.LongitudeFirstEpsgDecorator

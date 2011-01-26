@@ -1,0 +1,22 @@
+Module data
+~~~~~~~~~~~
+
+  Module Maintainer: Jody Garnett, Justin Deolivera
+
+  IP Review:
+ 
+    * Adrian Custer, June 6, 2008
+
+    * Jody Garnett, July 24th, 2006
+
+    * Martin, Feb 1st, 2006
+
+
+  STATUS: CLEAN
+  
+  The purpose and initial authors of this code not known, left to Jody/Justin.
+
+
+* org.geotools.data.store
+  ~~~~~~~~~~~~~~~~~~~~~~~
+  Start of abstract datastore 2 ideas - used as the basis for H2 datastore.

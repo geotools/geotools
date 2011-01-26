@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <pomVersion>3</pomVersion>
+	<extend>${basedir}/../project.xml</extend>
+  <name>catalog-wms</name>
+  <id>catalog-wms</id>
+
+	<dependencies>
+		<dependency>
+			<groupId>gt2</groupId>
+			<artifactId>catalog-wms</artifactId>
+			<version>2.1.1</version>
+		</dependency>
+
+		<dependency>	
+			<groupId>skunkworks</groupId>
+			<artifactId>catalog</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+
+	</dependencies>
+
+</project>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+    xmlns:gml="http://www.opengis.net/gml"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:gml2="http://www.safe.com/gml2"
+    targetNamespace="http://www.safe.com/gml2" elementFormDefault="qualified">
+    <import namespace="http://www.opengis.net/gml" schemaLocation="feature.xsd"/>
+    <element name="FeatureCollection" type="gml2:FeatureCollectionType" substitutionGroup="gml:_FeatureCollection"/>
+    <element name="lakes" type="gml2:lakesType" substitutionGroup="gml:_Feature"/>
+    <complexType name="FeatureCollectionType">
+        <complexContent>
+            <extension base="gml:AbstractFeatureCollectionType"/>
+        </complexContent>
+    </complexType>
+ 
+	<complexType name="GeomAttType">
+		<choice>
+			<element ref="gml:Polygon"/>
+			<element ref="gml:MultiPolygon"/>
+		</choice>
+ 		<attributeGroup ref="gml:AssociationAttributeGroup">
+ 		</attributeGroup>
+	</complexType>
+      
+    <complexType name="lakesType">
+        <complexContent>
+            <extension base="gml:AbstractFeatureType">
+                <sequence>
+                    <element name="POLY" type="string"/>
+                    <element name="POLY_OBRP" type="string"/>
+                    <element name="LABEL" type="string"/>
+                    <element name="PHOTOREVIS" type="string"/>
+                    <element name="TO_GROUND" type="string"/>
+                    <element name="RELATION" type="string"/>
+                    <element name="BANK" type="string"/>
+                    <element name="STATUS" type="string"/>
+                    <element name="SALT" type="string"/>
+                    <element name="UNSURVEYED" type="string"/>
+                    <element name="INTERMITTE" type="string"/>
+                    <element name="SUBMERGED" type="string"/>
+                    <element name="DRY" type="string"/>
+                    <element name="OR_HOT" type="string"/>
+                    <element name="NAVIGABLE" type="string"/>
+                    <element name="EARTHEN" type="string"/>
+                    <element name="INTERPOLAT" type="string"/>
+                    <element name="ELEVATION" type="float"/>
+                    <element name="ANGLE" type="long"/>
+                    <element name="RIVER_MILE" type="float"/>
+                    <element name="ESTIMATE" type="string"/>
+                    <element name="COMPOSITIO" type="string"/>
+                    <element name="TIDE" type="string"/>
+                    <element name="UNDREDGED" type="string"/>
+                    <element name="GEOM" type="GeomAttType"/>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+</schema>

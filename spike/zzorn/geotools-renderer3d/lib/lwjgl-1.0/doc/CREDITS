@@ -1,0 +1,32 @@
+The following people have helped to make this project what it is today:
+active developers:
+ - Caspian Rychlik-Prince <cprince@shavenpuppy.com>
+ - Brian Matzon <brian@matzon.dk>
+ - Elias Naur <naur@odense.kollegienet.dk>
+ - Ioannis Tsakpinis <spasi@users.sourceforge.net>
+ 
+contributors:
+ - Niels Jørgensen <nj@niemo.com>
+ - Tristan Campbell <tristan@happypedestrian.com>
+ - Gregory Pierce <gregorypierce@yahoo.com>
+ - Luke Holden <lholden@users.sf.net>
+ - Mark Bernard <captainjester@users.sourceforge.net>
+ - Erik Duijs <eduijs@users.sourceforge.net>
+ - Jos Hirth <jhirth@kaioa.com>
+ - Kevin Glass <kevin@cokeandcode.com>
+ - Atsuya Takagi
+ 
+additional credits goes to:
+ - Joseph I. Valenzuela [OpenAL stuff]
+ - Lev Povalahev [OpenGL Extensions]
+
+The LWJGL project includes files from or depends on the following projects:
+ - OpenGL, SGI - http://opengl.org/
+ - OpenAL, Creative Labs - http://openal.org/
+ - FMOD, Firelight Technologies - http://fmod.org
+ - DevIL, <no company> - http://openil.sourceforge.net/
+ - jinput, Sun - https://jinput.dev.java.net/
+
+Please see the /doc/3rdparty/ directory for licenses.
+
+All trademarks and registered trademarks are the property of their respective owners.

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<swe:DataDefinition xmlns:swe="http://www.opengis.net/swe" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xsi:schemaLocation="http://www.opengis.net/swe ../data.xsd">
+    <!-- -->
+    <swe:dataComponents xmlns:swe="http://www.opengis.net/swe">
+        <swe:DataGroup>
+            <swe:component name="time">
+                <swe:Time definition="urn:ogc:phenomenon:time" referenceTime="1970-01-01T00:00:00Z" uom="urn:ogc:unit:second"/>
+            </swe:component>
+            <swe:component name="latitude">
+                <swe:Quantity definition="urn:ogc:phenomenon:latitude:wgs84" uom="urn:ogc:unit:degree"/>
+            </swe:component>
+            <swe:component name="lon">
+                <swe:Quantity definition="urn:ogc:phenomenon:longitude:wgs84" uom="urn:ogc:unit:degree"/>
+            </swe:component>
+            <swe:component name="alt">
+                <swe:Quantity definition="urn:ogc:phenomenon:altitude:wgs84" uom="urn:ogc:unit:foot"/>
+            </swe:component>
+            <swe:component name="trueHeading">
+                <swe:Quantity definition="urn:ogc:phenomenon:angle" uom="urn:ogc:unit:degree"/>
+            </swe:component>
+            <swe:component name="pitch">
+                <swe:Quantity definition="urn:ogc:phenomenon:angle" uom="urn:ogc:unit:degree"/>
+            </swe:component>
+            <swe:component name="roll">
+                <swe:Quantity definition="urn:ogc:phenomenon:angle" uom="urn:ogc:unit:degree"/>
+            </swe:component>
+        </swe:DataGroup>
+    </swe:dataComponents>
+    <!-- -->
+    <swe:encoding>
+        <swe:XMLTuple decimalSeparator="." tokenSeparator="," tupleSeparator=" "/>
+    </swe:encoding>
+    <!-- -->
+</swe:DataDefinition>

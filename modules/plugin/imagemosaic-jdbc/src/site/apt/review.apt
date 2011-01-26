@@ -1,0 +1,21 @@
+Imagemosaic Jdbc  Implementation for Geotools
+---------------------------------------------
+
+Module Maintainer: Christian Mueller
+
+IP Review: 
+
+    * Christian Mueller Sept 22th, 2008
+
+STATUS: CLEAN
+
+IP: 
+
+   * LICENSE.TEXT refers to LGPL
+
+** Sample Data **
+resources.zip		:	a zip file containing image material needed for the tests
+						The sample data is downloaded from www.openstreemap.com
+						WGS84 Coordinates (lon/lat)
+						lower left:		9/46
+						upper right:	17/49

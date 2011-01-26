@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns:swe="http://www.opengis.net/swe/1.0.1" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:gml="http://www.opengis.net/gml" targetNamespace="http://www.opengis.net/swe/1.0.1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.1">
+	<annotation>
+		<documentation>phenomenon.xsd
+
+A GML conformant schema 
+for definitions of phenomena, per Annex C of OM specification
+
+			Copyright (c) 2007 OGC, All Rights Reserved.
+			For conditions, see OGC Software Notice - http://www.opengeospatial.org/legal/
+		</documentation>
+	</annotation>
+	<!-- ====================================================================== -->
+	<!-- bring in other schemas -->
+	<import namespace="http://www.opengis.net/gml" schemaLocation="../../gml/3.1.1/base/gml.xsd"/>
+	<include schemaLocation="./aggregateTypes.xsd"/>
+	<!-- ====================================================================== -->
+	<complexType name="PhenomenonType">
+		<annotation>
+			<documentation>Basic Phenomenon definition, and head of substitution group of specialized phenomenon defs. 
+			gml:description may be used for a more extensive description of the semantics, with a link to a definitive version (if available).  
+			gml:name should be used for the name or label.
+			
+			Note: In GML 3.2 the gml:identifier element should be used for the identifier assigned by or preferred by the data provider. 
+			This identifier will typically be in the form of a URN, for example following the OGC URN scheme
+			e.g. urn:x-ogc:def:phenomenon:OGC:Age
+			</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="gml:DefinitionType"/>
+		</complexContent>
+	</complexType>
+	<!-- .......... -->
+	<element name="Phenomenon" type="swe:PhenomenonType" substitutionGroup="gml:Definition">
+		<annotation>
+			<documentation>Basic Phenomenon definition, and head of substitution group of specialized phenomenon defs. </documentation>
+		</annotation>
+	</element>
+	<!-- .......... -->
+	<complexType name="PhenomenonPropertyType">
+		<sequence minOccurs="0">
+			<element ref="swe:Phenomenon"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+	<complexType name="ConstrainedPhenomenonType">
+		<annotation>
+			<documentation>A scalar Phenomenon is defined by adding constraints to an existing property.</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="swe:PhenomenonType">
+				<sequence>
+					<element name="base" type="swe:PhenomenonPropertyType">
+						<annotation>
+							<documentation>Property that forms the basis for generating a set of more refined Phenomena; e.g. Chemical Composition, Radiance</documentation>
+						</annotation>
+					</element>
+					<element name="otherConstraint" type="string" minOccurs="0" maxOccurs="unbounded">
+						<annotation>
+							<documentation>Constraints that cannot be expressed as values of an orthogonal/helper phenomenon</documentation>
+						</annotation>
+					</element>
+					<element name="singleConstraint" type="swe:AnyDataPropertyType" minOccurs="0" maxOccurs="unbounded">
+						<annotation>
+							<documentation>Constraint expressed as a value or range of an orthogonal/helper phenomenon</documentation>
+						</annotation>
+					</element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ........................................ -->
+	<element name="ConstrainedPhenomenon" type="swe:ConstrainedPhenomenonType" substitutionGroup="swe:Phenomenon">
+		<annotation>
+			<documentation>Description of a scalar Phenomenon defined by adding constraints to a property previously defined elsewhere.</documentation>
+		</annotation>
+	</element>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<complexType name="CompoundPhenomenonType" abstract="true">
+		<annotation>
+			<documentation>Description of a set of Phenomena.  
+	  CompoundPhenomenon is the abstract head of a substitution group of specialized compound phenomena</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="swe:PhenomenonType">
+				<attribute name="dimension" type="positiveInteger" use="required">
+					<annotation>
+						<documentation>The number of components in the tuple</documentation>
+					</annotation>
+				</attribute>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ........................................ -->
+	<element name="CompoundPhenomenon" type="swe:CompoundPhenomenonType" abstract="true" substitutionGroup="swe:Phenomenon">
+		<annotation>
+			<documentation>Description of a set of Phenomena.  
+	  CompoundPhenomenon is the abstract head of a substitution group of specialized compound phenomena</documentation>
+		</annotation>
+	</element>
+	<!-- ====================================================================== -->
+	<complexType name="CompositePhenomenonType">
+		<annotation>
+			<documentation>A Phenomenon defined as a set of explicitly enumerated components which may or may not be related to one another</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="swe:CompoundPhenomenonType">
+				<sequence>
+					<element name="base" type="swe:PhenomenonPropertyType" minOccurs="0">
+						<annotation>
+							<documentation>Optional phenomenon that forms the basis for generating more specialized composite Phenomenon by adding more components</documentation>
+						</annotation>
+					</element>
+					<element name="component" type="swe:PhenomenonPropertyType" maxOccurs="unbounded"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ........................................ -->
+	<element name="CompositePhenomenon" type="swe:CompositePhenomenonType" substitutionGroup="swe:CompoundPhenomenon">
+		<annotation>
+			<documentation>A Phenomenon defined as a set of explicitly enumerated components which may or may not be related to one another</documentation>
+		</annotation>
+	</element>
+	<!-- ====================================================================== -->
+	<complexType name="PhenomenonSeriesType">
+		<annotation>
+			<documentation>A phenomenon defined as a base property convolved with a set of constraints
+      The set of constraints may be either
+      * an explicit set of soft-typed measures, intervals and categories
+      * one or more lists of soft-typed measures, intervals and categories
+      * one or more sequences of soft-typed measures and intervals</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="swe:CompoundPhenomenonType">
+				<sequence>
+					<element name="base" type="swe:PhenomenonPropertyType">
+						<annotation>
+							<documentation>Phenomenon that forms the basis for generating a set of more refined Phenomena; e.g. Chemical Composition, Radiance</documentation>
+						</annotation>
+					</element>
+					<element name="constraintList" type="swe:DataArrayPropertyType" maxOccurs="unbounded">
+						<annotation>
+							<documentation>A set of values of some secondary property that constraints the basePhenomenon to generate a Phenomenon set.  
+							If more than one set of constraints are possible, then these are applied simultaneously to generate</documentation>
+						</annotation>
+					</element>
+					<element name="otherConstraint" type="string" minOccurs="0" maxOccurs="unbounded">
+						<annotation>
+							<documentation>Other constraints are described in text</documentation>
+						</annotation>
+					</element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ........................................ -->
+	<element name="PhenomenonSeries" type="swe:PhenomenonSeriesType" substitutionGroup="swe:CompoundPhenomenon">
+		<annotation>
+			<documentation>A phenomenon defined as a base property convolved with a set of constraints
+      The set of constraints may be either
+      * an explicit set of soft-typed measures, intervals and categories
+      * one or more lists of soft-typed measures, intervals and categories
+      * one or more sequences of soft-typed measures and intervals</documentation>
+		</annotation>
+	</element>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+</schema>

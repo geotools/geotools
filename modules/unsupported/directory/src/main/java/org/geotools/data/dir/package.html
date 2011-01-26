@@ -1,0 +1,20 @@
+<html>
+<body>
+<h1>Directory DataStore</h1>
+<h2>Overview</h2>
+<p>
+This package represents the functionality required to chain datastores, ie. to 
+represents a directory of mixed file types as a single datastore. Inlcuded are 
+the required interfaces and default implementations for datastores which wish 
+to support single file reading, and as such be included as a datatype for the 
+directory datastore.
+</p>
+<h2>Extensions</h2>
+<p>
+Addition formats may be included simply by having the dataStore extend 
+AbstractFileDataStore and the DataStore Factory extending FileDataStoreFactorySpi. 
+You will also have to fill in the META_INF directory in similar to a generic 
+dataStore. 
+</p>
+</body>
+</html>

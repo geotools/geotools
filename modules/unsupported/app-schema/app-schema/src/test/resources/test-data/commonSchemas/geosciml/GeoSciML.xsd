@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- IUGS/CGI GeoSciML schema, ver. 1 - draft 2005-10-19 -->
+<!-- GeoSciML Testbed-2 Model -->
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.cgi-iugs.org/xml/GeoSciML/1"
+  elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.0">
+<!--   <annotation>
+    <documentation>GeoSciML.xsd Wrapper schema for GeoSciML composed from the various sub-schemas</documentation>
+  </annotation> -->
+  <!--=======================-->
+  <include schemaLocation="collection.xsd" />
+  <include schemaLocation="geologicRelation.xsd" />
+  <include schemaLocation="geologicUnit.xsd" />
+  <include schemaLocation="structureObject.xsd" />
+  <include schemaLocation="vocabulary.xsd" />
+  <!--=======================-->
+  <import namespace="http://www.cgi-iugs.org/xml/GeoTime/1" schemaLocation="./geoTime.xsd">
+    <annotation>
+      <documentation>Make geological timescale components available.</documentation>
+    </annotation>
+  </import>
+  <!--=======================-->
+  <import namespace="http://www.opengis.net/xmml" schemaLocation="../../../XMML/1/xmml.xsd">
+    <annotation>
+      <documentation>Make XMML borehole components available.</documentation>
+    </annotation>
+  </import>
+  <!--=======================-->
+</schema>

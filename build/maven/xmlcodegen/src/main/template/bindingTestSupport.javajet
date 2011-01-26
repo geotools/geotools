@@ -1,0 +1,24 @@
+<%@ jet package="org.geotools.maven.xmlcodegen.templates" imports="java.util.* java.io.* org.eclipse.xsd.* org.geotools.xml.*" class="BindingTestSupportClass" %>
+<%  
+    Object[] arguments = (Object[])argument;
+    XSDSchema schema = (XSDSchema)arguments[0];
+    
+    String namespace = schema.getTargetNamespace();
+    String prefix = Schemas.getTargetPrefix( schema ).toUpperCase();
+ %>
+
+import org.geotools.xml.Configuration;
+import org.geotools.xml.test.XMLTestSupport;
+
+/**
+ * Base test class for the <%=namespace%> schema.
+ *
+ * @generated
+ */
+public class <%=prefix%>TestSupport extends XMLTestSupport {
+
+    protected Configuration createConfiguration() {
+       return new <%=prefix%>Configuration();
+    }
+  
+} 

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- not that have to hack schema to include namespace prefix mappings form included schemas... -->
+
+<schema xmlns="http://www.w3.org/2001/XMLSchema" 
+  xmlns:swe="http://www.opengis.net/swe/1.0.1" xmlns:om="http://www.opengis.net/om/1.0"  xmlns:cv="http://www.opengis.net/cv/0.2.1"
+  xmlns:aw="http://www.water.gov.au/awdip" xmlns:gml="http://www.opengis.net/gml" elementFormDefault="qualified" targetNamespace="http://www.water.gov.au/awdip" version="1.0">
+  
+  <import namespace="http://www.opengis.net/om/1.0" schemaLocation="http://schemas.opengis.net/om/1.0.0/extensions/om_extended.xsd"/>
+  <import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+  <include schemaLocation="SampleSite.xsd"/>
+  <include schemaLocation="ObservationProfiles.xsd"/>
+  
+ <!-- <import namespace="http://water.gov.au/awdip/" schemaLocation="SampleSite.xsd"/>
+  <include schemaLocation="SampleSite.xsd"/>-->
+  <!--XML Schema document created by ShapeChange-->
+  <simpleType name="RegionalisationCodeType">
+    <union memberTypes="aw:RegionalisationCodeEnumerationType aw:RegionalisationCodeOtherType"/>
+  </simpleType>
+  <simpleType name="RegionalisationCodeEnumerationType">
+    <restriction base="string">
+      <enumeration value="Catchment"/>
+      <enumeration value="CMA"/>
+      <enumeration value="Country"/>
+      <enumeration value="ElectorateFederal"/>
+      <enumeration value="ElectorateState"/>
+      <enumeration value="ElectorateLocal"/>
+      <enumeration value="IBRA"/>
+      <enumeration value="IBRA-subRegion"/>
+      <enumeration value="LGA"/>
+      <enumeration value="NAP"/>
+      <enumeration value="NHT"/>
+      <enumeration value="State"/>
+      <enumeration value="GroundwaterManagementUnit"/>
+      <enumeration value="WaterManagementUnit"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="RegionalisationCodeOtherType">
+    <restriction base="string">
+      <pattern value="other: \w{2,}"/>
+    </restriction>
+  </simpleType>
+  <element name="ParameterAtSite" substitutionGroup="aw:SiteCharacterisation" type="aw:ParameterAtSiteType"/>
+  <complexType name="ParameterAtSiteType">
+    <annotation>
+      <documentation>This class provides a simple parameter, start_date, end_date, count summary of a single phenomenon, maximising the information available for a single parameter</documentation>
+    </annotation>
+    <complexContent>
+      <extension base="aw:SiteCharacterisationType">
+        <sequence>
+          <element name="parameterClass" type="gml:CodeType"/>
+          <element name="availableFrom" type="dateTime"/>
+          <element name="availableTo" type="dateTime"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="ParameterAtSitePropertyType">
+    <sequence minOccurs="0">
+      <element ref="aw:ParameterAtSite"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="SiteSamplingStatistics" substitutionGroup="aw:SiteLocation" type="aw:SiteSamplingStatisticsType"/>
+  <complexType name="SiteSamplingStatisticsType">
+    <annotation>
+      <documentation>A container class for summary of sampling at a site</documentation>
+    </annotation>
+    <complexContent>
+      <extension base="aw:SiteLocationType">
+        <sequence>
+          <element  name="sampledPhenomenon" type="aw:SummaryStatisticsPropertyType"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="SiteSamplingStatisticsPropertyType">
+    <sequence minOccurs="0" maxOccurs="unbounded">
+      <element ref="aw:SiteSamplingStatistics" />
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="SummaryStatistics"  type="aw:SummaryStatisticsType"/>
+  <complexType name="SummaryStatisticsType">
+    <sequence>
+      <element name="availableFrom" type="dateTime"/>
+      <element name="availableTo" type="dateTime"/>
+      <element minOccurs="0" name="maxValue" type="double"/>
+      <element minOccurs="0" name="count" type="integer"/>
+      <element maxOccurs="unbounded" minOccurs="0" name="definition" type="aw:phenomenonDefPropertyType"/>
+    </sequence>
+  </complexType>
+  <complexType name="SummaryStatisticsPropertyType">
+    <sequence>
+      <element ref="aw:SummaryStatistics"/>
+    </sequence>
+  </complexType>
+  <element name="phenomenonDef"  type="aw:phenomenonDefType"/>
+  <complexType name="phenomenonDefType">
+    <annotation>
+      <documentation>This object contains a specialised dictionary of parameterised Phenenomen Definitions, supporting grouping, as well as a set of well-known aggregation levels.</documentation>
+    </annotation>
+   
+        <sequence>
+          <element name="name" type="string"/>
+          <element name="namespace" type="string"/>
+          <element name="title" type="string"/>
+          <element minOccurs="0" name="units" type="gml:CodeType"/>
+          <element minOccurs="0" name="timePeriod" type="gml:CodeType"/>
+          <element minOccurs="0" name="timePeriodCount" type="integer"/>
+          <element minOccurs="0" name="frequency" type="integer"/>
+          <element maxOccurs="unbounded" minOccurs="0" name="groupDef" type="aw:phenomenonDefPropertyType"/>
+          <element minOccurs="0" name="baseDef" type="aw:phenomenonDefPropertyType"/>
+        </sequence>
+  </complexType>
+  <complexType name="phenomenonDefPropertyType">
+    <sequence minOccurs="0">
+      <element ref="aw:phenomenonDef"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="SiteSinglePhenomTimeSeries" substitutionGroup="aw:SamplingSitePurpose" type="aw:SiteSinglePhenomTimeSeriesType"/>
+  <complexType name="SiteSinglePhenomTimeSeriesType">
+    <annotation>
+      <documentation>A view of the sampling feature with some subset of the constrained observations, where the result set is a trend over the sampled time envelope.
+</documentation>
+    </annotation>
+    <complexContent>
+      <extension base="aw:SamplingSitePurposeType">
+        <sequence>
+          <element maxOccurs="unbounded" minOccurs="0" name="relatedObservation" type="aw:PhenomenonTimeSeriesPropertyType"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="SiteSinglePhenomTimeSeriesPropertyType">
+    <sequence minOccurs="0">
+      <element ref="aw:SiteSinglePhenomTimeSeries"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element abstract="true" name="SiteCharacterisation" substitutionGroup="aw:SiteLocation" type="aw:SiteCharacterisationType"/>
+  <complexType abstract="true" name="SiteCharacterisationType">
+    <annotation>
+      <documentation>This object is a container for simple (scalar) characterisations of the state of a feature at a sampling site. The business purpose is to allow simple queries to select sites of interest, or to symbolise sites accordingly.
+
+Many different characterisations are possible. This class is abstract, and should be extended for specific cases.</documentation>
+    </annotation>
+    <complexContent>
+      <extension base="aw:SiteLocationType">
+        <sequence/>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="SiteCharacterisationPropertyType">
+    <sequence minOccurs="0">
+      <element ref="aw:SiteCharacterisation"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+</schema>

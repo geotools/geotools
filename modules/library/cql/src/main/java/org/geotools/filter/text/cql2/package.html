@@ -1,0 +1,67 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<HTML>
+  <HEAD>
+    <TITLE>package org.opengis.filter.cql</TITLE>
+  </HEAD>
+  <BODY>
+    <H3>Common Query Language (CQL)</H3>
+        <P ALIGN="justify">
+	This package implements the OGC_Common Catalogue Query Language. OGC CQL
+	is the query language to be supported by all OGC Catalogue Interfaces in order to support search
+	interoperability.
+	<A HREF="http://www.opengeospatial.org/standards/cat">Catalogue Service Implementation Specification <b>(OGC 04-021r3)</b></A>:
+	</P>
+	
+    <H3>CQL BNF with SQL Extensions</H3>
+    <P ALIGN="justify">
+    The original BNF was extended thinking in a SQL where expression. The original BNF is reproduced to indicate 
+    the extensions highlighted with bold characters.
+    </P>
+
+    <P ALIGN="justify">
+    Extensions in original BNF
+    <pre>
+	<b>
+    &lt;SequenceOfSearchConditions &gt; ::= 
+              &lt;search condition&gt; 
+         |    &lt;SequenceOfSearchConditions&gt; ";" &lt;search condition&gt; 
+     </b>
+    
+    <b>&lt;between predicate&gt; ::= 
+    		&lt;attribute name&gt; [ NOT ] BETWEEN &lt;literal&gt; AND &lt; literal &gt; 
+	</b>
+    &lt;routine invocation&gt; ::= 
+             &lt;geoop name&gt;&lt;georoutine argument list&gt;
+           | &lt;relgeoop name&gt;&lt;relgeoop argument list&gt;
+           | &lt;routine name&gt;&lt;argument list&gt;
+           <b>| &lt;BBOX&gt; &lt;bbox argument list&gt;	</b>
+           
+    &lt;geoop name&gt; ::= 
+           EQUAL | DISJOINT | INTERSECT | TOUCH | CROSS | 
+           WITHIN | CONTAINS |OVERLAP | RELATE <b>[1]</b>
+    <b>  
+    &lt;bbox argument list&gt;::= 
+       "(" &lt;attribute&gt; ","&lt;min X&gt; ","&lt;min Y&gt; ","&lt;max X&gt; ","&lt;max Y&gt;["," &lt;crs&gt;] ")"
+    &lt;min X&gt; ::= &lt;signed numerical literal&gt; 
+    &lt;min Y&gt; ::= &lt;signed numerical literal&gt; 
+    &lt;max X&gt; ::= &lt;signed numerical literal&gt; 
+    &lt;max Y&gt; ::= &lt;signed numerical literal&gt;
+    &lt;crs&gt; ::= [2]  
+    </b>  
+      
+    [1] RELATE is not supported (implementation in GeoTools is required)
+    [2] If not supplied, the BoundingBox CRS is EPSG:4326.
+
+    </pre>
+    </P>
+
+    <H3>Implementation Notes</H3>
+    <P ALIGN="justify">
+    The parser was generated using <A HREF="https://javacc.dev.java.net/">javacc</A>. 
+    In CQLGrammar.jjt file you can see the input grammar for javacc required to parse CQL with extensions.
+    </P>
+    
+
+  </BODY>
+</HTML>

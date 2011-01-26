@@ -1,0 +1,8 @@
+org.geotools.process.literal.BufferFactory
+org.geotools.process.literal.IntersectionFactory
+org.geotools.process.literal.UnionFactory
+org.geotools.process.literal.DoubleAdditionFactory
+org.geotools.process.literal.FeatureBufferFactory
+org.geotools.process.feature.BufferFeatureCollectionFactory
+org.geotools.process.raster.RasterToVectorFactory
+org.geotools.process.raster.VectorToRasterFactory

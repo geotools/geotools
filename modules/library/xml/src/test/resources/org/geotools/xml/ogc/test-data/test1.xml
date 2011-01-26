@@ -1,0 +1,6 @@
+<Filter>
+  <PropertyIsEqualTo>
+    <PropertyName>testString</PropertyName>
+    <Literal>2</Literal>
+  </PropertyIsEqualTo>
+</Filter>

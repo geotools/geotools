@@ -1,0 +1,210 @@
+/*
+ *    Geotools2 - OpenSource mapping toolkit
+ *    http://geotools.org
+ *    (C) 2002, Geotools Project Managment Committee (PMC)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ *
+ */
+ 
+package org.geotools.data.geometryless.wrapper;
+
+import javax.sql.ConnectionPoolDataSource;
+
+import java.sql.SQLException;
+
+import java.util.logging.Logger;
+import java.util.Properties;
+import java.util.Enumeration;
+
+import net.sourceforge.jtds.jdbc.DefaultProperties;
+import net.sourceforge.jtds.jdbc.Messages;
+
+/**
+ * Wraps a  ConnectionPoolDataSource implementation to support the setURL() method
+ * @author Rob Atkinson rob@socialchange.net.NOSPAM.au
+ */
+public class JtdsConnectionPoolDataSource extends net.sourceforge.jtds.jdbcx.JtdsConnectionPoolDataSource {
+
+    /** Standard logging instance */
+    private static final Logger LOGGER = Logger.getLogger("org.geotools.data.geometryless");
+
+        private ConnectionPoolDataSource _nativePool ;
+        
+    /** Creates configuration-driven JDBC driver class. */
+ 
+    private String _dbURL;
+    private String _username = "";
+    private String _password = "";
+  
+            
+    /**
+     * Sets the JDBC database login credentials.
+     * @param complete JDBC connectionURL
+     */
+    public void setURL(String dbURL)  throws SQLException {
+
+        _dbURL = dbURL;
+        try
+        {
+//        	_nativePool.getClass().getMethod("setURL", new Class [] { String.class } ).invoke( _nativePool, new Object [] { _dbURL } );
+	Properties props = parseURL(_dbURL, new Properties()  );
+       //
+        // Set default properties
+        //
+         props = DefaultProperties.addDefaultProperties(props);
+	
+	 setServerName (props.getProperty(Messages.get("prop.servername")));
+        	setServerType ( Integer.parseInt(props.getProperty(Messages.get("prop.servertype"))));
+        	setPortNumber ( Integer.parseInt(props.getProperty(Messages.get("prop.portnumber"))));
+        	setDatabaseName ( props.getProperty(Messages.get("prop.databasename")));
+        	setInstance ( props.getProperty(Messages.get("prop.instance")));
+
+        }
+	    catch ( Exception e )
+	   {
+		throw new SQLException("Failed to instantiate connection pool using " + _dbURL + "(" + e + ")" );
+	   }
+    
+    }
+           
+  
+    /**
+     * Parse the driver URL and extract the properties.
+     *
+     * @param url The URL to parse.
+     * @param info Any existing properties already loaded in a Properties object.
+     * @return The URL properties as a <code>Properties</code> object.
+     */
+    private static Properties parseURL(String url, Properties info) {
+        Properties props = new Properties();
+
+        // Take local copy of existing properties
+        for (Enumeration e = info.keys(); e.hasMoreElements();) {
+            String key = (String) e.nextElement();
+            String value = info.getProperty(key);
+
+            if (value != null) {
+                props.setProperty(key.toUpperCase(), value);
+            }
+        }
+
+        StringBuffer token = new StringBuffer(16);
+        int pos = 0;
+
+        pos = nextToken(url, pos, token); // Skip jdbc
+
+        if (!token.toString().equalsIgnoreCase("jdbc")) {
+            return null; // jdbc: missing
+        }
+
+        pos = nextToken(url, pos, token); // Skip jtds
+
+        if (!token.toString().equalsIgnoreCase("jtds")) {
+            return null; // jtds: missing
+        }
+
+        pos = nextToken(url, pos, token); // Get server type
+        String type = token.toString().toLowerCase();
+
+        Integer serverType = DefaultProperties.getServerType(type);
+        if (serverType == null) {
+            return null; // Bad server type
+        }
+        props.setProperty(Messages.get("prop.servertype"), String.valueOf(serverType));
+
+        pos = nextToken(url, pos, token); // Null token between : and //
+
+        if (token.length() > 0) {
+            return null; // There should not be one!
+        }
+
+        pos = nextToken(url, pos, token); // Get server name
+        String host = token.toString();
+
+        if (host.length() == 0) {
+            host = props.getProperty(Messages.get("prop.servername"));
+            if (host == null || host.length() == 0) {
+                return null; // Server name missing
+            }
+        }
+
+        props.setProperty(Messages.get("prop.servername"), host);
+
+        if (url.charAt(pos - 1) == ':' && pos < url.length()) {
+            pos = nextToken(url, pos, token); // Get port number
+
+            try {
+                int port = Integer.parseInt(token.toString());
+                props.setProperty(Messages.get("prop.portnumber"), Integer.toString(port));
+            } catch(NumberFormatException e) {
+                return null; // Bad port number
+            }
+        }
+
+        if (url.charAt(pos - 1) == '/' && pos < url.length()) {
+            pos = nextToken(url, pos, token); // Get database name
+            props.setProperty(Messages.get("prop.databasename"), token.toString());
+        }
+
+        //
+        // Process any additional properties in URL
+        //
+        while (url.charAt(pos - 1) == ';' && pos < url.length()) {
+            pos = nextToken(url, pos, token);
+            String tmp = token.toString();
+            int index = tmp.indexOf('=');
+
+            if (index > 0 && index < tmp.length() - 1) {
+                props.setProperty(tmp.substring(0, index).toUpperCase(), tmp.substring(index + 1));
+            } else {
+                props.setProperty(tmp.toUpperCase(), "");
+            }
+        }
+
+ 
+
+        return props;
+    }
+
+    /**
+     * Extract the next lexical token from the URL.
+     *
+     * @param url The URL being parsed
+     * @param pos The current position in the URL string.
+     * @param token The buffer containing the extracted token.
+     * @return The updated position as an <code>int</code>.
+     */
+    private static int nextToken(String url, int pos, StringBuffer token) {
+        token.setLength(0);
+
+        while (pos < url.length()) {
+            char ch = url.charAt(pos++);
+
+            if (ch == ':' || ch == ';') {
+                break;
+            }
+
+            if (ch == '/') {
+                if (pos < url.length() && url.charAt(pos) == '/') {
+                    pos++;
+                }
+
+                break;
+            }
+
+            token.append(ch);
+        }
+
+        return pos;
+    }
+
+}

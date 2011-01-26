@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://www.opengis.net/swe/1.0.1" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.1">
+	<xs:annotation>
+		<xs:documentation>swe document root definition
+
+				Copyright (c) 2007 OGC, All Rights Reserved.
+				For conditions, see OGC Software Notice - http://www.opengeospatial.org/legal/
+		</xs:documentation>
+	</xs:annotation>
+	<!--========================-->
+	<!--   <xs:include schemaLocation="./basicTypes.xsd"/>  included by simpleTypes.xsd -->
+	<!--   <xs:include schemaLocation="./simpleTypes.xsd"/> included by aggregateTypes.xsd -->
+	<!--   <xs:include schemaLocation="./aggregateTypes.xsd"/> included by positionTypes, curveTypes and data -->
+	<xs:include schemaLocation="./positionTypes.xsd"/>
+	<xs:include schemaLocation="./curveTypes.xsd"/>
+	<xs:include schemaLocation="./data.xsd"/>
+	<xs:include schemaLocation="./temporalAggregates.xsd"/>
+	<xs:include schemaLocation="./phenomenon.xsd"/>
+	<xs:include schemaLocation="./xmlData.xsd"/>
+	<!--========================-->
+</xs:schema>

@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+  Loughborough mapping file
+-->
+<as:AppSchemaDataAccess xmlns:as="http://www.geotools.org/app-schema" xmlns:ogc="http://www.opengis.net/ogc"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.geotools.org/app-schema AppSchemaDataAccess.xsd
+                      http://www.opengis.net/ogc http://schemas.opengis.net/filter/1.1.0/expr.xsd">
+  <namespaces>
+    <!-- 
+      declare here the namespaces and prefixes used by the parser to
+      resolve <type> elements. 
+    -->
+    <Namespace>
+      <prefix>gml</prefix>
+      <uri>http://www.opengis.net/gml</uri>
+    </Namespace>
+    <Namespace>
+      <prefix>xlink</prefix>
+      <uri>http://www.w3.org/1999/xlink</uri>
+    </Namespace>
+    <Namespace>
+      <prefix>xmml</prefix>
+      <uri>http://www.opengis.net/xmml</uri>
+    </Namespace>
+    <Namespace>
+      <prefix>sa</prefix>
+      <uri>http://www.seegrid.csiro.au/xml/sampling</uri>
+    </Namespace>
+    <Namespace>
+      <prefix>geo</prefix>
+      <uri>http://www.seegrid.csiro.au/xml/geometry</uri>
+    </Namespace>
+    <Namespace>
+      <prefix>swe</prefix>
+      <uri>http://www.opengis.net/swe</uri>
+    </Namespace>
+  </namespaces>
+  <sourceDataStores>
+    <DataStore>
+      <id>borehole_denormalized</id>
+      <parameters>
+        <Parameter>
+          <name>directory</name>
+          <!-- path can be relative to this file if starts with "file: -->
+          <value>file:./</value>
+        </Parameter>
+      </parameters>
+    </DataStore>
+  </sourceDataStores>
+  <targetTypes>
+    <FeatureType>
+      <!-- 
+        State the needed xsd schemas to be loaded in order 
+        to make the schema-to-FeatureModel parse.
+        Paths are relative to this file, or may be absolute URL's.
+        Imports and includes at the schemas will be followed as long
+        as they're relative paths.
+      -->
+      <schemaUri>commonSchemas/XMML/1/borehole.xsd</schemaUri>
+    </FeatureType>
+  </targetTypes>
+  <typeMappings>
+    <FeatureTypeMapping>
+      <sourceDataStore>borehole_denormalized</sourceDataStore>
+      <sourceType>boreholes_denormalized</sourceType>
+      <targetElement>xmml:Borehole</targetElement>
+      <attributeMappings>
+        <AttributeMapping>
+          <targetAttribute>xmml:Borehole</targetAttribute>
+          <idExpression>
+            <OCQL>strConcat('bh.', BGS_ID)</OCQL>
+          </idExpression>
+        </AttributeMapping>
+        <AttributeMapping>
+          <targetAttribute>Borehole/gml:name[1]</targetAttribute>
+          <sourceExpression>
+            <OCQL>strConcat( strConcat(QS, strConcat('/', RT)), strConcat(strConcat('/', NUMB), strConcat('/', BSUFF)) )</OCQL>
+          </sourceExpression>
+          <ClientProperty>
+            <name>gml:codeSpace</name>
+            <value>'http://ns.bgs.ac.uk/bgs.sobi.pk'</value>
+          </ClientProperty>
+        </AttributeMapping>
+        <AttributeMapping>
+          <targetAttribute>Borehole/gml:name[2]</targetAttribute>
+          <sourceExpression>
+            <OCQL>BGS_ID</OCQL>
+          </sourceExpression>
+          <ClientProperty>
+            <name>gml:codeSpace</name>
+            <value>'http://ns.bgs.ac.uk/bgs.ubi.pk'</value>
+          </ClientProperty>
+        </AttributeMapping>
+        <AttributeMapping>
+          <targetAttribute>Borehole/gml:name[3]</targetAttribute>
+          <sourceExpression>
+            <OCQL>NAME</OCQL>
+          </sourceExpression>
+          <ClientProperty>
+            <name>gml:codeSpace</name>
+            <value>'http://ns.bgs.ac.uk/bgs.sobi.bore_name'</value>
+          </ClientProperty>
+        </AttributeMapping>
+        <AttributeMapping>
+          <targetAttribute>Borehole/gml:name[4]</targetAttribute>
+          <sourceExpression>
+            <OCQL>ORIGINAL_N</OCQL>
+          </sourceExpression>
+          <ClientProperty>
+            <name>gml:codeSpace</name>
+            <value>'http://ns.bgs.ac.uk/bgs.sobi.original_number'</value>
+          </ClientProperty>
+        </AttributeMapping>
+        <!-- 
+          Don't know where comment is defined
+          <AttributeMapping>
+          <targetAttribute>Borehole/comment</targetAttribute>
+          <sourceExpression><OCQL>strConcat(CONFIDENTI, 'Access Restrictions: ')</OCQL></sourceExpression>
+          </AttributeMapping>
+        -->
+        <AttributeMapping>
+          <targetAttribute>Borehole/sa:surveyDetails/sa:SurveyProcedure</targetAttribute>
+          <idExpression>
+            <OCQL>strConcat('bh.', strConcat(BGS_ID, '.sp'))</OCQL>
+          </idExpression>
+        </AttributeMapping>
+
+        <AttributeMapping>
+          <targetAttribute>Borehole/sa:surveyDetails/sa:SurveyProcedure/gml:description</targetAttribute>
+          <sourceExpression>
+            <OCQL>
+              'Horizontal precision: (Field missing from SDE table) Vertical precision: (Field missing from SDE table)
+              Positioning method: (Field missing from SDE table)'
+            </OCQL>
+          </sourceExpression>
+        </AttributeMapping>
+
+        <AttributeMapping>
+          <targetAttribute>Borehole/sa:begin</targetAttribute>
+          <sourceExpression>
+            <OCQL>SHAPE</OCQL>
+          </sourceExpression>
+        </AttributeMapping>
+
+        <AttributeMapping>
+          <targetAttribute>Borehole/sa:end</targetAttribute>
+          <!-- 
+            TODO: complains saying that PointPropertyType is not nillable, which is wrong
+            This is a dummy value
+          -->
+          <sourceExpression>
+            <OCQL>SHAPE</OCQL>
+          </sourceExpression>
+          <ClientProperty>
+            <name>xlink:href</name>
+            <value>'urn:x-ogc:def:nil:OGC:unknown'</value>
+          </ClientProperty>
+        </AttributeMapping>
+
+        <AttributeMapping>
+          <targetAttribute>Borehole/sa:length</targetAttribute>
+          <sourceExpression>
+            <OCQL>LENGTHC</OCQL>
+          </sourceExpression>
+          <ClientProperty>
+            <name>swe:uom</name>
+            <value>'#m'</value>
+          </ClientProperty>
+        </AttributeMapping>
+
+        <AttributeMapping>
+          <targetAttribute>Borehole/sa:shape/geo:LineByVector</targetAttribute>
+          <idExpression>
+            <OCQL>strConcat('bh.', strConcat(BGS_ID, '.shape'))</OCQL>
+          </idExpression>
+          <targetAttributeNode>geo:LineByVectorType</targetAttributeNode>
+        </AttributeMapping>
+
+        <AttributeMapping>
+          <targetAttribute>Borehole/sa:shape/geo:LineByVector/geo:origin</targetAttribute>
+          <!--
+            TODO:  complains saying that PointPropertyType is not nillable, which is wrong
+            This is a dummy value
+          -->
+          <sourceExpression>
+            <OCQL>SHAPE</OCQL>
+          </sourceExpression>
+          <ClientProperty>
+            <name>xlink:href</name>
+            <value>strConcat('#bh.', strConcat(BGS_ID, '.start'))</value>
+          </ClientProperty>
+        </AttributeMapping>
+
+        <AttributeMapping>
+          <targetAttribute>Borehole/sa:shape/geo:LineByVector/geo:directionDescription</targetAttribute>
+          <sourceExpression>
+            <OCQL>'(Missing from SDE table)'</OCQL>
+          </sourceExpression>
+          <ClientProperty>
+            <name>gml:codeSpace</name>
+            <value>'http://ns.bgs.ac.uk/bgs.dic_incl'</value>
+          </ClientProperty>
+        </AttributeMapping>
+
+        <AttributeMapping>
+          <targetAttribute>Borehole/xmml:drillMethod</targetAttribute>
+          <sourceExpression>
+            <OCQL>'(Missing from SDE table)'</OCQL>
+          </sourceExpression>
+        </AttributeMapping>
+
+        <AttributeMapping>
+          <targetAttribute>Borehole/xmml:log/xmml:IntervalLog</targetAttribute>
+          <idExpression>
+            <OCQL>strConcat('bh.', strConcat(BGS_ID, '.log'))</OCQL>
+          </idExpression>
+          <ClientProperty>
+            <name>xmml:dimension</name>
+            <value>'1'</value>
+          </ClientProperty>
+        </AttributeMapping>
+
+        <!--
+          TODO: geotools AbstractFeatureType does not defines boundedBy 
+          <AttributeMapping>
+          <targetAttribute>Borehole/log/IntervalLog/boundedBy/Null</targetAttribute>
+          <sourceExpression><OCQL>'missing'</OCQL></sourceExpression>
+          </AttributeMapping>
+        -->
+
+        <AttributeMapping>
+          <targetAttribute>xmml:log/xmml:IntervalLog/xmml:range</targetAttribute>
+          <isMultiple>true</isMultiple>
+        </AttributeMapping>
+
+        <AttributeMapping>
+          <targetAttribute>xmml:log/xmml:IntervalLog/xmml:range/xmml:ListOfBands/xmml:categoryList[1]</targetAttribute>
+          <!-- TODO: not nillable? All LITHOSTRAT are null
+          <sourceExpression>
+            <OCQL>LITHOSTRAT</OCQL>
+          </sourceExpression>
+          -->
+          <sourceExpression>
+            <OCQL>'missing'</OCQL>
+          </sourceExpression>
+          <ClientProperty>
+            <name>swe:codeSpace</name>
+            <value>'http://ns.bgs.ac.uk/bgs.lex_lithostrat_unit_v3'</value>
+          </ClientProperty>
+          <ClientProperty>
+            <name>swe:property</name>
+            <value>'http://ns.bgs.ac.uk/thesaurus/lithostratigraphy'</value>
+          </ClientProperty>
+        </AttributeMapping>
+
+        <AttributeMapping>
+          <targetAttribute>xmml:log/xmml:IntervalLog/xmml:range/xmml:ListOfBands/xmml:categoryList[2]</targetAttribute>
+          <sourceExpression>
+            <OCQL>LITHOLOGY_</OCQL>
+          </sourceExpression>
+          <ClientProperty>
+            <name>swe:codeSpace</name>
+            <value>'http://ns.bgs.ac.uk/bgs.dic_rock_name'</value>
+          </ClientProperty>
+          <ClientProperty>
+            <name>swe:property</name>
+            <value>'http://ns.bgs.ac.uk/thesaurus/lithology'</value>
+          </ClientProperty>
+        </AttributeMapping>
+
+        <AttributeMapping>
+          <targetAttribute>xmml:log/xmml:IntervalLog/xmml:range/xmml:ListOfBands/xmml:categoryList[3]</targetAttribute>
+          <sourceExpression>
+            <OCQL>BASE_BED_C</OCQL>
+          </sourceExpression>
+          <ClientProperty>
+            <name>swe:codeSpace</name>
+            <value>'http://ns.bgs.ac.uk/bgs.dic_base_bed'</value>
+          </ClientProperty>
+          <ClientProperty>
+            <name>swe:property</name>
+            <value>'http://ns.bgs.ac.uk/thesaurus/base_bed'</value>
+          </ClientProperty>
+        </AttributeMapping>
+
+        <AttributeMapping>
+          <targetAttribute>xmml:log/xmml:IntervalLog/xmml:intervalSetDomain/geo:MultiGInterval</targetAttribute>
+          <idExpression>
+            <OCQL>strConcat('bh.', strConcat(BGS_ID, '.logdomain'))</OCQL>
+          </idExpression>
+          <ClientProperty>
+            <name>srsName</name>
+            <value>strConcat('#bh.', strConcat(BGS_ID, '.shape'))</value>
+          </ClientProperty>
+        </AttributeMapping>
+
+        <AttributeMapping>
+          <targetAttribute>xmml:log/xmml:IntervalLog/xmml:intervalSetDomain/geo:MultiGInterval/geo:member</targetAttribute>
+          <isMultiple>true</isMultiple>
+        </AttributeMapping>
+
+        <AttributeMapping>
+          <targetAttribute>xmml:log/xmml:IntervalLog/xmml:intervalSetDomain/geo:MultiGInterval/geo:member/geo:GInterval</targetAttribute>
+          <idExpression>
+            <OCQL>strConcat('bh.', strConcat(BGS_ID, '.loginterval.1'))</OCQL>
+          </idExpression>
+        </AttributeMapping>
+
+        <AttributeMapping>
+          <targetAttribute>xmml:log/xmml:IntervalLog/xmml:intervalSetDomain/geo:MultiGInterval/geo:member/geo:GInterval/geo:beginPos</targetAttribute>
+          <sourceExpression>
+            <OCQL>DRILLED_DE</OCQL>
+          </sourceExpression>
+        </AttributeMapping>
+
+        <AttributeMapping>
+          <targetAttribute>xmml:log/xmml:IntervalLog/xmml:intervalSetDomain/geo:MultiGInterval/geo:member/geo:GInterval/geo:endPos</targetAttribute>
+          <sourceExpression>
+            <OCQL>DRILLED__1</OCQL>
+          </sourceExpression>
+        </AttributeMapping>
+
+      </attributeMappings>
+    </FeatureTypeMapping>
+  </typeMappings>
+</as:AppSchemaDataAccess>

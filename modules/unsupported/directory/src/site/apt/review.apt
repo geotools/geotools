@@ -1,0 +1,24 @@
+Plugin Directory
+~~~~~~~~~~~~~~~~
+
+  Module Maintainer: David Zwiers & Jody Garnett
+
+  IP Review:
+
+    * Jody Garnett, July 8th, 2006
+
+    * Adrian Custer, June 2008
+
+  STATUS: Clean
+
+
+* org.geotools.data.dir
+  ~~~~~~~~~~~~~~~~~~~~~
+  Created for GeoTools 2.0 in an attempt to make GeoServer configuration a bit less
+  of a chore to set up.
+
+  Not much report use, never made it into any tutorials I bet.
+
+
+* org.geotools.data.dir (test)
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~

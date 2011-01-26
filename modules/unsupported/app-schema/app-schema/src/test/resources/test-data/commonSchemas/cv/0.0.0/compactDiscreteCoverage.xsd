@@ -1,0 +1,207 @@
+<?xml version="1.0"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.opengis.net/cv/0.0" xmlns:cv="http://www.opengis.net/cv/0.0" xmlns:gml="http://www.opengis.net/gml" elementFormDefault="qualified" attributeFormDefault="unqualified"
+        version="0.0.0">
+	<annotation>
+		<documentation>An explicit representation of the CV_DiscreteCoverage, interleaved model, from ISO 19123
+		All items are XML encoded 
+			
+Copyright (c) 2006 Open Geospatial Consortium - see http://www.opengeospatial.org/about/?page=ipr</documentation>
+	</annotation>
+	<!-- ============== -->
+	<import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+	<include schemaLocation="./discreteCoverage.xsd"/>
+	<!-- ============== -->
+	<!-- ============== -->
+	<complexType name="CompactDomainObjectType">
+		<annotation>
+			<documentation>Compact equivalent to ISO 19123 CV_DomainObject, in which the spatial and temporal elements are encoded directly.</documentation>
+		</annotation>
+		<sequence>
+			<element name="spatialElement" minOccurs="0" maxOccurs="unbounded" type="gml:DirectPositionType"/>
+			<element name="temporalElement" minOccurs="0" maxOccurs="unbounded" type="gml:TimePositionType"/>
+		</sequence>
+	</complexType>
+	<!-- ............... -->
+	<element name="CompactDomainObject" type="cv:CompactDomainObjectType">
+		<annotation>
+			<documentation>Compact equivalent to ISO 19123 CV_DomainObject, in which the spatial and temporal elements are encoded directly.</documentation>
+		</annotation>
+	</element>
+	<!-- ............... -->
+	<complexType name="CompactDomainObjectPropertyType">
+		<sequence minOccurs="0">
+			<element ref="cv:CompactDomainObject"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ============== -->
+	<!-- ============== -->
+	<complexType name="CompactGeometryValuePairType">
+		<annotation>
+			<documentation>Compact equivalent to ISO 19123 CV_GeometryValuePair, in which the spatial and temporal elements of the geometry are encoded directly.</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="cv:CV_AbstractGeometryValuePairType">
+				<sequence>
+					<element name="geometry" type="cv:CompactDomainObjectPropertyType"/>
+					<element name="value">
+						<annotation>
+							<documentation>Implicitly xs:anyType. Use xsi:type attribute to indicate the datatype at run-time.</documentation>
+						</annotation>
+					</element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ........... -->
+	<element name="CompactGeometryValuePair" type="cv:CompactGeometryValuePairType" substitutionGroup="cv:CV_AbstractGeometryValuePair">
+		<annotation>
+			<documentation>Compact equivalent to ISO 19123 CV_GeometryValuePair, in which the spatial and temporal elements of the geometry are encoded directly.</documentation>
+		</annotation>
+	</element>
+	<!-- ........... -->
+	<complexType name="CompactGeometryValuePairPropertyType">
+		<sequence>
+			<element ref="cv:CompactGeometryValuePair"/>
+		</sequence>
+	</complexType>
+	<!-- ============== -->
+	<complexType name="CompactPointValuePairType">
+		<annotation>
+			<documentation>Compact equivalent to ISO 19123 CV_PointValuePair, in which the geometry is encoded directly.</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="cv:CV_AbstractGeometryValuePairType">
+				<sequence>
+					<element name="geometry" type="gml:DirectPositionType"/>
+					<element name="value">
+						<annotation>
+							<documentation>Implicitly xs:anyType. Use xsi:type attribute to indicate the datatype at run-time.</documentation>
+						</annotation>
+					</element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ........... -->
+	<element name="CompactPointValuePair" type="cv:CompactPointValuePairType" substitutionGroup="cv:CV_AbstractGeometryValuePair">
+		<annotation>
+			<documentation>Compact equivalent to ISO 19123 CV_PointValuePair, in which the geometry is encoded directly.</documentation>
+		</annotation>
+	</element>
+	<!-- ........... -->
+	<complexType name="CompactPointValuePairPropertyType">
+		<sequence>
+			<element ref="cv:CompactPointValuePair"/>
+		</sequence>
+	</complexType>
+	<!-- ============== -->
+	<complexType name="CompactTimeValuePairType">
+		<annotation>
+			<documentation>Compact equivalent to CV_TimeInstantValuePair, in which the geometry is encoded directly.</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="cv:CV_AbstractGeometryValuePairType">
+				<sequence>
+					<element name="geometry" type="gml:TimePositionType"/>
+					<element name="value">
+						<annotation>
+							<documentation>Implicitly xs:anyType. Use xsi:type attribute to indicate the datatype at run-time.</documentation>
+						</annotation>
+					</element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ........... -->
+	<element name="CompactTimeValuePair" type="cv:CompactTimeValuePairType" substitutionGroup="cv:CV_AbstractGeometryValuePair">
+		<annotation>
+			<documentation>Compact equivalent to CV_TimeInstantValuePair, in which the geometry is encoded directly.</documentation>
+		</annotation>
+	</element>
+	<!-- ........... -->
+	<complexType name="CompactTimeValuePairPropertyType">
+		<sequence>
+			<element ref="cv:CompactTimeValuePair"/>
+		</sequence>
+	</complexType>
+	<!-- ============== -->
+	<!-- ============== -->
+	<!-- ============== -->
+	<complexType name="CompactDiscreteCoverageType">
+		<annotation>
+			<documentation>Head of substitution group for compact discrete coverage encodings</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="cv:CV_AbstractDiscreteCoverageType">
+				<sequence>
+					<element name="element" type="cv:CompactGeometryValuePairPropertyType" maxOccurs="unbounded"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ........... -->
+	<element name="CompactDiscreteCoverage" type="cv:CompactDiscreteCoverageType" substitutionGroup="cv:CV_AbstractDiscreteCoverage">
+		<annotation>
+			<documentation>Head of substitution group for compact discrete coverage encodings</documentation>
+		</annotation>
+	</element>
+	<!-- ........... -->
+	<complexType name="CompactDiscreteCoveragePropertyType">
+		<sequence>
+			<element ref="cv:CompactDiscreteCoverage"/>
+		</sequence>
+	</complexType>
+	<!-- ============== -->
+	<complexType name="CompactDiscretePointCoverageType">
+		<annotation>
+			<documentation>Compact equivalent to ISO 19123 CV_DiscretePointCoverage, in which the domain geometry is encoded directly.</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="cv:CV_AbstractDiscreteCoverageType">
+				<sequence>
+					<element name="element" type="cv:CompactPointValuePairPropertyType" maxOccurs="unbounded"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ........... -->
+	<element name="CompactDiscretePointCoverage" type="cv:CompactDiscretePointCoverageType" substitutionGroup="cv:CV_AbstractDiscreteCoverage">
+		<annotation>
+			<documentation>Compact equivalent to ISO 19123 CV_DiscretePointCoverage, in which the domain geometry is encoded directly.</documentation>
+		</annotation>
+	</element>
+	<!-- ........... -->
+	<complexType name="CompactDiscretePointCoveragePropertyType">
+		<sequence>
+			<element ref="cv:CompactDiscretePointCoverage"/>
+		</sequence>
+	</complexType>
+	<!-- ============== -->
+	<complexType name="CompactDiscreteTimeCoverageType">
+		<annotation>
+			<documentation>Compact equivalent to CV_DiscreteTimeInstantCoverage, in which the domain geometry is encoded directly.</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="cv:CV_AbstractDiscreteCoverageType">
+				<sequence>
+					<element name="element" type="cv:CompactTimeValuePairPropertyType" maxOccurs="unbounded"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ........... -->
+	<element name="CompactDiscreteTimeCoverage" type="cv:CompactDiscreteTimeCoverageType" substitutionGroup="cv:CV_AbstractDiscreteCoverage">
+		<annotation>
+			<documentation>Compact equivalent to CV_DiscreteTimeInstantCoverage, in which the domain geometry is encoded directly.</documentation>
+		</annotation>
+	</element>
+	<!-- ........... -->
+	<complexType name="CompactDiscreteTimeCoveragePropertyType">
+		<sequence>
+			<element ref="cv:CompactDiscreteTimeCoverage"/>
+		</sequence>
+	</complexType>
+	<!-- ============================================================== -->
+	<!-- ============== -->
+</schema>

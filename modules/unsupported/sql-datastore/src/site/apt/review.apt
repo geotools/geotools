@@ -1,0 +1,17 @@
+SQL-Datastore
+~~~~~~~~~~~~~~~~~
+
+  Extensions to JDBC datastore to support more sophisticated in-process views and aliasing of column names. Port from 2.4, 
+  future of this modeule unclear - rolling in these extensions to JDBC is a possibility.
+
+  IP Review:
+ 
+    * Rob Atkinson, July 2008
+
+  STATUS: CLEAN
+      Code is CLEAN
+      Data origin N/A
+      
+ Code provided by Gabriel Roldan, Rob Atkinson.
+
+ JSQLParser (dependency) under LGPL.

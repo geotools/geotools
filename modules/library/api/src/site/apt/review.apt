@@ -1,0 +1,108 @@
+Module API
+~~~~~~~~~~
+
+  Module Maintainer: Jody Garnett
+
+  IP Review:
+ 
+    * Jody Garnett, July 8th, 2006
+
+    * Jody Garnett, July 20th, 2006
+
+    * Jody Garnett, April 1, 2008
+
+    * Adrian Custer, June 6, 2008
+
+
+  STATUS as of June 2008: CLEAN
+
+    * Presume we can appropriate James Macgill's original work and its
+      (C) 2002, Center for Computational Geography.
+
+    * Presume we can appropriate minor stuff from GeoAPI.
+
+    * Presume we can appropriate minor text from OGC specs.
+
+
+
+* org.geotools.data
+  ~~~~~~~~~~~~~~~~~
+  This code was revised for the GeoServer 1.2 release as part of GeoTools 2.0, 
+  design documentation and research for this effort is available at 
+  http://vwfs.refractions.net/. Additional Java 5 generalization work
+  introduced for GeoTools 2.5 in the form of DataAccess superclass.
+
+
+* org.geotools.data.collection
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Added in GeoTools 2.2 time frame to support closable iterators, mostly used to 
+  define additional javadocs.
+
+    * ResourceCollection borrows an idea of a closable iterator from hibernate
+
+    * Collections API contract referenced from java.util.
+
+
+* org.geotools.data.event
+  ~~~~~~~~~~~~~~~~~~~~~~~
+  Added in GeoTools 2.2, based on event notification used in uDig (LGPL) allowing 
+  for a delta based events relative to a tree root.
+
+    * Method names compatible with some Eclipse code that informed origional design 
+      uDig event design
+
+
+* org.geotools.feature.[collection|visitor]
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Added in GeoTools 2.0, based on OGC / ISO feature model.
+  Revised for GeoTools 2.1 based on GML2 requirements.
+  Updated in GeoTools 2.2 to support random access, sorting and aggregate 
+  functions.
+
+
+* org.geotools.filter.[expression]
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Added for GeoTools 2.0 as part of Vision for new York, based on OGC Filter 
+  specification.
+  Updated for 2.2 to agree with Filter 1.1 specification.
+  Updated for 2.3 to agree/extend with GeoAPI interfaces (also Filter 1.1).
+
+
+* org.geotools.styling
+  ~~~~~~~~~~~~~~~~~~~~
+  Added baed on SLD specification for GeoTools 2.0.
+  Some constructs like RemoteOWS added for GeoTools 2.1.
+  Updated to agree with SLD 1.0, added event notification, and made method 
+  compatible with GeoAPI 2.0 (GPL Licience) for GeoTools 2.2.
+
+    * method names from GeoAPI 2.0 GPL project, not viewd as serious (and these 
+      interfaces will be retired shortly)
+
+    * Origional styling code is "Geotools - OpenSource mapping toolkit (C) 2002, 
+      Center for Computational Geography" with James Macgill as a contact.
+
+
+* org.geotools.util
+  ~~~~~~~~~~~~~~~~~
+
+
+Modules Coverage
+~~~~~~~~~~~~~~~~
+  This module provides several coverage implementations, with a focus on 
+  GridCoverages. This work was begun in GeoTools 2.0 (2001 at Institut de 
+  Recherche pour le Développement), and was revised to work with OGC based 
+  interfaces for GeoTools 2.1 (interfaces hosted by GeoAPI).
+
+  Coverage work continues as the focus of a specific GridCoverage branch for 
+  GeoTools 2.3. Planned work continues to work on n dimensional geometry based on 
+  ISO based Coverage interfaces (once again hosted by GeoAPI).
+
+
+* org.geotools.coverage
+  ~~~~~~~~~~~~~~~~~~~~~
+  Added for GeoTools 2.0, updated to OGC coverage interfaces were prototyped for 
+  GeoTools 2.1 and relased to GeoAPI when ready.
+
+    * AbstractCoverage: OGC specification credit: "This package contains 
+      documentation from OpenGIS specifications. OpenGIS consortium's work is fully 
+      acknowledged here."

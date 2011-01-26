@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Marcus Sen (british Geological Survey) -->
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:gml="http://www.opengis.net/gml" xmlns:geo="http://www.seegrid.csiro.au/xml/geometry" targetNamespace="http://www.seegrid.csiro.au/xml/geometry" elementFormDefault="qualified" attributeFormDefault="unqualified" version="pre-release">
+	<annotation>
+		<documentation>
+geometryProperties.xsd
+
+A GML conformant schema 
+for some convenience geometry properties
+
+Copyright (c) 2005 CSIRO - see https://www.seegrid.csiro.au/twiki/bin/view/Xmml/LegalNotices#Software_Notice
+</documentation>
+	</annotation>
+	<!-- ====================================================================== -->
+	<!-- bring in other schemas -->
+	<import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+	<include schemaLocation="./geometrySimpleObjects.xsd"/>
+	<include schemaLocation="./geometrySurfaces.xsd"/>
+	<!-- ====================================================================== -->
+	<!-- =========================================================== -->
+	<complexType name="Shape1DPropertyType">
+		<sequence minOccurs="0">
+			<choice>
+				<element ref="gml:LineString"/>
+				<element ref="geo:MultiLineString"/>
+				<element ref="geo:AbstractLine"/>
+			</choice>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+		<attribute name="unionSemantics">
+			<annotation>
+				<documentation>optional XML attribute implements UML Union discriminator</documentation>
+			</annotation>
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="lineSShape"/>
+					<enumeration value="multiLineSShape"/>
+					<enumeration value="lineVShape"/>
+				</restriction>
+			</simpleType>
+		</attribute>
+	</complexType>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<complexType name="Shape2DPropertyType">
+		<sequence minOccurs="0">
+			<choice>
+				<element ref="gml:Polygon"/>
+				<element ref="geo:MultiPolygon"/>
+				<element ref="geo:TriSurface"/>
+				<element ref="geo:PlaneByVector"/>
+			</choice>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+		<attribute name="unionSemantics">
+			<annotation>
+				<documentation>optional XML attribute implements UML Union discriminator</documentation>
+			</annotation>
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="polyShape"/>
+					<enumeration value="multiPolyShape"/>
+					<enumeration value="triSShape"/>
+					<enumeration value="planeVShape"/>
+				</restriction>
+			</simpleType>
+		</attribute>
+	</complexType>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<complexType name="Shape3DPropertyType">
+		<sequence minOccurs="0">
+			<choice>
+				<element ref="geo:AbstractSimpleSolid"/>
+				<element ref="geo:MultiSimpleSolid"/>
+			</choice>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+		<attribute name="unionSemantics">
+			<annotation>
+				<documentation>optional XML attribute implements UML Union discriminator</documentation>
+			</annotation>
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="simpleSolidShape"/>
+					<enumeration value="multiSimpleSolidShape"/>
+				</restriction>
+			</simpleType>
+		</attribute>
+	</complexType>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<complexType name="ShapePolygonPropertyType">
+		<sequence minOccurs="0">
+			<choice>
+				<element ref="gml:Polygon"/>
+				<element ref="geo:MultiPolygon"/>
+			</choice>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+		<attribute name="unionSemantics">
+			<annotation>
+				<documentation>optional XML attribute implements UML Union discriminator</documentation>
+			</annotation>
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="polyShape"/>
+					<enumeration value="multiPolyShape"/>
+				</restriction>
+			</simpleType>
+		</attribute>
+	</complexType>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+</schema>

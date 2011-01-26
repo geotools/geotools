@@ -1,0 +1,49 @@
+<run>
+<precisionModel type="FLOATING"/>
+
+<case>
+<desc>Two Rectangular Polygons</desc>
+  <a>
+    POLYGON ((240 360, 420 360, 420 40, 240 40, 240 360))
+  </a>
+  <b>
+    POLYGON ((100 260, 540 260, 540 120, 100 120, 100 260))
+  </b>
+  <test>
+    <op name="getboundary" arg1="A">
+      LINEARRING (240 360, 420 360, 420 40, 240 40, 240 360)
+          </op>
+  </test>
+  <test>
+    <op name="convexhull" arg1="A">
+      POLYGON ((240 40, 240 360, 420 360, 420 40, 240 40))
+          </op>
+  </test>
+  <test>
+    <op name="intersection" arg1="A" arg2="B">
+      POLYGON ((420 260, 420 120, 240 120, 240 260, 420 260))
+          </op>
+  </test>
+  <test>
+    <op name="union" arg1="A" arg2="B">
+      POLYGON ((240 360, 420 360, 420 260, 540 260, 540 120, 420 120, 420 40, 240 40, 240 120, 100 120, 
+          100 260, 240 260, 240 360))
+          </op>
+  </test>
+  <test>
+    <op name="difference" arg1="A" arg2="B">
+      MULTIPOLYGON (((240 360, 420 360, 420 260, 240 260, 240 360)), 
+        ((420 120, 420 40, 240 40, 240 120, 420 120)))
+          </op>
+  </test>
+  <test>
+    <op name="symdifference" arg1="A" arg2="B">
+      MULTIPOLYGON (((240 360, 420 360, 420 260, 240 260, 240 360)), 
+        ((420 120, 420 260, 540 260, 540 120, 420 120)), 
+        ((420 120, 420 40, 240 40, 240 120, 420 120)), 
+        ((240 260, 240 120, 100 120, 100 260, 240 260)))
+          </op>
+  </test>
+</case>
+
+</run>

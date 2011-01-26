@@ -1,0 +1,2 @@
+org.geotools.arcsde.ArcSDEDataStoreFactory
+org.geotools.arcsde.ArcSDEJNDIDataStoreFactory

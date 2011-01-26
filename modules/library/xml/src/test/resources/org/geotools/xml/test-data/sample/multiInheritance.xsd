@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://www.openplans.org/topp"
+    xmlns:topp="http://www.openplans.org/topp"
+    xmlns:gml="http://www.opengis.net/gml"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+    attributeFormDefault="unqualified" version="1.0">
+    <xs:import namespace="http://www.opengis.net/gml" schemaLocation="../../feature.xsd"/>
+    <xs:complexType xmlns:xs="http://www.w3.org/2001/XMLSchema" name="bcroad_Type">
+        <xs:complexContent>
+            <xs:extension base="topp:bcroad_parent_narrow_Type">
+                <xs:sequence>
+                    <xs:element name="LENGTH" minOccurs="0" nillable="true" type="xs:double"/>
+                    <xs:element name="BTRN_BC_ID" minOccurs="0" nillable="true" type="xs:int"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType xmlns:xs="http://www.w3.org/2001/XMLSchema" name="bcroad_parent_narrow_Type">
+        <xs:complexContent>
+            <xs:restriction base="topp:bcroad_parent_Type">
+                <xs:sequence>
+                    <xs:element name="the_geom" minOccurs="0" nillable="true" type="gml:MultiLineStringPropertyType"/>
+                </xs:sequence>
+            </xs:restriction>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType xmlns:xs="http://www.w3.org/2001/XMLSchema" name="bcroad_parent_Type">
+        <xs:complexContent>
+            <xs:extension base="gml:AbstractFeatureType">
+                <xs:sequence>
+                    <xs:element name="the_geom" minOccurs="0" nillable="true" type="gml:MultiLineStringPropertyType"/>
+                    <xs:element name="t2" type="xs:string"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="bcroad" type="topp:bcroad_Type" substitutionGroup="gml:_Feature"/>
+</xs:schema>

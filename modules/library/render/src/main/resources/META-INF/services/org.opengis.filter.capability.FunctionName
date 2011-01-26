@@ -1,0 +1,3 @@
+org.geotools.filter.CategorizeFunction.NAME
+org.geotools.filter.RecodeFunction.NAME
+org.geotools.filter.InterpolateFunction.NAME

@@ -1,0 +1,1275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gml:Dictionary xmlns:gml="http://www.opengis.net/gml" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/gml http://schemas.opengis.net/gml/3.1.1/base/units.xsd"
+                gml:id="unitsDictionary">
+	<gml:description>A dictionary of units of measure, including the set of units given in tables 1,2,3,5,6 in ISO 31-0</gml:description>
+	<gml:name>ISO 31-0 Units</gml:name>
+	<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:m</gml:name>
+	<gml:dictionaryEntry>
+		<gml:Dictionary gml:id="SIbaseUnits">
+			<gml:description xlink:href="http://www.bipm.fr/en/si/base_units/">The Base Units from the SI units system. Table 1 of ISO 31-0</gml:description>
+			<gml:name>SI Base Units</gml:name>
+			<gml:dictionaryEntry>
+				<gml:BaseUnit gml:id="m">
+					<gml:description>The metre is the length of the path travelled by light in vacuum during a time interval of 1/299 792 458 of a second.</gml:description>
+					<gml:name>metre</gml:name>
+					<gml:name xml:lang="eng-us">meter</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:m</gml:name>
+					<gml:quantityType>length</gml:quantityType>
+					<gml:catalogSymbol codeSpace="http://www.bipm.fr/en/si/">m</gml:catalogSymbol>
+					<gml:unitsSystem xlink:href="http://www.bipm.fr/en/si/"/>
+				</gml:BaseUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:BaseUnit gml:id="kg">
+					<gml:description>The kilogram is the unit of mass; it is equal to the mass of the international prototype of the kilogram.</gml:description>
+					<gml:name>kilogram</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:kg</gml:name>
+					<gml:quantityType>Mass</gml:quantityType>
+					<gml:catalogSymbol codeSpace="http://www.bipm.fr/en/si/">kg</gml:catalogSymbol>
+					<gml:unitsSystem xlink:href="http://www.bipm.fr/en/si/"/>
+				</gml:BaseUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:BaseUnit gml:id="s">
+					<gml:description>The second is the duration of 9 192 631 770 periods of the radiation corresponding to the transition between the two hyperfine levels of the ground state of the caesium 133 atom.</gml:description>
+					<gml:name>second</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:s</gml:name>
+					<gml:quantityType>Time</gml:quantityType>
+					<gml:catalogSymbol codeSpace="http://www.bipm.fr/en/si/">s</gml:catalogSymbol>
+					<gml:unitsSystem xlink:href="http://www.bipm.fr/en/si/"/>
+				</gml:BaseUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:BaseUnit gml:id="A">
+					<gml:description>The ampere is that constant current which, if maintained in two straight parallel conductors of infinite length, of negligible circular cross-section, and placed 1 metre apart in vacuum, would produce between these conductors a force equal to 2 × 10-7 newton per metre of length.</gml:description>
+					<gml:name>Ampere</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:A</gml:name>
+					<gml:quantityType>Electric current</gml:quantityType>
+					<gml:catalogSymbol codeSpace="http://www.bipm.fr/en/si/">A</gml:catalogSymbol>
+					<gml:unitsSystem xlink:href="http://www.bipm.fr/en/si/"/>
+				</gml:BaseUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:BaseUnit gml:id="K">
+					<gml:description>The kelvin, unit of thermodynamic temperature, is the fraction 1/273.16 of the thermodynamic temperature of the triple point of water.</gml:description>
+					<gml:name>kelvin</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:K</gml:name>
+					<gml:quantityType>Thermodynamic temperature</gml:quantityType>
+					<gml:catalogSymbol codeSpace="http://www.bipm.fr/en/si/">K</gml:catalogSymbol>
+					<gml:unitsSystem xlink:href="http://www.bipm.fr/en/si/"/>
+				</gml:BaseUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:BaseUnit gml:id="mol">
+					<gml:description>1. The mole is the amount of substance of a system which contains as many elementary entities as there are atoms in 0.012 kilogram of carbon 12. 
+2. When the mole is used, the elementary entities must be specified and may be atoms, molecules, ions, electrons, other particles, or specified groups of such particles.</gml:description>
+					<gml:name>mole</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:mol</gml:name>
+					<gml:quantityType>Amount of substance</gml:quantityType>
+					<gml:catalogSymbol codeSpace="http://www.bipm.fr/en/si/">mol</gml:catalogSymbol>
+					<gml:unitsSystem xlink:href="http://www.bipm.fr/en/si/"/>
+				</gml:BaseUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:BaseUnit gml:id="cd">
+					<gml:description>The candela is the luminous intensity, in a given direction, of a source that emits monochromatic radiation of frequency 540 × 1012 hertz and that has a radiant intensity in that direction of 1/683 watt per steradian.</gml:description>
+					<gml:name>candela</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:cd</gml:name>
+					<gml:quantityType>Luminous intensity</gml:quantityType>
+					<gml:catalogSymbol codeSpace="http://www.bipm.fr/en/si/">cd</gml:catalogSymbol>
+					<gml:unitsSystem xlink:href="http://www.bipm.fr/en/si/"/>
+				</gml:BaseUnit>
+			</gml:dictionaryEntry>
+		</gml:Dictionary>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<gml:Dictionary gml:id="SIDerivedUnits">
+			<gml:description xlink:href="http://www.bipm.fr/en/si/derived_units/">The Derived Units from the SI units system.  These are all derived as a product of SI Base Units, except degrees Celsius in which the conversion formaula to the SI Base Unit (kelvin) involves an offset.  
+			Given in tables 2, 3 of ISO 31-0</gml:description>
+			<gml:name>SI Derived Units</gml:name>
+			<gml:dictionaryEntry>
+				<gml:DerivedUnit gml:id="rad">
+					<gml:name>radian</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:rad</gml:name>
+					<gml:quantityType>plane angle</gml:quantityType>
+					<gml:catalogSymbol codeSpace="http://www.bipm.fr/en/si/">rad</gml:catalogSymbol>
+					<gml:derivationUnitTerm uom="#m" exponent="1"/>
+					<gml:derivationUnitTerm uom="#m" exponent="-1"/>
+				</gml:DerivedUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:DerivedUnit gml:id="sr">
+					<gml:name>steradian</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:sr</gml:name>
+					<gml:quantityType>solid angle</gml:quantityType>
+					<gml:catalogSymbol codeSpace="http://www.bipm.fr/en/si/">sr</gml:catalogSymbol>
+					<gml:derivationUnitTerm uom="#m" exponent="2"/>
+					<gml:derivationUnitTerm uom="#m" exponent="-2"/>
+				</gml:DerivedUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:DerivedUnit gml:id="Hz">
+					<gml:name>hertz</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:Hz</gml:name>
+					<gml:quantityType>frequency</gml:quantityType>
+					<gml:catalogSymbol codeSpace="http://www.bipm.fr/en/si/">Hz</gml:catalogSymbol>
+					<gml:derivationUnitTerm uom="#s" exponent="-1"/>
+				</gml:DerivedUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:DerivedUnit gml:id="N">
+					<gml:name>newton</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:N</gml:name>
+					<gml:quantityType>force</gml:quantityType>
+					<gml:catalogSymbol codeSpace="http://www.bipm.fr/en/si/">N</gml:catalogSymbol>
+					<gml:derivationUnitTerm uom="#m" exponent="1"/>
+					<gml:derivationUnitTerm uom="#kg" exponent="1"/>
+					<gml:derivationUnitTerm uom="#s" exponent="-2"/>
+				</gml:DerivedUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:DerivedUnit gml:id="Pa">
+					<gml:name>pascal</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:Pa</gml:name>
+					<gml:quantityType>pressure, stress</gml:quantityType>
+					<gml:catalogSymbol codeSpace="http://www.bipm.fr/en/si/">Pa</gml:catalogSymbol>
+					<gml:derivationUnitTerm uom="#N" exponent="1"/>
+					<gml:derivationUnitTerm uom="#m" exponent="-2"/>
+				</gml:DerivedUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:DerivedUnit gml:id="J">
+					<gml:name>joule</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:J</gml:name>
+					<gml:quantityType>energy, work, quantity of heat</gml:quantityType>
+					<gml:catalogSymbol codeSpace="http://www.bipm.fr/en/si/">J</gml:catalogSymbol>
+					<gml:derivationUnitTerm uom="#N" exponent="1"/>
+					<gml:derivationUnitTerm uom="#m" exponent="1"/>
+				</gml:DerivedUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:DerivedUnit gml:id="W">
+					<gml:name>watt</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:W</gml:name>
+					<gml:quantityType>power, radiant flux</gml:quantityType>
+					<gml:catalogSymbol codeSpace="http://www.bipm.fr/en/si/">W</gml:catalogSymbol>
+					<gml:derivationUnitTerm uom="#J" exponent="1"/>
+					<gml:derivationUnitTerm uom="#s" exponent="-1"/>
+				</gml:DerivedUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:DerivedUnit gml:id="C">
+					<gml:name>coulomb</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:C</gml:name>
+					<gml:quantityType>electric charge, quantity of electricity</gml:quantityType>
+					<gml:catalogSymbol codeSpace="http://www.bipm.fr/en/si/">C</gml:catalogSymbol>
+					<gml:derivationUnitTerm uom="#s" exponent="1"/>
+					<gml:derivationUnitTerm uom="#A" exponent="1"/>
+				</gml:DerivedUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:DerivedUnit gml:id="V">
+					<gml:name>volt</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:V</gml:name>
+					<gml:quantityType>electric potential difference, electromotive force</gml:quantityType>
+					<gml:catalogSymbol codeSpace="http://www.bipm.fr/en/si/">V</gml:catalogSymbol>
+					<gml:derivationUnitTerm uom="#W" exponent="1"/>
+					<gml:derivationUnitTerm uom="#A" exponent="-1"/>
+				</gml:DerivedUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:DerivedUnit gml:id="F">
+					<gml:name>farad</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:F</gml:name>
+					<gml:quantityType>capacitance</gml:quantityType>
+					<gml:catalogSymbol codeSpace="http://www.bipm.fr/en/si/">F</gml:catalogSymbol>
+					<gml:derivationUnitTerm uom="#C" exponent="1"/>
+					<gml:derivationUnitTerm uom="#V" exponent="-1"/>
+				</gml:DerivedUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:DerivedUnit gml:id="ohm">
+					<gml:name>Ohm</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:ohm</gml:name>
+					<gml:quantityType>electric resistance</gml:quantityType>
+					<gml:catalogSymbol codeSpace="http://www.bipm.fr/en/si/">Ω</gml:catalogSymbol>
+					<gml:derivationUnitTerm uom="#V" exponent="1"/>
+					<gml:derivationUnitTerm uom="#A" exponent="-1"/>
+				</gml:DerivedUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:DerivedUnit gml:id="S">
+					<gml:name>Siemens</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:S</gml:name>
+					<gml:quantityType>electric conductance</gml:quantityType>
+					<gml:catalogSymbol codeSpace="http://www.bipm.fr/en/si/">S</gml:catalogSymbol>
+					<gml:derivationUnitTerm uom="#A" exponent="1"/>
+					<gml:derivationUnitTerm uom="#V" exponent="-1"/>
+				</gml:DerivedUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:DerivedUnit gml:id="Wb">
+					<gml:name>Weber</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:Wb</gml:name>
+					<gml:quantityType>magnetic flux</gml:quantityType>
+					<gml:catalogSymbol codeSpace="http://www.bipm.fr/en/si/">Wb</gml:catalogSymbol>
+					<gml:derivationUnitTerm uom="#V" exponent="1"/>
+					<gml:derivationUnitTerm uom="#s" exponent="1"/>
+				</gml:DerivedUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:DerivedUnit gml:id="T">
+					<gml:name>Tesla</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:T</gml:name>
+					<gml:quantityType>magnetic flux density</gml:quantityType>
+					<gml:catalogSymbol codeSpace="http://www.bipm.fr/en/si/">T</gml:catalogSymbol>
+					<gml:derivationUnitTerm uom="#Wb" exponent="1"/>
+					<gml:derivationUnitTerm uom="#m" exponent="-2"/>
+				</gml:DerivedUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:DerivedUnit gml:id="H">
+					<gml:name>Henry</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:H</gml:name>
+					<gml:quantityType>inductance</gml:quantityType>
+					<gml:catalogSymbol codeSpace="http://www.bipm.fr/en/si/">H</gml:catalogSymbol>
+					<gml:derivationUnitTerm uom="#Wb" exponent="1"/>
+					<gml:derivationUnitTerm uom="#A" exponent="-1"/>
+				</gml:DerivedUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="degC">
+					<gml:name>degree Celsius</gml:name>
+					<gml:name>Cel</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:degC</gml:name>
+					<gml:quantityType>Celsius temperature</gml:quantityType>
+					<gml:catalogSymbol codeSpace="http://www.bipm.fr/en/si/">°C</gml:catalogSymbol>
+					<gml:conversionToPreferredUnit uom="#K">
+						<gml:formula>
+							<gml:a>273.16</gml:a>
+							<gml:b>1</gml:b>
+							<gml:c>1</gml:c>
+						</gml:formula>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:DerivedUnit gml:id="lm">
+					<gml:name>lumen</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:lm</gml:name>
+					<gml:quantityType>luminous flux</gml:quantityType>
+					<gml:catalogSymbol codeSpace="http://www.bipm.fr/en/si/">lm</gml:catalogSymbol>
+					<gml:derivationUnitTerm uom="#cd" exponent="1"/>
+					<gml:derivationUnitTerm uom="#sr" exponent="1"/>
+				</gml:DerivedUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:DerivedUnit gml:id="lx">
+					<gml:name>lux</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:lx</gml:name>
+					<gml:quantityType>illuminance</gml:quantityType>
+					<gml:catalogSymbol codeSpace="http://www.bipm.fr/en/si/">lx</gml:catalogSymbol>
+					<gml:derivationUnitTerm uom="#lm" exponent="1"/>
+					<gml:derivationUnitTerm uom="#m" exponent="-2"/>
+				</gml:DerivedUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:DerivedUnit gml:id="Bq">
+					<gml:name>becquerel</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:Bq</gml:name>
+					<gml:quantityType>activity (referred to a radionuclide)</gml:quantityType>
+					<gml:catalogSymbol codeSpace="http://www.bipm.fr/en/si/">Bq</gml:catalogSymbol>
+					<gml:derivationUnitTerm uom="#s" exponent="-1"/>
+				</gml:DerivedUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:DerivedUnit gml:id="Gy">
+					<gml:name>gray</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:Gy</gml:name>
+					<gml:quantityType>absorbed dose, specific energy (imparted), kerma</gml:quantityType>
+					<gml:catalogSymbol codeSpace="http://www.bipm.fr/en/si/">Gy</gml:catalogSymbol>
+					<gml:derivationUnitTerm uom="#J" exponent="1"/>
+					<gml:derivationUnitTerm uom="#kg" exponent="-1"/>
+				</gml:DerivedUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:DerivedUnit gml:id="Sv">
+					<gml:name>sievert</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:Sv</gml:name>
+					<gml:quantityType>dose equivalent, ambient dose equivalent, directional dose equivalent, personal dose equivalent, organ equivalent dose</gml:quantityType>
+					<gml:catalogSymbol codeSpace="http://www.bipm.fr/en/si/">Sv</gml:catalogSymbol>
+					<gml:derivationUnitTerm uom="#J" exponent="1"/>
+					<gml:derivationUnitTerm uom="#kg" exponent="-1"/>
+				</gml:DerivedUnit>
+			</gml:dictionaryEntry>
+		</gml:Dictionary>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<gml:Dictionary gml:id="SIwith">
+			<gml:description>Units used with SI, given in table 5 and 6 of ISO 31-0</gml:description>
+			<gml:name>Conventional units.</gml:name>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="deg">
+					<gml:name>degree</gml:name>
+					<gml:name>deg</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:deg</gml:name>
+					<gml:quantityType>plane angle</gml:quantityType>
+					<gml:catalogSymbol>deg</gml:catalogSymbol>
+					<gml:conversionToPreferredUnit uom="#rad">
+						<gml:factor>0.017453292519943295769236907684886</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="min_arc">
+					<gml:name>minute</gml:name>
+					<gml:name>'</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:min_arc</gml:name>
+					<gml:quantityType>plane angle</gml:quantityType>
+					<gml:catalogSymbol>'</gml:catalogSymbol>
+					<gml:conversionToPreferredUnit uom="#rad">
+						<gml:factor>2.9088820866572159615394846141477e-4</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="sec_arc">
+					<gml:name>second</gml:name>
+					<gml:name>"</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:sec_arc</gml:name>
+					<gml:quantityType>plane angle</gml:quantityType>
+					<gml:catalogSymbol>"</gml:catalogSymbol>
+					<gml:conversionToPreferredUnit uom="#rad">
+						<gml:factor>4.8481368110953599358991410235795e-6</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="Tonne">
+					<gml:name>tonne</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:Tonne</gml:name>
+					<gml:quantityType>mass</gml:quantityType>
+					<gml:catalogSymbol>T</gml:catalogSymbol>
+					<gml:conversionToPreferredUnit uom="#kg">
+						<gml:factor>1.e3</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="d">
+					<gml:name>day</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:d</gml:name>
+					<gml:quantityType>Time</gml:quantityType>
+					<gml:catalogSymbol>d</gml:catalogSymbol>
+					<gml:conversionToPreferredUnit uom="#s">
+						<gml:factor>86400</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="h">
+					<gml:name>hour</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:h</gml:name>
+					<gml:quantityType>Time</gml:quantityType>
+					<gml:catalogSymbol>h</gml:catalogSymbol>
+					<gml:conversionToPreferredUnit uom="#s">
+						<gml:factor>3600</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="min">
+					<gml:name>minute</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:min</gml:name>
+					<gml:quantityType>Time</gml:quantityType>
+					<gml:catalogSymbol>min</gml:catalogSymbol>
+					<gml:conversionToPreferredUnit uom="#s">
+						<gml:factor>60</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="eV">
+					<gml:name>electron volt</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:eV</gml:name>
+					<gml:quantityType>energy</gml:quantityType>
+					<gml:catalogSymbol>eV</gml:catalogSymbol>
+					<gml:conversionToPreferredUnit uom="#J">
+						<gml:factor>1.60217733e-19</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="l">
+					<gml:name>litre</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:l</gml:name>
+					<gml:quantityType>Volume</gml:quantityType>
+					<gml:conversionToPreferredUnit uom="#m3">
+						<gml:factor>0.001</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="u">
+					<gml:name>unified atomic mass unit</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:u</gml:name>
+					<gml:quantityType>Mass</gml:quantityType>
+					<gml:catalogSymbol>u</gml:catalogSymbol>
+					<gml:conversionToPreferredUnit uom="kg">
+						<gml:factor>1.6605402e-27</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+		</gml:Dictionary>
+	</gml:dictionaryEntry>
+	<!-- ========================================= -->
+	<gml:dictionaryEntry>
+		<gml:Dictionary gml:id="ConvUnits">
+			<gml:description>A collection of other Conventional Units.  
+			These are units of measure which are either widely used or important within a specific community.  
+			For most of these there is 
+1. a known derivation from more primitive units, which may or may not be SI Base Units, or 
+2. a known conversion to a preferred unit, which may or may not be an SI Base or Derived unit, through rescaling and offset, 
+or both.  </gml:description>
+			<gml:name>Conventional units.</gml:name>
+			<!-- Time -->
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="Ma">
+					<gml:name>million year</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:Ma</gml:name>
+					<gml:quantityType>Time</gml:quantityType>
+					<gml:catalogSymbol>Ma</gml:catalogSymbol>
+					<gml:conversionToPreferredUnit uom="#s">
+						<gml:factor>3.155815e13</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="yr">
+					<gml:name>sidereal year</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:yr</gml:name>
+					<gml:quantityType>Time</gml:quantityType>
+					<gml:catalogSymbol>yr</gml:catalogSymbol>
+					<gml:conversionToPreferredUnit uom="#s">
+						<gml:factor>3.155815e7</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="wk">
+					<gml:name>week</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:wk</gml:name>
+					<gml:quantityType>Time</gml:quantityType>
+					<gml:catalogSymbol>wk</gml:catalogSymbol>
+					<gml:conversionToPreferredUnit uom="#s">
+						<gml:factor>604800</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="ms">
+					<gml:name>millsecond</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:ms</gml:name>
+					<gml:quantityType>Time</gml:quantityType>
+					<gml:catalogSymbol>ms</gml:catalogSymbol>
+					<gml:conversionToPreferredUnit uom="#s">
+						<gml:factor>0.001</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<!-- Frequency -->
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="kHz">
+					<gml:name>kiloHertz</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:kHz</gml:name>
+					<gml:quantityType>frequency</gml:quantityType>
+					<gml:catalogSymbol>kHz</gml:catalogSymbol>
+					<gml:conversionToPreferredUnit uom="#Hz">
+						<gml:factor>1.e3</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="MHz">
+					<gml:name>MegaHertz</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:MHz</gml:name>
+					<gml:quantityType>frequency</gml:quantityType>
+					<gml:catalogSymbol>MHz</gml:catalogSymbol>
+					<gml:conversionToPreferredUnit uom="#Hz">
+						<gml:factor>1.e6</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="GHz">
+					<gml:name>GigaHertz</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:GHz</gml:name>
+					<gml:quantityType>frequency</gml:quantityType>
+					<gml:catalogSymbol>GHz</gml:catalogSymbol>
+					<gml:conversionToPreferredUnit uom="#Hz">
+						<gml:factor>1.e9</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<!-- Length -->
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="km">
+					<gml:name>kilometre</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:km</gml:name>
+					<gml:quantityType>length</gml:quantityType>
+					<gml:catalogSymbol>km</gml:catalogSymbol>
+					<gml:conversionToPreferredUnit uom="#m">
+						<gml:factor>1.e3</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="cm">
+					<gml:name>centimetre</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:cm</gml:name>
+					<gml:quantityType>length</gml:quantityType>
+					<gml:catalogSymbol>cm</gml:catalogSymbol>
+					<gml:conversionToPreferredUnit uom="#m">
+						<gml:factor>1.e-2</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="mm">
+					<gml:name>millimetre</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:mm</gml:name>
+					<gml:quantityType>length</gml:quantityType>
+					<gml:catalogSymbol>mm</gml:catalogSymbol>
+					<gml:conversionToPreferredUnit uom="#m">
+						<gml:factor>1.e-3</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="um">
+					<gml:name>micrometre</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:um</gml:name>
+					<gml:quantityType>length</gml:quantityType>
+					<gml:conversionToPreferredUnit uom="#m">
+						<gml:factor>1.e-6</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="nm">
+					<gml:name>nanometre</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:nm</gml:name>
+					<gml:quantityType>length</gml:quantityType>
+					<gml:catalogSymbol>nm</gml:catalogSymbol>
+					<gml:conversionToPreferredUnit uom="#m">
+						<gml:factor>1.e-9</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="pm">
+					<gml:name>picometre</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:pm</gml:name>
+					<gml:quantityType>length</gml:quantityType>
+					<gml:catalogSymbol>pm</gml:catalogSymbol>
+					<gml:conversionToPreferredUnit uom="#m">
+						<gml:factor>1.e-12</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="yd">
+					<gml:name>yard</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:yd</gml:name>
+					<gml:quantityType>length</gml:quantityType>
+					<gml:catalogSymbol>yd</gml:catalogSymbol>
+					<gml:conversionToPreferredUnit uom="#m">
+						<gml:factor>0.9144</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="ft">
+					<gml:name>foot</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:ft</gml:name>
+					<gml:quantityType>length</gml:quantityType>
+					<gml:catalogSymbol>'</gml:catalogSymbol>
+					<gml:conversionToPreferredUnit uom="#m">
+						<gml:factor>0.3048</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="in">
+					<gml:name>inch</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:in</gml:name>
+					<gml:quantityType>length</gml:quantityType>
+					<gml:catalogSymbol>"</gml:catalogSymbol>
+					<gml:conversionToPreferredUnit uom="#m">
+						<gml:factor>0.0254</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="mile">
+					<gml:name>statute mile</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:mile</gml:name>
+					<gml:quantityType>length</gml:quantityType>
+					<gml:catalogSymbol>mi</gml:catalogSymbol>
+					<gml:conversionToPreferredUnit uom="#m">
+						<gml:factor>1609.344</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="nautical_mile">
+					<gml:name>nautical mile</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:nautical_mile</gml:name>
+					<gml:quantityType>length</gml:quantityType>
+					<gml:catalogSymbol>mile</gml:catalogSymbol>
+					<gml:conversionToPreferredUnit uom="#m">
+						<gml:factor>1852</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="AU">
+					<gml:name>Astronomical Unit</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:AU</gml:name>
+					<gml:quantityType>length</gml:quantityType>
+					<gml:catalogSymbol>AU</gml:catalogSymbol>
+					<gml:conversionToPreferredUnit uom="#m">
+						<gml:factor>1.4959789e11</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+						<!-- Area -->
+			<gml:dictionaryEntry>
+				<gml:DerivedUnit gml:id="m2">
+					<gml:name>metre squared</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:m2</gml:name>
+					<gml:quantityType>area</gml:quantityType>
+					<gml:derivationUnitTerm uom="m" exponent="2"/>
+				</gml:DerivedUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="acre">
+					<gml:name>acre</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:acre</gml:name>
+					<gml:quantityType>area</gml:quantityType>
+					<gml:conversionToPreferredUnit uom="#m2">
+						<gml:factor>4046.86</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="hare">
+					<gml:name>hare</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:hare</gml:name>
+					<gml:quantityType>area</gml:quantityType>
+					<gml:conversionToPreferredUnit uom="#m2">
+						<gml:factor>0.000610609</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="ft2">
+					<gml:name>square foot</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:ft2</gml:name>
+					<gml:quantityType>area</gml:quantityType>
+					<gml:conversionToPreferredUnit uom="#m2">
+						<gml:factor>0.092903</gml:factor>
+					</gml:conversionToPreferredUnit>
+					<gml:derivationUnitTerm uom="#ft" exponent="2"/>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="ha">
+					<gml:name>hectare</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:hectare</gml:name>
+					<gml:quantityType>area</gml:quantityType>
+					<gml:conversionToPreferredUnit uom="#m2">
+						<gml:factor>10000</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="yd2">
+					<gml:name>square yard</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:yd2</gml:name>
+					<gml:quantityType>area</gml:quantityType>
+					<gml:conversionToPreferredUnit uom="#m2">
+						<gml:factor>0.836127</gml:factor>
+					</gml:conversionToPreferredUnit>
+					<gml:derivationUnitTerm uom="#yd" exponent="2"/>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="in2">
+					<gml:name>square inch</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:in2</gml:name>
+					<gml:quantityType>area</gml:quantityType>
+					<gml:conversionToPreferredUnit uom="#m2">
+						<gml:factor>0.00064516</gml:factor>
+					</gml:conversionToPreferredUnit>
+					<gml:derivationUnitTerm uom="#in" exponent="2"/>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="cm2">
+					<gml:name>square centimetre</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:cm2</gml:name>
+					<gml:quantityType>area</gml:quantityType>
+					<gml:conversionToPreferredUnit uom="#m2">
+						<gml:factor>0.0001</gml:factor>
+					</gml:conversionToPreferredUnit>
+					<gml:derivationUnitTerm uom="#cm" exponent="2"/>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="mm2">
+					<gml:name>square millimetre</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:mm2</gml:name>
+					<gml:quantityType>area</gml:quantityType>
+					<gml:conversionToPreferredUnit uom="#m2">
+						<gml:factor>1.e-6</gml:factor>
+					</gml:conversionToPreferredUnit>
+					<gml:derivationUnitTerm uom="#mm" exponent="2"/>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<!-- Volume -->
+			<gml:dictionaryEntry>
+				<gml:DerivedUnit gml:id="m3">
+					<gml:name>cubic metre</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:m3</gml:name>
+					<gml:quantityType>Volume</gml:quantityType>
+					<gml:derivationUnitTerm uom="#m" exponent="3"/>
+				</gml:DerivedUnit>
+			</gml:dictionaryEntry>
+			<!-- velocity -->
+			<gml:dictionaryEntry>
+				<gml:DerivedUnit gml:id="m_s">
+					<gml:name>metres per second</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:m_s</gml:name>
+					<gml:quantityType>velocity</gml:quantityType>
+					<gml:catalogSymbol>m/s</gml:catalogSymbol>
+					<gml:derivationUnitTerm uom="#m" exponent="1"/>
+					<gml:derivationUnitTerm uom="#s" exponent="-1"/>
+				</gml:DerivedUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="knot">
+					<gml:name>Nautical mile per hour</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:knot</gml:name>
+					<gml:quantityType>velocity</gml:quantityType>
+					<gml:catalogSymbol>knot</gml:catalogSymbol>
+					<gml:conversionToPreferredUnit uom="#m_s">
+						<gml:factor>0.514444444444444444444444444444444444444444444444444444444</gml:factor>
+					</gml:conversionToPreferredUnit>
+					<gml:derivationUnitTerm uom="#nautical_mile" exponent="1"/>
+					<gml:derivationUnitTerm uom="#hr" exponent="-1"/>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<!-- Acceleration -->
+			<gml:dictionaryEntry>
+				<gml:DerivedUnit gml:id="m_s2">
+					<gml:name>metres per second per second</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:m_s2</gml:name>
+					<gml:quantityType>acceleration</gml:quantityType>
+					<gml:catalogSymbol>m/m2</gml:catalogSymbol>
+					<gml:derivationUnitTerm uom="#m" exponent="1"/>
+					<gml:derivationUnitTerm uom="#s" exponent="-2"/>
+				</gml:DerivedUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="Gal">
+					<gml:name>Gal</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:Gal</gml:name>
+					<gml:quantityType>acceleration</gml:quantityType>
+					<gml:catalogSymbol>Gal</gml:catalogSymbol>
+					<gml:conversionToPreferredUnit uom="#m_s2">
+						<gml:factor>1.e-2</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="gu">
+					<gml:name>Gravity units</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:gu</gml:name>
+					<gml:quantityType>acceleration</gml:quantityType>
+					<gml:conversionToPreferredUnit uom="#m_s2">
+						<gml:factor>1.e-6</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+
+			<!-- Mass -->
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="g">
+					<gml:name>gram</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:u</gml:name>
+					<gml:quantityType>mass</gml:quantityType>
+					<gml:conversionToPreferredUnit uom="#kg">
+						<gml:factor>1.e-3</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="mg">
+					<gml:name>milligram</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:mg</gml:name>
+					<gml:quantityType>mass</gml:quantityType>
+					<gml:catalogSymbol>mg</gml:catalogSymbol>
+					<gml:conversionToPreferredUnit uom="#kg">
+						<gml:factor>1.e-6</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="ug">
+					<gml:name>microgram</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:ug</gml:name>
+					<gml:quantityType>mass</gml:quantityType>
+					<gml:conversionToPreferredUnit uom="#kg">
+						<gml:factor>1.e-9</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="lb">
+					<gml:name>pound</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:lb</gml:name>
+					<gml:quantityType>mass</gml:quantityType>
+					<gml:catalogSymbol>lb</gml:catalogSymbol>
+					<gml:conversionToPreferredUnit uom="#kg">
+						<gml:factor>0.45359237</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="oz">
+					<gml:name>ounce</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:oz</gml:name>
+					<gml:quantityType>mass</gml:quantityType>
+					<gml:catalogSymbol>oz</gml:catalogSymbol>
+					<gml:conversionToPreferredUnit uom="#kg">
+						<gml:factor>0.0283495</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="sack">
+					<gml:name>sack</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:sack</gml:name>
+					<gml:quantityType>mass</gml:quantityType>
+					<gml:catalogSymbol>sack</gml:catalogSymbol>
+					<gml:conversionToPreferredUnit uom="#kg">
+						<gml:factor>45.3592</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="sk94">
+					<gml:name>sk94</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:sk94</gml:name>
+					<gml:quantityType>mass</gml:quantityType>
+					<gml:catalogSymbol>sk94</gml:catalogSymbol>
+					<gml:conversionToPreferredUnit uom="#kg">
+						<gml:factor>42.6377</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="USTon">
+					<gml:name>US ton</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:USTon</gml:name>
+					<gml:quantityType>mass</gml:quantityType>
+					<gml:catalogSymbol>ton</gml:catalogSymbol>
+					<gml:conversionToPreferredUnit uom="#kg">
+						<gml:factor>907.18474</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="ImpTon">
+					<gml:name>Imperial ton</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:ImpTon</gml:name>
+					<gml:quantityType>mass</gml:quantityType>
+					<gml:catalogSymbol>ton</gml:catalogSymbol>
+					<gml:conversionToPreferredUnit uom="#kg">
+						<gml:factor>1016.0469</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="slug">
+					<gml:name>slug</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:slug</gml:name>
+					<gml:quantityType>mass</gml:quantityType>
+					<gml:catalogSymbol>slug</gml:catalogSymbol>
+					<gml:conversionToPreferredUnit uom="#kg">
+						<gml:factor>14.593903</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<!-- Pressure -->
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="MPa">
+					<gml:name>MegaPascal</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:MPa</gml:name>
+					<gml:quantityType>pressure</gml:quantityType>
+					<gml:catalogSymbol>MPa</gml:catalogSymbol>
+					<gml:conversionToPreferredUnit uom="#Pa">
+						<gml:factor>1.e-6</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="hPa">
+					<gml:name>hectoPascal</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:hPa</gml:name>
+					<gml:quantityType>pressure</gml:quantityType>
+					<gml:catalogSymbol>hPa</gml:catalogSymbol>
+					<gml:conversionToPreferredUnit uom="#Pa">
+						<gml:factor>1.e-2</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="kbar">
+					<gml:name>kilobar</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:kbar</gml:name>
+					<gml:quantityType>pressure</gml:quantityType>
+					<gml:catalogSymbol>kbar</gml:catalogSymbol>
+					<gml:conversionToPreferredUnit uom="#Pa">
+						<gml:factor>1.e8</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="bar">
+					<gml:name>bar</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:bar</gml:name>
+					<gml:quantityType>pressure</gml:quantityType>
+					<gml:catalogSymbol>bar</gml:catalogSymbol>
+					<gml:conversionToPreferredUnit uom="#Pa">
+						<gml:factor>1.e5</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="mbar">
+					<gml:name>milliBar</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:mbar</gml:name>
+					<gml:quantityType>pressure</gml:quantityType>
+					<gml:catalogSymbol>mbar</gml:catalogSymbol>
+					<gml:conversionToPreferredUnit uom="#Pa">
+						<gml:factor>1.e-1</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="atm">
+					<gml:name>Atmosphere</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:atm</gml:name>
+					<gml:quantityType>pressure</gml:quantityType>
+					<gml:catalogSymbol>atm</gml:catalogSymbol>
+					<gml:conversionToPreferredUnit uom="#Pa">
+						<gml:factor>101325</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="psi">
+					<gml:name>Pound per square inch</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:psi</gml:name>
+					<gml:quantityType>pressure</gml:quantityType>
+					<gml:catalogSymbol>psi</gml:catalogSymbol>
+					<gml:conversionToPreferredUnit uom="#Pa">
+						<gml:factor>6894.76</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<!-- Force -->
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="dyne">
+					<gml:name>dyne</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:dyne</gml:name>
+					<gml:quantityType>force</gml:quantityType>
+					<gml:catalogSymbol>dyne</gml:catalogSymbol>
+					<gml:conversionToPreferredUnit uom="#N">
+						<gml:factor>1.e-5</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<!-- Energy and Power -->
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="hp">
+					<gml:name>horsepower</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:hp</gml:name>
+					<gml:quantityType>power</gml:quantityType>
+					<gml:catalogSymbol>hp</gml:catalogSymbol>
+					<gml:conversionToPreferredUnit uom="#W">
+						<gml:factor>746</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+		<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="erg">
+					<gml:name>erg</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:erg</gml:name>
+					<gml:quantityType>energy</gml:quantityType>
+					<gml:catalogSymbol>erg</gml:catalogSymbol>
+					<gml:conversionToPreferredUnit uom="#J">
+						<gml:factor>1.e-7</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="cal">
+					<gml:name>Calorie</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:cal</gml:name>
+					<gml:quantityType>energy</gml:quantityType>
+					<gml:catalogSymbol>cal</gml:catalogSymbol>
+					<gml:conversionToPreferredUnit uom="#J">
+						<gml:factor>4.1868</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="kJ">
+					<gml:name>kiloJoule</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:kJ</gml:name>
+					<gml:quantityType>energy</gml:quantityType>
+					<gml:catalogSymbol>kJ</gml:catalogSymbol>
+					<gml:conversionToPreferredUnit uom="#J">
+						<gml:factor>1.e3</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:DerivedUnit gml:id="kJ_Nm3">
+					<gml:name>kilojoules per Newton metre</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:kJ_Nm3</gml:name>
+					<gml:quantityType>Point of evaporation</gml:quantityType>
+					<gml:derivationUnitTerm uom="#kJ" exponent="1"/>
+					<gml:derivationUnitTerm uom="#N" exponent="-1"/>
+					<gml:derivationUnitTerm uom="#m" exponent="-3"/>
+				</gml:DerivedUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:DerivedUnit gml:id="W_m2">
+					<gml:name>Watts per square metre</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:W_m2</gml:name>
+					<gml:quantityType>Heat flux</gml:quantityType>
+					<gml:derivationUnitTerm uom="#W" exponent="1"/>
+					<gml:derivationUnitTerm uom="#m" exponent="-2"/>
+				</gml:DerivedUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="hfu">
+					<gml:name>heat flux unit</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:hfu</gml:name>
+					<gml:quantityType>Heat flux</gml:quantityType>
+					<gml:conversionToPreferredUnit uom="#W_m2">
+						<gml:factor>4.868e-2</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<!-- Concentration and density -->
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="g_l">
+					<gml:name>grams per litre</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:g_l</gml:name>
+					<gml:quantityType>w/v concentration</gml:quantityType>
+					<gml:conversionToPreferredUnit uom="#kg_m3">
+						<gml:factor>1.</gml:factor>
+					</gml:conversionToPreferredUnit>
+					<gml:derivationUnitTerm uom="#g" exponent="1"/>
+					<gml:derivationUnitTerm uom="#l" exponent="-1"/>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="ug_m3">
+					<gml:name>micrograms per cubic metre</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:ug_m3</gml:name>
+					<gml:quantityType>w/v concentration</gml:quantityType>
+					<gml:conversionToPreferredUnit uom="#kg_m3">
+						<gml:factor>1.e-9</gml:factor>
+					</gml:conversionToPreferredUnit>
+					<gml:derivationUnitTerm uom="#ug" exponent="1"/>
+					<gml:derivationUnitTerm uom="#m" exponent="-3"/>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:DerivedUnit gml:id="kg_m3">
+					<gml:name>kilograms per cubic metre</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:kg_m3</gml:name>
+					<gml:quantityType>Density</gml:quantityType>
+					<gml:derivationUnitTerm uom="#kg" exponent="1"/>
+					<gml:derivationUnitTerm uom="#m" exponent="-3"/>
+				</gml:DerivedUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="T_m3">
+					<gml:name>Tonnes per cubic metre</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:T_m3</gml:name>
+					<gml:quantityType>Density</gml:quantityType>
+					<gml:conversionToPreferredUnit uom="#kg_m3">
+						<gml:factor>1000.</gml:factor>
+					</gml:conversionToPreferredUnit>
+					<gml:derivationUnitTerm uom="#T" exponent="1"/>
+					<gml:derivationUnitTerm uom="#m" exponent="-3"/>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<!-- Dimensionless ratios -->
+			<gml:dictionaryEntry>
+				<gml:UnitDefinition gml:id="scale">
+					<gml:name>scale</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:scale</gml:name>
+					<gml:quantityType>scale</gml:quantityType>
+				</gml:UnitDefinition>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="ratio">
+					<gml:name>ratio</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:ratio</gml:name>
+					<gml:quantityType>scale</gml:quantityType>
+					<gml:catalogSymbol>1</gml:catalogSymbol>
+					<gml:conversionToPreferredUnit uom="scale">
+						<gml:factor>1</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="percent">
+					<gml:name>percent</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:percent</gml:name>
+					<gml:quantityType>scale</gml:quantityType>
+					<gml:catalogSymbol>%</gml:catalogSymbol>
+					<gml:conversionToPreferredUnit uom="scale">
+						<gml:factor>0.01</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="ppm">
+					<gml:name>parts per million</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:ppm</gml:name>
+					<gml:quantityType>scale</gml:quantityType>
+					<gml:catalogSymbol>ppm</gml:catalogSymbol>
+					<gml:conversionToPreferredUnit uom="scale">
+						<gml:factor>1.e-6</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="ppb">
+					<gml:name>parts per billiion</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:ppb</gml:name>
+					<gml:quantityType>scale</gml:quantityType>
+					<gml:catalogSymbol>ppb</gml:catalogSymbol>
+					<gml:conversionToPreferredUnit uom="scale">
+						<gml:factor>1.e-9</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<!-- Viscosity -->
+			<gml:dictionaryEntry>
+				<gml:DerivedUnit gml:id="kappa">
+					<gml:name>kappa</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:kappa</gml:name>
+					<gml:quantityType>kinematic viscosity </gml:quantityType>
+					<gml:catalogSymbol>k</gml:catalogSymbol>
+					<gml:derivationUnitTerm uom="#Pa" exponent="1"/>
+					<gml:derivationUnitTerm uom="#m" exponent="-3"/>
+				</gml:DerivedUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:DerivedUnit gml:id="Pas">
+					<gml:name>poiseuille</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:Pas</gml:name>
+					<gml:quantityType>dynamic viscosity</gml:quantityType>
+					<gml:catalogSymbol> Pa.s</gml:catalogSymbol>
+					<gml:derivationUnitTerm uom="#Pa" exponent="1"/>
+					<gml:derivationUnitTerm uom="#s" exponent="1"/>
+				</gml:DerivedUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="Poise">
+					<gml:name>Poise</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:Poise</gml:name>
+					<gml:quantityType>dynamic viscosity</gml:quantityType>
+					<gml:catalogSymbol>po</gml:catalogSymbol>
+					<gml:conversionToPreferredUnit uom="#Pa.s">
+						<gml:factor>0.1</gml:factor>
+					</gml:conversionToPreferredUnit>
+					<gml:derivationUnitTerm uom="#cm" exponent="-1"/>
+					<gml:derivationUnitTerm uom="#g" exponent="1"/>
+					<gml:derivationUnitTerm uom="#s" exponent="1"/>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="slug_fts">
+					<gml:name>slugs/foot-second</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:slug_fts</gml:name>
+					<gml:quantityType>dynamic viscosity</gml:quantityType>
+					<gml:catalogSymbol>slug/fts</gml:catalogSymbol>
+					<gml:conversionToPreferredUnit uom="#Pa.s">
+						<gml:factor>47.9</gml:factor>
+					</gml:conversionToPreferredUnit>
+					<gml:derivationUnitTerm uom="#slug" exponent="1"/>
+					<gml:derivationUnitTerm uom="#ft" exponent="-1"/>
+					<gml:derivationUnitTerm uom="#s" exponent="-1"/>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<!-- Electromagnetism -->
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="gauss">
+					<gml:name>Gauss</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:gauss</gml:name>
+					<gml:quantityType>magnetic flux density</gml:quantityType>
+					<gml:conversionToPreferredUnit uom="#T">
+						<gml:factor>1.e-4</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="mV">
+					<gml:name>mllivolt</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:mV</gml:name>
+					<gml:quantityType>electric potential difference, electromotive force</gml:quantityType>
+					<gml:conversionToPreferredUnit uom="#V">
+						<gml:factor>1.e-3</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="uV">
+					<gml:name>microvolt</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:uV</gml:name>
+					<gml:quantityType>electric potential difference, electromotive force</gml:quantityType>
+					<gml:conversionToPreferredUnit uom="#V">
+						<gml:factor>1.e-6</gml:factor>
+					</gml:conversionToPreferredUnit>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+		</gml:Dictionary>
+	</gml:dictionaryEntry>
+	<!-- Added for OWS3-SWE by Mark Priest, commented out by by Simon Cox -->
+					<!-- Relative humidity is grams of water per cubic meter of air divided by the maximum saturation value of air in grams per cubic meter at the current temperature -->
+					<!-- the uom is just percent. the phenomenon is relative humidity. This definition conflates the two and is thus incorrect - use #percent instead 
+			<gml:dictionaryEntry>
+				<gml:ConventionalUnit gml:id="RelHum">
+					<gml:name>RelHumPercent</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:uom:OGC:RelHum</gml:name>
+					<gml:quantityType>concentration</gml:quantityType>
+					<gml:catalogSymbol codeSpace="unknown">RH%</gml:catalogSymbol>
+					<gml:derivationUnitTerm uom="#g" exponent="1"/>
+					<gml:derivationUnitTerm uom="#m" exponent="-3"/>
+					<gml:derivationUnitTerm uom="#g" exponent="-1"/>
+					<gml:derivationUnitTerm uom="#m" exponent="3"/>
+				</gml:ConventionalUnit>
+			</gml:dictionaryEntry>
+			 -->
+</gml:Dictionary>

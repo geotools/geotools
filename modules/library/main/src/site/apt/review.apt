@@ -1,0 +1,375 @@
+MODULE MAIN
+~~~~~~~~~~~
+
+  Module Maintainer: Jody Garnett
+
+    * feature
+
+    * filter & expression
+
+    * styling
+
+  IP Review:
+
+    * Martin, Feb 1st, 2006
+
+    * Jody Garnett, July 24th, 2006
+
+    * Adrian Custer, June 6th 2008
+    
+    * Jody Garnett, July 25h, 2008
+
+
+  STATUS: CLEAN, one mixed copyright file
+
+    Presumed acqusition of code (C) 2002, Centre for Computational Geography
+    
+    geotools.feature.type.DateUtil.java has (C) Denis Sosnoski with a second,
+     apparently compatible license.
+
+
+  Welcome to the "main" module, this module started out built around core. For GeoTools 2.0 (and
+  the move to subversion), default implementations from several existing modules were merged in
+  order to limit developer confusion.  These origional modules are still tracked (and where named
+  obvious things like feature, filter, style,....).
+
+  Much of the origional code comes from the dawn of time - say 1996 but was only punted together
+  under a GeoTools PMC (C) in 2002 as part of a merge of the existing GeoTools project with the
+  work of Martin.
+
+
+* org.geotools.data
+  ~~~~~~~~~~~~~~~~~
+  The contents of the data package were overhalled for the GeoTools 2.0 release, 
+  this package contains the default implementations, and a bit more utility 
+  classes then can be sensibly figured out.
+
+
+* org.geotools.data.collection
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Included to clean up code as part of GeoTools 2.2, common utility classes.
+
+
+* org.geotools.data.coverage.grid.[file|stream]
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Part of initial grid coverage work for uDig project, at least one file contained 
+  an incorrect header with (C) Refractions Reserach. Since this code was never 
+  released as part of uDig, this was simply a developer mistake.
+
+
+* org.geotools.data.crs
+  ~~~~~~~~~~~~~~~~~~~~~
+  Initially created for GeoTools 2.0 to provide reader implementations for 
+  reprojection / forceprojection, initial AuthorityFactory interface provided for 
+  GeoTools 2.1 since deprecated and moved to referencing.
+
+* org.geotools.data.memory
+  ~~~~~~~~~~~~~~~~~~~~~~~~
+  Created as the API proof of concept for GeoTools 2.0 DataStore API. MemoryDataStore 
+  added for GeoTools 2.0 (although really a port of DefaulFeatureCollection).
+
+
+* org.geotools.data.ows
+  ~~~~~~~~~~~~~~~~~~~~~
+  Added to support OGC Open Web Services constructs, for WMS client code and WFS
+  datastore code. Implemened for GeoTools 2.1 as part of the uDig project.
+
+
+* org.geotools.data.store
+  ~~~~~~~~~~~~~~~~~~~~~~~
+  Remaining code from first cut at supporting metadata, code retained as the start 
+  of a replacement for AbstractDataStore based on what we have learned. Code 
+  origionally based on GeoServer internals, for end product see the catalog 
+  package.
+
+
+* org.geotools.data.view
+  ~~~~~~~~~~~~~~~~~~~~~~
+  Support read only view on feature source information, port of internal GPL 
+  GeoServer code donated to PMC.
+
+
+* org.geotools.event
+  ~~~~~~~~~~~~~~~~~~
+  Added for GeoTools 2.2 as part of adding events to the SLD documents. Origionally based
+  on uDig catalog event system - compare and contrast (or bloody well merge) with the
+  current catalog package.
+
+* org.geotools.factory
+  ~~~~~~~~~~~~~~~~~~~~
+  Implementation to help find GeoAPI factories on the classpath.
+
+
+* org.geotools.feature
+  ~~~~~~~~~~~~~~~~~~~~
+  Feature model used since before GeoTools 2.0. Changed to use of FeatureCollection for
+  data results for GeoTools 2.1, and added FeatureVisitor for GeoTools 2.2. 
+  There seems to be lots of dead code in here - the FM branch cannot merge soon enough.
+
+
+* org.geotools.feature.collection
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Helper classes for feature collections added in GeoTools 2.2.
+
+
+* org.geotools.feature.type
+  ~~~~~~~~~~~~~~~~~~~~~~~~~
+  Congruent with the feature package, this tracts the feature model, this code
+  predates GeoTools 2.0.
+
+    * DateUtils contains the following Header:
+
+------------------------------------------------------------------------------------
+/*
+   Copyright (c) 2002-2004, Dennis M. Sosnoski.
+   All rights reserved.
+   Redistribution and use in source and binary forms, with or without modification,
+   are permitted provided that the following conditions are met:
+ * Redistributions of source code must retain the above copyright notice, this
+      list of conditions and the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright notice,
+      this list of conditions and the following disclaimer in the documentation
+      and/or other materials provided with the distribution.
+ * Neither the name of JiBX nor the names of its contributors may be used
+      to endorse or promote products derived from this software without specific
+      prior written permission.
+   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+   ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+   WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+   DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+   ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+   (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+   LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+   ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+------------------------------------------------------------------------------------
+ 
+    * copied a SosnoskiLICENSE.txt
+
+
+* org.geotools.feature.visitor
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Added for GeoTools2.2 as the brains behind aggregate functions.
+
+
+* org.geotools.filter
+  ~~~~~~~~~~~~~~~~~~~
+  Original pre GeoTools 2.0 code, revised to agree with Filter 1.1 specification 
+  for GeoTools 2.2, and then subclassed from GeoAPI for GeoTools 2.3.
+
+
+* org.geotools.filter.expression
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  All files added by justin as part GeoTools 2.3 move to GeoAPI interfaces.
+
+
+* org.geotools.filter.function.[math]
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Contains a mix of interesting functions, some of which are auto generated. Most 
+  date from GeoTools 2.1 timeframe as they are used to provided a better SLD 
+  experience for GeoServer. GeoTools 2.2 has introduced some aggregation functions 
+  wrapped over the visitor framework.
+
+
+* org.geotools.filter.parser
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Contains jcc parser file, for filter parser, dates from GeoTools 2.0.
+
+
+* org.geotools.filter.spatial
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Explicit implementation for filter functions, broken out by GeoAPI interface for 
+  GeoTools 2.3.
+
+
+* org.geotools.filter.visitor
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Contains visitors used to process filters, range of implementations over the 
+  geotools timeline.
+
+
+* org.geotools.geometry
+  ~~~~~~~~~~~~~~~~~~~~~
+  JTS utility class, deprecated and moved somewhere else...
+
+
+* org.geotools.geometry.coordinatesequence
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Implementations pluggin into JTS for specific benifits (speed, space etc...).
+
+
+* org.geotools.geometry.jts
+  ~~~~~~~~~~~~~~~~~~~~~~~~~
+  JTS support classes, care and feeding of....
+
+
+* org.geotools.gml
+  ~~~~~~~~~~~~~~~~
+  Looks to be the home of the sax and dom based GML parser code.
+
+
+* org.geotools.gml.producer
+  ~~~~~~~~~~~~~~~~~~~~~~~~~
+  Front end to the GML transformer code, produces GML from feature collections 
+  etc.
+
+
+* org.geotools.map.[event]
+  ~~~~~~~~~~~~~~~~~~~~~~~~
+  MapContext care and handling, model used by rendering (should move to API when 
+  based on a standard?)
+
+
+* org.geotools.ows
+  ~~~~~~~~~~~~~~~~
+  Contains a simple exception...
+
+
+* org.geotools.styling
+  ~~~~~~~~~~~~~~~~~~~~
+  Implementation of styling interfaces for Filter 1.0, updated in GeoTools 2.2 for 
+  Filter 1.1.
+
+
+* org.geotools.styling.visitor
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  One implementation of a style visitor, intended to duplicate content.
+
+
+* org.geotools.util
+  ~~~~~~~~~~~~~~~~~
+  Grab bag utils, some are JTS specific and should be moved etc...
+
+    * TODO: require LGPL copyright header
+
+    * javadocs needed w/ "@since 2.4"
+
+
+* org.geotools.xml
+  ~~~~~~~~~~~~~~~~
+  Entry point to XDO style parsing.
+
+
+* org.geotools.xml.filter
+  ~~~~~~~~~~~~~~~~~~~~~~~
+  Parsing elements / complex types for filter goodness
+
+
+* org.geotools.xml.gml
+  ~~~~~~~~~~~~~~~~~~~~
+  GML constructs for XDO style parser.
+
+
+* org.geotools.xml.handlers
+  ~~~~~~~~~~~~~~~~~~~~~~~~~
+  Handlers (like min SAX parsers) for base XML constructs.
+
+
+* org.geotools.xml.handlers.xsi
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Handlers (like min SAX parsers) for each kind of content.
+
+
+* org.geotools.xml.schema
+  ~~~~~~~~~~~~~~~~~~~~~~~
+  Interfaces for XDO style parsing handlers based on base XMLSchema elements.
+
+ 
+* org.geotools.xml.schema.impl
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Implementation of XDO style parsing handlers based on base XMLSchema elements.
+
+ 
+* org.geotools.xml.styling
+  ~~~~~~~~~~~~~~~~~~~~~~~~
+  Generated using a refractions (C) code generator according to class comment.
+
+
+* org.geotools.xml.transform
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Original traditional XML transformer code from GeoTools 2.0.
+
+ 
+* org.geotools.xml.xLink
+  ~~~~~~~~~~~~~~~~~~~~~~
+  Utility class for XDO based xml parsing added for GeoTools 2.1.
+
+ 
+* org.geotools.xml.xsi
+  ~~~~~~~~~~~~~~~~~~~~
+  Utility class for XDO based xml parsing added for GeoTools 2.1.
+
+
+* org.geotoools (test)
+  ~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.data.[collection] (test)
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.data.coverage.grid.[file|stream].test (test)
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.data.jdbc (test)
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.data.memory (test)
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.feature (test)
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.feature.visitor (test)
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.filter (test)
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.filter.function (test)
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.filter.function.math (test)
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.filter.visitor (test)
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.geometry (test)
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.geometry.jts (test)
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.map (test)
+  ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.styling (test)
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Test data .sld files generated by the community. Additional .sld files for raster symbolizer added by Emily in July 2008.
+
+* org.geotools.styling.visitor (test)
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.xml (test)
+  ~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.xml.ogc (test)
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns:gml="http://www.opengis.net/gml" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:sa="http://www.opengis.net/sampling" targetNamespace="http://www.opengis.net/sampling" elementFormDefault="qualified" attributeFormDefault="unqualified" version="pre-release">
+	<!-- ==================================================================        -->
+	<annotation>
+		<documentation>
+LUTgeodesy.xsd
+
+Codelists used in geodesy and surveying
+
+2003-07-15
+
+Copyright (c) 2004 CSIRO - see https://www.seegrid.csiro.au/twiki/bin/view/Xmml/LegalNotices#Software_Notice
+</documentation>
+	</annotation>
+	<!-- ==================================================================        -->
+	<simpleType name="projections">
+		<annotation>
+			<documentation>Projected coordinate reference systems (equivalent code from EPSG Geodetic reference systems database v6.3)</documentation>
+		</annotation>
+		<union>
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="MGA48">
+						<annotation>
+							<documentation>Map grid of Australia zone 48 - EPSG projected CRS code 28348</documentation>
+						</annotation>
+					</enumeration>
+					<enumeration value="MGA49">
+						<annotation>
+							<documentation>Map grid of Australia zone 49 - EPSG projected CRS code 28349</documentation>
+						</annotation>
+					</enumeration>
+					<enumeration value="MGA50">
+						<annotation>
+							<documentation>Map grid of Australia zone 50 - EPSG projected CRS code 28350</documentation>
+						</annotation>
+					</enumeration>
+					<enumeration value="MGA51">
+						<annotation>
+							<documentation>Map grid of Australia zone 51 - EPSG projected CRS code 28351</documentation>
+						</annotation>
+					</enumeration>
+					<enumeration value="MGA52">
+						<annotation>
+							<documentation>Map grid of Australia zone 52 - EPSG projected CRS code 28352</documentation>
+						</annotation>
+					</enumeration>
+					<enumeration value="MGA53">
+						<annotation>
+							<documentation>Map grid of Australia zone 53 - EPSG projected CRS code 28353</documentation>
+						</annotation>
+					</enumeration>
+					<enumeration value="MGA54">
+						<annotation>
+							<documentation>Map grid of Australia zone 54 - EPSG projected CRS code 28354</documentation>
+						</annotation>
+					</enumeration>
+					<enumeration value="MGA55">
+						<annotation>
+							<documentation>Map grid of Australia zone 55 - EPSG projected CRS code 28355</documentation>
+						</annotation>
+					</enumeration>
+					<enumeration value="MGA56">
+						<annotation>
+							<documentation>Map grid of Australia zone 56 - EPSG projected CRS code 28356</documentation>
+						</annotation>
+					</enumeration>
+					<enumeration value="MGA57">
+						<annotation>
+							<documentation>Map grid of Australia zone 57 - EPSG projected CRS code 28357</documentation>
+						</annotation>
+					</enumeration>
+					<enumeration value="MGA58">
+						<annotation>
+							<documentation>Map grid of Australia zone 58 - EPSG projected CRS code 28358</documentation>
+						</annotation>
+					</enumeration>
+				</restriction>
+			</simpleType>
+			<simpleType>
+				<restriction base="string">
+					<pattern value="other:\w{2,}"/>
+				</restriction>
+			</simpleType>
+		</union>
+	</simpleType>
+	<!-- ================================================================== -->
+	<simpleType name="gDatums">
+		<annotation>
+			<documentation>Geodetic datums (equivalent code from EPSG Geodetic reference systems database v6.3)</documentation>
+		</annotation>
+		<union>
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="AGD66">
+						<annotation>
+							<documentation>Australian geodetic datum 1966 - lon-lat/DD - no epsg code</documentation>
+						</annotation>
+					</enumeration>
+					<enumeration value="WGS84(DMSH)">
+						<annotation>
+							<documentation>World Geodetic System 1984 - lon-lat/DMSH - as in epsg:4326 but with axis order switched</documentation>
+						</annotation>
+					</enumeration>
+					<enumeration value="WGS84">
+						<annotation>
+							<documentation>World Geodetic System 19845 - lon-lat/DD - as in epsg:6326640 but with axis order switched</documentation>
+						</annotation>
+					</enumeration>
+					<enumeration value="AGD84">
+						<annotation>
+							<documentation>Australian geodetic datum 1984 - lon-lat/DD - as in epsg:62036405 but with axis order switched</documentation>
+						</annotation>
+					</enumeration>
+					<enumeration value="GDA94">
+						<annotation>
+							<documentation>Geodetic datum of Australia 1994 - lon-lat/DD - as in epsg:62836405 but with axis order switched</documentation>
+						</annotation>
+					</enumeration>
+					<enumeration value="GDA94(3D)">
+						<annotation>
+							<documentation>Geodetic datum of Australia 1994 - lon-lat-h/DDm - as in epsg:62836413 but with 2D axis order switched</documentation>
+						</annotation>
+					</enumeration>
+				</restriction>
+			</simpleType>
+			<simpleType>
+				<restriction base="string">
+					<pattern value="other:\w{2,}"/>
+				</restriction>
+			</simpleType>
+		</union>
+	</simpleType>
+	<!-- ================================================================== -->
+	<simpleType name="vDatums">
+		<annotation>
+			<documentation>Height datums (equivalent code from EPSG Geodetic reference systems database v6.3)</documentation>
+		</annotation>
+		<union>
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="AHD">
+						<annotation>
+							<documentation>Australian height datum - epsg:5711</documentation>
+						</annotation>
+					</enumeration>
+				</restriction>
+			</simpleType>
+			<simpleType>
+				<restriction base="string">
+					<pattern value="other:\w{2,}"/>
+				</restriction>
+			</simpleType>
+		</union>
+	</simpleType>
+	<!-- ================================================================== -->
+	<simpleType name="elevationMethodType">
+		<annotation>
+			<documentation>Codes used in the Geoscience Australia corporate database http://www.ga.gov.au/oracle/#online</documentation>
+		</annotation>
+		<union>
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="MAP">
+						<annotation>
+							<documentation>Height is picked off a topographic map</documentation>
+						</annotation>
+					</enumeration>
+					<enumeration value="PGE">
+						<annotation>
+							<documentation>Height computed from pressure gauge readings</documentation>
+						</annotation>
+					</enumeration>
+					<enumeration value="MIB">
+						<annotation>
+							<documentation>Micro-barometer recording technique</documentation>
+						</annotation>
+					</enumeration>
+					<enumeration value="DRB">
+						<annotation>
+							<documentation>Digitally recording barometer technique</documentation>
+						</annotation>
+					</enumeration>
+					<enumeration value="PHG">
+						<annotation>
+							<documentation>Heights determined by photogrammetry</documentation>
+						</annotation>
+					</enumeration>
+					<enumeration value="ALT">
+						<annotation>
+							<documentation>Heights measured by aircraft altimeter</documentation>
+						</annotation>
+					</enumeration>
+					<enumeration value="SAT">
+						<annotation>
+							<documentation>Height derived from satellite measurements</documentation>
+						</annotation>
+					</enumeration>
+					<enumeration value="SON">
+						<annotation>
+							<documentation>Water depths derived from sonar recording</documentation>
+						</annotation>
+					</enumeration>
+					<enumeration value="GPH">
+						<annotation>
+							<documentation>Hand held GPS height value (not very reliable)</documentation>
+						</annotation>
+					</enumeration>
+					<enumeration value="GPS">
+						<annotation>
+							<documentation>Heights derived from post processed or real time dual frequency GPS recording</documentation>
+						</annotation>
+					</enumeration>
+					<enumeration value="SUR">
+						<annotation>
+							<documentation>Heights determined by optical surveying methods or taken at surveyed points</documentation>
+						</annotation>
+					</enumeration>
+					<enumeration value="FOS">
+						<annotation>
+							<documentation>First order geodetic height determination</documentation>
+						</annotation>
+					</enumeration>
+				</restriction>
+			</simpleType>
+			<simpleType>
+				<restriction base="string">
+					<pattern value="other:\w{2,}"/>
+				</restriction>
+			</simpleType>
+		</union>
+	</simpleType>
+	<!-- ================================================================== -->
+	<simpleType name="positionMethodType">
+		<annotation>
+			<documentation>Alternative codes for the Geoscience Australia corporate database http://www.ga.gov.au/oracle/#online</documentation>
+		</annotation>
+		<restriction base="string">
+			<enumeration value="Unknown">
+				<annotation>
+					<documentation>0 Unknown</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="GPS">
+				<annotation>
+					<documentation>1 GPS</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="GPS2">
+				<annotation>
+					<documentation>2 GPS</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="GPS3">
+				<annotation>
+					<documentation>3 GPS</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="GPS4">
+				<annotation>
+					<documentation>4 GPS</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="Astronomical">
+				<annotation>
+					<documentation>5 Astronomical observation</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="Surveyed from ground control">
+				<annotation>
+					<documentation>6 Surveyed from ground control</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="Published report">
+				<annotation>
+					<documentation>7 Published report</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="Unpublished report">
+				<annotation>
+					<documentation>8 Unpublished report</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="Non-standard topographic map">
+				<annotation>
+					<documentation>10 Non-standard topographic map</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="25k topo map">
+				<annotation>
+					<documentation>11 - 1:25 000 topographic map</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="50k topo map">
+				<annotation>
+					<documentation>12 - 1:50 000 topographic map</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="100k topo map">
+				<annotation>
+					<documentation>13 - 1:100 000 topographic map</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="250k topo map">
+				<annotation>
+					<documentation>14 - 1:250 000 topographic map</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="500k topo map">
+				<annotation>
+					<documentation>15 - 1:500 000 topographic map</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="1M topo map">
+				<annotation>
+					<documentation>16 - 1:1 000 000 topographic map</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="Non-standard geological map">
+				<annotation>
+					<documentation>20 Non-standard geological map</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="25k geological map">
+				<annotation>
+					<documentation>21 - 1:25 000 geological map</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="50k geological map">
+				<annotation>
+					<documentation>22 - 1:50 000 geological map</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="100k geological map">
+				<annotation>
+					<documentation>23 - 1:100 000 geological map</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="250k geological map">
+				<annotation>
+					<documentation>24 - 1:250 000 geological map</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="500k geological map">
+				<annotation>
+					<documentation>25 - 1:500 000 geological map</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="1M geological map">
+				<annotation>
+					<documentation>26 - 1:1 000 000 geological map</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="Differential GPS - Survey quality">
+				<annotation>
+					<documentation>30 Differential GPS - Survey quality</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="Differential GPS">
+				<annotation>
+					<documentation>31 Differential GPS</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="Averaged GPS">
+				<annotation>
+					<documentation>35 Averaged GPS</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="Orthophoto">
+				<annotation>
+					<documentation>40 Orthophoto image</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="25k orthophoto">
+				<annotation>
+					<documentation>41 Orthophoto image 1:25 000 scale</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="Company supplied location - method unkown">
+				<annotation>
+					<documentation>50 Company supplied location - method unkown</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="State/NT supplied location - method unkown">
+				<annotation>
+					<documentation>51 State/NT supplied location - method unkown</documentation>
+				</annotation>
+			</enumeration>
+		</restriction>
+	</simpleType>
+	<!-- ==================================================================   -->
+	<simpleType name="detailedElevationMethodType">
+		<annotation>
+			<documentation>Codes used in the Geoscience Australia gravity database http://www.ga.gov.au/oracle/#online</documentation>
+		</annotation>
+		<union>
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="PGE">
+						<annotation>
+							<documentation>Height computed from pressure gauge readings</documentation>
+						</annotation>
+					</enumeration>
+					<enumeration value="MIB">
+						<annotation>
+							<documentation>Micro-barometer recording technique</documentation>
+						</annotation>
+					</enumeration>
+					<enumeration value="DRB">
+						<annotation>
+							<documentation>Digitally recording barometer technique</documentation>
+						</annotation>
+					</enumeration>
+					<enumeration value="RUL">
+						<annotation>
+							<documentation>Height above ground surface measured by ruler</documentation>
+						</annotation>
+					</enumeration>
+					<enumeration value="ALT">
+						<annotation>
+							<documentation>Heights measured by aircraft altimeter</documentation>
+						</annotation>
+					</enumeration>
+					<enumeration value="EST">
+						<annotation>
+							<documentation>Height difference estimated from equipment type</documentation>
+						</annotation>
+					</enumeration>
+				</restriction>
+			</simpleType>
+			<simpleType>
+				<restriction base="string">
+					<pattern value="other:\w{2,}"/>
+				</restriction>
+			</simpleType>
+		</union>
+	</simpleType>
+	<!-- ================================================================== -->
+</schema>

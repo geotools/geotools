@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- IUGS/CGI GeoSciML schema, ver. 1 - draft 2005-10-19 -->
+<!-- Contains the concepts (classes), their inheritance, and relations from the geologicRelation package of the GeoSciML model -->
+<!-- GeoSciML Testbed-2 Model -->
+<schema xmlns:gml="http://www.opengis.net/gml" xmlns="http://www.w3.org/2001/XMLSchema"
+  xmlns:gsml="http://www.cgi-iugs.org/xml/GeoSciML/1" targetNamespace="http://www.cgi-iugs.org/xml/GeoSciML/1"
+  elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.0">
+  <annotation>
+    <documentation>geologicRelation.xsd</documentation>
+  </annotation>
+  <!--=======================-->
+  <import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd" />
+  <!--=======================-->
+  <include schemaLocation="top.xsd" />
+  <!--=======================-->
+  <!-- 
+  NOTE: added by Gabriel because they're not found
+   -->
+  <complexType name="GeologicRelationType">
+    <sequence>
+    </sequence>
+  </complexType>
+  <complexType name="GeologicFeaturePropertyType">
+    <sequence>
+    </sequence>
+  </complexType>
+   
+   <!-- /NOTE -->
+   
+  <complexType name="GeologicFeatureRelationType">
+    <complexContent>
+      <extension base="gsml:GeologicRelationType">
+        <sequence>
+          <element name="source" type="gsml:GeologicFeaturePropertyType" />
+          <element name="target" type="gsml:GeologicFeaturePropertyType" />
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <!-- ..................... -->
+  <element name="GeologicFeatureRelation" type="gsml:GeologicFeatureRelationType"
+    substitutionGroup="gsml:GeologicRelation" />
+  <!--=======================-->
+</schema>

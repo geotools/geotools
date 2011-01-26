@@ -1,0 +1,14 @@
+Plugin EPSG-ORACLE
+~~~~~~~~~~~~~~~~~~
+
+  Module Maintainer: Jody Garnett
+
+  IP Review:
+
+    * Adrian Custer, June 2008
+
+
+  STATUS: Clean.
+
+
+ The EPSG-ORACLE module is derived from the EPSG-POSTGRES module.

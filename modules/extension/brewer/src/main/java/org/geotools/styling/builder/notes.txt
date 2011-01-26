@@ -1,0 +1,10 @@
+
+TODO
+-----------------------------------------------
+- some default objects are missing in our API
+- text and raster symbolizer builders are missing
+- deal with the few deprecated items
+- should the builder validate the inputs? (null URL, negative scales?)
+- shall we build the upper layer as well (StyledLayerDescriptorBuilder?)
+- pass down the style factory from parent to child and have each
+  accept it in the constructor as well

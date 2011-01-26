@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<swe:RecordDefinition gml:id="weather1" recordLength="6" 
+xmlns:xst="http://www.seegrid.csiro.au/xml/st" 
+xmlns:swe="http://www.opengis.net/swe" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xmlns:xlink="http://www.w3.org/1999/xlink"                      
+xmlns:gml="http://www.opengis.net/gml" 
+xsi:schemaLocation="http://www.opengis.net/swe ../recordSchema.xsd">
+	<gml:name>Weather 1</gml:name>
+	<swe:component>
+		<swe:ItemDefinition gml:id="at1">
+			<gml:name>Air Temperature</gml:name>
+			<swe:property xlink:href="urn:x-ogc:def:phenomenon:OGC:AirTemperature"/>
+			<swe:representation>
+				<swe:General>
+					<xst:restriction base="xst:decimal"/>
+					<gml:unitOfMeasure uom="urn:x-ogc:def:uom:OGC:degC"/>
+				</swe:General>
+			</swe:representation>
+		</swe:ItemDefinition>
+	</swe:component>
+	<swe:component>
+		<swe:ItemDefinition gml:id="ws1">
+			<gml:name>Wind Speed</gml:name>
+			<swe:property xlink:href="urn:x-ogc:def:phenomenon:OGC:WindSpeed"/>
+			<swe:representation>
+				<swe:General>
+					<xst:restriction base="xst:decimal">
+						<xst:minInclusive value="0.0"/>
+					</xst:restriction>
+					<gml:unitOfMeasure uom="urn:x-ogc:def:uom:OGC:m_s"/>
+				</swe:General>
+			</swe:representation>
+		</swe:ItemDefinition>
+	</swe:component>
+	<swe:component>
+		<swe:ItemDefinition gml:id="wd1">
+			<gml:name>Wind Direction</gml:name>
+			<swe:property xlink:href="urn:x-ogc:def:phenomenon:OGC:WindDirection"/>
+			<swe:representation>
+				<swe:General>
+					<xst:restriction base="xst:decimal">
+						<xst:minInclusive value="0.0"/>
+						<xst:maxExclusive value="360.0"/>
+					</xst:restriction>
+					<gml:unitOfMeasure uom="urn:x-ogc:def:uom:OGC:deg"/>
+					<swe:frame xlink:href="http://sweet.jpl.nasa.gov/ontology/space.owl#North"/>
+				</swe:General>
+			</swe:representation>
+		</swe:ItemDefinition>
+	</swe:component>
+	<swe:component>
+		<swe:ItemDefinition gml:id="ap1">
+			<gml:name>Atmospheric Pressure</gml:name>
+			<swe:property xlink:href="urn:x-ogc:def:phenomenon:OGC:AtmosphericPressure"/>
+			<swe:representation>
+				<swe:General>
+					<xst:restriction base="xst:decimal">
+						<xst:minInclusive value="0.0"/>
+					</xst:restriction>
+					<gml:unitOfMeasure uom="urn:x-ogc:def:uom:OGC:hPa"/>
+				</swe:General>
+			</swe:representation>
+		</swe:ItemDefinition>
+	</swe:component>
+	<swe:component>
+		<swe:ItemDefinition gml:id="rh1">
+			<gml:name>Relative Humidity</gml:name>
+			<swe:property xlink:href="urn:x-ogc:def:phenomenon:OGC:RelativeHumidity"/>
+			<swe:representation>
+				<swe:General>
+					<xst:restriction base="xst:decimal">
+						<xst:minInclusive value="0.0"/>
+						<xst:maxExclusive value="100.0"/>
+					</xst:restriction>
+					<gml:unitOfMeasure uom="urn:x-ogc:def:uom:OGC:percent"/>
+				</swe:General>
+			</swe:representation>
+		</swe:ItemDefinition>
+	</swe:component>
+	<swe:component>
+		<swe:ItemDefinition gml:id="vi1">
+			<gml:name>Visibility</gml:name>
+			<swe:property xlink:href="urn:x-ogc:def:phenomenon:OGC:Visibility"/>
+			<swe:representation>
+				<swe:General>
+					<xst:restriction base="xst:string"/>
+					<swe:classification xlink:href="urn:x-seegrid:definition:vocabulary:visibility"/>
+				</swe:General>
+			</swe:representation>
+		</swe:ItemDefinition>
+	</swe:component>
+</swe:RecordDefinition>

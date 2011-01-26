@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gml="http://www.opengis.net/gml" xmlns:geo="http://www.seegrid.csiro.au/xml/geometry" xmlns:sa="http://www.seegrid.csiro.au/xml/sampling" xmlns:swe="http://www.opengis.net/swe/0.0" xmlns:om="http://www.opengis.net/om" xmlns:xmml="http://www.opengis.net/xmml" targetNamespace="http://www.opengis.net/xmml" elementFormDefault="qualified" attributeFormDefault="unqualified" version="pre-release">
+	<annotation>
+		<documentation source="xw:CoveragesInXmml">coverage.xsd
+
+A GML conformant schema 
+for coverages - modified from GML coverages
+
+Copyright (c) 2005 CSIRO - see https://www.seegrid.csiro.au/twiki/bin/view/Xmml/LegalNotices#Software_Notice</documentation>
+	</annotation>
+	<!-- ====================================================================== -->
+	<!-- bring in other schemas -->
+	<import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+	<import namespace="http://www.seegrid.csiro.au/xml/geometry" schemaLocation="../../geo/0.1.0/geo.xsd"/>
+	<import namespace="http://www.seegrid.csiro.au/xml/sampling" schemaLocation="../../sampling/0.1.0/sampling.xsd"/>
+	<import namespace="http://www.opengis.net/swe/0.0" schemaLocation="../../sweCommon/1.0.30/swe.xsd"/>
+	<import namespace="http://www.opengis.net/om" schemaLocation="../../om/1.0.30/om.xsd"/>
+	<include schemaLocation="./coverage.xsd"/>
+	<!-- ====================================================================== -->
+	<!-- =========================================================== -->
+	<element name="curveDomain" type="xmml:CurveDomainType"/>
+	<!-- ...... -->
+	<complexType name="CurveDomainType">
+		<sequence minOccurs="0">
+			<element ref="gml:MultiCurve"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+	<element name="CurveCoverage" type="xmml:CurveCoverageType" substitutionGroup="xmml:AbstractCoverage"/>
+	<!-- ...... -->
+	<complexType name="CurveCoverageType">
+		<complexContent>
+			<extension base="xmml:AbstractCoverageType">
+				<sequence>
+					<element ref="xmml:curveDomain"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- =========================================================== -->
+	<!-- ===========================================================
+	<element name="tinDomain" type="xmml:TinDomainType"/> -->
+	<!-- ......
+	<complexType name="TinDomainType">
+		<sequence minOccurs="0">
+			<element ref="gml:Tin"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType> -->
+	<!-- ======================================================================
+	<element name="TinCoverage" type="xmml:TinCoverageType" substitutionGroup="xmml:AbstractCoverage"/> -->
+	<!-- ......
+	<complexType name="TinCoverageType">
+		<complexContent>
+			<extension base="xmml:AbstractCoverageType">
+				<sequence>
+					<element ref="xmml:tinDomain"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType> -->
+	<!-- =========================================================== -->
+	<!-- =========================================================== -->
+	<complexType name="CurveSurveyType">
+		<annotation>
+			<documentation>A discrete coverage type whose domain is defined by a collection of positions, and whose range is a set of direction vectors, coverageFunction implicitly linear</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="xmml:AbstractCoverageType">
+				<sequence>
+					<element name="offsets" type="gml:DirectPositionListType"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- .................. -->
+	<element name="CurveSurvey" type="xmml:CurveSurveyType" substitutionGroup="xmml:AbstractCoverage">
+		<annotation>
+			<documentation>A coverage whose domain is a collection of direct positions, and whose range is a set of direction vectors</documentation>
+		</annotation>
+	</element>
+	<!-- .................. -->
+	<complexType name="CurveSurveyPropertyType">
+		<sequence minOccurs="0">
+			<element ref="xmml:CurveSurvey"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+</schema>

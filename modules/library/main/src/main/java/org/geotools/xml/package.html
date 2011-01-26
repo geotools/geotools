@@ -1,0 +1,69 @@
+<html>
+<body>
+Package supporting XML parsing with a focus on GML.
+
+<p>The package supports GML version 2.X defined at <a 
+href="http://www.opengis.net/gml/">http://www.opengis.net/gml/</a>. 
+Although the schema and instance parsers appearing in this package 
+can be extended for use in most xml applications, the package was 
+intended to be used as a starting point to parse GML 2.0 documents. 
+</p>
+
+<p>
+For simplistic parsing requirements, you should refer to the 'Basics' 
+portion of this document. For more complex parsing requirements, or 
+optimizations you should also read 'Extending the Parser'.
+</p>
+
+<h2>Basics</h2>
+<p>
+This set of parsers (one xsi + one xml) is intended to parse arbitrary 
+schema defined xml documents. This means that the XML document must 
+have namespace definitions for the document, although there may be one 
+default namespace defined within the document.
+</p>
+<p>
+When asked to parse an XML instance document, the parser will first defer 
+to another instance to create a Schema instance of the document requested. 
+In some cases the entire Schema, or portions of the Schema, may already be 
+parsed and reside in a cahce. In this case the Schema will not be parsed, 
+otherwise a new instance of the Schema requested will be created and stored. 
+The Schema is important because it is used in the parsing and validation of 
+the XML document.
+</p>
+<p>
+To complete basic parsing, use the DocumentFactory.getInstance(URI) method. 
+This will return an Object representing the document (undefined ComplexTypes 
+are Object[], simpleTypes are their type parsed ... int is an Integer). In some 
+cases, specific pre-defined namespaces will not return Object[] for complexTypes 
+(such as gml elements, and gml-inherited elements). 
+</p>
+<h2>Extending the Parser</h2>
+<p>Parser extensions should be completed for two reasons: either you want it to 
+go faster, or you want specific types to parse information in a specific manner. 
+In either case you should construct a Schema instance, and add it to the 
+SchemaFactory.properties file found in this package. You will note that you will 
+be required to implement any ComplexTypes which are included in your schema, as 
+such providing an opportunity [getValue(Element,ElementValue[],Attributes)] to 
+create your own parsed values. 
+</p>
+<p>The framework will automatically get all you 
+children's values and place then in the order parsed into the ElementValue[]. 
+This means that each type is only responsible for interpreting it's own data, 
+removing the need for recursion. Please be careful or unwanted resources staying 
+in memory, as memory usage can grow quickly. I should also note that I make no 
+claims as to Thread safety, and as such you may wish to consider this when 
+creating an extension implementation.
+</p>
+<p>
+For more information study the interfaces found in the org.geotools.xml.schema 
+package, and an example hardcoded Schema, look in org.geotools.xml.gml . 
+</p>
+<h2>Credits</h2>
+<p>
+Some of the code and design within this package was first though of by Ian 
+Schneider. Much of the remaining design and implementation was completed by 
+David Zwiers.
+</p>
+</body>
+</html>

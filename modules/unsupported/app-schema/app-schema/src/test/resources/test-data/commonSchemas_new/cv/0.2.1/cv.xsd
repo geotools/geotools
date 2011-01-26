@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.opengis.net/cv/0.2.1" 
+xmlns:cv="http://www.opengis.net/cv/0.2.1" 
+xmlns:swe="http://www.opengis.net/swe/1.0.1" 
+elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.2.1">
+	<xs:annotation>
+		<xs:documentation>Stub schema for cv</xs:documentation>
+	</xs:annotation>
+	<!--========================-->
+	<xs:include schemaLocation="./compactDiscreteCoverage.xsd"/>	
+	<xs:import namespace="http://www.opengis.net/swe/1.0.1" schemaLocation="http://schemas.opengis.net/sweCommon/1.0.1/swe.xsd"/>
+   <!--========================-->
+	<xs:group name="XMLRecord">
+		<xs:annotation>
+			<xs:documentation>Convenience group that bundles all the soft-typed XML-encoded aggregates and coverages into a choice group</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:group ref="swe:XMLData"/>
+			<xs:element ref="cv:CV_DiscreteCoverage"/>
+		</xs:choice>
+	</xs:group>
+	<!-- ============== -->
+</xs:schema>

@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- IUGS/CGI GeoSciML schema, ver. 1 - draft 2005-10-19 -->
+<!-- Contains the concepts (classes), their inheritance, and relations from the CGI_Value package of the GeoSciML model -->
+<!-- GeoSciML Testbed-2 Model -->
+<schema xmlns:gml="http://www.opengis.net/gml" 
+xmlns="http://www.w3.org/2001/XMLSchema" 
+xmlns:gsml="http://www.cgi-iugs.org/xml/GeoSciML/1" 
+targetNamespace="http://www.cgi-iugs.org/xml/GeoSciML/1" 
+elementFormDefault="qualified" 
+attributeFormDefault="unqualified" 
+version="1.0.0">
+	<annotation>
+		<documentation>CGI_Value.xsd
+	Components for recording "simple" property-values comprising numbers/measures and words
+	allowing for qualification, uncertainty, ranges, and a choice of number or word 
+	as required for transporting values commonly recorded by field geologists	
+	</documentation>
+	</annotation>
+	<!--=======================-->
+	<import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+	<!--=======================-->
+	<include schemaLocation="./CGI_basicTypes.xsd"/>
+	<!--=======================-->
+	<attribute name="attributeProperty" type="anyURI">
+		<annotation>
+			<documentation>A very general name. Should this be "observationalBasis" or similar?</documentation>
+		</annotation>
+	</attribute>
+	<!-- ..................... -->
+	<attributeGroup name="RichPropertyAttributeGroup">
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+		<attribute ref="gsml:attributeProperty" use="optional"/>
+	</attributeGroup>
+	<!--=======================-->
+	<simpleType name="ValueQualifierCode">
+		<restriction base="string">
+			<enumeration value="never"/>
+			<enumeration value="rare"/>
+			<enumeration value="sometimes"/>
+			<enumeration value="common"/>
+			<enumeration value="always"/>
+			<enumeration value="greaterThan"/>
+			<enumeration value="lessThan"/>
+			<enumeration value="equalTo"/>
+			<enumeration value="approximate"/>
+			<enumeration value="nil:inapplicable"/>
+			<enumeration value="nil:missing"/>
+			<enumeration value="nil:unknown"/>
+			<enumeration value="nil:withheld"/>
+		</restriction>
+	</simpleType>
+	<!--=======================-->
+	<complexType name="CGI_ValueType" abstract="true">
+		<sequence>
+			<element name="qualifier" type="gsml:ValueQualifierCode" minOccurs="0"/>
+		</sequence>
+	</complexType>
+	<!-- ..................... -->
+	<element name="CGI_Value" type="gsml:CGI_ValueType"/>
+	<!-- ..................... -->
+	<complexType name="CGI_ValuePropertyType">
+		<sequence minOccurs="0">
+			<element ref="gsml:CGI_Value"/>
+		</sequence>
+		<attributeGroup ref="gsml:RichPropertyAttributeGroup"/>
+	</complexType>
+	<!--=======================-->
+	<complexType name="CGI_PrimitiveValueType" abstract="true">
+		<complexContent>
+			<extension base="gsml:CGI_ValueType"/>
+		</complexContent>
+	</complexType>
+	<!-- ..................... -->
+	<element name="CGI_PrimitiveValue" type="gsml:CGI_PrimitiveValueType" substitutionGroup="gsml:CGI_Value"/>
+	<!-- ..................... -->
+	<complexType name="CGI_PrimitiveValuePropertyType">
+		<sequence minOccurs="0">
+			<element ref="gsml:CGI_PrimitiveValue"/>
+		</sequence>
+		<attributeGroup ref="gsml:RichPropertyAttributeGroup"/>
+	</complexType>
+	<!--=======================-->
+	<complexType name="CGI_NumericValueType">
+		<complexContent>
+			<extension base="gsml:CGI_PrimitiveValueType">
+				<sequence>
+					<element name="principalValue" type="gml:MeasureType"/>
+					<element name="plusDelta" type="gml:MeasureType"/>
+					<element name="minusDelta" type="gml:MeasureType"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ..................... -->
+	<element name="CGI_NumericValue" type="gsml:CGI_NumericValueType" substitutionGroup="gsml:CGI_PrimitiveValue"/>
+	<!-- ..................... -->
+	<complexType name="CGI_NumericValuePropertyType">
+		<sequence minOccurs="0">
+			<element ref="gsml:CGI_NumericValue"/>
+		</sequence>
+		<attributeGroup ref="gsml:RichPropertyAttributeGroup"/>
+	</complexType>
+	<!--=======================-->
+	<complexType name="CGI_TermValueType">
+		<complexContent>
+			<extension base="gsml:CGI_PrimitiveValueType">
+				<sequence>
+					<element name="value" type="gsml:ScopedNameType"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ..................... -->
+	<element name="CGI_TermValue" type="gsml:CGI_TermValueType" substitutionGroup="gsml:CGI_PrimitiveValue"/>
+	<!-- ..................... -->
+	<complexType name="CGI_TermValuePropertyType">
+		<sequence minOccurs="0">
+			<element ref="gsml:CGI_TermValue"/>
+		</sequence>
+		<attributeGroup ref="gsml:RichPropertyAttributeGroup"/>
+	</complexType>
+	<!--=======================-->
+	<complexType name="CGI_RangeType">
+		<complexContent>
+			<extension base="gsml:CGI_ValueType">
+				<sequence>
+					<element name="lower" type="gsml:CGI_PrimitiveValuePropertyType"/>
+					<element name="upper" type="gsml:CGI_PrimitiveValuePropertyType"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ..................... -->
+	<element name="CGI_Range" type="gsml:CGI_RangeType" substitutionGroup="gsml:CGI_Value"/>
+	<!-- ..................... -->
+	<complexType name="CGI_RangePropertyType">
+		<sequence minOccurs="0">
+			<element ref="gsml:CGI_Range"/>
+		</sequence>
+		<attributeGroup ref="gsml:RichPropertyAttributeGroup"/>
+	</complexType>
+	<!--=======================-->
+	<complexType name="CGI_NumericRangeType">
+		<complexContent>
+			<extension base="gsml:CGI_ValueType">
+				<sequence>
+					<element name="lower" type="gsml:CGI_NumericValuePropertyType"/>
+					<element name="upper" type="gsml:CGI_NumericValuePropertyType"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ..................... -->
+	<element name="CGI_NumericRange" type="gsml:CGI_NumericRangeType" substitutionGroup="gsml:CGI_Value"/>
+	<!-- ..................... -->
+	<complexType name="CGI_NumericRangePropertyType">
+		<sequence minOccurs="0">
+			<element ref="gsml:CGI_NumericRange"/>
+		</sequence>
+		<attributeGroup ref="gsml:RichPropertyAttributeGroup"/>
+	</complexType>
+	<!--=======================-->
+	<complexType name="CGI_TermRangeType">
+		<complexContent>
+			<extension base="gsml:CGI_ValueType">
+				<sequence>
+					<element name="lower" type="gsml:CGI_TermValuePropertyType"/>
+					<element name="upper" type="gsml:CGI_TermValuePropertyType"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ..................... -->
+	<element name="CGI_TermRange" type="gsml:CGI_TermRangeType" substitutionGroup="gsml:CGI_Value"/>
+	<!-- ..................... -->
+	<complexType name="CGI_TermRangePropertyType">
+		<sequence minOccurs="0">
+			<element ref="gsml:CGI_TermRange"/>
+		</sequence>
+		<attributeGroup ref="gsml:RichPropertyAttributeGroup"/>
+	</complexType>
+	<!--=======================-->
+	<complexType name="CGI_TermPropertyType">
+		<choice minOccurs="0">
+			<element ref="gsml:CGI_TermValue"/>
+			<element ref="gsml:CGI_TermRange"/>
+		</choice>
+		<attributeGroup ref="gsml:RichPropertyAttributeGroup"/>
+		<attribute name="unionSemantics">
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="value"/>
+					<enumeration value="range"/>
+				</restriction>
+			</simpleType>
+		</attribute>
+	</complexType>
+	<!--=======================-->
+	<complexType name="CGI_NumericPropertyType">
+		<choice minOccurs="0">
+			<element ref="gsml:CGI_NumericValue"/>
+			<element ref="gsml:CGI_NumericRange"/>
+		</choice>
+		<attributeGroup ref="gsml:RichPropertyAttributeGroup"/>
+		<attribute name="unionSemantics">
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="value"/>
+					<enumeration value="range"/>
+				</restriction>
+			</simpleType>
+		</attribute>
+	</complexType>
+	<!--=======================-->
+	<complexType name="CGI_PhysicalDescriptionType">
+		<sequence>
+			<element name="property" type="gsml:ScopedNameType"/>
+			<element name="value" type="gsml:CGI_ValuePropertyType"/>
+		</sequence>
+	</complexType>
+	<!-- ..................... -->
+	<element name="CGI_PhysicalDescription" type="gsml:CGI_PhysicalDescriptionType"/>
+	<!-- ..................... -->
+	<complexType name="CGI_PhysicalDescriptionPropertyType">
+		<sequence minOccurs="0">
+			<element ref="gsml:CGI_PhysicalDescription"/>
+		</sequence>
+		<attributeGroup ref="gsml:RichPropertyAttributeGroup"/>
+	</complexType>
+	<!--=======================-->
+</schema>

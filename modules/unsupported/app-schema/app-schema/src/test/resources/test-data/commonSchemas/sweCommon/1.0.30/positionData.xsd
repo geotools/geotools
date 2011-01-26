@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v5 rel. 2 U (http://www.xmlspy.com) by Mike Botts (University of Alabama in Huntsville) -->
+<!-- edited with XML Spy v4.3 U (http://www.xmlspy.com) by Alexandre Robin (University of Alabama in Huntsville) -->
+<xs:schema targetNamespace="http://www.opengis.net/swe/0.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:swe="http://www.opengis.net/swe/0.0" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:annotation>
+		<xs:documentation>Definitions for some common position parameters</xs:documentation>
+	</xs:annotation>
+	<!--========================-->
+	<!--  Includes and Imports  -->
+	<!--========================-->
+	<xs:include schemaLocation="./parameters.xsd"/>
+	<!--=======================-->
+	<!--  Substitution Groups  -->
+	<!--=======================-->
+	<xs:element name="PositionData" type="swe:_PositionType" abstract="false" substitutionGroup="swe:_DataGroup">
+		<xs:annotation>
+			<xs:documentation>Head of substitution Group for Composite Position Data</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="LocationData" type="swe:_PositionType" abstract="false" substitutionGroup="swe:PositionData">
+		<xs:annotation>
+			<xs:documentation>Head of substitution Group for Location Data</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="OrientationData" type="swe:_PositionType" abstract="false" substitutionGroup="swe:PositionData">
+		<xs:annotation>
+			<xs:documentation>Head of substitution Group for Orientation Data</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<!--======================-->
+	<!--  Position DataGroup  -->
+	<!--======================-->
+	<xs:element name="Position" substitutionGroup="swe:PositionData">
+		<xs:annotation>
+			<xs:documentation>Location and Orientation given by a sequence of rotations or translations. Transformations are applied in the order listed</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="swe:_PositionType">
+					<xs:sequence>
+						<xs:element name="time" minOccurs="0">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:group ref="swe:Time" minOccurs="0"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="location" minOccurs="0">
+							<xs:complexType>
+								<xs:choice>
+									<xs:element ref="swe:Location"/>
+									<xs:element ref="swe:GeoLocation"/>
+								</xs:choice>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="orientation" minOccurs="0">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element ref="swe:Orientation" minOccurs="0"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Location" substitutionGroup="swe:LocationData">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="swe:_PositionType">
+					<xs:sequence>
+						<xs:element name="coordinate" maxOccurs="3">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element ref="swe:Quantity"/>
+								</xs:sequence>
+								<xs:attribute name="name" type="swe:qnameSimpleType" use="required"/>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="GeoLocation" substitutionGroup="swe:LocationData">
+		<xs:annotation>
+			<xs:documentation>Position given by latitude, longitude, altitude</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="swe:_PositionType">
+					<xs:sequence minOccurs="0">
+						<xs:element name="longitude">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element ref="swe:Quantity" minOccurs="0"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="latitude">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element ref="swe:Quantity" minOccurs="0"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="altitude" minOccurs="0">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element ref="swe:Quantity" minOccurs="0"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Orientation" substitutionGroup="swe:OrientationData">
+		<xs:annotation>
+			<xs:documentation>Orientation given by euler angle with an order of rotation</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="swe:_PositionType">
+					<xs:sequence minOccurs="0">
+						<xs:element name="coordinate" maxOccurs="3">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element ref="swe:Quantity"/>
+								</xs:sequence>
+								<xs:attribute name="name" type="swe:qnameSimpleType" use="required"/>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="order" minOccurs="0">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element ref="swe:Category"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<!--=================-->
+	<!--  Complex Types  -->
+	<!--=================-->
+	<xs:complexType name="_PositionType">
+		<xs:complexContent>
+			<xs:extension base="swe:_GroupBaseType">
+				<xs:attribute name="referenceFrame" type="xs:anyURI" use="optional"/>
+				<xs:attribute name="localFrame" type="xs:anyURI" use="optional"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

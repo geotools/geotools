@@ -1,0 +1,13 @@
+PostGIS Versioned
+~~~~~~~~~~~~~~~~~
+
+  Maintainer: Andrea Aime
+
+  IP Review:
+
+    * June 2008 Adrian Custer
+
+  STATUS: Clean
+
+  The module has no problematic headers, appears to
+  all be Andrea's work. There are no associated resources.

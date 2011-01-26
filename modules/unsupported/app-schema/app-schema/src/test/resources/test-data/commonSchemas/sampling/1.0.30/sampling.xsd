@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" 
+xmlns:sa="http://www.opengis.net/sampling/0.0" 
+targetNamespace="http://www.opengis.net/sampling/0.0" 
+elementFormDefault="qualified" attributeFormDefault="unqualified" version="pre-release">
+	<annotation>
+		<documentation>sampling.xsd
+
+The complete sampling schema
+
+Copyright (c) 2007 Open Geospatial Consortium - see http://www.opengeospatial.org/about/?page=ipr</documentation>
+	</annotation>
+	<!-- ====================================================================== -->
+	<include schemaLocation="./extensiveSampling.xsd"/>
+	<include schemaLocation="./specimen.xsd"/>
+	<!-- ====================================================================== -->
+</schema>

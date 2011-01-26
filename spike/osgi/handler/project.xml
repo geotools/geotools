@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <pomVersion>3</pomVersion>
+	<extend>${basedir}/../project.xml</extend>
+  <name>handler</name>
+  <id>handler</id>
+
+	<dependencies>
+		<dependency>
+			<groupId>gt2</groupId>	
+			<artifactId>catalog-core</artifactId>
+			<version>2.1.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.4</version>
+		</dependency>
+
+	</dependencies>
+	
+</project>

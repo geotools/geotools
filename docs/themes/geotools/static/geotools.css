@@ -1,0 +1,316 @@
+/*@import url("http://extjs.cachefly.net/ext-2.2.1/resources/css/ext-all.css");*/
+
+@import url("sphinxdoc.css");
+
+/* override some of ext-all.css 
+ul, ol {
+    margin: 14px 0;
+    padding-left: 40px;
+}
+ul {
+    list-style: disc;
+}
+ol {
+    list-style-type:decimal;
+}
+strong {
+    font-weight: bolder;
+}
+*/
+
+/* override some of sphinxdoc.css */
+html {
+    margin: 0;
+    padding: 0;
+}
+body {
+    border: none;
+    background-color: white;
+    margin: 0;
+    padding: 0;
+    min-width: 900px;
+}
+h1, h2, h3, h4, h5, h6 {
+    /*color: #385F95;*/
+	color: #17365c
+}
+table td, table th {
+    padding: 0;
+}
+div.related {
+    margin: 0 80px;
+    width: auto;
+}
+div.related ul li a {
+   /*font-size: 0.8em;*/
+   color: #078c00;
+}
+a.reference em {
+    font-style: normal;
+}
+div.sphinxsidebar {
+    padding-right: 95px;
+}
+div.sphinxsidebar h3, div.sphinxsidebar h4 {
+    background: inherit;
+    border: none;
+    color: #385F95;
+    padding: 0;
+}
+div.sphinxsidebar h3 a {
+    color: inherit;
+}
+div.document {
+    margin: 0 80px;
+}
+div.documentwrapper {
+    width: auto;
+}
+div.footer {
+    background: #fff url(img/footer-bg.png) repeat-x;
+    color: #000000;
+    padding: 60px 0 35px;
+    text-align: center;
+}
+
+/* custom header */
+div.header {
+    position: relative;
+    overflow: hidden;
+    height: 150px;
+    background: #97b7e1 url(img/header-bg2.png) 0 0 repeat-x;
+}
+div.header div.wrap {
+    margin: 0 80px;
+}
+#logo {
+    padding: 0;
+    padding-top: 0.5em;
+}
+#logo a {
+    float: left;
+    width: 476px;
+    height: 125px;
+    overflow: hidden;
+    text-indent: -9999em;
+    background: url(img/geotools-logo.png) no-repeat;
+}
+#logo_osgeo {
+	padding: 0;
+	position: absolute;
+	right: 10px;
+}
+#logo_osgeo a {
+	float: right;
+    width: 200px;
+    height: 85px;
+    overflow: hidden;
+    text-indent: -9999em;
+    background: url(img/osgeo-logo.png) no-repeat;
+}
+
+#top-nav {
+    position: absolute;
+    bottom: 15px;
+    right: 90px;
+    list-style: none;
+    margin: 0;
+}
+
+#top-nav li {
+    display: inline;
+    margin: 0;
+    padding: 0 8px;
+/*    border-left: 1px solid #47aa42;*/
+    border-left: 1px solid #CA7900;
+}
+
+#top-nav li:first-child, #top-nav li.first {
+    border-left: 0;
+}
+
+#top-nav li a {
+/*    color: #47aa42;*/
+    font-weight: bold;
+    text-decoration: none;
+    font-family: "Lucida Sans", "Lucida Sans Unicode", "Lucida Grande", Verdana, Arial, Helvetica, sans-serif;
+}
+
+#top-nav li a:hover {
+/*    color: #e0e0e0;*/
+}
+
+/* index page links */
+#quicklinks {
+  margin: 0 auto;
+  padding-top: 2em;
+}
+
+/*#getting-started ul {*/
+#quicklinks ul {
+	float: left; 
+	padding: 0;
+}
+/*#getting-started li {*/
+#quicklinks li {
+	float: left; 
+	display: inline;
+	margin: 1.1em;
+}
+
+/*#getting-started a {*/
+#quicklinks a {
+  float: left;
+  text-align: center;
+  padding-top: 5em;
+  min-width: 85px;
+  background-position: center top;
+  background-repeat: no-repeat;
+}
+
+/* about page */
+#about-geotools p {
+  text-align: justify;
+  font-size: 0.9em;
+}
+
+#open-source {
+  float: left;
+  width: 350px;
+  padding-right: 2em;
+}
+
+#open-development {
+  float: left;
+  width: 350px;
+}
+
+/* search box style */
+#searchbox {
+    position: absolute;
+    bottom: 70px;
+    right: 95px;
+    background: transparent url(img/search-box.png) top left no-repeat;
+    height: 28px;
+    width: 190px;
+}
+#searchbox-query {
+    color: #72a629;
+    font-size: 0.92em;
+    border: 0;
+    background: transparent;
+    width: 175px;
+    margin: 5px 0 0 8px;
+}
+#searchbox-submit {
+    position: absolute;
+    top: 6px;
+    right: 5px;
+}
+a.headerlink {
+    display: none;
+}
+
+/* meta-info about a class/module get pulled out */
+.meta {
+    float: right;
+    padding: 0 2em;
+    background-color: white;
+}
+.meta ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+/* overriding clear: both on dl */
+dl.class {
+    clear: left;
+}
+
+/* don't display class names for attributes or methods*/
+.attribute .descclassname {
+    display: none;
+}
+.method .descclassname {
+    display: none;
+}
+.classmethod .descclassname, .classmethod .property {
+    display: none;
+}
+
+/* headers with bottom border get some padding */
+h2, h3, h4 {
+    padding-bottom: 4px;
+}
+
+/* making code samples less gigantic */
+pre {
+    font-size: 0.8em;
+}
+
+/* blog entry style */
+ul.rss_items li.rss_item {
+    padding-bottom: 0.5em;
+}
+
+/* execute button style */
+.x-btn.execute {
+    margin: 1em;
+}
+
+/*
+.wrap {
+width: 990px;
+margin: 0 auto; 
+padding: 0;
+}
+*/
+
+.selfclear:after {
+content: ".";
+display: block;
+height: 0;
+clear: both;
+visibility: hidden;
+}
+
+.selfclear {
+display: inline-block; /* IE 7 */
+}
+
+.selfclear {
+display: block;
+}
+
+#content {
+	width: 740px; /*790px total*/
+	overflow: hidden;
+	float: left;
+	margin: -3px 0 0 0;
+	padding: 1216px 28px 0 22px;
+	background: #fff;
+	color: #262523;
+	font-size: 1.2em;
+}
+
+#breadcrumbs {
+font-size: 0.85em;
+color: #c6e09b;
+border-bottom: 1px solid #c6e09b;
+margin: -1200px 0 1em;
+padding: 0 0 0.5em;
+}
+
+#breadcrumbs li {
+list-style-type: none;
+display: inline;
+}
+
+#breadcrumbs a {
+color: #72a629;
+text-decoration: none;
+}
+
+#breadcrumbs a:hover {
+color: #26b2dd;
+}

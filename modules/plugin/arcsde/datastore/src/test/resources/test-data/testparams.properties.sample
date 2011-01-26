@@ -1,0 +1,53 @@
+#this file specifies ArcSDE connection properties
+#for ArcSDE DataSource test cases
+#
+#Modify it to adapt to your ArcSDE environment
+
+#dbtype is a fixed value
+dbtype=arcsde
+server=<your server name here>
+port=<db port number, usually 5151>
+instance=<your arcsde instance name, use to be sde for a default installation>
+user=<your db user name>
+password=<your db user password>
+pool.minConnections=1
+pool.maxConnections=2
+pool.timeOut=1000
+
+#specifies an optional configuration keyword to use when creating/destroying
+#tables during testing
+configKeyword=DEFAULTS
+
+#specifies an SDE table name that can be used
+#to test the creation of feature types.
+#CAUTION: be sure you do not specify a table name which already
+#exists and that you don't have to loose!
+temp_table=DELETE_ME
+
+
+
+############################
+# Raster test parameters
+############################
+
+#whether to write images resulting from raster tests to $HOME/arcsde_tests directory
+raster.test.debugToDisk=false
+
+#sample 1bit tiff image
+sampledata.onebitraster=1bit-raster.tiff
+
+#sample three-band RGB image
+sampledata.rgbraster=RGBphoto-raster.tiff
+
+#sample three-band raster that's indexed
+sampledata.rgbraster-colormapped=RGBphoto-raster-colormapped.png
+
+#sample four-band (with alpha) raster
+sampledata.rgbaraster=RGBAphoto-raster.tiff
+
+#sample one-band, one-byte, non-colormapped "greyscale" raster
+sampledata.onebyteonebandraster=GrayscalePhoto-raster.tiff
+
+#sample one-band, 32-bit signed real-valued raster
+sampledata.floatraster=Float-raster.tiff
+

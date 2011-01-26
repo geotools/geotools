@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:element name="GeneralizationInfos" type="GeneralizationInfosType"/>
+  <xsd:element name="GeneralizationInfo" type="GeneralizationInfoType"/>
+  <xsd:element name="Generalization" type="GeneralizationType"/>
+  <xsd:complexType name="GeneralizationInfosType">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" ref="GeneralizationInfo"/>
+    </xsd:sequence>
+    <xsd:attribute name="version" type="xsd:string" use="required"/>
+    <xsd:attribute name="dataSourceNameSpace" type="xsd:anyURI" use="optional"/>
+    <xsd:attribute name="dataSourceName" type="xsd:string" use="optional"/>
+  </xsd:complexType>
+  <xsd:complexType name="GeneralizationInfoType">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" ref="Generalization" minOccurs="0"/>
+    </xsd:sequence>
+    <xsd:attribute name="dataSourceNameSpace" type="xsd:anyURI" use="optional"/>
+    <xsd:attribute name="dataSourceName" type="xsd:string" use="optional"/>
+    <xsd:attribute name="baseFeatureName" type="xsd:string"/>
+    <xsd:attribute name="featureName" type="xsd:string"/>
+    <xsd:attribute name="geomPropertyName" type="xsd:string"/>
+  </xsd:complexType>
+  <xsd:complexType name="GeneralizationType">
+    <xsd:attribute name="dataSourceNameSpace" type="xsd:anyURI" use="optional"/>
+    <xsd:attribute name="dataSourceName" type="xsd:string" use="optional" />
+    <xsd:attribute name="featureName" type="xsd:string"/>
+    <xsd:attribute name="distance" type="Distance"/>
+    <xsd:attribute name="geomPropertyName" type="xsd:string"/>
+  </xsd:complexType>
+
+  <xsd:simpleType name="Distance">
+  	<xsd:restriction base="xsd:double">
+  		<xsd:minExclusive value="0"/>
+  	</xsd:restriction>
+  </xsd:simpleType>
+</xsd:schema>

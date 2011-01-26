@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:ows="http://www.opengis.net/ows/1.1" targetNamespace="http://mas.orchestra.jrc.it" elementFormDefault="qualified">
+	<import namespace="http://www.opengis.net/ows/1.1" schemaLocation="../../../ows/1.1.0/owsDomainType.xsd"/>
+	<element name="BufferZones">
+		<complexType>
+			<sequence>
+				<element name="Zone" maxOccurs="unbounded">
+					<complexType>
+						<sequence>
+							<element ref="ows:Range"/>
+						</sequence>
+					</complexType>
+				</element>
+			</sequence>
+		</complexType>
+	</element>
+</schema>

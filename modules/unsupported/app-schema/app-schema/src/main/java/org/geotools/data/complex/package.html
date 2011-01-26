@@ -1,0 +1,56 @@
+<body>
+<p>This package contains the implementation of a <i><b>ComplexDataStore</b></i>,
+
+</p>
+<p><i>Author note: though this "Complex" datastore has born to provide
+complex features out of a simple features data source, it may be better
+called a <i>DerivativeDataStore</i> or something like that, you'll see
+why later.</i>
+<img src="doc-files/complexdsscheme.png" />
+</p>
+<p>This DataStore implementation acts as a wrapper over one or more
+DataStores, from now on, the <i>surrogate DataStores</i>, and allows to
+specify a series of mappings between the properties of surrogate
+FeatureTypes and output schemas. This mappings, in turn, allows to
+specify properties of the target FeatureTypes as being derivated by the
+evaluation of an <b><code>org.geotools.filter.Expression</code></b> defined
+against the surrogate FeautreType.
+</p>
+<p>
+So, what is this useful for?
+Suppose you have a database of feature types you need to serve out of your office or 
+organization. Furthermore, suppose you need to serve that data in an externally defined 
+schema (like one defined by INSPIRE or any other organization). Obviously you don't want 
+to rearchitect your database to conform to that schema! And indeed you probably even can't 
+do that without the assistance of some kind of object-relational mapping layer.
+Now you can better figure out what this ComplexDataStore is about if you think on it as a kind
+of object-relational mapping layer, but targeted to GIS data. Though not exact, this pseudo 
+definition can help you understand it if its your first time reading this document.
+</p>
+<p>
+Of course it has nothing to do with relational databases directly, but with mapping an existing
+GeoTools FeatureType from your internal storage schema to an externally defined one, which we're
+getting used to call "<b>community schemas</b>".
+</p>
+<p>
+How does ComplexDataStore achieves that?<br>
+You need:
+<ul>
+	<li>An output (community) schema. This schema exists independently of your actual data structures, 
+	so it will be loaded from a GML schema file, defined in XML Schema language.
+	<li>An input FeatureType. GeoTools FeatureTypes are exposed by GeoTools DataStores, so you need a way
+	to specify the DataStore's connection parameters and the source FeatureType name.
+	<li>The attribute and attribute id mapping definitions. They consists of a series of couples of XPath and 
+	OGC Filter 1.0 Expressions. The former addresses the output schema properties and the later defines how
+	the value of that properties are derived from the source Feature instances.
+</ul>
+All this information is held by a <b>FeatureTypeMapping</b> object, and a ComplexDataStore, in turn,
+may hold an arbitrary number of that objects, each one defining one (derived) FeatureType the DataStore
+exposes.
+</p>
+<p>
+To persist this information, use a XML file which contains this definitions, and whose location 
+in the form of an URL must be used to create a DataStore instance through the GeoTools DataStoreFinder
+lookup system.
+</p>
+</body>

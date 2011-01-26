@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-Name: Skunkworks GUI
+Bundle-Description: A servlet front ending the catalog service
+Bundle-Version: 1.0.0
+Bundle-Activator: skunkworks.handler.Activator
+Import-Package: javax.servlet, 
+ javax.servlet.http,
+ org.osgi.service.http,
+ org.geotools.gtcatalog
+Bundle-ClassPath: .

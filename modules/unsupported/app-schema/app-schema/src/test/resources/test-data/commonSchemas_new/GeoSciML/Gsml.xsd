@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2007 sp2 (http://www.altova.com) by Eric Boisvert (Ressources naturelles Canada) -->
+<xs:schema xmlns:gsml="http://www.cgi-iugs.org/xml/GeoSciML/2" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:gml="http://www.opengis.net/gml" xmlns:om="http://www.opengis.net/om" xmlns:sa="http://www.opengis.net/sampling/1.0" targetNamespace="http://www.cgi-iugs.org/xml/GeoSciML/2" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:annotation>
+		<xs:documentation>Encoded by Eric Boisvert (May 2007) Geological Survey of Canada</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>Encoded by Eric Boisvert (May 2007) Geological Survey of Canada</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>2007-07-12 : Minor fixes and changes to fit new version of model - Eric Boisvert</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+	<xs:import namespace="http://www.opengis.net/sampling/1.0" schemaLocation="http://schemas.opengis.net/sampling/1.0.0/sampling.xsd"/>
+	<xs:include schemaLocation="geosciml.xsd"/>
+	<xs:include schemaLocation="CGI_Value.xsd"/>
+	<xs:include schemaLocation="vocabulary.xsd"/>
+	<xs:include schemaLocation="earthMaterial.xsd"/>
+	<xs:complexType name="MappedFeatureType">
+		<xs:complexContent>
+			<xs:extension base="gml:AbstractFeatureType">
+				<xs:sequence>
+					<xs:element name="positionalAccuracy" type="gsml:CGI_ValuePropertyType"/>
+					<xs:element name="observationMethod" type="gsml:CGI_TermValuePropertyType" maxOccurs="unbounded"/>
+					<xs:element name="samplingFrame" type="sa:SpatiallyExtensiveSamplingFeaturePropertyType">
+						<xs:annotation>
+							<xs:documentation>until a final Observation and Measurement and related schemas is stable, this points to xs:anyType</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="shape" type="gml:GeometryPropertyType"/>
+					<xs:element name="specification" type="gsml:GeologicFeaturePropertyType"/>
+					<xs:element name="metadata" type="gsml:MetadataPropertyType" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ..................... -->
+	<xs:element name="MappedFeature" type="gsml:MappedFeatureType" substitutionGroup="gml:_Feature"/>
+	<!-- ..................... -->
+	<xs:complexType name="MappedFeaturePropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:element ref="gsml:MappedFeature"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</xs:complexType>
+	<!--=======================-->
+	<xs:complexType name="GeologicFeatureType">
+		<xs:complexContent>
+			<xs:extension base="gml:AbstractFeatureType">
+				<xs:sequence>
+					<xs:element name="observationMethod" type="gsml:CGI_TermValuePropertyType" maxOccurs="unbounded"/>
+					<xs:element name="purpose" type="gsml:DescriptionPurpose" default="instance"/>
+					<xs:element name="occurence" type="gsml:MappedFeaturePropertyType" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="metadata" type="gsml:MetadataPropertyType" minOccurs="0"/>
+					<xs:element name="preferredAge" type="gsml:GeologicEventPropertyType"/>
+					<xs:element name="geologicHistory" type="gsml:GeologicEventPropertyType" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ..................... -->
+	<xs:element name="GeologicFeature" type="gsml:GeologicFeatureType" substitutionGroup="gml:_Feature"/>
+	<!-- ..................... -->
+	<xs:complexType name="GeologicFeaturePropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:element ref="gsml:GeologicFeature"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gsml:EstimatedPropertyAttributeGroup"/>
+	</xs:complexType>
+	<!--=======================-->
+	<xs:simpleType name="DescriptionPurpose">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="definingNorm"/>
+			<xs:enumeration value="instance"/>
+			<xs:enumeration value="typicalNorm"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!--=======================-->
+	<xs:complexType name="GeologicRelationType" abstract="true">
+		<xs:complexContent>
+			<xs:extension base="gml:AbstractFeatureType">
+				<xs:sequence>
+					<xs:element name="relationship" type="gsml:ScopedNameType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ..................... -->
+	<xs:element name="GeologicRelation" type="gsml:GeologicRelationType" substitutionGroup="gml:_Feature"/>
+	<!-- ..................... -->
+	<xs:complexType name="GeologicRelationPropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:element ref="gsml:GeologicRelation"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gsml:EstimatedPropertyAttributeGroup"/>
+	</xs:complexType>
+	<!--=======================-->
+	<xs:complexType name="GeologicFeatureRelationType">
+		<xs:complexContent>
+			<xs:extension base="gsml:GeologicRelationType">
+				<xs:sequence>
+					<xs:element name="source" type="gsml:GeologicFeaturePropertyType"/>
+					<xs:element name="target" type="gsml:GeologicFeaturePropertyType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ..................... -->
+	<xs:element name="GeologicFeatureRelation" type="gsml:GeologicFeatureRelationType" substitutionGroup="gsml:GeologicRelation"/>
+	<!-- ..................... -->
+	<xs:complexType name="GeologicFeatureRelationPropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:element ref="gsml:GeologicFeatureRelation"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gsml:EstimatedPropertyAttributeGroup"/>
+	</xs:complexType>
+	<!--=======================-->
+	<xs:complexType name="GeologicEventType">
+		<xs:complexContent>
+			<xs:extension base="gml:AbstractFeatureType">
+				<xs:sequence>
+					<xs:element name="eventAge" type="gsml:CGI_ValuePropertyType"/>
+					<xs:element name="eventProcess" type="gsml:CGI_TermValuePropertyType" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="eventEnvironment" type="gsml:CGI_TermValuePropertyType" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="metadata" type="gsml:MetadataPropertyType" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ..................... -->
+	<xs:element name="GeologicEvent" type="gsml:GeologicEventType" substitutionGroup="gml:_Feature"/>
+	<!-- ..................... -->
+	<xs:complexType name="GeologicEventPropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:element ref="gsml:GeologicEvent"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gsml:EstimatedPropertyAttributeGroup"/>
+	</xs:complexType>
+	<!--=======================-->
+	<xs:complexType name="GSMLType">
+		<xs:complexContent>
+			<xs:extension base="gml:AbstractFeatureType">
+				<xs:sequence>
+					<xs:element name="metadata" type="gsml:MetadataPropertyType" minOccurs="0"/>
+					<xs:element name="member" type="gsml:GSMLItemType" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ..................... -->
+	<xs:element name="GSML" type="gsml:GSMLType" substitutionGroup="gml:_Feature"/>
+	<!-- ..................... -->
+	<xs:complexType name="GSMLPropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:element ref="gsml:GSML"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gsml:EstimatedPropertyAttributeGroup"/>
+	</xs:complexType>
+	<!--=======================-->
+	<xs:complexType name="GSMLItemType">
+		<xs:choice>
+			<xs:element ref="gsml:GeologicFeature"/>
+			<xs:element ref="gml:_Geometry"/>
+			<xs:element ref="gsml:MappedFeature"/>
+			<xs:element ref="gsml:GeologicVocabulary"/>
+			<xs:element ref="gsml:GeologicEvent"/>
+			<xs:element ref="gsml:GeologicRelation"/>
+			<xs:element ref="gsml:EarthMaterial"/>
+			<xs:element ref="sa:SamplingFeature"/>
+		</xs:choice>
+		<xs:attribute name="unionSemantic">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="featureItem"/>
+					<xs:enumeration value="geometryItem"/>
+					<xs:enumeration value="mappedItem"/>
+					<xs:enumeration value="vocabularyItem"/>
+					<xs:enumeration value="eventItem"/>
+					<xs:enumeration value="relationItem"/>
+					<xs:enumeration value="earthMaterialItem"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attributeGroup ref="gsml:EstimatedPropertyAttributeGroup"/>
+	</xs:complexType>
+</xs:schema>

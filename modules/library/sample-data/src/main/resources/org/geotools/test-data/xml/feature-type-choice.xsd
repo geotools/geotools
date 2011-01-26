@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:gml="http://www.opengis.net/gml" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.ionicsoft.com/wfs" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:iwfs="http://www.ionicsoft.com/wfs" targetNamespaceOptionnal="true" xmlns="http://www.ionicsoft.com/wfs" elementFormDefault="qualified">
+    <xsd:import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/2.1.2/feature.xsd"/>
+    <xsd:element name="WATER" substitutionGroup="gml:_Feature" type="iwfs:WATER"/>
+    <xsd:complexType name="GeomPropertyType">
+      <xsd:choice minOccurs="0">
+        <xsd:element ref="gml:Polygon"/>
+        <xsd:element ref="gml:MultiPolygon"/>
+      </xsd:choice>
+      <xsd:attributeGroup ref="gml:AssociationAttributeGroup">
+      </xsd:attributeGroup>
+    </xsd:complexType>
+    <xsd:complexType name="WATER">
+      <xsd:complexContent>
+        <xsd:extension base="gml:AbstractFeatureType">
+          <xsd:sequence>
+            <xsd:element name="GEOM" minOccurs="0" nillable="true" type="iwfs:GeomPropertyType"/>
+            <xsd:element name="ID" minOccurs="0" nillable="true" type="xsd:int"/>
+            <xsd:element name="CODE" minOccurs="0" nillable="true" type="xsd:string"/>
+            <xsd:element name="KM" minOccurs="0" nillable="true" type="xsd:float"/>
+          </xsd:sequence>
+        </xsd:extension>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:schema>

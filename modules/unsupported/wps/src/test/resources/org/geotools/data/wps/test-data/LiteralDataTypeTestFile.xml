@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wps:ExecuteResponse service="WPS" version="1.0.0"
+    xmlns:wps="http://www.opengis.net/wps/1.0.0"
+    xmlns:gml="http://www.opengis.net/gml"
+    xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <wps:Process wps:processVersion="1.0.0">
+        <ows:Identifier>DoubleAddition</ows:Identifier>
+        <ows:Title>DoubleAddition</ows:Title>
+    </wps:Process>
+    <wps:Status creationTime="2008-07-16T22:33:52.468Z">
+        <wps:ProcessSucceeded>Process completed successfully.</wps:ProcessSucceeded>
+
+    </wps:Status>
+    <wps:ProcessOutputs>
+        <wps:Output>
+            <ows:Identifier>result</ows:Identifier>
+            <ows:Title>Result value</ows:Title>
+            <wps:Data>
+                <wps:LiteralData dataType="xs:double">40117.068999999996</wps:LiteralData>
+
+            </wps:Data>
+        </wps:Output>
+    </wps:ProcessOutputs>
+</wps:ExecuteResponse>

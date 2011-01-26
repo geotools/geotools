@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<HTML>
+  <HEAD>
+    <TITLE>package org.geotools.referencing.factory.epsg</TITLE>
+  </HEAD>
+  <BODY>
+  {@linkplain org.opengis.referencing.AuthorityFactory Authority factories} for
+  the <A HREF="http://www.epsg.org">EPSG</A> database.
+
+  <P ALIGN="justify">EPSG codes are numerical identifiers. For example "4326" is the EPSG
+  identifier for the "WGS 84" geographic CRS. However, the default implementation accepts
+  names as well as numeric identifiers. For example "<cite>NTF (Paris) / France I</cite>"
+  and {@code "27581"} both fetchs the same object. Note that names may be ambiguous since
+  the same name may be used for more than one object. This is the case of "WGS 84" for example.
+  If such an ambiguity is found, an exception will be thrown.</P>
+
+  <P ALIGN="justify">An EPSG authority factory is created using the following code:</P>
+  <BLOCKQUOTE><CODE>{@linkplain org.opengis.referencing.crs.CRSAuthorityFactory} factory =
+  {@linkplain org.geotools.referencing.ReferencingFactoryFinder}.getCRSAuthorityFactory("EPSG", null);</CODE></BLOCKQUOTE>
+
+  <P ALIGN="justify">This package provides the general framework for accessing an EPSG database,
+  but the actual connection to a database requires the existence of an EPSG plugin in the classpath.
+  Otherwise, a {@link org.geotools.factory.FactoryNotFoundException} will be thrown. Available plugins are:</P>
+
+  <TABLE ALIGN="center" BORDER="1" CELLPADDING="3">
+    <TR>
+      <TH>Required software</TH>
+      <TH>Data source</TH>
+      <TH>Plugin / JAR file</TH>
+      <TH>Additional notes</TH>
+    </TR>
+    <TR>
+      <TD>MS-Access ODBC driver</TD>
+      <TD>{@link org.geotools.referencing.factory.epsg.FactoryOnAccess}</TD>
+      <TD>{@code epsg-access}</TD>
+      <TD>See <A HREF="doc-files/Access.html">installation instructions</A></TD>
+    </TR>
+    <TR>
+      <TD>HSQL embedded database</TD>
+      <TD>{@link org.geotools.referencing.factory.epsg.FactoryOnHSQL}</TD>
+      <TD>{@code epsg-hsql}</TD>
+      <TD><A HREF="doc-files/HSQL.html">Note for module mainteners</A></TD>
+    </TR>
+    <TR>
+      <TD>PostgreSQL database</TD>
+      <TD>{@link org.geotools.referencing.factory.epsg.FactoryOnPostgreSQL}</TD>
+      <TD>{@code epsg-postgresql}</TD>
+      <TD><A HREF="doc-files/PostgreSQL.html">Note for module mainteners</A></TD>
+    </TR>
+  </TABLE>
+  </BODY>
+</HTML>

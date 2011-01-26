@@ -1,0 +1,137 @@
+// Parameterized math transform tests to test some map projections.
+//
+// (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+//
+// These replace the hard coded tests in 
+// org.geotools.referencing.operation.transform.projection.MathTransformTest
+//
+// Rueben Schulz - May 27, 2004
+//
+//
+// --------------------------------------------------------------------------
+// How to run this script:
+//
+//    chdir org/geotools/referencing/test-data/scripts
+//    java -ea org.geotools.referencing.ScriptRunner Projections.txt
+//
+// A test is performed every time a "target pt" statement occurs. If the target point computed
+// by Geotools is different from the target point declared in this script by an amount greater
+// than the value specified in the last "test tolerance" statement, then a failure is reported.
+// If some test fails, "print" statements can be added in this script for debugging purpose:
+//
+//    print crs            (prints the source and target CRS, and the transform between them)
+//    print pts            (prints the source and target points, and their transformed points)
+
+
+////////////////////////////////////////////
+//Mercator_1SP tests
+
+set _MT_Merc1_ = PARAM_MT["Mercator_1SP", PARAMETER["semi_major",6377397.155], PARAMETER["semi_minor",6356078.963], PARAMETER["central_meridian",110.0], PARAMETER["scale_factor",0.997], PARAMETER["false_easting",3900000.0], PARAMETER["false_northing",900000.0]]
+set _MT_Merc2_ = PARAM_MT["Mercator_1SP", PARAMETER["semi_major",1.0], PARAMETER["semi_minor",1.0], PARAMETER["central_meridian",-180.0], PARAMETER["scale_factor",1.0], PARAMETER["false_easting",0.0], PARAMETER["false_northing",0.0]]
+set _MT_Merc3_ = PARAM_MT["Mercator_1SP", PARAMETER["semi_major",6370997.0], PARAMETER["semi_minor",6370997.0], PARAMETER["central_meridian",0.0], PARAMETER["scale_factor",1.0], PARAMETER["false_easting",0.0], PARAMETER["false_northing",0.0]]
+
+transform = _MT_Merc1_
+test tolerance = (1e-2, 1e-2)
+
+//epsg example (p 26)
+source pt = (120.0, -3.0)
+target pt = (5009726.58, 569150.82)
+
+
+transform = _MT_Merc2_
+test tolerance = (1e-4, 1e-4)
+
+//spherical test (Snyder p. 266)
+source pt = (-75.0, 35.0)
+target pt = (1.8325957, 0.6528366)
+
+
+transform = _MT_Merc3_
+test tolerance = (1e-4, 1e-4)
+
+source pt = (-123.1, 49.2166666666)
+target pt = (-13688089.02443480, 6304639.84599441)
+
+
+////////////////////////////////////////////
+//Mercator_2SP tests
+
+set _MT_Merc4_ = PARAM_MT["Mercator_2SP", PARAMETER["semi_major",6378245.0], PARAMETER["semi_minor",6356863.019], PARAMETER["central_meridian",51.0], PARAMETER["false_easting",0.0], PARAMETER["false_northing",0.0], PARAMETER["standard_parallel_1",42.0]]
+set _MT_Merc5_ = PARAM_MT["Mercator_2SP", PARAMETER["semi_major",6370997.0], PARAMETER["semi_minor",6370997.0], PARAMETER["central_meridian",180.0], PARAMETER["false_easting",-500000.0], PARAMETER["false_northing",-1000000.0], PARAMETER["standard_parallel_1",60.0]]
+
+transform = _MT_Merc4_
+test tolerance = (1e-2, 1e-2)
+
+//epsg p25. Note FE and FN are wrong in guide 7. Correct in epsg database v6.3.
+source pt = (53.0, 53.0)
+target pt = (165704.29, 5171848.07)
+
+
+transform = _MT_Merc5_
+test tolerance = (1e-4, 1e-4)
+
+source pt = (-123.1, 49.2166666666)
+target pt = (2663494.1734, 2152319.9230)
+
+
+////////////////////////////////////////////
+//Lambert_Conformal_Conic_1SP tests
+
+set _MT_Lamb1_ = PARAM_MT["Lambert_Conformal_Conic_1SP", PARAMETER["semi_major",6378206.4], PARAMETER["semi_minor",6356583.8], PARAMETER["central_meridian",-76.99999999999999], PARAMETER["latitude_of_origin",18.0], PARAMETER["scale_factor",1.0], PARAMETER["false_easting",250000.0], PARAMETER["false_northing",150000.0]]
+set _MT_Lamb2_ = PARAM_MT["Lambert_Conformal_Conic_1SP", PARAMETER["semi_major",6370997.0], PARAMETER["semi_minor",6370997.0], PARAMETER["central_meridian",111.0], PARAMETER["latitude_of_origin",-55.0], PARAMETER["scale_factor",1.0], PARAMETER["false_easting",500000.0], PARAMETER["false_northing",1000000.0]]
+
+transform =_MT_Lamb1_
+test tolerance = (1e-2, 1e-3)
+
+//EPGS p. 18
+source pt = (-76.943683333, 17.932166666)
+target pt = (255966.58, 142493.51)
+
+
+transform =_MT_Lamb2_
+test tolerance = (1e-4, 1e-4)
+
+source pt = (151.283333333, -33.916666666)
+target pt = (4232963.1816, 2287639.9866)
+
+
+////////////////////////////////////////////
+//Lambert_Conformal_Conic_2SP tests
+
+set _MT_Lamb3_ = PARAM_MT["Lambert_Conformal_Conic_2SP", PARAMETER["semi_major",6378206.4], PARAMETER["semi_minor",6356583.8], PARAMETER["central_meridian",-99.00000000000001], PARAMETER["latitude_of_origin",27.833333333], PARAMETER["false_easting",609601.218], PARAMETER["false_northing",0.0], PARAMETER["standard_parallel_1",28.383333333], PARAMETER["standard_parallel_2",30.283333333]]
+set _MT_Lamb4_ = PARAM_MT["Lambert_Conformal_Conic_2SP", PARAMETER["semi_major",6370997.0], PARAMETER["semi_minor",6370997.0], PARAMETER["central_meridian",-119.99999999999999], PARAMETER["latitude_of_origin",0.0], PARAMETER["false_easting",0.0], PARAMETER["false_northing",0.0], PARAMETER["standard_parallel_1",2.0], PARAMETER["standard_parallel_2",59.99999999999999]]
+set _MT_Lamb5_ = PARAM_MT["Lambert_Conformal_Conic_2SP", PARAMETER["semi_major",6378137.0], PARAMETER["semi_minor",6356752.31424518], PARAMETER["central_meridian",0.0], PARAMETER["latitude_of_origin",-50.0], PARAMETER["false_easting",100000.0], PARAMETER["false_northing",0.0], PARAMETER["standard_parallel_1",-40.0], PARAMETER["standard_parallel_2",-40.0]]
+
+transform = _MT_Lamb3_
+test tolerance = (1e-2, 1e-3)
+
+////EPSG p. 17
+source pt = (-96.0, 28.5)
+target pt = (903277.7965, 77650.94219)
+
+
+transform = _MT_Lamb4_
+test tolerance = (1e-4, 1e-4)
+
+source pt = (139.733333333, 35.6833333333)
+target pt = (-6789805.6471, 7107623.6859)
+
+
+transform = _MT_Lamb5_
+test tolerance = (1e-4, 1e-4)
+
+source pt = (18.45, -33.9166666666)
+target pt = (1803288.3324, 1616657.7846)
+
+
+////////////////////////////////////////////
+//Lambert_Conformal_Conic_2SP_Belgium test
+
+set _MT_Lamb6_ = PARAM_MT["Lambert_Conformal_Conic_2SP_Belgium", PARAMETER["semi_major",6378388.0], PARAMETER["semi_minor",6356911.946], PARAMETER["central_meridian",4.356939722], PARAMETER["latitude_of_origin",90.0], PARAMETER["false_easting",150000.01], PARAMETER["false_northing",5400088.44], PARAMETER["standard_parallel_1",49.833333333], PARAMETER["standard_parallel_2",51.166666666000005]]
+
+transform = _MT_Lamb6_
+test tolerance = (1e-2, 1e-2)
+
+//epsg p. 19
+source pt = (5.807370277, 50.6795725)
+target pt = (251763.20, 153034.13)

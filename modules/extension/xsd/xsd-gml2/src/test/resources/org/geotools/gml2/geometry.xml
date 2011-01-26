@@ -1,0 +1,30 @@
+<gml:MultiGeometry xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:gml="http://www.opengis.net/gml"
+	xsi:schemaLocation="http://www.opengis.net/gml geometry.xsd">
+
+	<gml:pointMember>
+		<gml:Point>
+			<gml:coord>
+				<gml:X>12</gml:X>
+				<gml:Y>14</gml:Y>
+			</gml:coord>
+		</gml:Point>
+	</gml:pointMember>
+	
+	<gml:lineStringMember>
+		<gml:LineString>
+			<gml:coordinates>1,2 2,3</gml:coordinates>			
+		</gml:LineString>
+	</gml:lineStringMember>
+	
+	<gml:polygonMember>
+		<gml:Polygon>
+			<gml:outerBoundaryIs>
+				<gml:LinearRing>
+					<gml:coordinates>1,2 3,4 5,6 1,2</gml:coordinates>
+				</gml:LinearRing>
+			</gml:outerBoundaryIs>
+		</gml:Polygon>
+	</gml:polygonMember>
+
+</gml:MultiGeometry>

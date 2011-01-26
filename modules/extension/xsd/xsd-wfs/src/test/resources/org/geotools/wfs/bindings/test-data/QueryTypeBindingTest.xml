@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wfs:Query
+	typeName="gt:testType1"
+	handle="testHandle"
+	featureVersion="HEAD"
+	srsName="urn:x-ogc:def:crs:EPSG:6.11.2:4326"
+	xmlns:ogc="http://www.opengis.net/ogc"
+	xmlns:gml="http://www.opengis.net/gml"
+	xmlns:xlink="http://www.w3.org/1999/xlink"
+	xmlns:ows="http://www.opengis.net/ows"
+	xmlns:wfs="http://www.opengis.net/wfs"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:gt="http://www.geotools.org/test"
+	xsi:schemaLocation="http://www.opengis.net/gml http://schemas.opengis.net/gml/3.1.1/base/gml.xsd 
+						http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd">
+
+	<wfs:PropertyName>property1</wfs:PropertyName>
+	<wfs:PropertyName>property2</wfs:PropertyName>
+	<wfs:XlinkPropertyName
+		traverseXlinkDepth="*"
+		traverseXlinkExpiry="10">
+		gt:propertyA/gt:propertyB
+	</wfs:XlinkPropertyName>
+	<wfs:XlinkPropertyName traverseXlinkDepth="1">gt:propertyC/gt:propertyD</wfs:XlinkPropertyName>
+
+	<ogc:Function name="max">
+		<ogc:Literal>1</ogc:Literal>
+		<ogc:Literal>2</ogc:Literal>
+	</ogc:Function>
+	<ogc:Function name="min">
+		<ogc:Literal>1</ogc:Literal>
+		<ogc:Literal>2</ogc:Literal>
+	</ogc:Function>
+	<ogc:Filter>
+		<ogc:FeatureId fid="fid" />
+	</ogc:Filter>
+	<ogc:SortBy>
+		<ogc:SortProperty>
+			<ogc:PropertyName>sortProperty</ogc:PropertyName>
+			<ogc:SortOrder>DESC</ogc:SortOrder>
+		</ogc:SortProperty>
+	</ogc:SortBy>
+
+</wfs:Query>

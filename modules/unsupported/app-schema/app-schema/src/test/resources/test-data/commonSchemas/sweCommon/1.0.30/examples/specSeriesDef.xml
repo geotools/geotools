@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<swe:GridDefinition gml:id="ssd1" dimension="3" 
+xmlns:xst="http://www.seegrid.csiro.au/xml/st" 
+xmlns:swe="http://www.opengis.net/swe" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"                     
+xmlns:xlink="http://www.w3.org/1999/xlink" 
+xmlns:gml="http://www.opengis.net/gml" 
+xsi:schemaLocation="http://www.opengis.net/swe ../recordSchema.xsd">
+	<gml:description>This describes how to unpack an array and assign the atomic values to components of a set of map vectors
+	A Landsat TM spectrum is observed on 4 stations at 5 time instants</gml:description>
+	<gml:name>Spectrum Series Definition</gml:name>
+	<swe:map>
+		<swe:Array gml:id="et" arrayLength="3">
+			<gml:name>time</gml:name>
+			<swe:member xlink:href="toi.xml#ti1"/>
+			<swe:member xlink:href="toi.xml#ti3"/>
+			<swe:member xlink:href="toi.xml#ti5"/>
+		</swe:Array>
+	</swe:map>
+	<swe:map>
+		<swe:Array gml:id="tl" arrayLength="4">
+			<gml:name>location</gml:name>
+			<swe:member xlink:href="foi.xml#st11"/>
+			<swe:member xlink:href="foi.xml#st12"/>
+			<swe:member xlink:href="foi.xml#st13"/>
+			<swe:member xlink:href="foi.xml#st14"/>
+		</swe:Array>
+	</swe:map>
+	<swe:tupleMap xlink:href="tm7.xml#tm7"/>
+</swe:GridDefinition>

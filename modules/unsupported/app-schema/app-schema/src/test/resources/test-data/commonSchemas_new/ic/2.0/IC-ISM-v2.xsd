@@ -1,0 +1,553 @@
+<?xml version="1.0" ?>
+<!-- *********************************************************************** -->
+<!--                                UNCLASSIFIED                             -->
+<!-- *********************************************************************** -->
+<!-- *************************** IC ISM XML Schema ************************* -->
+
+<!--
+     The IC ISM XML Schema is described in the IC Information Security
+     Marking (IC ISM) Data Element Dictionary and the IC ISM Implementation
+     Guide. It is one of the Intelligence Community (IC) Metadata Standards
+     for Information Assurance.
+-->
+<!--    
+     IC ISM, Version 2.0, dated 30 April 2004
+
+     This file provides an XML-based schema for specification of metadata
+     for classification and controls markings.  The goal of the IC ISM XML
+     Schema is to provide a common set of XML attributes for implementing
+     security-based metadata throughout the IC. The IC ISM XML Schema
+     provides markup for the tokens that are used to format the CAPCO
+     markings.
+     
+     The IC ISM XML Schema may be incorporated into organizational 
+     XML-based schemas by (a) declaring the IC ISM v2.0 namespace and
+     (b) inserting an "import" statement:
+
+        <xsd:schema
+            xmlns="...my namespace name..."
+            targetNamespace="...my namespace name..."
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:ism="urn:us:gov:ic:ism:v2">
+        ...
+        <xsd:import 
+            namespace="urn:us:gov:ic:ism:v2"
+            schemaLocation="IC-ISM-v2.xsd" />
+		
+     IMPLEMENTATION NOTES:
+     
+     1. Refer to the Data Element Dictionary and Implementation Guide for an
+        explanation of the relationships of the IC ISM attributes and the 
+        associated controlled vocabularies.  The CAPCO Register and CAPCO
+        Implementation Manual provide business rules (that may be
+        classified) not provided in the DED or Implementation Guide.
+         
+     2. The IC ISM attributes are intended to support all CAPCO security
+        markings.  However, the attribute values are NOT intended to be
+        verbatim pieces of portionmarks and banners.  Instead, the values
+        should be interpreted by XSLT stylesheets or other formatting speci-
+        fications to produce the required portionmarks and banners.
+
+     3. The IC ISM schema is not a standalone construct; it should be
+        imported into a parent XML schema.
+     
+     4. The controlled vocabularies containing the required values for popu-
+        lating the attributes are defined in the Implementation Guide and
+        maintained as separate text files. The terms of the controlled
+        vocabularies are defined in the CAPCO Register.
+        
+     5. Attribute group "SecurityAttributesGroup" should be referenced
+        in the attribute definition list of any element that REQUIRES 
+        security metadata.
+     
+     6. Attribute group "SecurityAttributesOptionGroup" may be referenced
+        in the attribute definition list of any element for which
+        security metadata may be appropriate but is not required (such
+        as, an individual cell of a table).
+-->
+
+<xsd:schema
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="urn:us:gov:ic:ism:v2"
+  xmlns="urn:us:gov:ic:ism:v2"
+  elementFormDefault="qualified"
+  xml:lang="en">
+  
+  <xsd:annotation>
+    <xsd:documentation>
+W3C XML Schema for the Intelligence Community Metadata Standard for
+Information Security Marking (IC-ISM), which is part of the IC
+standards for Information Assurance.
+    </xsd:documentation>
+  </xsd:annotation>
+  
+
+<!-- ************************************************************* -->
+<!-- TYPE DEFINITIONS ................................           . -->
+<!-- ************************************************************* -->
+
+  <xsd:simpleType name="ClassificationType">
+     <xsd:annotation>
+       <xsd:documentation>
+A simple type in which a name token is restricted to the US,
+non-US, and joint classification portionmark abbreviations from 
+the CAPCO Register.
+       </xsd:documentation>
+     </xsd:annotation>
+     <xsd:restriction base="xsd:NMTOKEN">
+        <xsd:enumeration value="U">
+           <xsd:annotation>
+              <xsd:documentation>
+US, non-US or joint UNCLASSIFIED.
+              </xsd:documentation>
+           </xsd:annotation>
+        </xsd:enumeration>
+        <xsd:enumeration value="C"/>
+        <xsd:enumeration value="S"/>
+        <xsd:enumeration value="TS"/>
+        <xsd:enumeration value="R"/>
+        <xsd:enumeration value="CTS"/>
+        <xsd:enumeration value="CTS-B"/>
+        <xsd:enumeration value="CTS-BALK"/>
+        <xsd:enumeration value="NU"/>
+        <xsd:enumeration value="NR"/>
+        <xsd:enumeration value="NC"/>
+        <xsd:enumeration value="NS"/>
+        <xsd:enumeration value="NS-S"/>
+        <xsd:enumeration value="NS-A"/>
+        <xsd:enumeration value="CTSA"/>
+        <xsd:enumeration value="NSAT"/>
+        <xsd:enumeration value="NCA"/>
+     </xsd:restriction>
+  </xsd:simpleType>
+
+
+<!-- ************************************************************* -->
+<!-- ATTRIBUTE GROUP DEFINITIONS ................................. -->
+<!-- ************************************************************* -->
+
+  <xsd:attributeGroup name="SecurityAttributesGroup">
+
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+The group of Information Security Marking attributes in which
+the use of attributes 'classification' and 'ownerProducer' is
+required. This group is to be contrasted with group
+'SecurityAttributesOptionGroup' in which use of those attributes
+is optional.
+      </xsd:documentation>
+    </xsd:annotation>
+  
+    <xsd:attribute ref="classification" use="required"/>
+    <xsd:attribute ref="ownerProducer" use="required"/>
+    <xsd:attribute ref="SCIcontrols" use="optional"/>
+    <xsd:attribute ref="SARIdentifier" use="optional"/>
+    <xsd:attribute ref="disseminationControls" use="optional"/>
+    <xsd:attribute ref="FGIsourceOpen" use="optional"/>
+    <xsd:attribute ref="FGIsourceProtected" use="optional"/>
+    <xsd:attribute ref="releasableTo" use="optional"/>
+    <xsd:attribute ref="nonICmarkings" use="optional"/>
+    <xsd:attribute ref="classifiedBy" use="optional"/>
+    <xsd:attribute ref="classificationReason" use="optional"/>
+    <xsd:attribute ref="derivedFrom" use="optional"/>
+    <xsd:attribute ref="declassDate" use="optional"/>
+    <xsd:attribute ref="declassEvent" use="optional"/>
+    <xsd:attribute ref="declassException" use="optional"/>
+    <xsd:attribute ref="typeOfExemptedSource" use="optional"/>
+    <xsd:attribute ref="dateOfExemptedSource" use="optional"/>
+    <xsd:attribute ref="declassManualReview" use="optional"/>
+  
+  </xsd:attributeGroup>
+  
+  
+  <xsd:attributeGroup name="SecurityAttributesOptionGroup">
+
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+The group of Information Security Marking attributes in which
+the use of attributes 'classification' and 'ownerProducer'
+is optional. This group is to be contrasted with group
+'SecurityAttributesGroup' in which use of these attributes
+is required.
+      </xsd:documentation>
+    </xsd:annotation>
+  
+    <xsd:attribute ref="classification" use="optional"/>
+    <xsd:attribute ref="ownerProducer" use="optional"/>
+    <xsd:attribute ref="SCIcontrols" use="optional"/>
+    <xsd:attribute ref="SARIdentifier" use="optional"/>
+    <xsd:attribute ref="disseminationControls" use="optional"/>
+    <xsd:attribute ref="FGIsourceOpen" use="optional"/>
+    <xsd:attribute ref="FGIsourceProtected" use="optional"/>
+    <xsd:attribute ref="releasableTo" use="optional"/>
+    <xsd:attribute ref="nonICmarkings" use="optional"/>
+    <xsd:attribute ref="classifiedBy" use="optional"/>
+    <xsd:attribute ref="classificationReason" use="optional"/>
+    <xsd:attribute ref="derivedFrom" use="optional"/>
+    <xsd:attribute ref="declassDate" use="optional"/>
+    <xsd:attribute ref="declassEvent" use="optional"/>
+    <xsd:attribute ref="declassException" use="optional"/>
+    <xsd:attribute ref="typeOfExemptedSource" use="optional"/>
+    <xsd:attribute ref="dateOfExemptedSource" use="optional"/>
+    <xsd:attribute ref="declassManualReview" use="optional"/>
+  
+  </xsd:attributeGroup>
+    
+  
+<!-- ************************************************************* -->
+<!-- GLOBAL ATTRIBUTE DECLARATIONS ............................... -->
+<!-- ************************************************************* -->
+
+  <xsd:attribute name="classification" type="ClassificationType"/>
+  
+  
+  <xsd:attribute name="ownerProducer">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+ISO 3166-1 trigraph(s) of the owner or producer country(ies) and/or
+CAPCO-specified tetragraphs of international organizations.
+Either (a) a single trigraph or tetragraph or (b) a space-delimited
+list of trigraphs followed by tetragraphs. Trigraphs must be in
+alphabetical order and tetragraphs must be in alphabetical order.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleType>
+      <xsd:restriction base="xsd:NMTOKENS"/>
+    </xsd:simpleType>
+  </xsd:attribute>
+  
+  
+  <xsd:attribute name="SCIcontrols">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+Authorized abbreviation(s) of SCI control system(s). Either
+(a) a single abbreviation or (b) a space-delimited list of
+abbreviations in the order prescribed in the CAPCO Register.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleType>
+      <xsd:restriction base="xsd:NMTOKENS"/>
+    </xsd:simpleType>
+  </xsd:attribute>
+        
+
+  <xsd:attribute name="SARIdentifier">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+Authorized Special Access Required program digraph(s) or
+trigraph(s) preceded by "SAR-". Either (a) a single digraph or
+trigraph or (b) a space-delimited list of digraphs or trigraphs.
+Example: "SAR-ABC SAR-DEF ..."
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleType>
+      <xsd:restriction base="xsd:NMTOKENS"/>
+    </xsd:simpleType>
+  </xsd:attribute>
+        
+
+  <xsd:attribute name="disseminationControls">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+Authorized dissemination control portion mark abbreviation(s).
+Either (a) a single abbreviation or (b) a space-delimited list
+of abbreviations in the order shown in the CAPCO Register.
+Exception: For the "REL" abbreviation, omit the country code
+trigraph(s) and instead place the trigraph(s) in the
+"releasableTo" attribute value.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleType>
+      <xsd:restriction base="xsd:NMTOKENS"/>
+    </xsd:simpleType>
+  </xsd:attribute>
+        
+
+  <xsd:attribute name="FGIsourceOpen">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+Non-US classification portion marking for foreign government
+information in a document portion. Use this attribute to record
+a source country when the intent is to post the document to a
+shared space with the source identified.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleType>
+      <xsd:restriction base="xsd:NMTOKENS"/>
+    </xsd:simpleType>
+  </xsd:attribute>
+        
+
+  <xsd:attribute name="FGIsourceProtected">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+Non-US classification portion marking for foreign government
+information in a document portion. Use this attribute to record
+a source country when the intent is to filter out the identity of
+the source prior to posting the document to a shared space.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleType>
+      <xsd:restriction base="xsd:NMTOKENS"/>
+    </xsd:simpleType>
+  </xsd:attribute>
+        
+
+  <xsd:attribute name="releasableTo">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+ISO 3166-1 trigraphic codes of countries to which the associated
+content can be released. Include "USA" in all instances. Use a space-
+delimited list with "USA" first, followed by the other trigraph(s)
+in alphabetical order.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleType>
+      <xsd:restriction base="xsd:NMTOKENS"/>
+    </xsd:simpleType>
+  </xsd:attribute>
+        
+
+  <xsd:attribute name="nonICmarkings">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+Authorized non-IC portion marking abbreviation(s) from the CAPCO
+Register. Either (a) a single non-IC abbreviated marking or
+(b) a space-delimited list of abbreviations in the order shown
+in the CAPCO Register.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleType>
+      <xsd:restriction base="xsd:NMTOKENS"/>
+    </xsd:simpleType>
+  </xsd:attribute>
+        
+
+  <xsd:attribute name="classifiedBy">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+Use as specified by E.O. 12958.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleType>
+      <xsd:restriction base="xsd:string"/>
+    </xsd:simpleType>
+  </xsd:attribute>
+        
+
+  <xsd:attribute name="classificationReason">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+A text string containing one or more paragraph numbers, 1.4(a)
+through 1.4(h), taken from E.O. 12958, as amended. Enter the
+paragraph references as they should appear in a
+classification/declassification block.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleType>
+      <xsd:restriction base="xsd:string"/>
+    </xsd:simpleType>
+  </xsd:attribute>
+        
+
+  <xsd:attribute name="derivedFrom">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+A text string containing (a) the title and date of a specific source
+document, or (b) the title and date of an organization classification
+guide, or (c) the literal string "Multiple Sources".
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleType>
+      <xsd:restriction base="xsd:string"/>
+    </xsd:simpleType>
+  </xsd:attribute>
+        
+
+  <xsd:attribute name="declassDate">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+A specific date, in the format YYYY-MM-DD, at which the applicable
+information is automatically declassified.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleType>
+      <xsd:restriction base="xsd:date"/>
+    </xsd:simpleType>
+  </xsd:attribute>
+        
+
+  <xsd:attribute name="declassEvent">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+A textual description of an event that triggers declassification.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleType>
+      <xsd:restriction base="xsd:string"/>
+    </xsd:simpleType>
+  </xsd:attribute>
+        
+
+  <xsd:attribute name="declassException">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+One or more of the exceptions to 25-year declassification:
+specify "25X1-human", "25X1", "25X2", ..., "25X9". If more than
+one exception applies, use a space-delimited list. If "25X1-human"
+applies, it should be first in a list.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleType>
+      <xsd:restriction base="xsd:NMTOKENS"/>
+    </xsd:simpleType>
+  </xsd:attribute>
+        
+
+  <xsd:attribute name="typeOfExemptedSource">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+One or more tokens indicating that a source that is exempted from
+automatic declassification applies. Specify "OADR", "X1", "X2", ...,
+"X8". If more than one applies, use a space-delimited list.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleType>
+      <xsd:restriction base="xsd:NMTOKENS"/>
+    </xsd:simpleType>
+  </xsd:attribute>
+        
+
+  <xsd:attribute name="dateOfExemptedSource">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+A specific date, in the format YYYY-MM-DD. Used in conjunction with
+attribute "typeOfExemptedSource." If there are multiple exempted
+sources, specify the date of the exempted
+source that has the most recent date.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleType>
+      <xsd:restriction base="xsd:date"/>
+    </xsd:simpleType>
+  </xsd:attribute>
+        
+
+  <xsd:attribute name="declassManualReview">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+A true/false indication that manual review is required for
+declassification. Use this attribute to force the appearance of
+"//MR" in the header and footer marking titles. Use this attribute
+ONLY when it is necessary to override the business logic applied to
+classification and control markings in the document to determine
+whether manual review is required.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleType>
+      <xsd:restriction base="xsd:boolean"/>
+    </xsd:simpleType>
+  </xsd:attribute>
+        
+</xsd:schema>
+
+<!-- ***************************************************************
+                             USAGE GUIDELINES
+     ***************************************************************
+     
+     1. Use "classification" and "ownerProducer" together to specify
+     the classification and type of classification.
+     
+        a. If "ownerProducer" equals "USA," the classification is
+        a US classification and is restricted to "U," "C," "S" and
+        "TS."
+        
+        b. If "ownerProducer" equals a trigraph other than "USA" or
+        equals a tetragraph, the classification is a non-US classi-
+        fication.
+        
+        c. If "ownerProducer" equals two or more trigraphs or tetra-
+        graphs, the classification is a joint classification. If "USA"
+        is one of the trigraphs, the classification values are 
+        restricted as shown in a, above. If "USA" is not listed, the
+        permissible classification values include "R" in addition to
+        those in a, above.
+        
+     2. Use "classifiedBy" and "classificationReason" for original
+     classifications. Use "derivedFrom" for derived classifications.
+     
+     3. Use one and only one of:
+     
+        "declassDate"
+        "declassEvent"
+        "declassException"
+        "typeOfExemptedSource"
+        
+     4. If "typeOfExemptedSource" is used, "dateOfExemptedSource" must
+     also be used.
+     
+     5. Use "declassManualReview" to force the appearance of "//MR" in
+     header and footer marking titles. Otherwise, the applicability of
+     manual review should be determined from the other markings in the
+     document.
+     
+     6. Attribute "FGIsourceProtected" is included for use by organiza-
+     tions that want to use IC ISM internally and track protected
+     sources within the origanization private spaces. It is not
+     anticipated that this attribute will be used in documents posted
+     to the shared spaces.
+-->
+
+
+<!-- **************************************************************
+                            CHANGE HISTORY
+     **************************************************************
+*
+* VERSION: 1.0
+* DATE:    2002-07-05
+* BY:      IC MWG
+* PURPOSE: Released as a registered, production XML entity set.
+*
+* VERSION: 2.0
+* DATE:    2004-04-30
+* BY:      IC MWG
+* PURPOSE: Updated to support changes to the CAPCO Register and
+           Implementation Manual.
+* 
+*     - Added "ownerProducer" as a required attribute for entity
+*       "SecurityAttributes" and as an optional attribute for entity
+*       "SecurityAttributesOption."  Purpose is to provide a single method
+*       for specification of US, non-US, and joint classifications.
+*
+*     - Changed the enumerated list that is the declared value of attribute
+*       "classification" in order to accommodate non-US classifications.
+*     
+*     - Added optional attribute "SARIdentifier" as a separate container for
+*       DoD/DoE special-access-required nicknames, codewords, or trigraph/
+*       digraph to support elevation of SAR to the same level as SCI controls.
+*
+*     - Added optional attributes "classifiedBy" and "classificationReason"
+*       to support generation of EO 12958 classification/declassification
+*       blocks.
+*
+*     - Changed the declared value of "derivedFrom" to CDATA to allow the titles
+*       and dates of source documents or classification guides to be specified.
+*
+*     - Replaced the single attribute "declassification" with distinct attri-
+*       butes for date-determined and event-determined declassification and
+*       for the 25X declassification exceptions.
+*
+*     - Added attributes "typeOfExemptedSource" and "dateOfExemptedSource" for
+*       use in specifying that one or more sources was marked OADR, X1 through
+*       X8, or X-Foreign Relations.
+*
+*     - Added attribute "declassManualReview" for use in forcing "MR" to
+*       appear in header and footer banners (regardless of whether any
+*       caveats in the portions would necessitate manual review).
+*     
+*
+******************************** END CHANGE HISTORY ************************ -->
+
+<!-- *********************************************************************** -->
+<!--                               UNCLASSIFIED                              -->
+<!-- *********************************************************************** -->         

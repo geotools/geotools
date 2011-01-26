@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://schemas.example.org/demo" xmlns:ex="http://schemas.example.org/demo"
+    xmlns:gsml="urn:cgi:xmlns:CGI:GeoSciML:2.0" xmlns="http://www.w3.org/2001/XMLSchema"
+    elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+
+    <import namespace="urn:cgi:xmlns:CGI:GeoSciML:2.0" schemaLocation="http://www.geosciml.org/geosciml/2.0/xsd/geosciml.xsd" />
+
+    <element name="GeologicUnit" substitutionGroup="gsml:GeologicFeature" type="ex:CommentedGeologicUnitType" />
+
+    <complexType name="CommentedGeologicUnitType">
+        <complexContent>
+            <extension base="gsml:GeologicUnitType">
+                <sequence>
+                    <element name="comment" type="string" />
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+
+</schema>

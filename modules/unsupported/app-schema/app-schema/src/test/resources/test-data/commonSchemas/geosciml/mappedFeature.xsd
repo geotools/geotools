@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- 
+Gabriel's note: I created this file based on the sample Gsml instance document, since the provided
+schemas does not includes the MappedFeature definition
+version $Id$
+ -->
+<schema targetNamespace="http://www.cgi-iugs.org/xml/GeoSciML/1" 
+xmlns:gsml="http://www.cgi-iugs.org/xml/GeoSciML/1" 
+xmlns="http://www.w3.org/2001/XMLSchema" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+xmlns:gml="http://www.opengis.net/gml" 
+elementFormDefault="qualified" 
+attributeFormDefault="unqualified" version="1.0.0">
+  <!--=======================-->
+	<import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+  <!--=======================-->
+  <!--=======================-->
+  <include schemaLocation="geologicUnit.xsd" />
+  <!--=======================-->
+  <complexType name="MappedFeatureType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <!-- gml:name and gml:description should be inherited from gml:AbstractFeatureType 
+            but it is not yet bound in the geotools AbstractFeatureType binding
+          -->
+          <element name="name" type="xs:string" nillable="true" minOccurs="0"/>
+          <element name="description" type="xs:string" nillable="true" minOccurs="0"/>
+          <element name="shape" type="gml:MultiPolygonPropertyType"/>
+          <element name="specification" type="gsml:GeologicUnitPropertyType"/>
+          <element name="metadata" type="gsml:MappedFeatureMetadataPropertyType"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <!-- ..................... -->
+  <element name="MappedFeature" type="gsml:MappedFeatureType" substitutionGroup="gml:_Feature"/>
+  <!--=======================-->
+</schema>

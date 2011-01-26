@@ -1,0 +1,24 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<HTML>
+  <HEAD>
+    <TITLE>package org.geotools.referencing.crs</TITLE>
+  </HEAD>
+  <BODY>
+  {@linkplain org.geotools.referencing.crs.AbstractCRS Coordinate reference systems} implementation.
+  An explanation for this package is provided in the {@linkplain org.opengis.referencing.crs OpenGIS&reg; javadoc}.
+  The remaining discussion on this page is specific to the Geotools implementation.
+
+  <P ALIGN="justify">{@link org.geotools.referencing.crs.AbstractCRS} is the base class for all
+  coordinate reference systems (CRS). CRS can have an arbitrary number of dimensions. Some are two-dimensional
+  (e.g. {@link org.geotools.referencing.crs.DefaultGeographicCRS GeographicCRS} and
+  {@link org.geotools.referencing.crs.DefaultProjectedCRS ProjectedCRS}), while some others are one-dimensional
+  (e.g. {@link org.geotools.referencing.crs.DefaultVerticalCRS VerticalCRS} and
+  {@link org.geotools.referencing.crs.DefaultTemporalCRS TemporalCRS}). Those simple coordinate systems can be
+  used as building blocks for more complex coordinate reference systems. For example, it is possible to construct
+  a three-dimensional CRS with (<var>latitude</var>, <var>longitude</var>, <var>time</var>) with an aggregation
+  of {@link org.geotools.referencing.crs.DefaultGeographicCRS GeographicCRS} and
+  {@link org.geotools.referencing.crs.DefaultTemporalCRS TemporalCRS}. Such aggregations
+  are built with {@link org.geotools.referencing.crs.DefaultCompoundCRS CompoundCRS}.</P>
+  </BODY>
+</HTML>

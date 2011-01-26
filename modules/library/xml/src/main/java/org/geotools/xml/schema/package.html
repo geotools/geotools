@@ -1,0 +1,21 @@
+<html>
+<body>
+<h1>Schema Interfaces</h1>
+<h2>Overview</h2>
+<p>This package is intended to provide all the necessary interfaces to semantically 
+represent an XML Schema. Some of the concious shortcomings of this interface set 
+include the in-ability to reproduce exact xml schema documents from a schema 
+represented in memory using just these interfaces (some non-essential constructs 
+have been removed/ignored). </p>
+<p>Implementors creating instances of this package should refer to the SchemaFactory 
+(org.geotools.gml) to link your implmentation into the parser.</p>
+
+<h2>How to make an extension</h2>
+<p>This is easy to describe, but hard to implement (or rather to test + debug). 
+Essentially you should create a class that implements Schema, and register it 
+with the SchemaFactory. When creating the appropriate Types as part of the 
+Schema (I assume your Schema will have these) you can link extra parsing into 
+the getValue method (see Type Interface).</p>
+
+</body>
+</html>

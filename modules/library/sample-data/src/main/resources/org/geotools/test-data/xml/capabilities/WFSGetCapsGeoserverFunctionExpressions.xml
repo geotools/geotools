@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WFS_Capabilities version="1.0.0" xmlns="http://www.opengis.net/wfs" xmlns:topp="http://www.openplans.org/topp" xmlns:tiger="http://www.census.gov" xmlns:cite="http://www.opengeospatial.net/cite" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/wfs http://192.168.50.92:8080/geoserver/schemas/wfs/1.0.0/WFS-capabilities.xsd">
+  <Service>
+    <Name>My GeoServer WFS</Name>
+    <Title>My GeoServer WFS</Title>
+    <Abstract>
+This is a description of your Web Feature Server.
+
+The GeoServer is a full transactional Web Feature Server, you may wish to limit
+GeoServer to a Basic service level to prevent modificaiton of your geographic
+data.
+     </Abstract>
+    <Keywords>WFS, WMS, GEOSERVER</Keywords>
+    <OnlineResource>http://geoserver.sourceforge.net/html/index.php</OnlineResource>
+    <Fees>NONE</Fees>
+    <AccessConstraints>NONE</AccessConstraints>
+  </Service>
+  <Capability>
+    <Request>
+      <GetCapabilities>
+        <DCPType>
+          <HTTP>
+            <Get onlineResource="http://192.168.50.92:8080/geoserver/wfs?"/>
+          </HTTP>
+        </DCPType>
+        <DCPType>
+          <HTTP>
+            <Post onlineResource="http://192.168.50.92:8080/geoserver/wfs?"/>
+          </HTTP>
+        </DCPType>
+      </GetCapabilities>
+      <DescribeFeatureType>
+        <SchemaDescriptionLanguage>
+          <XMLSCHEMA/>
+        </SchemaDescriptionLanguage>
+        <DCPType>
+          <HTTP>
+            <Get onlineResource="http://192.168.50.92:8080/geoserver/wfs?"/>
+          </HTTP>
+        </DCPType>
+        <DCPType>
+          <HTTP>
+            <Post onlineResource="http://192.168.50.92:8080/geoserver/wfs?"/>
+          </HTTP>
+        </DCPType>
+      </DescribeFeatureType>
+      <GetFeature>
+        <ResultFormat>
+          <GML2/>
+          <GML2-GZIP/>
+        </ResultFormat>
+        <DCPType>
+          <HTTP>
+            <Get onlineResource="http://192.168.50.92:8080/geoserver/wfs?"/>
+          </HTTP>
+        </DCPType>
+        <DCPType>
+          <HTTP>
+            <Post onlineResource="http://192.168.50.92:8080/geoserver/wfs?"/>
+          </HTTP>
+        </DCPType>
+      </GetFeature>
+      <Transaction>
+        <DCPType>
+          <HTTP>
+            <Get onlineResource="http://192.168.50.92:8080/geoserver/wfs?"/>
+          </HTTP>
+        </DCPType>
+        <DCPType>
+          <HTTP>
+            <Post onlineResource="http://192.168.50.92:8080/geoserver/wfs?"/>
+          </HTTP>
+        </DCPType>
+      </Transaction>
+      <LockFeature>
+        <DCPType>
+          <HTTP>
+            <Get onlineResource="http://192.168.50.92:8080/geoserver/wfs?"/>
+          </HTTP>
+        </DCPType>
+        <DCPType>
+          <HTTP>
+            <Post onlineResource="http://192.168.50.92:8080/geoserver/wfs?"/>
+          </HTTP>
+        </DCPType>
+      </LockFeature>
+      <GetFeatureWithLock>
+        <ResultFormat>
+          <GML2/>
+        </ResultFormat>
+        <DCPType>
+          <HTTP>
+            <Get onlineResource="http://192.168.50.92:8080/geoserver/wfs?"/>
+          </HTTP>
+        </DCPType>
+        <DCPType>
+          <HTTP>
+            <Post onlineResource="http://192.168.50.92:8080/geoserver/wfs?"/>
+          </HTTP>
+        </DCPType>
+      </GetFeatureWithLock>
+    </Request>
+  </Capability>
+  <FeatureTypeList>
+    <Operations>
+      <Query/>
+      <Insert/>
+      <Update/>
+      <Delete/>
+      <Lock/>
+    </Operations>
+    <FeatureType>
+      <Name>topp:bc_pubs</Name>
+      <Title>bc_pubs_Type</Title>
+      <Abstract>Generated from rackmount</Abstract>
+      <Keywords>bc_pubs rackmount</Keywords>
+      <SRS>EPSG:3005</SRS>
+      <LatLongBoundingBox minx="-130.8651228670881" miny="47.94367232901433" maxx="-113.33824122955448" maxy="58.842656970401954"/>
+    </FeatureType>
+    <FeatureType>
+      <Name>topp:tasmania_state_boundaries</Name>
+      <Title>tasmania_state_boundaries_Type</Title>
+      <Abstract>Generated from tasmania_state_boundaries_shapefile</Abstract>
+      <Keywords>Tasmania Australia State</Keywords>
+      <SRS>EPSG:4326</SRS>
+      <LatLongBoundingBox minx="143.83482400000003" miny="-43.648056" maxx="148.47914100000003" maxy="-39.573891"/>
+    </FeatureType>
+    <FeatureType>
+      <Name>topp:bc_municipality</Name>
+      <Title>bc_municipality_Type</Title>
+      <Abstract>Generated from rackmount</Abstract>
+      <Keywords>bc_municipality rackmount</Keywords>
+      <SRS>EPSG:3005</SRS>
+      <LatLongBoundingBox minx="-133.2126875307206" miny="47.761710762008356" maxx="-111.99087652568278" maxy="58.86470809992614"/>
+    </FeatureType>
+    <FeatureType>
+      <Name>topp:more</Name>
+      <Title>more_Type</Title>
+      <Abstract>Generated from ant</Abstract>
+      <Keywords>more ant</Keywords>
+      <SRS>EPSG:4326</SRS>
+      <LatLongBoundingBox minx="-114.29065743944636" miny="-74.11764705882352" maxx="114.29065743944636" maxy="37.370242214532865"/>
+    </FeatureType>
+    <FeatureType>
+      <Name>tiger:tiger_roads</Name>
+      <Title>tiger_roads_Type</Title>
+      <Abstract>Generated from DS_tiger_roads</Abstract>
+      <Keywords>tiger_roads DS_tiger_roads</Keywords>
+      <SRS>EPSG:4326</SRS>
+      <LatLongBoundingBox minx="-74.02722" miny="40.684221" maxx="-73.907005" maxy="40.878178"/>
+    </FeatureType>
+    <FeatureType>
+      <Name>topp:geometrytype</Name>
+      <Title>GeometryTest</Title>
+      <Abstract>Generated from rackmount</Abstract>
+      <Keywords>geometrytype rackmount</Keywords>
+      <SRS>EPSG:3005</SRS>
+      <LatLongBoundingBox minx="-135.0" miny="48.0" maxx="-120.0" maxy="60.0"/>
+    </FeatureType>
+    <FeatureType>
+      <Name>tiger:poly_landmarks</Name>
+      <Title>poly_landmarks_Type</Title>
+      <Abstract>Generated from DS_poly_landmarks</Abstract>
+      <Keywords>DS_poly_landmarks poly_landmarks</Keywords>
+      <SRS>EPSG:4326</SRS>
+      <LatLongBoundingBox minx="-74.047185" miny="40.679648" maxx="-73.90782" maxy="40.882078"/>
+    </FeatureType>
+    <FeatureType>
+      <Name>topp:states</Name>
+      <Title>USA Population</Title>
+      <Abstract>This is some census data on the states.</Abstract>
+      <Keywords>census, state boundaries, united states</Keywords>
+      <SRS>EPSG:4326</SRS>
+      <LatLongBoundingBox minx="-124.731422" miny="24.955967" maxx="-66.969849" maxy="49.371735"/>
+    </FeatureType>
+    <FeatureType>
+      <Name>topp:tasmania_roads</Name>
+      <Title>tasmania_roads_Type</Title>
+      <Abstract>Generated from tasmania_roads_shapefile</Abstract>
+      <Keywords>Tasmania Roads</Keywords>
+      <SRS>EPSG:4326</SRS>
+      <LatLongBoundingBox minx="145.19754" miny="-43.423512" maxx="148.27298000000002" maxy="-40.852802"/>
+    </FeatureType>
+    <FeatureType>
+      <Name>topp:tasmania_water_bodies</Name>
+      <Title>tasmania_water_bodies_Type</Title>
+      <Abstract>Generated from tasmania_water_bodies_shapefile</Abstract>
+      <Keywords>Tasmania Australia Water Bodies Lakes</Keywords>
+      <SRS>EPSG:4326</SRS>
+      <LatLongBoundingBox minx="145.97161899999998" miny="-43.031944" maxx="147.219696" maxy="-41.775558"/>
+    </FeatureType>
+    <FeatureType>
+      <Name>tiger:giant_polygon</Name>
+      <Title>giant_polygon_Type</Title>
+      <Abstract>Generated from DS_giant_polygon</Abstract>
+      <Keywords>DS_giant_polygon giant_polygon</Keywords>
+      <SRS>EPSG:4326</SRS>
+      <LatLongBoundingBox minx="-180.0" miny="-90.0" maxx="180.0" maxy="90.0"/>
+    </FeatureType>
+    <FeatureType>
+      <Name>topp:tasmania_cities</Name>
+      <Title>tasmania_cities_Type</Title>
+      <Abstract>Generated from tasmania_cities_shapefile</Abstract>
+      <Keywords>Tasmania Roads</Keywords>
+      <SRS>EPSG:4326</SRS>
+      <LatLongBoundingBox minx="145.19754" miny="-43.423512" maxx="148.27298000000002" maxy="-40.852802"/>
+    </FeatureType>
+    <FeatureType>
+      <Name>tiger:poi</Name>
+      <Title>poi_Type</Title>
+      <Abstract>Generated from DS_poi</Abstract>
+      <Keywords>DS_poi poi</Keywords>
+      <SRS>EPSG:4326</SRS>
+      <LatLongBoundingBox minx="-74.0118315772888" miny="40.70754683896324" maxx="-74.00857344353275" maxy="40.711945649065406"/>
+    </FeatureType>
+  </FeatureTypeList>
+  <ogc:Filter_Capabilities>
+    <ogc:Spatial_Capabilities>
+      <ogc:Spatial_Operators>
+        <ogc:Disjoint/>
+        <ogc:Equals/>
+        <ogc:DWithin/>
+        <ogc:Beyond/>
+        <ogc:Intersect/>
+        <ogc:Touches/>
+        <ogc:Crosses/>
+        <ogc:Within/>
+        <ogc:Contains/>
+        <ogc:Overlaps/>
+        <ogc:BBOX/>
+      </ogc:Spatial_Operators>
+    </ogc:Spatial_Capabilities>
+    <ogc:Scalar_Capabilities>
+      <ogc:Logical_Operators/>
+      <ogc:Comparison_Operators>
+        <ogc:Simple_Comparisons/>
+        <ogc:Between/>
+        <ogc:Like/>
+        <ogc:NullCheck/>
+      </ogc:Comparison_Operators>
+      <ogc:Arithmetic_Operators>
+        <ogc:Simple_Arithmetic/>
+        <ogc:Functions>
+          <ogc:Function_Names>
+            <ogc:Function_Name nArgs="1">abs</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">abs_2</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">abs_3</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">abs_4</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">acos</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">Area</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">asin</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">atan</ogc:Function_Name>
+            <ogc:Function_Name nArgs="2">atan2</ogc:Function_Name>
+            <ogc:Function_Name nArgs="3">between</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">boundary</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">boundaryDimension</ogc:Function_Name>
+            <ogc:Function_Name nArgs="2">buffer</ogc:Function_Name>
+            <ogc:Function_Name nArgs="3">bufferWithSegments</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">ceil</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">centroid</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">Collection_Average</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">Collection_Bounds</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">Collection_Count</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">Collection_Max</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">Collection_Median</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">Collection_Min</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">Collection_Sum</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">Collection_Unique</ogc:Function_Name>
+            <ogc:Function_Name nArgs="2">contains</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">convexHull</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">cos</ogc:Function_Name>
+            <ogc:Function_Name nArgs="2">crosses</ogc:Function_Name>
+            <ogc:Function_Name nArgs="2">difference</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">dimension</ogc:Function_Name>
+            <ogc:Function_Name nArgs="2">disjoint</ogc:Function_Name>
+            <ogc:Function_Name nArgs="2">distance</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">double2bool</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">endPoint</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">envelope</ogc:Function_Name>
+            <ogc:Function_Name nArgs="2">EqualInterval</ogc:Function_Name>
+            <ogc:Function_Name nArgs="2">equalsExact</ogc:Function_Name>
+            <ogc:Function_Name nArgs="3">equalsExactTolerance</ogc:Function_Name>
+            <ogc:Function_Name nArgs="2">equalTo</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">exp</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">exteriorRing</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">floor</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">geometryType</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">geomFromWKT</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">geomLength</ogc:Function_Name>
+            <ogc:Function_Name nArgs="2">getGeometryN</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">getX</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">getY</ogc:Function_Name>
+            <ogc:Function_Name nArgs="2">greaterEqualThan</ogc:Function_Name>
+            <ogc:Function_Name nArgs="2">greaterThan</ogc:Function_Name>
+            <ogc:Function_Name nArgs="2">IEEEremainder</ogc:Function_Name>
+            <ogc:Function_Name nArgs="3">if_then_else</ogc:Function_Name>
+            <ogc:Function_Name nArgs="11">in10</ogc:Function_Name>
+            <ogc:Function_Name nArgs="3">in2</ogc:Function_Name>
+            <ogc:Function_Name nArgs="4">in3</ogc:Function_Name>
+            <ogc:Function_Name nArgs="5">in4</ogc:Function_Name>
+            <ogc:Function_Name nArgs="6">in5</ogc:Function_Name>
+            <ogc:Function_Name nArgs="7">in6</ogc:Function_Name>
+            <ogc:Function_Name nArgs="8">in7</ogc:Function_Name>
+            <ogc:Function_Name nArgs="9">in8</ogc:Function_Name>
+            <ogc:Function_Name nArgs="10">in9</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">int2bbool</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">int2ddouble</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">interiorPoint</ogc:Function_Name>
+            <ogc:Function_Name nArgs="2">interiorRingN</ogc:Function_Name>
+            <ogc:Function_Name nArgs="2">intersection</ogc:Function_Name>
+            <ogc:Function_Name nArgs="2">intersects</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">isClosed</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">isEmpty</ogc:Function_Name>
+            <ogc:Function_Name nArgs="2">isLike</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">isNull</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">isRing</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">isSimple</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">isValid</ogc:Function_Name>
+            <ogc:Function_Name nArgs="3">isWithinDistance</ogc:Function_Name>
+            <ogc:Function_Name nArgs="0">length</ogc:Function_Name>
+            <ogc:Function_Name nArgs="2">lessEqualThan</ogc:Function_Name>
+            <ogc:Function_Name nArgs="2">lessThan</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">log</ogc:Function_Name>
+            <ogc:Function_Name nArgs="2">max</ogc:Function_Name>
+            <ogc:Function_Name nArgs="2">max_2</ogc:Function_Name>
+            <ogc:Function_Name nArgs="2">max_3</ogc:Function_Name>
+            <ogc:Function_Name nArgs="2">max_4</ogc:Function_Name>
+            <ogc:Function_Name nArgs="2">min</ogc:Function_Name>
+            <ogc:Function_Name nArgs="2">min_2</ogc:Function_Name>
+            <ogc:Function_Name nArgs="2">min_3</ogc:Function_Name>
+            <ogc:Function_Name nArgs="2">min_4</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">not</ogc:Function_Name>
+            <ogc:Function_Name nArgs="2">notEqualTo</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">numGeometries</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">numInteriorRing</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">numPoints</ogc:Function_Name>
+            <ogc:Function_Name nArgs="2">overlaps</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">parseBoolean</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">parseDouble</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">parseInt</ogc:Function_Name>
+            <ogc:Function_Name nArgs="2">pointN</ogc:Function_Name>
+            <ogc:Function_Name nArgs="2">pow</ogc:Function_Name>
+            <ogc:Function_Name nArgs="2">Quantile</ogc:Function_Name>
+            <ogc:Function_Name nArgs="0">random</ogc:Function_Name>
+            <ogc:Function_Name nArgs="2">relate</ogc:Function_Name>
+            <ogc:Function_Name nArgs="3">relatePattern</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">rint</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">round</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">round_2</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">roundDouble</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">sin</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">sqrt</ogc:Function_Name>
+            <ogc:Function_Name nArgs="2">StandardDeviation</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">startPoint</ogc:Function_Name>
+            <ogc:Function_Name nArgs="2">strConcat</ogc:Function_Name>
+            <ogc:Function_Name nArgs="2">strEndsWith</ogc:Function_Name>
+            <ogc:Function_Name nArgs="2">strEqualsIgnoreCase</ogc:Function_Name>
+            <ogc:Function_Name nArgs="2">strIndexOf</ogc:Function_Name>
+            <ogc:Function_Name nArgs="2">strLastIndexOf</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">strLength</ogc:Function_Name>
+            <ogc:Function_Name nArgs="2">strMatches</ogc:Function_Name>
+            <ogc:Function_Name nArgs="2">strStartsWith</ogc:Function_Name>
+            <ogc:Function_Name nArgs="3">strSubstring</ogc:Function_Name>
+            <ogc:Function_Name nArgs="2">strSubstringStart</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">strTrim</ogc:Function_Name>
+            <ogc:Function_Name nArgs="2">symDifference</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">tan</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">toDegrees</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">toRadians</ogc:Function_Name>
+            <ogc:Function_Name nArgs="2">touches</ogc:Function_Name>
+            <ogc:Function_Name nArgs="1">toWKT</ogc:Function_Name>
+            <ogc:Function_Name nArgs="2">union</ogc:Function_Name>
+            <ogc:Function_Name nArgs="2">UniqueInterval</ogc:Function_Name>
+            <ogc:Function_Name nArgs="2">within</ogc:Function_Name>
+          </ogc:Function_Names>
+        </ogc:Functions>
+      </ogc:Arithmetic_Operators>
+    </ogc:Scalar_Capabilities>
+  </ogc:Filter_Capabilities>
+</WFS_Capabilities>

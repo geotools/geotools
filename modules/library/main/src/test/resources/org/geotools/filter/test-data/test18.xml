@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    Document   : test18.xml
+    Created on : 02 Febuary 2003
+    Author     : cholmes
+    Description:
+        To test a complex logic filter after a normal one
+-->
+
+
+<root>
+ <Filter xmlns:gml="http://www.opengis.net/gml">
+  <Or>
+  <And>
+   <BBOX>
+    <PropertyName>geom</PropertyName>
+     <gml:Box srsName="EPSG:2393">
+      <gml:coordinates>0,0 700,700</gml:coordinates>
+     </gml:Box>
+    </BBOX>
+    <PropertyIsEqualTo>
+     <PropertyName>name</PropertyName>
+      <Literal>simple polygons</Literal>
+     </PropertyIsEqualTo>
+    </And>
+     <PropertyIsEqualTo>
+       <PropertyName>name</PropertyName>
+       <Literal>boink</Literal>
+      </PropertyIsEqualTo>
+     </Or>
+   </Filter>
+   <Filter xmlns:gml="http://www.opengis.net/gml">
+    <Or>
+     <BBOX>
+      <PropertyName>geom</PropertyName>
+      <gml:Box srsName="EPSG:2393">
+       <gml:coordinates>0,30 1453,900</gml:coordinates>
+      </gml:Box>
+     </BBOX>
+     <Or>
+      <PropertyIsEqualTo>
+       <PropertyName>name</PropertyName>
+       <Literal>boink</Literal>
+      </PropertyIsEqualTo>
+      <PropertyIsEqualTo>
+       <PropertyName>name</PropertyName>
+       <Literal>bob</Literal>
+      </PropertyIsEqualTo>
+      <!--PropertyIsEqualTo>
+       <PropertyName>name</PropertyName>
+       <Literal>mid polygon</Literal>
+      </PropertyIsEqualTo>
+      <PropertyIsEqualTo>
+       <PropertyName>name</PropertyName>
+       <Literal>another polygon</Literal>
+      </PropertyIsEqualTo-->
+     </Or>
+    </Or>
+  </Filter>
+</root>

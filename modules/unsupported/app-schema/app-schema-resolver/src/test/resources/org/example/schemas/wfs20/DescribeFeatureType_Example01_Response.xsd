@@ -1,0 +1,76 @@
+<?xml version="1.0" ?>
+    <!-- From an annex of a draft of the WFS 2.0 specification -->
+<schema targetNamespace="http://www.someserver.com/myns" xmlns:myns="http://www.someserver.com/myns"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:gml="http://www.opengis.net/gml/3.2"
+    elementFormDefault="qualified" version="2.0.0">
+    <import namespace="http://www.opengis.net/gml/3.2" schemaLocation="http://schemas.opengis.net/gml/3.2.1/gml.xsd" />
+    <element name="TreesA_1M" type="myns:TreesA_1M_Type" substitutionGroup="gml:AbstractFeature" />
+    <element name="RoadL_1M" type="myns:RoadL_1M_Type" substitutionGroup="gml:AbstractFeature" />
+    <element name="LakesA_1M" type="myns:LakesA_1M_Type" substitutionGroup="gml:AbstractFeature" />
+    <complexType name="TreesA_1M_Type">
+        <complexContent>
+            <extension base="gml:AbstractFeatureType">
+                <sequence>
+                    <element name="extent" type="gml:SurfacePropertyType" nillable="false" />
+                    <element name="id" nillable="true" minOccurs="0">
+                        <simpleType>
+                            <restriction base="integer">
+                                <totalDigits value="10" />
+                            </restriction>
+                        </simpleType>
+                    </element>
+                    <element name="treeType" nillable="true" minOccurs="0">
+                        <simpleType>
+                            <restriction base="string">
+                                <maxLength value="80" />
+                            </restriction>
+                        </simpleType>
+                    </element>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="RoadL_1M_Type">
+        <complexContent>
+            <extension base="gml:AbstractFeatureType">
+                <sequence>
+                    <element name="centerLine" type="gml:CurvePropertyType" nillable="false" />
+                    <element name="designation" nillable="true" minOccurs="0">
+                        <simpleType>
+                            <restriction base="string">
+                                <maxLength value="30" />
+                            </restriction>
+                        </simpleType>
+                    </element>
+                    <element name="surfaceType" nillable="true" minOccurs="0">
+                        <simpleType>
+                            <restriction base="string">
+                                <maxLength value="30" />
+                            </restriction>
+                        </simpleType>
+                    </element>
+                    <element name="nLanes" nillable="true" minOccurs="0">
+                        <simpleType>
+                            <restriction base="integer">
+                                <totalDigits value="2" />
+                            </restriction>
+                        </simpleType>
+                    </element>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="LakesA_1M_Type">
+        <complexContent>
+            <extension base="gml:AbstractFeatureType">
+                <sequence>
+                    <element name="extent" type="gml:SurfacePropertyType" />
+                    <element name="name" type="xsd:string" />
+                    <element name="waterType" type="xsd:string" minOccurs="0" />
+                    <element name="avgDepth" type="gml:MeasureType" minOccurs="0" />
+                    <element name="maxDepth" type="gml:MeasureType" minOccurs="0" />
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+</schema>

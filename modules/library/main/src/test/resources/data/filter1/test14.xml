@@ -1,0 +1,23 @@
+<Filter xmlns:gml="http://www.opengis.net/gml">
+  <And>
+    <Within>
+      <PropertyName>testGeometry</PropertyName>
+      <gml:Polygon srsName="http://www.opengis.net/gml/srs/EPSG#4326">
+        <gml:outerBoundaryIs>
+          <gml:LinearRing>
+            <gml:coordinates>0,0 0,10 10,10 10,0 0,0</gml:coordinates>
+          </gml:LinearRing>
+        </gml:outerBoundaryIs>
+      </gml:Polygon>
+    </Within>
+    <PropertyIsBetween>
+      <PropertyName>testInteger</PropertyName>
+      <LowerBoundary>
+        <Literal>100</Literal>
+      </LowerBoundary>
+      <UpperBoundary>
+        <Literal>200</Literal>
+      </UpperBoundary>
+    </PropertyIsBetween>
+  </And>
+</Filter>

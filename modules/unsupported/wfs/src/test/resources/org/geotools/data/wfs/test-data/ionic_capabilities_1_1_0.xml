@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ogcwfs:WFS_Capabilities version="1.1.0" xmlns:ionic="http://www.ionicsoft.com/versions/4"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.opengis.net/wfs http://nbii-nin.ciesin.columbia.edu/mapserver/wfs/fgdcgubsblockgroup/REQUEST/get/DATA/LPR/wfs/1.1.0/WFS-capabilities.xsd"
+  xmlns="http://www.opengis.net/wfs" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ows="http://www.opengis.net/ows"
+  xmlns:ogcwfs="http://www.opengis.net/wfs">
+  <ows:OperationsMetadata xmlns:ows="http://www.opengis.net/ows" xmlns="http://www.opengis.net/ows">
+    <Operation name="GetCapabilities">
+      <DCP>
+        <HTTP>
+          <Get xlink:href="http://nbii-nin.ciesin.columbia.edu/mapserver/wfs/fgdcgubsblockgroup?" xlink:type="simple"
+            xmlns:xlink="http://www.w3.org/1999/xlink" />
+          <Post xlink:href="http://nbii-nin.ciesin.columbia.edu/mapserver/wfs/fgdcgubsblockgroup" xlink:type="simple"
+            xmlns:xlink="http://www.w3.org/1999/xlink" />
+        </HTTP>
+      </DCP>
+      <Parameter name="AcceptVersions">
+        <Value>1.1.0</Value>
+      </Parameter>
+      <Parameter name="AcceptFormats">
+        <Value>text/xml</Value>
+      </Parameter>
+      <Parameter name="Sections">
+        <Value>OperationsMetadata</Value>
+        <Value>FeatureTypeList</Value>
+        <Value>ServesGMLObjectTypeList</Value>
+        <Value>Filter_Capabilities</Value>
+      </Parameter>
+    </Operation>
+    <Operation name="DescribeFeatureType">
+      <DCP>
+        <HTTP>
+          <Get xlink:href="http://nbii-nin.ciesin.columbia.edu/mapserver/wfs/fgdcgubsblockgroup?" xlink:type="simple"
+            xmlns:xlink="http://www.w3.org/1999/xlink" />
+          <Post xlink:href="http://nbii-nin.ciesin.columbia.edu/mapserver/wfs/fgdcgubsblockgroup" xlink:type="simple"
+            xmlns:xlink="http://www.w3.org/1999/xlink" />
+        </HTTP>
+      </DCP>
+    </Operation>
+    <Operation name="GetFeature">
+      <DCP>
+        <HTTP>
+          <Get xlink:href="http://nbii-nin.ciesin.columbia.edu/mapserver/wfs/fgdcgubsblockgroup?" xlink:type="simple"
+            xmlns:xlink="http://www.w3.org/1999/xlink" />
+          <Post xlink:href="http://nbii-nin.ciesin.columbia.edu/mapserver/wfs/fgdcgubsblockgroup" xlink:type="simple"
+            xmlns:xlink="http://www.w3.org/1999/xlink" />
+        </HTTP>
+      </DCP>
+      <Parameter name="resultType">
+        <Value>results</Value>
+        <Value>hits</Value>
+      </Parameter>
+    </Operation>
+    <Operation name="GetFeatureWithLock">
+      <DCP>
+        <HTTP>
+          <Post xlink:href="http://nbii-nin.ciesin.columbia.edu/mapserver/wfs/fgdcgubsblockgroup" xlink:type="simple"
+            xmlns:xlink="http://www.w3.org/1999/xlink" />
+        </HTTP>
+      </DCP>
+      <Parameter name="resultType">
+        <Value>results</Value>
+        <Value>hits</Value>
+      </Parameter>
+    </Operation>
+    <Operation name="LockFeature">
+      <DCP>
+        <HTTP>
+          <Post xlink:href="http://nbii-nin.ciesin.columbia.edu/mapserver/wfs/fgdcgubsblockgroup" xlink:type="simple"
+            xmlns:xlink="http://www.w3.org/1999/xlink" />
+        </HTTP>
+      </DCP>
+      <Parameter name="lockAction">
+        <Value>ALL</Value>
+      </Parameter>
+    </Operation>
+    <Operation name="Transaction">
+      <DCP>
+        <HTTP>
+          <Post xlink:href="http://nbii-nin.ciesin.columbia.edu/mapserver/wfs/fgdcgubsblockgroup" xlink:type="simple"
+            xmlns:xlink="http://www.w3.org/1999/xlink" />
+        </HTTP>
+      </DCP>
+      <Parameter name="idgen">
+        <Value>GenerateNew</Value>
+      </Parameter>
+      <Parameter name="releaseAction">
+        <Value>ALL</Value>
+      </Parameter>
+    </Operation>
+    <Constraint name="SupportsSOAP">
+    </Constraint>
+    <Constraint name="LocalTraverseXLinkScope">
+      <Value>0</Value>
+      <Value>*</Value>
+    </Constraint>
+    <Constraint name="RemoteTraverseXLinkScope">
+      <Value>0</Value>
+      <Value>0</Value>
+    </Constraint>
+    <Constraint name="DefaultMaxFeatures">
+      <Value>2000</Value>
+    </Constraint>
+    <Constraint name="DefaultLockExpiry">
+      <Value>20</Value>
+    </Constraint>
+  </ows:OperationsMetadata>
+  <FeatureTypeList xmlns:ogc="http://www.opengis.net/ogc" xmlns:ionic="http://www.ionicsoft.com/versions/4"
+    xmlns="http://www.opengis.net/wfs" xmlns:ogcwfs="http://www.opengis.net/wfs">
+    <Operations>
+      <Operation>Query</Operation>
+      <Operation>Insert</Operation>
+      <Operation>Delete</Operation>
+      <Operation>Update</Operation>
+      <Operation>Lock</Operation>
+    </Operations>
+    <FeatureType xmlns:gubs="http://www.fgdc.gov/fgdc/gubs">
+      <Name>gubs:StatisticalUnit</Name>
+      <Title>Northeast Block Groups</Title>
+      <Abstract>Block Group Boundaries extracted from Census Tiger</Abstract>
+
+      <DefaultSRS>urn:opengis:def:crs:OGC::83</DefaultSRS>
+      <Operations>
+        <Operation>Query</Operation>
+      </Operations>
+      <ows:WGS84BoundingBox xmlns:ows="http://www.opengis.net/ows" xmlns="http://www.opengis.net/ows"
+        dimensions="2">
+        <LowerCorner>-80.0 38.0</LowerCorner>
+        <UpperCorner>-65.0 48.0</UpperCorner>
+      </ows:WGS84BoundingBox>
+    </FeatureType>
+  </FeatureTypeList>
+  <SupportsGMLObjectTypeList>
+  </SupportsGMLObjectTypeList>
+  <Filter_Capabilities xmlns="http://www.opengis.net/ogc">
+    <Spatial_Capabilities>
+      <GeometryOperands xmlns:gml="http://www.opengis.net/gml">
+        <GeometryOperand>gml:Point</GeometryOperand>
+        <GeometryOperand>gml:LineString</GeometryOperand>
+        <GeometryOperand>gml:Polygon</GeometryOperand>
+        <GeometryOperand>gml:MultiPoint</GeometryOperand>
+        <GeometryOperand>gml:MultiLineString</GeometryOperand>
+        <GeometryOperand>gml:MultiPolygon</GeometryOperand>
+        <GeometryOperand>gml:Envelope</GeometryOperand>
+      </GeometryOperands>
+      <SpatialOperators>
+        <SpatialOperator name="BBOX" />
+        <SpatialOperator name="Equals" />
+        <SpatialOperator name="Disjoint" />
+        <SpatialOperator name="Intersect" />
+        <SpatialOperator name="Touches" />
+        <SpatialOperator name="Crosses" />
+        <SpatialOperator name="Within" />
+        <SpatialOperator name="Contains" />
+        <SpatialOperator name="Overlaps" />
+        <SpatialOperator name="Beyond" />
+        <SpatialOperator name="DWithin" />
+      </SpatialOperators>
+    </Spatial_Capabilities>
+    <Scalar_Capabilities>
+      <LogicalOperators />
+      <ComparisonOperators>
+        <ComparisonOperator>LessThan</ComparisonOperator>
+        <ComparisonOperator>GreaterThan</ComparisonOperator>
+        <ComparisonOperator>LessThanEqualTo</ComparisonOperator>
+        <ComparisonOperator>GreaterThanEqualTo</ComparisonOperator>
+        <ComparisonOperator>EqualTo</ComparisonOperator>
+        <ComparisonOperator>NotEqualTo</ComparisonOperator>
+        <ComparisonOperator>Like</ComparisonOperator>
+        <ComparisonOperator>Between</ComparisonOperator>
+        <ComparisonOperator>NullCheck</ComparisonOperator>
+      </ComparisonOperators>
+      <ArithmeticOperators>
+        <SimpleArithmetic />
+        <Functions>
+          <FunctionNames>
+            <FunctionName nArgs="1">Upper</FunctionName>
+            <FunctionName nArgs="1">Lower</FunctionName>
+            <FunctionName nArgs="3">Distance</FunctionName>
+            <FunctionName nArgs="1">Score</FunctionName>
+          </FunctionNames>
+        </Functions>
+      </ArithmeticOperators>
+    </Scalar_Capabilities>
+    <Id_Capabilities>
+      <FID />
+      <EID />
+    </Id_Capabilities>
+  </Filter_Capabilities>
+</ogcwfs:WFS_Capabilities>

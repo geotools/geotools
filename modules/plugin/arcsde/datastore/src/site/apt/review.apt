@@ -1,0 +1,50 @@
+  Module Maintainer: Gabriel Roldan
+
+  IP Review:
+
+    * Gabriel Roldan
+
+    * Adrian Custer, June 2008
+
+  STATUS: DIRTY
+      Code is CLEAN
+      Data is CLEAN. Size: ~7M. 
+      All the imagery files in the src/test/resources/test-data folder are small subsets
+       of publicly redistributable MassGIS data. They are controlled by a US State government 
+       and as such are "Public Records".
+
+
+  The following was taken from the ArcSDE wiki page...
+
+  Contributor Review
+
+    * all code provided by Gabriel Roldan was done under the LGPL
+
+    * all code provided by Jake Fear was donated under the LGPL
+
+    * all code provided by Chris Dillard was donated under the LGPL
+
+    * all code provided by Saul Farber was donated under the LGPL as patches of already existing files
+
+    * src/ checked by [~groldan]
+
+    * test/ checked by [~groldan]
+
+
+* org.geotools.data.arcsde
+  ~~~~~~~~~~~~~~~~~~~~~~~~
+
+    * updated header comments reflecting latest from jalopy file
+
+    * org.geotools.data.arcsde.PooledConnection: no copyright message. Added copyright.
+
+
+* org.geotools.filter
+  ~~~~~~~~~~~~~~~~~~~
+
+    * updated header comments reflecting latest from jalopy file
+
+* test
+  ~~~~
+
+    * ArcSDEQueryTest, did not have author, added "Gabriel Roldan"

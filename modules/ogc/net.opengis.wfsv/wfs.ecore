@@ -1,0 +1,1845 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="wfs"
+    nsURI="http://www.opengis.net/wfs" nsPrefix="wfs">
+  <eClassifiers xsi:type="ecore:EClass" name="ActionType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="ActionType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="message" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;                  If an action fails, the message element may be used&#xD;&#xA;                  to supply an exception message.&#xD;&#xA;               "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Message"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="code" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;               The code attribute may be used to specify an &#xD;&#xA;               exception code indicating why an action failed.&#xD;&#xA;            "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="code"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="locator" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;               The locator attribute is used to locate an action &#xD;&#xA;               within a &amp;lt;Transaction&amp;gt; element.  The value&#xD;&#xA;               of the locator attribute is either a string that&#xD;&#xA;               is equal to the value of the handle attribute&#xD;&#xA;               specified on an  &amp;lt;Insert&amp;gt;, &amp;lt;Update&amp;gt;&#xD;&#xA;               or &amp;lt;Delete&amp;gt; action.  If a value is not &#xD;&#xA;               specified for the handle attribute then a WFS &#xD;&#xA;               may employ some other means of locating the &#xD;&#xA;               action.  For example, the value of the locator&#xD;&#xA;               attribute may be an integer indicating the order&#xD;&#xA;               of the action (i.e. 1=First action, 2=Second action,&#xD;&#xA;               etc.).&#xD;&#xA;            "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="locator"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="AllSomeType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="AllSomeType"/>
+    </eAnnotations>
+    <eLiterals name="ALL"/>
+    <eLiterals name="SOME" value="1"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="AllSomeTypeObject" instanceClassName="org.eclipse.emf.common.util.Enumerator">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="AllSomeType:Object"/>
+      <details key="baseType" value="AllSomeType"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="BaseRequestType" abstract="true">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="&#xD;&#xA;            XML encoded WFS operation request base, for all operations&#xD;&#xA;            except GetCapabilities.&#xD;&#xA;         "/>
+    </eAnnotations>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="BaseRequestType"/>
+      <details key="kind" value="empty"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="handle" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;               The handle attribute allows a client application&#xD;&#xA;               to assign a client-generated request identifier&#xD;&#xA;               to a WFS request.  The handle is included to&#xD;&#xA;               facilitate error reporting.  A WFS may report the&#xD;&#xA;               handle in an exception report to identify the&#xD;&#xA;               offending request or action.  If the handle is not&#xD;&#xA;               present, then the WFS may employ other means to&#xD;&#xA;               localize the error (e.g. line numbers).&#xD;&#xA;            "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="handle"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="service" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//AnySimpleType"
+        defaultValueLiteral="WFS" unsettable="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;              The service attribute is included to support service &#xD;&#xA;              endpoints that implement more than one OGC service.&#xD;&#xA;              For example, a single CGI that implements WMS, WFS&#xD;&#xA;              and WCS services. &#xD;&#xA;              The endpoint can inspect the value of this attribute &#xD;&#xA;              to figure out which service should process the request.&#xD;&#xA;              The value WFS indicates that a web feature service should&#xD;&#xA;              process the request.&#xD;&#xA;              This parameter is somewhat redundant in the XML encoding&#xD;&#xA;              since the request namespace can be used to determine&#xD;&#xA;              which service should process any give request.  For example,&#xD;&#xA;              wfs:GetCapabilities and easily be distinguished from&#xD;&#xA;              wcs:GetCapabilities using the namespaces.&#xD;&#xA;           "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="service"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="version" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"
+        defaultValueLiteral="1.1.0" unsettable="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;               The version attribute is used to indicate the version of the&#xD;&#xA;               WFS specification that a request conforms to.  All requests in&#xD;&#xA;               this schema conform to V1.1 of the WFS specification.&#xD;&#xA;               For WFS implementations that support more than one version of&#xD;&#xA;               a WFS sepcification ... if the version attribute is not &#xD;&#xA;               specified then the service should assume that the request&#xD;&#xA;               conforms to greatest available specification version.&#xD;&#xA;           "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="version"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="BaseTypeNameListType" instanceClassName="java.util.List">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="Base_TypeNameListType"/>
+      <details key="itemType" value="http://www.eclipse.org/emf/2003/XMLType#QName"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DeleteElementType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="DeleteElementType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="filter" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//AnySimpleType">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;                  The Filter element is used to constrain the scope&#xD;&#xA;                  of the delete operation to those features identified&#xD;&#xA;                  by the filter.  Feature instances can be specified&#xD;&#xA;                  explicitly and individually using the identifier of&#xD;&#xA;                  each feature instance OR a set of features to be&#xD;&#xA;                  operated on can be identified by specifying spatial&#xD;&#xA;                  and non-spatial constraints in the filter.&#xD;&#xA;                  If no filter is specified then an exception should&#xD;&#xA;                  be raised since it is unlikely that a client application&#xD;&#xA;                  intends to delete all feature instances.&#xD;&#xA;               "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Filter"/>
+        <details key="namespace" value="http://www.opengis.net/ogc"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="handle" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;               The handle attribute allows a client application&#xD;&#xA;               to assign a client-generated request identifier&#xD;&#xA;               to an Insert action.  The handle is included to&#xD;&#xA;               facilitate error reporting.  If a Delete action&#xD;&#xA;               in a Transaction request fails, then a WFS may&#xD;&#xA;               include the handle in an exception report to localize&#xD;&#xA;               the error.  If no handle is included of the offending&#xD;&#xA;               Insert element then a WFS may employee other means of&#xD;&#xA;               localizing the error (e.g. line number).&#xD;&#xA;            "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="handle"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="typeName" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//QName">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;              The value of the typeName attribute is the name &#xD;&#xA;              of the feature type to be updated. The name&#xD;&#xA;              specified must be a valid type that belongs to&#xD;&#xA;              the feature content as defined by the GML&#xD;&#xA;              Application Schema.&#xD;&#xA;           "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="typeName"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DescribeFeatureTypeType" eSuperTypes="#//BaseRequestType">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="&#xD;&#xA;            The DescribeFeatureType operation allows a client application&#xD;&#xA;            to request that a Web Feature Service describe one or more&#xD;&#xA;            feature types.   A Web Feature Service must be able to generate&#xD;&#xA;            feature descriptions as valid GML3 application schemas.&#xD;&#xA;&#xD;&#xA;            The schemas generated by the DescribeFeatureType operation can&#xD;&#xA;            be used by a client application to validate the output.&#xD;&#xA;&#xD;&#xA;            Feature instances within the WFS interface must be specified&#xD;&#xA;            using GML3.  The schema of feature instances specified within&#xD;&#xA;            the WFS interface must validate against the feature schemas &#xD;&#xA;            generated by the DescribeFeatureType request.&#xD;&#xA;         "/>
+    </eAnnotations>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="DescribeFeatureTypeType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="typeName" unique="false"
+        upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//QName">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;                        The TypeName element is used to enumerate the&#xD;&#xA;                        feature types to be described.  If no TypeName&#xD;&#xA;                        elements are specified then all features should&#xD;&#xA;                        be described.  The name must be a valid type&#xD;&#xA;                        that belongs to the feature content as defined&#xD;&#xA;                        by the GML Application Schema.&#xD;&#xA;                     "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="TypeName"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="outputFormat" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"
+        defaultValueLiteral="text/xml; subtype=gml/3.1.1" unsettable="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;                     The outputFormat attribute is used to specify what schema&#xD;&#xA;                     description language should be used to describe features.&#xD;&#xA;                     The default value of 'text/xml; subtype=3.1.1' means that&#xD;&#xA;                     the WFS must generate a GML3 application schema that can&#xD;&#xA;                     be used to validate the GML3 output of a GetFeature&#xD;&#xA;                     request or feature instances specified in Transaction&#xD;&#xA;                     operations.&#xD;&#xA;                     For the purposes of experimentation, vendor extension,&#xD;&#xA;                     or even extensions that serve a specific community of&#xD;&#xA;                     interest, other acceptable output format values may be&#xD;&#xA;                     advertised by a WFS service in the capabilities document.&#xD;&#xA;                     The meaning of such values in not defined in the WFS &#xD;&#xA;                     specification.  The only proviso is such cases is that&#xD;&#xA;                     clients may safely ignore outputFormat values that do&#xD;&#xA;                     not recognize.&#xD;&#xA;                  "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="outputFormat"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DocumentRoot">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value=""/>
+      <details key="kind" value="mixed"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="mixed" unique="false" upperBound="-1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFeatureMapEntry">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="elementWildcard"/>
+        <details key="name" value=":mixed"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="xMLNSPrefixMap" upperBound="-1"
+        eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStringToStringMapEntry"
+        transient="true" containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="xmlns:prefix"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="xSISchemaLocation" upperBound="-1"
+        eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStringToStringMapEntry"
+        transient="true" containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="xsi:schemaLocation"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="delete" upperBound="-2"
+        eType="#//DeleteElementType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;            The Delete element is used to indicate that one or more&#xD;&#xA;            feature instances should be removed from the feature&#xD;&#xA;            repository.&#xD;&#xA;         "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Delete"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="describeFeatureType" upperBound="-2"
+        eType="#//DescribeFeatureTypeType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;            The DescribeFeatureType element is used to request that a Web&#xD;&#xA;            Feature Service generate a document describing one or more &#xD;&#xA;            feature types.&#xD;&#xA;         "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="DescribeFeatureType"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="featureCollection" upperBound="-2"
+        eType="#//FeatureCollectionType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;            This element is a container for the response to a GetFeature&#xD;&#xA;            or GetFeatureWithLock (WFS-transaction.xsd) request.&#xD;&#xA;         "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="FeatureCollection"/>
+        <details key="namespace" value="##targetNamespace"/>
+        <details key="affiliation" value="http://www.opengis.net/gml#_FeatureCollection"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="featureTypeList" upperBound="-2"
+        eType="#//FeatureTypeListType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="FeatureTypeList"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="getCapabilities" upperBound="-2"
+        eType="#//GetCapabilitiesType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="GetCapabilities"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="getFeature" upperBound="-2"
+        eType="#//GetFeatureType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;            The GetFeature element is used to request that a Web Feature&#xD;&#xA;            Service return feature type instances of one or more feature&#xD;&#xA;            types.&#xD;&#xA;         "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="GetFeature"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="getFeatureWithLock" upperBound="-2"
+        eType="#//GetFeatureWithLockType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;            This is the root element for the GetFeatureWithLock request.&#xD;&#xA;            The GetFeatureWithLock operation performs identically to a&#xD;&#xA;            GetFeature request except that the GetFeatureWithLock request&#xD;&#xA;            locks all the feature instances in the result set and returns&#xD;&#xA;            a lock identifier to a client application in the response.&#xD;&#xA;            The lock identifier is returned to the client application &#xD;&#xA;            using the lockId attribute define on the wfs:FeatureCollection&#xD;&#xA;            element.&#xD;&#xA;         "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="GetFeatureWithLock"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="getGmlObject" upperBound="-2"
+        eType="#//GetGmlObjectType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;            The GetGmlObject element is used to request that a Web Feature&#xD;&#xA;            Service return an element with a gml:id attribute value specified&#xD;&#xA;            by an ogc:GmlObjectId.&#xD;&#xA;         "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="GetGmlObject"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="insert" upperBound="-2"
+        eType="#//InsertElementType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;            The Insert element is used to indicate that the Web Feature&#xD;&#xA;            Service should create a new instance of a feature type.  The&#xD;&#xA;            feature instance is specified using GML3 and one or more &#xD;&#xA;            feature instances to be created can be contained inside the&#xD;&#xA;            Insert element.&#xD;&#xA;         "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Insert"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="lockFeature" upperBound="-2"
+        eType="#//LockFeatureType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;            This is the root element for a LockFeature request.&#xD;&#xA;            The LockFeature request can be used to lock one or&#xD;&#xA;            more feature instances.&#xD;&#xA;         "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="LockFeature"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="lockFeatureResponse" upperBound="-2"
+        eType="#//LockFeatureResponseType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;            The LockFeatureResponse element contains a report&#xD;&#xA;            about the completion status of a LockFeature request.&#xD;&#xA;         "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="LockFeatureResponse"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="lockId" unique="false"
+        upperBound="-2" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"
+        volatile="true" transient="true" derived="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;            The LockId element contains the value of the lock identifier&#xD;&#xA;            obtained by a client application from a previous GetFeatureWithLock&#xD;&#xA;            or LockFeature request.&#xD;&#xA;         "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="LockId"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="native" upperBound="-2"
+        eType="#//NativeType" volatile="true" transient="true" derived="true" containment="true"
+        resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;            Many times, a Web Feature Service interacts with a repository&#xD;&#xA;            that may have special vendor specific capabilities.  The native&#xD;&#xA;            element allows vendor specific command to be passed to the&#xD;&#xA;            repository via the Web Feature Service.&#xD;&#xA;         "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Native"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="property" upperBound="-2"
+        eType="#//PropertyType" volatile="true" transient="true" derived="true" containment="true"
+        resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;            The Property element is used to specify the new&#xD;&#xA;            value of a feature property inside an Update&#xD;&#xA;            element.&#xD;&#xA;         "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Property"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="propertyName" unique="false"
+        upperBound="-2" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"
+        volatile="true" transient="true" derived="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;            The Property element is used to specify one or more&#xD;&#xA;            properties of a feature whose values are to be retrieved&#xD;&#xA;            by a Web Feature Service.&#xD;&#xA;&#xD;&#xA;            While a Web Feature Service should endeavour to satisfy&#xD;&#xA;            the exact request specified, in some instance this may&#xD;&#xA;            not be possible.  Specifically, a Web Feature Service&#xD;&#xA;            must generate a valid GML3 response to a Query operation.&#xD;&#xA;            The schema used to generate the output may include&#xD;&#xA;            properties that are mandatory.  In order that the output&#xD;&#xA;            validates, these mandatory properties must be specified&#xD;&#xA;            in the request.  If they are not, a Web Feature Service&#xD;&#xA;            may add them automatically to the Query before processing&#xD;&#xA;            it.  Thus a client application should, in general, be&#xD;&#xA;            prepared to receive more properties than it requested.&#xD;&#xA;&#xD;&#xA;            Of course, using the DescribeFeatureType request, a client&#xD;&#xA;            application can determine which properties are mandatory&#xD;&#xA;            and request them in the first place.&#xD;&#xA;         "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="PropertyName"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="query" upperBound="-2"
+        eType="#//QueryType" volatile="true" transient="true" derived="true" containment="true"
+        resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;            The Query element is used to describe a single query.&#xD;&#xA;            One or more Query elements can be specified inside a&#xD;&#xA;            GetFeature element so that multiple queries can be &#xD;&#xA;            executed in one request.  The output from the various&#xD;&#xA;            queries are combined in a wfs:FeatureCollection element&#xD;&#xA;            to form the response document.&#xD;&#xA;         "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Query"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="servesGMLObjectTypeList"
+        upperBound="-2" eType="#//GMLObjectTypeListType" volatile="true" transient="true"
+        derived="true" containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;            List of GML Object types available for GetGmlObject requests&#xD;&#xA;         "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="ServesGMLObjectTypeList"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="supportsGMLObjectTypeList"
+        upperBound="-2" eType="#//GMLObjectTypeListType" volatile="true" transient="true"
+        derived="true" containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;            List of GML Object types that WFS is capable of serving, either&#xD;&#xA;            directly, or as validly derived types defined in a GML application&#xD;&#xA;            schema.&#xD;&#xA;         "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="SupportsGMLObjectTypeList"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="transaction" upperBound="-2"
+        eType="#//TransactionType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;            This is the root element for a Transaction request.&#xD;&#xA;            A transaction request allows insert, update and &#xD;&#xA;            delete operations to be performed to create, change&#xD;&#xA;            or remove feature instances.&#xD;&#xA;         "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Transaction"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="transactionResponse" upperBound="-2"
+        eType="#//TransactionResponseType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;            The TransactionResponse element contains a report&#xD;&#xA;            about the completion status of a Transaction operation.  &#xD;&#xA;         "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="TransactionResponse"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="update" upperBound="-2"
+        eType="#//UpdateElementType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;            One or more existing feature instances can be changed by&#xD;&#xA;            using the Update element.&#xD;&#xA;         "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Update"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="wFSCapabilities" upperBound="-2"
+        eType="#//WFSCapabilitiesType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="WFS_Capabilities"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="xlinkPropertyName" upperBound="-2"
+        eType="#//XlinkPropertyNameType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;            This element may be used in place of an wfs:PropertyName element&#xD;&#xA;            in a wfs:Query element in a wfs:GetFeature element to selectively&#xD;&#xA;            request the traversal of nested XLinks in the returned element for&#xD;&#xA;            the named property. This element may not be used in other requests&#xD;&#xA;            -- GetFeatureWithLock, LockFeature, Insert, Update, Delete -- in&#xD;&#xA;            this version of the WFS specification.&#xD;&#xA;         "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="XlinkPropertyName"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="FeatureCollectionType">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="&#xD;&#xA;            This type defines a container for the response to a &#xD;&#xA;            GetFeature or GetFeatureWithLock request.  If the&#xD;&#xA;            request is GetFeatureWithLock, the lockId attribute&#xD;&#xA;            must be populated.  The lockId attribute can otherwise&#xD;&#xA;            be safely ignored.&#xD;&#xA;         "/>
+    </eAnnotations>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="FeatureCollectionType"/>
+      <details key="kind" value="empty"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="FeaturesLockedType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="FeaturesLockedType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="group" unique="false" upperBound="-1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFeatureMapEntry">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="group"/>
+        <details key="name" value="group:0"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="featureId" unique="false"
+        lowerBound="1" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//AnySimpleType"
+        volatile="true" transient="true" derived="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="FeatureId"/>
+        <details key="namespace" value="http://www.opengis.net/ogc"/>
+        <details key="group" value="#group:0"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="FeaturesNotLockedType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="FeaturesNotLockedType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="group" unique="false" upperBound="-1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFeatureMapEntry">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="group"/>
+        <details key="name" value="group:0"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="featureId" unique="false"
+        lowerBound="1" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//AnySimpleType"
+        volatile="true" transient="true" derived="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="FeatureId"/>
+        <details key="namespace" value="http://www.opengis.net/ogc"/>
+        <details key="group" value="#group:0"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="FeatureTypeListType">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="&#xD;&#xA;            A list of feature types available from  this server.&#xD;&#xA;         "/>
+    </eAnnotations>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="FeatureTypeListType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="operations" eType="#//OperationsType"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Operations"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="featureType" lowerBound="1"
+        upperBound="-1" eType="#//FeatureTypeType" containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="FeatureType"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="FeatureTypeType">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="&#xD;&#xA;            An element of this type that describes a feature in an application&#xD;&#xA;            namespace shall have an xml xmlns specifier, e.g.&#xD;&#xA;            xmlns:bo=&quot;http://www.BlueOx.org/BlueOx&quot;&#xD;&#xA;         "/>
+    </eAnnotations>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="FeatureTypeType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//QName">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;                  Name of this feature type, including any namespace prefix&#xD;&#xA;               "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Name"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="title" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;                  Title of this feature type, normally used for display&#xD;&#xA;                  to a human.&#xD;&#xA;               "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Title"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="abstract" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;                  Brief narrative description of this feature type, normally&#xD;&#xA;                  used for display to a human.&#xD;&#xA;               "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Abstract"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="keywords" unique="false"
+        upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//AnySimpleType">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Keywords"/>
+        <details key="namespace" value="http://www.opengis.net/ows"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="defaultSRS" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//AnyURI">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;                        The DefaultSRS element indicated which spatial&#xD;&#xA;                        reference system shall be used by a WFS to&#xD;&#xA;                        express the state of a spatial feature if not&#xD;&#xA;                        otherwise explicitly identified within a query&#xD;&#xA;                        or transaction request.  The SRS may be indicated&#xD;&#xA;                        using either the EPSG form (EPSG:posc code) or&#xD;&#xA;                        the URL form defined in subclause 4.3.2 of&#xD;&#xA;                        refernce[2].&#xD;&#xA;                     "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="DefaultSRS"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="otherSRS" unique="false"
+        upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//AnyURI">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;                        The OtherSRS element is used to indicate other &#xD;&#xA;                        supported SRSs within query and transaction &#xD;&#xA;                        operations.  A supported SRS means that the &#xD;&#xA;                        WFS supports the transformation of spatial&#xD;&#xA;                        properties between the OtherSRS and the internal&#xD;&#xA;                        storage SRS.  The effects of such transformations &#xD;&#xA;                        must be considered when determining and declaring &#xD;&#xA;                        the guaranteed data accuracy.&#xD;&#xA;                     "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="OtherSRS"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="noSRS" eType="#//NoSRSType"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="NoSRS"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="operations" eType="#//OperationsType"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Operations"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="outputFormats" eType="#//OutputFormatListType"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="OutputFormats"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="wGS84BoundingBox" unique="false"
+        lowerBound="1" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//AnySimpleType">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="WGS84BoundingBox"/>
+        <details key="namespace" value="http://www.opengis.net/ows"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="metadataURL" upperBound="-1"
+        eType="#//MetadataURLType" containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="MetadataURL"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="FormatType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="format_._type"/>
+    </eAnnotations>
+    <eLiterals name="textXml" literal="text/xml"/>
+    <eLiterals name="textHtml" value="1" literal="text/html"/>
+    <eLiterals name="textSgml" value="2" literal="text/sgml"/>
+    <eLiterals name="textPlain" value="3" literal="text/plain"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="FormatTypeObject" instanceClassName="org.eclipse.emf.common.util.Enumerator">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="format_._type:Object"/>
+      <details key="baseType" value="format_._type"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GetCapabilitiesType">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="&#xD;&#xA;          Request to a WFS to perform the GetCapabilities operation.&#xD;&#xA;          This operation allows a client to retrieve a Capabilities&#xD;&#xA;          XML document providing metadata for the specific WFS server.&#xD;&#xA;&#xD;&#xA;          The GetCapapbilities element is used to request that a Web Feature&#xD;&#xA;          Service generate an XML document describing the organization&#xD;&#xA;          providing the service, the WFS operations that the service&#xD;&#xA;          supports, a list of feature types that the service can operate&#xD;&#xA;          on and list of filtering capabilities that the service support.&#xD;&#xA;          Such an XML document is called a capabilities document.&#xD;&#xA;       "/>
+    </eAnnotations>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="GetCapabilitiesType"/>
+      <details key="kind" value="empty"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GetFeatureType" eSuperTypes="#//BaseRequestType">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="&#xD;&#xA;            A GetFeature element contains one or more Query elements&#xD;&#xA;            that describe a query operation on one feature type.  In&#xD;&#xA;            response to a GetFeature request, a Web Feature Service&#xD;&#xA;            must be able to generate a GML3 response that validates&#xD;&#xA;            using a schema generated by the DescribeFeatureType request.&#xD;&#xA;            A Web Feature Service may support other possibly non-XML&#xD;&#xA;            (and even binary) output formats as long as those formats&#xD;&#xA;            are advertised in the capabilities document.&#xD;&#xA;         "/>
+    </eAnnotations>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="GetFeatureType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="query" lowerBound="1" upperBound="-1"
+        eType="#//QueryType" containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;            The Query element is used to describe a single query.&#xD;&#xA;            One or more Query elements can be specified inside a&#xD;&#xA;            GetFeature element so that multiple queries can be &#xD;&#xA;            executed in one request.  The output from the various&#xD;&#xA;            queries are combined in a wfs:FeatureCollection element&#xD;&#xA;            to form the response document.&#xD;&#xA;         "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Query"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="maxFeatures" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//PositiveInteger">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;                     The maxFeatures attribute is used to specify the maximum&#xD;&#xA;                     number of features that a GetFeature operation should&#xD;&#xA;                     generate (regardless of the actual number of query hits).&#xD;&#xA;                  "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="maxFeatures"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="outputFormat" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"
+        defaultValueLiteral="text/xml; subtype=gml/3.1.1" unsettable="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;                     The outputFormat attribute is used to specify the output&#xD;&#xA;                     format that the Web Feature Service should generate in&#xD;&#xA;                     response to a GetFeature or GetFeatureWithLock element.&#xD;&#xA;                     The default value of 'text/xml; subtype=gml/3.1.1'&#xD;&#xA;                     indicates that the output is an XML document that&#xD;&#xA;                     conforms to the Geography Markup Language (GML)&#xD;&#xA;                     Implementation Specification V3.1.1.&#xD;&#xA;                     For the purposes of experimentation, vendor extension,&#xD;&#xA;                     or even extensions that serve a specific community of&#xD;&#xA;                     interest, other acceptable output format values may be&#xD;&#xA;                     used to specify other formats as long as those values&#xD;&#xA;                     are advertised in the capabilities document.&#xD;&#xA;                     For example, the value WKB may be used to indicate that a &#xD;&#xA;                     Well Known Binary format be used to encode the output.&#xD;&#xA;                  "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="outputFormat"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="resultType" eType="#//ResultTypeType"
+        defaultValueLiteral="results" unsettable="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;                     The resultType attribute is used to indicate&#xD;&#xA;                     what response a WFS should return to user once&#xD;&#xA;                     a GetFeature request is processed.&#xD;&#xA;                     Possible values are:&#xD;&#xA;                        results - meaning that the full response set&#xD;&#xA;                                  (i.e. all the feature instances) &#xD;&#xA;                                  should be returned.&#xD;&#xA;                        hits    - meaning that an empty response set&#xD;&#xA;                                  should be returned (i.e. no feature&#xD;&#xA;                                  instances should be returned) but&#xD;&#xA;                                  the &quot;numberOfFeatures&quot; attribute&#xD;&#xA;                                  should be set to the number of feature&#xD;&#xA;                                  instances that would be returned.&#xD;&#xA;                  "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="resultType"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="traverseXlinkDepth" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;                     This attribute indicates the depth to which nested property&#xD;&#xA;                     XLink linking element locator attribute (href) XLinks are&#xD;&#xA;                     traversed and resolved if possible.  A value of &quot;1&quot;&#xD;&#xA;                     indicates that one linking element locator attribute&#xD;&#xA;                     (href) Xlink will be traversed and the referenced element&#xD;&#xA;                     returned if possible, but nested property XLink linking&#xD;&#xA;                     element locator attribute (href) XLinks in the returned&#xD;&#xA;                     element are not traversed.  A value of &quot;*&quot; indicates that&#xD;&#xA;                     all nested property XLink linking element locator attribute&#xD;&#xA;                     (href) XLinks will be traversed and the referenced elements&#xD;&#xA;                     returned if possible.  The range of valid values for this&#xD;&#xA;                     attribute consists of positive integers plus &quot;*&quot;.&#xD;&#xA;                     If this attribute is not specified then no xlinks shall be &#xD;&#xA;                     resolved and the value of traverseXlinkExpiry attribute (if&#xD;&#xA;                     it specified) may be ignored.&#xD;&#xA;                  "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="traverseXlinkDepth"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="traverseXlinkExpiry" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//PositiveInteger">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;                     The traverseXlinkExpiry attribute value is specified in&#xD;&#xA;                     minutes.  It indicates how long a Web Feature Service&#xD;&#xA;                     should wait to receive a response to a nested GetGmlObject&#xD;&#xA;                     request.&#x9;&#xD;&#xA;                     This attribute is only relevant if a value is specified &#xD;&#xA;                     for the traverseXlinkDepth attribute.&#xD;&#xA;                  "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="traverseXlinkExpiry"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GetFeatureWithLockType" eSuperTypes="#//BaseRequestType">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="&#xD;&#xA;            A GetFeatureWithLock request operates identically to a&#xD;&#xA;            GetFeature request expect that it attempts to lock the&#xD;&#xA;            feature instances in the result set and includes a lock&#xD;&#xA;            identifier in its response to a client.  A lock identifier&#xD;&#xA;            is an identifier generated by a Web Feature Service that &#xD;&#xA;            a client application can use, in subsequent operations,&#xD;&#xA;            to reference the locked set of feature instances.&#xD;&#xA;         "/>
+    </eAnnotations>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="GetFeatureWithLockType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="query" lowerBound="1" upperBound="-1"
+        eType="#//QueryType" containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;            The Query element is used to describe a single query.&#xD;&#xA;            One or more Query elements can be specified inside a&#xD;&#xA;            GetFeature element so that multiple queries can be &#xD;&#xA;            executed in one request.  The output from the various&#xD;&#xA;            queries are combined in a wfs:FeatureCollection element&#xD;&#xA;            to form the response document.&#xD;&#xA;         "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Query"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="expiry" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//PositiveInteger"
+        defaultValueLiteral="5" unsettable="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;                     The expiry attribute is used to set the length&#xD;&#xA;                     of time (expressed in minutes) that features will&#xD;&#xA;                     remain locked as a result of a GetFeatureWithLock&#xD;&#xA;                     request.  After the expiry period elapses, the&#xD;&#xA;                     locked resources must be released.  If the &#xD;&#xA;                     expiry attribute is not set, then the default&#xD;&#xA;                     value of 5 minutes will be enforced.&#xD;&#xA;                  "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="expiry"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="maxFeatures" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//PositiveInteger">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;                     See definition of wfs:GetFeatureType.&#xD;&#xA;                  "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="maxFeatures"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="outputFormat" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"
+        defaultValueLiteral="text/xml; subtype=gml/3.1.1" unsettable="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;                     See definition of wfs:GetFeatureType.&#xD;&#xA;                  "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="outputFormat"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="resultType" eType="#//ResultTypeType"
+        defaultValueLiteral="results" unsettable="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;                     See definition of wfs:GetFeatureType.&#xD;&#xA;                  "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="resultType"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="traverseXlinkDepth" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;                     See definition of wfs:GetFeatureType.&#xD;&#xA;                  "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="traverseXlinkDepth"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="traverseXlinkExpiry" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//PositiveInteger">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;                     See definition of wfs:GetFeatureType.&#xD;&#xA;                  "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="traverseXlinkExpiry"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GetGmlObjectType" eSuperTypes="#//BaseRequestType">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="&#xD;&#xA;            A GetGmlObjectType element contains exactly one GmlObjectId.  &#xD;&#xA;            The value of the gml:id attribute on that GmlObjectId is used &#xD;&#xA;            as a unique key to retrieve the complex element with a &#xD;&#xA;            gml:id attribute with the same value.  &#xD;&#xA;         "/>
+    </eAnnotations>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="GetGmlObjectType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="gmlObjectId" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//AnySimpleType">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="GmlObjectId"/>
+        <details key="namespace" value="http://www.opengis.net/ogc"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="outputFormat" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"
+        defaultValueLiteral="GML3" unsettable="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="outputFormat"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="traverseXlinkDepth" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;                     This attribute indicates the depth to which nested&#xD;&#xA;                     property XLink linking element locator attribute&#xD;&#xA;                     (href) XLinks are traversed and resolved if possible.&#xD;&#xA;                     A value of &quot;1&quot; indicates that one linking element&#xD;&#xA;                     locator attribute (href) XLink will be traversed&#xD;&#xA;                     and the referenced element returned if possible, but&#xD;&#xA;                     nested property XLink linking element locator attribute&#xD;&#xA;                     (href) XLinks in the returned element are not traversed.&#xD;&#xA;                     A value of &quot;*&quot; indicates that all nested property XLink&#xD;&#xA;                     linking element locator attribute (href) XLinks will be&#xD;&#xA;                     traversed and the referenced elements returned if&#xD;&#xA;                     possible.  The range of valid values for this attribute&#xD;&#xA;                     consists of positive integers plus &quot;*&quot;.&#xD;&#xA;                  "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="traverseXlinkDepth"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="traverseXlinkExpiry" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//PositiveInteger">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;                     The traverseXlinkExpiry attribute value is specified&#xD;&#xA;                     in minutes.  It indicates how long a Web Feature Service&#xD;&#xA;                     should wait to receive a response to a nested GetGmlObject&#xD;&#xA;                     request.&#x9;&#xD;&#xA;                  "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="traverseXlinkExpiry"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GMLObjectTypeListType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="GMLObjectTypeListType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="gMLObjectType" lowerBound="1"
+        upperBound="-1" eType="#//GMLObjectTypeType" containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;                  Name of this GML object type, including any namespace prefix&#xD;&#xA;               "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="GMLObjectType"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GMLObjectTypeType">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="&#xD;&#xA;            An element of this type that describes a GML object in an&#xD;&#xA;            application namespace shall have an xml xmlns specifier,&#xD;&#xA;            e.g. xmlns:bo=&quot;http://www.BlueOx.org/BlueOx&quot;&#xD;&#xA;         "/>
+    </eAnnotations>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="GMLObjectTypeType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//QName">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;                  Name of this GML Object type, including any namespace prefix.&#xD;&#xA;               "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Name"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="title" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;                  Title of this GML Object type, normally used for display&#xD;&#xA;                  to a human.&#xD;&#xA;               "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Title"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="abstract" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;                  Brief narrative description of this GML Object type, normally&#xD;&#xA;                  used for display to a human.&#xD;&#xA;               "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Abstract"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="keywords" unique="false"
+        upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//AnySimpleType">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Keywords"/>
+        <details key="namespace" value="http://www.opengis.net/ows"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="outputFormats" eType="#//OutputFormatListType"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="OutputFormats"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="IdentifierGenerationOptionType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="IdentifierGenerationOptionType"/>
+    </eAnnotations>
+    <eLiterals name="UseExisting">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;                  The UseExsiting value indicates that WFS should not&#xD;&#xA;                  generate a new feature identifier for the feature&#xD;&#xA;                  being inserted into the repositry.  Instead, the WFS&#xD;&#xA;                  should use the identifier encoded if the feature.  &#xD;&#xA;                  If a duplicate exists then the WFS should raise an&#xD;&#xA;                  exception.&#xD;&#xA;               "/>
+      </eAnnotations>
+    </eLiterals>
+    <eLiterals name="ReplaceDuplicate" value="1">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;                  The ReplaceDuplicate value indicates that WFS should&#xD;&#xA;                  not generate a new feature identifier for the feature&#xD;&#xA;                  being inserted into the repositry.  Instead, the WFS&#xD;&#xA;                  should use the identifier encoded if the feature.  &#xD;&#xA;                  If a duplicate exists then the WFS should replace the&#xD;&#xA;                  existing feature instance with the one encoded in the&#xD;&#xA;                  Insert action.&#xD;&#xA;               "/>
+      </eAnnotations>
+    </eLiterals>
+    <eLiterals name="GenerateNew" value="2">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;                  The GenerateNew value indicates that WFS should&#xD;&#xA;                  generate a new unique feature identifier for the&#xD;&#xA;                  feature being inserted into the repositry.&#xD;&#xA;               "/>
+      </eAnnotations>
+    </eLiterals>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="IdentifierGenerationOptionTypeObject"
+      instanceClassName="org.eclipse.emf.common.util.Enumerator">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="IdentifierGenerationOptionType:Object"/>
+      <details key="baseType" value="IdentifierGenerationOptionType"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="InsertedFeatureType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="InsertedFeatureType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="featureId" unique="false"
+        lowerBound="1" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//AnySimpleType">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;                  This is the feature identifier for the newly created&#xD;&#xA;                  feature.  The feature identifier may be generated by&#xD;&#xA;                  the WFS or provided by the client (depending on the &#xD;&#xA;                  value of the idgen attribute).  In all cases of idgen&#xD;&#xA;                  values, the feature id must be reported here.&#xD;&#xA;               "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="FeatureId"/>
+        <details key="namespace" value="http://www.opengis.net/ogc"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="handle" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;               If the insert element that generated this feature &#xD;&#xA;               had a value for the &quot;handle&quot; attribute then a WFS&#xD;&#xA;               may report it using this attribute to correlate&#xD;&#xA;               the feature created with the action that created it.&#xD;&#xA;            "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="handle"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="InsertElementType">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="&#xD;&#xA;            An Insert element may contain a feature collection or one &#xD;&#xA;            or more feature instances to be inserted into the &#xD;&#xA;            repository.&#xD;&#xA;         "/>
+    </eAnnotations>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="InsertElementType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="feature" unique="false"
+        lowerBound="1" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//AnySimpleType">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="_Feature"/>
+        <details key="namespace" value="http://www.opengis.net/gml"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="handle" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;               The handle attribute allows a client application&#xD;&#xA;               to assign a client-generated request identifier&#xD;&#xA;               to an Insert action.  The handle is included to&#xD;&#xA;               facilitate error reporting.  If an Insert action&#xD;&#xA;               in a Transaction request fails, then a WFS may&#xD;&#xA;               include the handle in an exception report to localize&#xD;&#xA;               the error.  If no handle is included of the offending&#xD;&#xA;               Insert element then a WFS may employee other means of&#xD;&#xA;               localizing the error (e.g. line number).&#xD;&#xA;            "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="handle"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="idgen" eType="#//IdentifierGenerationOptionType"
+        defaultValueLiteral="GenerateNew" unsettable="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;               The idgen attribute control how a WFS generates identifiers&#xD;&#xA;               from newly created feature instances using the Insert action.&#xD;&#xA;               The default action is to have the WFS generate a new id for&#xD;&#xA;               the features.  This is also backward compatible with WFS 1.0&#xD;&#xA;               where the only action was for the WFS to generate an new id.&#xD;&#xA;            "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="idgen"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="inputFormat" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"
+        defaultValueLiteral="text/xml; subtype=gml/3.1.1" unsettable="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;               This inputFormat attribute is used to indicate &#xD;&#xA;               the format used to encode a feature instance in&#xD;&#xA;               an Insert element.  The default value of&#xD;&#xA;               'text/xml; subtype=gml/3.1.1' is used to indicate&#xD;&#xA;               that feature encoding is GML3.  Another example&#xD;&#xA;               might be 'text/xml; subtype=gml/2.1.2' indicating&#xD;&#xA;               that the feature us encoded in GML2.  A WFS must&#xD;&#xA;               declare in the capabilities document, using a &#xD;&#xA;               Parameter element, which version of GML it supports.&#xD;&#xA;            "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="inputFormat"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="srsName" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//AnyURI">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;              ===== PAV 12NOV2004 ====&#xD;&#xA;              WHY IS THIS HERE? WOULDN'T WE KNOW THE INCOMING SRS FROM THE &#xD;&#xA;              GML GEOMETRY ELEMENTS?   I ASSUME THAT IF THE INCOMING SRS&#xD;&#xA;              DOES NOT MATCH ONE OF THE STORAGE SRS(s) THEN THE WFS WOULD&#xD;&#xA;              EITHER PROJECT INTO THE STORAGE SRS OR RAISE AN EXCEPTION.&#xD;&#xA;           "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="srsName"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="InsertResultsType">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="&#xD;&#xA;            Reports the list of identifiers of all features created &#xD;&#xA;            by a transaction request.  New features are created using&#xD;&#xA;            the Insert action and the list of idetifiers must be &#xD;&#xA;            presented in the same order as the Insert actions were&#xD;&#xA;            encountered in the transaction request.  Features may&#xD;&#xA;            optionally be correlated with identifiers using the &#xD;&#xA;            handle attribute (if it was specified on the Insert &#xD;&#xA;            element).&#xD;&#xA;         "/>
+    </eAnnotations>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="InsertResultsType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="feature" lowerBound="1"
+        upperBound="-1" eType="#//InsertedFeatureType" containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Feature"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="LockFeatureResponseType">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="&#xD;&#xA;            The LockFeatureResponseType is used to define an&#xD;&#xA;            element to contains the response to a LockFeature&#xD;&#xA;            operation.&#xD;&#xA;         "/>
+    </eAnnotations>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="LockFeatureResponseType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="lockId" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;                  The LockFeatureResponse includes a LockId element&#xD;&#xA;                  that contains a lock identifier.  The lock identifier&#xD;&#xA;                  can be used by a client, in subsequent operations, to&#xD;&#xA;                  operate upon the locked feature instances.&#xD;&#xA;               "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="LockId"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="featuresLocked" eType="#//FeaturesLockedType"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;                  The LockFeature or GetFeatureWithLock operations&#xD;&#xA;                  identify and attempt to lock a set of feature &#xD;&#xA;                  instances that satisfy the constraints specified &#xD;&#xA;                  in the request.  In the event that the lockAction&#xD;&#xA;                  attribute (on the LockFeature or GetFeatureWithLock&#xD;&#xA;                  elements) is set to SOME, a Web Feature Service will&#xD;&#xA;                  attempt to lock as many of the feature instances from&#xD;&#xA;                  the result set as possible.&#xD;&#xA;&#xD;&#xA;                  The FeaturesLocked element contains list of ogc:FeatureId&#xD;&#xA;                  elements enumerating the feature instances that a WFS&#xD;&#xA;                  actually managed to lock.&#xD;&#xA;               "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="FeaturesLocked"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="featuresNotLocked" eType="#//FeaturesNotLockedType"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;                  In contrast to the FeaturesLocked element, the&#xD;&#xA;                  FeaturesNotLocked element contains a list of &#xD;&#xA;                  ogc:Filter elements identifying feature instances&#xD;&#xA;                  that a WFS did not manage to lock because they were&#xD;&#xA;                  already locked by another process.&#xD;&#xA;               "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="FeaturesNotLocked"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="LockFeatureType" eSuperTypes="#//BaseRequestType">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="&#xD;&#xA;            This type defines the LockFeature operation.  The LockFeature&#xD;&#xA;            element contains one or more Lock elements that define which&#xD;&#xA;            features of a particular type should be locked.  A lock&#xD;&#xA;            identifier (lockId) is returned to the client application which&#xD;&#xA;            can be used by subsequent operations to reference the locked&#xD;&#xA;            features.&#xD;&#xA;         "/>
+    </eAnnotations>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="LockFeatureType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="lock" lowerBound="1" upperBound="-1"
+        eType="#//LockType" containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;                        The lock element is used to indicate which feature &#xD;&#xA;                        instances of particular type are to be locked.&#xD;&#xA;                     "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Lock"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="expiry" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//PositiveInteger"
+        defaultValueLiteral="5" unsettable="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;                     The expiry attribute is used to set the length&#xD;&#xA;                     of time (expressed in minutes) that features will&#xD;&#xA;                     remain locked as a result of a LockFeature&#xD;&#xA;                     request.  After the expiry period elapses, the&#xD;&#xA;                     locked resources must be released.  If the &#xD;&#xA;                     expiry attribute is not set, then the default&#xD;&#xA;                     value of 5 minutes will be enforced.&#xD;&#xA;                  "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="expiry"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="lockAction" eType="#//AllSomeType"
+        defaultValueLiteral="ALL" unsettable="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;                     The lockAction attribute is used to indicate what&#xD;&#xA;                     a Web Feature Service should do when it encounters&#xD;&#xA;                     a feature instance that has already been locked by&#xD;&#xA;                     another client application.&#xD;&#xA;      &#xD;&#xA;                     Valid values are ALL or SOME.&#xD;&#xA;      &#xD;&#xA;                     ALL means that the Web Feature Service must acquire&#xD;&#xA;                     locks on all the requested feature instances.  If it&#xD;&#xA;                     cannot acquire those locks then the request should&#xD;&#xA;                     fail.  In this instance, all locks acquired by the&#xD;&#xA;                     operation should be released.&#xD;&#xA;       &#xD;&#xA;                     SOME means that the Web Feature Service should lock&#xD;&#xA;                     as many of the requested features as it can.&#xD;&#xA;                  "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="lockAction"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="LockType">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="&#xD;&#xA;            This type defines the Lock element.  The Lock element&#xD;&#xA;            defines a locking operation on feature instances of &#xD;&#xA;            a single type. An OGC Filter is used to constrain the&#xD;&#xA;            scope of the operation.  Features to be locked can be&#xD;&#xA;            identified individually by using their feature identifier&#xD;&#xA;            or they can be locked by satisfying the spatial and &#xD;&#xA;            non-spatial constraints defined in the filter.&#xD;&#xA;         "/>
+    </eAnnotations>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="LockType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="filter" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//AnySimpleType">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Filter"/>
+        <details key="namespace" value="http://www.opengis.net/ogc"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="handle" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;               The handle attribute allows a client application&#xD;&#xA;               to assign a client-generated request identifier&#xD;&#xA;               to a Lock action.  The handle is included to &#xD;&#xA;               facilitate error reporting.  If one of a set of&#xD;&#xA;               Lock actions failed while processing a LockFeature&#xD;&#xA;               request, a WFS may report the handle in an exception&#xD;&#xA;               report to localize the error.  If a handle is not&#xD;&#xA;               present then a WFS may employ some other means of &#xD;&#xA;               localizing the error (e.g. line number).&#xD;&#xA;            "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="handle"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="typeName" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//QName">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;              The value of the typeName attribute is the name &#xD;&#xA;              of the feature type to be updated. The name&#xD;&#xA;              specified must be a valid type that belongs to&#xD;&#xA;              the feature content as defined by the GML&#xD;&#xA;              Application Schema.&#xD;&#xA;           "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="typeName"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="MetadataURLType">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="&#xD;&#xA;            A Web Feature Server MAY use zero or more MetadataURL&#xD;&#xA;            elements to offer detailed, standardized metadata about&#xD;&#xA;            the data underneath a particular feature type.  The type&#xD;&#xA;            attribute indicates the standard to which the metadata&#xD;&#xA;            complies; the format attribute indicates how the metadata is&#xD;&#xA;            structured.  Two types are defined at present:&#xD;&#xA;            'TC211' or 'ISO19115' = ISO TC211 19115; &#xD;&#xA;            'FGDC'                = FGDC CSDGM.&#xD;&#xA;            'ISO19139'            = ISO 19139&#xD;&#xA;         "/>
+    </eAnnotations>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="MetadataURLType"/>
+      <details key="kind" value="simple"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="name" value=":0"/>
+        <details key="kind" value="simple"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="format" lowerBound="1"
+        eType="#//FormatType" defaultValueLiteral="text/xml" unsettable="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="format"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" lowerBound="1" eType="#//TypeType"
+        defaultValueLiteral="TC211" unsettable="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="type"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NativeType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="NativeType"/>
+      <details key="kind" value="empty"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="safeToIgnore" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"
+        unsettable="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;               In the event that a Web Feature Service does not recognize&#xD;&#xA;               the vendorId or does not recognize the vendor specific command,&#xD;&#xA;               the safeToIgnore attribute is used to indicate whether the &#xD;&#xA;               exception can be safely ignored.  A value of TRUE means that&#xD;&#xA;               the Web Feature Service may ignore the command.  A value of&#xD;&#xA;               FALSE means that a Web Feature Service cannot ignore the&#xD;&#xA;               command and an exception should be raised if a problem is &#xD;&#xA;               encountered.&#xD;&#xA;            "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="safeToIgnore"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="vendorId" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;               The vendorId attribute is used to specify the name of&#xD;&#xA;               vendor who's vendor specific command the client&#xD;&#xA;               application wishes to execute.&#xD;&#xA;            "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="vendorId"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NoSRSType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="NoSRS_._type"/>
+      <details key="kind" value="empty"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="OperationsType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="OperationsType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operation" unique="false"
+        lowerBound="1" upperBound="-1" eType="#//OperationType" defaultValueLiteral="Insert">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Operation"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="OperationType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="OperationType"/>
+    </eAnnotations>
+    <eLiterals name="Insert"/>
+    <eLiterals name="Update" value="1"/>
+    <eLiterals name="Delete" value="2"/>
+    <eLiterals name="Query" value="3"/>
+    <eLiterals name="Lock" value="4"/>
+    <eLiterals name="GetGmlObject" value="5"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="OperationTypeObject" instanceClassName="org.eclipse.emf.common.util.Enumerator">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="OperationType:Object"/>
+      <details key="baseType" value="OperationType"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="OutputFormatListType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="OutputFormatListType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="group" unique="false" upperBound="-1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFeatureMapEntry">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="group"/>
+        <details key="name" value="group:0"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="format" unique="false"
+        lowerBound="1" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"
+        volatile="true" transient="true" derived="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Format"/>
+        <details key="namespace" value="##targetNamespace"/>
+        <details key="group" value="#group:0"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PropertyType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="PropertyType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//QName">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;                  The Name element contains the name of a feature property&#xD;&#xA;                  to be updated.&#xD;&#xA;               "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Name"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;                  The Value element contains the replacement value for the&#xD;&#xA;                  named property.&#xD;&#xA;               "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Value"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="QueryType">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="&#xD;&#xA;            The Query element is of type QueryType.&#xD;&#xA;         "/>
+    </eAnnotations>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="QueryType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="group" unique="false" upperBound="-1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFeatureMapEntry">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="group"/>
+        <details key="name" value="group:0"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="propertyName" unique="false"
+        upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"
+        volatile="true" transient="true" derived="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;                   The Property element is used to specify one or more&#xD;&#xA;                   properties of a feature whose values are to be retrieved&#xD;&#xA;                   by a Web Feature Service.  &#xD;&#xA;                   &#xD;&#xA;                   While a Web Feature Service should endeavour to satisfy&#xD;&#xA;                   the exact request specified, in some instance this may&#xD;&#xA;                   not be possible.  Specifically, a Web Feature Service&#xD;&#xA;                   must generate a valid GML3 response to a Query operation.&#xD;&#xA;                   The schema used to generate the output may include &#xD;&#xA;                   properties that are mandatory.  In order that the output&#xD;&#xA;                   validates, these mandatory properties must be specified&#xD;&#xA;                   in the request.  If they are not, a Web Feature Service&#xD;&#xA;                   may add them automatically to the Query before processing&#xD;&#xA;                   it.  Thus a client application should, in general, be&#xD;&#xA;                   prepared to receive more properties than it requested.&#xD;&#xA;   &#xD;&#xA;                   Of course, using the DescribeFeatureType request, a client&#xD;&#xA;                   application can determine which properties are mandatory&#xD;&#xA;                   and request them in the first place.&#xD;&#xA;                "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="PropertyName"/>
+        <details key="namespace" value="##targetNamespace"/>
+        <details key="group" value="#group:0"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="xlinkPropertyName" upperBound="-1"
+        eType="#//XlinkPropertyNameType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;            This element may be used in place of an wfs:PropertyName element&#xD;&#xA;            in a wfs:Query element in a wfs:GetFeature element to selectively&#xD;&#xA;            request the traversal of nested XLinks in the returned element for&#xD;&#xA;            the named property. This element may not be used in other requests&#xD;&#xA;            -- GetFeatureWithLock, LockFeature, Insert, Update, Delete -- in&#xD;&#xA;            this version of the WFS specification.&#xD;&#xA;         "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="XlinkPropertyName"/>
+        <details key="namespace" value="##targetNamespace"/>
+        <details key="group" value="#group:0"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="function" unique="false"
+        upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//AnySimpleType"
+        volatile="true" transient="true" derived="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;                   A function may be used as a select item in a query.&#xD;&#xA;                   However, if a function is used, care must be taken&#xD;&#xA;                   to ensure that the result type matches the type in the &#xD;&#xA; &#xD;&#xA;                "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Function"/>
+        <details key="namespace" value="http://www.opengis.net/ogc"/>
+        <details key="group" value="#group:0"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="filter" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//AnySimpleType">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;                The Filter element is used to define spatial and/or non-spatial&#xD;&#xA;                constraints on query.  Spatial constrains use GML3 to specify&#xD;&#xA;                the constraining geometry.  A full description of the Filter&#xD;&#xA;                element can be found in the Filter Encoding Implementation&#xD;&#xA;                Specification.&#xD;&#xA;             "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Filter"/>
+        <details key="namespace" value="http://www.opengis.net/ogc"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="sortBy" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//AnySimpleType">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;                The SortBy element is used specify property names whose&#xD;&#xA;                values should be used to order (upon presentation) the&#xD;&#xA;                set of feature instances that satisfy the query.&#xD;&#xA;             "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="SortBy"/>
+        <details key="namespace" value="http://www.opengis.net/ogc"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="featureVersion" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;              For systems that implement versioning, the featureVersion&#xD;&#xA;              attribute is used to specify which version of a particular&#xD;&#xA;              feature instance is to be retrieved.  A value of ALL means&#xD;&#xA;              that all versions should be retrieved.  An integer value&#xD;&#xA;              'i', means that the ith version should be retrieve if it&#xD;&#xA;              exists or the most recent version otherwise.&#xD;&#xA;           "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="featureVersion"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="handle" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;               The handle attribute allows a client application&#xD;&#xA;               to assign a client-generated identifier for the &#xD;&#xA;               Query.  The handle is included to facilitate error&#xD;&#xA;               reporting.  If one Query in a GetFeature request&#xD;&#xA;               causes an exception, a WFS may report the handle&#xD;&#xA;               to indicate which query element failed.  If the a&#xD;&#xA;               handle is not present, the WFS may use other means&#xD;&#xA;               to localize the error (e.g. line numbers).&#xD;&#xA;            "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="handle"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="srsName" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//AnyURI">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;              This attribute is used to specify a specific WFS-supported SRS&#xD;&#xA;              that should be used for returned feature geometries.  The value&#xD;&#xA;              may be the WFS StorageSRS value, DefaultRetrievalSRS value, or&#xD;&#xA;              one of AdditionalSRS values.  If no srsName value is supplied,&#xD;&#xA;              then the features will be returned using either the&#xD;&#xA;              DefaultRetrievalSRS, if specified, and StorageSRS otherwise.&#xD;&#xA;              For feature types with no spatial properties, this attribute&#xD;&#xA;              must not be specified or ignored if it is specified.&#xD;&#xA;           "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="srsName"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="typeName" lowerBound="1"
+        eType="#//TypeNameListType">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;              The typeName attribute is a list of one or more&#xD;&#xA;              feature type names that indicate which types &#xD;&#xA;              of feature instances should be included in the&#xD;&#xA;              reponse set.  Specifying more than one typename&#xD;&#xA;              indicates that a join operation is being performed.&#xD;&#xA;              All the names in the typeName list must be valid&#xD;&#xA;              types that belong to this query's feature content&#xD;&#xA;              as defined by the GML Application Schema.&#xD;&#xA;           "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="typeName"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="ResultTypeType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="ResultTypeType"/>
+    </eAnnotations>
+    <eLiterals name="results">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;                  Indicates that a complete response should be generated&#xD;&#xA;                  by the WFS.  That is, all response feature instances&#xD;&#xA;                  should be returned to the client.&#xD;&#xA;               "/>
+      </eAnnotations>
+    </eLiterals>
+    <eLiterals name="hits" value="1">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;                  Indicates that an empty response should be generated with&#xD;&#xA;                  the &quot;numberOfFeatures&quot; attribute set (i.e. no feature&#xD;&#xA;                  instances should be returned).  In this manner a client may&#xD;&#xA;                  determine the number of feature instances that a GetFeature&#xD;&#xA;                  request will return without having to actually get the &#xD;&#xA;                  entire result set back.&#xD;&#xA;               "/>
+      </eAnnotations>
+    </eLiterals>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="ResultTypeTypeObject" instanceClassName="org.eclipse.emf.common.util.Enumerator">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="ResultTypeType:Object"/>
+      <details key="baseType" value="ResultTypeType"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TransactionResponseType">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="&#xD;&#xA;            The response for a transaction request that was successfully&#xD;&#xA;            completed. If the transaction failed for any reason, an&#xD;&#xA;            exception report is returned instead.&#xD;&#xA;         "/>
+    </eAnnotations>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="TransactionResponseType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="transactionSummary" lowerBound="1"
+        eType="#//TransactionSummaryType" containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;                  The TransactionSummary element is used to summarize&#xD;&#xA;                  the number of feature instances affected by the &#xD;&#xA;                  transaction.&#xD;&#xA;               "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="TransactionSummary"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="transactionResults" eType="#//TransactionResultsType"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;                  For systems that do not support atomic transactions,&#xD;&#xA;                  the TransactionResults element may be used to report&#xD;&#xA;                  exception codes and messages for all actions of a&#xD;&#xA;                  transaction that failed to execute successfully.&#xD;&#xA;               "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="TransactionResults"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="insertResults" lowerBound="1"
+        eType="#//InsertResultsType" containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;                  A transaction is a collection of Insert,Update and Delete&#xD;&#xA;                  actions.  The Update and Delete actions modify features&#xD;&#xA;                  that already exist.  The Insert action, however, creates&#xD;&#xA;                  new features.  The InsertResults element is used to&#xD;&#xA;                  report the identifiers of the newly created features.&#xD;&#xA;               "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="InsertResults"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="version" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String" defaultValueLiteral="1.1.0"
+        unsettable="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;               The version attribute contains the version of the request&#xD;&#xA;               that generated this response.  So a V1.1.0 transaction&#xD;&#xA;               request generates a V1.1.0 transaction response.&#xD;&#xA;            "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="version"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TransactionResultsType">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="&#xD;&#xA;            The TransactionResults element may be used to report exception&#xD;&#xA;            codes and messages for all actions of a transaction that failed&#xD;&#xA;            to complete successfully.&#xD;&#xA;         "/>
+    </eAnnotations>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="TransactionResultsType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="action" upperBound="-1"
+        eType="#//ActionType" containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;                  The Action element reports an exception code&#xD;&#xA;                  and exception message indicating why the&#xD;&#xA;                  corresponding action of a transaction request&#xD;&#xA;                  failed.&#xD;&#xA;               "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Action"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TransactionSummaryType">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="&#xD;&#xA;            Reports the total number of features affected by some kind &#xD;&#xA;            of write action (i.e, insert, update, delete).&#xD;&#xA;         "/>
+    </eAnnotations>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="TransactionSummaryType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="totalInserted" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//NonNegativeInteger">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="totalInserted"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="totalUpdated" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//NonNegativeInteger">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="totalUpdated"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="totalDeleted" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//NonNegativeInteger">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="totalDeleted"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TransactionType" eSuperTypes="#//BaseRequestType">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="&#xD;&#xA;            The TransactionType defines the Transaction operation.  A&#xD;&#xA;            Transaction element contains one or more Insert, Update&#xD;&#xA;            Delete and Native elements that allow a client application&#xD;&#xA;            to create, modify or remove feature instances from the &#xD;&#xA;            feature repository that a Web Feature Service controls.&#xD;&#xA;         "/>
+    </eAnnotations>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="TransactionType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="lockId" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;                        In order for a client application to operate upon&#xD;&#xA;                        locked feature instances, the Transaction request&#xD;&#xA;                        must include the LockId element.  The content of&#xD;&#xA;                        this element must be the lock identifier the client&#xD;&#xA;                        application obtained from a previous&#xD;&#xA;                        GetFeatureWithLock or LockFeature operation.&#xD;&#xA;&#xD;&#xA;                        If the correct lock identifier is specified the Web&#xD;&#xA;                        Feature Service knows that the client application may&#xD;&#xA;                        operate upon the locked feature instances.&#xD;&#xA;&#xD;&#xA;                        No LockId element needs to be specified to operate upon&#xD;&#xA;                        unlocked features.&#xD;&#xA;                     "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="LockId"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="group" unique="false" upperBound="-1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFeatureMapEntry">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="group"/>
+        <details key="name" value="group:4"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="insert" upperBound="-1"
+        eType="#//InsertElementType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;            The Insert element is used to indicate that the Web Feature&#xD;&#xA;            Service should create a new instance of a feature type.  The&#xD;&#xA;            feature instance is specified using GML3 and one or more &#xD;&#xA;            feature instances to be created can be contained inside the&#xD;&#xA;            Insert element.&#xD;&#xA;         "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Insert"/>
+        <details key="namespace" value="##targetNamespace"/>
+        <details key="group" value="#group:4"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="updateGroup" unique="false"
+        upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFeatureMapEntry"
+        volatile="true" transient="true" derived="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;            One or more existing feature instances can be changed by&#xD;&#xA;            using the Update element.&#xD;&#xA;         "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="group"/>
+        <details key="name" value="Update:group"/>
+        <details key="namespace" value="##targetNamespace"/>
+        <details key="group" value="#group:4"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="update" upperBound="-1"
+        eType="#//UpdateElementType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;            One or more existing feature instances can be changed by&#xD;&#xA;            using the Update element.&#xD;&#xA;         "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Update"/>
+        <details key="namespace" value="##targetNamespace"/>
+        <details key="group" value="Update:group"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="deleteGroup" unique="false"
+        upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFeatureMapEntry"
+        volatile="true" transient="true" derived="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;            The Delete element is used to indicate that one or more&#xD;&#xA;            feature instances should be removed from the feature&#xD;&#xA;            repository.&#xD;&#xA;         "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="group"/>
+        <details key="name" value="Delete:group"/>
+        <details key="namespace" value="##targetNamespace"/>
+        <details key="group" value="#group:4"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="delete" upperBound="-1"
+        eType="#//DeleteElementType" volatile="true" transient="true" derived="true"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;            The Delete element is used to indicate that one or more&#xD;&#xA;            feature instances should be removed from the feature&#xD;&#xA;            repository.&#xD;&#xA;         "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Delete"/>
+        <details key="namespace" value="##targetNamespace"/>
+        <details key="group" value="Delete:group"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="nativeGroup" unique="false"
+        upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFeatureMapEntry"
+        volatile="true" transient="true" derived="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;            Many times, a Web Feature Service interacts with a repository&#xD;&#xA;            that may have special vendor specific capabilities.  The native&#xD;&#xA;            element allows vendor specific command to be passed to the&#xD;&#xA;            repository via the Web Feature Service.&#xD;&#xA;         "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="group"/>
+        <details key="name" value="Native:group"/>
+        <details key="namespace" value="##targetNamespace"/>
+        <details key="group" value="#group:4"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="native" upperBound="-1"
+        eType="#//NativeType" volatile="true" transient="true" derived="true" containment="true"
+        resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;            Many times, a Web Feature Service interacts with a repository&#xD;&#xA;            that may have special vendor specific capabilities.  The native&#xD;&#xA;            element allows vendor specific command to be passed to the&#xD;&#xA;            repository via the Web Feature Service.&#xD;&#xA;         "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Native"/>
+        <details key="namespace" value="##targetNamespace"/>
+        <details key="group" value="Native:group"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="releaseAction" eType="#//AllSomeType"
+        defaultValueLiteral="ALL" unsettable="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;                     The releaseAction attribute is used to control how a Web&#xD;&#xA;                     Feature service releases locks on feature instances after&#xD;&#xA;                     a Transaction request has been processed.&#xD;&#xA;&#xD;&#xA;                     Valid values are ALL or SOME.&#xD;&#xA;&#xD;&#xA;                     A value of ALL means that the Web Feature Service should&#xD;&#xA;                     release the locks of all feature instances locked with the&#xD;&#xA;                     specified lockId regardless or whether or not the features&#xD;&#xA;                     were actually modified.&#xD;&#xA;&#xD;&#xA;                     A value of SOME means that the Web Feature Service will &#xD;&#xA;                     only release the locks held on feature instances that &#xD;&#xA;                     were actually operated upon by the transaction.  The&#xD;&#xA;                     lockId that the client application obtained shall remain&#xD;&#xA;                     valid and the other, unmodified, feature instances shall&#xD;&#xA;                     remain locked.&#xD;&#xA;                    &#xD;&#xA;                     If the expiry attribute was specified in the original&#xD;&#xA;                     operation that locked the feature instances, then the&#xD;&#xA;                     expiry counter will be reset to give the client&#xD;&#xA;                     application that same amount of time to post subsequent&#xD;&#xA;                     transactions against the locked features.&#xD;&#xA;                  "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="releaseAction"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="TypeNameListType" instanceClassName="java.util.List">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="TypeNameListType"/>
+      <details key="baseType" value="Base_TypeNameListType"/>
+      <details key="pattern" value="((\w:)?\w(=\w)?){1,}"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="TypeType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="type_._type"/>
+    </eAnnotations>
+    <eLiterals name="TC211"/>
+    <eLiterals name="FGDC" value="1"/>
+    <eLiterals name="_19115" value="2" literal="19115"/>
+    <eLiterals name="_19139" value="3" literal="19139"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="TypeTypeObject" instanceClassName="org.eclipse.emf.common.util.Enumerator">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="type_._type:Object"/>
+      <details key="baseType" value="type_._type"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="UpdateElementType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="UpdateElementType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="property" lowerBound="1"
+        upperBound="-1" eType="#//PropertyType" containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;                  Changing or updating a feature instance means that&#xD;&#xA;                  the current value of one or more properties of&#xD;&#xA;                  the feature are replaced with new values.  The Update&#xD;&#xA;                  element contains  one or more Property elements.  A&#xD;&#xA;                  Property element contains the name or a feature property&#xD;&#xA;                  who's value is to be changed and the replacement value&#xD;&#xA;                  for that property.&#xD;&#xA;               "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Property"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="filter" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//AnySimpleType">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;                  The Filter element is used to constrain the scope&#xD;&#xA;                  of the update operation to those features identified&#xD;&#xA;                  by the filter.  Feature instances can be specified&#xD;&#xA;                  explicitly and individually using the identifier of&#xD;&#xA;                  each feature instance OR a set of features to be&#xD;&#xA;                  operated on can be identified by specifying spatial&#xD;&#xA;                  and non-spatial constraints in the filter.&#xD;&#xA;                  If no filter is specified then update operation &#xD;&#xA;                  applies to all feature instances.&#xD;&#xA;               "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Filter"/>
+        <details key="namespace" value="http://www.opengis.net/ogc"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="handle" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;               The handle attribute allows a client application&#xD;&#xA;               to assign a client-generated request identifier&#xD;&#xA;               to an Insert action.  The handle is included to&#xD;&#xA;               facilitate error reporting.  If an Update action&#xD;&#xA;               in a Transaction request fails, then a WFS may&#xD;&#xA;               include the handle in an exception report to localize&#xD;&#xA;               the error.  If no handle is included of the offending&#xD;&#xA;               Insert element then a WFS may employee other means of&#xD;&#xA;               localizing the error (e.g. line number).&#xD;&#xA;            "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="handle"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="inputFormat" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"
+        defaultValueLiteral="x-application/gml:3" unsettable="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;               This inputFormat attribute is used to indicate &#xD;&#xA;               the format used to encode a feature instance in&#xD;&#xA;               an Insert element.  The default value of&#xD;&#xA;               'text/xml; subtype=gml/3.1.1' is used to indicate&#xD;&#xA;               that feature encoding is GML3.  Another example&#xD;&#xA;               might be 'text/xml; subtype=gml/2.1.2' indicating&#xD;&#xA;               that the feature us encoded in GML2.  A WFS must&#xD;&#xA;               declare in the capabilities document, using a &#xD;&#xA;               Parameter element, which version of GML it supports.&#xD;&#xA;            "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="inputFormat"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="srsName" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//AnyURI">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;               DO WE NEED THIS HERE?&#xD;&#xA;           "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="srsName"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="typeName" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//QName">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;              The value of the typeName attribute is the name &#xD;&#xA;              of the feature type to be updated. The name&#xD;&#xA;              specified must be a valid type that belongs to&#xD;&#xA;              the feature content as defined by the GML&#xD;&#xA;              Application Schema.&#xD;&#xA;           "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="typeName"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="WFSCapabilitiesType">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="&#xD;&#xA;            XML encoded WFS GetCapabilities operation response. This&#xD;&#xA;            document provides clients with service metadata about a&#xD;&#xA;            specific service instance, including metadata about the&#xD;&#xA;            tightly-coupled data served. If the server does not implement&#xD;&#xA;            the updateSequence parameter, the server shall always return&#xD;&#xA;            the complete Capabilities document, without the updateSequence&#xD;&#xA;            parameter. When the server implements the updateSequence&#xD;&#xA;            parameter and the GetCapabilities operation request included&#xD;&#xA;            the updateSequence parameter with the current value, the server&#xD;&#xA;            shall return this element with only the &quot;version&quot; and&#xD;&#xA;            &quot;updateSequence&quot; attributes. Otherwise, all optional elements&#xD;&#xA;            shall be included or not depending on the actual value of the&#xD;&#xA;            Contents parameter in the GetCapabilities operation request.&#xD;&#xA;         "/>
+    </eAnnotations>
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="WFS_CapabilitiesType"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="featureTypeList" eType="#//FeatureTypeListType"
+        containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="FeatureTypeList"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="servesGMLObjectTypeList"
+        eType="#//GMLObjectTypeListType" containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;            List of GML Object types available for GetGmlObject requests&#xD;&#xA;         "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="ServesGMLObjectTypeList"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="supportsGMLObjectTypeList"
+        eType="#//GMLObjectTypeListType" containment="true" resolveProxies="false">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;            List of GML Object types that WFS is capable of serving, either&#xD;&#xA;            directly, or as validly derived types defined in a GML application&#xD;&#xA;            schema.&#xD;&#xA;         "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="SupportsGMLObjectTypeList"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="filterCapabilities" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//AnySimpleType">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="Filter_Capabilities"/>
+        <details key="namespace" value="http://www.opengis.net/ogc"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XlinkPropertyNameType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="XlinkPropertyName_._type"/>
+      <details key="kind" value="simple"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="name" value=":0"/>
+        <details key="kind" value="simple"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="traverseXlinkDepth" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;                  This attribute indicates the depth to which nested property&#xD;&#xA;                  XLink linking element locator attribute (href) XLinks are&#xD;&#xA;                  traversed and resolved if possible.  A value of &quot;1&quot; indicates&#xD;&#xA;                  that one linking element locator attribute (href) Xlink&#xD;&#xA;                  will be traversed and the referenced element returned if&#xD;&#xA;                  possible, but nested property XLink linking element locator&#xD;&#xA;                  attribute (href) XLinks in the returned element are not&#xD;&#xA;                  traversed.  A value of  &quot;*&quot; indicates that all nested property&#xD;&#xA;                  XLink linking element locator attribute (href) XLinks will be&#xD;&#xA;                  traversed and the referenced elements returned if possible.&#xD;&#xA;                  The range of valid values for this attribute consists of&#xD;&#xA;                  positive integers plus &quot;*&quot;.&#xD;&#xA;                     "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="traverseXlinkDepth"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="traverseXlinkExpiry" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//PositiveInteger">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="&#xD;&#xA;                  The traverseXlinkExpiry attribute value is specified in&#xD;&#xA;                  minutes It indicates how long a Web Feature Service should&#xD;&#xA;                  wait to receive a response to a nested GetGmlObject request.&#x9;&#xD;&#xA;                     "/>
+      </eAnnotations>
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="traverseXlinkExpiry"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+</ecore:EPackage>

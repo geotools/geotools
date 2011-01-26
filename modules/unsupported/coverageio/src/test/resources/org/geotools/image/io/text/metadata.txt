@@ -1,0 +1,16 @@
+XMinimum            = 217904.31
+XMaximum            = 317904.31
+YMinimum            = 4663495.1
+YMaximum            = 5663495.1
+XResolution         = 1000.0000
+YResolution         = 1000.0000
+Width               = 800
+Height              = 600
+Unit                = meters
+Projection          = Mercator_1SP
+Central meridian    = -15.2167
+Latitude of origin  = 28.0667
+False easting       = 0.00000000
+False northing      = 0.00000000
+Ellipsoid           = Clarke 1866
+Datum               = Clarke 1866

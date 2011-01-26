@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DescribeFeatureType
+  version="1.1.0"
+  service="WFS"
+  handle="fooHandle"
+  outputFormat="fooFormat"
+  xmlns="http://www.opengis.net/wfs"
+  xmlns:topp="http://www.openplans.org/topp"
+  xmlns:gt="http://www.geotools.org/test"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd">
+  
+    <TypeName>topp:states</TypeName>
+    <TypeName>gt:sampleType</TypeName>
+    
+</DescribeFeatureType>

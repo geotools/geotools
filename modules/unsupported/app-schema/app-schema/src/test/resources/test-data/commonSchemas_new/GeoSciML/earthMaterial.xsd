@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2007 sp2 (http://www.altova.com) by Eric Boisvert (Ressources naturelles Canada) -->
+<xs:schema xmlns:gsml="http://www.cgi-iugs.org/xml/GeoSciML/2" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:gml="http://www.opengis.net/gml" targetNamespace="http://www.cgi-iugs.org/xml/GeoSciML/2" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:annotation>
+		<xs:documentation>Encoded by Eric Boisvert (May 2007) Geological Survey of Canada</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+	<xs:include schemaLocation="CGI_Value.xsd"/>
+	<xs:include schemaLocation="vocabulary.xsd"/>
+	<xs:include schemaLocation="fossil.xsd"/>
+	<xs:include schemaLocation="Gsml.xsd"/>
+	<xs:include schemaLocation="geologicUnit.xsd"/>
+	<xs:complexType name="EarthMaterialType">
+		<xs:complexContent>
+			<xs:extension base="gml:AbstractGMLType">
+				<xs:sequence>
+					<xs:element name="color" type="gsml:CGI_TermValuePropertyType" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="metadata" type="gsml:MetadataPropertyType" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ..................... -->
+	<xs:element name="EarthMaterial" substitutionGroup="gml:_Object"/>
+	<!-- ..................... -->
+	<xs:complexType name="EarthMaterialPropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:element ref="gsml:EarthMaterial"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gsml:EstimatedPropertyAttributeGroup"/>
+	</xs:complexType>
+	<!--=======================-->
+	<xs:complexType name="ConstituentPartType">
+		<xs:sequence>
+			<xs:element name="proportion" type="gsml:CGI_ValuePropertyType"/>
+			<xs:element name="role" type="gsml:ScopedNameType"/>
+			<xs:element name="particleType" type="gsml:ScopedNameType" minOccurs="0"/>
+			<xs:element name="material" type="gsml:EarthMaterialPropertyType" minOccurs="0"/>
+			<xs:element name="particleGeometry" type="gsml:ParticleGeometryDescriptionPropertyType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ..................... -->
+	<xs:element name="ConstituentPart" type="gsml:ConstituentPartType"/>
+	<!-- ..................... -->
+	<xs:complexType name="ConstituentPartPropertyType">
+		<xs:sequence>
+			<xs:element ref="gsml:ConstituentPart"/>
+		</xs:sequence>
+		<xs:attribute ref="gsml:attributeProperty"/>
+	</xs:complexType>
+	<!--=======================-->
+	<xs:complexType name="MaterialRelationType">
+		<xs:complexContent>
+			<xs:extension base="gsml:GeologicRelationType">
+				<xs:sequence>
+					<xs:element name="source" type="gsml:ConstituentPartPropertyType"/>
+					<xs:element name="target" type="gsml:ConstituentPartPropertyType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ..................... -->
+	<xs:element name="MaterialRelation" type="gsml:MaterialRelationType" substitutionGroup="gsml:GeologicRelation"/>
+	<!-- ..................... -->
+	<xs:complexType name="MaterialRelationPropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:element ref="gsml:MaterialRelation"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gsml:EstimatedPropertyAttributeGroup"/>
+	</xs:complexType>
+	<!--=======================-->
+	<xs:complexType name="CompoundMaterialType">
+		<xs:complexContent>
+			<xs:extension base="gsml:EarthMaterialType">
+				<xs:sequence>
+					<xs:element name="compositionCategory" type="gsml:CGI_TermValuePropertyType" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="geneticCategory" type="gsml:CGI_TermValuePropertyType" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="part" type="gsml:ConstituentPartPropertyType" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="particleGeometry" type="gsml:ParticleGeometryDescriptionPropertyType" minOccurs="0"/>
+					<xs:element name="metamorphicCharacter" type="gsml:MetamorphicDescriptionPropertyType" minOccurs="0"/>
+					<xs:element name="fabric" type="gsml:FabricDescriptionPropertyType" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ..................... -->
+	<xs:element name="CompoundMaterial"/>
+	<!-- ..................... -->
+	<xs:complexType name="CompoundMaterialPropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:element ref="gsml:CompoundMaterial"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gsml:EstimatedPropertyAttributeGroup"/>
+	</xs:complexType>
+	<!--=======================-->
+	<xs:complexType name="ParticleGeometryDescriptionType">
+		<xs:sequence>
+			<xs:element name="size" type="gsml:CGI_ValuePropertyType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="sorting" type="gsml:CGI_ValuePropertyType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="shape" type="gsml:CGI_ValuePropertyType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="aspectRatio" type="gsml:CGI_ValuePropertyType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ..................... -->
+	<xs:element name="ParticleGeometryDescription" type="gsml:ParticleGeometryDescriptionType"/>
+	<!-- ..................... -->
+	<xs:complexType name="ParticleGeometryDescriptionPropertyType">
+		<xs:sequence>
+			<xs:element ref="gsml:ParticleGeometryDescription"/>
+		</xs:sequence>
+		<xs:attribute ref="gsml:attributeProperty"/>
+	</xs:complexType>
+	<!--=======================-->
+	<xs:complexType name="FabricDescriptionType">
+		<xs:sequence>
+			<xs:element name="fabricType" type="gsml:ControlledConceptPropertyType"/>
+			<xs:element name="fabricDescription" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ..................... -->
+	<xs:element name="FabricDescription" type="gsml:FabricDescriptionType"/>
+	<!-- ..................... -->
+	<xs:complexType name="FabricDescriptionPropertyType">
+		<xs:sequence>
+			<xs:element ref="gsml:FabricDescription"/>
+		</xs:sequence>
+		<xs:attribute ref="gsml:attributeProperty"/>
+	</xs:complexType>
+	<!--=======================-->
+	<xs:complexType name="OrganicMaterialType">
+		<xs:complexContent>
+			<xs:extension base="gsml:EarthMaterialType"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ..................... -->
+	<xs:element name="OrganicMaterial" type="gsml:OrganicMaterialType" substitutionGroup="gsml:EarthMaterial"/>
+	<!-- ..................... -->
+	<xs:complexType name="OrganicMaterialPropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:element ref="gsml:OrganicMaterial"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gsml:EstimatedPropertyAttributeGroup"/>
+	</xs:complexType>
+	<!--=======================-->
+	<xs:complexType name="InorganicFluidType">
+		<xs:complexContent>
+			<xs:extension base="gsml:EarthMaterialType"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ..................... -->
+	<xs:element name="InorganicFluid" type="gsml:InorganicFluidType" substitutionGroup="gsml:EarthMaterial"/>
+	<!-- ..................... -->
+	<xs:complexType name="InorganicFluidPropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:element ref="gsml:InorganicFluid"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gsml:EstimatedPropertyAttributeGroup"/>
+	</xs:complexType>
+	<!--=======================-->
+	<xs:complexType name="MineralType">
+		<xs:complexContent>
+			<xs:extension base="gsml:EarthMaterialType">
+				<xs:sequence>
+					<xs:element name="mineralName" type="gsml:ControlledConceptPropertyType" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ..................... -->
+	<xs:element name="Mineral" type="gsml:MineralType" substitutionGroup="gsml:EarthMaterial"/>
+	<!-- ..................... -->
+	<xs:complexType name="MineralPropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:element ref="gsml:Mineral"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gsml:EstimatedPropertyAttributeGroup"/>
+	</xs:complexType>
+	<!--=======================-->
+	<xs:complexType name="RockType">
+		<xs:complexContent>
+			<xs:extension base="gsml:CompoundMaterialType">
+				<xs:sequence>
+					<xs:element name="consolidationDegree" type="gsml:CGI_TermPropertyType"/>
+					<xs:element name="lithology" type="gsml:ControlledConceptPropertyType" maxOccurs="unbounded"/>
+					<xs:element name="physicalProperty" type="gsml:PhysicalDescriptionPropertyType" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ..................... -->
+	<xs:element name="Rock" type="gsml:RockType" substitutionGroup="gsml:CompoundMaterial"/>
+	<!-- ..................... -->
+	<xs:complexType name="RockPropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:element ref="gsml:Rock"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</xs:complexType>
+	<!--=======================-->
+	<xs:complexType name="UnconsolidatedMaterialType">
+		<xs:complexContent>
+			<xs:extension base="gsml:CompoundMaterialType">
+				<xs:sequence>
+					<xs:element name="consolidationDegree" type="gsml:CGI_TermPropertyType"/>
+					<xs:element name="lithology" type="gsml:ControlledConceptPropertyType" maxOccurs="unbounded"/>
+					<xs:element name="physicalProperty" type="gsml:PhysicalDescriptionPropertyType" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ..................... -->
+	<xs:element name="UnconsolidatedMaterial" type="gsml:UnconsolidatedMaterialType" substitutionGroup="gsml:CompoundMaterial"/>
+	<!-- ..................... -->
+	<xs:complexType name="UnconsolidatedMaterialPropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:element ref="gsml:UnconsolidatedMaterial"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gsml:EstimatedPropertyAttributeGroup"/>
+	</xs:complexType>
+	<!--=======================-->
+	<xs:complexType name="MaterialFossilType">
+		<xs:complexContent>
+			<xs:extension base="gsml:CompoundMaterialType">
+				<xs:sequence>
+					<xs:element name="sourceOrganism" type="gsml:OrganismPropertyType" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ..................... -->
+	<xs:element name="MaterialFossil" type="gsml:MaterialFossilType" substitutionGroup="gsml:CompoundMaterial"/>
+	<!-- ..................... -->
+	<xs:complexType name="MaterialFossilPropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:element ref="gsml:MaterialFossil"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gsml:EstimatedPropertyAttributeGroup"/>
+	</xs:complexType>
+	<!--=======================-->
+	<xs:complexType name="CastType">
+		<xs:complexContent>
+			<xs:extension base="gsml:MaterialFossilType"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ..................... -->
+	<xs:element name="Cast" substitutionGroup="gsml:MaterialFossil"/>
+	<!-- ..................... -->
+	<xs:complexType name="CastPropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:element ref="gsml:Cast"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gsml:EstimatedPropertyAttributeGroup"/>
+	</xs:complexType>
+	<!--=======================-->
+	<xs:complexType name="PreservedRemainType">
+		<xs:complexContent>
+			<xs:extension base="gsml:MaterialFossilType"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ..................... -->
+	<xs:element name="PreservedRemain" type="gsml:PreservedRemainType" substitutionGroup="gsml:MaterialFossil"/>
+	<!-- ..................... -->
+	<xs:complexType name="PreservedRemainPropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:element ref="gsml:PreservedRemain"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gsml:EstimatedPropertyAttributeGroup"/>
+	</xs:complexType>
+</xs:schema>

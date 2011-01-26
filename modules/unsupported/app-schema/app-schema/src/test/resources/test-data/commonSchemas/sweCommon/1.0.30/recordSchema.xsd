@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns:swe="http://www.opengis.net/swe/0.0" xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:gml="http://www.opengis.net/gml" xmlns:xst="http://www.seegrid.csiro.au/xml/st"
+        targetNamespace="http://www.opengis.net/swe/0.0" elementFormDefault="qualified" attributeFormDefault="unqualified" version="pre-release">
+	<annotation>
+		<documentation>recordSchema.xsd
+
+A GML conformant schema 
+for definitions of properties and property sets
+used for soft-typing of property elements
+
+Copyright (c) 2005 Open Geospatial Consortium - see http://www.opengeospatial.org/about/?page=ipr</documentation>
+	</annotation>
+	<!-- ====================================================================== -->
+	<!-- bring in other schemas -->
+	<import namespace="http://www.seegrid.csiro.au/xml/st" schemaLocation="./simpleTypeDerivation.xsd">
+		<annotation>
+			<documentation>SimpleType derivation components from W3C XML Schema specification, loaded into a new namespace.</documentation>
+		</annotation>
+	</import>
+	<import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+	<!-- import namespace="http://www.isotc211.org/2005/gmd" schemaLocation="../../iso19139/gml3.1.1version/gmd/gmd.xsd"/-->
+	<include schemaLocation="./phenomenon.xsd"/>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<complexType name="SWE_RecordSchemaType">
+		<complexContent>
+			<extension base="gml:DefinitionType"/>
+		</complexContent>
+	</complexType>
+	<!-- .......... -->
+	<element name="SWE_RecordSchema" type="swe:SWE_RecordSchemaType" abstract="true" substitutionGroup="gml:Definition">
+		<annotation>
+			<documentation>Abstract element used as head of a substitution group for axis and record definitions</documentation>
+		</annotation>
+	</element>
+	<!-- ........................................ -->
+	<complexType name="SWE_RecordSchemaPropertyType">
+		<sequence minOccurs="0">
+			<element ref="swe:SWE_RecordSchema"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+	<complexType name="ItemDefinitionType">
+		<annotation>
+			<documentation>Description of a scalar property with its representation and scale and (optional) quality indicators.</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="swe:SWE_RecordSchemaType">
+				<sequence>
+					<element name="property" type="swe:PhenomenonPropertyType"/>
+					<element name="representation" type="swe:RepresentationType"/>
+					<element name="procedure" type="gml:ReferenceType" minOccurs="0"/>
+                    <!-- 
+					<element name="quality" type="gmd:DQ_DataQuality_PropertyType" minOccurs="0" maxOccurs="unbounded">
+						<annotation>
+							<documentation>One or more quality elements record systematic measure of reliability</documentation>
+						</annotation>
+					</element>
+                     -->
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ........................................ -->
+	<element name="ItemDefinition" type="swe:ItemDefinitionType" substitutionGroup="swe:SWE_RecordSchema">
+		<annotation>
+			<documentation>Description of a scalar property with its representation and scale and (optional) quality indicators</documentation>
+		</annotation>
+	</element>
+	<!-- ........................................ -->
+	<complexType name="ItemDefinitionPropertyType">
+		<sequence minOccurs="0">
+			<element ref="swe:ItemDefinition"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+	<complexType name="ItemSeriesDefinitionType">
+		<annotation>
+			<documentation>Description of a series of scalar properties with a common representation and scale and (optional) quality indicators.</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="swe:ItemDefinitionType">
+				<attribute name="recordLength" type="positiveInteger" use="required">
+					<annotation>
+						<documentation>The number of components in the tuple</documentation>
+					</annotation>
+				</attribute>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ........................................ -->
+	<element name="ItemSeriesDefinition" type="swe:ItemSeriesDefinitionType" substitutionGroup="swe:ItemDefinition">
+		<annotation>
+			<documentation>Description of a series of scalar properties with a common representation and scale and (optional) quality indicators.</documentation>
+		</annotation>
+	</element>
+	<!-- ........................................ -->
+	<complexType name="ItemSeriesDefinitionPropertyType">
+		<sequence minOccurs="0">
+			<element ref="swe:ItemSeriesDefinition"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+	<complexType name="RecordDefinitionType">
+		<complexContent>
+			<extension base="swe:SWE_RecordSchemaType">
+				<sequence>
+					<element name="component" type="swe:SWE_RecordSchemaPropertyType" maxOccurs="unbounded"/>
+				</sequence>
+				<attribute name="recordLength" type="positiveInteger" use="required">
+					<annotation>
+						<documentation>The number of components in the tuple</documentation>
+					</annotation>
+				</attribute>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ........................................ -->
+	<element name="RecordDefinition" type="swe:RecordDefinitionType" substitutionGroup="swe:SWE_RecordSchema">
+		<annotation>
+			<documentation>A Record Definition is composed from arbitrary base axes, which may be records.</documentation>
+		</annotation>
+	</element>
+	<!-- ........................................ -->
+	<complexType name="RecordDefinitionPropertyType">
+		<sequence minOccurs="0">
+			<element ref="swe:RecordDefinition"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<complexType name="GridDefinitionType">
+		<annotation>
+			<documentation>definition of how to unpack an array and assign atomic values to components of map vectors. 
+			The array must correspond with an N-dimensional grid. 
+			Each map describes the values of the independent variable for one axis of the grid. 
+			The order of maps defines the iteration sequence within the grid, i.e. the rule for assigning the control variables to the items in an ordered list corresponding with a grid.</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="swe:SWE_RecordSchemaType">
+				<sequence>
+					<element name="map" type="swe:ItemArrayPropertyType" minOccurs="0" maxOccurs="unbounded"/>
+					<element name="tupleMap" type="swe:SWE_RecordSchemaPropertyType"/>
+					<element name="map" type="swe:ItemArrayPropertyType" minOccurs="0" maxOccurs="unbounded"/>
+				</sequence>
+				<attribute name="dimension" type="positiveInteger" use="required">
+					<annotation>
+						<documentation>The number of axes in the grid</documentation>
+					</annotation>
+				</attribute>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ........................................ -->
+	<element name="GridDefinition" type="swe:GridDefinitionType" substitutionGroup="swe:SWE_RecordSchema"/>
+	<!-- ........................................ -->
+	<complexType name="GridDefinitionPropertyType">
+		<sequence minOccurs="0">
+			<element ref="swe:GridDefinition"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<complexType name="ItemArrayType">
+		<annotation>
+			<documentation>Basic ordered array type</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="gml:DefinitionType">
+				<attribute name="arrayLength" type="swe:count" use="required"/>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ........................................ -->
+	<simpleType name="count">
+		<union memberTypes="positiveInteger swe:unbounded"/>
+	</simpleType>
+	<!-- ........................................ -->
+	<simpleType name="unbounded">
+		<restriction base="string">
+			<enumeration value="unbounded"/>
+		</restriction>
+	</simpleType>
+	<!-- ........................................ -->
+	<element name="ItemArray" type="swe:ItemArrayType" abstract="true"/>
+	<!-- ........................................ -->
+	<complexType name="ItemArrayPropertyType">
+		<sequence minOccurs="0">
+			<element ref="swe:ItemArray"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+	<complexType name="ObjectArrayType">
+		<annotation>
+			<documentation>Ordered array whose members are references to items defined elsewhere</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="swe:ItemArrayType">
+				<sequence>
+					<element name="member" type="gml:ReferenceType" maxOccurs="unbounded"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ........................................ -->
+	<element name="ObjectArray" type="swe:ObjectArrayType" substitutionGroup="swe:ItemArray"/>
+	<!-- ====================================================================== -->
+	<complexType name="IndexArrayType">
+		<annotation>
+			<documentation>Ordered array whose members are simply index numbers</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="swe:ItemArrayType"></extension>
+		</complexContent>
+	</complexType>
+	<!-- ........................................ -->
+	<element name="IndexArray" type="swe:IndexArrayType" substitutionGroup="swe:ItemArray"/>
+	<!-- ====================================================================== -->
+	<!-- === Type designed to allow the specification of simpleContent types in-line === -->
+	<!-- ====================================================================== -->
+	<complexType name="RepresentationType">
+		<annotation>
+			<documentation>this uses components copied from XML Schema to describe the "value-space" in terms of 
+			a base type and facets, or a composite such as a union.  
+            
+            For numeric types this will normally indicate integer, double etc and (optionally) facets 
+            to describe one or more intervals or a precision. 
+            For textual types this will normally indicate string, token etc and (optionally) facets 
+            will indicate a pattern, enumeration, length etc.</documentation>
+		</annotation>
+		<choice>
+			<element name="SimpleType">
+				<complexType>
+					<complexContent>
+						<extension base="xst:localSimpleType">
+							<sequence>
+								<group ref="swe:scale"/>
+							</sequence>
+						</extension>
+					</complexContent>
+				</complexType>
+			</element>
+			<element name="Number">
+				<complexType>
+					<sequence>
+						<element name="restriction" minOccurs="0">
+							<complexType>
+								<sequence>
+									<element ref="xst:minInclusive" minOccurs="0"/>
+									<element ref="xst:minExclusive" minOccurs="0"/>
+									<element ref="xst:maxInclusive" minOccurs="0"/>
+									<element ref="xst:maxExclusive" minOccurs="0"/>
+								</sequence>
+							</complexType>
+						</element>
+						<sequence>
+							<element ref="gml:unitOfMeasure">
+								<annotation>
+									<documentation>Use this element to indicate an unit of measure for numeric values on a ratio scale.</documentation>
+								</annotation>
+							</element>
+							<element name="frame" type="gml:ReferenceType" minOccurs="0">
+								<annotation>
+									<documentation>Use this element to indicate the description of a reference system for numeric values on an interval scale.</documentation>
+								</annotation>
+							</element>
+						</sequence>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="Word">
+				<complexType>
+					<sequence>
+						<element name="restriction" minOccurs="0">
+							<complexType>
+								<choice>
+									<element ref="xst:pattern"/>
+									<element ref="xst:enumeration" maxOccurs="unbounded"/>
+								</choice>
+							</complexType>
+						</element>
+						<element name="classification" type="gml:StringOrRefType"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="Boolean">
+				<complexType>
+					<sequence>
+						<element name="restriction">
+							<complexType>
+								<sequence>
+									<element ref="xst:enumeration" minOccurs="2" maxOccurs="2"/>
+								</sequence>
+							</complexType>
+						</element>
+					</sequence>
+				</complexType>
+			</element>
+		</choice>
+	</complexType>
+	<!-- ......  ...... -->
+	<group name="scale">
+		<choice>
+			<sequence>
+				<element ref="gml:unitOfMeasure">
+					<annotation>
+						<documentation>Use this element to indicate an unit of measure for numeric values on a ratio scale.</documentation>
+					</annotation>
+				</element>
+				<element name="frame" type="gml:ReferenceType" minOccurs="0">
+					<annotation>
+						<documentation>Use this element to indicate the description of a reference system for numeric values on an interval scale.</documentation>
+					</annotation>
+				</element>
+			</sequence>
+			<element name="frame" type="gml:ReferenceType">
+				<annotation>
+					<documentation>Use this element to indicate the description of a reference system for numeric values on an interval scale.</documentation>
+				</annotation>
+			</element>
+			<element name="classification" type="gml:StringOrRefType">
+				<annotation>
+					<documentation>Use this element to indicate an informally or externally described classification scheme for values on an Ordinal or Nominal scale.</documentation>
+				</annotation>
+			</element>
+			<element name="noScale" type="boolean" fixed="true"/>
+		</choice>
+	</group>
+	<!-- ====================================================================== -->
+</schema>

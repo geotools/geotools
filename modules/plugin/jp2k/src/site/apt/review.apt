@@ -1,0 +1,28 @@
+JP2Kakadu
+~~~~~~~~~~~~~~~~
+
+  IP Review:
+
+  * Daniele Romagnoli November 2009
+
+  STATUS: OK
+  
+  * Code: Clean
+  
+  * Data: OK 
+
+
+* Data Credits
+  ~~~~~~~~~~~~
+
+* JP2 data credit
+   		
+   		* sample.jp2: 
+   		
+   			data generated using the gdal_translate utility, having "small_world.tif" as input file, which is freely available at:
+      		http://download.osgeo.org/gdal/data/gtiff/
+
+   		* bogota.jp2: 
+      		
+      		data generated using the gdal_translate utility, having "bogota.tif" as input file, which is freely available at:
+      		http://dl.maptools.org/dl/geotiff/samples/made_up/

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    Document   : test27.xml
+    Created on : 25 October 2002, 15:10
+    Author     : seangeo
+    Description:
+        Purpose of the document follows.
+-->
+
+<root>
+    <Filter>
+        <FeatureId fid="FID.1" />
+        <FeatureId fid="FID.2" />
+        <FeatureId fid="FID.3" />
+    </Filter>        
+</root>

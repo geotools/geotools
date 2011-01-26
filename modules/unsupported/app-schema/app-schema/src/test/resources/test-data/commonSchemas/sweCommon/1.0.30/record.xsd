@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:swe="http://www.opengis.net/swe/0.0" targetNamespace="http://www.opengis.net/swe/0.0" elementFormDefault="qualified" attributeFormDefault="unqualified" version="pre-release">
+	<annotation>
+		<documentation>A basic schema for data stored in arrays and grids. 
+		All items are XML encoded 
+		(contrast with swe:SWE_CompactRecordType where items are encoded compactly in a space separated list within a single XML element)
+		The description of the grid or array is given in recordSchema.xsd</documentation>
+	</annotation>
+	<!-- ============== -->
+	<element name="item" type="anyType">
+		<annotation>
+			<documentation>An item is an item of data of any type</documentation>
+		</annotation>
+	</element>
+	<!-- ============== -->
+	<element name="Record">
+		<annotation>
+			<documentation>A record is an ordered list of items</documentation>
+		</annotation>
+		<complexType>
+			<sequence>
+				<element ref="swe:item" maxOccurs="unbounded"/>
+			</sequence>
+		</complexType>
+	</element>
+	<!-- ============== -->
+  <!-- 
+	<element name="Array">
+		<annotation>
+			<documentation>An array is an ordered list of records or of other arrays. 
+			arrays must be homogeneous in the sense that they may not mix arrays and records</documentation>
+		</annotation>
+		<complexType>
+			<sequence>
+				<choice>
+					<element ref="swe:Record" maxOccurs="unbounded"/>
+					<element ref="swe:Array" maxOccurs="unbounded"/>
+				</choice>
+			</sequence>
+		</complexType>
+	</element>
+   -->
+	<!-- ============== -->
+</schema>

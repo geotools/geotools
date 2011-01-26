@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns="http://localhost/xob/test" xmlns:my="http://mails/refractions/net" xmlns:xsd="http://www.w3.org/2001/XMLSchema">            
+
+ <xsd:element name="date" type="xsd:dateTime"/>
+
+ <xsd:complexType name="stuffType">
+  <xsd:sequence>
+   <xsd:element name="thing" type="xsd:string"/>
+   <xsd:element ref="my:date"/>
+  </xsd:sequence>
+  <xsd:attribute name="name" type="xsd:string" use="required"/>
+ </xsd:complexType>
+
+</xsd:schema>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://online.socialchange.net.au" xmlns:sco="http://online.socialchange.net.au"
+  xmlns:gml="http://www.opengis.net/gml" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+  attributeFormDefault="unqualified" version="1.0">
+
+  <xs:import namespace="http://www.opengis.net/gml"
+    schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/feature.xsd" />
+
+  <xs:element name="RoadSegment" type="sco:RoadSegmentType" />
+  <xs:complexType name="RoadSegmentType">
+    <xs:complexContent>
+      <xs:extension base="gml:AbstractFeatureType">
+        <xs:sequence>
+          <xs:element name="name" type="xs:string" />
+          <xs:element name="fromToNodes" nillable="false">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="fromNode" type="gml:PointPropertyType" nillable="true" />
+                <xs:element name="toNode" type="gml:PointPropertyType" nillable="true" />
+              </xs:sequence>
+              <xs:attribute ref="gml:id" use="required" />
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="the_geom" type="gml:LineStringPropertyType" />
+
+			<!-- test case for specialisation  -->
+			<xs:element ref="sco:broadTypeEl"/>          
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+<xs:element name="broadTypeEl" type="sco:broadType"/>
+<xs:complexType name="broadType">
+   <xs:sequence>
+          <xs:element name="name" type="xs:string" maxOccurs="unbounded"/> 
+   </xs:sequence> 	
+</xs:complexType>
+
+<xs:element name="narrowTypeEl" type="sco:narrowType" substitutionGroup="sco:broadTypeEl"/>
+<xs:complexType name="narrowType">
+<xs:complexContent>
+ <xs:restriction base="sco:broadType">
+   <xs:sequence>
+          <xs:element name="name" type="xs:string" maxOccurs="1"/> 
+   </xs:sequence> 
+   </xs:restriction>
+   </xs:complexContent>	
+</xs:complexType>
+
+</xs:schema>

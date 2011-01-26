@@ -1,0 +1,48 @@
+Module CoverageTools
+~~~~~~~~~~~~~~~~~~~~
+
+  Module Maintainer: Simone Giannecchini
+
+  IP Review:
+
+    * Alessio Fabiani July 8, 2008
+
+  STATUS: CLEAN
+
+   * the code was developed internally to GeoSolutions s.a.s.      
+      
+* org.geotools.utils
+  ~~~~~~~~~~~~~~~~~~
+
+    * some basic utility files containing constants and interfaces 
+      along with a default implementation for a progress listener,
+      a tools used to monitor the progress of the elaboration which
+      may require a long time.
+
+  
+* org.geotools.utils.progress
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    * listeners and other stuff for the progress listener tool
+
+
+* org.geotools.utils.coveragetiler
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    * utilities to split coverages into tiles
+
+* org.geotools.utils.imagemosaic
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    * utilities to build a mosaic index of coverage tiles
+
+* org.geotools.utils.imageoverviews
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    * utilities to rewrite a GeoTIFF with overviews at custom scales
+
+
+* org.geotools.utils.imagepyramid
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    * utilities to write a pyramid of coverage mosaics at custom resolutions

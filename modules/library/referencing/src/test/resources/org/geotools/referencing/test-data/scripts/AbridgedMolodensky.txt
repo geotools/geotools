@@ -1,0 +1,282 @@
+// Test points for the AbridgedMolodensky Transformation
+//
+// (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+//
+// Calculations were done with ArcGIS 8.3, calculations for Z were done
+// with a spreadsheet (OO.o)
+// Note: The following test points are outside of the valid regions for 
+//       these datum transformations.
+// Note: We are not testing inverse transforms yet (not implemented, see GEOT-410)
+//
+// Rueben Schulz - May 29, 2004
+//
+//
+// --------------------------------------------------------------------------
+// How to run this script:
+//
+//    chdir org/geotools/referencing/test-data/scripts
+//    java -ea org.geotools.referencing.ScriptRunner AbridgedMolodensky.txt
+//
+// A test is performed every time a "target pt" statement occurs. If the target point computed
+// by Geotools is different from the target point declared in this script by an amount greater
+// than the value specified in the last "test tolerance" statement, then a failure is reported.
+// If some test fails, "print" statements can be added in this script for debugging purpose:
+//
+//    print crs            (prints the source and target CRS, and the transform between them)
+//    print pts            (prints the source and target points, and their transformed points)
+
+
+//nad 27 to nad 83
+set _MT_AMol1_=PARAM_MT["Abridged_Molodenski", PARAMETER["dim", 3], PARAMETER["dx", -3.0], PARAMETER["dy", 142.0], PARAMETER["dz", 183.0], PARAMETER["src_semi_major", 6378206.4], PARAMETER["src_semi_minor", 6356583.8], PARAMETER["tgt_semi_major", 6378137.0], PARAMETER["tgt_semi_minor", 6356752.31414036]]
+
+transform = _MT_AMol1_
+test tolerance = (1e-12, 1e-12, 1e-8)
+
+source pt = (-123.1, 49.2166666666, 10.0)
+target pt = (-123.101098871539, 49.2164240958503, 4.9282499594)
+
+source pt = (2.33656753, 43.96499314, -23.5)
+target pt = (2.33833692871919, 43.9640212895491, 60.28993444261)
+
+source pt = (151.283333333, -33.9166666666, 41.2)
+target pt = (151.28200226145, -33.9129546039006, -6.78433151658)
+
+source pt = (-47.95, -15.75,-5.14)
+target pt = (-47.9491333141652, -15.7475483647123,-106.36193587770)
+
+source pt = (139.733333333, 35.6833333333, 852.1)
+target pt = (139.73215781909, 35.6821465395989, 1023.70378192337)
+
+source pt = (18.45, -33.9166666666, 0.0)
+target pt = (18.4514668586457, -33.913099310479, -71.85501332647)
+
+source pt = (0, 0, -12.0)
+target pt = (1.27559382381506E-03, 1.65510190152601E-03, 54.40000000037)
+
+source pt = (180, 0, 55.0)
+target pt = (179.998724406176, 1.65510190152601E-03, 127.40000000037)
+
+source pt = (-180, 0, -2.0)
+target pt = (179.998724406176, 1.65510190152601E-03, 70.40000000037)
+
+source pt = (90, 0, 0.0)
+target pt = (90.0000269491653, 1.65510190152601E-03, 211.40000000037)
+
+source pt = (-90, 0, 13.45)
+target pt = (-90.0000269491653, 1.65510190152601E-03, -59.14999999963)
+
+source pt = (-76, -55, -124.5)
+target pt = (-75.9995086909825, -54.9980680476351, -444.09413052980)
+
+source pt = (12, -15, 45.0)
+target pt = (12.0012972403072, -14.9972650232531, 76.78173456188)
+
+source pt = (80, 6, -37.0)
+target pt = (80.0002494013643, 6.00106682317578, 187.48772036401)
+
+source pt = (-45, 71, 47.0)
+target pt = (-44.9972962660685, 71.0000900468279, 43.35040637554)
+
+source pt = (175, 66.67, -15.33)
+target pt = (174.996806357814, 66.6689717498428, 27.58997731544)
+
+source pt = (60, -70, 7)
+target pt = (60.0019272456987, -69.9970450717445, -264.10240137383)
+
+source pt = (0, 90, -8)
+target pt = (0, 90, 6.48327347512)
+
+source pt = (0, -90, 0.0)
+target pt = (0, -90, -351.51672652488)
+
+
+//_EPSG:4229_ = GEOGCS["Egypt 1907" to wgs84
+set _MT_AMol2_ = PARAM_MT["Abridged_Molodenski", PARAMETER["dim", 2], PARAMETER["dx", -130.0], PARAMETER["dy", 110.0], PARAMETER["dz", -13.0], PARAMETER["src_semi_major", 6378200.0], PARAMETER["src_semi_minor", 6356818.16962789], PARAMETER["tgt_semi_major", 6378137.0], PARAMETER["tgt_semi_minor", 6356752.31424518]]
+
+transform = _MT_AMol2_
+test tolerance = (1e-12, 1e-12)
+
+source pt = (-123.1, 49.2166666666)
+target pt = (-123.102319341576, 49.2167597456633)
+
+source pt = (2.33656753, 43.96499314)
+target pt = (2.33800307736759, 43.9657181399642)
+
+source pt = (151.283333333, -33.9166666666)
+target pt = (151.282965577487, -33.9159483678706)
+
+source pt = (-47.95, -15.75)
+target pt = (-47.9502132848259, -15.7505404995689)
+
+source pt = (139.733333333, 35.6833333333)
+target pt = (139.733334328123, 35.6823672886897)
+
+source pt = (18.45, -33.9166666666)
+target pt = (18.451573255093, -33.9172329862662)
+
+source pt = (0, 0)
+target pt = (9.88137052215211E-04, -1.17566757319198E-04)
+
+source pt = (180, 0)
+target pt = (179.999011862948, -1.17566757319198E-04)
+
+source pt = (-180, 0)
+target pt = (179.999011862948, -1.17566757319198E-04)
+
+source pt = (90, 0)
+target pt = (90.0011677983344, -1.17566757319198E-04)
+
+source pt = (-90, 0)
+target pt = (-90.0011677983344, -1.17566757319198E-04)
+
+source pt = (-76, -55)
+target pt = (-76.0015552377393, -55.0011078597881)
+
+source pt = (12, -15)
+target pt = (12.0012517230937, -15.0003703275085)
+
+source pt = (80, 6)
+target pt = (80.0013288764471, 5.99980740241019)
+
+source pt = (-45, 71)
+target pt = (-45.0003890400181, 71.001415951074)
+
+source pt = (175, 66.67)
+target pt = (174.997777666775, 66.6688271712627)
+
+source pt = (60, -70)
+target pt = (60.0043885021513, -69.9998014035091)
+
+source pt = (0, 90)
+target pt = (0, 90)
+
+source pt = (0, -90)
+target pt = (0, -90)
+
+
+//_EPSG:4301_=GEOGCS["Tokyo" to wgs84
+set _MT_AMol3_ = PARAM_MT["Abridged_Molodenski", PARAMETER["dim", 2], PARAMETER["dx", -148.0], PARAMETER["dy", 507.0], PARAMETER["dz", 685.0], PARAMETER["src_semi_major", 6377397.155], PARAMETER["src_semi_minor", 6356078.96281819], PARAMETER["tgt_semi_major", 6378137.0], PARAMETER["tgt_semi_minor", 6356752.31424518]]
+
+transform = _MT_AMol3_
+test tolerance = (1e-12, 1e-12)
+
+source pt = (-123.1, 49.2166666666)
+target pt = (-123.105502862596, 49.2236234676274)
+
+source pt = (2.33656753, 43.96499314)
+target pt = (2.34295572919651, 43.9708238746992)
+
+source pt = (151.283333333, -33.9166666666)
+target pt = (151.27929357828, -33.9102179051796)
+
+source pt = (-47.95, -15.75)
+target pt = (-47.9478565520382, -15.7455222280582)
+
+source pt = (139.733333333, 35.6833333333)
+target pt = (139.730116030518, 35.6865996900801)
+
+source pt = (18.45, -33.9166666666)
+target pt = (18.455707946146, -33.9119955590817)
+
+source pt = (0, 0)
+target pt = (4.55498685546937E-03, 6.19552480081531E-03)
+
+source pt = (180, 0)
+target pt = (179.995445013145, 6.19552480081531E-03)
+
+source pt = (-180, 0)
+target pt = (179.995445013145, 6.19552480081531E-03)
+
+source pt = (90, 0)
+target pt = (90.0013296608572, 6.19552480081531E-03)
+
+source pt = (-90, 0)
+target pt = (-90.0013296608572, 6.19552480081531E-03)
+
+source pt = (-76, -55)
+target pt = (-76.0003274040646, -55.0009152727464)
+
+source pt = (12, -15)
+target pt = (12.0048977296619, -14.99441212662)
+
+source pt = (80, 6)
+target pt = (80.002111918208, 6.00583822572031)
+
+source pt = (-45, 71)
+target pt = (-44.9930157927295, 71.0062913621464)
+
+source pt = (175, 66.67)
+target pt = (174.988866127878, 66.6712885291871)
+
+source pt = (60, -70)
+target pt = (60.0099961771064, -69.9952074104025)
+
+source pt = (0, 90)
+target pt = (0, 90)
+
+source pt = (0, -90)
+target pt = (0, -90)
+
+
+//_EPSG:4222_ = GEOGCS["Cape" to wgs84
+set _MT_AMol4_ = PARAM_MT["Abridged_Molodenski", PARAMETER["dim", 2], PARAMETER["dx", -136.0], PARAMETER["dy", -108.0], PARAMETER["dz", -292.0], PARAMETER["src_semi_major", 6378249.145], PARAMETER["src_semi_minor", 6356514.96639875], PARAMETER["tgt_semi_major", 6378137.0], PARAMETER["tgt_semi_minor", 6356752.31424518]]
+
+transform = _MT_AMol4_
+test tolerance = (1e-12, 1e-12)
+
+source pt = (-123.1, 49.2166666666)
+target pt = (-123.100754222622, 49.2107214182021)
+
+source pt = (2.33656753, 43.96499314)
+target pt = (2.33529205586424, 43.9608346515959)
+
+source pt = (151.283333333, -33.9166666666)
+target pt = (151.285064140442, -33.9155942437165)
+
+source pt = (-47.95, -15.75)
+target pt = (-47.9516173028181, -15.7509162550702)
+
+source pt = (139.733333333, 35.6833333333)
+target pt = (139.735214690541, 35.6780320622642)
+
+source pt = (18.45, -33.9166666666)
+target pt = (18.4493575997808, -33.9167541734956)
+
+source pt = (0, 0)
+target pt = (-9.70163448736352E-04, -2.64100252005967E-03)
+
+source pt = (180, 0)
+target pt = (-179.999029836551, -2.64100252005967E-03)
+
+source pt = (-180, 0)
+target pt = (-179.999029836551, -2.64100252005967E-03)
+
+source pt = (90, 0)
+target pt = (90.0012216873058, -2.64100252005967E-03)
+
+source pt = (-90, 0)
+target pt = (-90.0012216873058, -2.64100252005967E-03)
+
+source pt = (-76, -55)
+target pt = (-76.0024702139543, -54.9980253713775)
+
+source pt = (12, -15)
+target pt = (11.9992806884582, -15.0013335420132)
+
+source pt = (80, 6)
+target pt = (80.0010403205433, 5.99683947770815)
+
+source pt = (-45, 71)
+target pt = (-45.0047460167377, 70.9973873699846)
+
+source pt = (175, 66.67)
+target pt = (175.002701504277, 66.6656458018855)
+
+source pt = (60, -70)
+target pt = (60.0016700973926, -70.0002420543934)
+
+source pt = (0, 90)
+target pt = (0, 90)
+
+source pt = (0, -90)
+target pt = (0, -90)

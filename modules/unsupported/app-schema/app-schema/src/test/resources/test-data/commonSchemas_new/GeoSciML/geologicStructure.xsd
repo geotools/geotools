@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2007 sp2 (http://www.altova.com) by Eric Boisvert (Ressources naturelles Canada) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:gml="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd" xmlns:gsml="http://www.cgi-iugs.org/xml/GeoSciML/2" targetNamespace="http://www.cgi-iugs.org/xml/GeoSciML/2" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:annotation>
+		<xs:documentation>Encoded by Eric Boisvert (May 2007) Geological Survey of Canada</xs:documentation>
+	</xs:annotation>
+	<xs:annotation>
+		<xs:documentation>2007-07-12 : Minor fixes and changes to fit new version of model - Eric Boisvert</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+	<xs:include schemaLocation="Gsml.xsd"/>
+	<xs:include schemaLocation="geologicUnit.xsd"/>
+	<xs:include schemaLocation="CGI_Value.xsd"/>
+	<xs:complexType name="GeologicStructureType">
+		<xs:complexContent>
+			<xs:extension base="gsml:GeologicFeatureType">
+				<xs:sequence>
+					<xs:element name="definedUnit" type="gsml:DeformationUnitPropertyType" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ..................... -->
+	<xs:element name="GeologicStructure" type="gsml:GeologicStructureType" substitutionGroup="gsml:GeologicFeature"/>
+	<!-- ..................... -->
+	<xs:complexType name="GeologicStructurePropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:element ref="gsml:GeologicStructure"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gsml:EstimatedPropertyAttributeGroup"/>
+	</xs:complexType>
+	<!--=======================-->
+	<xs:complexType name="DisplacementEventType">
+		<xs:complexContent>
+			<xs:extension base="gsml:GeologicEventType">
+				<xs:sequence>
+					<xs:element name="incrementalDisplacement" type="gsml:DisplacementValuePropertyType" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ..................... -->
+	<xs:element name="DisplacementEvent" type="gsml:DisplacementEventType" substitutionGroup="gsml:GeologicEvent"/>
+	<!-- ..................... -->
+	<xs:complexType name="DisplacementEventPropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:element ref="gsml:DisplacementEvent"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gsml:EstimatedPropertyAttributeGroup"/>
+	</xs:complexType>
+	<!--=======================-->
+	<xs:complexType name="DisplacementValueType">
+		<xs:sequence>
+			<xs:element name="hangingWallDirection" type="gsml:CGI_LinearOrientationPropertyType" minOccurs="0"/>
+			<xs:element name="movementSense" type="gsml:CGI_TermValuePropertyType" minOccurs="0"/>
+			<xs:element name="movementType" type="gsml:CGI_TermValuePropertyType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ..................... -->
+	<xs:element name="DisplacementValue" type="gsml:DisplacementValueType"/>
+	<!-- ..................... -->
+	<xs:complexType name="DisplacementValuePropertyType">
+		<xs:sequence>
+			<xs:element ref="gsml:DisplacementValue"/>
+		</xs:sequence>
+		<xs:attribute ref="gsml:attributeProperty"/>
+	</xs:complexType>
+	<!--=======================-->
+	<xs:complexType name="SeparationValueType">
+		<xs:complexContent>
+			<xs:extension base="gsml:DisplacementValueType">
+				<xs:sequence>
+					<xs:element name="separation" type="gsml:CGI_VectorPropertyType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ..................... -->
+	<xs:element name="SeparationValue" type="gsml:SeparationValueType" substitutionGroup="gsml:DisplacementValue"/>
+	<!-- ..................... -->
+	<xs:complexType name="SeparationValuePropertyType">
+		<xs:sequence>
+			<xs:element ref="gsml:SeparationValue"/>
+		</xs:sequence>
+		<xs:attribute ref="gsml:attributeProperty"/>
+	</xs:complexType>
+	<!--=======================-->
+	<xs:complexType name="SlipComponentType">
+		<xs:complexContent>
+			<xs:extension base="gsml:DisplacementValueType">
+				<xs:sequence>
+					<xs:element name="horizontalSlip" type="gsml:CGI_VectorPropertyType" minOccurs="0"/>
+					<xs:element name="heave" type="gsml:CGI_VectorPropertyType" minOccurs="0"/>
+					<xs:element name="throw" type="gsml:CGI_VectorPropertyType" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ..................... -->
+	<xs:element name="SlipComponent" type="gsml:SlipComponentType" substitutionGroup="gsml:DisplacementValue"/>
+	<!-- ..................... -->
+	<xs:complexType name="SlipComponentPropertyType">
+		<xs:sequence>
+			<xs:element ref="gsml:SlipComponent"/>
+		</xs:sequence>
+		<xs:attribute ref="gsml:attributeProperty"/>
+	</xs:complexType>
+	<!--=======================-->
+	<xs:complexType name="NetSlipValueType">
+		<xs:complexContent>
+			<xs:extension base="gsml:DisplacementValueType">
+				<xs:sequence>
+					<xs:element name="netSlip" type="gsml:CGI_VectorPropertyType"/>
+					<xs:element name="slipComponent" type="gsml:SlipComponentPropertyType" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ..................... -->
+	<xs:element name="NetSlipValue" type="gsml:NetSlipValueType" substitutionGroup="gsml:DisplacementValue"/>
+	<!-- ..................... -->
+	<xs:complexType name="NetSlipValuePropertyType">
+		<xs:sequence>
+			<xs:element ref="gsml:NetSlipValue"/>
+		</xs:sequence>
+		<xs:attribute ref="gsml:attributeProperty"/>
+	</xs:complexType>
+	<!--=======================-->
+	<xs:complexType name="FractureType">
+		<xs:complexContent>
+			<xs:extension base="gsml:GeologicStructureType"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ..................... -->
+	<xs:element name="Fracture" type="gsml:FractureType" substitutionGroup="gsml:GeologicStructure"/>
+	<!-- ..................... -->
+	<xs:complexType name="FracturePropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:element ref="gsml:Fracture"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gsml:EstimatedPropertyAttributeGroup"/>
+	</xs:complexType>
+	<!--=======================-->
+	<xs:complexType name="JointType">
+		<xs:complexContent>
+			<xs:extension base="gsml:FractureType"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ..................... -->
+	<xs:element name="Joint" type="gsml:JointType" substitutionGroup="gsml:Fracture"/>
+	<!-- ..................... -->
+	<xs:complexType name="JointPropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:element ref="gsml:Joint"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gsml:EstimatedPropertyAttributeGroup"/>
+	</xs:complexType>
+	<!--=======================-->
+	<xs:complexType name="ShearDisplacementStructureType">
+		<xs:complexContent>
+			<xs:extension base="gsml:GeologicStructureType">
+				<xs:sequence>
+					<xs:element name="totalDisplacement" type="gsml:DisplacementValuePropertyType" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="physicalProperty" type="gsml:PhysicalDescriptionPropertyType" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ..................... -->
+	<xs:element name="ShearDisplacementStructure" type="gsml:ShearDisplacementStructureType" substitutionGroup="gsml:GeologicStructure"/>
+	<!-- ..................... -->
+	<xs:complexType name="ShearDisplacementStructurePropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:element ref="gsml:ShearDisplacementStructure"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gsml:EstimatedPropertyAttributeGroup"/>
+	</xs:complexType>
+	<!--=======================-->
+	<xs:complexType name="FaultType">
+		<xs:complexContent>
+			<xs:extension base="gsml:ShearDisplacementStructureType">
+				<xs:sequence>
+					<xs:element name="segment" type="gsml:FaultPropertyType" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ..................... -->
+	<xs:element name="Fault" type="gsml:FaultType" substitutionGroup="gsml:ShearDisplacementStructure"/>
+	<!-- ..................... -->
+	<xs:complexType name="FaultPropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:element ref="gsml:Fault"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gsml:EstimatedPropertyAttributeGroup"/>
+	</xs:complexType>
+	<!--=======================-->
+	<xs:complexType name="DuctileShearStructureType">
+		<xs:complexContent>
+			<xs:extension base="gsml:ShearDisplacementStructureType">
+				<xs:sequence>
+					<xs:element name="segment" type="gsml:DuctileShearStructurePropertyType" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ..................... -->
+	<xs:element name="DuctileShearStructure" type="gsml:DuctileShearStructureType" substitutionGroup="gsml:ShearDisplacementStructure"/>
+	<!-- ..................... -->
+	<xs:complexType name="DuctileShearStructurePropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:element ref="gsml:DuctileShearStructure"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gsml:EstimatedPropertyAttributeGroup"/>
+	</xs:complexType>
+	<!--=======================-->
+	<xs:complexType name="FaultSystemType">
+		<xs:complexContent>
+			<xs:extension base="gsml:ShearDisplacementStructureType">
+				<xs:sequence>
+					<xs:element name="faultSystemMember" type="gsml:ShearDisplacementStructurePropertyType" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ..................... -->
+	<xs:element name="FaultSystem" type="gsml:FaultSystemType" substitutionGroup="gsml:ShearDisplacementStructure"/>
+	<!-- ..................... -->
+	<xs:complexType name="FaultSystemPropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:element ref="gsml:FaultSystem"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gsml:EstimatedPropertyAttributeGroup"/>
+	</xs:complexType>
+	<!--=======================-->
+	<xs:complexType name="ContactType">
+		<xs:complexContent>
+			<xs:extension base="gsml:GeologicStructureType">
+				<xs:sequence>
+					<xs:element name="contactCharacter" type="gsml:CGI_TermValuePropertyType" minOccurs="0"/>
+					<xs:element name="contactType" type="gsml:ControlledConceptPropertyType" minOccurs="0"/>
+					<xs:element name="orientation" type="gsml:CGI_PlanarOrientationPropertyType" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ..................... -->
+	<xs:element name="Contact" type="gsml:ContactType" substitutionGroup="gsml:GeologicStructure"/>
+	<!-- ..................... -->
+	<xs:complexType name="ContactPropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:element ref="gsml:Contact"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gsml:EstimatedPropertyAttributeGroup"/>
+	</xs:complexType>
+	<!--=======================-->
+	<xs:complexType name="FoldSystemType">
+		<xs:complexContent>
+			<xs:extension base="gsml:GeologicStructureType">
+				<xs:sequence>
+					<xs:element name="periodic" type="xs:boolean"/>
+					<xs:element name="wavelength" type="gsml:CGI_NumericPropertyType" minOccurs="0"/>
+					<xs:element name="foldSystemMember" type="gsml:FoldPropertyType" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ..................... -->
+	<xs:element name="FoldSystem" type="gsml:FoldSystemType" substitutionGroup="gsml:GeologicStructure"/>
+	<!-- ..................... -->
+	<xs:complexType name="FoldSystemPropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:element ref="gsml:FoldSystem"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gsml:EstimatedPropertyAttributeGroup"/>
+	</xs:complexType>
+	<!--=======================-->
+	<xs:complexType name="FoldType">
+		<xs:complexContent>
+			<xs:extension base="gsml:GeologicStructureType">
+				<xs:sequence>
+					<xs:element name="profileType" type="gsml:CGI_TermValuePropertyType" minOccurs="0"/>
+					<xs:element name="axialSurfaceOrientation" type="gsml:CGI_PlanarOrientationPropertyType" minOccurs="0"/>
+					<xs:element name="hingeLineOrientation" type="gsml:CGI_LinearOrientationPropertyType" minOccurs="0"/>
+					<xs:element name="geneticModel" type="gsml:CGI_TermValuePropertyType" minOccurs="0"/>
+					<xs:element name="amplitude" type="gsml:CGI_NumericPropertyType" minOccurs="0"/>
+					<xs:element name="hingeLineCurvature" type="gsml:CGI_TermValuePropertyType" minOccurs="0"/>
+					<xs:element name="hingeShape" type="gsml:CGI_TermValuePropertyType" minOccurs="0"/>
+					<xs:element name="hingeLimbAngle" type="gsml:CGI_TermPropertyType" minOccurs="0"/>
+					<xs:element name="limbShape" type="gsml:CGI_TermValuePropertyType" minOccurs="0"/>
+					<xs:element name="span" type="gsml:CGI_NumericPropertyType" minOccurs="0"/>
+					<xs:element name="symmetry" type="gsml:CGI_TermValuePropertyType" minOccurs="0"/>
+					<xs:element name="higherOrderFoldPart" type="gsml:FoldPropertyType" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ..................... -->
+	<xs:element name="Fold" type="gsml:FoldType" substitutionGroup="gsml:GeologicStructure"/>
+	<!-- ..................... -->
+	<xs:complexType name="FoldPropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:element ref="gsml:Fold"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gsml:EstimatedPropertyAttributeGroup"/>
+	</xs:complexType>
+	<!--=======================-->
+	<xs:complexType name="FoliationType">
+		<xs:complexContent>
+			<xs:extension base="gsml:GeologicStructureType">
+				<xs:sequence>
+					<xs:element name="foliationType" type="gsml:ControlledConceptPropertyType"/>
+					<xs:element name="definingElement" type="gsml:CGI_TermPropertyType" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="spacing" type="gsml:CGI_NumericPropertyType" minOccurs="0"/>
+					<xs:element name="mineralElement" type="gsml:MineralPropertyType" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="continuity" type="gsml:CGI_TermPropertyType" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="orientation" type="gsml:CGI_PlanarOrientationPropertyType" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="intensity" type="gsml:CGI_TermPropertyType" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ..................... -->
+	<xs:element name="Foliation" type="gsml:FoliationType" substitutionGroup="gsml:GeologicStructure"/>
+	<!-- ..................... -->
+	<xs:element name="FoliationPropertyType">
+		<xs:complexType>
+			<xs:sequence minOccurs="0">
+				<xs:element ref="gsml:Foliation"/>
+			</xs:sequence>
+			<xs:attributeGroup ref="gsml:EstimatedPropertyAttributeGroup"/>
+		</xs:complexType>
+	</xs:element>
+	<!--=======================-->
+	<xs:complexType name="LayeringType">
+		<xs:complexContent>
+			<xs:extension base="gsml:FoliationType">
+				<xs:sequence>
+					<xs:element name="layerComposition" type="gsml:RockPropertyType" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ..................... -->
+	<xs:element name="Layering" type="gsml:LayeringType" substitutionGroup="gsml:Foliation"/>
+	<!-- ..................... -->
+	<xs:complexType name="LayeringPropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:element ref="gsml:Layering"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gsml:EstimatedPropertyAttributeGroup"/>
+	</xs:complexType>
+	<!--=======================-->
+	<xs:complexType name="LineationType">
+		<xs:complexContent>
+			<xs:extension base="gsml:GeologicStructureType">
+				<xs:sequence>
+					<xs:element name="lineationType" type="gsml:ControlledConceptPropertyType"/>
+					<xs:element name="definingElement" type="gsml:CGI_TermPropertyType" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="orientation" type="gsml:CGI_LinearOrientationPropertyType" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="mineralElement" type="gsml:MineralPropertyType" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="intensity" type="gsml:CGI_TermPropertyType" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ..................... -->
+	<xs:element name="Lineation" type="gsml:LineationType" substitutionGroup="gsml:GeologicStructure"/>
+	<!-- ..................... -->
+	<xs:complexType name="LineationPropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:element ref="gsml:Lineation"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gsml:EstimatedPropertyAttributeGroup"/>
+	</xs:complexType>
+	<!--=======================-->
+	<xs:complexType name="NonDirectionalStructureType">
+		<xs:complexContent>
+			<xs:extension base="gsml:GeologicStructureType">
+				<xs:sequence>
+					<xs:element name="structureType" type="gsml:ControlledConceptPropertyType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ..................... -->
+	<xs:element name="NonDirectionalStructure" type="gsml:NonDirectionalStructureType" substitutionGroup="gsml:GeologicStructure"/>
+	<!-- ..................... -->
+	<xs:complexType name="NonDirectionalStructurePropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:element ref="gsml:NonDirectionalStructure"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gsml:EstimatedPropertyAttributeGroup"/>
+	</xs:complexType>
+	<!--=======================-->
+</xs:schema>

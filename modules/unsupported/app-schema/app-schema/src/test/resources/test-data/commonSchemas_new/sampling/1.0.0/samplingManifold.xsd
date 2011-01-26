@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns:gml="http://www.opengis.net/gml" 
+        xmlns="http://www.w3.org/2001/XMLSchema" xmlns:sa="http://www.opengis.net/sampling/1.0"
+        targetNamespace="http://www.opengis.net/sampling/1.0" elementFormDefault="qualified"
+        attributeFormDefault="unqualified" version="1.0.0">
+	<annotation>
+		<documentation>samplingManifold.xsd
+
+SamplingFeatures are feature types that are used primarily for making observations: 
+SamplingFeature,  and collections are described in samplingBase.xsd
+
+SamplingPoint (0-D)
+SamplingCurve (1-D)
+SamplingSurface (2-D)
+SamplingSolid (3-D) are described in this schema document
+
+In many cases the properties of interest vary within the site, so may be represented as a coverage associated with the SamplingFeature. 
+
+Copyright (c) 2007 Open Geospatial Consortium - see http://www.opengeospatial.org/ogc/software</documentation>
+	</annotation>
+	<!-- ====================================================================== -->
+	<!-- bring in other schemas -->
+	<import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+	<include schemaLocation="./samplingBase.xsd"/>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<!-- 0-D sampling regimes -->
+	<!-- ====================================================================== -->
+	<complexType name="SamplingPointType">
+		<annotation>
+			<documentation>A "SamplingPoint" is an identified position (0-D geospatial feature). 
+		It may be revisited for various purposes, in particular to retrieve multiple specimens or make repeated or complementary observations. 
+		The position property of the SamplingPoint provides the value of the position property of observations an specimens associated with the SamplingPoint. 
+		By using the SamplingPoint feature, this position information and any metadata associated with it may be encoded in one place, i.e. normalised, and then re-used _by reference_ on other feature instances associated with it.
+		SamplingPoints are often known as Stations</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="sa:SamplingFeatureType">
+				<sequence>
+					<element name="position" type="gml:PointPropertyType"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- .................. -->
+	<element name="SamplingPoint" type="sa:SamplingPointType" substitutionGroup="sa:SamplingFeature"/>
+	<!-- .................. -->
+	<complexType name="SamplingPointPropertyType">
+		<sequence minOccurs="0">
+			<element ref="sa:SamplingPoint"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+	<!-- Extensive sampling regimes -->
+	<!-- ====================================================================== -->
+	<complexType name="SpatiallyExtensiveSamplingFeatureType">
+		<annotation>
+			<documentation>SpatiallyExtensiveSamplingFeature is the root class for sampling manifolds that are extensive in 1- 2- or 3-D.</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="sa:SamplingFeatureType"/>
+		</complexContent>
+	</complexType>
+	<!-- .................. -->
+	<element name="SpatiallyExtensiveSamplingFeature" abstract="true" type="sa:SpatiallyExtensiveSamplingFeatureType" substitutionGroup="sa:SamplingFeature"/>
+	<!-- .................. -->
+	<complexType name="SpatiallyExtensiveSamplingFeaturePropertyType">
+		<sequence minOccurs="0">
+			<element ref="sa:SpatiallyExtensiveSamplingFeature"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+	<!-- 1-D sites and sampling regimes -->
+	<!-- ====================================================================== -->
+	<complexType name="SamplingCurveType">
+		<annotation>
+			<documentation>A "SamplingCurve" is an identified 1-D spatial feature. 
+		It may be revisited for various purposes, in particular to retrieve multiple specimens or make repeated or complementary observations.
+		Specialized names for SamplingCurve include Sounding, ObservationWell, FlightLine, Transect.</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="sa:SpatiallyExtensiveSamplingFeatureType">
+				<sequence>
+					<element name="shape" type="gml:CurvePropertyType"/>
+					<element name="length" type="gml:MeasureType" minOccurs="0"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- .................. -->
+	<element name="SamplingCurve" type="sa:SamplingCurveType" substitutionGroup="sa:SpatiallyExtensiveSamplingFeature">
+		<annotation>
+			<documentation>A "SamplingCurve" is an identified 1-D spatial feature. 
+		It may be revisited for various purposes, in particular to retrieve multiple specimens or make repeated or complementary observations.
+		Specialized names for SamplingCurve include Profile, ObservationWell, FlightLine, Transect.</documentation>
+		</annotation>
+	</element>
+	<!-- .................. -->
+	<complexType name="SamplingCurvePropertyType">
+		<sequence minOccurs="0">
+			<element ref="sa:SamplingCurve"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+	<!-- 2-D sites and sampling regimes -->
+	<!-- ====================================================================== -->
+	<complexType name="SamplingSurfaceType">
+		<annotation>
+			<documentation>A "SamplingSurface" is an identified 2-D spatial feature. 
+		It may be used for various purposes, in particular for observations of cross sections through features.
+		Specialized names for SamplingSurface include CrossSection, Section, Flitch, Swath, Scene, MapHorizon.</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="sa:SpatiallyExtensiveSamplingFeatureType">
+				<sequence>
+					<element name="shape" type="gml:SurfacePropertyType"/>
+					<element name="area" type="gml:MeasureType" minOccurs="0"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- .................. -->
+	<element name="SamplingSurface" type="sa:SamplingSurfaceType" substitutionGroup="sa:SpatiallyExtensiveSamplingFeature">
+		<annotation>
+			<documentation>A "SamplingSurface" is an identified 2-D spatial feature. 
+		It may be used for various purposes, in particular for observations of cross sections through features.
+		Specialized names for SamplingSurface include CrossSection, Section, Flitch, Swath, Scene, MapHorizon.</documentation>
+		</annotation>
+	</element>
+	<!-- .................. -->
+	<complexType name="SamplingSurfacePropertyType">
+		<sequence minOccurs="0">
+			<element ref="sa:SamplingSurface"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+	<!-- 3-D sites and sampling regimes -->
+	<!-- ====================================================================== -->
+	<complexType name="SamplingSolidType">
+		<annotation>
+			<documentation>A "SamplingSolid" is an identified 3-D spatial feature used in sampling.</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="sa:SpatiallyExtensiveSamplingFeatureType">
+				<sequence>
+					<element name="shape" type="gml:SolidPropertyType"/>
+					<element name="volume" type="gml:MeasureType" minOccurs="0"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- .................. -->
+	<element name="SamplingSolid" type="sa:SamplingSolidType" substitutionGroup="sa:SpatiallyExtensiveSamplingFeature">
+		<annotation>
+			<documentation>A "SamplingSolid" is an identified 3-D spatial feature used in sampling.</documentation>
+		</annotation>
+	</element>
+	<!-- .................. -->
+	<complexType name="SamplingSolidPropertyType">
+		<sequence minOccurs="0">
+			<element ref="sa:SamplingSolid"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+</schema>

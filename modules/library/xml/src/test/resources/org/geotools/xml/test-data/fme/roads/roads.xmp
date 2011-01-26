@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xfMap>
+<feature-map>
+<mapping match="gml2:roads">
+<feature-type><literal expr="roads"/></feature-type>
+<attributes>
+<attribute><name><literal expr="LINE"/></name><value><extract expr="./gml2:LINE"/></value></attribute>
+<attribute><name><literal expr="LINE_OBRP"/></name><value><extract expr="./gml2:LINE_OBRP"/></value></attribute>
+<attribute><name><literal expr="PIDL"/></name><value><extract expr="./gml2:PIDL"/></value></attribute>
+<attribute><name><literal expr="PIDR"/></name><value><extract expr="./gml2:PIDR"/></value></attribute>
+<attribute><name><literal expr="SNID"/></name><value><extract expr="./gml2:SNID"/></value></attribute>
+<attribute><name><literal expr="ENID"/></name><value><extract expr="./gml2:ENID"/></value></attribute>
+<attribute><name><literal expr="LABEL"/></name><value><extract expr="./gml2:LABEL"/></value></attribute>
+<attribute><name><literal expr="EXT"/></name><value><extract expr="./gml2:EXT"/></value></attribute>
+<attribute><name><literal expr="TO_GROUND"/></name><value><extract expr="./gml2:TO_GROUND"/></value></attribute>
+<attribute><name><literal expr="RELATION"/></name><value><extract expr="./gml2:RELATION"/></value></attribute>
+<attribute><name><literal expr="STATUS"/></name><value><extract expr="./gml2:STATUS"/></value></attribute>
+<attribute><name><literal expr="RESTRICTIO"/></name><value><extract expr="./gml2:RESTRICTIO"/></value></attribute>
+<attribute><name><literal expr="GRADE"/></name><value><extract expr="./gml2:GRADE"/></value></attribute>
+<attribute><name><literal expr="RAILROAD"/></name><value><extract expr="./gml2:RAILROAD"/></value></attribute>
+<attribute><name><literal expr="COVERED"/></name><value><extract expr="./gml2:COVERED"/></value></attribute>
+<attribute><name><literal expr="HISTORICAL"/></name><value><extract expr="./gml2:HISTORICAL"/></value></attribute>
+<attribute><name><literal expr="ACCESS"/></name><value><extract expr="./gml2:ACCESS"/></value></attribute>
+<attribute><name><literal expr="PHOTOREVIS"/></name><value><extract expr="./gml2:PHOTOREVIS"/></value></attribute>
+<attribute><name><literal expr="LANES"/></name><value><extract expr="./gml2:LANES"/></value></attribute>
+<attribute><name><literal expr="ROAD_WIDTH"/></name><value><extract expr="./gml2:ROAD_WIDTH"/></value></attribute>
+<attribute><name><literal expr="ESTIMATE"/></name><value><extract expr="./gml2:ESTIMATE"/></value></attribute>
+<attribute><name><literal expr="CLASS"/></name><value><extract expr="./gml2:CLASS"/></value></attribute>
+<attribute><name><literal expr="NUMBER"/></name><value><extract expr="./gml2:NUMBER"/></value></attribute>
+<attribute><name><literal expr="ROUTE_TYPE"/></name><value><extract expr="./gml2:ROUTE_TYPE"/></value></attribute>
+</attributes>
+</mapping>
+</feature-map>
+<feature-content-map>
+<mapping match="gml:pointProperty/gml:Point"> <geometry activate="xml-point"> <data name="coordinate-system"><extract expr="@srsName"/></data> <data name="coord-separator"><extract expr="./gml:coordinates[@ts]" default="whitespace"/></data> <data name="axis-separator"><extract expr="./gml:coordinates[@cs]" default=","/></data> <data name="decimal"><extract expr="./gml:coordinates[@decimal]" default="."/></data> <data name="data-string"><extract expr="./gml:coordinates"/></data> </geometry> </mapping>
+<mapping match="gml:LineString"> <geometry activate="xml-line"> <data name="coordinate-system"><extract expr="@srsName"/></data> <data name="coord-separator"><extract expr="./gml:coordinates[@ts]" default="whitespace"/></data> <data name="axis-separator"><extract expr="./gml:coordinates[@cs]" default=","/></data> <data name="decimal"><extract expr="./gml:coordinates[@decimal]" default="."/></data> <data name="data-string"><extract expr="./gml:coordinates"/></data> </geometry> </mapping>
+<mapping match="gml:LinearRing"> <geometry activate="xml-area"> <data name="coord-separator"><extract expr="./gml:coordinates[@ts]" default="whitespace"/></data> <data name="axis-separator"><extract expr="./gml:coordinates[@cs]" default=","/></data> <data name="decimal"><extract expr="./gml:coordinates[@decimal]" default="."/></data> <data name="data-string"><extract expr="./gml:coordinates"/></data> </geometry> </mapping>
+<mapping match="gml:Polygon"> <geometry activate="xml-area"> <data name="coordinate-system"><extract expr="@srsName"/></data> </geometry> </mapping>
+<mapping match="gml:multiPolygonProperty/gml:MultiPolygon"> <attributes> <attribute> <name>  <literal expr="xml_type"/> </name> <value> <literal expr="xml_area"/> </value> </attribute> </attributes> <geometry activate="xml-aggregate"> <data name="coordinate-system"><extract expr="@srsName"/></data> </geometry> </mapping>
+<mapping match="gml:multiLineStringProperty/gml:MultiLineString"> <attributes> <attribute> <name>  <literal expr="xml_type"/> </name> <value> <literal expr="xml_line"/> </value> </attribute> </attributes> <geometry activate="xml-aggregate"> <data name="coordinate-system"><extract expr="@srsName"/></data> </geometry> </mapping>
+</feature-content-map>
+</xfMap>

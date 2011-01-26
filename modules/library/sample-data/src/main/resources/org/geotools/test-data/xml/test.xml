@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doc>
+	<child1>
+		<Child2>
+			value1
+		</Child2>
+		<Child2>
+			value2
+		</Child2>
+	</child1>
+</doc>

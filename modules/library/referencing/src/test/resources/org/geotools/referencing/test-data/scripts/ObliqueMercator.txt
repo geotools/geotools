@@ -1,0 +1,2078 @@
+// Test points for the Oblique Mercator Projection
+//
+// (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
+//
+// Most of the following test points were calculated with ArcGIS 8.3 
+// Some test points comes from the proj4 email list, epsg guidebook 7 and Snyder.
+// The test with an azimuth of -90 was actually calculated for azimuth of -89.999999
+//
+// Rueben Schulz - Jan 2, 2005
+//
+//
+// --------------------------------------------------------------------------
+// How to run this script:
+//
+//    chdir org/geotools/referencing/test-data/scripts
+//    java -ea org.geotools.referencing.ScriptRunner ObliqueMercator.txt
+//
+// A test is performed every time a "target pt" statement occurs. If the target point computed
+// by Geotools is different from the target point declared in this script by an amount greater
+// than the value specified in the last "test tolerance" statement, then a failure is reported.
+// Inverse transforms are tested if java assertions are enabled.
+// If some test fails, "print" statements can be added in this script for debugging purpose:
+//
+//    print crs            (prints the source and target CRS, and the transform between them)
+//    print pts            (prints the source and target points, and their transformed points)
+
+
+//geogCS's 
+set _WGS84_=GEOGCS["WGS84", DATUM["WGS84", SPHEROID["WGS84", 6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]]
+set _Sphere1_=GEOGCS["GCS_Sphere",DATUM["D_Sphere",SPHEROID["Sphere",6370997.0,0.0]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.017453292519943295]]
+set _Sphere2_=GEOGCS["GCS_Sphere",DATUM["D_Sphere",SPHEROID["Sphere",6000000.0,0.0]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.017453292519943295]]
+set _Sphere3_=GEOGCS["GCS_Sphere",DATUM["D_Sphere",SPHEROID["Sphere",6371000,0]],PRIMEM["Greenwich",0],UNIT["Degree",0.017453292519943295]]
+set _Sphere4_=GEOGCS["Sphere radius 1.0",DATUM["Sphere",SPHEROID["Sphere",1.0,0]],PRIMEM["Greenwich",0],UNIT["Degree",0.017453292519943295]]
+set _NAD27_=GEOGCS["NAD27",DATUM["North_American_Datum_1927",SPHEROID["Clarke 1866",6378206.4,294.978698213901,AUTHORITY["EPSG","7008"]],TOWGS84[-3,142,183,0,0,0,0],AUTHORITY["EPSG","6267"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Lat",NORTH],AXIS["Long",EAST],AUTHORITY["EPSG","4267"]]
+
+////////////////////////////////////////////
+// Azimuth Elliptical tests
+
+set _OMerc1_=PROJCS["NAD_1983_StatePlane_Alaska_1_FIPS_5001",GEOGCS["GCS_North_American_1983",DATUM["D_North_American_1983",SPHEROID["GRS_1980",6378137,298.257222101],TOWGS84[0,0,0]], PRIMEM["Greenwich",0],UNIT["Degree",0.0174532925199432955]],PROJECTION["Hotine_Oblique_Mercator_Azimuth_Natural_Origin"],PARAMETER["False_Easting",5000000],PARAMETER["False_Northing",-5000000],PARAMETER["Scale_Factor",0.9999],PARAMETER["Azimuth",-36.86989764583333],PARAMETER["Longitude_Of_Center",-133.6666666666667],PARAMETER["Latitude_Of_Center",57],UNIT["Meter",1]]
+set _OMerc2_=PROJCS["omerc",GEOGCS["WGS84", DATUM["WGS84",   SPHEROID["WGS84", 6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]],PROJECTION["Hotine_Oblique_Mercator_Azimuth_Natural_Origin"],PARAMETER["False_Easting",2500.0],PARAMETER["False_Northing",5000.0],PARAMETER["Scale_Factor",1.0],PARAMETER["Azimuth",85.0],PARAMETER["Longitude_Of_Center",-76],PARAMETER["Latitude_Of_Center",15.0],UNIT["Metre",1.0]]
+set _OMerc3_=PROJCS["omerc +89 azimuth",GEOGCS["WGS84", DATUM["WGS84",   SPHEROID["WGS84", 6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]],PROJECTION["Hotine_Oblique_Mercator_Azimuth_Center"],PARAMETER["False_Easting",0.0],PARAMETER["False_Northing",0.0],PARAMETER["Scale_Factor",0.95],PARAMETER["Azimuth",89.0],PARAMETER["Longitude_Of_Center",32.0],PARAMETER["Latitude_Of_Center",-12.0],UNIT["Metre",1.0]]
+set _OMerc4_=PROJCS["omerc +90 azimuth",GEOGCS["WGS84", DATUM["WGS84",   SPHEROID["WGS84", 6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]],PROJECTION["Hotine_Oblique_Mercator_Azimuth_Center"],PARAMETER["False_Easting",0.0],PARAMETER["False_Northing",0.0],PARAMETER["Scale_Factor",0.95],PARAMETER["Azimuth",90.0],PARAMETER["Longitude_Of_Center",32.0],PARAMETER["Latitude_Of_Center",-12.0],UNIT["Metre",1.0]]
+set _OMerc5_=PROJCS["omerc -89 azimuth",GEOGCS["WGS84", DATUM["WGS84",   SPHEROID["WGS84", 6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]],PROJECTION["Hotine_Oblique_Mercator_Azimuth_Natural_Origin"],PARAMETER["False_Easting",0.0],PARAMETER["False_Northing",0.0],PARAMETER["Scale_Factor",0.9999],PARAMETER["Azimuth",271.0],PARAMETER["Longitude_Of_Center",32.0],PARAMETER["Latitude_Of_Center",-12.0],UNIT["Metre",1.0]]
+set _OMerc6_=PROJCS["omerc -90 azimuth",GEOGCS["WGS84", DATUM["WGS84",   SPHEROID["WGS84", 6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]],PROJECTION["Hotine_Oblique_Mercator_Azimuth_Natural_Origin"],PARAMETER["False_Easting",0.0],PARAMETER["False_Northing",0.0],PARAMETER["Scale_Factor",0.9999],PARAMETER["Azimuth",-90.0],PARAMETER["Longitude_Of_Center",32.0],PARAMETER["Latitude_Of_Center",-12.0],UNIT["Metre",1.0]]
+set _OMerc7_=PROJCS["omerc 0 azimuth",GEOGCS["WGS84", DATUM["WGS84",   SPHEROID["WGS84", 6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]],PROJECTION["Hotine_Oblique_Mercator_Azimuth_Natural_Origin"],PARAMETER["False_Easting",123.0],PARAMETER["False_Northing",0.0],PARAMETER["Scale_Factor",0.9999],PARAMETER["Azimuth",0.0],PARAMETER["Longitude_Of_Center",123.0],PARAMETER["Latitude_Of_Center",60.0],UNIT["Metre",1.0]]
+set _OMerc8_=PROJCS["omerc 0 lat of center",GEOGCS["WGS84", DATUM["WGS84",   SPHEROID["WGS84", 6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]],PROJECTION["Hotine_Oblique_Mercator_Azimuth_Center"],PARAMETER["False_Easting",0.0],PARAMETER["False_Northing",2000.0],PARAMETER["Scale_Factor",1.0],PARAMETER["Azimuth",-33.0],PARAMETER["Longitude_Of_Center",-141],PARAMETER["Latitude_Of_Center",0.0],UNIT["Metre",1.0]]
+set _OMerc9_=PROJCS["omerc -0.1 lat of center",GEOGCS["WGS84", DATUM["WGS84",   SPHEROID["WGS84", 6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]],PROJECTION["Hotine_Oblique_Mercator_Azimuth_Center"],PARAMETER["False_Easting",0.0],PARAMETER["False_Northing",2000.0],PARAMETER["Scale_Factor",1.0],PARAMETER["Azimuth",-33.0],PARAMETER["Longitude_Of_Center",-141],PARAMETER["Latitude_Of_Center",-0.1],UNIT["Metre",1.0]]
+set _OMerc10_=PROJCS["omerc 0 lat of center",GEOGCS["WGS84", DATUM["WGS84",   SPHEROID["WGS84", 6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]],PROJECTION["Hotine_Oblique_Mercator_Azimuth_Center"],PARAMETER["False_Easting",0.0],PARAMETER["False_Northing",2000.0],PARAMETER["Scale_Factor",0.92],PARAMETER["Azimuth",-53.0],PARAMETER["Longitude_Of_Center",-41],PARAMETER["Latitude_Of_Center",0.0],UNIT["Metre",1.0]]
+set _OMerc11_=PROJCS["Snyder test",GEOGCS["NAD27",DATUM["North_American_Datum_1927",SPHEROID["Clarke 1866",6378206.4,294.978698213901,AUTHORITY["EPSG","7008"]],TOWGS84[-3,142,183,0,0,0,0],AUTHORITY["EPSG","6267"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Lat",NORTH],AXIS["Long",EAST],AUTHORITY["EPSG","4267"]],PROJECTION["Hotine_Oblique_Mercator"],PARAMETER["False_Easting",0.0],PARAMETER["False_Northing",0.0],PARAMETER["Scale_Factor",1.0],PARAMETER["Azimuth",14.3394883],PARAMETER["Longitude_Of_Center",-77.7610558],PARAMETER["Latitude_Of_Center",36],UNIT["Metre",1.0]]
+
+
+source crs=_WGS84_
+target crs=_OMerc1_
+test tolerance=(1e-2, 1e-2)
+
+source pt=(-123.1, 49.2166666666)
+target pt=(1587551.68733727, -233610.010073611)
+
+source pt=(2.33656753, 43.96499314)
+target pt=(4710310.43960206, 10385936.4972061)
+
+//higher tolerance because of datum shift (ArcGIS might have used NADCON, we are using BursaWolf)
+test tolerance=(1e-1, 1e-1)
+source pt=(151.283333333, -33.9166666666)
+target pt=(5328300.99257402, -23330616.5275361)
+
+test tolerance=(1e-2, 1e-2)
+source pt=(-47.95, -15.75)
+target pt=(11696955.8963377, -5746844.7400647)
+
+source pt=(139.733333333, 35.6833333333)
+target pt=(-5472892.03970572, 3376041.06352978)
+
+source pt=(18.45, -33.9166666666)
+target pt=(15761423.399949, -13480433.9979122)
+
+source pt=(0, 0)
+target pt=(21554723.1232718, -9627311.21882057)
+
+source pt=(180, 0)
+target pt=(-7186407.81203671, -5994041.46308105)
+
+source pt=(-180, 0)
+target pt=(-7186407.81203674, -5994041.46308103)
+
+source pt=(90, 0)
+target pt=(-7731095.83834824, 9967642.10378732)
+
+source pt=(-90, 0)
+target pt=(6221991.02543184, -4580703.29772496)
+
+source pt=(-76, -55)
+target pt=(8753981.37839476, -10340282.0863693)
+
+source pt=(12, -15)
+target pt=(18469392.9335669, -12472456.0055313)
+
+source pt=(80, 6)
+target pt=(-6554592.23776136, 10527947.502663)
+
+source pt=(-45, 71)
+target pt=(3102653.56763063, 4361083.1424255)
+
+source pt=(175, 66.67)
+target pt=(-1215514.44750909, 2518864.09622518)
+
+source pt=(60, -70)
+target pt=(11270796.2796504, -15559749.4216388)
+
+source pt=(0, 90)
+target pt=(715546.220409198, 4325907.99241505)
+
+source pt=(0, -90)
+target pt=(9284453.7795908, -14325907.9924151)
+
+
+source crs=_WGS84_
+target crs=_OMerc2_
+test tolerance=(1e-2, 1e-2)
+
+source pt=(-123.1, 49.2166666666)
+target pt=(3735702.18604144, 5343191.55039217)
+
+source pt=(2.33656753, 43.96499314)
+target pt=(15043427.4782422, 5443720.93677512)
+
+source pt=(151.283333333, -33.9166666666)
+target pt=(-7033088.81932645, -2848345.5312832)
+
+source pt=(-47.95, -15.75)
+target pt=(11443981.1554495, -2656214.19268032)
+
+source pt=(139.733333333, 35.6833333333)
+target pt=(-8150309.58779051, 5833588.82959595)
+
+source pt=(18.45, -33.9166666666)
+target pt=(19948854.3739695, -2578361.07507153)
+
+source pt=(0, 0)
+target pt=(16501655.382751, 511521.786326737)
+
+source pt=(180, 0)
+target pt=(-3622559.79420685, 640432.041972988)
+
+source pt=(-180, 0)
+target pt=(-3622559.79420684, 640432.041972987)
+
+source pt=(90, 0)
+target pt=(-13871092.4125293, 266319.09823953)
+
+source pt=(-90, 0)
+target pt=(6348415.1921574, -922100.313355353)
+
+source pt=(-76, -55)
+target pt=(7418446.40986485, -10198467.0553476)
+
+source pt=(12, -15)
+target pt=(18360743.8746174, -648074.3620041)
+
+source pt=(80, 6)
+target pt=(-15161950.023213, 631590.535726196)
+
+source pt=(-45, 71)
+target pt=(10088086.4982078, 8341388.44884446)
+
+source pt=(175, 66.67)
+target pt=(-728605.344251327, 11627660.6316202)
+
+source pt=(60, -70)
+target pt=(-13345041.5141673, -9483709.5706569)
+
+source pt=(0, 90)
+target pt=(8857682.60166622, 13408098.0643407)
+
+source pt=(0, -90)
+target pt=(-8852682.60166622, -13398098.0643407)
+
+
+source crs=_WGS84_
+target crs=_OMerc3_
+test tolerance=(1e-2, 1e-2)
+
+source pt=(-123.1, 49.2166666666)
+target pt=(21034124.3844395, 4770099.48300766)
+
+source pt=(2.33656753, 43.96499314)
+target pt=(-3941624.42201861, 6809396.46058898)
+
+source pt=(151.283333333, -33.9166666666)
+target pt=(11882460.7875784, -4397578.63888328)
+
+source pt=(-47.95, -15.75)
+target pt=(-8114692.42490718, -1455946.28675751)
+
+source pt=(139.733333333, 35.6833333333)
+target pt=(12081077.339438, 3558169.60596661)
+
+source pt=(18.45, -33.9166666666)
+target pt=(-1283035.92466287, -2396345.53659077)
+
+source pt=(0, 0)
+target pt=(-3446978.830349, 1069031.50566855)
+
+source pt=(180, 0)
+target pt=(15626059.2405847, -863132.476434271)
+
+source pt=(-180, 0)
+target pt=(15626059.2405847, -863132.476434271)
+
+source pt=(90, 0)
+target pt=(6187457.33123935, 679824.489408252)
+
+source pt=(-90, 0)
+target pt=(25239497.2378553, -121255.777735818)
+
+source pt=(-76, -55)
+target pt=(-9328287.02993536, -7270126.61193376)
+
+source pt=(12, -15)
+target pt=(-2044580.39546442, -389712.681823272)
+
+source pt=(80, 6)
+target pt=(5234179.61865963, 1483252.24063428)
+
+source pt=(-45, 71)
+target pt=(25889491.3709879, 11235089.4028746)
+
+source pt=(175, 66.67)
+target pt=(16052014.284133, 7416228.14889498)
+
+source pt=(60, -70)
+target pt=(1886511.42486593, -7763987.19340572)
+
+source pt=(0, 90)
+target pt=(18240563.1262868, 13926995.5429892)
+
+source pt=(0, -90)
+target pt=(-258914.761872752, -13613124.703272)
+
+
+source crs=_WGS84_
+target crs=_OMerc4_
+test tolerance=(1e-2, 1e-2)
+
+source pt=(-123.1, 49.2166666666)
+target pt=(21192118.4054133, 4354917.97734288)
+
+source pt=(2.33656753, 43.96499314)
+target pt=(-3939138.67644248, 6769210.2565798)
+
+source pt=(151.283333333, -33.9166666666)
+target pt=(11771610.4926222, -4477416.91077956)
+
+source pt=(-47.95, -15.75)
+target pt=(-8133524.47727794, -1419545.78311535)
+
+source pt=(139.733333333, 35.6833333333)
+target pt=(12168062.6745615, 3457635.52446515)
+
+source pt=(18.45, -33.9166666666)
+target pt=(-1282922.3358292, -2397952.4890733)
+
+source pt=(0, 0)
+target pt=(-3444064.60262668, 1071294.47571674)
+
+source pt=(180, 0)
+target pt=(15592139.6663902, -1078853.84064067)
+
+source pt=(-180, 0)
+target pt=(15592139.6663902, -1078853.84064067)
+
+source pt=(90, 0)
+target pt=(6192785.35629853, 662354.505154494)
+
+source pt=(-90, 0)
+target pt=(25228118.8269342, -652854.959001261)
+
+//source pt=(-76, -55)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+source pt=(12, -15)
+target pt=(-2044951.03904783, -389101.339914413)
+
+source pt=(80, 6)
+target pt=(5242974.98328355, 1474490.71709473)
+
+source pt=(-45, 71)
+target pt=(26193463.8213627, 10489059.0860963)
+
+source pt=(175, 66.67)
+target pt=(16320140.294427, 7217432.45357464)
+
+source pt=(60, -70)
+target pt=(1918730.11825636, -7734346.93229384)
+
+source pt=(0, 90)
+target pt=(18977301.6999423, 13627411.5384432)
+
+source pt=(0, -90)
+target pt=(2.69705588703746E-09, -13627411.5384432)
+
+
+source crs=_WGS84_
+target crs=_OMerc5_
+test tolerance=(1e-2, 1e-2)
+
+source pt=(-123.1, 49.2166666666)
+target pt=(-8119020.53436083, 4665563.53636085)
+
+source pt=(2.33656753, 43.96499314)
+target pt=(5321366.09904342, 6918157.81426494)
+
+source pt=(151.283333333, -33.9166666666)
+target pt=(-18328723.9205749, -4230099.86458256)
+
+source pt=(-47.95, -15.75)
+target pt=(881703.069128392, -1621150.08204656)
+
+source pt=(139.733333333, 35.6833333333)
+target pt=(-17693027.275397, 4094517.40974521)
+
+source pt=(18.45, -33.9166666666)
+target pt=(8112950.33271493, -2690775.73105998)
+
+source pt=(0, 0)
+target pt=(5841094.21259275, 964860.286572609)
+
+source pt=(180, 0)
+target pt=(-14229077.171903, -811508.372539171)
+
+source pt=(-180, 0)
+target pt=(-14229077.171903, -811508.372539171)
+
+source pt=(90, 0)
+target pt=(15987222.1354934, 513686.540768416)
+
+source pt=(-90, 0)
+target pt=(-4072659.05517295, -733051.518280749)
+
+source pt=(-76, -55)
+target pt=(-745966.713746305, -7920139.15278445)
+
+source pt=(12, -15)
+target pt=(7310302.4770109, -574087.855596093)
+
+source pt=(80, 6)
+target pt=(14990997.2092689, 1377765.22578134)
+
+source pt=(-45, 71)
+target pt=(-2619443.14829739, 10790904.0473703)
+
+source pt=(175, 66.67)
+target pt=(-13103366.4399575, 7932496.41083303)
+
+source pt=(60, -70)
+target pt=(11514493.0965763, -8273198.739307)
+
+source pt=(0, 90)
+target pt=(-9735593.65282668, 14493350.6495982)
+
+source pt=(0, -90)
+target pt=(9735593.65282668, -14493350.6495982)
+
+//actually calculated for azimuth of -89.999999
+source crs=_WGS84_
+target crs=_OMerc6_
+test tolerance=(1e-2, 1e-2)
+
+source pt=(-123.1, 49.2166666666)
+target pt=(-7757550.31301789, 4572291.39792029)
+
+source pt=(2.33656753, 43.96499314)
+target pt=(5841007.60367649, 7124771.93114281)
+
+source pt=(151.283333333, -33.9166666666)
+target pt=(-17699011.4606914, -4682007.85256865)
+
+source pt=(-47.95, -15.75)
+target pt=(1426306.16821917, -1494109.29344582)
+
+source pt=(139.733333333, 35.6833333333)
+target pt=(-17267811.3130303, 3666307.70331405)
+
+source pt=(18.45, -33.9166666666)
+target pt=(8636745.20091796, -2523908.10026991)
+
+source pt=(0, 0)
+target pt=(6362086.093586, 1127565.62654137)
+
+source pt=(180, 0)
+target pt=(-13674224.9971405, -1121539.21331954)
+
+source pt=(-180, 0)
+target pt=(-13674224.9971405, -1121539.21331954)
+
+source pt=(90, 0)
+target pt=(16505124.2765944, 697145.544176132)
+
+source pt=(-90, 0)
+target pt=(-3529728.71677311, -709078.625629095)
+
+source pt=(-76, -55)
+target pt=(-82797.9438238586, -7725700.49883471)
+
+source pt=(12, -15)
+target pt=(7834689.93776246, -409539.401136276)
+
+source pt=(80, 6)
+target pt=(15505423.8641355, 1551940.27942329)
+
+source pt=(-45, 71)
+target pt=(-2391854.1872078, 11040010.7164045)
+
+source pt=(175, 66.67)
+target pt=(-12869586.4714869, 7616422.10453181)
+
+source pt=(60, -70)
+target pt=(12006568.6618747, -8140603.6837804)
+
+source pt=(0, 90)
+target pt=(-9987054.71842944, 14343209.2620477)
+
+source pt=(0, -90)
+target pt=(9987054.71842944, -14343209.2620477)
+
+source crs=_WGS84_
+target crs=_OMerc7_
+test tolerance=(1e-2, 1e-2)
+
+source pt=(-123.1, 49.2166666666)
+target pt=(4399309.66951205, 12184513.5666426)
+
+source pt=(2.33656753, 43.96499314)
+target pt=(-4619126.22978929, 13142422.2324278)
+
+source pt=(151.283333333, -33.9166666666)
+target pt=(2669487.12832541, -4119440.48732573)
+
+source pt=(-47.95, -15.75)
+target pt=(-972314.362752614, -18333005.5206422)
+
+source pt=(139.733333333, 35.6833333333)
+target pt=(1521613.82546053, 4115831.21096896)
+
+source pt=(18.45, -33.9166666666)
+target pt=(-7142619.97420299, -12353792.435984)
+
+//source pt=(0, 0)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+source pt=(180, 0)
+target pt=(7774722.60476314, 56343.4857814245)
+
+source pt=(-180, 0)
+target pt=(7774722.60476313, 56343.4857814245)
+
+source pt=(90, 0)
+target pt=(-3902187.6800067, 36581.5130737972)
+
+//source pt=(-90, 0)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+source pt=(-76, -55)
+target pt=(1215265.01864775, -13807243.7422614)
+
+source pt=(12, -15)
+target pt=(-9511311.48101249, -16048283.8594687)
+
+source pt=(80, 6)
+target pt=(-5273645.41493187, 947423.795481733)
+
+source pt=(-45, 71)
+target pt=(-432167.496372195, 12112514.3185038)
+
+source pt=(175, 66.67)
+target pt=(2064900.22182327, 8375179.02349971)
+
+source pt=(60, -70)
+target pt=(-2032524.54054538, -8977075.51011432)
+
+source pt=(0, 90)
+target pt=(122.999999999291, 10034545.9670417)
+
+source pt=(0, -90)
+target pt=(122.999999999291, -10034545.9670417)
+
+
+source crs=_WGS84_
+target crs=_OMerc8_
+test tolerance=(1e-2, 1e-2)
+
+source pt=(-123.1, 49.2166666666)
+target pt=(1115785.82466194, 6035695.38745901)
+
+source pt=(2.33656753, 43.96499314)
+target pt=(-4000706.43169224, 17112700.5276463)
+
+source pt=(151.283333333, -33.9166666666)
+target pt=(-9181007.72095669, -7111645.48753326)
+
+source pt=(-47.95, -15.75)
+target pt=(9911814.97687635, -6036500.47354507)
+
+source pt=(139.733333333, 35.6833333333)
+target pt=(-6858585.88627447, 6252143.31687189)
+
+source pt=(18.45, -33.9166666666)
+target pt=(8200991.75243765, -13384741.6284242)
+
+source pt=(0, 0)
+target pt=(12550083.2007845, -12558570.1844299)
+
+source pt=(180, 0)
+target pt=(-4584971.60634307, 185982.333615784)
+
+source pt=(-180, 0)
+target pt=(-4584971.60634307, 185982.333615784)
+
+source pt=(90, 0)
+target pt=(-12964073.4012915, 10961321.021689)
+
+source pt=(-90, 0)
+target pt=(6224000.86600986, -465325.200086272)
+
+source pt=(-76, -55)
+target pt=(4551099.6236392, -7105560.04446666)
+
+source pt=(12, -15)
+target pt=(10409014.1780585, -13405978.9443651)
+
+source pt=(80, 6)
+target pt=(-11878796.9773808, 12108703.0827993)
+
+source pt=(-45, 71)
+target pt=(22176.0179251073, 12362712.0843346)
+
+source pt=(175, 66.67)
+target pt=(-2933232.33282335, 7731469.62833004)
+
+source pt=(60, -70)
+target pt=(3086176.17046441, -13063559.226559)
+
+source pt=(0, 90)
+target pt=(-2182386.07388493, 10490683.9677708)
+
+source pt=(0, -90)
+target pt=(2182386.07388493, -10486683.9677708)
+
+
+source crs=_WGS84_
+target crs=_OMerc9_
+test tolerance=(1e-2, 1e-2)
+
+source pt=(-123.1, 49.2166666666)
+target pt=(1113965.04215395, 6048881.7500692)
+
+source pt=(2.33656753, 43.96499314)
+target pt=(-4013959.78745531, 17119145.4310406)
+
+source pt=(151.283333333, -33.9166666666)
+target pt=(-9171736.78849893, -7091324.47226374)
+
+source pt=(-47.95, -15.75)
+target pt=(9909125.23026239, -6033456.43881283)
+
+source pt=(139.733333333, 35.6833333333)
+target pt=(-6861563.61717674, 6258588.28106197)
+
+source pt=(18.45, -33.9166666666)
+target pt=(8191851.35212997, -13379327.3908452)
+
+source pt=(0, 0)
+target pt=(12540401.2376367, -12555551.2620801)
+
+source pt=(180, 0)
+target pt=(-4583753.44854241, 196015.326640517)
+
+source pt=(-180, 0)
+target pt=(-4583753.4485424, 196015.326640516)
+
+source pt=(90, 0)
+target pt=(-12973115.6772748, 10963135.2013655)
+
+source pt=(-90, 0)
+target pt=(6226065.66283203, -456400.126152535)
+
+source pt=(-76, -55)
+target pt=(4547241.79029544, -7096949.39916307)
+
+source pt=(12, -15)
+target pt=(10399717.6259816, -13401710.3735685)
+
+source pt=(80, 6)
+target pt=(-11887930.2048041, 12111826.4506564)
+
+source pt=(-45, 71)
+target pt=(12471.4888127514, 12376593.0359577)
+
+source pt=(175, 66.67)
+target pt=(-2937613.57251345, 7741595.88570775)
+
+source pt=(60, -70)
+target pt=(3076219.08792258, -13053882.9890406)
+
+source pt=(0, 90)
+target pt=(-2189573.13843124, 10501737.549144)
+
+source pt=(0, -90)
+target pt=(2175211.58913633, -10475622.7025587)
+
+
+source crs=_WGS84_
+target crs=_OMerc10_
+test tolerance=(1e-2, 1e-2)
+
+source pt=(-123.1, 49.2166666666)
+target pt=(-6156234.84090859, 6232434.63211702)
+
+source pt=(2.33656753, 43.96499314)
+target pt=(4259174.92897108, 6047590.27503354)
+
+source pt=(151.283333333, -33.9166666666)
+target pt=(11387145.0862923, -13067939.6209912)
+
+source pt=(-47.95, -15.75)
+target pt=(-698048.408662312, -1630076.23737445)
+
+source pt=(139.733333333, 35.6833333333)
+target pt=(-10997968.6445281, 11967109.9713289)
+
+source pt=(18.45, -33.9166666666)
+target pt=(5266470.24933109, -4064436.89700284)
+
+source pt=(0, 0)
+target pt=(4318981.26579049, -185821.258147054)
+
+source pt=(180, 0)
+target pt=(-13328678.2832389, 7020810.00949468)
+
+source pt=(-180, 0)
+target pt=(-13328678.2832389, 7020810.00949468)
+
+source pt=(90, 0)
+target pt=(12949606.0429666, -6196363.45936725)
+
+source pt=(-90, 0)
+target pt=(-5213594.71417192, 332298.580212003)
+
+source pt=(-76, -55)
+target pt=(-2337799.22975825, -7504333.04225382)
+
+source pt=(12, -15)
+target pt=(5267850.06908746, -2023895.30637848)
+
+source pt=(80, 6)
+target pt=(13013375.9970807, -4796235.78915285)
+
+source pt=(-45, 71)
+target pt=(-1620321.0575385, 8205468.69822037)
+
+source pt=(175, 66.67)
+target pt=(-6854659.47028655, 10182350.9450332)
+
+source pt=(60, -70)
+target pt=(5543820.71173658, -8688298.8834087)
+
+source pt=(0, 90)
+target pt=(-3483233.10015737, 10644001.6795435)
+
+source pt=(0, -90)
+target pt=(3483233.10015737, -10640001.6795435)
+
+
+source crs=_NAD27_
+target crs=_OMerc11_
+test tolerance=(1e-1, 1e-1)
+
+source pt=(38.8092128, -76.8707953)
+target pt=(1091027.1, 4277491.9)
+
+
+///////////////////////////////////////
+// Azimuth Spherical tests
+
+set _OMerc12_=PROJCS["omerc",GEOGCS["GCS_Sphere",DATUM["D_Sphere",SPHEROID["Sphere",6370997.0,0.0]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.017453292519943295]],PROJECTION["Hotine_Oblique_Mercator_Azimuth_Natural_Origin"],PARAMETER["False_Easting",0.0],PARAMETER["False_Northing",0.0],PARAMETER["Scale_Factor",0.9999],PARAMETER["Azimuth",-298.0],PARAMETER["Longitude_Of_Center",180.0],PARAMETER["Latitude_Of_Center",45.0],UNIT["Metre",1.0]]
+set _OMerc13_=PROJCS["omerc",GEOGCS["GCS_Sphere",DATUM["D_Sphere",SPHEROID["Sphere",6000000.0,0.0]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.017453292519943295]],PROJECTION["Hotine_Oblique_Mercator_Azimuth_Center"],PARAMETER["False_Easting",0.0],PARAMETER["False_Northing",0.0],PARAMETER["Scale_Factor",0.9999],PARAMETER["Azimuth",-5.0],PARAMETER["Longitude_Of_Center",-52.0],PARAMETER["Latitude_Of_Center",-20.1],UNIT["Metre",1.0]]
+
+source crs=_Sphere1_
+target crs=_OMerc12_
+test tolerance=(1e-2, 1e-2)
+
+source pt=(-123.1, 49.2166666666)
+target pt=(10120546.8594967, 5331662.37720628)
+
+source pt=(2.33656753, 43.96499314)
+target pt=(11081070.1007523, 16372260.7072949)
+
+source pt=(151.283333333, -33.9166666666)
+target pt=(538262.35808394, -4892881.38579325)
+
+source pt=(-47.95, -15.75)
+target pt=(-15842851.2531784, -9166105.00546431)
+
+source pt=(139.733333333, 35.6833333333)
+target pt=(2818310.96044386, 3140212.26295857)
+
+source pt=(18.45, -33.9166666666)
+target pt=(-11207329.3422083, -3989484.80353572)
+
+source pt=(0, 0)
+target pt=(-15962363.1593417, -3205446.81175682)
+
+source pt=(180, 0)
+target pt=(6087021.11428533, -2045365.6944828)
+
+source pt=(-180, 0)
+target pt=(6087021.11428533, -2045365.6944828)
+
+source pt=(90, 0)
+target pt=(-3992276.45773486, 1552472.57985994)
+
+source pt=(-90, 0)
+target pt=(16725102.5945919, 5217691.16881276)
+
+source pt=(-76, -55)
+target pt=(-10891788.9121581, -11855367.7541033)
+
+source pt=(12, -15)
+target pt=(-13371081.6464475, -2925767.48175778)
+
+source pt=(80, 6)
+target pt=(-5050965.75661427, 2698246.19833859)
+
+source pt=(-45, 71)
+target pt=(9034659.25654622, 10105096.6782967)
+
+source pt=(175, 66.67)
+target pt=(6158645.4692032, 5855339.62366683)
+
+source pt=(60, -70)
+target pt=(-6969129.92761234, -6267315.58353318)
+
+source pt=(0, 90)
+target pt=(6645805.02257175, 8815529.44315551)
+
+source pt=(0, -90)
+target pt=(-6645805.02257175, -8815529.4431555)
+
+
+source crs=_Sphere2_
+target crs=_OMerc13_
+test tolerance=(1e-2, 1e-2)
+
+source pt=(-123.1, 49.2166666666)
+target pt=(-4532700.40476776, 9506340.32699591)
+
+source pt=(2.33656753, 43.96499314)
+target pt=(3940408.52774896, 8560697.00427967)
+
+source pt=(151.283333333, -33.9166666666)
+target pt=(-1359600.99456079, -13235369.993185)
+
+source pt=(-47.95, -15.75)
+target pt=(408501.163145855, 451630.736343166)
+
+source pt=(139.733333333, 35.6833333333)
+target pt=(-2334521.13123536, 16939007.7447515)
+
+source pt=(18.45, -33.9166666666)
+target pt=(6137012.23639722, -4463286.36256999)
+
+source pt=(0, 0)
+target pt=(6497684.19312063, 2019792.02295663)
+
+source pt=(180, 0)
+target pt=(-8392385.73616324, 19636745.712143)
+
+source pt=(-180, 0)
+target pt=(-8392385.73616324, 19636745.712143)
+
+source pt=(90, 0)
+target pt=(5474749.93968744, -15959218.9067616)
+
+source pt=(-90, 0)
+target pt=(-4262969.66836109, 2108507.02604707)
+
+source pt=(-76, -55)
+target pt=(-1413196.87255171, -3930796.45387913)
+
+source pt=(12, -15)
+target pt=(7825748.51472892, -1370709.05126976)
+
+source pt=(80, 6)
+target pt=(3693360.29163667, 20966153.6234674)
+
+source pt=(-45, 71)
+target pt=(-71991.2687473217, 9583931.29979531)
+
+source pt=(175, 66.67)
+target pt=(-2493154.83433631, 12995255.3720093)
+
+source pt=(60, -70)
+target pt=(2143787.34368307, -8007583.65157337)
+
+source pt=(0, 90)
+target pt=(-515154.775159447, 11534879.6286876)
+
+source pt=(0, -90)
+target pt=(147000.351549836, -7326855.31133677)
+
+
+///////////////////////////////////////
+// RSO tests
+
+set _Borneo_=GEOGCS["Borneo",DATUM["Borneo",SPHEROID["Borneo",6377298.560, 300.801695919523]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]]
+set _Timbalai_=GEOGCS["GCS_Timbalai_1948",DATUM["D_Timbalai_1948",SPHEROID["Everest_Definition_1967",6377298.556,300.8017]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]]
+set _Kertau_=GEOGCS["GCS_Kertau",DATUM["D_Kertau",SPHEROID["Everest_1830_Modified",6377304.063,300.8017]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]]
+
+set _RSO1_=PROJCS["RSO_Borneo",GEOGCS["Borneo",DATUM["Borneo",SPHEROID["Borneo",6377298.560, 300.801695919523]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Rectified_Skew_Orthomorphic_Natural_Origin"],PARAMETER["False_Easting",2000000],PARAMETER["False_Northing",5000000],PARAMETER["Scale_Factor",0.999840],PARAMETER["Azimuth",53.315820472222],PARAMETER["Longitude_Of_Center",115.0],PARAMETER["Latitude_Of_Center",4.0],PARAMETER["XY_Plane_Rotation",53.130102361111],UNIT["Meter",1.0]]
+set _RSO2_=PROJCS["Timbalai_1948_RSO_Borneo_Meters",GEOGCS["GCS_Timbalai_1948",DATUM["D_Timbalai_1948",SPHEROID["Everest_Definition_1967",6377298.556,300.8017]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Rectified_Skew_Orthomorphic_Natural_Origin"],PARAMETER["False_Easting",0.0],PARAMETER["False_Northing",0.0],PARAMETER["Scale_Factor",0.99984],PARAMETER["Azimuth",53.31582047908623],PARAMETER["Longitude_Of_Center",115.0],PARAMETER["Latitude_Of_Center",4.0],PARAMETER["XY_Plane_Rotation",53.13010235415598],UNIT["Meter",1.0]]
+set _RSO3_=PROJCS["Kertau_RSO_Malaya_Meters",GEOGCS["GCS_Kertau",DATUM["D_Kertau",SPHEROID["Everest_1830_Modified",6377304.063,300.8017]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Rectified_Skew_Orthomorphic_Center"],PARAMETER["False_Easting",804671.299775],PARAMETER["False_Northing",0.0],PARAMETER["Scale_Factor",0.99984],PARAMETER["Azimuth",-36.97420943711801],PARAMETER["Longitude_Of_Center",102.25],PARAMETER["Latitude_Of_Center",4.0],PARAMETER["XY_Plane_Rotation",-36.86989764584402],UNIT["Meter",1.0]]
+set _RSO4_=PROJCS["RSO",GEOGCS["WGS84", DATUM["WGS84",   SPHEROID["WGS84", 6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]],PROJECTION["Rectified_Skew_Orthomorphic_Center"],PARAMETER["False_Easting",0.0],PARAMETER["False_Northing",0.0],PARAMETER["Scale_Factor",0.95],PARAMETER["Azimuth",-45.0],PARAMETER["Longitude_Of_Center",90.0],PARAMETER["Latitude_Of_Center",-60.0],PARAMETER["XY_Plane_Rotation",0.0],UNIT["Meter",1.0]]
+set _RSO5_=PROJCS["lat of center -0.1",GEOGCS["GCS_Sphere",DATUM["D_Sphere",SPHEROID["Sphere",6370997.0,0.0]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.017453292519943295]],PROJECTION["Rectified_Skew_Orthomorphic_Center"],PARAMETER["False_Easting",0.0],PARAMETER["False_Northing",0.0],PARAMETER["Scale_Factor",0.95],PARAMETER["Azimuth",20.222],PARAMETER["Longitude_Of_Center",-2.0],PARAMETER["Latitude_Of_Center",-0.1],PARAMETER["XY_Plane_Rotation",19.0],UNIT["Meter",1.0]]
+set _RSO6_=PROJCS["lat of center 0.0",GEOGCS["GCS_Sphere",DATUM["D_Sphere",SPHEROID["Sphere",6370997.0,0.0]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.017453292519943295]],PROJECTION["Rectified_Skew_Orthomorphic_Center"],PARAMETER["False_Easting",0.0],PARAMETER["False_Northing",0.0],PARAMETER["Scale_Factor",0.95],PARAMETER["Azimuth",20.222],PARAMETER["Longitude_Of_Center",-2.0],PARAMETER["Latitude_Of_Center",0.0],PARAMETER["XY_Plane_Rotation",19.0],UNIT["Meter",1.0]]
+set _RSO7_=PROJCS["epsg test", GEOGCS["GCS_Timbalai_1948",DATUM["D_Timbalai_1948",SPHEROID["Everest_Definition_1967",6377298.556,300.8017]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Oblique_Mercator"],PARAMETER["False_Easting",590476.87],PARAMETER["False_Northing",442857.65],PARAMETER["Scale_Factor",0.99984],PARAMETER["Azimuth",53.315820472222200],PARAMETER["rectified_grid_angle",53.130102361111100],PARAMETER["Longitude_Of_Center",115],PARAMETER["Latitude_Of_Center",4.0],UNIT["Metre",1.0]]
+set _RSO8_=PROJCS["epsg test", GEOGCS["GCS_Timbalai_1948",DATUM["D_Timbalai_1948",SPHEROID["Everest_Definition_1967",6377298.556,300.8017]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Hotine_Oblique_Mercator"],PARAMETER["False_Easting",0.0],PARAMETER["False_Northing",0.0],PARAMETER["Scale_Factor",0.99984],PARAMETER["Azimuth",53.315820472222200],PARAMETER["rectified_grid_angle",53.130102361111100],PARAMETER["Longitude_Of_Center",115],PARAMETER["Latitude_Of_Center",4.0],UNIT["Metre",1.0]]
+set _RSO9_=PROJCS["rotation -150",GEOGCS["GCS_Kertau",DATUM["D_Kertau",SPHEROID["Everest_1830_Modified",6377304.063,300.8017]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Rectified_Skew_Orthomorphic_Center"],PARAMETER["False_Easting",804671.299775],PARAMETER["False_Northing",0.0],PARAMETER["Scale_Factor",0.99984],PARAMETER["Azimuth",-36.97420943711801],PARAMETER["Longitude_Of_Center",102.25],PARAMETER["Latitude_Of_Center",4.0],PARAMETER["XY_Plane_Rotation",-150.0],UNIT["Meter",1.0]]
+set _RSO10_=PROJCS["rotation 100.1",GEOGCS["GCS_Kertau",DATUM["D_Kertau",SPHEROID["Everest_1830_Modified",6377304.063,300.8017]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Rectified_Skew_Orthomorphic_Center"],PARAMETER["False_Easting",804671.299775],PARAMETER["False_Northing",0.0],PARAMETER["Scale_Factor",0.99984],PARAMETER["Azimuth",-36.97420943711801],PARAMETER["Longitude_Of_Center",102.25],PARAMETER["Latitude_Of_Center",4.0],PARAMETER["XY_Plane_Rotation",100.1],UNIT["Meter",1.0]]
+set _RSO11_=PROJCS["rotation 250",GEOGCS["GCS_Kertau",DATUM["D_Kertau",SPHEROID["Everest_1830_Modified",6377304.063,300.8017]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Rectified_Skew_Orthomorphic_Center"],PARAMETER["False_Easting",804671.299775],PARAMETER["False_Northing",0.0],PARAMETER["Scale_Factor",0.99984],PARAMETER["Azimuth",-36.97420943711801],PARAMETER["Longitude_Of_Center",102.25],PARAMETER["Latitude_Of_Center",4.0],PARAMETER["XY_Plane_Rotation",250.0],UNIT["Meter",1.0]]
+set _RSO12_=PROJCS["rotation 332.4",GEOGCS["GCS_Kertau",DATUM["D_Kertau",SPHEROID["Everest_1830_Modified",6377304.063,300.8017]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Rectified_Skew_Orthomorphic_Center"],PARAMETER["False_Easting",804671.299775],PARAMETER["False_Northing",0.0],PARAMETER["Scale_Factor",0.99984],PARAMETER["Azimuth",-36.97420943711801],PARAMETER["Longitude_Of_Center",102.25],PARAMETER["Latitude_Of_Center",4.0],PARAMETER["XY_Plane_Rotation",332.4],UNIT["Meter",1.0]]
+
+
+//test points from proj4 email list, http://xserve.flids.com/pipermail/proj/2004-February/001608.html
+source crs=_Borneo_
+target crs=_RSO1_
+test tolerance=(1e-2, 1e-2)
+
+source pt=(115.046244361111, 5.010925777778)
+target pt=(2595244.677, 5554640.242)
+
+source pt=(114.930676805556, 4.854796777778)
+target pt=(2582484.393, 5537337.229)
+
+source pt=(115.0, 4.0)
+target pt=(2590476.87,  5442857.66)
+
+source pt=(111.133333333333, 2.425000000000)
+target pt=(2161074.28,  5268121.72)
+
+source pt=(111.266666666667, 2.5)
+target pt=(2175900.30,  5276416.44)
+
+source pt=(111.266666666667, 2.4250000000000)
+target pt=(2175901.71,  5268123.87)
+
+
+source crs=_Timbalai_
+target crs=_RSO2_
+test tolerance=(1e-2, 1e-2)
+
+source pt=(-123.1, 49.2166666666)
+target pt=(9021698.19485546, 9175927.77738608)
+
+source pt=(2.33656753, 43.96499314)
+target pt=(-20962287.0465742, 460273.775500517)
+
+source pt=(151.283333333, -33.9166666666)
+target pt=(4838364.42820793, -4620097.58946518)
+
+source pt=(-47.95, -15.75)
+target pt=(-13599547.9385172, -10212174.5161495)
+
+source pt=(139.733333333, 35.6833333333)
+target pt=(3037392.1856076, 4061123.17493246)
+
+source pt=(18.45, -33.9166666666)
+target pt=(-8300866.33877443, -5806591.30505371)
+
+source pt=(0, 0)
+target pt=(-12595519.1163059, -4377015.84560013)
+
+source pt=(180, 0)
+target pt=(8317626.6779143, 1144112.05148521)
+
+source pt=(-180, 0)
+target pt=(8317626.67791429, 1144112.0514852)
+
+source pt=(90, 0)
+target pt=(-2206103.72594352, -21214.334638662)
+
+source pt=(-90, 0)
+target pt=(15355109.9206678, 9931587.73532979)
+
+source pt=(-76, -55)
+target pt=(-9381078.33318161, -13705395.7183365)
+
+source pt=(12, -15)
+target pt=(-10195309.6700502, -4582773.2022842)
+
+source pt=(80, 6)
+target pt=(-3394882.77055051, 629742.209305016)
+
+source pt=(-45, 71)
+target pt=(6265364.90317424, 14356081.1478674)
+
+source pt=(175, 66.67)
+target pt=(4816980.68054521, 8169737.72096525)
+
+source pt=(60, -70)
+target pt=(-3960605.82748387, -8412272.45691574)
+
+source pt=(0, 90)
+target pt=(3797090.65392735, 11575311.9029699)
+
+source pt=(0, -90)
+target pt=(-3797090.65392736, -11575311.9029699)
+
+source crs=_Kertau_
+target crs=_RSO3_
+test tolerance=(1e-2, 1e-2)
+
+source pt=(-123.1, 49.2166666666)
+target pt=(-2228159.59250862, 17055145.5177353)
+
+source pt=(2.33656753, 43.96499314)
+target pt=(-6235995.49690959, 7838260.93048952)
+
+source pt=(151.283333333, -33.9166666666)
+target pt=(5506703.69223005, -4717426.5855127)
+
+source pt=(-47.95, -15.75)
+target pt=(-13486425.0969237, 13184202.9245455)
+
+source pt=(139.733333333, 35.6833333333)
+target pt=(4690248.73479985, 4406061.77392899)
+
+source pt=(18.45, -33.9166666666)
+target pt=(-19492561.5376789, -8853675.9282703)
+
+source pt=(0, 0)
+target pt=(-11707382.4276406, 5859953.39165309)
+
+source pt=(180, 0)
+target pt=(10748174.4291712, -2377810.38992139)
+
+source pt=(-180, 0)
+target pt=(10748174.4291712, -2377810.38992138)
+
+source pt=(90, 0)
+target pt=(-572036.187339765, -432513.02905099)
+
+source pt=(-90, 0)
+target pt=(13567049.6630863, -14837083.6966016)
+
+source pt=(-76, -55)
+target pt=(7161656.58626402, -14098182.1847724)
+
+source pt=(12, -15)
+target pt=(-13753970.55367, 2132528.97621502)
+
+source pt=(80, 6)
+target pt=(-1687168.21187096, 300973.968706678)
+
+source pt=(-45, 71)
+target pt=(-3680374.06828906, 10980754.5723218)
+
+source pt=(175, 66.67)
+target pt=(2500682.60838872, 10998760.5253211)
+
+source pt=(60, -70)
+target pt=(636731.704765702, -10294397.1189539)
+
+source pt=(0, 90)
+target pt=(-1329111.89139441, 10186964.706236)
+
+source pt=(0, -90)
+target pt=(3602086.41784445, -11071807.275436)
+
+
+source crs=_WGS84_
+target crs=_RSO4_
+test tolerance=(1e-2, 1e-2)
+
+source pt=(-123.1, 49.2166666666)
+target pt=(1126436.94431294, 21114517.2580576)
+
+source pt=(2.33656753, 43.96499314)
+target pt=(-1550076.14175112, 13449523.1856509)
+
+source pt=(151.283333333, -33.9166666666)
+target pt=(3845337.50935359, -3646694.89017513)
+
+source pt=(-47.95, -15.75)
+target pt=(-15947110.6193587, 22610102.6242162)
+
+source pt=(139.733333333, 35.6833333333)
+target pt=(12482394.0222644, 16930220.4936886)
+
+source pt=(18.45, -33.9166666666)
+target pt=(-4145182.96657862, 4255066.41249575)
+
+source pt=(0, 0)
+target pt=(-5372441.47715116, 9499410.69948066)
+
+source pt=(180, 0)
+target pt=(5326279.94213105, -9499594.99930015)
+
+source pt=(-180, 0)
+target pt=(5326279.94213105, -9499594.99930015)
+
+source pt=(90, 0)
+target pt=(4307917.28777334, 5342530.27791459)
+
+source pt=(-90, 0)
+target pt=(-4336348.92228852, 24478268.7230201)
+
+source pt=(-76, -55)
+target pt=(-5618307.48632017, -5408447.04844597)
+
+source pt=(12, -15)
+target pt=(-4575916.44134927, 6874467.50846177)
+
+source pt=(80, 6)
+target pt=(3438621.53929688, 6556193.93527229)
+
+source pt=(-45, 71)
+target pt=(165547.989632292, 16857497.3631514)
+
+source pt=(175, 66.67)
+target pt=(4472123.66780536, 18569719.464018)
+
+source pt=(60, -70)
+target pt=(-1693109.96931738, -187929.398182628)
+
+source pt=(0, 90)
+target pt=(2244181.04345556, 16713281.2582946)
+
+source pt=(0, -90)
+target pt=(-2244181.04345556, -2354262.83349377)
+
+source crs=_Sphere1_
+target crs=_RSO5_
+test tolerance=(1e-2, 1e-2)
+
+source pt=(-123.1, 49.2166666666)
+target pt=(-1837753.14066936, 14402557.9353294)
+
+source pt=(2.33656753, 43.96499314)
+target pt=(386958.802448691, 4686419.51357588)
+
+source pt=(151.283333333, -33.9166666666)
+target pt=(-1737883.25255395, -16368299.6599665)
+
+source pt=(-47.95, -15.75)
+target pt=(-4835646.86251244, -2395493.66561774)
+
+source pt=(139.733333333, 35.6833333333)
+target pt=(6114240.85255466, 12593992.0008716)
+
+source pt=(18.45, -33.9166666666)
+target pt=(1899544.43138968, -3834289.25591829)
+
+source pt=(0, 0)
+target pt=(211032.382908834, 15080.5349718635)
+
+//source pt=(180, 0)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+//source pt=(-180, 0)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+source pt=(90, 0)
+target pt=(13134177.1508396, 6177121.18787919)
+
+source pt=(-90, 0)
+target pt=(-12737315.5018588, -5024551.26998497)
+
+source pt=(-76, -55)
+target pt=(-4136739.39189672, -7575387.70425967)
+
+source pt=(12, -15)
+target pt=(1488660.47363127, -1598119.54758333)
+
+source pt=(80, 6)
+target pt=(10574396.5655639, 4460153.54322033)
+
+source pt=(-45, 71)
+target pt=(-883600.984721384, 8542968.19775108)
+
+source pt=(175, 66.67)
+target pt=(2183639.6168315, 12049085.7097459)
+
+source pt=(60, -70)
+target pt=(1349789.99018817, -9202532.87896273)
+
+source pt=(0, 90)
+target pt=(1035836.77833683, 9710209.75633409)
+
+source pt=(0, -90)
+target pt=(-1028506.66702354, -9688921.56732347)
+
+source crs=_Sphere1_
+target crs=_RSO6_
+test tolerance=(1e-2, 1e-2)
+
+source pt=(-123.1, 49.2166666666)
+target pt=(-1845306.65662378, 14390559.9140574)
+
+source pt=(2.33656753, 43.96499314)
+target pt=(386142.800922615, 4675708.8750693)
+
+source pt=(151.283333333, -33.9166666666)
+target pt=(-1745100.27931658, -16377474.2465827)
+
+source pt=(-47.95, -15.75)
+target pt=(-4835060.42929191, -2404648.77988401)
+
+source pt=(139.733333333, 35.6833333333)
+target pt=(6108886.27568257, 12586164.8561957)
+
+source pt=(18.45, -33.9166666666)
+target pt=(1899445.39531578, -3845706.28530267)
+
+source pt=(0, 0)
+target pt=(211259.69247414, 4520.34128617808)
+
+//source pt=(180, 0)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+//source pt=(-180, 0)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+source pt=(90, 0)
+target pt=(13133145.208209, 6177371.55382465)
+
+source pt=(-90, 0)
+target pt=(-12736348.1793039, -5024989.30624889)
+
+source pt=(-76, -55)
+target pt=(-4139103.79326235, -7584139.01431186)
+
+source pt=(12, -15)
+target pt=(1488944.77683965, -1608913.35480279)
+
+source pt=(80, 6)
+target pt=(10575616.0165661, 4456360.94440868)
+
+source pt=(-45, 71)
+target pt=(-886402.963390692, 8531100.94266454)
+
+source pt=(175, 66.67)
+target pt=(2178573.72886333, 12039250.3913979)
+
+source pt=(60, -70)
+target pt=(1346555.34616384, -9214799.25799388)
+
+source pt=(0, 90)
+target pt=(1032168.30104602, 9699566.8399919)
+
+source pt=(0, -90)
+target pt=(-1032168.30104602, -9699566.8399919)
+
+source crs=_Timbalai_
+target crs=_RSO7_
+test tolerance=(1e-2, 1e-2)
+
+//test point from epsg guidebook 7
+source pt=(115.805505444444000, 5.387253583333330)
+target pt=(679245.73, 596562.78)
+
+source crs=_Timbalai_
+target crs=_RSO8_
+test tolerance=(1e-2, 1e-2)
+
+//test point from epsg guidebook 7
+source pt=(115.805505444444000, 5.387253583333330)
+target pt=(679245.73, 596562.78)
+
+
+source crs=_Kertau_
+target crs=_RSO9_
+test tolerance=(1e-2, 1e-2)
+
+source pt=(-123.1, 49.2166666666)
+target pt=(-13688142.8666838, -9488645.28733202)
+
+source pt=(2.33656753, 43.96499314)
+target pt=(-3637795.9193948, -9553732.69266924)
+
+source pt=(151.283333333, -33.9166666666)
+target pt=(3295834.80881513, 6177161.69293192)
+
+source pt=(-47.95, -15.75)
+target pt=(-5705889.56385739, -18321332.9268442)
+
+source pt=(139.733333333, 35.6833333333)
+target pt=(-4773544.04909124, 1842445.62495767)
+
+source pt=(18.45, -33.9166666666)
+target pt=(16919812.1933113, -15187740.8551148)
+
+source pt=(0, 0)
+target pt=(330757.828756615, -13808184.1040764)
+
+source pt=(180, 0)
+target pt=(-914668.133738625, 10078249.284826)
+
+source pt=(-180, 0)
+target pt=(-914668.133738627, 10078249.284826)
+
+source pt=(90, 0)
+target pt=(1743215.55357381, -1096141.28151345)
+
+source pt=(-90, 0)
+target pt=(9435758.02673963, 17564785.6810123)
+
+source pt=(-76, -55)
+target pt=(11272421.5114804, 11384033.0442692)
+
+source pt=(12, -15)
+target pt=(4562495.5443765, -14226049.67649)
+
+source pt=(80, 6)
+target pt=(1506736.25252323, -2409762.28781215)
+
+source pt=(-45, 71)
+target pt=(-7531581.00628924, -8437979.64093285)
+
+source pt=(175, 66.67)
+target pt=(-9976184.2355032, -2760858.81199473)
+
+source pt=(60, -70)
+target pt=(10337525.8863128, 3889408.59029004)
+
+source pt=(0, 90)
+target pt=(-7725223.31412696, -5963906.31287421)
+
+source pt=(0, -90)
+target pt=(9887592.519427, 6921776.49197063)
+
+
+source crs=_Kertau_
+target crs=_RSO10_
+test tolerance=(1e-2, 1e-2)
+
+source pt=(-123.1, 49.2166666666)
+target pt=(14659789.3721672, -10397680.2726563)
+
+source pt=(2.33656753, 43.96499314)
+target pt=(11300057.7132204, -925303.944031894)
+
+source pt=(151.283333333, -33.9166666666)
+target pt=(-5851581.6134267, 239831.951358601)
+
+source pt=(-47.95, -15.75)
+target pt=(20248064.9002896, 114403.980690537)
+
+source pt=(139.733333333, 35.6833333333)
+target pt=(970951.985403633, -5872260.4755613)
+
+source pt=(18.45, -33.9166666666)
+target pt=(9600259.29298875, 20322472.0483086)
+
+source pt=(0, 0)
+target pt=(13949653.3225172, 4254408.28457562)
+
+source pt=(180, 0)
+target pt=(-8086558.86075517, -5047104.41413773)
+
+source pt=(-180, 0)
+target pt=(-8086558.86075517, -5047104.41413773)
+
+source pt=(90, 0)
+target pt=(1515898.661345, 1255606.09489238)
+
+source pt=(-90, 0)
+target pt=(-18649133.5475375, 2137014.5228705)
+
+source pt=(-76, -55)
+target pt=(-13462607.9180484, 5967809.19335856)
+
+source pt=(12, -15)
+target pt=(12902170.3786818, 8375693.91078286)
+
+source pt=(80, 6)
+target pt=(2831573.61508544, 1480377.14310515)
+
+source pt=(-45, 71)
+target pt=(11576293.1825004, -4966363.35226784)
+
+source pt=(175, 66.67)
+target pt=(7070256.81905559, -9197370.57820815)
+
+source pt=(60, -70)
+target pt=(-6097282.17517922, 7639754.83768066)
+
+source pt=(0, 90)
+target pt=(9315863.28841777, -5990566.88181325)
+
+source pt=(0, -90)
+target pt=(-8795433.59281052, 6184531.81239755)
+
+source crs=_Kertau_
+target crs=_RSO11_
+test tolerance=(1e-2, 1e-2)
+
+source pt=(-123.1, 49.2166666666)
+target pt=(-16396652.0810043, 2047077.3806015)
+
+source pt=(2.33656753, 43.96499314)
+target pt=(-8739477.02831326, -4463020.95534241)
+
+source pt=(151.283333333, -33.9166666666)
+target pt=(6683616.26202293, 3130691.35180367)
+
+source pt=(-47.95, -15.75)
+target pt=(-15959433.469716, -9850047.42388877)
+
+source pt=(139.733333333, 35.6833333333)
+target pt=(-2284188.35150101, 4997002.9431622)
+
+source pt=(18.45, -33.9166666666)
+target pt=(3387093.79054998, -21993097.3803098)
+
+source pt=(0, 0)
+target pt=(-8434097.13558882, -10273056.9952574)
+
+source pt=(180, 0)
+target pt=(5965754.64851492, 8825556.94571676)
+
+source pt=(-180, 0)
+target pt=(5965754.64851492, 8825556.94571676)
+
+source pt=(90, 0)
+target pt=(819051.87579606, -1442977.55506107)
+
+source pt=(-90, 0)
+target pt=(18706893.9275985, 7907450.8592924)
+
+source pt=(-76, -55)
+target pt=(16140948.5705278, 1992135.11646733)
+
+source pt=(12, -15)
+target pt=(-5460996.78626325, -13313269.1660192)
+
+source pt=(80, 6)
+target pt=(-206481.085359174, -2297263.66263789)
+
+source pt=(-45, 71)
+target pt=(-11005097.2197022, -1105427.72152872)
+
+source pt=(175, 66.67)
+target pt=(-9228589.01153744, 4814859.80873276)
+
+source pt=(60, -70)
+target pt=(10607325.2337004, -3148140.97555914)
+
+source pt=(0, 90)
+target pt=(-9563132.15284197, 914293.279488666)
+
+source pt=(0, -90)
+target pt=(12211824.7934351, -536000.801565599)
+
+source crs=_Kertau_
+target crs=_RSO12_
+test tolerance=(1e-2, 1e-2)
+
+source pt=(-123.1, 49.2166666666)
+target pt=(558781.273537301, 17320958.112856)
+
+source pt=(2.33656753, 43.96499314)
+target pt=(-4881419.03358019, 8870045.10007137)
+
+source pt=(151.283333333, -33.9166666666)
+target pt=(4685389.25864111, -5413247.66966492)
+
+source pt=(-47.95, -15.75)
+target pt=(-11176008.7617033, 15314109.4497795)
+
+source pt=(139.733333333, 35.6833333333)
+target pt=(5349256.84423142, 3722611.25936759)
+
+source pt=(18.45, -33.9166666666)
+target pt=(-20653686.7251048, -5468464.97444442)
+
+source pt=(0, 0)
+target pt=(-10600028.6034966, 7798933.41081961)
+
+source pt=(180, 0)
+target pt=(10235286.7492649, -3948509.7161553)
+
+source pt=(-180, 0)
+target pt=(10235286.7492649, -3948509.71615529)
+
+source pt=(90, 0)
+target pt=(-623728.553961341, -205097.253084269)
+
+source pt=(-90, 0)
+target pt=(11010342.8176163, -16699150.3669558)
+
+source pt=(-76, -55)
+target pt=(4807627.25731037, -14938083.7609683)
+
+source pt=(12, -15)
+target pt=(-13220322.6327436, 4449862.65452009)
+
+source pt=(80, 6)
+target pt=(-1606143.50714458, 698442.15821806)
+
+source pt=(-45, 71)
+target pt=(-1852963.19058738, 11559826.2031397)
+
+source pt=(175, 66.67)
+target pt=(4250272.37503924, 10581919.517859)
+
+source pt=(60, -70)
+target pt=(-1019351.33386111, -10132904.6764628)
+
+source pt=(0, 90)
+target pt=(339724.747213254, 10397649.0292891)
+
+source pt=(0, -90)
+target pt=(1782047.91985632, -11377837.3441406)
+
+///////////////////////////////////////
+// Two Point Elliptical tests
+
+set _TwoPoint1_=PROJCS["Hotine",GEOGCS["WGS84", DATUM["WGS84",   SPHEROID["WGS84", 6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]],PROJECTION["Hotine_Oblique_Mercator_Two_Point_Natural_Origin"],PARAMETER["False_Easting",1500.0],PARAMETER["False_Northing",0],PARAMETER["Longitude_Of_1st_Point",-150.0],PARAMETER["Latitude_Of_1st_Point",75.0],PARAMETER["Scale_Factor",0.94],PARAMETER["Longitude_Of_2nd_Point",-60],PARAMETER["Latitude_Of_2nd_Point",5.1],PARAMETER["Latitude_Of_Center",30.0],UNIT["Meter",1]]
+set _TwoPoint2_=PROJCS["Hotine",GEOGCS["WGS84", DATUM["WGS84",   SPHEROID["WGS84", 6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]],PROJECTION["Hotine_Oblique_Mercator_Two_Point_Center"],PARAMETER["False_Easting",0.0],PARAMETER["False_Northing",25899.0],PARAMETER["Longitude_Of_1st_Point",-90.0],PARAMETER["Latitude_Of_1st_Point",-50.0],PARAMETER["Longitude_Of_2nd_Point",-70],PARAMETER["Latitude_Of_2nd_Point",-40],PARAMETER["Scale_Factor",1.0],PARAMETER["Latitude_Of_Center",-5.0],UNIT["Meter",1]]
+set _TwoPoint3_=PROJCS["Hotine",GEOGCS["WGS84", DATUM["WGS84",   SPHEROID["WGS84", 6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]],PROJECTION["Hotine_Oblique_Mercator_Two_Point_Center"],PARAMETER["False_Easting",0.0],PARAMETER["False_Northing",25899.0],PARAMETER["Longitude_Of_1st_Point",120.1],PARAMETER["Latitude_Of_1st_Point",78.0],PARAMETER["Longitude_Of_2nd_Point",180],PARAMETER["Latitude_Of_2nd_Point",20],PARAMETER["Scale_Factor",0.88],PARAMETER["Latitude_Of_Center",-30.0],UNIT["Meter",1]]
+set _TwoPoint4_=PROJCS["Hotine",GEOGCS["WGS84", DATUM["WGS84",   SPHEROID["WGS84", 6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]],PROJECTION["Hotine_Oblique_Mercator_Two_Point_Natural_Origin"],PARAMETER["False_Easting",0.0],PARAMETER["False_Northing",25899.0],PARAMETER["Longitude_Of_1st_Point",78.0],PARAMETER["Latitude_Of_1st_Point",-12.0],PARAMETER["Longitude_Of_2nd_Point",88.0],PARAMETER["Latitude_Of_2nd_Point",-27],PARAMETER["Scale_Factor",1.0],PARAMETER["Latitude_Of_Center",5.0],UNIT["Meter",1]]
+set _TwoPoint5_=PROJCS["Hotine lat of center 0.0",GEOGCS["WGS84", DATUM["WGS84",   SPHEROID["WGS84", 6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]],PROJECTION["Hotine_Oblique_Mercator_Two_Point_Center"],PARAMETER["False_Easting",0.0],PARAMETER["False_Northing",25899.0],PARAMETER["Longitude_Of_1st_Point",-140],PARAMETER["Latitude_Of_1st_Point",-10.0],PARAMETER["Longitude_Of_2nd_Point",-100],PARAMETER["Latitude_Of_2nd_Point",-40],PARAMETER["Scale_Factor",1.0],PARAMETER["Latitude_Of_Center",0.0],UNIT["Meter",1]]
+set _TwoPoint6_=PROJCS["Hotine",GEOGCS["WGS84", DATUM["WGS84",   SPHEROID["WGS84", 6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]],PROJECTION["Hotine_Oblique_Mercator_Two_Point_Natural_Origin"],PARAMETER["False_Easting",0.0],PARAMETER["False_Northing",25899.0],PARAMETER["Longitude_Of_1st_Point",1.0],PARAMETER["Latitude_Of_1st_Point",20.0],PARAMETER["Longitude_Of_2nd_Point",1.0],PARAMETER["Latitude_Of_2nd_Point", 40],PARAMETER["Scale_Factor",1.0],PARAMETER["Latitude_Of_Center",55.0],UNIT["Meter",1]]
+set _TwoPoint7_=PROJCS["lat of center 0.0",GEOGCS["WGS84", DATUM["WGS84",   SPHEROID["WGS84", 6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]],PROJECTION["Hotine_Oblique_Mercator_Two_Point_Center"],PARAMETER["False_Easting",0.0],PARAMETER["False_Northing",25899.0],PARAMETER["Longitude_Of_1st_Point",-140],PARAMETER["Latitude_Of_1st_Point",-10.0],PARAMETER["Longitude_Of_2nd_Point",-100],PARAMETER["Latitude_Of_2nd_Point",-40],PARAMETER["Scale_Factor",0.95],PARAMETER["Latitude_Of_Center",0.0],UNIT["Meter",1]]
+set _TwoPoint8_=PROJCS["Snyder test",GEOGCS["NAD27",DATUM["North_American_Datum_1927",SPHEROID["Clarke 1866",6378206.4,294.978698213901,AUTHORITY["EPSG","7008"]],TOWGS84[-3,142,183,0,0,0,0],AUTHORITY["EPSG","6267"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Lat",NORTH],AXIS["Long",EAST],AUTHORITY["EPSG","4267"]],PROJECTION["Hotine_Oblique_Mercator_Two_Point_Natural_Origin"],PARAMETER["False_Easting",4000000],PARAMETER["False_Northing",500000],PARAMETER["Longitude_Of_1st_Point",-122.3],PARAMETER["Latitude_Of_1st_Point",47.5],PARAMETER["Longitude_Of_2nd_Point",-80.2],PARAMETER["Latitude_Of_2nd_Point", 25.7],PARAMETER["Scale_Factor",0.9996],PARAMETER["Latitude_Of_Center",40.0],UNIT["Meter",1]]
+
+source crs=_WGS84_
+target crs=_TwoPoint1_
+test tolerance=(1e-2, 1e-2)
+
+source pt=(-123.1, 49.2166666666)
+target pt=(-4510274.27930028, 6509866.3327793)
+
+source pt=(2.33656753, 43.96499314)
+target pt=(4372739.57667765, 7438575.04897666)
+
+source pt=(151.283333333, -33.9166666666)
+target pt=(1206058.10329678, -15961614.8072096)
+
+source pt=(-47.95, -15.75)
+target pt=(1150992.71701551, -1603555.76837394)
+
+source pt=(139.733333333, 35.6833333333)
+target pt=(-4929964.94985348, 13882232.7587142)
+
+source pt=(18.45, -33.9166666666)
+target pt=(6703694.4182581, -6236960.84126447)
+
+source pt=(0, 0)
+target pt=(7430633.15574762, -191370.714533647)
+
+source pt=(180, 0)
+target pt=(-11552221.0700934, 13574564.6402484)
+
+source pt=(-180, 0)
+target pt=(-11552221.0700934, 13574564.6402484)
+
+source pt=(90, 0)
+target pt=(8479631.9192606, -16083210.6154082)
+
+source pt=(-90, 0)
+target pt=(-3445809.86967476, -87527.3742290307)
+
+source pt=(-76, -55)
+target pt=(-597326.342605588, -6056025.95057023)
+
+source pt=(12, -15)
+target pt=(8289344.09099853, -3606350.70744663)
+
+source pt=(80, 6)
+target pt=(9978855.72597182, -16011115.6053749)
+
+source pt=(-45, 71)
+target pt=(-309901.979504744, 7615974.14818107)
+
+source pt=(175, 66.67)
+target pt=(-3637656.610152, 10214736.8938192)
+
+source pt=(60, -70)
+target pt=(3380205.08495607, -9838772.98467387)
+
+source pt=(0, 90)
+target pt=(-1295360.07281678, 9446210.10980641)
+
+source pt=(0, -90)
+target pt=(1298360.07281678, -9446210.10980641)
+
+
+source crs=_WGS84_
+target crs=_TwoPoint2_
+test tolerance=(1e-2, 1e-2)
+
+source pt=(-123.1, 49.2166666666)
+target pt=(-4885902.20970559, 15981488.8501134)
+
+source pt=(2.33656753, 43.96499314)
+target pt=(3671785.72978278, 5710924.89055357)
+
+source pt=(151.283333333, -33.9166666666)
+target pt=(-7703502.17469109, -13902371.6199079)
+
+source pt=(-47.95, -15.75)
+target pt=(-1059765.79399252, -1178301.94405426)
+
+source pt=(139.733333333, 35.6833333333)
+target pt=(8275181.01862459, 15006440.7125545)
+
+source pt=(18.45, -33.9166666666)
+target pt=(6650629.19778492, -5001647.21676572)
+
+source pt=(0, 0)
+target pt=(4404844.26851544, 694000.296359266)
+
+source pt=(180, 0)
+target pt=(-12299601.2662403, -12063627.1733956)
+
+source pt=(-180, 0)
+target pt=(-12299601.2662403, -12063627.1733956)
+
+source pt=(90, 0)
+target pt=(13581431.6351627, 10438316.3195513)
+
+source pt=(-90, 0)
+target pt=(-6433522.51155721, -36739.8830792647)
+
+source pt=(-76, -55)
+target pt=(-2880080.77439511, -5827120.12813063)
+
+source pt=(12, -15)
+target pt=(6195447.6491468, -1312698.62965962)
+
+source pt=(80, 6)
+target pt=(12658096.2037375, 8938966.10132587)
+
+source pt=(-45, 71)
+target pt=(1107684.70197449, 9094924.3115257)
+
+source pt=(175, 66.67)
+target pt=(3548180.87386151, 14366588.6552394)
+
+source pt=(60, -70)
+target pt=(449839.813891904, -12037547.6253486)
+
+source pt=(0, 90)
+target pt=(2721676.84298064, 11122594.2641142)
+
+source pt=(0, -90)
+target pt=(-1951473.93635078, -9966301.54498341)
+
+source crs=_WGS84_
+target crs=_TwoPoint3_
+test tolerance=(1e-2, 1e-2)
+
+source pt=(-123.1, 49.2166666666)
+target pt=(2410214.14754215, 9484283.39166592)
+
+source pt=(2.33656753, 43.96499314)
+target pt=(-2750487.63572001, 16183581.295961)
+
+source pt=(151.283333333, -33.9166666666)
+target pt=(-3288006.1522284, -1002682.08390402)
+
+source pt=(-47.95, -15.75)
+target pt=(7087681.54295204, -9926059.73219893)
+
+source pt=(139.733333333, 35.6833333333)
+target pt=(-4341559.51652709, 7060207.31975554)
+
+source pt=(18.45, -33.9166666666)
+target pt=(768806.558620074, -11542921.1518132)
+
+//source pt=(0, 0)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+source pt=(180, 0)
+target pt=(-1036929.83393008, 2923909.16843484)
+
+source pt=(-180, 0)
+target pt=(-1036929.83393008, 2923909.16843484)
+
+source pt=(90, 0)
+target pt=(-15543121.776436, 10761224.725158)
+
+source pt=(-90, 0)
+target pt=(13386764.1559706, -1015555.38654667)
+
+source pt=(-76, -55)
+target pt=(3724930.24680488, -5743171.93233592)
+
+source pt=(12, -15)
+target pt=(1915802.78568974, -13170491.6166239)
+
+source pt=(80, 6)
+target pt=(-12410116.1377494, 13420151.3456486)
+
+source pt=(-45, 71)
+target pt=(-410078.408400043, 13387908.0282197)
+
+source pt=(175, 66.67)
+target pt=(-1452292.06055889, 9447374.43892846)
+
+source pt=(60, -70)
+target pt=(-1158266.27829643, -7440584.9654565)
+
+source pt=(0, 90)
+target pt=(-1518772.06235302, 11764670.5040077)
+
+source pt=(0, -90)
+target pt=(221153.454379215, -5882117.04964733)
+
+
+source crs=_WGS84_
+target crs=_TwoPoint4_
+test tolerance=(1e-2, 1e-2)
+
+source pt=(-123.1, 49.2166666666)
+target pt=(-4570781.49702406, 15040313.9176536)
+
+source pt=(2.33656753, 43.96499314)
+target pt=(-5469398.14913844, 6409383.69320539)
+
+source pt=(151.283333333, -33.9166666666)
+target pt=(7064676.51138347, -6304454.0550754)
+
+source pt=(-47.95, -15.75)
+target pt=(-15985640.0632519, 11084133.123654)
+
+source pt=(139.733333333, 35.6833333333)
+target pt=(8690898.73230759, 8036371.61289123)
+
+source pt=(18.45, -33.9166666666)
+target pt=(-5987919.59608331, -5601708.78881529)
+
+source pt=(0, 0)
+target pt=(-9466201.97331072, 1689679.78206321)
+
+source pt=(180, 0)
+target pt=(13277403.0661721, -8314768.78350067)
+
+source pt=(-180, 0)
+target pt=(13277403.0661721, -8314768.78350067)
+
+source pt=(90, 0)
+target pt=(2145358.95474159, 12953.9918416905)
+
+source pt=(-90, 0)
+target pt=(-11047221.2961559, 15488192.8727791)
+
+source pt=(-76, -55)
+target pt=(2779952.14626704, -15185101.5925702)
+
+source pt=(12, -15)
+target pt=(-8037635.47017752, -1924570.96401596)
+
+source pt=(80, 6)
+target pt=(1003105.70353297, 698727.381534187)
+
+source pt=(-45, 71)
+target pt=(-4258012.93002593, 10194979.4941171)
+
+source pt=(175, 66.67)
+target pt=(386517.47577556, 12984419.511808)
+
+source pt=(60, -70)
+target pt=(497998.871709642, -8245650.91265794)
+
+source pt=(0, 90)
+target pt=(-1992461.5701303, 10415800.506292)
+
+source pt=(0, -90)
+target pt=(1992461.5701303, -10364002.506292)
+
+
+source crs=_WGS84_
+target crs=_TwoPoint5_
+test tolerance=(1e-2, 1e-2)
+
+source pt=(-123.1, 49.2166666666)
+target pt=(1902979.2687692, 6543559.62827259)
+
+source pt=(2.33656753, 43.96499314)
+target pt=(-7361057.55752901, 16674654.942992)
+
+source pt=(151.283333333, -33.9166666666)
+target pt=(-7784413.33977698, -5618681.89308369)
+
+source pt=(-47.95, -15.75)
+target pt=(10369387.521754, -5997280.83983389)
+
+source pt=(139.733333333, 35.6833333333)
+target pt=(-6421715.93559527, 5390276.28840737)
+
+source pt=(18.45, -33.9166666666)
+target pt=(9761808.11581776, -13141693.2586968)
+
+source pt=(0, 0)
+target pt=(13663614.1639103, -11327713.3310762)
+
+source pt=(180, 0)
+target pt=(-3527369.00654412, 116197.968040405)
+
+source pt=(-180, 0)
+target pt=(-3527369.00654412, 116197.968040405)
+
+source pt=(90, 0)
+target pt=(-13362167.5223945, 7702261.95395129)
+
+source pt=(-90, 0)
+target pt=(7167332.5890227, -748286.144106695)
+
+source pt=(-76, -55)
+target pt=(5319886.19607426, -7197639.63820952)
+
+source pt=(12, -15)
+target pt=(11916159.8025271, -12635768.992001)
+
+source pt=(80, 6)
+target pt=(-12810688.0162798, 9169598.5297664)
+
+source pt=(-45, 71)
+target pt=(-1157351.9203247, 13866159.7767559)
+
+source pt=(175, 66.67)
+target pt=(-2895109.95676078, 7737365.53351185)
+
+source pt=(60, -70)
+target pt=(4115477.87424846, -13779802.3936446)
+
+source pt=(0, 90)
+target pt=(-2872583.62809862, 10896848.0032518)
+
+source pt=(0, -90)
+target pt=(2872583.62809862, -10845050.0032518)
+
+
+source crs=_WGS84_
+target crs=_TwoPoint6_
+test tolerance=(1e-2, 1e-2)
+
+source pt=(-123.1, 49.2166666666)
+target pt=(-3865239.40322647, 12937362.3516807)
+
+source pt=(2.33656753, 43.96499314)
+target pt=(107265.918140694, 4925720.95913876)
+
+source pt=(151.283333333, -33.9166666666)
+target pt=(2800248.07488637, -15872023.6520706)
+
+source pt=(-47.95, -15.75)
+target pt=(-5891788.83867309, -2514776.31660195)
+
+source pt=(139.733333333, 35.6833333333)
+target pt=(3813236.98321605, 15216546.7003157)
+
+source pt=(18.45, -33.9166666666)
+target pt=(1630930.6777066, -3853152.17780877)
+
+source pt=(0, 0)
+target pt=(-111492.21335506, 52505.3412871633)
+
+//source pt=(180, 0)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+//source pt=(-180, 0)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+//source pt=(90, 0)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+//source pt=(-90, 0)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+source pt=(-76, -55)
+target pt=(-4070549.21380886, -8997686.65286966)
+
+source pt=(12, -15)
+target pt=(1192738.45326535, -1639267.45390148)
+
+source pt=(80, 6)
+target pt=(14079875.7045639, 3337757.53988237)
+
+source pt=(-45, 71)
+target pt=(-1526441.51548705, 8555055.82494618)
+
+source pt=(175, 66.67)
+target pt=(262034.480199101, 12647288.7055193)
+
+source pt=(60, -70)
+target pt=(1948082.31439775, -8809604.08041219)
+
+source pt=(0, 90)
+target pt=(-7.08925770116474E-10, 10056117.8926876)
+
+source pt=(0, -90)
+target pt=(-7.08925770116474E-10, -10004319.8926876)
+
+source crs=_WGS84_
+target crs=_TwoPoint7_
+test tolerance=(1e-2, 1e-2)
+
+source pt=(-123.1, 49.2166666666)
+target pt=(1807830.30533074, 6217676.59685896)
+
+source pt=(2.33656753, 43.96499314)
+target pt=(-6993004.67965256, 15842217.1458424)
+
+source pt=(151.283333333, -33.9166666666)
+target pt=(-7395192.67278813, -5336452.8484295)
+
+source pt=(-47.95, -15.75)
+target pt=(9850918.14566634, -5696121.8478422)
+
+source pt=(139.733333333, 35.6833333333)
+target pt=(-6100630.1388155, 5122057.423987)
+
+source pt=(18.45, -33.9166666666)
+target pt=(9273717.71002687, -12483313.645762)
+
+source pt=(0, 0)
+target pt=(12980433.4557148, -10760032.7145224)
+
+source pt=(180, 0)
+target pt=(-3351000.55621691, 111683.019638385)
+
+source pt=(-180, 0)
+target pt=(-3351000.55621691, 111683.019638385)
+
+source pt=(90, 0)
+target pt=(-12694059.1462747, 7318443.80625372)
+
+source pt=(-90, 0)
+target pt=(6808965.95957157, -709576.886901359)
+
+source pt=(-76, -55)
+target pt=(5053891.88627054, -6836462.70629904)
+
+source pt=(12, -15)
+target pt=(11320351.8124007, -12002685.592401)
+
+source pt=(80, 6)
+target pt=(-12170153.6154658, 8712413.55327808)
+
+source pt=(-45, 71)
+target pt=(-1099484.32430846, 13174146.7379181)
+
+source pt=(175, 66.67)
+target pt=(-2750354.45892274, 7351792.20683625)
+
+source pt=(60, -70)
+target pt=(3909703.98053604, -13089517.3239624)
+
+source pt=(0, 90)
+target pt=(-2728954.44669369, 10353300.5530892)
+
+source pt=(0, -90)
+target pt=(2728954.44669369, -10301502.5530892)
+
+
+source crs=_NAD27_
+target crs=_TwoPoint8_
+test tolerance=(1e-1, 1e-1)
+
+//from Snyder's "Map Projections", p. 274
+source pt=(40.8, -74)
+target pt=(963436.1, 4369142.8)
+
+
+///////////////////////////////////////
+// Two Point Spherical tests
+
+set _TwoPoint9_=PROJCS["Sphere_Hotine",GEOGCS["GCS_Sphere",DATUM["D_Sphere",SPHEROID["Sphere",6371000,0]],PRIMEM["Greenwich",0],UNIT["Degree",0.017453292519943295]],PROJECTION["Hotine_Oblique_Mercator_Two_Point_Natural_Origin"],PARAMETER["False_Easting",1000.0],PARAMETER["False_Northing",0],PARAMETER["Longitude_Of_1st_Point",10],PARAMETER["Latitude_Of_1st_Point",20],PARAMETER["Scale_Factor",0.966],PARAMETER["Longitude_Of_2nd_Point",180.0],PARAMETER["Latitude_Of_2nd_Point",40.0],PARAMETER["Latitude_Of_Center",25.0],UNIT["Meter",1]]
+set _TwoPoint10_=PROJCS["Sphere_Hotine",GEOGCS["GCS_Sphere",DATUM["D_Sphere",SPHEROID["Sphere",6371000,0]],PRIMEM["Greenwich",0],UNIT["Degree",0.017453292519943295]],PROJECTION["Hotine_Oblique_Mercator_Two_Point_Center"],PARAMETER["False_Easting",0],PARAMETER["False_Northing",0],PARAMETER["Longitude_Of_1st_Point",170],PARAMETER["Latitude_Of_1st_Point",-60],PARAMETER["Scale_Factor",1],PARAMETER["Longitude_Of_2nd_Point",150],PARAMETER["Latitude_Of_2nd_Point",-70],PARAMETER["Latitude_Of_Center",-66],UNIT["Meter",1]]
+set _TwoPoint11_=PROJCS["Sphere_Hotine lat of 1st pt 0.0000001",GEOGCS["GCS_Sphere",DATUM["D_Sphere",SPHEROID["Sphere",6371000,0]],PRIMEM["Greenwich",0],UNIT["Degree",0.017453292519943295]],PROJECTION["Hotine_Oblique_Mercator_Two_Point_Natural_Origin"],PARAMETER["False_Easting",0],PARAMETER["False_Northing",0],PARAMETER["Longitude_Of_1st_Point",0],PARAMETER["Latitude_Of_1st_Point",0.0000001],PARAMETER["Scale_Factor",1],PARAMETER["Longitude_Of_2nd_Point",60.0],PARAMETER["Latitude_Of_2nd_Point",60.0],PARAMETER["Latitude_Of_Center",40],UNIT["Meter",1]]
+set _TwoPoint12_=PROJCS["Snyder test",GEOGCS["Sphere",DATUM["Sphere",SPHEROID["Sphere",1.0,0]],PRIMEM["Greenwich",0],UNIT["Degree",0.017453292519943295]],PROJECTION["Hotine_Oblique_Mercator_Two_Point_Natural_Origin"],PARAMETER["False_Easting",0],PARAMETER["False_Northing",0],PARAMETER["Longitude_Of_1st_Point",0],PARAMETER["Latitude_Of_1st_Point",45.0],PARAMETER["Scale_Factor",1],PARAMETER["Longitude_Of_2nd_Point",-90],PARAMETER["Latitude_Of_2nd_Point",0.0],PARAMETER["Latitude_Of_Center",45],UNIT["Meter",1]]
+
+
+source crs=_Sphere3_
+target crs=_TwoPoint9_
+test tolerance=(1e-2, 1e-2)
+
+source pt=(-123.1, 49.2166666666)
+target pt=(-2172180.59762069, 13600006.9639057)
+
+source pt=(2.33656753, 43.96499314)
+target pt=(-224570.650491496, 4758630.85537371)
+
+source pt=(151.283333333, -33.9166666666)
+target pt=(1387061.37069384, -15928123.3738395)
+
+source pt=(-47.95, -15.75)
+target pt=(-6371881.41276055, -2743512.33014757)
+
+source pt=(139.733333333, 35.6833333333)
+target pt=(5597285.29028032, 13219494.275649)
+
+source pt=(18.45, -33.9166666666)
+target pt=(948897.803423119, -3743945.06717804)
+
+source pt=(0, 0)
+target pt=(-750374.694884253, 10996.0561540301)
+
+//source pt=(180, 0)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+//source pt=(-180, 0)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+source pt=(90, 0)
+target pt=(15186505.6396855, 2952627.43773144)
+
+source pt=(-90, 0)
+target pt=(-16560373.1613699, -11544423.4659891)
+
+source pt=(-76, -55)
+target pt=(-4366465.69412707, -8602321.69707714)
+
+source pt=(12, -15)
+target pt=(496736.180866028, -1627470.66221108)
+
+source pt=(80, 6)
+target pt=(10591470.9311789, 2605546.18129339)
+
+source pt=(-45, 71)
+target pt=(-1181652.91434773, 8611932.3446489)
+
+source pt=(175, 66.67)
+target pt=(1611680.57659828, 12015322.9645951)
+
+source pt=(60, -70)
+target pt=(1304519.68995253, -8584582.32737176)
+
+source pt=(0, 90)
+target pt=(652705.314793255, 9686093.74181942)
+
+source pt=(0, -90)
+target pt=(-650705.314793255, -9686093.74181942)
+
+source crs=_Sphere3_
+target crs=_TwoPoint10_
+test tolerance=(1e-2, 1e-2)
+
+source pt=(-123.1, 49.2166666666)
+target pt=(10248452.9520236, 10265831.673001)
+
+source pt=(2.33656753, 43.96499314)
+target pt=(14634844.5698618, 17481486.9162618)
+
+source pt=(151.283333333, -33.9166666666)
+target pt=(-831232.623449633, 3657732.36792815)
+
+source pt=(-47.95, -15.75)
+target pt=(309538.449276488, -15329508.9461339)
+
+source pt=(139.733333333, 35.6833333333)
+target pt=(2416833.29843076, 14339653.4697568)
+
+source pt=(18.45, -33.9166666666)
+target pt=(-4722694.9144686, -7033251.50973865)
+
+source pt=(0, 0)
+target pt=(19045660.0480144, 19780290.3486129)
+
+source pt=(180, 0)
+target pt=(3231252.9626594, 6909164.88826271)
+
+source pt=(-180, 0)
+target pt=(3231252.9626594, 6909164.88826271)
+
+source pt=(90, 0)
+target pt=(-12717682.9270744, 486107.107040233)
+
+source pt=(-90, 0)
+target pt=(15577361.1741792, 2940007.38788105)
+
+source pt=(-76, -55)
+target pt=(3844535.41484355, -5441088.71748474)
+
+source pt=(12, -15)
+target pt=(-6017710.6011169, -8844456.92103483)
+
+source pt=(80, 6)
+target pt=(-13301957.3940381, -2433495.83887537)
+
+source pt=(-45, 71)
+target pt=(12252420.0285703, 14347940.2653621)
+
+source pt=(175, 66.67)
+target pt=(7816759.51474005, 13435526.6283069)
+
+source pt=(60, -70)
+target pt=(-2277291.23268416, -2961525.71140356)
+
+source pt=(0, 90)
+target pt=(10175983.028093, 14844119.1979515)
+
+source pt=(0, -90)
+target pt=(-39712.8460703311, -2700087.87896449)
+
+
+source crs=_Sphere3_
+target crs=_TwoPoint11_
+test tolerance=(1e-2, 1e-2)
+
+source pt=(-123.1, 49.2166666666)
+target pt=(2293778.66585586, 16088256.3083436)
+
+source pt=(2.33656753, 43.96499314)
+target pt=(1175777.50428239, 4824683.95007049)
+
+source pt=(151.283333333, -33.9166666666)
+target pt=(-6505177.23097969, -16717101.2181183)
+
+source pt=(-47.95, -15.75)
+target pt=(-5634062.62217356, -1578089.99317817)
+
+source pt=(139.733333333, 35.6833333333)
+target pt=(9490934.52507529, 10887673.9415079)
+
+source pt=(18.45, -33.9166666666)
+target pt=(1056178.70332706, -4301655.37844491)
+
+source pt=(0, 0)
+target pt=(5.48893959909699E-04, -8.84394358248697E-05)
+
+//source pt=(180, 0)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+//source pt=(-180, 0)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+source pt=(90, 0)
+target pt=(13309737.3070546, 2755723.88223389)
+
+source pt=(-90, 0)
+target pt=(-13309737.305603, -2755723.88021519)
+
+source pt=(-76, -55)
+target pt=(-6003913.27585636, -6906958.90079426)
+
+source pt=(12, -15)
+target pt=(1021144.83194988, -1902265.53364482)
+
+source pt=(80, 6)
+target pt=(10807487.6727642, 2089719.97318765)
+
+source pt=(-45, 71)
+target pt=(900071.709538769, 9320394.73431544)
+
+source pt=(175, 66.67)
+target pt=(5413062.0459051, 11891120.6450354)
+
+source pt=(60, -70)
+target pt=(-622127.110697751, -10019043.7661361)
+
+source pt=(0, 90)
+target pt=(3353237.80380079, 9914930.86366228)
+
+source pt=(0, -90)
+target pt=(-3353237.80380079, -9914930.86366227)
+
+
+source crs=_Sphere4_
+target crs=_TwoPoint12_
+test tolerance=(1e-2, 1e-2)
+
+//Snyder test point
+source pt=(120.0,-30.0)
+target pt=(-2.4201335,-0.0474026)

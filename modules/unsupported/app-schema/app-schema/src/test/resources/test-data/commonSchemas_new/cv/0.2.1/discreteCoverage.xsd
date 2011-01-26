@@ -1,0 +1,387 @@
+<?xml version="1.0"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:gmd="http://www.isotc211.org/2005/gmd" targetNamespace="http://www.opengis.net/cv/0.2.1" xmlns:cv="http://www.opengis.net/cv/0.2.1" xmlns:gml="http://www.opengis.net/gml" elementFormDefault="qualified"
+        attributeFormDefault="unqualified" version="0.2.1">
+	<annotation>
+		<documentation>An explicit representation of the CV_DiscreteCoverage, interleaved model, from ISO 19123
+		All items are XML encoded 
+			
+Copyright (c) 2007 Open Geospatial Consortium - see http://www.opengeospatial.org/about/?page=ipr</documentation>
+	</annotation>
+	<!-- ============== -->
+	<import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+	<!-- ============== -->
+	<!-- ============== -->
+	<complexType name="CV_DomainObjectType">
+		<annotation>
+			<documentation>Explicit implementation of ISO 19123 CV_DomainObject</documentation>
+		</annotation>
+		<sequence>
+			<element name="spatialElement" minOccurs="0" maxOccurs="unbounded" type="gml:GeometryPropertyType"/>
+			<element name="temporalElement" minOccurs="0" maxOccurs="unbounded" type="cv:TimeGeometricPrimitivePropertyType"/>
+		</sequence>
+	</complexType>
+	<!-- ............... -->
+	<element name="CV_DomainObject" type="cv:CV_DomainObjectType">
+		<annotation>
+			<documentation>Explicit implementation of ISO 19123 CV_DomainObject</documentation>
+		</annotation>
+	</element>
+	<!-- ............... -->
+	<complexType name="CV_DomainObjectPropertyType">
+		<sequence minOccurs="0">
+			<element ref="cv:CV_DomainObject"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ============== -->
+	<!-- ============== -->
+	<!-- === Implementations of CV_GeometryValuePair and specializations === -->
+	<!-- ============== -->
+	<complexType name="CV_AbstractGeometryValuePairType">
+		<annotation>
+			<documentation>Head of substitution group of ISO 19123 CV_GeometryValuePair and specializations
+	 - concrete types derived from this must add geometry and value properties of a suitable type</documentation>
+		</annotation>
+		<!--
+		<sequence>
+			<element name="geometry"/>
+			<element name="value"/>
+		</sequence>
+			-->
+	</complexType>
+	<!-- ........... -->
+	<element name="CV_AbstractGeometryValuePair" type="cv:CV_AbstractGeometryValuePairType" abstract="true">
+		<annotation>
+			<documentation>Head of substitution group of ISO 19123 CV_GeometryValuePair and specializations
+	 - concrete types derived from this must add geometry and value properties of a suitable type</documentation>
+		</annotation>
+	</element>
+	<!-- ........... -->
+	<complexType name="CV_AbstractGeometryValuePairPropertyType">
+		<sequence>
+			<element ref="cv:CV_AbstractGeometryValuePair"/>
+		</sequence>
+	</complexType>
+	<!-- ============== -->
+	<complexType name="CV_GeometryValuePairType">
+		<annotation>
+			<documentation>Explicit implementation of ISO 19123 CV_GeometryValuePair - this is the most general case, and is a literal encoding of the model. 
+			It is implemented as a sibling of specialized versions because of XML Schema derivation by restriction gotchas.</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="cv:CV_AbstractGeometryValuePairType">
+				<sequence>
+					<element name="geometry" type="cv:CV_DomainObjectPropertyType"/>
+					<element name="value">
+						<annotation>
+							<documentation>Implicitly xs:anyType. Use xsi:type attribute to indicate the datatype at run-time.</documentation>
+						</annotation>
+					</element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ........... -->
+	<element name="CV_GeometryValuePair" type="cv:CV_GeometryValuePairType" substitutionGroup="cv:CV_AbstractGeometryValuePair">
+		<annotation>
+			<documentation>Explicit implementation of ISO 19123 CV_GeometryValuePair - this is the most general case, and is a literal encoding of the model. 
+			It is implemented as a sibling of specialized versions because of XML Schema derivation by restriction gotchas.</documentation>
+		</annotation>
+	</element>
+	<!-- ........... -->
+	<complexType name="CV_GeometryValuePairPropertyType">
+		<sequence>
+			<element ref="cv:CV_GeometryValuePair"/>
+		</sequence>
+	</complexType>
+	<!-- ============== -->
+	<complexType name="CV_PointValuePairType">
+		<annotation>
+			<documentation>Specialization of ISO 19123 CV_GeometryValuePair. 
+			Explicit implementation of ISO 19123 CV_PointValuePair - this is a literal encoding of the model.</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="cv:CV_AbstractGeometryValuePairType">
+				<sequence>
+					<element name="geometry" type="gml:PointPropertyType"/>
+					<element name="value">
+						<annotation>
+							<documentation>Implicitly xs:anyType. Use xsi:type attribute to indicate the datatype at run-time.</documentation>
+						</annotation>
+					</element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ........... -->
+	<element name="CV_PointValuePair" type="cv:CV_PointValuePairType" substitutionGroup="cv:CV_AbstractGeometryValuePair">
+		<annotation>
+			<documentation>Specialization of ISO 19123 CV_GeometryValuePair. 
+			Explicit implementation of ISO 19123 CV_PointValuePair - this is a literal encoding of the model.</documentation>
+		</annotation>
+	</element>
+	<!-- ........... -->
+	<complexType name="CV_PointValuePairPropertyType">
+		<sequence>
+			<element ref="cv:CV_PointValuePair"/>
+		</sequence>
+	</complexType>
+	<!-- ============== -->
+	<complexType name="CV_TimeInstantValuePairType">
+		<annotation>
+			<documentation>Specialization of ISO 19123 CV_GeometryValuePair. 
+			Explicit implementation of CV_TimeInstantValuePair - this is the temporal equivalent to CV_PointValuePair.</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="cv:CV_AbstractGeometryValuePairType">
+				<sequence>
+					<element name="geometry" type="gml:TimeInstantPropertyType"/>
+					<element name="value">
+						<annotation>
+							<documentation>Implicitly xs:anyType. Use xsi:type attribute to indicate the datatype at run-time.</documentation>
+						</annotation>
+					</element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ........... -->
+	<element name="CV_TimeInstantValuePair" type="cv:CV_TimeInstantValuePairType" substitutionGroup="cv:CV_AbstractGeometryValuePair">
+		<annotation>
+			<documentation>Specialization of ISO 19123 CV_GeometryValuePair. 
+			Explicit implementation of CV_TimeInstantValuePair - this is the temporal equivalent to CV_PointValuePair.</documentation>
+		</annotation>
+	</element>
+	<!-- ........... -->
+	<complexType name="CV_TimeInstantValuePairPropertyType">
+		<sequence>
+			<element ref="cv:CV_TimeInstantValuePair"/>
+		</sequence>
+	</complexType>
+	<!-- ============== -->
+	<complexType name="CV_ElementValuePairType">
+		<annotation>
+			<documentation>Specialization of ISO 19123 CV_GeometryValuePair. 
+			Explicit implementation of CV_ElementValuePair -  the "geometry" property carries a pointer to an object which acts as the geometry-provider.</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="cv:CV_AbstractGeometryValuePairType">
+				<sequence>
+					<element name="geometry" type="gml:ReferenceType">
+						<annotation>
+							<documentation>In a CV_ElementValuePair the "geometry" property carries a pointer to an object which acts as the geometry-provider.</documentation>
+						</annotation>
+					</element>
+					<element name="value">
+						<annotation>
+							<documentation>Implicitly xs:anyType. Use xsi:type attribute to indicate the datatype at run-time.</documentation>
+						</annotation>
+					</element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ........... -->
+	<element name="CV_ElementValuePair" type="cv:CV_ElementValuePairType" substitutionGroup="cv:CV_AbstractGeometryValuePair">
+		<annotation>
+			<documentation>Specialization of ISO 19123 CV_GeometryValuePair. 
+			Explicit implementation of CV_ElementValuePair -  the "geometry" property carries a pointer to an object which acts as the geometry-provider.</documentation>
+		</annotation>
+	</element>
+	<!-- ........... -->
+	<complexType name="CV_ElementValuePairPropertyType">
+		<sequence>
+			<element ref="cv:CV_ElementValuePair"/>
+		</sequence>
+	</complexType>
+	<!-- ============== -->
+	<!-- === Implementations of CV_DiscreteCoverage and specializations === -->
+	<!-- ============== -->
+	<complexType name="CV_AbstractDiscreteCoverageType">
+		<annotation>
+			<documentation>Head of substitution group implementing ISO 19123 CV_DiscreteCoverage and specializations. 
+			Includes the standard elements defined for CV_Coverage. 
+			Concrete descendants must add an "element" property of a suitable type.</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="gml:AbstractFeatureType">
+				<sequence>
+					<element name="domainExtent" maxOccurs="unbounded">
+						<annotation>
+							<documentation>Replace with EX_Extent_PropertyType when GML 3.2 is adopted</documentation>
+						</annotation>
+						<complexType>
+							<sequence minOccurs="0">
+								<element name="EX_Extent">
+									<complexType>
+										<sequence>
+											<element name="geographicElement" minOccurs="0" maxOccurs="unbounded">
+												<complexType>
+													<sequence minOccurs="0">
+														<element name="EX_BoundingPolygon">
+															<complexType>
+																<sequence>
+																	<element name="polygon" maxOccurs="unbounded">
+																		<complexType>
+																			<sequence minOccurs="0">
+																				<element ref="gml:_Geometry"/>
+																			</sequence>
+																			<attributeGroup ref="gml:AssociationAttributeGroup"/>
+																		</complexType>
+																	</element>
+																</sequence>
+															</complexType>
+														</element>
+													</sequence>
+													<attributeGroup ref="gml:AssociationAttributeGroup"/>
+												</complexType>
+											</element>
+											<element name="temporalElement" minOccurs="0" maxOccurs="unbounded"/>
+											<element name="verticalElement" minOccurs="0" maxOccurs="unbounded"/>
+										</sequence>
+									</complexType>
+								</element>
+							</sequence>
+							<attributeGroup ref="gml:AssociationAttributeGroup"/>
+						</complexType>
+					</element>
+					<element name="rangeType" type="gml:ReferenceType">
+						<annotation>
+							<documentation>Pointer to a recordType or tuple description</documentation>
+						</annotation>
+					</element>
+					<!--
+			<element name="element" type="cv:CV_AbstractGeometryValuePairPropertyType" maxOccurs="unbounded"/>
+			-->
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ........... -->
+	<element name="CV_AbstractDiscreteCoverage" type="cv:CV_AbstractDiscreteCoverageType" abstract="true" substitutionGroup="gml:_Feature">
+		<annotation>
+			<documentation>Head of substitution group implementing ISO 19123 CV_DiscreteCoverage and specializations. 
+			Concrete descendants must add an "element" property of a suitable type.</documentation>
+		</annotation>
+	</element>
+	<!-- ........... -->
+	<complexType name="CV_AbstractDiscreteCoveragePropertyType">
+		<sequence>
+			<element ref="cv:CV_AbstractDiscreteCoverage"/>
+		</sequence>
+	</complexType>
+	<!-- ============== -->
+	<complexType name="CV_DiscreteCoverageType">
+		<annotation>
+			<documentation>Explicit implementation of ISO 19123 CV_DiscreteCoverage.</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="cv:CV_AbstractDiscreteCoverageType">
+				<sequence>
+					<element name="element" type="cv:CV_GeometryValuePairPropertyType" maxOccurs="unbounded"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ........... -->
+	<element name="CV_DiscreteCoverage" type="cv:CV_DiscreteCoverageType" substitutionGroup="cv:CV_AbstractDiscreteCoverage">
+		<annotation>
+			<documentation>Explicit implementation of ISO 19123 CV_DiscreteCoverage.</documentation>
+		</annotation>
+	</element>
+	<!-- ........... -->
+	<complexType name="CV_DiscreteCoveragePropertyType">
+		<sequence>
+			<element ref="cv:CV_DiscreteCoverage"/>
+		</sequence>
+	</complexType>
+	<!-- ============== -->
+	<complexType name="CV_DiscretePointCoverageType">
+		<annotation>
+			<documentation>Explicit implementation of ISO 19123 CV_DiscretePointCoverage.</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="cv:CV_AbstractDiscreteCoverageType">
+				<sequence>
+					<element name="element" type="cv:CV_PointValuePairPropertyType" maxOccurs="unbounded"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ........... -->
+	<element name="CV_DiscretePointCoverage" type="cv:CV_DiscretePointCoverageType" substitutionGroup="cv:CV_AbstractDiscreteCoverage">
+		<annotation>
+			<documentation>Explicit implementation of ISO 19123 CV_DiscretePointCoverage.</documentation>
+		</annotation>
+	</element>
+	<!-- ........... -->
+	<complexType name="CV_DiscretePointCoveragePropertyType">
+		<sequence>
+			<element ref="cv:CV_DiscretePointCoverage"/>
+		</sequence>
+	</complexType>
+	<!-- ============== -->
+	<complexType name="CV_DiscreteTimeInstantCoverageType">
+		<annotation>
+			<documentation>Explicit implementation of specialized CV_DiscreteCoverage in which the coverage domain is composed of time-instants.</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="cv:CV_AbstractDiscreteCoverageType">
+				<sequence>
+					<element name="element" type="cv:CV_TimeInstantValuePairPropertyType" maxOccurs="unbounded"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ........... -->
+	<element name="CV_DiscreteTimeInstantCoverage" type="cv:CV_DiscreteTimeInstantCoverageType" substitutionGroup="cv:CV_AbstractDiscreteCoverage">
+		<annotation>
+			<documentation>Explicit implementation of specialized CV_DiscreteCoverage in which the coverage domain is composed of time-instants.</documentation>
+		</annotation>
+	</element>
+	<!-- ........... -->
+	<complexType name="CV_DiscreteTimeInstantCoveragePropertyType">
+		<sequence>
+			<element ref="cv:CV_DiscreteTimeInstantCoverage"/>
+		</sequence>
+	</complexType>
+	<!-- ============== -->
+	<complexType name="CV_DiscreteElementCoverageType">
+		<annotation>
+			<documentation>Explicit implementation of specialized CV_DiscreteCoverage in which the coverage domain is composed of pointers to objects that act as geometry-providers.</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="cv:CV_AbstractDiscreteCoverageType">
+				<sequence>
+					<element name="element" type="cv:CV_ElementValuePairPropertyType" maxOccurs="unbounded"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ........... -->
+	<element name="CV_DiscreteElementCoverage" type="cv:CV_DiscreteElementCoverageType" substitutionGroup="cv:CV_AbstractDiscreteCoverage">
+		<annotation>
+			<documentation>Explicit implementation of specialized CV_DiscreteCoverage in which the coverage domain is composed of pointers to objects that act as geometry-providers.</documentation>
+		</annotation>
+	</element>
+	<!-- ........... -->
+	<complexType name="CV_DiscreteElementCoveragePropertyType">
+		<sequence>
+			<element ref="cv:CV_DiscreteElementCoverage"/>
+		</sequence>
+	</complexType>
+	<!-- ============================================================== -->
+	<!-- ===== Missing property types ====== -->
+	<!-- ================================================================== -->
+	<complexType name="TimeGeometricPrimitivePropertyType">
+		<annotation>
+			<documentation>Property type not provided by GML</documentation>
+		</annotation>
+		<sequence minOccurs="0">
+			<element ref="gml:_TimeGeometricPrimitive"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+
+	<!-- ============== -->
+</schema>

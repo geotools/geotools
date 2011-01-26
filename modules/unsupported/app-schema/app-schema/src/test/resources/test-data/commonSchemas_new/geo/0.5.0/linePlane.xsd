@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:gml="http://www.opengis.net/gml" 
+xmlns:geox="http://www.opengis.net/geomExt/0.0" 
+targetNamespace="http://www.opengis.net/geomExt/0.0" elementFormDefault="qualified" attributeFormDefault="unqualified" version="pre-release">
+	<annotation>
+		<documentation>linePlane.xsd
+
+A GML conformant schema for specialised geometries
+lines and planes
+
+Copyright (c) 2006 Open Geospatial Consortium - see http://www.opengeospatial.org/about/?page=ipr</documentation>
+	</annotation>
+	<!-- ====================================================================== -->
+	<!-- bring in other schemas -->
+	<import namespace="http://www.opengis.net/gml" schemaLocation="http://testschemas.opengis.net/gml/3.2.0/gml/gml.xsd"/>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<!-- === Geometric primitives === -->
+	<!-- ====================================================================== -->
+	<!-- === Parameterised Lines === -->
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<complexType name="AbstractLineType" abstract="true">
+		<annotation>
+			<documentation>An abstraction of a line to support the different levels of complexity. 
+      The line can always be viewed as a geometric primitive, i.e. is logically continuous.</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="gml:AbstractCurveType"/>
+		</complexContent>
+	</complexType>
+	<!-- ...... -->
+	<element name="AbstractLine" type="geox:AbstractLineType" abstract="true" substitutionGroup="gml:AbstractCurve">
+		<annotation>
+			<documentation>The "AbstractLine" element is the abstract head of the substituition group for all elements representing (infinite) Lines.</documentation>
+		</annotation>
+	</element>
+	<!-- .................. -->
+	<complexType name="AbstractLinePropertyType">
+		<sequence minOccurs="0">
+			<element ref="geox:AbstractLine"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ============================================================== -->
+	<complexType name="LineByVectorType">
+		<annotation>
+			<documentation>Line carries an id, so can be used as the target of a reference. This is useful so that the survey defines a 1-D CRS used for indexing information along the borehole.</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="geox:AbstractLineType">
+				<sequence>
+					<element name="origin" type="gml:PointPropertyType">
+						<annotation>
+							<documentation>Line is expressed as an origin and direction.</documentation>
+						</annotation>
+					</element>
+					<choice>
+						<element name="direction" type="gml:VectorType">
+							<annotation>
+								<documentation>A simple direction relative to the origin.</documentation>
+							</annotation>
+						</element>
+						<element name="directionDescription" type="gml:CodeType"/>
+					</choice>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ...... -->
+	<element name="LineByVector" type="geox:LineByVectorType" substitutionGroup="geox:AbstractLine"/>
+	<!-- .................. -->
+	<complexType name="LineByVectorPropertyType">
+		<sequence minOccurs="0">
+			<element ref="geox:LineByVector"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+	<!-- === Parameterised Planes === -->
+	<!-- ====================================================================== -->
+	<complexType name="AbstractPlaneType" abstract="true">
+		<annotation>
+			<documentation>An abstraction of a plane to support the different levels of complexity. 
+      The plane can always be viewed as a geometric primitive, i.e. is logically continuous.</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="gml:AbstractSurfaceType"/>
+		</complexContent>
+	</complexType>
+	<!-- ...... -->
+	<element name="AbstractPlane" type="geox:AbstractPlaneType" abstract="true" substitutionGroup="gml:AbstractSurface">
+		<annotation>
+			<documentation>The "AbstractPlane" element is the abstract head of the substituition group for all elements representing (infinite) planes.</documentation>
+		</annotation>
+	</element>
+	<!-- .................. -->
+	<complexType name="AbstractPlanePropertyType">
+		<sequence minOccurs="0">
+			<element ref="geox:AbstractPlane"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ============================================================== -->
+	<complexType name="PlaneByVectorType">
+		<annotation>
+			<documentation>Plane defined by its normal and a point contined within the plane.</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="geox:AbstractPlaneType">
+				<sequence>
+					<element name="containedPoint" type="gml:PointPropertyType"/>
+					<element name="normal" type="gml:VectorType"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ...... -->
+	<element name="PlaneByVector" type="geox:PlaneByVectorType" substitutionGroup="geox:AbstractPlane"/>
+	<!-- .................. -->
+	<complexType name="PlaneByVectorPropertyType">
+		<sequence minOccurs="0">
+			<element ref="geox:PlaneByVector"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+</schema>

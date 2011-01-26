@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gml="http://www.opengis.net/gml" 
+xmlns="http://www.w3.org/2001/XMLSchema" 
+xmlns:om="http://www.opengis.net/om/1.0" 
+xmlns:swe="http://www.opengis.net/swe/1.0.1" 
+xmlns:sch="http://purl.oclc.org/dsdl/schematron" 
+        targetNamespace="http://www.opengis.net/om/1.0" 
+elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.0">
+	<annotation>
+		<appinfo source="urn:x-iso:std:ISO:fts:19139:2006">
+			<sch:title>Schematron validation</sch:title>
+			<sch:ns prefix="gml" uri="http://www.opengis.net/gml"/>
+			<sch:ns prefix="om" uri="http://www.opengis.net/om/1.0"/>
+			<sch:ns prefix="swe" uri="http://www.opengis.net/swe/1.0"/>
+			<sch:ns prefix="xlink" uri="http://www.w3.org/1999/xlink"/>
+			<sch:ns prefix="xs" uri="http://www.w3.org/2001/XMLSchema"/>
+			<sch:ns prefix="xsi" uri="http://www.w3.org/2001/XMLSchema-instance"/>
+		</appinfo>
+
+		<documentation>observationSpecialization_constraint.xsd
+
+An implementation of the OandM model for SWE
+This document contains various specializations of the basic observation pattern, by fixing the type of the result. 
+In this version, the specialization is achieved by using Schematron to constrain the type of the result element from om:ObservationType
+
+Copyright (c) 2007 Open Geospatial Consortium - see http://www.opengeospatial.org/ogc/software</documentation>
+	</annotation>
+	<!-- ====================================================================== -->
+	<!-- bring in other schemas -->
+	<import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+	<import namespace="http://www.opengis.net/swe/1.0.1" schemaLocation="http://schemas.opengis.net//sweCommon/1.0.1/swe.xsd"/>
+	<include schemaLocation="../observation.xsd"/>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<!-- ===== Scalar Observations ====== -->
+	<!-- ====================================================================== -->
+	<element name="Measurement" type="om:ObservationType" substitutionGroup="om:Observation">
+		<annotation>
+			<appinfo>
+				<sch:pattern name="result type must be gml:MeasureType">
+					<sch:rule context="//om:Measurement">
+						<sch:assert test="om:result/@xsi:type='gml:MeasureType' ">xsi:Type must be gml:MeasureType</sch:assert>
+					</sch:rule>
+				</sch:pattern>
+			</appinfo>
+			<documentation>Specialized Observation in which the result is a Measure</documentation>
+		</annotation>
+	</element>
+	<!-- ====================================================================== -->
+	<element name="CategoryObservation" type="om:ObservationType" substitutionGroup="om:Observation">
+		<annotation>
+			<appinfo>
+				<sch:pattern name="result type must be gml:CodeType">
+					<sch:rule context="//om:CategoryObservation">
+						<sch:assert test="om:result/@xsi:type='gml:CodeType' ">xsi:Type must be gml:CodeType</sch:assert>
+					</sch:rule>
+				</sch:pattern>
+			</appinfo>
+			<documentation>Specialized Observation, in which the result is a textual value from a controlled vocabulary</documentation>
+		</annotation>
+	</element>
+	<!-- ====================================================================== -->
+	<element name="CountObservation" type="om:ObservationType" substitutionGroup="om:Observation">
+		<annotation>
+			<appinfo>
+				<sch:pattern name="result type must be xs:integer">
+					<sch:rule context="//om:CountObservation">
+						<sch:assert test="om:result/@xsi:type='xs:integer' ">xsi:Type must be xs:integer</sch:assert>
+					</sch:rule>
+				</sch:pattern>
+			</appinfo>
+			<documentation>Specialized Observation, in which the result is an integer representing the count of the observed property</documentation>
+		</annotation>
+	</element>
+	<!-- ====================================================================== -->
+	<element name="TruthObservation" type="om:ObservationType" substitutionGroup="om:Observation">
+		<annotation>
+			<appinfo>
+				<sch:pattern name="result type must be xs:boolean">
+					<sch:rule context="//om:TruthObservation">
+						<sch:assert test="om:result/@xsi:type='xs:boolean' ">xsi:Type must be xs:boolean</sch:assert>
+					</sch:rule>
+				</sch:pattern>
+			</appinfo>
+			<documentation>Specialized Observation, in which the result is a boolean value representing the truth value (usually existence) of the observed property</documentation>
+		</annotation>
+	</element>
+	<!-- ====================================================================== -->
+	<element name="GeometryObservation" type="om:ObservationType" substitutionGroup="om:Observation">
+		<annotation>
+			<appinfo>
+				<sch:pattern name="result must contain a gml:_Geometry and nothing else">
+					<sch:rule context="//om:GeometryObservation">
+						<sch:assert test="om:result/gml:_Geometry">gml:_Geometry must be present as child of om:result</sch:assert>
+						<sch:assert test="count(om:result/*) = 1">only one child may be present</sch:assert>
+				</sch:rule>
+				</sch:pattern>
+			</appinfo>
+			<documentation>Specialized Observation, in which the result is a geometry</documentation>
+		</annotation>
+	</element>
+	<!-- ====================================================================== -->
+	<element name="TemporalObservation" type="om:ObservationType" substitutionGroup="om:Observation">
+		<annotation>
+			<appinfo>
+				<sch:pattern name="result must contain a gml:_TimeObject and nothing else">
+					<sch:rule context="//om:TemporalObservation">
+						<sch:assert test="om:result/gml:_TimeObject">gml:_TimeObject must be present as child of om:result</sch:assert>
+						<sch:assert test="count(om:result/*) = 1">only one child may be present</sch:assert>
+				</sch:rule>
+				</sch:pattern>
+			</appinfo>
+			<documentation>Specialized Observation, in which the result is a temporal object</documentation>
+		</annotation>
+	</element>
+	<!-- ====================================================================== -->
+	<!-- ===== Observation with constant complex result ====== -->
+	<!-- ====================================================================== -->
+	<element name="ComplexObservation" type="om:ObservationType" substitutionGroup="om:Observation">
+		<annotation>
+			<appinfo>
+				<sch:pattern name="result must contain a swe:Record and nothing else">
+					<sch:rule context="//om:ComplexObservation">
+						<sch:assert test="om:result/swe:DataRecord">swe:DataRecord must be present as child of om:result</sch:assert>
+						<sch:assert test="count(om:result/*) = 1">only one child may be present</sch:assert>
+				</sch:rule>
+				</sch:pattern>
+			</appinfo>
+			<documentation>Specialized Observation, in which the result is a record representing a multi-component phenomenon</documentation>
+		</annotation>
+	</element>
+	<!-- ====================================================================== -->
+</schema>

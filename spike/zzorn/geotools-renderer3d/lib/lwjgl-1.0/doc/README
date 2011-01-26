@@ -1,0 +1,68 @@
+This is the official readme file for lwjgl.
+
+Unless otherwise stated, all files distributed or in CVS are covered by 
+the license as stated in the LICENSE file. If you have not received this
+file, please download it from the cvs server.
+
+Please note that DevIL and FMOD are distributed in the optional package (lwjgl_optional-<version>.zip). Their license is also included.
+If you want to use FMOD you must download the binary from their site: http://fmod.org. Please
+note that FMOD is a commercial offering and you must accept their license before using.
+
+To run some of the included tests:
+ Extract the archive, and cd into directory
+ (please substitute ; and \ according to platform)
+
+  java -cp .;res;jar\lwjgl.jar;jar\lwjgl_test.jar;jar\lwjgl_util.jar;jar\lwjgl_fmod3.jar;jar\lwjgl_devil.jar;jar\jinput.jar; -Djava.library.path=native\<win32|linux|macosx> TEST 
+  (this specifies that the jvm should locate the lwjgl native libs in 'native' directory)
+  
+ where TEST is one of the following: 
+ 
+ 	org.lwjgl.test.WindowCreationTest
+ 	org.lwjgl.test.SysTest
+ 	org.lwjgl.test.DisplayTest
+ 
+  org.lwjgl.test.input.MouseCreationTest
+  org.lwjgl.test.input.MouseTest
+  org.lwjgl.test.input.HWCursorTest
+  org.lwjgl.test.input.KeyboardTest
+  org.lwjgl.test.input.TestControllers
+  
+  org.lwjgl.test.openal.ALCTest
+  org.lwjgl.test.openal.OpenALCreationTest
+  org.lwjgl.test.openal.MovingSoundTest
+  org.lwjgl.test.openal.PlayTest
+  org.lwjgl.test.openal.PlayTestMemory
+  org.lwjgl.test.openal.SourceLimitTest
+  org.lwjgl.test.openal.PositionTest
+  org.lwjgl.test.openal.StressTest
+  org.lwjgl.test.openal.SourceLimitTest
+  
+  org.lwjgl.test.opengl.FullScreenWindowedTest
+  org.lwjgl.test.opengl.PbufferTest
+  org.lwjgl.test.opengl.VBOIndexTest
+  org.lwjgl.test.opengl.VBOTest
+  
+  org.lwjgl.test.opengl.pbuffers.PbufferTest
+  
+  org.lwjgl.test.opengl.shaders.ShadersTest
+
+
+	OPTIONAL TESTS (requires optional package)
+  [requires fmod dll (fmod.org)]  
+  org.lwjgl.test.fmod3.CDDAPlayer
+  org.lwjgl.test.fmod3.CDPlayer
+  org.lwjgl.test.fmod3.DSPTest
+  org.lwjgl.test.fmod3.MusicPlayer
+  org.lwjgl.test.fmod3.NetTest
+  org.lwjgl.test.fmod3.StreamPlayer
+  org.lwjgl.test.fmod3.StreamTest
+  org.lwjgl.test.fmod3.SyncTest
+  
+  org.lwjgl.test.devil.BasicTest
+  
+You may also run the Space invaders demo by executing:
+  java -cp .;res;jar\lwjgl.jar;jar\lwjgl_test.jar;jar\lwjgl_util.jar; -Djava.library.path=native\<win32|linux|macosx> org.lwjgl.examples.spaceinvaders.Game
+  
+Project Webpage: www.lwjgl.org
+Project Forum: forum.lwjgl.org
+Project SVN: https://svn.sourceforge.net/svnroot/java-game-lib

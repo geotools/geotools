@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://www.geotools.org/my" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:gt="http://www.geotools.org/my" xmlns:gml="http://www.opengis.net/gml">
+
+	<import namespace="http://www.opengis.net/gml" schemaLocation="feature.xsd"/>
+	
+	<complexType name="MyFeatureType">
+		<complexContent>
+			<extension base="gml:AbstractFeatureType">
+				<sequence>
+					<element name="geom" type="gml:PointPropertyType"/>
+					<element name="count" type="integer"/>				
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	
+	<complexType name="MyFeatureCollectionType">
+	    <complexContent>
+	    	<extension base="gml:AbstractFeatureCollectionType"/>
+	    </complexContent>
+	</complexType>
+
+</schema>

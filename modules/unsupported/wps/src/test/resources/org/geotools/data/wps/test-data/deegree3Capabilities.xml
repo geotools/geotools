@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wps:Capabilities xmlns:wps="http://www.opengis.net/wps/1.0.0" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" service="WPS" version="1.0.0" xml:lang="en" xsi:schemaLocation="http://www.opengis.net/wps/1.0.0 http://schemas.opengis.net/wps/1.0.0/wpsGetCapabilities_response.xsd">
+  <ows:ServiceIdentification>
+    <ows:Title>deegree 3 WPS</ows:Title>
+    <ows:Abstract>deegree 3 WPS implementation</ows:Abstract>
+    <ows:ServiceType>WPS</ows:ServiceType>
+    <ows:ServiceTypeVersion>1.0.0</ows:ServiceTypeVersion>
+  </ows:ServiceIdentification>
+  <ows:ServiceProvider>
+    <ows:ProviderName>lat-lon GmbH</ows:ProviderName>
+    <ows:ProviderSite xlink:href="http://www.lat-lon.de"></ows:ProviderSite>
+    <ows:ServiceContact>
+      <ows:IndividualName>Christian Kiehle</ows:IndividualName>
+      <ows:PositionName>Project Manager</ows:PositionName>
+      <ows:ContactInfo>
+        <ows:Phone>
+          <ows:Voice>0228/18496-0</ows:Voice>
+          <ows:Facsimile>0228/18496-29</ows:Facsimile>
+        </ows:Phone>
+        <ows:Address>
+          <ows:DeliveryPoint>Aennchenstr. 19</ows:DeliveryPoint>
+          <ows:City>Bonn</ows:City>
+          <ows:AdministrativeArea>NRW</ows:AdministrativeArea>
+          <ows:PostalCode>53177</ows:PostalCode>
+          <ows:Country>Bonn</ows:Country>
+          <ows:ElectronicMailAddress>kiehle@lat-lon.de
+      </ows:ElectronicMailAddress>
+        </ows:Address>
+        <ows:OnlineResource xlink:href="http://www.deegree.org"></ows:OnlineResource>
+        <ows:HoursOfService>24x7</ows:HoursOfService>
+        <ows:ContactInstructions>Don't hesitate to call</ows:ContactInstructions>
+      </ows:ContactInfo>
+      <ows:Role>PointOfContact</ows:Role>
+    </ows:ServiceContact>
+  </ows:ServiceProvider>
+  <ows:OperationsMetadata>
+    <ows:Operation name="GetCapabilities">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="http://localhost:8080/deegree-wps-demo-3.0-pre5/services?"></ows:Get>
+          <ows:Post xlink:href="http://localhost:8080/deegree-wps-demo-3.0-pre5/services"></ows:Post>
+        </ows:HTTP>
+      </ows:DCP>
+    </ows:Operation>
+    <ows:Operation name="DescribeProcess">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="http://localhost:8080/deegree-wps-demo-3.0-pre5/services?"></ows:Get>
+          <ows:Post xlink:href="http://localhost:8080/deegree-wps-demo-3.0-pre5/services"></ows:Post>
+        </ows:HTTP>
+      </ows:DCP>
+    </ows:Operation>
+    <ows:Operation name="Execute">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="http://localhost:8080/deegree-wps-demo-3.0-pre5/services?"></ows:Get>
+          <ows:Post xlink:href="http://localhost:8080/deegree-wps-demo-3.0-pre5/services"></ows:Post>
+        </ows:HTTP>
+      </ows:DCP>
+    </ows:Operation>
+  </ows:OperationsMetadata>
+  <wps:ProcessOfferings>
+    <wps:Process wps:processVersion="1.0.0">
+      <ows:Identifier>Centroid</ows:Identifier>
+      <ows:Title>Process for finding the centroid of a GML geometry.</ows:Title>
+      <ows:Abstract>The purpose of this process is finding the centroid of a geometry.</ows:Abstract>
+    </wps:Process>
+    <wps:Process wps:processVersion="1.0.0">
+      <ows:Identifier>Intersection</ows:Identifier>
+      <ows:Title>Determining the intersection points between two GML Geometries.</ows:Title>
+      <ows:Abstract>The intersection of two Geometries A and B is the set of all points which lie in both A and B.</ows:Abstract>
+    </wps:Process>
+    <wps:Process wps:processVersion="1.0.0">
+      <ows:Identifier>Crosses</ows:Identifier>
+      <ows:Title>Determining whether two geometries cross each other.</ows:Title>
+      <ows:Abstract>The Geometries share some but not all interior points, and the dimension of the intersection is less than that of at least one of the Geometries.</ows:Abstract>
+    </wps:Process>
+    <wps:Process wps:processVersion="1.0.0">
+      <ows:Identifier>Difference</ows:Identifier>
+      <ows:Title>Calculating the geometric-difference of two geometies.</ows:Title>
+      <ows:Abstract>The difference between two Geometries A and B is the set of all points which lie in A but not in B.</ows:Abstract>
+    </wps:Process>
+    <wps:Process wps:processVersion="1.0.0">
+      <ows:Identifier>Touches</ows:Identifier>
+      <ows:Title>Determining whether two GML Geometries touch or not.</ows:Title>
+      <ows:Abstract>The Geometries have at least one boundary point in common, but no interior points.</ows:Abstract>
+    </wps:Process>
+    <wps:Process wps:processVersion="1.0.0">
+      <ows:Identifier>Distance</ows:Identifier>
+      <ows:Title>Calculating the distance between two GML Geometries.</ows:Title>
+      <ows:Abstract>Calculating the distance between two GML Geometries.</ows:Abstract>
+    </wps:Process>
+    <wps:Process wps:processVersion="1.0.0">
+      <ows:Identifier>ConvexHull</ows:Identifier>
+      <ows:Title>Calculating the Convex Hull of a GML geometry.</ows:Title>
+      <ows:Abstract>Calculating the the smallest convex Polygon that contains all the points in the Geometry.</ows:Abstract>
+    </wps:Process>
+    <wps:Process wps:processVersion="1.0.0">
+      <ows:Identifier>Union</ows:Identifier>
+      <ows:Title>Calculates the union of two GML Geometries.</ows:Title>
+      <ows:Abstract>The union of two Geometries A and B is the set of all points which lie in A or B.</ows:Abstract>
+    </wps:Process>
+    <wps:Process wps:processVersion="1.0.0">
+      <ows:Identifier>Equals</ows:Identifier>
+      <ows:Title>Determining whether two GML Geometries are equal.</ows:Title>
+      <ows:Abstract>Determining whether two GML Geometries are topologically equal.</ows:Abstract>
+    </wps:Process>
+    <wps:Process wps:processVersion="1.0.0">
+      <ows:Identifier>Buffer</ows:Identifier>
+      <ows:Title>Process for creating a buffer around a GML geometry.</ows:Title>
+      <ows:Abstract>The purpose of this process is to create a buffer around an existing geometry with a buffer distance specified by the user.</ows:Abstract>
+    </wps:Process>
+    <wps:Process wps:processVersion="1.0.0">
+      <ows:Identifier>ParameterDemoProcess</ows:Identifier>
+      <ows:Title>Process for demonstrating the use of different types of input and output parameters.</ows:Title>
+      <ows:Abstract>The purpose of this process is to provide a demonstration for the use of different input and output parameter types in a deegree 3 WPS process.</ows:Abstract>
+    </wps:Process>
+    <wps:Process wps:processVersion="1.0.0">
+      <ows:Identifier>Contains</ows:Identifier>
+      <ows:Title>Determining whether a GML geometry contain another.</ows:Title>
+      <ows:Abstract>Determining whether a GML geometry lies within another.</ows:Abstract>
+    </wps:Process>
+  </wps:ProcessOfferings>
+  <wps:Languages>
+    <wps:Default>
+      <ows:Language>en</ows:Language>
+    </wps:Default>
+    <wps:Supported>
+      <ows:Language>en</ows:Language>
+    </wps:Supported>
+  </wps:Languages>
+  <wps:WSDL xlink:href="http://localhost:8080/deegree-wps-demo-3.0-pre5/services?service=WPS&amp;version=1.0.0&amp;request=GetWPSWSDL"></wps:WSDL>
+</wps:Capabilities>

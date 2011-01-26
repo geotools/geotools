@@ -1,0 +1,46 @@
+GeoTIFF Module
+~~~~~~~~~~~~~~
+
+  Module Maintainer: Bryce
+
+  IP Review:
+ 
+    * Jody Garnett, July 10th, 2006
+  
+  STATUS: DIRTY
+      Code is CLEAN, with 5 notices of Public Domain, one happy fun ball
+      Data of unknown origin
+        http://jira.codehaus.org/browse/GEOT-1908
+
+* org.geotools.gce.geotiff
+  ~~~~~~~~~~~~~~~~~~~~~~~~
+ GeoTiff reading code dates back to GeoTools 2.0, current Grid Coverage Exchange interfaces dates to GeoTools 2.1.
+
+ BRYCE - Yup.  I wrote this as the new (19111) CRS stuff was being written.
+ It worked for that brief period of time before new CRS was rolled in.
+ Then, all of GCE was broken for a time.  When GCE was completely ported
+ over to new CRS, I updated GeoTIFF.  For a long time, there was no self
+ consistent release against which to code.
+ 
+ IP:
+   * non LGPL Public Domain License (OSGEO OK with this)
+
+   * non LGPL custom license (completely permissive)
+
+   * where possible headers updated to (C) 2003-2006, GeoTools Project Managment Committee (PMC)
+
+
+* org.geotools.gce.geotiff (test)
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    * non LGPL Public Domain License (OSGEO OK with this)
+
+    * where possible headers updated to (C) 2003-2006, GeoTools Project Managment Committee (PMC)
+
+    * unsure of test data's origion [BRYCE- The reasonably-sized (<5Mb) test data
+      came from my lab and is PD.  The deleted data, I think, came from Simone,
+      but isn't included anymore.]
+ 
+  [BRYCE - I'm unsure if the current situation is inadequate, and if so, the 
+  manner in which it is inadequate.  If action needs to be taken, please 
+  contact me via email: bnordgren@fs.fed.us.]

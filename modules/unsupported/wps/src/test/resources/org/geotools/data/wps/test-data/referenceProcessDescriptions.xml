@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--This example describes a buffer command that accepts polygon coordinates 
+ in GML, and used a buffer distance in meters to produce a buffered polygon 
+ feature, which is output in GML, in either UTF-8 or base64 encoding. The 
+ polygon can be returned directly as output, or stored by the service as a 
+ web-accessible resource. Ongoing processing status reports are not available. -->
+<wps:ProcessDescriptions xmlns:wps="http://www.opengis.net/wps/1.0.0"
+ xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:xlink="http://www.w3.org/1999/xlink"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.opengis.net/wps/1.0.0 ../wpsDescribeProcess_response.xsd"
+ service="WPS" version="1.0.0" xml:lang="en-CA">
+ <ProcessDescription wps:processVersion="2"
+  storeSupported="true" statusSupported="false">
+  <ows:Identifier>Buffer</ows:Identifier>
+  <ows:Title>Create a buffer around a polygon.</ows:Title>
+  <ows:Abstract>Create a buffer around a single polygon. Accepts the
+   polygon as GML and provides GML output for the buffered feature.
+  </ows:Abstract>
+  <ows:Metadata xlink:title="spatial" />
+  <ows:Metadata xlink:title="geometry" />
+  <ows:Metadata xlink:title="buffer" />
+  <ows:Metadata xlink:title="GML" />
+  <wps:Profile>urn:ogc:wps:1.0.0:buffer</wps:Profile>
+  <wps:WSDL xlink:href="http://foo.bar/foo" />
+  <DataInputs>
+   <Input minOccurs="1" maxOccurs="1">
+    <ows:Identifier>InputPolygon</ows:Identifier>
+    <ows:Title>Polygon to be buffered</ows:Title>
+    <ows:Abstract>URI to a set of GML that describes the polygon.
+    </ows:Abstract>
+    <ComplexData maximumMegabytes="5">
+     <Default>
+      <Format>
+       <MimeType>text/xml</MimeType>
+       <Encoding>base64</Encoding>
+       <Schema>http://foo.bar/gml/3.1.0/polygon.xsd</Schema>
+      </Format>
+     </Default>
+     <Supported>
+      <Format>
+       <MimeType>text/xml</MimeType>
+       <Encoding>UTF-8</Encoding>
+       <Schema>http://foo.bar/gml/3.1.0/polygon.xsd</Schema>
+      </Format>
+     </Supported>
+    </ComplexData>
+   </Input>
+   <Input minOccurs="0" maxOccurs="1">
+    <ows:Identifier>BufferDistance</ows:Identifier>
+    <ows:Title>Buffer Distance</ows:Title>
+    <ows:Abstract>Distance to be used to calculate buffer.
+    </ows:Abstract>
+    <LiteralData>
+     <ows:DataType ows:reference="http://www.w3.org/TR/xmlschema-2/#float">float</ows:DataType>
+     <UOMs>
+      <Default>
+       <ows:UOM>meters</ows:UOM>
+      </Default>
+      <Supported>
+       <ows:UOM>meters</ows:UOM>
+       <ows:UOM>feet</ows:UOM>
+      </Supported>
+     </UOMs>
+     <ows:AnyValue />
+     <DefaultValue>100</DefaultValue>
+    </LiteralData>
+   </Input>
+  </DataInputs>
+  <ProcessOutputs>
+   <Output>
+    <ows:Identifier>BufferedPolygon</ows:Identifier>
+    <ows:Title>Buffered Polygon</ows:Title>
+    <ows:Abstract>GML stream describing the buffered polygon feature.
+    </ows:Abstract>
+    <ComplexOutput>
+     <Default>
+      <Format>
+       <MimeType>text/xml</MimeType>
+       <Encoding>base64</Encoding>
+       <Schema>http://foo.bar/gml/3.1.0/polygon.xsd</Schema>
+      </Format>
+     </Default>
+     <Supported>
+      <Format>
+       <MimeType>text/xml</MimeType>
+       <Encoding>UTF-8</Encoding>
+       <Schema>http://foo.bar/gml/3.1.0/polygon.xsd</Schema>
+      </Format>
+     </Supported>
+    </ComplexOutput>
+   </Output>
+  </ProcessOutputs>
+ </ProcessDescription>
+</wps:ProcessDescriptions>

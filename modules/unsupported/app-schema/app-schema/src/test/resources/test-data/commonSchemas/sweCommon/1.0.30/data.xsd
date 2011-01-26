@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v5 rel. 2 U (http://www.xmlspy.com) by Mike Botts (University of Alabama in Huntsville) -->
+<!-- edited with XML Spy v4.3 U (http://www.xmlspy.com) by Alexandre Robin (University of Alabama in Huntsville) -->
+<!-- edited with XML Spy v4.3 U (http://www.xmlspy.com) by Michael E Botts (University of Alabama in Huntsville) -->
+<xs:schema targetNamespace="http://www.opengis.net/swe/0.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:swe="http://www.opengis.net/swe/0.0" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:annotation>
+		<xs:documentation>Defines basic ResponseType definition and commonly used sensor characteristics</xs:documentation>
+	</xs:annotation>
+	<!--========================-->
+	<!--  Includes and Imports  -->
+	<!--========================-->
+	<xs:import namespace="http://www.w3.org/1999/xlink" schemaLocation="http://schemas.opengis.net/xlink/1.0.0/xlinks.xsd"/>
+	<xs:include schemaLocation="./parameters.xsd"/>
+   <!--=====================--> 
+   <!-- Substitution Groups -->
+   <!--=====================-->
+	<xs:element name="_Encoding" type="swe:_EncodingType" abstract="true"/>
+	<xs:element name="_MultiplexEncoding" type="swe:_MultiplexEncodingType" abstract="true"/>
+	<xs:element name="_Data" type="swe:_DataType" abstract="true"/>
+   <!--===================--> 
+   <!-- Concrete Elements -->
+   <!--===================-->
+	<!-- BEGIN change schema patterns to match GML use of global types - SJDC 2005-08-07-->
+	<!-- Does not change model but enables re-use in other contexts -->
+	<xs:complexType name="DataDefinitionType">
+		<xs:sequence>
+		   <xs:element name="dataComponents" type="swe:DataComponentsPropertyType"/>
+			<xs:element name="encoding" type="swe:EncodingPropertyType"/>
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:ID" use="optional"/>
+	</xs:complexType>
+	<!-- .............. -->
+	<xs:element name="DataDefinition" type="swe:DataDefinitionType"/>
+	<!-- .............. -->
+	<xs:complexType name="DataDefinitionPropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:element ref="swe:DataDefinition"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="swe:AssociationAttributes"/>
+	</xs:complexType>
+	<xs:complexType name="EncodingPropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:element ref="swe:_Encoding"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="swe:AssociationAttributes"/>
+	</xs:complexType>
+	<xs:complexType name="MultiplexEncodingPropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:element ref="swe:_MultiplexEncoding"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="swe:AssociationAttributes"/>
+	</xs:complexType>
+	<xs:complexType name="DataComponentsPropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:group ref="swe:AnyData"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="swe:AssociationAttributes"/>
+	   <xs:attribute name="name" type="swe:nameSimpleType" use="required"/>
+	</xs:complexType>
+	<!-- ============ -->
+	<xs:complexType name="DataValueType">
+		<xs:annotation>
+			<xs:documentation>supports data values as a string, as with tuple and base64 blocks; can also allow an external link to out-of-band data; can also support multiplex data that takes XML elements, such as TML</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="xs:anyType">
+				<xs:attribute name="externalLink" type="xs:anyURI" use="optional"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="SimpleDataPropertyType">
+		<xs:annotation>
+			<xs:documentation>Supports a DataGroup/DataArray with inline data values</xs:documentation>
+		</xs:annotation>
+		<xs:group ref="swe:AnyData" minOccurs="0"/>
+		<xs:attributeGroup ref="swe:AssociationAttributes"/>
+	</xs:complexType>
+	<!-- END change schema patterns to match GML use of global types -->
+	<xs:element name="StandardFormat" substitutionGroup="swe:_Encoding">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="swe:_EncodingType">
+					<xs:attribute name="mimeType" type="xs:token" use="required"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="BinaryBlock" substitutionGroup="swe:_Encoding">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="swe:_EncodingType">
+					<xs:sequence>
+						<xs:element name="member" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Component">
+										<xs:complexType>
+											<xs:attribute name="ref" type="xs:token" use="required"/>
+											<xs:attribute name="dataType" type="xs:anyURI" use="required"/>
+											<xs:attribute name="significantBits" type="xs:positiveInteger" use="optional"/>
+											<xs:attribute name="bitLength" type="xs:positiveInteger" use="optional"/>
+											<xs:attribute name="paddingBits-before" type="xs:nonNegativeInteger" use="optional" default="0"/>
+											<xs:attribute name="paddingBits-after" type="xs:nonNegativeInteger" use="optional" default="0"/>
+											<xs:attribute name="encryption" type="xs:anyURI" use="optional"/>
+											<xs:attribute name="compression" type="xs:anyURI" use="optional"/>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="byteLength" type="xs:positiveInteger" use="optional"/>
+					<xs:attribute name="byteEncoding" type="swe:ByteEncodingType" use="required"/>
+				   <xs:attribute name="byteOrder" type="swe:ByteOrderType" use="required"/>						
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="AsciiBlock" substitutionGroup="swe:_Encoding">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="swe:_EncodingType">
+					<xs:attribute name="tokenSeparator" type="xs:string" use="required"/>
+					<xs:attribute name="tupleSeparator" type="xs:string" use="required"/>
+					<xs:attribute name="decimalSeparator" type="xs:string" use="required"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+   <!--===============--> 
+   <!-- Complex Types -->
+   <!--===============-->
+	<xs:complexType name="_EncodingType">
+		<xs:attribute name="id" type="xs:ID" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="_MultiplexEncodingType"/>
+	<xs:complexType name="_BinaryType">
+		<xs:attribute name="id" type="xs:ID" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="_DataType">
+		<xs:attribute name="id" type="xs:ID" use="optional"/>
+	</xs:complexType>
+   <!--==============--> 
+   <!-- Simple Types -->
+   <!--==============-->
+   <xs:simpleType name="ByteEncodingType">
+      <xs:restriction base="xs:token">
+         <xs:enumeration value="base64"/>
+         <xs:enumeration value="raw"/>
+         <xs:enumeration value="hex"/>
+      </xs:restriction>
+   </xs:simpleType>
+   <xs:simpleType name="ByteOrderType">
+      <xs:restriction base="xs:token">
+         <xs:enumeration value="bigEndian"/>
+         <xs:enumeration value="littleEndian"/>
+      </xs:restriction>
+   </xs:simpleType>
+</xs:schema>

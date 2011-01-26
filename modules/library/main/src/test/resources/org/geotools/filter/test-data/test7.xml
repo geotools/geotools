@@ -1,0 +1,32 @@
+<Filters>
+<Filter xmlns:gml="http://www.opengis.net/gml">
+  <PropertyIsLike wildCard="*" singleChar="#" escapeChar="!">
+    <PropertyName>testString</PropertyName>
+    <Literal>test*</Literal>
+  </PropertyIsLike>
+</Filter>
+<Filter xmlns:gml="http://www.opengis.net/gml">
+  <PropertyIsLike wildCard="*" singleChar="#" escapeChar="!">
+    <PropertyName>testString</PropertyName>
+    <Literal>test#</Literal>
+  </PropertyIsLike>
+</Filter>
+<Filter xmlns:gml="http://www.opengis.net/gml">
+  <PropertyIsLike wildCard="*" singleChar="#" escapeChar="!">
+    <PropertyName>testString</PropertyName>
+    <Literal>test!*</Literal>
+  </PropertyIsLike>
+</Filter>
+<Filter xmlns:gml="http://www.opengis.net/gml">
+  <PropertyIsLike wildCard="*" singleChar="#" escapeChar="!">
+    <PropertyName>testString</PropertyName>
+    <Literal>test!#</Literal>
+  </PropertyIsLike>
+</Filter>
+<Filter xmlns:gml="http://www.opengis.net/gml">
+  <PropertyIsLike wildCard="*" singleChar="." escapeChar="!">
+    <PropertyName>testString</PropertyName>
+    <Literal>test.!.ex*</Literal>
+  </PropertyIsLike>
+</Filter>
+</Filters>

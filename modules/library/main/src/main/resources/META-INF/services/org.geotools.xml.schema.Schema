@@ -1,0 +1,3 @@
+org.geotools.xml.xLink.XLinkSchema
+org.geotools.xml.gml.GMLSchema
+org.geotools.xml.filter.FilterSchema

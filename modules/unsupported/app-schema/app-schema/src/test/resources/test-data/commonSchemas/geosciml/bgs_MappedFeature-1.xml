@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This instance contains a MappedFeature instance but also includes the GeologicVocabulary
+  and LithologicUnit instances it refers to using internal xrefs -->
+<gsml:Gsml xmlns:gsml="http://www.cgi-iugs.org/xml/GeoSciML/1" xmlns:sch="http://www.ascc.net/xml/schematron"
+  xmlns:gt="http://www.cgi-iugs.org/xml/GeoTime/1" xmlns:gco="http://www.isotc211.org/2005/gco"
+  xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:gsr="http://www.isotc211.org/2005/gsr"
+  xmlns:gss="http://www.isotc211.org/2005/gss" xmlns:gts="http://www.isotc211.org/2005/gts"
+  xmlns:smXML="http://www.isotc211.org/smXML" xmlns:gml="http://www.opengis.net/gml"
+  xmlns:om="http://www.opengis.net/om" xmlns:swe="http://www.opengis.net/swe" xmlns:xmml="http://www.opengis.net/xmml"
+  xmlns:geo="http://www.seegrid.csiro.au/xml/geometry" xmlns:meta="http://www.seegrid.csiro.au/xml/metaLite"
+  xmlns:sa="http://www.seegrid.csiro.au/xml/sampling" xmlns:xst="http://www.seegrid.csiro.au/xml/st"
+  xmlns:n1="http://www.seegrid.csiro.au/xml/swe" xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:smil20="http://www.w3.org/2001/SMIL20/" xmlns:smil20lang="http://www.w3.org/2001/SMIL20/Language"
+  xmlns:hfp="http://www.w3.org/2001/XMLSchema-hasFacetAndProperty" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.cgi-iugs.org/xml/GeoSciML/1
+W:\GSF\Strat_Evol_Software\Data\softevolve\SECS\GeoSciML\XMMLRepMirror\svn\GeoSciML\1.0.0\schema\GeoSciML.xsd">
+  <gsml:member>
+    <gsml:MappedFeature gml:id="bedrock.651">
+      <gml:name codeSpace="http://ns.bgs.ac.uk/geologicalMapType">bedrock</gml:name>
+      <gsml:shape>
+        <gml:MultiPolygon srsName="http://www.opengis.net/gml/srs/epsg.xml#27700">
+          <gml:polygonMember>
+            <gml:Polygon>
+              <gml:outerBoundaryIs>
+                <gml:LinearRing>
+                  <gml:coordinates xmlns:gml="http://www.opengis.net/gml" decimal="." cs="," ts=" ">
+                    429740.118,335558.314 429765.522,335558.072 429752.994,335539.613 429747.427,335534.044
+                    429742.903,335534.392 429740.467,335542.398 429740.118,335558.314
+                  </gml:coordinates>
+                </gml:LinearRing>
+              </gml:outerBoundaryIs>
+            </gml:Polygon>
+          </gml:polygonMember>
+        </gml:MultiPolygon>
+      </gsml:shape>
+      <gsml:specification>
+        <gsml:GeologicUnit>
+          <gsml:purpose>instance</gsml:purpose>
+          <gsml:age>
+            <gsml:GeologicAge>
+              <gsml:value>
+                <gsml:CGI_TermRange>
+                  <gsml:lower>
+                    <gsml:CGI_TermValue>
+                      <gsml:value codeSpace="http://www.iugs-cgi.org/geologicAgeVocabulary">ANISIAN</gsml:value>
+                    </gsml:CGI_TermValue>
+                  </gsml:lower>
+                  <gsml:upper>
+                    <gsml:CGI_TermValue>
+                      <gsml:value codeSpace="http://www.iugs-cgi.org/geologicAgeVocabulary">LADINIAN</gsml:value>
+                    </gsml:CGI_TermValue>
+                  </gsml:upper>
+                </gsml:CGI_TermRange>
+              </gsml:value>
+              <gsml:event xlink:href="urn:ogc:def:nil:OGC:inapplicable" />
+            </gsml:GeologicAge>
+          </gsml:age>
+          <gsml:metadata />
+          <gsml:classifier xlink:href="#GUN-MDST" />
+          <gsml:bodyMorphology xlink:href="urn:x-ogc:def:nil:OGC:unknown" />
+          <gsml:outcropCharacter xlink:href="urn:x-ogc:def:nil:OGC:unknown" />
+          <gsml:genesis xlink:href="urn:x-ogc:def:nil:OGC:unknown" />
+          <gsml:exposureColor xlink:href="urn:x-ogc:def:nil:OGC:unknown" />
+          <gsml:grossChemistry>unknown</gsml:grossChemistry>
+        </gsml:GeologicUnit>
+      </gsml:specification>
+      <gsml:metadata>
+        <!--It is very repetitive to put the same metadata for every MappedFeature but we don't have any kind of "Map" feature to attach this metadata to.-->
+        <gsml:MappedFeatureMetadata>
+          <gsml:sourceReference>
+            <meta:SimpleCitation gml:id="ref.1">
+              <gml:name>BGS 50K Sheet 141</gml:name>
+            </meta:SimpleCitation>
+          </gsml:sourceReference>
+          <!--The fact that this is a 50K map suggests a level of positional accuracy but we can't express this explicitly with the current model.-->
+          <gsml:positionalAccuracy />
+          <gsml:observationMethod>
+            <gsml:CGI_TermValue>
+              <gsml:value codeSpace="urn:ogc:def:nil:OGC">urn:ogc:def:nil:OGC:missing</gsml:value>
+            </gsml:CGI_TermValue>
+          </gsml:observationMethod>
+        </gsml:MappedFeatureMetadata>
+      </gsml:metadata>
+    </gsml:MappedFeature>
+  </gsml:member>
+  <gsml:member>
+    <gsml:GeologicVocabulary gml:id="LEX_ROCK">
+      <gml:name>LEX_ROCK vocabulary</gml:name>
+      <gsml:member>
+        <gsml:ControlledConcept gml:id="GUN-MDST">
+          <gml:name>GUN-MDST</gml:name>
+          <gsml:preferredName>GUN-MDST</gsml:preferredName>
+          <gsml:prototype xlink:href="#unit.GUN-MDST" />
+          <gsml:vocabulary />
+        </gsml:ControlledConcept>
+      </gsml:member>
+    </gsml:GeologicVocabulary>
+  </gsml:member>
+  <gsml:member>
+    <gsml:GeologicVocabulary gml:id="LEX">
+      <gml:name>BGS Stratigraphic Lexicon</gml:name>
+      <gsml:member>
+        <gsml:ControlledConcept gml:id="unit.GUN">
+          <gml:name>GUN</gml:name>
+          <gsml:preferredName>GUNTHORPE FORMATION</gsml:preferredName>
+          <gsml:prototype />
+          <gsml:vocabulary />
+        </gsml:ControlledConcept>
+      </gsml:member>
+      <gsml:member>
+        <gsml:ControlledConcept gml:id="unit.MMG">
+          <gml:name>MMG</gml:name>
+          <gsml:preferredName>MERCIA MUDSTONE GROUP</gsml:preferredName>
+          <gsml:prototype />
+          <gsml:vocabulary />
+        </gsml:ControlledConcept>
+      </gsml:member>
+      <gsml:member>
+        <gsml:ControlledConcept gml:id="unit.NRS">
+          <gml:name>NRS</gml:name>
+          <gsml:preferredName>NEW RED SANDSTONE SUPERGROUP</gsml:preferredName>
+          <gsml:prototype />
+          <gsml:vocabulary />
+        </gsml:ControlledConcept>
+      </gsml:member>
+    </gsml:GeologicVocabulary>
+  </gsml:member>
+  <gsml:member>
+    <gsml:LithologicUnit gml:id="unit.GUN-MDST">
+      <gml:name codeSpace="http://ns.bgs.ac.uk/bgs.lex">GUN</gml:name>
+      <gml:name>Gunthorpe Formation</gml:name>
+      <gsml:purpose>definingNorm</gsml:purpose>
+      <gsml:age>
+        <gsml:GeologicAge>
+          <gsml:value>
+            <gsml:CGI_TermRange>
+              <gsml:lower>
+                <gsml:CGI_TermValue>
+                  <gsml:value codeSpace="http://www.iugs-cgi.org/geologicAgeVocabulary">ANISIAN</gsml:value>
+                </gsml:CGI_TermValue>
+              </gsml:lower>
+              <gsml:upper>
+                <gsml:CGI_TermValue>
+                  <gsml:value codeSpace="http://www.iugs-cgi.org/geologicAgeVocabulary">LADINIAN</gsml:value>
+                </gsml:CGI_TermValue>
+              </gsml:upper>
+            </gsml:CGI_TermRange>
+          </gsml:value>
+          <gsml:event xlink:href="urn:ogc:def:nil:OGC:inapplicable" />
+        </gsml:GeologicAge>
+      </gsml:age>
+      <gsml:age>
+        <gsml:GeologicAge>
+          <gsml:value>
+            <gsml:CGI_TermRange>
+              <gsml:lower>
+                <gsml:CGI_TermValue>
+                  <gsml:value codeSpace="http://www.iugs-cgi.org/geologicAgeVocabulary">MID TRIASSIC</gsml:value>
+                </gsml:CGI_TermValue>
+              </gsml:lower>
+              <gsml:upper>
+                <gsml:CGI_TermValue>
+                  <gsml:value codeSpace="http://www.iugs-cgi.org/geologicAgeVocabulary">MID TRIASSIC</gsml:value>
+                </gsml:CGI_TermValue>
+              </gsml:upper>
+            </gsml:CGI_TermRange>
+          </gsml:value>
+          <gsml:event xlink:href="urn:ogc:def:nil:OGC:inapplicable" />
+        </gsml:GeologicAge>
+      </gsml:age>
+      <gsml:age>
+        <gsml:GeologicAge>
+          <gsml:value>
+            <gsml:CGI_TermRange>
+              <gsml:lower>
+                <gsml:CGI_TermValue>
+                  <gsml:value codeSpace="http://www.iugs-cgi.org/geologicAgeVocabulary">MESOZOIC</gsml:value>
+                </gsml:CGI_TermValue>
+              </gsml:lower>
+              <gsml:upper>
+                <gsml:CGI_TermValue>
+                  <gsml:value codeSpace="http://www.iugs-cgi.org/geologicAgeVocabulary">MESOZOIC</gsml:value>
+                </gsml:CGI_TermValue>
+              </gsml:upper>
+            </gsml:CGI_TermRange>
+          </gsml:value>
+          <gsml:event xlink:href="urn:ogc:def:nil:OGC:inapplicable" />
+        </gsml:GeologicAge>
+      </gsml:age>
+      <gsml:age>
+        <gsml:GeologicAge>
+          <gsml:value>
+            <gsml:CGI_TermRange>
+              <gsml:lower>
+                <gsml:CGI_TermValue>
+                  <gsml:value codeSpace="http://www.iugs-cgi.org/geologicAgeVocabulary">PHANEROZOIC</gsml:value>
+                </gsml:CGI_TermValue>
+              </gsml:lower>
+              <gsml:upper>
+                <gsml:CGI_TermValue>
+                  <gsml:value codeSpace="http://www.iugs-cgi.org/geologicAgeVocabulary">PHANEROZOIC</gsml:value>
+                </gsml:CGI_TermValue>
+              </gsml:upper>
+            </gsml:CGI_TermRange>
+          </gsml:value>
+          <gsml:event xlink:href="urn:ogc:def:nil:OGC:inapplicable" />
+        </gsml:GeologicAge>
+      </gsml:age>
+      <gsml:age>
+        <gsml:GeologicAge>
+          <gsml:value>
+            <gsml:CGI_TermRange>
+              <gsml:lower>
+                <gsml:CGI_TermValue>
+                  <gsml:value codeSpace="http://www.iugs-cgi.org/geologicAgeVocabulary">TRIASSIC</gsml:value>
+                </gsml:CGI_TermValue>
+              </gsml:lower>
+              <gsml:upper>
+                <gsml:CGI_TermValue>
+                  <gsml:value codeSpace="http://www.iugs-cgi.org/geologicAgeVocabulary">TRIASSIC</gsml:value>
+                </gsml:CGI_TermValue>
+              </gsml:upper>
+            </gsml:CGI_TermRange>
+          </gsml:value>
+          <gsml:event xlink:href="urn:ogc:def:nil:OGC:inapplicable" />
+        </gsml:GeologicAge>
+      </gsml:age>
+      <gsml:age>
+        <gsml:GeologicAge>
+          <gsml:value>
+            <gsml:CGI_NumericRange>
+              <gsml:lower>
+                <gsml:CGI_NumericValue>
+                  <gsml:principalValue uom="Year">241700000</gsml:principalValue>
+                  <!-- plustDelta and minusDelta are compulsory but can't take null values as they are based on double. We don't have anything to put in these fields for our data -->
+                  <gsml:plusDelta uom="">0</gsml:plusDelta>
+                  <gsml:minusDelta uom="">0</gsml:minusDelta>
+                </gsml:CGI_NumericValue>
+              </gsml:lower>
+              <gsml:upper>
+                <gsml:CGI_NumericValue>
+                  <gsml:principalValue uom="Year">227400000</gsml:principalValue>
+                  <gsml:plusDelta uom="">0</gsml:plusDelta>
+                  <gsml:minusDelta uom="">0</gsml:minusDelta>
+                </gsml:CGI_NumericValue>
+              </gsml:upper>
+            </gsml:CGI_NumericRange>
+          </gsml:value>
+          <gsml:event xlink:href="urn:ogc:def:nil:OGC:inapplicable" />
+        </gsml:GeologicAge>
+      </gsml:age>
+      <gsml:metadata />
+      <gsml:classifier xlink:href="urn:ogc:def:nil:OGC:inapplicable" />
+      <gsml:partOf>
+        <gsml:GeologicUnitPart>
+          <gsml:unit xlink:href="#unit.GUN" />
+          <gsml:role codeSpace="http://ns.bgs.ac.uk/stratigraphicRank">Formation</gsml:role>
+          <gsml:proportion />
+        </gsml:GeologicUnitPart>
+      </gsml:partOf>
+      <gsml:partOf>
+        <gsml:GeologicUnitPart>
+          <gsml:unit xlink:href="#unit.MMG" />
+          <gsml:role codeSpace="http://ns.bgs.ac.uk/stratigraphicRank">Group</gsml:role>
+          <gsml:proportion />
+        </gsml:GeologicUnitPart>
+      </gsml:partOf>
+      <gsml:partOf>
+        <gsml:GeologicUnitPart>
+          <gsml:unit xlink:href="#unit.NRS" />
+          <gsml:role codeSpace="http://ns.bgs.ac.uk/stratigraphicRank">SuperGroup</gsml:role>
+          <gsml:proportion />
+        </gsml:GeologicUnitPart>
+      </gsml:partOf>
+      <gsml:bodyMorphology />
+      <gsml:outcropCharacter />
+      <gsml:genesis />
+      <gsml:exposureColor />
+      <gsml:grossChemistry>unknown</gsml:grossChemistry>
+      <gsml:composition>
+        <gsml:CompositionPart>
+          <gsml:role codeSpace="" />
+          <gsml:proportion>
+            <gsml:CGI_NumericValue>
+              <gsml:principalValue uom="percent">100</gsml:principalValue>
+              <gsml:plusDelta uom="percent">0</gsml:plusDelta>
+              <gsml:minusDelta uom="percent">0</gsml:minusDelta>
+            </gsml:CGI_NumericValue>
+          </gsml:proportion>
+          <gsml:material>
+            <gsml:CompoundMaterial>
+              <gml:name codeSpace="http://ns.bgs.ac.uk/bgs.rcs">MDST</gml:name>
+              <gml:name codeSpace="http://ns.bgs.ac.uk/bgs.rock">MDST</gml:name>
+              <gml:name codeSpace="http://ns.bgs.ac.uk/bgs.rcs.d">MUDSTONE (UNDIFFERENTIATED)</gml:name>
+              <gml:name codeSpace="http://ns.bgs.ac.uk/bgs.rock.d">MUDSTONE</gml:name>
+              <gsml:purpose>definingNorm</gsml:purpose>
+              <gsml:classifier xlink:href="urn:ogc:def:nil:OGC:inapplicable" />
+              <gsml:color xlink:href="urn:ogc:def:nil:OGC:inapplicable" />
+              <gsml:consolidationDegree xlink:href="urn:ogc:def:nil:OGC:inapplicable" />
+              <gsml:metamorphicGrade xlink:href="urn:ogc:def:nil:OGC:inapplicable" />
+              <gsml:particleGeometry xlink:href="urn:ogc:def:nil:OGC:inapplicable" />
+              <gsml:fabric xlink:href="urn:ogc:def:nil:OGC:inapplicable" />
+              <gsml:grossChemistry>unknown</gsml:grossChemistry>
+              <gsml:genesis xlink:href="urn:ogc:def:nil:OGC:inapplicable" />
+            </gsml:CompoundMaterial>
+          </gsml:material>
+        </gsml:CompositionPart>
+      </gsml:composition>
+      <gsml:rank codeSpace="http://ns.bgs.ac.uk/stratigraphicRank">FORMATION</gsml:rank>
+      <gsml:weatheringCharacter xlink:href="urn:ogc:def:nil:OGC:unknown" />
+    </gsml:LithologicUnit>
+  </gsml:member>
+</gsml:Gsml>

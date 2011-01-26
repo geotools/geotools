@@ -1,0 +1,8 @@
+Web Processing Service EMF Model Changes
+========================================
+
+ * hacked wps10.genmodel and .ecore to change model and ecore file to "wps10" 
+ * hacked wps10.ecore to remove reference on "xml" namespace
+ * changed WPSGetCapabilities#getService() from Object to String
+ * added List ComplexDataType#getData()
+ * changed LanguagesType#getLanguage() to EList of String

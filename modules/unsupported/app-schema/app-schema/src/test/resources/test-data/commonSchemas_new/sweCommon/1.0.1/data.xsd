@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://www.opengis.net/swe/1.0.1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:gml="http://www.opengis.net/gml" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:swe="http://www.opengis.net/swe/1.0.1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.1">
+	<xs:annotation>
+		<xs:documentation>Schema allowing definition of structure and encoding of sensor data. Multiplexed streams can also be described
+
+		      Copyright (c) 2007 OGC, All Rights Reserved.
+		      For conditions, see OGC Software Notice - http://www.opengeospatial.org/legal/
+		</xs:documentation>
+	</xs:annotation>
+   <!-- ================================================= -->
+	<xs:import namespace="http://www.opengis.net/gml" schemaLocation="../../gml/3.1.1/base/gml.xsd"/>
+	<xs:include schemaLocation="./aggregateTypes.xsd"/>
+   <!-- ================================================= -->
+   <xs:element name="DataBlockDefinition" type="swe:DataBlockDefinitionType"/>
+	<!-- ........ -->
+   <xs:complexType name="DataBlockDefinitionType">
+		<xs:sequence>
+		   <xs:element name="components" type="swe:DataComponentPropertyType"/>
+		   <xs:element name="encoding" type="swe:BlockEncodingPropertyType"/>
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:ID" use="optional"/>
+   </xs:complexType>
+	<!-- ........ -->
+   <xs:complexType name="DataBlockDefinitionPropertyType">
+      <xs:sequence minOccurs="0">
+         <xs:element ref="swe:DataBlockDefinition"/>
+      </xs:sequence>
+		<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+   </xs:complexType>
+   <!-- ================================================= -->
+   <xs:element name="DataStreamDefinition" type="swe:DataStreamDefinitionType"/>
+	<!-- ........ -->
+   <xs:complexType name="DataStreamDefinitionType">
+      <xs:sequence>
+         <xs:element name="streamComponent" type="swe:DataBlockDefinitionPropertyType" maxOccurs="unbounded"/>
+         <xs:element name="streamEncoding" type="swe:MultiplexedStreamFormatPropertyType"/>
+      </xs:sequence>
+      <xs:attribute name="id" type="xs:ID" use="optional"/>
+   </xs:complexType>
+	<!-- ........ -->
+   <xs:complexType name="DataStreamDefinitionPropertyType">
+      <xs:sequence minOccurs="0">
+         <xs:element ref="swe:DataStreamDefinition"/>
+      </xs:sequence>
+		<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+   </xs:complexType> 
+   <!-- ================================================= -->
+</xs:schema>

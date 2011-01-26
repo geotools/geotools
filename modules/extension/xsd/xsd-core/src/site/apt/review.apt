@@ -1,0 +1,16 @@
+Module XML Parsing
+~~~~~~~~~~~~~~~~~~
+
+  Module Maintainer: Justin Deoliveira
+
+  IP Review:
+ 
+    * Gabriel Roldan, July 23th, 2008
+
+  STATUS as of July 2008: CLEAN
+
+    * All classes created for the geotools project by the module maintainer 
+      have been updated to assign (c) to OSGEO in the header
+    
+    * Some java files retain their original Apache License, V2.0. Added Apache
+      license to module and user guide

@@ -1,0 +1,75 @@
+<%@ jet package="org.geotools.maven.xmlcodegen.templates" imports="org.geotools.maven.xmlcodegen.* java.util.* org.apache.xml.serialize.* org.eclipse.xsd.* java.io.* org.geotools.xml.*" class="BindingTestClass" %>
+<%
+
+    Object[] arguments = (Object[]) argument;
+    XSDNamedComponent named = (XSDNamedComponent)arguments[0];
+    
+    XSDSchema schema = named.getSchema();
+    XSDTypeDefinition type = null;
+   
+    String ns = schema.getTargetNamespace();
+    String prefix = Schemas.getTargetPrefix( schema );
+%>
+
+import org.geotools.xml.Binding;
+
+/**
+ * Binding test case for <%=named.getTargetNamespace()%>:<%=named.getName()%>.
+ *
+ * <p>
+ *  <pre>
+ *   <code>
+<%
+    
+    OutputFormat output = new OutputFormat();
+    output.setOmitXMLDeclaration(true);
+    output.setIndenting(true);
+    
+    StringWriter writer = new StringWriter();
+    XMLSerializer serializer = new XMLSerializer(writer,output);
+
+    try {
+        serializer.serialize(named.getElement());
+    } 
+    catch (IOException e) {
+        e.printStackTrace();
+        return null;
+    }
+    
+    String[] lines = writer.getBuffer().toString().split("\n");
+    for (int i = 0; i < lines.length; i++) {
+%>
+ *  <%=lines[i].replaceAll("<","&lt;").replaceAll(">","&gt;")%>
+<%
+    }
+%> 
+ *      
+ *    </code>
+ *   </pre>
+ * </p>
+ *
+ * @generated
+ */
+<%
+    String className = named.getName().substring(0,1).toUpperCase() + 
+        named.getName().substring(1) + "BindingTest";
+    String baseClassName = prefix.toUpperCase() + "TestSupport";
+%>
+public class <%=className%> extends <%=baseClassName%> {
+
+    public void testType() {
+        assertEquals(  Object.class, binding( <%=prefix.toUpperCase()%>.<%=named.getName()%> ).getType() );
+    }
+    
+    public void testExecutionMode() {
+        assertEquals( Binding.OVERRIDE, binding( <%=prefix.toUpperCase()%>.<%=named.getName()%> ).getExecutionMode() );
+    }
+    
+    public void testParse() throws Exception {
+    
+    }
+    
+    public void testEncode() throws Exception {
+    
+    }
+}

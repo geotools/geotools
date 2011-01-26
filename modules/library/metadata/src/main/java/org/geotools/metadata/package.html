@@ -1,0 +1,29 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<HTML>
+  <HEAD>
+    <TITLE>package org.geotools.metadata</TITLE>
+  </HEAD>
+  <BODY>
+  Root package for various metadata implementations. This root package is not
+  linked to any particular metadata standard. It assumes that a standard is
+  defined through a set of Java interfaces (for example {@link org.opengis.metadata})
+  and uses reflection for performing basic operations like comparaisons and copies.
+  <p>
+  Possible metadata implementations (already available or planed in a future
+  Geotools version) are:
+  <UL>
+    <LI><P>{@link org.geotools.metadata.iso}: concrete implementation of ISO
+        interfaces, including ISO 19115.</P></LI>
+    <LI><P>{@code org.geotools.metadata.dublin}: concrete implementation of
+        Dublin core interfaces. <EM>Not yet implemented.</EM></P></LI>
+    <LI><P>{@link org.geotools.metadata.sql}: implementation of metadata interfaces
+        backed by a SQL database. The metadata interfaces doesn't need to be ISO ones,
+        which is why this package is not a sub-package of the ISO's one.</P></LI>
+    <LI><P>{@code org.geotools.metadata.xml}: implementation of metadata interfaces
+        backed by a XML files. The metadata interfaces doesn't need to be ISO ones,
+        which is why this package is not a sub-package of the ISO's one.
+        <EM>Not yet implemented.</EM></P></LI>
+  </UL>
+  </BODY>
+</HTML>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:ml="http://mails/refractions/net" 
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+  targetNamespace="http://mails/refractions/net"
+  elementFormDefault="qualified">
+
+ <xsd:element name="mails" type="ml:mailsType"/>
+
+ <xsd:complexType name="mailsType">
+  <xsd:sequence maxOccurs="unbounded" minOccurs="0">
+   <xsd:element name="mail" type="ml:mailType"/>
+  </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="mailType">
+  <xsd:sequence>
+   <xsd:element name="envelope" type="ml:envelopeType"/>
+   <xsd:element name="body" type="ml:bodyType"/>
+   <xsd:element maxOccurs="unbounded" minOccurs="0" name="attachment" type="ml:attachmentType"/>
+  </xsd:sequence>
+  <xsd:attribute name="id" type="xsd:integer" use="required"/>
+ </xsd:complexType>
+
+ <xsd:element name="header">
+  <xsd:complexType>
+   <xsd:simpleContent>
+    <xsd:extension base="xsd:string">
+     <xsd:attribute ref="ml:name" use="required"/>
+    </xsd:extension>
+   </xsd:simpleContent>
+  </xsd:complexType>
+ </xsd:element>
+
+ <xsd:element name="Date" type="xsd:dateTime"/>
+
+ <xsd:complexType name="envelopeType">
+  <xsd:sequence>
+   <xsd:element name="From" type="xsd:string"/>
+   <xsd:element name="To" type="xsd:string"/>
+   <xsd:element ref="ml:Date"/>
+   <xsd:element name="Subject" type="xsd:string"/>
+   <xsd:element maxOccurs="unbounded" minOccurs="0" ref="ml:header"/>
+  </xsd:sequence>
+  <xsd:attribute name="From" type="xsd:string" use="required"/>
+ </xsd:complexType>
+
+ <xsd:simpleType name="bodyType">
+  <xsd:restriction base="xsd:string"/>
+ </xsd:simpleType>
+
+ <xsd:complexType name="attachmentType">
+  <xsd:group ref="ml:attachmentContent"/>
+  <xsd:attribute ref="ml:name" use="required"/>
+ </xsd:complexType>
+
+ <xsd:group name="attachmentContent">
+  <xsd:sequence>
+   <xsd:element name="mimetype">
+    <xsd:complexType>
+     <xsd:attributeGroup ref="ml:mimeTypeAttributes"/>
+    </xsd:complexType>
+   </xsd:element>
+   <xsd:element minOccurs="0" name="content" type="xsd:string"/>
+  </xsd:sequence>
+ </xsd:group>
+
+ <xsd:attribute name="name" type="xsd:string"/>
+
+ <xsd:attributeGroup name="mimeTypeAttributes">
+  <xsd:attribute name="type" type="ml:mimeTopLevelType" use="required"/>
+  <xsd:attribute name="subtype" type="xsd:string" use="required"/>
+ </xsd:attributeGroup>
+
+ <xsd:simpleType name="mimeTopLevelType">
+  <xsd:restriction base="xsd:string">
+   <xsd:enumeration value="text"/>
+   <xsd:enumeration value="multipart"/>
+   <xsd:enumeration value="application"/>
+   <xsd:enumeration value="message"/>
+   <xsd:enumeration value="image"/>
+   <xsd:enumeration value="audio"/>
+   <xsd:enumeration value="video"/>
+  </xsd:restriction>
+ </xsd:simpleType>
+
+</xsd:schema>

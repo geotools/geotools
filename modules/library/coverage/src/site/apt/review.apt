@@ -1,0 +1,87 @@
+Module Coverage
+~~~~~~~~~~~~~~~
+
+  Module Maintainer: Martin
+
+  IP Review:
+
+    * Jody Garnett August 10th, 2006
+
+    * Adrian Custer June 6, 2008
+    
+    * Alessio Fabiani July 8, 2008
+
+  STATUS: CLEAN
+  
+    * Presume appropriation of 2ie Technology to IRD and thereby to OSGeo
+
+    * Presume use of some text from the OGC specs can be considered fair use for 
+      specification implementors.
+    
+
+* org.geotools.coverage
+  ~~~~~~~~~~~~~~~~~~~~~
+
+    * some files include following credit to OGC
+
+----------------------------------------------------------------
+This package contains documentation from OpenGIS specifications.
+OpenGIS consortium's work is fully acknowledged here.
+----------------------------------------------------------------
+
+  
+* org.geotools.coverage.grid
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    * some files include following credit to OGC
+
+----------------------------------------------------------------
+This package contains documentation from OpenGIS specifications.
+OpenGIS consortium's work is fully acknowledged here.
+----------------------------------------------------------------
+
+
+* org.geotools.coverage.io
+  ~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.coverage.processing
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.coverage.processing.operation
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  QA: CannotCropException missing serializationId
+
+  * Interpolate, Resample and SelectSampleDimension operation files to credit the OGC
+
+
+* org.geotools.image.*
+  ~~~~~~~~~~~~~~~~~~~~
+
+    * (C) 2003, 2ie Technologie
+
+  2ie Technologie do not exists anymore. Their work were very closely
+  related to "Institut de Recherche pour le D�veloppement" (IRD). Actually, IRD was the
+  funder if I remember right. I wonder if we could remove this last copyright...
+  (actually merge it with the "Institut de Recherche pour le Développement" copyright,
+  which I believe is close to what the situation really was).
+
+
+* org.geotools.resources.image
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    * updated headers
+
+
+* org.geotools.coverage (test)
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.coverage.grid (test)
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.coverage.io (test)
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

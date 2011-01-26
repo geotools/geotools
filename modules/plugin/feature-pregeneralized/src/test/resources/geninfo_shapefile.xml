@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GeneralizationInfos version="1.0">
+	<GeneralizationInfo dataSourceName="file:target/0/streams.properties"  featureName="GenStreams" baseFeatureName="streams" geomPropertyName="the_geom">
+		<Generalization dataSourceName="file:target/5.0/streams.shp"  distance="5" featureName="streams" geomPropertyName="the_geom"/>
+		<Generalization dataSourceName="file:target/10.0/streams.shp"  distance="10" featureName="streams" geomPropertyName="the_geom"/>
+		<Generalization dataSourceName="file:target/20.0/streams.shp"  distance="20" featureName="streams" geomPropertyName="the_geom"/>
+		<Generalization dataSourceName="file:target/50.0/streams.shp"  distance="50" featureName="streams" geomPropertyName="the_geom"/>		
+	</GeneralizationInfo>
+</GeneralizationInfos>

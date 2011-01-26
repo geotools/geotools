@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://www.geotools.org/test" 
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+	xmlns:test="http://www.geotools.org/test" 
+	xmlns:gml="http://www.opengis.net/gml/3.2"
+	elementFormDefault="qualified">
+	
+	<xsd:import namespace="http://www.opengis.net/gml/3.2" schemaLocation="http://schemas.opengis.net/gml/3.2.1/gml.xsd"/>
+	
+	<xsd:complexType name="TestFeatureType">
+		<xsd:complexContent>
+			<xsd:extension base="gml:AbstractFeatureType">
+				<xsd:sequence>
+					<xsd:element name="geom" type="gml:PointPropertyType"/>
+					<xsd:element name="count" type="xsd:int"/>
+					<xsd:element name="date" type="xsd:date"/>			
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="TestFeature" type="test:TestFeatureType" substitutionGroup="gml:_Feature"/>
+	
+	<xsd:complexType name="TestFeatureCollectionType">
+	    <xsd:complexContent>
+	    	<xsd:extension base="gml:AbstractFeatureCollectionType"/>
+	    </xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="TestFeatureCollection" type="test:TestFeatureCollectionType"/>
+	
+</xsd:schema>

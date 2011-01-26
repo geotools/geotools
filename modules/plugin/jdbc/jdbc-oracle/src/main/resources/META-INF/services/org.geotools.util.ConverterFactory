@@ -1,0 +1,3 @@
+org.geotools.data.oracle.OracleDateConverterFactory
+org.geotools.data.oracle.OracleBlobConverterFactory
+org.geotools.data.oracle.OracleClobConverterFactory

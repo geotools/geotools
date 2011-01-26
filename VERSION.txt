@@ -1,0 +1,3 @@
+version: ${project.version}
+svn revision: ${build.revision}
+build date: ${build.timestamp}

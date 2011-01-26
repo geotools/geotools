@@ -1,0 +1,27 @@
+<project name="docs"> 
+
+  <target name="build">
+    <property environment="env"/>
+    <condition property="sphinx.available">
+      <or>
+        <available file="sphinx-build" filepath="${env.PATH}"/>
+        <available file="sphinx-build.exe" filepath="${env.Path}"/>
+        <available file="sphinx-build.exe" filepath="${env.PATH}"/>
+      </or>
+    </condition>
+
+    <antcall target="sphinx">
+      <param name="id" value="user"/>
+    </antcall>
+    <antcall target="sphinx">
+      <param name="id" value="web"/>
+    </antcall>
+  </target>
+
+  <target name="sphinx" if="sphinx.available">
+    <exec executable="sphinx-build" failonerror="true" dir="${basedir}/${id}">
+      <arg line="-D release=${project.version} -b html -d ${build.directory}/${id}/doctrees . ${build.directory}/${id}/html"/>
+    </exec>
+  </target>
+
+</project>

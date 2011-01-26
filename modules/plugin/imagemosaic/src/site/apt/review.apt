@@ -1,0 +1,18 @@
+Module ImageMosaic
+~~~~~~~~~~~~~~~~~~
+
+  IP Review:
+
+    * Simone Giannecchini
+
+    * Adrian Custer, July 2008
+
+  STATUS: DIRTY
+      Code is CLEAN
+      Data origins unknown.(3.4M) 
+          http://jira.codehaus.org/browse/GEOT-1885
+
+  - afabiani:
+  	   * D220*.gif data comes from Slovenia and it may be reliable for distributing under LGPL license, but we should ask for that to be sure
+  	   * global_mosaic*.png don't remember where they come from, they should be safe though
+  	   * other is MODIS data coming from NURC and is distributed as NATO Unclissified Relisable for Internet Transmission (NURFIT), we should ask for LGPL distribution I guess

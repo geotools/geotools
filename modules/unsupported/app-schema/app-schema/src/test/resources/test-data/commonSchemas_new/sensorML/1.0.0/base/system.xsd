@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://www.opengis.net/sensorML/1.0" xmlns:gml="http://www.opengis.net/gml" xmlns:swe="http://www.opengis.net/swe/1.0" xmlns:sml="http://www.opengis.net/sensorML/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:annotation>
+		<xs:documentation>Component and System objects for core SensorML</xs:documentation>
+	</xs:annotation>
+	<!-- ================================================= -->
+	<xs:import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+	<xs:import namespace="http://www.opengis.net/swe/1.0" schemaLocation="../../../sweCommon/1.0.0/swe.xsd"/>
+	<xs:include schemaLocation="./process.xsd"/>
+	<!-- ================================================= -->
+	<xs:complexType name="AbstractDerivableComponentType" abstract="true">
+		<xs:annotation>
+			<xs:documentation>Complex Type to allow creation of component profiles by extension</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="sml:AbstractProcessType">
+				<xs:sequence>
+					<xs:element ref="sml:spatialReferenceFrame" minOccurs="0"/>
+					<xs:element ref="sml:temporalReferenceFrame" minOccurs="0"/>
+					<xs:choice minOccurs="0">
+						<xs:element ref="sml:location"/>
+						<xs:element ref="sml:position"/>
+					</xs:choice>
+					<xs:element ref="sml:timePosition" minOccurs="0"/>
+					<xs:element ref="sml:interfaces" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ================================================= -->
+	<xs:complexType name="AbstractComponentType" abstract="true">
+		<xs:annotation>
+			<xs:documentation>Complex Type for all generic components (soft typed inputs/outputs/parameters)</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="sml:AbstractDerivableComponentType">
+				<xs:sequence>
+					<xs:element ref="sml:inputs" minOccurs="0"/>
+					<xs:element ref="sml:outputs" minOccurs="0"/>
+					<xs:element ref="sml:parameters" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ================================================= -->
+	<xs:element name="spatialReferenceFrame">
+		<xs:annotation>
+			<xs:documentation>Textual definition of a spatial frame axes (origin, orientation). Spatial frames can be related to one another by specifying relative positions.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="gml:EngineeringCRS"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="temporalReferenceFrame">
+		<xs:annotation>
+			<xs:documentation>Textual definition of a temporal frame (time origin). Temporal frames can be related to one another by specifying relative times.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="gml:TemporalCRS"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- ================================================= -->
+	<xs:element name="location">
+		<xs:annotation>
+			<xs:documentation>Uses a gml:Point for a fixed location or a (time dependant) curve for time variable location</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice minOccurs="0">
+				<xs:element ref="gml:Point"/>
+				<xs:element ref="gml:_Curve"/>
+			</xs:choice>
+			<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+		</xs:complexType>
+	</xs:element>
+	<!-- ================================================= -->
+	<xs:element name="position">
+		<xs:annotation>
+			<xs:documentation>Full position (location + orientation) given by a swe:Position or a Process (if variable)</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice minOccurs="0">
+				<xs:element ref="sml:_Process"/>
+				<xs:element ref="swe:Position"/>
+				<xs:element ref="swe:Vector"/>
+			</xs:choice>
+			<xs:attribute name="name" type="xs:token" use="required"/>
+			<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+		</xs:complexType>
+	</xs:element>
+	<!-- ================================================= -->
+	<xs:element name="timePosition">
+		<xs:annotation>
+			<xs:documentation>Provide the ability to relate  a local time frame to a reference time frame</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice minOccurs="0">
+				<xs:element ref="swe:Time"/>
+				<xs:element ref="sml:_Process"/>
+			</xs:choice>
+			<xs:attribute name="name" type="xs:token" use="required"/>
+			<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+		</xs:complexType>
+	</xs:element>
+	<!-- ================================================= -->
+	<xs:element name="Component" type="sml:ComponentType" substitutionGroup="sml:_Process">
+		<xs:annotation>
+			<xs:documentation>Atomic SensorML Component</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="ComponentType">
+		<xs:complexContent>
+			<xs:extension base="sml:AbstractComponentType">
+				<xs:sequence>
+					<xs:element ref="sml:method" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ================================================= -->
+	<xs:element name="System" type="sml:SystemType" substitutionGroup="sml:_Process">
+		<xs:annotation>
+			<xs:documentation>System is a composite component containing sub-components.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="SystemType">
+		<xs:complexContent>
+			<xs:extension base="sml:AbstractComponentType">
+				<xs:sequence>
+					<xs:element ref="sml:components" minOccurs="0"/>
+					<xs:element ref="sml:positions" minOccurs="0"/>
+					<xs:element ref="sml:connections" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ================================================= -->
+	<xs:element name="positions">
+		<xs:annotation>
+			<xs:documentation>Relative positions of the System components</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence minOccurs="0">
+				<xs:element name="PositionList">
+					<xs:complexType>
+						<xs:choice>
+							<xs:element ref="sml:position" maxOccurs="unbounded"/>
+							<xs:element ref="sml:timePosition"/>
+						</xs:choice>
+						<xs:attribute name="id" type="xs:ID" use="optional"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+		</xs:complexType>
+	</xs:element>
+	<!-- ================================================= -->
+	<xs:element name="interfaces">
+		<xs:annotation>
+			<xs:documentation>List of interfaces useable to access System inputs and outputs</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence minOccurs="0">
+				<xs:element name="InterfaceList">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="sml:interface" maxOccurs="unbounded"/>
+						</xs:sequence>
+						<xs:attribute name="id" type="xs:ID" use="optional"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+		</xs:complexType>
+	</xs:element>
+	<!-- ================================================= -->
+	<xs:element name="interface">
+		<xs:complexType>
+			<xs:sequence minOccurs="0">
+				<xs:element ref="sml:InterfaceDefinition"/>
+			</xs:sequence>
+			<xs:attribute name="name" type="xs:token" use="required"/>
+			<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+		</xs:complexType>
+	</xs:element>
+	<!-- ================================================= -->
+	<xs:element name="InterfaceDefinition">
+		<xs:annotation>
+			<xs:documentation>Interface definition based on the OSI model. (http://en.wikipedia.org/wiki/OSI_model)</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="serviceLayer" type="sml:LayerPropertyType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Layer 8 (not in OSI). Type of web service used to access the data. (Ex: SOS, WCS, WFS)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="applicationLayer" type="sml:LayerPropertyType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Layer 7 of the OSI model. Provides a means for the user to access information on the network through an application. (Ex: HTTP, SMTP, FTP, XMPP, Telnet, NTP, RTP, NFS)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="presentationLayer" type="sml:PresentationLayerPropertyType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Layer 6 of the OSI model. Transforms the data to provide a standard interface for the Application layer. (Ex: SSL, TLS, ASCII, MIDI, MPEG, SWECommon)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="sessionLayer" type="sml:LayerPropertyType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Layer 5 of the OSI model. Controls the dialogues (sessions) between computers by establishing, managing and terminating connections between the local and remote application. (Ex: NetBios, TCP session establishment)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="transportLayer" type="sml:LayerPropertyType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Layer 4 of the OSI model. Provides transparent transfer of data between end users and can control reliability of a given link. (Ex: TCP, UDP, SPX)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="networkLayer" type="sml:LayerPropertyType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Layer 3 of the OSI model. Provides functional and procedural means of transfering data from source to destination via one or more networks while insuring QoS. (Ex: IP, ICMP, ARP, IPSec, IPX)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="dataLinkLayer" type="sml:LayerPropertyType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Layer 2 of the OSI model. Provides functional and procedural means of transfering data between network entities and detecting/correcting errors. (Ex: Ethernet, 802.11, Token ring, ATM, Fibre Channel)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="physicalLayer" type="sml:LayerPropertyType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Layer 1 of the OSI model. Provides all electrical and physical characteristics of the connection including pin layouts, voltages, cables specifcations, etc... (Ex: RS232, 100BASE-T, DSL, 802.11g)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="mechanicalLayer" type="sml:LayerPropertyType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Layer 0 (not is OSI). Type of connector used. (Ex: DB9, DB25, RJ45, RJ11, MINIDIN-8, USB-A, USB-B)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="id" type="xs:ID" use="optional"/>
+		</xs:complexType>
+	</xs:element>
+	<!-- ================================================= -->
+	<xs:complexType name="LayerPropertyType">
+		<xs:choice minOccurs="0">
+			<xs:element ref="swe:AbstractDataRecord"/>
+			<xs:element ref="swe:Category"/>
+		</xs:choice>
+		<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</xs:complexType>
+	<!-- ================================================= -->
+	<xs:complexType name="PresentationLayerPropertyType">
+		<xs:choice minOccurs="0">
+			<xs:element ref="swe:AbstractDataRecord"/>
+			<xs:element ref="swe:Category"/>
+			<xs:element ref="swe:DataBlockDefinition"/>
+			<xs:element ref="swe:DataStreamDefinition"/>
+		</xs:choice>
+		<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</xs:complexType>
+	<!-- ================================================= -->
+	<xs:element name="ComponentArray" type="sml:ComponentArrayType" substitutionGroup="sml:_Process">
+		<xs:annotation>
+			<xs:documentation>Special Type of system used to describe large arrays of almost identical components. An indexing mechanism can be used to vary certain parameters according to one or more indices value</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<!-- ================================================= -->
+	<xs:complexType name="ComponentArrayType">
+		<xs:complexContent>
+			<xs:extension base="sml:AbstractDerivableComponentType">
+				<xs:sequence>
+					<xs:element ref="sml:inputs" minOccurs="0"/>
+					<xs:element ref="sml:outputs" minOccurs="0"/>
+					<xs:element name="parameters">
+						<xs:complexType>
+							<xs:complexContent>
+								<xs:restriction base="sml:parametersPropertyType">
+									<xs:sequence minOccurs="0">
+										<xs:element name="ParameterList">
+											<xs:complexType>
+												<xs:complexContent>
+													<xs:restriction base="sml:AbstractListType">
+														<xs:sequence>
+															<xs:element name="index" maxOccurs="unbounded">
+																<xs:complexType>
+																	<xs:sequence>
+																		<xs:element ref="swe:Count"/>
+																	</xs:sequence>
+																	<xs:attribute name="name" type="xs:token"/>
+																</xs:complexType>
+															</xs:element>
+															<xs:element name="parameter" type="swe:DataComponentPropertyType" maxOccurs="unbounded"/>
+														</xs:sequence>
+													</xs:restriction>
+												</xs:complexContent>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:restriction>
+							</xs:complexContent>
+						</xs:complexType>
+					</xs:element>
+					<xs:element ref="sml:components" minOccurs="0"/>
+					<xs:element ref="sml:positions" minOccurs="0"/>
+					<xs:element ref="sml:connections" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

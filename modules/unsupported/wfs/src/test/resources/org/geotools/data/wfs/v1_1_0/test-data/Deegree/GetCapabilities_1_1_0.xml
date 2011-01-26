@@ -1,0 +1,440 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wfs:WFS_Capabilities xmlns:wfs="http://www.opengis.net/wfs" 
+                      xmlns:gml="http://www.opengis.net/gml"
+                      xmlns:ogc="http://www.opengis.net/ogc"
+                      xmlns:xlink="http://www.w3.org/1999/xlink"
+                      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                      updateSequence="0"
+                      version="1.1.0"
+                      xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd">
+  <ows:ServiceIdentification xmlns:ows="http://www.opengis.net/ows">
+    <ows:ServiceType>WFS</ows:ServiceType>
+    <ows:ServiceTypeVersion>1.1.0</ows:ServiceTypeVersion>
+    <ows:Fees>None</ows:Fees>
+    <ows:AccessConstraints>None</ows:AccessConstraints>
+  </ows:ServiceIdentification>
+  <ows:ServiceProvider xmlns:ows="http://www.opengis.net/ows">
+    <ows:ProviderName>lat/lon GmbH</ows:ProviderName>
+    <ows:ProviderSite xlink:href="http://www.lat-lon.de" xlink:type="simple" />
+    <ows:ServiceContact>
+      <ows:IndividualName>Markus Schneider</ows:IndividualName>
+      <ows:PositionName>deegree WFS core developer</ows:PositionName>
+      <ows:ContactInfo>
+        <ows:Phone>
+          <ows:Voice>+49 228 184960</ows:Voice>
+          <ows:Facsimile>+49 228 1849629</ows:Facsimile>
+        </ows:Phone>
+        <ows:Address>
+          <ows:DeliveryPoint>Aennchenstr. 19</ows:DeliveryPoint>
+          <ows:City>Bonn</ows:City>
+          <ows:AdministrativeArea>Northrhine-Westfalia</ows:AdministrativeArea>
+          <ows:PostalCode>53177</ows:PostalCode>
+          <ows:Country>Germany</ows:Country>
+          <ows:ElectronicMailAddress>schneider@lat-lon.de</ows:ElectronicMailAddress>
+        </ows:Address>
+        <ows:OnlineResource xlink:href="http://demo.deegree.org/deegree-wfs/services" xlink:type="simple" />
+        <ows:HoursOfService>24x7</ows:HoursOfService>
+        <ows:ContactInstructions>Don't call us. We'll call you.</ows:ContactInstructions>
+      </ows:ContactInfo>
+      <ows:Role>PointOfContact</ows:Role>
+    </ows:ServiceContact>
+  </ows:ServiceProvider>
+  <ows:OperationsMetadata xmlns:ows="http://www.opengis.net/ows">
+    <ows:Operation name="GetFeature">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="http://demo.deegree.org/deegree-wfs/services?" xlink:type="simple" />
+          <ows:Post xlink:href="http://demo.deegree.org/deegree-wfs/services" xlink:type="simple" />
+        </ows:HTTP>
+      </ows:DCP>
+      <ows:Parameter name="resultType">
+        <ows:Value>results</ows:Value>
+        <ows:Value>hits</ows:Value>
+      </ows:Parameter>
+      <ows:Parameter name="outputFormat">
+        <ows:Value>text/xml; subtype=gml/3.1.1</ows:Value>
+      </ows:Parameter>
+    </ows:Operation>
+    <ows:Operation name="DescribeFeatureType">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="http://demo.deegree.org/deegree-wfs/services?" xlink:type="simple" />
+          <ows:Post xlink:href="http://demo.deegree.org/deegree-wfs/services" xlink:type="simple" />
+        </ows:HTTP>
+      </ows:DCP>
+      <ows:Parameter name="outputFormat">
+        <ows:Value>text/xml; subtype=gml/3.1.1</ows:Value>
+      </ows:Parameter>
+    </ows:Operation>
+    <ows:Operation name="GetCapabilities">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="http://demo.deegree.org/deegree-wfs/services?" xlink:type="simple" />
+          <ows:Post xlink:href="http://demo.deegree.org/deegree-wfs/services" xlink:type="simple" />
+        </ows:HTTP>
+      </ows:DCP>
+      <ows:Parameter name="AcceptVersions">
+        <ows:Value>1.1.0</ows:Value>
+      </ows:Parameter>
+      <ows:Parameter name="AcceptFormats">
+        <ows:Value>text/xml</ows:Value>
+      </ows:Parameter>
+      <ows:Parameter name="Sections">
+        <ows:Value>ServiceIdentification</ows:Value>
+        <ows:Value>ServiceProvider</ows:Value>
+        <ows:Value>OperationsMetadata</ows:Value>
+        <ows:Value>FeatureTypeList</ows:Value>
+        <ows:Value>ServesGMLObjectTypeList</ows:Value>
+        <ows:Value>SupportsGMLObjectTypeList</ows:Value>
+        <ows:Value>Filter_Capabilities</ows:Value>
+      </ows:Parameter>
+    </ows:Operation>
+    <ows:Operation name="GetFeatureWithLock">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="http://demo.deegree.org/deegree-wfs/services?" xlink:type="simple" />
+          <ows:Post xlink:href="http://demo.deegree.org/deegree-wfs/services" xlink:type="simple" />
+        </ows:HTTP>
+      </ows:DCP>
+    </ows:Operation>
+    <ows:Operation name="LockFeature">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="http://demo.deegree.org/deegree-wfs/services?" xlink:type="simple" />
+          <ows:Post xlink:href="http://demo.deegree.org/deegree-wfs/services" xlink:type="simple" />
+        </ows:HTTP>
+      </ows:DCP>
+    </ows:Operation>
+    <ows:Operation name="Transaction">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="http://demo.deegree.org/deegree-wfs/services?" xlink:type="simple" />
+          <ows:Post xlink:href="http://demo.deegree.org/deegree-wfs/services" xlink:type="simple" />
+        </ows:HTTP>
+      </ows:DCP>
+      <ows:Parameter name="inputFormat">
+        <ows:Value>text/xml; subtype=gml/3.1.1</ows:Value>
+      </ows:Parameter>
+      <ows:Parameter name="idgen">
+        <ows:Value>GenerateNew</ows:Value>
+        <ows:Value>UseExisting</ows:Value>
+      </ows:Parameter>
+      <ows:Parameter name="releaseAction">
+        <ows:Value>ALL</ows:Value>
+      </ows:Parameter>
+    </ows:Operation>
+    <ows:Parameter name="srsName">
+      <ows:Value>EPSG:4326</ows:Value>
+    </ows:Parameter>
+    <ows:Constraint name="DefaultMaxFeatures">
+      <ows:Value>15000</ows:Value>
+    </ows:Constraint>
+    <ows:Constraint name="DefaultLockExpiry">
+      <ows:Value>5</ows:Value>
+    </ows:Constraint>
+  </ows:OperationsMetadata>
+  <wfs:FeatureTypeList>
+    <wfs:FeatureType xmlns:app="http://www.deegree.org/app">
+      <wfs:Name>app:Springs</wfs:Name>
+      <wfs:Title>Spring in Utah</wfs:Title>
+      <wfs:Abstract>All Spring in Utah</wfs:Abstract>
+      <ows:Keywords xmlns:ows="http://www.opengis.net/ows">
+        <ows:Keyword>Springs</ows:Keyword>
+      </ows:Keywords>
+      <wfs:DefaultSRS>EPSG:26912</wfs:DefaultSRS>
+      <wfs:OtherSRS>EPSG:4326</wfs:OtherSRS>
+      <wfs:OutputFormats>
+        <wfs:Format>text/xml; subtype=gml/3.1.1</wfs:Format>
+      </wfs:OutputFormats>
+      <ows:WGS84BoundingBox xmlns:ows="http://www.opengis.net/ows">
+        <ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+        <ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </wfs:FeatureType>
+    <wfs:FeatureType xmlns:app="http://www.deegree.org/app">
+      <wfs:Name>app:Country</wfs:Name>
+      <wfs:Title>European countries</wfs:Title>
+      <wfs:Abstract>Borders of some european countries</wfs:Abstract>
+      <ows:Keywords xmlns:ows="http://www.opengis.net/ows">
+        <ows:Keyword>country</ows:Keyword>
+        <ows:Keyword>test</ows:Keyword>
+      </ows:Keywords>
+      <wfs:DefaultSRS>EPSG:4326</wfs:DefaultSRS>
+      <wfs:OtherSRS>EPSG:23031</wfs:OtherSRS>
+      <wfs:OtherSRS>EPSG:23032</wfs:OtherSRS>
+      <wfs:OtherSRS>EPSG:23033</wfs:OtherSRS>
+      <wfs:OtherSRS>EPSG:31466</wfs:OtherSRS>
+      <wfs:OtherSRS>EPSG:31467</wfs:OtherSRS>
+      <wfs:OtherSRS>EPSG:31468</wfs:OtherSRS>
+      <wfs:OtherSRS>EPSG:31469</wfs:OtherSRS>
+      <wfs:OutputFormats>
+        <wfs:Format>text/xml; subtype=gml/3.1.1</wfs:Format>
+      </wfs:OutputFormats>
+      <ows:WGS84BoundingBox xmlns:ows="http://www.opengis.net/ows">
+        <ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+        <ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </wfs:FeatureType>
+    <wfs:FeatureType xmlns:dog="http://www.deegree.org/dog">
+      <wfs:Name>dog:Counties</wfs:Name>
+      <wfs:Title />
+      <wfs:DefaultSRS>EPSG:26912</wfs:DefaultSRS>
+      <wfs:Operations>
+        <wfs:Operation>Query</wfs:Operation>
+      </wfs:Operations>
+      <wfs:OutputFormats>
+        <wfs:Format xmlns:deegree="http://www.deegree.org/wfs"
+          deegree:inFilter="file:/usr/local/deegree/deegree-wfs/WEB-INF/conf/wfs/xslt/infilter_main.xsl"
+          deegree:outFilter="file:/usr/local/deegree/deegree-wfs/WEB-INF/conf/wfs/xslt/outfilter_main.xsl"
+          deegree:schemaLocation="file:/usr/local/deegree/deegree-wfs/WEB-INF/conf/wfs/schemas/iso19112.xsd">
+          text/xml; subtype=gml/3.1.1
+        </wfs:Format>
+      </wfs:OutputFormats>
+      <ows:WGS84BoundingBox xmlns:ows="http://www.opengis.net/ows">
+        <ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+        <ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </wfs:FeatureType>
+    <wfs:FeatureType xmlns:app="http://www.deegree.org/app">
+      <wfs:Name>app:Municipalities_edited</wfs:Name>
+      <wfs:Title />
+      <wfs:DefaultSRS>EPSG:26912</wfs:DefaultSRS>
+      <wfs:Operations>
+        <wfs:Operation>Query</wfs:Operation>
+      </wfs:Operations>
+      <wfs:OutputFormats>
+        <wfs:Format>text/xml; subtype=gml/3.1.1</wfs:Format>
+      </wfs:OutputFormats>
+      <ows:WGS84BoundingBox xmlns:ows="http://www.opengis.net/ows">
+        <ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+        <ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </wfs:FeatureType>
+    <wfs:FeatureType xmlns:app="http://www.deegree.org/app">
+      <wfs:Name>app:Counties</wfs:Name>
+      <wfs:Title />
+      <wfs:DefaultSRS>EPSG:26912</wfs:DefaultSRS>
+      <wfs:Operations>
+        <wfs:Operation>Query</wfs:Operation>
+      </wfs:Operations>
+      <wfs:OutputFormats>
+        <wfs:Format>text/xml; subtype=gml/3.1.1</wfs:Format>
+      </wfs:OutputFormats>
+      <ows:WGS84BoundingBox xmlns:ows="http://www.opengis.net/ows">
+        <ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+        <ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </wfs:FeatureType>
+    <wfs:FeatureType xmlns:app="http://www.deegree.org/app">
+      <wfs:Name>app:CountyBoundaries_edited</wfs:Name>
+      <wfs:Title />
+      <wfs:DefaultSRS>EPSG:26912</wfs:DefaultSRS>
+      <wfs:Operations>
+        <wfs:Operation>Query</wfs:Operation>
+      </wfs:Operations>
+      <wfs:OutputFormats>
+        <wfs:Format>text/xml; subtype=gml/3.1.1</wfs:Format>
+      </wfs:OutputFormats>
+      <ows:WGS84BoundingBox xmlns:ows="http://www.opengis.net/ows">
+        <ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+        <ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </wfs:FeatureType>
+    <wfs:FeatureType xmlns:app="http://www.deegree.org/app">
+      <wfs:Name>app:Municipalities</wfs:Name>
+      <wfs:Title />
+      <wfs:DefaultSRS>EPSG:26912</wfs:DefaultSRS>
+      <wfs:Operations>
+        <wfs:Operation>Query</wfs:Operation>
+      </wfs:Operations>
+      <wfs:OutputFormats>
+        <wfs:Format>text/xml; subtype=gml/3.1.1</wfs:Format>
+      </wfs:OutputFormats>
+      <ows:WGS84BoundingBox xmlns:ows="http://www.opengis.net/ows">
+        <ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+        <ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </wfs:FeatureType>
+    <wfs:FeatureType xmlns:app="http://www.deegree.org/app">
+      <wfs:Name>app:ZipCodes</wfs:Name>
+      <wfs:Title />
+      <wfs:DefaultSRS>EPSG:26912</wfs:DefaultSRS>
+      <wfs:Operations>
+        <wfs:Operation>Query</wfs:Operation>
+      </wfs:Operations>
+      <wfs:OutputFormats>
+        <wfs:Format>text/xml; subtype=gml/3.1.1</wfs:Format>
+      </wfs:OutputFormats>
+      <ows:WGS84BoundingBox xmlns:ows="http://www.opengis.net/ows">
+        <ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+        <ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </wfs:FeatureType>
+    <wfs:FeatureType xmlns:app="http://www.deegree.org/app">
+      <wfs:Name>app:Place</wfs:Name>
+      <wfs:Title />
+      <wfs:DefaultSRS>EPSG:4326</wfs:DefaultSRS>
+      <wfs:Operations>
+        <wfs:Operation>Query</wfs:Operation>
+      </wfs:Operations>
+      <wfs:OutputFormats>
+        <wfs:Format>text/xml; subtype=gml/3.1.1</wfs:Format>
+      </wfs:OutputFormats>
+      <ows:WGS84BoundingBox xmlns:ows="http://www.opengis.net/ows">
+        <ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+        <ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </wfs:FeatureType>
+    <wfs:FeatureType xmlns:dog="http://www.deegree.org/dog">
+      <wfs:Name>dog:Municipalities</wfs:Name>
+      <wfs:Title />
+      <wfs:DefaultSRS>EPSG:26912</wfs:DefaultSRS>
+      <wfs:Operations>
+        <wfs:Operation>Query</wfs:Operation>
+      </wfs:Operations>
+      <wfs:OutputFormats>
+        <wfs:Format xmlns:deegree="http://www.deegree.org/wfs"
+          deegree:inFilter="file:/usr/local/deegree/deegree-wfs/WEB-INF/conf/wfs/xslt/infilter_main.xsl"
+          deegree:outFilter="file:/usr/local/deegree/deegree-wfs/WEB-INF/conf/wfs/xslt/outfilter_main.xsl"
+          deegree:schemaLocation="file:/usr/local/deegree/deegree-wfs/WEB-INF/conf/wfs/schemas/iso19112.xsd">
+          text/xml; subtype=gml/3.1.1
+        </wfs:Format>
+      </wfs:OutputFormats>
+      <ows:WGS84BoundingBox xmlns:ows="http://www.opengis.net/ows">
+        <ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+        <ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </wfs:FeatureType>
+    <wfs:FeatureType xmlns:app="http://www.deegree.org/app">
+      <wfs:Name>app:Philosopher</wfs:Name>
+      <wfs:Title>European philosopher</wfs:Title>
+      <wfs:Abstract>Describes famous European philosophers</wfs:Abstract>
+      <ows:Keywords xmlns:ows="http://www.opengis.net/ows">
+        <ows:Keyword>philosopher</ows:Keyword>
+        <ows:Keyword>test</ows:Keyword>
+      </ows:Keywords>
+      <wfs:DefaultSRS>EPSG:4326</wfs:DefaultSRS>
+      <wfs:OtherSRS>EPSG:23031</wfs:OtherSRS>
+      <wfs:OtherSRS>EPSG:23032</wfs:OtherSRS>
+      <wfs:OtherSRS>EPSG:23033</wfs:OtherSRS>
+      <wfs:OtherSRS>EPSG:31466</wfs:OtherSRS>
+      <wfs:OtherSRS>EPSG:31467</wfs:OtherSRS>
+      <wfs:OtherSRS>EPSG:31468</wfs:OtherSRS>
+      <wfs:OtherSRS>EPSG:31469</wfs:OtherSRS>
+      <wfs:OutputFormats>
+        <wfs:Format>text/xml; subtype=gml/3.1.1</wfs:Format>
+      </wfs:OutputFormats>
+      <ows:WGS84BoundingBox xmlns:ows="http://www.opengis.net/ows">
+        <ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+        <ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </wfs:FeatureType>
+    <wfs:FeatureType xmlns:app="http://www.deegree.org/app">
+      <wfs:Name>app:SI_Gazetteer</wfs:Name>
+      <wfs:Title />
+      <wfs:DefaultSRS>EPSG:26912</wfs:DefaultSRS>
+      <wfs:Operations>
+        <wfs:Operation>Query</wfs:Operation>
+      </wfs:Operations>
+      <wfs:OutputFormats>
+        <wfs:Format>text/xml; subtype=gml/3.1.1</wfs:Format>
+      </wfs:OutputFormats>
+      <ows:WGS84BoundingBox xmlns:ows="http://www.opengis.net/ows">
+        <ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+        <ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </wfs:FeatureType>
+    <wfs:FeatureType xmlns:iso19112="http://www.opengis.net/iso19112">
+      <wfs:Name>iso19112:SI_Gazetteer</wfs:Name>
+      <wfs:Title />
+      <wfs:DefaultSRS>EPSG:26912</wfs:DefaultSRS>
+      <wfs:Operations>
+        <wfs:Operation>Query</wfs:Operation>
+      </wfs:Operations>
+      <wfs:OutputFormats>
+        <wfs:Format xmlns:deegree="http://www.deegree.org/wfs"
+          deegree:inFilter="file:/usr/local/deegree/deegree-wfs/WEB-INF/conf/wfs/xslt/infilter_main.xsl"
+          deegree:outFilter="file:/usr/local/deegree/deegree-wfs/WEB-INF/conf/wfs/xslt/outfilter_main.xsl"
+          deegree:schemaLocation="file:/usr/local/deegree/deegree-wfs/WEB-INF/conf/wfs/schemas/iso19112.xsd">
+          text/xml; subtype=gml/3.1.1
+        </wfs:Format>
+      </wfs:OutputFormats>
+      <ows:WGS84BoundingBox xmlns:ows="http://www.opengis.net/ows">
+        <ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+        <ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </wfs:FeatureType>
+    <wfs:FeatureType xmlns:app="http://www.deegree.org/app">
+      <wfs:Name>app:Railroads</wfs:Name>
+      <wfs:Title />
+      <wfs:DefaultSRS>EPSG:26912</wfs:DefaultSRS>
+      <wfs:Operations>
+        <wfs:Operation>Query</wfs:Operation>
+      </wfs:Operations>
+      <wfs:OutputFormats>
+        <wfs:Format>text/xml; subtype=gml/3.1.1</wfs:Format>
+      </wfs:OutputFormats>
+      <ows:WGS84BoundingBox xmlns:ows="http://www.opengis.net/ows">
+        <ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+        <ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </wfs:FeatureType>
+    <wfs:FeatureType xmlns:app="http://www.deegree.org/app">
+      <wfs:Name>app:StateBoundary</wfs:Name>
+      <wfs:Title />
+      <wfs:DefaultSRS>EPSG:26912</wfs:DefaultSRS>
+      <wfs:Operations>
+        <wfs:Operation>Query</wfs:Operation>
+      </wfs:Operations>
+      <wfs:OutputFormats>
+        <wfs:Format>text/xml; subtype=gml/3.1.1</wfs:Format>
+      </wfs:OutputFormats>
+      <ows:WGS84BoundingBox xmlns:ows="http://www.opengis.net/ows">
+        <ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+        <ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </wfs:FeatureType>
+  </wfs:FeatureTypeList>
+  <ogc:Filter_Capabilities>
+    <ogc:Spatial_Capabilities>
+      <ogc:GeometryOperands>
+        <ogc:GeometryOperand>gml:Envelope</ogc:GeometryOperand>
+        <ogc:GeometryOperand>gml:Point</ogc:GeometryOperand>
+        <ogc:GeometryOperand>gml:LineString</ogc:GeometryOperand>
+        <ogc:GeometryOperand>gml:Polygon</ogc:GeometryOperand>
+      </ogc:GeometryOperands>
+      <ogc:SpatialOperators>
+        <ogc:SpatialOperator name="Within" />
+        <ogc:SpatialOperator name="Intersects" />
+        <ogc:SpatialOperator name="Overlaps" />
+        <ogc:SpatialOperator name="BBOX" />
+        <ogc:SpatialOperator name="Crosses" />
+        <ogc:SpatialOperator name="Contains" />
+        <ogc:SpatialOperator name="Disjoint" />
+        <ogc:SpatialOperator name="Beyond" />
+        <ogc:SpatialOperator name="Equals" />
+        <ogc:SpatialOperator name="Touches" />
+      </ogc:SpatialOperators>
+    </ogc:Spatial_Capabilities>
+    <ogc:Scalar_Capabilities>
+      <ogc:LogicalOperators />
+      <ogc:ComparisonOperators>
+        <ogc:ComparisonOperator>LessThanEqualTo</ogc:ComparisonOperator>
+        <ogc:ComparisonOperator>Between</ogc:ComparisonOperator>
+        <ogc:ComparisonOperator>EqualTo</ogc:ComparisonOperator>
+        <ogc:ComparisonOperator>GreaterThanEqualTo</ogc:ComparisonOperator>
+        <ogc:ComparisonOperator>Like</ogc:ComparisonOperator>
+        <ogc:ComparisonOperator>GreaterThan</ogc:ComparisonOperator>
+        <ogc:ComparisonOperator>NullCheck</ogc:ComparisonOperator>
+        <ogc:ComparisonOperator>LessThan</ogc:ComparisonOperator>
+      </ogc:ComparisonOperators>
+      <ogc:ArithmeticOperators>
+        <ogc:SimpleArithmetic />
+      </ogc:ArithmeticOperators>
+    </ogc:Scalar_Capabilities>
+    <ogc:Id_Capabilities>
+      <ogc:EID />
+      <ogc:FID />
+    </ogc:Id_Capabilities>
+  </ogc:Filter_Capabilities>
+</wfs:WFS_Capabilities>

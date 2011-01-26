@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://www.openplans.org/topp"
+    xmlns:topp="http://www.openplans.org/topp"
+    xmlns:gml="http://www.opengis.net/gml"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+    attributeFormDefault="unqualified" version="1.0">
+    <xs:import namespace="http://www.opengis.net/gml" schemaLocation="../../feature.xsd"/>
+    <xs:complexType xmlns:xs="http://www.w3.org/2001/XMLSchema" name="bc_roads_Type">
+        <xs:complexContent>
+            <xs:extension base="gml:AbstractFeatureType">
+                <xs:sequence>
+                    <xs:element name="the_geom" minOccurs="0" nillable="true" type="gml:MultiLineStringPropertyType"/>
+                    <xs:element name="LENGTH" minOccurs="0" nillable="true" type="xs:double"/>
+                    <xs:element name="BTRN_BC_ID" minOccurs="0" nillable="true" type="xs:int"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="bc_roads" type="topp:bc_roads_Type" substitutionGroup="gml:_Feature"/>
+</xs:schema>

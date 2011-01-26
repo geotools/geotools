@@ -1,0 +1,112 @@
+<?xml version="1.0"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:swe="http://www.opengis.net/swe/1.0"
+        targetNamespace="http://www.opengis.net/swe/1.0" elementFormDefault="qualified" attributeFormDefault="unqualified"
+        version="1.0.0">
+	<annotation>
+		<documentation>A basic schema for XML-tagged data aggregates (Records and Arrays), using terminology consistent with ISO 11404. </documentation>
+	</annotation>
+	<!-- ============== -->
+	<!-- ============== -->
+	<element name="Item">
+		<annotation>
+			<documentation>An Item is an item of data of any type</documentation>
+		</annotation>
+	</element>
+	<!-- ......  ...... -->
+	<complexType name="ItemPropertyType">
+		<sequence>
+			<element ref="swe:Item"/>
+		</sequence>
+	</complexType>
+	<!-- ============== -->
+	<!-- ============== -->
+	<complexType name="RecordType">
+		<annotation>
+			<documentation>A record is a list of fields</documentation>
+		</annotation>
+		<sequence>
+			<element name="field" type="swe:ItemPropertyType" maxOccurs="unbounded">
+				<annotation>
+					<documentation>A Record/field contains an item of data</documentation>
+				</annotation>
+			</element>
+		</sequence>
+		<attribute name="RS" type="anyURI" use="optional">
+			<annotation>
+				<documentation>Optional pointer to record-type schema</documentation>
+			</annotation>
+		</attribute>
+		<attribute name="fieldCount" type="positiveInteger" use="optional">
+			<annotation>
+				<documentation>Optional count of the number of fields in the record. </documentation>
+			</annotation>
+		</attribute>
+	</complexType>
+	<!-- ......  ...... -->
+	<element name="Record" type="swe:RecordType">
+		<annotation>
+			<documentation>A record is a list of fields</documentation>
+		</annotation>
+	</element>
+	<!-- ......  ...... -->
+	<complexType name="RecordPropertyType">
+		<sequence>
+			<element ref="swe:Record"/>
+		</sequence>
+	</complexType>
+	<!-- ============== -->
+	<!-- ============== -->
+	<complexType name="ArrayType">
+		<annotation>
+			<documentation>An array is an indexed set of records of homogeneous type</documentation>
+		</annotation>
+		<sequence>
+			<element name="element" type="swe:XMLDataPropertyType" maxOccurs="unbounded">
+				<annotation>
+					<documentation>An Array/element contains an Item or a Record or an Array</documentation>
+				</annotation>
+			</element>
+		</sequence>
+		<attribute name="RS" type="anyURI" use="optional">
+			<annotation>
+				<documentation>Optional pointer to the record-type schema. This should be used when the elements of the array are Records</documentation>
+			</annotation>
+		</attribute>
+		<attribute name="elementCount" type="positiveInteger" use="optional">
+			<annotation>
+				<documentation>Optional count of the number of elements in the array. </documentation>
+			</annotation>
+		</attribute>
+	</complexType>
+	<!-- ......  ...... -->
+	<element name="Array" type="swe:ArrayType">
+		<annotation>
+			<documentation>An array is an indexed set of records of homogeneous type</documentation>
+		</annotation>
+	</element>
+	<!-- ......  ...... -->
+	<complexType name="ArrayPropertyType">
+		<sequence>
+			<element ref="swe:Array"/>
+		</sequence>
+	</complexType>
+	<!-- ============== -->
+	<complexType name="XMLDataPropertyType">
+		<annotation>
+			<documentation>Choice of Item or Record or Array - used in composing Arrays</documentation>
+		</annotation>
+		<group ref="swe:XMLData"/>
+	</complexType>
+	<!-- ============== -->
+	<group name="XMLData">
+		<annotation>
+			<documentation>Convenience group that bundles all the soft-typed XML-encoded aggregates into a choice group</documentation>
+		</annotation>
+		<choice>
+			<element ref="swe:Item"/>
+			<element ref="swe:Record"/>
+			<element ref="swe:Array"/>
+		</choice>
+	</group>
+	<!-- ============== -->
+</schema>

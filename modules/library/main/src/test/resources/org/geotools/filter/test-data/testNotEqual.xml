@@ -1,0 +1,6 @@
+<Filter xmlns:gml="http://www.opengis.net/gml">
+    <PropertyIsNotEqualTo>
+      <PropertyName>testInteger</PropertyName>
+      <Literal>1105</Literal>
+    </PropertyIsNotEqualTo>
+</Filter>

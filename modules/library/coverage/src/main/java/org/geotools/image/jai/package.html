@@ -1,0 +1,21 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<HTML>
+  <HEAD>
+    <TITLE>package org.geotools.image.jai</TITLE>
+  </HEAD>
+  <BODY>
+    A set of <A HREF="http://java.sun.com/products/java-media/jai/">Java Advanced Imaging</A>
+    operations. All operations defined here work on J2SE's {@linkplain java.awt.image.RenderedImage
+    rendered images}; there is no OpenGIS's {@linkplain org.opengis.coverage.grid.GridCoverage
+    grid coverage} depencencies here.
+
+    <P ALIGN="justify">The JAI operations provided in this package should be registered automatically at
+    JAI startup time, since they are declared in the {@code META-INF/registryFile.jai} file. However, this
+    default JAI mechanism may fail in some occasions, for example when the Geotools JAR file is unreachable
+    from the JAI class loader. In such case, the {@link org.geotools.image.jai.Registry#registerGeotoolsServices
+    registerGeotoolsServices} method may be invoked programmatically as a fallback. This is done automatically
+    by the {@link org.geotools.coverage.processing} package; users need to care only if they want to use directly
+    the custom JAI operations provided in this package.</P>
+  </BODY>
+</HTML>

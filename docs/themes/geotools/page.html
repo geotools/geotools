@@ -1,0 +1,62 @@
+{% extends "basic/page.html" %}
+{%- macro customrelbar(showrel=True) %}
+    <div class="related">
+      <h3>{{ _('Navigation') }}</h3-->
+      <ul id="breadcrumbs">
+        {%- if showrel %}
+            {%- for rellink in rellinks %}
+            <li class="right" {% if loop.first %}style="margin-right: 10px"{% endif %}>
+              <a href="{{ pathto(rellink[0]) }}" title="{{ rellink[1]|striptags }}"
+                 {{ accesskey(rellink[2]) }}>{{ rellink[3] }}</a>
+              {%- if not loop.first %}{{ reldelim2 }}{% endif %}</li>
+            {%- endfor %}
+        {%- endif %}
+        {%- block rootrellink %}
+        <li><a href="{{ pathto(master_doc) }}">{{ shorttitle|e }}</a>{{ reldelim1 }}</li>
+        {%- endblock %}
+        {%- for parent in parents %}
+          <li><a href="{{ parent.link|e }}" {% if loop.last %}{{ accesskey("U") }}{% endif %}>{{ parent.title }}</a>{{ reldelim1 }}</li>
+        {%- endfor %}
+        <li><a href="#">{{ title }}</a></li>
+      </ul>
+    </div>
+{%- endmacro %}
+
+{% block header %}
+    <div class="header">
+        <div class="wrap">
+            <h1 id="logo"><a href="http://geotools.org">GeoTools</a></h1>
+            <h1 id="logo_osgeo"><a href="http://osgeo.org">OSGeo</a></h1>
+            <ul id="top-nav">
+                <li class="first"><a href="http://docs.geotools.org">Documentation</a></li>
+                <li><a href="http://sourceforge.net/projects/geotools/files">Downloads</a></li>
+                <li><a href="http://docs.codehaus.org/display/GEOTOOLS/Home">Wiki</a></li>
+                <li><a href="http://geotools.org/about.html">About</a></li>
+                <li><a href="http://geotoolsnews.blogspot.com">Blog</a></li>
+            </ul>
+            {%- if pagename != "search" %}
+            <!--div id="searchbox">
+                <form class="search" action="{{ pathto('search') }}" method="get">
+                    <input id="searchbox-query" type="text" name="q" size="25" value="Search &hellip;" tabindex="3" onblur="if(this.value=='') this.value='Search &hellip;';" onfocus="if(this.value=='Search &hellip;') this.value='';" />
+                    <input id="searchbox-submit" type="image" value="Search" src="{{ pathto('_static/img/search_icon_green.png', 1)}}" />
+                    <input type="hidden" name="check_keywords" value="yes" />
+                    <input type="hidden" name="area" value="default" />
+                </form>
+            </div-->
+            {%- endif %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block relbar1 %}
+    {%- if pagename != 'index' %}{{ customrelbar(False) }}{% endif %}
+{% endblock %}
+{%- block relbar2 %}
+    {%- if pagename != 'index' %}{{ customrelbar(True) }}{% endif %}
+{% endblock %}
+
+{% block sidebarsearch %}{% endblock %}
+
+{%- block sidebar2 %}{% endblock %}
+
+

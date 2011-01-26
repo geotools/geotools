@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://www.opengis.net/swe/1.0.1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:gml="http://www.opengis.net/gml" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:swe="http://www.opengis.net/swe/1.0.1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.1">
+	<xs:annotation>
+		<xs:documentation>Defines basic ResponseType definition and commonly used sensor characteristics
+
+				Copyright (c) 2007 OGC, All Rights Reserved.
+				For conditions, see OGC Software Notice - http://www.opengeospatial.org/legal/
+		</xs:documentation>
+	</xs:annotation>
+	<!-- ================================================= -->
+	<xs:import namespace="http://www.opengis.net/gml" schemaLocation="../../gml/3.1.1/base/gml.xsd"/>
+	<!-- ================================================= -->
+	<xs:complexType name="BlockEncodingPropertyType">
+		<xs:choice minOccurs="0">
+			<xs:element ref="swe:StandardFormat"/>
+			<xs:element ref="swe:BinaryBlock"/>
+			<xs:element ref="swe:TextBlock"/>
+			<xs:element ref="swe:XMLBlock"/>
+		</xs:choice>
+		<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</xs:complexType>
+	<!-- ================================================= -->
+	<xs:complexType name="AbstractEncodingType">
+		<xs:attribute name="id" type="xs:ID"/>
+		<!-- why bother with the supertype? Not used to form a substitution group. -->
+		<!--->Remember - attributes are Optional by default -->
+	</xs:complexType>
+	<!-- ================================================= -->
+	<!-- ================================================= -->
+	<xs:element name="StandardFormat">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="swe:AbstractEncodingType">
+					<xs:attribute name="mimeType" type="xs:token" use="required"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<!-- ================================================= -->
+	<!-- ================================================= -->
+	<xs:element name="TextBlock">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="swe:AbstractEncodingType">
+					<xs:attribute name="tokenSeparator" type="swe:textSeparator" use="required"/>
+					<xs:attribute name="blockSeparator" type="swe:textSeparator" use="required"/>
+					<xs:attribute name="decimalSeparator" type="swe:decimalSeparator" use="required"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<!-- ================================================= -->
+	<xs:simpleType name="textSeparator">
+		<xs:annotation>
+			<xs:documentation>Max three characters to use as token or block separator</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="3"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ================================================= -->
+	<xs:simpleType name="decimalSeparator">
+		<xs:annotation>
+			<xs:documentation>One character to use as a decimal separator</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:token">
+			<xs:length value="1"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ================================================= -->
+	<!-- ================================================= -->
+	<xs:element name="BinaryBlock">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="swe:AbstractEncodingType">
+					<xs:sequence>
+						<xs:element name="member" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:choice>
+									<xs:element name="Component">
+										<xs:complexType>
+											<xs:attribute name="ref" type="xs:token" use="required"/>
+											<xs:attribute name="dataType" type="xs:anyURI" use="optional"/>
+											<xs:attribute name="significantBits" type="xs:positiveInteger" use="optional"/>
+											<xs:attribute name="bitLength" type="xs:positiveInteger" use="optional"/>
+											<xs:attribute name="paddingBits-before" type="xs:nonNegativeInteger" use="optional" default="0"/>
+											<xs:attribute name="paddingBits-after" type="xs:nonNegativeInteger" use="optional" default="0"/>
+											<xs:attribute name="encryption" type="xs:anyURI" use="optional"/>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="Block">
+										<xs:complexType>
+											<xs:attribute name="ref" type="xs:token" use="required"/>
+											<xs:attribute name="byteLength" type="xs:positiveInteger" use="optional"/>
+											<xs:attribute name="paddingBytes-before" type="xs:nonNegativeInteger" use="optional" default="0"/>
+											<xs:attribute name="paddingBytes-after" type="xs:nonNegativeInteger" use="optional" default="0"/>
+											<xs:attribute name="encryption" type="xs:anyURI" use="optional"/>
+											<xs:attribute name="compression" type="xs:anyURI" use="optional"/>
+										</xs:complexType>
+									</xs:element>
+								</xs:choice>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="byteLength" type="xs:positiveInteger" use="optional"/>
+					<xs:attribute name="byteEncoding" type="swe:byteEncoding" use="required"/>
+					<xs:attribute name="byteOrder" type="swe:byteOrder" use="required"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<!-- ================================================= -->
+	<xs:simpleType name="byteEncoding">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="base64"/>
+			<xs:enumeration value="raw"/>
+			<xs:enumeration value="hex"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ================================================= -->
+	<xs:simpleType name="byteOrder">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="bigEndian"/>
+			<xs:enumeration value="littleEndian"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ================================================= -->
+	<xs:element name="MultiplexedStreamFormat" type="swe:MultiplexedStreamFormatType">
+		<xs:annotation>
+			<xs:documentation>Allows specification of the stream/packaging format used (ex: RTP, ASF, AAF, TML...)</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<!-- ........ -->
+	<xs:complexType name="MultiplexedStreamFormatType">
+		<xs:complexContent>
+			<xs:extension base="swe:AbstractEncodingType">
+				<xs:attribute name="type" type="xs:anyURI" use="required"/>
+				<xs:attribute name="version" type="xs:string" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ........ -->
+	<xs:complexType name="MultiplexedStreamFormatPropertyType">
+		<xs:sequence>
+			<xs:element ref="swe:MultiplexedStreamFormat" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</xs:complexType>
+	<!-- ================================================= -->
+	<!-- ================================================= -->
+	<xs:element name="XMLBlock" type="swe:XMLBlockType">
+		<xs:annotation>
+			<xs:documentation>Carries the designator for an element implementing an XML-encoded data-type</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<!-- ........ -->
+	<xs:complexType name="XMLBlockType">
+		<xs:annotation>
+			<xs:documentation>Carries the designator for an element implementing an XML-encoded data-type</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="swe:AbstractEncodingType">
+				<xs:attribute name="xmlElement" type="xs:QName">
+					<xs:annotation>
+						<xs:documentation>May be any XML Schema defined global element. 
+		typically this will be swe:Array, swe:Record, cv:CV_DiscreteCoverage, etc</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ================================================= -->
+</xs:schema>

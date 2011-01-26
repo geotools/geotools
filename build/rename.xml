@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="Rename" default="rename">
+  <target name="rename">
+    <replace dir=".">
+      <include name="**/pom.xml"/>
+     <replacefilter token="&lt;version&gt;2.6-SNAPSHOT&lt;/version&gt;"
+                     value="&lt;version&gt;2.6-RC2&lt;/version&gt;"/>
+    </replace>
+    <replace dir="./modules/library/metadata/src/main/java/org/geotools/factory">
+      <include name="GeoTools.java"/>
+     <replacefilter token="2.6-SNAPSHOT"
+                     value="2.6-RC2"/>
+    </replace>
+  </target>
+</project>
+

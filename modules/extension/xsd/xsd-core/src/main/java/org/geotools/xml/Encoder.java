@@ -46,6 +46,7 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.apache.xml.serialize.OutputFormat;
 import org.apache.xml.serialize.XMLSerializer;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.xsd.XSDAttributeDeclaration;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDFactory;
@@ -715,8 +716,10 @@ public class Encoder {
 
                 //first make sure the element is not abstract
                 if (entry.element.isAbstract()) {
-                    //look for a non abstract substitute
-                    List sub = entry.element.getSubstitutionGroup();
+                    // look for a non abstract substitute - substitution groups are subject to
+                    // changes over time, so we make a copy to avoid being hit with a ConcurrentModificationException
+                    List sub = safeCopy(entry.element.getSubstitutionGroup());
+
 
                     if (sub.size() > 0) {
                         //match up by type
@@ -725,7 +728,7 @@ public class Encoder {
                         for (Iterator s = sub.iterator(); s.hasNext();) {
                             XSDElementDeclaration e = (XSDElementDeclaration) s.next();
 
-                            if (e.equals(entry.element)) {
+                            if (e == null || e.equals(entry.element)) {
                                 continue;
                             }
 
@@ -741,7 +744,7 @@ public class Encoder {
                                 //try the type
                                 XSDTypeDefinition type = e.getType();
 
-                                if (type.getName() == null) {
+                                if (type == null || type.getName() == null) {
                                     continue;
                                 }
 
@@ -1041,6 +1044,21 @@ O:
             // kill them too
         }
         
+    }
+    
+    /**
+     * Makes a defensive copy of an e-list handling the eventual issues due to concurrent modifications
+     * @param substitutionGroup
+     * @return
+     */
+    private List safeCopy(EList substitutionGroup) {
+        while(true) {
+            try {
+                return new ArrayList(substitutionGroup);
+            } catch(ArrayIndexOutOfBoundsException e) {
+                // ok, the list was modified just during the copy...
+            }
+        }
     }
 
     /**

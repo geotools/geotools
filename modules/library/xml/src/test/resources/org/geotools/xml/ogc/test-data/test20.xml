@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    Document   : test20.xml
+    Created on : 29 May 2003
+    Author     : cholmes
+    Description:
+        To test a beyond filters.
+-->
+
+
+<root>
+ <Filter xmlns:gml="http://www.opengis.net/gml">
+  <Beyond>
+   <PropertyName>gml:lineStringProperty</PropertyName>
+    <gml:LineString xmlns="http://www.opengis.net/cite/spatialTestSuite" srsName="EPSG:63266405">
+	<gml:coordinates>1.25,0.25 1.75,0.75</gml:coordinates>
+    </gml:LineString>
+    <Distance units="#meters">5</Distance>
+  </Beyond>
+ </Filter>
+</root>

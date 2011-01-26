@@ -1,0 +1,19 @@
+MODULE DXF
+~~~~~~~~~~~~~~
+
+  Module Maintainer: Roy Braam
+
+ 
+  STATUS: ?
+
+  This module was added to the GeoTools project by Roy Braam under the LGPL license.
+
+* org.geotools.dxf
+  ~~~~~~~~~~~~~~~~~~~~
+  Initial commit LGPL under OSGeo LGPL license.
+
+
+---------------------------------------------------------------------------------
+This file is derived from NGA/NASA software available for unlimited distribution.
+See http://earth-info.nima.mil/GandG/wgs84/gravitymod/.
+---------------------------------------------------------------------------------

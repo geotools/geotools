@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<WFS_Capabilities xmlns="http://www.opengis.net/wfs" xmlns:ogc="http://www.opengis.net/ogc" xmlns:pci="pci:wfs-application-schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/wfs schemas/WFS-capabilities.xsd" version="1.0.0" updateSequence="1">
+   <Service>
+      <Name>WFS</Name>
+      <Title>Web Feature Service</Title>
+      <Abstract>Web Feature Service implemented by PCI Geomatics Inc.</Abstract>
+      <OnlineResource>http://gws2.pcigeomatics.com/wfs1.0.0/wfs</OnlineResource>
+   </Service>
+   <Capability>
+      <Request>
+         <GetCapabilities>
+            <DCPType>
+               <HTTP>
+                  <Get onlineResource="http://gws2.pcigeomatics.com/wfs1.0.0/wfs?"/>
+               </HTTP>
+            </DCPType>
+         </GetCapabilities>
+         <DescribeFeatureType>
+            <SchemaDescriptionLanguage>
+               <XMLSCHEMA/>
+            </SchemaDescriptionLanguage>
+            <DCPType>
+               <HTTP>
+                  <Get onlineResource="http://gws2.pcigeomatics.com/wfs1.0.0/wfs?"/>
+               </HTTP>
+            </DCPType>
+         </DescribeFeatureType>
+         <GetFeature>
+            <ResultFormat>
+               <GML2/>
+            </ResultFormat>
+            <DCPType>
+               <HTTP>
+                  <Get onlineResource="http://gws2.pcigeomatics.com/wfs1.0.0/wfs?"/>
+                  <Post onlineResource="http://gws2.pcigeomatics.com/wfs1.0.0/wfs"/>
+               </HTTP>
+            </DCPType>
+         </GetFeature>
+      </Request>
+   </Capability>
+   <FeatureTypeList>
+      <Operations>
+         <Query/>
+      </Operations>
+      <FeatureType>
+         <Name>Cities</Name>
+         <Abstract>The main cities in California - Point Layer</Abstract>
+         <SRS>EPSG:26742</SRS>
+         <LatLongBoundingBox minx="-124.41136822944071" miny="32.400993992811635" maxx="-114.40135781470099" maxy="41.705094372509485"/>
+      </FeatureType>
+      <FeatureType>
+         <Name>DLGHYDRO</Name>
+         <Abstract>VED Hydrography from 1:100000 Map</Abstract>
+         <SRS>EPSG:26711</SRS>
+         <LatLongBoundingBox minx="-117.74941264623509" miny="33.63809705373551" maxx="-117.63931470707846" maxy="33.730086298087365"/>
+      </FeatureType>
+      <FeatureType>
+         <Name>RailRoad</Name>
+         <Abstract>The main Railroads in California - Line Layer</Abstract>
+         <SRS>EPSG:26742</SRS>
+         <LatLongBoundingBox minx="-124.26435750930061" miny="32.39291598623867" maxx="-114.47113646148642" maxy="41.712286664507054"/>
+      </FeatureType>
+      <FeatureType>
+         <Name>DLGTRANS</Name>
+         <Abstract>VED transportation from ELTORO DLG</Abstract>
+         <SRS>EPSG:26711</SRS>
+         <LatLongBoundingBox minx="-117.74941264623509" miny="33.63809705373551" maxx="-117.63931470707846" maxy="33.730086298087365"/>
+      </FeatureType>
+      <FeatureType>
+         <Name>Rain</Name>
+         <Abstract>Precipitation Information for California - Polygon Layer</Abstract>
+         <SRS>EPSG:26742</SRS>
+         <LatLongBoundingBox minx="-124.46506311596947" miny="32.369885741583516" maxx="-114.32471193131563" maxy="41.704676482145366"/>
+      </FeatureType>
+   </FeatureTypeList>
+   <ogc:Filter_Capabilities>
+      <ogc:Spatial_Capabilities>
+         <ogc:Spatial_Operators>
+            <ogc:BBOX/>
+            <ogc:Equals/>
+            <ogc:Disjoint/>
+            <ogc:Intersect/>
+            <ogc:Touches/>
+            <ogc:Crosses/>
+            <ogc:Within/>
+            <ogc:Contains/>
+            <ogc:Overlaps/>
+            <ogc:Beyond/>
+            <ogc:DWithin/>
+         </ogc:Spatial_Operators>
+      </ogc:Spatial_Capabilities>
+      <ogc:Scalar_Capabilities>
+         <ogc:Logical_Operators/>
+         <ogc:Comparison_Operators>
+            <ogc:Simple_Comparisons/>
+            <ogc:Between/>
+         </ogc:Comparison_Operators>
+      </ogc:Scalar_Capabilities>
+   </ogc:Filter_Capabilities>
+</WFS_Capabilities>

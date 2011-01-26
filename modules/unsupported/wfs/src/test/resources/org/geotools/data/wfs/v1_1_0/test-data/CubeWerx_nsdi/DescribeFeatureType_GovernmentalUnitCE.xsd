@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- This Web Feature Server is a component of CubeWerx Suite 4.7.5. -->
+<xs:schema 
+  targetNamespace="http://www.fgdc.gov/framework/073004/gubs"
+  xmlns:gubs="http://www.fgdc.gov/framework/073004/gubs" 
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:gml="http://www.opengis.net/gml" 
+  xmlns:cwmeta="http://www.cubewerx.com/cwmeta"
+  xmlns:fw="http://www.fgdc.gov/framework/073004" 
+  elementFormDefault="qualified" version="1.0">
+  
+  <xs:import  namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd" />
+  
+  <xs:import  namespace="http://www.fgdc.gov/framework/073004" schemaLocation="Framework.xsd" />
+
+  <xs:import  namespace="http://www.cubewerx.com/cwmeta" schemaLocation="cwmeta.xsd" />
+
+  <!-- ========================================================= -->
+  <!-- Feature type definitions ...                              -->
+  <!-- ========================================================= -->
+
+  <!-- === GOVUNIT_CE ========================================== -->
+  <xs:element name="GovernmentalUnitCE" type="gubs:GovernmentalUnitCEType" substitutionGroup="gml:_Feature" />
+  <xs:complexType name="GovernmentalUnitCEType">
+    <xs:annotation>
+      <xs:documentation>
+        <cwmeta:Metadata>
+          <cwmeta:Title>Governmental Unit (County or Equivalent)</cwmeta:Title>
+        </cwmeta:Metadata>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="gml:AbstractFeatureType">
+        <xs:sequence>
+          <xs:element name="unitId" type="fw:IdentifierPropertyType" />
+          <xs:element name="typeAbbreviation" type="xs:string" minOccurs="0" maxOccurs="1" />
+          <xs:element name="instanceName" type="xs:string" />
+          <xs:element name="instanceAlternateName" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+          <xs:element name="officialDescription" type="xs:string" minOccurs="0" maxOccurs="1" />
+          <xs:element name="instanceCode" type="xs:string" />
+          <xs:element name="codingSystemReference" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+          <xs:element name="effectiveDate" type="xs:date" minOccurs="0" maxOccurs="2" />
+          <xs:element name="geometry" type="gml:SurfacePropertyType">
+            <xs:annotation>
+              <xs:documentation>
+                <cwmeta:Metadata>
+                  <cwmeta:Title>3</cwmeta:Title>
+                  <cwmeta:Abstract>3</cwmeta:Abstract>
+                  <cwmeta:MetadataURL>3</cwmeta:MetadataURL>
+                </cwmeta:Metadata>
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="extended" type="fw:ExtendedAttributePropertyType" minOccurs="0" maxOccurs="unbounded" />
+          <xs:element name="governmentalUnitType">
+            <xs:complexType>
+              <xs:simpleContent>
+                <xs:restriction base="gml:CodeType">
+                  <xs:attribute name="codeSpace" type="xs:anyURI" use="optional" />
+                </xs:restriction>
+              </xs:simpleContent>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="typeDefinition" type="xs:string" minOccurs="0" maxOccurs="1" />
+          <xs:element name="boundedBy" type="gml:ReferenceType" minOccurs="0" maxOccurs="unbounded">
+            <xs:annotation>
+              <xs:appinfo source="urn:x-gml:targetElement" />
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+</xs:schema>

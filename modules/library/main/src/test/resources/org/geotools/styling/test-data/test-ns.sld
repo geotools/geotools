@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sld:StyledLayerDescriptor xmlns:sld="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml">
+<sld:UserLayer>
+<sld:UserStyle>
+<sld:Name>simple</sld:Name>
+<sld:Title>Default Styler</sld:Title>
+<sld:Abstract></sld:Abstract>
+<sld:FeatureTypeStyle>
+<sld:Name>bc_voting_areas</sld:Name>
+<sld:Title>title</sld:Title>
+<sld:Abstract>abstract</sld:Abstract>
+<sld:FeatureTypeName>Feature</sld:FeatureTypeName>
+<sld:SemanticTypeIdentifier>generic:geometry</sld:SemanticTypeIdentifier>
+<sld:Rule>
+<sld:Name>name</sld:Name>
+<sld:Abstract>Abstract</sld:Abstract>
+<sld:Title>title</sld:Title>
+<sld:MaxScaleDenominator>1.7976931348623157E308</sld:MaxScaleDenominator>
+</sld:Rule>
+</sld:FeatureTypeStyle>
+<sld:FeatureTypeStyle>
+<sld:Name>name</sld:Name>
+<sld:Title>title</sld:Title>
+<sld:Abstract>abstract</sld:Abstract>
+<sld:FeatureTypeName>Feature</sld:FeatureTypeName>
+<sld:SemanticTypeIdentifier>generic:geometry</sld:SemanticTypeIdentifier>
+<sld:SemanticTypeIdentifier>colorbrewer:default</sld:SemanticTypeIdentifier>
+<sld:Rule>
+<sld:Name>rule01</sld:Name>
+<sld:Abstract>Abstract</sld:Abstract>
+<sld:Title>0 to 61</sld:Title>
+<sld:MaxScaleDenominator>1.7976931348623157E308</sld:MaxScaleDenominator>
+<ogc:Filter>
+<ogc:And>
+<ogc:PropertyIsLessThanOrEqualTo>
+<ogc:Literal>0</ogc:Literal>
+<ogc:PropertyName>LIB</ogc:PropertyName>
+</ogc:PropertyIsLessThanOrEqualTo>
+<ogc:PropertyIsLessThan>
+<ogc:PropertyName>LIB</ogc:PropertyName>
+<ogc:Literal>61</ogc:Literal>
+</ogc:PropertyIsLessThan>
+</ogc:And>
+</ogc:Filter>
+</sld:Rule>
+<sld:Rule>
+<sld:Name>rule02</sld:Name>
+<sld:Abstract>Abstract</sld:Abstract>
+<sld:Title>61 to 200</sld:Title>
+<sld:MaxScaleDenominator>1.7976931348623157E308</sld:MaxScaleDenominator>
+<ogc:Filter>
+<ogc:And>
+<ogc:PropertyIsLessThanOrEqualTo>
+<ogc:Literal>61</ogc:Literal>
+<ogc:PropertyName>LIB</ogc:PropertyName>
+</ogc:PropertyIsLessThanOrEqualTo>
+<ogc:PropertyIsLessThan>
+<ogc:PropertyName>LIB</ogc:PropertyName>
+<ogc:Literal>200</ogc:Literal>
+</ogc:PropertyIsLessThan>
+</ogc:And>
+</ogc:Filter>
+</sld:Rule>
+</sld:FeatureTypeStyle>
+</sld:UserStyle>
+</sld:UserLayer>
+</sld:StyledLayerDescriptor>

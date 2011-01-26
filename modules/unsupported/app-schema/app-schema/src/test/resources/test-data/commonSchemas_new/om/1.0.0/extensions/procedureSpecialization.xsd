@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns:om="http://www.opengis.net/om/1.0" xmlns="http://www.w3.org/2001/XMLSchema" 
+		xmlns:sml="http://www.opengis.net/sensorML/1.0.1" xmlns:swe="http://www.opengis.net/swe/1.0.1" 
+        xmlns:gml="http://www.opengis.net/gml" xmlns:gmd="http://www.isotc211.org/2005/gmd"
+        xmlns:xlink="http://www.w3.org/1999/xlink" targetNamespace="http://www.opengis.net/om/1.0"
+        elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.0">
+	<annotation>
+		<documentation>specializedProcedure.xsd
+
+Components to describe procedures used in observations and measurements, and other events.
+
+Copyright (c) 2007 Open Geospatial Consortium - see http://www.opengeospatial.org/ogc/software</documentation>
+	</annotation>
+	<!-- ====================================================================== -->
+	<!-- bring in other schemas -->
+	<import namespace="http://www.opengis.net/gml" schemaLocation="../../../gml/3.1.1/base/gml.xsd"/>
+	<!-- can't use ISO Metadata schema with GML 3.1.1
+	<import namespace="http://www.isotc211.org/2005/gmd" schemaLocation="../../../../gml/trunk/gml/3.1.1/gmd/gmd.xsd"/>
+	-->
+	<import namespace="http://www.opengis.net/swe/1.0.1" schemaLocation="../../../sweCommon/1.0.1/swe.xsd"/>
+	<import namespace="http://www.opengis.net/sensorML/1.0.1" schemaLocation="../../../sensorML/1.0.1/sensorML.xsd"/>
+	<include schemaLocation="../observation.xsd"/>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<!-- === Specialised Procedure types === -->
+	<!-- ====================================================================== -->
+	<complexType name="ObservationProcessType">
+		<annotation>
+			<documentation>Head of substitution group of observation procedures. 
+			Use gml:description element to describe the procedure or link to a definitive description.</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="sml:AbstractProcessType">
+				<sequence>
+					<element name="method" type="gml:CodeType">
+						<annotation>
+							<documentation>Code for the particular procedure type.  Usually an item from a list or register of procedures, methods, instrument-types, etc.</documentation>
+						</annotation>
+					</element>
+
+					<element name="resultQuality" type="om:AnyOrReferenceType" minOccurs="0">
+<!--					<element name="resultQuality" type="gmd:DQ_Element_PropertyType" minOccurs="0"> -->
+						<annotation>
+							<documentation>Quality associated systematically with observations made using this procedure.</documentation>
+						</annotation>
+					</element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ...................... -->
+	<element name="ObservationProcess" type="om:ObservationProcessType" substitutionGroup="sml:_Process">
+		<annotation>
+			<documentation>Head of substitution group of observation procedures. 
+			Use gml:description element to describe the procedure or link to a definitive description.</documentation>
+		</annotation>
+	</element>
+	<!-- ...................... -->
+	<complexType name="ObservationProcessPropertyType">
+		<sequence minOccurs="0">
+			<element ref="om:ObservationProcess"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<complexType name="InstrumentType">
+		<annotation>
+			<documentation>Specialised observation procedure corresponding to a physical instrument or sensor. 
+			Use gml:description element to describe the procedure or link to a definitive description.</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="om:ObservationProcessType"/>
+		</complexContent>
+	</complexType>
+	<!-- ...................... -->
+	<element name="Instrument" type="om:InstrumentType" substitutionGroup="om:ObservationProcess">
+		<annotation>
+			<documentation>Specialised observation procedure corresponding to a physical instrument or sensor. 
+			Use gml:description element to describe the procedure or link to a definitive description.</documentation>
+		</annotation>
+	</element>
+	<!-- ...................... -->
+	<complexType name="InstrumentPropertyType">
+		<sequence minOccurs="0">
+			<element ref="om:Instrument"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+	<complexType name="CalculationProcessType">
+		<annotation>
+			<documentation>Specialised observation procedure corresponding to an algorithm or computational procedure. 
+			Use gml:description element to describe the procedure or link to a definitive description.</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="sml:AbstractProcessType"/>
+		</complexContent>
+	</complexType>
+	<!-- ...................... -->
+	<element name="CalculationProcess" type="om:CalculationProcessType" substitutionGroup="sml:_Process">
+		<annotation>
+			<documentation>Specialised observation procedure corresponding to an algorithm or computational procedure. 
+			Use gml:description element to describe the procedure or link to a definitive description.</documentation>
+		</annotation>
+	</element>
+	<!-- ...................... -->
+	<complexType name="CalculationProcessPropertyType">
+		<sequence minOccurs="0">
+			<element ref="om:CalculationProcess"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+</schema>

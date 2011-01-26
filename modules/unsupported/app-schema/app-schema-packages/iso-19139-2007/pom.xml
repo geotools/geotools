@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.geotools.schemas</groupId>
+    <artifactId>iso-19139-2007</artifactId>
+    <version>1.0.0-1</version>
+    <name>ISO/TS 19139:2007 Geographic MetaData (gmd) schema</name>
+
+    <scm>
+        <connection>scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema-packages/iso-19139-2007/</connection>
+        <url>http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema-packages/iso-19139-2007/</url>
+    </scm>
+
+    <developers>
+        <developer>
+            <name>Ben Caradoc-Davies</name>
+            <email>Ben.Caradoc-Davies@csiro.au</email>
+            <organization>CSIRO Earth Science and Resource Engineering </organization>
+            <roles>
+                <role>packager</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <build>
+    
+        <plugins>
+            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>generate-resources</phase>
+                        <configuration>
+                            <tasks>
+                                <property name="srcdir" value="http://schemas.opengis.net/iso/19139/20070417"/>
+                                <property name="destdir" value="${project.build.outputDirectory}/net/opengis/schemas/iso/19139/20070417"/>
+                                <mkdir dir="${destdir}/gco"/>
+                                <mkdir dir="${destdir}/gmd"/>
+                                <mkdir dir="${destdir}/gmx"/>
+                                <mkdir dir="${destdir}/gsr"/>
+                                <mkdir dir="${destdir}/gss"/>
+                                <mkdir dir="${destdir}/gts"/>
+                                <!-- gco -->
+                                <get src="${srcdir}/gco/basicTypes.xsd" dest="${destdir}/gco/basicTypes.xsd"/>
+                                <get src="${srcdir}/gco/gco.xsd" dest="${destdir}/gco/gco.xsd"/>
+                                <get src="${srcdir}/gco/gcoBase.xsd" dest="${destdir}/gco/gcoBase.xsd"/>
+                                <!-- gmd -->
+                                <get src="${srcdir}/gmd/applicationSchema.xsd" dest="${destdir}/gmd/applicationSchema.xsd"/>
+                                <get src="${srcdir}/gmd/citation.xsd" dest="${destdir}/gmd/citation.xsd"/>
+                                <get src="${srcdir}/gmd/constraints.xsd" dest="${destdir}/gmd/constraints.xsd"/>
+                                <get src="${srcdir}/gmd/content.xsd" dest="${destdir}/gmd/content.xsd"/>
+                                <get src="${srcdir}/gmd/dataQuality.xsd" dest="${destdir}/gmd/dataQuality.xsd"/>
+                                <get src="${srcdir}/gmd/distribution.xsd" dest="${destdir}/gmd/distribution.xsd"/>
+                                <get src="${srcdir}/gmd/extent.xsd" dest="${destdir}/gmd/extent.xsd"/>
+                                <get src="${srcdir}/gmd/freeText.xsd" dest="${destdir}/gmd/freeText.xsd"/>
+                                <get src="${srcdir}/gmd/gmd.xsd" dest="${destdir}/gmd/gmd.xsd"/>
+                                <get src="${srcdir}/gmd/identification.xsd" dest="${destdir}/gmd/identification.xsd"/>
+                                <get src="${srcdir}/gmd/maintenance.xsd" dest="${destdir}/gmd/maintenance.xsd"/>
+                                <get src="${srcdir}/gmd/metadataApplication.xsd" dest="${destdir}/gmd/metadataApplication.xsd"/>
+                                <get src="${srcdir}/gmd/metadataEntity.xsd" dest="${destdir}/gmd/metadataEntity.xsd"/>
+                                <get src="${srcdir}/gmd/metadataExtension.xsd" dest="${destdir}/gmd/metadataExtension.xsd"/>
+                                <get src="${srcdir}/gmd/portrayalCatalogue.xsd" dest="${destdir}/gmd/portrayalCatalogue.xsd"/>
+                                <get src="${srcdir}/gmd/referenceSystem.xsd" dest="${destdir}/gmd/referenceSystem.xsd"/>
+                                <get src="${srcdir}/gmd/spatialRepresentation.xsd" dest="${destdir}/gmd/spatialRepresentation.xsd"/>
+                                <!-- gmx -->
+                                <get src="${srcdir}/gmx/catalogues.xsd" dest="${destdir}/gmx/catalogues.xsd"/>
+                                <get src="${srcdir}/gmx/codelistItem.xsd" dest="${destdir}/gmx/codelistItem.xsd"/>
+                                <get src="${srcdir}/gmx/crsItem.xsd" dest="${destdir}/gmx/crsItem.xsd"/>
+                                <get src="${srcdir}/gmx/extendedTypes.xsd" dest="${destdir}/gmx/extendedTypes.xsd"/>
+                                <get src="${srcdir}/gmx/gmx.xsd" dest="${destdir}/gmx/gmx.xsd"/>
+                                <get src="${srcdir}/gmx/gmxUsage.xsd" dest="${destdir}/gmx/gmxUsage.xsd"/>
+                                <get src="${srcdir}/gmx/uomItem.xsd" dest="${destdir}/gmx/uomItem.xsd"/>
+                                <!-- gsr -->
+                                <get src="${srcdir}/gsr/gsr.xsd" dest="${destdir}/gsr/gsr.xsd"/>
+                                <get src="${srcdir}/gsr/spatialReferencing.xsd" dest="${destdir}/gsr/spatialReferencing.xsd"/>
+                                <!-- gss -->
+                                <get src="${srcdir}/gss/geometry.xsd" dest="${destdir}/gss/geometry.xsd"/>
+                                <get src="${srcdir}/gss/gss.xsd" dest="${destdir}/gss/gss.xsd"/>
+                                <!-- gts -->
+                                <get src="${srcdir}/gts/gts.xsd" dest="${destdir}/gts/gts.xsd"/>
+                                <get src="${srcdir}/gts/temporalObjects.xsd" dest="${destdir}/gts/temporalObjects.xsd"/>
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    
+    </build>
+
+</project>

@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wms:WMS_Capabilities version="1.3.0" xmlns="http://www.opengis.net/sld" xmlns:wms="http://www.opengis.net/wms" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/sld ./sld_capabilities.xsd">
+	<!-- Service Metadata -->
+	<wms:Service>
+		<!-- The WMT-defined name for this type of service -->
+		<wms:Name>WMS</wms:Name>
+		<!-- Human-readable title for pick lists -->
+		<wms:Title>Acme Corp. Map Server</wms:Title>
+		<!-- Narrative description providing additional information -->
+		<wms:Abstract>Map Server maintained by Acme Corporation.  Contact: webmaster@wmt.acme.com.  High-quality maps showing roadrunner nests and possible ambush locations.</wms:Abstract>
+		<wms:KeywordList>
+			<wms:Keyword>bird</wms:Keyword>
+			<wms:Keyword>roadrunner</wms:Keyword>
+			<wms:Keyword>ambush</wms:Keyword>
+		</wms:KeywordList>
+		<!-- Top-level web address of service or service provider.  See also OnlineResource
+  elements under <wms:DCPType>. -->
+		<wms:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://hostname/"/>
+		<!-- Contact information -->
+		<wms:ContactInformation>
+			<wms:ContactPersonPrimary>
+				<wms:ContactPerson>Jeff Smith</wms:ContactPerson>
+				<wms:ContactOrganization>NASA</wms:ContactOrganization>
+			</wms:ContactPersonPrimary>
+			<wms:ContactPosition>Computer Scientist</wms:ContactPosition>
+			<wms:ContactAddress>
+				<wms:AddressType>postal</wms:AddressType>
+				<wms:Address>NASA Goddard Space Flight Center</wms:Address>
+				<wms:City>Greenbelt</wms:City>
+				<wms:StateOrProvince>MD</wms:StateOrProvince>
+				<wms:PostCode>20771</wms:PostCode>
+				<wms:Country>USA</wms:Country>
+			</wms:ContactAddress>
+			<wms:ContactVoiceTelephone>+1 301 555-1212</wms:ContactVoiceTelephone>
+			<wms:ContactElectronicMailAddress>user@host.com</wms:ContactElectronicMailAddress>
+		</wms:ContactInformation>
+		<!-- Fees or access constraints imposed. -->
+		<wms:Fees>none</wms:Fees>
+		<wms:AccessConstraints>none</wms:AccessConstraints>
+		<wms:LayerLimit>16</wms:LayerLimit>
+		<wms:MaxWidth>2048</wms:MaxWidth>
+		<wms:MaxHeight>2048</wms:MaxHeight>
+	</wms:Service>
+	<wms:Capability>
+		<wms:Request>
+			<wms:GetCapabilities>
+				<wms:Format>text/xml</wms:Format>
+				<wms:DCPType>
+					<wms:HTTP>
+						<wms:Get>
+							<wms:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://hostname/path?"/>
+						</wms:Get>
+						<wms:Post>
+							<wms:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://hostname/path?"/>
+						</wms:Post>
+					</wms:HTTP>
+				</wms:DCPType>
+			</wms:GetCapabilities>
+			<wms:GetMap>
+				<wms:Format>image/gif</wms:Format>
+				<wms:Format>image/png</wms:Format>
+				<wms:Format>image/jpeg</wms:Format>
+				<wms:DCPType>
+					<wms:HTTP>
+						<wms:Get>
+							<!-- The URL here for invoking GetCapabilities using HTTP GET
+            is only a prefix to which a query string is appended. -->
+							<wms:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://hostname/path?"/>
+						</wms:Get>
+					</wms:HTTP>
+				</wms:DCPType>
+			</wms:GetMap>
+			<wms:GetFeatureInfo>
+				<wms:Format>text/xml</wms:Format>
+				<wms:Format>text/plain</wms:Format>
+				<wms:Format>text/html</wms:Format>
+				<wms:DCPType>
+					<wms:HTTP>
+						<wms:Get>
+							<wms:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://hostname/path?"/>
+						</wms:Get>
+					</wms:HTTP>
+				</wms:DCPType>
+			</wms:GetFeatureInfo>
+			<DescribeLayer>
+				<wms:Format>text/xml</wms:Format>
+				<wms:Format>text/plain</wms:Format>
+				<wms:Format>text/html</wms:Format>
+				<wms:DCPType>
+					<wms:HTTP>
+						<wms:Get>
+							<wms:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://hostname/path?"/>
+						</wms:Get>
+					</wms:HTTP>
+				</wms:DCPType>
+			</DescribeLayer>
+		</wms:Request>
+		<wms:Exception>
+			<wms:Format>XML</wms:Format>
+			<wms:Format>INIMAGE</wms:Format>
+			<wms:Format>BLANK</wms:Format>
+		</wms:Exception>
+		<UserDefinedSymbolization SupportSLD="1" UserLayer="1" UserStyle="1" RemoteWFS="1" InlineFeature="1"/>
+		<wms:Layer>
+			<wms:Title>Acme Corp. Map Server</wms:Title>
+			<wms:CRS>CRS:84</wms:CRS>
+			<!-- all layers are available in at least this CRS -->
+			<wms:AuthorityURL name="DIF_ID">
+				<wms:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://gcmd.gsfc.nasa.gov/difguide/whatisadif.html"/>
+			</wms:AuthorityURL>
+			<wms:Layer>
+				<!-- This parent layer has a Name and can therefore be requested from a Map Server, yielding a map of all subsidiary layers. -->
+				<wms:Name>ROADS_RIVERS</wms:Name>
+				<wms:Title>Roads and Rivers</wms:Title>
+				<!-- See the spec to learn how some characteristics are inherited by
+           subsidiary layers. -->
+				<wms:CRS>EPSG:26986</wms:CRS>
+				<!-- An additional CRS for this layer -->
+				<wms:EX_GeographicBoundingBox>
+					<wms:westBoundLongitude>-71.63</wms:westBoundLongitude>
+					<wms:eastBoundLongitude>-70.78</wms:eastBoundLongitude>
+					<wms:southBoundLatitude>41.75</wms:southBoundLatitude>
+					<wms:northBoundLatitude>42.90</wms:northBoundLatitude>
+				</wms:EX_GeographicBoundingBox>
+				<!-- The optional resx and resy attributes indicate the X and Y spatial
+           resolution in the units of that CRS. -->
+				<wms:BoundingBox CRS="CRS:84" minx="-71.63" miny="41.75" maxx="-70.78" maxy="42.90" resx="0.01" resy="0.01"/>
+				<wms:BoundingBox CRS="EPSG:26986" minx="189000" miny="834000" maxx="285000" maxy="962000" resx="1" resy="1"/>
+				<!-- Optional Title, URL and logo image of data provider. -->
+				<wms:Attribution>
+					<wms:Title>State College University</wms:Title>
+					<wms:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://www.university.edu/"/>
+					<wms:LogoURL width="100" height="100">
+						<wms:Format>image/gif</wms:Format>
+						<wms:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://www.university.edu/icons/logo.gif"/>
+					</wms:LogoURL>
+				</wms:Attribution>
+				<!-- Identifier whose meaning is defined in an AuthorityURL element -->
+				<wms:Identifier authority="DIF_ID">123456</wms:Identifier>
+				<wms:FeatureListURL>
+					<wms:Format>XML"</wms:Format>
+					<wms:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://www.university.edu/data/roads_rivers.gml"/>
+				</wms:FeatureListURL>
+				<wms:Style>
+					<wms:Name>USGS</wms:Name>
+					<wms:Title>USGS Topo Map Style</wms:Title>
+					<wms:Abstract>Features are shown in a style like that used in USGS topographic maps.</wms:Abstract>
+					<!-- A picture of a legend for a Layer in this Style -->
+					<wms:LegendURL width="72" height="72">
+						<wms:Format>image/gif</wms:Format>
+						<wms:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://www.university.edu/legends/usgs.gif"/>
+					</wms:LegendURL>
+					<!-- An XSL stylesheet describing how feature data will rendered to create
+             a map of this layer. -->
+					<wms:StyleSheetURL>
+						<wms:Format>text/xsl</wms:Format>
+						<wms:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://www.university.edu/stylesheets/usgs.xsl"/>
+					</wms:StyleSheetURL>
+				</wms:Style>
+				<wms:Layer queryable="1">
+					<wms:Name>ROADS_1M</wms:Name>
+					<wms:Title>Roads at 1:1M scale</wms:Title>
+					<wms:Abstract>Roads at a scale of 1 to 1 million.</wms:Abstract>
+					<wms:KeywordList>
+						<wms:Keyword>road</wms:Keyword>
+						<wms:Keyword>transportation</wms:Keyword>
+						<wms:Keyword>atlas</wms:Keyword>
+					</wms:KeywordList>
+					<wms:Identifier authority="DIF_ID">123456</wms:Identifier>
+					<wms:MetadataURL type="FGDC:1998">
+						<wms:Format>text/plain</wms:Format>
+						<wms:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://www.university.edu/metadata/roads.txt"/>
+					</wms:MetadataURL>
+					<wms:MetadataURL type="ISO19115:2003">
+						<wms:Format>text/xml</wms:Format>
+						<wms:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://www.university.edu/metadata/roads.xml"/>
+					</wms:MetadataURL>
+					<!-- In addition to the Style specified in the parent Layer, this Layer is
+             available in this style. -->
+					<wms:Style>
+						<wms:Name>ATLAS</wms:Name>
+						<wms:Title>Road atlas style</wms:Title>
+						<wms:Abstract>Roads are shown in a style like that used in a commercial road atlas.</wms:Abstract>
+						<wms:LegendURL width="72" height="72">
+							<wms:Format>image/gif</wms:Format>
+							<wms:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://www.university.edu/legends/atlas.gif"/>
+						</wms:LegendURL>
+					</wms:Style>
+				</wms:Layer>
+				<wms:Layer queryable="1">
+					<wms:Name>RIVERS_1M</wms:Name>
+					<wms:Title>Rivers at 1:1M scale</wms:Title>
+					<wms:Abstract>Rivers at a scale of 1 to 1 million.</wms:Abstract>
+					<wms:KeywordList>
+						<wms:Keyword>river</wms:Keyword>
+						<wms:Keyword>canal</wms:Keyword>
+						<wms:Keyword>waterway</wms:Keyword>
+					</wms:KeywordList>
+				</wms:Layer>
+			</wms:Layer>
+			<wms:Layer queryable="1">
+				<wms:Title>Weather Forecast Data</wms:Title>
+				<wms:CRS>CRS:84</wms:CRS>
+				<!-- harmless repetition of common CRS -->
+				<wms:EX_GeographicBoundingBox>
+					<wms:westBoundLongitude>-180</wms:westBoundLongitude>
+					<wms:eastBoundLongitude>180</wms:eastBoundLongitude>
+					<wms:southBoundLatitude>-90</wms:southBoundLatitude>
+					<wms:northBoundLatitude>90</wms:northBoundLatitude>
+				</wms:EX_GeographicBoundingBox>
+				<!-- These weather data are available daily from 1999-01-01 through
+           2000-08-22. -->
+				<wms:Dimension name="time" units="ISO8601" default="2000-08-22">
+         1999-01-01/2000-08-22/P1D
+      </wms:Dimension>
+				<wms:Layer>
+					<wms:Name>Clouds</wms:Name>
+					<wms:Title>Forecast cloud cover</wms:Title>
+				</wms:Layer>
+				<wms:Layer>
+					<wms:Name>Temperature</wms:Name>
+					<wms:Title>Forecast temperature</wms:Title>
+				</wms:Layer>
+				<wms:Layer>
+					<wms:Name>Pressure</wms:Name>
+					<wms:Title>Forecast barometric pressure</wms:Title>
+					<!-- This Pressure layer is available at several elevations and times. -->
+					<wms:Dimension name="elevation" units="EPSG:5030"/>
+					<wms:Dimension name="time" units="ISO8601" default="2000-08-22">
+           1999-01-01/2000-08-22/P1D</wms:Dimension>
+					<wms:Dimension name="elevation" units="CRS:88" default="0" nearestValue="1">
+           0,1000,3000,5000,10000</wms:Dimension>
+				</wms:Layer>
+			</wms:Layer>
+			<!-- Example of a layer which is a static map of fixed
+         size which the server cannot subset or make transparent -->
+			<wms:Layer opaque="1" noSubsets="1" fixedWidth="512" fixedHeight="256">
+				<wms:Name>ozone_image</wms:Name>
+				<wms:Title>Global ozone distribution (1992)</wms:Title>
+				<wms:EX_GeographicBoundingBox>
+					<wms:westBoundLongitude>-180</wms:westBoundLongitude>
+					<wms:eastBoundLongitude>180</wms:eastBoundLongitude>
+					<wms:southBoundLatitude>-90</wms:southBoundLatitude>
+					<wms:northBoundLatitude>90</wms:northBoundLatitude>
+				</wms:EX_GeographicBoundingBox>
+				<wms:Dimension name="time" units="ISO8601" default="1992">1992</wms:Dimension>
+			</wms:Layer>
+			<!-- Example of a layer which originated from another WMS and has been
+         "cascaded" by this WMS. -->
+			<wms:Layer cascaded="1">
+				<wms:Name>population</wms:Name>
+				<wms:Title>World population, annual</wms:Title>
+				<wms:EX_GeographicBoundingBox>
+					<wms:westBoundLongitude>-180</wms:westBoundLongitude>
+					<wms:eastBoundLongitude>180</wms:eastBoundLongitude>
+					<wms:southBoundLatitude>-90</wms:southBoundLatitude>
+					<wms:northBoundLatitude>90</wms:northBoundLatitude>
+				</wms:EX_GeographicBoundingBox>
+				<wms:Dimension name="time" units="ISO8601" default="2000">1990/2000/P1Y</wms:Dimension>
+			</wms:Layer>
+		</wms:Layer>
+	</wms:Capability>
+</wms:WMS_Capabilities>

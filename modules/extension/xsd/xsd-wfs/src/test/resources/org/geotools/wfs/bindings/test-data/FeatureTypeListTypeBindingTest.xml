@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FeatureTypeList
+	xmlns="http://www.opengis.net/wfs"
+	xmlns:ogc="http://www.opengis.net/ogc"
+	xmlns:ows="http://www.opengis.net/ows"
+	xmlns:topp="http://www.openplans.org/topp"
+	xmlns:gt="http://www.geotools.org/test"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd
+	http://www.opengis.net/ows http://schemas.opengis.net/ows/1.0.0/owsAll.xsd">
+
+	<Operations>
+		<Operation>Delete</Operation>
+		<Operation>Insert</Operation>
+		<Operation>Query</Operation>
+		<Operation>GetGmlObject</Operation>
+	</Operations>
+	<FeatureType>
+		<Name>topp:name1</Name>
+		<Title>title1</Title>
+		<Abstract>Abstract1</Abstract>
+		<ows:Keywords>
+			<ows:Keyword>kwd1</ows:Keyword>
+			<ows:Keyword>kwd2</ows:Keyword>
+		</ows:Keywords>
+		<DefaultSRS>urn:ogc:crs:EPSG:6.7:4326</DefaultSRS>
+		<OtherSRS>urn:ogc:crs:EPSG:6.7:23030</OtherSRS>
+		<Operations>
+			<Operation>Query</Operation>
+		</Operations>
+		<OutputFormats>
+			<Format>GML2</Format>
+		</OutputFormats>
+		<ows:WGS84BoundingBox>
+			<ows:LowerCorner>-10 -10</ows:LowerCorner>
+			<ows:UpperCorner>10 10</ows:UpperCorner>
+		</ows:WGS84BoundingBox>
+	</FeatureType>
+</FeatureTypeList>

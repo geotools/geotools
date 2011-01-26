@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://www.opengis.net/sensorML/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:gml="http://www.opengis.net/gml" xmlns:sml="http://www.opengis.net/sensorML/1.0" xmlns:swe="http://www.opengis.net/swe/1.0" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:annotation>
+		<xs:documentation>SensorML document root definition</xs:documentation>
+	</xs:annotation>
+	<!-- ================================================= -->
+	<xs:import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+	<xs:import namespace="http://www.opengis.net/swe/1.0" schemaLocation="../../../sweCommon/1.0.0/swe.xsd"/>
+	<xs:include schemaLocation="./system.xsd"/>
+	<!-- ================================================= -->
+	<xs:element name="SensorML">
+		<xs:annotation>
+			<xs:documentation>SensorML document root</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:group ref="sml:metadataGroup"/>
+				<xs:element name="member" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:choice>
+							<xs:element ref="sml:_Process"/>
+							<xs:element ref="sml:DocumentList"/>
+							<xs:element ref="sml:ContactList"/>
+						</xs:choice>
+						<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="version" type="xs:token" use="required" fixed="1.0"/>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

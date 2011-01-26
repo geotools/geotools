@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- IUGS/CGI GeoSciML schema, ver. 1 - draft 2005-10-19 -->
+<!-- Contains the concepts (classes), their inheritance, and relations from the CGI_Collection package of the GeoSciML model -->
+<!-- GeoSciML Testbed-2 Model -->
+<schema targetNamespace="http://www.cgi-iugs.org/xml/GeoSciML/1" xmlns:gsml="http://www.cgi-iugs.org/xml/GeoSciML/1" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:gml="http://www.opengis.net/gml" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.0">
+  <annotation>
+    <documentation>collection.xsd
+Collection object for GeoSciML, allowing a group of related or dependent elements to be packaged in one document</documentation>
+  </annotation>
+  <!--=======================-->
+	<import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+  <!--=======================-->
+  <include schemaLocation="top.xsd"/>
+  <!--=======================-->
+  <complexType name="GsmlType">
+    <annotation>
+      <documentation>Collection of Geologic Features and Objects</documentation>
+    </annotation>
+    <complexContent>
+      <!-- 
+      <extension base="gml:AbstractGMLType">
+        <sequence>
+          <element name="member" type="gsml:GSMLItemPropertyType" minOccurs="0" maxOccurs="unbounded"/>
+        </sequence>
+      </extension>
+       -->
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element name="member" type="gsml:GSMLItemPropertyType" minOccurs="0" maxOccurs="unbounded"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <!-- ..................... -->
+  <element name="Gsml" type="gsml:GsmlType" substitutionGroup="gml:_GML"/>
+  <!--=======================-->
+  <complexType name="GSMLItemPropertyType">
+    <sequence minOccurs="0">
+      <choice>
+         <element ref="gml:_Geometry"/>
+        <element ref="gml:Dictionary"/>
+       <element ref="gsml:GeologicFeature"/>
+        <element ref="gsml:MappedFeature"/>
+        <!-- 
+         <element ref="gsml:GeologicObject"/>
+        <element ref="gsml:GeologicRelation"/>
+          -->
+     </choice>
+    </sequence>
+    <attributeGroup ref="gsml:RichPropertyAttributeGroup"/>
+    <attribute name="unionSemantics">
+      <simpleType>
+        <restriction base="string">
+          <enumeration value="geometryItem"/>
+          <enumeration value="vocabularyItem"/>
+          <enumeration value="featureItem"/>
+          <enumeration value="mappedItem"/>
+          <enumeration value="objectItem"/>
+          <enumeration value="relationItem"/>
+        </restriction>
+      </simpleType>
+    </attribute>
+  </complexType>
+  <!--=======================-->
+</schema>

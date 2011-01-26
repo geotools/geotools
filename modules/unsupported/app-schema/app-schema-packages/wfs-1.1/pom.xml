@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.geotools.schemas</groupId>
+    <artifactId>wfs-1.1</artifactId>
+    <version>1.1.2-2</version>
+    <name>Web Feature Service (WFS) 1.1 schema</name>
+
+    <scm>
+        <connection>scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema-packages/wfs-1.1/</connection>
+        <url>http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema-packages/wfs-1.1/</url>
+    </scm>
+
+    <developers>
+        <developer>
+            <name>Ben Caradoc-Davies</name>
+            <email>Ben.Caradoc-Davies@csiro.au</email>
+            <organization>CSIRO Earth Science and Resource Engineering </organization>
+            <roles>
+                <role>packager</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.geotools.schemas</groupId>
+            <artifactId>gml-3.1</artifactId>
+            <version>3.1.1-4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools.schemas</groupId>
+            <artifactId>filter-1.1</artifactId>
+            <version>1.1.1-2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools.schemas</groupId>
+            <artifactId>ows-1.0</artifactId>
+            <version>1.0.0-2</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+    
+        <plugins>
+            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>generate-resources</phase>
+                        <configuration>
+                            <tasks>
+                                <property name="srcdir" value="http://schemas.opengis.net/wfs/1.1.0"/>
+                                <property name="destdir" value="${project.build.outputDirectory}/net/opengis/schemas/wfs/1.1.0"/>
+                                <mkdir dir="${destdir}"/>
+                                <get src="${srcdir}/wfs.xsd" dest="${destdir}/wfs.xsd"/>
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    
+    </build>
+
+</project>

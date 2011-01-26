@@ -1,0 +1,138 @@
+MODULE GEOMETRY
+~~~~~~~~~~~~~~~
+
+  Module Maintainer: Sanjay Dominik Jena, Grahem Davis (Refractions Research)
+
+  IP Review:
+
+    * Grahem Davis, July 17/18th, 2007
+
+    * Jody Garnett, July 17th, 2007
+
+    * Adrian Custer June 12008
+
+
+  STATUS: CLEAN code, data LGPL
+  
+    The data are, possibly, taken from the JTS test suite. Needs confirmation.
+      http://jira.codehaus.org/browse/GEOT-1895, CONFIRMED.
+  
+  
+  
+    NB The date of the start of the OSGeo copyright is wrong for all files which 
+    include Vivid as copyright holder: the script captured that earliest date 
+    rather than the earliest of those lines it recoginized as assigning 
+    copyright to OSGeo.
+  
+    Vivid has (c) on several of these files which makes them LGPL only (can't 
+    relicense them under GPL+CLASSPATH).
+
+
+
+  This module is a formal fork of the JTS Topology Suite version 1.7.2 backed onto
+  GeoAPI geometry interfaces. This work was undertaken by the University of 
+  Applied Sciences Koln (Fachhochschule Koln) in 2006.
+
+  This work is based on GeoAPI Geometry interfaces which are defined in accordance
+  with the ISO 19107 specification. The ISO 19107 specification was consulted
+  during implementation. The occasional javadoc description has been taken
+  from either GeoAPI or the ISO 19107 specification. It is our understanding that
+  up to 20% of an ISO specifications may be used during an implementation and we
+  are well within this limit.
+
+  The JTS Topology Suite is property of Vivid Solutions and is available under an
+  LGPL license. This license requires that we make any modifications to their
+  code available in source code form. The publication of GeoTools source code
+  in a public repository meets this requirement.
+
+
+  All previously unusual files now have the standard OSGeo header.
+
+
+
+* org.geotools.geometry.iso
+  ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.geometry.iso.aggregate
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.geometry.iso.complex
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.geometry.iso.coordinate
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.geometry.iso.index
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.geometry.iso.quadtree
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.geometry.iso.io
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.geometry.iso.wkt
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.geometry.iso.operation
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.geometry.iso.overlay
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.geometry.iso.relate
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.geometry.iso.primitive
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.geometry.iso.root
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.geometry.iso.topograph2D
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.geometry.iso.topograph2D.index
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.geometry.iso.topograph2D.util
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.geometry.iso.util
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.geometry.iso.util.algorithm2D
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.geometry.iso.util.algorithmND
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.geometry.iso.util.algorithmND
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.geometry.iso.util.interpolation
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.geometry.iso.util.topology
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

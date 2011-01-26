@@ -1,0 +1,37 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<HTML>
+  <HEAD>
+    <TITLE>package org.opengis.filter.sort</TITLE>
+  </HEAD>
+  <BODY>
+    An <CITE>SortBy</CITE> indicates the ordering requested during a data query.
+    
+    The following is adapted from the following specifications:
+    <ul>
+    <li><A HREF="http://portal.opengeospatial.org/files/?artifact_id=8340">OpenGIS&reg; Filter Encoding Implementation Specification Version 1.1</a>
+    <li><A HREF="http://portal.opengeospatial.org/files/?artifact_id=5929">OpenGIS&reg; Catalogue Service Implementation Specification 2.0.1</a>
+    </ul>
+
+    <P ALIGN="justify">An <CITE>SortBy</CITE> can be formed using the elements:
+    {@link org.opengis.filter.expression.Add}, {@link org.opengis.filter.expression.Subtract},
+    {@link org.opengis.filter.expression.Multiply}, {@link org.opengis.filter.expression.Divide},
+    {@link org.opengis.filter.expression.PropertyName}, {@link org.opengis.filter.expression.Literal}
+    and {@link org.opengis.filter.expression.Function}. They all belong to the substitution group
+    expression which means that any of them can be used wherever an expression is called for. In addition,
+    the combinaison of these elements are themselves expressions and can be used wherever an expression is
+    called for.</P>
+
+    <H3>FeatureCollections</H3>
+    <P ALIGN="justify">The contents of a FeatureCollection are not defined with respect to order.</P>
+
+    <H3>FeatureLists</H3>
+    <P ALIGN="justify">A FeatureList represents an ordered collection of features, possibly using a
+    siers of SortBy elements to define the intended order.</P>
+
+    <H3>Catalog and Web Feature Server</H3>
+    <P ALIGN="justify">Both the Catalog and Web Feature Server specifications all the use of SortBy
+    during requests.</P>
+    </p>
+  </BODY>
+</HTML>

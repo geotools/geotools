@@ -1,0 +1,104 @@
+Update: January 2009
+Emily Gouge (egouge@refractions.net)
+
+I've updated this code significantly.  More information can be found on the wiki:
+http://docs.codehaus.org/display/GEOTOOLS/Caching+Module
+
+----------------------------------------------------------------------------------------
+
+GOOGLE SUMMER OF CODE 2007 PROJECT : CACHING DATA IN UDIG
+
+PROJECT OVERVIEW
+
+    Caching data and the ability to support intermittent network
+    connections and limited bandwidth is required for a number of
+    Geo-applications, as these are still serious limitations when
+    designing apps for the operationanal world.
+
+    The aim of this project was to add a geofeatures caching framework
+    to the GeoTools library, as it serves as a foundation to the uDig
+    client.
+
+    The contributed code extends the spatial index framework proposed
+    by Marios Hadjieleftheriou
+    <http://research.att.com/~marioh/spatialindex> to build a
+    FeatureCache framework. This framework intends to be reusable so
+    as to vary implementation details such as type of
+    spatial index used, type of storage back end.
+
+    The main idea of this work is to group features according to a
+    predefined partition of space (and time if working in
+    n-dimensions). This partition is used to retrieve and store
+    features in the cache, and takes advantage of the underlying
+    spatial index properties.
+
+    Grid indexation, and memory and disk storage have been implemented.
+
+    Caching has not yet been implemented inside uDig, though the proposed
+    framework would make it feasible.
+
+INSTALLATION and DEMONSTRATION
+
+    Using Maven 2.0.5, type at the command prompt at the project root
+    directory :
+
+    $ mvn test
+
+    Maven will compile the module and run unit tests.
+
+    For more information on how to use Maven with GeoTools, see :
+
+       http://docs.codehaus.org/display/GEOT/2.5+Using+Maven
+
+    The source code includes a demo application named BenchMark you
+    can run by typing at the command prompt :
+
+    $ mvn java:exec -Dexec.mainClass="org.geotools.caching.BenchMark"
+
+TODO
+
+    (Aug 20th, 2007)
+
+    . Extend cache capability from read-only to write-thru
+
+    . Ensure implementation is thread safe
+
+    . Modify cache so it can be disconnected (minor modifications is required)
+
+    . Implement other (and likely more performant) types of spatial indices.
+
+    . Adapt uDig code to use this caching framework
+
+AUTHOR
+
+    Christophe ROUSSON <christophe.rousson@gmail.com>
+
+MENTOR
+
+    Ian TURTON <ijturton@gmail.com>
+
+LICENSE
+
+    GeoTools - OpenSource mapping toolkit
+    http://geotools.org
+    (C) 2002-2007, GeoTools Project Managment Committee (PMC)
+
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation;
+    version 2.1 of the License.
+
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Lesser General Public License for more details.
+
+ORIGINAl SOURCE CODE
+
+    Latest development version can be obtained from GeoTools SVN repository :
+
+    http://svn.geotools.org/geotools/trunk/gt/modules/unsupported/caching   
+
+FURTHER INFORMATION
+
+   http://docs.codehaus.org/display/GEOTOOLS/SoC+2007+Caching+data

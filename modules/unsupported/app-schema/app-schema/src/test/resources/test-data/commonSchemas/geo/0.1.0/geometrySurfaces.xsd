@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Marcus Sen (british Geological Survey) -->
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:gml="http://www.opengis.net/gml" xmlns:geo="http://www.seegrid.csiro.au/xml/geometry" targetNamespace="http://www.seegrid.csiro.au/xml/geometry" elementFormDefault="qualified" attributeFormDefault="unqualified"
+        version="pre-release">
+	<annotation>
+		<documentation>geometry.xsd
+
+A GML conformant schema 
+for specialised geometries for geoscience
+
+Copyright (c) 2005 CSIRO - see https://www.seegrid.csiro.au/twiki/bin/view/Xmml/LegalNotices#Software_Notice</documentation>
+	</annotation>
+	<!-- ====================================================================== -->
+	<!-- bring in other schemas -->
+	<import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+	<include schemaLocation="./geometry.xsd"/>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<!-- === Compact triangulated surface encoding === -->
+	<!-- ====================================================================== -->
+	<complexType name="TriSurfaceType">
+		<complexContent>
+			<extension base="gml:AbstractSurfaceType">
+				<sequence>
+					<element name="patch" type="geo:ThreeVertexSurfacePatchPropertyType" minOccurs="0" maxOccurs="unbounded"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- .................. -->
+	<element name="TriSurface" type="geo:TriSurfaceType" substitutionGroup="gml:_Surface">
+		<annotation>
+			<documentation>More flexible, and potentially more compact version of a set of triangles, directly derived by restricting the general composite provided by GML, allowing either gml:Triangle or geo:Triangle as members</documentation>
+		</annotation>
+	</element>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<!-- === Surface patches === -->
+	<!-- ====================================================================== -->
+	<complexType name="ThreeVertexSurfacePatchType">
+		<complexContent>
+			<extension base="gml:AbstractSurfacePatchType">
+				<sequence>
+					<element name="exteriorVertex" type="gml:PointPropertyType" minOccurs="3" maxOccurs="3"/>
+				</sequence>
+				<attribute name="interpolation" type="gml:SurfaceInterpolationType" fixed="planar"/>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- .................. -->
+	<element name="ThreeVertexSurfacePatch" type="geo:ThreeVertexSurfacePatchType" substitutionGroup="gml:_SurfacePatch">
+		<annotation>
+			<documentation>Represents a triangle as a surface with an 
+      outer boundary defined by references to three Points. 
+      Note that this is a polygon (subtype) with no inner boundaries. 
+      Relative to a right-handed coordinate system the vertex sequence is counter-clockwise around the positive normal vector
+      A
+       |
+ 0__| __2
+   \   |   /
+    \    /
+      1</documentation>
+		</annotation>
+	</element>
+	<!-- .................. -->
+	<complexType name="ThreeVertexSurfacePatchPropertyType">
+		<sequence minOccurs="0">
+			<element ref="geo:ThreeVertexSurfacePatch"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+	<complexType name="FourVertexSurfacePatchType">
+		<complexContent>
+			<extension base="gml:AbstractSurfacePatchType">
+				<sequence>
+					<element name="exteriorVertex" type="gml:PointPropertyType" minOccurs="4" maxOccurs="4"/>
+				</sequence>
+				<attribute name="interpolation" type="gml:SurfaceInterpolationType" fixed="planar"/>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- .................. -->
+	<element name="FourVertexSurfacePatch" type="geo:FourVertexSurfacePatchType" substitutionGroup="gml:_SurfacePatch">
+		<annotation>
+			<documentation>Represents a quadrilateral as a surface with an 
+      outer boundary defined by references to four Points. 
+      The points must be co-planar.  
+      Note that this is a polygon (subtype) with no inner boundaries. 
+      Relative to a right-handed coordinate system the vertex sequence is counter-clockwise around the positive normal vector
+      A
+       |
+ 0__| __3
+  |    |     |
+  |_____|
+ 1         2</documentation>
+		</annotation>
+	</element>
+	<!-- .................. -->
+	<complexType name="FourVertexSurfacePatchPropertyType">
+		<sequence minOccurs="0">
+			<element ref="geo:FourVertexSurfacePatch"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+	<!-- === Rings === -->
+	<!-- ======================================================================
+	<complexType name="TriangleRingType">
+		<complexContent>
+			<restriction base="gml:LinearRingType">
+				<sequence>
+					<group ref="gml:StandardObjectProperties"/>
+					<group ref="geo:posProperty" minOccurs="4" maxOccurs="4"/>
+				</sequence>
+				<attribute name="srsName" type="anyURI" use="optional"/>
+				<attribute ref="gml:id" use="required"/>
+			</restriction>
+		</complexContent>
+	</complexType> -->
+	<!-- .................. 
+	<element name="TriangleRing" type="geo:TriangleRingType" substitutionGroup="gml:LinearRing">
+		<annotation>
+			<documentation>Triangle ring - a LinearRing with 4 vertices.
+      The initial and final vertices must be coincident.</documentation>
+		</annotation>
+	</element>-->
+	<!-- ======================================================================
+	<complexType name="QuadrilateralRingType">
+		<complexContent>
+			<restriction base="gml:LinearRingType">
+				<sequence>
+					<group ref="gml:StandardObjectProperties"/>
+					<group ref="geo:posProperty" minOccurs="5" maxOccurs="5"/>
+				</sequence>
+				<attribute name="srsName" type="anyURI" use="optional"/>
+				<attribute ref="gml:id" use="required"/>
+			</restriction>
+		</complexContent>
+	</complexType> -->
+	<!-- .................. 
+	<element name="QuadrilateralRing" type="geo:QuadrilateralRingType" substitutionGroup="gml:LinearRing">
+		<annotation>
+			<documentation>Quadrilateral ring - a LinearRing with 5 vertices.
+      The initial and final vertices must be coincident.</documentation>
+		</annotation>
+	</element>-->
+	<!-- ====================================================================== -->
+	<!-- === Specialised components used by geometries === -->
+	<!-- ====================================================================== -->
+	<!-- === properties === -->
+	<!-- ====================================================================== -->
+	<element name="triPatches" type="geo:TriArrayPropertyType" substitutionGroup="gml:patches">
+		<annotation>
+			<documentation>triMembers contains triangles, each of which is described using either the gml or xmml forms.</documentation>
+		</annotation>
+	</element>
+	<!-- ====================================================================== -->
+	<complexType name="TriArrayPropertyType">
+		<complexContent>
+			<restriction base="gml:SurfacePatchArrayPropertyType">
+				<sequence minOccurs="0" maxOccurs="unbounded">
+					<element ref="geo:ThreeVertexSurfacePatch"/>
+				</sequence>
+			</restriction>
+		</complexContent>
+	</complexType>
+	<!-- =========================================================== -->
+	<element name="quadPatches" type="geo:QuadArrayPropertyType" substitutionGroup="gml:patches">
+		<annotation>
+			<documentation>quadMembers contains quadrilateral patches, each of which is described using either the gml or xmml forms.</documentation>
+		</annotation>
+	</element>
+	<!-- ====================================================================== -->
+	<complexType name="QuadArrayPropertyType">
+		<complexContent>
+			<restriction base="gml:SurfacePatchArrayPropertyType">
+				<sequence minOccurs="0" maxOccurs="unbounded">
+					<element ref="geo:FourVertexSurfacePatch"/>
+				</sequence>
+			</restriction>
+		</complexContent>
+	</complexType>
+	<!-- =========================================================== -->
+	<!-- =========================================================== -->
+	<!-- 
+How to implement a triangulated-surface
+using geometryPrimitives.xsd
+    Surface/patches/Triangle*/exterior/LinearRing/pos*
+using xmml-geometry, vertices represented locally 
+    TriSurface/triPatches/gml:Triangle*/exterior/LinearRing/pos*
+or if Points described elsewhere
+     TriSurface/triPatches/geo:Triangle*/exterior3Points (has references to vertex id's)
+     
+How to implement a hexahedron:
+using geometryPrimitives.xsd
+    Solid/exterior/Surface/patches/Rectangle*/exterior/LinearRing
+same pattern vertices represented locally 
+    Hexahedron/exterior/HexahedralSurface/quadPatches/gml:Rectangle*/exterior/LinearRing/pos*
+or by reference
+    Hexahedron/exterior/HexahedralSurface/quadPatches/geo:Rectangle*/exterior4Points
+    
+more compact patterns, ** require a fixed vertex sequence**: 
+vertices represented locally
+     Hexahedron/pos[8]
+or by reference
+     Hexahedron/exterior8Points
+ 
+  -->
+	<!-- =========================================================== -->
+</schema>

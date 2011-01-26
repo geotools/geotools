@@ -1,0 +1,429 @@
+# Table of Datum aliases. Datum may be geodetic, vertical, temporal, etc.
+# Ellipsoid and prime meridian names may appear in this table as well.
+# The first line shall contains the authority names. All other lines are
+# datum names.
+#
+# (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
+#
+EPSG;OGR;ESRI;Oracle;OGC
+#-----------------------------------------------------------------------
+Ayabelle Lighthouse;;D_Ayabelle
+Abidjan 1987;Abidjan_1987;D_Abidjan_1987
+Accra;Accra;D_Accra
+Adindan;Adindan;D_Adindan;Adindan
+Afgooye;Afgooye;D_Afgooye;Afgooye
+Agadez;Agadez;D_Agadez
+Ain el Abd 1970;Ain_el_Abd_1970;D_Ain_el_Abd_1970;Ain el Abd 1970
+Albanian 1987;Albanian_1987;D_Albanian_1987
+American Samoa 1962;American_Samoa_1962;D_American_Samoa_1962
+Amersfoort;Amersfoort;D_Amersfoort
+Ammassalik 1958;Ammassalik_1958;D_Ammassalik_1958
+Ancienne Triangulation Francaise (Paris);Ancienne_Triangulation_Francaise_Paris;D_ATF
+Anguilla 1957;Anguilla_1957;D_Anguilla_1957
+Antigua 1943;Antigua_1943;D_Antigua_1943
+Aratu;Aratu;D_Aratu
+Arc 1950;Arc_1950;D_Arc_1950;Arc 1950
+Arc 1960;Arc_1960;D_Arc_1960;Arc 1960
+Ascension Island 1958;;D_Ascension_Island_1958;Ascension Island 1958
+Australian Antarctic Datum 1998;Australian_Antarctic_Datum_1998;D_Australian_Antarctic_1998
+Australian Geodetic Datum 1966;Australian_Geodetic_Datum_1966;D_Australian_1966;Australian Geodetic 1966
+Australian Geodetic Datum 1984;Australian_Geodetic_Datum_1984;D_Australian_1984;Australian Geodetic 1984
+Average Terrestrial System 1977;Average_Terrestrial_System_1977;D_ATS_1977
+Azores Central Islands 1948;Azores_Central_Islands_1948;D_Azores_Central_Islands_1948
+Azores Central Islands 1995;Azores_Central_Islands_1995;D_Azores_Central_Islands_1995
+Azores Occidental Islands 1939;Azores_Occidental_Islands_1939;D_Azores_Occidental_Islands_1939
+Azores Oriental Islands 1940;Azores_Oriental_Islands_1940;D_Azores_Oriental_Islands_1940
+Azores Oriental Islands 1995;Azores_Oriental_Islands_1995;D_Azores_Oriental_Islands_1995
+Barbados 1938;Barbados_1938;D_Barbados_1938
+Batavia;Batavia;D_Batavia;Batavia (Jakarta);Batavia_Jakarta;
+Beduaram;Beduaram;D_Beduaram
+Beijing 1954;Beijing_1954;D_Beijing_1954
+Bellevue;;D_Bellevue_IGN;Bellevue (IGN)
+Bermuda 1957;Bermuda_1957;D_Bermuda_1957;Bermuda 1957
+Bern 1938;Bern_1938;D_Bern_1938
+Bissau;Bissau;D_Bissau
+Bogota 1975;Bogota_1975;D_Bogota;Bogota Observatory;Bogota 1975 (Bogota);Bogota_1975_Bogota
+Bukit Rimpah;Bukit_Rimpah;D_Bukit_Rimpah
+Camacupa;Camacupa;D_Camacupa
+Camp Area Astro;;D_Camp_Area
+Campo Inchauspe;Campo_Inchauspe;D_Campo_Inchauspe;Campo Inchauspe
+Cape;Cape;D_Cape;Cape
+Cape Canaveral;;D_Cape_Canaveral
+Carthage;Carthage;D_Carthage;Carthage
+Carthage (Paris);Carthage_Paris
+Centre Spatial Guyanais 1967;Centre_Spatial_Guyanais_1967;D_CSG_1967
+CH1903;CH1903;D_CH1903
+CH1903 (Bern);CH1903_Bern;D_Bern_1898;CH 1903 (Switzerland)
+CH1903+;CH1903+;D_CH1903+
+Chatham Islands Datum 1971;Chatham_Islands_Datum_1971;D_Chatham_Island_1971;Chatham 1971
+Chatham Islands Datum 1979;Chatham_Islands_Datum_1979;D_Chatham_Islands_1979
+Chos Malal 1914;Chos_Malal_1914;D_Chos_Malal_1914
+Chua;Chua;D_Chua;Chua Astro
+Clarke 1880 (IGN);;Clarke_1880_IGN
+Cocos Islands 1965;;D_Anna_1_1965;Anna 1 Astro 1965
+Combani 1950;Combani_1950;D_Combani_1950
+Conakry 1905;Conakry_1905;D_Conakry_1905
+Congo 1960 Pointe Noire;Congo_1960_Pointe_Noire;D_Pointe_Noire
+Corrego Alegre;Corrego_Alegre;D_Corrego_Alegre;Corrego Alegre
+Cote d'Ivoire;Cote_d_Ivoire;D_Cote_d_Ivoire
+Dabola 1981;Dabola_1981;D_Dabola_1981
+Datum 73;Datum_73;D_Datum_73
+Datum Geodesi Nasional 1995;;D_Datum_Geodesi_Nasional_1995
+Dealul Piscului 1930;;D_Dealul_Piscului_1933
+Dealul Piscului 1933;Dealul_Piscului_1933
+Dealul Piscului 1970;Dealul_Piscului_1970;D_Dealul_Piscului_1970
+Deception Island;;D_Deception_Island
+Deir ez Zor;Deir_ez_Zor;D_Deir_ez_Zor
+Deutsches Hauptdreiecksnetz;Deutsches_Hauptdreiecksnetz;D_Deutsches_Hauptdreiecksnetz
+Diego Garcia 1969;;D_ISTS_073_1969
+Dominica 1945;Dominica_1945;D_Dominica_1945
+Douala;Douala;D_Douala
+Douala 1948;Douala_1948;D_Douala_1948
+Easter Island 1967;;D_Easter_Island_1967
+Egypt 1907;Egypt_1907;D_Egypt_1907;Old Egyptian
+Egypt 1930;Egypt_1930;D_Egypt_1930
+Egypt Gulf of Suez S-650 TL;;D_Egypt_Gulf_of_Suez_S-650_TL
+Estonia 1992;Estonia_1992;D_Estonia_1992
+Estonia 1997;Estonia_1997;D_Estonia_1997
+European Datum 1950;European_Datum_1950;D_European_1950;European 1950
+European Datum 1950(1977);European_Datum_1950_1977;D_European_1950_ED77
+European Datum 1979;European_Datum_1979;D_European_1979;European 1979
+European Datum 1987;European_Datum_1987;D_European_1987;European 1987
+European Libyan Datum 1979;European_Libyan_Datum_1979;D_European_Libyan_1979
+European Terrestrial Reference System 1989;European_Terrestrial_Reference_System_1989;D_ETRS_1989;ETRS 89
+Fahud;Fahud;D_Fahud
+Fatu Iva 72;;D_Fatu_Iva_1972
+Faroe Datum 1954;;D_Faroe_Datum_1954
+Fiji 1956;;D_Fiji_1956
+Fiji Geodetic Datum 1986;;D_Fiji_1986
+Final Datum 1958;Final_Datum_1958;D_FD_1958
+Fort Marigot;Fort_Marigot;D_Fort_Marigot
+Gan 1970;;D_Gan_1970
+Gandajika 1970;Gandajika_1970;;Gandajika Base
+Garoua;Garoua;D_Garoua
+Geocentric Datum of Australia 1994;Geocentric_Datum_of_Australia_1994;D_GDA_1994;GDA 94
+Geodetic Datum of 1965;Geodetic_Datum_of_1965;D_TM75
+Geocentric datum of Korea;;D_Korea_2000
+Geodetic Datum of Malaysia 2000;;D_GDM_2000
+Grand Cayman 1959;;D_Grand_Cayman_1959
+Grand Comoros;Grand_Comoros;D_Grand_Comoros
+Greek;Greek;D_Greek
+Greek (Athens);Greek_Athens
+Greek Geodetic Reference System 1987;Greek_Geodetic_Reference_System_1987;D_GGRS_1987
+Greenland 1996;;D_Greenland_1996
+Grenada 1953;Grenada_1953;D_Grenada_1953
+Guadeloupe 1948;Guadeloupe_1948;D_Sainte_Anne
+Guam 1963;Guam_1963;D_Guam_1963;Guam 1963
+Gulshan 303;Gulshan_303;D_Gulshan_303
+Gunung Segara;Gunung_Segara;D_Gunung_Segara
+Gunung Segara (Jakarta);Gunung_Segara_Jakarta
+Guyane Francaise;Guyane_Francaise;D_Guyane_Francaise
+Hanoi 1972;Hanoi_1972;D_Hanoi_1972
+Hartebeesthoek94;Hartebeesthoek94;D_Hartebeesthoek_1994
+Helle 1954;Helle_1954;D_Helle_1954
+Herat North;Herat_North;D_Herat_North
+Hito XVIII 1963;Hito_XVIII_1963;D_Hito_XVIII_1963;Hito XVIII 1963
+Hjorsey 1955;Hjorsey_1955;D_Hjorsey_1955
+Hong Kong 1963;;D_Hong_Kong_1963;Hong Kong 1963
+Hong Kong 1980;Hong_Kong_1980;D_Hong_Kong_1980
+Hu Tzu Shan;Hu_Tzu_Shan;;Hu-Tzu-Shan
+Hungarian Datum 1972;Hungarian_Datum_1972;D_Hungarian_1972
+IERS Terrestrial Reference Frame 1988;IERS_Terrestrial_Reference_Frame_1988;
+IERS Terrestrial Reference Frame 1989;IERS_Terrestrial_Reference_Frame_1989;D_ITRF_1989
+IERS Terrestrial Reference Frame 1990;IERS_Terrestrial_Reference_Frame_1990;D_ITRF_1990
+IERS Terrestrial Reference Frame 1991;IERS_Terrestrial_Reference_Frame_1991;D_ITRF_1991
+IERS Terrestrial Reference Frame 1992;IERS_Terrestrial_Reference_Frame_1992;D_ITRF_1992
+IERS Terrestrial Reference Frame 1993;IERS_Terrestrial_Reference_Frame_1993;D_ITRF_1993
+IERS Terrestrial Reference Frame 1994;IERS_Terrestrial_Reference_Frame_1994;D_ITRF_1994
+IERS Terrestrial Reference Frame 1996;IERS_Terrestrial_Reference_Frame_1996;D_ITRF_1996
+IERS Terrestrial Reference Frame 1997;IERS_Terrestrial_Reference_Frame_1997;D_ITRF_1997
+IERS Terrestrial Reference Frame 2000;IERS_Terrestrial_Reference_Frame_2000;D_ITRF_2000
+IGN53 Mare;IGN53_Mare;D_IGN53_Mare
+IGN56 Lifou;IGN56_Lifou;D_IGN56_Lifou
+IGN72 Grande Terre;IGN72_Grande_Terre;D_IGN72_Grande_Terre
+IGN72 Nuku Hiva;IGN72_Nuku_Hiva;D_IGN72_Nuku_Hiva
+IGC 1962 Arc of the 6th Parallel South;;D_IGC_1962_Arc_of_the_6th_Parallel_South
+IGN 1962 Kerguelen;;D_Kerguelen_Island_1949
+IGN Astro 1960;;D_IGN_Astro_1960
+IGN63 Hiva Oa;;D_IGN63_Hiva_Oa
+Indian 1954;Indian_1954;D_Indian_1954
+Indian 1960;Indian_1960;D_Indian_1960
+Indian 1975;Indian_1975;D_Indian_1975
+Indonesian Datum 1974;Indonesian_Datum_1974;D_Indonesian_1974
+Institut Geographique du Congo Belge 1955;;D_Institut_Geographique_du_Congo_Belge_1955
+International Terrestrial Reference Frame 2005;;D_ITRF_2005
+Iraq-Kuwait Boundary Datum 1992;Iraq-Kuwait_Boundary_Datum_1992;D_Iraq_Kuwait_Boundary_1992
+IRENET95;IRENET95;D_IRENET95
+Islands Network 1993;Islands_Network_1993;D_Islands_Network_1993
+Israel;Israel;D_Israel
+Istituto Geografico Militaire 1995;Istituto_Geografico_Militaire_1995;D_IGM_1995
+Iwo Jima 1945;;D_Beacon_E_1945
+Jamaica 1875;Jamaica_1875;D_Jamaica_1875
+Jamaica 1969;Jamaica_1969;D_Jamaica_1969
+Jamaica 2001;;D_Jamaica_2001
+Japanese Geodetic Datum 2000;Japanese_Geodetic_Datum_2000;D_JGD_2000
+Jednotne Trigonometricke Site Katastralni;Jednotne_Trigonometricke_Site_Katastralni;D_S_JTSK
+Johnston Island 1961;;D_Johnston_Island_1961;Johnston Island 1961
+Jouik 1961;Jouik_1961;D_Jouik_1961
+K0 1949;K0_1949;D_K0_1949
+Kalianpur 1880;Kalianpur_1880;D_Kalianpur_1880
+Kalianpur 1937;Kalianpur_1937;D_Kalianpur_1937
+Kalianpur 1962;Kalianpur_1962;D_Kalianpur_1962
+Kalianpur 1975;Kalianpur_1975;D_Kalianpur_1975
+Kandawala;Kandawala;D_Kandawala;Kandawala
+Karbala 1979;;D_Karbala_1979_Polservice
+Kartastokoordinaattijarjestelma (1966);Kartasto_Koordinaati_Jarjestelma_1966;D_KKJ
+Kasai 1953;;D_Kasai_1955
+Katanga 1955;;D_Katanga_1955
+Kertau;Kertau;D_Kertau;Kertau 1948
+Korean Datum 1985;Korean_Datum_1985;D_Korean_Datum_1985
+Korean Datum 1995;Korean_Datum_1995;D_Korean_Datum_1995
+Kousseri;Kousseri;D_Kousseri
+Kusaie 1951;;D_Kusaie_1951
+Kuwait Oil Company;Kuwait_Oil_Company;D_Kuwait_Oil_Company
+Kuwait Utility;Kuwait_Utility;D_Kuwait_Utility
+La Canoa;La_Canoa;D_La_Canoa
+Lake;Lake;D_Lake
+Lao 1993;Lao_1993;D_Lao_1993
+Lao National Datum 1997;Lao_National_Datum_1997;D_Lao_National_Datum_1997
+Latvia 1992;Latvia_1992;D_Latvia_1992
+Le Pouce 1934;;D_Le_Pouce_1934
+Leigon;Leigon;D_Leigon
+Liberia 1964;Liberia_1964;D_Liberia_1964;Liberia 1964
+Libyan Geodetic Datum 2006;;D_Libyan_Geodetic_Datum_2006
+Lisbon 1890;Lisbon_1890
+Lisbon 1890 (Lisbon);Lisbon_1890_Lisbon;D_Lisbon_1890
+Lisbon 1937;Lisbon_1937;D_Lisbon
+Lisbon 1937 (Lisbon);Lisbon_1937_Lisbon
+Lithuania 1994 (ETRS89);Lithuania_1994_ETRS89;D_Lithuania_1994
+Little Cayman 1961;;D_Little_Cayman_1961
+Locodjo 1965;Locodjo_1965;D_Locodjo_1965
+Loma Quintana;Loma_Quintana;D_Loma_Quintana
+Lome;Lome;D_Lome
+Luxembourg 1930;Luxembourg_1930;D_Luxembourg_1930
+Luzon 1911;Luzon_1911;D_Luzon_1911
+MOLDREF99;;D_International_1967
+Madeira 1936;Madeira_1936;D_Madeira_1936
+Madrid 1870 (Madrid);Madrid_1870_Madrid;D_Madrid_1870
+Madzansua;Madzansua;D_Madzansua
+Marco Geocentrico Nacional de Referencia;;D_MAGNA
+Mahe 1971;Mahe_1971;D_Mahe_1971;Mahe 1971
+Makassar;Makassar;D_Makassar
+Makassar (Jakarta);Makassar_Jakarta
+Malongo 1987;Malongo_1987;D_Malongo_1987
+Manoca;Manoca;D_Manoca
+Manoca 1962;Manoca_1962;D_Manoca_1962
+Marcus Island 1952;;D_Astro_1952
+Marshall Islands 1960;;D_Wake_Eniwetok_1960;Wake-Eniwetok 1960
+Martinique 1938;Martinique_1938;D_Fort_Desaix
+Massawa;Massawa;D_Massawa;Massawa
+Maupiti 83;;D_Maupiti_1983
+Mauritania 1999;Mauritania_1999;D_Mauritania_1999
+Merchich;Merchich;D_Merchich;Merchich
+Mhast;Mhast;D_Mhast
+Mhast (offshore);;D_Mhast_Offshore
+Mhast (onshore);;D_Mhast_Onshore
+Midway 1961;;D_Midway_1961
+Militar-Geographische Institut (Ferro);Militar-Geographische_Institut_Ferro;Militar-Geographische Institut;Militar-Geographische_Institut;D_MGI
+Minna;Minna;D_Minna;Minna
+Missao Hidrografico Angola y Sao Tome 1951;;D_Mhast_1951
+Monte Mario;Monte_Mario;D_Monte_Mario
+Monte Mario (Rome);Monte_Mario_Rome
+Montserrat 1958;Montserrat_1958;D_Montserrat_1958
+Moorea 87;;D_Moorea_1987
+MOP78;MOP78;D_MOP78
+Mount Dillon;Mount_Dillon;D_Mount_Dillon
+Moznet (ITRF94);Moznet_ITRF94;D_Moznet
+M'poraloko;M_poraloko;D_Mporaloko
+NAD Michigan;NAD_Michigan;D_North_American_Michigan
+NAD83 (High Accuracy Regional Network);NAD83_High_Accuracy_Regional_Network;D_North_American_1983_HARN
+NAD83 (National Spatial Reference System 2007);;D_NAD_1983_NSRS2007
+NAD83 Canadian Spatial Reference System;NAD83_Canadian_Spatial_Reference_System;D_North_American_1983_CSRS
+Nahrwan 1934;;D_Nahrwan_1934
+Nahrwan 1967;Nahrwan_1967;D_Nahrwan_1967
+Nakhl-e Ghanem;;D_Nakhl-e_Ghanem
+Naparima 1955;Naparima_1955;D_Naparima_1955
+Naparima 1972;Naparima_1972;D_Naparima_1972;Naparima, BWI
+National Geodetic Network;National_Geodetic_Network;D_NGN
+NEA74 Noumea;NEA74_Noumea;D_NEA74_Noumea
+New Zealand Geodetic Datum 1949;New_Zealand_Geodetic_Datum_1949;D_New_Zealand_1949
+New Zealand Geodetic Datum 2000;New_Zealand_Geodetic_Datum_2000;D_NZGD_2000
+NGO 1948;NGO_1948;D_NGO_1948
+NGO 1948 (Oslo);NGO_1948_Oslo
+Nord de Guerre (Paris);Nord_de_Guerre_Paris;D_Nord_de_Guerre
+Nord Sahara 1959;Nord_Sahara_1959;D_Nord_Sahara_1959
+Nord Sahara 1959 (Paris);Nord_Sahara_1959_Paris
+North American Datum 1927;North_American_Datum_1927;D_North_American_1927;NAD 27 (Continental US)
+North American Datum 1927 (1976);North_American_Datum_1927_1976;D_NAD_1927_Definition_1976
+North American Datum 1927 (CGQ77);North_American_Datum_1927_CGQ77;D_NAD_1927_CGQ77
+North American Datum 1983;North_American_Datum_1983;D_North_American_1983;NAD 83
+Nouakchott 1965;Nouakchott_1965;D_Nouakchott_1965
+Nouvelle Triangulation Francaise;Nouvelle_Triangulation_Francaise;NTF
+Nouvelle Triangulation Francaise (Paris);Nouvelle_Triangulation_Francaise_Paris;D_NTF;NTF (Paris meridian)
+Not specified (based on Airy 1830 ellipsoid);;D_Airy_1830
+Not specified (based on Airy Modified 1849 ellipsoid);;D_Airy_Modified
+Not specified (based on Australian National Spheroid);;D_Australian
+Not specified (based on Authalic Sphere);;D_Sphere
+Not specified (based on Bessel 1841 ellipsoid);;D_Bessel_1841
+Not specified (based on Bessel Modified ellipsoid);;D_Bessel_Modified
+Not specified (based on Bessel Namibia ellipsoid);;D_Bessel_Namibia
+Not specified (based on Clarke 1858 ellipsoid);;D_Clarke_1858
+Not specified (based on Clarke 1866 Authalic Sphere);;D_Sphere_Clarke_1866_Authalic
+Not specified (based on Clarke 1866 Michigan ellipsoid);;D_Clarke_1866_Michigan
+Not specified (based on Clarke 1866 ellipsoid);;D_Clarke_1866
+Not specified (based on Clarke 1880 (Arc) ellipsoid);;D_Clarke_1880_Arc
+Not specified (based on Clarke 1880 (Benoit) ellipsoid);;D_Clarke_1880_Benoit
+Not specified (based on Clarke 1880 (IGN) ellipsoid);;D_Clarke_1880_IGN
+Not specified (based on Clarke 1880 (RGS) ellipsoid);;D_Clarke_1880_RGS
+Not specified (based on Clarke 1880 (SGA 1922) ellipsoid);;D_Clarke_1880_SGA
+Not specified (based on Clarke 1880 ellipsoid);;D_Clarke_1880
+Not specified (based on Everest 1830 (1937 Adjustment) ellipsoid);;D_Everest_Adj_1937
+Not specified (based on Everest 1830 (1962 Definition) ellipsoid);;D_Everest_Def_1962
+Not specified (based on Everest (1830 Definition) ellipsoid);;D_Everest_1830
+Not specified (based on Everest 1830 (1967 Definition) ellipsoid);;D_Everest_Def_1967
+Not specified (based on Everest 1830 (1975 Definition) ellipsoid);;D_Everest_Def_1975
+Not specified (based on Everest 1830 Modified ellipsoid);;D_Everest_Modified
+Not specified (based on GEM 10C ellipsoid);;D_GEM_10C
+Not specified (based on GRS 1967 ellipsoid);;D_GRS_1967
+Not specified (based on GRS 1980 Authalic Sphere);;D_Sphere_GRS_1980_Authalic
+Not specified (based on GRS 1980 ellipsoid);;D_GRS_1980
+Not specified (based on Helmert 1906 ellipsoid);;D_Helmert_1906
+Not specified (based on Hughes 1980 ellipsoid);;D_Hughes_1980
+Not specified (based on Indonesian National Spheroid);;D_Indonesian
+Not specified (based on International 1924 Authalic Sphere);;D_Sphere_International_1924_Authalic
+Not specified (based on International 1924 ellipsoid);;D_International_1924
+Not specified (based on Krassowsky 1940 ellipsoid);;D_Krasovsky_1940
+Not specified (based on NWL 9D ellipsoid);;D_NWL_9D
+Not specified (based on OSU86F ellipsoid);;D_OSU_86F
+Not specified (based on OSU91A ellipsoid);;D_OSU_91A
+Not specified (based on Plessis 1817 ellipsoid);;D_Plessis_1817
+Not specified (based on Struve 1860 ellipsoid);;D_Struve_1860
+Not specified (based on War Office ellipsoid);;D_War_Office
+NSWC 9Z-2;NSWC_9Z-2;D_NSWC_9Z_2
+Observatario;Observatario;D_Observatario;Observatorio 1966
+Old Hawaiian;Old_Hawaiian;D_Old_Hawaiian;Old Hawaiian
+OS (SN) 1980;OS_SN_1980;D_OS_SN_1980
+OSGB 1936;OSGB_1936;D_OSGB_1936
+OSGB 1970 (SN);OSGB_1970_SN;D_OSGB_1970_SN
+OSNI 1952;OSNI_1952;D_OSNI_1952
+Padang 1884;Padang_1884;D_Padang_1884
+Padang 1884 (Jakarta);Padang_1884_Jakarta
+Palestine 1923;Palestine_1923;D_Palestine_1923
+Pampa del Castillo;Pampa_del_Castillo;D_Pampa_del_Castillo
+Parametrop Zemp 1990;;D_Parametrop_Zemp_1990
+PDO Survey Datum 1993;PDO_Survey_Datum_1993;D_PDO_1993
+Petrels 1972;Petrels_1972;D_Petrels_1972
+Philippine Reference System 1992;;D_Philippine_Reference_System_1992
+Phoenix Islands 1966;;D_Canton_1966;Canton Astro 1966
+Pico de las Nieves 1984;;D_Pico_de_Las_Nieves;Pico de las Nieves
+Pitcairn 1967;;D_Pitcairn_1967
+Point 58;Point_58;D_Point_58
+Pointe Geologie Perroud 1950;Pointe_Geologie_Perroud_1950;D_Pointe_Geologie_Perroud_1950
+Porto Santo 1936;Porto_Santo_1936;D_Porto_Santo_1936
+Porto Santo 1995;Porto_Santo_1995;D_Porto_Santo_1995
+Posiciones Geodesicas Argentinas;Posiciones_Geodesicas_Argentinas;D_POSGAR
+Posiciones Geodesicas Argentinas 1998;Posiciones_Geodesicas_Argentinas_1998;D_POSGAR_1998
+Posiciones Geodesicas Argentinas 1994;;D_POSGAR_1994
+Potsdam Datum/83;;D_Potsdam_1983
+Provisional South American Datum 1956;Provisional_South_American_Datum_1956;D_Provisional_S_American_1956;Provisional South American
+Puerto Rico;Puerto_Rico;D_Puerto_Rico;Puerto Rico
+Pulkovo 1942;Pulkovo_1942;D_Pulkovo_1942;Pulkovo 1942
+Pulkovo 1942(58);Pulkovo_1942/58;D_Pulkovo_1942_Adj_1958
+Pulkovo 1942(83);Pulkovo_1942/83;D_Pulkovo_1942_Adj_1983
+Pulkovo 1995;Pulkovo_1995;D_Pulkovo_1995
+Qatar 1948;Qatar_1948;D_Qatar_1948
+Qatar 1974;Qatar_1974;D_Qatar
+Qatar National Datum 1995;Qatar_National_Datum_1995;D_QND_1995;Qatar National
+Qornoq;Qornoq;D_Qornoq;Qornoq
+Qornoq 1927;Qornoq_1927;D_Qornoq_1927
+#
+# NOTE: The two previous lines were:
+#       Qornoq;Qornoq;D_Qornoq;
+#       Qornoq 1927;Qornoq_1927;D_Qornoq_1927;Qornoq
+#       But it introduces a name clash on "Qornoq".
+#
+Rauenberg Datum/83;;D_Rauenberg_1983
+Rassadiran;Rassadiran;D_Rassadiran
+Red Geodesica Venezolana;Red_Geodesica_Venezolana;D_REGVEN
+Reseau de Reference des Antilles Francaises 1991;Reseau_de_Reference_des_Antilles_Francaises_1991;D_RRAF_1991
+Reseau Geodesique de Nouvelle Caledonie 91-93;;D_Reseau_Geodesique_de_Nouvelle_Caledonie_1991-93
+Reseau Geodesique de la Polynesie Francaise;;D_Reseau_Geodesique_de_la_Polynesie_Francaise
+Reseau Geodesique de la Reunion 1992;Reseau_Geodesique_de_la_Reunion_1992;D_RGR_1992
+Reseau Geodesique Francais 1993;Reseau_Geodesique_Francais_1993;D_RGF_1993
+Reseau Geodesique Francais Guyane 1995;Reseau_Geodesique_Francais_Guyane_1995;D_RGFG_1995
+Reseau Geodesique Nouvelle Caledonie 1991;Reseau_Geodesique_Nouvelle_Caledonie_1991;D_RGNC_1991
+Reseau National Belge 1950;Reseau_National_Belge_1950;D_Belge_1950
+Reseau National Belge 1950 (Brussels);Reseau_National_Belge_1950_Brussels
+Reseau National Belge 1972;Reseau_National_Belge_1972;D_Belge_1972
+Reunion 1947;Reunion_1947;D_Reunion_1947;Reunion
+Reykjavik 1900;Reykjavik_1900;D_Reykjavik_1900
+Rikets koordinatsystem 1990;Rikets_koordinatsystem_1990;D_RT_1990;RT 90 (Sweden)
+SVY21;;D_SVY21
+Saint Pierre et Miquelon 1950;Saint_Pierre_et_Miquelon_1950;D_Saint_Pierre_et_Miquelon_1950
+Samboja;Samboja;D_Samboja
+Santo 1965;;D_Santo_DOS_1965;Santo (DOS)
+Sapper Hill 1943;Sapper_Hill_1943;D_Sapper_Hill_1943;Sapper Hill 1943
+Schwarzeck;Schwarzeck;D_Schwarzeck;Schwarzeck
+Scoresbysund 1952;Scoresbysund_1952;D_Scoresbysund_1952
+Segora;Segora;D_Segora
+Selvagem Grande;Selvagem_Grande;D_Selvagem_Grande_1938
+Serindung;Serindung;D_Serindung
+Sierra Leone 1968;Sierra_Leone_1968;D_Sierra_Leone_1968
+Sierra Leone Colony 1924;Sierra_Leone_Colony_1924;D_Sierra_Leone_1924
+Sistema de Referencia Geocentrico para America del Sur 1995;Sistema_de_Referencia_Geocentrico_para_America_del_Sur_1995;D_SIRGAS
+Sistema de Referencia Geocentrico para America del Sur 2000;Sistema_de_Referencia_Geocentrico_para_America_del_Sur_2000;D_SIRGAS_2000
+S-JTSK (Ferro);S-JTSK_Ferro
+Solomon 1968;;D_Solomon_1968
+South American Datum 1969;South_American_Datum_1969;D_South_American_1969;South American 1969
+South American Datum 1969;South_American_Datum_1969;D_South_American_1969;South American 1969
+South Georgia 1968;;D_ISTS_061_1968
+South Yemen;South_Yemen;D_South_Yemen
+St. George Island;St_George_Island;D_St_George_Island
+St. Helena 1971;;D_DOS_71_4
+St. Kitts 1955;St_Kitts_1955;D_St_Kitts_1955
+St. Lawrence Island;St_Lawrence_Island;D_St_Lawrence_Island
+St. Lucia 1955;St_Lucia_1955;D_St_Lucia_1955
+St. Paul Island;St_Paul_Island;D_St_Paul_Island
+St. Vincent 1945;St_Vincent_1945;D_St_Vincent_1945
+ST71 Belep;ST71_Belep;D_ST71_Belep
+ST84 Ile des Pins;ST84_Ile_des_Pins;D_ST84_Ile_des_Pins
+ST87 Ouvea;ST87_Ouvea;D_ST87_Ouvea
+Stockholm 1938;Stockholm_1938;D_Stockholm_1938
+Stockholm 1938 (Stockholm);Stockholm_1938_Stockholm
+Sudan;Sudan;D_Sudan
+SWEREF99;SWEREF99;D_SWEREF99
+Swiss Terrestrial Reference Frame 1995;Swiss_Terrestrial_Reference_Frame_1995;D_Swiss_TRF_1995
+Tahaa;Tahaa;D_Tahaa
+Tahaa 54;;D_Tahaa_1954
+Tahiti;Tahiti;D_Tahiti
+Tahiti 52;;D_Tahiti_1952
+Tahiti 79;;D_Tahiti_1979
+Tananarive 1925;Tananarive_1925;D_Tananarive_1925
+Tananarive 1925 (Paris);Tananarive_1925_Paris
+Tern Island 1961;;D_Tern_Island_1961
+Tete;Tete;D_Tete
+Timbalai 1948;Timbalai_1948;D_Timbalai_1948;Timbalai 1948
+TM65;TM65;D_TM65
+Tokyo;Tokyo;D_Tokyo;Tokyo
+Trinidad 1903;Trinidad_1903;D_Trinidad_1903
+Tristan 1968;;D_Tristan_1968
+Trucial Coast 1948;Trucial_Coast_1948;D_Trucial_Coast_1948
+Vanua Levu 1915;;D_Vanua_Levu_1915
+Vientiane 1982;Vientiane_1982;D_Vientiane_1982
+Vietnam 2000;;D_Vietnam_2000
+Viti Levu 1916;;D_Viti_Levu_1916;Viti Levu 1916
+Voirol 1875;Voirol_1875;D_Voirol_1875
+Voirol 1875 (Paris);Voirol_1875_Paris
+Voirol 1879;Voirol_1879;D_Voirol_1879
+Voirol 1879 (Paris);Voirol_1879_Paris
+WGS 72 Transit Broadcast Ephemeris;WGS_72_Transit_Broadcast_Ephemeris;D_WGS_1972_BE
+Wake Island 1952;;D_Wake_Island_1952
+World Geodetic System 1966;;D_WGS_1966
+World Geodetic System 1972;World_Geodetic_System_1972;D_WGS_1972;WGS 72
+World Geodetic System 1984;World_Geodetic_System_1984;D_WGS_1984;WGS 84;WGS84;WGS_84;WGS 1984;WGS_1984
+Xian 1980;Xian_1980;D_Xian_1980
+Yacare;Yacare;D_Yacare;Yacare
+Yemen National Geodetic Network 1996;Yemen_National_Geodetic_Network_1996;D_Yemen_NGN_1996
+Yoff;Yoff;D_Yoff
+Zanderij;Zanderij;D_Zanderij;Zanderij
+fk89;;D_fk89

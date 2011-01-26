@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:gml="http://www.opengis.net/gml" xmlns:wml="http://waterml.org/namespaces" elementFormDefault="qualified" targetNamespace="http://waterml.org/namespaces" version="1.0">
+  <annotation>
+    <documentation>This package contains a draft conceptual model for descibing common hydrological features across internationally governed domain models. 
+
+The governance of this model is yet to be formalised, but it is supported by elements of the GeoSciML team wishing to model groundwater. The curtrent implementation provide critical identity-carriers for AWDIP project.
+
+</documentation>
+  </annotation>
+  <import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+  <!--XML Schema document created by ShapeChange-->
+  <element name="ContainingFeature" substitutionGroup="gml:_Feature" type="wml:ContainingFeatureType"/>
+  <complexType name="ContainingFeatureType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence/>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="ContainingFeaturePropertyType">
+    <sequence minOccurs="0">
+      <element ref="wml:ContainingFeature"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="AccessFeature" substitutionGroup="gml:_Feature" type="wml:AccessFeatureType"/>
+  <complexType name="AccessFeatureType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element maxOccurs="unbounded" minOccurs="0" name="accesses" type="wml:ContainingFeaturePropertyType"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="AccessFeaturePropertyType">
+    <sequence minOccurs="0">
+      <element ref="wml:AccessFeature"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element abstract="true" name="ResourceStateFeature" substitutionGroup="gml:_Feature" type="wml:ResourceStateFeatureType"/>
+  <complexType abstract="true" name="ResourceStateFeatureType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element name="stateTime" type="gml:GeometryPropertyType"/>
+          <element maxOccurs="unbounded" minOccurs="0" name="containingFeature" type="wml:ContainingFeaturePropertyType"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="ResourceStateFeaturePropertyType">
+    <sequence minOccurs="0">
+      <element ref="wml:ResourceStateFeature"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="WaterBody" substitutionGroup="wml:ResourceStateFeature" type="wml:WaterBodyType"/>
+  <complexType name="WaterBodyType">
+    <annotation>
+      <documentation>This is the "identity carrier" for a water body, which may be soft-typed.
+
+This class represents an agreement that the object exists and has a name.  The connectivty (source, destination) is regarded as a fundamental part of the agreement about the object in the context of the domain. 
+
+NB Possibly source,destination could be replaced with a profile pattern against a topological base class.</documentation>
+    </annotation>
+    <complexContent>
+      <extension base="wml:ResourceStateFeatureType">
+        <sequence>
+          <element minOccurs="0" name="waterBodyType" type="gml:CodeType"/>
+          <element maxOccurs="unbounded" minOccurs="0" name="destination" type="wml:WaterBodyPropertyType"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="WaterBodyPropertyType">
+    <sequence minOccurs="0">
+      <element ref="wml:WaterBody"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="AquiferContents" substitutionGroup="wml:WaterBody" type="wml:AquiferContentsType"/>
+  <complexType name="AquiferContentsType">
+    <complexContent>
+      <extension base="wml:WaterBodyType">
+        <sequence/>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="AquiferContentsPropertyType">
+    <sequence minOccurs="0">
+      <element ref="wml:AquiferContents"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="Well" substitutionGroup="wml:AccessFeature" type="wml:WellType"/>
+  <complexType name="WellType">
+    <complexContent>
+      <extension base="wml:AccessFeatureType">
+        <sequence/>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="WellPropertyType">
+    <sequence minOccurs="0">
+      <element ref="wml:Well"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="Tank" substitutionGroup="wml:StaticContainer" type="wml:TankType"/>
+  <complexType name="TankType">
+    <annotation>
+      <documentation>A storage facility within a capture and distribution network.</documentation>
+    </annotation>
+    <complexContent>
+      <extension base="wml:StaticContainerType">
+        <sequence/>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="TankPropertyType">
+    <sequence minOccurs="0">
+      <element ref="wml:Tank"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="StaticContainer" substitutionGroup="wml:ContainingFeature" type="wml:StaticContainerType"/>
+  <complexType name="StaticContainerType">
+    <complexContent>
+      <extension base="wml:ContainingFeatureType">
+        <sequence>
+          <element name="capacity" type="gml:MeasureType"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="StaticContainerPropertyType">
+    <sequence minOccurs="0">
+      <element ref="wml:StaticContainer"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+</schema>

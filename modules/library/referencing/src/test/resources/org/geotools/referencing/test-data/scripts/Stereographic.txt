@@ -1,0 +1,824 @@
+// Test points for the Stereographic Projections. The first section
+// tests the USGS Stereographic. The second section tests
+// the EPSG Oblique and polar Stereographic (EPSG 9809 and 9810).
+//
+// (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)
+//
+// Note: these 2 projections (USGS and EPSG) should be the same for the 
+// polar and spherical cases.
+// Note: the point opposite from the projection's origin is undefined and 
+// removed from the following tests.
+//
+// TODO: Tests points for the Oblique Stereographic that failed were replaced with
+// libproj4 output. This discrepancy still needs to be resolved.
+//
+//
+// --------------------------------------------------------------------------
+// How to run this script:
+//
+//    chdir org/geotools/referencing/test-data/scripts
+//    java -ea org.geotools.referencing.ScriptRunner Stereographic.txt
+//
+// A test is performed every time a "target pt" statement occurs. If the target point computed
+// by Geotools is different from the target point declared in this script by an amount greater
+// than the value specified in the last "test tolerance" statement, then a failure is reported.
+// Inverse transforms are tested if java assertions are enabled.
+// If some test fails, "print" statements can be added in this script for debugging purpose:
+//
+//    print crs            (prints the source and target CRS, and the transform between them)
+//    print pts            (prints the source and target points, and their transformed points)
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+// Test points for the USGS Stereographic Projection.
+//
+// The following test points were calculated with ArcInfo 8.2
+// Spherical tests cases used the ArcInfo 'type 1' stereographic.
+// Ellipse test used ArcInfo 'type 2' stereographic.
+//
+// Rueben Schulz - June 22, 2003
+
+
+set _sphere_   =                                     GEOGCS["Sphere", DATUM["Sphere", SPHEROID["WGS84",  6370997.0, 0]],             PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]]
+set _sphere2_  =                                     GEOGCS["Sphere", DATUM["Sphere", SPHEROID["WGS84",  6300000.0, 0]],             PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]]
+set _WGS84_    =                                     GEOGCS["WGS84",  DATUM["WGS84",  SPHEROID["WGS84",  6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]]
+set _Stereo1_  = PROJCS["North Polar Stereographic", GEOGCS["Sphere", DATUM["Sphere", SPHEROID["Sphere", 6370997.0, 0]],             PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Stereographic"],            PARAMETER["central_meridian",   50.0], PARAMETER["latitude_of_origin",  90.0], PARAMETER["scale_factor", 1.00],                                         PARAMETER["false_easting",       0.0       ], PARAMETER["false_northing",      0.0], UNIT["metre",         1.0],               AXIS["x",EAST], AXIS["y",NORTH]]
+set _Stereo2_  = PROJCS["South Polar Stereographic", GEOGCS["Sphere", DATUM["Sphere", SPHEROID["Sphere", 6370997.0, 0]],             PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Stereographic_South_Pole"], PARAMETER["central_meridian", -100.0],                                         PARAMETER["scale_factor", 1.00],                                         PARAMETER["false_easting",    1000.0       ], PARAMETER["false_northing", 500000.0], UNIT["metre",         1.0],               AXIS["x",EAST], AXIS["y",NORTH]]
+set _Stereo3_  = PROJCS["Equitorial Stereographic",  GEOGCS["Sphere", DATUM["Sphere", SPHEROID["Sphere", 6370997.0, 0]],             PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Stereographic"],            PARAMETER["central_meridian",   10.0], PARAMETER["latitude_of_origin",   0.0], PARAMETER["scale_factor", 1.00],                                         PARAMETER["false_easting",       0.0       ], PARAMETER["false_northing",      0.0], UNIT["metre",         1.0],               AXIS["x",EAST], AXIS["y",NORTH]]
+set _Stereo4_  = PROJCS["Equitorial Stereographic",  GEOGCS["Sphere", DATUM["Sphere", SPHEROID["Sphere", 6300000.0, 0]],             PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Stereographic"],            PARAMETER["central_meridian",  180.0], PARAMETER["latitude_of_origin",   0.0], PARAMETER["scale_factor", 1.00],                                         PARAMETER["false_easting", 1640416.66666667], PARAMETER["false_northing",      0.0], UNIT["US survey foot",0.304800609601219], AXIS["x",EAST], AXIS["y",NORTH]]
+set _Stereo5_  = PROJCS["Oblique Stereographic",     GEOGCS["Sphere", DATUM["Sphere", SPHEROID["Sphere", 6370997.0, 0]],             PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Stereographic"],            PARAMETER["central_meridian",  140.0], PARAMETER["latitude_of_origin",  60.0], PARAMETER["scale_factor", 1.00],                                         PARAMETER["false_easting",       0.0       ], PARAMETER["false_northing",      0.0], UNIT["metre",         1.0],               AXIS["x",EAST], AXIS["y",NORTH]]
+set _Stereo6_  = PROJCS["Oblique Stereographic",     GEOGCS["Sphere", DATUM["Sphere", SPHEROID["Sphere", 6370997.0, 0]],             PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Stereographic"],            PARAMETER["central_meridian", -120.0], PARAMETER["latitude_of_origin", -50.0], PARAMETER["scale_factor", 1.00],                                         PARAMETER["false_easting",       0.0       ], PARAMETER["false_northing",      0.0], UNIT["metre",         1.0],               AXIS["x",EAST], AXIS["y",NORTH]]
+set _Stereo7_  = PROJCS["North Polar Stereographic", GEOGCS["WGS84",  DATUM["WGS84",  SPHEROID["WGS84",  6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Stereographic_North_Pole"], PARAMETER["central_meridian",  150.0],                                         PARAMETER["scale_factor", 1.00], PARAMETER["Standard_Parallel_1",  85.0],PARAMETER["false_easting",       0.0       ], PARAMETER["false_northing",      0.0], UNIT["metre",         1.0],               AXIS["x",EAST], AXIS["y",NORTH]]
+set _Stereo8_  = PROJCS["North Polar Stereographic", GEOGCS["WGS84",  DATUM["WGS84",  SPHEROID["WGS84",  6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Stereographic"],            PARAMETER["central_meridian",  -67.0], PARAMETER["latitude_of_origin",  90.0], PARAMETER["scale_factor", 1.00],                                         PARAMETER["false_easting",       0.0       ], PARAMETER["false_northing",      0.0], UNIT["metre",         1.0],               AXIS["x",EAST], AXIS["y",NORTH]]
+set _Stereo9_  = PROJCS["South Polar Stereographic", GEOGCS["WGS84",  DATUM["WGS84",  SPHEROID["WGS84",  6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Stereographic_South_Pole"], PARAMETER["central_meridian", -177.0],                                         PARAMETER["scale_factor", 1.00], PARAMETER["Standard_Parallel_1", -71.0],PARAMETER["false_easting",       0.0       ], PARAMETER["false_northing",      0.0], UNIT["metre",         1.0],               AXIS["x",EAST], AXIS["y",NORTH]]
+set _Stereo10_ = PROJCS["South Polar Stereographic", GEOGCS["WGS84",  DATUM["WGS84",  SPHEROID["WGS84",  6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Polar_Stereographic"],      PARAMETER["central_meridian",   22.0], PARAMETER["latitude_of_origin", -90.0], PARAMETER["scale_factor", 1.00],                                         PARAMETER["false_easting",       0.0       ], PARAMETER["false_northing",      0.0], UNIT["metre",         1.0],               AXIS["x",EAST], AXIS["y",NORTH]]
+set _Stereo11_ = PROJCS["Equitorial Stereographic",  GEOGCS["WGS84",  DATUM["WGS84",  SPHEROID["WGS84",  6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Stereographic"],            PARAMETER["central_meridian",   56.0], PARAMETER["latitude_of_origin",   0.0], PARAMETER["scale_factor", 1.00],                                         PARAMETER["false_easting",       0.0       ], PARAMETER["false_northing",      0.0], UNIT["metre",         1.0],               AXIS["x",EAST], AXIS["y",NORTH]]
+set _Stereo12_ = PROJCS["Equitorial Stereographic",  GEOGCS["WGS84",  DATUM["WGS84",  SPHEROID["WGS84",  6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Stereographic"],            PARAMETER["central_meridian",   -4.0], PARAMETER["latitude_of_origin",   0.0], PARAMETER["scale_factor", 0.91],                                         PARAMETER["false_easting",       0.0       ], PARAMETER["false_northing",      0.0], UNIT["metre",         1.0],               AXIS["x",EAST], AXIS["y",NORTH]]
+set _Stereo13_ = PROJCS["Oblique Stereographic",     GEOGCS["WGS84",  DATUM["WGS84",  SPHEROID["WGS84",  6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Stereographic"],            PARAMETER["central_meridian",  -55.0], PARAMETER["latitude_of_origin",  51.0], PARAMETER["scale_factor", 0.99],                                         PARAMETER["false_easting",       0.0       ], PARAMETER["false_northing",      0.0], UNIT["metre",         1.0],               AXIS["x",EAST], AXIS["y",NORTH]]
+set _Stereo14_ = PROJCS["Oblique Stereographic",     GEOGCS["WGS84",  DATUM["WGS84",  SPHEROID["WGS84",  6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Stereographic"],            PARAMETER["central_meridian",   64.0], PARAMETER["latitude_of_origin", -32.0], PARAMETER["scale_factor", 1.00],                                         PARAMETER["false_easting",       0.0       ], PARAMETER["false_northing",      0.0], UNIT["metre",         1.0],               AXIS["x",EAST], AXIS["y",NORTH]]
+set _Stereo15_ = PROJCS["North Polar Stereographic", GEOGCS["WGS84",  DATUM["WGS84",  SPHEROID["WGS84",  6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Stereographic_North_Pole"], PARAMETER["central_meridian",  -96.0],                                         PARAMETER["scale_factor", 1.00], PARAMETER["Standard_Parallel_1",  71.0],PARAMETER["false_easting",       0.0       ], PARAMETER["false_northing",      0.0], UNIT["metre",         1.0],               AXIS["x",EAST], AXIS["y",NORTH]]
+
+////////////////////////////////////////////
+// Spherical North
+
+source crs = _sphere_
+target crs = _Stereo1_
+test tolerance = (1e-2, 1e-2)
+
+source pt = (-123.1, 49.2166666666)
+target pt = (-569039.6270, 4702290.0974)
+
+source pt = (2.33656753, 43.96499314)
+target pt = (-4001482.1176, -3645739.640)
+
+source pt = (151.283333333, -33.916666666)
+target pt = (23459842.7218, 4680642.8947)
+
+source pt = (-47.95, -15.75)
+target pt = (-16670888.6766, 2328106.9805)
+
+source pt = (139.733333333, 35.6833333333)
+target pt = (6536715.3141, -30423.4742)
+
+source pt = (18.45, -33.9166666666)
+target pt = (-12517120.9473, -20386130.6194)
+
+
+////////////////////////////////////////////
+// Spherical South
+
+source crs = _sphere_
+target crs = _Stereo2_
+test tolerance = (1e-2, 1e-2)
+
+source pt = (-123.1, 49.2166666666)
+target pt = (-13447315.1416, 32029133.6112)
+
+source pt = (2.33656753, 43.96499314)
+target pt = (29301227.6488, -5908074.5888)
+
+source pt = (151.283333333, -33.916666666)
+target pt = (-6427015.6000, -1677847.5077)
+
+source pt = (-47.95, -15.75)
+target pt = (7606887.4054, 6431688.8876)
+
+source pt = (139.733333333, 35.6833333333)
+target pt = (-21451003.9982, -12018802.8096)
+
+source pt = (18.45, -33.9166666666)
+target pt = (5968293.0902, -2733236.3811)
+
+
+////////////////////////////////////////////
+// Spherical Equitorial
+
+source crs = _sphere_
+target crs = _Stereo3_
+test tolerance = (1e-2, 1e-2)
+
+source pt = (-123.1, 49.2166666666)
+target pt = (-10975901.6974, 17425146.9141)
+
+source pt = (2.33656753, 43.96499314)
+target pt = ( -713822.4244, 5162871.3803)
+
+source pt = (151.283333333, -33.916666666)
+target pt = (18761641.7965, -20169201.7279)
+
+source pt = (-47.95, -15.75)
+target pt = (-6880387.3644, -2289409.5189)
+
+source pt = (139.733333333, 35.6833333333)
+target pt = (16554295.1489, 15458696.4976)
+
+source pt = (18.45, -33.9166666666)
+target pt = (853342.6017, -3904711.5139)
+
+
+source crs = _sphere2_
+target crs = _Stereo4_
+test tolerance = (1e-2, 1e-2)
+
+source pt = (-123.1, 49.2166666666)
+target pt = (18313312.9974, 23071108.5406)
+
+source pt = (2.33656753, 43.96499314)
+target pt = (-2679048.8043, 102188221.1560)
+
+source pt = (151.283333333, -33.916666666)
+target pt = (-7899377.2908, -13350238.6363)
+
+source pt = (-47.95, -15.75)
+target pt = (84776405.1579, -31575568.6281)
+
+source pt = (139.733333333, 35.6833333333)
+target pt = (-11758008.0552, 14886510.7664)
+
+source pt = (18.45, -33.9166666666)
+target pt = (-49376756.6233, -108392290.3667)
+
+
+////////////////////////////////////////////
+// Spherical Oblique
+
+source crs = _sphere_
+target crs = _Stereo5_
+test tolerance = (1e-2, 1e-2)
+
+//source pt = (-123.1, 49.2166666666)
+//target pt = (5111518.3838, 3519921.2597)
+
+source pt = (2.33656753, 43.96499314)
+target pt = (-4626083.2478, 7709778.2077)
+
+source pt = (151.283333333, -33.916666666)
+target pt = (2239865.7214, -13571053.7552)
+
+source pt = (-47.95, -15.75)
+target pt = (5882861.1803, 30483752.1708)
+
+source pt = (139.733333333, 35.6833333333)
+target pt = (-25202.8272, -2745174.2686)
+
+source pt = (18.45, -33.9166666666)
+target pt = (-30070247.8619, 4126498.8667)
+
+
+source crs = _sphere_
+target crs = _Stereo6_
+test tolerance = (1e-2, 1e-2)
+
+source pt = (-123.1, 49.2166666666)
+target pt = (-536335.5224, 14976051.8319)
+
+source pt = (2.33656753, 43.96499314)
+target pt = (35106533.5793, 8734803.7398)
+
+source pt = (151.283333333, -33.916666666)
+target pt = (-7344290.0367, -3049012.9721)
+
+source pt = (-47.95, -15.75)
+target pt = (8341703.4925, 480514.1948)
+
+source pt = (139.733333333, 35.6833333333)
+target pt = (-22133987.2972, 7312269.0941)
+
+source pt = (18.45, -33.9166666666)
+target pt = (6820762.1489, -10340013.7044)
+
+
+////////////////////////////////////////////
+// Ellipse North
+
+source crs = _WGS84_
+target crs = _Stereo7_
+test tolerance = (1e-2, 1e-2)
+
+source pt = (-123.1, 49.2166666666)
+target pt = (4734112.9430, -256390.3922)
+
+source pt = (2.33656753, 43.96499314)
+target pt = (-2897000.2339, 4576132.3583)
+
+source pt = (151.283333333, -33.916666666)
+target pt = (531572.7533, -23728661.1588)
+
+source pt = (-47.95, -15.75)
+target pt = (5156818.7159, 15918309.4169)
+
+source pt = (139.733333333, 35.6833333333)
+target pt = (-1164785.0278, -6430662.1897)
+
+source pt = (18.45, -33.9166666666)
+target pt = (-17762444.1908, 15742538.1165)
+
+
+source crs = _WGS84_
+target crs = _Stereo8_
+test tolerance = (1e-2, 1e-2)
+
+source pt = (-123.1, 49.2166666666)
+target pt = (-3942631.5543, -2649338.4561)
+
+source pt = (2.33656753, 43.96499314)
+target pt = (5077292.5287, -1914846.7289)
+
+source pt = (151.283333333, -33.916666666)
+target pt = (-14732828.3540, 18666157.2113)
+
+source pt = (-47.95, -15.75)
+target pt = ( 5471869.9971, -15846527.7746)
+
+source pt = (139.733333333, 35.6833333333)
+target pt = (-2945434.4200, 5847866.4702)
+
+source pt = (18.45, -33.9166666666)
+target pt = (23704915.6430, -1886433.3285)
+
+
+////////////////////////////////////////
+// Elliptical South
+
+source crs = _WGS84_
+target crs = _Stereo9_
+test tolerance = (1e-2, 1e-2)
+
+source pt = (-123.1, 49.2166666666)
+target pt = (26745521.5872, 19503169.7905)
+
+source pt = (2.33656753, 43.96499314)
+target pt = (335506.9066, -28973967.1999)
+
+source pt = (151.283333333, -33.916666666)
+target pt = (-3476092.5649, 5624613.2248)
+
+source pt = (-47.95,  -15.75)
+target pt = (7283623.7845, -5908693.9040)
+
+source pt = (139.733333333, 35.6833333333)
+target pt = (-16458682.7200, 17485900.3222)
+
+source pt = (18.45, -33.9166666666)
+target pt = (-1761438.3929, -6373133.3138)
+
+
+source crs = _WGS84_
+target crs = _Stereo10_
+test tolerance = (1e-2, 1e-2)
+
+source pt = (-123.1, 49.2166666666)
+target pt = (-19468934.7924, -27908063.5417)
+
+source pt = (2.33656753, 43.96499314)
+target pt = (-10023169.8500, 28050023.6648)
+
+source pt = (151.283333333, -33.916666666)
+target pt = (5261171.9431, -4303664.2698)
+
+source pt = (-47.95,  -15.75)
+target pt = (-9057118.4307, 3305475.2442)
+
+source pt = (139.733333333, 35.6833333333)
+target pt = (21849835.1170, -11487640.3953)
+
+source pt = (18.45, -33.9166666666)
+target pt = (-420877.4389, 6784122.5330)
+
+
+////////////////////////////////////////
+// Elliptical Equitorial
+
+source crs = _WGS84_
+target crs = _Stereo11_
+test tolerance = (1e-2, 1e-2)
+
+source pt = (-123.1, 49.2166666666)
+target pt = (-381517.7735, 27967467.8233)
+
+source pt = (2.33656753, 43.96499314)
+target pt = (-5196633.8476, 6180449.7189)
+
+source pt = (151.283333333, -33.916666666)
+target pt = (11438665.7948, -7672420.6307)
+
+source pt = (-47.95,  -15.75)
+target pt = (-15525059.5040, -4481382.3081)
+
+source pt = (139.733333333, 35.6833333333)
+target pt = (9480395.8620, 6803267.4579)
+
+source pt = (18.45, -33.9166666666)
+target pt = (-3896229.3187, -4269843.2094)
+
+
+source crs = _WGS84_
+target crs = _Stereo12_
+test tolerance = (1e-2, 1e-2)
+
+source pt = (-123.1, 49.2166666666)
+target pt = (-9764791.6464, 12867824.7061)
+
+source pt = (2.33656753, 43.96499314)
+target pt = (538591.9946, 4675248.9850)
+
+source pt = (151.283333333, -33.916666666)
+target pt = (16501209.0722, -26357916.0339)
+
+source pt = (-47.95, -15.75)
+target pt = (-4581578.1738, -1849327.3326)
+
+source pt = (139.733333333, 35.6833333333)
+target pt = (16269126.0087, 19618474.4606)
+
+source pt = (18.45, -33.9166666666)
+target pt = (2084362.8747, -3645505.7204)
+
+
+////////////////////////////////////////
+// Elliptical Oblique
+
+source crs = _WGS84_
+target crs = _Stereo13_
+test tolerance = (1e-2, 1e-2)
+
+source pt = (-123.1, 49.2166666666)
+target pt = (-4407434.5194, 2082811.7883)
+
+source pt = (2.33656753, 43.96499314)
+target pt = (4298278.4273, 955057.5666)
+
+source pt = (151.283333333, -33.916666666)
+target pt = (-47167588.1622, 29071179.3031)
+
+source pt = (-47.95,  -15.75)
+target pt = (1067938.1787, -8233254.2708)
+
+source pt = (139.733333333, 35.6833333333)
+target pt = (-2739234.3871, 12928389.0428)
+
+source pt = (18.45, -33.9166666666)
+target pt = (13968985.4665, -9367398.2205)
+
+
+source crs = _WGS84_
+target crs = _Stereo14_
+test tolerance = (1e-2, 1e-2)
+
+source pt = (-123.1, 49.2166666666)
+target pt = (21084353.9245, 77613853.8593)
+
+source pt = (2.33656753, 43.96499314)
+target pt = (-8743580.0850, 10572818.2134)
+
+source pt = (151.283333333, -33.916666666)
+target pt = (7981081.4514, -4334411.3396)
+
+source pt = (-47.95,  -15.75)
+target pt = (-13608055.3148, -6384283.3272)
+
+source pt = (139.733333333, 35.6833333333)
+target pt = (11635190.0266, 8836389.2762)
+
+source pt = (18.45, -33.9166666666)
+target pt = (-4231988.1148, -1174790.7406)
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+// Test points for the EPSG Oblique and Polar Stereographic Projection.
+//
+// The following test points were calculated with ArcGIS 8.3
+//
+// Note: there are some differences between what ArcGIS calculates and
+// what we calculate (7 test 'errors'). These errors have been replaced with 
+// output from libproj4. The -V option of libproj4 indicates that its output 
+// values are conformal
+//
+// Rueben Schulz - Feb 17, 2004, May 16, 2004
+
+
+set _DStereo1_ = PROJCS["Oblique Stereographic", GEOGCS["WGS84", DATUM["WGS84", SPHEROID["WGS84", 6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Oblique_Stereographic"], PARAMETER["semi_major", 6378137.0], PARAMETER["semi_minor", 6356752.314245179], PARAMETER["central_meridian", 0.0], PARAMETER["latitude_of_origin", 70.0], PARAMETER["scale_factor", 1.0], PARAMETER["false_easting", 0.0], PARAMETER["false_northing", 0.0], UNIT["metre",1.0], AXIS["x",EAST], AXIS["y",NORTH]]
+set _DStereo2_ = PROJCS["Oblique Stereographic", GEOGCS["WGS84", DATUM["WGS84", SPHEROID["WGS84", 6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Oblique_Stereographic"], PARAMETER["semi_major", 6378137.0], PARAMETER["semi_minor", 6356752.314245179], PARAMETER["central_meridian", -110.0], PARAMETER["latitude_of_origin", -50.0], PARAMETER["scale_factor", 0.96], PARAMETER["false_easting", 0.0], PARAMETER["false_northing", 0.0], UNIT["metre",1.0], AXIS["x",EAST], AXIS["y",NORTH]]
+set _DStereo3_ = PROJCS["Equitorial Stereographic", GEOGCS["WGS84", DATUM["WGS84", SPHEROID["WGS84", 6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Oblique_Stereographic"], PARAMETER["semi_major", 6378137.0], PARAMETER["semi_minor", 6356752.314245179], PARAMETER["central_meridian", 20.0], PARAMETER["latitude_of_origin", 0.0], PARAMETER["scale_factor", 1.0], PARAMETER["false_easting", 0.0], PARAMETER["false_northing", 0.0], UNIT["metre",1.0], AXIS["x",EAST], AXIS["y",NORTH]]
+set _DStereo4_ = PROJCS["Polar Stereographic (North)", GEOGCS["WGS84", DATUM["WGS84", SPHEROID["WGS84", 6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Polar_Stereographic"], PARAMETER["semi_major", 6378137.0], PARAMETER["semi_minor", 6356752.314245179], PARAMETER["central_meridian", 140.0], PARAMETER["latitude_of_origin", 90.0], PARAMETER["scale_factor", 0.8], PARAMETER["false_easting", 0.0], PARAMETER["false_northing", 0.0], UNIT["metre",1.0], AXIS["x",EAST], AXIS["y",NORTH]]
+set _DStereo5_ = PROJCS["Polar Stereographic (South)", GEOGCS["WGS84", DATUM["WGS84", SPHEROID["WGS84", 6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Polar Stereographic (variant B)"], PARAMETER["semi_major", 6378137.0], PARAMETER["semi_minor", 6356752.314245179], PARAMETER["central_meridian", 0.0], PARAMETER["Standard_Parallel_1", -90.0], PARAMETER["false_easting", 0.0], PARAMETER["false_northing", 0.0], UNIT["metre",1.0], AXIS["x",EAST], AXIS["y",NORTH]]
+
+//epsg oblique test
+set _Bessel_ = GEOGCS["Bessel 1841", DATUM["Bessel", SPHEROID["Bessel", 6377397.155, 299.15281]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]]
+set _DStereo10_ = PROJCS["Oblique Stereographic EPSG", GEOGCS["Bessel 1841", DATUM["Bessel", SPHEROID["Bessel", 6377397.155, 299.15281]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Oblique_Stereographic"], PARAMETER["semi_major", 6377397.155], PARAMETER["semi_minor", 6356078.96261866], PARAMETER["central_meridian", 5.387638889], PARAMETER["latitude_of_origin", 52.15616056], PARAMETER["scale_factor", 0.9999079], PARAMETER["false_easting", 155000.0], PARAMETER["false_northing", 463000.0], UNIT["metre",1.0], AXIS["x",EAST], AXIS["y",NORTH]]
+
+//UNB test
+set _Nad27_=GEOGCS["NAD27",DATUM["North_American_Datum_1927",SPHEROID["Clarke 1866",6378206.4,294.978698213901,AUTHORITY["EPSG","7008"]],TOWGS84[-3,142,183,0,0,0,0],AUTHORITY["EPSG","6267"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Longitude",EAST], AXIS["Latitude",NORTH],AUTHORITY["EPSG","4267"]]
+set _DStereo11_= PROJCS["Oblique Stereographic EPSG", GEOGCS["NAD27",DATUM["North_American_Datum_1927",SPHEROID["Clarke 1866",6378206.4,294.978698213901,AUTHORITY["EPSG","7008"]],TOWGS84[-3,142,183,0,0,0,0],AUTHORITY["EPSG","6267"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Longitude",EAST], AXIS["Latitude",NORTH],AUTHORITY["EPSG","4267"]], PROJECTION["Oblique_Stereographic"], PARAMETER["semi_major", 6378206.4], PARAMETER["semi_minor", 6356583.8], PARAMETER["central_meridian", -66.5], PARAMETER["latitude_of_origin", 46.5], PARAMETER["scale_factor", 0.999912], PARAMETER["false_easting", 300000.0], PARAMETER["false_northing", 800000.0], UNIT["metre",1.0], AXIS["x",EAST], AXIS["y",NORTH]]
+set _DStereo12_= PROJCS["Oblique Stereographic EPSG", GEOGCS["NAD27",DATUM["North_American_Datum_1927",SPHEROID["Clarke 1866",6378206.4,294.978698213901,AUTHORITY["EPSG","7008"]],TOWGS84[-3,142,183,0,0,0,0],AUTHORITY["EPSG","6267"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Longitude",EAST], AXIS["Latitude",NORTH],AUTHORITY["EPSG","4267"]], PROJECTION["Oblique_Stereographic"], PARAMETER["semi_major", 6378206.4], PARAMETER["semi_minor", 6356583.8], PARAMETER["central_meridian", -63.0], PARAMETER["latitude_of_origin", 47.25], PARAMETER["scale_factor", 0.999912], PARAMETER["false_easting", 700000.0], PARAMETER["false_northing", 400000.0], UNIT["metre",1.0], AXIS["x",EAST], AXIS["y",NORTH]]
+
+////////////////////////////////////////
+// Elliptical Oblique
+source crs = _WGS84_
+target crs = _DStereo1_
+test tolerance = (1e-2, 1e-2)
+
+source pt = (-123.1, 49.2166666666)
+target pt = (-4398811.24918829, 4780023.58535872)
+
+source pt = (2.33656753, 43.96499314)
+target pt = (197487.535049174, -2946384.25777934)
+
+//source pt = (151.283333333, -33.9166666666)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+source pt = (-47.95, -15.75)
+target pt = (-9417083.95801759, -9170019.17553014)
+
+source pt = (139.733333333, 35.6833333333)
+target pt = (5013546.19775259, 7475371.30940516)
+
+source pt = (18.45, -33.9166666666)
+target pt = (4486418.53520613, -15840660.7109299)
+
+source pt = (0, 90)
+target pt = (0, 2255899.32774423)
+
+//source pt = (0, -90)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+
+source crs = _WGS84_
+target crs = _DStereo2_
+test tolerance = (1e-2, 1e-2)
+
+source pt = (-123.1, 49.2166666666)
+target pt = (-2187792.49332045, 14311891.5579733)
+
+source pt = (2.33656753, 43.96499314)
+target pt = (27866150.44815110, 9702053.86856459)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+//error (replaced with libproj output)
+source pt = (151.283333333, -33.9166666666)
+target pt = (-7466458.20136069, -4150816.18942717)
+//target pt = (-7460003.39378955, -4124311.05369635)  //arcGIS output
+
+source pt = (-47.95, -15.75)
+target pt = (6949231.62438508, 1382215.87566019)
+
+//error (replaced with libproj output)
+source pt = (139.733333333, 35.6833333333)
+target pt = (-25009078.87841832, 5079217.18056460)
+//target pt = (-24924065.4478382, 5124122.41314095)  //arcGIS output
+
+source pt = (18.45, -33.9166666666)
+target pt = (7265980.56818263, -8446857.93987766)
+
+//source pt = (0, 90)   //libproj also fails here, may be a tolerance error
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+source pt = (0, -90)
+target pt = (3.9914448559467E-10, -4464514.77931394)
+
+
+////////////////////////////////////////
+// Elliptical Equatorial
+
+source crs = _WGS84_
+target crs = _DStereo3_
+test tolerance = (1e-2, 1e-2)
+
+source pt = (-123.1, 49.2166666666) 
+target pt = (-10422471.5923968, 20303079.0429489)
+
+//error (replaced with libproj output)
+source pt = (2.33656753, 43.96499314)
+target pt = (-1653798.70244788, 5226442.19714902)
+//target pt = (-1767825.34583943, 5241329.09731566)  //arcGIS output
+
+//error (replaced with libproj output)
+source pt = (151.283333333, -33.9166666666) 
+target pt = (17624349.50374345, -15831595.66661218)
+//target pt = (17436880.6584282, -15376813.6457952)  //arcGIS output
+
+//error (replaced with libproj output)
+source pt = (-47.95, -15.75) 
+target pt = (-8367783.05840569, -2533803.44939967)
+//target pt = (-8556259.14610263, -2569702.00752923)  //arcGIS output
+
+//error (replaced with libproj output)
+source pt = (139.733333333, 35.6833333333)
+target pt = (15105514.94962235, 12507132.48721923)
+//target pt = (14910741.4194107, 12198910.9989865)  //arcGIS output
+
+//error (replaced with libproj output)
+source pt = (18.45, -33.9166666666)
+target pt = (-156585.69254757,  -3868038.49689169)
+//target pt = (-278548.416542974, -3869437.88697763)  //arcGIS output
+
+source pt = (0, 90)
+target pt = (-2.82499596765061E-10, 12713504.6284904)
+
+source pt = (0, -90)
+target pt = (-2.82499596765061E-10, -12713504.6284904)
+
+
+////////////////////////////////////////
+//Elliptical Polar
+
+source crs = _WGS84_
+target crs = _DStereo4_
+test tolerance = (1e-2, 1e-2)
+
+source pt = (-123.1, 49.2166666666)
+target pt = (3772547.94163496, 456528.463621665)
+
+source pt = (2.33656753, 43.96499314)
+target pt = (-2923662.83596991, 3208946.80055835)
+
+source pt = (151.283333333, -33.9166666666)
+target pt = (3722230.51407769, -18656185.5710066)
+
+source pt = (-47.95, -15.75)
+target pt = (1854960.95732183, 13282829.3019208)
+
+source pt = (139.733333333, 35.6833333333)
+target pt = (-24379.6291743415, -5238149.13743781)
+
+source pt = (18.45, -33.9166666666)
+target pt = (-16211849.3469659, 9954104.7217239)
+
+source pt = (0, 90)
+target pt = (0, 0)
+
+//source pt = (0, -90)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+
+/////////////////////////////////////////////////////////////////////////
+// The following tests (south polar) all failed. 
+// The commented out points were calculated with the ArcGIS 
+// double stereographic. The new values are from the ArcInfo stereographic.
+// Note that they should be the same for the polar case (I think???) 
+// Points calculated using double stereographic and stereographic are equal
+// for the north polar case above (as expected).
+
+source crs = _WGS84_
+target crs = _DStereo5_
+test tolerance = (1e-2, 1e-2)
+
+source pt = (-123.1, 49.2166666666)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+target pt = (-28505826.6173,      -18582714.5881)
+
+source pt = (2.33656753, 43.96499314)
+//target pt = (1230808.15179152, 30164338.8749791)
+target pt = (1214402.5538,       29762274.5749)
+
+source pt = (151.283333333, -33.9166666666)
+//target pt = (3310012.24359201, -6041688.15332015)
+target pt = (3265892.6704,       -5961157.7254)
+
+source pt = (-47.95, -15.75)
+//target pt = (-7256078.34586213, 6544877.05627666)
+target pt = (-7159361.1570,        6457639.5596)
+
+source pt = (139.733333333, 35.6833333333)
+//target pt = (16171014.0080265, -19090709.4904612)
+target pt = (15955468.5106,      -18836247.0015)
+
+source pt = (18.45, -33.9166666666)
+//target pt = (2180206.51455429, 6534896.81239062)
+target pt = (2151146.2653,        6447792.3436)
+
+//source pt = (0, 90)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+source pt = (0, -90)
+target pt = (0, 0)
+
+
+////////////////////////////////////////
+//Other tests
+
+//a test point from the EPSG guide book 7
+source crs = _Bessel_
+target crs = _DStereo10_
+test tolerance = (1e-2, 1e-2)
+
+source pt = (6.0,53.0)
+target pt = (196105.283, 557057.739)
+
+//examples from UNB reports
+source crs = _Nad27_
+target crs = _DStereo11_
+test tolerance = (1e-2, 1e-2)
+
+source pt = (-65.484292500000020, 47.056845555555560)
+target pt = (377164.887, 862395.774)
+
+source crs = _Nad27_
+target crs = _DStereo12_
+test tolerance = (1e-2, 1e-2)
+
+source pt = (-64.49278166666670, 46.707818611111120)
+target pt = (585855.446,340817.760)
+
+
+set _sphere3_ = GEOGCS["Sphere", DATUM["Sphere", SPHEROID["Sphere", 6371000.0, 0]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]]
+set _DStereo6_ = PROJCS["Polar Stereographic (South)", GEOGCS["Sphere", DATUM["Sphere", SPHEROID["Sphere", 6371000.0, 0]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Polar_Stereographic"], PARAMETER["semi_major", 6371000.0], PARAMETER["semi_minor", 6371000.0], PARAMETER["central_meridian", 0.0], PARAMETER["latitude_of_origin", -90.0], PARAMETER["scale_factor", 1.0], PARAMETER["false_easting", 0.0], PARAMETER["false_northing", 0.0], UNIT["metre",1.0], AXIS["x",EAST], AXIS["y",NORTH]]
+set _DStereo7_ = PROJCS["Equitorial Stereographic", GEOGCS["Sphere", DATUM["Sphere", SPHEROID["Sphere", 6371000.0, 0]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Oblique_Stereographic"], PARAMETER["central_meridian", -45.0], PARAMETER["latitude_of_origin", 0.0], PARAMETER["scale_factor", 1.0], PARAMETER["false_easting", 0.0], PARAMETER["false_northing", 0.0], UNIT["metre",1.0], AXIS["x",EAST], AXIS["y",NORTH]]
+set _DStereo8_ = PROJCS["Oblique Stereographic", GEOGCS["Sphere", DATUM["Sphere", SPHEROID["Sphere", 6371000.0, 0]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Oblique_Stereographic"], PARAMETER["central_meridian", -55.0], PARAMETER["latitude_of_origin", 70.0], PARAMETER["scale_factor", 1.0], PARAMETER["false_easting", 0.0], PARAMETER["false_northing", 0.0], UNIT["metre",1.0], AXIS["x",EAST], AXIS["y",NORTH]]
+set _DStereo9_ = PROJCS["Oblique Stereographic", GEOGCS["Sphere", DATUM["Sphere", SPHEROID["Sphere", 6371000.0, 0]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Oblique_Stereographic"], PARAMETER["central_meridian", 170.0], PARAMETER["latitude_of_origin", -22.0], PARAMETER["scale_factor", 1.0], PARAMETER["false_easting", 0.0], PARAMETER["false_northing", 0.0], UNIT["metre",1.0], AXIS["x",EAST], AXIS["y",NORTH]]
+
+////////////////////////////////////////
+//Spherical Polar
+
+source crs = _sphere3_
+target crs = _DStereo6_
+test tolerance = (1e-2, 1e-2)
+
+//source pt = (-123.1, 49.2166666666)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+source pt = (2.33656753, 43.96499314)
+target pt = (1222790.97629403, 29967855.9396212)
+
+source pt = (151.283333333, -33.9166666666)
+target pt = (3260975.84097009, -5952183.1512236)
+
+source pt = (-47.95, -15.75)
+target pt = (-7162325.06507552, 6460312.9615793)
+
+source pt = (139.733333333, 35.6833333333)
+target pt = (16053723.026356, -18952241.4849415)
+
+source pt = (18.45, -33.9166666666)
+target pt = (2147907.69612739, 6438085.13690347)
+
+//source pt = (0, 90)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+source pt = (0, -90)
+target pt = (0, 0)
+
+
+////////////////////////////////////////
+//Spherical Equitorial
+
+source crs = _sphere3_
+target crs = _DStereo7_
+test tolerance = (1e-2, 1e-2)
+
+source pt = (-123.1, 49.2166666666)
+target pt = (-7177457.04562655, 8502789.26341092)
+
+source pt = (2.33656753, 43.96499314)
+target pt = (4532964.6771832, 5945604.3806171)
+
+//source pt = (151.283333333, -33.9166666666)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+source pt = (-47.95, -15.75)
+target pt = (-321816.428830414, -1763578.32357749)
+
+//source pt = (139.733333333, 35.6833333333)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+source pt = (18.45, -33.9166666666)
+target pt = (6899624.53423796, -5186179.56202058)
+
+//the long. of the the next 2 points were changed from arcGIS output (was 0)
+//we have differing views about what the long. of a pole should be.
+source pt = (-45, 90)
+target pt = (5.5168238290053E-10, 12742000)
+
+source pt = (-45, -90)
+target pt = (5.5168238290053E-10, -12742000)
+
+source crs = _DStereo7_
+target crs = _sphere3_
+test tolerance = (1e-5, 1e-5)
+
+source pt = (5.5168238290053E-10, 12742000)
+target pt = (-45, 90)
+
+source pt = (5.5168238290053E-10, -12742000)
+target pt = (-45, -90)
+
+
+////////////////////////////////////////
+// Spherical Oblique
+
+source crs = _sphere3_
+target crs = _DStereo8_
+test tolerance = (1e-2, 1e-2)
+
+source pt = (-123.1, 49.2166666666)
+target pt = (-4302563.66689065, 213187.830274701)
+
+source pt = (2.33656753, 43.96499314)
+target pt = (4324891.73045712, -910713.807515885)
+
+//source pt = (151.283333333, -33.9166666666)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+source pt = (-47.95, -15.75)
+target pt = (1404583.27391585, -11776410.5577183)
+
+source pt = (139.733333333, 35.6833333333)
+target pt = (-2057243.67777944, 9338231.09361794)
+
+source pt = (18.45, -33.9166666666)
+target pt = (18213225.8877641, -9455459.3973766)
+
+source pt = (0, 90)
+target pt = (3.29485054216154E-10, 2246758.38818726)
+
+//source pt = (0, -90)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+source crs = _sphere3_
+target crs = _DStereo9_
+test tolerance = (1e-2, 1e-2)
+
+source pt = (-123.1, 49.2166666666)
+target pt = (8025167.41865162, 10659462.713673)
+
+//source pt = (2.33656753, 43.96499314)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+source pt = (151.283333333, -33.9166666666)
+target pt = (-1751021.5482452, -1465895.97287927)
+
+source pt = (-47.95, -15.75)
+target pt = (18949003.1287529, -17159231.214752)
+
+source pt = (139.733333333, 35.6833333333)
+target pt = (-3642974.56059216, 7151031.37033279)
+
+source pt = (18.45, -33.9166666666)
+target pt = (-9459391.5721868, -18919110.2925948)
+
+// The longitude of the the next 2 points were changed from ArcGIS output (was 0)
+// We have differing views about what the longitude of a pole should be.
+source pt = (170, 90)
+target pt = (-2.16631219873976E-10, 18890791.8607893)
+
+source pt = (170, -90)
+target pt = (-9.85589165790218E-11, -8594587.5216062)
+
+source crs = _DStereo9_
+target crs = _sphere3_
+test tolerance = (1e-5, 1e-5)
+
+source pt = (-9.85589165790218E-11, -8594587.5216062)
+target pt = (170, -90)
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// From http://www.remotesensing.org/geotiff/proj_list/polar_stereographic.html
+
+source crs = _WGS84_
+target crs = _Stereo15_
+test tolerance = (1e-2, 1e-2)
+
+source pt = (-121.33955, 39.1012523)
+target pt = (-2529570.00, -5341800.00)
+
+
+
+/////////////////////////////////////////////////
+// From http://jira.codehaus.org/browse/GEOS-1037
+
+set _GEOS1037_ = PROJCS["Antarctic Polar Stereographic", GEOGCS["WGS 84", DATUM["WGS_1984", SPHEROID["WGS 84", 6378137, 298.257223563]], PRIMEM["Greenwich", 0], UNIT["degree", 0.0174532925199433], AXIS["Lat",NORTH], AXIS["Long",EAST]], PROJECTION["Polar_Stereographic"], PARAMETER["latitude_of_origin", -90], PARAMETER["central_meridian", 0], PARAMETER["scale_factor", 0.97276901289], PARAMETER["false_easting", 0], PARAMETER["false_northing", 0], UNIT["metre", 1]]
+
+source crs = _GEOS1037_
+target crs = _WGS84_
+test tolerance = (1e-5, 1e-5)
+
+source pt = (-1052066.625, 281900.375)
+target pt = (-75.0000, -80.0000)
+
+source pt = (-2119718.750, 567976.875)
+target pt = (-75.0000, -70.0000)
+
+source pt = (-3219560.250, 862678.563)
+target pt = (-75.0000, -60.0000)

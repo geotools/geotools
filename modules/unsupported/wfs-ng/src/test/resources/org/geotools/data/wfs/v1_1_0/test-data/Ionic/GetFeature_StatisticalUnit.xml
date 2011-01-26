@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ogcwfs:FeatureCollection
+  xsi:schemaLocation="http://www.fgdc.gov/fgdc/gubs http://nbii-nin.ciesin.columbia.edu/mapserver/wfs/fgdcgubscensustract?REQUEST=DescribeAllFeatureType&amp;SERVICE=WFS http://www.opengis.net/wfs http://nbii-nin.ciesin.columbia.edu/mapserver/wfs/fgdcgubscensustract/REQUEST/get/DATA/LPR/wfs/1.0.0/WFS-basic.xsd"
+  xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:ogcwfs="http://www.opengis.net/wfs" xmlns:fw="http://www.fgdc.gov/framework/073004" xmlns:gubs="http://www.fgdc.gov/fgdc/gubs">
+  <gml:boundedBy>
+    <gml:Envelope srsName="EPSG:4269">
+      <gml:lowerCorner>-73.37097 44.15377</gml:lowerCorner>
+      <gml:upperCorner>-72.95293 44.302868</gml:upperCorner>
+    </gml:Envelope>
+  </gml:boundedBy>
+  <gml:featureMember>
+    <gubs:StatisticalUnit id="StatisticalUnit.1">
+      <gubs:unitId>50001960100</gubs:unitId>
+      <gubs:typeAbbreviation>CT</gubs:typeAbbreviation>
+      <gubs:instanceName>50001960100</gubs:instanceName>
+      <gubs:geometry>
+        <gml:Polygon srsName="EPSG:4269">
+          <gml:exterior>
+            <gml:LinearRing srsName="EPSG:4269">
+              <gml:pos>-72.95293 44.16137</gml:pos>
+              <gml:pos>-72.95738 44.184967</gml:pos>
+              <gml:pos>-72.96085 44.203236</gml:pos>
+              <gml:pos>-72.96461 44.159676</gml:pos>
+              <gml:pos>-72.963905 44.159767</gml:pos>
+              <gml:pos>-72.95293 44.16137</gml:pos>
+            </gml:LinearRing>
+          </gml:exterior>
+        </gml:Polygon>
+      </gubs:geometry>
+      <gubs:typeDefinition>Census Tract</gubs:typeDefinition>
+    </gubs:StatisticalUnit>
+  </gml:featureMember>
+  <gml:featureMember>
+    <gubs:StatisticalUnit id="StatisticalUnit.2">
+      <gubs:unitId>50001960200</gubs:unitId>
+      <gubs:typeAbbreviation>CT</gubs:typeAbbreviation>
+      <gubs:instanceName>50001960200</gubs:instanceName>
+      <gubs:geometry>
+        <gml:MultiPolygon srsName="EPSG:4269">
+          <gml:polygonMember>
+            <gml:Polygon srsName="EPSG:4269">
+              <gml:exterior>
+                <gml:LinearRing srsName="EPSG:4269">
+                  <gml:pos>-73.30847 44.1808</gml:pos>
+                  <gml:pos>-73.30882 44.181347</gml:pos>
+                  <gml:pos>-73.30941 44.18313</gml:pos>
+                  <gml:pos>-73.30817 44.17996</gml:pos>
+                  <gml:pos>-73.308266 44.18003</gml:pos>
+                  <gml:pos>-73.30847 44.1808</gml:pos>
+                </gml:LinearRing>
+              </gml:exterior>
+            </gml:Polygon>
+          </gml:polygonMember>
+          <gml:polygonMember>
+            <gml:Polygon srsName="EPSG:4269">
+              <gml:exterior>
+                <gml:LinearRing srsName="EPSG:4269">
+                  <gml:pos>-73.320496 44.22399</gml:pos>
+                  <gml:pos>-73.32173 44.224445</gml:pos>
+                  <gml:pos>-73.32402 44.22511</gml:pos>
+                  <gml:pos>-73.31776 44.222664</gml:pos>
+                  <gml:pos>-73.31928 44.223648</gml:pos>
+                  <gml:pos>-73.320496 44.22399</gml:pos>
+                </gml:LinearRing>
+              </gml:exterior>
+            </gml:Polygon>
+          </gml:polygonMember>
+        </gml:MultiPolygon>
+      </gubs:geometry>
+      <gubs:typeDefinition>Census Tract</gubs:typeDefinition>
+    </gubs:StatisticalUnit>
+  </gml:featureMember>
+</ogcwfs:FeatureCollection>

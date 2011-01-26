@@ -1,0 +1,9 @@
+XMFAP The input xfMap document, which guides the XML 
+Reader on how to convert XML elements into FME 
+Features. 
+Multiple XFMAP keywords may be specified within 
+a mapping file. Each xfMap will map features from 
+the same input dataset. Alternatively, multiple xf- 
+Maps may be specified in a single value quoted XFMAP 
+keyword by separating each xfMap path with a 
+semicolon

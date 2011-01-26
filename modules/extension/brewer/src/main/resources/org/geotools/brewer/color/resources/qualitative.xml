@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+Apache-Style Software License for ColorBrewer Color Schemes
+Version 1.1
+
+Copyright (c) 2002 Cynthia Brewer, Mark Harrower, and The Pennsylvania State University. All rights reserved.
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+1. Redistributions as source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+2. The end-user documentation included with the redistribution, if any, must include the following acknowledgment:
+"This product includes color specifications and designs developed by Cynthia Brewer (http://colorbrewer.org/)."
+Alternately, this acknowledgment may appear in the software itself, if and wherever such third-party acknowledgments normally appear.
+4. The name "ColorBrewer" must not be used to endorse or promote products derived from this software without prior written permission. For written permission, please contact Cynthia Brewer at cbrewer@psu.edu.
+5. Products derived from this software may not be called "ColorBrewer", nor may "ColorBrewer" appear in their name, without prior written permission of Cynthia Brewer.
+
+THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL CYNTHIA BREWER, MARK HARROWER, OR THE PENNSYLVANIA STATE UNIVERSITY BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+Legend:
+G = good
+D = doubtful
+B = bad
+suitability = Colorblind, PhotoCopy, LCD Projector, LCD, CRT, Color Printing
+-->
+<type>
+<name>Qualitative</name>
+<description>Qualitative schemes do not imply magnitude differences between legend classes, and hues are used to create the primary visual differences between classes. They are best suited to representing nominal or categorical data.</description>
+<samples>
+ <sample size="2">0,1</sample>
+ <sample size="3">0,1,2</sample>
+ <sample size="4">0,1,2,3</sample>
+ <sample size="5">0,1,2,3,4</sample>
+ <sample size="6">0,1,2,3,4,5</sample>
+ <sample size="7">0,1,2,3,4,5,6</sample>
+ <sample size="8">0,1,2,3,4,5,6,7</sample>
+ <sample size="9">0,1,2,3,4,5,6,7,8</sample>
+ <sample size="10">0,1,2,3,4,5,6,7,8,9</sample>
+ <sample size="11">0,1,2,3,4,5,6,7,8,9,10</sample>
+ <sample size="12">0,1,2,3,4,5,6,7,8,9,10,11</sample>
+</samples>
+<palettes>
+ <palette>
+  <name>Set1</name>
+  <description>includes bold, readily named, basic colors (such as red, green, blue)</description>
+  <colors>
+228,26,28:
+55,126,184:
+77,175,74:
+152,78,163:
+255,127,0:
+255,255,51:
+166,86,40:
+247,129,191:
+153,153,153
+  </colors>
+  <suitability>
+   <scheme size="2">G,D,G,G,G,D</scheme>
+   <scheme size="3">G,D,G,G,G,D</scheme>
+   <scheme size="4">G,B,G,G,G,B</scheme>
+   <scheme size="5">G,B,G,D,G,D</scheme>
+   <scheme size="6">G,B,G,D,G,D</scheme>
+   <scheme size="7">G,B,G,D,G,D</scheme>
+   <scheme size="8">G,B,G,D,G,D</scheme>
+   <scheme size="9">G,B,G,D,G,D</scheme>
+   <scheme size="10">G,G,G,G,G,G</scheme>
+   <scheme size="11">G,G,G,G,G,G</scheme>
+   <scheme size="12">G,G,G,G,G,G</scheme>
+  </suitability>
+ </palette>
+ <palette>
+  <name>Pastel1</name>
+  <description>lighter version of Set 1</description>
+  <colors>
+251,180,174:
+179,205,227:
+204,235,197:
+222,203,228:
+254,217,166:
+255,255,204:
+229,216,189:
+253,218,236:
+242,242,242
+  </colors>
+  <suitability>
+   <scheme size="2">G,B,G,D,G,D</scheme>
+   <scheme size="3">G,B,G,D,G,D</scheme>
+   <scheme size="4">B,B,G,D,G,D</scheme>
+   <scheme size="5">B,B,G,D,G,D</scheme>
+   <scheme size="6">B,B,G,D,G,D</scheme>
+   <scheme size="7">B,B,D,D,G,D</scheme>
+   <scheme size="8">B,B,B,B,D,D</scheme>
+   <scheme size="9">B,B,B,B,D,D</scheme>
+  </suitability>
+ </palette>
+ <palette>
+  <name>Set2</name>
+  <description>includes mostly mixture colors (such as blue-green, red-orange)</description>
+  <colors>
+102,194,165:
+252,141,98:
+141,160,203:
+231,138,195:
+166,216,84:
+255,217,47:
+229,196,148:
+179,179,179
+  </colors>
+  <suitability>
+   <scheme size="2">G,B,G,D,G,D</scheme>
+   <scheme size="3">G,B,G,D,G,D</scheme>
+   <scheme size="4">B,B,G,D,G,D</scheme>
+   <scheme size="5">B,B,G,D,G,D</scheme>
+   <scheme size="6">B,B,G,D,G,D</scheme>
+   <scheme size="7">B,B,G,D,G,D</scheme>
+   <scheme size="8">B,B,G,D,G,D</scheme>
+  </suitability>
+ </palette>
+ <palette>
+  <name>Pastel2</name>
+  <description>lighter version of Set 2</description>
+  <colors>
+179,226,205:
+253,205,172:
+203,213,232:
+244,202,228:
+230,245,201:
+255,242,174:
+241,226,204:
+204,204,204
+  </colors>
+  <suitability>
+   <scheme size="2">G,B,D,D,D,D</scheme>
+   <scheme size="3">G,B,D,D,D,D</scheme>
+   <scheme size="4">B,B,D,D,D,D</scheme>
+   <scheme size="5">B,B,D,D,D,D</scheme>
+   <scheme size="6">B,B,B,B,D,G</scheme>
+   <scheme size="7">B,B,B,B,B,B</scheme>
+   <scheme size="8">B,B,B,B,B,B</scheme>
+  </suitability>
+ </palette>
+ <palette>
+  <name>Dark2</name>
+  <description>darker version of Set 2</description>
+  <colors>
+27,158,119:
+217,95,2:
+117,112,179:
+231,41,138:
+102,166,30:
+230,171,2:
+166,118,29:
+102,102,102
+  </colors>
+  <suitability>
+   <scheme size="2">G,B,G,G,G,D</scheme>
+   <scheme size="3">G,B,G,G,G,D</scheme>
+   <scheme size="4">G,B,G,G,G,D</scheme>
+   <scheme size="5">G,B,G,G,G,D</scheme>
+   <scheme size="6">G,B,G,D,G,D</scheme>
+   <scheme size="7">G,B,G,D,G,D</scheme>
+   <scheme size="8">G,B,B,B,B,D</scheme>
+  </suitability>
+ </palette>
+ <palette>
+  <name>Set3</name>
+  <description>median saturation set with more lightness variation and more classes than Set 1 or 2</description>
+  <colors>
+141,211,199:
+255,255,179:
+190,186,218:
+251,128,114:
+128,177,211:
+253,180,98:
+179,222,105:
+252,205,229:
+217,217,217:
+188,128,189:
+204,235,197:
+255,237,111
+  </colors>
+  <suitability>
+   <scheme size="2">G,D,G,D,G,D</scheme>
+   <scheme size="3">G,D,G,D,G,D</scheme>
+   <scheme size="4">G,D,G,D,G,D</scheme>
+   <scheme size="5">B,D,G,D,G,D</scheme>
+   <scheme size="6">B,D,G,D,G,D</scheme>
+   <scheme size="7">B,D,G,D,D,D</scheme>
+   <scheme size="8">B,D,G,D,D,G</scheme>
+   <scheme size="9">B,D,D,D,D,D</scheme>
+   <scheme size="10">B,B,D,B,D,D</scheme>
+   <scheme size="11">B,B,B,B,G,D</scheme>
+   <scheme size="12">B,B,B,B,B,B</scheme>
+  </suitability>
+ </palette>
+ <palette>
+  <name>Paired</name>
+  <description>light/dark pairs for namable hues</description>
+  <colors>
+166,206,227:
+31,120,180:
+178,223,138:
+51,160,44:
+251,154,153:
+227,26,28:
+253,191,111:
+255,127,0:
+202,178,214:
+106,61,154:
+255,255,153:
+177,89,40
+  </colors>
+  <suitability>
+   <scheme size="2">G,B,G,G,G,B</scheme>
+   <scheme size="3">G,B,G,G,G,B</scheme>
+   <scheme size="4">G,B,G,G,G,B</scheme>
+   <scheme size="5">G,B,G,G,G,B</scheme>
+   <scheme size="6">G,B,G,G,G,D</scheme>
+   <scheme size="7">B,B,G,G,G,D</scheme>
+   <scheme size="8">B,B,G,D,G,D</scheme>
+   <scheme size="9">B,B,G,G,G,D</scheme>
+   <scheme size="10">B,B,G,G,G,D</scheme>
+   <scheme size="11">B,B,G,D,G,B</scheme>
+   <scheme size="12">B,B,B,B,B,B</scheme>
+  </suitability>
+ </palette>
+ <palette>
+  <name>Accents</name>
+  <description>includes lightness and saturation extremes to accent small or important areas</description>
+  <colors>
+127,201,127:
+190,174,212:
+253,192,134:
+255,255,153:
+56,108,176:
+240,2,127:
+191,91,23:
+102,102,102
+  </colors>
+  <suitability>
+   <scheme size="2">B,D,G,G,G,D</scheme>
+   <scheme size="3">B,D,G,G,G,D</scheme>
+   <scheme size="4">B,D,G,G,G,D</scheme>
+   <scheme size="5">B,D,G,G,G,D</scheme>
+   <scheme size="6">B,D,G,G,G,D</scheme>
+   <scheme size="7">B,D,G,G,G,D</scheme>
+   <scheme size="8">B,D,G,G,G,D</scheme>
+  </suitability>
+ </palette>
+</palettes>
+</type>

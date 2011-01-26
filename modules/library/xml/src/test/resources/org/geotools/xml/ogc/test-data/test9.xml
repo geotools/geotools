@@ -1,0 +1,11 @@
+<Filter xmlns:gml="http://www.opengis.net/gml">
+  <PropertyIsBetween>
+    <PropertyName>testInteger</PropertyName>
+    <LowerBoundary>
+      <Literal>100</Literal>
+    </LowerBoundary>
+    <UpperBoundary>
+      <Literal>200</Literal>
+    </UpperBoundary>
+  </PropertyIsBetween>
+</Filter>

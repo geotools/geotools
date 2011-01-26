@@ -1,0 +1,32 @@
+EXTENTION SHAPEFILE RENDERER
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  Module Maintainer: Jesse Eichar
+
+  IP Review:
+
+    * Jody Garnett, August 6th, 2006
+
+    * Adrian Custer, June 2008
+
+
+  STATUS: DIRTY
+      Clean code
+      dirty data
+        http://jira.codehaus.org/browse/GEOT-1893
+
+
+* org.geotools.data.shapefile
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+* org.geotools.renderer.shape
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Optimized renderer for shapefiles, developed as part of the uDig project.
+
+
+* org.geotools.data.shapefile.shp (test)
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.renderer.shape (test)
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

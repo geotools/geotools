@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+    <author>Christiaan ten Klooster</author>
+    <author>Andrea Aime</author>
+    <title>Features</title>
+  </properties>
+
+  <body>
+    <section name="GTOPO30 datasource">
+      <p>
+      The gtopo30 module contains a datasource that can read the GTOPO30 format into
+      a standard feature collection. Write support is needed.
+      You can download the GTOPO30 DEM files and get more information about this file
+      format at the GTOPO30 home site at <a href="http://edcdaac.usgs.gov/gtopo30/gtopo30.html">http://edcdaac.usgs.gov/gtopo30/gtopo30.html</a>
+      </p>
+      <p>
+      The create the datasource you'll need an URL pointing to one of the files that
+      compose the standard GTOPO30 DEM, either .dem, .hdr, .src, .sch or .stx.
+      </p>
+    </section>
+  </body>
+</document>

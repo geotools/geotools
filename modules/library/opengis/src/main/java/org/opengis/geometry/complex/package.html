@@ -1,0 +1,78 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<HTML>
+  <HEAD>
+    <TITLE>package org.opengis.geometry.complex</TITLE>
+  </HEAD>
+  <BODY>
+  Set of primitive geometric objects whose interiors are disjoint. The following is adapted from
+  <A HREF="http://www.opengis.org/docs/01-101.pdf">Feature Geometry (Topic 1)</A> specification.
+
+  <P ALIGN="justify">A geometric complex ({@link org.opengis.geometry.complex.Complex}) is a set of
+  primitive geometric objects (in a common coordinate system) whose interiors are disjoint.
+  Further, if a primitive is in a geometric complex, then there exists a set of primitives in
+  that complex whose point-wise union is the boundary of this first primitive.</P>
+
+  <P ALIGN="justify">A subcomplex of a complex is a subset of the primitives of that complex
+  that is, in its own right, a geometric complex. A supercomplex of a complex is a superset
+  of primitives that is also a complex. These definitions are essentially subset and superset
+  with the added restriction that they must be a complex. A complex is maximal if it is a
+  subcomplex of no larger complex.</P>
+
+  <P ALIGN="justify">The boundary of a geometric object in a geometric complex is a subcomplex
+  of that complex. The simplest complex is a single point. The simplest 1-dimensional complex
+  is a curve with its two end points. The simplest 2-dimensional complex is a surface with its
+  boundary curve, and the curve's start and end points.</P>
+
+  <P ALIGN="justify">The underlying geometry of a complex is usually referred to as a "manifold".
+  The structure of a complex organizes the geometry of the manifold into primitive elements,
+  analogously to the way in which "charts" are organized by an "atlas" into a map of the world.</P>
+
+  <P ALIGN="justify">One way, but obviously not the only way, to generate a complex from a set of
+  primitives is by beginning with those primitives and performing the following operations.</P>
+
+  <UL>
+    <LI><P ALIGN="justify">If two primitives overlap, then subdivide them, eliminating repetitions
+        until there is no overlap.</P></LI>
+
+    <LI><P ALIGN="justify">Similarly, if a primitive is not simple, subdivide it where it
+        intersects itself, eliminating repetitions until there is no overlap.</P></LI>
+
+    <LI><P ALIGN="justify">If a primitive is not a point, calculate its boundary as a collection
+        of other primitives, using those already in the generating set if possible, and insert
+        them into the complex.</P></LI>
+
+    <LI><P ALIGN="justify">Repeat previous steps until no new primitive is required.</P></LI>
+  </UL>
+
+  <P ALIGN="justify">Many systems have a concept of a universal face (for 2D) or universal solid
+  (for 3D). This is valid only in the case where the underlying space of the complex is an
+  unbounded Euclidean space. In this case, for 2D, the universal face is the surface in the
+  {@link org.opengis.geometry.complex.Complex} that has only interior boundary rings (its exterior
+  one being the "point at infinity"). Analogously, in 3D, the universal solid is the one that
+  has only interior boundary shells. In bounded manifolds, such as the sphere, there is no point
+  at infinity, and all primitives are bounded. Without the Jordan Separation Theorem, all boundaries
+  are essentially interior boundaries. In other unbounded manifolds, such as a hyperbolic surface,
+  there may be more than one unbounded primitive. Since this specification does not directly address
+  these sorts of unbounded manifolds, the cardinality of some elements may require relaxing if this
+  specification were to be applied to such non-geographic manifolds. This specification does not
+  special case either the universal face or solid, and the relationship between them and their
+  boundaries are represented in the same manner as any other boundary relationship.</P>
+
+  <BLOCKQUOTE>
+  <P ALIGN="justify"><FONT SIZE=2><STRONG>NOTE:</STRONG> A maximal complex could reasonably be
+  considered a strong aggregation of its primitives depending on the internal semantics of the
+  application. For this reason, the mechanism for the containment of
+  {@link org.opengis.geometry.primitive.Primitive}s in a {@link org.opengis.geometry.complex.Complex} is left
+  unspecified. In any case, once a {@link org.opengis.geometry.primitive.Primitive} is within a complex,
+  or a {@link org.opengis.geometry.complex.Complex} is a subcomplex of a maximal
+  {@link org.opengis.geometry.complex.Complex}, its boundary operation will not need to construct
+  representative {@link org.opengis.geometry.Geometry}, since by the definition of a complex, the
+  objects needed to represent the boundary of the contained object will already exist, and
+  only references to those objects are required by the {@link org.opengis.geometry.Geometry#getBoundary}
+  method. Remember that the containment of {@link org.opengis.geometry.complex.Complex} in one another
+  is a subset-superset association, while the containment of {@link org.opengis.geometry.primitive.Primitive}s
+  in a {@link org.opengis.geometry.complex.Complex} is an element-set association.</FONT></P>
+  </BLOCKQUOTE>
+  </BODY>
+</HTML>

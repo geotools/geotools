@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<swe:DataDefinition xmlns:swe="http://www.opengis.net/swe" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xsi:schemaLocation="http://www.opengis.net/swe ../data.xsd">
+    <!-- -->
+    <swe:dataComponents xmlns:swe="http://www.opengis.net/swe">
+        <swe:DataGroup>
+            <swe:component name="time">
+                <swe:Time definition="urn:ogc:phenomenon:time:iso8601"/>
+            </swe:component>
+            <swe:component name="temperature">
+                <swe:Quantity definition="urn:vast:phenomenon:AirTemperature" uom="urn:ogc:unit:celsius"/>
+            </swe:component>
+            <swe:component name="pressure">
+                <swe:Quantity definition="urn:vast:phenomenon:AtmosphericPressure" uom="urn:ogc:unit:millibar"/>
+            </swe:component>
+            <swe:component name="windSpeed">
+                <swe:Quantity definition="urn:vast:phenomenon:WindSpeed" uom="urn:ogc:unit:kilometerPerHour"/>
+            </swe:component>
+            <swe:component name="windDirection">
+                <swe:Quantity definition="urn:vast:phenomenon:WindDirection" uom="urn:ogc:unit:degree"/>
+            </swe:component>
+        </swe:DataGroup>
+    </swe:dataComponents>
+    <!-- -->
+    <swe:encoding>
+        <swe:XMLTuple decimalSeparator="." tokenSeparator="," tupleSeparator=" "/>
+    </swe:encoding>
+    <!-- -->
+</swe:DataDefinition>

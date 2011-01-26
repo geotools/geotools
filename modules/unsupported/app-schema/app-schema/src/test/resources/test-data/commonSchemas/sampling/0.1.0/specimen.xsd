@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns:gml="http://www.opengis.net/gml" xmlns:om="http://www.opengis.net/om" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:sa="http://www.seegrid.csiro.au/xml/sampling"
+        targetNamespace="http://www.seegrid.csiro.au/xml/sampling" elementFormDefault="qualified" attributeFormDefault="unqualified" version="pre-release">
+	<annotation>
+		<documentation>specimen.xsd
+
+feature types that are used primarily for making observations: 
+
+Copyright (c) 2005 CSIRO - see https://www.seegrid.csiro.au/twiki/bin/view/Xmml/LegalNotices#Software_Notice</documentation>
+	</annotation>
+	<!-- ====================================================================== -->
+	<!-- bring in other schemas -->
+	<import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+	<import namespace="http://www.opengis.net/om" schemaLocation="../../om/1.0.30/om.xsd"/>
+	<include schemaLocation="./surveyProcedure.xsd"/>
+	<!--
+	<include schemaLocation="../enumerations/LUTgeography.xsd"/>
+	-->
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<complexType name="SpecimenType">
+		<annotation>
+			<documentation>A located object on which measurements may be made.
+			
+			A "Station" from where the specimen was obtained may be recorded using the samplingStation property. 
+						
+			A basic material classification is provided using the "material" property. 
+			Its value may be relatively generic (rock, pulp) or may reflect a detailed classification (calcrete, adamellite, biotite-schist). 
+			In the latter case it is wise to use the codeSpace attribute to provide a link to the classification scheme/vocabulary used. 
+			
+			Note that if this specimen is a "processed" version of another (e.g. by grinding, seiving, etc) then 
+			the predecessor (if known) may be recorded as a relatedFeature
+			
+			If this specimen has been processed from an "original" specimen, 
+			as collected in the field or as supplied to the lab, 
+			but results should be reported regarding the original, 
+			then the original may be indicated using the reportingSpecimen property.
+			
+			Related observations may also be recorded using the relatedFeature property.</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="gml:AbstractFeatureType">
+				<sequence>
+					<element name="sampledOn" type="gml:ReferenceType" minOccurs="0">
+						<annotation>
+							<documentation>Pointer to the station, section, etc from which the specimen was obtained</documentation>
+						</annotation>
+					</element>
+					<element name="material" type="gml:CodeType">
+						<annotation>
+							<documentation>Material type, usually taken from a controlled vocabulary
+					Specialised domains may choose to fix the vocabulary to be used</documentation>
+						</annotation>
+					</element>
+					<element name="mass" type="gml:MeasureType" nillable="true">
+						<annotation>
+							<documentation>The mass of the specimen</documentation>
+						</annotation>
+					</element>
+					<element name="processingDetails" type="om:ProcedureEventPropertyType">
+						<annotation>
+							<documentation>One or more procedures may have been applied to a specimen.  
+            May contain collection, sampling and preparation procedures</documentation>
+						</annotation>
+					</element>
+					<element name="relatedSpecimen" type="gml:ReferenceType" minOccurs="0">
+						<annotation>
+							<documentation>A related specimen for which results may be available.</documentation>
+						</annotation>
+					</element>
+					<element name="relatedObservation" type="om:AbstractObservationPropertyType" minOccurs="0" maxOccurs="unbounded">
+						<annotation>
+							<documentation>An observation on the specimen</documentation>
+						</annotation>
+					</element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- .................. -->
+	<element name="Specimen" type="sa:SpecimenType" substitutionGroup="gml:_Feature"/>
+	<!-- .................. -->
+	<complexType name="SpecimenPropertyType">
+		<sequence minOccurs="0">
+			<element ref="sa:Specimen"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+	<complexType name="LocatedSpecimenType">
+		<annotation>
+			<documentation/>
+		</annotation>
+		<complexContent>
+			<extension base="sa:SpecimenType">
+				<sequence>
+					<element name="samplingLocation" type="gml:GeometryPropertyType" nillable="true"/>
+					<element name="locationMethod" type="gml:StringOrRefType" minOccurs="0"/>
+					<element name="samplingTime" type="gml:TimePrimitivePropertyType" nillable="true">
+						<annotation>
+							<documentation>Time and date when the specimen was initially retrieved</documentation>
+						</annotation>
+					</element>
+					<element name="samplingMethod" type="om:ProcedureTypePropertyType" minOccurs="0"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- .................. -->
+	<element name="LocatedSpecimen" type="sa:LocatedSpecimenType" substitutionGroup="sa:Specimen"/>
+	<!-- .................. -->
+	<complexType name="LocatedSpecimenPropertyType">
+		<sequence minOccurs="0">
+			<element ref="sa:LocatedSpecimen"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+</schema>

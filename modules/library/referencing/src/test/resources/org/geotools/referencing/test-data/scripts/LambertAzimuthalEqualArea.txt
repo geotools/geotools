@@ -1,0 +1,965 @@
+// Test points for the Lambert Azimuthal Equal Area Projection
+//
+// (C) 2006-2008, Open Source Geospatial Foundation (OSGeo)
+//
+// The first two test points were calculated with FME. The rest of the tests were 
+// calculated with ArcGIS 9.1.
+// 
+// Beate Stollberg - September 25, 2006
+// Rueben Schulz - October 24, 2006
+//
+//
+// --------------------------------------------------------------------------
+// How to run this script:
+//
+//    chdir org/geotools/referencing/test-data/scripts
+//    java -ea org.geotools.referencing.ScriptRunner LambertAzimuthalEqualArea.txt
+//
+// A test is performed every time a "target pt" statement occurs. If the target point computed
+// by Geotools is different from the target point declared in this script by an amount greater
+// than the value specified in the last "test tolerance" statement, then a failure is reported.
+// Inverse transforms are tested if java assertions are enabled.
+// If some test fails, "print" statements can be added in this script for debugging purpose:
+//
+//    print crs            (prints the source and target CRS, and the transform between them)
+//    print pts            (prints the source and target points, and their transformed points)
+
+
+set _ETRS89_    = GEOGCS["ETRS89", DATUM["European_Terrestrial_Reference_System_1989",SPHEROID["GRS 1980",6378137,298.257222101,AUTHORITY["EPSG","7019"]],AUTHORITY["EPSG","6258"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.01745329251994328,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4258"]]
+set _ETRS_LAEA_ = PROJCS["ETRS89 / ETRS-LAEA",GEOGCS["ETRS89",DATUM["European_Terrestrial_Reference_System_1989",SPHEROID["GRS 1980",6378137,298.257222101,AUTHORITY["EPSG","7019"]],AUTHORITY["EPSG","6258"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.01745329251994328,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4258"]],PROJECTION["Lambert_Azimuthal_Equal_Area"],PARAMETER["latitude_of_center",52],PARAMETER["longitude_of_center",10],PARAMETER["false_easting",4321000],PARAMETER["false_northing",3210000],UNIT["metre",1,AUTHORITY["EPSG","9001"]],AUTHORITY["EPSG","3035"]]
+set _WGS84_  = GEOGCS["WGS84",  DATUM["WGS84",  SPHEROID["WGS84",  6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]]
+
+
+source crs = _ETRS89_ 
+target crs = _ETRS_LAEA_
+test tolerance = (1e-4, 1e-4)
+
+source pt = (5, 50)
+target pt = (3962799.4509550673, 2999718.8531595636)
+
+source pt = (5, 60)
+target pt = (4041548.1252533556, 4109791.6598768588)
+
+
+
+source crs = _ETRS_LAEA_
+target crs = _ETRS89_
+test tolerance = (1e-4, 1e-4)
+
+source pt = (3962799.45, 2999718.85)
+target pt = (4.99999998966968, 49.999999971082069)
+
+source pt = (4041548.12, 4109791.66)
+target pt = (4.99999990615208, 59.999999997775312)
+
+
+////////////////////////////////////////////
+//Elliptical Polar tests
+
+set _LAEA_POLAR1_ = PROJCS["Lambert Azimuthal Equal Area", GEOGCS["WGS84", DATUM["WGS84", SPHEROID["WGS84", 6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Lambert_Azimuthal_Equal_Area"], PARAMETER["central_meridian", 0], PARAMETER["latitude_of_origin", 90.0], PARAMETER["false_easting", 0.0], PARAMETER["false_northing", 0.0], UNIT["metre",1.0], AXIS["x",EAST], AXIS["y",NORTH]]
+set _LAEA_POLAR2_ = PROJCS["Lambert Azimuthal Equal Area", GEOGCS["WGS84", DATUM["WGS84", SPHEROID["WGS84", 6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Lambert_Azimuthal_Equal_Area"], PARAMETER["central_meridian", 30], PARAMETER["latitude_of_origin", -90.0], PARAMETER["false_easting", 0.0], PARAMETER["false_northing", 0.0], UNIT["metre",1.0], AXIS["x",EAST], AXIS["y",NORTH]]
+
+
+source crs = _WGS84_
+target crs = _LAEA_POLAR1_
+test tolerance = (1e-4, 1e-4)
+
+source pt = (-123.1, 49.2166666666)
+target pt = (-3730362.56608835, 2431792.76315331)
+
+source pt = (2.33656753, 43.96499314)
+target pt = (203660.019760355, -4991248.91429615)
+
+source pt = (151.283333333, -33.9166666666)
+target pt = (5400563.04370993, 9857521.77370576)
+
+source pt = (-47.95, -15.75)
+target pt = (-7540686.63586954, -6801589.59141045)
+
+source pt = (139.733333333, 35.6833333333)
+target pt = (3766983.47050531, 4447116.73956199)
+
+source pt = (18.45, -33.9166666666)
+target pt = (3557190.08379863, -10662233.1345686)
+
+source pt = (0, 0)
+target pt = (0, -9009964.76123128)
+
+source pt = (180, 0)
+target pt = (1.10336600943195E-09, 9009964.76123128)
+
+source pt = (-180, 0)
+target pt = (-1.10336600943195E-09, 9009964.76123128)
+
+source pt = (90, 0)
+target pt = (9009964.76123128, -5.51683004715977E-10)
+
+source pt = (-90, 0)
+target pt = (-9009964.76123128, -5.51683004715977E-10)
+
+source pt = (-76, -55)
+target pt = (-11787380.079255, -2938923.93391414)
+
+source pt = (12, -15)
+target pt = (2100860.92048093, -9883773.5423212)
+
+source pt = (80, 6)
+target pt = (8398708.08136468, -1480918.83783882)
+
+source pt = (-45, 71)
+target pt = (-1493207.32821693, -1493207.32821693)
+
+source pt = (175, 66.67)
+target pt = (225425.708697742, 2576627.64080223)
+
+source pt = (60, -70)
+target pt = (10865879.2257545, -6273418.29597132)
+
+source pt = (0, 90)
+target pt = (0, 0)
+
+//source pt = (0, -90)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+source crs = _WGS84_
+target crs = _LAEA_POLAR2_
+test tolerance = (1e-4, 1e-4)
+
+source pt = (-123.1, 49.2166666666)
+target pt = (-5401428.28764189, -10646796.7733644)
+
+source pt = (2.33656753, 43.96499314)
+target pt = (-5442245.62669288, 10382044.567805)
+
+source pt = (151.283333333, -33.9166666666)
+target pt = (5129234.10704625, -3116579.97879149)
+
+source pt = (-47.95, -15.75)
+target pt = (-7526865.54277121, 1606751.12818946)
+
+source pt = (139.733333333, 35.6833333333)
+target pt = (10665593.6074026, -3825837.32490532)
+
+source pt = (18.45, -33.9166666666)
+target pt = (-1201706.93324662, 5880307.28241964)
+
+source pt = (0, 0)
+target pt = (-4504982.38061564, 7802858.37042889)
+
+source pt = (180, 0)
+target pt = (4504982.38061564, -7802858.37042889)
+
+source pt = (-180, 0)
+target pt = (4504982.38061564, -7802858.37042889)
+
+source pt = (90, 0)
+target pt = (7802858.37042889, 4504982.38061564)
+
+source pt = (-90, 0)
+target pt = (-7802858.37042889, -4504982.38061564)
+
+source pt = (-76, -55)
+target pt = (-3695463.91396413, -1059657.2255674)
+
+source pt = (12, -15)
+target pt = (-2398742.97982439, 7382571.77892025)
+
+source pt = (80, 6)
+target pt = (7252281.22997065, 6085386.50526228)
+
+source pt = (-45, 71)
+target pt = (-12137640.8988624, 3252271.07686916)
+
+source pt = (175, 66.67)
+target pt = (7156365.49666065, -10220349.119574)
+
+source pt = (60, -70)
+target pt = (1110835.44374809, 1924023.42742)
+
+//source pt = (0, 90)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+source pt = (0, -90)
+target pt = (0, 0)
+
+
+////////////////////////////////////////////
+// Elliptical Equatorial Polar tests
+
+set _LAEA_EQ1_ = PROJCS["Lambert Azimuthal Equal Area", GEOGCS["WGS84", DATUM["WGS84", SPHEROID["WGS84", 6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Lambert_Azimuthal_Equal_Area"], PARAMETER["central_meridian", -150], PARAMETER["latitude_of_origin", 0.0], PARAMETER["false_easting", 0.0], PARAMETER["false_northing", 4551.0], UNIT["metre",1.0], AXIS["x",EAST], AXIS["y",NORTH]]
+set _LAEA_EQ2_ = PROJCS["Lambert Azimuthal Equal Area", GEOGCS["WGS84", DATUM["WGS84", SPHEROID["WGS84", 6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Lambert_Azimuthal_Equal_Area"], PARAMETER["central_meridian", 0], PARAMETER["latitude_of_origin", 0.0], PARAMETER["false_easting", 0.0], PARAMETER["false_northing", 90.0], UNIT["metre",1.0], AXIS["x",EAST], AXIS["y",NORTH]]
+
+source crs = _WGS84_
+target crs = _LAEA_EQ1_
+test tolerance = (1e-4, 1e-4)
+
+source pt = (-123.1, 49.2166666666)
+target pt = (2123460.3502409, 5408702.46944425)
+
+source pt = (2.33656753, 43.96499314)
+target pt = (5026604.98292244, 10377145.0805669)
+
+source pt = (151.283333333, -33.9166666666)
+target pt = (-5354044.99386753, -4179736.30530388)
+
+source pt = (-47.95, -15.75)
+target pt = (9501246.04364809, -2717109.28743311)
+
+source pt = (139.733333333, 35.6833333333)
+target pt = (-6117552.68467962, 4640611.40136335)
+
+source pt = (18.45, -33.9166666666)
+target pt = (3481580.10959448, -11609128.2507517)
+
+source pt = (0, 0)
+target pt = (12321614.5038198, 4551)
+
+source pt = (180, 0)
+target pt = (-3301566.65574611, 4551)
+
+source pt = (-180, 0)
+target pt = (-3301566.65574611, 4551)
+
+source pt = (90, 0)
+target pt = (-11047257.3416349, 4551)
+
+source pt = (-90, 0)
+target pt = (6378137, 4551)
+
+source pt = (-76, -55)
+target pt = (4634286.4479146, -6834537.50383866)
+
+source pt = (12, -15)
+target pt = (9458456.24364542, -8141991.49678344)
+
+source pt = (80, 6)
+target pt = (-11442574.4804231, 1564006.20748058)
+
+source pt = (-45, 71)
+target pt = (2976643.62390514, 8894418.1820791)
+
+source pt = (175, 66.67)
+target pt = (-1786286.54547163, 7177133.39538255)
+
+source pt = (60, -70)
+target pt = (-1847496.17967139, -10079423.127255)
+
+source pt = (0, 90)
+target pt = (2.76150197663321E-10, 9004443.94579701)
+
+source pt = (0, -90)
+target pt = (2.76150197663321E-10, -8995341.94579701)
+
+source crs = _WGS84_
+target crs = _LAEA_EQ2_
+test tolerance = (1e-4, 1e-4)
+
+source pt = (-123.1, 49.2166666666)
+target pt = (-6174098.21582479, 8486315.87840788)
+
+source pt = (2.33656753, 43.96499314)
+target pt = (202215.729893844, 4752011.84557046)
+
+source pt = (151.283333333, -33.9166666666)
+target pt = (6915737.15286824, -9613194.85387849)
+
+source pt = (-47.95, -15.75)
+target pt = (-5028074.14514411, -1896820.2237724)
+
+source pt = (139.733333333, 35.6833333333)
+target pt = (7701045.75010128, 8499175.82910546)
+
+source pt = (18.45, -33.9166666666)
+target pt = (1773924.87857823, -3743605.55980199)
+
+source pt = (0, 0)
+target pt = (0, 90)
+
+//source pt = (180, 0)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+//source pt = (-180, 0)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+source pt = (90, 0)
+target pt = (9020047.84807365, 90)
+
+source pt = (-90, 0)
+target pt = (-9020047.84807365, 90)
+
+source pt = (-76, -55)
+target pt = (-4717496.05151866, -6896976.50188173)
+
+source pt = (12, -15)
+target pt = (1299242.73895357, -1663118.97734487)
+
+source pt = (80, 6)
+target pt = (8158331.79072902, 864964.371904321)
+
+source pt = (-45, 71)
+target pt = (-1878973.07377366, 7665718.40482416)
+
+source pt = (175, 66.67)
+target pt = (402117.166278529, 10626151.5038805)
+
+source pt = (60, -70)
+target pt = (2478000.67925061, -7808793.92713297)
+
+source pt = (0, 90)
+target pt = (0, 8999982.94579701)
+
+source pt = (0, -90)
+target pt = (0, -8999802.94579701)
+
+
+////////////////////////////////////////////
+// Elliptical Oblique tests
+
+set _LAEA_OBL1_ = PROJCS["Lambert Azimuthal Equal Area", GEOGCS["WGS84", DATUM["WGS84", SPHEROID["WGS84", 6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Lambert_Azimuthal_Equal_Area"], PARAMETER["central_meridian", 52], PARAMETER["latitude_of_origin", 20.0], PARAMETER["false_easting", 0.0], PARAMETER["false_northing", 0.0], UNIT["metre",1.0], AXIS["x",EAST], AXIS["y",NORTH]]
+set _LAEA_OBL2_ = PROJCS["Lambert Azimuthal Equal Area", GEOGCS["WGS84", DATUM["WGS84", SPHEROID["WGS84", 6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Lambert_Azimuthal_Equal_Area"], PARAMETER["central_meridian", -123], PARAMETER["latitude_of_origin", -11.0], PARAMETER["false_easting", 0.0], PARAMETER["false_northing", 0.0], UNIT["metre",1.0], AXIS["x",EAST], AXIS["y",NORTH]]
+set _LAEA_OBL3_ = PROJCS["Lambert Azimuthal Equal Area", GEOGCS["WGS84", DATUM["WGS84", SPHEROID["WGS84", 6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Lambert_Azimuthal_Equal_Area"], PARAMETER["central_meridian", 88.0], PARAMETER["latitude_of_origin", -72.0], PARAMETER["false_easting", 0.0], PARAMETER["false_northing", 0.0], UNIT["metre",1.0], AXIS["x",EAST], AXIS["y",NORTH]]
+set _LAEA_OBL4_ = PROJCS["Lambert Azimuthal Equal Area", GEOGCS["WGS84", DATUM["WGS84", SPHEROID["WGS84", 6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Lambert_Azimuthal_Equal_Area"], PARAMETER["central_meridian", -66.0], PARAMETER["latitude_of_origin", 42.1], PARAMETER["false_easting", 0.0], PARAMETER["false_northing", 0.0], UNIT["metre",1.0], AXIS["x",EAST], AXIS["y",NORTH]]
+
+
+source crs = _WGS84_
+target crs = _LAEA_OBL1_
+test tolerance = (1e-4, 1e-4)
+
+source pt = (-123.1, 49.2166666666)
+target pt = (-628654.159465159, 10462703.2061225)
+
+source pt = (2.33656753, 43.96499314)
+target pt = (-3831616.97074218, 3422712.14839573)
+
+source pt = (151.283333333, -33.9166666666)
+target pt = (8940371.55871191, -5193164.84628444)
+
+source pt = (-47.95, -15.75)
+target pt = (-9865686.79222, -2050396.81971969)
+
+source pt = (139.733333333, 35.6833333333)
+target pt = (6614514.66858743, 4351681.34343135)
+
+source pt = (18.45, -33.9166666666)
+target pt = (-3426084.33780336, -5650337.45990592)
+
+source pt = (0, 0)
+target pt = (-5656087.32470288, -1502451.54652565)
+
+source pt = (180, 0)
+target pt = (10951108.2350407, 2908991.42098571)
+
+source pt = (-180, 0)
+target pt = (10951108.2350407, 2908991.42098571)
+
+source pt = (90, 0)
+target pt = (4208337.15282175, -1831366.33377036)
+
+source pt = (-90, 0)
+target pt = (-10907850.2265325, 4746832.05106002)
+
+source pt = (-76, -55)
+target pt = (-6560966.66006084, -9364731.80083365)
+
+source pt = (12, -15)
+target pt = (-4417115.93846204, -3509796.10717158)
+
+source pt = (80, 6)
+target pt = (3086845.3123853, -1328297.4580762)
+
+source pt = (-45, 71)
+target pt = (-2581754.3346839, 7164484.94062326)
+
+source pt = (175, 66.67)
+target pt = (2855174.37312302, 8004063.05370012)
+
+source pt = (60, -70)
+target pt = (431054.822886335, -8991964.09134666)
+
+source pt = (0, 90)
+target pt = (-3.75828849017133E-10, 7308791.62988721)
+
+source pt = (0, -90)
+target pt = (-5.35919131781625E-10, -10422087.8064722)
+
+source crs = _WGS84_
+target crs = _LAEA_OBL2_
+test tolerance = (1e-4, 1e-4)
+
+source pt = (-123.1, 49.2166666666)
+target pt = (-8419.25424976406, 6368159.08708867)
+
+source pt = (2.33656753, 43.96499314)
+target pt = (7835432.06147494, 7982040.48226404)
+
+source pt = (151.283333333, -33.9166666666)
+target pt = (-6920146.62856356, -4452561.79129894)
+
+source pt = (-47.95, -15.75)
+target pt = (7372087.15300867, -1725642.58550806)
+
+source pt = (139.733333333, 35.6833333333)
+target pt = (-8196785.60225848, 5589285.03936492)
+
+source pt = (18.45, -33.9166666666)
+target pt = (6830826.68580137, -8813079.98196359)
+
+source pt = (0, 0)
+target pt = (11089836.2368932, -1365306.01885547)
+
+source pt = (180, 0)
+target pt = (-6106159.81536378, 751749.31080363)
+
+source pt = (-180, 0)
+target pt = (-6106159.81536378, 751749.31080363)
+
+source pt = (90, 0)
+target pt = (-11689587.0506251, -3412473.72883942)
+
+source pt = (-90, 0)
+target pt = (3637973.78069689, 1062012.70404765)
+
+source pt = (-76, -55)
+target pt = (3057505.4287446, -5282511.88022441)
+
+source pt = (12, -15)
+target pt = (10020572.1816881, -5603032.3672742)
+
+source pt = (80, 6)
+target pt = (-12285764.4500123, -2263892.26520149)
+
+source pt = (-45, 71)
+target pt = (3061759.48500157, 8989447.32551926)
+
+source pt = (175, 66.67)
+target pt = (-3151848.91229513, 8390029.4964896)
+
+source pt = (60, -70)
+target pt = (-176669.102172386, -9684541.18400393)
+
+source pt = (0, 90)
+target pt = (5.14639546524662E-10, 9818068.18271968)
+
+source pt = (0, -90)
+target pt = (4.24598109438774E-10, -8100297.02706491)
+
+source crs = _WGS84_
+target crs = _LAEA_OBL3_
+test tolerance = (1e-4, 1e-4)
+
+source pt = (-123.1, 49.2166666666)
+target pt = (9293252.37782959, -8201551.36128868)
+
+source pt = (2.33656753, 43.96499314)
+target pt = (-10824472.3333298, 4013572.24134458)
+
+source pt = (151.283333333, -33.9166666666)
+target pt = (5215478.31050302, 1282513.02939175)
+
+source pt = (-47.95, -15.75)
+target pt = (-5908334.16751754, -6545030.39800865)
+
+source pt = (139.733333333, 35.6833333333)
+target pt = (7408833.40337941, 7647255.98529057)
+
+source pt = (18.45, -33.9166666666)
+target pt = (-5514325.65906793, 732289.546625396)
+
+source pt = (0, 0)
+target pt = (-8957078.09486978, 297287.643253659)
+
+source pt = (180, 0)
+target pt = (9054598.70425209, -300524.376463401)
+
+source pt = (-180, 0)
+target pt = (9054598.70425209, -300524.376463405)
+
+source pt = (90, 0)
+target pt = (274751.275288326, 7477950.81584124)
+
+source pt = (-90, 0)
+target pt = (-378608.127011859, -10304639.8940327)
+
+source pt = (-76, -55)
+target pt = (-1127535.96919604, -5541453.82465077)
+
+source pt = (12, -15)
+target pt = (-7359777.98080508, 1116418.30406161)
+
+source pt = (80, 6)
+target pt = (-1135453.78847724, 7943615.74739051)
+
+source pt = (-45, 71)
+target pt = (-11966624.0810274, 4068833.46845852)
+
+source pt = (175, 66.67)
+target pt = (9766636.15380243, 7489335.26984528)
+
+source pt = (60, -70)
+target pt = (-1030521.42409041, -20366.0962922226)
+
+source pt = (0, 90)
+target pt = (-2.48210812031226E-09, 12582472.2846535)
+
+source pt = (0, -90)
+target pt = (-3.94804481757885E-10, -2001369.88752554)
+
+source crs = _WGS84_
+target crs = _LAEA_OBL4_
+test tolerance = (1e-4, 1e-4)
+
+source pt = (-123.1, 49.2166666666)
+target pt = (-3726162.55811475, 2192777.41143219)
+
+source pt = (2.33656753, 43.96499314)
+target pt = (4689193.48535066, 2353357.5740042)
+
+source pt = (151.283333333, -33.9166666666)
+target pt = (-12287547.8899818, 697727.138990759)
+
+source pt = (-47.95, -15.75)
+target pt = (2196075.63909945, -5978830.53389113)
+
+source pt = (139.733333333, 35.6833333333)
+target pt = (-3465868.90139008, 9040737.41704899)
+
+source pt = (18.45, -33.9166666666)
+target pt = (8991714.31528688, -5074030.70922343)
+
+source pt = (0, 0)
+target pt = (7216886.41363635, -2146224.9382484)
+
+source pt = (180, 0)
+target pt = (-9860901.40580344, 2932526.75707284)
+
+source pt = (-180, 0)
+target pt = (-9860901.40580344, 2932526.75707284)
+
+source pt = (90, 0)
+target pt = (6474127.47242011, 9712708.1307591)
+
+source pt = (-90, 0)
+target pt = (-2829791.02025902, -4245349.56531289)
+
+source pt = (-76, -55)
+target pt = (-963274.233160862, -9505439.73162829)
+
+source pt = (12, -15)
+target pt = (8620357.91898059, -2969524.68425307)
+
+source pt = (80, 6)
+target pt = (7420435.15085563, 8379276.52833974)
+
+source pt = (-45, 71)
+target pt = (774586.814269673, 3292517.17472932)
+
+source pt = (175, 66.67)
+target pt = (-2584987.85895951, 6022938.77937693)
+
+source pt = (60, -70)
+target pt = (5317418.79916893, -10768803.6877676)
+
+source pt = (0, 90)
+target pt = (3.9038152701805E-10, 5182249.89314096)
+
+source pt = (0, -90)
+target pt = (8.7624289370789E-10, -11631978.7900038)
+
+
+//////////////////////////////////
+// Spherical Polar tests
+
+set _SPHERE_ = GEOGCS["Sphere", DATUM["Sphere", SPHEROID["Sphere", 6370997.0, 0]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]]
+set _LAEA_S_P1_ = PROJCS["Lambert Azimuthal Equal Area", GEOGCS["Sphere", DATUM["Sphere", SPHEROID["Sphere", 6370997.0, 0]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Lambert_Azimuthal_Equal_Area"], PARAMETER["central_meridian", -111.2], PARAMETER["latitude_of_origin", 90], PARAMETER["false_easting", 500000.0], PARAMETER["false_northing", 0.0], UNIT["metre",1.0], AXIS["x",EAST], AXIS["y",NORTH]]
+set _LAEA_S_P2_ = PROJCS["Lambert Azimuthal Equal Area", GEOGCS["Sphere", DATUM["Sphere", SPHEROID["Sphere", 6370997.0, 0]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Lambert_Azimuthal_Equal_Area"], PARAMETER["central_meridian", 180.0], PARAMETER["latitude_of_origin", -90], PARAMETER["false_easting", 500000.0], PARAMETER["false_northing", 0.0], UNIT["metre",1.0], AXIS["x",EAST], AXIS["y",NORTH]]
+
+
+source crs = _SPHERE_
+target crs = _LAEA_S_P1_
+test tolerance = (1e-4, 1e-4)
+
+source pt = (-123.1, 49.2166666666)
+target pt = (-415498.305130711, -4344350.79817974)
+
+source pt = (2.33656753, 43.96499314)
+target pt = (5067778.07765256, 1989593.82680008)
+
+source pt = (151.283333333, -33.9166666666)
+target pt = (-10649519.7927307, 1471161.73145601)
+
+source pt = (-47.95, -15.75)
+target pt = (9572179.37943126, -4572754.8511902)
+
+source pt = (139.733333333, 35.6833333333)
+target pt = (-4997019.81631081, 1899932.98536649)
+
+source pt = (18.45, -33.9166666666)
+target pt = (9159055.93674575, 7176131.18141678)
+
+source pt = (0, 0)
+target pt = (8900191.17141742, 3258219.42656704)
+
+source pt = (180, 0)
+target pt = (-7900191.17141742, -3258219.42656704)
+
+source pt = (-180, 0)
+target pt = (-7900191.17141742, -3258219.42656704)
+
+source pt = (90, 0)
+target pt = (-2758219.42656704, 8400191.17141742)
+
+source pt = (-90, 0)
+target pt = (3758219.42656704, -8400191.17141742)
+
+source pt = (-76, -55)
+target pt = (7504952.87916321, -9930153.7192098)
+
+source pt = (12, -15)
+target pt = (8958769.69856588, 5535263.78745955)
+
+source pt = (80, 6)
+target pt = (-1156053.37739357, 8363680.71808209)
+
+source pt = (-45, 71)
+target pt = (2424192.75733809, -848670.125890806)
+
+source pt = (175, 66.67)
+target pt = (-1973997.03615493, -718762.58247817)
+
+source pt = (60, -70)
+target pt = (2419729.6832669, 12400699.3313255)
+
+source pt = (0, 90)
+target pt = (500000, 0)
+
+//source pt = (0, -90)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+source crs = _SPHERE_
+target crs = _LAEA_S_P2_
+test tolerance = (1e-4, 1e-4)
+
+source pt = (-123.1, 49.2166666666)
+target pt = (10505282.8952382, 6522361.86346228)
+
+source pt = (2.33656753, 43.96499314)
+target pt = (21873.8916018869, -11717795.2857259)
+
+source pt = (151.283333333, -33.9166666666)
+target pt = (-2378155.32496729, 5253429.7913653)
+
+source pt = (-47.95, -15.75)
+target pt = (6210667.01435743, -5150938.52860861)
+
+source pt = (139.733333333, 35.6833333333)
+target pt = (-6827734.54937112, 8650765.58809633)
+
+source pt = (18.45, -33.9166666666)
+target pt = (-1395755.22010252, -5682289.57312949)
+
+source pt = (0, 0)
+target pt = (499999.999999999, -9009950.3632383)
+
+source pt = (180, 0)
+target pt = (500000, 9009950.3632383)
+
+source pt = (-180, 0)
+target pt = (500000, 9009950.3632383)
+
+source pt = (90, 0)
+target pt = (-8509950.3632383, 5.51682123122293E-10)
+
+source pt = (-90, 0)
+target pt = (9509950.3632383, 5.51682123122293E-10)
+
+source pt = (-76, -55)
+target pt = (4217776.85054057, -926945.877161891)
+
+source pt = (12, -15)
+target pt = (-1112736.57126965, -7587329.03185226)
+
+source pt = (80, 6)
+target pt = (-8825289.28878364, -1644300.10452421)
+
+source pt = (-45, 71)
+target pt = (9386384.31382709, -8886384.31382708)
+
+source pt = (175, 66.67)
+target pt = (-587601.45960431, 12431341.5678369)
+
+source pt = (60, -70)
+target pt = (-1416188.62588271, -1106312.01897148)
+
+//source pt = (0, 90)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+source pt = (0, -90)
+target pt = (500000, -7.8019634063833E-10)
+
+
+//////////////////////////////////
+// Spherical Equatorial tests
+
+set _LAEA_S_E1_ = PROJCS["Lambert Azimuthal Equal Area", GEOGCS["Sphere", DATUM["Sphere", SPHEROID["Sphere", 6370997.0, 0]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Lambert_Azimuthal_Equal_Area"], PARAMETER["central_meridian", 142.5], PARAMETER["latitude_of_origin", 0], PARAMETER["false_easting", 500000.0], PARAMETER["false_northing", 0.0], UNIT["metre",1.0], AXIS["x",EAST], AXIS["y",NORTH]]
+set _LAEA_S_E2_ = PROJCS["Lambert Azimuthal Equal Area", GEOGCS["Sphere", DATUM["Sphere", SPHEROID["Sphere", 6370997.0, 0]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Lambert_Azimuthal_Equal_Area"], PARAMETER["central_meridian", -20.6], PARAMETER["latitude_of_origin", 0], PARAMETER["false_easting", 500000.0], PARAMETER["false_northing", 0.0], UNIT["metre",1.0], AXIS["x",EAST], AXIS["y",NORTH]]
+
+source crs = _SPHERE_
+target crs = _LAEA_S_E1_
+test tolerance = (1e-4, 1e-4)
+
+source pt = (-123.1, 49.2166666666)
+target pt = (6520755.1438104, 6999845.59054843)
+
+source pt = (2.33656753, 43.96499314)
+target pt = (-5711471.92249047, 9352200.50701425)
+
+source pt = (151.283333333, -33.9166666666)
+target pt = (1346265.41232339, -3726458.69019317)
+
+source pt = (-47.95, -15.75)
+target pt = (7299466.99846946, -10572695.2508365)
+
+source pt = (139.733333333, 35.6833333333)
+target pt = (237527.806508669, 3905009.54669109)
+
+source pt = (18.45, -33.9166666666)
+target pt = (-7966813.40976924, -6871091.93949115)
+
+source pt = (0, 0)
+target pt = (-11565778.0284459, 0)
+
+source pt = (180, 0)
+target pt = (4595779.73825609, 0)
+
+source pt = (-180, 0)
+target pt = (4595779.73825609, 0)
+
+source pt = (90, 0)
+target pt = (-5135639.83703837, 0)
+
+source pt = (-90, 0)
+target pt = (11927947.0913731, 0)
+
+source pt = (-76, -55)
+target pt = (4833535.77834272, -9941823.243569)
+
+source pt = (12, -15)
+target pt = (-10340338.848431, -3819880.65785988)
+
+source pt = (80, 6)
+target pt = (-6079689.77599288, 779644.663090797)
+
+source pt = (-45, 71)
+target pt = (965262.466342617, 10352100.9288964)
+
+source pt = (175, 66.67)
+target pt = (2159908.82662289, 7163073.97899125)
+
+source pt = (60, -70)
+target pt = (-2489226.23957073, -8283699.79494534)
+
+source pt = (0, 90)
+target pt = (500000, 9009950.3632383)
+
+source pt = (0, -90)
+target pt = (500000, -9009950.3632383)
+
+source crs = _SPHERE_
+target crs = _LAEA_S_E2_
+test tolerance = (1e-4, 1e-4)
+
+source pt = (-123.1, 49.2166666666)
+target pt = (-5700824.52763184, 7362470.36864721)
+
+source pt = (2.33656753, 43.96499314)
+target pt = (2459876.17710043, 4850552.82867633)
+
+source pt = (151.283333333, -33.9166666666)
+target pt = (2998903.78632298, -11900689.6431404)
+
+source pt = (-47.95, -15.75)
+target pt = (-2425235.40673346, -1795727.24157105)
+
+source pt = (139.733333333, 35.6833333333)
+target pt = (5579344.87739854, 10838410.1752525)
+
+source pt = (18.45, -33.9166666666)
+target pt = (4173245.32137579, -3920438.44042069)
+
+source pt = (0, 0)
+target pt = (2778296.75219924, 0)
+
+source pt = (180, 0)
+target pt = (-12036657.250039, 0)
+
+source pt = (-180, 0)
+target pt = (-12036657.250039, 0)
+
+source pt = (90, 0)
+target pt = (10975754.4379494, 0)
+
+source pt = (-90, 0)
+target pt = (-6753756.27187868, 0)
+
+source pt = (-76, -55)
+target pt = (-3194558.67891723, -6410088.06655181)
+
+source pt = (12, -15)
+target pt = (3981624.40107421, -1731531.24218575)
+
+source pt = (80, 6)
+target pt = (10243964.5510833, 1041911.80374535)
+
+source pt = (-45, 71)
+target pt = (-564240.175401273, 7481831.88249216)
+
+source pt = (175, 66.67)
+target pt = (-720049.873515815, 10519291.6824415)
+
+source pt = (60, -70)
+target pt = (3458691.01505205, -8239576.45607801)
+
+source pt = (0, 90)
+target pt = (500000, 9009950.3632383)
+
+source pt = (0, -90)
+target pt = (500000, -9009950.3632383)
+
+//////////////////////////////////
+// Spherical Oblique tests
+
+set _LAEA_S_O1_ = PROJCS["Lambert Azimuthal Equal Area", GEOGCS["Sphere", DATUM["Sphere", SPHEROID["Sphere", 6370997.0, 0]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Lambert_Azimuthal_Equal_Area"], PARAMETER["central_meridian", -20.6], PARAMETER["latitude_of_origin", 0], PARAMETER["false_easting", 500000.0], PARAMETER["false_northing", 0.0], UNIT["metre",1.0], AXIS["x",EAST], AXIS["y",NORTH]]
+set _LAEA_S_O2_ = PROJCS["Lambert Azimuthal Equal Area", GEOGCS["Sphere", DATUM["Sphere", SPHEROID["Sphere", 6370997.0, 0]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Lambert_Azimuthal_Equal_Area"], PARAMETER["central_meridian", -88], PARAMETER["latitude_of_origin", 80.2], PARAMETER["false_easting", 500000.0], PARAMETER["false_northing", 0.0], UNIT["metre",1.0], AXIS["x",EAST], AXIS["y",NORTH]]
+
+source crs = _SPHERE_
+target crs = _LAEA_S_O1_
+test tolerance = (1e-4, 1e-4)
+
+source pt = (-123.1, 49.2166666666)
+target pt = (-5700824.52763184, 7362470.36864721)
+
+source pt = (2.33656753, 43.96499314)
+target pt = (2459876.17710043, 4850552.82867633)
+
+source pt = (151.283333333, -33.9166666666)
+target pt = (2998903.78632298, -11900689.6431404)
+
+source pt = (-47.95, -15.75)
+target pt = (-2425235.40673346, -1795727.24157105)
+
+source pt = (139.733333333, 35.6833333333)
+target pt = (5579344.87739854, 10838410.1752525)
+
+source pt = (18.45, -33.9166666666)
+target pt = (4173245.32137579, -3920438.44042069)
+
+source pt = (0, 0)
+target pt = (2778296.75219924, 0)
+
+source pt = (180, 0)
+target pt = (-12036657.250039, 0)
+
+source pt = (-180, 0)
+target pt = (-12036657.250039, 0)
+
+source pt = (90, 0)
+target pt = (10975754.4379494, 0)
+
+source pt = (-90, 0)
+target pt = (-6753756.27187868, 0)
+
+source pt = (-76, -55)
+target pt = (-3194558.67891723, -6410088.06655181)
+
+source pt = (12, -15)
+target pt = (3981624.40107421, -1731531.24218575)
+
+source pt = (80, 6)
+target pt = (10243964.5510833, 1041911.80374535)
+
+source pt = (-45, 71)
+target pt = (-564240.175401273, 7481831.88249216)
+
+source pt = (175, 66.67)
+target pt = (-720049.873515815, 10519291.6824415)
+
+source pt = (60, -70)
+target pt = (3458691.01505205, -8239576.45607801)
+
+source pt = (0, 90)
+target pt = (500000, 9009950.3632383)
+
+source pt = (0, -90)
+target pt = (500000, -9009950.3632383)
+
+
+//  The following is an attempt to figure out what is going
+//  on with failures in the commented-out tests below.
+//  -------------------------------------------------------
+//  set _LAEA_OBL3_ = PROJCS["Lambert Azimuthal Equal Area", GEOGCS["WGS84", DATUM["WGS84", SPHEROID["WGS84", 6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Lambert_Azimuthal_Equal_Area"], PARAMETER["central_meridian", -88], PARAMETER["latitude_of_origin", 80.2], PARAMETER["false_easting", 0.0], PARAMETER["false_northing", 0.0], UNIT["metre",1.0], AXIS["x",EAST], AXIS["y",NORTH]]
+//  source crs = _WGS84_
+//  target crs = _LAEA_OBL3_
+//  source pt = (-123.1, 49.2166666666)
+//  print pts
+
+
+source crs = _SPHERE_
+target crs = _LAEA_S_O2_
+test tolerance = (1e-4, 1e-4)
+
+//source pt = (-123.1, 49.2166666666)
+//target pt = (6497054.32476527, 7925163.99912593)
+
+//source pt = (2.33656753, 43.96499314)
+//target pt = (-7710570.8635569, 9667826.55246062)
+
+//source pt = (151.283333333, -33.9166666666)
+//target pt = (-1435805.69337966, 21213.3605939527)
+
+//source pt = (-47.95, -15.75)
+//target pt = (7971414.60150413, -7778553.15360222)
+
+//source pt = (139.733333333, 35.6833333333)
+//target pt = (-3101195.85985109, 7154487.45536303)
+
+//source pt = (18.45, -33.9166666666)
+//target pt = (-3344376.97700187, -9422359.09684676)
+
+//source pt = (0, 0)
+//target pt = (-2143580.24486773, -11802719.3532994)
+
+//source pt = (180, 0)
+//target pt = (1376054.52442742, 3911296.32250769)
+
+//source pt = (-180, 0)
+//target pt = (1376054.52442742, 3911296.32250769)
+
+//source pt = (90, 0)
+//target pt = (-7995566.82842804, 657415.816455857)
+
+//source pt = (-90, 0)
+//target pt = (9945491.49583684, -730924.213647956)
+
+//source pt = (-76, -55)
+//target pt = (4698761.73828872, -6186197.32120525)
+
+//source pt = (12, -15)
+//target pt = (-4006865.98547148, -10407517.099141)
+
+//source pt = (80, 6)
+//target pt = (-8918195.9973311, 559901.034578993)
+
+//source pt = (-45, 71)
+//target pt = (4181476.44280447, 11388835.3399751)
+
+//source pt = (175, 66.67)
+//target pt = (676188.934674804, 9948788.38466331)
+
+//source pt = (60, -70)
+//target pt = (-1867215.95149342, -6271612.69442226)
+
+//source pt = (0, 90)
+//target pt = (500000, 11353199.785169)
+
+//source pt = (0, -90)
+//target pt = (500000, -5784744.22373831)

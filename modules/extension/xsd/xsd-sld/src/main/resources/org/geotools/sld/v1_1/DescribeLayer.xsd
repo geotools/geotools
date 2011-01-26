@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://www.opengis.net/sld" xmlns:sld="http://www.opengis.net/sld" xmlns:wfs="http://www.opengis.net/wfs" xmlns:se="http://www.opengis.net/se" xmlns:ows="http://www.opengis.net/ows" xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" version="1.1.0 2010-02-01">
+	
+	<xsd:import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/feature.xsd"/>
+	<xsd:import namespace="http://www.opengis.net/se" schemaLocation="http://schemas.opengis.net/se/1.1.0/FeatureStyle.xsd"/>
+	<xsd:import namespace="http://www.opengis.net/wfs" schemaLocation="http://schemas.opengis.net/wfs/1.1.0/wfs.xsd"/>
+	<xsd:import namespace="http://www.opengis.net/ows" schemaLocation="http://schemas.opengis.net/ows/1.0.0/owsCommon.xsd"/>
+	<xsd:include schemaLocation="StyledLayerDescriptor.xsd"/>
+	<xsd:annotation>
+		<xsd:documentation>
+			<description>Styled Layer Descriptor version 1.1.0 (2010-02-01)</description>
+			<copyright>
+				SLD is an OGC Standard.
+				Copyright (c) 2007,2010 Open Geospatial Consortium, Inc. All Rights Reserved.
+				To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .
+			</copyright>
+		</xsd:documentation>
+	</xsd:annotation>
+	<xsd:element name="DescribeLayerResponse" type="sld:DescribeLayerResponseType"/>
+	<xsd:complexType name="DescribeLayerResponseType">
+		<xsd:sequence>
+			<xsd:element name="Version" type="ows:VersionType"/>
+			<xsd:element name="LayerDescription" type="sld:LayerDescriptionType" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="LayerDescriptionType">
+		<xsd:sequence>
+			<xsd:element name="owsType" type="sld:owsTypeType"/>
+			<xsd:element ref="se:OnlineResource"/>
+			<xsd:element name="TypeName" type="sld:TypeNameType" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TypeNameType">
+		<xsd:choice>
+			<xsd:element ref="se:FeatureTypeName"/>
+			<xsd:element ref="se:CoverageName"/>
+		</xsd:choice>
+	</xsd:complexType>
+	<xsd:simpleType name="owsTypeType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="wfs"/>
+			<xsd:enumeration value="wcs"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+</xsd:schema>

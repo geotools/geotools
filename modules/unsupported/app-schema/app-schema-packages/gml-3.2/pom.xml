@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.geotools.schemas</groupId>
+    <artifactId>gml-3.2</artifactId>
+    <version>3.2.1-1</version>
+    <name>Geography Markup Language (GML) 3.2 schema</name>
+    
+    <developers>
+        <developer>
+            <name>Ben Caradoc-Davies</name>
+            <email>Ben.Caradoc-Davies@csiro.au</email>
+            <organization>CSIRO Earth Science and Resource Engineering </organization>
+            <roles>
+                <role>packager</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema-packages/gml-3.2/</connection>
+        <url>http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema-packages/gml-3.2/</url>
+    </scm>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.geotools.schemas</groupId>
+            <artifactId>xlink-1.0</artifactId>
+            <version>1.0.0-3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools.schemas</groupId>
+            <artifactId>gml-3.1</artifactId>
+            <version>3.1.1-4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools.schemas</groupId>
+            <artifactId>iso-19139-2007</artifactId>
+            <version>1.0.0-1</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+    
+        <plugins>
+            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>generate-resources</phase>
+                        <configuration>
+                            <tasks>
+                                <property name="srcdir" value="http://schemas.opengis.net/gml/3.2.1"/>
+                                <property name="destdir" value="${project.build.outputDirectory}/net/opengis/schemas/gml/3.2.1"/>
+                                <mkdir dir="${destdir}"/>
+                                <get src="${srcdir}/ReadMe.txt" dest="${destdir}/ReadMe.txt"/>
+                                <get src="${srcdir}/SchematronConstraints.xml" dest="${destdir}/SchematronConstraints.xml"/>
+                                <get src="${srcdir}/basicTypes.xsd" dest="${destdir}/basicTypes.xsd"/>
+                                <get src="${srcdir}/coordinateOperations.xsd" dest="${destdir}/coordinateOperations.xsd"/>
+                                <get src="${srcdir}/coordinateReferenceSystems.xsd" dest="${destdir}/coordinateReferenceSystems.xsd"/>
+                                <get src="${srcdir}/coordinateSystems.xsd" dest="${destdir}/coordinateSystems.xsd"/>
+                                <get src="${srcdir}/coverage.xsd" dest="${destdir}/coverage.xsd"/>
+                                <get src="${srcdir}/datums.xsd" dest="${destdir}/datums.xsd"/>
+                                <get src="${srcdir}/defaultStyle.xsd" dest="${destdir}/defaultStyle.xsd"/>
+                                <get src="${srcdir}/deprecatedTypes.xsd" dest="${destdir}/deprecatedTypes.xsd"/>
+                                <get src="${srcdir}/dictionary.xsd" dest="${destdir}/dictionary.xsd"/>
+                                <get src="${srcdir}/direction.xsd" dest="${destdir}/direction.xsd"/>
+                                <get src="${srcdir}/dynamicFeature.xsd" dest="${destdir}/dynamicFeature.xsd"/>
+                                <get src="${srcdir}/feature.xsd" dest="${destdir}/feature.xsd"/>
+                                <get src="${srcdir}/geometryAggregates.xsd" dest="${destdir}/geometryAggregates.xsd"/>
+                                <get src="${srcdir}/geometryBasic0d1d.xsd" dest="${destdir}/geometryBasic0d1d.xsd"/>
+                                <get src="${srcdir}/geometryBasic2d.xsd" dest="${destdir}/geometryBasic2d.xsd"/>
+                                <get src="${srcdir}/geometryComplexes.xsd" dest="${destdir}/geometryComplexes.xsd"/>
+                                <get src="${srcdir}/geometryPrimitives.xsd" dest="${destdir}/geometryPrimitives.xsd"/>
+                                <get src="${srcdir}/gml.xsd" dest="${destdir}/gml.xsd"/>
+                                <get src="${srcdir}/gmlBase.xsd" dest="${destdir}/gmlBase.xsd"/>
+                                <get src="${srcdir}/gml_3_2_1-ReadMe.txt" dest="${destdir}/gml_3_2_1-ReadMe.txt"/>
+                                <get src="${srcdir}/grids.xsd" dest="${destdir}/grids.xsd"/>
+                                <get src="${srcdir}/measures.xsd" dest="${destdir}/measures.xsd"/>
+                                <get src="${srcdir}/observation.xsd" dest="${destdir}/observation.xsd"/>
+                                <get src="${srcdir}/referenceSystems.xsd" dest="${destdir}/referenceSystems.xsd"/>
+                                <get src="${srcdir}/temporal.xsd" dest="${destdir}/temporal.xsd"/>
+                                <get src="${srcdir}/temporalReferenceSystems.xsd" dest="${destdir}/temporalReferenceSystems.xsd"/>
+                                <get src="${srcdir}/temporalTopology.xsd" dest="${destdir}/temporalTopology.xsd"/>
+                                <get src="${srcdir}/topology.xsd" dest="${destdir}/topology.xsd"/>
+                                <get src="${srcdir}/units.xsd" dest="${destdir}/units.xsd"/>
+                                <get src="${srcdir}/valueObjects.xsd" dest="${destdir}/valueObjects.xsd"/>
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    
+    </build>
+
+</project>

@@ -1,0 +1,97 @@
+/*
+ *    Geotools2 - OpenSource mapping toolkit
+ *    http://geotools.org
+ *    (C) 2002, Geotools Project Managment Committee (PMC)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ *
+ */
+
+package org.geotools.data.geometryless.wrapper;
+
+import javax.sql.ConnectionPoolDataSource;
+import javax.sql.PooledConnection;
+
+import java.sql.SQLException;
+
+import java.util.logging.Logger;
+import java.util.Properties;
+import java.util.Enumeration;
+
+import oracle.jdbc.pool.OraclePooledConnection;
+import oracle.jdbc.pool.OracleConnectionPoolDataSource;
+
+/**
+ * Wraps a  ConnectionPoolDataSource implementation to support the setURL() method
+ * @author Rob Atkinson rob@socialchange.net.NOSPAM.au
+ */
+public class OCIConnectionPoolDataSource extends OracleConnectionPoolDataSource {
+
+    /** Standard logging instance */
+    private static final Logger LOGGER = Logger.getLogger("org.geotools.data.geometryless");
+
+           
+    /** Creates configuration-driven JDBC driver class. */
+ 
+    private String _dbURL;
+    private String _username = "";
+    private String _password = "";
+  
+    /*  Constructor */
+    
+           OCIConnectionPoolDataSource() throws SQLException {
+          		super();
+          }
+          
+    /**
+     * Sets the JDBC database login credentials.
+     * @param complete JDBC connectionURL
+     */
+    public void setURL(String dbURL)   {
+
+        _dbURL = dbURL;
+    }           
+
+    /**
+     * Sets the JDBC database login credentials.
+     * @param username
+     */
+    public void setUsername(String u)  {
+
+        _username = u;
+    }           
+
+    /**
+     * Sets the JDBC database login credentials.
+     * @param password
+     */
+    public void setPassword(String p)  {
+
+        _password = p;
+    }           
+ 
+  /* 
+   override getPooledConnection() to force URL set manually 
+  */
+   public javax.sql.PooledConnection getPooledConnection()  throws SQLException
+   {
+   	return getPooledConnection(_username, _password);
+   }
+   
+  /* 
+   override getPooledConnection() to force URL set manually 
+  */
+   public javax.sql.PooledConnection getPooledConnection(String user, String pass)  throws SQLException
+   {
+   	return new OraclePooledConnection(_dbURL, user,pass);
+   }
+   	
+}

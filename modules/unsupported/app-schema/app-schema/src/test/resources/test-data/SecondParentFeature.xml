@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<!--  This is to test encoding complex types with simple content with feature chaining -->
+<as:AppSchemaDataAccess xmlns:as="http://www.geotools.org/app-schema"
+	xmlns:ogc="http://www.opengis.net/ogc" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.geotools.org/app-schema AppSchemaDataAccess.xsd
+                      http://www.opengis.net/ogc http://schemas.opengis.net/filter/1.1.0/expr.xsd">
+	<namespaces>
+		<Namespace>
+			<prefix>ex</prefix>
+			<uri>http://example.com</uri>
+		</Namespace>
+	</namespaces>	
+	<sourceDataStores>
+		<DataStore>
+			<id>SimpleContentDataDirectory</id>
+			<parameters>
+				<Parameter>
+					<name>directory</name>
+					<!-- path can be relative to this file if starts with "file: -->
+					<value>file:./</value>
+				</Parameter>
+			</parameters>
+		</DataStore>
+	</sourceDataStores>
+	<targetTypes>
+		<FeatureType>
+			<schemaUri>simpleContent.xsd</schemaUri>
+		</FeatureType>
+	</targetTypes>
+	<typeMappings>
+		<FeatureTypeMapping>
+			<sourceDataStore>SimpleContentDataDirectory</sourceDataStore>
+			<sourceType>ControlledConcept</sourceType>
+			<targetElement>ex:SecondParentFeature</targetElement>			
+			<attributeMappings>
+			    <AttributeMapping>
+					<targetAttribute>ex:SecondParentFeature</targetAttribute>
+				</AttributeMapping>
+				<AttributeMapping>
+					<targetAttribute>ex:nestedFeature</targetAttribute>
+					<sourceExpression>
+						<OCQL>strTrim(getID())</OCQL>
+						<linkElement>ex:SimpleContent</linkElement>
+						<linkField>FEATURE_LINK[2]</linkField>
+					</sourceExpression>
+					<isMultiple>true</isMultiple>
+				</AttributeMapping>
+			</attributeMappings>				
+		</FeatureTypeMapping>	
+		<FeatureTypeMapping>
+		    <!-- This is testing chaining complex types with simple content -->
+		    <sourceDataStore>SimpleContentDataDirectory</sourceDataStore>
+			<sourceType>SimpleContent</sourceType>
+			<targetElement>ex:SimpleContent</targetElement>
+			<attributeMappings>
+			    <AttributeMapping>
+					<targetAttribute>ex:SimpleContent</targetAttribute>
+					<idExpression>
+					    <OCQL>strConcat('nestedFeature:', getID())</OCQL>
+					</idExpression>
+				</AttributeMapping>
+				<AttributeMapping>
+					<targetAttribute>ex:someAttribute</targetAttribute>
+					<sourceExpression>
+						<OCQL>STRING</OCQL>
+					</sourceExpression>
+				</AttributeMapping>
+				<!-- This is testing multiple FEATURE_LINKs are possible -->
+				<AttributeMapping>
+					<targetAttribute>FEATURE_LINK[1]</targetAttribute>
+					<sourceExpression>
+						<OCQL>LINK_ONE</OCQL>
+					</sourceExpression>
+				</AttributeMapping>
+				<AttributeMapping>
+					<targetAttribute>FEATURE_LINK[2]</targetAttribute>
+					<sourceExpression>
+						<OCQL>LINK_TWO</OCQL>
+					</sourceExpression>
+				</AttributeMapping>
+			</attributeMappings>
+		</FeatureTypeMapping>	
+	</typeMappings>
+</as:AppSchemaDataAccess>

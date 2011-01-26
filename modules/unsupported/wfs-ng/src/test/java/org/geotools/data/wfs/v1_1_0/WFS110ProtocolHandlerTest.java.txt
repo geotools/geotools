@@ -1,0 +1,497 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
+package org.geotools.wfs.v_1_1_0.data;
+
+import static org.geotools.data.wfs.HttpMethod.GET;
+import static org.geotools.data.wfs.HttpMethod.POST;
+import static org.geotools.data.wfs.WFSOperationType.DESCRIBE_FEATURETYPE;
+import static org.geotools.data.wfs.WFSOperationType.GET_CAPABILITIES;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import net.opengis.wfs.FeatureTypeType;
+
+import org.geotools.data.DataSourceException;
+import org.geotools.data.DefaultQuery;
+import org.geotools.data.FeatureReader;
+import org.geotools.data.Transaction;
+import org.geotools.data.wfs.HttpMethod;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.referencing.CRS;
+import org.geotools.test.TestData;
+import org.geotools.wfs.protocol.ConnectionFactory;
+import org.geotools.wfs.protocol.DefaultConnectionFactory;
+import org.geotools.xml.Configuration;
+import org.opengis.feature.Feature;
+import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.filter.Filter;
+import org.opengis.filter.FilterFactory;
+import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.spatial.BBOX;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.NoSuchAuthorityCodeException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+
+/**
+ * @author Gabriel Roldan
+ * @version $Id: WFS110ProtocolHandlerTest.java 28946 2008-01-25 16:34:22Z
+ *          groldan $
+ * @since 2.5.x
+ * @source $URL:
+ *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/wfs/src/test/java/org/geotools/wfs/v_1_1_0/data/WFS110ProtocolHandlerTest.java $
+ */
+public class WFS110ProtocolHandlerTest extends DataTestSupport {
+
+    /**
+     * @see junit.framework.TestCase#setUp()
+     */
+    protected void setUp() throws Exception {
+        super.setUp();
+    }
+
+    /**
+     * @see junit.framework.TestCase#tearDown()
+     */
+    protected void tearDown() throws Exception {
+        super.tearDown();
+    }
+
+    /**
+     * Test method for
+     * {@link WFS110ProtocolHandler#WFS110ProtocolHandler(java.io.InputStream, boolean, java.net.Authenticator, java.lang.String)}.
+     * 
+     * @throws IOException
+     */
+    public void testWFS110ProtocolHandler() throws IOException {
+        try {
+            createProtocolHandler(DataTestSupport.GEOS_STATES.SCHEMA);
+            fail("Excpected DataSourceException as a capabilities document was not provided");
+        } catch (DataSourceException e) {
+            assertTrue(true);
+        }
+        try {
+            InputStream badData = new ByteArrayInputStream(new byte[1024]);
+            ConnectionFactory connFac = new DefaultConnectionFactory();
+            protocolHandler = new WFS110ProtocolHandler(badData, connFac, Integer.valueOf(0));
+            fail("Excpected DataSourceException as a capabilities document was not provided");
+        } catch (DataSourceException e) {
+            assertTrue(true);
+        }
+
+        createProtocolHandler(DataTestSupport.GEOS_ARCHSITES.CAPABILITIES);
+        assertNotNull(protocolHandler);
+
+        assertEquals("My GeoServer WFS", protocolHandler.getServiceTitle());
+        assertEquals("This is a description of your Web Feature Server.", protocolHandler
+                .getServiceAbstract().trim());
+        assertNotNull(protocolHandler.getServiceProviderUri());
+        assertEquals("http://www.geoserver.org", protocolHandler.getServiceProviderUri().toString());
+    }
+
+    /**
+     * Test method for
+     * {@link WFS110ProtocolHandler#supports(org.geotools.data.wfs.WFSOperationType, org.geotools.data.wfs.HttpMethod)}.
+     * 
+     * @throws IOException
+     */
+    public void testSupports() throws IOException {
+        createProtocolHandler(DataTestSupport.GEOS_ARCHSITES.CAPABILITIES);
+        assertTrue(protocolHandler.supports(DESCRIBE_FEATURETYPE, GET));
+        // post was deliberately left off on the test capabilities file
+        assertFalse(protocolHandler.supports(DESCRIBE_FEATURETYPE, POST));
+    }
+
+    /**
+     * Test method for
+     * {@link WFS110ProtocolHandler#getOperationURL(org.geotools.data.wfs.WFSOperationType, org.geotools.data.wfs.HttpMethod)}.
+     */
+    public void testGetOperationURL() throws IOException {
+        createProtocolHandler(DataTestSupport.GEOS_ARCHSITES.CAPABILITIES);
+        final URL expectedGet = new URL("http://localhost:8080/geoserver/wfs/get?");
+        final URL expectedPost = new URL("http://localhost:8080/geoserver/wfs/post?");
+        assertEquals(expectedGet, protocolHandler.getOperationURL(GET_CAPABILITIES, GET));
+        assertEquals(expectedPost, protocolHandler.getOperationURL(GET_CAPABILITIES, POST));
+    }
+
+    /**
+     * Test method for {@link WFS110ProtocolHandler#getCapabilitiesTypeNames()}.
+     * 
+     * @throws IOException
+     */
+    public void testGetCapabilitiesTypeNames() throws IOException {
+        createProtocolHandler(DataTestSupport.GEOS_STATES.CAPABILITIES);
+        String[] names = protocolHandler.getCapabilitiesTypeNames();
+        assertNotNull(names);
+        assertEquals(6, names.length);
+        Set<String> typeNames = new HashSet<String>(Arrays.asList(names));
+        assertTrue(typeNames.contains("topp:states"));
+        assertTrue(typeNames.contains("sf:archsites"));
+        assertTrue(typeNames.contains("tiger:tiger_roads"));
+        assertTrue(typeNames.contains("sf:roads"));
+        assertTrue(typeNames.contains("tiger:poi"));
+        assertTrue(typeNames.contains("topp:tasmania_cities"));
+    }
+
+    /**
+     * Test method for
+     * {@link WFS110ProtocolHandler#parseDescribeFeatureType(String)}
+     * 
+     * @throws IOException
+     */
+    public void testParseDescribeFeatureType_GeoServer() throws Exception {
+        InputStream stream = TestData.openStream(this, DataTestSupport.GEOS_STATES.CAPABILITIES);
+        ConnectionFactory connFac = new DefaultConnectionFactory();
+        protocolHandler = new WFS110ProtocolHandler(stream, connFac, Integer.valueOf(0)) {
+            @Override
+            public URL getDescribeFeatureTypeURLGet(final String typeName)
+                    throws MalformedURLException {
+                return TestData.getResource(this, DataTestSupport.GEOS_STATES.SCHEMA);
+            }
+        };
+
+        String typeName = DataTestSupport.GEOS_STATES.FEATURETYPENAME;
+        final CoordinateReferenceSystem crs = protocolHandler.getFeatureTypeCRS(typeName);
+        SimpleFeatureType ftype = protocolHandler.parseDescribeFeatureType(typeName);
+        assertNotNull(ftype);
+        assertSame(crs, ftype.getGeometryDescriptor().getCoordinateReferenceSystem());
+    }
+
+    /**
+     * Test method for {@link WFS110ProtocolHandler#getFeatureTypeCRS(String)}
+     * 
+     * @throws IOException
+     * @throws FactoryException
+     * @throws NoSuchAuthorityCodeException
+     */
+    public void testGetFeatureTypeCRS() throws IOException, NoSuchAuthorityCodeException,
+            FactoryException {
+        String capabilitiesFileName;
+        String typeName;
+        String crs;
+
+        capabilitiesFileName = DataTestSupport.GEOS_STATES.CAPABILITIES;
+        typeName = DataTestSupport.GEOS_STATES.FEATURETYPENAME;
+        crs = "EPSG:4326";
+        assertFeatureTypeCrs(capabilitiesFileName, typeName, crs);
+
+        capabilitiesFileName = DataTestSupport.GEOS_ARCHSITES.CAPABILITIES;
+        typeName = DataTestSupport.GEOS_ARCHSITES.FEATURETYPENAME;
+        crs = "EPSG:26713";
+        assertFeatureTypeCrs(capabilitiesFileName, typeName, crs);
+
+        capabilitiesFileName = DataTestSupport.CUBEWERX_GOVUNITCE.CAPABILITIES;
+        typeName = DataTestSupport.CUBEWERX_GOVUNITCE.FEATURETYPENAME;
+        crs = "EPSG:4269";
+        assertFeatureTypeCrs(capabilitiesFileName, typeName, crs);
+    }
+
+    private void assertFeatureTypeCrs(String capabilitiesFileName, String typeName, String crs)
+            throws IOException, NoSuchAuthorityCodeException, FactoryException {
+        createProtocolHandler(capabilitiesFileName);
+        CoordinateReferenceSystem featureTypeCRS = protocolHandler.getFeatureTypeCRS(typeName);
+        CoordinateReferenceSystem expectedCrs = CRS.decode(crs);
+        assertTrue(CRS.equalsIgnoreMetadata(expectedCrs, featureTypeCRS));
+    }
+
+    /**
+     * Test method for
+     * {@link WFS110ProtocolHandler#getFeatureTypeBounds(String)}
+     * 
+     * @throws IOException
+     * @throws FactoryException
+     * @throws NoSuchAuthorityCodeException
+     */
+    public void testGetFeatureTypeBounds() throws IOException, NoSuchAuthorityCodeException,
+            FactoryException {
+        String capabilitiesFileName;
+        String typeName;
+        String expectedCrs;
+
+        capabilitiesFileName = DataTestSupport.GEOS_STATES.CAPABILITIES;
+        typeName = DataTestSupport.GEOS_STATES.FEATURETYPENAME;
+        expectedCrs = "EPSG:4326";
+        testGetFeatureTypeBounds(capabilitiesFileName, typeName, expectedCrs);
+
+        capabilitiesFileName = DataTestSupport.GEOS_ARCHSITES.CAPABILITIES;
+        typeName = DataTestSupport.GEOS_ARCHSITES.FEATURETYPENAME;
+        expectedCrs = "EPSG:26713";
+        testGetFeatureTypeBounds(capabilitiesFileName, typeName, expectedCrs);
+
+        capabilitiesFileName = DataTestSupport.CUBEWERX_GOVUNITCE.CAPABILITIES;
+        typeName = DataTestSupport.CUBEWERX_GOVUNITCE.FEATURETYPENAME;
+        expectedCrs = "EPSG:4269";
+        testGetFeatureTypeBounds(capabilitiesFileName, typeName, expectedCrs);
+
+        // force the capabilities info for the type not to contain the latlon
+        // bounds
+        FeatureTypeType typeInfo = protocolHandler.getFeatureTypeInfo(typeName);
+        typeInfo.getWGS84BoundingBox().clear();
+        try {
+            protocolHandler.getFeatureTypeBounds(typeName);
+            fail("expected IllegalStateException when the capabilities "
+                    + "does not provide the latlon bounds");
+        } catch (IllegalStateException e) {
+            assertTrue(true);
+        }
+    }
+
+    private void testGetFeatureTypeBounds(String capabilitiesFileName, String typeName,
+            String expectedCrsCode) throws IOException, NoSuchAuthorityCodeException,
+            FactoryException {
+
+        createProtocolHandler(capabilitiesFileName);
+
+        ReferencedEnvelope bounds = protocolHandler.getFeatureTypeBounds(typeName);
+        assertNotNull(bounds);
+        CoordinateReferenceSystem expectedCrs = CRS.decode(expectedCrsCode);
+        CoordinateReferenceSystem boundsCrs = bounds.getCoordinateReferenceSystem();
+        assertTrue(CRS.equalsIgnoreMetadata(expectedCrs, boundsCrs));
+    }
+
+    /**
+     * If the capabilities does not supply the required information an
+     * IllegalStateException shall be thrown (as the latlon bounds are
+     * mandatory).
+     * <p>
+     * Test method for
+     * {@link WFS110ProtocolHandler#getBounds(org.geotools.data.Query)}
+     * </p>
+     * 
+     * @throws IOException
+     */
+    public void testGetBoundsIllegalState() throws IOException {
+        final String capabilitiesFileName = DataTestSupport.CUBEWERX_GOVUNITCE.CAPABILITIES;
+        final String typeName = DataTestSupport.CUBEWERX_GOVUNITCE.FEATURETYPENAME;
+        createProtocolHandler(capabilitiesFileName);
+        final DefaultQuery query = new DefaultQuery(typeName);
+
+        // force the capabilities info for the type not to contain the latlon
+        // bounds
+        FeatureTypeType typeInfo = protocolHandler.getFeatureTypeInfo(typeName);
+        typeInfo.getWGS84BoundingBox().clear();
+
+        try {
+            protocolHandler.getBounds(query);
+            fail("Expected IllegalStateException as the capabilities document "
+                    + "does not supply the latlon bounds");
+        } catch (IllegalStateException e) {
+            assertTrue(true);
+        }
+    }
+
+    /**
+     * If the query contains a filter other than {@link Filter#INCLUDE}
+     * getbounds returns {@code null} as it is too expensive to calculate (would
+     * require an extra GetFeature request and a full scan of the results).
+     * <p>
+     * Test method for
+     * {@link WFS110ProtocolHandler#getBounds(org.geotools.data.Query)}
+     * </p>
+     * 
+     * @throws IOException
+     */
+    public void testGetBoundsFilter() throws IOException {
+        final String capabilitiesFileName = DataTestSupport.CUBEWERX_GOVUNITCE.CAPABILITIES;
+        final String typeName = DataTestSupport.CUBEWERX_GOVUNITCE.FEATURETYPENAME;
+        createProtocolHandler(capabilitiesFileName);
+        DefaultQuery query;
+        {
+            FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+            Filter nonIncludeFilter = ff.equals(ff.property("name"), ff.literal("value"));
+            query = new DefaultQuery(typeName, nonIncludeFilter);
+        }
+        ReferencedEnvelope bounds = protocolHandler.getBounds(query);
+        assertNull(bounds);
+    }
+
+    /**
+     * If the query filter is {@link Filter#INCLUDE} getbounds returns the
+     * feature type bounds in the query requested CRS.
+     * <p>
+     * Test method for
+     * {@link WFS110ProtocolHandler#getBounds(org.geotools.data.Query)}
+     * </p>
+     * 
+     * @throws IOException
+     * @throws FactoryException
+     * @throws NoSuchAuthorityCodeException
+     */
+    public void testGetBounds() throws IOException, NoSuchAuthorityCodeException, FactoryException {
+        final String capabilitiesFileName = DataTestSupport.CUBEWERX_GOVUNITCE.CAPABILITIES;
+        final String typeName = DataTestSupport.CUBEWERX_GOVUNITCE.FEATURETYPENAME;
+        createProtocolHandler(capabilitiesFileName);
+
+        DefaultQuery query;
+        CoordinateReferenceSystem expectedCrs;
+        ReferencedEnvelope bounds;
+
+        query = new DefaultQuery(typeName);
+        expectedCrs = CRS.decode("EPSG:4326");
+        query.setCoordinateSystem(expectedCrs);
+
+        bounds = protocolHandler.getBounds(query);
+        assertSame(expectedCrs, bounds.getCoordinateReferenceSystem());
+
+        query = new DefaultQuery(typeName);
+        expectedCrs = CRS.decode("EPSG:4269");
+        query.setCoordinateSystem(expectedCrs);
+
+        bounds = protocolHandler.getBounds(query);
+        assertSame(expectedCrs, bounds.getCoordinateReferenceSystem());
+    }
+
+    /**
+     * <p>
+     * Test method for
+     * {@link WFS110ProtocolHandler#getCount(org.geotools.data.Query)}
+     * </p>
+     * 
+     * @throws IOException
+     */
+    public void testGetCount() throws IOException {
+        String capabilitiesFileName = DataTestSupport.GEOS_ARCHSITES.CAPABILITIES;
+        String typeName = DataTestSupport.GEOS_ARCHSITES.FEATURETYPENAME;
+
+        ConnectionFactory connFac = new DefaultConnectionFactory() {
+            @Override
+            public InputStream getInputStream(URL query, HttpMethod method) throws IOException {
+                return TestData.openStream(this, DataTestSupport.GEOS_ARCHSITES.DATA);
+            }
+        };
+        createProtocolHandler(capabilitiesFileName, connFac);
+        int count = protocolHandler.getCount(new DefaultQuery(typeName));
+        assertEquals(3, count);
+
+        // this one does not specify numberOfFeatures
+        capabilitiesFileName = DataTestSupport.CUBEWERX_GOVUNITCE.CAPABILITIES;
+        typeName = DataTestSupport.CUBEWERX_GOVUNITCE.FEATURETYPENAME;
+        connFac = new DefaultConnectionFactory() {
+            @Override
+            public InputStream getInputStream(URL query, HttpMethod method) throws IOException {
+                return TestData.openStream(this, DataTestSupport.CUBEWERX_GOVUNITCE.DATA);
+            }
+        };
+
+        createProtocolHandler(capabilitiesFileName, connFac);
+        count = protocolHandler.getCount(new DefaultQuery(typeName));
+        assertEquals(-1, count);
+    }
+
+    /**
+     * Test method for
+     * {@link WFS110ProtocolHandler#getFeatureReader(SimpleFeatureType, org.geotools.data.Query, org.geotools.data.Transaction)}
+     * 
+     * @throws IOException
+     */
+    public void testGetFeatureReader() throws IOException {
+        // no limits
+        List<Feature> features = testGetFeatureReader(0, Integer.MAX_VALUE);
+        assertEquals(3, features.size());
+    }
+
+    public void testGetFeatureReaderWithMaxFeatures() throws IOException {
+        final int hardLimitMaxFeatures = 2;
+
+        List<Feature> features = testGetFeatureReader(hardLimitMaxFeatures, Integer.MAX_VALUE);
+        assertEquals(hardLimitMaxFeatures, features.size());
+
+        final int queryMaxFeatures = 1;
+        features = testGetFeatureReader(hardLimitMaxFeatures, queryMaxFeatures);
+        assertEquals(queryMaxFeatures, features.size());
+    }
+
+    /**
+     * 
+     * @param maxFeatures
+     *            the hard limit maxFeatures, 0 for no limit
+     * @param queryMaxFeatures
+     *            the query max features, Integre.MAX_VALUE for no limit
+     * @return the features parsed
+     * @throws IOException
+     */
+    public List<Feature> testGetFeatureReader(final int maxFeatures, final int queryMaxFeatures)
+            throws IOException {
+        final String capabilitiesFileName = DataTestSupport.GEOS_ARCHSITES.CAPABILITIES;
+        final String typeName = DataTestSupport.GEOS_ARCHSITES.FEATURETYPENAME;
+        final String featuresFileName = DataTestSupport.GEOS_ARCHSITES.DATA;
+        final String featureNameSpace = DataTestSupport.GEOS_ARCHSITES.TYPENAME.getNamespaceURI();
+        final String schemaFile = DataTestSupport.GEOS_ARCHSITES.SCHEMA;
+        final URL schemaLocation = TestData.getResource(this, schemaFile);
+        final Configuration testConfiguration = new TestWFSConfiguration(featureNameSpace,
+                schemaLocation.toExternalForm());
+
+        ConnectionFactory connFac = new DefaultConnectionFactory() {
+            @Override
+            public InputStream getInputStream(URL query, HttpMethod method) throws IOException {
+                return TestData.openStream(this, featuresFileName);
+            }
+        };
+
+        InputStream capabilitiesIn = TestData.openStream(this, capabilitiesFileName);
+        protocolHandler = new WFS110ProtocolHandler(capabilitiesIn, connFac, Integer
+                .valueOf(maxFeatures)) {
+            public URL getDescribeFeatureTypeURLGet(String typeName) {
+                return schemaLocation;
+            }
+
+            @Override
+            Configuration getConfiguration() {
+                return testConfiguration;
+            }
+        };
+
+        SimpleFeatureType contentType = protocolHandler.parseDescribeFeatureType(typeName);
+        DefaultQuery query = new DefaultQuery(typeName);
+        query.setMaxFeatures(queryMaxFeatures);
+        Transaction transaction = Transaction.AUTO_COMMIT;
+         FeatureReader<SimpleFeatureType, SimpleFeature> reader = protocolHandler.getFeatureReader(query, transaction);
+        assertNotNull(reader);
+        assertEquals(contentType, reader.getFeatureType());
+
+        SimpleFeature next;
+        List<Feature> features = new ArrayList<Feature>();
+
+        while (reader.hasNext()) {
+            next = reader.next();
+            features.add(next);
+        }
+
+        return features;
+    }
+
+    public void testEncodeFilterGet() throws IOException{
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        BBOX bbox = ff.bbox("the_geom", -180, -90, 180, 90, "EPSG:4326");
+        String encoded = WFS110ProtocolHandler.encodeGetFeatureGetFilter(bbox);
+        System.err.println(encoded);
+        assertTrue(encoded, encoded.contains("PropertyName"));
+        assertTrue(encoded, encoded.contains("Envelope"));
+        assertTrue(encoded, encoded.contains("lowerCorner"));
+        assertTrue(encoded, encoded.contains("upperCorner"));
+    }
+}

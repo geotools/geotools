@@ -1,0 +1,674 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gml:Dictionary xmlns:gml="http://www.opengis.net/gml" xmlns:swe="http://www.opengis.net/swe" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="http://www.opengis.net/swe ../../sweCommon/1.0.30/phenomenon.xsd" gml:id="phenomena1_0_30">
+	<gml:description>A dictionary of phenomena, compiled through OWS-1, OWS-1.2 OWS-3.
+SJDC 2005-10-03
+</gml:description>
+	<gml:name>OWS Phenomena</gml:name>
+	<gml:dictionaryEntry>
+		<swe:ConstrainedPhenomenon gml:id="_19V">
+			<gml:description>19 GHz Radiation Vertical Polarisation</gml:description>
+			<gml:name>19V</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:19V</gml:name>
+			<swe:base xlink:href="#Radiation"/>
+			<swe:measureConstraint property="#PeakWavelength" uom="./units.xml#GHz">19.35</swe:measureConstraint>
+			<swe:categoryConstraint property="http://www.opengis.net/componentPhenomenonType#PolarisationDirection" codeSpace="http://www.opengis.net/sensorGlossary">V</swe:categoryConstraint>
+		</swe:ConstrainedPhenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:ConstrainedPhenomenon gml:id="_19H">
+			<gml:description>19 GHz Radiation Horizontal Polarisation</gml:description>
+			<gml:name>19H</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:19H</gml:name>
+			<swe:base xlink:href="#Radiation"/>
+			<swe:measureConstraint property="http://www.opengis.net/componentPhenomenonType#peakWavelength" uom="#GHz">19.35</swe:measureConstraint>
+			<swe:categoryConstraint property="http://www.opengis.net/componentPhenomenonType#PolarisationDirection" codeSpace="http://www.opengis.net/sensorGlossary">H</swe:categoryConstraint>
+		</swe:ConstrainedPhenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:Phenomenon gml:id="Age">
+			<gml:description xlink:href="http://sweet.jpl.nasa.gov/ontology/time.owl#Age">Time duration since creation</gml:description>
+			<gml:name>Age</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:Age</gml:name>
+		</swe:Phenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:Phenomenon gml:id="AtmosphericPressure">
+			<gml:description xlink:href="http://sweet.jpl.nasa.gov/ontology/property.owl#AtmosphericPressure">fluid pressure exerted due to the gravitational effect on the column of atmosphere above the position of interest</gml:description>
+			<gml:name>Atmospheric Pressure</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:AtmosphericPressure</gml:name>
+		</swe:Phenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:Phenomenon gml:id="CloudCover">
+			<gml:description>fraction of sky occupied by visible cloud</gml:description>
+			<gml:name>Cloud Cover</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:CloudCover</gml:name>
+		</swe:Phenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:Phenomenon gml:id="Concentration">
+			<gml:description xlink:href="http://sweet.jpl.nasa.gov/ontology/property.owl#MassConcentration">Amount of substance as a fraction of host medium; 
+			the type of substance can be indicated by appending a symbol at the end of the URN - e.g. urn:x-ogc:def:phenomenon:OGC:Concentration[Sb] for concentration of Antimony</gml:description>
+			<gml:name>Concentration</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:Concentration</gml:name>
+		</swe:Phenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:Phenomenon gml:id="Density">
+			<gml:description/>
+			<gml:name>Density</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:Density</gml:name>
+		</swe:Phenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:Phenomenon gml:id="Depth">
+			<gml:description xlink:href="http://sweet.jpl.nasa.gov/ontology/property.owl#Depth">Linear distance measured vertically downwards from a reference surface</gml:description>
+			<gml:name>Depth</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:Depth</gml:name>
+		</swe:Phenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:ConstrainedPhenomenon gml:id="DewPointTemperature">
+			<gml:description xlink:href="http://sweet.jpl.nasa.gov/ontology/property.owl#DewPointTemperature">Temperature at which water condensation occurs, providing an indirect measure of humidity</gml:description>
+			<gml:name>Dew Point Temperature</gml:name>
+			<gml:name>Dew Point</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:DewPointTemperature</gml:name>
+			<swe:base xlink:href="#Humidity"/>
+			<swe:otherConstraint>Condensation temperature</swe:otherConstraint>
+		</swe:ConstrainedPhenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:Phenomenon gml:id="Direction">
+			<gml:description xlink:href="http://sweet.jpl.nasa.gov/ontology/space.owl#Direction">Orientation of a vector relative to a reference frame.</gml:description>
+			<gml:name>Direction</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:Direction</gml:name>
+		</swe:Phenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:ConstrainedPhenomenon gml:id="DissolvedSolids">
+			<gml:description  xlink:href="http://sweet.jpl.nasa.gov/ontology/property.owl#DissolvedConcentration">Amount of solids remaining after evaporation</gml:description>
+			<gml:name>Dissolved Solids</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:DissolvedSolids</gml:name>
+			<swe:base xlink:href="Concentration"/>
+			<swe:categoryConstraint property="#Material" codeSpace="http://www.opengis.net/ows/material">total solute</swe:categoryConstraint>
+		</swe:ConstrainedPhenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:Phenomenon gml:id="DOX">
+			<gml:name>Dissolved Oxygen</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:DOX</gml:name>
+		</swe:Phenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:CompositePhenomenon gml:id="EarthquakeParameters" dimension="2">
+			<gml:name>Earthquake Parameters</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:EarthquakeParameters</gml:name>
+			<swe:component>
+				<swe:CompositePhenomenon gml:id="EarthquakeLocation" dimension="3">
+					<gml:name>Earthquake Location</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:EarthquakeLocation</gml:name>
+					<swe:component xlink:href="#Epicentre"/>
+					<swe:component xlink:href="#Depth"/>
+					<swe:component xlink:href="#OriginTime"/>
+				</swe:CompositePhenomenon>
+			</swe:component>
+			<swe:component>
+				<swe:CompositePhenomenon gml:id="MomentTensor" dimension="6">
+					<gml:name>Earthquake Moment Tensor</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:MomentTensor</gml:name>
+					<swe:component xlink:href="#Mrr"/>
+					<swe:component xlink:href="#Mtt"/>
+					<swe:component xlink:href="#Mff"/>
+					<swe:component xlink:href="#Mrt"/>
+					<swe:component xlink:href="#Mrf"/>
+					<swe:component xlink:href="#Mtf"/>
+				</swe:CompositePhenomenon>
+			</swe:component>
+		</swe:CompositePhenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:Phenomenon gml:id="Elevation">
+			<gml:description xlink:href="http://sweet.jpl.nasa.gov/ontology/property.owl#Elevation">Linear distance measured vertically upwards from a reference surface</gml:description>
+			<gml:name>Elevation</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:Elevation</gml:name>
+		</swe:Phenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:Phenomenon gml:id="Epicentre">
+			<gml:description>The location on the surface of the earth directly above the position of the origin of an earthquake</gml:description>
+			<gml:name>Epicentre</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:Epicentre</gml:name>
+		</swe:Phenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:ConstrainedPhenomenon gml:id="Humidity">
+			<gml:description  xlink:href="http://sweet.jpl.nasa.gov/ontology/property.owl#Humidity">Concentration of water</gml:description>
+			<gml:name>Humidity</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:Humidity</gml:name>
+			<swe:base xlink:href="Concentration"/>
+			<swe:categoryConstraint property="#Material" codeSpace="http://www.opengis.net/ows/material">Water</swe:categoryConstraint>
+		</swe:ConstrainedPhenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:Phenomenon gml:id="Medium">
+			<gml:description>Material of which an object is constructed or within which a phenomenon occurs</gml:description>
+			<gml:name>Medium</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:Medium</gml:name>
+		</swe:Phenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:Phenomenon gml:id="Mrr">
+			<gml:description xlink:href="http://biggeophysicsdictionary.org/parameters/earthquakes/moment/Mrr"/>
+			<gml:name>Earthquake Moment Tensor component Mrr</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:"Mrr</gml:name>
+		</swe:Phenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:Phenomenon gml:id="Mtt">
+			<gml:description xlink:href="http://biggeophysicsdictionary.org/parameters/earthquakes/moment/Mtt"/>
+			<gml:name>Earthquake Moment Tensor component Mtt</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:Mtt</gml:name>
+		</swe:Phenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:Phenomenon gml:id="Mff">
+			<gml:description xlink:href="http://biggeophysicsdictionary.org/parameters/earthquakes/moment/Mff"/>
+			<gml:name>Earthquake Moment Tensor component Mff</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:Mff</gml:name>
+		</swe:Phenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:Phenomenon gml:id="Mrt">
+			<gml:description xlink:href="http://biggeophysicsdictionary.org/parameters/earthquakes/moment/Mrt"/>
+			<gml:name>Earthquake Moment Tensor component Mrt</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:Mrt</gml:name>
+		</swe:Phenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:Phenomenon gml:id="Mrf">
+			<gml:description xlink:href="http://biggeophysicsdictionary.org/parameters/earthquakes/moment/Mrf"/>
+			<gml:name>Earthquake Moment Tensor component Mrf</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:Mrf</gml:name>
+		</swe:Phenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:Phenomenon gml:id="Mtf">
+			<gml:description xlink:href="http://biggeophysicsdictionary.org/parameters/earthquakes/moment/Mtf"/>
+			<gml:name>Earthquake Moment Tensor component Mtf</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:Mtf</gml:name>
+		</swe:Phenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:Phenomenon gml:id="MolWt">
+			<gml:description/>
+			<gml:name>Molecular weight</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:MolWt</gml:name>
+		</swe:Phenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:Phenomenon gml:id="MolVol">
+			<gml:description/>
+			<gml:name>Molecular volume</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:MolVol</gml:name>
+		</swe:Phenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:Phenomenon gml:id="OrganismCount">
+			<gml:description xlink:href="http://sweet.jpl.nasa.gov/ontology/property.owl#Population">Number of organisms</gml:description>
+			<gml:name>Organism count</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:OrganismCount</gml:name>
+		</swe:Phenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:Phenomenon gml:id="OriginTime">
+			<gml:description>The time instant corresponding to the initiation of the event.</gml:description>
+			<gml:name>Origin Time</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:OriginTime</gml:name>
+		</swe:Phenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:Phenomenon gml:id="PeakWavelength">
+			<gml:description>Centre of wavelength sensitivity band</gml:description>
+			<gml:name>Peak Wavelength</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:PeakWavelength</gml:name>
+		</swe:Phenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:Phenomenon gml:id="Precipitation">
+			<gml:description xlink:href="http://sweet.jpl.nasa.gov/ontology/property.owl#Rainfall"></gml:description>
+			<gml:name>Precipitation</gml:name>
+			<gml:name>Rainfall</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:Precipitation</gml:name>
+		</swe:Phenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:ConstrainedPhenomenon gml:id="Precipitation1Hour">
+			<gml:description>Percipitation - over 1 hour</gml:description>
+			<gml:name>Precipitation1Hour</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:Precipitation1Hour</gml:name>
+			<swe:base xlink:href="#Precipitation"/>
+			<!-- trying to represent the averaging period in secconds -->
+			<swe:measureConstraint property="#TimeAverage" uom="./units.xml#s">3600</swe:measureConstraint>
+		</swe:ConstrainedPhenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:ConstrainedPhenomenon gml:id="Precipitation24Hour">
+			<gml:description>Percipitation - over 24 hours</gml:description>
+			<gml:name>Precipitation24Hour</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:Precipitation24Hour</gml:name>
+			<swe:base xlink:href="#Precipitation"/>
+			<!-- trying to represent the averaging period in secconds -->
+			<swe:measureConstraint property="#TimeAverage" uom="./units.xml#s">86400</swe:measureConstraint>
+		</swe:ConstrainedPhenomenon>
+	</gml:dictionaryEntry>	
+	<gml:dictionaryEntry>
+		<swe:Phenomenon gml:id="Radiation">
+			<gml:description xlink:href="http://sweet.jpl.nasa.gov/ontology/property.owl#RadiantEnergy"/>
+			<gml:name>Radiation</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:Radiation</gml:name>
+		</swe:Phenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:ConstrainedPhenomenon gml:id="Radiance">
+			<gml:description xlink:href="http://sweet.jpl.nasa.gov/ontology/property.owl#Radiance"/>
+			<gml:name>Radiance</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:Radiance</gml:name>
+			<swe:base xlink:href="#Radiation"/>
+			<swe:categoryConstraint property="mode" codeSpace="urn:x-ogc:def:nil:OGC:unknown">passive</swe:categoryConstraint>
+		</swe:ConstrainedPhenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:ConstrainedPhenomenon gml:id="RelativeHumidity">
+			<gml:description xlink:href="http://sweet.jpl.nasa.gov/ontology/property.owl#Humidity">Amount of water vapour in a gas measured as a fraction of full saturation</gml:description>
+			<gml:name>Relative Humidity</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:RelativeHumidity</gml:name>
+			<swe:base xlink:href="#Humidity"/>
+			<swe:otherConstraint>Normalised</swe:otherConstraint>
+		</swe:ConstrainedPhenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:Phenomenon gml:id="Shape">
+			<gml:description>The geometry of the boundary of the object of interest</gml:description>
+			<gml:name>Shape</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:Shape</gml:name>
+		</swe:Phenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:Phenomenon gml:id="Species">
+			<gml:description>The kind of thing</gml:description>
+			<gml:name>Species</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:Species</gml:name>
+		</swe:Phenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:Phenomenon gml:id="Speed">
+			<gml:description xlink:href="http://sweet.jpl.nasa.gov/ontology/property.owl#Speed">Scalar rate of movement</gml:description>
+			<gml:name>Speed</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:Speed</gml:name>
+		</swe:Phenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:CompositePhenomenon gml:id="DiscreteSpectrumTM" dimension="7">
+			<gml:name>Landsat Thematic Mapper spectrum</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:DiscreteSpectrumTM</gml:name>
+			<swe:base xlink:href="#Radiance"/>
+			<swe:component>
+				<swe:ConstrainedPhenomenon gml:id="TMBand1">
+					<gml:name>Landsat TM band 1</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:TMBand1</gml:name>
+					<swe:base xlink:href="#Radiance"/>
+					<swe:intervalConstraint property="#Wavelength" uom="./units.xml#um">0.45 0.52</swe:intervalConstraint>
+				</swe:ConstrainedPhenomenon>
+			</swe:component>
+			<swe:component>
+				<swe:ConstrainedPhenomenon gml:id="TMBand2">
+					<gml:name>Landsat TM band 2</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:TMBand2</gml:name>
+					<swe:base xlink:href="#Radiance"/>
+					<swe:intervalConstraint property="#Wavelength" uom="./units.xml#um">0.52 0.60</swe:intervalConstraint>
+				</swe:ConstrainedPhenomenon>
+			</swe:component>
+			<swe:component>
+				<swe:ConstrainedPhenomenon gml:id="TMBand3">
+					<gml:name>Landsat TM band 3</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:TMBand3</gml:name>
+					<swe:base xlink:href="#Radiance"/>
+					<swe:intervalConstraint property="#Wavelength" uom="./units.xml#um">0.63 0.69</swe:intervalConstraint>
+				</swe:ConstrainedPhenomenon>
+			</swe:component>
+			<swe:component>
+				<swe:ConstrainedPhenomenon gml:id="TMBand4">
+					<gml:name>Landsat TM band 4</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:TMBand4</gml:name>
+					<swe:base xlink:href="#Radiance"/>
+					<swe:intervalConstraint property="#Wavelength" uom="./units.xml#um">0.76 0.90</swe:intervalConstraint>
+				</swe:ConstrainedPhenomenon>
+			</swe:component>
+			<swe:component>
+				<swe:ConstrainedPhenomenon gml:id="TMBand5">
+					<gml:name>Landsat TM band 5</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:TMBand5</gml:name>
+					<swe:base xlink:href="#Radiance"/>
+					<swe:intervalConstraint property="#Wavelength" uom="./units.xml#um">1.55 1.75</swe:intervalConstraint>
+				</swe:ConstrainedPhenomenon>
+			</swe:component>
+			<swe:component>
+				<swe:ConstrainedPhenomenon gml:id="TMBand6">
+					<gml:name>Landsat TM band 6</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:TMBand6</gml:name>
+					<swe:base xlink:href="#Radiance"/>
+					<swe:intervalConstraint property="#Wavelength" uom="./units.xml#um">10.4 12.5</swe:intervalConstraint>
+				</swe:ConstrainedPhenomenon>
+			</swe:component>
+			<swe:component>
+				<swe:ConstrainedPhenomenon gml:id="TMBand7">
+					<gml:name>Landsat TM band 7</gml:name>
+					<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:TMBand7</gml:name>
+					<swe:base xlink:href="#Radiance"/>
+					<swe:intervalConstraint property="#Wavelength" uom="./units.xml#um">2.08 2.35</swe:intervalConstraint>
+				</swe:ConstrainedPhenomenon>
+			</swe:component>
+		</swe:CompositePhenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:ConstrainedPhenomenon gml:id="SurfaceWaterTemperature2">
+			<gml:name>Surface Water Temperature 2</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:SurfaceWaterTemperature2</gml:name>
+			<swe:base xlink:href="#Temperature"/>
+			<swe:categoryConstraint property="#Medium" codeSpace="http://www.opengis.net/ows/material">water</swe:categoryConstraint>
+			<swe:intervalConstraint property="#Depth" uom="./units.xml#m">0.0 1.5</swe:intervalConstraint>
+		</swe:ConstrainedPhenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:ConstrainedPhenomenon gml:id="SurfaceWaterTemperature">
+			<gml:name>Surface Water Temperature</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:SurfaceWaterTemperature</gml:name>
+			<swe:base xlink:href="#WaterTemperature"/>
+			<swe:intervalConstraint property="#Depth" uom="./units.xml#m">0.0 1.5</swe:intervalConstraint>
+		</swe:ConstrainedPhenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:Phenomenon gml:id="Temperature">
+			<gml:description xlink:href="http://sweet.jpl.nasa.gov/ontology/property.owl#Temperature"/>
+			<gml:name>Temperature</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:Temperature</gml:name>
+		</swe:Phenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:Phenomenon gml:id="TimePosition">
+			<gml:description xlink:href="http://sweet.jpl.nasa.gov/ontology/time.owl#Instant">A position on a time scale</gml:description>
+			<gml:name>Time Position</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:TimePosition</gml:name>
+		</swe:Phenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:PhenomenonSeries gml:id="uSpectrum" dimension="17">
+			<gml:description>Simple spectrum with uniform spacing of bands</gml:description>
+			<gml:name>UniformSpectrum</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:uSpectrum</gml:name>
+			<swe:base xlink:href="#Radiance"/>
+			<swe:measureConstraintList property="http://www.opengis.net/componentPhenomena#Wavelength" uom="./units.xml#um">0.300 0.304 0.308 0.312 0.316 0.320 0.324 0.328 0.332 0.336 0.340 0.344 0.348 0.352 0.356 0.360 0.364</swe:measureConstraintList>
+		</swe:PhenomenonSeries>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:PhenomenonSeries dimension="12" gml:id="Radiance12cA">
+			<gml:description>12-Channel Radiance for NNNNNNNNN</gml:description>
+			<gml:name>12-Channel_Radiance</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:Radiance12cA</gml:name>
+			<swe:base xlink:href="#Radiance"/>
+			<swe:intervalConstraintList property="#Wavelength" uom="./units.xml#um">
+		0.42 0.45
+        0.45 0.52
+        0.52 0.60
+        0.60 0.62
+        0.63 0.69
+        0.69 0.75
+        0.76 0.90
+        0.91 1.05
+        1.55 1.75
+        2.08 2.35
+        3.60 3.79
+        10.26 11.26
+		</swe:intervalConstraintList>
+		</swe:PhenomenonSeries>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:CompositePhenomenon gml:id="Velocity" dimension="2">
+			<gml:description xlink:href="http://sweet.jpl.nasa.gov/ontology/property.owl#Velocity">Vector rate of movement relative to a reference frame</gml:description>
+			<gml:name>Velocity</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:Velocity</gml:name>
+			<swe:component xlink:href="#Speed"/>
+			<swe:component xlink:href="#Direction"/>
+		</swe:CompositePhenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:ConstrainedPhenomenon gml:id="WaterTemperature">
+			<gml:name>Water Temperature</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:WaterTemperature</gml:name>
+			<swe:base xlink:href="#Temperature"/>
+			<swe:categoryConstraint property="#Medium" codeSpace="http://www.opengis.net/ows/material">water</swe:categoryConstraint>
+		</swe:ConstrainedPhenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:Phenomenon gml:id="Visibility">
+			<gml:description>Atmospheric visibility</gml:description>
+			<gml:name>Visibility</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:Visibility</gml:name>
+		</swe:Phenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:Phenomenon gml:id="Wavelength">
+			<gml:description xlink:href="http://sweet.jpl.nasa.gov/ontology/property.owl#Wavelength">Distance between peak values of a wave</gml:description>
+			<gml:name>Wavelength</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:Wavelength</gml:name>
+		</swe:Phenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:ConstrainedPhenomenon gml:id="WindChill">
+			<gml:description xlink:href="http://sweet.jpl.nasa.gov/ontology/property.owl#WindChill"/>
+			<gml:name>Wind Chill</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:WindChill</gml:name>
+			<swe:base xlink:href="#Temperature"/>
+			<swe:otherConstraint>Corrected for wind speed</swe:otherConstraint>
+		</swe:ConstrainedPhenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:ConstrainedPhenomenon gml:id="WindDirection">
+			<gml:name>Wind Direction</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:WindDirection</gml:name>
+			<swe:base xlink:href="#Direction"/>
+			<swe:categoryConstraint codeSpace="urn:x-ogc:def:phenomenon:SWE:1.0.30" property="#Medium">Wind</swe:categoryConstraint>
+		</swe:ConstrainedPhenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:ConstrainedPhenomenon gml:id="WindSpeed">
+			<gml:name>Wind Speed</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:WindSpeed</gml:name>
+			<swe:base xlink:href="#Speed"/>
+			<swe:categoryConstraint codeSpace="urn:x-ogc:def:phenomenon:SWE:1.0.30" property="#Medium">Air</swe:categoryConstraint>
+		</swe:ConstrainedPhenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:ConstrainedPhenomenon gml:id="WindVelocity">
+			<gml:name>Wind Velocity</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:WindVelocity</gml:name>
+			<swe:base xlink:href="#Velocity"/>
+			<swe:categoryConstraint codeSpace="urn:x-ogc:def:phenomenon:SWE:1.0.30" property="#Medium">Air</swe:categoryConstraint>
+		</swe:ConstrainedPhenomenon>
+	</gml:dictionaryEntry>
+	<!-- =================== -->
+	<!-- Added by Mark Priest for OWS3-SWE - comments by Simon Cox -->
+	<gml:dictionaryEntry>
+		<swe:Phenomenon gml:id="TimeAverage">
+			<gml:description>Statistical mean value in a time series of data</gml:description>
+			<gml:name>Average</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:Average</gml:name>
+		</swe:Phenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:Phenomenon gml:id="TimeMax">
+			<gml:description>Statistical maximum value in a time series of data</gml:description>
+			<gml:name>Max</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:Max</gml:name>
+		</swe:Phenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:Phenomenon gml:id="TimeMin">
+			<gml:description>Statistical minimum value in a time series of data</gml:description>
+			<gml:name>Min</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:Min</gml:name>
+		</swe:Phenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:Phenomenon gml:id="Chemical">
+			<gml:description>Chemical compound - ************ should this be formulated as ConstrainedPhenomenon species(chemical) ? *************</gml:description>
+			<gml:name>Chemical</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:Chemical</gml:name>
+		</swe:Phenomenon>
+	</gml:dictionaryEntry>
+	<!-- the following series are clearly all related so should be formulated as a set of related ConstrainedPhenomenon definitions -->
+	<gml:dictionaryEntry>
+		<swe:ConstrainedPhenomenon gml:id="ChemicalPresenceInAir">
+			<gml:name>Chemical presence (as apposed to absence)</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:ChemicalPresence</gml:name>
+			<swe:base xlink:href="#Chemical"/>
+			<swe:categoryConstraint property="#Medium" codeSpace="http://www.opengis.net/ows/material">Air</swe:categoryConstraint>
+		</swe:ConstrainedPhenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:ConstrainedPhenomenon gml:id="ChemicalPresenceInAirDPM">
+			<gml:name>DPM chemical presence</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:ChemicalPresenceInAirDPM</gml:name>
+			<swe:base xlink:href="#ChemicalPresenceInAir"/>
+			<swe:categoryConstraint property="#Chemical" codeSpace="./">DPM</swe:categoryConstraint>
+		</swe:ConstrainedPhenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:ConstrainedPhenomenon gml:id="ChemicalPresenceInAirMS">
+			<gml:name>MS chemical presence</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:ChemicalPresenceInAirMS</gml:name>
+			<swe:base xlink:href="#ChemicalPresenceInAir"/>
+			<swe:categoryConstraint property="#Chemical" codeSpace="./">MS</swe:categoryConstraint>
+		</swe:ConstrainedPhenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:ConstrainedPhenomenon gml:id="ChemicalPresenceInAirGA">
+			<gml:name>GA chemical presence</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:ChemicalPresenceInAirGA</gml:name>
+			<swe:base xlink:href="#ChemicalPresenceInAir"/>
+			<swe:categoryConstraint property="#Chemical" codeSpace="./">GA</swe:categoryConstraint>
+		</swe:ConstrainedPhenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:ConstrainedPhenomenon gml:id="ChemicalPresenceInAirGB">
+			<gml:name>GB chemical presence</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:ChemicalPresenceInAirGB</gml:name>
+			<swe:base xlink:href="#ChemicalPresenceInAir"/>
+			<swe:categoryConstraint property="#Chemical" codeSpace="./">GB</swe:categoryConstraint>
+		</swe:ConstrainedPhenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:ConstrainedPhenomenon gml:id="ChemicalPresenceInAirGD_GF">
+			<gml:name>GD_GF chemical presence</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:ChemicalPresenceInAirGD_GF</gml:name>
+			<swe:base xlink:href="#ChemicalPresenceInAir"/>
+			<swe:categoryConstraint property="#Chemical" codeSpace="./">GD_GF</swe:categoryConstraint>
+		</swe:ConstrainedPhenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:ConstrainedPhenomenon gml:id="ChemicalPresenceInAirVX">
+			<gml:name>VX chemical presence</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:ChemicalPresenceInAirVX</gml:name>
+			<swe:base xlink:href="#ChemicalPresenceInAir"/>
+			<swe:categoryConstraint property="#Chemical" codeSpace="./">VX</swe:categoryConstraint>
+		</swe:ConstrainedPhenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:ConstrainedPhenomenon gml:id="ChemicalPresenceInAirHD">
+			<gml:name>HD chemical presence</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:ChemicalPresenceInAirHD</gml:name>
+			<swe:base xlink:href="#ChemicalPresenceInAir"/>
+			<swe:categoryConstraint property="#Chemical" codeSpace="./">HD</swe:categoryConstraint>
+		</swe:ConstrainedPhenomenon>
+	</gml:dictionaryEntry>
+	<!-- ============== -->
+	<gml:dictionaryEntry>
+		<swe:ConstrainedPhenomenon gml:id="AirTemperature">
+			<gml:name>Air Temperature</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:AirTemperature</gml:name>
+			<swe:base xlink:href="#Temperature"/>
+			<swe:categoryConstraint property="#Medium" codeSpace="http://www.opengis.net/ows/material">Air</swe:categoryConstraint>
+		</swe:ConstrainedPhenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:ConstrainedPhenomenon gml:id="AverageWindSpeed15Minute">
+			<gml:description>Average wind speed - 15 minutes</gml:description>
+			<gml:name>AverageWindSpeed15Minute</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:AverageWindSpeed15Minute</gml:name>
+			<swe:base xlink:href="#WindSpeed"/>
+			<!-- trying to represent the averaging period in secconds -->
+			<swe:measureConstraint property="#TimeAverage" uom="./units.xml#s">900</swe:measureConstraint>
+		</swe:ConstrainedPhenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:ConstrainedPhenomenon gml:id="AverageAirTemperature15Minute">
+			<gml:description>Average air temperature - 15 minutes</gml:description>
+			<gml:name>AverageAirTemperature15Minute</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:AverageAirTemperature15Minute</gml:name>
+			<swe:base xlink:href="#AirTemperature"/>
+			<!-- trying to represent the averaging period in secconds -->
+			<swe:measureConstraint property="#TimeAverage" uom="./units.xml#s">900</swe:measureConstraint>
+		</swe:ConstrainedPhenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:ConstrainedPhenomenon gml:id="MaximumWindSpeed15Minute">
+			<gml:description>Maximum wind speed - 15 minutes</gml:description>
+			<gml:name>MaximumWindSpeed15Minute</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:MaximumWindSpeed15Minute</gml:name>
+			<swe:base xlink:href="#WindSpeed"/>
+			<!-- trying to represent the averaging period in secconds -->
+			<swe:measureConstraint property="#Max" uom="./units.xml#s">900</swe:measureConstraint>
+		</swe:ConstrainedPhenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:ConstrainedPhenomenon gml:id="MinimumWindSpeed15Minute">
+			<gml:description>Minimum wind speed - 15 minutes</gml:description>
+			<gml:name>MinimumWindSpeed15Minute</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:MinimumWindSpeed15Minute</gml:name>
+			<swe:base xlink:href="#WindSpeed"/>
+			<!-- trying to represent the averaging period in secconds -->
+			<swe:measureConstraint property="#Min" uom="./units.xml#s">900</swe:measureConstraint>
+		</swe:ConstrainedPhenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:ConstrainedPhenomenon gml:id="MaximumRelativeHumidity15Minute">
+			<gml:description>Maximum relative humidity - 15 minutes</gml:description>
+			<gml:name>MaximumRelativeHumidity15Minute</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:MaximumRelativeHumidity15Minute</gml:name>
+			<swe:base xlink:href="#RelativeHumidity"/>
+			<!-- trying to represent the averaging period in secconds -->
+			<swe:measureConstraint property="#Max" uom="./units.xml#s">900</swe:measureConstraint>
+		</swe:ConstrainedPhenomenon>
+	</gml:dictionaryEntry>
+	<!-- Some odds and sods for illustrative purposes -->
+	<gml:dictionaryEntry>
+		<swe:Phenomenon gml:id="Weather">
+			<gml:description>Generic weather type. This may be used directly, typically for cases where the observation has a textual result. Or it may serve as the basis for more specific weather types by extension - see below.</gml:description>
+			<gml:name>Weather</gml:name>
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:OGC:Weather</gml:name>
+		</swe:Phenomenon>
+	</gml:dictionaryEntry>
+	<gml:dictionaryEntry>
+		<swe:CompositePhenomenon gml:id="weather1" dimension="6">
+			<gml:name codeSpace="urn:x-ogc:tc:arch:doc-rp(05-010)">urn:x-ogc:def:phenomenon:SEEGrid:weather1</gml:name>
+			<swe:base xlink:href="urn:x-ogc:def:phenomenon:OGC:Weather"/>
+			<swe:component xlink:href="urn:x-ogc:def:phenomenon:OGC:AirTemperature"/>
+			<swe:component xlink:href="urn:x-ogc:def:phenomenon:OGC:WindSpeed"/>
+			<swe:component xlink:href="urn:x-ogc:def:phenomenon:OGC:WindDirection"/>
+			<swe:component xlink:href="urn:x-ogc:def:phenomenon:OGC:AtmosphericPressure"/>
+			<swe:component xlink:href="urn:x-ogc:def:phenomenon:OGC:RelativeHumidity"/>
+			<swe:component xlink:href="urn:x-ogc:def:phenomenon:OGC:Visibility"/>
+		</swe:CompositePhenomenon>
+	</gml:dictionaryEntry>
+</gml:Dictionary>

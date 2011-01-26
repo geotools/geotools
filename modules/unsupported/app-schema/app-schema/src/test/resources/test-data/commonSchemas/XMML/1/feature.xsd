@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns:xmml="http://www.opengis.net/xmml" xmlns="http://www.w3.org/2001/XMLSchema"
+  xmlns:gml="http://www.opengis.net/gml" xmlns:xlink="http://www.w3.org/1999/xlink"
+  targetNamespace="http://www.opengis.net/xmml" elementFormDefault="qualified" attributeFormDefault="unqualified"
+  version="pre-release">
+  <annotation>
+    <documentation>
+      feature.xsd
+
+      A few variations on the basic feature and feature collection types for XMML
+
+      Copyright (c) 2005 CSIRO - see https://www.seegrid.csiro.au/twiki/bin/view/Xmml/LegalNotices#Software_Notice
+    </documentation>
+  </annotation>
+  <!-- ====================================================================== -->
+  <!-- bring in other schemas -->
+  <import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd" />
+  <include schemaLocation="./base.xsd" />
+  <!-- ====================================================================== -->
+  <!-- === A few variations on the basic feature and feature collection types === -->
+  <!-- ====================================================================== -->
+  <group name="ExtendedFeatureProperties">
+    <sequence>
+      <element name="place" type="gml:CodeType" minOccurs="0" maxOccurs="unbounded" />
+      <element name="country" type="gml:CodeType" minOccurs="0" />
+      <element name="relatedFeature" type="gml:ReferenceType" minOccurs="0" maxOccurs="unbounded">
+        <annotation>
+          <documentation>
+            General link to another feature. Use xlink:role to indicate the nature of the related feature, and
+            xlink:arcrole to indicate the nature of the relationship
+          </documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </group>
+  <!-- ====================================================================== -->
+  <element name="Feature" type="xmml:FeatureType" substitutionGroup="gml:_Feature">
+    <annotation>
+      <documentation>A generic feature for XMML.</documentation>
+    </annotation>
+  </element>
+  <!-- ...................... -->
+  <complexType name="AbstractFeatureType" abstract="true">
+    <annotation>
+      <documentation>Suppress gml:location</documentation>
+    </annotation>
+    <complexContent>
+      <restriction base="gml:AbstractFeatureType">
+        <sequence>
+          <group ref="gml:StandardObjectProperties" />
+          <element ref="gml:boundedBy" minOccurs="0" />
+        </sequence>
+      </restriction>
+    </complexContent>
+  </complexType>
+  <!-- ...................... -->
+  <complexType name="FeatureType">
+    <annotation>
+      <documentation>
+        Extend with place - location given as keyword or string, e.g. mapsheet name/code support - definitions,
+        geometries, etc that may be used in the document comment - additional comments that are not strictly part of the
+        feature description relatedFeature - assert a relationship with another feature.
+
+        Note, however, that features derived from this base may have additional more specific geometry properties, which
+        may be more suitable for specific operations.
+      </documentation>
+    </annotation>
+    <complexContent>
+      <extension base="xmml:AbstractFeatureType">
+        <sequence>
+          <group ref="xmml:StandardLiteMetadata" />
+          <group ref="xmml:ExtendedFeatureProperties" />
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <!-- ====================================================================== -->
+  <element name="FeatureCollection" type="xmml:FeatureCollectionType" substitutionGroup="gml:_Feature">
+    <annotation>
+      <documentation>A generic concrete bag of features for XMML.</documentation>
+    </annotation>
+  </element>
+  <!-- ...................... -->
+  <complexType name="FeatureCollectionType">
+    <annotation>
+      <documentation>Extend with collection composition properties</documentation>
+    </annotation>
+    <complexContent>
+      <extension base="xmml:FeatureType">
+        <sequence>
+          <element name="featureMember" type="gml:FeaturePropertyType" minOccurs="0" maxOccurs="unbounded" />
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <!-- ===================================================== -->
+  <!-- ===================================================== -->
+  <!-- === Specialised location properties === -->
+  <!-- ===================================================== -->
+  <!-- ====================================================================== -->
+  <element name="geogPosition" type="gml:PointPropertyType">
+    <annotation>
+      <documentation>
+        property used to record location as a point within a geographic coordinate reference system
+      </documentation>
+    </annotation>
+  </element>
+  <!-- ===================================================== -->
+  <element name="projPosition" type="gml:PointPropertyType">
+    <annotation>
+      <documentation>
+        property used to record location as a point within a projected coordinate reference system
+      </documentation>
+    </annotation>
+  </element>
+  <!-- ====================================================================== -->
+  <!-- PositionedFeature and BoundedFeature have been removed. These feature-types are a throw-back to the old geometry-centric abstraction and do not belong in a conceptual feature-type hierarchy. If position and bounds are required on a feature-type, they should be introduced locally. -->
+  <!-- ======================================================================
+    <element name="AbstractBoundedFeature" type="xmml:BoundedFeatureType" abstract="true" substitutionGroup="xmml:Feature">
+    <annotation>
+    <documentation>A generic feature for XMML, with bounding box mandatory.  </documentation>
+    </annotation>
+    </element> -->
+  <!-- ......................
+    <complexType name="BoundedFeatureType">
+    <annotation>
+    <documentation>enforce boundedBy property</documentation>
+    </annotation>
+    <complexContent>
+    <restriction base="xmml:FeatureType">
+    <sequence>
+    <group ref="gml:StandardObjectProperties"/>
+    <element ref="gml:boundedBy"/>
+    <group ref="xmml:StandardLiteMetadata"/>
+    <group ref="xmml:ExtendedFeatureProperties"/>
+    </sequence>
+    </restriction>
+    </complexContent>
+    </complexType> -->
+  <!-- ======
+    <complexType name="NonBoundedFeatureType">
+    <annotation>
+    <documentation>suppress boundedBy property</documentation>
+    </annotation>
+    <complexContent>
+    <restriction base="xmml:FeatureType">
+    <sequence>
+    <group ref="gml:StandardObjectProperties"/>
+    <group ref="xmml:StandardLiteMetadata"/>
+    <group ref="xmml:ExtendedFeatureProperties"/>
+    </sequence>
+    </restriction>
+    </complexContent>
+    </complexType> -->
+  <!-- ======================================================================
+    <element name="AbstractPositionedFeature" type="xmml:PositionedFeatureType" abstract="true" substitutionGroup="xmml:Feature">
+    <annotation>
+    <documentation>A generic feature for XMML, with position.  </documentation>
+    </annotation>
+    </element>   -->
+  <!-- ......................
+    <complexType name="PositionedFeatureType">
+    <annotation>
+    <documentation>     
+    add position - the one recommended, by the data provider, for portrayal and spatial analysis.  
+    add optional location (keyword or string) and positionMethod
+    </documentation>
+    </annotation>
+    <complexContent>
+    <extension base="xmml:NonBoundedFeatureType">
+    <sequence>
+    <element ref="gml:position"/>
+    <element ref="xmml:positionMethod" minOccurs="0"/>
+    </sequence>
+    </extension>
+    </complexContent>
+    </complexType> -->
+</schema>

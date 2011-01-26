@@ -1,0 +1,49 @@
+Plugin EPSG-EXT
+~~~~~~~~~~~~~~~
+
+  Module Maintainer: Martin Desruisseaux
+
+  IP Review:
+
+    * Jody Garnett, July 9th, 2006
+
+    * Adrian Custer, July 2008
+
+
+  STATUS: DIRTY
+      Code is CLEAN 
+      Resources pending resolution of epsg.properties
+        http://jira.codehaus.org/browse/GEOT-1882
+
+  The EPSG-EXT module is derived from the EPSG-WKT module. The "esri.properties"
+  and "extra.properties" files in EPST-EXT are derived from "epsg.properties" in
+  EPSG-WKT.    The IP review done by Jody Garnett for EPSG-WKT on July 9th, 2006
+  applies to EPSG-EXT as well. This review is copied below with some adaptations
+  for the new directory layout in EPSG-EXT. See SVN history for a list of changes.
+
+  The (re) distribution of epsg.properties requires clairfication, asked
+  Paul Ramsey for advice via email. Response from Paul:
+  All public information.
+
+    * http://edndoc.esri.com/arcims/9.2/elements/pcs.htm
+
+    * http://edndoc.esri.com/arcims/9.2/elements/gcs.htm
+
+  But the website is governed by the painfully closed terms of use:
+  http://edn.esri.com/index.cfm?fa=misc.termsOfUse
+
+  * Still needs clarification
+
+
+* org.geotools.referencing.factory.epsg
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Code contains a few basic property files based pseudo-EPSG Authority. The WKT definitions
+  contained are a derived data product from the PostGIS project, modifed to hack around
+  limitations in early GeoTools.
+
+    * *.properties data a derived data product from PostGIS, license unclear
+
+
+* org.geotools.referencing.factory.epsg (test)
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  OK

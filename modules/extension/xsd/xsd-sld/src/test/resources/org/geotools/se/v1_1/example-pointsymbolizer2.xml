@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<PointSymbolizer version="1.1.0" xsi:schemaLocation="http://www.opengis.net/se http://www.opengis.net/se/1.1.0/Symbolizer.xsd" xmlns="http://www.opengis.net/se" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="http://www.opengeospatial.org/se/units/pixel">
+	<Name>MyPointSymbolizer</Name>
+	<Description>
+		<Title>Example Pointsymbolizer</Title>
+		<Abstract>This is just a simple example of a point symbolizer.</Abstract>
+	</Description>
+	<Graphic>
+		<ExternalGraphic>
+			<OnlineResource xlink:type="simple" xlink:href="http://www.vendor.com/geosym/2267.svg"/>
+			<Format>image/svg+xml</Format>
+		</ExternalGraphic>
+		<ExternalGraphic>
+			<OnlineResource xlink:type="simple" xlink:href="http://www.vendor.com/geosym/2267.png"/>
+			<Format>image/png</Format>
+		</ExternalGraphic>
+		<Size>15.0</Size>
+	</Graphic>
+</PointSymbolizer>

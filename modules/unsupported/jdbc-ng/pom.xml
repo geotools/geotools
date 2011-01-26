@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- =======================================================================    
+        Maven Project Configuration File                                        
+                                                                                
+        The Geotools Project                                                    
+            http://www.geotools.org/                                            
+                                                                                
+        Version: $Id$              
+     ======================================================================= -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                               http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.geotools.jdbc</groupId>
+    <artifactId>gt-jdbc</artifactId>
+    <version>2.7-SNAPSHOT</version>
+    <relativePath>../../plugin/jdbc/pom.xml</relativePath>
+  </parent>
+
+
+  <!-- =========================================================== -->
+  <!--     Module Description                                      -->
+  <!-- =========================================================== -->
+  <groupId>org.geotools</groupId>
+  <artifactId>gt-jdbc-ng</artifactId>
+  <packaging>pom</packaging>
+  <name>Next Generation JDBC DataStores</name>
+  
+
+  <scm>
+    <connection>
+      scm:svn:http://svn.geotools.org/trunk/modules/unsupported/jdbc-ng/
+    </connection>
+    <url>http://svn.geotools.org/trunk/modules/unsupported/jdbc-ng/</url>
+  </scm>
+
+  <licenses>
+    <license>
+      <name>Lesser General Public License (LGPL)</name>
+      <url>http://www.gnu.org/copyleft/lesser.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+
+  <!-- =========================================================== -->
+  <!--     Developers and Contributors                             -->
+  <!-- =========================================================== -->
+  <developers>
+    <developer>
+      <name>Justin Deoliveira</name>
+      <id>jdeolive</id>
+      <email>jdeolive@users.sourceforge.net</email>
+      <organization>TOPP</organization>
+      <roles>
+        <role>Module Maintainer</role>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+  </developers>
+
+  <!--dependencies>
+    <dependency>
+      <groupId>simple-jndi</groupId>
+      <artifactId>simple-jndi</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+         <groupId>org.apache.maven.plugins</groupId>
+         <artifactId>maven-surefire-plugin</artifactId>
+         <configuration>
+           <systemProperties>
+              <property>
+                 <name>java.naming.factory.initial</name>
+                 <value>org.osjava.sj.SimpleContextFactory</value>
+              </property>
+              <property>
+                 <name>org.osjava.sj.root</name>
+                 <value>file://${project.build.directory}/jndi</value>
+              </property>
+              <property>
+                 <name>org.osjava.jndi.delimiter</name>
+                 <value>/</value>
+              </property>
+          </systemProperties>
+         </configuration>
+       </plugin>
+     </plugins>
+  </build-->
+
+  <modules>
+  </modules>
+</project>

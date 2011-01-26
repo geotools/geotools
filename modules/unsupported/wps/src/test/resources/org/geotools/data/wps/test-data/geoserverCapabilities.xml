@@ -1,0 +1,540 @@
+<wps:Capabilities xml:lang="en" service="WPS" version="1.0.0"
+ xmlns:wps="http://www.opengis.net/wps/1.0.0" xmlns:ows="http://www.opengis.net/ows/1.1"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+ <ows:ServiceIdentification>
+  <ows:Title>Prototype GeoServer WPS</ows:Title>
+  <ows:Abstract />
+  <ows:ServiceType>WPS</ows:ServiceType>
+  <ows:ServiceTypeVersion>1.0.0</ows:ServiceTypeVersion>
+ </ows:ServiceIdentification>
+ <ows:ServiceProvider>
+  <ows:ProviderName>GeoServer</ows:ProviderName>
+  <ows:ProviderSite xlink:href="http://geoserver.org" />
+  <ows:ServiceContact />
+ </ows:ServiceProvider>
+ <ows:OperationsMetadata>
+  <ows:Operation name="GetCapabilities">
+   <ows:DCP>
+    <ows:HTTP>
+     <ows:Get
+      xlink:href="http://localhost:8080/geoserver/?service=wps&amp;request=GetCapabilities&amp;" />
+     <ows:Post xlink:href="http://localhost:8080/geoserver/" />
+    </ows:HTTP>
+   </ows:DCP>
+  </ows:Operation>
+  <ows:Operation name="DescribeProcess">
+   <ows:DCP>
+    <ows:HTTP>
+     <ows:Get
+      xlink:href="http://localhost:8080/geoserver/?service=wps&amp;request=DescribeProcess&amp;" />
+     <ows:Post xlink:href="http://localhost:8080/geoserver/" />
+    </ows:HTTP>
+   </ows:DCP>
+  </ows:Operation>
+  <ows:Operation name="Execute">
+   <ows:DCP>
+    <ows:HTTP>
+     <ows:Get
+      xlink:href="http://localhost:8080/geoserver/?service=wps&amp;request=Execute&amp;" />
+     <ows:Post xlink:href="http://localhost:8080/geoserver/" />
+    </ows:HTTP>
+   </ows:DCP>
+  </ows:Operation>
+ </ows:OperationsMetadata>
+ <wps:ProcessOfferings>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>gt:buffer</ows:Identifier>
+   <ows:Title>Buffer</ows:Title>
+   <ows:Abstract>Buffer a geometry</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>orci:Bounds</ows:Identifier>
+   <ows:Title>bounds</ows:Title>
+   <ows:Abstract>Computes the overlall bounds of the input features
+   </ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>orci:Snap</ows:Identifier>
+   <ows:Title>Snap</ows:Title>
+   <ows:Abstract>Snap to nearest feature</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>orci:Nearest</ows:Identifier>
+   <ows:Title>Nearest</ows:Title>
+   <ows:Abstract>Get nearest feature</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>gt:Intersect</ows:Identifier>
+   <ows:Title>Intersection</ows:Title>
+   <ows:Abstract>Intersection between two literal geometry
+   </ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="0.0.4">
+   <ows:Identifier>gt:RasterToVector</ows:Identifier>
+   <ows:Title>Vectorize raster regions</ows:Title>
+   <ows:Abstract>Raster region to vector polygon conversion
+   </ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>gt:VectorToRaster</ows:Identifier>
+   <ows:Title>Rasterize features</ows:Title>
+   <ows:Abstract>Rasterize all or selected features in a
+    FeatureCollection</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:geometricproperties</ows:Identifier>
+   <ows:Title>Geometric properties of polygons</ows:Title>
+   <ows:Abstract>Geometric properties of polygons</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:cleanpointslayer</ows:Identifier>
+   <ows:Title>Clean points layer</ows:Title>
+   <ows:Abstract>Clean points layer</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:ln</ows:Identifier>
+   <ows:Title>ln()</ows:Title>
+   <ows:Abstract>ln()</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:variabledistancebuffer</ows:Identifier>
+   <ows:Title>Variable distance buffer</ows:Title>
+   <ows:Abstract>Variable distance buffer</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:generateterrain</ows:Identifier>
+   <ows:Title>Random DEM</ows:Title>
+   <ows:Abstract>Random DEM</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:fixeddistancebuffer</ows:Identifier>
+   <ows:Title>Fixed distance buffer</ows:Title>
+   <ows:Abstract>Fixed distance buffer</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:log10</ows:Identifier>
+   <ows:Title>log10()</ows:Title>
+   <ows:Abstract>log10()</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:divide</ows:Identifier>
+   <ows:Title>/</ows:Title>
+   <ows:Abstract>/</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:multiply</ows:Identifier>
+   <ows:Title>*</ows:Title>
+   <ows:Abstract>*</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:gridcalculator</ows:Identifier>
+   <ows:Title>Raster calculator</ows:Title>
+   <ows:Abstract>Raster calculator</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:polylinestopolygons</ows:Identifier>
+   <ows:Title>Polylines to polygons</ows:Title>
+   <ows:Abstract>Polylines to polygons</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:difference</ows:Identifier>
+   <ows:Title>Difference</ows:Title>
+   <ows:Abstract>Difference</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:separateshapes</ows:Identifier>
+   <ows:Title>Separate entities</ows:Title>
+   <ows:Abstract>Separate entities</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:exportvector</ows:Identifier>
+   <ows:Title>Export vector layer</ows:Title>
+   <ows:Abstract>Export vector layer</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:boundingbox</ows:Identifier>
+   <ows:Title>Bounding Box</ows:Title>
+   <ows:Abstract>Bounding Box</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:gridstatisticsinpolygons</ows:Identifier>
+   <ows:Title>Grid statistics in polygons</ows:Title>
+   <ows:Abstract>Grid statistics in polygons</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:ceil</ows:Identifier>
+   <ows:Title>ceil()</ows:Title>
+   <ows:Abstract>ceil()</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:extendpointslayerwithgrids</ows:Identifier>
+   <ows:Title>Sample raster layers</ows:Title>
+   <ows:Abstract>Sample raster layers</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:generaterandombernoulli</ows:Identifier>
+   <ows:Title>Random grid (Bernouilli)</ows:Title>
+   <ows:Abstract>Random grid (Bernouilli)</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:splitmultipart</ows:Identifier>
+   <ows:Title>Separate multi-part features</ows:Title>
+   <ows:Abstract>Separate multi-part features</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:cleanvectorlayer</ows:Identifier>
+   <ows:Title>Clean vector layer</ows:Title>
+   <ows:Abstract>Clean vector layer</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:linestoequispacedpoints</ows:Identifier>
+   <ows:Title>Lines to equispaced points</ows:Title>
+   <ows:Abstract>Lines to equispaced points</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:geometricpropertieslines</ows:Identifier>
+   <ows:Title>Geometric properties of lines</ows:Title>
+   <ows:Abstract>Geometric properties of lines</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:gridfromfunction</ows:Identifier>
+   <ows:Title>Grid from function</ows:Title>
+   <ows:Abstract>Grid from function</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:merge</ows:Identifier>
+   <ows:Title>Merge</ows:Title>
+   <ows:Abstract>Merge</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:graticulebuilder</ows:Identifier>
+   <ows:Title>Create graticule</ows:Title>
+   <ows:Abstract>Create graticule</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:removerepeatedgeometries</ows:Identifier>
+   <ows:Title>Remove repeated geometries</ows:Title>
+   <ows:Abstract>Remove repeated geometries</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:sqrt</ows:Identifier>
+   <ows:Title>sqrt()</ows:Title>
+   <ows:Abstract>sqrt()</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:addeventtheme</ows:Identifier>
+   <ows:Title>Points layer from table</ows:Title>
+   <ows:Abstract>Points layer from table</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:noteq</ows:Identifier>
+   <ows:Title>!=</ows:Title>
+   <ows:Abstract>!=</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:constantgrid</ows:Identifier>
+   <ows:Title>Constant grid</ows:Title>
+   <ows:Abstract>Constant grid</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:snappoints</ows:Identifier>
+   <ows:Title>Snap points to layer</ows:Title>
+   <ows:Abstract>Snap points to layer</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:removeholes</ows:Identifier>
+   <ows:Title>Remove holes</ows:Title>
+   <ows:Abstract>Remove holes</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:intersection</ows:Identifier>
+   <ows:Title>Intersection</ows:Title>
+   <ows:Abstract>Intersection</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:splitlineswithpoints</ows:Identifier>
+   <ows:Title>Split lines with points layer</ows:Title>
+   <ows:Abstract>Split lines with points layer</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:centroids</ows:Identifier>
+   <ows:Title>Centroids</ows:Title>
+   <ows:Abstract>Centroids</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:abs</ows:Identifier>
+   <ows:Title>abs()</ows:Title>
+   <ows:Abstract>abs()</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:randomvector</ows:Identifier>
+   <ows:Title>Create random vector layer</ows:Title>
+   <ows:Abstract>Create random vector layer</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:eq</ows:Identifier>
+   <ows:Title>==</ows:Title>
+   <ows:Abstract>==</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:splitpolylinesatnodes</ows:Identifier>
+   <ows:Title>Split polylines at nodes</ows:Title>
+   <ows:Abstract>Split polylines at nodes</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:generaterandomuniform</ows:Identifier>
+   <ows:Title>Random grid (uniform)</ows:Title>
+   <ows:Abstract>Random grid (uniform)</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:groupnearfeatures</ows:Identifier>
+   <ows:Title>Group near features</ows:Title>
+   <ows:Abstract>Group near features</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:generaterandomnormal</ows:Identifier>
+   <ows:Title>Random grid (normal)</ows:Title>
+   <ows:Abstract>Random grid (normal)</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:normalize</ows:Identifier>
+   <ows:Title>Normalize</ows:Title>
+   <ows:Abstract>Normalize</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:distanceandangle</ows:Identifier>
+   <ows:Title>Distances and Angles</ows:Title>
+   <ows:Abstract>Distances and Angles</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:symdifference</ows:Identifier>
+   <ows:Title>Symmetric difference</ows:Title>
+   <ows:Abstract>Symmetric difference</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:perturbatepointslayer</ows:Identifier>
+   <ows:Title>Perturbate points layer</ows:Title>
+   <ows:Abstract>Perturbate points layer</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:countpoints</ows:Identifier>
+   <ows:Title>Count points in polygons</ows:Title>
+   <ows:Abstract>Count points in polygons</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:simplifylines</ows:Identifier>
+   <ows:Title>Simplify lines</ows:Title>
+   <ows:Abstract>Simplify lines</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:volume</ows:Identifier>
+   <ows:Title>Volume calculation</ows:Title>
+   <ows:Abstract>Volume calculation</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:vectorcluster</ows:Identifier>
+   <ows:Title>Cluster</ows:Title>
+   <ows:Abstract>Cluster</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:or</ows:Identifier>
+   <ows:Title>OR</ows:Title>
+   <ows:Abstract>OR</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:lowerthan</ows:Identifier>
+   <ows:Title>&lt;</ows:Title>
+   <ows:Abstract>&lt;</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:polygonize</ows:Identifier>
+   <ows:Title>Polygonize</ows:Title>
+   <ows:Abstract>Polygonize</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:union</ows:Identifier>
+   <ows:Title>Union</ows:Title>
+   <ows:Abstract>Union</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:kernelfilter</ows:Identifier>
+   <ows:Title>User-defined 3 X 3 filter</ows:Title>
+   <ows:Abstract>User-defined 3 X 3 filter</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:dissolve</ows:Identifier>
+   <ows:Title>Dissolve</ows:Title>
+   <ows:Abstract>Dissolve</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:minimumenclosingpolygon</ows:Identifier>
+   <ows:Title>Minimum enclosing shapes</ows:Title>
+   <ows:Abstract>Minimum enclosing shapes</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:extendlineslayerwithgrids</ows:Identifier>
+   <ows:Title>Sample lines extreme points</ows:Title>
+   <ows:Abstract>Sample lines extreme points</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:xor</ows:Identifier>
+   <ows:Title>XOR</ows:Title>
+   <ows:Abstract>XOR</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:geometriestopoints</ows:Identifier>
+   <ows:Title>Geometries to points</ows:Title>
+   <ows:Abstract>Geometries to points</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:generateroutes</ows:Identifier>
+   <ows:Title>Generate alternative routes</ows:Title>
+   <ows:Abstract>Generate alternative routes</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:transform</ows:Identifier>
+   <ows:Title>Transform</ows:Title>
+   <ows:Abstract>Transform</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:simplifypolygons</ows:Identifier>
+   <ows:Title>Simplify polygons</ows:Title>
+   <ows:Abstract>Simplify polygons</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:changelinedirection</ows:Identifier>
+   <ows:Title>Change line direction</ows:Title>
+   <ows:Abstract>Change line direction</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:and</ows:Identifier>
+   <ows:Title>AND</ows:Title>
+   <ows:Abstract>AND</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:floor</ows:Identifier>
+   <ows:Title>floor()</ows:Title>
+   <ows:Abstract>floor()</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:polygonstatisticsfrompoints</ows:Identifier>
+   <ows:Title>Point statistics in polygons</ows:Title>
+   <ows:Abstract>Point statistics in polygons</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:polygonstopolylines</ows:Identifier>
+   <ows:Title>Polygons to polylines</ows:Title>
+   <ows:Abstract>Polygons to polylines</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:clipbyrectangle</ows:Identifier>
+   <ows:Title>Clip by rectangle</ows:Title>
+   <ows:Abstract>Clip by rectangle</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:minus</ows:Identifier>
+   <ows:Title>-</ows:Title>
+   <ows:Abstract>-</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:volumebetweengrids</ows:Identifier>
+   <ows:Title>Volumen between two layers</ows:Title>
+   <ows:Abstract>Volumen between two layers</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:polylinestosinglesegments</ows:Identifier>
+   <ows:Title>Polylines to single segments</ows:Title>
+   <ows:Abstract>Polylines to single segments</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:pointcoordinates</ows:Identifier>
+   <ows:Title>Add coordinates to points</ows:Title>
+   <ows:Abstract>Add coordinates to points</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:clip</ows:Identifier>
+   <ows:Title>Clip</ows:Title>
+   <ows:Abstract>Clip</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:fitnpointsinpolygon</ows:Identifier>
+   <ows:Title>Adjust n point to polygon</ows:Title>
+   <ows:Abstract>Adjust n point to polygon</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:mod</ows:Identifier>
+   <ows:Title>Mod</ows:Title>
+   <ows:Abstract>Mod</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:plus</ows:Identifier>
+   <ows:Title>+</ows:Title>
+   <ows:Abstract>+</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:delaunay</ows:Identifier>
+   <ows:Title>Delaunay triangulation</ows:Title>
+   <ows:Abstract>Delaunay triangulation</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:autoincrementvalue</ows:Identifier>
+   <ows:Title>Autoincrement Value</ows:Title>
+   <ows:Abstract>Autoincrement Value</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:vectormean</ows:Identifier>
+   <ows:Title>Directional mean</ows:Title>
+   <ows:Abstract>Directional mean</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:savetowkt</ows:Identifier>
+   <ows:Title>Save geometries as WKT</ows:Title>
+   <ows:Abstract>Save geometries as WKT</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:vectorspatialcluster</ows:Identifier>
+   <ows:Title>Spatial cluster</ows:Title>
+   <ows:Abstract>Spatial cluster</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:smoothlines</ows:Identifier>
+   <ows:Title>Smooth lines</ows:Title>
+   <ows:Abstract>Smooth lines</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>sxt:greaterthan</ows:Identifier>
+   <ows:Title>&gt;</ows:Title>
+   <ows:Abstract>&gt;</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>gt:Union</ows:Identifier>
+   <ows:Title>Union</ows:Title>
+   <ows:Abstract>Union 2 or more geometries together</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>gt:DoubleAddition</ows:Identifier>
+   <ows:Title>DoubleAddition</ows:Title>
+   <ows:Abstract>Adds two double precision floating point numbers and
+    returns the sum as a double</ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>gt:BufferFeatureCollection</ows:Identifier>
+   <ows:Title>Buffer Features</ows:Title>
+   <ows:Abstract>Buffer each Feature in a Feature Collection
+   </ows:Abstract>
+  </wps:Process>
+  <wps:Process wps:processVersion="1.0.0">
+   <ows:Identifier>gt:FeatureBuffer</ows:Identifier>
+   <ows:Title>FeatureBuffer</ows:Title>
+   <ows:Abstract>Buffers a Feature by a constant.</ows:Abstract>
+  </wps:Process>
+ </wps:ProcessOfferings>
+ <wps:Languages>
+  <wps:Default>
+   <ows:Language>en-US</ows:Language>
+  </wps:Default>
+  <wps:Supported>
+   <ows:Language>en-US</ows:Language>
+  </wps:Supported>
+ </wps:Languages>
+</wps:Capabilities>

@@ -1,0 +1,14 @@
+!mvn install:install-file -Dfile=e:\temp\db2jcc.jar
+                         -DgroupId=com.ibm
+                         -DartifactId=db2jcc
+                         -Dversion=9
+                         -Dpackaging=jar
+                         -DcreateChecksum=true
+                         -DgeneratePom=true;
+!mvn install:install-file -Dfile=e:\temp\db2jcc_license_cu.jar
+                         -DgroupId=com.ibm
+                         -DartifactId=db2jcc_license_cu
+                         -Dversion=9
+                         -Dpackaging=jar
+                         -DcreateChecksum=true
+                         -DgeneratePom=true;

@@ -1,0 +1,201 @@
+<%@ jet package="org.geotools.maven.xmlcodegen.templates" imports="org.geotools.maven.xmlcodegen.* java.util.* org.apache.xml.serialize.* org.eclipse.xsd.* java.io.* org.geotools.xml.*" %>
+<%
+
+	Object[] arguments = (Object[]) argument;
+	XSDNamedComponent named = (XSDNamedComponent)arguments[0];
+	BindingConstructorArgument[] constructorArgs = (BindingConstructorArgument[]) arguments[1];
+	Class bindingBaseClass = (Class)arguments[2];
+	
+	XSDSchema schema = named.getSchema();
+	XSDTypeDefinition type = null;
+	String desc = null;
+	if (named instanceof XSDTypeDefinition) {
+		type = (XSDTypeDefinition)named;
+		desc = "type";
+	}
+	if (named instanceof XSDElementDeclaration) {
+		type = ((XSDElementDeclaration)named).getTypeDefinition();
+		desc = "element";
+	}
+	if (named instanceof XSDAttributeDeclaration) {
+		type = ((XSDAttributeDeclaration)named).getTypeDefinition();
+		desc = "attribute";
+	}
+	
+	String ns = schema.getTargetNamespace();
+	String prefix = Schemas.getTargetPrefix( schema );
+%>
+
+import org.geotools.xml.*;
+import <%=bindingBaseClass.getName()%>;
+
+<%
+	if ( constructorArgs != null ) {
+		for ( int i = 0;i < constructorArgs.length; i++ ) {
+			Class arg = constructorArgs[i].clazz;
+%>
+import <%=arg.getName()%>;		
+<%		
+		}
+	}
+%>
+
+import javax.xml.namespace.QName;
+
+/**
+ * Binding object for the <%=desc%> <%=named.getTargetNamespace()%>:<%=named.getName()%>.
+ *
+ * <p>
+ *	<pre>
+ *	 <code>
+<%
+	
+	OutputFormat output = new OutputFormat();
+	output.setOmitXMLDeclaration(true);
+	output.setIndenting(true);
+	
+	StringWriter writer = new StringWriter();
+	XMLSerializer serializer = new XMLSerializer(writer,output);
+
+	try {
+		serializer.serialize(named.getElement());
+	} 
+	catch (IOException e) {
+		e.printStackTrace();
+		return null;
+	}
+	
+	String[] lines = writer.getBuffer().toString().split("\n");
+	for (int i = 0; i < lines.length; i++) {
+%>
+ *  <%=lines[i].replaceAll("<","&lt;").replaceAll(">","&gt;")%>
+<%
+	}
+%> 
+ *		
+ *	  </code>
+ *	 </pre>
+ * </p>
+ *
+ * @generated
+ */
+<%
+	String className = named.getName().substring(0,1).toUpperCase() + 
+		named.getName().substring(1) + "Binding";
+	String baseClassName = bindingBaseClass.getName();
+	baseClassName = baseClassName.substring(bindingBaseClass.getPackage().getName().length()+1); 
+%>
+public class <%=className%> extends <%=baseClassName%> {
+
+<%
+	if ( constructorArgs != null ) {
+		List fieldNames = new ArrayList();
+		
+		StringBuffer constructor = new StringBuffer();
+		constructor.append("public " + className + "( ");
+		
+		for ( int i = 0; i < constructorArgs.length; i++ ) {
+		    
+			String fieldName = constructorArgs[i].getName();
+			Class arg = constructorArgs[i].clazz;
+			
+			String typeName = arg.getName();
+			
+			if ( typeName.lastIndexOf( '.' ) != -1 ) {
+				typeName = typeName.substring( typeName.lastIndexOf( '.') + 1 );
+			}
+			
+			fieldNames.add( fieldName );
+			
+			if ( "member".equals(constructorArgs[i].getMode() ) ) {
+%>
+	<%=typeName%> <%=fieldName%>;	
+<%
+            }
+            
+			constructor.append( typeName + " " + fieldName );
+			constructor.append( "," );
+		}
+		constructor.setLength( constructor.length()-1 );
+		
+		constructor.append( " ) {\n");
+		constructor.append( "\t\tsuper(");
+		boolean trim = false;
+		for ( int i = 0; i < constructorArgs.length; i++ ) {
+            String fieldName = (String) fieldNames.get(i);
+            if ( "parent".equals( constructorArgs[i].getMode() ) ) {
+              constructor.append(fieldName + ",");
+              trim = true;
+            }
+        }
+        if (trim) {
+            constructor.setLength(constructor.length()-1);
+        }
+		constructor.append( ");\n");
+		
+		for ( int i = 0; i < constructorArgs.length; i++ ) {
+            String fieldName = (String) fieldNames.get(i);
+            if ( "member".equals( constructorArgs[i].getMode() ) ) {
+                constructor.append( "\t\tthis." + fieldName + " = " + fieldName + ";\n");
+            }
+		}
+		constructor.append( "\t}\n" );
+%>	
+	<%=constructor.toString()%>
+<%
+	}
+%>
+	/**
+	 * @generated
+	 */
+	public QName getTarget() {
+		return <%=prefix.toUpperCase()%>.<%=named.getName()%>;
+	}
+	
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 *	
+	 * @generated modifiable
+	 */	
+	public Class getType() {
+		return null;
+	}
+	
+<%
+	if (type instanceof XSDSimpleTypeDefinition) {
+%>
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 *	
+	 * @generated modifiable
+	 */	
+	public Object parse(InstanceComponent instance, Object value) 
+		throws Exception {
+		
+		//TODO: implement and remove call to super
+		return super.parse(instance,value);
+	}
+
+<%
+	}
+	else {
+%>
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 *	
+	 * @generated modifiable
+	 */	
+	public Object parse(ElementInstance instance, Node node, Object value) 
+		throws Exception {
+		
+		//TODO: implement and remove call to super
+		return super.parse(instance,node,value);
+	}
+
+<%
+	}
+%>
+}

@@ -1,0 +1,8 @@
+<Filter xmlns:gml="http://www.opengis.net/gml">
+    <Within>
+        <PropertyName>testGeometry</PropertyName>
+        <gml:Box>
+            <gml:coordinates>10,10 20,20</gml:coordinates>
+        </gml:Box>
+    </Within>
+</Filter>

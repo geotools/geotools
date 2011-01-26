@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WFS_Capabilities version="1.0.0" xmlns:ionic="http://www.ionicsoft.com/versions/4" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/wfs https://www.rijkswaterstaat.nl/rws/agi/GeoServices/Demo/refractions/wfs/BKN_BASIC/REQUEST/get/DATA/LPR/wfs/1.0.0/WFS-capabilities.xsd" xmlns="http://www.opengis.net/wfs" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ogc="http://www.opengis.net/ogc" xmlns:ogcwfs="http://www.opengis.net/wfs">
+  <Service>
+    <Name>WFS Feature Server</Name>
+    <Title>Beheerkaart Nat (read-only)</Title>
+    <Abstract>WFS Server maintained by Ionic Software (http://www.ionicsoft.com).</Abstract>
+
+    <OnlineResource>https://www.rijkswaterstaat.nl/rws/agi/GeoServices/Demo/refractions/wfs/BKN_BASIC?</OnlineResource>
+
+  </Service>
+  <Capability>
+    <Request>
+      <GetCapabilities>
+        <DCPType>
+          <HTTP>
+            <Get onlineResource="https://www.rijkswaterstaat.nl/rws/agi/GeoServices/Demo/refractions/wfs/BKN_BASIC?"/>
+            <Post onlineResource="https://www.rijkswaterstaat.nl/rws/agi/GeoServices/Demo/refractions/wfs/BKN_BASIC"/>
+          </HTTP>
+
+        </DCPType>
+      </GetCapabilities>
+      <DescribeFeatureType>
+        <SchemaDescriptionLanguage>
+          <XMLSCHEMA/>
+        </SchemaDescriptionLanguage>
+        <DCPType>
+          <HTTP>
+            <Get onlineResource="https://www.rijkswaterstaat.nl/rws/agi/GeoServices/Demo/refractions/wfs/BKN_BASIC?"/>
+
+            <Post onlineResource="https://www.rijkswaterstaat.nl/rws/agi/GeoServices/Demo/refractions/wfs/BKN_BASIC"/>
+          </HTTP>
+        </DCPType>
+      </DescribeFeatureType>
+      <GetFeature>
+        <ResultFormat>
+          <GML2/>
+        </ResultFormat>
+        <DCPType>
+
+          <HTTP>
+            <Get onlineResource="https://www.rijkswaterstaat.nl/rws/agi/GeoServices/Demo/refractions/wfs/BKN_BASIC?"/>
+            <Post onlineResource="https://www.rijkswaterstaat.nl/rws/agi/GeoServices/Demo/refractions/wfs/BKN_BASIC"/>
+          </HTTP>
+        </DCPType>
+      </GetFeature>
+      <LockFeature>
+        <DCPType>
+          <HTTP>
+
+            <Get onlineResource="https://www.rijkswaterstaat.nl/rws/agi/GeoServices/Demo/refractions/wfs/BKN_BASIC?"/>
+            <Post onlineResource="https://www.rijkswaterstaat.nl/rws/agi/GeoServices/Demo/refractions/wfs/BKN_BASIC"/>
+          </HTTP>
+        </DCPType>
+      </LockFeature>
+      <Transaction>
+        <DCPType>
+          <HTTP>
+            <Get onlineResource="https://www.rijkswaterstaat.nl/rws/agi/GeoServices/Demo/refractions/wfs/BKN_BASIC?"/>
+
+            <Post onlineResource="https://www.rijkswaterstaat.nl/rws/agi/GeoServices/Demo/refractions/wfs/BKN_BASIC"/>
+          </HTTP>
+        </DCPType>
+      </Transaction>
+    </Request>
+  </Capability>
+  <FeatureTypeList>
+    <Operations>
+      <Query/>
+
+      <Insert/>
+      <Delete/>
+      <Update/>
+      <Lock/>
+    </Operations>
+    <FeatureType xmlns:iwfs="http://www.ionicsoft.com/wfs">
+      <Name>iwfs:BODEMTYPE</Name>
+      <SRS>EPSG:28992</SRS>
+
+      <Operations>
+        <Query/>
+      </Operations>
+      <LatLongBoundingBox minx="4.724511922719955" miny="51.887424225287305" maxx="5.46468631764356" maxy="52.37536013398457"/>
+    </FeatureType>
+    <FeatureType xmlns:iwfs="http://www.ionicsoft.com/wfs">
+      <Name>iwfs:BRUG</Name>
+      <SRS>EPSG:28992</SRS>
+
+      <Operations>
+        <Query/>
+      </Operations>
+      <LatLongBoundingBox minx="4.8674440260511815" miny="51.90154502658551" maxx="5.456020509020082" maxy="52.37078628568805"/>
+    </FeatureType>
+    <FeatureType xmlns:iwfs="http://www.ionicsoft.com/wfs">
+      <Name>iwfs:MAAIVELD</Name>
+      <SRS>EPSG:28992</SRS>
+
+      <Operations>
+        <Query/>
+      </Operations>
+      <LatLongBoundingBox minx="4.724322924190788" miny="51.88730524872273" maxx="5.466039551463094" maxy="52.375360140559515"/>
+    </FeatureType>
+    <FeatureType xmlns:iwfs="http://www.ionicsoft.com/wfs">
+      <Name>iwfs:ONDERGRONDS</Name>
+      <SRS>EPSG:28992</SRS>
+
+      <Operations>
+        <Query/>
+      </Operations>
+      <LatLongBoundingBox minx="4.95702123521871" miny="51.91801108164032" maxx="5.436727998429754" maxy="52.36834099153791"/>
+    </FeatureType>
+    <FeatureType xmlns:iwfs="http://www.ionicsoft.com/wfs">
+      <Name>iwfs:WATER</Name>
+      <SRS>EPSG:28992</SRS>
+
+      <Operations>
+        <Query/>
+      </Operations>
+      <LatLongBoundingBox minx="4.724511922718064" miny="51.887424225287305" maxx="5.464686317643787" maxy="52.37536013411099"/>
+    </FeatureType>
+  </FeatureTypeList>
+  <Filter_Capabilities xmlns="http://www.opengis.net/ogc">
+    <Spatial_Capabilities>
+      <Spatial_Operators>
+
+        <BBOX/>
+        <Equals/>
+        <Disjoint/>
+        <Intersect/>
+        <Touches/>
+        <Crosses/>
+        <Within/>
+        <Contains/>
+        <Overlaps/>
+
+        <Beyond/>
+        <DWithin/>
+      </Spatial_Operators>
+    </Spatial_Capabilities>
+    <Scalar_Capabilities>
+      <Logical_Operators/>
+      <Comparison_Operators>
+        <Simple_Comparisons/>
+        <Like/>
+
+        <Between/>
+        <NullCheck/>
+      </Comparison_Operators>
+      <Arithmetic_Operators>
+        <Simple_Arithmetic/>
+        <Functions>
+          <Function_Names>
+            <Function_Name nArgs="1">Upper</Function_Name>
+
+            <Function_Name nArgs="1">Lower</Function_Name>
+            <Function_Name nArgs="3">Distance</Function_Name>
+            <Function_Name nArgs="1">Score</Function_Name>
+          </Function_Names>
+        </Functions>
+      </Arithmetic_Operators>
+    </Scalar_Capabilities>
+
+  </Filter_Capabilities>
+</WFS_Capabilities>

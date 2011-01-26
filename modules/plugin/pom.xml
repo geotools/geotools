@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- =======================================================================    
+        Maven Project Configuration File                                        
+                                                                                
+        The Geotools Project                                                    
+            http://www.geotools.org/                                            
+                                                                                
+        Version: $Id$              
+     ======================================================================= -->
+  <project xmlns="http://maven.apache.org/POM/4.0.0" 
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                               http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.geotools</groupId>
+    <artifactId>modules</artifactId>
+    <version>2.7-SNAPSHOT</version>
+  </parent>
+
+  <!-- =========================================================== -->
+  <!--     Module Description                                      -->
+  <!-- =========================================================== -->
+  <groupId>org.geotools</groupId>
+  <artifactId>plugin</artifactId>
+  <packaging>pom</packaging>
+  <name>Geotools plugins</name>
+  <description>
+    Geotools plugins.
+  </description>
+
+  <licenses>
+    <license>
+      <name>Lesser General Public License (LGPL)</name>
+      <url>http://www.gnu.org/copyleft/lesser.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+
+  <!-- =========================================================== -->
+  <!--     Modules included in the build                           -->
+  <!-- =========================================================== --> 
+  <modules>
+    <module>arcgrid</module>
+    <module>arcsde</module>
+    <module>charts</module>
+    <module>epsg-extension</module>
+    <module>epsg-hsql</module>
+    <module>epsg-postgresql</module>
+    <module>epsg-wkt</module>
+    <module>feature-pregeneralized</module>
+    <module>geotiff</module>
+    <module>gtopo30</module>
+    <module>image</module>
+    <module>imagemosaic</module>
+    <module>imageio-ext-gdal</module>
+    <module>imagepyramid</module>
+    <module>imagemosaic-jdbc</module>
+    <module>jdbc</module>
+    <module>jp2k</module>
+    <module>property</module>
+    <module>referencing3D</module>
+    <module>shapefile</module>
+    <module>svg</module>
+  </modules>
+
+</project>
+

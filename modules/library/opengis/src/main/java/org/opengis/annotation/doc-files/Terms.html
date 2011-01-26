@@ -1,0 +1,428 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<HTML>
+  <HEAD>
+    <TITLE>Symbols, terms and definitions</TITLE>
+  </HEAD>
+  <BODY>
+  <H1>Symbols and abbreviated terms</H1>
+  <BR>
+  <BLOCKQUOTE><TABLE>
+    <!-- NOTE: Abbreviations M (mandatory), O (optional) and C (conditional) 
+               has been omitted  because  they are declared as Javadoc tags
+               instead (@UML mandatory, @UML optional and @UML conditional
+               respectively) -->
+    <TR><TD><VAR>a</VAR></TD>   <TD>&nbsp;semi-major axis</TD></TR>
+    <TR><TD><VAR>b</VAR></TD>   <TD>&nbsp;semi-minor axis</TD></TR>
+    <TR><TD>CC</TD>             <TD>&nbsp;Change Coordinates (package abbreviation in UML model)</TD></TR>
+    <TR><TD>CD</TD>             <TD>&nbsp;Coordinate datum (package abbreviation in UML model)</TD></TR>
+    <TR><TD>CCRS</TD>           <TD>&nbsp;Compound coordinate reference system</TD></TR>
+    <TR><TD>CI</TD>             <TD>&nbsp;Citation</TD></TR>
+    <TR><TD>CRS</TD>            <TD>&nbsp;Coordinate reference system</TD></TR>
+    <TR><TD>CS</TD>             <TD>&nbsp;Coordinate system (also package abbreviation in UML model)</TD></TR>
+    <TR><TD>DQ</TD>             <TD>&nbsp;Data quality (package abbreviation in UML model)</TD></TR>
+    <TR><TD><VAR>E</VAR></TD>   <TD>&nbsp;Easting</TD></TR>
+    <TR><TD><VAR>f</VAR></TD>   <TD>&nbsp;flattening</TD></TR>
+    <TR><TD><VAR>h</VAR></TD>   <TD>&nbsp;ellipsoidal height</TD></TR>
+    <TR><TD><VAR>H</VAR></TD>   <TD>&nbsp;gravity-related height</TD></TR>
+    <TR><TD>ISO</TD>            <TD>&nbsp;International Organization for Standardization</TD></TR>
+    <TR><TD>N</TD>              <TD>&nbsp;Northing</TD></TR>
+    <TR><TD>OGC</TD>            <TD>&nbsp;Open GIS Consortium</TD></TR>
+    <TR><TD>RS</TD>             <TD>&nbsp;Reference System (package abbreviation in UML model)</TD></TR>
+    <TR><TD>SC</TD>             <TD>&nbsp;Spatial referencing by Coordinates (package abbreviation in UML model)</TD></TR>
+    <TR><TD>SI</TD>             <TD>&nbsp;Le Syst&egrave;me International d'Unit&eacute;s</TD></TR>
+    <TR><TD>UML</TD>            <TD>&nbsp;Unified Modeling Language</TD></TR>
+    <TR><TD>XML</TD>            <TD>&nbsp;eXtensible Markup Language</TD></TR>
+    <TR><TD>1D</TD>             <TD>&nbsp;One Dimensional</TD></TR>
+    <TR><TD>2D</TD>             <TD>&nbsp;Two Dimensional</TD></TR>
+    <TR><TD>3D</TD>             <TD>&nbsp;Three Dimensional</TD></TR>
+    <TR><TD>&lambda;</TD>       <TD>&nbsp;geodetic longitude</TD></TR>
+    <TR><TD>&phi;</TD>          <TD>&nbsp;geodetic latitude</TD></TR>
+    <TR><TD><VAR>X</VAR>, <VAR>Y</VAR>, <VAR>Z</VAR></TD>
+        <TD>&nbsp;Cartesian coordinates in a geocentric coordinate reference system</TD></TR>
+    <TR><TD><VAR>i</VAR>, <VAR>j</VAR>, <VAR>k</VAR></TD>
+        <TD>&nbsp;Cartesian coordinates in an engineering coordinate reference system, (integer or real)</TD></TR>
+  </TABLE></BLOCKQUOTE>
+
+  <P>&nbsp;</P>
+  <HR>
+  <P>&nbsp;</P>
+
+  <H1>Terms and definitions</H1>
+  <BR>
+    <H3>Cartesian coordinate system</H3><BLOCKQUOTE>
+    <P ALIGN="justify">Coordinate system which gives the position of points
+    relative to <VAR>N</VAR> mutually-perpendicular straight axes. In the
+    context of geospatial coordinates the maximum value of <VAR>N</VAR>
+    is three.</P>
+    </BLOCKQUOTE><BR>
+    <H3>Compound coordinate reference system</H3><BLOCKQUOTE>
+    <P ALIGN="justify">Coordinate system describing the position of points
+    through two or more independent coordinate reference systems. For example,
+    one coordinate reference system can be a two-dimensional horizontal
+    coordinate system, and the other coordinate reference system can be a
+    vertical gravity-related height system.</P>
+    </BLOCKQUOTE><BR>
+    <H3>Concatenated transformation</H3><BLOCKQUOTE>
+    <P ALIGN="justify">Sequential application of multiple transformations.</P>
+    </BLOCKQUOTE><BR>
+    <H3>Coordinate</H3><BLOCKQUOTE>
+    <P ALIGN="justify">One of a sequence of <VAR>N</VAR> numbers designating the
+    position of a point in <VAR>N</VAR>-dimensional space. In a coordinate
+    reference system, the coordinate numbers must be qualified by units.</P>
+    </BLOCKQUOTE><BR>
+    <H3>Coordinate conversion</H3><BLOCKQUOTE>
+    <P ALIGN="justify">Change of coordinates, based on a one-to-one relationship,
+    from one coordinate reference system to another based on the same datum.
+    For example between geodetic and Cartesian coordinate systems or between
+    geodetic coordinates and projected coordinates, or change of units such as
+    from radians to degrees or feet to metres. A conversion uses parameters
+    which have specified values, not empirically determined values.</P>
+    </BLOCKQUOTE><BR>
+    <H3>Coordinate reference system</H3><BLOCKQUOTE>
+    <P ALIGN="justify">Coordinate system which is related to the real world by
+    a datum. NOTE For geodetic and vertical datums, it will be related to the
+    Earth.</P>
+    </BLOCKQUOTE><BR>
+    <H3>Coordinate system</H3><BLOCKQUOTE>
+    <P ALIGN="justify">Set of (mathematical) rules for specifying how coordinates
+    are to be assigned to points. One coordinate system may be used in many
+    coordinate reference systems. The geometric properties of a coordinate space
+    determine how distances and angles between points are calculated from the
+    coordinates. For example, in an ellipsoidal (2D) space distances are defined
+    as curves on the surface of the ellipsoid, whereas in a Euclidean plane as
+    used for projected CRS distance is the length of a straight line between two
+    points. The mathematical rules that determine distances and angles are
+    calculated from coordinates and vice versa are comprised in the concept of
+    coordinate system.</P>
+    </BLOCKQUOTE><BR>
+    <H3>Coordinate transformation</H3><BLOCKQUOTE>
+    <P ALIGN="justify">Computational process of converting a position given in
+    one coordinate reference system into the corresponding position in another
+    coordinate reference system. A coordinate transformation can require and use
+    the parameters of the ellipsoids associated with the source and target
+    coordinate reference systems, in addition to the parameters explicitly
+    associated with the transformation. The term "transformation" is used only
+    when the parameter values associated with the transformation have been
+    determined empirically from a measurement / calculation process. This is
+    typically the case when a change of datum is involved.</P>
+    </BLOCKQUOTE><BR>
+    <H3>Covariance matrix</H3><BLOCKQUOTE>
+    <P ALIGN="justify">Matrix of elements (or cells) that contain the expected
+    average values of the product of the error in the matrix row coordinate
+    times the simultaneous error in the matrix column coordinate. A covariance
+    matrix is a form of detailed error estimate data. Covariance matrices are
+    sometimes called variance-covariance matrices. All complete covariance
+    matrices are symmetrical, meaning that the same element values appear on
+    both sides of the diagonal elements. Covariance matrices contain information
+    about the absolute and/or relative accuracy of the data elements (e.g.
+    coordinates). The absolute accuracy information is contained in the diagonal
+    matrix elements. Relative accuracy is a function of multiple diagonal and
+    off-diagonal elements. A complete covariance matrix for <VAR>N</VAR> specific
+    points in 3D space would contain 3<VAR>N</VAR> rows by 3<VAR>N</VAR> columns.
+    For example, for three coordinates, a covariance matrix is a 3 by 3 matrix,
+    with the matrix rows and columns each corresponding to the three coordinates.
+    For just two horizontal coordinates, a covariance matrix is a 2 by 2 matrix,
+    with the matrix rows and columns each corresponding to the two horizontal
+    coordinates. Similarly, for two image coordinates, a covariance matrix is a
+    2 by 2 matrix, with the matrix rows and columns each corresponding to the two
+    image coordinates.</P>
+    </BLOCKQUOTE><BR>
+    <H3>Cylindrical coordinates</H3><BLOCKQUOTE>
+    <P ALIGN="justify">3-dimensional coordinates with two distance and one
+    angular coordinate.</P>
+    </BLOCKQUOTE><BR>
+    <H3>Datum</H3><BLOCKQUOTE>
+    <P ALIGN="justify">Parameter or set of parameters that determine the location
+    of the origin, the orientation and the scale of a coordinate reference system.
+    </BLOCKQUOTE><BR>
+    <H3>Depth</H3><BLOCKQUOTE>
+    <P ALIGN="justify">Distance of a point below a chosen reference surface usually
+    measured along the local vertical (gravity vector). Depth is sometimes measured
+    along a line that does not follow the vector of gravity locally. An example is
+    depth in an oil or gas well. These are generally measured along the wellbore
+    path, which may vary significantly from the local vertical. Some sections of
+    a wellbore path may even run horizontally or slope upwards. Nevertheless the
+    distance along the wellbore path is referred to as "depth". See elevation,
+    ellipsoidal height, and gravity-related height.</P>
+    </BLOCKQUOTE><BR>
+    <H3>Dimension</H3><BLOCKQUOTE>
+    <P ALIGN="justify">Number of ordinates needed to describe a position in a
+    coordinate system.</P>
+    </BLOCKQUOTE><BR>
+    <H3>Elevation</H3><BLOCKQUOTE>
+    <P ALIGN="justify">Distance of a point from a chosen reference surface along
+    the direction of the gravity vector from the point to that surface. See
+    ellipsoidal height and gravity-related height. It should be noted that
+    ellipsoidal height is defined w.r.t. an ellipsoidal model of the shape
+    of the earth. Ellipsoidal height is measured from the point along the line
+    perpendicular to the ellipsoid's surface. Height of a point outside the
+    surface treated as positive; negative height is also named as depth.</P>
+    </BLOCKQUOTE><BR>
+    <H3>Ellipsoid</H3><BLOCKQUOTE>
+    <P ALIGN="justify">Surface formed by the rotation of an ellipse about an axis
+    In this document the axis of rotation is always the minor axis. Sometimes the
+    alternative word "spheroid" is used in geodetic or survey practice to express
+    the same concept. Although mathematically speaking incorrect the more common
+    term in geodetic or survey practice is "ellipsoid". An alternative term used
+    in geodetic practice is "reference ellipsoid".
+    </BLOCKQUOTE><BR>
+    <H3>Ellipsoidal coordinate system<BR>
+        Geodetic coordinate system</H3><BLOCKQUOTE>
+    <P ALIGN="justify">Coordinate system in which position is specified
+    by geodetic latitude, geodetic longitude and (in the three-dimensional case)
+    ellipsoidal height, associated with one or more geographic coordinate reference
+    systems.</P>
+    </BLOCKQUOTE><BR>
+    <H3>Ellipsoidal height<BR>
+        Geodetic height</H3><BLOCKQUOTE>
+    <P ALIGN="justify">Distance of a point from the ellipsoid
+    measured along the perpendicular from the ellipsoid to this point, positive
+    if upwards or outside of the ellipsoid. Only used as part of a three-dimensional
+    geodetic coordinate system and never on its own.</P>
+    </BLOCKQUOTE><BR>
+    <H3>Engineering coordinate reference system</H3><BLOCKQUOTE>
+    <P ALIGN="justify">A coordinate reference system that is defined for and
+    usually used in a contextually local sense, which may be an area, significantly
+    less than the complete surface of the earth or a moving platform and its
+    vicinity. For example local engineering and architectural coordinates, grids,
+    and drawings; also: vessel navigation systems and CRSs associated with orbiting
+    spacecraft. A transformation of engineering coordinates to geodetic coordinates
+    may or may not be possible depending on whether such operation parameters have
+    been determined (or defined). An Engineering CRS may be defined to describe
+    geometry that is local to the context of a moving platform, such as a car,
+    a ship, an aircraft or a spacecraft. Transformation of such engineering
+    coordinates to geodetic coordinates involves time dependent operation parameters
+    and, when repeated at (regular) time-intervals, will result in a record of
+    the "track" of the moving platform. Additionally such a transformation may
+    be used for real-time navigation of the platform. The term "vicinity of the
+    moving platform" may constitute an area varying from the immediate surroundings
+    of the platform to the entire earth, the latter being the case in a number of
+    space applications.</P>
+    </BLOCKQUOTE><BR>
+    <H3>Flattening</H3><BLOCKQUOTE>
+    <P ALIGN="justify">Ratio of the difference between the semi-major (<VAR>a</VAR>)
+    and semi-minor axis (<VAR>b</VAR>) of an ellipsoid to the semi-major axis;
+    <VAR>f</VAR>&nbsp;=&nbsp;(<VAR>a</VAR>-<VAR>b</VAR>)/<VAR>a</VAR>.
+    Sometimes inverse flattening
+    1/<VAR>f</VAR>&nbsp;=&nbsp;<VAR>a</VAR>/(<VAR>a</VAR>-<VAR>b</VAR>)
+    is given instead of flattening; 1/<VAR>f</VAR> is also known as
+    reciprocal flattening.</P>
+    </BLOCKQUOTE><BR>
+    <H3>Geocentric coordinate reference system</H3><BLOCKQUOTE>
+    <P ALIGN="justify">3-dimensional coordinate reference system with its origin
+    at the (approximate) centre of the Earth.</P>
+    </BLOCKQUOTE><BR>
+    <H3>Geodetic coordinates</H3><BLOCKQUOTE>
+    <P ALIGN="justify">Coordinates defined in a geocentric, geographic (2D or 3D)
+    or projected coordinate reference system.</P>
+    </BLOCKQUOTE><BR>
+    <H3>Geodetic datum</H3><BLOCKQUOTE>
+    <P ALIGN="justify">Datum describing the relationship of a 3D or 2D coordinate
+    system to the Earth. In most cases, the geodetic datum includes an ellipsoid
+    definition.</P>
+    </BLOCKQUOTE><BR>
+    <H3>Geographic coordinate reference system</H3><BLOCKQUOTE>
+    <P ALIGN="justify">Coordinate reference system using an ellipsoidal coordinate
+    system and based on an ellipsoid that approximates the shape of the Earth. A
+    geographic coordinate system can be 2D or 3D. In a 3D geographic coordinate
+    system, the third dimension is height above the ellipsoid surface.</P>
+    </BLOCKQUOTE><BR>
+    <H3>Geographic dataset</H3><BLOCKQUOTE>
+    <P ALIGN="justify">Dataset with a spatial content.</P>
+    </BLOCKQUOTE><BR>
+    <H3>Geoid</H3><BLOCKQUOTE>
+    <P ALIGN="justify">Level surface which best fits mean sea level either locally
+    or globally. "Level surface" means an equipotential surface of the Earth's
+    gravity field that is everywhere perpendicular to the direction of gravity.</P>
+    </BLOCKQUOTE><BR>
+    <H3>Gravity-related height</H3><BLOCKQUOTE>
+    <P ALIGN="justify">Height dependent on the Earth's gravity field. In particular,
+    orthometric height or normal height, which are both approximations of the
+    distance of a point above the geoid.</P>
+    </BLOCKQUOTE><BR>
+    <H3>Gregorian calendar</H3><BLOCKQUOTE>
+    <P ALIGN="justify">Calendar in general use first introduced in 1582 to correct
+    an error in the Julian calendar. In the Gregorian calendar, common years have
+    365 days and leap years 366 days divided into 12 sequential months.</P>
+    </BLOCKQUOTE><BR>
+    <H3>Greenwich meridian</H3><BLOCKQUOTE>
+    <P ALIGN="justify">Prime meridian passing through Greenwich, United Kingdom.
+    Most geodetic datums use the Greenwich meridian as the prime meridian.</P>
+    </BLOCKQUOTE><BR>
+    <H3>Ground coordinates<BR>
+        Earth referenced coordinates<BR>
+        Terrestrial coordinates</H3><BLOCKQUOTE>
+    <P ALIGN="justify">Coordinates of points expressed in a non-image, earth-fixed
+    coordinate reference system. The term ground coordinates is used herein to
+    distinguish such coordinates from image coordinates. Even when an image is
+    collected by a near vertical camera, image coordinates are different from
+    ground coordinates.</P>
+    </BLOCKQUOTE><BR>
+    <H3>Image</H3><BLOCKQUOTE>
+    <P ALIGN="justify">Record of the likeness of any features, objects, and activities.
+    An image can be acquired through the sensing of visual or any other segment of the
+    electromagnetic spectrum by sensors, such as thermal infrared, and high resolution
+    radar.</P>
+    </BLOCKQUOTE><BR>
+    <H3>Image coordinates</H3><BLOCKQUOTE>
+    <P ALIGN="justify">Definition of position within an image, expressed in image
+    row and column coordinates.</P>
+    </BLOCKQUOTE><BR>
+    <H3>Image geometry model</H3><BLOCKQUOTE>
+    <P ALIGN="justify">Mathematical model that specifies the mapping (or projection)
+    from 3D ground position coordinates to the corresponding 2D image position
+    coordinates. An image geometry model is alternately called an image sensor model,
+    sensor model, imaging model, or image mathematical model. The term "sensor" is
+    often used when the image is generated by a digital camera and is thus originally
+    digital. The word "camera" is usually used when the image is recorded in analogue
+    form, normally on film. Of course, film images can be later scanned or digitised
+    and are then "digital". An image geometry model can also be used to determine the
+    correct ground position for an image position, if used with additional data. When
+    a single (or monoscopic) image is used, this additional data normally defines the
+    shape and position of the visible ground (or object) surface. For example, this
+    additional data is often a single elevation or is grid elevation data, sometimes
+    called a Digital Terrain Model (DTM). Alternately, two stereoscopic images or
+    multiple overlapping images can be used, that show the same ground point viewed
+    from different directions. In this case, the two (or more) image geometry mathematical
+    models can also be used, with the point coordinates in each individual image, to
+    determine the corresponding 3D ground position.</P>
+    </BLOCKQUOTE><BR>
+    <H3>Image version</H3><BLOCKQUOTE>
+    <P ALIGN="justify">New image produced by sub-setting and/or re-sampling the
+    pixels in an original image.</P>
+    </BLOCKQUOTE><BR>
+    <H3>Interface</H3><BLOCKQUOTE>
+    <P ALIGN="justify">Named set of operations that characterise the behaviour of
+    an element. An interface standard specifies the services in terms of the functional
+    characteristics and behaviour observed at the interface. The standard is a contract
+    in the sense that it documents a mutual obligation between the service user and
+    provider and assures stable definition of that obligation.</P>
+    </BLOCKQUOTE><BR>
+    <H3>Latitude<BR>
+        Geodetic latitude<BR>
+        Ellipsoidal latitude</H3><BLOCKQUOTE>
+    <P ALIGN="justify">Angle from the equatorial plane to the perpendicular to the
+    ellipsoid through a given point, northwards treated as positive.</P>
+    </BLOCKQUOTE><BR>
+    <H3>Local datum<BR>
+        Engineering datum</H3><BLOCKQUOTE>
+    <P ALIGN="justify">Datum with a local reference, used as a basis for an
+    engineering coordinate reference system. Engineering datum excludes both
+    geodetic and vertical datums.</P>
+    </BLOCKQUOTE><BR>
+    <H3>Longitude<BR>
+        Geodetic longitude<BR>
+        Ellipsoidal longitude</H3><BLOCKQUOTE>
+    <P ALIGN="justify">Angle from the prime meridian plane to the meridian plane
+    of the given point, eastward treated as positive.</P>
+    </BLOCKQUOTE><BR>
+    <H3>Map projection</H3><BLOCKQUOTE>
+    <P ALIGN="justify">Conversion from a geodetic coordinate system to a planar
+    surface.</P>
+    </BLOCKQUOTE><BR>
+    <H3>Mean sea level</H3><BLOCKQUOTE>
+    <P ALIGN="justify">Average level of the surface of the sea over all stages
+    of tide. Mean sea level in a local context normally means mean sea level for
+    the region as measured by tide gauge measurements at one or more points over
+    a given period of time. Mean sea level in a global context differs from a global
+    geoid by not more than 2 metres.</P>
+    </BLOCKQUOTE><BR>
+    <H3>Meridian</H3><BLOCKQUOTE>
+    <P ALIGN="justify">Intersection of an ellipsoid by a plane containing the minor
+    axis of the ellipsoid. This term is often used for the pole-to-pole arc rather
+    than the complete closed figure.</P>
+    </BLOCKQUOTE><BR>
+    <H3>Oblique Cartesian coordinate system</H3><BLOCKQUOTE>
+    <P ALIGN="justify">Coordinate system with straight axes that are not necessarily
+    mutually perpendicular.</P>
+    </BLOCKQUOTE><BR>
+    <H3>Pixel</H3><BLOCKQUOTE>
+    <P ALIGN="justify">Two-dimensional picture element that is the smallest
+    non-divisible element of a digital image. In image processing, the smallest
+    element of a digital image that can be assigned a grey level. This term
+    originated as a contraction for "picture element".</P>
+    </BLOCKQUOTE><BR>
+    <H3>Polar coordinates</H3><BLOCKQUOTE>
+    <P ALIGN="justify">2-dimensional coordinates in which position is specified
+    by distance to the origin and the direction angle. NOTE ISO/DIS 19111 does
+    not specify the number of dimensions and therefore implicitly permits a
+    3-dimensional polar coordinate system to exist. The equivalent of the latter
+    is termed "spherical coordinate system" in this document.</P>
+    </BLOCKQUOTE><BR>
+    <H3>Position</H3><BLOCKQUOTE>
+    <P ALIGN="justify">Spatial reference of a point or an object.</P>
+    </BLOCKQUOTE><BR>
+    <H3>Prime meridian<BR>
+        Zero meridian</H3><BLOCKQUOTE>
+    <P ALIGN="justify">Meridian from which the longitudes of other meridians are
+    quantified.</P>
+    </BLOCKQUOTE><BR>
+    <H3>Projected coordinate reference system</H3><BLOCKQUOTE>
+    <P ALIGN="justify">Two-dimensional coordinate system resulting from a map
+    projection. A projected coordinate reference system is derived from a 2D
+    geographic coordinate reference system by applying a parameterised coordinate
+    transformation known as a "map projection". A projected coordinate reference
+    system commonly uses a Cartesian coordinate system.</P>
+    </BLOCKQUOTE><BR>
+    <H3>Reference ellipsoid</H3><BLOCKQUOTE>
+    <P ALIGN="justify">Ellipsoid used as the best local or global approximation
+    of the surface of the geoid.</P>
+    </BLOCKQUOTE><BR>
+    <H3>Semi-major axis</H3><BLOCKQUOTE>
+    <P ALIGN="justify">Semi-diameter of the longest axis of a reference ellipsoid.
+    This equates to the semi-diameter of the reference ellipsoid measured in its
+    equatorial plane.</P>
+    </BLOCKQUOTE><BR>
+    <H3>Semi-minor axis</H3><BLOCKQUOTE>
+    <P ALIGN="justify">Semi-diameter of the shortest axis of a reference ellipsoid.
+    The shortest axis coincides with the rotation axis of the reference ellipsoid
+    and therefore contains both poles.</P>
+    </BLOCKQUOTE><BR>
+    <H3>Spherical coordinate system.</H3><BLOCKQUOTE>
+    <P ALIGN="justify">3-dimensional coordinate system with one distance, measured
+    from the origin and two angular coordinates, commonly associated with a geocentric
+    coordinate reference system. Not to be confused with an ellipsoidal coordinate
+    system based on an ellipsoid "degenerated" into a sphere.</P>
+    </BLOCKQUOTE><BR>
+    <H3>Temporal coordinate</H3><BLOCKQUOTE>
+    <P ALIGN="justify">Distance from the origin of the interval time scale used
+    as the basis for a temporal reference system.</P>
+    </BLOCKQUOTE><BR>
+    <H3>Temporal coordinate reference system</H3><BLOCKQUOTE>
+    <P ALIGN="justify">Reference system against which time is measured.</P>
+    </BLOCKQUOTE><BR>
+    <H3>Transformation</H3><BLOCKQUOTE>
+    <P ALIGN="justify">Change of coordinates from one coordinate reference system
+    to another coordinate reference system based on a different datum through a
+    one-to-one relationship. A transformation uses parameter values which may
+    have to be derived empirically by a set of points common to both coordinate
+    reference systems. See coordinate conversion and coordinate transformation.</P>
+    </BLOCKQUOTE><BR>
+    <H3>Unit<BR>
+        Unit of measure</H3><BLOCKQUOTE>
+    <P ALIGN="justify">Defined quantity in which dimensioned parameters are
+    expressed. In this document, the subtypes of units are length units, angular
+    units, time units, scale units and pixel spacing units.</P>
+    </BLOCKQUOTE><BR>
+    <H3>UTC<BR>
+        Coordinated Universal Time</H3><BLOCKQUOTE>
+    <P ALIGN="justify">Time scale maintained by the <CITE>Bureau International
+    des Poids et Mesures</CITE> (International Bureau of Weights and Measures)
+    and the International Earth Rotation Service (IERS) that forms the basis
+    of a coordinated dissemination of standard frequencies and time signals.</P>
+    </BLOCKQUOTE><BR>
+    <H3>Vertical coordinate system</H3><BLOCKQUOTE>
+    <P ALIGN="justify">1-dimensional coordinate reference system used for
+    elevation, height, or depth measurements.</P>
+    </BLOCKQUOTE><BR>
+    <H3>Vertical datum</H3><BLOCKQUOTE>
+    <P ALIGN="justify">Datum describing the relation of gravity-related heights
+    to the Earth. In most cases the vertical datum will be related to sea level.
+    Ellipsoidal heights are treated as related to a three-dimensional ellipsoidal
+    coordinate system referenced to a geodetic datum. Vertical datums include
+    sounding datums (used for hydrographic purposes), in which case the heights
+    may be negative heights or depths.</P>
+    </BLOCKQUOTE>
+  </BODY>
+</HTML>

@@ -1,0 +1,1 @@
+<Filter><PropertyIsLessThan><PropertyName>testInteger</PropertyName><Literal>1003</Literal></PropertyIsLessThan></Filter>

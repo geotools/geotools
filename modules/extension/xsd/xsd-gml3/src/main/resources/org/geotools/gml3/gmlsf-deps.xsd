@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:gml="http://www.opengis.net/gml" xmlns:xlink="http://www.w3.org/1999/xlink" targetNamespace="http://www.opengis.net/gml" elementFormDefault="qualified" attributeFormDefault="unqualified" version="3.1.1">
+	<xsd:annotation>
+		<xsd:appinfo source="urn:opengis:specification:gml:schema-xsd:gml:3.1.1">gml.xsd</xsd:appinfo>
+		<xsd:documentation>Add types needed to validate wfs:FeatureCollection</xsd:documentation>
+	</xsd:annotation>
+	<xsd:element name="_FeatureCollection" type="gml:AbstractFeatureCollectionType" abstract="true"/>
+	<!-- ============================================================== -->
+	<xsd:complexType name="AbstractFeatureCollectionType" abstract="true">
+		<xsd:annotation>
+			<xsd:documentation>A feature collection contains zero or more features.</xsd:documentation>
+		</xsd:annotation>
+			<xsd:sequence>
+				<xsd:group ref="gml:StandardObjectProperties"/>		
+				<xsd:element ref="gml:boundedBy" minOccurs="0"/>
+				<xsd:element ref="gml:featureMember" minOccurs="0" maxOccurs="unbounded"/>
+				<xsd:element ref="gml:featureMembers" minOccurs="0"/>
+			</xsd:sequence>
+			<xsd:attribute ref="gml:id" use="optional"/>					
+	</xsd:complexType>
+	<!-- ============================================================== -->
+	<xsd:element name="featureMember" type="gml:FeaturePropertyType"/>
+	<xsd:element name="featureProperty" type="gml:FeaturePropertyType"/>
+	<!-- ============================================================== -->
+	<xsd:complexType name="FeaturePropertyType">
+		<xsd:annotation>
+			<xsd:documentation>Container for a feature - follow gml:AssociationType pattern.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence minOccurs="0">
+			<xsd:element ref="gml:_Feature"/>
+		</xsd:sequence>
+		<xsd:attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</xsd:complexType>
+	<!-- ============================================================== -->
+	<!-- ===== property for association of an array of features ===== -->
+	<xsd:element name="featureMembers" type="gml:FeatureArrayPropertyType"/>
+	<!-- =========================================================== -->
+	<xsd:complexType name="FeatureArrayPropertyType">
+		<xsd:annotation>
+			<xsd:documentation>Container for features - follow gml:ArrayAssociationType pattern.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element ref="gml:_Feature" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

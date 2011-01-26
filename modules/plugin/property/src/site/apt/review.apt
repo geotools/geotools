@@ -1,0 +1,20 @@
+Demo Property
+~~~~~~~~~~~~~
+
+  Module Maintainer: Jody Garnett
+
+  IP Review:
+
+    * Jody Garnett, July 8th, 2006
+
+    * Adrian Custer, June 2008
+
+  STATUS: clean
+
+
+* org.geotools.data.property
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~
+  This is the definitive datastore implementation used as an example
+  in the datastore implementation and use tutorial for GeoTools 2.0.
+  This code should be considered part of the tutorials are not really
+  intended for useful deployment.

@@ -1,0 +1,42 @@
+<test:TestFeatureCollection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:gml="http://www.opengis.net/gml/3.2"
+   xmlns:test="http://www.geotools.org/test"
+   gml:id="test" xsi:schemaLocation="test.xsd">
+
+   <gml:featureMember>
+      <test:TestFeature gml:id="fid.0">
+         <test:geom>
+           <gml:Point  gml:id="fid.0.geom">
+               <gml:coordinates>0,0</gml:coordinates>
+           </gml:Point>
+         </test:geom>
+         <test:count>0</test:count>
+         <test:date>2001-01-01</test:date>
+     </test:TestFeature>       
+   </gml:featureMember>
+   
+   <gml:featureMember>
+      <test:TestFeature gml:id="fid.1">
+         <test:geom>
+           <gml:Point gml:id="fid.1.geom">
+               <gml:coordinates>1,1</gml:coordinates>
+           </gml:Point>
+         </test:geom>
+         <test:count>1</test:count>
+         <test:date>2002-02-02</test:date>
+     </test:TestFeature>
+   </gml:featureMember>
+   
+   <gml:featureMember>
+       <test:TestFeature gml:id="fid.2">
+         <test:geom>
+           <gml:Point gml:id="fid.2.geom">
+               <gml:coordinates>2,2</gml:coordinates>
+           </gml:Point>
+         </test:geom>
+         <test:count>2</test:count>
+         <test:date>2003-03-03</test:date>
+     </test:TestFeature>
+   </gml:featureMember>
+
+</test:TestFeatureCollection>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- =======================================================================
+        Maven Project Configuration File
+
+        The Geotools Project
+            http://www.geotools.org/
+
+        Version: $Id: pom.xml 4695 2009-05-26 07:20:43Z simboss $
+     ======================================================================= -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+   <parent>
+    <groupId>org.geotools</groupId>
+    <artifactId>gt-coverage-experiment</artifactId>
+    <version>2.7-SNAPSHOT</version>
+   </parent>
+
+  <!-- =========================================================== -->
+  <!--     Module Description                                      -->
+  <!-- =========================================================== -->
+  <groupId>org.geotools</groupId>
+  <artifactId>gt-hdf4</artifactId>
+  <packaging>jar</packaging>
+  <name>HDF4 gridcoverage module</name>
+  <scm>
+    <connection>
+      scm:svn:https://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/hdf4/
+    </connection>
+  <url>https://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/hdf4/</url>
+ </scm>
+
+  <description>
+    Core of the ND GeoTools plugin.
+  </description>
+
+  <licenses>
+    <license>
+      <name>Lesser General Public License (LGPL)</name>
+      <url>http://www.gnu.org/copyleft/lesser.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+
+  <!-- =========================================================== -->
+  <!--     Developers and Contributors                             -->
+  <!-- =========================================================== -->
+  <developers>
+    <developer>
+      <name>Daniele Romagnoli</name>
+      <id>danieler</id>
+      <email>dany.geotools@gmail.com</email>
+      <organization>GeoSolutions</organization>
+      <roles>
+        <role>Module Maintainer</role>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Simone Giannecchini</name>
+      <id>simboss</id>
+      <email>simboss1@gmail.com</email>
+      <organization>GeoSolutions</organization>
+      <roles>
+        <role>Boss</role>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+  </developers>
+
+
+  <!-- =========================================================== -->
+  <!--     Dependency Management                                   -->
+  <!-- =========================================================== -->
+  <dependencies>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-coverage-core</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>it.geosolutions.imageio-ext</groupId>
+      <artifactId>imageio-ext-hdf4</artifactId>
+      <version>1.1-SNAPSHOT</version>
+    </dependency>
+       <dependency>
+      <groupId>it.geosolutions.imageio-ext</groupId>
+      <artifactId>imageio-ext-imagereadmt</artifactId>
+      <version>1.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>it.geosolutions.imageio-ext</groupId>
+      <artifactId>imageio-ext-utilities</artifactId>
+      <version>1.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>it.geosolutions.imageio-ext</groupId>
+      <artifactId>imageio-ext-geocore</artifactId>
+      <version>1.1-SNAPSHOT</version>
+    </dependency>
+    <!-- Test dependencies -->
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-sample-data</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+ </project>
+ 

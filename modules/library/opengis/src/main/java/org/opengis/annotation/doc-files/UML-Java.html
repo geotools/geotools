@@ -1,0 +1,155 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<HTML>
+  <HEAD>
+    <TITLE>UML to Java mapping</TITLE>
+  </HEAD>
+  <BODY>
+  <H1>UML to Java mapping</H1>
+  <TABLE BORDER='2' CELLPADDING='6'>
+    <TR BGCOLOR="#EEEEFF"><TH>UML</TH><TH>OGC Purpose</TH><TH>Java mapping</TH></TR>
+    <TR><TD nowrap><CODE>&lt;&lt;Enumeration&gt;&gt;</CODE></TD>
+        <TD>Data type whose instances form a list of named literal values. Both the enumeration name
+            and its literal values are declared. Enumeration means a short list of well-understood
+            potential values within a class.</TD>
+        <TD><CODE><strong>extends</strong>
+        <CODE><A HREF="http://java.sun.com/j2se/1.5/docs/api/java/lang/Enum.html">java.lang.Enum</A></CODE>
+        (not available in J2SE 1.4 profile)</TD></TR>
+    <TR><TD nowrap><CODE>&lt;&lt;CodeList&gt;&gt;</CODE></TD>
+        <TD>A flexible enumeration useful for expressing a long list of potential values. If the
+            elements of the list are completely known, an enumeration should be used; if the only
+            likely values of the elements are known, a code list should be used.</TD>
+        <TD><CODE><strong>extends</strong> <A HREF="../util/CodeList.html">CodeList</A></CODE></TD></TR>
+    <TR><TD nowrap><CODE>&lt;&lt;Union&gt;&gt;</CODE></TD>
+        <TD>Contains a list of attributes where only one of those attributes can be
+            present at any time.</TD>
+        <TD>none. Create a common super-class instead.</TD></TR>
+    <TR><TD nowrap><CODE>&lt;&lt;Type&gt;&gt;</CODE></TD>
+        <TD>Class used for specification of a domain of instances (objects), together with the
+            operations applicable to the objects. A type may have attributes and associations.</TD>
+        <TD>Java interface</TD></TR>
+    <TR><TD nowrap><CODE>&lt;&lt;DataType&gt;&gt;</CODE></TD>
+        <TD>A descriptor of a set of values that lack identity (independent
+            existence and the possibility of side effects). A DataType is a
+            class with no operations whose primary purpose is to hold the
+            information.</TD>
+        <TD>Java interface</TD></TR>
+    <TR><TD nowrap><CODE>&lt;&lt;Abstract&gt;&gt;</CODE></TD>
+        <TD>A polymorphic object class that cannot be instantiated.</TD>
+        <TD>Java interface</TD></TR>
+    <TR><TD nowrap><CODE>&lt;&lt;Interface&gt;&gt;</CODE></TD>
+        <TD>Named set of operations that characterize the behaviour of an element..</TD>
+        <TD>Java interface</TD></TR>
+    <TR><TD nowrap>Constructor</TD>
+        <TD>Cast an object into an object of an other type.</TD>
+        <TD>A <CODE>createFoo()</CODE> method in a <CODE>Factory</CODE> interface.</TD></TR>
+    <TR><TD nowrap><CODE>Set&lt;DataType&gt;</CODE></TD>
+        <TD>A finite set. Each object is considered to be in the set only once.</TD>
+        <TD><CODE><A HREF="http://java.sun.com/j2se/1.5/docs/api/java/util/Set.html">java.util.Set</A></CODE></TD></TR>
+    <TR><TD nowrap><CODE>Sequence&lt;DataType&gt;</CODE></TD>
+        <TD>A sequence type of collection, which contains an ordered finite list of
+            values (possibly with repeated values) of the specified data type.</TD>
+        <TD>Small array, or
+        <CODE><A HREF="http://java.sun.com/j2se/1.5/docs/api/java/util/List.html">java.util.List</A></CODE>
+            if the sequence is likely to be big.</TD></TR>
+    <TR><TD nowrap><CODE>CharacterString</CODE></TD>
+        <TD>A sequence of characters.</TD>
+        <TD><CODE><A HREF="http://java.sun.com/j2se/1.5/docs/api/java/lang/String.html">java.lang.String</A></CODE>
+            in the general case, or
+            <CODE><A HREF="http://java.sun.com/j2se/1.5/docs/api/java/net/URI.html">java.net.URI</A></CODE>
+            for reference to a file.</TD></TR>
+    <TR><TD nowrap><CODE>Integer</CODE></TD>
+        <TD>An integer number.</TD>
+        <TD><CODE><STRONG>int</STRONG></CODE> if mandatory, or
+        <CODE><A HREF="http://java.sun.com/j2se/1.5/docs/api/java/lang/Integer.html">java.lang.Integer</A></CODE>
+        if optional.</TD></TR>
+    <TR><TD nowrap><CODE>Double</CODE></TD>
+        <TD>A double precision floating point number.</TD>
+        <TD><CODE><STRONG>double</STRONG></CODE> if mandatory, or
+        <CODE><A HREF="http://java.sun.com/j2se/1.5/docs/api/java/lang/Double.html">java.lang.Double</A></CODE>
+        if optional.</TD></TR>
+    <TR><TD nowrap><CODE>Boolean</CODE></TD>
+        <TD>A value specifying TRUE or FALSE.</TD>
+        <TD><CODE><STRONG>boolean</STRONG></CODE> if mandatory, or
+        <CODE><A HREF="http://java.sun.com/j2se/1.5/docs/api/java/lang/Boolean.html">java.lang.Boolean</A></CODE>
+        if optional.</TD></TR>
+    <TR><TD nowrap><CODE>Sign</CODE></TD>
+        <TD>Sign + or -.</TD>
+        <TD><CODE><STRONG>int</STRONG></CODE> with value +1 ou -1</TD></TR>
+    <TR><TD nowrap><CODE>DateTime</CODE></TD>
+        <TD>A character string as specified by ISO 19108, which comprises year,
+            month, day and time of the day to the appropriate level of precision.</TD>
+        <TD><CODE><A HREF="http://java.sun.com/j2se/1.5/docs/api/java/util/Date.html">java.util.Date</A></CODE></TD></TR>
+    <TR><TD nowrap><CODE>Scale</CODE></TD>
+        <TD>A floating point number associated with a dimensionless unit.</TD>
+        <TD><CODE><STRONG>double</STRONG></CODE> if mandatory, or
+        <CODE><A HREF="http://java.sun.com/j2se/1.5/docs/api/java/lang/Double.html">java.lang.Double</A></CODE>
+        if optional.</TD></TR>
+    <TR><TD nowrap><CODE>Length</CODE></TD>
+        <TD>A floating point number associated with a linear unit.</TD>
+        <TD><CODE><STRONG>double</STRONG></CODE> with some <CODE>getUnit()</CODE> method
+            (e.g.&nbsp;<CODE>getAxisUnit()</CODE>).</TD></TR>
+    <TR><TD nowrap><CODE>Angle</CODE></TD>
+        <TD>A floating point number associated with an angular unit.</TD>
+        <TD><CODE><STRONG>double</STRONG></CODE> with some <CODE>getUnit()</CODE> method
+            (e.g.&nbsp;<CODE>getAngularUnit()</CODE>).</TD></TR>
+    <TR><TD nowrap><CODE>Measure</CODE></TD>
+        <TD>A floating point number associated with an arbitrary unit.</TD>
+        <TD><CODE><STRONG>double</STRONG></CODE> with a <CODE>getUnit()</CODE> method.</TD></TR>
+    <TR><TD nowrap><CODE>Record</CODE></TD>
+        <TD>A structure of logically related elements. May be used as an implementation representation
+            for features, by keeping a list of (name, value) pairs in a dictionary. This represents a
+            generic storage structure for features.</TD>
+        <TD>User-defined subclass of
+        <CODE><A HREF="http://java.sun.com/j2se/1.5/docs/api/java/lang/Object.html">java.lang.Object</A></CODE></TD></TR>
+    <TR><TD nowrap><CODE>RecordType</CODE></TD>
+        <TD>Description of a <CODE>Record</CODE> structure.</TD>
+        <TD><CODE><A HREF="http://java.sun.com/j2se/1.5/docs/api/java/lang/Class.html">java.lang.Class</A></CODE></TD></TR>
+  </TABLE>
+
+  <P>&nbsp;</P>
+  <H2>Javadoc tags</H2>
+  <TABLE BORDER='2' CELLPADDING='12'>
+    <TR BGCOLOR="#EEEEFF"><TH NOWRAP>Javadoc tag</TH>
+                          <TH NOWRAP>Usage</TH></TR>
+
+    <TR><TD NOWRAP><CODE>@author</CODE> <VAR>&lt;editor&gt;</VAR></TD>
+        <TD><P ALIGN=justify>The person who wrote the interface. This is <U>not</U> the person who
+            wrote the specification. The term <CITE>editor</CITE> may be more appropriate for the
+            describing his task, but <CODE>@author</CODE> is the standard javadoc tag. Furthermore,
+            the editor sometime needs to extend the specification, in which case editor do some
+            author work. The <CODE>@author</CODE> tag may be considered as a contact person for
+            questions related to the Java expression of OGC/ISO specifications.</P></TD></TR>
+
+    <TR><TD NOWRAP><CODE>@rename</CODE> <VAR>&lt;reason&gt;</VAR></TD>
+        <TD><P ALIGN=justify>Some non-trivial name change has been applied in order to match
+            more closely Java usage. A description of the change and its rational shall
+            follow the <CODE>@rename</CODE> tag. Some main reasons for renaming are:</P>
+            <UL>
+              <LI><P ALIGN="justify">In some occasions, abbreviations are expanded.
+                  For example a <CODE>getCS()</CODE> method returning a <CODE>CoordinateSystem</CODE>
+                  object is renamed <CODE>getCoordinateSystem()</CODE>.</P>
+
+              <LI><P ALIGN=justify>In some occasions, supplementary prefix are
+                  omitted. For example, some UML attribute names are prefixed by
+                  some abbreviation of the enclosing class name (e.g. "<CODE>csName</CODE>"
+                  is <CODE>CoordinateSystem</CODE> and "<CODE>srsName</CODE>" in
+                  <CODE>ReferenceSystem</CODE>). For Java interfaces, the above-cited
+                  attributes map to a plain <CODE>getName()</CODE> method.
+                  The same apply to "<CODE>ID</CODE>".</P></LI>
+
+              <LI><P ALIGN=justify>Methods returning an array are renamed to
+                  their plural form (e.g. <CODE>getElement()</CODE> to
+                  <CODE>getElement<U>s</U>()</CODE>).</P></LI>
+            </UL></TD></TR>
+
+    <TR><TD NOWRAP><CODE>@unitof</CODE> <VAR>&lt;quantity&gt;</VAR></TD>
+        <TD><P ALIGN=justify>The method returns a <CODE>double</CODE> value which should be
+            expressed in unit of <CODE>Scale</CODE>, <CODE>Length</CODE> or <CODE>Angle</CODE>.
+            Some <CODE>getUnit()</CODE> method must be provided in addition to this method.</P></TD></TR>
+
+    <TR><TD NOWRAP><CODE>@todo</CODE> <VAR>&lt;comment&gt;</VAR></TD>
+        <TD><P ALIGN=justify>Somme open issue to revisit.</P></TD></TR>
+  </TABLE>
+  </BODY>
+</HTML>

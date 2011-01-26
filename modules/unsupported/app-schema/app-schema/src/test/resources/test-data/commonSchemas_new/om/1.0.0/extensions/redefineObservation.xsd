@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gml="http://www.opengis.net/gml" xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:om="http://www.opengis.net/om/1.0"
+        xmlns:swe="http://www.opengis.net/swe/1.0.1" targetNamespace="http://www.opengis.net/om/1.0" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.0">
+	<annotation>
+		<documentation>observation.xsd
+
+An example of how to "redefine" ObservationType to restrict the result-type
+
+Copyright (c) 2007 Open Geospatial Consortium - see http://www.opengeospatial.org/ogc/software</documentation>
+	</annotation>
+	<!-- ====================================================================== -->
+	<!-- bring in other schemas -->
+	<import namespace="http://www.opengis.net/gml" schemaLocation="../../../gml/3.1.1/base/gml.xsd"/>
+	<!-- can't use ISO Metadata schema with GML 3.1.1
+	<import namespace="http://www.isotc211.org/2005/gmd" schemaLocation="../../../../gml/trunk/gml/3.1.1/gmd/gmd.xsd"/>
+	-->
+	<import namespace="http://www.opengis.net/swe/1.0.1" schemaLocation="../../../sweCommon/1.0.1/swe.xsd"/>
+	<import namespace="http://www.opengis.net/sensorML/1.0.1" schemaLocation="../../../sensorML/1.0.1/sensorML.xsd"/>
+	<redefine schemaLocation="../observation.xsd">
+		<!-- ====================================================================== -->
+		<!-- ====================================================================== -->
+		<!-- ===== Object types for Observations ====== -->
+		<!-- ====================================================================== -->
+		<complexType name="ObservationType">
+			<annotation>
+				<documentation>Redefines observation type, restricting the result to be a measure.</documentation>
+			</annotation>
+			<complexContent>
+				<restriction base="om:ObservationType">
+					<sequence>
+						<element ref="gml:metaDataProperty" minOccurs="0" maxOccurs="unbounded"/>
+						<element ref="gml:description" minOccurs="0"/>
+						<element ref="gml:name" minOccurs="0" maxOccurs="unbounded"/>
+						<element ref="gml:boundedBy" minOccurs="0"/>
+						<element name="metadata" type="om:AnyOrReferenceType" minOccurs="0"/>
+						<element name="samplingTime" type="swe:TimeObjectPropertyType"/>
+						<element name="resultTime" type="swe:TimeObjectPropertyType" minOccurs="0"/>
+						<element name="procedure" type="om:ProcessPropertyType"/>
+						<element name="resultQuality" type="om:AnyOrReferenceType" minOccurs="0"/>
+						<element name="observedProperty" type="swe:PhenomenonPropertyType"/>
+						<element name="featureOfInterest" type="gml:FeaturePropertyType"/>
+						<element name="parameter" type="swe:AnyDataPropertyType" minOccurs="0" maxOccurs="unbounded"/>
+						<element name="result" type="gml:MeasureType">
+							<annotation>
+								<documentation>restrict result to "measure"</documentation>
+							</annotation>
+						</element>
+					</sequence>
+				</restriction>
+			</complexContent>
+		</complexType>
+		<!-- ====================================================================== -->
+	</redefine>
+	<!-- ====================================================================== -->
+</schema>

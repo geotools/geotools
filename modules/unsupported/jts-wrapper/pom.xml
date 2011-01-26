@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- ===========================================================================
+         Project configuration file for the Geotools 2 project
+         http://www.geotools.org/
+
+         Version: $Id$
+     =========================================================================== -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.geotools</groupId>
+    <artifactId>unsupported</artifactId>
+    <version>2.7-SNAPSHOT</version>
+  </parent>
+
+  <properties>
+    <allow.test.skip>true</allow.test.skip>
+    <allow.test.failure.ignore>true</allow.test.failure.ignore>
+    <maven.test.skip>true</maven.test.skip>
+  </properties>
+
+
+  <!-- ==================================================== -->
+  <!--     Module description                               -->
+  <!-- ==================================================== -->
+  <groupId>org.geotools</groupId>
+  <artifactId>gt-jts-wrapper</artifactId>
+  <packaging>jar</packaging>
+  <name>ISO 19107 implementation using JTS</name>
+  
+
+  <scm>
+    <connection>
+      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/jts-wrapper/
+    </connection>
+    <url>http://svn.osgeo.org/geotools/trunk/modules/unsupported/jts-wrapper/</url>
+  </scm>
+
+  <description>
+     This is a basic 2D ISO 19107 implementation which uses 
+     JTS for the computational geometry.
+  </description>
+
+
+  <!-- ==================================================== -->
+  <!--     Developers and contributors                      -->
+  <!-- ==================================================== -->
+  <developers>
+   <!-- Figure out who to credit inside SYS Technologies -->
+    <developer>
+      <name>Bryce Nordgren</name>
+      <id>bnordgren</id>
+      <email>bnordgren@fs.fed.us</email>
+      <organization>USDA Forest Service</organization>
+      <roles>
+        <role>Module Maintainer</role>
+      </roles>
+    </developer>
+  </developers>
+
+  <contributors>
+    <contributor>
+      <name>Colin Combe</name>
+      <email>c.combe@napier.ac.uk</email>
+      <roles>
+        <role>Code Refactoring</role>
+      </roles>
+    </contributor>
+  </contributors>
+
+
+  <!-- ==================================================== -->
+  <!--     Dependencies                                     -->
+  <!-- ==================================================== -->
+  <dependencies>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-main</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.vividsolutions</groupId>
+      <artifactId>jts</artifactId>
+      <!-- The version number is specified in the parent POM. -->
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <!-- The version number is specified in the parent POM. -->
+      <scope>provided</scope>   <!-- Needed for compilation, not for running -->
+    </dependency>
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <!-- The version number is specified in the parent POM. -->
+    </dependency>
+    <dependency>
+      <groupId>picocontainer</groupId>
+      <artifactId>picocontainer</artifactId>
+      <version>3</version>
+      <scope>test</scope>
+    </dependency> 
+  </dependencies>
+
+
+  <!-- ==================================================== -->
+  <!--     Compilation (including non-standard plugins)     -->
+  <!-- ==================================================== -->
+  <build>
+  </build>
+
+</project>

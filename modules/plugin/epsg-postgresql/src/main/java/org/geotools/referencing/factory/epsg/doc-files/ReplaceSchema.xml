@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!--
+  Renames the table names in the SQL scripts provided by EPSG.  Those SQL scripts use
+  different table names than the ones in the original MS-Access database. For example
+  "Coordinate Reference System" has been renamed as "epsg_coordinatereferencesystem",
+  which is more difficult to read.   In addition the "epsg_" prefix is redundant with
+  schema name. Assuming that a "epsg" schema has been created in the target database,
+  this Ant script replaces the "epsg_" prefix by the "epsg." schema name and restores
+  the original MS-Access table names.
+
+  This script is optional;  users don't need to run it in order to use Geotools EPSG
+  factories backed by a PostgreSQL database.   It is provided only for users who may
+  prefer a database in its own schema with more readable table names rather than the
+  default structure.
+
+  $URL$
+  $Id$
+  -->
+
+<project name="ReplaceSchema" default="rename">
+  <target name="rename">
+    <replace dir=".">
+      <include name="*.sql"/>
+      <replacefilter token="epsg_versionhistory"             value="epsg.&quot;Version History&quot;"                      />
+      <replacefilter token="epsg_unitofmeasure"              value="epsg.&quot;Unit of Measure&quot;"                      />
+      <replacefilter token="epsg_supersession"               value="epsg.&quot;Supersession&quot;"                         />
+      <replacefilter token="epsg_primemeridian"              value="epsg.&quot;Prime Meridian&quot;"                       />
+      <replacefilter token="epsg_namingsystem"               value="epsg.&quot;Naming System&quot;"                        />
+      <replacefilter token="epsg_ellipsoid"                  value="epsg.&quot;Ellipsoid&quot;"                            />
+      <replacefilter token="epsg_deprecation"                value="epsg.&quot;Deprecation&quot;"                          />
+      <replacefilter token="epsg_datum"                      value="epsg.&quot;Datum&quot;"                                />
+      <replacefilter token="epsg_coordinatesystem"           value="epsg.&quot;Coordinate System&quot;"                    />
+      <replacefilter token="epsg_coordinatereferencesystem"  value="epsg.&quot;Coordinate Reference System&quot;"          />
+      <replacefilter token="epsg_coordoperationpath"         value="epsg.&quot;Coordinate_Operation Path&quot;"            />
+      <replacefilter token="epsg_coordoperationparamvalue"   value="epsg.&quot;Coordinate_Operation Parameter Value&quot;" />
+      <replacefilter token="epsg_coordoperationparamusage"   value="epsg.&quot;Coordinate_Operation Parameter Usage&quot;" />
+      <replacefilter token="epsg_coordoperationparam"        value="epsg.&quot;Coordinate_Operation Parameter&quot;"       />
+      <replacefilter token="epsg_coordoperationmethod"       value="epsg.&quot;Coordinate_Operation Method&quot;"          />
+      <replacefilter token="epsg_coordoperation"             value="epsg.&quot;Coordinate_Operation&quot;"                 />
+      <replacefilter token="epsg_coordinateaxisname"         value="epsg.&quot;Coordinate Axis Name&quot;"                 />
+      <replacefilter token="epsg_coordinateaxis"             value="epsg.&quot;Coordinate Axis&quot;"                      />
+      <replacefilter token="epsg_change"                     value="epsg.&quot;Change&quot;"                               />
+      <replacefilter token="epsg_area"                       value="epsg.&quot;Area&quot;"                                 />
+      <replacefilter token="epsg_alias"                      value="epsg.&quot;Alias&quot;"                                />
+    </replace>
+  </target>
+</project>

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GeneralizationInfos version="1.0">
+	<GeneralizationInfo dataSourceName="dsStreams"  featureName="GenStreams" baseFeatureName="streams" geomPropertyName="the_geom">
+	</GeneralizationInfo>	
+</GeneralizationInfos>

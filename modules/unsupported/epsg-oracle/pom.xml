@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- =======================================================================    
+        Maven Project Configuration File                                        
+                                                                                
+        The Geotools Project                                                    
+            http://www.geotools.org/                                            
+                                                                                
+        Version: $Id$              
+     ======================================================================= -->
+  <project xmlns="http://maven.apache.org/POM/4.0.0" 
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                               http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.geotools</groupId>
+    <artifactId>unsupported</artifactId>
+    <version>2.7-SNAPSHOT</version>
+  </parent>
+
+
+  <!-- =========================================================== -->
+  <!--     Module Description                                      -->
+  <!-- =========================================================== -->
+  <groupId>org.geotools</groupId>
+  <artifactId>gt-epsg-oracle</artifactId>
+  <packaging>jar</packaging>
+  <name>EPSG Authority Factory for Oracle</name>
+  
+
+  <scm>
+    <connection>
+      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/epsg-oracle/
+    </connection>
+    <url>http://svn.osgeo.org/geotools/trunk/modules/unsupported/epsg-oracle/</url>
+  </scm>
+
+  <description>
+    This plugin allows you to make use of an oracle database as the host of your
+    CoordinateReferenceSystem definitions. The table names and content are provided
+    by the EPSG database (distributed in access format) and can be loaded using 
+    a provided SQL script.
+  </description>
+
+  <licenses>
+    <license>
+      <name>Lesser General Public License (LGPL)</name>
+      <url>http://www.gnu.org/copyleft/lesser.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+
+  <!-- =========================================================== -->
+  <!--     Developers and Contributors                             -->
+  <!-- =========================================================== -->
+  <developers>
+    <developer>
+      <name>Jody Garnett</name>
+      <id>jive</id>
+      <email>jive@users.sourceforge.net</email>
+      <organization>Refractions Research</organization>
+      <roles>
+        <role>Module Maintainer</role>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Martin Desruisseaux</name>
+      <id>desruisseaux</id>
+      <email>desruisseaux@users.sourceforge.net</email>
+      <organization>Geomatys</organization>
+      <organizationUrl>http://www.geomatys.fr/</organizationUrl>
+      <timezone>+1</timezone>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+  </developers>
+
+  <profiles>
+    <!-- If you have access to the real driver you can rebuild     -->
+    <!-- this geotools plugin with that driver to get a working    -->
+    <!-- plugin.                                                   -->
+
+    <!--                                                           -->
+    <!-- To use for real:                                          -->
+    <!--   Download the ojdbc14.jar driver from oracle and install -->
+    <!--   into maven:                                             -->
+    <!--       mvn install:install-file -Dfile=ojdbc14.jar         -->
+    <!--           -DgroupId=com.oracle -DartifactId=ojdbc14       -->
+    <!--           -Dversion=10.2.0 -Dpackaging=jar                -->
+    <!--                                                           -->
+    <!--   You can then supply -Doracle=true on the command line   -->
+    <!--                                                           -->
+    <!--   You will need to update a "fixture" with connection     -->
+    <!--   information in:                                         -->
+    <!--         HOME/.geotools/oracle/oracle.properties           -->
+    <profile>
+        <id>oracle.jdbc-true</id>
+        <activation>
+           <property>
+              <name>oracle</name>
+           </property>           
+        </activation>
+        <dependencies>
+          <dependency>
+            <artifactId>ojdbc14</artifactId>
+            <groupId>com.oracle</groupId>
+            <!-- version specified in root pom -->
+          </dependency>
+        </dependencies>          
+    </profile>
+    
+    <!-- By default, the build downloads and uses a fake jar full  -->
+    <!-- of "Mock Objects" so you we can compile the plugin even   -->
+    <!-- without downloading the real thing from oracle.           -->
+    <profile>
+        <id>oracle.jdbc-false</id>
+        <activation>
+           <property>
+              <name>!oracle</name>
+           </property>
+        </activation>
+        <dependencies>
+          <dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>dummy_spatial</artifactId>
+            <version>8.1.8</version>         
+            <scope>provided</scope>
+          </dependency>                  
+        </dependencies>
+        <properties>
+           <maven.test.skip>true</maven.test.skip>
+        </properties>
+    </profile>
+  </profiles>
+  
+  <!-- =========================================================== -->
+  <!--     Dependency Management                                   -->
+  <!-- =========================================================== -->
+  <dependencies>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-referencing</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-sample-data</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>simple-jndi</groupId>
+      <artifactId>simple-jndi</artifactId>
+      <version>0.11.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>commons-dbcp</groupId>
+      <artifactId>commons-dbcp</artifactId>
+      <version>1.2.2</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>net.sourceforge.groboutils</groupId>
+      <artifactId>groboutils-core</artifactId>
+      <version>5</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+</project>

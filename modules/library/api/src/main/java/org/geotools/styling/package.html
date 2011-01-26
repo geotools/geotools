@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<HTML>
+  <HEAD>
+    <TITLE>package org.geotools.styling</TITLE>
+  </HEAD>
+  <BODY>
+  Allows for symbolization of geospatial data.
+  <p>
+  For many of us in geotools *this* is the reason we came along for the ride -
+  a pretty picture. The contents of this package are adapted from the
+  <A HREF="http://portal.opengeospatial.org/files/?artifact_id=1188">OpenGIS&reg; Styled Layer Descriptor</A>
+  specification v1.0.0.
+  </p>
+  <h2>Conformance to SLD 1.0.0</h2>
+  <p>
+  We may experiment with our own (or SLD 1.1) ideas but will mark such
+  experiments for you. This is only an issue of you are considering writing out
+  these objects for interoptability with other systems.
+  </p>
+  <p>
+  General stratagy for supporting multiple SLD versions (and experiments):
+  <ul>
+  <li>These interfaces will reflect the current published specification
+ <li>Our implementations will be <b>BIGGER</b> and more capabile then any
+  one specification
+  <li>We cannot defined explicit interfaces tracking each version until we
+  move to Java 5 (perferably GeoAPI would hold these anyways)
+  <li>We can provided javadocs indicating extentions, and isolate these using
+  the normal java convention: TextSymbolizer and TextSymbolizer2 (In short you
+  will have to go out of your way to work with a hack or experiment, you won't
+  depend on one by accident)
+  <li>We can use Factories (aka SLD1Factory and SLD1_1Factory and SEFactory)
+  to support the creation of conformant datastructures. Code (such as user
+  interfaces) can be parameratized with these factories when they need to
+  confirm to an exact version supported by an individual service. We hope that
+  specifications are always adative, and will be forced to throw unsupported
+  exceptions when functionality is removed from a specification.
+  </ul>
+  </p>
+  <h2>Care and Feeding of Style Objects</h2>
+  <p>
+  SLD is an XML specification, the definition of objects capturing this information,
+  the binding of objects to these XML documents, and the provision of events
+  on object modification all need to be accounted for.
+  <p>
+  <h4>StyleFactory</h4>
+  As with all geotools work construction of styling constructs is handled by a
+  <i>Factory</i>(GOF). Quickly a <i>Factory</i> is used when working with interfaces,
+  anything that would of been a constructor is set up as an <i>create</i> method.
+  <pre><code>
+  StyleFactory factory = StyleFactoryFinder.createStyleFactory();
+  StyleLayerDescriptor sld = factory.createStyleLayerDescriptor();
+  // an empty sld document
+  sld.setTitle("Basic Black");
+  sld.setAbstract("Grayscale style suitable for use with photocopiers");
+  </code>
+  </pre>
+  <p>
+  When creating a complex data structure direct use of a Factory is a pain.
+  Which leads us to the next section.
+  <p>
+  Notes:
+  <ul>
+  <li>At this time one implementation of StyleFactory is available, this will
+  not provide true in the future (as SLD experiments, and code generation
+  are brought to bare on future specifications).
+  </ul>
+  
+  <h4>StyleBuilder</h4>
+  <p>
+  When constructing a complex data structure, such as an SLD document, the use
+  of a Factory is a bit of a pain. That is where <i>StyleBuilder</i> is brought
+  to bare. A <i>Builder</i> is simply a class that help you construct a complicated
+  data structure, for a make involved/interesting example of a builder have a look
+  at the graph package.
+  <p>
+  <pre><code>
+  
+  </code></pre>
+  
+  <h2>Example</h2>
+  The following code example has been borrowed from the geotools website,
+  for additional examples (and advice) please consult the user documentation.
+  <P>
+  <pre><code>
+    private Style buildStyle() throws Exception {
+        StyleBuilder sb = new StyleBuilder();
+        FilterFactory ff = sb.getFilterFactory();
+        Style style = sb.createStyle();
+        style.setName("MyStyle");
+
+        // "testPoint" feature type style
+        Mark testMark = sb.createMark(sb.attributeExpression("name"),
+                sb.createFill(Color.RED, 0.5), null);
+        Graphic graph = sb.createGraphic(null, new Mark[] { testMark }, null,
+                sb.literalExpression(1), sb.attributeExpression("size"),
+                sb.attributeExpression("rotation"));
+        style.addFeatureTypeStyle(sb.createFeatureTypeStyle("testPoint",
+                new Symbolizer[] { sb.createPointSymbolizer(graph) }));
+
+        // "labelPoint" feature type style
+        AnchorPoint anchorPoint = sb.createAnchorPoint(sb.attributeExpression("X"),
+                sb.attributeExpression("Y"));
+        PointPlacement pointPlacement = sb.createPointPlacement(anchorPoint, null,
+                sb.literalExpression(0));
+        TextSymbolizer textSymbolizer = sb.createTextSymbolizer(sb.createFill(Color.BLACK),
+                new Font[] { sb.createFont("Lucida Sans", 10), sb.createFont("Arial", 10) },
+                sb.createHalo(), sb.attributeExpression("name"), pointPlacement, null);
+        Mark circle = sb.createMark(StyleBuilder.MARK_CIRCLE, Color.RED);
+        Graphic graph2 = sb.createGraphic(null, circle, null, 1, 4, 0);
+        PointSymbolizer pointSymbolizer = sb.createPointSymbolizer(graph2);
+        style.addFeatureTypeStyle(sb.createFeatureTypeStyle("labelPoint",
+                new Symbolizer[] { textSymbolizer, pointSymbolizer }));
+
+        return style;
+    }<code></pre>
+  </P>
+  <h3>References</h2>
+  The following links will be of interest:
+  <ul>
+  <li>SLD 1.0.0
+  <li>Design Patterns, GOF
+  </ul>  
+  @author Ian Turton, CCG
+  @author James Macgill, CCG
+  @author Jody Garnett, Refractions Research
+  @since GeoTools 2.0
+  @version SLD 1.0 
+  </BODY>
+</HTML>

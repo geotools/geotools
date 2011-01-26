@@ -1,0 +1,97 @@
+// Test points for the Krovak
+//
+// (C) 2006-2008, Open Source Geospatial Foundation (OSGeo)
+//
+// The following test points were calculated with Proj4 and also with
+// Geodetic software (Kokes) that is used in Czech Perupblic.
+//
+// Jan Jezek August 2006
+//
+//
+// --------------------------------------------------------------------------
+// How to run this script:
+//
+//    chdir org/geotools/referencing/test-data/scripts
+//    java -ea org.geotools.referencing.ScriptRunner Krovak.txt
+//
+// A test is performed every time a "target pt" statement occurs. If the target point computed
+// by Geotools is different from the target point declared in this script by an amount greater
+// than the value specified in the last "test tolerance" statement, then a failure is reported.
+// Inverse transforms are tested if java assertions are enabled.
+// If some test fails, "print" statements can be added in this script for debugging purpose:
+//
+//    print crs            (prints the source and target CRS, and the transform between them)
+//    print pts            (prints the source and target points, and their transformed points)
+
+
+//geogCS's 
+
+set _WGS84_     = GEOGCS["WGS84",  DATUM["WGS84",  SPHEROID["WGS84",  6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]]
+set _SJTSKFerro = GEOGCS["S-JTSK (Ferro)", DATUM["S_JTSK_Ferro", SPHEROID["Bessel 1841",6377397.155,299.1528128], TOWGS84[570.8,85.7,462.8,4.998,1.587,5.261,3.56]], PRIMEM["Ferro",-17.66666666666667],UNIT["degree",0.0174532925199433]]
+set _SJTSKGreen = GEOGCS["S-JTSK (Ferro)", DATUM["S_JTSK_Ferro", SPHEROID["Bessel 1841",6377397.155,299.1528128], TOWGS84[570.8,85.7,462.8,4.998,1.587,5.261,3.56]], PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433]]
+
+/////////////////////////////////////////
+//Elliptical 1SP tests            ///////
+/////////////////////////////////////////
+
+// The axis are setup for 'GIS' version of Krovak.
+
+
+set _KrovakGIS = PROJCS["S-JTSK (Ferro) / Krovak", _SJTSKGreen , PROJECTION["Krovak"], UNIT["metre",1.0], AXIS["x",EAST], AXIS["y",NORTH]]
+
+source crs = _SJTSKFerro
+target crs = _KrovakGIS
+test tolerance = (1e-2, 1e-2)
+
+source pt = (32.037197614 , 50.071153856 )
+target pt = (-746742.6075,  -1044389.4516)
+
+// The Axis are setup like this:
+//
+//   y<---+
+//        |
+//        x
+//
+
+set _Krovak = PROJCS["S-JTSK(Ferro) / krovak ", _SJTSKGreen , PROJECTION["Krovak"], UNIT["metre",1.0], AXIS["y",WEST], AXIS["x",SOUTH]]
+
+source crs = _SJTSKGreen
+target crs = _Krovak 
+
+source pt = (12 , 48 )
+target pt = (953172.26,  1245573.32)
+
+source pt = (15 , 48 )
+target pt = (731705.00, 1278768.44)
+
+source pt = (18 , 48 )
+target pt = (509171.78, 1303126.99)
+
+source pt = (12 , 49 )
+target pt = (934471.17, 1135915.61)
+
+source pt = (15 , 49 )
+target pt = (717409.61, 1168493.29)
+
+source pt = (18 , 49 )
+target pt = (499258.06, 1192389.16)
+
+source pt = (12 , 50 )
+target pt = (915750.02, 1026285.27)
+
+source pt = (15 , 50 )
+target pt = (703105.69, 1058219.60)
+
+source pt = (18 , 50 )
+target pt = (489343.16, 1081630.34)
+
+//102067 - ESRI definition
+set _KrovakESRI = PROJCS["S-JTSK_Krovak_East_North",GEOGCS["GCS_S_JTSK",DATUM["D_S_JTSK",SPHEROID["Bessel_1841",6377397.155,299.1528128]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Krovak"],PARAMETER["Pseudo_Standard_Parallel_1",78.5],PARAMETER["Scale_Factor",0.9999],PARAMETER["Azimuth",30.28813975277778],PARAMETER["Longitude_Of_Center",24.83333333333333],PARAMETER["Latitude_Of_Center",49.5],PARAMETER["X_Scale",-1.0],PARAMETER["Y_Scale",1.0],PARAMETER["XY_Plane_Rotation",90.0],UNIT["Meter",1.0],AXIS["x",SOUTH], AXIS["y",WEST]] 
+set _SJTSKESRI =  GEOGCS["GCS_S_JTSK",DATUM["D_S_JTSK",SPHEROID["Bessel_1841",6377397.155,299.1528128]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]]
+
+source crs = _SJTSKESRI
+target crs = _KrovakESRI
+test tolerance = (1e-2, 1e-2)
+
+source pt = (12 , 48 )
+target pt = (-953172.26,  -1245573.32)

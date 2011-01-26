@@ -1,0 +1,19 @@
+LWJGL "Hidden" switches:
+
+org.lwjgl.opengl.Display.noinput
+Do not initialize any controls when creating the display
+
+org.lwjgl.opengl.Display.nomouse
+Do not create the mouse when creating the display
+
+org.lwjgl.opengl.Display.nokeyboard
+Do not create the keyboard when creating the display
+
+org.lwjgl.util.Debug
+Whether to output debug info
+
+org.lwjgl.opengl.Display.allowSoftwareOpenGL
+Whether to allow creation of a software only opengl context
+
+org.lwjgl.opengl.Window.undecorated
+Whether to create an undecorated window (no title bar)

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- =======================================================================    
+        Maven Project Configuration File                                        
+                                                                                
+        The Geotools Project                                                    
+            http://www.geotools.org/                                            
+                                                                                
+        Version: $Id$              
+     ======================================================================= -->
+  <project xmlns="http://maven.apache.org/POM/4.0.0" 
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                               http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.geotools</groupId>
+    <artifactId>library</artifactId>
+    <version>2.7-SNAPSHOT</version>
+  </parent>
+  
+
+  <!-- =========================================================== -->
+  <!--     Module Description                                      -->
+  <!-- =========================================================== -->
+  <groupId>org.geotools</groupId>
+  <artifactId>gt-temporal</artifactId>
+  <packaging>jar</packaging>
+  <name>Temporal implementation</name>
+  <url>
+	http://maven.geotools.fr/reports/modules/unsupported/temporal/
+  </url>
+  <scm>
+    <connection>
+      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/temporal/
+    </connection>
+    <url>
+      http://svn.osgeo.org/geotools/trunk/modules/unsupported/temporal/
+    </url>
+  </scm>
+
+  <description>
+    Provides a Temporal (ISO 19108) implementation. This module contains temporal aspects implementations for geographic information.
+  </description>
+
+
+  <!-- =========================================================== -->
+  <!--     Developers and Contributors                             -->
+  <!-- =========================================================== -->
+  <developers>
+    <developer>
+      <id>msidhoum</id>
+      <name>Mehdi Sidhoum</name>
+      <email>mehdi.sidhoum@geomatys.fr</email>
+      <organization>Geomatys</organization>
+      <organizationUrl>http://www.geomatys.fr/</organizationUrl>
+      <roles>
+        <role>Module Creator</role>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Alessio Fabiani</name>
+      <id>afabiani</id>
+      <email>alessio.fabiani@geo-solutions.it</email>
+      <organization>GeoSolutions</organization>
+      <organizationUrl>http://www.geo-solutions.it/</organizationUrl>
+      <roles>
+        <role>Module Maintainer</role>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Simone Giannecchini</name>
+      <id>simboss</id>
+      <email>simone.giannecchini@geo-solutions.it</email>
+      <organization>GeoSolutions</organization>
+      <organizationUrl>http://www.geo-solutions.it/</organizationUrl>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Daniele Romagnoli</name>
+      <id>danieler</id>
+      <email>daniele.romagnoli@geo-solutions.it</email>
+      <organization>GeoSolutions</organization>
+      <organizationUrl>http://www.geo-solutions.it/</organizationUrl>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+  </developers>
+
+
+  <!-- =========================================================== -->
+  <!--     Dependency Mangement                                    -->
+  <!-- =========================================================== -->
+  <dependencies>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-referencing</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+     <groupId>org.geotools</groupId>
+     <artifactId>gt-metadata</artifactId>
+     <version>${project.version}</version>
+    </dependency>
+  </dependencies>
+
+</project>

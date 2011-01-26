@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- IUGS/CGI GeoSciML schema, ver. 1 - draft 2005-10-19 -->
+<!-- Contains the concepts (classes), their inheritance, and relations from the CGI_Metadata package of the GeoSciML model -->
+<!-- GeoSciML Testbed-2 Model -->
+<schema 
+xmlns="http://www.w3.org/2001/XMLSchema" 
+xmlns:meta="http://www.seegrid.csiro.au/xml/metaLite"
+xmlns:gml="http://www.opengis.net/gml" 
+xmlns:gmd="http://www.isotc211.org/2005/gmd" 
+xmlns:gsml="http://www.cgi-iugs.org/xml/GeoSciML/1" 
+targetNamespace="http://www.cgi-iugs.org/xml/GeoSciML/1"
+        elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.0">
+	<annotation>
+		<documentation>metadata.xsd
+Basic metadata components for GeoSciML
+covering 	dataset and object metadata</documentation>
+	</annotation>
+	<!--=======================-->
+	<import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+	<!--import namespace="http://www.isotc211.org/2005/gmd" schemaLocation="http://www.seegrid.csiro.au/xml/iso19139/gml3.1.1version/gmd/gmd.xsd"/-->
+	<!--=======================-->
+	<include schemaLocation="CGI_Value.xsd"/>
+	<!--=======================-->
+	<complexType name="ObjectMetadataType">
+		<complexContent>
+			<extension base="gml:AbstractGMLType">
+				<sequence>
+                    <!-- 
+                    @note: making it explicitly reference metaLite#SimpleCitation, didn't tried importing
+                    the full 19115 schemas, need
+					<element name="sourceReference" type="gmd:CI_Citation_PropertyType" maxOccurs="unbounded"/>
+                     -->
+                    <element name="sourceReference" type="meta:SimpleCitationPropertyType" maxOccurs="unbounded"/>
+					<element name="comment" type="gml:StringOrRefType" minOccurs="0">
+						<annotation>
+							<documentation>Container for commentary that may not be strictly part of a "description".</documentation>
+						</annotation>
+					</element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ..................... -->
+	<element name="ObjectMetadata" type="gsml:ObjectMetadataType" abstract="true" substitutionGroup="gml:_GML"/>
+	<!-- ..................... -->
+	<complexType name="ObjectMetadataPropertyType">
+		<sequence minOccurs="0">
+			<element ref="gsml:ObjectMetadata"/>
+		</sequence>
+		<attributeGroup ref="gsml:RichPropertyAttributeGroup"/>
+	</complexType>
+	<!--=======================-->
+	<complexType name="MappedFeatureMetadataType">
+		<complexContent>
+			<extension base="gsml:ObjectMetadataType">
+				<sequence>
+					<element name="positionalAccuracy" type="gsml:CGI_ValuePropertyType"/>
+					<element name="observationMethod" type="gsml:CGI_ValuePropertyType" maxOccurs="unbounded"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ..................... -->
+	<element name="MappedFeatureMetadata" type="gsml:MappedFeatureMetadataType" substitutionGroup="gsml:ObjectMetadata"/>
+	<!-- ..................... -->
+	<complexType name="MappedFeatureMetadataPropertyType">
+		<sequence minOccurs="0">
+			<element ref="gsml:MappedFeatureMetadata"/>
+		</sequence>
+		<attributeGroup ref="gsml:RichPropertyAttributeGroup"/>
+	</complexType>
+	<!--=======================-->
+	<complexType name="GeologicFeatureMetadataType">
+		<complexContent>
+			<extension base="gsml:ObjectMetadataType">
+				<sequence>
+					<element name="thematicAccuracy" type="gsml:CGI_ValuePropertyType"/>
+					<element name="observationMethod" type="gsml:CGI_ValuePropertyType" maxOccurs="unbounded"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ..................... -->
+	<element name="GeologicFeatureMetadata" type="gsml:GeologicFeatureMetadataType" substitutionGroup="gsml:ObjectMetadata"/>
+	<!-- ..................... -->
+	<complexType name="GeologicFeatureMetadataPropertyType">
+		<sequence minOccurs="0">
+			<element ref="gsml:GeologicFeatureMetadata"/>
+		</sequence>
+		<attributeGroup ref="gsml:RichPropertyAttributeGroup"/>
+	</complexType>
+	<!--=======================-->
+	<complexType name="DatasetMetadataType">
+		<annotation><documentation>Should be derived from MD_Metadata</documentation></annotation>
+		<complexContent>
+			<extension base="gml:AbstractGMLType"/>
+		</complexContent>
+	</complexType>
+	<element name="DatasetMetadata" type="gsml:DatasetMetadataType" substitutionGroup="gml:_GML"/>
+	<!--=======================-->
+</schema>

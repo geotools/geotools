@@ -1,0 +1,113 @@
+<%@ jet package="org.geotools.maven.xmlcodegen.templates" imports="java.util.* java.io.* org.eclipse.xsd.* org.geotools.xml.*" class="ConfigurationTemplate" %>
+<% 	
+    Object[] arguments = (Object[])argument;
+	XSDSchema schema = (XSDSchema)arguments[0];
+	List components = (List)arguments[1];
+	
+	String namespace = schema.getTargetNamespace();
+	String prefix = Schemas.getTargetPrefix( schema ).toUpperCase();
+	
+	List types = new ArrayList();
+    List elements = new ArrayList();
+    List attributes = new ArrayList();
+    
+    for (Iterator itr = components.iterator(); itr.hasNext();) {
+        XSDNamedComponent component = (XSDNamedComponent)itr.next();
+        if (component instanceof XSDTypeDefinition) {
+            types.add(component);
+        }
+        else if (component instanceof XSDElementDeclaration) {
+            elements.add(component);
+        }
+        else if (component instanceof XSDAttributeDeclaration) {
+            attributes.add(component);
+        }
+    }
+%>
+import org.eclipse.xsd.util.XSDSchemaLocationResolver;	
+import org.geotools.xml.Configuration;
+import org.picocontainer.MutablePicoContainer;
+
+/**
+ * Parser configuration for the <%=namespace%> schema.
+ *
+ * @generated
+ */
+public class <%=prefix%>Configuration extends Configuration {
+
+    /**
+     * Creates a new configuration.
+     * 
+     * @generated
+     */     
+    public <%=prefix%>Configuration() {
+       super(<%=prefix%>.getInstance());
+       
+       //TODO: add dependencies here
+    }
+    
+    /**
+     * Registers the bindings for the configuration.
+     *
+     * @generated
+     */
+    protected final void registerBindings( MutablePicoContainer container ) {
+    <%
+    if (!types.isEmpty()) {
+%>
+        //Types
+<%
+        for (Iterator itr = types.iterator(); itr.hasNext();) {
+                XSDTypeDefinition type = (XSDTypeDefinition)itr.next();
+                if (type.getName() == null) continue;
+                
+                String typeQName = prefix.toUpperCase()+"."+type.getName();
+                String binding = type.getName().substring(0,1).toUpperCase() + 
+                    type.getName().substring(1) + "Binding.class";
+%>
+        container.registerComponentImplementation(<%=typeQName%>,<%=binding%>);
+<%
+        }
+    }
+%>
+
+<%
+    if (!elements.isEmpty()) {
+%>
+        //Elements
+<%
+        for (Iterator itr = elements.iterator(); itr.hasNext();) {
+                XSDNamedComponent named = (XSDNamedComponent)itr.next();
+                if (named.getName() == null) continue;
+                
+                String nQName = prefix.toUpperCase()+"."+named.getName();
+                String binding = named.getName().substring(0,1).toUpperCase() + 
+                    named.getName().substring(1) + "Binding.class";
+%>
+        container.registerComponentImplementation(<%=nQName%>,<%=binding%>);
+<%
+        }
+    }
+%>
+
+<%
+    if (!attributes.isEmpty()) {
+%>
+        //Attributes
+<%
+        for (Iterator itr = attributes.iterator(); itr.hasNext();) {
+                XSDNamedComponent named = (XSDNamedComponent)itr.next();
+                if (named.getName() == null) continue;
+                
+                String nQName = prefix.toUpperCase()+"."+named.getName();
+                String binding = named.getName().substring(0,1).toUpperCase() + 
+                    named.getName().substring(1) + "Binding.class";
+%>
+        container.registerComponentImplementation(<%=nQName%>,<%=binding%>);
+<%
+        }
+    }
+%>
+    
+    }
+} 

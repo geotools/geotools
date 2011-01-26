@@ -1,0 +1,12 @@
+#
+# Blue - cyan - white - yellow - red
+# Useful for data with a Gaussian distribution, whith a clear 0
+# (to appear white) and approximative minimum and maximum values
+# (to appear blue and red respectively).
+#
+
+000 000 255
+000 255 255
+255 255 255
+255 255 000
+255 000 000

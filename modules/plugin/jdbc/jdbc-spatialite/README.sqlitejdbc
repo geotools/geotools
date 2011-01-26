@@ -1,0 +1,12 @@
+This module utilizes the SQLiteJDBC driver made available as part of the Xerial
+project:
+
+  http://www.xerial.org/trac/Xerial/wiki/SQLiteJDBC
+
+However we use a slighty modified version of it in which SpatiaLite is compiled
+directly into the jdbc driver. The reason being that sqlitejdbc used its own 
+copy of sqlite. And spatialite does the same so this results in problems when 
+the two are used together. 
+
+The sqlitejdbc.patch file is used to modify the sqlitejdbc sources in order to 
+add support for spatialite.

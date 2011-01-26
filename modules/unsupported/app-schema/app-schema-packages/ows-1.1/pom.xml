@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.geotools.schemas</groupId>
+    <artifactId>ows-1.1</artifactId>
+    <version>1.1.0-1</version>
+    <name>OGC Web Service (OWS) 1.1 schema</name>
+
+    <scm>
+        <connection>scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema-packages/ows-1.1/</connection>
+        <url>http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema-packages/ows-1.1/</url>
+    </scm>
+
+    <developers>
+        <developer>
+            <name>Ben Caradoc-Davies</name>
+            <email>Ben.Caradoc-Davies@csiro.au</email>
+            <organization>CSIRO Earth Science and Resource Engineering </organization>
+            <roles>
+                <role>packager</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.geotools.schemas</groupId>
+            <artifactId>xlink-1.0</artifactId>
+            <version>1.0.0-3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools.schemas</groupId>
+            <artifactId>xml-1.0</artifactId>
+            <version>1.0.0-3</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+    
+        <plugins>
+            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>generate-resources</phase>
+                        <configuration>
+                            <tasks>
+                                <property name="srcdir" value="http://schemas.opengis.net/ows/1.1.0"/>
+                                <property name="destdir" value="${project.build.outputDirectory}/net/opengis/schemas/ows/1.1.0"/>
+                                <mkdir dir="${destdir}"/>
+                                <get src="${srcdir}/ows19115subset.xsd" dest="${destdir}/ows19115subset.xsd"/>
+                                <get src="${srcdir}/owsAll.xsd" dest="${destdir}/owsAll.xsd"/>
+                                <get src="${srcdir}/owsCommon.xsd" dest="${destdir}/owsCommon.xsd"/>
+                                <get src="${srcdir}/owsContents.xsd" dest="${destdir}/owsContents.xsd"/>
+                                <get src="${srcdir}/owsDataIdentification.xsd" dest="${destdir}/owsDataIdentification.xsd"/>
+                                <get src="${srcdir}/owsDomainType.xsd" dest="${destdir}/owsDomainType.xsd"/>
+                                <get src="${srcdir}/owsExceptionReport.xsd" dest="${destdir}/owsExceptionReport.xsd"/>
+                                <get src="${srcdir}/owsGetCapabilities.xsd" dest="${destdir}/owsGetCapabilities.xsd"/>
+                                <get src="${srcdir}/owsGetResourceByID.xsd" dest="${destdir}/owsGetResourceByID.xsd"/>
+                                <get src="${srcdir}/owsInputOutputData.xsd" dest="${destdir}/owsInputOutputData.xsd"/>
+                                <get src="${srcdir}/owsManifest.xsd" dest="${destdir}/owsManifest.xsd"/>
+                                <get src="${srcdir}/owsOperationsMetadata.xsd" dest="${destdir}/owsOperationsMetadata.xsd"/>
+                                <get src="${srcdir}/owsServiceIdentification.xsd" dest="${destdir}/owsServiceIdentification.xsd"/>
+                                <get src="${srcdir}/owsServiceProvider.xsd" dest="${destdir}/owsServiceProvider.xsd"/>
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    
+    </build>
+
+</project>

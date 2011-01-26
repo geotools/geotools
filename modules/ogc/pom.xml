@@ -1,0 +1,67 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.geotools</groupId>
+    <artifactId>modules</artifactId>
+    <version>2.7-SNAPSHOT</version>
+  </parent>
+
+  <groupId>org.geotools</groupId>
+  <artifactId>ogc</artifactId>
+  <packaging>pom</packaging>
+
+  <name>OGC Web Service Models</name>
+
+  <description>Collection of EMF models for OGC Web Service scheams.</description>
+
+  <developers>
+    <developer>
+      <name>Justin Deoliveira</name>
+      <roles>
+        <role>Java Developer</role>
+        <role>Module Maintainer</role>
+     </roles>
+    </developer>
+  </developers>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.eclipse.emf</groupId>
+      <artifactId>common</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.emf</groupId>
+      <artifactId>ecore</artifactId>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <sourceDirectory>src</sourceDirectory>
+    <plugins>
+      <plugin>
+        <artifactId>maven-eclipse-plugin</artifactId>
+        <configuration>
+          <additionalBuildcommands>
+            <buildcommand>org.eclipse.pde.ManifestBuilder</buildcommand>
+            <buildcommand>org.eclipse.pde.SchemaBuilder</buildcommand>
+          </additionalBuildcommands>
+          <additionalProjectnatures>
+            <projectnature>org.eclipse.pde.PluginNature</projectnature>
+          </additionalProjectnatures>
+       </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <modules>
+    <module>org.w3.xlink</module>
+    <module>net.opengis.ows</module>
+    <module>net.opengis.wfs</module>
+    <module>net.opengis.wps</module>
+    <module>net.opengis.wcs</module>
+    <module>net.opengis.wfsv</module>
+  </modules>
+
+</project>

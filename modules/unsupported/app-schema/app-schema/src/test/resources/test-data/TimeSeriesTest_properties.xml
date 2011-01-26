@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+  TimeSeriesTest mapping file
+-->
+<as:AppSchemaDataAccess xmlns:as="http://www.geotools.org/app-schema" xmlns:ogc="http://www.opengis.net/ogc"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.geotools.org/app-schema AppSchemaDataAccess.xsd
+                      http://www.opengis.net/ogc http://schemas.opengis.net/filter/1.1.0/expr.xsd">
+  <namespaces>
+    <!-- 
+      declare here the namespaces and prefixes used by the parser to
+      resolve <type> elements. 
+    -->
+
+    <Namespace>
+      <prefix>aw</prefix>
+      <uri>http://www.water.gov.au/awdip</uri>
+    </Namespace>
+    <Namespace>
+      <prefix>gmd</prefix>
+      <uri>http://www.isotc211.org/2005/gmd</uri>
+    </Namespace>
+    <Namespace>
+      <prefix>sa</prefix>
+      <uri>http://www.opengis.net/sampling/1.0</uri>
+    </Namespace>
+    <!-- <Namespace>
+      <prefix>geo</prefix>
+      <uri>http://www.opengis.net/geomExt/0.0</uri>
+      </Namespace>-->
+    <Namespace>
+      <prefix>xlink</prefix>
+      <uri>http://www.w3.org/1999/xlink</uri>
+    </Namespace>
+	<Namespace>
+	  <prefix>xsi</prefix>
+      <uri>http://www.w3.org/2001/XMLSchema-instance</uri>
+    </Namespace>
+    <Namespace>
+      <prefix>swe</prefix>
+      <uri>http://www.opengis.net/swe/1.0.1</uri>
+    </Namespace>
+    <Namespace>
+      <prefix>cv</prefix>
+      <uri>http://www.opengis.net/cv/0.2.1</uri>
+    </Namespace>
+    <Namespace>
+      <prefix>om</prefix>
+      <uri>http://www.opengis.net/om/1.0</uri>
+    </Namespace>
+    <Namespace>
+      <prefix>gco</prefix>
+      <uri>http://www.isotc211.org/2005/gco</uri>
+    </Namespace>
+    <Namespace>
+      <prefix>gml</prefix>
+      <uri>http://www.opengis.net/gml</uri>
+    </Namespace>
+  </namespaces>
+  <sourceDataStores>
+    <DataStore>
+      <id>timeseries_denormalized</id>
+      <parameters>
+        <Parameter>
+          <name>directory</name>
+          <!-- path can be relative to this file if starts with "file: -->
+          <value>file:./</value>
+        </Parameter>
+      </parameters>
+    </DataStore>
+  </sourceDataStores>
+  <catalog>observations.oasis.xml</catalog>
+  <targetTypes>
+    <FeatureType>
+      <!-- 
+        the oasis catalog above will be used to resolve schema locations
+      -->
+      <schemaUri>commonSchemas_new/awdip.xsd</schemaUri>
+    </FeatureType>
+  </targetTypes>
+  <typeMappings>
+    <FeatureTypeMapping>
+      <sourceDataStore>timeseries_denormalized</sourceDataStore>
+      <sourceType>timeseries_denormalized</sourceType>
+      <targetElement>aw:SiteSinglePhenomTimeSeries</targetElement>
+      <groupBy>
+  
+        <GroupByAttribute>station_id</GroupByAttribute>
+        <GroupByAttribute>determinand_code</GroupByAttribute>
+
+      </groupBy>
+      <attributeMappings>
+        <AttributeMapping>
+          <targetAttribute>SiteSinglePhenomTimeSeries</targetAttribute>
+          <idExpression>
+            <OCQL>station_id</OCQL>
+          </idExpression>
+        </AttributeMapping>
+
+        <AttributeMapping>
+          <targetAttribute>SiteSinglePhenomTimeSeries/gml:name[1]</targetAttribute>
+          <sourceExpression>
+            <OCQL>station_id</OCQL>
+          </sourceExpression>
+          <ClientProperty>
+            <name>gml:codeSpace</name>
+            <value>'http://my.org/identifiers/public'</value>
+          </ClientProperty>
+        </AttributeMapping>
+
+        <!-- ####################################### -->
+        <AttributeMapping>
+          <targetAttribute>sa:sampledFeature</targetAttribute>
+          <ClientProperty>
+            <name>xlink:title</name>
+            <value>determinand_code</value>
+          </ClientProperty>
+          <ClientProperty>
+            <name>xlink:href</name>
+            <value>'urn:x-ogc:def:nil:OGC:unknown'</value>
+          </ClientProperty>
+        </AttributeMapping>
+
+        <!--      <AttributeMapping>
+          <targetAttribute>relatedObservation/WaterObservation/observedProperty</targetAttribute>
+          <targetAttributeNode>aw:PhenomenonPropertyType</targetAttributeNode>
+        </AttributeMapping>
+
+        <AttributeMapping>
+          <targetAttribute>relatedObservation/WaterObservation/observedProperty/Phenomenom</targetAttribute>
+          <targetAttributeNode>aw:PhenomenonType</targetAttributeNode>
+
+        </AttributeMapping>-->
+
+        <!-- aw:PhenomenonTimeSeries must be identified -->
+        <AttributeMapping>
+          <targetAttribute>aw:relatedObservation/aw:PhenomenonTimeSeries</targetAttribute>
+          <idExpression>
+            <OCQL>determinand_code</OCQL>
+          </idExpression>
+        </AttributeMapping>
+
+        <!-- swe:Phenomenon must be identified -->
+        <AttributeMapping>
+          <targetAttribute>aw:relatedObservation/aw:PhenomenonTimeSeries/om:observedProperty/swe:Phenomenon</targetAttribute>
+          <idExpression>
+            <OCQL>determinand_code</OCQL>
+          </idExpression>
+        </AttributeMapping>
+
+        <AttributeMapping>
+          <targetAttribute>aw:relatedObservation/aw:PhenomenonTimeSeries/om:observedProperty/swe:Phenomenon/gml:name</targetAttribute>
+          <sourceExpression>
+            <OCQL>determinand_code</OCQL>
+          </sourceExpression>
+        </AttributeMapping>
+
+        <AttributeMapping>
+          <targetAttribute>aw:relatedObservation/aw:PhenomenonTimeSeries/om:result</targetAttribute>
+          <targetAttributeNode>cv:CompactDiscreteTimeCoveragePropertyType</targetAttributeNode>
+        </AttributeMapping>
+        <!--            <AttributeMapping>
+            <targetAttribute>relatedObservation/WaterObservation/result/CompactDiscreteTimeCoverage[1]</targetAttribute>
+            <targetAttributeNode>om:CompactDiscreteTimeCoverageType</targetAttributeNode>
+            
+            </AttributeMapping>-->
+
+        <!-- cv:CompactDiscreteTimeCoverage must be identified -->
+        <AttributeMapping>
+          <targetAttribute>aw:relatedObservation/aw:PhenomenonTimeSeries/om:result/cv:CompactDiscreteTimeCoverage</targetAttribute>
+          <idExpression>
+            <OCQL>'missing'</OCQL>
+          </idExpression>
+        </AttributeMapping>
+
+        <AttributeMapping>
+          <targetAttribute>aw:relatedObservation/aw:PhenomenonTimeSeries/om:result/cv:CompactDiscreteTimeCoverage/cv:element</targetAttribute>
+          <targetAttributeNode>cv:CompactTimeValuePairPropertyType</targetAttributeNode>
+          <isMultiple>true</isMultiple>
+        </AttributeMapping>
+
+        <!--        <AttributeMapping>
+            <targetAttribute>aw:relatedObservation/aw:PhenomenonTimeSeries/om:result/cv:CompactDiscreteTimeCoverage/cv:element/cv:CompactTimeValuePair</targetAttribute>
+            <targetAttributeNode>cv:CompactTimeValuePairType</targetAttributeNode>
+            </AttributeMapping>-->
+
+
+        <AttributeMapping>
+          <targetAttribute>aw:relatedObservation/aw:PhenomenonTimeSeries/om:result/cv:CompactDiscreteTimeCoverage/cv:element/cv:CompactTimeValuePair/cv:geometry</targetAttribute>
+          <sourceExpression>
+            <OCQL>sample_time_position</OCQL>
+          </sourceExpression>
+        </AttributeMapping>
+
+        <AttributeMapping>
+          <targetAttribute>aw:relatedObservation/aw:PhenomenonTimeSeries/om:result/cv:CompactDiscreteTimeCoverage/cv:element/cv:CompactTimeValuePair/cv:value</targetAttribute>
+          <!--       <targetAttributeNode>gml:MeasureType</targetAttributeNode>
+            -->
+          <sourceExpression>
+            <OCQL>result</OCQL>
+          </sourceExpression>
+       <!--   <ClientProperty>
+            <name>xsi:type</name>
+            <value>gml:MeasureType</value>
+          </ClientProperty>  -->
+          <ClientProperty>
+            <name>uom</name>
+            <value>uom</value>
+          </ClientProperty>
+        </AttributeMapping>
+
+
+
+
+      </attributeMappings>
+    </FeatureTypeMapping>
+  </typeMappings>
+</as:AppSchemaDataAccess>

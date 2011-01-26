@@ -1,0 +1,25 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<HTML>
+  <HEAD>
+    <TITLE>package org.opengis.geometry.coordinate</TITLE>
+  </HEAD>
+  <BODY>
+  Set of geometric objects. The following is adapted from
+  <A HREF="http://www.opengis.org/docs/01-101.pdf">Feature Geometry (Topic 1)</A> specification.
+
+  <P ALIGN="justify">A geometric object shall be a combination of a coordinate geometry and a coordinate
+  reference system. In all of the operations, all geometric calculations shall be done in the coordinate
+  reference system of the first geometric object accessed, which is normally the object whose operation
+  is being invoked. Returned objects shall be in the coordinate reference system in which the calculations
+  are done unless explicitly stated otherwise. The interface defined in this package are basically those
+  of set theory. In general a geometric object is a set of geometric points, represented by
+  {@link org.opengis.geometry.DirectPosition}. Object instantiations of geometric objects are
+  {@link org.opengis.geometry.Geometry}. Object instantiations of geometric points, when used as values,
+  are {@link org.opengis.geometry.DirectPosition}s. General set theory operations defined at
+  {@link org.opengis.geometry.Geometry} differentiate further down the class hierarchy depending on
+  whether or not the boundary {@link org.opengis.geometry.DirectPosition} are included as set
+  elements. Subtypes of {@link org.opengis.geometry.primitive.Primitive} do not contain boundary points,
+  while subtypes of {@link org.opengis.geometry.complex.Complex} do.</P>
+  </BODY>
+</HTML>

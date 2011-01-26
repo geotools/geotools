@@ -1,0 +1,54 @@
+<class-diagram generalizations="true" realizations="true" associations="true" dependencies="true" 
+  nesting-relationships="true">  
+  <classifier-display autosize="true" package="true" attributes="true" operations="true" initial-value="false" 
+    signature="true" visibility="true"/>  
+  <association-display labels="true" multiplicity="true"/>  
+  <interface type="java" name="org.opengis.feature.simple.SimpleFeature" project="geoapi" 
+    file="/geoapi/src/main/java/org/opengis/feature/simple/SimpleFeature.java" corner="BOTTOM_RIGHT">    
+    <display autosize="true" package="true" attributes="true" operations="true" initial-value="false" signature="true" 
+      visibility="true"/>    
+    <position x="311" y="466" width="-1" height="-1"/>  
+  </interface>  
+  <interface type="java" name="org.opengis.feature.simple.SimpleFeatureType" project="geoapi" 
+    file="/geoapi/src/main/java/org/opengis/feature/simple/SimpleFeatureType.java" corner="BOTTOM_RIGHT">    
+    <display autosize="true" package="true" attributes="true" operations="true" initial-value="false" signature="true" 
+      visibility="true"/>    
+    <position x="611" y="468" width="-1" height="-1"/>  
+  </interface>  
+  <interface type="java" name="org.opengis.feature.Feature" project="geoapi" 
+    file="/geoapi/src/main/java/org/opengis/feature/Feature.java" corner="BOTTOM_RIGHT">    
+    <display autosize="true" package="true" attributes="true" operations="false" initial-value="false" signature="true" 
+      visibility="true"/>    
+    <position x="311" y="264" width="-1" height="-1"/>  
+  </interface>  
+  <interface type="java" name="org.opengis.feature.type.FeatureType" project="geoapi" 
+    file="/geoapi/src/main/java/org/opengis/feature/type/FeatureType.java" corner="BOTTOM_RIGHT">    
+    <display autosize="true" package="true" attributes="true" operations="false" initial-value="false" signature="true" 
+      visibility="true"/>    
+    <position x="611" y="264" width="-1" height="-1"/>  
+  </interface>  
+  <generalization>    
+    <source project="geoapi" name="org.opengis.feature.simple.SimpleFeatureType" 
+      file="/geoapi/src/main/java/org/opengis/feature/simple/SimpleFeatureType.java"/>    
+    <target project="geoapi" name="org.opengis.feature.type.FeatureType" 
+      file="/geoapi/src/main/java/org/opengis/feature/type/FeatureType.java"/>  
+  </generalization>  
+  <dependency>    
+    <source project="geoapi" name="org.opengis.feature.Feature" 
+      file="/geoapi/src/main/java/org/opengis/feature/Feature.java"/>    
+    <target project="geoapi" name="org.opengis.feature.type.FeatureType" 
+      file="/geoapi/src/main/java/org/opengis/feature/type/FeatureType.java"/>  
+  </dependency>  
+  <generalization>    
+    <source project="geoapi" name="org.opengis.feature.simple.SimpleFeature" 
+      file="/geoapi/src/main/java/org/opengis/feature/simple/SimpleFeature.java"/>    
+    <target project="geoapi" name="org.opengis.feature.Feature" 
+      file="/geoapi/src/main/java/org/opengis/feature/Feature.java"/>  
+  </generalization>  
+  <dependency>    
+    <source project="geoapi" name="org.opengis.feature.simple.SimpleFeature" 
+      file="/geoapi/src/main/java/org/opengis/feature/simple/SimpleFeature.java"/>    
+    <target project="geoapi" name="org.opengis.feature.simple.SimpleFeatureType" 
+      file="/geoapi/src/main/java/org/opengis/feature/simple/SimpleFeatureType.java"/>  
+  </dependency>
+</class-diagram>

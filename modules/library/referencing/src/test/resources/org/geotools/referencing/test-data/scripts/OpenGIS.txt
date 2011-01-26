@@ -1,0 +1,559 @@
+// Geographic coordinate systems
+//
+// (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)
+//
+set _Wgs84NE_=GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],TOWGS84[0,0,0,0,0,0,0],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Lat",NORTH],AXIS["Long",EAST],AUTHORITY["EPSG","4326"]]
+set _Wgs84EN_=GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],TOWGS84[0,0,0,0,0,0,0],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Long",EAST],AXIS["Lat",NORTH]]
+set _Wgs84SW_=GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],TOWGS84[0,0,0,0,0,0,0],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Long",SOUTH],AXIS["Lat",WEST]]
+set _Wgs84SE_=GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],TOWGS84[0,0,0,0,0,0,0],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Long",SOUTH],AXIS["Lat",EAST]]
+set _Wgs84NE23W_=GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],TOWGS84[0,0,0,0,0,0,0],AUTHORITY["EPSG","6326"]],PRIMEM["23W",-23],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Lat",NORTH],AXIS["Long",EAST]]
+set _Wgs84ES23W_=GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],TOWGS84[0,0,0,0,0,0,0],AUTHORITY["EPSG","6326"]],PRIMEM["23W",-23],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Long",EAST],AXIS["Lat",SOUTH]]
+set _Nad27_=GEOGCS["NAD27",DATUM["North_American_Datum_1927",SPHEROID["Clarke 1866",6378206.4,294.978698213901,AUTHORITY["EPSG","7008"]],TOWGS84[-3,142,183,0,0,0,0],AUTHORITY["EPSG","6267"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Lat",NORTH],AXIS["Long",EAST],AUTHORITY["EPSG","4267"]]
+set _Osgb36_=GEOGCS["OSGB 1936",DATUM["OSGB_1936",SPHEROID["Airy 1830",6377563.396,299.3249646,AUTHORITY["EPSG","7001"]],TOWGS84[375,-111,431,0,0,0,0],AUTHORITY["EPSG","6277"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Lat",NORTH],AXIS["Long",EAST],AUTHORITY["EPSG","4277"]]
+set _NtfParis_=GEOGCS["NTF (Paris)",DATUM["Nouvelle_Triangulation_Francaise",SPHEROID["Clarke 1880 (IGN)",6378249.2,293.466021293627,AUTHORITY["EPSG","7011"]],TOWGS84[-168,-60,320,0,0,0,0],AUTHORITY["EPSG","6275"]],PRIMEM["Paris",2.5969213,AUTHORITY["EPSG","8903"]],UNIT["grad",0.015707963267949,AUTHORITY["EPSG","9105"]],AXIS["Lat",NORTH],AXIS["Long",EAST],AUTHORITY["EPSG","4807"]]
+set _GccWgs84OEN_=GEOCCS["Geocentric",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],TOWGS84[0,0,0,0,0,0,0],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0],UNIT["Meter",1],AXIS["X",OTHER],AXIS["Y",EAST],AXIS["Z",NORTH]]
+set _GccOsgb36OEN_=GEOCCS["Geocentric",DATUM["OSGB_1936",SPHEROID["Airy 1830",6377563.396,299.3249646,AUTHORITY["EPSG","7001"]],TOWGS84[375,-111,431,0,0,0,0],AUTHORITY["EPSG","6277"]],PRIMEM["Greenwich",0],UNIT["Meter",1],AXIS["X",OTHER],AXIS["Y",EAST],AXIS["Z",NORTH]]
+set _GccWgs84ONWcm_=GEOCCS["Geocentric",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],TOWGS84[0,0,0,0,0,0,0],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0],UNIT["Centimeter",0.01],AXIS["X",OTHER],AXIS["Y",NORTH],AXIS["Z",WEST]]
+set _Ed50NE_=GEOGCS["ED50",DATUM["European_Datum_1950",SPHEROID["International 1924",6378388,297,AUTHORITY["EPSG","7022"]],TOWGS84[-87,-98,-121,0,0,0,0],AUTHORITY["EPSG","6230"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Lat",NORTH],AXIS["Long",EAST],AUTHORITY["EPSG","4230"]]
+set _EPSG:4267_=GEOGCS["NAD27",DATUM["North_American_Datum_1927",SPHEROID["Clarke 1866",6378206.4,294.978698213901,AUTHORITY["EPSG","7008"]],TOWGS84[-3,142,183,0,0,0,0],AUTHORITY["EPSG","6267"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Lat",NORTH],AXIS["Long",EAST],AUTHORITY["EPSG","4267"]]
+set _EPSG:4291_=GEOGCS["SAD69",DATUM["South_American_Datum_1969",SPHEROID["GRS 1967",6378160,298.247167427,AUTHORITY["EPSG","7036"]],TOWGS84[-57,1,-41,0,0,0,0],AUTHORITY["EPSG","6291"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Lat",NORTH],AXIS["Long",EAST],AUTHORITY["EPSG","4291"]]
+set _EPSG:4230_=GEOGCS["ED50",DATUM["European_Datum_1950",SPHEROID["International 1924",6378388,297,AUTHORITY["EPSG","7022"]],TOWGS84[-87,-98,-121,0,0,0,0],AUTHORITY["EPSG","6230"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Lat",NORTH],AXIS["Long",EAST],AUTHORITY["EPSG","4230"]]
+set _EPSG:4301_=GEOGCS["Tokyo",DATUM["Tokyo",SPHEROID["Bessel 1841",6377397.155,299.1528128,AUTHORITY["EPSG","7004"]],TOWGS84[-148,507,685,0,0,0,0],AUTHORITY["EPSG","6301"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Lat",NORTH],AXIS["Long",EAST],AUTHORITY["EPSG","4301"]]
+set _EPSG:4202_=GEOGCS["AGD66",DATUM["Australian_Geodetic_Datum_1966",SPHEROID["Australian National Spheroid",6378160,298.25,AUTHORITY["EPSG","7003"]],TOWGS84[-133,-48,148,0,0,0,0],AUTHORITY["EPSG","6202"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Lat",NORTH],AXIS["Long",EAST],AUTHORITY["EPSG","4202"]]
+set _EPSG:4203_=GEOGCS["AGD84",DATUM["Australian_Geodetic_Datum_1984",SPHEROID["Australian National Spheroid",6378160,298.25,AUTHORITY["EPSG","7003"]],TOWGS84[-134,-48,149,0,0,0,0],AUTHORITY["EPSG","6203"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Lat",NORTH],AXIS["Long",EAST],AUTHORITY["EPSG","4203"]]
+set _EPSG:4201_=GEOGCS["Adindan",DATUM["Adindan",SPHEROID["Clarke 1880 (RGS)",6378249.145,293.465,AUTHORITY["EPSG","7012"]],TOWGS84[-166,-15,204,0,0,0,0],AUTHORITY["EPSG","6201"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Lat",NORTH],AXIS["Long",EAST],AUTHORITY["EPSG","4201"]]
+set _EPSG:4209_=GEOGCS["Arc 1950",DATUM["Arc_1950",SPHEROID["Clarke 1880 (Arc)",6378249.145,293.4663077,AUTHORITY["EPSG","7013"]],TOWGS84[-143,-90,-294,0,0,0,0],AUTHORITY["EPSG","6209"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Lat",NORTH],AXIS["Long",EAST],AUTHORITY["EPSG","4209"]]
+set _EPSG:4210_=GEOGCS["Arc 1960",DATUM["Arc_1960",SPHEROID["Clarke 1880 (RGS)",6378249.145,293.465,AUTHORITY["EPSG","7012"]],TOWGS84[-160,-6,-302,0,0,0,0],AUTHORITY["EPSG","6210"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Lat",NORTH],AXIS["Long",EAST],AUTHORITY["EPSG","4210"]]
+set _EPSG:4216_=GEOGCS["Bermuda 1957",DATUM["Bermuda_1957",SPHEROID["Clarke 1866",6378206.4,294.978698213901,AUTHORITY["EPSG","7008"]],TOWGS84[-73,213,296,0,0,0,0],AUTHORITY["EPSG","6216"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Lat",NORTH],AXIS["Long",EAST],AUTHORITY["EPSG","4216"]]
+set _EPSG:4218_=GEOGCS["Bogota",DATUM["Bogota",SPHEROID["International 1924",6378388,297,AUTHORITY["EPSG","7022"]],TOWGS84[307,304,-318,0,0,0,0],AUTHORITY["EPSG","6218"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Lat",NORTH],AXIS["Long",EAST],AUTHORITY["EPSG","4218"]]
+set _EPSG:4221_=GEOGCS["Campo Inchauspe",DATUM["Campo_Inchauspe",SPHEROID["International 1924",6378388,297,AUTHORITY["EPSG","7022"]],TOWGS84[-148,136,90,0,0,0,0],AUTHORITY["EPSG","6221"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Lat",NORTH],AXIS["Long",EAST],AUTHORITY["EPSG","4221"]]
+set _EPSG:4222_=GEOGCS["Cape",DATUM["Cape",SPHEROID["Clarke 1880 (Arc)",6378249.145,293.4663077,AUTHORITY["EPSG","7013"]],TOWGS84[-136,-108,-292,0,0,0,0],AUTHORITY["EPSG","6222"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Lat",NORTH],AXIS["Long",EAST],AUTHORITY["EPSG","4222"]]
+set _EPSG:4223_=GEOGCS["Carthage",DATUM["Carthage",SPHEROID["Clarke 1880 (IGN)",6378249.2,293.466021293627,AUTHORITY["EPSG","7011"]],TOWGS84[-263,6,431,0,0,0,0],AUTHORITY["EPSG","6223"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Lat",NORTH],AXIS["Long",EAST],AUTHORITY["EPSG","4223"]]
+set _EPSG:4224_=GEOGCS["Chua",DATUM["Chua",SPHEROID["International 1924",6378388,297,AUTHORITY["EPSG","7022"]],TOWGS84[-134,229,-29,0,0,0,0],AUTHORITY["EPSG","6224"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Lat",NORTH],AXIS["Long",EAST],AUTHORITY["EPSG","4224"]]
+set _EPSG:4225_=GEOGCS["Corrego Alegre",DATUM["Corrego_Alegre",SPHEROID["International 1924",6378388,297,AUTHORITY["EPSG","7022"]],TOWGS84[-206,172,-6,0,0,0,0],AUTHORITY["EPSG","6225"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Lat",NORTH],AXIS["Long",EAST],AUTHORITY["EPSG","4225"]]
+set _EPSG:4280_=GEOGCS["Padang",DATUM["Padang_1884",SPHEROID["Bessel 1841",6377397.155,299.1528128,AUTHORITY["EPSG","7004"]],TOWGS84[0,0,0,0,0,0,0],AUTHORITY["EPSG","6280"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Lat",NORTH],AXIS["Long",EAST],AUTHORITY["EPSG","4280"]]
+set _EPSG:4272_=GEOGCS["GD49",DATUM["New_Zealand_Geodetic_Datum_1949",SPHEROID["International 1924",6378388,297,AUTHORITY["EPSG","7022"]],TOWGS84[84,-22,209,0,0,0,0],AUTHORITY["EPSG","6272"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Lat",NORTH],AXIS["Long",EAST],AUTHORITY["EPSG","4272"]]
+set _EPSG:4244_=GEOGCS["Kandawala",DATUM["Kandawala",SPHEROID["Everest 1830 (1937 Adjustment)",6377276.345,300.8017,AUTHORITY["EPSG","7015"]],TOWGS84[-97,787,86,0,0,0,0],AUTHORITY["EPSG","6244"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Lat",NORTH],AXIS["Long",EAST],AUTHORITY["EPSG","4244"]]
+set _EPSG:4245_=GEOGCS["Kertau",DATUM["Kertau",SPHEROID["Everest 1830 Modified",6377304.063,300.8017,AUTHORITY["EPSG","7018"]],TOWGS84[-11,851,5,0,0,0,0],AUTHORITY["EPSG","6245"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Lat",NORTH],AXIS["Long",EAST],AUTHORITY["EPSG","4245"]]
+set _EPSG:4251_=GEOGCS["Liberia 1964",DATUM["Liberia_1964",SPHEROID["Clarke 1880 (RGS)",6378249.145,293.465,AUTHORITY["EPSG","7012"]],TOWGS84[-90,40,88,0,0,0,0],AUTHORITY["EPSG","6251"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Lat",NORTH],AXIS["Long",EAST],AUTHORITY["EPSG","4251"]]
+set _EPSG:4253_=GEOGCS["Luzon 1911",DATUM["Luzon_1911",SPHEROID["Clarke 1866",6378206.4,294.978698213901,AUTHORITY["EPSG","7008"]],TOWGS84[-133,-77,-51,0,0,0,0],AUTHORITY["EPSG","6253"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Lat",NORTH],AXIS["Long",EAST],AUTHORITY["EPSG","4253"]]
+set _EPSG:4261_=GEOGCS["Merchich",DATUM["Merchich",SPHEROID["Clarke 1880 (IGN)",6378249.2,293.466021293627,AUTHORITY["EPSG","7011"]],TOWGS84[31,146,47,0,0,0,0],AUTHORITY["EPSG","6261"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Lat",NORTH],AXIS["Long",EAST],AUTHORITY["EPSG","4261"]]
+set _EPSG:4263_=GEOGCS["Minna",DATUM["Minna",SPHEROID["Clarke 1880 (RGS)",6378249.145,293.465,AUTHORITY["EPSG","7012"]],TOWGS84[-81,-84,115,0,0,0,0],AUTHORITY["EPSG","6263"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Lat",NORTH],AXIS["Long",EAST],AUTHORITY["EPSG","4263"]]
+set _EPSG:4270_=GEOGCS["Nahrwan 1967",DATUM["Nahrwan_1967",SPHEROID["Clarke 1880 (RGS)",6378249.145,293.465,AUTHORITY["EPSG","7012"]],TOWGS84[-247,-148,369,0,0,0,0],AUTHORITY["EPSG","6270"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Lat",NORTH],AXIS["Long",EAST],AUTHORITY["EPSG","4270"]]
+set _EPSG:4229_=GEOGCS["Egypt 1907",DATUM["Egypt_1907",SPHEROID["Helmert 1906",6378200,298.3,AUTHORITY["EPSG","7020"]],TOWGS84[-130,110,-13,0,0,0,0],AUTHORITY["EPSG","6229"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Lat",NORTH],AXIS["Long",EAST],AUTHORITY["EPSG","4229"]]
+set _EPSG:4135_=GEOGCS["Old Hawaiian",DATUM["Old_Hawaiian",SPHEROID["Clarke 1866",6378206.4,294.978698213901,AUTHORITY["EPSG","7008"]],TOWGS84[0,0,0,0,0,0,0],AUTHORITY["EPSG","6135"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Lat",NORTH],AXIS["Long",EAST],AUTHORITY["EPSG","4135"]]
+set _EPSG:4277_=GEOGCS["OSGB 1936",DATUM["OSGB_1936",SPHEROID["Airy 1830",6377563.396,299.3249646,AUTHORITY["EPSG","7001"]],TOWGS84[375,-111,431,0,0,0,0],AUTHORITY["EPSG","6277"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Lat",NORTH],AXIS["Long",EAST],AUTHORITY["EPSG","4277"]]
+set _EPSG:4248_=GEOGCS["PSAD56",DATUM["Provisional_South_American_Datum_1956",SPHEROID["International 1924",6378388,297,AUTHORITY["EPSG","7022"]],TOWGS84[-288,175,-376,0,0,0,0],AUTHORITY["EPSG","6248"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Lat",NORTH],AXIS["Long",EAST],AUTHORITY["EPSG","4248"]]
+set _EPSG:4139_=GEOGCS["Puerto Rico",DATUM["Puerto_Rico",SPHEROID["Clarke 1866",6378206.4,294.978698213901,AUTHORITY["EPSG","7008"]],TOWGS84[0,0,0,0,0,0,0],AUTHORITY["EPSG","6139"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Lat",NORTH],AXIS["Long",EAST],AUTHORITY["EPSG","4139"]]
+set _EPSG:4298_=GEOGCS["Timbalai 1948",DATUM["Timbalai_1948",SPHEROID["Everest 1830 (1967 Definition)",6377298.556,300.8017,AUTHORITY["EPSG","7016"]],TOWGS84[-679,669,-48,0,0,0,0],AUTHORITY["EPSG","6298"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Lat",NORTH],AXIS["Long",EAST],AUTHORITY["EPSG","4298"]]
+set _EPSG:4311_=GEOGCS["Zanderij",DATUM["Zanderij",SPHEROID["International 1924",6378388,297,AUTHORITY["EPSG","7022"]],TOWGS84[-265,120,-358,0,0,0,0],AUTHORITY["EPSG","6311"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Lat",NORTH],AXIS["Long",EAST],AUTHORITY["EPSG","4311"]]
+
+// Projected
+set _BritNatGrid_=PROJCS["OSGB 1936 / British National Grid",GEOGCS["OSGB 1936",DATUM["OSGB_1936",SPHEROID["Airy 1830",6377563.396,299.3249646,AUTHORITY["EPSG","7001"]],TOWGS84[375,-111,431,0,0,0,0],AUTHORITY["EPSG","6277"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Lat",NORTH],AXIS["Long",EAST],AUTHORITY["EPSG","4277"]],PROJECTION["Transverse_Mercator"],PARAMETER["latitude_of_origin",49],PARAMETER["central_meridian",-2],PARAMETER["scale_factor",0.999601272],PARAMETER["false_easting",400000],PARAMETER["false_northing",-100000],UNIT["metre",1,AUTHORITY["EPSG","9001"]],AXIS["E",EAST],AXIS["N",NORTH],AUTHORITY["EPSG","27700"]]
+set _BritNatGridNW_=PROJCS["OSGB 1936 / British National Grid",GEOGCS["OSGB 1936",DATUM["OSGB_1936",SPHEROID["Airy 1830",6377563.396,299.3249646,AUTHORITY["EPSG","7001"]],TOWGS84[375,-111,431,0,0,0,0],AUTHORITY["EPSG","6277"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Lat",NORTH],AXIS["Long",EAST],AUTHORITY["EPSG","4277"]],PROJECTION["Transverse_Mercator"],PARAMETER["latitude_of_origin",49],PARAMETER["central_meridian",-2],PARAMETER["scale_factor",0.999601272],PARAMETER["false_easting",400000],PARAMETER["false_northing",-100000],UNIT["metre",1,AUTHORITY["EPSG","9001"]],AXIS["S",NORTH],AXIS["W",WEST]]
+set _BritNatGridcm_=PROJCS["OSGB 1936 / British National Grid",GEOGCS["OSGB 1936",DATUM["OSGB_1936",SPHEROID["Airy 1830",6377563.396,299.3249646,AUTHORITY["EPSG","7001"]],TOWGS84[375,-111,431,0,0,0,0],AUTHORITY["EPSG","6277"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Lat",NORTH],AXIS["Long",EAST],AUTHORITY["EPSG","4277"]],PROJECTION["Transverse_Mercator"],PARAMETER["latitude_of_origin",49],PARAMETER["central_meridian",-2],PARAMETER["scale_factor",0.999601272],PARAMETER["false_easting",40000000],PARAMETER["false_northing",-10000000],UNIT["centimetre",0.01]]
+set _France1_=PROJCS["NTF (Paris) / France I",GEOGCS["NTF (Paris)",DATUM["Nouvelle_Triangulation_Francaise",SPHEROID["Clarke 1880 (IGN)",6378249.2,293.466021293627,AUTHORITY["EPSG","7011"]],TOWGS84[-168,-60,320,0,0,0,0],AUTHORITY["EPSG","6275"]],PRIMEM["Paris",2.5969213,AUTHORITY["EPSG","8903"]],UNIT["grad",0.015707963267949,AUTHORITY["EPSG","9105"]],AXIS["Lat",NORTH],AXIS["Long",EAST],AUTHORITY["EPSG","4807"]],PROJECTION["Lambert_Conformal_Conic_1SP"],PARAMETER["latitude_of_origin",49.5],PARAMETER["central_meridian",0],PARAMETER["scale_factor",0.999877341],PARAMETER["false_easting",600000],PARAMETER["false_northing",1200000],UNIT["metre",1,AUTHORITY["EPSG","9001"]],AXIS["X",EAST],AXIS["Y",NORTH],AUTHORITY["EPSG","27581"]]
+set _NAD27Idaho_=PROJCS["NAD27 / Idaho Central",GEOGCS["NAD27",DATUM["North_American_Datum_1927",SPHEROID["Clarke 1866",6378206.4,294.978698213901,AUTHORITY["EPSG","7008"]],TOWGS84[-3,142,183,0,0,0,0],AUTHORITY["EPSG","6267"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Lat",NORTH],AXIS["Long",EAST],AUTHORITY["EPSG","4267"]],PROJECTION["Transverse_Mercator"],PARAMETER["latitude_of_origin",41.6666666666666],PARAMETER["central_meridian",-114],PARAMETER["scale_factor",0.999947368],PARAMETER["false_easting",152400.30480061],PARAMETER["false_northing",0],UNIT["US survey foot",0.304800609601219,AUTHORITY["EPSG","9003"]],AXIS["X",EAST],AXIS["Y",NORTH],AUTHORITY["EPSG","26769"]]
+set _NAD83Idaho_=PROJCS["NAD83 / Idaho  Central",GEOGCS["NAD83",DATUM["North_American_Datum_1983",SPHEROID["GRS 1980",6378137,298.257222101,AUTHORITY["EPSG","7019"]],TOWGS84[0,0,0,0,0,0,0],AUTHORITY["EPSG","6269"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],AXIS["Lat",NORTH],AXIS["Long",EAST],AUTHORITY["EPSG","4269"]],PROJECTION["Transverse_Mercator"],PARAMETER["latitude_of_origin",41.6666666666666],PARAMETER["central_meridian",-114],PARAMETER["scale_factor",0.999947368],PARAMETER["false_easting",500000],PARAMETER["false_northing",0],UNIT["metre",1,AUTHORITY["EPSG","9001"]],AXIS["X",EAST],AXIS["Y",NORTH],AUTHORITY["EPSG","26969"]]
+
+// Local coordinate systems.
+set _Paper_=LOCAL_CS["Paper",LOCAL_DATUM["Paper",10000],UNIT["Meter",1],AXIS["",OTHER],AXIS["",OTHER],AXIS["",OTHER]]
+
+// Vertical coordinate systems
+set _Vmslh_=VERT_CS["mean sea level height",VERT_DATUM["Mean Sea Level",2005,AUTHORITY["EPSG","5100"]],UNIT["metre",1,AUTHORITY["EPSG","9001"]],AXIS["Z",UP],AUTHORITY["EPSG","5714"]]
+set _VmsldKm_=VERT_CS["mean sea level depth",VERT_DATUM["Mean Sea Level",2005,AUTHORITY["EPSG","5100"]],UNIT["kilometre",1000],AXIS["Z",DOWN]]
+set _EllipsoidZ_=VERT_CS["ellipsoid Z in centimeters",VERT_DATUM["Ellipsoid",2002],UNIT["metre",1],AXIS["Z",UP]]
+
+// Compound coordinate systems
+set _Wgs84Z_=COMPD_CS["Wgs84 with sea-level Z",_Wgs84NE_,_Vmslh_]
+set _Wgs84EZ_=COMPD_CS["Wgs84 with ellipsoid Z",_Wgs84NE_,_EllipsoidZ_]
+set _Ed50Z_=COMPD_CS["ED50 with sea-level Z",_Ed50NE_,_Vmslh_]
+set _Ed50EZ_=COMPD_CS["ED50 with ellipsoid Z",_Ed50NE_,_EllipsoidZ_]
+set _Nad27Z_=COMPD_CS["NAD27 with sea-level Z",_Nad27_,_Vmslh_]
+set _Nad27EZ_=COMPD_CS["NAD27 with ellipsoid Z",_Nad27_,_EllipsoidZ_]
+set _Osgb36Z_=COMPD_CS["Osgb36 with sea-level Z",_Osgb36_,_Vmslh_]
+set _Osgb36EZ_=COMPD_CS["Osgb36 with ellipsoid Z",_Osgb36_,_EllipsoidZ_]
+set _ZOsgb36_=COMPD_CS["Osgb36 with Z",_Vmslh_,_Osgb36_]
+set _Osgb36Zkm_=COMPD_CS["Osgb36 with Z depth in Km",_Osgb36_,_VmsldKm_]
+set _ZkmOsgb36_=COMPD_CS["Z depth in Km with Osgb36",_VmsldKm_,_Osgb36_]
+set _BritNatGridNWZkm_=COMPD_CS["British National Grid (NW) with Z depth in Km",_BritNatGridNW_,_VmsldKm_]
+set _EPSG:4267Z_=COMPD_CS["EPSG:4267 with sea-level Z",_EPSG:4267_,_Vmslh_]
+set _EPSG:4291Z_=COMPD_CS["EPSG:4291 with sea-level Z",_EPSG:4291_,_Vmslh_]
+set _EPSG:4230Z_=COMPD_CS["EPSG:4230 with sea-level Z",_EPSG:4230_,_Vmslh_]
+set _EPSG:4301Z_=COMPD_CS["EPSG:4301 with sea-level Z",_EPSG:4301_,_Vmslh_]
+set _EPSG:4202Z_=COMPD_CS["EPSG:4202 with sea-level Z",_EPSG:4202_,_Vmslh_]
+set _EPSG:4203Z_=COMPD_CS["EPSG:4203 with sea-level Z",_EPSG:4203_,_Vmslh_]
+set _EPSG:4201Z_=COMPD_CS["EPSG:4201 with sea-level Z",_EPSG:4201_,_Vmslh_]
+set _EPSG:4209Z_=COMPD_CS["EPSG:4209 with sea-level Z",_EPSG:4209_,_Vmslh_]
+set _EPSG:4210Z_=COMPD_CS["EPSG:4210 with sea-level Z",_EPSG:4210_,_Vmslh_]
+set _EPSG:4216Z_=COMPD_CS["EPSG:4216 with sea-level Z",_EPSG:4216_,_Vmslh_]
+set _EPSG:4218Z_=COMPD_CS["EPSG:4218 with sea-level Z",_EPSG:4218_,_Vmslh_]
+set _EPSG:4221Z_=COMPD_CS["EPSG:4221 with sea-level Z",_EPSG:4221_,_Vmslh_]
+set _EPSG:4222Z_=COMPD_CS["EPSG:4222 with sea-level Z",_EPSG:4222_,_Vmslh_]
+set _EPSG:4223Z_=COMPD_CS["EPSG:4223 with sea-level Z",_EPSG:4223_,_Vmslh_]
+set _EPSG:4224Z_=COMPD_CS["EPSG:4224 with sea-level Z",_EPSG:4224_,_Vmslh_]
+set _EPSG:4225Z_=COMPD_CS["EPSG:4225 with sea-level Z",_EPSG:4225_,_Vmslh_]
+set _EPSG:4280Z_=COMPD_CS["EPSG:4280 with sea-level Z",_EPSG:4280_,_Vmslh_]
+set _EPSG:4272Z_=COMPD_CS["EPSG:4272 with sea-level Z",_EPSG:4272_,_Vmslh_]
+set _EPSG:4244Z_=COMPD_CS["EPSG:4244 with sea-level Z",_EPSG:4244_,_Vmslh_]
+set _EPSG:4245Z_=COMPD_CS["EPSG:4245 with sea-level Z",_EPSG:4245_,_Vmslh_]
+set _EPSG:4251Z_=COMPD_CS["EPSG:4251 with sea-level Z",_EPSG:4251_,_Vmslh_]
+set _EPSG:4253Z_=COMPD_CS["EPSG:4253 with sea-level Z",_EPSG:4253_,_Vmslh_]
+set _EPSG:4261Z_=COMPD_CS["EPSG:4261 with sea-level Z",_EPSG:4261_,_Vmslh_]
+set _EPSG:4263Z_=COMPD_CS["EPSG:4263 with sea-level Z",_EPSG:4263_,_Vmslh_]
+set _EPSG:4270Z_=COMPD_CS["EPSG:4270 with sea-level Z",_EPSG:4270_,_Vmslh_]
+set _EPSG:4229Z_=COMPD_CS["EPSG:4229 with sea-level Z",_EPSG:4229_,_Vmslh_]
+set _EPSG:4135Z_=COMPD_CS["EPSG:4135 with sea-level Z",_EPSG:4135_,_Vmslh_]
+set _EPSG:4277Z_=COMPD_CS["EPSG:4277 with sea-level Z",_EPSG:4277_,_Vmslh_]
+set _EPSG:4248Z_=COMPD_CS["EPSG:4248 with sea-level Z",_EPSG:4248_,_Vmslh_]
+set _EPSG:4139Z_=COMPD_CS["EPSG:4139 with sea-level Z",_EPSG:4139_,_Vmslh_]
+set _EPSG:4298Z_=COMPD_CS["EPSG:4298 with sea-level Z",_EPSG:4298_,_Vmslh_]
+set _EPSG:4311Z_=COMPD_CS["EPSG:4311 with sea-level Z",_EPSG:4311_,_Vmslh_]
+
+// Math transforms
+set _Add7_=PARAM_MT["Affine",PARAMETER["num_row",2],PARAMETER["num_col",2],PARAMETER["elt_0_1",7]]
+set _AddYtoXAndShift23_=PARAM_MT["Affine",PARAMETER["num_row",3],PARAMETER["num_col",3],PARAMETER["elt_0_1",1],PARAMETER["elt_0_2",2],PARAMETER["elt_1_2",3]]
+set _Molodenski_=PARAM_MT["Abridged_Molodenski",PARAMETER["dim",3],PARAMETER["dx",-13],PARAMETER["dy",165],PARAMETER["dz",185],PARAMETER["src_semi_major",6378206.4],PARAMETER["src_semi_minor",6356583.79999898],PARAMETER["tgt_semi_major",6378137],PARAMETER["tgt_semi_minor",6356752.314243]]
+
+// Fitted coordinate systems, and compounded fitted coordinate systems.
+set _FitOsgb36_=FITTED_CS["Fitted OSGB36",_AddYtoXAndShift23_,_Osgb36_]
+set _ZkmFitOsgb36_=COMPD_CS["Z depth in Km with Osgb36",_VmsldKm_,_FitOsgb36_]
+set _VmslhMinus7_=FITTED_CS["Mean sea level minus 7",_Add7_,_Vmslh_]
+set _ZMinus7FitOsgb36_=COMPD_CS["Z minus 7, with fitted Osgb36",_VmslhMinus7_,_FitOsgb36_]
+
+
+// Start the tests...
+
+
+
+///////////////////////////////////////////////////////////////
+// Test horizontal datum shifts.
+// Test cases copied from DMA TR 8350.2-B, using regression polynomials.
+
+target crs = _Wgs84Z_
+test tolerance = (1e-5,1e-5,1)
+
+source crs = _EPSG:4267Z_
+source pt = (34.78578694,273.41884028,0)
+target pt = (34.78588583,273.41886250,-38.06)
+
+source crs = _EPSG:4291Z_
+source pt = (-31.94276500,294.89481722,0)
+target pt = (-31.94314167,294.89421778,20.27)
+
+source crs = _EPSG:4230Z_
+source pt = (46.69524806,13.91502444,0)
+target pt = (46.69439222,13.91405611,41.21)
+
+source crs = _EPSG:4301Z_
+source pt = (40.71062778,141.37332750,0)
+target pt = (40.71330389,141.36982806,20.99)
+
+source crs = _EPSG:4202Z_
+source pt = (-17.00910444,144.19367917,0)
+target pt = (-17.00758222,144.19476861,57.28)
+
+source crs = _EPSG:4203Z_
+source pt = (-20.63352028,144.40813556,0)
+target pt = (-20.63199111,144.40927694,47.84)
+
+source crs = _EPSG:4201Z_
+source pt = (9.08673611,36.58023667,0)
+target pt = (9.08780833,36.58104194,-0.90)
+
+source crs = _EPSG:4209Z_
+source pt = (-21.15097222,27.51075667,0)
+target pt = (-21.15183250,27.51050083,12.03)
+
+source crs = _EPSG:4210Z_
+source pt = (-6.05910000,35.92201361,0)
+target pt = (-6.06138222,35.92277528,5.69)
+
+source crs = _EPSG:4216Z_
+source pt = (32.35241861,295.34362583,0)
+target pt = (32.35381972,295.34390250,-29.44)
+
+source crs = _EPSG:4218Z_
+source pt = (2.57395028,287.36020361,0)
+target pt = (2.57109583,287.36366639,33.29)
+
+source crs = _EPSG:4221Z_
+source pt = (-29.79602278,301.87272306,0)
+target pt = (-29.79548028,301.87217778,18.29)
+
+source crs = _EPSG:4222Z_
+source pt = (-22.25379944,29.16319111,0)
+target pt = (-22.25459778,29.16294694,14.63)
+
+source crs = _EPSG:4223Z_
+source pt = (36.82255778,10.76911500,0)
+target pt = (36.82402444,10.76981333,39.19)
+
+source crs = _EPSG:4224Z_
+source pt = (-25.32313056,305.41314306,0)
+target pt = (-25.32377556,305.41340889,8.14)
+
+source crs = _EPSG:4225Z_
+source pt = (-20.48361639,305.21300806,0)
+target pt = (-20.48390250,305.21242444,-5.16)
+
+source crs = _EPSG:4280Z_
+source pt = (5.43096528,95.54227167,0)
+target pt = (5.43001833,95.54504389,-31.04)
+
+source crs = _EPSG:4272Z_
+source pt = (-41.29223611,173.25427917,0)
+target pt = (-41.29052056,173.25443333,8.27)
+
+source crs = _EPSG:4244Z_
+source pt = (7.61742500,81.68048611,0)
+target pt = (7.61771361,81.68238417,-87.21)
+
+source crs = _EPSG:4245Z_
+source pt = (3.46408611,102.62348611,0)
+target pt = (3.46387528,102.62190722,0.58)
+
+source crs = _EPSG:4251Z_
+source pt = (7.51998778,351.48173472,0)
+target pt = (7.52009444,351.48197444,23.06)
+
+source crs = _EPSG:4253Z_
+source pt = (6.10806667,125.17895278,0)
+target pt = (6.10696306,125.18033778,70.55)
+
+source crs = _EPSG:4261Z_
+source pt = (35.14442833,357.57036306,0)
+target pt = (35.14168861,357.57193944,41.46)
+
+source crs = _EPSG:4263Z_
+source pt = (9.31918083,12.23059028,0)
+target pt = (9.31943917,12.22993806,13.43)
+
+source crs = _EPSG:4270Z_
+source pt = (24.96879750,55.00214444,0)
+target pt = (24.97054083,55.00327194,-33.88)
+
+source crs = _EPSG:4229Z_
+source pt = (29.83398667,30.59947167,0)
+target pt = (29.83416306,30.60113056,8.93)
+
+source crs = _EPSG:4135Z_
+source pt = (21.57293889,201.73711972,0)
+target pt = (21.56978222,201.73986500,16.51)
+
+source crs = _EPSG:4277Z_
+source pt = (52.14298472,358.03336639,0)
+target pt = (52.14340833,358.03193278,47.17)
+
+source crs = _EPSG:4248Z_
+source pt = (-16.52608417,291.83361500,0)
+target pt = (-16.52970111,291.83186694,99.51)
+
+source crs = _EPSG:4139Z_
+source pt = (18.36708972,292.73404111,0)
+target pt = (18.36507667,292.73441917,-46.24)
+
+source crs = _EPSG:4298Z_
+source pt = (5.01092583,115.04624444,0)
+target pt = (5.01007278,115.04923278,51.43)
+
+source crs = _EPSG:4311Z_
+source pt = (5.45262528,304.79652389,0)
+target pt = (5.44945000,304.79516694,-32.33)
+
+
+
+///////////////////////////////////////////////////////////////
+// Test conversions between ellipsoidal and geoid (sea-level) heights. 
+
+// Use large tolerance in Z, since accurate transformations are classified.
+test tolerance = (1e-5,1e-5,5)
+
+source crs = _Ed50Z_
+target crs = _Ed50EZ_
+
+source pt = (57,-5,0)
+target pt = (57,-5,10)
+
+source crs = _Wgs84Z_
+target crs = _Wgs84EZ_
+
+source pt = (20,200,0)
+target pt = (20,200,7)
+
+source pt = (15,200,0)
+target pt = (15,200,9)
+
+source crs = _Ed50Z_
+target crs = _Wgs84Z_
+
+source pt = (46,13,0)
+target pt = (45.99911,12.99902,42)
+
+source crs = _Osgb36EZ_
+target crs = _Wgs84EZ_
+
+source pt = (49,-2,0)
+target pt = (49.000498299229,-2.0012406564658,48)
+
+
+
+///////////////////////////////////////////////////////////////
+// Test geocentric coordinate transformations.
+
+source crs = _GccWgs84OEN_
+target crs = _GccOsgb36OEN_
+test tolerance = 1e-3
+
+source pt = (6378137,0,0)
+target pt = (6377762,111,-431)
+
+source crs = _GccWgs84ONWcm_
+target crs = _Wgs84SW_
+test tolerance = 1e-3
+
+source pt = (637813700,0,0)
+target pt = (0,0)
+
+source pt = (0,-635675231.424518,0)
+target pt = (90,0)
+
+source pt = (0,635675231.424518,0)
+target pt = (-90,0)
+
+source pt = (0,0,637813700)
+target pt = (0,90)
+
+source crs = _Wgs84SW_
+target crs = _GccWgs84ONWcm_
+test tolerance = 1e-3
+
+source pt = (0,0)
+target pt = (637813700,0,0)
+
+source pt = (90,0)
+target pt = (0,-635675231.424518,0)
+
+source pt = (-90,0)
+target pt = (0,635675231.424518,0)
+
+source pt = (0,90)
+target pt = (0,0,637813700)
+
+source crs = _Wgs84SW_
+target crs = _GccWgs84OEN_
+test tolerance = 1e-3
+
+source pt = (0,0)
+target pt = (6378137,0,0)
+
+source pt = (90,0)
+target pt = (0,0,-6356752.31424518)
+
+source pt = (-90,0)
+target pt = (0,0,6356752.31424518)
+
+source pt = (0,90)
+target pt = (0,-6378137,0)
+
+source crs = _Wgs84NE_
+target crs = _GccWgs84OEN_
+test tolerance = 1e-3
+
+source pt = (0,0)
+target pt = (6378137,0,0)
+
+source pt = (90,0)
+target pt = (0,0,6356752.31424518)
+
+source pt = (-90,0)
+target pt = (0,0,-6356752.31424518)
+
+source pt = (0,90)
+target pt = (0,6378137,0)
+
+
+
+///////////////////////////////////////////////////////////////
+// Test Transverse Mercator projections.
+
+source crs = _Osgb36Z_
+target crs = _Wgs84Z_
+test tolerance = (1e-5,1e-5,1)
+
+source pt = (49,-2,120)
+target pt = (49.000498299229,-2.0012406564658,168.19377592067)
+
+source crs = _Osgb36Z_
+target crs = _BritNatGridNWZkm_
+test tolerance = 1e-3
+
+source pt = (49,-2,120)
+target pt = (-100000,-400000,-0.12)
+
+source crs = _Osgb36_
+target crs = _BritNatGrid_
+test tolerance = 1e-3
+
+source pt = (49,-2)
+target pt = (400000,-100000)
+
+source crs = _BritNatGrid_
+target crs = _BritNatGridcm_
+test tolerance = 1e-3
+
+source pt = (23,34)
+target pt = (2300,3400)
+
+source crs = _France1_
+target crs = _Wgs84NE_
+test tolerance = (1e-5)
+
+source pt = (0,0)
+target pt = (38.5200741443094,-4.43593261406989)
+
+source crs = _NAD27Idaho_
+target crs = _NAD83Idaho_
+test tolerance = (1e-5)
+
+source pt = (30000,40000)
+target pt = (356672.14701,12183.56326)
+
+///////////////////////////////////////////////////////////////
+// Test Fitted coordinate systems, and axes flips
+
+source crs = _ZOsgb36_
+target crs = _ZMinus7FitOsgb36_
+test tolerance = 1e-3
+
+source pt = (0,2102,2003)
+target pt = (-7,100,2000)
+
+source crs = _Vmslh_
+target crs = _VmslhMinus7_
+test tolerance = 1e-3
+
+source pt = (23)
+target pt = (16)
+
+source crs = _ZkmFitOsgb36_
+target crs = _ZOsgb36_
+test tolerance = 1e-3
+
+source pt = (0,100,2000)
+target pt = (0,2102,2003)
+
+source crs = _FitOsgb36_
+target crs = _Osgb36_
+test tolerance = 1e-3
+
+source pt = (0,0)
+target pt = (2,3)
+
+source pt = (100,2000)
+target pt = (2102,2003)
+
+source crs = _Osgb36Z_
+target crs = _Osgb36Zkm_
+test tolerance = 1e-3
+
+source pt = (1,2,3)
+target pt = (1,2,-0.003)
+
+source crs = _Osgb36Z_
+target crs = _ZkmOsgb36_
+test tolerance = 1e-3
+
+source pt = (1,2,3)
+target pt = (-0.003,1,2)
+
+source crs = _Osgb36Z_
+target crs = _ZOsgb36_
+test tolerance = 1e-3
+
+source pt = (1,2,3)
+target pt = (3,1,2)
+
+source crs = _Osgb36Z_
+target crs = _Osgb36Z_
+test tolerance = 1e-3
+
+source pt = (1,2,3)
+target pt = (1,2,3)
+
+source crs = _Vmslh_
+target crs = _VmsldKm_
+test tolerance = 1e-3
+
+source pt = (100)
+target pt = (-0.1)
+
+source crs = _GccWgs84OEN_
+target crs = _GccWgs84ONWcm_
+test tolerance = 1e-3
+
+source pt = (1,2,3)
+target pt = (100,300,-200)
+
+source crs = _Wgs84NE_
+target crs = _GccWgs84OEN_
+test tolerance = 1e-3
+
+source pt = (0,0)
+target pt = (6378137,0,0)
+
+source crs = _BritNatGridNW_
+target crs = _BritNatGrid_
+test tolerance = 1e-3
+
+source pt = (100,200)
+target pt = (-200,100)
+
+source crs = _Wgs84NE_
+target crs = _Wgs84ES23W_
+test tolerance = 1e-6
+
+source pt = (1,2)
+target pt = (25,-1)
+
+source crs = _Wgs84NE_
+target crs = _Wgs84NE23W_
+test tolerance = 1e-6
+
+source pt = (1,2)
+target pt = (1,25)
+
+source crs = _Wgs84NE_
+target crs = _Wgs84SE_
+test tolerance = 1e-6
+
+source pt = (1,2)
+target pt = (-1,2)
+
+source crs = _Wgs84NE_
+target crs = _Wgs84EN_
+test tolerance = 1e-6
+
+source pt = (1,2)
+target pt = (2,1)
+
+source crs = _Wgs84NE_
+target crs = _Wgs84SW_
+test tolerance = 1e-6
+
+source pt = (1,2)
+target pt = (-1,-2)
+
+source crs = _Wgs84NE_
+target crs = _NtfParis_
+test tolerance = 1e-6
+
+source pt = (45,0)
+target pt = (50.0000443768998,-2.59607577885018)
+
+source crs = _NtfParis_
+target crs = _Wgs84NE_
+test tolerance = 1e-6
+
+source pt = (50.0000443768998,-2.59607577885018)
+target pt = (45,0)

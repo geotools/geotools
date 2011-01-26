@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://merge/net" 
+	xmlns:mrg="http://merge/net" 
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+	<xsd:include schemaLocation="merge2.xsd"/>
+
+    <xsd:element name="name" type="xsd:string"/>
+    <xsd:element name="nameList" type="mrg:nameList"/>
+	<xsd:complexType name="nameList">
+		<xsd:sequence minOccurs="0" maxOccurs="unbounded">
+			<xsd:element ref="mrg:name" />
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

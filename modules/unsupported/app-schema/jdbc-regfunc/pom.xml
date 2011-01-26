@@ -1,0 +1,86 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+
+	<parent>
+		<groupId>org.geotools</groupId>
+		<artifactId>app-schema</artifactId>
+		<version>2.7-SNAPSHOT</version>
+	</parent>
+
+
+	<groupId>org.geotools</groupId>
+	<artifactId>gt-jdbc-regfunc</artifactId>
+	<packaging>jar</packaging>
+	<name>Support for Registered Functions in JDBC data stores</name>
+	<url>http://geotools.org/</url>
+
+	<scm>
+		<connection>
+			scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/jdbc-regfunc
+		</connection>
+		<url>
+			http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/jdbc-regfunc
+		</url>
+	</scm>
+	<description>
+		Add support for Registered Functions in JDBC data stores.
+	</description>
+
+
+	<!-- ==================================================== -->
+	<!--     Developers and contributors                      -->
+	<!-- ==================================================== -->
+	<developers></developers>
+	<contributors></contributors>
+	
+	<!-- ==================================================== -->
+	<!--     Dependencies                                     -->
+	<!-- ==================================================== -->
+	<dependencies>
+		<dependency>
+			<groupId>org.geotools.xsd</groupId>
+			<artifactId>gt-xsd-filter</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-postgis</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<!-- will need oracle spatial -->
+		<dependency>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-sample-data</artifactId>
+			<version>${project.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+
+	<!-- ==================================================== -->
+	<!--     Compilation (including non-standard plugins)     -->
+	<!-- ==================================================== -->
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<excludes></excludes>
+				</configuration>
+			</plugin>
+		</plugins>
+		<testResources>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<includes></includes>
+			</testResource>
+		</testResources>
+	</build>
+</project>
+
+
+

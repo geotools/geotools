@@ -1,0 +1,45 @@
+POINT (1 1):Point:POINT (1 1):Point to Point conversion
+POINT (1 1):MultiPoint:MULTIPOINT ((1 1)):Point to MultiPoint conversion
+POINT (1 1):LineString:LINESTRING (1 1, 1 1):Point to LineString conversion
+POINT (1 1):MultiLineString:MULTILINESTRING ((1 1, 1 1)):Point to MultiLineString conversion
+POINT (1 1):Polygon:POLYGON ((1 1, 1 1, 1 1, 1 1)):Point to Polygon conversion
+POINT (1 1):MultiPolygon:MULTIPOLYGON (((1 1, 1 1, 1 1, 1 1))):Point to MultiPolygon conversion
+POINT (1 1):GeometryCollection:GEOMETRYCOLLECTION (POINT (1 1)):Point to GeometryCollection conversion
+LINESTRING (1 1,2 2,3 3):Point:POINT (2 2):LineString to Point conversion
+LINESTRING (1 1,2 2,3 3):MultiPoint:MULTIPOINT ((2 2)):LineString to MultiPoint conversion
+LINESTRING (1 1,2 2,3 3):LineString:LINESTRING (1 1, 2 2, 3 3):LineString to LineString conversion
+LINESTRING (1 1,2 2,3 3):MultiLineString:MULTILINESTRING ((1 1, 2 2, 3 3)):LineString to MultiLineString conversion
+LINESTRING (1 1,2 2,3 3):Polygon:POLYGON ((1 1, 2 2, 3 3, 1 1)):LineString to Polygon conversion
+LINESTRING (1 1,2 2,3 3):MultiPolygon:MULTIPOLYGON (((1 1, 2 2, 3 3, 1 1))):LineString to MultiPolygon conversion
+LINESTRING (1 1,2 2,3 3):GeometryCollection:GEOMETRYCOLLECTION (LINESTRING (1 1, 2 2, 3 3)):LineString to GeometryCollection conversion
+POLYGON ((1 1,1 10,10 10,10 1,1 1),(2 2,2 4,4 4,2 2)):Point:POINT (5.571729957805908 5.5548523206751055):Polygon to Point conversion
+POLYGON ((1 1,1 10,10 10,10 1,1 1),(2 2,2 4,4 4,2 2)):MultiPoint:MULTIPOINT ((5.571729957805908 5.5548523206751055)):Polygon to MultiPoint conversion
+POLYGON ((1 1,1 10,10 10,10 1,1 1),(2 2,2 4,4 4,2 2)):LineString:LINESTRING (1 1, 1 10, 10 10, 10 1, 1 1, 2 2, 2 4, 4 4, 2 2):Polygon to LineString conversion
+POLYGON ((1 1,1 10,10 10,10 1,1 1),(2 2,2 4,4 4,2 2)):MultiLineString:MULTILINESTRING ((1 1, 1 10, 10 10, 10 1, 1 1, 2 2, 2 4, 4 4, 2 2)):Polygon to MultiLineString conversion
+POLYGON ((1 1,1 10,10 10,10 1,1 1),(2 2,2 4,4 4,2 2)):Polygon:POLYGON ((1 1, 1 10, 10 10, 10 1, 1 1), (2 2, 2 4, 4 4, 2 2)):Polygon to Polygon conversion
+POLYGON ((1 1,1 10,10 10,10 1,1 1),(2 2,2 4,4 4,2 2)):MultiPolygon:MULTIPOLYGON (((1 1, 1 10, 10 10, 10 1, 1 1), (2 2, 2 4, 4 4, 2 2))):Polygon to MultiPolygon conversion
+POLYGON ((1 1,1 10,10 10,10 1,1 1),(2 2,2 4,4 4,2 2)):GeometryCollection:GEOMETRYCOLLECTION (POLYGON ((1 1, 1 10, 10 10, 10 1, 1 1), (2 2, 2 4, 4 4, 2 2))):Polygon to GeometryCollection conversion
+MULTIPOINT ((1 1), (2 2)):Point:POINT (1.5 1.5):MultiPoint to Point conversion
+MULTIPOINT (1 1):Point:POINT (1 1):MultiPoint with 1 Point to Point conversion
+MULTIPOINT ((1 1), (2 2)):MultiPoint:MULTIPOINT ((1 1), (2 2)):MultiPoint to MultiPoint conversion
+MULTIPOINT ((1 1), (2 2)):LineString:LINESTRING (1 1, 2 2):MultiPoint to LineString conversion
+MULTIPOINT ((1 1), (2 2)):MultiLineString:MULTILINESTRING ((1 1, 1 1), (2 2, 2 2)):MultiPoint to MultiLineString conversion
+MULTIPOINT ((1 1), (2 2)):Polygon:POLYGON ((1 1, 2 2, 1 1, 1 1)):MultiPoint to Polygon conversion
+MULTIPOINT ((1 1), (2 2)):MultiPolygon:MULTIPOLYGON (((1 1, 1 1, 1 1, 1 1)), ((2 2, 2 2, 2 2, 2 2))):MultiPoint to MultiPolygon conversion
+MULTIPOINT ((1 1), (2 2)):GeometryCollection:MULTIPOINT ((1 1), (2 2)):MultiPoint to GeometryCollection conversion
+MULTILINESTRING ((1 1,2 2,3 3),(4 4,5 5)):Point:POINT (2.8333333333333335 2.8333333333333335):MultiLineString to Point conversion
+MULTILINESTRING ((1 1,2 2,3 3),(4 4,5 5)):MultiPoint:MULTIPOINT ((2 2), (4.5 4.5)):MultiLineString to MultiPoint conversion
+MULTILINESTRING ((1 1,2 2,3 3),(4 4,5 5)):LineString:LINESTRING (1 1, 2 2, 3 3, 4 4, 5 5):MultiLineString to LineString conversion
+MULTILINESTRING ((1 1,2 2,3 3)):LineString:LINESTRING (1 1, 2 2, 3 3):MultiLineString with 1 LineString to LineString conversion
+MULTILINESTRING ((1 1,2 2,3 3),(4 4,5 5)):MultiLineString:MULTILINESTRING ((1 1, 2 2, 3 3), (4 4, 5 5)):MultiLineString to MultiLineString conversion
+MULTILINESTRING ((1 1,2 2,3 3),(4 4,5 5)):Polygon:POLYGON ((1 1, 2 2, 3 3, 4 4, 5 5, 1 1)):MultiLineString to Polygon conversion
+MULTILINESTRING ((1 1,2 2,3 3),(4 4,5 5)):MultiPolygon:MULTIPOLYGON (((1 1, 2 2, 3 3, 1 1)), ((4 4, 5 5, 4 4, 4 4))):MultiLineString to MultiPolygon conversion
+MULTILINESTRING ((1 1,2 2,3 3),(4 4,5 5)):GeometryCollection:MULTILINESTRING ((1 1, 2 2, 3 3), (4 4, 5 5)):MultiLineString to GeometryCollection conversion
+MULTIPOLYGON (((1 1,1 10,10 10,10 1,1 1)),((2 2,2 4,3 3,2 2))):Point:POINT (5.461382113821138 5.469512195121951):MultiPolygon to Point conversion
+MULTIPOLYGON (((1 1,1 10,10 10,10 1,1 1)),((2 2,2 4,3 3,2 2))):MultiPoint:MULTIPOINT ((5.5 5.5), (2.3333333333333335 3)):MultiPolygon to MultiPoint conversion
+MULTIPOLYGON (((1 1,1 10,10 10,10 1,1 1)),((2 2,2 4,3 3,2 2))):LineString:LINESTRING (1 1, 1 10, 10 10, 10 1, 1 1, 2 2, 2 4, 3 3, 2 2):MultiPolygon to LineString conversion
+MULTIPOLYGON (((1 1,1 10,10 10,10 1,1 1)),((2 2,2 4,3 3,2 2))):MultiLineString:MULTILINESTRING ((1 1, 1 10, 10 10, 10 1, 1 1), (2 2, 2 4, 3 3, 2 2)):MultiPolygon to MultiLineString conversion
+MULTIPOLYGON (((1 1,1 10,10 10,10 1,1 1)),((2 2,2 4,3 3,2 2))):Polygon:POLYGON ((1 1, 1 10, 10 10, 10 1, 1 1, 2 2, 2 4, 3 3, 2 2, 1 1)):MultiPolygon to Polygon conversion
+MULTIPOLYGON (((1 1,1 10,10 10,10 1,1 1))):Polygon:POLYGON ((1 1, 1 10, 10 10, 10 1, 1 1)):MultiPolygon with 1 Polygon to Polygon conversion
+MULTIPOLYGON (((1 1,1 10,10 10,10 1,1 1)),((2 2,2 4,3 3,2 2))):MultiPolygon:MULTIPOLYGON (((1 1, 1 10, 10 10, 10 1, 1 1)), ((2 2, 2 4, 3 3, 2 2))):MultiPolygon to MultiPolygon conversion
+MULTIPOLYGON (((1 1,1 10,10 10,10 1,1 1)),((2 2,2 4,3 3,2 2))):GeometryCollection:MULTIPOLYGON (((1 1, 1 10, 10 10, 10 1, 1 1)), ((2 2, 2 4, 3 3, 2 2))):MultiPolygon to GeometryCollection conversion

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wfs:FeatureCollection numberOfFeatures="3" timeStamp="2008-10-23T18:29:30.899-03:00"
+  xsi:schemaLocation="http://www.census.gov DescribeFeatureType_tiger_roads.xsd  http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd"
+  xmlns:ogc="http://www.opengis.net/ogc" xmlns:tiger="http://www.census.gov" xmlns:wfs="http://www.opengis.net/wfs"
+  xmlns:topp="http://www.openplans.org/topp" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sf="http://www.openplans.org/spearfish"
+  xmlns:ows="http://www.opengis.net/ows" xmlns:gml="http://www.opengis.net/gml" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <gml:featureMembers>
+    <tiger:tiger_roads gml:id="tiger_roads.1">
+      <gml:boundedBy>
+        <gml:Envelope srsName="urn:x-ogc:def:crs:EPSG:4326">
+          <gml:lowerCorner>40.73158 -73.999559</gml:lowerCorner>
+          <gml:upperCorner>40.732188 -73.999079</gml:upperCorner>
+        </gml:Envelope>
+      </gml:boundedBy>
+      <tiger:the_geom>
+        <gml:MultiLineString srsName="urn:x-ogc:def:crs:EPSG:4326">
+          <gml:lineStringMember>
+            <gml:LineString>
+              <gml:posList>40.73158 -73.999559 40.732188 -73.999079</gml:posList>
+            </gml:LineString>
+          </gml:lineStringMember>
+        </gml:MultiLineString>
+      </tiger:the_geom>
+      <tiger:CFCC>A41</tiger:CFCC>
+      <tiger:NAME>Washington Sq W</tiger:NAME>
+    </tiger:tiger_roads>
+    <tiger:tiger_roads gml:id="tiger_roads.2">
+      <gml:boundedBy>
+        <gml:Envelope srsName="urn:x-ogc:def:crs:EPSG:4326">
+          <gml:lowerCorner>40.810874 -73.952101</gml:lowerCorner>
+          <gml:upperCorner>40.811472 -73.950718</gml:upperCorner>
+        </gml:Envelope>
+      </gml:boundedBy>
+      <tiger:the_geom>
+        <gml:MultiLineString srsName="urn:x-ogc:def:crs:EPSG:4326">
+          <gml:lineStringMember>
+            <gml:LineString>
+              <gml:posList>40.810874 -73.950718 40.811472 -73.952101</gml:posList>
+            </gml:LineString>
+          </gml:lineStringMember>
+        </gml:MultiLineString>
+      </tiger:the_geom>
+      <tiger:CFCC>A41</tiger:CFCC>
+      <tiger:NAME>W 126th St</tiger:NAME>
+    </tiger:tiger_roads>
+    <tiger:tiger_roads gml:id="tiger_roads.3">
+      <gml:boundedBy>
+        <gml:Envelope srsName="urn:x-ogc:def:crs:EPSG:4326">
+          <gml:lowerCorner>40.73615 -73.991309</gml:lowerCorner>
+          <gml:upperCorner>40.736381 -73.991199</gml:upperCorner>
+        </gml:Envelope>
+      </gml:boundedBy>
+      <tiger:the_geom>
+        <gml:MultiLineString srsName="urn:x-ogc:def:crs:EPSG:4326">
+          <gml:lineStringMember>
+            <gml:LineString>
+              <gml:posList>40.73615 -73.991309 40.736381 -73.991199</gml:posList>
+            </gml:LineString>
+          </gml:lineStringMember>
+        </gml:MultiLineString>
+      </tiger:the_geom>
+      <tiger:CFCC>A41</tiger:CFCC>
+      <tiger:NAME>Union Sq W</tiger:NAME>
+    </tiger:tiger_roads>
+  </gml:featureMembers>
+</wfs:FeatureCollection>

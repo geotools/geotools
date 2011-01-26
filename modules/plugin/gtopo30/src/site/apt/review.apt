@@ -1,0 +1,28 @@
+PLUGIN GTOPO30
+~~~~~~~~~~~~~~
+
+  Module Maintainer: Andrea
+
+  IP Review:
+
+    * Jody Garnett July 10th, 2006
+
+    * Adrian Custer, June 2008
+
+  STATUS: DIRTY
+      Code is CLEAN
+      Data needs clarification
+        http://jira.codehaus.org/browse/GEOT-1884
+          src/test/resources/org/geotools/gce/gtopo30/test-data/W002N52.zip 
+
+  The dates of the files look like a mess. Jody already moved some of this to
+  2003 or later, now it seems to have moved to 2002. Leaving as is.
+
+  - afabiani: W002N52.zip is a GTOPO30 sample data most probably coming from USGS.
+              I don't think it is reliable for distribution under LGPL.
+      If it's USGS the data is originally in the public domain so is usable, it
+      depends who processed your 52 \deg N sample data.
+
+* org.geotools.gce.gtopo30
+  ~~~~~~~~~~~~~~~~~~~~~~~~
+  Created to access the GTOPO grid format, all existing code deates from 2005

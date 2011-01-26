@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:gml="http://www.opengis.net/gml"
+    xmlns:aeras="urn:www.aecoreco.com:schemas:archsites" targetNamespace="urn:www.aecoreco.com:schemas:archsites"
+    elementFormDefault="qualified" attributeFormDefault="unqualified" version="2010.10">
+
+    <import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd" />
+
+    <element name="ArchSite" type="aeras:ArchSiteType" substitutionGroup="gml:_Feature" />
+
+    <element name="ArchSiteNillable" type="aeras:ArchSiteNillableType" substitutionGroup="gml:_Feature" />
+
+    <complexType name="ArchSiteType">
+        <complexContent>
+            <extension base="gml:AbstractFeatureType">
+                <sequence>
+                    <element ref="gml:Point" />
+                    <element name="ID" type="integer" />
+                    <element name="CAT_ID" type="integer" />
+                    <element name="CAT_DESC" type="string" nillable="false" />
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+
+    <complexType name="ArchSiteNillableType">
+        <complexContent>
+            <extension base="gml:AbstractFeatureType">
+                <sequence>
+                    <element ref="gml:Point" />
+                    <element name="ID" type="integer" />
+                    <element name="CAT_ID" type="integer" />
+                    <element name="CAT_DESC" type="string" nillable="true" />
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+
+</schema>

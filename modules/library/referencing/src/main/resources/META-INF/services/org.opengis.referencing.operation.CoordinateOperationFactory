@@ -1,0 +1,3 @@
+org.geotools.referencing.operation.DefaultCoordinateOperationFactory
+org.geotools.referencing.operation.AuthorityBackedFactory
+org.geotools.referencing.operation.BufferedCoordinateOperationFactory

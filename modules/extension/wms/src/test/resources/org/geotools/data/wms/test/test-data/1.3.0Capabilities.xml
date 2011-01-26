@@ -1,0 +1,217 @@
+<?xml version="1.0"?>
+<WMS_Capabilities version="1.3.0" xmlns="http://www.opengis.net/wms" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/wms capabilities_1_3_0.xsd">
+	<!-- Service Metadata -->
+	<Service>
+		<!-- The WMT-defined name for this type of service -->
+		<Name>WMS</Name>
+		<!-- Human-readable title for pick lists -->
+		<Title>World Map</Title>
+		<!-- Narrative description providing additional information -->
+		<Abstract>None</Abstract>
+		<!-- Top-level web address of service or service provider.  See also OnlineResource
+  elements under <DCPType>. -->
+		<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://www2.demis.nl"/>
+		<!-- Contact information -->
+		<ContactInformation>
+			<ContactPersonPrimary>
+				<ContactPerson></ContactPerson>
+				<ContactOrganization></ContactOrganization>
+			</ContactPersonPrimary>
+			<ContactPosition>None</ContactPosition>
+			<ContactAddress>
+				<AddressType>None</AddressType>
+				<Address>None</Address>
+				<City>None</City>
+				<StateOrProvince>None</StateOrProvince>
+				<PostCode>None</PostCode>
+				<Country>None</Country>
+			</ContactAddress>
+			<ContactVoiceTelephone>None</ContactVoiceTelephone>
+			<ContactElectronicMailAddress></ContactElectronicMailAddress>
+		</ContactInformation>
+		<!-- Fees or access constraints imposed. -->
+		<Fees>none</Fees>
+		<AccessConstraints>none</AccessConstraints>
+		<LayerLimit>40</LayerLimit>
+		<MaxWidth>2000</MaxWidth>
+		<MaxHeight>2000</MaxHeight>
+	</Service>
+	<Capability>
+		<Request>
+			<GetCapabilities>
+				<Format>text/xml</Format>
+				<DCPType>
+					<HTTP>
+						<Get>
+							<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://www2.demis.nl/wms/wms.asp?wms=WorldMap&amp;"/>
+						</Get>
+						<Post>
+							<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://www2.demis.nl/wms/wms.asp?wms=WorldMap&amp;"/>
+						</Post>
+					</HTTP>
+				</DCPType>
+			</GetCapabilities>
+			<GetMap>
+				<Format>image/gif</Format>
+				<Format>image/png</Format>
+				<Format>image/jpeg</Format>
+				<Format>image/bmp</Format>
+				<Format>image/swf</Format>
+				<DCPType>
+					<HTTP>
+						<Get>
+							<!-- The URL here for invoking GetCapabilities using HTTP GET
+            is only a prefix to which a query string is appended. -->
+							<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://www2.demis.nl/wms/wms.asp?wms=WorldMap&amp;"/>
+						</Get>
+					</HTTP>
+				</DCPType>
+			</GetMap>
+			<GetFeatureInfo>
+				<Format>text/xml</Format>
+				<Format>text/plain</Format>
+				<Format>text/html</Format>
+				<Format>text/swf</Format>
+				<DCPType>
+					<HTTP>
+						<Get>
+							<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://www2.demis.nl/wms/wms.asp?wms=WorldMap&amp;"/>
+						</Get>
+					</HTTP>
+				</DCPType>
+			</GetFeatureInfo>
+		</Request>
+		<Exception>
+			<Format>XML</Format>
+			<Format>INIMAGE</Format>
+			<Format>BLANK</Format>
+		</Exception>
+		<Layer>
+			<Title>World Map</Title>
+			<CRS>CRS:84</CRS>
+			<!-- all layers are available in at least this CRS -->
+			<EX_GeographicBoundingBox>
+				<westBoundLongitude>-180</westBoundLongitude>
+				<eastBoundLongitude>180</eastBoundLongitude>
+				<southBoundLatitude>-90</southBoundLatitude>
+				<northBoundLatitude>90</northBoundLatitude>
+			</EX_GeographicBoundingBox>
+			<BoundingBox CRS="CRS:84" minx="-184" miny="-90.0000000017335" maxx="180" maxy="90"/>
+			<Layer queryable="1" opaque="1">
+				<Name>Bathymetry</Name>
+				<Title>Bathymetry</Title>
+				<BoundingBox CRS="CRS:84" minx="-180" miny="-90" maxx="180" maxy="90"/>
+			</Layer>
+			<Layer queryable="1" opaque="0">
+				<Name>Countries</Name>
+				<Title>Countries</Title>
+				<BoundingBox CRS="CRS:84" minx="-184" miny="-90" maxx="180" maxy="85"/>
+			</Layer>
+			<Layer queryable="1" opaque="1">
+				<Name>Topography</Name>
+				<Title>Topography</Title>
+				<BoundingBox CRS="CRS:84" minx="-179.999999999999" miny="-90.0000000017335" maxx="179.999999996401" maxy="89.9999999999998"/>
+			</Layer>
+			<Layer queryable="0" opaque="1">
+				<Name>Hillshading</Name>
+				<Title>Hillshading</Title>
+				<BoundingBox CRS="CRS:84" minx="-179.999999999999" miny="-90.0000000017335" maxx="179.999999996401" maxy="89.9999999999998"/>
+			</Layer>
+			<Layer queryable="1" opaque="0">
+				<Name>Builtup areas</Name>
+				<Title>Builtup areas</Title>
+				<BoundingBox CRS="CRS:84" minx="-180" miny="-55" maxx="180" maxy="75"/>
+				<MaxScaleDenominator>5000000</MaxScaleDenominator>
+			</Layer>
+			<Layer queryable="1" opaque="0">
+				<Name>Coastlines</Name>
+				<Title>Coastlines</Title>
+				<BoundingBox CRS="CRS:84" minx="-184" miny="-90" maxx="180" maxy="85"/>
+			</Layer>
+			<Layer queryable="1" opaque="0">
+				<Name>Waterbodies</Name>
+				<Title>Waterbodies</Title>
+				<BoundingBox CRS="CRS:84" minx="-184" miny="-75" maxx="180" maxy="85"/>
+				<MaxScaleDenominator>20000000</MaxScaleDenominator>
+			</Layer>
+			<Layer queryable="1" opaque="0">
+				<Name>Inundated</Name>
+				<Title>Inundated</Title>
+				<BoundingBox CRS="CRS:84" minx="-180" miny="-50" maxx="180" maxy="80"/>
+				<MaxScaleDenominator>5000000</MaxScaleDenominator>
+			</Layer>
+			<Layer queryable="1" opaque="0">
+				<Name>Rivers</Name>
+				<Title>Rivers</Title>
+				<BoundingBox CRS="CRS:84" minx="-180" miny="-55" maxx="180" maxy="85"/>
+				<MaxScaleDenominator>40000000</MaxScaleDenominator>
+			</Layer>
+			<Layer queryable="1" opaque="0">
+				<Name>Streams</Name>
+				<Title>Streams</Title>
+				<BoundingBox CRS="CRS:84" minx="-180" miny="-55" maxx="180" maxy="85"/>
+				<MaxScaleDenominator>20000000</MaxScaleDenominator>
+			</Layer>
+			<Layer queryable="1" opaque="0">
+				<Name>Railroads</Name>
+				<Title>Railroads</Title>
+				<BoundingBox CRS="CRS:84" minx="-170" miny="-55" maxx="180" maxy="80"/>
+				<MaxScaleDenominator>3000000</MaxScaleDenominator>
+			</Layer>
+			<Layer queryable="1" opaque="0">
+				<Name>Highways</Name>
+				<Title>Highways</Title>
+				<BoundingBox CRS="CRS:84" minx="-175" miny="-55" maxx="180" maxy="75"/>
+				<MaxScaleDenominator>2500000</MaxScaleDenominator>
+			</Layer>
+			<Layer queryable="1" opaque="0">
+				<Name>Roads</Name>
+				<Title>Roads</Title>
+				<BoundingBox CRS="CRS:84" minx="-184" miny="-55" maxx="180" maxy="75"/>
+				<MaxScaleDenominator>1500000</MaxScaleDenominator>
+			</Layer>
+			<Layer queryable="1" opaque="0">
+				<Name>Trails</Name>
+				<Title>Trails</Title>
+				<BoundingBox CRS="CRS:84" minx="-184" miny="-50" maxx="180" maxy="80"/>
+				<MaxScaleDenominator>1000000</MaxScaleDenominator>
+			</Layer>
+			<Layer queryable="1" opaque="0">
+				<Name>Borders</Name>
+				<Title>Borders</Title>
+				<BoundingBox CRS="CRS:84" minx="-184" miny="-60" maxx="176" maxy="75"/>
+			</Layer>
+			<Layer queryable="1" opaque="0">
+				<Name>Cities</Name>
+				<Title>Cities</Title>
+				<BoundingBox CRS="CRS:84" minx="-180" miny="-55" maxx="180" maxy="75"/>
+				<MaxScaleDenominator>100000000</MaxScaleDenominator>
+			</Layer>
+			<Layer queryable="1" opaque="0">
+				<Name>Settlements</Name>
+				<Title>Settlements</Title>
+				<BoundingBox CRS="CRS:84" minx="-180" miny="-55" maxx="180" maxy="85"/>
+				<MaxScaleDenominator>2000000</MaxScaleDenominator>
+			</Layer>
+			<Layer queryable="0" opaque="0">
+				<Name>Spot elevations</Name>
+				<Title>Spot elevations</Title>
+				<BoundingBox CRS="CRS:84" minx="-179.983093261719" miny="-89.83837890625" maxx="179.991439819336" maxy="83.5204086303711"/>
+				<MaxScaleDenominator>1000000</MaxScaleDenominator>
+			</Layer>
+			<Layer queryable="1" opaque="0">
+				<Name>Airports</Name>
+				<Title>Airports</Title>
+				<BoundingBox CRS="CRS:84" minx="-184" miny="-55" maxx="180" maxy="80"/>
+				<MaxScaleDenominator>2000000</MaxScaleDenominator>
+			</Layer>
+			<Layer queryable="1" opaque="0">
+				<Name>Ocean features</Name>
+				<Title>Ocean features</Title>
+				<BoundingBox CRS="CRS:84" minx="-180" miny="-62.9231796264648" maxx="179.999420166016" maxy="68.6906585693359"/>
+				<MaxScaleDenominator>10000000</MaxScaleDenominator>
+			</Layer>
+		</Layer>
+	</Capability>
+</WMS_Capabilities>
+

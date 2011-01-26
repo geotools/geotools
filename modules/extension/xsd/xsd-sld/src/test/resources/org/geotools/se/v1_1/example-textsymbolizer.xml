@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<TextSymbolizer version="1.1.0" xsi:schemaLocation="http://www.opengis.net/se http://www.opengis.net/se/1.1.0/Symbolizer.xsd" xmlns="http://www.opengis.net/se" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="http://www.opengeospatial.org/se/units/pixel">
+	<Name>MyTextSymbolizer</Name>
+	<Description>
+		<Title>Example TextSymbolizer</Title>
+		<Abstract>This is just an example of a text symbolizer using the FormatNumber function.</Abstract>
+	</Description>
+	<Geometry>
+		<ogc:PropertyName>locatedAt</ogc:PropertyName>
+	</Geometry>
+	<Label>
+		<ogc:PropertyName>hospitalName</ogc:PropertyName>
+			(<FormatNumber fallbackValue="">
+				<NumericValue>
+					<ogc:PropertyName>numberOfBeds</ogc:PropertyName>
+				</NumericValue>
+			<Pattern>#####</Pattern>
+		</FormatNumber>)
+  	</Label>
+	<Font>
+		<SvgParameter name="font-family">Arial</SvgParameter>
+		<SvgParameter name="font-family">Sans-Serif</SvgParameter>
+		<SvgParameter name="font-style">italic</SvgParameter>
+		<SvgParameter name="font-size">10</SvgParameter>
+	</Font>
+	<Halo/>
+	<Fill>
+		<SvgParameter name="fill">#000000</SvgParameter>
+	</Fill>
+</TextSymbolizer>

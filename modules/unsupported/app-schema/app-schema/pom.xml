@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- =======================================================================    
+  Maven Project Configuration File                                        
+  
+  The Geotools Project                                                    
+  http://www.geotools.org/                                            
+  
+  Version: $Id$              
+  ======================================================================= -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                               http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.geotools</groupId>
+    <artifactId>app-schema</artifactId>
+    <version>2.7-SNAPSHOT</version>
+  </parent>
+
+
+  <groupId>org.geotools</groupId>
+  <artifactId>gt-app-schema</artifactId>
+  <name>Application Schema DataAccess</name>
+  
+  <scm>
+    <connection>
+      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema
+    </connection>
+    <url>http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema</url>
+  </scm>
+  <description>
+    DataAccess to create FeatureTypes defined in application schema.
+  </description>
+
+
+  <!-- ==================================================== -->
+  <!--     Developers and contributors                      -->
+  <!-- ==================================================== -->
+  <developers></developers>
+
+  <contributors></contributors>
+  <!-- ==================================================== -->
+  <!--     Dependencies                                     -->
+  <!-- ==================================================== -->
+  <dependencies>
+    <dependency>
+      <groupId>commons-digester</groupId>
+      <artifactId>commons-digester</artifactId>
+      <version>1.7</version>
+      <exclusions>
+        <exclusion>
+          <groupId>commons-collections</groupId>
+          <artifactId>commons-collections</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>commons-beanutils</groupId>
+          <artifactId>commons-beanutils</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <!-- override transitive dependency from commons-digester 1.7
+        which depends on commons-collections 2.1, since xml (SchemaIndexImpl)
+        depends on commons-collections 3.1 -->
+      <groupId>commons-collections</groupId>
+      <artifactId>commons-collections</artifactId>
+      <version>3.1</version>
+    </dependency>
+    <dependency>
+      <!-- override transitive dependency from commons-digester 1.7
+        which depends on commons-collections 2.1, since xml (SchemaIndexImpl)
+        depends on commons-collections 3.1 -->
+      <groupId>commons-beanutils</groupId>
+      <artifactId>commons-beanutils</artifactId>
+      <version>1.7.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-data</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-cql</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-render</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools.xsd</groupId>
+      <artifactId>gt-xsd-gml3</artifactId>
+      <version>${project.version}</version>
+    </dependency>    
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-app-schema-resolver</artifactId>
+      <version>${project.version}</version>
+    </dependency>    
+   <dependency>
+      <groupId>xpp3</groupId>
+      <artifactId>xpp3</artifactId>
+    </dependency>
+    <dependency>
+      <!-- for FilenameUtils -->
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+    </dependency>
+
+    <dependency>
+      <!-- For GeometryFunctionsTest to find the EPSG factory -->
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-epsg-hsql</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency> 
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-property</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-sample-data</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools.jdbc</groupId>
+      <artifactId>gt-jdbc-postgis</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-shapefile</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools.schemas</groupId>
+      <artifactId>geosciml-2.0</artifactId>
+      <version>2.0.2-4</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools.schemas</groupId>
+      <artifactId>earthresourceml-1.1</artifactId>
+      <version>1.1.0-3</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <!-- required for sweCommon 1.0.30 used by XMML/borehole -->
+      <groupId>org.geotools.schemas</groupId>
+      <artifactId>xml-1.0</artifactId>
+      <version>1.0.0-3</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+
+  <!-- ==================================================== -->
+  <!--     Compilation (including non-standard plugins)     -->
+  <!-- ==================================================== -->
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+		<configuration>
+			<excludes>
+				<exclude>**/DataAccessIntegrationTest.java</exclude>				
+			</excludes>
+		</configuration>	
+      </plugin>
+      <!-- build test jar so that app-schema tests in GeoServer 
+        can use classes in GeoTools app-schema tests -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>    
+         <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>test-jar</goal>
+            </goals> 
+          </execution>
+        </executions> 
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>   
+         <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>test-jar</goal>
+            </goals> 
+          </execution>
+        </executions> 
+      </plugin>
+    </plugins>
+    <testResources>
+      <testResource>
+        <directory>src/test/resources</directory>
+        <includes>
+          <include>**/*.properties</include>
+          <include>**/*.xml</include>
+          <include>**/*.xsd</include>
+          <include>**/META-INF/**</include>
+        </includes>
+      </testResource>
+    </testResources>
+  </build>
+</project>

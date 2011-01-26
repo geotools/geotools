@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns="http://geotools.org/test" xmlns:geotools="http://geotools.org/test" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://geotools.org/test">
+
+
+ <xsd:element name="foo" type="geotools:MixedType"/>
+ 
+ <xsd:complexType name="MixedType" mixed="true">
+    <xsd:sequence maxOccurs="unbounded" minOccurs="0">
+        <xsd:element name="bar" type="xsd:string"/>
+    </xsd:sequence>
+ </xsd:complexType>
+ 
+ </xsd:schema>

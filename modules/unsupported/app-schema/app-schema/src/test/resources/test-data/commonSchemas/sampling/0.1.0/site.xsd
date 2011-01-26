@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema 
+xmlns:gml="http://www.opengis.net/gml" 
+xmlns:gmd="http://www.isotc211.org/2005/gmd" 
+xmlns:om="http://www.opengis.net/om" 
+xmlns="http://www.w3.org/2001/XMLSchema"        
+xmlns:sa="http://www.seegrid.csiro.au/xml/sampling" 
+targetNamespace="http://www.seegrid.csiro.au/xml/sampling" 
+elementFormDefault="qualified" attributeFormDefault="unqualified" version="pre-release">
+	<annotation>
+		<documentation>site.xsd
+
+Sampling features are feature types that are used primarily for making observations: 
+SamplingFeature, Station (0-D, and collections are described in this schema document
+
+Profile, Interval, Traverse, Flightline, Borehole (1-D)
+SurfaceOfInterest, Swath (2-D)
+SolidOfInterest (3-D) are described in extensiveSite.xsd
+
+Copyright (c) 2005 CSIRO - see https://www.seegrid.csiro.au/twiki/bin/view/Xmml/LegalNotices#Software_Notice</documentation>
+	</annotation>
+	<!-- ====================================================================== -->
+	<!-- bring in other schemas -->
+	<import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+	<!--import namespace="http://www.isotc211.org/2005/gmd" schemaLocation="../../iso19139/gml3.1.1version/gmd/gmd.xsd"/-->
+	<import namespace="http://www.opengis.net/om" schemaLocation="../../om/1.0.30/om.xsd"/>
+	<include schemaLocation="./surveyProcedure.xsd"/>
+	<include schemaLocation="./specimen.xsd"/>
+	<!--
+	<include schemaLocation="../enumerations/LUTgeography.xsd"/>
+	-->
+	<!-- ====================================================================== -->
+	<!-- ===== Feature types in Site hierarchy ====== -->
+	<!-- ====================================================================== -->
+	<complexType name="SamplingFeatureType">
+		<annotation>
+			<documentation>A "SamplingFeature" is a feature used primarily for taking observations.</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="gml:AbstractFeatureType">
+				<sequence>
+					<element name="member" type="sa:SamplingFeaturePropertyType" minOccurs="0" maxOccurs="unbounded">
+						<annotation>
+							<documentation>A site is often associated with a set of member sites: e.g. stations on a traverse, intervals in a borehole or section, boreholes within an area of interest.</documentation>
+						</annotation>
+					</element>
+					<element name="surveyDetails" type="sa:SurveyProcedurePropertyType" nillable="true">
+						<annotation>
+							<documentation>Description of, or link to, the procedure used in determining the position of the site.  
+              For complex procedures, such as when elevation and position are determined separately, may be disaggregated.</documentation>
+						</annotation>
+					</element>
+					<element name="associatedSpecimen" type="sa:SpecimenPropertyType" minOccurs="0" maxOccurs="unbounded"/>
+					<element name="relatedObservation" type="om:AbstractObservationPropertyType" minOccurs="0" maxOccurs="unbounded"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- .................. -->
+	<element name="SamplingFeature" type="sa:SamplingFeatureType" abstract="true" substitutionGroup="gml:_Feature"/>
+	<!-- .................. -->
+	<complexType name="SamplingFeaturePropertyType">
+		<sequence minOccurs="0">
+			<element ref="sa:SamplingFeature"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+	<complexType name="SamplingFeatureCollectionType">
+		<complexContent>
+			<restriction base="sa:SamplingFeatureType">
+				<sequence>
+					<group ref="gml:StandardObjectProperties"/>
+					<element ref="gml:boundedBy">
+						<annotation>
+							<documentation>The bounds of a SiteCollection must be provided</documentation>
+						</annotation>
+					</element>
+					<element name="member" type="sa:SamplingFeaturePropertyType" minOccurs="1" maxOccurs="unbounded">
+						<annotation>
+							<documentation>A SiteCollection must have at least one member site</documentation>
+						</annotation>
+					</element>
+					<element name="surveyDetails" type="sa:SurveyProcedurePropertyType" nillable="true"/>
+					<element name="associatedSpecimen" type="sa:SpecimenPropertyType" minOccurs="0" maxOccurs="unbounded"/>
+					<element name="relatedObservation" type="om:AbstractObservationPropertyType" minOccurs="0" maxOccurs="unbounded"/>
+				</sequence>
+			</restriction>
+		</complexContent>
+	</complexType>
+	<!-- .................. -->
+	<element name="SamplingFeatureCollection" type="sa:SamplingFeatureCollectionType" substitutionGroup="sa:SamplingFeature"/>
+	<!-- .................. -->
+	<complexType name="SamplingFeatureCollectionPropertyType">
+		<sequence minOccurs="0">
+			<element ref="sa:SamplingFeatureCollection"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+	<complexType name="StationType">
+		<annotation>
+			<documentation>A "Station" is an identified position (0-D geospatial feature). 
+		It may be revisited for various purposes, in particular to retrieve multiple specimens or make repeated or complementary observations. 
+		The position property of the station provides the value of the position property of observations an specimens associated with the station. 
+		By using the Station feature, this position information and any metadata associated with it may be encoded in one place, i.e. normalised, and then re-used _by reference_ on other feature instances associated with it.</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="sa:SamplingFeatureType">
+				<sequence>
+					<element name="position" type="gml:PointPropertyType"/>
+					<element name="elevation" type="gml:DirectPositionType" minOccurs="0">
+						<annotation>
+							<documentation>Use the srsName attribute to record the elevation datum</documentation>
+						</annotation>
+					</element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- .................. -->
+	<element name="Station" type="sa:StationType" substitutionGroup="sa:SamplingFeature"/>
+	<!-- .................. -->
+	<complexType name="StationPropertyType">
+		<sequence minOccurs="0">
+			<element ref="sa:Station"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+</schema>

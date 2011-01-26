@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<LineSymbolizer version="1.1.0" xsi:schemaLocation="http://www.opengis.net/se http://www.opengis.net/se/1.1.0/Symbolizer.xsd" xmlns="http://www.opengis.net/se" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uom="http://www.opengeospatial.org/se/units/metre">
+	<Name>MyLineSymbolizer</Name>
+	<Description>
+		<Title>Example Symbol</Title>
+		<Abstract>This is just a simple example of a line symbolizer.</Abstract>
+	</Description>
+	<Stroke>
+		<SvgParameter name="stroke">#0000ff</SvgParameter>
+		<SvgParameter name="stroke-width">2</SvgParameter>
+	</Stroke>
+</LineSymbolizer>

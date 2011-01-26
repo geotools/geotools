@@ -1,0 +1,477 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://www.opengis.net/sensorML/1.0" 
+xmlns:ism="urn:us:gov:ic:ism:v2" 
+xmlns:sml="http://www.opengis.net/sensorML/1.0" 
+xmlns:gml="http://www.opengis.net/gml" 
+xmlns:swe="http://www.opengis.net/swe/1.0" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.0">
+	<xs:annotation>
+		<xs:documentation>Base class definitions for core SensorML</xs:documentation>
+	</xs:annotation>
+	<!-- ================================================= -->
+	<xs:import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+	<xs:import namespace="http://www.opengis.net/swe/1.0" schemaLocation="../../../sweCommon/1.0.0/swe.xsd"/>
+	<!-- import US Intelligence Community schema for security speciifications-->
+	<xs:import namespace="urn:us:gov:ic:ism:v2" schemaLocation="../../../ic/2.0/IC-ISM-v2.xsd"/>
+	<!-- ================================================= -->
+	<xs:complexType name="AbstractSMLType" abstract="true">
+		<xs:annotation>
+			<xs:documentation>Main Abstract SensorML Object</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:restriction base="gml:AbstractFeatureType">
+				<xs:sequence>
+					<xs:sequence>
+						<xs:sequence>
+							<xs:element ref="gml:description" minOccurs="0"/>
+							<xs:element ref="gml:name" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>The gml:name property should be used only as a label in SensorML, and thus is limited to one occurence. Multiple robust and well defined identifiers can be provided in the identification section.
+                           </xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element ref="gml:boundedBy" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Specifies the possible extent of the component location</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:sequence>
+					</xs:sequence>
+				</xs:sequence>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ================================================= -->
+	<xs:group name="constraints">
+		<xs:sequence>
+			<xs:element ref="sml:validTime" minOccurs="0"/>
+			<xs:element ref="sml:securityConstraint" minOccurs="0"/>
+			<xs:element ref="sml:legalConstraint" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:group>
+	<!-- ================================================= -->
+	<xs:element name="securityConstraint">
+		<xs:annotation>
+			<xs:documentation>Means of providing security constraints of description</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="sml:Security"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- ================================================= -->
+	<xs:element name="Security">
+		<xs:annotation>
+			<xs:documentation>based on IC:ISM definition</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attributeGroup ref="ism:SecurityAttributesOptionGroup"/>
+		</xs:complexType>
+	</xs:element>
+	<!-- ================================================= -->
+	<xs:element name="validTime">
+		<xs:annotation>
+			<xs:documentation>Means of providing time validity constraint of description</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice>
+				<xs:element ref="gml:TimeInstant"/>
+				<xs:element ref="gml:TimePeriod"/>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+	<!-- ================================================= -->
+	<xs:element name="legalConstraint">
+		<xs:annotation>
+			<xs:documentation>Means of providing legal constraints of description</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence minOccurs="0">
+				<xs:element ref="sml:Rights"/>
+			</xs:sequence>
+			<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+		</xs:complexType>
+	</xs:element>
+	<!-- ================================================= -->
+	<xs:element name="Rights">
+		<xs:annotation>
+			<xs:documentation>based on IC:DDMS definition</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="sml:documentation"/>
+			</xs:sequence>
+			<xs:attribute ref="gml:id"/>
+			<xs:attribute name="privacyAct" type="xs:boolean" use="optional"/>
+			<xs:attribute name="intellectualPropertyRights" type="xs:boolean" use="optional"/>
+			<xs:attribute name="copyRights" type="xs:boolean" use="optional"/>
+		</xs:complexType>
+	</xs:element>
+	<!-- ================================================= -->
+	<xs:group name="generalInfo">
+		<xs:sequence>
+			<xs:element ref="sml:keywords" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element ref="sml:identification" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element ref="sml:classification" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:group>
+	<!-- ================================================= -->
+	<xs:element name="keywords">
+		<xs:annotation>
+			<xs:documentation>Means of providing a list of keywords (with a codeSpace) for quick discovery</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence minOccurs="0">
+				<xs:element name="KeywordList">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="keyword" type="xs:token" maxOccurs="unbounded"/>
+						</xs:sequence>
+						<xs:attribute name="id" type="xs:ID"/>
+						<xs:attribute name="codeSpace" type="xs:anyURI"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+		</xs:complexType>
+	</xs:element>
+	<!-- ================================================= -->
+	<xs:element name="identification">
+		<xs:annotation>
+			<xs:documentation>Means of providing various identity and alias values, with types such as "longName", "abbreviation", "modelNumber", "serialNumber", whose terms can be defined in a dictionary</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence minOccurs="0">
+				<xs:element name="IdentifierList">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="identifier" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element ref="sml:Term"/>
+									</xs:sequence>
+									<xs:attribute name="name" type="xs:token" use="optional"/>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="id" type="xs:ID"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+		</xs:complexType>
+	</xs:element>
+	<!-- ================================================= -->
+	<xs:element name="classification">
+		<xs:annotation>
+			<xs:documentation>Means of specifying classification values with types such as "sensorType", "intendedApplication", etc., whose terms can be defined in a dictionary</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence minOccurs="0">
+				<xs:element name="ClassifierList">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="classifier" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element ref="sml:Term"/>
+									</xs:sequence>
+									<xs:attribute name="name" type="xs:token" use="optional"/>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="id" type="xs:ID"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+		</xs:complexType>
+	</xs:element>
+	<!-- ================================================= -->
+	<xs:element name="Term">
+		<xs:annotation>
+			<xs:documentation>A well defined token used to specify identifier and classifier values (single spaces allowed)</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="codeSpace" type="swe:CodeSpacePropertyType" minOccurs="0"/>
+				<xs:element name="value" type="xs:token"/>
+			</xs:sequence>
+			<xs:attribute name="definition" type="xs:anyURI">
+				<xs:annotation>
+					<xs:documentation>Points to the term definition using a URI. Term definitions are things like uid, shortName, sensorType, application, etc...</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<!-- ================================================= -->
+	<xs:group name="references">
+		<xs:sequence>
+			<xs:element ref="sml:contact" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element ref="sml:documentation" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:group>
+	<!-- ================================================= -->
+	<xs:element name="contact">
+		<xs:annotation>
+			<xs:documentation>Relevant contacts for that object</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice minOccurs="0">
+				<xs:group ref="sml:ContactGroup"/>
+				<xs:element ref="sml:ContactList"/>
+			</xs:choice>
+			<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+		</xs:complexType>
+	</xs:element>
+	<!-- ================================================= -->
+	<xs:element name="ContactList">
+		<xs:annotation>
+			<xs:documentation>Allows to group several contacts together in a list that can be referenced as a whole</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="gml:description" minOccurs="0"/>
+				<xs:element name="member" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:group ref="sml:ContactGroup"/>
+						<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute ref="gml:id"/>
+		</xs:complexType>
+	</xs:element>
+	<!-- ================================================= -->
+	<xs:group name="ContactGroup">
+		<xs:choice>
+			<xs:element ref="sml:Person"/>
+			<xs:element ref="sml:ResponsibleParty"/>
+		</xs:choice>
+	</xs:group>
+	<!-- ================================================= -->
+	<xs:element name="Person">
+		<xs:annotation>
+			<xs:documentation>based on IC:DMMS</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="surname" type="xs:token"/>
+				<xs:element name="name" type="xs:token"/>
+				<xs:element name="userID" type="xs:token"/>
+				<xs:element name="affiliation" type="xs:token"/>
+				<xs:element name="phoneNumber" type="xs:token"/>
+				<xs:element name="email" type="xs:token"/>
+			</xs:sequence>
+			<xs:attribute ref="gml:id"/>
+		</xs:complexType>
+	</xs:element>
+	<!-- ================================================= -->
+	<xs:element name="ResponsibleParty">
+		<xs:annotation>
+			<xs:documentation>based on ISO 19115</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="individualName" type="xs:string" minOccurs="0"/>
+				<xs:element name="organizationName" type="xs:string" minOccurs="0"/>
+				<xs:element name="positionName" type="xs:string" minOccurs="0"/>
+				<xs:element ref="sml:contactInfo" minOccurs="0"/>
+			</xs:sequence>
+			<xs:attribute ref="gml:id"/>
+		</xs:complexType>
+	</xs:element>
+	<!-- ================================================= -->
+	<xs:element name="contactInfo">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="phone" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="voice" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+							<xs:element name="facsimile" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="address" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="deliveryPoint" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+							<xs:element name="city" type="xs:string" minOccurs="0"/>
+							<xs:element name="administrativeArea" type="xs:string" minOccurs="0"/>
+							<xs:element name="postalCode" type="xs:string" minOccurs="0"/>
+							<xs:element name="country" type="xs:string" minOccurs="0"/>
+							<xs:element name="electronicMailAddress" type="xs:string" minOccurs="0"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element ref="sml:onlineResource" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="hoursOfService" type="xs:string" minOccurs="0"/>
+				<xs:element name="contactInstructions" type="xs:string" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- ================================================= -->
+	<xs:element name="onlineResource">
+		<xs:complexType>
+			<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+		</xs:complexType>
+	</xs:element>
+	<!-- ================================================= -->
+	<xs:element name="documentation">
+		<xs:annotation>
+			<xs:documentation>Relevant documentation for that object</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice minOccurs="0">
+				<xs:element ref="sml:Document"/>
+				<xs:element ref="sml:DocumentList"/>
+			</xs:choice>
+			<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+		</xs:complexType>
+	</xs:element>
+	<!-- ================================================= -->
+	<xs:element name="Document">
+		<xs:annotation>
+			<xs:documentation>Document record with date/time, version, author, etc. pointing to an online resource related to the enclosing object</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="gml:description"/>
+				<xs:element name="date" type="swe:timeIso8601" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Date of creation</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="sml:contact" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Person who is responsible for the document</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="format" type="xs:token" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Specifies the fornat of the file pointed to by onlineResource</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="sml:onlineResource" minOccurs="0" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>Points to the actual document corresponding to that version</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute ref="gml:id"/>
+			<xs:attribute name="version" type="xs:token" use="optional"/>
+		</xs:complexType>
+	</xs:element>
+	<!-- ================================================= -->
+	<xs:element name="DocumentList">
+		<xs:annotation>
+			<xs:documentation>List of documents related to the enclosing object</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="gml:description" minOccurs="0"/>
+				<xs:element name="member" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence minOccurs="0">
+							<xs:element ref="sml:Document"/>
+						</xs:sequence>
+						<xs:attribute name="name" type="xs:token" use="required"/>
+						<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute ref="gml:id"/>
+		</xs:complexType>
+	</xs:element>
+	<!-- ================================================= -->
+	<xs:group name="history">
+		<xs:sequence>
+			<xs:element ref="sml:history" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:group>
+	<!-- ================================================= -->
+	<xs:element name="history">
+		<xs:annotation>
+			<xs:documentation>History of the object described (Recalibration, adjustments, etc...)</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence minOccurs="0">
+				<xs:element ref="sml:EventList"/>
+			</xs:sequence>
+			<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+		</xs:complexType>
+	</xs:element>
+	<!-- ================================================= -->
+	<xs:element name="EventList">
+		<xs:annotation>
+			<xs:documentation>List of events related to the enclosing object</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="member" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence minOccurs="0">
+							<xs:element ref="sml:Event"/>
+						</xs:sequence>
+						<xs:attribute name="name" type="xs:token" use="required"/>
+						<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute ref="gml:id"/>
+		</xs:complexType>
+	</xs:element>
+	<!-- ================================================= -->
+	<xs:element name="Event">
+		<xs:annotation>
+			<xs:documentation>Event record (change to the object) including a date/time, description, identification and additional references and metadata</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="date" type="swe:timeIso8601" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Date/Time of event</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="gml:description" minOccurs="0"/>
+				<xs:group ref="sml:generalInfo" minOccurs="0"/>
+				<xs:group ref="sml:references" minOccurs="0"/>
+				<xs:element name="property" type="swe:DataComponentPropertyType" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+			<xs:attribute ref="gml:id"/>
+		</xs:complexType>
+	</xs:element>
+	<!-- ================================================= -->
+	<xs:group name="properties">
+		<xs:sequence>
+			<xs:element ref="sml:characteristics" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element ref="sml:capabilities" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:group>
+	<!-- ================================================= -->
+	<xs:element name="capabilities">
+		<xs:annotation>
+			<xs:documentation>Capability list for quick discovery</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence minOccurs="0">
+				<xs:element ref="swe:AbstractDataRecord"/>
+			</xs:sequence>
+			<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+		</xs:complexType>
+	</xs:element>
+	<!-- ================================================= -->
+	<xs:element name="characteristics">
+		<xs:annotation>
+			<xs:documentation>Characteristic list for quick discovery</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence minOccurs="0">
+				<xs:element ref="swe:AbstractDataRecord"/>
+			</xs:sequence>
+			<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

@@ -1,0 +1,37 @@
+PLUGIN IMAGE
+~~~~~~~~~~~~
+
+  Module Maintainer: Simone Giannecchini, Alessio Fabiani (developers)
+
+  IP Review:
+
+    * Jody Garnett, July 15th, 2006
+
+    * Adrian Custer, June 2008
+
+  STATUS: DIRTY
+      Code is CLEAN
+      Data origins unknown 
+        http://jira.codehaus.org/browse/GEOT-1886
+
+  - afabiani:
+  	   * etopo.tif don't remeber where it come from. It should be safe
+  	   * Pk50095.tif comes from Slovenia and it shouldn't be safe (ask to Blaz Repnik)
+  	   * usa.tif comes from GIDB client. It is not safe
+
+  This module contains code based on the origional image rendering code in GeoTools 2.0, this code
+  was refactored in the face of a new CoordinateReferenceSystem interface to work with GeoAPI
+  GridCoverageExchange and GridCoverage interfaces for GeoTools 2.1.
+
+
+* org.geotools.gce.image
+  ~~~~~~~~~~~~~~~~~~~~~~
+  Module started by Richard Gould to restore some ability to handle images for GeoTools 2.1,
+  the GeoServer WCS project has be head of a grid coverage QA run which updated this module
+  for GeoTools 2.3.
+
+
+
+* org.geotools.gce.image (test)
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Many test cases date from Richard Gould's CRS changeover.

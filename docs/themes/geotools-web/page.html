@@ -1,0 +1,30 @@
+{% extends "geotools/page.html" %}
+{%- macro index_sidebar() %}
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+
+            <!--h1>Download</h1>
+            <p>Current release: <a href="{{ pathto('downloads') }}">{{ release }}</a></p-->
+            <h1><a href="http://geotoolsnews.blogspot.com">News</a></h1>
+            <script charset="ISO-8859-1" src="http://landmark-project.com/feed2js/feed2js.php?src=http://geotoolsnews.blogspot.com/feeds/posts/default?alt=rss&num=3&desc=75"></script>
+        </div>
+    </div>
+{%- endmacro %}
+{% block body %}
+  {{super()}}
+  {%- if pagename == 'index' %}
+  <div id="quicklinks">
+  	<ul>
+	  <li><a href="http://docs.geotools.org/stable/userguide/quickstart.html" style="background-image: url(_static/img/quickstart.png)">Quickstart</a></li>
+	  <li><a href="http://docs.geotools.org" style="background-image: url(_static/img/docs.png)">Documentation</a></li>
+	  <li><a href="{{ pathto('getinvolved')}}" style="background-image: url(_static/img/getinvolved.png)">Get Involved</a></li>
+	  <li><a href="{{ pathto('about') }}" style="background-image: url(_static/img/info.png)">About GeoTools</a></li>
+	</ul>
+  </div>
+  {% endif %}
+{% endblock %}
+
+{%- block sidebar1 %}
+    {%- if pagename == 'index' %}{{ index_sidebar() }}{% else %}{{ super() }}{% endif %}
+{% endblock %}
+

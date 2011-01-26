@@ -1,0 +1,1293 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<schema
+   targetNamespace="http://www.opengis.net/gml"
+   xmlns:gml="http://www.opengis.net/gml"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2001/XMLSchema"
+   elementFormDefault="qualified"
+   version="1.0.0">
+   <annotation>
+      <appinfo source="urn:opengis:specification:gml:schema-xsd:gmlsf:1.0.0">gmlsf2.xsd</appinfo>
+      <documentation>
+         GML 3.1.1 Simplified Features profile Level 2.
+         Copyright (c) 2006 Open Geospatial Consortium, Inc.
+         All Rights Reserved.
+      </documentation>
+   </annotation>
+   <!-- =========================================================== -->
+   <!-- === includes and imports                                === -->
+   <!-- =========================================================== -->
+   <include schemaLocation="./gmlsf-deps.xsd" />
+   <import namespace="http://www.w3.org/1999/xlink"
+   schemaLocation="http://schemas.opengis.net/xlink/1.0.0/xlinks.xsd"/>
+   <!-- =========================================================== -->
+   <!-- === Subset of geometryAggregates.xsd for this profile ===== -->
+   <!-- =========================================================== -->
+   <!-- aggregate geometry objects -->
+   <!-- =========================================================== -->
+   <element name="_GeometricAggregate"
+            type="gml:AbstractGeometricAggregateType"
+            substitutionGroup="gml:_Geometry"
+            abstract="true">
+      <annotation>
+         <documentation>
+            The "_GeometricAggregate" element is the abstract head of
+            the substitution group for all geometric aggregates.
+         </documentation>
+      </annotation>
+   </element>
+   <!-- =========================================================== -->
+   <complexType name="AbstractGeometricAggregateType" abstract="true">
+      <annotation>
+         <documentation>
+            This is the abstract root type of the geometric aggregates.
+         </documentation>
+      </annotation>
+      <complexContent>
+         <extension base="gml:AbstractGeometryType"/>
+      </complexContent>
+   </complexType>
+   <!-- =========================================================== -->
+   <complexType name="MultiGeometryPropertyType">
+      <annotation>
+         <documentation>
+            A property that has a geometric aggregate as its value domain
+            can either be an appropriate geometry element encapsulated in
+            an element of this type or an XLink reference to a remote
+            geometry element (where remote includes geometry elements
+            located elsewhere in the same document). Either the reference
+            or the contained element must be given, but neither both nor none.
+         </documentation>
+      </annotation>
+      <sequence minOccurs="0">
+         <element ref="gml:_GeometricAggregate"/>
+      </sequence>
+      <attributeGroup ref="gml:AssociationAttributeGroup">
+         <annotation>
+            <documentation>
+               This attribute group includes the XLink attributes (see
+               xlinks.xsd). XLink is used in GML to reference remote
+               resources (including those elsewhere in the same document).
+               A simple link element can be constructed by including a
+               specific set of XLink attributes. The XML Linking Language
+               (XLink) is currently a Proposed Recommendation of the World
+               Wide Web Consortium. XLink allows elements to be inserted
+               into XML documents so as to create sophisticated links
+               between resources; such links can be used to reference
+               remote properties.
+               A simple link element can be used to implement pointer
+               functionality, and this functionality has been built
+               into various GML 3 elements by including the
+               gml:AssociationAttributeGroup.
+            </documentation>
+         </annotation>
+      </attributeGroup>
+   </complexType>
+   <!-- =========================================================== -->
+   <element name="MultiPoint"
+            type="gml:MultiPointType"
+            substitutionGroup="gml:_GeometricAggregate"/>
+   <!-- =========================================================== -->
+   <complexType name="MultiPointType">
+      <annotation>
+         <documentation>
+            A MultiPoint is defined by one or more Points, referenced
+            through pointMember elements.
+         </documentation>
+      </annotation>
+      <complexContent>
+         <extension base="gml:AbstractGeometricAggregateType">
+            <sequence>
+               <element ref="gml:pointMember"
+                        minOccurs="0" maxOccurs="unbounded"/>
+            </sequence>
+         </extension>
+      </complexContent>
+   </complexType>
+   <!-- =========================================================== -->
+   <complexType name="MultiPointPropertyType">
+      <annotation>
+         <documentation>
+            A property that has a collection of points as its value
+            domain can either be an appropriate geometry element
+            encapsulated in an element of this type or an XLink
+            reference to a remote geometry element (where remote
+            includes geometry elements located elsewhere in the
+            same document). Either the reference or the contained
+            element must be given, but neither both nor none.
+         </documentation>
+      </annotation>
+      <sequence minOccurs="0">
+         <element ref="gml:MultiPoint"/>
+      </sequence>
+      <attributeGroup ref="gml:AssociationAttributeGroup">
+         <annotation>
+            <documentation>
+               This attribute group includes the XLink attributes
+               (see xlinks.xsd). XLink is used in GML to reference
+               remote resources (including those elsewhere in the
+               same document). A simple link element can be constructed
+               by including a specific set of XLink attributes. The XML
+               Linking Language (XLink) is currently a Proposed Recommendation
+               of the World Wide Web Consortium. XLink allows elements to be
+               inserted into XML documents so as to create sophisticated
+               links between resources; such links can be used to reference
+               remote properties.
+               A simple link element can be used to implement pointer
+               functionality, and this functionality has been built into
+               various GML 3 elements by including the
+               gml:AssociationAttributeGroup.
+            </documentation>
+         </annotation>
+      </attributeGroup>
+   </complexType>
+   <!-- =========================================================== -->
+   <element name="MultiCurve"
+            type="gml:MultiCurveType"
+            substitutionGroup="gml:_GeometricAggregate"/>
+   <!-- =========================================================== -->
+   <complexType name="MultiCurveType">
+      <annotation>
+         <documentation>
+            A MultiCurve is defined by one or more Curves, referenced
+            through curveMember elements.
+         </documentation>
+      </annotation>
+      <complexContent>
+         <extension base="gml:AbstractGeometricAggregateType">
+            <sequence>
+               <element ref="gml:curveMember"
+                        minOccurs="0" maxOccurs="unbounded"/>
+            </sequence>
+         </extension>
+      </complexContent>
+   </complexType>
+   <!-- =========================================================== -->
+   <complexType name="MultiCurvePropertyType">
+      <annotation>
+         <documentation>
+            A property that has a collection of curves as its value domain
+            can either be an appropriate geometry element encapsulated in
+            an element of this type or an XLink reference to a remote
+            geometry element (where remote includes geometry elements
+            located elsewhere in the same document). Either the reference
+            or the contained element must be given, but neither both nor
+            none.
+         </documentation>
+      </annotation>
+      <sequence minOccurs="0">
+         <element ref="gml:MultiCurve"/>
+      </sequence>
+      <attributeGroup ref="gml:AssociationAttributeGroup">
+         <annotation>
+            <documentation>
+               This attribute group includes the XLink attributes (see
+               xlinks.xsd). XLink is used in GML to reference remote
+               resources (including those elsewhere in the same document).
+               A simple link element can be constructed by including a
+               specific set of XLink attributes. The XML Linking Language
+               (XLink) is currently a Proposed Recommendation of the World
+               Wide Web Consortium. XLink allows elements to be inserted
+               into XML documents so as to create sophisticated links between
+               resources; such links can be used to reference remote properties.
+               A simple link element can be used to implement pointer
+               functionality, and this functionality has been built into
+               various GML 3 elements by including the
+               gml:AssociationAttributeGroup.
+            </documentation>
+         </annotation>
+      </attributeGroup>
+   </complexType>
+   <!-- =========================================================== -->
+   <element name="MultiSurface"
+            type="gml:MultiSurfaceType"
+            substitutionGroup="gml:_GeometricAggregate"/>
+   <!-- =========================================================== -->
+   <complexType name="MultiSurfaceType">
+      <annotation>
+         <documentation>
+            A MultiSurface is defined by one or more Surfaces,
+            referenced through surfaceMember elements.
+         </documentation>
+      </annotation>
+      <complexContent>
+         <extension base="gml:AbstractGeometricAggregateType">
+            <sequence>
+               <element ref="gml:surfaceMember"
+                        minOccurs="0" maxOccurs="unbounded"/>
+            </sequence>
+         </extension>
+      </complexContent>
+   </complexType>
+   <!-- =========================================================== -->
+   <complexType name="MultiSurfacePropertyType">
+      <annotation>
+         <documentation>
+            A property that has a collection of surfaces as its value
+            domain can either be an appropriate geometry element
+            encapsulated in an element of this type or an XLink
+            reference to a remote geometry element (where remote
+            includes geometry elements located elsewhere in the
+            same document). Either the reference or the contained
+            element must be given, but neither both nor none.
+         </documentation>
+      </annotation>
+      <sequence minOccurs="0">
+         <element ref="gml:MultiSurface"/>
+      </sequence>
+      <attributeGroup ref="gml:AssociationAttributeGroup">
+         <annotation>
+            <documentation>
+               This attribute group includes the XLink attributes (see
+               xlinks.xsd). XLink is used in GML to reference remote
+               resources (including those elsewhere in the same document).
+               A simple link element can be constructed by including a
+               specific set of XLink attributes. The XML Linking Language
+               (XLink) is currently a Proposed Recommendation of the World
+               Wide Web Consortium. XLink allows elements to be inserted
+               into XML documents so as to create sophisticated links
+               between resources; such links can be used to reference
+               remote properties.
+	       A simple link element can be used to implement pointer
+               functionality, and this functionality has been built
+               into various GML 3 elements by including the
+               gml:AssociationAttributeGroup.
+            </documentation>
+         </annotation>
+      </attributeGroup>
+   </complexType>
+   <!-- =========================================================== -->
+   <element name="pointMember" type="gml:PointPropertyType">
+      <annotation>
+         <documentation>
+            This property element either references a Point via the
+            XLink-attributes or contains the Point element.
+         </documentation>
+      </annotation>
+   </element>
+   <!-- =========================================================== -->
+   <element name="surfaceMember" type="gml:SurfacePropertyType">
+      <annotation>
+         <documentation>
+            This property element either references a surface via the
+            XLink-attributes or contains the surface element. A surface
+            element is any element which is substitutable for "_Surface".
+         </documentation>
+      </annotation>
+   </element>
+   <!-- =========================================================== -->
+   <!-- == Subset of geometryPrimitives.xsd for this profile ====== -->
+   <!-- =========================================================== -->
+   <element name="Curve" type="gml:CurveType" substitutionGroup="gml:_Curve"/>
+   <!-- =========================================================== -->
+   <complexType name="CurveType">
+      <annotation>
+         <documentation>
+            Curve is a 1-dimensional primitive. Curves are continuous,
+            connected, and have a measurable length in terms of the
+            coordinate system.
+            A curve is composed of one or more curve segments.
+            The curve segments are connected to one another, with the
+            end point of each segment except the last being the start
+            point of the next segment in the segment list.
+            The orientation of the curve is positive.
+         </documentation>
+      </annotation>
+      <complexContent>
+         <extension base="gml:AbstractCurveType">
+            <sequence>
+               <element ref="gml:segments">
+                  <annotation>
+                     <documentation>
+                        This element encapsulates the segments of the
+                        curve.
+                     </documentation>
+                  </annotation>
+               </element>
+            </sequence>
+         </extension>
+      </complexContent>
+   </complexType>
+   <!-- =========================================================== -->
+   <!-- curve segments (1-dimensional) -->
+   <!-- =========================================================== -->
+   <element name="_CurveSegment"
+            type="gml:AbstractCurveSegmentType"
+            abstract="true">
+      <annotation>
+         <documentation>
+            The "_CurveSegment" element is the abstract head of the
+            substituition group for all curve segment elements,
+            i.e. continuous segments of the same interpolation
+            mechanism.
+         </documentation>
+      </annotation>
+   </element>
+   <!-- =========================================================== -->
+   <complexType name="AbstractCurveSegmentType" abstract="true">
+      <annotation>
+         <documentation>
+            Curve segment defines a homogeneous segment of a curve.
+         </documentation>
+      </annotation>
+      <sequence/>
+   </complexType>
+   <!-- =========================================================== -->
+   <element name="segments" type="gml:CurveSegmentArrayPropertyType">
+      <annotation>
+         <documentation>
+            This property element contains a list of curve segments.
+            The order of the elements is significant and shall be
+            preserved when processing the array.
+         </documentation>
+      </annotation>
+   </element>
+   <!-- =========================================================== -->
+   <complexType name="CurveSegmentArrayPropertyType">
+      <annotation>
+         <documentation>
+            A container for an array of curve segments.
+         </documentation>
+      </annotation>
+      <sequence>
+         <element ref="gml:_CurveSegment" minOccurs="0" maxOccurs="unbounded"/>
+      </sequence>
+   </complexType>
+   <!-- =========================================================== -->
+   <element name="curveMember" type="gml:CurvePropertyType">
+      <annotation>
+         <documentation>
+            This property element either references a curve via the
+            XLink-attributes or contains the curve element. A curve
+            element is any element which is substitutable for "_Curve".
+         </documentation>
+      </annotation>
+   </element>
+   <!-- ============================================================ -->
+   <!-- === global element in "_CurveSegment" substitution group === -->
+   <!-- ============================================================ -->
+   <element name="LineStringSegment"
+            type="gml:LineStringSegmentType"
+            substitutionGroup="gml:_CurveSegment"/>
+   <!-- ============================================================ -->
+   <complexType name="LineStringSegmentType">
+      <annotation>
+         <documentation>
+            A LineStringSegment is a curve segment that is defined by
+            two or more coordinate tuples, with linear interpolation
+            between them.
+            Note: LineStringSegment implements GM_LineString of ISO 19107.
+         </documentation>
+      </annotation>
+      <complexContent>
+         <extension base="gml:AbstractCurveSegmentType">
+            <sequence>
+               <element ref="gml:posList"/>
+            </sequence>
+            <attribute name="interpolation"
+                       type="gml:CurveInterpolationType"
+                       fixed="linear">
+               <annotation>
+                  <documentation>
+                     The attribute "interpolation" specifies
+                     the curve interpolation mechanism used
+                     for this segment. This mechanism uses
+                     the control points and control parameters
+                     to determine the position of this curve
+                     segment. For a LineStringSegment the
+                     interpolation is fixed as "linear".
+                  </documentation>
+               </annotation>
+            </attribute>
+         </extension>
+      </complexContent>
+   </complexType>
+   <!-- =========================================================== -->
+   <!-- surface patches (2-dimensional) -->
+   <!-- =========================================================== -->
+   <element name="_SurfacePatch"
+            type="gml:AbstractSurfacePatchType"
+            abstract="true">
+      <annotation>
+         <documentation>
+            The "_SurfacePatch" element is the abstract head of the
+            substituition group for all surface pach elements describing
+            a continuous portion of a surface.
+         </documentation>
+      </annotation>
+   </element>
+   <!-- =========================================================== -->
+   <complexType name="AbstractSurfacePatchType" abstract="true">
+      <annotation>
+         <documentation>
+            A surface patch defines a homogenuous portion of a surface.
+         </documentation>
+      </annotation>
+      <sequence/>
+   </complexType>
+   <!-- =========================================================== -->
+   <element name="patches" type="gml:SurfacePatchArrayPropertyType">
+      <annotation>
+         <documentation>
+             This property element contains a list of surface patches.
+             The order of the elements is significant and shall be
+             preserved when processing the array.
+         </documentation>
+      </annotation>
+   </element>
+   <!-- =========================================================== -->
+   <complexType name="SurfacePatchArrayPropertyType">
+      <annotation>
+         <documentation>
+            A container for an array of surface patches.
+         </documentation>
+      </annotation>
+      <sequence>
+         <element ref="gml:_SurfacePatch"
+                  minOccurs="0" maxOccurs="unbounded"/>
+      </sequence>
+   </complexType>
+   <!-- =========================================================== -->
+   <element name="PolygonPatch"
+            type="gml:PolygonPatchType"
+            substitutionGroup="gml:_SurfacePatch"/>
+   <!-- =========================================================== -->
+   <complexType name="PolygonPatchType">
+      <annotation>
+         <documentation>
+            A PolygonPatch is a surface patch that is defined by
+            a set of boundary curves and an underlying surface to
+            which these curves adhere. The curves are coplanar and
+            the polygon uses planar interpolation in its interior.
+            Implements GM_Polygon of ISO 19107.
+         </documentation>
+      </annotation>
+      <complexContent>
+         <extension base="gml:AbstractSurfacePatchType">
+            <sequence>
+               <element ref="gml:exterior" minOccurs="0"/>
+               <element ref="gml:interior"
+                        minOccurs="0" maxOccurs="unbounded"/>
+            </sequence>
+            <attribute name="interpolation"
+                       type="gml:SurfaceInterpolationType"
+                       fixed="planar">
+               <annotation>
+                  <documentation>
+                     The attribute "interpolation" specifies the
+                     interpolation mechanism used for this surface
+                     patch. Currently only planar surface patches
+                     are defined in GML 3, the attribute is fixed
+                     to "planar", i.e. the interpolation method
+                     shall return points on a single plane. The
+                     boundary of the patch shall be contained within
+                     that plane.
+                  </documentation>
+               </annotation>
+            </attribute>
+         </extension>
+      </complexContent>
+   </complexType>
+   <!-- =========================================================== -->
+   <element name="Surface"
+                 type="gml:SurfaceType"
+                 substitutionGroup="gml:_Surface"/>
+   <!-- =========================================================== -->
+   <complexType name="SurfaceType">
+      <annotation>
+         <documentation>
+            A Surface is a 2-dimensional primitive and is composed
+            of one or more surface patches. The surface patches are
+            connected to one another.
+            The orientation of the surface is positive ("up"). The
+            orientation of a surface chooses an "up" direction
+            through the choice of the upward normal, which, if the
+            surface is not a cycle, is the side of the surface from
+            which the exterior boundary appears counterclockwise.
+            Reversal of the surface orientation reverses the curve
+            orientation of each boundary component, and interchanges
+            the conceptual "up" and "down" direction of the surface.
+            If the surface is the boundary of a solid, the "up"
+            direction is usually outward. For closed surfaces, which
+            have no boundary, the up direction is that of the surface
+            patches, which must be consistent with one another. Its
+            included surface patches describe the interior structure
+            of the Surface.
+         </documentation>
+      </annotation>
+      <complexContent>
+         <extension base="gml:AbstractSurfaceType">
+            <sequence>
+               <element ref="gml:patches">
+                  <annotation>
+                     <documentation>
+                        This element encapsulates the patches of the
+                        surface.
+                     </documentation>
+                  </annotation>
+               </element>
+            </sequence>
+         </extension>
+      </complexContent>
+   </complexType>
+   <!-- =========================================================== -->
+   <simpleType name="CurveInterpolationType">
+      <annotation>
+         <documentation>
+            CurveInterpolationType is a list of codes that may be
+            used to identify the interpolation mechanisms specified
+            by an schema.
+         </documentation>
+      </annotation>
+      <restriction base="string">
+         <enumeration value="linear"/>
+      </restriction>
+   </simpleType>
+   <simpleType name="SurfaceInterpolationType">
+      <annotation>
+         <documentation>
+            SurfaceInterpolationType is a list of codes that may be
+            used to identify the interpolation mechanisms specified
+            by an application schema.
+         </documentation>
+      </annotation>
+      <restriction base="string">
+         <enumeration value="planar"/>
+      </restriction>
+   </simpleType>
+   <!-- =========================================================== -->
+   <!-- == Subset of geometryBasic2d.xsd for this profile ========= -->
+   <!-- =========================================================== -->
+   <!-- == primitive geometry objects (2-dimensional) ============= -->
+   <!-- =========================================================== -->
+   <element name="_Surface"
+            type="gml:AbstractSurfaceType"
+            substitutionGroup="gml:_GeometricPrimitive"
+            abstract="true">
+      <annotation>
+         <documentation>
+            The "_Surface" element is the abstract head of the
+            substituition group for all (continuous) surface elements.
+         </documentation>
+      </annotation>
+   </element>
+   <!-- =========================================================== -->
+   <complexType name="AbstractSurfaceType">
+      <annotation>
+         <documentation>
+            An abstraction of a surface to support the different
+            levels of complexity. A surface is always a continuous
+            region of a plane.
+         </documentation>
+      </annotation>
+      <complexContent>
+         <extension base="gml:AbstractGeometricPrimitiveType"/>
+      </complexContent>
+   </complexType>
+   <!-- =========================================================== -->
+   <complexType name="SurfacePropertyType">
+      <annotation>
+         <documentation>
+            A property that has a surface as its value domain can
+            either be an appropriate geometry element encapsulated
+            in an element of this type or an XLink reference to a
+            remote geometry element (where remote includes geometry
+            elements located elsewhere in the same document). Either
+            the reference or the contained element must be given,
+            but neither both nor none.
+         </documentation>
+      </annotation>
+      <sequence minOccurs="0">
+         <element ref="gml:_Surface"/>
+      </sequence>
+      <attributeGroup ref="gml:AssociationAttributeGroup">
+         <annotation>
+            <documentation>
+               This attribute group includes the XLink attributes (see
+               xlinks.xsd). XLink is used in GML to reference remote
+               resources (including those elsewhere in the same document).
+               A simple link element can be constructed by including a
+               specific set of XLink attributes. The XML Linking Language
+               (XLink) is currently a Proposed Recommendation of the World
+               Wide Web Consortium. XLink allows elements to be inserted
+               into XML documents so as to create sophisticated links
+               between resources; such links can be used to reference
+               remote properties. A simple link element can be used to
+               implement pointer functionality, and this functionality
+               has been built into various GML 3 elements by including
+               the gml:AssociationAttributeGroup.
+            </documentation>
+         </annotation>
+      </attributeGroup>
+   </complexType>
+   <!-- =========================================================== -->
+   <element name="Polygon"
+            type="gml:PolygonType"
+            substitutionGroup="gml:_Surface"/>
+   <!-- =========================================================== -->
+   <complexType name="PolygonType">
+      <annotation>
+         <documentation>
+            A Polygon is a special surface that is defined by a single
+            surface patch. The boundary of this patch is coplanar and
+            the polygon uses planar interpolation in its interior. It
+            is backwards compatible with the Polygon of GML 2.
+         </documentation>
+      </annotation>
+      <complexContent>
+         <extension base="gml:AbstractSurfaceType">
+            <sequence>
+               <element ref="gml:exterior" minOccurs="0"/>
+               <element ref="gml:interior" minOccurs="0" maxOccurs="unbounded"/>
+            </sequence>
+         </extension>
+      </complexContent>
+   </complexType>
+   <!-- =========================================================== -->
+   <!-- rings (closed curves for surface boundaries) -->
+   <!-- =========================================================== -->
+   <element name="exterior" type="gml:AbstractRingPropertyType">
+      <annotation>
+         <documentation>
+            A boundary of a surface consists of a number of rings.
+            In the normal 2D case, one of these rings is distinguished
+            as being the exterior boundary. In a general manifold this
+            is not always possible, in which case all boundaries shall
+            be listed as interior boundaries, and the exterior will be
+            empty.
+         </documentation>
+      </annotation>
+   </element>
+   <!-- =========================================================== -->
+   <element name="interior" type="gml:AbstractRingPropertyType">
+      <annotation>
+         <documentation>
+            A boundary of a surface consists of a number of rings. The
+            "interior" rings seperate the surface / surface patch from
+            the area enclosed by the rings.
+         </documentation>
+      </annotation>
+   </element>
+   <!-- =========================================================== -->
+   <complexType name="AbstractRingPropertyType">
+      <annotation>
+         <documentation>
+            Encapsulates a ring to represent the surface boundary property
+            of a surface.
+         </documentation>
+      </annotation>
+      <sequence>
+         <element ref="gml:LinearRing"/>
+      </sequence>
+   </complexType>
+   <!-- =========================================================== -->
+   <element name="LinearRing" type="gml:LinearRingType"
+      substitutionGroup="gml:_Geometry"/>
+   <!-- =========================================================== -->
+   <complexType name="LinearRingType">
+      <annotation>
+         <documentation>
+            A LinearRing is defined by four or more coordinate tuples,
+            with linear interpolation between them; the first and last
+            coordinates must be coincident.
+         </documentation>
+      </annotation>
+      <complexContent>
+         <extension base="gml:AbstractGeometryType">
+            <sequence>
+               <element ref="gml:posList">
+                  <annotation>
+                     <documentation>
+                        The "posList" element provides a compact way to
+                        specifiy the coordinates of the control points,
+                        if all control points are in the same coordinate
+                        reference systems and belong to this ring only.
+                        The number of direct positions in the list must
+                        be at least four.
+                     </documentation>
+                  </annotation>
+               </element>
+            </sequence>
+         </extension>
+      </complexContent>
+   </complexType>
+   <!-- =========================================================== -->
+   <!-- == Subset of geometryBasic0d1d.xsd for this profile ======= -->
+   <!-- =========================================================== -->
+   <!-- =========================================================== -->
+   <!-- == abstract supertype for geometry objects ================ -->
+   <!-- =========================================================== -->
+   <element name="_Geometry" type="gml:AbstractGeometryType"
+      substitutionGroup="gml:_GML" abstract="true">
+      <annotation>
+         <documentation>
+            The "_Geometry" element is the abstract head of the
+            substituition group for all geometry elements of GML 3.
+            This includes pre-defined and user-defined geometry elements.
+            Any geometry element must be a direct or indirect
+            extension/restriction  of AbstractGeometryType
+            and must be directly or indirectly in the substitution
+            group of "_Geometry".
+         </documentation>
+      </annotation>
+   </element>
+   <!-- =========================================================== -->
+   <complexType name="GeometryPropertyType">
+      <annotation>
+         <documentation>
+            A geometric property can either be any geometry element
+            encapsulated in an element of this type or an XLink
+            reference to a remote geometry element (where remote
+            includes geometry elements located elsewhere in the same
+            document). Note that either the reference or the contained
+            element must be given, but not both or none.
+         </documentation>
+      </annotation>
+      <sequence minOccurs="0">
+         <element ref="gml:_Geometry"/>
+      </sequence>
+      <attributeGroup ref="gml:AssociationAttributeGroup">
+         <annotation>
+            <documentation>
+               This attribute group includes the XLink attributes (see
+               xlinks.xsd). XLink is used in GML to reference remote
+               resources (including those elsewhere in the same document).
+               A simple link element can be constructed by including a
+               specific set of XLink attributes. The XML Linking Language
+               (XLink) is currently a Proposed Recommendation of the World
+               Wide Web Consortium. XLink allows elements to be inserted
+               into XML documents so as to create sophisticated links
+               between resources; such links can be used to reference
+               remote properties. A simple link element can be used to
+               implement pointer functionality, and this functionality
+               has been built into various GML 3 elements by including
+               the gml:AssociationAttributeGroup.
+            </documentation>
+         </annotation>
+      </attributeGroup>
+   </complexType>
+   <!-- =========================================================== -->
+   <complexType name="AbstractGeometryType" abstract="true">
+      <annotation>
+         <documentation>
+            All geometry elements are derived directly or indirectly
+            from this abstract supertype. A geometry element may
+            have an identifying attribute ("gml:id"), a name (attribute
+            "name") and a description (attribute "description"). It may
+            be associated with a spatial reference system (attribute
+            "srsName"). The following rules shall be adhered: - Every
+            geometry type shall derive from this abstract type. - Every
+            geometry element (i.e. an element of a geometry type) shall
+            be directly or indirectly in the substitution group of _Geometry.
+         </documentation>
+      </annotation>
+      <complexContent>
+         <extension base="gml:AbstractGMLType">
+            <attribute name="srsName" type="anyURI" use="optional">
+               <annotation>
+                  <documentation>
+                     In general this reference points to a CRS instance of
+                     gml:CoordinateReferenceSystemType (see
+                     coordinateReferenceSystems.xsd). For well known
+                     references it is not required that the CRS description
+                     exists at the location the URI points to. If no srsName
+                     attribute is given, the CRS must be specified as part of
+                     the larger context this geometry element is part of, e.g.
+                     a geometric element like point, curve, etc. It is expected
+                     that this attribute will be specified at the direct
+                     position level only in rare cases.
+                  </documentation>
+               </annotation>
+            </attribute>
+         </extension>
+      </complexContent>
+   </complexType>
+   <!-- =========================================================== -->
+   <element name="_GeometricPrimitive" type="gml:AbstractGeometricPrimitiveType"
+      abstract="true" substitutionGroup="gml:_Geometry">
+      <annotation>
+         <documentation>
+            The "_GeometricPrimitive" element is the abstract head of
+            the substituition group for all (pre- and user-defined)
+            geometric primitives.
+         </documentation>
+      </annotation>
+   </element>
+   <!-- =========================================================== -->
+   <complexType name="AbstractGeometricPrimitiveType" abstract="true">
+      <annotation>
+         <documentation>
+            This is the abstract root type of the geometric primitives.
+            A geometric primitive is a geometric object that is not
+            decomposed further into other primitives in the system.
+            All primitives are oriented in the direction implied by
+            the sequence of their coordinate tuples.
+         </documentation>
+      </annotation>
+      <complexContent>
+         <extension base="gml:AbstractGeometryType"/>
+      </complexContent>
+   </complexType>
+   <!-- =========================================================== -->
+   <!-- primitive geometry objects (0-dimensional) -->
+   <!-- =========================================================== -->
+   <element name="Point"
+            type="gml:PointType"
+            substitutionGroup="gml:_GeometricPrimitive"/>
+   <!-- =========================================================== -->
+   <complexType name="PointType">
+      <annotation>
+         <documentation>
+            A Point is defined by a single coordinate tuple.
+         </documentation>
+      </annotation>
+      <complexContent>
+         <extension base="gml:AbstractGeometricPrimitiveType">
+            <sequence>
+               <element ref="gml:pos"/>
+            </sequence>
+         </extension>
+      </complexContent>
+   </complexType>
+   <!-- =========================================================== -->
+   <complexType name="PointPropertyType">
+      <annotation>
+         <documentation>
+            A property that has a point as its value domain can either
+            be an appropriate geometry element encapsulated in an element
+            of this type or an XLink reference to a remote geometry
+            element (where remote includes geometry elements located
+            elsewhere in the same document). Either the reference or the
+            contained element must be given, but neither both nor none.
+         </documentation>
+      </annotation>
+      <sequence minOccurs="0">
+         <element ref="gml:Point"/>
+      </sequence>
+      <attributeGroup ref="gml:AssociationAttributeGroup">
+         <annotation>
+            <documentation>
+               This attribute group includes the XLink attributes (see
+               xlinks.xsd). XLink is used in GML to reference remote
+               resources (including those elsewhere in the same document).
+               A simple link element can be constructed by including a
+               specific  set of XLink attributes. The XML Linking Language
+               (XLink) is currently a Proposed Recommendation of the World
+               Wide Web Consortium. XLink allows elements to be inserted
+               into XML documents so as to create sophisticated links
+               between resources; such links can be  used to reference
+               remote properties. A simple link element can be used to
+               implement pointer functionality, and this functionality
+               has been built into various GML 3 elements by including
+               the gml:AssociationAttributeGroup.
+            </documentation>
+         </annotation>
+      </attributeGroup>
+   </complexType>
+    <!-- =========================================================== -->
+   <!-- primitive geometry objects (1-dimensional) -->
+   <!-- =========================================================== -->
+   <element name="_Curve" type="gml:AbstractCurveType"
+      substitutionGroup="gml:_GeometricPrimitive" abstract="true">
+      <annotation>
+         <documentation>
+            The "_Curve" element is the abstract head of the
+            substituition group for all (continuous) curve elements.
+         </documentation>
+      </annotation>
+   </element>
+   <!-- =========================================================== -->
+   <complexType name="AbstractCurveType" abstract="true">
+      <annotation>
+         <documentation>
+            An abstraction of a curve to support the different levels
+            of complexity. The curve can always be viewed as a geometric
+            primitive, i.e. is continuous.
+         </documentation>
+      </annotation>
+      <complexContent>
+         <extension base="gml:AbstractGeometricPrimitiveType"/>
+      </complexContent>
+   </complexType>
+   <!-- =========================================================== -->
+   <complexType name="CurvePropertyType">
+      <annotation>
+         <documentation>
+            A property that has a curve as its value domain can either
+            be an appropriate geometry element encapsulated in an
+            element of this type or an XLink reference to a remote
+            geometry element (where remote includes geometry elements
+            located elsewhere in the same document). Either the reference
+            or the contained element must be given, but neither both nor none.
+         </documentation>
+      </annotation>
+      <sequence minOccurs="0">
+         <element ref="gml:_Curve"/>
+      </sequence>
+      <attributeGroup ref="gml:AssociationAttributeGroup">
+         <annotation>
+            <documentation>
+               This attribute group includes the XLink attributes (see
+               xlinks.xsd). XLink is used in GML to reference remote
+               resources (including those elsewhere in the same document).
+               A simple link element can be constructed by including a
+               specific set of XLink attributes.
+
+               The XML Linking Language (XLink) is currently a Proposed
+               Recommendation of the World Wide Web Consortium. XLink
+               allows elements to be inserted into XML documents so as
+               to create sophisticated links between resources; such
+               links can be used to reference remote properties. A simple
+               link element can be used to implement pointer functionality,
+               and this functionality has been built into various GML 3
+               elements by including the gml:AssociationAttributeGroup.
+            </documentation>
+         </annotation>
+      </attributeGroup>
+   </complexType>
+   <!-- =========================================================== -->
+   <element name="LineString"
+            type="gml:LineStringType"
+            substitutionGroup="gml:_Curve"/>
+   <!-- =========================================================== -->
+   <complexType name="LineStringType">
+      <annotation>
+         <documentation>
+            A LineString is a special curve that consists of a
+            single segment with linear interpolation. It is defined
+            by two or more coordinate tuples, with linear interpolation
+            between them. It is backwards compatible with the LineString
+            of GML 2.
+         </documentation>
+      </annotation>
+      <complexContent>
+         <extension base="gml:AbstractCurveType">
+            <sequence>
+               <element ref="gml:posList"/>
+            </sequence>
+         </extension>
+      </complexContent>
+   </complexType>
+   <!-- =========================================================== -->
+   <!-- positions -->
+   <!-- =========================================================== -->
+   <element name="pos" type="gml:DirectPositionType"/>
+   <!-- =========================================================== -->
+   <complexType name="DirectPositionType">
+      <annotation>
+         <documentation>
+            DirectPosition instances hold the coordinates for one position
+            in the coordinate reference system (CRS) referenced in a
+            larger element. In this case, the CRS shall be assumed to be
+            the value referenced in the containing object's CRS.
+         </documentation>
+      </annotation>
+      <simpleContent>
+         <extension base="gml:doubleList"/>
+      </simpleContent>
+   </complexType>
+   <!-- =========================================================== -->
+   <element name="posList" type="gml:DirectPositionListType"/>
+   <!-- =========================================================== -->
+   <complexType name="DirectPositionListType">
+      <annotation>
+         <documentation>
+            DirectPositionList instances hold the coordinates for a
+            sequence of direct positions within the same coordinate
+            reference system (CRS).
+         </documentation>
+      </annotation>
+      <simpleContent>
+         <extension base="gml:doubleList"/>
+      </simpleContent>
+   </complexType>
+   <!-- =========================================================== -->
+   <!-- Envelope -->
+   <!-- =========================================================== -->
+   <element name="Envelope" type="gml:EnvelopeType"/>
+   <!-- =========================================================== -->
+   <complexType name="EnvelopeType">
+      <annotation>
+         <documentation>
+            Envelope defines an extent using a pair of positions
+            defining opposite corners in arbitrary dimensions. The
+            first direct position is the "lower corner" (a coordinate
+            position consisting of all the minimal ordinates for each
+            dimension for all points within the envelope), the second
+            one the "upper corner" (a coordinate position consisting
+            of all the maximal ordinates for each dimension for all
+            points within the envelope).
+         </documentation>
+      </annotation>
+      <sequence>
+         <element name="lowerCorner" type="gml:DirectPositionType"/>
+         <element name="upperCorner" type="gml:DirectPositionType"/>
+      </sequence>
+      <attribute name="srsName" type="anyURI" use="required">
+         <annotation>
+            <documentation>
+               In general this reference points to a CRS instance of
+               gml:CoordinateReferenceSystemType (see
+               coordinateReferenceSystems.xsd). For well known
+               references it is not required that the CRS description
+               exists at the location the URI points to.
+            </documentation>
+         </annotation>
+      </attribute>
+   </complexType>
+   <!-- =========================================================== -->
+   <!-- == Subset of feature.xsd for this profile ================= -->
+   <!-- =========================================================== -->
+   <!-- =========================================================== -->
+   <element name="_Feature" type="gml:AbstractFeatureType" abstract="true"
+      substitutionGroup="gml:_GML"/>
+   <!-- =========================================================== -->
+   <complexType name="AbstractFeatureType" abstract="true">
+      <annotation>
+         <documentation>
+            An abstract feature provides a set of common properties,
+            including id, name and description inherited from
+            AbstractGMLType, plus boundedBy.  A concrete feature type
+            must derive from this type and specify additional properties
+            in an application schema.
+         </documentation>
+      </annotation>
+      <complexContent>
+         <extension base="gml:AbstractFeatureBaseType">
+            <sequence>
+               <element ref="gml:boundedBy" minOccurs="0"/>
+               <!-- additional properties must be specified in an
+                    application schema -->
+            </sequence>
+         </extension>
+      </complexContent>
+   </complexType>
+   <!-- =========================================================== -->
+   <complexType name="AbstractFeatureBaseType">
+      <annotation>
+         <documentation>
+            A abstract feature base type, that shall include an
+            identifying attribute ('id').
+         </documentation>
+      </annotation>
+      <complexContent>
+         <restriction base="gml:AbstractGMLType">
+            <sequence>
+               <group ref="gml:StandardObjectProperties"/>
+            </sequence>
+            <attribute ref="gml:id" use="required"/>
+         </restriction>
+      </complexContent>
+   </complexType>
+   <!-- =========================================================== -->
+   <!-- =========================================================== -->
+   <element name="boundedBy" type="gml:BoundingShapeType"/>
+   <!-- =========================================================== -->
+   <complexType name="BoundingShapeType">
+      <annotation>
+         <documentation>Bounding shape.</documentation>
+      </annotation>
+      <sequence>
+         <element ref="gml:Envelope"/>
+      </sequence>
+   </complexType>
+   <!-- =========================================================== -->
+   <!-- == Subset of gmlBase.xsd for this profile ================= -->
+   <!-- =========================================================== -->
+   <!-- ==================== Objects ============================== -->
+   <!-- =========================================================== -->
+   <!-- =============== Abstract "Object" is "anyType" ============ -->
+   <!-- == Global element at the head of the "Object" substitution= -->
+   <!-- == group                                                  = -->
+   <!-- =========================================================== -->
+   <element name="_Object" abstract="true">
+      <annotation>
+         <documentation>
+            This abstract element is the head of a substitutionGroup
+            hierararchy which may contain either simpleContent or
+            complexContent elements.  It is used to assert the model
+            position of "class" elements declared in other GML schemas.
+         </documentation>
+      </annotation>
+   </element>
+   <!-- ============================================================ -->
+   <!-- == Abstract "GMLobject" supertype ========================== -->
+   <element name="_GML" type="gml:AbstractGMLType" abstract="true"
+      substitutionGroup="gml:_Object">
+      <annotation>
+         <documentation>
+            Global element which acts as the head of a substitution group
+            that may include any element which is a GML feature, object,
+            geometry or complex value
+         </documentation>
+      </annotation>
+   </element>
+   <!-- =========================================================== -->
+   <group name="StandardObjectProperties">
+      <annotation>
+         <documentation>
+            This content model group makes it easier to construct types
+            that derive from AbstractGMLType and its descendents "by
+            restriction".  A reference to the group saves having to
+            enumerate the standard object properties.
+         </documentation>
+      </annotation>
+      <sequence>
+         <element ref="gml:description" minOccurs="0"/>
+         <element ref="gml:name" minOccurs="0" maxOccurs="unbounded">
+            <annotation>
+               <documentation>
+                  Multiple names may be provided.  These will often be
+                  distinguished by being assigned by different authorities,
+                  as indicated by the value of the codeSpace attribute.
+                  In an instance document there will usually only be one
+                  name per authority.
+               </documentation>
+            </annotation>
+         </element>
+      </sequence>
+   </group>
+   <!-- =========================================================== -->
+   <complexType name="AbstractGMLType" abstract="true">
+      <annotation>
+         <documentation>
+            All complexContent GML elements are directly or indirectly
+            derived from this abstract supertype to establish a hierarchy
+            of GML types that may be distinguished from other XML types
+            by their ancestry.  Elements in this hierarchy must have an
+            ID and are thus referenceable.
+         </documentation>
+      </annotation>
+      <sequence>
+         <group ref="gml:StandardObjectProperties"/>
+      </sequence>
+      <attribute ref="gml:id" use="optional"/>
+   </complexType>
+   <!-- =========================================================== -->
+   <!-- == Base Property Types ==================================== -->
+   <!-- =========================================================== -->
+   <complexType name="ReferenceType">
+      <annotation>
+         <documentation>
+            A pattern or base for derived types used to specify complex
+            types corresponding to a UML aggregation association. An
+            instance of this type serves as a pointer to a remote Object.
+         </documentation>
+      </annotation>
+      <attributeGroup ref="gml:AssociationAttributeGroup"/>
+   </complexType>
+   <!-- =========================================================== -->
+   <!-- ==========================================================
+	global attribute, attribute group and element declarations
+	=============================================================  -->
+   <attribute name="id" type="ID">
+      <annotation>
+         <documentation>
+            Database handle for the object.  It is of XML type ID,
+            so is constrained to be unique in the XML document within
+            which it occurs.  An external identifier for the object
+            in the form of a URI may be constructed using standard XML
+            and XPointer methods.  This is done by concatenating the
+            URI for the document, a fragment separator, and the value
+            of the id attribute.
+         </documentation>
+      </annotation>
+   </attribute>
+   <!-- =========================================================== -->
+   <attributeGroup name="AssociationAttributeGroup">
+      <annotation>
+         <documentation>
+            Attribute group used to enable property elements to refer
+            to their value remotely. It contains the simple link
+            components from xlinks.xsd, with all members optional.
+            These attributes can be attached to any element, thus
+            allowing it to act as a pointer.
+         </documentation>
+      </annotation>
+      <attributeGroup ref="xlink:simpleLink"/>
+   </attributeGroup>
+   <!-- =========================================================== -->
+   <element name="name" type="gml:CodeType">
+      <annotation>
+         <documentation>
+            Label for the object, normally a descriptive name. An
+            object may have several names, typically assigned by
+            different authorities.  The authority for a name is
+            indicated by the value of its (optional) codeSpace
+            attribute.  The name may or may not be unique, as
+            determined by the rules of the organization responsible
+            for the codeSpace.
+         </documentation>
+      </annotation>
+   </element>
+   <!-- =========================================================== -->
+   <element name="description" type="string">
+      <annotation>
+         <documentation>
+            Contains a simple text description of the object.
+         </documentation>
+         <documentation>
+            Restricted to only allow a text string, as done in GML 3.2.
+         </documentation>
+      </annotation>
+   </element>
+   <!-- =========================================================== -->
+   <!-- == Subset of basicTypes.xsd for this profile ============== -->
+   <!-- =========================================================== -->
+   <!-- =========================================================== -->
+   <simpleType name="doubleList">
+      <annotation>
+         <documentation>
+            XML List based on XML Schema double type.  An element
+            of this type contains a space-separated list of double
+            values
+         </documentation>
+      </annotation>
+      <list itemType="double"/>
+   </simpleType>
+   <!-- =========================================================== -->
+   <complexType name="CodeType">
+      <annotation>
+         <documentation>
+            Name or code with an (optional) authority.  Text token.
+            If the codeSpace attribute is present, then its value
+            should identify a dictionary, thesaurus or authority
+            for the term, such as the organisation who assigned
+            the value, or the dictionary from which it is taken.
+            A text string with an optional codeSpace attribute.
+         </documentation>
+      </annotation>
+      <simpleContent>
+         <extension base="string">
+            <attribute name="codeSpace" type="anyURI" use="optional"/>
+         </extension>
+      </simpleContent>
+   </complexType>
+   <!-- =========================================================== -->
+   <complexType name="MeasureType">
+      <annotation>
+         <documentation>
+            Number with a scale. The value of uom (Units Of Measure)
+            attribute is a reference to a Reference System for the
+            amount, either a ratio or position scale.
+         </documentation>
+      </annotation>
+      <simpleContent>
+         <extension base="double">
+            <attribute name="uom" type="anyURI" use="required"/>
+         </extension>
+      </simpleContent>
+   </complexType>
+   <!-- =========================================================== -->
+   <simpleType name="NCNameList">
+      <annotation>
+         <documentation>
+            A set of values, representing a list of token with the
+            lexical value space of NCName. The tokens are seperated
+            by whitespace.
+         </documentation>
+      </annotation>
+      <list itemType="NCName"/>
+   </simpleType>
+   <!-- =========================================================== -->
+</schema>

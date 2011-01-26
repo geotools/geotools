@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<!--
+		=======================================================================
+		Maven Project Configuration File The Geotools Project
+		http://www.geotools.org/ Version: $Id: pom.xml 33423 2009-07-01
+		17:13:45Z groldan $
+		=======================================================================
+	-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                               http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.geotools</groupId>
+		<artifactId>arcsde-plugin</artifactId>
+		<version>2.7-SNAPSHOT</version>
+	</parent>
+
+
+	<!-- =========================================================== -->
+	<!--     Module Description                                      -->
+	<!-- =========================================================== -->
+	<groupId>org.geotools</groupId>
+	<artifactId>gt-arcsde</artifactId>
+	<packaging>jar</packaging>
+	<name>ArcSDE DataStore plugin</name>
+
+
+	<scm>
+		<connection>
+      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/
+    </connection>
+		<url>http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/</url>
+	</scm>
+
+	<description> ArcSDE DataStore plugin. </description>
+	<licenses>
+		<license>
+			<name>Lesser General Public License (LGPL)</name>
+			<url>http://www.gnu.org/copyleft/lesser.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+
+	<!-- =========================================================== -->
+	<!--     Developers and Contributors                             -->
+	<!-- =========================================================== -->
+	<developers>
+		<developer>
+			<name>Gabriel Roldan</name>
+			<id>groldan</id>
+			<email>groldan@users.sourceforge.net</email>
+			<organization>OpenGeo</organization>
+			<organizationUrl>http://opengeo.org</organizationUrl>
+			<roles>
+				<role>Module Maintainer</role>
+				<role>Java Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<name>Jody Garnett</name>
+			<id>jgarnett</id>
+			<email>jody.garnett@gmail.com</email>
+			<organization>LISAsoft</organization>
+			<organizationUrl>http://www.lisasoft.com</organizationUrl>
+			<roles>
+				<role>Java Developer</role>
+			</roles>
+		</developer>
+	</developers>
+	<contributors>
+		<contributor>
+			<name>Saul Farber</name>
+			<email>saul@peoplegis.com</email>
+			<roles>
+				<role>Former co-module maintainer and Java Developer</role>
+			</roles>
+		</contributor>
+		<contributor>
+			<name>Chris Dillard</name>
+			<email>cdillard@polexis.com</email>
+			<organization>Polexis</organization>
+			<roles>
+				<role>Java Developer</role>
+			</roles>
+		</contributor>
+		<contributor>
+			<name>Jake Fear</name>
+			<email>jfear@polexis.com</email>
+			<organization>Polexis</organization>
+			<roles>
+				<role>Java Developer</role>
+			</roles>
+		</contributor>
+	</contributors>
+
+
+	<!-- =========================================================== -->
+	<!--     Dependency Management                                   -->
+	<!-- =========================================================== -->
+	<dependencies>
+		<dependency>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-arcsde-common</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>jsqlparser</groupId>
+			<artifactId>jsqlparser</artifactId>
+			<version>0.3.14</version>
+		</dependency>
+		<dependency>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-jdbc</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-coverage</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-epsg-hsql</artifactId>
+      <version>${project.version}</version>
+      <scope>provided</scope>
+    </dependency>		
+    <dependency>
+			<groupId>javax.media</groupId>
+			<artifactId>jai_core</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.media</groupId>
+			<artifactId>jai_codec</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.media</groupId>
+			<artifactId>jai_imageio</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-sample-data</artifactId>
+			<version>${project.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-render</artifactId>
+			<version>${project.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-geotiff</artifactId>
+			<version>${project.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-cql</artifactId>
+			<version>${project.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>simple-jndi</groupId>
+			<artifactId>simple-jndi</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	<profiles>
+		<profile>
+			<id>autoSDEDummyJars</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<dependencies>
+				<dependency>
+					<groupId>org.geotools</groupId>
+					<artifactId>gt-sde-dummy</artifactId>
+					<version>${project.version}</version>
+					<scope>provided</scope>
+				</dependency>
+			</dependencies>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<configuration>
+							<!-- if we're using the dummy api, we should disable all tests -->
+							<excludes>
+								<exclude>**/*.java</exclude>
+							</excludes>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>arcsde</id>
+			<dependencies>
+				<dependency>
+					<groupId>com.esri</groupId>
+					<artifactId>jsde_sdk</artifactId>
+					<version>${sde.version}</version>
+				</dependency>
+				<dependency>
+					<groupId>com.esri</groupId>
+					<artifactId>jpe_sdk</artifactId>
+					<version>${sde.version}</version>
+				</dependency>
+			</dependencies>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<configuration>
+							<!--
+								You need two things to run these tests successfully 1) The esri
+								ArcSDE jars installed. Either the 9.2 or 9.3 ones from your
+								ArcSDE Java SDK installation. 2) A properly configured
+								testparams.properties file. Make sure it correctly references
+								your SDE server with usernames and passwords in there correctly.
+
+								Since if you're building with the *real* SDE jars from SVN, I'd
+								suggest you enable these tests, just to make sure the SDE plugin
+								is actually correctly working right now!
+							-->
+							<includes>
+								<include>**/*Test.java</include>
+							</includes>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+</project>

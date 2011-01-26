@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:om="http://www.opengis.net/om/1.0.1" targetNamespace="http://www.opengis.net/om/1.0" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.0">
+	<annotation>
+		<documentation>om.xsd
+
+The Observations and Measurements schema. 
+This document includes  the normative elements, plus 
+   * the extensions to define specialized observations with constrained result types
+   * specialized procedure types
+   * coverage-observations
+
+Copyright (c) 2007 Open Geospatial Consortium - see http://www.opengeospatial.org/ogc/software</documentation>
+	</annotation>
+	<!-- ====================================================================== -->
+	<!--
+	<include schemaLocation="../observation.xsd"/>
+	included transitively by the following -->
+	<include schemaLocation="./observationSpecialization_constraint.xsd"/>
+	<include schemaLocation="./observationCoverage.xsd"/>
+	<include schemaLocation="./observationCoverageCompact.xsd"/>
+	<include schemaLocation="./procedureSpecialization.xsd"/>
+	<!-- ====================================================================== -->
+</schema>

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- =======================================================================    
+        Maven Project Configuration File                                        
+                                                                                
+        The Geotools Project                                                    
+            http://www.geotools.org/                                            
+                                                                                
+        Version: $Id$              
+     ======================================================================= -->
+  <project xmlns="http://maven.apache.org/POM/4.0.0" 
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                               http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.geotools.demo</groupId>
+    <artifactId>demo</artifactId>
+    <version>2.7-SNAPSHOT</version>
+  </parent>
+
+
+  <!-- =========================================================== -->
+  <!--     Module Description                                      -->
+  <!-- =========================================================== -->
+  <groupId>org.geotools.demo</groupId>
+  <artifactId>gt-xml-po</artifactId>
+  <packaging>jar</packaging>
+  <name>Purchase Order XML Support</name>
+
+  
+
+  <scm>
+    <connection>
+      scm:svn:http://svn.geotools.org/trunk/demo/xml-po/
+    </connection>
+    <url>http://svn.geotools.org/trunk/demo/xml-po/</url>
+  </scm>
+
+  <repositories>
+    <repository>
+      <id>maven2-repository.dev.java.net</id>
+      <name>Java.net Maven 2 Repository</name>
+      <url>http://download.java.net/maven/2</url>
+    </repository>
+    <repository>
+      <id>maven-repository.dev.java.net</id>
+      <name>Java.net Maven 1 Repository (legacy)</name>
+      <url>http://download.java.net/maven/1</url>
+      <layout>legacy</layout>
+     </repository>
+   </repositories>
+
+   <pluginRepositories>
+     <pluginRepository>
+        <id>maven2-repository.dev.java.net</id>
+        <name>Java.net Maven 2 Repository</name>
+        <url>http://download.java.net/maven/2</url>
+      </pluginRepository>
+      <pluginRepository>
+        <id>maven-repository.dev.java.net</id>
+        <name>Java.net Maven 1 Repository (legacy)</name>
+        <url>http://download.java.net/maven/1</url>
+        <layout>legacy</layout>
+      </pluginRepository>
+   </pluginRepositories>
+
+
+  <!-- =========================================================== -->
+  <!--     Dependency Management                                   -->
+  <!-- =========================================================== -->
+  <dependencies>
+    <dependency>
+      <groupId>openejb</groupId>
+      <artifactId>jaxb-api</artifactId>
+      <version>2.0EA3</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools.xsd</groupId>
+      <artifactId>gt-xsd-core</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.jvnet.jaxb2.maven2</groupId>
+        <artifactId>maven-jaxb2-plugin</artifactId>
+        <configuration>
+          <packageName>org.geotools.po</packageName>
+          <outputDirectory>${project.build.sourceDirectory}</outputDirectory>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.5</source>
+          <target>1.5</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.geotools.maven</groupId>
+        <artifactId>xmlcodegen</artifactId>
+        <version>${project.version}</version>	
+        <configuration>
+          <schemaLocation>po.xsd</schemaLocation>
+          <destinationPackage>org.geotools.po.bindings</destinationPackage>
+          <constructorArguments>
+            <constructorArgument>
+              <name>factory</name>
+              <type>org.geotools.po.ObjectFactory</type>
+            </constructorArgument>
+          </constructorArguments>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+	
+</project>

@@ -1,0 +1,6 @@
+Module Maintainer: Andrea Aime
+IP Review: Andrea Aime, May 8 2009
+All code written by Andrea Aime
+Dependencies all fall under the LGPL license 2.1 or later)
+STATUS as of May 2009: CLEAN
+

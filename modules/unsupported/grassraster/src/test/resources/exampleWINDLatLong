@@ -1,0 +1,16 @@
+proj:   3
+zone:   0
+cols:   373
+rows:   256
+top:   1
+bottom:   0
+cols3:   12001
+rows3:   6001
+depths:   1
+t-b resol:   1
+north:   -3.742082752222222
+south:   -3.9554160855555556
+east:   30.15125023476092
+west:   29.840416916475846
+n-s resol:   8.333333333333335E-4
+e-w resol:   8.333332929894733E-4

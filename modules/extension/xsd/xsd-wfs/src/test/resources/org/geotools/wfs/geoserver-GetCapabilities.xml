@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wfs:WFS_Capabilities
+	version="1.1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.opengis.net/wfs"
+	xmlns:wfs="http://www.opengis.net/wfs"
+	xmlns:ows="http://www.opengis.net/ows"
+	xmlns:gml="http://www.opengis.net/gml"
+	xmlns:ogc="http://www.opengis.net/ogc"
+	xmlns:xlink="http://www.w3.org/1999/xlink"
+	xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd"
+	xmlns:sf="http://cite.opengeospatial.org/gmlsf"
+	xmlns:it.geosolutions="http://www.geo-solutions.it">
+	<ows:ServiceIdentification>
+		<ows:Title>The Open Planning Project Basemap Server</ows:Title>
+		<ows:Abstract>This is a test server. It contains some basemap data from New York City.</ows:Abstract>
+		<ows:Keywords>
+			<ows:Keyword>WFS</ows:Keyword>
+			<ows:Keyword>TEST</ows:Keyword>
+			<ows:Keyword>NY</ows:Keyword>
+			<ows:Keyword>New York</ows:Keyword>
+		</ows:Keywords>
+		<ows:ServiceType>WFS</ows:ServiceType>
+		<ows:ServiceTypeVersion>1.1.0</ows:ServiceTypeVersion>
+		<ows:Fees>NONE</ows:Fees>
+		<ows:AccessConstraints>NONE</ows:AccessConstraints>
+	</ows:ServiceIdentification>
+	<ows:ServiceProvider>
+		<ows:ProviderName />
+		<ows:ProviderSite />
+		<ows:ServiceContact />
+	</ows:ServiceProvider>
+	<ows:OperationsMetadata>
+		<ows:Operation name="GetCapabilities">
+			<ows:DCP>
+				<ows:HTTP>
+					<ows:Get
+						xlink:type="simple"
+						xlink:href="http://localhost:8080/geoserver/wfs" />
+					<ows:Post
+						xlink:type="simple"
+						xlink:href="http://localhost:8080/geoserver/wfs" />
+				</ows:HTTP>
+			</ows:DCP>
+			<ows:Parameter name="AcceptVersions">
+				<ows:Value>1.0.0</ows:Value>
+				<ows:Value>1.1.0</ows:Value>
+			</ows:Parameter>
+			<ows:Parameter name="AcceptFormats">
+				<ows:Value>text/xml</ows:Value>
+			</ows:Parameter>
+		</ows:Operation>
+		<ows:Operation name="DescribeFeatureType">
+			<ows:DCP>
+				<ows:HTTP>
+					<ows:Get xlink:href="http://localhost:8080/geoserver/wfs" />
+					<ows:Post xlink:href="http://localhost:8080/geoserver/wfs" />
+				</ows:HTTP>
+			</ows:DCP>
+			<ows:Parameter name="outputFormat">
+				<ows:Value>text/gml; subtype=gml/3.1.1</ows:Value>
+			</ows:Parameter>
+		</ows:Operation>
+		<ows:Operation name="GetFeature">
+			<ows:DCP>
+				<ows:HTTP>
+					<ows:Get xlink:href="http://localhost:8080/geoserver/wfs" />
+					<ows:Post xlink:href="http://localhost:8080/geoserver/wfs" />
+				</ows:HTTP>
+			</ows:DCP>
+			<ows:Parameter name="resultType">
+				<ows:Value>results</ows:Value>
+				<ows:Value>hits</ows:Value>
+			</ows:Parameter>
+			<ows:Parameter name="outputFormat">
+				<ows:Value>text/gml; subtype=gml/3.1.1</ows:Value>
+			</ows:Parameter>
+		</ows:Operation>
+		<ows:Operation name="LockFeature">
+			<ows:DCP>
+				<ows:HTTP>
+					<ows:Get xlink:href="http://localhost:8080/geoserver/wfs" />
+					<ows:Post xlink:href="http://localhost:8080/geoserver/wfs" />
+				</ows:HTTP>
+			</ows:DCP>
+			<ows:Parameter name="releaseAction">
+				<ows:Value>ALL</ows:Value>
+				<ows:Value>SOME</ows:Value>
+			</ows:Parameter>
+		</ows:Operation>
+		<ows:Operation name="GetFeatureWithLock">
+			<ows:DCP>
+				<ows:HTTP>
+					<ows:Get xlink:href="http://localhost:8080/geoserver/wfs" />
+					<ows:Post xlink:href="http://localhost:8080/geoserver/wfs" />
+				</ows:HTTP>
+			</ows:DCP>
+			<ows:Parameter name="resultType">
+				<ows:Value>results</ows:Value>
+				<ows:Value>hits</ows:Value>
+			</ows:Parameter>
+			<ows:Parameter name="outputFormat">
+				<ows:Value>text/gml; subtype=gml/3.1.1</ows:Value>
+			</ows:Parameter>
+		</ows:Operation>
+		<ows:Operation name="Transaction">
+			<ows:DCP>
+				<ows:HTTP>
+					<ows:Get xlink:href="http://localhost:8080/geoserver/wfs" />
+					<ows:Post xlink:href="http://localhost:8080/geoserver/wfs" />
+				</ows:HTTP>
+			</ows:DCP>
+			<ows:Parameter name="inputFormat">
+				<ows:Value>text/gml; subtype=gml/3.1.1</ows:Value>
+			</ows:Parameter>
+			<ows:Parameter name="idgen">
+				<ows:Value>GenerateNew</ows:Value>
+				<ows:Value>UseExisting</ows:Value>
+				<ows:Value>ReplaceDuplicate</ows:Value>
+			</ows:Parameter>
+			<ows:Parameter name="releaseAction">
+				<ows:Value>ALL</ows:Value>
+				<ows:Value>SOME</ows:Value>
+			</ows:Parameter>
+		</ows:Operation>
+	</ows:OperationsMetadata>
+	<FeatureTypeList>
+		<Operations>
+			<Operation>Query</Operation>
+			<Operation>Insert</Operation>
+			<Operation>Update</Operation>
+			<Operation>Delete</Operation>
+			<Operation>Lock</Operation>
+		</Operations>
+		<FeatureType xmlns:sf="http://cite.opengeospatial.org/gmlsf">
+			<Name>sf:AggregateGeoFeature</Name>
+			<Title>AggregateGeoFeatureType</Title>
+			<Abstract>Generated from sf</Abstract>
+			<ows:Keywords>
+				<ows:Keyword>sf AggregateGeoFeature</ows:Keyword>
+			</ows:Keywords>
+			<DefaultSRS>urn:x-ogc:def:crs:EPSG:6.11.2:4326</DefaultSRS>
+			<OutputFormats>
+				<Format>text/gml; subtype=gml/3.1.1</Format>
+			</OutputFormats>
+			<ows:WGS84BoundingBox>
+				<ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+				<ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+			</ows:WGS84BoundingBox>
+		</FeatureType>
+		<FeatureType xmlns:sf="http://cite.opengeospatial.org/gmlsf">
+			<Name>sf:EntitéGénérique</Name>
+			<Title>EntitéGénériqueType</Title>
+			<Abstract>Generated from sf</Abstract>
+			<ows:Keywords>
+				<ows:Keyword>sf EntitéGénérique</ows:Keyword>
+			</ows:Keywords>
+			<DefaultSRS>urn:x-ogc:def:crs:EPSG:6.11.2:4326</DefaultSRS>
+			<OutputFormats>
+				<Format>text/gml; subtype=gml/3.1.1</Format>
+			</OutputFormats>
+			<ows:WGS84BoundingBox>
+				<ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+				<ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+			</ows:WGS84BoundingBox>
+		</FeatureType>
+		<FeatureType xmlns:sf="http://cite.opengeospatial.org/gmlsf">
+			<Name>sf:PrimitiveGeoFeature</Name>
+			<Title>PrimitiveGeoFeatureType</Title>
+			<Abstract>Generated from sf</Abstract>
+			<ows:Keywords>
+				<ows:Keyword>sf PrimitiveGeoFeature</ows:Keyword>
+			</ows:Keywords>
+			<DefaultSRS>urn:x-ogc:def:crs:EPSG:6.11.2:4326</DefaultSRS>
+			<OutputFormats>
+				<Format>text/gml; subtype=gml/3.1.1</Format>
+			</OutputFormats>
+			<ows:WGS84BoundingBox>
+				<ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>
+				<ows:UpperCorner>180.0 90.0</ows:UpperCorner>
+			</ows:WGS84BoundingBox>
+		</FeatureType>
+	</FeatureTypeList>
+	<ogc:Filter_Capabilities>
+		<ogc:Spatial_Capabilities>
+			<ogc:GeometryOperands>
+				<ogc:GeometryOperand>gml:Envelope</ogc:GeometryOperand>
+				<ogc:GeometryOperand>gml:Point</ogc:GeometryOperand>
+				<ogc:GeometryOperand>gml:LineString</ogc:GeometryOperand>
+				<ogc:GeometryOperand>gml:Polygon</ogc:GeometryOperand>
+			</ogc:GeometryOperands>
+			<ogc:SpatialOperators>
+				<ogc:SpatialOperator name="Disjoint" />
+				<ogc:SpatialOperator name="Equals" />
+				<ogc:SpatialOperator name="DWithin" />
+				<ogc:SpatialOperator name="Beyond" />
+				<ogc:SpatialOperator name="Intersects" />
+				<ogc:SpatialOperator name="Touches" />
+				<ogc:SpatialOperator name="Crosses" />
+				<ogc:SpatialOperator name="Contains" />
+				<ogc:SpatialOperator name="Overlaps" />
+				<ogc:SpatialOperator name="BBOX" />
+			</ogc:SpatialOperators>
+		</ogc:Spatial_Capabilities>
+		<ogc:Scalar_Capabilities>
+			<ogc:LogicalOperators />
+			<ogc:ComparisonOperators>
+				<ogc:ComparisonOperator>LessThan</ogc:ComparisonOperator>
+				<ogc:ComparisonOperator>GreaterThan</ogc:ComparisonOperator>
+				<ogc:ComparisonOperator>LessThanEqualTo</ogc:ComparisonOperator>
+				<ogc:ComparisonOperator>GreaterThanEqualTo</ogc:ComparisonOperator>
+				<ogc:ComparisonOperator>EqualTo</ogc:ComparisonOperator>
+				<ogc:ComparisonOperator>NotEqualTo</ogc:ComparisonOperator>
+				<ogc:ComparisonOperator>Like</ogc:ComparisonOperator>
+				<ogc:ComparisonOperator>Between</ogc:ComparisonOperator>
+				<ogc:ComparisonOperator>NullCheck</ogc:ComparisonOperator>
+			</ogc:ComparisonOperators>
+			<ogc:ArithmeticOperators>
+				<ogc:SimpleArithmetic />
+				<ogc:Functions>
+					<ogc:FunctionNames>
+						<ogc:FunctionName nArgs="0">abs</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">abs_2</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">abs_3</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">abs_4</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">acos</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">Area</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">asin</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">atan</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">atan2</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">between</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">boundary</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">boundaryDimension</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">buffer</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">bufferWithSegments</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">ceil</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">centroid</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">classify</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">Collection_Average</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">Collection_Bounds</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">Collection_Count</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">Collection_Max</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">Collection_Median</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">Collection_Min</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">Collection_Sum</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">Collection_Unique</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">contains</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">convexHull</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">cos</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">crosses</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">difference</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">dimension</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">disjoint</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">distance</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">double2bool</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">endPoint</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">envelope</ogc:FunctionName>
+						<ogc:FunctionName nArgs="2">EqualInterval</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">equalsExact</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">equalsExactTolerance</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">equalTo</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">exp</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">exteriorRing</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">floor</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">geometryType</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">geomFromWKT</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">geomLength</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">getGeometryN</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">getX</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">getY</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">getZ</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">greaterEqualThan</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">greaterThan</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">IEEEremainder</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">if_then_else</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">in10</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">in2</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">in3</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">in4</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">in5</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">in6</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">in7</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">in8</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">in9</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">int2bbool</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">int2ddouble</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">interiorPoint</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">interiorRingN</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">intersection</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">intersects</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">isClosed</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">isEmpty</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">isLike</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">isNull</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">isRing</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">isSimple</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">isValid</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">isWithinDistance</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">length</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">lessEqualThan</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">lessThan</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">log</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">max</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">max_2</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">max_3</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">max_4</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">min</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">min_2</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">min_3</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">min_4</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">not</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">notEqualTo</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">numGeometries</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">numInteriorRing</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">numPoints</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">overlaps</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">parseBoolean</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">parseDouble</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">parseInt</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">pointN</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">pow</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">PropertyExists</ogc:FunctionName>
+						<ogc:FunctionName nArgs="2">Quantile</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">random</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">relate</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">relatePattern</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">rint</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">round</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">round_2</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">roundDouble</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">sin</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">sqrt</ogc:FunctionName>
+						<ogc:FunctionName nArgs="2">StandardDeviation</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">startPoint</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">strConcat</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">strEndsWith</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">strEqualsIgnoreCase</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">strIndexOf</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">strLastIndexOf</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">strLength</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">strMatches</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">strReplace</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">strStartsWith</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">strSubstring</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">strSubstringStart</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">strTrim</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">symDifference</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">tan</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">toDegrees</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">toRadians</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">touches</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">toWKT</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">union</ogc:FunctionName>
+						<ogc:FunctionName nArgs="2">UniqueInterval</ogc:FunctionName>
+						<ogc:FunctionName nArgs="0">within</ogc:FunctionName>
+					</ogc:FunctionNames>
+				</ogc:Functions>
+			</ogc:ArithmeticOperators>
+		</ogc:Scalar_Capabilities>
+		<ogc:Id_Capabilities>
+			<ogc:FID />
+			<ogc:EID />
+		</ogc:Id_Capabilities>
+	</ogc:Filter_Capabilities>
+</wfs:WFS_Capabilities>

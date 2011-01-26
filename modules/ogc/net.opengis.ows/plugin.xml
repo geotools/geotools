@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+ <copyright>
+ </copyright>
+
+ $Id$
+-->
+
+<plugin>
+
+  <extension point="org.eclipse.emf.ecore.generated_package">
+    <package 
+       uri = "http://www.opengis.net/ows"
+       class = "net.opengis.ows10.Ows10Package"
+       genModel = "ows10.genmodel" /> 
+  </extension>
+  <extension point="org.eclipse.emf.ecore.generated_package">
+    <package
+       uri = "http://www.opengis.net/ows/1.1"
+       class = "net.opengis.ows11.Ows11Package"
+       genModel = "ows11.genmodel" />
+  </extension>
+
+
+</plugin>
+

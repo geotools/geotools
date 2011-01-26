@@ -1,0 +1,641 @@
+// Test points for the Albers Equal Area Conic Projection (EPSG 9822)
+//
+// (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+//
+// The following test points were calculated with ArcGIS 8.3
+// ArcGIS calls this projection 'Albers'.
+// Points with an //Error: comment could not be calculated with ArcGIS, 
+// and were instead calculated with libproj4.
+//
+// Rueben Schulz - May 15, 2004
+//
+//
+// --------------------------------------------------------------------------
+// How to run this script:
+//
+//    chdir org/geotools/referencing/test-data/scripts
+//    java -ea org.geotools.referencing.ScriptRunner AlbersEqualArea.txt
+//
+// A test is performed every time a "target pt" statement occurs. If the target point computed
+// by Geotools is different from the target point declared in this script by an amount greater
+// than the value specified in the last "test tolerance" statement, then a failure is reported.
+// Inverse transforms are tested if java assertions are enabled.
+// If some test fails, "print" statements can be added in this script for debugging purpose:
+//
+//    print crs            (prints the source and target CRS, and the transform between them)
+//    print pts            (prints the source and target points, and their transformed points)
+
+
+//geogCS's 
+set _WGS84_ = GEOGCS["WGS84", DATUM["WGS84", SPHEROID["WGS84", 6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]]
+set _sphere_ = GEOGCS["sphere", DATUM["sphere", SPHEROID["sphere", 6370997.0, 0]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]]
+
+
+////////////////////////////////////////
+//Eliptical 2SP  sp1!=sp2
+//Albers_Conic_Equal_Area
+set _Albers1_ = PROJCS["BC Albers", GEOGCS["WGS84", DATUM["WGS84", SPHEROID["WGS84", 6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Albers"], PARAMETER["central_meridian", -126.0], PARAMETER["latitude_of_origin", 45.0], PARAMETER["false_easting", 1000000.0], PARAMETER["false_northing", 0.0], UNIT["metre",1.0], PARAMETER["standard_parallel_1", 50.0], PARAMETER["standard_parallel_2", 58.5], AXIS["x",EAST], AXIS["y",NORTH]]
+set _Albers2_ = PROJCS["Albers", GEOGCS["WGS84", DATUM["WGS84", SPHEROID["WGS84", 6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Albers_Conic_Equal_Area"], PARAMETER["central_meridian", -88.0], PARAMETER["latitude_of_origin", 14.5], PARAMETER["false_easting", 328.08333333], PARAMETER["false_northing", 192109.19583333], UNIT["feet", 0.304800609601219], PARAMETER["standard_parallel_1", -20.0], PARAMETER["standard_parallel_2", -33.0], AXIS["x",EAST], AXIS["y",NORTH]]
+
+source crs = _WGS84_
+target crs = _Albers1_
+test tolerance = (1e-2, 1e-2)
+
+source pt = (-123.1, 49.2166666666)
+target pt = (1211425.84962133, 471033.644210806)
+
+source pt = (2.33656753, 43.96499314)
+target pt = (6575707.64756576, 7006003.11271868)
+
+source pt = (151.283333333, -33.9166666666)
+target pt = (-10575091.8076743, 703333.787927306)
+
+source pt = (-47.95, -15.75)
+target pt = (11157387.3848833, 491765.122611918)
+
+source pt = (139.733333333, 35.6833333333)
+target pt = (-5453174.60223012, 4055579.84081025)
+
+source pt = (18.45, -33.9166666666)
+target pt = (12217357.7308788, 11322968.9885851)
+
+source pt = (0, 0)
+target pt = (10901509.2263531, 7730066.90157682)
+
+source pt = (180, 0)
+target pt = (-5993723.79941068, -1687922.36699586)
+
+source pt = (-180, 0)
+target pt = (-5993723.79941068, -1687922.36699586)
+
+source pt = (90, 0)
+target pt = (-8054727.37457933, 10153104.8712489)
+
+source pt = (-90, 0)
+target pt = (5928329.78685703, -3211831.83933126)
+
+source pt = (-76, -55)
+target pt = (9815553.13501685, -4704185.07489006)
+
+source pt = (12, -15)
+target pt = (11525095.5957047, 9815810.78991777)
+
+source pt = (80, 6)
+target pt = (-6892021.43514334, 11081898.3302606)
+
+source pt = (-45, 71)
+target pt = (3519910.0925606, 4483937.98966464)
+
+source pt = (175, 66.67)
+target pt = (-1389224.84718635, 3459190.07743634)
+
+source pt = (60, -70)
+target pt = (-7857910.64654613, 16500943.6091868)
+
+source pt = (0, 90)
+target pt = (2435014.70388284,        5933725.07207942)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+source pt = (0, -90)
+target pt = (14929124.26088672,       8584608.68980453)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+
+source crs = _WGS84_
+target crs = _Albers2_
+test tolerance = (1e-2, 1e-2)
+
+source pt = (-123.1, 49.2166666666)
+target pt = (-17239667.9481912, 6138212.93705869)
+
+source pt = (2.33656753, 43.96499314)
+target pt = (40723133.3537288, -7324504.59019322)
+
+source pt = (151.283333333, -33.9166666666)
+target pt = (-31591128.3113899, -32408232.5319827)
+
+source pt = (-47.95, -15.75)
+target pt = (14000056.3257644, -12048962.1107514)
+
+source pt = (139.733333333, 35.6833333333)
+target pt = (-52543796.9861001, -23746925.1667779)
+
+source pt = (18.45, -33.9166666666)
+target pt = (28826040.8817663, -29069833.6202153)
+
+source pt = (0, 0)
+target pt = (32346315.6191239, -15845422.1221515)
+
+source pt = (180, 0)
+target pt = (-33565625.7079392, -16865592.4819854)
+
+source pt = (-180, 0)
+target pt = (-33565625.7079392, -16865592.4819854)
+
+source pt = (90, 0)
+target pt = (50422501.6587785, -45891514.4900115)
+
+source pt = (-90, 0)
+target pt = (-794823.667529104, -4391992.28210582)
+
+source pt = (-76, -55)
+target pt = (2973164.53880154, -23843396.5124836)
+
+source pt = (12, -15)
+target pt = (32269541.9479498, -22740990.9826586)
+
+source pt = (80, 6)
+target pt = (51395471.6699587, -41499297.4701418)
+
+source pt = (-45, 71)
+target pt = (21917946.6023458, 7654093.5513438)
+
+source pt = (175, 66.67)
+target pt = (-45491881.1117315, -6993141.85515382)
+
+source pt = (60, -70)
+target pt = (25582846.099436, -44171134.7210733)
+
+source pt = (0, 90)
+target pt = (42747894.44433462,       -3008140.67538815)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+source pt = (0, -90)
+target pt = (16284412.01469642,       -35668487.50643850)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+////////////////////////////////////////
+//Eliptical 1SP  sp1==sp2
+//Albers_Conic_Equal_Area
+set _Albers3_=PROJCS["Albers", GEOGCS["WGS84", DATUM["WGS84", SPHEROID["WGS84", 6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Albers_Conic_Equal_Area"], PARAMETER["central_meridian", 142.0], PARAMETER["latitude_of_origin", 42.0], PARAMETER["false_easting", 0.0], PARAMETER["false_northing", 0.0], UNIT["metre",1.0], PARAMETER["standard_parallel_1", 57.0], AXIS["x",EAST], AXIS["y",NORTH]]
+set _Albers4_=PROJCS["Albers", GEOGCS["WGS84", DATUM["WGS84", SPHEROID["WGS84", 6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Albers_Conic_Equal_Area"], PARAMETER["central_meridian", 45.0], PARAMETER["latitude_of_origin", 0.0], PARAMETER["false_easting", 0.0], PARAMETER["false_northing", 1000.0], UNIT["metre",1.0], PARAMETER["standard_parallel_1", -77.0], PARAMETER["standard_parallel_2", -77.0], AXIS["x",EAST], AXIS["y",NORTH]]
+
+source crs = _WGS84_
+target crs = _Albers3_
+test tolerance = (1e-3, 1e-3)
+
+source pt = (-123.1, 49.2166666666)
+target pt = (4933115.21170736, 4898897.963504)
+
+source pt = (2.33656753, 43.96499314)
+target pt = (-4976440.41373824, 8355237.23121531)
+
+source pt = (151.283333333, -33.9166666666)
+target pt = (1670995.46296577, -6416115.93783127)
+
+source pt = (-47.95, -15.75)
+target pt = (6773904.95569645, 14670205.5935247)
+
+source pt = (139.733333333, 35.6833333333)
+target pt = (-215018.473048147, -673084.874865398)
+
+source pt = (18.45, -33.9166666666)
+target pt = (-11988260.7230552, 8709395.35338419)
+
+source pt = (0, 0)
+target pt = (-8664259.12813293, 10625924.5831346)
+
+source pt = (180, 0)
+target pt = (5235023.31185895, -2615212.13681585)
+
+source pt = (-180, 0)
+target pt = (5235023.31185895, -2615212.13681585)
+
+source pt = (90, 0)
+target pt = (-6838994.07661748, -1373725.13525292)
+
+source pt = (-90, 0)
+target pt = (9463960.44432268, 8761926.19415079)
+
+source pt = (-76, -55)
+target pt = (11641589.1525513, 12282487.7223154)
+
+source pt = (12, -15)
+target pt = (-10495532.0720006, 9424668.90287313)
+
+source pt = (80, 6)
+target pt = (-7401842.07548658, 21741.2697462322)
+
+source pt = (-45, 71)
+target pt = (1495692.11689393, 7948426.34133371)
+
+source pt = (175, 66.67)
+target pt = (1430854.30345432, 3077061.63234317)
+
+source pt = (60, -70)
+target pt = (-12822233.2214325, 824310.843236785)
+
+source pt = (0, 90)
+target pt = (-1074998.89654937,       6403319.54748226)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+source pt = (0, -90)
+target pt = (-12205865.38663024,      12596446.60541181)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+
+source crs = _WGS84_
+target crs = _Albers4_
+test tolerance = (1e-3, 1e-3)
+
+source pt = (-123.1, 49.2166666666)
+target pt = (-3376307.81668634, -20743224.369812)
+
+source pt = (2.33656753, 43.96499314)
+target pt = (-7880359.98538445, -243008.755067278)
+
+source pt = (151.283333333, -33.9166666666)
+target pt = (5913060.56738206, -10554321.2073185)
+
+source pt = (-47.95, -15.75)
+target pt = (-7798451.56423588, -9205517.96623692)
+
+source pt = (139.733333333, 35.6833333333)
+target pt = (11471017.0558271, -9590038.1816085)
+
+source pt = (18.45, -33.9166666666)
+target pt = (-2653978.11577643, -3655188.02100303)
+
+source pt = (0, 0)
+target pt = (-6324108.99972563, -2544266.7759903)
+
+source pt = (180, 0)
+target pt = (6833181.22471626, -15182235.9178812)
+
+source pt = (-180, 0)
+target pt = (6833181.22471626, -15182235.9178812)
+
+source pt = (90, 0)
+target pt = (6324108.99972563, -2544266.7759903)
+
+source pt = (-90, 0)
+target pt = (-6833181.22471626, -15182235.9178812)
+
+source pt = (-76, -55)
+target pt = (-3445185.22593591, -10952284.4808428)
+
+source pt = (12, -15)
+target pt = (-4186138.63600707, -2468975.40119313)
+
+source pt = (80, 6)
+target pt = (5378261.61643813, -1185469.2862761)
+
+source pt = (-45, 71)
+target pt = (-12720800.6559459, -8615838.11512792)
+
+source pt = (175, 66.67)
+target pt = (10139363.3318229, -16677119.7698951)
+
+source pt = (60, -70)
+target pt = (569509.708280942, -6944295.65610404)
+
+source pt = (0, 90)
+target pt = (-8942880.64386993,       182115.77557023)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+source pt = (0, -90)
+target pt = (-116597.88785811,        -9006857.74699521)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+////////////////////////////////////////////
+//Elliptical 1SP tests (sp1==sp2==latOfOrigin)
+//Albers_Conic_Equal_Area
+set _Albers5_=PROJCS["Albers", GEOGCS["WGS84", DATUM["WGS84", SPHEROID["WGS84", 6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Albers_Conic_Equal_Area"], PARAMETER["central_meridian", 0.0], PARAMETER["latitude_of_origin", -33.0], PARAMETER["false_easting", 0.0], PARAMETER["false_northing", 100.0], UNIT["metre",1.0], PARAMETER["standard_parallel_1", -33.0], PARAMETER["standard_parallel_2", -33.0], AXIS["x",EAST], AXIS["y",NORTH]]
+
+source crs = _WGS84_
+target crs = _Albers5_
+test tolerance = (1e-3, 1e-3)
+
+source pt = (-123.1, 49.2166666666)
+target pt = (-15686830.9632606, -3187027.62337824)
+
+source pt = (2.33656753, 43.96499314)
+target pt = (372165.424411829, 6922155.10277838)
+
+source pt = (151.283333333, -33.9166666666)
+target pt = (9643984.58696047, -8543464.17163486)
+
+source pt = (-47.95, -15.75)
+target pt = (-5157561.17847127, 689578.565251076)
+
+source pt = (139.733333333, 35.6833333333)
+target pt = (15780410.8010584, -5927114.67679043)
+
+source pt = (18.45, -33.9166666666)
+target pt = (1697647.42606529, -250815.872344079)
+
+source pt = (0, 0)
+target pt = (0, 3494665.38904662)
+
+source pt = (180, 0)
+target pt = (13194979.19818181,       -11693795.64953070)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+source pt = (-180, 0)
+target pt = (-13194979.19818181,      -11693795.64953070)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+source pt = (90, 0)
+target pt = (10059781.6175313, -1091698.10250433)
+
+source pt = (-90, 0)
+target pt = (-10059781.6175313, -1091698.10250433)
+
+source pt = (-76, -55)
+target pt = (-4933082.13615352, -4234188.85645709)
+
+source pt = (12, -15)
+target pt = (1342712.67664192, 1888829.63680701)
+
+source pt = (80, 6)
+target pt = (9577618.21479928, 236509.594760772)
+
+source pt = (-45, 71)
+target pt = (-7402649.16288248, 6405918.68588408)
+
+source pt = (175, 66.67)
+target pt = (17653660.9185026, -11472493.206231)
+
+source pt = (60, -70)
+target pt = (3310197.12843306, -4670684.15924919)
+
+source pt = (0, 90)
+target pt = (0.00000000,      8241740.12404183)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+source pt = (0, -90)
+target pt = (0.00000000,      -4490245.37133415)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+////////////////////////////////////////
+//Spherical 2SP (SP1 != sp2)
+//Albers_Conic_Equal_Area
+set _Albers6_=PROJCS["Albers", GEOGCS["Sphere", DATUM["Sphere", SPHEROID["Sphere", 6370997.0, 0]],PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Albers_Conic_Equal_Area"], PARAMETER["central_meridian", 156.0], PARAMETER["latitude_of_origin", 40.0], PARAMETER["false_easting", 0.0], PARAMETER["false_northing", 0.0], UNIT["metre",1.0], PARAMETER["standard_parallel_1", 35.0], PARAMETER["standard_parallel_2", 78.0], AXIS["x",EAST], AXIS["y",NORTH]]
+set _Albers7_=PROJCS["Albers", GEOGCS["Sphere", DATUM["Sphere", SPHEROID["Sphere", 6370997.0, 0]],PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Albers_Conic_Equal_Area"], PARAMETER["central_meridian", 80.0], PARAMETER["latitude_of_origin", -33.0], PARAMETER["false_easting", 123.0], PARAMETER["false_northing", 100.0], UNIT["metre",1.0], PARAMETER["standard_parallel_1", -41.0], PARAMETER["standard_parallel_2", -56.0], AXIS["x",EAST], AXIS["y",NORTH]]
+
+source crs = _sphere_
+target crs = _Albers6_
+test tolerance = (1e-4, 1e-4)
+
+source pt = (-123.1, 49.2166666666)
+target pt = (4536806.6280743, 3829840.83109546)
+
+source pt = (2.33656753, 43.96499314)
+target pt = (-4984741.15136029, 8953069.85559507)
+
+source pt = (151.283333333, -33.9166666666)
+target pt = (-816486.680015532, -6601456.36786496)
+
+source pt = (-47.95, -15.75)
+target pt = (9902224.79102239, 12131827.5788682)
+
+source pt = (139.733333333, 35.6833333333)
+target pt = (-1453078.64883341, -324968.827104023)
+
+source pt = (18.45, -33.9166666666)
+target pt = (-12251444.738143, 9844952.85172238)
+
+source pt = (0, 0)
+target pt = (-8791009.19837176, 11454096.2080055)
+
+source pt = (180, 0)
+target pt = (3275904.5016248, -3557815.65527972)
+
+source pt = (-180, 0)
+target pt = (3275904.5016248, -3557815.65527972)
+
+source pt = (90, 0)
+target pt = (-7996466.05706427, -263016.848740702)
+
+source pt = (-90, 0)
+target pt = (10255833.65446, 5886898.53888059)
+
+source pt = (-76, -55)
+target pt = (13637071.3995663, 8400405.9134156)
+
+source pt = (12, -15)
+target pt = (-10686859.3111973, 10422755.4742316)
+
+source pt = (80, 6)
+target pt = (-8321772.32400658, 1157678.07983271)
+
+source pt = (-45, 71)
+target pt = (2101147.63133604, 7548179.37244407)
+
+source pt = (175, 66.67)
+target pt = (771093.075692697, 3234115.44048072)
+
+source pt = (60, -70)
+target pt = (-13748081.1928205, 2347585.91040047)
+
+source pt = (0, 90)
+target pt = (-679206.04709748,        6573387.70730380)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+source pt = (0, -90)
+target pt = (-12413797.34800353,      13633854.83730259)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+
+source crs = _sphere_
+target crs = _Albers7_
+test tolerance = (1e-4, 1e-4)
+
+source pt = (-123.1, 49.2166666666)
+target pt = (12542404.5867846, -13610864.1130988)
+
+source pt = (2.33656753, 43.96499314)
+target pt = (-11633180.2295124, 7204.31800142353)
+
+source pt = (151.283333333, -33.9166666666)
+target pt = (5789908.84852776, -2982112.2614161)
+
+source pt = (-47.95, -15.75)
+target pt = (-9128857.80305953, -8156056.24035784)
+
+source pt = (139.733333333, 35.6833333333)
+target pt = (9312175.86512546, 2168225.61215434)
+
+source pt = (18.45, -33.9166666666)
+target pt = (-5193396.21097785, -2288457.87570964)
+
+source pt = (0, 0)
+target pt = (-9176486.78388793, -1929723.49199698)
+
+source pt = (180, 0)
+target pt = (10260960.2553749, -4462998.47277632)
+
+source pt = (-180, 0)
+target pt = (10260960.2553749, -4462998.47277632)
+
+source pt = (90, 0)
+target pt = (1377895.78044764, 3215528.19172926)
+
+source pt = (-90, 0)
+target pt = (-8599110.79637437, -13657265.5691878)
+
+source pt = (-76, -55)
+target pt = (-4418285.54334136, -9495434.33988884)
+
+source pt = (12, -15)
+target pt = (-7128195.28753447, -1478384.5781651)
+
+source pt = (80, 6)
+target pt = (123, 3828058.03479664)
+
+source pt = (-45, 71)
+target pt = (-14713747.4101706, -8080320.43286229)
+
+source pt = (175, 66.67)
+target pt = (13794664.8368794, -2482417.62773692)
+
+source pt = (60, -70)
+target pt = (-846917.35238005, -4161509.17646639)
+
+source pt = (0, 90)
+target pt = (-12853401.82310688,      244463.31123870)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+source pt = (0, -90)
+target pt = (-1790752.16965052,       -6296962.48424930)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+////////////////////////////////////////
+//Spherical 1SP (SP1 == sp2)
+//Albers_Conic_Equal_Area
+set _Albers8_=PROJCS["Albers", GEOGCS["Sphere", DATUM["Sphere", SPHEROID["Sphere", 6370997.0, 0]],PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Albers_Conic_Equal_Area"], PARAMETER["central_meridian", -110.5], PARAMETER["latitude_of_origin", 58.0], PARAMETER["false_easting", 0.0], PARAMETER["false_northing", 0.0], UNIT["metre",1.0], PARAMETER["standard_parallel_1", 58.0], PARAMETER["standard_parallel_2", 58.0], AXIS["x",EAST], AXIS["y",NORTH]]
+set _Albers9_=PROJCS["Albers", GEOGCS["Sphere", DATUM["Sphere", SPHEROID["Sphere", 6370997.0, 0]],PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Albers_Conic_Equal_Area"], PARAMETER["central_meridian", -22.0], PARAMETER["latitude_of_origin", -52.0], PARAMETER["false_easting", 2000.0], PARAMETER["false_northing", 0.0], UNIT["metre",1.0], PARAMETER["standard_parallel_1", -66.0], PARAMETER["standard_parallel_2", -66.0], AXIS["x",EAST], AXIS["y",NORTH]]
+
+source crs = _sphere_
+target crs = _Albers8_
+test tolerance = (1e-4, 1e-4)
+
+source pt = (-123.1, 49.2166666666)
+target pt = (-918634.979563719, -887494.412428516)
+
+source pt = (2.33656753, 43.96499314)
+target pt = (5502121.11197623, 4529336.71657887)
+
+source pt = (151.283333333, -33.9166666666)
+target pt = (-12181486.6130464, 2548419.15986532)
+
+source pt = (-47.95, -15.75)
+target pt = (8862996.20137761, -2686699.70606146)
+
+source pt = (139.733333333, 35.6833333333)
+target pt = (-6408718.38038393, 4326712.50280264)
+
+source pt = (18.45, -33.9166666666)
+target pt = (11572180.3319044, 8046217.65520702)
+
+source pt = (0, 0)
+target pt = (9829638.45743817, 4618299.68384809)
+
+source pt = (180, 0)
+target pt = (-8437956.83780774, -1101161.07286577)
+
+source pt = (-180, 0)
+target pt = (-8437956.83780774, -1101161.07286577)
+
+source pt = (90, 0)
+target pt = (-6933068.29755269, 10978215.561513)
+
+source pt = (-90, 0)
+target pt = (2943170.44520051, -5419259.16829288)
+
+source pt = (-76, -55)
+target pt = (6473536.1406997, -7574665.99311297)
+
+source pt = (12, -15)
+target pt = (10713918.8435569, 6629668.08451002)
+
+source pt = (80, 6)
+target pt = (-5516832.03890398, 11503440.1642934)
+
+source pt = (-45, 71)
+target pt = (2105270.27149912, 2536677.98902626)
+
+source pt = (175, 66.67)
+target pt = (-2696492.15288152, 2617738.30130577)
+
+source pt = (60, -70)
+target pt = (7922639.14847018, 15126063.7038817)
+
+source pt = (0, 90)
+target pt = (1139153.66351114,        4054892.49895495)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+source pt = (0, -90)
+target pt = (13854454.63880856,       4879229.93207117)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+
+source crs = _sphere_
+target crs = _Albers9_
+test tolerance = (1e-4, 1e-4)
+
+source pt = (-123.1, 49.2166666666)
+target pt = (-12497788.9069484, -4896956.44377333)
+
+source pt = (2.33656753, 43.96499314)
+target pt = (4650136.52445683, 6989511.24041042)
+
+source pt = (151.283333333, -33.9166666666)
+target pt = (2329758.76426484, -10231976.6783596)
+
+source pt = (-47.95, -15.75)
+target pt = (-3242050.82397372, 3005952.339381)
+
+source pt = (139.733333333, 35.6833333333)
+target pt = (6339508.21649348, -14426557.4968962)
+
+source pt = (18.45, -33.9166666666)
+target pt = (3786988.19791879, 649523.960899407)
+
+source pt = (0, 0)
+target pt = (3247869.0798088, 4488790.79176199)
+
+source pt = (180, 0)
+target pt = (-5504697.00977817, -12056654.8703189)
+
+source pt = (-180, 0)
+target pt = (-5504697.00977817, -12056654.8703189)
+
+source pt = (90, 0)
+target pt = (9230484.37250611, -6396941.65215855)
+
+source pt = (-90, 0)
+target pt = (-8347597.52152461, 35027.1161275015)
+
+source pt = (-76, -55)
+target pt = (-3072839.78084891, -1740078.84887393)
+
+source pt = (12, -15)
+target pt = (4200719.62024639, 2589223.29415377)
+
+source pt = (80, 6)
+target pt = (9912112.95122059, -4932798.02319822)
+
+source pt = (-45, 71)
+target pt = (-4717415.3515742, 7905173.52148439)
+
+source pt = (175, 66.67)
+target pt = (-6747478.80902204, -15574154.691528)
+
+source pt = (60, -70)
+target pt = (2311703.53822396, -3759180.82155486)
+
+source pt = (0, 90)
+target pt = (4587674.1865,        8150376.3398)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+source pt = (0, -90)
+target pt = (209182.0983,       -3815709.8261)
+//Error: The operation was attempted on an empty geometry.::"esri.Point"
+
+source crs = _Albers9_
+target crs = _sphere_
+test tolerance = (1e-4, 1e-4)
+
+source pt = (209182.0983,       -3815709.8261)
+target pt = (0, -90)

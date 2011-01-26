@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gml="http://www.opengis.net/gml" xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:om="http://www.opengis.net/om" xmlns:swe="http://www.opengis.net/swe/0.0" targetNamespace="http://www.opengis.net/om" elementFormDefault="qualified" attributeFormDefault="unqualified" version="pre-release">
+	<annotation>
+		<documentation>observation.xsd
+
+An implementation of the OandM model for SWE
+
+Copyright (c) 2005 Open Geospatial Consortium - see http://www.opengeospatial.org/about/?page=ipr</documentation>
+	</annotation>
+	<!-- ====================================================================== -->
+	<!-- bring in other schemas -->
+	<import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+	<!--import namespace="http://www.isotc211.org/2005/gmd" schemaLocation="../../iso19139/gml3.1.1version/gmd/gmd.xsd"/-->
+	<import namespace="http://www.opengis.net/swe/0.0" schemaLocation="../../sweCommon/1.0.30/swe.xsd"/>
+	<include schemaLocation="./procedureSpecializations.xsd"/>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<!-- ===== Object types for Observations ====== -->
+	<!-- ====================================================================== -->
+	<complexType name="AbstractObservationType">
+		<annotation>
+			<documentation>Base type for Observations. 
+
+			    Concrete Observation types must extend this type with a "result" of the appropriate type.
+
+			    The following properties are inherited from EventType:
+				<!--	from AbstractGMLType
+				<group ref="gml:StandardObjectProperties"/> -->
+				<!-- or
+				<element ref="gml:metaDataProperty" minOccurs="0" maxOccurs="unbounded"/>
+				<element ref="gml:description" minOccurs="0"/>
+				<element ref="gml:name" minOccurs="0" maxOccurs="unbounded"/> -->
+				<!--    from AbstractFeatureType
+				<element ref="gml:boundedBy" minOccurs="0"/> -->
+				<!--    from EventType
+				<element name="time" type="om:TimeObjectPropertyType" nillable="true"/>
+				<element name="location" type="om:LocationPropertyType" nillable="true"/>
+				<element name="precedingEvent" type="gml:StringOrRefType" minOccurs="0" maxOccurs="unbounded"/>
+				<element name="followingEvent" type="gml:StringOrRefType" minOccurs="0" maxOccurs="unbounded"/>
+				<element name="responsible" type="meta:PartyPropertyType" minOccurs="0" maxOccurs="unbounded"/> -->
+				
+				In the context of an Observation, the interpretation of some of the properties shall be refined as follows:
+				time - the date/Time at which the procedure was executed
+				location - the location of the procedure (sensor, intrument, computational engine) at the time of the observation event
+
+				For "in situ" procedures the value of the location will usually be the same as the location of the featureOfInterest. 
+				For "remote" procedures the location will normally be removed from the location of the featureOfInterest</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="om:EventType">
+				<sequence>
+					<element name="procedure" type="om:ObservationProcedurePropertyType"/>
+					<element name="countParameter" type="swe:TypedCountType" minOccurs="0" maxOccurs="unbounded"/>
+					<element name="measureParameter" type="swe:TypedMeasureType" minOccurs="0" maxOccurs="unbounded"/>
+					<element name="termParameter" type="swe:TypedCategoryType" minOccurs="0" maxOccurs="unbounded"/>
+					<element name="observedProperty" type="swe:PhenomenonPropertyType">
+						<annotation>
+							<documentation>Link to a description of the property or phenomenon whose value is being described or estimated through observation
+							for example "wavelength", "grass-species", "power", "intensity in the waveband x-y", etc. 
+							It is this feature-property that provides the (semantic) type of the observation. 
+							Note that the description of the phenomenon may be quite specific and constrained. 
+							In general the precise details of the constraints describing the observe properties require attention to the procedure used in making the observation: 
+							e.g. an optical sensor typically has a wavelength-dependent response. 
+							This property may be provided for client convenience, to allow comparison between and aggregation of observations of the same property made using different procedures.</documentation>
+						</annotation>
+					</element>
+          
+					<!--element name="quality" type="gmd:DQ_DataQuality_PropertyType" minOccurs="0" maxOccurs="unbounded">
+						<annotation>
+							<documentation>Allow multiple quality measures if required.</documentation>
+						</annotation>
+					</element-->
+					<element name="featureOfInterest" type="gml:FeaturePropertyType">
+						<annotation>
+							<documentation>the Feature regarding which the observations are being made, 
+			sometimes called the target or subject of the observation, such as a specimen, station, tract, mountain, pixel, etc.
+
+			The spatial properties (location) of the feature of interest are typically of most interest for spatial analysis of the observation result. 
+
+			If any of the properties are time dependent, then the values at the Observation/eventTime should appear.</documentation>
+						</annotation>
+					</element>
+					<!-- 
+					<element name="result" type="anyType">
+						<annotation>
+							<documentation>This is a placeholder - concrete types must replace (restrict) this with a "result" property of the correct type. </documentation>
+						</annotation>
+					</element>
+					-->
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ......................... -->
+	<element name="AbstractObservation" type="om:AbstractObservationType" abstract="true" substitutionGroup="om:Event">
+		<annotation>
+			<documentation>Head of Observation substitution group</documentation>
+		</annotation>
+	</element>
+	<!-- ...................... -->
+	<complexType name="AbstractObservationPropertyType">
+		<sequence minOccurs="0">
+			<element ref="om:AbstractObservation"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+	<complexType name="ObservationType">
+		<annotation>
+			<documentation>Observation event.   
+			carries a generic  "result" properties of type "anyType".</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="om:AbstractObservationType">
+				<sequence>
+					<element name="resultDefinition" type="swe:SWE_RecordSchemaPropertyType" minOccurs="0">
+						<annotation>
+							<documentation>Allows additional soft-typing information concerning the result structure to be recorded locally. 
+Typically this will be a "schema" for the result-tuple, needed to complete the description of the result structure where its type is Record or NumericRecord. </documentation>
+						</annotation>
+					</element>
+					<element name="result" type="anyType" nillable="true">
+						<annotation>
+							<documentation>an xsi:type attribute may appear in the instance to indicate the type of the result</documentation>
+						</annotation>
+					</element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ...................... -->
+	<element name="Observation" type="om:ObservationType" substitutionGroup="om:AbstractObservation">
+		<annotation>
+			<documentation>Generic Observation event</documentation>
+		</annotation>
+	</element>
+	<!-- ====================================================================== -->
+	<!-- ===== Observation Collection ======= -->
+	<!-- ====================================================================== -->
+	<complexType name="ObservationCollectionType">
+		<complexContent>
+			<extension base="om:EventType">
+				<sequence>
+					<element name="member" type="om:AbstractObservationPropertyType" maxOccurs="unbounded"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ...................... -->
+	<element name="ObservationCollection" type="om:ObservationCollectionType" substitutionGroup="om:Event">
+		<annotation>
+			<documentation>Observation collection, using the "Composite" pattern</documentation>
+		</annotation>
+	</element>
+	<!-- ====================================================================== -->
+	<!-- === Convenience type to serve as value of feature-of-interest when no other feature type catalogue is available === -->
+	<!-- ===================================================================  -->
+	<complexType name="StationType">
+		<annotation>
+			<documentation>A "Station" is an identified position (0-D geospatial feature). 
+		It may be revisited for various purposes, in particular to retrieve multiple specimens or make repeated or complementary observations. 
+		The position property of the station provides the value of the position property of observations an specimens associated with the station. 
+		The procedureHosted property allows the user to point to one or more sensors or other procedures that are relevant to this station. 
+
+		By using the Station feature, this position information and any metadata associated with it may be encoded in one place, 
+		i.e. normalised, and then re-used _by reference_ on other feature instances associated with it.</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="gml:AbstractFeatureType">
+				<sequence>
+					<element name="position" type="gml:PointPropertyType"/>
+					<element name="procedureHosted" type="gml:ReferenceType" maxOccurs="unbounded"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- .................. -->
+	<element name="Station" type="om:StationType" substitutionGroup="gml:_Feature"/>
+	<!-- .................. -->
+	<complexType name="StationPropertyType">
+		<sequence minOccurs="0">
+			<element ref="om:Station"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+	<complexType name="ExternalReferenceType">
+		<complexContent>
+			<extension base="gml:ReferenceType">
+				<attribute name="mimeType" type="anyURI" use="required"/>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ====================================================================== -->
+</schema>

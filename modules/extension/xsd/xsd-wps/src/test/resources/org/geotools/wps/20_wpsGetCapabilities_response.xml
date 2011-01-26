@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wps:Capabilities service="WPS" version="1.0.0" xml:lang="en-CA" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:wps="http://www.opengis.net/wps/1.0.0" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/wps/1.0.0 ../wpsGetCapabilities_response.xsd" updateSequence="1">
+	<ows:ServiceIdentification>
+		<ows:Title>AAFC GDAS-based WPS server</ows:Title>
+		<ows:Abstract>AAFC GDAS-based WPS server developed for the OGC WPSie.</ows:Abstract>
+		<ows:Keywords>
+			<ows:Keyword>WPS</ows:Keyword>
+			<ows:Keyword>AAFC</ows:Keyword>
+			<ows:Keyword>geospatial</ows:Keyword>
+			<ows:Keyword>geoprocessing</ows:Keyword>
+		</ows:Keywords>
+		<ows:ServiceType>WPS</ows:ServiceType>
+		<ows:ServiceTypeVersion>1.0.0</ows:ServiceTypeVersion>
+		<ows:ServiceTypeVersion>0.4.0</ows:ServiceTypeVersion>
+		<ows:Fees>NONE</ows:Fees>
+		<ows:AccessConstraints>NONE</ows:AccessConstraints>
+	</ows:ServiceIdentification>
+	<ows:ServiceProvider>
+		<ows:ProviderName>Agriculture and Agri-Food Canada</ows:ProviderName>
+		<ows:ProviderSite xlink:href="http://gis.agr.gc.ca/"/>
+		<ows:ServiceContact>
+			<ows:IndividualName>Peter Schut</ows:IndividualName>
+			<ows:PositionName>Information System Scientist</ows:PositionName>
+			<ows:ContactInfo>
+				<ows:Phone>
+					<ows:Voice>+1 613 759-1874</ows:Voice>
+					<ows:Facsimile>+1 613 759-1937</ows:Facsimile>
+				</ows:Phone>
+				<ows:Address>
+					<ows:DeliveryPoint>Room 1135, Neatby Building, 960, Carling Avenue</ows:DeliveryPoint>
+					<ows:City>Ottawa</ows:City>
+					<ows:AdministrativeArea>ON</ows:AdministrativeArea>
+					<ows:PostalCode>K1AOC6</ows:PostalCode>
+					<ows:Country>Canada</ows:Country>
+					<ows:ElectronicMailAddress>schutp@agr.gc.ca</ows:ElectronicMailAddress>
+				</ows:Address>
+			</ows:ContactInfo>
+		</ows:ServiceContact>
+	</ows:ServiceProvider>
+	<ows:OperationsMetadata>
+		<ows:Operation name="GetCapabilities">
+			<ows:DCP>
+				<ows:HTTP>
+					<ows:Get xlink:href="http://wms1.agr.gc.ca/GeoPS/GeoPS?"/>
+				</ows:HTTP>
+			</ows:DCP>
+		</ows:Operation>
+		<ows:Operation name="DescribeProcess">
+			<ows:DCP>
+				<ows:HTTP>
+					<ows:Get xlink:href="http://wms1.agr.gc.ca/GeoPS/GeoPS?"/>
+					<ows:Post xlink:href="http://wms1.agr.gc.ca/GeoPS/GeoPS"/>
+				</ows:HTTP>
+			</ows:DCP>
+		</ows:Operation>
+		<ows:Operation name="Execute">
+			<ows:DCP>
+				<ows:HTTP>
+					<ows:Get xlink:href="http://wms1.agr.gc.ca/GeoPS/GeoPS?"/>
+					<ows:Post xlink:href="http://wms1.agr.gc.ca/GeoPS/GeoPS"/>
+				</ows:HTTP>
+			</ows:DCP>
+		</ows:Operation>
+	</ows:OperationsMetadata>
+	<wps:ProcessOfferings>
+		<wps:Process wps:processVersion="1">
+			<ows:Identifier>buffer</ows:Identifier>
+			<ows:Title>Buffer a polygon feature</ows:Title>
+			<ows:Abstract>Buffer  the polygon coordinates found in one GML stream by a given buffer distance, and output the results in GML.</ows:Abstract>
+			<ows:Metadata xlink:title="buffer" />
+			<ows:Metadata xlink:title="polygon" />
+		</wps:Process>
+	</wps:ProcessOfferings>
+	<wps:Languages>
+		<wps:Default>
+			<ows:Language>en-CA</ows:Language>
+		</wps:Default>
+		<wps:Supported>
+			<ows:Language>en-CA</ows:Language>
+			<ows:Language>fr-CA</ows:Language>
+		</wps:Supported>
+	</wps:Languages> 
+	<wps:WSDL xlink:href="http://foo.bar/wps?WSDL"/>
+</wps:Capabilities>

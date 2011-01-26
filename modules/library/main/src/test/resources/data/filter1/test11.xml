@@ -1,0 +1,6 @@
+<Filter xmlns:gml="http://www.opengis.net/gml">
+  <PropertyIsLike wildCard="*" singleChar="#" escapeChar="!">
+    <PropertyName>testString</PropertyName>
+    <Literal>test*</Literal>
+  </PropertyIsLike>
+</Filter>

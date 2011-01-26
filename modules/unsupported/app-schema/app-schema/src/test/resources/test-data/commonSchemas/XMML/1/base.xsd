@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns:gml="http://www.opengis.net/gml" xmlns:smXML="http://www.isotc211.org/smXML" xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xmml="http://www.opengis.net/xmml" targetNamespace="http://www.opengis.net/xmml" elementFormDefault="qualified" attributeFormDefault="unqualified" version="pre-release">
+	<annotation>
+		<documentation>base.xsd
+
+Some base components required in various places in XMML
+
+Copyright © 2005 CSIRO - see https://www.seegrid.csiro.au/twiki/bin/view/Xmml/LegalNotices#Software_Notice</documentation>
+	</annotation>
+	<!-- ====================================================================== -->
+	<!-- bring in other schemas -->
+	<import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+	<!-- import namespace="http://www.isotc211.org/2005/gmd" schemaLocation="../../iso19139/gml3.1.1version/gmd/gmd.xsd"/-->
+	<include schemaLocation="../../enumerations/LUTmaintenance.xsd"/>
+	<!-- ====================================================================== -->
+	<!-- ================================================================== -->
+	<!-- ===== Some useful property components ====== -->
+	<!-- ====================================================================== -->
+	<group name="StandardDefinitionProperties">
+		<sequence>
+			<element ref="gml:metaDataProperty" minOccurs="0" maxOccurs="unbounded"/>
+			<element ref="gml:description" minOccurs="0"/>
+			<element ref="gml:name" maxOccurs="unbounded"/>
+		</sequence>
+	</group>
+	<!-- ====================================================================== -->
+	<!-- === Objects and properties associated with people, organisations, etc ======== -->
+	<!-- ====================================================================== -->
+  <!-- 
+	<element name="responsible" type="gmd:CI_ResponsibleParty_PropertyType">
+		<annotation>
+			<documentation>Party responsible for action, event, etc.</documentation>
+		</annotation>
+	</element>
+   -->
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<!-- ===== Some generic elements and datatypes ====== -->
+	<!-- ====================================================================== -->
+	<simpleType name="Flag">
+		<restriction base="boolean">
+			<pattern value="true"/>
+		</restriction>
+	</simpleType>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<!-- ==== Generic metadata types ==== -->
+	<!-- ====================================================================== -->
+	<complexType name="ElementOnlyMetaDataType" abstract="true" mixed="false">
+		<annotation>
+			<documentation>mixed="false", so this can serve as the basis for element-only MetaData elements</documentation>
+		</annotation>
+		<complexContent mixed="false">
+			<restriction base="gml:AbstractMetaDataType"/>
+		</complexContent>
+	</complexType>
+	<!-- ====================================================================== -->
+	<complexType name="TextMetaDataType" abstract="false">
+		<annotation>
+			<documentation>Vacuous extension of a mixed type, resulting in just a text element.  For unstructured metadata.</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="gml:AbstractMetaDataType"/>
+		</complexContent>
+	</complexType>
+	<!-- ====================================================================== -->
+		<!-- ====================================================================== -->
+	<group name="StandardLiteMetadata">
+		<sequence>
+			<element name="support" type="gml:AssociationType" minOccurs="0" maxOccurs="unbounded">
+				<annotation>
+					<documentation>A place to attach components that are required to be listed someplace in order that they can be "used" by-reference elsewhere in (usually) the same instance document.</documentation>
+				</annotation>
+			</element>
+			<element name="comment" type="gml:StringOrRefType" minOccurs="0" maxOccurs="unbounded">
+				<annotation>
+					<documentation>Container for commentary that may not be strictly part of a "description".</documentation>
+				</annotation>
+			</element>
+       <!-- 
+			<element name="reference" type="gmd:CI_Citation_PropertyType" minOccurs="0" maxOccurs="unbounded">
+				<annotation>
+					<documentation>Holds or points to a Citation.  
+      If a URN for the cited work is known then this should appear as the value of a href attribute on the reference element.  
+      There are several systems available for assigning URN's to bibliographic resources - see review here: 
+          http://www.nla.gov.au/initiatives/persistence/PIcontents.html
+      Probably the best developed is DOI, described here: http://www.doi.org/
+      also see http://www.crossref.org/01company/15doi_info.html
+      Note that the DOI/crossref service is free to users, but not to publishers.</documentation>
+				</annotation>
+			</element>
+       -->
+			<element name="geographicDescription" type="gml:CodeType" minOccurs="0" maxOccurs="unbounded">
+				<annotation><documentation>Description of geographic location or extent using an identifier</documentation></annotation>
+			</element>
+		</sequence>
+	</group>
+	<!-- ====================================================================== -->
+
+</schema>

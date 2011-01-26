@@ -1,0 +1,121 @@
+PLUGIN POSTGIS
+~~~~~~~~~~~~~~
+
+  Module Maintainer: Chris Holmes, Rob Hranac
+
+  IP Review:
+
+    * Jody Garnett August 6th, 2006
+
+    * Adrian Custer June 2008
+
+  STATUS: clean
+
+
+
+  The PostGIS module works with code from the pre GeoTools 2.0 release (the FeatureStore code for update
+  etc is a direct port of this earlier code). We will record the (C) range as 2002-2006 with the
+  understanding that it may in fact be earlier.
+
+  Much original of the origional work was done by Rob Hranac for TOPP, this was taken up by Chris Holmes
+  for the GeoTools 2.0 release. Work is on going with many optimizations made available for uDig use in
+  GeoTools 2.1, development continues to present.
+
+
+
+* org.geotools.data.postgis
+  ~~~~~~~~~~~~~~~~~~~~~~~~~
+  Contains the first JDBC based DataStore implementation from GeoTools 2.0 (aka 2003), based
+  on earlier DataSource API (2002).
+
+
+* org.geotools.data.postgis.attributeio
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    * file Base64 contains a public domain notice from Rob Hrananc the following
+      class comment was available:
+
+--------------------------------------------------------------------------------
+I am placing this code in the Public Domain. Do with it as you will.
+This software comes with no guarantees or warranties but with
+plenty of well-wishing instead!
+Please visit <a href="http://iharder.net/base64">http://iharder.net/base64</a>
+periodically to check for updates or to contribute improvements.
+--------------------------------------------------------------------------------
+
+    * These files were dropped or moved:
+
+      * WKBEncoder, has no header, and was (C) Refractions Research, updated (C) PNC header and sent email
+
+      * WKBReader, is (C) Vivid and under a LGPL license
+
+--------------------------------------------------------------------------------
+/*
+ * The JTS Topology Suite is a collection of Java classes that
+ * implement the fundamental operations required to validate a given
+ * geo-spatial data set to a known topological specification.
+ *
+ * Copyright (C) 2001 Vivid Solutions
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * For more information, contact:
+ *
+ *     Vivid Solutions
+ *     Suite #1A
+ *     2328 Government Street
+ *     Victoria BC  V8T 5G5
+ *     Canada
+ *
+ *     (250)385-6040
+ *     www.vividsolutions.com
+ */
+--------------------------------------------------------------------------------
+
+
+
+* org.geotools.data.postgis.collection
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Implemented for GeoTools 2.1 in order to support optimizaed aggregation functions for cbrewer.
+
+
+* org.geotools.data.postgis.fidmapper
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.data.postgis.referencing
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  An authority factory based on PostGIS tables.
+
+
+* org.geotools.filter
+  ~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.data.postgis (test)
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.data.postgis.collection (test)
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    * demo-bc-fixture.properties tests against public instance of PostGIS used for uDig demos
+
+
+* org.geotools.data.postgis.referencing (test)
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.data.filter (test)
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

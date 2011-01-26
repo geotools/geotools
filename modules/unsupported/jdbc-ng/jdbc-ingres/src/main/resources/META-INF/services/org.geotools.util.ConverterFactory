@@ -1,0 +1,2 @@
+org.geotools.data.ingres.IngresBlobConverterFactory
+org.geotools.data.ingres.IngresClobConverterFactory

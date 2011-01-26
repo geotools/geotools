@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- =======================================================================    
+        Maven Project Configuration File                                        
+                                                                                
+        The Geotools Project                                                    
+            http://www.geotools.org/                                            
+                                                                                
+        Version: $Id$              
+     ======================================================================= --><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.geotools</groupId>
+    <artifactId>geotools</artifactId>
+    <version>2.7-SNAPSHOT</version>
+  </parent>
+  
+
+  <!-- =========================================================== -->
+  <!--     Module Description                                      -->
+  <!-- =========================================================== -->
+  <groupId>org.geotools.demo</groupId>
+  <artifactId>demo</artifactId>
+  <packaging>pom</packaging>
+  <name>Geotools demos and examples</name>
+  <description>Demos and Examples for Geotools 2, discussion in wiki.</description>
+
+  <licenses>
+    <license>
+      <name>Lesser General Public License (LGPL)</name>
+      <url>http://www.gnu.org/copyleft/lesser.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+
+  <!-- =========================================================== -->
+  <!--     Dependency Management                                   -->
+  <!--     If a POM declares one of those dependencies, then it    -->
+  <!--     will use the version specified here. Otherwise, those   -->
+  <!--     dependencies are ignored.                               -->
+  <!-- =========================================================== -->
+  <dependencyManagement>
+    <dependencies>
+    
+      <!-- GeoTools Library -->
+      <dependency>
+        <groupId>org.geotools</groupId>
+        <artifactId>gt-main</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+    
+     <!-- GeoTools Plugin -->
+     <dependency>
+        <groupId>org.geotools</groupId>
+        <artifactId>gt-epsg-wkt</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.geotools</groupId>
+        <artifactId>gt-shapefile</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      
+    </dependencies>
+  </dependencyManagement>
+
+
+  <!-- =========================================================== -->
+  <!--     Build Configuration                                     -->
+  <!--         copies all JARs in a single directory.              -->
+  <!-- =========================================================== -->
+  <!--
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.geotools.maven</groupId>
+        <artifactId>jar-collector</artifactId>
+        <version>${project.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>collect</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+  -->
+  
+  <!-- =========================================================== -->
+  <!--     Modules included in the build                           -->
+  <!-- =========================================================== -->
+  <modules>
+    <module>example</module>
+    <module>libraryJTS</module>
+    <module>svgsupport</module>
+    <module>gmlparsing</module>
+    <module>jdbc</module>
+    <!--module>xml-po</module-->
+  </modules>
+  
+</project>

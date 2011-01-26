@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://www.opengis.net/sld" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wms="http://www.opengis.net/wms" xmlns:ows="http://www.opengis.net/ows" xmlns:gml="http://www.opengis.net/gml" xmlns:se="http://www.opengis.net/se" xmlns:ogc="http://www.opengis.net/ogc" xmlns:sld="http://www.opengis.net/sld" elementFormDefault="qualified" version="1.1.0 2010-02-01">
+	
+	<xsd:import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/feature.xsd"/>
+	<xsd:import namespace="http://www.opengis.net/ogc" schemaLocation="http://schemas.opengis.net/filter/1.1.0/filter.xsd"/>
+	<xsd:import namespace="http://www.opengis.net/se" schemaLocation="http://schemas.opengis.net/se/1.1.0/FeatureStyle.xsd"/>
+	<xsd:import namespace="http://www.opengis.net/wms" schemaLocation="http://schemas.opengis.net/wms/1.3.0/capabilities_1_3_0.xsd"/>
+	<xsd:import namespace="http://www.opengis.net/ows" schemaLocation="http://schemas.opengis.net/ows/1.0.0/owsCommon.xsd"/>
+	<xsd:include schemaLocation="StyledLayerDescriptor.xsd"/>
+	<xsd:annotation>
+		<xsd:documentation>
+      		<description>Styled Layer Descriptor version 1.1.0 (2010-02-01)</description>
+			<copyright>
+				SLD is an OGC Standard.
+				Copyright (c) 2007,2010 Open Geospatial Consortium, Inc. All Rights Reserved.
+				To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .
+			</copyright>
+          </xsd:documentation>
+	</xsd:annotation>
+	<xsd:element name="GetMap" type="sld:GetMapType"/>
+	<xsd:complexType name="GetMapType">
+		<xsd:sequence>
+			<xsd:element ref="sld:StyledLayerDescriptor"/>
+			<xsd:element name="CRS" type="xsd:string"/>
+			<xsd:element name="BoundingBox" type="ows:BoundingBoxType"/>
+			<xsd:element name="Output" type="sld:OutputType"/>
+			<xsd:element name="Exceptions" type="sld:ExceptionsType" minOccurs="0"/>
+			<xsd:element name="Time" type="xsd:dateTime" minOccurs="0"/>
+			<xsd:element name="Elevation" type="sld:ElevationType" minOccurs="0"/>
+			<!-- LAYERS and STYLES parameters are handled by sld:StyledLayerDescriptor-->
+		</xsd:sequence>
+		<xsd:attribute name="version" type="xsd:string" fixed="1.3.0"/>
+	</xsd:complexType>
+	<xsd:complexType name="OutputType">
+		<xsd:sequence>
+			<xsd:element name="Size">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="Width" type="xsd:positiveInteger"/>
+						<xsd:element name="Height" type="xsd:positiveInteger"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element ref="wms:Format"/>
+			<xsd:element name="Transparent" type="xsd:boolean" minOccurs="0"/>
+			<xsd:element name="BGcolor" type="xsd:string" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:simpleType name="ExceptionsType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="XML"/>
+			<xsd:enumeration value="INIMAGE"/>
+			<xsd:enumeration value="BLANK"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="ElevationType">
+		<xsd:choice>
+			<xsd:element name="Value" type="xsd:double" maxOccurs="unbounded"/>
+			<xsd:element name="Interval" type="sld:IntervalType"/>
+		</xsd:choice>
+	</xsd:complexType>
+	<xsd:complexType name="IntervalType">
+		<xsd:sequence>
+			<xsd:element name="Min" type="xsd:double"/>
+			<xsd:element name="Max" type="xsd:double"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

@@ -1,0 +1,140 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html>
+  <head>
+    <title>List of changes</title>
+  </head>
+  <body>
+  <H1>List of changes</H1>
+  <H2>Changes from GeoAPI 1.0 to 2.0</H2>
+  <BLOCKQUOTE>
+  <H3>Changes in Metadata packages</H3>
+  <UL>
+    <LI><P>Completed interfaces and code list derived from ISO 19115.</P></LI>
+    <LI><P>Replaced all <code>Set</code> references by <code>Collection</code>, except in the
+           very few places where ISO 19115 defines explicitly the collection type.</P></LI>
+    <LI><P>Replaced all <code>URL</code> references by <code>URI</code>.</P></LI>
+  </UL>
+  <H3>Changes in Referencing packages</H3>
+  <UL>
+    <LI><P>Added <code><A HREF="../referencing/crs/SingleCRS.html">SingleCRS</A></code> interface.
+        This change reflect a part of ISO 19111 which was omitted in previous release.</P></LI>
+
+    <LI><P>Renamed <code>ObliqueCartesianCS</code> as <code><A HREF="../referencing/cs/AffineCS.html">AffineCS</A></code>.
+        This reflect a change in OGC Topic 2 voted in July 16, 2004.</P></LI>
+
+    <LI><P>Renamed <code>TemporalCS</code> as <code><A HREF="../referencing/cs/TimeCS.html">TimeCS</A></code>.
+        This reflect a change in OGC Topic 2 voted in July 16, 2004.</P></LI>
+
+    <LI><P>Renamed <code>Info</code> as <code><A HREF="../referencing/IdentifiedObject.html">IdentifiedObject</A></code>.
+        This reflect a change in OGC Topic 2 voted in July 16, 2004.</P></LI>
+
+    <LI><P>In <code><A HREF="../referencing/crs/CRSFactory.html">CRSFactory</A>.createImageCRS(...)</code>
+        method, changed the <code>cs</code> argument type from
+        <code><A HREF="../referencing/cs/CoordinateSystem.html">CoordinateSystem</A></code> to
+        <code><A HREF="../referencing/cs/AffineCS.html">AffineCS</A></code>.
+        This change is required for type safety and was forgotten in previous release.</P></LI>
+
+    <LI><P>In <code><A HREF="../referencing/cs/CSFactory.html">CSFactory</A></code> interface, added methods
+        for <code><A HREF="../referencing/cs/UserDefinedCS.html">UserDefinedCS</A></code> creation.
+        This part was forgotten in previous release.</P></LI>
+
+    <LI><P>Added <code>toWKT()</code> method in <code><A HREF="../referencing/IdentifiedObject.html">IdentifiedObject</A></code>.</P></LI>
+
+    <LI><P>Renamed <code>NoSuchClassificationException</code> as
+        <code><A HREF="../referencing/NoSuchIdentifierException.html">NoSuchIdentifierException</A></code>.</P></LI>
+
+    <LI><P>Replaced all arrays by collections as the return type of the following methods:
+           <code>IdentifiedObject.getIdentifiers()</code>, <code>IdentifiedObject.getAlias()</code>
+           <code>CompoundCRS.getCoordinateReferenceSystems()</code>, <code>ConcatenatedOperation.getOperations()</code>,
+           <code>CoordinateOperation.getPositionalAccuracy()</code>.</P></LI>
+
+    <LI><P>Removed the <code>org.opengis.referencing.quality</code> package. This package is now
+         replaced by <code>org.opengis.metadata.quality</code>. This reflect a change in OGC Topic
+         2 voted in July 16, 2004.</P></LI>
+
+    <LI><P>Renamed all <CODE>OperationParameter</CODE> interfaces as <CODE>ParameterDescriptor</CODE>. This is because many users
+        expect a parameter to contains a value. The <CODE>ParameterDescriptor</CODE> name make it clearer that this interface
+        contains metadata about parameter, not the actual parameter value. It also consistent with usage in other Java libraries
+        like <cite>Java Advanced Imaging</cite>.</P></LI>
+
+    <LI><P>In <code><A HREF="../referencing/operation/OperationMethod.html">OperationMethod</A></code>, changed the <code>GeneralParameterDescriptor[]</code>
+        return type to <code>ParameterDescriptorGroup</code>. Generally speaking, this change was applied for most processing methods in GeoAPI
+        returning parameters. This is a slight departure from specifications, which usually returns a sequence of parameter rather than a group.</P>
+
+    <LI><P>For convenience method <code>getParameter(String)</code> in
+        <code><A HREF="../parameter/ParameterDescriptorGroup.html">ParameterDescriptorGroup</A></code> interface,
+        changed the return type from
+        <code><A HREF="../parameter/GeneralParameterDescriptor.html">GeneralParameterDescriptor</A></code> to
+        <code><A HREF="../parameter/ParameterDescriptor.html">ParameterDescriptor</A></code>.
+        This change make the convenience method more... convenient.</P></LI>
+    
+    <LI><P>For convenience method <code>getValue(String)</code> in
+        <code><A HREF="../parameter/ParameterValueGroup.html">ParameterValueGroup</A></code> interface,
+        changed the return type from
+        <code><A HREF="../parameter/GeneralParameterValue.html">GeneralParameterValue</A></code> to
+        <code><A HREF="../parameter/ParameterValue.html">ParameterValue</A></code>.
+        This change make the convenience method more... convenient. Also renamed the method as
+        <code>parameter</code>, which avoid strange expression like
+        <code>getValue("some_name").setValue(someValue)</code>. The idiom is now
+        <code>parameter("some_name").setValue(someValue)</code> instead.</P></LI>
+
+    <LI><P>For all methods expecting a <CODE>Locale</CODE> argument, removed this argument and replaced the
+         <CODE>String</CODE> return type by <A HREF="../util/InternationalString.html"><CODE>InternationalString</CODE></A>.
+         This change was done for consistency with the metadata package.</P></LI>
+
+    <LI><P>In <code>valueFile()</code> method, replaced the <code>URL</code> return type by <code>URI</code>.</P></LI>
+  </UL>
+  <H3>Changes in Geometry packages</H3>
+  <UL>
+    <LI><P>Set <code><A HREF="../geometry/coordinate/Position.html">Position</A></code> as the super-interface
+        for <code><A HREF="../geometry/DirectPosition.html">DirectPosition</A></code> and
+        <code><A HREF="../geometry/primitive/Point.html">Point</A></code> interfaces instead
+        of an union of them. The union type do no exists in Java and this change lead to a more object oriented
+        approach. This change was done after a comment on the GeoAPI mailing list.</P></LI>
+
+    <LI><P>In <code><A HREF="../geometry/Envelope.html">Envelope</A></code> interface,
+        added convenience methods <code>getMinimum</code>, <code>getMaximum</code>, <code>getCenter</code>
+        and <code>getLength</code>.</P></LI>
+
+    <LI><P>In <code><A HREF="../geometry/coordinate/GenericCurve.html">GenericCurve</A></code>, renamed the
+        <code>getParam</code> and <code>getConstructiveParam</code> method as
+        <code>forParam</code> and <code>forConstructiveParam</code> respectively.
+        The former names was misleading since those methods do not return a constructive
+        parameter; they expect it as argument instead.</P>
+
+    <LI><P>In <code><A HREF="../geometry/complex/Complex.html">Complex</A></code>, renamed the
+        <code>getSuperComplexex</code> method as <code>getSuperComplexes</code>. The former was a typo.</P>
+
+    <LI><P>Addition of more geometry interfaces from ISO 19107. The work is not finished however.</P></LI>
+  </UL>
+  <H3>Changes in Grid Coverage packages</H3>
+  <UL>
+    <LI><P>In <code><A HREF="../coverage/SampleDimension.html">SampleDimension</A></code> interface (methods
+        <code>getDescription</code> and <code>getCategoryNames</code>) and in <code><A HREF="../coverage/Coverage.html">Coverage</A></code>
+        interface (method <code>getDimensionNames</code>), replaced the <code>String</code> returns type by <code>InternationalString</code>.
+        This change is required for localization support and was forgotten in previous release.</P></LI>
+
+    <LI><P>In <code><A HREF="../coverage/Coverage.html">Coverage</A></code> interface, changed
+        the return type from <code>double[]</code> to <code>float[]</code> for the method
+        <code>evaluate(DirectPosition, float[])</code>. Previous return type was wrong.</P></LI>
+
+    <LI><P>In <code><A HREF="../coverage/Coverage.html">Coverage</A></code>, merged <code>getNumSources()</code>
+        and <code>getSource(int)</code> methods into a single <code>getSources()</code> method.</P></LI>
+
+    <LI><P>In <code><A HREF="../coverage/grid/GridRange.html">GridRange</A></code>, renamed <code>getLower()</code>
+        and <code>getUpper()</code> as <code>getLowers()</code> and <code>getUppers()</code>.</P></LI>
+
+    <LI><P>In <code><A HREF="../coverage/grid/GridRange.html">GridRange</A></code>, added <code>getLower(int)</code>, <code>getUpper(int)</code>,
+        <code>getLength(int)</code> and <code>getDimension</code> convenience methods.</P></LI>
+
+    <LI><P>In <code><A HREF="../coverage/processing/Operation.html">Operation</A></code>, changed the <code>GeneralParameterValue[]</code>,
+        return type to <code>ParameterValueGroup</code>. Generally speaking, this change was applied for most processing methods in GeoAPI
+        returning parameters. This is a slight departure from specifications, which usually returns a sequence of parameter values.</P>
+
+    <LI><P>In <code><A HREF="../coverage/processing/GridAnalysis.html">GridAnalysis</A></code>, renamed the <code>analyse</code>
+        method as <code>analyze</code>. The former was a typo.</P>
+  </UL>
+  </BLOCKQUOTE>
+  </body>
+</html>

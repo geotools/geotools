@@ -1,0 +1,41 @@
+PLUGIN GEOMETRYLESS
+~~~~~~~~~~~~~~~~~~~
+
+  Module Maintainer: Rob Atkinson
+
+  IP Review:
+
+    * Jody Garnett August 6th, 2006
+
+    * Rob Atkinson - removed dependencies on third party JDBC drivers 24-07-2007
+
+    * Adrian Custer June 2008
+
+  STATUS: Clean
+
+
+
+  This module was adapted from the postgis module in GT 2.0 We will record the
+  (C) range as 2002-2006 with the understanding that it may in fact be earlier.
+
+
+* org.geotools.data.geometryless
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Contains the first JDBC based DataStore implementation from GeoTools 2.0
+  (aka 2003), based on earlier DataSource API (2002).
+
+
+* org.geotools.data.postgis.attributeio
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.filter
+  ~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.data.filter (test)
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.data.geometryless.wrapper
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -1,0 +1,545 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+"http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
+<article>
+  <title>How to create a new Validation</title>
+
+  <sect1>
+    <title>Introduction</title>
+
+    <para>Validation instances can be used in real time to test data validity.
+    This framework allows for multiple configurations of each test to be run
+    concurrently on data being retrieved from a datasource. This document
+    intends to teach the intermediate developer how to create a new data
+    validation and use the validation. Sections 2-4 describe the process of
+    creating an instalation, while section 5 gives a brief generic overview of
+    the instalation procedures found in most instances of the validation
+    framework.</para>
+  </sect1>
+
+  <sect1>
+    <title>Validation</title>
+
+    <para>There are two basic types of validations, Feature validations and
+    Integrity validations. Feature validations are used to check individual
+    data features being returned through the framework. These validations test
+    particular attributes or properties of a class of data features, for
+    example to check for the existance of an attribute. Integrity validations
+    are more common and test a group of features to ensure that some relation
+    between a set of relations holds. For example an integrity validaton may
+    ensure that no two lines of the same type my touch except at their end
+    points. </para>
+
+    <sect2>
+      <title>Class</title>
+
+      <para>This is relatively simple, there are two requirements: the class
+      is a Java Bean, and is must extend either DefaultFeatureValidation or
+      DefaultIntegrityValidation. Part one means that for each class variable
+      you must provide getter and setter methods. Although advanced users may
+      chose to implement the interfaces directly, we recommend that you extend
+      one of the above classes to provide some free functionality. In both
+      cases the validate method must be overridden if you want the validation
+      to do anything (fails be default). </para>
+
+      <programlisting>/*
+ *    Geotools2 - OpenSource mapping toolkit
+ *    http://geotools.org
+ *    (C) 2002, Geotools Project Managment Committee (PMC)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ *
+ */
+/* Copyright (c) 2001, 2003 TOPP - www.openplans.org.  All rights reserved.
+ * This code is licensed under the GPL 2.0 license, availible at the root
+ * application directory.
+ */
+package org.geotools.validation.attributes;
+
+import org.geotools.feature.Feature;
+import org.geotools.feature.FeatureType;
+import org.geotools.validation.DefaultFeatureValidation;
+import org.geotools.validation.ValidationResults;
+
+
+/**
+ * NullZeroFeatureValidation purpose.
+ * DefaultIntValidation
+ * &lt;p&gt;
+ * Description of NullZeroFeatureValidation ...
+ * &lt;/p&gt;
+ * 
+ * &lt;p&gt;
+ * Capabilities:
+ * 
+ * &lt;ul&gt;
+ * &lt;li&gt;
+ * Tests for null/0 atribute values.
+ * &lt;/li&gt;
+ * &lt;/ul&gt;
+ * 
+ * Example Use:
+ * &lt;pre&gt;&lt;code&gt;
+ * NullZeroFeatureValidation x = new NullZeroFeatureValidation(...);
+ * &lt;/code&gt;&lt;/pre&gt;
+ * &lt;/p&gt;
+ *
+ * @author dzwiers, Refractions Research, Inc.
+ * @author $Author: dmzwiers $ (last modification)
+ * @version $Id$
+ */
+public class NullZeroValidation extends DefaultFeatureValidation {
+    private String attributeName;
+
+    public NullZeroValidation() {
+        super();
+    }
+
+    /**
+     * Implement validate.
+     * 
+     * &lt;p&gt;
+     * Description ...
+     * &lt;/p&gt;
+     *
+     * @param feature Provides the attributes to test.
+     * @param type not used.
+     * @param results a reference for returning error codes.
+     *
+     * @return false when null or 0 values are found in the attribute.
+     *
+     * @see org.geotools.validation.FeatureValidation#validate(org.geotools.feature.Feature,
+     *      org.geotools.feature.FeatureType,
+     *      org.geotools.validation.ValidationResults)
+     */
+    public boolean validate(Feature feature, FeatureType type,
+        ValidationResults results) { // throws Exception {
+
+        Object ft = feature.getAttribute(attributeName);
+
+        if (ft == null) {
+            results.error(feature, attributeName + " is Empty");
+
+            return false;
+        }
+
+        if (ft instanceof Number) {
+            Number nb = (Number) ft;
+
+            if (nb.intValue() == 0) {
+                results.error(feature, attributeName + " is Zero");
+
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Implement getPriority.
+     *DefaultIntValidation
+     * @see org.geotools.validation.Validation#getPriority()
+     */
+    public int getPriority() {
+        return 0;
+    }
+
+    /**
+     * Implementation of getTypeNames.
+     *
+     * @return Array of typeNames, or empty array for all, null for disabled
+     *
+     * @see org.geotools.validation.Validation#getTypeRefs()
+     */
+    public String[] getTypeRefs() {
+        if (getTypeRef() == null) {
+            return null;
+        }
+
+        if (getTypeRef().equals("*")) {
+            return ALL;
+        }
+
+        return new String[] { getTypeRef(), };
+    }
+
+    /**
+     * Access attributeName property.
+     *
+     * @return the path being stored for validation
+     */
+    public String getAttributeName() {
+        return attributeName;
+    }
+
+    /**
+     * set AttributeName to name.
+     *DefaultIntValidation
+     * @param name
+     */
+    public void setAttributeName(String name) {
+        attributeName = name;
+    }
+}</programlisting>
+    </sect2>
+  </sect1>
+
+  <sect1>
+    <title>BeanInfo</title>
+
+    <para>The validation framework will automatically detect you bean
+    properties when using the validation, but on occasion you may wish to
+    provide human readable name and descriptions. Advanced users may also wish
+    to redirect class variable names to alternate getter or settter methods.
+    To allow for internationalization, we have opted to store the class
+    variable deisplay names and descriptions in property files following the
+    java.util.ResourceBundle internationalization name conventions. </para>
+
+    <sect2>
+      <title>Class</title>
+
+      <para>For each Validation we recommend creating a BeanInfo class.
+      Although this not scrictly required for geotools, many of geotools
+      cleants do require human readable display names and descriptions. This
+      is also an excelent opportunity to document your recent work. Just like
+      the Validations, be have two base classes to extend. In both cases
+      remember to include the parent classes getProperties method.</para>
+
+      <programlisting>/*
+ *    Geotools2 - OpenSource mapping toolkit
+ *    http://geotools.org
+ *    (C) 2002, Geotools Project Managment Committee (PMC)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ *
+ */
+/*
+ * Created on Jan 22, 2004
+ *
+ * To change the template for this generated file go to
+ * Window - Preferences - Java - Code Generation - Code and Comments
+ */
+package org.geotools.validation.attributes;
+
+import org.geotools.validation.DefaultFeatureValidationBeanInfo;
+import java.beans.IntrospectionException;
+import java.beans.PropertyDescriptor;
+import java.util.ResourceBundle;
+
+
+/**
+ * GazetteerNameValidationBeanInfo purpose.
+ * 
+ * &lt;p&gt;
+ * Description of GazetteerNameValidationBeanInfo ...
+ * &lt;/p&gt;
+ *
+ * @author dzwiers, Refractions Research, Inc.
+ * @author $Author: dmzwiers $ (last modification)
+ * @version $Id$
+ */
+public class NullZeroValidationBeanInfo extends DefaultFeatureValidationBeanInfo {
+    /**
+     * GazetteerNameValidationBeanInfo constructor.
+     * 
+     * &lt;p&gt;
+     * Description
+     * &lt;/p&gt;DefaultIntValidation
+     */
+    public NullZeroValidationBeanInfo() {
+        super();
+    }
+
+    /**
+     * Implementation of getPropertyDescriptors.
+     *
+     * @return
+     *
+     * @see java.beans.BeanInfo#getPropertyDescriptors()
+     */
+    public PropertyDescriptor[] getPropertyDescriptors() {
+        PropertyDescriptor[] pd2 = super.getPropertyDescriptors();
+        ResourceBundle resourceBundle = getResourceBundle(NullZeroValidation.class);
+
+        if (pd2 == null) {
+            pd2 = new PropertyDescriptor[0];
+        }
+
+        PropertyDescriptor[] pd = new PropertyDescriptor[pd2.length + 1];
+        int i = 0;
+
+        for (; i &lt; pd2.length; i++)
+            pd[i] = pd2[i];
+
+        try {
+            pd[i] = createPropertyDescriptor("attributeName",
+                    NullZeroValidation.class, resourceBundle);
+            pd[i].setExpert(false);
+        } catch (IntrospectionException e) {
+            pd = pd2;
+
+            // TODO error, log here
+            e.printStackTrace();
+        }
+
+        return pd;
+    }
+}
+</programlisting>
+    </sect2>
+
+    <sect2>
+      <title>Properties</title>
+
+      <para>If you notice in the code fragment above, a resource bundle is
+      loaded. Therefore at the very least you should have created a resource
+      bundle. These are simple, with the key on the left and the value on the
+      right. Here is the default for the NullZeroValidation.</para>
+
+      <programlisting>attributeName.DisplayName = Feature Attribute Name
+attributeName.Description = The name of the attribute in the Feature which is to be tested for existance at the gazetteer service.</programlisting>
+    </sect2>
+  </sect1>
+
+  <sect1>
+    <title>Tests</title>
+
+    <para>Basically you need to write a complete test case for each
+    validation. I wouldn't write one for the bean info (not much to test
+    there), but make sure you have a really good one for the actual
+    Validation. This one is a short example of what is expected. </para>
+
+    <programlisting>/* Copyright (c) 2001, 2003 TOPP - www.openplans.org.  All rights reserved.
+ * This code is licensed under the GPL 2.0 license, availible at the root
+ * application directory.
+ */
+package org.geotools.validation.attributes;
+
+import junit.framework.TestCase;
+
+import org.geotools.data.DataUtilities;
+import org.geotools.feature.Feature;
+import org.geotools.feature.FeatureType;
+import org.geotools.validation.RoadValidationResults;
+
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
+
+/**
+ * NullZeroValidationTest purpose.
+ * &lt;p&gt;
+ * Description of NullZeroValidationTest ...
+ * &lt;p&gt;
+ * Capabilities:
+ * &lt;ul&gt;
+ * &lt;li&gt;&lt;/li&gt;
+ * &lt;/ul&gt;
+ * Example Use:
+ * &lt;pre&gt;&lt;code&gt;
+ * NullZeroValidationTest x = new NullZeroValidationTest(...);
+ * &lt;/code&gt;&lt;/pre&gt;
+ * 
+ * @author bowens, Refractions Research, Inc.
+ * @author $Author: dmzwiers $ (last modification)
+ * @version $Id$
+ */
+public class NullZeroValidationTest extends TestCase {
+  private RoadValidationResults results;
+  private FeatureType type;
+  private Feature feature;
+  RangeValidation test;
+  /**
+   * Constructor for NullZeroValidationTest.
+   * @param arg0
+   */
+  public NullZeroValidationTest(String arg0) {
+    super(arg0);
+  }
+
+  /*
+   * @see TestCase#setUp()
+   */
+  protected void setUp() throws Exception {
+    GeometryFactory gf = new GeometryFactory();
+    test = new RangeValidation();
+    super.setUp();
+    
+    type = DataUtilities.createType(getName()+".road",
+    "id:0,*geom:LineString,name:String");
+    Coordinate[] coords = new Coordinate[]{ new Coordinate(1, 1), new Coordinate( 2, 2), new Coordinate (4, 2), new Coordinate (5, 1)};
+
+    
+    feature = type.create(new Object[] {
+        new Integer(1),
+        gf.createLineString(coords),
+        "r1",
+      },
+      "road.rd1"
+    );
+    
+    results = new RoadValidationResults();
+  }
+
+  /*
+   * @see TestCase#tearDown()
+   */
+  protected void tearDown() throws Exception {
+    test = null;
+    super.tearDown();
+  }
+
+  public void testRangeFeatureValidation() throws Exception {
+    test.setPath("id");
+    
+    
+    assertTrue(test.validate(feature, type, results));
+    assertEquals(0,results.failedFeatures.size());
+    test.setMin(5);
+    assertTrue(!test.validate(feature, type, results));
+    assertEquals(1,results.failedFeatures.size());    
+  }
+
+  public void testValidate() {
+    //test.validate(feature, type, results);
+  }
+
+  public void testSetName() {
+    test.setName("foo");
+    assertEquals("foo", test.getName());
+  }
+
+  public void testGetName() {
+    test.setName("bork");	
+    assertEquals("bork", test.getName());
+  }
+
+  public void testSetDescription() {
+    test.setDescription("foo");
+    assertEquals("foo", test.getDescription());
+  }
+
+  public void testGetDescription() {
+    test.setDescription("bork");
+    assertEquals("bork", test.getDescription());
+  }
+
+  public void testGetPriority() {
+    //TODO Implement getPriority().
+  }
+
+  public void testGetMax() {
+    test.setMax(100);
+    assertEquals(100, test.getMax());
+  }
+
+  public void testGetMin() {
+    test.setMin(10);
+    assertEquals(10, test.getMin());
+  }
+
+  public void testGetPath() {
+    test.setPath("path");
+    assertEquals("path", test.getPath());
+  }
+
+  public void testSetMax() {
+    test.setMax(500);
+    assertEquals(500, test.getMax());
+
+  }
+
+  public void testSetMin() {
+    test.setMin(5);
+    assertEquals(5, test.getMin());
+  }
+
+  public void testSetPath() {
+    test.setPath("path2");
+    assertEquals("path2", test.getPath());
+  }
+
+}
+</programlisting>
+  </sect1>
+
+  <sect1>
+    <title>Installation</title>
+
+    <para>To install your validation in the framework you will need to create
+    atleast two XML files, one plug-in definition and one test suite. The
+    plug-in definition declares default values including the Bean to used for
+    the plug-in. One class may be used by multiple plug-ins. </para>
+
+    <programlisting>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;plugin xmlns="pluginSchema" 
+xmlns:gml="http://www.opengis.net/gml" 
+xmlns:ogc="http://www.opengis.net/ogc" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" 
+xs:schemaLocation="pluginSchema /data/capabilities/validate/plname to see 
+       that they are of appropriate length and checks to 
+       see if they are on the list of possible road names.
+       It also checks to see if any roads are contained in
+       a specified box.uginSchema.xsd"&gt;
+  &lt;name&gt;NullZero&lt;/name&gt;
+  &lt;description&gt;Checks for non null or zero values.&lt;/description&gt;
+  &lt;class&gt;org.geotools.validation.spatial.NullZeroValidation&lt;/class&gt;
+&lt;/plugin&gt;</programlisting>
+
+    <para>You also need to define TestSuite which uses the plug-in. A test
+    suite should be viewed as context in which to run the validation, and
+    provides specific values for this context. One test suite may contain
+    multiple instances of a plug-in, and a plug-in may be used in multiple
+    test suites. So you can see that you Validation that you wrote may be used
+    in many contexts if it was designed and inplemented efficiently.</para>
+
+    <programlisting>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;suite xmlns="testSuiteSchema" 
+xmlns:gml="http://www.opengis.net/gml" 
+xmlns:ogc="http://www.opengis.net/ogc" 
+xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" 
+xs:schemaLocation="testSuiteSchema /data/capabilities/validatename to see 
+       that they are of appropriate length and checks to 
+       see if they are on the list of possible road names.
+       It also checks to see if any roads are contained in
+       a specified box./testSuiteSchema.xsd"&gt;
+  &lt;name&gt;RoadTestSuite&lt;/name&gt;
+  &lt;description&gt;This test suite checks each feture to ensure they have a none null road and lake attribute.
+  &lt;/description&gt;
+  &lt;test&gt;
+    &lt;name&gt;NameLookup&lt;/name&gt;
+    &lt;description&gt;Checks to see ensure there are lakes.&lt;/description&gt;
+    &lt;plugin&gt;NullZero&lt;/plugin&gt;
+    &lt;argument final="true"&gt;
+      &lt;name&gt;attributeName&lt;/name&gt;
+      &lt;string&gt;lake&lt;/string&gt;
+    &lt;/argument&gt;
+  &lt;/test&gt;
+  &lt;test&gt;
+    &lt;name&gt;RoadsInbox&lt;/name&gt;
+    &lt;description&gt;Checks to see ensure there are roads&lt;/description&gt;
+    &lt;plugin&gt;NullZero&lt;/plugin&gt;
+    &lt;argument final="true"&gt;
+      &lt;name&gt;attributeName&lt;/name&gt;
+      &lt;string&gt;road&lt;/string&gt;
+    &lt;/argument&gt;
+  &lt;/test&gt;
+&lt;/suite&gt;</programlisting>
+  </sect1>
+</article>

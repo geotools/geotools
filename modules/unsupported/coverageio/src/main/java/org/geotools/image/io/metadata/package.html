@@ -1,0 +1,22 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<HTML>
+  <HEAD>
+    <TITLE>package org.geotools.image.io.metadata</TITLE>
+  </HEAD>
+  <BODY>
+    Geographic informations encoded in images as metadata.
+
+    <P>This package defines a {@link org.geotools.image.io.metadata.GeographicMetadataFormat
+    geographic metadata format} which is aimed as image format neutral. The metadata format defines a structure
+    for a tree of nodes in a way similar to the way methods are defined in GeoAPI interfaces. For example it
+    defines a {@code "CoordinateReferenceSystem"} node with {@code "CoordinateSystem"} and {@code "Datum"}
+    child nodes.</P>
+
+    <P>The {@link org.geotools.image.io.metadata.GeographicMetadata} class contains convenience
+    methods for encoding metatadata. Metadata are usually given as {@link java.lang.String} or {@code double}
+    attributes only, but image readers can optionaly attach fully constructed GeoAPI objects if they wish. If
+    only {@link java.lang.String} and {@code double} are used, then the duty to create GeoAPI objects from them
+    incomb to the {@link org.geotools.coverage.io} package.</P>
+  </BODY>
+</HTML>

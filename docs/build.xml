@@ -1,0 +1,69 @@
+<project name="docs" default="build"> 
+
+  <target name="build">
+    <property environment="env"/>
+    <condition property="sphinx.available">
+      <or>
+        <available file="sphinx-build" filepath="${env.PATH}"/>
+        <available file="sphinx-build.exe" filepath="${env.Path}"/>
+        <available file="sphinx-build.exe" filepath="${env.PATH}"/>
+      </or>
+    </condition>
+    <condition property="rst2pdf.available">
+      <or>
+        <available file="rst2pdf" filepath="${env.PATH}"/>
+        <available file="rst2pdf.exe" filepath="${env.Path}"/>
+        <available file="rst2pdf.exe" filepath="${env.PATH}"/>
+      </or>
+    </condition>
+    <condition property="latex.available">
+      <or>
+        <available file="latex" filepath="${env.PATH}"/>
+      </or>
+    </condition>
+    <antcall target="sphinx">
+      <param name="id" value="user"/>
+      <param name="build" value="html"/>
+    </antcall>
+    <antcall target="sphinx">
+      <param name="id" value="web"/>
+      <param name="build" value="html"/>
+    </antcall>
+    <antcall target="sphinx">
+      <param name="id" value="index"/>
+      <param name="build" value="html"/>
+    </antcall>
+    <antcall target="sphinx">
+      <param name="id" value="tutorial"/>
+      <param name="build" value="html"/>
+    </antcall>
+    <!-- uncomment for pdf -->
+    <!--antcall target="pdf">
+      <param name="id" value="tutorial"/>
+      <param name="build" value="pdf"/>
+    </antcall-->
+    <!--antcall target="latex">
+      <param name="id" value="tutorial"/>
+      <param name="build" value="latex"/>
+    </antcall-->
+  </target>
+
+  <target name="sphinx" if="sphinx.available">
+    <exec executable="sphinx-build" failonerror="true" dir="${basedir}/${id}">
+      <arg line="-D release=${project.version} -a -W -E -b ${build} -d &quot;${build.directory}/${id}/doctrees&quot; . &quot;${build.directory}/${id}/${build}&quot;"/>
+    </exec>
+  </target>
+
+  <target name="latex" if="latex.available">
+    <exec executable="sphinx-build" failonerror="true" dir="${basedir}/${id}">
+      <arg line="-D release=${project.version} -a -E -b latex -d &quot;${build.directory}/${id}/doctrees&quot; . &quot;${build.directory}/${id}/${build}&quot;"/>
+    </exec>
+  </target>
+
+  <target name="pdf" if="rst2pdf.available">
+    <exec executable="sphinx-build" failonerror="true" dir="${basedir}/${id}">
+      <arg line="-D release=${project.version} -c ${basedir}/${id}/pdf -a -E -b pdf -d &quot;${build.directory}/${id}/doctrees&quot; . &quot;${build.directory}/${id}/${build}&quot;"/>
+    </exec>
+  </target>
+
+</project>

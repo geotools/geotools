@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<HTML>
+  <HEAD>
+    <TITLE>package org.opengis.filter.cql</TITLE>
+  </HEAD>
+  <BODY>
+    <H3>Extended Common Query Language (ECQL)</H3>
+    <P ALIGN="justify">
+	This package implements the ECQL query language that extend the OGC Common Catalogue Query Language (CQL) capabilities.  
+	</P>
+		
+	<H3>ECQL Usage </H3>
+    <P ALIGN="justify">
+	Below are presented some usage samples. You can find more samples and the <b>BNF<b> with the ECQL syntax in the user guide of Geotools.   
+	</P>
+
+	<P ALIGN="justify">
+	 Filter filter = ECQL.toFilter(<b>"POP_RANK  &gt;  6"</b>);
+	</P>
+	<P ALIGN="justify">
+	 Filter filter = ECQL.toFilter(<b>"POP_RANK &gt; 3 AND POP_RANK &lt; 6"</b>);
+	</P>
+	<P ALIGN="justify">
+	 Filter filter = ECQL.toFilter(<b>"area(the_geom) &gt; 3000"</b>);
+	</P>
+	
+	<P ALIGN="justify">
+	Filter filter = ECQL.toFilter(<b>"Name LIKE '%omer%'"</b>);
+	</P>
+
+	<P ALIGN="justify">
+    Filter filter = ECQL.toFilter(<b>"DISJOINT(buffer(the_geom, 10) , POINT(1 2))"</b>);
+	</P>
+
+	<P ALIGN="justify">
+    Filter filter = ECQL.toFilter(<b>"IN ('river.1', 'river.2')"</b>);
+	</P>
+	
+	<P ALIGN="justify">
+	Filter filter = ECQL.toFilter(<b>"LENGHT IN (4100001,4100002, 4100003 )"</b>);
+	</P>
+	
+	<P ALIGN="justify">
+	List &lt;Filter&gt; list = ECQL.toFilterList(<b>"LENGHT = 100; NAME like '%omer%'"</b>);
+	</P>	
+
+	<P ALIGN="justify">
+	Expression expression = ECQL.toExpression(<b>"LENGHT + 100"</b>);
+	</P>	
+	
+
+    <H3>Implementation and Design Notes</H3>
+
+    <P ALIGN="justify">
+    The <b>ECQL</b> class is the interface of this module. It provides access to all functionalities of the ECQL parser. 
+    </P>
+
+    <P ALIGN="justify">
+    The parser was generated using <A HREF="https://javacc.dev.java.net/">javacc</A>. 
+    In ECQLGrammar.jjt file you can see the input grammar for <b>javacc</b> that is required to parse the ECQL syntax rules. The generated
+    class are allocated in the <b>org.geotools.filter.text.generated.parsers</b> package, these classes are not
+    part of the module interface, then the client module shouldn't use them.
+    </P>
+    
+    <P ALIGN="justify">
+    The <b>org.geotools.filter.text.commons</b> package encapsulate classes intended as commons utilities used
+    in the ECQL and CQL parsing process. They are not utilities for client modules, they are part of the cql module
+    implementation, so client module shouldn't use them.   
+    </P>
+
+  </BODY>
+</HTML>

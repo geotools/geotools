@@ -1,0 +1,37 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<HTML>
+  <HEAD>
+    <TITLE>package org.opengis.style</TITLE>
+  </HEAD>
+  <BODY>
+  <h2>The following package is an implementation of OGC Symbology Encoding 1.1.0 and ISO 19117 : Portrayal</h2>
+  This package is a merge from package GeoAPI SLD (v1.0.0) and GeoTools styling.<br>
+  
+  <h2>Symbology Encoding overview</h2>
+  Source : <a href="http://www.opengeospatial.org/standards/symbol">http://www.opengeospatial.org/standards/symbol</a><br>
+  File  : 05-077r4 <br>
+  <p>This document defines an XML encoding that can be used for styling feature and
+  coverage data.<br>
+  Symbology Encoding includes the FeatureTypeStyle as root element.
+  These elements include all information for styling the data such as Filter and different
+  kinds of Symbolizers.<br>
+  As Symbology Encoding is a grammar for styling map data independent of any service
+  interface specification it can be used flexibly by a number of services that style
+  georeferenced information or store styling information that can be used by other services.
+  </p>
+  
+  
+  <P ALIGN="justify">Symbology Encoding is a specification that define styles in xml files.
+  This GeoAPI implementation may be a bit different from the original XSD structure to offer
+  a better integration in the Java langage and to follow ISO 19117.</P>
+  
+  <h2>Here are schemas breafly describing the java implementation :</h2>
+  <br>
+      - Styles have N rules, and each rule have N Symbolizers.<br>
+  <img src="doc-files/rules.jpg"/><br>
+      - We found Symbolizer for each data type we can portray.<br>
+  <img src="doc-files/symbolizers.jpg"/><br>
+
+  </BODY>
+</HTML>

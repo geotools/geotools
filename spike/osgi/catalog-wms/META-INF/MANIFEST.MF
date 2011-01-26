@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-Name: Skunkworks WMS Service
+Bundle-Description: Skunkworks WMS Service
+Bundle-Version: 1.0.0
+Bundle-Activator: skunkworks.catalog.wms.Activator
+Bundle-ClassPath: .
+Import-Package: org.geotools.gtcatalog,
+ org.geotools.gtcatalog.wms,
+ skunkworks.catalog

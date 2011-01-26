@@ -1,0 +1,71 @@
+IMAGEIO-EXT-GDAL
+~~~~~~~~~~~~~~~~
+
+  IP Review:
+
+  	* Daniele Romagnoli March 2010
+
+  STATUS: OK
+  
+  * Code: Clean
+  
+  * Data: OK 
+
+  This module is the set of geotools plugins leveraging on imageio-ext project 
+  which provides access to several raster data formats leveraging on GDAL.
+
+
+* Important Note
+  ~~~~~~~~~~~~~~
+  The ECW/JP2KECW plugin shall not be used within a server application to DECODE ECW format.
+  The ECW EULA (read this at https://imageio-ext.dev.java.net/files/documents/7505/124153/ECWEULA.txt)
+  explicitly prohibits that type of use unless you have paid a lincesing fee to Erdas to use ECW SDK on a server.
+  In case you don't agree the ECW EULA, stop using the module.
+
+
+* Data Credits
+  ~~~~~~~~~~~~
+
+	* MrSID data credit:
+   		
+   		* n13250i.sid
+   		
+   			ftp://data.massgis.state.ma.us/pub/wave/noaasid/n13250i.sid.
+   			MassGIS sample data available at http://www.mass.gov/mgis/download.htm
+   			Office of Geographic and Environmental Information (MassGIS), Commonwealth of Massachusetts Executive Office of Environmental Affairs
+
+	* DTED data credit:
+   		
+   		* n43.dt0
+   		
+   			data Freely available at: http://download.osgeo.org/gdal/data/dted/
+
+	* JP2 data credit / ECW data credit
+   		
+   		* sample.jp2 / sample.ecw: 
+   		
+   			data generated using the gdal_translate utility, having "small_world.tif" as input file, which is freely available at:
+      		http://download.osgeo.org/gdal/data/gtiff/
+   
+	* ERDASImg data credit:
+   		
+   		* test.zip containing sample.img
+
+       		data generated using the gdal_translate utility, having "small_world.tif" as input file, which is freely available at:
+       		http://download.osgeo.org/gdal/data/gtiff/
+       		
+
+  	* EHdr data credit:
+
+    	* elggll.bil / elggll.hdr
+    	
+          data freely available at:
+          http://download.osgeo.org/gdal/data/ehdr/
+   
+
+  	* EnviHdr data credit:
+
+    	* aea.dat / aea.hdr
+    	
+          data freely available at:
+          http://svn.osgeo.org/gdal/tags/1.7.1/autotest/gdrivers/data/

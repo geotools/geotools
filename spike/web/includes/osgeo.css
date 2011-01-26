@@ -1,0 +1,564 @@
+/*
+-----------------------------------------------------------------------------
+OSGEOCSS. Written by Davin Greenwell at 
+Smallbox Software.  Questions to davin@smallboxsoftware.net
+-----------------------------------------------------------------------------
+*/
+
+body {
+	font-family: Bitstream Vera Sans, Arial, Helvetica, sans-serif;
+	font-size: 9pt;
+	color: #000;
+	background-attachment: fixed;
+	background-color: #FFFFFF;
+  background-image: url(../images/background_lower.jpg);
+/*background-image: url(../images/background.png);*/
+	background-repeat: no-repeat;
+	background-position: center bottom;
+	text-align: center;
+}
+
+
+/*
+-----------------------------------------------------------------------------
+Utility
+-----------------------------------------------------------------------------
+*/
+.zamboni {
+ clear:both;
+ font-size:0;
+ line-height:0;
+}
+.hr {
+ border-top:1px solid #B3B3B3;
+ font-size:0;
+ line-height:0;
+ height:1px;
+ margin:10px 0; 
+}
+img, div { behavior: url(/includes/css/iepngfix.htc) }
+
+
+/*
+-----------------------------------------------------------------------------
+Structural
+-----------------------------------------------------------------------------
+*/
+#container {
+ width:977px;
+ min-height:400px;
+ margin:20px auto;
+ border:1px solid #000000;
+ text-align:left;
+ background-color: #FFFFFF;
+}
+#header {
+ background-color:#FFFFFF;
+}
+#content {
+ line-height: 1.5em;
+ padding:7px 17px;
+ background-image: url(../images/green_lower.png);
+ background-repeat: no-repeat;
+ background-position: left bottom;
+ position: bottom;
+}
+#three_left {
+ width:215px;
+ padding:5px 0 20px 0;
+ float:left;
+}
+#three_main {
+ width:435px;
+ padding:5px 0 20px 40px;
+ float:left;
+}
+#three_right {
+ width:215px;
+ padding:10px 0 20px 0;
+ float:right; 
+}
+#twoleft_left {
+ width:215px;
+ padding:5px 0 20px 0;
+ float:left;
+}
+#twoleft_main {
+ width:435px;
+ padding:5px 0 20px 40px;
+ float:right;
+}
+#tworight_right {
+ width:215px;
+ padding:5px 0 20px 0;
+ float:right;
+}
+#tworight_main {
+ width:435px;
+ padding:5px 0 20px 0px;
+ float:left;
+}
+#footer {
+ clear:both;
+}
+
+
+/*
+-----------------------------------------------------------------------------
+Header
+-----------------------------------------------------------------------------
+*/
+#header #logo_row {
+ width:977px;
+ height:95px;
+ position:relative; 
+}
+#header #logo_row #login_signup {
+ height:11px;
+ position:absolute;
+ top:7px;
+ right:15px;
+ text-align:right;
+ font-size:90%;
+ line-height:1em;
+ text-transform:uppercase;
+}
+#header #logo_row #login_signup a {
+ color:#a5a6a7;
+}
+#header #logo_row #login_signup a:hover {
+ color:#666666;
+}
+#header #logo_row #project {
+ width:277px;
+ height:64px;
+ position:absolute;
+ left:20px;
+ top:20px;
+}
+#header #logo_row #osgeo {
+ width:200px;
+ height:85px;
+ position:absolute;
+ left:750px;
+ top:2px;
+}
+#header #nav_row {
+ line-height:1.25em;
+  background-image: url(../images/green_lower.png);
+ background-repeat: no-repeat;
+ background-position: left bottom;
+}
+#header #nav_row ul {
+ list-style:none;
+ margin:0;
+ padding:2px 0 2px 0;
+ text-align:left;
+}
+#header #right {
+  float: right;
+}
+#header #right ul {
+ list-style:none;
+ margin:0;
+ padding:2px 0 2px 0;
+ text-align: right;
+}
+#header #nav_row ul li {
+ margin:0;
+ padding:0 10px;
+ display:inline;
+ font-family: Bitstream Vera Sans Roman, Arial, Helvetica, sans-serif;
+ font-size:95%;
+ line-height:1.2em;
+ letter-spacing:0.2em;
+}
+#header #nav_row ul li a {
+ color:#000000;
+/* text-transform:uppercase; */
+}
+#header #nav_row ul li a.active,
+#header #nav_row ul li a:hover {
+ color:#ffffff;
+ text-decoration:none;
+}
+#header #photo_row {
+ height:30px;
+ background-image:url(../../images/photo_row_bg.jpg);
+ background-repeat:no-repeat;
+}
+#header img {
+ margin:0;
+ padding:0;
+}
+
+
+
+/*
+-----------------------------------------------------------------------------
+Breadcrumbs
+-----------------------------------------------------------------------------
+*/
+#content #breadcrumbs {
+ color:#004d87;
+ font-size:90%;
+}
+#content #breadcrumbs a {
+ color:#555;
+}
+#content #breadcrumbs p {
+ padding:0 0 2px 0;
+}
+#content #breadcrumbs a.active,
+#content #breadcrumbs a:hover {
+ color:#000;
+ text-decoration:none;
+}
+
+
+/*
+-----------------------------------------------------------------------------
+Tag redefinitions
+-----------------------------------------------------------------------------
+*/
+h1,h2,h3,h4,h5,h6 {
+ font-family: Bitstream Vera Sans Bold, Arial, Helvetica, sans-serif;
+ line-height:1.1em;
+ color:#004d87;
+ font-weight:bold;
+ margin:0;
+ padding:10px 0;
+}
+h1 {
+ font-size:160%;
+ padding-bottom:9px;
+}
+h2 {
+ font-size:110%;
+ color:#000000;
+ text-transform:uppercase;
+ padding-bottom:7px;
+}
+h3 {
+ font-size:100%;
+ font-weight:bold;
+ color:#000000;
+ text-transform:uppercase;
+ padding-bottom:5px;
+}
+img {
+ border-width:0;
+ margin:0;
+ padding:5px 10px;
+ vertical-align:middle;
+}
+p {
+ margin:0;
+ padding:5px 0 5px 0;
+}
+ol {
+ margin-top:5px;
+ margin-bottom:5px;
+ margin-left:0px;
+ padding-left:2em;
+}
+ul {
+ margin-top:5px;
+ margin-bottom:5px;
+ margin-left:0px;
+ padding-left:1.5em;
+}
+a {
+ color:#004d87;
+ text-decoration:none;
+}
+a:hover {
+ text-decoration:underline;
+}
+dd {
+  padding-left:0;
+  padding-bottom:5px;
+  margin-left:1em;
+}
+table {
+ width:100%;
+ border-width:0;
+ border-color:#cdc;
+ font-size:100%;
+ cell-spacing:0;
+}
+td, th {
+ vertical-align:top;
+ padding:6px;
+}
+pre {
+ background-color:#eee;
+ padding:7px 12px 7px 12px;
+}
+
+/*
+-----------------------------------------------------------------------------
+Subnavigation - Secondary and Tertiary
+-----------------------------------------------------------------------------
+*/
+#subnavigation {
+ border-top:1px solid #B3B3B3;
+ border-bottom:1px solid #B3B3B3;
+ padding:0 0 10px 0;
+}
+#subnavigation ul.secondary {
+ list-style:none;
+ margin:0;
+ padding:0;
+}
+#subnavigation ul.secondary li {
+ padding:10px 0 0 0;
+ margin:0;
+ font-size:105%;
+ line-height:1em;
+ font-family: Bitstream Vera Sans Roman, Arial, Helvetica, sans-serif;
+ text-transform:uppercase;
+}
+#subnavigation ul.secondary li a {
+ width:200px;
+ display:block;
+ padding:0 0 0 15px;
+}
+#subnavigation ul.secondary li a.active,
+#subnavigation ul.secondary li a:hover {
+  background-image:url(../../images/left_arrow_orange_left.gif);
+  background-repeat:no-repeat;
+  background-position:left;
+  text-decoration:none;
+}
+#subnavigation ul.tertiary {
+ list-style:none;
+ margin:0;
+ padding:0 0 0 15px;
+}
+#subnavigation ul.tertiary li {
+ padding:10px 0 0 0;
+ margin:0;
+ font-size:100%;
+ line-height:1em;
+ font-family: Bitstream Vera Sans Roman, Arial, Helvetica, sans-serif;
+ text-transform:capitalize;
+}
+#subnavigation ul.tertiary li a {
+ display:inline;
+ color:#6D6D6D;
+}
+#subnavigation ul.tertiary li a.active,
+#subnavigation ul.tertiary li a:hover {
+  display:inline;
+  background-image:none;
+  text-decoration:underline;
+}
+
+/*
+-----------------------------------------------------------------------------
+Lists
+-----------------------------------------------------------------------------
+*/
+p.listitem-title {
+ font-weight:bold;
+}
+p.listitem-subtitle {
+ font-size:90%;
+ padding-top:0px;
+ padding-bottom:8px;
+}
+
+/*
+-----------------------------------------------------------------------------
+Special Styles
+-----------------------------------------------------------------------------
+*/
+#three_main p.listitem-title {
+ font-size:110%;
+ font-weight:bold;
+}
+
+.three #content {
+ background-image:url(../images/green_lower.png);
+ min-height:400px;
+}
+.twoleft #content {
+ background-image:url(../../images/cols2_content_bg.gif);
+ background-repeat:repeat-y;
+ min-height:400px;
+}
+.twoleft #twoleft_main {
+ width:685px;
+}
+.twoleft #twoleft_right {
+ display:none;
+}
+.tworight #content {
+ background-image:url(../../images/home_content_bg.gif);
+ background-repeat:repeat-y;
+ min-height:400px;
+}
+.tworight #tworight_main {
+ width:685px;
+}
+.tworight #tworight_left {
+ display:none;
+}
+.description {
+ font-size:110%;
+ line-height:1.5em;
+}
+.side_link {
+ display:block;
+ padding:0 28px 0 0;
+ margin:0 0 10px 0;
+ background-image:url(../../images/arrow_orange_right.gif);
+ background-repeat:no-repeat;
+ background-position:right;
+ font-size:100%;
+ line-height:1em;
+ font-family: Bitstream Vera Sans Roman, Arial, Helvetica, sans-serif;
+ text-transform:uppercase;
+}
+--------------------------------------------------------------------------------
+Blue Box 
+--------------------------------------------------------------------------------
+*/
+.bluebox {
+ width:215px;
+ margin:20px 0 10px 0;
+}
+.bluebox .bluebox_head {
+ background-image:url(../../images/bluebox_head.png);
+ height:10px;
+ line-height:0;
+ font-size:0;
+}
+.bluebox .bluebox_content {
+ background-color:#0074bc;
+ padding:2px 10px 0 10px;
+ color:white;
+}
+.bluebox .bluebox_arrow {
+ display:block;
+ float:right;
+ padding:0 0 0 0px;
+ margin:2px 4px;
+ width:51px;
+ height:42px;
+ background-image:url(../../images/bluebox_arrow.gif);
+}
+.bluebox h1, .bluebox h2, .bluebox h3, .bluebox h4, .bluebox h5, .bluebox h6, .b
+luebox p, .bluebox li {
+ color:white;
+ padding:0 0 5px 0;
+}
+.bluebox a {
+ color:white;
+ font-weight:bold;
+ text-decoration:underline;
+}
+.bluebox .bluebox_foot {
+ height:10px;
+ line-height:0;
+ font-size:0;
+ background-image:url(../../images/bluebox_foot.png);
+}
+
+/*
+--------------------------------------------------------------------------------
+Sideboxes
+--------------------------------------------------------------------------------
+*/
+.sidebox_blue, .sidebox_orange, .sidebox_turquoise {
+ width:195px;
+ padding:5px 10px;
+ background-image:repeat-y;
+ line-height:1em;
+ margin:5px 0;
+}
+.sidebox_blue {
+ background-image:url(/images/sidebox_blue.gif);
+}
+.sidebox_orange {
+ background-image:url(/images/sidebox_orange.gif);
+}
+.sidebox_turquoise {
+ background-image:url(/images/sidebox_turquoise.gif);
+}
+.sidebox_blue .title, .sidebox_orange .title, .sidebox_turquoise .title {
+ color:white;
+ width:90px;
+
+at:left;
+ font-size:16px;
+ line-height:20px;
+}
+.sidebox_blue .description, .sidebox_orange .description, .sidebox_turquoise .de
+scription {
+ color:black;
+ width:100px;
+ float:right;
+ font-size:10px;
+}
+.sidebox_blue .description a, .sidebox_orange .description a, .sidebox_turquoise
+ .description a {
+ color:black;
+}
+
+/*
+--------------------------------------------------------------------------------
+Utility classes for floats and text alignment
+--------------------------------------------------------------------------------
+*/
+p.center {
+ text-align:center;
+}
+p.right {
+ text-align:right;
+}
+h3.download {
+ text-align:right;
+ padding-right:4px;
+}
+div.download {
+ margin:4px;
+ padding:5px;
+ float:left;
+ width:120px;
+ height:130px;
+}
+div.c2 {
+ padding:5px 8px 5px 8px;
+ border-color:#d3d3d3;
+ border-style:solid;
+ border-width:0 1px 0 1px;
+}
+img.right {
+ float:right;
+ clear:right;
+}
+img.left {
+ float:left;
+ clear:left;
+}
+img.middle {
+ vertical-align:middle;
+ padding:2px;
+}
+img.listitem-image {
+ padding: 6px;
+ float:left;
+}
+.red {
+ color:#f22;
+ font-weight:bold;
+}
+img.flickr {
+ float:none;
+ padding:4px;
+ width:75px;
+ height:75px;
+ border-width:0;
+}

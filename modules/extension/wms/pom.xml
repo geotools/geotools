@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- =======================================================================    
+        Maven Project Configuration File                                        
+                                                                                
+        The Geotools Project                                                    
+            http://www.geotools.org/                                            
+                                                                                
+        Version: $Id$              
+     ======================================================================= -->
+  <project xmlns="http://maven.apache.org/POM/4.0.0" 
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                               http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.geotools</groupId>
+    <artifactId>extension</artifactId>
+    <version>2.7-SNAPSHOT</version>
+  </parent>
+
+
+  <!-- =========================================================== -->
+  <!--     Module Description                                      -->
+  <!-- =========================================================== -->
+  <groupId>org.geotools</groupId>
+  <artifactId>gt-wms</artifactId>
+  <packaging>jar</packaging>
+  <name>Web Map Server client</name>
+  
+
+  <scm>
+    <connection>
+      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/plugin/wms/
+    </connection>
+    <url>http://svn.osgeo.org/geotools/trunk/modules/plugin/wms/</url>
+  </scm>
+
+  <description>
+    An OGC Web Map Server client implementation that can be used directly or as 
+    through the GridCoverageExchange API. Direct usage is recommended, as the
+    GridCoverageExchange access for WMS is not well tested and is complicated to
+    use. It supports WMS versions 1.0.0, 1.1.0, 1.1.1, and 1.3.0.
+  </description>
+
+  <licenses>
+    <license>
+      <name>Lesser General Public License (LGPL)</name>
+      <url>http://www.gnu.org/copyleft/lesser.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+
+  <!-- =========================================================== -->
+  <!--     Developers and Contributors                             -->
+  <!-- =========================================================== -->
+  <developers>
+    <developer>
+      <name>Jody Garnett</name>
+      <id>jive</id>
+      <email>jody.garnett@gmail.com</email>
+      <organization>LISAsoft</organization>
+      <roles>
+        <role>Java Developer</role>
+        <role>Module Maintainer</role>
+        <role>Project Management Committee (PMC) Member</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Richard Gould</name>
+      <id>rgould</id>
+      <email>rwgould@gmail.com</email>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+  </developers>
+
+
+  <!-- =========================================================== -->
+  <!--     Dependency Management                                   -->
+  <!-- =========================================================== -->
+  <dependencies>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-main</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-coverage</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-referencing</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+        <groupId>org.geotools</groupId>
+        <artifactId>gt-xml</artifactId>
+        <version>${project.version}</version>
+        <exclusions>
+            <exclusion>
+                <groupId>org.geotools</groupId>
+                <artifactId>gt-wfs</artifactId>                
+            </exclusion>
+            <exclusion>
+                <groupId>org.geotools.xsd</groupId>
+                <artifactId>gt-xsd-wfs</artifactId>                
+            </exclusion>
+            <exclusion>
+                <groupId>org.geotools.ogc</groupId>
+                <artifactId>net.opengis.wfs</artifactId>
+            </exclusion>
+        </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-render</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-epsg-wkt</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-sample-data</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+
+  <!-- =========================================================== -->
+  <!--     Build Configuration                                     -->
+  <!-- =========================================================== -->
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <excludes>
+            <!-- The following tests are skipped because they do not extend OnlineTestCase -->
+            <exclude>**/LocalGeoServerOnlineTest.java</exclude>
+            <exclude>**/WMSReaderOnlineTest.java</exclude>
+            <exclude>**/WebMapServerOnlineTest.java</exclude>
+            <exclude>**/WMS1_0_0_OnlineTest.java</exclude>
+            <exclude>**/WMS1_1_0_OnlineTest.java</exclude>
+            <exclude>**/WMS1_1_1_OnlineTest.java</exclude>
+            <exclude>**/WMS1_3_0_OnlineTest.java</exclude>
+            <!-- The following tests fail -->
+            <exclude>**/Geot553Test.java</exclude>
+            <exclude>**/WMSSchemaTest.java</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

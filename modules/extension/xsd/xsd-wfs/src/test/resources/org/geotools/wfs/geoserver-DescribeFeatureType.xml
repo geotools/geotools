@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:gml="http://www.opengis.net/gml" xmlns:sf="http://cite.opengeospatial.org/gmlsf" elementFormDefault="qualified" targetNamespace="http://cite.opengeospatial.org/gmlsf">
+  <xsd:import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+  <xsd:element name="PrimitiveGeoFeature" substitutionGroup="gml:_Feature" type="sf:PrimitiveGeoFeatureType">
+    <xsd:annotation/>
+  </xsd:element>
+  <xsd:complexType name="PrimitiveGeoFeatureType">
+    <xsd:complexContent>
+      <xsd:extension base="gml:AbstractFeatureType">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="surfaceProperty" type="gml:SurfacePropertyType"/>
+          <xsd:element minOccurs="0" name="pointProperty" type="gml:PointPropertyType"/>
+          <xsd:element minOccurs="0" name="curveProperty" type="gml:CurvePropertyType"/>
+          <xsd:element name="intProperty" type="xsd:integer"/>
+          <xsd:element minOccurs="0" name="uriProperty" type="xsd:anyURI"/>
+          <xsd:element name="measurand" type="xsd:float"/>
+          <xsd:element minOccurs="0" name="dateTimeProperty" type="xsd:dateTime"/>
+          <xsd:element minOccurs="0" name="dateProperty" type="xsd:date"/>
+          <xsd:element name="decimalProperty">
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:decimal">
+                <xsd:totalDigits value="4"/>
+                <xsd:fractionDigits value="2"/>
+              </xsd:restriction>
+            </xsd:simpleType>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+</xsd:schema>

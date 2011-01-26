@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- =======================================================================
+        Maven Project Configuration File
+
+        The Geotools Project
+            http://www.geotools.org/
+
+        Version: $Id: pom.xml 33188 2009-05-30 19:48:33Z aaime $
+     ======================================================================= -->
+  <project xmlns="http://maven.apache.org/POM/4.0.0"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                               http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.geotools</groupId>
+    <artifactId>unsupported</artifactId>
+    <version>2.7-SNAPSHOT</version>
+  </parent>
+
+  <!-- =========================================================== -->
+  <!--     Module Description                                      -->
+  <!-- =========================================================== -->
+  <groupId>org.geotools</groupId>
+  <artifactId>gt-jai-tools</artifactId>
+  <packaging>jar</packaging>
+  <name>Jai-Tools Operations module</name>
+  
+
+  <description>
+    A module working as a Bridge to jai-tools operations
+  </description>
+
+  <licenses>
+    <license>
+      <name>Lesser General Public License (LGPL)</name>
+      <url>http://www.gnu.org/copyleft/lesser.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+
+  <!-- =========================================================== -->
+  <!--     Developers and Contributors                             -->
+  <!-- =========================================================== -->
+  <developers>
+    <developer>
+      <name>Simone Giannecchini</name>
+      <id>simboss</id>
+      <email>simone.giannecchini@geo-solutions.it</email>
+      <organization>GeoSolutions S.A.S.</organization>
+      <organizationUrl>http://www.geo-solutions.it</organizationUrl>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>  
+    <developer>
+      <name>Daniele Romagnoli</name>
+      <id>danieler</id>
+      <email>daniele.romagnoli@geo-solutions.it</email>
+      <organization>GeoSolutions S.A.S.</organization>
+      <organizationUrl>http://www.geo-solutions.it</organizationUrl>
+      <roles>
+        <role>Java Developer</role>
+        <role>Documentation</role>
+        <role>Module Maintainer</role>
+      </roles>
+    </developer>  
+    <developer>
+      <name>Michael Bedward</name>
+      <id>mbedward</id>
+      <email>michael.bedward@gmail.com</email>
+      <organization>Dept Environment and Climate Change</organization>
+      <organizationUrl>http://www.environment.nsw.gov.au</organizationUrl>
+      <timezone>+10</timezone>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+   </developers>
+
+
+  <!-- =========================================================== -->
+  <!--     Dependency Management                                   -->
+  <!-- =========================================================== -->
+  <dependencies>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-coverage</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+       <groupId>com.googlecode.jaitools</groupId>
+       <artifactId>zonalstats</artifactId>
+       <version>1.0.1</version>
+     </dependency>
+     <dependency>
+       <groupId>com.googlecode.jaitools</groupId>
+       <artifactId>utils</artifactId>
+       <version>1.0.1</version>
+     </dependency>
+    <dependency>
+      <groupId>javax.media</groupId>
+      <artifactId>jai_imageio</artifactId>
+      <!-- The version number is specified in the parent POM. -->
+      <scope>provided</scope>  <!-- Users should execute JAI installer. -->
+    </dependency>
+    <dependency>
+      <groupId>javax.media</groupId>
+      <artifactId>jai_codec</artifactId>
+      <!-- The version number is specified in the parent POM. -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-geotiff</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+     <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-epsg-hsql</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-shapefile</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-sample-data</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+</project>

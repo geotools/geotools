@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<swe:GridDefinition gml:id="rd2" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xst="http://www.seegrid.csiro.au/xml/st" xmlns:swe="http://www.opengis.net/swe" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gml="http://www.opengis.net/gml"
+          xsi:schemaLocation="http://www.opengis.net/swe ../recordSchema.xsd http://www.seegrid.csiro.au/xml/st ../../../sweCommon/1.0.30/simpleTypeDerivation.xsd">
+	<gml:description>This describes how to unpack an array and assign the atomic values to components of a set of map vectors</gml:description>
+	<gml:name>result definition 2</gml:name>
+	<swe:map>
+		<swe:Array gml:id="et" arrayLength="3">
+			<gml:name>eventTime</gml:name>
+			<swe:member xlink:href="#ti1"/>
+			<swe:member xlink:href="#ti2"/>
+			<swe:member xlink:href="#ti3"/>
+		</swe:Array>
+	</swe:map>
+	<swe:map>
+		<swe:Array gml:id="tl" arrayLength="3">
+			<gml:name>targetLocation</gml:name>
+			<swe:member xlink:href="#p1"/>
+			<swe:member xlink:href="#p2"/>
+			<swe:member xlink:href="#p3"/>
+		</swe:Array>
+	</swe:map>
+	<swe:tupleMap>
+		<swe:RecordDefinition gml:id="record2" recordLength="2">
+			<gml:name>Record 2</gml:name>
+			<swe:component>
+				<swe:ItemDefinition gml:id="r2c1">
+					<gml:name>fruit species</gml:name>
+					<swe:property xlink:href="urn:x-seegrid:definition:phenomenon:fruitSpecies"/>
+					<swe:representation>
+						<swe:General>
+							<xst:restriction base="xs:string"/>
+							<swe:classification xlink:href="urn:x-seegrid:dictionary:fruitSpecies"/>
+						</swe:General>
+					</swe:representation>
+				</swe:ItemDefinition>
+			</swe:component>
+			<swe:component>
+				<swe:ItemDefinition gml:id="r2c2">
+					<gml:name>mass</gml:name>
+					<swe:property xlink:href="http://sweet.jpl.nasa.gov/ontology/property.owl#Mass"/>
+					<swe:representation>
+						<swe:General>
+							<xst:restriction base="xs:double"/>
+							<gml:unitOfMeasure uom="kg"/>
+						</swe:General>
+					</swe:representation>
+				</swe:ItemDefinition>
+			</swe:component>
+		</swe:RecordDefinition>
+	</swe:tupleMap>
+</swe:GridDefinition>

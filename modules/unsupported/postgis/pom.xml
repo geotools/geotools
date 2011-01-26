@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- =======================================================================    
+  Maven Project Configuration File                                        
+  
+  The Geotools Project                                                    
+  http://www.geotools.org/                                            
+  
+  Version: $Id$              
+  ======================================================================= -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                               http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.geotools</groupId>
+    <artifactId>unsupported</artifactId>
+    <version>2.7-SNAPSHOT</version>
+  </parent>
+
+
+  <!-- =========================================================== -->
+  <!--     Module Description                                      -->
+  <!-- =========================================================== -->
+  <groupId>org.geotools</groupId>
+  <artifactId>gt-postgis</artifactId>
+  <packaging>jar</packaging>
+  <name>PostGIS module</name>
+  
+
+  <scm>
+    <connection>
+      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/plugin/postgis/
+    </connection>
+    <url>http://svn.osgeo.org/geotools/trunk/modules/plugin/postgis/</url>
+  </scm>
+
+  <description>
+    Used to extract and edit features from a PostGIS database. PostGIS
+    was developed by Refractions Research. It is an extension to the
+    excellent Postgresql database, adding support for Geographic
+    objects. It is open source and freely available.
+  </description>
+
+  <licenses>
+    <license>
+      <name>Lesser General Public License (LGPL)</name>
+      <url>http://www.gnu.org/copyleft/lesser.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+
+  <!-- =========================================================== -->
+  <!--     Developers and Contributors                             -->
+  <!-- =========================================================== -->
+  <developers>
+    <developer>
+      <name>Rob Hranac</name>
+      <id>robhranac</id>
+      <email>robhranac@users.sourceforge.net</email>
+      <organization>VFNY</organization>
+      <roles>
+        <role>Module Maintainer</role>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Chris Holmes</name>
+      <id>cholmesny</id>
+      <email>cholmesny@users.sourceforge.net</email>
+      <organization>TOPP</organization>
+      <roles>
+        <role>Module Maintainer</role>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Justin Deoliveira</name>
+      <id>jdeolive</id>
+      <email>jdeolive@users.sourceforge.net</email>
+      <organization>TOPP</organization>
+      <roles>
+        <role>Module Maintainer</role>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+  </developers>
+
+
+  <!-- =========================================================== -->
+  <!--     Dependency Management                                   -->
+  <!-- =========================================================== -->
+  <dependencies>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-jdbc</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-referencing</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-epsg-wkt</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-sample-data</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <!-- The version number is specified in the parent POM. -->
+    </dependency>
+    <dependency>
+      <groupId>org.postgis</groupId>
+      <artifactId>postgis-driver</artifactId>
+      <!-- The version number is specified in the parent POM. -->
+    </dependency>
+    <dependency>
+      <!-- TODO: this dependency should appears in wkb4j -->
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <!-- The version number is specified in the parent POM. -->
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.easymock</groupId>
+      <artifactId>easymock</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.easymock</groupId>
+      <artifactId>easymockclassextension</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <excludes>
+            <!-- the following tests either fail, or do not extend PostgisOnlineTestCase -->
+            <exclude>**/Postgis3DTest.java</exclude>
+            <exclude>**/PostgisFeatureCollectionOnlineTest.java</exclude>
+            <exclude>**/PostgisAlternateSchemaOnlineTest.java</exclude>
+            <exclude>**/PostgisDataStoreAPIOnlineTest.java</exclude>
+            <exclude>**/PostgisDataStoreFactoryOnlineTest.java</exclude>
+            <exclude>**/PostgisFeatureReaderOnlineTest.java</exclude>
+            <exclude>**/PostgisFeatureStoreOnlineTest.java</exclude>
+            <exclude>**/PostgisFeatureWriterOnlineTest.java</exclude>
+            <exclude>**/PostgisWithoutGeosOnlineTest.java</exclude>
+            <exclude>**/PostgisAuthorityFactoryOnlineTest.java</exclude>
+            <exclude>${online.skip.pattern}</exclude>
+            <exclude>${stress.skip.pattern}</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+
+      <!-- build test jar so that tests can be shared with postgis versioned datastore -->
+      <plugin>
+        <artifactId>maven-jar-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>test-jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

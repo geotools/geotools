@@ -1,0 +1,1296 @@
+<wfs:FeatureCollection xmlns:wfs="http://www.opengis.net/wfs"
+    xmlns:topp="http://www.openplans.org/topp"
+    xmlns:gml="http://www.opengis.net/gml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://www.opengis.net/wfs ../wfs/WFS-basic.xsd
+    http://www.openplans.org/topp roadSchema.xsd">
+    <gml:boundedBy>
+        <gml:Box srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+            <gml:coordinates decimal="." cs=","
+                ts=" ">489153.04867119,5433016.8189323 521887.26079768,5460816.94030219</gml:coordinates>
+        </gml:Box>
+    </gml:boundedBy>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.1">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">494475.71056415,5433016.8189323 494982.70115662,5435041.95096618</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>2163.48</topp:LENGTH>
+            <topp:BTRN_BC_ID>13166</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.2">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">494982.70115662,5435041.95096618
+                                494018.49865972,5435062.7013022
+                                492601.5407064,5435063.8891422 490914.68912083,5433621.42949286</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>4605.96</topp:LENGTH>
+            <topp:BTRN_BC_ID>13161</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.3">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">510552.24024312,5437026.92991203
+                                510558.78155512,5436412.55858346
+                                509959.25003457,5435486.7110306
+                                508448.96062516,5434395.25810158
+                                508125.00798486,5433684.29899692 508251.88158498,5433020.2186123</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>6767.57</topp:LENGTH>
+            <topp:BTRN_BC_ID>13175</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.4">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">511845.99870832,5437859.31903281
+                                512374.91109282,5437220.98200821
+                                513777.02923812,5435518.97931863 515790.569592,5433036.56165231</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>11451.0</topp:LENGTH>
+            <topp:BTRN_BC_ID>13170</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.5">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">507216.38820801,5438943.69816982
+                                507067.47812787,5438666.64063356
+                                506180.75147105,5437409.72978439
+                                503607.79172465,5437270.40024826
+                                500399.98884166,5437280.89010427
+                                499246.51837659,5437284.28159227
+                                498448.33085585,5436989.488376
+                                498356.87946376,5436026.0682151
+                                498148.68797557,5435191.06175032
+                                497742.27056719,5434982.44018213 494982.70115662,5435041.95096618</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>14702.5</topp:LENGTH>
+            <topp:BTRN_BC_ID>13137</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.6">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">507216.38820801,5438943.69816982 508497.2196972,5438994.27148186</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>1283.8</topp:LENGTH>
+            <topp:BTRN_BC_ID>13125</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.7">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">508497.2196972,5438994.27148186
+                                509498.97022614,5438697.34015359
+                                510547.12024311,5437633.1583926 510552.24024312,5437026.92991203</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>3146.29</topp:LENGTH>
+            <topp:BTRN_BC_ID>13174</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.8">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">508497.2196972,5438994.27148186
+                                508761.94827345,5439003.61036187
+                                510535.5408511,5438849.87928973
+                                511387.7996679,5438409.78047332 511845.99870832,5437859.31903281</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>3724.8</topp:LENGTH>
+            <topp:BTRN_BC_ID>13133</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.9">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">494982.70115662,5435041.95096618
+                                495295.43075691,5436291.32107934
+                                495617.60163721,5438322.87973724 495517.99101312,5439040.1180099</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>4066.2</topp:LENGTH>
+            <topp:BTRN_BC_ID>13157</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.10">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">495517.99101312,5439040.1180099
+                                496684.4908542,5438715.2191936
+                                499234.09930458,5438496.8982974
+                                500388.52823365,5438518.70949742
+                                502704.07076381,5438561.04165746
+                                506836.54974366,5438929.9192258 507216.38820801,5438943.69816982</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>11787.3</topp:LENGTH>
+            <topp:BTRN_BC_ID>13135</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.11">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">507216.38820801,5438943.69816982
+                                507505.04971228,5439234.73945009
+                                507758.69860852,5439212.44901807 508497.2196972,5438994.27148186</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>1436.21</topp:LENGTH>
+            <topp:BTRN_BC_ID>13126</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.12">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">495517.99101312,5439040.1180099
+                                495464.48086907,5439423.54047426
+                                495061.88912469,5439941.54111474 494738.44029239,5440357.94866713</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>1570.33</topp:LENGTH>
+            <topp:BTRN_BC_ID>13128</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.13">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">494738.44029239,5440357.94866713
+                                494661.07914032,5440457.51013923
+                                494206.8982759,5441100.18892382 494163.79197186,5441253.67013997</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>1072.43</topp:LENGTH>
+            <topp:BTRN_BC_ID>13130</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.14">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">500605.53021785,5447947.9185942 500633.12906588,5447953.66937821</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>28.2327</topp:LENGTH>
+            <topp:BTRN_BC_ID>13063</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.15">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">492475.31017828,5441853.84063653
+                                492494.3401943,5444766.55129524
+                                492541.39913834,5446600.03148895
+                                492659.49091445,5447822.69158608 493069.93878684,5448214.40845045</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>6538.86</topp:LENGTH>
+            <topp:BTRN_BC_ID>13113</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.16">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">494163.79197186,5441253.67013997
+                                493820.85846754,5442463.25170909
+                                493528.01904326,5444796.73881527
+                                493562.3885793,5446506.72051286
+                                493180.98953894,5447897.48045015 493069.93878684,5448214.40845045</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>7093.12</topp:LENGTH>
+            <topp:BTRN_BC_ID>13131</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.17">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">511845.99870832,5437859.31903281
+                                511859.76946034,5438004.10034494
+                                512100.40946056,5439196.97842605
+                                511763.46021225,5441040.92799577
+                                510870.49125141,5443775.02028632
+                                510520.50853109,5445498.53926392
+                                510574.30949114,5447437.29075373
+                                510654.39857921,5448285.08902652 510671.99089923,5448469.90873869</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>10842.0</topp:LENGTH>
+            <topp:BTRN_BC_ID>13132</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.18">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">510671.99089923,5448469.90873869
+                                512612.47090104,5447378.36160167
+                                513821.45855016,5446663.97004901
+                                514294.9397666,5446257.79020863
+                                517069.48005719,5444557.61843104
+                                519219.22060319,5443208.65817379 521887.26079768,5441527.29932422</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>30298.5</topp:LENGTH>
+            <topp:BTRN_BC_ID>13138</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.19">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">493069.93878684,5448214.40845045 492825.16182661,5448917.5892511</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>744.269</topp:LENGTH>
+            <topp:BTRN_BC_ID>13067</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.20">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">493069.93878684,5448214.40845045
+                                493368.56176311,5448498.97805071
+                                494167.72003586,5448796.65075499
+                                495871.88950945,5449132.3179553
+                                499852.57892115,5447780.24064205
+                                500333.4779936,5447887.40019414 500605.53021785,5447947.9185942</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>7987.3</topp:LENGTH>
+            <topp:BTRN_BC_ID>13066</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.21">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">515181.26091943,5449357.17197151
+                                515336.85976757,5449205.77971537
+                                517487.48095358,5447665.33964994
+                                519808.83980374,5446598.61017694 521870.72934166,5445700.25907211</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>34974.6</topp:LENGTH>
+            <topp:BTRN_BC_ID>13141</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.22">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">521865.06866965,5447128.46873744
+                                520382.18150027,5447271.21024157
+                                519773.00799571,5447570.93094585
+                                518900.06847489,5447775.84153804 515181.26091943,5449357.17197151</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>39779.3</topp:LENGTH>
+            <topp:BTRN_BC_ID>13099</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.23">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">508620.14065732,5449756.08141188
+                                507900.01060865,5448898.94016309
+                                507577.77828835,5448191.47085043
+                                507381.82155217,5447476.82944176
+                                506750.27979158,5446192.04121657
+                                505367.92075029,5445098.56076755
+                                505194.99172613,5444629.01990311
+                                505624.24023853,5443744.71807829
+                                505523.97015844,5442666.83110128
+                                505572.79857448,5441817.57874849
+                                505770.83198267,5441196.03941991
+                                506442.17047929,5440173.44025096 507216.38820801,5438943.69816982</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>12575.6</topp:LENGTH>
+            <topp:BTRN_BC_ID>13127</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.24">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">508620.14065732,5449756.08141188
+                                509352.071282,5449383.12013154
+                                510550.45029112,5448538.34061075 510671.99089923,5448469.90873869</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>2429.18</topp:LENGTH>
+            <topp:BTRN_BC_ID>13046</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.25">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">500633.12906588,5447953.66937821
+                                500639.30992989,5447955.18899421
+                                502453.96081158,5449515.56838766 503059.61175614,5449830.32960396</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>3084.2</topp:LENGTH>
+            <topp:BTRN_BC_ID>13064</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.26">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">508015.32939276,5450065.32941217 508620.14065732,5449756.08141188</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>679.969</topp:LENGTH>
+            <topp:BTRN_BC_ID>13028</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.27">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">492825.16182661,5448917.5892511
+                                492777.84893056,5449051.77011523 492078.26851391,5450124.14797223</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>1422.61</topp:LENGTH>
+            <topp:BTRN_BC_ID>13068</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.28">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">507341.72990413,5450411.5601965 508015.32939276,5450065.32941217</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>758.112</topp:LENGTH>
+            <topp:BTRN_BC_ID>13027</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.29">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">515181.26091943,5449357.17197151
+                                514117.39045444,5449809.41133194
+                                513000.7307414,5450157.23136426
+                                512127.18910859,5450360.58138045
+                                510353.96926693,5450523.0615086
+                                508763.38187345,5449928.24038805 508620.14065732,5449756.08141188</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>6933.59</topp:LENGTH>
+            <topp:BTRN_BC_ID>13025</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.30">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">503059.61175614,5449830.32960396
+                                503263.49015633,5449936.14157205
+                                504844.7591498,5450409.34016449
+                                506159.71851103,5450783.62035684 506305.49105516,5450944.81843699</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>3468.83</topp:LENGTH>
+            <topp:BTRN_BC_ID>13031</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.31">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">506305.49105516,5450944.81843699 507341.72990413,5450411.5601965</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>1166.54</topp:LENGTH>
+            <topp:BTRN_BC_ID>13026</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.32">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">512643.69061307,5451820.01894981 515181.26091943,5449357.17197151</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>3537.72</topp:LENGTH>
+            <topp:BTRN_BC_ID>13024</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.33">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">503059.61175614,5449830.32960396
+                                502997.63108408,5449835.87149196 504575.25873355,5451859.79930184</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>2628.89</topp:LENGTH>
+            <topp:BTRN_BC_ID>13032</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.34">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">504575.25873355,5451859.79930184
+                                504961.74910191,5451640.02022964 506305.49105516,5450944.81843699</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>1959.41</topp:LENGTH>
+            <topp:BTRN_BC_ID>13018</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.35">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">512173.03973263,5452281.74874224
+                                512530.42802096,5451930.13171791 512643.69061307,5451820.01894981</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>659.601</topp:LENGTH>
+            <topp:BTRN_BC_ID>13023</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.36">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">517928.09176999,5453045.64864695
+                                518118.78924217,5453008.21120691 521843.20831763,5452644.51098258</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>26081.8</topp:LENGTH>
+            <topp:BTRN_BC_ID>13080</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.37">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">506305.49105516,5450944.81843699
+                                508018.72907276,5452849.58951077 508716.81035341,5453265.73082316</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>3376.08</topp:LENGTH>
+            <topp:BTRN_BC_ID>13017</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.38">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">516774.05196091,5453273.16915916 517928.09176999,5453045.64864695</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>1177.77</topp:LENGTH>
+            <topp:BTRN_BC_ID>13079</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.39">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">508716.81035341,5453265.73082316
+                                509103.73080177,5453497.67091937
+                                510279.18040286,5453762.41997562 510649.29086721,5453798.35008765</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>2030.28</topp:LENGTH>
+            <topp:BTRN_BC_ID>12993</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.40">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">510649.29086721,5453798.35008765 512173.03973263,5452281.74874224</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>2150.71</topp:LENGTH>
+            <topp:BTRN_BC_ID>13022</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.41">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">511701.52869219,5453882.87104773
+                                514283.17195859,5453752.01203961
+                                514362.08959067,5453747.8914636 516774.05196091,5453273.16915916</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>5128.99</topp:LENGTH>
+            <topp:BTRN_BC_ID>13077</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.42">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">510649.29086721,5453798.35008765
+                                511567.47890006,5453889.15021574 511701.52869219,5453882.87104773</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>1058.28</topp:LENGTH>
+            <topp:BTRN_BC_ID>12987</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.43">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">509968.54795457,5454329.90848814
+                                510314.1192829,5454135.20103196 510649.29086721,5453798.35008765</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>872.383</topp:LENGTH>
+            <topp:BTRN_BC_ID>12988</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.44">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">519727.07954766,5454347.66055216
+                                520750.76006062,5453872.07808772 521839.09183763,5453682.35136754</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>11521.1</topp:LENGTH>
+            <topp:BTRN_BC_ID>12992</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.45">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">504575.25873355,5451859.79930184
+                                504893.48106985,5452269.50989423
+                                506153.05022302,5453402.47168728
+                                507287.33912008,5454549.85959235 507384.68056017,5454629.62100042</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>3953.82</topp:LENGTH>
+            <topp:BTRN_BC_ID>13001</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.46">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">507384.68056017,5454629.62100042
+                                508011.68804875,5454103.32186393
+                                508470.57931318,5453557.84935143 508716.81035341,5453265.73082316</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>1914.21</topp:LENGTH>
+            <topp:BTRN_BC_ID>12994</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.47">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">518885.04025088,5454784.26138457
+                                519042.56831503,5454666.05082446 519727.07954766,5454347.66055216</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>952.774</topp:LENGTH>
+            <topp:BTRN_BC_ID>12991</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.48">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">495444.68080505,5456606.78068227
+                                496892.3218944,5456967.6792426 498064.85104749,5457154.42817078</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>2682.59</topp:LENGTH>
+            <topp:BTRN_BC_ID>12963</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.49">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">498064.85104749,5457154.42817078
+                                497998.61872743,5456477.76897015
+                                498068.32855149,5454569.54087237
+                                498515.82064791,5453891.75117574
+                                499114.49200847,5453453.52832733
+                                499875.95069718,5453378.21927126
+                                500314.98045758,5453283.45011917
+                                502010.13873116,5452919.45088683
+                                503383.33092444,5452537.99040648 504575.25873355,5451859.79930184</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>9894.16</topp:LENGTH>
+            <topp:BTRN_BC_ID>12997</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.50">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">498064.85104749,5457154.42817078
+                                498845.45853622,5457279.99924289
+                                500295.34832957,5457135.27117876
+                                501257.49053846,5457038.90049067
+                                502247.05956338,5456687.68077834
+                                502615.22033173,5456523.95137019
+                                503328.44042839,5455946.55872965
+                                504697.76190167,5455558.24973729
+                                505458.27031837,5455483.89095322
+                                506827.80887965,5455098.28941686 507384.68056017,5454629.62100042</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>9934.52</topp:LENGTH>
+            <topp:BTRN_BC_ID>12961</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.51">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">514311.45893462,5457543.04026714
+                                514017.00159035,5456797.30202644
+                                512133.41912459,5454461.36141627
+                                511831.99038831,5453989.37933583 511701.52869219,5453882.87104773</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>4531.45</topp:LENGTH>
+            <topp:BTRN_BC_ID>12986</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.52">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">514311.45893462,5457543.04026714
+                                514342.12159065,5457523.60884312
+                                514938.0404392,5457086.31169071
+                                515743.89976795,5456729.57876238
+                                516038.91826423,5456597.72033026
+                                517724.5983938,5455549.18938528
+                                518091.69010614,5455387.45063313 518885.04025088,5454784.26138457</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>5367.22</topp:LENGTH>
+            <topp:BTRN_BC_ID>12989</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.53">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">513618.91954197,5457976.40116354 514311.45893462,5457543.04026714</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>817.611</topp:LENGTH>
+            <topp:BTRN_BC_ID>12950</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.54">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">513618.91954197,5457976.40116354
+                                514125.79135045,5457925.27079549
+                                514353.72146266,5457649.51169124 514311.45893462,5457543.04026714</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>982.473</topp:LENGTH>
+            <topp:BTRN_BC_ID>12949</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.55">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">498099.63837552,5457997.54881156
+                                498097.16848752,5457481.35860308 498064.85104749,5457154.42817078</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>844.292</topp:LENGTH>
+            <topp:BTRN_BC_ID>12962</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.56">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">509968.54795457,5454329.90848814
+                                510096.06872269,5454531.98874433
+                                511439.81067594,5456543.87021821
+                                512330.76030877,5457848.67149942 512945.14802135,5458010.79937157</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>4874.67</topp:LENGTH>
+            <topp:BTRN_BC_ID>12983</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.57">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">512945.14802135,5458010.79937157
+                                513240.35083762,5458012.38861958 513618.91954197,5457976.40116354</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>676.355</topp:LENGTH>
+            <topp:BTRN_BC_ID>12936</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.58">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">498099.63837552,5457997.54881156
+                                500294.32023356,5458061.58977162
+                                500974.8706342,5458081.09082764
+                                503233.4500923,5457603.32929119
+                                506912.55102373,5455973.87904968
+                                508981.80107366,5454890.76967267 509968.54795457,5454329.90848814</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>12693.3</topp:LENGTH>
+            <topp:BTRN_BC_ID>12954</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.59">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">512945.14802135,5458010.79937157
+                                513378.34098175,5458125.36039568 513618.91954197,5457976.40116354</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>731.8</topp:LENGTH>
+            <topp:BTRN_BC_ID>12937</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.60">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">497443.77866291,5459031.42017252
+                                497863.3401353,5459024.87886052 498105.34000753,5459035.97902053</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>662.716</topp:LENGTH>
+            <topp:BTRN_BC_ID>12944</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.61">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">498105.34000753,5459035.97902053 498099.63837552,5457997.54881156</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>1037.92</topp:LENGTH>
+            <topp:BTRN_BC_ID>12955</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.62">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">491318.05910521,5459050.76967654 492946.51811472,5459074.08001256</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>1630.73</topp:LENGTH>
+            <topp:BTRN_BC_ID>12951</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.63">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">492946.51811472,5459074.08001256 493100.54000287,5459076.11982057</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>154.238</topp:LENGTH>
+            <topp:BTRN_BC_ID>12952</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.64">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">493100.54000287,5459076.11982057
+                                493505.38045124,5459082.07950057 497443.77866291,5459031.42017252</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>4349.25</topp:LENGTH>
+            <topp:BTRN_BC_ID>12953</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.65">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">498105.34000753,5459035.97902053
+                                499663.76970498,5459099.16801259
+                                500290.87959356,5459090.02164458
+                                504139.41975715,5459035.74145253
+                                504911.56900587,5459087.73198058
+                                508330.91800105,5458750.77044426
+                                510812.74993936,5457998.74893956 512945.14802135,5458010.79937157</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>14990.3</topp:LENGTH>
+            <topp:BTRN_BC_ID>12938</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.66">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">497314.61130279,5459507.58836497 497443.77866291,5459031.42017252</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>493.196</topp:LENGTH>
+            <topp:BTRN_BC_ID>12948</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.67">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">498109.84970353,5459824.81946926 498105.34000753,5459035.97902053</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>788.466</topp:LENGTH>
+            <topp:BTRN_BC_ID>12942</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.68">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">498115.37111154,5460806.54875018 498109.84970353,5459824.81946926</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>1392.5</topp:LENGTH>
+            <topp:BTRN_BC_ID>12941</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.69">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">497267.38032675,5460806.90919818
+                                497187.16835867,5459980.54938941 497314.61130279,5459507.58836497</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>1885.38</topp:LENGTH>
+            <topp:BTRN_BC_ID>12947</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.70">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:lineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">492078.26851391,5450124.14797223
+                                491994.52988984,5450253.56928435
+                                491302.92028919,5451077.38138112
+                                490702.65148863,5451516.71014953
+                                489898.31996788,5452485.43872643
+                                489628.00854363,5453653.51962352
+                                490086.53116806,5458289.24954783
+                                489597.8988476,5459859.5289733 489153.04867119,5460816.94030219</gml:coordinates>
+                        </gml:lineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>12726.1</topp:LENGTH>
+            <topp:BTRN_BC_ID>13069</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+</wfs:FeatureCollection>

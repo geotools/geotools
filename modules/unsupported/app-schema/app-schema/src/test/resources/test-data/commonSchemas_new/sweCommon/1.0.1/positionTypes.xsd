@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://www.opengis.net/swe/1.0.1" xmlns:gml="http://www.opengis.net/gml" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:swe="http://www.opengis.net/swe/1.0.1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.1">
+	<xs:annotation>
+		<xs:documentation>Schema for defining position data (location, orientation, etc...) based on aggregate data types
+
+				Copyright (c) 2007 OGC, All Rights Reserved.
+				For conditions, see OGC Software Notice - http://www.opengeospatial.org/legal/
+		</xs:documentation>
+	</xs:annotation>
+	<!-- ================================================= -->
+	<xs:import namespace="http://www.opengis.net/gml" schemaLocation="../../gml/3.1.1/base/gml.xsd"/>
+	<xs:include schemaLocation="./aggregateTypes.xsd"/>
+	<!-- ================================================= -->
+	<xs:element name="Position" type="swe:PositionType" substitutionGroup="swe:AbstractDataRecord">
+		<xs:annotation>
+			<xs:documentation>Position is given as a group of Vectors/Matrices, each of which can specify location, orientation, velocity, angularVelocity, acceleration or angularAcceleration or a combination of those in a composite state Vector. Each Vector can have a separate frame of reference or inherit the frame from the parent Position object.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<!-- ........ -->
+	<xs:complexType name="PositionType">
+		<xs:complexContent>
+			<xs:extension base="swe:AbstractVectorType">
+				<xs:sequence>
+					<xs:element name="time" type="swe:TimePropertyType" minOccurs="0"/>
+					<xs:element name="location" type="swe:VectorPropertyType" minOccurs="0"/>
+					<xs:element name="orientation" type="swe:VectorOrSquareMatrixPropertyType" minOccurs="0"/>
+					<xs:element name="velocity" type="swe:VectorPropertyType" minOccurs="0"/>
+					<xs:element name="angularVelocity" type="swe:VectorOrSquareMatrixPropertyType" minOccurs="0"/>
+					<xs:element name="acceleration" type="swe:VectorPropertyType" minOccurs="0"/>
+					<xs:element name="angularAcceleration" type="swe:VectorOrSquareMatrixPropertyType" minOccurs="0"/>
+					<xs:element name="state" type="swe:VectorOrSquareMatrixPropertyType" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ================================================= -->
+	<xs:complexType name="AbstractMatrixType">
+		<xs:complexContent>
+			<xs:extension base="swe:AbstractDataArrayType">
+				<xs:attribute name="referenceFrame" type="xs:anyURI" use="optional">
+					<xs:annotation>
+						<xs:documentation>Points to a spatial reference frame definition. Coordinates of the vector will be expressed in this reference frame</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="localFrame" type="xs:anyURI" use="optional">
+					<xs:annotation>
+						<xs:documentation>Specifies the spatial frame which location and/or orientation is given by the enclosing vector</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ================================================= -->
+	<xs:element name="SquareMatrix" type="swe:SquareMatrixType" substitutionGroup="swe:AbstractDataArray">
+		<xs:annotation>
+			<xs:documentation>This is a square matrix (so the size is the square of one dimension) which is a DataArray of Quantities. 		It has a referenceFrame in which the matrix components are described</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<!-- ........ -->
+	<xs:complexType name="SquareMatrixType">
+		<xs:complexContent>
+			<xs:extension base="swe:AbstractMatrixType">
+				<xs:sequence>
+					<xs:element name="elementType" type="swe:QuantityPropertyType"/>
+					<xs:group ref="swe:EncodedValuesGroup" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ........ -->
+	<xs:complexType name="VectorOrSquareMatrixPropertyType">
+		<xs:annotation>
+			<xs:documentation>Vector/SquareMatrix is a data-type so usually appears "by value" rather than by reference.</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element ref="swe:Vector"/>
+			<xs:element ref="swe:SquareMatrix"/>
+		</xs:choice>
+	</xs:complexType>
+	<!-- ================================================= -->
+	<!-- Areas and Envelopes -->
+	<!-- ================================================= -->
+	<xs:element name="GeoLocationArea" substitutionGroup="swe:AbstractDataRecord">
+		<xs:annotation>
+			<xs:documentation>Area used to define bounding boxes</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="swe:AbstractVectorType">
+					<xs:sequence>
+						<xs:element name="member" type="swe:EnvelopePropertyType" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Is this an aggregate geometry?</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="name" type="xs:token"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<!-- ================================================= -->
+	<xs:element name="Envelope" type="swe:EnvelopeType" substitutionGroup="swe:AbstractDataRecord">
+		<xs:annotation>
+			<xs:documentation>Envelope described using two vectors specifying lower and upper corner points.
+           This is typically use to define rectangular bounding boxes in any coordinate system.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<!-- ........ -->
+	<xs:complexType name="EnvelopeType">
+		<xs:complexContent>
+			<xs:extension base="swe:AbstractVectorType">
+				<xs:sequence>
+					<xs:element name="time" type="swe:TimeRangePropertyType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Optionally provides time range during which this bounding envelope applies</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="lowerCorner" type="swe:VectorPropertyType"/>
+					<xs:element name="upperCorner" type="swe:VectorPropertyType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ........ -->
+	<xs:complexType name="EnvelopePropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:element ref="swe:Envelope"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</xs:complexType>
+	<!--         Composite/Aggregate Components - Vectors and Matrices            -->
+	<!-- ================================================= -->
+	<xs:complexType name="AbstractVectorType" abstract="true">
+		<xs:complexContent>
+			<xs:extension base="swe:AbstractDataRecordType">
+				<xs:attribute name="referenceFrame" type="xs:anyURI" use="optional">
+					<xs:annotation>
+						<xs:documentation>Points to a spatial reference frame definition. Coordinates of the vector will be expressed in this reference frame</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="localFrame" type="xs:anyURI" use="optional">
+					<xs:annotation>
+						<xs:documentation>Specifies the spatial frame which location and/or orientation is given by the enclosing vector</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ================================================= -->
+	<xs:element name="Vector" type="swe:VectorType" substitutionGroup="swe:AbstractDataRecord">
+		<xs:annotation>
+			<xs:documentation>A Vector is a special type of DataRecord that takes a list of numerical scalars called coordinates. The Vector has a referenceFrame in which the coordinates are expressed</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<!-- ............... -->
+	<xs:complexType name="VectorType">
+		<xs:complexContent>
+			<xs:extension base="swe:AbstractVectorType">
+				<xs:sequence>
+					<xs:element name="coordinate" maxOccurs="unbounded">
+						<xs:complexType>
+							<xs:group ref="swe:AnyNumerical" minOccurs="0"/>
+							<xs:attribute name="name" type="xs:token" use="required"/>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ........ -->
+	<xs:complexType name="VectorPropertyType">
+		<xs:annotation>
+			<xs:documentation>Vector is a data-type so usually appears "by value" rather than by reference. However, by reference is still useful when objects, for instance, share a location.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence minOccurs="0">
+			<xs:element ref="swe:Vector"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</xs:complexType>
+	<!-- ================================================= -->
+	<!-- ================================================= -->
+</xs:schema>

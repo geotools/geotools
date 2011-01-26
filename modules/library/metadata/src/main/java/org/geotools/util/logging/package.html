@@ -1,0 +1,19 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<HTML>
+  <HEAD>
+    <TITLE>package org.geotools.util.logging</TITLE>
+  </HEAD>
+  <BODY>
+    Extensions to the {@linkplain java.util.logging Java logging} framework. The GeoTools
+    project uses the standard {@link java.util.logging.Logger} API for its logging, but this
+    package allows redirection of logs to some other frameworks like
+    <a href="http://logging.apache.org/log4j/">Log4J</a>.
+    <p>
+    <strong>All GeoTools code should fetch their logger through a call to
+    {@link org.geotools.util.logging.Logging#getLogger(String)}</strong>, not
+    {@link java.util.logging.Logger#getLogger(String)}. This is necessary in
+    order to give GeoTools a chance to redirect log events to an other logging
+    framework.
+  </BODY>
+</HTML>

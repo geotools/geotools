@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- =======================================================================    
+        Maven Project Configuration File                                        
+                                                                                
+        The Geotools Project                                                    
+            http://www.geotools.org/                                            
+                                                                                
+        Version: $Id: pom.xml 34196 2009-10-22 13:32:49Z groldan $              
+     ======================================================================= -->
+  <project xmlns="http://maven.apache.org/POM/4.0.0" 
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                               http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.geotools</groupId>
+    <artifactId>unsupported</artifactId>
+    <version>2.7-SNAPSHOT</version>
+  </parent>
+
+
+  <!-- =========================================================== -->
+  <!--   Properties and Profiles                                   -->
+  <!--       explanation of their effect.                          -->
+  <!--                                                             -->
+  <!--   Available profiles are:                                   -->
+  <!--                                                             -->
+  <!--     nameOfprofile      Explantion of what the profile does  -->
+  <!--                        for the user.                        -->
+  <!--                                                             -->
+  <!--     Example:           mvn -PnameOfprofile install          -->
+  <!--                                                             -->
+  <!--     Note ...                                                -->
+  <!-- =========================================================== -->
+  <!-- Default setting of properties -->
+  <!--
+  <properties>
+    <nameOfproperty>valueOfsetting</nameOfproperty>
+  </properties>
+  -->
+
+  <!-- Profiles set on the command-line to override default properties. -->
+  <!--
+  <profiles>
+    <profile>
+      <id>nameOfprofile</id>
+      <properties>
+        <nameOfproperty>valueOfsetting</nameOfproperty>
+      </properties>
+    </profile>
+  </profiles>
+  -->
+  
+
+  <!-- =========================================================== -->
+  <!--     Module Description                                      -->
+  <!-- =========================================================== -->
+  <groupId>org.geotools</groupId>
+  <artifactId>gt-dxf</artifactId>
+  <packaging>jar</packaging>
+  <name>dxf</name>
+  <description>
+    Dxf datastore (read only)
+  </description>
+  
+  <organization>
+    <name>B3Partners</name>
+    <url>http://www.b3p.nl</url>
+  </organization>
+  
+  <!-- for your project. -->
+  <inceptionYear></inceptionYear>
+
+  <!-- Pick your license. -->
+  <licenses>
+    <license>
+      <name>Lesser General Public License (LGPL)</name>
+      <url>http://www.gnu.org/copyleft/lesser.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>  
+
+
+  <!-- =========================================================== -->
+  <!--     Developers and Contributors                             -->
+  <!-- =========================================================== -->
+  <developers>
+    <developer>
+      <id>roybraam</id>
+      <name>Roy Braam</name>
+      <email>roybraam@b3partners.nl</email>
+      <organization>B3Partners</organization>
+      <roles>
+        <role>Module Maintainer</role>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+  </developers>
+
+
+  <!-- =========================================================== -->
+  <!--     Dependency Mangement                                    -->
+  <!-- =========================================================== -->
+  <dependencies>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-main</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-referencing</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.vividsolutions</groupId>
+      <artifactId>jts</artifactId>
+      <!-- The version number is specified in the parent POM. -->
+    </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+    </dependency>
+  </dependencies>
+
+
+  <!-- =========================================================== -->
+  <!--     Build Configuration                                     -->
+  <!--         copies all JARs in a single directory.              -->
+  <!-- =========================================================== -->
+  <build>
+
+    <plugins>
+      <!-- ====    Compilation      ============================== -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <!-- ====    Switch commenting to skip tests    = -->
+          <skip>${allow.test.skip}</skip>
+          <!-- skip>true</skip> -->
+          <includes>
+            <include></include>
+          </includes>
+          <excludes>
+            <exclude></exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+      
+      <!-- ====    Testing          ============================== -->
+      <!-- ====    Code Formatting  ============================== -->
+      <!--
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>jalopy-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>format</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      -->
+      <!-- ====    Code Coverage    ============================== -->
+      <!--
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-clover-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal></goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      -->
+    </plugins>
+    
+  </build>
+
+</project>

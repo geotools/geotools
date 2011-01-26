@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns:gml="http://www.opengis.net/gml" xmlns:geox="http://www.opengis.net/geomExt" 
+			xmlns:cv="http://www.opengis.net/cv/0.0" 
+        xmlns:swe="http://www.opengis.net/swe/0.0" xmlns:om="http://www.opengis.net/om/0.0"
+        xmlns="http://www.w3.org/2001/XMLSchema" xmlns:sa="http://www.opengis.net/sampling/0.0"
+        targetNamespace="http://www.opengis.net/sampling/0.0" elementFormDefault="qualified"
+        attributeFormDefault="unqualified" version="0.0.0">
+	<annotation>
+		<documentation>extensiveSite.xsd
+
+SamplingFeatures are feature types that are used primarily for making observations: 
+SamplingFeature and collections are described in samplingBase.xsd
+
+Station (0-D)
+Profile (1-D)
+SurfaceOfInterest (2-D)
+SolidOfInterest (3-D) are described in this schema document
+
+In many cases the properties of interest vary within the site, so may be represented as a coverage associated with the SamplingFeature. 
+
+Copyright (c) 2007 Open Geospatial Consortium - see http://www.opengeospatial.org/about/?page=ipr</documentation>
+	</annotation>
+	<!-- ====================================================================== -->
+	<!-- bring in other schemas -->
+	<import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+	<import namespace="http://www.opengis.net/cv/0.0" schemaLocation="../../cv/0.0.0/cv.xsd"/>
+	<include schemaLocation="./samplingBase.xsd"/>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<!-- 0-D sites and sampling regimes -->
+	<!-- ====================================================================== -->
+	<complexType name="StationType">
+		<annotation>
+			<documentation>A "Station" is an identified position (0-D geospatial feature). 
+		It may be revisited for various purposes, in particular to retrieve multiple specimens or make repeated or complementary observations. 
+		The position property of the station provides the value of the position property of observations an specimens associated with the station. 
+		By using the Station feature, this position information and any metadata associated with it may be encoded in one place, i.e. normalised, and then re-used _by reference_ on other feature instances associated with it.</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="sa:SamplingFeatureType">
+				<sequence>
+					<element name="position" type="gml:PointPropertyType"/>
+					<element name="elevation" type="gml:DirectPositionType" minOccurs="0">
+						<annotation>
+							<documentation>Use the srsName attribute to record the elevation datum</documentation>
+						</annotation>
+					</element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- .................. -->
+	<element name="Station" type="sa:StationType" substitutionGroup="sa:SamplingFeature"/>
+	<!-- .................. -->
+	<complexType name="StationPropertyType">
+		<sequence minOccurs="0">
+			<element ref="sa:Station"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+	<!-- 1-D sites and sampling regimes -->
+	<!-- ====================================================================== -->
+	<complexType name="ProfileType">
+		<annotation>
+			<documentation>A "Profile" is an identified 1-D spatial feature. 
+		It may be revisited for various purposes, in particular to retrieve multiple specimens or make repeated or complementary observations.
+		Specialized names for Profile include Sounding, ObservationWell, FlightLine, Transect.</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="sa:SamplingFeatureType">
+				<sequence>
+					<element name="begin" type="gml:PointPropertyType"/>
+					<element name="end" type="gml:PointPropertyType"/>
+					<element name="length" type="gml:MeasureType" minOccurs="0"/>
+					<element name="propertyLog" type="sa:CV_Coverage_PropertyType" minOccurs="0" maxOccurs="unbounded">
+						<annotation>
+							<documentation>In addition to the constant "property" inherited from the base type, Profiles may also have properties that vary along their length. 
+					These are encoded as discrete coverages.</documentation>
+						</annotation>
+					</element>
+					<element name="shape" type="gml:CurvePropertyType"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- .................. -->
+	<element name="Profile" type="sa:ProfileType" substitutionGroup="sa:SamplingFeature">
+		<annotation>
+			<documentation>A "Profile" is an identified 1-D spatial feature. 
+		It may be revisited for various purposes, in particular to retrieve multiple specimens or make repeated or complementary observations.
+		Specialized names for Profile include Sounding, ObservationWell, FlightLine, Transect.</documentation>
+		</annotation>
+	</element>
+	<!-- .................. -->
+	<complexType name="ProfilePropertyType">
+		<sequence minOccurs="0">
+			<element ref="sa:Profile"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+	<!-- 2-D sites and sampling regimes -->
+	<!-- ====================================================================== -->
+	<complexType name="SurfaceOfInterestType">
+		<annotation>
+			<documentation>A "SurfaceOfInterest" is an identified 2-D spatial feature. 
+		It may be used for various purposes, in particular for observations of cross sections through features.
+		Specialized names for SurfaceOfInterest include CrossSection, Section, Flitch, Swath, Scene, MapHorizon.</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="sa:SamplingFeatureType">
+				<sequence>
+					<element name="area" type="gml:MeasureType" minOccurs="0"/>
+					<element name="propertyMap" type="sa:CV_Coverage_PropertyType" minOccurs="0" maxOccurs="unbounded">
+						<annotation>
+							<documentation>In addition to the constant "property" inherited from the base type, Surfaces may also have properties that vary across their extent. 
+					These are encoded as discrete coverages.</documentation>
+						</annotation>
+					</element>
+					<element name="shape" type="gml:SurfacePropertyType"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- .................. -->
+	<element name="SurfaceOfInterest" type="sa:SurfaceOfInterestType" substitutionGroup="sa:SamplingFeature">
+		<annotation>
+			<documentation>A "SurfaceOfInterest" is an identified 2-D spatial feature. 
+		It may be used for various purposes, in particular for observations of cross sections through features.
+		Specialized names for SurfaceOfInterest include CrossSection, Section, Flitch, Swath, Scene, MapHorizon.</documentation>
+		</annotation>
+	</element>
+	<!-- .................. -->
+	<complexType name="SurfaceOfInterestPropertyType">
+		<sequence minOccurs="0">
+			<element ref="sa:SurfaceOfInterest"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+	<!-- 3-D sites and sampling regimes -->
+	<!-- ====================================================================== -->
+	<complexType name="SolidOfInterestType">
+		<annotation>
+			<documentation>A "SolidOfInterest" is an identified 3-D spatial feature used in sampling.</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="sa:SamplingFeatureType">
+				<sequence>
+					<element name="volume" type="gml:MeasureType" minOccurs="0"/>
+					<element name="propertyFill" type="sa:CV_Coverage_PropertyType" minOccurs="0" maxOccurs="unbounded">
+						<annotation>
+							<documentation>In addition to the constant "property" inherited from the base type, Solids may also have properties that vary within their extent. 
+					These are encoded as discrete coverages.</documentation>
+						</annotation>
+					</element>
+					<element name="shape" type="gml:SolidPropertyType"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- .................. -->
+	<element name="SolidOfInterest" type="sa:SolidOfInterestType" substitutionGroup="sa:SamplingFeature">
+		<annotation>
+			<documentation>A "SolidOfInterest" is an identified 3-D spatial feature used in sampling.</documentation>
+		</annotation>
+	</element>
+	<!-- .................. -->
+	<complexType name="SolidOfInterestPropertyType">
+		<sequence minOccurs="0">
+			<element ref="sa:SolidOfInterest"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+		<!-- ====================================================================== -->
+	<complexType name="CV_Coverage_PropertyType">
+		<annotation>
+			<documentation>Convenience property type to support selection of either a procedure system or procedure event.</documentation>
+		</annotation>
+		<sequence minOccurs="0">
+			<choice>
+				<element ref="cv:CV_AbstractDiscreteCoverage"/>
+				<!--
+				<element ref="gml:AbstractCoverage"/>
+				-->
+			</choice>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+		<attribute name="unionSemantics">
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="interleavedCoverage"/>
+					<enumeration value="domainRangeCoverage"/>
+				</restriction>
+			</simpleType>
+		</attribute>
+	</complexType>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+</schema>

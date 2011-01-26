@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- =======================================================================
+        Maven Project Configuration File
+
+        The Geotools Project
+            http://www.geotools.org/
+
+        Version: $Id$
+     ======================================================================= -->
+  <project xmlns="http://maven.apache.org/POM/4.0.0" 
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                               http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.geotools</groupId>
+    <artifactId>modules</artifactId>
+    <version>2.7-SNAPSHOT</version>
+  </parent>
+
+
+  <!-- =========================================================== -->
+  <!--     Module Description                                      -->
+  <!-- =========================================================== -->
+  <groupId>org.geotools</groupId>
+  <artifactId>unsupported</artifactId>
+  <packaging>pom</packaging>
+  <name>Geotools unsupported</name>
+
+  <description>
+    Unsupported modules for GeoTools.
+  </description>
+
+  <licenses>
+    <license>
+      <name>Lesser General Public License (LGPL)</name>
+      <url>http://www.gnu.org/copyleft/lesser.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+
+  <profiles>
+     <profile>
+       <id>nd</id>
+       <modules>
+         <module>ndplugins</module>
+       </modules>
+     </profile>
+
+     <!-- ================================================== -->
+     <!--     Modules not yet included in the build          -->
+     <!-- ================================================== -->
+     <profile>
+       <id>pending</id>
+       <modules>
+         <module>coveragetools</module>
+         <module>sql-datastore</module>
+         <module>geometryless</module>
+         <module>excel</module>
+       </modules>
+     </profile>
+
+     <!-- ================================================== -->
+     <!--     Modules kicked out of the build                -->
+     <!-- ================================================== -->
+
+     <!-- These modules have been removed from the build     -->
+     <!-- so as not to clash with the new swing module.      -->
+     <!-- Selected classes will be moved out of these to the -->
+     <!-- new module prior to discarding them                -->
+     <profile>
+       <id>archive</id>
+       <modules>
+         <module>ogr</module>
+       </modules>
+     </profile>
+
+     <!-- ================================================== -->
+     <!--     Unsupported Modules                            -->
+     <!-- ================================================== -->
+     <!-- The following profiles can all be turned on by     -->
+     <!-- providing -Dall on the command line.               -->
+     <!--                                                    -->
+     <!-- These modules are included in the build and deploy -->
+     <!-- but have not passed our QA and Doc requirements    -->
+     <!-- so you may/should consider them risky              -->
+     <profile>
+       <id>raster</id>
+       <activation>
+         <property><name>all</name></property>
+       </activation>
+       <modules>
+         <module>coverageio</module>
+         <module>coverageio-netcdf</module>
+         <module>coveragetools</module>
+       </modules>
+     </profile>
+     <profile>
+       <id>grass</id>
+       <activation>
+         <property><name>all</name></property>
+       </activation>
+       <modules>
+         <module>grassraster</module>
+       </modules>
+     </profile>
+     <profile>
+       <id>geometry</id>
+       <activation>
+         <property><name>all</name></property>
+       </activation>
+       <modules>
+         <module>jts-wrapper</module>
+         <module>geometry</module>
+       </modules>
+     </profile>
+     <profile>
+       <id>wps</id>
+       <activation>
+         <property><name>all</name></property>
+       </activation>
+       <modules>
+         <module>wps</module>
+       </modules>
+     </profile>
+     <profile>
+       <id>epsg-h2</id>
+       <activation>
+         <property><name>all</name></property>
+       </activation>
+       <modules>
+         <module>epsg-h2</module>
+       </modules>
+     </profile>
+     <profile>
+       <id>app-schema</id>
+       <modules>
+         <module>app-schema</module>
+       </modules>
+     </profile>
+     <profile>
+       <id>shapefile-renderer</id>
+       <activation>
+         <property><name>all</name></property>
+       </activation>
+       <modules>
+         <module>shapefile-renderer</module>
+       </modules>
+     </profile>
+     
+     <profile>
+       <id>jai-tools</id>
+       <activation>
+         <property><name>all</name></property>
+       </activation>
+       <modules>
+         <module>jai-tools</module>
+       </modules>
+     </profile>     
+
+     <profile>
+       <id>unsupported</id>
+       <activation>
+         <property><name>all</name></property>
+       </activation>
+       <modules>
+         <module>app-schema</module>
+         <module>csv</module>
+         <module>db2</module>
+         <module>epsg-oracle</module>
+         <module>epsg-h2</module>
+         <module>jdbc-ng</module>
+         <module>mysql</module>
+         <module>oracle-spatial</module>
+         <module>postgis</module>
+         <module>postgis-versioned</module>
+         <module>vpf</module>
+         <module>caching</module>
+         <module>shapefile-renderer</module>
+         <module>matfile5</module>
+         <module>jai-tools</module>
+         <module>sfs</module>
+       </modules>
+     </profile>
+  </profiles>
+
+  <modules>
+    <module>swing</module>
+    <module>process</module>
+    <module>wfs</module>
+    <module>geojson</module>
+    <module>grid</module>
+  </modules>
+
+</project>

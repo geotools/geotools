@@ -1,0 +1,19 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+<TITLE></TITLE>
+</HEAD>
+<BODY>
+DataStore implementation for the ArcSDE 8.x and 9.x spatial gateway.
+<p>This implementation is based on the <a
+	href="http://edndoc.esri.com/arcsde/9.1/java_api/docs/index.html">ESRI
+ArcSDE Java API</a>. This API is based on a single jar file which maven
+downloads automatically and a couple of platform specific libraries
+(.dll or .so). So we have made an effort in order to this DataStore
+implementation not being dependent of those native libraries.</p>
+<p>The feature set of the ArcSDEDataStore includes feature write
+support but is actually limited to the in-process locking manager. Native
+locking should be developed and will be highly appreciated, so volunteers
+are wellcome.</p>
+</BODY>
+</HTML>

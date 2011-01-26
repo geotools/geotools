@@ -1,0 +1,26 @@
+<html>
+<body>
+<h1>Building</h1>
+<p>
+To build using maven first check that you have the correct environment:<pre>
+C:\java\geotools\trunk\spike\geometry>mvn -version
+
+Apache Maven 2.1.0 (r755702; 2009-03-19 06:10:27+1100)
+Java version: 1.5.0_19
+Java home: C:\Program Files\Java\jdk1.5.0_19\jre
+Default locale: en_AU, platform encoding: Cp1252
+OS name: "windows vista" version: "6.0" arch: "x86" Family: "windows"</pre>
+
+You can then build the project using:<pre>mvn install</pre>
+The resulting jar will be available in your local maven repsoitory or in
+the <b>./target</b> directory.
+
+<p>
+If you like you can also create a quick summary of the project using:<pre>
+mvn site
+</pre>
+You can view this site at <a href="target/site/index.html">./target/site/index.html</a>.
+<p>
+You can bring the file into eclipse using:<pre>>mvn eclipse:eclipse -DoutputDirectory=bin</pre> and then importing the project as an existing project.
+</body>
+</html>

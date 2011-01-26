@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Schema locations intentionally modified so there's no need to have a geoserver running
+for the parser to work. Yet, it seems you'll need to be connected to the internet? -->
+<wfs:FeatureCollection
+	numberOfFeatures="3"
+	timeStamp="2008-01-22T11:15:06.714+01:00"
+	xsi:schemaLocation="http://www.openplans.org/spearfish DescribeFeatureType_archsites.xsd
+                        http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd"
+	xmlns:ogc="http://www.opengis.net/ogc"
+	xmlns:tiger="http://www.census.gov"
+	xmlns:wfs="http://www.opengis.net/wfs"
+	xmlns:topp="http://www.openplans.org/topp"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:sf="http://www.openplans.org/spearfish"
+	xmlns:ows="http://www.opengis.net/ows"
+	xmlns:gml="http://www.opengis.net/gml"
+	xmlns:xlink="http://www.w3.org/1999/xlink">
+	<gml:featureMembers>
+		<sf:archsites gml:id="archsites.1">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:x-ogc:def:crs:EPSG:6.11.2:26713">
+					<gml:lowerCorner>593493.0 4914730.0</gml:lowerCorner>
+					<gml:upperCorner>593493.0 4914730.0</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<sf:the_geom>
+				<gml:Point srsName="urn:x-ogc:def:crs:EPSG:6.11.2:26713">
+					<gml:pos>593493.0 4914730.0</gml:pos>
+				</gml:Point>
+			</sf:the_geom>
+			<sf:cat>1</sf:cat>
+			<sf:str1>Signature Rock</sf:str1>
+		</sf:archsites>
+		<sf:archsites gml:id="archsites.2">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:x-ogc:def:crs:EPSG:6.11.2:26713">
+					<gml:lowerCorner>591950.0 4923000.0</gml:lowerCorner>
+					<gml:upperCorner>591950.0 4923000.0</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<sf:the_geom>
+				<gml:Point srsName="urn:x-ogc:def:crs:EPSG:6.11.2:26713">
+					<gml:pos>591950.0 4923000.0</gml:pos>
+				</gml:Point>
+			</sf:the_geom>
+			<sf:cat>2</sf:cat>
+			<sf:str1>No Name</sf:str1>
+		</sf:archsites>
+		<sf:archsites gml:id="archsites.3">
+			<gml:boundedBy>
+				<gml:Envelope srsName="urn:x-ogc:def:crs:EPSG:6.11.2:26713">
+					<gml:lowerCorner>589860.0 4922000.0</gml:lowerCorner>
+					<gml:upperCorner>589860.0 4922000.0</gml:upperCorner>
+				</gml:Envelope>
+			</gml:boundedBy>
+			<sf:the_geom>
+				<gml:Point srsName="urn:x-ogc:def:crs:EPSG:6.11.2:26713">
+					<gml:pos>589860.0 4922000.0</gml:pos>
+				</gml:Point>
+			</sf:the_geom>
+			<sf:cat>3</sf:cat>
+			<sf:str1>Canyon Station</sf:str1>
+		</sf:archsites>
+	</gml:featureMembers>
+</wfs:FeatureCollection>

@@ -1,0 +1,8 @@
+org.geotools.gce.imagemosaic.properties.time.TimestampFileNameExtractorSPI
+org.geotools.gce.imagemosaic.properties.numeric.ByteFileNameExtractorSPI
+org.geotools.gce.imagemosaic.properties.numeric.IntegerFileNameExtractorSPI
+org.geotools.gce.imagemosaic.properties.numeric.ShortFileNameExtractorSPI
+org.geotools.gce.imagemosaic.properties.numeric.LongFileNameExtractorSPI
+org.geotools.gce.imagemosaic.properties.numeric.FloatFileNameExtractorSPI
+org.geotools.gce.imagemosaic.properties.numeric.DoubleFileNameExtractorSPI
+

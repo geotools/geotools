@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns:gml="http://www.opengis.net/gml" xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:om="http://www.opengis.net/om"
+        targetNamespace="http://www.opengis.net/om" elementFormDefault="qualified" attributeFormDefault="unqualified" version="pre-release">
+	<annotation>
+		<documentation>event.xsd
+
+Components required to establish the top-level of the om:Event substitution group
+
+Copyright © 2005 Open Geospatial Consortium - see http://www.opengeospatial.org/about/?page=ipr</documentation>
+	</annotation>
+	<!-- ====================================================================== -->
+	<!-- bring in other schemas -->
+	<import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+	<!--import namespace="http://www.isotc211.org/2005/gmd" schemaLocation="../../iso19139/gml3.1.1version/gmd/gmd.xsd"/-->
+	<!-- ====================================================================== -->
+	<!-- =========================================================== -->
+	<complexType name="TimeObjectPropertyType">
+		<sequence minOccurs="0">
+			<element ref="gml:_TimeObject"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ===================================================== -->
+	<complexType name="LocationPropertyType">
+		<sequence minOccurs="0">
+			<choice>
+				<element ref="gml:_Geometry"/>
+				<!-- element ref="gmd:EX_GeographicDescription"/-->
+			</choice>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+		<attribute name="unionSemantics">
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="geometryLocation"/>
+					<enumeration value="nameLocation"/>
+				</restriction>
+			</simpleType>
+		</attribute>
+	</complexType>
+	<!-- ====================================================================== -->
+	<complexType name="EventType">
+		<annotation>
+			<documentation>Description of an event, particularly that causes transformation, creation or destruction of a feature.  
+      The event may be transport or administrative.  
+      Use gml:description to describe the nature of the event or action, or to point to a description of it.  
+      Specialised event types may be derived from this type.</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="gml:AbstractFeatureType">
+				<sequence>
+					<element name="time" type="om:TimeObjectPropertyType">
+						<annotation>
+							<documentation>
+							The Time when the event occurred (mandatory). 
+			This may be given 
+              * in absolute terms as a TimeInstant or TimePeriod
+              * in approximate terms or relative to an absolute position using the indeterminatePosition attribute
+              * or using a TimeTopology element (TimeEdge or TimeNode), which provides the option of giving a time relative to other edges or nodes, either directly (gml) or indirectly (xmml) 
+              * as a TimeGeometricComplex if it is a recurring or repeating event</documentation>
+						</annotation>
+					</element>
+					<element name="location" type="om:LocationPropertyType" minOccurs="0" >
+						<annotation>
+							<documentation>
+						Location where the event took place (optional)</documentation>
+						</annotation>
+					</element>
+					<element name="precedingEvent" type="gml:StringOrRefType" minOccurs="0" maxOccurs="unbounded">
+						<annotation>
+							<documentation>Description of, or pointer to, preceding event(s)</documentation>
+						</annotation>
+					</element>
+					<element name="followingEvent" type="gml:StringOrRefType" minOccurs="0" maxOccurs="unbounded">
+						<annotation>
+							<documentation>Description of, or pointer to, following event(s)</documentation>
+						</annotation>
+					</element>
+					<!-- element name="responsible" type="gmd:CI_ResponsibleParty_PropertyType" minOccurs="0">
+						<annotation>
+							<documentation>Person or organisation responsible for the event, if applicable. 
+					The nature of the responsibility (i.e. the role of the party with respect to the event) may be indicated using the xlink:arcrole attribute. 
+					Examples of roles are operator, sponsor, requestor, provider, processor, etc.</documentation>
+						</annotation>
+					</element-->
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ................. -->
+	<element name="Event" type="om:EventType" substitutionGroup="gml:_Feature"/>
+	<!-- ................. -->
+	<complexType name="EventPropertyType">
+		<sequence minOccurs="0">
+			<element ref="om:Event"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+</schema>

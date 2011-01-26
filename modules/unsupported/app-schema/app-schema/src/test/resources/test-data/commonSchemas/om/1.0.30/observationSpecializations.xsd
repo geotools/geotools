@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:cv="http://www.opengis.net/cv/0.0" xmlns:gml="http://www.opengis.net/gml" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:om="http://www.opengis.net/om" xmlns:swe="http://www.opengis.net/swe/0.0" targetNamespace="http://www.opengis.net/om" elementFormDefault="qualified" attributeFormDefault="unqualified" version="pre-release">
+	<annotation>
+		<documentation>observationSpecializations.xsd
+
+An implementation of the OandM model for SWE
+This document contains various specializations of the basic observation pattern, primarily by fixing the type of the result. 
+
+Copyright (c) 2005 Open Geospatial Consortium - see http://www.opengeospatial.org/about/?page=ipr</documentation>
+	</annotation>
+	<!-- ====================================================================== -->
+	<!-- bring in other schemas -->
+	<import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+	<import namespace="http://www.opengis.net/swe/0.0" schemaLocation="../../sweCommon/1.0.30/swe.xsd"/>
+	<import namespace="http://www.opengis.net/cv/0.0" schemaLocation="../../cv/0.0.0/cv.xsd"/>	
+	<include schemaLocation="./observation.xsd"/>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<!-- ===== Object types for Observations ====== -->
+	<!-- ====================================================================== -->
+	<complexType name="MeasurementType">
+		<annotation>
+			<documentation>Measurement event.   
+			carries one "result" properties of type "ResultMeasureType".</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="om:AbstractObservationType">
+				<sequence>
+					<element name="result" type="swe:RelativeMeasureType" nillable="true"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ...................... -->
+	<element name="Measurement" type="om:MeasurementType" substitutionGroup="om:AbstractObservation">
+		<annotation>
+			<documentation>Measurement event</documentation>
+		</annotation>
+	</element>
+	<!-- ====================================================================== -->
+	<complexType name="CategoryObservationType">
+		<annotation>
+			<documentation>Observation, in which the result is a textual value from a controlled vocabulary</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="om:AbstractObservationType">
+				<sequence>
+					<element name="result" type="swe:ScopedNameType"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ...................... -->
+	<element name="CategoryObservation" type="om:CategoryObservationType" substitutionGroup="om:AbstractObservation">
+		<annotation>
+			<documentation>Observation, in which the result is a textual value from a controlled vocabulary</documentation>
+		</annotation>
+	</element>
+	<!-- ====================================================================== -->
+	<complexType name="CountObservationType">
+		<annotation>
+			<documentation>Observation, in which the result is an integer representing the count of the observed property</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="om:AbstractObservationType">
+				<sequence>
+					<element name="result" type="integer"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ...................... -->
+	<element name="CountObservation" type="om:CountObservationType" substitutionGroup="om:AbstractObservation">
+		<annotation>
+			<documentation>Observation, in which the result is an integer representing the count of the observed property</documentation>
+		</annotation>
+	</element>
+	<!-- ====================================================================== -->
+	<complexType name="TruthObservationType">
+		<annotation>
+			<documentation>Observation, in which the result is a boolean value representing the truth value (usually existence) of the observed property</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="om:AbstractObservationType">
+				<sequence>
+					<element name="result" type="boolean"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ...................... -->
+	<element name="TruthObservation" type="om:TruthObservationType" substitutionGroup="om:AbstractObservation">
+		<annotation>
+			<documentation>Observation, in which the result is a boolean value representing the truth value (usually existence) of the observed property</documentation>
+		</annotation>
+	</element>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<complexType name="CommonObservationType">
+		<annotation>
+			<documentation>Observation event.   
+			"result" property contains an sml:DataValue
+			resultDefinition property contains value record schema, used to parse value, and an indication of the encoding</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="om:AbstractObservationType">
+				<sequence>
+					<element name="resultDefinition" type="swe:DataDefinitionPropertyType"/>
+					<element name="result" type="swe:DataValueType" nillable="true"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ...................... -->
+	<element name="CommonObservation" type="om:CommonObservationType" substitutionGroup="om:AbstractObservation">
+		<annotation>
+			<documentation>Observation event</documentation>
+		</annotation>
+	</element>
+	<!-- ====================================================================== -->
+	<!-- ===== Composite Observation ======= -->
+	<!-- ====================================================================== -->
+	<complexType name="CompositeObservationType">
+		<complexContent>
+			<extension base="om:ObservationCollectionType">
+				<sequence>
+					<element name="sampleDesign" type="string"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ...................... -->
+	<element name="CompositeObservation" type="om:CompositeObservationType" substitutionGroup="om:ObservationCollection">
+		<annotation>
+			<documentation>Specialization of ObservationCollection, in which the members of the collection refer to a consistent target, time etc. Functionally equivalent to ComplexObservation</documentation>
+		</annotation>
+	</element>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<complexType name="TimeSeriesObsType">
+		<annotation>
+			<documentation>Specialized Observation, in which the result is a compact representation of a time-instant coverage which samples a property of the feature of interest at different times</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="om:AbstractObservationType">
+				<sequence>
+<!--					<element name="resultDefinition" type="swe:DataBlockDefinitionPropertyType">
+						<annotation>
+							<documentation>resultDefinition property contains or points to a record schema, which describes the structure of the value element in each geometry-value pair</documentation>
+						</annotation>
+					</element>-->
+					<element name="result" type="cv:CompactDiscreteTimeCoveragePropertyType">
+						<annotation>
+							<documentation>compact representation of a time-instant coverage which samples a property of the feature of interest at different times</documentation>
+						</annotation>
+					</element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ...................... -->
+	<element name="TimeSeriesObs" type="om:TimeSeriesObsType" substitutionGroup="om:AbstractObservation">
+		<annotation>
+			<documentation>Specialized Observation, in which the result is a compact representation of a time-instant coverage which samples a property of the feature of interest at different times</documentation>
+		</annotation>
+	</element>
+	<!-- ====================================================================== -->
+</schema>

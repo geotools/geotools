@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- =======================================================================    
+        Maven Project Configuration File                                        
+                                                                                
+        The Geotools Project                                                    
+            http://www.geotools.org/                                            
+                                                                                
+        Version: $Id$              
+     ======================================================================= -->
+  <project xmlns="http://maven.apache.org/POM/4.0.0" 
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                               http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.geotools</groupId>
+    <artifactId>unsupported</artifactId>
+    <version>2.7-SNAPSHOT</version>
+  </parent>
+
+
+  <!-- =========================================================== -->
+  <!--     Module Description                                      -->
+  <!-- =========================================================== -->
+  <groupId>org.geotools</groupId>
+  <artifactId>gt-oracle-spatial</artifactId>
+  <packaging>jar</packaging>
+  <name>Oracle Spatial Module</name>
+  
+
+  <scm>
+    <connection>
+      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/oracle-spatial/
+    </connection>
+    <url>http://svn.osgeo.org/geotools/trunk/modules/unsupported/oracle-spatial/</url>
+  </scm>
+
+  <description>
+    Module offers GeoTools DataStore support for Oracle Spatial.
+  </description>
+
+  <licenses>
+    <license>
+      <name>Lesser General Public License (LGPL)</name>
+      <url>http://www.gnu.org/copyleft/lesser.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+
+  <!-- =========================================================== -->
+  <!--     Developers and Contributors                             -->
+  <!-- =========================================================== -->
+  <developers>
+
+    <developer>
+      <name>Marc Risney</name>
+      <id>mrisney</id>
+      <email>marc.risney@gmail.com</email>
+      <organization>Oracle</organization>
+      <roles>
+      <role>Java Developer</role>
+      <role>Module Mantainer</role>
+      </roles>
+    </developer>
+
+    <developer>
+      <name>Sean Geoghegan</name>
+      <id>seangeo</id>
+      <email>sean.geoghegan@dsto.defence.gov.au</email>
+      <organization>Defence Science and Technology Organisation</organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Simon Rass</name>
+      <roles>
+        <role>Bug Fixer</role>
+      </roles>
+    </developer>
+  </developers>
+
+  <profiles>
+    <!-- If you have access to the real driver you can rebuild     -->
+    <!-- this geotools plugin with that driver to get a working    -->
+    <!-- plugin.                                                   -->
+
+    <!--                                                           -->
+    <!-- To use for real:                                          -->
+    <!--   Download the ojdbc14.jar driver from oracle and install -->
+    <!--   into maven:                                             -->
+    <!--       mvn install:install-file -Dfile=ojdbc14.jar         -->
+    <!--           -DgroupId=com.oracle -DartifactId=ojdbc14       -->
+    <!--           -Dversion=10.2.0 -Dpackaging=jar                -->
+    <!--                                                           -->
+    <!--   You can then supply -Doracle=true on the command line   -->
+    <!--                                                           -->
+    <!--   You will need to update a "fixture" with connection     -->
+    <!--   information in:                                         -->
+    <!--         HOME/.geotools/epsg/oracle/oracle.properties      -->
+    <profile>
+        <id>oracle.jdbc-true</id>
+        <activation>
+           <property>
+              <name>oracle</name>
+           </property>           
+        </activation>
+        <dependencies>
+          <dependency>
+            <artifactId>ojdbc14</artifactId>
+            <groupId>com.oracle</groupId>
+            <!-- version specified in root pom -->
+          </dependency>
+        </dependencies>          
+    </profile>
+    
+    <!-- By default, the build downloads and uses a fake jar full  -->
+    <!-- of "Mock Objects" so you we can compile the plugin even   -->
+    <!-- without downloading the real thing from oracle.           -->
+    <profile>
+        <id>oracle.jdbc-false</id>
+        <activation>
+           <property>
+              <name>!oracle</name>
+           </property>
+        </activation>
+        <dependencies>
+          <dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>dummy_spatial</artifactId>
+            <version>8.1.8</version> <!-- Do not necessarly match the oracle.jdbc version number. -->
+            <scope>provided</scope>
+          </dependency>        
+        </dependencies>                  
+        <properties>
+           <maven.test.skip>true</maven.test.skip>
+        </properties>
+    </profile>
+  </profiles>
+
+
+  <!-- =========================================================== -->
+  <!--     Dependency Management                                   -->
+  <!-- =========================================================== -->
+  <dependencies>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-jdbc</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-sample-data</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-epsg-hsql</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <excludes>
+            <exclude>**/OracleDataStoreOnlineTest.java</exclude>
+            <exclude>**/OracleConnectionFactoryOnlineTest.java</exclude>
+            <exclude>**/QuickOracleOnlineTest.java</exclude>
+            <exclude>**/SDOOnlineTest.java</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+    <author>Christiaan ten Klooster</author>
+    <author>Andrea Aime</author>
+    <title>Features</title>
+  </properties>
+
+  <body>
+    <section name="ARCGrid datasource">
+      <p>
+      The arcgrid module contains a datasource that can read the ARCGrid ASCII format into
+      a standard feature collection. Write support and performance optimization are needed.
+      </p>
+      <p>
+      To create the datasource you'll need an URL pointing to the ARCGrid file.
+      </p>
+    </section>
+  </body>
+</document>

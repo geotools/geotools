@@ -1,0 +1,187 @@
+// Test points for the Orthographic Projection
+//
+// (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)
+//
+// The following test points were calculated with ArcInfo 8.2
+// It appears that there is a small bug in ArcInfo, and it is giving values
+// that are wrong (~0.5m) for the polls. I have commented these out below
+// and replaced them with the values I believe are correct (cos(90) == 0).
+//
+// Rueben Schulz - April 12, 2003
+//
+//
+// --------------------------------------------------------------------------
+// How to run this script:
+//
+//    chdir org/geotools/referencing/test-data/scripts
+//    java -ea org.geotools.referencing.ScriptRunner Orthographic.txt
+//
+// A test is performed every time a "target pt" statement occurs. If the target point computed
+// by Geotools is different from the target point declared in this script by an amount greater
+// than the value specified in the last "test tolerance" statement, then a failure is reported.
+// Inverse transforms are tested if java assertions are enabled.
+// If some test fails, "print" statements can be added in this script for debugging purpose:
+//
+//    print crs            (prints the source and target CRS, and the transform between them)
+//    print pts            (prints the source and target points, and their transformed points)
+
+
+set _sphere_ =                                   GEOGCS["WGS84",  DATUM["WGS84",  SPHEROID["WGS84",  6370997.0, 0],TOWGS84[0,0,0,0,0,0,0]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]]
+set _ortho1_ = PROJCS["Polar Orthographic",      GEOGCS["Sphere", DATUM["Sphere", SPHEROID["Sphere", 6370997.0, 0],TOWGS84[0,0,0,0,0,0,0]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Orthographic"], PARAMETER["central_meridian", 120.0], PARAMETER["latitude_of_origin",  90.0], PARAMETER["false_easting",      0.0], PARAMETER["false_northing",     0.0], UNIT["meter", 1.0], AXIS["x",EAST], AXIS["y",NORTH]]
+set _ortho2_ = PROJCS["Polar Orthographic",      GEOGCS["Sphere", DATUM["Sphere", SPHEROID["Sphere", 6370997.0, 0],TOWGS84[0,0,0,0,0,0,0]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Orthographic"], PARAMETER["central_meridian", -64.5], PARAMETER["latitude_of_origin", -90.0], PARAMETER["false_easting", 100000.0], PARAMETER["false_northing", 40000.0], UNIT["meter", 1.0], AXIS["x",EAST], AXIS["y",NORTH]]
+set _ortho3_ = PROJCS["Equatorial Orthographic", GEOGCS["Sphere", DATUM["Sphere", SPHEROID["Sphere", 6370997.0, 0],TOWGS84[0,0,0,0,0,0,0]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Orthographic"], PARAMETER["central_meridian",   0.0], PARAMETER["latitude_of_origin",   0.0], PARAMETER["false_easting",    400.0], PARAMETER["false_northing",   180.0], UNIT["meter", 1.0], AXIS["x",EAST], AXIS["y",NORTH]]
+set _ortho4_ = PROJCS["Equatorial Orthographic", GEOGCS["Sphere", DATUM["Sphere", SPHEROID["Sphere", 6370997.0, 0],TOWGS84[0,0,0,0,0,0,0]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Orthographic"], PARAMETER["central_meridian", 146.9], PARAMETER["latitude_of_origin",   0.0], PARAMETER["false_easting",   2500.0], PARAMETER["false_northing",  1400.0], UNIT["meter", 1.0], AXIS["x",EAST], AXIS["y",NORTH]]
+set _ortho5_ = PROJCS["Oblique Orthographic",    GEOGCS["Sphere", DATUM["Sphere", SPHEROID["Sphere", 6370997.0, 0],TOWGS84[0,0,0,0,0,0,0]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Orthographic"], PARAMETER["central_meridian", -40.0], PARAMETER["latitude_of_origin",  44.0], PARAMETER["false_easting",      0.0], PARAMETER["false_northing",     0.0], UNIT["meter", 1.0], AXIS["x",EAST], AXIS["y",NORTH]]
+set _ortho6_ = PROJCS["Oblique Orthographic",    GEOGCS["Sphere", DATUM["Sphere", SPHEROID["Sphere", 6370997.0, 0],TOWGS84[0,0,0,0,0,0,0]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]], PROJECTION["Orthographic"], PARAMETER["central_meridian",  70.0], PARAMETER["latitude_of_origin", -60.0], PARAMETER["false_easting",    500.0], PARAMETER["false_northing",     0.0], UNIT["meter", 1.0], AXIS["x",EAST], AXIS["y",NORTH]]
+
+////////////////////////////////////////////
+// Spherical Polar tests
+
+source crs = _sphere_
+target crs = _ortho1_
+test tolerance = (1e-4, 1e-4)
+
+source pt = (-123.1, 49.2166666666)
+target pt = (3711248.9797, 1882824.0689)
+
+source pt = (2.33656753, 43.96499314 )
+target pt = (-4061433.7784, 2128994.9272)
+
+source pt = (139.733333333, 35.6833333333)
+target pt = (1747255.8687, -4870965.3447)
+
+source pt = (0.0, 90.0)
+target pt = (0.0, 0.0)
+//target pt = (-0.6897, 0.3982)
+
+source crs = _ortho1_
+target crs = _sphere_
+
+source pt = (-4061433.7784, 2128994.9272)
+target pt = (2.33656753, 43.96499314 )
+
+
+source crs = _sphere_
+target crs = _ortho2_
+test tolerance = (1e-4, 1e-4)
+
+source pt = (151.283333333, -33.9166666666)
+target pt = (-2991407.3186, -4248971.0674)
+
+source pt = (-47.95, -15.75)
+target pt = (1846655.1120, 5917768.2922)
+
+source pt = (18.45, -33.9166666666)
+target pt = (5346999.3546, 688898.9131)
+
+source pt = (0.0, -90.0)
+target pt = (100000.0, 40000.0)
+//target pt = (100000.7188, 40000.3428)
+
+source crs = _ortho2_
+target crs = _sphere_
+
+source pt = (1846655.1120, 5917768.2922)
+target pt = (-47.95, -15.75)
+
+       
+////////////////////////////////////////////
+// Spherical Equatorial tests
+        
+source crs = _sphere_
+target crs = _ortho3_
+test tolerance = (1e-4, 1e-4)
+
+source pt = (2.33656753, 43.96499314)
+target pt = (187353.1977, 4423045.4782)   
+     
+source pt = (-47.95, -15.75)
+target pt = (-4552832.7574, -1729166.2918)    
+
+source pt = (18.45, -33.9166666666)
+target pt = (1673604.8371, -3554750.4842)  
+
+source pt = (0.0, 90.0)
+target pt = (400.0000, 6371177.0000)  
+
+source pt = (0.0, -90.0)
+target pt = (400.0000, -6370817.0000) 
+
+source crs = _ortho3_
+target crs = _sphere_
+source pt = (-4552832.7574, -1729166.2918)
+target pt = (-47.95, -15.75)
+
+source crs = _sphere_
+target crs = _ortho4_
+test tolerance = (1e-4, 1e-4)
+
+source pt = (-123.1, 49.2166666666)
+target pt = (4164037.6322, 4825423.9749)   
+
+source pt = (151.283333333, -33.9166666666 )
+target pt = (406577.9447, -3553530.4842) 
+
+source pt = (139.733333333, 35.6833333333)
+target pt = (-643095.3225, 3717634.1576) 
+
+source pt = (146.9, 90.0)
+target pt = (2500.0000, 6372397.0000) 
+
+source pt = (146.9, -90.0)
+target pt = (2500.0000, -6369597.0000) 
+
+source crs = _ortho4_
+target crs = _sphere_
+source pt = (2500.0000, 6372397.0000)
+target pt = (146.9, 90.0)
+
+
+////////////////////////////////////////////
+// Spherical Oblique tests
+
+source crs = _sphere_
+target crs = _ortho5_
+test tolerance = (1e-4, 1e-4)
+
+source pt = (-123.1, 49.2166666666  )
+target pt = (-4131397.0380, 3122815.2288)   
+
+source pt = (2.33656753, 43.96499314  )
+target pt = (3088340.2012, 826864.5642)  
+
+source pt = (-47.95, -15.75)
+target pt = (-848082.2872, -5462555.9115)  
+
+test tolerance = (1e-4, 0.5)
+source pt = (0.0, 90.0 )
+target pt = (0.0, 4582911.2862)  
+//target pt = (0.5119, 4582911.2862) 
+
+test tolerance = (1e-4, 1e-4)
+source crs = _ortho5_
+target crs = _sphere_
+source pt = (3088340.2012, 826864.5642)
+target pt = (2.33656753, 43.96499314)  
+
+
+source crs = _sphere_
+target crs = _ortho6_
+test tolerance = (1e-4, 1e-4)
+
+source pt = (151.283333333, -33.9166666666)
+target pt = (5226406.5695, -1083578.0650) 
+  
+source pt = (18.45, -33.9166666666)
+target pt = (-4139997.8986, 1069684.5403)
+
+test tolerance = (1e-4, 0.5)
+source pt = (0.0, -90.0 )
+target pt = (500.0, -3185498.2641)  
+//target pt = (499.2517, -3185498.2641) 
+
+source crs = _ortho6_ 
+target crs = _sphere_    
+test tolerance = (1e-4, 1e-4) 
+source pt = (5226406.5695, -1083578.0650)
+target pt = (151.283333333, -33.9166666666)

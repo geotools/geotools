@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns:sa="http://www.opengis.net/sampling/1.0" xmlns="http://www.w3.org/2001/XMLSchema"
+        xmlns:gml="http://www.opengis.net/gml" xmlns:gmd="http://www.isotc211.org/2005/gmd"
+        xmlns:om="http://www.opengis.net/om/1.0" targetNamespace="http://www.opengis.net/sampling/1.0"
+        elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.0">
+	<annotation>
+		<documentation>surveyProcedure.xsd
+
+Components to describe procedures used in sampling.
+
+Copyright (c) 2007 Open Geospatial Consortium - see http://www.opengeospatial.org/ogc/software</documentation>
+	</annotation>
+	<!-- ====================================================================== -->
+	<!-- bring in other schemas -->
+	<import namespace="http://www.opengis.net/gml" schemaLocation="../../gml/3.1.1/base/gml.xsd"/>
+	<!-- GMD cannot be used with GML 3.1.1
+	<import namespace="http://www.isotc211.org/2005/gmd" schemaLocation="../../../../gml/trunk/gml/3.1.1/gmd/gmd.xsd"/>
+	-->
+	<import namespace="http://www.opengis.net/om/1.0" schemaLocation="../../om/1.0.0/om.xsd"/>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<complexType name="SurveyProcedureType">
+		<annotation>
+			<documentation>Specialized procedure related to surveying positions and locations.</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="gml:AbstractFeatureType">
+				<sequence>
+					<element name="operator" type="sa:AnyOrReferenceType" minOccurs="0"/>
+					<!-- Replace with
+					<element name="operator" type="gmd:CI_ResponsibleParty_PropertyType" minOccurs="0"/>
+					when upgrading to GML 3.2
+					-->
+					<element name="elevationDatum" type="gml:ReferenceType" minOccurs="0"/>
+					<!-- Replace with
+					<element name="elevationDatum" type="gml:VerticalDatumPropertyType" minOccurs="0"/>
+					when upgrading to GML 3.2
+					-->
+					<element name="elevationMethod" type="om:ProcessPropertyType" minOccurs="0"/>
+					<element name="elevationAccuracy" type="gml:MeasureType" minOccurs="0"/>
+					<element name="geodeticDatum" type="gml:ReferenceType" minOccurs="0"/>
+					<!-- Replace with
+					<element name="geodeticDatum" type="gml:GeodeticDatumPropertyType" minOccurs="0"/>
+					when upgrading to GML 3.2
+					-->
+					<element name="positionMethod" type="om:ProcessPropertyType"/>
+					<element name="positionAccuracy" type="gml:MeasureType" minOccurs="0"/>
+					<element name="projection" type="gml:ReferenceType" minOccurs="0"/>
+					<!-- Replace with
+					<element name="projection" type="gml:SingleCRSPropertyType" minOccurs="0"/>
+					when upgrading to GML 3.2
+					-->
+					<element name="surveyTime" type="gml:TimePrimitivePropertyType" minOccurs="0"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ...................... -->
+	<element name="SurveyProcedure" type="sa:SurveyProcedureType" substitutionGroup="gml:_Feature">
+		<annotation>
+			<documentation>Specialized procedure related to surveying positions and locations.</documentation>
+		</annotation>
+	</element>
+	<!-- ...................... -->
+	<complexType name="SurveyProcedurePropertyType">
+		<sequence minOccurs="0">
+			<element ref="sa:SurveyProcedure"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+		<!-- ====================================================================== -->
+	<complexType name="AnyOrReferenceType">
+		<annotation>
+			<documentation>Placeholder type</documentation>
+		</annotation>
+		<sequence minOccurs="0">
+			<any/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+
+</schema>

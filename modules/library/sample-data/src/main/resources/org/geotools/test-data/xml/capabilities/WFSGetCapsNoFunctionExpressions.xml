@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WFS_Capabilities version="1.0.0" xmlns="http://www.opengis.net/wfs" xmlns:gd="http://www.refractions.net" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/wfs http://www.refractions.net:8080/geoserver/data/capabilities/wfs/1.0.0/WFS-capabilities.xsd">
+  <Service>
+    <Name>uDig Demo WFS</Name>
+    <Title>uDig Demo Web Feature Server</Title>
+    <Abstract>This web feature server is used to test the User-firendly
+Desktop GIS, an open-source project that you are encouraged
+to download and try out.
+
+Download from:
+- http://udig.refractions.net/
+
+GeoServer is a full transactional Web Feature Server.
+GeoServer is supported by the open source community and by
+Refractions Research for commercial support:
+- http://www.refractions.net/geoserver/</Abstract>
+    <Keywords>WFS
+, WMS
+, GEOSERVER
+</Keywords>
+    
+  <OnlineResource>http://geoserver.sourceforge.net/html/index.php</OnlineResource><Fees>NONE</Fees>
+  <AccessConstraints>NONE</AccessConstraints></Service>
+  <Capability>
+    <Request>
+      <GetCapabilities>
+        <DCPType><HTTP><Get onlineResource="http://www.refractions.net:8080/geoserver/wfs/GetCapabilities?"/></HTTP></DCPType>
+        <DCPType><HTTP><Post onlineResource="http://www.refractions.net:8080/geoserver/wfs/GetCapabilities"/></HTTP></DCPType>
+      </GetCapabilities>
+    
+      <DescribeFeatureType>
+        <SchemaDescriptionLanguage><XMLSCHEMA/></SchemaDescriptionLanguage>
+        <DCPType><HTTP><Get onlineResource="http://www.refractions.net:8080/geoserver/wfs/DescribeFeatureType?"/></HTTP></DCPType>
+        <DCPType><HTTP><Post onlineResource="http://www.refractions.net:8080/geoserver/wfs/DescribeFeatureType"/></HTTP></DCPType>
+      </DescribeFeatureType>
+    
+      <GetFeature>
+        <ResultFormat><GML2/></ResultFormat>
+        <DCPType><HTTP><Get onlineResource="http://www.refractions.net:8080/geoserver/wfs/GetFeature?"/></HTTP></DCPType>
+        <DCPType><HTTP><Post onlineResource="http://www.refractions.net:8080/geoserver/wfs/GetFeature"/></HTTP></DCPType>
+      </GetFeature>
+    
+      <Transaction>
+        <DCPType><HTTP><Get onlineResource="http://www.refractions.net:8080/geoserver/wfs/Transaction?"/></HTTP></DCPType>
+        <DCPType><HTTP><Post onlineResource="http://www.refractions.net:8080/geoserver/wfs/Transaction"/></HTTP></DCPType>
+      </Transaction>
+    
+      <LockFeature>
+        <DCPType><HTTP><Get onlineResource="http://www.refractions.net:8080/geoserver/wfs/LockFeature?"/></HTTP></DCPType>
+        <DCPType><HTTP><Post onlineResource="http://www.refractions.net:8080/geoserver/wfs/LockFeature"/></HTTP></DCPType>
+      </LockFeature>
+    
+      <GetFeatureWithLock>
+        <ResultFormat><GML2/></ResultFormat>
+        <DCPType><HTTP><Get onlineResource="http://www.refractions.net:8080/geoserver/wfs/GetFeatureWithLock?"/></HTTP></DCPType>
+        <DCPType><HTTP><Post onlineResource="http://www.refractions.net:8080/geoserver/wfs/GetFeatureWithLock"/></HTTP></DCPType>
+      </GetFeatureWithLock>
+    </Request>
+  </Capability><FeatureTypeList>
+    <Operations>
+      <Query/><Insert/><Update/><Delete/><Lock/>
+    </Operations><FeatureType>
+      <Name>gd:roads</Name>
+      <Title>roads_Type</Title>
+      <Abstract>Generated from roads</Abstract>
+      <Keywords>roads</Keywords>
+      
+    <SRS>EPSG:26910</SRS>
+    <LatLongBoundingBox minx="-122.248437678166" miny="47.2480730062538" maxx="-122.123411805448" maxy="47.37217444602"/>
+  </FeatureType>
+  <FeatureType>
+    <Name>gd:bc_roads</Name>
+    <Title>bc_roads_Type</Title>
+    <Abstract>Generated from demo_bc</Abstract>
+    <Keywords>bc_roads demo_bc</Keywords>
+    
+  <SRS>EPSG:3005</SRS>
+  <LatLongBoundingBox minx="-136.8518008185662" miny="47.72632735216145" maxx="-110.90073038634327" maxy="60.41482524844976"/>
+</FeatureType>
+<FeatureType>
+  <Name>gd:swamps</Name>
+  <Title>swamps_Type</Title>
+  <Abstract>Generated from swamps</Abstract>
+  <Keywords>swamps</Keywords>
+  
+<SRS>EPSG:26910</SRS>
+<LatLongBoundingBox minx="-122.248437678166" miny="47.2480730062538" maxx="-122.123411805448" maxy="47.37217444602"/>
+</FeatureType>
+<FeatureType>
+  <Name>gd:towers</Name>
+  <Title>towers</Title>
+  <Abstract>British Columbia Towers</Abstract>
+  <Keywords>Towers</Keywords>
+  
+<SRS>EPSG:4269</SRS>
+<LatLongBoundingBox minx="-133.71" miny="48.36" maxx="-114.56" maxy="60.0"/>
+</FeatureType>
+<FeatureType>
+  <Name>gd:bc_hospitals</Name>
+  <Title>bc_hospitals_Type</Title>
+  <Abstract>Generated from demo_bc</Abstract>
+  <Keywords>demo_bc bc_hospitals</Keywords>
+  
+<SRS>EPSG:3005</SRS>
+<LatLongBoundingBox minx="-128.80453379860245" miny="48.028091991795094" maxx="-114.1152803223022" maxy="56.346735590047864"/>
+</FeatureType>
+<FeatureType>
+  <Name>gd:lakes</Name>
+  <Title>lakes_Type</Title>
+  <Abstract>Generated from lakes</Abstract>
+  <Keywords>lakes</Keywords>
+  
+<SRS>EPSG:26910</SRS>
+<LatLongBoundingBox minx="-122.248437678166" miny="47.2480730062538" maxx="-122.123411805448" maxy="47.37217444602"/>
+</FeatureType>
+<FeatureType>
+  <Name>gd:streams</Name>
+  <Title>streams_Type</Title>
+  <Abstract>Generated from streams</Abstract>
+  <Keywords>streams</Keywords>
+  
+<SRS>EPSG:26910</SRS>
+<LatLongBoundingBox minx="-122.248437678166" miny="47.2480730062538" maxx="-122.123411805448" maxy="47.37217444602"/>
+</FeatureType>
+<FeatureType>
+  <Name>gd:rivers</Name>
+  <Title>rivers_Type</Title>
+  <Abstract>Generated from rivers</Abstract>
+  <Keywords>rivers</Keywords>
+  
+<SRS>EPSG:26910</SRS>
+<LatLongBoundingBox minx="-122.248437678166" miny="47.2480730062538" maxx="-122.123411805448" maxy="47.37217444602"/>
+</FeatureType>
+<FeatureType>
+  <Name>gd:bc_municipality</Name>
+  <Title>bc_municipality_Type</Title>
+  <Abstract>Generated from demo_bc</Abstract>
+  <Keywords>bc_municipality demo_bc</Keywords>
+  
+<SRS>EPSG:3005</SRS>
+<LatLongBoundingBox minx="-133.2126875307206" miny="47.761710762008356" maxx="-111.99087652568278" maxy="58.86470809992614"/>
+</FeatureType>
+<FeatureType>
+  <Name>gd:buildings</Name>
+  <Title>buildings_Type</Title>
+  <Abstract>Generated from buildings</Abstract>
+  <Keywords>buildings</Keywords>
+  
+<SRS>EPSG:26910</SRS>
+<LatLongBoundingBox minx="-122.248437678166" miny="47.2480730062538" maxx="-122.123411805448" maxy="47.37217444602"/>
+</FeatureType>
+</FeatureTypeList>
+  <ogc:Filter_Capabilities>
+    <ogc:Spatial_Capabilities>
+      <ogc:Spatial_Operators>
+      <ogc:Disjoint/>
+      <ogc:Equals/>
+      <ogc:DWithin/>
+      <ogc:Beyond/>
+      <ogc:Intersect/>
+      <ogc:Touches/>
+      <ogc:Crosses/>
+      <ogc:Within/>
+      <ogc:Contains/>
+      <ogc:Overlaps/>
+      <ogc:BBOX/>
+    </ogc:Spatial_Operators>
+  </ogc:Spatial_Capabilities>
+  <ogc:Scalar_Capabilities>
+    <ogc:Logical_Operators/>
+      <ogc:Comparison_Operators>
+        <ogc:Simple_Comparisons/>
+        <ogc:Between/>
+        <ogc:Like/>
+        <ogc:NullCheck/>
+      </ogc:Comparison_Operators>
+      <ogc:Arithmetic_Operators>
+        <ogc:Simple_Arithmetic/>
+      </ogc:Arithmetic_Operators>
+    </ogc:Scalar_Capabilities>
+  </ogc:Filter_Capabilities>
+</WFS_Capabilities>

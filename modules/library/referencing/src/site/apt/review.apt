@@ -1,0 +1,249 @@
+MODULE REFERENCING
+~~~~~~~~~~~~~~~~~~
+
+  Module Maintainer: Martin
+
+  IP Review:
+
+    * Martin, March, 2006
+
+    * Jody Garnett, August 5th, 2006
+
+    * Adrian Custer, June 5th, 2008
+
+
+  STATUS: CLEAN
+
+
+  Referencing is at one level a "pure" implementation of GeoAPI interfaces, up to 
+  the level of coordinate reference systems. There is all kinds of fun 
+  reprojection stuff happening here, some of which is ported from proj4 (with 
+  permission).
+  
+  There are miscelaneous attributions to external resources where those were 
+  inspirational to this effort.
+  
+  There are text resources to run tests. These are home created and copyright
+  OSGeo.
+
+
+
+* org.geotools.geometry
+  ~~~~~~~~~~~~~~~~~~~~~
+  The minimal elements of geometry required for Referencing: DirectPosition and
+  Envelope.
+
+
+
+* org.geotools.measure
+  ~~~~~~~~~~~~~~~~~~~~
+  Support for unit parameter objects capturing common constructs like angle and 
+  latitude.
+
+
+
+* org.geotools.nature
+  ~~~~~~~~~~~~~~~~~~~
+  Collection of algorithms for hacking at natural phenomenons.
+
+    * package html cites the following:
+
+      * http://webexhibits.org/calendars/year-astronomy.html
+
+      * http://www.treasure-troves.com/astro/TropicalYear.html
+
+      * Unesco technical papers in marine science #40,#44,#45,#50
+
+    * Calendar, SeaWater, SunRelativePosition contain a note allowing JScience to 
+      distribute those files using a BSD style license.
+
+  The full org.geotools.nature may be removed from Geotools distribution if
+  JScience decide to includes them in their own distribution. JScience is
+  probably a more appropriate place than Geotools for them.
+
+
+
+* org.geotools.parameter
+  ~~~~~~~~~~~~~~~~~~~~~~
+  Parameter implementation, informed by an OGC specification. Contains an 
+  breakdown of parameters and parameter groups with enough metadata to allow for 
+  automation.
+
+
+
+* org.geotools.referencing
+  ~~~~~~~~~~~~~~~~~~~~~~~~
+  Contains the CRS utility class, a GeodeticCalculator and other high level api
+  for putting the referencing system to good use.
+
+    * OGC credited with some abstrations:
+
+----------------------------------------------------------------
+This package contains documentation from OpenGIS specifications.
+OpenGIS consortium's work is fully acknowledged here.
+----------------------------------------------------------------
+
+    * GeodeticCalculator contains the following reference:
+
+--------------------------------------------------------------------
+Portions of this file is adapted from Fortran code provided by NOAA.
+Programmed for CDC-6600 by LCDR L.Pfeifer NGS ROCKVILLE MD 18FEB75
+Modified for IBM SYSTEM 360 by John G.Gergen NGS ROCKVILLE MD 7507
+Source: ftp://ftp.ngs.noaa.gov/pub/pcsoft/for_inv.3d/source/
+--------------------------------------------------------------------
+
+      The above-cited NOAA code is in public domain.
+
+
+
+* org.geotools.referencing.crs
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Implementation of coordinate reference systems, based on geoapi interfaces.
+
+    * OGC credited with some abstrations:
+
+----------------------------------------------------------------
+This package contains documentation from OpenGIS specifications.
+OpenGIS consortium's work is fully acknowledged here.
+----------------------------------------------------------------
+
+
+
+* org.geotools.referencing.cs
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Implementation of coordinate systems, based on geoapi interfaces.
+
+    * OGC credited with some abstrations:
+
+----------------------------------------------------------------
+This package contains documentation from OpenGIS specifications.
+OpenGIS consortium's work is fully acknowledged here.
+----------------------------------------------------------------
+
+
+
+* org.geotools.referencing.datum
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    * OGC credited with some abstrations:
+
+----------------------------------------------------------------
+This package contains documentation from OpenGIS specifications.
+OpenGIS consortium's work is fully acknowledged here.
+----------------------------------------------------------------
+
+    * NOAA public domain is credited in DefaultEllipsoid:
+
+----------------------------------------------------------------
+This class contains formulas from the public FTP area of NOAA.
+NOAAS's work is fully acknowledged here. 
+----------------------------------------------------------------
+
+
+
+* org.geotools.referencing.factory
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Here is where factories are used to address some of the complexities of the who 
+  geospaital "standard" scene :-)  The DatumAliasesTable.txt is used to great 
+  effect to allow the various parsers to be more forgiving.
+
+    * OGC credited with some abstrations:
+
+----------------------------------------------------------------
+This package contains documentation from OpenGIS specifications.
+OpenGIS consortium's work is fully acknowledged here.
+----------------------------------------------------------------
+
+
+
+* org.geotools.referencing.factory.epsg
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Contains base support for an EPSG support, compare and contrast with the 
+  referencing plugins for PostGRES, and HSQL and the like available in the plugin 
+  folder.
+
+    * OGC credited with some abstrations:
+
+----------------------------------------------------------------
+This package contains documentation from OpenGIS specifications.
+OpenGIS consortium's work is fully acknowledged here.
+----------------------------------------------------------------
+
+
+
+* org.geotools.referencing.factory.wms
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    Created by Refractions for a project in early 2004 and donated to the GeoTools 
+    community, supports additional AUTO projects defined by the WMS specification in 
+    Appendix B.
+
+
+
+* org.geotools.referencing.operation
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Seems to define various math operations, probably the basis for reprojection. 
+  Most files date from 2004.
+
+    * OGC credited with some abstrations:
+
+----------------------------------------------------------------
+This package contains documentation from OpenGIS specifications.
+OpenGIS consortium's work is fully acknowledged here.
+----------------------------------------------------------------
+
+
+
+* org.geotools.referencing.operation.matrix
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Defines some basic matrix math, onto of Java 3D vecmath.
+
+
+
+* org.geotools.referencing.operation.projection
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Fun with math projections, this is interesting in that we have
+  been given permission to relicense some derrived code from the
+  proj4 project.
+
+    * Some algorithms ported from Proj4.
+       Frank Warmerdam will sign the copyright agreement; we presume this covers
+       Gerald Evenden's copyright. Both added as authors as appropriate. Frank had 
+       perviously provided permission to relicense as LGPL. The package also 
+       credits the USGS work with:
+
+----------------------------------------------------------------
+This package contains formulas from the PROJ package of USGS.
+USGS's work is fully acknowledged here. This derived work has
+been relicensed under LGPL with Frank Warmerdam's permission.
+----------------------------------------------------------------
+
+
+
+* org.geotools.referencing.operation.transform
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Math transformation functions.
+
+    * OGC credited with interfaces/documentation:
+
+----------------------------------------------------------------
+This package contains documentation from OpenGIS specifications.
+OpenGIS consortium's work is fully acknowledged here.
+----------------------------------------------------------------
+
+
+
+* org.geotools.referencing.wkt
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Support for reading and writing well known text.
+
+     * Contains scripts, a kind of executable test suite in text form. Contains 
+       source and target CRS, source points and expected target points. The test 
+       suite performs the projection and fires a test failure if the computed points 
+       is significantly different than the target points specified in the script. 
+       The OpenGIS test script is modified from an OGC script. All other test 
+       scripts are Rueben Schulz's work (as far as I know). Rueben did this job as a 
+       Geotools contributor.
+
+     * WKT for CoordinateReferenceSystem.txt - they are mostly test scripts with comments, 
+       source and target points trimmed out. So they are mostly Rueben's derivative work.
+

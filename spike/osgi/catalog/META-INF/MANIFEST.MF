@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-Name: Skunkworks Catalog
+Bundle-Description: A Skunkworks catalog service
+Bundle-Version: 1.0.0
+Bundle-Activator: skunkworks.catalog.Activator
+Bundle-ClassPath: .
+Import-Package: org.geotools.gtcatalog,
+ org.geotools.gtcatalog.defaults
+Export-Package: skunkworks.catalog

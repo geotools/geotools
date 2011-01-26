@@ -1,0 +1,35 @@
+MODULE MYSQL
+~~~~~~~~~~~~
+
+  Module Maintainer: Chris Holmes
+
+  IP Review:
+
+   * Jody Garnett July 30th
+
+   * Adrian Custer, June 2008
+
+
+STATUS: Clean
+
+
+  A data store to work on the mysql database.
+
+  There's a tiny data file, should not bother anyone. There's also some
+  documentation, probably rapidly going out of date.
+
+
+* org.geotools.data.mysql
+  ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.data.filter
+  ~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.data.mysql (test)
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.filter
+  ~~~~~~~~~~~~~~~~~~~

@@ -1,0 +1,107 @@
+<%@ jet package="org.geotools.maven.xmlcodegen.templates" imports="java.util.* java.io.* org.eclipse.xsd.* org.geotools.xml.* org.geotools.maven.xmlcodegen.*" class="XSDTemplate" %>
+<%  
+    XSDSchema schema = (XSDSchema)argument ;
+    String ns = schema.getTargetNamespace();
+    String prefix = Schemas.getTargetPrefix( schema );
+    
+    String file = new File( schema.eResource().getURI().toFileString() ).getName();
+    
+%>
+
+import java.util.Set;
+import javax.xml.namespace.QName;
+import org.geotools.xml.XSD;
+
+/**
+ * This interface contains the qualified names of all the types,elements, and 
+ * attributes in the <%=schema.getTargetNamespace()%> schema.
+ *
+ * @generated
+ */
+public final class <%=prefix.toUpperCase()%> extends XSD {
+
+    /** singleton instance */
+    private static final <%=prefix.toUpperCase()%> instance = new <%=prefix.toUpperCase()%>();
+    
+    /**
+     * Returns the singleton instance.
+     */
+    public static final <%=prefix.toUpperCase()%> getInstance() {
+       return instance;
+    }
+    
+    /**
+     * private constructor
+     */
+    private <%=prefix.toUpperCase()%>() {
+    }
+    
+    protected void addDependencies(Set dependencies) {
+       //TODO: add dependencies here
+    }
+    
+    /**
+     * Returns '<%=ns%>'.
+     */
+    public String getNamespaceURI() {
+       return NAMESPACE;
+    }
+    
+    /**
+     * Returns the location of '<%=file%>.'.
+     */
+    public String getSchemaLocation() {
+       return getClass().getResource("<%=file%>").toString();
+    }
+    
+    /** @generated */
+    public static final String NAMESPACE = "<%= ns %>";
+    
+    /* Type Definitions */
+<%
+    List types = GeneratorUtils.allTypes( schema );
+    for (Iterator itr = types.iterator(); itr.hasNext();) {
+        XSDTypeDefinition type = (XSDTypeDefinition)itr.next();
+        if (type.getName() == null) continue;
+        if (!ns.equals(type.getTargetNamespace())) continue;
+        
+%>
+    /** @generated */
+    public static final QName <%=type.getName()%> = 
+        new QName("<%=ns%>","<%=type.getName()%>");
+<%
+    }
+%>
+
+    /* Elements */
+<%
+    List elements = schema.getElementDeclarations();
+    for (Iterator itr = elements.iterator(); itr.hasNext();) {
+        XSDElementDeclaration element = (XSDElementDeclaration)itr.next();
+        if (element.getName() == null) continue;
+        if (!ns.equals(element.getTargetNamespace())) continue;
+%>
+    /** @generated */
+    public static final QName <%=element.getName()%> = 
+        new QName("<%=ns%>","<%=element.getName()%>");
+<%
+    }
+%>
+
+    /* Attributes */
+    <%
+    List attributes = schema.getAttributeDeclarations();
+    for (Iterator itr = attributes.iterator(); itr.hasNext();) {
+        XSDAttributeDeclaration attribute = (XSDAttributeDeclaration)itr.next();
+        if (attribute.getName() == null) continue;
+        if (!ns.equals(attribute.getTargetNamespace())) continue;
+%>
+    /** @generated */
+    public static final QName <%=attribute.getName()%> = 
+        new QName("<%=ns%>","<%=attribute.getName()%>");
+<%
+    }
+%>
+
+}
+    

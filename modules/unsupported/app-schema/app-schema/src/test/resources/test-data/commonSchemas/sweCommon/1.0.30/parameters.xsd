@@ -1,0 +1,518 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v5 rel. 2 U (http://www.xmlspy.com) by Mike Botts (University of Alabama in Huntsville) -->
+<!-- edited with XML Spy v4.3 U (http://www.xmlspy.com) by Michael E Botts (University of Alabama in Huntsville) -->
+<!-- edited with XML Spy v4.3 U (http://www.xmlspy.com) by Alexandre Robin (University of Alabama in Huntsville) -->
+<xs:schema targetNamespace="http://www.opengis.net/swe/0.0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:swe="http://www.opengis.net/swe/0.0" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:annotation>
+		<xs:documentation>Data components for core SensorML
+		Note that this schema defines a number of components that mirror types and elements already defined in GML, in the schema documents 
+		basicTypes.xsd, measures.xsd and temporal.xsd</xs:documentation>
+	</xs:annotation>
+	<!--========================-->
+	<!--  Includes and Imports  -->
+	<!--========================-->
+	<xs:import namespace="http://www.w3.org/1999/xlink" schemaLocation="http://schemas.opengis.net/xlink/1.0.0/xlinks.xsd"/>
+	<!--====================-->
+	<!--  Attribute Groups  -->
+	<!--====================-->
+	<xs:attributeGroup name="AssociationAttributes">
+		<xs:attribute ref="xlink:href" use="optional"/>
+	</xs:attributeGroup>
+	<!--============================-->
+	<!--  Main Substitution Groups  -->
+	<!--============================-->
+	<xs:element name="_DataGroup" type="swe:_GroupBaseType" abstract="true"/>
+	<xs:element name="_DataArray" type="swe:_ArrayBaseType" abstract="true"/>
+	<!--==========================-->
+	<!--  Simple Data Components  -->
+	<!--==========================-->
+	<xs:element name="Boolean" type="swe:BooleanType">
+		<xs:annotation>
+			<xs:documentation>True or False, 0 or 1</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="Count" type="swe:CountType">
+		<xs:annotation>
+			<xs:documentation>Integer number used for a counting value </xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="CountRange" type="swe:CountRangeType">
+		<xs:annotation>
+			<xs:documentation>Integer pair used for specifying a count range</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="Quantity" type="swe:QuantityType">
+		<xs:annotation>
+			<xs:documentation>Decimal number with optional unit and bounds</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="QuantityRange" type="swe:QuantityRangeType">
+		<xs:annotation>
+			<xs:documentation>Decimal pair for specifying a quantity range</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="Category" type="swe:CategoryType">
+		<xs:annotation>
+			<xs:documentation>A simple token identifying a term or category (single spaces allowed); definition attribute should provide dictionary entry useful for interpretation of the value</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="Discussion" type="swe:TextType">
+		<xs:annotation>
+			<xs:documentation>A descriptive text with an optional topic</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<!--===========================-->
+	<!--  Time Elements  -->
+	<!--===========================-->
+	<xs:element name="Time" type="swe:TimeType">
+		<xs:annotation>
+			<xs:documentation>Either ISO 8601 (e.g. 2004-04-18T12:03:04.6Z) or time relative to a time origin</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+   <xs:element name="TimeRange" type="swe:TimeRangeType">
+      <xs:annotation>
+         <xs:documentation>Time value pair for specifying a time range (can be a decimal or ISO 8601)</xs:documentation>
+      </xs:annotation>
+   </xs:element>
+	<!--===========================-->
+	<!--  Complex Data Components  -->
+	<!--===========================-->
+	<xs:element name="DataGroup" substitutionGroup="swe:_DataGroup">
+		<xs:annotation>
+			<xs:documentation>Group of other data components</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="swe:_GroupBaseType">
+					<xs:sequence minOccurs="0">
+						<xs:element name="component" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:group ref="swe:AnyData" minOccurs="0"/>
+								<xs:attribute name="name" type="swe:qnameSimpleType" use="required"/>
+								<xs:attributeGroup ref="swe:AssociationAttributes"/>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="DataArray" substitutionGroup="swe:_DataArray">
+		<xs:annotation>
+			<xs:documentation>Array of other data components with a size</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="swe:_ArrayBaseType">
+					<xs:sequence minOccurs="0">
+						<xs:element name="component">
+							<xs:complexType>
+								<xs:group ref="swe:AnyData" minOccurs="0"/>
+								<xs:attribute name="name" type="swe:qnameSimpleType" use="optional"/>
+								<xs:attributeGroup ref="swe:AssociationAttributes"/>
+							</xs:complexType>
+						</xs:element>
+						<xs:element ref="swe:tupleValues" minOccurs="0"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="tupleValues">
+		<xs:annotation>
+			<xs:documentation>List of space separated tuples</xs:documentation>
+		</xs:annotation>
+		<xs:simpleType>
+			<xs:list itemType="swe:tupleType"/>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="Curve" substitutionGroup="swe:_DataArray">
+		<xs:annotation>
+			<xs:documentation>Curve describing variations of a parameter vs. another quantity</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="swe:CurveType"/>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ConditionalValue" type="swe:ConditionalValueType" substitutionGroup="swe:_DataGroup"/>
+	<xs:element name="NormalizedCurve" type="swe:NormalizedCurveType" substitutionGroup="swe:_DataGroup"/>
+	<xs:complexType name="CurveType">
+		<xs:complexContent>
+			<xs:extension base="swe:_ArrayBaseType">
+				<xs:sequence>
+					<xs:element name="definition">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Coordinates">
+									<xs:complexType>
+										<xs:complexContent>
+											<xs:extension base="swe:_GroupBaseType">
+												<xs:sequence>
+													<xs:element name="axis" maxOccurs="unbounded">
+														<xs:complexType>
+															<xs:group ref="swe:AnyScalar"/>
+															<xs:attribute name="name" type="swe:qnameSimpleType" use="required"/>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:extension>
+										</xs:complexContent>
+									</xs:complexType>
+								</xs:element>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element ref="swe:tupleValues"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="NormalizedCurveType">
+		<xs:complexContent>
+			<xs:extension base="swe:_GroupBaseType">
+				<xs:sequence>
+					<xs:element name="inputGain" minOccurs="0">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element ref="swe:Quantity"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="inputBias" minOccurs="0">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element ref="swe:Quantity"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="outputGain" minOccurs="0">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element ref="swe:Quantity"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="outputBias" minOccurs="0">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element ref="swe:Quantity"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="interpolationMethod" minOccurs="0">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element ref="swe:Category"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				   <xs:element name="extrapolationMethod" minOccurs="0">
+				      <xs:complexType>
+				         <xs:sequence>
+				            <xs:element ref="swe:Category"/>
+				         </xs:sequence>
+				      </xs:complexType>
+				   </xs:element>
+					<xs:element name="function">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element ref="swe:Curve"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ConditionalValueType">
+		<xs:complexContent>
+			<xs:extension base="swe:_GroupBaseType">
+				<xs:sequence>
+					<xs:element name="condition" maxOccurs="unbounded">
+						<xs:complexType>
+							<xs:choice minOccurs="0">
+								<xs:element ref="swe:Discussion"/>
+								<xs:group ref="swe:AnyData"/>
+							</xs:choice>
+							<xs:attribute name="name" type="swe:qnameSimpleType" use="required"/>
+							<xs:attributeGroup ref="swe:AssociationAttributes"/>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="value">
+						<xs:complexType>
+							<xs:group ref="swe:AnyData" minOccurs="0"/>
+							<xs:attributeGroup ref="swe:AssociationAttributes"/>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!--================-->
+	<!--  Simple Types  -->
+	<!--================-->
+	<!-- EmptyType allows Quantity, Count, etc to be nillable (i.e. have no value) -->
+	<!-- Consider using XML Schema's nillable="true" -->
+	<xs:simpleType name="emptyType">
+		<xs:restriction base="xs:string">
+			<xs:length value="0"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="booleanOrEmpty">
+		<xs:union memberTypes="xs:boolean swe:emptyType"/>
+	</xs:simpleType>
+	<xs:simpleType name="countOrEmpty">
+		<xs:union memberTypes="xs:integer swe:emptyType"/>
+	</xs:simpleType>
+	<xs:simpleType name="decimalOrEmpty">
+		<xs:union memberTypes="xs:double swe:emptyType"/>
+		<!--Need double to support scientific notation (ex: 10e3)-->
+	</xs:simpleType>
+	<xs:simpleType name="timeIso8601SimpleType">
+		<xs:union memberTypes="xs:date xs:time xs:dateTime swe:timeString"/>
+	</xs:simpleType>
+	<xs:simpleType name="timeSimpleType">
+		<xs:union memberTypes="swe:timeIso8601SimpleType xs:double swe:emptyType"/>
+	</xs:simpleType>
+	<xs:simpleType name="timeString">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="currentTime"/>
+			<xs:enumeration value="unknown"/>
+		</xs:restriction>
+		<!-- Implemented in GML using indeterminatePosition attribute on gml:TImePositionType  -->
+	</xs:simpleType>
+	<xs:simpleType name="uomType">
+		<xs:restriction base="xs:anyURI"/>
+	</xs:simpleType>
+	<!-- consider using GML 3.2's UomIdentifier -->
+	<!-- this gives an (unambiguous) choice of the UCUM symbol or a URI -->
+	<xs:simpleType name="uomIdentifier">
+		<xs:union memberTypes="swe:uomSymbol swe:uomURI"/>
+	</xs:simpleType>
+	<xs:simpleType name="uomSymbol">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[^: \n\r\t]+"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="uomURI">
+		<xs:restriction base="xs:anyURI">
+			<xs:pattern value="([a-zA-Z][a-zA-Z0-9\-\+\.]*:|\.\./|\./|#).*"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="definitionType">
+		<xs:restriction base="xs:anyURI"/>
+	</xs:simpleType>
+	<xs:simpleType name="nameSimpleType">
+		<xs:restriction base="xs:token">
+			<xs:maxLength value="30"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="qnameSimpleType">
+		<xs:restriction base="xs:QName"/>
+	</xs:simpleType>
+	<xs:simpleType name="axisCodeSimpleType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="X"/>
+			<xs:enumeration value="Y"/>
+			<xs:enumeration value="Z"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="timeReferenceSimpleType">
+		<xs:union memberTypes="swe:timeIso8601SimpleType xs:anyURI"/>
+	</xs:simpleType>
+	<xs:simpleType name="timeList">
+		<xs:list itemType="swe:timeSimpleType"/>
+	</xs:simpleType>
+	<xs:simpleType name="timePair">
+		<xs:restriction base="swe:timeList">
+			<xs:length value="2"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="tupleType">
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:simpleType name="decimalList">
+		<xs:list itemType="xs:double"/>
+		<!-- this is a double, because decimal does not allow scientific notation -->
+	</xs:simpleType>
+	<xs:simpleType name="decimalPair">
+		<xs:restriction base="swe:decimalList">
+			<xs:length value="2"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="countList">
+		<xs:list itemType="xs:integer"/>
+	</xs:simpleType>
+	<xs:simpleType name="countPair">
+		<xs:restriction base="swe:countList">
+			<xs:length value="2"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="arraySizeSimpleType">
+		<xs:union memberTypes="xs:positiveInteger xs:IDREF"/>
+	</xs:simpleType>
+	<!--================-->
+	<!--  Scalar Types with additional metadata included as XML attributes  -->
+	<!--================-->
+	<xs:complexType name="BooleanType">
+		<xs:simpleContent>
+			<xs:extension base="swe:booleanOrEmpty">
+				<xs:attribute name="id" type="xs:ID" use="optional"/>
+				<xs:attribute name="definition" type="swe:definitionType" use="optional"/>
+				<xs:attribute name="axisCode" type="swe:axisCodeSimpleType" use="optional"/>
+				<xs:attribute name="fixed" type="xs:boolean" use="optional" default="false"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="CountType">
+		<xs:simpleContent>
+			<xs:extension base="swe:countOrEmpty">
+				<xs:attribute name="id" type="xs:ID" use="optional"/>
+				<xs:attribute name="definition" type="swe:definitionType" use="optional"/>
+				<xs:attribute name="axisCode" type="swe:axisCodeSimpleType" use="optional"/>
+				<xs:attribute name="min" type="xs:integer" use="optional"/>
+				<xs:attribute name="max" type="xs:integer" use="optional"/>
+				<xs:attribute name="fixed" type="xs:boolean" use="optional" default="false"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="CountRangeType">
+		<xs:simpleContent>
+			<xs:extension base="swe:countPair">
+				<xs:attribute name="id" type="xs:ID" use="optional"/>
+				<xs:attribute name="definition" type="swe:definitionType" use="optional"/>
+				<xs:attribute name="axisCode" type="swe:axisCodeSimpleType" use="optional"/>
+				<xs:attribute name="fixed" type="xs:boolean" use="optional" default="false"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="QuantityType">
+		<xs:simpleContent>
+			<xs:extension base="swe:decimalOrEmpty">
+				<xs:attribute name="id" type="xs:ID" use="optional"/>
+				<xs:attribute name="definition" type="swe:definitionType" use="optional"/>
+				<xs:attribute name="uom" type="swe:uomType" use="optional"/>
+				<xs:attribute name="scale" type="xs:double" use="optional"/>
+				<xs:attribute name="axisCode" type="swe:axisCodeSimpleType" use="optional"/>
+				<xs:attribute name="min" type="xs:double" use="optional"/>
+				<xs:attribute name="max" type="xs:double" use="optional"/>
+				<xs:attribute name="fixed" type="xs:boolean" use="optional" default="false"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="QuantityRangeType">
+		<xs:simpleContent>
+			<xs:extension base="swe:decimalPair">
+				<xs:attribute name="id" type="xs:ID" use="optional"/>
+				<xs:attribute name="definition" type="swe:definitionType" use="optional"/>
+				<xs:attribute name="uom" type="swe:uomType" use="optional"/>
+				<xs:attribute name="scale" type="xs:double" use="optional"/>
+				<xs:attribute name="axisCode" type="swe:axisCodeSimpleType" use="optional"/>
+				<xs:attribute name="fixed" type="xs:boolean" use="optional" default="false"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="TextType">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="id" type="xs:ID" use="optional"/>
+				<xs:attribute name="topic" type="xs:token" use="optional"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="CategoryType">
+		<xs:simpleContent>
+			<xs:extension base="xs:token">
+				<xs:attribute name="id" type="xs:ID" use="optional"/>
+				<xs:attribute name="definition" type="swe:definitionType" use="optional"/>
+				<xs:attribute name="fixed" type="xs:boolean" use="optional" default="false"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<!--==========================-->
+	<!--  Time Types  -->
+	<!--==========================-->
+	<xs:complexType name="TimeType">
+		<xs:simpleContent>
+			<xs:extension base="swe:timeSimpleType">
+				<xs:attribute name="id" type="xs:ID" use="optional"/>
+				<xs:attribute name="definition" type="swe:definitionType" use="optional"/>
+				<xs:attribute name="referenceTimeFrame" type="swe:timeReferenceSimpleType" use="optional"/>
+				<xs:attribute name="localTimeFrame" type="xs:anyURI" use="optional"/>
+				<xs:attribute name="uom" type="swe:uomType" use="optional"/>
+				<xs:attribute name="scale" type="xs:double" use="optional"/>
+				<xs:attribute name="fixed" type="xs:boolean" use="optional" default="false"/>
+				<xs:attribute name="min" type="swe:timeSimpleType" use="optional"/>
+				<xs:attribute name="max" type="swe:timeSimpleType" use="optional"/>
+			</xs:extension>
+		</xs:simpleContent>
+		<!-- Implemented in GML as gml:TimeType -->
+	</xs:complexType>
+	<xs:complexType name="TimeRangeType">
+		<xs:simpleContent>
+			<xs:extension base="swe:timePair">
+				<xs:attribute name="id" type="xs:ID" use="optional"/>
+				<xs:attribute name="definition" type="swe:definitionType" use="optional"/>
+				<xs:attribute name="referenceTimeFrame" type="swe:timeReferenceSimpleType" use="optional"/>
+				<xs:attribute name="localTimeFrame" type="xs:anyURI" use="optional"/>
+				<xs:attribute name="uom" type="swe:uomType" use="optional"/>
+				<xs:attribute name="scale" type="xs:double" use="optional"/>
+				<xs:attribute name="fixed" type="xs:boolean" use="optional" default="false"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<!--==========================-->
+	<!--  Abstract Complex Types  -->
+	<!--==========================-->
+	<xs:complexType name="_GroupBaseType" abstract="true">
+		<xs:attribute name="id" type="xs:ID" use="optional"/>
+		<xs:attribute name="definition" type="swe:definitionType" use="optional"/>
+		<xs:attribute name="fixed" type="xs:boolean" use="optional" default="false"/>
+	</xs:complexType>
+	<xs:complexType name="_ArrayBaseType" abstract="true">
+		<xs:complexContent>
+			<xs:extension base="swe:_GroupBaseType">
+				<xs:attribute name="arraySize" type="swe:arraySizeSimpleType" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!--=================-->
+	<!--  Common Groups  -->
+	<!--=================-->
+	<xs:group name="AnyScalar">
+		<xs:choice>
+			<xs:element ref="swe:Boolean"/>
+			<xs:group ref="swe:AnyNumerical"/>
+			<xs:element ref="swe:Category"/>
+		</xs:choice>
+	</xs:group>
+	<xs:group name="AnyNumerical">
+		<xs:choice>
+			<xs:element ref="swe:Count"/>
+			<xs:element ref="swe:Quantity"/>
+			<xs:group ref="swe:Time"/>
+		</xs:choice>
+	</xs:group>
+	<xs:group name="AnyData">
+		<xs:choice>
+			<xs:group ref="swe:AnyScalar"/>
+			<xs:element ref="swe:QuantityRange"/>
+			<xs:element ref="swe:CountRange"/>
+			<xs:element ref="swe:_DataGroup"/>
+			<xs:element ref="swe:_DataArray"/>
+		</xs:choice>
+	</xs:group>
+	<xs:group name="Time">
+		<xs:choice>
+			<xs:element ref="swe:Time"/>
+		</xs:choice>
+	</xs:group>
+	<xs:group name="Curves">
+		<xs:choice>
+			<xs:element ref="swe:Curve"/>
+			<xs:element ref="swe:NormalizedCurve"/>
+		</xs:choice>
+	</xs:group>
+</xs:schema>

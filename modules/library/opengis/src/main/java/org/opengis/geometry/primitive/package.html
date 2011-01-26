@@ -1,0 +1,37 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<HTML>
+  <HEAD>
+    <TITLE>package org.opengis.geometry.primitive</TITLE>
+  </HEAD>
+  <BODY>
+  Set of geometric objects that are not decomposed further into
+  other {@linkplain org.opengis.geometry.primitive.Primitive primitives}.
+  The following is adapted from
+  <A HREF="http://www.opengis.org/docs/01-101.pdf">Feature Geometry (Topic 1)</A> specification.
+
+  <P ALIGN="justify">The Geometric primitive package contains all the geometric primitives
+  and supporting data types used in describing their boundaries. A geometric primitive is a
+  geometric object that is not decomposed further into other primitives in the system. This
+  includes curves and surfaces, even though they are composed of curve segments and surface
+  patches, respectively. Those curve segments and surface patches cannot exist outside the
+  context of a primitive.</P>
+
+  <BLOCKQUOTE><P ALIGN="justify"><FONT SIZE=2><STRONG>NOTE:</STRONG> Most geometric primitives are
+  decomposable infinitely many times. Adding a centre point to a line may split that line into two
+  separate lines. A new curve drawn across a surface may divide that surface into two parts, each
+  of which is a surface. This is the reason that the normal definition of primitive as
+  "non-decomposable" is not plausible in a geometry model - the only non-decomposable object in
+  geometry is a point.</FONT></P></BLOCKQUOTE>
+ 
+  <P ALIGN="justify">Any geometric object that is used to describe a feature is a collection of
+  geometric primitives. A collection of geometric primitives may or may not be a geometric complex.
+  Geometric complexes have additional properties such as closure by boundary operations and mutually
+  exclusive component parts. {@link org.opengis.geometry.primitive.Primitive} and
+  {@link org.opengis.geometry.complex.Complex} share most semantics, in the meaning of operations and
+  attributes. There is an exception in that a {@link org.opengis.geometry.primitive.Primitive} shall not
+  contain its boundary (except in the trivial case of {@link org.opengis.geometry.primitive.Point} where
+  the boundary is empty), while a {@link org.opengis.geometry.complex.Complex} shall contain its boundary
+  in all cases.</P>
+  </BODY>
+</HTML>

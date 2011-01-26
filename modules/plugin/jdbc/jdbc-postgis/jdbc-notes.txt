@@ -1,0 +1,124 @@
+Create a new JDBC datastore notes:
+-------------------------------------------------
+
+0) Setup the pom?
+1) Create a org.geotools.data.<dbname>.<dbname>Dialect class
+   (empty implementation, just make the compiler happy)
+2) Create a org.geotools.data.<dbname>.<dbname>DataStoreFactory
+   and populate the abstract methods with the necessary content
+3) Register the factory in SPI by creating a 
+   src\main\resources\META-INF\org.geotools.data.DataStoreFactorySpi
+   file and adding a single line looking like
+   org.geotools.data.oracle.<dbname>DataStoreFactory
+4) Let's start by adding a read only test. We extend JDBCTestSetup
+   by creating <dbname>TestSetup, override createSqlDialect and
+   setUpData. For the latter we follow the javadoc instructions
+   to create the test data table, basically we drop the ft1 and 
+   ft2 tables (using runSafe) and then we create the ft1 table
+   with the proper schema, populate metadata, create a spatial
+   index, and fill it with sample data.
+   Also, it's a good idea to override the setUpDataStore method
+   and force a specific database schema into the datastore.
+   Otherwise the tests will try to run into the default schema,
+   which is "geotools".
+5) Once that is done, we extend JDCBFeatureSourceTest by 
+   creating <dbname>FeatureSourceTest and we return the dialect
+   created in the previous step in createTestSetup().
+   This is all that needs doing, since the tests are designed
+   to be reused as is, all differences are located in the test
+   setup itself.
+6) We create the file src/test/resources/org/geotools/data/postgis/db.properties
+   and fill it with the following information (the example is valid for postgis,
+   so you'll have to adapt it). This information is required for the test
+   to connect to an existing db and run the test
+   driver=org.postgresql.Driver
+   url=jdbc:postgresql://localhost/mypostgisdb
+   username=username
+   password=passwd
+7) Nice, we can start by running the test and see if any 
+   fix need to be done in the test setup itself
+8) Once the test setup is fixed, most of the tests will still be failing,
+   this is normal, we have to start adding some meat to the sql dialect.
+   (yet, testCount, testCountWithFilter, testGetFeatures should already
+   be running fine)
+9) Let's start by dealing with the schema. We should be able to 
+   recognize the geometry is a point and that's in the proper srs (4326).
+   To do so, we have to override two optional methods in <dbname>Dialect,
+   getMapping() and getGeometrySRID(). If that is done properly,
+   the testSchema method should be passing now.
+10) Let's now deal with bounds calculation. Most databases do offer an
+    aggregate function to quickly compute the extent of a geometry column.
+    The SQLDialect.encodeGeometryEnvelope method should be overridden
+    in order to encode such function around the specified geometry column
+    (what if the database has no such function???). 
+    The envelope needs also be read back, so the decodeGeometryEnvelope
+    must be coded as well.
+11) If all goes fine, you should have only one test failing at this 
+    point, the GetFeaturesWithLogicFilter one. This one is failing because
+    we still haven't provided support to read geometries, and the feature
+    model is loaded with meaningless blobs instead of real geometries.
+    In order to read geometries usually the following two methods in
+    dialect have to be overridden:
+    * encodeGeometryColumn, which is necessary only if using the
+      geometry name straight in the SELECT is not sufficient (with many
+      database is required/more efficient to encode the native geometry
+      in a specific format, e.g., WKB, and to do so you have to call
+      a function around the geometry column name)
+    * decodeGeometryValue, which reads from the resultset the value
+      coming from the database and turns it into a JTS geometry using
+      the specified geometry factory
+12) While we're at it, let's implement some other read only tests as
+    well:
+    - JDBCFeatureReaderTest
+    - JDBCEmptyTest (and its setup)
+13) Let's get a spin to JDBCSpatialFilterTests. First off, prepare
+    the associated test setup and make sure the test passes. 
+    Once you've done that, you should wonder how the test has passed,
+    as we haven't coded up anything related to spatial filters.
+    It's working because the filters are executed in memory. Now,
+    take the dialect and override the createFilterToSql or the
+    createPreparedFilterToSql according to your needs. The FilterToSql
+    implementation returned will have to properly encode spatial
+    filters using the native spatial filter capabilities.
+    You may want to write custom unit tests for the FilterToSql
+    subclass you're going to write.
+14) Now that the read only behaviour is laid down, we can move to the write part.
+    Write wise prikary keys are king, so we need to extend JDBCPrimaryKeyTest
+    and its associated setup. Depending on the database capabilities, we may
+    have to override the autovalue or sequence test.
+    If the database supports sequences the dialect will have to 
+    override the getSequenceForColumn() and getNextSequenceValue() methods.
+    Hammer until all four tests do pass.
+15) We start adding support for write operations by implementing
+    JDBCFeatureStore test. Most tests will fail because
+    we did not provide means to encode the geometries as values for 
+    parameters in prepared statements. 
+    The involved methods for prepared statements based dialects are:
+    - prepareGeometryValue() if a simple "?" placeholder is not enough
+      (say, if you need to call a function to unpack a wkb encoded
+       geometry, for example)
+    - setGeometryValue() to set the geometry into the prepared st
+    Mind the null values, they often have to be handled differently
+16) Once basic write support is in place, let's move to check 
+    table creation support by implementing PostgisGeometryTest,
+    which runs a series of create tables with different geometry types.
+    The key to properly run this test is to have good support for
+    table creation, in particular primary keys and geometry columns/spatial
+    indexes support. In order to pass this test you'll most probably
+    have to override:
+    - registerSqlTypeNameToClassMappings (register the geometry type association)
+    - getGeometryTypeName (from type to geom name)
+    - encodePrimaryKey (possibly with an auto-increment type)
+    - postCreateTable (to add geometry metatada and spatial indexes, and/or
+      to associate sequences as default values for the primary keys when
+      auto-increment is not supported)
+17) We can now move to JDBCDataStoreTest. Barring any bug, it should not
+    give surprises
+18) Once that is working, we move to JDBCDataStoreAPITest, for which
+    we should have the test support ready as well. We delayed working
+    on this one long because it requires a bit of everything we've
+    been working on so far, reading, writing, table creation, datastore api,
+    but hammers stuff on a more extensive set of tables
+19) After this, only details need to be sorted out. Implement all other
+    tests that do make sense for your database and make it solid
+      

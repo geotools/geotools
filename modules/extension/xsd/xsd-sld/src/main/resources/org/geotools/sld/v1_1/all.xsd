@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://www.opengis.net/sld" xmlns:sld="http://www.opengis.net/sld" xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" version="1.1.0 2010-02-01">
+	
+	<xsd:include schemaLocation="StyledLayerDescriptor.xsd"/>
+	<xsd:include schemaLocation="GetMap.xsd"/>
+	<xsd:include schemaLocation="DescribeLayer.xsd"/>
+
+</xsd:schema>

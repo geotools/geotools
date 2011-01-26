@@ -1,0 +1,210 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
+package org.geotools.wfs.v_1_1_0.data;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Collection;
+import java.util.Iterator;
+
+import org.geotools.data.DefaultQuery;
+import org.geotools.data.FeatureSource;
+import org.geotools.data.Query;
+import org.geotools.data.ResourceInfo;
+import org.geotools.data.wfs.DefaultHTTPProtocol;
+import org.geotools.data.wfs.HTTPProtocol;
+import org.geotools.data.wfs.WFSProtocol;
+import org.geotools.feature.FeatureCollection;
+import org.geotools.test.TestData;
+import org.geotools.wfs.protocol.ConnectionFactory;
+import org.geotools.wfs.protocol.DefaultConnectionFactory;
+import org.junit.Before;
+import org.junit.experimental.theories.suppliers.TestedOn;
+import org.opengis.feature.Feature;
+import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.PropertyDescriptor;
+import org.opengis.filter.Filter;
+
+/**
+ * @author Gabriel Roldan
+ * @version $Id: WFSFeatureSourceTest.java.txt 31720 2008-10-24 22:57:22Z groldan $
+ * @since 2.5.x
+ * @source $URL:
+ *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/wfs/src/test/java/org/geotools
+ *         /wfs/v_1_1_0/data/WFSFeatureSourceTest.java $
+ */
+public class WFSFeatureSourceTest {
+
+    private WFS_1_1_0_DataStore geosStore;
+
+    private WFSFeatureSource statesSource;
+
+    private WFS_1_1_0_DataStore cubewerxStore;
+
+    private WFSFeatureSource govUnitsSource;
+
+    @Before
+    public void setUp() throws Exception {
+        protocolHandler = createTestProtocolHandler(GEOS_STATES.CAPABILITIES);
+        geosStore = new WFS_1_1_0_DataStore(protocolHandler);
+        statesSource = geosStore.getFeatureSource(GEOS_STATES.FEATURETYPENAME);
+
+        WFSProtocol cubewerxProtocolHandler = createTestProtocolHandler(CUBEWERX_GOVUNITCE.CAPABILITIES);
+        cubewerxStore = new WFS_1_1_0_DataStore(cubewerxProtocolHandler);
+        govUnitsSource = cubewerxStore.getFeatureSource(CUBEWERX_GOVUNITCE.FEATURETYPENAME);
+    }
+
+    private WFSProtocol createTestProtocolHandler( final String capabilitiesFileName )
+            throws IOException {
+        InputStream stream = TestData.openStream(this, capabilitiesFileName);
+        HTTPProtocol http = new DefaultHTTPProtocol();
+
+        WFSProtocol protocolHandler = new WFS_1_1_0_Protocol(stream, http){
+            @Override
+            public URL getDescribeFeatureTypeURLGet( final String typeName ) {
+                String schemaLocation;
+                if (GEOS_STATES.FEATURETYPENAME.equals(typeName)) {
+                    schemaLocation = GEOS_STATES.SCHEMA;
+                } else if (CUBEWERX_GOVUNITCE.FEATURETYPENAME.equals(typeName)) {
+                    schemaLocation = CUBEWERX_GOVUNITCE.SCHEMA;
+                } else {
+                    throw new IllegalArgumentException("unknown typename: " + typeName);
+                }
+                URL url = TestData.getResource(this, schemaLocation);
+                assertNotNull(url);
+                return url;
+            }
+        };
+        return protocolHandler;
+    }
+
+    protected void tearDown() throws Exception {
+        super.tearDown();
+        geosStore = null;
+        statesSource = null;
+    }
+
+    public void testCreate() throws IOException {
+        try {
+            new WFSFeatureSource(geosStore, "nonExistentTypeName");
+            fail("Expected IOException for a non existent type name");
+        } catch (IllegalArgumentException e) {
+            assertTrue(true);
+        }
+    }
+
+    /**
+     * Test method for {@link WFSFeatureSource#getInfo()}.
+     */
+    public void testGetInfo() {
+        ResourceInfo info = statesSource.getInfo();
+        assertNotNull(info.getBounds());
+        assertFalse(info.getBounds().isEmpty());
+    }
+
+    /**
+     * Test method for {@link WFSFeatureSource#getBounds()}.
+     * 
+     * @throws IOException
+     */
+    public void testGetBounds() throws IOException {
+        assertNotNull(statesSource.getBounds());
+        assertEquals(statesSource.getInfo().getBounds(), statesSource.getBounds());
+    }
+
+    /**
+     * Test method for {@link WFSFeatureSource#getBounds(org.geotools.data.Query)}.
+     */
+    public void testGetBoundsQuery() {
+        fail("Not yet implemented");
+    }
+
+    /**
+     * Test method for {@link WFSFeatureSource#getCount(org.geotools.data.Query)}.
+     */
+    public void testGetCount() {
+        fail("Not yet implemented");
+    }
+
+    /**
+     * Test method for {@link WFSFeatureSource#getFeatures()}.
+     * 
+     * @throws IOException
+     */
+    @SuppressWarnings("unchecked")
+    public void testGetFeatures() throws IOException {
+        FeatureCollection<SimpleFeatureType, SimpleFeature> features = statesSource.getFeatures();
+        assertNotNull(features);
+        Iterator<SimpleFeature> iterator = features.iterator();
+        assertTrue(iterator.hasNext());
+        try {
+            Feature feature;
+            while( iterator.hasNext() ) {
+                feature = iterator.next();
+                assertNotNull(feature);
+            }
+        } finally {
+            features.close(iterator);
+        }
+    }
+
+    /**
+     * Test method for {@link WFSFeatureSource#getFeatures(org.geotools.data.Query)}.
+     * 
+     * @throws IOException
+     */
+    @SuppressWarnings("unchecked")
+    public void testGetFeaturesQueryProperties() throws IOException {
+        String[] properties = {"the_geom"};
+        testGetFeaturesQueryProperties(statesSource, GEOS_STATES.FEATURETYPENAME, properties);
+
+        properties = new String[]{"geometry"};
+        testGetFeaturesQueryProperties(govUnitsSource, CUBEWERX_GOVUNITCE.FEATURETYPENAME,
+                properties);
+    }
+
+    @SuppressWarnings("unchecked")
+    private void testGetFeaturesQueryProperties(
+            final FeatureSource<SimpleFeatureType, SimpleFeature> source, final String typeName,
+            final String[] propertyNames ) throws IOException {
+
+        Query query = new DefaultQuery(typeName, Filter.INCLUDE, propertyNames);
+        FeatureCollection<SimpleFeatureType, SimpleFeature> features = source.getFeatures(query);
+        assertNotNull(features);
+
+        SimpleFeatureType contentType = features.getSchema();
+        final int expectedPropertyCount = propertyNames.length;
+        Collection<PropertyDescriptor> properties = contentType.getDescriptors();
+        assertEquals(expectedPropertyCount, properties.size());
+
+        Iterator<SimpleFeature> iterator = features.iterator();
+        assertTrue(iterator.hasNext());
+        try {
+            Feature feature;
+            while( iterator.hasNext() ) {
+                feature = iterator.next();
+                assertNotNull(feature);
+                assertEquals(expectedPropertyCount, feature.getProperties().size());
+            }
+        } finally {
+            features.close(iterator);
+        }
+    }
+}

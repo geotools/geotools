@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- IUGS/CGI GeoSciML schema, ver. 1 - draft 2005-10-19 -->
+<!-- Contains the concepts (classes), their inheritance, and relations from the earthMaterial package of the GeoSciML model -->
+<!-- GeoSciML Testbed-2 Model -->
+<schema targetNamespace="http://www.cgi-iugs.org/xml/GeoSciML/1" xmlns:gml="http://www.opengis.net/gml"
+  xmlns="http://www.w3.org/2001/XMLSchema" xmlns:gsml="http://www.cgi-iugs.org/xml/GeoSciML/1"
+  elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.0">
+  <annotation>
+    <documentation>earthMaterial.xsd Basic earth material description for GeoSciML</documentation>
+  </annotation>
+  <!--=======================-->
+  <import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd" />
+  <!--=======================-->
+  <include schemaLocation="top.xsd" />
+  <!--=======================-->
+  <!-- 
+  NOTE: added by Gabriel because its not found
+   -->
+  <complexType name="GeologicObjectType">
+    <sequence>
+    </sequence>
+  </complexType>
+  
+  <complexType name="EarthMaterialType" abstract="true">
+    <complexContent>
+      <extension base="gsml:GeologicObjectType">
+        <sequence>
+          <element name="color" type="gsml:CGI_TermValuePropertyType" maxOccurs="unbounded" />
+          <element name="physicalProperty" type="gsml:CGI_PhysicalDescriptionPropertyType" minOccurs="0"
+            maxOccurs="unbounded" />
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <!-- ..................... -->
+  <element name="EarthMaterial" type="gsml:EarthMaterialType" substitutionGroup="gsml:GeologicObject" />
+  <!-- ..................... -->
+  <complexType name="EarthMaterialPropertyType">
+    <sequence minOccurs="0">
+      <element ref="gsml:EarthMaterial" />
+    </sequence>
+    <attributeGroup ref="gsml:RichPropertyAttributeGroup" />
+  </complexType>
+  <!--=======================-->
+  <complexType name="CompoundMaterialType">
+    <complexContent>
+      <extension base="gsml:EarthMaterialType">
+        <sequence>
+        <!-- @note: gabriel's hack, again due to not parsing element groups yet -->
+          <element ref="gml:name" minOccurs="0" maxOccurs="unbounded"/>
+        <!-- /hack -->
+          <element name="consolidationDegree" type="gsml:CGI_TermValuePropertyType" />
+          <element name="metamorphicGrade" type="gsml:CGI_TermValuePropertyType" />
+          <element name="particleGeometry" type="gsml:CGI_PhysicalDescriptionPropertyType" maxOccurs="unbounded" />
+          <element name="fabric" type="gsml:CGI_TermValuePropertyType" maxOccurs="unbounded" />
+          <element name="grossChemistry" type="gsml:ChemicalCompositionClass" />
+          <element name="genesis" type="gsml:CGI_TermValuePropertyType" maxOccurs="unbounded" />
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <!-- ..................... -->
+  <element name="CompoundMaterial" type="gsml:CompoundMaterialType" substitutionGroup="gsml:EarthMaterial" />
+  <!-- 
+  @note: hack by gabriel: as we still don't hangle substitutionGroups I'm creating a specific
+  association type for CompoundMaterial
+   -->
+   <complexType name="CompoundMaterialPropertyType">
+    <sequence>
+      <element ref="gsml:CompoundMaterial"/>
+    </sequence>
+   </complexType>
+  <!--=======================-->
+  <simpleType name="ChemicalCompositionClass">
+    <union>
+      <simpleType>
+        <restriction base="string">
+          <enumeration value="aqueous">
+            <annotation>
+              <documentation>ice, water</documentation>
+            </annotation>
+          </enumeration>
+          <enumeration value="carbonate">
+            <annotation>
+              <documentation>calcite, dolomite, magnesite, etc</documentation>
+            </annotation>
+          </enumeration>
+          <enumeration value="evaporite">
+            <annotation>
+              <documentation>halite, gypsum, borates, etc</documentation>
+            </annotation>
+          </enumeration>
+          <enumeration value="hydrocarbon">
+            <annotation>
+              <documentation>coal, oil, pitch, etc</documentation>
+            </annotation>
+          </enumeration>
+          <enumeration value="oxide/hydroxide">
+            <annotation>
+              <documentation>bauxite, chromite, hematite, magnetite etc</documentation>
+            </annotation>
+          </enumeration>
+          <enumeration value="silicate" />
+          <enumeration value="silicate-felsic" />
+          <enumeration value="silicate-intermediate" />
+          <enumeration value="silicate-mafic" />
+          <enumeration value="sulfide">
+            <annotation>
+              <documentation>chalcopyrite, galena, pentlandite, pyrite, sphalerite, etc</documentation>
+            </annotation>
+          </enumeration>
+          <enumeration value="unknown" />
+        </restriction>
+      </simpleType>
+      <simpleType>
+        <restriction base="string">
+          <pattern value="other:\w{2,}" />
+        </restriction>
+      </simpleType>
+    </union>
+  </simpleType>
+  <!--=======================-->
+</schema>

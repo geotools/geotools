@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- =======================================================================
+        Maven Project Configuration File
+
+        The Geotools Project
+            http://www.geotools.org/
+
+        Version: $Id$
+     ======================================================================= -->
+  <project xmlns="http://maven.apache.org/POM/4.0.0"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                               http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.geotools</groupId>
+    <artifactId>library</artifactId>
+    <version>2.7-SNAPSHOT</version>
+  </parent>
+
+
+  <!-- =========================================================== -->
+  <!--     Module Description                                      -->
+  <!-- =========================================================== -->
+  <groupId>org.geotools</groupId>
+  <artifactId>gt-metadata</artifactId>
+  <packaging>jar</packaging>
+  <name>Metadata</name>
+  
+
+  <scm>
+    <connection>scm:svn:http://svn.osgeo.org/geotools/trunk/modules/library/metadata/</connection>
+    <url>http://svn.osgeo.org/geotools/trunk/modules/library/metadata/</url>
+  </scm>
+
+  <description>
+    Contains implementations of metadata and some core utilities classes.
+  </description>
+
+  <licenses>
+    <license>
+      <name>Lesser General Public License (LGPL)</name>
+      <url>http://www.gnu.org/copyleft/lesser.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+
+  <!-- =========================================================== -->
+  <!--     Developers and Contributors                             -->
+  <!-- =========================================================== -->
+  <developers>
+    <developer>
+      <name>Jody Garnett</name>
+      <id>jive</id>
+      <email>jive@users.sourceforge.net</email>
+      <organization>Refractions Research</organization>
+      <roles>
+        <role>Module Maintainer</role>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+  </developers>
+
+  <contributors>
+    <contributor>
+      <name>Touraïvane</name>
+      <organization>
+        Institut de Recherche pour le Développement (IRD)
+      </organization>
+      <roles>
+        <role>Java developper</role>
+      </roles>
+    </contributor>
+    <contributor>
+      <name>Martin Desruisseaux</name>
+      <email>desruisseaux@users.sourceforge.net</email>
+      <organization>Geomatys</organization>
+      <organizationUrl>http://www.geomatys.fr/</organizationUrl>
+      <timezone>+1</timezone>
+      <roles>
+        <role>Retired Module Maintainer</role>
+        <role>Retired Java Developer</role>
+      </roles>
+    </contributor>
+    <contributor>
+      <name>Cédric Briançon</name>
+      <email>cedric.briancon@geomatys.fr</email>
+      <organization>Geomatys</organization>
+      <timezone>+1</timezone>
+      <roles>
+        <role>Java developper</role>
+      </roles>
+    </contributor>
+  </contributors>
+
+  <!-- =========================================================== -->
+  <!--     Dependency Management                                   -->
+  <!-- =========================================================== -->
+  <dependencies>
+    <!-- NOTE: The metadata module does not depend on JTS. -->
+    <dependency>
+      <groupId>org.geotools</groupId>
+        <artifactId>gt-opengis</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!--
+      The following is required only for compilation.  It should not be included
+      in distribution, unless the user really want to use Apache commons logging
+      (in which case he should put this dependency explicitly on the classpath).
+    -->
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <!-- The version number is specified in the parent POM. -->
+      <scope>provided</scope>  <!-- Not required for default execution. -->
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <scope>provided</scope>  <!-- Not required for default execution. -->
+      <optional>true</optional>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <resources>
+      <resource>
+        <directory>${basedir}/src/main/resources</directory>
+      </resource>
+      <resource>
+        <directory>${basedir}/src/main/properties</directory>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
+  </build>
+
+</project>

@@ -1,0 +1,43 @@
+Module CQL
+~~~~~~~~~~
+
+  Module Maintainer: Cory Horner
+
+  IP Review:
+
+   * Adrian Custer, June 6, 2008
+
+  STATUS as of June 2008: CLEAN
+
+  Original motivation and authors not known, left to the module maintainers.
+
+
+
+* org.geotools.data.jdbc
+
+* org.geotools.data.jdbc
+  ~~~~~~~~~~~~~~~~~~~~~~
+
+  Created to "save" previous data source implementations, and provide an abstract 
+  class for JDBC DataStore implementations. Warning scariest series of hacks we 
+  got ... code added for GeoTools 2.0, 2.1 and 2.2.
+
+
+* org.geotools.data.jdbc.attributeio
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Part of origional attribute reader based design for datastore.
+
+
+* org.geotools.data.jdbc.fidmapper
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Merged from an experimental branch in 2004, thanks andrea.
+
+
+* org.geotools.data.jdbc.referencing
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Seems to be added by jesse, probably a port of early access based EPSG 
+  authority?
+
+
+* org.geotools.filter
+  ~~~~~~~~~~~~~~~~~~~

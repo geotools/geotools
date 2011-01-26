@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    Document   : test27.xml
+    Created on : 25 October 2002, 15:10
+    Author     : iant
+    Description:
+        Purpose of the document follows.
+-->
+
+<root>
+    <Filter>
+        <PropertyIsEqualTo> <!-- should be true -->
+            <Function name = "Min">
+                <PropertyName>testDouble</PropertyName>
+                <PropertyName>testZeroDouble</PropertyName>
+            </Function>
+            <Literal>0</Literal>
+        </PropertyIsEqualTo>
+    </Filter>
+        <Filter> <!-- should be false -->
+        <PropertyIsEqualTo>
+            <Function name = "Min">
+                <PropertyName>testDouble</PropertyName>
+                <Function name = "MAX">
+                    <PropertyName>testDouble</PropertyName>
+                    <PropertyName>testZeroDouble</PropertyName>
+                </Function>
+            </Function>
+            <Literal>0</Literal>
+        </PropertyIsEqualTo>
+    </Filter>
+</root>

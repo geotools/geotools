@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- =======================================================================
+        Maven Project Configuration File
+
+        The Geotools Project
+            http://www.geotools.org/
+
+        Version: $Id: pom.xml 33582 2009-07-17 04:40:35Z mbedward $
+     ======================================================================= -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                               http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.geotools</groupId>
+        <artifactId>unsupported</artifactId>
+        <version>2.7-SNAPSHOT</version>
+    </parent>
+
+  <!-- =========================================================== -->
+  <!--     Module Description                                      -->
+  <!-- =========================================================== -->
+    <groupId>org.geotools</groupId>
+    <artifactId>gt-geojson</artifactId>
+    <packaging>jar</packaging>
+    <name>GeoJSON Support</name>
+
+    <scm>
+        <connection>
+      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/extension/geojson/
+        </connection>
+        <url>http://svn.osgeo.org/geotools/trunk/modules/extension/geojson/</url>
+    </scm>
+
+    <description>
+    Provides GeoJSON Encoding and Parsing support.
+    </description>
+
+    <licenses>
+        <license>
+            <name>Lesser General Public License (LGPL)</name>
+            <url>http://www.gnu.org/copyleft/lesser.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+
+  <!-- =========================================================== -->
+  <!--     Developers and Contributors                             -->
+  <!-- =========================================================== -->
+    <developers>
+        <developer>
+            <name>Justin Deoliveira</name>
+            <id>jdeolive</id>
+            <email>jdeolive@sourceforge.net</email>
+            <organization>OpenGeo</organization>
+            <roles>
+                <role>Module Maintainer</role>
+                <role>Java Developer</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <dependencies>
+        <!--   GeoTools modules   -->
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-main</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!--   Third-party dependencies   -->
+        <dependency>
+            <groupId>com.googlecode.json-simple</groupId>
+            <artifactId>json-simple</artifactId>
+            <version>1.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-epsg-hsql</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <profiles>
+      <profile>
+        <id>benchmark</id>
+        <dependencies>
+          <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-shapefile</artifactId>
+            <version>${project.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+          </dependency>
+        </dependencies>
+      </profile>
+    </profiles>
+
+</project>

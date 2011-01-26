@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- =======================================================================
+        Maven Project Configuration File                                        
+
+        The Geotools Project                                                    
+            http://www.geotools.org/                                            
+
+        Version: $Id$
+     ======================================================================= -->
+  <project xmlns="http://maven.apache.org/POM/4.0.0"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                               http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.geotools</groupId>
+    <artifactId>library</artifactId>
+    <version>2.7-SNAPSHOT</version>
+  </parent>
+
+
+  <!-- =========================================================== -->
+  <!--     Module Description                                      -->
+  <!-- =========================================================== -->
+  <groupId>org.geotools</groupId>
+  <artifactId>gt-cql</artifactId>
+  <packaging>jar</packaging>
+  <name>OGC CQL to Filter parser</name>
+  
+
+  <scm>
+    <connection>
+      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/library/cql/
+    </connection>
+    <url>http://svn.osgeo.org/geotools/trunk/modules/library/cql/</url>
+  </scm>
+
+  <description>
+    A parser that takes an OGC Common Query Language input string and produces
+    an equivalent org.opengis.filter.Filter.
+  </description>
+
+  <licenses>
+    <license>
+      <name>Lesser General Public License (LGPL)</name>
+      <url>http://www.gnu.org/copyleft/lesser.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+
+  <!-- =========================================================== -->
+  <!--     Developers and Contributors                             -->
+  <!-- =========================================================== -->
+  <developers>
+    <developer>
+      <name>Ian Schneider</name>
+      <id>ians</id>
+      <roles>
+        <role>Original Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Mauricio Pazos</name>
+      <id>mauricio.pazos</id>
+      <email>mauricio.pazos@axios.es</email>
+      <organization>Axios</organization>
+      <roles>
+        <role>Module Maintainer</role>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Gabriel Roldan</name>
+      <id>groldan</id>
+      <email>groldan@users.sourceforge.net</email>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+  </developers>
+
+
+  <!-- =========================================================== -->
+  <!--     Dependency Management                                   -->
+  <!-- =========================================================== -->
+  <dependencies>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-main</artifactId>
+      <version>${project.version}</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-epsg-wkt</artifactId>
+      <version>${project.version}</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+
+
+  <!-- ==================================================== -->
+  <!--     Compilation (including non-standard plugins)     -->
+  <!-- ==================================================== -->
+  <build>
+    <plugins>
+ 
+      <plugin>
+        <groupId>org.geotools.maven</groupId>
+        <artifactId>jjtree-javacc</artifactId>
+        <version>${project.version}</version>
+			
+    		<configuration>
+         		<nodePackage>org.geotools.filter.text.generated.parsers</nodePackage>
+     			<nodeDirectory>${basedir}/modified-src</nodeDirectory>
+     			<sourceDirectory>${basedir}/src/main/jjtree</sourceDirectory>
+    		</configuration>
+
+        <executions>
+          <execution>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+
+          </execution>
+          
+        </executions>
+
+      </plugin>     
+	</plugins>
+
+  </build>
+
+</project>

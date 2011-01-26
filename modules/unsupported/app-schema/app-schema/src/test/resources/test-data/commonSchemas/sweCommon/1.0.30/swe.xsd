@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://www.opengis.net/swe/0.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:annotation>
+		<xs:documentation>Stub schema for swe</xs:documentation>
+	</xs:annotation>
+	<!--========================-->
+	<xs:include schemaLocation="./positionData.xsd"/><!-- transitively includes paramaters -->
+	<xs:include schemaLocation="./data.xsd"/>
+	<xs:include schemaLocation="./recordSchema.xsd"/><!-- transitively includes phenomenon -->
+	<xs:include schemaLocation="./record.xsd"/>
+	<xs:include schemaLocation="./temporalAggregates.xsd"/>
+</xs:schema>

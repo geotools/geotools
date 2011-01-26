@@ -1,0 +1,105 @@
+PLUGIN WFS
+~~~~~~~~~~~~~~~~~~~~~
+
+  Module Maintainers: Justin Deoliveira and Gabriel Roldan
+
+  Former Module Maintainer: David Zwiers
+
+  IP Review:
+
+    * Jody Garnett, August 7th, 2006
+
+    * Adrian Custer, June 2008
+
+
+  STATUS: DIRTY
+      CODE is CLEAN, with mixed copyright
+      DATA source needs clarification:
+          http://jira.codehaus.org/browse/GEOT-1890
+  
+  
+  
+  David Zwiers has retained copyright on the following classes for all work 
+  which he committed after his 2005-03-30 departure from Refractions
+
+  Date: 	Thu, 3 Jul 2008 09:07:33 -0700 (18:07 CEST)
+
+  Adrian,
+
+  Your asessment is correct, there is a mixture of paid and unpaid effort. There 
+  are changes  within the WFS plugin which should have shared copyrights; 
+  however without spending a bunch of effort I cant' track down the exact 
+  changes. The simplest method would be to look for SVN commits using my userid 
+  after March 31st 2005.
+
+  Regards,
+  David Zwiers
+  
+  Performing an SVN log on all the java files of the module gave us these 
+  files to modify:
+  
+      src/test/java/org/geotools/wfs/v_1_0_0/data/CubewerksOnlineTest.java
+      
+      src/test/java/org/geotools/wfs/v_1_0_0/data/WFSDataStoreReadTest.java
+      
+      src/test/java/org/geotools/wfs/v_1_0_0/data/GeoServerOnlineTest.java
+      
+      src/test/java/org/geotools/wfs/v_1_0_0/data/WFSDataStoreWriteOnlineTest.java
+      
+      src/main/java/org/geotools/wfs/v_1_0_0/data/WFSTransactionState.java
+      
+      src/main/java/org/geotools/wfs/v_1_0_0/data/WFS_1_0_0_DataStore.java
+      
+      src/main/java/org/geotools/wfs/v_1_0_0/data/WFSFeatureStore.java
+      
+      src/main/java/org/geotools/wfs/v_1_0_0/data/WFSFeatureSource.java
+      
+      src/main/java/org/geotools/xml/wfs/WFSCapabilitiesComplexTypes.java
+      
+      src/main/java/org/geotools/xml/wfs/WFSBasicComplexTypes.java
+      
+      src/main/java/org/geotools/data/ows/WFSCapabilities.java
+      
+  All have been updated according to the dates of David's commits as his 
+  copyright for 2005 only or for both 2005 and 2006.
+  
+  
+  For future reference, we have David's permission to change to GPL+CLASSPATH 
+  some day, if we choose to do so:
+  
+    On Thu, 2008-07-03 at 10:34 -0700, David Zwiers wrote:
+    Thanks, the 'bunch of effort' was because I can't remember my svn 
+    password (so can't use the automated tools). 
+    
+    Re-licensing as GPL+CLASSPATH is fine with me. That said, I don't believe 
+    you require explicit permission to create a release with a more restrictive 
+    license ... but it may be hard to change the license for any previosuly 
+    released code.
+      
+    David
+  
+  
+* org.geotools.catalog.wfs
+  ~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.data.ows
+  ~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.data.wfs
+  ~~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.xml.gml
+  ~~~~~~~~~~~~~~~~~~~~
+  Looks to be jesse adding a hack.
+
+
+* org.geotools.xml.wfs
+  ~~~~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.data.wfs.[demo] (test)
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Fun w/ junit.

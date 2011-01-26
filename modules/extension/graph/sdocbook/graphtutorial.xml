@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+"http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
+<article>
+  <title>Graph Tutorial 1</title>
+
+  <para>The GeoTools project strives to support as many geographical data
+  formats and opperations as possible.</para>
+
+  <para>The geotools2 graph package defines the concept of a graph (or
+  network) made up of geotools2 Features. The graph module strives to provide
+  a convient flexable and performant API for graph construction and query.</para>
+
+  <para>In additional to generic Graph support, Networks based on LineStrings
+  and Directed Networks have been implementations.</para>
+
+  <sect1>
+    <title>Graphing Terms</title>
+
+    <para>The Graph module makes use of concepts and (classes) from the
+    geotools2 core:<itemizedlist><listitem><para>Feature - atomic unit of
+    geographic information</para></listitem><listitem><para>FeatureType -
+    keeps track of what attributes each Feature can hold</para></listitem><listitem><para>FeatureID
+    - a unique id associated with each Feature (must start with a non-numeric
+    character)</para></listitem></itemizedlist>In addition to the Feature API
+    from core, the graph module makes use of relationships. Usually
+    relationships are based on spatial comparisions between features.</para>
+
+    <para>Example Relationships</para>
+
+    <itemizedlist>
+      <listitem>
+        <para>Graph constructed from LineStrings based on &#34;shared end
+        points&#34;</para>
+      </listitem>
+
+      <listitem>
+        <para>Graph constructed from Polygons based on &#34;touches&#34;</para>
+      </listitem>
+    </itemizedlist>
+  </sect1>
+
+  <sect1>
+    <title>Creating and using a Graph</title>
+
+    <para>Graph creations is handled using a Graph Builder. For those
+    familliar with the Builder Pattern (GOF Design Patterns) this will look
+    familliar.</para>
+
+    <para>Example of building a Line network:<programlisting>LineGraphBuilder lgb = new LineGraphBuilder();
+FeatureSource fs = (FeatureSource)layers.get(typeName);
+FeatureResults fr = fs.getFeatures();
+FeatureCollection fc = fr.collection();
+FeatureIterator f = fc.features();
+while(f.hasNext()){
+  Feature ft = f.next();
+  if(envelope.contains(ft.getBounds()))
+    lgb.add(ft);
+}
+// lgb is loaded
+Graph g = lgb.build();
+</programlisting></para>
+
+    <para>To make use of your graph we will use a GraphVisitor (this is the
+    usual GOF Visitor pattern):</para>
+
+    <para>Example of making use of the network:<programlisting>class OrphanVisitor implements GraphVisitor{
+  private int count = 0;
+  public int getCount(){return count;}
+  public int visit(GraphComponent element){
+    if(element.getAdjacentElements().size()==0)
+      count++;
+    results.error(element.getFeature(),&#34;Orphaned&#34;);
+    return GraphTraversal.CONTINUE;
+  }
+}
+OrphanVisitor ov = new OrphanVisitor();
+SimpleGraphWalker sgv = new SimpleGraphWalker(ov);
+BasicGraphTraversal bgt = new BasicGraphTraversal(g,sgv);
+bgt.walkNodes();
+if(ov.getCount()==0)
+  return true;
+else
+  return false;</programlisting></para>
+  </sect1>
+</article>

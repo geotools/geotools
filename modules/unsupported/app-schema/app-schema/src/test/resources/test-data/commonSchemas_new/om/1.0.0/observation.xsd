@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gml="http://www.opengis.net/gml" xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:om="http://www.opengis.net/om/1.0"
+        xmlns:swe="http://www.opengis.net/swe/1.0.1" xmlns:sml="http://www.opengis.net/sensorML/1.0.1" targetNamespace="http://www.opengis.net/om/1.0" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.0">
+	<annotation>
+		<documentation>observation.xsd
+
+An XML implementation of the OandM model from OGC 07-022
+
+Copyright (c) 2007 Open Geospatial Consortium - see http://www.opengeospatial.org/ogc/software</documentation>
+	</annotation>
+	<!-- ====================================================================== -->
+	<!-- bring in other schemas -->
+	<import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+	<!-- can't use ISO Metadata schema with GML 3.1.1
+	<import namespace="http://www.isotc211.org/2005/gmd" schemaLocation="../../../../gml/trunk/gml/3.1.1/gmd/gmd.xsd"/>
+	-->
+	<import namespace="http://www.opengis.net/swe/1.0.1" schemaLocation="http://schemas.opengis.net/sweCommon/1.0.1/swe.xsd"/>
+	<import namespace="http://www.opengis.net/sensorML/1.0.1" schemaLocation="http://schemas.opengis.net/sensorML/1.0.1/sensorML.xsd"/>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<!-- ===== Object types for Observations ====== -->
+	<!-- ====================================================================== -->
+	<complexType name="ObservationType">
+		<annotation>
+			<documentation>Base type for Observations. 
+            Observation is an act ("event"), whose result is an estimate of the value of a property of the feature of interest. 
+            The observed property may be any property associated with the type of the feature of interest.
+
+			    The following properties are inherited from AbstractFeatureType:
+				<!--	from AbstractGMLType
+				<element ref="gml:metaDataProperty" minOccurs="0" maxOccurs="unbounded"/>
+				<element ref="gml:description" minOccurs="0"/>
+				<element ref="gml:name" minOccurs="0" maxOccurs="unbounded"/> -->
+				<!--    from AbstractFeatureType
+				<element ref="gml:boundedBy" minOccurs="0"/> --></documentation>
+		</annotation>
+		<complexContent>
+			<extension base="gml:AbstractFeatureType">
+				<sequence>
+					<element name="metadata" type="om:AnyOrReferenceType" minOccurs="0">
+						<!--					<element name="observationMetadata" type="gmd:MD_Metadata_PropertyType" minOccurs="0"> -->
+						<annotation>
+							<documentation>Replace with reference to ISO Metadata entity when GML version 3.2.X has been formally adopted.</documentation>
+						</annotation>
+					</element>
+					<element name="samplingTime" type="swe:TimeObjectPropertyType">
+						<annotation>
+							<documentation>The samplingTime is the time that the result applies to the feature-of-interest. 
+					This is the time usually required for geospatial analysis of the result.</documentation>
+						</annotation>
+					</element>
+					<element name="resultTime" type="swe:TimeObjectPropertyType" minOccurs="0">
+						<annotation>
+							<documentation>The resultTime is the time when the procedure associated with the observation act was applied. 
+					For some observations this is identical to samplingTime, in which case the resultTime may be omitted. 
+					
+					Example: 	Where a measurement is made on a specimen in a laboratory, the samplingTime should record the time the specimen was retrieved from its host, while the resultTime should record the time the laboratory procedure was applied. 
+					Example: 	Where sensor observation results are post-processed, the resultTime is the post-processing time, while the samplingTime preserves the time of initial interaction with the world. 
+					Example: 	Simulations are often used to estimate the values for phenomena in the future or past. The samplingTime is the real-world time that the result applies to, while the resultTime is the time that the simulation process was executed.</documentation>
+						</annotation>
+					</element>
+					<element name="procedure" type="om:ProcessPropertyType">
+						<annotation>
+							<documentation>The procedure is the description of a process used to generate the result. 
+							It must be suitable for the observed property. 
+							NOTE: 	At this level we do not distinguish between sensor-observations, 
+							estimations made by an observer, or algorithms, simulations, computations and complex processing chains.</documentation>
+						</annotation>
+					</element>
+					<element name="resultQuality" type="om:AnyOrReferenceType" minOccurs="0">
+						<!--					<element name="resultQuality" type="gmd:DQ_Element_PropertyType" minOccurs="0"> -->
+						<annotation>
+							<documentation>Instance-specific quality assessment or measure. 
+							Allow multiple quality measures if required.			
+									
+					Replace with reference to ISO Metadata entity when GML version 3.2.X has been formally adopted.</documentation>
+						</annotation>
+					</element>
+					<element name="observedProperty" type="swe:PhenomenonPropertyType">
+						<annotation>
+							<documentation>Property-type or phenomenon for which the observation result provides an estimate of its value. 
+							for example "wavelength", "grass-species", "power", "intensity in the waveband x-y", etc. 
+							It must be a property associated with the type of the feature of interest. 
+							This feature-property that provides the (semantic) type of the observation. 
+							The description of the phenomenon may be quite specific and constrained. 
+
+							The description of the property-type may be presented using various alternative encodings. 
+							If shown inline, the swe:Phenomenon schema is required. 
+							If provided using another encoding (e.g. OWL or SWEET) then the description must be in a remote repository and xlink reference used.</documentation>
+						</annotation>
+					</element>
+					<element name="featureOfInterest" type="gml:FeaturePropertyType">
+						<annotation>
+							<documentation>The featureOfInterest is a feature of any type (ISO 19109, ISO 19101), which is a representation of the observation target, being the real-world object regarding which the observation is made. 
+							such as a specimen, station, tract, mountain, pixel, etc. 
+							The spatial properties (location) of this feature of interest are typically of most interest for spatial analysis of the observation result.</documentation>
+						</annotation>
+					</element>
+					<element name="parameter" type="swe:AnyDataPropertyType" minOccurs="0" maxOccurs="unbounded">
+						<annotation>
+							<documentation>An Observation parameter is a general event-specific parameter. 
+							This will typically be used to record environmental parameters, or event-specific sampling parameters that are not tightly bound to either the feature-of-interest or the procedure. 
+							NOTE: 	Parameters that are tightly bound to the procedure should be recorded as part of the procedure description. For example, the SensorML model associates parameters with specific process elements or stages. 
+							NOTE: 	The semantics of the parameter must be provided as part of its value. 
+							
+							In some applications it is convenient to use a generic or standard procedure, or feature-of-interest, rather than define an event-specific process or feature. 
+							In this context, event-specific parameters are bound to the Observation act.</documentation>
+						</annotation>
+					</element>
+					<element name="result" type="anyType">
+						<annotation>
+							<documentation>The result contains the value generated by the procedure. 
+							The type of the observation result must be consistent with the observed property, and the scale or scope for the value must be consistent with the quantity or category type. 
+							Application profiles may choose to constrain the type of the result.</documentation>
+						</annotation>
+					</element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ......................... -->
+	<element name="Observation" type="om:ObservationType" substitutionGroup="gml:_Feature">
+		<annotation>
+			<documentation>Observation is an act ("event"), whose result is an estimate of the value of a property of the feature of interest. 
+            The observed property may be any property associated with the type of the feature of interest.</documentation>
+		</annotation>
+	</element>
+	<!-- ...................... -->
+	<complexType name="ObservationPropertyType">
+		<sequence minOccurs="0">
+			<element ref="om:Observation"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+	<!-- ===== Observation Collection ======= -->
+	<!-- ====================================================================== -->
+	<complexType name="ObservationCollectionType">
+		<annotation>
+			<documentation>Collection of arbitrary observations</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="gml:AbstractFeatureType">
+				<sequence>
+					<element name="member" type="om:ObservationPropertyType" maxOccurs="unbounded"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ...................... -->
+	<element name="ObservationCollection" type="om:ObservationCollectionType" substitutionGroup="gml:_Feature">
+		<annotation>
+			<documentation>Collection of arbitrary observations</documentation>
+		</annotation>
+	</element>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<complexType name="ProcessPropertyType">
+		<annotation>
+			<documentation>This property type allows the Observation/procedure property to  either 
+		* contain a SensorML Process, 
+		* contain a description of a process described using another model, wrapped inside a om:Process element
+		* point to a Process either elsewhere in the document or identified by a URI</documentation>
+		</annotation>
+		<sequence minOccurs="0">
+			<choice>
+				<element ref="sml:_Process">
+					<annotation>
+						<documentation>Top of  SensorML Process hierarchy</documentation>
+					</annotation>
+				</element>
+				<element name="Process">
+					<annotation>
+						<documentation>This element is xs:anyType so may contain a description of a process provided in any well-formed XML. 
+				If the process description is namespace qualified, then the namespace must be identified in the instance document.</documentation>
+					</annotation>
+				</element>
+			</choice>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<complexType name="AnyOrReferenceType">
+		<annotation>
+			<documentation>Placeholder type
+			Used in a few places where ISO 19139 metadata classes are used, which will become available with GML 3.2</documentation>
+		</annotation>
+		<sequence minOccurs="0">
+			<any/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+</schema>

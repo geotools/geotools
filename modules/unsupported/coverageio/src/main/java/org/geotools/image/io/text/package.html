@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<HTML>
+  <HEAD>
+    <TITLE>package org.geotools.image.io.text</TITLE>
+  </HEAD>
+  <BODY>
+    Extensions to {@link javax.imageio.ImageReader} for ASCII files.
+
+    <P>The <CODE>gt2-imageio.jar</CODE> file declares a service provider for the
+    following image readers:</P>
+
+    <TABLE ALIGN="center" BORDER='3' CELLPADDING='6' BGCOLOR="F4F8FF">
+      <TR BGCOLOR="#B9DCFF">
+        <TH>{@link javax.imageio.ImageReader} subclass</TH>
+        <TH>Name</TH>
+        <TH>MIME type</TH>
+      </TR>
+      <TR>
+        <TD>{@link org.geotools.image.io.RawBinaryImageReader}</TD>
+        <TD>raw</TD>
+        <TD>image/raw</TD>
+      </TR>
+      <TR>
+        <TD>{@link org.geotools.image.io.text.TextMatrixImageReader}</TD>
+        <TD>matrix</TD>
+        <TD>text/matrix</TD>
+      </TR>
+      <TR>
+        <TD>{@link org.geotools.image.io.text.TextRecordImageReader}</TD>
+        <TD>gridded records</TD>
+        <TD>text/x-grid</TD>
+      </TR>
+    </TABLE>
+
+    <P><STRONG>Example:</STRONG> a user may want to read an ASCII
+    file containing gridded elevation on the ocean floor (left side below). The
+    {@link org.geotools.image.io.TextRecordImageReader} class can read such file,
+    detect automatically minimum and maximum values (in order to scale the grayscale
+    palette) and produce the image below:</P>
+
+    <P>&nbsp;</P>
+    <TABLE ALIGN="center" CELLPADDING='24'>
+      <TR>
+        <TD><PRE>
+Longitude Latitude Altitude
+59.9000   -30.0000   -3022
+59.9333   -30.0000   -3194
+59.9667   -30.0000   -3888
+60.0000   -30.0000   -3888
+45.0000   -29.9667   -2502
+45.0333   -29.9667   -2502
+45.0667   -29.9667   -2576
+45.1000   -29.9667   -2576
+45.1333   -29.9667   -2624
+45.1667   -29.9667   -2690
+45.2000   -29.9667   -2690
+45.2333   -29.9667   -2692
+45.2667   -29.9667   -2606
+45.3000   -29.9667   -2606
+45.3333   -29.9667   -2528
+</PRE>etc...</TD>
+        <TD>
+          <IMG SRC="doc-files/Sandwell.jpeg">
+        </TD>
+      </TR>
+    </TABLE>
+  </BODY>
+</HTML>

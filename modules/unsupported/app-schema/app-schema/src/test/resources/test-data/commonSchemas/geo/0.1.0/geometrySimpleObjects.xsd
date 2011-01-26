@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Marcus Sen (british Geological Survey) -->
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:gml="http://www.opengis.net/gml" xmlns:geo="http://www.seegrid.csiro.au/xml/geometry" targetNamespace="http://www.seegrid.csiro.au/xml/geometry" elementFormDefault="qualified" attributeFormDefault="unqualified" version="pre-release">
+	<annotation>
+		<documentation>
+geometry.xsd
+
+A GML conformant schema 
+for specialised geometries for geoscience
+
+Copyright (c) 2005 CSIRO - see https://www.seegrid.csiro.au/twiki/bin/view/Xmml/LegalNotices#Software_Notice
+</documentation>
+	</annotation>
+	<!-- ====================================================================== -->
+	<!-- bring in other schemas -->
+	<import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+	<include schemaLocation="./geometry.xsd"/>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<!-- =========================================================== -->
+	<!-- === Solids === -->
+	<!-- =========================================================== -->
+	<complexType name="AbstractSimpleSolidType" abstract="true">
+		<complexContent>
+			<extension base="gml:AbstractSolidType"/>
+		</complexContent>
+	</complexType>
+	<!-- .............. -->
+	<element name="AbstractSimpleSolid" type="geo:AbstractSimpleSolidType" abstract="true" substitutionGroup="gml:_Solid">
+		<annotation>
+			<documentation>Head of substitution group for primitive Solids with simple descriptions. </documentation>
+		</annotation>
+	</element>
+	<!-- .................. -->
+	<complexType name="AbstractSimpleSolidPropertyType">
+		<sequence minOccurs="0">
+			<element ref="geo:AbstractSimpleSolid"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- =========================================================== -->
+	<!-- =========================================================== -->
+	<complexType name="MultiSimpleSolidType">
+		<complexContent>
+			<extension base="gml:AbstractGeometricAggregateType">
+				<sequence>
+					<element name="member" type="geo:AbstractSimpleSolidPropertyType" maxOccurs="unbounded"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- .............. -->
+	<element name="MultiSimpleSolid" type="geo:MultiSimpleSolidType" substitutionGroup="gml:_GeometricAggregate">
+		<annotation>
+			<documentation>Head of substitution group for multiSolids with simple descriptions. </documentation>
+		</annotation>
+	</element>
+	<!-- .................. -->
+	<complexType name="MultiSimpleSolidPropertyType">
+		<sequence minOccurs="0">
+			<element ref="geo:MultiSimpleSolid"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- =========================================================== -->
+	<complexType name="HexahedronType">
+		<annotation>
+			<documentation>The "Hexahedron" element is a simple solid with eight vertices and six sides.  
+Relative to a right-handed coordinate system the vertex sequence is      
+   7____6
+  / |       / |
+4____5  |
+|  3  _  |  2
+| /        | /
+0____1
+
+For cases where the face order is used implicitly, then the faces are defined with the following vertices
+
+0 - 0 1 5 4
+1 - 1 2 6 5
+2 - 2 3 7 6
+3 - 3 0 4 7
+4 - 0 3 2 1
+5 - 7 4 5 6
+
+      </documentation>
+		</annotation>
+		<complexContent>
+			<extension base="geo:AbstractSimpleSolidType">
+				<sequence>
+					<element name="exteriorVertex" type="gml:PointPropertyType" minOccurs="8" maxOccurs="8"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- .................. -->
+	<element name="Hexahedron" type="geo:HexahedronType" substitutionGroup="geo:AbstractSimpleSolid">
+		<annotation>
+			<documentation>The "Hexahedron" element is a simple solid with eight vertices and six sides. </documentation>
+		</annotation>
+	</element>
+	<!-- =========================================================== -->
+	<complexType name="WedgeType">
+		<annotation>
+			<documentation>The "Wedge" element is a simple solid with six vertices and five sides.  
+Relative to a right-handed coordinate system the vertex sequence is      
+      5
+    /  | \
+   /  4  \
+ 3 / -\- 2
+  |/     \  | 
+ 0____1
+
+For cases where the face order is used implicitly, then the faces are defined with the following vertices
+
+0 - 0 1 4
+1 - 1 2 5 4
+2 - 2 3 5
+3 - 3 0 4 5
+4 - 0 3 2 1
+
+      </documentation>
+		</annotation>
+		<complexContent>
+			<extension base="geo:AbstractSimpleSolidType">
+				<sequence>
+					<element name="exteriorVertex" type="gml:PointPropertyType" minOccurs="6" maxOccurs="6"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- .................. -->
+	<element name="Wedge" type="geo:WedgeType" substitutionGroup="geo:AbstractSimpleSolid">
+		<annotation>
+			<documentation>The "Wedge" element is a simple solid with six vertices and five sides. </documentation>
+		</annotation>
+	</element>
+	<!-- =========================================================== -->
+	<complexType name="PyramidType">
+		<annotation>
+			<documentation>The "Pyramid" element is a simple solid with five vertices and five sides.  
+Relative to a right-handed coordinate system the vertex sequence is      
+     4
+    //\\ 
+ 3 / -\- 2
+  |/     \  | 
+ 0____1
+
+For cases where the face order is used implicitly, then the faces are defined with the following vertices
+
+0 - 0 1 4
+1 - 1 2 4
+2 - 2 3 4
+3 - 3 0 4 
+4 - 0 3 2 1
+
+      </documentation>
+		</annotation>
+		<complexContent>
+			<extension base="geo:AbstractSimpleSolidType">
+				<sequence>
+					<element name="exteriorVertex" type="gml:PointPropertyType" minOccurs="5" maxOccurs="5"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- .................. -->
+	<element name="Pyramid" type="geo:PyramidType" substitutionGroup="geo:AbstractSimpleSolid">
+		<annotation>
+			<documentation>The "Pyramid" element is a simple solid with five vertices and five sides. </documentation>
+		</annotation>
+	</element>
+	<!-- =========================================================== -->
+	<complexType name="TetrahedronType">
+		<annotation>
+			<documentation>The "Tetrahedron" element is a simple solid with four vertices and four sides.  
+Relative to a right-handed coordinate system the vertex sequence is      
+      3
+   /   |  \
+ 2- -| - -1
+   \   |   /
+      0
+      
+ For cases where the face order is used implicitly, then the faces are defined with the following vertices 
+
+1 - 1 2 3
+2 - 2 0 3
+0 - 0 1 3
+3 - 0 2 1  
+
+      </documentation>
+		</annotation>
+		<complexContent>
+			<extension base="geo:AbstractSimpleSolidType">
+				<sequence>
+					<element name="exteriorVertex" type="gml:PointPropertyType" minOccurs="4" maxOccurs="4"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- .................. -->
+	<element name="Tetrahedron" type="geo:TetrahedronType" substitutionGroup="geo:AbstractSimpleSolid">
+		<annotation>
+			<documentation>The "TetrahedronP" element is a simple solid with four vertices and four sides.  </documentation>
+		</annotation>
+	</element>
+	<!-- ====================================================================== -->
+</schema>

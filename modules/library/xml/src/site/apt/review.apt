@@ -1,0 +1,15 @@
+Module xml
+~~~~~~~~~~
+
+  Module Maintainer: Jody Garnett, Justin Deolivera
+
+  IP Review:
+
+    * Adrian Custer, June 6, 2008
+
+  STATUS: DIRTY
+    Code is CLEAN
+    Resource origin needs to be found and documented.
+      http://jira.codehaus.org/browse/GEOT-1877
+
+  Original purpose and authors not known, left to Jody/Justin.

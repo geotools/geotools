@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="Geotools 2">
+  <body>
+    <!-- ==================================================== -->
+    <!--     Menus to appears on the left side of each page   -->
+    <!-- ==================================================== -->
+    <menu name="Geotools" inherited="top">
+      <item name ="User documentation" href="http://docs.codehaus.org/display/GEOTDOC/Home"/>
+      <item name="Download"     href="http://docs.codehaus.org/display/GEOTOOLS/Downloads"/>
+      <item name="Full Javadoc" href="http://www.geotools.org/apidocs/"/>
+      <item name="Legal review" href="review.html"/>
+    </menu>
+
+    <menu ref="parent" inherited="top"/>
+    <menu ref="modules" inherited="top"/>
+    <menu ref="reports" inherited="top"/>
+  </body>
+</project>

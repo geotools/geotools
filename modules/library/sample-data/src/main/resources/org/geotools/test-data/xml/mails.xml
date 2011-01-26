@@ -1,0 +1,36 @@
+<mails xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://mails/refractions/net mails.xsd"
+ xmlns="http://mails/refractions/net">
+  <mail id="0">
+    <envelope From="bill@microsoft.com">
+      <From>user@unknown.domain.org</From>
+      <To>user@cduce.org</To>
+      <Date>2003-10-15T15:44:01Z</Date>
+      <Subject>I desperately need XML Schema support in CDuce</Subject>
+      <header name="Reply-To">bill@microsoft.com</header>
+    </envelope>
+    <body>
+      As subject says, is it possible to implement it?
+    </body>
+    <attachment name="signature.doc">
+      <mimetype type="application" subtype="msword"/>
+      <content>
+	### removed by spamoracle ###
+      </content>
+    </attachment>
+  </mail>
+  <mail id="1">
+    <envelope From="zack@cs.unibo.it">
+      <From>zack@di.ens.fr</From>
+      <To>bill@microsoft.com</To>
+      <Date>2003-10-15T16:17:39Z</Date>
+      <Subject>Re: I desperately need XML Schema support in CDuce</Subject>
+    </envelope>
+    <body>
+      user@unknown.domain.org wrote:
+      > As subject says, is possible to implement it?
+
+      Sure, I'm working on it, in a few years^Wdays it will be finished
+    </body>
+  </mail>
+</mails>

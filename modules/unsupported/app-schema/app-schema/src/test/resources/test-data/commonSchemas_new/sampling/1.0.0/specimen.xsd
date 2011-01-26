@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns:gml="http://www.opengis.net/gml" xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:sa="http://www.opengis.net/sampling/1.0"
+        targetNamespace="http://www.opengis.net/sampling/1.0" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.0">
+	<annotation>
+		<documentation>specimen.xsd
+
+SamplingFeatures are feature types that are used primarily for making observations: 
+SamplingFeature,  and collections are described in samplingBase.xsd
+
+Specimen and LocatedSpecimen are described in this schema document
+
+Copyright (c) 2007 Open Geospatial Consortium - see http://www.opengeospatial.org/ogc/software</documentation>
+	</annotation>
+	<!-- ====================================================================== -->
+	<!-- bring in other schemas -->
+	<import namespace="http://www.opengis.net/gml" schemaLocation="../../gml/3.1.1/base/gml.xsd"/>
+	<!-- GMD cannot be used with GML 3.1.1
+	<import namespace="http://www.isotc211.org/2005/gmd" schemaLocation="../../../../gml/trunk/gml/3.1.1/gmd/gmd.xsd"/>
+	-->
+	<include schemaLocation="./samplingBase.xsd"/>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<complexType name="SpecimenType">
+		<annotation>
+			<documentation>An object on which measurements may be made, often ex-situ.
+									
+			Note that if this specimen is a "processed" version of another (e.g. by grinding, sieving, etc) then 
+			the predecessor (if known) may be recorded as a relatedSamplingFeature</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="sa:SamplingFeatureType">
+				<sequence>
+					<element name="materialClass" type="gml:CodeType">
+						<annotation>
+							<documentation>Material type, usually taken from a controlled vocabulary
+					Specialised domains may choose to fix the vocabulary to be used
+					Its value may be relatively generic (rock, pulp) or may reflect a detailed classification (calcrete, adamellite, biotite-schist). 
+			In the latter case it is wise to use the codeSpace attribute to provide a link to the classification scheme/vocabulary used. 
+</documentation>
+						</annotation>
+					</element>
+					<element name="currentLocation" type="sa:LocationPropertyType" minOccurs="0">
+						<annotation>
+							<documentation>Storage location of specimen if it still exists. If destroyed in analysis, then either omit or use xlink:href to point to a suitable URN, e.g. urn:cgi:def:nil:destroyed</documentation>
+						</annotation>
+					</element>
+					<element name="size" minOccurs="0">
+						<annotation>
+							<documentation>The size of the specimen: mass, length, volume, etc</documentation>
+						</annotation>
+						<complexType>
+							<annotation>
+								<documentation>Xlink attributes added to enable rich annotation, e.g. size-type</documentation>
+							</annotation>
+							<simpleContent>
+								<extension base="gml:MeasureType">
+									<attributeGroup ref="gml:AssociationAttributeGroup"/>
+								</extension>
+							</simpleContent>
+						</complexType>
+					</element>
+					<element name="samplingMethod" type="gml:ReferenceType" minOccurs="0">
+						<annotation>
+							<documentation>Method used when retrieving specimen from host sampledFeature</documentation>
+						</annotation>
+					</element>
+					<element name="samplingTime" type="gml:TimePrimitivePropertyType">
+						<annotation>
+							<documentation>Time and date when the specimen was initially retrieved</documentation>
+						</annotation>
+					</element>
+					<element name="processingDetails" type="gml:ReferenceType" minOccurs="0" maxOccurs="unbounded">
+						<annotation>
+							<documentation>One or more procedures may have been applied to a specimen.  
+            May contain collection, sampling and preparation procedures</documentation>
+						</annotation>
+					</element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- .................. -->
+	<element name="Specimen" type="sa:SpecimenType" substitutionGroup="sa:SamplingFeature"/>
+	<!-- .................. -->
+	<complexType name="SpecimenPropertyType">
+		<sequence minOccurs="0">
+			<element ref="sa:Specimen"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+	<complexType name="LocatedSpecimenType">
+		<annotation>
+			<documentation/>
+		</annotation>
+		<complexContent>
+			<extension base="sa:SpecimenType">
+				<sequence>
+					<element name="samplingLocation" type="gml:GeometryPropertyType">
+						<annotation>
+							<documentation>Sampling location may be provided directly if not available through its association with either the sampledFeature or a relatedSamplingFeature</documentation>
+						</annotation>
+					</element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- .................. -->
+	<element name="LocatedSpecimen" type="sa:LocatedSpecimenType" substitutionGroup="sa:Specimen"/>
+	<!-- .................. -->
+	<complexType name="LocatedSpecimenPropertyType">
+		<sequence minOccurs="0">
+			<element ref="sa:LocatedSpecimen"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+	<complexType name="LocationPropertyType">
+		<sequence minOccurs="0">
+			<choice>
+				<element ref="gml:_Geometry"/>
+				<element name="EX_GeographicDescription" type="sa:AnyOrReferenceType"/>
+				<!--
+				<element ref="gmd:EX_GeographicDescription"/>
+				-->
+			</choice>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+		<attribute name="unionSemantics">
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="geometryLocation"/>
+					<enumeration value="nameLocation"/>
+				</restriction>
+			</simpleType>
+		</attribute>
+	</complexType>
+	<!-- ====================================================================== -->
+</schema>

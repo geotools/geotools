@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/net.opengis.wps/src"
+    modelPluginID="net.opengis.wps" modelName="Wps10" importerID="org.eclipse.emf.importer.java"
+    copyrightFields="false" usedGenPackages="platform:/plugin/org.eclipse.emf.ecore/model/XMLType.genmodel#//type ../net.opengis.ows/ows11.genmodel#//ows11 platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore platform:/plugin/org.eclipse.emf.ecore/model/XMLNamespace.genmodel#//namespace">
+  <foreignModel>@model</foreignModel>
+  <genPackages prefix="Wps10" basePackage="net.opengis" disposableProviderFactory="true"
+      generateExampleClass="false" fileExtensions="Wps10" ecorePackage="wps10.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="wps10.ecore#//MethodType">
+      <genEnumLiterals ecoreEnumLiteral="wps10.ecore#//MethodType/GET"/>
+      <genEnumLiterals ecoreEnumLiteral="wps10.ecore#//MethodType/POST"/>
+    </genEnums>
+    <genDataTypes ecoreDataType="wps10.ecore#//MethodTypeObject"/>
+    <genDataTypes ecoreDataType="wps10.ecore#//PercentCompletedType"/>
+    <genDataTypes ecoreDataType="wps10.ecore#//Map"/>
+    <genDataTypes ecoreDataType="wps10.ecore#//QName"/>
+    <genClasses ecoreClass="wps10.ecore#//BodyReferenceType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//BodyReferenceType/href"/>
+    </genClasses>
+    <genClasses ecoreClass="wps10.ecore#//ComplexDataCombinationsType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//ComplexDataCombinationsType/format"/>
+    </genClasses>
+    <genClasses ecoreClass="wps10.ecore#//ComplexDataCombinationType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//ComplexDataCombinationType/format"/>
+    </genClasses>
+    <genClasses ecoreClass="wps10.ecore#//ComplexDataDescriptionType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//ComplexDataDescriptionType/mimeType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//ComplexDataDescriptionType/encoding"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//ComplexDataDescriptionType/schema"/>
+    </genClasses>
+    <genClasses ecoreClass="wps10.ecore#//ComplexDataType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//ComplexDataType/encoding"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//ComplexDataType/mimeType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//ComplexDataType/schema"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//ComplexDataType/data"/>
+    </genClasses>
+    <genClasses ecoreClass="wps10.ecore#//CRSsType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//CRSsType/cRS"/>
+    </genClasses>
+    <genClasses ecoreClass="wps10.ecore#//DataInputsType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//DataInputsType/input"/>
+    </genClasses>
+    <genClasses ecoreClass="wps10.ecore#//DataInputsType1">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//DataInputsType1/input"/>
+    </genClasses>
+    <genClasses ecoreClass="wps10.ecore#//DataType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//DataType/complexData"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//DataType/literalData"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//DataType/boundingBoxData"/>
+    </genClasses>
+    <genClasses ecoreClass="wps10.ecore#//DefaultType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//DefaultType/cRS"/>
+    </genClasses>
+    <genClasses ecoreClass="wps10.ecore#//DefaultType1">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//DefaultType1/uOM"/>
+    </genClasses>
+    <genClasses ecoreClass="wps10.ecore#//DefaultType2">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//DefaultType2/language"/>
+    </genClasses>
+    <genClasses ecoreClass="wps10.ecore#//DescribeProcessType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//DescribeProcessType/identifier"/>
+    </genClasses>
+    <genClasses ecoreClass="wps10.ecore#//DescriptionType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//DescriptionType/identifier"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//DescriptionType/title"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//DescriptionType/abstract"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//DescriptionType/metadata"/>
+    </genClasses>
+    <genClasses ecoreClass="wps10.ecore#//DocumentOutputDefinitionType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//DocumentOutputDefinitionType/title"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//DocumentOutputDefinitionType/abstract"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//DocumentOutputDefinitionType/asReference"/>
+    </genClasses>
+    <genClasses ecoreClass="wps10.ecore#//DocumentRoot">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//DocumentRoot/mixed"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference wps10.ecore#//DocumentRoot/xMLNSPrefixMap"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference wps10.ecore#//DocumentRoot/xSISchemaLocation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//DocumentRoot/capabilities"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//DocumentRoot/describeProcess"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//DocumentRoot/execute"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//DocumentRoot/executeResponse"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//DocumentRoot/getCapabilities"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//DocumentRoot/languages"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//DocumentRoot/processDescriptions"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//DocumentRoot/processOfferings"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//DocumentRoot/wSDL"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//DocumentRoot/processVersion"/>
+    </genClasses>
+    <genClasses ecoreClass="wps10.ecore#//ExecuteResponseType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//ExecuteResponseType/process"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//ExecuteResponseType/status"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//ExecuteResponseType/dataInputs"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//ExecuteResponseType/outputDefinitions"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//ExecuteResponseType/processOutputs"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//ExecuteResponseType/serviceInstance"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//ExecuteResponseType/statusLocation"/>
+    </genClasses>
+    <genClasses ecoreClass="wps10.ecore#//ExecuteType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//ExecuteType/identifier"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//ExecuteType/dataInputs"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//ExecuteType/responseForm"/>
+    </genClasses>
+    <genClasses ecoreClass="wps10.ecore#//GetCapabilitiesType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//GetCapabilitiesType/acceptVersions"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//GetCapabilitiesType/language"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//GetCapabilitiesType/service"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//GetCapabilitiesType/baseUrl"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//GetCapabilitiesType/extendedProperties"/>
+    </genClasses>
+    <genClasses ecoreClass="wps10.ecore#//HeaderType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//HeaderType/key"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//HeaderType/value"/>
+    </genClasses>
+    <genClasses ecoreClass="wps10.ecore#//InputDescriptionType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//InputDescriptionType/complexData"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//InputDescriptionType/literalData"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//InputDescriptionType/boundingBoxData"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//InputDescriptionType/maxOccurs"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//InputDescriptionType/minOccurs"/>
+    </genClasses>
+    <genClasses ecoreClass="wps10.ecore#//InputReferenceType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//InputReferenceType/header"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute wps10.ecore#//InputReferenceType/body"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//InputReferenceType/bodyReference"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//InputReferenceType/encoding"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//InputReferenceType/href"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//InputReferenceType/method"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//InputReferenceType/mimeType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//InputReferenceType/schema"/>
+    </genClasses>
+    <genClasses ecoreClass="wps10.ecore#//InputType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//InputType/identifier"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//InputType/title"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//InputType/abstract"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//InputType/reference"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//InputType/data"/>
+    </genClasses>
+    <genClasses ecoreClass="wps10.ecore#//LanguagesType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//LanguagesType/language"/>
+    </genClasses>
+    <genClasses ecoreClass="wps10.ecore#//LanguagesType1">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//LanguagesType1/default"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//LanguagesType1/supported"/>
+    </genClasses>
+    <genClasses ecoreClass="wps10.ecore#//LiteralDataType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//LiteralDataType/value"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//LiteralDataType/dataType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//LiteralDataType/uom"/>
+    </genClasses>
+    <genClasses ecoreClass="wps10.ecore#//LiteralInputType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//LiteralInputType/allowedValues"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//LiteralInputType/anyValue"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//LiteralInputType/valuesReference"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//LiteralInputType/defaultValue"/>
+    </genClasses>
+    <genClasses ecoreClass="wps10.ecore#//LiteralOutputType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//LiteralOutputType/dataType"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//LiteralOutputType/uOMs"/>
+    </genClasses>
+    <genClasses ecoreClass="wps10.ecore#//OutputDataType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//OutputDataType/reference"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//OutputDataType/data"/>
+    </genClasses>
+    <genClasses ecoreClass="wps10.ecore#//OutputDefinitionsType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//OutputDefinitionsType/output"/>
+    </genClasses>
+    <genClasses ecoreClass="wps10.ecore#//OutputDefinitionType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//OutputDefinitionType/identifier"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//OutputDefinitionType/encoding"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//OutputDefinitionType/mimeType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//OutputDefinitionType/schema"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//OutputDefinitionType/uom"/>
+    </genClasses>
+    <genClasses ecoreClass="wps10.ecore#//OutputDescriptionType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//OutputDescriptionType/complexOutput"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//OutputDescriptionType/literalOutput"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//OutputDescriptionType/boundingBoxOutput"/>
+    </genClasses>
+    <genClasses ecoreClass="wps10.ecore#//OutputReferenceType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//OutputReferenceType/encoding"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//OutputReferenceType/href"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//OutputReferenceType/mimeType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//OutputReferenceType/schema"/>
+    </genClasses>
+    <genClasses ecoreClass="wps10.ecore#//ProcessBriefType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//ProcessBriefType/profile"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//ProcessBriefType/wSDL"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//ProcessBriefType/processVersion"/>
+    </genClasses>
+    <genClasses ecoreClass="wps10.ecore#//ProcessDescriptionsType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//ProcessDescriptionsType/processDescription"/>
+    </genClasses>
+    <genClasses ecoreClass="wps10.ecore#//ProcessDescriptionType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//ProcessDescriptionType/dataInputs"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//ProcessDescriptionType/processOutputs"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//ProcessDescriptionType/statusSupported"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//ProcessDescriptionType/storeSupported"/>
+    </genClasses>
+    <genClasses ecoreClass="wps10.ecore#//ProcessFailedType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//ProcessFailedType/exceptionReport"/>
+    </genClasses>
+    <genClasses ecoreClass="wps10.ecore#//ProcessOfferingsType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//ProcessOfferingsType/process"/>
+    </genClasses>
+    <genClasses ecoreClass="wps10.ecore#//ProcessOutputsType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//ProcessOutputsType/output"/>
+    </genClasses>
+    <genClasses ecoreClass="wps10.ecore#//ProcessOutputsType1">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//ProcessOutputsType1/output"/>
+    </genClasses>
+    <genClasses ecoreClass="wps10.ecore#//ProcessStartedType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//ProcessStartedType/value"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//ProcessStartedType/percentCompleted"/>
+    </genClasses>
+    <genClasses ecoreClass="wps10.ecore#//RequestBaseType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//RequestBaseType/language"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//RequestBaseType/service"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//RequestBaseType/version"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//RequestBaseType/baseUrl"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//RequestBaseType/extendedProperties"/>
+    </genClasses>
+    <genClasses ecoreClass="wps10.ecore#//ResponseBaseType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//ResponseBaseType/lang"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//ResponseBaseType/service"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//ResponseBaseType/version"/>
+    </genClasses>
+    <genClasses ecoreClass="wps10.ecore#//ResponseDocumentType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//ResponseDocumentType/output"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//ResponseDocumentType/lineage"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//ResponseDocumentType/status"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//ResponseDocumentType/storeExecuteResponse"/>
+    </genClasses>
+    <genClasses ecoreClass="wps10.ecore#//ResponseFormType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//ResponseFormType/responseDocument"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//ResponseFormType/rawDataOutput"/>
+    </genClasses>
+    <genClasses ecoreClass="wps10.ecore#//StatusType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//StatusType/processAccepted"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//StatusType/processStarted"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//StatusType/processPaused"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//StatusType/processSucceeded"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//StatusType/processFailed"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//StatusType/creationTime"/>
+    </genClasses>
+    <genClasses ecoreClass="wps10.ecore#//SupportedComplexDataInputType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//SupportedComplexDataInputType/maximumMegabytes"/>
+    </genClasses>
+    <genClasses ecoreClass="wps10.ecore#//SupportedComplexDataType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//SupportedComplexDataType/default"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//SupportedComplexDataType/supported"/>
+    </genClasses>
+    <genClasses ecoreClass="wps10.ecore#//SupportedCRSsType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//SupportedCRSsType/default"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//SupportedCRSsType/supported"/>
+    </genClasses>
+    <genClasses ecoreClass="wps10.ecore#//SupportedUOMsType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//SupportedUOMsType/default"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//SupportedUOMsType/supported"/>
+    </genClasses>
+    <genClasses ecoreClass="wps10.ecore#//UOMsType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//UOMsType/uOM"/>
+    </genClasses>
+    <genClasses ecoreClass="wps10.ecore#//ValuesReferenceType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//ValuesReferenceType/reference"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//ValuesReferenceType/valuesForm"/>
+    </genClasses>
+    <genClasses ecoreClass="wps10.ecore#//WPSCapabilitiesType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//WPSCapabilitiesType/processOfferings"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//WPSCapabilitiesType/languages"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wps10.ecore#//WPSCapabilitiesType/wSDL"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//WPSCapabilitiesType/lang"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//WPSCapabilitiesType/service"/>
+    </genClasses>
+    <genClasses ecoreClass="wps10.ecore#//WSDLType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wps10.ecore#//WSDLType/href"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="wps10.ecore#//Unit"/>
+  </genPackages>
+</genmodel:GenModel>

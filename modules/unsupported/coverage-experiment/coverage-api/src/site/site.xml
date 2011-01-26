@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="Geotools 2">
+  <body>
+    <!-- ==================================================== -->
+    <!--     Links to appears just below the right banner     -->
+    <!-- ==================================================== -->
+    <links>
+      <item name="Geotools" href="http://www.geotools.org/"/>
+      <item name="GeoAPI"   href="http://geoapi.sourceforge.net/"/>
+      <item name="Javadoc"  href="http://javadoc.geotools.fr/snapshot/"/>
+    </links>
+
+    <!-- ==================================================== -->
+    <!--     Menus to appears on the left side of each page   -->
+    <!-- ==================================================== -->
+    <menu name="Geotools">
+      <item name="Download"     href="http://www.geotools.org/display/GEOTOOLS/Downloads"/>
+      <item name="Full Javadoc" href="http://javadoc.geotools.fr/snapshot/"/>
+      <item name="All Reports"  href="http://maven.geotools.fr/reports/"/>
+      <item name="Legal review" href="review.html"/>
+    </menu>
+
+    ${reports}  <!-- Replaced by menus for any configured reports (mailing lists, etc.) -->
+
+    <menu name="Use">
+      <item name="Articles"  href="http://www.geotools.org/display/GEOTOOLS/Articles"/>
+      <item name="Tutorials" href="http://www.geotools.org/display/GEOTOOLS/Tutorials"/>
+      <item name="Snippets"  href="http://www.geotools.org/display/GEOTOOLS/Snippets"/>
+    </menu>
+  </body>
+</project>

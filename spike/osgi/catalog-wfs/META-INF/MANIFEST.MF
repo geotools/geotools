@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-Name: Skunkworks WFS Service
+Bundle-Description: Skunkworks WFS Service
+Bundle-Version: 1.0.0
+Bundle-Activator: skunkworks.catalog.wfs.Activator
+Bundle-ClassPath: .
+Import-Package: org.geotools.gtcatalog,
+ org.geotools.gtcatalog.wfs,
+ skunkworks.catalog

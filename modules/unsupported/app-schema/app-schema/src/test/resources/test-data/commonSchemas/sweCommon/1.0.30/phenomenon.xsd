@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns:swe="http://www.opengis.net/swe/0.0" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:gml="http://www.opengis.net/gml" targetNamespace="http://www.opengis.net/swe/0.0" elementFormDefault="qualified" attributeFormDefault="unqualified" version="pre-release">
+	<annotation>
+		<documentation>
+phenomenon.xsd
+
+A GML conformant schema 
+for definitions of phenomena
+used for soft-typing of property elements
+
+Copyright (c) 2005 Open Geospatial Consortium - see http://www.opengeospatial.org/about/?page=ipr
+</documentation>
+	</annotation>
+	<!-- ====================================================================== -->
+	<!-- bring in other schemas -->
+	<import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+	<include schemaLocation="./SWE_basicTypes.xsd"/>
+	<!-- ====================================================================== -->
+	<complexType name="PhenomenonType">
+		<complexContent>
+			<extension base="gml:DefinitionType"/>
+		</complexContent>
+	</complexType>
+	<!-- .......... -->
+	<element name="Phenomenon" type="swe:PhenomenonType" substitutionGroup="gml:Definition">
+		<annotation>
+			<documentation>Use the generic gml:DefinitionType for basic Phenomenon definitions, 
+			gml:description may be used for a more extensive description of the semantics, with a link to a definitive version (if available).  
+			gml:name should be used for the "short name" or label.  
+</documentation>
+		</annotation>
+	</element>
+	<!-- .......... -->
+	<complexType name="PhenomenonPropertyType">
+		<sequence minOccurs="0">
+			<element ref="swe:Phenomenon"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+	<complexType name="ConstrainedPhenomenonType">
+		<annotation>
+			<documentation>A scalar Phenomenon defined by adding constraints to an existing property.  
+      </documentation>
+		</annotation>
+		<complexContent>
+			<extension base="swe:PhenomenonType">
+				<sequence>
+					<element name="base" type="swe:PhenomenonPropertyType">
+						<annotation>
+							<documentation>Property that forms the basis for generating a set of more refined Phenomena; e.g. Chemical Composition, Radiance</documentation>
+						</annotation>
+					</element>
+					<group ref="swe:singleConstraint" maxOccurs="unbounded"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ........................................ -->
+	<element name="ConstrainedPhenomenon" type="swe:ConstrainedPhenomenonType" substitutionGroup="swe:Phenomenon">
+		<annotation>
+			<documentation>Description of a scalar Phenomenon defined by adding constraints to a property previously defined elsewhere.</documentation>
+		</annotation>
+	</element>
+	<!-- ====================================================================== -->
+	<group name="singleConstraint">
+		<annotation>
+			<documentation>Constraints expressed in fully explicit form. 
+        The base Phenomenon is associated with each value or interval in turn</documentation>
+		</annotation>
+		<choice>
+			<element name="categoryConstraint" type="swe:TypedCategoryType">
+				<annotation>
+					<documentation>A value from a classification that constrains the base Phenomenon; e.g. Chemical Species</documentation>
+				</annotation>
+			</element>
+			<element name="measureConstraint" type="swe:TypedMeasureType">
+				<annotation>
+					<documentation>A numeric value of some property that constrains the base Phenomenon; e.g. Wavelength</documentation>
+				</annotation>
+			</element>
+			<element name="intervalConstraint" type="swe:TypedMeasureIntervalType">
+				<annotation>
+					<documentation>An interval or range of some property that constrains the base Phenomenon; e.g. Wavelength band</documentation>
+				</annotation>
+			</element>
+			<element name="otherConstraint" type="gml:StringOrRefType"/>
+		</choice>
+	</group>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<complexType name="CompoundPhenomenonType" abstract="true">
+		<annotation>
+			<documentation>Description of a set of Phenomena.  
+      A Phenomenon set may defined as either
+      1. a set of explicitly enumerated components which may or may not be related to one another
+      2. a base property convolved with a set of constraints
+      The set of  constraints may be either
+      * an explicit set of soft-typed measures, intervals and categories
+      * one or more lists of soft-typed measures, intervals and categories
+      * one or more sequences of soft-typed measures and intervals 
+</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="swe:PhenomenonType">
+				<attribute name="dimension" type="positiveInteger" use="required">
+					<annotation>
+						<documentation>The number of components in the tuple</documentation>
+					</annotation>
+				</attribute>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ........................................ -->
+	<element name="CompoundPhenomenon" type="swe:CompoundPhenomenonType" abstract="true" substitutionGroup="swe:Phenomenon">
+		<annotation>
+			<documentation>Description of a set of properties or a compound Phenomenon, 
+      that are the subject of a measurement, observation or assignment.   </documentation>
+		</annotation>
+	</element>
+	<!-- ====================================================================== -->
+	<complexType name="CompositePhenomenonType">
+		<complexContent>
+			<extension base="swe:CompoundPhenomenonType">
+				<sequence>
+					<element name="base" type="swe:PhenomenonPropertyType" minOccurs="0" >
+						<annotation>
+							<documentation>Phenomenon that forms the basis for generating more specialized composite Phenomenon by adding more components</documentation>
+						</annotation>
+					</element>
+					<element name="component" type="swe:PhenomenonPropertyType" maxOccurs="unbounded"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ........................................ -->
+	<element name="CompositePhenomenon" type="swe:CompositePhenomenonType" substitutionGroup="swe:CompoundPhenomenon">
+		<annotation>
+			<documentation>A Composite Phenomenon Definition is composed from arbitrary base Phenomena. </documentation>
+		</annotation>
+	</element>
+	<!-- ====================================================================== -->
+	<complexType name="PhenomenonSeriesType">
+		<complexContent>
+			<extension base="swe:CompoundPhenomenonType">
+				<sequence>
+					<element name="base" type="swe:PhenomenonPropertyType">
+						<annotation>
+							<documentation>Phenomenon that forms the basis for generating a set of more refined Phenomena; e.g. Chemical Composition, Radiance</documentation>
+						</annotation>
+					</element>
+					<group ref="swe:constraintLists" maxOccurs="unbounded">
+						<annotation>
+							<documentation>A set of values of some secondary property that constraints the basePhenomenon to generate a Phenomenon set.  
+							If more than one set of constraints are possible, then these are applied simultaneously to generate </documentation>
+						</annotation>
+					</group>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ........................................ -->
+	<element name="PhenomenonSeries" type="swe:PhenomenonSeriesType" substitutionGroup="swe:CompoundPhenomenon">
+		<annotation>
+			<documentation>A Series is derived from a common basePhenomenon (e.g. Chemical Concentration) with one or more constraint lists (e.g. Chemical Species). </documentation>
+		</annotation>
+	</element>
+	<!-- ====================================================================== -->
+	<group name="constraintLists">
+		<choice>
+			<annotation>
+				<documentation>Constraint sets expressed in compact form. 
+        The base property is associated with each value or interval in turn</documentation>
+			</annotation>
+			<element name="categoryConstraintList" type="swe:TypedCategoryListType">
+				<annotation>
+					<documentation>A list of values from a classification ; e.g. Chemical Species</documentation>
+				</annotation>
+			</element>
+			<element name="measureConstraintList" type="swe:TypedMeasureListType">
+				<annotation>
+					<documentation>A list of numeric values of some property; e.g. Wavelength</documentation>
+				</annotation>
+			</element>
+			<element name="intervalConstraintList" type="swe:TypedMeasureListType">
+				<annotation>
+					<documentation>A list of *pairs* of numeric values each defining an interval of some property; e.g. Wavelength band</documentation>
+				</annotation>
+			</element>
+			<!--
+			<element name="measureConstraintSequence" type="string">
+				<annotation>
+					<documentation>A set of numeric values of some property; e.g. Wavelength, expressed as a regular sequence (incomplete)</documentation>
+				</annotation>
+			</element>
+			<element name="intervalConstraintSequence" type="string">
+				<annotation>
+					<documentation>A set of *pairs* of numeric values of some property; e.g. Wavelength band, expressed as a regular sequence (incomplete)</documentation>
+				</annotation>
+			</element>
+			-->
+		</choice>
+	</group>
+	<!-- ====================================================================== -->
+</schema>

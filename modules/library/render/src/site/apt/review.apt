@@ -1,0 +1,66 @@
+MODULE RENDER
+~~~~~~~~~~~~~
+
+  Module Maintainer: Jesse Eichar
+
+  IP Review:
+    * Jody Garnett, August 6th, 2006
+
+    * Adrian Custer, June 6th 2008
+
+
+  STATUS: DIRTY
+      Code is CLEAN
+        -- we presume copyright transfer from (C) 2002, Centre for Computational Geography
+        
+      Data are UNKNOWN: Geosolutions needs to fix (see the last entry).
+        http://jira.codehaus.org/browse/GEOT-1876
+   
+  - afabiani: apart usa.png the other test-data is safe. usa.png comes from GIDB client
+              it shouldn't be reliable to be distributed under LGPL license.
+
+* org.geotools.renderer
+  ~~~~~~~~~~~~~~~~~~~~~
+  Contains a "unified" rendering interface for which several implementations have been
+  made available.
+
+  
+* org.geotools.renderer.lite
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Andrea's experimental simplified rendering pipeline, on the grounds that simple
+  code can be debugged, and go fast.
+
+    * ListenerList appears to hava JFace javadocs ... this needs to be fixed (or reimplemented)
+
+
+* org.geotools.renderer.lite.gridcoverage2d
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Think this was recently added from the coverage branch, (C) says 2002 ... going to guess 2005.
+
+
+* org.geotools.renderer.style
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Some code here dates back to 2003, appears to be some cross over with the geovista project (supporting
+  dynamic style obejcts and the like).
+
+
+* org.geotools.renderer.[lite|style] (test)
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Fun with JUnit.
+
+    * some test case headers are cleary (C) 2002, so will need to use svn history 
+      to sort this module out.
+
+* Resources
+  ~~~~~~~~~
+  ** render/src/test/resources/org/geotools/referencing/piecewise/test-data/usa.png
+       Some unclassified image with vector overlay from Alessio Fabiani
+  ** render/src/test/resources/org/geotools/renderer/lite/test-data/
+       A slew of files
+  ** render/src/test/resources/org/geotools/renderer/lite/gridcoverage2d/test-data/
+       A slew of files
+  ** render/src/test/resources/org/geotools/renderer/style/test-data/star.sld
+       Taken from the user list, so ok.
+       
+       
+       

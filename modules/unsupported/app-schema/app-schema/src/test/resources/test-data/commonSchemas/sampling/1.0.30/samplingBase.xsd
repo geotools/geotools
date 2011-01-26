@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns:gml="http://www.opengis.net/gml" xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:swe="http://www.opengis.net/swe/0.0" xmlns:om="http://www.opengis.net/om" xmlns="http://www.w3.org/2001/XMLSchema"
+        xmlns:sa="http://www.opengis.net/sampling/0.0" targetNamespace="http://www.opengis.net/sampling/0.0" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.0">
+	<annotation>
+		<documentation>samplingBase.xsd
+
+Sampling features are feature types that are used primarily for making observations: 
+Station (0-D), SamplingFeature, and collections are described in this schema document
+
+Profile, Interval, Traverse, Flightline, Borehole (1-D)
+SurfaceOfInterest, Swath (2-D)
+SolidOfInterest (3-D) are described in extensiveSite.xsd
+
+Copyright (c) 2007 Open Geospatial Consortium - see http://www.opengeospatial.org/about/?page=ipr</documentation>
+	</annotation>
+	<!-- ====================================================================== -->
+	<!-- bring in other schemas -->
+	<import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+<!--	<import namespace="http://www.isotc211.org/2005/gmd" schemaLocation="../../../../gml/trunk/gml/3.1.1/gmd/gmd.xsd"/>-->
+	<import namespace="http://www.opengis.net/swe/0.0" schemaLocation="../../sweCommon/1.0.30/swe.xsd"/>
+	<import namespace="http://www.opengis.net/om" schemaLocation="../../om/1.0.30/om.xsd"/>
+	<include schemaLocation="./surveyProcedure.xsd"/>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<!-- ===== Feature types in Site hierarchy ====== -->
+	<!-- ====================================================================== -->
+	<complexType name="SamplingFeatureType">
+		<annotation>
+			<documentation>A "SamplingFeature" is a feature used primarily for taking observations.</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="gml:AbstractFeatureType">
+				<sequence>
+<!--					<element name="property" type="swe:TypedValuePropertyType" minOccurs="0" maxOccurs="unbounded"/>-->
+					<element name="relatedObservation" type="om:AbstractObservationPropertyType" minOccurs="0" maxOccurs="unbounded"/>
+					<element name="relatedSamplingFeature" type="sa:SamplingFeatureRelationPropertyType" minOccurs="0" maxOccurs="unbounded">
+						<annotation>
+							<documentation>A samplingFeature is often associated with a set of member samplingFeatures: e.g. stations on a traverse, intervals in a borehole or section, boreholes within an area of interest.</documentation>
+						</annotation>
+					</element>
+					<element name="sampledFeature" type="gml:FeaturePropertyType" maxOccurs="unbounded">
+						<annotation>
+							<documentation>Pointer to the feature(s) being sampled, indicating the intention of the samplingFeature</documentation>
+						</annotation>
+					</element>
+					<element name="surveyDetails" type="sa:SurveyProcedurePropertyType" minOccurs="0">
+						<annotation>
+							<documentation>Link to description of the procedure used in determining the position of the samplingFeature.  
+              For complex procedures, such as when elevation and position are determined separately, may be disaggregated.</documentation>
+						</annotation>
+					</element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- .................. -->
+	<element name="SamplingFeature" type="sa:SamplingFeatureType" abstract="true" substitutionGroup="gml:_Feature"/>
+	<!-- .................. -->
+	<complexType name="SamplingFeaturePropertyType">
+		<sequence minOccurs="0">
+			<element ref="sa:SamplingFeature"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+	<complexType name="SamplingFeatureRelationType">
+		<annotation>
+			<documentation>A "SamplingFeatureRelation" is used to describe relationships between sampling features, including part-whole, siblings, etc.</documentation>
+		</annotation>
+		<sequence>
+			<element name="role" type="gml:CodeType"/>
+			<element name="target" type="sa:SamplingFeaturePropertyType"/>
+		</sequence>
+	</complexType>
+	<!-- .................. -->
+	<element name="SamplingFeatureRelation" type="sa:SamplingFeatureRelationType"/>
+	<!-- .................. -->
+	<complexType name="SamplingFeatureRelationPropertyType">
+		<sequence>
+			<element ref="sa:SamplingFeatureRelation"/>
+		</sequence>
+	</complexType>
+	<!-- ====================================================================== -->
+</schema>

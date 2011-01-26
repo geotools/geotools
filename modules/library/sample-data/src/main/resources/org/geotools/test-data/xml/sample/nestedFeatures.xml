@@ -1,0 +1,41 @@
+<gml:FeatureCollection xmlns:wfs="http://www.opengis.net/wfs"
+    xmlns:topp="http://www.openplans.org/topp"
+    xmlns:gml="http://www.opengis.net/gml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://www.openplans.org/topp nestedFeatures.xsd">
+    <gml:boundedBy>
+        <gml:Box srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+            <gml:coordinates decimal="." cs=","
+                ts=" ">494475.71056415,5433016.8189323 494982.70115662,5435041.95096618</gml:coordinates>
+        </gml:Box>
+    </gml:boundedBy>
+    <gml:featureMember>
+        <topp:bc_roads fid="bc_roads.1">
+            <topp:the_geom>
+                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+                    <gml:lineStringMember>
+                        <gml:LineString>
+                            <gml:coordinates decimal="." cs=","
+                                ts=" ">494475.71056415,5433016.8189323 494982.70115662,5435041.95096618</gml:coordinates>
+                        </gml:LineString>
+                    </gml:lineStringMember>
+                </gml:MultiLineString>
+            </topp:the_geom>
+            <topp:LENGTH>2163.48</topp:LENGTH>
+	        <topp:building fid="building.1">
+	            <topp:the_geom>
+	                <gml:MultiLineString srsName="http://www.opengis.net/gml/srs/epsg.xml#27354">
+	                    <gml:lineStringMember>
+	                        <gml:LineString>
+	                            <gml:coordinates decimal="." cs=","
+	                                ts=" ">494476.71056415,5433022.8189323 494981.70115662,5435039.95096618</gml:coordinates>
+	                        </gml:LineString>
+	                    </gml:lineStringMember>
+	                </gml:MultiLineString>
+	            </topp:the_geom>
+	            <topp:LENGTH>200</topp:LENGTH>
+	        </topp:building>
+            <topp:BTRN_BC_ID>13166</topp:BTRN_BC_ID>
+        </topp:bc_roads>
+    </gml:featureMember>
+</gml:FeatureCollection>

@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- =======================================================================
+        Maven Project Configuration File
+
+        The Geotools Project
+            http://www.geotools.org/
+
+        Version: $Id$
+     ======================================================================= -->
+  <project xmlns="http://maven.apache.org/POM/4.0.0"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                               http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.geotools</groupId>
+    <artifactId>library</artifactId>
+    <version>2.7-SNAPSHOT</version>
+  </parent>
+
+
+  <!-- =========================================================== -->
+  <!--     Module Description                                      -->
+  <!-- =========================================================== -->
+  <groupId>org.geotools</groupId>
+  <artifactId>gt-referencing</artifactId>
+  <packaging>jar</packaging>
+  <name>Referencing services</name>
+  
+
+  <scm>
+    <connection>
+      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/library/referencing/
+    </connection>
+    <url>http://svn.osgeo.org/geotools/trunk/modules/library/referencing/</url>
+  </scm>
+
+  <description>
+    Contains implementations of Coordinate Reference Systems (CRS),
+    conversion and transformation services.
+  </description>
+
+  <licenses>
+    <license>
+      <name>Lesser General Public License (LGPL)</name>
+      <url>http://www.gnu.org/copyleft/lesser.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+
+  <!-- =========================================================== -->
+  <!--     Developers and Contributors                             -->
+  <!-- =========================================================== -->
+  <developers>
+    <developer>
+      <name>Martin Desruisseaux</name>
+      <id>desruisseaux</id>
+      <email>desruisseaux@users.sourceforge.net</email>
+      <organization>Geomatys</organization>
+      <organizationUrl>http://www.geomatys.fr/</organizationUrl>
+      <timezone>+1</timezone>
+      <roles>
+        <role>Retired Module Maintainer</role>
+        <role>Retired Java Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Rueben Schulz</name>
+      <id>rschulz</id>
+      <organization>University of British Columbia</organization>
+      <roles>
+        <role>Java developper</role>
+        <role>Tester</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Jan Jezek</name>
+      <id>jezekjan</id>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Jody Garnett</name>
+      <id>jive</id>
+      <email>jive@users.sourceforge.net</email>
+      <organization>Refractions Research</organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Simone Giannecchini</name>
+      <id>simboss</id>
+      <email>simone.giannecchini@geo-solutions.it</email>
+      <organization>GeoSolutions S.A.S.</organization>
+      <organizationUrl>http://www.geo-solutions.it</organizationUrl>
+      <roles>
+        <role>Java Developer</role>
+        <role>Documentation</role>
+        <role>Module Maintainer</role>
+      </roles>
+    </developer> 
+    <developer>
+      <name>Andrea Aime</name>
+      <id>aaime</id>
+      <email>aaime@users.sourceforge.net</email>
+      <roles>
+        <role>Java Developer</role>
+        <role>Module Maintainer</role>
+      </roles>
+    </developer>
+  </developers>
+
+  <contributors>
+    <contributor>
+      <name>Rémi Eve</name>
+      <organization>
+        Institut de Recherche pour le Développement (IRD)
+      </organization>
+      <roles>
+        <role>Java developper</role>
+      </roles>
+    </contributor>
+    <contributor>
+      <name>Yann Cézard</name>
+      <organization>Université de Montpellier II</organization>
+      <roles>
+        <role>Java developper</role>
+      </roles>
+    </contributor>
+    <contributor>
+      <name>Daniele Franzoni</name>
+      <organization>SATA srl, Italy</organization>
+      <roles>
+        <role>Java developper</role>
+      </roles>
+    </contributor>
+    <contributor>
+      <name>Matthias Basler</name>
+      <email>matthiasbasier@users.sourceforge.net</email>
+      <roles>
+        <role>Java developper</role>
+      </roles>
+    </contributor>
+    <contributor>
+      <name>David Heath</name>
+      <roles>
+        <role>Java developper</role>
+      </roles>
+    </contributor>
+    <contributor>
+      <name>Beate Stollberg</name>
+      <roles>
+        <role>Java developper</role>
+      </roles>
+      <organization>
+        Institute for Environment and Sustainability
+      </organization>
+    </contributor>
+    <contributor>
+      <name>Tara Athan</name>
+      <roles>
+        <role>Java developper</role>
+      </roles>
+    </contributor>
+  </contributors>
+
+
+  <!-- =========================================================== -->
+  <!--     Dependency Management                                   -->
+  <!-- =========================================================== -->
+  <dependencies>
+    <!-- NOTE: The referencing module does not depends on JTS. -->
+    <dependency>
+      <groupId>java3d</groupId>
+      <artifactId>vecmath</artifactId>
+      <!-- The version number is specified in the parent POM. -->
+    </dependency>
+    <dependency>
+      <groupId>commons-pool</groupId>
+      <artifactId>commons-pool</artifactId>
+      <!-- The version number is specified in the parent POM. -->
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-metadata</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <!-- Test dependencies -->
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-sample-data</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <!-- Required for ImageParameterDescriptor test. -->
+      <groupId>javax.media</groupId>
+      <artifactId>jai_codec</artifactId>
+      <!-- The version number is specified in the parent POM. -->
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+
+</project>

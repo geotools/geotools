@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns:xlink="http://www.w3.org/1999/xlink" 
+xmlns:gml="http://www.opengis.net/gml" 
+xmlns="http://www.w3.org/2001/XMLSchema" 
+xmlns:om="http://www.opengis.net/om/1.0" 
+xmlns:swe="http://www.opengis.net/swe/1.0.1" 
+        targetNamespace="http://www.opengis.net/om/1.0" 
+		elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.0">
+	<annotation>
+		<documentation>observationSpecialization_override.xsd
+
+An implementation of the OandM model for SWE
+This document contains various specializations of the basic observation pattern, by fixing the type of the result. 
+In this version, the specialization is achieved by restricting om:ObservationType to have a result of the correct type
+
+Copyright (c) 2007 Open Geospatial Consortium - see http://www.opengeospatial.org/ogc/software</documentation>
+	</annotation>
+	<!-- ====================================================================== -->
+	<!-- bring in other schemas -->
+	<import namespace="http://www.opengis.net/gml" schemaLocation="../../../gml/3.1.1/base/gml.xsd"/>
+	<import namespace="http://www.opengis.net/swe/1.0.1" schemaLocation="../../../sweCommon/1.0.1/swe.xsd"/>
+	<include schemaLocation="../observation.xsd"/>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<!-- ===== Scalar Observations ====== -->
+	<!-- ====================================================================== -->
+	<complexType name="MeasurementType">
+		<annotation>
+			<documentation>Specialized Observation in which the result is a Measure</documentation>
+		</annotation>
+		<complexContent>
+			<restriction base="om:ObservationType">
+				<sequence>
+					<element ref="gml:metaDataProperty" minOccurs="0" maxOccurs="unbounded"/>
+					<element ref="gml:description" minOccurs="0"/>
+					<element ref="gml:name" minOccurs="0" maxOccurs="unbounded"/>
+					<element ref="gml:boundedBy" minOccurs="0"/>
+					<element name="metadata" type="om:AnyOrReferenceType" minOccurs="0"/>
+					<element name="samplingTime" type="swe:TimeObjectPropertyType"/>
+					<element name="resultTime" type="swe:TimeObjectPropertyType" minOccurs="0"/>
+					<element name="procedure" type="om:ProcessPropertyType"/>
+					<element name="resultQuality" type="om:AnyOrReferenceType" minOccurs="0"/>
+					<element name="observedProperty" type="swe:PhenomenonPropertyType"/>
+					<element name="featureOfInterest" type="gml:FeaturePropertyType"/>
+					<element name="parameter" type="swe:AnyDataPropertyType" minOccurs="0" maxOccurs="unbounded"/>
+					<element name="result" type="gml:MeasureType"/>
+				</sequence>
+			</restriction>
+		</complexContent>
+	</complexType>
+	<!-- ...................... -->
+	<element name="Measurement" type="om:MeasurementType" substitutionGroup="om:Observation">
+		<annotation>
+			<documentation>Specialized Observation in which the result is a Measure</documentation>
+		</annotation>
+	</element>
+	<!-- ====================================================================== -->
+	<complexType name="CategoryObservationType">
+		<annotation>
+			<documentation>Specialized Observation, in which the result is a textual value from a controlled vocabulary</documentation>
+		</annotation>
+		<complexContent>
+			<restriction base="om:ObservationType">
+				<sequence>
+					<element ref="gml:metaDataProperty" minOccurs="0" maxOccurs="unbounded"/>
+					<element ref="gml:description" minOccurs="0"/>
+					<element ref="gml:name" minOccurs="0" maxOccurs="unbounded"/>
+					<element ref="gml:boundedBy" minOccurs="0"/>
+					<element name="metadata" type="om:AnyOrReferenceType" minOccurs="0"/>
+					<element name="samplingTime" type="swe:TimeObjectPropertyType"/>
+					<element name="resultTime" type="swe:TimeObjectPropertyType" minOccurs="0"/>
+					<element name="procedure" type="om:ProcessPropertyType"/>
+					<element name="resultQuality" type="om:AnyOrReferenceType" minOccurs="0"/>
+					<element name="observedProperty" type="swe:PhenomenonPropertyType"/>
+					<element name="featureOfInterest" type="gml:FeaturePropertyType"/>
+					<element name="parameter" type="swe:AnyDataPropertyType" minOccurs="0" maxOccurs="unbounded"/>
+					<element name="result" type="swe:ScopedNameType">
+						<annotation>
+							<documentation>A Scoped Name is a term with a mandatory codeSpace attribute</documentation>
+						</annotation>
+					</element>
+				</sequence>
+			</restriction>
+		</complexContent>
+	</complexType>
+	<!-- ...................... -->
+	<element name="CategoryObservation" type="om:CategoryObservationType" substitutionGroup="om:Observation">
+		<annotation>
+			<documentation>Specialized Observation, in which the result is a textual value from a controlled vocabulary</documentation>
+		</annotation>
+	</element>
+	<!-- ====================================================================== -->
+	<complexType name="CountObservationType">
+		<annotation>
+			<documentation>Specialized Observation, in which the result is an integer representing the count of the observed property</documentation>
+		</annotation>
+		<complexContent>
+			<restriction base="om:ObservationType">
+				<sequence>
+					<element ref="gml:metaDataProperty" minOccurs="0" maxOccurs="unbounded"/>
+					<element ref="gml:description" minOccurs="0"/>
+					<element ref="gml:name" minOccurs="0" maxOccurs="unbounded"/>
+					<element ref="gml:boundedBy" minOccurs="0"/>
+					<element name="metadata" type="om:AnyOrReferenceType" minOccurs="0"/>
+					<element name="samplingTime" type="swe:TimeObjectPropertyType"/>
+					<element name="resultTime" type="swe:TimeObjectPropertyType" minOccurs="0"/>
+					<element name="procedure" type="om:ProcessPropertyType"/>
+					<element name="resultQuality" type="om:AnyOrReferenceType" minOccurs="0"/>
+					<element name="observedProperty" type="swe:PhenomenonPropertyType"/>
+					<element name="featureOfInterest" type="gml:FeaturePropertyType"/>
+					<element name="parameter" type="swe:AnyDataPropertyType" minOccurs="0" maxOccurs="unbounded"/>
+					<element name="result" type="integer">
+						<annotation>
+							<documentation>count of the observed property</documentation>
+						</annotation>
+					</element>
+				</sequence>
+			</restriction>
+		</complexContent>
+	</complexType>
+	<!-- ...................... -->
+	<element name="CountObservation" type="om:CountObservationType" substitutionGroup="om:Observation">
+		<annotation>
+			<documentation>Specialized Observation, in which the result is an integer representing the count of the observed property</documentation>
+		</annotation>
+	</element>
+	<!-- ====================================================================== -->
+	<complexType name="TruthObservationType">
+		<annotation>
+			<documentation>Specialized Observation, in which the result is a boolean value representing the truth value (e.g. existence) of the observed property</documentation>
+		</annotation>
+		<complexContent>
+			<restriction base="om:ObservationType">
+				<sequence>
+					<element ref="gml:metaDataProperty" minOccurs="0" maxOccurs="unbounded"/>
+					<element ref="gml:description" minOccurs="0"/>
+					<element ref="gml:name" minOccurs="0" maxOccurs="unbounded"/>
+					<element ref="gml:boundedBy" minOccurs="0"/>
+					<element name="metadata" type="om:AnyOrReferenceType" minOccurs="0"/>
+					<element name="samplingTime" type="swe:TimeObjectPropertyType"/>
+					<element name="resultTime" type="swe:TimeObjectPropertyType" minOccurs="0"/>
+					<element name="procedure" type="om:ProcessPropertyType"/>
+					<element name="resultQuality" type="om:AnyOrReferenceType" minOccurs="0"/>
+					<element name="observedProperty" type="swe:PhenomenonPropertyType"/>
+					<element name="featureOfInterest" type="gml:FeaturePropertyType"/>
+					<element name="parameter" type="swe:AnyDataPropertyType" minOccurs="0" maxOccurs="unbounded"/>
+					<element name="result" type="boolean">
+						<annotation>
+							<documentation>truth value (e.g. existence) of the observed property</documentation>
+						</annotation>
+					</element>
+				</sequence>
+			</restriction>
+		</complexContent>
+	</complexType>
+	<!-- ...................... -->
+	<element name="TruthObservation" type="om:TruthObservationType" substitutionGroup="om:Observation">
+		<annotation>
+			<documentation>Specialized Observation, in which the result is a boolean value representing the truth value (usually existence) of the observed property</documentation>
+		</annotation>
+	</element>
+	<!-- ====================================================================== -->
+	<complexType name="GeometryObservationType">
+		<annotation>
+			<documentation>Specialized Observation, in which the result is a Geometry </documentation>
+		</annotation>
+		<complexContent>
+			<restriction base="om:ObservationType">
+				<sequence>
+					<element ref="gml:metaDataProperty" minOccurs="0" maxOccurs="unbounded"/>
+					<element ref="gml:description" minOccurs="0"/>
+					<element ref="gml:name" minOccurs="0" maxOccurs="unbounded"/>
+					<element ref="gml:boundedBy" minOccurs="0"/>
+					<element name="metadata" type="om:AnyOrReferenceType" minOccurs="0"/>
+					<element name="samplingTime" type="swe:TimeObjectPropertyType"/>
+					<element name="resultTime" type="swe:TimeObjectPropertyType" minOccurs="0"/>
+					<element name="procedure" type="om:ProcessPropertyType"/>
+					<element name="resultQuality" type="om:AnyOrReferenceType" minOccurs="0"/>
+					<element name="observedProperty" type="swe:PhenomenonPropertyType"/>
+					<element name="featureOfInterest" type="gml:FeaturePropertyType"/>
+					<element name="parameter" type="swe:AnyDataPropertyType" minOccurs="0" maxOccurs="unbounded"/>
+					<element name="result" type="gml:GeometryPropertyType">
+						<annotation>
+							<documentation>Geometry of the observed property</documentation>
+						</annotation>
+					</element>
+				</sequence>
+			</restriction>
+		</complexContent>
+	</complexType>
+	<!-- ...................... -->
+	<element name="GeometryObservation" type="om:GeometryObservationType" substitutionGroup="om:Observation">
+		<annotation>
+			<documentation>Specialized Observation, in which the result is a Geometry</documentation>
+		</annotation>
+	</element>
+	<!-- ====================================================================== -->
+	<complexType name="TemporalObservationType">
+		<annotation>
+			<documentation>Specialized Observation, in which the result is a Temporal object</documentation>
+		</annotation>
+		<complexContent>
+			<restriction base="om:ObservationType">
+				<sequence>
+					<element ref="gml:metaDataProperty" minOccurs="0" maxOccurs="unbounded"/>
+					<element ref="gml:description" minOccurs="0"/>
+					<element ref="gml:name" minOccurs="0" maxOccurs="unbounded"/>
+					<element ref="gml:boundedBy" minOccurs="0"/>
+					<element name="metadata" type="om:AnyOrReferenceType" minOccurs="0"/>
+					<element name="samplingTime" type="swe:TimeObjectPropertyType"/>
+					<element name="resultTime" type="swe:TimeObjectPropertyType" minOccurs="0"/>
+					<element name="procedure" type="om:ProcessPropertyType"/>
+					<element name="resultQuality" type="om:AnyOrReferenceType" minOccurs="0"/>
+					<element name="observedProperty" type="swe:PhenomenonPropertyType"/>
+					<element name="featureOfInterest" type="gml:FeaturePropertyType"/>
+					<element name="parameter" type="swe:AnyDataPropertyType" minOccurs="0" maxOccurs="unbounded"/>
+					<element name="result" type="swe:TimeObjectPropertyType">
+						<annotation>
+							<documentation>Temporal value of the observed property</documentation>
+						</annotation>
+					</element>
+				</sequence>
+			</restriction>
+		</complexContent>
+	</complexType>
+	<!-- ...................... -->
+	<element name="TemporalObservation" type="om:TemporalObservationType" substitutionGroup="om:Observation">
+		<annotation>
+			<documentation>Specialized Observation, in which the result is a Temporal object</documentation>
+		</annotation>
+	</element>
+	<!-- ====================================================================== -->
+	<!-- ===== Observation with constant complex result ====== -->
+	<!-- ====================================================================== -->
+	<complexType name="ComplexObservationType">
+		<annotation>
+			<documentation>Specialized Observation, in which the result is a record representing a description of a multi-component phenomenon.</documentation>
+		</annotation>
+		<complexContent>
+			<restriction base="om:ObservationType">
+				<sequence>
+					<element ref="gml:metaDataProperty" minOccurs="0" maxOccurs="unbounded"/>
+					<element ref="gml:description" minOccurs="0"/>
+					<element ref="gml:name" minOccurs="0" maxOccurs="unbounded"/>
+					<element ref="gml:boundedBy" minOccurs="0"/>
+					<element name="metadata" type="om:AnyOrReferenceType" minOccurs="0"/>
+					<element name="samplingTime" type="swe:TimeObjectPropertyType"/>
+					<element name="resultTime" type="swe:TimeObjectPropertyType" minOccurs="0"/>
+					<element name="procedure" type="om:ProcessPropertyType"/>
+					<element name="resultQuality" type="om:AnyOrReferenceType" minOccurs="0"/>
+					<element name="observedProperty" type="swe:PhenomenonPropertyType"/>
+					<element name="featureOfInterest" type="gml:FeaturePropertyType"/>
+					<element name="parameter" type="swe:AnyDataPropertyType" minOccurs="0" maxOccurs="unbounded"/>
+					<element name="result" type="swe:DataRecordPropertyType">
+						<annotation>
+							<documentation>result is a Record - i.e. a heterogeneous list of fields (ISO/IEC 11404) - describing a multi-component phenomenon</documentation>
+						</annotation>
+					</element>
+				</sequence>
+			</restriction>
+		</complexContent>
+	</complexType>
+	<!-- ...................... -->
+	<element name="ComplexObservation" type="om:ComplexObservationType" substitutionGroup="om:Observation">
+		<annotation>
+			<documentation>Specialized Observation, in which the result is a record representing a multi-component phenomenon</documentation>
+		</annotation>
+	</element>
+	<!-- ====================================================================== -->
+</schema>

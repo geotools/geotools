@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- =======================================================================
+        Maven Project Configuration File
+
+        The Geotools Project
+            http://www.geotools.org/
+
+        Version: $Id: pom.xml 33582 2009-07-17 04:40:35Z mbedward $
+     ======================================================================= -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                               http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.geotools</groupId>
+        <artifactId>unsupported</artifactId>
+        <version>2.7-SNAPSHOT</version>
+    </parent>
+
+  <!-- =========================================================== -->
+  <!--     Module Description                                      -->
+  <!-- =========================================================== -->
+    <groupId>org.geotools</groupId>
+    <artifactId>gt-swing</artifactId>
+    <packaging>jar</packaging>
+    <name>Swing widgets</name>
+
+    <scm>
+        <connection>
+      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/extension/widgets-swing/
+        </connection>
+        <url>http://svn.osgeo.org/geotools/trunk/modules/extension/widgets-swing/</url>
+    </scm>
+
+    <description>
+    Provides widgets for map display and other GUI elements
+    </description>
+
+    <licenses>
+        <license>
+            <name>Lesser General Public License (LGPL)</name>
+            <url>http://www.gnu.org/copyleft/lesser.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+
+  <!-- =========================================================== -->
+  <!--     Developers and Contributors                             -->
+  <!-- =========================================================== -->
+    <developers>
+        <developer>
+            <name>Jody Garnett</name>
+            <id>jive</id>
+            <email>jody.garnett@lisasoft.com</email>
+            <organization>LISAsoft</organization>
+            <organizationUrl>http://lisasoft.com/</organizationUrl>
+            <timezone>+10</timezone>
+            <roles>
+                <role>Module Maintainer</role>
+                <role>Java Developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <name>Michael Bedward</name>
+            <id>mbedward</id>
+            <email>michael.bedward@gmail.com</email>
+            <organization>DECCW</organization>
+            <organizationUrl>http://www.environment.nsw.gov.au</organizationUrl>
+            <timezone>+10</timezone>
+            <roles>
+                <role>Module Maintainer</role>
+                <role>Java Developer</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <dependencies>
+        <!--   GeoTools modules   -->
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-render</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-wms</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-shapefile</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>        
+        <!--   Third-party dependencies   -->
+        <dependency>
+            <groupId>com.miglayout</groupId>
+            <artifactId>miglayout</artifactId>
+            <version>3.7</version>
+            <classifier>swing</classifier>
+        </dependency>
+    </dependencies>
+</project>

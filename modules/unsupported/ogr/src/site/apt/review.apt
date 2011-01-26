@@ -1,0 +1,13 @@
+OGR Data Store
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  Module Maintainer: Andrea Aime
+
+  IP Review:
+
+    * Adrian Custer, June 2008
+
+  STATUS: Clean
+
+
+  All files have single header, appear to be the work of the GeoTools community.

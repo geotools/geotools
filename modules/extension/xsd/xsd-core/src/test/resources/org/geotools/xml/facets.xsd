@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns="http://geotools.org/test" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://geotools.org/test">            
+
+ <xsd:element name="stringList" type="stringListType"/>
+ <xsd:element name="collapsedString" type="collapsedStringType"/>
+ 
+ <xsd:simpleType name="stringListType">
+    <xsd:list itemType="xsd:int"/>
+ </xsd:simpleType>
+ 
+ <xsd:simpleType name="collapsedStringType">
+    <xsd:restriction base="xsd:string">
+      <xsd:whiteSpace value='collapse'/>
+    </xsd:restriction>
+ </xsd:simpleType>
+ </xsd:schema>

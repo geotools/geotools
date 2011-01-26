@@ -1,0 +1,9 @@
+<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
+	<ogc:DWithin>
+		<ogc:PropertyName>the_geom</ogc:PropertyName>
+		<gml:Point xmlns:gml="http://www.opengis.net/gml">
+			<gml:coordinates decimal="." cs="," ts=" ">147,-42</gml:coordinates>
+		</gml:Point>
+		<ogc:Distance units="metre">5000</ogc:Distance>
+	</ogc:DWithin>
+</ogc:Filter>

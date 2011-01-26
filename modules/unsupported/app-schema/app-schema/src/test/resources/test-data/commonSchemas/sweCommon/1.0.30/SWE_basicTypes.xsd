@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns:gml="http://www.opengis.net/gml" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:swe="http://www.opengis.net/swe/0.0" targetNamespace="http://www.opengis.net/swe/0.0" elementFormDefault="qualified" attributeFormDefault="unqualified"
+        version="pre-release">
+	<annotation>
+		<documentation>SWE_basicTypes.xsd
+
+Some basic types (simpleContent) required in various places in OWS Sensor Web application schemas
+
+Copyright © 2005 Open Geospatial Consortium - see http://www.opengeospatial.org/about/?page=ipr</documentation>
+	</annotation>
+	<!-- ====================================================================== -->
+	<!-- ===== SimpleContent types ====== -->
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<!-- ===== some basic list types ====== -->
+	<!-- ====================================================================== -->
+	<simpleType name="refList">
+		<list itemType="anyURI"/>
+	</simpleType>
+	<!-- ====================================================================== -->
+	<simpleType name="nonNegativeIntegerList">
+		<list itemType="nonNegativeInteger"/>
+	</simpleType>
+	<!-- ====================================================================== -->
+	<simpleType name="doubleList">
+		<list itemType="double"/>
+	</simpleType>
+	<!-- ====================================================================== -->
+	<simpleType name="stringList">
+		<annotation>
+			<documentation>When appearing in a list context, internal whitespace is interpreted as an item separator.  
+Strings may be represented in a list by escaping spaces as a (non-breaking space) entity.</documentation>
+		</annotation>
+		<list itemType="string"/>
+	</simpleType>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<simpleType name="UomIdentifier">
+		<union memberTypes="swe:UomSymbol swe:UomURI"/>
+	</simpleType>
+	<simpleType name="UomSymbol">
+		<restriction base="string">
+			<pattern value="[^: \n\r\t]+"/>
+		</restriction>
+	</simpleType>
+	<simpleType name="UomURI">
+		<restriction base="anyURI">
+			<pattern value="([a-zA-Z][a-zA-Z0-9\-\+\.]*:|\.\./|\./|#).*"/>
+		</restriction>
+	</simpleType>
+	<!-- ====================================================================== -->
+	<!-- ===== Numeric Records and tables ====== -->
+	<!-- ====================================================================== -->
+	<complexType name="SWE_CompactNumericRecordType">
+		<annotation>
+			<documentation>A set of numeric values, representing a list of Records or a table.  
+			A single record is a list with just one member. 
+      Generalises the approach used for gml:DirectPositionType, replacing "srsName" with "RS" (record schema). 
+      This allows a table of values to be recorded in compact form, as a whitespace-separated list of doubles. 
+      
+	  In general, Record components increment fastest, followed by Record instances, so if you think of this as a table in which the rows are Records, then the representation is left-to-right followed by down the table.  
+       
+      To assist direct inspection of the data, good practice is to use 
+         * linefeed between Records, and 
+         * tab between components in a Record.
+      However any whitespace character sequence is a valid separator between items.</documentation>
+		</annotation>
+		<simpleContent>
+			<extension base="swe:doubleList">
+				<attribute name="RS" type="anyURI" use="optional">
+					<annotation>
+						<documentation>Pointer to record definition or schema.  
+            The RS description should indicate the semantics/label and units of measure for each component, 
+            and the order in which the components appear in the Record.  
+            RS may be omitted, in which case it is the same as the previous value in the current context or document.</documentation>
+					</annotation>
+				</attribute>
+				<attribute name="recordLength" type="positiveInteger" use="optional">
+					<annotation>
+						<documentation>The number of components in the Record. Should this be mandatory?</documentation>
+					</annotation>
+				</attribute>
+				<attribute name="recordCount" type="nonNegativeInteger" use="optional" default="1">
+					<annotation>
+						<documentation>The number of Records in the list.</documentation>
+					</annotation>
+				</attribute>
+			</extension>
+			<!--
+				<attributeGroup ref="gml:SRSInformationGroup">
+					<annotation>
+						<documentation>Optionally include the axis-names and axis-labels as lists</documentation>
+					</annotation>
+				</attributeGroup>
+				-->
+		</simpleContent>
+	</complexType>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<!-- ===== General Records and tables ====== -->
+	<!-- ====================================================================== -->
+	<complexType name="SWE_CompactRecordType">
+		<annotation>
+			<documentation>A set of values, representing a Record.  
+      Generalises the approach used for swe:NumericRecordType. 
+      This allows a Record to be recorded in compact form, as a list of tokens.
+      Note that XML "token" may contain embedded single spaces, so item separators should be tabs, linefeeds, or two or more consecutive spaces.</documentation>
+		</annotation>
+		<simpleContent>
+			<extension base="swe:stringList">
+				<attribute name="RS" type="anyURI" use="optional">
+					<annotation>
+						<documentation>Pointer to definition of the reference system for the Record.  
+            The RS description should indicate the semantics/label and 
+            units of measure or value-space (if appropriate) for each component, 
+            and the order in which the components appear in the Record.  
+            RS may be omitted, in which case it is the same as the previous value in the current context or document.</documentation>
+					</annotation>
+				</attribute>
+				<attribute name="recordLength" type="positiveInteger" use="optional">
+					<annotation>
+						<documentation>The number of components in the Record. Should this be mandatory?</documentation>
+					</annotation>
+				</attribute>
+				<attribute name="recordCount" type="nonNegativeInteger" use="optional" default="1">
+					<annotation>
+						<documentation>The number of Records in the list.</documentation>
+					</annotation>
+				</attribute>
+			</extension>
+			<!--
+				<attributeGroup ref="gml:SRSInformationGroup">
+					<annotation>
+						<documentation>Optionally include the axis-names and axis-labels as lists</documentation>
+					</annotation>
+				</attributeGroup>
+				-->
+		</simpleContent>
+	</complexType>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<!-- ===== Types used for observation results ====== -->
+	<!-- ====================================================================== -->
+	<complexType name="ScopedNameType">
+		<annotation>
+			<documentation>Extension of string which also carries a codeSpace attribute.</documentation>
+		</annotation>
+		<simpleContent>
+			<extension base="string">
+				<attribute name="codeSpace" type="anyURI" use="required"/>
+			</extension>
+		</simpleContent>
+	</complexType>
+	<!-- ====================================================================== -->
+	<complexType name="ScopedNameListType">
+		<annotation>
+			<documentation>Extension of stringList which also carries a codeSpace attribute.</documentation>
+		</annotation>
+		<simpleContent>
+			<extension base="swe:stringList">
+				<attribute name="codeSpace" type="anyURI" use="required"/>
+				<attribute name="count" type="nonNegativeInteger" use="optional"/>
+			</extension>
+		</simpleContent>
+	</complexType>
+	<!-- ====================================================================== -->
+	<complexType name="RelativeMeasureType">
+		<simpleContent>
+			<extension base="double">
+				<attribute name="uom" type="swe:UomIdentifier" use="required"/>
+				<attribute name="relativeMeasure" type="swe:RelativeMeasureCode" default="equals"/>
+			</extension>
+		</simpleContent>
+	</complexType>
+	<!-- ............ -->
+	<simpleType name="RelativeMeasureCode">
+		<annotation>
+			<documentation xml:lang="en">This enumerated data type specifies values for relative measures.</documentation>
+		</annotation>
+		<union>
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="lessThan"/>
+					<enumeration value="lessThanOrEquals"/>
+					<enumeration value="equals"/>
+					<enumeration value="greaterThanOrEquals"/>
+					<enumeration value="greaterThan"/>
+					<enumeration value="nil:inapplicable"/>
+					<enumeration value="nil:missing"/>
+					<enumeration value="nil:unknown"/>
+					<enumeration value="nil:withheld"/>
+				</restriction>
+			</simpleType>
+			<simpleType>
+				<restriction base="string">
+					<annotation>
+						<documentation>fall-through qualifier expressed as "other:aaaaaaa"</documentation>
+					</annotation>
+					<pattern value="other:\w{2,}">
+					</pattern>
+				</restriction>
+			</simpleType>
+			<simpleType>
+				<restriction base="anyURI">
+					<annotation>
+						<documentation>Link to an external resource providing explanation</documentation>
+					</annotation>
+				</restriction>
+			</simpleType>
+		</union>
+	</simpleType>
+	<!-- ===================================================================  -->
+	<!-- ====================================================================== -->
+	<!-- ===== Soft-typed values and lists ====== -->
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<complexType name="TypedCategoryType">
+		<annotation>
+			<documentation>A text value, 
+			taken from a value space identified by the value of the codeSpace attribute, 
+			and representing a description of the phenomenon identified by the property attribute.</documentation>
+		</annotation>
+		<simpleContent>
+			<extension base="string">
+				<attribute name="codeSpace" type="anyURI" use="required"/>
+				<attribute name="property" type="anyURI" use="required">
+					<annotation>
+						<documentation>This attribute holds a reference to or label for the property being described.  
+            This will usually refer to a classification or phenomenon described on a nominal scale, 
+            such as lithology type, material colour.</documentation>
+					</annotation>
+				</attribute>
+			</extension>
+		</simpleContent>
+	</complexType>
+	<!-- ====================================================================== -->
+	<complexType name="TypedCategoryListType">
+		<annotation>
+			<documentation>A list of text values, 
+			taken from a value space identified by the value of the codeSpace attribute, 
+			and representing a set of descriptions of the phenomenon identified by the property attribute.</documentation>
+		</annotation>
+		<simpleContent>
+			<extension base="swe:stringList">
+				<attribute name="codeSpace" type="anyURI" use="required"/>
+				<attribute name="property" type="anyURI" use="required">
+					<annotation>
+						<documentation>This attribute holds a reference to or label for the property being described.</documentation>
+					</annotation>
+				</attribute>
+				<attribute name="count" type="nonNegativeInteger" use="optional"/>
+			</extension>
+		</simpleContent>
+	</complexType>
+	<!-- ====================================================================== -->
+	<complexType name="TypedCategoryIntervalType">
+		<annotation>
+			<documentation>A pair of text values, representing an interval of the phenomenon identified by the property attribute.</documentation>
+		</annotation>
+		<simpleContent>
+			<restriction base="swe:TypedCategoryListType">
+				<length value="2"/>
+				<attribute name="count" type="nonNegativeInteger" use="prohibited" fixed="2"/>
+			</restriction>
+		</simpleContent>
+	</complexType>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<complexType name="TypedMeasureType">
+		<annotation>
+			<documentation>A numeric value, 
+			expressed using the scale indicated by the value of the (mandatory) uom attribute, attribute, 
+			and representing a description of the phenomenon identified by the property attribute.</documentation>
+		</annotation>
+		<simpleContent>
+			<extension base="double">
+				<attribute name="uom" type="swe:UomIdentifier" use="required"/>
+				<attribute name="property" type="anyURI" use="required">
+					<annotation>
+						<documentation>This attribute holds a reference to or label for the property being described.  
+            This will usually refer to a measure described on a ratio or interval scale, 
+            such as temperature, wavelength, concentration.</documentation>
+					</annotation>
+				</attribute>
+			</extension>
+		</simpleContent>
+	</complexType>
+	<!-- ====================================================================== -->
+	<complexType name="TypedMeasureListType">
+		<annotation>
+			<documentation>A list of numeric values, 
+			expressed using the scale indicated by the value of the (mandatory) uom attribute, attribute, 
+			and representing a set of descriptions of the phenomenon identified by the property attribute.</documentation>
+		</annotation>
+		<simpleContent>
+			<extension base="swe:doubleList">
+				<attribute name="uom" type="swe:UomIdentifier" use="required"/>
+				<attribute name="property" type="anyURI" use="required">
+					<annotation>
+						<documentation>This attribute holds a reference to or label for the property being described.</documentation>
+					</annotation>
+				</attribute>
+				<attribute name="count" type="nonNegativeInteger" use="optional"/>
+			</extension>
+		</simpleContent>
+	</complexType>
+	<!-- ====================================================================== -->
+	<complexType name="TypedMeasureIntervalType">
+		<annotation>
+			<documentation>A pair of numeric values, 
+			expressed using the scale indicated by the value of the (mandatory) uom attribute, attribute, 
+			and representing an interval of the phenomenon identified by the property attribute.</documentation>
+		</annotation>
+		<simpleContent>
+			<restriction base="swe:TypedMeasureListType">
+				<length value="2"/>
+				<attribute name="count" type="nonNegativeInteger" use="prohibited" fixed="2"/>
+			</restriction>
+		</simpleContent>
+	</complexType>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<complexType name="TypedCountType">
+		<annotation>
+			<documentation>A numeric value, representing a count of the phenomenon identified by the property attribute.</documentation>
+		</annotation>
+		<simpleContent>
+			<extension base="nonNegativeInteger">
+				<attribute name="property" type="anyURI" use="required">
+					<annotation>
+						<documentation>This attribute holds a reference to or label for the property being described.</documentation>
+					</annotation>
+				</attribute>
+			</extension>
+		</simpleContent>
+	</complexType>
+	<!-- ====================================================================== -->
+	<complexType name="TypedCountListType">
+		<annotation>
+			<documentation>A pair of numeric values, representing a set of counts of the phenomenon identified by the property attribute.</documentation>
+		</annotation>
+		<simpleContent>
+			<extension base="swe:nonNegativeIntegerList">
+				<attribute name="property" type="anyURI" use="required">
+					<annotation>
+						<documentation>This attribute holds a reference to or label for the property being described.</documentation>
+					</annotation>
+				</attribute>
+				<attribute name="count" type="nonNegativeInteger" use="optional"/>
+			</extension>
+		</simpleContent>
+	</complexType>
+	<!-- ====================================================================== -->
+	<complexType name="TypedCountIntervalType">
+		<annotation>
+			<documentation>A pair of numeric values, representing an interval of the phenomenon identified by the property attribute.</documentation>
+		</annotation>
+		<simpleContent>
+			<restriction base="swe:TypedCountListType">
+				<length value="2"/>
+				<attribute name="count" type="nonNegativeInteger" use="prohibited" fixed="2"/>
+			</restriction>
+		</simpleContent>
+	</complexType>
+	<!-- ====================================================================== -->
+	<!-- ===================================================== -->
+</schema>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/org.w3.xlink/src"
+    editDirectory="/org.w3.xlink.edit/src" editorDirectory="/org.w3.xlink.editor/src" modelPluginID="org.w3.xlink"
+    modelName="Xlink" importerID="org.eclipse.emf.importer.java" copyrightFields="false"
+    usedGenPackages="platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore platform:/plugin/org.eclipse.emf.ecore/model/XMLType.genmodel#//type">
+  <foreignModel>@model</foreignModel>
+  <genPackages prefix="Xlink" basePackage="org.w3" disposableProviderFactory="true"
+      adapterFactory="false" ecorePackage="xlink.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="xlink.ecore#//ActuateType">
+      <genEnumLiterals ecoreEnumLiteral="xlink.ecore#//ActuateType/onLoad"/>
+      <genEnumLiterals ecoreEnumLiteral="xlink.ecore#//ActuateType/onRequest"/>
+      <genEnumLiterals ecoreEnumLiteral="xlink.ecore#//ActuateType/other"/>
+      <genEnumLiterals ecoreEnumLiteral="xlink.ecore#//ActuateType/none"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="xlink.ecore#//ShowType">
+      <genEnumLiterals ecoreEnumLiteral="xlink.ecore#//ShowType/new"/>
+      <genEnumLiterals ecoreEnumLiteral="xlink.ecore#//ShowType/replace"/>
+      <genEnumLiterals ecoreEnumLiteral="xlink.ecore#//ShowType/embed"/>
+      <genEnumLiterals ecoreEnumLiteral="xlink.ecore#//ShowType/other"/>
+      <genEnumLiterals ecoreEnumLiteral="xlink.ecore#//ShowType/none"/>
+    </genEnums>
+    <genDataTypes ecoreDataType="xlink.ecore#//ActuateTypeObject"/>
+    <genDataTypes ecoreDataType="xlink.ecore#//ShowTypeObject"/>
+    <genClasses ecoreClass="xlink.ecore#//DocumentRoot">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EAttribute xlink.ecore#//DocumentRoot/mixed"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference xlink.ecore#//DocumentRoot/xMLNSPrefixMap"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference xlink.ecore#//DocumentRoot/xSISchemaLocation"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute xlink.ecore#//DocumentRoot/actuate"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute xlink.ecore#//DocumentRoot/arcrole"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute xlink.ecore#//DocumentRoot/from"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute xlink.ecore#//DocumentRoot/href"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute xlink.ecore#//DocumentRoot/label"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute xlink.ecore#//DocumentRoot/role"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute xlink.ecore#//DocumentRoot/show"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute xlink.ecore#//DocumentRoot/title"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute xlink.ecore#//DocumentRoot/to"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

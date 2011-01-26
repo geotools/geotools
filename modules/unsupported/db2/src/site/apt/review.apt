@@ -1,0 +1,67 @@
+Module DB2
+~~~~~~~~~~
+
+  Module Maintainer: David Adler
+
+  IP Review:
+
+    * Jody Garnett, July 9th, 2006
+
+    * Adrian Custer, June 2008
+
+
+  STATUS: DIRTY
+  
+    Code is a mess, see below. 
+      http://jira.codehaus.org/browse/GEOT-1879
+    Resource origin and license unknown.
+      http://jira.codehaus.org/browse/GEOT-1880
+
+  This module is interesting in that it operatings against a comercial database, leaving us without the
+  rights to distribute a jdbc driver in jar form. As with other modules in this situtation we need to
+  produce a stub jar based on what is needed to make the module compile. This is viewed as being similar
+  in spirit to use of a C++ header file and not of interest in an IP review.
+
+  The header contained in this file leaves me with a question:
+
+-------------------------------------------------------------------------
+/*
+ *    Geotools2 - OpenSource mapping toolkit
+ *    http://geotools.org
+ *    (C) Copyright IBM Corporation, 2005. All rights reserved.
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ *
+ */
+-------------------------------------------------------------------------
+
+  That is this code is has not had copyright assigned to the GeoTools PMC,
+  so I am uncomfortable updating the headers with out first talking to
+  David Adler.
+
+  We can either proceed to assign copyright to the GeoTools PMC, or wait
+  until we move to OSGEO giving IBM a chance to formally donate code to
+  the OSGO Foundation.
+
+  Note we have publically thanks IBM for their involvement with GeoTools
+  at the first Where 2.0 conference. This (C) with all rights reserved
+  was a surprise to me.
+
+
+* org.geotools.data.db2
+  ~~~~~~~~~~~~~~~~~~~~~
+  Added in GeoTools 2.1 to facilitate use of DB2 with GeoServer and uDig.
+
+    * Headers updated to  GeoTools - OpenSource mapping toolkit
+
+    * (C) IBM presents a management issues
+
+    * LGPL license is compatible, so library use at least is not compromized

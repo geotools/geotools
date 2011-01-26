@@ -1,0 +1,63 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<HTML>
+  <HEAD>
+    <TITLE>package org.geotools.referencing.operation.projection</TITLE>
+  </HEAD>
+  <BODY>
+  Basic implementations of {@linkplain org.geotools.referencing.operation.projection.MapProjection
+  map projections}. This package is mostly for internal purpose and should usually not be used
+  directly. Consider using {@link org.opengis.referencing.operation.MathTransformFactory} instead.
+
+  <H3>Axis units and orientation</H3>
+  <P ALIGN="justify">Many {@linkplain org.opengis.referencing.crs.GeographicCRS geographic coordinate reference systems}
+  use axis in (<var>latitude</var>,<var>longitude</var>) order, but not all. Axis order, orientation
+  and units are CRS-dependent. For example some CRS use longitude values increasing toward
+  {@linkplain org.opengis.referencing.cs.AxisDirection#EAST East}, while some others use longitude
+  values increasing toward {@linkplain org.opengis.referencing.cs.AxisDirection#WEST West}. The axis
+  order must be specified in all CRS, and any method working with them should take their axis order and
+  units in account.</P>
+
+  <P ALIGN="justify">However, map projections defined in this package are <strong>transformation steps</strong>,
+  not final CRS. All projections defined in this package must complies with the OGC 01-009 specification. This
+  specification said (quoting section 10.6 at page 34):</P>
+
+  <BLOCKQUOTE><P ALIGN="justify">
+  Cartographic projection transforms are used by projected coordinate reference systems to map geographic coordinates
+  (e.g. <var>Longitude</var> and <var>Latitude</var>) into (<var>X</var>,<var>Y</var>) coordinates. These
+  (<var>X</var>,<var>Y</var>) coordinates can be imagined to lie on a plane, such as a paper map or a screen.
+  All cartographic projection transforms will have the following properties:</P>
+  <UL>
+    <LI>Converts from (<var>Longitude</var>, <var>Latitude</var>) coordinates to (<var>X</var>,<var>Y</var>).</LI>
+    <LI>All angles are assumed to be decimal degrees, and all distances are assumed to be meters.</LI>
+    <LI>The domain should be a subset of {[-180,180)&times;(-90,90)}.</LI>
+  </UL>
+  <P ALIGN="justify">Although all cartographic projection transforms must have the properties listed above,
+  many projected coordinate reference systems have different properties. For example, in Europe some projected
+  coordinate reference systems use grads instead of decimal degrees, and often the base geographic coordinate reference
+  system is (<var>Latitude</var>, <var>Longitude</var>) instead of (<var>Longitude</var>, <var>Latitude</var>).
+  This means that the cartographic projected transform is often used as a single step in a series of transforms,
+  where the other steps change units and swap ordinates.</P>
+  </BLOCKQUOTE>
+
+  <P ALIGN="justify">The Geotools implementation extends this rule to axis directions as well, i.e.
+  (<var>X</var>,<var>Y</var>) coordinates must be ({@linkplain org.opengis.referencing.cs.AxisDirection#EAST East},
+  {@linkplain org.opengis.referencing.cs.AxisDirection#NORTH North}) orientated. This rule implies a non-intuitive
+  behavior for the <cite>Transverse Mercator South Orientated</cite> projection, which still projects coordinates
+  with <var>Y</var> values increasing toward North. The real axis flip is performed by the rest of the CRS framework
+  upon {@linkplain org.opengis.referencing.cs.CoordinateSystemAxis coordinate system axis} inspection. In order to
+  get a real South orientated projection, the cartographic transform must be concatenated with an affine transform.
+  This is done automatically if the {@linkplain org.opengis.referencing.crs.ProjectedCRS projected CRS} is created
+  with the Geotools's {@link org.geotools.referencing.factory.FactoryGroup#createProjectedCRS createProjectedCRS}
+  convenience method with a South orientated {@linkplain org.opengis.referencing.cs.CoordinateSystem coordinate system}
+  in argument.</P>
+
+  <P ALIGN="justify">In order to reduce the risk of confusion, this package never defines south orientated
+  {@link org.geotools.referencing.operation.projection.MapProjection} implementations. The providers always
+  create south-orientated projections as a concatenation of their north-orientated variants with an affine
+  transform. This approach removes all ambiguity when reading a transform in
+  <A HREF="http://geoapi.sourceforge.net/snapshot/javadoc/org/opengis/referencing/doc-files/WKT.html"><cite>Well
+  Known Text</cite> (WKT)</A> format, since only the north-orientated variant is used and the affine transform
+  coefficients tell exactly which axis flips are applied.</P>
+  </BODY>
+</HTML>

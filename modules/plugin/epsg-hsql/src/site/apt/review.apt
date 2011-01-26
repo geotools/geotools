@@ -1,0 +1,62 @@
+Plugin EPSG HSQL
+~~~~~~~~~~~~~~~~
+
+  Module Maintainer: Martin
+
+  IP Review:
+
+    * Jody Garnett, July 9th, 2006
+
+    * Adrian Custer, June 2008
+
+  STATUS: CLEAN
+
+
+  This module includes data generated from the EPSG access database, as the
+    epsg-hsql/src/main/resources/org/geotools/referencing/factory/epsg/EPSG.sql
+  file.
+  
+  see http://www.epsg.org/guides/docs/G7-1.pdf, with extract:
+
+--------------------------------------------------------------------------------
+  1.1     Use of the Data
+
+The user assumes the entire risk as to the accuracy and the use of this data. 
+The data may be used, copied and distributed subject to the following conditions:
+
+1.   INFORMATION PROVIDED IN THIS DOCUMENT IS PROVIDED "AS IS" WITHOUT WARRANTY
+      OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+      IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR
+      PURPOSE.
+
+To facilitate improvement, this document is subject to revision. The current 
+version is available at www.epsg.org.
+
+    2.   The data may be included in any commercial package provided that any
+         commerciality is based on value added by the provider and not on a
+         value ascribed to the EPSG dataset which is made available at no
+         charge. The ownership of the EPSG dataset [OGP] must be acknowledged.
+
+    3.   Subsets of information may be extracted from the dataset. Users are
+         advised that coordinate reference system and coordinate transformation
+         descriptions are incomplete unless all elements detailed as essential
+         in OGP Surveying and Positioning Guidance Note 7-1 annex F are included.
+
+    4.   Essental elements should preferably be reproduced as described in the
+         dataset. Modification of parameter values is permitted as described in
+         the table below to allow change to the content of the information
+         provided that numeric equivalence is achieved. Numeric equivalence
+         refers to the results of geodetic calculations in which the parameters
+         are used, for example (i) conversion of ellipsoid defining parameters,
+         or (ii) conversion of parameters between one and two standard parallel
+         projection methods, or (iii) conversion of parameters between
+         7-parameter geocentric transformation methods
+--------------------------------------------------------------------------------
+
+* org.geotools.referencing.factory.epsg
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  *  contains a copy of the epsg data base tweaked for hibernate, need to check
+     redistribution policy.
+     
+     

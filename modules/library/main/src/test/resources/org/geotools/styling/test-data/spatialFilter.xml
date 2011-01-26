@@ -1,0 +1,34 @@
+<!-- 
+	This document is a mixture of test-sld.xml and namedLayers.sld
+	to help testing that SLDParser manages both types of layers
+	without problems
+-->
+<StyledLayerDescriptor version="1.0.0">
+	<UserLayer>
+		<UserStyle>
+			<Name>First User Style</Name>
+			<Title>A style by me</Title>
+			<Abstract>this is a sample style</Abstract>
+			<FeatureTypeStyle>
+				<FeatureTypeName>testType</FeatureTypeName>
+				<Rule>
+					<Filter xmlns:gml="http://www.opengis.net/gml">
+						<Not>
+							<Disjoint>
+								<PropertyName>Polygons</PropertyName>
+								<gml:Box srsName="http://www.opengis.net/gml/srs/epsg.xml#4326">
+									<gml:coordinates>-10,-10 10,10</gml:coordinates>
+								</gml:Box>
+							</Disjoint>
+						</Not>
+					</Filter>
+					<LineSymbolizer>
+						<Stroke>
+							<CssParameter name="width">4</CssParameter>
+						</Stroke>
+					</LineSymbolizer>
+				</Rule>
+			</FeatureTypeStyle>
+		</UserStyle>
+	</UserLayer>
+</StyledLayerDescriptor>

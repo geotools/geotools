@@ -1,0 +1,23 @@
+Module grassraster
+~~~~~~~~~~~~~~
+
+  Module Maintainer: Andrea Antonello
+
+  IP Review:
+ 
+    * 
+
+    * 
+
+  STATUS: ???
+
+
+* org.geotools.gce.grassraster
+  ~~~~~~~~~~~~~~~~~~~~~~~~
+  Plugin providing grid coverage access to grass raster data format. Before GeoTools 2.0 this
+  was available in the JGrass libraries where it was already released under LGPL license.
+
+
+* org.geotools.gce.grassraster (test)
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+

@@ -1,0 +1,79 @@
+<class-diagram generalizations="true" realizations="true" associations="true" dependencies="true" 
+  nesting-relationships="true">  
+  <classifier-display autosize="true" package="true" attributes="false" operations="true" initial-value="false" 
+    signature="true" visibility="false"/>  
+  <association-display labels="true" multiplicity="true"/>  
+  <interface type="java" name="org.opengis.feature.Attribute" project="geoapi" 
+    file="/geoapi/src/main/java/org/opengis/feature/Attribute.java" corner="BOTTOM_RIGHT">    
+    <display autosize="true" package="true" attributes="false" operations="true" initial-value="false" signature="true" 
+      visibility="false"/>    
+    <position x="194" y="236" width="-1" height="-1"/>  
+  </interface>  
+  <interface type="java" name="org.opengis.feature.ComplexAttribute" project="geoapi" 
+    file="/geoapi/src/main/java/org/opengis/feature/ComplexAttribute.java" corner="BOTTOM_RIGHT">    
+    <display autosize="true" package="true" attributes="false" operations="true" initial-value="false" signature="true" 
+      visibility="false"/>    
+    <position x="349" y="408" width="-1" height="-1"/>  
+  </interface>  
+  <interface type="java" name="org.opengis.feature.GeometryAttribute" project="geoapi" 
+    file="/geoapi/src/main/java/org/opengis/feature/GeometryAttribute.java" corner="BOTTOM_RIGHT">    
+    <display autosize="true" package="true" attributes="false" operations="true" initial-value="false" signature="true" 
+      visibility="false"/>    
+    <position x="64" y="379" width="-1" height="-1"/>  
+  </interface>  
+  <interface type="java" name="org.opengis.feature.Feature" project="geoapi" 
+    file="/geoapi/src/main/java/org/opengis/feature/Feature.java" corner="BOTTOM_RIGHT">    
+    <display autosize="true" package="true" attributes="false" operations="true" initial-value="false" signature="true" 
+      visibility="false"/>    
+    <position x="350" y="578" width="-1" height="-1"/>  
+  </interface>  
+  <interface type="java" name="org.opengis.feature.Property" project="geoapi" 
+    file="/geoapi/src/main/java/org/opengis/feature/Property.java" corner="BOTTOM_RIGHT">    
+    <display autosize="true" package="true" attributes="false" operations="true" initial-value="false" signature="true" 
+      visibility="false"/>    
+    <position x="192" y="87" width="-1" height="-1"/>  
+  </interface>  
+  <interface type="java" name="org.opengis.feature.Association" project="geoapi" 
+    file="/geoapi/src/main/java/org/opengis/feature/Association.java" corner="BOTTOM_RIGHT">    
+    <display autosize="true" package="true" attributes="false" operations="true" initial-value="false" signature="true" 
+      visibility="false"/>    
+    <position x="-19" y="227" width="-1" height="-1"/>  
+  </interface>  
+  <generalization>    
+    <source project="geoapi" name="org.opengis.feature.ComplexAttribute" 
+      file="/geoapi/src/main/java/org/opengis/feature/ComplexAttribute.java"/>    
+    <target project="geoapi" name="org.opengis.feature.Attribute" 
+      file="/geoapi/src/main/java/org/opengis/feature/Attribute.java"/>  
+  </generalization>  
+  <generalization>    
+    <source project="geoapi" name="org.opengis.feature.GeometryAttribute" 
+      file="/geoapi/src/main/java/org/opengis/feature/GeometryAttribute.java"/>    
+    <target project="geoapi" name="org.opengis.feature.Attribute" 
+      file="/geoapi/src/main/java/org/opengis/feature/Attribute.java"/>  
+  </generalization>  
+  <generalization>    
+    <source project="geoapi" name="org.opengis.feature.Attribute" 
+      file="/geoapi/src/main/java/org/opengis/feature/Attribute.java"/>    
+    <target project="geoapi" name="org.opengis.feature.Property" 
+      file="/geoapi/src/main/java/org/opengis/feature/Property.java"/>  
+  </generalization>  
+  <dependency>    
+    <source project="geoapi" name="org.opengis.feature.ComplexAttribute" 
+      file="/geoapi/src/main/java/org/opengis/feature/ComplexAttribute.java"/>    
+    <target project="geoapi" name="org.opengis.feature.Property" 
+      file="/geoapi/src/main/java/org/opengis/feature/Property.java"/>    
+    <bendpoint x="353" y="83"/>  
+  </dependency>  
+  <generalization>    
+    <source project="geoapi" name="org.opengis.feature.Feature" 
+      file="/geoapi/src/main/java/org/opengis/feature/Feature.java"/>    
+    <target project="geoapi" name="org.opengis.feature.ComplexAttribute" 
+      file="/geoapi/src/main/java/org/opengis/feature/ComplexAttribute.java"/>  
+  </generalization>  
+  <generalization>    
+    <source project="geoapi" name="org.opengis.feature.Association" 
+      file="/geoapi/src/main/java/org/opengis/feature/Association.java"/>    
+    <target project="geoapi" name="org.opengis.feature.Property" 
+      file="/geoapi/src/main/java/org/opengis/feature/Property.java"/>  
+  </generalization>
+</class-diagram>

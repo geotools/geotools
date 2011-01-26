@@ -1,0 +1,14 @@
+<Filter xmlns:gml="http://www.opengis.net/gml">
+ <And>
+  <PropertyIsLessThan>
+   <PropertyName>testInteger</PropertyName>
+   <Literal>1000</Literal>
+  </PropertyIsLessThan>
+  <Not>
+    <Disjoint>
+      <PropertyName>testGeometry</PropertyName>
+      <gml:Box srsName="http://www.epsg.com"><gml:coordinates>0,0 10,10</gml:coordinates></gml:Box>
+    </Disjoint>
+   </Not>
+  </And>
+</Filter>

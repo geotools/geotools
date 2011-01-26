@@ -1,0 +1,9 @@
+# A simple summary of the PNG format image file.
+# These values are in degrees on a WGS_84 execpt for the width and height which
+# are in pixels.
+MinX   =  35
+MaxX   =  80
+MinY   = -41
+MaxY   =   5
+Width  = 450
+Height = 460

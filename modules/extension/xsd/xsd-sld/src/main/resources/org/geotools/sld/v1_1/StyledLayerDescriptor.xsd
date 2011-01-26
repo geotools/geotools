@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://www.opengis.net/sld" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:gml="http://www.opengis.net/gml" xmlns:se="http://www.opengis.net/se" xmlns:ogc="http://www.opengis.net/ogc" xmlns:sld="http://www.opengis.net/sld" elementFormDefault="qualified" version="1.1.0 2010-02-01">
+	
+	<xsd:import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/feature.xsd"/>
+	<xsd:import namespace="http://www.opengis.net/ogc" schemaLocation="http://schemas.opengis.net/filter/1.1.0/filter.xsd"/>
+	<xsd:import namespace="http://www.opengis.net/se" schemaLocation="http://schemas.opengis.net/se/1.1.0/FeatureStyle.xsd"/>
+	<!-- *********************************************************************** -->
+	<xsd:annotation>
+		<xsd:documentation>
+      		<description>Styled Layer Descriptor version 1.1.0 (2010-02-01)</description>
+			<copyright>
+				SLD is an OGC Standard.
+				Copyright (c) 2007,2010 Open Geospatial Consortium, Inc. All Rights Reserved.
+				To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .
+			</copyright>
+		</xsd:documentation>
+	</xsd:annotation>
+	<xsd:element name="StyledLayerDescriptor">
+		<xsd:annotation>
+			<xsd:documentation>
+        A StyledLayerDescriptor is a sequence of styled layers, represented
+        at the first level by NamedLayer and UserLayer elements.
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="se:Name" minOccurs="0"/>
+				<xsd:element ref="se:Description" minOccurs="0"/>
+				<xsd:element ref="sld:UseSLDLibrary" minOccurs="0" maxOccurs="unbounded"/>
+				<xsd:choice minOccurs="0" maxOccurs="unbounded">
+					<xsd:element ref="sld:NamedLayer"/>
+					<xsd:element ref="sld:UserLayer"/>
+				</xsd:choice>
+			</xsd:sequence>
+			<xsd:attribute name="version" type="se:VersionType" use="required"/>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- *********************************************************************** -->
+	<xsd:annotation>
+		<xsd:documentation>
+      SLD LIBRARIES
+    </xsd:documentation>
+	</xsd:annotation>
+	<xsd:element name="UseSLDLibrary">
+		<xsd:annotation>
+			<xsd:documentation>
+        The UseSLDLibrary tag specifies that an external SLD document
+        should be used as a "library" of named layers and styles to
+        augment the set of named layers and styles that are available
+        for use inside of a WMS.  In the event of name collisions, the
+        SLD library takes precedence over the ones internal to the WMS.
+        Any number of libraries may be specified in an SLD and each
+        successive library takes precedence over the former ones in the
+        case of name collisions.
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="se:OnlineResource"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- *********************************************************************** -->
+	<xsd:annotation>
+		<xsd:documentation>
+      LAYERS AND STYLES
+    </xsd:documentation>
+	</xsd:annotation>
+	<xsd:element name="NamedLayer">
+		<xsd:annotation>
+			<xsd:documentation>
+        A NamedLayer is a layer of data that has a name advertised by a WMS.
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="se:Name"/>
+				<xsd:element ref="se:Description" minOccurs="0"/>
+				<xsd:element ref="sld:LayerFeatureConstraints" minOccurs="0"/>
+				<xsd:choice minOccurs="0" maxOccurs="unbounded">
+					<xsd:element ref="sld:NamedStyle"/>
+					<xsd:element ref="sld:UserStyle"/>
+				</xsd:choice>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="NamedStyle">
+		<xsd:annotation>
+			<xsd:documentation>
+        A NamedStyle is used to refer to a style that has a name in a WMS.
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="se:Name"/>
+				<xsd:element ref="se:Description" minOccurs="0"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="UserLayer">
+		<xsd:annotation>
+			<xsd:documentation>
+        A UserLayer allows a user-defined layer to be built from WFS and
+        WCS data.
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="se:Name" minOccurs="0"/>
+				<xsd:element ref="se:Description" minOccurs="0"/>
+				<xsd:choice minOccurs="0">
+					<xsd:element ref="sld:RemoteOWS"/>
+					<xsd:element ref="sld:InlineFeature"/>
+				</xsd:choice>
+				<xsd:choice minOccurs="0">
+					<xsd:element ref="sld:LayerFeatureConstraints"/>
+					<xsd:element ref="sld:LayerCoverageConstraints"/>
+				</xsd:choice>
+				<xsd:element ref="sld:UserStyle" maxOccurs="unbounded"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="RemoteOWS">
+		<xsd:annotation>
+			<xsd:documentation>
+        A RemoteOWS gives a reference to a remote WFS/WCS/other-OWS server. 
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="sld:Service"/>
+				<xsd:element ref="se:OnlineResource"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="Service">
+		<xsd:annotation>
+			<xsd:documentation>
+        A Service refers to the type of a remote OWS server.
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:simpleType>
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="WFS"/>
+				<xsd:enumeration value="WCS"/>
+			</xsd:restriction>
+		</xsd:simpleType>
+	</xsd:element>
+	<xsd:element name="InlineFeature">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="gml:FeatureCollection" maxOccurs="unbounded"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="LayerFeatureConstraints">
+		<xsd:annotation>
+			<xsd:documentation>
+        LayerFeatureConstraints define what features &amp; feature types are
+        referenced in a layer.
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="sld:FeatureTypeConstraint" maxOccurs="unbounded"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="FeatureTypeConstraint">
+		<xsd:annotation>
+			<xsd:documentation>
+        A FeatureTypeConstraint identifies a specific feature type and
+        supplies fitlering.
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="se:FeatureTypeName" minOccurs="0"/>
+				<xsd:element ref="ogc:Filter" minOccurs="0"/>
+				<xsd:element ref="sld:Extent" minOccurs="0" maxOccurs="unbounded"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="LayerCoverageConstraints">
+		<xsd:annotation>
+			<xsd:documentation>
+        LayerCoverageConstraints define what coverage offering subsets
+        are referenced in a layer.
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="sld:CoverageConstraint" maxOccurs="unbounded"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="CoverageConstraint">
+		<xsd:annotation>
+			<xsd:documentation>
+          A CoverageConstraint identifies a specific coverage offering
+          and supplies time and range selection.
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="se:CoverageName"/>
+				<xsd:element ref="sld:CoverageExtent" minOccurs="0"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="CoverageExtent">
+		<xsd:annotation>
+			<xsd:documentation>
+        The CoverageExtent describes the time or range selections.
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:choice>
+				<xsd:element ref="sld:RangeAxis" minOccurs="0" maxOccurs="unbounded"/>
+				<xsd:element ref="sld:TimePeriod" minOccurs="0"/>
+			</xsd:choice>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="RangeAxis">
+		<xsd:annotation>
+			<xsd:documentation>
+        A RangeAxis describes the range selection for a coverage.
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="se:Name"/>
+				<xsd:element ref="sld:Value"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="Value" type="xsd:string"/>
+	<xsd:element name="TimePeriod" type="xsd:string"/>
+	<xsd:element name="Extent">
+		<xsd:annotation>
+			<xsd:documentation>
+        An Extent gives feature/coverage/raster/matrix dimension extent. 
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="se:Name"/>
+				<xsd:element ref="sld:Value"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="UserStyle">
+		<xsd:annotation>
+			<xsd:documentation>
+        A UserStyle allows user-defined styling and is semantically
+        equivalent to a WMS named style. External FeatureTypeStyles or
+        CoverageStyles can be linked using an OnlineResource-element
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="se:Name" minOccurs="0"/>
+				<xsd:element ref="se:Description" minOccurs="0"/>
+				<xsd:element ref="sld:IsDefault" minOccurs="0"/>
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element ref="se:FeatureTypeStyle"/>
+					<xsd:element ref="se:CoverageStyle"/>
+					<xsd:element ref="se:OnlineResource"/>
+				</xsd:choice>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="IsDefault" type="xsd:boolean"/>
+</xsd:schema>

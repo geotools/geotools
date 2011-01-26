@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- =======================================================================    
+        Maven Project Configuration File                                        
+                                                                                
+        The Geotools Project                                                    
+            http://www.geotools.org/                                            
+                                                                                
+        Version: $Id$              
+     ======================================================================= -->
+  <project xmlns="http://maven.apache.org/POM/4.0.0" 
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                               http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.geotools.xsd</groupId>
+    <artifactId>xsd</artifactId>
+    <version>2.7-SNAPSHOT</version>
+  </parent>
+
+
+  <!-- =========================================================== -->
+  <!--     Module Description                                      -->
+  <!-- =========================================================== -->
+  <groupId>org.geotools.xsd</groupId>
+  <artifactId>gt-xsd-gml3</artifactId>
+  <packaging>jar</packaging>
+  <name>GML3 XML Support</name>
+  
+
+  <scm>
+    <connection>
+      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-gml3/
+    </connection>
+    <url>http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-gml3/</url>
+  </scm>
+
+  <description>
+    GML3 XML support for Geotools.
+  </description>
+
+  <licenses>
+    <license>
+      <name>Lesser General Public License (LGPL)</name>
+      <url>http://www.gnu.org/copyleft/lesser.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+
+  <!-- =========================================================== -->
+  <!--     Developers and Contributors                             -->
+  <!-- =========================================================== -->
+  <developers>
+    <developer>
+      <name>Justin Deoliveira</name>
+      <id>jdeolive</id>
+      <email>jdeolive@openplans.org</email>
+      <organization>The Open Planning Project</organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+  </developers>
+
+  <!-- =========================================================== -->
+  <!--     Dependency Management                                   -->
+  <!-- =========================================================== -->
+  <dependencies>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-referencing</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-coverage</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-main</artifactId>
+      <version>${project.version}</version>
+    </dependency>    
+    <dependency>
+      <groupId>org.geotools.xsd</groupId>
+      <artifactId>gt-xsd-core</artifactId>
+      <version>${project.version}</version>
+    </dependency>   
+    <dependency>
+      <groupId>org.geotools.xsd</groupId>
+      <artifactId>gt-xsd-gml2</artifactId>
+      <version>${project.version}</version>
+    </dependency>    
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-epsg-hsql</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>    
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <scope>test</scope>
+    </dependency>    
+    <dependency>
+      <groupId>xmlunit</groupId>
+      <artifactId>xmlunit</artifactId>
+      <scope>test</scope>
+    </dependency>    
+  </dependencies>
+
+
+  <!-- =========================================================== -->
+  <!--     Build Configuration                                     -->
+  <!-- =========================================================== -->
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.geotools.maven</groupId>
+        <artifactId>xmlcodegen</artifactId>
+        <configuration>
+          <schemaLocation>gml.xsd</schemaLocation>
+	      <schemaSourceDirectory>${basedir}/src/main/resources/org/geotools/gml3/v3_2</schemaSourceDirectory>
+          <schemaLookupDirectories>
+            <schemaLookupDirectory>${basedir}/../xsd-core/src/main/resources/org/geotools/xlink</schemaLookupDirectory>
+            <!--schemaLookupDirectory>${basedir}/src/main/resources/org/geotools/gml3/</schemaLookupDirectory>
+            <schemaLookupDirectory>${basedir}/src/main/resources/org/geotools/gml3/smil</schemaLookupDirectory-->
+            <schemaLookupDirectory>${basedir}/src/main/resources/org/geotools/gml3/v3_2</schemaLookupDirectory>
+            <schemaLookupDirectory>${basedir}/src/main/resources/org/geotools/gml3/v3_2/gmd</schemaLookupDirectory>
+            <schemaLookupDirectory>${basedir}/src/main/resources/org/geotools/gml3/v3_2/gts</schemaLookupDirectory>
+            <schemaLookupDirectory>${basedir}/src/main/resources/org/geotools/gml3/v3_2/gco</schemaLookupDirectory>
+            <schemaLookupDirectory>${basedir}/src/main/resources/org/geotools/gml3/v3_2/gsr</schemaLookupDirectory>
+            <schemaLookupDirectory>${basedir}/src/main/resources/org/geotools/gml3/v3_2/gss</schemaLookupDirectory>
+            <schemaLookupDirectory>${basedir}/src/main/resources/org/geotools/gml3/v3_2/gmx</schemaLookupDirectory>
+          </schemaLookupDirectories>
+          <generateConfiguration>false</generateConfiguration>
+          <generateBindingConfiguration>false</generateBindingConfiguration>
+          <generateBindingInterface>false</generateBindingInterface>
+          <generateSchemaLocationResolver>false</generateSchemaLocationResolver>
+          <generateElementBindings>false</generateElementBindings>
+          <generateTypeBindings>false</generateTypeBindings>
+          <generateXsd>false</generateXsd>
+          <imports>
+            <import>org.geotools.xs.XSSchema</import>
+            <import>org.geotools.xlink.XLINKSchema</import>
+            <import>org.geotools.gml3.v3_2.gco.GCOSchema</import>
+            <import>org.geotools.gml3.v3_2.gsr.GSRSchema</import>
+            <import>org.geotools.gml3.v3_2.gts.GTSSchema</import>
+            <import>org.geotools.gml3.v3_2.gmd.GMDSchema</import>
+            <!--import>org.geotools.gml3.v3_2.GMLSchema</import-->
+            <!--import>org.geotools.gml3.smil.SMIL20Schema</import>
+            <import>org.geotools.gml3.smil.SMIL20LANGSchema</import-->
+          </imports>
+          <followComplexTypes>true</followComplexTypes>
+          <includeGML>false</includeGML>
+          <!--includes>
+	      <include>AbstractFeatureType</include>
+	      <include>AbstractFeatureCollectionType</include>
+          </includes-->
+            <typeBindings>
+                <typeBinding>
+                    <name>AbstractGeometryType</name>
+                    <binding>com.vividsolutions.jts.geom.Geometry</binding>
+                </typeBinding>
+                <typeBinding>
+                    <name>CurvePropertyType</name>
+                    <binding>com.vividsolutions.jts.geom.MultiLineString</binding>
+                </typeBinding>
+                <typeBinding>
+                    <name>CurveType</name>
+                    <binding>com.vividsolutions.jts.geom.MultiLineString</binding>
+                </typeBinding>
+                <typeBinding>
+                    <name>GeometryPropertyType</name>
+                    <binding>com.vividsolutions.jts.geom.Geometry</binding>
+                </typeBinding>
+                <typeBinding>
+                    <name>LineStringPropertyType</name>
+                    <binding>com.vividsolutions.jts.geom.LineString</binding>
+                </typeBinding>
+                <typeBinding>
+                    <name>LineStringType</name>
+                    <binding>com.vividsolutions.jts.geom.LineString</binding>
+                </typeBinding>
+                <typeBinding>
+                    <name>LinearRingPropertyType</name>
+                    <binding>com.vividsolutions.jts.geom.LinearRing</binding>
+                </typeBinding>
+                <typeBinding>
+                    <name>LinearRingType</name>
+                    <binding>com.vividsolutions.jts.geom.LinearRing</binding>
+                </typeBinding>
+                <typeBinding>
+                    <name>MultiCurvePropertyType</name>
+                    <binding>com.vividsolutions.jts.geom.MultiLineString[]</binding>
+                </typeBinding>
+                <typeBinding>
+                    <name>MultiCurveType</name>
+                    <binding>com.vividsolutions.jts.geom.MultiLineString[]</binding>
+                </typeBinding>
+                <typeBinding>
+                    <name>MultiGeometryPropertyType</name>
+                    <binding>com.vividsolutions.jts.geom.GeometryCollection</binding>
+                </typeBinding>
+                <typeBinding>
+                    <name>MultiGeometryType</name>
+                    <binding>com.vividsolutions.jts.geom.GeometryCollection</binding>
+                </typeBinding>
+                <typeBinding>
+                    <name>MultiLineStringPropertyType</name>
+                    <binding>com.vividsolutions.jts.geom.MultiLineString</binding>
+                </typeBinding>
+                <typeBinding>
+                    <name>MultiLineStringType</name>
+                    <binding>com.vividsolutions.jts.geom.MultiLineString</binding>
+                </typeBinding>
+                <typeBinding>
+                    <name>MultiPointPropertyType</name>
+                    <binding>com.vividsolutions.jts.geom.MultiPoint</binding>
+                </typeBinding>
+                <typeBinding>
+                    <name>MultiPointType</name>
+                    <binding>com.vividsolutions.jts.geom.MultiPoint</binding>
+                </typeBinding>
+                <typeBinding>
+                    <name>MultiPolygonPropertyType</name>
+                    <binding>com.vividsolutions.jts.geom.MultiPolygon</binding>
+                </typeBinding>
+                <typeBinding>
+                    <name>MultiPolygonType</name>
+                    <binding>com.vividsolutions.jts.geom.MultiPolygon</binding>
+                </typeBinding>
+                <typeBinding>
+                    <name>MultiSurfacePropertyType</name>
+                    <binding>com.vividsolutions.jts.geom.MultiPolygon</binding>
+                </typeBinding>
+                <typeBinding>
+                    <name>MultiSurfaceType</name>
+                    <binding>com.vividsolutions.jts.geom.MultiPolygon</binding>
+                </typeBinding>
+                <typeBinding>
+                    <name>PointPropertyType</name>
+                    <binding>com.vividsolutions.jts.geom.Point</binding>
+                </typeBinding>
+                <typeBinding>
+                    <name>PointType</name>
+                    <binding>com.vividsolutions.jts.geom.Point</binding>
+                </typeBinding>
+                <typeBinding>
+                    <name>PolygonPropertyType</name>
+                    <binding>com.vividsolutions.jts.geom.Polygon</binding>
+                </typeBinding>
+                <typeBinding>
+                    <name>PolygonType</name>
+                    <binding>com.vividsolutions.jts.geom.Polygon</binding>
+                </typeBinding>
+                <typeBinding>
+                    <name>SurfacePropertyType</name>
+                    <binding>com.vividsolutions.jts.geom.Polygon</binding>
+                </typeBinding>
+                <typeBinding>
+                    <name>SurfaceType</name>
+                    <binding>com.vividsolutions.jts.geom.Polygon</binding>
+                </typeBinding>
+            </typeBindings>
+            <printRecursionPaths>true</printRecursionPaths>
+        </configuration>
+      </plugin>
+
+    </plugins>
+  </build>
+
+
+</project>
+

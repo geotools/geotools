@@ -1,0 +1,255 @@
+<!DOCTYPE HTML PUBLIC -//W3C//DTD HTML 4.01 Transitional//EN>
+
+<HTML>
+  <HEAD>
+    <TITLE>Differences between ISO/OGC specifications and GeoAPI</TITLE>
+  </HEAD>
+  <BODY>
+  <H1>Differences between ISO/OGC specifications and GeoAPI</H1>
+  <P ALIGN="justify">In the following discussion, "specification 2003-73" refers to the
+  <EM>abstract</EM> specification <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Spatial
+  Referencing by Coordinates (Topic 2)</A>, while "specification 2001-009" refers to the
+  <EM>implementation</EM> specification <A HREF="http://www.opengis.org/docs/01-009.pdf">Coordinate
+  Transformation Services</A>. The later was based on a older abstract specification.</P>
+  <UL>
+    <LI><A HREF="#metadata">Changes in Metadata</A></LI>
+    <LI><A HREF="#referencing">Changes in Spatial Referencing by Coordinates</A></LI>
+    <LI><A HREF="#geometry">Changes in Feature Geometry</A></LI>
+    <LI><A HREF="#coverage">Changes in Grid Coverage</A></LI>
+  </UL>
+  <P>&nbsp;</P>
+  <HR>
+  <P>&nbsp;</P>
+  <H2><A NAME="metadata">Changes in Metadata</A></H2>
+  <H3>Addition</H3>
+  <UL>
+    <LI><P ALIGN="justify">Added a new type,
+        <A HREF="../util/InternationalString.html"><CODE>InternationalString</CODE></A>
+        in order to distinguish between localizable and non-localizable character strings.
+        Not all character string should be localizable; for example <CITE>Well Know Text</CITE>
+        or code name should probably be language neutral. Since the UML doesn't said which
+        character string are localizable and which one are not, we have done our own guess.</P>
+    </LI>
+  </UL>
+  <H3>Omission</H3>
+  <UL>
+    <LI><P ALIGN="justify">Omitted the reference system package, since it duplicates
+        ISO 19111 / OGC Topic 2.</P>
+    </LI>
+  </UL>
+  <H3>Changes</H3>
+  <BLOCKQUOTE>(None at this time)</BLOCKQUOTE>
+
+  <P>&nbsp;</P>
+  <HR>
+  <P>&nbsp;</P>
+  <H2><A NAME="referencing">Changes in Spatial Referencing by Coordinates</A></H2>
+  <H3>Addition</H3>
+  <UL>
+    <LI><P ALIGN="justify">Factory and operations from the legacy 2001-009 specification have been
+        ported to the 2003-073 specification. This is because UML diagrams found in the 2003-073
+        specification contains only <EM>attributes</EM> or <EM>associations</EM>, no <EM>operations</EM>.
+        Many services found in the legacy 2001-009 specification are not available in latest UML.
+        More specifically:</P>
+        <P><UL>
+          <LI>There was nothing like a transformation method taking a point or an array
+          in argument and returning a transformed point or array (e.g. the legacy
+          <A HREF=../../../../legacy/org/opengis/ct/CT_MathTransform.html><CODE>CT_MathTransform</CODE></A>
+          interface).</LI>
+
+          <LI>There was no factory at all (e.g. the legacy
+          <A HREF=../../../../legacy/org/opengis/ct/CT_CoordinateTransformationFactory.html><CODE>CT_CoordinateTransformationFactory</CODE></A>
+          interface).</LI>
+        </UL></P>
+    </LI>
+
+    <LI><P ALIGN="justify">Added a
+        <A HREF="../referencing/operation/Projection.html"><CODE>Projection</CODE></A> interface as a special kind of
+        <A HREF="../referencing/operation/Conversion.html"><CODE>Conversion</CODE></A>. Subinterfaces of
+        <CODE>Projection</CODE> make it possible to check which kind of projection is applied
+        (planar, cylindrical, conical...).</P>
+    </LI>
+
+    <LI><P ALIGN="justify">Added a
+        <A HREF="../referencing/operation/Matrix.html"><CODE>Matrix</CODE></A> interface</A>.
+        The legacy 2001-09 specification defined a
+        <A HREF=../../../../legacy/org/opengis/pt/PT_Matrix.html><CODE>PT_Matrix</CODE></A>
+        interface, which is required for derivative computation.</P>
+    </LI>
+
+    <LI><P ALIGN="justify">Added the following methods into
+        <A HREF="../referencing/cs/AxisDirection.html"><CODE>AxisDirection</CODE></A>:
+        <CODE>inverse()</CODE> and <CODE>absolute()</CODE>.</P>
+    </LI>
+  </UL>
+
+  <H3>Omission</H3>
+  <UL>
+    <LI><P ALIGN="justify">Omitted the <CODE>IdentifiedObjectBase</CODE> interface, since the split
+        between <CODE>IdentifiedObject</CODE> and <CODE>IdentifiedObjectBase</CODE> in OGC specification
+        is mostly a workaround for introducing <CODE>IdentifiedObject</CODE> in ISO 19111 without changing
+        ISO 19115, where a base <CODE>ReferenceSystem</CODE> is already defined.</P>
+    </LI>
+
+    <LI><P ALIGN="justify">Union structures avoided. While it is possible to mimic C's <CODE>union</CODE>
+        in Java, the hacks are usually unconvenient. Furthermore, <CODE>union</CODE> are not type-safe even
+        in C. Consequently, the following structures were omitted:
+        <CODE>CD_SecondDefiningParameter</CODE> (replaced by an API similar to the legacy
+        <A HREF=../../../../legacy/org/opengis/cs/CS_Ellipsoid.html><CODE>CS_Ellipsoid</CODE></A>).</P>
+    </LI>
+
+    <LI><P ALIGN="justify">Removed the <CODE>DerivedCRSType</CODE> code list, since a Java
+        expression like <CODE>(baseCRS instanceof FooCRS)</CODE> provides the same capability
+        with more flexibility.</P></LI>
+    </LI>
+  </UL>
+
+  <H3>Changes</H3>
+  <UL>
+    <LI><P ALIGN="justify">Defined <A HREF="../referencing/cs/CartesianCS.html"><CODE>CartesianCS</CODE></A>
+        as a sub-interface of <A HREF="../referencing/cs/AffineCS.html"><CODE>AffineCS</CODE></A>.</P></LI>
+
+    <LI><P ALIGN="justify">Allows <A HREF="../referencing/crs/CompoundCRS.html"><CODE>CompoundCRS</CODE></A>
+        to contains other <CODE>CompoundCRS</CODE>. This is a violation of the ISO
+        <A HREF="../referencing/crs/CompoundCRS.html"><CODE>CompoundCRS</CODE></A>'s contract ("<cite>A Compound
+        CRS is a coordinate reference system that combines two or more coordinate reference systems, <U>none
+        of which can itself be compound</U></cite>"). However, the need for this constraint is not obvious.
+        Note also that in "<u>Coordinate Transformation Services</u>" (OGC document 01-009), compound CRS was
+        specified as a pair of arbitrary CRS ("head" and "tail"). Each of them can be an other compound CRS,
+        allowing the creation of a tree.</P></LI>
+
+    <LI><P ALIGN="justify">Renamed <CODE>ParameterOperation</CODE> and related interfaces as
+        <A HREF="../parameter/ParameterDescriptor.html"> <code>ParameterDescriptor</code></A>.
+        Discussion on the mailing list suggested that the previous naming was confusing, since
+        many developpers expect <CODE>OperationParameter</CODE> to contains parameter values,
+        which is not the case. The <CODE>ParameterDescriptor</CODE> name make it more obvious
+        that this interface contains meta-data about parameters, not the parameter value itself.
+        Furthermore, it is consistent with naming in usage by the <CITE>Java Advanced Imaging</CITE> library.</P>
+    </LI>
+
+    <LI><P ALIGN="justify">Renamed <CODE>ParameterValueGroup.getGroup()</CODE> method as
+         <A HREF="../parameter/ParameterValueGroup.html#getDescriptor()"><CODE>getDescriptor()</CODE></A>
+         and moved it in the hierarchy up into
+         <A HREF="../parameter/GeneralParameterValue.html#getDescriptor()"><CODE>GeneralParameterValue</CODE></A>.
+         The <CODE>getDescriptor()</CODE> name was choosen because <CODE>getGroup()</CODE> seems too
+         restrictive, misleading (it returns an abstract definition of a group of parameters, not the
+         actual group), and for consistency with usage in other Java extensions (e.g. JAI's
+         <A HREF="http://java.sun.com/products/java-media/jai/forDevelopers/jai-apidocs/javax/media/jai/ParameterList.html#getParameterListDescriptor()"><CODE>ParameterList</CODE></A>).</P></LI>
+
+    <LI><P ALIGN="justify">Moved the
+        <A HREF="../parameter/GeneralParameterDescriptor.html">    <code>GeneralParameterDescriptor</code></A>,
+        <A HREF="../parameter/ParameterDescriptor.html">           <code>ParameterDescriptor</code></A>,
+        <A HREF="../parameter/ParameterDescriptorGroup.html">      <code>ParameterDescriptorGroup</code></A>,
+        <A HREF="../parameter/GeneralParameterValue.html">         <code>GeneralParameterValue</code></A>,
+        <A HREF="../parameter/ParameterValue.html">                <code>ParameterValue</code></A>,
+        <A HREF="../parameter/ParameterValueGroup.html">           <code>ParameterValueGroup</code></A>,
+        <A HREF="../parameter/InvalidParameterNameException.html"> <code>InvalidParameterNameException</code></A>,
+        <A HREF="../parameter/InvalidParameterTypeException.html"> <code>InvalidParameterTypeException</code></A> and
+        <A HREF="../parameter/InvalidParameterValueException.html"><code>InvalidParameterValueException</code></A>
+        interfaces from <code>org.opengis.referencing.operation</code> to <code>org.opengis.parameter</code>.
+        With this move, GeoAPI has extended the use of these parameter classes to be shared
+        across several implementations with different needs. This is an accident of implementation
+        (we produced these parameter classes first. They do happen to be very expressive
+        and a good candiate for reuse). We also considered:</P>
+        <UL>
+          <LI>ISO 19119 - type specification in terms of ENUM, RANGE and so on. Not enough
+              information is publically available to proceed.</LI>
+          <LI>Grid Coverage Exchange - parameter description is simple and has been superceeded
+              by these definitions.</LI>
+          <LI><CODE>java.beans.ParameterDescriptor</CODE> -
+              The Java Beans specification is well known and many tools exist for UI creation
+              based on this specification.</LI>
+          <LI><CODE>javax.jai.ParameterList</CODE> -
+              Java Advanced Imaging contains a ParameterDescriptor infrastructure that has
+              served as a guideline for how we would like to extend this work.</LI>
+        </UL>
+        <P ALIGN="JUSTIFY">In the field we are using this set of parameter classes to describe
+        connection information for WMS, WFS and Database connections - a function that
+        ISO 19119 - <CITE>Metadata Services</CITE> is supposed to fulfill.</P>
+    </LI>
+
+    <LI><P ALIGN="justify">Moved up (in the hierarchy) the "<CODE>maximumOccurs</CODE>" attribute from
+        <A HREF="../parameter/ParameterDescriptorGroup.html"><CODE>ParameterDescriptorGroup</CODE></A> into the
+        <A HREF="../parameter/GeneralParameterDescriptor.html"><CODE>GeneralParameterDescriptor</CODE></A>
+        super-interface, in order to be on per with the "<CODE>minimumOccurs</CODE>" attribute.</P></LI>
+  </UL>
+
+
+
+  <P>&nbsp;</P>
+  <HR>
+  <P>&nbsp;</P>
+  <H2><A NAME="geometry">Changes in Feature Geometry</A></H2>
+  <H3>Addition</H3>
+  <BLOCKQUOTE>(None at this time)</BLOCKQUOTE>
+
+  <H3>Omission</H3>
+  <BLOCKQUOTE>(None at this time)</BLOCKQUOTE>
+
+  <H3>Changes</H3>
+  <UL>
+    <LI><P ALIGN="justify">Renamed <CODE>GM_Object</CODE> as
+        <A HREF="../geometry/Geometry.html"><CODE>Geometry</CODE></A>
+        in order to avoid ambiguity with <CODE>java.lang.Object</CODE>.</P></LI>
+
+    <LI><P ALIGN="justify">Moved <A HREF="../geometry/Envelope.html"><CODE>Envelope</CODE></A>
+        and <A HREF="../geometry/DirectPosition.html"><CODE>DirectPosition</CODE></A>
+        in the root geometry package (<CODE>org.opengis.geometry</CODE>) since they are
+        used in many places in most packages.</P></LI>
+  </UL>
+
+
+  <P>&nbsp;</P>
+  <HR>
+  <P>&nbsp;</P>
+  <H2><A NAME="coverage">Changes in Grid Coverage</A></H2>
+  <H3>Addition</H3>
+  <UL>
+    <LI><P ALIGN="justify">In <CODE>Coverage</CODE>, added an optional
+        <A HREF="../coverage/Coverage.html#getRenderableImage(int, int)"><CODE>getRenderableImage</CODE></A>
+        method for interoperability with Java2D.</P></LI>
+
+    <LI><P ALIGN="justify">In <CODE>SampleDimension</CODE>, added an optional
+        <A HREF="../coverage/SampleDimension.html#getSampleToGeophysics()"><CODE>getSampleToGeophysics</CODE></A>
+        method as a generalization of <code>scale</code> and <code>offset</code> attributes.</P></LI>
+
+    <LI><P ALIGN="justify">Added
+        <A HREF="../coverage/CannotEvaluateException.html"><CODE>CannotEvaluateException</CODE></A> as a super-class of
+        <A HREF="../coverage/PointOutsideCoverageException.html"><CODE>PointOutsideCoverageException</CODE></A>.</P></LI>
+  </UL>
+
+  <H3>Omission</H3>
+  <UL>
+    <LI><P ALIGN="justify">Exceptions
+        <A HREF="../coverage/MetadataNameNotFoundException.html"><CODE>MetadataNameNotFoundException</CODE></A>
+        were declared only once in the CV package, not duplicated in every packages.</P></LI>
+
+    <LI><P ALIGN="justify">Omitted
+        <CODE>InvalidIndexException</CODE> (replaced by <CODE>IndexOutOfBoundsException</CODE>) and
+        <CODE>ErrorExportingGridCoverageException</CODE> (replaced by <CODE>IOException</CODE>).</P></LI>
+  </UL>
+
+  <H3>Changes</H3>
+  <UL>
+    <LI><P ALIGN="justify">In <A HREF="../coverage/Coverage.html"><CODE>Coverage</CODE></A>, changed
+        <CODE>evaluateAsDouble(DirectPosition)</CODE> into <CODE>evaluate(DirectPosition, double[])</CODE>
+        for reusing optionally pre-allocated array. This is consistent with Java usage in <CODE>Raster</CODE>
+        for example. Same apply to all <CODE>evaluateAsFoo(DirectPosition)</CODE> methods.</P></LI>
+
+    <LI><P ALIGN="justify">In <A HREF="../coverage/grid/GridCoverage.html"><CODE>GridCoverage</CODE></A>, changed
+        <CODE>getDataBlockAsDouble(GridRange)</CODE> into <CODE>getDataBlock(GridCoverage, double[])</CODE>
+        for reusing optionally pre-allocated array. This is consistent with Java usage in <CODE>Raster</CODE>
+        for example. Same apply to all <CODE>getDataBlockAsFoo(GridRange)</CODE> methods.</P></LI>
+
+    <LI><P ALIGN="justify">Return type of
+        <A HREF="../coverage/Coverage.html#getSource(int)"><CODE>Coverage.getSource(int)</CODE></A>
+        was relaxed from <CODE>GridCoverage</CODE> to <CODE>Coverage</CODE>. Instead, the return
+        type has been constrained to <CODE>GridCoverage</CODE> only in
+        <A HREF="../coverage/grid/GridCoverage.html#getSource(int)"><CODE>GridCoverage.getSource(int)</CODE></A>.
+        This approach (return type covariance) was already used in "Spatial Referencing by
+        Coordinates" (ISO 19111). It avoid forward dependency of <CODE>Coverage</CODE> toward
+        <CODE>GridCoverage</CODE> and give more flexibility for use of <CODE>Coverage</CODE>
+        with non-gridded data.</P></LI>
+  </UL>
+  </BODY>
+</HTML>

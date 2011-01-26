@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.geotools.schemas</groupId>
+    <artifactId>om-1.0</artifactId>
+    <version>1.0.0-4</version>
+    <name>Observations and Measurements 1.0 application schema</name>
+
+    <scm>
+        <connection>scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema-packages/om-1.0/</connection>
+        <url>http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema-packages/om-1.0/</url>
+    </scm>
+
+    <developers>
+        <developer>
+            <name>Ben Caradoc-Davies</name>
+            <email>Ben.Caradoc-Davies@csiro.au</email>
+            <organization>CSIRO Earth Science and Resource Engineering </organization>
+            <roles>
+                <role>packager</role>
+            </roles>
+        </developer>
+    </developers>
+    
+    <dependencies>
+        <dependency>
+            <groupId>org.geotools.schemas</groupId>
+            <artifactId>gml-3.1</artifactId>
+            <version>3.1.1-4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools.schemas</groupId>
+            <artifactId>sensorML-1.0</artifactId>
+            <version>1.0.1-4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools.schemas</groupId>
+            <artifactId>sweCommon-1.0</artifactId>
+            <version>1.0.1-4</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+    
+        <plugins>
+            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>generate-resources</phase>
+                        <configuration>
+                            <tasks>
+                                <property name="srcdir" value="http://schemas.opengis.net/om/1.0.0"/>
+                                <property name="destdir" value="${project.build.outputDirectory}/net/opengis/schemas/om/1.0.0"/>
+                                <mkdir dir="${destdir}"/>
+                                <get src="${srcdir}/observation.xsd" dest="${destdir}/observation.xsd"/>
+                                <get src="${srcdir}/om.xsd" dest="${destdir}/om.xsd"/>
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    
+    </build>
+
+</project>

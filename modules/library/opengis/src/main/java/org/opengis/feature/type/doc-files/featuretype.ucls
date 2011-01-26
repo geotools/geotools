@@ -1,0 +1,84 @@
+<class-diagram generalizations="true" realizations="true" associations="true" dependencies="false" 
+  nesting-relationships="true">  
+  <classifier-display autosize="true" package="true" attributes="true" operations="true" initial-value="false" 
+    signature="true" visibility="true"/>  
+  <association-display labels="true" multiplicity="true"/>  
+  <interface type="java" name="org.opengis.feature.type.PropertyType" project="geoapi" 
+    file="/geoapi/src/main/java/org/opengis/feature/type/PropertyType.java" corner="BOTTOM_RIGHT">    
+    <display autosize="true" package="true" attributes="true" operations="true" initial-value="false" signature="true" 
+      visibility="true"/>    
+    <position x="238" y="180" width="-1" height="-1"/>  
+  </interface>  
+  <interface type="java" name="org.opengis.feature.type.OperationType" project="geoapi" 
+    file="/geoapi/src/main/java/org/opengis/feature/type/OperationType.java" corner="BOTTOM_RIGHT">    
+    <display autosize="true" package="true" attributes="true" operations="true" initial-value="false" signature="true" 
+      visibility="true"/>    
+    <position x="444" y="367" width="-1" height="-1"/>  
+  </interface>  
+  <interface type="java" name="org.opengis.feature.type.AttributeType" project="geoapi" 
+    file="/geoapi/src/main/java/org/opengis/feature/type/AttributeType.java" corner="BOTTOM_RIGHT">    
+    <display autosize="true" package="true" attributes="true" operations="true" initial-value="false" signature="true" 
+      visibility="true"/>    
+    <position x="240" y="338" width="-1" height="-1"/>  
+  </interface>  
+  <interface type="java" name="org.opengis.feature.type.AssociationType" project="geoapi" 
+    file="/geoapi/src/main/java/org/opengis/feature/type/AssociationType.java" corner="BOTTOM_RIGHT">    
+    <display autosize="true" package="true" attributes="true" operations="true" initial-value="false" signature="true" 
+      visibility="true"/>    
+    <position x="53" y="344" width="-1" height="-1"/>  
+  </interface>  
+  <interface type="java" name="org.opengis.feature.type.GeometryType" project="geoapi" 
+    file="/geoapi/src/main/java/org/opengis/feature/type/GeometryType.java" corner="BOTTOM_RIGHT">    
+    <display autosize="true" package="true" attributes="true" operations="true" initial-value="false" signature="true" 
+      visibility="true"/>    
+    <position x="105" y="490" width="-1" height="-1"/>  
+  </interface>  
+  <interface type="java" name="org.opengis.feature.type.ComplexType" project="geoapi" 
+    file="/geoapi/src/main/java/org/opengis/feature/type/ComplexType.java" corner="BOTTOM_RIGHT">    
+    <display autosize="true" package="true" attributes="true" operations="true" initial-value="false" signature="true" 
+      visibility="true"/>    
+    <position x="395" y="519" width="-1" height="-1"/>  
+  </interface>  
+  <interface type="java" name="org.opengis.feature.type.FeatureType" project="geoapi" 
+    file="/geoapi/src/main/java/org/opengis/feature/type/FeatureType.java" corner="BOTTOM_RIGHT">    
+    <display autosize="true" package="true" attributes="true" operations="true" initial-value="false" signature="true" 
+      visibility="true"/>    
+    <position x="396" y="669" width="-1" height="-1"/>  
+  </interface>  
+  <generalization>    
+    <source project="geoapi" name="org.opengis.feature.type.GeometryType" 
+      file="/geoapi/src/main/java/org/opengis/feature/type/GeometryType.java"/>    
+    <target project="geoapi" name="org.opengis.feature.type.AttributeType" 
+      file="/geoapi/src/main/java/org/opengis/feature/type/AttributeType.java"/>  
+  </generalization>  
+  <generalization>    
+    <source project="geoapi" name="org.opengis.feature.type.AssociationType" 
+      file="/geoapi/src/main/java/org/opengis/feature/type/AssociationType.java"/>    
+    <target project="geoapi" name="org.opengis.feature.type.PropertyType" 
+      file="/geoapi/src/main/java/org/opengis/feature/type/PropertyType.java"/>  
+  </generalization>  
+  <generalization>    
+    <source project="geoapi" name="org.opengis.feature.type.OperationType" 
+      file="/geoapi/src/main/java/org/opengis/feature/type/OperationType.java"/>    
+    <target project="geoapi" name="org.opengis.feature.type.PropertyType" 
+      file="/geoapi/src/main/java/org/opengis/feature/type/PropertyType.java"/>  
+  </generalization>  
+  <generalization>    
+    <source project="geoapi" name="org.opengis.feature.type.FeatureType" 
+      file="/geoapi/src/main/java/org/opengis/feature/type/FeatureType.java"/>    
+    <target project="geoapi" name="org.opengis.feature.type.ComplexType" 
+      file="/geoapi/src/main/java/org/opengis/feature/type/ComplexType.java"/>  
+  </generalization>  
+  <generalization>    
+    <source project="geoapi" name="org.opengis.feature.type.ComplexType" 
+      file="/geoapi/src/main/java/org/opengis/feature/type/ComplexType.java"/>    
+    <target project="geoapi" name="org.opengis.feature.type.AttributeType" 
+      file="/geoapi/src/main/java/org/opengis/feature/type/AttributeType.java"/>  
+  </generalization>  
+  <generalization>    
+    <source project="geoapi" name="org.opengis.feature.type.AttributeType" 
+      file="/geoapi/src/main/java/org/opengis/feature/type/AttributeType.java"/>    
+    <target project="geoapi" name="org.opengis.feature.type.PropertyType" 
+      file="/geoapi/src/main/java/org/opengis/feature/type/PropertyType.java"/>  
+  </generalization>
+</class-diagram>

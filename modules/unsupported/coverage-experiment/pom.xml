@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- =======================================================================
+        Maven Project Configuration File
+
+        The Geotools Project
+            http://www.geotools.org/
+
+        Version: $Id: pom.xml 5203 2009-11-27 14:54:57Z daniele $
+     ======================================================================= -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+    <parent>
+      <groupId>org.geotools</groupId>
+      <artifactId>unsupported</artifactId>
+      <version>2.7-SNAPSHOT</version>
+  </parent>
+
+  <!-- =========================================================== -->
+  <!--     Module Description                                      -->
+  <!-- =========================================================== -->
+  <groupId>org.geotools</groupId>
+  <artifactId>gt-coverage-experiment</artifactId>
+  <packaging>pom</packaging>
+  <name>Coverage Experiment Module</name>
+
+  <scm>
+    <connection>
+      scm:svn:https://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/
+    </connection>
+  <url>https://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/</url>
+ </scm>
+
+  <description>
+    Module for Coverage experiment and ND GeoTools plugins.
+  </description>
+
+  <licenses>
+    <license>
+      <name>Lesser General Public License (LGPL)</name>
+      <url>http://www.gnu.org/copyleft/lesser.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+
+  <!-- =========================================================== -->
+  <!--     Developers and Contributors                             -->
+  <!-- =========================================================== -->
+  <developers>
+    <developer>
+      <name>Daniele Romagnoli</name>
+      <id>danieler</id>
+      <email>daniele.romagnoli@geo-solutions.it</email>
+      <organization>GeoSolutions</organization>
+      <roles>
+        <role>Module Maintainer</role>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Simone Giannecchini</name>
+      <id>simboss</id>
+      <email>simone.giannecchini@geo-solutions.it</email>
+      <organization>GeoSolutions</organization>
+      <roles>
+        <role>Boss</role>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+ <developer>
+      <name>Alessio Fabiani</name>
+      <id>afabiani</id>
+      <email>alessio.fabiani@geo-solutions.it</email>
+      <organization>GeoSolutions</organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+  </developers>
+
+  <repositories>
+    <repository>
+      <id>geosolutions</id>
+      <name>GeoSolutions libraries repository</name>
+      <url>http://mvn.geo-solutions.it/</url>
+    </repository>
+    </repositories>
+
+  <!-- =========================================================== -->
+  <!--     Modules for the build in approximate dependency order   -->
+  <!-- =========================================================== -->
+      <modules>
+        <module>coverage-api</module>
+        <module>coverage-core</module>
+        <!--module>geotiff</module-->
+        <module>netcdf</module>
+        <module>hdf4</module>
+        <module>grib1</module>
+      </modules>
+ </project>
+ 

@@ -1,0 +1,125 @@
+<?xml version="1.0" ?> 
+<!--<!DOCTYPE metadata SYSTEM "http://www.esri.com/metadata/esriprof80.dtd">-->
+<metadata xml:lang="en">
+	<Esri>
+		<MetaID>{1F7DDF21-BC01-4C20-8AA5-243B33ED0B1E}</MetaID> 
+		<CreaDate>20000920</CreaDate> 
+		<CreaTime>15021200</CreaTime> 
+		<SyncDate>20001102</SyncDate> 
+		<SyncTime>16430700</SyncTime> 
+		<ModDate>20001102</ModDate> 
+		<ModTime>17543700</ModTime> 
+		<Sync>FALSE</Sync>
+	</Esri>
+	
+	<idinfo>
+		<native Sync="TRUE">Windows NT Version 5.0 (Build 2195) ; ESRI ArcInfo 8.1.0.515</native>
+		<descript>
+			<langdata Sync="TRUE">en</langdata> 
+			<abstract>Metadata sample document</abstract> 
+			<purpose>Provides a sample of the information that can be parsed</purpose> 
+		</descript>
+		<citation>
+			<citeinfo>
+				<pubdate>20041021</pubdate> 
+			  	<title>Example Shapefile</title> 
+			  	<ftname Sync="TRUE">example</ftname> 
+			  	<geoform Sync="TRUE">vector digital data</geoform> 
+			  	<edition>2004</edition> 
+			 	<serinfo>
+			  		<sername>Geotools</sername> 
+			  		<issue>2.1.x</issue> 
+			  	</serinfo>
+			 	<pubinfo>
+			  		<pubplace>Victoria, British Columbia, Canada</pubplace> 
+			  		<publish>Refractions Research, Inc.</publish> 
+			  	</pubinfo>
+			  	<othercit>New York</othercit> 
+			  	<origin>Refractions Research, Inc. </origin> 
+			</citeinfo>
+		</citation>
+		<timeperd>
+		<current>publication date</current> 
+			<timeinfo>
+				<mdattim>
+					<sngdate>
+						<caldate>2004</caldate> 
+					</sngdate>
+					<sngdate>
+						<caldate>1987</caldate> 
+					</sngdate>
+				</mdattim>
+			</timeinfo>
+		</timeperd>
+		<status>
+			<progress>Complete</progress> 
+			<update>Matches software update releases</update> 
+		</status>
+	    <spdom>
+			<bounding>
+			    <westbc>-180.000</westbc>
+			    <eastbc>180.000</eastbc>
+			    <southbc>-90.000</southbc>
+	            <northbc>90.000</northbc>	    
+			</bounding>
+			<lbounding>
+			    <westbc>-180.000</westbc>
+			    <eastbc>180.000</eastbc>
+			    <southbc>-90.000</southbc>
+	            <northbc>90.000</northbc>	    
+			</lbounding>
+	    </spdom>
+	    <keywords>
+			<theme>
+				<themekt>None</themekt> 
+				<themekey>polygon</themekey> 
+				<themekey>utm</themekey> 
+				<themekey>universal transverse mercator</themekey> 
+			</theme>
+			<place>
+				<placekey>World</placekey> 
+				<placekt>None</placekt> 
+			</place>
+			<temporal>
+				<tempkey>2004</tempkey> 
+				<tempkt>None</tempkt>
+			</temporal>
+		</keywords>	    
+	    <accconst>Access granted to all</accconst> 
+	    <useconst>LGPL</useconst>
+		<natvform Sync="TRUE">Shapefile</natvform>
+		<ptcontac>
+		<cntinfo>
+			<cntorgp>
+				<cntorg>Geottols</cntorg> 
+				<cntper>Project Management Commitee</cntper> 
+			</cntorgp>
+			<cntaddr>
+				<addrtype>mailing and physical address</addrtype> 
+				<address>n/a</address> 
+				<city>n/a</city> 
+				<state>n/a</state> 
+				<postal>A1B 2C3</postal> 
+				<country>n/a</country> 
+			</cntaddr>
+			<cntvoice>555-555-1234</cntvoice> 
+			<cntfax>555-555-1234</cntfax> 
+			<cntemail>geotools-devel@lists.sourceforge.net</cntemail> 
+  			<hours>24 hours everyday of the week</hours> 
+  			<cntinst>Please direct inquires to geotools-devel@lists.sourceforge.net</cntinst> 
+  		</cntinfo>
+	  	</ptcontac>
+		<browse BrowseGraphicType="Thumbnail">
+		  <browsed>Thumbnail</browsed> 
+		  <browset>BMP</browset> 
+		  <browseem EsriPropertyType="Picture">encoded bmp image goes here</browseem>
+		</browse>
+		
+	</idinfo>
+	<metainfo/>
+	<spdoinfo/>
+	<spref/>
+	<eainfo/>
+	<distinfo/>
+	<dataqual/>	
+</metadata>

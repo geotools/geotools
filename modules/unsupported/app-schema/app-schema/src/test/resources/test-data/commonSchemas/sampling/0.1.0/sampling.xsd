@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:sa="http://www.seegrid.csiro.au/xml/sampling" targetNamespace="http://www.seegrid.csiro.au/xml/sampling" elementFormDefault="qualified" attributeFormDefault="unqualified" version="pre-release">
+	<annotation>
+		<documentation>sampling.xsd
+
+The complete sampling schema
+
+Copyright (c) 2005 CSIRO - see https://www.seegrid.csiro.au/twiki/bin/view/Xmml/LegalNotices#Software_Notice</documentation>
+	</annotation>
+	<!-- ====================================================================== -->
+	<include schemaLocation="./extensiveSite.xsd"/>
+	<include schemaLocation="./specimen.xsd"/>
+	<!-- ====================================================================== -->
+</schema>

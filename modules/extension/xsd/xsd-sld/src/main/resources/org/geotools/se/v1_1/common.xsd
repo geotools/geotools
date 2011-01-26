@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://www.opengis.net/se" xmlns:se="http://www.opengis.net/se" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xlink="http://www.w3.org/1999/xlink" elementFormDefault="qualified" version="1.1.1">
+	<xsd:import namespace="http://www.w3.org/1999/xlink" schemaLocation="http://schemas.opengis.net/xlink/1.0.0/xlinks.xsd"/>
+	<!-- *********************************************************************** -->
+	<xsd:annotation>
+		<xsd:documentation>
+      SE COMMON ELEMENTS version 1.1.0 (2010-02-01)
+      
+      Symbology Encoding is an OGC Standard.
+      Copyright (c) 2005,2010 Open Geospatial Consortium, Inc. All Rights Reserved.
+      To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .
+		</xsd:documentation>
+	</xsd:annotation>
+	<!-- *********************************************************************** -->
+	<xsd:simpleType name="VersionType">
+		<xsd:annotation>
+			<xsd:documentation>
+        The "VersionType" merely restricts the version string that may
+        be used with XML documents based on this schema.
+      </xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="1.1.0"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<!-- *********************************************************************** -->
+	<xsd:element name="Name" type="xsd:string"/>
+	<xsd:element name="Description" type="se:DescriptionType">
+		<xsd:annotation>
+			<xsd:documentation>
+        A "Description" gives human-readable descriptive information for
+        the object it is included within.
+      </xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:complexType name="DescriptionType">
+		<xsd:sequence>
+			<xsd:element name="Title" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="Abstract" type="xsd:string" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- *********************************************************************** -->
+	<xsd:element name="FeatureTypeName" type="xsd:QName"/>
+	<!-- *********************************************************************** -->
+	<xsd:element name="CoverageName" type="xsd:string"/>
+	<!-- *********************************************************************** -->
+	<xsd:element name="OnlineResource" type="se:OnlineResourceType">
+		<xsd:annotation>
+			<xsd:documentation>
+        An "OnlineResource" is typically used to refer to an HTTP URL.
+      </xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:complexType name="OnlineResourceType">
+		<xsd:attributeGroup ref="xlink:simpleLink"/>
+	</xsd:complexType>
+	<!-- *********************************************************************** -->
+	<xsd:element name="InlineContent" type="se:InlineContentType">
+		<xsd:annotation>
+			<xsd:documentation>
+        "InlineContent" is XML- or base64-encoded encoded content in some
+        externally-defined format that is included in an SE in-line.
+      </xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:complexType name="InlineContentType" mixed="true">
+		<xsd:sequence>
+			<xsd:any minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:attribute name="encoding" use="required">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="xml"/>
+					<xsd:enumeration value="base64"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:complexType>
+</xsd:schema>

@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/net.opengis.ows/src"
+    editDirectory="/net.opengis.ows.edit/src" editorDirectory="/net.opengi.ows.editor/src"
+    modelPluginID="net.opengis.ows" modelName="Ows10" updateClasspath="false" importerID="org.eclipse.emf.importer.java"
+    usedGenPackages="platform:/plugin/org.eclipse.emf.ecore/model/XMLType.genmodel#//type platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore platform:/plugin/org.eclipse.emf.ecore/model/XMLNamespace.genmodel#//namespace">
+  <foreignModel>@model</foreignModel>
+  <genPackages prefix="Ows10" basePackage="net.opengis" disposableProviderFactory="true"
+      adapterFactory="false" literalsInterface="false" ecorePackage="ows10.ecore#/">
+    <genDataTypes ecoreDataType="ows10.ecore#//MimeType"/>
+    <genDataTypes ecoreDataType="ows10.ecore#//VersionType"/>
+    <genDataTypes ecoreDataType="ows10.ecore#//PositionType"/>
+    <genDataTypes ecoreDataType="ows10.ecore#//UpdateSequenceType"/>
+    <genDataTypes ecoreDataType="ows10.ecore#//Map"/>
+    <genClasses ecoreClass="ows10.ecore#//AcceptFormatsType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//AcceptFormatsType/outputFormat"/>
+    </genClasses>
+    <genClasses ecoreClass="ows10.ecore#//AcceptVersionsType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//AcceptVersionsType/version"/>
+    </genClasses>
+    <genClasses ecoreClass="ows10.ecore#//AddressType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//AddressType/deliveryPoint"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//AddressType/city"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//AddressType/administrativeArea"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//AddressType/postalCode"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//AddressType/country"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//AddressType/electronicMailAddress"/>
+    </genClasses>
+    <genClasses ecoreClass="ows10.ecore#//BoundingBoxType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//BoundingBoxType/lowerCorner"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//BoundingBoxType/upperCorner"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//BoundingBoxType/crs"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//BoundingBoxType/dimensions"/>
+    </genClasses>
+    <genClasses ecoreClass="ows10.ecore#//CapabilitiesBaseType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ows10.ecore#//CapabilitiesBaseType/serviceIdentification"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ows10.ecore#//CapabilitiesBaseType/serviceProvider"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ows10.ecore#//CapabilitiesBaseType/operationsMetadata"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//CapabilitiesBaseType/updateSequence"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//CapabilitiesBaseType/version"/>
+    </genClasses>
+    <genClasses ecoreClass="ows10.ecore#//CodeType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//CodeType/value"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//CodeType/codeSpace"/>
+    </genClasses>
+    <genClasses ecoreClass="ows10.ecore#//ContactType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ows10.ecore#//ContactType/phone"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ows10.ecore#//ContactType/address"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ows10.ecore#//ContactType/onlineResource"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//ContactType/hoursOfService"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//ContactType/contactInstructions"/>
+    </genClasses>
+    <genClasses ecoreClass="ows10.ecore#//DCPType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ows10.ecore#//DCPType/hTTP"/>
+    </genClasses>
+    <genClasses ecoreClass="ows10.ecore#//DescriptionType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//DescriptionType/title"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//DescriptionType/abstract"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ows10.ecore#//DescriptionType/keywords"/>
+    </genClasses>
+    <genClasses ecoreClass="ows10.ecore#//DocumentRoot">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//DocumentRoot/mixed"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference ows10.ecore#//DocumentRoot/xMLNSPrefixMap"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference ows10.ecore#//DocumentRoot/xSISchemaLocation"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//DocumentRoot/abstract"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ows10.ecore#//DocumentRoot/contactInfo"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//DocumentRoot/individualName"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ows10.ecore#//DocumentRoot/keywords"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//DocumentRoot/organisationName"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ows10.ecore#//DocumentRoot/pointOfContact"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//DocumentRoot/positionName"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ows10.ecore#//DocumentRoot/role"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//DocumentRoot/title"/>
+      <genFeatures property="None" children="true" createChild="false" ecoreFeature="ecore:EReference ows10.ecore#//DocumentRoot/abstractMetaData"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//DocumentRoot/accessConstraints"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//DocumentRoot/availableCRS"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ows10.ecore#//DocumentRoot/boundingBox"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ows10.ecore#//DocumentRoot/dcp"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ows10.ecore#//DocumentRoot/exception"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ows10.ecore#//DocumentRoot/exceptionReport"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ows10.ecore#//DocumentRoot/extendedCapabilities"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//DocumentRoot/fees"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ows10.ecore#//DocumentRoot/getCapabilities"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ows10.ecore#//DocumentRoot/http"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ows10.ecore#//DocumentRoot/identifier"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//DocumentRoot/language"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ows10.ecore#//DocumentRoot/metadata"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ows10.ecore#//DocumentRoot/operation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ows10.ecore#//DocumentRoot/operationsMetadata"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//DocumentRoot/outputFormat"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ows10.ecore#//DocumentRoot/serviceIdentification"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ows10.ecore#//DocumentRoot/serviceProvider"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//DocumentRoot/supportedCRS"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ows10.ecore#//DocumentRoot/wgS84BoundingBox"/>
+    </genClasses>
+    <genClasses ecoreClass="ows10.ecore#//DomainType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//DomainType/value"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ows10.ecore#//DomainType/metadata"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//DomainType/name"/>
+    </genClasses>
+    <genClasses ecoreClass="ows10.ecore#//ExceptionReportType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ows10.ecore#//ExceptionReportType/exception"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//ExceptionReportType/language"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//ExceptionReportType/version"/>
+    </genClasses>
+    <genClasses ecoreClass="ows10.ecore#//ExceptionType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//ExceptionType/exceptionText"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//ExceptionType/exceptionCode"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//ExceptionType/locator"/>
+    </genClasses>
+    <genClasses ecoreClass="ows10.ecore#//GetCapabilitiesType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ows10.ecore#//GetCapabilitiesType/acceptVersions"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ows10.ecore#//GetCapabilitiesType/sections"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ows10.ecore#//GetCapabilitiesType/acceptFormats"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//GetCapabilitiesType/updateSequence"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//GetCapabilitiesType/baseUrl"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//GetCapabilitiesType/namespace"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//GetCapabilitiesType/extendedProperties"/>
+    </genClasses>
+    <genClasses ecoreClass="ows10.ecore#//HTTPType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute ows10.ecore#//HTTPType/group"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference ows10.ecore#//HTTPType/get"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference ows10.ecore#//HTTPType/post"/>
+    </genClasses>
+    <genClasses ecoreClass="ows10.ecore#//IdentificationType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ows10.ecore#//IdentificationType/identifier"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute ows10.ecore#//IdentificationType/boundingBoxGroup"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference ows10.ecore#//IdentificationType/boundingBox"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//IdentificationType/outputFormat"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute ows10.ecore#//IdentificationType/availableCRSGroup"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//IdentificationType/availableCRS"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ows10.ecore#//IdentificationType/metadata"/>
+    </genClasses>
+    <genClasses ecoreClass="ows10.ecore#//KeywordsType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//KeywordsType/keyword"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ows10.ecore#//KeywordsType/type"/>
+    </genClasses>
+    <genClasses ecoreClass="ows10.ecore#//MetadataType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute ows10.ecore#//MetadataType/abstractMetaDataGroup"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference ows10.ecore#//MetadataType/abstractMetaData"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//MetadataType/about"/>
+    </genClasses>
+    <genClasses ecoreClass="ows10.ecore#//OnlineResourceType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//OnlineResourceType/href"/>
+    </genClasses>
+    <genClasses ecoreClass="ows10.ecore#//OperationType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ows10.ecore#//OperationType/dCP"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ows10.ecore#//OperationType/parameter"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ows10.ecore#//OperationType/constraint"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ows10.ecore#//OperationType/metadata"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//OperationType/name"/>
+    </genClasses>
+    <genClasses ecoreClass="ows10.ecore#//OperationsMetadataType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ows10.ecore#//OperationsMetadataType/operation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ows10.ecore#//OperationsMetadataType/parameter"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ows10.ecore#//OperationsMetadataType/constraint"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ows10.ecore#//OperationsMetadataType/extendedCapabilities"/>
+    </genClasses>
+    <genClasses ecoreClass="ows10.ecore#//RequestMethodType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ows10.ecore#//RequestMethodType/constraint"/>
+    </genClasses>
+    <genClasses ecoreClass="ows10.ecore#//ResponsiblePartySubsetType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//ResponsiblePartySubsetType/individualName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//ResponsiblePartySubsetType/positionName"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ows10.ecore#//ResponsiblePartySubsetType/contactInfo"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ows10.ecore#//ResponsiblePartySubsetType/role"/>
+    </genClasses>
+    <genClasses ecoreClass="ows10.ecore#//ResponsiblePartyType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//ResponsiblePartyType/individualName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//ResponsiblePartyType/organisationName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//ResponsiblePartyType/positionName"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ows10.ecore#//ResponsiblePartyType/contactInfo"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ows10.ecore#//ResponsiblePartyType/role"/>
+    </genClasses>
+    <genClasses ecoreClass="ows10.ecore#//SectionsType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//SectionsType/section"/>
+    </genClasses>
+    <genClasses ecoreClass="ows10.ecore#//ServiceIdentificationType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ows10.ecore#//ServiceIdentificationType/serviceType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//ServiceIdentificationType/serviceTypeVersion"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//ServiceIdentificationType/fees"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//ServiceIdentificationType/accessConstraints"/>
+    </genClasses>
+    <genClasses ecoreClass="ows10.ecore#//ServiceProviderType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//ServiceProviderType/providerName"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ows10.ecore#//ServiceProviderType/providerSite"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ows10.ecore#//ServiceProviderType/serviceContact"/>
+    </genClasses>
+    <genClasses ecoreClass="ows10.ecore#//TelephoneType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//TelephoneType/voice"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ows10.ecore#//TelephoneType/facsimile"/>
+    </genClasses>
+    <genClasses ecoreClass="ows10.ecore#//WGS84BoundingBoxType"/>
+    <genClasses image="false" ecoreClass="ows10.ecore#//Object"/>
+  </genPackages>
+</genmodel:GenModel>

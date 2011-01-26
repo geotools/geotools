@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<swe:DataDefinition xmlns:swe="http://www.opengis.net/swe" 
+                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                    xsi:schemaLocation="http://www.opengis.net/swe ../data.xsd">
+    <!-- -->
+    <swe:dataComponents>
+        <swe:DataArray arraySize="3000" definition="urn:ogc:data:image">
+            <swe:component>
+                <swe:DataArray arraySize="3000" definition="urn:ogc:data:row">
+                    <swe:component>
+                        <swe:DataGroup definition="urn:ogc:data:pixel">
+                            <swe:component name="red">
+                                <swe:Quantity definition="urn:ogc:phenomenon:radiance"/>
+                            </swe:component>
+                            <swe:component name="green">
+                                <swe:Quantity definition="urn:ogc:phenomenon:radiance"/>
+                            </swe:component>
+                            <swe:component name="blue">
+                                <swe:Quantity definition="urn:ogc:phenomenon:radiance"/>
+                            </swe:component>
+                        </swe:DataGroup>
+                    </swe:component>
+                </swe:DataArray>
+            </swe:component>
+        </swe:DataArray>
+    </swe:dataComponents>
+    <!-- -->
+    <swe:encoding>
+        <swe:BinaryBlock>
+            <swe:byteLength>9000</swe:byteLength>
+            <swe:byteEncoding>urn:ogc:data:base64</swe:byteEncoding>
+            <swe:byteOrder>urn:ogc:data:littleEndian</swe:byteOrder>
+            <swe:structure>
+                <swe:BinaryArray arraySize="9000">
+                    <swe:component>
+                        <swe:BinaryValue dataType="urn:ogc:data:unsignedByte" bitLength="8"/>
+                    </swe:component>
+                </swe:BinaryArray>
+            </swe:structure>
+        </swe:BinaryBlock>
+    </swe:encoding>
+    <!-- -->
+</swe:DataDefinition>

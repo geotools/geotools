@@ -1,0 +1,11 @@
+org.geotools.coverageio.gdal.mrsid.MrSIDFormatFactory
+org.geotools.coverageio.gdal.jp2kak.JP2KFormatFactory
+org.geotools.coverageio.gdal.jp2mrsid.JP2MrSIDFormatFactory
+org.geotools.coverageio.gdal.jp2ecw.JP2ECWFormatFactory
+org.geotools.coverageio.gdal.ecw.ECWFormatFactory
+org.geotools.coverageio.gdal.dted.DTEDFormatFactory
+org.geotools.coverageio.gdal.erdasimg.ErdasImgFormatFactory
+org.geotools.coverageio.gdal.nitf.NITFFormatFactory
+org.geotools.coverageio.gdal.ehdr.EsriHdrFormatFactory
+org.geotools.coverageio.gdal.envihdr.EnviHdrFormatFactory
+org.geotools.coverageio.gdal.aig.AIGFormatFactory

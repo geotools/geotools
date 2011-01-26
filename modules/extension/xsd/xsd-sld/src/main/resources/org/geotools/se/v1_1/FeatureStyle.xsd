@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://www.opengis.net/se" xmlns:se="http://www.opengis.net/se" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" version="1.1.1">
+	<xsd:include schemaLocation="Symbolizer.xsd"/>
+	<xsd:import namespace="http://www.opengis.net/ogc" schemaLocation="http://schemas.opengis.net/filter/1.1.0/filter.xsd"/>
+	<!-- *********************************************************************** -->
+	<xsd:annotation>
+		<xsd:documentation>
+      Symbology Encoding FEATURE STYLE version 1.1.0 (2010-02-01)
+      
+      Symbology Encoding is an OGC Standard.
+      Copyright (c) 2005,2010 Open Geospatial Consortium, Inc. All Rights Reserved.
+      To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .
+		</xsd:documentation>
+	</xsd:annotation>
+	<xsd:element name="FeatureTypeStyle" type="se:FeatureTypeStyleType">
+		<xsd:annotation>
+			<xsd:documentation>
+      A FeatureTypeStyle contains styling information specific to one
+      feature type.
+    </xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:complexType name="FeatureTypeStyleType">
+		<xsd:sequence>
+			<xsd:element ref="se:Name" minOccurs="0"/>
+			<xsd:element ref="se:Description" minOccurs="0"/>
+			<xsd:element ref="se:FeatureTypeName" minOccurs="0"/>
+			<xsd:element ref="se:SemanticTypeIdentifier" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:choice maxOccurs="unbounded">
+				<xsd:element ref="se:Rule"/>
+				<xsd:element ref="se:OnlineResource"/>
+			</xsd:choice>
+		</xsd:sequence>
+		<xsd:attribute name="version" type="se:VersionType"/>
+	</xsd:complexType>
+	<xsd:element name="CoverageStyle" type="se:CoverageStyleType">
+		<xsd:annotation>
+			<xsd:documentation>
+        A CoverageStyle contains styling information specific to one
+        Coverage offering. 
+      </xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:complexType name="CoverageStyleType">
+		<xsd:sequence>
+			<xsd:element ref="se:Name" minOccurs="0"/>
+			<xsd:element ref="se:Description" minOccurs="0"/>
+			<xsd:element ref="se:CoverageName" minOccurs="0"/>
+			<xsd:element ref="se:SemanticTypeIdentifier" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:choice maxOccurs="unbounded">
+				<xsd:element ref="se:Rule"/>
+				<xsd:element ref="se:OnlineResource"/>
+			</xsd:choice>
+		</xsd:sequence>
+		<xsd:attribute name="version" type="se:VersionType"/>
+	</xsd:complexType>
+	<xsd:element name="SemanticTypeIdentifier" type="xsd:string"/>
+	<xsd:element name="Rule" type="se:RuleType">
+		<xsd:annotation>
+			<xsd:documentation>
+        A Rule is used to attach property/scale conditions to and group
+        the individual symbols used for rendering.
+      </xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:complexType name="RuleType">
+		<xsd:sequence>
+			<xsd:element ref="se:Name" minOccurs="0"/>
+			<xsd:element ref="se:Description" minOccurs="0"/>
+			<xsd:element ref="se:LegendGraphic" minOccurs="0"/>
+			<xsd:choice minOccurs="0">
+				<xsd:element ref="ogc:Filter"/>
+				<xsd:element ref="se:ElseFilter"/>
+			</xsd:choice>
+			<xsd:element ref="se:MinScaleDenominator" minOccurs="0"/>
+			<xsd:element ref="se:MaxScaleDenominator" minOccurs="0"/>
+			<xsd:element ref="se:Symbolizer" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="LegendGraphic" type="se:LegendGraphicType"/>
+	<xsd:complexType name="LegendGraphicType">
+		<xsd:sequence>
+			<xsd:element ref="se:Graphic"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="ElseFilter" type="se:ElseFilterType"/>
+	<xsd:complexType name="ElseFilterType"/>
+	<xsd:element name="MinScaleDenominator" type="xsd:double"/>
+	<xsd:element name="MaxScaleDenominator" type="xsd:double"/>
+</xsd:schema>

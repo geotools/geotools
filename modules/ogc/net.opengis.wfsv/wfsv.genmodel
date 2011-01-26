@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/wfsv/src"
+    modelPluginID="wfsv" modelName="Wfsv" importerID="org.eclipse.xsd.ecore.importer">
+  <foreignModel>schemas/wfs/1.1.0/wfsv.xsd</foreignModel>
+  <genPackages prefix="Wfs" basePackage="net.opengis" resource="XML" disposableProviderFactory="true"
+      ecorePackage="wfs.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="wfs.ecore#//AllSomeType">
+      <genEnumLiterals ecoreEnumLiteral="wfs.ecore#//AllSomeType/ALL"/>
+      <genEnumLiterals ecoreEnumLiteral="wfs.ecore#//AllSomeType/SOME"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="wfs.ecore#//FormatType">
+      <genEnumLiterals ecoreEnumLiteral="wfs.ecore#//FormatType/textXml"/>
+      <genEnumLiterals ecoreEnumLiteral="wfs.ecore#//FormatType/textHtml"/>
+      <genEnumLiterals ecoreEnumLiteral="wfs.ecore#//FormatType/textSgml"/>
+      <genEnumLiterals ecoreEnumLiteral="wfs.ecore#//FormatType/textPlain"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="wfs.ecore#//IdentifierGenerationOptionType">
+      <genEnumLiterals ecoreEnumLiteral="wfs.ecore#//IdentifierGenerationOptionType/UseExisting"/>
+      <genEnumLiterals ecoreEnumLiteral="wfs.ecore#//IdentifierGenerationOptionType/ReplaceDuplicate"/>
+      <genEnumLiterals ecoreEnumLiteral="wfs.ecore#//IdentifierGenerationOptionType/GenerateNew"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="wfs.ecore#//OperationType">
+      <genEnumLiterals ecoreEnumLiteral="wfs.ecore#//OperationType/Insert"/>
+      <genEnumLiterals ecoreEnumLiteral="wfs.ecore#//OperationType/Update"/>
+      <genEnumLiterals ecoreEnumLiteral="wfs.ecore#//OperationType/Delete"/>
+      <genEnumLiterals ecoreEnumLiteral="wfs.ecore#//OperationType/Query"/>
+      <genEnumLiterals ecoreEnumLiteral="wfs.ecore#//OperationType/Lock"/>
+      <genEnumLiterals ecoreEnumLiteral="wfs.ecore#//OperationType/GetGmlObject"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="wfs.ecore#//ResultTypeType">
+      <genEnumLiterals ecoreEnumLiteral="wfs.ecore#//ResultTypeType/results"/>
+      <genEnumLiterals ecoreEnumLiteral="wfs.ecore#//ResultTypeType/hits"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="wfs.ecore#//TypeType">
+      <genEnumLiterals ecoreEnumLiteral="wfs.ecore#//TypeType/TC211"/>
+      <genEnumLiterals ecoreEnumLiteral="wfs.ecore#//TypeType/FGDC"/>
+      <genEnumLiterals ecoreEnumLiteral="wfs.ecore#//TypeType/_19115"/>
+      <genEnumLiterals ecoreEnumLiteral="wfs.ecore#//TypeType/_19139"/>
+    </genEnums>
+    <genDataTypes ecoreDataType="wfs.ecore#//AllSomeTypeObject"/>
+    <genDataTypes ecoreDataType="wfs.ecore#//BaseTypeNameListType"/>
+    <genDataTypes ecoreDataType="wfs.ecore#//FormatTypeObject"/>
+    <genDataTypes ecoreDataType="wfs.ecore#//IdentifierGenerationOptionTypeObject"/>
+    <genDataTypes ecoreDataType="wfs.ecore#//OperationTypeObject"/>
+    <genDataTypes ecoreDataType="wfs.ecore#//ResultTypeTypeObject"/>
+    <genDataTypes ecoreDataType="wfs.ecore#//TypeNameListType"/>
+    <genDataTypes ecoreDataType="wfs.ecore#//TypeTypeObject"/>
+    <genClasses ecoreClass="wfs.ecore#//ActionType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//ActionType/message"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//ActionType/code"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//ActionType/locator"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="wfs.ecore#//BaseRequestType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//BaseRequestType/handle"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//BaseRequestType/service"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//BaseRequestType/version"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs.ecore#//DeleteElementType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//DeleteElementType/filter"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//DeleteElementType/handle"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//DeleteElementType/typeName"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs.ecore#//DescribeFeatureTypeType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//DescribeFeatureTypeType/typeName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//DescribeFeatureTypeType/outputFormat"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs.ecore#//DocumentRoot">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//DocumentRoot/mixed"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference wfs.ecore#//DocumentRoot/xMLNSPrefixMap"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference wfs.ecore#//DocumentRoot/xSISchemaLocation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs.ecore#//DocumentRoot/delete"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs.ecore#//DocumentRoot/describeFeatureType"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs.ecore#//DocumentRoot/featureCollection"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs.ecore#//DocumentRoot/featureTypeList"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs.ecore#//DocumentRoot/getCapabilities"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs.ecore#//DocumentRoot/getFeature"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs.ecore#//DocumentRoot/getFeatureWithLock"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs.ecore#//DocumentRoot/getGmlObject"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs.ecore#//DocumentRoot/insert"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs.ecore#//DocumentRoot/lockFeature"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs.ecore#//DocumentRoot/lockFeatureResponse"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//DocumentRoot/lockId"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs.ecore#//DocumentRoot/native"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs.ecore#//DocumentRoot/property"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//DocumentRoot/propertyName"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs.ecore#//DocumentRoot/query"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs.ecore#//DocumentRoot/servesGMLObjectTypeList"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs.ecore#//DocumentRoot/supportsGMLObjectTypeList"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs.ecore#//DocumentRoot/transaction"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs.ecore#//DocumentRoot/transactionResponse"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs.ecore#//DocumentRoot/update"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs.ecore#//DocumentRoot/wFSCapabilities"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs.ecore#//DocumentRoot/xlinkPropertyName"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs.ecore#//FeatureCollectionType"/>
+    <genClasses ecoreClass="wfs.ecore#//FeaturesLockedType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute wfs.ecore#//FeaturesLockedType/group"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//FeaturesLockedType/featureId"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs.ecore#//FeaturesNotLockedType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute wfs.ecore#//FeaturesNotLockedType/group"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//FeaturesNotLockedType/featureId"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs.ecore#//FeatureTypeListType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs.ecore#//FeatureTypeListType/operations"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs.ecore#//FeatureTypeListType/featureType"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs.ecore#//FeatureTypeType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//FeatureTypeType/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//FeatureTypeType/title"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//FeatureTypeType/abstract"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//FeatureTypeType/keywords"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//FeatureTypeType/defaultSRS"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//FeatureTypeType/otherSRS"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs.ecore#//FeatureTypeType/noSRS"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs.ecore#//FeatureTypeType/operations"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs.ecore#//FeatureTypeType/outputFormats"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//FeatureTypeType/wGS84BoundingBox"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs.ecore#//FeatureTypeType/metadataURL"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs.ecore#//GetCapabilitiesType"/>
+    <genClasses ecoreClass="wfs.ecore#//GetFeatureType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs.ecore#//GetFeatureType/query"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//GetFeatureType/maxFeatures"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//GetFeatureType/outputFormat"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//GetFeatureType/resultType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//GetFeatureType/traverseXlinkDepth"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//GetFeatureType/traverseXlinkExpiry"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs.ecore#//GetFeatureWithLockType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs.ecore#//GetFeatureWithLockType/query"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//GetFeatureWithLockType/expiry"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//GetFeatureWithLockType/maxFeatures"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//GetFeatureWithLockType/outputFormat"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//GetFeatureWithLockType/resultType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//GetFeatureWithLockType/traverseXlinkDepth"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//GetFeatureWithLockType/traverseXlinkExpiry"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs.ecore#//GetGmlObjectType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//GetGmlObjectType/gmlObjectId"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//GetGmlObjectType/outputFormat"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//GetGmlObjectType/traverseXlinkDepth"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//GetGmlObjectType/traverseXlinkExpiry"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs.ecore#//GMLObjectTypeListType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs.ecore#//GMLObjectTypeListType/gMLObjectType"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs.ecore#//GMLObjectTypeType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//GMLObjectTypeType/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//GMLObjectTypeType/title"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//GMLObjectTypeType/abstract"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//GMLObjectTypeType/keywords"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs.ecore#//GMLObjectTypeType/outputFormats"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs.ecore#//InsertedFeatureType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//InsertedFeatureType/featureId"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//InsertedFeatureType/handle"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs.ecore#//InsertElementType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//InsertElementType/feature"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//InsertElementType/handle"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//InsertElementType/idgen"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//InsertElementType/inputFormat"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//InsertElementType/srsName"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs.ecore#//InsertResultsType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs.ecore#//InsertResultsType/feature"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs.ecore#//LockFeatureResponseType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//LockFeatureResponseType/lockId"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs.ecore#//LockFeatureResponseType/featuresLocked"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs.ecore#//LockFeatureResponseType/featuresNotLocked"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs.ecore#//LockFeatureType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs.ecore#//LockFeatureType/lock"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//LockFeatureType/expiry"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//LockFeatureType/lockAction"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs.ecore#//LockType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//LockType/filter"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//LockType/handle"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//LockType/typeName"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs.ecore#//MetadataURLType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//MetadataURLType/value"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//MetadataURLType/format"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//MetadataURLType/type"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs.ecore#//NativeType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//NativeType/safeToIgnore"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//NativeType/vendorId"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs.ecore#//NoSRSType"/>
+    <genClasses ecoreClass="wfs.ecore#//OperationsType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//OperationsType/operation"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs.ecore#//OutputFormatListType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute wfs.ecore#//OutputFormatListType/group"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//OutputFormatListType/format"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs.ecore#//PropertyType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//PropertyType/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs.ecore#//PropertyType/value"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs.ecore#//QueryType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute wfs.ecore#//QueryType/group"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//QueryType/propertyName"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference wfs.ecore#//QueryType/xlinkPropertyName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//QueryType/function"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//QueryType/filter"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//QueryType/sortBy"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//QueryType/featureVersion"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//QueryType/handle"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//QueryType/srsName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//QueryType/typeName"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs.ecore#//TransactionResponseType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs.ecore#//TransactionResponseType/transactionSummary"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs.ecore#//TransactionResponseType/transactionResults"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs.ecore#//TransactionResponseType/insertResults"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//TransactionResponseType/version"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs.ecore#//TransactionResultsType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs.ecore#//TransactionResultsType/action"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs.ecore#//TransactionSummaryType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//TransactionSummaryType/totalInserted"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//TransactionSummaryType/totalUpdated"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//TransactionSummaryType/totalDeleted"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs.ecore#//TransactionType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//TransactionType/lockId"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute wfs.ecore#//TransactionType/group"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference wfs.ecore#//TransactionType/insert"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//TransactionType/updateGroup"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference wfs.ecore#//TransactionType/update"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//TransactionType/deleteGroup"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference wfs.ecore#//TransactionType/delete"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//TransactionType/nativeGroup"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference wfs.ecore#//TransactionType/native"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//TransactionType/releaseAction"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs.ecore#//UpdateElementType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs.ecore#//UpdateElementType/property"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//UpdateElementType/filter"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//UpdateElementType/handle"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//UpdateElementType/inputFormat"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//UpdateElementType/srsName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//UpdateElementType/typeName"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs.ecore#//WFSCapabilitiesType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs.ecore#//WFSCapabilitiesType/featureTypeList"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs.ecore#//WFSCapabilitiesType/servesGMLObjectTypeList"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfs.ecore#//WFSCapabilitiesType/supportsGMLObjectTypeList"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//WFSCapabilitiesType/filterCapabilities"/>
+    </genClasses>
+    <genClasses ecoreClass="wfs.ecore#//XlinkPropertyNameType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//XlinkPropertyNameType/value"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//XlinkPropertyNameType/traverseXlinkDepth"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//XlinkPropertyNameType/traverseXlinkExpiry"/>
+    </genClasses>
+  </genPackages>
+  <genPackages prefix="Wfsv" basePackage="net.opengis" disposableProviderFactory="true"
+      ecorePackage="wfsv.ecore#/">
+    <genClasses image="false" ecoreClass="wfsv.ecore#//AbstractVersionedFeatureType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfsv.ecore#//AbstractVersionedFeatureType/version"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfsv.ecore#//AbstractVersionedFeatureType/author"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfsv.ecore#//AbstractVersionedFeatureType/date"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfsv.ecore#//AbstractVersionedFeatureType/message"/>
+    </genClasses>
+    <genClasses ecoreClass="wfsv.ecore#//DescribeVersionedFeatureTypeType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfsv.ecore#//DescribeVersionedFeatureTypeType/versioned"/>
+    </genClasses>
+    <genClasses ecoreClass="wfsv.ecore#//DifferenceQueryType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfsv.ecore#//DifferenceQueryType/filter"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfsv.ecore#//DifferenceQueryType/fromFeatureVersion"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfsv.ecore#//DifferenceQueryType/srsName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfsv.ecore#//DifferenceQueryType/toFeatureVersion"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfsv.ecore#//DifferenceQueryType/typeName"/>
+    </genClasses>
+    <genClasses ecoreClass="wfsv.ecore#//DocumentRoot">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute wfsv.ecore#//DocumentRoot/mixed"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference wfsv.ecore#//DocumentRoot/xMLNSPrefixMap"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference wfsv.ecore#//DocumentRoot/xSISchemaLocation"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfsv.ecore#//DocumentRoot/describeVersionedFeatureType"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference wfsv.ecore#//DocumentRoot/differenceQuery"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference wfsv.ecore#//DocumentRoot/getDiff"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference wfsv.ecore#//DocumentRoot/getLog"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfsv.ecore#//DocumentRoot/getVersionedFeature"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference wfsv.ecore#//DocumentRoot/rollback"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference wfsv.ecore#//DocumentRoot/versionedDelete"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfsv.ecore#//DocumentRoot/versionedFeatureCollection"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference wfsv.ecore#//DocumentRoot/versionedUpdate"/>
+    </genClasses>
+    <genClasses ecoreClass="wfsv.ecore#//GetDiffType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfsv.ecore#//GetDiffType/differenceQuery"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfsv.ecore#//GetDiffType/outputFormat"/>
+    </genClasses>
+    <genClasses ecoreClass="wfsv.ecore#//GetLogType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference wfsv.ecore#//GetLogType/differenceQuery"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfsv.ecore#//GetLogType/maxFeatures"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfsv.ecore#//GetLogType/outputFormat"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfsv.ecore#//GetLogType/resultType"/>
+    </genClasses>
+    <genClasses ecoreClass="wfsv.ecore#//GetVersionedFeatureType"/>
+    <genClasses ecoreClass="wfsv.ecore#//RollbackType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfsv.ecore#//RollbackType/filter"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfsv.ecore#//RollbackType/handle"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfsv.ecore#//RollbackType/toFeatureVersion"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfsv.ecore#//RollbackType/typeName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfsv.ecore#//RollbackType/user"/>
+    </genClasses>
+    <genClasses ecoreClass="wfsv.ecore#//VersionedDeleteElementType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfsv.ecore#//VersionedDeleteElementType/featureVersion"/>
+    </genClasses>
+    <genClasses ecoreClass="wfsv.ecore#//VersionedFeatureCollectionType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfsv.ecore#//VersionedFeatureCollectionType/version"/>
+    </genClasses>
+    <genClasses ecoreClass="wfsv.ecore#//VersionedUpdateElementType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfsv.ecore#//VersionedUpdateElementType/featureVersion"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

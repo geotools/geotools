@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- =======================================================================    
+        Maven Project Configuration File                                        
+                                                                                
+        The Geotools Project                                                    
+            http://www.geotools.org/                                            
+                                                                                
+        Version: $Id$              
+     ======================================================================= -->
+  <project xmlns="http://maven.apache.org/POM/4.0.0" 
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                               http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.geotools</groupId>
+    <artifactId>plugin</artifactId>
+    <version>2.7-SNAPSHOT</version>
+  </parent>
+
+
+  <!-- =========================================================== -->
+  <!--     Module Description                                      -->
+  <!-- =========================================================== -->
+  <groupId>org.geotools</groupId>
+  <artifactId>gt-epsg-postgresql</artifactId>
+  <packaging>jar</packaging>
+  <name>EPSG Authority Service using PostgreSQL database</name>
+  
+
+  <scm>
+    <connection>
+      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/plugin/epsg-postgresql/
+    </connection>
+    <url>http://svn.osgeo.org/geotools/trunk/modules/plugin/epsg-postgresql/</url>
+  </scm>
+
+  <description>
+    Connection to an EPSG postgreSQL database.
+    This database should be built by the user from the SQL scripts delivered by EPSG.
+  </description>
+
+  <licenses>
+    <license>
+      <name>Lesser General Public License (LGPL)</name>
+      <!--url>http://www.gnu.org/copyleft/lesser.txt</url-->
+      <url>http://svn.osgeo.org/geotools/trunk/modules/plugin/epsg-postgresql/LICENSE.html</url>
+      <distribution>repo</distribution>
+    </license>
+    <license>
+      <name>BSD License for PostgreSQL JDBC driver</name>
+      <url>http://svn.osgeo.org/geotools/trunk/licenses/PostgreSQL.html</url>
+      <distribution>repo</distribution>
+      <comments>
+        This Geotools module requires the PostgreSQL JDBC driver, which is
+        bundled with the binary distribution only (there is no PostgreSQL 
+        derived work in the Java source code).
+      </comments>
+    </license>
+  </licenses>
+
+
+  <!-- =========================================================== -->
+  <!--     Developers and Contributors                             -->
+  <!-- =========================================================== -->
+  <developers>
+    <developer>
+      <name>Andrea Aime</name>
+      <id>aaime</id>
+      <email>aaime@users.sourceforge.net</email>
+      <roles>
+        <role>Java Developer</role>
+        <role>Module Maintainer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Didier Richard</name>
+      <email>dgr@libertysurf.fr</email>
+      <organization>Institut Géographique National - France</organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Martin Desruisseaux</name>
+      <id>desruisseaux</id>
+      <email>desruisseaux@users.sourceforge.net</email>
+      <organization>Geomatys</organization>
+      <organizationUrl>http://www.geomatys.fr/</organizationUrl>
+      <timezone>+1</timezone>
+      <roles>
+        <role>Retired Module Maintainer</role>
+        <role>Retired Java Developer</role>
+      </roles>
+    </developer>
+  </developers>
+
+
+  <!-- =========================================================== -->
+  <!--     Dependency Management                                   -->
+  <!-- =========================================================== -->
+  <dependencies>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-referencing</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <!-- The version number is specified in the parent POM. -->
+    </dependency>
+  </dependencies>
+
+</project>

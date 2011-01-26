@@ -1,0 +1,62 @@
+MAVEN PLUGIN JJTREE JAVACC
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  Module Maintainer: Martin
+
+  IP Review:
+
+    * Jody Garnett July 18th, 2006
+
+  This module lists Martin as the maintainer, but the header assignes (C) Codehaus...
+
+--------------------------------------------------------------------------
+/*
+ * Copyright 2001-2005 The Codehaus.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+--------------------------------------------------------------------------
+
+  We should remove this module from out code base. However, it would requires volunter work.
+  We took this script form the Mojo project and modified it at a time when the Mojo's Jacacc
+  plugin wasn't working. Now the real Mojo javacc plugin is released:
+
+    http://mojo.codehaus.org/javacc-maven-plugin/
+
+  We should delete our custom "maven/gt-jjtree-javacc" plugin and use "javacc-maven-plugin"
+  instead. The two goals "javacc:jjtree" and "javacc:javacc" will be required (we need to
+  perform "jjtree" on the "module/main/src/org/geotools/filter/parser/expr.jjt" file first,
+  and then "javacc" on its output, taking in account the "module/main/modified-src" directory).
+  This Work is required because the "javacc-maven-plugin" is not working exactly in the same
+  way than the custom "maven/gt2-jjtree-javacc" plugin I did 10 months ago.
+
+  Note: "javacc" is used for generating a Filter parser. This code was setup by James and
+  Ian Schneider (if my memory serve me right) two years ago. I don't know if it still used
+  (which code people uses for filter parsing today?). The generated sources are there:
+
+    http://javadoc.geotools.fr/snapshot/org/geotools/filter/parser/package-summary.html
+
+  This job may be easier to do after we fixed http://jira.codehaus.org/browse/GEOT-887
+  since it would make the "javacc-maven-plugin" easier to configure. In the main time,
+  since the "maven/gt2-jjtree-javacc" plugin is only used for the build and is not part
+  of the Geotools distribution, I guess that Geotools users don't need to care about this
+  Apache license.
+
+
+
+* org.geotools.maven
+  ~~~~~~~~~~~~~~~~~~
+
+    * Distributed under Apache License! (C) The Codehaus
+
+    * Should be removed from our codebase

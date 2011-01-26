@@ -1,0 +1,284 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<HTML>
+  <HEAD>
+    <TITLE>Well-Know Text (WKT) format</TITLE>
+  </HEAD>
+  <BODY>
+  <H1>Well-Known Text format</H1>
+  <P ALIGN="justify">Many entities in this specification can be printed in a well-known text
+  format. This allows objects to be stored in databases (persistence), and transmitted between
+  interoperating computer programs. Each entity has a keyword in upper case (for example,
+  <A HREF="#DATUM"><CODE>DATUM</CODE></A> or <A HREF="#UNIT"><CODE>UNIT</CODE></A>) followed
+  by the defining, comma-delimited, parameters of the object in brackets. Some
+  objects are composed of objects so the result is a nested structure. Implementations are free
+  to substitute standard brackets (&nbsp;) for square brackets [&nbsp;] and should be prepared to
+  read both forms of brackets. The definition for WKT is shown below using Extended Backus Naur
+  Form (EBNF). The WKT for a math transform can be used inside a engineering coordinate reference
+  system, so it is shown first.</P>
+
+  <H2>Math Transform WKT</H2>
+<PRE>&lt;math transform&gt; = &lt;param mt&gt; | &lt;concat mt&gt; | &lt;inv mt&gt; | &lt;passthrough mt&gt;
+&lt;param mt&gt;       = <A HREF="#PARAM_MT">PARAM_MT</A>["&lt;classification name&gt;" {,&lt;parameter&gt;}* ]
+&lt;parameter&gt;      = <A HREF="#PARAMETER">PARAMETER</A>["&lt;name&gt;", &lt;value&gt;]
+&lt;value&gt;          = &lt;number&gt;
+&lt;concat mt&gt;      = <A HREF="#CONCAT_MT">CONCAT_MT</A>[&lt;math transform&gt; {,&lt;math transform&gt;}* ]
+&lt;inv mt&gt;         = <A HREF="#INVERSE_MT">INVERSE_MT</A>[&lt;math transform&gt;]
+&lt;passthrough mt&gt; = <A HREF="#PASSTHROUGH_MT">PASSTHROUGH_MT</A>[&lt;integer&gt;, &lt;math transform&gt;]</PRE>
+
+<H2>Coordinate System WKT</H2>
+<PRE>&lt;coordinate system&gt;  = &lt;horz cs&gt; | &lt;geocentric cs&gt; | &lt;vert cs&gt; | &lt;compd cs&gt; | &lt;fitted cs&gt; | &lt;local cs&gt;
+&lt;horz cs&gt;            = &lt;geographic cs&gt; | &lt;projected cs&gt;
+&lt;projected cs&gt;       = <A HREF="#PROJCS">PROJCS</A>["&lt;name&gt;", &lt;geographic cs&gt;, &lt;projection&gt;, {&lt;parameter&gt;,}* &lt;linear unit&gt; {,&lt;twin axes&gt;}{,&lt;authority&gt;}]
+&lt;projection&gt;         = <A HREF="#PROJECTION">PROJECTION</A>["&lt;name&gt;" {,&lt;authority&gt;}]
+&lt;geographic cs&gt;      = <A HREF="#GEOGCS">GEOGCS</A>["&lt;name&gt;", &lt;datum&gt;, &lt;prime meridian&gt;, &lt;angular unit&gt; {,&lt;twin axes&gt;} {,&lt;authority&gt;}]
+&lt;datum&gt;              = <A HREF="#DATUM">DATUM</A>["&lt;name&gt;", &lt;spheroid&gt; {,&lt;to wgs84&gt;} {,&lt;authority&gt;}]
+&lt;spheroid&gt;           = <A HREF="#SPHEROID">SPHEROID</A>["&lt;name&gt;", &lt;semi-major axis&gt;, &lt;inverse flattening&gt; {,&lt;authority&gt;}]
+&lt;semi-major axis&gt;    = &lt;number&gt;
+&lt;inverse flattening&gt; = &lt;number&gt;
+&lt;prime meridian&gt;     = <A HREF="#PRIMEM">PRIMEM</A>["&lt;name&gt;", &lt;longitude&gt; {,&lt;authority&gt;}]
+&lt;longitude&gt;          = &lt;number&gt;
+&lt;angular unit&gt;       = &lt;unit&gt;
+&lt;linear unit&gt;        = &lt;unit&gt;
+&lt;unit&gt;               = <A HREF="#UNIT">UNIT</A>["&lt;name&gt;", &lt;conversion factor&gt; {,&lt;authority&gt;}]
+&lt;conversion factor&gt;  = &lt;number&gt;
+&lt;geocentric cs&gt;      = <A HREF="#GEOCCS">GEOCCS</A>["&lt;name&gt;", &lt;datum&gt;, &lt;prime meridian&gt;, &lt;linear unit&gt; {,&lt;axis&gt;, &lt;axis&gt;, &lt;axis&gt;} {,&lt;authority&gt;}]
+&lt;authority&gt;          = <A HREF="#AUTHORITY">AUTHORITY</A>["&lt;name&gt;", "&lt;code&gt;"]
+&lt;vert cs&gt;            = <A HREF="#VERT_CS">VERT_CS</A>["&lt;name&gt;", &lt;vert datum&gt;, &lt;linear unit&gt;, {&lt;axis&gt;,} {,&lt;authority&gt;}]
+&lt;vert datum&gt;         = <A HREF="#VERT_DATUM">VERT_DATUM</A>["&lt;name&gt;", &lt;datum type&gt; {,&lt;authority&gt;}]
+&lt;datum type&gt;         = &lt;number&gt;
+&lt;compd cs&gt;           = <A HREF="#COMPD_CS">COMPD_CS</A>["&lt;name&gt;", &lt;head cs&gt;, &lt;tail cs&gt; {,&lt;authority&gt;}]
+&lt;head cs&gt;            = &lt;coordinate system&gt;
+&lt;tail cs&gt;            = &lt;coordinate system&gt;
+&lt;twin axes&gt;          = &lt;axis&gt;, &lt;axis&gt;
+&lt;axis&gt;               = <A HREF="#AXIS">AXIS</A>["&lt;name&gt;", NORTH | SOUTH | EAST | WEST | UP | DOWN | OTHER]
+&lt;to wgs84s&gt;          = <A HREF="#TOWGS84">TOWGS84</A>[&lt;seven param&gt;]
+&lt;seven param&gt;        = &lt;dx&gt;, &lt;dy&gt;, &lt;dz&gt;, &lt;ex&gt;, &lt;ey&gt;, &lt;ez&gt;, &lt;ppm&gt;
+&lt;dx&gt;                 = &lt;number&gt;
+&lt;dy&gt;                 = &lt;number&gt;
+&lt;dz&gt;                 = &lt;number&gt;
+&lt;ex&gt;                 = &lt;number&gt;
+&lt;ey&gt;                 = &lt;number&gt;
+&lt;ez&gt;                 = &lt;number&gt;
+&lt;ppm&gt;                = &lt;number&gt;
+&lt;fitted cs&gt;          = <A HREF="#FITTED_CS">FITTED_CS</A>["&lt;name&gt;", &lt;to base&gt;, &lt;base cs&gt;]
+&lt;to base&gt;            = &lt;math transform&gt;
+&lt;base cs&gt;            = &lt;coordinate system&gt;
+&lt;local cs&gt;           = <A HREF="#LOCAL_CS">LOCAL_CS</A>["&lt;name&gt;", &lt;local datum&gt;, &lt;unit&gt;, &lt;axis&gt;, {,&lt;axis&gt;}* {,&lt;authority&gt;}]
+&lt;local datum&gt;        = <A HREF="#LOCAL_DATUM">LOCAL_DATUM</A>["&lt;name&gt;", &lt;datum type&gt; {,&lt;authority&gt;}]</PRE>
+
+
+<H2>Description of WKT keywords</H2>
+<H3><A NAME="AUTHORITY">AUTHORITY</A></H3>
+<P ALIGN="justify">This is an optional clause that allows an external authority to manage the
+definition of an entity.</P>
+
+<H3><A NAME="AXIS">AXIS</A></H3>
+<P ALIGN="justify">The name of the axis is for human consumption. The enumerated value that
+follows is to allow software to correctly overlay different coordinate systems. If the optional
+<code>AXIS</code> terms are not present, then the default values are assumed. They are:</P>
+<TABLE cellpadding='0' cellspacing='0'>
+  <TR><TD nowrap>Geographic Coordinate System:&nbsp;</TD>
+      <TD nowrap><code>AXIS["Lon",EAST],AXIS["Lat",NORTH]</code></TD></TR>
+  <TR><TD nowrap>Projected Coordinate System:&nbsp;</TD>
+      <TD nowrap><code>AXIS["X",EAST],AXIS["Y",NORTH]</code></TD></TR>
+  <TR><TD nowrap>Geocentric Coordinate System:&nbsp;</TD>
+      <TD nowrap><code>AXIS["X",OTHER],AXIS["Y",EAST],AXIS["Z",NORTH]</code></TD></TR>
+</TABLE>
+<P ALIGN="justify">However, if these terms are present, and have non-default values, then
+implementations must be prepared to swap and reverse the coordinates of geometry before
+attempting to overlay graphics.</P>
+
+<H3><A NAME="COMPD_CS">COMPD_CS</A></H3>
+<P ALIGN="justify">This indicates a compound coordinate system, which combines the coordinate of
+two other coordinate systems. For example, a compound 3D coordinate system could be made up of a
+horizontal coordinate system and a vertical coordinate system.</P>
+
+<H3><A NAME="CONCAT_MT">CONCAT_MT</A></H3>
+<P ALIGN="justify">A transform defined by the concatenation of sub-transforms. The dimension of
+the output space of the first transform must match the dimension of the input space in the second
+transform (if defined), and so on for the remaining sub-transforms.</P>
+
+<H3><A NAME="DATUM">DATUM</A></H3>
+<P ALIGN="justify">This indicates the horizontal datum, which corresponds to the procedure used
+to measure positions on the surface of the Earth.</P>
+
+<H3><A NAME="FITTED_CS">FITTED_CS</A></H3>
+<P ALIGN="justify">This indicates a fitted coordinate system. The math transform is used to
+construct a map from the fitted coordinate system to the base coordinate system. The transform
+is often an affine map. The math transform works from the fitted CS to the base CS so that the
+fitted CS can have a smaller dimension that the base CS. This is often quite useful. For example,
+a fitted coordinate system could be a 2D plane approximately tangential to the Earth, but based
+on a WGS84 geocentric 3D coordinate system.</P>
+
+<H3><A NAME="GEOCCS">GEOCCS</A></H3>
+<P ALIGN="justify">A 3D coordinate system, with its origin at the center of the Earth. The
+<VAR>X</VAR> axis points towards the prime meridian. The <VAR>Y</VAR> axis points East or
+West. The <VAR>Z</VAR> axis points North or South. By default the <VAR>Z</VAR> axis will
+point North, and the <VAR>Y</VAR> axis will point East (e.g. a right handed system), but
+you should check the axes for non-default values.</P>
+
+<H3><A NAME="GEOGCS">GEOGCS</A></H3>
+<P ALIGN="justify">A coordinate system based on latitude and longitude. Some geographic
+coordinate systems are Lat/Lon, and some are Lon/Lat. You can find out which this is by
+examining the axes. You should also check the angular units, since not all geographic
+coordinate systems use degrees.</P>
+
+<H3><A NAME="INVERSE_MT">INVERSE_MT</A></H3>
+<P ALIGN="justify">A math transform defined as the inverse of another transform.</P>
+
+<H3><A NAME="LOCAL_DATUM">LOCAL_DATUM</A></H3>
+<P ALIGN="justify">This indicates the local datum.</P>
+
+<H3><A NAME="LOCAL_CS">LOCAL_CS</A></H3>
+<P ALIGN="justify">This indicates a local, ungeoreferenced coordinate system. Such
+coordinate systems are often used in CAD systems. They can also be used for local
+surveys, where the relationship between the surveyed site and the rest of the world
+is not important. The number of <A HREF="#AXIS"><CODE>AXIS</CODE></A> clauses indicates
+the dimension of the local coordinate system.</P>
+
+<H3><A NAME="PARAMETER">PARAMETER</A></H3>
+<P ALIGN="justify">A named projection parameter value. The units of the
+parameter must be inferred from its context. If the parameter is inside
+a <A HREF="#PROJCS"><CODE>PROJCS</CODE></A>, then its units will match
+the units of the <A HREF="#PROJCS"><CODE>PROJCS</CODE></A>. If the parameter
+is inside a <A HREF="#PARAM_MT"><CODE>PARAM_MT</CODE></A>, then its units
+will be meters and degrees for linear and angular values respectively.</P>
+
+<H3><A NAME="PARAM_MT">PARAM_MT</A></H3>
+<P ALIGN="justify">A parameterized math transform. All the linear parameters are expressed
+in meters, and all the angular parameters are expressed in degrees. Other parameters should
+use S.I. units where possible. (E.g. use Kg for mass, and seconds for time.)</P>
+<P ALIGN="justify">The &lt;classification name&gt; is a coded value that specifies the
+formulae used by the math transform. See Parameterized Transforms for legal values, and
+the corresponding parameters.</P>
+
+<H3><A NAME="PASSTHROUGH_MT">PASSTHROUGH_MT</A></H3>
+<P ALIGN="justify">This is a math transform that passes through a subset of ordinates to
+another transform. This allows transforms to operate on a subset of ordinates. For example,
+if you have (Lat,Lon,Height) coordinates, then you may wish to convert the height values
+from meters to feet without affecting the (Lat,Lon) values. If you wanted to affect the
+(Lat,Lon) values and leave the Height values alone, then you would have to swap the ordinates
+around to (Height,Lat,Lon). You can do this with an affine map.</P>
+<P ALIGN="justify">The &lt;integer&gt; argument is the index of the first affected ordinate.
+The &lt;math transform&gt; argument is the transform to pass coordinates onto.</P>
+
+<H3><A NAME="PRIMEM">PRIMEM</A></H3>
+<P ALIGN="justify">This defines the meridian used to take longitude measurements
+from. The units of the &lt;longitude&gt; must be inferred from the context. If the
+<CODE>PRIMEM</CODE> clause occurs inside a <A HREF="#GEOGCS"><CODE>GEOGCS</CODE></A>,
+then the longitude units will match those of the geographic coordinate system. If the
+<CODE>PRIMEM</CODE> clause occurs inside a <A HREF="#GEOCCS"><CODE>GEOCCS</CODE></A>,
+then the units will be in degrees.</P>
+<P ALIGN="justify">The longitude value defines the angle of the prime meridian relative to
+the Greenwich Meridian. A positive value indicates the prime meridian is East of Greenwich,
+and a negative value indicates the prime meridian is West of Greenwich.</P>
+
+<H3><A NAME="PROJCS">PROJCS</A></H3>
+<P ALIGN="justify">This indicates a projected coordinate system. The
+<A HREF="#PROJECTION"><CODE>PROJECTION</CODE></A> sub-clause contains
+the classification name used by <CODE>MathTransformFactory</CODE>, and the
+<A HREF="#PARAMETER"><CODE>PARAMETER</CODE></A> clauses specify the parameters.
+However, the units used by <CODE>MathTransformFactory</CODE> are always meters
+and degrees, and the units in the <A HREF="#PARAMETER"><CODE>PARAMETER</CODE></A>
+clauses are in the linear/angular units of the
+<A HREF="#PROJCS"><CODE>PROJCS</CODE></A>/<A HREF="#GEOGCS"><CODE>GEOGCS</CODE></A>
+respectively. So if you are writing code to read or write WKT, then you must do the
+unit conversions - be careful!</P>
+<P ALIGN="justify">(Notice that this handling of units is slightly different from the way
+the EPSG 4 database works. In the EPSG 4 database, each transformation parameter value
+defines its own units. However, 99% of the EPSG projection parameter units are the same
+as the units of the corresponding projected coordinate system.)</P>
+
+<H3><A NAME="PROJECTION">PROJECTION</A></H3>
+<P ALIGN="justify">This describes a projection from geographic coordinates to projected
+coordinates. It is used inside a <A HREF="#PROJCS"><CODE>PROJCS</CODE></A> to define the
+parameters of the projection transform.</P>
+
+<H3><A NAME="SPHEROID">SPHEROID</A></H3>
+<P ALIGN="justify">This describes a spheroid, which is an approximation of the Earth's
+surface as a squashed sphere. In this document, the terms "spheroid" and "ellipsoid" are
+synonymous. The term "<CODE>SPHEROID</CODE>" is used in WKT for compatibility with Simple
+Features. However, the term "ellipsoid" is preferred elsewhere in this specification.</P>
+
+<H3><A NAME="TOWGS84">TOWGS84</A></H3>
+<P ALIGN="justify">This indicates a list of up to 7 Bursa Wolf transformation parameters.
+These parameters can be used to approximate a transformation from the horizontal datum to
+the WGS84 datum. However, it must be remembered that this transformation is only an
+approximation. For a given horizontal datum, different Bursa Wolf transformations can
+be used to minimize the errors over different regions.</P>
+<P ALIGN="justify">If the <A HREF="#DATUM"><CODE>DATUM</CODE></A> clause contains a
+<CODE>TOWGS84</CODE> clause, then this should be its "preferred" transformation, which
+will often be the transformation which gives a broad approximation over the whole area
+of interest (e.g. the area of interest in the containing geographic coordinate system).
+Sometimes, only the first three or six parameters are defined. In this case the remaining
+parameters must be zero. If only three parameters are defined, then they can still be plugged
+into the Bursa Wolf formulas, or you can take a short cut. The Bursa Wolf transformation works
+on geocentric coordinates, so you cannot apply it onto geographic coordinates directly. If there
+are only three parameters then you can use the Molodenski or abridged Molodenski formulas.</P>
+<P ALIGN="justify">The <A HREF="#DATUM"><CODE>DATUM</CODE></A> clause may not contain a
+<CODE>TOWGS84</CODE> clause in the following
+situations:</P>
+<UL>
+  <LI>The writing application was using the Simple Features specification, which does not
+      specify <CODE>TOWGS84</CODE> as a valid keyword</LI>
+  <LI>The writing application did not have an available transformation.</LI>
+  <LI>There is no possible transformation. For example, the horizontal datum could be a
+      surface that rotates relative to the Earth's surface.</LI>
+</UL>
+<P ALIGN="justify">In particular, if the <A HREF="#DATUM"><CODE>DATUM</CODE></A> does contain
+a <CODE>TOWGS84</CODE> clause, and the parameter values are zero, then the receiving application
+can assume that the writing application believed that the datum is approximately equal to WGS84.</P>
+
+<H3><A NAME="UNIT">UNIT</A></H3>
+<P ALIGN="justify">This describes units used for values elsewhere within the parent WKT clause
+(sometimes including descendants of the parent clause). The physical dimension (i.e. type) of
+the units is determined by context. For example, in a <A HREF="#GEOGCS"><CODE>GEOGCS</CODE></A>
+the type of the units is angular. In a <A HREF="#VERT_CS"><CODE>VERT_CS</CODE></A> the type of
+the units is linear. Within a <CODE>UNIT</CODE> clause, the units are described by relating them
+to a fundamental unit of that type with a conversion factor. For linear units, the conversion
+factor is the scalar value that converts the described units into meters. For angular units, the
+conversion factor is the scalar value that converts the described units into radians.</P>
+
+<H3><A NAME="VERT_DATUM">VERT_DATUM</A></H3>
+<P ALIGN="justify">This indicates the vertical datum, or method used for vertical measurements.</P>
+
+<H3><A NAME="VERT_CS">VERT_CS</A></H3>
+<P ALIGN="justify">This indicates a vertical coordinate system.</P>
+
+
+<H2>WKT Example</H2>
+<P ALIGN="justify">The following example shows a 3D compound coordinate system, which is made
+by combining a projected coordinate system and a vertical coordinate system. This is the same
+coordinate system as used for the XML Example.</P>
+
+<PRE><A HREF="#COMPD_CS">COMPD_CS</A>["OSGB36 / British National Grid + ODN",
+    <A HREF="#PROJCS">PROJCS</A>["OSGB 1936 / British National Grid",
+        <A HREF="#GEOGCS">GEOGCS</A>["OSGB 1936",
+            <A HREF="#DATUM">DATUM</A>["OSGB_1936",
+                <A HREF="#SPHEROID">SPHEROID</A>["Airy 1830",6377563.396,299.3249646,<A HREF="#AUTHORITY">AUTHORITY</A>["EPSG","7001"]],
+                <A HREF="#TOWGS84">TOWGS84</A>[375,-111,431,0,0,0,0],
+                <A HREF="#AUTHORITY">AUTHORITY</A>["EPSG","6277"]],
+            <A HREF="#PRIMEM">PRIMEM</A>["Greenwich",0,<A HREF="#AUTHORITY">AUTHORITY</A>["EPSG","8901"]],
+            <A HREF="#UNIT">UNIT</A>["DMSH",0.0174532925199433,<A HREF="#AUTHORITY">AUTHORITY</A>["EPSG","9108"]],
+            <A HREF="#AXIS">AXIS</A>["Lat",NORTH],
+            <A HREF="#AXIS">AXIS</A>["Long",EAST],
+            <A HREF="#AUTHORITY">AUTHORITY</A>["EPSG","4277"]],
+        <A HREF="#PROJECTION">PROJECTION</A>["Transverse_Mercator"],
+        <A HREF="#PARAMETER">PARAMETER</A>["latitude_of_origin",49],
+        <A HREF="#PARAMETER">PARAMETER</A>["central_meridian",-2],
+        <A HREF="#PARAMETER">PARAMETER</A>["scale_factor",0.999601272],
+        <A HREF="#PARAMETER">PARAMETER</A>["false_easting",400000],
+        <A HREF="#PARAMETER">PARAMETER</A>["false_northing",-100000],
+        <A HREF="#UNIT">UNIT</A>["metre",1,<A HREF="#AUTHORITY">AUTHORITY</A>["EPSG","9001"]],
+        <A HREF="#AXIS">AXIS</A>["E",EAST],
+        <A HREF="#AXIS">AXIS</A>["N",NORTH],
+        <A HREF="#AUTHORITY">AUTHORITY</A>["EPSG","27700"]],
+    <A HREF="#VERT_CS">VERT_CS</A>["Newlyn",
+        <A HREF="#VERT_DATUM">VERT_DATUM</A>["Ordnance Datum Newlyn",2005,<A HREF="#AUTHORITY">AUTHORITY</A>["EPSG","5101"]],
+        <A HREF="#UNIT">UNIT</A>["metre",1,<A HREF="#AUTHORITY">AUTHORITY</A>["EPSG","9001"]],
+        <A HREF="#AXIS">AXIS</A>["Up",UP],
+        <A HREF="#AUTHORITY">AUTHORITY</A>["EPSG","5701"]],
+    <A HREF="#AUTHORITY">AUTHORITY</A>["EPSG","7405"]]</PRE>
+  </BODY>
+</HTML>

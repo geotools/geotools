@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    Document   : test19.xml
+    Created on : 06 Febuary 2003
+    Author     : cholmes
+    Description:
+        To test a bbox after a logic filter
+-->
+
+
+<root>
+ <Filter xmlns:gml="http://www.opengis.net/gml">
+  <Or>
+  <And>
+   <BBOX>
+    <PropertyName>geom</PropertyName>
+     <gml:Box srsName="EPSG:2393">
+      <gml:coordinates>600,600 700,700</gml:coordinates>
+     </gml:Box>
+    </BBOX>
+    <PropertyIsEqualTo>
+     <PropertyName>name</PropertyName>
+      <Literal>simple polygons</Literal>
+     </PropertyIsEqualTo>
+    </And>
+     <PropertyIsEqualTo>
+       <PropertyName>name</PropertyName>
+       <Literal>boink</Literal>
+      </PropertyIsEqualTo>
+     </Or>
+   </Filter>
+   <Filter xmlns:gml="http://www.opengis.net/gml">
+       <BBOX>
+      <PropertyName>geom</PropertyName>
+      <gml:Box srsName="EPSG:2393">
+       <gml:coordinates>0,20 1402,900</gml:coordinates>
+      </gml:Box>
+     </BBOX>
+   </Filter>
+   <Filter xmlns:gml="http://www.opengis.net/gml">
+  <And>
+   <BBOX>
+    <PropertyName>geom</PropertyName>
+     <gml:Box srsName="EPSG:2393">
+      <gml:coordinates>4,4 76,76</gml:coordinates>
+     </gml:Box>
+    </BBOX>
+    <PropertyIsEqualTo>
+     <PropertyName>date</PropertyName>
+      <Literal>12 feb</Literal>
+     </PropertyIsEqualTo>
+     <PropertyIsEqualTo>
+       <PropertyName>type</PropertyName>
+       <Literal>blorg</Literal>
+      </PropertyIsEqualTo>
+    </And>
+   </Filter>
+   
+</root>

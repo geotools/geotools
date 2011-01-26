@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gml="http://www.opengis.net/gml" xmlns:swe="http://www.opengis.net/swe/0.0" xmlns:om="http://www.opengis.net/om" xmlns:sa="http://www.seegrid.csiro.au/xml/sampling" xmlns:xmml="http://www.opengis.net/xmml" targetNamespace="http://www.opengis.net/xmml" elementFormDefault="qualified" attributeFormDefault="unqualified" version="pre-release">
+	<annotation>
+		<documentation>geochemistry.xsd
+
+A GML conformant schema 
+for geochemistry
+
+Copyright © 2005 CSIRO - see https://www.seegrid.csiro.au/twiki/bin/view/Xmml/LegalNotices#Software_Notice</documentation>
+	</annotation>
+	<!-- ====================================================================== -->
+	<!-- bring in other schemas -->
+	<import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+	<import namespace="http://www.opengis.net/swe/0.0" schemaLocation="../../sweCommon/1.0.30/swe.xsd"/>
+	<import namespace="http://www.opengis.net/om" schemaLocation="../../om/1.0.30/om.xsd"/>
+	<import namespace="http://www.seegrid.csiro.au/xml/sampling" schemaLocation="../../sampling/0.1.0/sampling.xsd"/>
+	<include schemaLocation="./feature.xsd"/>
+	<include schemaLocation="../../enumerations/LUTgeochemistry.xsd"/>
+	<!-- ====================================================================== -->
+	<complexType name="GeochemMeasurementType">
+		<annotation>
+			<documentation>Extend with 
+        			analyte (specializes the "chemicalConcentration" which is implicitly the fixed value for observedProperty which may be omitted in the instance)
+        			purpose (optional)</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="om:MeasurementType">
+				<sequence>
+					<element name="analyte" type="xmml:analyteCode"/>
+					<element name="purpose" type="string" minOccurs="0"/>
+					<group ref="xmml:ExtendedFeatureProperties"/>
+				</sequence>
+				<attribute name="seqNo" type="integer" use="optional"/>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ...................... -->
+	<element name="GeochemMeasurement" type="xmml:GeochemMeasurementType" substitutionGroup="om:Measurement"/>
+	<!-- ...................... -->
+	<complexType name="GeochemMeasurementPropertyType">
+		<sequence minOccurs="0">
+			<element ref="xmml:GeochemMeasurement"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+	<complexType name="GeochemSpecimenType">
+		<annotation>
+			<documentation>Basic geochemistry specimen feature type. 
+				Use the (optional) "related Observation" property to link specimen to observations and measurements made on it
+				
+				If no fractionation is described by processingStep properties, then whole rock analysis is implied</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="sa:SpecimenType">
+				<sequence>
+					<group ref="xmml:ExtendedFeatureProperties"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ...................... -->
+	<element name="GeochemSpecimen" type="xmml:GeochemSpecimenType" substitutionGroup="sa:Specimen"/>
+	<!-- ====================================================================== -->
+	<complexType name="AssayProcedureType">
+		<annotation>
+			<documentation>Adds the following assay-specific properties to generic procedure:
+				analyte
+				lowerDetectionLimit
+				upperDetectionLimit
+				secondUpperDetectionLimit
+				
+				*** Note: this should be harmonised with adx:AnalyteProcedure ***</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="om:ObservationProcedureType">
+				<sequence>
+					<element name="analyteDetails" minOccurs="0" maxOccurs="unbounded">
+						<complexType>
+							<sequence>
+								<element ref="xmml:AnalyteSensitivity"/>
+							</sequence>
+						</complexType>
+					</element>
+					<group ref="xmml:ExtendedFeatureProperties"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ...................... -->
+	<element name="AssayProcedure" type="xmml:AssayProcedureType" substitutionGroup="om:ObservationProcedure">
+		<annotation>
+			<documentation>description of an assay method</documentation>
+		</annotation>
+	</element>
+	<!-- ...................... -->
+	<complexType name="AssayProcedurePropertyType">
+		<sequence minOccurs="0">
+			<element ref="xmml:AssayProcedure"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+	<element name="AnalyteSensitivity">
+		<complexType>
+			<sequence>
+				<element name="analyte" type="xmml:analyteCode"/>
+				<element name="lowerDetectionLimit" type="gml:MeasureType" nillable="true"/>
+				<element name="upperDetectionLimit" type="gml:MeasureType" minOccurs="0"/>
+			</sequence>
+		</complexType>
+	</element>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<complexType name="ChemAxisDefinitionType">
+		<complexContent>
+			<extension base="swe:ItemDefinitionType">
+				<sequence>
+					<element name="lowerDetectionLimit" type="gml:MeasureType" nillable="true"/>
+					<element name="upperDetectionLimit" type="gml:MeasureType" minOccurs="0"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ........................................ -->
+	<element name="ChemAxisDefinition" type="xmml:ChemAxisDefinitionType" substitutionGroup="swe:ItemDefinition">
+		<annotation>
+			<documentation>Specialised AxisDefinition with sensitivity information added</documentation>
+		</annotation>
+	</element>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<complexType name="AssaySuiteDefinitionType">
+		<annotation>
+			<documentation/>
+		</annotation>
+		<complexContent>
+			<extension base="gml:DefinitionType">
+				<sequence>
+					<element name="component" minOccurs="0" maxOccurs="unbounded">
+						<complexType>
+							<sequence minOccurs="0">
+								<element name="Assay" type="xmml:AssayDefinitionType"/>
+							</sequence>
+							<attributeGroup ref="gml:AssociationAttributeGroup"/>
+						</complexType>
+					</element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ...................... -->
+	<element name="AssaySuite" type="xmml:AssaySuiteDefinitionType" substitutionGroup="gml:Definition">
+		<annotation>
+			<documentation>description of an assay suite, which includes one or more Assay definitions</documentation>
+		</annotation>
+	</element>
+	<!-- ====================================================================== -->
+	<complexType name="AssayDefinitionType">
+		<annotation>
+			<documentation>*** Note: this must be harmonised with xmml:AxisDefinition ***</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="gml:DefinitionType">
+				<sequence>
+					<element name="analyte" type="xmml:analyteCode"/>
+					<element ref="gml:unitOfMeasure"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ...................... -->
+	<element name="Assay" type="xmml:AssayDefinitionType" substitutionGroup="gml:Definition">
+		<annotation>
+			<documentation>description of an assay</documentation>
+		</annotation>
+	</element>
+	<!-- ====================================================================== -->
+	<!-- code lists -->
+	<!-- ====================================================================== -->
+	<simpleType name="sampleCollectionTypes">
+		<annotation>
+			<documentation>A restricted method type</documentation>
+		</annotation>
+		<restriction base="string">
+			<enumeration value="Drill"/>
+			<enumeration value="Stream"/>
+			<enumeration value="Lag"/>
+		</restriction>
+	</simpleType>
+	<!-- ====================================================================== -->
+	<simpleType name="WMCsampleCode">
+		<annotation>
+			<documentation>A restricted method type</documentation>
+		</annotation>
+		<restriction base="string">
+			<enumeration value="STAND">
+				<annotation>
+					<documentation>Standard</documentation>
+				</annotation>
+			</enumeration>
+			<enumeration value="DSPLIT"/>
+			<enumeration value="P"/>
+		</restriction>
+	</simpleType>
+	<!-- ====================================================================== -->
+	<element name="WMCpurpose" type="xmml:QAQCPurposeWMC"/>
+	<!-- ...................... -->
+	<simpleType name="QAQCPurposeWMC">
+		<annotation>
+			<documentation>Codes for WMC QAQC measurements.
+    
+    QS - internal standard or blank
+    SD - site duplicate - i.e. splits from drill core, proximate specimen for surface samples
+    RS - repeat sample for seasonal effects - surface sampling
+    C - check assay - same prep, different lab
+    D - lab duplicate - split prior to pulverising, same lab
+    R - lab replicate - split after pulverising, same lab</documentation>
+		</annotation>
+		<restriction base="string">
+			<enumeration value="normal"/>
+			<enumeration value="QS"/>
+			<enumeration value="SD"/>
+			<enumeration value="RS"/>
+			<enumeration value="C"/>
+			<enumeration value="D"/>
+			<enumeration value="R"/>
+		</restriction>
+	</simpleType>
+	<!-- ====================================================================== -->
+</schema>

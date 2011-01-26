@@ -1,0 +1,31 @@
+  This project originally by Prolexis was to implement ISO geometry simply by 
+  wrapping JTS. Were that things could be that simple.
+
+  IP Review:
+ 
+    * Adrian Custer, June 2008
+
+    STATUS: DIRTY 
+        No Data to be worried about. 
+        Code has a mix of headers, standard and as follows.
+          http://jira.codehaus.org/browse/GEOT-1899
+
+----------------------------------------------------------------------------------------------------
+/*$************************************************************************************************
+ **
+ ** $Id$
+ **
+ ** $Source: /cvs/ctree/LiteGO1/src/jar/com/polexis/lite/spatialschema/geometry/primitive/CurveImpl.java,v $
+ **
+ ** Copyright (C) 2003 Open GIS Consortium, Inc. All Rights Reserved. http://www.opengis.org/Legal/
+ **
+ *************************************************************************************************/
+----------------------------------------------------------------------------------------------------
+
+  It seems like the intent of Polexis was to have the copyright follow the same 
+  path as the copyright for GeoAPI. 
+
+  Standard headers added, where missing, with the arbitrary 2006 start date. We 
+  could probably do better if we knew more about the project.
+
+  Extant headers with (c) to GEotools changed to benefit OSGeo.

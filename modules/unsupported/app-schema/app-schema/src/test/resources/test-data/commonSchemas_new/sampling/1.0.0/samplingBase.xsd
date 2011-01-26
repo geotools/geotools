@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns:gml="http://www.opengis.net/gml" xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:swe="http://www.opengis.net/swe/1.0.1" xmlns:om="http://www.opengis.net/om/1.0" xmlns="http://www.w3.org/2001/XMLSchema"
+        xmlns:sa="http://www.opengis.net/sampling/1.0" targetNamespace="http://www.opengis.net/sampling/1.0" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.0">
+	<annotation>
+		<documentation>samplingBase.xsd
+
+Sampling features are feature types that are used primarily for making observations: 
+Abstract SamplingFeature, and collections are described in this schema document
+
+SamplingPoint, SamplingCurve, SamplingSurface and SamplingSolid are described in samplingManifold.xsd
+Specimen and LocatedSpecimen are described in specimen.xsd
+
+Copyright (c) 2007 Open Geospatial Consortium - see http://www.opengeospatial.org/ogc/software</documentation>
+	</annotation>
+	<!-- ====================================================================== -->
+	<!-- bring in other schemas -->
+	<import namespace="http://www.opengis.net/gml" schemaLocation="../../gml/3.1.1/base/gml.xsd"/>
+	<!-- GMD schema does not work with GML 3.1.1
+	<import namespace="http://www.isotc211.org/2005/gmd" schemaLocation="../../../../gml/trunk/gml/3.1.1/gmd/gmd.xsd"/>
+	-->
+	<!--
+	<import namespace="http://www.opengis.net/cv/0.2" schemaLocation="http://schemas.opengis.net/cv/0.2.0/cv.xsd"/>
+	-->
+	<import namespace="http://www.opengis.net/swe/1.0.1" schemaLocation="../../sweCommon/1.0.1/swe.xsd"/>
+	<import namespace="http://www.opengis.net/om/1.0" schemaLocation="../../om/1.0.0/om.xsd"/>
+	<include schemaLocation="./surveyProcedure.xsd"/>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<!-- ===== Feature types in Site hierarchy ====== -->
+	<!-- ====================================================================== -->
+	<complexType name="SamplingFeatureType">
+		<annotation>
+			<documentation>A "SamplingFeature" is a feature used primarily for taking observations.</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="gml:AbstractFeatureType">
+				<sequence>
+					<element name="sampledFeature" type="gml:FeaturePropertyType" maxOccurs="unbounded">
+						<annotation>
+							<documentation>A SamplingFeature must be associated with one or more other features through an association role sampledFeature. 
+							This association records the intention of the sample design. 
+							The target of this association will usually be a domain feature.</documentation>
+						</annotation>
+					</element>
+					<element name="relatedObservation" type="om:ObservationPropertyType" minOccurs="0" maxOccurs="unbounded">
+						<annotation>
+							<documentation>A SamplingFeature is distinguished from typical domain feature types in that it has a set of [0..*] navigable associations with Observations, given the rolename relatedObservation. 
+					This complements the association role “featureOfInterest” which is constrained to point back from the Observation to the Sampling-Feature. 
+					The usual requirement of an Observation feature-of-interest is that its type has a property matching the observed-property on the Observation. 
+					In the case of Sampling-features, the topology of the model and navigability of the relatedObservation role means that this requirement is satisfied automatically: 
+					a property of the sampling-feature is implied by the observedProperty of a related observation. 
+					This effectively provides an unlimited set of “soft-typed” properties on a Sampling Feature.</documentation>
+						</annotation>
+					</element>
+					<element name="relatedSamplingFeature" type="sa:SamplingFeatureRelationPropertyType" minOccurs="0" maxOccurs="unbounded">
+						<annotation>
+							<documentation>Sampling features are frequently related to each other, as parts of complexes, networks, through sub-sampling, etc. 
+							This is supported by the relatedSamplingFeature association with a SamplingFeatureRelation association class, which carries a source, target and role.</documentation>
+						</annotation>
+					</element>
+					<element name="surveyDetails" type="sa:SurveyProcedurePropertyType" minOccurs="0">
+						<annotation>
+							<documentation>A common requirement for sampling features is an indication of the SurveyProcedure 
+							that provides the surveyDetails related to determination of its location and shape. </documentation>
+						</annotation>
+					</element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- .................. -->
+	<element name="SamplingFeature" abstract="true" type="sa:SamplingFeatureType" substitutionGroup="gml:_Feature"/>
+	<!-- .................. -->
+	<complexType name="SamplingFeaturePropertyType">
+		<sequence minOccurs="0">
+			<element ref="sa:SamplingFeature"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+	<complexType name="SamplingFeatureRelationType">
+		<annotation>
+			<documentation>A "SamplingFeatureRelation" is used to describe relationships between sampling features, including part-whole, siblings, etc.</documentation>
+		</annotation>
+		<sequence>
+			<element name="role" type="gml:CodeType"/>
+			<element name="target" type="sa:SamplingFeaturePropertyType"/>
+		</sequence>
+	</complexType>
+	<!-- .................. -->
+	<element name="SamplingFeatureRelation" type="sa:SamplingFeatureRelationType"/>
+	<!-- .................. -->
+	<complexType name="SamplingFeatureRelationPropertyType">
+		<sequence>
+			<element ref="sa:SamplingFeatureRelation"/>
+		</sequence>
+	</complexType>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<!-- Collection -->
+	<!-- ====================================================================== -->
+	<complexType name="SamplingFeatureCollectionType">
+		<annotation>
+			<documentation>A Sampling Feature Collection is a simple collection of sampling features. 
+			The relationship of members to the collection is equivalent to a part-whole relation. 
+			A collection is a sampling feature so must still carry the sampledFeature association to indicate intention.</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="sa:SamplingFeatureType">
+				<sequence>
+					<element name="member" type="sa:SamplingFeaturePropertyType" maxOccurs="unbounded"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- .................. -->
+	<element name="SamplingFeatureCollection" type="sa:SamplingFeatureCollectionType" substitutionGroup="sa:SamplingFeature"/>
+	<!-- .................. -->
+	<complexType name="SamplingFeatureCollectionPropertyType">
+		<sequence minOccurs="0">
+			<element ref="sa:SamplingFeatureCollection"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+</schema>

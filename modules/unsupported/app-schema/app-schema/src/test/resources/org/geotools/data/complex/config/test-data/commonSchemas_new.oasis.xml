@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<!DOCTYPE catalog PUBLIC "-//OASIS//DTD Entity Resolution XML Catalog V1.0//EN" "http://www.oasis-open.org/committees/entity/release/1.0/catalog.dtd">
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">  
+    <rewriteSystem systemIdStartString="http://schemas.opengis.net/gml" rewritePrefix="file:///schemas/gml/trunk/gml"/>
+    <rewriteSystem systemIdStartString="http://schemas.opengis.net/xlink" rewritePrefix="file:///schemas/gml/trunk/xlink"/>
+    <rewriteSystem systemIdStartString="https://www.seegrid.csiro.au/subversion/xmml/swe/trunk/" rewritePrefix="file:///src/gt21/trunk/gt/modules/unsupported/community-schemas/community-schema-ds/src/test/resources/test-data/commonSchemas/"/>
+    <rewriteSystem systemIdStartString="https://www.seegrid.csiro.au/subversion/xmml/swe/trunk/" rewritePrefix="file:///src/gt21/trunk/gt/modules/unsupported/community-schemas/community-schema-ds/src/test/resources/test-data/commonSchemas/"/>
+</catalog>

@@ -1,0 +1,3 @@
+<Filter  xmlns:gml="http://www.opengis.net/gml">
+  <BBOX><PropertyName>testGeometry</PropertyName><gml:Box srsName="EPSG:4326"><gml:coordinates>0,0 10,10</gml:coordinates></gml:Box></BBOX>
+</Filter>

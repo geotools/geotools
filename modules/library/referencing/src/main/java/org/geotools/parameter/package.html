@@ -1,0 +1,30 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<HTML>
+  <HEAD>
+    <TITLE>package org.geotools.parameter</TITLE>
+  </HEAD>
+  <BODY>
+  {@linkplain org.geotools.parameter.Parameter Parameter} implementation.
+  An explanation for this package is provided in the
+  {@linkplain org.opengis.parameter OpenGIS&reg; javadoc}.
+  The remaining discussion on this page is specific to the Geotools implementation.
+
+  <P>The starting point is often {@link org.opengis.parameter.ParameterDescriptorGroup}.
+  Operation implementations need to defines one. Operation usages typically invoke its
+  {@link org.opengis.parameter.ParameterDescriptorGroup#createValue createValue} method
+  and fill the returned object with parameter values. This Geotools package provides the
+  following implementations:</P>
+
+  <UL>
+    <LI><P>{@link org.geotools.parameter.DefaultParameterDescriptorGroup} for the general case.</P></LI>
+
+    <LI><P>{@link org.geotools.parameter.ImagingParameterDescriptors} for wrappers around
+        {@linkplain javax.media.jai.ParameterListDescriptor Java Advanced Imaging's parameters}.</P></LI>
+
+    <LI><P>{@link org.geotools.parameter.MatrixParameterDescriptors} for matrix parameters,
+        including the number of rows and columns. The total number of parameters in this group vary according
+        the number of rows and columns.</P></LI>
+  </UL>
+  </BODY>
+</HTML>

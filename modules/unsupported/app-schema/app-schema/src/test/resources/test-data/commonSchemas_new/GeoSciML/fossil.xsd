@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2007 sp2 (http://www.altova.com) by Eric Boisvert (Ressources naturelles Canada) -->
+<xs:schema xmlns:gsml="http://www.cgi-iugs.org/xml/GeoSciML/2" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:gml="http://www.opengis.net/gml" targetNamespace="http://www.cgi-iugs.org/xml/GeoSciML/2" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:annotation>
+		<xs:documentation>Encoded by Eric Boisvert (May 2007) Geological Survey of Canada</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+	<xs:include schemaLocation="vocabulary.xsd"/>
+	<xs:include schemaLocation="geologicStructure.xsd"/>
+	<xs:include schemaLocation="CGI_Value.xsd"/>
+	<xs:complexType name="OrganismType">
+		<xs:complexContent>
+			<xs:extension base="gml:AbstractGMLType">
+				<xs:sequence>
+					<xs:element name="classifier" type="gsml:ControlledConceptPropertyType" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ..................... -->
+	<xs:element name="Organism" type="gsml:OrganismType" substitutionGroup="gml:_Object"/>
+	<!-- ..................... -->
+	<xs:complexType name="OrganismPropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:element ref="gsml:Organism"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gsml:EstimatedPropertyAttributeGroup"/>
+	</xs:complexType>
+	<!--=======================-->
+	<xs:complexType name="TraceFossilType">
+		<xs:complexContent>
+			<xs:extension base="gsml:GeologicStructureType">
+				<xs:sequence>
+					<xs:element name="sourceOrganism" type="gsml:OrganismPropertyType" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ..................... -->
+	<xs:element name="TraceFossil" type="gsml:TraceFossilType" substitutionGroup="gsml:GeologicStructure"/>
+	<!-- ..................... -->
+	<xs:complexType name="TraceFossilPropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:element ref="gsml:TraceFossil"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gsml:EstimatedPropertyAttributeGroup"/>
+	</xs:complexType>
+	<!--=======================-->
+	<xs:complexType name="FossilMoldType">
+		<xs:complexContent>
+			<xs:extension base="gsml:GeologicStructureType">
+				<xs:sequence>
+					<xs:element name="sourceOrganism" type="gsml:OrganismPropertyType" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ..................... -->
+	<xs:element name="FossilMold" type="gsml:FossilMoldType" substitutionGroup="gsml:GeologicStructure"/>
+	<!-- ..................... -->
+	<xs:complexType name="FossilMoldPropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:element ref="gsml:FossilMold"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gsml:EstimatedPropertyAttributeGroup"/>
+	</xs:complexType>
+</xs:schema>

@@ -1,0 +1,28 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<HTML>
+  <HEAD>
+    <TITLE>package org.geotools.referencing.factory.wms</TITLE>
+  </HEAD>
+  <BODY>
+  Provides {@linkplain org.opengis.referencing.crs.CoordinateReferenceSystem
+  coordinate reference systems} specified in the <CITE>Web Map Service</CITE>
+  specification (ISO 19128). This include:
+  <P>
+  <UL>
+    <LI>{@code CRS} space</LI>
+    <LI>{@code AUTO2} space: <CITE>automatic projections</CITE> (dynamic projections)
+        based on code and location:
+        <UL>
+          <LI>{@code AUTO2} projection codes are in the range 42000-42499</LI>
+          <LI><var>lon0</var> and <var>lat0</var> are central point of the projection</LI>
+          <LI>The <var>lon0</var>/<var>lat0</var> are provided by the SRS parameter of the map request.</LI>
+        </UL>
+    </LI>
+  </UL>
+  <P>
+  Those CRS are defined in Annex B (<CITE>CRS definitions</CITE>) of
+  ISO 19128 (<CITE>Web Map Service Implementation Specification</CITE>).
+  </P>
+  </BODY>
+</HTML>

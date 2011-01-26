@@ -1,0 +1,1 @@
+<Filter xmlns:gml="http://www.opengis.net/gml"><Not><Disjoint><PropertyName>testGeometry</PropertyName><gml:Box><gml:coordinates>-57.9188,46.2023 -46.6873,51.8145</gml:coordinates></gml:Box></Disjoint></Not></Filter>

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- =======================================================================    
+        Maven Project Configuration File                                        
+                                                                                
+        The Geotools Project                                                    
+            http://www.geotools.org/                                            
+                                                                                
+        Version: $Id$              
+     ======================================================================= -->
+  <project xmlns="http://maven.apache.org/POM/4.0.0" 
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                               http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.geotools</groupId>
+    <artifactId>unsupported</artifactId>
+    <version>2.7-SNAPSHOT</version>
+  </parent>
+
+
+  <!-- =========================================================== -->
+  <!--     Module Description                                      -->
+  <!-- =========================================================== -->
+  <groupId>org.geotools</groupId>
+  <artifactId>gt-geometry</artifactId>
+  <packaging>jar</packaging>
+  <name>Geometries</name>
+
+  <scm>
+    <connection>
+      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/geometry/
+    </connection>
+    <url>http://svn.osgeo.org/geotools/trunk/modules/unsupported/geometry/</url>
+  </scm>
+
+  <description>
+    Implementations of ISO 19107 (Spatial Schema).
+  </description>
+
+  <licenses>
+    <license>
+      <name>Lesser General Public License (LGPL)</name>
+      <url>http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+
+  <!-- =========================================================== -->
+  <!--     Developers and Contributors                             -->
+  <!-- =========================================================== -->
+  <developers>
+    <developer>
+      <name>Sanjay Jena</name>
+      <id>sanjayjena</id>
+      <email>sanjayjena@users.sourceforge.net</email>
+      <organization>Fachhochschule Koeln</organization>
+      <organizationUrl>www.fh-koeln.de</organizationUrl>
+      <timezone>(todo)</timezone>
+      <roles>
+        <role>Module Maintainer</role>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Jackson Roehrig</name>
+      <organization>Fachhochschule Koeln</organization>
+      <organizationUrl>www.fh-koeln.de</organizationUrl>
+      <roles>
+        <role>Java developper</role>
+      </roles>
+    </developer>
+     <developer>
+      <name>Graham Davis</name>
+      <organization>Refractions Research</organization>
+      <organizationUrl>www.refractions.net</organizationUrl>
+      <roles>
+        <role>Java developper</role>
+      </roles>
+    </developer>
+  </developers>
+
+
+  <!-- ======================================================= -->
+  <!--     Compilation.                                        -->
+  <!-- ======================================================= -->
+  <build>
+    <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>2.3</version>
+          <!-- Current version is 2.3, but it seems to be rough with
+               class loaders; JAI is not found anymore, and we have
+               some additional test failures. -->
+        </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.5</source>  <!-- The -source argument for the Java compiler. -->
+          <target>1.5</target>  <!-- The -target argument for the Java compiler. -->
+          <debug>true</debug>   <!-- Whether to include debugging information.   -->
+          <encoding>UTF-8</encoding> <!-- The -encoding argument for the Java compiler. -->
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <excludes>
+            <exclude>**/RunStoredTest.java</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+
+  <!-- =========================================================== -->
+  <!--     Dependency Management                                   -->
+  <!-- =========================================================== -->
+  <dependencies>
+    <dependency>
+      <groupId>net.java.dev.jsr-275</groupId>
+      <artifactId>jsr-275</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-main</artifactId>
+      <version>${project.version}</version>  
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-sample-data</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-epsg-hsql</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+	<dependency>
+	    <groupId>picocontainer</groupId>
+	    <artifactId>picocontainer</artifactId>
+	    <version>3</version>
+	    <scope>test</scope>
+	</dependency>       
+  </dependencies>
+
+</project>

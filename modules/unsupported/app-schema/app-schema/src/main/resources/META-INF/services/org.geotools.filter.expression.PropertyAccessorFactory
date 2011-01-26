@@ -1,0 +1,3 @@
+org.geotools.data.complex.filter.MapPropertyAccessorFactory
+org.geotools.filter.expression.FeaturePropertyAccessorFactory
+org.geotools.filter.expression.XmlXPathPropertyAccessorFactory

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+ <copyright>
+ </copyright>
+
+ $Id$
+-->
+
+<plugin>
+
+  <extension point="org.eclipse.emf.ecore.generated_package">
+    <package 
+       uri = "http://www.w3.org/1999/xlink" 
+       class = "org.w3.xlink.XlinkPackage"
+       genModel = "xlink.genmodel" /> 
+  </extension>
+
+</plugin>

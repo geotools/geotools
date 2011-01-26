@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+  <HEAD>
+    <TITLE>package org.opengis.catalog</TITLE>
+  </HEAD>
+  <BODY>
+  Provides support for the OGC Catalog Specification.
+  
+  <P ALIGN="justify">This package provides the base interfaces needed to support
+  the concept of a {@linkplain org.opengis.catalog.Catalog catalog} of
+  {@linkplain org.opengis.catalog.CatalogEntry catalog entries}. Catalog access
+  is granted by both an iterator, and a query method. The query language is not
+  specified by this api, although the specification expects it to perform similarly
+  to the Simple Feature.</P>
+
+  <BLOCKQUOTE><P ALIGN="justify"><STRONG>NOTE:</STRONG><BR>
+  The specification <A HREF="http://www.opengis.org/docs/02-087r3.pdf">Catalog Services 1.1.1</A>
+  does not specify the methods of the {@link org.opengis.catalog.CatalogEntry} interface.
+  The methods in this interface were inferred from reading the abstract catalog specification:
+  <A HREF="http://www.opengis.org/docs/99-113.pdf">Catalog Services</A> section 3.1.2.</P>
+  </BLOCKQUOTE>
+
+  <H3>Representation of Metadata</H3>
+  <P ALIGN="justify">We could not decide on a unified approach for the representation of
+  Metadata. The choices were between ISO 19115, ISO 19119 and the Dublin core.
+  Our feedback for implementing ISO 19115 is described in the
+  {@link org.opengis.metadata} package.</P>
+  
+  <P ALIGN="justify">Our insight came when examining the Catalog Services 1.1.1
+  document - in the abstract catalog specification: CatalogServices section 3.1.2.
+  By making real classes out of these definitions we have been able to programatically
+  declare the api used by catalog services {@link org.opengis.catalog.QueryDefinition}
+  to access metadata without being tied to a specific Metadata standard.</P>
+
+  <P ALIGN="justify">Specifically the following definitions:</P>
+  <UL>
+    <LI>4.6 Metadata dataset -
+            Metadata describing a specific dataset [ISO 19101]</LI>
+    <LI>4.7 Metadata entity -
+            Group of metadata elements and other metadata entities
+            describing the same aspect of data.
+            <UL>
+              <LI>NOTE 1: A metadata entity may contain one or more metadata entities.</LI>
+              <LI>NOTE 2: A metadata is equivalent to a class in UML terminology [ISO 19101].</LI>
+            </UL></LI>
+    <LI>4.8 Metadata schema -
+            Conceptual schema describing metadata.
+            <UL>
+              <LI>NOTE ISO 19115 describes a standard for a metadata schema [ISO 19101]</LI>
+            </UL></LI>
+  </UL>
+  <P ALIGN="justify">From these definitions we have formalized the following:
+  <UL>
+    <LI>{@link org.opengis.catalog.MetadataEntity}</LI>
+    <LI>{@link org.opengis.catalog.MetadataEntity.EntityType}</LI>
+    <LI>{@link org.opengis.catalog.MetadataEntity.Element}</LI>
+  </UL>
+  <P ALIGN="justify">This abstraction allows our implementation of ISO 19115
+  ({@link org.opengis.metadata}) to exist independently of
+  {@link org.opengis.catalog.Catalog},
+  {@link org.opengis.catalog.CatalogEntry},
+  {@link org.opengis.catalog.QueryDefinition} and
+  {@link org.opengis.catalog.QueryResult}.</P>
+
+  <H3>Package Specification</H3>
+  <P ALIGN="justify">This package is based on the following specifications:</P>
+  <UL>
+    <LI><a href="http://www.opengis.org/docs/99-113.pdf">Topic 13 - Catalog Services</a> version: 4 (Abstract Specification)</LI>
+    <LI><a href="http://www.opengis.org/docs/02-087r3.pdf">OpenGIS® Catalogue Services Specification</a> version: 1.1.1 (Implementation Specification)</LI>
+  </UL>
+  Since the time of creation the following has been released:
+  <UL>
+    <LI><a href="http://portal.opengis.org/files/?artifact_id=5929&version=1">OpenGIS® Catalogue Services Specification</a> version: 2.0 (Implementation Specification)</LI>
+  </UL>
+  <P ALIGN="justify"><STRONG>Q:</STRONG>
+  Is practice of creating objects for MetadataEntity, Element and EntityType not in the
+  spirit of the specification, if so can they recommend an alternative? One alternative
+  would be to port the CORBA IDL from v2. Problem is InsertMetadata/UpdateMetadata using
+  "any payload".</P>
+  
+  <P ALIGN="justify"><STRONG>Q:</STRONG>
+  Does the Catalog v2 section 10: HTTP protocol binding replace the Web Registry Service
+  draft document? Or should we expect any progress on that front?</P>
+
+  <H3>Related Documentation </H3>
+  <UL>
+   <LI>{@link org.opengis.metadata} - ISO 19115 (TC211) Metadata specification</LI>
+   <LI>{@link org.opengis.filter} - defines a query language similar in scope to QueryDefinition</LI>
+  </UL>
+
+</BODY>
+</HTML>

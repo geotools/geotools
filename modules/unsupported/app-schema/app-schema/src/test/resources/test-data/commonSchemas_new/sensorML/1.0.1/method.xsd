@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://www.opengis.net/sensorML/1.0.1" xmlns:swe="http://www.opengis.net/swe/1.0.1" xmlns:sml="http://www.opengis.net/sensorML/1.0.1" xmlns:gml="http://www.opengis.net/gml" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.1">
+	<xs:annotation>
+		<xs:documentation>Defines Process Method</xs:documentation>
+	</xs:annotation>
+	<!-- ================================================= -->
+	<xs:import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+	<xs:import namespace="http://www.opengis.net/swe/1.0.1" schemaLocation="http://schemas.opengis.net/sweCommon/1.0.1/swe.xsd"/>
+	<xs:include schemaLocation="./base.xsd"/>
+	<xs:include schemaLocation="./process.xsd"/>
+	<!-- ================================================= -->
+	<xs:element name="ProcessMethod" type="sml:ProcessMethodType">
+		<xs:annotation>
+			<xs:documentation>Method describing a process (Can also be a dictionary entry)</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="ProcessMethodType">
+		<xs:annotation>
+			<xs:documentation>Complex Type for process methods definition</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="gml:AbstractGMLType">
+				<xs:sequence>
+					<xs:group ref="sml:metadataGroup" minOccurs="0"/>
+					<xs:element name="rules">
+						<xs:annotation>
+							<xs:documentation>Text and/or language defining rules for process profile (e.g. inputs, outputs, parameters, and metadata)</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="RulesDefinition">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element ref="gml:description" minOccurs="0">
+												<xs:annotation>
+													<xs:documentation>Textual description of the i/o structure</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+											<xs:element ref="sml:ruleLanguage" minOccurs="0"/>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="algorithm" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Textual and/or MathML description of the algorithm</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="AlgorithmDefinition">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element ref="gml:description" minOccurs="0">
+												<xs:annotation>
+													<xs:documentation>Textual description of the algorithm</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+											<xs:element name="mathML" minOccurs="0">
+												<xs:annotation>
+													<xs:documentation>Includes or reference a MathML doc specifying the maths of the algorithm</xs:documentation>
+												</xs:annotation>
+												<xs:complexType>
+													<xs:sequence minOccurs="0">
+														<xs:any namespace="##any" processContents="lax"/>
+													</xs:sequence>
+													<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+												</xs:complexType>
+											</xs:element>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="implementation" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>Points to the reference implementation of this process in the specified programming language (can be a SensorML process chain)</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:choice minOccurs="0">
+								<xs:element ref="sml:ProcessChain"/>
+								<xs:element name="ImplementationCode">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element ref="gml:description" minOccurs="0">
+												<xs:annotation>
+													<xs:documentation>Textual description of the algorithm</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+											<xs:group ref="sml:metadataGroup" minOccurs="0"/>
+											<xs:element name="sourceRef" minOccurs="0">
+												<xs:complexType>
+													<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+												</xs:complexType>
+											</xs:element>
+											<xs:element name="binaryRef" minOccurs="0">
+												<xs:complexType>
+													<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+												</xs:complexType>
+											</xs:element>
+										</xs:sequence>
+										<xs:attribute name="language" type="xs:token" use="required"/>
+										<xs:attribute name="framework" type="xs:token" use="optional"/>
+										<xs:attribute name="version" type="xs:token" use="optional"/>
+									</xs:complexType>
+								</xs:element>
+							</xs:choice>
+							<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ================================================= -->
+	<xs:element name="method" type="sml:methodPropertyType">
+		<xs:annotation>
+			<xs:documentation>process method</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="methodPropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:element ref="sml:ProcessMethod"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</xs:complexType>
+	<!-- ================================================= -->
+	<xs:element name="ruleLanguage" type="sml:ruleLanguageType" abstract="true">
+		<xs:annotation>
+			<xs:documentation>substitutionGroup for languages that define rules</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="ruleLanguageType">
+		<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</xs:complexType>
+	<xs:element name="schematron" substitutionGroup="sml:ruleLanguage">
+		<xs:annotation>
+			<xs:documentation>Includes or references a schematron doc for enforcing process constraints</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="sml:ruleLanguageType">
+					<xs:sequence minOccurs="0">
+						<xs:any namespace="http://www.ascc.net/xml/schematron" processContents="lax"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="relaxNG" substitutionGroup="sml:ruleLanguage">
+		<xs:annotation>
+			<xs:documentation>Includes or references a relaxNG doc for enforcing process constraints</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="sml:ruleLanguageType">
+					<xs:sequence minOccurs="0">
+						<xs:any namespace="http://relaxng.org/ns/structure/1.0" processContents="lax"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

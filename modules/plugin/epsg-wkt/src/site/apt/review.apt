@@ -1,0 +1,41 @@
+Plugin EPSG-WKT
+~~~~~~~~~~~~~~~
+
+  Module Maintainer: Jody Garnett
+
+  IP Review:
+ 
+    * Jody Garnett, July 9th, 2006
+
+    * Adrian Custer, June 2008
+
+
+  STATUS: DIRTY
+      Code is clean
+      Properties files have pending questions below.
+        http://jira.codehaus.org/browse/GEOT-1883
+
+  The (re) distribution of epsg.properties requires clairfication, asked Paul 
+  Ramsey for advice via email.
+
+
+  IP:
+
+    * LICENSE.TXT changed to (C) 2004-2006
+
+
+
+* org.geotools.referencing.crs
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Code contains a basic property file based EPSG Authority, in addition to an an 
+  AUTO Authority handling the AUTO projects defined by the OGC WMS specification. 
+  The WKT definitions contained are a derrived data product from the PostGIS 
+  project, modifed to hack around limitations in early GeoTools.
+
+    *  epsg.properties data a derived data product from PostGIS and/or EPSG, license 
+       unclear
+
+
+
+* org.geotools.referencing.crs (test)
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

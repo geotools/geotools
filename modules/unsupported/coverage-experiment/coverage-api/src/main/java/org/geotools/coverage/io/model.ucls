@@ -1,0 +1,365 @@
+<class-diagram version="0.9.82" icons="true" always-add-relationships="true" generalizations="true" realizations="true" 
+  associations="true" dependencies="true" nesting-relationships="true">  
+  <interface corner="BOTTOM_RIGHT" language="java" name="org.geotools.coverage.io.CoverageSource" 
+    project="gt-coverage-api-old-2.6-SNAPSHOT" 
+    file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/CoverageSource.java" binary="false">    
+    <position x="332" y="142" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="true" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <enumeration corner="BOTTOM_RIGHT" language="java" name="org.geotools.coverage.io.CoverageAccess.AccessType" 
+    project="gt-coverage-api-old-2.6-SNAPSHOT" 
+    file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/CoverageAccess.java" binary="false">    
+    <position x="411" y="286" width="116" height="43"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </enumeration>  
+  <interface corner="BOTTOM_RIGHT" language="java" name="org.geotools.coverage.io.CoverageStore" 
+    project="gt-coverage-api-old-2.6-SNAPSHOT" 
+    file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/CoverageStore.java" binary="false">    
+    <position x="102" y="203" width="110" height="43"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <enumeration corner="BOTTOM_RIGHT" language="java" name="org.geotools.coverage.io.CoverageCapabilities" 
+    project="gt-coverage-api-old-2.6-SNAPSHOT" 
+    file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/CoverageCapabilities.java" 
+    binary="false">    
+    <position x="252" y="203" width="143" height="43"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </enumeration>  
+  <enumeration corner="BOTTOM_RIGHT" language="java" name="org.geotools.coverage.io.CoverageResponse.Status" 
+    project="gt-coverage-api-old-2.6-SNAPSHOT" 
+    file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/CoverageResponse.java" binary="false">    
+    <position x="226" y="369" width="116" height="43"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </enumeration>  
+  <interface corner="BOTTOM_RIGHT" language="java" name="org.geotools.coverage.io.CoverageResponse" 
+    project="gt-coverage-api-old-2.6-SNAPSHOT" 
+    file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/CoverageResponse.java" binary="false">    
+    <position x="62" y="286" width="134" height="43"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface corner="BOTTOM_RIGHT" language="java" name="org.geotools.coverage.io.CoverageUpdateRequest" 
+    project="gt-coverage-api-old-2.6-SNAPSHOT" 
+    file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/CoverageUpdateRequest.java" 
+    binary="false">    
+    <position x="363" y="452" width="164" height="43"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface corner="BOTTOM_RIGHT" language="java" name="org.geotools.coverage.io.CoverageReadRequest" 
+    project="gt-coverage-api-old-2.6-SNAPSHOT" 
+    file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/CoverageReadRequest.java" 
+    binary="false">    
+    <position x="41" y="452" width="153" height="43"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface corner="BOTTOM_RIGHT" language="java" name="org.geotools.coverage.io.CoverageRequest" 
+    project="gt-coverage-api-old-2.6-SNAPSHOT" 
+    file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/CoverageRequest.java" binary="false">    
+    <position x="62" y="369" width="124" height="43"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface corner="BOTTOM_RIGHT" language="java" name="org.geotools.coverage.io.CoverageAccess" 
+    project="gt-coverage-api-old-2.6-SNAPSHOT" 
+    file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/CoverageAccess.java" binary="false">    
+    <position x="201" y="37" width="120" height="43"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface corner="BOTTOM_RIGHT" language="java" name="org.geotools.coverage.io.driver.FileDriver" 
+    project="gt-coverage-api-old-2.6-SNAPSHOT" 
+    file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/driver/FileDriver.java" 
+    binary="false">    
+    <position x="613" y="49" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <enumeration corner="BOTTOM_RIGHT" language="java" name="org.geotools.coverage.io.driver.Driver.DriverOperation" 
+    project="gt-coverage-api-old-2.6-SNAPSHOT" 
+    file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/driver/Driver.java" binary="false">    
+    <position x="809" y="96" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </enumeration>  
+  <interface corner="BOTTOM_RIGHT" language="java" name="org.geotools.coverage.io.driver.Driver" 
+    project="gt-coverage-api-old-2.6-SNAPSHOT" 
+    file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/driver/Driver.java" binary="false">    
+    <position x="627" y="149" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <class corner="BOTTOM_RIGHT" language="java" 
+    name="org.geotools.coverage.io.domain.RasterDatasetDomainManager.HorizontalDomain" 
+    project="gt-coverage-api-old-2.6-SNAPSHOT" 
+    file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/domain/RasterDatasetDomainManager.java" 
+    binary="false">    
+    <position x="-349" y="157" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" 
+    name="org.geotools.coverage.io.domain.RasterDatasetDomainManager.VerticalDomain" 
+    project="gt-coverage-api-old-2.6-SNAPSHOT" 
+    file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/domain/RasterDatasetDomainManager.java" 
+    binary="false">    
+    <position x="-166" y="157" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="org.geotools.coverage.io.domain.RasterDatasetDomainManager" 
+    project="gt-coverage-api-old-2.6-SNAPSHOT" 
+    file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/domain/RasterDatasetDomainManager.java" 
+    binary="false">    
+    <position x="-179" y="48" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" 
+    name="org.geotools.coverage.io.domain.RasterDatasetDomainManager.TemporalDomain" 
+    project="gt-coverage-api-old-2.6-SNAPSHOT" 
+    file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/domain/RasterDatasetDomainManager.java" 
+    binary="false">    
+    <position x="17" y="157" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <dependency>    
+    <bendpoint x="210" y="120"/>    
+    <source project="gt-coverage-api-old-2.6-SNAPSHOT" name="org.geotools.coverage.io.CoverageAccess" 
+      file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/CoverageAccess.java" 
+      binary="false"/>    
+    <target project="gt-coverage-api-old-2.6-SNAPSHOT" name="org.geotools.coverage.io.CoverageStore" 
+      file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/CoverageStore.java" binary="false"/>  
+  </dependency>  
+  <dependency>    
+    <source project="gt-coverage-api-old-2.6-SNAPSHOT" name="org.geotools.coverage.io.driver.FileDriver" 
+      file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/driver/FileDriver.java" 
+      binary="false"/>    
+    <target project="gt-coverage-api-old-2.6-SNAPSHOT" name="org.geotools.coverage.io.driver.Driver.DriverOperation" 
+      file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/driver/Driver.java" binary="false"/>  
+  </dependency>  
+  <dependency>    
+    <source project="gt-coverage-api-old-2.6-SNAPSHOT" name="org.geotools.coverage.io.driver.FileDriver" 
+      file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/driver/FileDriver.java" 
+      binary="false"/>    
+    <target project="gt-coverage-api-old-2.6-SNAPSHOT" name="org.geotools.coverage.io.CoverageAccess" 
+      file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/CoverageAccess.java" 
+      binary="false"/>  
+  </dependency>  
+  <generalization>    
+    <source project="gt-coverage-api-old-2.6-SNAPSHOT" name="org.geotools.coverage.io.CoverageReadRequest" 
+      file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/CoverageReadRequest.java" 
+      binary="false"/>    
+    <target project="gt-coverage-api-old-2.6-SNAPSHOT" name="org.geotools.coverage.io.CoverageRequest" 
+      file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/CoverageRequest.java" 
+      binary="false"/>  
+  </generalization>  
+  <generalization>    
+    <source project="gt-coverage-api-old-2.6-SNAPSHOT" name="org.geotools.coverage.io.driver.FileDriver" 
+      file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/driver/FileDriver.java" 
+      binary="false"/>    
+    <target project="gt-coverage-api-old-2.6-SNAPSHOT" name="org.geotools.coverage.io.driver.Driver" 
+      file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/driver/Driver.java" binary="false"/>  
+  </generalization>  
+  <association>    
+    <source project="gt-coverage-api-old-2.6-SNAPSHOT" name="org.geotools.coverage.io.CoverageCapabilities" 
+      file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/CoverageCapabilities.java" 
+      binary="false" navigable="false">      
+      <attribute name="access"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="gt-coverage-api-old-2.6-SNAPSHOT" name="org.geotools.coverage.io.CoverageAccess.AccessType" 
+      file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/CoverageAccess.java" binary="false" 
+      navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency>    
+    <bendpoint x="71" y="203"/>    
+    <source project="gt-coverage-api-old-2.6-SNAPSHOT" name="org.geotools.coverage.io.CoverageSource" 
+      file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/CoverageSource.java" 
+      binary="false"/>    
+    <target project="gt-coverage-api-old-2.6-SNAPSHOT" name="org.geotools.coverage.io.CoverageResponse" 
+      file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/CoverageResponse.java" 
+      binary="false"/>  
+  </dependency>  
+  <nesting>    
+    <bendpoint x="425" y="120"/>    
+    <bendpoint x="425" y="203"/>    
+    <source project="gt-coverage-api-old-2.6-SNAPSHOT" name="org.geotools.coverage.io.CoverageAccess" 
+      file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/CoverageAccess.java" 
+      binary="false"/>    
+    <target project="gt-coverage-api-old-2.6-SNAPSHOT" name="org.geotools.coverage.io.CoverageAccess.AccessType" 
+      file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/CoverageAccess.java" 
+      binary="false"/>  
+  </nesting>  
+  <dependency>    
+    <source project="gt-coverage-api-old-2.6-SNAPSHOT" name="org.geotools.coverage.io.driver.Driver" 
+      file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/driver/Driver.java" binary="false"/>    
+    <target project="gt-coverage-api-old-2.6-SNAPSHOT" name="org.geotools.coverage.io.CoverageAccess" 
+      file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/CoverageAccess.java" 
+      binary="false"/>  
+  </dependency>  
+  <dependency>    
+    <bendpoint x="31" y="203"/>    
+    <bendpoint x="31" y="286"/>    
+    <bendpoint x="31" y="369"/>    
+    <source project="gt-coverage-api-old-2.6-SNAPSHOT" name="org.geotools.coverage.io.CoverageSource" 
+      file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/CoverageSource.java" 
+      binary="false"/>    
+    <target project="gt-coverage-api-old-2.6-SNAPSHOT" name="org.geotools.coverage.io.CoverageReadRequest" 
+      file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/CoverageReadRequest.java" 
+      binary="false"/>  
+  </dependency>  
+  <generalization>    
+    <source project="gt-coverage-api-old-2.6-SNAPSHOT" name="org.geotools.coverage.io.CoverageUpdateRequest" 
+      file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/CoverageUpdateRequest.java" 
+      binary="false"/>    
+    <target project="gt-coverage-api-old-2.6-SNAPSHOT" name="org.geotools.coverage.io.CoverageRequest" 
+      file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/CoverageRequest.java" 
+      binary="false"/>  
+  </generalization>  
+  <generalization>    
+    <source project="gt-coverage-api-old-2.6-SNAPSHOT" name="org.geotools.coverage.io.CoverageStore" 
+      file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/CoverageStore.java" binary="false"/>    
+    <target project="gt-coverage-api-old-2.6-SNAPSHOT" name="org.geotools.coverage.io.CoverageSource" 
+      file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/CoverageSource.java" 
+      binary="false"/>  
+  </generalization>  
+  <nesting>    
+    <source project="gt-coverage-api-old-2.6-SNAPSHOT" name="org.geotools.coverage.io.driver.Driver" 
+      file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/driver/Driver.java" binary="false"/>    
+    <target project="gt-coverage-api-old-2.6-SNAPSHOT" name="org.geotools.coverage.io.driver.Driver.DriverOperation" 
+      file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/driver/Driver.java" binary="false"/>  
+  </nesting>  
+  <dependency>    
+    <bendpoint x="372" y="286"/>    
+    <bendpoint x="372" y="369"/>    
+    <source project="gt-coverage-api-old-2.6-SNAPSHOT" name="org.geotools.coverage.io.CoverageStore" 
+      file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/CoverageStore.java" binary="false"/>    
+    <target project="gt-coverage-api-old-2.6-SNAPSHOT" name="org.geotools.coverage.io.CoverageUpdateRequest" 
+      file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/CoverageUpdateRequest.java" 
+      binary="false"/>  
+  </dependency>  
+  <dependency>    
+    <source project="gt-coverage-api-old-2.6-SNAPSHOT" name="org.geotools.coverage.io.CoverageAccess" 
+      file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/CoverageAccess.java" 
+      binary="false"/>    
+    <target project="gt-coverage-api-old-2.6-SNAPSHOT" name="org.geotools.coverage.io.driver.Driver" 
+      file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/driver/Driver.java" binary="false"/>  
+  </dependency>  
+  <dependency>    
+    <source project="gt-coverage-api-old-2.6-SNAPSHOT" name="org.geotools.coverage.io.CoverageSource" 
+      file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/CoverageSource.java" 
+      binary="false"/>    
+    <target project="gt-coverage-api-old-2.6-SNAPSHOT" name="org.geotools.coverage.io.CoverageCapabilities" 
+      file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/CoverageCapabilities.java" 
+      binary="false"/>  
+  </dependency>  
+  <dependency>    
+    <source project="gt-coverage-api-old-2.6-SNAPSHOT" name="org.geotools.coverage.io.CoverageAccess" 
+      file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/CoverageAccess.java" 
+      binary="false"/>    
+    <target project="gt-coverage-api-old-2.6-SNAPSHOT" name="org.geotools.coverage.io.CoverageSource" 
+      file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/CoverageSource.java" 
+      binary="false"/>  
+  </dependency>  
+  <dependency>    
+    <source project="gt-coverage-api-old-2.6-SNAPSHOT" name="org.geotools.coverage.io.CoverageStore" 
+      file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/CoverageStore.java" binary="false"/>    
+    <target project="gt-coverage-api-old-2.6-SNAPSHOT" name="org.geotools.coverage.io.CoverageResponse" 
+      file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/CoverageResponse.java" 
+      binary="false"/>  
+  </dependency>  
+  <nesting>    
+    <source project="gt-coverage-api-old-2.6-SNAPSHOT" name="org.geotools.coverage.io.domain.RasterDatasetDomainManager" 
+      
+      file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/domain/RasterDatasetDomainManager.java" 
+      binary="false"/>    
+    <target project="gt-coverage-api-old-2.6-SNAPSHOT" 
+      name="org.geotools.coverage.io.domain.RasterDatasetDomainManager.HorizontalDomain" 
+      file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/domain/RasterDatasetDomainManager.java" 
+      binary="false"/>  
+  </nesting>  
+  <nesting>    
+    <source project="gt-coverage-api-old-2.6-SNAPSHOT" name="org.geotools.coverage.io.domain.RasterDatasetDomainManager" 
+      
+      file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/domain/RasterDatasetDomainManager.java" 
+      binary="false"/>    
+    <target project="gt-coverage-api-old-2.6-SNAPSHOT" 
+      name="org.geotools.coverage.io.domain.RasterDatasetDomainManager.TemporalDomain" 
+      file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/domain/RasterDatasetDomainManager.java" 
+      binary="false"/>  
+  </nesting>  
+  <nesting>    
+    <source project="gt-coverage-api-old-2.6-SNAPSHOT" name="org.geotools.coverage.io.CoverageResponse" 
+      file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/CoverageResponse.java" 
+      binary="false"/>    
+    <target project="gt-coverage-api-old-2.6-SNAPSHOT" name="org.geotools.coverage.io.CoverageResponse.Status" 
+      file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/CoverageResponse.java" 
+      binary="false"/>  
+  </nesting>  
+  <nesting>    
+    <source project="gt-coverage-api-old-2.6-SNAPSHOT" name="org.geotools.coverage.io.domain.RasterDatasetDomainManager" 
+      
+      file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/domain/RasterDatasetDomainManager.java" 
+      binary="false"/>    
+    <target project="gt-coverage-api-old-2.6-SNAPSHOT" 
+      name="org.geotools.coverage.io.domain.RasterDatasetDomainManager.VerticalDomain" 
+      file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/domain/RasterDatasetDomainManager.java" 
+      binary="false"/>  
+  </nesting>  
+  <dependency>    
+    <source project="gt-coverage-api-old-2.6-SNAPSHOT" name="org.geotools.coverage.io.CoverageResponse" 
+      file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/CoverageResponse.java" 
+      binary="false"/>    
+    <target project="gt-coverage-api-old-2.6-SNAPSHOT" name="org.geotools.coverage.io.CoverageRequest" 
+      file="/gt-coverage-api-old-2.6-SNAPSHOT/src/main/java/org/geotools/coverage/io/CoverageRequest.java" 
+      binary="false"/>  
+  </dependency>  
+  <classifier-display autosize="true" package="true" initial-value="true" signature="true" visibility="true">    
+    <attributes public="false" package="false" protected="false" private="false"/>    
+    <operations public="false" package="false" protected="false" private="false"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

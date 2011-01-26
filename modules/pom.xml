@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- =======================================================================    
+        Maven Project Configuration File                                        
+                                                                                
+        The Geotools Project                                                    
+            http://www.geotools.org/                                            
+                                                                                
+        Version: $Id$              
+     ======================================================================= -->
+  <project xmlns="http://maven.apache.org/POM/4.0.0" 
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                               http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.geotools</groupId>
+    <artifactId>geotools</artifactId>
+    <version>2.7-SNAPSHOT</version>
+  </parent>
+  
+
+  <!-- =========================================================== -->
+  <!--     Module Description                                      -->
+  <!-- =========================================================== -->
+  <groupId>org.geotools</groupId>
+  <artifactId>modules</artifactId>
+  <packaging>pom</packaging>
+  <name>Geotools modules</name>
+  <description>
+    Geotools libraries.
+  </description>
+
+  <licenses>
+    <license>
+      <name>Lesser General Public License (LGPL)</name>
+      <url>http://www.gnu.org/copyleft/lesser.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+
+  <!-- =========================================================== -->
+  <!--     Dependencies to be inherited by all modules.            -->
+  <!-- =========================================================== -->
+  <dependencies>
+    <dependency>
+      <groupId>javax.media</groupId>
+      <artifactId>jai_core</artifactId>
+      <!-- The version number is specified in the parent POM. -->
+      <scope>provided</scope>  <!-- Users should execute JAI installer. -->
+    </dependency>
+  </dependencies>
+
+
+  <!-- =========================================================== -->
+  <!--     Build Configuration                                     -->
+  <!--         copies all JARs in a single directory.              -->
+  <!-- =========================================================== -->
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.geotools.maven</groupId>
+        <artifactId>jar-collector</artifactId>
+        <version>${project.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>collect</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+  
+
+  <reporting>
+    <plugins>
+      <!-- ======================================================= -->
+      <!--     Javadoc generation.                                 -->
+      <!--                                                         -->
+      <!--     Notes:                                              -->
+      <!--       Do NOT enable deep copying of "doc-files"         -->
+      <!--       directories ("-docfilessubdirs" option), because  -->
+      <!--       it has the unwanted side effect to copy .svn      -->
+      <!--       directories as well.                              -->
+      <!--                                                         -->
+      <!--       Do NOT link source code, because it duplicates    -->
+      <!--       jxr-maven-plugin.                                 -->
+      <!--                                                         -->
+      <!--       <sourcepath/> and <subpackages/> elements do not  -->
+      <!--       seem to work with aggregated javadoc.             -->
+      <!--                                                         -->
+      <!-- ======================================================= -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+
+        <configuration>
+            <!-- Necessary to enable javadoc to handle J2SE 1.5 features. -->
+          <source>1.5</source>
+            <!-- Specifies whether or not the version text is included.-->
+          <version>false</version>
+            <!-- Omit qualifying package name before class names in output.-->
+          <noqualifier>all</noqualifier>
+            <!-- Shuts off non-error and non-warning messages.-->
+          <quiet>true</quiet>
+            <!-- The maximum Java heap size to be used to run javadoc. -->
+          <maxmemory>512M</maxmemory>
+            <!-- Specifies the encoding name of the source files.-->
+          <encoding>UTF-8</encoding>
+            <!-- Set an additional parameter for the command line. -->
+          <additionalparam>-keywords</additionalparam>
+          <breakiterator>true</breakiterator>
+          <excludePackageNames>
+            org.geotools.resources:org.geotools.maven:com:net.opengis:org.w3:javax:it.geosolutions
+          </excludePackageNames>
+
+          <!-- Custom taglets implemented in Java. -->
+          <taglets>
+            <taglet>
+              <tagletClass>org.geotools.maven.taglet.Tutorial</tagletClass>
+              <tagletArtifact>
+                <groupId>org.geotools.maven</groupId>
+                <artifactId>javadoc</artifactId>
+                <version>${project.version}</version>
+              </tagletArtifact>
+            </taglet>
+            <taglet>
+              <tagletClass>org.geotools.maven.taglet.Source</tagletClass>
+              <tagletArtifact>
+                <groupId>org.geotools.maven</groupId>
+                <artifactId>javadoc</artifactId>
+                <version>${project.version}</version>
+              </tagletArtifact>
+            </taglet>
+          </taglets>
+
+          <!-- Enables the Javadoc tool to interpret a simple, one-argument -->
+          <!-- custom block tag tagname in doc comments. Note: <placement/> -->
+          <!-- should be a combinaison of the letters Xaoptcmf.             -->
+          <tags>
+            <tag>
+              <name>todo</name>
+              <placement>a</placement>
+              <head>TODO:</head>
+            </tag>
+            <tag>
+              <name>todo:</name>
+              <placement>a</placement>
+              <head>TODO:</head>
+            </tag>
+            <tag>
+              <name>TODO</name>
+              <placement>a</placement>
+              <head>TODO:</head>
+            </tag>
+            <tag>
+              <name>task</name>
+              <placement>tfmc</placement>
+              <head>TODO:</head>
+            </tag>
+            <tag>
+              <name>revisit</name>
+              <placement>tfmc</placement>
+              <head>TODO:</head>
+            </tag>
+            <tag>
+              <name>generated</name>
+              <placement>Xt</placement>
+              <head>Generated</head>
+            </tag>
+            <tag>
+              <name>UML</name>
+              <placement>a</placement>
+              <head>UML:</head>
+            </tag>
+            <tag>
+              <name>uml.property</name>
+              <placement>a</placement>
+              <head>UML property:</head>
+            </tag>
+          </tags>
+
+          <!-- Creates links to existing javadoc-generated         -->
+          <!-- documentation of external referenced classes.       -->
+          <links>
+            <link>http://java.sun.com/j2se/1.5/docs/api</link>
+            <link>http://java.sun.com/javaee/5/docs/api</link>
+            <link>http://download.java.net/media/jai/javadoc/1.1.3/jai-apidocs</link>
+            <link>http://download.java.net/media/jai-imageio/javadoc/1.1</link>
+            <link>http://download.java.net/media/java3d/javadoc/1.5.1</link>
+            <link>http://jscience.org/api/</link>
+            <link>http://geoapi.sourceforge.net/snapshot/javadoc</link>
+            <link>http://tsusiatsoftware.net/jts/javadoc</link>
+          </links>
+
+          <!-- Separates packages on the overview page into the    -->
+          <!-- groups  specified.                                  -->
+          <groups>
+            <group>
+              <title>Spatial Referencing by Coordinates</title>
+              <packages>
+                org.geotools.referencing*:org.geotools.parameter*:org.geotools.axis*
+              </packages>
+            </group>
+            <group>
+              <title>Geometries</title>
+              <packages>
+                org.geotools.geometry*:org.geotools.topology*:org.geotools.measure*
+              </packages>
+            </group>
+            <group>
+              <title>Images and Grid Coverage</title>
+              <packages>
+                org.geotools.coverage*:org.geotools.gce*:org.geotools.image*
+              </packages>
+            </group>
+            <group>
+              <title>Features, Filters and Styling</title>
+              <packages>
+                org.geotools.feature*:org.geotools.filter*:org.geotools.styling*
+              </packages>
+            </group>
+            <group>
+              <title>Data stores</title>
+              <packages>org.geotools.data*</packages>
+            </group>
+            <group>
+              <title>XML and derivatives (GML, SVG)</title>
+              <packages>
+                org.geotools.xsd*:org.geotools.gml*:org.geotools.svg*
+              </packages>
+            </group>
+            <group>
+              <title>Catalog Services</title>
+              <packages>org.geotools.catalog*</packages>
+            </group>
+            <group>
+              <title>Meta Data</title>
+              <packages>org.geotools.metadata*</packages>
+            </group>
+            <group>
+              <title>Graphs and validation</title>
+              <packages>org.geotools.graph*:org.geotools.validation*</packages>
+            </group>
+            <group>
+              <title>Renderer and Display Objects</title>
+              <packages>
+                org.geotools.display*:org.geotools.renderer*:org.geotools.renderer.shape*:org.geotools.map*
+              </packages>
+            </group>
+            <group>
+              <title>Graphic User Interfaces</title>
+              <packages>org.geotools.gui*</packages>
+            </group>
+            <group>
+              <title>Miscellaneous utilities</title>
+              <packages>
+                org.geotools.factory*:org.geotools.io*:org.geotools.util*:org.geotools.math*:org.geotools.nature*:org.geotools.event*:org.geotools.index*
+              </packages>
+            </group>
+          </groups>
+        </configuration>
+      </plugin>
+    </plugins>
+  </reporting>
+  
+  <!-- =========================================================== -->
+  <!--     Modules included in the build                           -->
+  <!-- =========================================================== -->
+  <modules>
+    <module>library</module>
+    <module>ogc</module>    
+    <module>plugin</module>
+    <module>extension</module>
+    <module>unsupported</module>
+  </modules>
+
+
+</project>

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:aw="http://www.water.gov.au/awdip" xmlns:gml="http://www.opengis.net/gml" xmlns:om="http://www.opengis.net/om/1.0" xmlns:wml="http://waterml.org/namespaces" elementFormDefault="qualified" targetNamespace="http://www.water.gov.au/awdip" version="1.0">
+  <import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+  <import namespace="http://www.opengis.net/om/1.0" schemaLocation="http://schemas.opengis.net/om/1.0.0/extensions/om_extended.xsd"/>
+  <!--<import namespace="http://www.opengis.net/om/1.0.0" schemaLocation="http://schemas.opengis.net/om/1.0.0/observationCoverageCompact.xsd"/>-->
+  <import namespace="http://waterml.org/namespaces" schemaLocation="WaterML.xsd"/>
+ <!-- <include schemaLocation="gw_samp_profile.xsd"/>
+  <include schemaLocation="sw_samp_profile.xsd"/>-->
+<!--  <include schemaLocation="ObservationProfiles.xsd"/>-->
+  <!--XML Schema document created by ShapeChange-->
+  <simpleType name="NRSamplingTypeCodeType">
+    <union memberTypes="aw:NRSamplingTypeCodeEnumerationType aw:NRSamplingTypeCodeOtherType"/>
+  </simpleType>
+  <simpleType name="NRSamplingTypeCodeEnumerationType">
+    <restriction base="string">
+      <enumeration value="production"/>
+      <enumeration value="monitoring"/>
+      <enumeration value="telemetered"/>
+      <enumeration value="logged"/>
+      <enumeration value="visited"/>
+      <enumeration value="regularlyVisited"/>
+      <enumeration value="opportunistic"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="NRSamplingTypeCodeOtherType">
+    <restriction base="string">
+      <pattern value="other: \w{2,}"/>
+    </restriction>
+  </simpleType>
+  <element name="WaterSample" substitutionGroup="gml:_Feature" type="aw:WaterSampleType"/>
+  <complexType name="WaterSampleType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element name="lowerDepth" type="gml:DirectPositionType"/>
+          <element name="upperDepth" type="gml:DirectPositionType"/>
+          <element minOccurs="0" name="siteType" type="aw:NRSamplingTypeCodeType"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="WaterSamplePropertyType">
+    <sequence minOccurs="0">
+      <element ref="aw:WaterSample"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="WaterObservation" substitutionGroup="om:TimeSeriesObs" type="aw:WaterObservationType"/>
+  <complexType name="WaterObservationType">
+    <complexContent>
+      <extension base="om:TimeSeriesObsType">
+        <sequence/>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="WaterObservationPropertyType">
+    <sequence minOccurs="0">
+      <element ref="aw:WaterObservation"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="ESCAWRI_Procedures" substitutionGroup="gml:_GML" type="aw:ESCAWRI_ProceduresType"/>
+  <complexType name="ESCAWRI_ProceduresType">
+    <complexContent>
+      <extension base="gml:AbstractGMLType">
+        <sequence/>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="ESCAWRI_ProceduresPropertyType">
+    <sequence minOccurs="0">
+      <element ref="aw:ESCAWRI_Procedures"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="ESCAWRI_Phenomena" substitutionGroup="gml:_GML" type="aw:ESCAWRI_PhenomenaType"/>
+  <complexType name="ESCAWRI_PhenomenaType">
+    <annotation>
+      <documentation>Externally defined vocabulary of common phenomenon codes</documentation>
+    </annotation>
+    <complexContent>
+      <extension base="gml:AbstractGMLType">
+        <sequence/>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="ESCAWRI_PhenomenaPropertyType">
+    <sequence minOccurs="0">
+      <element ref="aw:ESCAWRI_Phenomena"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <simpleType name="WaterUseCodeType">
+    <union memberTypes="aw:WaterUseCodeEnumerationType aw:WaterUseCodeOtherType"/>
+  </simpleType>
+  <simpleType name="WaterUseCodeEnumerationType">
+    <restriction base="string">
+      <enumeration value="agriculture"/>
+      <enumeration value="irrigation"/>
+      <enumeration value="domestic"/>
+      <enumeration value="horticulture"/>
+      <enumeration value="garden"/>
+      <enumeration value="heatTransfer"/>
+      <enumeration value="commercial"/>
+      <enumeration value="industry"/>
+      <enumeration value="eductaion"/>
+      <enumeration value="publicRecreation"/>
+      <enumeration value="environmental"/>
+      <enumeration value="research"/>
+      <enumeration value="other"/>
+      <enumeration value="unknown"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="WaterUseCodeOtherType">
+    <restriction base="string">
+      <pattern value="other: \w{2,}"/>
+    </restriction>
+  </simpleType>
+  <element name="AWDIPWaterBody" substitutionGroup="wml:WaterBody" type="aw:AWDIPWaterBodyType"/>
+  <complexType name="AWDIPWaterBodyType">
+    <annotation>
+      <documentation>This is a specialisation of a genric WaterBody (Identity Carrier) with an optional ability to identify a "denormalised" provenance, which could be generated by recursively traversing all the source WaterBody objects to find their destination.
+
+This implementation allows just the provenance of interest to be recorded, e.g. underlying aquifer.
+
+</documentation>
+    </annotation>
+    <complexContent>
+      <extension base="wml:WaterBodyType">
+        <sequence>
+          <element maxOccurs="unbounded" minOccurs="0" name="ultimateSource" type="wml:WaterBodyPropertyType"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="AWDIPWaterBodyPropertyType">
+    <sequence minOccurs="0">
+      <element ref="aw:AWDIPWaterBody"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+</schema>

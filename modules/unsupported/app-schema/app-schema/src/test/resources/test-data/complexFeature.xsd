@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://online.socialchange.net.au" xmlns:sco="http://online.socialchange.net.au"
+  xmlns:gml="http://www.opengis.net/gml" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+  attributeFormDefault="unqualified" version="1.0" xmlns:Q1="swe">
+
+  <xs:import namespace="http://www.opengis.net/gml"
+    schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/feature.xsd" />
+
+  <xs:complexType name="wq_plus_Type">
+    <xs:complexContent>
+      <xs:extension base="gml:AbstractFeatureType">
+        <xs:sequence>
+          <xs:element name="measurement" type="sco:measurementType" minOccurs="0" maxOccurs="unbounded" nillable="true" />
+
+          <xs:element name="the_geom" type="gml:PointPropertyType" />
+
+          <xs:element name="sitename" maxOccurs="unbounded" nillable="false" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name='wq_plus' type='sco:wq_plus_Type' substitutionGroup="gml:_Feature" />
+
+  <xs:complexType name="measurementType">
+    <xs:sequence>
+      <xs:element name="determinand_description" type="xs:string" minOccurs="1" />
+      <xs:element name="result" type="xs:float" minOccurs="1" />
+    </xs:sequence>
+    <xs:attribute ref="gml:id" use="required" />
+  </xs:complexType>
+
+  <!-- ====================================================================== -->
+  <xs:complexType name="TypedCategoryListType">
+    <xs:annotation>
+      <xs:documentation>
+        A list of text values, taken from a value space identified by the value of the codeSpace attribute, and
+        representing a set of descriptions of the phenomenon identified by the property attribute.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="codeSpace" type="xs:anyURI" use="required" />
+        <xs:attribute name="property" type="xs:anyURI" use="required">
+          <xs:annotation>
+            <xs:documentation>
+              This attribute holds a reference to or label for the property being described.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="count" type="xs:integer" use="optional" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <!-- ====================================================================== -->
+
+</xs:schema>

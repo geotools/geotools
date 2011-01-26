@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- =======================================================================    
+        Maven Project Configuration File                                        
+                                                                                
+        The Geotools Project                                                    
+            http://www.geotools.org/                                            
+                                                                                
+        Version: $Id$              
+     ======================================================================= -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                            http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.geotools.demo</groupId>
+    <artifactId>demo</artifactId>
+    <version>2.7-SNAPSHOT</version>
+  </parent>
+
+  <!-- =========================================================== -->
+  <!--     Module Description                                      -->
+  <!-- =========================================================== -->
+  <groupId>org.geotools.demo</groupId>
+  <artifactId>gt-libraryJTS</artifactId>
+  <packaging>jar</packaging>
+  <name>Geotools JTS Library Demo</name>
+  
+
+  <scm>
+    <connection>
+      scm:svn:http://svn.osgeo.org/geotools/trunk/demo/libraryJTS/
+    </connection>
+    <url>http://svn.osgeo.org/geotools/trunk/demo/libraryJTS/</url>
+  </scm>
+
+  <description>
+      Geotools demo of the Java Topology Suite library
+  </description>
+  
+  <licenses>
+    <license>
+      <name>Public Domain</name>
+      <url>
+        http://svn.osgeo.org/geotools/trunk/demo/libraryJTS/LICENSE.txt
+      </url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <!-- =========================================================== -->
+  <!--     Developers and Contributors                             -->
+  <!-- =========================================================== -->
+  <developers>
+    <developer>
+      <name>Adrian Custer</name>
+      <id>acuster</id>
+      <email>acuster@gmail.com</email>
+      <roles>
+        <role>Documentation Writer</role>
+      </roles>
+    </developer>
+  </developers>
+
+  <!--
+  <contributors>
+    <contributor>
+      <name></name>
+      <organization></organization>
+      <roles>
+        <role></role>
+      </roles>
+    </contributor>
+  </contributors>
+  -->
+
+  <!-- =========================================================== -->
+  <!--     Dependency Management                                   -->
+  <!-- =========================================================== -->
+  <dependencies>
+    <dependency>
+      <groupId>com.vividsolutions</groupId>
+      <artifactId>jts</artifactId>
+    </dependency>
+  </dependencies>
+
+
+  <!-- =========================================================== -->
+  <!--     Build Configuration                                     -->
+  <!-- =========================================================== -->
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifest>
+              <mainClass>org.geotools.demo.libraryJTS.DemoJTS</mainClass>
+              <addClasspath>true</addClasspath>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+      <plugin>
+        <!--
+           Use maven from the command line:
+             mvn exec:java -Dexec.mainClass="org.geotools.demo.libraryJTS.DemoJTS
+        -->
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
+    <resources>
+      <!--resource>
+        <directory>.</directory>
+        <includes>
+          <include>LICENSE*</include>
+          <include>*README*</include>
+        </includes>
+      </resource-->
+    </resources>
+  </build>
+</project>

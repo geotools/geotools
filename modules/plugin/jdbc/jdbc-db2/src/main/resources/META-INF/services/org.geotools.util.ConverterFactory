@@ -1,0 +1,2 @@
+org.geotools.data.db2.DB2BlobConverterFactory
+org.geotools.data.db2.DB2ClobConverterFactory

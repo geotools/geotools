@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+Apache-Style Software License for ColorBrewer Color Schemes
+Version 1.1
+
+Copyright (c) 2002 Cynthia Brewer, Mark Harrower, and The Pennsylvania State University. All rights reserved.
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+1. Redistributions as source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+2. The end-user documentation included with the redistribution, if any, must include the following acknowledgment:
+"This product includes color specifications and designs developed by Cynthia Brewer (http://colorbrewer.org/)."
+Alternately, this acknowledgment may appear in the software itself, if and wherever such third-party acknowledgments normally appear.
+4. The name "ColorBrewer" must not be used to endorse or promote products derived from this software without prior written permission. For written permission, please contact Cynthia Brewer at cbrewer@psu.edu.
+5. Products derived from this software may not be called "ColorBrewer", nor may "ColorBrewer" appear in their name, without prior written permission of Cynthia Brewer.
+
+THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL CYNTHIA BREWER, MARK HARROWER, OR THE PENNSYLVANIA STATE UNIVERSITY BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+Legend:
+G = good
+D = doubtful
+B = bad
+suitability = Colorblind, PhotoCopy, LCD Projector, LCD, CRT, Color Printing
+-->
+<type>
+<name>Diverging</name>
+<description>Diverging schemes put equal emphasis on mid-range critical values and extremes at both ends of the data range. The critical class or break in the middle of the legend is emphasized with light colors and low and high extremes are emphasized with dark colors that have contrasting hues.</description>
+<samples>
+ <sample size="2">7,10</sample>
+ <sample size="3">4,7,10</sample>
+ <sample size="4">2,5,9,12</sample>
+ <sample size="5">3,5,7,9,12</sample>
+ <sample size="6">1,4,6,8,10,13</sample>
+ <sample size="7">1,4,6,7,8,10,13</sample>
+ <sample size="8">1,3,5,6,8,9,11,13</sample>
+ <sample size="9">1,3,5,6,7,8,9,11,13</sample>
+ <sample size="10">0,1,3,5,6,8,9,11,13,14</sample>
+ <sample size="11">0,1,3,5,6,7,8,9,11,13,14</sample>
+</samples>
+<palettes>
+ <palette>
+  <name>PuOr</name>
+  <description>dark orange to light to dark purple</description>
+  <colors>
+127,59,8:
+179,88,6:
+230,97,1:
+224,130,20:
+241,163,64:
+253,184,99:
+254,224,182:
+247,247,247:
+216,218,235:
+178,171,210:
+153,142,195:
+128,115,172:
+94,60,153:
+84,39,136:
+45,0,75
+  </colors>
+  <suitability>
+   <scheme size="2">G,G,G,G,G,G</scheme>
+   <scheme size="3">G,G,G,G,G,G</scheme>
+   <scheme size="4">G,G,G,G,G,G</scheme>
+   <scheme size="5">G,B,G,G,G,D</scheme>
+   <scheme size="6">G,B,D,D,G,B</scheme>
+   <scheme size="7">G,B,D,B,D,D</scheme>
+   <scheme size="8">G,B,D,B,D,B</scheme>
+   <scheme size="9">G,B,B,B,B,B</scheme>
+   <scheme size="10">G,B,B,B,B,B</scheme>
+   <scheme size="11">G,B,B,B,B,B</scheme>
+  </suitability>
+ </palette>
+ <palette>
+  <name>BrBG</name>
+  <description>dark brown to light to dark blue-green</description>
+  <colors>
+84,48,5:
+140,81,10:
+166,97,26:
+191,129,45:
+216,179,101:
+223,194,125:
+246,232,195:
+245,245,245:
+199,234,229:
+128,205,193:
+90,180,172:
+53,151,143:
+1,133,113:
+1,102,94:
+0,60,48
+  </colors>
+  <suitability>
+   <scheme size="2">G,B,G,G,G,B</scheme>
+   <scheme size="3">G,B,G,G,G,B</scheme>
+   <scheme size="4">G,B,G,G,G,D</scheme>
+   <scheme size="5">G,B,G,G,G,D</scheme>
+   <scheme size="6">G,B,G,G,D,D</scheme>
+   <scheme size="7">G,B,D,D,B,D</scheme>
+   <scheme size="8">G,B,B,B,B,B</scheme>
+   <scheme size="9">G,B,B,B,B,B</scheme>
+   <scheme size="10">G,B,B,B,B,B</scheme>
+   <scheme size="11">G,B,B,B,B,B</scheme>
+  </suitability>
+ </palette>
+ <palette>
+  <name>PRGn</name>
+  <description>dark reddish-purple to light to dark green</description>
+  <colors>
+64,0,75:
+118,42,131:
+123,50,148:
+153,112,171:
+175,141,195:
+194,165,207:
+231,212,232:
+247,247,247:
+217,240,211:
+166,219,160:
+127,191,123:
+90,174,97:
+0,136,55:
+27,120,55:
+0,68,27
+  </colors>
+  <suitability>
+   <scheme size="2">G,B,G,G,G,B</scheme>
+   <scheme size="3">G,B,G,G,G,B</scheme>
+   <scheme size="4">G,B,G,G,G,B</scheme>
+   <scheme size="5">G,B,D,D,D,D</scheme>
+   <scheme size="6">G,B,D,D,D,D</scheme>
+   <scheme size="7">G,B,D,D,D,D</scheme>
+   <scheme size="8">G,B,B,B,B,B</scheme>
+   <scheme size="9">G,B,B,B,B,B</scheme>
+   <scheme size="10">G,B,B,B,B,B</scheme>
+   <scheme size="11">G,B,B,B,B,B</scheme>
+  </suitability>
+ </palette>
+ <palette>
+  <name>PiYG</name>
+  <description>dark magenta to light to dark yellow-green</description>
+  <colors>
+142,1,82:
+197,27,125:
+208,28,139:
+222,119,174:
+233,163,201:
+241,182,218:
+253,224,239:
+247,247,247:
+230,245,208:
+184,225,134:
+161,215,106:
+127,188,65:
+77,172,38:
+77,146,33:
+39,100,25
+  </colors>
+  <suitability>
+   <scheme size="2">G,B,G,G,G,D</scheme>
+   <scheme size="3">G,B,G,G,G,D</scheme>
+   <scheme size="4">G,B,G,G,G,D</scheme>
+   <scheme size="5">G,B,G,D,G,D</scheme>
+   <scheme size="6">G,B,D,B,D,D</scheme>
+   <scheme size="7">G,B,B,B,B,D</scheme>
+   <scheme size="8">G,B,B,B,B,D</scheme>
+   <scheme size="9">G,B,B,B,B,B</scheme>
+   <scheme size="10">G,B,B,B,B,B</scheme>
+   <scheme size="11">G,B,B,B,B,B</scheme>
+  </suitability>
+ </palette>
+ <palette>
+  <name>RdBu</name>
+  <description>dark red to light to dark blue</description>
+  <colors>
+103,0,31:
+178,24,43:
+202,0,32:
+214,96,77:
+239,138,98:
+244,165,130:
+253,219,199:
+247,247,247:
+209,229,240:
+146,197,222:
+103,169,207:
+67,147,195:
+5,113,176:
+33,102,172:
+5,48,97
+  </colors>
+  <suitability>
+   <scheme size="2">G,B,G,G,G,D</scheme>
+   <scheme size="3">G,B,G,G,G,D</scheme>
+   <scheme size="4">G,B,G,G,G,D</scheme>
+   <scheme size="5">G,B,G,G,G,D</scheme>
+   <scheme size="6">G,B,D,D,G,D</scheme>
+   <scheme size="7">G,B,B,D,D,D</scheme>
+   <scheme size="8">G,B,B,B,B,B</scheme>
+   <scheme size="9">G,B,B,B,B,B</scheme>
+   <scheme size="10">G,B,B,B,B,B</scheme>
+   <scheme size="11">G,B,B,B,B,B</scheme>
+  </suitability>
+ </palette>
+ <palette>
+  <name>RdGy</name>
+  <description>dark red to light to dark gray</description>
+  <colors>
+103,0,31:
+178,24,43:
+202,0,32:
+214,96,77:
+239,138,98:
+244,165,130:
+253,219,199:
+255,255,255:
+224,224,224:
+186,186,186:
+153,153,153:
+135,135,135:
+64,64,64:
+77,77,77:
+26,26,26
+  </colors>
+  <suitability>
+   <scheme size="2">G,B,G,G,G,D</scheme>
+   <scheme size="3">G,B,G,G,G,D</scheme>
+   <scheme size="4">G,B,G,G,G,D</scheme>
+   <scheme size="5">G,B,G,D,G,D</scheme>
+   <scheme size="6">G,B,D,D,G,D</scheme>
+   <scheme size="7">G,B,D,G,D,D</scheme>
+   <scheme size="8">G,B,B,B,D,D</scheme>
+   <scheme size="9">G,B,B,B,D,D</scheme>
+   <scheme size="10">G,B,B,B,D,B</scheme>
+   <scheme size="11">G,B,B,B,D,B</scheme>
+  </suitability>
+ </palette>
+ <palette>
+  <name>RdYlBu</name>
+  <description>dark red to light yellow to dark blue</description>
+  <colors>
+165,0,38:
+215,48,39:
+215,25,28:
+244,109,67:
+252,141,89:
+253,174,97:
+254,224,144:
+255,255,191:
+224,243,248:
+171,217,233:
+145,191,219:
+116,173,209:
+44,123,182:
+69,117,180:
+49,54,149
+  </colors>
+  <suitability>
+   <scheme size="2">G,B,G,G,G,D</scheme>
+   <scheme size="3">G,B,G,G,G,D</scheme>
+   <scheme size="4">G,B,G,G,G,B</scheme>
+   <scheme size="5">G,B,G,G,G,D</scheme>
+   <scheme size="6">G,B,G,D,G,D</scheme>
+   <scheme size="7">G,B,G,D,D,D</scheme>
+   <scheme size="8">G,B,D,D,D,D</scheme>
+   <scheme size="9">G,B,B,B,D,D</scheme>
+   <scheme size="10">G,B,B,B,D,D</scheme>
+   <scheme size="11">G,B,B,B,D,B</scheme>
+  </suitability>
+ </palette>
+ <palette>
+  <name>Spectral</name>
+  <description>dark red, orange, light yellow, green, dark blue</description>
+  <colors>
+158,1,66:
+213,62,79:
+215,25,28:
+244,109,67:
+252,141,89:
+253,174,97:
+254,224,139:
+255,255,191:
+230,245,152:
+171,221,164:
+153,213,148:
+102,194,165:
+43,131,186:
+50,136,189:
+94,79,162
+  </colors>
+  <suitability>
+   <scheme size="2">G,B,G,G,G,D</scheme>
+   <scheme size="3">B,B,G,G,G,D</scheme>
+   <scheme size="4">B,B,G,G,G,D</scheme>
+   <scheme size="5">B,B,G,D,G,D</scheme>
+   <scheme size="6">B,B,D,D,D,D</scheme>
+   <scheme size="7">B,B,D,B,D,D</scheme>
+   <scheme size="8">G,B,D,D,D,D</scheme>
+   <scheme size="9">B,B,B,B,D,B</scheme>
+   <scheme size="10">B,B,B,B,D,B</scheme>
+   <scheme size="11">B,B,B,B,D,B</scheme>
+  </suitability>
+ </palette>
+ <palette>
+  <name>RdYlGn</name>
+  <description>dark red, orange, light yellow, yellow-green, dark green</description>
+  <colors>
+165,0,38:
+215,48,39:
+215,25,28:
+244,109,67:
+252,141,89:
+253,174,97:
+254,224,139:
+255,255,191:
+217,239,139:
+166,217,106:
+145,207,96:
+102,189,99:
+26,150,65:
+26,152,80:
+0,104,55
+  </colors>
+  <suitability>
+   <scheme size="2">B,B,G,G,G,D</scheme>
+   <scheme size="3">B,B,G,G,G,D</scheme>
+   <scheme size="4">B,B,G,G,G,D</scheme>
+   <scheme size="5">B,B,G,D,G,D</scheme>
+   <scheme size="6">B,B,D,D,D,D</scheme>
+   <scheme size="7">B,B,D,D,D,D</scheme>
+   <scheme size="8">B,B,B,B,D,D</scheme>
+   <scheme size="9">B,B,B,B,B,B</scheme>
+   <scheme size="10">B,B,B,B,B,B</scheme>
+   <scheme size="11">B,B,B,B,B,B</scheme>
+  </suitability>
+ </palette>
+</palettes>
+</type>

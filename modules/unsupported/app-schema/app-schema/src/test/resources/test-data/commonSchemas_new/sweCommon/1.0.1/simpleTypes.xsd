@@ -1,0 +1,658 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://www.opengis.net/swe/1.0.1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:swe="http://www.opengis.net/swe/1.0.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gml="http://www.opengis.net/gml" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.1">
+	<xs:annotation>
+		<xs:documentation>SWE common schema for simple data types (i.e. without children)		
+
+		These have mostly been implemented using the "composition" pattern, rather than using inheritance/type-derivation. 
+Note: In general, content model definition using composition is more easily accomplished using groups and attribute groups.
+			* global/named type definitions are not needed unless type derivation is required. 
+			* type derivation is not needed unless substitution groups are to be supported. 
+			* parent types that are too generalized will require derivation by restriction further down, so should be avoided.
+
+				Copyright (c) 2007 OGC, All Rights Reserved.
+				For conditions, see OGC Software Notice - http://www.opengeospatial.org/legal/
+		</xs:documentation>
+	</xs:annotation>
+	<!-- ================================================= -->
+	<xs:import namespace="http://www.w3.org/1999/xlink" schemaLocation="../../xlink/1.0.0/xlinks.xsd"/>
+	<xs:import namespace="http://www.opengis.net/gml" schemaLocation="../../gml/3.1.1/base/gml.xsd"/>
+	<xs:include schemaLocation="./basicTypes.xsd"/>
+	<!-- ================================================= -->
+	<!-- === Root class model === -->
+	<!-- ================================================= -->
+	<xs:complexType name="AbstractDataComponentType" abstract="true">
+		<xs:annotation>
+			<xs:documentation>Base type for all data components. 
+			This is implemented as an XML Schema complexType because it includes both element and attribute content.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="gml:AbstractGMLType">
+				<xs:attribute name="fixed" type="xs:boolean" use="optional" default="false">
+					<xs:annotation>
+						<xs:documentation>Specifies if the value of a component stays fixed in time or is variable. Default is variable</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="definition" type="xs:anyURI" use="optional">
+					<xs:annotation>
+						<xs:documentation>Points to semantics information defining the precise nature of the component</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ================================================= -->
+	<!--                 Simple Components                 -->
+	<!-- ================================================= -->
+	<xs:attributeGroup name="SimpleComponentAttributeGroup">
+		<xs:annotation>
+			<xs:documentation>Basic attributes required for all simple data components (i.e. without children)</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="referenceFrame" type="xs:anyURI" use="optional">
+			<xs:annotation>
+				<xs:documentation>A reference frame anchors a value to a datum or interval scale</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="axisID" type="xs:token" use="optional">
+			<xs:annotation>
+				<xs:documentation>Specifies the reference axis using the gml:axisID. The reference frame URI is inherited from parent Vector</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:attributeGroup>
+	<!-- ================================================= -->
+	<!-- ======== Booleans ============= -->
+	<!-- ================================================= -->
+	<xs:element name="Boolean">
+		<xs:annotation>
+			<xs:documentation>Scalar component used to express truth: True or False, 0 or 1</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="swe:AbstractDataComponentType">
+					<xs:sequence>
+						<xs:element name="quality" type="swe:QualityPropertyType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>The quality property provides an indication of the reliability of estimates of the asociated value</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="value" type="xs:boolean" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Value is optional, to enable structure to act in a schema for values provided using other encodings</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+					<xs:attributeGroup ref="swe:SimpleComponentAttributeGroup"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<!-- ........ -->
+	<xs:complexType name="BooleanPropertyType">
+		<xs:annotation>
+			<xs:documentation>Boolean is a data-type so usually appears "by value" rather than by reference.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="swe:Boolean"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ================================================= -->
+	<!-- ======== Quantities ============= -->
+	<!-- ================================================= -->
+	<xs:element name="Quantity">
+		<xs:annotation>
+			<xs:documentation>Decimal number with optional unit and constraints</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="swe:AbstractDataComponentType">
+					<xs:sequence>
+						<xs:element name="uom" type="swe:UomPropertyType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Unit of measure</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="constraint" type="swe:AllowedValuesPropertyType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>The constraint property defines the permitted values, as a range or enumerated list</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="quality" type="swe:QualityPropertyType" minOccurs="0" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>The quality property provides an indication of the reliability of estimates of the asociated value</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="value" type="xs:double" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Value is optional, to enable structure to act in a schema for values provided using other encodings</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+					<xs:attributeGroup ref="swe:SimpleComponentAttributeGroup"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<!-- ........ -->
+	<xs:complexType name="QuantityPropertyType">
+		<xs:annotation>
+			<xs:documentation>Quantity is a data-type so usually appears "by value" rather than by reference.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="swe:Quantity"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ================================================= -->
+	<xs:element name="QuantityRange">
+		<xs:annotation>
+			<xs:documentation>Decimal pair for specifying a quantity range with constraints</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="swe:AbstractDataComponentType">
+					<xs:sequence>
+						<xs:element name="uom" type="swe:UomPropertyType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Unit of measure</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="constraint" type="swe:AllowedValuesPropertyType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>The constraint property defines the permitted values, as a range or enumerated list</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="quality" type="swe:QualityPropertyType" minOccurs="0" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>The quality property provides an indication of the reliability of estimates of the asociated value</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="value" type="swe:decimalPair" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Value is optional, to enable structure to act in a schema for values provided using other encodings</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<!-- *** Maybe cleaner to implement as a pair of value elements? *** -->
+					</xs:sequence>
+					<xs:attributeGroup ref="swe:SimpleComponentAttributeGroup"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<!-- ........ -->
+	<xs:complexType name="QuantityRangePropertyType">
+		<xs:annotation>
+			<xs:documentation>QuantityRange is a data-type so usually appears "by value" rather than by reference.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="swe:QuantityRange"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ================================================= -->
+	<xs:element name="Count">
+		<xs:annotation>
+			<xs:documentation>Integer number used for a counting value</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="swe:AbstractDataComponentType">
+					<xs:sequence>
+						<xs:element name="constraint" type="swe:AllowedValuesPropertyType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>The constraint property defines the permitted values, as a range or enumerated list</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="quality" type="swe:QualityPropertyType" minOccurs="0" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>The quality property provides an indication of the reliability of estimates of the asociated value</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="value" type="xs:integer" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Value is optional, to enable structure to act in a schema for values provided using other encodings</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<!--
+						<xs:element name="uom" type="swe:UomPropertyType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Unit of measure</xs:documentation>
+							</xs:annotation> 
+						If there is a UOM then it is a scaled Quantity, not a Count. 
+						</xs:element>
+						-->
+					</xs:sequence>
+					<xs:attributeGroup ref="swe:SimpleComponentAttributeGroup"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<!-- ........ -->
+	<xs:complexType name="CountPropertyType">
+		<xs:annotation>
+			<xs:documentation>Count is a data-type so usually appears "by value" rather than by reference.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="swe:Count"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ================================================= -->
+	<xs:element name="CountRange">
+		<xs:annotation>
+			<xs:documentation>Integer pair used for specifying a count range</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="swe:AbstractDataComponentType">
+					<xs:sequence>
+						<xs:element name="constraint" type="swe:AllowedValuesPropertyType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>The constraint property defines the permitted values, as a range or enumerated list</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="quality" type="swe:QualityPropertyType" minOccurs="0" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>The quality property provides an indication of the reliability of estimates of the asociated value</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="value" type="swe:countPair" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Value is optional, to enable structure to act in a schema for values provided using other encodings</xs:documentation>
+							</xs:annotation>
+							<!-- *** Maybe cleaner to implement as a pair of value elements? *** -->
+						</xs:element>
+						<!--
+						<xs:element name="uom" type="swe:UomPropertyType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Unit of measure</xs:documentation>
+							</xs:annotation> 
+						If there is a UOM then it is a scaled Quantity, not a Count. 
+						</xs:element>
+						-->
+					</xs:sequence>
+					<xs:attributeGroup ref="swe:SimpleComponentAttributeGroup"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<!-- ........ -->
+	<xs:complexType name="CountRangePropertyType">
+		<xs:annotation>
+			<xs:documentation>CountRange is a data-type so usually appears "by value" rather than by reference.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="swe:CountRange"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ================================================= -->
+	<!-- ======== Categories ============= -->
+	<!-- ================================================= -->
+	<xs:element name="Category">
+		<xs:annotation>
+			<xs:documentation>A simple token identifying a term or category (single spaces allowed); definition attribute should provide dictionary entry useful for interpretation of the value</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="swe:AbstractDataComponentType">
+					<xs:sequence>
+						<xs:element name="codeSpace" type="swe:CodeSpacePropertyType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Provides link to dictionary or rule set to which the value belongs</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="constraint" type="swe:AllowedTokensPropertyType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>The constraint property defines the permitted values, as an enumerated list</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="quality" type="swe:QualityPropertyType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>The quality property provides an indication of the reliability of estimates of the asociated value</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="value" type="xs:token" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Value is optional, to enable structure to act in a schema for values provided using other encodings</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+					<xs:attributeGroup ref="swe:SimpleComponentAttributeGroup"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<!-- ........ -->
+	<xs:complexType name="CategoryPropertyType">
+		<xs:annotation>
+			<xs:documentation>Category is a data-type so usually appears "by value" rather than by reference.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="swe:Category"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ================================================= -->
+	<!-- ========== Time Components ======== -->
+	<!-- ================================================= -->
+	<xs:attributeGroup name="TRSAttributeGroup">
+		<xs:attribute name="referenceTime" type="swe:timeIso8601" use="optional">
+			<xs:annotation>
+				<xs:documentation>Specifies the origin of the temporal reference frame as an ISO8601 date (used to specify time after an epoch)</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="referenceFrame" type="xs:anyURI" use="optional">
+			<xs:annotation>
+				<xs:documentation>Points to a temporal reference frame definition. Time value will be expressed relative to this frame</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="localFrame" type="xs:anyURI" use="optional">
+			<xs:annotation>
+				<xs:documentation>Specifies the temporal frame which origin is given by this time component</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:attributeGroup>
+	<!-- ================================================= -->
+	<xs:element name="Time">
+		<xs:annotation>
+			<xs:documentation>Either ISO 8601 (e.g. 2004-04-18T12:03:04.6Z) or time relative to a time origin</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="swe:AbstractDataComponentType">
+					<xs:sequence>
+						<xs:element name="uom" type="swe:UomPropertyType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Unit of measure</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="constraint" type="swe:AllowedTimesPropertyType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>The constraint property defines the permitted values, as a range or enumerated list</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="quality" type="swe:QualityPropertyType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>The quality property provides an indication of the reliability of estimates of the asociated value</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="value" type="swe:timePositionType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Value is optional, to enable structure to act in a schema for values provided using other encodings</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+					<xs:attributeGroup ref="swe:TRSAttributeGroup"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<!-- ........ -->
+	<xs:complexType name="TimePropertyType">
+		<xs:annotation>
+			<xs:documentation>Time is a data-type so usually appears "by value" rather than by reference.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="swe:Time"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ================================================= -->
+	<xs:element name="TimeRange">
+		<xs:annotation>
+			<xs:documentation>Time value pair for specifying a time range (can be a decimal or ISO 8601)</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="swe:AbstractDataComponentType">
+					<xs:sequence>
+						<xs:element name="uom" type="swe:UomPropertyType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Unit of measure</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="constraint" type="swe:AllowedTimesPropertyType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>The constraint property defines the permitted values, as a range or enumerated list</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="quality" type="swe:QualityPropertyType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>The quality property provides an indication of the reliability of estimates of the asociated value</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="value" type="swe:timePair" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Value is optional, to enable structure to act in a schema for values provided using other encodings</xs:documentation>
+							</xs:annotation>
+							<!-- *** Maybe cleaner to implement as a pair of value elements? *** -->
+						</xs:element>
+					</xs:sequence>
+					<xs:attributeGroup ref="swe:TRSAttributeGroup"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<!-- ........ -->
+	<xs:complexType name="TimeRangePropertyType">
+		<xs:annotation>
+			<xs:documentation>TimeRange is a data-type so usually appears "by value" rather than by reference.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="swe:TimeRange"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ================================================= -->
+	<!-- ======== Text Object  ============= -->
+	<!-- ================================================= -->
+	<xs:element name="Text">
+		<xs:annotation>
+			<xs:documentation>Free textual component</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="swe:AbstractDataComponentType">
+					<xs:sequence>
+						<xs:element name="value" type="xs:string" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Value is optional, to enable structure to act in a schema for values provided using other encodings</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<!-- ........ -->
+	<xs:complexType name="TextPropertyType">
+		<xs:annotation>
+			<xs:documentation>Text is a data-type so usually appears "by value" rather than by reference.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="swe:Text"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ================================================= -->
+	<!-- ======== ObservableProperty ============= -->
+	<!-- ================================================= -->
+	<xs:element name="ObservableProperty">
+		<xs:annotation>
+			<xs:documentation>ObservableProperty should be used to identify (through reference only) stimuli or measurable property types. The consequence is that it does not have a uom because it has not been measured yet.  This is used to define sensor/detector/actuator inputs and outputs, for instance.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="swe:AbstractDataComponentType"/>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<!-- ================================================= -->
+	<!-- ============ Constraints and Qualifiers ================ -->
+	<!-- ================================================= -->
+	<xs:complexType name="QualityPropertyType">
+		<xs:annotation>
+			<xs:documentation>Allows for a simple quality assessment of the values carried by this component.
+	      This value can be numerical or categorical thus allowing for things like accuracy, precision, tolerance, confidence level, etc...
+	      
+	      The  meaning of the quality measure is indicated by the definition attribute of the chosen sub-component.
+	      
+	      The use of the 'ref'attribute indicate that the value of accuracy is included itself in the data inside the referred component. 
+	      
+	      This soft-typed Data Quality description may be replaced by ISO 19115/19139 DQ_DataQuality elements in later versions</xs:documentation>
+		</xs:annotation>
+		<xs:choice minOccurs="0">
+			<xs:element ref="swe:Quantity"/>
+			<xs:element ref="swe:QuantityRange"/>
+			<xs:element ref="swe:Category"/>
+			<xs:element ref="swe:Text"/>
+		</xs:choice>
+		<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</xs:complexType>
+	<!-- ================================================= -->
+	<xs:complexType name="AllowedValuesPropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:element ref="swe:AllowedValues"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</xs:complexType>
+	<!-- ........ -->
+	<xs:element name="AllowedValues">
+		<xs:annotation>
+			<xs:documentation>List of allowed values (There is an implicit AND between all members)</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice>
+				<xs:choice>
+					<xs:element name="min" type="xs:double">
+						<xs:annotation>
+							<xs:documentation>Specifies minimum allowed value for an open interval (no max)</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="max" type="xs:double">
+						<xs:annotation>
+							<xs:documentation>Specifies maximum allowed value for an open interval (no min)</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:choice>
+				<xs:choice maxOccurs="unbounded">
+					<xs:element name="interval" type="swe:decimalPair">
+						<xs:annotation>
+							<xs:documentation>Range of allowed values (closed interval) for this component</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="valueList" type="swe:decimalList">
+						<xs:annotation>
+							<xs:documentation>List of allowed values for this component</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:choice>
+			</xs:choice>
+			<xs:attribute name="id" type="xs:ID"/>
+		</xs:complexType>
+	</xs:element>
+	<!-- ================================================= -->
+	<xs:complexType name="AllowedTokensPropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:element ref="swe:AllowedTokens"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</xs:complexType>
+	<!-- ........ -->
+	<xs:element name="AllowedTokens">
+		<xs:annotation>
+			<xs:documentation>Enumeration of allowed values</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="valueList" type="swe:tokenList" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>List of allowed token values for this component</xs:documentation>
+					</xs:annotation>
+					<!-- why tokens? Better to allow strings. In which case either the members must be tagged, or whitespace escaped -->
+					<!-- the Category component is limited to the use of tokens to simplify comparisons (remove possible confusions due to
+					     insertion of \n or double spaces). Free Strings are only used in the Text component -->
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="id" type="xs:ID"/>
+		</xs:complexType>
+	</xs:element>
+	<!-- ================================================= -->
+	<xs:complexType name="AllowedTimesPropertyType">
+		<xs:sequence minOccurs="0">
+			<xs:element ref="swe:AllowedTimes"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</xs:complexType>
+	<!-- ........ -->
+	<xs:element name="AllowedTimes">
+		<xs:annotation>
+			<xs:documentation>List of allowed time values (There is an implicit AND between all members)</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice>
+				<xs:choice>
+					<xs:element name="min" type="swe:timePositionType">
+						<xs:annotation>
+							<xs:documentation>Specifies minimum allowed time value for an open interval (no max)</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="max" type="swe:timePositionType">
+						<xs:annotation>
+							<xs:documentation>Specifies maximum allowed time value for an open interval (no min)</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:choice>
+				<xs:choice maxOccurs="unbounded">
+					<xs:element name="interval" type="swe:timePair">
+						<xs:annotation>
+							<xs:documentation>Range of allowed time values (closed interval) for this component</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="valueList" type="swe:timeList">
+						<xs:annotation>
+							<xs:documentation>List of allowed time values for this component</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:choice>
+			</xs:choice>
+			<xs:attribute name="id" type="xs:ID"/>
+		</xs:complexType>
+	</xs:element>
+	<!-- ================================================= -->
+	<!--               Data Component Groups               -->
+	<!-- ================================================= -->
+	<xs:group name="AnyScalar">
+		<xs:annotation>
+			<xs:documentation>Re-usable group providing a choice of scalar data types</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:group ref="swe:AnyNumerical"/>
+			<xs:element ref="swe:Boolean"/>
+			<xs:element ref="swe:Category"/>
+			<xs:element ref="swe:Text"/>
+		</xs:choice>
+	</xs:group>
+	<!-- ........ -->
+	<xs:complexType name="AnyScalarPropertyType">
+		<xs:annotation>
+			<xs:documentation>Complex Type for all properties taking the AnyScalar Group</xs:documentation>
+		</xs:annotation>
+		<xs:group ref="swe:AnyScalar" minOccurs="0"/>
+		<xs:attribute name="name" type="xs:token" use="required"/>
+		<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</xs:complexType>
+	<!-- ================================================= -->
+	<xs:group name="AnyNumerical">
+		<xs:annotation>
+			<xs:documentation>Re-usable group providing a choice of numeric data types</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element ref="swe:Count"/>
+			<xs:element ref="swe:Quantity"/>
+			<xs:element ref="swe:Time"/>
+		</xs:choice>
+	</xs:group>
+	<!-- ........ -->
+	<xs:group name="AnyRange">
+		<xs:annotation>
+			<xs:documentation>Re-usable group providing a choice of range data types</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element ref="swe:QuantityRange"/>
+			<xs:element ref="swe:CountRange"/>
+			<xs:element ref="swe:TimeRange"/>
+		</xs:choice>
+	</xs:group>
+</xs:schema>

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gml="http://www.opengis.net/gml"
+        xmlns="http://www.w3.org/2001/XMLSchema" xmlns:om="http://www.opengis.net/om/1.0"
+        xmlns:swe="http://www.opengis.net/swe/1.0.1" xmlns:cv="http://www.opengis.net/cv/0.2.1"
+		  targetNamespace="http://www.opengis.net/om/1.0"
+        elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.0">
+	<annotation>
+		<documentation>observationCoverageCompact.xsd
+
+An implementation of the OandM model for SWE
+This document contains specializations of the basic observation pattern, fixing the type of the result to be various discrete coverage types (compact version). 
+
+In this schema, the derivation model is **restriction**
+
+Copyright (c) 2007 Open Geospatial Consortium - see http://www.opengeospatial.org/ogc/software</documentation>
+	</annotation>
+	<!-- ====================================================================== -->
+	<!-- bring in other schemas -->
+	<import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+	<import namespace="http://www.opengis.net/swe/1.0.1" schemaLocation="http://schemas.opengis.net/sweCommon/1.0.1/swe.xsd"/>
+	<import namespace="http://www.opengis.net/cv/0.2.1" schemaLocation="http://bp.schemas.opengis.net/06-188r1/cv/0.2.1/cv.xsd"/>	
+	<include schemaLocation="../observation.xsd"/>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+	<!-- === Compact coverage observations = implement the "geometry" element in the result in compact form === -->
+	<!-- ====================================================================== -->
+	<complexType name="DiscreteCoverageObsType">
+		<annotation>
+			<documentation>Specialized Observation, in which the result is a compact representation of a generalized discrete coverage</documentation>
+		</annotation>
+		<complexContent>
+			<restriction base="om:ObservationType">
+				<sequence>
+					<element ref="gml:metaDataProperty" minOccurs="0" maxOccurs="unbounded"/>
+					<element ref="gml:description" minOccurs="0"/>
+					<element ref="gml:name" minOccurs="0" maxOccurs="unbounded"/>
+					<element ref="gml:boundedBy" minOccurs="0"/>
+					<element name="metadata" type="om:AnyOrReferenceType" minOccurs="0"/>
+					<element name="samplingTime" type="swe:TimeObjectPropertyType"/>
+					<element name="resultTime" type="swe:TimeObjectPropertyType" minOccurs="0"/>
+					<element name="procedure" type="om:ProcessPropertyType"/>
+					<element name="resultQuality" type="om:AnyOrReferenceType" minOccurs="0"/>
+					<element name="observedProperty" type="swe:PhenomenonPropertyType"/>
+					<element name="featureOfInterest" type="gml:FeaturePropertyType"/>
+					<element name="parameter" type="swe:AnyDataPropertyType" minOccurs="0" maxOccurs="unbounded"/>
+					<element name="result" type="cv:CompactDiscreteCoveragePropertyType">
+						<annotation>
+							<documentation>compact representation of a generalized discrete coverage which describes the distribution of a property on the feature of interest</documentation>
+						</annotation>
+					</element>
+				</sequence>
+			</restriction>
+		</complexContent>
+	</complexType>
+	<!-- ...................... -->
+	<element name="DiscreteCoverageObs" type="om:DiscreteCoverageObsType" substitutionGroup="om:Observation">
+		<annotation>
+			<documentation>Specialized Observation, in which the result is a compact representation of a generalized discrete coverage</documentation>
+		</annotation>
+	</element>
+	<!-- ====================================================================== -->
+	<complexType name="PointCoverageObsType">
+		<annotation>
+			<documentation>Specialized Observation, in which the result is a compact representation of a point coverage which samples a property at points in the feature of interest</documentation>
+		</annotation>
+		<complexContent>
+			<restriction base="om:ObservationType">
+				<sequence>
+					<element ref="gml:metaDataProperty" minOccurs="0" maxOccurs="unbounded"/>
+					<element ref="gml:description" minOccurs="0"/>
+					<element ref="gml:name" minOccurs="0" maxOccurs="unbounded"/>
+					<element ref="gml:boundedBy" minOccurs="0"/>
+					<element name="metadata" type="om:AnyOrReferenceType" minOccurs="0"/>
+					<element name="samplingTime" type="swe:TimeObjectPropertyType"/>
+					<element name="resultTime" type="swe:TimeObjectPropertyType" minOccurs="0"/>
+					<element name="procedure" type="om:ProcessPropertyType"/>
+					<element name="resultQuality" type="om:AnyOrReferenceType" minOccurs="0"/>
+					<element name="observedProperty" type="swe:PhenomenonPropertyType"/>
+					<element name="featureOfInterest" type="gml:FeaturePropertyType"/>
+					<element name="parameter" type="swe:AnyDataPropertyType" minOccurs="0" maxOccurs="unbounded"/>
+					<element name="result" type="cv:CompactDiscretePointCoveragePropertyType">
+						<annotation>
+							<documentation>compact representation of a point coverage which samples a property at points in the feature of interest</documentation>
+						</annotation>
+					</element>
+				</sequence>
+			</restriction>
+		</complexContent>
+	</complexType>
+	<!-- ...................... -->
+	<element name="PointCoverageObs" type="om:PointCoverageObsType" substitutionGroup="om:Observation">
+		<annotation>
+			<documentation>Observation event</documentation>
+		</annotation>
+	</element>
+	<!-- ====================================================================== -->
+	<complexType name="TimeSeriesObsType">
+		<annotation>
+			<documentation>Specialized Observation, in which the result is a compact representation of a time-instant coverage which samples a property of the feature of interest at different times</documentation>
+		</annotation>
+		<complexContent>
+			<restriction base="om:ObservationType">
+				<sequence>
+					<element ref="gml:metaDataProperty" minOccurs="0" maxOccurs="unbounded"/>
+					<element ref="gml:description" minOccurs="0"/>
+					<element ref="gml:name" minOccurs="0" maxOccurs="unbounded"/>
+					<element ref="gml:boundedBy" minOccurs="0"/>
+					<element name="metadata" type="om:AnyOrReferenceType" minOccurs="0"/>
+					<element name="samplingTime" type="swe:TimeObjectPropertyType"/>
+					<element name="resultTime" type="swe:TimeObjectPropertyType" minOccurs="0"/>
+					<element name="procedure" type="om:ProcessPropertyType"/>
+					<element name="resultQuality" type="om:AnyOrReferenceType" minOccurs="0"/>
+					<element name="observedProperty" type="swe:PhenomenonPropertyType"/>
+					<element name="featureOfInterest" type="gml:FeaturePropertyType"/>
+					<element name="parameter" type="swe:AnyDataPropertyType" minOccurs="0" maxOccurs="unbounded"/>
+					<element name="result" type="cv:CompactDiscreteTimeCoveragePropertyType">
+						<annotation>
+							<documentation>compact representation of a time-instant coverage which samples a property of the feature of interest at different times</documentation>
+						</annotation>
+					</element>
+				</sequence>
+			</restriction>
+		</complexContent>
+	</complexType>
+	<!-- ...................... -->
+	<element name="TimeSeriesObs" type="om:TimeSeriesObsType" substitutionGroup="om:Observation">
+		<annotation>
+			<documentation>Specialized Observation, in which the result is a compact representation of a time-instant coverage which samples a property of the feature of interest at different times</documentation>
+		</annotation>
+	</element>
+	<!-- ====================================================================== -->
+</schema>

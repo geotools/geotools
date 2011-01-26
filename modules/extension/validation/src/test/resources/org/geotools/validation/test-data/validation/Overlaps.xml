@@ -1,0 +1,24 @@
+<suite xmlns:gml = "http://www.opengis.net/gml" xsi:schemaLocation = "testSuiteSchema /data/capabilities/validate/testSuiteSchema.xsd" xmlns:ogc = "http://www.opengis.net/ogc" xmlns = "testSuiteSchema" xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" >
+<name>River Overlap</name>
+<description>Ensure that rivers do not overlap</description>
+<test>
+<name>overlaps</name>
+<description></description>
+<plugin>Geometry Overlaps Geometry</plugin>
+<argument >
+<name>geomTypeRefB</name>
+<string>STREAMS:streams</string>
+
+</argument>
+<argument >
+<name>expected</name>
+<boolean>false</boolean>
+
+</argument>
+<argument >
+<name>geomTypeRefA</name>
+<string>STREAMS:streams</string>
+
+</argument>
+</test>
+</suite>

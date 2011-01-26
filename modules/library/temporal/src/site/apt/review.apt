@@ -1,0 +1,28 @@
+MODULE TEMPORAL
+~~~~~~~~~~~~~~~
+
+  Module Creator: Mehdi Sidhoum
+  Module Maintainer: Alessio Fabiani
+
+  IP Review:
+ 
+    * Adrian Custer, June 2008
+
+
+  STATUS: CLEAN
+
+  Work done up to now by Mehdi, and his copyright assigned to OSGeo under 
+  Geomatys' assignment document.
+  
+  Code review, code coverage and tests fixed by Alessio Fabiani of GeoSolutions.
+
+
+* org.geotools.temporal.object [(test)]
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Created to define temporal geometric and topological objects that 
+  shall be used as values for the temporal characteristics of features and data sets.
+
+
+* org.geotools.temporal.reference [(test)]
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Provides elements for describing temporal reference systems.

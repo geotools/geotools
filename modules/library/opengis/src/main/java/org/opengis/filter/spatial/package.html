@@ -1,0 +1,34 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<HTML>
+  <HEAD>
+    <TITLE>package org.opengis.filter.spatial</TITLE>
+  </HEAD>
+  <BODY>
+    A <CITE>spatial operator</CITE> determines whether its geometric arguments satisfy
+    the stated spatial relationship. The operator {@linkplain org.opengis.filter.Filter#evaluate evaluates}
+    to {@code true} if the spatial relationship is satisfied. Otherwise the operator evaluates to {@code false}.
+    The following is adapted from
+    <A HREF="http://www.opengis.org/docs/02-059.pdf">Filter encoding implementation</A>:
+
+    <P ALIGN="justify">{@linkplain org.opengis.filter.spatial.SpatialOperator Spatial operators}
+    are used to test whether the value of a geometric property, potentially referenced using the name of the
+    property, and a (potentially literal) geometric value satisfy the spatial relationship implied by the operator.
+    For example, the {@link org.opengis.filter.spatial.Overlaps} operator evaluates whether the
+    value of the specified geometric property and the specified literal geometric value spatially
+    overlap.</P>
+
+    <P ALIGN="justify">The {@link org.opengis.filter.spatial.BBOX} element is defined as a convenient
+    and more compact way of encoding the very common bounding box constraint based on the {@code gml:Box}
+    geometry. The {@code BBOX} operator should identify all geometries that spatially interact with the box
+    in some manner.</P>
+
+    <P ALIGN="justify">The spatial operators {@link org.opengis.filter.spatial.DWithin} and
+    {@link org.opengis.filter.spatial.Beyond} test whether the value of a geometric property is
+    within or beyond a specified distance of the specified literal geometric value. Distance values
+    are expressed using the {@linkplain org.opengis.filter.spatial.DistanceBufferOperator#getDistance distance}
+    attribute. The content of the distance attribute represents the magnitude of the distance and the
+    {@linkplain org.opengis.filter.spatial.DistanceBufferOperator#getDistanceUnits units} attribute
+    is used to specify the units of measure.</P>
+  </BODY>
+</HTML>

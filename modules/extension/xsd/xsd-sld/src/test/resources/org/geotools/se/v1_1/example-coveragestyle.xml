@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CoverageStyle version="1.1.0" xsi:schemaLocation="http://www.opengis.net/se/1.1.0/FeatureStyle.xsd" xmlns="http://www.opengis.net/se" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<Rule>
+		<Name>ChannelSelection</Name>
+		<Description>
+			<Title>Gray channel mapping</Title>
+		</Description>
+		<RasterSymbolizer>
+			<ChannelSelection>
+				<GrayChannel>
+					<SourceChannelName>Band.band1</SourceChannelName>
+				</GrayChannel>
+			</ChannelSelection>
+			<ContrastEnhancement>
+				<Normalize/>
+			</ContrastEnhancement>
+		</RasterSymbolizer>
+	</Rule>
+</CoverageStyle>

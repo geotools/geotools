@@ -1,0 +1,65 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.osgeo</groupId>
+  <artifactId>geometry-trunk</artifactId>
+  <packaging>jar</packaging>
+  <version>0.1-SNAPSHOT</version>
+
+  <name>geometry</name>
+
+  <url>http://osgeo.org</url>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <developers>
+    <developer>
+      <name>Markus Schneider</name>
+      <id>markusschneider</id>
+        <email>schneider@lat-lon.de</email>
+        <organization>lat/lon GmbH</organization>
+        <roles>
+          <role>Java Developer</role>
+          <role>deegree Technical Management Committee (TMC) Member</role>
+        </roles>
+    </developer>
+    <developer>
+      <name>Jody Garnett</name>
+      <id>jive</id>
+      <email>jive@users.sourceforge.net</email>
+      <organization>LISAsoft</organization>
+      <roles>
+        <role>Java Developer</role>
+        <role>GeoTools Project Management Committee (PMC) Member</role>
+      </roles>
+    </developer>
+  </developers>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+        <source>1.5</source>
+        <target>1.5</target>
+        <debug>true</debug>
+        <encoding>UTF-8</encoding>
+        <fork>true</fork> 
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

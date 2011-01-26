@@ -1,0 +1,17 @@
+Feature-Pregeneralized module  for Geotools
+---------------------------------------------
+
+Module Maintainer: Christian Mueller
+
+IP Review: 
+
+    * Christian Mueller May 11th, 2009
+
+STATUS: CLEAN
+
+IP: 
+
+   * LICENSE.TEXT refers to LGPL
+
+** Sample Data **
+streams.shp 			taken from gt-sample-data      

@@ -1,0 +1,796 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wps:ProcessDescriptions xmlns:wps="http://www.opengis.net/wps/1.0.0" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" service="WPS" version="1.0.0" xml:lang="en" xsi:schemaLocation="http://www.opengis.net/wps/1.0.0 http://schemas.opengis.net/wps/1.0.0/wpsDescribeProcess_response.xsd">
+  <ProcessDescription wps:processVersion="1.0.0" storeSupported="false" statusSupported="false">
+    <ows:Identifier>Centroid</ows:Identifier>
+    <ows:Title>Process for finding the centroid of a GML geometry.</ows:Title>
+    <ows:Abstract>The purpose of this process is finding the centroid of a geometry.</ows:Abstract>
+    <DataInputs>
+      <Input minOccurs="1" maxOccurs="1">
+        <ows:Identifier>GMLInput</ows:Identifier>
+        <ows:Title>GMLInput</ows:Title>
+        <ComplexData>
+          <Default>
+            <Format>
+              <MimeType>text/xml</MimeType>
+              <Encoding>UTF-8</Encoding>
+              <Schema>http://schemas.opengis.net/gml/3.1.1/base/gml.xsd</Schema>
+            </Format>
+          </Default>
+          <Supported>
+            <Format>
+              <MimeType>text/xml</MimeType>
+              <Encoding>UTF-8</Encoding>
+              <Schema>http://schemas.opengis.net/gml/3.1.1/base/gml.xsd</Schema>
+            </Format>
+          </Supported>
+        </ComplexData>
+      </Input>
+    </DataInputs>
+    <ProcessOutputs>
+      <Output>
+        <ows:Identifier>Centroid</ows:Identifier>
+        <ows:Title>Centroid</ows:Title>
+        <ComplexOutput>
+          <Default>
+            <Format>
+              <MimeType>text/xml</MimeType>
+              <Encoding>UTF-8</Encoding>
+              <Schema>http://schemas.opengis.net/gml/3.1.1/base/gml.xsd</Schema>
+            </Format>
+          </Default>
+          <Supported>
+            <Format>
+              <MimeType>text/xml</MimeType>
+              <Encoding>UTF-8</Encoding>
+              <Schema>http://schemas.opengis.net/gml/3.1.1/base/gml.xsd</Schema>
+            </Format>
+          </Supported>
+        </ComplexOutput>
+      </Output>
+    </ProcessOutputs>
+  </ProcessDescription>
+  <ProcessDescription wps:processVersion="1.0.0" storeSupported="false" statusSupported="false">
+    <ows:Identifier>Intersection</ows:Identifier>
+    <ows:Title>Determining the intersection points between two GML Geometries.</ows:Title>
+    <ows:Abstract>The intersection of two Geometries A and B is the set of all points which lie in both A and B.</ows:Abstract>
+    <DataInputs>
+      <Input minOccurs="1" maxOccurs="1">
+        <ows:Identifier>GMLInput1</ows:Identifier>
+        <ows:Title>GMLInput1</ows:Title>
+        <ComplexData>
+          <Default>
+            <Format>
+              <MimeType>text/xml</MimeType>
+              <Encoding>UTF-8</Encoding>
+              <Schema>http://schemas.opengis.net/gml/3.1.1/base/gml.xsd</Schema>
+            </Format>
+          </Default>
+          <Supported>
+            <Format>
+              <MimeType>text/xml</MimeType>
+              <Encoding>UTF-8</Encoding>
+              <Schema>http://schemas.opengis.net/gml/3.1.1/base/gml.xsd</Schema>
+            </Format>
+          </Supported>
+        </ComplexData>
+      </Input>
+      <Input minOccurs="1" maxOccurs="1">
+        <ows:Identifier>GMLInput2</ows:Identifier>
+        <ows:Title>GMLInput2</ows:Title>
+        <ComplexData>
+          <Default>
+            <Format>
+              <MimeType>text/xml</MimeType>
+              <Encoding>UTF-8</Encoding>
+              <Schema>http://schemas.opengis.net/gml/3.1.1/base/gml.xsd</Schema>
+            </Format>
+          </Default>
+          <Supported>
+            <Format>
+              <MimeType>text/xml</MimeType>
+              <Encoding>UTF-8</Encoding>
+              <Schema>http://schemas.opengis.net/gml/3.1.1/base/gml.xsd</Schema>
+            </Format>
+          </Supported>
+        </ComplexData>
+      </Input>
+    </DataInputs>
+    <ProcessOutputs>
+      <Output>
+        <ows:Identifier>Intersection</ows:Identifier>
+        <ows:Title>Intersection</ows:Title>
+        <ComplexOutput>
+          <Default>
+            <Format>
+              <MimeType>text/xml</MimeType>
+              <Encoding>UTF-8</Encoding>
+              <Schema>http://schemas.opengis.net/gml/3.1.1/base/gml.xsd</Schema>
+            </Format>
+          </Default>
+          <Supported>
+            <Format>
+              <MimeType>text/xml</MimeType>
+              <Encoding>UTF-8</Encoding>
+              <Schema>http://schemas.opengis.net/gml/3.1.1/base/gml.xsd</Schema>
+            </Format>
+          </Supported>
+        </ComplexOutput>
+      </Output>
+    </ProcessOutputs>
+  </ProcessDescription>
+  <ProcessDescription wps:processVersion="1.0.0" storeSupported="false" statusSupported="false">
+    <ows:Identifier>Crosses</ows:Identifier>
+    <ows:Title>Determining whether two geometries cross each other.</ows:Title>
+    <ows:Abstract>The Geometries share some but not all interior points, and the dimension of the intersection is less than that of at least one of the Geometries.</ows:Abstract>
+    <DataInputs>
+      <Input minOccurs="1" maxOccurs="1">
+        <ows:Identifier>GMLInput1</ows:Identifier>
+        <ows:Title>GMLInput1</ows:Title>
+        <ComplexData>
+          <Default>
+            <Format>
+              <MimeType>text/xml</MimeType>
+              <Encoding>UTF-8</Encoding>
+              <Schema>http://schemas.opengis.net/gml/3.1.1/base/gml.xsd</Schema>
+            </Format>
+          </Default>
+          <Supported>
+            <Format>
+              <MimeType>text/xml</MimeType>
+              <Encoding>UTF-8</Encoding>
+              <Schema>http://schemas.opengis.net/gml/3.1.1/base/gml.xsd</Schema>
+            </Format>
+          </Supported>
+        </ComplexData>
+      </Input>
+      <Input minOccurs="1" maxOccurs="1">
+        <ows:Identifier>GMLInput2</ows:Identifier>
+        <ows:Title>GMLInput2</ows:Title>
+        <ComplexData>
+          <Default>
+            <Format>
+              <MimeType>text/xml</MimeType>
+              <Encoding>UTF-8</Encoding>
+              <Schema>http://schemas.opengis.net/gml/3.1.1/base/gml.xsd</Schema>
+            </Format>
+          </Default>
+          <Supported>
+            <Format>
+              <MimeType>text/xml</MimeType>
+              <Encoding>UTF-8</Encoding>
+              <Schema>http://schemas.opengis.net/gml/3.1.1/base/gml.xsd</Schema>
+            </Format>
+          </Supported>
+        </ComplexData>
+      </Input>
+    </DataInputs>
+    <ProcessOutputs>
+      <Output>
+        <ows:Identifier>Crosses</ows:Identifier>
+        <ows:Title>Crosses</ows:Title>
+        <LiteralOutput>
+          <ows:DataType ows:reference="http://www.w3.org/TR/xmlschema-2/#boolean">boolean</ows:DataType>
+        </LiteralOutput>
+      </Output>
+    </ProcessOutputs>
+  </ProcessDescription>
+  <ProcessDescription wps:processVersion="1.0.0" storeSupported="false" statusSupported="false">
+    <ows:Identifier>Difference</ows:Identifier>
+    <ows:Title>Calculating the geometric-difference of two geometies.</ows:Title>
+    <ows:Abstract>The difference between two Geometries A and B is the set of all points which lie in A but not in B.</ows:Abstract>
+    <DataInputs>
+      <Input minOccurs="1" maxOccurs="1">
+        <ows:Identifier>GMLInput1</ows:Identifier>
+        <ows:Title>GMLInput1</ows:Title>
+        <ComplexData>
+          <Default>
+            <Format>
+              <MimeType>text/xml</MimeType>
+              <Encoding>UTF-8</Encoding>
+              <Schema>http://schemas.opengis.net/gml/3.1.1/base/gml.xsd</Schema>
+            </Format>
+          </Default>
+          <Supported>
+            <Format>
+              <MimeType>text/xml</MimeType>
+              <Encoding>UTF-8</Encoding>
+              <Schema>http://schemas.opengis.net/gml/3.1.1/base/gml.xsd</Schema>
+            </Format>
+          </Supported>
+        </ComplexData>
+      </Input>
+      <Input minOccurs="1" maxOccurs="1">
+        <ows:Identifier>GMLInput2</ows:Identifier>
+        <ows:Title>GMLInput2</ows:Title>
+        <ComplexData>
+          <Default>
+            <Format>
+              <MimeType>text/xml</MimeType>
+              <Encoding>UTF-8</Encoding>
+              <Schema>http://schemas.opengis.net/gml/3.1.1/base/gml.xsd</Schema>
+            </Format>
+          </Default>
+          <Supported>
+            <Format>
+              <MimeType>text/xml</MimeType>
+              <Encoding>UTF-8</Encoding>
+              <Schema>http://schemas.opengis.net/gml/3.1.1/base/gml.xsd</Schema>
+            </Format>
+          </Supported>
+        </ComplexData>
+      </Input>
+    </DataInputs>
+    <ProcessOutputs>
+      <Output>
+        <ows:Identifier>Difference</ows:Identifier>
+        <ows:Title>Difference</ows:Title>
+        <ComplexOutput>
+          <Default>
+            <Format>
+              <MimeType>text/xml</MimeType>
+              <Encoding>UTF-8</Encoding>
+              <Schema>http://schemas.opengis.net/gml/3.1.1/base/gml.xsd</Schema>
+            </Format>
+          </Default>
+          <Supported>
+            <Format>
+              <MimeType>text/xml</MimeType>
+              <Encoding>UTF-8</Encoding>
+              <Schema>http://schemas.opengis.net/gml/3.1.1/base/gml.xsd</Schema>
+            </Format>
+          </Supported>
+        </ComplexOutput>
+      </Output>
+    </ProcessOutputs>
+  </ProcessDescription>
+  <ProcessDescription wps:processVersion="1.0.0" storeSupported="false" statusSupported="false">
+    <ows:Identifier>Touches</ows:Identifier>
+    <ows:Title>Determining whether two GML Geometries touch or not.</ows:Title>
+    <ows:Abstract>The Geometries have at least one boundary point in common, but no interior points.</ows:Abstract>
+    <DataInputs>
+      <Input minOccurs="1" maxOccurs="1">
+        <ows:Identifier>GMLInput1</ows:Identifier>
+        <ows:Title>GMLInput1</ows:Title>
+        <ComplexData>
+          <Default>
+            <Format>
+              <MimeType>text/xml</MimeType>
+              <Encoding>UTF-8</Encoding>
+              <Schema>http://schemas.opengis.net/gml/3.1.1/base/gml.xsd</Schema>
+            </Format>
+          </Default>
+          <Supported>
+            <Format>
+              <MimeType>text/xml</MimeType>
+              <Encoding>UTF-8</Encoding>
+              <Schema>http://schemas.opengis.net/gml/3.1.1/base/gml.xsd</Schema>
+            </Format>
+          </Supported>
+        </ComplexData>
+      </Input>
+      <Input minOccurs="1" maxOccurs="1">
+        <ows:Identifier>GMLInput2</ows:Identifier>
+        <ows:Title>GMLInput2</ows:Title>
+        <ComplexData>
+          <Default>
+            <Format>
+              <MimeType>text/xml</MimeType>
+              <Encoding>UTF-8</Encoding>
+              <Schema>http://schemas.opengis.net/gml/3.1.1/base/gml.xsd</Schema>
+            </Format>
+          </Default>
+          <Supported>
+            <Format>
+              <MimeType>text/xml</MimeType>
+              <Encoding>UTF-8</Encoding>
+              <Schema>http://schemas.opengis.net/gml/3.1.1/base/gml.xsd</Schema>
+            </Format>
+          </Supported>
+        </ComplexData>
+      </Input>
+    </DataInputs>
+    <ProcessOutputs>
+      <Output>
+        <ows:Identifier>Touches</ows:Identifier>
+        <ows:Title>Touches</ows:Title>
+        <LiteralOutput>
+          <ows:DataType ows:reference="http://www.w3.org/TR/xmlschema-2/#boolean">boolean</ows:DataType>
+        </LiteralOutput>
+      </Output>
+    </ProcessOutputs>
+  </ProcessDescription>
+  <ProcessDescription wps:processVersion="1.0.0" storeSupported="false" statusSupported="false">
+    <ows:Identifier>Distance</ows:Identifier>
+    <ows:Title>Calculating the distance between two GML Geometries.</ows:Title>
+    <ows:Abstract>Calculating the distance between two GML Geometries.</ows:Abstract>
+    <DataInputs>
+      <Input minOccurs="1" maxOccurs="1">
+        <ows:Identifier>GMLInput1</ows:Identifier>
+        <ows:Title>GMLInput1</ows:Title>
+        <ComplexData>
+          <Default>
+            <Format>
+              <MimeType>text/xml</MimeType>
+              <Encoding>UTF-8</Encoding>
+              <Schema>http://schemas.opengis.net/gml/3.1.1/base/gml.xsd</Schema>
+            </Format>
+          </Default>
+          <Supported>
+            <Format>
+              <MimeType>text/xml</MimeType>
+              <Encoding>UTF-8</Encoding>
+              <Schema>http://schemas.opengis.net/gml/3.1.1/base/gml.xsd</Schema>
+            </Format>
+          </Supported>
+        </ComplexData>
+      </Input>
+      <Input minOccurs="1" maxOccurs="1">
+        <ows:Identifier>GMLInput2</ows:Identifier>
+        <ows:Title>GMLInput2</ows:Title>
+        <ComplexData>
+          <Default>
+            <Format>
+              <MimeType>text/xml</MimeType>
+              <Encoding>UTF-8</Encoding>
+              <Schema>http://schemas.opengis.net/gml/3.1.1/base/gml.xsd</Schema>
+            </Format>
+          </Default>
+          <Supported>
+            <Format>
+              <MimeType>text/xml</MimeType>
+              <Encoding>UTF-8</Encoding>
+              <Schema>http://schemas.opengis.net/gml/3.1.1/base/gml.xsd</Schema>
+            </Format>
+          </Supported>
+        </ComplexData>
+      </Input>
+    </DataInputs>
+    <ProcessOutputs>
+      <Output>
+        <ows:Identifier>Distance</ows:Identifier>
+        <ows:Title>Distance</ows:Title>
+        <LiteralOutput>
+          <ows:DataType ows:reference="http://www.w3.org/TR/xmlschema-2/#double">double</ows:DataType>
+          <UOMs>
+            <Default>
+              <ows:UOM>unity</ows:UOM>
+            </Default>
+            <Supported>
+              <ows:UOM>unity</ows:UOM>
+            </Supported>
+          </UOMs>
+        </LiteralOutput>
+      </Output>
+    </ProcessOutputs>
+  </ProcessDescription>
+  <ProcessDescription wps:processVersion="1.0.0" storeSupported="false" statusSupported="false">
+    <ows:Identifier>ConvexHull</ows:Identifier>
+    <ows:Title>Calculating the Convex Hull of a GML geometry.</ows:Title>
+    <ows:Abstract>Calculating the the smallest convex Polygon that contains all the points in the Geometry.</ows:Abstract>
+    <DataInputs>
+      <Input minOccurs="1" maxOccurs="1">
+        <ows:Identifier>GMLInput</ows:Identifier>
+        <ows:Title>GMLInput</ows:Title>
+        <ComplexData>
+          <Default>
+            <Format>
+              <MimeType>text/xml</MimeType>
+              <Encoding>UTF-8</Encoding>
+              <Schema>http://schemas.opengis.net/gml/3.1.1/base/gml.xsd</Schema>
+            </Format>
+          </Default>
+          <Supported>
+            <Format>
+              <MimeType>text/xml</MimeType>
+              <Encoding>UTF-8</Encoding>
+              <Schema>http://schemas.opengis.net/gml/3.1.1/base/gml.xsd</Schema>
+            </Format>
+          </Supported>
+        </ComplexData>
+      </Input>
+    </DataInputs>
+    <ProcessOutputs>
+      <Output>
+        <ows:Identifier>ConvexHull</ows:Identifier>
+        <ows:Title>ConvexHull</ows:Title>
+        <ComplexOutput>
+          <Default>
+            <Format>
+              <MimeType>text/xml</MimeType>
+              <Encoding>UTF-8</Encoding>
+              <Schema>http://schemas.opengis.net/gml/3.1.1/base/gml.xsd</Schema>
+            </Format>
+          </Default>
+          <Supported>
+            <Format>
+              <MimeType>text/xml</MimeType>
+              <Encoding>UTF-8</Encoding>
+              <Schema>http://schemas.opengis.net/gml/3.1.1/base/gml.xsd</Schema>
+            </Format>
+          </Supported>
+        </ComplexOutput>
+      </Output>
+    </ProcessOutputs>
+  </ProcessDescription>
+  <ProcessDescription wps:processVersion="1.0.0" storeSupported="false" statusSupported="false">
+    <ows:Identifier>Union</ows:Identifier>
+    <ows:Title>Calculates the union of two GML Geometries.</ows:Title>
+    <ows:Abstract>The union of two Geometries A and B is the set of all points which lie in A or B.</ows:Abstract>
+    <DataInputs>
+      <Input minOccurs="1" maxOccurs="1">
+        <ows:Identifier>GMLInput1</ows:Identifier>
+        <ows:Title>GMLInput1</ows:Title>
+        <ComplexData>
+          <Default>
+            <Format>
+              <MimeType>text/xml</MimeType>
+              <Encoding>UTF-8</Encoding>
+              <Schema>http://schemas.opengis.net/gml/3.1.1/base/gml.xsd</Schema>
+            </Format>
+          </Default>
+          <Supported>
+            <Format>
+              <MimeType>text/xml</MimeType>
+              <Encoding>UTF-8</Encoding>
+              <Schema>http://schemas.opengis.net/gml/3.1.1/base/gml.xsd</Schema>
+            </Format>
+          </Supported>
+        </ComplexData>
+      </Input>
+      <Input minOccurs="1" maxOccurs="1">
+        <ows:Identifier>GMLInput2</ows:Identifier>
+        <ows:Title>GMLInput2</ows:Title>
+        <ComplexData>
+          <Default>
+            <Format>
+              <MimeType>text/xml</MimeType>
+              <Encoding>UTF-8</Encoding>
+              <Schema>http://schemas.opengis.net/gml/3.1.1/base/gml.xsd</Schema>
+            </Format>
+          </Default>
+          <Supported>
+            <Format>
+              <MimeType>text/xml</MimeType>
+              <Encoding>UTF-8</Encoding>
+              <Schema>http://schemas.opengis.net/gml/3.1.1/base/gml.xsd</Schema>
+            </Format>
+          </Supported>
+        </ComplexData>
+      </Input>
+    </DataInputs>
+    <ProcessOutputs>
+      <Output>
+        <ows:Identifier>Union</ows:Identifier>
+        <ows:Title>Union</ows:Title>
+        <ComplexOutput>
+          <Default>
+            <Format>
+              <MimeType>text/xml</MimeType>
+              <Encoding>UTF-8</Encoding>
+              <Schema>http://schemas.opengis.net/gml/3.1.1/base/gml.xsd</Schema>
+            </Format>
+          </Default>
+          <Supported>
+            <Format>
+              <MimeType>text/xml</MimeType>
+              <Encoding>UTF-8</Encoding>
+              <Schema>http://schemas.opengis.net/gml/3.1.1/base/gml.xsd</Schema>
+            </Format>
+          </Supported>
+        </ComplexOutput>
+      </Output>
+    </ProcessOutputs>
+  </ProcessDescription>
+  <ProcessDescription wps:processVersion="1.0.0" storeSupported="false" statusSupported="false">
+    <ows:Identifier>Equals</ows:Identifier>
+    <ows:Title>Determining whether two GML Geometries are equal.</ows:Title>
+    <ows:Abstract>Determining whether two GML Geometries are topologically equal.</ows:Abstract>
+    <DataInputs>
+      <Input minOccurs="1" maxOccurs="1">
+        <ows:Identifier>GMLInput1</ows:Identifier>
+        <ows:Title>GMLInput1</ows:Title>
+        <ComplexData>
+          <Default>
+            <Format>
+              <MimeType>text/xml</MimeType>
+              <Encoding>UTF-8</Encoding>
+              <Schema>http://schemas.opengis.net/gml/3.1.1/base/gml.xsd</Schema>
+            </Format>
+          </Default>
+          <Supported>
+            <Format>
+              <MimeType>text/xml</MimeType>
+              <Encoding>UTF-8</Encoding>
+              <Schema>http://schemas.opengis.net/gml/3.1.1/base/gml.xsd</Schema>
+            </Format>
+          </Supported>
+        </ComplexData>
+      </Input>
+      <Input minOccurs="1" maxOccurs="1">
+        <ows:Identifier>GMLInput2</ows:Identifier>
+        <ows:Title>GMLInput2</ows:Title>
+        <ComplexData>
+          <Default>
+            <Format>
+              <MimeType>text/xml</MimeType>
+              <Encoding>UTF-8</Encoding>
+              <Schema>http://schemas.opengis.net/gml/3.1.1/base/gml.xsd</Schema>
+            </Format>
+          </Default>
+          <Supported>
+            <Format>
+              <MimeType>text/xml</MimeType>
+              <Encoding>UTF-8</Encoding>
+              <Schema>http://schemas.opengis.net/gml/3.1.1/base/gml.xsd</Schema>
+            </Format>
+          </Supported>
+        </ComplexData>
+      </Input>
+    </DataInputs>
+    <ProcessOutputs>
+      <Output>
+        <ows:Identifier>Equals</ows:Identifier>
+        <ows:Title>Equals</ows:Title>
+        <LiteralOutput>
+          <ows:DataType ows:reference="http://www.w3.org/TR/xmlschema-2/#boolean">boolean</ows:DataType>
+        </LiteralOutput>
+      </Output>
+    </ProcessOutputs>
+  </ProcessDescription>
+  <ProcessDescription wps:processVersion="1.0.0" storeSupported="false" statusSupported="false">
+    <ows:Identifier>Buffer</ows:Identifier>
+    <ows:Title>Process for creating a buffer around a GML geometry.</ows:Title>
+    <ows:Abstract>The purpose of this process is to create a buffer around an existing geometry with a buffer distance specified by the user.</ows:Abstract>
+    <DataInputs>
+      <Input minOccurs="1" maxOccurs="1">
+        <ows:Identifier>GMLInput</ows:Identifier>
+        <ows:Title>GMLInput</ows:Title>
+        <ComplexData>
+          <Default>
+            <Format>
+              <MimeType>text/xml</MimeType>
+              <Encoding>UTF-8</Encoding>
+              <Schema>http://schemas.opengis.net/gml/3.1.1/base/gml.xsd</Schema>
+            </Format>
+          </Default>
+          <Supported>
+            <Format>
+              <MimeType>text/xml</MimeType>
+              <Encoding>UTF-8</Encoding>
+              <Schema>http://schemas.opengis.net/gml/3.1.1/base/gml.xsd</Schema>
+            </Format>
+          </Supported>
+        </ComplexData>
+      </Input>
+      <Input minOccurs="1" maxOccurs="1">
+        <ows:Identifier>BufferDistance</ows:Identifier>
+        <ows:Title>Buffer distance</ows:Title>
+        <LiteralData>
+          <ows:DataType ows:reference="http://www.w3.org/TR/xmlschema-2/#double">double</ows:DataType>
+          <UOMs>
+            <Default>
+              <ows:UOM>unity</ows:UOM>
+            </Default>
+            <Supported>
+              <ows:UOM>unity</ows:UOM>
+            </Supported>
+          </UOMs>
+          <ows:AnyValue/>
+        </LiteralData>
+      </Input>
+    </DataInputs>
+    <ProcessOutputs>
+      <Output>
+        <ows:Identifier>BufferedGeometry</ows:Identifier>
+        <ows:Title>BufferedGeometry</ows:Title>
+        <ComplexOutput>
+          <Default>
+            <Format>
+              <MimeType>text/xml</MimeType>
+              <Encoding>UTF-8</Encoding>
+              <Schema>http://schemas.opengis.net/gml/3.1.1/base/gml.xsd</Schema>
+            </Format>
+          </Default>
+          <Supported>
+            <Format>
+              <MimeType>text/xml</MimeType>
+              <Encoding>UTF-8</Encoding>
+              <Schema>http://schemas.opengis.net/gml/3.1.1/base/gml.xsd</Schema>
+            </Format>
+          </Supported>
+        </ComplexOutput>
+      </Output>
+    </ProcessOutputs>
+  </ProcessDescription>
+  <ProcessDescription wps:processVersion="1.0.0" storeSupported="false" statusSupported="false">
+    <ows:Identifier>ParameterDemoProcess</ows:Identifier>
+    <ows:Title>Process for demonstrating the use of different types of input and output parameters.</ows:Title>
+    <ows:Abstract>The purpose of this process is to provide a demonstration for the use of different input and output parameter types in a deegree 3 WPS process.</ows:Abstract>
+    <wps:WSDL xlink:href="http://localhost:8080/deegree-wps-demo-3.0-pre5/services?service=WPS&amp;version=1.0.0&amp;request=GetWPSWSDL&amp;identifier=ParameterDemoProcess"></wps:WSDL>
+    <DataInputs>
+      <Input minOccurs="1" maxOccurs="1">
+        <ows:Identifier>LiteralInput</ows:Identifier>
+        <ows:Title>Example literal input </ows:Title>
+        <ows:Abstract>This parameter specifies how long the execution of the process takes (the process sleeps for this time). May be specified in seconds or minutes.</ows:Abstract>
+        <LiteralData>
+          <ows:DataType ows:reference="http://www.w3.org/TR/xmlschema-2/#integer">integer</ows:DataType>
+          <UOMs>
+            <Default>
+              <ows:UOM>seconds</ows:UOM>
+            </Default>
+            <Supported>
+              <ows:UOM>seconds</ows:UOM>
+              <ows:UOM>minutes</ows:UOM>
+            </Supported>
+          </UOMs>
+          <ows:AnyValue/>
+        </LiteralData>
+      </Input>
+      <Input minOccurs="1" maxOccurs="1">
+        <ows:Identifier>BBOXInput</ows:Identifier>
+        <ows:Title>BBOXInput</ows:Title>
+        <BoundingBoxData>
+          <Default>
+            <CRS>EPSG:4326</CRS>
+          </Default>
+          <Supported>
+            <CRS>EPSG:4326</CRS>
+          </Supported>
+        </BoundingBoxData>
+      </Input>
+      <Input minOccurs="1" maxOccurs="1">
+        <ows:Identifier>XMLInput</ows:Identifier>
+        <ows:Title>XMLInput</ows:Title>
+        <ComplexData>
+          <Default>
+            <Format>
+              <MimeType>text/xml</MimeType>
+            </Format>
+          </Default>
+          <Supported>
+            <Format>
+              <MimeType>text/xml</MimeType>
+            </Format>
+          </Supported>
+        </ComplexData>
+      </Input>
+      <Input minOccurs="1" maxOccurs="1">
+        <ows:Identifier>BinaryInput</ows:Identifier>
+        <ows:Title>BinaryInput</ows:Title>
+        <ComplexData>
+          <Default>
+            <Format>
+              <MimeType>image/png</MimeType>
+              <Encoding>base64</Encoding>
+            </Format>
+          </Default>
+          <Supported>
+            <Format>
+              <MimeType>image/png</MimeType>
+              <Encoding>base64</Encoding>
+            </Format>
+          </Supported>
+        </ComplexData>
+      </Input>
+    </DataInputs>
+    <ProcessOutputs>
+      <Output>
+        <ows:Identifier>LiteralOutput</ows:Identifier>
+        <ows:Title>A literal output parameter</ows:Title>
+        <LiteralOutput>
+          <ows:DataType ows:reference="http://www.w3.org/TR/xmlschema-2/#integer">integer</ows:DataType>
+          <UOMs>
+            <Default>
+              <ows:UOM>seconds</ows:UOM>
+            </Default>
+            <Supported>
+              <ows:UOM>seconds</ows:UOM>
+            </Supported>
+          </UOMs>
+        </LiteralOutput>
+      </Output>
+      <Output>
+        <ows:Identifier>BBOXOutput</ows:Identifier>
+        <ows:Title>A bounding box output parameter</ows:Title>
+        <BoundingBoxOutput>
+          <Default>
+            <CRS>EPSG:4326</CRS>
+          </Default>
+          <Supported>
+            <CRS>EPSG:4326</CRS>
+          </Supported>
+        </BoundingBoxOutput>
+      </Output>
+      <Output>
+        <ows:Identifier>XMLOutput</ows:Identifier>
+        <ows:Title>An XML output parameter</ows:Title>
+        <ComplexOutput>
+          <Default>
+            <Format>
+              <MimeType>text/xml</MimeType>
+            </Format>
+          </Default>
+          <Supported>
+            <Format>
+              <MimeType>text/xml</MimeType>
+            </Format>
+          </Supported>
+        </ComplexOutput>
+      </Output>
+      <Output>
+        <ows:Identifier>BinaryOutput</ows:Identifier>
+        <ows:Title>A binary output parameter</ows:Title>
+        <ComplexOutput>
+          <Default>
+            <Format>
+              <MimeType>image/png</MimeType>
+              <Encoding>base64</Encoding>
+            </Format>
+          </Default>
+          <Supported>
+            <Format>
+              <MimeType>image/png</MimeType>
+              <Encoding>base64</Encoding>
+            </Format>
+          </Supported>
+        </ComplexOutput>
+      </Output>
+    </ProcessOutputs>
+  </ProcessDescription>
+  <ProcessDescription wps:processVersion="1.0.0" storeSupported="false" statusSupported="false">
+    <ows:Identifier>Contains</ows:Identifier>
+    <ows:Title>Determining whether a GML geometry contain another.</ows:Title>
+    <ows:Abstract>Determining whether a GML geometry lies within another.</ows:Abstract>
+    <DataInputs>
+      <Input minOccurs="1" maxOccurs="1">
+        <ows:Identifier>GMLInput1</ows:Identifier>
+        <ows:Title>GMLInput1</ows:Title>
+        <ComplexData>
+          <Default>
+            <Format>
+              <MimeType>text/xml</MimeType>
+              <Encoding>UTF-8</Encoding>
+              <Schema>http://schemas.opengis.net/gml/3.1.1/base/gml.xsd</Schema>
+            </Format>
+          </Default>
+          <Supported>
+            <Format>
+              <MimeType>text/xml</MimeType>
+              <Encoding>UTF-8</Encoding>
+              <Schema>http://schemas.opengis.net/gml/3.1.1/base/gml.xsd</Schema>
+            </Format>
+          </Supported>
+        </ComplexData>
+      </Input>
+      <Input minOccurs="1" maxOccurs="1">
+        <ows:Identifier>GMLInput2</ows:Identifier>
+        <ows:Title>GMLInput2</ows:Title>
+        <ComplexData>
+          <Default>
+            <Format>
+              <MimeType>text/xml</MimeType>
+              <Encoding>UTF-8</Encoding>
+              <Schema>http://schemas.opengis.net/gml/3.1.1/base/gml.xsd</Schema>
+            </Format>
+          </Default>
+          <Supported>
+            <Format>
+              <MimeType>text/xml</MimeType>
+              <Encoding>UTF-8</Encoding>
+              <Schema>http://schemas.opengis.net/gml/3.1.1/base/gml.xsd</Schema>
+            </Format>
+          </Supported>
+        </ComplexData>
+      </Input>
+    </DataInputs>
+    <ProcessOutputs>
+      <Output>
+        <ows:Identifier>Contains</ows:Identifier>
+        <ows:Title>Contains</ows:Title>
+        <LiteralOutput>
+          <ows:DataType ows:reference="http://www.w3.org/TR/xmlschema-2/#boolean">boolean</ows:DataType>
+        </LiteralOutput>
+      </Output>
+    </ProcessOutputs>
+  </ProcessDescription>
+</wps:ProcessDescriptions>

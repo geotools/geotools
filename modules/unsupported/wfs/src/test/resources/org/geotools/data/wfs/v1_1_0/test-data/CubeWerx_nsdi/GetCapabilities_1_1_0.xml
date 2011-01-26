@@ -1,0 +1,673 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- This Web Feature Server is a component of CubeWerx Suite 4.7.5. -->
+<WFS_Capabilities
+  version="1.1.0"
+  xmlns="http://www.opengis.net/wfs"
+  xmlns:gml="http://www.opengis.net/gml"
+  xmlns:ogc="http://www.opengis.net/ogc"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:ows="http://www.opengis.net/ows"
+  xmlns:gubs="http://www.fgdc.gov/framework/073004/gubs"
+  xmlns:hyd="http://www.fgdc.gov/framework/073004/hydro"
+  xmlns:trans="http://www.fgdc.gov/framework/073004/transportation"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd">
+  <!-- got rid of the ows schema location to avoid triggering a schema download when running the test suite
+   xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd http://www.opengis/net/ows http://schemas.opengis.net/ows/1.0.0/owsAll.xsd"> -->
+  <ows:ServiceIdentification>
+    <ows:Title>USGS Framework Layer WFS</ows:Title>
+    <ows:Abstract>A WFS serving USGS framework layers.</ows:Abstract>
+    <ows:Keywords>
+      <ows:Keyword>WFS HTTP data feature spatial USGS framework hydrography governmental units roads</ows:Keyword>
+    </ows:Keywords>
+    <ows:ServiceType>WFS</ows:ServiceType>
+    <ows:ServiceTypeVersion>1.1.0</ows:ServiceTypeVersion>
+    <ows:ServiceTypeVersion>1.0.0</ows:ServiceTypeVersion>
+    <ows:Fees>NONE</ows:Fees>
+    <ows:AccessConstraints>NONE</ows:AccessConstraints>
+  </ows:ServiceIdentification>
+  <ows:ServiceProvider>
+    <ows:ProviderName>GeoLeaders LLC</ows:ProviderName>
+    <ows:ProviderSite xlink:href="http://www.geoleaders.com" />
+    <ows:ServiceContact>
+      <ows:IndividualName>Panagiotis (Peter) A. Vretanos (CubeWerx Inc.)</ows:IndividualName>
+      <ows:PositionName>Senior Developer</ows:PositionName>
+      <ows:ContactInfo>
+        <ows:Phone>
+          <ows:Voice>(703)491-9543</ows:Voice>
+          <ows:Facsimile>(703)491-0873</ows:Facsimile>
+        </ows:Phone>
+        <ows:Address>
+          <ows:DeliveryPoint>12052 Willowood Drive</ows:DeliveryPoint>
+          <ows:City>Lake Ridge</ows:City>
+          <ows:AdministrativeArea>Virginia</ows:AdministrativeArea>
+          <ows:PostalCode>22192</ows:PostalCode>
+          <ows:Country>USA</ows:Country>
+          <ows:ElectronicMailAddress>pvretano@cubewerx.com</ows:ElectronicMailAddress>
+        </ows:Address>
+        <ows:OnlineResource xlink:href="http://geoleaders.cubewerx.com" />
+        <ows:HoursOfService />
+        <ows:ContactInstructions />
+      </ows:ContactInfo>
+      <ows:Role />
+    </ows:ServiceContact>
+  </ows:ServiceProvider>
+  <ows:OperationsMetadata>
+    <ows:Operation name="GetCapabilities">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="http://frameworkwfs.usgs.gov/framework/wfs/wfs.cgi?DATASTORE=Framework&amp;" />
+          <ows:Post xlink:href="http://frameworkwfs.usgs.gov/framework/wfs/wfs.cgi?DATASTORE=Framework" />
+        </ows:HTTP>
+      </ows:DCP>
+      <ows:Parameter name="AcceptVersions">
+        <ows:Value>1.1.0</ows:Value>
+        <ows:Value>1.0.0</ows:Value>
+      </ows:Parameter>
+      <ows:Parameter name="AcceptFormats">
+        <ows:Value>text/xml</ows:Value>
+      </ows:Parameter>
+      <ows:Parameter name="Sections">
+        <ows:Value>ServiceIdentification</ows:Value>
+        <ows:Value>ServiceProvider</ows:Value>
+        <ows:Value>OperationsMetadata</ows:Value>
+        <ows:Value>FeatureTypeList</ows:Value>
+        <ows:Value>SupportsGMLObjectTypeList</ows:Value>
+        <ows:Value>Filter_Capabilities</ows:Value>
+      </ows:Parameter>
+    </ows:Operation>
+    <ows:Operation name="DescribeFeatureType">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="http://frameworkwfs.usgs.gov/framework/wfs/wfs.cgi?DATASTORE=Framework&amp;" />
+          <ows:Post xlink:href="http://frameworkwfs.usgs.gov/framework/wfs/wfs.cgi?DATASTORE=Framework" />
+        </ows:HTTP>
+      </ows:DCP>
+      <ows:Parameter name="TypeName">
+        <ows:Value>gubs:GovernmentalUnitCE</ows:Value>
+        <ows:Value>gubs:GovernmentalUnitMCD</ows:Value>
+        <ows:Value>gubs:GovernmentalUnitST</ows:Value>
+        <ows:Value>hyd:HydroElementARHI</ows:Value>
+        <ows:Value>hyd:HydroElementARMD</ows:Value>
+        <ows:Value>hyd:HydroElementFLHI</ows:Value>
+        <ows:Value>hyd:HydroElementFLMD</ows:Value>
+        <ows:Value>hyd:HydroElementLIHI</ows:Value>
+        <ows:Value>hyd:HydroElementLIMD</ows:Value>
+        <ows:Value>hyd:HydroElementPTHI</ows:Value>
+        <ows:Value>hyd:HydroElementPTMD</ows:Value>
+        <ows:Value>hyd:HydroElementWBHI</ows:Value>
+        <ows:Value>hyd:HydroElementWBMD</ows:Value>
+        <ows:Value>trans:RoadSeg</ows:Value>
+      </ows:Parameter>
+      <ows:Parameter name="outputFormat">
+        <ows:Value>text/xml; subtype=gml/3.1.1</ows:Value>
+        <ows:Value>text/xml; subtype=gml/3.1.1/profiles/gmlsf/0</ows:Value>
+        <ows:Value>text/xml; subtype=gml/3.1.1/profiles/gmlsf/1</ows:Value>
+        <ows:Value>text/xml; subtype=gml/2.1.2</ows:Value>
+        <ows:Value>application/gml+xml; subtype=gml/3.1.1</ows:Value>
+        <ows:Value>application/gml+xml; subtype=gml/3.1.1/profiles/gmlsf/0</ows:Value>
+        <ows:Value>application/gml+xml; subtype=gml/3.1.1/profiles/gmlsf/1</ows:Value>
+        <ows:Value>application/gml+xml; subtype=gml/2.1.2</ows:Value>
+        <ows:Value>text/xml; subtype="bxfs/0.0.3"</ows:Value>
+        <ows:Value>BXFS</ows:Value>
+        <ows:Value>GML0</ows:Value>
+        <ows:Value>XMLSCHEMA</ows:Value>
+        <ows:Value>GML2</ows:Value>
+        <ows:Value>GML3</ows:Value>
+        <ows:Value>GML3L0</ows:Value>
+        <ows:Value>GML3L1</ows:Value>
+        <ows:Value>SXSDL</ows:Value>
+      </ows:Parameter>
+    </ows:Operation>
+    <ows:Operation name="GetFeature">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="http://frameworkwfs.usgs.gov/framework/wfs/wfs.cgi?DATASTORE=Framework&amp;" />
+          <ows:Post xlink:href="http://frameworkwfs.usgs.gov/framework/wfs/wfs.cgi?DATASTORE=Framework" />
+        </ows:HTTP>
+      </ows:DCP>
+      <ows:Parameter name="outputFormat">
+        <ows:Value>text/xml; subtype=gml/3.1.1</ows:Value>
+        <ows:Value>text/xml; subtype=gml/3.1.1/profiles/gmlsf/0</ows:Value>
+        <ows:Value>text/xml; subtype=gml/3.1.1/profiles/gmlsf/1</ows:Value>
+        <ows:Value>text/xml; subtype=gml/2.1.2</ows:Value>
+        <ows:Value>application/gml+xml; subtype=gml/3.1.1</ows:Value>
+        <ows:Value>application/gml+xml; subtype=gml/3.1.1/profiles/gmlsf/0</ows:Value>
+        <ows:Value>application/gml+xml; subtype=gml/3.1.1/profiles/gmlsf/1</ows:Value>
+        <ows:Value>application/gml+xml; subtype=gml/2.1.2</ows:Value>
+        <ows:Value>x-application/gml:3</ows:Value>
+        <ows:Value>x-application/gml:3:0</ows:Value>
+        <ows:Value>x-application/gml:3:1</ows:Value>
+        <ows:Value>x-application/gml:2</ows:Value>
+        <ows:Value>text/xml; subtype="bxfs/0.0.3"</ows:Value>
+        <ows:Value>GML0</ows:Value>
+        <ows:Value>GML1</ows:Value>
+        <ows:Value>GML.1</ows:Value>
+        <ows:Value>GML2</ows:Value>
+        <ows:Value>GML3</ows:Value>
+        <ows:Value>GML3L0</ows:Value>
+        <ows:Value>GML3L1</ows:Value>
+        <ows:Value>BXFS</ows:Value>
+        <ows:Value>RSS</ows:Value>
+        <ows:Value>application/rss+xml</ows:Value>
+        <ows:Value>KML</ows:Value>
+        <ows:Value>application/vnd.google-earth.kml+xml</ows:Value>
+        <ows:Value>ATOM</ows:Value>
+        <ows:Value>application/atom+xml</ows:Value>
+        <ows:Value>JSON</ows:Value>
+        <ows:Value>SHAPE</ows:Value>
+        <ows:Value>MIF</ows:Value>
+      </ows:Parameter>
+      <ows:Parameter name="resultType">
+        <ows:Value>results</ows:Value>
+        <ows:Value>hits</ows:Value>
+      </ows:Parameter>
+    </ows:Operation>
+    <ows:Parameter name="service">
+      <ows:Value>WFS</ows:Value>
+    </ows:Parameter>
+    <ows:Parameter name="version">
+      <ows:Value>1.1.0</ows:Value>
+      <ows:Value>1.0.0</ows:Value>
+    </ows:Parameter>
+    <ows:Constraint name="srsName">
+      <ows:Value>EPSG:4326</ows:Value>
+      <ows:Value>CRS:84</ows:Value>
+      <ows:Value>AUTO:42001</ows:Value>
+      <ows:Value>AUTO:42002</ows:Value>
+      <ows:Value>AUTO:42003</ows:Value>
+      <ows:Value>AUTO:42004</ows:Value>
+      <ows:Value>EPSG:2163</ows:Value>
+      <ows:Value>EPSG:2263</ows:Value>
+      <ows:Value>EPSG:2283</ows:Value>
+      <ows:Value>EPSG:3005</ows:Value>
+      <ows:Value>EPSG:4267</ows:Value>
+      <ows:Value>CRS:27</ows:Value>
+      <ows:Value>EPSG:4269</ows:Value>
+      <ows:Value>CRS:83</ows:Value>
+      <ows:Value>EPSG:26703</ows:Value>
+      <ows:Value>EPSG:26704</ows:Value>
+      <ows:Value>EPSG:26705</ows:Value>
+      <ows:Value>EPSG:26706</ows:Value>
+      <ows:Value>EPSG:26707</ows:Value>
+      <ows:Value>EPSG:26708</ows:Value>
+      <ows:Value>EPSG:26709</ows:Value>
+      <ows:Value>EPSG:26710</ows:Value>
+      <ows:Value>EPSG:26711</ows:Value>
+      <ows:Value>EPSG:26712</ows:Value>
+      <ows:Value>EPSG:26713</ows:Value>
+      <ows:Value>EPSG:26714</ows:Value>
+      <ows:Value>EPSG:26715</ows:Value>
+      <ows:Value>EPSG:26716</ows:Value>
+      <ows:Value>EPSG:26717</ows:Value>
+      <ows:Value>EPSG:26718</ows:Value>
+      <ows:Value>EPSG:26719</ows:Value>
+      <ows:Value>EPSG:26720</ows:Value>
+      <ows:Value>EPSG:26721</ows:Value>
+      <ows:Value>EPSG:26722</ows:Value>
+      <ows:Value>EPSG:26903</ows:Value>
+      <ows:Value>EPSG:26904</ows:Value>
+      <ows:Value>EPSG:26905</ows:Value>
+      <ows:Value>EPSG:26906</ows:Value>
+      <ows:Value>EPSG:26907</ows:Value>
+      <ows:Value>EPSG:26908</ows:Value>
+      <ows:Value>EPSG:26909</ows:Value>
+      <ows:Value>EPSG:26910</ows:Value>
+      <ows:Value>EPSG:26911</ows:Value>
+      <ows:Value>EPSG:26912</ows:Value>
+      <ows:Value>EPSG:26913</ows:Value>
+      <ows:Value>EPSG:26914</ows:Value>
+      <ows:Value>EPSG:26915</ows:Value>
+      <ows:Value>EPSG:26916</ows:Value>
+      <ows:Value>EPSG:26917</ows:Value>
+      <ows:Value>EPSG:26918</ows:Value>
+      <ows:Value>EPSG:26919</ows:Value>
+      <ows:Value>EPSG:26920</ows:Value>
+      <ows:Value>EPSG:26921</ows:Value>
+      <ows:Value>EPSG:26922</ows:Value>
+      <ows:Value>EPSG:26923</ows:Value>
+      <ows:Value>EPSG:26930</ows:Value>
+      <ows:Value>EPSG:26985</ows:Value>
+      <ows:Value>EPSG:26986</ows:Value>
+      <ows:Value>EPSG:26987</ows:Value>
+      <ows:Value>EPSG:27582</ows:Value>
+      <ows:Value>EPSG:27700</ows:Value>
+      <ows:Value>EPSG:32118</ows:Value>
+      <ows:Value>EPSG:32128</ows:Value>
+      <ows:Value>EPSG:32129</ows:Value>
+      <ows:Value>EPSG:32601</ows:Value>
+      <ows:Value>EPSG:32602</ows:Value>
+      <ows:Value>EPSG:32603</ows:Value>
+      <ows:Value>EPSG:32604</ows:Value>
+      <ows:Value>EPSG:32605</ows:Value>
+      <ows:Value>EPSG:32606</ows:Value>
+      <ows:Value>EPSG:32607</ows:Value>
+      <ows:Value>EPSG:32608</ows:Value>
+      <ows:Value>EPSG:32609</ows:Value>
+      <ows:Value>EPSG:32610</ows:Value>
+      <ows:Value>EPSG:32611</ows:Value>
+      <ows:Value>EPSG:32612</ows:Value>
+      <ows:Value>EPSG:32613</ows:Value>
+      <ows:Value>EPSG:32614</ows:Value>
+      <ows:Value>EPSG:32615</ows:Value>
+      <ows:Value>EPSG:32616</ows:Value>
+      <ows:Value>EPSG:32617</ows:Value>
+      <ows:Value>EPSG:32618</ows:Value>
+      <ows:Value>EPSG:32619</ows:Value>
+      <ows:Value>EPSG:32620</ows:Value>
+      <ows:Value>EPSG:32621</ows:Value>
+      <ows:Value>EPSG:32622</ows:Value>
+      <ows:Value>EPSG:32623</ows:Value>
+      <ows:Value>EPSG:32624</ows:Value>
+      <ows:Value>EPSG:32625</ows:Value>
+      <ows:Value>EPSG:32626</ows:Value>
+      <ows:Value>EPSG:32627</ows:Value>
+      <ows:Value>EPSG:32628</ows:Value>
+      <ows:Value>EPSG:32629</ows:Value>
+      <ows:Value>EPSG:32630</ows:Value>
+      <ows:Value>EPSG:32631</ows:Value>
+      <ows:Value>EPSG:32632</ows:Value>
+      <ows:Value>EPSG:32633</ows:Value>
+      <ows:Value>EPSG:32634</ows:Value>
+      <ows:Value>EPSG:32635</ows:Value>
+      <ows:Value>EPSG:32636</ows:Value>
+      <ows:Value>EPSG:32637</ows:Value>
+      <ows:Value>EPSG:32638</ows:Value>
+      <ows:Value>EPSG:32639</ows:Value>
+      <ows:Value>EPSG:32640</ows:Value>
+      <ows:Value>EPSG:32641</ows:Value>
+      <ows:Value>EPSG:32642</ows:Value>
+      <ows:Value>EPSG:32643</ows:Value>
+      <ows:Value>EPSG:32644</ows:Value>
+      <ows:Value>EPSG:32645</ows:Value>
+      <ows:Value>EPSG:32646</ows:Value>
+      <ows:Value>EPSG:32647</ows:Value>
+      <ows:Value>EPSG:32648</ows:Value>
+      <ows:Value>EPSG:32649</ows:Value>
+      <ows:Value>EPSG:32650</ows:Value>
+      <ows:Value>EPSG:32651</ows:Value>
+      <ows:Value>EPSG:32652</ows:Value>
+      <ows:Value>EPSG:32653</ows:Value>
+      <ows:Value>EPSG:32654</ows:Value>
+      <ows:Value>EPSG:32655</ows:Value>
+      <ows:Value>EPSG:32656</ows:Value>
+      <ows:Value>EPSG:32657</ows:Value>
+      <ows:Value>EPSG:32658</ows:Value>
+      <ows:Value>EPSG:32659</ows:Value>
+      <ows:Value>EPSG:32660</ows:Value>
+      <ows:Value>EPSG:32701</ows:Value>
+      <ows:Value>EPSG:32702</ows:Value>
+      <ows:Value>EPSG:32703</ows:Value>
+      <ows:Value>EPSG:32704</ows:Value>
+      <ows:Value>EPSG:32705</ows:Value>
+      <ows:Value>EPSG:32706</ows:Value>
+      <ows:Value>EPSG:32707</ows:Value>
+      <ows:Value>EPSG:32708</ows:Value>
+      <ows:Value>EPSG:32709</ows:Value>
+      <ows:Value>EPSG:32710</ows:Value>
+      <ows:Value>EPSG:32711</ows:Value>
+      <ows:Value>EPSG:32712</ows:Value>
+      <ows:Value>EPSG:32713</ows:Value>
+      <ows:Value>EPSG:32714</ows:Value>
+      <ows:Value>EPSG:32715</ows:Value>
+      <ows:Value>EPSG:32716</ows:Value>
+      <ows:Value>EPSG:32717</ows:Value>
+      <ows:Value>EPSG:32718</ows:Value>
+      <ows:Value>EPSG:32719</ows:Value>
+      <ows:Value>EPSG:32720</ows:Value>
+      <ows:Value>EPSG:32721</ows:Value>
+      <ows:Value>EPSG:32722</ows:Value>
+      <ows:Value>EPSG:32723</ows:Value>
+      <ows:Value>EPSG:32724</ows:Value>
+      <ows:Value>EPSG:32725</ows:Value>
+      <ows:Value>EPSG:32726</ows:Value>
+      <ows:Value>EPSG:32727</ows:Value>
+      <ows:Value>EPSG:32728</ows:Value>
+      <ows:Value>EPSG:32729</ows:Value>
+      <ows:Value>EPSG:32730</ows:Value>
+      <ows:Value>EPSG:32731</ows:Value>
+      <ows:Value>EPSG:32732</ows:Value>
+      <ows:Value>EPSG:32733</ows:Value>
+      <ows:Value>EPSG:32734</ows:Value>
+      <ows:Value>EPSG:32735</ows:Value>
+      <ows:Value>EPSG:32736</ows:Value>
+      <ows:Value>EPSG:32737</ows:Value>
+      <ows:Value>EPSG:32738</ows:Value>
+      <ows:Value>EPSG:32739</ows:Value>
+      <ows:Value>EPSG:32740</ows:Value>
+      <ows:Value>EPSG:32741</ows:Value>
+      <ows:Value>EPSG:32742</ows:Value>
+      <ows:Value>EPSG:32743</ows:Value>
+      <ows:Value>EPSG:32744</ows:Value>
+      <ows:Value>EPSG:32745</ows:Value>
+      <ows:Value>EPSG:32746</ows:Value>
+      <ows:Value>EPSG:32747</ows:Value>
+      <ows:Value>EPSG:32748</ows:Value>
+      <ows:Value>EPSG:32749</ows:Value>
+      <ows:Value>EPSG:32750</ows:Value>
+      <ows:Value>EPSG:32751</ows:Value>
+      <ows:Value>EPSG:32752</ows:Value>
+      <ows:Value>EPSG:32753</ows:Value>
+      <ows:Value>EPSG:32754</ows:Value>
+      <ows:Value>EPSG:32755</ows:Value>
+      <ows:Value>EPSG:32756</ows:Value>
+      <ows:Value>EPSG:32757</ows:Value>
+      <ows:Value>EPSG:32758</ows:Value>
+      <ows:Value>EPSG:32759</ows:Value>
+      <ows:Value>EPSG:32760</ows:Value>
+      <ows:Value>EPSG:41001</ows:Value>
+      <ows:Value>EPSG:42101</ows:Value>
+      <ows:Value>EPSG:42103</ows:Value>
+      <ows:Value>EPSG:42104</ows:Value>
+      <ows:Value>EPSG:42105</ows:Value>
+      <ows:Value>EPSG:42106</ows:Value>
+      <ows:Value>EPSG:42301</ows:Value>
+      <ows:Value>EPSG:42302</ows:Value>
+      <ows:Value>EPSG:42303</ows:Value>
+      <ows:Value>EPSG:42304</ows:Value>
+      <ows:Value>EPSG:42305</ows:Value>
+      <ows:Value>EPSG:42306</ows:Value>
+      <ows:Value>EPSG:42307</ows:Value>
+      <ows:Value>EPSG:42308</ows:Value>
+      <ows:Value>EPSG:42309</ows:Value>
+      <ows:Value>EPSG:42310</ows:Value>
+      <ows:Value>EPSG:42311</ows:Value>
+      <ows:Value>EPSG:42312</ows:Value>
+      <ows:Value>EPSG:42313</ows:Value>
+      <ows:Value>EPSG:100001</ows:Value>
+      <ows:Value>EPSG:100002</ows:Value>
+      <ows:Value>EPSG:102002</ows:Value>
+      <ows:Value>EPSG:900913</ows:Value>
+    </ows:Constraint>
+    <ows:Constraint name="SupportsSOAP">
+      <ows:Value>TRUE</ows:Value>
+    </ows:Constraint>
+  </ows:OperationsMetadata>
+  <FeatureTypeList>
+    <Operations>
+      <Operation>Query</Operation>
+      <Operation>Insert</Operation>
+      <Operation>Update</Operation>
+      <Operation>Delete</Operation>
+    </Operations>
+    <FeatureType>
+      <Name>gubs:GovernmentalUnitCE</Name>
+      <Title>Governmental Unit (County or Equivalent)</Title>
+      <DefaultSRS>EPSG:4269</DefaultSRS>
+      <OtherSRS>EPSG:4326</OtherSRS>
+      <ows:WGS84BoundingBox>
+        <ows:LowerCorner>-179.14221197 18.9108417</ows:LowerCorner>
+        <ows:UpperCorner>-66.94983061 71.35256069</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </FeatureType>
+    <FeatureType>
+      <Name>gubs:GovernmentalUnitMCD</Name>
+      <Title>Governmental Unit (Minor Civil Divisions)</Title>
+      <DefaultSRS>EPSG:4269</DefaultSRS>
+      <ows:WGS84BoundingBox>
+        <ows:LowerCorner>-179.14221197 18.9108417</ows:LowerCorner>
+        <ows:UpperCorner>-66.94982987 71.38990002</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </FeatureType>
+    <FeatureType>
+      <Name>gubs:GovernmentalUnitST</Name>
+      <Title>Governmental Unit (State or Territory)</Title>
+      <DefaultSRS>EPSG:4269</DefaultSRS>
+      <ows:WGS84BoundingBox>
+        <ows:LowerCorner>-179.14221197 18.9108417</ows:LowerCorner>
+        <ows:UpperCorner>-66.94983061 71.35256069</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </FeatureType>
+    <FeatureType>
+      <Name>hyd:HydroElementARHI</Name>
+      <Title>HydroElementARHI</Title>
+      <DefaultSRS>EPSG:4269</DefaultSRS>
+      <ows:WGS84BoundingBox>
+        <ows:LowerCorner>-173.78443904 17.67302957</ows:LowerCorner>
+        <ows:UpperCorner>-64.54957828 71.49960662</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </FeatureType>
+    <FeatureType>
+      <Name>hyd:HydroElementARMD</Name>
+      <Title>Hydro Element (Areas - Med Res)</Title>
+      <DefaultSRS>EPSG:4269</DefaultSRS>
+      <ows:WGS84BoundingBox>
+        <ows:LowerCorner>-160.99724839 18.4977261</ows:LowerCorner>
+        <ows:UpperCorner>-66.88508041 49.37656952</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </FeatureType>
+    <FeatureType>
+      <Name>hyd:HydroElementFLHI</Name>
+      <Title>HydroElementFLHI</Title>
+      <DefaultSRS>EPSG:4269</DefaultSRS>
+      <ows:WGS84BoundingBox>
+        <ows:LowerCorner>-173.11631824 17.67373571</ows:LowerCorner>
+        <ows:UpperCorner>-64.56519181 71.39038002</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </FeatureType>
+    <FeatureType>
+      <Name>hyd:HydroElementFLMD</Name>
+      <Title>Hydro Element (Flow Lines - Med Res)</Title>
+      <DefaultSRS>EPSG:4269</DefaultSRS>
+      <ows:WGS84BoundingBox>
+        <ows:LowerCorner>-160.2465274 17.69005417</ows:LowerCorner>
+        <ows:UpperCorner>-64.72332421 49.37661312</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </FeatureType>
+    <FeatureType>
+      <Name>hyd:HydroElementLIHI</Name>
+      <Title>Hydro Element (Lines - Hi Res)</Title>
+      <DefaultSRS>EPSG:4269</DefaultSRS>
+      <ows:WGS84BoundingBox>
+        <ows:LowerCorner>-167.66666658 17.67436911</ows:LowerCorner>
+        <ows:UpperCorner>-64.56577261 71.27072782</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </FeatureType>
+    <FeatureType>
+      <Name>hyd:HydroElementLIMD</Name>
+      <Title>Hydro Element (Lines - Med Res)</Title>
+      <DefaultSRS>EPSG:4269</DefaultSRS>
+      <ows:WGS84BoundingBox>
+        <ows:LowerCorner>-159.7875304 19.6195583</ows:LowerCorner>
+        <ows:UpperCorner>-67.42844201 48.98378032</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </FeatureType>
+    <FeatureType>
+      <Name>hyd:HydroElementPTHI</Name>
+      <Title>Hydro Element (Points - Hi Res)</Title>
+      <DefaultSRS>EPSG:4269</DefaultSRS>
+      <ows:WGS84BoundingBox>
+        <ows:LowerCorner>-167.37851578 17.67697157</ows:LowerCorner>
+        <ows:UpperCorner>-64.57822901 70.68186002</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </FeatureType>
+    <FeatureType>
+      <Name>hyd:HydroElementPTMD</Name>
+      <Title>Hydro Element (Points - Med Res)</Title>
+      <DefaultSRS>EPSG:4269</DefaultSRS>
+      <ows:WGS84BoundingBox>
+        <ows:LowerCorner>-159.76387233 19.08765677</ows:LowerCorner>
+        <ows:UpperCorner>-67.73994341 48.99950219</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </FeatureType>
+    <FeatureType>
+      <Name>hyd:HydroElementWBHI</Name>
+      <Title>Hydro Element (Water Bodies - Hi Res)</Title>
+      <DefaultSRS>EPSG:4269</DefaultSRS>
+      <ows:WGS84BoundingBox>
+        <ows:LowerCorner>-168.11872378 17.67955811</ows:LowerCorner>
+        <ows:UpperCorner>-64.59388448 71.38890569</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </FeatureType>
+    <FeatureType>
+      <Name>hyd:HydroElementWBMD</Name>
+      <Title>Hydro Element (Water Bodies - Med Res)</Title>
+      <DefaultSRS>EPSG:4269</DefaultSRS>
+      <ows:WGS84BoundingBox>
+        <ows:LowerCorner>-160.2311072 19.20399837</ows:LowerCorner>
+        <ows:UpperCorner>-66.99786661 49.38433299</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </FeatureType>
+    <FeatureType>
+      <Name>trans:RoadSeg</Name>
+      <Title>Road Segments</Title>
+      <DefaultSRS>EPSG:4269</DefaultSRS>
+      <ows:WGS84BoundingBox>
+        <ows:LowerCorner>-176.95890897 17.67427197</ows:LowerCorner>
+        <ows:UpperCorner>-64.56738401 71.34896802</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </FeatureType>
+  </FeatureTypeList>
+  <SupportsGMLObjectTypeList>
+    <GMLObjectType>
+      <Name>gml:AbstractFeatureType</Name>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1/profiles/gmlsf/1</Format>
+        <Format>text/xml; subtype=gml/3.1.1/profiles/gmlsf/0</Format>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+        <Format>text/xml; subtype=gml/2.1.2</Format>
+      </OutputFormats>
+    </GMLObjectType>
+    <GMLObjectType>
+      <Name>gml:PointPropertyType</Name>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1/profiles/gmlsf/1</Format>
+        <Format>text/xml; subtype=gml/3.1.1/profiles/gmlsf/0</Format>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+        <Format>text/xml; subtype=gml/2.1.2</Format>
+      </OutputFormats>
+    </GMLObjectType>
+    <GMLObjectType>
+      <Name>gml:MultiPointPropertyType</Name>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1/profiles/gmlsf/1</Format>
+        <Format>text/xml; subtype=gml/3.1.1/profiles/gmlsf/0</Format>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+        <Format>text/xml; subtype=gml/2.1.2</Format>
+      </OutputFormats>
+    </GMLObjectType>
+    <GMLObjectType>
+      <Name>gml:CurvePropertyType</Name>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1/profiles/gmlsf/1</Format>
+        <Format>text/xml; subtype=gml/3.1.1/profiles/gmlsf/0</Format>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+        <Format>text/xml; subtype=gml/2.1.2</Format>
+      </OutputFormats>
+    </GMLObjectType>
+    <GMLObjectType>
+      <Name>gml:MultiCurvePropertyType</Name>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1/profiles/gmlsf/1</Format>
+        <Format>text/xml; subtype=gml/3.1.1/profiles/gmlsf/0</Format>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+        <Format>text/xml; subtype=gml/2.1.2</Format>
+      </OutputFormats>
+    </GMLObjectType>
+    <GMLObjectType>
+      <Name>gml:SurfacePropertyType</Name>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1/profiles/gmlsf/1</Format>
+        <Format>text/xml; subtype=gml/3.1.1/profiles/gmlsf/0</Format>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+        <Format>text/xml; subtype=gml/2.1.2</Format>
+      </OutputFormats>
+    </GMLObjectType>
+    <GMLObjectType>
+      <Name>gml:MultiSurfacePropertyType</Name>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1/profiles/gmlsf/1</Format>
+        <Format>text/xml; subtype=gml/3.1.1/profiles/gmlsf/0</Format>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+        <Format>text/xml; subtype=gml/2.1.2</Format>
+      </OutputFormats>
+    </GMLObjectType>
+    <GMLObjectType>
+      <Name>gml:GeometryPropertyType</Name>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1/profiles/gmlsf/1</Format>
+        <Format>text/xml; subtype=gml/3.1.1/profiles/gmlsf/0</Format>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+        <Format>text/xml; subtype=gml/2.1.2</Format>
+      </OutputFormats>
+    </GMLObjectType>
+    <GMLObjectType>
+      <Name>gml:MultiGeometryPropertyType</Name>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1/profiles/gmlsf/1</Format>
+        <Format>text/xml; subtype=gml/3.1.1/profiles/gmlsf/0</Format>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+        <Format>text/xml; subtype=gml/2.1.2</Format>
+      </OutputFormats>
+    </GMLObjectType>
+    <GMLObjectType>
+      <Name>gml:EnvelopeType</Name>
+      <OutputFormats>
+        <Format>text/xml; subtype=gml/3.1.1/profiles/gmlsf/1</Format>
+        <Format>text/xml; subtype=gml/3.1.1/profiles/gmlsf/0</Format>
+        <Format>text/xml; subtype=gml/3.1.1</Format>
+        <Format>text/xml; subtype=gml/2.1.2</Format>
+      </OutputFormats>
+    </GMLObjectType>
+  </SupportsGMLObjectTypeList>
+  <Filter_Capabilities
+    xmlns="http://www.opengis.net/ogc"
+    xmlns:gml="http://www.opengis.net/gml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.opengis.net/ogc http://schemas.opengis.net/filter/1.1.0/filterCapabilities.xsd">
+    <ogc:Spatial_Capabilities>
+      <ogc:GeometryOperands>
+        <ogc:GeometryOperand>gml:Point</ogc:GeometryOperand>
+        <ogc:GeometryOperand>gml:LineString</ogc:GeometryOperand>
+        <ogc:GeometryOperand>gml:Polygon</ogc:GeometryOperand>
+        <ogc:GeometryOperand>gml:Envelope</ogc:GeometryOperand>
+        <!-- gml:MultiPoint -->
+        <!-- gml:MultiLineString -->
+        <!-- gml:Curve -->
+        <!-- gml:MultiCurve -->
+        <!-- gml:MultiPolygon -->
+        <!-- gml:Surface -->
+        <!-- gml:MultiSurface -->
+        <!-- gml:MultiGeometry -->
+        <!-- gml:Box -->
+      </ogc:GeometryOperands>
+      <ogc:SpatialOperators>
+        <ogc:SpatialOperator name="BBOX" />
+        <ogc:SpatialOperator name="Equals" />
+        <ogc:SpatialOperator name="Disjoint" />
+        <ogc:SpatialOperator name="Intersects" />
+        <ogc:SpatialOperator name="Touches" />
+        <ogc:SpatialOperator name="Crosses" />
+        <ogc:SpatialOperator name="Within" />
+        <ogc:SpatialOperator name="Contains" />
+        <ogc:SpatialOperator name="Overlaps" />
+      </ogc:SpatialOperators>
+    </ogc:Spatial_Capabilities>
+    <ogc:Scalar_Capabilities>
+      <ogc:LogicalOperators />
+      <ogc:ComparisonOperators>
+        <ComparisonOperator>LessThan</ComparisonOperator>
+        <ComparisonOperator>GreaterThan</ComparisonOperator>
+        <ComparisonOperator>LessThanEqualTo</ComparisonOperator>
+        <ComparisonOperator>GreaterThanEqualTo</ComparisonOperator>
+        <ComparisonOperator>EqualTo</ComparisonOperator>
+        <ComparisonOperator>NotEqualTo</ComparisonOperator>
+        <ComparisonOperator>Like</ComparisonOperator>
+        <ComparisonOperator>Between</ComparisonOperator>
+        <ComparisonOperator>NullCheck</ComparisonOperator>
+      </ogc:ComparisonOperators>
+      <ogc:ArithmeticOperators>
+        <ogc:SimpleArithmetic />
+        <ogc:Functions>
+          <ogc:FunctionNames>
+            <ogc:FunctionName nArgs="1">MIN</ogc:FunctionName>
+            <ogc:FunctionName nArgs="1">MAX</ogc:FunctionName>
+          </ogc:FunctionNames>
+        </ogc:Functions>
+      </ogc:ArithmeticOperators>
+    </ogc:Scalar_Capabilities>
+    <ogc:Id_Capabilities>
+      <ogc:FID />
+    </ogc:Id_Capabilities>
+  </Filter_Capabilities>
+</WFS_Capabilities>

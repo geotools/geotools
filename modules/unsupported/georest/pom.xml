@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- =======================================================================
+        Maven Project Configuration File
+
+        The Geotools Project
+            http://www.geotools.org/
+
+        Version: $Id: pom.xml 33582 2009-07-17 04:40:35Z mbedward $
+     ======================================================================= -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                               http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.geotools</groupId>
+        <artifactId>unsupported</artifactId>
+        <version>2.7-SNAPSHOT</version>
+    </parent>
+
+
+  <!-- =========================================================== -->
+  <!--     Module Description                                      -->
+  <!-- =========================================================== -->
+    <groupId>org.geotools</groupId>
+    <artifactId>gt-georest</artifactId>
+    <packaging>jar</packaging>
+    <name>Rest based GeoJson DataStore</name>
+
+    <scm>
+        <connection>
+      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/extension/georest/
+        </connection>
+        <url>http://svn.osgeo.org/geotools/trunk/modules/extension/georest/</url>
+    </scm>
+
+    <description>
+    Provides a DataStore based on a GeoJson rest service.
+    </description>
+
+    <licenses>
+        <license>
+            <name>Lesser General Public License (LGPL)</name>
+            <url>http://www.gnu.org/copyleft/lesser.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+
+  <!-- =========================================================== -->
+  <!--     Developers and Contributors                             -->
+  <!-- =========================================================== -->
+    <developers>
+        <developer>
+            <name>Pieter De Graef</name>
+            <id>?</id>
+            <email>pieter.degraef@geomajas.org</email>
+            <organization>Geosparc</organization>
+            <roles>
+                <role>Module Maintainer</role>
+                <role>Java Developer</role>
+            </roles>
+        </developer>
+    </developers>
+
+
+  <!-- =========================================================== -->
+  <!--     Dependency Management                                    -->
+  <!-- =========================================================== -->
+    <dependencies>
+        <!--   GeoTools modules   -->
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-main</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-data</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-geojson</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+
+
+  <!-- =========================================================== -->
+  <!--     Build Configuration                                     -->
+  <!--         copies all JARs in a single directory.              -->
+  <!-- =========================================================== -->
+  <build>
+
+    <plugins>
+      <!-- ====    Compilation      ============================== -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <!-- ====    Switch commenting to skip tests    = -->
+          <skip>${allow.test.skip}</skip>
+          <!-- skip>true</skip> -->
+          <includes>
+            <include></include>
+          </includes>
+          <excludes>
+            <exclude></exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+      
+      <!-- ====    Testing          ============================== -->
+      <!-- ====    Code Formatting  ============================== -->
+      <!--
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>jalopy-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>format</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      -->
+      <!-- ====    Code Coverage    ============================== -->
+      <!--
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-clover-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal></goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      -->
+    </plugins>
+    
+  </build>
+
+
+</project>

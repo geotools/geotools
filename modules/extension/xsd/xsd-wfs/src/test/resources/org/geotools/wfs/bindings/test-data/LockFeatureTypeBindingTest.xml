@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LockFeature
+	expiry="1000"
+	lockAction="SOME"
+	xmlns="http://www.opengis.net/wfs"
+	xmlns:ogc="http://www.opengis.net/ogc"
+	xmlns:topp="http://www.openplans.org/topp"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd
+	http://www.opengis.net/ogc http://schemas.opengis.net/filter/1.1.0/filter.xsd">
+	
+	<Lock typeName="TestTypeName">
+		<ogc:Filter>
+			<ogc:FeatureId fid="fid1" />
+		</ogc:Filter>
+	</Lock>
+
+</LockFeature>

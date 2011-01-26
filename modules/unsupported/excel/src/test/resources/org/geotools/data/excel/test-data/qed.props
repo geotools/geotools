@@ -1,0 +1,6 @@
+type=excel
+url=file\:qed.xlsx
+sheet=qed
+latcol=Latitude
+longcol=Longitude
+projection=epsg\:4326

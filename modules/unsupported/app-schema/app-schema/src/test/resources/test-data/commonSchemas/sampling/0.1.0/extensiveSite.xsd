@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns:gml="http://www.opengis.net/gml" 
+    xmlns:geo="http://www.seegrid.csiro.au/xml/geometry" 
+    xmlns:swe="http://www.opengis.net/swe/0.0" 
+    xmlns:om="http://www.opengis.net/om" 
+    xmlns="http://www.w3.org/2001/XMLSchema" 
+    xmlns:sa="http://www.seegrid.csiro.au/xml/sampling" 
+    targetNamespace="http://www.seegrid.csiro.au/xml/sampling" 
+    elementFormDefault="qualified" 
+    attributeFormDefault="unqualified" 
+    version="pre-release">
+	<annotation>
+		<documentation>extensiveSite.xsd
+
+SamplingFeatures are feature types that are used primarily for making observations: 
+SamplingFeature, Station (0-D), and collections are described in site.xsd
+
+Profile, Interval, Traverse, Flightline, Borehole (1-D)
+SurfaceOfInterest, Swath (2-D)
+SolidOfInterest (3-D) are described in this schema document
+
+In many cases the properties of interest vary within the site, so may be represented as a coverage associated with the site. 
+
+Copyright (c) 2005 CSIRO - see https://www.seegrid.csiro.au/twiki/bin/view/Xmml/LegalNotices#Software_Notice</documentation>
+	</annotation>
+	<!-- ====================================================================== -->
+	<!-- bring in other schemas -->
+	<import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+	<import namespace="http://www.opengis.net/om" schemaLocation="../../om/1.0.30/om.xsd"/>
+	<import namespace="http://www.seegrid.csiro.au/xml/geometry" schemaLocation="../../geo/0.1.0/geo.xsd"/>
+	<import namespace="http://www.opengis.net/swe/0.0" schemaLocation="../../sweCommon/1.0.30/swe.xsd"/>
+    <include schemaLocation="./site.xsd"/>
+    
+	<!-- ====================================================================== -->
+	<!-- 1-D sites and sampling regimes -->
+	<!-- ====================================================================== -->
+	<complexType name="ProfileType">
+		<annotation>
+			<documentation>A "Profile" is an identified 1-D spatial feature. 
+		It may be revisited for various purposes, in particular to retrieve multiple specimens or make repeated or complementary observations.</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="sa:SamplingFeatureType">
+				<sequence>
+					<element name="begin" type="gml:PointPropertyType"/>
+					<element name="end" type="gml:PointPropertyType"/>
+					<element name="length" type="swe:RelativeMeasureType"/>
+					<element name="shape" type="geo:Shape1DPropertyType"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- .................. -->
+	<element name="Profile" type="sa:ProfileType" substitutionGroup="sa:SamplingFeature"/>
+	<!-- .................. -->
+	<complexType name="ProfilePropertyType">
+		<sequence minOccurs="0">
+			<element ref="sa:Profile"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+	<!-- 2-D sites and sampling regimes -->
+	<!-- ====================================================================== -->
+	<complexType name="SurfaceOfInterestType">
+		<annotation>
+			<documentation>A "SurfaceOfInterest" is an identified 2-D spatial feature. 
+		It may be used for various purposes, in particular for observations of cross sections through features.</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="sa:SamplingFeatureType">
+				<sequence>
+					<element name="area" type="swe:RelativeMeasureType"/>
+					<element name="shape" type="geo:Shape2DPropertyType"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- .................. -->
+	<element name="SurfaceOfInterest" type="sa:SurfaceOfInterestType" substitutionGroup="sa:SamplingFeature"/>
+	<!-- .................. -->
+	<complexType name="SurfaceOfInterestPropertyType">
+		<sequence minOccurs="0">
+			<element ref="sa:SurfaceOfInterest"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+	<complexType name="SwathType">
+		<annotation>
+			<documentation> </documentation>
+		</annotation>
+		<complexContent>
+			<extension base="sa:SurfaceOfInterestType"/>
+		</complexContent>
+	</complexType>
+	<!-- .................. -->
+	<element name="Swath" type="sa:SwathType" substitutionGroup="sa:SurfaceOfInterest"/>
+	<!-- .................. -->
+	<complexType name="SwathPropertyType">
+		<sequence minOccurs="0">
+			<element ref="sa:Swath"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+	<complexType name="SectionType">
+		<annotation>
+			<documentation> </documentation>
+		</annotation>
+		<complexContent>
+			<extension base="sa:SurfaceOfInterestType"/>
+		</complexContent>
+	</complexType>
+	<!-- .................. -->
+	<element name="Section" type="sa:SectionType" substitutionGroup="sa:SurfaceOfInterest"/>
+	<!-- .................. -->
+	<complexType name="SectionPropertyType">
+		<sequence minOccurs="0">
+			<element ref="sa:Section"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+	<!-- 3-D sites and sampling regimes -->
+	<!-- ====================================================================== -->
+	<complexType name="SolidOfInterestType">
+		<annotation>
+			<documentation>A "SolidOfInterest" is an identified 3-D spatial feature used in sampling. </documentation>
+		</annotation>
+		<complexContent>
+			<extension base="sa:SamplingFeatureType">
+				<sequence>
+					<element name="volume" type="swe:RelativeMeasureType"/>
+					<element name="shape" type="geo:Shape3DPropertyType"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- .................. -->
+	<element name="SolidOfInterest" type="sa:SolidOfInterestType" substitutionGroup="sa:SamplingFeature"/>
+	<!-- .................. -->
+	<complexType name="SolidOfInterestPropertyType">
+		<sequence minOccurs="0">
+			<element ref="sa:SolidOfInterest"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ====================================================================== -->
+	<!-- ====================================================================== -->
+</schema>

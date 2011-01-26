@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<as:AppSchemaDataAccess xmlns:as="http://www.geotools.org/app-schema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.geotools.org/app-schema AppSchemaDataAccess.xsd">
+    <namespaces>
+        <Namespace>
+            <prefix>gsml</prefix>
+            <uri>urn:cgi:xmlns:CGI:GeoSciML:2.0</uri>
+        </Namespace>
+    </namespaces>
+    <sourceDataStores>
+        <DataStore>
+            <id>PointFeatureGeomPropertyfile</id>
+            <parameters>
+                <Parameter>
+                    <name>directory</name>
+                    <value>file:./directory</value>
+                </Parameter>
+            </parameters>
+        </DataStore>
+    </sourceDataStores>
+    <targetTypes>
+        <FeatureType>
+            <schemaUri>http://www.geosciml.org/geosciml/2.0/xsd/geosciml.xsd</schemaUri>
+        </FeatureType>
+    </targetTypes>
+    <typeMappings>
+        <FeatureTypeMapping>
+            <sourceDataStore>PointFeatureGeomPropertyfile</sourceDataStore>
+            <sourceType>PointFeatureGeomPropertyfile</sourceType>
+            <targetElement>gsml:MappedFeature</targetElement>
+            <attributeMappings>
+                <AttributeMapping>
+                    <targetAttribute>gsml:name</targetAttribute>
+                    <sourceExpression>
+                        <OCQL>NAME</OCQL>
+                    </sourceExpression>
+                </AttributeMapping>
+                <AttributeMapping>
+                    <targetAttribute>gsml:shape</targetAttribute>
+                    <sourceExpression>
+                        <OCQL>SHAPE</OCQL>
+                    </sourceExpression>
+                </AttributeMapping>
+            </attributeMappings>
+        </FeatureTypeMapping>
+    </typeMappings>
+</as:AppSchemaDataAccess>

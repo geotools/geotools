@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+            targetNamespace="http://www.fgdc.gov/framework/073004/lrs" 
+            xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+            xmlns:gml="http://www.opengis.net/gml" 
+            xmlns:gmlsf="http://www.opengis.net/gmlsf" 
+            xmlns:lrs="http://www.fgdc.gov/framework/073004/lrs" 
+            elementFormDefault="qualified" 
+            version="CD19133">
+
+   <xs:annotation>
+      <xs:appinfo source="http://schemas.opengis.net/gml/3.1.1/profiles/gmlsfProfile/1.0.0/gmlsfLevels.xsd">
+         <gmlsf:ConformanceLevel>1</gmlsf:ConformanceLevel>
+         <gmlsf:GMLProfileSchema>http://schemas.opengis.net/gml/3.1.1/profiles/gmlsfProfile/1.0.0/gmlsf.xsd</gmlsf:GMLProfileSchema>
+      </xs:appinfo>
+   </xs:annotation>
+
+   <xs:import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+   <xs:import namespace="http://www.opengis.net/gmlsf" schemaLocation="http://schemas.opengis.net/gml/3.1.1/profiles/gmlsfProfile/1.0.0/gmlsfLevels.xsd"/>
+
+   <!-- ******************************************************************* -->
+   <!-- *  LINEAR REFERENCE METHOD                                        * -->
+   <!-- ******************************************************************* -->
+   <xs:complexType name="LR_LinearReferenceMethodPropertyType">
+      <xs:sequence>
+         <xs:element ref="lrs:LR_LinearReferenceMethod"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="LR_LinearReferenceMethod">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="type" type="xs:string"/>
+            <xs:element name="units" type="xs:anyURI"/>
+            <xs:element name="offsetUnits" type="xs:anyURI"/>
+            <xs:element name="positiveOffsetDirection" default="right">
+               <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                     <xs:enumeration value="left"/>
+                     <xs:enumeration value="right"/>
+                  </xs:restriction>
+               </xs:simpleType>
+            </xs:element>
+            <xs:element name="marker" type="lrs:LR_ReferenceMarkerPropertyType" minOccurs="1" maxOccurs="unbounded"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+
+   <!-- ******************************************************************* -->
+   <!-- *  POSITION EXPRESSION                                            * -->
+   <!-- ******************************************************************* -->
+   <xs:complexType name="LR_PositionExpressionPropertyType">
+      <xs:sequence>
+         <xs:element ref="lrs:LR_PositionExpression"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="LR_PositionExpression">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="measure">
+               <xs:simpleType>
+                  <xs:restriction base="xs:decimal">
+                     <xs:totalDigits value="15"/>
+                     <xs:fractionDigits value="5"/>
+                  </xs:restriction>
+               </xs:simpleType>
+            </xs:element>
+            <xs:element name="measureUOM" type="xs:anyURI"/>
+            <xs:element name="LRM" type="lrs:LR_LinearReferenceMethodPropertyType"/>
+            <xs:element name="referent" type="lrs:LR_ReferenceMarkerPropertyType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="referenceDomain" type="lrs:LR_ElementPropertyType"/>
+            <xs:element name="offset" type="lrs:LR_OffsetExpressionPropertyType"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+
+   <!-- ******************************************************************* -->
+   <!-- *  REFERENCE MARKER                                               * -->
+   <!-- ******************************************************************* -->
+   <xs:complexType name="LR_ReferenceMarkerPropertyType">
+      <xs:sequence>
+         <xs:element ref="lrs:LR_ReferenceMarker"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="LR_ReferenceMarker">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="type" type="xs:string"/>
+            <xs:element name="position" type="gml:PointPropertyType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="location" type="lrs:LR_PositionExpressionPropertyType" minOccurs="0" maxOccurs="1"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+
+   <!-- ******************************************************************* -->
+   <!-- *  ELEMENT                                                        * -->
+   <!-- ******************************************************************* -->
+   <xs:complexType name="LR_ElementPropertyType">
+      <xs:sequence>
+         <xs:element ref="lrs:LR_Element"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="LR_Element">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="datumMarkers" type="lrs:LR_ReferenceMarkerPropertyType" minOccurs="0" maxOccurs="unbounded"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+
+   <!-- ******************************************************************* -->
+   <!-- *  OFFSET EXPRESSION                                              * -->
+   <!-- ******************************************************************* -->
+   <xs:complexType name="LR_OffsetExpressionPropertyType">
+      <xs:sequence>
+         <xs:element ref="lrs:LR_OffsetExpression"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="LR_OffsetExpression">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="offsetReference">
+               <xs:complexType>
+                  <xs:simpleContent>
+                     <xs:restriction base="gml:CodeType">
+                        <xs:attribute name="codeSpace" type="xs:anyURI" use="optional" default="./Dictionaries/LR_OffsetReference.xml"/>
+                     </xs:restriction>
+                  </xs:simpleContent>
+               </xs:complexType>
+            </xs:element>
+            <xs:element name="offset" minOccurs="0" maxOccurs="1">
+               <xs:simpleType>
+                  <xs:restriction base="xs:decimal">
+                     <xs:totalDigits value="15"/>
+                     <xs:fractionDigits value="5"/>
+                  </xs:restriction>
+               </xs:simpleType>
+            </xs:element>
+            <xs:element name="offsetUOM" type="xs:anyURI" minOccurs="0" maxOccurs="1"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+
+</xs:schema>

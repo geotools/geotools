@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gml="http://www.opengis.net/gml" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:swe="http://www.opengis.net/swe/0.0" targetNamespace="http://www.opengis.net/swe/0.0" elementFormDefault="qualified" attributeFormDefault="unqualified" version="pre-release">
+	<annotation>
+		<documentation>
+temporal.xsd
+
+time geometric complex and time grids
+
+2005-06-27
+
+Copyright (c) 2005 CSIRO - see https://www.seegrid.csiro.au/twiki/bin/view/Xmml/LegalNotices#Software_Notice
+</documentation>
+	</annotation>
+	<!-- ====================================================================== -->
+	<!-- bring in other schemas -->
+	<import namespace="http://www.opengis.net/gml" schemaLocation="./gml4temporal.xsd"/>
+	<!-- ================================================================== -->
+	<!-- =========================================================== -->
+	<!-- ============================================================== -->
+	<complexType name="TimePositionListType">
+		<annotation>
+			<documentation>TimePositionList instances hold a sequence of time positions within the same frame.</documentation>
+		</annotation>
+		<simpleContent>
+			<extension base="swe:TimeValueList">
+				<attribute name="frame" type="anyURI" use="optional" default="#ISO-8601"/>
+				<attribute name="calendarEraName" type="string" use="optional"/>
+				<attribute name="indeterminatePosition" type="gml:TimeIndeterminateValueType" use="optional"/>
+				<attribute name="count" type="positiveInteger" use="optional">
+					<annotation>
+						<documentation>"count" allows to specify the number of direct positions in the list. </documentation>
+					</annotation>
+				</attribute>
+			</extension>
+		</simpleContent>
+	</complexType>
+	<!-- ============================================================== -->
+	<simpleType name="TimeValueList">
+		<list itemType="gml:TimePositionUnion"/>
+	</simpleType>
+	<!-- ====================================================================== -->
+	<!-- ===== Time geometric complexes ====== -->
+	<!-- ================================================================== -->
+	<element name="TimeGeometricComplex" type="swe:TimeGeometricComplexType" substitutionGroup="gml:_TimeComplex">
+		<annotation>
+			<documentation>a set of TimeInstants and TimePeriods</documentation>
+		</annotation>
+	</element>
+	<!-- ===================================== -->
+	<complexType name="TimeGeometricComplexType">
+		<complexContent>
+			<extension base="gml:AbstractTimeComplexType">
+				<choice>
+					<element name="timePosList" type="swe:TimePositionListType"/>
+					<sequence maxOccurs="unbounded">
+						<choice>
+							<element name="primitiveTimePos" type="gml:TimePositionType">
+								<annotation>
+									<documentation>Simple-content time position</documentation>
+								</annotation>
+							</element>
+							<element name="primitive" type="gml:TimeGeometricPrimitivePropertyType">
+								<annotation>
+									<documentation>Reference to an identified time primitive</documentation>
+								</annotation>
+							</element>
+						</choice>
+					</sequence>
+				</choice>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- =========================================================== -->
+	<element name="TimeInstantGrid" type="swe:TimeInstantGridType" substitutionGroup="gml:_TimeComplex">
+		<annotation>
+			<documentation>A set of uniformly spaced time instants described using an implicit notation</documentation>
+		</annotation>
+	</element>
+	<!-- ================================================================== -->
+	<complexType name="TimeInstantGridType">
+		<annotation>
+			<documentation>Regular "grid" of time-points.  
+      Follow pattern of (ISO 19123) spatial grids: 
+  these have (dimension,axisName,extent(,origin,offsetVector))
+  For temporal case, dimension is fixed (1), axisName is fixed ("time")</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="gml:AbstractTimeComplexType">
+				<sequence>
+					<element name="extent" type="swe:TimeGridExtentType"/>
+					<choice>
+						<element name="originPos" type="gml:TimePositionType">
+							<annotation>
+								<documentation>Simple-content time position</documentation>
+							</annotation>
+						</element>
+						<element name="origin" type="gml:TimeInstantPropertyType">
+							<annotation>
+								<documentation>Reference to an identified time instant</documentation>
+							</annotation>
+						</element>
+					</choice>
+					<choice>
+						<element name="offsetDuration" type="duration">
+							<annotation>
+								<documentation>XML Schema built-in simple type for duration: e.g. 
+                P1Y (1 year) 
+                P1M (1 month) 
+                P1DT12H (1 day 12 hours) 
+                PT5M (5 minutes) 
+                PT0.007S (7 milliseconds)</documentation>
+							</annotation>
+						</element>
+						<element name="offsetInterval" type="gml:TimeIntervalLengthType">
+							<annotation>
+								<documentation>representation of the ISO 11404 model of a time interval length: e.g. 
+                value=1, unit="year"  
+                value=1, unit="other:month" (or see next)
+                value=1, unit="year" radix="12" factor="1" (1/12 year)
+                value=1.5, unit="day"  
+                value=36, unit="hour" 
+                value=5, unit="minute"  
+                value=7, unit="second" radix="10" factor="3" (7 milliseconds)</documentation>
+							</annotation>
+						</element>
+					</choice>
+					<element name="duration" type="duration" minOccurs="0"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- =========================================================== -->
+	<complexType name="TimeGridExtentType">
+		<sequence>
+			<element name="SeriesEnvelope">
+				<annotation>
+					<documentation>Grid extent specified in grid coordinates - i.e. 2 integers</documentation>
+				</annotation>
+				<complexType>
+					<sequence>
+						<element name="low" type="integer"/>
+						<element name="high" type="integer"/>
+					</sequence>
+				</complexType>
+			</element>
+		</sequence>
+	</complexType>
+	<!-- ================================================================== -->
+	<element name="TimeIntervalGrid" type="swe:TimeIntervalGridType" substitutionGroup="gml:_TimeComplex">
+		<annotation>
+			<documentation>A set of uniformly spaced time intervals described using an implicit notation</documentation>
+		</annotation>
+	</element>
+	<!-- ================================================================== -->
+	<complexType name="TimeIntervalGridType">
+		<annotation>
+			<documentation>Extend time instant grid with window size property</documentation>
+		</annotation>
+		<complexContent>
+			<extension base="swe:TimeInstantGridType">
+				<sequence>
+					<choice>
+						<element name="windowDuration" type="duration">
+							<annotation>
+								<documentation>XML Schema built-in simple type for duration</documentation>
+							</annotation>
+						</element>
+						<element name="windowInterval" type="gml:TimeIntervalLengthType">
+							<annotation>
+								<documentation>representation of the ISO 11404 model of a time interval length</documentation>
+							</annotation>
+						</element>
+					</choice>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ================================================================== -->
+</schema>

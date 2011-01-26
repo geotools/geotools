@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://online.socialchange.net.au" xmlns:sco="http://online.socialchange.net.au"
+  xmlns:gml="http://www.opengis.net/gml" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+  attributeFormDefault="unqualified" version="1.0">
+
+  <xs:import namespace="http://www.opengis.net/gml"
+    schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/feature.xsd" />
+
+  <xs:complexType name="simpleFeatureType" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:complexContent>
+      <xs:extension base="gml:AbstractFeatureType">
+        <xs:sequence>
+          <xs:element name="the_geom" type="gml:GeometryPropertyType" />
+          <xs:element name="stringAtt" nillable="false" type="xs:string" />
+          <xs:element name="intAtt" nillable="true" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+</xs:schema>

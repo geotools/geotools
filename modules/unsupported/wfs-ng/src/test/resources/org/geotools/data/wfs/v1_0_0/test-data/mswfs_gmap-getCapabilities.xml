@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<WFS_Capabilities version="1.0.0" updateSequence="0" xmlns="http://www.opengis.net/wfs" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/wfs http://ogc.dmsolutions.ca/wfs/1.0.0/WFS-capabilities.xsd">
+
+<!-- MapServer version 4.2-beta1 OUTPUT=GIF OUTPUT=PNG OUTPUT=JPEG OUTPUT=WBMP OUTPUT=PDF OUTPUT=SWF SUPPORTS=PROJ SUPPORTS=FREETYPE SUPPORTS=WMS_SERVER SUPPORTS=WMS_CLIENT SUPPORTS=WFS_SERVER SUPPORTS=WFS_CLIENT INPUT=EPPL7 INPUT=POSTGIS INPUT=OGR INPUT=GDAL INPUT=SHAPEFILE -->
+
+<Service>
+  <Name>MapServer WFS</Name>
+  <Title>GMap WMS Demo Server</Title>
+  <OnlineResource>http://www2.dmsolutions.ca/cgi-bin/mswfs_gmap?</OnlineResource>
+</Service>
+
+<Capability>
+  <Request>
+    <GetCapabilities>
+      <DCPType>
+        <HTTP>
+          <Get onlineResource="http://www2.dmsolutions.ca/cgi-bin/mswfs_gmap?"/>
+        </HTTP>
+      </DCPType>
+      <DCPType>
+        <HTTP>
+          <Post onlineResource="http://www2.dmsolutions.ca/cgi-bin/mswfs_gmap?"/>
+        </HTTP>
+      </DCPType>
+    </GetCapabilities>
+    <DescribeFeatureType>
+      <SchemaDescriptionLanguage>
+        <XMLSCHEMA/>
+      </SchemaDescriptionLanguage>
+      <DCPType>
+        <HTTP>
+          <Get onlineResource="http://www2.dmsolutions.ca/cgi-bin/mswfs_gmap?"/>
+        </HTTP>
+      </DCPType>
+      <DCPType>
+        <HTTP>
+          <Post onlineResource="http://www2.dmsolutions.ca/cgi-bin/mswfs_gmap?"/>
+        </HTTP>
+      </DCPType>
+    </DescribeFeatureType>
+    <GetFeature>
+      <ResultFormat>
+        <GML2/>
+      </ResultFormat>
+      <DCPType>
+        <HTTP>
+          <Get onlineResource="http://www2.dmsolutions.ca/cgi-bin/mswfs_gmap?"/>
+        </HTTP>
+      </DCPType>
+      <DCPType>
+        <HTTP>
+          <Post onlineResource="http://www2.dmsolutions.ca/cgi-bin/mswfs_gmap?"/>
+        </HTTP>
+      </DCPType>
+    </GetFeature>
+  </Request>
+</Capability>
+
+<FeatureTypeList>
+  <Operations>
+    <Query/>
+  </Operations>
+    <FeatureType>
+        <Name>park</Name>
+        <Title>Parks</Title>
+        <SRS>EPSG:42304</SRS>
+        <LatLongBoundingBox minx="-173.433" miny="41.4271" maxx="-13.0481" maxy="83.7466"/>
+    </FeatureType>
+    <FeatureType>
+        <Name>road</Name>
+        <Title>Roads</Title>
+        <SRS>EPSG:42304</SRS>
+        <LatLongBoundingBox minx="-148.059" miny="35.882" maxx="-33.7745" maxy="72.5503"/>
+    </FeatureType>
+    <FeatureType>
+        <Name>popplace</Name>
+        <Title>Cities</Title>
+        <SRS>EPSG:42304</SRS>
+        <LatLongBoundingBox minx="-172.301" miny="36.3541" maxx="-12.9698" maxy="83.4832"/>
+    </FeatureType>
+</FeatureTypeList>
+
+<ogc:Filter_Capabilities>
+  <ogc:Spatial_Capabilities>
+    <ogc:Spatial_Operators>
+      <ogc:Intersect/>
+      <ogc:DWithin/>
+      <ogc:BBOX/>
+    </ogc:Spatial_Operators>
+  </ogc:Spatial_Capabilities>
+  <ogc:Scalar_Capabilities>
+    <ogc:Logical_Operators/>
+    <ogc:Comparison_Operators>
+      <ogc:Simple_Comparisons/>
+      <ogc:Like/>
+      <ogc:Between/>
+    </ogc:Comparison_Operators>
+  </ogc:Scalar_Capabilities>
+</ogc:Filter_Capabilities>
+
+</WFS_Capabilities>

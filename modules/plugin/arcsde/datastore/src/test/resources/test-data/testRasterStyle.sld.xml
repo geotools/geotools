@@ -1,0 +1,25 @@
+<sld:StyledLayerDescriptor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/sld http://64.119.128.70/geoserver/schemas/sld/StyledLayerDescriptor.xsd" xmlns:sld="http://www.opengis.net/sld" version="1.0.0">
+    <sld:NamedLayer>
+        <sld:Name>massgis:image_coverage</sld:Name>
+        <UserStyle xmlns="http://www.opengis.net/sld">
+            <FeatureTypeStyle>
+                <Rule>
+                    <RasterSymbolizer>
+                        <Opacity>1.0</Opacity>
+                        <ChannelSelection>
+                            <RedChannel>
+                                <SourceChannelName>3</SourceChannelName>
+                            </RedChannel>
+                            <GreenChannel>
+                                <SourceChannelName>2</SourceChannelName>
+                            </GreenChannel>
+                            <BlueChannel>
+                                <SourceChannelName>1</SourceChannelName>
+                            </BlueChannel>
+                        </ChannelSelection>
+                    </RasterSymbolizer>
+                </Rule>
+            </FeatureTypeStyle>
+        </UserStyle>
+    </sld:NamedLayer>
+</sld:StyledLayerDescriptor>

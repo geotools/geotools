@@ -1,0 +1,60 @@
+<class-diagram generalizations="true" realizations="true" associations="true" dependencies="true" 
+  nesting-relationships="true">  
+  <classifier-display autosize="true" package="true" attributes="true" operations="true" initial-value="false" 
+    signature="true" visibility="true"/>  
+  <association-display labels="true" multiplicity="true"/>  
+  <interface type="java" name="org.opengis.feature.type.PropertyDescriptor" project="geoapi" 
+    file="/geoapi/src/main/java/org/opengis/feature/type/PropertyDescriptor.java" corner="BOTTOM_RIGHT">    
+    <display autosize="true" package="true" attributes="true" operations="true" initial-value="false" signature="true" 
+      visibility="true"/>    
+    <position x="242" y="158" width="-1" height="-1"/>  
+  </interface>  
+  <interface type="java" name="org.opengis.feature.type.AssociationDescriptor" project="geoapi" 
+    file="/geoapi/src/main/java/org/opengis/feature/type/AssociationDescriptor.java" corner="BOTTOM_RIGHT">    
+    <display autosize="true" package="true" attributes="true" operations="true" initial-value="false" signature="true" 
+      visibility="true"/>    
+    <position x="125" y="304" width="-1" height="-1"/>  
+  </interface>  
+  <interface type="java" name="org.opengis.feature.type.GeometryDescriptor" project="geoapi" 
+    file="/geoapi/src/main/java/org/opengis/feature/type/GeometryDescriptor.java" corner="BOTTOM_RIGHT">    
+    <display autosize="true" package="true" attributes="true" operations="true" initial-value="false" signature="true" 
+      visibility="true"/>    
+    <position x="393" y="462" width="-1" height="-1"/>  
+  </interface>  
+  <interface type="java" name="org.opengis.feature.type.AttributeDescriptor" project="geoapi" 
+    file="/geoapi/src/main/java/org/opengis/feature/type/AttributeDescriptor.java" corner="BOTTOM_RIGHT">    
+    <display autosize="true" package="true" attributes="true" operations="true" initial-value="false" signature="true" 
+      visibility="true"/>    
+    <position x="391" y="319" width="-1" height="-1"/>  
+  </interface>  
+  <interface type="java" name="org.opengis.feature.type.ComplexType" project="geoapi" 
+    file="/geoapi/src/main/java/org/opengis/feature/type/ComplexType.java" corner="BOTTOM_RIGHT">    
+    <display autosize="true" package="true" attributes="true" operations="false" initial-value="false" signature="true" 
+      visibility="true"/>    
+    <position x="529" y="159" width="-1" height="-1"/>  
+  </interface>  
+  <dependency>    
+    <source project="geoapi" name="org.opengis.feature.type.ComplexType" 
+      file="/geoapi/src/main/java/org/opengis/feature/type/ComplexType.java"/>    
+    <target project="geoapi" name="org.opengis.feature.type.PropertyDescriptor" 
+      file="/geoapi/src/main/java/org/opengis/feature/type/PropertyDescriptor.java"/>  
+  </dependency>  
+  <generalization>    
+    <source project="geoapi" name="org.opengis.feature.type.GeometryDescriptor" 
+      file="/geoapi/src/main/java/org/opengis/feature/type/GeometryDescriptor.java"/>    
+    <target project="geoapi" name="org.opengis.feature.type.AttributeDescriptor" 
+      file="/geoapi/src/main/java/org/opengis/feature/type/AttributeDescriptor.java"/>  
+  </generalization>  
+  <generalization>    
+    <source project="geoapi" name="org.opengis.feature.type.AttributeDescriptor" 
+      file="/geoapi/src/main/java/org/opengis/feature/type/AttributeDescriptor.java"/>    
+    <target project="geoapi" name="org.opengis.feature.type.PropertyDescriptor" 
+      file="/geoapi/src/main/java/org/opengis/feature/type/PropertyDescriptor.java"/>  
+  </generalization>  
+  <generalization>    
+    <source project="geoapi" name="org.opengis.feature.type.AssociationDescriptor" 
+      file="/geoapi/src/main/java/org/opengis/feature/type/AssociationDescriptor.java"/>    
+    <target project="geoapi" name="org.opengis.feature.type.PropertyDescriptor" 
+      file="/geoapi/src/main/java/org/opengis/feature/type/PropertyDescriptor.java"/>  
+  </generalization>
+</class-diagram>

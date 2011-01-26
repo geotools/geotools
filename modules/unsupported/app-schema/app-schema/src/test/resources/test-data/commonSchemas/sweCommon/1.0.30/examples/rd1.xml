@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<swe:RecordDefinition gml:id="record1" recordLength="4" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xst="http://www.seegrid.csiro.au/xml/st" xmlns:swe="http://www.opengis.net/swe" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                      xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gml="http://www.opengis.net/gml"
+                      xsi:schemaLocation="http://www.opengis.net/swe ../recordSchema.xsd http://www.seegrid.csiro.au/xml/st ../../../sweCommon/1.0.30/simpleTypeDerivation.xsd">
+	<gml:name>Record 1</gml:name>
+	<swe:component>
+		<swe:ItemDefinition gml:id="r1c1">
+			<gml:name>time</gml:name>
+			<swe:property xlink:href="http://sweet.jpl.nasa.gov/ontology/time.owl#Instant"/>
+			<swe:representation>
+				<swe:General>
+					<xst:restriction base="xs:dateTime"/>
+					<swe:frame xlink:href="#ISO-8601"/>
+				</swe:General>
+			</swe:representation>
+		</swe:ItemDefinition>
+	</swe:component>
+	<swe:component>
+		<swe:RecordDefinition gml:id="r1c23" recordLength="2">
+			<gml:name>location</gml:name>
+			<swe:component>
+				<swe:ItemDefinition gml:id="r1c2">
+					<gml:name>coord1</gml:name>
+					<swe:property xlink:href="http://sweet.jpl.nasa.gov/ontology/space.owl#East"/>
+					<swe:representation>
+						<swe:General>
+							<xst:restriction base="xs:double"/>
+							<gml:unitOfMeasure uom="m"/>
+							<swe:frame xlink:href="urn:ogc:def:crs:OGC:1.3:CRS1#axis1"/>
+						</swe:General>
+					</swe:representation>
+				</swe:ItemDefinition>
+			</swe:component>
+			<swe:component>
+				<swe:ItemDefinition gml:id="r1c3">
+					<gml:name>coord2</gml:name>
+					<swe:property xlink:href="http://sweet.jpl.nasa.gov/ontology/space.owl#North"/>
+					<swe:representation>
+						<swe:General>
+							<xst:restriction base="xs:double"/>
+							<gml:unitOfMeasure uom="m"/>
+							<swe:frame xlink:href="urn:ogc:def:crs:OGC:1.3:CRS1#axis2"/>
+						</swe:General>
+					</swe:representation>
+				</swe:ItemDefinition>
+			</swe:component>
+		</swe:RecordDefinition>
+	</swe:component>
+	<swe:component>
+		<swe:ItemDefinition gml:id="r1c4">
+			<gml:name>fruit species</gml:name>
+			<swe:property xlink:href="urn:x-seegrid:definition:phenomenon:fruitSpecies"/>
+			<swe:representation>
+				<swe:General>
+					<xst:restriction base="xs:string"/>
+					<swe:frame xlink:href="urn:x-seegrid:dictionary:fruitSpecies"/>
+				</swe:General>
+			</swe:representation>
+		</swe:ItemDefinition>
+	</swe:component>
+</swe:RecordDefinition>

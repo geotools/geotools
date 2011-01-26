@@ -1,0 +1,60 @@
+//Test points for the New Zealand Map Grid transform
+//
+// (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
+//
+//Nov 15, 2005
+
+set _NZGD_ = GEOGCS["NZGD49", DATUM["New_Zealand_Geodetic_Datum_1949", SPHEROID["International 1924",6378388,297,AUTHORITY["EPSG","7022"]], TOWGS84[59.47,-5.04,187.44,0.47,-0.1,1.024,-4.5993], AUTHORITY["EPSG","6272"]], PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]], UNIT["degree",0.01745329251994328,AUTHORITY["EPSG","9122"]], AUTHORITY["EPSG","4272"]]
+set _NZMG_ = PROJCS["NZGD49 / New Zealand Map Grid", GEOGCS["NZGD49", DATUM["New_Zealand_Geodetic_Datum_1949", SPHEROID["International 1924",6378388,297,AUTHORITY["EPSG","7022"]], TOWGS84[59.47,-5.04,187.44,0.47,-0.1,1.024,-4.5993], AUTHORITY["EPSG","6272"]], PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]], UNIT["degree",0.01745329251994328,AUTHORITY["EPSG","9122"]], AUTHORITY["EPSG","4272"]], PROJECTION["New_Zealand_Map_Grid"], PARAMETER["latitude_of_origin",-41], PARAMETER["central_meridian",173], PARAMETER["false_easting",2510000], PARAMETER["false_northing",6023150], UNIT["metre",1,AUTHORITY["EPSG","9001"]], AUTHORITY["EPSG","27200"]]
+
+source crs = _NZGD_
+target crs = _NZMG_
+test tolerance = (1e-4, 1e-4)
+
+//test points from "Conversion between Latitude and Longitude and New Zealand Map Grid" - OSG Technical Report 4.1 Office of the Surveyor-General
+//uncommented targets were calculated with ArcGIS
+source pt=(172.739194, -34.444066)
+target pt=(2487100.66443094, 6751049.7543125)
+//target is 2487100.638 metres 6751049.719 metres (E,N)
+
+source pt=(172.723106, -40.512409)
+target pt=(2486533.43428447, 6077263.67024489)
+//target is 2486533.395 metres 6077263.661 metres (E,N)
+
+source pt=(169.172062, -46.651295)
+target pt=(2216746.39478922, 5388508.71477365)
+//target is 2216746.425 metres 5388508.765 metres (E,N)
+
+//some additional points near NZ
+source pt=(166, -36.2)
+target pt=(1878186.78331811, 6534578.53830211)
+
+source pt=(172, -44.6)
+target pt=(2430598.5570827, 5622755.54062432)
+
+source pt=(179.2, -50)
+target pt=(2956078.77131022, 5003136.29080305)
+
+source pt=(167.3, -48.5)
+target pt=(2088060.78662213, 5175148.04594058)
+
+source pt=(175.7, -38.9)
+target pt=(2744250.68815441, 6252685.23434607)
+
+source pt=(171.2, -45.852)
+target pt=(2370063.18030655, 5482573.82957077)
+
+source pt=(168.53, -37.5)
+target pt=(2114163.40751986, 6402852.10000256)
+
+source pt=(180, -42)
+target pt=(3089882.76830207, 5888833.24158028)
+
+source pt=(169.233, -35)
+target pt=(2166415.24428798, 6684079.53039585)
+
+source pt=(176, -41)
+target pt=(2762353.61275198, 6018825.95126429)
+
+source pt=(151.283333333, -33.9166666666)
+target pt=(416879.609607075, 6526282.42444341)

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RasterSymbolizer version="1.1.0" xsi:schemaLocation="http://www.opengis.net/se http://www.opengis.net/se/1.1.0/Symbolizer.xsd" xmlns="http://www.opengis.net/se" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<Opacity>1.0</Opacity>
+	<OverlapBehavior>AVERAGE</OverlapBehavior>
+	<ColorMap>
+		<Categorize fallbackValue="#78c818">
+		<LookupValue>Rasterdata</LookupValue>
+			<Value>#00ff00</Value>
+			<Threshold>-417</Threshold>
+			<Value>#00fa00</Value>
+			<Threshold>-333</Threshold>
+			<Value>#14f500</Value>
+			<Threshold>-250</Threshold>
+			<Value>#28f502</Value>
+			<Threshold>-167</Threshold>
+			<Value>#3cf505</Value>
+			<Threshold>-83</Threshold>
+			<Value>#50f50a</Value>
+			<Threshold>-1</Threshold>
+			<Value>#64f014</Value>
+			<Threshold>0</Threshold>
+			<Value>#7deb32</Value>
+			<Threshold>30</Threshold>
+			<Value>#78c818</Value>
+			<Threshold>105</Threshold>
+			<Value>#38840c</Value>
+			<Threshold>300</Threshold>
+			<Value>#2c4b04</Value>
+			<Threshold>400</Threshold>
+			<Value>#ffff00</Value>
+			<Threshold>700</Threshold>
+			<Value>#dcdc00</Value>
+			<Threshold>1200</Threshold>
+			<Value>#b47800</Value>
+			<Threshold>1400</Threshold>
+			<Value>#c85000</Value>
+			<Threshold>1600</Threshold>
+			<Value>#be4100</Value>
+			<Threshold>2000</Threshold>
+			<Value>#963000</Value>
+			<Threshold>3000</Threshold>
+			<Value>#3c0200</Value>
+			<Threshold>5000</Threshold>
+			<Value>#ffffff</Value>
+			<Threshold>13000</Threshold>
+			<Value>#ffffff</Value>
+		</Categorize>
+	</ColorMap>
+	<ShadedRelief/>
+</RasterSymbolizer>

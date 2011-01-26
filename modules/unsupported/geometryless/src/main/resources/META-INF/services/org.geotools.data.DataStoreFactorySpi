@@ -1,0 +1,3 @@
+org.geotools.data.geometryless.BBOXDataStoreFactory
+org.geotools.data.geometryless.LocationsXYDataStoreFactory
+org.geotools.data.geometryless.JDBCDataStoreFactory

@@ -1,0 +1,17 @@
+PLUGIN SHAPEFILE
+~~~~~~~~~~~~~~~~
+
+  Module Maintainer: Daniele Romagnoli
+
+  IP Review:
+
+    * Simone Giannecchini, January 2010
+ 
+
+  STATUS: Clear
+
+
+
+* org.geotools.covereageio.mat5file
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+

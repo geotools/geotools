@@ -1,0 +1,2 @@
+org.geotools.data.postgis.VersionedPostgisDataStoreFactory
+org.geotools.data.postgis.synch.SynchronizedPostgisDataStoreFactory

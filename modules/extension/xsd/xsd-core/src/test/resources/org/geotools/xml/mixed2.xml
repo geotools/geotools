@@ -1,0 +1,10 @@
+<foo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://geotools.org/test mixed.xsd"
+ xmlns="http://geotools.org/test">
+    
+    
+    Hello       <bar>there</bar>     how       are    <bar>you</bar>    ?
+    
+    
+    
+ </foo>

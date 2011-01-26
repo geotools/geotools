@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- =======================================================================    
+        Maven Project Configuration File                                        
+                                                                                
+        The Geotools Project                                                    
+            http://www.geotools.org/                                            
+                                                                                
+        Version: $Id$              
+     ======================================================================= --><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.geotools</groupId>
+    <artifactId>unsupported</artifactId>
+    <version>2.7-SNAPSHOT</version>
+  </parent>
+  
+
+  <!-- =========================================================== -->
+  <!--     Module Description                                      -->
+  <!-- =========================================================== -->
+  <groupId>org.geotools</groupId>
+  <artifactId>app-schema</artifactId>
+  <packaging>pom</packaging>
+  <name>Geotools application schema support</name>
+  
+  
+  <scm>
+    <connection>
+      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema
+    </connection>
+    <url>http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema</url>
+  </scm>
+  
+  <description>
+    Modules to support serving application schema defined FeatureTypes through DataAccess GeoTools.
+  </description>
+
+  <licenses>
+    <license>
+      <name>Lesser General Public License (LGPL)</name>
+      <url>http://www.gnu.org/copyleft/lesser.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  
+  <profiles>
+      <profile>
+          <id>webservice</id>
+          <modules>
+              <module>webservice</module>
+          </modules>
+      </profile>
+  </profiles>
+  
+  <!-- =========================================================== -->
+  <!--     Modules included in the build                           -->
+  <!-- =========================================================== -->
+  <modules>
+      <module>app-schema</module>
+      <module>app-schema-resolver</module>
+      <module>sample-data-access</module>
+  </modules>
+  
+</project>

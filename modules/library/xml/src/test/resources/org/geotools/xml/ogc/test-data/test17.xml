@@ -1,0 +1,11 @@
+<Filters>
+ <Filter xmlns:gml="http://www.opengis.net/gml">
+  <FeatureId fid="123"/>
+  <FeatureId fid="124"/>
+ </Filter>
+ <Filter xmlns:gml="http://www.opengis.net/gml">
+   <FeatureId fid="1023"/>
+   <FeatureId fid="16"/>
+ </Filter> 
+</Filters>
+

@@ -1,0 +1,1090 @@
+/*
+ *    GeoTools - The Open Source Java GIS Tookit
+ *    http://geotools.org
+ *
+ *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
+
+options {
+   STATIC=false;
+   NODE_SCOPE_HOOK=true; //JJTree generates calls to two user-defined parser methods on the entry and exit of every node scope
+   NODE_DEFAULT_VOID=true;
+   MULTI=false;
+
+   BUILD_NODE_FILES=false; // Generate sample implementations for SimpleNode and any other nodes used in the grammar   	
+   NODE_PACKAGE="org.geotools.filter.text.generated.parsers";
+
+   SANITY_CHECK=true;
+   VISITOR=false;
+
+	// unicode	
+   UNICODE_INPUT = true;
+   JAVA_UNICODE_ESCAPE = true;
+   
+   	// debug
+   DEBUG_TOKEN_MANAGER=false;
+   DEBUG_PARSER=false;
+}
+
+PARSER_BEGIN(CQLParser)
+
+package org.geotools.filter.text.generated.parsers;
+        
+import java.util.HashSet;
+import java.util.Set;
+import java.util.logging.Logger;
+
+
+
+
+/**
+ * CQLParser is the result of a javacc jjtree grammar.
+ * 
+ * @author  Ian Schneider
+ * @author  Mauricio Pazos - Axios Engineering
+ * @since 2.5
+ * @version $Id: CQLGrammar.jjt 24966 2007-03-30 11:33:47Z vmpazos $
+ */
+public class CQLParser {
+  public void jjtreeOpenNodeScope(Node n) throws ParseException {
+ 
+  }
+
+  public void jjtreeCloseNodeScope(Node n) throws ParseException {
+
+  }
+private static final Logger LOGGER = Logger.getLogger(CQLParser.class.getName());
+
+  /**
+   * initialize geooperations
+   */  
+  protected static final Set GEOOP = new HashSet();
+  static {
+		GEOOP.add("EQUALS");	
+		GEOOP.add("DISJOINT");
+		GEOOP.add("INTERSECTS");
+		GEOOP.add("TOUCHES");
+		GEOOP.add("CROSSES");
+		GEOOP.add("WITHIN");
+		GEOOP.add("CONTAINS");
+		GEOOP.add("OVERLAPS");
+		GEOOP.add("RELATE");
+		GEOOP.add("BBOX");
+  }
+  
+  protected boolean isGeoOp() {
+  
+  		String tokenImage = getToken(1).image.toUpperCase();
+  		boolean OK = 
+        			 "(".equals(getToken(2).image)
+            		&& GEOOP.contains(tokenImage);
+
+
+        return OK;
+  }
+  
+  protected static final Set RELGEOOP = new HashSet();
+  static {
+  	RELGEOOP.add("DWITHIN");
+  	RELGEOOP.add("BEYOND"); 
+  	
+  }
+  protected boolean isRelGeoOp() {
+  
+        return "(".equals(getToken(2).image)
+            && RELGEOOP.contains(getToken(1).image.toUpperCase());
+  }
+  
+}
+
+PARSER_END(CQLParser)
+
+
+SKIP : /* WHITE SPACE */
+{
+  " "
+| "\t"
+| "\n"
+| "\r"
+| "\f"
+}
+
+
+/*
+ * <character string literal>
+ */
+ 
+TOKEN:
+{
+	  < STRING_LITERAL: "'" ( "''" | ~["'"] )* "'" > : DEFAULT
+}
+
+/*
+ * keywords
+ */
+TOKEN [IGNORE_CASE]:  /* keywords */
+{
+   < AND: "and" | "&&"> |
+   < OR: "or"> |
+   < NOT: "not" | "!"> |
+   < EQ: "eq" | "==" | "="> |
+   < NEQ: "neq" | "<>" > |
+   < GT: "gt" | ">" > |
+   < LT: "lt" | "<" > |
+   < GTE: "gte" | ">="> |
+   < LTE: "lte" | "<="> |
+   < TRUE: "true"> |
+   < FALSE: "false"> |
+   < UNKNOWN: "unknown"> |
+   < LIKE: "like" > |
+   < BETWEEN: "between"> |
+   < IS: "is" > |
+   < NULL: "null" > 
+}
+
+TOKEN [IGNORE_CASE]: /* include all and exclude all filters */
+{
+  < INCLUDE: "include"> |
+  < EXCLUDE: "exclude">
+}
+  
+TOKEN [IGNORE_CASE]: /* geometry markers */
+{
+  < POINT: "point"> |
+  < LINESTRING: "linestring"> |
+  < POLYGON: "polygon"> |
+  < MULTIPOINT: "multipoint"> |
+  < MULTILINESTRING: "multilinestring"> |
+  < MULTIPOLYGON: "multipolygon"> |
+  < GEOMETRYCOLLECTION: "geometrycollection"> |
+  < ENVELOPE: "envelope">
+}
+
+TOKEN [IGNORE_CASE]: /* temporal expression*/
+{
+	<BEFORE: "before"> 	| 
+	<DURING: "during"> 	|
+	<AFTER:  "after">  	|
+	<UTC: "T">			
+}
+TOKEN [IGNORE_CASE]: /* existence predicate*/
+{
+	<EXISTS: "exists"> |
+	<DOES_NOT_EXIST: "does-not-exist">
+}
+
+TOKEN [IGNORE_CASE]:  
+{
+  < EQUALS: "equals" > |
+  < DISJOINT: "disjoint"> |
+  <INTERSECTS: "intersects" > |
+  < TOUCHES: "touches"> |
+  < CROSSES: "crosses"> |
+  < WITHIN: "within"> |
+  < CONTAINS: "contains"> |
+  < OVERLAPS: "overlaps"> |
+  < RELATE: "relate"> |
+  < BBOX: "bbox"> 
+}
+
+TOKEN [IGNORE_CASE]: /* relgeoop name */
+{
+  < DWITHIN: "dwithin"> |
+  < BEYOND: "beyond"> 
+}
+
+TOKEN [IGNORE_CASE]:
+{
+	<FEET: "feet" > | 
+	<METERS: "meters"> | 
+	<STATUTE_MILES: "statute miles"> | 
+	<NAUTICAL_MILES: "nautical miles"> | 
+	<KILOMETERS: "kilometers">
+}
+
+
+TOKEN:
+{
+  < LP: "("> |
+  < RP: ")"> |
+  < LSP: "["> |
+  < RSP: "]"> |
+  < COMMA: ","> |
+  < SENTENCE_SEPARATOR: ";"> |
+  < PERIOD: "."> |
+  < SLASH: "/"> |
+  < COLON: ":">	|
+  < MULT: "*"> |
+  < PLUS: "+"> |
+  < MINUS: "-" > |
+  < DOUBLE_QUOTE: "\"">  
+}
+
+
+// Note, because float and int can technically have the same grammar,
+// put int first to make token manager have preference for it...
+// The same case occurs between identifier and duration tokens, 
+// then DURATION has preference over IDENTIFIER
+TOKEN [IGNORE_CASE]: /* Literals */
+{
+  	< INTEGER_LITERAL: ("-")? (<DIGIT>)+ > |
+  	< FLOATING_LITERAL:
+    	("-")?
+    	( ( <DIGIT> )* "." ( <DIGIT> )+ (<EXPONENT>)? ) |
+    	( ( <DIGIT> )+ ("." ( <DIGIT> )*)? (<EXPONENT>)? )
+  	> |
+
+	< #DUR_DAY:	  (<DIGIT>)+ "D" > |
+	< #DUR_MONTH: (<DIGIT>)+ "M" (<DUR_DAY>)? > |
+	< #DUR_YEAR:  (<DIGIT>)+ "Y" (<DUR_MONTH>)? > |	
+	< #DUR_DATE:  (<DUR_DAY> | <DUR_MONTH> | <DUR_YEAR>) ("T" <DUR_TIME>)?> | 
+
+	< #DUR_HOUR:  (<DIGIT>)+ "H" (<DUR_MINUTE>)?> |
+	< #DUR_MINUTE:(<DIGIT>)+ "M" (<DUR_SECOND>)? > |
+	< #DUR_SECOND:(<DIGIT>)+ "S" > |	
+	< #DUR_TIME:  (<DUR_HOUR> | <DUR_MINUTE> | <DUR_SECOND>) > | 
+	
+	< DURATION:  ("P" <DUR_DATE> |  "T" <DUR_TIME>) > |
+	
+	< #FULL_DATE: <DIGIT><DIGIT><DIGIT><DIGIT> "-" <DIGIT><DIGIT> "-" <DIGIT><DIGIT> > |
+	< #UTC_TIME: <DIGIT><DIGIT> ":" <DIGIT><DIGIT> ":" <DIGIT><DIGIT> ("." (<DIGIT>)+)? "Z" > |
+	< DATE_TIME : <FULL_DATE>"T"<UTC_TIME> > |
+
+    < IDENTIFIER: (<LETTER> (<LETTER>|<DIGIT>)*) | <DOUBLE_QUOTE> (<ANY>)+ <DOUBLE_QUOTE> > |
+    < #ANY: ~[" "] > |
+    
+    
+  	< LETTER: [ "a"-"z", "A"-"Z" , "_"] > |
+  	< DIGIT: [ "0"-"9"] > |
+  	< #EXPONENT: ["e","E"] (["+","-"])? (<DIGIT>)+ > 
+}
+
+
+/*
+ * Program structuring syntax to parse a single filter.
+ */
+Node FilterCompilationUnit() :
+{}
+{
+   SearchCondition()
+   <EOF>
+   {return jjtree.rootNode();}
+}
+
+/*
+ * Program structuring syntax to parse a single expression.
+ */
+Node ExpressionCompilationUnit() :
+{}
+{
+   Expression()
+   <EOF>
+   {return jjtree.rootNode();}
+}
+
+/*
+ * Program structuring syntax to parse a list of filters.
+ */
+Node FilterListCompilationUnit() :
+{}
+{
+   SequenceOfSearchConditions()
+   <EOF>
+   {return jjtree.rootNode();}
+}
+
+void SearchCondition() #void:
+{}
+{
+	 BooleanValueExpression()
+}
+/*
+ * <SequenceOfSearchConditions> ::= 
+ * 			<search condition>
+ * 		|	<SequenceOfSearchConditions> ; <search condition>
+ */ 
+void SequenceOfSearchConditions() #void:
+{}
+{
+		SearchCondition() (<SENTENCE_SEPARATOR> SearchCondition())*
+}
+
+/*
+ * <boolean value expression> ::= 
+ *			<boolean term>
+ * 		| 	<boolean value expression> OR <boolean term>
+ */
+void BooleanValueExpression() #void:
+{}
+{
+		BooleanTerm()( <OR> BooleanTerm() #Boolean_Or_Node )*
+}
+
+
+/*
+ * <boolean term> ::= 
+ *            <boolean factor>
+ *          | <boolean term> AND <boolean factor>
+ */
+void BooleanTerm() #void :
+{}
+{
+	 BooleanFactor()( <AND> BooleanFactor() #Boolean_And_Node )*
+}
+
+
+void BooleanFactor() #void:
+{}
+{
+	 	<NOT> BooleanPrimary() #Boolean_Not_Node
+	|	BooleanPrimary()
+}
+
+void BooleanPrimary() #void:
+{}
+{
+		LOOKAHEAD(Predicate()) Predicate() 
+	|	IncludeExcludePredicate() 
+	|  	<LP>SearchCondition()<RP> 
+	|  	<LSP>SearchCondition()<RSP>
+	| 	RoutineInvocation() 
+}
+
+/*
+ * <predicate> ::= <comparison predicate>
+ * 	| <text predicate>
+ * 	| <null predicate>
+ * 	| <temporal predicate>
+ * 	| <classification predicate> (*not supported*)
+ * 	| <existence predicate> 
+ * 	| <between predicate> (*extension*)
+ *  | <includeexclude predicate> (*extension*)
+ */
+void Predicate() #void:
+{}
+{
+	Attribute() 
+	(
+			LOOKAHEAD(3)TextPredicate()
+		|  	LOOKAHEAD(3)NullPredicate() 
+		| 	LOOKAHEAD(3)ExistencePredicate() 
+		| 	LOOKAHEAD(3)TemporalPredicate() 
+		|   LOOKAHEAD(3)BetweenPredicate()		
+		|	ComparissonPredicate() 
+	)
+}
+
+/* ---------------------------------------- *
+ *   	<routine invocation>
+ * ---------------------------------------- *
+/*
+ * <routine invocation> ::= 
+ *	 <geoop name><georoutine argument list>
+ * | <relgeoop name><relgeoop argument list>
+ * | <routine name><argument list>
+ */
+void RoutineInvocation() #void:
+{}
+{
+		LOOKAHEAD({ isGeoOp() })   		RoutineInvocationGeoOp()
+	|	LOOKAHEAD({ isRelGeoOp() })		RoutineInvocationRelGeoOp()
+	|	RoutineInvocationGeneric()
+}
+
+void RoutineInvocationGeoOp() #void:
+{}
+{
+  	<EQUALS> 	GeoRoutineArgumentList() #RoutineInvocation_GeoOp_Equal_Node
+  |	<DISJOINT> 	GeoRoutineArgumentList() #RoutineInvocation_GeoOp_Disjoint_Node
+  |	<INTERSECTS> GeoRoutineArgumentList() #RoutineInvocation_GeoOp_Intersect_Node
+  |	<TOUCHES> 	GeoRoutineArgumentList() #RoutineInvocation_GeoOp_Touch_Node
+  |	<CROSSES> 	GeoRoutineArgumentList() #RoutineInvocation_GeoOp_Cross_Node
+  |	<WITHIN> 	GeoRoutineArgumentList() #RoutineInvocation_GeoOp_Within_Node
+  |	<CONTAINS> 	GeoRoutineArgumentList() #RoutineInvocation_GeoOp_Contain_Node
+  |	<OVERLAPS> 	GeoRoutineArgumentList() #RoutineInvocation_GeoOp_Overlap_Node
+  |	<RELATE> 	GeoRoutineArgumentList() #RoutineInvocation_GeoOp_Relate_Node
+  | <BBOX> 		BBoxArgumentList()		 
+}
+
+/*
+ * <georoutine argument list> ::=
+ *		<left paren><attribute name><comma><geometry literal><right paren>
+ *
+ */
+void GeoRoutineArgumentList() #void:
+{}
+{
+	<LP> Attribute() <COMMA> GeometryLiteral() <RP>
+}
+/*
+ * <bbox argument list>::= 
+ * 	"(" <attribute> "," 
+ * 		<min X> ","
+ * 		<min Y> ","
+ * 		<max X> ","
+ * 		<max Y> 
+ * 		[, srs] ")"
+ * 
+ * <min X> ::= <signed numerical literal> 
+ * <min Y> ::= <signed numerical literal> 
+ * <max X> ::= <signed numerical literal> 
+ * <max Y> ::= <signed numerical literal> 
+ * <srs> ::= <character string literal>
+*/
+void BBoxArgumentList() #void:
+{}
+{
+		<LP> Attribute() <COMMA> 
+			 SignedNumericLiteral() <COMMA>
+			 SignedNumericLiteral() <COMMA>
+			 SignedNumericLiteral() <COMMA>
+			 SignedNumericLiteral() 
+			 ( <RP> 						#RoutineInvocation_GeoOp_BBOX_Node
+			  | <COMMA> StringLiteral()<RP> #RoutineInvocation_GeoOp_BBOX_SRS_Node)
+			
+		
+}
+
+/*
+ * <relgeoop name> ::= DWITHIN | BEYOND
+ */
+void RoutineInvocationRelGeoOp() #void:
+{}
+{
+  	<DWITHIN> 	RelGeoRoutineArgumentList() #RoutineInvocation_RelOp_DWITHIN_Node
+  |	<BEYOND> 	RelGeoRoutineArgumentList() #RoutineInvocation_RelOp_BEYOND_Node
+}
+
+/*
+ * <relgeoop argument list> ::= 
+ *		<left paren><attribute name><comma><geometry literal><comma><tolerance><right paren>
+ */
+void RelGeoRoutineArgumentList() #void:
+{}
+{
+	<LP> Attribute() <COMMA> GeometryLiteral() <COMMA> Tolerance() <RP>
+}
+/*
+ * <tolerance> ::= <unsigned numeric literal><comma><distance units>
+ */
+void Tolerance() :
+{}
+{
+	UnsignedNumericLiteral() #Tolerance_Node <COMMA> DistanceUnits()
+}
+
+void UnsignedNumericLiteral():
+{}
+{
+	SignedNumericLiteral() // TODO must be redefined for number token to handle sign correctly
+}
+
+/**
+ * <distance units> ::=
+ *	 'feet' | 'meters' | 'statute miles' |
+ *   'nautical miles' | 'kilometers'
+ * 
+ * TODO this set of units is just an example. The real list of distance unit must be developed
+ */ 
+void DistanceUnits() #DistanceUnits_Node:
+{}
+{
+	<FEET> | <METERS> | <STATUTE_MILES> | <NAUTICAL_MILES> | <KILOMETERS>
+}
+
+
+/*
+ * <geometry literal> ::= 
+ *	  <Point Tagged Text>
+ * 	| <LineString Tagged Text>
+ * 	| <Polygon Tagged Text>
+ *	| <MultiPoint Tagged Text>
+ *  | <MultiLineString Tagged Text>
+ * 	| <MultiPolygon Tagged Text>
+ * 	| <GeometryCollection Tagged Text>
+ *	| <Envelope Tagged Text>
+ */
+void GeometryLiteral() #void:
+{}
+{
+  PointTaggedText() |
+  LineStringTaggedText() |
+  PolygonTaggedText() |
+  MultiPointTaggedText() |
+  MultiLineStringTaggedText() |
+  MultiPolygonTaggedText() |
+  GeometryCollectionTaggedText() |
+  EnvelopeTaggedText()
+}
+/*
+ *  <routine invocation > ::= 
+ *  |   <routine name > <argument list > 
+ *                                           
+ * <argument list&gt ::=    
+ *      <left paren> [<positional arguments>] <right paren>
+ * <positional arguments> ::=
+ *      <argument> [ { <comma&gt <argument> }... ]
+ *           
+ * <argument>  ::= 
+ *      <literal>  
+ *  |   <attribute name>                                            
+ *  |   <function>           (*Extension*)                                            
+ *  |   <binary expression>  (*Extnsion*)                            
+ */
+void RoutineInvocationGeneric() #void:
+{}
+{
+	Function()
+}
+
+/* ---------------------------------------- *
+ *   	End <routine invocation>
+ * ---------------------------------------- *
+
+
+/* ---------------------------------------- *
+ *   	<includeexclude predicate>
+ * ---------------------------------------- *
+/*
+ * <includeexclude predicate> ::= 
+ *		  <INCLUDE> | <EXCLUDE>
+ */
+void IncludeExcludePredicate() #void:
+{}
+{
+   <INCLUDE> 	#Include_Node
+   | <EXCLUDE> 	#Exclude_Node
+}
+
+/* ---------------------------------------- *
+ *   	<comparison predicate>
+ * ---------------------------------------- *
+/*
+ * <comparison predicate> ::= 
+ *		  <attribute name> <comp op> <literal>
+ */
+void ComparissonPredicate() :
+{}
+{
+   	 <EQ> 	Expression() #ComparissonPredicate_EQ_Node
+   | <GT> 	Expression() #ComparissonPredicate_GT_Node
+   | <LT> 	Expression() #ComparissonPredicate_LT_Node
+   | <GTE> 	Expression() #ComparissonPredicate_GTE_Node
+   | <LTE>	Expression() #ComparissonPredicate_LTE_Node
+   | <NEQ> 	Expression() #ComparissonPredicate_Not_Equal_Node
+}
+
+/*
+ * <null predicate> ::= <attribute name> IS [ NOT ] NULL 
+ */
+void NullPredicate() :
+{}
+{
+	  LOOKAHEAD(3) 	<IS> <NULL> 		#NullPredicateNode
+	|  				<IS> <NOT> <NULL> 	#NotNullPredicateNode
+}
+
+
+/* ---------------------------------------- *
+ *   	<temporal predicate>
+ * ---------------------------------------- *
+ * <temporal predicate> ::= 
+ *    <attribute_name> BEFORE <date-time expression>
+ *	| <attribute_name> BEFORE OR DURING <period>
+ *	| <attribute_name> DURING <period>
+ *	| <attribute_name> DURING OR AFTER <period>
+ *	| <attribute_name> AFTER <date-time expression>
+ */
+void TemporalPredicate() #void:
+{}
+{
+		<BEFORE> TemporalPredicateBefore() 	
+	|   <AFTER>	 TemporalPredicateAfter()	
+	|	<DURING> TemporalPredicateDuring()	
+	
+}
+
+void TemporalPredicateBefore()#void:
+{}
+{
+		DateTimeExpression() 	#TPBefore_DateTime_Node
+	|	<OR> <DURING> Period()	#TPBefore_Or_During_Period_Node 
+}
+
+void TemporalPredicateAfter() #TPAfter_DateTime_Node:
+{}
+{
+		DateTimeExpression()
+}
+
+void TemporalPredicateDuring()#void:
+{}
+{
+		Period() 				#TPDuring_Period_Node
+	| 	<OR> <AFTER> Period()	#TPDuring_Or_After_Period_Node
+}
+
+/*
+ * <date-time expression ::= <date-time> | <period>
+ */
+void DateTimeExpression()#void:
+{}
+{
+		LOOKAHEAD(2) Period() 	
+	| 	DateTime()						
+}
+
+/*
+ *<period> ::= 
+ *	  <date-time> "/" <date-time>
+ * 	| <date-time> "/" <duration>
+ * 	| <duration> "/" <date-time>
+ */
+void Period() #void:
+{}
+{
+		LOOKAHEAD(2)
+		DateTime() <SLASH> PeriodTail() 	
+	|	Duration() <SLASH> DateTime()	#Period_With_Duration_Date_Node
+}
+
+void PeriodTail()#void:
+{}
+{
+		Duration()	#Period_With_Date_Duration_Node
+	|	DateTime()	#Period_Between_Dates_Node	
+}
+
+void DateTime()#DateTime_Node: 
+{}
+{
+	<DATE_TIME> 
+}
+
+/*
+ * <duration> ::= "P" <dur-date> | <dur-time>
+ * <dur-date> ::= <dur-day> | <dur-month> | <dur-year> [<dur-time>]
+ * <dur-day> ::= <digit>... "D"
+ * <dur-month> ::= <digit>... "M" [<dur-day>]
+ * <dur-year> ::= <digit>... "Y" [<dur-month>]
+ */
+void Duration()#void:
+{}
+{
+ 		<DURATION> #Duration_Date_Node
+}
+
+/* ---------------------------------------- *
+ *  End <temporal predicate>
+ * ---------------------------------------- */
+
+/* ---------------------------------------- *
+ *  <existence predicate>
+ * ---------------------------------------- */
+/*
+ * <existence_predicate> ::= <attribute_name> EXISTS
+ * | <attribute_name> DOES-NOT-EXIST
+ */
+void ExistencePredicate() #void:
+{}
+{
+		<EXISTS>			#Existence_Predicate_Exists_Node
+	|	<DOES_NOT_EXIST>	#Existence_Predicate_DoesNotExist_Node
+}
+/* ---------------------------------------- *
+ *  end <existence predicate>
+ * ---------------------------------------- */
+
+void TextPredicate() #void:
+{}
+{
+  	 	LOOKAHEAD(2)  <NOT> <LIKE> CharacterPattern() 	#Not_Like_Node
+  	|	              <LIKE> CharacterPattern() 		#Like_Node
+}
+
+
+void CharacterPattern() #void:
+{}
+{
+  	StringLiteral() 
+}
+
+/*
+ * Cql Extension
+ * 
+ *	<beween predicate>::= ["NOT"] "BETWEEN" expression "AND" expression
+ */
+void BetweenPredicate() #void:
+{}
+{
+	LOOKAHEAD(2) <NOT> <BETWEEN> Expression() <AND> Expression()	#Not_Between_Node
+  	|			 <BETWEEN> Expression() <AND> Expression()			#Between_Node
+}
+
+/*
+ * cql extension
+ */
+ void Expression() #void:
+{}
+{
+   BinaryExpression()
+}
+
+void BinaryExpression() #void:
+{}
+{
+  MultiplicativeExpression()
+  (
+    <PLUS> MultiplicativeExpression() #AddNode(2)
+   |
+    <MINUS> MultiplicativeExpression() #SubtractNode(2)
+  )*
+}
+ 
+
+
+void MultiplicativeExpression() #void :
+{}
+{
+  
+  UnaryExpression()
+  (
+    <MULT> UnaryExpression() #MulNode(2)
+   |
+    <SLASH> UnaryExpression() #DivNode(2)
+  )*
+}
+
+void UnaryExpression() #void:
+{}
+{
+	  LOOKAHEAD(Function()) Function() 
+	| LOOKAHEAD(Attribute()) Attribute() 
+	| Literal()
+	| <LP> Expression()<RP>
+	| <LSP> Expression()<RSP>
+}
+
+void Evaluate() #void:
+{}
+{
+  	LOOKAHEAD(Function()) Function() 
+  |	Attribute()
+}
+
+/*
+ * <identifier> ::= <identifier part> [ { <colon> | <identifier part> }... ] 
+ */
+void Identifier() #Identifier_Node:
+{}
+{		
+	IdentifierPart() (  <COLON> | IdentifierPart() )*	
+}
+void IdentifierPart() #Identifier_Part_Node:
+ {}
+ {
+ 	<IDENTIFIER>
+ }
+ 
+ 
+  
+/*
+ * <attribute name> ::= 
+ *  	  <simple attribute name> 
+ * 		| <compound attribute name>
+ * 
+ * <compound attribute name> ::= 
+ * 		<identifier><period> [{<identifier><period>}*] <simple attribute name>
+ *
+ * <simple attribute name> ::= <identifier>
+ */ 
+void Attribute() #void:
+{}
+{
+	 	SimpleAttributeName() AttributeTail() 
+}
+
+/*
+ * <simple attribute name> ::= <identifier>
+ */
+void SimpleAttributeName() #Simple_Attribute_Node:
+{}
+{
+	Identifier()	
+}
+
+void AttributeTail() #Compound_Attribute_Node:
+{}
+{
+ 	 (  <PERIOD> SimpleAttributeName() )* 
+}
+
+/*
+ * <literal> ::= 
+ *			<signed numeric literal>
+ * 		| 	<general literal>
+ */
+void Literal() #void :
+{}
+{
+		SignedNumericLiteral()
+	| 	GeneralLiteral()	
+}
+
+void SignedNumericLiteral() #void :
+{}
+{
+  	IntegerLiteral() 
+  | FloatingLiteral()
+}
+/*
+ *<general literal> ::= 
+ * 			<character string literal>
+ * 		| 	<datetime literal>
+ * 		| 	<boolean literal>
+ * 		| 	<geography literal
+ */   
+void GeneralLiteral() #void:
+{}
+{
+  	StringLiteral()
+  |	BooleanLiteral() 
+//  | GeographyLiteral()  TODO
+}
+
+void IntegerLiteral() #IntegerNode:
+{}
+{
+  <INTEGER_LITERAL>
+}
+
+void FloatingLiteral() #FloatingNode:
+{}
+{
+  <FLOATING_LITERAL>
+}
+
+void BooleanLiteral() #void :
+{}
+{
+  <TRUE> #TrueNode |
+  <FALSE> #FalseNode
+}
+
+void StringLiteral() #StringNode :
+{}
+{
+    <STRING_LITERAL> 
+}
+
+/* ---------------------------------------- *
+ *  <function>
+ * ---------------------------------------- */
+/*
+ * <function> ::= <function name> "("<function arg> [,<function arg>]*)
+ */
+void Function() #Function_Node:
+{}
+{
+  		FunctionName() 
+  			<LP>( FunctionArg() (<COMMA> FunctionArg() )* )? <RP>
+
+}
+
+void FunctionName() #FunctionName_Node:
+{}
+{
+    <IDENTIFIER>
+}
+
+/*
+ * <argument>  ::= 
+ *      <literal>  
+ *  |   <attribute name>                                            
+ * 	|	<expression> (*extension: expression includes literal and attributes*) 
+ */
+void FunctionArg() #FunctionArg_Node:
+{}
+{
+		Expression()
+}
+/* ---------------------------------------- *
+ *  end <function>
+ * ---------------------------------------- */
+
+/*
+ * <Point> := <x><space><y>
+ */
+void Point() #void:
+{}
+{
+  NumericLiteral() NumericLiteral()
+}
+
+/*
+ * <LineString Text> := EMPTY
+ * | <left paren><Point>{<comma><Point >} ... <right paren>
+ */
+void LineStringText() #void:
+{}
+{
+  (<LP> Point() ( <COMMA> Point() )* <RP>)?
+}
+
+void PointTaggedText() #WKTNode:
+{} 
+{
+  jjtThis.token = <POINT> PointText()
+}
+/*
+ * <Point Text> := EMPTY | <left paren> <Point> <right paren>
+ */
+void PointText() #void:
+{}
+{
+	(<LP> Point() <RP>)?
+}
+
+void LineStringTaggedText() #WKTNode:
+{}
+{
+  jjtThis.token = <LINESTRING> LineStringText() 
+}
+/*
+ * <Polygon Tagged Text> := POLYGON <Polygon Text>
+ */
+void PolygonTaggedText() #WKTNode:
+{}
+{
+  jjtThis.token = <POLYGON> PolygonText()
+}
+
+
+/*
+ * <Polygon Text> := EMPTY
+ *  	| <left paren><LineString Text>{<comma><LineString Text>}*<right paren>
+ */
+void PolygonText()#void:
+{}
+{
+	(<LP> LineStringText() (<COMMA> LineStringText())* <RP>)?
+}
+
+/*
+ * <MultiPoint Tagged Text> ::= MULTIPOINT <Multipoint Text>
+ */
+void MultiPointTaggedText() #WKTNode:
+{}
+{
+  jjtThis.token = <MULTIPOINT> MultiPointText()
+}
+/*
+ * <Multipoint Text> := EMPTY
+ * 	| ( <Point Text > {, <Point Text > }* )
+ */
+void MultiPointText() #void:
+{}
+{
+ 	(<LP> PointText() (<COMMA> PointText() )* <RP>)?
+}
+
+/*
+ * <MultiLineString Tagged Text> := MULTILINESTRING <MultiLineString Text>
+ */
+void MultiLineStringTaggedText() #WKTNode:
+{}
+{
+  jjtThis.token = <MULTILINESTRING> MultiLineStringText()
+}
+/*
+ * <MultiLineString Text> := 
+ *		EMPTY
+ * 		| ( <LineString Text > {, < LineString Text > }* )
+ */
+void MultiLineStringText() #void:
+{}
+{
+	( <LP> LineStringText() (<COMMA> LineStringText())* <RP> )?
+}
+/*
+ * <MultiPolygon Tagged Text> :: =MULTIPOLYGON <MultiPolygon Text>
+ */
+void MultiPolygonTaggedText() #WKTNode:
+{}
+{
+  jjtThis.token = <MULTIPOLYGON> MultiPolygonText()
+}
+/*
+ * <MultiPolygon Text> := EMPTY
+ * 	| <left paren><Polygon Text>{<comma><Polygon Text>}* <right paren>
+ */
+void MultiPolygonText() #void:
+{}
+{
+	( <LP> PolygonText() ( <COMMA> PolygonText() )* <RP> )?
+}
+
+void GeometryCollectionTaggedText() #WKTNode:
+{}
+{
+  jjtThis.token = <GEOMETRYCOLLECTION> GeometryCollectionText()
+}
+
+/*
+ * <GeometryCollection Text> := EMPTY
+ * | ( <Geometry Tagged Text> {, <Geometry Tagged Text> }* )
+ */
+ void GeometryCollectionText() #void:
+ {}
+ {
+ 	( <LP> GeometryLiteral() ( <COMMA> GeometryLiteral() )* <RP>)?
+ }
+ 
+/*
+ * <Envelope Tagged Text> ::= ENVELOPE <Envelope Text>
+ */
+ void EnvelopeTaggedText() #EnvelopeTaggedText_Node:
+ {}
+ {
+ 	jjtThis.token = <ENVELOPE> EnvelopText()
+ }
+
+/*
+ * <Envelope Text> := EMPTY
+ * | <left paren>
+ *		<WestBoundLongitude><comma>
+ *   	<EastBoundLongitude><comma>
+ *   	<NorthBoundLatitude><comma>
+ *   	<SouthBoundLatitude>
+ *	<right paren>
+ * <WestBoundLongitude> := numeric literal
+ * <EastBoundLongitude> := numeric literal
+ * <NorthBoundLatitude> := numeric literal
+ * <SouthBoundLatitude> := numeric literal
+ */
+ void EnvelopText() #void:
+ {}
+ {
+ 	( <LP> 
+ 		NumericLiteral() <COMMA>
+ 		NumericLiteral() <COMMA>
+ 		NumericLiteral() <COMMA>
+ 		NumericLiteral() 
+ 	 <RP> )?
+ }
+ 
+void NumericLiteral() #void:
+{}
+{
+	<FLOATING_LITERAL>|<INTEGER_LITERAL>
+}

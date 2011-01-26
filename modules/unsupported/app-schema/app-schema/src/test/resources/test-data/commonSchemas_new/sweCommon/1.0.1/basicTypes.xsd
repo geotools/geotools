@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:swe="http://www.opengis.net/swe/1.0.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gml="http://www.opengis.net/gml" targetNamespace="http://www.opengis.net/swe/1.0.1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.1">
+	<xs:annotation>
+		<xs:documentation>basicTypes.xsd
+
+Some basic types (simpleContent) required in various places in OWS Sensor Web application schemas
+
+			Copyright (c) 2007 OGC, All Rights Reserved.
+			For conditions, see OGC Software Notice - http://www.opengeospatial.org/legal/
+		</xs:documentation>
+	</xs:annotation>
+	<!-- ====================================================================== -->
+	<xs:import namespace="http://www.w3.org/1999/xlink" schemaLocation="../../xlink/1.0.0/xlinks.xsd"/>
+	<xs:import namespace="http://www.opengis.net/gml" schemaLocation="../../gml/3.1.1/base/gml.xsd"/>
+	<!-- ====================================================================== -->
+	<!-- === Units of Measure === -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="UomSymbol">
+		<xs:annotation>
+			<xs:documentation>Local copy of GML 3.2 uom symbol definition
+			Included for forward compatibility. 
+			Note: in future of this specification based on GML 3.2, these will be removed in favour of the GML 3.2 implementation</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[^: \n\r\t]+"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ............ -->
+	<xs:simpleType name="UomURI">
+		<xs:annotation>
+			<xs:documentation>Local copy of GML 3.2 uom URI definition</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:anyURI">
+			<xs:pattern value="([a-zA-Z][a-zA-Z0-9\-\+\.]*:|\.\./|\./|#).*"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ............ -->
+	<xs:simpleType name="UomIdentifier">
+		<xs:annotation>
+			<xs:documentation>Local copy of GML 3.2 uom identifier definition</xs:documentation>
+		</xs:annotation>
+		<xs:union memberTypes="swe:UomSymbol swe:UomURI"/>
+	</xs:simpleType>
+	<!-- ............ -->
+	<xs:complexType name="UomPropertyType">
+		<xs:annotation>
+			<xs:documentation>Property type that indicates unit-of-measure, either by (i) inline definition; (ii)  reference; (iii)  UCUM code</xs:documentation>
+		</xs:annotation>
+		<xs:sequence minOccurs="0">
+			<xs:element ref="gml:UnitDefinition">
+				<xs:annotation>
+					<xs:documentation>Defines a unit inline</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="code" type="swe:UomSymbol">
+			<xs:annotation>
+				<xs:documentation>Specifies a unit by using a UCUM expression (prefered)</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attributeGroup ref="gml:AssociationAttributeGroup">
+			<xs:annotation>
+				<xs:documentation>Specifies a unit by referencing a dictionary entry (to be used only for units not defined in UCUM)</xs:documentation>
+			</xs:annotation>
+		</xs:attributeGroup>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- === Code space/vocabulary === -->
+	<!-- ====================================================================== -->
+   <xs:complexType name="CodeSpacePropertyType">
+      <xs:annotation>
+         <xs:documentation>Property type that indicates the codespace</xs:documentation>
+      </xs:annotation>
+      <xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+   </xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- === Time position === -->
+	<!-- overlaps with GML TimePositionType -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="timeIso8601">
+		<xs:annotation>
+			<xs:documentation>Choice of time position encodings, not including numeric representation. 
+	      A minor variation on gml:TimePositionUnion - carrying "indeterminate value" as content instead of an attribute.</xs:documentation>
+		</xs:annotation>
+		<xs:union memberTypes="xs:date xs:time xs:dateTime gml:TimeIndeterminateValueType"/>
+	</xs:simpleType>
+	<!-- ............ -->
+	<xs:simpleType name="timePositionType">
+		<xs:annotation>
+			<xs:documentation>Choice of time position encodings, including numeric representation but no frame. 
+	A minor variation on gml:TimePositionUnion - carrying "indeterminate value" as content instead of an attribute. </xs:documentation>
+		</xs:annotation>
+		<xs:union memberTypes="swe:timeIso8601 xs:double"/>
+	</xs:simpleType>
+	<!-- ====================================================================== -->
+	<!-- === Scoped Name === -->
+	<!-- equivalent to GML 3.2 CodeWithAuthorityType -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="ScopedNameType">
+		<xs:annotation>
+			<xs:documentation>Explicit implementation of ISO 19103 ScopedName. 
+			Extension of string which also carries a codeSpace attribute.
+			Note: in future versions of this specification based on GML 3.2, this will be removed in favour of gml:CodeWithAuthorityType. </xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="codeSpace" type="xs:anyURI" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- === Lists === -->
+	<!-- ================================================= -->
+	<xs:simpleType name="decimalList">
+		<xs:annotation>
+			<xs:documentation>Simple list of double-precision numbers. 
+	Note: xs:double supports either decimal or scientific notation</xs:documentation>
+		</xs:annotation>
+		<xs:list itemType="xs:double"/>
+	</xs:simpleType>
+	<!-- ............ -->
+	<xs:simpleType name="decimalPair">
+		<xs:annotation>
+			<xs:documentation>Pair of double-precision numbers. 
+	Note: xs:double supports either decimal or scientific notation</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="swe:decimalList">
+			<xs:length value="2"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ================================================= -->
+	<xs:simpleType name="countList">
+		<xs:annotation>
+			<xs:documentation>Simple list of integers. </xs:documentation>
+		</xs:annotation>
+		<xs:list itemType="xs:integer"/>
+	</xs:simpleType>
+	<!-- ............ -->
+	<xs:simpleType name="countPair">
+		<xs:annotation>
+			<xs:documentation>Pair of integers. </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="swe:countList">
+			<xs:length value="2"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ================================================= -->
+	<xs:simpleType name="tokenList">
+		<xs:annotation>
+			<xs:documentation>Simple list of tokens. 
+			Note: xs:token is a string with no embedded white-space allowed</xs:documentation>
+		</xs:annotation>
+		<xs:list itemType="xs:token"/>
+	</xs:simpleType>
+	<!-- ================================================= -->
+	<xs:simpleType name="timeList">
+		<xs:annotation>
+			<xs:documentation>Simple list of time positions. </xs:documentation>
+		</xs:annotation>
+		<xs:list itemType="swe:timePositionType"/>
+	</xs:simpleType>
+	<!-- ............ -->
+	<xs:simpleType name="timePair">
+		<xs:annotation>
+			<xs:documentation>Pair of time positions. </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="swe:timeList">
+			<xs:length value="2"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ====================================================================== -->
+	<!-- === Generic Interval === -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="IntervalType">
+		<xs:annotation>
+			<xs:documentation>A generic interval. The type of the two limits will normally be the same.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="lowerBound">
+				<xs:annotation>
+					<xs:documentation>Implicit xs:anyType</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="upperBound">
+				<xs:annotation>
+					<xs:documentation>Implicit xs:anyType</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ................ -->
+	<xs:element name="Interval" type="swe:IntervalType">
+		<xs:annotation>
+			<xs:documentation>A generic interval. The type of the two limits will normally be the same.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<!-- ................ -->
+	<xs:complexType name="IntervalPropertyType">
+		<xs:annotation>
+			<xs:documentation>Inline property type for generic intervals</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="swe:Interval"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+</xs:schema>

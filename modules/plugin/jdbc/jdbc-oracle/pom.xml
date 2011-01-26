@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- =======================================================================    
+        Maven Project Configuration File                                        
+                                                                                
+        The Geotools Project                                                    
+            http://www.geotools.org/                                            
+                                                                                
+        Version: $Id$              
+     ======================================================================= -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                               http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.geotools.jdbc</groupId>
+    <artifactId>gt-jdbc</artifactId>
+    <version>2.7-SNAPSHOT</version>
+  </parent>
+
+
+  <!-- =========================================================== -->
+  <!--     Module Description                                      -->
+  <!-- =========================================================== -->
+  <groupId>org.geotools.jdbc</groupId>
+  <artifactId>gt-jdbc-oracle</artifactId>
+  <packaging>jar</packaging>
+  <name>Oracle DataStore</name>
+
+  <scm>
+    <connection>
+      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/plugin/jdbc/jdbc-oracle/
+    </connection>
+    <url>http://svn.osgeo.org/geotools/trunk/modules/plugin/jdbc/jdbc-oracle/</url>
+  </scm>
+
+  <description>
+	DataStore for Oracle Database.
+  </description>
+
+  <licenses>
+    <license>
+      <name>Lesser General Public License (LGPL)</name>
+      <url>http://www.gnu.org/copyleft/lesser.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+
+  <!-- =========================================================== -->
+  <!--     Developers and Contributors                             -->
+  <!-- =========================================================== -->
+  <developers>
+    <developer>
+      <name>Andrea Aime</name>
+      <id>aaime</id>
+      <email>aaime@users.sourceforge.net</email>
+      <organization>TOPP</organization>
+      <roles>
+        <role>Module Maintainer</role>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+  </developers>
+
+  <profiles>
+    <!-- If you have access to the real driver you can rebuild     -->
+    <!-- this geotools plugin with that driver to get a working    -->
+    <!-- plugin.                                                   -->
+
+    <!--                                                           -->
+    <!-- To use for real:                                          -->
+    <!--   Download the ojdbc14.jar driver from oracle and install -->
+    <!--   into maven:                                             
+            mvn install:install-file -Dfile=ojdbc14.jar         
+                -DgroupId=com.oracle -DartifactId=ojdbc14       
+                -Dversion=10.2.0.3.0 -Dpackaging=jar                
+                                                                   -->
+    <!--   You can then supply -Doracle=true on the command line   -->
+    <profile>
+        <id>oracle.jdbc-true</id>
+        <activation>
+           <property>
+              <name>oracle</name>
+           </property>           
+        </activation>
+        <dependencies>
+          <dependency>
+            <artifactId>ojdbc14</artifactId>
+            <groupId>com.oracle</groupId>
+            <!-- version specified in root pom -->
+          </dependency>
+        </dependencies>          
+    </profile>
+    
+    <!-- By default, the build downloads and uses a fake jar full  -->
+    <!-- of "Mock Objects" so you we can compile the plugin even   -->
+    <!-- without downloading the real thing from oracle.           -->
+    <profile>
+        <id>oracle.jdbc-false</id>
+        <activation>
+           <property>
+              <name>!oracle</name>
+           </property>
+        </activation>
+        <dependencies>
+          <dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>dummy_spatial</artifactId>
+            <version>8.1.8</version> <!-- Do not necessarly match the oracle.jdbc version number. -->
+            <scope>provided</scope>
+          </dependency>        
+        </dependencies>                  
+        <properties>
+           <maven.test.skip>true</maven.test.skip>
+        </properties>
+    </profile>
+  </profiles>
+  
+</project>

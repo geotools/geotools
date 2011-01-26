@@ -1,0 +1,15 @@
+<project xmlns:j="jelly:core" xmlns:u="jelly:util" xmlns:ant="jelly:ant" xmlns:maven="jelly:maven" xmlns:deploy="deploy" default="build">
+
+
+	<goal name="build">
+		<j:set var="goal" value="clean,jar:install"/>
+		<attainGoal name="multiproject:goal"/>
+	</goal>
+
+	<goal name="eclipseAll">
+		<j:set var="ignoreFailures" value="true"/>
+		<j:set var="goal" value="eclipse"/>
+		<attainGoal name="multiproject:goal"/>
+	</goal>
+
+</project>

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- IUGS/CGI GeoSciML schema, ver. 1 - draft 2005-10-19 -->
+<!-- Contains the concepts (classes), their inheritance, and relations from the geologicUnit package of the GeoSciML model -->
+<!-- GeoSciML Testbed-2 Model -->
+<schema targetNamespace="http://www.cgi-iugs.org/xml/GeoSciML/1" 
+  xmlns:gsml="http://www.cgi-iugs.org/xml/GeoSciML/1"
+  xmlns="http://www.w3.org/2001/XMLSchema" 
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:gml="http://www.opengis.net/gml" elementFormDefault="qualified"
+  attributeFormDefault="unqualified" version="1.0.0">
+  <annotation>
+    <documentation>
+      geologicUnit.xsd Basic geologic unit for GeoSciML covering lithostratigraphic and lithodemic units
+    </documentation>
+  </annotation>
+  <!--=======================-->
+  <import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd" />
+  <!--=======================-->
+  <include schemaLocation="earthMaterial.xsd" />
+  <!--=======================-->
+  <!-- 
+  NOTE: added by Gabriel because its not found
+   -->
+  <complexType name="GeologicFeatureType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element name="purpose" type="xs:string" nillable="true"></element>
+          <element name="age" type="gsml:GeologicAgePropertyType" nillable="true"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <!-- 
+    /NOTE
+  -->  
+  
+  <complexType name="GeologicUnitType">
+    <complexContent>
+      <extension base="gsml:GeologicFeatureType">
+        <sequence>
+          <element name="partOf" type="gsml:GeologicUnitPartPropertyType" minOccurs="0" maxOccurs="unbounded" />
+          <element name="bodyMorphology" type="gsml:CGI_TermValuePropertyType" maxOccurs="unbounded" />
+          <element name="outcropCharacter" type="gsml:CGI_TermValuePropertyType" maxOccurs="unbounded" />
+          <element name="genesis" type="gsml:CGI_TermValuePropertyType" maxOccurs="unbounded" />
+          <element name="exposureColor" type="gsml:CGI_TermValuePropertyType" maxOccurs="unbounded" />
+          <element name="grossChemistry" type="gsml:ChemicalCompositionClass" />
+          <element name="composition" type="gsml:CompositionPropertyType" minOccurs="0" maxOccurs="unbounded">
+            <annotation>
+              <documentation>Detailed description</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <!-- ..................... -->
+  <element name="GeologicUnit" type="gsml:GeologicUnitType" substitutionGroup="gsml:GeologicFeature" />
+  <!-- ..................... -->
+  <complexType name="GeologicUnitPropertyType">
+    <sequence minOccurs="0">
+      <element ref="gsml:GeologicUnit" />
+    </sequence>
+    <attributeGroup ref="gsml:RichPropertyAttributeGroup" />
+  </complexType>
+  <!--=======================-->
+  <complexType name="CompositionPartType">
+    <sequence>
+      <element name="role" type="gsml:ScopedNameType" />
+      <element name="proportion" type="gsml:CGI_ValuePropertyType" />
+      <element name="material" type="gsml:EarthMaterialPropertyType" />
+    </sequence>
+  </complexType>
+  <!-- ..................... -->
+  <element name="CompositionPart" type="gsml:CompositionPartType" />
+  <!-- ..................... -->
+  <complexType name="CompositionPropertyType">
+    <sequence minOccurs="0">
+      <element ref="gsml:CompositionPart" />
+    </sequence>
+    <attributeGroup ref="gsml:RichPropertyAttributeGroup" />
+  </complexType>
+  <!--=======================-->
+  <complexType name="GeologicUnitPartType">
+    <sequence>
+      <element name="unit" type="gsml:GeologicUnitPropertyType" />
+      <element name="role" type="gsml:ScopedNameType" />
+      <element name="proportion" type="gsml:CGI_ValuePropertyType" />
+    </sequence>
+  </complexType>
+  <!-- ..................... -->
+  <element name="GeologicUnitPart" type="gsml:GeologicUnitPartType" />
+  <!-- ..................... -->
+  <complexType name="GeologicUnitPartPropertyType">
+    <annotation>
+      <documentation>May appear inline only</documentation>
+    </annotation>
+    <sequence>
+      <element ref="gsml:GeologicUnitPart" />
+    </sequence>
+  </complexType>
+  <!--=======================-->
+  <complexType name="LithologicUnitType">
+    <complexContent>
+      <extension base="gsml:GeologicUnitType">
+        <sequence>
+          <!-- @note: added by gabriel: we still don't parse groups. In the while I'm adding gml:name explicitly here
+           -->
+           <element ref="gml:name" minOccurs="0" maxOccurs="unbounded" />
+           <!-- /hack -->
+          <element name="rank" type="gsml:ScopedNameType" />
+          <element name="weatheringCharacter" type="gsml:CGI_TermValuePropertyType" maxOccurs="unbounded" />
+          <element name="structurePresent" type="gsml:CGI_TermValuePropertyType" minOccurs="0" maxOccurs="unbounded" />
+          <element name="metamorphicGrade" type="gsml:CGI_TermValuePropertyType" minOccurs="0" maxOccurs="unbounded" />
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <!-- ..................... -->
+  <element name="LithologicUnit" type="gsml:LithologicUnitType" substitutionGroup="gsml:GeologicUnit" />
+  <!-- 
+  @note: added by gabriel
+   -->
+  <complexType name="LithologicUnitPropertyType">
+    <xs:sequence>
+      <element ref="gsml:LithologicUnit"/>
+    </xs:sequence>
+  </complexType>
+
+  <!--=======================-->
+  <complexType name="LithoStratigraphicUnitType">
+    <complexContent>
+      <extension base="gsml:LithologicUnitType">
+        <sequence>
+          <element name="unitThickness" type="gsml:CGI_NumericPropertyType" maxOccurs="unbounded" />
+          <element name="beddingStyle" type="gsml:CGI_TermValuePropertyType" maxOccurs="unbounded" />
+          <element name="beddingPattern" type="gsml:CGI_TermValuePropertyType" maxOccurs="unbounded" />
+          <element name="beddingThickness" type="gsml:CGI_ValuePropertyType" maxOccurs="unbounded" />
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <!-- ..................... -->
+  <element name="LithoStratigraphicUnit" type="gsml:LithoStratigraphicUnitType" substitutionGroup="gsml:LithologicUnit" />
+  <!--=======================-->
+  <complexType name="LithodemicUnitType">
+    <complexContent>
+      <extension base="gsml:LithologicUnitType" />
+    </complexContent>
+  </complexType>
+  <!-- ..................... -->
+  <element name="LithodemicUnit" type="gsml:LithodemicUnitType" substitutionGroup="gsml:LithologicUnit" />
+  <!--=======================-->
+</schema>

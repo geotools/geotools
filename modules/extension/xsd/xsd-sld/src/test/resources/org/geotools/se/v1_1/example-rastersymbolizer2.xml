@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RasterSymbolizer version="1.1.0" xsi:schemaLocation="http://www.opengis.net/se http://www.opengis.net/se/1.1.0/Symbolizer.xsd" xmlns="http://www.opengis.net/se" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<Opacity>1.0</Opacity>
+	<ChannelSelection>
+		<RedChannel>
+			<SourceChannelName>1</SourceChannelName>
+			<ContrastEnhancement>
+				<Histogram/>
+			</ContrastEnhancement>
+		</RedChannel>
+		<GreenChannel>
+			<SourceChannelName>2</SourceChannelName>
+			<ContrastEnhancement>
+				<GammaValue>2.5</GammaValue>
+			</ContrastEnhancement>
+		</GreenChannel>
+		<BlueChannel>
+			<SourceChannelName>3</SourceChannelName>
+			<ContrastEnhancement>
+				<Normalize/>
+			</ContrastEnhancement>
+		</BlueChannel>
+	</ChannelSelection>
+	<OverlapBehavior>LATEST_ON_TOP</OverlapBehavior>
+	<ColorMap>
+		<Interpolate fallbackValue="#dddddd">
+			<LookupValue>Rasterdata</LookupValue>
+			<InterpolationPoint>
+				<Data>0</Data>
+				<Value>#000000</Value>
+			</InterpolationPoint>
+			<InterpolationPoint>
+				<Data>255</Data>
+				<Value>#ffffff</Value>
+			</InterpolationPoint>
+		</Interpolate>
+	</ColorMap>
+	<ContrastEnhancement>
+		<GammaValue>1.0</GammaValue>
+	</ContrastEnhancement>
+</RasterSymbolizer>

@@ -1,0 +1,2 @@
+org.geotools.image.io.text.TextMatrixImageReader$Spi
+org.geotools.image.io.text.TextRecordImageReader$Spi

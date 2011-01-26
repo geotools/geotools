@@ -1,0 +1,103 @@
+MODULE METADATA
+~~~~~~~~~~~~~~~~
+
+  Module Maintainer: Martin
+
+
+  IP Review:
+
+    * Martin, March, 2006
+
+    * Jody Garnett, August 5th, 2006
+
+    * Adrian Custer, May 2008
+
+
+  STATUS: CLEAN
+  
+    We could use confirmation for (c) transfer by:
+    * MassGIS (c) as employer of Saul Farber in org.geotools.logging but that's
+      reaching the level of paranoia. Martin has rewritten all the code since 
+      that time. The work was done under contract for MassGIS and is therefore 
+      a "Public Record" of the commonwealth---i.e. it is in the Public Domain.
+      Therefore, I'm closing 
+        http://jira.codehaus.org/browse/GEOT-1875, --adrian
+
+
+* org.geotools.factory
+  ~~~~~~~~~~~~~~~~~~~~
+  Basis for a factory implementation, based on java SPI technology forming the 
+  core of the geotools plugin system. These constructs we revised for GeoTools 2.1 
+  to make use of some JAI and provide a mechanism for "hinting" the lookup process 
+  when needed by client applications.
+
+
+* org.geotools.io
+  ~~~~~~~~~~~~~~~
+  Appears to be focused on the usual text suspects, EOL and TAB.
+
+
+* org.geotools.math
+  ~~~~~~~~~~~~~~~~~
+  Contains formula for a line and other madness, mostly utility classes for 
+  elsewhere. 
+
+  * Package html cites the following references:
+
+    * http://www.worldserver.com/turk/opensource/
+
+    * http://mathworld.wolfram.com/
+
+
+ * org.geotools.metadata.iso.*
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   Created in GeoTools 2.1, these classes provide the basis for ISO based metadata 
+   (such as Citation). An attempt was made to provide query support, based on 
+   MetadataEntity for GeoTools 2.1. Some very interesting ideas here :-)
+ 
+     * Credit given in header for the abstractions used:
+
+----------------------------------------------------------------
+This package contains documentation from OpenGIS specifications.
+OpenGIS consortium's work is fully acknowledged here.
+----------------------------------------------------------------
+ 
+
+ * org.geotools.metadata.sql
+   ~~~~~~~~~~~~~~~~~~~~~~~~~
+   Appears to be low-level support for metadata wrapped over an SQL result set, 
+   interested to know if this is used. (Answer: not yet used in Geotools. Used in 
+   at least one external project however. It could be used in a future Geotools 
+   version as a more convenient and more detailled way to store pre-defined 
+   Citations (EPSG, ESRI, etc...) than hard-coded constants.)
+ 
+
+* org.geotools.resources
+  ~~~~~~~~~~~~~~~~~~~~~~
+  Seems to be a collection of crazy utility classes.
+
+
+* org.geotools.resources.geometry
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Some neat, and more performant implementations for hacking Java 2d.
+
+
+* org.geotools.resources.i18n
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Contains a breakdown of resource bundle/property files that have been processed to
+  use number based lookup for speed, compile-time safety and to minimize resource use.
+
+
+* org.geotools.util
+  ~~~~~~~~~~~~~~~~~
+
+
+* org.geotools.util.logging
+  ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    * Saul Farber listed as author for most classes. He has signed the contribution agreement.
+
+
+* org.geotools.[factory|util|math] (test)
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Fun with JUnit.

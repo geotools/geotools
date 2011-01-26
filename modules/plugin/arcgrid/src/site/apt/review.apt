@@ -1,0 +1,22 @@
+Module ArcGrid
+~~~~~~~~~~~~~~
+
+  Module Maintainer: Andrea Aime
+
+  IP Review:
+ 
+    * Jody Garnett July 8th, 2006
+
+    * Adrian Custer June 2008
+
+  STATUS: Clean
+
+
+* org.geotools.gce.arcgrid
+  ~~~~~~~~~~~~~~~~~~~~~~~~
+  Plugin providing grid coverage access to arc grid data format. Before GeoTools 2.0 this
+  was available as a DataSource, updated to a GridCoverageExchange API for GeoTools 2.1.
+
+
+* org.geotools.gce.arcgrid (test)
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

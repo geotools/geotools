@@ -1,0 +1,20 @@
+Plugin EPSG Postgresql
+~~~~~~~~~~~~~~~~~~~~~~
+
+  Module Maintainer: Martin
+
+  IP Review:
+
+    * Jody Garnett, July 9th, 2006
+
+    * Adrian Custer, June 2008
+
+  STATUS: CLEAN
+
+
+
+* org.geotools.referencing.factory.epsg
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Seems to be created in 2005 for GeoTools 2.2, allows use of Postgres to serve 
+  up the EPSG database. Contains instructions for using the scripts provided at 
+  epsg.org w/ postgres.

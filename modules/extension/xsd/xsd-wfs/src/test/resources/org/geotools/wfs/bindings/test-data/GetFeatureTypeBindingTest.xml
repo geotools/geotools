@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GetFeature
+	version="1.1.0"
+	service="WFS"
+	handle="fooHandle"
+	outputFormat="fooFormat"
+	resultType="hits"
+	maxFeatures="1000"
+	traverseXlinkDepth="*"
+	traverseXlinkExpiry="2"
+	xmlns="http://www.opengis.net/wfs"
+	xmlns:ogc="http://www.opengis.net/ogc"
+	xmlns:topp="http://www.openplans.org/topp"
+	xmlns:gt="http://www.geotools.org/test"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd">
+
+	<Query typeName="topp:TestType">
+		<PropertyName>prop1</PropertyName>
+		<ogc:Filter>
+			<ogc:FeatureId fid="fid1" />
+		</ogc:Filter>
+	</Query>
+	<Query typeName="topp:Type2">
+		<ogc:Filter>
+			<ogc:FeatureId fid="fid2" />
+		</ogc:Filter>
+	</Query>
+
+</GetFeature>

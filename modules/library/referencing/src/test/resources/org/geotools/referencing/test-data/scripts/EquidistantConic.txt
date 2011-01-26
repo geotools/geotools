@@ -1,0 +1,52 @@
+// Test points for the Equidistant Conic projection
+//
+// (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+//
+// The following test points were calculated with libproj4 utility "cs2cs" 
+//
+// Andrea Aime - Nov 22 2009
+//
+//
+// --------------------------------------------------------------------------
+// How to run this script:
+//
+//    chdir org/geotools/referencing/test-data/scripts
+//    java -ea org.geotools.referencing.ScriptRunner EquidistantConic.txt
+//
+// A test is performed every time a "target pt" statement occurs. If the target point computed
+// by Geotools is different from the target point declared in this script by an amount greater
+// than the value specified in the last "test tolerance" statement, then a failure is reported.
+// Inverse transforms are tested if java assertions are enabled.
+// If some test fails, "print" statements can be added in this script for debugging purpose:
+//
+//    print crs            (prints the source and target CRS, and the transform between them)
+//    print pts            (prints the source and target points, and their transformed points)
+
+
+// CRS used for the test 
+set _WGS84_  = GEOGCS["WGS84",  DATUM["WGS84",  SPHEROID["WGS84",  6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]]
+set _sphere_ = GEOGCS["sphere", DATUM["sphere", SPHEROID["sphere", 6370997.0, 0]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]]
+
+////////////////////////////////////////////
+// World Equidistant Conic
+
+set _worldEquidistantConic_ = PROJCS["World_Equidistant_Conic", _WGS84_ ,PROJECTION["Equidistant_Conic"],PARAMETER["False_Easting",0.0],PARAMETER["False_Northing",0.0],PARAMETER["Central_Meridian",0.0],PARAMETER["Standard_Parallel_1",60.0],PARAMETER["Standard_Parallel_2",60.0],PARAMETER["Latitude_Of_Origin",0.0],UNIT["Meter",1.0]]
+
+source crs = _WGS84_
+target crs = _worldEquidistantConic_
+test tolerance = (1e-2, 1e-2)
+
+source pt = (-180, -90)
+target pt = (-8313601.71, 28917643.09)
+
+source pt = (180, 90)
+target pt = (140470.75, 10659570.79)
+
+source pt = (60, 60)
+target pt = (2907571.10, 8070981.70)
+
+source pt = (-60, -60)
+target pt = (-13389028.56, -129371.33)
+
+source pt = (0, 0)
+target pt = (0, 0)

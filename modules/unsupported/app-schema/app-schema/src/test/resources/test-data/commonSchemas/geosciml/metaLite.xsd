@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- 
+  Gabriel's note: I created this file based on the sample Gsml instance document, since the provided
+  schemas does not includes the types from http://www.seegrid.csiro.au/xml/metaLite namespace
+  version $Id$
+-->
+<schema targetNamespace="http://www.seegrid.csiro.au/xml/metaLite" 
+  xmlns:gml="http://www.opengis.net/gml" 
+  xmlns:meta="http://www.seegrid.csiro.au/xml/metaLite"
+  xmlns="http://www.w3.org/2001/XMLSchema" 
+  xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+  elementFormDefault="qualified"
+  attributeFormDefault="unqualified" version="1.0.0">
+  <!--=======================-->
+  <import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd" />
+  <!--=======================-->
+
+  <complexType name="SimpleCitationType">
+      <sequence>
+        <element ref="gml:name" minOccurs="0" maxOccurs="unbounded"/>
+      </sequence>
+  </complexType>
+  
+  <complexType name="SimpleCitationPropertyType">
+      <sequence>
+        <element ref="meta:SimpleCitation" minOccurs="0" maxOccurs="unbounded"/>
+      </sequence>
+  </complexType>
+  
+  <element name="SimpleCitation" type="meta:SimpleCitationType"/>
+</schema>

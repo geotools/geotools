@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- =======================================================================    
+        Maven Project Configuration File                                        
+                                                                                
+        The Geotools Project                                                    
+            http://www.geotools.org/                                            
+                                                                                
+        Version: $Id$              
+     ======================================================================= -->
+  <project xmlns="http://maven.apache.org/POM/4.0.0" 
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                               http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.geotools</groupId>
+    <artifactId>plugin</artifactId>
+    <version>2.7-SNAPSHOT</version>
+  </parent>
+
+
+  <!-- =========================================================== -->
+  <!--     Module Description                                      -->
+  <!-- =========================================================== -->
+  <groupId>org.geotools</groupId>
+  <artifactId>gt-epsg-hsql</artifactId>
+  <packaging>jar</packaging>
+  <name>EPSG Authority Service using HSQL database</name>
+  
+
+  <scm>
+    <connection>
+      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/plugin/epsg-hsql/
+    </connection>
+    <url>http://svn.osgeo.org/geotools/trunk/modules/plugin/epsg-hsql/</url>
+  </scm>
+
+  <description>
+    Connection to an embedded EPSG database in HSQL format.
+    This database is built from the SQL scripts delivered by EPSG.
+  </description>
+
+  <licenses>
+    <license>
+      <name>Lesser General Public License (LGPL)</name>
+      <!-- url>http://www.gnu.org/copyleft/lesser.txt</url -->
+      <url>http://svn.osgeo.org/geotools/trunk/modules/plugin/epsg-hsql/LICENSE.html</url>
+      <distribution>repo</distribution>
+    </license>
+    <license>
+      <name>EPSG database distribution license</name>
+      <url>http://svn.osgeo.org/geotools/trunk/licenses/EPSG.html</url>
+      <distribution>repo</distribution>
+      <comments>
+        This Geotools module is bundled with a copy of the EPSG database. The
+        data may be copied and distributed subject to the EPSG conditions.
+      </comments>
+    </license>
+    <license>
+      <name>BSD License for HSQL</name>
+      <url>http://svn.osgeo.org/geotools/trunk/licenses/HSQL.html</url>
+      <distribution>repo</distribution>
+      <comments>
+        This Geotools module requires the HSQL database engine, which is bundled
+        with the binary distribution only (there is no HSQL derived work in the
+        Java source code).
+      </comments>
+    </license>
+  </licenses>
+
+
+  <!-- =========================================================== -->
+  <!--     Developers and Contributors                             -->
+  <!-- =========================================================== -->
+  <developers>
+    <developer>
+      <name>Didier Richard</name>
+      <email>dgr@libertysurf.fr</email>
+      <organization>Institut Géographique National - France</organization>
+      <timezone>+1</timezone>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Martin Desruisseaux</name>
+      <id>desruisseaux</id>
+      <email>desruisseaux@users.sourceforge.net</email>
+      <organization>Geomatys</organization>
+      <organizationUrl>http://www.geomatys.fr/</organizationUrl>
+      <timezone>+1</timezone>
+      <roles>
+        <role>Retired Module Maintainer</role>
+        <role>Retired Java Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Andrea Aime</name>
+      <id>aaime</id>
+      <email>aaime@users.sourceforge.net</email>
+      <roles>
+        <role>Java Developer</role>
+        <role>Module Maintainer</role>
+      </roles>
+    </developer>
+  </developers>
+
+
+  <!-- =========================================================== -->
+  <!--     Dependency Management                                   -->
+  <!-- =========================================================== -->
+  <dependencies>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-referencing</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-sample-data</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>hsqldb</groupId>
+      <artifactId>hsqldb</artifactId>
+      <!-- The version number is specified in the parent POM. -->
+    </dependency>
+    <dependency>
+      <groupId>net.sourceforge.groboutils</groupId>
+      <artifactId>groboutils-core</artifactId>
+      <version>5</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>commons-dbcp</groupId>
+      <artifactId>commons-dbcp</artifactId>
+      <scope>test</scope>
+    </dependency>    
+  </dependencies>
+  
+  
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <excludes>
+            <!-- disable the mediator tests, they are all broken by the EPSG database upgrade -->
+            <exclude>**/*Mediator*.java</exclude>
+            <exclude>**/HsqlDialectEpsgFactoryTest.java</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  
+
+</project>

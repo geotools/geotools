@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- =======================================================================    
+        Maven Project Configuration File                                        
+                                                                                
+        The Geotools Project                                                    
+            http://www.geotools.org/                                            
+                                                                                
+        Version: $Id$              
+     ======================================================================= -->
+  <project xmlns="http://maven.apache.org/POM/4.0.0" 
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                               http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.geotools.xsd</groupId>
+    <artifactId>xsd</artifactId>
+    <version>2.7-SNAPSHOT</version>
+  </parent>
+  
+
+  <!-- =========================================================== -->
+  <!--     Module Description                                      -->
+  <!-- =========================================================== -->
+  <groupId>org.geotools.xsd</groupId>
+  <artifactId>gt-xsd-fes</artifactId>
+  <packaging>jar</packaging>
+  <name>Filter Encoding Specification XML Support</name>
+  
+
+  <scm>
+    <connection>
+      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-fes/
+    </connection>
+    <url>http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-fes/</url>
+  </scm>
+
+  <description>
+    Filter XML support for Geotools.
+  </description>
+
+  <licenses>
+    <license>
+      <name>Lesser General Public License (LGPL)</name>
+      <url>http://www.gnu.org/copyleft/lesser.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+
+  <!-- =========================================================== -->
+  <!--     Developers and Contributors                             -->
+  <!-- =========================================================== -->
+  <developers>
+    <developer>
+      <name>Justin Deoliveira</name>
+      <id>jdeolive</id>
+      <email>jdeolive@openplans.org</email>
+      <organization>The Open Planning Project</organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+  </developers>
+
+
+  <!-- =========================================================== -->
+  <!--     Dependency Management                                   -->
+  <!-- =========================================================== -->
+  <dependencies>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-referencing</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-coverage</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-main</artifactId>
+      <version>${project.version}</version>
+    </dependency>    
+    <dependency>
+      <groupId>org.geotools.xsd</groupId>
+      <artifactId>gt-xsd-core</artifactId>
+      <version>${project.version}</version>
+    </dependency>    
+    <dependency>
+      <groupId>org.geotools.xsd</groupId>
+      <artifactId>gt-xsd-gml3</artifactId>
+      <version>${project.version}</version>
+    </dependency>    
+    <dependency>
+      <groupId>org.geotools.xsd</groupId>
+      <artifactId>gt-xsd-ows</artifactId>
+      <version>${project.version}</version>
+    </dependency>    
+  </dependencies>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>cobertura-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </reporting>
+
+  <!-- =========================================================== -->
+  <!--     Build Configuration                                     -->
+  <!--         copies all JARs in a single directory.              -->
+  <!-- =========================================================== -->
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.geotools.maven</groupId>
+        <artifactId>xmlcodegen</artifactId>
+        <configuration>
+          <schemaLocation>filterAll.xsd</schemaLocation>
+  	  <schemaSourceDirectory>${basedir}/src/main/resources/org/geotools/filter/v2_0</schemaSourceDirectory>
+          <schemaLookupDirectories>
+  	         <schemaLookupDirectory>${basedir}/src/main/resources/org/geotools/filter/v2_0</schemaLookupDirectory>
+            <schemaLookupDirectory>${basedir}/../xsd-gml3/src/main/resources/org/geotools/gml3/v3_2</schemaLookupDirectory>
+            <schemaLookupDirectory>${basedir}/../xsd-gml3/src/main/resources/org/geotools/gml3/v3_2/gco</schemaLookupDirectory>
+            <schemaLookupDirectory>${basedir}/../xsd-gml3/src/main/resources/org/geotools/gml3/v3_2/gmd</schemaLookupDirectory>
+            <schemaLookupDirectory>${basedir}/../xsd-gml3/src/main/resources/org/geotools/gml3/v3_2/gmx</schemaLookupDirectory>
+            <schemaLookupDirectory>${basedir}/../xsd-gml3/src/main/resources/org/geotools/gml3/v3_2/gsr</schemaLookupDirectory>
+            <schemaLookupDirectory>${basedir}/../xsd-gml3/src/main/resources/org/geotools/gml3/v3_2/gss</schemaLookupDirectory>
+            <schemaLookupDirectory>${basedir}/../xsd-gml3/src/main/resources/org/geotools/gml3/v3_2/gts</schemaLookupDirectory>
+            <schemaLookupDirectory>${basedir}/../xsd-ows/src/main/resources/org/geotools/ows/v1_1</schemaLookupDirectory>
+
+          </schemaLookupDirectories>
+          <!--destinationPackage>org.geotools.filter.v2_0</destinationPackage-->
+          <generateTests>false</generateTests>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>cobertura-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>clean</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+    </plugins>
+  </build>
+
+</project>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<StyledLayerDescriptor version="1.0.0"
+  xsi:schemaLocation="http://www.opengis.net/sld http://schemas.opengis.net/sld/1.0.0/StyledLayerDescriptor.xsd"
+  xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <NamedLayer>
+    <Name>OCEANSEA_1M:Foundation</Name>
+    <UserStyle>
+      <Name>GEOSYM</Name>
+      <FeatureTypeStyle>
+        <Rule>
+          <Name>Polygon fill mixed</Name>
+          <TextSymbolizer>
+            <Label>
+            <!-- this is a label consisting of the concatenation of two expressions with a 
+                 CDATA section in between to assert we can avoid whitespaces, newlines, etc from being trimmed -->
+            <ogc:Literal>literal_1</ogc:Literal><![CDATA[
+]]><ogc:Literal>literal_2</ogc:Literal>
+            </Label>
+        </TextSymbolizer>
+        </Rule>
+      </FeatureTypeStyle>
+    </UserStyle>
+  </NamedLayer>
+</StyledLayerDescriptor>

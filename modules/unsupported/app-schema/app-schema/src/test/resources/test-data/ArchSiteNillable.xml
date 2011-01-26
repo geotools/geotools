@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<as:AppSchemaDataAccess xmlns:as="http://www.geotools.org/app-schema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.geotools.org/app-schema AppSchemaDataAccess.xsd">
+    <namespaces>
+        <Namespace>
+            <prefix>gml</prefix>
+            <uri>http://www.opengis.net/gml</uri>
+        </Namespace>
+        <Namespace>
+            <prefix>aeras</prefix>
+            <uri>urn:www.aecoreco.com:schemas:archsites</uri>
+        </Namespace>
+    </namespaces>
+    <sourceDataStores>
+        <DataStore>
+            <id>datastore_shp</id>
+            <parameters>
+                <Parameter>
+                    <name>url</name>
+                    <value>file:..\..\..\..\..\..\library\sample-data\src\main\resources\org\geotools\test-data\shapes\archsites.shp</value>
+                </Parameter>
+                <Parameter>
+                    <name>memory mapped buffer</name>
+                    <value>false</value>
+                </Parameter>
+                <Parameter>
+                    <name>create spatial index</name>
+                    <value>true</value>
+                </Parameter>
+                <Parameter>
+                    <name>charset</name>
+                    <value>ISO-8859-1</value>
+                </Parameter>
+            </parameters>
+        </DataStore>
+    </sourceDataStores>
+    <targetTypes>
+        <FeatureType>
+            <schemaUri>ArchSite.xsd</schemaUri>
+        </FeatureType>
+    </targetTypes>
+    <typeMappings>
+        <FeatureTypeMapping>
+            <sourceDataStore>datastore_shp</sourceDataStore>
+            <sourceType>archsites</sourceType>
+            <targetElement>aeras:ArchSiteNillable</targetElement>
+            <attributeMappings>
+                <AttributeMapping>
+                    <targetAttribute>gml:Point</targetAttribute>
+                    <sourceExpression>
+                        <OCQL>the_geom</OCQL>
+                    </sourceExpression>
+                </AttributeMapping>
+                <AttributeMapping>
+                    <targetAttribute>aeras:ID</targetAttribute>
+                    <sourceExpression>
+                        <OCQL>ID</OCQL>
+                    </sourceExpression>
+                </AttributeMapping>
+                <AttributeMapping>
+                    <targetAttribute>aeras:CAT_ID</targetAttribute>
+                    <sourceExpression>
+                        <OCQL>CAT_ID</OCQL>
+                    </sourceExpression>
+                </AttributeMapping>
+                <AttributeMapping>
+                    <targetAttribute>aeras:CAT_DESC</targetAttribute>
+                    <sourceExpression>
+                        <OCQL>if_then_else(equalTo(CAT_DESC, 'No Name'), Expression.Nil , CAT_DESC)</OCQL>
+                    </sourceExpression>
+                </AttributeMapping>
+            </attributeMappings>
+        </FeatureTypeMapping>
+    </typeMappings>
+</as:AppSchemaDataAccess>

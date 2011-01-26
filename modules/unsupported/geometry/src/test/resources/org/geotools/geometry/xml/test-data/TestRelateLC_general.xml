@@ -1,0 +1,79 @@
+<run>
+  <precisionModel scale="1.0" offsetx="0.0" offsety="0.0"/>
+
+<case>
+  <desc>LC - topographically equal with no boundary</desc>
+  <a>
+    LINESTRING(0 0, 0 50, 50 50, 50 0, 0 0)
+  </a>
+  <b>
+    MULTILINESTRING(
+      (0 0, 0 50), 
+      (0 50, 50 50), 
+      (50 50, 50 0), 
+      (50 0, 0 0))
+  </b>
+<test>
+  <op name="relate" arg3="1FFFFFFF2" arg1="A" arg2="B">
+    true
+  </op>
+</test>
+</case>
+
+<case>
+  <desc>LC - intersection (containment) along mod-2 A-Int line segment</desc>
+  <a>
+    LINESTRING(40 180, 140 180)
+  </a>
+  <b>
+    MULTIPOLYGON(
+      (
+        (20 320, 180 320, 180 180, 20 180, 20 320)), 
+      (
+        (20 180, 20 80, 180 80, 180 180, 20 180)))
+  </b>
+<test>
+  <op name="relate" arg3="1FF0FF212" arg1="A" arg2="B">
+    true
+  </op>
+</test>
+</case>
+
+<case>
+  <desc>LC - intersection (overlap) along mod-2 A-Int line segment</desc>
+  <a>
+    LINESTRING(40 180, 140 180)
+  </a>
+  <b>
+    MULTIPOLYGON(
+      (
+        (20 320, 180 320, 180 180, 20 180, 20 320)), 
+      (
+        (60 180, 60 80, 180 80, 180 180, 60 180)))
+  </b>
+<test>
+  <op name="relate" arg3="11F00F212" arg1="A" arg2="B">
+    true
+  </op>
+</test>
+</case>
+
+<case>
+  <desc>LC - equal with boundary intersection</desc>
+  <a>
+    LINESTRING(0 0, 60 0, 60 60, 60 0, 120 0)
+  </a>
+  <b>
+    MULTILINESTRING(
+      (0 0, 60 0), 
+      (60 0, 120 0), 
+      (60 0, 60 60))
+  </b>
+<test>
+  <op name="relate" arg3="10FF0FFF2" arg1="A" arg2="B">
+    true
+  </op>
+</test>
+</case>
+
+</run>

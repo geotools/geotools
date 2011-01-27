@@ -25,7 +25,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -34,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.zip.GZIPInputStream;
 
 import org.geotools.data.store.ContentDataStore;
 import org.geotools.data.store.ContentEntry;
@@ -246,11 +246,12 @@ public class SFSDataStore extends ContentDataStore {
             IOException, ProtocolException {
         // TODO: use commons http client + persistent connections instead
         URL url = new URL(baseURL + resource);
-        URLConnection urlConnection = url.openConnection();
+        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+        urlConnection.setRequestProperty("Accept-Encoding", "gzip");
         
         urlConnection.setDoInput(true);
         if(postData != null) {
-            ((HttpURLConnection) urlConnection).setRequestMethod("POST");
+            urlConnection.setRequestMethod("POST");
             urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             urlConnection.setDoOutput(true);
             
@@ -266,11 +267,21 @@ public class SFSDataStore extends ContentDataStore {
                 }
             }
         } else {
-            ((HttpURLConnection) urlConnection).setRequestMethod("GET");
+            urlConnection.setRequestMethod("GET");
         }
         
         /* Get the response from the server*/
-        InputStream is = urlConnection.getInputStream();
-        return is;
+        if(urlConnection.getResponseCode() != 200) {
+            throw new IOException("Server reported and error with code " + 
+                    urlConnection.getResponseCode() + ": " + urlConnection.getResponseMessage());
+        } else {
+            InputStream is = urlConnection.getInputStream();
+            String encoding = urlConnection.getContentEncoding();
+            if ("gzip".equalsIgnoreCase(encoding)) {
+                is = new GZIPInputStream(is);
+            }
+            
+            return is;
+        }
     }
 }

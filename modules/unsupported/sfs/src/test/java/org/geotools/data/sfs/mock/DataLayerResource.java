@@ -78,7 +78,7 @@ public class DataLayerResource extends Resource {
      */
     @Override
     public Representation represent(Variant variant) throws ResourceException {
-        String _strJson = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"id\":\"tiger_roads.1\",\"geometry\":{\"type\":\"MultiLineString\",\"coordinates\":[[[-73.999559,40.73158],[-73.999079,40.732188]]]},\"geometry_name\":\"the_geom\",\"properties\":{\"CFCC\":\"A41\",\"NAME\":\"Washington Sq W\",\"bbox\":[-73.999559,40.73158,-73.999079,40.732188]}},{\"type\":\"Feature\",\"id\":\"tiger_roads.2\",\"geometry\":{\"type\":\"MultiLineString\",\"coordinates\":[[[-73.950718,40.810874],[-73.952101,40.811472]]]},\"geometry_name\":\"the_geom\",\"properties\":{\"CFCC\":\"A42\",\"NAME\":\"W 126th St\",\"bbox\":[-73.952101,40.810874,-73.950718,40.811472]}}]}";
+        String _strJson = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"id\":\"tiger_roads.1\",\"geometry\":{\"type\":\"MultiLineString\",\"coordinates\":[[[-73.999559,40.73158],[-73.999079,40.732188]]]},\"geometry_name\":\"the_geom\",\"properties\":{\"CFCC\":\"A41\",\"NAME\":\"Washington Sq W\"}},{\"type\":\"Feature\",\"id\":\"tiger_roads.2\",\"geometry\":{\"type\":\"MultiLineString\",\"coordinates\":[[[-73.950718,40.810874],[-73.952101,40.811472]]]},\"geometry_name\":\"the_geom\",\"properties\":{\"CFCC\":\"A42\",\"NAME\":\"W 126th St\"}}";
         Representation representation = new StringRepresentation(_strJson, MediaType.APPLICATION_JSON);
         return representation;
     }

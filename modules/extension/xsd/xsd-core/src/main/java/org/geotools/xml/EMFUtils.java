@@ -16,6 +16,7 @@
  */
 package org.geotools.xml;
 
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.emf.ecore.EObject;
@@ -24,8 +25,10 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -90,12 +93,49 @@ public class EMFUtils {
     public static void add(EObject eobject, String property, Object value) {
         EStructuralFeature feature = feature(eobject, property);
 
-        if ((feature != null) && isCollection(eobject, property)) {
-            Collection collection = (Collection) get(eobject, property);
-            collection.addAll(collection(value));
+        if ((feature != null)) {
+            add(eobject, feature, value);
         }
     }
 
+    /**
+     * Adds a value to a multi-valued propert of an eobject.
+     * <p>
+     * The <param>feature</param> must map to a multi-valued property of the
+     * eobject. The {@link #isCollection(EStructuralFeature)} method can be used
+     * to test this.
+     * </p>
+     *
+     * @param eobject The object.
+     * @param feature The multi-valued feature.
+     * @param value The value to add.
+     */
+    public static void add(EObject eobject, EStructuralFeature feature, Object value) {
+        if (isCollection(eobject, feature)) {
+            Collection collection = (Collection) eobject.eGet(feature);
+            if (collection == null) {
+                //most likely not an ECollection
+                collection = createEmptyCollection(feature);
+                eobject.eSet(feature, collection);
+            }
+            collection.addAll(collection(value));
+        }
+    }
+    
+    static Collection createEmptyCollection(EStructuralFeature feature) {
+        Class clazz = feature.getEType().getInstanceClass();
+        if (EList.class.isAssignableFrom(clazz)) {
+            return new BasicEList();
+        }
+        if (List.class.isAssignableFrom(clazz)) {
+            return new ArrayList();
+        }
+        if (Set.class.isAssignableFrom(clazz)) {
+            return new HashSet();
+        }
+        throw new IllegalArgumentException("Unable to create collection for " + clazz);
+     }
+    
     /**
      * Returns a collection view for value, taking care of the case where value
      * is of an array type, in which case the collection returned contains the
@@ -151,7 +191,27 @@ public class EMFUtils {
             return false;
         }
 
-        if (EList.class.isAssignableFrom(feature.getEType().getInstanceClass())) {
+        if (Collection.class.isAssignableFrom(feature.getEType().getInstanceClass())) {
+            return true;
+        }
+
+        return false;
+    }
+    
+    /**
+     * Determines if a feature of an eobject is a collection.
+     *
+     * @return <code>true</code> if the feature is a collection, otherwise
+     * <code>false</code>
+     */
+    public static boolean isCollection(EObject eobject, EStructuralFeature feature) {
+        
+        Object o = eobject.eGet(feature);
+        if (o != null) {
+            return o instanceof Collection;
+        }
+        
+        if (Collection.class.isAssignableFrom(feature.getEType().getInstanceClass())) {
             return true;
         }
 
@@ -338,7 +398,7 @@ public class EMFUtils {
      *
      * @param prototype The object to be cloned from.
      * @param factory The factory used to create the clone.
-     * @param deepÊFlag indicating wether to perform a deep clone.
+     * @param deepï¿½Flag indicating wether to perform a deep clone.
      *
      * @return THe cloned object, with all properties the same to the original.
      */

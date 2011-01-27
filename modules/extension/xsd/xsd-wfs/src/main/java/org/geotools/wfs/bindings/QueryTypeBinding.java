@@ -16,6 +16,7 @@
  */
 package org.geotools.wfs.bindings;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -24,6 +25,7 @@ import javax.xml.namespace.QName;
 import net.opengis.wfs.QueryType;
 import net.opengis.wfs.WfsFactory;
 
+import org.eclipse.emf.ecore.EObject;
 import org.geotools.wfs.WFS;
 import org.geotools.xml.AbstractComplexEMFBinding;
 
@@ -188,8 +190,14 @@ public class QueryTypeBinding extends AbstractComplexEMFBinding {
             List typeName = query.getTypeName();
             StringBuilder typeNameList = new StringBuilder();
             if (typeName != null) {
-                for (Iterator<String> it = typeName.iterator(); it.hasNext();) {
-                    typeNameList.append(it.next());
+                for (Iterator it = typeName.iterator(); it.hasNext();) {
+                    Object o = it.next();
+                    if (o instanceof QName) {
+                        QName qName = (QName) o;
+                        o = qName.getPrefix() + ":" + qName.getLocalPart(); 
+                    }
+                    
+                    typeNameList.append(o);
                     if (it.hasNext()) {
                         typeNameList.append(",");
                     }
@@ -205,5 +213,17 @@ public class QueryTypeBinding extends AbstractComplexEMFBinding {
         }
 
         return super.getProperty(object, name);
+    }
+    
+    @Override
+    protected void setProperty(EObject eObject, String property, Object value, boolean lax) {
+        if ("typeName".equals(property)) {
+            QueryType query = (QueryType) eObject;
+            if (query.getTypeName() == null) {
+                query.setTypeName(new ArrayList());
+            }
+        }
+        
+        super.setProperty(eObject, property, value, lax);
     }
 }

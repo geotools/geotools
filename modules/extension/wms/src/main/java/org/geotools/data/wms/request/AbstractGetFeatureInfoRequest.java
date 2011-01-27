@@ -20,6 +20,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Iterator;
+import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -42,9 +43,20 @@ public abstract class AbstractGetFeatureInfoRequest extends AbstractWMSRequest i
      * @param request a previously configured GetMapRequest that the query will be executed on
      */
     public AbstractGetFeatureInfoRequest( URL onlineResource, GetMapRequest request) {
-        super(onlineResource, request.getProperties());
+        super(onlineResource, getMapProperties(request));
 
         queryLayers = new TreeSet();
+    }
+    
+    /**
+     * GetMap request fills in the LAYERS and STYLES properties only when getFinalURL()
+     * is called, so we force it to fill them in before copying the properties
+     * @param request
+     * @return
+     */
+    static Properties getMapProperties(GetMapRequest request) {
+        request.getFinalURL();
+        return request.getProperties();
     }
 
     /**
@@ -69,8 +81,6 @@ public abstract class AbstractGetFeatureInfoRequest extends AbstractWMSRequest i
         }
 
         setProperty(QUERY_LAYERS, queryLayerString);
-        //need to add the querylayers to the LAYERS tag as well.
-        setProperty(GetMapRequest.LAYERS, queryLayerString);
         URL url = super.getFinalURL();
         
         setProperty(QUERY_LAYERS, initialQueryLayerString);

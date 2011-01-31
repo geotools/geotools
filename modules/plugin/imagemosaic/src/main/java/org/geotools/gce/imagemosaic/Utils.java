@@ -966,6 +966,8 @@ public class Utils {
 	static final int DEFAULT_MAX_POOLSIZE = 15;
 	public static final int DEFAULT_KEEP_ALIVE = 30;
 	static final QueueType DEFAULT_QUEUE_TYPE = QueueType.getDefault();
+
+	public static final boolean DEFAULT_CACHING = true;
 	/** 
 	     * Build a background values array using the same dataType of the input {@link SampleModel} (if available). 
 	     * 

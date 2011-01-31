@@ -125,7 +125,7 @@ public class MosaicConfigurationBean {
 	}
 
 	/** we want to use caching for our index.*/
-	private boolean caching=true;
+	private boolean caching = Utils.DEFAULT_CACHING;
 
    /** <code>true</code> if we need to manage footprint if available.  */
     private boolean footprintManagement;

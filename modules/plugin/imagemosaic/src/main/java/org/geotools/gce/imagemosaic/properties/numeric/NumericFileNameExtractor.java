@@ -18,7 +18,6 @@ package org.geotools.gce.imagemosaic.properties.numeric;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -26,12 +25,14 @@ import org.geotools.factory.GeoTools;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
 import org.geotools.gce.imagemosaic.properties.RegExPropertiesCollector;
 import org.geotools.util.Converter;
-import org.geotools.util.ConverterFactory;
-import org.geotools.util.Converters;
+import org.geotools.util.NumericConverterFactory;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.simple.SimpleFeature;
 
 abstract class NumericFileNameExtractor <N extends Number & Comparable<N>> extends RegExPropertiesCollector {
+    
+    final static NumericConverterFactory factory = new NumericConverterFactory();
+    
     static class IntegerFileNameExtractor extends NumericFileNameExtractor<Integer>{
 
         public IntegerFileNameExtractor(PropertiesCollectorSPI spi, List<String> propertyNames,
@@ -101,17 +102,16 @@ abstract class NumericFileNameExtractor <N extends Number & Comparable<N>> exten
 		super(spi,  propertyNames,regex);
 		
                 this.targetClasse = targetClass;
-                if (targetClasse != null) {
-                    // look up a converter
-                    final Set<ConverterFactory> converters = Converters.getConverterFactories(String.class,
-                            targetClasse);
-                    if (!converters.isEmpty()) {
-                        this.converter = converters.iterator().next().createConverter(String.class, targetClasse, GeoTools.getDefaultHints());
-                        return;
-                    }
-                    throw new IllegalArgumentException(
-                            "Unable to find a proper converter from String to the class:" + targetClasse);
-                }
+                this.converter = factory.createConverter(String.class, targetClasse, GeoTools.getDefaultHints());
+//                if (targetClasse != null) {
+//                    // look up a converter
+//                    final Set<ConverterFactory> converters = Converters.getConverterFactories(String.class, targetClasse);
+//                    if (!converters.isEmpty()) {
+//                        this.converter = converters.iterator().next().createConverter(String.class, targetClasse, GeoTools.getDefaultHints());
+//                        return;
+//                    }
+//                    throw new IllegalArgumentException("Unable to find a proper converter from String to the class:" + targetClasse);
+//                }
 
 	}
 

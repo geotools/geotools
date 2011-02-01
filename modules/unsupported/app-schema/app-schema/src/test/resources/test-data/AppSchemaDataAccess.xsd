@@ -138,6 +138,17 @@
                 </sequence>
               </complexType>
             </element>
+            <element name="isDataAccess" type="boolean" default="false" minOccurs="0">
+              <annotation>
+                <documentation>
+                  <![CDATA[ 
+                  Flag to indicate that we want to connect to a data access that is connected
+                  to this data store. The data access would have complex features instead of
+                  simple features. When this is used, inputAttribute would be used in 
+                  sourceExpression tag in place of OCQL.]]>
+                </documentation>
+              </annotation>
+            </element>
           </sequence>
           <attribute name="id" type="ID" />
         </complexType>

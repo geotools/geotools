@@ -65,10 +65,4 @@ public interface WSProtocol {
             UnsupportedOperationException;
 
    public Filter[] splitFilters(Filter filter);
-   
-   /**
-    * Close input stream for capabilities reader.
-    * @throws IOException
-    */
-   public void clean() throws IOException;
 }

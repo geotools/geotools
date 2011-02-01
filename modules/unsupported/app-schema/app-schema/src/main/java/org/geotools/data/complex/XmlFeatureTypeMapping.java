@@ -31,7 +31,6 @@ import org.geotools.data.FeatureSource;
 import org.geotools.data.complex.PathAttributeList.Pair;
 import org.geotools.data.complex.filter.XPath.Step;
 import org.geotools.data.complex.filter.XPath.StepList;
-import org.geotools.data.complex.xml.XmlFeatureSource;
 import org.geotools.filter.LiteralExpressionImpl;
 import org.opengis.feature.Attribute;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -63,20 +62,13 @@ public class XmlFeatureTypeMapping extends FeatureTypeMapping {
 
     private AttributeCreateOrderList attOrderedTypeList = null;
 
-    private Map<String, AttributeMapping> indexAttributeList;
+    private Map<String, TreeAttributeMapping> indexAttributeList;
 
-    AttributeMapping rootAttribute;
+    private TreeAttributeMapping rootAttribute;
 
     private int index = 1;
 
-    /**
-     * Attributes that don't have their own label, therefore are children of another node.
-     */
-    List<AttributeMapping> setterAttributes = new ArrayList<AttributeMapping>();
-
-    PathAttributeList elements;
-
-    protected String itemXpath;
+    private List<TreeAttributeMapping> setterAttributes = new ArrayList<TreeAttributeMapping>();
 
     /**
      * No parameters constructor for use by the digester configuration engine as a JavaBean
@@ -86,17 +78,20 @@ public class XmlFeatureTypeMapping extends FeatureTypeMapping {
     }
 
     public XmlFeatureTypeMapping(FeatureSource source, AttributeDescriptor target,
+            List<AttributeMapping> mappings, NamespaceSupport namespaces) {
+        this(source, target, mappings, namespaces, null);
+    }
+
+    public XmlFeatureTypeMapping(FeatureSource source, AttributeDescriptor target,
             List<AttributeMapping> mappings, NamespaceSupport namespaces, String itemXpath) {
-        super(source, target, mappings, namespaces);
-        this.itemXpath = itemXpath;
-        ((XmlFeatureSource) source).setItemXpath(itemXpath);
+        super(source, target, mappings, namespaces, itemXpath);
         try {
             populateFeatureData();
         } catch (IOException ex) {
             throw new RuntimeException("Error occured when trying to create attribute mappings", ex);
         }
     }
-    
+
     public List<String> getStringMappingsIgnoreIndex(final StepList targetPath) {
         List<String> mappings = new ArrayList<String>();
         String path = targetPath.toString();
@@ -118,9 +113,9 @@ public class XmlFeatureTypeMapping extends FeatureTypeMapping {
         
         if (mappings.isEmpty()) {
             // look in the setter attributes
-            Iterator<AttributeMapping> leafAtts = setterAttributes.iterator();
+            Iterator<TreeAttributeMapping> leafAtts = setterAttributes.iterator();
             while (leafAtts.hasNext()) {
-                AttributeMapping att = leafAtts.next();
+                TreeAttributeMapping att = leafAtts.next();
                 String listPath = att.getTargetXPath().toString();
                 String unindexedListPath = removeIndexFromPath(listPath);
                 if (path.equals(unindexedListPath)) {
@@ -129,7 +124,6 @@ public class XmlFeatureTypeMapping extends FeatureTypeMapping {
             }
 
         }
-        
         return mappings;
     }
 
@@ -175,12 +169,12 @@ public class XmlFeatureTypeMapping extends FeatureTypeMapping {
      * @return the attribute mapping that match 1:1 with <code>exactPath</code> or <code>null</code>
      *         if
      */
-    public AttributeMapping getStringMapping(final StepList exactPath) {
+    public String getStringMapping(final StepList exactPath) {
         AttributeMapping attMapping;
         for (Iterator<AttributeMapping> it = attributeMappings.iterator(); it.hasNext();) {
             attMapping = (AttributeMapping) it.next();
             if (exactPath.equals(attMapping.getTargetXPath())) {
-                return attMapping;
+                return "";
             }
         }
         return null;
@@ -192,37 +186,27 @@ public class XmlFeatureTypeMapping extends FeatureTypeMapping {
         if (attOrderedTypeList == null) {
             initialiseAttributeLists(attMap);
         }
-        // create required elements
         PathAttributeList elements = new PathAttributeList();
-        String xpath = rootAttribute.getInstanceXpath() == null ? itemXpath : itemXpath
-                + XPATH_SEPARATOR + rootAttribute.getInstanceXpath();
-        
-        elements.put(rootAttribute.getLabel(), xpath, null);
-        if (!rootAttribute.getIdentifierExpression().equals(Expression.NIL)) {
-            String id;
-            if (rootAttribute.getInstanceXpath() != null) {
-                id = rootAttribute.getInstanceXpath() + XPATH_SEPARATOR + rootAttribute.getIdentifierExpression();
-            } else {
-                id = rootAttribute.getIdentifierExpression().toString();
-            }                    
-            mapping.put("@gml:id", id);    
-        }        
+        elements.put(rootAttribute.getLabel(), itemXpath, null);
+        String id = rootAttribute.getInstanceXpath() + XPATH_SEPARATOR
+                + rootAttribute.getIdentifierExpression();
+        mapping.put("@gml:id", id);
+        mapping.put("@gsml:id", id);
+        // create required elements
 
         // iterator returns the attribute mappings starting from the root of the tree.
         // parents are always returned before children elements.
-        Iterator<AttributeMapping> it = attOrderedTypeList.iterator();
+        Iterator<TreeAttributeMapping> it = attOrderedTypeList.iterator();
         addComplexAttributes(elements, it);
         addSetterAttributes(elements);
-
-        this.elements = elements;
         
         index++;
         removeAllRelativePaths();
     }
 
-    private void addComplexAttributes(PathAttributeList elements, Iterator<AttributeMapping> it) {
+    private void addComplexAttributes(PathAttributeList elements, Iterator<TreeAttributeMapping> it) {
         while (it.hasNext()) {
-            AttributeMapping attMapping = it.next();
+            TreeAttributeMapping attMapping = it.next();
             final Expression sourceExpression = attMapping.getIdentifierExpression();
 
             List<Pair> ls = elements.get(attMapping.getParentLabel());
@@ -250,10 +234,10 @@ public class XmlFeatureTypeMapping extends FeatureTypeMapping {
                                     + XPATH_SEPARATOR + sourceExpression.toString();
                         }
                         String label = getFullQueryPath(attMapping, attMapping
-                                .getSourceExpression().toString());
-                        
-                        mapping.put(label + XPATH_PROPERTY_SEPARATOR + "gml:id", xpath);
-                        
+                                .getTargetQueryString());
+                        String idSuffix = XPATH_PROPERTY_SEPARATOR + "gml:id";
+                        mapping.put(label + idSuffix, xpath);
+
                         StepList sl = attMapping.getTargetXPath();
                         setPathIndex(j, sl);
                         Attribute subFeature = null;
@@ -265,7 +249,7 @@ public class XmlFeatureTypeMapping extends FeatureTypeMapping {
     }
 
     private void addSetterAttributes(PathAttributeList elements) {
-        for (AttributeMapping attMapping : setterAttributes) {
+        for (TreeAttributeMapping attMapping : setterAttributes) {
             List<Pair> ls = elements.get(attMapping.getParentLabel());
             if (ls != null) {
                 for (int i = 0; i < ls.size(); i++) {
@@ -292,7 +276,7 @@ public class XmlFeatureTypeMapping extends FeatureTypeMapping {
         }
     }
 
-    private void addClientProperties(AttributeMapping attMapping, StringBuffer usedXpath,
+    private void addClientProperties(TreeAttributeMapping attMapping, StringBuffer usedXpath,
             String label) {
         Map<Name, Expression> clientProperties = attMapping.getClientProperties();
         if (clientProperties.size() != 0) {
@@ -347,24 +331,30 @@ public class XmlFeatureTypeMapping extends FeatureTypeMapping {
     private void initialiseAttributeLists(List<AttributeMapping> mappings) {
 
         for (AttributeMapping attMapping : mappings) {
-            if (attMapping.getLabel() != null && attMapping.getParentLabel() == null
-                    && attMapping.getTargetNodeInstance() == null) {
+            if (attMapping.isTreeAttribute()) {
+                TreeAttributeMapping treeAttMapping = (TreeAttributeMapping) attMapping;
+                if (treeAttMapping.getLabel() != null && treeAttMapping.getParentLabel() == null
+                        && attMapping.getTargetNodeInstance() == null) {
 
-                rootAttribute = attMapping;
-                break;
+                    rootAttribute = treeAttMapping;
+                    break;
+                }
             }
         }
 
         attOrderedTypeList = new AttributeCreateOrderList(rootAttribute.getLabel());
-        indexAttributeList = new HashMap<String, AttributeMapping>();
+        indexAttributeList = new HashMap<String, TreeAttributeMapping>();
         indexAttributeList.put(rootAttribute.getLabel(), rootAttribute);
 
         for (AttributeMapping attMapping : mappings) {
-            if (attMapping.getLabel() == null) {
-                setterAttributes.add(attMapping);
-            } else if (attMapping.getParentLabel() != null) {
-                attOrderedTypeList.put(attMapping);
-                indexAttributeList.put(attMapping.getLabel(), attMapping);
+            if (attMapping.isTreeAttribute()) {
+                TreeAttributeMapping treeAttMapping = (TreeAttributeMapping) attMapping;
+                if (treeAttMapping.getLabel() == null) {
+                    setterAttributes.add(treeAttMapping);
+                } else if (treeAttMapping.getParentLabel() != null) {
+                    attOrderedTypeList.put(treeAttMapping);
+                    indexAttributeList.put(treeAttMapping.getLabel(), treeAttMapping);
+                }
             }
         }
     }
@@ -391,19 +381,13 @@ public class XmlFeatureTypeMapping extends FeatureTypeMapping {
         }
     }
 
-    private String getFullQueryPath(AttributeMapping attMapping, String initialString) {
-        StringBuffer name = new StringBuffer();
-        if (!Expression.NIL.toString().equals(initialString)) {
-            name.append(initialString);
-        }
-        AttributeMapping tam = attMapping;
+    private String getFullQueryPath(TreeAttributeMapping attMapping, String initialString) {
+        StringBuffer name = new StringBuffer(initialString);
+        TreeAttributeMapping tam = attMapping;
         while (tam.getParentLabel() != null) {
             tam = indexAttributeList.get(tam.getParentLabel());
-            if (!rootAttribute.equals(tam) && !tam.getSourceExpression().equals(Expression.NIL)) {
-                if (name.length() > 0) {
-                    name.insert(0, XPATH_SEPARATOR);
-                }
-                name.insert(0, tam.getSourceExpression());
+            if (!rootAttribute.equals(tam)) {
+                name.insert(0, tam.getTargetQueryString() + XPATH_SEPARATOR);
             }
         }
         return name.toString();

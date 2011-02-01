@@ -88,12 +88,9 @@ public class WS_Protocol implements WSProtocol {
 
     final WFSCapabilitiesType capabilities;
 
-    private InputStream capabilitiesStream;
-
     public WS_Protocol(InputStream capabilitiesReader, WSStrategy strategy, URL query,
             HTTPProtocol http) throws IOException {
         this.strategy = strategy;
-        this.capabilitiesStream = capabilitiesReader;
         this.capabilities = parseCapabilities(capabilitiesReader);
         this.http = http;
         this.url = query;
@@ -106,12 +103,6 @@ public class WS_Protocol implements WSProtocol {
 
     public URL getOperationURL() {
         return this.url;
-    }
-    
-    public void clean() throws IOException {
-        if (capabilitiesStream != null) {
-            capabilitiesStream.close();
-        }
     }
 
     /**

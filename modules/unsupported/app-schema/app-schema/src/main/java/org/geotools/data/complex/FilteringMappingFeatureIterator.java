@@ -19,12 +19,12 @@ package org.geotools.data.complex;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.ListIterator;
 
 import org.apache.commons.collections.IteratorUtils;
 import org.geotools.data.Query;
 import org.opengis.feature.Feature;
-import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.Filter;
 
 /**
@@ -37,7 +37,7 @@ import org.opengis.filter.Filter;
  */
 public class FilteringMappingFeatureIterator extends DataAccessMappingFeatureIterator {
 
-    protected ListIterator<SimpleFeature> listFeatureIterator;
+    protected ListIterator<Feature> listFeatureIterator;
 
     private Filter filter;
 
@@ -61,7 +61,7 @@ public class FilteringMappingFeatureIterator extends DataAccessMappingFeatureIte
     }
 
     @Override
-    protected ListIterator<SimpleFeature> getSourceFeatureIterator() {
+    protected Iterator<Feature> getSourceFeatureIterator() {
         return listFeatureIterator;
     }
 

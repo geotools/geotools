@@ -16,23 +16,35 @@
  */
 package org.geotools.data.ws;
 
-import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.Authenticator;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.geotools.data.AbstractDataStoreFactory;
+import org.geotools.data.DataSourceException;
 import org.geotools.data.DataStore;
 import org.geotools.data.ws.protocol.http.HTTPProtocol;
+import org.geotools.data.ws.protocol.http.HTTPResponse;
 import org.geotools.data.ws.protocol.http.SimpleHttpProtocol;
 import org.geotools.data.ws.protocol.ws.Version;
 import org.geotools.data.ws.protocol.ws.WSProtocol;
 import org.geotools.util.logging.Logging;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
 /**
  * 
@@ -145,6 +157,12 @@ public class WSDataStoreFactory extends AbstractDataStoreFactory {
      */
     public static final WSFactoryParam<Boolean> TRY_GZIP = parametersInfo[2];
 
+    /**
+     * Optional positive {@code Integer} used as a hard limit for the amount of Features to retrieve
+     * for each FeatureType. A value of zero or not providing this parameter means no limit.
+     */
+    public static final WSFactoryParam<Integer> MAXFEATURES = parametersInfo[3];
+
     public static final WSFactoryParam<String> TEMPLATE_NAME = parametersInfo[4];
 
     public static final WSFactoryParam<String> TEMPLATE_DIRECTORY = parametersInfo[5];
@@ -174,6 +192,7 @@ public class WSDataStoreFactory extends AbstractDataStoreFactory {
         final URL getQueryRequest = (URL) GET_CONNECTION_URL.lookUp(params);
         final int timeoutMillis = (Integer) TIMEOUT.lookUp(params);
         final boolean tryGZIP = (Boolean) TRY_GZIP.lookUp(params);
+        final Integer maxFeatures = (Integer) MAXFEATURES.lookUp(params);
         final String templateName = (String) TEMPLATE_NAME.lookUp(params);
         final String templateDirectory = (String) TEMPLATE_DIRECTORY.lookUp(params);
         final String capabilitiesDirectory = (String) CAPABILITIES_FILE_LOCATION.lookUp(params);
@@ -182,11 +201,12 @@ public class WSDataStoreFactory extends AbstractDataStoreFactory {
         http.setTryGzip(tryGZIP);
         http.setTimeoutMillis(timeoutMillis);
 
-        InputStream capsIn = new BufferedInputStream(new FileInputStream(new File(capabilitiesDirectory)));
+        InputStream capsIn = new FileInputStream(new File(capabilitiesDirectory));
 
         WSStrategy strategy = determineCorrectStrategy(templateDirectory, templateName);
         WS_Protocol ws = new WS_Protocol(capsIn, strategy, getQueryRequest, http);
         final XmlDataStore dataStore = new WS_DataStore(ws);
+        dataStore.setMaxFeatures(maxFeatures);
 
         perParameterSetDataStoreCache.put(new HashMap(params), dataStore);
         return dataStore;

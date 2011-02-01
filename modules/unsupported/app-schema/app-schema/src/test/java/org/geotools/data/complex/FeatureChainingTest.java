@@ -62,9 +62,9 @@ import com.vividsolutions.jts.util.Stopwatch;
  * @source $URL$
  */
 public class FeatureChainingTest {
-    public static final String GSMLNS = "urn:cgi:xmlns:CGI:GeoSciML:2.0";
+    static final String GSMLNS = "urn:cgi:xmlns:CGI:GeoSciML:2.0";
 
-    public static final String GMLNS = "http://www.opengis.net/gml";
+    static final String GMLNS = "http://www.opengis.net/gml";
 
     static final Name MAPPED_FEATURE_TYPE = Types.typeName(GSMLNS, "MappedFeatureType");
 

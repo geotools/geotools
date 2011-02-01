@@ -17,6 +17,7 @@
 package org.geotools.data.ws;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import org.geotools.data.Query;
 import org.geotools.data.complex.xml.XmlFeatureCollection;
@@ -24,6 +25,7 @@ import org.geotools.data.complex.xml.XmlResponse;
 import org.geotools.data.store.DataFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.util.logging.Logging;
 
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -41,7 +43,9 @@ import org.opengis.feature.simple.SimpleFeatureType;
  */
 
 public class WSFeatureCollection extends DataFeatureCollection implements XmlFeatureCollection {
-    
+
+    private static final Logger LOGGER = Logging.getLogger("org.geotools.data.ws");
+
     private Query query;
 
     private XmlDataStore dataStore;    
@@ -103,16 +107,7 @@ public class WSFeatureCollection extends DataFeatureCollection implements XmlFea
             // no luck, cache both bounds and count with a full scan
             getBounds();
         }
-        return  cachedSize;
-    }
-    
-    public XmlResponse xmlResponse(String xpath, String value) {
-        try {
-            xmlResponse = dataStore.getXmlReader(query, xpath, value);
-        } catch (IOException e) {           
-            throw new RuntimeException(e);
-        }
-        return xmlResponse;
+        return cachedSize;
     }
     
     public XmlResponse xmlResponse() {

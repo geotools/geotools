@@ -166,10 +166,6 @@ public class MappingFeatureCollection implements FeatureCollection<FeatureType, 
             throw new RuntimeException(e);
         }
     }
-    
-    public XmlMappingFeatureIterator features(String xpath, String value) throws IOException {
-        return new XmlMappingFeatureIterator(store, mapping, query, xpath, value);
-    }
 
     /**
      * 
@@ -306,10 +302,6 @@ public class MappingFeatureCollection implements FeatureCollection<FeatureType, 
      */
     public FeatureCollection<FeatureType, Feature> sort(SortBy order) {
         throw new UnsupportedOperationException();
-    }
-    
-    public boolean isXmlCollection() {
-        return mapping instanceof XmlFeatureTypeMapping;
     }
 
     /*

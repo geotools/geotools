@@ -63,6 +63,8 @@ public class FeatureTypeMapping {
 
     NamespaceSupport namespaces;
 
+    String itemXpath;
+
     /**
      * A user-defined name for the mapping. This is optional, and used when there are more than one
      * mapping for the same type. When defined, this overrides the targetElement as the identifier.
@@ -101,6 +103,12 @@ public class FeatureTypeMapping {
         if (featureFidMapping == null) {
         	featureFidMapping = Expression.NIL;
         }
+    }
+
+    public FeatureTypeMapping(FeatureSource<?,?> source, AttributeDescriptor target,
+            List<AttributeMapping> mappings, NamespaceSupport namespaces, String itemXpath) {
+        this(source, target, mappings, namespaces);
+        this.itemXpath = itemXpath;
     }
 
     public List<AttributeMapping> getAttributeMappings() {
@@ -170,6 +178,10 @@ public class FeatureTypeMapping {
 
     public NamespaceSupport getNamespaces() {
         return namespaces;
+    }
+
+    public String getItemXpath() {
+        return itemXpath;
     }
 
     /**

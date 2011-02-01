@@ -37,12 +37,12 @@ import java.util.Set;
 public class AttributeCreateOrderList {
 
     private String rootLabel; 
-    private Map<String, List<AttributeMapping>> childrenList = new HashMap<String, List<AttributeMapping>>();
+    private Map<String, List<TreeAttributeMapping>> childrenList = new HashMap<String, List<TreeAttributeMapping>>();
 
 
 public AttributeCreateOrderList(String rootLabel) {
         this.rootLabel = rootLabel;
-        List<AttributeMapping> newAttMapping = new ArrayList<AttributeMapping>();
+        List<TreeAttributeMapping> newAttMapping = new ArrayList<TreeAttributeMapping>();
         childrenList.put(rootLabel, newAttMapping);
     }
 
@@ -51,7 +51,7 @@ public AttributeCreateOrderList(String rootLabel) {
  * @param attMapping attribute to add
  * @return whether an item was added or not.
  */
-public boolean put(AttributeMapping attMapping) {
+public boolean put(TreeAttributeMapping attMapping) {
     String parentLabel = attMapping.getParentLabel();
     if(attMapping.getLabel() == null || parentLabel == null) {
         return false;
@@ -60,18 +60,18 @@ public boolean put(AttributeMapping attMapping) {
         throw new IllegalArgumentException("Parents label same as label!");
     }
     
-    List<AttributeMapping> newAttMapping;
+    List<TreeAttributeMapping> newAttMapping;
     if(childrenList.containsKey(parentLabel)) {
         newAttMapping = childrenList.get(parentLabel);        
     } else {
-        newAttMapping = new ArrayList<AttributeMapping>();
+        newAttMapping = new ArrayList<TreeAttributeMapping>();
         childrenList.put(parentLabel, newAttMapping);
     }
     newAttMapping.add(attMapping);
     return true;
 }
 
-public Iterator<AttributeMapping> iterator() {
+public Iterator<TreeAttributeMapping> iterator() {
     return new InnerClass();
 }
 
@@ -79,10 +79,10 @@ public void setRootLabel(String rootLabel) {
     this.rootLabel = rootLabel;
 }
 
-class InnerClass implements Iterator<AttributeMapping>{
+class InnerClass implements Iterator<TreeAttributeMapping>{
     boolean isInitialised = false;
     boolean isHasNextBeenCalled = false;    
-    private Iterator<AttributeMapping> currentListIterator;
+    private Iterator<TreeAttributeMapping> currentListIterator;
     private Set<String> unprocessedTreeNodes = new HashSet<String>(childrenList.keySet());
     private Set<String> returnedUnprocessedNodes = new HashSet<String>();
     
@@ -104,12 +104,12 @@ class InnerClass implements Iterator<AttributeMapping>{
         return true;
     }
 
-    public AttributeMapping next() {
+    public TreeAttributeMapping next() {
         if(!isHasNextBeenCalled) {
             throw new IllegalStateException("next method called without hasNext being called first.");
         }
         isHasNextBeenCalled = false;
-        AttributeMapping next = currentListIterator.next();
+        TreeAttributeMapping next = currentListIterator.next();
         returnedUnprocessedNodes.add(next.getLabel());
         return next;        
     }
@@ -120,36 +120,31 @@ class InnerClass implements Iterator<AttributeMapping>{
    
     private void initialise() {
         isInitialised = true;        
-        List<AttributeMapping> currentList = childrenList.get(rootLabel);
+        List<TreeAttributeMapping> currentList = childrenList.get(rootLabel);
         currentListIterator = currentList.iterator();
         unprocessedTreeNodes.remove(rootLabel);
     }
     
     private void getNextList() {
-        if (returnedUnprocessedNodes.isEmpty()) {
-            throw new IllegalStateException(
-                    "Please check your mapping file. No attribute found for parentLabel: '"
-                            + unprocessedTreeNodes.toString() + "' or root label has no matching children.");
-        }
         Iterator<String> it = returnedUnprocessedNodes.iterator();
         boolean listFound = false;
-        String element = null;
-        while (it.hasNext() && !listFound) {
+        String element = null;;
+        while(it.hasNext() && !listFound) {
             element = it.next();
-            if (unprocessedTreeNodes.contains(element)) {
+            if(unprocessedTreeNodes.contains(element)) {
                 listFound = true;
                 unprocessedTreeNodes.remove(element);
                 it.remove();
             } else {
-                // returned element has no children to process
-                // remove for efficiency.
+                //returned element has no children to process
+                //remove for efficiency.
                 it.remove();
             }
         }
         if(!listFound) {
            throw new IllegalStateException("Error in tree structure.  No created elements link to unprocessed children elements");
         }
-        List<AttributeMapping> currentList = childrenList.get(element);
+        List<TreeAttributeMapping> currentList = childrenList.get(element);
         currentListIterator = currentList.iterator();
     }
 }

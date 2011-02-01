@@ -52,12 +52,6 @@ public class AttributeMapping {
 
     private Map<Name, Expression> clientProperties;
 
-    private String label;
-
-    private String parentLabel;
-
-    private String instancePath;
-
     /**
      * Creates a new AttributeMapping object.
      * 
@@ -110,36 +104,16 @@ public class AttributeMapping {
      */
     public boolean isNestedAttribute() {
         return false;
-    }   
-    
-    /**********************************************************************
-     * Label, parentLabel and instancePath are for web service backend only
-     **********************************************************************/
-    public String getLabel() {
-        return label;
-    }
-
-    public String getParentLabel() {
-        return parentLabel;
-    }  
-    
-    public String getInstanceXpath() {
-        return instancePath;
     }
     
-    public void setLabel(String label) {
-        this.label = label;
+    /**
+     * This is overridden by TreeAttributeMapping
+     * 
+     * @return always return false
+     */
+    public boolean isTreeAttribute() {
+        return false;
     }
-
-    public void setParentLabel(String label) {
-        parentLabel = label;
-    }  
-    
-    public void setInstanceXpath(String instancePath) {
-        this.instancePath = instancePath;
-    }
-    
-    /********END specific web service methods*******************/
     
     @Override
     public boolean equals(Object o) {
@@ -156,9 +130,7 @@ public class AttributeMapping {
         return Utilities.equals(identifierExpression, other.identifierExpression)
                 && Utilities.equals(sourceExpression, other.sourceExpression)
                 && Utilities.equals(targetXPath, other.targetXPath)
-                && Utilities.equals(targetNodeInstance, other.targetNodeInstance)
-                && Utilities.equals(label, other.label)
-                && Utilities.equals(parentLabel, other.parentLabel);
+                && Utilities.equals(targetNodeInstance, other.targetNodeInstance);
     }
 
     public int hashCode() {

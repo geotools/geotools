@@ -18,6 +18,9 @@
 package org.geotools.data.complex.xml;
 
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.FeatureCollection;
+import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
  * @author Russell Petty, GSV
@@ -27,6 +30,4 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 public interface XmlFeatureCollection extends SimpleFeatureCollection {
 
     XmlResponse xmlResponse();
-    
-    XmlResponse xmlResponse(String xpath, String value);
 }

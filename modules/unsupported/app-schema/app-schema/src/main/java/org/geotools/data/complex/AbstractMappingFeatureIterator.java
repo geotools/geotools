@@ -17,21 +17,19 @@
 package org.geotools.data.complex;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import javax.xml.namespace.QName;
-
+import org.geotools.data.DataSourceException;
 import org.geotools.data.Query;
 import org.geotools.data.complex.filter.XPath;
-import org.geotools.data.complex.filter.XPath.Step;
-import org.geotools.data.complex.filter.XPath.StepList;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.AppSchemaFeatureFactoryImpl;
 import org.geotools.feature.Types;
 import org.geotools.filter.FilterFactoryImplNamespaceAware;
@@ -39,10 +37,18 @@ import org.geotools.xlink.XLINK;
 import org.opengis.feature.Attribute;
 import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureFactory;
+import org.opengis.feature.GeometryAttribute;
+import org.opengis.feature.Property;
+import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.xml.sax.Attributes;
 import org.xml.sax.helpers.NamespaceSupport;
+
+import com.vividsolutions.jts.geom.EmptyGeometry;
+import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * Base class for several MappingFeatureImplementation's. 
@@ -152,8 +158,26 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
      *         that attribute.
      */
     protected abstract String extractIdForAttribute(final Expression idExpression,
-            Object sourceInstance);
+            Object sourceInstance);    
+    /**
+     * Return a query appropriate to its underlying feature source.
+     * 
+     * @param query
+     *            the original query against the output schema
+     * @return a query appropriate to be executed over the underlying feature source.
+     */
+    protected Query getUnrolledQuery(Query query) {
+        return store.unrollQuery(query, mapping);
+    }
 
+    protected boolean isHasNextCalled() {
+        return hasNextCalled;
+    }
+    
+    protected void setHasNextCalled(boolean hasNextCalled) {
+        this.hasNextCalled = hasNextCalled;
+    }
+    
     /**
      * Return next feature.
      * 
@@ -169,83 +193,169 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
         Feature next;
         try {
             next = computeNext();
+            this.cleanEmptyElements(next);
         } catch (IOException e) {
             close();
             throw new RuntimeException(e);
         }
         ++featureCounter;
+                
         return next;
     }
+    
+    private void cleanEmptyElements(Feature target) throws DataSourceException {
+        try {
+            ArrayList values = new ArrayList<Property>();
+            for (Iterator i = target.getValue().iterator(); i.hasNext();) {
+                Property p = (Property) i.next();
 
-    /**
-     * Return true if there are more features.
-     * 
-     * @see java.util.Iterator#hasNext()
-     */
-    public boolean hasNext() {
-        if (hasNextCalled) {
-            return !isNextSourceFeatureNull();
-        }
-                
-        boolean exists = false;
-        
-        if (featureCounter >= maxFeatures) {
-            return false;
-        }
-        if (isSourceFeatureIteratorNull()) {
-            return false;
-        }
-        // make sure features are unique by mapped id
-        exists = unprocessedFeatureExists();
-
-        if (!exists) {        
-            LOGGER.finest("no more features, produced " + featureCounter);
-            close();
-        }
-        
-        setHasNextCalled(true);
-        
-        return exists;
-    }
-
-    /**
-     * Return a query appropriate to its underlying feature source.
-     * 
-     * @param query
-     *            the original query against the output schema
-     * @return a query appropriate to be executed over the underlying feature source.
-     */
-    protected Query getUnrolledQuery(Query query) {
-        return store.unrollQuery(query, mapping);
-    }
-
-    protected Feature computeNext() throws IOException {
-        if (!hasNextCalled) {
-            // hasNext needs to be called to set nextSrcFeature
-            if (!hasNext()) {
-                return null;
+                if (hasChild(p) || p.getDescriptor().getMinOccurs() > 0) {
+                    values.add(p);
+                }
             }
+            target.setValue(values);
+        } catch (DataSourceException e) {
+            throw new DataSourceException("Unable to clean empty element", e);
         }
-        hasNextCalled = false;
-        if (isNextSourceFeatureNull()) {
-            throw new UnsupportedOperationException("No more features produced!");
-        }
-
-        String id = extractIdForFeature();
-        return populateFeatureData(id);
-    }
-
-    protected boolean isHasNextCalled() {
-        return hasNextCalled;
     }
     
-    protected void setHasNextCalled(boolean hasNextCalled) {
-        this.hasNextCalled = hasNextCalled;
-    }
+    private boolean hasChild(Property p) throws DataSourceException {
+        boolean result = false;
+        if (p.getValue() instanceof Collection) {
 
+            Collection c = (Collection) p.getValue();
+            
+            if (this.getClientProperties(p).containsKey(XLINK_HREF_NAME)) {
+                return true;
+            }
+            
+            ArrayList values = new ArrayList();
+            for (Object o : c) {
+                if (o instanceof Property) {
+                    if (hasChild((Property) o)) {
+                        values.add(o);
+                        result = true;
+                    } else if (((Property) o).getDescriptor().getMinOccurs() > 0) {
+                        if (((Property) o).getDescriptor().isNillable()) {
+                            // add nil mandatory property
+                            values.add(o);
+                        }
+                    }
+                }
+            }
+            p.setValue(values);
+        } else if (p.getName().equals(ComplexFeatureConstants.FEATURE_CHAINING_LINK_NAME)) {
+            // ignore fake attribute FEATURE_LINK
+            result = false;
+        } else if (p.getValue() != null && p.getValue().toString().length() > 0) {
+            result = true;
+        }
+        return result;
+    }
+    
+    protected Map getClientProperties(Property attribute) throws DataSourceException {
+
+        Map<Object, Object> userData = attribute.getUserData();
+        Map clientProperties = new HashMap<Name, Expression>();
+        if (userData != null && userData.containsKey(Attributes.class)) {
+            Map props = (Map) userData.get(Attributes.class);
+            if (!props.isEmpty()) {
+                clientProperties.putAll(props);
+            }
+        }
+        return clientProperties;
+    }
+    
+    protected void setClientProperties(final Attribute target, final Object source,
+            final Map<Name, Expression> clientProperties) {
+        if (target == null) {
+            return;
+        }
+        
+        if (source == null) {
+            return;
+        }
+
+        // NC - first calculate target attributes
+        final Map<Name, Object> targetAttributes = new HashMap<Name, Object>();
+        if (target.getUserData().containsValue(Attributes.class)) {
+            targetAttributes.putAll((Map<? extends Name, ? extends Object>) target.getUserData()
+                    .get(Attributes.class));
+        }        
+        for (Map.Entry<Name, Expression> entry : clientProperties.entrySet()) {
+            Name propName = entry.getKey();
+            Object propExpr = entry.getValue();
+            Object propValue;
+            if (propExpr instanceof Expression) {
+                propValue = getValue((Expression) propExpr, source);
+            } else {
+                propValue = propExpr;
+            }
+            if (propValue != null) {
+                if (propValue instanceof Collection) {
+                    if (!((Collection)propValue).isEmpty()) {                
+                        propValue = ((Collection)propValue).iterator().next();
+                        targetAttributes.put(propName, propValue);
+                    }
+                } else {
+                    targetAttributes.put(propName, propValue);
+                }
+            } 
+        }
+        // FIXME should set a child Property.. but be careful for things that
+        // are smuggled in there internally and don't exist in the schema, like
+        // XSDTypeDefinition, CRS etc.
+        if (targetAttributes.size() > 0) {
+            target.getUserData().put(Attributes.class, targetAttributes);
+        }
+        
+        setGeometryUserData(target, targetAttributes);
+    }
+    
+    protected void setGeometryUserData(Attribute target, Map<Name, Object> targetAttributes) {
+     // with geometry objects, set ID and attributes in geometry object
+        if (target instanceof GeometryAttribute
+                && (targetAttributes.size() > 0 || target.getIdentifier() != null)) {
+            Geometry geom;
+            if (target.getValue() == null) {
+                // create empty geometry if null but attributes
+                geom = new EmptyGeometry();
+            } else {
+                // need to clone because it seems the same geometry object from the
+                // db is reused instead of regenerated if different attributes refer
+                // to the same database row... so if we change the userData, we have
+                // to clone it
+                geom = (Geometry) ((Geometry) target.getValue()).clone();
+            }
+
+            if (geom != null) {
+
+                Object userData = geom.getUserData();
+                Map newUserData = new HashMap<Object, Object>();
+                if (userData != null) {
+                    if (userData instanceof Map) {
+                        newUserData.putAll((Map) userData);
+                    } else if (userData instanceof CoordinateReferenceSystem) {
+                        newUserData.put(CoordinateReferenceSystem.class, userData);
+                    }
+                }
+                // set gml:id and attributes in Geometry userData
+                if (target.getIdentifier() != null) {
+                    newUserData.put("gml:id", target.getIdentifier().toString());
+                }
+                if (targetAttributes.size() > 0) {
+                    newUserData.put(Attributes.class, targetAttributes);
+                }
+
+                geom.setUserData(newUserData);
+                target.setValue(geom);
+            }
+        }
+    }
+    
     protected abstract void closeSourceFeatures();
 
-    protected abstract Iterator<Feature> getSourceFeatureIterator();
+    protected abstract Iterator<SimpleFeature> getSourceFeatureIterator();
 
     protected abstract void initialiseSourceFeatures(FeatureTypeMapping mapping, Query query)
             throws IOException;
@@ -263,7 +373,8 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
     protected abstract Object getValue(Expression expression, Object sourceFeature);
 
     protected abstract boolean isSourceFeatureIteratorNull();
+    
+    protected abstract Feature computeNext() throws IOException;   
 
-    abstract protected void setClientProperties(final Attribute target, final Object source,
-            final Map<Name, Expression> clientProperties);
+    public abstract boolean hasNext();
 }

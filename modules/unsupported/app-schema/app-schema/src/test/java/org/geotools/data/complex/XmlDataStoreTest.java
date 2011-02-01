@@ -17,17 +17,15 @@ package org.geotools.data.complex;
  *    Lesser General Public License for more details.
  */
 
-import java.awt.RenderingHints.Key;
-import java.io.DataInputStream;
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.Serializable;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -35,50 +33,32 @@ import java.util.Set;
 
 import junit.framework.TestCase;
 
-import org.geotools.data.DataAccess;
-import org.geotools.data.DataStore;
-import org.geotools.data.DataStoreFactorySpi;
-import org.geotools.data.DefaultQuery;
-import org.geotools.data.FeatureListener;
-import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureSource;
-import org.geotools.data.FeatureWriter;
-import org.geotools.data.LockingManager;
 import org.geotools.data.Query;
-import org.geotools.data.QueryCapabilities;
-import org.geotools.data.ResourceInfo;
-import org.geotools.data.ServiceInfo;
-import org.geotools.data.Transaction;
+import org.geotools.data.complex.AppSchemaDataAccess;
+import org.geotools.data.complex.DataAccessRegistry;
 import org.geotools.data.complex.config.AppSchemaDataAccessConfigurator;
 import org.geotools.data.complex.config.AppSchemaDataAccessDTO;
 import org.geotools.data.complex.config.XMLConfigDigester;
-import org.geotools.data.complex.xml.XmlFeatureCollection;
-import org.geotools.data.complex.xml.XmlFeatureSource;
 import org.geotools.data.complex.xml.XmlResponse;
-import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.data.store.DataFeatureCollection;
+import org.geotools.data.ws.WSDataStoreFactory;
+import org.geotools.data.ws.WS_DataStore;
+import org.geotools.data.ws.XmlDataStore;
+import org.geotools.data.ws.protocol.ws.WSProtocol;
 import org.geotools.feature.ComplexAttributeImpl;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.Types;
-import org.geotools.feature.simple.SimpleFeatureTypeImpl;
-import org.geotools.feature.type.AttributeDescriptorImpl;
 import org.geotools.filter.FilterFactoryImplNamespaceAware;
-import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.gml3.GMLSchema;
 import org.geotools.gml3.bindings.GML3EncodingUtils;
 import org.geotools.util.Converters;
-import org.geotools.xs.XSSchema;
 import org.jdom.Document;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.opengis.feature.Attribute;
 import org.opengis.feature.ComplexAttribute;
 import org.opengis.feature.Feature;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
@@ -98,18 +78,14 @@ public class XmlDataStoreTest extends TestCase {
     private static final String MOCK_DS_PARAM_KEY = "DATA_FILE_DIRECTORY_PARAM_KEY";
 
     private static final SAXBuilder sax = new SAXBuilder();
-
-    static final XmlDataStore MOCK_DATASTORE = new XmlDataStore();
     
     private static final String schemaBase = "/test-data/";
 
-    private static final String GSMLNS = "http://www.cgi-iugs.org/xml/GeoSciML/2";
+    private static final String CGINS = "urn:cgi:xmlns:CGI:Utilities:1.0";
 
-    private static final String GMLNS = "http://www.opengis.net/gml";
+    private final int MAX_FEATURES = 1;
 
-    private final int MAX_FEATURES = 5;
-
-    private DataAccess mappingDataStore;
+    private AppSchemaDataAccess mappingDataStore;
 
     private Name typeName;
 
@@ -122,7 +98,7 @@ public class XmlDataStoreTest extends TestCase {
         super.setUp();
         setFilterFactory();
         buildXmlBackedDataAccess();
-        typeName = Types.typeName(GSMLNS, "GeologicUnit");
+        typeName = Types.typeName(FeatureChainingTest.GSMLNS, "GeologicUnit");
     }
 
     protected void tearDown() throws Exception {
@@ -138,51 +114,57 @@ public class XmlDataStoreTest extends TestCase {
     }
 
     public void testFilterTranslation() throws Exception {
-      //tests that the translation of the filter from GeoSciML to the xml datasorce works.
+        //tests that the translation of the filter from GeoSciML to the xml datasorce works.
         Filter inputFilter = ff.equals(ff.property("gml:name"), ff
                 .literal("Unit Name1233811724109 UC1233811724109 description name"));
+
+        FeatureCollection features = getFeatures(Query.DEFAULT_MAX, inputFilter);
+        assertEquals(1, size(features));
         
-        List<Integer> ls = new ArrayList<Integer>();
-        ls.add(1);
-        MOCK_DATASTORE.setValidElements(ls);
-
-        FeatureCollection features = getFeatures(MAX_FEATURES, inputFilter);
-        int size = size(features);
-
-        assertEquals(ls.size(), size);
-        Query query = MOCK_DATASTORE.getQuery();
-
-        assertEquals(MAX_FEATURES, query.getMaxFeatures());
-        String translatedFilter = query.getFilter().toString();
-        assertTrue(getExpectedFilter().equals(translatedFilter) ||
-                getReversedExpectedFilter().equals(translatedFilter));
+        // check that it returns the right feature
+        FeatureIterator iterator = features.features();
+        Feature f = iterator.next();
+        assertEquals(f.getIdentifier().toString(), "lithostratigraphic.unit.1679161041155866313");        
+        iterator.close();     
     }
 
     public void testFeatureCounting() throws Exception {
-        Filter inputFilter = ff.equals(ff.property("gml:name"), ff
-                .literal("Unit Name1233811724109 UC1233811724109 description name"));
-
-        List<Integer> ls = new ArrayList<Integer>();
-        ls.add(1);
-        MOCK_DATASTORE.setValidElements(ls);
-
-        FeatureCollection features = getFeatures(MAX_FEATURES, inputFilter);
-        int size = size(features);
-
-        assertEquals(ls.size(), size);
+        Filter inputFilter = ff.like(ff.property("gml:name"), "*description name*");
+        
+        FeatureCollection features = getFeatures(Query.DEFAULT_MAX, inputFilter);
+        assertEquals(3, size(features));
+        
+        // check feature ids
+        FeatureIterator iterator = features.features();
+        Feature f = iterator.next();
+        assertEquals(f.getIdentifier().toString(), "lithostratigraphic.unit.1679161021439131319");
+        assertTrue(iterator.hasNext());
+        f = iterator.next();            
+        assertEquals(f.getIdentifier().toString(), "lithostratigraphic.unit.1679161041155866313");  
+        assertTrue(iterator.hasNext());
+        f = iterator.next();      
+        assertEquals(f.getIdentifier().toString(), "lithostratigraphic.unit.1679161021439938381");
+        
+        iterator.close();        
+        
+        // now with maxFeatures = 1, it should only return the first one
+        features = getFeatures(MAX_FEATURES, inputFilter);
+        assertEquals(MAX_FEATURES, size(features));
+        
+        iterator = features.features();
+        f = iterator.next();
+        assertEquals(f.getIdentifier().toString(), "lithostratigraphic.unit.1679161021439131319");
+        
+        iterator.close();    
     }
 
     public void testNoElementsReturned() throws Exception {
         final Filter filter = ff.equals(ff.property("gml:name"), ff
-                .literal("Unit Name1233811724109 UC1233811724109 description name"));
-
-        List<Integer> ls = new ArrayList<Integer>();
-        // Empty list--no valid elements returned in the response
-        MOCK_DATASTORE.setValidElements(ls);
+                .literal("invalid name"));        
 
         FeatureCollection features = getFeatures(MAX_FEATURES, filter);
-        int size = size(features);
-        assertEquals(0, size);
+        
+        assertEquals(0, size(features));
 
         List<Feature> results = new ArrayList<Feature>();
         FeatureIterator it = features.features();
@@ -190,42 +172,85 @@ public class XmlDataStoreTest extends TestCase {
             results.add((Feature) it.next());
         }
         it.close();
-        assertEquals(ls.size(), results.size());
+        assertEquals(0, results.size());
     }
 
     public void testFeaturesCreatedCorrectly() throws Exception {
-        final Name GeologicUnitName = new NameImpl(GSMLNS, "GeologicUnit");
-        final Name GeologicUnitType = new NameImpl(GSMLNS, "GeologicUnitType");
-        final Filter filter = ff.equals(ff.property("gml:name"), ff
-                .literal("Unit Name1233811724109 UC1233811724109 description name"));
-
-        XmlDataStore ds = (XmlDataStore) MOCK_DATASTORE;
-        ds.setFileName("./src/test/resources/test-data/xmlDataStoreResponse.xml");
-        String s = Filter.INCLUDE.toString();
-        List<Integer> ls = new ArrayList<Integer>();
-        ls.add(1);
-        ls.add(2);
-        MOCK_DATASTORE.setValidElements(ls);
+        final Name GeologicUnitName = new NameImpl(FeatureChainingTest.GSMLNS, "GeologicUnit");
+        final Name GeologicUnitType = new NameImpl(FeatureChainingTest.GSMLNS, "GeologicUnitType");
 
         List<Feature> results = new ArrayList<Feature>();
 
-        FeatureCollection features = getFeatures(MAX_FEATURES, filter);
+        FeatureCollection features = getFeatures(Query.DEFAULT_MAX, Filter.INCLUDE);
         FeatureIterator it = features.features();
         for (; it.hasNext();) {
             results.add((Feature) it.next());
         }
         it.close();
-        assertEquals(ls.size(), results.size());
+        
+        final int EXPECTED_SIZE = 3;        
+        assertEquals(EXPECTED_SIZE, results.size());
 
         // ***************************************************************************************
         // Check that all features returned are GUs and have the correct id.
         // ***************************************************************************************
-        final String[] ids = new String[] { "1679161021439131319", "1679161041155866313" };
-        for (int i = 0; i < ls.size(); i++) {
+        final String[] ids = new String[] { "lithostratigraphic.unit.1679161021439131319",
+                "lithostratigraphic.unit.1679161041155866313",
+                "lithostratigraphic.unit.1679161021439938381" };
+        
+        for (int i = 0; i < EXPECTED_SIZE; i++) {
             Feature f = results.get(i);
             assertEquals(ids[i], f.getIdentifier().getID());
             assertEquals(GeologicUnitName, f.getName());
             assertEquals(GeologicUnitType, f.getDescriptor().getType().getName());
+            
+            // ***************************************************************************************
+            // Test an attribute with constant value (as opposed to an xpath)
+            // ***************************************************************************************
+            List<Attribute> attPurposeList = getAttributesForProperty(f, "purpose");
+            assertEquals(1, attPurposeList.size());
+
+            Attribute at = attPurposeList.get(0);
+            assertEquals("CONSTANT", getValueForAttribute(at));
+            assertEquals(0, at.getUserData().size());
+            
+            // ***************************************************************************************
+            // Test an attribute with null value (ie unset) but User data is an xpath
+            // ***************************************************************************************
+            List<Attribute> attGUTypeList = getAttributesForProperty(f, "rank");
+            assertEquals(1, attGUTypeList.size());
+
+            at = attGUTypeList.get(0);
+            assertEquals("", getValueForAttribute(at));
+            assertEquals(1, at.getUserData().size());
+            assertEquals("urn:cgi:classifier:GSV:LithostratigraphicUnitRank:formation",
+                    getUserDataForAttribute(at, new NameImpl("http://www.w3.org/1999/xlink", "href")));
+            
+            // ***************************************************************************************
+            // Test that a nested complex type is created correctly
+            // ***************************************************************************************
+            List<Attribute> attObMethList = getAttributesForProperty(f, "observationMethod");
+            assertEquals(1, attObMethList.size());
+            at = attObMethList.get(0);
+
+            assertEquals(null, at.getIdentifier());
+            assertEquals(new NameImpl(FeatureChainingTest.GSMLNS, "observationMethod"), at.getName());
+            assertEquals(new NameImpl(FeatureChainingTest.GSMLNS, "CGI_TermValuePropertyType"), at.getDescriptor()
+                    .getType().getName());
+
+            ComplexAttribute ob = getNestedComplexValueForAttribute(at);
+            assertEquals(null, ob.getIdentifier());
+            assertEquals(new NameImpl(FeatureChainingTest.GSMLNS, "CGI_TermValue"), ob.getName());
+            assertEquals(new NameImpl(FeatureChainingTest.GSMLNS, "CGI_TermValueType"), ob.getDescriptor().getType()
+                    .getName());
+
+            ComplexAttribute ob2 = getNestedComplexValueForAttribute(ob);
+            assertEquals(null, ob2.getIdentifier());
+            assertEquals(new NameImpl(FeatureChainingTest.GSMLNS, "value"), ob2.getName());
+            assertEquals(new NameImpl(CGINS, "CodeWithAuthorityType"), ob2
+                    .getDescriptor().getType().getName());
+            assertEquals("CONSTANT", getValueForAttribute(ob2));
+            assertEquals("gsv:NameSpace", getUserDataForAttribute(ob2, new NameImpl("codeSpace")));
         }
 
         Feature feature = results.get(0);
@@ -258,54 +283,50 @@ public class XmlDataStoreTest extends TestCase {
         assertEquals("urn:cgi:feature:GSV:1679161021439131319", getValueForAttribute(at));
         assertTrue(at.getUserData() != null && ((Map) at.getUserData().get(Attributes.class)).size() == 1);
         assertEquals("gsv:NameSpace", getUserDataForAttribute(at, new NameImpl("codeSpace")));
-
-        // ***************************************************************************************
-        // Test an attribute with constant value (as opposed to an xpath)
-        // ***************************************************************************************
-        List<Attribute> attPurposeList = getAttributesForProperty(feature, "purpose");
-        assertEquals(1, attPurposeList.size());
-
-        at = attPurposeList.get(0);
-        assertEquals("CONSTANT", getValueForAttribute(at));
+        
+        // second feature
+        feature = results.get(1);
+        attDescList = getAttributesForProperty(feature, "description");
+        assertEquals(1, attDescList.size());
+        at = attDescList.get(0);
+        assertEquals("Test description 1", getValueForAttribute(at));
         assertEquals(0, at.getUserData().size());
 
-        // ***************************************************************************************
-        // Test an attribute with null value (ie unset) but User data is an xpath
-        // ***************************************************************************************
-        List<Attribute> attGUTypeList = getAttributesForProperty(feature, "rank");
-        assertEquals(1, attGUTypeList.size());
+        attNameList = getAttributesForProperty(feature, "name");
+        assertEquals(2, attNameList.size());
+        
+        at = attNameList.get(0);
+        assertEquals("Unit Name1233811724109 UC1233811724109 description name",
+                getValueForAttribute(at));
+        assertEquals(1, ((Map) at.getUserData().get(Attributes.class)).size());
+        assertEquals("gsv:NameSpace", getUserDataForAttribute(at, new NameImpl("codeSpace")));
 
-        at = attGUTypeList.get(0);
-        assertEquals("", getValueForAttribute(at));
-        assertEquals(1, at.getUserData().size());
-        assertEquals("urn:cgi:classifier:GSV:LithostratigraphicUnitRank:formation",
-                getUserDataForAttribute(at, new NameImpl("http://www.w3.org/1999/xlink", "href")));
+        at = attNameList.get(1);
+        assertEquals("urn:cgi:feature:GSV:1679161041155866313", getValueForAttribute(at));
+        assertTrue(at.getUserData() != null && ((Map) at.getUserData().get(Attributes.class)).size() == 1);
+        assertEquals("gsv:NameSpace", getUserDataForAttribute(at, new NameImpl("codeSpace")));
+                
+        // third feature
+        feature = results.get(2);
+        attDescList = getAttributesForProperty(feature, "description");
+        assertEquals(1, attDescList.size());
+        at = attDescList.get(0);
+        assertEquals("Test description 2", getValueForAttribute(at));
+        assertEquals(0, at.getUserData().size());
 
-        // ***************************************************************************************
-        // Test that a nested complex type is created correctly
-        // ***************************************************************************************
-        List<Attribute> attObMethList = getAttributesForProperty(feature, "observationMethod");
-        assertEquals(1, attObMethList.size());
-        at = attObMethList.get(0);
+        attNameList = getAttributesForProperty(feature, "name");
+        assertEquals(2, attNameList.size());
+        
+        at = attNameList.get(0);
+        assertEquals("Unit Name1248396020281 UC1248396020281 description name 2",
+                getValueForAttribute(at));
+        assertEquals(1, ((Map) at.getUserData().get(Attributes.class)).size());
+        assertEquals("gsv:NameSpace", getUserDataForAttribute(at, new NameImpl("codeSpace")));
 
-        assertEquals(null, at.getIdentifier());
-        assertEquals(new NameImpl(GSMLNS, "observationMethod"), at.getName());
-        assertEquals(new NameImpl(GSMLNS, "CGI_TermValuePropertyType"), at.getDescriptor()
-                .getType().getName());
-
-        ComplexAttribute ob = getNestedComplexValueForAttribute(at);
-        assertEquals(null, ob.getIdentifier());
-        assertEquals(new NameImpl(GSMLNS, "CGI_TermValue"), ob.getName());
-        assertEquals(new NameImpl(GSMLNS, "CGI_TermValueType"), ob.getDescriptor().getType()
-                .getName());
-
-        ComplexAttribute ob2 = getNestedComplexValueForAttribute(ob);
-        assertEquals(null, ob2.getIdentifier());
-        assertEquals(new NameImpl(GSMLNS, "value"), ob2.getName());
-        assertEquals(new NameImpl(GSMLNS, "ScopedNameType"), ob2
-                .getDescriptor().getType().getName());
-        assertEquals("CONSTANT", getValueForAttribute(ob2));
-        assertEquals("gsv:NameSpace", getUserDataForAttribute(ob2, new NameImpl("codeSpace")));
+        at = attNameList.get(1);
+        assertEquals("urn:cgi:feature:GSV:1679161021439938381", getValueForAttribute(at));
+        assertTrue(at.getUserData() != null && ((Map) at.getUserData().get(Attributes.class)).size() == 1);
+        assertEquals("gsv:NameSpace", getUserDataForAttribute(at, new NameImpl("codeSpace")));
     }
 
     private String getValueForAttribute(Attribute sv) {
@@ -361,265 +382,99 @@ public class XmlDataStoreTest extends TestCase {
     }
 
 
-    public static class MockXmlDataStoreFactory implements DataStoreFactorySpi {
+    public static class MockXmlDataStoreFactory extends WSDataStoreFactory {
         public boolean isAvailable() {
             return true;
         }
 
-        public boolean canProcess(Map<String, Serializable> params) {
+        @Override
+        public boolean canProcess(final Map params) {
             return params.get(MOCK_DS_PARAM_KEY) != null;
         }
 
-        public DataStore createDataStore(Map<String, Serializable> params) throws IOException {
-            XmlDataStore ds = (XmlDataStore) MOCK_DATASTORE;
+        @Override
+        public XmlDataStore createDataStore(Map params) throws IOException {
+            XmlDataStore ds = null;
+            String testDirectory = getClass().getResource(schemaBase).getFile();
+            Map<String, Object> wsParams = new HashMap<String, Object>();
+            wsParams.put("WSDataStoreFactory:GET_CONNECTION_URL",
+                    "http://d00109:8080/xaware/XADocSoapServlet");
+            wsParams.put("WSDataStoreFactory:TIMEOUT", new Integer(30000));
+            wsParams.put("WSDataStoreFactory:TEMPLATE_DIRECTORY", testDirectory);
+            wsParams.put("WSDataStoreFactory:TEMPLATE_NAME", "request.ftl");
+            wsParams.put("WSDataStoreFactory:CAPABILITIES_FILE_LOCATION", testDirectory
+                    + "ws_capabilities_equals_removed.xml");
+
+            org.geotools.data.ws.XmlDataStore wsStore = super.createDataStore(wsParams);
+            ds = new XmlDataStore(((WS_DataStore) wsStore).getProtocol());
+            // additional parameter because we don't actually have a web service, but pretend
+            // the output has been written in an xml file
             ds.setFileName((String) params.get(MOCK_DS_PARAM_KEY));
+
             return ds;
-        }
-
-        public DataStore createNewDataStore(Map params) throws IOException {
-            return null;
-        }
-
-        public String getDescription() {
-            return null;
-        }
-
-        public String getDisplayName() {
-            return null;
-        }
-
-        public org.geotools.data.DataAccessFactory.Param[] getParametersInfo() {
-            return null;
-        }
-
-        public Map<Key, ?> getImplementationHints() {
-            return null;
         }
     }
 
-    public static final class XmlDataStore implements DataStore {
+    public static final class XmlDataStore extends WS_DataStore {
+
+        public XmlDataStore(WSProtocol protocol) {
+            super(protocol);
+        }
 
         private String fileName;
-
-        private List<Integer> validElements;
-
-        private Query query;
-
-        public FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(Query query,
-                Transaction transaction) throws IOException {
-            return null;
-        }
-
-        public SimpleFeatureSource getFeatureSource(String typeName)
-                throws IOException {
-            return null;
-        }
-
-        public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(String typeName,
-                Filter filter, Transaction transaction) throws IOException {
-            return null;
-        }
-
-        public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(String typeName,
-                Transaction transaction) throws IOException {
-            return null;
-        }
-
-        public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriterAppend(
-                String typeName, Transaction transaction) throws IOException {
-            return null;
-        }
-
-        public LockingManager getLockingManager() {
-            return null;
-        }
-
-        public SimpleFeatureType getSchema(String typeName) throws IOException {
-            return null;
-        }
-
-        public String[] getTypeNames() throws IOException {
-            return null;
-        }
-
-        public void updateSchema(String typeName, SimpleFeatureType featureType) throws IOException {
-        }
-
-        public void createSchema(SimpleFeatureType featureType) throws IOException {
-        }
-
-        public void dispose() {
-        }
-
-        public SimpleFeatureSource getFeatureSource(Name typeName)
-                throws IOException {
-            return new XmlTestFeatureSource(this);
-        }
 
         public void setFileName(String fileName) {
             this.fileName = fileName;
         }
+        
+        @Override
+        public XmlResponse getXmlReader(Query query) throws IOException {
+            if (Filter.EXCLUDE.equals(query.getFilter())) {
+                return null; //empty response
+            }
 
-        public void setValidElements(List<Integer> validElements) {
-            this.validElements = validElements;
+            Query callQuery = new Query(query);
+
+            Filter[] filters = getProtocol().splitFilters(query.getFilter());
+            Filter supportedFilter = filters[0];
+            Filter postFilter = filters[1];
+            callQuery.setFilter(supportedFilter);
+            
+            Document doc = getXmlResponse();             
+            List<Integer> validFeatureIndex = determineValidFeatures(postFilter, doc, query
+                    .getMaxFeatures());
+            return new XmlResponse(doc, validFeatureIndex);
+        }
+        
+        public XmlResponse getXmlReader(Query query, String xpath, String value) throws IOException {
+            Document doc = getXmlResponse(); 
+            
+            List<Integer> validFeatureIndex = determineValidFeatures(xpath, value, doc, query
+                    .getMaxFeatures());
+            return new XmlResponse(doc, validFeatureIndex);
         }
 
-        public Query getQuery() {
-            return query;
-        }
-
-        public int getCount(Query query) {
-            return -1;
-        }
-
-        public ServiceInfo getInfo() {
-            return null;
-        }
-
-        public List<Name> getNames() throws IOException {
-            return null;
-        }
-
-        public SimpleFeatureType getSchema(Name name) throws IOException {
-            return null;
-        }
-
-        public void updateSchema(Name typeName, SimpleFeatureType featureType) throws IOException {
-        }
-
-        public XmlResponse getXmlReader(Query query, final Transaction transaction)
-                throws IOException {
-            this.query = query;
+        private Document getXmlResponse() throws IOException {
             Document doc = null;
+            BufferedInputStream dos = null;
             try {
                 File outFile = new File(fileName);
-                DataInputStream dos = new DataInputStream(new FileInputStream(outFile));
+                dos = new BufferedInputStream(new FileInputStream(outFile));
                 doc = sax.build(dos);
             } catch (JDOMException e1) {
                 throw new RuntimeException("error reading xml from file ", e1);
+            } finally {
+                if (dos != null) {
+                    dos.close();
+                }
             }
-
-            return new XmlResponse(doc, validElements);
+            return doc;
         }
     };
-
-    public static final class XmlTestFeatureSource implements XmlFeatureSource {
-
-        private XmlDataStore dataStore;
-
-        public XmlTestFeatureSource(final DataStore dataStore) throws IOException {
-            this.dataStore = (XmlDataStore) dataStore;
-        }
-
-        public Name getName() {
-            return new NameImpl(GSMLNS, "GeologicUnit");
-        }
-
-        public DataStore getDataStore() {
-            return dataStore;
-        }
-
-        public SimpleFeatureType getSchema() {
-            List<AttributeDescriptor> schema = new ArrayList<AttributeDescriptor>();
-            schema.add(new AttributeDescriptorImpl(XSSchema.DOUBLE_TYPE, Types.typeName("pointOne"), 0,
-                    1, false, null));
-            schema.add(new AttributeDescriptorImpl(XSSchema.DOUBLE_TYPE, Types.typeName("pointTwo"), 0,
-                    1, false, null));
-            return new SimpleFeatureTypeImpl(Types.typeName("GeometryContainer"),
-                    schema, null, false, null, GMLSchema.ABSTRACTFEATURETYPE_TYPE, null);
-        }
-
-        public void setNamespaces(org.xml.sax.helpers.NamespaceSupport namespaces) {
-        }
-
-        public void setItemXpath(String inputAttributeXpathPrefix) {
-        }
-
-        public ResourceInfo getInfo() {
-            return null;
-        }
-
-        public void addFeatureListener(FeatureListener listener) {
-        }
-
-        public void removeFeatureListener(FeatureListener listener) {
-        }
-
-        public ReferencedEnvelope getBounds() throws IOException {
-            return getInfo().getBounds();
-        }
-
-        public ReferencedEnvelope getBounds(Query query) throws IOException {
-            return null;
-        }
-
-        public int getCount(Query query) throws IOException {
-            Query namedQuery = namedQuery(query);
-            return dataStore.getCount(namedQuery);
-        }
-
-        public XmlTestFeatureCollection getFeatures(Filter filter) throws IOException {
-            return getFeatures(new DefaultQuery("GeologicUnit", filter));
-        }
-
-        public XmlTestFeatureCollection getFeatures() throws IOException {
-            return getFeatures(new DefaultQuery("GeologicUnit"));
-        }
-
-        public XmlTestFeatureCollection getFeatures(final Query query) throws IOException {
-            return new XmlTestFeatureCollection(dataStore, namedQuery(query));
-        }
-
-        public Set getSupportedHints() {
-            return Collections.EMPTY_SET;
-        }
-
-        private Query namedQuery(final Query query) {
-            return new DefaultQuery(query);
-        }
-
-        public QueryCapabilities getQueryCapabilities() {
-            return null;
-        }
-    }
-
-    public static final class XmlTestFeatureCollection extends DataFeatureCollection implements
-            XmlFeatureCollection {
-
-        private Query query;
-
-        private XmlDataStore dataStore;
-
-        private XmlResponse xmlResponse;
-
-        public XmlTestFeatureCollection(XmlDataStore dataStore, Query query) throws IOException {
-            this.dataStore = dataStore;
-            this.query = query;
-        }
-
-        @Override
-        public ReferencedEnvelope getBounds() {
-            throw new UnsupportedOperationException("No bounds for WS!");
-        }
-
-        @Override
-        public int getCount() throws IOException {
-            return dataStore.getCount(query);
-        }
-
-        public XmlResponse xmlResponse() {
-            try {
-                xmlResponse = dataStore.getXmlReader(query, null);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            return xmlResponse;
-        }
-    }
-
-    private DefaultQuery namedQuery(Filter filter, int count) throws Exception {
-        return new DefaultQuery("GeologicUnit", new URI(GSMLNS), filter, count, new String[] {},
-                "test");
+    
+    private Query namedQuery(Filter filter, int count) throws Exception {
+        return new Query("GeologicUnit", new URI(FeatureChainingTest.GSMLNS), filter, count,
+                new String[] {}, "test");
     }
 
     /**
@@ -627,8 +482,8 @@ public class XmlDataStoreTest extends TestCase {
      */
     private void setFilterFactory() {
         NamespaceSupport namespaces = new NamespaceSupport();
-        namespaces.declarePrefix("gsml", GSMLNS);
-        namespaces.declarePrefix("gml", GMLNS);
+        namespaces.declarePrefix("gsml", FeatureChainingTest.GSMLNS);
+        namespaces.declarePrefix("gml", FeatureChainingTest.GMLNS);
         ff = new FilterFactoryImplNamespaceAware(namespaces);
     }
 

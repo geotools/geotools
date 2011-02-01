@@ -36,10 +36,6 @@ import org.xml.sax.helpers.NamespaceSupport;
  */
 public interface XmlDataStore extends DataStore {
 
-    void setMaxFeatures(int maxFeatures);
-
-    int getMaxFeatures();
-
     int getCount(Query query);
 
     void setItemXpath(String inputAttributeXpathPrefix);
@@ -49,4 +45,6 @@ public interface XmlDataStore extends DataStore {
     Name getName();
 
     XmlResponse getXmlReader(Query query) throws IOException;
+    
+    XmlResponse getXmlReader(Query query, String xpath, String value) throws IOException;
 }

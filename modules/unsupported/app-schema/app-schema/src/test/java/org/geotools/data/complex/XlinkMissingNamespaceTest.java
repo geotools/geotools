@@ -38,7 +38,7 @@ public class XlinkMissingNamespaceTest {
             fail("No exception caught");
 
         } catch (Exception ex) {
-            assertSame(java.lang.IllegalArgumentException.class, ex.getClass());
+            assertSame(java.io.IOException.class, ex.getClass());
         }
     }
 }

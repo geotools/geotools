@@ -23,6 +23,7 @@ import java.util.List;
 
 import java.util.logging.Logger;
 
+import org.geotools.data.complex.AttributeMapping;
 import org.geotools.data.complex.FeatureTypeMapping;
 import org.geotools.data.complex.XmlFeatureTypeMapping;
 import org.geotools.data.complex.filter.XPath.StepList;
@@ -77,23 +78,35 @@ public class XmlUnmappingFilterVisitor extends UnmappingFilterVisitor {
     protected List<Expression> findMappingsFor(FeatureTypeMapping mappings,
             final StepList propertyName) {
         XmlFeatureTypeMapping xmlMapping = (XmlFeatureTypeMapping) mappings;
-        // collect all the mappings for the given property
-        List<String> candidates;
 
+        List<Expression> expressions = null;
+        
         // get all matching mappings if index is not specified, otherwise
         // get the specified mapping
         if (!propertyName.toString().contains("[")) {
-            candidates = xmlMapping.getStringMappingsIgnoreIndex(propertyName);
-        } else {
-            candidates = new ArrayList<String>();
-            String mapping = xmlMapping.getStringMapping(propertyName);
-            if (mapping != null) {
-                candidates.add(mapping);
+            // collect all the mappings for the given property
+            List<String> candidates = xmlMapping.getStringMappingsIgnoreIndex(propertyName);
+            expressions = getExpressions(candidates);
+        }
+
+        if (expressions == null || expressions.isEmpty()) {
+            // get specified mapping if indexed or that expressions is not found because it
+            // could be attribute mapping with OCQL containing functions, instead of inputattribute
+            // with xpath
+            expressions = new ArrayList<Expression>(1);
+            AttributeMapping mapping = xmlMapping.getStringMapping(propertyName);
+            if (mapping != null) {   
+//TODO handle instancepath and also consider functions
+//                if (mapping.getInstanceXpath() != null) {
+//                    // add prefix
+//                } else {
+                    expressions.add(mapping.getSourceExpression());
+//                }
             }
         }
-        List<Expression> expressions = getExpressions(candidates);
-
         return expressions;
+        
+        
     }
 
     private List<Expression> getExpressions(List<String> candidates) {

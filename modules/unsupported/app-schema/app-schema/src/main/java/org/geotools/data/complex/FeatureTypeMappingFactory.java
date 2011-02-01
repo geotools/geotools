@@ -37,7 +37,7 @@ public class FeatureTypeMappingFactory {
                    mappings, namespaces, itemXpath);           
        } else {
            return new FeatureTypeMapping(source, target,
-                   mappings, namespaces, itemXpath);
+                   mappings, namespaces);
        }       
    }
 }

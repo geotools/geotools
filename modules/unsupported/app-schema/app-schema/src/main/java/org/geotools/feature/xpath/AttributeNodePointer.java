@@ -26,7 +26,6 @@ import org.apache.commons.jxpath.ri.compiler.NodeTest;
 import org.apache.commons.jxpath.ri.compiler.NodeTypeTest;
 import org.apache.commons.jxpath.ri.model.NodeIterator;
 import org.apache.commons.jxpath.ri.model.NodePointer;
-import org.geotools.feature.Types;
 import org.opengis.feature.Attribute;
 import org.opengis.feature.ComplexAttribute;
 
@@ -100,11 +99,7 @@ public class AttributeNodePointer extends NodePointer {
             NodeNameTest nodeNameTest = (NodeNameTest) test;
 
             if (!nodeNameTest.isWildcard()) {
-                String localName = nodeNameTest.getNodeName().getName();
-                String nameSpace = nodeNameTest.getNamespaceURI();
-                if (nameSpace==null) nameSpace = getNamespaceResolver().getNamespaceURI("");
-                                
-                return new AttributeNodeIterator(this, Types.typeName(nameSpace, localName));
+                return new AttributeNodeIterator(this, nodeNameTest);
             } else {
                 return new AttributeNodeIterator(this);
             }
@@ -120,8 +115,14 @@ public class AttributeNodePointer extends NodePointer {
         return super.childIterator(test, reverse, startWith);
     }
 
-    public NodeIterator attributeIterator(QName qname) {        
-        return new XmlAttributeNodeIterator(this, Types.typeName(getNamespaceResolver().getNamespaceURI(qname.getPrefix()), qname.getName()));
+    public NodeIterator attributeIterator(QName qname) {
+        /*TODO
+        if (qname.getName().equals("id") || qname.getName().equals("fid")) {
+            return new SingleFeaturePropertyIterator(this, -1);
+        }
+        */
+
+        return super.attributeIterator(qname);
     }
 
 }

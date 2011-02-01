@@ -58,8 +58,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * <p>
  * THe property accessor may be run against {@link org.geotools.feature.Feature}, or against
  * {@link org.geotools.feature.FeatureType}. In the former case the feature property value is
- * returned, in the latter a descriptor is returned (in case of "@" attributes, a Name is returned
- * or null if the attribute doesn't exist - can be used to validate an x-path!) .
+ * returned, in the latter the feature property type is returned.
  * </p>
  * 
  * @author Justin Deoliveira, The Open Planning Project
@@ -126,6 +125,24 @@ public class FeaturePropertyAccessorFactory implements PropertyAccessorFactory {
         // }
 
         // return null;
+    }
+
+    /**
+     * We strip off namespace prefix, we need new feature model to do this property
+     * <ul>
+     * <li>BEFORE: foo:bar
+     * <li>AFTER: bar
+     * </ul>
+     * 
+     * @param xpath
+     * @return xpath with any XML prefixes removed
+     */
+    static String stripPrefix(String xpath) {
+        int split = xpath.indexOf(":");
+        if (split != -1) {
+            return xpath.substring(split + 1);
+        }
+        return xpath;
     }
 
     /**
@@ -246,15 +263,18 @@ public class FeaturePropertyAccessorFactory implements PropertyAccessorFactory {
         }
 
         public boolean canHandle(Object object, String xpath, Class target) {
-           
+            // xpath = stripPrefix(xpath);
+
             return object instanceof Attribute || object instanceof AttributeType
                     || object instanceof AttributeDescriptor;
 
         }
 
         public Object get(Object object, String xpath, Class target) {
+            // xpath = stripPrefix(xpath);
 
             JXPathContext context = JXPathContext.newContext(object);
+            // context.setLenient(true); -- NC, edited
             Enumeration declaredPrefixes = namespaces.getDeclaredPrefixes();
             while (declaredPrefixes.hasMoreElements()) {
                 String prefix = (String) declaredPrefixes.nextElement();
@@ -269,18 +289,14 @@ public class FeaturePropertyAccessorFactory implements PropertyAccessorFactory {
 
         public void set(Object object, String xpath, Object value, Class target)
                 throws IllegalAttributeException {
+            // xpath = stripPrefix(xpath);
 
             if (object instanceof FeatureType) {
                 throw new IllegalAttributeException("feature type is immutable");
             }
 
             JXPathContext context = JXPathContext.newContext(object);
-            Enumeration declaredPrefixes = namespaces.getDeclaredPrefixes();
-            while (declaredPrefixes.hasMoreElements()) {
-                String prefix = (String) declaredPrefixes.nextElement();
-                String uri = namespaces.getURI(prefix);
-                context.registerNamespace(prefix, uri);
-            }
+            // context.setLenient(true); --NC -edited
             context.setValue(xpath, value);
 
             assert value == context.getValue(xpath);

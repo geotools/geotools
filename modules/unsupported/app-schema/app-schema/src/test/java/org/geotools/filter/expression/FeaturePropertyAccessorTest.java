@@ -16,24 +16,17 @@
  */
 package org.geotools.filter.expression;
 
-import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 import junit.framework.TestCase;
 
-import org.geotools.data.complex.config.EmfAppSchemaReader;
-import org.geotools.data.complex.config.FeatureTypeRegistry;
 import org.geotools.factory.Hints;
 import org.geotools.feature.AttributeImpl;
 import org.geotools.feature.ComplexAttributeImpl;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.FeatureImpl;
-import org.geotools.feature.Types;
 import org.geotools.feature.type.AttributeDescriptorImpl;
 import org.geotools.feature.type.AttributeTypeImpl;
 import org.geotools.feature.type.ComplexTypeImpl;
@@ -41,8 +34,6 @@ import org.geotools.feature.type.FeatureTypeFactoryImpl;
 import org.geotools.filter.AttributeExpressionImpl;
 import org.geotools.filter.expression.FeaturePropertyAccessorFactory;
 import org.geotools.filter.identity.FeatureIdImpl;
-import org.geotools.xml.SchemaIndex;
-import org.junit.Test;
 import org.opengis.feature.Feature;
 import org.opengis.feature.Property;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -52,7 +43,6 @@ import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.FeatureTypeFactory;
 import org.opengis.feature.type.Name;
 import org.opengis.feature.type.PropertyDescriptor;
-import org.xml.sax.Attributes;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**
@@ -80,7 +70,7 @@ public class FeaturePropertyAccessorTest extends TestCase {
     static final Name SINGLE_LEAF_ATTRIBUTE = new NameImpl(EG, "singleLeafAttribute");
 
     static final Name MULTI_LEAF_ATTRIBUTE = new NameImpl(EG, "multiLeafAttribute");
-    
+
     /**
      * Mock name space
      */
@@ -89,31 +79,14 @@ public class FeaturePropertyAccessorTest extends TestCase {
             declarePrefix("eg", EG);
         }
     };
-    
-    
-    private static final String GSMLNS = "http://www.cgi-iugs.org/xml/GeoSciML/2";
-    private static final String XLINKNS = "http://www.w3.org/1999/xlink";
-
-    private static final String schemaBase = "/test-data/";    
-    
-    /**
-     * Gsml name space
-     */
-    static final NamespaceSupport GSMLNAMESPACES = new NamespaceSupport() {
-        {
-            declarePrefix("gsml", GSMLNS);
-            declarePrefix("xlink", XLINKNS);
-        }
-    };
 
     public void testComplexFeature() {
         FeatureType fType = createFeatureType();
 
-        AttributeDescriptor complexDesc = (AttributeDescriptor)fType.getDescriptor(COMPLEX_ATTRIBUTE);
-        ComplexType complexAttType = (ComplexType) complexDesc.getType();
-        AttributeDescriptor rootDesc = (AttributeDescriptor) complexAttType.getDescriptor(ROOT_ATTRIBUTE) ;
-        ComplexType rootAttType = (ComplexType) rootDesc.getType();
-        
+        ComplexType complexAttType = (ComplexType) fType.getDescriptor(COMPLEX_ATTRIBUTE).getType();
+        ComplexType rootAttType = (ComplexType) complexAttType.getDescriptor(ROOT_ATTRIBUTE)
+                .getType();
+
         // feature properties
         Collection<Property> properties = new ArrayList<Property>(fType.getDescriptors().size());
 
@@ -121,29 +94,25 @@ public class FeaturePropertyAccessorTest extends TestCase {
          * Build the feature properties
          */
         // eg:simpleAttribute
-        AttributeDescriptor simpleAttributeDesc = (AttributeDescriptor) fType.getDescriptor(SIMPLE_ATTRIBUTE);
-        AttributeImpl simpleAttribute = new AttributeImpl("simple value", simpleAttributeDesc, null);
+        AttributeDescriptor attDesc = (AttributeDescriptor) fType.getDescriptor(SIMPLE_ATTRIBUTE);
+        AttributeImpl simpleAttribute = new AttributeImpl("simple value", attDesc, null);
         properties.add(simpleAttribute);
         // eg:complexAttribute/eg:rootAttribute[1]
         Collection<Property> rootPropertiesOne = new ArrayList<Property>();
-        AttributeDescriptor multiLeafDesc = (AttributeDescriptor) rootAttType.getDescriptor(MULTI_LEAF_ATTRIBUTE);
+        attDesc = (AttributeDescriptor) rootAttType.getDescriptor(MULTI_LEAF_ATTRIBUTE);
         // eg:complexAttribute/eg:rootAttribute[1]/eg:multiLeafAttribute[1]
-        AttributeImpl leafOne = new AttributeImpl("multi leaf value 1", multiLeafDesc, null);
+        AttributeImpl leafOne = new AttributeImpl("multi leaf value 1", attDesc, null);
         rootPropertiesOne.add(leafOne);
         // eg:complexAttribute/eg:rootAttribute[1]/eg:multiLeafAttribute[2]
-        AttributeImpl leafTwo = new AttributeImpl("multi leaf value 2", multiLeafDesc, null);
+        AttributeImpl leafTwo = new AttributeImpl("multi leaf value 2", attDesc, null);
         rootPropertiesOne.add(leafTwo);
         // eg:complexAttribute/eg:rootAttribute[1]/eg:singleLeafAttribute
-        AttributeDescriptor singleLeafDesc = (AttributeDescriptor) rootAttType.getDescriptor(SINGLE_LEAF_ATTRIBUTE);
-        AttributeImpl singleLeaf = new AttributeImpl("single leaf value", singleLeafDesc, null);        
+        attDesc = (AttributeDescriptor) rootAttType.getDescriptor(SINGLE_LEAF_ATTRIBUTE);
+        AttributeImpl singleLeaf = new AttributeImpl("single leaf value", attDesc, null);
         rootPropertiesOne.add(singleLeaf);
-        
-        //NC- add, test xml-attribute
-        Map<Name, Object> userData = new HashMap<Name, Object>();
-        singleLeaf.getUserData().put(Attributes.class, userData);
-        userData.put(Types.typeName(EG, "att"), "test attribute");        
-        
 
+        AttributeDescriptor rootDesc = (AttributeDescriptor) complexAttType
+                .getDescriptor(ROOT_ATTRIBUTE);
         AttributeImpl rootOne = new ComplexAttributeImpl(rootPropertiesOne, rootDesc, null);
 
         // eg:complexAttribute/eg:rootAttribute[2]
@@ -163,7 +132,7 @@ public class FeaturePropertyAccessorTest extends TestCase {
         complexProperties.add(rootTwo);
         complexProperties.add(rootThree);
         AttributeImpl complexAttribute = new ComplexAttributeImpl(complexProperties,
-                complexDesc, null);
+                complexAttType, null);
         properties.add(complexAttribute);
 
         Feature feature = new FeatureImpl(properties, fType, new FeatureIdImpl("test1"));
@@ -191,31 +160,31 @@ public class FeaturePropertyAccessorTest extends TestCase {
         ex = new AttributeExpressionImpl("eg:complexAttribute/eg:rootAttribute[2]", new Hints(
                 FeaturePropertyAccessorFactory.NAMESPACE_CONTEXT, NAMESPACES));
         assertEquals(rootTwo, ex.evaluate(feature));
-       
+
         // single valued nested property
         ex = new AttributeExpressionImpl(
                 "eg:complexAttribute/eg:rootAttribute[3]/eg:singleLeafAttribute", new Hints(
                         FeaturePropertyAccessorFactory.NAMESPACE_CONTEXT, NAMESPACES));
         assertEquals(singleLeaf, ex.evaluate(feature));
-        
+
         // null values
         ex = new AttributeExpressionImpl(
                 "eg:complexAttribute/eg:rootAttribute[3]/eg:multiLeafAttribute", new Hints(
                         FeaturePropertyAccessorFactory.NAMESPACE_CONTEXT, NAMESPACES));
         assertEquals(null, ex.evaluate(feature));
-        
+
         // deeper nesting
         ex = new AttributeExpressionImpl(
                 "eg:complexAttribute/eg:rootAttribute[2]/eg:multiLeafAttribute", new Hints(
                         FeaturePropertyAccessorFactory.NAMESPACE_CONTEXT, NAMESPACES));
         assertEquals(leafOne, ex.evaluate(feature));
-        
+
         // property index doesn't exist
         ex = new AttributeExpressionImpl(
                 "eg:complexAttribute/eg:rootAttribute[2]/eg:multiLeafAttribute[2]", new Hints(
                         FeaturePropertyAccessorFactory.NAMESPACE_CONTEXT, NAMESPACES));
         assertEquals(null, ex.evaluate(feature));
-               
+
         // expect an exception when object supplied is not a complex attribute
         boolean exceptionThrown = false;
         try {
@@ -232,39 +201,6 @@ public class FeaturePropertyAccessorTest extends TestCase {
         ex = new AttributeExpressionImpl("randomAttribute", new Hints(
                 FeaturePropertyAccessorFactory.NAMESPACE_CONTEXT, NAMESPACES));
         assertEquals(null, ex.evaluate(feature));
-        assertEquals(null, ex.evaluate(fType));
-                
-        // NC - test xml attribute
-        ex = new AttributeExpressionImpl(
-                "eg:complexAttribute/eg:rootAttribute[3]/eg:singleLeafAttribute/@eg:att", new Hints(
-                        FeaturePropertyAccessorFactory.NAMESPACE_CONTEXT, NAMESPACES));
-        assertEquals("test attribute", ex.evaluate(feature));
-        
-        // NC - test descriptor functionality
-        
-        ex = new AttributeExpressionImpl("eg:simpleAttribute", new Hints(
-                FeaturePropertyAccessorFactory.NAMESPACE_CONTEXT, NAMESPACES));        
-        assertEquals( simpleAttributeDesc, ex.evaluate(fType));
-        
-        ex = new AttributeExpressionImpl("eg:complexAttribute", new Hints(
-                FeaturePropertyAccessorFactory.NAMESPACE_CONTEXT, NAMESPACES));        
-        assertEquals( complexDesc, ex.evaluate(fType));
-        
-        // test nested properties
-        ex = new AttributeExpressionImpl("eg:complexAttribute/eg:rootAttribute", new Hints(
-                FeaturePropertyAccessorFactory.NAMESPACE_CONTEXT, NAMESPACES));
-        assertEquals( rootDesc, ex.evaluate(fType));
-        
-        ex = new AttributeExpressionImpl(
-                "eg:complexAttribute/eg:rootAttribute/eg:singleLeafAttribute", new Hints(
-                        FeaturePropertyAccessorFactory.NAMESPACE_CONTEXT, NAMESPACES));
-        assertEquals(singleLeafDesc, ex.evaluate(fType));
-        
-        ex = new AttributeExpressionImpl(
-                "eg:complexAttribute/eg:rootAttribute/eg:multiLeafAttribute", new Hints(
-                        FeaturePropertyAccessorFactory.NAMESPACE_CONTEXT, NAMESPACES));
-        assertEquals(multiLeafDesc, ex.evaluate(fType));
-                       
     }
 
     public static FeatureType createFeatureType() {
@@ -314,59 +250,6 @@ public class FeaturePropertyAccessorTest extends TestCase {
 
         return tfac.createFeatureType(fName, schema, null, false, Collections.EMPTY_LIST, null,
                 null);
-    }
-    
-    /**
-     * Load schema
-     * 
-     * @param location
-     *            schema location path that can be found through getClass().getResource()
-     * @return 
-     */
-    private SchemaIndex loadSchema(final String location) throws IOException {
-        EmfAppSchemaReader reader = EmfAppSchemaReader.newInstance();
-        final URL catalogLocation = getClass().getResource(schemaBase + "mappedPolygons.oasis.xml");
-        reader.setResolver(catalogLocation);
-        return reader.parse(new URL(location));
-    }
-    
-    /**
-     * Tests getting descriptor from GeoSciML type, supporting polymorphism
-     * 
-     * @throws Exception
-     */
-    @Test
-    public void testPolymorphism() throws Exception {
-        SchemaIndex schemaIndex = loadSchema("http://schemas.opengis.net/GeoSciML/Gsml.xsd");
-
-        FeatureTypeRegistry typeRegistry = new FeatureTypeRegistry();
-        typeRegistry.addSchemas(schemaIndex);
-
-        Name typeName = Types.typeName(GSMLNS, "MappedFeatureType");       
-        ComplexType mf = (ComplexType) typeRegistry.getAttributeType(typeName);
-        assertNotNull(mf);
-        assertTrue(mf instanceof FeatureType);
-        
-        AttributeExpressionImpl ex = new AttributeExpressionImpl("gsml:specification/gsml:GeologicUnit/gsml:preferredAge/gsml:GeologicEvent/gsml:eventAge/gsml:CGI_TermRange/gsml:upper/gsml:CGI_TermValue/gsml:value", 
-                new Hints(FeaturePropertyAccessorFactory.NAMESPACE_CONTEXT, GSMLNAMESPACES));
-                
-        Object o = ex.evaluate(mf);
-        assertNotNull(o);
-        assertTrue(o instanceof PropertyDescriptor);
-        
-        ex = new AttributeExpressionImpl("gsml:specification/gsml:GeologicUnit/gsml:composition/gsml:CompositionPart/gsml:lithology/@xlink:href", 
-                new Hints(FeaturePropertyAccessorFactory.NAMESPACE_CONTEXT, GSMLNAMESPACES));
-                
-        o = ex.evaluate(mf);
-        assertNotNull(o);
-        assertTrue(o.equals (Types.typeName(XLINKNS, "href")));
-        
-        ex = new AttributeExpressionImpl("gsml:specification/gsml:GeologicUnit/gsml:composition/gsml:CompositionPart/gsml:lithology/@foo:bar", 
-                new Hints(FeaturePropertyAccessorFactory.NAMESPACE_CONTEXT, GSMLNAMESPACES));
-                
-        o = ex.evaluate(mf);
-        assertNull(o);
-        
     }
 
 }

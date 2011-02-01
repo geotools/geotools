@@ -247,20 +247,9 @@ public class FeatureTypeRegistry {
             LOGGER.fine(type.getName() + " replaced by new value.");
         }
     }
-     
-    //NC - modified : made extra method, for purpose of creating substitution descriptors    
-    private AttributeDescriptor createAttributeDescriptor(final XSDComplexTypeDefinition container,
-            final XSDElementDeclaration elemDecl, CoordinateReferenceSystem crs,
-            List<AttributeMapping> attMappings) {
-        int minOccurs = container == null ? 0 : Schemas.getMinOccurs(container, elemDecl);
-        int maxOccurs = container == null ? Integer.MAX_VALUE : Schemas.getMaxOccurs(container, elemDecl);
-                
-        return createAttributeDescriptor( container, elemDecl, minOccurs, maxOccurs, crs, attMappings);
-        
-    }
 
     private AttributeDescriptor createAttributeDescriptor(final XSDComplexTypeDefinition container,
-            final XSDElementDeclaration elemDecl, int minOccurs, int maxOccurs, CoordinateReferenceSystem crs,
+            final XSDElementDeclaration elemDecl, CoordinateReferenceSystem crs,
             List<AttributeMapping> attMappings) {
         String targetNamespace = elemDecl.getTargetNamespace();
         String name = elemDecl.getName();
@@ -277,6 +266,9 @@ public class FeatureTypeRegistry {
             nse.initCause(e);
             throw nse;
         }
+        int minOccurs = container == null ? 0 : Schemas.getMinOccurs(container, elemDecl);
+        int maxOccurs = container == null ? Integer.MAX_VALUE : Schemas.getMaxOccurs(container,
+                elemDecl);
         boolean nillable = elemDecl.isNillable();
 
         if (maxOccurs == -1) {
@@ -299,24 +291,7 @@ public class FeatureTypeRegistry {
                     maxOccurs, nillable, defaultValue);
         }
         descriptor.getUserData().put(XSDElementDeclaration.class, elemDecl);
-        
-        //NC - substitution groups
-        List<AttributeDescriptor> substitutionGroup = new ArrayList<AttributeDescriptor>();
-        Iterator it = elemDecl.getSubstitutionGroup().iterator();
-        while ( it.hasNext()){
-            XSDElementDeclaration sub =  (XSDElementDeclaration)it.next();
-            if (!sub.getName().equals (elemDecl.getName())) {
-               try {
-                   substitutionGroup.add( createAttributeDescriptor ( container , sub, minOccurs, maxOccurs, crs, attMappings)) ;
-               } catch (Exception e) {
-                   
-               }
-            }
-        }
 
-        descriptor.getUserData().put("substitutionGroup", substitutionGroup);
-        //NC - end.
-        
         return descriptor;
     }
 

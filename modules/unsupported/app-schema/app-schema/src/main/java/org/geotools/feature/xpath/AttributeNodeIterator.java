@@ -68,15 +68,20 @@ public class AttributeNodeIterator implements NodeIterator {
         position = 1;
     }
 
-    public AttributeNodeIterator(AttributeNodePointer pointer, Name name) {
+    public AttributeNodeIterator(AttributeNodePointer pointer, NodeNameTest filter) {
         this.pointer = pointer;
         feature = (ComplexAttribute) pointer.getImmediateNode();
 
+        String localName = filter.getNodeName().getName();
+        String nameSpace = filter.getNamespaceURI();
+
         AttributeDescriptor descriptor = feature.getDescriptor();
         Name attName = descriptor == null ? feature.getType().getName() : descriptor.getName();
-        if (attName.equals(name)) {
+        if (Utilities.equals(nameSpace, attName.getNamespaceURI())
+                && Utilities.equals(localName, attName.getLocalPart())) {
             children = Collections.<Property>singletonList(feature);
         } else {
+            Name name = Types.typeName(nameSpace, localName);
             children = new ArrayList<Property>(feature.getProperties(name));
         }
 

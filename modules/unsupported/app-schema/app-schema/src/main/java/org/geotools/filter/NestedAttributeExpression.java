@@ -396,8 +396,8 @@ public class NestedAttributeExpression extends AttributeExpressionImpl {
             } else {
                 lastStep = Types.toTypeName(lastStepName);
             }
-            // NC -added
-            // Fix Me - Id Checking should be done in a better way
+            //NC -added
+            //FIXME - Id Checking should be done in a better way
             if (lastStep.getLocalPart().equals("id")) {
                 if (mapping.getIdentifierExpression() == Expression.NIL) {
                     return CommonFactoryFinder.getFilterFactory(null).property("@id");

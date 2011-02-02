@@ -28,6 +28,7 @@ import java.util.logging.Logger;
 
 import org.geotools.data.AbstractDataStoreFactory;
 import org.geotools.data.DataStore;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.ws.protocol.http.HTTPProtocol;
 import org.geotools.data.ws.protocol.http.SimpleHttpProtocol;
 import org.geotools.data.ws.protocol.ws.Version;
@@ -116,12 +117,12 @@ public class WSDataStoreFactory extends AbstractDataStoreFactory {
         parametersInfo[4] = new WSFactoryParam(name, clazz, description);
 
         name = "WSDataStoreFactory:TEMPLATE_DIRECTORY";
-        clazz = String.class;
+        clazz = URL.class;
         description = "Directory where the template used to create the XML request has been put";
         parametersInfo[5] = new WSFactoryParam(name, clazz, description);
 
         name = "WSDataStoreFactory:CAPABILITIES_FILE_LOCATION";
-        clazz = String.class;
+        clazz = URL.class;
         description = "The location of the capabilities file";
         parametersInfo[6] = new WSFactoryParam(name, clazz, description);
     }
@@ -147,9 +148,9 @@ public class WSDataStoreFactory extends AbstractDataStoreFactory {
 
     public static final WSFactoryParam<String> TEMPLATE_NAME = parametersInfo[4];
 
-    public static final WSFactoryParam<String> TEMPLATE_DIRECTORY = parametersInfo[5];
+    public static final WSFactoryParam<URL> TEMPLATE_DIRECTORY = parametersInfo[5];
     
-    public static final WSFactoryParam<String> CAPABILITIES_FILE_LOCATION = parametersInfo[6];
+    public static final WSFactoryParam<URL> CAPABILITIES_FILE_LOCATION = parametersInfo[6];
 
     protected Map<Map, XmlDataStore> perParameterSetDataStoreCache = new HashMap();
 
@@ -175,14 +176,14 @@ public class WSDataStoreFactory extends AbstractDataStoreFactory {
         final int timeoutMillis = (Integer) TIMEOUT.lookUp(params);
         final boolean tryGZIP = (Boolean) TRY_GZIP.lookUp(params);
         final String templateName = (String) TEMPLATE_NAME.lookUp(params);
-        final String templateDirectory = (String) TEMPLATE_DIRECTORY.lookUp(params);
-        final String capabilitiesDirectory = (String) CAPABILITIES_FILE_LOCATION.lookUp(params);
+        final URL templateDirectory = (URL) TEMPLATE_DIRECTORY.lookUp(params);
+        final URL capabilitiesDirectory = (URL) CAPABILITIES_FILE_LOCATION.lookUp(params);
 
         final HTTPProtocol http = new SimpleHttpProtocol();
         http.setTryGzip(tryGZIP);
         http.setTimeoutMillis(timeoutMillis);
 
-        InputStream capsIn = new BufferedInputStream(new FileInputStream(new File(capabilitiesDirectory)));
+        InputStream capsIn = new BufferedInputStream(new FileInputStream(DataUtilities.urlToFile(capabilitiesDirectory)));
 
         WSStrategy strategy = determineCorrectStrategy(templateDirectory, templateName);
         WS_Protocol ws = new WS_Protocol(capsIn, strategy, getQueryRequest, http);
@@ -192,7 +193,7 @@ public class WSDataStoreFactory extends AbstractDataStoreFactory {
         return dataStore;
     }
 
-    static WSStrategy determineCorrectStrategy(String templateDirectory, String templateName) {
+    static WSStrategy determineCorrectStrategy(URL templateDirectory, String templateName) {
         WSStrategy strategy = new DefaultWSStrategy(templateDirectory, templateName);
 
         logger.info("Using WS Strategy: " + strategy.getClass().getName());

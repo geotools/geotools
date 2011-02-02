@@ -33,6 +33,7 @@ import java.util.Set;
 
 import junit.framework.TestCase;
 
+import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
 import org.geotools.data.complex.AppSchemaDataAccess;
@@ -400,10 +401,10 @@ public class XmlDataStoreTest extends TestCase {
                     "http://d00109:8080/xaware/XADocSoapServlet");
             wsParams.put("WSDataStoreFactory:TIMEOUT", new Integer(30000));
             wsParams.put("WSDataStoreFactory:TEMPLATE_DIRECTORY", getClass()
-                    .getResource(schemaBase).getFile());
+                    .getResource(schemaBase));
             wsParams.put("WSDataStoreFactory:TEMPLATE_NAME", "request.ftl");
             wsParams.put("WSDataStoreFactory:CAPABILITIES_FILE_LOCATION", getClass().getResource(
-                    schemaBase + "ws_capabilities_equals_removed.xml").getFile());
+                    schemaBase + "ws_capabilities_equals_removed.xml"));
 
             org.geotools.data.ws.XmlDataStore wsStore = super.createDataStore(wsParams);
             ds = new XmlDataStore(((WS_DataStore) wsStore).getProtocol());

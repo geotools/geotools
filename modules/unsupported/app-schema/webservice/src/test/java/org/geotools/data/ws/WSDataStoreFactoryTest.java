@@ -18,10 +18,12 @@ package org.geotools.data.ws;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -64,10 +66,20 @@ public class WSDataStoreFactoryTest {
         params.put(WSDataStoreFactory.TEMPLATE_NAME.key, "request.ftl");
         assertFalse(dsf.canProcess(params));
         
-        params.put(WSDataStoreFactory.TEMPLATE_DIRECTORY.key, "./src/test/resources/test-data");
+        try {
+            params.put(WSDataStoreFactory.TEMPLATE_DIRECTORY.key, new URL(
+                    "file:./src/test/resources/test-data"));
+        } catch (MalformedURLException e) {
+            fail(e.getMessage());
+        }
         assertFalse(dsf.canProcess(params));
-        
-        params.put(WSDataStoreFactory.CAPABILITIES_FILE_LOCATION.key, "./src/test/resources/test-data/ws_capabilities.xml");
+
+        try {
+            params.put(WSDataStoreFactory.CAPABILITIES_FILE_LOCATION.key, new URL(
+                    "file:./src/test/resources/test-data/ws_capabilities.xml"));
+        } catch (MalformedURLException e) {
+            fail(e.getMessage());
+        }
         assertTrue(dsf.canProcess(params));
 
         params.put(WSDataStoreFactory.TIMEOUT.key, "30000");
@@ -93,9 +105,9 @@ public class WSDataStoreFactoryTest {
         URL url = file.toURL();
        
         params.put(WSDataStoreFactory.GET_CONNECTION_URL.key, url);
-        params.put(WSDataStoreFactory.TEMPLATE_DIRECTORY.key, BASE_DIRECTORY);
+        params.put(WSDataStoreFactory.TEMPLATE_DIRECTORY.key, new URL("file:" + BASE_DIRECTORY));
         params.put(WSDataStoreFactory.TEMPLATE_NAME.key, "request.ftl");
-        params.put(WSDataStoreFactory.CAPABILITIES_FILE_LOCATION.key, BASE_DIRECTORY  + capabilitiesFile);
+        params.put(WSDataStoreFactory.CAPABILITIES_FILE_LOCATION.key, url);
 
         XmlDataStore dataStore = dsf.createDataStore(params);
         assertTrue(dataStore instanceof WS_DataStore);

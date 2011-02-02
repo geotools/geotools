@@ -18,6 +18,7 @@ package org.geotools.data.ws;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.HashMap;
 
 import java.util.Map;
@@ -27,6 +28,7 @@ import java.util.logging.Logger;
 
 import net.opengis.wfs.GetFeatureType;
 
+import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
 
 import org.geotools.filter.Capabilities;
@@ -60,7 +62,7 @@ public class DefaultWSStrategy implements WSStrategy {
 
     private static final org.geotools.xml.Configuration ws_Configuration = new WFSConfiguration();
 
-    public DefaultWSStrategy(String templateDirectory, String templateName) {
+    public DefaultWSStrategy(URL templateDirectory, String templateName) {
         LOGGER.log(Level.WARNING, "template directory is: " + templateDirectory);
         initialiseFreeMarkerConfiguration(templateDirectory);
         try {
@@ -70,10 +72,10 @@ public class DefaultWSStrategy implements WSStrategy {
         }
     }
 
-    private void initialiseFreeMarkerConfiguration(String templateDirectory) {
+    private void initialiseFreeMarkerConfiguration(URL templateDirectory) {
         cfg = new Configuration();
         try {
-            cfg.setDirectoryForTemplateLoading(new File(templateDirectory));
+            cfg.setDirectoryForTemplateLoading(DataUtilities.urlToFile(templateDirectory));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

@@ -41,7 +41,7 @@ import org.junit.Test;
  */
 @SuppressWarnings("nls")
 public class WS_DataStoreTest {
-    private static final String TEST_DIRECTORY = "./src/test/resources/test-data/";
+    private static final String TEST_DIRECTORY = "file:./src/test/resources/test-data/";
 
     /**
      * Test method for {@link WS_DataStore#getTypeNames()}.

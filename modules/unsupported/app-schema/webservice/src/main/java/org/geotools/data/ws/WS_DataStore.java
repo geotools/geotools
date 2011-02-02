@@ -23,9 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.geotools.data.DataAccess;
-import org.geotools.data.DefaultQuery;
 import org.geotools.data.FeatureReader;
-import org.geotools.data.FeatureSource;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.LockingManager;
 import org.geotools.data.Query;
@@ -34,10 +32,8 @@ import org.geotools.data.Transaction;
 import org.geotools.data.complex.xml.XmlResponse;
 import org.geotools.data.complex.xml.XmlXpathFilterData;
 import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.data.view.DefaultView;
 import org.geotools.data.ws.protocol.ws.WSProtocol;
 import org.geotools.data.ws.protocol.ws.WSResponse;
-import org.geotools.feature.SchemaException;
 import org.geotools.util.XmlXpathUtilites;
 import org.geotools.util.logging.Logging;
 import org.jdom.Document;
@@ -62,7 +58,7 @@ import org.xml.sax.helpers.NamespaceSupport;
  * @source $URL$
  * @version $Id$ 
  */
-public final class WS_DataStore implements XmlDataStore {
+public class WS_DataStore implements XmlDataStore {
     private static final Logger LOGGER = Logging.getLogger("org.geotools.data.ws");
 
     private static final XMLOutputter out = new XMLOutputter(Format.getPrettyFormat()); 
@@ -70,10 +66,6 @@ public final class WS_DataStore implements XmlDataStore {
     
     private final WSProtocol wsProtocol;
     
-    //The hard limit is the maximum number of features we are allowed to call. 
-    //If not set it has the value of zero, which means unlimited.
-    private int maxFeaturesHardLimit;
-
     private Name name;
     
     private NamespaceSupport namespaces;
@@ -91,18 +83,8 @@ public final class WS_DataStore implements XmlDataStore {
         this.wsProtocol = wsProtocol;
     }
 
-    /**
-     * @see XmlDataStore#setMaxFeatures(Integer)
-     */
-    public void setMaxFeatures(int maxFeatures) {
-        this.maxFeaturesHardLimit = maxFeatures;
-    }
-
-    /**
-     * @see XmlDataStore#getMaxFeatures()
-     */
-    public int getMaxFeatures() {
-        return this.maxFeaturesHardLimit;
+    public WSProtocol getProtocol() {
+        return wsProtocol;
     }
 
     /**
@@ -142,7 +124,11 @@ public final class WS_DataStore implements XmlDataStore {
      * @see org.geotools.data.DataStore#dispose()
      */
     public void dispose() {
-        // do nothing
+        try {
+            wsProtocol.clean();
+        } catch (IOException e) {
+            LOGGER.info("Failed closing capabilities stream for web service backend store: " + e.getMessage());
+        }
     }
 
     /**
@@ -150,38 +136,44 @@ public final class WS_DataStore implements XmlDataStore {
      *      org.geotools.data.Transaction)
      */
     public XmlResponse getXmlReader(Query query) throws IOException {
-
         if (Filter.EXCLUDE.equals(query.getFilter())) {
             return null; //empty response
         }
 
-        Query callQuery = new DefaultQuery(query);
+        Query callQuery = new Query(query);
 
         Filter[] filters = wsProtocol.splitFilters(query.getFilter());
         Filter supportedFilter = filters[0];
         Filter postFilter = filters[1];
-        LOGGER.fine("Supported filter:  " + supportedFilter);        
-        LOGGER.fine("Unupported filter: " + postFilter);
-        ((DefaultQuery) callQuery).setFilter(supportedFilter);
-        int maxFeatures = getMaxFeatures(query);
-        
-        //Only set maxFeatures if the back end can handle the filter.
-        //If it cannot, we don't want to limit the number of responses 
-        //before filtering on the server. However a hard limit may have been specified.        
-        if (Filter.INCLUDE.equals(postFilter)) {
-            ((DefaultQuery) callQuery).setMaxFeatures(maxFeatures);
-        } else {
-            ((DefaultQuery) callQuery).setMaxFeatures(maxFeaturesHardLimit);
-        }
+        LOGGER.fine("Supported filter sent to web service backend:  " + supportedFilter);        
+        LOGGER.fine("Unsupported filter to be processed in GeoServer: " + postFilter);
+        callQuery.setFilter(supportedFilter);        
 
         WSResponse response = wsProtocol.issueGetFeature(callQuery);
         Document doc = getXmlResponse(response); 
         
-        List<Integer> validFeatureIndex = determineValidFeatures(postFilter, doc, maxFeatures);
+        List<Integer> validFeatureIndex = determineValidFeatures(postFilter, doc, query
+                .getMaxFeatures());
+        return new XmlResponse(doc, validFeatureIndex);
+    }
+    
+    /**
+     * For feature chaining
+     * @param xpath    Linking attribute
+     * @param value    Foreign key value
+     * @return
+     * @throws IOException
+     */    
+    public XmlResponse getXmlReader(Query query, String xpath, String value) throws IOException {
+        WSResponse response = wsProtocol.issueGetFeature(query);
+        Document doc = getXmlResponse(response); 
+        
+        List<Integer> validFeatureIndex = determineValidFeatures(xpath, value, doc, query
+                .getMaxFeatures());
         return new XmlResponse(doc, validFeatureIndex);
     }
 
-    private List<Integer> determineValidFeatures(Filter postFilter, Document doc, int maxFeatures) {
+    protected List<Integer> determineValidFeatures(Filter postFilter, Document doc, int maxFeatures) {
         int nodeCount = XmlXpathUtilites.countXPathNodes(namespaces, itemXpath, doc);       
         
         List<Integer> validFeatureIndex = null;
@@ -204,6 +196,27 @@ public final class WS_DataStore implements XmlDataStore {
                 nodeIndex++;
             }
         }
+        return validFeatureIndex;
+    }
+    
+    protected List<Integer> determineValidFeatures(String xpath, String value, Document doc,
+            int maxFeatures) {
+        int nodeCount = XmlXpathUtilites.countXPathNodes(namespaces, itemXpath, doc);
+
+        List<Integer> validFeatureIndex = null;
+
+        validFeatureIndex = new ArrayList<Integer>();
+        int nodeIndex = 1;
+        List<String> values = XmlXpathUtilites.getXPathValues(namespaces, xpath, doc);
+        if (!values.isEmpty()) {
+            while (nodeIndex <= nodeCount && validFeatureIndex.size() <= maxFeatures) {
+                if (values.get(nodeIndex - 1).equals(value)) {
+                    validFeatureIndex.add(nodeIndex);
+                }
+                nodeIndex++;
+            }
+        }
+
         return validFeatureIndex;
     }
 
@@ -332,24 +345,8 @@ public final class WS_DataStore implements XmlDataStore {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("WSDataStore[");
-        sb.append(", max features=").append(
-                maxFeaturesHardLimit == 0 ? "not set" : String
-                        .valueOf(maxFeaturesHardLimit));
         sb.append("]");
         return sb.toString();
-    }
-
-    protected int getMaxFeatures(Query query) {
-        int maxFeaturesDataStoreLimit = getMaxFeatures();
-        int queryMaxFeatures = query.getMaxFeatures();
-        int maxFeatures = Query.DEFAULT_MAX;
-        if (Query.DEFAULT_MAX != queryMaxFeatures) {
-            maxFeatures = queryMaxFeatures;
-        }
-        if (maxFeaturesDataStoreLimit > 0) {
-            maxFeatures = Math.min(maxFeaturesDataStoreLimit, maxFeatures);
-        }
-        return maxFeatures;
     }
 
     public Name getName() {

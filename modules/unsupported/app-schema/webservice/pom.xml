@@ -146,8 +146,14 @@
 		</plugins>
 		<testResources>
 			<testResource>
-				<directory>src/test/resources</directory>
-				<includes></includes>
+	            <directory>src/test/resources</directory>
+	            <includes>
+		            <include>**/*.properties</include>
+		            <include>**/*.xml</include>
+		            <include>**/*.xsd</include>
+		            <include>**/*.ftl</include>
+		            <include>**/META-INF/**</include>
+	            </includes>
 			</testResource>
 		</testResources>
 	</build>

@@ -395,15 +395,15 @@ public class XmlDataStoreTest extends TestCase {
         @Override
         public XmlDataStore createDataStore(Map params) throws IOException {
             XmlDataStore ds = null;
-            String testDirectory = getClass().getResource(schemaBase).getFile();
             Map<String, Object> wsParams = new HashMap<String, Object>();
             wsParams.put("WSDataStoreFactory:GET_CONNECTION_URL",
                     "http://d00109:8080/xaware/XADocSoapServlet");
             wsParams.put("WSDataStoreFactory:TIMEOUT", new Integer(30000));
-            wsParams.put("WSDataStoreFactory:TEMPLATE_DIRECTORY", testDirectory);
+            wsParams.put("WSDataStoreFactory:TEMPLATE_DIRECTORY", getClass()
+                    .getResource(schemaBase).getFile());
             wsParams.put("WSDataStoreFactory:TEMPLATE_NAME", "request.ftl");
-            wsParams.put("WSDataStoreFactory:CAPABILITIES_FILE_LOCATION", testDirectory
-                    + "ws_capabilities_equals_removed.xml");
+            wsParams.put("WSDataStoreFactory:CAPABILITIES_FILE_LOCATION", getClass().getResource(
+                    schemaBase + "ws_capabilities_equals_removed.xml").getFile());
 
             org.geotools.data.ws.XmlDataStore wsStore = super.createDataStore(wsParams);
             ds = new XmlDataStore(((WS_DataStore) wsStore).getProtocol());

@@ -343,7 +343,7 @@ public class XPath {
             return 17 * attributeName.hashCode() + 37 * index;
         }
 
-        public Object clone() {
+        public Step clone() {
             return new Step(this.attributeName, this.index, this.isXmlAttribute, this.isIndexed);
         }
 
@@ -359,6 +359,11 @@ public class XPath {
          */
         public boolean isXmlAttribute() {
             return isXmlAttribute;
+        }
+
+        public void setIndex(int index) {
+            this.index = index;
+            isIndexed = true;
         }
     }
 
@@ -740,15 +745,17 @@ public class XPath {
                             // so we need to find it if it already exists
                             if (index > -1) {
                                 // get the attribute of specified index
+                                int valueIndex = 1;
                                 for (Attribute stepValue : values) {
-                                    if (stepValue.getUserData().containsKey(
-                                            ComplexFeatureConstants.MAPPED_ATTRIBUTE_INDEX)) {
-                                        if (index == Integer.parseInt(
-                                                String.valueOf(stepValue.getUserData().get(
-                                                    ComplexFeatureConstants.MAPPED_ATTRIBUTE_INDEX)))) {
-                                            return stepValue;
-                                        }
+                                    Object mappedIndex = stepValue.getUserData().get(
+                                            ComplexFeatureConstants.MAPPED_ATTRIBUTE_INDEX);
+                                    if (mappedIndex == null) {
+                                        mappedIndex = valueIndex;
                                     }
+                                    if (index == Integer.parseInt(String.valueOf(mappedIndex))) {
+                                        return stepValue;
+                                    }
+                                    valueIndex++;
                                 }
                             } else {
                                 // get the last existing node

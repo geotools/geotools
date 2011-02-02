@@ -47,14 +47,13 @@ import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.complex.AttributeMapping;
-import org.geotools.data.complex.DataAccessRegistry;
 import org.geotools.data.complex.FeatureTypeMapping;
 import org.geotools.data.complex.FeatureTypeMappingFactory;
 import org.geotools.data.complex.NestedAttributeMapping;
-import org.geotools.data.complex.TreeAttributeMapping;
 import org.geotools.data.complex.filter.XPath;
 import org.geotools.data.complex.filter.XPath.Step;
 import org.geotools.data.complex.filter.XPath.StepList;
+import org.geotools.data.complex.xml.XmlFeatureSource;
 import org.geotools.factory.Hints;
 import org.geotools.feature.Types;
 import org.geotools.filter.AttributeExpressionImpl;
@@ -99,8 +98,6 @@ public class AppSchemaDataAccessConfigurator {
     private AppSchemaDataAccessDTO config;
 
     private FeatureTypeRegistry typeRegistry;
-
-    private Map sourceDataStores;
     
     private FilterFactory ff = new FilterFactoryImplReportInvalidProperty();
 
@@ -113,14 +110,6 @@ public class AppSchemaDataAccessConfigurator {
     private Map schemaURIs;
 
     /**
-     * This holds the data access ids when isDataAccess is specified in the mapping connection
-     * parameters. A data access differs from a data store where it produces complex features,
-     * instead of simple features. This requires the data access to be registered, so that its
-     * complex feature source can later be retrieved via the DataAccessRegistry.
-     */
-    private ArrayList<String> inputDataAccessIds;
-
-    /**
      * Creates a new ComplexDataStoreConfigurator object.
      * 
      * @param config
@@ -129,7 +118,6 @@ public class AppSchemaDataAccessConfigurator {
     private AppSchemaDataAccessConfigurator(AppSchemaDataAccessDTO config) {
         this.config = config;
         namespaces = new NamespaceSupport();
-        inputDataAccessIds = new ArrayList<String>();
         Map nsMap = config.getNamespaces();
         for (Iterator it = nsMap.entrySet().iterator(); it.hasNext();) {
             Map.Entry entry = (Entry) it.next();
@@ -189,7 +177,7 @@ public class AppSchemaDataAccessConfigurator {
             sourceDataStores = acquireSourceDatastores();
             // -create FeatureType mappings
             featureTypeMappings = createFeatureTypeMappings(sourceDataStores);
-            return featureTypeMappings;
+            return featureTypeMappings;        
         } finally  {
             disposeUnusedSourceDataStores(sourceDataStores, featureTypeMappings);
         }
@@ -233,29 +221,43 @@ public class AppSchemaDataAccessConfigurator {
         Set<FeatureTypeMapping> featureTypeMappings = new HashSet<FeatureTypeMapping>();
 
         for (Iterator it = mappingsConfigs.iterator(); it.hasNext();) {
-            TypeMapping dto = (TypeMapping) it.next();
+            TypeMapping dto = (TypeMapping) it.next();            
+            try {
+                FeatureSource featureSource = getFeatureSource(dto, sourceDataStores);
+                // get CRS from underlying feature source and pass it on
+                CoordinateReferenceSystem crs;
+                try {
+                    crs = featureSource.getSchema().getCoordinateReferenceSystem();
+                } catch (UnsupportedOperationException e) {
+                    // web service back end doesn't support getSchema
+                    crs = null;
+                }
+                AttributeDescriptor target = getTargetDescriptor(dto, crs);
 
-            FeatureSource featureSource = getFeatureSource(dto, sourceDataStores);
-            // get CRS from underlying feature source and pass it on
-            AttributeDescriptor target = getTargetDescriptor(dto, featureSource.getSchema()
-                    .getCoordinateReferenceSystem());
+                // set original schema locations for encoding
+                target.getType().getUserData().put("schemaURI", schemaURIs);
 
-            // set original schema locations for encoding
-            target.getType().getUserData().put("schemaURI", schemaURIs);
-            
-            List attMappings = getAttributeMappings(target, dto.getAttributeMappings(), dto.getItemXpath());
+                List attMappings = getAttributeMappings(target, dto.getAttributeMappings(), dto
+                        .getItemXpath());
 
-            FeatureTypeMapping mapping;
+                FeatureTypeMapping mapping;
 
-            mapping = FeatureTypeMappingFactory.getInstance(featureSource, target, attMappings, namespaces,
-                    dto.getItemXpath(), dto.isXmlDataStore());
-            
-            String mappingName = dto.getMappingName();
-            if (mappingName != null) {
-                mapping.setName(Types.degloseName(mappingName, namespaces));
+                mapping = FeatureTypeMappingFactory.getInstance(featureSource, target, attMappings,
+                        namespaces, dto.getItemXpath(), dto.isXmlDataStore());
+
+                String mappingName = dto.getMappingName();
+                if (mappingName != null) {
+                    mapping.setName(Types.degloseName(mappingName, namespaces));
+                }
+                featureTypeMappings.add(mapping);
+            } catch (Exception e) {
+                LOGGER
+                        .warning("Error creating app-schema data store for '"
+                                + dto.getMappingName() != null ? dto.getMappingName() : dto
+                                .getTargetElementName()
+                                + "', caused by: " + e.getMessage());
+                throw new IOException(e.getMessage());
             }
-
-            featureTypeMappings.add(mapping);
         }
         return featureTypeMappings;
     }
@@ -350,30 +352,40 @@ public class AppSchemaDataAccessConfigurator {
                 expectedInstanceOf = null;
             }
             AttributeMapping attMapping;
-            String sourceElement = attDto.getLinkElement();
-            if(attDto.getLabel() != null || attDto.getParentLabel() != null) {
-                attMapping = new TreeAttributeMapping(idExpression, sourceExpression, targetXPathSteps,
-                        expectedInstanceOf, isMultiValued, clientProperties, attDto.getLabel(), 
-                        attDto.getParentLabel(), attDto.getTargetQueryString(), attDto.getInstancePath());
-            } else
+            String sourceElement = attDto.getLinkElement();            
             if (sourceElement != null) {
-                // nested complex attributes, this could be a function expression for polymorphic types
+                // nested complex attributes, this could be a function expression for polymorphic
+                // types
                 Expression elementExpr = parseOgcCqlExpression(sourceElement);
                 String sourceField = attDto.getLinkField();
                 StepList sourceFieldSteps = null;
                 if (sourceField != null) {
-                    // it could be null for polymorphism mapping, 
+                    // it could be null for polymorphism mapping,
                     // i.e. when the linked element maps to the same table as the container mapping
                     sourceFieldSteps = XPath.steps(root, sourceField, namespaces);
                 }
                 // a nested feature
                 attMapping = new NestedAttributeMapping(idExpression, sourceExpression,
-                        targetXPathSteps, isMultiValued, clientProperties,
-                        elementExpr, sourceFieldSteps, namespaces);
+                        targetXPathSteps, isMultiValued, clientProperties, elementExpr,
+                        sourceFieldSteps, namespaces);
             } else {
                 attMapping = new AttributeMapping(idExpression, sourceExpression, targetXPathSteps,
                         expectedInstanceOf, isMultiValued, clientProperties);
             }
+
+            /**
+             * Label and parent label are specific for web service backend
+             */
+            if (attDto.getLabel() != null) {
+                attMapping.setLabel(attDto.getLabel());
+            }
+            if (attDto.getParentLabel() != null) {
+                attMapping.setParentLabel(attDto.getParentLabel());
+            }
+            if (attDto.getInstancePath() != null) {
+                attMapping.setInstanceXpath(attDto.getInstancePath());
+            }
+            
             attMappings.add(attMapping);
         }
         return attMappings;
@@ -470,16 +482,10 @@ public class AppSchemaDataAccessConfigurator {
         AppSchemaDataAccessConfigurator.LOGGER.fine("asking datastore " + sourceDataStore
                 + " for source type " + typeName);
         Name name = Types.degloseName(typeName, namespaces);
-        FeatureSource<FeatureType, Feature> fSource = sourceDataStore.getFeatureSource(name);
-
-        if (inputDataAccessIds.contains(dsId)) {
-            // reassign with complex feature source
-            // since the dsId actually is the parameters for the underlying
-            // data store.. but we want to connect to the data access
-            fSource = DataAccessRegistry.getFeatureSource(fSource.getName());
-            sourceDataStores.put(dsId, fSource.getDataStore());
+        FeatureSource fSource = sourceDataStore.getFeatureSource(name);
+        if (fSource instanceof XmlFeatureSource) {
+            ((XmlFeatureSource) fSource).setNamespaces(namespaces);
         }
-
         AppSchemaDataAccessConfigurator.LOGGER.fine("found feature source for " + typeName);
         return fSource;
     }
@@ -615,10 +621,6 @@ public class AppSchemaDataAccessConfigurator {
 
         for (SourceDataStore dsconfig : dsParams) {
             id = dsconfig.getId();
-
-            if (dsconfig.isDataAccess()) {
-                inputDataAccessIds.add(id);
-            }
 
             @SuppressWarnings("unchecked")
             Map<String, Serializable> datastoreParams = dsconfig.getParams();

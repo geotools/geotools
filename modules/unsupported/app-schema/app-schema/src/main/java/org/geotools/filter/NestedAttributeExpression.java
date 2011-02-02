@@ -32,11 +32,8 @@ import org.geotools.data.complex.filter.XPath;
 import org.geotools.data.complex.filter.XPath.Step;
 import org.geotools.data.complex.filter.XPath.StepList;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.Hints;
-import org.geotools.feature.FeatureImpl;
 import org.geotools.feature.Types;
 import org.geotools.filter.AttributeExpressionImpl;
-import org.geotools.filter.expression.FeaturePropertyAccessorFactory;
 import org.opengis.feature.Attribute;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.Name;
@@ -226,25 +223,15 @@ public class NestedAttributeExpression extends AttributeExpressionImpl {
                                         values.addAll(nestedValues);
                                     }
                                 } else if (!nestedFeatures.isEmpty()) {
-                                    if (nestedFeatures.get(0) instanceof FeatureImpl) {
-                                        // has a complex features backend,
-                                        // therefore doesn't necessarily
-                                        // have a FeatureTypeMapping, because
-                                        // it's not
-                                        // an app-schema data access
-                                        Expression exp = getComplexFeatureValue(fullSteps.subList(
-                                                startIndex, fullSteps.size()));
-                                        for (Feature f : nestedFeatures) {
-                                            Object value = getValue(exp, f);
-                                            if (value != null) {
-                                                values.add(value);
-                                            }
-                                        }
-                                    } else {
-                                        throw new UnsupportedOperationException(
-                                                "FeatureTypeMapping not found for "
-                                                        + attPath
-                                                        + ". This shouldn't happen if it's set in AppSchemaDataAccess mapping file!");
+                                    throw new UnsupportedOperationException(
+                                            "FeatureTypeMapping not found for "
+                                                    + attPath
+                                                    + ". This shouldn't happen if it's set in AppSchemaDataAccess mapping file!");
+                                } else {
+                                    List<Object> nestedValues = getValues(++startIndex, endIndex,
+                                            nestedFeatures, fMapping, mapping);
+                                    if (nestedValues != null) {
+                                        values.addAll(nestedValues);
                                     }
                                 }
                             } catch (IOException e) {
@@ -315,19 +302,6 @@ public class NestedAttributeExpression extends AttributeExpressionImpl {
             // app-schema with a complex feature source
             return nestedMapping.getFeatures(val, null, root);
         }
-    }
-
-    /**
-     * Extract leaf attribute value from an xpath in a feature.
-     * 
-     * @param subList
-     *            xpath steps
-     * @return leaf attribute value
-     */
-    private Expression getComplexFeatureValue(StepList subList) {
-        AttributeExpressionImpl att = new AttributeExpressionImpl(subList.toString(), new Hints(
-                FeaturePropertyAccessorFactory.NAMESPACE_CONTEXT, namespaces));
-        return att;
     }
 
     private Object getValue(Expression expression, Feature feature) {

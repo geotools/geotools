@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -34,15 +33,13 @@ import java.util.logging.Logger;
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataStore;
-import org.geotools.data.DefaultQuery;
-import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
+import org.geotools.data.FeatureSource;
 import org.geotools.data.SchemaNotFoundException;
 import org.geotools.data.ServiceInfo;
 import org.geotools.data.complex.config.NonFeatureTypeProxy;
 import org.geotools.data.complex.filter.UnmappingFilterVisitor;
 import org.geotools.data.complex.filter.UnmappingFilterVistorFactory;
-import org.geotools.data.complex.filter.XPath;
 import org.geotools.data.complex.filter.XPath.StepList;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.Types;
@@ -58,7 +55,6 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
-import org.xml.sax.helpers.NamespaceSupport;
 
 /**
  * A {@link DataAccess} that maps a "simple" source {@link DataStore} into a source of full Feature
@@ -261,7 +257,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
         final FeatureTypeMapping mapping = getMappingByElement(getName(targetQuery));
         final FeatureSource<FeatureType, Feature> mappedSource = mapping.getSource();
         Query unmappedQuery = unrollQuery(targetQuery, mapping);
-        ((DefaultQuery) unmappedQuery).setMaxFeatures(targetQuery.getMaxFeatures());
+        unmappedQuery.setMaxFeatures(targetQuery.getMaxFeatures());
         return mappedSource.getCount(unmappedQuery);
     }
 
@@ -310,7 +306,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
 
             List propNames = getSurrogatePropertyNames(query.getPropertyNames(), mapping);
 
-            DefaultQuery newQuery = new DefaultQuery();
+            Query newQuery = new Query();
 
             String name = source.getName().getLocalPart();
             newQuery.setTypeName(name);
@@ -337,8 +333,6 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
     private List<String> getSurrogatePropertyNames(String[] mappingProperties,
             FeatureTypeMapping mapping) {
         List<String> propNames = null;
-        //NC - get source type
-        final AttributeType mappedType = mapping.getSource().getSchema();
         if (mappingProperties != null && mappingProperties.length > 0) {
             Set<String> requestedSurrogateProperties = new HashSet<String>();
             // add all surrogate attributes involved in mapping of the requested
@@ -347,6 +341,16 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
             List<String> requestedProperties = new ArrayList<String>( Arrays.asList(mappingProperties));
             //NC - add feature to list, to include its ID expression
             requestedProperties.add(mapping.getTargetFeature().getName().getLocalPart());
+            
+            //get source type
+            AttributeType mappedType;
+            try {
+                mappedType = mapping.getSource().getSchema();
+            } catch (UnsupportedOperationException e) {
+                // web service backend doesn't support getSchema()
+                mappedType = null;
+            }
+            
             for (String requestedProperty : requestedProperties) {
                 for (final AttributeMapping entry : attMappings) {
                     final StepList targetSteps = entry.getTargetXPath();
@@ -369,15 +373,23 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
                             it.next().accept(extractor, null);
                         }
                         Set<String> exprAtts = extractor.getAttributeNameSet();
+                        
                         for (String mappedAtt : exprAtts) {
                             if (!mappedAtt.equals("Expression.NIL")) { //NC - ignore Nil Expression
                                PropertyName propExpr = filterFac.property(mappedAtt);
-                               Object object = propExpr.evaluate(mappedType);
-                               AttributeDescriptor mappedAttribute = (AttributeDescriptor) object;
-                               if (mappedAttribute != null) {
+                               if (mappedType == null) {
+                                    // web service backend.. no underlying simple feature
+                                    // so just assume that it exists..
                                     requestedSurrogateProperties.add(mappedAtt);
-                               } else {
-                                    LOGGER.info("mapped type does not contains property " + mappedAtt);
+                                } else {
+                                    Object object = propExpr.evaluate(mappedType);
+                                    AttributeDescriptor mappedAttribute = (AttributeDescriptor) object;
+                                    if (mappedAttribute != null) {
+                                        requestedSurrogateProperties.add(mappedAtt);
+                                    } else {
+                                        LOGGER.info("mapped type does not contains property "
+                                                + mappedAtt);
+                                    }
                                 }
                             }
                         }

@@ -17,13 +17,18 @@
 package org.geotools.styling;
 
 import java.net.MalformedURLException;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.renderer.style.ExpressionExtractor;
+import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.Filter;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.ExpressionVisitor;
 import org.opengis.filter.expression.Literal;
+import org.opengis.filter.expression.PropertyName;
 
 
 /**
@@ -36,6 +41,30 @@ import org.opengis.filter.expression.Literal;
  */
 public class StyleAttributeExtractor extends FilterAttributeExtractor
     implements StyleVisitor {
+    
+    /* NC */ protected Set<PropertyName> attributes = new HashSet<PropertyName>();
+    
+    @Override
+    public void clear() {
+        super.clear();
+        /* NC */ attributes = new HashSet<PropertyName>();
+    }
+    
+    @Override
+    public Object visit( PropertyName expression, Object data ) {
+        /* NC */ attributes.add(expression);
+        
+        return super.visit(expression, data);
+    }
+    
+    /**
+     * Returns PropertyNames rather than strings (includes namespace info)
+     *
+     * @return an array of the attribute found so far during the visit
+     */
+    public Set<PropertyName> getAttributes() {
+        return Collections.unmodifiableSet( attributes);
+    }
 
     /**
      *   if the default geometry is used, this will be true.  See GEOS-469

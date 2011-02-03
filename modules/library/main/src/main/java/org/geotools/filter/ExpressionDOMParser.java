@@ -31,6 +31,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.helpers.NamespaceSupport;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
@@ -54,6 +55,9 @@ public final class ExpressionDOMParser {
 
     /** Factory for creating filters. */
     private FilterFactory2 ff;
+    
+    /** Namespace Context for creating expressions */
+    private NamespaceSupport namespaceContext = null;
 
     /** Factory for creating geometry objects */
     private static GeometryFactory gfac = new GeometryFactory();
@@ -87,6 +91,11 @@ public final class ExpressionDOMParser {
     /** Setter injection */
     public void setFilterFactory( FilterFactory2 factory ){
     	ff = factory;
+    }
+    
+    /** Namespace Support Setter */
+    public void setNamespaceContext( NamespaceSupport namespaceContext ){
+        this.namespaceContext = namespaceContext;
     }
     
     /**
@@ -333,7 +342,7 @@ public final class ExpressionDOMParser {
             	//JD: trim whitespace here
             	String value = child.getFirstChild().getNodeValue();
             	value = value != null ? value.trim() : value;
-                PropertyName attribute = ff.property( value );
+                PropertyName attribute = ff.property( value, namespaceContext );
 
                 //                attribute.setAttributePath(child.getFirstChild().getNodeValue());
                 return attribute;

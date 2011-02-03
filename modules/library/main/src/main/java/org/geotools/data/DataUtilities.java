@@ -1979,8 +1979,8 @@ public class DataUtilities {
         int maxFeatures = Math.min(firstQuery.getMaxFeatures(), secondQuery.getMaxFeatures());
 
         // join attributes names
-        String[] propNames = joinAttributes(firstQuery.getPropertyNames(), secondQuery
-                .getPropertyNames());
+        List<PropertyName> propNames = joinAttributes(firstQuery.getProperties(), secondQuery
+                .getProperties());
 
         // join filters
         Filter filter = firstQuery.getFilter();
@@ -2060,31 +2060,26 @@ public class DataUtilities {
      * 
      * @return Set of attribute names from <code>atts1</code> and <code>atts2</code>
      */
-    private static String[] joinAttributes(String[] atts1, String[] atts2) {
-        String[] propNames = null;
-
+    private static List<PropertyName> joinAttributes(List<PropertyName> atts1, List<PropertyName> atts2) {
+        
         if (atts1 == null && atts2 == null) {
             return null;
         }
 
-        List<String> atts = new LinkedList<String>();
+        List<PropertyName> atts = new LinkedList<PropertyName>();
 
         if (atts1 != null) {
-            atts.addAll(Arrays.asList(atts1));
+            atts.addAll(atts1);
         }
 
         if (atts2 != null) {
-            for (int i = 0; i < atts2.length; i++) {
-                if (!atts.contains(atts2[i])) {
-                    atts.add(atts2[i]);
+            for (int i = 0; i < atts2.size(); i++) {
+                if (!atts.contains(atts2.get(i))) {
+                    atts.add(atts2.get(i));
                 }
             }
         }
-
-        propNames = new String[atts.size()];
-        atts.toArray(propNames);
-
-        return propNames;
+        return atts;
     }
 
     /**

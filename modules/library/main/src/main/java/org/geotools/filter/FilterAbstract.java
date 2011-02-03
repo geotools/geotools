@@ -17,6 +17,8 @@
 package org.geotools.filter;
 
 
+import org.geotools.feature.NameImpl;
+import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterVisitor;
 
@@ -94,15 +96,26 @@ public abstract class FilterAbstract implements org.opengis.filter.Filter
 	protected Object eval(org.opengis.filter.expression.Expression expression, Object object) {
 		if( expression == null ) return null;
 		Object value = expression.evaluate( object );
-        //HACK as this method is used internally for filter 
-        //evaluation comparisons, etc, they work over the
-        //contents (i.e. comparing an attexpresion with a literal)
-        //so, lacking a better way of doing so, I'm putting this
-        //check here
-        if(value instanceof org.opengis.feature.Attribute){
-            value = ((org.opengis.feature.Attribute)value).getValue();
-        }
-        return value;
+	
+		//NC - HACK (similar to below), but for complex features
+	        if (value instanceof org.opengis.feature.ComplexAttribute){
+	            Property simpleContent = ((org.opengis.feature.ComplexAttribute)value).getProperty(new NameImpl("simpleContent"));
+	            if (simpleContent == null) {
+	                value = null;
+	            } else {
+	                value = simpleContent.getValue();
+	            }
+	        }
+		
+	        //HACK as this method is used internally for filter 
+                //evaluation comparisons, etc, they work over the
+                //contents (i.e. comparing an attexpresion with a literal)
+                //so, lacking a better way of doing so, I'm putting this
+                //check here
+                if(value instanceof org.opengis.feature.Attribute){
+                    value = ((org.opengis.feature.Attribute)value).getValue();
+                }            
+                return value;
 	}
 	/**
 	 * Helper method for subclasses to reduce null checks

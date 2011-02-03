@@ -17,8 +17,8 @@
 package org.geotools.renderer.lite;
 
 import org.geotools.filter.Filter;
-import org.geotools.filter.FilterVisitorFilterWrapper;
 import org.geotools.filter.GeometryFilter;
+import org.geotools.filter.FilterVisitorFilterWrapper;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.simple.SimpleFeature;
@@ -26,6 +26,7 @@ import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.BBOX;
 import org.opengis.filter.spatial.BinarySpatialOperator;
 
@@ -45,11 +46,11 @@ import com.vividsolutions.jts.geom.TopologyException;
  */
 class FastBBOX implements BBOX, BinarySpatialOperator, BinaryComparisonOperator, GeometryFilter {
     
-    String property;
+    PropertyName property;
     Envelope envelope; 
     FilterFactory factory;
     
-    public FastBBOX(String propertyName, Envelope env, FilterFactory factory) {
+    public FastBBOX(PropertyName propertyName, Envelope env, FilterFactory factory) {
         this.property = propertyName;
         this.envelope = env;
         this.factory = factory;
@@ -70,9 +71,13 @@ class FastBBOX implements BBOX, BinarySpatialOperator, BinaryComparisonOperator,
     public double getMinY() {
         return envelope.getMinY();
     }
+    
+    public PropertyName getProperty() {
+        return property;
+    }
 
     public String getPropertyName() {
-        return property;
+        return property.getPropertyName();
     }
 
     public String getSRS() {
@@ -80,7 +85,7 @@ class FastBBOX implements BBOX, BinarySpatialOperator, BinaryComparisonOperator,
     }
 
     public Expression getExpression1() {
-        return factory.property(property);
+        return property;
     }
 
     public Expression getExpression2() {
@@ -126,7 +131,7 @@ class FastBBOX implements BBOX, BinarySpatialOperator, BinaryComparisonOperator,
         if(feature == null)
             return false;
         
-        Geometry other = (Geometry) sf.getAttribute(property);
+        Geometry other = (Geometry) property.evaluate(sf);
         if(other == null)
             return false;
         

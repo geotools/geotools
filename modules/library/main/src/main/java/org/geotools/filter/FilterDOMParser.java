@@ -36,6 +36,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.helpers.NamespaceSupport;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
@@ -112,6 +113,31 @@ public final class FilterDOMParser {
      */
     private FilterDOMParser() {
     }
+    
+    private static NamespaceSupport getNameSpaces(Node node)
+    {
+        NamespaceSupport namespaces = new NamespaceSupport();
+        while (node != null)
+        {
+            NamedNodeMap atts = node.getAttributes();
+            
+            if (atts != null) {
+                for (int i=0; i<atts.getLength(); i++){
+                    Node att = atts.item(i);
+                    
+                    if (att.getNamespaceURI() != null
+                            && att.getNamespaceURI().equals("http://www.w3.org/2000/xmlns/")
+                            && namespaces.getURI(att.getLocalName()) == null){
+                        namespaces.declarePrefix(att.getLocalName(), att.getNodeValue());
+                    }
+                }
+            }
+            
+            node = node.getParentNode();
+        }
+        
+        return namespaces;
+    }
 
     /**
      * Parses the filter using DOM.
@@ -123,6 +149,13 @@ public final class FilterDOMParser {
      * @task TODO: split up this insanely long method.
      */
     public static org.opengis.filter.Filter parseFilter(Node root) {
+        //NC - NameSpaceSupport
+        NamespaceSupport namespaces = getNameSpaces(root);
+        
+        final ExpressionDOMParser expressionDOMParser = new ExpressionDOMParser(FILTER_FACT);
+        expressionDOMParser.setNamespaceContext(namespaces);
+        
+        
         LOGGER.finer("parsingFilter " + root.getLocalName());
 
         //NodeList children = root.getChildNodes();
@@ -211,7 +244,7 @@ public final class FilterDOMParser {
                     //while(value.getNodeType() != Node.ELEMENT_NODE ) 
                     //value = value.getNextSibling();
                     LOGGER.finer("add middle value -> " + value + "<-");
-                    Expression middle = ExpressionDOMParser.parseExpression(value);
+                    Expression middle = expressionDOMParser.expression(value);
                     Expression lower = null;
                     Expression upper = null;
 
@@ -232,7 +265,7 @@ public final class FilterDOMParser {
                             }
 
                             LOGGER.finer("add left value -> " + value + "<-");
-                            lower = ExpressionDOMParser.parseExpression(value);
+                            lower = expressionDOMParser.expression(value);
                         }
 
                         if (kidName.equalsIgnoreCase("UpperBoundary")) {
@@ -243,7 +276,7 @@ public final class FilterDOMParser {
                             }
 
                             LOGGER.finer("add right value -> " + value + "<-");
-                            upper = ExpressionDOMParser.parseExpression(value);
+                            upper = expressionDOMParser.expression(value);
                         }
                     }
 
@@ -272,11 +305,11 @@ public final class FilterDOMParser {
                         }
 
                         if (res.equalsIgnoreCase("PropertyName")) {
-                            value = ExpressionDOMParser.parseExpression(kid);
+                            value = expressionDOMParser.expression(kid);
                         }
 
                         if (res.equalsIgnoreCase("Literal")) {
-                            pattern = ExpressionDOMParser.parseExpression(kid)
+                            pattern = expressionDOMParser.expression(kid)
                                                          .toString();
                         }
                     }
@@ -335,7 +368,7 @@ public final class FilterDOMParser {
                 }
 
                 LOGGER.finest("add left value -> " + value + "<-");
-                Expression left = ExpressionDOMParser.parseExpression(value);
+                Expression left = expressionDOMParser.expression(value);
                 value = value.getNextSibling();
 
                 while (value.getNodeType() != Node.ELEMENT_NODE) {
@@ -343,7 +376,7 @@ public final class FilterDOMParser {
                 }
 
                 LOGGER.finest("add right value -> " + value + "<-");
-                Expression right = ExpressionDOMParser.parseExpression(value);
+                Expression right = expressionDOMParser.expression(value);
                 
                 switch (type){
                 case FilterType.COMPARE_EQUALS:
@@ -385,7 +418,7 @@ public final class FilterDOMParser {
                 }
 
                 LOGGER.finest("add left value -> " + value + "<-");
-                Expression left = ExpressionDOMParser.parseExpression(value);
+                Expression left = expressionDOMParser.expression(value);
                 value = value.getNextSibling();
 
                 while (value.getNodeType() != Node.ELEMENT_NODE) {
@@ -411,9 +444,9 @@ public final class FilterDOMParser {
 
                     literal.appendChild(value);
                     LOGGER.finest("Built new literal " + literal);
-                    right = ExpressionDOMParser.parseExpression(literal);
+                    right = expressionDOMParser.expression(literal);
                 } else {
-                    right = ExpressionDOMParser.parseExpression(value);
+                    right = expressionDOMParser.expression(value);
                 }
                 
                 
@@ -568,6 +601,13 @@ public final class FilterDOMParser {
      */
     private static PropertyIsNull parseNullFilter(Node nullNode)
         throws IllegalFilterException {
+        
+        //NC - NameSpaceSupport
+        NamespaceSupport namespaces = getNameSpaces(nullNode);
+        
+        final ExpressionDOMParser expressionDOMParser = new ExpressionDOMParser(FILTER_FACT);
+        expressionDOMParser.setNamespaceContext(namespaces);
+        
         LOGGER.finest("parsing null node: " + nullNode);
 
         Node value = nullNode.getFirstChild();
@@ -577,7 +617,7 @@ public final class FilterDOMParser {
         }
 
         LOGGER.finest("add null value -> " + value + "<-");
-        Expression expr = ExpressionDOMParser.parseExpression(value);
+        Expression expr = expressionDOMParser.expression(value);
 
         return FILTER_FACT.isNull( expr );
     }

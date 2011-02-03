@@ -22,6 +22,7 @@ import java.util.List;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.GeoTools;
+import org.geotools.filter.AttributeExpressionImpl;
 import org.opengis.filter.And;
 import org.opengis.filter.ExcludeFilter;
 import org.opengis.filter.Filter;
@@ -320,7 +321,8 @@ public class DuplicatingFilterVisitor implements FilterVisitor, ExpressionVisito
 	}
 
 	public Object visit(PropertyName expression, Object extraData) {
-		return getFactory(extraData).property(expression.getPropertyName());
+	    //NC - namespace support
+	    return getFactory(extraData).property(expression.getPropertyName(), expression.getNamespaceContext());	    
 	}
 
 	public Object visit(Subtract expression, Object extraData) {

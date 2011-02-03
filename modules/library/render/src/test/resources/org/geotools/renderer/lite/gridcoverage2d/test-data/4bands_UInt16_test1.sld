@@ -13,23 +13,16 @@ http://schemas.opengis.net/sld/1.0.0/StyledLayerDescriptor.xsd" version="1.0.0">
 		<FeatureTypeStyle>
 	        <FeatureTypeName>Feature</FeatureTypeName>
 			<Rule>
-				<RasterSymbolizer>
-					<ChannelSelection>
-						<RedChannel>
-							<SourceChannelName>1</SourceChannelName>
-						</RedChannel>
-						<GreenChannel>
-							<SourceChannelName>2</SourceChannelName>
-						</GreenChannel>
-						<BlueChannel>
-							<SourceChannelName>3</SourceChannelName>
-						</BlueChannel>
-					</ChannelSelection>
-					<ContrastEnhancement>
-						<Histogram/>
-				    </ContrastEnhancement>					
-				    <Opacity>1.0</Opacity>
-				</RasterSymbolizer>
+          <RasterSymbolizer>
+            <ContrastEnhancement>
+              <Normalize />
+              <GammaValue>0.5</GammaValue>
+            </ContrastEnhancement>
+            <ColorMap>
+              <ColorMapEntry color="#008000" quantity="70" />
+              <ColorMapEntry color="#663333" quantity="256" />
+            </ColorMap>
+          </RasterSymbolizer>
 			</Rule>
 		</FeatureTypeStyle>
 	</UserStyle>

@@ -36,7 +36,6 @@ import javax.media.jai.iterator.WritableRectIter;
 import javax.media.jai.registry.RenderedRegistryMode;
 import javax.media.jai.util.ImagingException;
 
-import org.geotools.coverage.GridSampleDimension;
 import org.geotools.image.TransfertRectIter;
 import org.geotools.image.jai.Registry;
 import org.geotools.referencing.piecewise.DefaultDomain1D;

@@ -898,7 +898,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
             attMapping = (AttributeMapping) it.next();
             clientProperties = attMapping.getClientProperties();
             // NC -added
-            // Fix Me - Id Checking should be done in a better way
+            //FIXME - Id Checking should be done in a better way
             if (clientPropertyName.getLocalPart().equals("id")) {
                 clientPropertyExpressions.add(attMapping.getIdentifierExpression());
             } else // end NC - added      

@@ -82,7 +82,7 @@ public class GridEnvelope2D extends Rectangle implements GridEnvelope, Cloneable
      * {@linkplain org.opengis.coverage.grid.GridGeometry#getGridToCRS grid to CRS} transform.
      * The floating point values are rounded toward the nearest integers.
      * <p>
-     * <strong>Notice that highest values are interpreted as inclusive</strong>
+     * <strong>Notice that highest values are interpreted as non-inclusive</strong>
      * 
      * <p>
      * <b>Anchor</b><br>

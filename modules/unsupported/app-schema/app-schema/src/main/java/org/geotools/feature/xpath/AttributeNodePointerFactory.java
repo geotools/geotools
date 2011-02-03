@@ -24,7 +24,9 @@ import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.apache.commons.jxpath.ri.model.NodePointerFactory;
 import org.opengis.feature.Attribute;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeType;
+import org.opengis.feature.type.ComplexType;
 
 /**
  * A node factory which creates special node pointers featurs.
@@ -57,12 +59,11 @@ public class AttributeNodePointerFactory implements NodePointerFactory {
         if (object instanceof Attribute && !(object instanceof SimpleFeature)) {
             return new AttributeNodePointer(null, (Attribute) object, name);
         }
-
-        /*
-         * if (object instanceof AttributeType) { return new
-         * FeatureTypePointer(null, (AttributeType) object, name); }
-         */
-
+        
+        if (object instanceof ComplexType && !(object instanceof SimpleFeatureType)) { 
+            return new FeatureTypePointer(null, (ComplexType) object, name); 
+        }
+        
         return null;
     }
 
@@ -76,10 +77,9 @@ public class AttributeNodePointerFactory implements NodePointerFactory {
             return new AttributeNodePointer(parent, (Attribute) object, name);
         }
 
-        /*
-         * if (object instanceof AttributeType) { return new
-         * FeatureTypePointer(null, (AttributeType) object, name); }
-         */
+        if (object instanceof ComplexType && !(object instanceof SimpleFeatureType)) { 
+            return new FeatureTypePointer(null, (ComplexType) object, name); 
+        }
 
         return null;
     }

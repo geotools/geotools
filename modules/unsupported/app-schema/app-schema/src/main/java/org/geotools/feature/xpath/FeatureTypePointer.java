@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -14,10 +14,10 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-
 package org.geotools.feature.xpath;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.jxpath.ri.Compiler;
 import org.apache.commons.jxpath.ri.QName;
@@ -27,51 +27,60 @@ import org.apache.commons.jxpath.ri.compiler.NodeTypeTest;
 import org.apache.commons.jxpath.ri.model.NodeIterator;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.geotools.feature.Types;
-import org.opengis.feature.Attribute;
-import org.opengis.feature.ComplexAttribute;
+import org.opengis.feature.type.ComplexType;
+import org.opengis.feature.type.PropertyDescriptor;
 
 /**
- * Special node pointer for {@link org.geotools.feature.Feature}.
+ * Special node pointer for {@link org.geotools.feature.FeatureType}.
  * 
- * @author Justin Deoliveira, The Open Planning Project
- * @author Gabriel Roldan, Axios Engineering
+ * @author Niels Charlier, Curtin University of Technology
  * 
- *
- * @source $URL$
+ * @source $URL:
+ *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/main
+ *         /java/org/geotools/feature/xpath/FeatureTypePointer.java $
+ * 
  */
-public class AttributeNodePointer extends NodePointer {
+public class FeatureTypePointer extends NodePointer {
 
     /**
      * 
      */
-    private static final long serialVersionUID = -5637103253645991273L;
+    private static final long serialVersionUID = 7329150854098309040L;
 
     /**
-     * The name of hte node.
+     * The name of the node.
      */
-    QName name;
+    protected QName name;
 
     /**
-     * The underlying feature
+     * The underlying feature type
      */
-    Attribute feature;
+    protected ComplexType featureType;
 
-    protected AttributeNodePointer(NodePointer parent, Attribute feature, QName name) {
+    protected FeatureTypePointer(NodePointer parent, ComplexType featureType, QName name) {
         super(parent);
         this.name = name;
-        this.feature = feature;
+        this.featureType = featureType;
     }
 
     public boolean isLeaf() {
-        return !(feature instanceof ComplexAttribute);
+        return false;
     }
 
     public boolean isCollection() {
-        return !isLeaf();
+        return true;
     }
 
     public int getLength() {
-        return isLeaf() ? 0 : ((Collection) feature.getValue()).size();
+        //get list of descriptors from types and all supertypes
+        List<PropertyDescriptor> children = new ArrayList<PropertyDescriptor>();
+        ComplexType loopType = featureType;
+        while (loopType != null) { 
+            children.addAll(loopType.getDescriptors());
+            loopType = loopType.getSuper() instanceof ComplexType? (ComplexType) loopType.getSuper() : null;
+        }
+        
+        return children.size();
     }
 
     public QName getName() {
@@ -83,15 +92,14 @@ public class AttributeNodePointer extends NodePointer {
     }
 
     public Object getImmediateNode() {
-        return feature;
+        return featureType;
     }
 
     public void setValue(Object value) {
-        feature = (Attribute) value;
+        throw new UnsupportedOperationException("Feature types are immutable");
     }
 
     public int compareChildNodePointers(NodePointer pointer1, NodePointer pointer2) {
-
         return 0;
     }
 
@@ -103,25 +111,22 @@ public class AttributeNodePointer extends NodePointer {
                 String localName = nodeNameTest.getNodeName().getName();
                 String nameSpace = nodeNameTest.getNamespaceURI();
                 if (nameSpace==null) nameSpace = getNamespaceResolver().getNamespaceURI("");
-                                
-                return new AttributeNodeIterator(this, Types.typeName(nameSpace, localName));
+                
+                return new SingleFeatureTypeAttributeIterator(this, featureType,
+                         Types.typeName(nameSpace, localName));
             } else {
-                return new AttributeNodeIterator(this);
+                return new FeatureTypeAttributeIterator(this, featureType);
             }
         }
 
         if (test instanceof NodeTypeTest) {
             NodeTypeTest nodeTypeTest = (NodeTypeTest) test;
+
             if (nodeTypeTest.getNodeType() == Compiler.NODE_TYPE_NODE) {
-                return new AttributeNodeIterator(this);
+                return new FeatureTypeAttributeIterator(this, featureType);
             }
         }
 
         return super.childIterator(test, reverse, startWith);
     }
-
-    public NodeIterator attributeIterator(QName qname) {        
-        return new XmlAttributeNodeIterator(this, Types.typeName(getNamespaceResolver().getNamespaceURI(qname.getPrefix()), qname.getName()));
-    }
-
 }

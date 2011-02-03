@@ -757,7 +757,7 @@ public final class GridCoverageRenderer {
     									interpolation, 
     									hints);
     		}else{
-                    // use more general affine (but slower)
+                    // use more general affine (slower)
                     im = AffineDescriptor.create(
                             finalImage, 
                             clonedFinalWorldToGrid, 

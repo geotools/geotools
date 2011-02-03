@@ -21,18 +21,26 @@ import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import org.geotools.filter.FilterAttributeExtractor;
 import org.opengis.filter.And;
 import org.opengis.filter.Filter;
 import org.opengis.filter.Id;
 import org.opengis.filter.Not;
 import org.opengis.filter.Or;
+import org.opengis.filter.expression.VolatileFunction;
 import org.opengis.filter.identity.FeatureId;
 import org.opengis.filter.identity.GmlObjectId;
 import org.opengis.filter.identity.Identifier;
 
 /**
- * Takes a filter and returns a simplified, equivalent one. At the moment the filter simplifies out
- * {@link Filter#INCLUDE} and {@link Filter#EXCLUDE} and deal with FID filter validation.
+ * Takes a filter and returns a simplified, equivalent one. At the moment the filter:
+ * <ul>
+ * <li>simplifies out {@link Filter#INCLUDE} and {@link Filter#EXCLUDE} in logical expressions</li>
+ * <li>removes double logic negations</li>
+ * <li>deal with FID filter validation removing invalid fids</li>
+ * <li>optimize out all non volatile functions that do not happen to use attributes, 
+ * replacing them with literals</li>
+ * </ul>
  * <p>
  * FID filter validation is meant to wipe out non valid feature ids from {@link Id} filters. This is
  * so in order to avoid sending feature ids down to DataStores that are not valid as per the
@@ -54,6 +62,24 @@ import org.opengis.filter.identity.Identifier;
  * @source $URL$
  */
 public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
+	
+	VolatileFilterAttributeExtractor attributeExtractor;
+	
+	static class VolatileFilterAttributeExtractor extends FilterAttributeExtractor {
+		boolean usingVolatileFunctions;
+
+		public void clear() {
+			super.clear();
+			usingVolatileFunctions = false;
+		}
+		
+		public Object visit(org.opengis.filter.expression.Function expression, Object data) {
+			if(expression instanceof VolatileFunction) {
+				usingVolatileFunctions = true;
+			}
+			return super.visit(expression, data);
+		};
+	};
 
     /**
      * Defines a simple means of assessing whether a feature id in an {@link Id} filter is
@@ -227,4 +253,30 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
     		return super.visit(filter, extraData);
     	}
     }
+    
+    public Object visit(org.opengis.filter.expression.Function function, Object extraData) {
+    	// can't optimize out volatile functions
+    	if(function instanceof VolatileFunction) {
+    		return super.visit(function, extraData);
+    	}
+    	
+    	// stable function, is it using attributes?
+    	if(attributeExtractor == null) {
+    		attributeExtractor = new VolatileFilterAttributeExtractor();
+    	} else {
+    		attributeExtractor.clear();
+    	}
+    	function.accept(attributeExtractor, null);
+    	
+    	// if so  we can replace it with a literal
+    	if(attributeExtractor.getAttributeNameSet().isEmpty() && !attributeExtractor.usingVolatileFunctions) {
+    		Object result = function.evaluate(null);
+    		return ff.literal(result);
+    	} else {
+    		return super.visit(function, extraData);
+    	}
+    }
+    
+    
+    
 }

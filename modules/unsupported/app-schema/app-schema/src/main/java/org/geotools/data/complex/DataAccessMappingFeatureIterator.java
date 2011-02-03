@@ -55,6 +55,7 @@ import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.identity.FeatureId;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.xml.sax.Attributes;
@@ -105,7 +106,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
 
     public DataAccessMappingFeatureIterator(AppSchemaDataAccess store, FeatureTypeMapping mapping,
             Query query, boolean isFiltered) throws IOException {
-        this(store, mapping, query, isFiltered, false);
+        this(store, mapping, query, isFiltered, null);
     }
 
     /**
@@ -120,8 +121,8 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
      * @throws IOException
      */
     public DataAccessMappingFeatureIterator(AppSchemaDataAccess store, FeatureTypeMapping mapping,
-            Query query, boolean isFiltered, boolean isQueryUnrolled) throws IOException {
-        super(store, mapping, query, isQueryUnrolled);
+            Query query, boolean isFiltered, Query unrolledQuery) throws IOException {
+        super(store, mapping, query, unrolledQuery);
         this.isFiltered = isFiltered;
         if (isFiltered) {
             filteredFeatures = new ArrayList<String>();
@@ -283,7 +284,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
      * @return Feature. Target feature sets with simple attributes
      */
     protected Attribute setAttributeValue(Attribute target, final Object source,
-            final AttributeMapping attMapping, Object values, StepList inputXpath) throws IOException {
+            final AttributeMapping attMapping, Object values, StepList inputXpath, List<PropertyName> selectedProperties) throws IOException {
 
         final Expression sourceExpression = attMapping.getSourceExpression();
         final AttributeType targetNodeType = attMapping.getTargetNodeInstance();
@@ -343,7 +344,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                                 .getInputFeatures(val, source));
                     } else {
                         nestedFeatures.addAll(((NestedAttributeMapping) attMapping).getFeatures(
-                                val, reprojection, source));
+                                val, reprojection, source, selectedProperties));
                     }
                 }
                 values = nestedFeatures;
@@ -355,7 +356,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                 values = ((NestedAttributeMapping) attMapping).getInputFeatures(values, source);
             } else {
                 values = ((NestedAttributeMapping) attMapping).getFeatures(values, reprojection,
-                        source);
+                        source, selectedProperties);
             }
             if (isHRefLink) {
                 // only need to set the href link value, not the nested feature properties
@@ -500,7 +501,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                     setClientProperties(instance, source, mapping.getClientProperties());
                     continue;
                 }
-                setAttributeValue(instance, source, mapping, null, null);
+                setAttributeValue(instance, source, mapping, null, null, selectedProperties.get(mapping));
             }
         }
     }
@@ -637,34 +638,32 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
         }
         final AttributeDescriptor targetNode = mapping.getTargetFeature();
         final Name targetNodeName = targetNode.getName();
-        final List<AttributeMapping> mappings = mapping.getAttributeMappings();
-
+        
         AttributeBuilder builder = new AttributeBuilder(attf);
         builder.setDescriptor(targetNode);
         Feature target = (Feature) builder.build(id);
 
-        for (AttributeMapping attMapping : mappings) {
-            if (propertyNames == null || propertyNames.contains(attMapping.getTargetXPath().get(0).getName().getLocalPart())) {
-                try {
-                    if (isTopLevelmapping(targetNodeName, attMapping.getTargetXPath())) {
-                        // ignore the top level mapping for the Feature itself
-                        // as it was already set
-                        continue;
-                    }
-                    // extract the values from multiple source features of the same id
-                    // and set them to one built feature
-                    if (attMapping.isMultiValued()) {
-                        for (Feature source : sources) {
-                            setAttributeValue(target, source, attMapping, null, null);
-                        }
-                    } else {
-                        setAttributeValue(target, sources.get(0), attMapping, null, null);
-                    }
-                } catch (Exception e) {
-                    throw new RuntimeException("Error applying mapping with targetAttribute "
-                            + attMapping.getTargetXPath(), e);
+        for (AttributeMapping attMapping : selectedMapping) { 
+            try {
+                if (isTopLevelmapping(targetNodeName, attMapping.getTargetXPath())) {
+                    // ignore the top level mapping for the Feature itself
+                    // as it was already set
+                    continue;
                 }
-            }
+                
+                // extract the values from multiple source features of the same id
+                // and set them to one built feature
+                if (attMapping.isMultiValued()) {
+                    for (Feature source : sources) {
+                        setAttributeValue(target, source, attMapping, null, null, selectedProperties.get(attMapping));
+                    }
+                } else {
+                    setAttributeValue(target, sources.get(0), attMapping, null, null, selectedProperties.get(attMapping));
+                }
+            } catch (Exception e) {
+                throw new RuntimeException("Error applying mapping with targetAttribute "
+                        + attMapping.getTargetXPath(), e);    
+            }                
         }       
         return target;
     }

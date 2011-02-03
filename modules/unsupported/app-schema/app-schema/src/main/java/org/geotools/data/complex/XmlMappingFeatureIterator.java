@@ -200,7 +200,7 @@ public class XmlMappingFeatureIterator extends DataAccessMappingFeatureIterator 
                             xpath.get(0).setIndex(i + 1);
                         }
                                     
-                        Attribute att = setAttributeValue(target, null, attMapping, value, xpath);
+                        Attribute att = setAttributeValue(target, null, attMapping, value, xpath, null);
                         setClientProperties(att, parentPair.getXpath(), attMapping.getClientProperties());
                     }
                 }

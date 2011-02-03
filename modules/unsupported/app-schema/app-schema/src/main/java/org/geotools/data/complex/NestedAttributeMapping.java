@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import org.geotools.data.FeatureSource;
@@ -303,7 +304,7 @@ public class NestedAttributeMapping extends AttributeMapping {
 
         return getFilteredFeatures(foreignKeyValue);     
     }
-
+    
     /**
      * Get the maching built features that are stored in this mapping using a supplied link value
      * 
@@ -314,7 +315,24 @@ public class NestedAttributeMapping extends AttributeMapping {
      * @throws IOException
      */
     public List<Feature> getFeatures(Object foreignKeyValue,
-            CoordinateReferenceSystem reprojection, Object feature) throws IOException {
+            CoordinateReferenceSystem reprojection, Feature feature) throws IOException{
+        return getFeatures(foreignKeyValue, reprojection, feature, null);
+    }
+            
+
+    /**
+     * Get the maching built features that are stored in this mapping using a supplied link value
+     * 
+     * @param foreignKeyValue
+     * @param reprojection
+     *            Reprojected CRS or null
+     * @param selectedProperties list of properties to get
+     * @return The matching simple features
+     * @throws IOException
+     */
+    public List<Feature> getFeatures(Object foreignKeyValue,
+            CoordinateReferenceSystem reprojection, Object feature, List<PropertyName> selectedProperties) throws IOException {
+
         if (isSameSource()) {
             // if linkField is null, this method shouldn't be called because the mapping
             // should use the same table, and handles it differently
@@ -326,8 +344,6 @@ public class NestedAttributeMapping extends AttributeMapping {
         if (fSource == null) {
             return null;
         }       
-
-        ArrayList<Feature> matchingFeatures = new ArrayList<Feature>();
         
         Query query = new Query();
         query.setCoordinateSystemReproject(reprojection);
@@ -336,8 +352,16 @@ public class NestedAttributeMapping extends AttributeMapping {
         PropertyName propertyName = filterFac.property(this.nestedTargetXPath.toString());
         filter = filterFac.equals(propertyName, filterFac.literal(foreignKeyValue));              
         query.setFilter(filter);
+        
+        if (selectedProperties!=null) {
+            selectedProperties = new ArrayList<PropertyName>(selectedProperties);
+            selectedProperties.add(propertyName);
+        }
+        
+        query.setProperties(selectedProperties);
 
-
+        ArrayList<Feature> matchingFeatures = new ArrayList<Feature>();
+        
         // get all the mapped nested features based on the link values
         FeatureCollection<FeatureType, Feature> fCollection = fSource.getFeatures(query);
         if (fCollection instanceof MappingFeatureCollection) {

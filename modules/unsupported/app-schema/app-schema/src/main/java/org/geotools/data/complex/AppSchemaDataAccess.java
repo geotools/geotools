@@ -19,7 +19,6 @@ package org.geotools.data.complex;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -40,6 +39,7 @@ import org.geotools.data.ServiceInfo;
 import org.geotools.data.complex.config.NonFeatureTypeProxy;
 import org.geotools.data.complex.filter.UnmappingFilterVisitor;
 import org.geotools.data.complex.filter.UnmappingFilterVistorFactory;
+import org.geotools.data.complex.filter.XPath;
 import org.geotools.data.complex.filter.XPath.StepList;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.Types;
@@ -52,7 +52,7 @@ import org.opengis.feature.type.ComplexType;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
+import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
 
@@ -74,7 +74,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
 
     private Map<Name, FeatureTypeMapping> mappings = new LinkedHashMap<Name, FeatureTypeMapping>();
 
-    private FilterFactory filterFac = CommonFactoryFinder.getFilterFactory(null);
+    private FilterFactory2 filterFac = CommonFactoryFinder.getFilterFactory2(null);
 
     /**
      * Constructor.
@@ -304,14 +304,14 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
             Filter complexFilter = query.getFilter();
             Filter unrolledFilter = AppSchemaDataAccess.unrollFilter(complexFilter, mapping);
 
-            List propNames = getSurrogatePropertyNames(query.getPropertyNames(), mapping);
-
+            List<PropertyName> propNames = getSurrogatePropertyNames(query.getProperties(), mapping);
+            
             Query newQuery = new Query();
 
             String name = source.getName().getLocalPart();
             newQuery.setTypeName(name);
             newQuery.setFilter(unrolledFilter);
-            newQuery.setPropertyNames(propNames);
+            newQuery.setProperties(propNames);
             newQuery.setCoordinateSystem(query.getCoordinateSystem());
             newQuery.setCoordinateSystemReproject(query.getCoordinateSystemReproject());
             newQuery.setHandle(query.getHandle());
@@ -320,6 +320,48 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
             unrolledQuery = newQuery;
         }
         return unrolledQuery;
+    }
+    
+    /**
+     * Helper method for getSurrogatePropertyNames to match a requested x-path property
+     * with a target x-path
+     * 
+     * @param requestedProperty requested property x-path
+     * @param targetXPath target x-path
+     * @return whether they match, i.e. when one of them is completely contained in the other
+     */
+    protected static boolean matchProperty(StepList requestedProperty, StepList target) {
+        // NC - the requested property may or may not be given as an x-path
+        // if it wasn't, the namespace given by the XPath.steps method might be wrong, so it will be ignored
+        // with property selection, requested Properties are top level nodes, 
+        // so get all mappings inside node
+        // i.e.: requested "measurement", found mapping of "measurement/result". 
+        // "result" must be included to create "measurement"
+        // in other cases, requested property is a nested x-path, 
+        // so get all mappings that could be needed
+        // i.e.: requested "measurement/result", found mapping of "measurement". 
+        // "measurement" must be included to create "result"      
+        
+        int minSize = Math.min(requestedProperty.size(), target.size());
+
+        for (int i = 0; i < minSize; i++) {
+            if (!target.get(i).getName().equals(requestedProperty.get(i).getName())) {
+                return false;
+            }
+        }
+        return true;        
+    }
+    
+    /**
+     * Helper method for getSurrogatePropertyNames to match a requested single step property
+     * with a target x-path, ignoring namespaces
+     * 
+     * @param requestedProperty requested property x-path
+     * @param targetXPath target x-path
+     * @return whether they match, i.e. when one of them is completely contained in the other
+     */
+    protected static boolean matchProperty(String requestedProperty, StepList target) {
+       return target.get(0).getName().getLocalPart().equals(requestedProperty);        
     }
 
     /**
@@ -330,18 +372,19 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
      *         needed surrogate attributes to satisfy the mapping of prorperties in
      *         <code>mappingProperties</code>
      */
-    private List<String> getSurrogatePropertyNames(String[] mappingProperties,
-            FeatureTypeMapping mapping) {
-        List<String> propNames = null;
-        if (mappingProperties != null && mappingProperties.length > 0) {
-            Set<String> requestedSurrogateProperties = new HashSet<String>();
+    private List<PropertyName> getSurrogatePropertyNames(List<PropertyName> requestedProperties,
+            FeatureTypeMapping mapping) {        
+        List<PropertyName> propNames = null;
+        final AttributeDescriptor targetDescriptor = mapping.getTargetFeature();
+        if (requestedProperties != null && requestedProperties.size() > 0) {
+            requestedProperties = new ArrayList<PropertyName>(requestedProperties);
+            Set<PropertyName> requestedSurrogateProperties = new HashSet<PropertyName>();
             // add all surrogate attributes involved in mapping of the requested
             // target schema attributes
             List<AttributeMapping> attMappings = mapping.getAttributeMappings();
-            List<String> requestedProperties = new ArrayList<String>( Arrays.asList(mappingProperties));
             //NC - add feature to list, to include its ID expression
-            requestedProperties.add(mapping.getTargetFeature().getName().getLocalPart());
-            
+            requestedProperties.add(filterFac.property(mapping.getTargetFeature().getName()));
+                 
             //get source type
             AttributeType mappedType;
             try {
@@ -351,15 +394,13 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
                 mappedType = null;
             }
             
-            for (String requestedProperty : requestedProperties) {
+            for (PropertyName requestedProperty : requestedProperties) {
+                StepList requestedPropertySteps = requestedProperty.getNamespaceContext()==null? null:
+                    XPath.steps(targetDescriptor, requestedProperty.getPropertyName(), requestedProperty.getNamespaceContext()); 
                 for (final AttributeMapping entry : attMappings) {
-                    final StepList targetSteps = entry.getTargetXPath();
-                    // i.e.: requested "measurement", found mapping of
-                    // "measurement/result".
-                    // "result" must be included to create "measurement"
-                    //NC - requested Properties are only top level nodes, get all mappings inside node
-                    if (targetSteps.get(0).getName().getLocalPart().equals(requestedProperty) ) {
-                        
+                    final StepList targetSteps = entry.getTargetXPath();                           
+                    if (requestedPropertySteps==null? matchProperty(requestedProperty.getPropertyName(), targetSteps) : 
+                                                      matchProperty(requestedPropertySteps, targetSteps)) {                                          
                         final Expression sourceExpression = entry.getSourceExpression();
                         final Expression idExpression = entry.getIdentifierExpression();
                         //NC - include client properties
@@ -376,16 +417,16 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
                         
                         for (String mappedAtt : exprAtts) {
                             if (!mappedAtt.equals("Expression.NIL")) { //NC - ignore Nil Expression
-                               PropertyName propExpr = filterFac.property(mappedAtt);
                                if (mappedType == null) {
                                     // web service backend.. no underlying simple feature
                                     // so just assume that it exists..
-                                    requestedSurrogateProperties.add(mappedAtt);
-                                } else {
+                                    requestedSurrogateProperties.add(filterFac.property(mappedAtt));
+                               } else {
+                                   PropertyName propExpr = filterFac.property(mappedAtt);                                   
                                     Object object = propExpr.evaluate(mappedType);
                                     AttributeDescriptor mappedAttribute = (AttributeDescriptor) object;
                                     if (mappedAttribute != null) {
-                                        requestedSurrogateProperties.add(mappedAtt);
+                                        requestedSurrogateProperties.add(filterFac.property(mappedAtt));
                                     } else {
                                         LOGGER.info("mapped type does not contains property "
                                                 + mappedAtt);
@@ -397,7 +438,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
                     }
                 }
             }
-            propNames = new ArrayList<String>(requestedSurrogateProperties);
+            propNames = new ArrayList<PropertyName>(requestedSurrogateProperties);
         }
         return propNames;
     }

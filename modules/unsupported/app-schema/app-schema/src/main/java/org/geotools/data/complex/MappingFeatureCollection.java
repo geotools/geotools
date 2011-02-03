@@ -27,6 +27,7 @@ import org.geotools.feature.CollectionListener;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.util.NullProgressListener;
 import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.type.FeatureType;
@@ -63,13 +64,29 @@ public class MappingFeatureCollection implements FeatureCollection<FeatureType, 
     }
 
     /**
-     * Not a supported operation.
-     * 
+     *  
      * @see org.geotools.feature.FeatureCollection#accepts(org.opengis.feature.FeatureVisitor,
      *      org.opengis.util.ProgressListener)
      */
     public void accepts(FeatureVisitor visitor, ProgressListener progress) throws IOException {
-        throw new UnsupportedOperationException();
+        FeatureIterator iterator = null;
+        if( progress == null ) progress = new NullProgressListener();
+        try{
+            progress.started();
+            for( iterator = features(); !progress.isCanceled() && iterator.hasNext();){
+                try {
+                    Feature feature = iterator.next();
+                    visitor.visit(feature);
+                }
+                catch( Exception erp ){
+                    progress.exceptionOccurred( erp );
+                }
+            }            
+        }
+        finally {
+            progress.complete();            
+            iterator.close();
+        }
     }
 
     /**

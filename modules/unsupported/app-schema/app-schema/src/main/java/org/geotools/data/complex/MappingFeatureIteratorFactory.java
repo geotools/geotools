@@ -50,7 +50,7 @@ public class MappingFeatureIteratorFactory {
             if (filter instanceof MultiValuedOrImpl) {
                 // has nested attribute in the filter expression
                 unrolledQuery.setFilter(Filter.INCLUDE);
-                return new FilteringMappingFeatureIterator(store, mapping, unrolledQuery, filter);
+                return new FilteringMappingFeatureIterator(store, mapping, query, unrolledQuery, filter);
             } else if (!filter.equals(Filter.INCLUDE) && !filter.equals(Filter.EXCLUDE)
                     && !(filter instanceof FidFilterImpl)) {
                 // normal filters
@@ -78,7 +78,7 @@ public class MappingFeatureIteratorFactory {
                 Query unrolledQuery = store.unrollQuery(query, mapping);
                 Filter filter = unrolledQuery.getFilter();
                 unrolledQuery.setFilter(Filter.INCLUDE);
-                iterator = new FilteringMappingFeatureIterator(store, mapping, unrolledQuery,
+                iterator = new FilteringMappingFeatureIterator(store, mapping, query, unrolledQuery,
                         filter);
             } else {
                 throw e;

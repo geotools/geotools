@@ -492,7 +492,7 @@ public class XPath {
 
         QName name = null;
 
-        final String prefix;
+        String prefix;
         final String namespaceUri;
         final String localName;
 
@@ -517,8 +517,9 @@ public class XPath {
                 prefix = namespaces.getPrefix(defaultNamespace);
 
                 if (prefix == null) {
-                    throw new IllegalStateException("Default namespace is not mapped to a prefix: "
-                            + defaultNamespace);
+                    //throw new IllegalStateException("Default namespace is not mapped to a prefix: "
+                    //        + defaultNamespace);
+                    prefix = "";
                 }
             }
         } else {

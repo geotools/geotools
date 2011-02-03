@@ -42,8 +42,8 @@ public class FilteringMappingFeatureIterator extends DataAccessMappingFeatureIte
     private Filter filter;
 
     public FilteringMappingFeatureIterator(AppSchemaDataAccess store, FeatureTypeMapping mapping,
-            Query query, Filter filter) throws IOException {
-        super(store, mapping, query, false, true);
+            Query query, Query unrolledQuery, Filter filter) throws IOException {
+        super(store, mapping, query, false, unrolledQuery);
         this.filter = filter;
     }
 

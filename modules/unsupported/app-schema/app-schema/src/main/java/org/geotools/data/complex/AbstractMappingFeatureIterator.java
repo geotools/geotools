@@ -18,18 +18,17 @@ package org.geotools.data.complex;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.logging.Logger;
-
 import org.geotools.data.DataSourceException;
 import org.geotools.data.Query;
 import org.geotools.data.complex.filter.XPath;
+import org.geotools.data.complex.filter.XPath.StepList;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.AppSchemaFeatureFactoryImpl;
 import org.geotools.feature.Types;
 import org.geotools.filter.FilterFactoryImplNamespaceAware;
@@ -37,16 +36,18 @@ import org.geotools.xlink.XLINK;
 import org.opengis.feature.Attribute;
 import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureFactory;
+import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.GeometryAttribute;
 import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.FilterFactory;
+import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.PropertyName;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.NamespaceSupport;
-
 import com.vividsolutions.jts.geom.EmptyGeometry;
 import com.vividsolutions.jts.geom.Geometry;
 
@@ -61,6 +62,8 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
     /** The logger for the filter module. */
     protected static final Logger LOGGER = org.geotools.util.logging.Logging
             .getLogger("org.geotools.data.complex");
+    
+    private FilterFactory2 filterFac = CommonFactoryFinder.getFilterFactory2(null);
 
     /**
      * Name representation of xlink:href
@@ -71,6 +74,16 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
      * The mappings for the source and target schemas
      */
     protected FeatureTypeMapping mapping;
+    
+    /**
+     * Mappings after Property Selection is applied
+     */
+    protected List<AttributeMapping> selectedMapping;
+    
+    /**
+     * Selected Properties for Feature Chaining
+     */
+    protected Map<AttributeMapping, List<PropertyName>> selectedProperties;
 
     /**
      * Factory used to create the target feature and attributes
@@ -98,35 +111,79 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
      */
     private boolean hasNextCalled = false;
     
-    protected Set<String> propertyNames;
-
     public AbstractMappingFeatureIterator(AppSchemaDataAccess store, FeatureTypeMapping mapping,
             Query query) throws IOException {
-        this(store, mapping, query, false);
+        this(store, mapping, query, null);
     }
     
+    //NC - changed
+    //possibility to pass on both query and unrolled query
+    //so that property names can be taken out of query, also when a custom unrolled query is passed.    
+    //one of them can be null, but not both!
+    
     public AbstractMappingFeatureIterator(AppSchemaDataAccess store, FeatureTypeMapping mapping,
-            Query query, boolean isQueryUnrolled) throws IOException {
+            Query query, Query unrolledQuery) throws IOException {
         this.store = store;
         this.attf = new AppSchemaFeatureFactoryImpl();
 
-        Name name = mapping.getTargetFeature().getName();
-        
-        propertyNames = query.getPropertyNames()==null? null: new HashSet<String>(Arrays.asList(query.getPropertyNames()));
-
         this.mapping = mapping;
+        
+        //NC - property names
+        if (query != null && query.getProperties()!= null) {
+            setPropertyNames(query.getProperties());
+        } else { 
+            setPropertyNames(null); // we need the actual property names (not surrogates) to do this... otherwise need to set manually
+        }
         
         this.maxFeatures = query.getMaxFeatures();
                 
-        if (!isQueryUnrolled) {
-            query = getUnrolledQuery(query);
+        if (unrolledQuery==null) {
+            unrolledQuery = getUnrolledQuery(query);
         }
         xpathAttributeBuilder = new XPath();
         xpathAttributeBuilder.setFeatureFactory(attf);
-        initialiseSourceFeatures(mapping, query);
+        initialiseSourceFeatures(mapping, unrolledQuery);
         namespaces = mapping.getNamespaces();
         namespaceAwareFilterFactory = new FilterFactoryImplNamespaceAware(namespaces);
         xpathAttributeBuilder.setFilterFactory(namespaceAwareFilterFactory);
+    }
+    
+    public void setPropertyNames(Collection<PropertyName> propertyNames)
+    {
+        selectedProperties = new HashMap<AttributeMapping, List<PropertyName>>();
+        
+        if (propertyNames == null) {
+            selectedMapping = mapping.getAttributeMappings();
+        }
+        else {            
+            final AttributeDescriptor targetDescriptor = mapping.getTargetFeature();            
+            selectedMapping = new ArrayList<AttributeMapping>();
+                        
+            for (AttributeMapping attMapping : mapping.getAttributeMappings()) {   
+                final StepList targetSteps = attMapping.getTargetXPath();
+                boolean alreadyAdded = false;
+                for (PropertyName requestedProperty : propertyNames){
+                    StepList requestedPropertySteps = requestedProperty.getNamespaceContext()==null? null:
+                        XPath.steps(targetDescriptor, requestedProperty.getPropertyName(), requestedProperty.getNamespaceContext()); 
+                    if (requestedPropertySteps==null? AppSchemaDataAccess.matchProperty(requestedProperty.getPropertyName(), targetSteps) : 
+                        AppSchemaDataAccess.matchProperty(requestedPropertySteps, targetSteps)) {  
+                        if (!alreadyAdded) {
+                            selectedMapping.add(attMapping);
+                            alreadyAdded = true;
+                        }
+                        if (requestedPropertySteps!=null && requestedPropertySteps.size() > targetSteps.size()) {
+                            List<PropertyName > pnList = selectedProperties.get(attMapping); 
+                            if (pnList == null) {
+                                pnList = new ArrayList<PropertyName>();
+                                selectedProperties.put(attMapping, pnList);
+                            }
+                            StepList subProperty = requestedPropertySteps.subList(targetSteps.size(), requestedPropertySteps.size());
+                            pnList.add(filterFac.property(subProperty.toString(), requestedProperty.getNamespaceContext() ));
+                        }
+                    }
+                }
+            }
+        }
     }
 
     /**

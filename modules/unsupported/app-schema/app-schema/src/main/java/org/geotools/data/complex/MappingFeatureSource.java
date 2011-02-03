@@ -25,7 +25,6 @@ import java.util.Collections;
 import java.util.Set;
 
 import org.geotools.data.DataAccess;
-import org.geotools.data.DefaultQuery;
 import org.geotools.data.FeatureListener;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
@@ -81,8 +80,8 @@ class MappingFeatureSource implements FeatureSource<FeatureType, Feature> {
         return store.getBounds(namedQuery(Filter.INCLUDE, Integer.MAX_VALUE));
     }
 
-    private DefaultQuery namedQuery(Filter filter, int countLimit) {
-        DefaultQuery query = new DefaultQuery();
+    private Query namedQuery(Filter filter, int countLimit) {
+       Query query = new Query();
         if (getName().getNamespaceURI() != null) {
             try {
                 query.setNamespace(new URI(getName().getNamespaceURI()));
@@ -96,9 +95,9 @@ class MappingFeatureSource implements FeatureSource<FeatureType, Feature> {
         return query;
     }
 
-    private DefaultQuery namedQuery(Query query) {
-        DefaultQuery namedQuery = namedQuery(query.getFilter(), query.getMaxFeatures());
-        namedQuery.setPropertyNames(query.getPropertyNames());
+    private Query namedQuery(Query query) {
+        Query namedQuery = namedQuery(query.getFilter(), query.getMaxFeatures());
+        namedQuery.setProperties(query.getProperties());
         namedQuery.setCoordinateSystem(query.getCoordinateSystem());
         namedQuery.setCoordinateSystemReproject(query.getCoordinateSystemReproject());
         namedQuery.setHandle(query.getHandle());
@@ -108,12 +107,12 @@ class MappingFeatureSource implements FeatureSource<FeatureType, Feature> {
     }
 
     public ReferencedEnvelope getBounds(Query query) throws IOException {
-        DefaultQuery namedQuery = namedQuery(query);
+        Query namedQuery = namedQuery(query);
         return store.getBounds(namedQuery);
     }
 
     public int getCount(Query query) throws IOException {
-        DefaultQuery namedQuery = namedQuery(query);
+        Query namedQuery = namedQuery(query);
         int count = store.getCount(namedQuery);
         if (count >= 0) {
             // normal case

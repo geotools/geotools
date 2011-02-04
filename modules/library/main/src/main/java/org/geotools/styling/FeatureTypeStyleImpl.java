@@ -29,6 +29,8 @@ import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.Utilities;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Id;
+import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Function;
 import org.opengis.metadata.citation.OnLineResource;
 import org.opengis.style.FeatureTypeStyle;
 import org.opengis.style.SemanticType;
@@ -56,6 +58,7 @@ public class FeatureTypeStyleImpl implements org.geotools.styling.FeatureTypeSty
     private DescriptionImpl description = new DescriptionImpl();
     private String name = "name";
     private OnLineResource online = null;
+    private Expression transformation;
 
     /**
      * Creates a new instance of FeatureTypeStyleImpl
@@ -381,5 +384,13 @@ public class FeatureTypeStyleImpl implements org.geotools.styling.FeatureTypeSty
             return copy;
         }
 
+    }
+    
+    public Expression getTransformation() {
+        return transformation;
+    }
+
+    public void setTransformation(Expression transformation) {
+        this.transformation = transformation;
     }
 }

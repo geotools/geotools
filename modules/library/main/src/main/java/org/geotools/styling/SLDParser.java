@@ -781,6 +781,10 @@ public class SLDParser {
                 sti.add(getFirstChildValue(child));
             } else if (childName.equalsIgnoreCase("Rule")) {
                 rules.add(parseRule(child));
+            } else if (childName.equalsIgnoreCase("Transformation")) {
+                ExpressionDOMParser parser = new ExpressionDOMParser(CommonFactoryFinder.getFilterFactory2(null));
+                Expression tx = parser.expression(getFirstNonTextChild(child));
+                ft.setTransformation(tx);
             }
         }
 
@@ -790,6 +794,22 @@ public class SLDParser {
         ft.setRules((Rule[]) rules.toArray(new Rule[0]));
 
         return ft;
+    }
+
+    private Node getFirstNonTextChild(Node node) {
+        NodeList children = node.getChildNodes();
+        final int length = children.getLength();
+        for (int i = 0; i < length; i++) {
+            Node child = children.item(i);
+
+            if ((child == null) || (child.getNodeType() != Node.ELEMENT_NODE)) {
+                continue;
+            }
+            
+            return child;
+        }
+        
+        return null;
     }
 
     /** Internal parse method - made protected for unit testing */

@@ -25,6 +25,7 @@ import java.util.List;
 
 import org.geotools.renderer.ScreenMap;
 import org.geotools.styling.Rule;
+import org.opengis.filter.expression.Expression;
 
 /**
  * This is a simple class that contains the information needed to render a layer.
@@ -58,6 +59,8 @@ public final class LiteFeatureTypeStyle {
     public Rule[] elseRules;
 
     public Graphics2D graphics;
+    
+    public Expression transformation;
 
     /**
      * The bit map used to decide whether to skip geometries that have been already drawn
@@ -65,11 +68,12 @@ public final class LiteFeatureTypeStyle {
     ScreenMap screenMap;
 
     public LiteFeatureTypeStyle(BufferedImage image, AffineTransform at, List ruleList,
-            List elseRule, RenderingHints hints) {
+            List elseRule, RenderingHints hints, Expression transformation) {
         this.myImage = image;
         this.ruleList = (Rule[]) ruleList.toArray(new Rule[ruleList.size()]);
         this.elseRules = (Rule[]) elseRule.toArray(new Rule[elseRule.size()]);
         this.graphics = image.createGraphics();
+        this.transformation = transformation;
 
         if (hints != null) {
             graphics.setRenderingHints(hints);
@@ -84,12 +88,12 @@ public final class LiteFeatureTypeStyle {
      * @param ruleList
      * @param elseRuleList
      */
-    public LiteFeatureTypeStyle(Graphics2D graphics, List ruleList, List elseRuleList) {
-
+    public LiteFeatureTypeStyle(Graphics2D graphics, List ruleList, List elseRuleList, Expression transformation) {
         this.myImage = null;
         this.graphics = graphics;
         this.ruleList = (Rule[]) ruleList.toArray(new Rule[ruleList.size()]);
         this.elseRules = (Rule[]) elseRuleList.toArray(new Rule[elseRuleList.size()]);
+        this.transformation = transformation;
     }
 
 }

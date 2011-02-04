@@ -33,7 +33,7 @@ import org.opengis.util.InternationalString;
 public class BufferFeatureCollectionFactory extends FeatureToFeatureProcessFactory {
 
     /** Buffer amount */
-    static final Parameter<Double> BUFFER = new Parameter<Double>("buffer",
+    public static final Parameter<Double> BUFFER = new Parameter<Double>("buffer",
             Double.class, Text.text("Buffer Amount"), Text.text("Amount to buffer each feature by"));
 
     public InternationalString getTitle() {

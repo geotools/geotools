@@ -688,4 +688,20 @@ public class SLDStyleTest extends TestCase {
         assertEquals("the_geom", ps.getGeometryPropertyName());
 
     }
+    
+    public void testDataTransformation() throws Exception {
+        StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
+        java.net.URL surl = TestData.getResource(this, "transformation.xml");
+        SLDParser stylereader = new SLDParser(factory, surl);
+       
+        // basic checks
+        Style[] styles = stylereader.readXML();
+        assertEquals(1, styles.length);
+        assertEquals(1, styles[0].featureTypeStyles().size());
+        final FeatureTypeStyle fts = styles[0].featureTypeStyles().get(0);
+        assertEquals(1, fts.rules().size());
+        assertNotNull(fts.getTransformation());
+        Function tx = (Function) fts.getTransformation();
+        assertEquals("union", tx.getName());
+    }
 }

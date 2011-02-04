@@ -50,82 +50,79 @@ import com.vividsolutions.jts.geom.LineString;
  * 
  * @author wolf
  * 
- *
+ * 
  * @source $URL$
  */
 public class ReprojectionTest extends TestCase {
 
-	private SimpleFeatureType pointFeautureType;
+    private SimpleFeatureType pointFeautureType;
 
-	private GeometryFactory gf = new GeometryFactory();
+    private GeometryFactory gf = new GeometryFactory();
 
-	protected int errors;
+    protected int errors;
 
-	protected void setUp() throws Exception {
-		super.setUp();
+    protected void setUp() throws Exception {
+        super.setUp();
 
-		SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
-		builder.setName("Lines");
-		builder.add("geom", LineString.class, DefaultGeographicCRS.WGS84);
-		pointFeautureType = builder.buildFeatureType();
-	}
+        SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
+        builder.setName("Lines");
+        builder.add("geom", LineString.class, DefaultGeographicCRS.WGS84);
+        pointFeautureType = builder.buildFeatureType();
+    }
 
-	public SimpleFeatureCollection createLineCollection() throws Exception {
-	    SimpleFeatureCollection fc = FeatureCollections.newCollection();
-		fc.add(createLine(-177, 0, -177, 10));
-		fc.add(createLine(-177, 0, -200, 0));
-		fc.add(createLine(-177, 0, -177, 100));
+    public SimpleFeatureCollection createLineCollection() throws Exception {
+        SimpleFeatureCollection fc = FeatureCollections.newCollection();
+        fc.add(createLine(-177, 0, -177, 10));
+        fc.add(createLine(-177, 0, -200, 0));
+        fc.add(createLine(-177, 0, -177, 100));
 
-		return fc;
-	}
+        return fc;
+    }
 
-	private SimpleFeature createLine(double x1, double y1, double x2, double y2)
-			throws IllegalAttributeException {
-		Coordinate[] coords = new Coordinate[] { new Coordinate(x1, y1),
-				new Coordinate(x2, y2) };
-		return SimpleFeatureBuilder.build(pointFeautureType, new Object[] { gf
-				.createLineString(coords) }, null);
-	}
+    private SimpleFeature createLine(double x1, double y1, double x2, double y2)
+            throws IllegalAttributeException {
+        Coordinate[] coords = new Coordinate[] { new Coordinate(x1, y1), new Coordinate(x2, y2) };
+        return SimpleFeatureBuilder.build(pointFeautureType, new Object[] { gf
+                .createLineString(coords) }, null);
+    }
 
-	private Style createLineStyle() {
-		StyleBuilder sb = new StyleBuilder();
-		return sb.createStyle(sb.createLineSymbolizer());
-	}
+    private Style createLineStyle() {
+        StyleBuilder sb = new StyleBuilder();
+        return sb.createStyle(sb.createLineSymbolizer());
+    }
 
-	public void testSkipProjectionErrors() throws Exception {
-		// build map context
-		MapContext mapContext = new DefaultMapContext(
-				DefaultGeographicCRS.WGS84);
-		mapContext.addLayer(createLineCollection(), createLineStyle());
+    public void testSkipProjectionErrors() throws Exception {
+        // build map context
+        MapContext mapContext = new DefaultMapContext(DefaultGeographicCRS.WGS84);
+        mapContext.addLayer(createLineCollection(), createLineStyle());
 
-		// build projected envelope to work with (small one around the area of
-		// validity of utm zone 1, which being a Gauss projection is a vertical 
-		// slice parallel to the central meridian, -177°)
-		ReferencedEnvelope reWgs = new ReferencedEnvelope(new Envelope(-180,
-				-170, 20, 40), DefaultGeographicCRS.WGS84);
-		CoordinateReferenceSystem utm1N = CRS.decode("EPSG:32601");
-		System.out.println(CRS.getGeographicBoundingBox(utm1N));
-		ReferencedEnvelope reUtm = reWgs.transform(utm1N, true);
+        // build projected envelope to work with (small one around the area of
+        // validity of utm zone 1, which being a Gauss projection is a vertical
+        // slice parallel to the central meridian, -177°)
+        ReferencedEnvelope reWgs = new ReferencedEnvelope(new Envelope(-180, -170, 20, 40),
+                DefaultGeographicCRS.WGS84);
+        CoordinateReferenceSystem utm1N = CRS.decode("EPSG:32601");
+        System.out.println(CRS.getGeographicBoundingBox(utm1N));
+        ReferencedEnvelope reUtm = reWgs.transform(utm1N, true);
 
-		BufferedImage image = new BufferedImage(200, 200,
-				BufferedImage.TYPE_4BYTE_ABGR);
+        BufferedImage image = new BufferedImage(200, 200, BufferedImage.TYPE_4BYTE_ABGR);
 
-		// setup the renderer and listen for errors
-		StreamingRenderer sr = new StreamingRenderer();
-		sr.setRendererHints(Collections.singletonMap(sr.OPTIMIZED_DATA_LOADING_KEY, Boolean.FALSE));
-		sr.setContext(mapContext);
-		sr.addRenderListener(new RenderListener() {
-			public void featureRenderer(SimpleFeature feature) {
-			}
-			public void errorOccurred(Exception e) {
-			    e.printStackTrace();
-				errors++;
-			}
-		});
-		errors = 0;
-		sr.paint((Graphics2D) image.getGraphics(), new Rectangle(200, 200),reUtm);
-		// we should get two errors since there are two features that cannot be
-		// projected but the renderer itself should not throw exceptions
-		assertEquals(2, errors);
-	}
+        // setup the renderer and listen for errors
+        StreamingRenderer sr = new StreamingRenderer();
+        sr.setContext(mapContext);
+        sr.addRenderListener(new RenderListener() {
+            public void featureRenderer(SimpleFeature feature) {
+            }
+
+            public void errorOccurred(Exception e) {
+                e.printStackTrace();
+                errors++;
+            }
+        });
+        errors = 0;
+        sr.paint((Graphics2D) image.getGraphics(), new Rectangle(200, 200), reUtm);
+        // we should get two errors since there are two features that cannot be
+        // projected but the renderer itself should not throw exceptions
+        assertEquals(1, errors);
+    }
 }

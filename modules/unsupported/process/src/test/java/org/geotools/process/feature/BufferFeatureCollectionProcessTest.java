@@ -45,9 +45,6 @@ public class BufferFeatureCollectionProcessTest {
     
     FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
-    /**
-     * FIXME: test fails at line 79
-     */
     @Test
     public void test() throws Exception {
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();

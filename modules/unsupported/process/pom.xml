@@ -129,6 +129,12 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-shapefile</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>javax.media</groupId>
             <artifactId>jai_codec</artifactId>
 	    <!-- The version number is specified in the parent POM. -->

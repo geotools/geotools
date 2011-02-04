@@ -18,6 +18,8 @@ package org.geotools.styling;
 
 import java.util.List;
 
+import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Function;
 import org.opengis.metadata.citation.OnLineResource;
 
 /**
@@ -202,4 +204,20 @@ public interface FeatureTypeStyle extends org.opengis.style.FeatureTypeStyle{
     void setOnlineResource(OnLineResource online);
 
     void accept(org.geotools.styling.StyleVisitor visitor);
+    
+    /**
+     * The eventual transformation to be applied before rendering the data (should be an expression 
+     * taking a feature collection or a grid coverage as the evaluation context and returns a 
+     * feature collection or a grid coverage as an output) 
+     * @return
+     */
+    Expression getTransformation();
+    
+    /**
+     * Sets the eventual transformation to be applied before rendering the data (should be an 
+     * expression taking a feature collection or a grid coverage as an input and returns a 
+     * feature collection or a grid coverage as an output) 
+     * @return
+     */
+    void setTransformation(Expression transformation);
 }

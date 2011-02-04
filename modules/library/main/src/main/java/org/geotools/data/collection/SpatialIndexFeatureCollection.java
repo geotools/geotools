@@ -53,6 +53,11 @@ public class SpatialIndexFeatureCollection implements SimpleFeatureCollection {
     public SpatialIndexFeatureCollection() {
         this.index = new STRtree();
     }
+    
+    public SpatialIndexFeatureCollection(SimpleFeatureType schema) {
+        this.index = new STRtree();
+        this.schema = schema;
+    }
 
     public synchronized void addListener(CollectionListener listener) throws NullPointerException {
         if (listeners == null) {

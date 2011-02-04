@@ -184,7 +184,7 @@ public class CollectionConverterFactory implements ConverterFactory {
             }
             
             //array to collection?
-            if ( source.getClass().isArray() && Collection.class.isAssignableFrom( target ) ) {
+            if ( source.isArray() && Collection.class.isAssignableFrom( target ) ) {
                 return ArrayToCollection;
             }
         }

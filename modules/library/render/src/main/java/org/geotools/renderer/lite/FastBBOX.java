@@ -83,6 +83,10 @@ class FastBBOX implements BBOX, BinarySpatialOperator, BinaryComparisonOperator,
     public String getSRS() {
         return null;
     }
+    
+    public Envelope getEnvelope() {
+        return envelope;
+    }
 
     public Expression getExpression1() {
         return property;

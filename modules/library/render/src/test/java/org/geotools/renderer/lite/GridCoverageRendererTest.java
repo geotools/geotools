@@ -194,7 +194,6 @@ public class GridCoverageRendererTest  {
         final StreamingRenderer renderer = new StreamingRenderer();
         CountingRenderListener counter = new CountingRenderListener();
         renderer.addRenderListener(counter);
-        renderer.setRendererHints(Collections.singletonMap(StreamingRenderer.OPTIMIZED_DATA_LOADING_KEY, Boolean.TRUE));
         renderer.setContext(context);
         BufferedImage image = new BufferedImage(300, 300, BufferedImage.TYPE_4BYTE_ABGR);
         Graphics2D g2d = (Graphics2D) image.getGraphics();

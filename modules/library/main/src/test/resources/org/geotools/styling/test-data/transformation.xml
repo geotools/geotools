@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<StyledLayerDescriptor version="1.0.0"
+  xsi:schemaLocation="http://www.opengis.net/sld http://schemas.opengis.net/sld/1.0.0/StyledLayerDescriptor.xsd"
+  xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc"
+  xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <NamedLayer>
+    <Name>Whatever</Name>
+    <UserStyle>
+      <Name>Whenever</Name>
+      <FeatureTypeStyle>
+        <Transformation>
+          <!--
+            Fake function call, just to make sure we can parse this
+            properly, to do actual transformations we need gt-process
+            and the process/function bridge around
+          -->
+          <ogc:Function name="union">
+            <ogc:Literal>geom1</ogc:Literal>
+            <ogc:Literal>geom2</ogc:Literal>
+          </ogc:Function>
+        </Transformation>
+        <Rule>
+          <Name>Polygon fill mixed</Name>
+          <LineSymbolizer>
+            <Stroke />
+          </LineSymbolizer>
+        </Rule>
+      </FeatureTypeStyle>
+    </UserStyle>
+  </NamedLayer>
+</StyledLayerDescriptor>

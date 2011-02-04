@@ -25,6 +25,7 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImagingOpException;
 import java.awt.image.RenderedImage;
@@ -74,6 +75,7 @@ import org.opengis.referencing.operation.TransformException;
 
 import com.sun.media.jai.opimage.RIFUtil;
 import com.sun.media.jai.opimage.TranslateIntOpImage;
+import com.sun.media.jai.util.Rational;
 import com.vividsolutions.jts.geom.Envelope;
 
 /**
@@ -191,6 +193,68 @@ public final class GridCoverageRenderer {
     private final AffineTransform finalWorldToGrid;
 
     private final Hints hints = new Hints();
+
+    // FORMULAE FOR FORWARD MAP are derived as follows
+    //     Nearest
+    //        Minimum:
+    //            srcMin = floor ((dstMin + 0.5 - trans) / scale)
+    //            srcMin <= (dstMin + 0.5 - trans) / scale < srcMin + 1
+    //            srcMin*scale <= dstMin + 0.5 - trans < (srcMin + 1)*scale
+    //            srcMin*scale - 0.5 + trans
+    //                       <= dstMin < (srcMin + 1)*scale - 0.5 + trans
+    //            Let A = srcMin*scale - 0.5 + trans,
+    //            Let B = (srcMin + 1)*scale - 0.5 + trans
+    //
+    //            dstMin = ceil(A)
+    //
+    //        Maximum:
+    //            Note that srcMax is defined to be srcMin + dimension - 1
+    //            srcMax = floor ((dstMax + 0.5 - trans) / scale)
+    //            srcMax <= (dstMax + 0.5 - trans) / scale < srcMax + 1
+    //            srcMax*scale <= dstMax + 0.5 - trans < (srcMax + 1)*scale
+    //            srcMax*scale - 0.5 + trans
+    //                       <= dstMax < (srcMax+1) * scale - 0.5 + trans
+    //            Let float A = (srcMax + 1) * scale - 0.5 + trans
+    //
+    //            dstMax = floor(A), if floor(A) < A, else
+    //            dstMax = floor(A) - 1
+    //            OR dstMax = ceil(A - 1)
+    //
+    //     Other interpolations
+    //
+    //        First the source should be shrunk by the padding that is
+    //        required for the particular interpolation. Then the
+    //        shrunk source should be forward mapped as follows:
+    //
+    //        Minimum:
+    //            srcMin = floor (((dstMin + 0.5 - trans)/scale) - 0.5)
+    //            srcMin <= ((dstMin + 0.5 - trans)/scale) - 0.5 < srcMin+1
+    //            (srcMin+0.5)*scale <= dstMin+0.5-trans <
+    //                                                  (srcMin+1.5)*scale
+    //            (srcMin+0.5)*scale - 0.5 + trans
+    //                       <= dstMin < (srcMin+1.5)*scale - 0.5 + trans
+    //            Let A = (srcMin+0.5)*scale - 0.5 + trans,
+    //            Let B = (srcMin+1.5)*scale - 0.5 + trans
+    //
+    //            dstMin = ceil(A)
+    //
+    //        Maximum:
+    //            srcMax is defined as srcMin + dimension - 1
+    //            srcMax = floor (((dstMax + 0.5 - trans) / scale) - 0.5)
+    //            srcMax <= ((dstMax + 0.5 - trans)/scale) - 0.5 < srcMax+1
+    //            (srcMax+0.5)*scale <= dstMax + 0.5 - trans <
+    //                                                   (srcMax+1.5)*scale
+    //            (srcMax+0.5)*scale - 0.5 + trans
+    //                       <= dstMax < (srcMax+1.5)*scale - 0.5 + trans
+    //            Let float A = (srcMax+1.5)*scale - 0.5 + trans
+    //
+    //            dstMax = floor(A), if floor(A) < A, else
+    //            dstMax = floor(A) - 1
+    //            OR dstMax = ceil(A - 1)
+    //
+    
+    
+        private static float rationalTolerance = 0.000001F;
 
     /** Parameters used to control the {@link Resample} operation. */
     private final static ParameterValueGroup resampleParams;
@@ -686,23 +750,37 @@ public final class GridCoverageRenderer {
         // either multiband or indexed. It could also be 16 bits indexed!!!!
         
         final RenderedImage finalImage = couple.getGridCoverage().getRenderedImage();
-        final AffineTransform clonedFinalWorldToGrid = couple.getTransform();
+        final AffineTransform finalRaster2Model = couple.getTransform();
+        
+        //paranoiac check to avoid that JAI freaks out when computing its internal layouT on images that are too small
+        Rectangle2D finalLayout= layoutHelper(
+                        finalImage, 
+                        (float)finalRaster2Model.getScaleX(), 
+                        (float)finalRaster2Model.getScaleY(), 
+                        (float)finalRaster2Model.getTranslateX(), 
+                        (float)finalRaster2Model.getTranslateY(), 
+                        interpolation);
+        if(finalLayout.isEmpty()){
+                if(LOGGER.isLoggable(java.util.logging.Level.FINE))
+                        LOGGER.fine("Unable to create a granuleDescriptor "+this.toString()+ " due to jai scale bug");
+                return null;
+        }
 
         // TODO: optimize translate/scale transformations
         // TODO: use mosaic to merge with a background respecting alpha and transparency
         // TODO: check tolerance value
         // TODO: do we need to pass in any hints?
         
-        boolean hasScaleX=!(Math.abs(clonedFinalWorldToGrid.getScaleX()-1) < 1E-2/(finalImage.getWidth()+1-finalImage.getMinX()));
-        boolean hasScaleY=!(Math.abs(clonedFinalWorldToGrid.getScaleY()-1) < 1E-2/(finalImage.getHeight()+1-finalImage.getMinY()));
-        boolean hasShearX=!(clonedFinalWorldToGrid.getShearX() == 0.0);
-        boolean hasShearY=!(clonedFinalWorldToGrid.getShearY() == 0.0);
-        boolean hasTranslateX=!(Math.abs(clonedFinalWorldToGrid.getTranslateX()) <  1E-2);
-        boolean hasTranslateY=!(Math.abs(clonedFinalWorldToGrid.getTranslateY()) <  1E-2);
-        boolean isTranslateXInt=!(Math.abs(clonedFinalWorldToGrid.getTranslateX() - (int) clonedFinalWorldToGrid.getTranslateX()) <  1E-2);
-        boolean isTranslateYInt=!(Math.abs(clonedFinalWorldToGrid.getTranslateY() - (int) clonedFinalWorldToGrid.getTranslateY()) <  1E-2);
+        boolean hasScaleX=!(Math.abs(finalRaster2Model.getScaleX()-1) < 1E-2/(finalImage.getWidth()+1-finalImage.getMinX()));
+        boolean hasScaleY=!(Math.abs(finalRaster2Model.getScaleY()-1) < 1E-2/(finalImage.getHeight()+1-finalImage.getMinY()));
+        boolean hasShearX=!(finalRaster2Model.getShearX() == 0.0);
+        boolean hasShearY=!(finalRaster2Model.getShearY() == 0.0);
+        boolean hasTranslateX=!(Math.abs(finalRaster2Model.getTranslateX()) <  1E-2);
+        boolean hasTranslateY=!(Math.abs(finalRaster2Model.getTranslateY()) <  1E-2);
+        boolean isTranslateXInt=!(Math.abs(finalRaster2Model.getTranslateX() - (int) finalRaster2Model.getTranslateX()) <  1E-2);
+        boolean isTranslateYInt=!(Math.abs(finalRaster2Model.getTranslateY() - (int) finalRaster2Model.getTranslateY()) <  1E-2);
         
-        boolean isIdentity = clonedFinalWorldToGrid.isIdentity() && !hasScaleX&&!hasScaleY &&!hasTranslateX&&!hasTranslateY;
+        boolean isIdentity = finalRaster2Model.isIdentity() && !hasScaleX&&!hasScaleY &&!hasTranslateX&&!hasTranslateY;
         boolean isScale = hasScaleX&&hasScaleY &&!hasShearX&&!hasShearY;
         
         // TODO how can we check that the a skew is harmless????
@@ -732,8 +810,8 @@ public final class GridCoverageRenderer {
             // It's a integer translate
             return new TranslateIntOpImage(finalImage,
             								hints,
-                                           (int) clonedFinalWorldToGrid.getShearX(),
-                                           (int) clonedFinalWorldToGrid.getShearY());
+                                           (int) finalRaster2Model.getShearX(),
+                                           (int) finalRaster2Model.getShearY());
         }                                
                           
         // final transformation
@@ -750,17 +828,17 @@ public final class GridCoverageRenderer {
     		// scale ?
     		if (isScale){
     			im=ScaleDescriptor.create(	finalImage, 
-    									(float) clonedFinalWorldToGrid.getScaleX(),
-    									(float) clonedFinalWorldToGrid.getScaleY(),
-    									(float) clonedFinalWorldToGrid.getTranslateX(), 
-    									(float) clonedFinalWorldToGrid.getTranslateY(), 
+    									(float) finalRaster2Model.getScaleX(),
+    									(float) finalRaster2Model.getScaleY(),
+    									(float) finalRaster2Model.getTranslateX(), 
+    									(float) finalRaster2Model.getTranslateY(), 
     									interpolation, 
     									hints);
     		}else{
                     // use more general affine (slower)
                     im = AffineDescriptor.create(
                             finalImage, 
-                            clonedFinalWorldToGrid, 
+                            finalRaster2Model, 
                             interpolation,
                             null, 
                             hints);
@@ -918,6 +996,122 @@ public final class GridCoverageRenderer {
         graphics.setComposite(oldAlphaComposite);
         graphics.setRenderingHints(oldHints);
 
+    }
+
+
+
+    private static Rectangle2D layoutHelper(RenderedImage source,
+                                        float scaleX,
+                                        float scaleY,
+                                        float transX,
+                                        float transY,
+                                        Interpolation interp) {
+    
+    // Represent the scale factors as Rational numbers.
+    	// Since a value of 1.2 is represented as 1.200001 which
+    	// throws the forward/backward mapping in certain situations.
+    	// Convert the scale and translation factors to Rational numbers
+    	Rational scaleXRational = Rational.approximate(scaleX,rationalTolerance);
+    	Rational scaleYRational = Rational.approximate(scaleY,rationalTolerance);
+    
+    	long scaleXRationalNum = (long) scaleXRational.num;
+    	long scaleXRationalDenom = (long) scaleXRational.denom;
+    	long scaleYRationalNum = (long) scaleYRational.num;
+    	long scaleYRationalDenom = (long) scaleYRational.denom;
+    
+    	Rational transXRational = Rational.approximate(transX,rationalTolerance);
+    	Rational transYRational = Rational.approximate(transY,rationalTolerance);
+    
+    	long transXRationalNum = (long) transXRational.num;
+    	long transXRationalDenom = (long) transXRational.denom;
+    	long transYRationalNum = (long) transYRational.num;
+    	long transYRationalDenom = (long) transYRational.denom;
+    
+    	int x0 = source.getMinX();
+    	int y0 = source.getMinY();
+    	int w = source.getWidth();
+    	int h = source.getHeight();
+    
+    	// Variables to store the calculated destination upper left coordinate
+    	long dx0Num, dx0Denom, dy0Num, dy0Denom;
+    
+    	// Variables to store the calculated destination bottom right
+    	// coordinate
+    	long dx1Num, dx1Denom, dy1Num, dy1Denom;
+    
+    	// Start calculations for destination
+    
+    	dx0Num = x0;
+    	dx0Denom = 1;
+    
+    	dy0Num = y0;
+    	dy0Denom = 1;
+    
+    	// Formula requires srcMaxX + 1 = (x0 + w - 1) + 1 = x0 + w
+    	dx1Num = x0 + w;
+    	dx1Denom = 1;
+    
+    	// Formula requires srcMaxY + 1 = (y0 + h - 1) + 1 = y0 + h
+    	dy1Num = y0 + h;
+    	dy1Denom = 1;
+    
+    	dx0Num *= scaleXRationalNum;
+    	dx0Denom *= scaleXRationalDenom;
+    
+    	dy0Num *= scaleYRationalNum;
+    	dy0Denom *= scaleYRationalDenom;
+    
+    	dx1Num *= scaleXRationalNum;
+    	dx1Denom *= scaleXRationalDenom;
+    
+    	dy1Num *= scaleYRationalNum;
+    	dy1Denom *= scaleYRationalDenom;
+    
+    	// Equivalent to subtracting 0.5
+    	dx0Num = 2 * dx0Num - dx0Denom;
+    	dx0Denom *= 2;
+    
+    	dy0Num = 2 * dy0Num - dy0Denom;
+    	dy0Denom *= 2;
+    
+    	// Equivalent to subtracting 1.5
+    	dx1Num = 2 * dx1Num - 3 * dx1Denom;
+    	dx1Denom *= 2;
+    
+    	dy1Num = 2 * dy1Num - 3 * dy1Denom;
+    	dy1Denom *= 2;
+    
+    	// Adding translation factors
+    
+    	// Equivalent to float dx0 += transX
+    	dx0Num = dx0Num * transXRationalDenom + transXRationalNum * dx0Denom;
+    	dx0Denom *= transXRationalDenom;
+    
+    	// Equivalent to float dy0 += transY
+    	dy0Num = dy0Num * transYRationalDenom + transYRationalNum * dy0Denom;
+    	dy0Denom *= transYRationalDenom;
+    
+    	// Equivalent to float dx1 += transX
+    	dx1Num = dx1Num * transXRationalDenom + transXRationalNum * dx1Denom;
+    	dx1Denom *= transXRationalDenom;
+    
+    	// Equivalent to float dy1 += transY
+    	dy1Num = dy1Num * transYRationalDenom + transYRationalNum * dy1Denom;
+    	dy1Denom *= transYRationalDenom;
+    
+    	// Get the integral coordinates
+    	int l_x0, l_y0, l_x1, l_y1;
+    
+    	l_x0 = Rational.ceil(dx0Num, dx0Denom);
+    	l_y0 = Rational.ceil(dy0Num, dy0Denom);
+    
+    	l_x1 = Rational.ceil(dx1Num, dx1Denom);
+    	l_y1 = Rational.ceil(dy1Num, dy1Denom);
+    
+    	// Set the top left coordinate of the destination
+    	final Rectangle2D retValue= new Rectangle2D.Double();
+    	retValue.setFrame(l_x0, l_y0, l_x1 - l_x0 + 1, l_y1 - l_y0 + 1);
+    	return retValue;
     }
 
 }

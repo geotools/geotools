@@ -131,11 +131,7 @@ public class ComplexTypeImpl extends AttributeTypeImpl implements ComplexType {
 	    }
 	    return true;
 	}
-    
-	public int hashCode(){
-	    return 59 * super.hashCode() + properties.hashCode();
-	}
-    
+      
 	public String toString() {
 		StringBuffer sb = new StringBuffer(Classes.getShortClassName(this));
 		sb.append(" ");

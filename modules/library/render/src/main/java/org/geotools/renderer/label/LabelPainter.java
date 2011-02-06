@@ -289,12 +289,26 @@ public class LabelPainter {
         final Font font = item.getTextStyle().getFont();
         final char[] chars = label.toCharArray();
         final int length = label.length();
-        if (Bidi.requiresBidi(chars, 0, length)
-                && new Bidi(label, Bidi.DIRECTION_DEFAULT_LEFT_TO_RIGHT).isRightToLeft())
-            return font.layoutGlyphVector(graphics.getFontRenderContext(), chars, 0, length,
-                    Font.LAYOUT_RIGHT_TO_LEFT);
-        else
-            return font.createGlyphVector(graphics.getFontRenderContext(), chars);
+        if (Bidi.requiresBidi(chars, 0, length)) {
+            Bidi bidi = new Bidi(label, Bidi.DIRECTION_DEFAULT_LEFT_TO_RIGHT);
+            if (bidi.isRightToLeft()) {
+                return font.layoutGlyphVector(graphics.getFontRenderContext(), chars, 0, length,
+                        Font.LAYOUT_RIGHT_TO_LEFT);
+            } else if (bidi.isMixed()) {
+                String r = "";
+                for (int i=0; i<bidi.getRunCount(); i++) {
+                    String s1 = label.substring(bidi.getRunStart(i), bidi.getRunLimit(i));
+                    if (bidi.getRunLevel(i)%2==0) {
+                        s1 = new StringBuffer(s1).reverse().toString();
+                    }
+                    r = r + s1;
+                }
+                char[] chars2 = r.toCharArray();
+                return font.layoutGlyphVector(graphics.getFontRenderContext(), chars2, 0, length,
+                        Font.LAYOUT_RIGHT_TO_LEFT);
+            } 
+        } 
+        return font.createGlyphVector(graphics.getFontRenderContext(), chars);
     }
 
     /**

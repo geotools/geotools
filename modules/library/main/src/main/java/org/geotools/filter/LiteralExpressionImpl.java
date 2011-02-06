@@ -215,59 +215,7 @@ public class LiteralExpressionImpl extends DefaultExpression
     }
 
     public Object evaluate(Object feature) {
-        //hrm.  Well, now that' we're always storing the internals of 
-        //Literals as strings, we need to be slightly smart about how we
-        //return what's inside.  Some (err, lots) of code relies on this
-        //method to return an instance of the correct TYPE.  I guess we should
-        //try and be somewhat smart about this.
-        
-        //ASSERTION: literal is always a string.
-        
-        // caching, don't try to reparse over and over the same literal
-        if(parsedValue != null)
-            return parsedValue;
-        
-        // actual parsing
-        if (literal == null || !(literal instanceof String)) {
-            parsedValue = literal;
-        } else {
-            String s = (String) literal;
-            
-            // check if it's a number
-            try {
-                BigDecimal bd = new BigDecimal(s);
-                
-                // check if it has a decimal part 
-                if(bd.scale() > 0) {
-                    double d = bd.doubleValue();
-                    // if too big for double, it will become infinite
-                    if(!Double.isInfinite(d))
-                        parsedValue = d;
-                    else
-                        parsedValue = bd;
-                } else {
-                    // it's integral, see if we can convert it to a long or int
-                    if(bd.compareTo(MIN_LONG) >= 0 && bd.compareTo(MAX_LONG) <= 0) {
-                        // in range to be a long 
-                        long l = bd.longValue();
-                        // if this test passes, it's actually an int
-                        if((int) l == l)
-                            parsedValue = new Integer((int) l);
-                        else
-                            parsedValue = new Long(l);
-                    } else {
-                        // out of range, switch to big decimal
-                        parsedValue = bd.toBigInteger();
-                    }
-                }
-            } catch(Exception e) {
-                // ok, it's not a number, let's keep it as it is
-                parsedValue = literal;
-            }
-            
-            
-        }  
-        return parsedValue;
+        return literal;
     }
     
     public Object evaluate(Object feature, Class context) {

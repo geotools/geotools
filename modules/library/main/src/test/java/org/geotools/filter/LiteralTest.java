@@ -64,12 +64,12 @@ public class LiteralTest extends TestCase {
     
     public void testConversion() throws Exception {
         assertEquals("abc", ff.literal("abc").evaluate(null));
-        assertEquals(new Integer(12), ff.literal("12").evaluate(null));
-        assertEquals(new Double(12.0), ff.literal("12.0").evaluate(null));
-        assertEquals(new Double(12.5), ff.literal("12.5").evaluate(null));
-        assertEquals(new Long(Long.MAX_VALUE), ff.literal(Long.MAX_VALUE + "").evaluate(null));
+        assertEquals(new Integer(12), ff.literal("12").evaluate(null, Integer.class));
+        assertEquals(new Double(12.0), ff.literal("12.0").evaluate(null, Double.class));
+        assertEquals(new Double(12.5), ff.literal("12.5").evaluate(null, Double.class));
+        assertEquals(new Long(Long.MAX_VALUE), ff.literal(Long.MAX_VALUE + "").evaluate(null, Long.class));
         BigInteger doubleMaxLong = BigInteger.valueOf(Long.MAX_VALUE).multiply(BigInteger.valueOf(2));
-        assertEquals(doubleMaxLong, ff.literal(doubleMaxLong.toString()).evaluate(null));
+        assertEquals(doubleMaxLong, ff.literal(doubleMaxLong.toString()).evaluate(null, BigInteger.class));
 
     }
 }

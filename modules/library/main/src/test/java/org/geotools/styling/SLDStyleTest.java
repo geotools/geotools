@@ -619,7 +619,7 @@ public class SLDStyleTest extends TestCase {
          RasterSymbolizer rs = (RasterSymbolizer)r.getSymbolizers()[0];
          
          //opacity         
-         Double d = (Double)rs.getOpacity().evaluate(null);
+         Double d = (Double)rs.getOpacity().evaluate(null, Double.class);
          assertEquals(1.0, d.doubleValue());
                 
          //overlap behaviour
@@ -636,7 +636,7 @@ public class SLDStyleTest extends TestCase {
          for (int i = 0; i < centeries.length; i++) {
 			ColorMapEntry entry = centeries[i];
 			String c = (String) entry.getColor().evaluate(null);
-			Integer q = (Integer) entry.getQuantity().evaluate(null);
+			Integer q = (Integer) entry.getQuantity().evaluate(null, Integer.class);
 			assertEquals(colors[i], c);
 			assertEquals(values[i], q.intValue());
 		}

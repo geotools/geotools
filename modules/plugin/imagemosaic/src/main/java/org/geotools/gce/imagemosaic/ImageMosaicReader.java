@@ -27,7 +27,6 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -53,7 +52,6 @@ import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
-import org.geotools.data.DefaultQuery;
 import org.geotools.data.Query;
 import org.geotools.data.QueryCapabilities;
 import org.geotools.factory.Hints;
@@ -63,7 +61,7 @@ import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalogFactory;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
+import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.resources.coverage.FeatureUtilities;
 import org.geotools.util.Utilities;
 import org.opengis.coverage.grid.Format;
@@ -78,7 +76,6 @@ import org.opengis.geometry.BoundingBox;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.MathTransform;
 /**
  * This reader is responsible for providing access to mosaic of georeferenced
@@ -375,16 +372,21 @@ public final class ImageMosaicReader extends AbstractGridCoverage2DReader implem
         	this.originalEnvelope.setCoordinateReferenceSystem(crs);
         }
         
-        // original gridrange (estimated)
+        // original gridrange (estimated). I am using the floor here in order to make sure
+        // we always stays inside the real area that we have for the granule
         originalGridRange = new GridEnvelope2D(
                         new Rectangle(
-                                        (int) Math.round(originalEnvelope.getSpan(0)/ highestRes[0]), 
-                                        (int) Math.round(originalEnvelope.getSpan(1)/ highestRes[1])
+                                        (int) (originalEnvelope.getSpan(0)/ highestRes[0]), 
+                                        (int) (originalEnvelope.getSpan(1)/ highestRes[1])
                                         )
                         );
-        final GridToEnvelopeMapper geMapper = new GridToEnvelopeMapper(originalGridRange, originalEnvelope);
-        geMapper.setPixelAnchor(PixelInCell.CELL_CENTER);
-        raster2Model = geMapper.createTransform();      
+        raster2Model= new AffineTransform2D(
+                highestRes[0], 
+                0, 
+                0, 
+                -highestRes[1], 
+                originalEnvelope.getLowerCorner().getOrdinate(0)+0.5*highestRes[0], 
+                originalEnvelope.getUpperCorner().getOrdinate(1)-0.5*highestRes[1]);   
 		
 	}
 
@@ -567,8 +569,7 @@ public final class ImageMosaicReader extends AbstractGridCoverage2DReader implem
     		    } else {
     		        LOGGER.fine("Reading mosaic");
     		    }
-		    LOGGER.fine(new StringBuffer("Highest res ").append(highestRes[0])
-					.append(" ").append(highestRes[1]).toString());
+		    LOGGER.fine("Highest res "+highestRes[0]+" "+highestRes[1]);
 		}
 		//
 		// add max allowed tiles if missing
@@ -735,7 +736,7 @@ public final class ImageMosaicReader extends AbstractGridCoverage2DReader implem
 		if(getTimeAttribute){
 			Query query;
 			try {
-				query = new DefaultQuery(rasterManager.granuleCatalog.getType().getTypeName());
+				query = new Query(rasterManager.granuleCatalog.getType().getTypeName());
 				query.setPropertyNames(Arrays.asList(timeAttribute));
 				final SortBy[] sortBy=new SortBy[]{
 						new SortByImpl(
@@ -796,7 +797,7 @@ public final class ImageMosaicReader extends AbstractGridCoverage2DReader implem
 		if(getElevationAttribute){
 			Query query;
 			try {
-				query = new DefaultQuery(rasterManager.granuleCatalog.getType().getTypeName());
+				query = new Query(rasterManager.granuleCatalog.getType().getTypeName());
 				query.setPropertyNames(Arrays.asList(elevationAttribute));
 				final SortBy[] sortBy=new SortBy[]{
 						new SortByImpl(
@@ -805,8 +806,8 @@ public final class ImageMosaicReader extends AbstractGridCoverage2DReader implem
 						)};
 				if(queryCapabilities.supportsSorting(sortBy))
 					query.setSortBy(sortBy);
-//				else
-//					manualSort=true;				
+				else
+					manualSort=true;				
 				final UniqueVisitor visitor= new UniqueVisitor(elevationAttribute);
 				rasterManager.granuleCatalog.computeAggregateFunction(query, visitor);
 				

@@ -523,9 +523,9 @@ public class ImagePyramidReaderTest extends Assert {
 				.read(new GeneralParameterValue[] { gg }));
 		assertNotNull("Null value returned instead of a coverage", coverage);
 		assertTrue("coverage dimensions different from what we expected",
-				coverage.getGridGeometry().getGridRange().getSpan(0) == 250
+				coverage.getGridGeometry().getGridRange().getSpan(0) == 254
 						&& coverage.getGridGeometry().getGridRange().getSpan(
-								1) == 250);
+								1) == 254);
 		if (TestData.isInteractiveTest())
 			coverage.show("testCropHighestLevel");
 		else

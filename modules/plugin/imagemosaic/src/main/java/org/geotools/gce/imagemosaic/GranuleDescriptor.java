@@ -727,8 +727,7 @@ public class GranuleDescriptor {
 			// which source area we need to crop in the selected level taking
 			// into account the scale factors imposed by the selection of this
 			// level together with the base level grid to world transformation
-            AffineTransform tempCropWorldToGrid = new AffineTransform(selectedlevel.gridToWorldTransformCorner);
-            AffineTransform2D cropWorldToGrid= new AffineTransform2D(tempCropWorldToGrid);
+            AffineTransform2D cropWorldToGrid= new AffineTransform2D(selectedlevel.gridToWorldTransformCorner);
             cropWorldToGrid=(AffineTransform2D) cropWorldToGrid.inverse();
 			// computing the crop source area which lives into the
 			// selected level raster space, NOTICE that at the end we need to
@@ -736,6 +735,9 @@ public class GranuleDescriptor {
 			// we cannot just use the crop grid to world but we need to correct
 			// it.
 			final Rectangle sourceArea = CRS.transform(cropWorldToGrid, intersection).toRectangle2D().getBounds();
+			//gutter
+			if(selectedlevel.baseToLevelTransform.isIdentity())
+			        			sourceArea.grow(2, 2);
 			XRectangle2D.intersect(sourceArea, selectedlevel.rasterDimensions, sourceArea);//make sure roundings don't bother us
 			// is it empty??
 			if (sourceArea.isEmpty()) {
@@ -757,7 +759,7 @@ public class GranuleDescriptor {
 			// Setting subsampling 
 			int newSubSamplingFactor = 0;
 			final String pluginName = cachedReaderSPI.getPluginClassName();
-			if (pluginName != null && pluginName.equals(Utils.DIRECT_KAKADU_PLUGIN)){
+			if (pluginName != null && pluginName.equals(ImageUtilities.DIRECT_KAKADU_PLUGIN)){
 				final int ssx = readParameters.getSourceXSubsampling();
 				final int ssy = readParameters.getSourceYSubsampling();
 				newSubSamplingFactor = Utilities.getSubSamplingFactor2(ssx, ssy);

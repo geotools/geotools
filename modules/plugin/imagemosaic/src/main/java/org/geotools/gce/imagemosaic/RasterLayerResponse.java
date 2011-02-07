@@ -20,6 +20,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.image.ColorModel;
@@ -53,6 +54,7 @@ import javax.media.jai.TileCache;
 import javax.media.jai.TileScheduler;
 import javax.media.jai.operator.AffineDescriptor;
 import javax.media.jai.operator.ConstantDescriptor;
+import javax.media.jai.operator.CropDescriptor;
 import javax.media.jai.operator.MosaicDescriptor;
 
 import org.geotools.coverage.Category;
@@ -61,6 +63,7 @@ import org.geotools.coverage.TypeMap;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
+import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.Query;
 import org.geotools.data.QueryCapabilities;
@@ -76,10 +79,10 @@ import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
 import org.geotools.referencing.CRS;
-import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.resources.coverage.FeatureUtilities;
+import org.geotools.resources.geometry.XRectangle2D;
 import org.geotools.resources.i18n.Vocabulary;
 import org.geotools.resources.i18n.VocabularyKeys;
 import org.geotools.resources.image.ImageUtilities;
@@ -693,28 +696,44 @@ class RasterLayerResponse{
 		if (finalTransparentColor != null) {
 			if (LOGGER.isLoggable(Level.FINE))
 				LOGGER.fine("Support for alpha on final mosaic");
-			return Utils.makeColorTransparent(finalTransparentColor,mosaic);
+			return ImageUtilities.maskColor(finalTransparentColor,mosaic);
 
 		}
-		if (oversampledRequest){
+		if (!needsReprojection){
 		    try {
-		        // creating source grid to world corrected to the pixel corner
-		        final AffineTransform sourceGridToWorld = new AffineTransform((AffineTransform) baseGridToWorld);
-		        sourceGridToWorld.concatenate(CoverageUtilities.CENTER_TO_CORNER);
 		        
-		        // creating target grid to world corrected to the pixel corner
-		        final AffineTransform targetGridToWorld = new AffineTransform(request.getRequestedGridToWorld());
-		        targetGridToWorld.concatenate(CoverageUtilities.CENTER_TO_CORNER);
+		        // creating source grid to world corrected to the pixel corner
+                        final AffineTransform sourceGridToWorld = new AffineTransform((AffineTransform) finalGridToWorldCorner);
 		        
 		        // target world to grid at the corner
-		        final AffineTransform targetWorldToGrid=targetGridToWorld.createInverse();
-		        
-		        // final complete transformation
-		        targetWorldToGrid.concatenate(sourceGridToWorld);
+                        final AffineTransform targetGridToWorld = new AffineTransform(request.getRequestedGridToWorld());
+                        targetGridToWorld.concatenate(CoverageUtilities.CENTER_TO_CORNER);
+                        
+                        // target world to grid at the corner
+                        final AffineTransform targetWorldToGrid=targetGridToWorld.createInverse();
+                        // final complete transformation
+                        targetWorldToGrid.concatenate(sourceGridToWorld);
+                        
+                        //update final grid to world
+                        finalGridToWorldCorner=new AffineTransform2D(targetGridToWorld);
 		        
 		        // create final image
 		        // TODO this one could be optimized further depending on how the affine is created
-                        mosaic = AffineDescriptor.create(mosaic, targetWorldToGrid , interpolation, backgroundValues, hints);
+		        //
+                        // In case we are asked to use certain tile dimensions we tile
+                        // also at this stage in case the read type is Direct since
+                        // buffered images comes up untiled and this can affect the
+                        // performances of the subsequent affine operation.
+                        //
+		        final Hints localHints= new Hints(hints);
+                        if (hints != null && !hints.containsKey(JAI.KEY_BORDER_EXTENDER)) {
+                            final Object extender = hints.get(JAI.KEY_BORDER_EXTENDER);
+                            if (!(extender != null && extender instanceof BorderExtender)) {
+                                localHints.add(ImageUtilities.BORDER_EXTENDER_HINTS);
+                            }
+                        }
+	        
+                        mosaic = AffineDescriptor.create(mosaic, targetWorldToGrid , interpolation, backgroundValues, localHints);
                     } catch (NoninvertibleTransformException e) {
                         if (LOGGER.isLoggable(Level.SEVERE)){
                             LOGGER.log(Level.SEVERE, "Unable to create the requested mosaic ", e );
@@ -777,31 +796,26 @@ class RasterLayerResponse{
 						
 			//compute final world to grid
 			// base grid to world for the center of pixels
-			
-			
 			final AffineTransform g2w;
-
 			final OverviewLevel baseLevel = rasterManager.overviewsController.resolutionsLevels
 					.get(0);
+			final OverviewLevel selectedLevel = rasterManager.overviewsController.resolutionsLevels.get(imageChoice);
 			final double resX = baseLevel.resolutionX;
 			final double resY = baseLevel.resolutionY;
 			final double[] requestRes = request.getRequestedResolution();
-			if ((requestRes[0] < resX || requestRes[1] < resY) && !needsReprojection) {
-				// Using the best available resolution
-				oversampledRequest = true;
-				g2w = new AffineTransform((AffineTransform) baseGridToWorld);
-				g2w.concatenate(CoverageUtilities.CENTER_TO_CORNER);
+
+                        g2w = new AffineTransform((AffineTransform) baseGridToWorld);
+                        g2w.concatenate(CoverageUtilities.CENTER_TO_CORNER);
+                        
+			if ((requestRes[0] < resX || requestRes[1] < resY) ) {
+			    // Using the best available resolution
+			    oversampledRequest = true;
 			} else {
-				if (!needsReprojection) {
-					g2w = new AffineTransform(request.getRequestedGridToWorld());
-					g2w.concatenate(CoverageUtilities.CENTER_TO_CORNER);
-				} else {
-					GridToEnvelopeMapper mapper = new GridToEnvelopeMapper(
-							new GridEnvelope2D(request.getRequestedRasterArea()),
-							mosaicBBox);
-					mapper.setPixelAnchor(PixelInCell.CELL_CORNER);
-					g2w = mapper.createAffineTransform();
-				}
+				
+			    // SG going back to working on a per level basis to do the composition
+			    // g2w = new AffineTransform(request.getRequestedGridToWorld());
+			    g2w.concatenate(AffineTransform.getScaleInstance(selectedLevel.scaleFactor,selectedLevel.scaleFactor));
+			    g2w.concatenate(AffineTransform.getScaleInstance(baseReadParameters.getSourceXSubsampling(), baseReadParameters.getSourceYSubsampling()));
 			}
 
 			// move it to the corner
@@ -809,15 +823,23 @@ class RasterLayerResponse{
 			finalWorldToGridCorner = finalGridToWorldCorner.inverse();// compute raster bounds
 			final GeneralEnvelope tempRasterBounds = CRS.transform(finalWorldToGridCorner, mosaicBBox);
 			rasterBounds=tempRasterBounds.toRectangle2D().getBounds();
+			
+			
 			// SG using the above may lead to problems since the reason is that  may be a little (1 px) bigger
 			// than what we need. The code below is a bit better since it uses a proper logic (see GridEnvelope
 			// Javadoc)
-			//rasterBounds = new GridEnvelope2D(new Envelope2D(tempRasterBounds), PixelInCell.CELL_CORNER);
+//			rasterBounds = new GridEnvelope2D(new Envelope2D(tempRasterBounds), PixelInCell.CELL_CORNER);
 			if (rasterBounds.width == 0)
 			    rasterBounds.width++;
 			if (rasterBounds.height == 0)
 			    rasterBounds.height++;
+			if(oversampledRequest)
+			    rasterBounds.grow(2, 2);
 			
+                        // make sure we do not go beyond the raster dimensions for this layer
+                        final GeneralEnvelope levelRasterArea_ = CRS.transform(finalWorldToGridCorner, rasterManager.spatialDomainManager.coverageBBox);
+                        final GridEnvelope2D levelRasterArea = new GridEnvelope2D(new Envelope2D(levelRasterArea_), PixelInCell.CELL_CORNER);
+                        XRectangle2D.intersect(levelRasterArea, rasterBounds, rasterBounds);
 			
 			// create the index visitor and visit the feature
 			final MosaicBuilder visitor = new MosaicBuilder();
@@ -923,6 +945,7 @@ class RasterLayerResponse{
 			// or we had some problem with missing tiles, therefore it might
 			// happen that for some bboxes we don't have anything to load.
 			//
+			RenderedImage returnValue=null;
 			if (visitor.granulesNumber>=1) {
 
 				//
@@ -930,33 +953,32 @@ class RasterLayerResponse{
 				// managing the transparent color if applicable. Be aware that
 				// management of the transparent color involves removing
 				// transparency information from the input images.
-				// 
-				if (LOGGER.isLoggable(Level.FINER))
-					LOGGER.finer(new StringBuilder("Loaded bbox ").append(
-							mosaicBBox.toString()).append(" while crop bbox ")
-							.append(request.getCropBBox().toString())
-							.toString());
-				
-				
-				return buildMosaic(visitor);				
+				// 			
+				returnValue= buildMosaic(visitor);
+				if(returnValue!=null){
+				    if (LOGGER.isLoggable(Level.FINE))
+				        LOGGER.fine("Loaded bbox "+mosaicBBox.toString()+" while crop bbox "+request.getCropBBox().toString());
+				    return returnValue;
+				}
 			
 			}
-			else{
-				// if we get here that means that we do not have anything to load
-				// but still we are inside the definition area for the mosaic,
-				// therefore we create a fake coverage using the background values,
-				// if provided (defaulting to 0), as well as the compute raster
-				// bounds, envelope and grid to world.
-				
-			        final Number[] values = Utils.getBackgroundValues(rasterManager.defaultSM, backgroundValues);
-				
-				// create a constant image with a proper layout
-				return ConstantDescriptor.create(
-						Float.valueOf(rasterBounds.width), 
-						Float.valueOf(rasterBounds.height),
-						values,
-						rasterManager.defaultImageLayout!=null?new RenderingHints(JAI.KEY_IMAGE_LAYOUT,rasterManager.defaultImageLayout):null);
-			}
+                        if (LOGGER.isLoggable(Level.FINE))
+                            LOGGER.fine("Creating constant image for area with no data");
+                        
+                        // if we get here that means that we do not have anything to load
+                        // but still we are inside the definition area for the mosaic,
+                        // therefore we create a fake coverage using the background values,
+                        // if provided (defaulting to 0), as well as the compute raster
+                        // bounds, envelope and grid to world.
+
+                        final Number[] values = Utils.getBackgroundValues(rasterManager.defaultSM, backgroundValues);
+                        // create a constant image with a proper layout
+                        return ConstantDescriptor.create(
+                                Float.valueOf(rasterBounds.width),
+                                Float.valueOf(rasterBounds.height),
+                                values,
+                                rasterManager.defaultImageLayout!=null?new RenderingHints(JAI.KEY_IMAGE_LAYOUT,rasterManager.defaultImageLayout):null);
+			
 
 		} catch (IOException e) {
 			throw new DataSourceException("Unable to create this mosaic", e);
@@ -1006,7 +1028,7 @@ class RasterLayerResponse{
 		if (doTransparentColor) {
 			if (LOGGER.isLoggable(Level.FINE))
 				LOGGER.fine("Support for alpha on input image number "+ granuleIndex);
-			granule = Utils.makeColorTransparent(transparentColor, granule);
+			granule = ImageUtilities.maskColor(transparentColor, granule);
 			alphaIndex[0]= granule.getColorModel().getNumComponents() - 1 ;
 		}
 		//
@@ -1044,44 +1066,91 @@ class RasterLayerResponse{
 	 */
 	private RenderedImage buildMosaic(final MosaicBuilder visitor) throws IOException  {
 
+	    // build final layout and use it for cropping purposes
 		final ImageLayout layout = new ImageLayout(
 				rasterBounds.x,
 				rasterBounds.y,
 				rasterBounds.width,
 				rasterBounds.height);
-		//tiling
-		final Dimension tileDimensions=request.getTileDimensions();
-		if(tileDimensions!=null)
-			layout.setTileHeight(tileDimensions.width).setTileWidth(tileDimensions.height);
-		final RenderingHints localHints = new RenderingHints(JAI.KEY_IMAGE_LAYOUT,layout);
-		if (hints != null && !hints.isEmpty()){
-		    if (hints.containsKey(JAI.KEY_TILE_CACHE)){
-		        final Object tc = hints.get(JAI.KEY_TILE_CACHE);
-		        if (tc != null && tc instanceof TileCache)
-		            localHints.add(new RenderingHints(JAI.KEY_TILE_CACHE, (TileCache) tc));
-		    }
-		    boolean addBorderExtender = true;
-		    if (hints != null && hints.containsKey(JAI.KEY_BORDER_EXTENDER)){
+		
+                //prepare hints
+                final Dimension tileDimensions=request.getTileDimensions();
+                if(tileDimensions!=null)
+                        layout.setTileHeight(tileDimensions.width).setTileWidth(tileDimensions.height);
+                final RenderingHints localHints = new RenderingHints(JAI.KEY_IMAGE_LAYOUT,layout);
+                if (hints != null && !hints.isEmpty()){
+                    if (hints.containsKey(JAI.KEY_TILE_CACHE)){
+                        final Object tc = hints.get(JAI.KEY_TILE_CACHE);
+                        if (tc != null && tc instanceof TileCache)
+                            localHints.add(new RenderingHints(JAI.KEY_TILE_CACHE, (TileCache) tc));
+                    }
+                    boolean addBorderExtender = true;
+                    if (hints != null && hints.containsKey(JAI.KEY_BORDER_EXTENDER)){
                         final Object extender = hints.get(JAI.KEY_BORDER_EXTENDER);
                         if (extender != null && extender instanceof BorderExtender) {
                             localHints.add(new RenderingHints(JAI.KEY_BORDER_EXTENDER, (BorderExtender) extender));
                             addBorderExtender = false;
                         }
                     }
-		    if (addBorderExtender){
-		        localHints.add(ImageUtilities.BORDER_EXTENDER_HINTS);
-		    }
-		    if (hints.containsKey(JAI.KEY_TILE_SCHEDULER)){
+                    if (addBorderExtender){
+                        localHints.add(ImageUtilities.BORDER_EXTENDER_HINTS);
+                    }
+                    if (hints.containsKey(JAI.KEY_TILE_SCHEDULER)){
                         final Object ts = hints.get(JAI.KEY_TILE_SCHEDULER);
                         if (ts != null && ts instanceof TileScheduler)
                             localHints.add(new RenderingHints(JAI.KEY_TILE_SCHEDULER, (TileScheduler) ts));
                     }
+                }	
+                
+		//
+		// SPECIAL CASE
+		// 1 single tile, we try not do a mosaic.
+		if(visitor.granulesNumber==1){
+		    // the roi is exactly equal to the 
+		    final ROI roi = visitor.rois.get(0);
+		    if(roi instanceof ROIShape){
+		        final ROIShape roiShape= (ROIShape) roi;
+		        final Shape shape= roiShape.getAsShape();
+		        if(shape instanceof Rectangle){
+		            final Rectangle bounds = (Rectangle) shape;
+		            final RenderedImage image= visitor.getSourcesAsArray()[0];
+		            final Rectangle imageBounds= PlanarImage.wrapRenderedImage(image).getBounds();
+		            if(imageBounds.equals(bounds)){
+		                
+		                // do we need to crop
+		                if(!imageBounds.equals(rasterBounds)){
+		                    // we have to crop
+		                    //D.R. rasterBounds... was bounds
+		                    XRectangle2D.intersect(imageBounds, rasterBounds, imageBounds);
+		                    
+		                    if(imageBounds.isEmpty()){
+		                        // return back a constant image
+		                        return null;
+		                    }
+		                    // crop
+		                    return CropDescriptor.create(
+		                            image, 
+		                            new Float(imageBounds.x), 
+		                            new Float(imageBounds.y), 
+		                            new Float(imageBounds.width), 
+		                            new Float(imageBounds.height), 
+		                            localHints);
+		                }
+		                return image;
+		            }
+		        }
+		    }
 		}
 
+
 		final ROI[] sourceRoi = visitor.sourceRoi;
-		final RenderedImage mosaic = MosaicDescriptor.create(visitor.getSourcesAsArray(), 
-		        request.isBlend()? MosaicDescriptor.MOSAIC_TYPE_BLEND: MosaicDescriptor.MOSAIC_TYPE_OVERLAY
-		        , (alphaIn || visitor.doInputTransparency) ? visitor.alphaChannels : null, sourceRoi, visitor.sourceThreshold, backgroundValues, localHints);
+		final RenderedImage mosaic = MosaicDescriptor.create(
+		        visitor.getSourcesAsArray(), 
+		        request.isBlend()? MosaicDescriptor.MOSAIC_TYPE_BLEND: MosaicDescriptor.MOSAIC_TYPE_OVERLAY, 
+		        (alphaIn || visitor.doInputTransparency) ? visitor.alphaChannels : null, sourceRoi, 
+		        visitor.sourceThreshold, 
+		        backgroundValues, 
+		        localHints);
 		
 		if (setRoiProperty) {
 		    
@@ -1100,7 +1169,7 @@ class RasterLayerResponse{
 		}
 
 		if (LOGGER.isLoggable(Level.FINE))
-			LOGGER.fine(new StringBuffer("Mosaic created ").toString());
+			LOGGER.fine("Mosaic created ");
 
 
 		// create the coverage
@@ -1212,7 +1281,18 @@ class RasterLayerResponse{
 	        		).geophysics(true);
 		}
 
-        return coverageFactory.create(rasterManager.getCoverageIdentifier(), image,new GeneralEnvelope(mosaicBBox), bands, null, null);		
+        return coverageFactory.create(
+                rasterManager.getCoverageIdentifier(),
+                image,
+                new GridGeometry2D(
+                        new GridEnvelope2D(PlanarImage.wrapRenderedImage(image).getBounds()), 
+                        PixelInCell.CELL_CORNER,
+                        finalGridToWorldCorner,
+                        this.mosaicBBox.getCoordinateReferenceSystem(),
+                        hints),
+                bands,
+                null, 
+                null);		
 
 	}
 

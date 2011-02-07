@@ -16,28 +16,32 @@
  */
 package org.geotools.referencing.factory.epsg;
 
-import java.util.Set;
-import java.util.Collection;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.Collection;
+import java.util.Set;
 
-import org.opengis.metadata.citation.Citation;
-import org.opengis.referencing.ReferenceIdentifier;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.ProjectedCRS;
-import org.opengis.referencing.crs.CRSAuthorityFactory;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import junit.framework.Assert;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 import org.geotools.factory.Hints;
+import org.geotools.geometry.jts.JTS;
+import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.NamedIdentifier;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.factory.OrderedAxisAuthorityFactory;
-import org.geotools.metadata.iso.citation.Citations;
+import org.opengis.metadata.citation.Citation;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.ReferenceIdentifier;
+import org.opengis.referencing.crs.CRSAuthorityFactory;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.crs.ProjectedCRS;
+import org.opengis.referencing.operation.MathTransform;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import com.vividsolutions.jts.geom.Coordinate;
 
 
 /**
@@ -177,6 +181,36 @@ public class UnnamedExtensionTest extends TestCase {
         assertNotNull(crs);
     }
 
+	/**
+	 * Test for Google's Projection under its unofficial code (EPSG:900913).
+	 * <p>
+	 * The official supported code for that projection is EPSG:3857, and both
+	 * should be equivalent.
+	 */
+	public void test900913()
+	{
+		try
+		{
+			CoordinateReferenceSystem sourceCRS;
+			sourceCRS = CRS.decode("EPSG:4326");
+			CoordinateReferenceSystem googleCRS = CRS.decode("EPSG:900913");
+			CoordinateReferenceSystem officialCRS = CRS.decode("EPSG:3857");
+			
+			MathTransform transformGoogle = CRS.findMathTransform(sourceCRS, googleCRS, true);
+			MathTransform transformOfficial = CRS.findMathTransform(sourceCRS, officialCRS, true);
+			
+			Coordinate sourceCoord = new Coordinate(-22,-44);
+			Coordinate destCoordGoogle = JTS.transform(sourceCoord, null, transformGoogle);
+			Coordinate destCoordOfficial = JTS.transform(sourceCoord, null, transformOfficial);
+			
+			Assert.assertEquals(destCoordOfficial, destCoordGoogle);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			Assert.fail(e.getClass().getSimpleName() + " should not be thrown.");
+		}
+	}    
     /**
      * Tests the extensions through a URI.
      *

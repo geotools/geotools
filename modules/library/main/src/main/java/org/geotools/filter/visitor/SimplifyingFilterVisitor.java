@@ -62,6 +62,9 @@ import org.opengis.filter.identity.Identifier;
  * @source $URL$
  */
 public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
+
+    static final boolean SIMPLIFY_STABLE_FUNCTIONS = Boolean.getBoolean("org.geotools.filter.function.simplify");
+      
 	
 	VolatileFilterAttributeExtractor attributeExtractor;
 	
@@ -255,6 +258,11 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
     }
     
     public Object visit(org.opengis.filter.expression.Function function, Object extraData) {
+        // in the stable branch this is still considered experimental
+        if(!SIMPLIFY_STABLE_FUNCTIONS) {
+            return super.visit(function, extraData);
+        }
+        
     	// can't optimize out volatile functions
     	if(function instanceof VolatileFunction) {
     		return super.visit(function, extraData);

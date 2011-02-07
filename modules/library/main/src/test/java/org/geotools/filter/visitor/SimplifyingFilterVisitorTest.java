@@ -45,9 +45,15 @@ public class SimplifyingFilterVisitorTest extends TestCase {
     
     @Override
     protected void setUp() throws Exception {
+        System.setProperty("org.geotools.filter.function.simplify", "true");
         emptyFid = ff.id(new HashSet<Identifier>());
         property = ff.equal(ff.property("test"), ff.literal("oneTwoThree"), false);        
         visitor = new SimplifyingFilterVisitor();
+    }
+
+    @Override
+    protected void tearDown() throws Exception {
+        System.setProperty("org.geotools.filter.function.simplify", "false");
     }
 
     public void testIncludeAndInclude() {

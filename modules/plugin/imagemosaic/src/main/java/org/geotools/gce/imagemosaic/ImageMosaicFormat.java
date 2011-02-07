@@ -53,12 +53,10 @@ import org.geotools.parameter.ParameterGroup;
 import org.geotools.util.Converters;
 import org.geotools.util.Utilities;
 import org.opengis.coverage.grid.Format;
-import org.opengis.coverage.grid.GridCoverageReader;
 import org.opengis.coverage.grid.GridCoverageWriter;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.parameter.GeneralParameterDescriptor;
-import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
@@ -105,43 +103,17 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
     /** Logger. */
     private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(ImageMosaicFormat.class.toString());
     
-    /** The {@code String} representing the parameter to customize tile sizes */
-    private static final String SUGGESTED_TILESIZE = "SUGGESTED_TILE_SIZE";
-    
     static final Interpolation DEFAULT_INTERPOLATION = new InterpolationNearest();
 
-    /**
-     * This {@link GeneralParameterValue} can be provided to the
-     * {@link GridCoverageReader}s through the
-     * {@link GridCoverageReader#read(GeneralParameterValue[])} method in order
-     * to specify the suggested size of tiles to avoid long time reading
-     * occurring with JAI ImageRead on striped images. (Images with tiles Nx1)
-     * Value should be a String in the form of "W,H" (without quotes) where W is
-     * a number representing the suggested tileWidth and H is a number
-     * representing the suggested tileHeight.
-     */
-    public static final DefaultParameterDescriptor<String> SUGGESTED_TILE_SIZE = new DefaultParameterDescriptor<String>(
-    		SUGGESTED_TILESIZE, String.class, null, "512,512");
-
-    public static final String TILE_SIZE_SEPARATOR = ",";
-    
     /** Optional Time value for this mosaic. */
     @SuppressWarnings("unchecked")
 	public static final ParameterDescriptor<List> TIME = DefaultParameterDescriptor.create("TIME", "A list of time objects",List.class, null,false);    
     
-    /** Optional Elevation value for this mosaic. */
-    @SuppressWarnings("unchecked")
-	public static final ParameterDescriptor<List> ELEVATION = DefaultParameterDescriptor.create("ELEVATION", "An elevation value",List.class, null,false);    
-
     /** Filter tiles based on attributes from the input coverage*/
     public static final ParameterDescriptor<Filter> FILTER = new DefaultParameterDescriptor<Filter>("Filter", Filter.class, null, null);
     
     /** Control the type of the final mosaic. */
     public static final ParameterDescriptor<Boolean> FADING = new DefaultParameterDescriptor<Boolean>("Fading", Boolean.class, new Boolean[]{Boolean.TRUE,Boolean.FALSE}, Boolean.FALSE);
-
-    /** Control the transparency of the input coverages. */
-    public static final ParameterDescriptor<Color> INPUT_TRANSPARENT_COLOR = new DefaultParameterDescriptor<Color>(
-            "InputTransparentColor", Color.class, null, null);
 
     /** Control the transparency of the output coverage. */
     public static final ParameterDescriptor<Color> OUTPUT_TRANSPARENT_COLOR = new DefaultParameterDescriptor<Color>(

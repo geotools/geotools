@@ -31,6 +31,7 @@ import java.util.logging.Logger;
 
 import javax.imageio.spi.ImageReaderSpi;
 
+import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridFormatFactorySpi;
 import org.geotools.coverageio.gdal.jp2ecw.JP2ECWFormatFactory;
 import org.geotools.coverageio.gdal.jp2kak.JP2KFormatFactory;
@@ -292,7 +293,7 @@ public final class ImageMosaicFormatFactory implements GridFormatFactorySpi {
 	/**
 	 * @see GridFormatFactorySpi#createFormat().
 	 */
-	public ImageMosaicFormat createFormat() {
+	public AbstractGridFormat createFormat() {
 		return new ImageMosaicFormat();
 	}
 	

@@ -23,7 +23,6 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.DataBuffer;
-import java.awt.image.MultiPixelPackedSampleModel;
 import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
 import java.awt.image.WritableRaster;
@@ -65,19 +64,18 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
+import org.geotools.data.DataAccessFactory.Param;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.DataUtilities;
-import org.geotools.data.DataAccessFactory.Param;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilder;
-import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilderConfiguration;
 import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilder.ExceptionEvent;
 import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilder.ProcessingEvent;
+import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilderConfiguration;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.image.ImageWorker;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
@@ -106,21 +104,6 @@ public class Utils {
         final static String HETEROGENEOUS = "Heterogeneous";
     }
     
-	/**
-	 * Discriminator for the type of queue we should use.
-	 * 
-	 * @author Simone Giannecchini, GeoSolutions SAS
-	 *
-	 */
-    enum QueueType{
-    	UNBOUNDED, DIRECT;
-
-		public static QueueType getDefault() {
-			return UNBOUNDED;
-		}
-    }
-	final static String THREADPOOL_CONFIG_FILE = "mosaicthreadpoolconfig.properties";
-	
 	/**
 	 * Logger.
 	 */
@@ -561,20 +544,6 @@ public class Utils {
                 }
 	}
 
-	/**
-	 * @param transparentColor
-	 * @param image
-	 * @return
-	 * @throws IllegalStateException
-	 */
-	static RenderedImage makeColorTransparent(final Color transparentColor,
-			final RenderedImage image) throws IllegalStateException {
-		final ImageWorker w = new ImageWorker(image);
-		if (image.getSampleModel() instanceof MultiPixelPackedSampleModel)
-			w.forceComponentColorModel();
-		return w.makeColorTransparent(transparentColor).getRenderedImage();
-	}
-
 	static ImageReadParam cloneImageReadParam(ImageReadParam param) {
 
 		// The ImageReadParam passed in is non-null. As the
@@ -810,8 +779,6 @@ public class Utils {
 
 	public static final DataStoreFactorySpi INDEXED_SHAPE_SPI = new ShapefileDataStoreFactory();
 
-	static final String DIRECT_KAKADU_PLUGIN = "it.geosolutions.imageio.plugins.jp2k.JP2KKakaduImageReader";
-
 	public static final boolean DEFAULT_RECURSION_BEHAVIOR = true;
 
 	/**
@@ -963,9 +930,6 @@ public class Utils {
 	
         public static final boolean DEFAULT_FOOTPRINT_MANAGEMENT = true;
 	
-	static final int DEFAULT_MAX_POOLSIZE = 15;
-	public static final int DEFAULT_KEEP_ALIVE = 30;
-	static final QueueType DEFAULT_QUEUE_TYPE = QueueType.getDefault();
 
 	public static final boolean DEFAULT_CACHING = true;
 	/** 

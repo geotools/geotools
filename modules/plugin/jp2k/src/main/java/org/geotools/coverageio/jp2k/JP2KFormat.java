@@ -16,7 +16,6 @@
  */
 package org.geotools.coverageio.jp2k;
 
-import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -42,7 +41,6 @@ import org.opengis.coverage.grid.GridCoverageWriter;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.parameter.GeneralParameterDescriptor;
 import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.parameter.ParameterDescriptor;
 
 /**
  * An implementation of {@link Format} for the JP2K format.
@@ -78,28 +76,6 @@ public final class JP2KFormat extends AbstractGridFormat implements Format {
     public static final DefaultParameterDescriptor<Boolean> USE_MULTITHREADING = new DefaultParameterDescriptor<Boolean>(
             USE_MT, Boolean.class,
             new Boolean[] { Boolean.TRUE, Boolean.FALSE }, Boolean.FALSE);
-
-    /** The {@code String} representing the parameter to customize tile sizes */
-    private static final String SUGGESTED_TILESIZE = "SUGGESTED_TILE_SIZE";
-
-    /**
-     * This {@link GeneralParameterValue} can be provided to the
-     * {@link GridCoverageReader}s through the
-     * {@link GridCoverageReader#read(GeneralParameterValue[])} method in order
-     * to specify the suggested size of tiles to avoid long time reading
-     * occurring with JAI ImageRead on striped images. (Images with tiles Nx1)
-     * Value should be a String in the form of "W,H" (without quotes) where W is
-     * a number representing the suggested tileWidth and H is a number
-     * representing the suggested tileHeight.
-     */
-    public static final DefaultParameterDescriptor<String> SUGGESTED_TILE_SIZE = new DefaultParameterDescriptor<String>(
-            SUGGESTED_TILESIZE, String.class, null, "512,512");
-
-    public static final String TILE_SIZE_SEPARATOR = ",";
-
-    /** Control the transparency of the input coverages. */
-    public static final ParameterDescriptor<Color> INPUT_TRANSPARENT_COLOR = new DefaultParameterDescriptor<Color>(
-            "InputTransparentColor", Color.class, null, null);
 
     /**
      * Creates an instance and sets the metadata.

@@ -16,6 +16,7 @@
  */
 package org.geotools.resources.image;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
@@ -27,6 +28,7 @@ import java.awt.image.DataBufferInt;
 import java.awt.image.DataBufferShort;
 import java.awt.image.DataBufferUShort;
 import java.awt.image.IndexColorModel;
+import java.awt.image.MultiPixelPackedSampleModel;
 import java.awt.image.RenderedImage;
 import java.awt.image.WritableRaster;
 import java.awt.image.WritableRenderedImage;
@@ -57,6 +59,7 @@ import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.RenderedOp;
 
+import org.geotools.image.ImageWorker;
 import org.geotools.resources.Classes;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
@@ -240,6 +243,8 @@ public final class ImageUtilities {
     public final static BorderExtender DEFAULT_BORDER_EXTENDER = BorderExtender.createInstance(BorderExtender.BORDER_COPY);
 
     public final static RenderingHints BORDER_EXTENDER_HINTS = new RenderingHints(JAI.KEY_BORDER_EXTENDER, DEFAULT_BORDER_EXTENDER);
+
+    public static final String DIRECT_KAKADU_PLUGIN = "it.geosolutions.imageio.plugins.jp2k.JP2KKakaduImageReader";
 
     /**
      * Do not allow creation of instances of this class.
@@ -849,5 +854,27 @@ public final class ImageUtilities {
                 }
             }
         }
+    }
+
+    /**
+     * Relies on the {@link ImageWorker} to mask a certain color from an image.
+     * 
+     * @param transparentColor the {@link Color} to make transparent
+     * @param image the {@link RenderedImage} to work on
+     * @return a new {@link RenderedImage} where the provided {@link Color} has turned into transparent.
+     * 
+     * @throws IllegalStateException
+     */
+    public static RenderedImage maskColor(final Color transparentColor,
+    		final RenderedImage image) throws IllegalStateException {
+        Utilities.ensureNonNull("image", image);
+        if(transparentColor==null){
+            return image;
+        }
+        final ImageWorker w = new ImageWorker(image);
+        if (image.getSampleModel() instanceof MultiPixelPackedSampleModel){
+            w.forceComponentColorModel();
+        }
+        return w.makeColorTransparent(transparentColor).getRenderedImage();
     }
 }

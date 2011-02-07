@@ -345,7 +345,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverageReader
 		//
 		// //
 		if (useOverviews) 
-			imageChoice= getOverviewImage(overviewPolicy, requestedRes);
+			imageChoice= pickOverviewLevel(overviewPolicy, requestedRes);
 		
 		// /////////////////////////////////////////////////////////////////////
 		// DECIMATION ON READING
@@ -381,7 +381,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverageReader
 		return overviewPolicy;
 	}
 	
-	private Integer getOverviewImage(OverviewPolicy policy, double[] requestedRes) {
+	private Integer pickOverviewLevel(OverviewPolicy policy, double[] requestedRes) {
 	    // setup policy
         if(policy == null)
         	policy=extractOverviewPolicy();
@@ -477,7 +477,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverageReader
 	    // find the target resolution level
 	    double[] result;
 	    if(numOverviews > 0) {
-	        int imageIdx = getOverviewImage(policy, requestedResolution);
+	        int imageIdx = pickOverviewLevel(policy, requestedResolution);
 	        result = overViewResolutions[imageIdx];
 	    } else {
 	        result = highestRes;

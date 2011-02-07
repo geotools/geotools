@@ -16,6 +16,8 @@
  */
 package org.geotools.coverage.grid.io;
 
+import java.awt.Color;
+import java.util.List;
 import java.util.Map;
 
 import javax.imageio.ImageWriteParam;
@@ -152,7 +154,33 @@ public abstract class AbstractGridFormat implements Format {
                     DecimationPolicy.ALLOW, DecimationPolicy.DISALLOW },
             DecimationPolicy.ALLOW);
 
-	/**
+    /** The {@code String} representing the parameter to customize tile sizes */
+    private static final String SUGGESTED_TILESIZE = "SUGGESTED_TILE_SIZE";
+
+    /**
+     * This {@link GeneralParameterValue} can be provided to the
+     * {@link GridCoverageReader}s through the
+     * {@link GridCoverageReader#read(GeneralParameterValue[])} method in order
+     * to specify the suggested size of tiles to avoid long time reading
+     * occurring with JAI ImageRead on striped images. (Images with tiles Nx1)
+     * Value should be a String in the form of "W,H" (without quotes) where W is
+     * a number representing the suggested tileWidth and H is a number
+     * representing the suggested tileHeight.
+     */
+    public static final DefaultParameterDescriptor<String> SUGGESTED_TILE_SIZE = new DefaultParameterDescriptor<String>(
+        		SUGGESTED_TILESIZE, String.class, null, "512,512");
+
+    public static final String TILE_SIZE_SEPARATOR = ",";
+
+    /** Optional Elevation value for this mosaic. */
+    @SuppressWarnings("unchecked")
+    public static final ParameterDescriptor<List> ELEVATION = DefaultParameterDescriptor.create("ELEVATION", "An elevation value",List.class, null,false);
+
+    /** Control the transparency of the input coverages. */
+    public static final ParameterDescriptor<Color> INPUT_TRANSPARENT_COLOR = new DefaultParameterDescriptor<Color>(
+                "InputTransparentColor", Color.class, null, null);
+
+        /**
 	 * @see org.opengis.coverage.grid.Format#getName()
 	 */
 	public String getName() {

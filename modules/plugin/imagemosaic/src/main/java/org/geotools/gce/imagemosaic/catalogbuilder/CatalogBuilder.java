@@ -1529,7 +1529,7 @@ public class CatalogBuilder implements Runnable {
             final boolean checkLevels = compareLevels != null;
 
             // resolutions levels are computed using the raster space scale factors
-            if (numberOfLevels > 1) {
+            if (numberOfLevels >= 1) {
                 for (int k = 0; k < numberOfLevels; k++) {
                     resolutionLevels[0][k] = resolutionLevels[0][0]*coverageReader.getOriginalGridRange().getSpan(0)/(1.0*imageioReader.getWidth(k));
                     resolutionLevels[1][k] = resolutionLevels[1][0]*coverageReader.getOriginalGridRange().getSpan(1)/(1.0*imageioReader.getHeight(k));

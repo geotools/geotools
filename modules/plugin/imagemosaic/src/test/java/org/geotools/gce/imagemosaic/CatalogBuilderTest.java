@@ -28,6 +28,7 @@ import javax.media.jai.PlanarImage;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
+import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilder;
 import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilderConfiguration;
 import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilder.ExceptionEvent;
@@ -105,10 +106,10 @@ public class CatalogBuilderTest extends Assert {
             Rectangle rasterArea = null;
             GridEnvelope2D range = null;
             GridCoverage2D coverage = null;
-            final ParameterValue<Boolean> useJai = ImageMosaicFormat.USE_JAI_IMAGEREAD.createValue();
+            final ParameterValue<Boolean> useJai = AbstractGridFormat.USE_JAI_IMAGEREAD.createValue();
             useJai.setValue(false);
             
-            final ParameterValue<String> tileSize = ImageMosaicFormat.SUGGESTED_TILE_SIZE.createValue();
+            final ParameterValue<String> tileSize = AbstractGridFormat.SUGGESTED_TILE_SIZE.createValue();
             tileSize.setValue("128,128");
 
 	    
@@ -131,7 +132,7 @@ public class CatalogBuilderTest extends Assert {
 		reader = (ImageMosaicReader) new ImageMosaicReader(relativeMosaic);
 
 		// limit yourself to reading just a bit of it
-		gg =  ImageMosaicFormat.READ_GRIDGEOMETRY2D.createValue();
+		gg =  AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
 		envelope = reader.getOriginalEnvelope();
 		dim= new Dimension();
 		dim.setSize(reader.getOriginalGridRange().getSpan(0)/2.0, reader.getOriginalGridRange().getSpan(1)/2.0);
@@ -167,7 +168,7 @@ public class CatalogBuilderTest extends Assert {
 		reader = (ImageMosaicReader) new ImageMosaicReader(absoluteMosaic);
 
 		// limit yourself to reading just a bit of it
-		gg =  ImageMosaicFormat.READ_GRIDGEOMETRY2D.createValue();
+		gg =  AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
 		envelope = reader.getOriginalEnvelope();
 		dim= new Dimension();
 		dim.setSize(reader.getOriginalGridRange().getSpan(0)/2.0, reader.getOriginalGridRange().getSpan(1)/2.0);

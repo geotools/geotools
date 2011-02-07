@@ -116,7 +116,7 @@ class RasterLayerRequest {
      */
     private boolean empty;
 
-	private Color inputTransparentColor=ImageMosaicFormat.INPUT_TRANSPARENT_COLOR.getDefaultValue();;
+	private Color inputTransparentColor=AbstractGridFormat.INPUT_TRANSPARENT_COLOR.getDefaultValue();;
 
 	private boolean blend=ImageMosaicFormat.FADING.getDefaultValue();
 
@@ -307,7 +307,7 @@ class RasterLayerRequest {
                 // Decimation Policy parameter
                 //
                 // //
-                if (name.equals(ImageMosaicFormat.DECIMATION_POLICY.getName())) {
+                if (name.equals(AbstractGridFormat.DECIMATION_POLICY.getName())) {
                     if (value == null)
                             continue;
                     decimationPolicy = (DecimationPolicy) value;
@@ -328,7 +328,7 @@ class RasterLayerRequest {
                 }
                 
                 
-	        if (name.equals(ImageMosaicFormat.INPUT_TRANSPARENT_COLOR.getName())) {
+	        if (name.equals(AbstractGridFormat.INPUT_TRANSPARENT_COLOR.getName())) {
 	        	if(value==null)
 	        		continue;
 				inputTransparentColor = (Color) value;
@@ -407,7 +407,7 @@ class RasterLayerRequest {
 	        // and TileHeight are integer values)
 	        //
 	        // //
-	        if (name.equals(ImageMosaicFormat.SUGGESTED_TILE_SIZE.getName())) {
+	        if (name.equals(AbstractGridFormat.SUGGESTED_TILE_SIZE.getName())) {
 	            final String suggestedTileSize = (String) value;
 	
 	            // Preliminary checks on parameter value
@@ -415,9 +415,9 @@ class RasterLayerRequest {
 	                    && (suggestedTileSize.trim().length() > 0)) {
 	
 	                if (suggestedTileSize
-	                        .contains(ImageMosaicFormat.TILE_SIZE_SEPARATOR)) {
+	                        .contains(AbstractGridFormat.TILE_SIZE_SEPARATOR)) {
 	                    final String[] tilesSize = suggestedTileSize
-	                            .split(ImageMosaicFormat.TILE_SIZE_SEPARATOR);
+	                            .split(AbstractGridFormat.TILE_SIZE_SEPARATOR);
 	                    if (tilesSize.length == 2) {
 	                        try {
 	                            // Getting suggested tile size
@@ -498,7 +498,7 @@ class RasterLayerRequest {
         // Decimation Policy parameter
         //
         // //
-        if (name.equals(ImageMosaicFormat.DECIMATION_POLICY.getName())) {
+        if (name.equals(AbstractGridFormat.DECIMATION_POLICY.getName())) {
                 final Object value = param.getValue();
                 if(value==null)
                         return;
@@ -520,7 +520,7 @@ class RasterLayerRequest {
             return;
         }
 
-        if (name.equals(ImageMosaicFormat.INPUT_TRANSPARENT_COLOR.getName())) {
+        if (name.equals(AbstractGridFormat.INPUT_TRANSPARENT_COLOR.getName())) {
         	final Object value = param.getValue();
         	if(value==null)
         		return;
@@ -609,7 +609,7 @@ class RasterLayerRequest {
         // and TileHeight are integer values)
         //
         // //
-        if (name.equals(ImageMosaicFormat.SUGGESTED_TILE_SIZE.getName())) {
+        if (name.equals(AbstractGridFormat.SUGGESTED_TILE_SIZE.getName())) {
             final String suggestedTileSize = (String) param.getValue();
 
             // Preliminary checks on parameter value
@@ -617,9 +617,9 @@ class RasterLayerRequest {
                     && (suggestedTileSize.trim().length() > 0)) {
 
                 if (suggestedTileSize
-                        .contains(ImageMosaicFormat.TILE_SIZE_SEPARATOR)) {
+                        .contains(AbstractGridFormat.TILE_SIZE_SEPARATOR)) {
                     final String[] tilesSize = suggestedTileSize
-                            .split(ImageMosaicFormat.TILE_SIZE_SEPARATOR);
+                            .split(AbstractGridFormat.TILE_SIZE_SEPARATOR);
                     if (tilesSize.length == 2) {
                         try {
                             // Getting suggested tile size
@@ -660,7 +660,7 @@ class RasterLayerRequest {
         // Elevation parameter
         //
         // //
-        if (name.equals(ImageMosaicFormat.ELEVATION.getName())) {
+        if (name.equals(AbstractGridFormat.ELEVATION.getName())) {
         	final Object value = param.getValue();
         	if(value==null)
         		return;

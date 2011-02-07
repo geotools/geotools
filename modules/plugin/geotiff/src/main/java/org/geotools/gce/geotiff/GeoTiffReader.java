@@ -380,8 +380,7 @@ public final class GeoTiffReader extends AbstractGridCoverage2DReader implements
 	 * @throws IOException
 	 *             on any IO related troubles
 	 */
-	@SuppressWarnings("unchecked")
-    public GridCoverage2D read(GeneralParameterValue[] params) throws IOException {
+	public GridCoverage2D read(GeneralParameterValue[] params) throws IOException {
 		GeneralEnvelope requestedEnvelope = null;
 		Rectangle dim = null;
 		OverviewPolicy overviewPolicy=null;

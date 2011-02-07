@@ -23,11 +23,17 @@ import java.util.Set;
 import junit.framework.TestCase;
 
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.function.EnvFunction;
+import org.geotools.filter.function.math.FilterFunction_abs;
+import org.geotools.filter.function.math.FilterFunction_random;
 import org.geotools.filter.visitor.SimplifyingFilterVisitor.FIDValidator;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.Id;
 import org.opengis.filter.PropertyIsEqualTo;
+import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Function;
+import org.opengis.filter.expression.Literal;
 import org.opengis.filter.identity.Identifier;
 
 public class SimplifyingFilterVisitorTest extends TestCase {
@@ -185,5 +191,37 @@ public class SimplifyingFilterVisitorTest extends TestCase {
 		Filter f = ff.not(ff.not(ff.not(equal)));
     	Filter result = (Filter) f.accept(visitor, null);
     	assertEquals(ff.not(equal), result);
+    }
+    
+    public void testStableFunction() {
+    	EnvFunction.setLocalValue("var", "123");
+    	Function f = ff.function("env", ff.literal("var"));
+    	
+    	Expression result = (Expression) f.accept(visitor, null);
+    	assertTrue(result instanceof Literal);
+    	assertEquals("123", result.evaluate(null, String.class));
+    }
+    
+    public void testVolatileFunction() {
+    	Function f = ff.function("random");
+    	
+    	Expression result = (Expression) f.accept(visitor, null);
+    	assertTrue(result instanceof FilterFunction_random);
+    }
+    
+    public void testNestedVolatile() {
+    	EnvFunction.setLocalValue("power", 3);
+    	Function f = ff.function("pow", ff.function("random"), ff.function("env", ff.literal("power")));
+    	
+    	Function result = (Function) f.accept(visitor, null);
+    	// main function not simplified out
+    	assertEquals("pow", result.getName());
+    	// first argument not simplified out
+    	Function param1 = (Function) result.getParameters().get(0);
+		assertEquals("random", param1.getName());
+		// second argument simplified out
+		Expression param2 = result.getParameters().get(1);
+		assertTrue(param2 instanceof Literal);
+		assertEquals(Integer.valueOf(3), param2.evaluate(null, Integer.class));
     }
 }

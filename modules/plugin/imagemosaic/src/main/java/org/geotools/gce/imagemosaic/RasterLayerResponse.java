@@ -909,24 +909,14 @@ class RasterLayerResponse{
 					}
 					else{
 						// current management
-						final SortBy[] descendingSortOrder = new SortBy[]{
-								new SortByImpl(
-										FeatureUtilities.DEFAULT_FILTER_FACTORY.property(rasterManager.timeAttribute),
-										SortOrder.DESCENDING
-								)};
-						final QueryCapabilities queryCapabilities = rasterManager.granuleCatalog.getQueryCapabilities();
-						if(queryCapabilities.supportsSorting(descendingSortOrder))
-							query.setSortBy(descendingSortOrder);
-						else{
-							// the datastore does not support descending sortby, let's support the maximum
-							final MaxVisitor max = new MaxVisitor(rasterManager.timeAttribute);
-							rasterManager.granuleCatalog.computeAggregateFunction(query,max);
-							final Object result=max.getResult().getValue();		
-							
-							// now let's get this feature by is fid
-							final Filter temporal = FeatureUtilities.DEFAULT_FILTER_FACTORY.equal(FeatureUtilities.DEFAULT_FILTER_FACTORY.property(rasterManager.timeAttribute), FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(Converters.convert(result, Date.class)),true);
-							query.setFilter(FeatureUtilities.DEFAULT_FILTER_FACTORY.and(oldFilter, temporal));
-						}
+					        final MaxVisitor max = new MaxVisitor(rasterManager.timeAttribute);
+					        rasterManager.granuleCatalog.computeAggregateFunction(query,max);
+					        final Object result=max.getResult().getValue();
+
+					        // now let's get this feature by is fid
+						final Filter temporal = FeatureUtilities.DEFAULT_FILTER_FACTORY.equal(FeatureUtilities.DEFAULT_FILTER_FACTORY.property(rasterManager.timeAttribute), FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(Converters.convert(result, Date.class)),true);
+						query.setFilter(FeatureUtilities.DEFAULT_FILTER_FACTORY.and(oldFilter, temporal));
+						
 						
 					}
 				}

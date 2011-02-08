@@ -131,7 +131,11 @@ abstract class NumericFileNameExtractor <N extends Number & Comparable<N>> exten
 			
 		}
 		
-		// set the properties
+		// set the properties, if we have some
+                if(values.size()<=0){
+                    if(LOGGER.isLoggable(Level.FINE))
+                        LOGGER.fine("No matches found for this property extractor:");
+                }		
 		int index=0;
 		for(String propertyName:getPropertyNames()){
 			// set the property

@@ -406,6 +406,8 @@ public class FeatureJSON {
             string("properties", sb).append(":").append("{");
             for (int i = 0; i < featureType.getAttributeCount(); i++) {
                 AttributeDescriptor ad = featureType.getDescriptor(i);
+                
+                // skip the default geometry, it's already encoded
                 if (i == gindex) {
                     continue;
                 }
@@ -415,13 +417,16 @@ public class FeatureJSON {
                     //skip
                     continue;
                 }
+                
+                // handle special types separately, everything else as a string or literal
                 if (value instanceof Envelope) {
                     array(ad.getLocalName(), gjson.toString((Envelope)value), sb);
-                }
-                else if (value instanceof BoundingBox) {
+                } else if (value instanceof BoundingBox) {
                     array(ad.getLocalName(), gjson.toString((BoundingBox)value), sb);
-                }
-                else {
+                } else if (value instanceof Geometry) {
+                    string(ad.getLocalName(), sb).append(":")
+                    .append(gjson.toString((Geometry) value));
+                } else {
                     entry(ad.getLocalName(), value, sb);
                 }
                 sb.append(",");

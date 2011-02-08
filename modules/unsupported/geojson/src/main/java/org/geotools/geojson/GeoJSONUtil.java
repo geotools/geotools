@@ -151,11 +151,14 @@ public class GeoJSONUtil {
     public static StringBuilder entry(String key, Object value, StringBuilder sb) {
         string(key, sb).append(":");
         
-        if (value instanceof String) {
-            string((String)value, sb);
-        }
-        else {
+        if (value instanceof Number || value instanceof Boolean || value instanceof Date) {
             literal(value, sb);
+        } else {
+            String str = Converters.convert(value, String.class);
+            if(str == null) {
+                str = value.toString();
+            }
+            string(str, sb);
         }
         return sb;
         

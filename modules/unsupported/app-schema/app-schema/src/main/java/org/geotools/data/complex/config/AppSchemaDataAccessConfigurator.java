@@ -755,7 +755,7 @@ public class AppSchemaDataAccessConfigurator {
                  * datastore is created, everything will work fine provided the key "url" is used if
                  * and only if the datastore expects a parameter value starting with "file:"
                  */
-                if ("url".equals(key)) {
+                if ("url".equals(key) || key.startsWith("WSDataStoreFactory")) {
                     value = "file:" + resolvedDataPath;
                 } else {
                     value = resolvedDataPath;

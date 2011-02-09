@@ -1208,6 +1208,7 @@ public final class JDBCDataStore extends ContentDataStore
         //result of the function
         try {
             Object result = null;
+            List results = new ArrayList();
             Statement st = null;
             ResultSet rs = null;
             
@@ -1223,16 +1224,18 @@ public final class JDBCDataStore extends ContentDataStore
                     st = cx.createStatement();
                     rs = st.executeQuery( sql );
                 }
-                    
-                rs.next();
-                result = rs.getObject( 1 );
-            }
-            finally {
+             
+                while(rs.next()) {
+                    Object value = rs.getObject(1);
+                    result = value;
+                    results.add(value);
+                }
+            } finally {
                 closeSafe( rs );
                 closeSafe( st );
             }
             
-            if ( setResult(visitor,result) ){
+            if ( setResult(visitor, results.size() > 1 ? results : result) ){
                 return result;    
             }
             

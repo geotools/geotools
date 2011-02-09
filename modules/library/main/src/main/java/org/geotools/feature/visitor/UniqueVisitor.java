@@ -17,13 +17,17 @@
 package org.geotools.feature.visitor;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
 
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.IllegalFilterException;
+import org.geotools.util.Converters;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -91,16 +95,17 @@ public class UniqueVisitor implements FeatureCalc {
     }
 
     public void setValue(Object newSet) {
-    	if (newSet instanceof ArrayList) { //convert to set
-    		ArrayList newList = (ArrayList) newSet;
-    		Set anotherSet = new HashSet();
-    		for (ListIterator i = newList.listIterator(); i.hasNext();) {
-        		anotherSet.add(i.next());
-    		}
-    		this.set = anotherSet;
+        
+    	if (newSet instanceof Collection) { //convert to set
+    		this.set = new HashSet((Collection) newSet);
     	} else {
-        	this.set = (Set) newSet;
-    	}
+    	    Collection collection = Converters.convert(newSet, List.class);
+    	    if(collection != null) {
+    	        this.set = new HashSet(collection);
+    	    } else {
+    	        this.set = new HashSet(Collections.singleton(newSet));
+    	    }
+    	} 
     }
     
     public void reset() {

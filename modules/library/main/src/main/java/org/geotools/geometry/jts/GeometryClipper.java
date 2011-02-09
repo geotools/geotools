@@ -19,8 +19,6 @@ package org.geotools.geometry.jts;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.geotools.geometry.jts.coordinatesequence.CoordinateSequences;
-
 import com.vividsolutions.jts.geom.CoordinateSequence;
 import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
 import com.vividsolutions.jts.geom.Envelope;

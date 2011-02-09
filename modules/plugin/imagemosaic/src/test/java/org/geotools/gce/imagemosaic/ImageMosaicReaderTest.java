@@ -278,12 +278,14 @@ public class ImageMosaicReaderTest extends Assert{
 		
 		final String[] metadataNames = reader.getMetadataNames();
 		assertNotNull(metadataNames);
-		assertEquals(metadataNames.length,2);
+		assertEquals(metadataNames.length,4);
 		
+		assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
 		final String timeMetadata = reader.getMetadataValue("TIME_DOMAIN");
 		assertNotNull(timeMetadata);
 		assertEquals(16,timeMetadata.split(",").length);
 		
+		assertEquals("true", reader.getMetadataValue("HAS_ELEVATION_DOMAIN"));
 		final String elevationMetadata = reader.getMetadataValue("ELEVATION_DOMAIN");
 		assertNotNull(elevationMetadata);
 		assertEquals(2,elevationMetadata.split(",").length);
@@ -372,9 +374,9 @@ public class ImageMosaicReaderTest extends Assert{
 		
 		final String[] metadataNames = reader.getMetadataNames();
 		assertNotNull(metadataNames);
-		assertEquals(metadataNames.length,2);
+		assertEquals(metadataNames.length,4);
 		assertEquals("2004-01-01T00:00:00.000Z,2004-02-01T00:00:00.000Z,2004-03-01T00:00:00.000Z,2004-04-01T00:00:00.000Z,2004-05-01T00:00:00.000Z,2004-06-01T00:00:00.000Z,2004-07-01T00:00:00.000Z", reader.getMetadataValue(metadataNames[0]));
-
+		assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
 		// limit yourself to reading just a bit of it
 		final ParameterValue<GridGeometry2D> gg =  AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
 		final GeneralEnvelope envelope = reader.getOriginalEnvelope();

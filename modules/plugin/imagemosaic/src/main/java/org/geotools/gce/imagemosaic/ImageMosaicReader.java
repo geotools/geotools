@@ -722,7 +722,9 @@ public final class ImageMosaicReader extends AbstractGridCoverage2DReader implem
 		{
 			final List<String> metadataNames= new ArrayList<String>();
 			metadataNames.add("TIME_DOMAIN");
-			metadataNames.add("ELEVATION_DOMAIN");
+                        metadataNames.add("HAS_TIME_DOMAIN");
+                        metadataNames.add("ELEVATION_DOMAIN");			
+			metadataNames.add("HAS_ELEVATION_DOMAIN");
 			return metadataNames.toArray(new String[metadataNames.size()]);
 		}
 		return super.getMetadataNames();
@@ -730,6 +732,12 @@ public final class ImageMosaicReader extends AbstractGridCoverage2DReader implem
 
 	@Override
 	public String getMetadataValue(final String name) {
+	        if(name.equalsIgnoreCase("HAS_ELEVATION_DOMAIN"))
+	        return String.valueOf(elevationAttribute!=null);
+	    
+	       if(name.equalsIgnoreCase("HAS_TIME_DOMAIN"))
+	                return String.valueOf(timeAttribute!=null);
+	    
 		final boolean getTimeAttribute=(timeAttribute!=null&&name.equalsIgnoreCase("time_domain"));
 		final QueryCapabilities queryCapabilities = rasterManager.granuleCatalog.getQueryCapabilities();
 		boolean manualSort=false;
@@ -755,26 +763,8 @@ public final class ImageMosaicReader extends AbstractGridCoverage2DReader implem
 				// check result
 				final ArrayList<Date> result= new ArrayList<Date>();
 				result.addAll(visitor.getUnique());
-				Collections.sort(result);
-//				final Set<Date> result = manualSort?new TreeSet<Date>(visitor.getUnique()):visitor.getUnique();
-//				final Set<Date> result = new TreeSet<Date>(new Comparator<Date>() {
-//				        private final Calendar c1 = Calendar.getInstance(TimeZone.getTimeZone("UTC")); 
-//				        private final Calendar c2 = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-//					public int compare(Date o1, Date o2) {
-//
-//						c1.setTime(o1);
-//						c2.setTime(o2);
-//
-//						// Revert behavior in order to have a dsc time list
-//						if (c1.before(c2))
-//							return -1;
-//						else if (c1.after(c2))
-//							return 1;
-//						
-//						return 0;
-//					}
-//				});
-//				result.addAll(visitor.getUnique());
+				if(manualSort)
+				    Collections.sort(result);
 
 				if(result.size()<=0)
 					return null;				
@@ -812,7 +802,7 @@ public final class ImageMosaicReader extends AbstractGridCoverage2DReader implem
 				rasterManager.granuleCatalog.computeAggregateFunction(query, visitor);
 				
 				// check result
-				final Set<Double> result = new TreeSet<Double>(visitor.getUnique());//manualSort?new TreeSet<Double>(visitor.getUnique()):visitor.getUnique();
+				final Set<Double> result = manualSort?new TreeSet<Double>(visitor.getUnique()):visitor.getUnique();
 				if(result.size()<=0)
 					return null;
 				final StringBuilder buff= new StringBuilder();

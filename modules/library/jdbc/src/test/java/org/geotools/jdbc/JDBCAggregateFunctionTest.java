@@ -16,11 +16,14 @@
  */
 package org.geotools.jdbc;
 
+import java.util.Set;
+
 import org.geotools.data.DefaultQuery;
 import org.geotools.data.Query;
 import org.geotools.feature.visitor.MaxVisitor;
 import org.geotools.feature.visitor.MinVisitor;
 import org.geotools.feature.visitor.SumVisitor;
+import org.geotools.feature.visitor.UniqueVisitor;
 import org.geotools.filter.IllegalFilterException;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
@@ -171,6 +174,7 @@ public abstract class JDBCAggregateFunctionTest extends JDBCTestSupport {
         }
         
     }
+    
     public void testMin() throws Exception {
         FilterFactory ff = dataStore.getFilterFactory();
         PropertyName p = ff.property( aname("doubleProperty") );
@@ -210,5 +214,66 @@ public abstract class JDBCAggregateFunctionTest extends JDBCTestSupport {
         
         assertFalse(visited);
         assertEquals( 0.0, v.getResult().toDouble(), 0.01 );
+    }
+    
+    class MyUniqueVisitor extends UniqueVisitor {
+
+        public MyUniqueVisitor(Expression expr) throws IllegalFilterException {
+            super(expr);
+        }
+        
+        public void visit(Feature feature) {
+            super.visit(feature);
+            visited = true;
+        }
+        
+        public void visit(SimpleFeature feature) {
+            super.visit(feature);
+            visited = true;
+        }
+        
+    }
+    
+    public void testUnique() throws Exception {
+        FilterFactory ff = dataStore.getFilterFactory();
+        PropertyName p = ff.property( aname("stringProperty") );
+        
+        UniqueVisitor v = new MyUniqueVisitor(p);
+        dataStore.getFeatureSource(tname("ft1")).accepts(Query.ALL, v, null);
+        assertFalse(visited);
+        Set result = v.getResult().toSet();
+        assertEquals(3, result.size());
+        assertTrue(result.contains("zero"));
+        assertTrue(result.contains("one"));
+        assertTrue(result.contains("two"));
+    }
+    
+    public void testUniqueWithFilter() throws Exception {
+        FilterFactory ff = dataStore.getFilterFactory();
+        PropertyName p = ff.property( aname("stringProperty") );
+        
+        UniqueVisitor v = new MyUniqueVisitor(p);
+        Filter f = ff.greater( ff.property( aname("doubleProperty") ), ff.literal(1) );
+        Query q = new Query( tname("ft1"), f);
+        dataStore.getFeatureSource(tname("ft1")).accepts(q, v, null);
+        assertFalse(visited);
+        Set result = v.getResult().toSet();
+        assertEquals(2, result.size());
+        assertTrue(result.contains("one"));
+        assertTrue(result.contains("two"));
+    }
+    
+    public void testUniqueWithLimitOffset() throws Exception {
+        FilterFactory ff = dataStore.getFilterFactory();
+        PropertyName p = ff.property( aname("stringProperty") );
+        
+        UniqueVisitor v = new MyUniqueVisitor(p);
+        Query q = new Query( tname("ft1"));
+        q.setStartIndex(0);
+        q.setMaxFeatures(2);
+        dataStore.getFeatureSource(tname("ft1")).accepts(q, v, null);
+        assertFalse(visited);
+        Set result = v.getResult().toSet();
+        assertEquals(2, result.size());
     }
 }

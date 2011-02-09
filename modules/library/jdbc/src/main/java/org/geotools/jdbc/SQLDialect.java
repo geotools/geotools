@@ -38,6 +38,7 @@ import org.geotools.feature.visitor.CountVisitor;
 import org.geotools.feature.visitor.MaxVisitor;
 import org.geotools.feature.visitor.MinVisitor;
 import org.geotools.feature.visitor.SumVisitor;
+import org.geotools.feature.visitor.UniqueVisitor;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
@@ -354,6 +355,7 @@ public abstract class SQLDialect {
      * maps the class of the visitor to the associated function name. This base implementation 
      * handles some of the well known mappings:
      * <ul>
+     * <li>{@link UniqueVisitor} -> "unique" <li> 
      * <li>{@link CountVisitor} -> "count" <li>
      * <li>{@link MaxVisitor} -> "max" <li>
      * <li>{@link MinVisitor} -> "min" <li>
@@ -364,6 +366,7 @@ public abstract class SQLDialect {
      */
     public void registerAggregateFunctions(Map<Class<? extends FeatureVisitor>,String> aggregates) {
         //register the well known
+        aggregates.put( UniqueVisitor.class, "distinct");
         aggregates.put( CountVisitor.class, "count" );
         aggregates.put( MinVisitor.class, "min");
         aggregates.put( MaxVisitor.class, "max");

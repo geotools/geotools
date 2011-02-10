@@ -18,12 +18,14 @@ package org.geotools.renderer.lite.gridcoverage2d;
 
 import java.awt.Color;
 import java.awt.image.DataBuffer;
+import java.awt.image.LookupTable;
 import java.awt.image.RenderedImage;
 import java.awt.image.renderable.ParameterBlock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.media.jai.JAI;
+import javax.media.jai.LookupTableJAI;
 import javax.media.jai.OperationDescriptor;
 import javax.media.jai.RenderedOp;
 
@@ -147,7 +149,6 @@ class ColorMapNode extends StyleVisitorCoverageProcessingNodeAdapter implements
 			if (numSD>1)
 				throw new IllegalArgumentException(
 						Errors.format(ErrorKeys.BAD_BAND_NUMBER_$1,Integer.valueOf(numSD)));
-
 			// /////////////////////////////////////////////////////////////////////
 			//
 			// Check the sample dimension we are going to use for NoData

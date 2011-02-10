@@ -454,7 +454,8 @@ public final class LinearColorMap extends AbstractList<LinearColorMapElement>
 						tempARGB[tempARGB.length-1]=defaultColor.getRGB();
 						ARGB=tempARGB;	
 					}
-					this.piecewise= new DefaultPiecewiseTransform1D<LinearColorMapElement>(this.standardElements,max);
+					// SG we use max-1 as a default value since the colormap goes from 0 to max - 1
+					this.piecewise= new DefaultPiecewiseTransform1D<LinearColorMapElement>(this.standardElements,max-1);
 				}
 
 			}

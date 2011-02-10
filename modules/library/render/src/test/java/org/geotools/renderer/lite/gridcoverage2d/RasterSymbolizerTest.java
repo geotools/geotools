@@ -28,6 +28,7 @@ import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
 import java.awt.image.WritableRaster;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -1002,6 +1003,37 @@ public class RasterSymbolizerTest  {
 
 	}
 
+	/**
+	 * Found out that we were creating a classification transform that was incorrect
+	 * since the gaps index was set to the max index + 1 in the colormap, which 
+	 * resulted in {@link IndexOutOfBoundsException}.
+	 * 
+	 * @throws IOException
+	 */
+	@Test
+	public void testGapsColor() throws IOException{
+            java.net.URL surl = TestData.url(this, "Topsoil-Organic-Carbon.sld");
+            SLDParser stylereader = new SLDParser(sf, surl);
+            StyledLayerDescriptor sld = stylereader.parseSLD();
+    
+            final GridSampleDimension[] gsd = { new GridSampleDimension("test1BandByte_SLD1")};
+            // get a coverage
+            final GridCoverage2D gc = CoverageFactoryFinder.getGridCoverageFactory(null).create("name",
+                    JAI.create("ImageRead", TestData.file(this, "toc.tif")),
+                    new GeneralEnvelope(new double[] { -90, -180 }, new double[] { 90, 180 }), gsd,
+                    null, null);
+    
+            // build the RasterSymbolizer
+            final SubchainStyleVisitorCoverageProcessingAdapter rsh = new RasterSymbolizerHelper(gc,
+                    null);
+            final RasterSymbolizer rs = extractRasterSymbolizer(sld);
+    
+            // visit the RasterSymbolizer
+            rsh.visit(rs);
+    
+            testRasterSymbolizerHelper(rsh);
+	}
+	
 	@org.junit.Test
 	public void dem() throws IOException, TransformerException {
 		

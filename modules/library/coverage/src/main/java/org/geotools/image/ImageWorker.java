@@ -2524,29 +2524,20 @@ public class ImageWorker {
         try{
 
             writer.setOutput(outStream);
-        	 // the JDK writer has problems with images that do not  start at minx==miny==0
-            if (!nativeAcc&&(image.getMinX()!=0 || image.getMinY()!=0)) {
-          
-                      
-//                     final WritableRaster raster= RasterFactory.createWritableRaster(
-//                     		image.getSampleModel().createCompatibleSampleModel(image.getWidth(), image.getHeight()), 
-//                     		new Point(0,0)); 
+        	// the JDK writer has problems with images that do not  start at minx==miny==0
+            // while the clib writer has issues with tiled images
+            if ((!nativeAcc && (image.getMinX() != 0 || image.getMinY() != 0)) ||
+                    (nativeAcc && (image.getNumXTiles() > 1 || image.getNumYTiles() > 1))) {
                  	final BufferedImage finalImage= new BufferedImage(
                  			image.getColorModel(),
-//                 			raster,
-                 			((WritableRaster)image.getData()).createWritableTranslatedChild(0,0),
+                			((WritableRaster)image.getData()).createWritableTranslatedChild(0,0),
                  			image.getColorModel().isAlphaPremultiplied(),null);
-//                 	final Graphics2D g2D= finalImage.createGraphics();
-//                 	g2D.drawRenderedImage(image, AffineTransform.getTranslateInstance());
-//                 	g2D.dispose();
                  	
                     writer.write(null, new IIOImage(finalImage, null, null), iwp);
-
-             }       
-            else
+             } else {
             	writer.write(null, new IIOImage(image, null, null), iwp);
-        }
-        finally{
+             }
+        } finally{
         	try{
         		writer.dispose();
         	}catch (Throwable e) {

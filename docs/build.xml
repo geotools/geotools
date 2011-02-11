@@ -38,12 +38,10 @@
       <param name="build" value="html"/>
     </antcall>
     <!-- uncomment for developers guide -->
-    <!--
     <antcall target="sphinx">
       <param name="id" value="developer"/>
       <param name="build" value="html"/>
     </antcall>
-    -->
     <!-- uncomment for pdf -->
     <!--antcall target="pdf">
       <param name="id" value="tutorial"/>

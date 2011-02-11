@@ -1,0 +1,30 @@
+Websites
+--------
+
+GeoTools maintains a number of public websites:
+* http://geotools.org/ website generated using sphinx operated by OSGeo
+* http://geotoolsnews.blogspot.com/ Blog operated by google
+* http://docs.codehaus.org/display/GEOTOOLS/Home http://docs.codehaus.org/display/GEOTDOC/Home http://docs.codehaus.org/display/GEOT/Home Confluence wiki used for developer collaboration operated by CodeHaus
+* http://jira.codehaus.org/secure/BrowseProject.jspa?id=10270  JIRA Issue Tracker operated by CodeHaus
+* http://xircles.codehaus.org/projects/geotools CodeHaus project page (for confluence and jira project permissions)
+* http://svn.geotools.org/ svn source code repository operated by OSGeo
+* http://sourceforge.net/projects/geotools/ Used for project downloads.
+
+GeoTools has entries on a number of other public websites:
+* http://freshmeat.net/projects/geotools/
+* http://www.ohloh.net/p/geotools
+
+Confluence
+^^^^^^^^^^
+
+Confluence has been used since March 2004 to allow anyone (developers and users) to create and update GeoTools documentation.
+Because of spammers our procedure to get read/write access to the wiki has gotten a tad annoying. It is documented at the bottom of our home page:
+1. Create an account for confluence: http://docs.codehaus.org/signup.action
+2. Create an account for codehaus: http://xircles.codehaus.org/signup
+3. Go to your personal details page: http://xircles.codehaus.org/my/details
+4. Use the form to fill in your Confluence Username from step one. http://xircles.codehaus.org/projects/geotools
+5. Go to the GeoTools project page: http://xircles.codehaus.org/projects/geotools
+6. And click on Apply to join as a developer
+7. Wait for a GeoTools Project Management Committee Member to grant you permission
+8. Once you have an account, you just need to login and click on the edit button to modify a page.
+Confluence uses a simple markup language, and a quick reference is given on the right side of pages you are editing. One way to start contributing to the wiki documentation is to fix mistakes, clarify confusing content or by contributing to the documentation for areas of the GeoTools code base you are familiar with.

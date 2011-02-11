@@ -1,0 +1,15 @@
+*****
+Tools
+*****
+
+* Eclipse Developers Guide
+  * Eclipse FAQ
+  * Eclipse Setup and Build
+* Eclipse Modeling Framework
+* IDEA4
+* IDEA Project File Generation with Maven
+* ImageIO
+* Java Emitter Templates
+* NetBeans developers guide
+* Omondo
+* YourKit profiler

@@ -1,0 +1,15 @@
+**************
+Documentation
+**************
+
+The chapter covers some writing guidelines for GeoTools documentation, along with some tips and tricks for working with Confluence.
+
+You may wish to review *Websites* page which covers how to get edit access for the wiki.
+
+.. toctree::
+   :maxdepth: 1
+   
+   Welcome and Tutorials
+   Reference Material
+   Confluence Tips and Tricks
+   GeoTools 2.0 Documentation

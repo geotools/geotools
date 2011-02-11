@@ -1,0 +1,122 @@
+Java Install
+-------------
+
+As mentioned in the previous section we use a stable (ie old) version of Java to build the GeoTools library.
+
+Java 2 Standard Edition Software Developers Kit
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+1. Download a JDK
+2. Use the one click installer
+3. When it asks if you want to install a JRE you can say yes
+
+Be careful with Java 6
+^^^^^^^^^^^^^^^^^^^^^^^
+
+The API has changed in a few areas so making use of Java 6 for building is a little risky (you may accidentally use a new method).
+
+GeoTools requires a Java 1.5 SDK for versions 2.5 and above; for older versions of java please use GeoTools 2.4.
+
+Why JAVA_HOME does not work on Windows
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+How to Build using Java 5 and run using Java 6 on windows.
+
+Several projects expect to make use of a JRE 6 runtime environment (simply for the speed benefit). If your computer is set up with both a JDK 1.5 for building GeoTools; and a JDK 6 for your other projects you will need to sort out how to switch between them.
+
+One technique is to set up a batch file similar to the following:
+
+1. Hunt down the cmd.exe ( Start menu > Accessories > Command Prompt) and right click to send it to the desktop
+2. Edit the desktop cmd.exe short cut and change the target to::
+      
+      %SystemRoot%\system32\cmd.exe /k C:\java\java15.bat
+3. Create the C:\java\java15.bat file mentioned above::
+   
+      set ANT_HOME=C:\java\apache-ant-1.6.5
+      set M2_HOME=C:\java\maven-2.0.9
+      set JAVA_HOME=C:\Program Files\Java\jdk1.5.0_19
+      
+      set PATH=%JAVA_HOME%\bin;%SystemRoot%\system32;%SystemRoot%;%SystemRoot%\System32\Wbem;C:\Program Files\Subversion\bin;%M2_HOME%\bin;%ANT_HOME%\bin
+
+4. Please note that the construction of the PATH above is very important; JAVA_HOME\bin must appear
+   before SystemRoot\system32 as the system32 contains a stub java.exe that looks up the correct
+   version of java to run in the registry.
+   
+
+5.   You can see in the above screen snap that the **My Computer\HKEY_LOCAL_MACHINE\SOFTWARE\JavaSoft > Java Development Kit > CurrentVersion** is set to **1.6**. The **1.6** entry documents the path to the version of java to run. Placing JAVA_HOME on the path before System32 shortcuts this annoying "feature".
+
+Java Extensions
+---------------
+
+GeoTools is now able to build with just a normal Java Software Developers Kit. You should be aware that several of our raster formats are capable of making use of native code packaged up as Java extensions.
+
+Java Developers Kit:
+* Can make use of JAI and ImageIO if they have been installed into your JDK
+Java Runtime Environment:
+* Can make use of JAI and ImageIO if you have installed them into your JRE
+
+These extensions end up adding:
+* some jars into your lib folder
+* some dlls into your bin folder
+
+Please follow the installation instructions carefully.
+
+Java Advanced Imaging
+^^^^^^^^^^^^^^^^^^^^^
+
+Download this Version of JAI
+* Java Advanced Imaging API 1.1.3
+
+
+1. Download JAI for your JDK by clicking on the above link. 
+   Example: jai-1_1_3-lib-windows-i586-jdk.exe
+2. Use the one click installer to install JAI into your JDK
+3. Download JAI for your JRE by clicking on the above link.
+   Example: jai-1_1_3-lib-windows-i586-jre.exe
+4. Use the one click installer to install JAI into your JRE
+
+If you are working on linux you will of course need to choose the appropriate download.
+
+For More Information
+* Java Media Home Page: http://java.sun.com/products/java-media/jai/index.jsp
+
+Java Image IO
+^^^^^^^^^^^^^
+
+Download this Version of ImageIO
+* JAI Image I/O Tools 1.1
+
+1. Download ImageIO for your JDK by clicking on the above link. Example: jai_imageio-1_1-lib-windows-i586-jdk.exe
+
+2. Download ImageIO for your JRE by clicking on the above link. Example: jai_imageio-1_1-lib-windows-i586-jre.exe
+
+If you are working on linux you will of course need to choose the appropriate download.
+
+Alternate ImageIO-Ext Install
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The installer from the ImageIO-Ext website can be used to install into your JAVA_HOME (ie the JDK). If you like you can use this to install the software; and then copy the required jars into your JRE by hand (they end up in JAVA_HOME/jre/ext/libs and need to be copied into JRE/ext/libs
+
+Alternate CLASSPATH Install
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This is only needed if the windows one-click installers don't work for you:
+* Perhaps you have several JDKs installed on your system?
+* Perhaps you are on Linux?
+* Perhaps you are on Mac and the version of JAI/ImageIO included with your operating system is out of date?
+
+The goal is to place the required jars into your lib/ext directory of both your JDK (for compiling) and your JRE (for running).
+
+Optional: Mac ImageIO
+^^^^^^^^^^^^^^^^^^^^^
+
+Java Advanced Imaging is included with recent releases of Mac OS (but that may be changing in the future).
+
+The JAI ImageIO extension is not available as a download for the mac. However, you can use the jar from the Linux/windows download to get “pure java” functionality without hardware acceleration:
+1. Copy the jars to ~/Library/Java/Extensions
+2. Check that the files are present as expected:
+   
+   * clibwrapper_jiio.jar 
+   * jai_core.jar
+   * mlibwrapper_jai.jar
+   * jai_codec.jar
+   * jai_imageio.jar

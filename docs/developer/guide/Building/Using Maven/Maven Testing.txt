@@ -1,0 +1,67 @@
+Maven Testing
+-------------
+
+To just run tests for a module::
+   
+   cd modules/library/main
+   mvn test
+
+Several of the "profiles" described on this page can be used on conjuction::
+   
+   mvn test -o -P interactive,stress
+
+Logging
+^^^^^^^
+
+By default logging information is considered a test result:
+* the logs from testing end up in target/surefire-reports sub-directory of each module
+* There should be XML and TXT files for the results of each test. Be sure to check both, as one of the wrinkles of maven makes it so the output isn't always exactly the same.
+
+Run a Single Test
+^^^^^^^^^^^^^^^^^
+
+To run a single test::
+   mvn -Dtest=Rendering2DTest test
+
+If you are having problems with logging output levels be sure to read the logging section under coding conventions.
+
+Online Testing
+^^^^^^^^^^^^^^
+
+Many tests require an online resource to run such as a remote server.
+
+These tests are excluded from the default build as often these online resources are not available and as a result case tests to fail. The naming convention for these tests is to name them as "OnlineTest".
+
+Examples:
+* PostgisDataStoreAPIOnlineTest.java
+* WMS1_0_0_OnlineTest.java
+
+To execute online tests during a build, the online profiles is used::
+   
+   mvn test -P online
+
+Additionally many of these online tests depend on connection parameters being supplied describing the server to connect to. For more information on the use of these "test fixture" files please see the project contentions section on online tests.
+
+Interactive Tests
+^^^^^^^^^^^^^^^^^
+
+Some tests (particularly of rendering technology) like to pop up images and the practice drawing. 
+
+To run these tests::
+   
+   mvn test -P interactive
+
+Stress Testing
+^^^^^^^^^^^^^^
+
+Stress tests can roughly be defined as tests that do not add much test coverage to a module, and take a extended amount of time to run.
+
+These tests are excluded from the default build as they are time consuming. The naming convention for these tests is to name them as StressTest.
+
+Examples:
+* GMLParserStressTest.java
+* WFSIonicStressTest.java
+
+To execute stress tests during a build, the stress profiles is used::
+   
+   mvn test -P stress

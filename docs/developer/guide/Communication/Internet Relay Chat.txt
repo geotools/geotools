@@ -1,0 +1,19 @@
+Internet Relay Chat
+-------------------
+GeoTools developers use an IRC channel for real time collaboration (for situations where email is too slow) - this is also a suitable venue for questions.
+If you are new to IRC, you will need to find an IRC client. The later versions of Netscape and Mozilla have IRC built in, and you can connect to a GeoTools meeting simply by using the URL:
+irc://irc.freenode.net/geotools.
+
+The information you need to configure your IRC client are:
+* Server - Pick one from Freenode Servers
+* Channel - #geotools
+* Port - 6667
+
+Logs from IRC meetings are stored on this wiki:
+* http://docs.codehaus.org/pages/viewrecentblogposts.action?key=GEOTOOLS
+
+IRC Breakout Meetings
+^^^^^^^^^^^^^^^^^^^^^
+
+Occasionally breakout IRC meetings will be announced on the geotools-devel mailing list around specific topics of interest.
+Anyone is free to start a meeting; we ask that an email be sent out and a time negotiated on the email list allowing interested parties to attend.

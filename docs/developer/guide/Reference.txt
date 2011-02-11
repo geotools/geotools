@@ -1,0 +1,14 @@
+*********
+Reference
+*********
+
+
+* Version
+
+  * ArcSDE
+  * DB2
+  * JAI
+  * JDK
+  * JRE
+  * Maven
+  * Oracle

@@ -183,7 +183,7 @@
                 <ant antfile="build.xml" dir="${basedir}" target="build">
                   <property name="build.directory" value="${build.directory}"/>
                   <!-- may be ${project.version} when tagged -->
-                  <property name="project.version" value="2.7-M3"/>
+                  <property name="project.version" value="2.7-RC1"/>
                 </ant>
               </tasks>
             </configuration>

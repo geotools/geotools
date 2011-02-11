@@ -1,0 +1,14 @@
+Modular Design
+==============
+
+Module Categories
+-----------------
+
+Data Access
+-----------
+
+Patterns
+--------
+
+Abstract Factory
+^^^^^^^^^^^^^^^^

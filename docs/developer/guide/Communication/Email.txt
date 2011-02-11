@@ -1,0 +1,9 @@
+Email
+-------------------
+
+Much of the development discussion happens on the geotools-devel mailing list.
+
+ * http://lists.sourceforge.net/lists/listinfo/geotools-devel
+ * http://sourceforge.net/mailarchive/forum.php?forum=geotools-devel
+
+If your query is more general, e.g. you need help with how to use GeoTools, please use the geotools-gt2-users mailing list.

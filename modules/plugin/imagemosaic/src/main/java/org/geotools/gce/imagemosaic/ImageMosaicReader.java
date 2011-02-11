@@ -727,8 +727,8 @@ public final class ImageMosaicReader extends AbstractGridCoverage2DReader implem
             metadataNames.add("TIME_DOMAIN_MAXIMUM");
             metadataNames.add("TIME_DOMAIN_RESOLUTION");
             metadataNames.add("ELEVATION_DOMAIN");
-            metadataNames.add("TIME_DOMAIN_MINIMUM");
-            metadataNames.add("TIME_DOMAIN_MAXIMUM");
+            metadataNames.add("ELEVATION_DOMAIN_MINIMUM");
+            metadataNames.add("ELEVATION_DOMAIN_MAXIMUM");
             metadataNames.add("HAS_ELEVATION_DOMAIN");
             metadataNames.add("ELEVATION_DOMAIN_RESOLUTION");
             if(parentNames!=null)
@@ -995,7 +995,7 @@ public final class ImageMosaicReader extends AbstractGridCoverage2DReader implem
             return buff.substring(0,buff.length()-1).toString();
         } catch (IOException e) {
             if(LOGGER.isLoggable(Level.WARNING))
-                    LOGGER.log(Level.WARNING,"Unable to parse attribute:"+"TIME_DOMAIN",e);
+                    LOGGER.log(Level.WARNING,"Unable to parse attribute:TIME_DOMAIN",e);
             return null;
         }
     }

@@ -172,10 +172,6 @@ public abstract class AbstractGridFormat implements Format {
 
     public static final String TILE_SIZE_SEPARATOR = ",";
 
-    /** Optional Elevation value for this mosaic. */
-    @SuppressWarnings("unchecked")
-    public static final ParameterDescriptor<List> ELEVATION = DefaultParameterDescriptor.create("ELEVATION", "An elevation value",List.class, null,false);
-
     /** Control the transparency of the input coverages. */
     public static final ParameterDescriptor<Color> INPUT_TRANSPARENT_COLOR = new DefaultParameterDescriptor<Color>(
                 "InputTransparentColor", Color.class, null, null);

@@ -862,7 +862,7 @@ class RasterLayerResponse{
                                 //handle elevation indexing first since we then combine this with the max in case we are asking for current in time
                                 if (hasElevation){
                                         // sort by
-                                        query.setSortBy(new SortBy[]{new SortByImpl(FeatureUtilities.DEFAULT_FILTER_FACTORY.property(rasterManager.elevationAttribute), SortOrder.ASCENDING)});
+//                                        query.setSortBy(new SortBy[]{new SortByImpl(FeatureUtilities.DEFAULT_FILTER_FACTORY.property(rasterManager.elevationAttribute), SortOrder.ASCENDING)});
                                         final List<Filter> elevationF=new ArrayList<Filter>();
                                         for( Object elevation: elevations){
                                             if(elevation==null){
@@ -909,21 +909,21 @@ class RasterLayerResponse{
                                 
                                 // fuse time query with the bbox query
                                 if(hasTime){
-                                    final SortBy[] old= query.getSortBy();
-                                    if(old==null||old.length==0){
-                                        query.setSortBy(
-                                                new SortBy[]{
-                                                        new SortByImpl(
-                                                                FeatureUtilities.DEFAULT_FILTER_FACTORY.property(rasterManager.timeAttribute), 
-                                                                SortOrder.DESCENDING)});
-                                    } else {
-                                        query.setSortBy(
-                                                new SortBy[]{
-                                                        old[0],
-                                                        new SortByImpl(
-                                                                FeatureUtilities.DEFAULT_FILTER_FACTORY.property(rasterManager.timeAttribute), 
-                                                                SortOrder.DESCENDING)});
-                                    }
+//                                    final SortBy[] old= query.getSortBy();
+//                                    if(old==null||old.length==0){
+//                                        query.setSortBy(
+//                                                new SortBy[]{
+//                                                        new SortByImpl(
+//                                                                FeatureUtilities.DEFAULT_FILTER_FACTORY.property(rasterManager.timeAttribute), 
+//                                                                SortOrder.DESCENDING)});
+//                                    } else {
+//                                        query.setSortBy(
+//                                                new SortBy[]{
+//                                                        old[0],
+//                                                        new SortByImpl(
+//                                                                FeatureUtilities.DEFAULT_FILTER_FACTORY.property(rasterManager.timeAttribute), 
+//                                                                SortOrder.DESCENDING)});
+//                                    }
                                         final List<Filter> timeFilter=new ArrayList<Filter>();
                                         for( Object datetime: times){
                                             if(datetime==null){

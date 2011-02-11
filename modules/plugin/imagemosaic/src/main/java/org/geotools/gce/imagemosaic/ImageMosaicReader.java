@@ -55,6 +55,9 @@ import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
 import org.geotools.data.QueryCapabilities;
 import org.geotools.factory.Hints;
+import org.geotools.feature.visitor.FeatureCalc;
+import org.geotools.feature.visitor.MaxVisitor;
+import org.geotools.feature.visitor.MinVisitor;
 import org.geotools.feature.visitor.UniqueVisitor;
 import org.geotools.filter.SortByImpl;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
@@ -716,110 +719,64 @@ public final class ImageMosaicReader extends AbstractGridCoverage2DReader implem
 
 	@Override
 	public String[] getMetadataNames() {
-		final boolean hasTimeAttribute=timeAttribute!=null;
-		final boolean hasElevationAttribute=elevationAttribute!=null;
-		if(hasElevationAttribute||hasTimeAttribute)
-		{
-			final List<String> metadataNames= new ArrayList<String>();
-			metadataNames.add("TIME_DOMAIN");
-                        metadataNames.add("HAS_TIME_DOMAIN");
-                        metadataNames.add("ELEVATION_DOMAIN");			
-			metadataNames.add("HAS_ELEVATION_DOMAIN");
-			return metadataNames.toArray(new String[metadataNames.size()]);
-		}
-		return super.getMetadataNames();
+	    final String []parentNames = super.getMetadataNames();
+            final List<String> metadataNames = new ArrayList<String>();
+            metadataNames.add("TIME_DOMAIN");
+            metadataNames.add("HAS_TIME_DOMAIN");
+            metadataNames.add("TIME_DOMAIN_MINIMUM");
+            metadataNames.add("TIME_DOMAIN_MAXIMUM");
+            metadataNames.add("TIME_DOMAIN_RESOLUTION");
+            metadataNames.add("ELEVATION_DOMAIN");
+            metadataNames.add("TIME_DOMAIN_MINIMUM");
+            metadataNames.add("TIME_DOMAIN_MAXIMUM");
+            metadataNames.add("HAS_ELEVATION_DOMAIN");
+            metadataNames.add("ELEVATION_DOMAIN_RESOLUTION");
+            if(parentNames!=null)
+                metadataNames.addAll(Arrays.asList(parentNames));
+            return metadataNames.toArray(new String[metadataNames.size()]);
 	}
 
 	@Override
 	public String getMetadataValue(final String name) {
-	        if(name.equalsIgnoreCase("HAS_ELEVATION_DOMAIN"))
-	        return String.valueOf(elevationAttribute!=null);
+	    final String superValue=super.getMetadataValue(name);
+	    if(superValue!=null)
+	        return superValue;
 	    
-	       if(name.equalsIgnoreCase("HAS_TIME_DOMAIN"))
-	                return String.valueOf(timeAttribute!=null);
-	    
-		final boolean getTimeAttribute=(timeAttribute!=null&&name.equalsIgnoreCase("time_domain"));
-		final QueryCapabilities queryCapabilities = rasterManager.granuleCatalog.getQueryCapabilities();
-		boolean manualSort=false;
-		if(getTimeAttribute){
-			Query query;
-			try {
-				query = new Query(rasterManager.granuleCatalog.getType().getTypeName());
-				query.setPropertyNames(Arrays.asList(timeAttribute));
-				final SortBy[] sortBy=new SortBy[]{
-						new SortByImpl(
-								FeatureUtilities.DEFAULT_FILTER_FACTORY.property(rasterManager.timeAttribute),
-								SortOrder.ASCENDING
-						)};
-				// if the store does not support sorting we have to do it by hand
-				if (queryCapabilities.supportsSorting(sortBy)) {
-					query.setSortBy(sortBy);
-				} else {
-					manualSort=true;
-				}
-				final UniqueVisitor visitor= new UniqueVisitor(timeAttribute);
-				rasterManager.granuleCatalog.computeAggregateFunction(query, visitor);
-				
-				// check result
-				final ArrayList<Date> result= new ArrayList<Date>();
-				result.addAll(visitor.getUnique());
-				if(manualSort)
-				    Collections.sort(result);
-
-				if(result.size()<=0)
-					return null;				
-				final StringBuilder buff= new StringBuilder();
-				final SimpleDateFormat df= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
-				df.setTimeZone(UTC_TZ);
-				for(Date date:result){
-					buff.append(df.format(date)).append("Z");//ZULU
-					buff.append(",");
-				}
-				return buff.substring(0,buff.length()-1).toString();
-			} catch (IOException e) {
-				if(LOGGER.isLoggable(Level.WARNING))
-					LOGGER.log(Level.WARNING,"Unable to parse attribute:"+name,e);
-			}
-			
-		}
-
-		final boolean getElevationAttribute=(elevationAttribute!=null&&name.equalsIgnoreCase("elevation_domain"));
-		if(getElevationAttribute){
-			Query query;
-			try {
-				query = new Query(rasterManager.granuleCatalog.getType().getTypeName());
-				query.setPropertyNames(Arrays.asList(elevationAttribute));
-				final SortBy[] sortBy=new SortBy[]{
-						new SortByImpl(
-								FeatureUtilities.DEFAULT_FILTER_FACTORY.property(rasterManager.elevationAttribute),
-								SortOrder.ASCENDING
-						)};
-				if(queryCapabilities.supportsSorting(sortBy))
-					query.setSortBy(sortBy);
-				else
-					manualSort=true;				
-				final UniqueVisitor visitor= new UniqueVisitor(elevationAttribute);
-				rasterManager.granuleCatalog.computeAggregateFunction(query, visitor);
-				
-				// check result
-				final Set<Double> result = manualSort?new TreeSet<Double>(visitor.getUnique()):visitor.getUnique();
-				if(result.size()<=0)
-					return null;
-				final StringBuilder buff= new StringBuilder();
-				for(Iterator<Double> it=result.iterator();it.hasNext();){
-					final double value= (Double) it.next();
-					buff.append(value);
-					if(it.hasNext())
-						buff.append(",");
-				}
-				return buff.toString();
-			} catch (IOException e) {
-				if(LOGGER.isLoggable(Level.WARNING))
-					LOGGER.log(Level.WARNING,"Unable to parse attribute:"+name,e);
-			}
-			
-		}
-		
+            if (name.equalsIgnoreCase("HAS_ELEVATION_DOMAIN"))
+                return String.valueOf(elevationAttribute != null);
+    
+            if (name.equalsIgnoreCase("HAS_TIME_DOMAIN"))
+                return String.valueOf(timeAttribute != null);
+    
+            if (name.equalsIgnoreCase("TIME_DOMAIN_RESOLUTION"))
+                return null;
+    
+            final boolean getTimeDomain = (timeAttribute != null && name.equalsIgnoreCase("time_domain"));
+            if (getTimeDomain) {
+                return extractTimeDomain();
+    
+            }
+    
+            final boolean getTimeExtrema = timeAttribute != null
+                    && (name.equalsIgnoreCase("time_domain_minimum") || name.equalsIgnoreCase("time_domain_maximum"));
+            if (getTimeExtrema) {
+                return extractTimeExtrema(name);
+    
+            }
+    
+            final boolean getElevationAttribute = (elevationAttribute != null && name.equalsIgnoreCase("elevation_domain"));
+            if (getElevationAttribute) {
+                return extractElevationDomain();
+    
+            }
+    
+            final boolean getElevationExtrema = elevationAttribute != null
+                    && (name.equalsIgnoreCase("elevation_domain_minimum") || name.equalsIgnoreCase("elevation_domain_maximum"));
+            if (getElevationExtrema) {
+                return extractElevationExtrema(name);
+    
+            }
+        		
 //		final boolean getRuntimeAttribute=name.equalsIgnoreCase("runtime_domain");
 //		if(getRuntimeAttribute){
 //			Query query;
@@ -870,4 +827,176 @@ public final class ImageMosaicReader extends AbstractGridCoverage2DReader implem
 //		
 		return super.getMetadataValue(name);
 	}
+
+
+    /**
+     * Extract the time domain extrema.
+     * 
+     * @param metadataName a {@link String} either TIME_DOMAIN_MAXIMUM or TIME_DOMAIN_MINIMUM.
+     * 
+     * @return either TIME_DOMAIN_MAXIMUM or TIME_DOMAIN_MINIMUM as a {@link String}.
+     */
+    private String extractTimeExtrema(String metadataName) {
+        if(timeAttribute==null){
+            if(LOGGER.isLoggable(Level.INFO))
+                LOGGER.info("Requesting extrema on attribute "+metadataName+" when no such an attribute is supported!");
+            return null;
+        }
+        try {
+            final FeatureCalc visitor = createExtremaQuery(metadataName,rasterManager.timeAttribute);
+            
+            // check result
+            final Date result=(Date) visitor.getResult().getValue();
+            final SimpleDateFormat df= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+            df.setTimeZone(UTC_TZ);
+            return df.format(result)+"Z";//ZULU
+        } catch (IOException e) {
+            if(LOGGER.isLoggable(Level.WARNING))
+                    LOGGER.log(Level.WARNING,"Unable to compute extrema for TIME_DOMAIN",e);
+            return null;
+        }
+    }
+
+    /**
+     * @param metadataName
+     * @param attributeName 
+     * @return
+     * @throws IOException
+     */
+    private FeatureCalc createExtremaQuery(String metadataName, String attributeName) throws IOException {
+        final Query query = new Query(rasterManager.granuleCatalog.getType().getTypeName());
+        query.setPropertyNames(Arrays.asList(attributeName));
+                              
+        final FeatureCalc visitor= 
+            metadataName.toLowerCase().endsWith("maximum")?
+                new MaxVisitor(attributeName):new MinVisitor(attributeName);
+        rasterManager.granuleCatalog.computeAggregateFunction(query, visitor);
+        return visitor;
+    }
+    
+    /**
+     * Extract the elevation domain extrema.
+     * 
+     * @param metadataName a {@link String} either ELEVATION_DOMAIN_MAXIMUM or ELEVATION_DOMAIN_MINIMUM.
+     * 
+     * @return either ELEVATION_DOMAIN_MAXIMUM or ELEVATION_DOMAIN_MINIMUM as a {@link String}.
+     */
+    private String extractElevationExtrema(String metadataName) {
+        if(elevationAttribute==null){
+            if(LOGGER.isLoggable(Level.INFO))
+                LOGGER.info("Requesting extrema on attribute "+metadataName+" when no such an attribute is supported!");
+            return null;
+        }
+        try {
+            final FeatureCalc visitor = createExtremaQuery(metadataName,rasterManager.elevationAttribute);
+            
+            // check result
+            final Double result=(Double) visitor.getResult().getValue();
+            return Double.toString(result);
+        } catch (IOException e) {
+            if(LOGGER.isLoggable(Level.WARNING))
+                    LOGGER.log(Level.WARNING,"Unable to compute extrema for ELEVATION_DOMAIN",e);
+            return null;
+        }
+    }
+
+    /**
+     * Extract the elevation domain as a comma separated list of string values.
+     * @return a {@link String} that contains a comma separated list of values.
+     */
+    private String extractElevationDomain() {
+        if(elevationAttribute==null){
+            if(LOGGER.isLoggable(Level.INFO))
+                LOGGER.info("Requesting domain on attribute elevation when no such an attribute is supported!");
+            return null;
+        }
+        try {
+            final Set<Double> result = extractDomain(elevationAttribute);          
+            // check result
+            if(result.size()<=0)
+                    return null;
+            
+            final StringBuilder buff= new StringBuilder();
+            for(Iterator<Double> it=result.iterator();it.hasNext();){
+                    final double value= (Double) it.next();
+                    buff.append(value);
+                    if(it.hasNext())
+                    	buff.append(",");
+            }
+            return buff.toString();
+        } catch (IOException e) {
+            if(LOGGER.isLoggable(Level.WARNING))
+                    LOGGER.log(Level.WARNING,"Unable to parse attribute: ELEVATION_DOMAIN",e);
+            return null;
+        }
+    }
+
+    /**
+     * Extract the domain of a dimension as a set of unique values.
+     * 
+     * <p>
+     * It retrieves a comma separated list of values as a {@link String}.
+     * 
+     * @return a comma separated list of values as a {@link String}.
+     * @throws IOException
+     */
+    private Set extractDomain(final String attribute)
+            throws IOException {
+
+        final QueryCapabilities queryCapabilities = rasterManager.granuleCatalog.getQueryCapabilities();
+        boolean manualSort=false;        
+        Query query = new Query(rasterManager.granuleCatalog.getType().getTypeName());
+        query.setPropertyNames(Arrays.asList(attribute));
+        final SortBy[] sortBy=new SortBy[]{
+                	new SortByImpl(
+                			FeatureUtilities.DEFAULT_FILTER_FACTORY.property(attribute),
+                			SortOrder.ASCENDING
+                	)};
+        if(queryCapabilities.supportsSorting(sortBy))
+                query.setSortBy(sortBy);
+        else
+                manualSort=true;				
+        final UniqueVisitor visitor= new UniqueVisitor(attribute);
+        rasterManager.granuleCatalog.computeAggregateFunction(query, visitor);
+        
+        // check result
+        final Set result = manualSort?
+                new TreeSet(visitor.getUnique()):
+                visitor.getUnique();
+        if(result.size()<=0)
+                return null;
+        return result;
+    }
+
+    /**
+     * Extract the elevation domain as a comma separated list of string values.
+     * @return a {@link String} that contains a comma separated list of values.
+     */
+    private String extractTimeDomain() {
+        if(timeAttribute==null){
+            if(LOGGER.isLoggable(Level.INFO))
+                LOGGER.info("Requesting domain on attribute time when no such an attribute is supported!");
+            return null;
+        }
+        try {
+            final Collection<Date>result =extractDomain(timeAttribute);
+            
+            // check result
+            if(result.size()<=0)
+                    return null;	
+                    
+            final StringBuilder buff= new StringBuilder();
+            final SimpleDateFormat df= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+            df.setTimeZone(UTC_TZ);
+            for(Date date:result){
+                    buff.append(df.format(date)).append("Z");//ZULU
+                    buff.append(",");
+            }
+            return buff.substring(0,buff.length()-1).toString();
+        } catch (IOException e) {
+            if(LOGGER.isLoggable(Level.WARNING))
+                    LOGGER.log(Level.WARNING,"Unable to parse attribute:"+"TIME_DOMAIN",e);
+            return null;
+        }
+    }
 }

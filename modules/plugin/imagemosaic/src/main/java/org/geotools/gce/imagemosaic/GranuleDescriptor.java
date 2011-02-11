@@ -86,7 +86,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * Right now we are making the assumption that a single granuleDescriptor is made a by a
  * single file with embedded overviews, either explicit or intrinsic through wavelets like MrSID,
  * ECW or JPEG2000.
- * 
+ *      
  * @author Simone Giannecchini, GeoSolutions S.A.S.
  * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for jar:file:foo.jar/bar.properties URLs
  * @since 2.5.5

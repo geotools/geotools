@@ -106,8 +106,7 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
     static final Interpolation DEFAULT_INTERPOLATION = new InterpolationNearest();
 
     /** Optional Time value for this mosaic. */
-    @SuppressWarnings("unchecked")
-	public static final ParameterDescriptor<List> TIME = DefaultParameterDescriptor.create("TIME", "A list of time objects",List.class, null,false);    
+    public static final ParameterDescriptor<List> TIME = DefaultParameterDescriptor.create("TIME", "A list of time objects",List.class, null,false);    
     
     /** Filter tiles based on attributes from the input coverage*/
     public static final ParameterDescriptor<Filter> FILTER = new DefaultParameterDescriptor<Filter>("Filter", Filter.class, null, null);
@@ -142,6 +141,9 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
     /** Control the interpolation to be used in mosaicking */
     public static final ParameterDescriptor<Interpolation> INTERPOLATION = new DefaultParameterDescriptor<Interpolation>(
             "Interpolation", Interpolation.class, null, DEFAULT_INTERPOLATION);
+
+    /** Optional Elevation value for this mosaic. */
+    public static final ParameterDescriptor<List> ELEVATION = DefaultParameterDescriptor.create("ELEVATION", "An elevation value",List.class, null,false);
 
     
     /**

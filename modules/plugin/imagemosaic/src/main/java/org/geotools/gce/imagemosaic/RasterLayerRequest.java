@@ -20,7 +20,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -149,13 +148,13 @@ class RasterLayerRequest {
 
 	private boolean multithreadingAllowed;
 
-	private List<Date> requestedTimes;
+	private List<?> requestedTimes;
 
-	private List<Double> elevation;
+	private List<?> elevation;
 	
 	private Filter filter = null;
 
-	public List<Double> getElevation() {
+	public List<?> getElevation() {
 		return elevation;
 	}
 
@@ -163,7 +162,7 @@ class RasterLayerRequest {
 		return filter;
 	}
 	
-	public List<Date> getRequestedTimes() {
+	public List<?> getRequestedTimes() {
 		return requestedTimes;
 	}
 
@@ -646,7 +645,7 @@ class RasterLayerRequest {
         	final Object value = param.getValue();
         	if(value==null)
         		return;
-            final List<Date> dates = (List<Date>) value;
+            final List<?> dates = (List<?>) value;
             if (dates==null|| dates.size()<=0) {
                 return;
             }
@@ -655,16 +654,16 @@ class RasterLayerRequest {
             return;
         }      
         
-        // //
+        // //x
         //
         // Elevation parameter
         //
         // //
-        if (name.equals(AbstractGridFormat.ELEVATION.getName())) {
+        if (name.equals(ImageMosaicFormat.ELEVATION.getName())) {
         	final Object value = param.getValue();
         	if(value==null)
         		return;
-            elevation = (List<Double>) value;
+            elevation = (List<?>) value;
             return;
         }            
 

@@ -31,7 +31,6 @@ import java.awt.image.SampleModel;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -66,11 +65,9 @@ import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.Query;
-import org.geotools.data.QueryCapabilities;
 import org.geotools.factory.Hints;
 import org.geotools.feature.visitor.MaxVisitor;
 import org.geotools.filter.IllegalFilterException;
-import org.geotools.filter.SortByImpl;
 import org.geotools.gce.imagemosaic.OverviewsController.OverviewLevel;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalogVisitor;
 import org.geotools.geometry.Envelope2D;
@@ -86,7 +83,7 @@ import org.geotools.resources.geometry.XRectangle2D;
 import org.geotools.resources.i18n.Vocabulary;
 import org.geotools.resources.i18n.VocabularyKeys;
 import org.geotools.resources.image.ImageUtilities;
-import org.geotools.util.Converters;
+import org.geotools.util.DateRange;
 import org.geotools.util.NumberRange;
 import org.geotools.util.SimpleInternationalString;
 import org.opengis.coverage.ColorInterpretation;
@@ -96,10 +93,7 @@ import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
-import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.expression.Expression;
-import org.opengis.filter.sort.SortBy;
-import org.opengis.filter.sort.SortOrder;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.MathTransform;
@@ -825,9 +819,9 @@ class RasterLayerResponse{
 			rasterBounds=tempRasterBounds.toRectangle2D().getBounds();
 			
 			
-			// SG using the above may lead to problems since the reason is that  may be a little (1 px) bigger
-			// than what we need. The code below is a bit better since it uses a proper logic (see GridEnvelope
-			// Javadoc)
+//			 SG using the above may lead to problems since the reason is that  may be a little (1 px) bigger
+//			 than what we need. The code below is a bit better since it uses a proper logic (see GridEnvelope
+//			 Javadoc)
 //			rasterBounds = new GridEnvelope2D(new Envelope2D(tempRasterBounds), PixelInCell.CELL_CORNER);
 			if (rasterBounds.width == 0)
 			    rasterBounds.width++;
@@ -844,8 +838,8 @@ class RasterLayerResponse{
 			// create the index visitor and visit the feature
 			final MosaicBuilder visitor = new MosaicBuilder();
 			visitor.request = request;
-			final List<Date> times = request.getRequestedTimes();
-			final List<Double> elevations=request.getElevation();
+			final List times = request.getRequestedTimes();
+			final List elevations=request.getElevation();
 			final Filter filter = request.getFilter();
 			final boolean hasTime=(times!=null&&times.size()>0);
 			final boolean hasElevation=(elevations!=null && elevations.size()>0);
@@ -858,74 +852,100 @@ class RasterLayerResponse{
 			    final Filter bbox=FeatureUtilities.DEFAULT_FILTER_FACTORY.bbox(FeatureUtilities.DEFAULT_FILTER_FACTORY.property(rasterManager.granuleCatalog.getType().getGeometryDescriptor().getName()),mosaicBBox);
 			    query.setFilter( bbox);
 			}
-			
-			if(hasTime||hasElevation||hasFilter )
-			{
-				//handle elevation indexing first since we then combine this with the max in case we are asking for current in time
-				if (hasElevation){
-					
-					final Filter oldFilter = query.getFilter();
-					final PropertyIsEqualTo elevationF = 
-						FeatureUtilities.DEFAULT_FILTER_FACTORY.equal(
-								FeatureUtilities.DEFAULT_FILTER_FACTORY.property(
-										rasterManager.elevationAttribute), 
-										FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(elevations.get(0)),
-										true
-						);
-					query.setFilter(FeatureUtilities.DEFAULT_FILTER_FACTORY.and(oldFilter, elevationF));	
-				}
 
-				//handle runtime indexing since we then combine this with the max in case we are asking for current in time
-				if (hasFilter){
-					final Filter oldFilter = query.getFilter();
-					query.setFilter(FeatureUtilities.DEFAULT_FILTER_FACTORY.and(oldFilter, filter));	
-				}
-				
-				// fuse time query with the bbox query
-				if(hasTime){
-					final Filter oldFilter = query.getFilter();
-					final int size=times.size();
-					boolean current= size==1&&times.get(0)==null;
-					if( !current){
-						Filter temporal=null;
-						if(size==1)
-							temporal=FeatureUtilities.DEFAULT_FILTER_FACTORY.equal(FeatureUtilities.DEFAULT_FILTER_FACTORY.property(rasterManager.timeAttribute), FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(times.get(0)),true);
-						else{
-							boolean first =true;
-							for( Date datetime: times){
-								if(first){
-									temporal=FeatureUtilities.DEFAULT_FILTER_FACTORY.equal(FeatureUtilities.DEFAULT_FILTER_FACTORY.property(rasterManager.timeAttribute), FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(datetime),true);
-									first =false;
-								}
-								else{
-									final PropertyIsEqualTo temp =
-										FeatureUtilities.DEFAULT_FILTER_FACTORY.equal(FeatureUtilities.DEFAULT_FILTER_FACTORY.property(rasterManager.timeAttribute), FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(datetime),true);
-									temporal= FeatureUtilities.DEFAULT_FILTER_FACTORY.or(Arrays.asList(temporal,temp));
-								}
-							}
-						}
-						if(temporal!=null)//should not happen
-							query.setFilter(FeatureUtilities.DEFAULT_FILTER_FACTORY.and(oldFilter, temporal));
-					}
-					else{
-						// current management
-					        final MaxVisitor max = new MaxVisitor(rasterManager.timeAttribute);
-					        rasterManager.granuleCatalog.computeAggregateFunction(query,max);
-					        final Object result=max.getResult().getValue();
+                        if(hasTime||hasElevation||hasFilter )
+                        {
+                                //handle elevation indexing first since we then combine this with the max in case we are asking for current in time
+                                if (hasElevation){
+                                        
+                                        final List<Filter> elevationF=new ArrayList<Filter>();
+                                        for( Object elevation: elevations){
+                                            if(elevation==null){
+                                                if(LOGGER.isLoggable(Level.INFO))
+                                                    LOGGER.info("Ignoring null elevation for the elevation filter");
+                                                continue;
+                                            }
+                                            if(elevation instanceof Number){
+                                                elevationF.add( FeatureUtilities.DEFAULT_FILTER_FACTORY.equal(
+                                                    FeatureUtilities.DEFAULT_FILTER_FACTORY.property(rasterManager.elevationAttribute), 
+                                                    FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(elevation),
+                                                    true)); 
+                                            } else {
+                                                // convert to range and create a correct range filter
+                                                @SuppressWarnings("rawtypes")
+                                                final NumberRange range= (NumberRange)elevation;
+                                                elevationF.add( 
+                                                        FeatureUtilities.DEFAULT_FILTER_FACTORY.and(
+                                                                FeatureUtilities.DEFAULT_FILTER_FACTORY.lessOrEqual(
+                                                                        FeatureUtilities.DEFAULT_FILTER_FACTORY.property(rasterManager.elevationAttribute), 
+                                                                        FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(range.getMaximum())),
+                                                                FeatureUtilities.DEFAULT_FILTER_FACTORY.greaterOrEqual(
+                                                                        FeatureUtilities.DEFAULT_FILTER_FACTORY.property(rasterManager.elevationAttribute), 
+                                                                        FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(range.getMinimum()))
+                                                        )); 
+                                            }
+                                            
+                                        }
+                                        final int elevationSize=elevationF.size();
+                                        if(elevationSize>1)//should not happen
+                                            query.setFilter(
+                                                    FeatureUtilities.DEFAULT_FILTER_FACTORY.and(query.getFilter(),
+                                                            FeatureUtilities.DEFAULT_FILTER_FACTORY.or(elevationF))
+                                                            );  
+                                        else
+                                            if(elevationSize==1)
+                                                query.setFilter(FeatureUtilities.DEFAULT_FILTER_FACTORY.and(query.getFilter(), elevationF.get(0)));        
+                                }
 
-					        // now let's get this feature by is fid
-						final Filter temporal = FeatureUtilities.DEFAULT_FILTER_FACTORY.equal(FeatureUtilities.DEFAULT_FILTER_FACTORY.property(rasterManager.timeAttribute), FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(Converters.convert(result, Date.class)),true);
-						query.setFilter(FeatureUtilities.DEFAULT_FILTER_FACTORY.and(oldFilter, temporal));
-						
-						
-					}
-				}
-				
-				rasterManager.getGranules(query, visitor);
+                                //handle generic filter since we then combine this with the max in case we are asking for current in time
+                                if (hasFilter){
+                                        query.setFilter(FeatureUtilities.DEFAULT_FILTER_FACTORY.and(query.getFilter(), filter));        
+                                }
+                                
+                                // fuse time query with the bbox query
+                                if(hasTime){
+                                        final List<Filter> timeFilter=new ArrayList<Filter>();
+                                        for( Object datetime: times){
+                                            if(datetime==null){
+                                                if(LOGGER.isLoggable(Level.INFO))
+                                                    LOGGER.info("Ignoring null date for the time filter");
+                                                continue;
+                                            }
+                                            if(datetime instanceof Date){
+                                                timeFilter.add(
+                                                        FeatureUtilities.DEFAULT_FILTER_FACTORY.equal(
+                                                                FeatureUtilities.DEFAULT_FILTER_FACTORY.property(rasterManager.timeAttribute), 
+                                                                FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(datetime),true));
+                                            }else {
+                                                // convert to range and create a correct range filter
+                                                final DateRange range= (DateRange)datetime;
+                                                timeFilter.add( 
+                                                        FeatureUtilities.DEFAULT_FILTER_FACTORY.and(
+                                                                FeatureUtilities.DEFAULT_FILTER_FACTORY.lessOrEqual(
+                                                                        FeatureUtilities.DEFAULT_FILTER_FACTORY.property(rasterManager.timeAttribute), 
+                                                                        FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(range.getMaxValue())),
+                                                                FeatureUtilities.DEFAULT_FILTER_FACTORY.greaterOrEqual(
+                                                                        FeatureUtilities.DEFAULT_FILTER_FACTORY.property(rasterManager.timeAttribute), 
+                                                                        FeatureUtilities.DEFAULT_FILTER_FACTORY.literal(range.getMinValue()))
+                                                        )); 
+                                            }                                                
 
-			} else {
-			    rasterManager.getGranules(mosaicBBox, visitor);    
-			}
+                                        }
+                                        final int sizeTime=timeFilter.size();
+                                        if(sizeTime>1)//should not happen
+                                            query.setFilter(
+                                                    FeatureUtilities.DEFAULT_FILTER_FACTORY.and(
+                                                            query.getFilter(), FeatureUtilities.DEFAULT_FILTER_FACTORY.or(timeFilter)));
+                                        else
+                                            if(sizeTime==1)
+                                                query.setFilter(FeatureUtilities.DEFAULT_FILTER_FACTORY.and(query.getFilter(), timeFilter.get(0)));
+                                }
+                                
+                                rasterManager.getGranules(query, visitor);
+
+                        } else {
+                            rasterManager.getGranules(mosaicBBox, visitor);    
+                        }
 			// get those granules
 			visitor.produce();
 			

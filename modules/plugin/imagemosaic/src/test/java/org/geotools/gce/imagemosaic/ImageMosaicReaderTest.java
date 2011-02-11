@@ -48,7 +48,6 @@ import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
-import org.geotools.coverage.grid.io.DecimationPolicy;
 import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.coverage.grid.io.UnknownFormat;
@@ -56,12 +55,12 @@ import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.parameter.Parameter;
 import org.geotools.referencing.CRS;
-import org.geotools.resources.geometry.XRectangle2D;
 import org.geotools.test.TestData;
+import org.geotools.util.DateRange;
+import org.geotools.util.NumberRange;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.parameter.GeneralParameterValue;
@@ -278,17 +277,21 @@ public class ImageMosaicReaderTest extends Assert{
 		
 		final String[] metadataNames = reader.getMetadataNames();
 		assertNotNull(metadataNames);
-		assertEquals(metadataNames.length,4);
+		assertEquals(metadataNames.length,10);
 		
 		assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
 		final String timeMetadata = reader.getMetadataValue("TIME_DOMAIN");
 		assertNotNull(timeMetadata);
 		assertEquals(16,timeMetadata.split(",").length);
+		assertEquals(timeMetadata.split(",")[0],reader.getMetadataValue("TIME_DOMAIN_MINIMUM"));
+		assertEquals(timeMetadata.split(",")[15],reader.getMetadataValue("TIME_DOMAIN_MAXIMUM"));
 		
 		assertEquals("true", reader.getMetadataValue("HAS_ELEVATION_DOMAIN"));
 		final String elevationMetadata = reader.getMetadataValue("ELEVATION_DOMAIN");
 		assertNotNull(elevationMetadata);
 		assertEquals(2,elevationMetadata.split(",").length);
+	        assertEquals(elevationMetadata.split(",")[0],reader.getMetadataValue("ELEVATION_DOMAIN_MINIMUM"));
+	        assertEquals(elevationMetadata.split(",")[1],reader.getMetadataValue("ELEVATION_DOMAIN_MAXIMUM"));
 		
 		
 		// limit yourself to reading just a bit of it
@@ -306,21 +309,25 @@ public class ImageMosaicReaderTest extends Assert{
 		final ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
 		final List<Date> timeValues= new ArrayList<Date>();
 		final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'");
-        sdf.setTimeZone(TimeZone.getTimeZone("GMT+0"));
+		sdf.setTimeZone(TimeZone.getTimeZone("GMT+0"));
 		Date date = sdf.parse("2008-10-20T14:00:00.000Z");
 		timeValues.add(date);
 		time.setValue(timeValues);
 		
-		final ParameterValue<List> elevation = AbstractGridFormat.ELEVATION.createValue();
-		elevation.setValue(Arrays.asList(10.0));
-		
-		
 		final ParameterValue<double[]> bkg = ImageMosaicFormat.BACKGROUND_VALUES.createValue();
 		bkg.setValue(new double[]{-9999.0});
 		
+		final ParameterValue<List> elevation = ImageMosaicFormat.ELEVATION.createValue();
+		elevation.setValue(Arrays.asList(10.0));
+	                
 		// Test the output coverage
-		final GridCoverage2D coverage = getCoverage(reader, new GeneralParameterValue[] {gg,time,bkg,elevation });
-		testCoverage(reader, new GeneralParameterValue[] {gg,time,bkg ,elevation}, "Time-Elevation Test", coverage);
+		checkCoverage(reader, new GeneralParameterValue[] {gg,time,bkg ,elevation}, "Time-Elevation Test");
+		
+                elevation.setValue(Arrays.asList(NumberRange.create(0.0,10.0)));
+        
+                // Test the output coverage
+                checkCoverage(reader, new GeneralParameterValue[] { gg, time, bkg, elevation },
+                        "Time-Elevation Test");
 	}	
 	
 	
@@ -374,9 +381,11 @@ public class ImageMosaicReaderTest extends Assert{
 		
 		final String[] metadataNames = reader.getMetadataNames();
 		assertNotNull(metadataNames);
-		assertEquals(metadataNames.length,4);
+		assertEquals(metadataNames.length,10);
 		assertEquals("2004-01-01T00:00:00.000Z,2004-02-01T00:00:00.000Z,2004-03-01T00:00:00.000Z,2004-04-01T00:00:00.000Z,2004-05-01T00:00:00.000Z,2004-06-01T00:00:00.000Z,2004-07-01T00:00:00.000Z", reader.getMetadataValue(metadataNames[0]));
 		assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
+		assertEquals("2004-01-01T00:00:00.000Z", reader.getMetadataValue("TIME_DOMAIN_MINIMUM"));
+		assertEquals("2004-07-01T00:00:00.000Z", reader.getMetadataValue("TIME_DOMAIN_MAXIMUM"));
 		// limit yourself to reading just a bit of it
 		final ParameterValue<GridGeometry2D> gg =  AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
 		final GeneralEnvelope envelope = reader.getOriginalEnvelope();
@@ -393,7 +402,7 @@ public class ImageMosaicReaderTest extends Assert{
 		final ParameterValue<String> tileSize = AbstractGridFormat.SUGGESTED_TILE_SIZE.createValue();
 		tileSize.setValue("128,128");
 		
-		// specify current time
+		// specify time
 		final ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
 		
 		final SimpleDateFormat formatD = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
@@ -403,6 +412,15 @@ public class ImageMosaicReaderTest extends Assert{
 		
 		// Test the output coverage
 		checkCoverage(reader, new GeneralParameterValue[] {gg,useJai ,tileSize,time}, "time test");
+		
+		// specify time range
+		// Test the output coverage
+                time.setValue(
+                        new ArrayList(){{
+                            add(new DateRange(formatD.parse("2004-01-01T00:00:00.000Z"), formatD.parse("2004-02-01T00:00:00.000Z")));
+                            }}
+                );		
+                checkCoverage(reader, new GeneralParameterValue[] {gg,useJai ,tileSize,time}, "time test");
 		
 	}	
 	
@@ -632,11 +650,6 @@ public class ImageMosaicReaderTest extends Assert{
 		testCoverage(reader, values, title, coverage, rect);
 	}
 
-	private void testCoverage(final ImageMosaicReader reader,
-                GeneralParameterValue[] values, String title,
-                final GridCoverage2D coverage){
-	    testCoverage(reader, values, title, coverage, null);
-	}
 	
 	@SuppressWarnings("unchecked")
 	private void testCoverage(final ImageMosaicReader reader,

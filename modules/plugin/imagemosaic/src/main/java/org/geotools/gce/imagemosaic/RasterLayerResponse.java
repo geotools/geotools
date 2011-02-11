@@ -68,6 +68,7 @@ import org.geotools.data.Query;
 import org.geotools.factory.Hints;
 import org.geotools.feature.visitor.MaxVisitor;
 import org.geotools.filter.IllegalFilterException;
+import org.geotools.filter.SortByImpl;
 import org.geotools.gce.imagemosaic.OverviewsController.OverviewLevel;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalogVisitor;
 import org.geotools.geometry.Envelope2D;
@@ -94,6 +95,9 @@ import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.PropertyName;
+import org.opengis.filter.sort.SortBy;
+import org.opengis.filter.sort.SortOrder;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.MathTransform;
@@ -408,7 +412,7 @@ class RasterLayerResponse{
 				final RenderedImage loadedImage;
 				final GranuleLoadingResult result;
 				try {
-					if(!multithreadingAllowed)
+					if(!multithreadingAllowed|| rasterManager.parent.multiThreadedLoader==null)
 					{
 						//run the loading in this thread
 					    final FutureTask<GranuleLoadingResult> task=(FutureTask<GranuleLoadingResult>) future;
@@ -857,7 +861,8 @@ class RasterLayerResponse{
                         {
                                 //handle elevation indexing first since we then combine this with the max in case we are asking for current in time
                                 if (hasElevation){
-                                        
+                                        // sort by
+                                        query.setSortBy(new SortBy[]{new SortByImpl(FeatureUtilities.DEFAULT_FILTER_FACTORY.property(rasterManager.elevationAttribute), SortOrder.ASCENDING)});
                                         final List<Filter> elevationF=new ArrayList<Filter>();
                                         for( Object elevation: elevations){
                                             if(elevation==null){
@@ -904,6 +909,21 @@ class RasterLayerResponse{
                                 
                                 // fuse time query with the bbox query
                                 if(hasTime){
+                                    final SortBy[] old= query.getSortBy();
+                                    if(old==null||old.length==0){
+                                        query.setSortBy(
+                                                new SortBy[]{
+                                                        new SortByImpl(
+                                                                FeatureUtilities.DEFAULT_FILTER_FACTORY.property(rasterManager.timeAttribute), 
+                                                                SortOrder.DESCENDING)});
+                                    } else {
+                                        query.setSortBy(
+                                                new SortBy[]{
+                                                        old[0],
+                                                        new SortByImpl(
+                                                                FeatureUtilities.DEFAULT_FILTER_FACTORY.property(rasterManager.timeAttribute), 
+                                                                SortOrder.DESCENDING)});
+                                    }
                                         final List<Filter> timeFilter=new ArrayList<Filter>();
                                         for( Object datetime: times){
                                             if(datetime==null){

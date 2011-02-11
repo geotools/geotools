@@ -108,7 +108,7 @@ import com.vividsolutions.jts.geom.PrecisionModel;
  */
 public class CatalogBuilder implements Runnable {
 
-    final private static double RESOLUTION_TOLERANCE_FACTOR = 10E-2;
+    final private static double RESOLUTION_TOLERANCE_FACTOR = 1E-2;
 
 	/** Default Logger * */
 	final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(CatalogBuilder.class);

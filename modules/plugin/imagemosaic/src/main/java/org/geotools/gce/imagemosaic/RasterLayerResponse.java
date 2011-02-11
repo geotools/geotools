@@ -414,7 +414,7 @@ class RasterLayerResponse{
 				final RenderedImage loadedImage;
 				final GranuleLoadingResult result;
 				try {
-					if(!multithreadingAllowed)
+					if(!multithreadingAllowed || rasterManager.parent.multiThreadedLoader == null)
 					{
 						//run the loading in this thread
 					    final FutureTask<GranuleLoadingResult> task=(FutureTask<GranuleLoadingResult>) future;

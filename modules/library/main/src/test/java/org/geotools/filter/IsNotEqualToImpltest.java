@@ -43,6 +43,14 @@ public class IsNotEqualToImpltest extends TestCase {
 		assertTrue( notEqual.evaluate( null ) );
 	}
 	
+	public void testOperandsIntDouble() {
+        Expression e1 = filterFactory.literal( 1 );
+        Expression e2 = filterFactory.literal( "1.0" );
+        
+        PropertyIsNotEqualTo notEqual = filterFactory.notEqual( e1, e2, true );
+        assertFalse( notEqual.evaluate( null ) );
+    }
+	
 	public void testCaseSensitivity() {
 		Expression e1 = filterFactory.literal( "foo" );
 		Expression e2 = filterFactory.literal( "FoO" );

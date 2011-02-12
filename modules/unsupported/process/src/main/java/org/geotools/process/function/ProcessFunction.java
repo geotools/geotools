@@ -140,7 +140,13 @@ class ProcessFunction implements Function {
                                         }
                                         convertedCollection.add(convertedItem);
                                     }
-                                    converted = convertedCollection.toArray((Object[]) Array.newInstance(param.type, convertedCollection.size()));
+                                    Object array = Array.newInstance(param.type, convertedCollection.size());
+                                    int i = 0;
+                                    for (Object item : convertedCollection) {
+                                        Array.set(array, i, item);
+                                        i++;
+                                    }
+                                    converted = array;
                                 } else {
                                     throw new InvalidParameterException("Could not convert the value "
                                             + paramValue + " into the expected type " + param.type

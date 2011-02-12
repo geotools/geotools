@@ -4,6 +4,7 @@ Sphinx (Optional)
 To build the geotools "doc" folder you will need to install the components of the sphinx documentation system.
 
 Reference:
+
 * http://docs.geoserver.org/latest/en/docguide/install.html
 * http://stackoverflow.com/questions/1815080/easy-install-pil-fails
 
@@ -11,13 +12,15 @@ Windows Sphinx Install
 ^^^^^^^^^^^^^^^^^^^^^^
 
 Install Python:
+
 1. Python version 2.7 has been verified to work: http://www.python.org/download/releases/2.7/
-2. You will need to add it to your path. it installed into C:Python27 for me::
+2. You will need to add it to your path.::
      
      set 'PYTHON=C:\Python27\'
      set 'PATH=%PATH%;%PYTHON%'
 
 3. You will need Setup Tools for Python 2.7
+   
    http://pypi.python.org/pypi/setuptools#downloads
    
 4. Install and add Setup Tools to your path::

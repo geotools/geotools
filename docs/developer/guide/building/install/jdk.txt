@@ -63,43 +63,55 @@ Please follow the installation instructions carefully.
 Java Advanced Imaging
 ^^^^^^^^^^^^^^^^^^^^^
 
-Download this Version of JAI
-* Java Advanced Imaging API 1.1.3
+1. Download this Version of JAI
+   
+   * https://jai.dev.java.net/binary-builds.html
+   * Java Advanced Imaging API 1.1.3
 
-
-1. Download JAI for your JDK by clicking on the above link. 
+2. Download JAI for your JDK by clicking on the above link. 
+   
    Example: jai-1_1_3-lib-windows-i586-jdk.exe
-2. Use the one click installer to install JAI into your JDK
-3. Download JAI for your JRE by clicking on the above link.
+
+3. Use the one click installer to install JAI into your JDK
+4. Download JAI for your JRE by clicking on the above link.
+   
    Example: jai-1_1_3-lib-windows-i586-jre.exe
-4. Use the one click installer to install JAI into your JRE
+
+5. Use the one click installer to install JAI into your JRE
 
 If you are working on linux you will of course need to choose the appropriate download.
 
-For More Information
+For More Information:
+
 * Java Media Home Page: http://java.sun.com/products/java-media/jai/index.jsp
 
 Java Image IO
 ^^^^^^^^^^^^^
 
-Download this Version of ImageIO
-* JAI Image I/O Tools 1.1
+1. Download this Version of ImageIO:
+   * https://jai-imageio.dev.java.net/binary-builds.html
+   * JAI Image I/O Tools 1.1
 
-1. Download ImageIO for your JDK by clicking on the above link. Example: jai_imageio-1_1-lib-windows-i586-jdk.exe
+2. Download ImageIO for your JDK by clicking on the above link.
+   
+   Example: jai_imageio-1_1-lib-windows-i586-jdk.exe
 
-2. Download ImageIO for your JRE by clicking on the above link. Example: jai_imageio-1_1-lib-windows-i586-jre.exe
+3. Download ImageIO for your JRE by clicking on the above link.
+   
+   Example: jai_imageio-1_1-lib-windows-i586-jre.exe
 
 If you are working on linux you will of course need to choose the appropriate download.
 
 Alternate ImageIO-Ext Install
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The installer from the ImageIO-Ext website can be used to install into your JAVA_HOME (ie the JDK). If you like you can use this to install the software; and then copy the required jars into your JRE by hand (they end up in JAVA_HOME/jre/ext/libs and need to be copied into JRE/ext/libs
+The installer from the ImageIO-Ext website can be used to install into your JAVA_HOME (ie the JDK). If you like you can use this to install the software; and then copy the required jars into your JRE by hand (they end up in JAVA_HOME/jre/ext/libs and need to be copied into JRE/ext/libs).
 
 Alternate CLASSPATH Install
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This is only needed if the windows one-click installers don't work for you:
+
 * Perhaps you have several JDKs installed on your system?
 * Perhaps you are on Linux?
 * Perhaps you are on Mac and the version of JAI/ImageIO included with your operating system is out of date?
@@ -112,6 +124,7 @@ Optional: Mac ImageIO
 Java Advanced Imaging is included with recent releases of Mac OS (but that may be changing in the future).
 
 The JAI ImageIO extension is not available as a download for the mac. However, you can use the jar from the Linux/windows download to get “pure java” functionality without hardware acceleration:
+
 1. Copy the jars to ~/Library/Java/Extensions
 2. Check that the files are present as expected:
    

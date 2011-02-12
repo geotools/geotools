@@ -9,11 +9,13 @@ Think of this document as the “Care and Feeding” instructions we used to cre
 Document Overview
 -------------------
 
-This document provides comprehensive java software development processes tailored for open source projects. It covers processes, conventions, and recommended tools. The guide aims to help developers quickly get up to speed with best practices. You are not expected to read this guide cover-to-cover. You probably should be familiar with the contents and reference the appropriate section when you need it. Documentation aims to be concise with references elsewhere on the web for details like installation instructions.
+This document covers processes, conventions, and recommended tools. The guide aims to help developers quickly download or checkout the GeoTools project and start working. You are not expected to read this guide cover-to-cover. You probably should be familiar with the contents and reference the appropriate section as needed.
 
-This guide is written in a modular fashion so that different projects can easily add, delete, or modify sections. It is hoped that this guide will become the de-facto standard software developers guide for java-based open source projects. For this guide to be useful it needs to be continually added to and improved as tools are developed, processes improved and projects grow.
+Where possible this document is concise with references to the web for details like installation instructions. As these instructions change over time  please advise us if any links are broken or can otherwise be updated.
 
-Please consider improving or adding a section if you feel it is required. Only free, cross-platform tools are recommended here. Where applicable, widely-accepted conventions and open standards are used. It has been satisfying to discover the breadth of quality free and open source tools which support software development. It is hoped that this document will highlight areas where tools can be improved or developed and encourage developers to focus on these areas. This guide has been used as the basis for Generguide - A Generic Software Developer's Guide.
+For this guide to be useful it needs to be continually added to and improved as tools are developed, processes improved and projects grow.
+
+Community members should improving or adding sections to reflect current best practice. Where possible we suggest free, cross-platform tools or those that are available to open source developers for use. Where applicable, accepted conventions and open standards are used.
 
 System Overview
 -------------------
@@ -29,11 +31,9 @@ The GeoTools project is divided into separate modules, each of which implements 
 Document License
 -------------------
 
-The original wiki documentation was distributed under the free documentation license:
-
-.. code-block:: java
+The original wiki documentation was distributed under the free documentation license::
    
-   Copyright (c) 2004 Open Geospatial Foundation
+   Copyright (c) 2004-2011 Open Geospatial Foundation
    
    Permission is granted to copy, distribute and/or modify this document under the
    terms of the GNU Free Documentation License, Version 1.1 or any later version
@@ -41,7 +41,7 @@ The original wiki documentation was distributed under the free documentation lic
    Invariant Sections, with the Front-Cover Texts being no Front-Cover Texts, and with
    the Back-Cover Texts being no Back-Cover Texts.
 
-This generated documentation is distributed using creative commons with attribution.
+This generated documentation is distributed using creative commons with attribution. 
 
 For details see http://creativecommons.org/licenses/by/3.0/ 
 
@@ -50,12 +50,10 @@ For details see http://creativecommons.org/licenses/by/3.0/
 Source License
 -------------------
 
-The source code of the GeoTools library is distributed under the LGPL license:
-
-.. code-block:: java
+The source code of the GeoTools library is distributed under the LGPL license::
    
    GeoTools - The Open Source Java GIS Toolkit http://geotools.org
-   (C) 2004-2010, Open Source Geospatial Foundation (OSGeo)
+   (C) 2004-2011, Open Source Geospatial Foundation (OSGeo)
    
    This library is free software; you can redistribute it and/or modify it under
    the terms of the GNU Lesser General Public License as published by the Free

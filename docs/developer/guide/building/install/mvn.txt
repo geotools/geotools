@@ -2,12 +2,15 @@ Maven Install
 -------------
 
 We use Maven 2 for our build environment, this page simply set's it up for you. Actual build instructions will happen later.
+
 Reference:
+
 * http://maven.apache.org/
 * http://maven.apache.org/start/install.html
 
 Download and Install Maven
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 1. Download Maven. Last tested with Maven 2.2.1
 2. Unzip the maven download to your computer:
    
@@ -48,6 +51,7 @@ Please be careful of the maven provided out of the box by unbuntu::
    Apache Maven 2.2.1 (rdebian-1)
 
 It is not actually apache maven as provided by apache; and it has a build failure with::
+   
    [INFO] ------------------------------------------------------------------------
    [INFO] Building Cross-modules javadoc
    [INFO]    task-segment: [install]

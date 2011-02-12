@@ -7,12 +7,18 @@ Subversion Repository
 ^^^^^^^^^^^^^^^^^^^^^
 
 The GeoTools svn repository holds the source code for GeoTools:
+
 * http://svn.osgeo.org/geotools/
 
 This repository is setup with the following versions of GeoTools:
-* http://svn.osgeo.org/geotools/trunk - this is what we are currently working on
-* http://svn.osgeo.org/geotools/tags - contains our official releases
-* http://svn.osgeo.org/geotools/branches - stable development branches; and wild experiments are located here
+
+======================================= ====================================================================
+Directory                               version
+======================================= ====================================================================
+http://svn.osgeo.org/geotools/trunk     this is what we are currently working on
+http://svn.osgeo.org/geotools/tags      contains our official releases
+http://svn.osgeo.org/geotools/branches  stable development branches; and wild experiments are located here
+======================================= ====================================================================
 
 Since SVN also provides web access, all these addresses can be navigated with a web browser.
 

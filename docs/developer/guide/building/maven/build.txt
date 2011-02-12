@@ -27,14 +27,23 @@ Your First Build
      26/04/2007  10:08 AM    <DIR>          target
                     2 File(s)         56,155 bytes
                     8 Dir(s)  15,264,776,192 bytes free
+
 3. Make sure you are connected to the internet
 4. Start your first build::
      
      C:\java\geotools\trunk>mvn install
+
 5. If all is well, Maven should download the required .jar files and build GeoTools modules.
 6. At the end of this process it will display a list of all the modules which were built and installed correctly.::
      
-     ... BUILD SUCCESS
+      [INFO] ------------------------------------------------------------------------
+      [INFO] BUILD SUCCESSFUL
+      [INFO] ------------------------------------------------------------------------
+      [INFO] Total time: 9 months, 3 weeks, 12 hours, 3 minuets, and 43 seconds
+      [INFO] Finished at: Sat Feb 12 16:05:08 EST 2011
+      [INFO] Final Memory: 41M/87M
+      [INFO] ------------------------------------------------------------------------
+
 7. The first build takes a while due to the download time for the .jar files.
 
 Build Failure
@@ -66,11 +75,14 @@ Expected Build times
 ^^^^^^^^^^^^^^^^^^^^
 
 Depending on your hardware and internet connection:
+
 * Building the first time, where maven needs to download everything, may take 20 to 30 minuets.
 * Future builds check for the most recent .jar files from the internet. The checking is based of md5 checksums and does not take long. Building subsequently may take 10 minuets depending on your hardware and internet connection.
 * After everything is downloaded can build “offline” and avoid the checking of mdf5 checksums resulting in a faster build of 5-7 minuets.
 * Finally you can turn off tests (danger!) and build offline to get a build under 2 minuets
+
 Tips to speed up a build:
+
 * Do not do a “clean” build if you do not have to
 * Rebuild a single module after you have modified it
 * Update your “settings.xml” file to point to a “mirror” in your country - allowing you to download closer to home
@@ -85,19 +97,24 @@ GeoTools plays host to a number of experiment "unsupported" modules; if you woul
 The "-Dall" acts as a switch to part engages several profiles; you can also do this by hand with -P
 
 The following “profiles” are included by the “-Dall”:
-* -Pgdal	 include modules that depend on having gdal installed into your JRE
-* -Ppending	 several experimental modules
-* -Praster	 
-* -Pswing	 
-* -Pworkflow	 process and wps support
 
-Not included with -Dall
-* -Parchive	 modules that no longer work
+=================== ========== ===================================================================
+Profile             \-Dall     Builds
+=================== ========== ===================================================================
+``-Pgdal``          included   include modules that depend on having gdal installed into your JRE
+``-Ppending``       included   several experimental modules
+``-Praster``        included   
+``-Pswing``         included   
+``-Pworkflow``      included   process and wps support
+``-Parchive``                  modules that no longer work
+=================== ========== ===================================================================
 
 Building Offline
 ^^^^^^^^^^^^^^^^
 
-When working offline, you can bypass the checking of md5 and downloading files. To do this use the following::
+When working offline, you can bypass the checking of md5 and downloading files.
+
+To do this use the following::
    
    C:\java\geotools\trunk>mvn -o install
 
@@ -107,6 +124,7 @@ Building an Individual module
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Provided you have done at least one complete build you should be able to build individual modules one-at-a-time.
+
 1. Change to the modules home directory::
      
      cd modules/library/cql
@@ -122,15 +140,13 @@ Provided you have done at least one complete build you should be able to build i
 
 If you have not done a full build yet then the build may fail because it can't find the jar for a module it depends on.
 
-An error caused by not having another GT2 module installed can be a little misleading::
-   
-   Error: unable to download main-2.1.x.jar
-
-This is because Maven:
-* failed to find main-2.1,x.jar in the local repository where a full build should have put it
-* tried to download the file from the internet (and failed)
-
-If you see an error like that, either do a full build or change into the module which is missing (main in this case) and type.::
+* An error caused by not having another GT2 module installed can be a little misleading::
+    
+    Error: unable to download main-2.1.x.jar
+  
+* Maven failed to find main-2.1,x.jar in the local repository where a full build should have put it
+* Maven tried to download the file from the internet (and failed)
+* If you see an error like that, either do a full build or change into the module which is missing (main in this case) and type.::
    
    maven install
 
@@ -183,6 +199,7 @@ Navigating into the directory to look at the actual error::
 This indicates that Java Advanced Imaging has not been installed into the JRE (please see the dependencies section and try again).
 
 On GeoTools trunk you can try the following experimental option. This will download and use just the JAI jar files, you wont get native performance - but for a build do you even care?::
+   
    mvn install -Pnojai
 
 Failure of GridCoverageRendererTest

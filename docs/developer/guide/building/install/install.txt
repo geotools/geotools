@@ -10,35 +10,46 @@ Install
    ojdbc
    sphinx
 
-Download
-^^^^^^^^
+Download Links
+^^^^^^^^^^^^^^^^^^^^^
 
-Before using or developing GeoTools you should download and install the software listed here.
+Before using or developing GeoTools you should download the software listed here. You can start downloading now before proceeding on to the install instructions.
 
-Apache Maven 2.2.1
-* http://maven.apache.org/download.html
-* Apache build tool used for GeoTools. Excels as managing dependencies.
+* Apache Maven 2.2.1
+  
+  * http://maven.apache.org/download.html
+  * Apache build tool used for GeoTools. Excels as managing dependencies.
 
-Java 2 Software Developers Kit (Java 5)
+* Java 2 Software Developers Kit (Java 5)
+  
+  * http://www.oracle.com/technetwork/java/javase/downloads/index.html
+  * Check under "previous releases"
+  * Yes we known J2S2 5.0 End of Service Life Notice has been issued
 
-Java Advanced Imaging
-* Java Advanced Imaging API 1.1.3 
-* https://jai.dev.java.net/binary-builds.html
-* Java extension for image processing
+* Java Advanced Imaging
+  
+  * Java Advanced Imaging API 1.1.3 
+  * https://jai.dev.java.net/binary-builds.html
+  * Java extension for image processing
 
-Java ImageIO:
-* Java Image I/O Tools 1.1
-* https://jai-imageio.dev.java.net/binary-builds.html
-* Low-level image Access
+* Java ImageIO
+  
+  * Java Image I/O Tools 1.1
+  * https://jai-imageio.dev.java.net/binary-builds.html
+  * Low-level image Access
 
-Java ImageIO-Ext:
-* url needed
+* Java ImageIO-Ext:
+  
+  * http://java.net/projects/imageio-ext/downloads
 
-Oracle (Optional):
-* Ojdbc14.jar
+* Oracle (Optional):
+  
+  * Ojdbc14.jar
 
-ArcSDE (Optional):
-* Not downloadable - Included on CD
+* ArcSDE (Optional):
+  
+  * Not downloadable - Included on CD
 
-DB2:
-* db2jcc.jar
+* DB2:
+  
+  * db2jcc.jar

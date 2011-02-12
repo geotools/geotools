@@ -9,6 +9,7 @@ Dependency SNAPSHOT Changes
 We depend on a "snapshot" of several projects (usually project GeoTools community members are involved such as ImageIO-EXT). In these cases an email will be sent to the developer list asking people to "update with -U"
 
 To respond to one of these emails include "-u" in your next build.
+
 1. Update::
      
      svn up
@@ -25,6 +26,7 @@ Deploy GeoTools SNAPSHOT
 If you are working on GeoServer or uDig or another project that depends on the latest greatest GeoTools release you will need to know how to deploy a SNAPSHOT (so members of your developer community do not get compile errors).
 
 Usually do this after a commit:
+
 1. Update to make sure you are not missing out on anyones work::
      
      svn up

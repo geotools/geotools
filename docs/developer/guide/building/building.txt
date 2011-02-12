@@ -2,7 +2,7 @@
 Building
 ************
 
-Covers the development environment and building instructions to work on the GeoTools library.
+Covers the development environment and building instructions for working on the GeoTools library.
 
 .. toctree::
    :maxdepth: 1

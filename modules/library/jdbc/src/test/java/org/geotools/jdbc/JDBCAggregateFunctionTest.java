@@ -264,6 +264,11 @@ public abstract class JDBCAggregateFunctionTest extends JDBCTestSupport {
     }
     
     public void testUniqueWithLimitOffset() throws Exception {
+        
+        if (!dataStore.getSQLDialect().isLimitOffsetSupported()) {
+            return;
+        }
+        
         FilterFactory ff = dataStore.getFilterFactory();
         PropertyName p = ff.property( aname("stringProperty") );
         

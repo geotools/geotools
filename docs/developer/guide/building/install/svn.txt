@@ -1,0 +1,230 @@
+Subversion Install
+------------------
+
+Subversion is an advanced version management tool with the same command line syntax as CVS.
+
+SVN offers the GeoTools project:
+* the ability to version directories and renames
+* the change to get off of the SourceForge CVS repository
+
+Reference:
+* Subversion Book (http://svnbook.red-bean.com/svnbook/index.html)
+
+Although links to various IDE interfaces will be made available, no GUI will substitute for an understanding of the underlying subversion versioning model, and how the system is actually doing work.
+
+Subversion Install
+^^^^^^^^^^^^^^^^^^
+
+Here are the installation instructions for SVN Windows:
+
+Command line access is similar to cvs. Once again, your best reference is the subversion book.
+
+The svn tool can be downloaded from here:
+* http://subversion.apache.org
+* http://www.sliksvn.com/en/download
+
+The use of the windows shell extension Tortoise (http://tortoisesvn.tigris.org/) is recommended in conjunction with the command line. IDE integration is available for both NetBeans and Eclipse.
+
+Please note that whatever client you use; we need to ask you to configure subversion correctly to work with our repository.
+* If you don't do this every java file you edit will appear to be 100% modified!
+* We do not wish to accidentally commit “.class” files
+* We mark the various source code files so that line feeds are handled consistently (CRLF) 
+* We mark the various image formats so that they are committed with the correct mime type allowing you to visually browse the repository.
+
+Configuration file location:
+* Windows XP:	C:\Documents and Settings\ %USERID% \Application Data\Subversion\config
+* Vista:		C:\Users\ %USERID% \App Data\Roaming\Subversion\config
+* Windows7:	C:\Users\ %USERID% \App Data\Roaming\Subversion\config
+* Linux:		~/.subversion/config
+* Mac: 		~/.subversion/config
+
+Windows Setup  for SVN Command Line
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+1. Download a win32 installer from here: http://www.sliksvn.com/en/download
+2. Run the installer you downloaded. Our if you downloaded the zip file, please unzip the archive and the bin folder to %PATH%
+3. Copy the config file to where subversion keeps its configuration:
+   
+   * Windows XP: C:\Documents and Settings\ %USERID% \Application Data\Subversion\config
+   * Vista: C:\Users\ %USERID% \App Data\Roaming\Subversion\config
+   * Windows7: C:\Users\ %USERID% \App Data\Roaming\Subversion\config
+
+4. You’ll need to have view system folders turned on to see "Application Data" in explorer.
+   Subversion should have an example config file there already.
+5. (Optional) change any of your client settings in the config file
+6. (Optional) change your servers file to account for any firewalls
+
+Eclipse
+^^^^^^^
+
+Eclipse has plugin support for subversion:
+* Subclipse: http://subclipse.tigris.org/
+* Subversive
+
+The eclipse IDE assumes on directory per project; while the GeoTools library is split up into a number of smaller projects. As such we will still perform a checkout on the command line. Installing subversion support into eclipse will allow you to commit from the repository.
+
+SVN Linux
+^^^^^^^^^
+
+Linux setup for svn command line access:
+1. If svn is not already installed, get it here:
+   
+   http://subversion.apache.org
+   
+   Most distributions already have it installed.
+   
+2. Install/compile the package
+3. Copy the config file to: ~/.subversion/config
+4. (Optional) change any of your client settings in the config file
+
+SVN Netbeans
+^^^^^^^^^^^^
+
+1. A netbeans profile is available here: http://vcsgeneric.netbeans.org/profiles/
+2. To ignore the ubiquitous .svn folders click the filesystem node and set the “Ignored Files” property to include: .svn
+
+SVN Tortoise for Windows
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+A windows shell extension is available: http://tortoisesvn.tigris.org/ 
+
+This is highly recommended for developers uncomfortable with the command line.
+
+ToroiseSVN Checkout of Geotools:
+1. Create a folder for geotools to live in: C:\java\geotools
+2. Navigate to the folder, and right-click
+3. Select "Checkout ..."
+   
+   * URL of Repository: http://svn.geotools.org/geotools/trunk
+   * Checkout directory: C:\java\geotools
+   * Revision: Head Revision
+   
+4. Press OK
+
+Sample Config
+^^^^^^^^^^^^^
+
+subversion **config** file::
+
+    ### This file configures various client-side behaviors.
+    ###
+    ### The commented-out examples below are intended to demonstrate
+    ### how to use this file.
+    
+    ### Section for authentication and authorization customizations.
+    ### Set store-auth-creds to 'no' to avoid storing your subversion
+    ### credentials in the auth/ area of your config directory.
+    ### It defaults to 'yes'.  Note that this option only prevents
+    ### saving of *new* credentials;  it doesn't invalidate existing
+    ### caches.  (To do that, remove the cache files by hand.)
+    # [auth]
+    # store-auth-creds = no
+    
+    ### Section for configuring external helper applications.
+    ### Set editor to the command used to invoke your text editor.
+    ###   This will override the environment variables that Subversion
+    ###   examines by default to find this information ($EDITOR, 
+    ###   et al).
+    ### Set diff-cmd to the absolute path of your 'diff' program.
+    ###   This will override the compile-time default, which is to use
+    ###   Subversion's internal diff implementation.
+    ### Set diff3-cmd to the absolute path of your 'diff3' program.
+    ###   This will override the compile-time default, which is to use
+    ###   Subversion's internal diff3 implementation.
+    ### Set diff3-has-program-arg to 'true' or 'yes' if your 'diff3'
+    ###   program accepts the '--diff-program' option.
+    # [helpers]
+    # editor-cmd = editor (vi, emacs, notepad, etc.)
+    # diff-cmd = diff_program (diff, gdiff, etc.)
+    # diff3-cmd = diff3_program (diff3, gdiff3, etc.)
+    # diff3-has-program-arg = [true | false]
+    
+    ### Section for configuring tunnel agents.
+    # [tunnels]
+    ### Configure svn protocol tunnel schemes here.  By default, only
+    ### the 'ssh' scheme is defined.  You can define other schemes to
+    ### be used with 'svn+scheme://hostname/path' URLs.  A scheme
+    ### definition is simply a command, optionally prefixed by an
+    ### environment variable name which can override the command if it
+    ### is defined.  The command (or environment variable) may contain
+    ### arguments, using standard shell quoting for arguments with
+    ### spaces.  The command will be invoked as:
+    ###   <command> <hostname> svnserve -t
+    ### (If the URL includes a username, then the hostname will be
+    ### passed to the tunnel agent as <user>@<hostname>.)  If the
+    ### built-in ssh scheme were not predefined, it could be defined
+    ### as:
+    # ssh = $SVN_SSH ssh
+    ### If you wanted to define a new 'rsh' scheme, to be used with
+    ### 'svn+rsh:' URLs, you could do so as follows:
+    # rsh = rsh
+    ### Or, if you wanted to specify a full path and arguments:
+    # rsh = /path/to/rsh -l myusername
+    ### On Windows, if you are specifying a full path to a command,
+    ### use a forward slash (/) or a paired backslash (\\) as the
+    ### path separator.  A single backslash will be treated as an
+    ### escape for the following character.
+    
+    ### Section for configuring miscelleneous Subversion options.
+    [miscellany]
+    ### Set global-ignores to a set of whitespace-delimited globs
+    ### which Subversion will ignore in its 'status' output.
+    
+    global-ignores = *.o *.lo *.la #*# .*.rej *.rej .*~ *~ .#* *.class
+    
+    ### Set log-encoding to the default encoding for log messages
+    # log-encoding = latin1
+    ### Set use-commit-times to make checkout/update/switch/revert
+    ### put last-committed timestamps on every file touched.
+    # use-commit-times = yes
+    ### Set enable-auto-props to 'yes' to enable automatic properties
+    ### for 'svn add' and 'svn import', it defaults to 'no'.
+    ### Automatic properties are defined in the section 'auto-props'.
+    
+    enable-auto-props = yes
+    
+    ### Section for configuring automatic properties.
+    ### The format of the entries is:
+    ###   file-name-pattern = propname[=value][;propname[=value]...]
+    ### The file-name-pattern can contain wildcards (such as '*' and
+    ### '?').  All entries which match will be applied to the file.
+    ### Note that auto-props functionality must be enabled, which
+    ### is typically done by setting the 'enable-auto-props' option.
+    [auto-props]
+    *.java       = svn:mime-type=text/plain;svn:eol-style=native;svn:keywords=Id
+    *.sql        = svn:mime-type=text/plain;svn:eol-style=native;svn:keywords=Id
+    *.c          = svn:mime-type=text/plain;svn:eol-style=native;svn:keywords=Id
+    *.cpp        = svn:mime-type=text/plain;svn:eol-style=native;svn:keywords=Id
+    *.h          = svn:mime-type=text/plain;svn:eol-style=native;svn:keywords=Id
+    *.txt        = svn:mime-type=text/plain;svn:eol-style=native;svn:keywords=Id
+    *.sgml       = svn:mime-type=text/plain;svn:eol-style=native;svn:keywords=Id
+    *.properties = svn:mime-type=text/plain;svn:eol-style=native;svn:keywords=Id
+    *.xml        = svn:mime-type=text/xml;svn:eol-style=native;svn:keywords=Id
+    *.classpath  = svn:mime-type=text/xml;svn:eol-style=native;svn:keywords=Id
+    *.project    = svn:mime-type=text/xml;svn:eol-style=native;svn:keywords=Id
+    *.sld        = svn:mime-type=text/xml;svn:eol-style=native;svn:keywords=Id
+    *.gml        = svn:mime-type=text/xml;svn:eol-style=native;svn:keywords=Id
+    *.xsl        = svn:mime-type=text/xsl;svn:eol-style=native;svn:keywords=Id
+    *.html       = svn:mime-type=text/html;svn:eol-style=native;svn:keywords=Id
+    *.css        = svn:mime-type=text/css;svn:eol-style=native;svn:keywords=Id
+    *.dsp        = svn:eol-style=CRLF
+    *.bat        = svn:eol-style=CRLF
+    *.dsw        = svn:eol-style=CRLF
+    *.sh         = svn:eol-style=native;svn:executable;svn:keywords=Id
+    *.png        = svn:mime-type=image/png
+    *.jpg        = svn:mime-type=image/jpeg
+    *.gif        = svn:mime-type=image/gif
+    *.tif        = svn:mime-type=image/tiff
+    *.zip        = svn:mime-type=application/zip
+    *.sxw        = svn:mime-type=application/zip
+    *.sxc        = svn:mime-type=application/zip
+    *.sxi        = svn:mime-type=application/zip
+    *.utf        = svn:mime-type=application/octet-stream
+    *.ttf        = svn:mime-type=application/octet-stream
+    *.shp        = svn:mime-type=application/octet-stream
+    *.shx        = svn:mime-type=application/octet-stream
+    *.dbf        = svn:mime-type=application/octet-stream
+    *.mif        = svn:mime-type=application/octet-stream
+    *.mid        = svn:mime-type=application/octet-stream
+    Makefile     = svn:mime-type=text/plain;svn:eol-style=native 
+    README       = svn:mime-type=text/plain;svn:eol-style=native 

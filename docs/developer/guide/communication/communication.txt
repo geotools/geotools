@@ -1,0 +1,13 @@
+*************
+Communication
+*************
+
+The GeoTools Project practices “open development” with project communication taking place using a range of public forums.
+
+.. toctree::
+   :maxdepth: 1
+   
+   Email
+   Issue Tracker
+   Internet Relay Chat
+   Websites

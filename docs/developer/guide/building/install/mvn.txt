@@ -1,0 +1,64 @@
+Maven Install
+-------------
+
+We use Maven 2 for our build environment, this page simply set's it up for you. Actual build instructions will happen later.
+Reference:
+* http://maven.apache.org/
+* http://maven.apache.org/start/install.html
+
+Download and Install Maven
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+1. Download Maven. Last tested with Maven 2.2.1
+2. Unzip the maven download to your computer:
+   
+   Example: C:\java\apache-maven-2.2.1.
+   
+   If you do not have an unzip program may we recommend: http://www.7-zip.org/
+
+3. You need to have the following environmental variables set for maven to work:
+   
+   * JAVA_HOME = C:\j2sdk1.4.2_07\
+    
+     Location of your JDK installation
+   
+   * M2_HOME = C:\java\apache-maven-2.2.1
+     
+     Location of your maven installation
+   
+   * PATH = %PATH%;%JAVA_HOME%\bin;%M2_HOME%\bin
+     
+     Include java and maven bin directory in your PATH
+
+4. Open up a cmd window and type the following::
+     
+     >mvn --version
+     Apache Maven 2.2.1 (r801777; 2009-08-07 05:16:01+1000)
+     Java version: 1.6.0_17
+     Java home: /System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Home
+     Default locale: en_US, platform encoding: MacRoman
+     OS name: "mac os x" version: "10.6.3" arch: "x86_64" Family: "mac"
+
+Do not use Apt-Get
+^^^^^^^^^^^^^^^^^^
+
+It is very tempting to use apt-get to install maven, ubuntu users I am looking at you!
+
+Please be careful of the maven provided out of the box by unbuntu::
+   
+   Apache Maven 2.2.1 (rdebian-1)
+
+It is not actually apache maven as provided by apache; and it has a build failure with::
+   [INFO] ------------------------------------------------------------------------
+   [INFO] Building Cross-modules javadoc
+   [INFO]    task-segment: [install]
+   [INFO] ------------------------------------------------------------------------
+   [INFO] [plugin:descriptor {execution: default-descriptor}]
+   [WARNING] Using platform encoding (UTF-8 actually) to read mojo metadata, i.e. build is platform dependent!
+   [INFO] Applying mojo extractor for language: java
+   [INFO] Mojo extractor for language: java found 0 mojo descriptors.
+   [INFO] Applying mojo extractor for language: bsh
+   [INFO] Mojo extractor for language: bsh found 0 mojo descriptors.
+   [INFO] ------------------------------------------------------------------------
+   [ERROR] BUILD ERROR
+   [INFO] ------------------------------------------------------------------------
+   [INFO] Error extracting plugin descriptor: 'No mojo definitions were found for plugin: org.geotools.maven:javadoc.

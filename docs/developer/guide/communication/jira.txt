@@ -1,0 +1,15 @@
+Issue Tracker
+-------------------
+
+GeoTools tracks tasks, issues and bugs with its JIRA tracker, generously provided by Atlassian and hosted by CodeHaus.
+
+This is where all bugs should be reported, in addition to requested features and improvements.
+* http://jira.codehaus.org/secure/BrowseProject.jspa?id=10270
+
+Filling out all fields is specially important for bug reports:
+* including component(s)
+* affected versions of geotools ( a release or code from SVN? )
+* A description of what caused the problem (example code that reproduces the problem) along with any stack traces
+* The Java Version and the type of operating system you are using
+* You may wish to attach log files, or screen snapshots to the Jira task
+* If you are reporting failed tests during the maven build, check the test reports in <module>/target/surefire-reports for further details

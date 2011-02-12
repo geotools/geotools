@@ -1,0 +1,74 @@
+Confluence Tips and Tricks
+==========================
+
+Page Hierarchies
+^^^^^^^^^^^^^^^^
+
+Related wiki pages can be grouped into hierarchies. For example, all tutorials are children of the Tutorials page. You can set a page's 'parent page' property to make it a child of the parent. Using a hierarchical organization makes the hundreds of wiki pages easier to navigate in the directory view of the wiki.
+
+Hierarchies also allows wiki macros to be used to create table of contents of the child pages (as done for the FAQ and Reference pages). The table of contents is organized alphabetically. If you need the pages to be ordered, prepend numbers to them. The following macro creates a table of content of all the child pages:
+
+ {children:all=true|excerpt=true}
+
+The above macro also includes page excerpts in the table of contents. An excerpt can be created with the following wiki tag:
+
+ {excerpt}an excerpt{excerpt}
+
+Use of pages and Links
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Link early link often, and the pages will come.
+
+Feel free to link to pages that don't exist yet, or to reference terms a reader may not know. Undefined pages act as reminders to write new content, and can be found from the Reports on the Space Summary page.
+
+Linking to References
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Since all references are on their own page, they can just be linked like any other page. For example:
+
+The design of the \[GEOTDOC:GCE\] was influenced by the \[GEOTDOC:Web Map Server\] specification.
+
+Including page content in other pages
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Sometimes you will want to include information in one page in many different pages. You can use the following tag to accomplish this:
+
+ {include:quicklinks}
+
+Special Characters
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Unfortunately the Confluence wiki software does not like page names with '?' characters. Also, pages with '-' characters in their names do not link correctly on the http://geotools.codehaus.org/ view of the wiki.
+
+Use of Attachments
+
+The confluence system allows the use of images:
+
+1. Upload the picture as an attachment
+2. Refer to it: !my-image.png
+
+Use of Export
+^^^^^^^^^^^^^^^^
+
+Export to PDF and html work. The series of check boxes used to specify each page is a bit clunky but life will go on.
+
+We will probably make use of export to html (and provide a custom style sheet) when exporting the developers guide for release.
+
+GeoTools 2.0 Documentation
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The following pages were used to collection information for the GeoTools 2.0 release - information is being migrated to the user guide as needed.
+
+* Tutorials - Use for lessons and discussions, with sample code, about the geotools codebase. Such tutorials can be printed out and referenced as the library is learned. UML diagrams are also common here.
+
+* Snippets - A place for small pieces of sample code that do not have to be full worked examples. Some Snippets may latter be further developed into tutorials.
+
+* Articles Non-coding documents (miscellaneous).
+
+* FAQ - Answers to questions that new users and developers may have.
+
+* RnD - Proposed new features for the geotools library.
+
+* Home - (aka Developers Guide) A place for project procedures and standards.
+
+* Reference - A list of abbreviations and acronyms. New references are added as children pages to the reference pages. If you want to go the extra mile you can provide an information hierarchy for things like OGC Specifications, GIS Terms, Definitions and so on.

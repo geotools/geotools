@@ -3,6 +3,19 @@ Using Maven
 
 **Maven** is a Java project management and project comprehension tool, or - in other words - yet another build tool. It can use Ant and a number of other open source utilities and brings them together in an easy-to-use build tool.
 
+.. toctree::
+   :maxdepth: 1
+   
+   build
+   testing
+   tips
+   snapshots
+   javadocs
+   eclipse
+   pom
+   settings
+   repositories
+
 Project Files
 ^^^^^^^^^^^^^
 
@@ -21,16 +34,3 @@ Trouble looks like::
    Reason: Parse error
    reading POM. Reason: only whitespace content allowed before start tag
    and not \ud4 (position: START_DOCUMENT seen \ud4... @1:1)
-
-.. toctree::
-   :maxdepth: 1
-   
-   Maven Build
-   Maven Testing
-   Maven Tips
-   Maven Snapshots
-   Generating Javadocs
-   Maven Eclipse Plugin
-   Project Object Model (POM) Files
-   Maven Local Settings
-   Remote Repositories

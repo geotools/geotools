@@ -1,28 +1,34 @@
 Install
-=========
+=======
+
+.. toctree::
+   :maxdepth: 1
+   
+   jdk
+   mvn
+   svn
+   ojdbc
+   sphinx
+
+Download
+^^^^^^^^
 
 Before using or developing GeoTools you should download and install the software listed here.
 
 Apache Maven 2.2.1
-
 * http://maven.apache.org/download.html
-
 * Apache build tool used for GeoTools. Excels as managing dependencies.
 
 Java 2 Software Developers Kit (Java 5)
 
 Java Advanced Imaging
-
 * Java Advanced Imaging API 1.1.3 
-  https://jai.dev.java.net/binary-builds.html
-
+* https://jai.dev.java.net/binary-builds.html
 * Java extension for image processing
 
 Java ImageIO:
-
 * Java Image I/O Tools 1.1
-  https://jai-imageio.dev.java.net/binary-builds.html
-
+* https://jai-imageio.dev.java.net/binary-builds.html
 * Low-level image Access
 
 Java ImageIO-Ext:
@@ -36,12 +42,3 @@ ArcSDE (Optional):
 
 DB2:
 * db2jcc.jar
-
-.. toctree::
-   :maxdepth: 1
-   
-   Java Install
-   Maven Install
-   Subversion Install
-   Oracle (Optional)
-   Sphinx (Optional)

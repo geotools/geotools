@@ -1,49 +1,32 @@
-Testing JUnit
-=============
+Testing
+=======
 
-As you code, you should write a unit test for each class to test the functionality and robustness of the class. This is made much easier by using JUnit.
-JUnit is very good at:
-
-* capturing a Jira bug report in a reproducible manner
-* allowing you to specify exactly the behaviour your want - before you start coding
-* unit testing
-
-The general idea:
-
-* If you are testing src/org/geotools/module/HelloWorld.java
-* create a file test/org/geotools/module/HelloWorldTest.java
-* any public void methods starting with test will be run by JUnit
-* maven will run all tests for your module using: mvn test 
-* tests can be ignored using you pom.xml file
-* maven will not "release" your module into the repository while it still fails unit testing
-
-Code Coverage vs Regression Testing
-------------------------------------
-
-Code Coverage reports are available via::
+.. toctree::
+   :maxdepth: 1
    
-   mvn site
-
-The percentage reported is based on the lines of code your test cases manage to test, please limit this to "real" tests - although we demand 60% test coverage for supported modules we would much rather this is produced honestly.
-
-Creating boiler plate tests that just call assertEquals against every method, and cutting and pasting the current result is an example of a regression test. While this will catch changes in our codebase it is not nearly as useful as actually testing for what you expect.
+   junit
+   online
+   data
 
 Use of Maven Test Profiles
 --------------------------
 
-You can also make use of maven profiles to isolate long running tests from the day to day grind of other GeoTools developers.
+Install with all normal tests::
+    
+    mvn install
 
-* Install with all normal tests:
-  
-  mvn install
+We have isolated long running tests so they are not part of the day to day grind. You can use a maven profile to increase the amount of testing performed.
+*  Install with online tests (will connect to servers around the world)::
+     
+     mvn -P online install
 
-*  Install with online tests (will connect to servers around the world):
-   
-   mvn -P online install
+*  Install with stress tests (long running tests that try to break the code using many threads)::
+     
+     mvn -P stress install
 
-*  Install with stress tests (long running tests that try to break the code using many threads):
-   
-   mvn -P stress install
+* To run interactive tests that will display dialogs on screen::
+     
+     mvn -P interactive install
 
 You can combine profiles as needed::
    
@@ -61,9 +44,13 @@ Tests on unsupported modules are not subject to a time limit, to run your tests 
    
    mvn -P unsupported install
 
-.. toctree::
-   :maxdepth: 1
+Code Coverage vs Regression Testing
+------------------------------------
+
+Code Coverage reports are available via::
    
-   Example Test Case
-   Online Tests
-   Test Data
+   mvn site
+
+The percentage reported is based on the lines of code your test cases manage to test, please limit this to "real" tests - although we demand 60% test coverage for supported modules we would much rather this is produced honestly.
+
+Creating boiler plate tests that just call assertEquals against every method, and cutting and pasting the current result is an example of a regression test. While this will catch changes in our codebase it is not nearly as useful as actually testing for what you expect.

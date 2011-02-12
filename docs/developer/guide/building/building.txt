@@ -7,8 +7,8 @@ Covers the development environment and building instructions to work on the GeoT
 .. toctree::
    :maxdepth: 1
    
-   Java
-   Downloads/Downloads
-   Source Code
-   Using Subversion
-   Using Maven/Using Maven
+   java
+   install/install
+   source
+   subversion
+   maven/maven

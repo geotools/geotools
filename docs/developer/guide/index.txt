@@ -3,15 +3,15 @@ GeoTools Developers Guide
 #########################
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
    
-   Introduction
-   Building/Building
-   Communication/Communication
-   Roles and Responsibilities/Roles and Responsibilities
-   Project Conventions/Project Conventions
-   Documentation/Documentation
-   Project Procedures/Project Procedures
-   Design and Architecture/Design and Architecture
-   Tools
-   Reference
+   introduction
+   building/building
+   communication/communication
+   roles/roles
+   conventions/conventions
+   docs/docs
+   procedures/procedures
+   overview/overview
+   tools
+   reference

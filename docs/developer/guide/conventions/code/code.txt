@@ -4,10 +4,10 @@ Source Code
 .. toctree::
    :maxdepth: 1
    
-   Coding Style
-   Do not return null
-   Logging
-   Exception handling
-   Avoid assumptions
-   Converting URLs to Files
-   Use of Assertions, IllegalArgumentException and NPE
+   style
+   null
+   log
+   exception
+   assumptions
+   url
+   assert

@@ -5,7 +5,7 @@ Roles and Responsibilities
 .. toctree::
    :maxdepth: 1
    
-   Contributors
-   Committers
-   Module Maintainers
-   Project Management Committee
+   contribute
+   commit
+   maintain
+   committee

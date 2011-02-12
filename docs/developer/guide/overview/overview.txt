@@ -5,5 +5,5 @@ Design and Architecture
 .. toctree::
    :maxdepth: 1
    
-   Architecture
-   Modular Design
+   architecture
+   design

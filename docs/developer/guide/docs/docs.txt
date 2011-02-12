@@ -9,7 +9,6 @@ You may wish to review *Websites* page which covers how to get edit access for t
 .. toctree::
    :maxdepth: 1
    
-   Welcome and Tutorials
-   Reference Material
-   Confluence Tips and Tricks
-   GeoTools 2.0 Documentation
+   tutorial
+   reference
+   wiki

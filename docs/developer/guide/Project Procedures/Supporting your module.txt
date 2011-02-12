@@ -1,2 +1,0 @@
-Supporting your module
-==========================

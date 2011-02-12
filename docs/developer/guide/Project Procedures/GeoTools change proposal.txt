@@ -1,2 +1,0 @@
-GeoTools change proposal
-==========================

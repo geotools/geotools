@@ -1,4 +1,0 @@
-How to cut a release
-==========================
-
-  Announcement

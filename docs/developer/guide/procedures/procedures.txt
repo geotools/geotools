@@ -13,6 +13,5 @@ Project Procedures
    hack
    add
    release
-   change
    supported
    stable

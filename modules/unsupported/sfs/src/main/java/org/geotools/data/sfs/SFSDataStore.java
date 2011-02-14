@@ -35,6 +35,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 
+import org.apache.commons.codec.binary.Base64;
 import org.geotools.data.store.ContentDataStore;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
@@ -86,6 +87,9 @@ public class SFSDataStore extends ContentDataStore {
     protected static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.data.simplefeatureservice");
     String baseURL;
     Map<Name, SFSLayer> layers = new LinkedHashMap<Name, SFSLayer>();
+    String user;
+    String password;
+    int timeout;
 
     /**
      * Constructor -- it takes in the base URl and then appends "/capabilities"
@@ -97,6 +101,22 @@ public class SFSDataStore extends ContentDataStore {
         String strURL = fnURL.toString();
         this.baseURL = strURL + (strURL.endsWith("/") ? "" : "/");
         this.namespaceURI = namespaceURI;
+        processCapabilities();
+    }
+    
+    /**
+     * Constructor -- it takes in the base URl and then appends "/capabilities"
+     * to pull the list of available layers
+     * @param URL 
+     * 
+     */
+    public SFSDataStore(URL fnURL, String namespaceURI, String user, String password, int timeout) throws IOException {
+        String strURL = fnURL.toString();
+        this.baseURL = strURL + (strURL.endsWith("/") ? "" : "/");
+        this.namespaceURI = namespaceURI;
+        this.user = user;
+        this.password = password;
+        this.timeout = timeout;
         processCapabilities();
     }
 
@@ -249,8 +269,22 @@ public class SFSDataStore extends ContentDataStore {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         urlConnection.setRequestProperty("Accept-Encoding", "gzip");
         
+        // if we have username/password use them to setup basic auth
+        if(user != null && password != null) {
+            String combined = nullToEmpty(user) + ":" + nullToEmpty(password);
+            byte[] authBytes = combined.getBytes("US-ASCII");
+            String encoded = new String(Base64.encodeBase64(authBytes));
+            urlConnection.setRequestProperty("Authorization",  "Basic " + encoded);
+        }
+        
+        // enforce the timeout if we have one
+        if(timeout > 0) {
+            urlConnection.setConnectTimeout(timeout);
+            urlConnection.setReadTimeout(timeout);
+        }
+        
         urlConnection.setDoInput(true);
-        if(postData != null) {
+        if(postData != null && !"".equals(postData.trim())) {
             urlConnection.setRequestMethod("POST");
             urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             urlConnection.setDoOutput(true);
@@ -273,7 +307,7 @@ public class SFSDataStore extends ContentDataStore {
         /* Get the response from the server*/
         if(urlConnection.getResponseCode() != 200) {
             throw new IOException("Server reported and error with code " + 
-                    urlConnection.getResponseCode() + ": " + urlConnection.getResponseMessage());
+                    urlConnection.getResponseCode() + ": " + urlConnection.getResponseMessage() + " accessing resource " + url.toExternalForm());
         } else {
             InputStream is = urlConnection.getInputStream();
             String encoding = urlConnection.getContentEncoding();
@@ -284,4 +318,9 @@ public class SFSDataStore extends ContentDataStore {
             return is;
         }
     }
+
+    private String nullToEmpty(String string) {
+        return string != null ? string : "";
+    }
+
 }

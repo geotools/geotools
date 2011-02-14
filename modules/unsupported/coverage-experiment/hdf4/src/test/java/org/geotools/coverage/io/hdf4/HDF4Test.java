@@ -41,7 +41,7 @@ import org.geotools.coverage.io.CoverageSource;
 import org.geotools.coverage.io.CoverageSource.HorizontalDomain;
 import org.geotools.coverage.io.CoverageSource.TemporalDomain;
 import org.geotools.coverage.io.CoverageSource.VerticalDomain;
-import org.geotools.coverage.io.driver.BaseFileDriver;
+import org.geotools.coverage.io.driver.DefaultFileDriver;
 import org.geotools.coverage.io.driver.Driver.DriverOperation;
 import org.geotools.coverage.io.impl.CoverageReadRequest;
 import org.geotools.coverage.io.impl.CoverageResponse;
@@ -90,8 +90,8 @@ public final class HDF4Test extends TestCase {
     	boolean isInteractiveTest = false;
         
         // create a base driver
-        final BaseFileDriver driver = new HDF4Driver();
-        File testDir = TestData.file(this,"");
+        final DefaultFileDriver driver = new HDF4Driver();
+        File testDir = TestData.file(this,".");
         final String[] files = testDir.list(new FilenameFilter(){
 
 			public boolean accept(File dir, String name) {

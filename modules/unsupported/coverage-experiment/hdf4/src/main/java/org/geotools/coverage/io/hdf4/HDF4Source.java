@@ -37,7 +37,7 @@ import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.io.CoverageCapabilities;
 import org.geotools.coverage.io.CoverageSource;
 import org.geotools.coverage.io.domain.RasterLayout;
-import org.geotools.coverage.io.driver.BaseFileDriver;
+import org.geotools.coverage.io.driver.DefaultFileDriver;
 import org.geotools.coverage.io.impl.CoverageReadRequest;
 import org.geotools.coverage.io.impl.CoverageResponse;
 import org.geotools.coverage.io.impl.CoverageResponse.Status;
@@ -458,7 +458,7 @@ public class HDF4Source implements CoverageSource {
 //        } else {
             final int imageIndex = ((AbstractSliceDescriptor) sd)
                     .getImageIndex();
-            GridCoverage gc = Utilities.compute(BaseFileDriver.urlToFile(access
+            GridCoverage gc = Utilities.compute(DefaultFileDriver.urlToFile(access
                     .getInput()), imageIndex, needTransformation, emptyRequest,
                     useJAI, imageReadParam, false, sampleDimensions, HDF4Driver.spi, this.name.toString(), coverageFactory, access.raster2ModelMap.get(this.name),
                     access.spatialReferenceSystem2DMap.get(this.name), access.coverageEnvelope2DMap.get(this.name));

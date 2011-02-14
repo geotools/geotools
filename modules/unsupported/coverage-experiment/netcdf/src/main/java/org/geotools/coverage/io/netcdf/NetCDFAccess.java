@@ -42,7 +42,7 @@ import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.io.CoverageAccess;
 import org.geotools.coverage.io.CoverageSource;
 import org.geotools.coverage.io.CoverageStore;
-import org.geotools.coverage.io.driver.BaseFileDriver;
+import org.geotools.coverage.io.driver.DefaultFileDriver;
 import org.geotools.coverage.io.driver.Driver;
 import org.geotools.coverage.io.impl.DefaultCoverageAccess;
 import org.geotools.coverage.io.impl.range.DefaultRangeType;
@@ -155,7 +155,7 @@ public class NetCDFAccess extends DefaultCoverageAccess {
         types.add(AccessType.READ_ONLY);
         allowedAccessTypes = Collections.unmodifiableSet(types);
         final Map<String, Parameter<?>> parameters = new HashMap<String, Parameter<?>>();
-        parameters.put(BaseFileDriver.URL.key, BaseFileDriver.URL);
+        parameters.put(DefaultFileDriver.URL.key, DefaultFileDriver.URL);
         accessParameters = Collections.unmodifiableMap(parameters);
     }
 
@@ -169,8 +169,8 @@ public class NetCDFAccess extends DefaultCoverageAccess {
         super(driver);
 
         if (source == null) {
-            if (additionalParameters.containsKey(BaseFileDriver.URL.key)) {
-                source = (URL) additionalParameters.get(BaseFileDriver.URL.key);
+            if (additionalParameters.containsKey(DefaultFileDriver.URL.key)) {
+                source = (URL) additionalParameters.get(DefaultFileDriver.URL.key);
             }
         }
         if (source == null)
@@ -179,7 +179,7 @@ public class NetCDFAccess extends DefaultCoverageAccess {
         if (additionalParameters != null) {
             connectionParameters.putAll(additionalParameters);
         }
-        connectionParameters.put(BaseFileDriver.URL.key, source);
+        connectionParameters.put(DefaultFileDriver.URL.key, source);
 
         // get the protocol
         final String protocol = source.getProtocol();
@@ -187,7 +187,7 @@ public class NetCDFAccess extends DefaultCoverageAccess {
         // file
         if (protocol.equalsIgnoreCase("file")) {
             // convert to file
-            final File sourceFile = BaseFileDriver.urlToFile(source);
+            final File sourceFile = DefaultFileDriver.urlToFile(source);
 
             // check that it is a file,exists and can be at least read
             if (!sourceFile.exists() || !sourceFile.isFile()|| !sourceFile.canRead())

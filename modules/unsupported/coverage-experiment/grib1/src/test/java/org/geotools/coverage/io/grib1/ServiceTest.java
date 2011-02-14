@@ -46,16 +46,16 @@ public class ServiceTest extends TestCase {
     @Ignore
     public void testIsAvailable() throws NoSuchAuthorityCodeException,
             FactoryException {
-//        CoverageIO.scanForPlugins();
-//        
-//        Set<Driver> drivers = CoverageIO.getAvailableDrivers();
-//        Driver driverFound = null;
-//        for (Driver driver: drivers)
-//            if (driver instanceof GRIB1Driver) {
-//                driverFound = driver;
-//                break;
-//        }
-//        assertTrue("GRIB1Driver not registered", driverFound!=null);
-//        assertTrue("GRIB1Driver not available", driverFound.isAvailable());
+        CoverageIO.scanForPlugins();
+        
+        Set<Driver> drivers = CoverageIO.getAvailableDrivers();
+        Driver driverFound = null;
+        for (Driver driver: drivers)
+            if (driver instanceof GRIB1Driver) {
+                driverFound = driver;
+                break;
+        }
+        assertTrue("GRIB1Driver not registered", driverFound!=null);
+        assertTrue("GRIB1Driver not available", driverFound.isAvailable());
     }
 }

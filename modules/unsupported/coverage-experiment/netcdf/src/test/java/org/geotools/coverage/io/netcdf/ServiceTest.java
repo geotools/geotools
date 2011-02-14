@@ -44,15 +44,15 @@ public class ServiceTest extends TestCase {
     public void testIsAvailable() throws NoSuchAuthorityCodeException,
             FactoryException {
         CoverageIO.scanForPlugins();
-//        
-//        Set<Driver> drivers = CoverageIO.getAvailableDrivers();
-//        Driver driverFound = null;
-//        for (Driver driver: drivers)
-//            if (driver instanceof NetCDFDriver) {
-//                driverFound = driver;
-//                break;
-//        }
-//        assertTrue("NetCDFDriver not registered", driverFound!=null);
-//        assertTrue("NetCDFDriver not available", driverFound.isAvailable());
+        
+        Set<Driver> drivers = CoverageIO.getAvailableDrivers();
+        Driver driverFound = null;
+        for (Driver driver: drivers)
+            if (driver instanceof NetCDFDriver) {
+                driverFound = driver;
+                break;
+        }
+        assertTrue("NetCDFDriver not registered", driverFound!=null);
+        assertTrue("NetCDFDriver not available", driverFound.isAvailable());
     }
 }

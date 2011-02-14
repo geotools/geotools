@@ -40,7 +40,7 @@ import org.geotools.coverage.io.CoverageSource;
 import org.geotools.coverage.io.CoverageSource.HorizontalDomain;
 import org.geotools.coverage.io.CoverageSource.TemporalDomain;
 import org.geotools.coverage.io.CoverageSource.VerticalDomain;
-import org.geotools.coverage.io.driver.BaseFileDriver;
+import org.geotools.coverage.io.driver.DefaultFileDriver;
 import org.geotools.coverage.io.driver.Driver.DriverOperation;
 import org.geotools.coverage.io.impl.CoverageReadRequest;
 import org.geotools.coverage.io.impl.CoverageResponse;
@@ -68,7 +68,7 @@ public final class GRIB1Test extends Assert {
     @org.junit.Test
     public void testReader() throws IllegalArgumentException, IOException,
             NoSuchAuthorityCodeException, InterruptedException {
-        final BaseFileDriver driver = new GRIB1Driver();
+        final DefaultFileDriver driver = new GRIB1Driver();
         
         File dir = TestData.file(this, "");
         File[] files = dir.listFiles(new FileFilter() {

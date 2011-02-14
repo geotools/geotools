@@ -1,5 +1,6 @@
 package org.geotools.map;
 
+import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
@@ -228,6 +229,7 @@ class WMSCoverageReader extends AbstractGridCoverage2DReader {
         Envelope requestedEnvelope = null;
         int width = -1;
         int height = -1;
+        Color backgroundColor = null;
         if (parameters != null) {
             for (GeneralParameterValue param : parameters) {
                 final ReferenceIdentifier name = param.getDescriptor().getName();
@@ -239,7 +241,8 @@ class WMSCoverageReader extends AbstractGridCoverage2DReader {
                     // the actual width and height is one more than that
                     width = gg.getGridRange().getHigh(0) + 1;
                     height = gg.getGridRange().getHigh(1) + 1;
-                    break;
+                } else if(name.equals(AbstractGridFormat.BACKGROUND_COLOR.getName())) {
+                    backgroundColor = (Color)  ((ParameterValue) param).getValue();
                 }
             }
         }
@@ -258,17 +261,17 @@ class WMSCoverageReader extends AbstractGridCoverage2DReader {
                 && grid.getEnvelope().equals(requestedEnvelope))
             return grid;
 
-        grid = getMap(reference(requestedEnvelope), width, height);
+        grid = getMap(reference(requestedEnvelope), width, height, backgroundColor);
         return grid;
     }
 
     /**
      * Execute the GetMap request
      */
-    GridCoverage2D getMap(ReferencedEnvelope requestedEnvelope, int width, int height)
+    GridCoverage2D getMap(ReferencedEnvelope requestedEnvelope, int width, int height, Color backgroundColor)
             throws IOException {
         // build the request
-        ReferencedEnvelope gridEnvelope = initMapRequest(requestedEnvelope, width, height);
+        ReferencedEnvelope gridEnvelope = initMapRequest(requestedEnvelope, width, height, backgroundColor);
 
         // issue the request and wrap response in a grid coverage
         InputStream is = null;
@@ -292,7 +295,7 @@ class WMSCoverageReader extends AbstractGridCoverage2DReader {
      * @return
      * @throws IOException
      */
-    ReferencedEnvelope initMapRequest(ReferencedEnvelope bbox, int width, int height)
+    ReferencedEnvelope initMapRequest(ReferencedEnvelope bbox, int width, int height, Color backgroundColor)
             throws IOException {
         ReferencedEnvelope gridEnvelope = bbox;
         String requestSrs = srsName;
@@ -339,7 +342,14 @@ class WMSCoverageReader extends AbstractGridCoverage2DReader {
         mapRequest.setFormat(URLEncoder.encode(format, "ASCII"));
         mapRequest.setSRS(requestSrs);
         mapRequest.setBBox(gridEnvelope);
-        mapRequest.setTransparent(true);
+        if(backgroundColor == null) {
+            mapRequest.setTransparent(true);
+        } else {
+            String rgba = Integer.toHexString(backgroundColor.getRGB());
+            String rgb = rgba.substring(2, rgba.length());
+            mapRequest.setBGColour("0x" + rgb.toUpperCase());
+            mapRequest.setTransparent(backgroundColor.getAlpha() < 255);
+        }
 
         try {
             this.requestCRS = CRS.decode(requestSrs);

@@ -7,7 +7,7 @@ GeoTools Developers Guide
    
    introduction
    building/building
-   communication/communication
+   communication
    roles/roles
    conventions/conventions
    docs/docs

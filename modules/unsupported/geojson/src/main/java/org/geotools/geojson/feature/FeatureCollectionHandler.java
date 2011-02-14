@@ -73,19 +73,23 @@ public class FeatureCollectionHandler extends DelegatingHandler<SimpleFeature>
             return true;
         }
 
-        stack.add(null);
+        if(stack != null) {
+            stack.add(null);
+        }
         return super.startArray();
     }
     
     @Override
     public boolean endArray() throws ParseException, IOException {
-        if (stack.isEmpty()) {
-            //end of features array, clear the delegate
-            delegate = NULL;
-            return true;
+        if(stack != null) {
+            if (stack.isEmpty()) {
+                //end of features array, clear the delegate
+                delegate = NULL;
+                return true;
+            }
+            
+            stack.remove(0);
         }
-        
-        stack.remove(0);
         return super.endArray();
     }
     

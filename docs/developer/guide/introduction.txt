@@ -7,7 +7,7 @@ This guide is intended for programmers wishing to improve the GeoTools library i
 Think of this document as the “Care and Feeding” instructions we used to create the library for your use.
 
 Document Overview
--------------------
+^^^^^^^^^^^^^^^^^
 
 This document covers processes, conventions, and recommended tools. The guide aims to help developers quickly download or checkout the GeoTools project and start working. You are not expected to read this guide cover-to-cover. You probably should be familiar with the contents and reference the appropriate section as needed.
 
@@ -18,7 +18,7 @@ For this guide to be useful it needs to be continually added to and improved as 
 Community members should improving or adding sections to reflect current best practice. Where possible we suggest free, cross-platform tools or those that are available to open source developers for use. Where applicable, accepted conventions and open standards are used.
 
 System Overview
--------------------
+^^^^^^^^^^^^^^^^^
 
 GeoTools is an open source, Java GIS toolkit for developing standards compliant solutions. Its modular architecture allows extra functionality to be easily incorporated.
 
@@ -29,7 +29,7 @@ It is not the intention of the GeoTools project to develop finished products or 
 The GeoTools project is divided into separate modules, each of which implements a specific requirement. Only a subset of these modules is usually required to build an application based on GeoTools.
 
 Document License
--------------------
+^^^^^^^^^^^^^^^^^
 
 The original wiki documentation was distributed under the free documentation license::
    
@@ -48,7 +48,7 @@ For details see http://creativecommons.org/licenses/by/3.0/
 .. image:: /images/ccAttribution.*
 
 Source License
--------------------
+^^^^^^^^^^^^^^^^^
 
 The source code of the GeoTools library is distributed under the LGPL license::
    

@@ -9,7 +9,7 @@ source_suffix = '.txt'
 #source_encoding = 'utf-8'
 
 # The master toctree document.
-master_doc = 'guide/index'
+master_doc = 'index'
 
 # Options for HTML output
 # -----------------------

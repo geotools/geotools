@@ -29,6 +29,7 @@ One technique is to set up a batch file similar to the following:
 2. Edit the desktop cmd.exe short cut and change the target to::
       
       %SystemRoot%\system32\cmd.exe /k C:\java\java15.bat
+
 3. Create the C:\java\java15.bat file mentioned above::
    
       set ANT_HOME=C:\java\apache-ant-1.6.5
@@ -37,12 +38,18 @@ One technique is to set up a batch file similar to the following:
       
       set PATH=%JAVA_HOME%\bin;%SystemRoot%\system32;%SystemRoot%;%SystemRoot%\System32\Wbem;C:\Program Files\Subversion\bin;%M2_HOME%\bin;%ANT_HOME%\bin
 
-4. Please note that the construction of the PATH above is very important; JAVA_HOME\bin must appear
-   before SystemRoot\system32 as the system32 contains a stub java.exe that looks up the correct
-   version of java to run in the registry.
+4. Please note that the construction of the PATH above is very important; ``JAVA_HOME\bin`` must
+   appear before ``SystemRoot\system32`` as the system32 contains a stub java.exe that looks up
+   the correct version of java to run in the registry.
    
 
-5.   You can see in the above screen snap that the **My Computer\HKEY_LOCAL_MACHINE\SOFTWARE\JavaSoft > Java Development Kit > CurrentVersion** is set to **1.6**. The **1.6** entry documents the path to the version of java to run. Placing JAVA_HOME on the path before System32 shortcuts this annoying "feature".
+5. You can see in the above screen snap that the
+   ``My Computer\HKEY_LOCAL_MACHINE\SOFTWARE\JavaSoft > Java Development Kit > CurrentVersion``
+   is set to **1.6**.
+   
+   The **1.6** entry documents the path to the version of java to run.
+   
+   Placing JAVA_HOME on the path before System32 shortcuts this annoying "feature".
 
 Java Extensions
 ---------------

@@ -73,6 +73,7 @@ public class FeatureCollectionHandler extends DelegatingHandler<SimpleFeature>
             return true;
         }
 
+        // are we handling a feature collection? stack is null otherwise
         if(stack != null) {
             stack.add(null);
         }
@@ -81,6 +82,7 @@ public class FeatureCollectionHandler extends DelegatingHandler<SimpleFeature>
     
     @Override
     public boolean endArray() throws ParseException, IOException {
+        // are we handling a feature collection? stack is null otherwise
         if(stack != null) {
             if (stack.isEmpty()) {
                 //end of features array, clear the delegate

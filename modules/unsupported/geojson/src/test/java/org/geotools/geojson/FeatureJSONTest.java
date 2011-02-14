@@ -329,9 +329,17 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
         expected.close(e);
     }
     
-    public void testFeatureCollectionStream() throws Exception {
+    public void testFeatureCollectionStreamBasic() throws Exception {
+        testFeatureCollectionStream(false, false);
+    }
+
+    public void testFeatureCollectionStreamFull() throws Exception {
+        testFeatureCollectionStream(true, true);
+    }
+    
+    void testFeatureCollectionStream(boolean withBounds, boolean withCRS) throws Exception {
         FeatureIterator<SimpleFeature> features = 
-            fjson.streamFeatureCollection(reader(strip(collectionText())));
+            fjson.streamFeatureCollection(reader(strip(collectionText(withBounds, withCRS))));
         
         FeatureCollection expected = collection();
         Iterator e = expected.iterator();

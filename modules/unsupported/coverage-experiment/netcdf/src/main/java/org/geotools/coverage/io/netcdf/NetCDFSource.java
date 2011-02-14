@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
@@ -36,7 +37,6 @@ import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.io.CoverageCapabilities;
 import org.geotools.coverage.io.CoverageSource;
-import org.geotools.coverage.io.domain.RasterDatasetDomainManager;
 import org.geotools.coverage.io.domain.RasterLayout;
 import org.geotools.coverage.io.impl.CoverageReadRequest;
 import org.geotools.coverage.io.impl.CoverageResponse;
@@ -72,7 +72,7 @@ import org.opengis.util.ProgressListener;
  *
  */
 public class NetCDFSource implements CoverageSource {
-	private class NetCDFRasterDatasetDomainManager extends RasterDatasetDomainManager{
+	private class NetCDFRasterDatasetDomainManager {
 		/**
 		 * Implementation of temporal domain
 		 * @author Simone Giannecchini, GeoSolutions SAS
@@ -219,29 +219,29 @@ public class NetCDFSource implements CoverageSource {
 			
 		}
 
-		@Override
+		
 		public CoordinateReferenceSystem getCoordinateReferenceSystem() {
 	        return access.crsMap.get(NetCDFSource.this.name);
 		}
 
-		@Override
+		
 		public Extent getExtent() {
 			return null;
 		}
 
-		@Override
+		
 		public TemporalDomain getTemporalDomain() throws IOException {
 			final  TemporalDomain td= new NetCDFTemporalDomain();
 			return td;
 		}
 
-		@Override
+		
 		public VerticalDomain getVerticalDomain() throws IOException {
 			final VerticalDomain vd= new NetCDFVerticalDomain();
 			return vd;
 		}
 
-		@Override
+		
 		public HorizontalDomain getHorizontalDomain() throws IOException {
 			final HorizontalDomain hd= new NetCDFHorizontalDomain();
 			return hd;
@@ -525,7 +525,7 @@ public class NetCDFSource implements CoverageSource {
             }
 
             // TODO: Check for center/corner anchor point
-            request.setDomainSubset(requestedRasterArea, requestedBoundingBox);
+            request.setDomainSubset(requestedRasterArea, ReferencedEnvelope.reference(requestedBoundingBox));
         }
 
         // //
@@ -616,11 +616,6 @@ public class NetCDFSource implements CoverageSource {
         return takeThis;
     }
 
-	public RasterDatasetDomainManager getDomainManager(ProgressListener listener)
-			throws IOException {
-		return this.domainManager;
-	}
-
 	public MetadataNode getMetadata(String metadataDomain,
 			ProgressListener listener) {
 		return null;
@@ -629,4 +624,33 @@ public class NetCDFSource implements CoverageSource {
 	public Set<Name> getMetadataDomains() {
 		return null;
 	}
+
+    public CoordinateReferenceSystem getCoordinateReferenceSystem() {
+        return domainManager.getCoordinateReferenceSystem();
+    }
+
+    public Extent getExtent() {
+        return domainManager.getExtent();
+    }
+
+    public HorizontalDomain getHorizontalDomain() throws IOException {
+        return domainManager.getHorizontalDomain();
+    }
+
+    public TemporalDomain getTemporalDomain() throws IOException {
+        return domainManager.getTemporalDomain();
+    }
+
+    public VerticalDomain getVerticalDomain() throws IOException {
+        return domainManager.getVerticalDomain();
+    }
+
+    public List<? extends RasterLayout> getOverviewsLayouts(ProgressListener listener)
+            throws IOException {
+        return Collections.emptyList();
+    }
+
+    public int getOverviewsNumber(ProgressListener listener) throws IOException {
+        return 0;
+    }
 }

@@ -31,7 +31,6 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.util.NumberRange;
 import org.opengis.geometry.BoundingBox;
-import org.opengis.geometry.Envelope;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.datum.PixelInCell;
@@ -56,7 +55,7 @@ public class CoverageReadRequest extends CoverageRequest  {
 	 * The requested area in geographic coordinates, which means the area in destination world space  which we want to get data for.
 	 * @uml.property  name="geographicArea"
 	 */
-	private BoundingBox geographicArea;
+	private ReferencedEnvelope geographicArea;
 	
 	/**
 	 * The request   {@link MathTransform2D}   which would map the pixel into the requested world area. <p> Note that having a raster are and a world area is not enough, unless we have a simple scale-and-translate grid-to-workd transform.
@@ -106,56 +105,21 @@ public class CoverageReadRequest extends CoverageRequest  {
 	/**
 	 * @see org.geotools.coverage.io.CoverageReadRequest#setDomainSubset(java.awt.Rectangle, org.opengis.geometry.BoundingBox, org.opengis.referencing.datum.PixelInCell)
 	 */
-	public void setDomainSubset(final Rectangle rasterArea, final BoundingBox worldArea, PixelInCell anchor){
-		//get input elements
-		this.rasterArea=(Rectangle) rasterArea.clone();
+	public void setDomainSubset(final Rectangle rasterArea, final ReferencedEnvelope worldArea){
+	    //get input elements
+	    if(rasterArea!=null){
+	        this.rasterArea=(Rectangle) rasterArea.clone();
+	    }
 		this.geographicArea=worldArea;
 		
 		//create a math transform
 		final GridToEnvelopeMapper mapper = new GridToEnvelopeMapper(new GridEnvelope2D(rasterArea), new ReferencedEnvelope(worldArea));
-		mapper.setPixelAnchor(anchor);
+		mapper.setPixelAnchor(PixelInCell.CELL_CORNER);
 		this.gridToWorldTransform=(MathTransform2D) mapper.createTransform();
 	}
 	
 	
-	/**
-	 * @see org.geotools.coverage.io.CoverageReadRequest#setDomainSubset(org.opengis.geometry.BoundingBox)
-	 */
-	public void setDomainSubset( final BoundingBox worldArea){
-		this.geographicArea= new ReferencedEnvelope(worldArea);
-	}
 	
-	/**
-	 * @see org.geotools.coverage.io.CoverageReadRequest#setDomainSubset(com.vividsolutions.jts.geom.Envelope)
-	 */
-	public void setDomainSubset(final Envelope worldArea){
-		this.geographicArea= new ReferencedEnvelope(worldArea);
-	}	
-	
-	
-	/**
-	 * @see org.geotools.coverage.io.CoverageReadRequest#setDomainSubset(java.awt.Rectangle, org.opengis.geometry.BoundingBox)
-	 */
-	public void setDomainSubset(final Rectangle rasterArea, final BoundingBox worldArea){
-		setDomainSubset(rasterArea, worldArea,PixelInCell.CELL_CENTER);
-	}
-
-	
-	/**
-	 * @see org.geotools.coverage.io.CoverageReadRequest#setDomainSubset(java.awt.Rectangle, com.vividsolutions.jts.geom.Envelope)
-	 */
-	public void setDomainSubset(final Rectangle rasterArea, final Envelope worldArea){
-		setDomainSubset(rasterArea,(BoundingBox) new ReferencedEnvelope((org.opengis.geometry.Envelope)worldArea));
-	}	
-	
-	
-	/**
-	 * @see org.geotools.coverage.io.CoverageReadRequest#setDomainSubset(java.awt.Rectangle, com.vividsolutions.jts.geom.Envelope, org.opengis.referencing.datum.PixelInCell)
-	 */
-	public void setDomainSubset(final Rectangle rasterArea, final Envelope worldArea, PixelInCell anchor){
-		setDomainSubset(rasterArea,(BoundingBox) new ReferencedEnvelope((org.opengis.geometry.Envelope)worldArea),anchor);
-	}	
-
         /**
          * Set the range subset we are requesting. <p> Note that a null  {@link RangeType}  means get everything.
          * @param  value

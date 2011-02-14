@@ -38,9 +38,9 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.io.CoverageAccess;
 import org.geotools.coverage.io.CoverageAccess.AccessType;
 import org.geotools.coverage.io.CoverageSource;
-import org.geotools.coverage.io.domain.RasterDatasetDomainManager.HorizontalDomain;
-import org.geotools.coverage.io.domain.RasterDatasetDomainManager.TemporalDomain;
-import org.geotools.coverage.io.domain.RasterDatasetDomainManager.VerticalDomain;
+import org.geotools.coverage.io.CoverageSource.HorizontalDomain;
+import org.geotools.coverage.io.CoverageSource.TemporalDomain;
+import org.geotools.coverage.io.CoverageSource.VerticalDomain;
 import org.geotools.coverage.io.driver.BaseFileDriver;
 import org.geotools.coverage.io.driver.Driver.DriverOperation;
 import org.geotools.coverage.io.impl.CoverageReadRequest;
@@ -123,7 +123,7 @@ public final class HDF4Test extends TestCase {
 	                LOGGER.info("Connected to coverage: "+name.toString());
 	
 	                // TEMPORAL DOMAIN
-	                final TemporalDomain temporalDomain = gridSource.getDomainManager(null).getTemporalDomain();
+	                final TemporalDomain temporalDomain = gridSource.getTemporalDomain();
 	                if(temporalDomain==null)
 	                	LOGGER.info("Temporal domain is null");
 	                else{
@@ -137,7 +137,7 @@ public final class HDF4Test extends TestCase {
 	                }
 	                
 	                // VERTICAL DOMAIN
-	                final VerticalDomain verticalDomain= gridSource.getDomainManager(null).getVerticalDomain();
+	                final VerticalDomain verticalDomain= gridSource.getVerticalDomain();
 	                if(verticalDomain==null || verticalDomain.getVerticalElements(true, null).isEmpty())
 	                	LOGGER.info("Vertical domain is null");
 	                else{
@@ -152,7 +152,7 @@ public final class HDF4Test extends TestCase {
 	                
 	                
 	                // HORIZONTAL DOMAIN
-	                final HorizontalDomain horizontalDomain= gridSource.getDomainManager(null).getHorizontalDomain();
+	                final HorizontalDomain horizontalDomain= gridSource.getHorizontalDomain();
 	                if(horizontalDomain==null)
 	                	LOGGER.info("Horizontal domain is null");
 	                else{

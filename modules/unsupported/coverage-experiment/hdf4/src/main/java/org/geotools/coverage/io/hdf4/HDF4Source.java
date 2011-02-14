@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
@@ -35,7 +36,6 @@ import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.io.CoverageCapabilities;
 import org.geotools.coverage.io.CoverageSource;
-import org.geotools.coverage.io.domain.RasterDatasetDomainManager;
 import org.geotools.coverage.io.domain.RasterLayout;
 import org.geotools.coverage.io.driver.BaseFileDriver;
 import org.geotools.coverage.io.impl.CoverageReadRequest;
@@ -71,7 +71,7 @@ public class HDF4Source implements CoverageSource {
 	/** Logger. */
     private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(HDF4Source.class.toString());
     
-    private class HDF4RasterDatasetDomainManager extends RasterDatasetDomainManager{
+    private class HDF4RasterDatasetDomainManager {
 		/**
 		 * Implementation of temporal domain
 		 * @author Simone Giannecchini, GeoSolutions SAS
@@ -211,29 +211,29 @@ public class HDF4Source implements CoverageSource {
 			
 		}
 	
-		@Override
+		
 		public CoordinateReferenceSystem getCoordinateReferenceSystem() {
 	        return access.crsMap.get(HDF4Source.this.name);
 		}
 	
-		@Override
+		
 		public Extent getExtent() {
 			return null;
 		}
 	
-		@Override
+		
 		public TemporalDomain getTemporalDomain() throws IOException {
 			final  TemporalDomain td= new HDF4TemporalDomain();
 			return td;
 		}
 	
-		@Override
+		
 		public VerticalDomain getVerticalDomain() throws IOException {
 			final VerticalDomain vd= new HDF4VerticalDomain();
 			return vd;
 		}
 	
-		@Override
+		
 		public HorizontalDomain getHorizontalDomain() throws IOException {
 			final HorizontalDomain hd= new HDF4HorizontalDomain();
 			return hd;
@@ -490,7 +490,7 @@ public class HDF4Source implements CoverageSource {
 
             }
 
-            request.setDomainSubset(requestedRasterArea, requestedBoundingBox);
+            request.setDomainSubset(requestedRasterArea, ReferencedEnvelope.reference(requestedBoundingBox));
         }
 
         // //
@@ -574,12 +574,6 @@ public class HDF4Source implements CoverageSource {
             takeThis = Utilities.contains(second, first);
         return takeThis;
     }
-
-	public RasterDatasetDomainManager getDomainManager(ProgressListener listener)
-			throws IOException {
-		return domainManager;
-	}
-
 	public MetadataNode getMetadata(String metadataDomain,
 			ProgressListener listener) {
 		return null;
@@ -588,4 +582,33 @@ public class HDF4Source implements CoverageSource {
 	public Set<Name> getMetadataDomains() {
 		return null;
 	}
+
+    public CoordinateReferenceSystem getCoordinateReferenceSystem() {
+        return this.domainManager.getCoordinateReferenceSystem();
+    }
+
+    public Extent getExtent() {
+        return null;
+    }
+
+    public HorizontalDomain getHorizontalDomain() throws IOException {
+        return this.domainManager.getHorizontalDomain();
+    }
+
+    public TemporalDomain getTemporalDomain() throws IOException {
+        return domainManager.getTemporalDomain();
+    }
+
+    public VerticalDomain getVerticalDomain() throws IOException {
+        return this.domainManager.getVerticalDomain();
+    }
+
+    public List<? extends RasterLayout> getOverviewsLayouts(ProgressListener listener)
+            throws IOException {
+        return Collections.emptyList();
+    }
+
+    public int getOverviewsNumber(ProgressListener listener) throws IOException {
+        return 0;
+    }
 }

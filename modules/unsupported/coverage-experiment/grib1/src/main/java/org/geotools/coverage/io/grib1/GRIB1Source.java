@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
@@ -36,7 +37,6 @@ import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.io.CoverageCapabilities;
 import org.geotools.coverage.io.CoverageSource;
-import org.geotools.coverage.io.domain.RasterDatasetDomainManager;
 import org.geotools.coverage.io.domain.RasterLayout;
 import org.geotools.coverage.io.driver.BaseFileDriver;
 import org.geotools.coverage.io.impl.CoverageReadRequest;
@@ -73,7 +73,7 @@ public class GRIB1Source implements CoverageSource {
 	/** Logger. */
     private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(GRIB1Source.class.toString());
     
-    private class GRIB1RasterDatasetDomainManager extends RasterDatasetDomainManager{
+    private class GRIB1RasterDatasetDomainManager {
 		/**
 		 * Implementation of temporal domain
 		 * @author Simone Giannecchini, GeoSolutions SAS
@@ -211,29 +211,29 @@ public class GRIB1Source implements CoverageSource {
 			
 		}
 	
-		@Override
+		
 		public CoordinateReferenceSystem getCoordinateReferenceSystem() {
 	        return access.crsMap.get(GRIB1Source.this.name);
 		}
 	
-		@Override
+	
 		public Extent getExtent() {
 			return null;
 		}
 	
-		@Override
+		
 		public TemporalDomain getTemporalDomain() throws IOException {
 			final  TemporalDomain td= new GRIB1TemporalDomain();
 			return td;
 		}
 	
-		@Override
+		
 		public VerticalDomain getVerticalDomain() throws IOException {
 			final VerticalDomain vd= new GRIB1VerticalDomain();
 			return vd;
 		}
 	
-		@Override
+		
 		public HorizontalDomain getHorizontalDomain() throws IOException {
 			final HorizontalDomain hd= new GRIB1HorizontalDomain();
 			return hd;
@@ -677,7 +677,7 @@ public class GRIB1Source implements CoverageSource {
             }
 
             // TODO: Check for center/corner anchor point
-            request.setDomainSubset(requestedRasterArea, requestedBoundingBox);
+            request.setDomainSubset(requestedRasterArea, ReferencedEnvelope.reference(requestedBoundingBox));
         }
 
         // //
@@ -767,10 +767,6 @@ public class GRIB1Source implements CoverageSource {
         return takeThis;
     }
 
-	public RasterDatasetDomainManager getDomainManager(ProgressListener listener)
-			throws IOException {
-		return domainManager;
-	}
 
 	public MetadataNode getMetadata(String metadataDomain,
 			ProgressListener listener) {
@@ -782,4 +778,33 @@ public class GRIB1Source implements CoverageSource {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+    public CoordinateReferenceSystem getCoordinateReferenceSystem() {
+        return this.domainManager.getCoordinateReferenceSystem();
+    }
+
+    public Extent getExtent() {
+        return this.domainManager.getExtent();
+    }
+
+    public HorizontalDomain getHorizontalDomain() throws IOException {
+        return this.domainManager.getHorizontalDomain();
+    }
+
+    public TemporalDomain getTemporalDomain() throws IOException {
+        return this.domainManager.getTemporalDomain();
+    }
+
+    public VerticalDomain getVerticalDomain() throws IOException {
+        return this.domainManager.getVerticalDomain();
+    }
+
+    public List<? extends RasterLayout> getOverviewsLayouts(ProgressListener listener)
+            throws IOException {
+        return Collections.emptyList();
+    }
+
+    public int getOverviewsNumber(ProgressListener listener) throws IOException {
+        return 0;
+    }
 }

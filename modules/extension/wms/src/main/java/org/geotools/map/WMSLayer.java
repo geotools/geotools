@@ -152,7 +152,7 @@ public class WMSLayer extends GridReaderLayer {
     public InputStream getFeatureInfo(ReferencedEnvelope bbox, int width, int height, int x, int y,
             String infoFormat, int featureCount) throws IOException {
         try {
-            getReader().initMapRequest(bbox, width, height);
+            getReader().initMapRequest(bbox, width, height, null);
             // we need to convert x/y from the screen to the original coordinates, and then to the ones
             // that will be used to make the request
             AffineTransform at = RendererUtilities.worldToScreenTransform(bbox, new Rectangle(width, height));

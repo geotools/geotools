@@ -32,6 +32,7 @@ import java.awt.image.ComponentColorModel;
 import java.awt.image.DataBuffer;
 import java.awt.image.DirectColorModel;
 import java.awt.image.IndexColorModel;
+import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.awt.image.WritableRaster;
 import java.io.File;
@@ -678,6 +679,121 @@ public final class ImageWorkerTest {
             Viewer.show(worker.getRenderedImage(), title);
         } else {
             assertNotNull(worker.getRenderedImage().getTile(worker.getRenderedImage().getMinTileX(), worker.getRenderedImage().getMinTileY())); // Force computation.
+        }
+    }
+    
+    @Test
+    public void testOpacityAlphaRGBComponent() {
+        testAlphaRGB(false);
+    }
+    
+    @Test
+    public void testOpacityAlphaRGBDirect() {
+        testAlphaRGB(true);
+    }
+    
+    private void testAlphaRGB(boolean direct) {
+        assertTrue("Assertions should be enabled.", ImageWorker.class.desiredAssertionStatus());
+        ImageWorker worker = new ImageWorker(getSyntheticRGB(direct));
+        worker.applyOpacity(0.5f);
+        
+        RenderedImage image = worker.getRenderedImage();
+        assertTrue(image.getColorModel() instanceof ComponentColorModel);
+        assertTrue(image.getColorModel().hasAlpha());
+        int sample = image.getTile(0, 0).getSample(0, 0, 3);
+        assertEquals(128, sample);
+    }
+    
+    @Test
+    public void testOpacityRGBA() {
+        assertTrue("Assertions should be enabled.", ImageWorker.class.desiredAssertionStatus());
+        assertTrue(worldImage.getColorModel().hasAlpha());
+        assertTrue(worldImage.getColorModel() instanceof ComponentColorModel);
+        ImageWorker worker = new ImageWorker(worldImage);
+        worker.applyOpacity(0.5f);
+        
+        RenderedImage image = worker.getRenderedImage();
+        assertTrue(image.getColorModel() instanceof ComponentColorModel);
+        assertTrue(image.getColorModel().hasAlpha());
+        Raster tile = worldImage.getTile(0, 0);
+        Raster outputTile = image.getTile(0, 0);
+        for(int i = 0; i < tile.getWidth(); i++) {
+            for(int j = 0; j < tile.getHeight(); j++) {
+                int original = tile.getSample(i, j, 3);
+                int result = outputTile.getSample(i, j, 3);
+                assertEquals(Math.round(original * 0.5), result);
+            }
+        }
+    }
+    
+    @Test
+    public void testOpacityGray() {
+        assertTrue("Assertions should be enabled.", ImageWorker.class.desiredAssertionStatus());
+        ImageWorker worker = new ImageWorker(gray);
+        worker.applyOpacity(0.5f);
+        
+        RenderedImage image = worker.getRenderedImage();
+        assertTrue(image.getColorModel() instanceof ComponentColorModel);
+        assertTrue(image.getColorModel().hasAlpha());
+        int sample = image.getTile(0, 0).getSample(0, 0, 1);
+        assertEquals(128, sample);
+    }
+    
+    @Test
+    public void testOpacityGrayAlpha() {
+        assertTrue("Assertions should be enabled.", ImageWorker.class.desiredAssertionStatus());
+        ImageWorker worker = new ImageWorker(gray);
+        worker.applyOpacity(0.5f);
+        
+        RenderedImage image = worker.getRenderedImage();
+        assertTrue(image.getColorModel() instanceof ComponentColorModel);
+        assertTrue(image.getColorModel().hasAlpha());
+        Raster tile = gray.getTile(0, 0);
+        Raster outputTile = image.getTile(0, 0);
+        for(int i = 0; i < tile.getWidth(); i++) {
+            for(int j = 0; j < tile.getHeight(); j++) {
+                int original = tile.getSample(i, j, 1);
+                int result = outputTile.getSample(i, j, 1);
+                assertEquals(Math.round(original * 0.5), result);
+            }
+        }
+    }
+    
+    @Test
+    public void testOpacityIndexed() {
+        assertTrue("Assertions should be enabled.", ImageWorker.class.desiredAssertionStatus());
+        assertFalse(worldDEMImage.getColorModel().hasAlpha());
+        ImageWorker worker = new ImageWorker(worldDEMImage);
+        worker.applyOpacity(0.5f);
+        
+        RenderedImage image = worker.getRenderedImage();
+        assertTrue(image.getColorModel() instanceof IndexColorModel);
+        assertTrue(image.getColorModel().hasAlpha());
+        
+        // check the resulting palette
+        IndexColorModel index = (IndexColorModel) image.getColorModel();
+        for (int i = 0; i < index.getMapSize(); i++) {
+            assertEquals(128, index.getAlpha(i));
+        }
+    }
+    
+    @Test
+    public void testOpacityIndexedTranslucent() {
+        assertTrue("Assertions should be enabled.", ImageWorker.class.desiredAssertionStatus());
+        assertFalse(worldDEMImage.getColorModel().hasAlpha());
+        final BufferedImage input = getSyntheticTranslucentIndexed();
+        ImageWorker worker = new ImageWorker(input);
+        worker.applyOpacity(0.5f);
+        
+        RenderedImage image = worker.getRenderedImage();
+        assertTrue(image.getColorModel() instanceof IndexColorModel);
+        assertTrue(image.getColorModel().hasAlpha());
+        
+        // check the resulting palette
+        IndexColorModel outputCM = (IndexColorModel) image.getColorModel();
+        IndexColorModel inputCM = (IndexColorModel) input.getColorModel();
+        for (int i = 0; i < inputCM.getMapSize(); i++) {
+            assertEquals(Math.round(inputCM.getAlpha(i) * 0.5), outputCM.getAlpha(i));
         }
     }
 }

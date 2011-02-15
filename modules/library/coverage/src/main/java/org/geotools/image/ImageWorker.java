@@ -75,6 +75,7 @@ import javax.media.jai.operator.BandMergeDescriptor;
 import javax.media.jai.operator.BandSelectDescriptor;
 import javax.media.jai.operator.BinarizeDescriptor;
 import javax.media.jai.operator.ColorConvertDescriptor;
+import javax.media.jai.operator.ConstantDescriptor;
 import javax.media.jai.operator.ErrorDiffusionDescriptor;
 import javax.media.jai.operator.ExtremaDescriptor;
 import javax.media.jai.operator.FormatDescriptor;
@@ -2215,6 +2216,110 @@ public class ImageWorker {
             image = FormatDescriptor.create(image, type, hints);
         }
         return this;
+    }
+    
+    /**
+     * Applies the specified opacity to the image by either adding an alpha band, or modifying
+     * the existing one by multiplication
+     * 
+     * @param opacity The opacity to be applied, between 0 and 1 
+     * 
+     * @return this {@link ImageWorker}.
+     */
+    public ImageWorker applyOpacity(float opacity) {
+        RenderedImage result;
+        ColorModel colorModel = image.getColorModel();
+        
+        // if it's an index color model we can just recompute the palette
+        // and replace it
+        if(colorModel instanceof IndexColorModel) {
+            // grab the original palette
+            IndexColorModel index = (IndexColorModel) colorModel;
+            byte[] reds = new byte[index.getMapSize()]; 
+            byte[] greens = new byte[index.getMapSize()];
+            byte[] blues = new byte[index.getMapSize()];
+            byte[] alphas = new byte[index.getMapSize()];
+            index.getReds(reds);
+            index.getGreens(greens);
+            index.getBlues(blues);
+            index.getAlphas(alphas);
+
+            // multiply the alphas by opacity
+            final int transparentPixel = index.getTransparentPixel();
+            for (int i = 0; i < alphas.length; i++) {
+                alphas[i] = (byte) Math.round((0xFF & alphas[i]) * opacity);
+                if(i == transparentPixel) {
+                    alphas[i] = 0;
+                }
+            }
+            
+            // build a new palette
+            IndexColorModel newColorModel = new IndexColorModel(index.getPixelSize(), index.getMapSize(), 
+                    reds, greens, blues, alphas);
+            LookupTableJAI table = buildOpacityLookupTable(0, 1, -1);
+            ImageLayout layout = new ImageLayout(image);
+            layout.setColorModel(newColorModel);
+            RenderingHints hints = new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout);
+            result = LookupDescriptor.create(image, table, hints);
+        } else {
+            // not indexed, then make sure it's some sort of component color model or turn it into one
+            RenderedImage expanded;
+            if(!(colorModel instanceof ComponentColorModel)) {
+                expanded = new ImageWorker(image).forceComponentColorModel().getRenderedImage();
+            } else {
+                expanded = image;
+            }
+            
+            // do we have to add the alpha band or it's there and we need to change it?
+            
+            if(!expanded.getColorModel().hasAlpha()) {
+                // we just need to add it, so first build a constant image with the same structure
+                // as the original image
+                byte alpha = (byte) Math.round(255 * opacity);
+                ImageLayout layout = new ImageLayout(image.getMinX(), image.getMinY(), 
+                        image.getWidth(), image.getHeight());
+                RenderedOp alphaBand = ConstantDescriptor.create(
+                        (float) image.getWidth(), (float) image.getHeight(), 
+                        new Byte[] {new Byte(alpha)}, new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
+                
+                result = BandMergeDescriptor.create(expanded, alphaBand, null);
+            } else {
+                // we need to transform the existing, we'll use a lookup
+                final int bands = expanded.getSampleModel().getNumBands();
+                int alphaBand = bands - 1;
+                LookupTableJAI table = buildOpacityLookupTable(opacity, bands, alphaBand);
+                result = LookupDescriptor.create(expanded, table, null);
+            }
+        }
+        
+        image = result;
+        return this;
+    }
+
+
+    /**
+     * Builds a lookup table that is the identity on all bands but the alpha one, where
+     * the opacity is applied
+     * @param opacity
+     * @param bands
+     * @param alphaBand
+     * @return
+     */
+    LookupTableJAI buildOpacityLookupTable(float opacity, final int bands, int alphaBand) {
+        byte[][] matrix = new byte[bands][256];
+        for (int band = 0; band < matrix.length; band++) {
+            if(band == alphaBand) {
+                for (int i = 0; i < 256; i++) {
+                    matrix[band][i] = (byte) Math.round(i * opacity);
+                }
+            } else {
+                for (int i = 0; i < 256; i++) {
+                    matrix[band][i] = (byte) i;
+                }
+            }
+        }
+        LookupTableJAI table = new LookupTableJAI(matrix);
+        return table;
     }
 
     /**

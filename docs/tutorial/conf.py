@@ -6,7 +6,7 @@ from common import *
 # -----------------------
 
 html_title='GeoTools %s Tutorial' % release
-html_theme = 'geotools-tutorial'
+#html_theme = 'geotools-tutorial'
 
 # -- General configuration -----------------------------------------------------
 # Add any Sphinx extension module names here, as strings. They can be extensions

@@ -9,12 +9,12 @@ source_suffix = '.txt'
 #source_encoding = 'utf-8'
 
 # The master toctree document.
-master_doc = 'index'
+master_doc = 'guide/index'
 
 # Options for HTML output
 # -----------------------
 
-html_title='GeoTools %s Developer' % release
+html_title='GeoTools %s Developer Guide' % release
 
 # -- General configuration -----------------------------------------------------
 # Add any Sphinx extension module names here, as strings. They can be extensions

@@ -1,4 +1,4 @@
-package org.geotools.coverage.io.range.impl;
+package org.geotools.coverage.io.driver;
 
 import java.util.Set;
 

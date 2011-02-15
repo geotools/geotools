@@ -23,6 +23,7 @@ import java.util.Map;
 
 import org.geotools.coverage.io.CoverageAccess;
 import org.geotools.data.Parameter;
+import org.geotools.factory.Factory;
 import org.geotools.factory.Hints;
 import org.geotools.factory.OptionalFactory;
 import org.opengis.util.InternationalString;
@@ -55,7 +56,7 @@ import org.opengis.util.ProgressListener;
  * 
  * 
  */
-public interface Driver extends OptionalFactory {
+public interface Driver extends OptionalFactory, Factory {
 	
 	public enum DriverOperation{
 		CONNECT,

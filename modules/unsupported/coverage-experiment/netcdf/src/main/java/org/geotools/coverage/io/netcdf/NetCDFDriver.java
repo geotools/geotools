@@ -39,11 +39,12 @@ import javax.imageio.stream.ImageInputStream;
 import org.geotools.coverage.io.CoverageAccess;
 import org.geotools.coverage.io.driver.DefaultFileDriver;
 import org.geotools.coverage.io.driver.Driver;
+import org.geotools.coverage.io.driver.FileDriver;
 import org.geotools.factory.Hints;
 import org.geotools.imageio.netcdf.NetCDFSpatioTemporalImageReaderSpi;
 import org.opengis.util.ProgressListener;
 
-public class NetCDFDriver extends DefaultFileDriver implements Driver {
+public class NetCDFDriver extends DefaultFileDriver implements FileDriver,Driver {
 
     /** Logger. */
     private final static Logger LOGGER = org.geotools.util.logging.Logging

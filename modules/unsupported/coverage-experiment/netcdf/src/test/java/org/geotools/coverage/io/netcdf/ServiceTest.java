@@ -44,7 +44,6 @@ public class ServiceTest extends TestCase {
     public void testIsAvailable() throws NoSuchAuthorityCodeException,
             FactoryException {
         CoverageIO.scanForPlugins();
-        
         Set<Driver> drivers = CoverageIO.getAvailableDrivers();
         Driver driverFound = null;
         for (Driver driver: drivers)

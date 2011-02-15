@@ -41,6 +41,10 @@ div.related {
     margin: 0 80px;
     width: auto;
 }
+div.related ul {
+  background-image: none;
+  border-top: 0px;
+}
 div.related ul li a {
    /*font-size: 0.8em;*/
    color: #078c00;
@@ -297,7 +301,7 @@ display: block;
 font-size: 0.85em;
 color: #c6e09b;
 border-bottom: 1px solid #c6e09b;
-margin: -1200px 0 1em;
+margin: 1em 0 0 0;
 padding: 0 0 0.5em;
 }
 

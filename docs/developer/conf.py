@@ -15,7 +15,6 @@ master_doc = 'index'
 # -----------------------
 
 html_title='GeoTools %s Developer' % release
-html_theme = 'geotools-tutorial'
 
 # -- General configuration -----------------------------------------------------
 # Add any Sphinx extension module names here, as strings. They can be extensions

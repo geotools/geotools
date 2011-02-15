@@ -1,7 +1,7 @@
 {% extends "basic/page.html" %}
 {%- macro customrelbar(showrel=True) %}
+  {%- if theme_showbreadcrumbs %}
     <div class="related">
-      <h3>{{ _('Navigation') }}</h3-->
       <ul id="breadcrumbs">
         {%- if showrel %}
             {%- for rellink in rellinks %}
@@ -20,6 +20,7 @@
         <li><a href="#">{{ title }}</a></li>
       </ul>
     </div>
+ {%- endif %}
 {%- endmacro %}
 
 {% block header %}
@@ -49,10 +50,10 @@
 {% endblock %}
 
 {% block relbar1 %}
-    {%- if pagename != 'index' %}{{ customrelbar(False) }}{% endif %}
+    {%- if not pagename.endswith('index') %}{{ customrelbar(False) }}{% endif %}
 {% endblock %}
 {%- block relbar2 %}
-    {%- if pagename != 'index' %}{{ customrelbar(True) }}{% endif %}
+    {%- if not pagename.endswith('index') %}{{ customrelbar(True) }}{% endif %}
 {% endblock %}
 
 {% block sidebarsearch %}{% endblock %}

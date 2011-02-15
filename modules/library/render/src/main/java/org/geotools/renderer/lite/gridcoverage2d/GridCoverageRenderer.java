@@ -17,9 +17,7 @@
 package org.geotools.renderer.lite.gridcoverage2d;
 
 // J2SE dependencies
-import java.awt.AlphaComposite;
 import java.awt.Color;
-import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
@@ -27,7 +25,10 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
+import java.awt.image.ComponentColorModel;
 import java.awt.image.ImagingOpException;
+import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
@@ -40,10 +41,19 @@ import javax.media.jai.ImageLayout;
 import javax.media.jai.Interpolation;
 import javax.media.jai.InterpolationNearest;
 import javax.media.jai.JAI;
+import javax.media.jai.LookupTableJAI;
+import javax.media.jai.RenderedOp;
 import javax.media.jai.operator.AffineDescriptor;
+import javax.media.jai.operator.BandMergeDescriptor;
+import javax.media.jai.operator.ConstantDescriptor;
+import javax.media.jai.operator.LookupDescriptor;
 import javax.media.jai.operator.ScaleDescriptor;
 
+import org.geotools.coverage.CoverageFactoryFinder;
+import org.geotools.coverage.GridSampleDimension;
+import org.geotools.coverage.TypeMap;
 import org.geotools.coverage.grid.GridCoverage2D;
+import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.processing.CoverageProcessor;
@@ -667,24 +677,54 @@ public final class GridCoverageRenderer {
         // RASTERSYMBOLIZER
         //
         // ///////////////////////////////////////////////////////////////////
+        final GridCoverage2D symbolizerGC;
+        final RenderedImage symbolizerImage;
         if (LOGGER.isLoggable(Level.FINE))
             LOGGER.fine(new StringBuilder("Raster Symbolizer ").toString());
         if (LOGGER.isLoggable(Level.FINE))
             LOGGER.fine(new StringBuffer("Raster Symbolizer ").toString());
-        final RenderedImage finalImage;
-        final GridCoverage2D finalGC;
         if(symbolizer!=null){
         	final RasterSymbolizerHelper rsp = new RasterSymbolizerHelper (preSymbolizer,this.hints);
         	rsp.visit(symbolizer);
-        	finalGC = (GridCoverage2D) rsp.getOutput();
-        	finalImage = finalGC.geophysics(false).getRenderedImage();
-    	}
-        else{
-        	finalGC=preSymbolizer;
-        	finalImage=finalGC.geophysics(false).getRenderedImage();
+        	symbolizerGC = (GridCoverage2D) rsp.getOutput();
+        	symbolizerImage = symbolizerGC.geophysics(false).getRenderedImage();
+    	} else {
+            symbolizerGC = preSymbolizer;
+            symbolizerImage = symbolizerGC.geophysics(false).getRenderedImage();
         }
         if (DEBUG) {
-            writeRenderedImage(finalImage,"postSymbolizer");
+            writeRenderedImage(symbolizerImage,"postSymbolizer");
+        }
+        
+        // ///////////////////////////////////////////////////////////////////
+        // Apply opacity if needs be
+        // TODO: move this into the RasterSymbolizerHelper
+        // ///////////////////////////////////////////////////////////////////
+        final RenderedImage finalImage;
+        final GridCoverage2D finalGC;
+        float opacity = getOpacity(symbolizer);
+        if(opacity < 1) {
+            ImageWorker ow = new ImageWorker(symbolizerImage);
+            finalImage = ow.applyOpacity(opacity).getRenderedImage();
+            
+            final int numBands=finalImage.getSampleModel().getNumBands();
+            final GridSampleDimension [] sd= new GridSampleDimension[numBands];
+            for(int i=0;i<numBands;i++) {
+                sd[i]= new GridSampleDimension(TypeMap.getColorInterpretation(finalImage.getColorModel(), i).name());
+            }
+            
+            GridCoverageFactory factory = CoverageFactoryFinder.getGridCoverageFactory(hints);
+            finalGC = factory.create(
+                    "opacity_"+symbolizerGC.getName().toString(), 
+                    finalImage,
+                    symbolizerGC.getGridGeometry(),
+                    sd,
+                    new GridCoverage[]{symbolizerGC},
+                    symbolizerGC.getProperties()
+                    );
+        } else {
+            finalImage = symbolizerImage;
+            finalGC = symbolizerGC;
         }
         
         // ///////////////////////////////////////////////////////////////////
@@ -720,6 +760,7 @@ public final class GridCoverageRenderer {
 
         return new GCpair(clonedFinalWorldToGrid,finalGC);
     }            	
+
 
     /**
      * Turns the coverage into a rendered image applying the necessary transformations and the
@@ -898,12 +939,6 @@ public final class GridCoverageRenderer {
         RenderedImage finalImage = couple.getGridCoverage().getRenderedImage();
         AffineTransform clonedFinalWorldToGrid = couple.getTransform();
 
-        // //
-        // Opacity
-        // //
-        final float alpha = getOpacity(symbolizer);
-        final Composite oldAlphaComposite = graphics.getComposite();
-        graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
         try {
             //debug
             if (DEBUG) {
@@ -993,7 +1028,6 @@ public final class GridCoverageRenderer {
         // Restore old elements
         //
         // ///////////////////////////////////////////////////////////////////
-        graphics.setComposite(oldAlphaComposite);
         graphics.setRenderingHints(oldHints);
 
     }

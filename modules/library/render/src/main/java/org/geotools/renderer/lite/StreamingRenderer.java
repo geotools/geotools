@@ -1974,16 +1974,21 @@ public final class StreamingRenderer implements GTRenderer {
      * @param attributeNames
      */
     void checkAttributeExistence(FeatureType schema, Query query) {
-        for (String attribute : query.getPropertyNames()) {
-            if(schema.getDescriptor(attribute) == null) {
-                List<Name> allNames = new ArrayList<Name>();
-                for (PropertyDescriptor pd : schema.getDescriptors()) {
-                    allNames.add(pd.getName());
-                }
-                
-                throw new IllegalFilterException("Could not find '" + 
+        for (PropertyName attribute : query.getProperties()) {
+            if(attribute.evaluate(schema) == null) {
+                if (schema instanceof SimpleFeatureType) {
+                    List<Name> allNames = new ArrayList<Name>();
+                    for (PropertyDescriptor pd : schema.getDescriptors()) {
+                        allNames.add(pd.getName());
+                    }
+                    throw new IllegalFilterException("Could not find '" + 
+                            attribute + "' in the FeatureType (" + schema.getName() + 
+                           "), available attributes are: " + allNames);
+                } else {
+                    throw new IllegalFilterException("Could not find '" + 
                         attribute + "' in the FeatureType (" + schema.getName() + 
-                        "), available attributes are: " + allNames);
+                        ")");
+                }
             }
         }
     }

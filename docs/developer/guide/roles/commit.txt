@@ -53,7 +53,7 @@ This is an example offer letter that should be sent to the volunteer after 3 pos
 
    Attachment:
    
-    * GeotoolsAssignmentToOSGeo.pdf
+   * :download:`GeotoolsAssignmentToOSGeo.pdf</artifacts/GeotoolsAssignmentToOSGeo.pdf>`
 
 Getting write access to the repository
 ------------------------------------------

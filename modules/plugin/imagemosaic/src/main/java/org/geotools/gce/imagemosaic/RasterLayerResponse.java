@@ -28,8 +28,10 @@ import java.awt.image.IndexColorModel;
 import java.awt.image.MultiPixelPackedSampleModel;
 import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -42,6 +44,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageReadParam;
 import javax.measure.unit.Unit;
 import javax.media.jai.BorderExtender;
+import javax.media.jai.Histogram;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.Interpolation;
 import javax.media.jai.JAI;
@@ -56,6 +59,7 @@ import javax.media.jai.operator.ConstantDescriptor;
 import javax.media.jai.operator.CropDescriptor;
 import javax.media.jai.operator.MosaicDescriptor;
 
+import org.apache.commons.io.FilenameUtils;
 import org.geotools.coverage.Category;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.TypeMap;
@@ -64,12 +68,14 @@ import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.data.DataSourceException;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
 import org.geotools.factory.Hints;
 import org.geotools.feature.visitor.MaxVisitor;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.gce.imagemosaic.OverviewsController.OverviewLevel;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalogVisitor;
+import org.geotools.gce.imagemosaic.processing.ArtifactsFilterDescriptor;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.JTS;
@@ -126,6 +132,10 @@ class RasterLayerResponse{
         RenderedImage loadedImage;
 
         ROIShape footprint;
+        
+        URL granuleUrl;
+        
+        boolean doFiltering;
 
         public ROIShape getFootprint() {
             return footprint;
@@ -135,9 +145,25 @@ class RasterLayerResponse{
             return loadedImage;
         }
 
-        GranuleLoadingResult(RenderedImage loadedImage, ROIShape inclusionArea) {
+        public URL getGranuleUrl() {
+            return granuleUrl;
+        }
+        public boolean isDoFiltering() {
+            return doFiltering;
+        }
+        GranuleLoadingResult(RenderedImage loadedImage, ROIShape footprint) {
+            this(loadedImage, footprint, null);
+        }
+
+        GranuleLoadingResult(RenderedImage loadedImage, ROIShape footprint, URL granuleUrl) {
+            this(loadedImage, footprint, granuleUrl, false);
+        }
+
+        GranuleLoadingResult(RenderedImage loadedImage, ROIShape footprint, URL granuleUrl, final boolean doFiltering) {
             this.loadedImage = loadedImage;
-            this.footprint = inclusionArea;
+            this.footprint = footprint;
+            this.granuleUrl = granuleUrl;
+            this.doFiltering = doFiltering;
         }
     }
     
@@ -407,6 +433,7 @@ class RasterLayerResponse{
 				
 				final RenderedImage loadedImage;
 				final GranuleLoadingResult result;
+				boolean doFiltering;
 				try {
 					if(!multithreadingAllowed || rasterManager.parent.multiThreadedLoader == null)
 					{
@@ -422,6 +449,7 @@ class RasterLayerResponse{
                                             continue;
                                         }
 					loadedImage = result.getRaster();
+					doFiltering = result.isDoFiltering();
 					if(loadedImage==null)
 					{
 						if(LOGGER.isLoggable(Level.FINE))
@@ -486,7 +514,7 @@ class RasterLayerResponse{
 				//
 				// add to the mosaic collection, with preprocessing
 				//
-				final RenderedImage raster = processGranuleRaster(
+				RenderedImage raster = processGranuleRaster(
 						loadedImage,
 						granuleIndex, 
 						alphaIndex,
@@ -506,9 +534,26 @@ class RasterLayerResponse{
 								            imageBounds = imageBounds.intersect(footprint);
 								        }
 								    }
-				    
-				    
-				}
+                                if (defaultArtifactsFilterThreshold != Integer.MIN_VALUE && doFiltering){
+                                    int artifactThreshold = defaultArtifactsFilterThreshold; 
+                                    if (artifactsFilterPTileThreshold != -1){
+                                        final URL url = result.getGranuleUrl();
+                                        if (url != null){
+                                            final File inputFile = DataUtilities.urlToFile(url);
+                                            final String inputFileName = inputFile.getPath();
+                                            final String path = FilenameUtils.getFullPath(inputFileName);
+                                            final String baseName = FilenameUtils.getBaseName(inputFileName);
+                                            final String histogramPath = path + baseName + "." + "histogram";
+                                            final Histogram histogram = Utils.getHistogram(histogramPath);
+                                            if (histogram != null) {
+                                                final double[]p = histogram.getPTileThreshold(artifactsFilterPTileThreshold);
+                                                artifactThreshold = (int)p[0];
+                                            }
+                                        }
+                                    }
+                                    raster = ArtifactsFilterDescriptor.create(raster, imageBounds, new double[]{0}, artifactThreshold, 3, hints);
+                                    }
+                                }
                                 rois.add(imageBounds);
 
 				// add to mosaic
@@ -571,6 +616,10 @@ class RasterLayerResponse{
 	
 	private boolean footprintManagement = !Utils.IGNORE_FOOTPRINT;
 	
+	private int defaultArtifactsFilterThreshold = Integer.MIN_VALUE;
+	
+	private double artifactsFilterPTileThreshold = ImageMosaicFormat.DEFAULT_ARTIFACTS_FILTER_PTILE_THRESHOLD;
+	
 	private boolean setRoiProperty;
 	
 	private boolean alphaIn=false;
@@ -617,6 +666,8 @@ class RasterLayerResponse{
 		backgroundValues = request.getBackgroundValues();
 		interpolation = request.getInterpolation();
 		needsReprojection = request.isNeedsReprojection();
+		defaultArtifactsFilterThreshold = request.getDefaultArtifactsFilterThreshold();
+		artifactsFilterPTileThreshold = request.getArtifactsFilterPTileThreshold();
 	}
 
 	/**
@@ -723,7 +774,7 @@ class RasterLayerResponse{
                         if (hints != null && !hints.containsKey(JAI.KEY_BORDER_EXTENDER)) {
                             final Object extender = hints.get(JAI.KEY_BORDER_EXTENDER);
                             if (!(extender != null && extender instanceof BorderExtender)) {
-                                localHints.add(ImageUtilities.BORDER_EXTENDER_HINTS);
+                                localHints.add(ImageUtilities.EXTEND_BORDER_BY_COPYING);
                             }
                         }
 	        
@@ -1115,7 +1166,7 @@ class RasterLayerResponse{
 		//
 		// SPECIAL CASE
 		// 1 single tile, we try not do a mosaic.
-		if(visitor.granulesNumber==1){
+		if(visitor.granulesNumber==1 && Utils.OPTIMIZE_CROP){
 		    // the roi is exactly equal to the 
 		    final ROI roi = visitor.rois.get(0);
 		    if(roi instanceof ROIShape){

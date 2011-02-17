@@ -164,6 +164,13 @@
       <artifactId>commons-beanutils</artifactId>
     </dependency>
 
+
+    <dependency>
+		<groupId>net.sf.ehcache</groupId>
+		<artifactId>ehcache</artifactId>
+		<version>1.6.2</version>
+    </dependency>
+
     <!-- Test dependencies -->
     <dependency>
       <groupId>org.geotools</groupId>

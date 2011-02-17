@@ -100,6 +100,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  */
 public final class ImageMosaicFormat extends AbstractGridFormat implements Format {
 
+    final static double DEFAULT_ARTIFACTS_FILTER_PTILE_THRESHOLD = 0.1;
+    
     /** Logger. */
     private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(ImageMosaicFormat.class.toString());
     
@@ -121,6 +123,14 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
     /** Control the thresholding on the input coverage */
     public static final ParameterDescriptor<Integer> MAX_ALLOWED_TILES = new DefaultParameterDescriptor<Integer>(
             "MaxAllowedTiles", Integer.class, null, Integer.MAX_VALUE);
+    
+    /** Control the default artifact filter luminance thresholding on the input coverages */
+    public static final ParameterDescriptor<Integer> DEFAULT_ARTIFACTS_FILTER_THRESHOLD = new DefaultParameterDescriptor<Integer>(
+            "DefaultArtifactsFilterThreshold", Integer.class, null, Integer.MIN_VALUE);
+
+    /** Control the artifact filter ptile thresholding */
+    public static final ParameterDescriptor<Double> ARTIFACTS_FILTER_PTILE_THRESHOLD = new DefaultParameterDescriptor<Double>(
+            "ArtifactsFilterPtileThreshold", Double.class, null, Double.valueOf(DEFAULT_ARTIFACTS_FILTER_PTILE_THRESHOLD));
     
     /** Control the threading behavior for this plugin.*/
     public static final ParameterDescriptor<Boolean> ALLOW_MULTITHREADING = new DefaultParameterDescriptor<Boolean>(
@@ -176,13 +186,9 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
                 SUGGESTED_TILE_SIZE,
                 ALLOW_MULTITHREADING,
                 MAX_ALLOWED_TILES,
-//                INTERPOLATION,
                 TIME,
                 ELEVATION,
                 FILTER
-//				,
-//              OVERVIEW_POLICY,
-//              DECIMATION_POLICY
         }));
 
         // reading parameters

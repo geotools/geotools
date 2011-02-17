@@ -101,6 +101,10 @@ class RasterLayerRequest {
     
     private boolean footprintManagement;
     
+    private int defaultArtifactsFilterThreshold = Integer.MIN_VALUE;;
+    
+    private double artifactsFilterPTileThreshold;
+    
     private boolean setRoiProperty;
     
     private boolean needsReprojection = false;
@@ -377,6 +381,20 @@ class RasterLayerRequest {
 				continue;
 			}	 
 			
+			if (name.equals(ImageMosaicFormat.DEFAULT_ARTIFACTS_FILTER_THRESHOLD.getName())) {
+	                        if (value==null)
+	                                continue;
+	                        defaultArtifactsFilterThreshold =(Integer)value;
+	                        continue;
+	                }     
+			
+			if (name.equals(ImageMosaicFormat.ARTIFACTS_FILTER_PTILE_THRESHOLD.getName())) {
+                            if (value==null)
+                                    continue;
+                            artifactsFilterPTileThreshold =(Double)value;
+                            continue;
+                    }     
+			
 			
 			if (name.equals(ImageMosaicFormat.ALLOW_MULTITHREADING.getName())) {
 	        	if(value==null)
@@ -458,6 +476,9 @@ class RasterLayerRequest {
         	if (value == null)
         		return;
             final GridGeometry2D gg = (GridGeometry2D) value;
+            if (gg == null) {
+                return;
+            }
 
             requestedBBox = new ReferencedEnvelope((Envelope) gg.getEnvelope2D());
             requestedRasterArea = gg.getGridRange2D().getBounds();
@@ -574,6 +595,21 @@ class RasterLayerRequest {
 			return;
 		}	 
 		
+		if (name.equals(ImageMosaicFormat.DEFAULT_ARTIFACTS_FILTER_THRESHOLD.getName())) {
+		        final Object value = param.getValue();
+	                if(value==null)
+	                        return;
+	                defaultArtifactsFilterThreshold = param.intValue();
+	                return;
+	        }
+		
+		if (name.equals(ImageMosaicFormat.ARTIFACTS_FILTER_PTILE_THRESHOLD.getName())) {
+                    final Object value = param.getValue();
+                    if(value==null)
+                            return;
+                    artifactsFilterPTileThreshold = param.doubleValue();
+                    return;
+                }
 		
 		if (name.equals(ImageMosaicFormat.ALLOW_MULTITHREADING.getName())) {
         	final Object value = param.getValue();
@@ -1276,6 +1312,14 @@ class RasterLayerRequest {
             return footprintManagement;
         }
 	
+        public int getDefaultArtifactsFilterThreshold() {
+            return defaultArtifactsFilterThreshold;
+        }
+        
+        public double getArtifactsFilterPTileThreshold() {
+            return artifactsFilterPTileThreshold;
+        }
+
         public boolean isSetRoiProperty() {
             return setRoiProperty;
         }

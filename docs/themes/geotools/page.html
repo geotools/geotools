@@ -1,6 +1,6 @@
 {% extends "basic/page.html" %}
 {%- macro customrelbar(showrel=True) %}
-  {%- if theme_showbreadcrumbs %}
+  {%- if theme_showbreadcrumbs == 'true' %}
     <div class="related">
       <ul id="breadcrumbs">
         {%- if showrel %}

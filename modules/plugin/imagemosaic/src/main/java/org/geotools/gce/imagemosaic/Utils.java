@@ -97,9 +97,17 @@ import com.sun.media.jai.operator.ImageReadDescriptor;
  * 
  */
 public class Utils {
+    
+    /** EHCache instance to cache geometries and histograms */ 
     private static Cache ehcache;    
+    
+    /** RGB to GRAY coefficients (for Luminance computation) */
     public final static double RGB_TO_GRAY_MATRIX [][]= {{ 0.114, 0.587, 0.299, 0 }};
     
+    /** 
+     * Flag indicating whether to compute optimized crop ops (instead of standard
+     * mosaicking op) when possible (As an instance when mosaicking a single granule) 
+     */
     final static boolean OPTIMIZE_CROP; 
         
     static {
@@ -1214,6 +1222,14 @@ public class Utils {
         return sourceURL;
     }
     
+    /**
+     * Scan back the rendered op chain (navigating the sources) 
+     * to find an {@link ImageReader} used to read the main source.
+     *  
+     * @param rOp
+     * @return the {@link ImageReader} related to this operation, if any.
+     * {@code null} in case no readers are found.
+     */
     public static ImageReader getReader(RenderedImage rOp) {
         if (rOp != null) {
             if (rOp instanceof RenderedOp) {
@@ -1248,13 +1264,28 @@ public class Utils {
         return null;
     }
     
+    /**
+     * Private constructor to initialize the ehCache instance.
+     * It can be configured through a Bean.
+     * @param ehcache
+     */
     private Utils(Cache ehcache) {
         Utils.ehcache = ehcache;
     }
     
+    /**
+     * Setup a {@link Histogram} object by deserializing  
+     * a file representing a serialized Histogram.
+     * 
+     * @param file
+     * @return the deserialized histogram.
+     */
     public static Histogram getHistogram(final String file){
         Utilities.ensureNonNull("file", file);
         Histogram histogram = null;
+        
+        // Firstly: check if the histogram have been already
+        // deserialized and it is available in cache
         if (ehcache != null && ehcache.isKeyInCache(file)){
             if (ehcache.isElementInMemory(file)){
                 final Element element = ehcache.get(file);
@@ -1267,6 +1298,8 @@ public class Utils {
                 }
             }
         }
+        
+        // No histogram in cache. Deserializing...
         if (histogram == null){
             FileInputStream fileStream = null;
             ObjectInputStream objectStream = null;

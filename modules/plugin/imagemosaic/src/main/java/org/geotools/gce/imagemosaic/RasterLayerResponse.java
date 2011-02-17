@@ -528,7 +528,7 @@ class RasterLayerResponse{
 						doInputTransparency,
 						inputTransparentColor);
 				
-				// we need to add its roi in order to avoid problems whith the mosaic overl
+				// we need to add its roi in order to avoid problems with the mosaic overlapping
 				Rectangle bounds = PlanarImage.wrapRenderedImage(raster).getBounds();
 				Geometry mask = JTS.toGeometry(new Envelope(bounds.getMinX(), bounds.getMaxX(), bounds.getMinY(), bounds.getMaxY()));
 				ROI imageBounds = new ROIGeometry(mask);
@@ -541,10 +541,15 @@ class RasterLayerResponse{
                                             imageBounds = imageBounds.intersect(footprint);
                                         }
                                     }
+                                    
+                                    //Artifacts filtering processing
                                 if (defaultArtifactsFilterThreshold != Integer.MIN_VALUE && doFiltering){
                                     int artifactThreshold = defaultArtifactsFilterThreshold; 
                                     if (artifactsFilterPTileThreshold != -1){
                                         final URL url = result.getGranuleUrl();
+                                        
+                                        //Looking for a histogram for that granule in order to 
+                                        //setup dynamic threshold 
                                         if (url != null){
                                             final File inputFile = DataUtilities.urlToFile(url);
                                             final String inputFileName = inputFile.getPath();

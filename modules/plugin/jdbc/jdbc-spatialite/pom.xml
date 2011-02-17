@@ -71,4 +71,28 @@
     </dependency>
   </dependencies>
 
+  <profiles>
+    <profile>
+      <id>skipDataStoreFactoryTest1</id>
+      <activation>
+        <jdk>1.6</jdk>
+      </activation>
+      <properties>
+        <test.exclude.pattern>**/SpatiaLiteDataStoreFactoryTest*</test.exclude.pattern>
+      </properties>
+    </profile>
+    <profile>
+      <id>skipDataStoreFactoryTest2</id>
+      <activation>
+        <os>
+          <family>Windows</family>
+          <arch>x86_64</arch>
+        </os>
+      </activation>
+      <properties>
+        <test.exclude.pattern>**/SpatiaLiteDataStoreFactoryTest*</test.exclude.pattern>
+      </properties>
+    </profile>
+  </profiles>
+
 </project>

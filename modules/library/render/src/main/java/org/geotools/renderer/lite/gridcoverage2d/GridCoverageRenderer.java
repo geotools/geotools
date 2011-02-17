@@ -858,12 +858,13 @@ public final class GridCoverageRenderer {
         // final transformation
         final ImageLayout layout = new ImageLayout(finalImage);
         layout.setTileGridXOffset(0).setTileGridYOffset(0).setTileHeight(tileSizeY).setTileWidth(tileSizeX);
-        final RenderingHints hints = new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout);
+        final RenderingHints localHints = this.hints.clone(); 
+            localHints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
         //add hints to preserve IndexColorModel
         if(interpolation instanceof InterpolationNearest)
-            hints.add(new RenderingHints(JAI.KEY_REPLACE_INDEX_COLOR_MODEL, Boolean.FALSE));
+            localHints.add(new RenderingHints(JAI.KEY_REPLACE_INDEX_COLOR_MODEL, Boolean.FALSE));
         //SG add hints for the border extender
-        hints.add(new RenderingHints(JAI.KEY_BORDER_EXTENDER,BorderExtender.createInstance(BorderExtender.BORDER_COPY)));
+        localHints.add(new RenderingHints(JAI.KEY_BORDER_EXTENDER,BorderExtender.createInstance(BorderExtender.BORDER_COPY)));
     	RenderedImage im=null;
     	try{
     		// scale ?
@@ -874,7 +875,7 @@ public final class GridCoverageRenderer {
     									(float) finalRaster2Model.getTranslateX(), 
     									(float) finalRaster2Model.getTranslateY(), 
     									interpolation, 
-    									hints);
+    									localHints);
     		}else{
                     // use more general affine (slower)
                     im = AffineDescriptor.create(
@@ -882,7 +883,7 @@ public final class GridCoverageRenderer {
                             finalRaster2Model, 
                             interpolation,
                             null, 
-                            hints);
+                            localHints);
     		}
     	}finally{
     		if(DEBUG)

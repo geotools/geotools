@@ -17,6 +17,9 @@
 package org.geotools.gce.imagemosaic;
 
 import it.geosolutions.imageio.utilities.Utilities;
+import jaitools.imageutils.ROIGeometry;
+import jaitools.media.jai.vectorbinarize.VectorBinarizeDescriptor;
+import jaitools.media.jai.vectorbinarize.VectorBinarizeRIF;
 
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -25,6 +28,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.RenderedImage;
+import java.awt.image.renderable.RenderedImageFactory;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -42,17 +46,20 @@ import javax.media.jai.BorderExtender;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.Interpolation;
 import javax.media.jai.JAI;
-import javax.media.jai.ROIShape;
+import javax.media.jai.OperationDescriptor;
+import javax.media.jai.OperationRegistry;
+import javax.media.jai.ROI;
 import javax.media.jai.TileCache;
 import javax.media.jai.TileScheduler;
 import javax.media.jai.operator.AffineDescriptor;
+import javax.media.jai.registry.RenderedRegistryMode;
 
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.RasterLayerResponse.GranuleLoadingResult;
 import org.geotools.geometry.DirectPosition2D;
-import org.geotools.geometry.jts.LiteShape2;
+import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
@@ -63,7 +70,6 @@ import org.geotools.resources.geometry.XRectangle2D;
 import org.geotools.resources.image.ImageUtilities;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.geometry.BoundingBox;
-import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.referencing.operation.TransformException;
@@ -99,6 +105,21 @@ public class GranuleDescriptor {
 
     private static final double SAMEBBOX_THRESHOLD_FACTOR = 20; 
 	   
+	static {
+            final OperationRegistry registry = JAI.getDefaultInstance().getOperationRegistry();
+            try {
+                final OperationDescriptor op = new VectorBinarizeDescriptor();
+                registry.registerDescriptor(op);
+                final String descName = op.getName();
+                final RenderedImageFactory rif = new VectorBinarizeRIF();
+                registry.registerFactory(RenderedRegistryMode.MODE_NAME, descName, "jaitools.media.jai", rif);
+            } catch (Exception e) {
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.log(Level.FINE, e.getLocalizedMessage());
+                }
+            }
+        }
+	
     // FORMULAE FOR FORWARD MAP are derived as follows
     //     Nearest
     //        Minimum:
@@ -362,7 +383,7 @@ public class GranuleDescriptor {
 	
 	ReferencedEnvelope granuleBBOX;
 	
-	ROIShape granuleROIShape;
+	ROIGeometry granuleROIShape;
         
         Geometry inclusionGeometry;
 	
@@ -444,15 +465,12 @@ public class GranuleDescriptor {
 			
 			try {
 				if (inclusionGeometry != null) {
-					LiteShape2 shape = null;
-					geMapper.setPixelAnchor(PixelInCell.CELL_CORNER);
-					shape = new LiteShape2(inclusionGeometry, geMapper.createTransform().inverse(), null, false);
-					this.granuleROIShape = (ROIShape) new ROIShape(shape);
+				        geMapper.setPixelAnchor(PixelInCell.CELL_CORNER);
+				        Geometry mapped = JTS.transform(inclusionGeometry, geMapper.createTransform().inverse());
+				        this.granuleROIShape = new ROIGeometry(mapped);  
 				}
 
 			} catch (TransformException e1) {
-				throw new IllegalArgumentException(e1);
-			} catch (FactoryException e1) {
 				throw new IllegalArgumentException(e1);
 			}
 			
@@ -872,7 +890,7 @@ public class GranuleDescriptor {
 					LOGGER.fine("Unable to create a granuleDescriptor "+this.toString()+ " due to jai scale bug");
 				return null;
 			}
-			ROIShape granuleLoadingShape = null;
+			ROI granuleLoadingShape = null;
 			if (granuleROIShape != null){
 			    
                             final Point2D translate = mosaicWorldToGrid.transform(new DirectPosition2D(x,y), (Point2D) null);
@@ -882,7 +900,7 @@ public class GranuleDescriptor {
                             tx2.preConcatenate(AffineTransform.getScaleInstance(((AffineTransform)baseGridToWorld).getScaleX(), 
                                     -((AffineTransform)baseGridToWorld).getScaleY()));
                             tx2.preConcatenate(AffineTransform.getTranslateInstance(translate.getX(),translate.getY()));
-                            granuleLoadingShape = (ROIShape) granuleROIShape.transform(tx2);
+                            granuleLoadingShape = (ROI) granuleROIShape.transform(tx2);
                         }
 			// apply the affine transform  conserving indexed color model
 			final RenderingHints localHints = new RenderingHints(JAI.KEY_REPLACE_INDEX_COLOR_MODEL, Boolean.FALSE);

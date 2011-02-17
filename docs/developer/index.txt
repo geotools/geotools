@@ -3,7 +3,7 @@ GeoTools Developers Guide
 #########################
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    
    guide/introduction
    guide/building/building

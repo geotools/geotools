@@ -15,14 +15,14 @@ The best way to make a code contribution is to develop a formal patch against a 
 JIRA will automatically notify the maintainer of the module since that is the best person to do the code review. If no one answers or comments in the subsequent few days, then the contributor can contact the developers' mailing list to let everyone know about the patch and find someone else competent to review the code and integrate the contribution into the code base or provide a request for improvements to the patch.
 
 Large contributions
-——————————----------
+-------------------
 
 Informal participants can also contribute larger contributions following essentially the same process as that just described for small code contributions but also including the formal transfer of the copyright over the contribution to the Open Source Geospatial Foundation (OSGeo).
 
 Patches submitted to JIRA for large contributions should include the contributor name in the list of authors of the class documentation for any file in which the contributor has made significant changes. That is the contributor's name should be added using the @author javadoc tag.
 
 GeoTools Contributor Agreement
-———————————————---------------
+------------------------------
 
 Geotools has adopted a formal policy as part of the process of joining the Open Source Geospatial Foundation (OSGeo). All new contributors will be required to transfer copyright to the foundation.
 

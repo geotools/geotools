@@ -5,17 +5,47 @@ Communication
 The GeoTools Project practices “open development” with project communication taking place using a range of public forums.
 
 Email
-^^^^^
+-----
+
+geotools-gt2-users
+^^^^^^^^^^^^^^^^^^
+
+The users list is for questions regarding the installation or use of the GeoTools2 library. Users of GeoTools2 are usually java developers building applications with spatial capabilities.
+
+* https://lists.sourceforge.net/lists/listinfo/geotools-gt2-users
+* http://sourceforge.net/mailarchive/forum.php?forum_name=geotools-gt2-users
+
+Sometimes, some small applications or server-side code will exist within the GeoTools code base (for example, a Web Map Service implementation or a conversion utility). If these have not yet found a project of their own, then questions about how to use them may be directed to this list.
+
+
+geotools-devel
+^^^^^^^^^^^^^^
 
 Much of the development discussion happens on the geotools-devel mailing list.
+If your query is more general, e.g. you need help with how to use GeoTools,
+please use the geotools-gt2-users mailing list.
 
  * http://lists.sourceforge.net/lists/listinfo/geotools-devel
- * http://sourceforge.net/mailarchive/forum.php?forum=geotools-devel
+ * http://sourceforge.net/mailarchive/forum.php?forum_name=geotools-devel
 
-If your query is more general, e.g. you need help with how to use GeoTools, please use the geotools-gt2-users mailing list.
+The developer list is used by the development team of GeoTools solely to discuss development issues. The list is exclusively for:
+
+1. current members of the GeoTools2 development team.
+2. those who are interested in joining the GeoTools development effort.
+3. those who wish to follow the discussions surrounding GeoTools development.
+
+Please do not send general questions regarding the use of GeoTools to this list, but to geotools-gt2-users above.
+
+geotools-commits
+^^^^^^^^^^^^^^^^
+
+A read only list to which all SVN (was CVS) commit statements are posted.
+
+* http://lists.sourceforge.net/lists/listinfo/geotools-commits
+* http://sourceforge.net/mailarchive/forum.php?forum_name=geotools-commits
 
 Issue Tracker
-^^^^^^^^^^^^^
+---------------
 
 GeoTools tracks tasks, issues and bugs with its JIRA tracker, generously provided by Atlassian and hosted by CodeHaus.
 
@@ -34,7 +64,7 @@ Filling out all fields is specially important for bug reports:
   ``<module>/target/surefire-reports`` for further details
 
 Internet Relay Chat
-^^^^^^^^^^^^^^^^^^^
+--------------------
 
 GeoTools developers use an IRC channel for real time collaboration (for situations where email is
 too slow) - this is also a suitable venue for questions.
@@ -101,7 +131,7 @@ GeoTools has entries on a number of other public websites:
 * http://www.ohloh.net/p/geotools
 
 Confluence
-^^^^^^^^^^
+----------
 
 Confluence has been used since March 2004 to allow anyone (developers and users) to create and update GeoTools documentation.
 

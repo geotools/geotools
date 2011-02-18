@@ -12,6 +12,3 @@ GeoTools Developers Guide
    guide/conventions/conventions
    guide/docs/docs
    guide/procedures/procedures
-   guide/overview/overview
-   guide/tools
-   guide/reference

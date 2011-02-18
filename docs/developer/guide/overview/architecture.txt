@@ -1,8 +1,0 @@
-Architecture
-============
-
-Detailed Model
---------------
-
-Plugin Extension Model
-----------------------

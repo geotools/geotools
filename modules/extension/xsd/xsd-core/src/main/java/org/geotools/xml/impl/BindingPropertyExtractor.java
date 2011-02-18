@@ -319,7 +319,9 @@ O:
                 if (child.getResolvedElementDeclaration() != null) {
                     child = child.getResolvedElementDeclaration();
                 }
-                if (child.getName().equals(partContent.getName())) {
+                if (child.getName().equals(partContent.getName()) &&
+                        child.getTargetNamespace()==null? partContent.getTargetNamespace()==null :
+                       child.getTargetNamespace().equals(partContent.getTargetNamespace())) {
                     notFound = false;
                     break;
                 }

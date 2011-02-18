@@ -62,7 +62,6 @@ import org.geotools.data.crs.ForceCoordinateSystemFeatureResults;
 import org.geotools.data.memory.CollectionSource;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.data.store.EmptyFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
 import org.geotools.feature.FeatureCollection;
@@ -109,7 +108,6 @@ import org.geotools.styling.visitor.DuplicatingStyleVisitor;
 import org.geotools.styling.visitor.RescaleStyleVisitor;
 import org.geotools.styling.visitor.UomRescaleStyleVisitor;
 import org.geotools.util.NumberRange;
-import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.coverage.processing.Operation;
 import org.opengis.coverage.processing.OperationNotFoundException;
 import org.opengis.feature.Feature;
@@ -133,7 +131,6 @@ import org.opengis.referencing.operation.TransformException;
 import org.opengis.style.LineSymbolizer;
 import org.opengis.style.PolygonSymbolizer;
 
-import com.sun.org.omg.CORBA.AttributeDescription;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
@@ -736,10 +733,10 @@ public final class StreamingRenderer implements GTRenderer {
         requests = new ArrayBlockingQueue<RenderingRequest>(10000);
         PainterThread painterThread = new PainterThread(requests);
         ExecutorService localThreadPool = threadPool;
-        boolean userProvidedPool = false;
+        boolean localPool = false;
         if(localThreadPool == null) {
             localThreadPool = Executors.newSingleThreadExecutor();
-            userProvidedPool = true;
+            localPool = true;
         }
         Future painterFuture = localThreadPool.submit(painterThread);
         try {
@@ -789,7 +786,7 @@ public final class StreamingRenderer implements GTRenderer {
                 painterFuture.cancel(true);
                 fireErrorEvent(e);
             } finally {
-                if(userProvidedPool) {
+                if(localPool) {
                     localThreadPool.shutdown();
                 }
             }
@@ -2436,8 +2433,36 @@ public final class StreamingRenderer implements GTRenderer {
             //
             // /////////////////////////////////////////////////////////////////
             if (symbolizer instanceof RasterSymbolizer) {
-                requests.put(new RenderRasterRequest(graphics, drawMe.content, (RasterSymbolizer) symbolizer, destinationCrs, at));
-
+                // grab the grid coverage
+                GridCoverage2D coverage = null;
+                boolean disposeCoverage = false;
+                
+                try {
+                    // //
+                    // It is a grid coverage
+                    // //
+                    final Object grid = gridPropertyName.evaluate(drawMe.content);
+                    if (grid instanceof GridCoverage2D) {
+                        coverage = (GridCoverage2D) drawMe.content;
+                    } else if (grid instanceof AbstractGridCoverage2DReader) {
+                        final Object params = paramsPropertyName.evaluate(drawMe.content);
+                        GridGeometry2D readGG = new GridGeometry2D(new GridEnvelope2D(screenSize), mapExtent);
+                        AbstractGridCoverage2DReader reader = (AbstractGridCoverage2DReader) grid;
+                        coverage = readCoverage(reader, params, readGG);
+                        disposeCoverage = true;
+                    }
+                } catch (IllegalArgumentException e) {
+                    LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
+                    fireErrorEvent(e);
+                } catch (IOException e) {
+                    LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
+                    fireErrorEvent(e);
+                }
+                
+                if(coverage != null) {
+                    requests.put(new RenderRasterRequest(graphics, coverage, disposeCoverage,
+                            (RasterSymbolizer) symbolizer, destinationCrs, at));
+                }
             } else {
 
                 // /////////////////////////////////////////////////////////////////
@@ -3079,16 +3104,18 @@ public final class StreamingRenderer implements GTRenderer {
     public class RenderRasterRequest extends RenderingRequest {
 
         private Graphics2D graphics;
-        private Object content;
+        private boolean disposeCoverage;
+        private GridCoverage2D coverage;
         private RasterSymbolizer symbolizer;
         private CoordinateReferenceSystem destinationCRS;
         private AffineTransform worldToScreen;
 
-        public RenderRasterRequest(Graphics2D graphics, Object content,
+        public RenderRasterRequest(Graphics2D graphics, GridCoverage2D coverage, boolean disposeCoverage,
                 RasterSymbolizer symbolizer, CoordinateReferenceSystem destinationCRS,
                 AffineTransform worldToScreen) {
             this.graphics = graphics;
-            this.content = content;
+            this.coverage = coverage;
+            this.disposeCoverage = disposeCoverage;
             this.symbolizer = symbolizer;
             this.destinationCRS = destinationCRS;
             this.worldToScreen = worldToScreen;
@@ -3096,13 +3123,10 @@ public final class StreamingRenderer implements GTRenderer {
 
         @Override
         void execute() {
-            final Object grid = gridPropertyName.evaluate(content);
-            if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.fine(new StringBuffer("rendering Raster for feature ")
-                .append(content.toString()).append(" - ").append(
-                        grid).toString());
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.fine("Rendering Raster " + coverage);
+            }
 
-            GridCoverage2D coverage=null;
             try {
                 // /////////////////////////////////////////////////////////////////
                 //
@@ -3111,32 +3135,21 @@ public final class StreamingRenderer implements GTRenderer {
                 // rely on the gridocerage renderer itself.
                 //
                 // /////////////////////////////////////////////////////////////////
-                final GridCoverageRenderer gcr = new GridCoverageRenderer(
-                        destinationCRS, originalMapExtent, screenSize, worldToScreen,java2dHints);
+                final GridCoverageRenderer gcr = new GridCoverageRenderer(destinationCRS,
+                        originalMapExtent, screenSize, worldToScreen, java2dHints);
 
-                // //
-                // It is a grid coverage
-                // //
-                if (grid instanceof GridCoverage) {
-                    gcr.paint(graphics, (GridCoverage2D) grid, symbolizer);
-                } else if (grid instanceof AbstractGridCoverage2DReader) {
-                    final Object params = paramsPropertyName.evaluate(content);
-                    GridGeometry2D readGG = new GridGeometry2D(new GridEnvelope2D(screenSize), mapExtent);
-                    AbstractGridCoverage2DReader reader = (AbstractGridCoverage2DReader) grid;
-                    coverage = readCoverage(reader, params, readGG);
-                    try {
-                        if(coverage!=null)
-                            gcr.paint(graphics, coverage, symbolizer);
-                    }
-                    finally {
-
-                        //we need to try and dispose this coverage since it was created on purpose for rendering 
-                        if(coverage!=null)
-                            coverage.dispose(true);
-                    }
+                try {
+                    gcr.paint(graphics, coverage, symbolizer);
+                } finally {
+                    // we need to try and dispose this coverage if was created on purpose for
+                    // rendering
+                    if (coverage != null && disposeCoverage)
+                        coverage.dispose(true);
                 }
-                if (LOGGER.isLoggable(Level.FINE))
+                
+                if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.fine("Raster rendered");
+                }
 
             } catch (FactoryException e) {
                 LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
@@ -3150,12 +3163,7 @@ public final class StreamingRenderer implements GTRenderer {
             } catch (IllegalArgumentException e) {
                 LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
                 fireErrorEvent(e);
-            } catch (IOException e) {
-                LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
-                fireErrorEvent(e);
             }
-
-
         }
     }
     

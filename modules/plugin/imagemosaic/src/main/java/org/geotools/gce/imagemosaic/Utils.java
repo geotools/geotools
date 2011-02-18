@@ -57,8 +57,13 @@ import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import javax.imageio.spi.ImageInputStreamSpi;
 import javax.imageio.stream.ImageInputStream;
+import javax.media.jai.Histogram;
 import javax.media.jai.RasterFactory;
+import javax.media.jai.RenderedOp;
 import javax.media.jai.remote.SerializableRenderedImage;
+
+import net.sf.ehcache.Cache;
+import net.sf.ehcache.Element;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
@@ -82,6 +87,8 @@ import org.geotools.resources.i18n.Errors;
 import org.geotools.util.Converters;
 import org.geotools.util.Utilities;
 
+import com.sun.media.jai.operator.ImageReadDescriptor;
+
 /**
  * Sparse utilities for the various mosaic classes. I use them to extract
  * complex code from other places.
@@ -90,6 +97,27 @@ import org.geotools.util.Utilities;
  * 
  */
 public class Utils {
+    
+    /** EHCache instance to cache histograms */ 
+    private static Cache ehcache;    
+    
+    /** RGB to GRAY coefficients (for Luminance computation) */
+    public final static double RGB_TO_GRAY_MATRIX [][]= {{ 0.114, 0.587, 0.299, 0 }};
+    
+    /** 
+     * Flag indicating whether to compute optimized crop ops (instead of standard
+     * mosaicking op) when possible (As an instance when mosaicking a single granule) 
+     */
+    final static boolean OPTIMIZE_CROP; 
+        
+    static {
+        final String prop = System.getProperty("org.geotools.imagemosaic.optimizecrop");
+        if (prop != null && prop.equalsIgnoreCase("FALSE")){
+            OPTIMIZE_CROP = false;
+        } else {
+            OPTIMIZE_CROP = true;
+        }
+    }
     
     static class Prop {
         final static String LOCATION_ATTRIBUTE = "LocationAttribute";
@@ -779,6 +807,8 @@ public class Utils {
 
 	public static final DataStoreFactorySpi INDEXED_SHAPE_SPI = new ShapefileDataStoreFactory();
 
+	static final String DIRECT_KAKADU_PLUGIN = "it.geosolutions.imageio.plugins.jp2k.JP2KKakaduImageReader";
+
 	public static final boolean DEFAULT_RECURSION_BEHAVIOR = true;
 
 	/**
@@ -1190,5 +1220,118 @@ public class Utils {
                 // sourceURL=null;
         }
         return sourceURL;
+    }
+    
+    /**
+     * Scan back the rendered op chain (navigating the sources) 
+     * to find an {@link ImageReader} used to read the main source.
+     *  
+     * @param rOp
+     * @return the {@link ImageReader} related to this operation, if any.
+     * {@code null} in case no readers are found.
+     */
+    public static ImageReader getReader(RenderedImage rOp) {
+        if (rOp != null) {
+            if (rOp instanceof RenderedOp) {
+                RenderedOp renderedOp = (RenderedOp) rOp;
+
+                final int nSources = renderedOp.getNumSources();
+                if (nSources > 0) {
+                    for (int k = 0; k < nSources; k++) {
+                        Object source = null;
+                        try {
+                            source = renderedOp.getSourceObject(k);
+                            
+                        } catch (ArrayIndexOutOfBoundsException e) {
+                            // Ignore
+                        }
+                        if (source != null) {
+                            if (source instanceof RenderedOp) {
+                                getReader((RenderedOp) source);
+                            }
+                        }
+                    }
+                } else {
+                    // get the reader
+                    Object imageReader = rOp.getProperty(ImageReadDescriptor.PROPERTY_NAME_IMAGE_READER);
+                    if (imageReader != null && imageReader instanceof ImageReader) {
+                        final ImageReader reader = (ImageReader) imageReader;
+                        return reader;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+    
+    /**
+     * Private constructor to initialize the ehCache instance.
+     * It can be configured through a Bean.
+     * @param ehcache
+     */
+    private Utils(Cache ehcache) {
+        Utils.ehcache = ehcache;
+    }
+    
+    /**
+     * Setup a {@link Histogram} object by deserializing  
+     * a file representing a serialized Histogram.
+     * 
+     * @param file
+     * @return the deserialized histogram.
+     */
+    public static Histogram getHistogram(final String file){
+        Utilities.ensureNonNull("file", file);
+        Histogram histogram = null;
+        
+        // Firstly: check if the histogram have been already
+        // deserialized and it is available in cache
+        if (ehcache != null && ehcache.isKeyInCache(file)){
+            if (ehcache.isElementInMemory(file)){
+                final Element element = ehcache.get(file);
+                if (element != null){
+                    final Serializable value = element.getValue();
+                    if (value != null && value instanceof Histogram){
+                        histogram = (Histogram) value; 
+                        return histogram;
+                    }
+                }
+            }
+        }
+        
+        // No histogram in cache. Deserializing...
+        if (histogram == null){
+            FileInputStream fileStream = null;
+            ObjectInputStream objectStream = null;
+            try {
+
+                fileStream = new FileInputStream(file);
+                objectStream = new ObjectInputStream(fileStream);
+                histogram = (Histogram) objectStream.readObject();
+                if (ehcache != null){
+                    ehcache.put(new Element(file, histogram));
+                }
+            } catch (FileNotFoundException e) {
+                if (LOGGER.isLoggable(Level.FINE)){
+                    LOGGER.fine("Unable to parse Histogram:" + e.getLocalizedMessage());
+                }
+            } catch (IOException e) {
+                if (LOGGER.isLoggable(Level.FINE)){
+                    LOGGER.fine("Unable to parse Histogram:" + e.getLocalizedMessage());
+                }
+            } catch (ClassNotFoundException e) {
+                if (LOGGER.isLoggable(Level.FINE)){
+                    LOGGER.fine("Unable to parse Histogram:" + e.getLocalizedMessage());
+                }
+            } finally {
+                if (objectStream != null){
+                    IOUtils.closeQuietly(objectStream);
+                }
+                if (fileStream != null){
+                    IOUtils.closeQuietly(fileStream);
+                }
+            }
+        }
+        return histogram;
     }
 }

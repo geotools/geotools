@@ -16,6 +16,8 @@
  */
 package org.geotools.gce.imagemosaic;
 
+import jaitools.imageutils.ROIGeometry;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -23,13 +25,17 @@ import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
+import java.awt.geom.PathIterator;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.ColorModel;
 import java.awt.image.IndexColorModel;
 import java.awt.image.MultiPixelPackedSampleModel;
 import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -42,6 +48,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageReadParam;
 import javax.measure.unit.Unit;
 import javax.media.jai.BorderExtender;
+import javax.media.jai.Histogram;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.Interpolation;
 import javax.media.jai.JAI;
@@ -56,6 +63,7 @@ import javax.media.jai.operator.ConstantDescriptor;
 import javax.media.jai.operator.CropDescriptor;
 import javax.media.jai.operator.MosaicDescriptor;
 
+import org.apache.commons.io.FilenameUtils;
 import org.geotools.coverage.Category;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.TypeMap;
@@ -64,13 +72,14 @@ import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.data.DataSourceException;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
 import org.geotools.factory.Hints;
 import org.geotools.feature.visitor.MaxVisitor;
 import org.geotools.filter.IllegalFilterException;
-import org.geotools.filter.SortByImpl;
 import org.geotools.gce.imagemosaic.OverviewsController.OverviewLevel;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalogVisitor;
+import org.geotools.gce.imagemosaic.processing.ArtifactsFilterDescriptor;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.JTS;
@@ -95,9 +104,6 @@ import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.PropertyName;
-import org.opengis.filter.sort.SortBy;
-import org.opengis.filter.sort.SortOrder;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.MathTransform;
@@ -107,6 +113,7 @@ import org.opengis.referencing.operation.TransformException;
 import org.opengis.util.InternationalString;
 
 import com.sun.media.jai.codecimpl.util.ImagingException;
+import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 /**
  * A RasterLayerResponse. An instance of this class is produced everytime a
@@ -129,9 +136,13 @@ class RasterLayerResponse{
 
         RenderedImage loadedImage;
 
-        ROIShape footprint;
+        ROI footprint;
+        
+        URL granuleUrl;
+        
+        boolean doFiltering;
 
-        public ROIShape getFootprint() {
+        public ROI getFootprint() {
             return footprint;
         }
 
@@ -139,9 +150,25 @@ class RasterLayerResponse{
             return loadedImage;
         }
 
-        GranuleLoadingResult(RenderedImage loadedImage, ROIShape inclusionArea) {
+        public URL getGranuleUrl() {
+            return granuleUrl;
+        }
+        public boolean isDoFiltering() {
+            return doFiltering;
+        }
+        GranuleLoadingResult(RenderedImage loadedImage, ROI footprint) {
+            this(loadedImage, footprint, null);
+        }
+
+        GranuleLoadingResult(RenderedImage loadedImage, ROI footprint, URL granuleUrl) {
+            this(loadedImage, footprint, granuleUrl, false);
+        }
+
+        GranuleLoadingResult(RenderedImage loadedImage, ROI footprint, URL granuleUrl, final boolean doFiltering) {
             this.loadedImage = loadedImage;
-            this.footprint = inclusionArea;
+            this.footprint = footprint;
+            this.granuleUrl = granuleUrl;
+            this.doFiltering = doFiltering;
         }
     }
     
@@ -411,8 +438,9 @@ class RasterLayerResponse{
 				
 				final RenderedImage loadedImage;
 				final GranuleLoadingResult result;
+				boolean doFiltering;
 				try {
-					if(!multithreadingAllowed|| rasterManager.parent.multiThreadedLoader==null)
+					if(!multithreadingAllowed || rasterManager.parent.multiThreadedLoader == null)
 					{
 						//run the loading in this thread
 					    final FutureTask<GranuleLoadingResult> task=(FutureTask<GranuleLoadingResult>) future;
@@ -426,6 +454,7 @@ class RasterLayerResponse{
                                             continue;
                                         }
 					loadedImage = result.getRaster();
+					doFiltering = result.isDoFiltering();
 					if(loadedImage==null)
 					{
 						if(LOGGER.isLoggable(Level.FINE))
@@ -490,7 +519,7 @@ class RasterLayerResponse{
 				//
 				// add to the mosaic collection, with preprocessing
 				//
-				final RenderedImage raster = processGranuleRaster(
+				RenderedImage raster = processGranuleRaster(
 						loadedImage,
 						granuleIndex, 
 						alphaIndex,
@@ -499,20 +528,47 @@ class RasterLayerResponse{
 						doInputTransparency,
 						inputTransparentColor);
 				
-				// we need to add its roi in order to avoid problems whith the mosaic overl
-				ROI imageBounds = new ROIShape(PlanarImage.wrapRenderedImage(raster).getBounds());
+				// we need to add its roi in order to avoid problems with the mosaic overlapping
+				Rectangle bounds = PlanarImage.wrapRenderedImage(raster).getBounds();
+				Geometry mask = JTS.toGeometry(new Envelope(bounds.getMinX(), bounds.getMaxX(), bounds.getMinY(), bounds.getMaxY()));
+				ROI imageBounds = new ROIGeometry(mask);
                                 if (footprintManagement){
-                                    final ROIShape footprint = result.getFootprint();
-								    if (footprint != null){
-								        if (imageBounds.contains(footprint.getBounds())) {
-								            imageBounds = footprint;
-								        } else {
-								            imageBounds = imageBounds.intersect(footprint);
-								        }
-								    }
-				    
-				    
-				}
+                                    final ROI footprint = result.getFootprint();
+                                    if (footprint != null) {
+                                        if (imageBounds.contains(footprint.getBounds())) {
+                                            imageBounds = footprint;
+                                        } else {
+                                            imageBounds = imageBounds.intersect(footprint);
+                                        }
+                                    }
+                                    
+                                    //Artifacts filtering processing
+                                if (defaultArtifactsFilterThreshold != Integer.MIN_VALUE && doFiltering){
+                                    int artifactThreshold = defaultArtifactsFilterThreshold; 
+                                    if (artifactsFilterPTileThreshold != -1){
+                                        final URL url = result.getGranuleUrl();
+                                        
+                                        //Looking for a histogram for that granule in order to 
+                                        //setup dynamic threshold 
+                                        if (url != null){
+                                            final File inputFile = DataUtilities.urlToFile(url);
+                                            final String inputFileName = inputFile.getPath();
+                                            final String path = FilenameUtils.getFullPath(inputFileName);
+                                            final String baseName = FilenameUtils.getBaseName(inputFileName);
+                                            final String histogramPath = path + baseName + "." + "histogram";
+                                            final Histogram histogram = Utils.getHistogram(histogramPath);
+                                            if (histogram != null) {
+                                                final double[]p = histogram.getPTileThreshold(artifactsFilterPTileThreshold);
+                                                artifactThreshold = (int)p[0];
+                                            }
+                                        }
+                                    }
+                                    if (LOGGER.isLoggable(Level.FINE)){
+                                        LOGGER.log(Level.FINE, "Filtering granules artifacts");
+                                    }
+                                    raster = ArtifactsFilterDescriptor.create(raster, imageBounds, new double[]{0}, artifactThreshold, 3, hints);
+                                    }
+                                }
                                 rois.add(imageBounds);
 
 				// add to mosaic
@@ -575,6 +631,10 @@ class RasterLayerResponse{
 	
 	private boolean footprintManagement = !Utils.IGNORE_FOOTPRINT;
 	
+	private int defaultArtifactsFilterThreshold = Integer.MIN_VALUE;
+	
+	private double artifactsFilterPTileThreshold = ImageMosaicFormat.DEFAULT_ARTIFACTS_FILTER_PTILE_THRESHOLD;
+	
 	private boolean setRoiProperty;
 	
 	private boolean alphaIn=false;
@@ -621,6 +681,8 @@ class RasterLayerResponse{
 		backgroundValues = request.getBackgroundValues();
 		interpolation = request.getInterpolation();
 		needsReprojection = request.isNeedsReprojection();
+		defaultArtifactsFilterThreshold = request.getDefaultArtifactsFilterThreshold();
+		artifactsFilterPTileThreshold = request.getArtifactsFilterPTileThreshold();
 	}
 
 	/**
@@ -727,7 +789,7 @@ class RasterLayerResponse{
                         if (hints != null && !hints.containsKey(JAI.KEY_BORDER_EXTENDER)) {
                             final Object extender = hints.get(JAI.KEY_BORDER_EXTENDER);
                             if (!(extender != null && extender instanceof BorderExtender)) {
-                                localHints.add(ImageUtilities.BORDER_EXTENDER_HINTS);
+                                localHints.add(ImageUtilities.EXTEND_BORDER_BY_COPYING);
                             }
                         }
 	        
@@ -861,8 +923,7 @@ class RasterLayerResponse{
                         {
                                 //handle elevation indexing first since we then combine this with the max in case we are asking for current in time
                                 if (hasElevation){
-                                        // sort by
-//                                        query.setSortBy(new SortBy[]{new SortByImpl(FeatureUtilities.DEFAULT_FILTER_FACTORY.property(rasterManager.elevationAttribute), SortOrder.ASCENDING)});
+                                        
                                         final List<Filter> elevationF=new ArrayList<Filter>();
                                         for( Object elevation: elevations){
                                             if(elevation==null){
@@ -909,21 +970,6 @@ class RasterLayerResponse{
                                 
                                 // fuse time query with the bbox query
                                 if(hasTime){
-//                                    final SortBy[] old= query.getSortBy();
-//                                    if(old==null||old.length==0){
-//                                        query.setSortBy(
-//                                                new SortBy[]{
-//                                                        new SortByImpl(
-//                                                                FeatureUtilities.DEFAULT_FILTER_FACTORY.property(rasterManager.timeAttribute), 
-//                                                                SortOrder.DESCENDING)});
-//                                    } else {
-//                                        query.setSortBy(
-//                                                new SortBy[]{
-//                                                        old[0],
-//                                                        new SortByImpl(
-//                                                                FeatureUtilities.DEFAULT_FILTER_FACTORY.property(rasterManager.timeAttribute), 
-//                                                                SortOrder.DESCENDING)});
-//                                    }
                                         final List<Filter> timeFilter=new ArrayList<Filter>();
                                         for( Object datetime: times){
                                             if(datetime==null){
@@ -1135,41 +1181,37 @@ class RasterLayerResponse{
 		//
 		// SPECIAL CASE
 		// 1 single tile, we try not do a mosaic.
-		if(visitor.granulesNumber==1){
+		if(visitor.granulesNumber==1 && Utils.OPTIMIZE_CROP){
 		    // the roi is exactly equal to the 
 		    final ROI roi = visitor.rois.get(0);
-		    if(roi instanceof ROIShape){
-		        final ROIShape roiShape= (ROIShape) roi;
-		        final Shape shape= roiShape.getAsShape();
-		        if(shape instanceof Rectangle){
-		            final Rectangle bounds = (Rectangle) shape;
-		            final RenderedImage image= visitor.getSourcesAsArray()[0];
-		            final Rectangle imageBounds= PlanarImage.wrapRenderedImage(image).getBounds();
-		            if(imageBounds.equals(bounds)){
-		                
-		                // do we need to crop
-		                if(!imageBounds.equals(rasterBounds)){
-		                    // we have to crop
-		                    //D.R. rasterBounds... was bounds
-		                    XRectangle2D.intersect(imageBounds, rasterBounds, imageBounds);
-		                    
-		                    if(imageBounds.isEmpty()){
-		                        // return back a constant image
-		                        return null;
-		                    }
-		                    // crop
-		                    return CropDescriptor.create(
-		                            image, 
-		                            new Float(imageBounds.x), 
-		                            new Float(imageBounds.y), 
-		                            new Float(imageBounds.width), 
-		                            new Float(imageBounds.height), 
-		                            localHints);
-		                }
-		                return image;
-		            }
-		        }
-		    }
+		    Rectangle bounds = toRectangle(roi.getAsShape());
+	        if (bounds != null) {
+	            final RenderedImage image= visitor.getSourcesAsArray()[0];
+	            final Rectangle imageBounds= PlanarImage.wrapRenderedImage(image).getBounds();
+	            if(imageBounds.equals(bounds)){
+	                
+	                // do we need to crop
+	                if(!imageBounds.equals(rasterBounds)){
+	                    // we have to crop
+	                    
+	                    XRectangle2D.intersect(imageBounds, rasterBounds, imageBounds);
+	                    
+	                    if(imageBounds.isEmpty()){
+	                        // return back a constant image
+	                        return null;
+	                    }
+	                    // crop
+	                    return CropDescriptor.create(
+	                            image, 
+	                            new Float(imageBounds.x), 
+	                            new Float(imageBounds.y), 
+	                            new Float(imageBounds.width), 
+	                            new Float(imageBounds.height), 
+	                            localHints);
+	                }
+	                return image;
+	            }
+	        }
 		}
 
 
@@ -1190,7 +1232,7 @@ class RasterLayerResponse{
                     ROI[] rois = sourceRoi;
                     for (int i=0; i<rois.length; i++){
                         if (globalRoi == null){
-                            globalRoi = new ROI(rois[i].getAsImage());
+                              globalRoi = new ROIGeometry(((ROIGeometry)rois[i]).getAsGeometry());
                         } else {
                             globalRoi = globalRoi.add(rois[i]);
                         }
@@ -1205,6 +1247,91 @@ class RasterLayerResponse{
 		// create the coverage
 		return mosaic;
 
+	}
+	
+	/**
+	 * Checks if the Shape equates to a Rectangle, if it does it performs a conversion, otherwise
+	 * returns null
+	 * @param shape
+	 * @return
+	 */
+	Rectangle toRectangle(Shape shape) {
+	    if(shape instanceof Rectangle) {
+	        return (Rectangle) shape;
+	    }
+	    
+	    if(shape == null) {
+	        return null;
+	    }
+	    
+	    // check if it's equivalent to a rectangle
+	    PathIterator iter = shape.getPathIterator(new AffineTransform());
+        double[] coords = new double[2];
+	    
+        // not enough points?
+	    if(iter.isDone()) {
+	        return null;
+	    }
+	    
+	    // get the first and init the data structures
+	    iter.next();
+	    int action = iter.currentSegment(coords);
+	    if(action != PathIterator.SEG_MOVETO && action != PathIterator.SEG_LINETO) {
+	        return null;
+	    }
+        double minx = coords[0];
+        double miny = coords[1];
+        double maxx = minx;
+        double maxy = miny;
+        double prevx = minx;
+        double prevy = miny;
+        int i = 0;
+        
+        // at most 4 steps, if more it's not a strict rectangle
+	    for (; i < 4 && !iter.isDone(); i++) {
+	        iter.next();
+	        action = iter.currentSegment(coords);
+	        
+	        if(action == PathIterator.SEG_CLOSE) {
+	            break;
+	        }
+	        if(action != PathIterator.SEG_LINETO) {
+	            return null;
+	        }
+	        
+	        // check orthogonal step (x does not change and y does, or vice versa)
+            double x = coords[0];
+	        double y = coords[1];
+	        if(!(prevx == x && prevy != y) &&
+	           !(prevx != x && prevy == y)) {
+	            return null;
+	        }
+	        
+	        // update mins and maxes
+	        if(x < minx) {
+	            minx = x;
+	        } else if(x > maxx) {
+	            maxx = x;
+	        }
+	        if(y < miny) {
+	            miny = y;
+	        } else if(y > maxy) {
+	            maxy = y;
+	        }
+	        
+	        // keep track of prev step
+	        prevx = x;
+	        prevy = y;
+        }
+	    
+	    // if more than 4 other points it's not a standard rectangle
+	    iter.next();
+	    if(!iter.isDone() || i != 3) {
+	        return null;
+	    }
+	    
+	    // turn it into a rectangle
+	    return new Rectangle2D.Double(minx, miny, maxx - minx, maxy - miny).getBounds();
 	}
 	
 	/**

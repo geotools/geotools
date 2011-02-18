@@ -51,9 +51,9 @@ This is an example offer letter that should be sent to the volunteer after 3 pos
    
    GeoTools Project Management Committee
 
-   Attachment:
-   
-   * :download:`GeotoolsAssignmentToOSGeo.pdf</artifacts/GeotoolsAssignmentToOSGeo.pdf>`
+Attachment:
+
+* :download:`GeotoolsAssignmentToOSGeo.pdf</artifacts/GeotoolsAssignmentToOSGeo.pdf>`
 
 Getting write access to the repository
 ------------------------------------------

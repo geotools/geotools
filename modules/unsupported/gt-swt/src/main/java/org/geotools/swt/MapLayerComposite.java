@@ -124,70 +124,6 @@ public class MapLayerComposite extends Composite {
         GridData listGD = new GridData(SWT.FILL, SWT.FILL, true, true);
         mapLayerTableViewer.getTable().setLayoutData(listGD);
 
-        // list.setCellEditors(new CellEditor[]{new MapCellEditor(), new MapCellEditor(), new
-        // MapCellEditor()});
-        // {
-        // /*
-        // * We override setToolTipText to provide tool tips
-        // * for the control labels displayed for each list item
-        // */
-        // @Override
-        // public String getToolTipText( MouseEvent e ) {
-        // int item = list.locationToIndex(e.getPoint());
-        //
-        // if (item >= 0) {
-        // Rectangle r = list.getCellBounds(item, item);
-        // if (r.contains(e.getPoint())) {
-        // Point p = new Point(e.getPoint().x, e.getPoint().y - r.y);
-        //
-        // if (MapLayerTableCellRenderer.hitSelectionLabel(p)) {
-        // return Messages.getString("select_layer");
-        //
-        // } else if (MapLayerTableCellRenderer.hitVisibilityLabel(p)) {
-        // return Messages.getString("show_layer");
-        //
-        // } else if (MapLayerTableCellRenderer.hitStyleLabel(p)) {
-        // return Messages.getString("style_layer");
-        //
-        // } else if (MapLayerTableCellRenderer.hitRemoveLabel(p)) {
-        // return Messages.getString("remove_layer");
-        //
-        // } else if (MapLayerTableCellRenderer.hitNameLabel(p)) {
-        // return Messages.getString("rename_layer");
-        // }
-        // }
-        // }
-        //
-        // return null;
-        // }
-        // };
-
-        // Listen for drag-reordering of the list contents which
-        // will be received via the contentsChanged method
-        // listModel.addListDataListener(new ListDataListener(){
-        //
-        // public void intervalAdded( ListDataEvent e ) {
-        // }
-        //
-        // public void intervalRemoved( ListDataEvent e ) {
-        // }
-        //
-        // public void contentsChanged( ListDataEvent e ) {
-        // onReorderLayers(e);
-        // }
-        // });
-
-        // list.addMouseListener(new MouseAdapter(){
-        // @Override
-        // public void mouseClicked( MouseEvent e ) {
-        // long clickTime = System.currentTimeMillis();
-        // boolean doubleClick = clickTime - lastClickTime < DOUBLE_CLICK_TIME;
-        // lastClickTime = clickTime;
-        // onLayerItemClicked(e, doubleClick);
-        // }
-        //
-        // });
-
         Composite buttonComposite = new Composite(mapLayersGroup, SWT.NONE);
         buttonComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
         buttonComposite.setLayout(new GridLayout(5, true));
@@ -250,43 +186,6 @@ public class MapLayerComposite extends Composite {
     }
 
     /**
-     * Handle a mouse click on a cell in the JList that displays
-     * layer names and states.
-     *
-     * @param ev the mouse event
-     * @param doubleClick true if this is the second click of a double-click; false otherwise
-     */
-    // private void onLayerItemClicked( MouseEvent ev, boolean doubleClick ) {
-    // int item = list.locationToIndex(ev.getPoint());
-    //
-    // if (item >= 0) {
-    // Rectangle r = list.getCellBounds(item, item);
-    // if (r.contains(ev.getPoint())) {
-    // MapLayer layer = listModel.getElementAt(item);
-    // Point p = new Point(ev.getPoint().x, ev.getPoint().y - r.y);
-    //
-    // if (MapLayerTableCellRenderer.hitSelectionLabel(p)) {
-    // layer.setSelected(!layer.isSelected());
-    //
-    // } else if (MapLayerTableCellRenderer.hitVisibilityLabel(p)) {
-    // layer.setVisible(!layer.isVisible());
-    //
-    // } else if (MapLayerTableCellRenderer.hitStyleLabel(p)) {
-    // doSetStyle(layer);
-    //
-    // } else if (MapLayerTableCellRenderer.hitRemoveLabel(p)) {
-    // doRemoveLayer(layer);
-    //
-    // } else if (MapLayerTableCellRenderer.hitNameLabel(p)) {
-    // if (doubleClick) {
-    // doSetLayerName(layer);
-    // }
-    // }
-    // }
-    // }
-    // }
-
-    /**
      * Handle a ListDataEvent signallying a drag-reordering of the map layers.
      * The event is published by the list model after the layers have been
      * reordered there.
@@ -294,10 +193,11 @@ public class MapLayerComposite extends Composite {
      * @param ev the event
      */
     private void moveLayer( int delta ) {
-        List<MapLayer> layersList = mapLayerTableViewer.getLayersList();
         MapLayer selectedMapLayer = mapLayerTableViewer.getSelectedMapLayer();
+        if (selectedMapLayer == null)
+            return;
+        List<MapLayer> layersList = mapLayerTableViewer.getLayersList();
         MapContext mapContext = pane.getMapContext();
-        
 
         int contextIndex = mapContext.indexOf(selectedMapLayer);
 

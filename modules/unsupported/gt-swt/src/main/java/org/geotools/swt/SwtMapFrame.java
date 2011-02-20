@@ -33,9 +33,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
-import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
-import org.geotools.coverage.grid.io.AbstractGridFormat;
-import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -43,7 +40,6 @@ import org.geotools.map.DefaultMapContext;
 import org.geotools.map.MapContext;
 import org.geotools.renderer.GTRenderer;
 import org.geotools.renderer.lite.StreamingRenderer;
-import org.geotools.styling.Style;
 import org.geotools.swt.action.InfoAction;
 import org.geotools.swt.action.OpenCoverageAction;
 import org.geotools.swt.action.OpenShapefileAction;
@@ -53,7 +49,6 @@ import org.geotools.swt.action.ZoomInAction;
 import org.geotools.swt.action.ZoomOutAction;
 import org.geotools.swt.utils.CrsStatusBarButton;
 import org.geotools.swt.utils.StatusBarNotifier;
-import org.geotools.swt.utils.Utils;
 
 /**
  * A Swing frame containing a map display pane and (optionally) a toolbar,
@@ -216,6 +211,7 @@ public class SwtMapFrame extends ApplicationWindow {
 
     protected Control createContents( Composite parent ) {
         String title = context.getTitle();
+        context.layers();
         if (title != null) {
             getShell().setText(title);
         }
@@ -248,22 +244,23 @@ public class SwtMapFrame extends ApplicationWindow {
         openCoverageAction.setMapPane(mapPane);
 
         StatusLineManager statusLineManager = getStatusLineManager();
-        IContributionItem filler = new ControlContribution("org.geotools.swt.SwtMapFrame.ID"){
-            protected Control createControl( Composite parent ) {
-                Label almostParent = new Label(parent, SWT.NONE);
-                StatusLineLayoutData statusLineLayoutData = new StatusLineLayoutData();
-                statusLineLayoutData.widthHint = 1;
-                statusLineLayoutData.heightHint = 45;
-                almostParent.setLayoutData(statusLineLayoutData);
-                return almostParent;
-            }
-        };
-        CrsStatusBarButton crsButton = new CrsStatusBarButton(mapPane);
-        statusLineManager.add(filler);
-        statusLineManager.add(crsButton);
-        statusLineManager.update(true);
-
-        new StatusBarNotifier(this, mapPane);
+        if (statusLineManager != null) {
+            IContributionItem filler = new ControlContribution("org.geotools.swt.SwtMapFrame.ID"){
+                protected Control createControl( Composite parent ) {
+                    Label almostParent = new Label(parent, SWT.NONE);
+                    StatusLineLayoutData statusLineLayoutData = new StatusLineLayoutData();
+                    statusLineLayoutData.widthHint = 1;
+                    statusLineLayoutData.heightHint = 45;
+                    almostParent.setLayoutData(statusLineLayoutData);
+                    return almostParent;
+                }
+            };
+            CrsStatusBarButton crsButton = new CrsStatusBarButton(mapPane);
+            statusLineManager.add(filler);
+            statusLineManager.add(crsButton);
+            statusLineManager.update(true);
+            new StatusBarNotifier(this, mapPane);
+        }
 
         return mainComposite;
     }
@@ -358,36 +355,17 @@ public class SwtMapFrame extends ApplicationWindow {
     }
 
     public static void main( String[] args ) throws Exception {
+        // just as an example to start up with an existing map
         MapContext context = new DefaultMapContext();
+        context.setTitle("The SWT Map is in the game");
+        if (args.length > 0) {
+            File shapeFile = new File(args[0]);
+            ShapefileDataStore store = new ShapefileDataStore(shapeFile.toURI().toURL());
+            SimpleFeatureSource featureSource = store.getFeatureSource();
+            SimpleFeatureCollection shapefile = featureSource.getFeatures();
+            context.addLayer(shapefile, null);
+        }
 
-        // String tiff = "/home/moovida/data/udig_data/data/bluemarble.tif";
-        // File rasterFile = new File(tiff);
-        // String tiff = "D:/data/udig-testdata/data-v1_2/bluemarble.tif";
-        // File rasterFile = new File(tiff);
-        // AbstractGridFormat format = GridFormatFinder.findFormat(rasterFile);
-        // AbstractGridCoverage2DReader tiffReader = format.getReader(rasterFile);
-        // Style rgbStyle = Utils.createRGBStyle(tiffReader);
-        // context.addLayer(tiffReader, rgbStyle);
-
-        File shapeFile = new File("/home/moovida/data/world_adm0/countries.shp");
-        // File shapeFile = new File("D:\\data\\wb\\countries.shp");
-        // File shapeFile = new
-        // File("D:/data/hydrocare_workspace/featuredata/utm_new/bacino_adige_new_all.shp");
-        // File shapeFile = new
-        // File("/home/moovida/data/hydrocareworkspace/featuredata/utm/rete_adige.shp");
-        ShapefileDataStore store = new ShapefileDataStore(shapeFile.toURI().toURL());
-        SimpleFeatureSource featureSource = store.getFeatureSource();
-        SimpleFeatureCollection shapefile = featureSource.getFeatures();
-        context.addLayer(shapefile, null);
-
-        // shapeFile = new
-        // File("D:/data/hydrocare_workspace/featuredata/utm_new/bacino_cismon_new_all.shp");
-        // store = new ShapefileDataStore(shapeFile.toURI().toURL());
-        // featureSource = store.getFeatureSource();
-        // shapefile = featureSource.getFeatures();
-        // context.addLayer(shapefile, null);
-
-        context.setTitle("The SWT Map is Back");
         SwtMapFrame.showMap(context);
     }
 

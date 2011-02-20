@@ -55,6 +55,7 @@ import org.geotools.map.event.MapLayerEvent;
 import org.geotools.map.event.MapLayerListEvent;
 import org.geotools.map.event.MapLayerListListener;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.GTRenderer;
 import org.geotools.renderer.label.LabelCacheImpl;
 import org.geotools.renderer.lite.LabelCache;
@@ -575,9 +576,6 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
      */
     public void setRepaint( boolean repaint ) {
         acceptRepaintRequests = repaint;
-
-        // we also want to accept / ignore system requests for repainting
-        // TODO check: setIgnoreRepaint(!repaint);
     }
 
     /**
@@ -915,7 +913,12 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
      * @param paintArea the current map pane extent (screen units)
      */
     private void setTransforms( final Envelope envelope, final Rectangle paintArea ) {
-        ReferencedEnvelope refEnv = new ReferencedEnvelope(envelope);
+        ReferencedEnvelope refEnv = null;
+        if (envelope != null) {
+            refEnv = new ReferencedEnvelope(envelope);
+        } else {
+            refEnv = new ReferencedEnvelope(-180, 180, -90, 90, DefaultGeographicCRS.WGS84);
+        }
 
         java.awt.Rectangle awtPaintArea = Utils.toAwtRectangle(paintArea);
         double xscale = awtPaintArea.getWidth() / refEnv.getWidth();

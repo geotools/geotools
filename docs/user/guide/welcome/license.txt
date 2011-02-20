@@ -1,0 +1,168 @@
+License
+=======
+
+The GeoTools project is a member of the Open Source Geospatial Foundation; the foundation holds copyright for the project.
+
+As an open source project GeoTools is made available to you using an open source (LGPL) license as described below.
+
+A few select files have additional license:
+
+* Code contributed by government members is often contributed as public domain
+* To facilitate adopting of the GeoTools library the example code used in the
+  user guide is also public domain
+
+Source License
+^^^^^^^^^^^^^^
+
+**GNU Lesser General Public License**
+
+The source code of the GeoTools library is distributed under the LGPL license::
+   
+   GeoTools - The Open Source Java GIS Toolkit http://geotools.org
+   (C) 2004-2011, Open Source Geospatial Foundation (OSGeo)
+   
+   This library is free software; you can redistribute it and/or modify it under
+   the terms of the GNU Lesser General Public License as published by the Free
+   Software Foundation; version 2.1 of the License.
+   
+   This library is distributed in the hope that it will be useful, but WITHOUT
+   ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+   FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+
+The text of the license itself is included with the library as a "LICENSE" file. This license can be downloaded from the Free Software Foundation:
+
+* http://www.gnu.org/licenses/lgpl-2.1.html
+
+**SOSNOKILLLICENSE**
+
+The file DateUtils requires that this license be included with your GeoTools documentation.::
+   
+   Copyright (c) 2002-2004, Dennis M. Sosnoski.
+   All rights reserved.
+   Redistribution and use in source and binary forms, with or without modification,
+   are permitted provided that the following conditions are met:
+
+   * Redistributions of source code must retain the above copyright notice, this
+     list of conditions and the following disclaimer.
+   * Redistributions in binary form must reproduce the above copyright notice,
+     this list of conditions and the following disclaimer in the documentation
+     and/or other materials provided with the distribution.
+   * Neither the name of JiBX nor the names of its contributors may be used
+     to endorse or promote products derived from this software without specific
+     prior written permission.
+   
+   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+   ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+   WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+   DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+   ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+   (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+   LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+   ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+**Apache License**
+
+The module extension/xsd/xsd-core requires that this license be included with
+your GeoTools documentation.::
+   
+   Copyright 2003, 2004 The Apache Software Foundation
+   
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+   
+   http://www.apache.org/licenses/LICENSE-2.0
+   
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+
+Document License
+^^^^^^^^^^^^^^^^^
+
+This generated documentation is distributed using creative commons with attribution. 
+
+For details see http://creativecommons.org/licenses/by/3.0/ 
+
+.. image:: /images/ccAttribution.*
+
+The original wiki documentation was distributed under the free documentation license::
+   
+   Copyright (c) 2004-2011 Open Geospatial Foundation
+   
+   Permission is granted to copy, distribute and/or modify this document under the
+   terms of the GNU Free Documentation License, Version 1.1 or any later version
+   published by the Free Software Foundation; with the Invariant Sections being with no
+   Invariant Sections, with the Front-Cover Texts being no Front-Cover Texts, and with
+   the Back-Cover Texts being no Back-Cover Texts.
+
+Common License Questions
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+Can I use GeoTools in my Commercial Project?
+   Yes. This is one of the reasons we chose the LGPL license. You can build a
+   Commercial application which uses GeoTools as a library and re-distribute your
+   application under any license you choose. Your users will get a license to your
+   application under the terms of your license and a license to the GeoTools
+   library under the terms of the LGPL. You only need to give your users some way
+   to get the source code of the GeoTools library, most easily by pointing your
+   users to the servers of the GeoTools project.
+   
+   However, if you choose to modify the GeoTools library itself, then you have to
+   publish the source code to those changes---the easiest way to do that will be
+   to submit those changes back to the GeoTools project so the changes can be
+   incorporated into the core source code.
+
+Can I use GeoTools in my GPL Project?
+   Yes. This is one of the reasons we chose the LGPL license. You can build a free
+   software application which uses GeoTools as a library and re-distribute your
+   application under the GPL license. Your users will get a license to your
+   application under the terms of the GPL and a license to the GeoTools library
+   under the terms of the LGPL. You only need to give your users some way to get
+   the source code of the GeoTools library, either by pointing your users to the
+   servers of the GeoTools project or by giving them the GeoTools code in the same
+   way you give them the code to your GPL application.
+   
+   However, if you choose to modify the GeoTools library itself, then you have to
+   publish the source code to those changes---the easiest way to do that will be
+   to submit those changes back to the GeoTools project so the changes can be
+   incorporated into the core source code.
+   
+   Note that this means you can use GeoTools as a library but you cannot
+   incorporate GeoTools code directly into your GLP application. Legally, the
+   latter amounts to re-licensing GeoTools under a new license and you do not have
+   the right to do so.
+
+What restrictions are there on my use of GeoTools?
+   None. You can read, run, copy, or do anything else you want to do with the
+   GeoTools code. This is one of the four core freedoms of free software which we
+   grant you under the LGPL: the freedom to use the software for any purpose you
+   choose.
+   
+   The only restrictions of the LGPL come when you are re-distributing GeoTools,
+   that is when you are passing it on to someone else either on its own or as part
+   of a larger product, such as when you share it or sell it.
+
+What restrictions are there on my re-distribution of GeoTools?
+   Technically, you have to provide everyone who receives a copy of GeoTools from
+   you with some way to get the source code to the library. In practice, pointing
+   those users to the Geotools project itself is considered an adequate solution.
+   
+   However, if you are re-distributing a modified version of GeoTools then you
+   need to provide users with access to the modified code. This means that you
+   must give your users some way to get the modified code such as by publishing it
+   yourself. An alternative way to provide your users with the modifications would
+   be to work with us to get your changes integrated into the GeoTools library--
+   -you could then use the new library directly. The best way to do this would be
+   to open a change request on our issue tracker and add to that request a code
+   patch containing your changes.
+
+What should I do if I am still unsure what I am allowed to do?
+   You can clarify any questions you have by sending us questions to the user
+   mailing list: 
+   
+   *  geotools-gt2-users@lists.sourceforge.net

@@ -1,0 +1,4 @@
+JTS Topology Suite
+==================
+
+The JTS Topology Suite is used to provide an implementation of Geometry.

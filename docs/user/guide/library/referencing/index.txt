@@ -1,0 +1,4 @@
+Referencing
+===========
+
+Used to interpret referencing information allowing the determination of a location given a set of coordinates.

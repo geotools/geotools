@@ -1,0 +1,4 @@
+OpenGIS
+=======
+
+Interfaces for GeoSpatial concepts, often defined by the OGC or ISO standards bodies. 

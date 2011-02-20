@@ -1,0 +1,9 @@
+Metadata
+========
+
+Used to describe GeoSpatial information and services.
+
+References:
+
+* ISO 19115
+* ISO 19119

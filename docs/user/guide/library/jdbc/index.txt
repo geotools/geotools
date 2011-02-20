@@ -1,0 +1,4 @@
+JDBC
+====
+
+Supports accessing information databases using the Java JDBC library.

@@ -1,0 +1,25 @@
+===========
+Unsupported
+===========
+
+The modules in the unsupported directory have not passed the quality assurance steps required to be included as
+part of the library.
+
+Under active development:
+
+.. toctree::
+
+   swing
+   swt
+
+Volunteers needed:
+
+.. toctree::
+
+   process   
+
+Deprecated:
+
+.. toctree::
+
+   postgis-versioned

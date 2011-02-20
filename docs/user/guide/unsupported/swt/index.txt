@@ -1,0 +1,4 @@
+SWT
+===
+
+Utility classes and examples illustrating the use of GeoTools facilities and rendering engine with the Standard Widget Toolkit.

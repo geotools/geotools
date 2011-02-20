@@ -1,0 +1,15 @@
+.. _userguide:
+
+##########
+User Guide
+##########
+
+This User Guide is  reference for GeoTools with code examples for each module, plugin and extension.
+
+.. toctree::
+
+   welcome/index
+   library/index
+   extensions/index
+   unsupported/index
+  

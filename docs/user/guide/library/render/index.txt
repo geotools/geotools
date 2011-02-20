@@ -1,0 +1,4 @@
+Render
+======
+
+Supports the rendering of geospatial information using the Java2D api.

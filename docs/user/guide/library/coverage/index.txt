@@ -1,0 +1,4 @@
+Coverage
+========
+
+Supports the use of coverage information (ie raster) from a range of sources.

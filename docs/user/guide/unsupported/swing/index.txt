@@ -1,0 +1,4 @@
+Swing
+=====
+
+Provides utility classes and examples showing how to use GeoTools facilities and rendering engine with the Swing User Interface library.

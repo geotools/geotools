@@ -1,5 +1,3 @@
-.. _userguide:
-
 ##########
 User Guide
 ##########

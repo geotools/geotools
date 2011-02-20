@@ -2,3 +2,19 @@
 Welcome to GeoTools
 *******************
 
+Welcome to the Geotools Users Guide. This space serves as a reference to the GeoTools library, and collecting documentation and examples provided by the developer community.
+
+.. toctree::
+   
+   license
+   geotools
+   support
+   create
+   factory
+   standards
+   eclipse
+   jump
+   netbeans
+   udig
+   api
+

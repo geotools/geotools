@@ -1,0 +1,15 @@
+SWT MODULE
+~~~~~~~~~~~~
+
+  Module Maintainers: Andrea Antonello
+
+  IP Review:
+
+    * Andrea Antonello
+
+  STATUS: clean
+
+  The SWT Module is developed for Geotools and provides classes for
+  GUI elements including a map display pane with associated cursor
+  tools.
+

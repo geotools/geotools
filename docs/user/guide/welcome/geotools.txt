@@ -1,2 +1,261 @@
-geotools
-========
+Meet the GeoTools Library
+=========================
+
+Having an understanding of how the GeoTools library is structured for helpful for answering the
+question "What jars do I need?".
+
+The answer depends on what you are doing. This page introduces the you to the parts of the
+GeoTools library and how they fit together, we have isolated the parts into individual jars.
+This allows you to use just the right amount of GeoTools in your next project.
+
+Maven (recommended):
+   The quickstart is writen with the maven build system in mind. The maven build
+   system is very good at sorting out dependencies between lots of little jars - and
+   is the recommended way to start using GeoTools.
+   
+   Both Eclipse and NetBeans offer maven intergration, for details please review
+   the Eclipse Quickstart and NetBeans quickstart.
+
+Download:
+   Traditionally users just dump all the jars into their IDE and have a go, please be
+   advised that some of the jars will be in conflict.
+   
+   1. Dump everything from a binary distribution of GeoTools into your IDE
+   2. Remove all the jars that say epsg in them - except for the gt2-epsg jar.
+   3. Ensure your JRE has JAI and ImageIO if you are doing raster work
+   4. Ignore the rest of this page   
+   
+   For detailed step-by-step instructions review the Eclipse quickstart and
+   Netbeans quickstart. Instructions for downloading and selecting jars
+   are provided at the end of the document as an alternative.
+
+Using maven in concert with your IDE, and looking over the pictures on this page is recommended
+since there are often too many jars to manage by hand.
+
+GeoTools Library
+----------------
+
+The GeoTools library forms a software "stack" with each jar building on the ideas
+and concepts defined in the previous one.
+
+=============== ============== ==============================================================
+Module          JAR            Purpose
+=============== ============== ==============================================================
+Render          gt-render      Implements of Java2D rendering engine to draw a map
+JDBC            gt-jdbc        Implements for accessing spatial database
+Data            gt-data        Implements for accessing spatial data
+XML             gt-xml         Implements of common spatial xml formats
+CQL             gt-cql         Implements of Common Query Language for filters
+Main            gt-main        Implements filter, feature, etc...
+API             gt-api         Definition of interfaces for working with spatial information
+JTS             jts            Definition and implementation of Geometry
+Coverage        gt-coverage    Implementation for accessing raster information
+Referencing     gt-referencing Implementation of co-ordinate location and transofrmation
+Metadata        gt-metadata    Implementation of identification and description
+OpenGIS         gt-opengis     Definition of interfaces for common spatial concepts
+=============== ============== ==============================================================
+
+Each layer of the "stack" is built on the ones below it:
+
+* To use Referencing you need gt-opengis, gt-referencing and gt-metadata
+* To use Data you need gt-api, gt-data, gt-main, jts, gt-opengis, gt-referencing, gt-opengis,
+  gt-metadata
+
+The maven tool can calculate the jars you need, please see the Eclipse or Netbeans quickstart
+for an example use.
+
+GeoTools Plugins
+----------------
+
+Of course that is not the complete picture - just by itself the GeoTools library does not do
+anything. There are plug-ins to for different data formats, different coordinate reference
+system authorities and so on.
+
++-------------+---------------+------------------+--------------------------------------+
+|Module       | Base JAR      | Plugin JAR       | Plugin                               |
++=============+===============+==================+======================================+
+|Render       | gt-render     |                  |                                      |
++-------------+---------------+------------------+--------------------------------------+
+|JDBC         | gt-jdbc       | gt-jdbc-db2      | Geometry in DB2                      |
++-------------+---------------+------------------+--------------------------------------+
+|             |               | gt-jdbc-h2       | Pure Java "H2" database              |
++-------------+---------------+------------------+--------------------------------------+
+|             |               | gt-jdbc-mysql    | Geometry in MySQL                    |
++-------------+---------------+------------------+--------------------------------------+
+|             |               | gt-jdbc-oracle   | Oracle SDO Geometry                  |
++-------------+---------------+------------------+--------------------------------------+
+|             |               | gt-jdbc-postgis  | PostgreSQL extension PostGIS         |
++-------------+---------------+------------------+--------------------------------------+
+|             |               |gt-jdbc-spatialite| SQLite                               |
++-------------+---------------+------------------+--------------------------------------+
+|             |               |gt-jdbc-sqlserver | SQL Server                           |
++-------------+---------------+------------------+--------------------------------------+
+|Data         | gt-data       | gt-shape         | Shapefile read/write support         |
++-------------+---------------+------------------+--------------------------------------+
+|             |               | gt-wfs           | WFS read/write support               |
++-------------+---------------+------------------+--------------------------------------+
+|             |               | gt-arcsde        | Communicate with ArcSDE              |
++-------------+---------------+------------------+--------------------------------------+
+|XML          | gt-xml        |                  |                                      |
++-------------+---------------+------------------+--------------------------------------+
+|CQL          | gt-cql        |                  |                                      |
++-------------+---------------+------------------+--------------------------------------+
+|Main         | gt-main       |                  |                                      |
++-------------+---------------+------------------+--------------------------------------+
+|API          | gt-api        |                  |                                      |
++-------------+---------------+------------------+--------------------------------------+
+|JTS          | jts           |                  |                                      |
++-------------+---------------+------------------+--------------------------------------+
+|Coverage     | gt-coverage   | gt-geotiff       | GeotTIFF raster format               |
++-------------+---------------+------------------+--------------------------------------+
+|             |               | gt-arcgrid       | arcgrid format                       |
++-------------+---------------+------------------+--------------------------------------+
+|             |               | gt-mif           | MIF format                           |
++-------------+---------------+------------------+--------------------------------------+
+|             |               | gt-image         | JPG, PNG, TIFF, GID formats          |
++-------------+---------------+------------------+--------------------------------------+
+|Referencing  | gt-referencing| epsg-access      | Official EPSG database in Access     |
++-------------+---------------+------------------+--------------------------------------+
+|             |               | epsg-hsql        | Pure Java port of EPSG database      |
++-------------+---------------+------------------+--------------------------------------+
+|             |               | epsg-wkt         | Lightweight copy of EPSG codes       |
++-------------+---------------+------------------+--------------------------------------+
+|             |               | epsg-postgresql  | PostgreSQL port of EPSG database     |
++-------------+---------------+------------------+--------------------------------------+
+|             |               | epsg-oracle      | Oracle port of EPSG database         |
++-------------+---------------+------------------+--------------------------------------+
+|Metadata     | gt-metadata   |                  |                                      |
++-------------+---------------+------------------+--------------------------------------+
+|OpenGIS      | gt-opengis    |                  |                                      |
++-------------+---------------+------------------+--------------------------------------+
+
+Usually at least one plug-in is needed for each layer for GeoTools to do something. As an
+example every time you use the referencing module please make sure you have an epsg plugin
+around (or the referencing module will not know that "EPSG:4326" is the world as we know it).
+
+GeoTools Extensions
+-------------------
+
+We have gone a bit further and implemented some interesting functionality on top of the
+GeoTools library. This code is kind of fun and may be useful in your own project.
+
+=============== ============== ==============================================================
+Extension          JAR            Purpose
+=============== ============== ==============================================================
+Graph           gt-graph       Work with graph and network traversals
+Validation      gt-validation  Quality assurance for spatial data
+WMS             gt-wms         Web Map Server client
+XSD             gt-xsd         Parsing/Encoding for common OGC schemas
+Color Brewer    gt-brewer      Generation of styles using color bewer palettes
+=============== ============== ==============================================================
+
+We also have bundled up several schemas in JAR form (to prevent needing to download them from
+the internet each time they are needed) along with a generated Java model using the Eclipse
+Modelling Framework.
+
++-------------+---------------+-----------------+-----------------------------------------+
+| Module      | Parent        | JAR             | Purpose                                 |
++=============+===============+=================+=========================================+
+| OGC         | gt-ogc        | net.opengis.ows | open web services schema                |
++-------------+---------------+-----------------+-----------------------------------------+
+|             |               | net.opengis.wfs | web feature service                     |
++-------------+---------------+-----------------+-----------------------------------------+
+|             |               | net.opengis.wps | web processing service schema           |
++-------------+---------------+-----------------+-----------------------------------------+
+|             |               | net.opengis.wcs | web coverage service schema             |
++-------------+---------------+-----------------+-----------------------------------------+
+|             |               | net.opengis.wfsv| web feature service schema              |
++-------------+---------------+-----------------+-----------------------------------------+
+|             |               | org.w3.xlink    | xlink schema                            |
++-------------+---------------+-----------------+-----------------------------------------+
+
+To support the xsd parser there are a series of XSD plugins indicating how to parse and encode
+additional content. These plugins make use of the Eclipse Modelling Community XSD library to
+parse XML schema documents and offer "bindings" mapping these to Java classes such as String,
+Date, URL and Geometry.
+
++-------------+---------------+---------------+-----------------------------------------+
+| Module      | Parent        | Plugin        | Purpose                                 |
++=============+===============+===============+=========================================+
+| XSD         | gt-xsd        | gt-xsd-core   | Basic types defined by XML schema       |
++-------------+---------------+---------------+-----------------------------------------+
+|             |               | gt-xsd-fes    | filter                                  |
++-------------+---------------+---------------+-----------------------------------------+
+|             |               | gt-xsd-filter | filter (used by ogc cat and wfs)        |
++-------------+---------------+---------------+-----------------------------------------+
+|             |               | gt-xsd-kml    | keyhole markup language                 |
++-------------+---------------+---------------+-----------------------------------------+
+|             |               | gt-xsd-wfs    | web feature service                     |
++-------------+---------------+---------------+-----------------------------------------+
+|             |               | gt-xsd-wps    | web processing service                  |
++-------------+---------------+---------------+-----------------------------------------+
+|             |               | gt-xsd-gml3   | geographic markup language 3            |
++-------------+---------------+---------------+-----------------------------------------+
+|             |               | gt-xsd-gml2   | geographinc markup language 2           |
++-------------+---------------+---------------+-----------------------------------------+
+|             |               | gt-xsd-ows    | open web services                       |
++-------------+---------------+---------------+-----------------------------------------+
+|             |               | gt-xsd-wcs    | web coverage service                    |
++-------------+---------------+---------------+-----------------------------------------+
+|             |               | gt-xsd-wms    | web map service                         |
++-------------+---------------+---------------+-----------------------------------------+
+|             |               | gt-xsd-sld    | style layer descriptor                  |
++-------------+---------------+---------------+-----------------------------------------+
+
+GeoTools Unsupported
+--------------------
+
+There is also a number of "unsupported" plugins and extensions that are under development
+(or being phased out). These modules are not distributed by the project management
+committee as part of the GeoTools library. However they are available via maven for
+individual download.
+
++-------------+---------------+---------------+-----------------------------------------+
+|Module       | JAR           | Unsupported   | Purpose                                 |
++=============+===============+===============+=========================================+
+| Render      | gt-render     | gt-swt        | Standard widget toolkit interactive map |
++-------------+---------------+---------------+-----------------------------------------+
+|             |               | gt-swing      | Swing interactive map                   |
++-------------+---------------+---------------+-----------------------------------------+
+|JDBC         | gt-jdbc       | gt-oracle     | retired oracle support                  |
++-------------+---------------+---------------+-----------------------------------------+
+|             |               | gt-postgis    | retired postgis support                 |
++-------------+---------------+---------------+-----------------------------------------+
+|             |               | gt-db2        | retired db2 support                     |
++-------------+---------------+---------------+-----------------------------------------+
+| Data        | gt-data       |               |                                         |
++-------------+---------------+---------------+-----------------------------------------+
+| XML         | gt-xml        | gt-wps        | Web Processing Service cient            |
++-------------+---------------+---------------+-----------------------------------------+
+|             |               | gt-process    | Job system for spatial data             |
++-------------+---------------+---------------+-----------------------------------------+
+| CQL         | gt-cql        |               |                                         |
++-------------+---------------+---------------+-----------------------------------------+
+| Main        | gt-main       |               |                                         |
++-------------+---------------+---------------+-----------------------------------------+
+| API         | gt-api        |               |                                         |
++-------------+---------------+---------------+-----------------------------------------+
+| JTS         | jts           |               |                                         |
++-------------+---------------+---------------+-----------------------------------------+
+| Coverage    | gt-coverage   |               |                                         |
++-------------+---------------+---------------+-----------------------------------------+
+| Referencing | gt-referencing|               |                                         |
++-------------+---------------+---------------+-----------------------------------------+
+| Metadata    | gt-metadata   |               |                                         |
++-------------+---------------+---------------+-----------------------------------------+
+| OpenGIS     | gt-opengis    |               |                                         |
++-------------+---------------+---------------+-----------------------------------------+
+
+Module Matrix
+-------------
+
+The GeoTools library is live and online! So you can check up on modules, plugins and
+extensions you are about to use:
+
+* http://docs.codehaus.org/display/GEOTOOLS/Module+Matrix
+
+This page includes a description of how good each module is (more stars is better). If there
+are any serious problems (ie a red star) you may want to click on the module name to find out
+more information.
+
+The Module Matrix also lists unsupported modules allowing you to check on current status.

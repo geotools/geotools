@@ -25,7 +25,7 @@ import java.util.ResourceBundle;
  * @author Andrea Antonello (www.hydrologis.com)
  */
 public class Messages {
-    private static final ResourceBundle stringRes = ResourceBundle.getBundle("org/geotools/swt/Text"); //$NON-NLS-1$
+    private static final ResourceBundle stringRes = ResourceBundle.getBundle("resources/Text"); //$NON-NLS-1$
 
     public static String getString( String key ) {
         String string = stringRes.getString(key);

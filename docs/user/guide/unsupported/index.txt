@@ -9,17 +9,17 @@ Under active development:
 
 .. toctree::
 
-   swing
-   swt
+   swing/index
+   swt/index
 
 Volunteers needed:
 
 .. toctree::
 
-   process   
+   process/index 
 
 Deprecated:
 
 .. toctree::
 
-   postgis-versioned
+   postgis-versioned/index

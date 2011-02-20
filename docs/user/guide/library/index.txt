@@ -11,8 +11,8 @@ The GeoTools library is organised into a series of jars. These jars form a softw
    api/index
    util/index
    metadata/index
-   crs/index
-   raster/index
+   referencing/index
+   coverage/index
    main/index
    data/index
    jdbc/index

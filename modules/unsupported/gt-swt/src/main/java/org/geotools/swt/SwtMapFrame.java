@@ -368,7 +368,7 @@ public class SwtMapFrame extends ApplicationWindow {
         // just as an example to start up with an existing map
         MapContext context = new DefaultMapContext();
         context.setTitle("The SWT Map is in the game");
-        args = new String[]{"/home/moovida/data/world_adm0/countries.shp"};
+        // args = new String[]{"/home/moovida/data/world_adm0/countries.shp"};
         if (args.length > 0) {
             File shapeFile = new File(args[0]);
             ShapefileDataStore store = new ShapefileDataStore(shapeFile.toURI().toURL());

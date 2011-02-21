@@ -1002,6 +1002,8 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
      * @param overlayDoXor flag for Xor mode.
      */
     public void setOverlay( Image overlayImage, ReferencedEnvelope overlayEnvelope, boolean overlayDoXor ) {
+        if (this.overlayImage != null)
+            this.overlayImage.dispose();
         this.overlayImage = overlayImage;
         this.overlayEnvelope = overlayEnvelope;
         this.overlayDoXor = overlayDoXor;

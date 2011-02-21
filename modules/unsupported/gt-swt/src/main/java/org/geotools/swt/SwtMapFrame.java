@@ -40,6 +40,7 @@ import org.geotools.map.DefaultMapContext;
 import org.geotools.map.MapContext;
 import org.geotools.renderer.GTRenderer;
 import org.geotools.renderer.lite.StreamingRenderer;
+import org.geotools.swt.action.DrawShapeAction;
 import org.geotools.swt.action.InfoAction;
 import org.geotools.swt.action.OpenCoverageAction;
 import org.geotools.swt.action.OpenShapefileAction;
@@ -121,6 +122,12 @@ public class SwtMapFrame extends ApplicationWindow {
     private OpenShapefileAction openShapeAction;
     private OpenCoverageAction openCoverageAction;
 
+    /*
+     * to see how overlay of shapes works, uncomment all the lines that
+     * contain drawAction
+     */
+    // private DrawShapeAction drawAction;
+
     /**
      * Creates a new {@code JMapFrame} object with a toolbar, map pane and status
      * bar; sets the supplied {@code MapContext}; and displays the frame on the
@@ -171,6 +178,7 @@ public class SwtMapFrame extends ApplicationWindow {
         this.context = context;
         this.renderer = renderer;
 
+        // drawAction = new DrawShapeAction();
         infoAction = new InfoAction();
         panAction = new PanAction();
         resetAction = new ResetAction();
@@ -235,6 +243,7 @@ public class SwtMapFrame extends ApplicationWindow {
         mapPane.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
         mapPane.setRenderer(renderer);
 
+        // drawAction.setMapPane(mapPane);
         infoAction.setMapPane(mapPane);
         panAction.setMapPane(mapPane);
         resetAction.setMapPane(mapPane);
@@ -267,6 +276,7 @@ public class SwtMapFrame extends ApplicationWindow {
 
     protected ToolBarManager createToolBarManager( int style ) {
         ToolBarManager tool_bar_manager = new ToolBarManager(style);
+        // tool_bar_manager.add(drawAction);
         tool_bar_manager.add(infoAction);
         tool_bar_manager.add(panAction);
         tool_bar_manager.add(resetAction);
@@ -358,6 +368,7 @@ public class SwtMapFrame extends ApplicationWindow {
         // just as an example to start up with an existing map
         MapContext context = new DefaultMapContext();
         context.setTitle("The SWT Map is in the game");
+        args = new String[]{"/home/moovida/data/world_adm0/countries.shp"};
         if (args.length > 0) {
             File shapeFile = new File(args[0]);
             ShapefileDataStore store = new ShapefileDataStore(shapeFile.toURI().toURL());

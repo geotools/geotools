@@ -838,7 +838,7 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
      * redisplayed at (new) full extent.
      */
     public void mapBoundsChanged( MapBoundsEvent event ) {
-
+        redrawBaseImage = true;
         int type = event.getType();
         if ((type & MapBoundsEvent.COORDINATE_SYSTEM_MASK) != 0) {
             /*
@@ -1001,12 +1001,19 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
      * @param overlayEnvelope the envelope it has to cover.
      * @param overlayDoXor flag for Xor mode.
      */
-    public void setOverlay( Image overlayImage, ReferencedEnvelope overlayEnvelope, boolean overlayDoXor ) {
+    public void setOverlay( Image overlayImage, ReferencedEnvelope overlayEnvelope, boolean overlayDoXor, boolean boundsChanged ) {
         if (this.overlayImage != null)
             this.overlayImage.dispose();
         this.overlayImage = overlayImage;
         this.overlayEnvelope = overlayEnvelope;
         this.overlayDoXor = overlayDoXor;
+
+        if (boundsChanged) {
+            redrawBaseImage = true;
+        } else {
+            redrawBaseImage = false;
+        }
+        redraw();
     }
 
     @SuppressWarnings("deprecation")
@@ -1016,12 +1023,10 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
 
         // System.out.println("event: " + event.type);
         if (event.type == SWT.MouseDown) {
-            System.out.println("mousedown");
             startX = event.x;
             startY = event.y;
             mouseDown = true;
         } else if (event.type == SWT.MouseUp) {
-            System.out.println("mouseup");
             endX = event.x;
             endY = event.y;
 
@@ -1059,8 +1064,9 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
                     if (dragEnabled) {
                         // System.out.println("draw box: " + startX + "/" + startY + "/" + endX +
                         // "/" + endY);
-                        if (swtImage != null)
-                            gc.drawImage(swtImage, 0, 0);
+                        if (swtImage != null) {
+                            drawFinalImage(swtImage);
+                        }
                         gc.setXORMode(true);
 
                         org.eclipse.swt.graphics.Color fC = gc.getForeground();
@@ -1105,30 +1111,38 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
                         swtImage.dispose();
                         swtImage = null;
                     }
+                    System.out.println("create img");
                     swtImage = new Image(getDisplay(), awtToSwt(baseImage, curPaintArea.width + 1, curPaintArea.height + 1));
-
-                    if (overlayImage != null) {
-                        doOverlayImage();
-                    }
-
-                    if (gc != null && !gc.isDisposed() && swtImage != null)
-                        gc.drawImage(swtImage, imageOrigin.x, imageOrigin.y);
-
-                    ev = new MapPaneEvent(this, MapPaneEvent.Type.RENDERING_STOPPED);
-                    publishEvent(ev);
-                    clearLabelCache = true;
                 }
 
-                onRenderingCompleted();
+                if (swtImage != null) {
+                    drawFinalImage(swtImage);
+                }
 
+                MapPaneEvent ev = new MapPaneEvent(this, MapPaneEvent.Type.RENDERING_STOPPED);
+                publishEvent(ev);
+                clearLabelCache = true;
+                onRenderingCompleted();
                 redrawBaseImage = true;
             }
         }
     }
 
-    private void doOverlayImage() {
-        GC tmpGc = new GC(swtImage);
+    private void drawFinalImage( Image swtImage ) {
+        if (overlayImage != null) {
+            Image tmpImage = new Image(getDisplay(), curPaintArea.width, curPaintArea.height);
+            GC tmpGc = new GC(tmpImage);
+            tmpGc.drawImage(swtImage, imageOrigin.x, imageOrigin.y);
+            doOverlayImage(tmpGc);
+            if (gc != null && !gc.isDisposed() && swtImage != null)
+                gc.drawImage(tmpImage, imageOrigin.x, imageOrigin.y);
+        } else {
+            if (gc != null && !gc.isDisposed() && swtImage != null)
+                gc.drawImage(swtImage, imageOrigin.x, imageOrigin.y);
+        }
+    }
 
+    private void doOverlayImage( GC gc ) {
         Point2D lowerLeft = new Point2D.Double(overlayEnvelope.getMinX(), overlayEnvelope.getMinY());
         worldToScreen.transform(lowerLeft, lowerLeft);
 
@@ -1137,14 +1151,10 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
 
         Rectangle bounds = overlayImage.getBounds();
         if (overlayDoXor) {
-            tmpGc.setXORMode(true);
+            gc.setXORMode(true);
         }
 
-        // System.out.println(bounds);
-        // System.out.println(lowerLeft);
-        // System.out.println(upperRight);
-        // System.out.println("*********************");
-        tmpGc.drawImage(overlayImage,//
+        gc.drawImage(overlayImage,//
                 0,//
                 0,//
                 bounds.width, //
@@ -1155,7 +1165,7 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
                 (int) Math.abs(upperRight.getY() - lowerLeft.getY())//
         );
         if (overlayDoXor) {
-            tmpGc.setXORMode(false);
+            gc.setXORMode(false);
         }
     }
 

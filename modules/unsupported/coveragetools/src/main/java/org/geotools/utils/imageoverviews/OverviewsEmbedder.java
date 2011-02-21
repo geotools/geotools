@@ -961,32 +961,51 @@ public void run() {
 				// clean up
 				
 				// clean caches
-				baseTC.flush();
-				scaleTC.flush();
+				if(baseTC!=null)
+				    try{
+				        baseTC.flush();
+				    } catch (Exception e) {
+                                    }
+				if(scaleTC!=null)
+                                    try{
+                                        scaleTC.flush();
+                                    } catch (Exception e) {
+                                    }
 				
 				//
 				// free everything
 				try {
-					streamOut.flush();
+					if(streamOut!=null)
+					    streamOut.flush();
 				} catch (Throwable e) {
 					if(LOGGER.isLoggable(Level.FINE))
 						LOGGER.log(Level.FINE,e.getLocalizedMessage(),e);
 				}
 				try {
-					streamOut.close();
+				    if(streamOut!=null)
+                                        streamOut.close();
 				} catch (Throwable e) {
 					if(LOGGER.isLoggable(Level.FINE))
 						LOGGER.log(Level.FINE,e.getLocalizedMessage(),e);
 				}
 				
 				try {
-					writer.dispose();
+				    if(writer!=null)
+                                        writer.dispose();
 				} catch (Throwable e) {
 					if(LOGGER.isLoggable(Level.FINE))
 						LOGGER.log(Level.FINE,e.getLocalizedMessage(),e);
 				}
-				
-				currentImage.dispose();
+                
+                                try {
+                                    if (currentImage != null)
+                                        currentImage.dispose();
+                                } catch (Throwable e) {
+                                    if (LOGGER.isLoggable(Level.FINE))
+                                                LOGGER.log(Level.FINE,e.getLocalizedMessage(),e);
+                                }
+                                                
+
 				if(newImage!=null)
 					newImage.dispose();
 				try {
@@ -1153,11 +1172,11 @@ public void run() {
 		return compressionScheme;
 	}
 
-	public final void setCompressionRatio(double compressionRatio) {
+	public void setCompressionRatio(double compressionRatio) {
 		this.compressionRatio = compressionRatio;
 	}
 
-	public final void setCompressionScheme(String compressionScheme) {
+	public void setCompressionScheme(String compressionScheme) {
 		this.compressionScheme = compressionScheme;
 	}
 

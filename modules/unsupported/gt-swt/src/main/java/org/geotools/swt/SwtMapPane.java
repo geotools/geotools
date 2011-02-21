@@ -918,6 +918,7 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
             refEnv = new ReferencedEnvelope(envelope);
         } else {
             refEnv = new ReferencedEnvelope(-180, 180, -90, 90, DefaultGeographicCRS.WGS84);
+            context.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
         }
 
         java.awt.Rectangle awtPaintArea = Utils.toAwtRectangle(paintArea);

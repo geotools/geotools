@@ -27,6 +27,7 @@ import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.map.MapContext;
+import org.geotools.map.MapLayer;
 import org.geotools.styling.Style;
 import org.geotools.swt.control.JFileImageChooser;
 import org.geotools.swt.utils.ImageCache;
@@ -54,7 +55,9 @@ public class OpenCoverageAction extends MapAction implements ISelectionChangedLi
             Style rgbStyle = Utils.createRGBStyle(tiffReader);
 
             MapContext mapContext = mapPane.getMapContext();
-            mapContext.addLayer(tiffReader, rgbStyle);
+            MapLayer layer = new MapLayer(tiffReader, rgbStyle);
+            layer.setTitle(openFile.getName());
+            mapContext.addLayer(layer);
             mapPane.redraw();
         }
     }

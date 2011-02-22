@@ -752,6 +752,13 @@ public void run() {
 				final ImageReader reader = (ImageReader) it.next();
 				stream.reset();
 				stream.mark();
+				// is it a geotiff reader or not?
+				if(!reader.getFormatName().toLowerCase().startsWith("tif")){
+                                    if (LOGGER.isLoggable(Level.INFO)) {
+                                        LOGGER.info("Discarding input file "+files[fileBeingProcessed] + " since it is not a proper tif file.");
+                                    }
+				    continue;
+				}
 
 
 				//

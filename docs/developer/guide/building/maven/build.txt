@@ -86,6 +86,7 @@ Tips to speed up a build:
 * Do not do a “clean” build if you do not have to
 * Rebuild a single module after you have modified it
 * Update your “settings.xml” file to point to a “mirror” in your country - allowing you to download closer to home
+* Build offline (when everything is downloaded to your local repository)
 
 Really Building All Modules
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -164,6 +165,23 @@ This is useful for installing the postgis module test jar; which is used by the 
 The following will not even build the tests::
    
    mvn -Dmaven.test.skip=true install
+
+Resuming After a Failure
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+When doing a full build of GeoTools it can be disheartening when a build fails 90% of the way through causing you to fix and start again.
+
+The -rf (resume from) parameter of is useful in these cases. It is used to resume a multi-module build such as GeoTools from a specific location to avoid rebuilding those modules you have already successfully build.
+
+1. For instance, consider quickly building offline::
+     
+     mvn install -o -Dall
+
+2. If **modules/library/data** failed due to a missing jar you can resume the build in online mode::
+     
+     mvn install -rf modules/library/data
+
+This same technique can be used to restart a build after fixing a failed test in a module.
 
 Common Build Problems
 ^^^^^^^^^^^^^^^^^^^^^

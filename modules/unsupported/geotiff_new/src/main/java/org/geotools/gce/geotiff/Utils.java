@@ -3,11 +3,8 @@
  */
 package org.geotools.gce.geotiff;
 
-import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
-import java.awt.image.DataBuffer;
-import java.awt.image.MultiPixelPackedSampleModel;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
@@ -23,12 +20,9 @@ import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.filefilter.FileFilterUtils;
-import org.apache.commons.io.filefilter.IOFileFilter;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.image.ImageWorker;
 import org.geotools.metadata.iso.spatial.PixelTranslation;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.resources.i18n.ErrorKeys;
@@ -70,11 +64,6 @@ class Utils {
 					.getPixelTranslation(PixelInCell.CELL_CORNER),
 					-PixelTranslation
 							.getPixelTranslation(PixelInCell.CELL_CORNER));
-
-	/**
-	 * Defaut wildcard for creating mosaics.
-	 */
-	static final String DEFAULT_WILCARD = "*.*";
 
 	/**
 	 * Default path behavior with respect to absolute paths.
@@ -132,35 +121,6 @@ class Utils {
 	}
 
 	/**
-	 * Returns a suitable threshold depending on the {@link DataBuffer} type.
-	 * 
-	 * <p>
-	 * Remember that the threshold works with >=.
-	 * 
-	 * @param dataType
-	 *            to create a low threshold for.
-	 * @return a minimum threshold value suitable for this data type.
-	 */
-	static double getThreshold(int dataType) {
-		switch (dataType) {
-		case DataBuffer.TYPE_BYTE:
-		case DataBuffer.TYPE_USHORT:
-			// this may cause problems and truncations when the native mosaic
-			// operations is enabled
-			return 0.0;
-		case DataBuffer.TYPE_INT:
-			return Integer.MIN_VALUE;
-		case DataBuffer.TYPE_SHORT:
-			return Short.MIN_VALUE;
-		case DataBuffer.TYPE_DOUBLE:
-			return -Double.MAX_VALUE;
-		case DataBuffer.TYPE_FLOAT:
-			return -Float.MAX_VALUE;
-		}
-		return 0;
-	}
-
-	/**
 	 * Builds a {@link ReferencedEnvelope} from a {@link GeographicBoundingBox}.
 	 * This is useful in order to have an implementation of {@link BoundingBox}
 	 * from a {@link GeographicBoundingBox} which strangely does implement
@@ -180,20 +140,6 @@ class Utils {
 	}
 
 	/**
-	 * @param transparentColor
-	 * @param image
-	 * @return
-	 * @throws IllegalStateException
-	 */
-	static RenderedImage makeColorTransparent(final Color transparentColor,
-			final RenderedImage image) throws IllegalStateException {
-		final ImageWorker w = new ImageWorker(image);
-		if (image.getSampleModel() instanceof MultiPixelPackedSampleModel)
-			w.forceComponentColorModel();
-		return w.makeColorTransparent(transparentColor).getRenderedImage();
-	}
-
-	/**
 	 * Makes sure that an argument is non-null.
 	 * 
 	 * @param name
@@ -209,16 +155,6 @@ class Utils {
 			throw new IllegalArgumentException(Errors.format(
 					ErrorKeys.NULL_ARGUMENT_$1, name));
 		}
-	}
-
-	static IOFileFilter excludeFilters(final IOFileFilter inputFilter,
-			IOFileFilter... filters) {
-		IOFileFilter retFilter = inputFilter;
-		for (IOFileFilter filter : filters) {
-			retFilter = FileFilterUtils.andFileFilter(retFilter,
-					FileFilterUtils.notFileFilter(filter));
-		}
-		return retFilter;
 	}
 
 	/**
@@ -325,11 +261,6 @@ class Utils {
 		readParameters.setSourceRegion(sourceRegion);
 		return false;
 	}
-
-	/**
-	 * Default priority for the underlying {@link Thread}.
-	 */
-	public static final int DEFAULT_PRIORITY = Thread.NORM_PRIORITY;
 
 	/**
 	 * Checks that a {@link File} is a real file, exists and is readable.

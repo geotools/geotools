@@ -103,7 +103,6 @@ import org.opengis.referencing.operation.TransformException;
  * @source $URL:
  *         http://svn.geotools.org/geotools/branches/coverages_branch/trunk/gt/plugin/geotiff/src/org/geotools/gce/geotiff/GeoTiffReader.java $
  */
-@SuppressWarnings("deprecation")
 public final class GeoTiffReader extends AbstractGridCoverage2DReader implements
 		GridCoverageReader {
 
@@ -315,7 +314,7 @@ public final class GeoTiffReader extends AbstractGridCoverage2DReader implements
 		
 		try{
 		    metadata = new GeoTiffIIOMetadataDecoder(iioMetadata);
-		    gtcs = (GeoTiffMetadata2CRSAdapter) GeoTiffMetadata2CRSAdapter.get(hints);
+		    gtcs = new GeoTiffMetadata2CRSAdapter(hints);
 		    if (gtcs != null)
 		    	foundCrs = gtcs.createCoordinateSystem(metadata);
 		    else 
@@ -368,7 +367,7 @@ public final class GeoTiffReader extends AbstractGridCoverage2DReader implements
 		originalGridRange = new GridEnvelope2D(actualDim);
 
 		if (!useWorldFile && gtcs != null) {
-		    this.raster2Model = gtcs.getRasterToModel(metadata);
+		    this.raster2Model = GeoTiffMetadata2CRSAdapter.getRasterToModel(metadata);
         }
         else {
             this.raster2Model = parseWorldFile(source);

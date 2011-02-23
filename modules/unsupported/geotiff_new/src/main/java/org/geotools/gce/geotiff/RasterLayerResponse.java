@@ -54,6 +54,7 @@ import org.geotools.image.ImageWorker;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
+import org.geotools.resources.image.ImageUtilities;
 import org.opengis.coverage.ColorInterpretation;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.geometry.BoundingBox;
@@ -68,7 +69,6 @@ import org.opengis.referencing.operation.TransformException;
  * 
  * @author Daniele Romagnoli, GeoSolutions
  */
-@SuppressWarnings("deprecation")
 class RasterLayerResponse{
 	
 	class GranuleWorker {
@@ -339,12 +339,8 @@ class RasterLayerResponse{
 				imageChoice = 0;
 			assert imageChoice>=0;
 			if (LOGGER.isLoggable(Level.FINE))
-				LOGGER.fine(new StringBuilder("Loading level ")
-									.append(imageChoice)
-									.append(" with subsampling factors ")
-									.append(baseReadParameters.getSourceXSubsampling()).append(" ")
-									.append(baseReadParameters.getSourceYSubsampling())
-								.toString());			
+				LOGGER.fine("Loading level "+imageChoice+" with subsampling factors "+baseReadParameters.getSourceXSubsampling()
+				        +" "+baseReadParameters.getSourceYSubsampling());			
 			
 			
 			final BoundingBox cropBBOX = request.getCropBBox();
@@ -394,10 +390,8 @@ class RasterLayerResponse{
 				// transparency information from the input images.
 				// 
 				if (LOGGER.isLoggable(Level.FINE))
-					LOGGER.fine(new StringBuilder("Loaded bbox ").append(
-							bbox.toString()).append(" while crop bbox ")
-							.append(request.getCropBBox().toString())
-							.toString());
+					LOGGER.fine("Loaded bbox "+
+							bbox.toString()+" while crop bbox "+request.getCropBBox());
 				
 				
 				return theImage;				
@@ -480,7 +474,7 @@ class RasterLayerResponse{
 		if (doTransparentColor) {
 			if (LOGGER.isLoggable(Level.FINE))
 				LOGGER.fine("Support for alpha on input image number "+ granuleIndex);
-			granule = Utils.makeColorTransparent(transparentColor, granule);
+			granule = ImageUtilities.maskColor(transparentColor, granule);
 		}
 		return granule;
 

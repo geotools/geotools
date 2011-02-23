@@ -72,6 +72,15 @@
         <role>Java Developer</role>
       </roles>
     </developer>
+    <developer>
+      <id>lendholt</id>
+      <name>Matthias Lendholt</name>
+      <email>matthias.lendholt@gfz-potsdam.de</email>
+      <organization>German Research Centre for Geosciences</organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
   </developers>
 
   <!-- =========================================================== -->

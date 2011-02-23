@@ -75,15 +75,9 @@ public class WPSFactory extends SingleProcessFactory {
         this.version = this.pdt.getProcessVersion();
         this.title = this.pdt.getTitle().getValue();
         this.identifier = this.pdt.getIdentifier().getValue();
-        this.description = isAbstractNull( this.pdt)  ? "" : this.pdt.getAbstract().getValue();
+        this.description = WPSUtils.isAbstractNull(this.pdt)  ? "" : this.pdt.getAbstract().getValue();
         this.parameterInfo = WPSUtils.createInputParamMap(this.pdt, this.parameterInfo);
         this.resultInfo = WPSUtils.createOutputParamMap(this.pdt, this.resultInfo);
-    }
-
-    private boolean isAbstractNull(DescriptionType description ) {
-        if( this.pdt.getAbstract() == null ) return true;
-        if( this.pdt.getAbstract().getValue() == null ) return true;
-        return false;
     }
 
     /**

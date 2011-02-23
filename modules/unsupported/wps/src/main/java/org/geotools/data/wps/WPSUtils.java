@@ -27,6 +27,7 @@ import net.opengis.wps10.ComplexDataDescriptionType;
 import net.opengis.wps10.ComplexDataType;
 import net.opengis.wps10.DataInputsType;
 import net.opengis.wps10.DataType;
+import net.opengis.wps10.DescriptionType;
 import net.opengis.wps10.ExecuteResponseType;
 import net.opengis.wps10.InputDescriptionType;
 import net.opengis.wps10.LiteralDataType;
@@ -201,7 +202,8 @@ public class WPSUtils {
             String identifier = idt.getIdentifier().getValue();
             InternationalString title = Text.text(idt
                     .getTitle().getValue());
-            InternationalString description = Text.text( idt.getAbstract() == null ? "" : idt.getAbstract().getValue());
+            InternationalString description = Text.text( isAbstractNull(idt) ? "" : idt.getAbstract().getValue());
+
             Parameter<?> param = new Parameter(identifier, type, title, description, required, idt
                     .getMinOccurs().intValue(), idt.getMaxOccurs().intValue(), null, null);
             map.put(identifier, param);
@@ -258,7 +260,8 @@ public class WPSUtils {
                 type = getComplexType(encoding, mimetype, schema);
             }
             // create the parameter
-            InternationalString description = Text.text(odt.getAbstract()==null? "" : odt.getAbstract().getValue());
+            InternationalString description = Text.text(isAbstractNull(odt)? "" : odt.getAbstract().getValue());
+
             Parameter param = new Parameter(odt.getIdentifier().getValue(), type, Text.text(odt
                     .getTitle().getValue()), description);
             map.put(odt.getIdentifier().getValue(), param);
@@ -266,6 +269,19 @@ public class WPSUtils {
 
         return map;
     }
+    
+    
+    /**
+     * Returns whether the abstract or its value of the given DescriptionType is null 
+     * @param description
+     * @return
+     */
+    public static boolean isAbstractNull(DescriptionType description ) {
+        if( description.getAbstract() == null ) return true;
+        if( description.getAbstract().getValue() == null ) return true;
+        return false;
+    } 
+    
 
     /**
      * Take a reference string and determine the literal type based from that

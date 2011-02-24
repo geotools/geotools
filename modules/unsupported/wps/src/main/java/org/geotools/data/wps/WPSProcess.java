@@ -91,33 +91,35 @@ public class WPSProcess extends AbstractProcess {
 		
 		// loop through each expected input in the describeprocess, and set it
 		// based on what we have in the provided input map.
-		EList inputs = pdt.getDataInputs().getInput();
-		Iterator iterator = inputs.iterator();
-		while (iterator.hasNext()) {
-			InputDescriptionType idt = (InputDescriptionType) iterator.next();
-			String identifier = idt.getIdentifier().getValue();
-			Object inputValue = input.get(identifier);
-			if (inputValue != null) {
-				// if our value is some sort of collection, then created multiple
-				// dataTypes for this inputdescriptiontype.
-				List<DataType> list = new ArrayList<DataType>();
-				if (inputValue instanceof Map) {
-					for (Object inVal : ((Map)inputValue).values()) {
-						DataType createdInput = WPSUtils.createInputDataType(inVal, idt);
+		if (pdt.getDataInputs()!=null){
+			EList inputs = pdt.getDataInputs().getInput();
+			Iterator iterator = inputs.iterator();
+			while (iterator.hasNext()) {
+				InputDescriptionType idt = (InputDescriptionType) iterator.next();
+				String identifier = idt.getIdentifier().getValue();
+				Object inputValue = input.get(identifier);
+				if (inputValue != null) {
+					// if our value is some sort of collection, then created multiple
+					// dataTypes for this inputdescriptiontype.
+					List<DataType> list = new ArrayList<DataType>();
+					if (inputValue instanceof Map) {
+						for (Object inVal : ((Map)inputValue).values()) {
+							DataType createdInput = WPSUtils.createInputDataType(inVal, idt);
+							list.add(createdInput);
+						}
+					} else if (inputValue instanceof Collection) {
+						for (Object inVal : (Collection)inputValue) {
+							DataType createdInput = WPSUtils.createInputDataType(inVal, idt);
+							list.add(createdInput);
+						}
+					} else {
+						// our value is a single object so create a single datatype for it
+						DataType createdInput = WPSUtils.createInputDataType(inputValue, idt);
 						list.add(createdInput);
 					}
-				} else if (inputValue instanceof Collection) {
-					for (Object inVal : (Collection)inputValue) {
-						DataType createdInput = WPSUtils.createInputDataType(inVal, idt);
-						list.add(createdInput);
-					}
-				} else {
-					// our value is a single object so create a single datatype for it
-					DataType createdInput = WPSUtils.createInputDataType(inputValue, idt);
-					list.add(createdInput);
+					// add the input to the execute request
+					exeRequest.addInput(identifier, list);
 				}
-				// add the input to the execute request
-				exeRequest.addInput(identifier, list);
 			}
 		}
 		

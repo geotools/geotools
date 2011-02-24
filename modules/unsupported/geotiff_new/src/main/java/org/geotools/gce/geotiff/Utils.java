@@ -22,13 +22,10 @@ import javax.imageio.stream.ImageInputStream;
 import org.apache.commons.io.FilenameUtils;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
-import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.metadata.iso.spatial.PixelTranslation;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
-import org.opengis.geometry.BoundingBox;
-import org.opengis.metadata.extent.GeographicBoundingBox;
+import org.geotools.util.Utilities;
 import org.opengis.referencing.datum.PixelInCell;
 
 /**
@@ -69,13 +66,6 @@ class Utils {
 	 * Default path behavior with respect to absolute paths.
 	 */
 	static final boolean DEFAULT_PATH_BEHAVIOR = false;
-
-	static String getMessageFromException(Exception exception) {
-		if (exception.getLocalizedMessage() != null)
-			return exception.getLocalizedMessage();
-		else
-			return exception.getMessage();
-	}
 
 	static URL checkSource(Object source) throws MalformedURLException,
 			DataSourceException {
@@ -121,43 +111,6 @@ class Utils {
 	}
 
 	/**
-	 * Builds a {@link ReferencedEnvelope} from a {@link GeographicBoundingBox}.
-	 * This is useful in order to have an implementation of {@link BoundingBox}
-	 * from a {@link GeographicBoundingBox} which strangely does implement
-	 * {@link GeographicBoundingBox}.
-	 * 
-	 * @param geographicBBox
-	 *            the {@link GeographicBoundingBox} to convert.
-	 * @return an instance of {@link ReferencedEnvelope}.
-	 */
-	static ReferencedEnvelope getReferencedEnvelopeFromGeographicBoundingBox(
-			final GeographicBoundingBox geographicBBox) {
-		Utils.ensureNonNull("GeographicBoundingBox", geographicBBox);
-		return new ReferencedEnvelope(geographicBBox.getEastBoundLongitude(),
-				geographicBBox.getWestBoundLongitude(), geographicBBox
-						.getSouthBoundLatitude(), geographicBBox
-						.getNorthBoundLatitude(), DefaultGeographicCRS.WGS84);
-	}
-
-	/**
-	 * Makes sure that an argument is non-null.
-	 * 
-	 * @param name
-	 *            Argument name.
-	 * @param object
-	 *            User argument.
-	 * @throws IllegalArgumentException
-	 *             if {@code object} is null.
-	 */
-	static void ensureNonNull(final String name, final Object object)
-			throws IllegalArgumentException {
-		if (object == null) {
-			throw new IllegalArgumentException(Errors.format(
-					ErrorKeys.NULL_ARGUMENT_$1, name));
-		}
-	}
-
-	/**
 	 * Look for an {@link ImageReader} instance that is able to read the
 	 * provided {@link ImageInputStream}, which must be non null.
 	 * 
@@ -171,7 +124,7 @@ class Utils {
 	 *         if one cannot be found.
 	 */
 	static ImageReader getReader(final ImageInputStream inStream) {
-		ensureNonNull("inStream", inStream);
+	        Utilities.ensureNonNull("inStream", inStream);
 		// get a reader
 		inStream.mark();
 		final Iterator<ImageReader> readersIt = ImageIO
@@ -208,8 +161,8 @@ class Utils {
 	static Rectangle getDimension(final int imageIndex,
 			final ImageInputStream inStream, final ImageReader reader)
 			throws IOException {
-		ensureNonNull("inStream", inStream);
-		ensureNonNull("reader", reader);
+	        Utilities.ensureNonNull("inStream", inStream);
+	        Utilities.ensureNonNull("reader", reader);
 		if (imageIndex < 0)
 			throw new IllegalArgumentException(Errors.format(
 					ErrorKeys.INDEX_OUT_OF_BOUNDS_$1, imageIndex));
@@ -252,8 +205,8 @@ class Utils {
 	 */
 	static boolean checkEmptySourceRegion(final ImageReadParam readParameters,
 			final Rectangle dimensions) {
-		ensureNonNull("readDimension", dimensions);
-		ensureNonNull("readP", readParameters);
+	        Utilities.ensureNonNull("readDimension", dimensions);
+	        Utilities.ensureNonNull("readP", readParameters);
 		final Rectangle sourceRegion = readParameters.getSourceRegion();
 		Rectangle.intersect(sourceRegion, dimensions, sourceRegion);
 		if (sourceRegion.isEmpty())

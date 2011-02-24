@@ -234,8 +234,8 @@ class RasterManager {
 			{
 		
 				// the read parameters cannot be null
-				Utils.ensureNonNull("readParameters", readParameters);
-				Utils.ensureNonNull("request", request);
+			        Utilities.ensureNonNull("readParameters", readParameters);
+			        Utilities.ensureNonNull("request", request);
 				
 				//get the requested resolution in order to guess what we are looking for
 				final double[] requestedRes=request.getRequestedResolution();
@@ -415,7 +415,7 @@ class RasterManager {
 
 	public RasterManager(final GeoTiffReader reader) throws DataSourceException {
 
-		Utils.ensureNonNull("GeoTiffReader", reader);
+	    Utilities.ensureNonNull("GeoTiffReader", reader);
 		this.parent=reader;
 		this.expandMe=parent.expandMe;
         inputURL = reader.sourceURL;

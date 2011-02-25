@@ -681,11 +681,11 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
         while (iterator.hasNext()) {
             features.add(iterator.next());
         }
-
-        if (features.size() < 1) {
-            LOGGER.warning("This shouldn't have happened."
-                    + "There should be at least 1 features with id='" + fId + "'.");
+        // Probably cause there is no primary key nor idExpression
+        if (features.isEmpty()) {
+            features.add(curSrcFeature);
         }
+
         filteredFeatures.add(fId);
 
         matchingFeatures.close(iterator);

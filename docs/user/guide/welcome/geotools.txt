@@ -1,36 +1,15 @@
-Meet the GeoTools Library
-=========================
+Library Structure
+=================
 
-Having an understanding of how the GeoTools library is structured for helpful for answering the
-question "What jars do I need?".
+Having an understanding of how the GeoTools library is structured for helpful for sorting
+out what jars you need for your application.
 
-The answer depends on what you are doing. This page introduces the you to the parts of the
-GeoTools library and how they fit together, we have isolated the parts into individual jars.
-This allows you to use just the right amount of GeoTools in your next project.
 
-Maven (recommended):
-   The quickstart is writen with the maven build system in mind. The maven build
-   system is very good at sorting out dependencies between lots of little jars - and
-   is the recommended way to start using GeoTools.
-   
-   Both Eclipse and NetBeans offer maven intergration, for details please review
-   the Eclipse Quickstart and NetBeans quickstart.
+.. image:: /images/geotools.png
 
-Download:
-   Traditionally users just dump all the jars into their IDE and have a go, please be
-   advised that some of the jars will be in conflict.
-   
-   1. Dump everything from a binary distribution of GeoTools into your IDE
-   2. Remove all the jars that say epsg in them - except for the gt2-epsg jar.
-   3. Ensure your JRE has JAI and ImageIO if you are doing raster work
-   4. Ignore the rest of this page   
-   
-   For detailed step-by-step instructions review the Eclipse quickstart and
-   Netbeans quickstart. Instructions for downloading and selecting jars
-   are provided at the end of the document as an alternative.
-
-Using maven in concert with your IDE, and looking over the pictures on this page is recommended
-since there are often too many jars to manage by hand.
+This page introduces the you to the parts of the GeoTools library and how they fit together.
+By including only the jars you need you can select just the right amount of GeoTools for
+your next project.
 
 GeoTools Library
 ----------------
@@ -65,10 +44,9 @@ The maven tool can calculate the jars you need, please see the Eclipse or Netbea
 for an example use.
 
 GeoTools Plugins
-----------------
+^^^^^^^^^^^^^^^^
 
-Of course that is not the complete picture - just by itself the GeoTools library does not do
-anything. There are plug-ins to for different data formats, different coordinate reference
+GeoTools offers plug-ins to support additional data formats, different coordinate reference
 system authorities and so on.
 
 +-------------+---------------+------------------+--------------------------------------+
@@ -134,7 +112,7 @@ example every time you use the referencing module please make sure you have an e
 around (or the referencing module will not know that "EPSG:4326" is the world as we know it).
 
 GeoTools Extensions
--------------------
+^^^^^^^^^^^^^^^^^^^
 
 We have gone a bit further and implemented some interesting functionality on top of the
 GeoTools library. This code is kind of fun and may be useful in your own project.
@@ -205,10 +183,9 @@ Date, URL and Geometry.
 GeoTools Unsupported
 --------------------
 
-There is also a number of "unsupported" plugins and extensions that are under development
-(or being phased out). These modules are not distributed by the project management
-committee as part of the GeoTools library. However they are available via maven for
-individual download.
+There is also a number of "unsupported" plugins and extensions. These modules are not
+distributed by the project management committee as part of the GeoTools download,
+however they are available via maven or individual download.
 
 +-------------+---------------+---------------+-----------------------------------------+
 |Module       | JAR           | Unsupported   | Purpose                                 |
@@ -245,6 +222,34 @@ individual download.
 +-------------+---------------+---------------+-----------------------------------------+
 | OpenGIS     | gt-opengis    |               |                                         |
 +-------------+---------------+---------------+-----------------------------------------+
+
+Adding GeoTools to your Application
+-----------------------------------
+
+Maven (recommended):
+   The quickstart is writen with the maven build system in mind. The maven build
+   system is very good at sorting out dependencies between lots of little jars - and
+   is the recommended way to start using GeoTools.
+   
+   Both Eclipse and NetBeans offer maven integration, for details please review
+   the Eclipse Quickstart and NetBeans quickstart.
+   
+   Using maven in concert with your IDE, and looking over the pictures on this page is
+   recommended.
+
+Download:
+   Traditionally users just dump all the jars into their IDE and have a go, please be
+   advised that some of the jars will be in conflict.
+   
+   1. Dump everything from a binary distribution of GeoTools into your IDE
+   2. Remove all the jars that say epsg in them - except for the gt2-epsg jar.
+   3. Ensure your JRE has JAI and ImageIO if you are doing raster work
+   4. Ignore the rest of this page   
+   
+   For detailed step-by-step instructions review the Eclipse quickstart and
+   Netbeans quickstart. Instructions for downloading and selecting jars
+   are provided at the end of the document as an alternative.
+
 
 Module Matrix
 -------------

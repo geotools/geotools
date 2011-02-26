@@ -7,7 +7,6 @@ Welcome to the Geotools Users Guide. This space serves as a reference to the Geo
 .. toctree::
    
    license
-   geotools
    support
    create
    factory
@@ -17,4 +16,5 @@ Welcome to the Geotools Users Guide. This space serves as a reference to the Geo
    netbeans
    udig
    api
+   geotools
 

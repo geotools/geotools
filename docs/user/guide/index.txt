@@ -5,6 +5,7 @@ User Guide
 This User Guide is  reference for GeoTools with code examples for each module, plugin and extension.
 
 .. toctree::
+   :maxdepth: 2
 
    welcome/index
    library/index

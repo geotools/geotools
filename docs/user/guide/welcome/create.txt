@@ -1,14 +1,16 @@
-Create
-======
+How to Create
+=============
 
 Code leveraging GeoTools usually works against the Java interfaces only but interfaces in Java don't provide any way to create actual objects. GeoTools therefore provides Factories which are concrete implementations through whose interface users can create actual GeoTools objects such as Features, Styles, Filters, DataStores, and MathTransforms.
 
 This page explains how to use the FactoryFinder system to find the appropriate Factory implementations to instantiate particular objects. The next page will show alternative approaches to obtain and use a particular implementation of an appropriate DataStore interface; those examples show the utility of the FactoryFinder system.
 
-Creating Anything
------------------
+Creating in GeoTools
+--------------------
 
 To create an implementation (and not get your hands dirty by depending on a specific class) Java developers are asked to use a Factory. Other languages like scala allow the definition of a constructors as part of the interface itself.
+
+in GeoTools we use a "FactoryFinder" to look for a factory implementation on the classpath.
 
 Here is a quick example showing how to create and use a Filter::
   
@@ -30,19 +32,6 @@ In this example we:
 3. Used the instance to accomplish something.
   
    (we used the filter to check the size of a Feature )
-
-Where to get a Factory
-----------------------
-
-It really depends on your application, depending on your environment you may locate a factory by either:
-
-* Using a GeoTools "FactoryFinder". Most factory finders are provided by the main module. They will hunt down an implementation on the CLASSPATH for you to use.
-* Use of "Container" - you may find an implementation provided as part of your application container (especially for a Java EE application). You can take this approach in normal applications with a container implementation like Spring, or PicoContainer
-* Use of "JNDI" - your application may also store an implementation in JNDI (this approach is often used to locate a DataSource in a JEE application)
-* Direct use of a known factory. You can always create a new Factory yourself and make use of it to create interfaces.
-* Direct use of an implementation. You may decide to duck the factory game completely and make use of a specific implementation using new.
-
-These examples will usually use a factory finder of some sort. For the details please review the How to Find a Factory page.
 
 Finding a FactoryFinder
 -----------------------

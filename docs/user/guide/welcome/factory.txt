@@ -1,10 +1,18 @@
-How to Find a Factory
-=====================
+Where to get a Factory
+----------------------
 
-There are a couple of ways to get a hold of a GeoTools Factory.
+It really depends on your application, depending on your environment you may locate a factory by either:
+
+* Using a GeoTools "FactoryFinder". Most factory finders are provided by the main module. They will hunt down an implementation on the CLASSPATH for you to use.
+* Use of "Container" - you may find an implementation provided as part of your application container (especially for a Java EE application). You can take this approach in normal applications with a container implementation like Spring, or PicoContainer
+* Use of "JNDI" - your application may also store an implementation in JNDI (this approach is often used to locate a DataSource in a JEE application)
+* Direct use of a known factory. You can always create a new Factory yourself and make use of it to create interfaces.
+* Direct use of an implementation. You may decide to duck the factory game completely and make use of a specific implementation using new.
+
+These examples will usually use a factory finder of some sort. For the details please review the How to Find a Factory page.
 
 FactoryFinder
--------------
+^^^^^^^^^^^^^
 
 While the use of Factories has become common place (especially in development environments like Spring). GeoTools has its own "FactoryFinder" classes, unique to project, which is how the library looks up what plugins are available for use.
 
@@ -19,16 +27,13 @@ Here is an example::
    FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory( null );
 
 About FactorySPI
-^^^^^^^^^^^^^^^^
+""""""""""""""""
 
 The "FactorySPI" system is the out of the box plug in system that ships with Java. That is why we like it - we are sure you already are using the Java software after all. The SPI part is pronounced "spy" and stands for Service, Provider, Interface.
 
 The FactorySPI system has a look on your CLASSPATH and locates implementations of a requested service scattered around all the jars you have. It does this by looking in the jar MANIFEST folder in a services directory.
 
 Factory SPI is a runtime plugin system; so your application can "discover" and use new abilities that GeoTools provides over time. As our shapefile support gets better and better your application will notice and make use of the best implementation for the job.
-
-Searching using FactoryRegistery
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 If you are curious you can make use of the FactorySPI system yourself to locate anything we got going on in GeoTools::
    
@@ -48,12 +53,12 @@ Notes:
 Think of FactoryRegistry keeping instances as singletons for you.  In the same manner as it is a Java best practice (when making a singleton) to "partition" by ThreadGroup (so different applets use different singletons). FactoryRegistry does not follow this practice - it uses Hints to "partition" - so two applets that are configured the same will end up using the same FilterFactory.
 
 Application specific Alternatives
----------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Here are a couple of alternatives for stitching together your application.
 
 Container
-^^^^^^^^^
+"""""""""
 
 A container is a great way to take care of a lot of the boiler plate
 code involved in working with factories. Much of this documentation
@@ -88,7 +93,7 @@ In the above example the WKTParser needs to be constructed with a PositionFactor
 If we were not using a container to manage our factories it would of taken three times the number of lines of code just to set up a WKTParser.
 
 JNDI
-^^^^
+""""
 
 If you are writing a Java EE Application there is a big global map in the sky called "InitialContext". Literally this is a map you can do look up by name and find Java instances in. It is so global in fact that the instances will be shared between applications.
 
@@ -122,8 +127,8 @@ The difference between JNDI and a Container:
 
 Because making use of an application container is a good idea, and too hard to set up. There are a lot of alternative "light weight" containers available. Examples include pico container, JBoss container, Spring container and many many more. These containers focus on the storing of global variables (and making a lot of the difficult configuration automatic - like what factory needs to be created first).
 
-Hack for Direct use of Factory
-------------------------------
+Direct use of Factory
+^^^^^^^^^^^^^^^^^^^^^
 
 Sometimes you just need to go ahead and code it like you mean it. The GeoTools plugin system does have its place and purpose; but if you know exactly what you are doing; or want to test an exact situation you can dodge the plugin system and do the work by hand.
 

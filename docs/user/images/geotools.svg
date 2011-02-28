@@ -21,6 +21,32 @@
    inkscape:export-ydpi="90.054886">
   <defs
      id="defs2989">
+    <marker
+       inkscape:stockid="Arrow1Mend"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow1Mend"
+       style="overflow:visible;">
+      <path
+         id="path3796"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt;marker-start:none;"
+         transform="scale(0.4) rotate(180) translate(10,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow1Lend"
+       style="overflow:visible;">
+      <path
+         id="path3790"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt;marker-start:none;"
+         transform="scale(0.8) rotate(180) translate(12.5,0)" />
+    </marker>
     <linearGradient
        id="linearGradient7658">
       <stop
@@ -325,6 +351,215 @@
        fx="149.58623"
        fy="234.68521"
        r="70.5" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4081"
+       id="radialGradient2918"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.42857141,0,0,0.60460987,274.85715,525.05864)"
+       cx="150"
+       cy="234.09448"
+       fx="150"
+       fy="234.09448"
+       r="70.5" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3787"
+       id="radialGradient2932"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.42857143,0,0,0.90691492,214.85714,435.5407)"
+       cx="150"
+       cy="234.09448"
+       fx="150"
+       fy="234.09448"
+       r="70.5" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3787"
+       id="radialGradient2936"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.42857143,0,0,1.2092199,214.85714,346.02278)"
+       cx="150"
+       cy="234.09448"
+       fx="150"
+       fy="234.09448"
+       r="70.5" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3787"
+       id="radialGradient2940"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.42857143,0,0,0.90691492,214.85714,465.54069)"
+       cx="150"
+       cy="234.09448"
+       fx="150"
+       fy="234.09448"
+       r="70.5" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient7658"
+       id="radialGradient2944"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.58540368,0,0,0.7053782,384.1708,428.55265)"
+       cx="149.58623"
+       cy="234.68521"
+       fx="149.58623"
+       fy="234.68521"
+       r="70.5" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient7658"
+       id="radialGradient2948"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.58540368,0,0,0.7053782,384.1708,448.55265)"
+       cx="149.58623"
+       cy="234.68521"
+       fx="149.58623"
+       fy="234.68521"
+       r="70.5" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient7658"
+       id="radialGradient2952"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.58540368,0,0,0.7053782,384.1708,468.55265)"
+       cx="149.58623"
+       cy="234.68521"
+       fx="149.58623"
+       fy="234.68521"
+       r="70.5" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient7658"
+       id="radialGradient2956"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.58540368,0,0,0.7053782,384.1708,508.55265)"
+       cx="149.58623"
+       cy="234.68521"
+       fx="149.58623"
+       fy="234.68521"
+       r="70.5" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4081"
+       id="radialGradient3732"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.42857141,0,0,0.60460987,334.85715,525.05864)"
+       cx="150"
+       cy="234.09448"
+       fx="150"
+       fy="234.09448"
+       r="70.5" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4081"
+       id="radialGradient3736"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.85714282,0,0,0.60460987,239.7143,505.05864)"
+       cx="150"
+       cy="234.09448"
+       fx="150"
+       fy="234.09448"
+       r="70.5" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4081"
+       id="radialGradient3740"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.49999998,0,0,1.2092198,269.00001,366.0228)"
+       cx="150"
+       cy="234.09448"
+       fx="150"
+       fy="234.09448"
+       r="70.5" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4081"
+       id="radialGradient3744"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.28571427,0,0,0.60460988,286.57143,445.05864)"
+       cx="150"
+       cy="234.09448"
+       fx="150"
+       fy="234.09448"
+       r="70.5" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4081"
+       id="radialGradient3748"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.35714284,0,0,0.60460988,320.71429,445.05864)"
+       cx="150"
+       cy="234.09448"
+       fx="150"
+       fy="234.09448"
+       r="70.5" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4081"
+       id="radialGradient3752"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.2142857,0,0,0.60460988,382.42857,445.05864)"
+       cx="150"
+       cy="234.09448"
+       fx="150"
+       fy="234.09448"
+       r="70.5" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4081"
+       id="radialGradient3756"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.35714284,0,0,0.60460988,350.71429,465.05864)"
+       cx="150"
+       cy="234.09448"
+       fx="150"
+       fy="234.09448"
+       r="70.5" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4081"
+       id="radialGradient3760"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.35714284,0,0,0.60460988,350.71429,485.05864)"
+       cx="150"
+       cy="234.09448"
+       fx="150"
+       fy="234.09448"
+       r="70.5" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient7658"
+       id="radialGradient4608"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.63043475,0,0,1.0580673,195.26087,330.78174)"
+       cx="149.58623"
+       cy="234.68521"
+       fx="149.58623"
+       fy="234.68521"
+       r="70.5" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient7658"
+       id="radialGradient4620"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.63043475,0,0,1.0580673,275.26087,330.78174)"
+       cx="149.58623"
+       cy="234.68521"
+       fx="149.58623"
+       fy="234.68521"
+       r="70.5" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient7658"
+       id="radialGradient4628"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.54037264,0,0,1.0580673,363.08075,330.78174)"
+       cx="149.58623"
+       cy="234.68521"
+       fx="149.58623"
+       fy="234.68521"
+       r="70.5" />
   </defs>
   <sodipodi:namedview
      inkscape:document-units="mm"
@@ -334,17 +569,17 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1"
-     inkscape:cx="456.41542"
-     inkscape:cy="530.24872"
+     inkscape:cx="346.73458"
+     inkscape:cy="365.82924"
      inkscape:current-layer="layer1"
      id="namedview2991"
      showgrid="true"
      inkscape:snap-grids="true"
-     inkscape:window-width="1167"
-     inkscape:window-height="850"
-     inkscape:window-x="281"
-     inkscape:window-y="0"
-     inkscape:window-maximized="0">
+     inkscape:window-width="1240"
+     inkscape:window-height="984"
+     inkscape:window-x="1473"
+     inkscape:window-y="15"
+     inkscape:window-maximized="1">
     <inkscape:grid
        type="xygrid"
        id="grid2998" />
@@ -373,13 +608,19 @@
        x="80"
        y="69.094482"
        rx="10"
-       ry="10" />
+       ry="10"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/geotools.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886" />
     <text
        xml:space="preserve"
        style="font-size:40px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Vera Sans"
        x="126.13281"
        y="130.75854"
-       id="text3799"><tspan
+       id="text3799"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/geotools.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886"><tspan
          style="font-size:32px;font-weight:normal;-inkscape-font-specification:Bitstream Vera Sans"
          sodipodi:role="line"
          id="tspan3801"
@@ -393,13 +634,19 @@
        height="60"
        width="140"
        id="rect3968"
-       style="fill:url(#radialGradient4016);fill-opacity:1;stroke:#191919;stroke-width:1;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1" />
+       style="fill:url(#radialGradient4016);fill-opacity:1;stroke:#191919;stroke-width:1;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/geotools.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886" />
     <text
        id="text3970"
        y="212.76636"
        x="127.03125"
        style="font-size:40px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
-       xml:space="preserve"><tspan
+       xml:space="preserve"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/geotools.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886"><tspan
          style="font-size:32px"
          y="212.76636"
          x="127.03125"
@@ -413,13 +660,19 @@
        x="80"
        y="239.09448"
        rx="10"
-       ry="10" />
+       ry="10"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/geotools.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886" />
     <text
        xml:space="preserve"
        style="font-size:40px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
        x="88.743164"
        y="289.073"
-       id="text4002"><tspan
+       id="text4002"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/geotools.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886"><tspan
          style="font-size:28px"
          sodipodi:role="line"
          id="tspan4004"
@@ -433,7 +686,10 @@
        height="40"
        width="265"
        id="rect4023"
-       style="fill:url(#radialGradient4025);fill-opacity:1;stroke:#191919;stroke-width:1;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1" />
+       style="fill:url(#radialGradient4025);fill-opacity:1;stroke:#191919;stroke-width:1;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/geotools.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886" />
     <rect
        style="fill:url(#radialGradient4029);fill-opacity:1.0;stroke:#191919;stroke-width:1;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
        id="rect4027"
@@ -442,13 +698,19 @@
        x="225"
        y="284.09448"
        rx="10"
-       ry="10" />
+       ry="10"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/geotools.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886" />
     <text
        xml:space="preserve"
        style="font-size:22px;font-style:normal;font-weight:normal;fill:#000064;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
        x="229.15967"
        y="314.09448"
-       id="text4031"><tspan
+       id="text4031"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/geotools.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886"><tspan
          sodipodi:role="line"
          id="tspan4033"
          x="229.15967"
@@ -459,7 +721,10 @@
        style="font-size:22px;font-style:normal;font-weight:normal;fill:#000064;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
        x="306.41016"
        y="269.09448"
-       id="text4063"><tspan
+       id="text4063"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/geotools.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886"><tspan
          sodipodi:role="line"
          id="tspan4065"
          x="306.41016"
@@ -472,13 +737,19 @@
        height="40"
        width="145"
        id="rect4067"
-       style="fill:url(#radialGradient4073);fill-opacity:1;stroke:#191919;stroke-width:1;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1" />
+       style="fill:url(#radialGradient4073);fill-opacity:1;stroke:#191919;stroke-width:1;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/geotools.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886" />
     <text
        id="text4069"
        y="314.09448"
        x="354.74414"
        style="font-size:22px;font-style:normal;font-weight:normal;fill:#000064;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
-       xml:space="preserve"><tspan
+       xml:space="preserve"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/geotools.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886"><tspan
          style="font-size:22px;fill:#000064;fill-opacity:1"
          y="314.09448"
          x="354.74414"
@@ -492,13 +763,19 @@
        x="224.99998"
        y="129.09448"
        rx="10"
-       ry="10" />
+       ry="10"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/geotools.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886" />
     <text
        id="text4091"
        y="189.79614"
        x="274.94629"
-       style="font-size:22px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
-       xml:space="preserve"><tspan
+       style="font-size:22px;font-style:normal;font-weight:normal;fill:#000064;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       xml:space="preserve"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/geotools.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886"><tspan
          y="189.79614"
          x="274.94629"
          id="tspan4093"
@@ -511,13 +788,19 @@
        height="55"
        width="75"
        id="rect4095"
-       style="fill:url(#radialGradient4097);fill-opacity:1;stroke:#191919;stroke-width:0.99999994;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1" />
+       style="fill:url(#radialGradient4097);fill-opacity:1;stroke:#191919;stroke-width:0.99999994;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/geotools.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886" />
     <text
        xml:space="preserve"
        style="font-size:22px;font-style:normal;font-weight:normal;fill:#000064;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
        x="246.84863"
        y="102.66382"
-       id="text4099"><tspan
+       id="text4099"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/geotools.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886"><tspan
          sodipodi:role="line"
          id="tspan4101"
          x="246.84863"
@@ -530,13 +813,19 @@
        x="415"
        y="69.094482"
        rx="9.999999"
-       ry="10.000001" />
+       ry="10.000001"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/geotools.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886" />
     <text
        id="text4105"
        y="104.9519"
        x="432.94922"
        style="font-size:22px;font-style:normal;font-weight:normal;fill:#000064;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
-       xml:space="preserve"><tspan
+       xml:space="preserve"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/geotools.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886"><tspan
          y="104.9519"
          x="432.94922"
          id="tspan4107"
@@ -549,13 +838,19 @@
        height="49.142578"
        width="105.00003"
        id="rect4111"
-       style="fill:url(#radialGradient4117);fill-opacity:1;stroke:#191919;stroke-width:0.99999976;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1" />
+       style="fill:url(#radialGradient4117);fill-opacity:1;stroke:#191919;stroke-width:0.99999976;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/geotools.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886" />
     <text
        xml:space="preserve"
        style="font-size:22px;font-style:normal;font-weight:normal;fill:#000064;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
        x="413.08301"
        y="216.86743"
-       id="text4113"><tspan
+       id="text4113"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/geotools.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886"><tspan
          sodipodi:role="line"
          id="tspan4115"
          x="413.08301"
@@ -568,13 +863,19 @@
        x="385"
        y="129.09448"
        rx="9.9999981"
-       ry="10.000001" />
+       ry="10.000001"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/geotools.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886" />
     <text
        id="text4121"
        y="160.16382"
        x="415.31738"
        style="font-size:22px;font-style:normal;font-weight:normal;fill:#000064;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
-       xml:space="preserve"><tspan
+       xml:space="preserve"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/geotools.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886"><tspan
          y="160.16382"
          x="415.31738"
          id="tspan4123"
@@ -587,13 +888,19 @@
        height="55"
        width="105"
        id="rect4127"
-       style="fill:url(#radialGradient4129);fill-opacity:1;stroke:#191919;stroke-width:0.99999988;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1" />
+       style="fill:url(#radialGradient4129);fill-opacity:1;stroke:#191919;stroke-width:0.99999988;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/geotools.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886" />
     <text
        xml:space="preserve"
        style="font-size:22px;font-style:normal;font-weight:normal;fill:#000064;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
        x="320"
        y="104.09448"
-       id="text4131"><tspan
+       id="text4131"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/geotools.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886"><tspan
          sodipodi:role="line"
          id="tspan4133"
          x="320"
@@ -603,7 +910,10 @@
        style="font-size:22px;font-style:normal;font-weight:normal;fill:#96ff00;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
        x="95"
        y="59.094482"
-       id="text4135"><tspan
+       id="text4135"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/geotools.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886"><tspan
          sodipodi:role="line"
          id="tspan4137"
          x="95"
@@ -614,7 +924,10 @@
        y="59.094482"
        x="260"
        style="font-size:22px;font-style:normal;font-weight:normal;fill:#96ff00;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
-       xml:space="preserve"><tspan
+       xml:space="preserve"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/geotools.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886"><tspan
          style="fill:#646464;fill-opacity:1"
          y="59.094482"
          x="260"
@@ -625,7 +938,10 @@
        style="font-size:22px;font-style:normal;font-weight:normal;fill:#96ff00;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Vera Sans"
        x="510"
        y="59.094482"
-       id="text4143"><tspan
+       id="text4143"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/geotools.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886"><tspan
          sodipodi:role="line"
          id="tspan4145"
          x="510"
@@ -639,7 +955,10 @@
        x="500"
        y="289.09448"
        rx="2"
-       ry="2" />
+       ry="2"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/geotools.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886" />
     <rect
        ry="2"
        rx="2"
@@ -648,7 +967,10 @@
        height="30"
        width="115"
        id="rect7672"
-       style="fill:url(#radialGradient7678);fill-opacity:1;stroke:#191919;stroke-width:1;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1" />
+       style="fill:url(#radialGradient7678);fill-opacity:1;stroke:#191919;stroke-width:1;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/geotools.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886" />
     <rect
        style="fill:url(#radialGradient7680);fill-opacity:1;stroke:#191919;stroke-width:1;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
        id="rect7674"
@@ -657,7 +979,10 @@
        x="505"
        y="199.09448"
        rx="2"
-       ry="2" />
+       ry="2"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/geotools.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886" />
     <rect
        ry="2"
        rx="2"
@@ -666,13 +991,19 @@
        height="30"
        width="115"
        id="rect7676"
-       style="fill:url(#radialGradient7682);fill-opacity:1;stroke:#191919;stroke-width:1;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1" />
+       style="fill:url(#radialGradient7682);fill-opacity:1;stroke:#191919;stroke-width:1;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/geotools.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886" />
     <text
        xml:space="preserve"
        style="font-size:16px;font-style:normal;font-weight:normal;text-align:center;text-anchor:middle;fill:#000064;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
        x="557.47656"
        y="214.09448"
-       id="text7684"><tspan
+       id="text7684"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/geotools.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886"><tspan
          sodipodi:role="line"
          id="tspan7686"
          x="557.47656"
@@ -683,7 +1014,10 @@
        y="309.09448"
        x="557.80469"
        style="font-size:16px;font-style:normal;font-weight:normal;text-align:center;text-anchor:middle;fill:#000064;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
-       xml:space="preserve"><tspan
+       xml:space="preserve"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/geotools.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886"><tspan
          y="309.09448"
          x="557.80469"
          id="tspan7690"
@@ -697,7 +1031,10 @@
        x="510"
        y="149.09448"
        rx="2"
-       ry="2" />
+       ry="2"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/geotools.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886" />
     <rect
        ry="2"
        rx="2"
@@ -706,7 +1043,10 @@
        height="30"
        width="115"
        id="rect7694"
-       style="fill:url(#radialGradient7704);fill-opacity:1;stroke:#191919;stroke-width:1;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1" />
+       style="fill:url(#radialGradient7704);fill-opacity:1;stroke:#191919;stroke-width:1;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/geotools.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886" />
     <rect
        style="fill:url(#radialGradient7706);fill-opacity:1;stroke:#191919;stroke-width:1;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
        id="rect7696"
@@ -715,13 +1055,19 @@
        x="500"
        y="139.09448"
        rx="2"
-       ry="2" />
+       ry="2"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/geotools.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886" />
     <text
        id="text7698"
        y="159.09448"
        x="553.75"
        style="font-size:16px;font-style:normal;font-weight:normal;text-align:center;text-anchor:middle;fill:#000064;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
-       xml:space="preserve"><tspan
+       xml:space="preserve"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/geotools.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886"><tspan
          y="159.09448"
          x="553.75"
          id="tspan7700"
@@ -735,7 +1081,10 @@
        height="30"
        width="115"
        id="rect7708"
-       style="fill:url(#radialGradient7718);fill-opacity:1;stroke:#191919;stroke-width:1;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1" />
+       style="fill:url(#radialGradient7718);fill-opacity:1;stroke:#191919;stroke-width:1;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/geotools.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886" />
     <rect
        style="fill:url(#radialGradient7720);fill-opacity:1;stroke:#191919;stroke-width:1;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
        id="rect7710"
@@ -744,7 +1093,10 @@
        x="505"
        y="89.094482"
        rx="2"
-       ry="2" />
+       ry="2"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/geotools.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886" />
     <rect
        ry="2"
        rx="2"
@@ -753,17 +1105,321 @@
        height="30"
        width="115"
        id="rect7712"
-       style="fill:url(#radialGradient7722);fill-opacity:1;stroke:#191919;stroke-width:1;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1" />
+       style="fill:url(#radialGradient7722);fill-opacity:1;stroke:#191919;stroke-width:1;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/geotools.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886" />
     <text
        xml:space="preserve"
        style="font-size:16px;font-style:normal;font-weight:normal;text-align:center;text-anchor:middle;fill:#000064;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
        x="557.66406"
        y="104.09448"
-       id="text7714"><tspan
+       id="text7714"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/geotools.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886"><tspan
          sodipodi:role="line"
          id="tspan7716"
          x="557.66406"
          y="104.09448"
          style="font-size:16px;text-align:center;text-anchor:middle">xsd-wms</tspan></text>
+    <rect
+       ry="5"
+       rx="5"
+       y="624.09448"
+       x="310"
+       height="19.999998"
+       width="60"
+       id="rect2916"
+       style="fill:url(#radialGradient2918);fill-opacity:1;stroke:#191919;stroke-width:0.99999988;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/extension.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       style="fill:url(#radialGradient2932);fill-opacity:1;stroke:#191919;stroke-width:1;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+       id="rect2930"
+       width="60"
+       height="30"
+       x="250"
+       y="584.09448"
+       rx="5"
+       ry="5"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/extension.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       ry="5"
+       rx="5"
+       y="544.09448"
+       x="250"
+       height="40"
+       width="60"
+       id="rect2934"
+       style="fill:url(#radialGradient2936);fill-opacity:1;stroke:#191919;stroke-width:0.99999994;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/extension.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       ry="5"
+       rx="5"
+       y="614.09448"
+       x="250"
+       height="30"
+       width="60"
+       id="rect2938"
+       style="fill:url(#radialGradient2940);fill-opacity:1;stroke:#191919;stroke-width:1;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/extension.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       ry="2"
+       rx="2"
+       y="544.09448"
+       x="435"
+       height="20"
+       width="65"
+       id="rect2942"
+       style="fill:url(#radialGradient2944);fill-opacity:1;stroke:#191919;stroke-width:1;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/extension.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       style="fill:url(#radialGradient2948);fill-opacity:1;stroke:#191919;stroke-width:1;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+       id="rect2946"
+       width="65"
+       height="20"
+       x="435"
+       y="564.09448"
+       rx="2"
+       ry="2"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/extension.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       ry="2"
+       rx="2"
+       y="584.09448"
+       x="435"
+       height="20"
+       width="65"
+       id="rect2950"
+       style="fill:url(#radialGradient2952);fill-opacity:1;stroke:#191919;stroke-width:1;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/extension.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       style="fill:url(#radialGradient2956);fill-opacity:1;stroke:#191919;stroke-width:1;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+       id="rect2954"
+       width="65"
+       height="20"
+       x="435"
+       y="624.09448"
+       rx="2"
+       ry="2"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/extension.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       style="fill:url(#radialGradient3732);fill-opacity:1;stroke:#191919;stroke-width:0.99999988;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+       id="rect3730"
+       width="60"
+       height="19.999998"
+       x="370"
+       y="624.09448"
+       rx="5"
+       ry="5"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/extension.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       style="fill:url(#radialGradient3736);fill-opacity:1;stroke:#191919;stroke-width:0.99999988;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+       id="rect3734"
+       width="120"
+       height="19.999998"
+       x="310"
+       y="604.09448"
+       rx="5"
+       ry="5"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/extension.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       ry="5"
+       rx="5"
+       y="564.09448"
+       x="310"
+       height="39.999996"
+       width="70"
+       id="rect3738"
+       style="fill:url(#radialGradient3740);fill-opacity:1;stroke:#191919;stroke-width:0.99999988;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/extension.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       style="fill:url(#radialGradient3744);fill-opacity:1;stroke:#191919;stroke-width:0.99999988;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+       id="rect3742"
+       width="40"
+       height="19.999998"
+       x="310"
+       y="544.09448"
+       rx="5"
+       ry="5"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/extension.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       ry="5"
+       rx="5"
+       y="544.09448"
+       x="350"
+       height="19.999998"
+       width="50"
+       id="rect3746"
+       style="fill:url(#radialGradient3748);fill-opacity:1;stroke:#191919;stroke-width:0.99999988;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/extension.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       style="fill:url(#radialGradient3752);fill-opacity:1;stroke:#191919;stroke-width:0.99999988;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+       id="rect3750"
+       width="30"
+       height="19.999998"
+       x="400"
+       y="544.09448"
+       rx="5"
+       ry="5"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/extension.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       style="fill:url(#radialGradient3756);fill-opacity:1;stroke:#191919;stroke-width:0.99999988;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+       id="rect3754"
+       width="50"
+       height="19.999998"
+       x="380"
+       y="564.09448"
+       rx="5"
+       ry="5"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/extension.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       ry="5"
+       rx="5"
+       y="584.09448"
+       x="380"
+       height="19.999998"
+       width="50"
+       id="rect3758"
+       style="fill:url(#radialGradient3760);fill-opacity:1;stroke:#191919;stroke-width:0.99999988;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/extension.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <text
+       xml:space="preserve"
+       style="font-size:22px;font-style:normal;font-weight:normal;text-align:end;text-anchor:end;fill:#96ff00;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="240.57812"
+       y="564.09448"
+       id="text3770"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/extension.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         id="tspan3772"
+         x="240.57812"
+         y="564.09448"
+         style="text-align:end;text-anchor:end;fill:#646464;fill-opacity:1">LIBRARY</tspan></text>
+    <text
+       id="text3778"
+       y="524.09448"
+       x="240.67969"
+       style="font-size:22px;font-style:normal;font-weight:normal;text-align:end;text-anchor:end;fill:#96ff00;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       xml:space="preserve"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/extension.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         style="text-align:end;text-anchor:end;fill:#646464;fill-opacity:1"
+         y="524.09448"
+         x="240.67969"
+         id="tspan3780"
+         sodipodi:role="line">EXTENSIONS</tspan></text>
+    <rect
+       style="fill:url(#radialGradient4608);fill-opacity:1;stroke:#191919;stroke-width:1;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+       id="rect4606"
+       width="70"
+       height="30"
+       x="250"
+       y="504.09448"
+       rx="2"
+       ry="2"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/extension.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <text
+       id="text4610"
+       y="524.09448"
+       x="285.29297"
+       style="font-size:16px;font-style:normal;font-weight:normal;text-align:center;text-anchor:middle;fill:#000064;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       xml:space="preserve"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/extension.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         style="font-size:16px;text-align:center;text-anchor:middle"
+         y="524.09448"
+         x="285.29297"
+         id="tspan4612"
+         sodipodi:role="line">swing</tspan></text>
+    <rect
+       ry="2"
+       rx="2"
+       y="504.09448"
+       x="330"
+       height="30"
+       width="70"
+       id="rect4614"
+       style="fill:url(#radialGradient4620);fill-opacity:1;stroke:#191919;stroke-width:1;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/extension.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <text
+       xml:space="preserve"
+       style="font-size:16px;font-style:normal;font-weight:normal;text-align:center;text-anchor:middle;fill:#000064;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="364.28125"
+       y="524.09448"
+       id="text4616"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/extension.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         id="tspan4618"
+         x="364.28125"
+         y="524.09448"
+         style="font-size:16px;text-align:center;text-anchor:middle">brewer</tspan></text>
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/extension.png"
+       style="fill:url(#radialGradient4628);fill-opacity:1;stroke:#191919;stroke-width:1;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+       id="rect4622"
+       width="60"
+       height="30"
+       x="410"
+       y="504.09448"
+       rx="1.9999999"
+       ry="2" />
+    <text
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/extension.png"
+       id="text4624"
+       y="524.09448"
+       x="440.24609"
+       style="font-size:16px;font-style:normal;font-weight:normal;text-align:center;text-anchor:middle;fill:#000064;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       xml:space="preserve"><tspan
+         style="font-size:16px;text-align:center;text-anchor:middle"
+         y="524.09448"
+         x="440.24609"
+         id="tspan4626"
+         sodipodi:role="line">graph</tspan></text>
   </g>
 </svg>

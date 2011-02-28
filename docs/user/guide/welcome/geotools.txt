@@ -1,11 +1,8 @@
-Library Structure
+GeoTools Overview
 =================
 
 Having an understanding of how the GeoTools library is structured for helpful for sorting
 out what jars you need for your application.
-
-
-.. image:: /images/geotools.png
 
 This page introduces the you to the parts of the GeoTools library and how they fit together.
 By including only the jars you need you can select just the right amount of GeoTools for
@@ -16,6 +13,18 @@ GeoTools Library
 
 The GeoTools library forms a software "stack" with each jar building on the ideas
 and concepts defined in the previous one.
+
+
+.. image:: /images/geotools.png
+
+Each layer of the "stack" is built on the ones below it:
+
+* To use Referencing you need gt-opengis, gt-referencing and gt-metadata
+* To use Data you need gt-api, gt-data, gt-main, jts, gt-opengis, gt-referencing, gt-opengis,
+  gt-metadata
+
+The maven tool can calculate the jars you need, please see the Eclipse or Netbeans quickstart
+for an example use.
 
 ============== ==============================================================
 Module            Purpose
@@ -34,14 +43,6 @@ gt-metadata    Implementation of identification and description
 gt-opengis     Definition of interfaces for common spatial concepts
 ============== ==============================================================
 
-Each layer of the "stack" is built on the ones below it:
-
-* To use Referencing you need gt-opengis, gt-referencing and gt-metadata
-* To use Data you need gt-api, gt-data, gt-main, jts, gt-opengis, gt-referencing, gt-opengis,
-  gt-metadata
-
-The maven tool can calculate the jars you need, please see the Eclipse or Netbeans quickstart
-for an example use.
 
 GeoTools Plugins
 ^^^^^^^^^^^^^^^^
@@ -50,7 +51,7 @@ GeoTools offers plug-ins to support additional data formats, different coordinat
 system authorities and so on.
 
 +---------------+------------------+--------------------------------------+
-| Module        | Plugin JAR       | Plugin                               |
+| Module        | JAR              | Plugin                               |
 +===============+==================+======================================+
 | gt-render     |                  |                                      |
 +---------------+------------------+--------------------------------------+
@@ -112,13 +113,17 @@ example every time you use the referencing module please make sure you have an e
 around (or the referencing module will not know that "EPSG:4326" is the world as we know it).
 
 GeoTools Extensions
-^^^^^^^^^^^^^^^^^^^
+-------------------
 
-We have gone a bit further and implemented some interesting functionality on top of the
-GeoTools library. This code is kind of fun and may be useful in your own project.
+We have gone a bit further and implemented some interesting "extensions" on top of the GeoTools library. These extensions provide additional capabilities that are built on top of GeoTools using the spatial facilities of the library.
+
+
+.. image:: /images/extension.png
+
+The extensions are independent of each other offering and may be of use in your application. Here is a brief listing of the extensions at the time of writing.
 
 ============== ===============================================
-Extension      Purpose
+JAR            Extension
 ============== ===============================================
 gt-graph       Work with graph and network traversals
 gt-validation  Quality assurance for spatial data
@@ -127,13 +132,14 @@ gt-xsd         Parsing/Encoding for common OGC schemas
 gt-brewer      Generation of styles using color brewer
 ============== ===============================================
 
+XML
+^^^
 
-We also have bundled up several schemas in JAR form (to prevent needing to download them from
-the internet each time they are needed) along with a generated Java model using the Eclipse
-Modelling Framework.
+To support the xml module in GeoTools we have bundled up several XML schemas in JAR form (to prevent needing to download them from
+the internet each time they are needed). In addition these jars contain a generated Java data structure produced with the Eclipse Modelling Framework.
 
 ================= =============================================
-JAR               Description
+JAR               Schema
 ================= =============================================
 net.opengis.ows   open web services schema
 net.opengis.wfs   web feature service
@@ -143,13 +149,13 @@ net.opengis.wfsv  web feature service schema
 org.w3.xlink      xlink schema
 ================= =============================================
 
-To support the xsd parser there are a series of XSD plugins indicating how to parse and encode
-additional content. These plugins make use of the Eclipse Modelling Community XSD library to
-parse XML schema documents and offer "bindings" mapping these to Java classes such as String,
+These facilities are used by the xsd parser by way of a series of XSD plugins. These plugins indicating how to parse and encode
+additional content using Eclipse XSD library to
+parse XML schema documents and offer "bindings" showing how to parse and encode to Java classes such as String,
 Date, URL and Geometry.
 
 ================= =============================================
-JAR               Description
+JAR               Bindings
 ================= =============================================
 gt-xsd-core       Basic types defined by XML schema
 gt-xsd-fes        filter

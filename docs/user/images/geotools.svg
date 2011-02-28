@@ -17,8 +17,8 @@
    inkscape:version="0.47pre2 r22153"
    sodipodi:docname="geotools.svg"
    inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/geotools.png"
-   inkscape:export-xdpi="120"
-   inkscape:export-ydpi="120">
+   inkscape:export-xdpi="90.054886"
+   inkscape:export-ydpi="90.054886">
   <defs
      id="defs2989">
     <linearGradient
@@ -334,8 +334,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1"
-     inkscape:cx="400.29053"
-     inkscape:cy="460.95795"
+     inkscape:cx="456.41542"
+     inkscape:cy="530.24872"
      inkscape:current-layer="layer1"
      id="namedview2991"
      showgrid="true"
@@ -476,12 +476,12 @@
     <text
        id="text4069"
        y="314.09448"
-       x="350"
+       x="354.74414"
        style="font-size:22px;font-style:normal;font-weight:normal;fill:#000064;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
        xml:space="preserve"><tspan
          style="font-size:22px;fill:#000064;fill-opacity:1"
          y="314.09448"
-         x="350"
+         x="354.74414"
          id="tspan4071"
          sodipodi:role="line">referencing</tspan></text>
     <rect
@@ -669,26 +669,26 @@
        style="fill:url(#radialGradient7682);fill-opacity:1;stroke:#191919;stroke-width:1;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1" />
     <text
        xml:space="preserve"
-       style="font-size:22px;font-style:normal;font-weight:normal;fill:#000064;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
-       x="527.27539"
-       y="219.09448"
+       style="font-size:16px;font-style:normal;font-weight:normal;text-align:center;text-anchor:middle;fill:#000064;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="557.47656"
+       y="214.09448"
        id="text7684"><tspan
          sodipodi:role="line"
          id="tspan7686"
-         x="527.27539"
-         y="219.09448"
-         style="font-size:20px">shape</tspan></text>
+         x="557.47656"
+         y="214.09448"
+         style="font-size:16px;text-align:center;text-anchor:middle">shape</tspan></text>
     <text
        id="text7688"
-       y="314.09448"
-       x="509.54102"
-       style="font-size:22px;font-style:normal;font-weight:normal;fill:#000064;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       y="309.09448"
+       x="557.80469"
+       style="font-size:16px;font-style:normal;font-weight:normal;text-align:center;text-anchor:middle;fill:#000064;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
        xml:space="preserve"><tspan
-         y="314.09448"
-         x="509.54102"
+         y="309.09448"
+         x="557.80469"
          id="tspan7690"
          sodipodi:role="line"
-         style="font-size:20px">epsg-hsql</tspan></text>
+         style="font-size:16px;text-align:center;text-anchor:middle">epsg-hsql</tspan></text>
     <rect
        style="fill:url(#radialGradient7702);fill-opacity:1;stroke:#191919;stroke-width:1;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
        id="rect7692"
@@ -718,15 +718,15 @@
        ry="2" />
     <text
        id="text7698"
-       y="164.09448"
-       x="521.14746"
-       style="font-size:22px;font-style:normal;font-weight:normal;fill:#000064;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       y="159.09448"
+       x="553.75"
+       style="font-size:16px;font-style:normal;font-weight:normal;text-align:center;text-anchor:middle;fill:#000064;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
        xml:space="preserve"><tspan
-         y="164.09448"
-         x="521.14746"
+         y="159.09448"
+         x="553.75"
          id="tspan7700"
          sodipodi:role="line"
-         style="font-size:20px">postgis</tspan></text>
+         style="font-size:16px;text-align:center;text-anchor:middle">postgis</tspan></text>
     <rect
        ry="2"
        rx="2"
@@ -756,14 +756,14 @@
        style="fill:url(#radialGradient7722);fill-opacity:1;stroke:#191919;stroke-width:1;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1" />
     <text
        xml:space="preserve"
-       style="font-size:22px;font-style:normal;font-weight:normal;fill:#000064;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
-       x="513.48633"
-       y="109.09448"
+       style="font-size:16px;font-style:normal;font-weight:normal;text-align:center;text-anchor:middle;fill:#000064;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="557.66406"
+       y="104.09448"
        id="text7714"><tspan
          sodipodi:role="line"
          id="tspan7716"
-         x="513.48633"
-         y="109.09448"
-         style="font-size:20px">xsd-wms</tspan></text>
+         x="557.66406"
+         y="104.09448"
+         style="font-size:16px;text-align:center;text-anchor:middle">xsd-wms</tspan></text>
   </g>
 </svg>

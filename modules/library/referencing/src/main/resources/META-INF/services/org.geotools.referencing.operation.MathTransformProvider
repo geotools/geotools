@@ -41,5 +41,9 @@ org.geotools.referencing.operation.projection.CassiniSoldner$Provider
 org.geotools.referencing.operation.projection.EquidistantConic$Provider
 org.geotools.referencing.operation.projection.Polyconic$Provider
 org.geotools.referencing.operation.projection.Robinson$Provider
-org.geotools.referencing.operation.projection.WinkelTripel$Provider
+org.geotools.referencing.operation.projection.WinkelTripel$WinkelProvider
+org.geotools.referencing.operation.projection.WinkelTripel$AitoffProvider
+org.geotools.referencing.operation.projection.EckertIV$Provider
+org.geotools.referencing.operation.projection.Mollweide$MollweideProvider
+org.geotools.referencing.operation.projection.Mollweide$WagnerIVProvider
 

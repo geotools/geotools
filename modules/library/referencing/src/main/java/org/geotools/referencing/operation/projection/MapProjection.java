@@ -1373,6 +1373,19 @@ public abstract class MapProjection extends AbstractMathTransform
             }
         }
     }
+    
+    /**
+     * Tolerant asin that will just return the limits of its output range if the input is out of range
+     * @param v
+     * @return
+     */
+    double aasin(double v) {
+        double av = abs(v);
+        if (av >= 1.) {
+            return (v < 0. ? -PI / 2: PI / 2);
+        }
+        return asin(v);
+    }
 
 
     //////////////////////////////////////////////////////////////////////////////////////////

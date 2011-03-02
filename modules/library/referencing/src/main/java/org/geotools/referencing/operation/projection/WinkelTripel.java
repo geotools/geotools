@@ -38,11 +38,12 @@ import org.opengis.referencing.operation.MathTransform;
 
 
 /**
- * Winkel Tripel projection 
+ * Winkel Tripel and Hammer Aitoff projection 
  * 
  * <b>References:</b>
  * <ul>
  *   <li>http://en.wikipedia.org/wiki/Winkel_tripel_projection</li>
+ *   <li>http://en.wikipedia.org/wiki/Hammer_projection</li>
  * </ul>
  *
  * @see <A HREF="http://mathworld.wolfram.com/PolyconicProjection.html">Polyconic projection on MathWorld</A>
@@ -58,11 +59,17 @@ public class WinkelTripel extends MapProjection {
      */
     private static final long serialVersionUID = -8643765000703074857L;
     
+    private enum ProjectionMode {Winkel, Aitoff};
+    
     /**
      * Cosine of the standard parallel
      * Used for calculations for the ellipsoid.
      */
     private final double cosphi1;
+    
+    private final ProjectionMode mode;
+    
+    private ParameterDescriptorGroup descriptors;
 
     /**
      * Constructs a new map projection from the supplied parameters.
@@ -70,22 +77,27 @@ public class WinkelTripel extends MapProjection {
      * @param  parameters The parameter values in standard units.
      * @throws ParameterNotFoundException if a mandatory parameter is missing.
      */
-    protected WinkelTripel(final ParameterValueGroup parameters) throws ParameterNotFoundException {
-        super(parameters);
+    protected WinkelTripel(ProjectionMode mode, final ParameterDescriptorGroup descriptors, final ParameterValueGroup parameters) throws ParameterNotFoundException {
+        super(parameters, descriptors.descriptors());
+        this.descriptors = descriptors;
         invertible = false;
         
         //  Compute constants
-        final Collection<GeneralParameterDescriptor> expected = getParameterDescriptors().descriptors();
-        final double phi1 = doubleValue(expected, Provider.STANDARD_PARALLEL_1, parameters);
-        
-        cosphi1 = cos(phi1);
+        if(mode == ProjectionMode.Winkel) {
+            final Collection<GeneralParameterDescriptor> expected = getParameterDescriptors().descriptors();
+            final double phi1 = doubleValue(expected, WinkelProvider.STANDARD_PARALLEL_1, parameters);
+            cosphi1 = cos(phi1);
+        } else {
+            cosphi1 = 0;
+        }
+        this.mode = mode;
     }
     
     /**
      * {@inheritDoc}
      */
     public ParameterDescriptorGroup getParameterDescriptors() {
-        return Provider.PARAMETERS;
+        return descriptors;
     }
 
     /**
@@ -105,8 +117,10 @@ public class WinkelTripel extends MapProjection {
             x = y = 0;
         }
         
-        x = (x + lam * cosphi1) * 0.5;
-        y = (y + phi) * 0.5;
+        if(mode == ProjectionMode.Winkel) {
+            x = (x + lam * cosphi1) * 0.5;
+            y = (y + phi) * 0.5;
+        }
         
         if(ptDst != null) {
             ptDst.setLocation(x, y);
@@ -165,7 +179,7 @@ public class WinkelTripel extends MapProjection {
      *
      * @see org.geotools.referencing.operation.DefaultMathTransformFactory
      */
-    public static class Provider extends AbstractProvider {
+    public static class WinkelProvider extends AbstractProvider {
         /**
          * For cross-version compatibility.
          */
@@ -196,7 +210,7 @@ public class WinkelTripel extends MapProjection {
         /**
          * Constructs a new provider.
          */
-        public Provider() {
+        public WinkelProvider() {
             super(PARAMETERS);
         }
 
@@ -210,7 +224,53 @@ public class WinkelTripel extends MapProjection {
         protected MathTransform createMathTransform(final ParameterValueGroup parameters)
                 throws ParameterNotFoundException
         {
-            return new WinkelTripel(parameters);
+            return new WinkelTripel(ProjectionMode.Winkel, PARAMETERS, parameters);
+        }
+    }
+    
+    /**
+     * The {@linkplain org.geotools.referencing.operation.MathTransformProvider math transform
+     * provider} for the Aitoff projection (not part of the EPSG database).
+     *
+     * @since 2.7.0
+     * @author Andrea Aime
+     *
+     * @see org.geotools.referencing.operation.DefaultMathTransformFactory
+     */
+    public static class AitoffProvider extends AbstractProvider {
+        /**
+         * For cross-version compatibility.
+         */
+        private static final long serialVersionUID = 1189973109778926762L;
+
+        /**
+         * The parameters group.
+         */
+        static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(new NamedIdentifier[] {
+                new NamedIdentifier(Citations.ESRI, "Aitoff"),
+                new NamedIdentifier(Citations.GEOTOOLS, "Aitoff"),
+            }, new ParameterDescriptor[] {
+                SEMI_MAJOR, SEMI_MINOR
+            });
+
+        /**
+         * Constructs a new provider.
+         */
+        public AitoffProvider() {
+            super(PARAMETERS);
+        }
+
+        /**
+         * Creates a transform from the specified group of parameter values.
+         *
+         * @param  parameters The group of parameter values.
+         * @return The created math transform.
+         * @throws ParameterNotFoundException if a required parameter was not found.
+         */
+        protected MathTransform createMathTransform(final ParameterValueGroup parameters)
+                throws ParameterNotFoundException
+        {
+            return new WinkelTripel(ProjectionMode.Aitoff, PARAMETERS, parameters);
         }
     }
 }

@@ -14,11 +14,12 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.gml3.bindings;
+package org.geotools.gml3.bindings.ext;
 
 import javax.xml.namespace.QName;
 
 import org.geotools.gml3.GML;
+import org.geotools.gml3.bindings.LineStringTypeBinding;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
@@ -61,53 +62,16 @@ import com.vividsolutions.jts.geom.MultiLineString;
  *
  * @source $URL$
  */
-public class CurveTypeBinding extends AbstractComplexBinding {
-    protected GeometryFactory gf;
-
+public class CurveTypeBinding extends org.geotools.gml3.bindings.CurveTypeBinding
+    implements Comparable {
+    
     public CurveTypeBinding(GeometryFactory gf) {
-        this.gf = gf;
-    }
-
-    /**
-     * @generated
-     */
-    public QName getTarget() {
-        return GML.CurveType;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @generated modifiable
-     */
-    public Class getType() {
-        //return Curve.class;
-        return MultiLineString.class;
-    }
-
-    public int getExecutionMode() {
-        return BEFORE;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     *
-     * @generated modifiable
-     */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
-        LineString[] segments = (LineString[]) node.getChildValue("segments");
-
-        return gf.createMultiLineString(segments);
-
-        //return new Curve(segments, gf);
+        super(gf);
     }
 
     public Object getProperty(Object object, QName name)
         throws Exception {
-        if ("segments".equals(name.getLocalPart())) {
+        if (GML.segments.equals(name)) {
             //Curve curve = (Curve) object;
             MultiLineString curve = (MultiLineString) object;
             LineString[] segments = new LineString[curve.getNumGeometries()];
@@ -120,5 +84,13 @@ public class CurveTypeBinding extends AbstractComplexBinding {
         }
 
         return null;
+    }
+
+    public int compareTo(Object o) {
+        if (o instanceof LineStringTypeBinding) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 }

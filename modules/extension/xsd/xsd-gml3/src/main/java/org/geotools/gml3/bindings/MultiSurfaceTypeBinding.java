@@ -64,7 +64,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * @source $URL$
  */
 public class MultiSurfaceTypeBinding extends AbstractComplexBinding {
-    GeometryFactory gf;
+    protected GeometryFactory gf;
 
     public MultiSurfaceTypeBinding(GeometryFactory gf) {
         this.gf = gf;

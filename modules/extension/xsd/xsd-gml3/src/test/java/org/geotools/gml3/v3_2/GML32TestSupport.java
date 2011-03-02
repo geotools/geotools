@@ -23,7 +23,15 @@ public abstract class GML32TestSupport extends XMLTestSupport {
     }
 
     protected Configuration createConfiguration() {
-        return new GMLConfiguration();
+        return new GMLConfiguration(enableArcSurfaceSupport());
+    }
+    
+    /*
+     * To be overriden by subclasses that require the extended arc/surface bindings
+     * enabled. 
+     */
+    protected boolean enableArcSurfaceSupport() {
+        return false;
     }
     
     @Override

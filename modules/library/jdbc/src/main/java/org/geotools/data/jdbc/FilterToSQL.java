@@ -29,11 +29,13 @@ import java.util.logging.Logger;
 
 import org.geotools.data.jdbc.fidmapper.FIDMapper;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.factory.Hints;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.FunctionImpl;
 import org.geotools.filter.LikeFilterImpl;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.PrimaryKey;
+import org.geotools.util.ConverterFactory;
 import org.geotools.util.Converters;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -967,13 +969,21 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
 
     protected Object evaluateLiteral(Literal expression, Class target ) {
         Object literal = null;
+        
         // HACK: let expression figure out the right value for numbers,
         // since the context is almost always improperly set and the
-        // numeric converters try to force floating points to integrals 
-        if(target != null && !(Number.class.isAssignableFrom(target))) 
+        // numeric converters try to force floating points to integrals
+        // JD: the above is no longer true, so instead do a safe conversion
+        if(target != null) {
             // use the target type
-            literal = expression.evaluate(null, target);
-        
+            if (target.isAssignableFrom(Number.class)) {
+                literal = Converters.convert(expression.evaluate(null), target, 
+                        new Hints(ConverterFactory.SAFE_CONVERSION, true));    
+            }
+            else {
+                literal = expression.evaluate(null, target);
+            }
+        }
         // if the target was not known, of the conversion failed, try the
         // type guessing dance literal expression does only for the following
         // method call

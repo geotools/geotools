@@ -428,4 +428,13 @@ public abstract class JDBCFeatureSourceTest extends JDBCTestSupport {
         assertEquals(1, featureSource.getCount(new Query(null, caseInsensitiveLike)));
         assertEquals(1, featureSource.getCount(new Query(null, caseInsensitiveLike2)));
     }
+    
+    
+    public void testConversionFilter() throws Exception {
+        FilterFactory ff = dataStore.getFilterFactory();
+        PropertyIsEqualTo f = ff.equals(ff.property(aname("doubleProperty")), 
+            ff.add(ff.property(aname("intProperty")), ff.literal("0.1")));
+        assertEquals(1, featureSource.getCount(new Query(null, f)));
+    }
+    
 }

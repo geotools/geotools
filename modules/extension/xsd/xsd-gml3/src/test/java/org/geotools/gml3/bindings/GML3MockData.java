@@ -131,6 +131,22 @@ public class GML3MockData {
         return lineString;
     }
 
+    public static Element arcWithPosList(Document document, Node parent) {
+        Element arc = element(qName("Arc"), document, parent);
+        Element posList = element(qName("posList"), document, arc);
+        posList.appendChild(document.createTextNode("1.0 1.0 2.0 2.0 3.0 1.0"));
+
+        return arc;
+    }
+
+    public static Element circleWithPosList(Document document, Node parent) {
+        Element circle = element(qName("Circle"), document, parent);
+        Element posList = element(qName("posList"), document, circle);
+        posList.appendChild(document.createTextNode("1.0 1.0 2.0 2.0 3.0 1.0"));
+
+        return circle;
+    }
+
     public static LinearRing linearRing() {
         return gf.createLinearRing(new Coordinate[] {
                 new Coordinate(1, 1), new Coordinate(2, 2), new Coordinate(3, 3),

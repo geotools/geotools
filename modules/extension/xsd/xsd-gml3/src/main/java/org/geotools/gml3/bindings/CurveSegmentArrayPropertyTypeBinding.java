@@ -84,7 +84,8 @@ public class CurveSegmentArrayPropertyTypeBinding extends AbstractComplexBinding
 
     public Object getProperty(Object object, QName name)
         throws Exception {
-        if (GML._CurveSegment.equals(name)) {
+        if ("_CurveSegment".equals(name.getLocalPart()) || 
+         /*gml 3.2*/   "AbstractCurveSegment".equals(name.getLocalPart())) {
             return object;
         }
 

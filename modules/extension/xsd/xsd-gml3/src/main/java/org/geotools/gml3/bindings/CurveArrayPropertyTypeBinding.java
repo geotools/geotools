@@ -56,7 +56,7 @@ import com.vividsolutions.jts.geom.MultiLineString;
  */
 public class CurveArrayPropertyTypeBinding extends AbstractComplexBinding {
     
-    GeometryFactory gf;
+    protected GeometryFactory gf;
     
     public CurveArrayPropertyTypeBinding(GeometryFactory gf) {
         this.gf = gf;

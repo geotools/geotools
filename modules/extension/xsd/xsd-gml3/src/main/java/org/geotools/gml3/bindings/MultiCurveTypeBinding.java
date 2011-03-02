@@ -64,7 +64,7 @@ import com.vividsolutions.jts.geom.MultiLineString;
  * @source $URL$
  */
 public class MultiCurveTypeBinding extends AbstractComplexBinding {
-    GeometryFactory gf;
+    protected GeometryFactory gf;
 
     public MultiCurveTypeBinding(GeometryFactory gf) {
         this.gf = gf;

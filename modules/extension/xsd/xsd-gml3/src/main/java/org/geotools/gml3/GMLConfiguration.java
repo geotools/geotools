@@ -81,6 +81,10 @@ import org.picocontainer.MutablePicoContainer;
 import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.impl.CoordinateArraySequenceFactory;
+import org.geotools.gml3.bindings.ArcTypeBinding;
+import org.geotools.gml3.bindings.CircleTypeBinding;
+import org.geotools.gml3.bindings.RingTypeBinding;
+import org.geotools.gml3.bindings.SurfacePatchArrayPropertyTypeBinding;
 
 
 /**
@@ -104,9 +108,20 @@ public class GMLConfiguration extends Configuration {
      */
     public static final QName ENCODE_FEATURE_MEMBER = org.geotools.gml2.GMLConfiguration.ENCODE_FEATURE_MEMBER;
 
+    /**
+     * extended support for arcs and surface flag
+     */
+    boolean extArcSurfaceSupport = false;
+    
     public GMLConfiguration() {
+        this(false);
+    }
+    
+    public GMLConfiguration(boolean extArcSurfaceSupport) {
         super(GML.getInstance());
 
+        this.extArcSurfaceSupport = extArcSurfaceSupport;
+        
         //add xlink cdependency
         addDependency(new XLINKConfiguration());
 
@@ -119,6 +134,17 @@ public class GMLConfiguration extends Configuration {
         getProperties().add(Parser.Properties.PARSE_UNKNOWN_ATTRIBUTES);
     }
 
+    /**
+     * Flag that when set triggers extended support for arcs and surfaces.
+     */
+    public void setExtendedArcSurfaceSupport(boolean arcSurfaceSupport) {
+        this.extArcSurfaceSupport = arcSurfaceSupport;
+    }
+    
+    public boolean isExtendedArcSurfaceSupport() {
+        return extArcSurfaceSupport;
+    }
+    
     protected void registerBindings(MutablePicoContainer container) {
         //Types
         container.registerComponentImplementation(GML.AbstractFeatureType,
@@ -207,6 +233,39 @@ public class GMLConfiguration extends Configuration {
             SurfacePropertyTypeBinding.class);
         container.registerComponentImplementation(GML.SurfaceType, SurfaceTypeBinding.class);
         container.registerComponentImplementation(XS.ANYTYPE, ComplexSupportXSAnyTypeBinding.class);
+        
+        //extended bindings for arc/surface support
+        if (isExtendedArcSurfaceSupport()) {
+            container.registerComponentImplementation(GML.ArcType,
+                    ArcTypeBinding.class);
+            container.registerComponentImplementation(GML.CircleType,
+                    CircleTypeBinding.class);
+            container.registerComponentImplementation(GML.RingType, RingTypeBinding.class);
+            container.registerComponentImplementation(GML.SurfacePatchArrayPropertyType,
+                    SurfacePatchArrayPropertyTypeBinding.class);
+            container.registerComponentImplementation(GML.CurveArrayPropertyType, 
+                    org.geotools.gml3.bindings.ext.CurveArrayPropertyTypeBinding.class);
+            container.registerComponentImplementation(GML.CurvePropertyType, 
+                    org.geotools.gml3.bindings.ext.CurvePropertyTypeBinding.class);
+            container.registerComponentImplementation(GML.CurveType, 
+                    org.geotools.gml3.bindings.ext.CurveTypeBinding.class);
+            container.registerComponentImplementation(GML.MultiCurveType, 
+                    org.geotools.gml3.bindings.ext.MultiCurveTypeBinding.class);
+            container.registerComponentImplementation(GML.MultiPolygonType, 
+                    org.geotools.gml3.bindings.ext.MultiPolygonTypeBinding.class);
+            container.registerComponentImplementation(GML.MultiSurfaceType, 
+                    org.geotools.gml3.bindings.ext.MultiSurfaceTypeBinding.class);
+            container.registerComponentImplementation(GML.PolygonPatchType, 
+                    org.geotools.gml3.bindings.ext.PolygonPatchTypeBinding.class);
+            container.registerComponentImplementation(GML.SurfaceArrayPropertyType, 
+                    org.geotools.gml3.bindings.ext.SurfaceArrayPropertyTypeBinding.class);
+            container.registerComponentImplementation(GML.SurfacePatchArrayPropertyType, 
+                    org.geotools.gml3.bindings.ext.SurfacePatchArrayPropertyTypeBinding.class);
+            container.registerComponentImplementation(GML.SurfacePropertyType, 
+                    org.geotools.gml3.bindings.ext.SurfacePropertyTypeBinding.class);
+            container.registerComponentImplementation(GML.SurfaceType, 
+                    org.geotools.gml3.bindings.ext.SurfaceTypeBinding.class);
+        }
     }
 
     /**
@@ -231,5 +290,9 @@ public class GMLConfiguration extends Configuration {
         container.registerComponentImplementation(GeometryFactory.class);
         
         container.registerComponentInstance(new GML3EncodingUtils());
+        
+        if (isExtendedArcSurfaceSupport()) {
+            container.registerComponentInstance(new ArcParameters());
+        }
     }
 }

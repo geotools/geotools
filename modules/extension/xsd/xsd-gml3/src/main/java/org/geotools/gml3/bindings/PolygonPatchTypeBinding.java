@@ -78,7 +78,7 @@ import com.vividsolutions.jts.geom.Polygon;
  */
 public class PolygonPatchTypeBinding extends AbstractComplexBinding {
 
-    GeometryFactory gf;
+    protected GeometryFactory gf;
     
     public PolygonPatchTypeBinding(GeometryFactory gf) {
         this.gf = gf;

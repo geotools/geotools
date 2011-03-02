@@ -230,6 +230,58 @@ public final class ScriptTest {
     public void testWinkelTripel() throws Exception {
         runScript("scripts/WinkelTripel.txt");
     }
+    
+    /**
+     * Run "HammerAitoff.txt"
+     * @throws Exception
+     */
+    @Test
+    public void testAitoff() throws Exception {
+        runScript("scripts/Aitoff.txt");
+    }
+    
+    /**
+     * Run "EckertIV.txt"
+     * @throws Exception
+     */
+    @Test
+    public void testEckertIV() throws Exception {
+        runScript("scripts/EckertIV.txt");
+    }
+    
+    /**
+     * Run "Mollweide.txt"
+     * @throws Exception
+     */
+    @Test
+    public void testMollweide() throws Exception {
+        runScript("scripts/Mollweide.txt");
+    }
+    
+    /**
+     * Run "WagnerIV.txt"
+     * @throws Exception
+     */
+    @Test
+    public void testWagnerIV() throws Exception {
+        runScript("scripts/WagnerIV.txt");
+    }
+    
+    /**
+     * Run "WagnerIV.txt". Disabled as the projection is not really
+     * working as expected, but don't have time to investigate.
+     * If you want to try and fix this please enable the service provider as well
+     * by adding the 
+     * org.geotools.referencing.operation.projection.Mollweide$WagnerVProvider
+     * line into 
+     * referencing/src/main/resources/META-INF/services/org.geotools.referencing.operation.MathTransformProvider
+     * @throws Exception
+     */
+    @Test
+    @Ignore
+    public void testWagnerV() throws Exception {
+        runScript("scripts/WagnerV.txt");
+    }
 
     /**
      * Run "OpenGIS.txt".

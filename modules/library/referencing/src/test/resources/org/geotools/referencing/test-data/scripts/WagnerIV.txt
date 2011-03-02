@@ -1,0 +1,57 @@
+// Test points for the Wagner IV projection
+//
+// (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+//
+// The following test points were calculated with libproj4 utility "cs2cs" 
+// cs2cs -v +datum=WGS84 +proj=lonlat +to +datum=WGS84 +proj=moll
+//
+// Andrea Aime - March 2 2011
+//
+// --------------------------------------------------------------------------
+// How to run this script:
+//
+//    chdir org/geotools/referencing/test-data/scripts
+//    java -ea org.geotools.referencing.ScriptRunner WagnerIV.txt
+//
+// A test is performed every time a "target pt" statement occurs. If the target point computed
+// by Geotools is different from the target point declared in this script by an amount greater
+// than the value specified in the last "test tolerance" statement, then a failure is reported.
+// Inverse transforms are tested if java assertions are enabled.
+// If some test fails, "print" statements can be added in this script for debugging purpose:
+//
+//    print crs            (prints the source and target CRS, and the transform between them)
+//    print pts            (prints the source and target points, and their transformed points)
+
+
+// CRS used for the test 
+set _WGS84_  = GEOGCS["WGS84",  DATUM["WGS84",  SPHEROID["WGS84",  6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree",0.017453292519943295], AXIS["Longitude",EAST], AXIS["Latitude",NORTH]]
+
+////////////////////////////////////////////
+// Robinson
+
+set _wiv_ = PROJCS["Wagner_IV", _WGS84_, PROJECTION["Wagner_IV"], UNIT["m", 1.0], AXIS["Easting", EAST], AXIS["Northing", NORTH]]
+
+source crs = _WGS84_
+target crs = _wiv_
+test tolerance = (0.01, 0.01)
+
+source pt = (0, 0)
+target pt = (0, 0)
+
+source pt = (10, 10)
+target pt = (952780.85, 1286803.65)
+
+source pt = (30, 30)
+target pt = (2666920.24, 3787844.41)
+
+source pt = (-180, 90)
+target pt = (-8647138.03, 8647138.03)
+
+source pt = (180, 90)
+target pt = (8647138.03, 8647138.03)
+
+source pt = (-180, 0)
+target pt = (-17294276.07, 0.00)
+
+source pt = (180, 0)
+target pt = (17294276.07, 0.00)

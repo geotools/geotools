@@ -160,7 +160,7 @@ public class SFSFilterVisitorTest extends OnlineTest {
     	
         StringBuilder builder = new StringBuilder(URL_LAYER_ASIA);
         SFSFilterVisitor visitor = new SFSFilterVisitor(true);
-        PropertyIsLike filter = FF.like(FF.property(PROPERTY_NAME), PROPERTY_VALUE);
+        PropertyIsLike filter = FF.like(FF.property(PROPERTY_NAME), PROPERTY_VALUE, "%", "_", "\\", true);
         visitor.visit(filter, null);
         visitor.finish(builder, false);
         assertEquals(URL_LAYER_ASIA + "?" + PROPERTY_NAME + "__like=" + PROPERTY_VALUE + "&queryable="

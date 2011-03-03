@@ -125,7 +125,7 @@ public final class ImageMosaicReader extends AbstractGridCoverage2DReader implem
 
 	String locationAttributeName="location";
 
-	private RasterManager rasterManager;
+	RasterManager rasterManager;
 
 	int maxAllowedTiles=ImageMosaicFormat.MAX_ALLOWED_TILES.getDefaultValue();
 

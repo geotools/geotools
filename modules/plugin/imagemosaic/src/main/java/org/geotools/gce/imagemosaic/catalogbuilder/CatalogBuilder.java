@@ -118,6 +118,9 @@ public class CatalogBuilder implements Runnable {
 		@Option(description="This index must use absolute or relative path",mandatory=false,name="absolute")
 		private Boolean absolute;
 		
+		@Option(description="This index can use caching or not",mandatory=false,name="caching")
+		private Boolean caching = Utils.DEFAULT_CONFIGURATION_CACHING;
+		
 		@Option(description="Directories where to look for file to index",mandatory=true,name="indexingDirectories")
 		private String indexingDirectoriesString;
 		
@@ -141,10 +144,15 @@ public class CatalogBuilder implements Runnable {
 
 		public CommandLineCatalogBuilderRunner(String[] args) {
 			super(args);
-			if(this.absolute==null)
-				this.absolute=Utils.DEFAULT_PATH_BEHAVIOR;
-			if(this.footprintManagement == null)
+			if (this.absolute == null){
+				this.absolute = Utils.DEFAULT_PATH_BEHAVIOR;
+			}
+			if (this.caching == null){
+				this.caching = Utils.DEFAULT_CONFIGURATION_CACHING;
+			}
+			if (this.footprintManagement == null){
                                 this.footprintManagement = Utils.DEFAULT_FOOTPRINT_MANAGEMENT;
+			}
 			if(this.indexName==null)
 				this.indexName=Utils.DEFAULT_INDEX_NAME;
 		}
@@ -157,6 +165,7 @@ public class CatalogBuilder implements Runnable {
 			configuration.setAbsolute(runner.absolute);
 			configuration.setIndexName(runner.indexName);
 			configuration.setFootprintManagement(runner.footprintManagement);
+			configuration.setCaching(runner.caching);
 			configuration.setRootMosaicDirectory(runner.rootMosaicDirectory);
 			configuration.setWildcard(runner.wildcardString);
 			configuration.setLocationAttribute(runner.locationAttribute);
@@ -918,8 +927,7 @@ public class CatalogBuilder implements Runnable {
 	private SampleModel defaultSM;
 
 	private ReferencedEnvelope imposedBBox;
-
-
+	
 	/* (non-Javadoc)
 	 * @see org.geotools.gce.imagemosaic.JMXIndexBuilderMBean#run()
 	 */
@@ -1281,7 +1289,7 @@ public class CatalogBuilder implements Runnable {
 			if(LOGGER.isLoggable(Level.WARNING))
 				LOGGER.log(Level.WARNING,"Unable to parse imposed bbox",e);
 		}
-	
+		mosaicConfiguration.setCaching(runConfiguration.isCaching());
 		//
 		// load property collectors
 		//
@@ -1371,6 +1379,7 @@ public class CatalogBuilder implements Runnable {
 			mosaicConfiguration.setExpandToRGB(mustConvertToRGB);
 			mosaicConfiguration.setAbsolutePath(runConfiguration.isAbsolute());
 			mosaicConfiguration.setLocationAttribute(runConfiguration.getLocationAttribute());
+			mosaicConfiguration.setCaching(runConfiguration.isCaching());
 			final String timeAttribute= runConfiguration.getTimeAttribute();
 			if(timeAttribute!=null)
 				mosaicConfiguration.setTimeAttribute(runConfiguration.getTimeAttribute());
@@ -1477,7 +1486,7 @@ public class CatalogBuilder implements Runnable {
 		if(imposedBBox!=null){
 			properties.setProperty("Envelope2D", imposedBBox.getMinX()+","+imposedBBox.getMinY()+" "+imposedBBox.getMaxX()+","+imposedBBox.getMaxY());
 		}
- 	
+		properties.setProperty("Caching", Boolean.toString(mosaicConfiguration.isCaching()));
 		OutputStream outStream=null;
 		try {
 			outStream=new BufferedOutputStream(new FileOutputStream(runConfiguration.getRootMosaicDirectory() + "/" + runConfiguration.getIndexName() + ".properties"));

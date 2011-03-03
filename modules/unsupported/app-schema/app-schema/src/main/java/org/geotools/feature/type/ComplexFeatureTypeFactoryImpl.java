@@ -18,7 +18,7 @@ import org.opengis.util.InternationalString;
  *
  * @source $URL$
  */
-public class ComplexFeatureTypeFactoryImpl extends FeatureTypeFactoryImpl {
+public class ComplexFeatureTypeFactoryImpl extends UniqueNameFeatureTypeFactoryImpl {
 
     @Override
     public FeatureType createFeatureType(Name name, Collection schema,

@@ -45,13 +45,12 @@ import org.geotools.data.complex.TestData;
 import org.geotools.data.complex.filter.XPath.Step;
 import org.geotools.data.complex.filter.XPath.StepList;
 import org.geotools.data.memory.MemoryDataStore;
-import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.TypeBuilder;
 import org.geotools.feature.Types;
-import org.geotools.feature.type.FeatureTypeFactoryImpl;
+import org.geotools.feature.type.UniqueNameFeatureTypeFactoryImpl;
 import org.geotools.filter.FilterFactoryImplNamespaceAware;
 import org.geotools.gml3.GML;
 import org.geotools.xlink.XLINK;
@@ -150,7 +149,7 @@ public class UnmappingFilterVisitorTest {
     @SuppressWarnings("unchecked")
     private FeatureTypeMapping createSampleDerivedAttributeMappings() throws Exception {
         // create the target type
-        FeatureTypeFactory tf = new FeatureTypeFactoryImpl();
+        FeatureTypeFactory tf = new UniqueNameFeatureTypeFactoryImpl();
         TypeBuilder builder = new TypeBuilder(tf);
 
         AttributeType areaOfInfluence = builder.name("areaOfInfluence").bind(Polygon.class)

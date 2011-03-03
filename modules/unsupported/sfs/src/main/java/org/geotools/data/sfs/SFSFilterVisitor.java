@@ -63,6 +63,7 @@ import org.opengis.filter.spatial.Within;
 import org.opengis.filter.FilterVisitor;
 
 import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 
@@ -223,10 +224,11 @@ class SFSFilterVisitor implements FilterVisitor {
 
     public Object visit(PropertyIsLike filter, Object extraData) {
         String propertyName = ((PropertyName) filter.getExpression()).getPropertyName();
-        if (!properties.containsKey(propertyName + "__like")) {
+        String operator = filter.isMatchingCase() ? "__like" : "__ilike";
+        if (!properties.containsKey(propertyName + operator)) {
             String value = filter.getLiteral();
             if (value != null) {
-                properties.put(propertyName + "__like", value);
+                properties.put(propertyName + operator, value);
                 if (!queryable.contains(propertyName)) {
                     queryable.add(propertyName);
                 }
@@ -271,24 +273,39 @@ class SFSFilterVisitor implements FilterVisitor {
         throw new UnsupportedOperationException("visit (Disjoint filter, Object extraData)");
     }
 
-    /* Needs testing, also check if geometry type is point or not
-     * should only be valid for point geometry -- another confirm if
-     * axis are flipped or not has to be implemented for it or not
-     */
     public Object visit(DWithin filter, Object extraData) {
-
-        Point getPoint = (Point) filter.getExpression2().evaluate(extraData);
-
-        if (!properties.containsKey("lon")) {
-            properties.put("lon", String.valueOf(getPoint.getX()));
-        } else {
-            throw new IllegalArgumentException("Long. is already set");
+        // check we actually support this thing
+        boolean valid = true;
+        if(!(filter.getExpression1() instanceof PropertyName)) {
+            valid = false;
+        } 
+        if(!(filter.getExpression2() instanceof Literal)) {
+            valid = false;
         }
+        if(!valid) {
+            throw new UnsupportedOperationException("DWithin filter on this store is supported only " +
+            		"if the first operand is the default geometry property and the second " +
+            		"is a geometry literal");
+        }
+        
+        
+        Geometry geometry = (Geometry) filter.getExpression2().evaluate(extraData);
 
-        if (!properties.containsKey("lat")) {
-            properties.put("lat", String.valueOf(getPoint.getY()));
+        if(geometry instanceof Point) {
+            Point point = (Point) geometry;
+            if (!properties.containsKey("lon")) {
+                properties.put("lon", String.valueOf(point.getX()));
+            } else {
+                throw new IllegalArgumentException("Long. is already set");
+            }
+    
+            if (!properties.containsKey("lat")) {
+                properties.put("lat", String.valueOf(point.getY()));
+            } else {
+                throw new IllegalArgumentException("Lat is already set");
+            }
         } else {
-            throw new IllegalArgumentException("Lat is already set");
+            writeGeometry(geometry);
         }
         
         if (!properties.containsKey("tolerance")) {
@@ -308,22 +325,22 @@ class SFSFilterVisitor implements FilterVisitor {
         throw new UnsupportedOperationException("visit (Equals filter, Object extraData)");
     }
 
-    /* Needs testing, also check if geometry type is point or not
-     * what geometries are supported. Also, how to convert geometry to GeoJSON string
-     * representation
-     *
-     */
     public Object visit(Intersects filter, Object extraData) {
+        
+        Geometry goem = (Geometry) filter.getExpression2().evaluate(null);
+        writeGeometry(goem);
+        
+        return extraData;
+    }
 
+    private void writeGeometry(Geometry geom) {
         if (!properties.containsKey("geometry")) {
             String strGeoJSON = "";
             GeometryJSON gjson = new GeometryJSON();
             try {
-                com.vividsolutions.jts.geom.Geometry goem = (com.vividsolutions.jts.geom.Geometry) filter.getExpression2().evaluate(extraData);
                 StringWriter sw = new StringWriter();
-                gjson.write(goem, sw);
+                gjson.write(geom, sw);
                 strGeoJSON = sw.toString();
-
             } catch (IOException ex) {
                 LOGGER.log(Level.SEVERE, " Exception at visit  : Intersect Filter " + ex.getMessage(), ex);
             }
@@ -331,8 +348,6 @@ class SFSFilterVisitor implements FilterVisitor {
         } else {
             throw new IllegalArgumentException("Geometry is already sey");
         }
-        
-        return extraData;
     }
 
     public Object visit(Overlaps filter, Object extraData) {

@@ -170,8 +170,19 @@ public class PolygonHandler implements ShapeHandler {
             }
 
             length = finish - start;
+            int close = 0; // '1' if the ring must be closed, '0' otherwise
+            if ((coords.getOrdinate(start, 0) != coords.getOrdinate(finish - 1, 0)) 
+                    || (coords.getOrdinate(start, 1) != coords.getOrdinate(finish - 1, 1))
+            ) {
+                close=1;
+            }
+            if (dimensions == 3) {
+                if(coords.getOrdinate(start, 2) != coords.getOrdinate(finish - 1, 2)) {
+                    close = 1;
+                }
+            }
 
-            CoordinateSequence csRing = geometryFactory.getCoordinateSequenceFactory().create(length, dimensions);
+            CoordinateSequence csRing = geometryFactory.getCoordinateSequenceFactory().create(length + close, dimensions);
             // double area = 0;
             // int sx = offset;
             for (int i = 0; i < length; i++) {
@@ -181,6 +192,13 @@ public class PolygonHandler implements ShapeHandler {
                     csRing.setOrdinate(i, 2, coords.getOrdinate(offset, 2));
                 }
                 offset++;
+            }
+            if (close == 1) {
+                csRing.setOrdinate(length, 0, coords.getOrdinate(start, 0));
+                csRing.setOrdinate(length, 1, coords.getOrdinate(start, 1));
+                if(dimensions == 3) {
+                    csRing.setOrdinate(length, 2, coords.getOrdinate(start, 2));
+                }
             }
             // REVISIT: polygons with only 1 or 2 points are not polygons -
             // geometryFactory will bomb so we skip if we find one.

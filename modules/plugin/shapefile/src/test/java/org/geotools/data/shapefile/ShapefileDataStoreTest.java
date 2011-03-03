@@ -682,13 +682,17 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
                 }
             }
             try {
-                Coordinate[] c1 = geom.getCoordinates();
-                Coordinate[] c2 = fromShape.getCoordinates();
-                for (int cc = 0, ccc = c1.length; cc < ccc; cc++) {
-                    if (d3)
-                        assertTrue(c1[cc].equals3D(c2[cc]));
-                    else
-                        assertTrue(c1[cc].equals2D(c2[cc]));
+                // check if the original is valid as we're going to fix unclosed rings
+                // as we read them out of the shapefile
+                if(geom.isValid()) {
+                    Coordinate[] c1 = geom.getCoordinates();
+                    Coordinate[] c2 = fromShape.getCoordinates();
+                    for (int cc = 0, ccc = c1.length; cc < ccc; cc++) {
+                        if (d3)
+                            assertTrue(c1[cc].equals3D(c2[cc]));
+                        else
+                            assertTrue(c1[cc].equals2D(c2[cc]));
+                    }
                 }
             } catch (Throwable t) {
                 fail("Bogus : " + Arrays.asList(geom.getCoordinates()) + " : "

@@ -812,14 +812,16 @@ public class IndexedShapefileDataStoreTest extends TestCaseSupport {
             }
 
             try {
-                Coordinate[] c1 = geom.getCoordinates();
-                Coordinate[] c2 = fromShape.getCoordinates();
-
-                for (int cc = 0, ccc = c1.length; cc < ccc; cc++) {
-                    if (d3) {
-                        assertTrue(c1[cc].equals3D(c2[cc]));
-                    } else {
-                        assertTrue(c1[cc].equals2D(c2[cc]));
+                if(geom.isValid()) {
+                    Coordinate[] c1 = geom.getCoordinates();
+                    Coordinate[] c2 = fromShape.getCoordinates();
+    
+                    for (int cc = 0, ccc = c1.length; cc < ccc; cc++) {
+                        if (d3) {
+                            assertTrue(c1[cc].equals3D(c2[cc]));
+                        } else {
+                            assertTrue(c1[cc].equals2D(c2[cc]));
+                        }
                     }
                 }
             } catch (Throwable t) {

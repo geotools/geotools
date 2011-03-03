@@ -98,7 +98,7 @@ import com.sun.media.jai.operator.ImageReadDescriptor;
  */
 public class Utils {
     
-    /** EHCache instance to cache geometries and histograms */ 
+    /** EHCache instance to cache histograms */ 
     private static Cache ehcache;    
     
     /** RGB to GRAY coefficients (for Luminance computation) */
@@ -244,6 +244,9 @@ public class Utils {
 			// collectors
 			if (props.containsKey("PropertyCollectors"))
 				configuration.setPropertyCollectors(props.getProperty("PropertyCollectors"));
+			
+			if (props.containsKey("Caching"))
+				configuration.setCaching(Boolean.valueOf(props.getProperty("Caching")));
 		}
 
 		// create the builder
@@ -958,10 +961,9 @@ public class Utils {
         
 	final static Boolean IGNORE_FOOTPRINT = Boolean.getBoolean("org.geotools.footprint.ignore");
 	
-        public static final boolean DEFAULT_FOOTPRINT_MANAGEMENT = true;
+    public static final boolean DEFAULT_FOOTPRINT_MANAGEMENT = true;
 	
-
-	public static final boolean DEFAULT_CACHING = true;
+	public static final boolean DEFAULT_CONFIGURATION_CACHING = true;
 	/** 
 	     * Build a background values array using the same dataType of the input {@link SampleModel} (if available). 
 	     * 

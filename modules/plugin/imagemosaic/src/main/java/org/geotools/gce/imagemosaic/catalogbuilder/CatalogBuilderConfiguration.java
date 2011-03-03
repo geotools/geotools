@@ -44,6 +44,8 @@ public class CatalogBuilderConfiguration {
 	private String runtimeAttribute;
 
 	private boolean absolute = Utils.DEFAULT_PATH_BEHAVIOR;
+	
+	private boolean caching = Utils.DEFAULT_CONFIGURATION_CACHING;
 
 	/**
 	 * Index file name. Default is index.
@@ -138,6 +140,14 @@ public class CatalogBuilderConfiguration {
 
 	public void setRecursive(boolean recursive) {
 		this.recursive = recursive;
+	}
+
+	public boolean isCaching() {
+		return caching;
+	}
+
+	public void setCaching(boolean caching) {
+		this.caching = caching;
 	}
 
 	public String getPropertyCollectors() {
@@ -254,6 +264,10 @@ public class CatalogBuilderConfiguration {
 
 		if (this.absolute != that.absolute)
 			return false;
+		if (this.caching != that.caching)
+			return false;
+		if (this.recursive != that.recursive)
+			return false;
 		if (this.footprintManagement != that.footprintManagement)
 			return false;
 		if (!(this.indexName == null && that.indexName == null)
@@ -276,6 +290,8 @@ public class CatalogBuilderConfiguration {
 	public int hashCode() {
 		int seed = 37;
 		seed = Utilities.hash(absolute, seed);
+		seed = Utilities.hash(recursive, seed);
+		seed = Utilities.hash(caching, seed);
 		seed = Utilities.hash(footprintManagement, seed);
 		seed = Utilities.hash(locationAttribute, seed);
 		seed = Utilities.hash(indexName, seed);
@@ -292,6 +308,8 @@ public class CatalogBuilderConfiguration {
 		builder.append("wildcardString:\t\t\t").append(wildcard).append("\n");
 		builder.append("indexName:\t\t\t").append(indexName).append("\n");
 		builder.append("absolute:\t\t\t").append(absolute).append("\n");
+		builder.append("caching:\t\t\t").append(caching).append("\n");
+		builder.append("recursive:\t\t\t").append(recursive).append("\n");
 		builder.append("footprintManagement:\t\t\t")
 				.append(footprintManagement).append("\n");
 		builder.append("locationAttribute:\t\t\t").append(locationAttribute)

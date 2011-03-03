@@ -19,9 +19,11 @@ package org.geotools.gce.imagemosaic;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Properties;
 
 import javax.media.jai.PlanarImage;
 
@@ -29,6 +31,7 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
+import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
 import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilder;
 import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilderConfiguration;
 import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilder.ExceptionEvent;
@@ -183,5 +186,107 @@ public class CatalogBuilderTest extends Assert {
 		coverage = (GridCoverage2D) reader.read(new GeneralParameterValue[] {gg,useJai ,tileSize});
 		Assert.assertNotNull(coverage);
 		PlanarImage.wrapRenderedImage( coverage.getRenderedImage()).getTiles();;
+	}
+	
+	
+	@Test
+	public void buildCachingIndex() throws FileNotFoundException, IOException {
+		CatalogBuilder builder = null;
+		ImageMosaicReader reader = null;
+		FileInputStream inStream = null;
+		CatalogBuilderConfiguration c1 = new CatalogBuilderConfiguration();
+		c1.setIndexName("shpindex");
+		c1.setLocationAttribute("location");
+		c1.setAbsolute(false);
+		c1.setRootMosaicDirectory(TestData.file(this, "/caching").toString());
+		c1.setIndexingDirectories(Arrays.asList(TestData.file(this,"/caching").toString()));
+		Properties prop = new Properties();
+		
+		
+		try {
+			
+			c1.setCaching(false);
+			
+	
+			// build the index
+			builder = new CatalogBuilder(c1);
+			builder.addProcessingEventListener(new CatalogBuilderListener());
+			builder.run();
+			final File relativeMosaic = TestData.file(this, "/caching/" + c1.getIndexName() + ".shp");
+			final File propertiesFile = TestData.file(this, "/caching/" + c1.getIndexName() + ".properties");
+			assertTrue(relativeMosaic.exists());
+			inStream = new FileInputStream(propertiesFile);
+			prop.load(inStream);
+			String value = prop.getProperty("Caching");
+			assertNotNull(value);
+			assertTrue (value.toLowerCase().equals("false"));
+			
+	
+			assertTrue(new ImageMosaicFormat().accepts(relativeMosaic));
+			reader = (ImageMosaicReader) new ImageMosaicReader(relativeMosaic);
+			
+			GranuleCatalog catalog = reader.rasterManager.granuleCatalog;
+			assertTrue(catalog.getClass().toString().endsWith("GTDataStoreGranuleCatalog"));
+		} finally {
+			try {
+				if (inStream != null){
+					inStream.close();
+				}
+			} catch (Throwable t){
+				//Eat exception
+			}
+			
+			try {
+				if (reader != null){
+					reader.dispose();
+				}
+			} catch (Throwable t){
+				//Eat exception
+			}
+		}
+		
+		try {
+			
+			c1.setCaching(true);
+	
+			// build the index
+			builder = new CatalogBuilder(c1);
+			builder.addProcessingEventListener(new CatalogBuilderListener());
+			builder.run();
+			final File relativeMosaic = TestData.file(this, "/caching/" + c1.getIndexName() + ".shp");
+			final File propertiesFile = TestData.file(this, "/caching/" + c1.getIndexName() + ".properties");
+			inStream = new FileInputStream(propertiesFile);
+			prop.load(inStream);
+			
+			String value = prop.getProperty("Caching");
+			assertNotNull(value);
+			assertTrue (value.toLowerCase().equals("true"));
+			
+			assertTrue(relativeMosaic.exists());
+	
+			assertTrue(new ImageMosaicFormat().accepts(relativeMosaic));
+			reader = (ImageMosaicReader) new ImageMosaicReader(relativeMosaic);
+			
+			GranuleCatalog catalog = reader.rasterManager.granuleCatalog;
+			assertTrue(catalog.getClass().toString().endsWith("STRTreeGranuleCatalog"));
+
+		} finally {
+			try {
+				if (inStream != null){
+					inStream.close();
+				}
+			} catch (Throwable t){
+				//Eat exception
+			}
+			
+			try {
+				if (reader != null){
+					reader.dispose();
+				}
+			} catch (Throwable t){
+				//Eat exception
+			}
+		}
+		
 	}
 }

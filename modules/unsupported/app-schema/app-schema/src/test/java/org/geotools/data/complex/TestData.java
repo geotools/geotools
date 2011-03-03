@@ -29,6 +29,7 @@ import org.geotools.feature.Types;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.type.FeatureTypeFactoryImpl;
+import org.geotools.feature.type.UniqueNameFeatureTypeFactoryImpl;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -78,7 +79,7 @@ public class TestData {
      * @return
      */
     public static FeatureType createComplexWaterQualityType() {
-        FeatureTypeFactory tfac = new FeatureTypeFactoryImpl();
+        FeatureTypeFactory tfac = new UniqueNameFeatureTypeFactoryImpl();
         TypeBuilder builder = new TypeBuilder(tfac);
 
         FeatureType wq_plusType;
@@ -121,7 +122,7 @@ public class TestData {
     }
 
     public static FeatureType createComplexWaterSampleType() {
-        FeatureTypeFactory tfac = new FeatureTypeFactoryImpl();
+        FeatureTypeFactory tfac = new UniqueNameFeatureTypeFactoryImpl();
         TypeBuilder builder = new TypeBuilder(tfac);
 
         FeatureType sampleType;
@@ -257,7 +258,7 @@ public class TestData {
         final SimpleFeatureSource wsSource = simpleStore.getFeatureSource(sourceTypeName);
 
         FeatureType targetType = createComplexWaterQualityType();
-        FeatureTypeFactory tf = new FeatureTypeFactoryImpl();
+        FeatureTypeFactory tf = new UniqueNameFeatureTypeFactoryImpl();
         AttributeDescriptor targetFeature = tf.createAttributeDescriptor(targetType, targetType
                 .getName(), 0, Integer.MAX_VALUE, true, null);
 

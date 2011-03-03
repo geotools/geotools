@@ -25,14 +25,13 @@ import junit.framework.TestCase;
 import org.geotools.factory.Hints;
 import org.geotools.feature.AttributeImpl;
 import org.geotools.feature.ComplexAttributeImpl;
-import org.geotools.feature.NameImpl;
 import org.geotools.feature.FeatureImpl;
+import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.AttributeDescriptorImpl;
 import org.geotools.feature.type.AttributeTypeImpl;
 import org.geotools.feature.type.ComplexTypeImpl;
-import org.geotools.feature.type.FeatureTypeFactoryImpl;
+import org.geotools.feature.type.UniqueNameFeatureTypeFactoryImpl;
 import org.geotools.filter.AttributeExpressionImpl;
-import org.geotools.filter.expression.FeaturePropertyAccessorFactory;
 import org.geotools.filter.identity.FeatureIdImpl;
 import org.opengis.feature.Feature;
 import org.opengis.feature.Property;
@@ -204,7 +203,7 @@ public class FeaturePropertyAccessorTest extends TestCase {
     }
 
     public static FeatureType createFeatureType() {
-        FeatureTypeFactory tfac = new FeatureTypeFactoryImpl();
+        FeatureTypeFactory tfac = new UniqueNameFeatureTypeFactoryImpl();
         Name fName = new NameImpl(EG, "complexFeatureType");
 
         Collection<PropertyDescriptor> schema = new ArrayList<PropertyDescriptor>();

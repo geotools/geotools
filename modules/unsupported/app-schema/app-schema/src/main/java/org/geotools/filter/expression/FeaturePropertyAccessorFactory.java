@@ -31,6 +31,7 @@ import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.simple.SimpleFeatureImpl;
 import org.geotools.feature.type.AttributeDescriptorImpl;
 import org.geotools.feature.type.FeatureTypeImpl;
+import org.geotools.feature.type.UniqueNameFeatureTypeImpl;
 import org.geotools.feature.xpath.AttributeDescriptorPropertyHandler;
 import org.geotools.feature.xpath.AttributeNodePointerFactory;
 import org.geotools.feature.xpath.AttributePropertyHandler;
@@ -249,6 +250,8 @@ public class FeaturePropertyAccessorFactory implements PropertyAccessorFactory {
             JXPathIntrospector.registerDynamicClass(AttributeDescriptorImpl.class,
                     AttributeDescriptorPropertyHandler.class);
             JXPathIntrospector.registerDynamicClass(FeatureTypeImpl.class,
+                    AttributeDescriptorPropertyHandler.class);
+            JXPathIntrospector.registerDynamicClass(UniqueNameFeatureTypeImpl.class,
                     AttributeDescriptorPropertyHandler.class);
         }
 

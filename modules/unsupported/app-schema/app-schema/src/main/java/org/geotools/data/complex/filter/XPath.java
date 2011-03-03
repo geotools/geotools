@@ -27,7 +27,7 @@ import java.util.logging.Logger;
 
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
-import org.opengis.filter.expression.Expression;
+
 import org.geotools.data.complex.ComplexFeatureConstants;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.AttributeBuilder;
@@ -36,8 +36,8 @@ import org.geotools.feature.NameImpl;
 import org.geotools.feature.Types;
 import org.geotools.feature.ValidatingFeatureFactoryImpl;
 import org.geotools.feature.type.AttributeDescriptorImpl;
-import org.geotools.feature.type.FeatureTypeFactoryImpl;
 import org.geotools.feature.type.GeometryTypeImpl;
+import org.geotools.feature.type.UniqueNameFeatureTypeFactoryImpl;
 import org.geotools.util.CheckedArrayList;
 import org.geotools.xs.XSSchema;
 import org.opengis.feature.Attribute;
@@ -53,6 +53,7 @@ import org.opengis.feature.type.GeometryType;
 import org.opengis.feature.type.Name;
 import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.filter.FilterFactory;
+import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.util.Cloneable;
@@ -99,7 +100,7 @@ public class XPath {
     public XPath() {
         this.FF = CommonFactoryFinder.getFilterFactory(null);
         this.featureFactory = new ValidatingFeatureFactoryImpl();
-        this.descriptorFactory = new FeatureTypeFactoryImpl();
+        this.descriptorFactory = new UniqueNameFeatureTypeFactoryImpl();
     }
 
     public XPath(FilterFactory ff, FeatureFactory featureFactory) {

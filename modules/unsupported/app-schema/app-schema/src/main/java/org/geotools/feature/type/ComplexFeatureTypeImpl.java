@@ -22,7 +22,7 @@ import org.opengis.util.InternationalString;
  *
  * @source $URL$
  */
-public class ComplexFeatureTypeImpl extends FeatureTypeImpl {
+public class ComplexFeatureTypeImpl extends UniqueNameFeatureTypeImpl {
     /**
      * Type specific descriptors, excluding FEATURE_LINK
      */

@@ -29,6 +29,7 @@ import org.geotools.data.ComplexTestData;
 import org.geotools.data.complex.filter.XPath.StepList;
 import org.geotools.feature.type.AttributeDescriptorImpl;
 import org.geotools.feature.type.FeatureTypeFactoryImpl;
+import org.geotools.feature.type.UniqueNameFeatureTypeFactoryImpl;
 import org.geotools.gml3.GMLSchema;
 import org.geotools.xlink.XLINK;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -56,7 +57,7 @@ public class XPathTest extends TestCase {
 
     public void testSteps() throws Exception {
         FeatureType complexType = ComplexTestData
-                .createExample01MultiValuedComplexProperty(new FeatureTypeFactoryImpl());
+                .createExample01MultiValuedComplexProperty(new UniqueNameFeatureTypeFactoryImpl());
         Name name = complexType.getName();
         AttributeDescriptor descriptor = new AttributeDescriptorImpl(complexType, name, 0,
                 Integer.MAX_VALUE, true, null);
@@ -118,7 +119,7 @@ public class XPathTest extends TestCase {
      */
     public void testStepsWithXmlAttribute() throws Exception {
         FeatureType complexType = ComplexTestData
-                .createExample01MultiValuedComplexProperty(new FeatureTypeFactoryImpl());
+                .createExample01MultiValuedComplexProperty(new UniqueNameFeatureTypeFactoryImpl());
         Name name = complexType.getName();
         AttributeDescriptor descriptor = new AttributeDescriptorImpl(complexType, name, 0,
                 Integer.MAX_VALUE, true, null);

@@ -23,7 +23,7 @@ import org.geotools.data.ComplexTestData;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.AttributeBuilder;
 import org.geotools.feature.ValidatingFeatureFactoryImpl;
-import org.geotools.feature.type.FeatureTypeFactoryImpl;
+import org.geotools.feature.type.UniqueNameFeatureTypeFactoryImpl;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.FeatureTypeFactory;
@@ -48,7 +48,7 @@ public class IDFunctionExpressionTest extends TestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
-        FeatureTypeFactory typeFactory = new FeatureTypeFactoryImpl();
+        FeatureTypeFactory typeFactory = new UniqueNameFeatureTypeFactoryImpl();
         FeatureType type = ComplexTestData.createExample02MultipleMultivalued(typeFactory);
         AttributeBuilder ab = new AttributeBuilder(new ValidatingFeatureFactoryImpl());
         ab.setType(type);

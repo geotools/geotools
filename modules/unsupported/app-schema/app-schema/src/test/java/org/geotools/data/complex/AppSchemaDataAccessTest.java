@@ -40,7 +40,7 @@ import org.geotools.feature.NameImpl;
 import org.geotools.feature.Types;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
-import org.geotools.feature.type.FeatureTypeFactoryImpl;
+import org.geotools.feature.type.UniqueNameFeatureTypeFactoryImpl;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.feature.Feature;
@@ -85,7 +85,7 @@ public class AppSchemaDataAccessTest extends TestCase {
         super.setUp();
         MemoryDataStore ds = createWaterSampleTestFeatures();
         targetType = TestData.createComplexWaterSampleType();
-        FeatureTypeFactory tf = new FeatureTypeFactoryImpl();
+        FeatureTypeFactory tf = new UniqueNameFeatureTypeFactoryImpl();
         AttributeDescriptor targetFeature = tf.createAttributeDescriptor(targetType, targetType
                 .getName(), 0, Integer.MAX_VALUE, true, null);
         targetName = targetFeature.getName();

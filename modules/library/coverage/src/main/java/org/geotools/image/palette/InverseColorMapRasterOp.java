@@ -134,7 +134,7 @@ public final class InverseColorMapRasterOp implements RasterOp {
 						|| !hasAlpha
 						|| (sourceHasAlpha && hasAlpha && rgba[alphaBand] >= this.alphaThreshold)) {
 					int val = invCM.getIndexNearest(rgba[0] & 0xff,
-							rgba[1] & 0xff, rgba[2]);
+							rgba[numBands == 1 ? 0 : 1] & 0xff, rgba[numBands == 1 ? 0 : 2]);
 					if (hasAlpha && val >= transparencyIndex)
 						val++;
 					dest.setSample(x_, y_, 0, (byte) (val & 0xff));

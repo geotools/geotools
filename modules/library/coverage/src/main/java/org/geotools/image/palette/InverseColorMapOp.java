@@ -188,7 +188,7 @@ public final class InverseColorMapOp implements BufferedImageOp {
 								|| !hasAlpha
 								|| (sourceHasAlpha && hasAlpha && rgba[alphaBand] >= this.alphaThreshold)) {
 							int val = invCM.getIndexNearest(rgba[0] & 0xff,
-									rgba[1] & 0xff, rgba[2]);
+									rgba[numBands == 1 ? 0 : 1] & 0xff, rgba[numBands == 1 ? 0 : 2]);
 							if (hasAlpha && val >= transparencyIndex)
 								val++;
 							destWr.setSample(ii, jj, 0, (byte) (val & 0xff));

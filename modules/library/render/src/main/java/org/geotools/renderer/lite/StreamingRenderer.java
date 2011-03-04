@@ -1996,13 +1996,16 @@ public final class StreamingRenderer implements GTRenderer {
         
         // check if it's a wrapper coverage or a wrapped reader
         FeatureType schema = featureSource.getSchema();
+        boolean isRasterData = false;
         if(schema instanceof SimpleFeatureType) {
             SimpleFeatureType simpleSchema = (SimpleFeatureType) schema;
             GridCoverage2D coverage = null;
             if(FeatureUtilities.isWrappedCoverage(simpleSchema)) {
+                isRasterData = true;
                 throw new UnsupportedOperationException("Don't have support for plain coverages " +
                         "in rendering transformations now");
             } else if(FeatureUtilities.isWrappedCoverageReader(simpleSchema)) {
+                isRasterData = true;
                 GridGeometry2D readGG = gridGeometry;
                 if(transformation instanceof RenderingTransformation) {
                     RenderingTransformation tx = (RenderingTransformation) transformation;
@@ -2064,7 +2067,7 @@ public final class StreamingRenderer implements GTRenderer {
             } 
         }
         
-        if(result == null) {
+        if(result == null && !isRasterData) {
             // it's a transformation starting from vector data, let's see if we can optimize the query
             FeatureCollection originalFeatures;
             Query optimizedQuery = null;

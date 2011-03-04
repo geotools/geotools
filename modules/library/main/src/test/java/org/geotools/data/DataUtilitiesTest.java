@@ -21,7 +21,6 @@ import java.io.FilenameFilter;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -36,12 +35,8 @@ import org.geotools.factory.Hints;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.IllegalAttributeException;
-import org.geotools.feature.NameImpl;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
-import org.geotools.feature.type.AttributeDescriptorImpl;
-import org.geotools.feature.type.AttributeTypeImpl;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -49,7 +44,6 @@ import org.geotools.test.TestData;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.filter.And;
 import org.opengis.filter.BinaryLogicOperator;
@@ -661,47 +655,6 @@ public class DataUtilitiesTest extends DataTestCase {
         assertTrue(desc.size() == propNames.length);
         assertTrue(desc.get(0).getLocalName().equals(propNames[0]));
         assertTrue(desc.get(1).getLocalName().equals(propNames[1]));
-    }
-    
-    public void testAddMandatoryProperties() {
-        AttributeType at = new AttributeTypeImpl(new NameImpl("String"), String.class, false,
-                false, Collections.EMPTY_LIST, null, null);
-
-        AttributeDescriptor descr1 = new AttributeDescriptorImpl(at, new NameImpl("att1"), 0, 1,
-                false, null);
-        AttributeDescriptor descr2 = new AttributeDescriptorImpl(at, new NameImpl("att2"), 0, 1,
-                false, null);
-        AttributeDescriptor descr3 = new AttributeDescriptorImpl(at, new NameImpl("att3"), 1, 1,
-                false, null);
-        AttributeDescriptor descr4 = new AttributeDescriptorImpl(at, new NameImpl("att4"), 1, 1,
-                false, null);
-
-        SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
-        tb.setName("type");
-        tb.add(descr1);
-        tb.add(descr2);
-        tb.add(descr3);
-        tb.add(descr4);
-
-        SimpleFeatureType type = tb.buildFeatureType();
-
-        PropertyName propName1 = ff.property("att1");
-        PropertyName propName2 = ff.property("att2");
-        PropertyName propName3 = ff.property("att3");
-        PropertyName propName4 = ff.property("att4");
-
-        List<PropertyName> list = new ArrayList<PropertyName>();
-        list.add(propName1);
-        list.add(propName4);
-
-        List<PropertyName> list2 = DataUtilities.addMandatoryProperties(type, list);
-
-        assertTrue(list2.contains(propName1)); // in original list, not mandatory
-        assertTrue(!list2.contains(propName2)); // not in original list and not mandatory
-        assertTrue(list2.contains(propName3)); // mandatory
-        assertTrue(list2.contains(propName4)); // mandatory and in list
-        assertEquals(3, list2.size());
-
     }
 
     public static void main(String[] args) {

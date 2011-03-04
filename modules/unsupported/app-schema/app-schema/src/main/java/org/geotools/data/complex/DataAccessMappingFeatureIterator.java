@@ -344,7 +344,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                                 .getInputFeatures(val, source));
                     } else {
                         nestedFeatures.addAll(((NestedAttributeMapping) attMapping).getFeatures(
-                                val, reprojection, source, selectedProperties, includeMandatory));
+                                val, reprojection, source, selectedProperties));
                     }
                 }
                 values = nestedFeatures;
@@ -356,7 +356,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                 values = ((NestedAttributeMapping) attMapping).getInputFeatures(values, source);
             } else {
                 values = ((NestedAttributeMapping) attMapping).getFeatures(values, reprojection,
-                        source, selectedProperties, includeMandatory);
+                        source, selectedProperties);
             }
             if (isHRefLink) {
                 // only need to set the href link value, not the nested feature properties

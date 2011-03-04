@@ -57,6 +57,26 @@ public class CustomPaletteBuilderTest extends TestCase {
         // png encoder go mad if they get a one element palette, we need at least two
         assertEquals(2, icm.getMapSize());
     }
+	
+	@Test
+	public void testGrayColor() {
+		BufferedImage image = new BufferedImage(256, 256, BufferedImage.TYPE_BYTE_GRAY);
+		Graphics g = image.getGraphics();
+		g.setColor(Color.WHITE);
+		g.fillRect(0, 0, 20, 20);
+		g.setColor(new Color(20, 20, 20)); // A dark gray
+		g.fillRect(20, 20, 20, 20);
+		g.setColor(new Color(200, 200, 200)); // A light gray
+		g.fillRect(0, 20, 20, 20);
+		g.dispose();
+		CustomPaletteBuilder builder = new CustomPaletteBuilder(image, 256, 1, 1, 1);
+        RenderedImage indexed =  builder.buildPalette().getIndexedImage();
+        assertTrue(indexed.getColorModel() instanceof IndexColorModel);
+        IndexColorModel icm = (IndexColorModel) indexed.getColorModel();
+        assertEquals(4, icm.getMapSize()); //Black background, white fill, light gray fill, dark gray fill = 4 colors
+		
+	}
+	
     
     @Test
     public void testFourColor() {
@@ -77,7 +97,7 @@ public class CustomPaletteBuilderTest extends TestCase {
         //
         // create a palette out of it
         //
-        CustomPaletteBuilder builder = new CustomPaletteBuilder(image, 255, 1,1, 1);
+        CustomPaletteBuilder builder = new CustomPaletteBuilder(image, 255, 1, 1, 1);
         builder.buildPalette();
         RenderedImage indexed = builder.getIndexedImage();
         assertTrue(indexed.getColorModel() instanceof IndexColorModel);

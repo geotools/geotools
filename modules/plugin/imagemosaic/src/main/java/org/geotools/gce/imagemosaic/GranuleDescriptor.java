@@ -61,6 +61,7 @@ import org.geotools.gce.imagemosaic.RasterLayerResponse.GranuleLoadingResult;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.image.jai.Registry;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
@@ -105,20 +106,16 @@ public class GranuleDescriptor {
 
     private static final double SAMEBBOX_THRESHOLD_FACTOR = 20; 
 	   
-	static {
-            final OperationRegistry registry = JAI.getDefaultInstance().getOperationRegistry();
-            try {
-                final OperationDescriptor op = new VectorBinarizeDescriptor();
-                registry.registerDescriptor(op);
-                final String descName = op.getName();
-                final RenderedImageFactory rif = new VectorBinarizeRIF();
-                registry.registerFactory(RenderedRegistryMode.MODE_NAME, descName, "jaitools.media.jai", rif);
-            } catch (Exception e) {
-                if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.log(Level.FINE, e.getLocalizedMessage());
-                }
+    static {
+        try {
+            Registry.registerRIF(JAI.getDefaultInstance(), new VectorBinarizeDescriptor(),
+                    new VectorBinarizeRIF(), Registry.JAI_TOOLS_PRODUCT);
+        } catch (Exception e) {
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.log(Level.FINE, e.getLocalizedMessage());
             }
         }
+    }
 	
     // FORMULAE FOR FORWARD MAP are derived as follows
     //     Nearest

@@ -1238,8 +1238,9 @@ public class SLDParser {
         ColorMap symbol = factory.createColorMap();
 
         if (root.hasAttributes()) {
+            // parsing type attribute
             final NamedNodeMap atts = root.getAttributes();
-            final Node typeAtt = atts.getNamedItem("type");
+            Node typeAtt = atts.getNamedItem("type");
             if (typeAtt != null) {
                 final String type = typeAtt.getNodeValue();
 
@@ -1251,6 +1252,20 @@ public class SLDParser {
                     symbol.setType(ColorMap.TYPE_VALUES);
                 } else if (LOGGER.isLoggable(Level.FINE))
                     LOGGER.fine(Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "ColorMapType", type));
+
+            }
+            
+            // parsing extended colors
+            typeAtt = atts.getNamedItem("extended");
+            if (typeAtt != null) {
+                final String type = typeAtt.getNodeValue();
+
+                if ("true".equalsIgnoreCase(type)) {
+                    symbol.setExtendedColors(true);
+                } else if ("false".equalsIgnoreCase(type)) {
+                    symbol.setExtendedColors(false);
+                } else if (LOGGER.isLoggable(Level.FINE))
+                    LOGGER.fine(Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "Extended", type));
 
             }
         }

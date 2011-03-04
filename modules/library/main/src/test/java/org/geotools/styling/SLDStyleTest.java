@@ -218,6 +218,19 @@ public class SLDStyleTest extends TestCase {
          assertEquals("this is a prefix; this is an expression; this is a postfix", labelValue);
     }
     
+    public void testSLDExtendedColorMap() throws Exception {
+        java.net.URL surl = TestData.getResource(this, "colormap.sld");
+         SLDParser stylereader = new SLDParser(sf, surl);
+         StyledLayerDescriptor sld = stylereader.parseSLD();
+         
+         Symbolizer[] symbolizers = ((UserLayer) sld.getStyledLayers()[0]).userStyles().get(0).getFeatureTypeStyles()[0].getRules()[0].getSymbolizers();
+
+         RasterSymbolizer rs = (RasterSymbolizer) symbolizers[0];
+         
+         assertTrue(rs.getColorMap().getExtendedColors());
+         assertTrue(rs.getColorMap().getType()==ColorMap.TYPE_RAMP);
+    }
+    
     public void testSLDParserWithhMixedContentCDATA() throws Exception {
         java.net.URL surl = TestData.getResource(this, "mixedContentWithCDATA.xml");
          SLDParser stylereader = new SLDParser(sf, surl);

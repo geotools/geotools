@@ -84,6 +84,23 @@ import org.geotools.factory.Hints;
  * @version $Id$
  */
 public class Query {
+    
+    /**
+     * When specifying properties to select, setting this hint flag true tells the datastore
+     * to include mandatory properties (i.e. properties with minOccurs >= 1) in the end result,
+     * irrespective of whether they are not included in the list of properties. 
+     * 
+     * Datastores may implement adding all mandatory properties to the end result
+     * when this flag is set to true.  For example:
+     * 
+     * Object includeProps = query.getHints().get(Query.INCLUDE_MANDATORY_PROPS);
+     *  if (includeProps instanceof Boolean && ((Boolean)includeProps).booleanValue()) {
+     *          query.setProperties (DataUtilities.addMandatoryProperties(type, query.getProperties()));
+     *  }
+     * 
+     */
+    public static Hints.Key INCLUDE_MANDATORY_PROPS = new Hints.Key(Boolean.class);
+    
     /**
      * Constant (actually null) used to represent no namespace restrictions on the returned result, should be considered ANY_URI
      */

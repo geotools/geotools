@@ -37,6 +37,7 @@ import org.opengis.feature.Attribute;
 import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureFactory;
 import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.feature.GeometryAttribute;
 import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
@@ -84,6 +85,8 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
      * Selected Properties for Feature Chaining
      */
     protected Map<AttributeMapping, List<PropertyName>> selectedProperties;
+    
+    protected boolean includeMandatory;
 
     /**
      * Factory used to create the target feature and attributes
@@ -128,11 +131,18 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
 
         this.mapping = mapping;
         
-        //NC - property names
-        if (query != null && query.getProperties()!= null) {
+        namespaces = mapping.getNamespaces();
+        namespaceAwareFilterFactory = new FilterFactoryImplNamespaceAware(namespaces);
+        
+        Object includeProps = query.getHints().get(Query.INCLUDE_MANDATORY_PROPS);
+        includeMandatory = includeProps instanceof Boolean && ((Boolean)includeProps).booleanValue();
+        
+        // NC - property names
+        if (query != null && query.getProperties() != null) {
             setPropertyNames(query.getProperties());
-        } else { 
-            setPropertyNames(null); // we need the actual property names (not surrogates) to do this... otherwise need to set manually
+        } else {
+            setPropertyNames(null); // we need the actual property names (not surrogates) to do
+                                    // this... otherwise need to set manually
         }
         
         this.maxFeatures = query.getMaxFeatures();
@@ -143,42 +153,54 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
         xpathAttributeBuilder = new XPath();
         xpathAttributeBuilder.setFeatureFactory(attf);
         initialiseSourceFeatures(mapping, unrolledQuery);
-        namespaces = mapping.getNamespaces();
-        namespaceAwareFilterFactory = new FilterFactoryImplNamespaceAware(namespaces);
         xpathAttributeBuilder.setFilterFactory(namespaceAwareFilterFactory);
     }
     
-    public void setPropertyNames(Collection<PropertyName> propertyNames)
-    {
+    public void setPropertyNames(Collection<PropertyName> propertyNames) {
         selectedProperties = new HashMap<AttributeMapping, List<PropertyName>>();
-        
+
         if (propertyNames == null) {
             selectedMapping = mapping.getAttributeMappings();
-        }
-        else {            
-            final AttributeDescriptor targetDescriptor = mapping.getTargetFeature();            
+        } else {
+            final AttributeDescriptor targetDescriptor = mapping.getTargetFeature();
             selectedMapping = new ArrayList<AttributeMapping>();
-                        
-            for (AttributeMapping attMapping : mapping.getAttributeMappings()) {   
+
+            for (AttributeMapping attMapping : mapping.getAttributeMappings()) {
                 final StepList targetSteps = attMapping.getTargetXPath();
                 boolean alreadyAdded = false;
-                for (PropertyName requestedProperty : propertyNames){
-                    StepList requestedPropertySteps = requestedProperty.getNamespaceContext()==null? null:
-                        XPath.steps(targetDescriptor, requestedProperty.getPropertyName(), requestedProperty.getNamespaceContext()); 
-                    if (requestedPropertySteps==null? AppSchemaDataAccess.matchProperty(requestedProperty.getPropertyName(), targetSteps) : 
-                        AppSchemaDataAccess.matchProperty(requestedPropertySteps, targetSteps)) {  
-                        if (!alreadyAdded) {
+
+                if (includeMandatory) {
+                    PropertyName targetProp = namespaceAwareFilterFactory.property(targetSteps
+                            .toString());
+                    Object descr = targetProp.evaluate(targetDescriptor.getType());
+                    if (descr instanceof PropertyDescriptor) {
+                        if (((PropertyDescriptor) descr).getMinOccurs() >= 1) {
                             selectedMapping.add(attMapping);
+                            selectedProperties.put(attMapping, new ArrayList<PropertyName>());
                             alreadyAdded = true;
                         }
-                        if (requestedPropertySteps!=null && requestedPropertySteps.size() > targetSteps.size()) {
-                            List<PropertyName > pnList = selectedProperties.get(attMapping); 
-                            if (pnList == null) {
-                                pnList = new ArrayList<PropertyName>();
-                                selectedProperties.put(attMapping, pnList);
-                            }
-                            StepList subProperty = requestedPropertySteps.subList(targetSteps.size(), requestedPropertySteps.size());
-                            pnList.add(filterFac.property(subProperty.toString(), requestedProperty.getNamespaceContext() ));
+                    }
+                }
+
+                for (PropertyName requestedProperty : propertyNames) {
+                    StepList requestedPropertySteps = requestedProperty.getNamespaceContext() == null ? null
+                            : XPath.steps(targetDescriptor, requestedProperty.getPropertyName(),
+                                    requestedProperty.getNamespaceContext());
+                    if (requestedPropertySteps == null ? AppSchemaDataAccess.matchProperty(
+                            requestedProperty.getPropertyName(), targetSteps) : AppSchemaDataAccess
+                            .matchProperty(requestedPropertySteps, targetSteps)) {
+                        if (!alreadyAdded) {
+                            selectedMapping.add(attMapping);
+                            selectedProperties.put(attMapping, new ArrayList<PropertyName>());
+                            alreadyAdded = true;
+                        }
+                        if (requestedPropertySteps != null
+                                && requestedPropertySteps.size() > targetSteps.size()) {
+                            List<PropertyName> pnList = selectedProperties.get(attMapping);
+                            StepList subProperty = requestedPropertySteps.subList(
+                                    targetSteps.size(), requestedPropertySteps.size());
+                            pnList.add(filterFac.property(subProperty.toString(),
+                                    requestedProperty.getNamespaceContext()));
                         }
                     }
                 }

@@ -316,7 +316,7 @@ public class NestedAttributeMapping extends AttributeMapping {
      */
     public List<Feature> getFeatures(Object foreignKeyValue,
             CoordinateReferenceSystem reprojection, Feature feature) throws IOException{
-        return getFeatures(foreignKeyValue, reprojection, feature, null);
+        return getFeatures(foreignKeyValue, reprojection, feature, null, true);
     }
             
 
@@ -331,7 +331,7 @@ public class NestedAttributeMapping extends AttributeMapping {
      * @throws IOException
      */
     public List<Feature> getFeatures(Object foreignKeyValue,
-            CoordinateReferenceSystem reprojection, Object feature, List<PropertyName> selectedProperties) throws IOException {
+            CoordinateReferenceSystem reprojection, Object feature, List<PropertyName> selectedProperties, boolean includeMandatory) throws IOException {
 
         if (isSameSource()) {
             // if linkField is null, this method shouldn't be called because the mapping
@@ -358,6 +358,10 @@ public class NestedAttributeMapping extends AttributeMapping {
             selectedProperties.add(propertyName);
         }
         
+        final Hints hints = new Hints();
+        hints.put(Query.INCLUDE_MANDATORY_PROPS, includeMandatory);
+        query.setHints(hints);
+        
         query.setProperties(selectedProperties);
 
         ArrayList<Feature> matchingFeatures = new ArrayList<Feature>();
@@ -376,7 +380,7 @@ public class NestedAttributeMapping extends AttributeMapping {
         return matchingFeatures;
     }
 
-    private FeatureSource<FeatureType, Feature> getMappingSource(Object feature)
+    protected FeatureSource<FeatureType, Feature> getMappingSource(Object feature)
             throws IOException {
 
         if (mappingSource == null || !(nestedFeatureType instanceof AttributeExpressionImpl)) {

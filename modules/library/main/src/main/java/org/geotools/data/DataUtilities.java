@@ -97,7 +97,7 @@ import org.opengis.feature.type.GeometryType;
 import org.opengis.feature.type.Name;
 import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
+import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.sort.SortBy;
@@ -135,7 +135,7 @@ public class DataUtilities {
 
     static Map<Class, String> typeEncode = new HashMap<Class, String>();
 
-    static FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+    static FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
 
     static {
         typeEncode.put(String.class, "String");
@@ -2080,6 +2080,36 @@ public class DataUtilities {
             }
         }
         return atts;
+    }
+    
+    /**
+     * Returns a list of properties of a simple feature type,
+     * including all properties from a given list, and all mandatory (minoccurs > 0) added.
+     * 
+     * @param type feature type
+     * @param propNames given list of properties
+     * @return list of properties including all mandatory properties
+     * @throws IOException
+     */
+    public static List<PropertyName> addMandatoryProperties (SimpleFeatureType type, List<PropertyName> oldProps)  {
+        Iterator<PropertyDescriptor> ii = type.getDescriptors().iterator();
+        
+         List<PropertyName> properties = new ArrayList<PropertyName>();
+
+        while (ii.hasNext()) {
+            
+            PropertyDescriptor descr = ii.next();
+            PropertyName propName = ff.property (descr.getName());
+            
+            if (oldProps.contains(propName)) {
+                properties.add(propName);
+            } else if (((descr.getMinOccurs() > 0) && (descr.getMaxOccurs() != 0))) {
+                //mandatory, add it
+                properties.add(propName);
+            }
+        }
+              
+        return properties;
     }
 
     /**

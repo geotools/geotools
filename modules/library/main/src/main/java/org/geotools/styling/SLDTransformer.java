@@ -508,6 +508,10 @@ public class SLDTransformer extends TransformerBase {
                 if(!"ramp".equals(typeString)) {
                     atts.addAttribute("", "type", "type", "", typeString);
                 }
+                
+                if(colorMap.getExtendedColors()) {
+                    atts.addAttribute("", "extended", "extended", "", typeString);
+                }
 
                 start("ColorMap", atts);
                 ColorMapEntry[] mapEntries = colorMap.getColorMapEntries();

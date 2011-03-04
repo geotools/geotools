@@ -16,24 +16,25 @@
  */
 package org.geotools.image.jai;
 
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.logging.LogRecord;
 import java.awt.image.renderable.ContextualRenderedImageFactory;
 import java.awt.image.renderable.RenderedImageFactory;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
 
 import javax.media.jai.JAI;
 import javax.media.jai.OperationDescriptor;
 import javax.media.jai.OperationRegistry;
+import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.registry.RIFRegistry;
 import javax.media.jai.registry.RenderedRegistryMode;
 
-import org.geotools.util.logging.Logging;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.AbstractGridCoverage;
-import org.geotools.resources.i18n.Loggings;
 import org.geotools.resources.i18n.LoggingKeys;
+import org.geotools.resources.i18n.Loggings;
+import org.geotools.util.logging.Logging;
 
 
 /**
@@ -43,8 +44,20 @@ import org.geotools.resources.i18n.LoggingKeys;
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
+ * @author Andrea Aime - GeoSolutions
  */
 public final class Registry {
+    
+    /**
+     * The JAITools product name (used to register operations in JAI)
+     */
+    public static final String JAI_TOOLS_PRODUCT = "jaitools.media.jai";
+    
+    /**
+     * The GeoTools product name (used to register operations in JAI)
+     */
+    public static final String GEOTOOLS_PRODUCT = "org.geotools";
+    
     /**
      * Do not allows instantiation of this class.
      */
@@ -132,6 +145,7 @@ public final class Registry {
     public static void setNativeAccelerationAllowed(final String operation, final boolean allowed) {
     	setNativeAccelerationAllowed(operation, allowed, JAI.getDefaultInstance());
     }
+    
 	/**
 	 * Register the "SampleTranscode" image operation to the operation registry
 	 * of the specified JAI instance. This method is invoked by the static
@@ -151,7 +165,7 @@ public final class Registry {
 		try {
 			registry.registerDescriptor(descriptor);
 			registry.registerFactory(RenderedRegistryMode.MODE_NAME,
-					name, "geotools.org",crif);
+					name, GEOTOOLS_PRODUCT,crif);
 			return true;
 		} catch (IllegalArgumentException exception) {
 			final LogRecord record = Loggings.format(Level.SEVERE,
@@ -166,6 +180,31 @@ public final class Registry {
 		}
 		return false;
 	}
+	
+	/**
+     * Forcefully registers the specified rendered operation in the JAI registry
+     * 
+     * @param descriptor
+     * @param rif
+     * @param productName
+     * @return true if the registration succeded, false if the registration was not required 
+     *         as the operation was already available in the registry
+     */
+    public static boolean registerRIF(final JAI jai, OperationDescriptor descriptor,
+            RenderedImageFactory rif, String productName) {
+        final OperationRegistry registry = jai.getOperationRegistry();
+        try {
+            // see if the operation is already registered, avoid registering it twice
+            new ParameterBlockJAI(descriptor.getName());
+            return false;
+        } catch (Exception e) {
+            registry.registerDescriptor(descriptor);
+            final String descName = descriptor.getName();
+            registry.registerFactory(RenderedRegistryMode.MODE_NAME, descName, productName,
+                    rif);
+            return true;
+        }
+    }
 
     /**
      * Logs the specified record.

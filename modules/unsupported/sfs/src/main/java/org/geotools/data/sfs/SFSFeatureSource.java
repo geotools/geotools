@@ -235,12 +235,15 @@ class SFSFeatureSource extends ContentFeatureSource implements SimpleFeatureSour
         /* Do the pre part first */
         reader = new SFSFeatureReader(getState(), layer, preQuery, returnedSchema);
 
-        /* Finish off with Post Filtering*/
-        if (postFilter != null && postFilter != Filter.INCLUDE) {
-
-            reader = new FilteringFeatureReader<SimpleFeatureType, SimpleFeature>(reader, postFilter);
+        /* 
+         * Normally we should finish off with post filtering, but reality proves that the
+         * remote service sometimes does not implement the protocol filtering spec fully.
+         * Don't trust the records sent back and apply the whole filter again on top of them
+         */
+        if(filter != null && !Filter.INCLUDE.equals(filter)) {
+            reader = new FilteringFeatureReader<SimpleFeatureType, SimpleFeature>(reader, filter);
         }
-
+        
         return reader;
     }
 

@@ -28,7 +28,6 @@ import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
 import java.awt.image.WritableRaster;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -961,7 +960,7 @@ public class RasterSymbolizerTest  {
 					new Color(0,0,255,(int) (255*0.2))
 				},
 				ColorMap.TYPE_RAMP);
-		
+		cm.setExtendedColors(true);
 		rs.setColorMap(cm);
 
 		// visit the RasterSymbolizer

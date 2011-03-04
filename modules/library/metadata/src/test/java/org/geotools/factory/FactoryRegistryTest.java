@@ -16,7 +16,10 @@
  */
 package org.geotools.factory;
 
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.*;
+
 import org.geotools.resources.LazySet;
 
 import org.junit.*;
@@ -263,5 +266,25 @@ public final class FactoryRegistryTest {
         hints.put(DummyFactory.DUMMY_FACTORY, DummyFactory.Example4.class);
         factory = registry.getServiceProvider(DummyFactory.class, null, hints, key);
         assertEquals("An instance of Factory #4 should have been created.", DummyFactory.Example4.class, factory.getClass());
+    }
+    
+    @Test
+    public void testLookupWithExtendedClasspath() {
+        URL url = getClass().getResource("foo.jar");
+        assertNotNull(url);
+        
+        FactoryRegistry reg = new FactoryCreator( DummyInterface.class );
+        Iterator it = reg.getServiceProviders(DummyInterface.class, false);
+        assertFalse(it.hasNext());
+        
+        URLClassLoader cl = new URLClassLoader(new URL[]{url});
+        GeoTools.addClassLoader(cl);
+        reg.scanForPlugins();
+        
+        it = reg.getServiceProviders(DummyInterface.class, false);
+        assertTrue(it.hasNext());
+        
+        Object next = it.next();
+        assertEquals( "pkg.Foo", next.getClass().getName() );
     }
 }

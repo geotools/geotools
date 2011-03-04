@@ -17,9 +17,12 @@
 package org.geotools.factory;
 
 import java.awt.RenderingHints;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 import javax.naming.Context;
@@ -166,6 +169,14 @@ public final class GeoTools {
      * The initial context. Will be created only when first needed.
      */
     private static InitialContext context;
+    
+    /**
+     * Class loaders to be added to the list in ${link {@link FactoryRegistry#getClassLoaders()}} 
+     * which are used to look-up plug-ins. Class loaders are added via 
+     * {@link #addClassLoader(ClassLoader)}
+     */
+    private static final Set<ClassLoader> addedClassLoaders = 
+        Collections.synchronizedSet(new HashSet<ClassLoader>());
 
     /**
      * Do not allow instantiation of this class.
@@ -559,6 +570,29 @@ public final class GeoTools {
         }
     }
 
+    /**
+     * Adds a class loader to be included in the list of class loaders that are used to locate
+     * GeoTools plug-ins.
+     * <p>
+     * Client code that calls this method may also need to call {@link FactoryRegistry#scanForPlugins()}
+     * on any existing registry to force it to clear its cache and use the added class loader to 
+     * locate plugins.
+     * </p>
+     * 
+     * @param classLoader The class loader.
+     */
+    public static void addClassLoader(ClassLoader classLoader) {
+        addedClassLoaders.add(classLoader);
+        fireConfigurationChanged();
+    }
+    
+    /**
+     * Returns the class loaders added via {@link #addClassLoader(ClassLoader)}. 
+     */
+    static Set<ClassLoader> getClassLoaders() {
+        return addedClassLoaders;
+    }
+    
     /**
      * Reports the GeoTools {@linkplain #getVersion version} number to the
      * {@linkplain System#out standard output stream}.

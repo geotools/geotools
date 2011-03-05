@@ -42,8 +42,9 @@ import org.geotools.renderer.GTRenderer;
 import org.geotools.renderer.lite.StreamingRenderer;
 import org.geotools.swt.action.DrawShapeAction;
 import org.geotools.swt.action.InfoAction;
-import org.geotools.swt.action.OpenCoverageAction;
+import org.geotools.swt.action.OpenGeotiffAction;
 import org.geotools.swt.action.OpenShapefileAction;
+import org.geotools.swt.action.OpenWorldimageAction;
 import org.geotools.swt.action.PanAction;
 import org.geotools.swt.action.ResetAction;
 import org.geotools.swt.action.ZoomInAction;
@@ -120,7 +121,8 @@ public class SwtMapFrame extends ApplicationWindow {
     private ZoomOutAction zoomoutAction;
 
     private OpenShapefileAction openShapeAction;
-    private OpenCoverageAction openCoverageAction;
+    private OpenGeotiffAction openCoverageAction;
+    private OpenWorldimageAction openWorldimageAction;
 
     /*
      * to see how overlay of shapes works, uncomment all the lines that
@@ -185,7 +187,8 @@ public class SwtMapFrame extends ApplicationWindow {
         zoominAction = new ZoomInAction();
         zoomoutAction = new ZoomOutAction();
         openShapeAction = new OpenShapefileAction();
-        openCoverageAction = new OpenCoverageAction();
+        openCoverageAction = new OpenGeotiffAction();
+        openWorldimageAction = new OpenWorldimageAction();
 
         toolSet = new HashSet<Tool>();
         toolSet.addAll(EnumSet.allOf(Tool.class));
@@ -251,6 +254,7 @@ public class SwtMapFrame extends ApplicationWindow {
         zoomoutAction.setMapPane(mapPane);
         openShapeAction.setMapPane(mapPane);
         openCoverageAction.setMapPane(mapPane);
+        openWorldimageAction.setMapPane(mapPane);
 
         StatusLineManager statusLineManager = getStatusLineManager();
         if (statusLineManager != null) {
@@ -292,6 +296,7 @@ public class SwtMapFrame extends ApplicationWindow {
         MenuManager file_menu = new MenuManager("&File");
         file_menu.add(openShapeAction);
         file_menu.add(openCoverageAction);
+        file_menu.add(openWorldimageAction);
 
         MenuManager navigation_menu = new MenuManager("&Navigation");
         bar_menu.add(file_menu);

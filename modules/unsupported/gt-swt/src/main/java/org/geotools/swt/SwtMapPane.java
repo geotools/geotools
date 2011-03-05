@@ -780,8 +780,13 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
         layer.setSelected(true);
 
         boolean atFullExtent = equalsFullExtent(getDisplayArea());
-        if (context.getLayerCount() == 1 || atFullExtent) {
+        boolean firstLayer = context.getLayerCount() == 1;
+        if (firstLayer || atFullExtent) {
             reset();
+            if (firstLayer) {
+                setCrs(layer.getBounds().getCoordinateReferenceSystem());
+                return;
+            }
         }
 
         redraw();
@@ -868,30 +873,33 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
                  */
                 if (fullExtent == null) {
                     // set arbitrary bounds centred on 0,0
-                    fullExtent = new ReferencedEnvelope(-1, 1, -1, 1, context.getCoordinateReferenceSystem());
+                    fullExtent = worldEnvelope();// new ReferencedEnvelope(-1, 1, -1, 1,
+                                                 // context.getCoordinateReferenceSystem());
 
-                } else {
-                    double w = fullExtent.getWidth();
-                    double h = fullExtent.getHeight();
-                    double x = fullExtent.getMinimum(0);
-                    double y = fullExtent.getMinimum(1);
-
-                    double xmin = x;
-                    double xmax = x + w;
-                    if (w <= 0.0) {
-                        xmin = x - 1.0;
-                        xmax = x + 1.0;
-                    }
-
-                    double ymin = y;
-                    double ymax = y + h;
-                    if (h <= 0.0) {
-                        ymin = y - 1.0;
-                        ymax = y + 1.0;
-                    }
-
-                    fullExtent = new ReferencedEnvelope(xmin, xmax, ymin, ymax, context.getCoordinateReferenceSystem());
                 }
+                // else {
+                // double w = fullExtent.getWidth();
+                // double h = fullExtent.getHeight();
+                // double x = fullExtent.getMinimum(0);
+                // double y = fullExtent.getMinimum(1);
+                //
+                // double xmin = x;
+                // double xmax = x + w;
+                // if (w <= 0.0) {
+                // xmin = x - 1.0;
+                // xmax = x + 1.0;
+                // }
+                //
+                // double ymin = y;
+                // double ymax = y + h;
+                // if (h <= 0.0) {
+                // ymin = y - 1.0;
+                // ymax = y + 1.0;
+                // }
+                //
+                // fullExtent = new ReferencedEnvelope(xmin, xmax, ymin, ymax,
+                // context.getCoordinateReferenceSystem());
+                // }
 
             } catch (Exception ex) {
                 throw new IllegalStateException(ex);
@@ -917,7 +925,7 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
         if (envelope != null) {
             refEnv = new ReferencedEnvelope(envelope);
         } else {
-            refEnv = new ReferencedEnvelope(-180, 180, -90, 90, DefaultGeographicCRS.WGS84);
+            refEnv = worldEnvelope();
             context.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
         }
 
@@ -937,6 +945,10 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
         } catch (NoninvertibleTransformException ex) {
             ex.printStackTrace();
         }
+    }
+
+    private ReferencedEnvelope worldEnvelope() {
+        return new ReferencedEnvelope(-180, 180, -90, 90, DefaultGeographicCRS.WGS84);
     }
 
     /**

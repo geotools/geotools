@@ -28,20 +28,22 @@ import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.map.MapContext;
 import org.geotools.map.MapLayer;
+import org.geotools.styling.RasterSymbolizer;
+import org.geotools.styling.SLD;
 import org.geotools.styling.Style;
+import org.geotools.styling.StyleFactoryImpl;
 import org.geotools.swt.control.JFileImageChooser;
 import org.geotools.swt.utils.ImageCache;
-import org.geotools.swt.utils.Utils;
 
 /**
- * Action to open image files.
+ * Action to open geotiff files.
  * 
  * @author Andrea Antonello (www.hydrologis.com)
  */
-public class OpenCoverageAction extends MapAction implements ISelectionChangedListener {
+public class OpenGeotiffAction extends MapAction implements ISelectionChangedListener {
 
-    public OpenCoverageAction() {
-        super("Open Image", "Load an image into the viewer.", ImageCache.getInstance().getImage(ImageCache.OPEN));
+    public OpenGeotiffAction() {
+        super("Open Geotiff", "Load a geotiff into the viewer.", ImageCache.getInstance().getImage(ImageCache.OPEN));
     }
 
     public void run() {
@@ -52,10 +54,12 @@ public class OpenCoverageAction extends MapAction implements ISelectionChangedLi
         if (openFile != null && openFile.exists()) {
             AbstractGridFormat format = GridFormatFinder.findFormat(openFile);
             AbstractGridCoverage2DReader tiffReader = format.getReader(openFile);
-            Style rgbStyle = Utils.createRGBStyle(tiffReader);
+            StyleFactoryImpl sf = new StyleFactoryImpl();
+            RasterSymbolizer symbolizer = sf.getDefaultRasterSymbolizer();
+            Style defaultStyle = SLD.wrapSymbolizers(symbolizer);
 
             MapContext mapContext = mapPane.getMapContext();
-            MapLayer layer = new MapLayer(tiffReader, rgbStyle);
+            MapLayer layer = new MapLayer(tiffReader, defaultStyle);
             layer.setTitle(openFile.getName());
             mapContext.addLayer(layer);
             mapPane.redraw();

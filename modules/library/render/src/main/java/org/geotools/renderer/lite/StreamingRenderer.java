@@ -2994,35 +2994,17 @@ public final class StreamingRenderer implements GTRenderer {
         }
 
         public void run() {
-            
-            List<RenderingRequest> rl = new ArrayList<RenderingRequest>(100);
             boolean done = false;
             while(!done) {
                 try {
                     // System.out.println("Grabbing the next request");
                     
-                    rl.clear();
-                    // try a bulk read
-                    int count = requests.drainTo(rl, 100);
-                    // if that fails just block on the next element
-                    if(count == 0) {
-                        rl.add(requests.take());
-                        count = 1;
-                    } 
-                    
-                    for (int i = 0; i < count; i++) {
-                        RenderingRequest request = rl.get(i);
-                        rl.set(i, null);
-                        // System.out.println(request);
-                        // special value to signal the sequence of requests ended
-                        
-                        if(request instanceof EndRequest || renderingStopRequested) {
-                            done = true;
-                        } else {
-                            request.execute();
-                        }
+                    RenderingRequest request = requests.take();
+                    if(request instanceof EndRequest || renderingStopRequested) {
+                        done = true;
+                    } else {
+                        request.execute();
                     }
-                    
                 } catch(InterruptedException e) {
                     // ok, we might have been interupped to stop processing
                     if(renderingStopRequested) {

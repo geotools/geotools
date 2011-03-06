@@ -248,8 +248,6 @@ public class StyleFactoryImplTest extends TestCase {
                 Expression exp = filterFactory.literal(names[i]);
                 assertEquals("Wrong sort of mark returned ", exp,
                     m.getWellKnownName());
-                assertEquals("Wrong size of mark returned ", "6",
-                    m.getSize().evaluate(feature).toString());
             } catch (InvocationTargetException ite) {
                 ite.getTargetException().printStackTrace();
                 fail("InvocationTargetException " + ite.getTargetException());

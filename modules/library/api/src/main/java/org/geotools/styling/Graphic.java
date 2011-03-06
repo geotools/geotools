@@ -136,10 +136,6 @@ public interface Graphic extends GraphicLegend,
                 return ConstantExpression.ZERO;
             }
 
-            public String getGeometryPropertyName() {
-                return "";
-            }
-
         };
 
     /**
@@ -362,20 +358,6 @@ public interface Graphic extends GraphicLegend,
      */
     void setRotation(Expression rotation);
 
-    /**
-     * Getter for property geometryPropertyName.
-     *
-     * @return Value of property geometryPropertyName.
-     */
-    String getGeometryPropertyName();
-
-    /**
-     * Setter for property geometryPropertyName.
-     *
-     * @param geometryPropertyName New value of property geometryPropertyName.
-     */
-    void setGeometryPropertyName(String geometryPropertyName);
-
     Expression getGap();
     
     void setGap(Expression gap );
@@ -444,10 +426,6 @@ abstract class ConstantGraphic implements Graphic {
     }
 
     public void setRotation(Expression rotation) {
-        cannotModifyConstant();
-    }
-
-    public void setGeometryPropertyName(String geometryPropertyName) {
         cannotModifyConstant();
     }
 

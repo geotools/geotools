@@ -121,31 +121,6 @@ public interface Mark extends org.opengis.style.Mark, Symbol {
     void setFill(org.opengis.style.Fill fill);
 
     /**
-     * @return size of mark
-     */
-    Expression getSize();
-
-    /**
-     * Size to display the mark.
-     * <p>
-     * If this value is not provided or is Expression.NIL then a default of 16x16
-     * (or the natural size of the image) will be used.
-     * 
-     * @param size 
-     */
-    void setSize(Expression size);
-
-    /**
-     * @return rotation
-     */
-    Expression getRotation();
-
-    /**
-     * @param rotation
-     */
-    void setRotation(Expression rotation);
-
-    /**
      * Mark defined by an external resource.
      *
      * @return ExternalMark or null if WellKNownName is being used

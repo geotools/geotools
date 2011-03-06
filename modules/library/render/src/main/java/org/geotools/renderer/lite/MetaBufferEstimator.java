@@ -304,17 +304,10 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
                             }
                         }
                     } else if(gs instanceof Mark) {
-                        Mark m = (Mark) gs;
-                        if(m.getSize() instanceof Literal) {
-                            int size = (int) Math.ceil(m.getSize().evaluate(null, Double.class));
-                            if(size > buffer) {
-                                buffer = size;
-                            }
-                            return;
-                        } else {
-                            estimateAccurate = false;
-                            return;
-                        }
+                        // Mark is assumed to be 16 pixels by the SLD specification
+                        // (although our factory traditionally used 6 pixels)
+                        estimateAccurate = false;
+                        return;
                     }
                 } 
                 // if we got here we could not find a way to actually estimate the graphic size

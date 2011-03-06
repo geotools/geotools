@@ -1514,9 +1514,7 @@ public class SLDParser {
                 childName = child.getNodeName();
             }
 
-            if (childName.equalsIgnoreCase(geomString)) {
-                graphic.setGeometryPropertyName(parseGeometryName(child));
-            } else if (childName.equalsIgnoreCase("ExternalGraphic")) {
+            if (childName.equalsIgnoreCase("ExternalGraphic")) {
                 if (LOGGER.isLoggable(Level.FINEST))
                     LOGGER.finest("parsing extgraphic " + child);
                 graphic.addExternalGraphic(parseExternalGraphic(child));

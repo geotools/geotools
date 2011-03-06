@@ -45,8 +45,6 @@ public class MarkImpl implements Mark, Cloneable {
 
     private ExternalMarkImpl external;
     private Expression wellKnownName = null;
-    private Expression rotation = null;
-    private Expression size = null;
 
     /**
      * Creates a new instance of DefaultMark
@@ -71,8 +69,6 @@ public class MarkImpl implements Mark, Cloneable {
             stroke = StrokeImpl.cast( sfac.getDefaultStroke() );
 
             wellKnownName = filterFactory.literal("square");
-            size = filterFactory.literal(new Integer(6));
-            rotation = filterFactory.literal(new Double(0.0));
         } catch (org.geotools.filter.IllegalFilterException ife) {
             severe("<init>", "Failed to build default mark: ", ife);
         }
@@ -144,14 +140,6 @@ public class MarkImpl implements Mark, Cloneable {
         this.stroke = StrokeImpl.cast( stroke );
     }
 
-    public void setSize(Expression size) {
-        this.size = size;
-    }
-
-    public void setSize(int size) {
-        setSize(filterFactory.literal(size));
-    }
-
     /**
      * Setter for property wellKnownName.
      *
@@ -166,31 +154,6 @@ public class MarkImpl implements Mark, Cloneable {
         setWellKnownName(filterFactory.literal(name));
     }
 
-    public void setRotation(Expression rotation) {
-        this.rotation = rotation;
-    }
-
-    public void setRotation(double rotation) {
-        setRotation(filterFactory.literal(rotation));
-    }
-
-    /**
-     * Getter for property size.
-     *
-     * @return Value of property size.
-     */
-    public Expression getSize() {
-        return size;
-    }
-
-    /**
-     * Getter for property rotation.
-     *
-     * @return Value of property rotation.
-     */
-    public Expression getRotation() {
-        return rotation;
-    }
 
     public String toString() {
         return wellKnownName.toString();
@@ -252,14 +215,6 @@ public class MarkImpl implements Mark, Cloneable {
             result = (PRIME * result) + wellKnownName.hashCode();
         }
 
-        if (rotation != null) {
-            result = (PRIME * result) + rotation.hashCode();
-        }
-
-        if (size != null) {
-            result = (PRIME * result) + size.hashCode();
-        }
-
         return result;
     }
 
@@ -297,26 +252,6 @@ public class MarkImpl implements Mark, Cloneable {
             }
         } else {
             if (!this.wellKnownName.equals(other.wellKnownName)) {
-                return false;
-            }
-        }
-
-        if (this.rotation == null) {
-            if (other.rotation != null) {
-                return false;
-            }
-        } else {
-            if (!this.rotation.equals(other.rotation)) {
-                return false;
-            }
-        }
-
-        if (this.size == null) {
-            if (other.size != null) {
-                return false;
-            }
-        } else {
-            if (!this.size.equals(other.size)) {
                 return false;
             }
         }
@@ -363,8 +298,6 @@ public class MarkImpl implements Mark, Cloneable {
             TextMark text = (TextMark) item;
             TextMarkImpl copy = new TextMarkImpl();
             copy.setFill( text.getFill() );
-            copy.setRotation( text.getRotation() );
-            copy.setSize( text.getSize() );
             copy.setStroke( text.getStroke() );
             copy.setSymbol( text.getSymbol() );
             copy.setWellKnownName( text.getWellKnownName() );
@@ -374,9 +307,6 @@ public class MarkImpl implements Mark, Cloneable {
         else if (item instanceof Mark ){
             Mark mark = (Mark) item;
             MarkImpl copy = new TextMarkImpl();
-            copy.setFill( mark.getFill() );
-            copy.setRotation( mark.getRotation() );
-            copy.setSize( mark.getSize() );
             copy.setStroke( mark.getStroke() );
             copy.setWellKnownName( mark.getWellKnownName() );
             copy.setExternalMark( mark.getExternalMark() );

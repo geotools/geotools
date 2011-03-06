@@ -382,14 +382,6 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor
         if (mark.getStroke() != null) {
             mark.getStroke().accept(this);
         }
-
-        if (mark.getRotation() != null) {
-            mark.getRotation().accept(this,null);
-        }
-
-        if (mark.getSize() != null) {
-            mark.getSize().accept(this,null);
-        }
         
         if(mark.getWellKnownName() != null) {
             if(mark.getWellKnownName() instanceof Literal) {

@@ -269,7 +269,6 @@ public class StyleObjectTest extends TestCase {
         assertEquals(clone.getSymbols().length, graphic.getSymbols().length);
 
         Graphic notEq = styleFactory.getDefaultGraphic();
-        notEq.setGeometryPropertyName("geomprop");
         assertEqualsContract(clone, notEq, graphic);
     }
 

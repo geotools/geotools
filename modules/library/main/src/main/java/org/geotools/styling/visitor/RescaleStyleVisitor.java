@@ -184,7 +184,6 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
         }
 
         copy = sf.createDefaultGraphic();
-        copy.setGeometryPropertyName(gr.getGeometryPropertyName());
         copy.setDisplacement(displacementCopy);
         copy.setExternalGraphics(externalGraphicsCopy);
         copy.setMarks(marksCopy);

@@ -226,13 +226,10 @@ public class SLD {
      * Retrieve the size of a Mark object
      * @param mark the Mark object
      * @return size or {@linkplain #NOTFOUND} if not available
+     * @deprecated please check graphic as an indication of mark size
      */
     public static int size(Mark mark) {
-        if (mark == null) {
-            return NOTFOUND;
-        }
-
-        return Filters.asInt(mark.getSize());
+        return NOTFOUND;
     }
 
     /**

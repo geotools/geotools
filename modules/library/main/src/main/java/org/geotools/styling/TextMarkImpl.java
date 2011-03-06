@@ -16,6 +16,9 @@
  */
 package org.geotools.styling;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.GeoTools;
 import org.opengis.filter.FilterFactory;
@@ -34,7 +37,7 @@ public class TextMarkImpl extends MarkImpl implements TextMark {
     //private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.core");
     private FilterFactory filterFactory;
     private Expression wellKnownName = null;
-    private java.util.List fonts = new java.util.ArrayList();
+    private List<Font> fonts = new ArrayList<Font>();
     private Expression symbol;
 
     public TextMarkImpl() {
@@ -78,7 +81,7 @@ public class TextMarkImpl extends MarkImpl implements TextMark {
      *
      * @return Value of property font.
      */
-    public org.geotools.styling.Font[] getFonts() {
+    public Font[] getFonts() {
         return (Font[]) fonts.toArray(new Font[0]);
     }
 

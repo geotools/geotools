@@ -365,19 +365,6 @@ public class StyleFactoryImpl extends AbstractStyleFactory
         mark.setStroke(stroke);
         mark.setFill(fill);
 
-        if (size == null) {
-            throw new IllegalArgumentException("Size can not be null in mark");
-        }
-
-        mark.setSize(size);
-
-        if (rotation == null) {
-            throw new IllegalArgumentException(
-                "Rotation can not be null in mark");
-        }
-
-        mark.setRotation(rotation);
-
         return mark;
     }
 

@@ -51,7 +51,6 @@ public class GraphicImpl implements Graphic, Cloneable {
     private Expression initialGap;
     
     private FilterFactory filterFactory;
-    private String geometryPropertyName = "";
     private Expression rotation = null;
     private Expression size = null;
     private DisplacementImpl displacement = null;
@@ -345,20 +344,6 @@ public class GraphicImpl implements Graphic, Cloneable {
         setSize(filterFactory.literal(size));
     }
 
-    @Deprecated
-    public void setGeometryPropertyName(String name) {
-        geometryPropertyName = name;
-    }
-
-    /**
-     * Getter for property geometryPropertyName.
-     *
-     * @return Value of property geometryPropertyName.
-     */
-    public java.lang.String getGeometryPropertyName() {
-        return geometryPropertyName;
-    }
-
     public Object accept(StyleVisitor visitor, Object data) {
         return visitor.visit((org.opengis.style.GraphicStroke)this, data);
     }
@@ -398,10 +383,6 @@ public class GraphicImpl implements Graphic, Cloneable {
     public int hashCode() {
         final int PRIME = 1000003;
         int result = 0;
-
-        if (geometryPropertyName != null) {
-            result = (PRIME * result) + geometryPropertyName.hashCode();
-        }
 
         if (graphics != null) {
             result = (PRIME * result) + graphics.hashCode();
@@ -451,9 +432,7 @@ public class GraphicImpl implements Graphic, Cloneable {
         if (oth instanceof GraphicImpl) {
             GraphicImpl other = (GraphicImpl) oth;
 
-            return Utilities.equals(this.geometryPropertyName,
-                other.geometryPropertyName)
-            && Utilities.equals(this.size, other.size)
+            return Utilities.equals(this.size, other.size)
             && Utilities.equals(this.rotation, other.rotation)
             && Utilities.equals(this.opacity, other.opacity)
             &&    Arrays.equals(this.getMarks(), other.getMarks() )

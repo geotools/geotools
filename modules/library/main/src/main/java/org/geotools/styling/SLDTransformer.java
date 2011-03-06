@@ -718,7 +718,7 @@ public class SLDTransformer extends TransformerBase {
         public void visit(Graphic gr) {
             start("Graphic");
 
-            encodeGeometryProperty(gr.getGeometryPropertyName());
+            //encodeGeometryProperty(gr.getGeometryPropertyName());
 
             Symbol[] symbols = gr.getSymbols();
 

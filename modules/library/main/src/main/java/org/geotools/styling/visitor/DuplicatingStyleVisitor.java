@@ -756,9 +756,6 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
 
         copy = sf.createDefaultGraphic();
         
-        // Odd.. graphics should not have a geometry property name 
-        copy.setGeometryPropertyName(gr.getGeometryPropertyName());
-        
         copy.setDisplacement(displacementCopy);
         copy.setExternalGraphics(externalGraphicsCopy);
         copy.setMarks(marksCopy);
@@ -807,8 +804,6 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
 
         copy = sf.createMark();
         copy.setFill(copy( mark.getFill() ));
-        copy.setRotation( copy( mark.getRotation() ));
-        copy.setSize(copy( mark.getSize() ));
         copy.setStroke(copy( mark.getStroke() ));
         copy.setWellKnownName(copy( mark.getWellKnownName() ));
         

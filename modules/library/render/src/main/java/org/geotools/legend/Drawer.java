@@ -192,7 +192,10 @@ public class Drawer {
         if( Point.class.isAssignableFrom(type) ||
                 MultiPoint.class.isAssignableFrom(type)){
             PointSymbolizer point = builder.createPointSymbolizer(builder.createGraphic());
-            point.getGraphic().getMarks()[0].setSize((Expression) CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints()).literal(10));
+            // set graphic size to 10 by default
+            point.getGraphic().setSize((Expression) CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints()).literal(10));
+            
+            // danger assumes a Mark!
             point.getGraphic().getMarks()[0].setFill(builder.createFill(baseColor));
             syms[0]=point;
         }

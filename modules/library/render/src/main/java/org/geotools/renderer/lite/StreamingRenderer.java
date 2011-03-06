@@ -2871,10 +2871,14 @@ public final class StreamingRenderer implements GTRenderer {
                 return null;
             
             try {
-                // process screenmap if necessary
+                // process screenmap if necessary (only do it once, 
+                // the geometry will be transformed simplified in place and the screenmap 
+                // really needs to play against the original coordinates, plus, once we start
+                // drawing a geometry we want to apply all symbolizers on it)
                 if (screenMap != null // 
                         && !(symbolizer instanceof PointSymbolizer) //
-                        && !(g instanceof Point)) {
+                        && !(g instanceof Point)
+                        && getGeometryIndex(g) == -1) {
                     Envelope env = g.getEnvelopeInternal();
                     if(screenMap.canSimplify(env))
                         if (screenMap.checkAndSet(env)) {
@@ -2937,12 +2941,21 @@ public final class StreamingRenderer implements GTRenderer {
                 return null;
             }
         }
+        
+        private int getGeometryIndex(Geometry g) {
+            for (int i = 0; i < geometries.size(); i++) {
+                if(geometries.get(i) == g) {
+                    return i;
+                }
+            }
+            return -1;
+        }
 
         private final LiteShape2 getTransformedShape(Geometry originalGeom, SymbolizerAssociation sa) throws TransformException,
         FactoryException {
-            for (int i = 0; i < geometries.size(); i++) {
-                if(geometries.get(i) == originalGeom)
-                    return (LiteShape2) shapes.get(i);
+            int idx = getGeometryIndex(originalGeom);
+            if(idx != -1) {
+                return (LiteShape2) shapes.get(idx);
             }
 
             // we need to clone if the clone flag is high or if the coordinate sequence is not the one we asked for
@@ -3199,8 +3212,6 @@ public final class StreamingRenderer implements GTRenderer {
             boolean done = false;
             while(!done) {
                 try {
-                    // System.out.println("Grabbing the next request");
-                    
                     RenderingRequest request = requests.take();
                     if(request instanceof EndRequest || renderingStopRequested) {
                         done = true;

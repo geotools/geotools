@@ -501,6 +501,22 @@ to use “urn:ogc:def:crs:EPSG:6.6:4326“. If you ever see that you can be sure
 that a) someone really knows what they are doing and b) the data is recorded in
 exactly the order defined by the EPSG database.
 
+Workarounds
+^^^^^^^^^^^
+
+You can perform a workaround on a case by case basis::
+   
+   CRSAuthorityFactory   factory = CRS.getAuthorityFactory(true);
+   CoordinateReferenceSystem crs = factory.createCoordinateReferenceSystem("EPSG:4326");
+
+Or you can set a global hint to force GeoTools to use x/y order::
+   
+   static void main( String args []){
+      System.setProperty("org.geotools.referencing.forceXY", "true");
+      
+      ....
+   }
+   
 For more Information
 ---------------------
 

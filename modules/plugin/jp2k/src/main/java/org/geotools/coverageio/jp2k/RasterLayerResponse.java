@@ -58,6 +58,8 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
+import org.geotools.resources.coverage.CoverageUtilities;
+import org.geotools.resources.image.ImageUtilities;
 import org.opengis.coverage.ColorInterpretation;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.geometry.BoundingBox;
@@ -556,7 +558,7 @@ class RasterLayerResponse{
 		if (doTransparentColor) {
 			if (LOGGER.isLoggable(Level.FINE))
 				LOGGER.fine("Support for alpha on input image number "+ granuleIndex);
-			granule = Utils.makeColorTransparent(transparentColor, granule);
+			granule = ImageUtilities.maskColor(transparentColor, granule);
 		}
 		return granule;
 

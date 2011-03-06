@@ -20,10 +20,8 @@ import it.geosolutions.imageio.imageioimpl.imagereadmt.CloneableImageReadParam;
 import it.geosolutions.imageio.imageioimpl.imagereadmt.DefaultCloneableImageReadParam;
 import it.geosolutions.imageio.stream.input.FileImageInputStreamExt;
 
-import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
-import java.awt.image.MultiPixelPackedSampleModel;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
@@ -42,7 +40,6 @@ import org.apache.commons.io.filefilter.IOFileFilter;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.image.ImageWorker;
 import org.geotools.metadata.iso.spatial.PixelTranslation;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.resources.i18n.ErrorKeys;
@@ -151,20 +148,6 @@ class Utils {
 				geographicBBox.getWestBoundLongitude(), geographicBBox
 						.getSouthBoundLatitude(), geographicBBox
 						.getNorthBoundLatitude(), DefaultGeographicCRS.WGS84);
-	}
-
-	/**
-	 * @param transparentColor
-	 * @param image
-	 * @return
-	 * @throws IllegalStateException
-	 */
-	static RenderedImage makeColorTransparent(final Color transparentColor,
-			final RenderedImage image) throws IllegalStateException {
-		final ImageWorker w = new ImageWorker(image);
-		if (image.getSampleModel() instanceof MultiPixelPackedSampleModel)
-			w.forceComponentColorModel();
-		return w.makeColorTransparent(transparentColor).getRenderedImage();
 	}
 
 	static ImageReadParam cloneImageReadParam(ImageReadParam param) {

@@ -366,6 +366,7 @@ public interface Graphic extends GraphicLegend,
      * Getter for property geometryPropertyName.
      *
      * @return Value of property geometryPropertyName.
+     * @deprecated Please use symbolizer geometry expresion
      */
     String getGeometryPropertyName();
 
@@ -373,6 +374,7 @@ public interface Graphic extends GraphicLegend,
      * Setter for property geometryPropertyName.
      *
      * @param geometryPropertyName New value of property geometryPropertyName.
+     * @deprecated Please use symbolizer geometry expression
      */
     void setGeometryPropertyName(String geometryPropertyName);
 

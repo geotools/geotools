@@ -122,6 +122,7 @@ public interface Mark extends org.opengis.style.Mark, Symbol {
 
     /**
      * @return size of mark
+     * @deprecated please use graphic size
      */
     Expression getSize();
 
@@ -132,16 +133,19 @@ public interface Mark extends org.opengis.style.Mark, Symbol {
      * (or the natural size of the image) will be used.
      * 
      * @param size 
+     * @deprecated please use graphic size
      */
     void setSize(Expression size);
 
     /**
      * @return rotation
+     * @deprecated please use graphic rotation
      */
     Expression getRotation();
 
     /**
      * @param rotation
+     * @deprecated please use graphic rotation
      */
     void setRotation(Expression rotation);
 

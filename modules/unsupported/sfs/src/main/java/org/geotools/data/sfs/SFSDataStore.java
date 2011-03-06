@@ -100,6 +100,9 @@ public class SFSDataStore extends ContentDataStore {
     public SFSDataStore(URL fnURL, String namespaceURI) throws IOException {
         String strURL = fnURL.toString();
         this.baseURL = strURL + (strURL.endsWith("/") ? "" : "/");
+        if(baseURL.endsWith("capabilities/")) {
+            baseURL = baseURL.substring(0, baseURL.length() - "capabilities/".length());
+        }
         this.namespaceURI = namespaceURI;
         processCapabilities();
     }
@@ -113,6 +116,9 @@ public class SFSDataStore extends ContentDataStore {
     public SFSDataStore(URL fnURL, String namespaceURI, String user, String password, int timeout) throws IOException {
         String strURL = fnURL.toString();
         this.baseURL = strURL + (strURL.endsWith("/") ? "" : "/");
+        if(baseURL.endsWith("capabilities/")) {
+            baseURL = baseURL.substring(0, baseURL.length() - "capabilities/".length());
+        }
         this.namespaceURI = namespaceURI;
         this.user = user;
         this.password = password;

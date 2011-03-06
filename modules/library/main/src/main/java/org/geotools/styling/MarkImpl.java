@@ -294,19 +294,9 @@ public class MarkImpl implements Mark, Cloneable {
         else if ( item instanceof MarkImpl){
             return (MarkImpl) item;
         }
-        else if ( item instanceof TextMark){
-            TextMark text = (TextMark) item;
-            TextMarkImpl copy = new TextMarkImpl();
-            copy.setFill( text.getFill() );
-            copy.setStroke( text.getStroke() );
-            copy.setSymbol( text.getSymbol() );
-            copy.setWellKnownName( text.getWellKnownName() );
-
-            return copy;
-        }
         else if (item instanceof Mark ){
             Mark mark = (Mark) item;
-            MarkImpl copy = new TextMarkImpl();
+            MarkImpl copy = new MarkImpl();
             copy.setStroke( mark.getStroke() );
             copy.setWellKnownName( mark.getWellKnownName() );
             copy.setExternalMark( mark.getExternalMark() );

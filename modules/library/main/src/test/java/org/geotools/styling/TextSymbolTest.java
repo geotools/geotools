@@ -123,23 +123,9 @@ public class TextSymbolTest extends TestCase {
         //org.geotools.map.Map map = new DefaultMap();
         //The following is complex, and should be built from
         //an SLD document and not by hand
-        org.geotools.styling.FontImpl font = new org.geotools.styling.FontImpl();
-
-        font.setFontFamily(filterFactory.literal(dataFolder + "geog.ttf"));
-        font.setFontSize(filterFactory.property("size"));
 
         PropertyName symbExpr = filterFactory.property("symbol");
-        TextMark textMark = new TextMarkImpl(font, symbExpr);
-
-        org.geotools.styling.FontImpl font2 = new org.geotools.styling.FontImpl();
-        font2.setFontFamily(filterFactory.literal("MapInfo Cartographic"));
-        font2.setFontSize(filterFactory.property("size"));
-        textMark.addFont(font2);
-
-        org.geotools.styling.FontImpl font3 = new org.geotools.styling.FontImpl();
-        font3.setFontFamily(filterFactory.literal("ESRI Cartography"));
-        font3.setFontSize(filterFactory.property("size"));
-        textMark.addFont(font3);
+        Mark textMark = new MarkImpl("square");
 
         GraphicImpl graphic = new GraphicImpl();
         graphic.addSymbol(textMark);

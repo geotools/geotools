@@ -74,11 +74,13 @@ public class CSVFeatureReader implements FeatureReader<SimpleFeatureType, Simple
             if( "lat".equalsIgnoreCase(column)){
                 coordinate.y = Double.valueOf( value.trim() );
             }
-            if( "lon".equalsIgnoreCase(column)){
+            else if( "lon".equalsIgnoreCase(column)){
                 coordinate.x = Double.valueOf( value.trim() );
             }
-            builder.set(column, value );
-        }        
+            else {
+                builder.set(column, value );
+            }
+        }
         builder.set("Location", geometryFactory.createPoint( coordinate ) );
         
         row += 1;
@@ -96,8 +98,10 @@ public class CSVFeatureReader implements FeatureReader<SimpleFeatureType, Simple
     }
 
     public void close() throws IOException {
-        reader.close();
-        reader = null;
+        if( reader != null ){
+            reader.close();
+            reader = null;
+        }
         builder = null;
         geometryFactory = null;
         next = null;

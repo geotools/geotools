@@ -193,10 +193,15 @@ class GTDataStoreGranuleCatalog extends AbstractGranuleCatalog {
 				return;
 				
 			// if this is not a new store let's extract basic properties from it
-			if(spi instanceof PostgisNGJNDIDataStoreFactory||spi instanceof PostgisNGDataStoreFactory)
-				extractBasicProperties(FilenameUtils.getBaseName(FilenameUtils.getPathNoEndSeparator(this.parentLocation)));
-			else
+			if(spi instanceof PostgisNGJNDIDataStoreFactory||spi instanceof PostgisNGDataStoreFactory){
+				String typeName = FilenameUtils.getBaseName(FilenameUtils.getPathNoEndSeparator(this.parentLocation));
+				//if (typeName != null){
+				//    typeName = typeName.toLowerCase();
+				//}
+               extractBasicProperties(typeName);
+			} else {
 				extractBasicProperties(null);
+			}
 		}
 		catch (Throwable e) {
 			try {

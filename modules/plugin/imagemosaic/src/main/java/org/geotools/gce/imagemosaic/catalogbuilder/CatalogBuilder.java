@@ -1299,67 +1299,71 @@ public class CatalogBuilder implements Runnable {
 
 	private void loadPropertyCollectors() {
 		// load property collectors
-		final String pc=runConfiguration.getPropertyCollectors();
-		if(pc!=null&& pc.length()>0)
-		{
+		final String pcConfig = runConfiguration.getPropertyCollectors();
+		if (pcConfig != null && pcConfig.length()>0){
 			// load the SPI set
 			final Set<PropertiesCollectorSPI> pcSPIs = PropertiesCollectorFinder.getPropertiesCollectorSPI();
 			
 			// parse the string
 			final List<PropertiesCollector> pcs= new ArrayList<PropertiesCollector>();
-			final String[] pcsDefs=pc.split(",");
-			for(String pcDef: pcsDefs)
-			{
+			final String[] pcsDefs=pcConfig.split(",");
+			for (String pcDef: pcsDefs) {
 				// parse this def as NAME[CONFIG_FILE](PROPERTY;PROPERTY;....;PROPERTY)
-				final int squareLPos=pcDef.indexOf("[");
-				final int squareRPos=pcDef.indexOf("]");
-				final int squareRPosLast= pcDef.lastIndexOf("]");
-				final int roundLPos=pcDef.indexOf("(");
-				final int roundRPos=pcDef.indexOf(")");
-				final int roundRPosLast= pcDef.lastIndexOf(")");				
-				if(squareRPos!=squareRPosLast)
+				final int squareLPos = pcDef.indexOf("[");
+				final int squareRPos = pcDef.indexOf("]");
+				final int squareRPosLast = pcDef.lastIndexOf("]");
+				final int roundLPos = pcDef.indexOf("(");
+				final int roundRPos = pcDef.indexOf(")");
+				final int roundRPosLast = pcDef.lastIndexOf(")");				
+				if (squareRPos != squareRPosLast)
 					continue;
-				if(squareLPos==-1 || squareRPos ==-1)
+				if (squareLPos == -1 || squareRPos == -1)
 					continue;
-				if(squareLPos==0)
+				if (squareLPos == 0)
 					continue;
 				
-				if(roundRPos!=roundRPosLast)
+				if (roundRPos != roundRPosLast)
 					continue;
-				if(roundLPos==-1 || roundRPos ==-1)
+				if (roundLPos == -1 || roundRPos == -1)
 					continue;
-				if(roundLPos==0)
+				if (roundLPos == 0)
 					continue;	
-				if(roundLPos!=squareRPos+1)//]( or exit
+				if (roundLPos != squareRPos + 1)//]( or exit
 					continue;		
-				if(roundRPos!=(pcDef.length()-1))// end with )
+				if (roundRPos != (pcDef.length() - 1))// end with )
 					continue;	
 				
 				// name
 				final String name=pcDef.substring(0,squareLPos);
-				PropertiesCollectorSPI selectedSPI=null;
-				for(PropertiesCollectorSPI spi:pcSPIs){
-					if(spi.isAvailable()&&spi.getName().equalsIgnoreCase(name))
-					{
+				PropertiesCollectorSPI selectedSPI = null;
+				for (PropertiesCollectorSPI spi:pcSPIs) {
+					if (spi.isAvailable() && spi.getName().equalsIgnoreCase(name)) {
 						selectedSPI=spi;
 						break;
 					}
 				}
-				if(selectedSPI==null)
+				if (selectedSPI == null)
 					continue;
 				
 				// config
 				final String config=squareLPos<squareRPos?pcDef.substring(squareLPos+1,squareRPos):"";
 				final File configFile= new File(runConfiguration.getRootMosaicDirectory(),config+".properties");
-				if(!Utils.checkFileReadable(configFile))
+				if (!Utils.checkFileReadable(configFile))
 					continue;
 				// it is readable
 				
 				// property names
-				final String propertyNames[]=pcDef.substring(roundLPos+1, roundRPos).split(",");
+				final String propertyNames[] = pcDef.substring(roundLPos+1, roundRPos).split(",");
 				
 				// create the PropertiesCollector
-				pcs.add(selectedSPI.create(configFile, Arrays.asList(propertyNames)));
+				final PropertiesCollector pc = selectedSPI.create(configFile, Arrays.asList(propertyNames));
+				if (pc != null) {
+				    pcs.add(pc);
+				} else {
+				    if(LOGGER.isLoggable(Level.INFO)){
+				        LOGGER.info("Unable to create PropertyCollector from config file:"+configFile);
+				    }
+				}
 				
 			}
 			this.propertiesCollectors=pcs;
@@ -1381,22 +1385,25 @@ public class CatalogBuilder implements Runnable {
 			mosaicConfiguration.setLocationAttribute(runConfiguration.getLocationAttribute());
 			mosaicConfiguration.setCaching(runConfiguration.isCaching());
 			final String timeAttribute= runConfiguration.getTimeAttribute();
-			if(timeAttribute!=null)
+			if (timeAttribute != null) {
 				mosaicConfiguration.setTimeAttribute(runConfiguration.getTimeAttribute());
+			}
 			final String elevationAttribute= runConfiguration.getElevationAttribute();
-			if(elevationAttribute!=null)
-				mosaicConfiguration.setElevationAttribute(runConfiguration.getElevationAttribute());			
+			if (elevationAttribute != null) {
+				mosaicConfiguration.setElevationAttribute(runConfiguration.getElevationAttribute());
+			}
 			final String runtimeAttribute= runConfiguration.getRuntimeAttribute();
-			if(runtimeAttribute!=null)
-				mosaicConfiguration.setRuntimeAttribute(runConfiguration.getRuntimeAttribute());			
+			if (runtimeAttribute != null) {
+				mosaicConfiguration.setRuntimeAttribute(runConfiguration.getRuntimeAttribute());
+			}
 			createPropertiesFiles();
 			
 			// processing information
-			fireEvent(Level.FINE,"Done!!!", 100);				
-		}
-		else
+			fireEvent(Level.FINE, "Done!!!", 100);				
+		} else {
 			//	processing information
-			fireEvent(Level.FINE,"Nothing to process!!!", 100);
+			fireEvent(Level.FINE, "Nothing to process!!!", 100);
+		}
 	}
 	
 
@@ -1405,35 +1412,28 @@ public class CatalogBuilder implements Runnable {
 	 */
 	private void createSampleImage() {
 		// create a sample image to store SM and CM
-		if(defaultCM !=null && defaultSM!=null){
+		if (defaultCM !=null && defaultSM != null){
 			
 			// sample image file
 			final File sampleImageFile= new File(runConfiguration.getRootMosaicDirectory() + "/sample_image");
 			try {
-				Utils.storeSampleImage(sampleImageFile,defaultSM,defaultCM);
+				Utils.storeSampleImage(sampleImageFile, defaultSM, defaultCM);
 			} catch (IOException e) {
 				fireEvent(Level.SEVERE,e.getLocalizedMessage(), 0);
 			}			
 		}
-		
 	}
-	
-	
 
 	private void closeIndexObjects() {
-
-		
 		try {
-			if(catalog!=null)
+			if (catalog != null) {
 				catalog.dispose();
+			}
 		} catch (Throwable e) {
 			LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 	
 		catalog=null;
-		
-
-
 	}
 
 	/**
@@ -1454,14 +1454,17 @@ public class CatalogBuilder implements Runnable {
 		properties.setProperty("AbsolutePath", Boolean.toString(mosaicConfiguration.isAbsolutePath()));
 		properties.setProperty("LocationAttribute", mosaicConfiguration.getLocationAttribute());
 		final String timeAttribute=mosaicConfiguration.getTimeAttribute();
-		if(timeAttribute!=null)
+		if (timeAttribute != null) {
 			properties.setProperty("TimeAttribute", mosaicConfiguration.getTimeAttribute());
+		}
 		final String elevationAttribute=mosaicConfiguration.getElevationAttribute();
-		if(elevationAttribute!=null)
+		if (elevationAttribute != null) {
 			properties.setProperty("ElevationAttribute", mosaicConfiguration.getElevationAttribute());
+		}
 		final String runtimeAttribute=mosaicConfiguration.getRuntimeAttribute();
-		if(runtimeAttribute!=null)
+		if (runtimeAttribute != null) {
 			properties.setProperty("RuntimeAttribute", mosaicConfiguration.getRuntimeAttribute());
+		}
 		
 		final int numberOfLevels=mosaicConfiguration.getLevelsNum();
 		final double[][] resolutionLevels=mosaicConfiguration.getLevels();
@@ -1477,41 +1480,38 @@ public class CatalogBuilder implements Runnable {
 		properties.setProperty("ExpandToRGB", Boolean.toString(mustConvertToRGB));
 		properties.setProperty("Heterogeneous", Boolean.toString(mosaicConfiguration.isHeterogeneous()));
 		
-		if(cachedSPI!=null){
+		if (cachedSPI != null){
 			// suggested spi
 			properties.setProperty("SuggestedSPI", cachedSPI.getClass().getName());
 		}
 
 		// write down imposed bbox
-		if(imposedBBox!=null){
+		if (imposedBBox != null){
 			properties.setProperty("Envelope2D", imposedBBox.getMinX()+","+imposedBBox.getMinY()+" "+imposedBBox.getMaxX()+","+imposedBBox.getMaxY());
 		}
 		properties.setProperty("Caching", Boolean.toString(mosaicConfiguration.isCaching()));
 		OutputStream outStream=null;
 		try {
-			outStream=new BufferedOutputStream(new FileOutputStream(runConfiguration.getRootMosaicDirectory() + "/" + runConfiguration.getIndexName() + ".properties"));
+			outStream = new BufferedOutputStream(new FileOutputStream(runConfiguration.getRootMosaicDirectory() + "/" + runConfiguration.getIndexName() + ".properties"));
 			properties.store(outStream, "-Automagically created from GeoTools-");
 		} catch (FileNotFoundException e) {
 			fireEvent(Level.SEVERE,e.getLocalizedMessage(), 0);
 		} catch (IOException e) {
 			fireEvent(Level.SEVERE,e.getLocalizedMessage(), 0);
-		}
-		finally{
-			try{
-				if(outStream!=null)
+		} finally {
+			try {
+				if (outStream != null) {
 					outStream.close();
-			}catch (Throwable e) {
-	
+				}
+			} catch (Throwable e) {
 				if (LOGGER.isLoggable(Level.FINE))
 					LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
 			}
 		}
-	
 	}
 
 	public void dispose() {
 		reset();
-		
 	}
 	
 	/**

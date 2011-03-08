@@ -130,6 +130,10 @@ public class Utils {
         final static String NAME = "Name";
         final static String FOOTPRINT_MANAGEMENT = "FootprintManagement";
         final static String HETEROGENEOUS = "Heterogeneous";
+        static final String TIME_ATTRIBUTE = "TimeAttribute";
+        static final String ELEVATION_ATTRIBUTE = "ElevationAttribute";
+        final static String CACHING= "Caching";
+        static final String RUN_TIME = "RuntimeAttribute";
     }
     
 	/**
@@ -403,7 +407,7 @@ public class Utils {
 		//
 		// time attribute is optional
 		//
-		if (properties.containsKey("TimeAttribute")) {
+		if (properties.containsKey(Prop.TIME_ATTRIBUTE)) {
 		        final String timeAttribute = properties.getProperty("TimeAttribute").trim();
 			retValue.setTimeAttribute(timeAttribute);
 		}
@@ -411,7 +415,7 @@ public class Utils {
 		//
 		// elevation attribute is optional
 		//
-		if (properties.containsKey("ElevationAttribute")) {
+		if (properties.containsKey(Prop.ELEVATION_ATTRIBUTE)) {
 		        final String elevationAttribute = properties.getProperty("ElevationAttribute").trim();
 			retValue.setElevationAttribute(elevationAttribute);
 		}
@@ -419,7 +423,7 @@ public class Utils {
 		//
 		// runtime attribute is optional
 		//
-		if (properties.containsKey("RuntimeAttribute")) {
+		if (properties.containsKey(Prop.RUN_TIME)) {
 		        final String runtimeAttribute = properties.getProperty("RuntimeAttribute").trim();
 			retValue.setRuntimeAttribute(runtimeAttribute);
 		}
@@ -427,7 +431,7 @@ public class Utils {
 		//
 		// caching
 		//
-		if (properties.containsKey("Caching")) {
+		if (properties.containsKey(Prop.CACHING)) {
 			String caching = properties.getProperty("Caching").trim();
 			try {
 				retValue.setCaching(Boolean.valueOf(caching));

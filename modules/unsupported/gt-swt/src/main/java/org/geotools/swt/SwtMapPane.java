@@ -1020,7 +1020,7 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
         this.overlayEnvelope = overlayEnvelope;
         this.overlayDoXor = overlayDoXor;
 
-        if (boundsChanged) {
+        if (boundsChanged || swtImage == null) {
             redrawBaseImage = true;
         } else {
             redrawBaseImage = false;
@@ -1098,7 +1098,8 @@ public class SwtMapPane extends Canvas implements Listener, MapLayerListListener
                 if (context.getLayerCount() == 0) {
                     gc.setForeground(getDisplay().getSystemColor(SWT.COLOR_YELLOW));
                     gc.fillRectangle(0, 0, curPaintArea.width + 1, curPaintArea.height + 1);
-                    return;
+                    if (overlayImage == null)
+                        return;
                 }
                 final ReferencedEnvelope mapAOI = context.getAreaOfInterest();
                 if (mapAOI == null) {

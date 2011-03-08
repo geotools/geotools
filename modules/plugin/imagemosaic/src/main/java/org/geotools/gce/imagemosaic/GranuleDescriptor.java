@@ -883,8 +883,8 @@ public class GranuleDescriptor {
 					(float)finalRaster2Model.getTranslateY(), 
 					interpolation);
 			if(finalLayout.isEmpty()){
-				if(LOGGER.isLoggable(java.util.logging.Level.FINE))
-					LOGGER.fine("Unable to create a granuleDescriptor "+this.toString()+ " due to jai scale bug");
+				if(LOGGER.isLoggable(java.util.logging.Level.INFO))
+					LOGGER.info("Unable to create a granuleDescriptor "+this.toString()+ " due to jai scale creating a null source area");
 				return null;
 			}
 			ROI granuleLoadingShape = null;

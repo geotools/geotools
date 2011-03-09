@@ -629,14 +629,17 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      *   <li>reprojection</li>
      *   <li>filtering</li>
      *   <li>max feature limiting</li>
-     *   <li>sorting<li>
+     *   <li>sorting</li>
      * </ul>
-     * Then it <b>*must*</b> set the corresonding flags to <code>true</code>:
+     * Then it <b>*must*</b> set the corresponding flags to <code>true</code>:
      * <ul>
-     *   <li>{@link #canReproject()}</li>
-     *   <li>{@link #canFilter()}</li>
-     *   <li>{@link #canLimit()}</li>
-     *   <li>{@link #canSort()}<li>
+     *   <li>{@link #canReproject()} - handles {@link Query#getCoordinateSystemReproject()} internally.
+     *       Example would be PostGIS using Proj to handle reproejction internally</li>
+     *   <li>{@link #canFilter()} - handles {@link Query#getFilter() internally.</li>
+     *   <li>{@link #canLimit()} - handles {@link Query#getMaxFeatures()} and {@link Query#getStartIndex()} internally.</li>
+     *   <li>{@link #canSort()} - handles {@link Query#getSortBy()} natively.</li>
+     *   <li>{@link #canRetype()} - handles {@link Query#getProperties()} natively. Example would
+     *   be only parsing the properties the user asks for from an XML file</li>
      * </ul>
      * </p>
      * 

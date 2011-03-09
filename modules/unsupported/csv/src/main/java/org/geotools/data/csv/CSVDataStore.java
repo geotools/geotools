@@ -29,7 +29,7 @@ public class CSVDataStore extends ContentDataStore {
     // constructor end
     
     /**
-     * Allow read access to file; for our package visibile "friends".
+     * Allow read access to file; for our package visible "friends".
      * Please close the reader when done.
      * @return CsvReader for file
      */

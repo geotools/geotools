@@ -113,9 +113,10 @@ public class AppSchemaCacheOnlineTest extends OnlineTestSupport {
      */
     @Test
     public void downloadHttps() throws Exception {
-        check(AppSchemaCache.download(new URI("https://www.seegrid.csiro.au/"
-                + "subversion/GeoSciML/trunk/schema/GeoSciML/geosciml.xsd")));
+        check(AppSchemaCache.download(new URI("https://www.seegrid.csiro.au"
+                + "/subversion/GeoSciML/tags/2.0.0/schema/GeoSciML/geosciml.xsd")));
     }
+
     /**
      * Basic sanity checks of schema and test store to disk.
      */

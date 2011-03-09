@@ -270,8 +270,15 @@ public class SFSDataStore extends ContentDataStore {
      */
     InputStream resourceToStream(String resource, String postData) throws MalformedURLException,
             IOException, ProtocolException {
+        boolean doPost = false;
+        URL url;
+        if(postData != null && (baseURL.length() + resource.length() + postData.length() < 2048)) {
+            url = new URL(baseURL + resource + "?" + postData);
+        } else {
+            url = new URL(baseURL + resource);
+        }
+        
         // TODO: use commons http client + persistent connections instead
-        URL url = new URL(baseURL + resource);
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         urlConnection.setRequestProperty("Accept-Encoding", "gzip");
         
@@ -290,7 +297,7 @@ public class SFSDataStore extends ContentDataStore {
         }
         
         urlConnection.setDoInput(true);
-        if(postData != null && !"".equals(postData.trim())) {
+        if(doPost && postData != null && !"".equals(postData.trim())) {
             urlConnection.setRequestMethod("POST");
             urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             urlConnection.setDoOutput(true);

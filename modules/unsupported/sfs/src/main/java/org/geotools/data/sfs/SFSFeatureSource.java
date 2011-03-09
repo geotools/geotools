@@ -96,10 +96,10 @@ class SFSFeatureSource extends ContentFeatureSource implements SimpleFeatureSour
         } else {
             Query tmpPreQ = new Query(fnQuery);
             tmpPreQ.setFilter(preFilter);
-            String strQuery = SFSDataStoreUtil.encodeQuery(tmpPreQ);
+            String strQuery = SFSDataStoreUtil.encodeQuery(tmpPreQ, schema);
 
             /* Create the URL */
-            String bboxString = ods.resourceToString("data/" + layer.getTypeName().getLocalPart() + "?mode=bounds", strQuery);
+            String bboxString = ods.resourceToString("data/" + layer.getTypeName().getLocalPart(), "mode=bounds" + strQuery);
             JSONArray bbox;
             try {
                 bbox = (JSONArray) new JSONParser().parse(bboxString);
@@ -155,10 +155,10 @@ class SFSFeatureSource extends ContentFeatureSource implements SimpleFeatureSour
             Query tmpPreQ = new Query(fnQuery);
             tmpPreQ.setFilter(preFilter);
             /**/
-            String strQuery = SFSDataStoreUtil.encodeQuery(tmpPreQ);
+            String strQuery = SFSDataStoreUtil.encodeQuery(tmpPreQ, schema);
 
             /* Create the URL */
-            String strCount = ods.resourceToString("data/" + layer.getTypeName().getLocalPart() + "?mode=count", strQuery);
+            String strCount = ods.resourceToString("data/" + layer.getTypeName().getLocalPart(), "mode=count" + strQuery);
 
             try {
                 count = Integer.parseInt(strCount);

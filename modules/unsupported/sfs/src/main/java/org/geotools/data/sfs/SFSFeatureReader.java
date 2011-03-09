@@ -18,6 +18,7 @@ package org.geotools.data.sfs;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.logging.Logger;
@@ -29,6 +30,7 @@ import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.geojson.GeoJSON;
 import org.geotools.geojson.feature.FeatureJSON;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -70,11 +72,11 @@ class SFSFeatureReader implements SimpleFeatureReader {
         /* Encode the query into a protocol filter specification */
         String queryURL = null;
         if (fnQuery != null) {
-            queryURL = SFSDataStoreUtil.encodeQuery(fnQuery);
+            queryURL = SFSDataStoreUtil.encodeQuery(fnQuery, targetSchema);
         }
 
         // read the feature collection with a streaming reader
-        jsonStream = ods.resourceToStream("data/" + layer.getTypeName().getLocalPart() + "?mode=features", queryURL);
+        jsonStream = ods.resourceToStream("data/" + layer.getTypeName().getLocalPart(), "mode=features&" + queryURL);
         fjson = new FeatureJSON();
         fjson.setFeatureType(contentState.getFeatureType());
         featureIterator = fjson.streamFeatureCollection(jsonStream);
@@ -153,5 +155,13 @@ class SFSFeatureReader implements SimpleFeatureReader {
     public void close() throws IOException {
         jsonStream.close();
         featureIterator.close();
+    }
+    
+    public static void main(String[] args) throws Exception {
+        String json = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[43.3599,-11.6515]},\"properties\": {},\"id\":\"null\"}]}";
+        FeatureJSON fj = new FeatureJSON();
+//        URL url = new URL("http://www.glews-test.net/eisurvtest/data/outbreakMarker?mode=features&bbox=-218.20632812500003%2C-85.6734453125%2C361.860109375%2C116.8704140625&limit=1");
+//        InputStream is = url.openStream();
+        System.out.println(fj.readFeature(json));
     }
 }

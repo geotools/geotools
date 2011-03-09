@@ -309,7 +309,10 @@ public class FeatureTypeRegistry {
                    try {
                        substitutionGroup.add( createAttributeDescriptor ( container , sub, minOccurs, maxOccurs, crs, attMappings, false)) ;
                    } catch (Exception e) {
-                       LOGGER.log(Level.WARNING, "Could not create substitution descriptor: " + e.getMessage());
+                        // FIXME: This log level should be WARNING, as an exception here may
+                        // indicate a serious problem. The log level has been temporarily reduced as
+                        // a cosmetic fix. See GEOT-3462.
+                       LOGGER.log(Level.FINE, "Could not create substitution descriptor: " + e.getMessage());
                    }
                 }
             }

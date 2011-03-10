@@ -26,6 +26,8 @@ import java.util.Map;
 import org.geotools.data.Query;
 import org.geotools.factory.Hints;
 import org.geotools.referencing.CRS;
+import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.filter.sort.SortOrder;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
@@ -111,7 +113,7 @@ class SFSDataStoreUtil {
      * @param fnQuery
      * @return String
      */
-    public static String encodeQuery(Query fnQuery) throws UnsupportedEncodingException {
+    public static String encodeQuery(Query fnQuery, SimpleFeatureType targetType) throws UnsupportedEncodingException {
 
         boolean firstChar = false;
 
@@ -133,7 +135,7 @@ class SFSDataStoreUtil {
             firstChar = false;
             urlBuilder.append("attrs=");
             for (int i = 0; i < fnQuery.getPropertyNames().length; i++) {
-                if (fnQuery.getPropertyNames()[i].equalsIgnoreCase("geometry")) {
+                if (targetType.getDescriptor(fnQuery.getPropertyNames()[i]) instanceof GeometryDescriptor) {
                     no_geom = false;
                 }
 
@@ -144,9 +146,11 @@ class SFSDataStoreUtil {
                 }
             }
             /*This is to add no_geom*/
-            urlBuilder.append(getGlueChar(firstChar));
-            urlBuilder.append("no_geom=");
-            urlBuilder.append(no_geom);
+            if(no_geom) {
+                urlBuilder.append(getGlueChar(firstChar));
+                urlBuilder.append("no_geom=");
+                urlBuilder.append(no_geom);
+            }
         }
 
         // Perhaps use an offset to start counting from:
@@ -202,7 +206,11 @@ class SFSDataStoreUtil {
             }
         }
 
-        return urlBuilder.toString();
+        if(urlBuilder.length() > 1) {
+            return urlBuilder.substring(1).toString();
+        } else {
+            return "";
+        }
     }
 
     /**

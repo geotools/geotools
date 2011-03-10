@@ -34,6 +34,8 @@ import org.geotools.jdbc.SQLDialect;
 public class SQLServerDataStoreFactory extends JDBCDataStoreFactory {
     /** parameter for database type */
     public static final Param DBTYPE = new Param("dbtype", String.class, "Type", true, "sqlserver");
+    /** parameter for using integrated security, only works on windows, ignores the user and password parameters, the current windows user account is used for login*/
+    public static final Param INTSEC = new Param("Integrated Security", Boolean.class, "Login as current windows user account. Works only in windows. Ignores user and password settings.", true, new Boolean(false)); 
     
     @Override
     protected SQLDialect createSQLDialect(JDBCDataStore dataStore) {
@@ -65,6 +67,7 @@ public class SQLServerDataStoreFactory extends JDBCDataStoreFactory {
     protected void setupParameters(Map parameters) {
         super.setupParameters(parameters);
         parameters.put(DBTYPE.key, DBTYPE);
+        parameters.put(INTSEC.key, INTSEC);
     }
     
     /**
@@ -75,9 +78,15 @@ public class SQLServerDataStoreFactory extends JDBCDataStoreFactory {
     protected String getJDBCUrl(Map params) throws IOException {
         String url = super.getJDBCUrl(params);
         String db = (String) DATABASE.lookUp(params);
+        Boolean intsec = (Boolean) INTSEC.lookUp(params);
         if (db != null) {
             url = url.substring(0, url.lastIndexOf("/")) + (db != null ? ";DatabaseName="+db : "");
         }
+
+        if (intsec.booleanValue()) {
+        	url = url + ";integratedSecurity=true";
+        }
+        
         return url;
     }
 

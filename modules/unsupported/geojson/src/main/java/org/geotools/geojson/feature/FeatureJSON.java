@@ -404,6 +404,7 @@ public class FeatureJSON {
                     -1;
             
             string("properties", sb).append(":").append("{");
+            boolean attributesWritten = false;
             for (int i = 0; i < featureType.getAttributeCount(); i++) {
                 AttributeDescriptor ad = featureType.getDescriptor(i);
                 
@@ -417,6 +418,8 @@ public class FeatureJSON {
                     //skip
                     continue;
                 }
+                
+                attributesWritten = true;
                 
                 // handle special types separately, everything else as a string or literal
                 if (value instanceof Envelope) {
@@ -432,7 +435,9 @@ public class FeatureJSON {
                 sb.append(",");
             }
             
-            sb.setLength(sb.length()-1);
+            if(attributesWritten) {
+                sb.setLength(sb.length()-1);
+            }
             sb.append("},");
             
             //id

@@ -16,6 +16,7 @@
  */
 package org.geotools.geojson;
 
+import java.io.ByteArrayOutputStream;
 import java.io.StringWriter;
 import java.util.Iterator;
 import java.util.List;
@@ -38,6 +39,7 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.io.WKTReader;
 
 public class FeatureJSONTest extends GeoJSONTestSupport {
 
@@ -67,6 +69,29 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
         fjson.writeFeature(feature(1), writer);
         
         assertEquals(strip(featureText(1)), writer.toString());
+    }
+    
+    public void testWriteReadNoProperties() throws Exception {
+        SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
+        tb.add("geom", Point.class, CRS.decode("EPSG:4326"));
+        tb.add("name", String.class);
+        tb.add("quantity", Integer.class);
+        tb.setName("outbreak");
+        SimpleFeatureType schema = tb.buildFeatureType();
+        
+        SimpleFeatureBuilder fb = new SimpleFeatureBuilder(schema);
+        fb.add(new WKTReader().read("POINT(10 20)"));
+        SimpleFeature feature = fb.buildFeature("outbreak.1");
+        
+        FeatureJSON fj = new FeatureJSON();
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        fj.writeFeature(feature, os);
+        
+        String json = os.toString();
+        
+        // here it would break because the written json was incorrect
+        SimpleFeature feature2 = fj.readFeature(json);
+        assertEquals(feature.getID(), feature2.getID());
     }
     
     public void testFeatureRead() throws Exception {

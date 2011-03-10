@@ -141,7 +141,7 @@ class SFSDataStoreUtil {
 
                 urlBuilder.append(URLEncoder.encode(fnQuery.getPropertyNames()[i], DEFAULT_ENCODING));
 
-                if (i > 0 && i < fnQuery.getPropertyNames().length - 1) {
+                if (i < fnQuery.getPropertyNames().length - 1) {
                     urlBuilder.append(",");
                 }
             }

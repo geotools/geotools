@@ -86,7 +86,7 @@ class SFSFeatureSource extends ContentFeatureSource implements SimpleFeatureSour
         ReferencedEnvelope env = new ReferencedEnvelope(layer.getCoordinateReferenceSystem());
 
         /* Spilt the filter into two parts pre and post */
-        Filter[] split = splitFilter(query.getFilter());
+        Filter[] split = splitFilter(fnQuery.getFilter());
 
         Filter preFilter = split[0];
         Filter postFilter = split[1];
@@ -96,10 +96,10 @@ class SFSFeatureSource extends ContentFeatureSource implements SimpleFeatureSour
         } else {
             Query tmpPreQ = new Query(fnQuery);
             tmpPreQ.setFilter(preFilter);
-            String strQuery = SFSDataStoreUtil.encodeQuery(tmpPreQ, schema);
+            String strQuery = SFSDataStoreUtil.encodeQuery(tmpPreQ, getSchema());
 
             /* Create the URL */
-            String bboxString = ods.resourceToString("data/" + layer.getTypeName().getLocalPart(), "mode=bounds" + strQuery);
+            String bboxString = ods.resourceToString("data/" + layer.getTypeName().getLocalPart(), "mode=bounds&" + strQuery);
             JSONArray bbox;
             try {
                 bbox = (JSONArray) new JSONParser().parse(bboxString);
@@ -155,10 +155,10 @@ class SFSFeatureSource extends ContentFeatureSource implements SimpleFeatureSour
             Query tmpPreQ = new Query(fnQuery);
             tmpPreQ.setFilter(preFilter);
             /**/
-            String strQuery = SFSDataStoreUtil.encodeQuery(tmpPreQ, schema);
+            String strQuery = SFSDataStoreUtil.encodeQuery(tmpPreQ, getSchema());
 
             /* Create the URL */
-            String strCount = ods.resourceToString("data/" + layer.getTypeName().getLocalPart(), "mode=count" + strQuery);
+            String strCount = ods.resourceToString("data/" + layer.getTypeName().getLocalPart(), "mode=count&" + strQuery);
 
             try {
                 count = Integer.parseInt(strCount);
@@ -169,8 +169,8 @@ class SFSFeatureSource extends ContentFeatureSource implements SimpleFeatureSour
             }
         }
         /* Check if the count greater than maxFeature Limit*/
-        if (query.getMaxFeatures() > 0 && count > query.getMaxFeatures()) {
-            count = query.getMaxFeatures();
+        if (fnQuery.getMaxFeatures() > 0 && count > fnQuery.getMaxFeatures()) {
+            count = fnQuery.getMaxFeatures();
         }
         return count;
     }
@@ -201,29 +201,30 @@ class SFSFeatureSource extends ContentFeatureSource implements SimpleFeatureSour
         preQuery.setFilter(preFilter);
 
         /* Check if the schema remains same of do we need to update it*/
-        SimpleFeatureType querySchema;
         SimpleFeatureType returnedSchema;
+        SimpleFeatureType querySchema;
 
-        if (query.getPropertyNames() == Query.ALL_NAMES) {
-
+        if (fnQuery.getPropertyNames() == Query.ALL_NAMES) {
             returnedSchema = querySchema = getSchema();
-
         } else {
-
-            returnedSchema = SimpleFeatureTypeBuilder.retype(getSchema(), query.getPropertyNames());
+            returnedSchema = SimpleFeatureTypeBuilder.retype(getSchema(), fnQuery.getPropertyNames());
             FilterAttributeExtractor extractor = new FilterAttributeExtractor(getSchema());
-            postFilter.accept(extractor, null);
+            // we need to let all attribute pass as we're going to make a full filter evaluation
+            // in memory
+            filter.accept(extractor, null);
             String[] extraAttributes = extractor.getAttributeNames();
             if (extraAttributes == null || extraAttributes.length == 0) {
+                // nothing to do
                 querySchema = returnedSchema;
             } else {
-                List<String> allAttributes = new ArrayList<String>(Arrays.asList(query.getPropertyNames()));
+                List<String> allAttributes = new ArrayList<String>(Arrays.asList(fnQuery.getPropertyNames()));
                 for (String extraAttribute : extraAttributes) {
                     if (!allAttributes.contains(extraAttribute)) {
                         allAttributes.add(extraAttribute);
                     }
                 }
                 String[] allAttributeArray = (String[]) allAttributes.toArray(new String[allAttributes.size()]);
+                preQuery.setPropertyNames(allAttributeArray);
                 querySchema = SimpleFeatureTypeBuilder.retype(getSchema(), allAttributeArray);
             }
         }
@@ -233,7 +234,7 @@ class SFSFeatureSource extends ContentFeatureSource implements SimpleFeatureSour
 
 
         /* Do the pre part first */
-        reader = new SFSFeatureReader(getState(), layer, preQuery, returnedSchema);
+        reader = new SFSFeatureReader(getState(), layer, preQuery, querySchema);
 
         /* 
          * Normally we should finish off with post filtering, but reality proves that the
@@ -242,6 +243,10 @@ class SFSFeatureSource extends ContentFeatureSource implements SimpleFeatureSour
          */
         if(filter != null && !Filter.INCLUDE.equals(filter)) {
             reader = new FilteringFeatureReader<SimpleFeatureType, SimpleFeature>(reader, filter);
+        }
+        
+        if(querySchema.getAttributeCount() > returnedSchema.getAttributeCount()) {
+            reader = new ReTypeFeatureReader(reader, returnedSchema);
         }
         
         return reader;
@@ -350,5 +355,30 @@ class SFSFeatureSource extends ContentFeatureSource implements SimpleFeatureSour
         split[1] = (Filter) split[1].accept(visitor, null);
 
         return split;
+    }
+    
+    @Override
+    protected boolean canFilter() {
+        return true;
+    }
+    
+    @Override
+    protected boolean canLimit() {
+        return true;
+    }
+    
+    @Override
+    protected boolean canOffset() {
+        return true;
+    }
+    
+    @Override
+    protected boolean canRetype() {
+        return true;
+    }
+    
+    @Override
+    protected boolean canSort() {
+        return true;
     }
 }

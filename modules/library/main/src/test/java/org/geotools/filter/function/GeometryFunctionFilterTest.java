@@ -49,4 +49,8 @@ public class GeometryFunctionFilterTest extends FunctionTestSupport {
         
         iter.close();
     }
+    
+    public void testNull() throws Exception {
+        assertEquals(null, ff.function("buffer", ff.literal(null), ff.literal(10)).evaluate(null));
+    }
 }

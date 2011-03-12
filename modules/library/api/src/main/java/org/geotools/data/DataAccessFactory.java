@@ -243,12 +243,6 @@ public interface DataAccessFactory extends Factory {
      * <p>
      * Subclasses may provide specific setAsText()/getAsText() requirements
      * </p>
-     *
-     * <p>
-     * Warning: We would like to start moving towards a common paraemters
-     * framework with GridCoverageExchnage. Param will be maintained as a
-     * wrapper for one point release (at which time it will be deprecated).
-     * </p>
      */
     @SuppressWarnings("unchecked")
     public static class Param extends Parameter {

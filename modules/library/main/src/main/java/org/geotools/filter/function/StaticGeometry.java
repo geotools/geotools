@@ -58,6 +58,7 @@ import com.vividsolutions.jts.io.WKTReader;
 
      static public String toWKT(Geometry arg0)
      {
+           if (arg0 == null) return null;
            Geometry _this = arg0;
 
            return _this.toString();
@@ -65,6 +66,7 @@ import com.vividsolutions.jts.io.WKTReader;
 
      static public boolean contains(Geometry arg0,Geometry arg1)
      {
+           if (arg0 == null || arg1 == null) return false;
            Geometry _this = arg0;
 
            return _this.contains(arg1);
@@ -72,6 +74,7 @@ import com.vividsolutions.jts.io.WKTReader;
 
      static public boolean isEmpty(Geometry arg0)
      {
+           if (arg0 == null) return false;
            Geometry _this = arg0;
 
            return _this.isEmpty();
@@ -79,6 +82,7 @@ import com.vividsolutions.jts.io.WKTReader;
 
      static public double geomLength(Geometry arg0)
      {
+           if (arg0 == null) return 0d;
            Geometry _this = arg0;
 
            return _this.getLength();
@@ -86,6 +90,7 @@ import com.vividsolutions.jts.io.WKTReader;
 
      static public boolean intersects(Geometry arg0,Geometry arg1)
      {
+           if (arg0 == null || arg1 == null) return false;
            Geometry _this = arg0;
 
            return _this.intersects(arg1);
@@ -93,6 +98,7 @@ import com.vividsolutions.jts.io.WKTReader;
 
      static public boolean isValid(Geometry arg0)
      {
+           if (arg0 == null) return false;
            Geometry _this = arg0;
 
            return _this.isValid();
@@ -100,6 +106,7 @@ import com.vividsolutions.jts.io.WKTReader;
 
      static public String geometryType(Geometry arg0)
      {
+           if (arg0 == null) return null;
            Geometry _this = arg0;
 
            return _this.getGeometryType();
@@ -109,6 +116,7 @@ import com.vividsolutions.jts.io.WKTReader;
 
      static public int numPoints(Geometry arg0)
      {
+           if (arg0 == null) return 0;
            Geometry _this = arg0;
 
            return _this.getNumPoints();
@@ -116,6 +124,7 @@ import com.vividsolutions.jts.io.WKTReader;
 
      static public boolean isSimple(Geometry arg0)
      {
+           if (arg0 == null) return false;
            Geometry _this = arg0;
 
            return _this.isSimple();
@@ -123,13 +132,15 @@ import com.vividsolutions.jts.io.WKTReader;
 
      static public double distance(Geometry arg0,Geometry arg1)
      {
+           if (arg0 == null || arg1 == null) return -1d;
            Geometry _this = arg0;
 
            return _this.distance(arg1);
      }
 
-     static public boolean isWithinDistance(Geometry arg0,Geometry arg1,double arg2)
+     static public boolean isWithinDistance(Geometry arg0,Geometry arg1, Double arg2)
      {
+           if (arg0 == null || arg1 == null || arg2 == null) return false;
            Geometry _this = arg0;
 
            return _this.isWithinDistance(arg1,arg2);
@@ -137,6 +148,7 @@ import com.vividsolutions.jts.io.WKTReader;
 
      static public double area(Geometry arg0)
      {
+           if (arg0 == null) return -1d;
            Geometry _this = arg0;
 
            return _this.getArea();
@@ -144,6 +156,7 @@ import com.vividsolutions.jts.io.WKTReader;
 
      static public Geometry centroid(Geometry arg0)
      {
+           if (arg0 == null) return null;
            Geometry _this = arg0;
 
            return _this.getCentroid();
@@ -151,6 +164,7 @@ import com.vividsolutions.jts.io.WKTReader;
 
      static public Geometry interiorPoint(Geometry arg0)
      {
+           if (arg0 == null) return null;
            Geometry _this = arg0;
 
            return _this.getInteriorPoint();
@@ -158,6 +172,7 @@ import com.vividsolutions.jts.io.WKTReader;
 
      static public int dimension(Geometry arg0)
      {
+           if (arg0 == null) return -1;
            Geometry _this = arg0;
 
            return _this.getDimension();
@@ -165,6 +180,7 @@ import com.vividsolutions.jts.io.WKTReader;
 
      static public Geometry boundary(Geometry arg0)
      {
+           if (arg0 == null) return null;
            Geometry _this = arg0;
 
            return _this.getBoundary();
@@ -172,6 +188,7 @@ import com.vividsolutions.jts.io.WKTReader;
 
      static public int boundaryDimension(Geometry arg0)
      {
+           if (arg0 == null) return -1;
            Geometry _this = arg0;
 
            return _this.getBoundaryDimension();
@@ -179,6 +196,7 @@ import com.vividsolutions.jts.io.WKTReader;
 
      static public Geometry envelope(Geometry arg0)
      {
+           if (arg0 == null) return null;
            Geometry _this = arg0;
 
            return _this.getEnvelope();
@@ -186,6 +204,7 @@ import com.vividsolutions.jts.io.WKTReader;
 
      static public boolean disjoint(Geometry arg0,Geometry arg1)
      {
+           if (arg0 == null || arg1 == null) return false;
            Geometry _this = arg0;
 
            return _this.disjoint(arg1);
@@ -193,6 +212,7 @@ import com.vividsolutions.jts.io.WKTReader;
 
      static public boolean touches(Geometry arg0,Geometry arg1)
      {
+           if (arg0 == null || arg1 == null) return false;
            Geometry _this = arg0;
 
            return _this.touches(arg1);
@@ -200,6 +220,7 @@ import com.vividsolutions.jts.io.WKTReader;
 
      static public boolean crosses(Geometry arg0,Geometry arg1)
      {
+           if (arg0 == null || arg1 == null) return false;
            Geometry _this = arg0;
 
            return _this.crosses(arg1);
@@ -207,6 +228,7 @@ import com.vividsolutions.jts.io.WKTReader;
 
      static public boolean within(Geometry arg0,Geometry arg1)
      {
+           if (arg0 == null || arg1 == null) return false;
            Geometry _this = arg0;
 
            return _this.within(arg1);
@@ -214,6 +236,7 @@ import com.vividsolutions.jts.io.WKTReader;
 
      static public boolean overlaps(Geometry arg0,Geometry arg1)
      {
+           if (arg0 == null || arg1 == null) return false;
            Geometry _this = arg0;
 
            return _this.overlaps(arg1);
@@ -221,6 +244,7 @@ import com.vividsolutions.jts.io.WKTReader;
 
      static public boolean relatePattern(Geometry arg0,Geometry arg1,String arg2)
      {
+           if (arg0 == null || arg1 == null || arg2 == null) return false;
            Geometry _this = arg0;
 
            return _this.relate(arg1,arg2);
@@ -228,6 +252,7 @@ import com.vividsolutions.jts.io.WKTReader;
 
      static public String relate(Geometry arg0,Geometry arg1)
      {
+           if (arg0 == null || arg1 == null) return null;
            Geometry _this = arg0;
 
            return _this.relate(arg1).toString();
@@ -235,15 +260,17 @@ import com.vividsolutions.jts.io.WKTReader;
 
     
 
-     static public Geometry bufferWithSegments(Geometry arg0,double arg1,int arg2)
+     static public Geometry bufferWithSegments(Geometry arg0, Double arg1, Integer arg2)
      {
+           if (arg0 == null || arg1 == null || arg2 == null) return null;
            Geometry _this = arg0;
 
            return _this.buffer(arg1,arg2);
      }
 
-     static public Geometry buffer(Geometry arg0,double arg1)
+     static public Geometry buffer(Geometry arg0, Double arg1)
      {
+           if (arg0 == null || arg1 == null) return null;
            Geometry _this = arg0;
 
            return _this.buffer(arg1);
@@ -251,6 +278,7 @@ import com.vividsolutions.jts.io.WKTReader;
 
      static public Geometry convexHull(Geometry arg0)
      {
+           if (arg0 == null) return null;
            Geometry _this = arg0;
 
            return _this.convexHull();
@@ -258,6 +286,7 @@ import com.vividsolutions.jts.io.WKTReader;
 
      static public Geometry intersection(Geometry arg0,Geometry arg1)
      {
+           if (arg0 == null || arg1 == null) return null;
            Geometry _this = arg0;
 
            return _this.intersection(arg1);
@@ -265,6 +294,7 @@ import com.vividsolutions.jts.io.WKTReader;
 
      static public Geometry union(Geometry arg0,Geometry arg1)
      {
+           if (arg0 == null || arg1 == null) return null;
            Geometry _this = arg0;
 
            return _this.union(arg1);
@@ -272,6 +302,7 @@ import com.vividsolutions.jts.io.WKTReader;
 
      static public Geometry difference(Geometry arg0,Geometry arg1)
      {
+           if (arg0 == null || arg1 == null) return null;
            Geometry _this = arg0;
 
            return _this.difference(arg1);
@@ -279,13 +310,15 @@ import com.vividsolutions.jts.io.WKTReader;
 
      static public Geometry symDifference(Geometry arg0,Geometry arg1)
      {
+           if (arg0 == null || arg1 == null) return null;
            Geometry _this = arg0;
 
            return _this.symDifference(arg1);
      }
 
-     static public boolean equalsExactTolerance(Geometry arg0,Geometry arg1,double arg2)
+     static public boolean equalsExactTolerance(Geometry arg0,Geometry arg1, Double arg2)
      {
+           if (arg0 == null || arg1 == null || arg2 == null) return false;
            Geometry _this = arg0;
 
            return _this.equalsExact(arg1,arg2);
@@ -293,6 +326,7 @@ import com.vividsolutions.jts.io.WKTReader;
 
      static public boolean equalsExact(Geometry arg0,Geometry arg1)
      {
+           if (arg0 == null || arg1 == null) return false;
            Geometry _this = arg0;
 
            return _this.equalsExact(arg1);
@@ -300,20 +334,26 @@ import com.vividsolutions.jts.io.WKTReader;
 
      static public int numGeometries(Geometry arg0)
      {
+           if (!(arg0 instanceof GeometryCollection)) return 0;
            GeometryCollection _this = (GeometryCollection) arg0;
 
            return _this.getNumGeometries();
      }
 
-     static public Geometry getGeometryN(Geometry arg0,int arg1)
+     static public Geometry getGeometryN(Geometry arg0, Integer arg1)
      {
+           if (!(arg0 instanceof GeometryCollection) || arg1 == null) return null;
+
            GeometryCollection _this = (GeometryCollection) arg0;
+
+           if (arg1 < 0 || arg1 >= _this.getNumGeometries()) return null;
 
            return _this.getGeometryN(arg1);
      }
 
      static public double getX(Geometry arg0)
      {
+           if (!(arg0 instanceof Point)) return 0d;
            Point _this = (Point) arg0;
 
            return _this.getX();
@@ -321,6 +361,7 @@ import com.vividsolutions.jts.io.WKTReader;
 
      static public double getY(Geometry arg0)
      {
+           if (!(arg0 instanceof Point)) return 0d;
            Point _this = (Point) arg0;
 
            return _this.getY();
@@ -328,20 +369,24 @@ import com.vividsolutions.jts.io.WKTReader;
 
      static public boolean isClosed(Geometry arg0)
      {
+           if (!(arg0 instanceof LineString)) return false;
            LineString _this = (LineString) arg0;
 
            return _this.isClosed();
      }
 
-     static public Geometry pointN(Geometry arg0,int arg1)
+     static public Geometry pointN(Geometry arg0, Integer arg1)
      {
+           if (!(arg0 instanceof LineString) || arg1 == null) return null;
            LineString _this = (LineString) arg0;
 
+           if (arg1 < 0 || arg1 >= _this.getNumPoints()) return null;
            return _this.getPointN(arg1);
      }
 
      static public Geometry startPoint(Geometry arg0)
      {
+           if (!(arg0 instanceof LineString)) return null;
            LineString _this = (LineString) arg0;
 
            return _this.getStartPoint();
@@ -349,6 +394,7 @@ import com.vividsolutions.jts.io.WKTReader;
 
      static public Geometry endPoint(Geometry arg0)
      {
+           if (!(arg0 instanceof LineString)) return null;
            LineString _this = (LineString) arg0;
 
            return _this.getEndPoint();
@@ -356,6 +402,7 @@ import com.vividsolutions.jts.io.WKTReader;
 
      static public boolean isRing(Geometry arg0)
      {
+           if (!(arg0 instanceof LineString)) return false;
            LineString _this = (LineString) arg0;
 
            return _this.isRing();
@@ -363,6 +410,7 @@ import com.vividsolutions.jts.io.WKTReader;
 
      static public Geometry exteriorRing(Geometry arg0)
      {
+           if (!(arg0 instanceof Polygon)) return null;
            Polygon _this = (Polygon) arg0;
 
            return _this.getExteriorRing();
@@ -370,14 +418,18 @@ import com.vividsolutions.jts.io.WKTReader;
 
      static public int numInteriorRing(Geometry arg0)
      {
+           if (!(arg0 instanceof Polygon)) return 0;
            Polygon _this = (Polygon) arg0;
 
            return _this.getNumInteriorRing();
      }
 
-     static public Geometry interiorRingN(Geometry arg0,int arg1)
+     static public Geometry interiorRingN(Geometry arg0, Integer arg1)
      {
+           if (!(arg0 instanceof Polygon) || arg1 == null) return null;
            Polygon _this = (Polygon) arg0;
+
+           if (arg1 < 0 || arg1 >= _this.getNumInteriorRing()) return null;
 
            return _this.getInteriorRingN(arg1);
      }
@@ -387,51 +439,61 @@ import com.vividsolutions.jts.io.WKTReader;
   	//JAVA String functions
      static public String strConcat(String s1,String s2)
      {
+        if (s1 == null || s2 == null) return null;
      	return s1+s2;
      }
      
      static public boolean strEndsWith(String s1,String s2)
      {
+        if (s1 == null || s2 == null) return false;
      	return s1.endsWith(s2);
      }
      
      static public boolean strStartsWith(String s1,String s2)
      {
+        if (s1 == null || s2 == null) return false;
      	return s1.startsWith(s2);
      }
      
      static public boolean strEqualsIgnoreCase(String s1,String s2)
      {
+        if (s1 == null || s2 == null) return false;
      	return s1.equalsIgnoreCase(s2);
      }
      
      static public int strIndexOf(String s1,String s2)
      {
+        if (s1 == null || s2 == null) return -1;
      	return s1.indexOf(s2);
      }
      
      static public int strLastIndexOf(String s1,String s2)
      {
+        if (s1 == null || s2 == null) return -1;
      	return s1.lastIndexOf(s2);
      }
      
      static public int strLength(String s1)
      {
+        if (s1 == null) return 0;
      	return s1.length();
      }
      
      static public String strToLowerCase(String s1)
      {
+        if (s1 == null) return null;
         return s1.toLowerCase();
      }
      
      static public String strToUpperCase(String s1)
      {
+        if (s1 == null) return null;
         return s1.toUpperCase();
      }
      
      static public String strCapitalize(String s)
      {
+        if (s == null) return null;
         int strLength = s.length();
         StringBuilder sb = new StringBuilder(strLength);
         boolean titleCaseNext = true;
@@ -452,12 +514,14 @@ import com.vividsolutions.jts.io.WKTReader;
      
      static public boolean strMatches(String s1,String s2)
      {
+        if (s1 == null || s2 == null) return false;
      	return s1.matches(s2);
      }
      
-     static public String strReplace(String s1, String s2, String s3, boolean bAll)
+     static public String strReplace(String s1, String s2, String s3, Boolean bAll)
      {
-         if (bAll) {  
+        if (s1 == null || s2 == null || s3 == null) return null;
+         if (bAll != null && bAll) {  
              return s1.replaceAll(s2, s3);
          }
          else { 
@@ -465,18 +529,23 @@ import com.vividsolutions.jts.io.WKTReader;
          }
      }
 
-     static public String strSubstring(String s1,int beg, int end)
+     static public String strSubstring(String s1, Integer beg, Integer end)
      {
+        if (s1 == null || beg == null || end == null) return null;
+        if (beg < 0 || end < 0 || beg >= s1.length() || end >= s1.length()) return null;
      	return s1.substring(beg,end);
      }
   
-     static public String strSubstringStart(String s1,int beg)
+     static public String strSubstringStart(String s1, Integer beg)
      {
+        if (s1 == null || beg == null) return null;
+        if (beg < 0 || beg >= s1.length()) return null;
      	return s1.substring(beg);
      }
      
      static public String strTrim(String s1)
      {
+        if (s1 == null) return null;
      	return s1.trim();
      }
 
@@ -488,61 +557,76 @@ import com.vividsolutions.jts.io.WKTReader;
      
      static public double parseDouble(String s)
      {
-     	return Double.parseDouble(s);
+        if (s == null) return 0d;
+        try {
+            return Double.parseDouble(s);
+        } catch (NumberFormatException e) {
+            return 0d;
+        }
      }
      
      static public int parseInt(String s)
      {
+        if (s == null) return 0;
      	try{
      		return Integer.parseInt(s);
      	}
      	catch(NumberFormatException e) // be nice for silly people!
 		{
-     		return (int) Math.round(Double.parseDouble(s));
+     		return (int) Math.round(parseDouble(s));
 		}
      }
      
      static public long parseLong(String s)
      {
+        if (s == null) return 0L;
         try{
             return Long.parseLong(s);
         }
         catch(NumberFormatException e) // be nice for silly people!
         {
-            return (long) Math.round(Double.parseDouble(s));
+            return (long) Math.round(parseDouble(s));
         }
      }
      
      static public boolean parseBoolean(String s)
      {
-     	if (s.equalsIgnoreCase("") || s.equalsIgnoreCase("f") || s.equalsIgnoreCase("false")|| s.equalsIgnoreCase("0")|| s.equalsIgnoreCase("0.0"))
+     	if (s == null || s.equalsIgnoreCase("") || s.equalsIgnoreCase("f") 
+            || s.equalsIgnoreCase("false") || s.equalsIgnoreCase("0") || s.equalsIgnoreCase("0.0"))
+        {
      		return false;
+        }
+
      	return true;
      }
      
-     static public int roundDouble(double d)
+     static public int roundDouble(Double d)
      {
+        if (d == null) return 0;
      	return (int) Math.round(d);
      }
      
-     static public double int2ddouble(int i)
+     static public double int2ddouble(Integer i)
      {
+        if (i == null) return Double.NaN;
      	return (double) i;
      }
      
-     static public boolean int2bbool(int i)
+     static public boolean int2bbool(Integer i)
      {
+        if (i == null) return false;
      	return i==0;
      }
      
-     static public boolean double2bool(double d)
+     static public boolean double2bool(Double d)
      {
+        if (d == null) return false;
      	return d==0;
      }
      
-     static public Object if_then_else(boolean p, Object a, Object b)
+     static public Object if_then_else(Boolean p, Object a, Object b)
      {
-     	if (p)
+     	if (p != null && p)
      		return a;
      	else
      		return b;
@@ -555,6 +639,7 @@ import com.vividsolutions.jts.io.WKTReader;
      
      static public boolean equalTo(Object o1,Object o2)
      {
+         if (o1 == null || o2 == null) return false;
      	 if (o1.getClass() == o2.getClass())
      	 	return o1.equals(o2);
      	 if ( (o1 instanceof Number) && (o2 instanceof Number) )
@@ -566,11 +651,13 @@ import com.vividsolutions.jts.io.WKTReader;
      
      static public boolean notEqualTo(Object o1,Object o2)
      {
+         if (o1 == null || o2 == null) return false;
      	 return !(equalTo(o1,o2));
      }
      
      static public boolean lessThan(Object o1,Object o2)
      {
+        if (o1 == null || o2 == null) return false;
      	if ( (o1 instanceof Integer) && (o2 instanceof Integer) )
     	 {
     	 	return ((Integer)o1).intValue() < ((Integer)o2).intValue();
@@ -584,6 +671,7 @@ import com.vividsolutions.jts.io.WKTReader;
      
      static public boolean greaterThan(Object o1,Object o2)
      {
+        if (o1 == null || o2 == null) return false;
      	if ( (o1 instanceof Integer) && (o2 instanceof Integer) )
     	 {
     	 	return ((Integer)o1).intValue() > ((Integer)o2).intValue();
@@ -597,6 +685,7 @@ import com.vividsolutions.jts.io.WKTReader;
      
      static public boolean greaterEqualThan(Object o1,Object o2)
      {
+        if (o1 == null || o2 == null) return false;
      	if ( (o1 instanceof Integer) && (o2 instanceof Integer) )
     	 {
     	 	return ((Integer)o1).intValue() >= ((Integer)o2).intValue();
@@ -613,6 +702,7 @@ import com.vividsolutions.jts.io.WKTReader;
      
      static public boolean lessEqualThan(Object o1,Object o2)
      {
+        if (o1 == null || o2 == null) return false;
      	if ( (o1 instanceof Integer) && (o2 instanceof Integer) )
     	 {
     	 	return ((Integer)o1).intValue() <= ((Integer)o2).intValue();
@@ -629,6 +719,7 @@ import com.vividsolutions.jts.io.WKTReader;
      
      static public boolean isLike(String s1, String s2)
      {
+        if (s1 == null || s2 == null) return false;
         return s1.matches(s2); // this sucks, but hay...
      }
      
@@ -644,8 +735,9 @@ import com.vividsolutions.jts.io.WKTReader;
      }
      
      
-     static public boolean not(boolean b)
+     static public boolean not(Boolean b)
      {
+        if (b == null) return true;
      	return !b;
      }
 

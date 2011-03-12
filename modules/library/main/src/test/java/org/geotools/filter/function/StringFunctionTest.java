@@ -57,6 +57,14 @@ public class StringFunctionTest  {
     }
     
     @Test
+    public void testNull() {
+        assertEquals(null, ff.function("strCapitalize", ff.literal(null)).evaluate(null));
+        assertEquals(null, ff.function("strToUpperCase", ff.literal(null)).evaluate(null));
+        assertEquals(0, ff.function("strLength", ff.literal(null)).evaluate(null));
+        assertEquals(false, ff.function("strMatches", ff.literal(null), ff.literal(null)).evaluate(null));
+    }
+    
+    @Test
     public void testStrTrim2() throws Exception {
         assertEquals("hello", ff.function("strTrim2", ff.literal("  hello  "), ff.literal("both"), 
             ff.literal(" ")).evaluate(null));

@@ -21,6 +21,8 @@ Recently the OGC started collaborating with ISO TC211 Standards (which you have 
 
 These primers are not kind to the the faint of heart, but they are kind to the faint of budget.
 
+.. _standards:
+
 Standards Covered
 ^^^^^^^^^^^^^^^^^
 

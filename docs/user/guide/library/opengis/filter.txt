@@ -1,0 +1,277 @@
+Filter Guide
+------------
+
+The filter api defines the first step of a Query, it is used when requesting data from a DataStore or Catalog. The Filter specification itself is maintained by the OGC and is used in a number of their specifications (Catalog, WFS, and so on).
+
+The filter interface itself is designed to test set membership. That sounds dry - but it is accurate. A filter is used to test features one at a time to determine what you want returned to you. Being a spatial standard the tests are often spatial in nature (like intersects, bounding box).
+
+You can think of Filter as similar to an SQL WHERE clause.
+
+Not Object Oriented
+
+* A common mistake for programmers to make is to assume that you can implement
+  **Filter** in order to define a custom filter.
+  
+  The set of filter interfaces understood by the system is strictly limited to
+  those defined by the Filter specification.
+  
+  All hope is not lost - you can define your own custom Functions.
+
+Creating using CQL
+^^^^^^^^^^^^^^^^^^
+
+The common query language is a standard that appeared as part of the OGC Catalog specification. It defines an text syntax similar to SQL for defining Filters.::
+   
+   Filter filter = CQL.toFilter("attName >= 5");
+   Expression percent = CQL.toExpression("ratio * 100");
+
+In addition to the base standard the GeoTools community has allowed for a couple of extensions available using the ECQL class::
+   
+   Filter filter = ECQL.toFilter("area( SHAPE ) BETWEEN 10000 AND 30000");
+
+In this case the idea of comparing an area expression is an extension as the base CQL specification only allows property values to be compared.
+
+Creating using a FilterFactory
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+By using the FilterFactory you can create objects by hand. The FilterFactory interface is limited to strict specification compliance.::
+   
+   FilterFactory ff = CommonFactoryFinder.getFilterFactory( GeoTools.getDefaultHints );
+   Filter filter = ff.propertyLessThan( ff.property( "AGE"), ff.literal( 12 ) );
+
+Creating using a FilterFactory2
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+In the real world we need to go beyond the specification. FilterFactory2 will let you work with JTS Geometry instances (the specification is only defined to work with ISO Geometry).::
+   
+   FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2( GeoTools.getDefaultHints );
+   Filter filter = ff.contains( ff.property( "THE_GEOM"), ff.literal( geometry ) );
+
+FilterFactory2 also let's you define your filters in a bit more of a free form manner. In the specification all operations must have the PropertyName expression first.
+
+Creating using XML
+^^^^^^^^^^^^^^^^^^
+
+Remember that Filter is a standard? Well it actually is an XML standard with documents that look like this::
+   
+   <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml">
+     <ogc:PropertyIsGreaterThanOrEqualTo>
+       <ogc:PropertyName>attName</ogc:PropertyName>
+       <ogc:Literal>5</ogc:Literal>
+     </ogc:PropertyIsGreaterThanOrEqualTo>
+   </ogc:Filter>
+
+To parse an xml stream::
+   
+   Configuration configuration = new org.geotools.filter.v1_0.OGCConfiguration();
+   Parser parser = new Parser( configuration );
+   Filter filter = (Filter) parser.parse( inputStream );
+
+To parse a DOM fragement::
+
+   InputSource input = new InputSource( reader );
+   
+   DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+   DocumentBuilder db = dbf.newDocumentBuilder();
+   Document dom = db.parse( input );
+   
+   Filter filter = null;
+   
+   // first grab a filter node
+   NodeList nodes = dom.getElementsByTagName("Filter");
+   
+   for (int j = 0; j < nodes.getLength(); j++) {
+       Element filterNode = (Element) nodes.item(j);
+       NodeList list = filterNode.getChildNodes();
+       Node child = null;
+      
+       for (int i = 0; i < list.getLength(); i++) {
+           child = list.item(i);
+           
+           if ((child == null) || (child.getNodeType() != Node.ELEMENT_NODE)) {
+               continue;
+           }
+            
+           filter = FilterDOMParser.parseFilter(child);
+       }
+   }
+   System.out.println( "got:"+filter );
+
+Using a Filter
+^^^^^^^^^^^^^^
+
+The core filter abstractions are here. This set of interfaces is closed (you cannot make a new filter class and expect it to work).
+
+
+.. image:: /images/filter_model.png
+
+Here is an example of each that you can cut and paste into your own code:
+   
+   .. literalinclude:: /../src/main/java/org/geotools/opengis/FilterExamples.java
+      :language: java
+      :start-after: // start ff example
+      :end-before: // end ff example
+
+
+The core expression abstractions are here - this set is open in that you can define new functions.
+
+
+.. image:: /images/filter_expression.png
+
+Evaluate
+^^^^^^^^
+
+The most common thing todo is use a Filter to evaluate a Feature to see if it is in the set or out of the set.::
+   
+   if( filter.evaluate( feature ) ){
+       // the feature was "selected" by the filter
+       System.out.println( "Selected "+ feature.getId();
+   }
+
+You can also using a Filter on normal Java objects (ie POJOs).
+
+You evaluate an expression against a feature::
+   
+   Object value = expression.evaluate( feature );
+
+You can also evaluate with a specific type of object in mind::
+   
+   Integer number = expression.evaulate( feature, Integer.class );
+
+This can be used to convert types as needed::
+   
+   Color color = expression.evaulate( feature, ff.literal("#FF0000") );
+
+INCLUDES and EXCLUDES
+^^^^^^^^^^^^^^^^^^^^^
+
+There are two constants defined that can be used as Sentinel objects (or placeholders). Both of them represent "I don't have a Filter", but they differ in what client code is supposed to do about it.
+
+* Filter.INCLUDES - all content is included in the set. Would return EVERYTHING if used in a Query.
+* Filter.EXCLUDES - don't include any content. Would return an empty Collection if used in a Query.
+
+These values are often used as default values in other data structures - for example the default value for Query.getFilter() is Filter.INCLUDES.
+
+* You can check for these values when optimising::
+    
+    public void draw( Filter filter ){
+       if( filter == Filter.EXCLUDES ) return; // draw nothing
+       
+        Query query = new DefaultQuery( "roads", filter );
+        FeatureCollection collection = store.getFeatureSource( "roads" ).getFeatures( filter );
+        ...
+    }
+
+* However do be careful as it is easy to get confused.::
+     
+     // the following always returns true!
+     if( filter == Filter.INCLUDES || filter.evaluate( feature ) ){
+         System.out.println( "Selected "+ feature.getId();
+     }
+
+Expressions
+^^^^^^^^^^^
+
+Many of the filters mentioned above are presented as a comparison between two (or more) expressions. Expressions are used to access data held in a Feature (or POJO, or Record, or ...).
+
+Expressions are so useful that you will see them pop up in many parts of GeoTools. They are used by styles to select which data for portrayal and so forth.
+
+* PropertyName
+  
+  The PropertyName expression is used to extract information from your data model.
+  
+  The most common use is to access a Feature Property.::
+     
+     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2( GeoTools.getDefaultHints );
+     
+     Expression expr = ff.property("name");
+     Object value = expr.evaluate( feature ); // evaluate
+     if( value instanceof String){
+         name = (String) value;
+     }
+     else {
+         name = "(invalid name)";
+     }
+  
+  You can also ask for the value specifically as a String, null will be returned if the value
+  cannot be forced into a String::
+     
+     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2( GeoTools.getDefaultHints );
+     
+     Expression expr = ff.property("name");
+     String name = expr.evaluate( feature, String ); // evaluate
+     if( name == null ){
+         name = "(invalid name)";
+     }
+
+* X-Paths and Namespaces
+  
+  It is possible to use X-Path expressions in filters. This is particularly useful for evaluating nested
+  properties against complex features. To evaluate X-path expressions, an
+  org.xml.sax.helpers.NamespaceSupport object is needed to associate prefixes with Namespace URI's.
+  
+  FilterFactory2 supports the creation of PropertyName expression with associated Namespace context
+  information.::
+     
+     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2( GeoTools.getDefaultHints );
+     
+     NamespaceSupport namespaceSupport = new NamespaceSupport();
+     namespaceSupport.declarePrefix("foo", "urn:cgi:xmlns:CGI:GeoSciML:2.0" );
+     
+     Filter filter = ff.greater(ff.property("foo:city/foo:size",namespaceSupport),ff.literal(300000));
+     
+  Namespace context information can be retrieved from an existing PropertyName expression::
+     
+     PropertyName propertyName = ff.property("foo:city/foo:size", namespaceSupport);
+     NamespaceSupport namespaceSupport2 = propertyName.getNamespaceContext();
+      // now namespaceSupport2 == namespaceSupport !
+
+  PropertyName.getNamespaceContext() will return null when the PropertyName expression does not contain or
+  does not support Namespace context information.
+
+* Functions
+  
+  You can create functions using FilterFactory2::
+     
+     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2( GeoTools.getDefaultHints );
+     
+     PropertyName a = ff.property("testInteger");
+     Literal b = ff.literal( 1004.0 );
+     Function min = ff.function("min", a, b );
+
+  For functions that take more than a couple parameters you will need to use an Array::
+     
+     FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+     PropertyName property = ff.property("name");
+     Literal search = ff.literal("foo");
+     Literal replace = ff.literal("bar");
+     Literal all = ff.literal( true );
+     
+     Function f = ff.function("strReplace", new Expression[]{property,search,replace,all});
+
+  What can you do when a Function is not found - creating the Function will fail!
+  
+  The Symbology Encoding 2.0 specification has the concept of a fallbackValue - while we have not
+  made it available via the factory yet you can use the FunctionFinder.::
+      
+      FunctionFinder finder = new FunctionFinder(null);
+      finder.findFunction("pi", Collections.emptyList(), ff.literal(Math.PI));
+  
+  Please note that the literal value provided above is only used when the expression is evaluated in context
+  of a service that does not support the **pi()** function.
+
+FilterVisitor
+^^^^^^^^^^^^^
+
+FilterVisitor is used to traverse the filter data structure, common uses include:
+
+* asking questions about the content of a Filter
+* performing analysis and optimisations on a Filter (say replacing "1+1" with "2" )
+* transforming the filter (think search and replace)
+
+All of these activities have something in common:
+
+* the contents of the Filter need to be examined
+* a result or answer needs to be built up
+
+For interesting examples please see this page: FilterVisitor Examples

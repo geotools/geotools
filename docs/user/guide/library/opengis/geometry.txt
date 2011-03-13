@@ -1,2 +1,37 @@
-Geometry
---------
+ISO Geometry
+------------
+
+The OpenGIS module defines a set of interfaces aligned with the ISO 19107 Geometry Specification.
+
+These interfaces are many, varied, and well documented. The problem is they are not useful.
+
+* They are complex (in comparison to the Simple Feature Specification used by JTS)
+* The two implementations are unsupported modules
+
+GeoTools has two full implementations of these interfaces:
+
+* Geometry Plugin a port of JTS 1.7 to the ISO Geometry interfaces
+* JTS Wrapper Plugin an implementation that delegates all the work to JTS
+
+You should only include one on your CLASSPATH at any point in time.
+
+* Which implementation should I use?
+  
+  Neither - unless you have a direct need for these implementations
+  (because you are limiting your project to ISO19107 only interfaces)
+  they are not recommended.
+  
+  * The JTS-Wrapper implementation is field tested, but limited to
+    constructs similar to JTS. On the bright side because it always
+    uses the latest JTS the performance of this implementation has
+    improved over time.
+  
+  * The Geometry module has now had a lot of testing; but since it
+    is a port of JTS 1.7 it will lag behind JTS in speed. It is
+    however less complicated in terms of duplication of
+    information.
+
+* How do I use ISO Geometry
+  
+  Check out the documentation for the unsupported Geometry Plugin.
+  There is a nice series of source code examples.

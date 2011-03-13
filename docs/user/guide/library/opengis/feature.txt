@@ -142,6 +142,17 @@ Building a Geometry Descriptor with Limited Length::
   build.setLength(15);
   AttributeDescriptor descriptor = build.buildDescriptor( "username" );
 
+Name
+''''
+
+Creating a specific name::
+  
+  Name roadName = new NameImpl("http://localhost/","Road");
+
+Creating a global name::
+  
+  Name roadName = new NameImpl(null,"Road");
+
 Build a Feature
 ^^^^^^^^^^^^^^^
 
@@ -299,6 +310,26 @@ BoundingBox of named Property::
   
   GeometryAttribute location = (GeometryAttribute) feature.getProperty( "location" );
   BoundingBox bounds = location.getBounds();
+
+Name
+''''
+
+Name access::
+  
+  // can access both parts of a name - similar to XML QName
+  String localName = name.getLocalPart();
+  String namespace = name.getNamespaceURI(); // Note a String
+
+Check if name is global::
+  
+  name.isGlobal(); // true! name.getNamespaceURI() == null
+
+Name comparison::
+  
+  Name name1 = new Name( "gopher://localhost/example", "name" );
+  Name name2 = new Name( "gopher://localhost", "example/name" );
+  
+  name1.equals( name2 ); // true they both represent gopher://localhost/example/name
 
 Validation
 ^^^^^^^^^^

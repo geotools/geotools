@@ -28,7 +28,7 @@ As this set of text form directives to a rendering engine on handling overlappin
 * The "vocabulary" of allowed text values is fixed at compile time (and is well documented for those implementing a rendering engine).
 * As this text is intended to direct a rendering engine the entries are considered machine readable.
 
-An easy test to see if something is considered machine readable is to consider if internationalising the values would "break" the codebase.
+An easy test to see if something is considered machine readable is to consider if internationalizing the values would "break" the codebase.
 
 CodeList
 ^^^^^^^^
@@ -102,7 +102,7 @@ To use the InternationalString with a different locale::
    
    return title.toString( locale );
 
-This method of handing internationalisation may be unfamiliar to those coming from a desktop computing background. You will find thise technique very handy when implementing a web application that is communicating with users from a number of different locales.
+This method of handing internationalization may be unfamiliar to those coming from a desktop computing background. You will find this technique very handy when implementing a web application that is communicating with users from a number of different locales.
 
 With this in mind International String is considered:
 

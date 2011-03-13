@@ -155,11 +155,11 @@ public class ContrastEnhancementImpl implements ContrastEnhancement {
 
     public void setMethod(ContrastMethod method) {
         if (method == ContrastMethod.NORMALIZE) {
-            type = filterFactory.literal("Normalize");
-            method = ContrastMethod.NORMALIZE;
+            this.type = filterFactory.literal("Normalize");
+            this.method = ContrastMethod.NORMALIZE;
         } else if (method == ContrastMethod.HISTOGRAM) {
-            type = filterFactory.literal("Histogram");
-            method = ContrastMethod.HISTOGRAM;
+            this.type = filterFactory.literal("Histogram");
+            this.method = ContrastMethod.HISTOGRAM;
         } else {
             this.method = method;
         }

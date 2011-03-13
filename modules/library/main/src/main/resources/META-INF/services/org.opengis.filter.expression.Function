@@ -155,3 +155,4 @@ org.geotools.filter.function.math.FilterFunction_toDegrees
 org.geotools.filter.function.math.FilterFunction_toRadians
 org.geotools.filter.function.math.PiFunction
 org.geotools.filter.function.string.ConcatenateFunction
+org.geotools.filter.function.JenksNaturalBreaksFunction

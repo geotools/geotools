@@ -43,7 +43,8 @@ public class IDFunction extends FunctionExpressionImpl {
 		return "ID()";
 	}
 
-	public Object getValue(Object obj) {
+	@Override
+	public Object evaluate(Object obj) {
 	    if( obj instanceof SimpleFeature){
 	        SimpleFeature feature = (SimpleFeature) obj;
 	        return feature.getID();

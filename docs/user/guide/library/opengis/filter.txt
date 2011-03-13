@@ -7,9 +7,9 @@ The filter interface itself is designed to test set membership. That sounds dry 
 
 You can think of Filter as similar to an SQL WHERE clause.
 
-Not Object Oriented
-
-* A common mistake for programmers to make is to assume that you can implement
+* Not Object Oriented
+  
+  A common mistake for programmers to make is to assume that you can implement
   **Filter** in order to define a custom filter.
   
   The set of filter interfaces understood by the system is strictly limited to
@@ -263,15 +263,44 @@ Expressions are so useful that you will see them pop up in many parts of GeoTool
 FilterVisitor
 ^^^^^^^^^^^^^
 
-FilterVisitor is used to traverse the filter data structure, common uses include:
+FilterVisitor is used to traverse the filter data structure. Common uses include:
 
-* asking questions about the content of a Filter
-* performing analysis and optimisations on a Filter (say replacing "1+1" with "2" )
-* transforming the filter (think search and replace)
+* Asking questions about the content of a Filter
+* Performing analysis and optimisations on a Filter (say replacing "1+1" with "2" )
+* Transforming the filter (think search and replace)
+
+.. sidebar:: Visitor
+  
+  For simple data structures like a List java provides a for loop
+  to allow you to traverse list elements. Since the Filter data
+  structure forms a tree we have a different approach - passing in
+  an object (called a visitor) which is called on each element in
+  the tree.
+  
+  A similar approach is used for XML documents (which also form a
+  tree) when XSLT processing is used traverse the tree.
 
 All of these activities have something in common:
 
 * the contents of the Filter need to be examined
 * a result or answer needs to be built up
 
-For interesting examples please see this page: FilterVisitor Examples
+Here is a quick code example showing the use of a visitor to traverse the data structure::
+  
+  // The visitor will be called on each object
+  // in your filter
+  class FindNames extends DefaultFilterVisitor {
+      public Set<String> found = new HashSet<String>();
+      /** We are only interested in property name expressions */
+      public Object visit( PropertyName expression, Object data ) {
+          found.add( expression.getPropertyName() );
+          return found;
+      }
+  }
+  // Pass the visitor to your filter to start the traversal
+  FindNames visitor = new FindNames();
+  filter.accept( visitor, null );
+  
+  System.out.println("Property Names found "+visitor.found );
+
+For more examples please see the Filter Visitor Examples page.

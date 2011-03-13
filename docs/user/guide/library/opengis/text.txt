@@ -1,7 +1,7 @@
 Text
 ----
 
-Many projects use Java String to represent text. This page goes over some of the alternative sto String we use in order ot handle text in a consistent manner.
+Many projects use Java String to represent text. This page goes over some of the String alternative used to text in a consistent manner.
 
 Enum
 ^^^^

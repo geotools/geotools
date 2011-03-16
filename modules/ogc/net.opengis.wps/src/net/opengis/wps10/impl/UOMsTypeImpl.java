@@ -9,24 +9,14 @@ package net.opengis.wps10.impl;
 import java.util.Collection;
 
 import javax.measure.unit.Unit;
-import net.opengis.ows11.DomainMetadataType;
 
 import net.opengis.wps10.UOMsType;
 import net.opengis.wps10.Wps10Package;
 
-import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.EObjectImpl;
-
-import org.eclipse.emf.ecore.util.EObjectResolvingEList;
-import org.eclipse.emf.ecore.util.EObjectContainmentEList;
-import org.eclipse.emf.ecore.util.EcoreEList;
-import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.emf.ecore.util.EObjectEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -77,8 +67,7 @@ public class UOMsTypeImpl extends EObjectImpl implements UOMsType {
      */
     public EList getUOM() {
         if (uOM == null) {
-            //uOM = new EObjectResolvingEList(Unit.class, this, Wps10Package.UO_MS_TYPE__UOM);
-            uOM = new EcoreEList(Unit.class, this );
+            uOM = new EObjectEList(Unit.class, this, Wps10Package.UO_MS_TYPE__UOM );
         }
         return uOM;
     }

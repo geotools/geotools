@@ -21,8 +21,6 @@ import com.vividsolutions.jts.geom.Envelope;
 import java.awt.Polygon;
 import java.awt.Shape;
 import java.awt.geom.GeneralPath;
-import java.util.Arrays;
-import java.util.List;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.LinearRing;
@@ -45,20 +43,7 @@ import static org.junit.Assert.*;
  * @version $Id$
  * @since 2.8
  */
-public class JTSTest {
-    
-    private static final int[] XPOINTS = {
-        0, 15, 30, 45, 60, 75, 90, 75, 60, 45, 30, 15
-    };
-
-    private static final int[] YPOINTS = {
-        0, 20, 10, 20, 10, 20, 00, -20, -10, -20, -10, -20
-    };
-    
-    private static final int NPOINTS = XPOINTS.length;
-    
-    private static final double TOL = 1.0e-6d;
-    
+public class JTSTest extends JTSTestBase {
     
     @Test
     public void toGeometry_Shape_Poly() {
@@ -151,37 +136,5 @@ public class JTSTest {
         assertEquals(-5.0, geomEnv.getMinY(), TOL);
         assertEquals(5.0, geomEnv.getMaxY(), TOL);
     }
-
-    private Coordinate[] getPolyCoords() {
-        Coordinate[] coords = new Coordinate[NPOINTS + 1];
-        for (int i = 0; i < NPOINTS; i++) {
-            coords[i] = new Coordinate(XPOINTS[i], YPOINTS[i]);
-        }
-        coords[NPOINTS] = new Coordinate(XPOINTS[0], YPOINTS[0]);
-        return coords;
-    }
-    
-    private static class CoordList {
-        private static final double TOL = 1.0e-4d;
-        private List<Coordinate> coords;
-        
-        CoordList(Coordinate[] coordArray) {
-            coords = Arrays.asList(coordArray);
-        }
-        
-        public boolean contains(Coordinate coord) {
-            for (Coordinate c : coords) {
-                if (equal2D(c, coord)) return true;
-            }
-            return false;
-        }
-        
-        private boolean equal2D(Coordinate c0, Coordinate c1) {
-            if (c0 == null || c1 == null) {
-                throw new IllegalArgumentException("arguments must not be null");
-            }
-            
-            return (Math.abs(c0.x - c1.x) < TOL && Math.abs(c0.y - c1.y) < TOL);
-        }
-    }
+ 
 }

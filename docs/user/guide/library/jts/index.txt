@@ -7,6 +7,13 @@ The JTS Topology Suite is an external project that GeoTools uses to provide an i
    :maxdepth: 1
 
    geometry
+   relate
+   operation
+   filter
+   simplify
+   snap
+   ring
+   combine
 
 You will be using JTS a lot as it literally is the "shape" of GeoTools. It captures shapes using constructs like Coordinate, Point, Polygon and LineString.
 

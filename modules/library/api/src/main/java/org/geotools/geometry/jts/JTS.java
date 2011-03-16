@@ -73,6 +73,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * @author Jody Garnett
  * @author Martin Desruisseaux
  * @author Simone Giannecchini, GeoSolutions.
+ * @author Michael Bedward
  */
 public final class JTS {
     /**
@@ -426,7 +427,7 @@ public final class JTS {
             break;
         }
     }
-
+    
     /**
      * Converts an arbitrary Java2D shape into a JTS geometry. The created JTS geometry
      * may be any of {@link LineString}, {@link LinearRing} or {@link MultiLineString}.
@@ -434,8 +435,38 @@ public final class JTS {
      * @param  shape    The Java2D shape to create.
      * @param  factory  The JTS factory to use for creating geometry.
      * @return The JTS geometry.
+     * 
+     * @deprecated Please use {@link #toGeometry(Shape)} or {@link #toGeometry(Shape, GeometryFactory)}
      */
     public static Geometry shapeToGeometry(final Shape shape, final GeometryFactory factory) {
+        return toGeometry(shape, factory);
+    }
+
+    /**
+     * Converts an arbitrary Java2D shape into a JTS geometry. The created JTS geometry
+     * may be any of {@link LineString}, {@link LinearRing} or {@link MultiLineString}.
+     *
+     * @param  shape    the input shape
+     * 
+     * @return A new JTS geometry instance
+     * @throws IllegalArgumentException if {@code shape} is {@code null}
+     */
+    public static Geometry toGeometry(final Shape shape) {
+        return toGeometry(shape, new GeometryFactory());
+    }
+
+    /**
+     * Converts an arbitrary Java2D shape into a JTS geometry. The created JTS geometry
+     * may be any of {@link LineString}, {@link LinearRing} or {@link MultiLineString}.
+     *
+     * @param  shape    the input shape
+     * @param  factory  the JTS factory to use to create the geometry
+     * 
+     * @return A new JTS geometry instance
+     * @throws IllegalArgumentException if either {@code shape} or {@code factory} 
+     *         is {@code null}
+     */
+    public static Geometry toGeometry(final Shape shape, final GeometryFactory factory) {
         ensureNonNull("shape", shape);
         ensureNonNull("factory", factory);
 
@@ -552,26 +583,45 @@ public final class JTS {
     }
 
     /**
-     * Converts an envelope to a polygon.
+     * Converts an envelope to a JTS polygon.
      * <p>
-     * The resulting polygon contains an outer ring with verticies:
+     * The resulting polygon contains an outer ring with vertices:
+     * (x1,y1),(x2,y1),(x2,y2),(x1,y2),(x1,y1)
+     *
+     * @param envelope The original envelope.
+     * @return The envelope as a polygon.
+     * @throws IllegalArgumentException if {@code env} is {@code null}
+     *
+     * @since 2.4
+     */
+    public static Polygon toGeometry(Envelope env) {
+        return toGeometry(env, new GeometryFactory());
+    }
+
+    /**
+     * Converts an envelope to a JTS polygon using the given JTS geometry factory.
+     * <p>
+     * The resulting polygon contains an outer ring with vertices:
      * (x1,y1),(x2,y1),(x2,y2),(x1,y2),(x1,y1)
      *
      * @param envelope The original envelope.
      * @return The envelope as a polygon.
      *
-     * @since 2.4
+     * @since 2.8
+     * @throws IllegalArgumentException if either {@code env} or {@code factory} 
+     *         is {@code null}
      */
-    public static Polygon toGeometry(Envelope e) {
-        GeometryFactory gf = new GeometryFactory();
-
-        return gf.createPolygon(gf.createLinearRing(
-                new Coordinate[] {
-                    new Coordinate(e.getMinX(), e.getMinY()),
-                    new Coordinate(e.getMaxX(), e.getMinY()),
-                    new Coordinate(e.getMaxX(), e.getMaxY()),
-                    new Coordinate(e.getMinX(), e.getMaxY()),
-                    new Coordinate(e.getMinX(), e.getMinY())
+    public static Polygon toGeometry(final Envelope env, final GeometryFactory factory) {
+        ensureNonNull("env", env);
+        ensureNonNull("factory", factory);
+        
+        return factory.createPolygon(factory.createLinearRing(
+                new Coordinate[]{
+                    new Coordinate(env.getMinX(), env.getMinY()),
+                    new Coordinate(env.getMaxX(), env.getMinY()),
+                    new Coordinate(env.getMaxX(), env.getMaxY()),
+                    new Coordinate(env.getMinX(), env.getMaxY()),
+                    new Coordinate(env.getMinX(), env.getMinY())
                 }), null);
     }
 
@@ -610,27 +660,48 @@ public final class JTS {
         }
         return new ReferencedEnvelope( geom.getEnvelopeInternal(), crs );
     }
+    
     /**
-     * Converts a {@link BoundingBox} to a polygon.
+     * Converts a {@link BoundingBox} to a JTS polygon.
      * <p>
-     * The resulting polygon contains an outer ring with verticies:
+     * The resulting polygon contains an outer ring with vertices:
+     * (x1,y1),(x2,y1),(x2,y2),(x1,y2),(x1,y1)
+     *
+     * @param envelope The original envelope.
+     * @return The envelope as a polygon.
+     * @throws IllegalArgumentException if {@code bbox} is {@code null}
+     *
+     * @since 2.4
+     */
+    public static Polygon toGeometry(BoundingBox bbox) {
+        return toGeometry(bbox, new GeometryFactory());
+    }
+
+    /**
+     * Converts a {@link BoundingBox} to a JTS polygon using the given
+     * JTS geometry factory.
+     * <p>
+     * The resulting polygon contains an outer ring with vertices:
      * (x1,y1),(x2,y1),(x2,y2),(x1,y2),(x1,y1)
      *
      * @param envelope The original envelope.
      * @return The envelope as a polygon.
      *
-     * @since 2.4
+     * @since 2.8
+     * @throws IllegalArgumentException if either {@code bbox} or {@code factory}
+     *         is {@code null}
      */
-    public static Polygon toGeometry(BoundingBox e) {
-        GeometryFactory gf = new GeometryFactory();
-
-        return gf.createPolygon(gf.createLinearRing(
+    public static Polygon toGeometry(BoundingBox bbox, final GeometryFactory factory) {
+        ensureNonNull("bbox", bbox);
+        ensureNonNull("factory", factory);
+        
+        return factory.createPolygon(factory.createLinearRing(
                 new Coordinate[] {
-                    new Coordinate(e.getMinX(), e.getMinY()),
-                    new Coordinate(e.getMaxX(), e.getMinY()),
-                    new Coordinate(e.getMaxX(), e.getMaxY()),
-                    new Coordinate(e.getMinX(), e.getMaxY()),
-                    new Coordinate(e.getMinX(), e.getMinY())
+                    new Coordinate(bbox.getMinX(), bbox.getMinY()),
+                    new Coordinate(bbox.getMaxX(), bbox.getMinY()),
+                    new Coordinate(bbox.getMaxX(), bbox.getMaxY()),
+                    new Coordinate(bbox.getMinX(), bbox.getMaxY()),
+                    new Coordinate(bbox.getMinX(), bbox.getMinY())
                 }), null);
     }
 

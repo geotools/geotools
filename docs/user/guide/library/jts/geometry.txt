@@ -3,6 +3,8 @@ Geometry
 
 To create a Geometry object we make use of the GeometryFactory provided by JTS. GeometryFactory has a bunch of create methods that take Coordinate instances (and arrays) and wrap them up in the appropriate instance of Geometry.
 
+.. image:: /images/geometry.PNG
+
 You can create your own GeometryFactory with a specific PrecisionModel and CoordinateSequenceFactory. These configuration options are only of interest if you are wanting your Coordinates to store values as floats rather than doubles.
 
 The GeometryFactory created by default works just fine.
@@ -375,8 +377,71 @@ And here is the code for the SplineInterpolator class...::
     }
   }
 
+Geometry
+^^^^^^^^
+
+Using Geometry is pretty straight forward, although a little intimidating when starting out due to the number of methods.
+
+
+.. image:: /images/geometry_use.PNG
+
+Some summary information is available:
+
+* getArea() - area returned in the same units as the coordinates (be careful of lat/lon data!)
+* getCentroid() - the centre of the geometry
+* getEnvelope() - returns a geometry which is probably not what you wanted
+* getEnvelopeInternal() - this returns a useful Envelope
+* getInteriorPoint() - the centre of the geometry (that is actually on the geometry)
+* getDimension()
+
+Geometry relationships are represented by the following functions returning true or false:
+
+* disjoint(Geometry) - same as "not" intersects
+* touches(Geometry) - geometry have to just touch, crossing or overlap will not work
+* intersects(Geometry)
+* crosses(Geometry)
+* within(Geometry) - geometry has to be full inside 
+* contains(Geometry)
+* overlaps(Geometry) - has to actually overlap the edge, being within or touching will not work
+* covers(Geometry)
+* coveredBy(Geometry)
+* relate(Geometry, String) - allows general check of relationship see dim9 page
+* relate(Geometry)
+
+To actually determine a shape based on two geometry:
+
+* intersection(Geometry)
+* union(Geometry)
+* difference(Geometry)
+* symDifference(Geometry)
+
+Some of the most helpful functions are:
+
+* distance( Geometry )
+* buffer(double) - used to buffer the edge of a geometry to produce a polygon
+* union() - used on a geometry collection to produce a single geometry
+
+The tree most difficult methods are here (they will be discussed in detail):
+
+* equals( Object ) - normal Java equals which checks that the two objects are the same instance
+* equals( Geometry ) - checks if the geometry is the same shape
+* equalsExact( Geometry ) - check if the data structure is the same
+ 
+There are some book keeping methods to help discovery how the geometry was constructed:
+
+* getGeometryFactory()
+* getPreceisionModel()
+* toText() - the WKT representation of the Geometry
+* getGeoemtryType() - factory method called (ie "point", "linestring", etc..)
+
+A couple of methods are there to store your developer information:
+
+* getSRID() - stores the "spatial reference id", used as an external key when working with databases
+* getUserData() - intended to be used by developers, a best practice is to store a java.util.Map. GeoTools will occasionally use this field to store a "srsName" or full CoordianteReferenceSystem. 
+
+
 Geometries Enum
-^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^
 
 Code that makes use of Geometry ends up doing a fair amount of "instanceof" testing in order to determine what kind of Geometry is being used (to take appropriate action).
 
@@ -386,3 +451,4 @@ We have an enumeration defined to help out in this case:
       :language: java
       :start-after: // geometries start
       :end-before: // geometries end
+

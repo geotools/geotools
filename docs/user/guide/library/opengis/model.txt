@@ -25,7 +25,7 @@ The Feature class is used to represents "something that can be drawn on a map".
 
 Information is stored in a data structure composed of Feature, Attributes, and Associations.
 
-.. image:: /images/feature_data_model.gif
+.. image:: /images/feature_data_model.PNG
 
 To directly create a Feature you can make use of **FeatureFactory**, or use a builder which makes things a little easier (as it fills in defaults)::
 
@@ -48,7 +48,7 @@ Filter
 Use **Filter** to select features that are of interest and the **Expression** to drill in and access information.
 
 
-.. image:: /images/filter_expression.png
+.. image:: /images/filter_expression.PNG
 
 Although Expression forms a closed set of classes, you can extend the system with your own functions.
 
@@ -99,7 +99,7 @@ FeatureType is used to:
 The type is represented by PropertyType, AttributeType, GeometryType, ComplexType, FeatureType.
 
 
-.. image:: /images/feature_type_model.gif
+.. image:: /images/feature_type_model.PNG
 
 This forms a "dynamic type system" indicating we can describe new types of information at runtime. To make this a complete type system we have support for references (with AssociationType) and methods (with OperationType) although use of these faciities is considered experimental at present.
 
@@ -107,7 +107,7 @@ As shown above a ComplexType contains a list of **properties** each represented 
 
 
 
-.. image:: /images/feature_type_mode_descriptorsl.gif
+.. image:: /images/feature_type_model_descriptors.PNG
 
 Simple Feature
 ^^^^^^^^^^^^^^
@@ -122,7 +122,7 @@ SimpleFeature may be used when:
 * These restrictions match the abilities of a simple shapefile or database table
 
 
-.. image:: /images/feature_simple.gif
+.. image:: /images/feature_simple.PNG
 
 Here is an example of constructing a SimpleFeatureType::
    

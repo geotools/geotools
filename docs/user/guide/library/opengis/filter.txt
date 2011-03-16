@@ -103,7 +103,7 @@ Using a Filter
 The core filter abstractions are here. This set of interfaces is closed (you cannot make a new filter class and expect it to work).
 
 
-.. image:: /images/filter_model.png
+.. image:: /images/filter_model.PNG
 
 Here is an example of each that you can cut and paste into your own code:
    
@@ -112,14 +112,9 @@ Here is an example of each that you can cut and paste into your own code:
       :start-after: // start ff example
       :end-before: // end ff example
 
+Spatial filters are also available.
 
-The core expression abstractions are here - this set is open in that you can define new functions.
-
-
-.. image:: /images/filter_expression.png
-
-Evaluate
-^^^^^^^^
+.. image:: /images/filter_spatial.PNG
 
 The most common thing todo is use a Filter to evaluate a Feature to see if it is in the set or out of the set.::
    
@@ -130,20 +125,7 @@ The most common thing todo is use a Filter to evaluate a Feature to see if it is
 
 You can also using a Filter on normal Java objects (ie POJOs).
 
-You evaluate an expression against a feature::
-   
-   Object value = expression.evaluate( feature );
-
-You can also evaluate with a specific type of object in mind::
-   
-   Integer number = expression.evaulate( feature, Integer.class );
-
-This can be used to convert types as needed::
-   
-   Color color = expression.evaulate( feature, ff.literal("#FF0000") );
-
-INCLUDES and EXCLUDES
-^^^^^^^^^^^^^^^^^^^^^
+**INCLUDES and EXCLUDES**
 
 There are two constants defined that can be used as Sentinel objects (or placeholders). Both of them represent "I don't have a Filter", but they differ in what client code is supposed to do about it.
 
@@ -169,10 +151,35 @@ These values are often used as default values in other data structures - for exa
          System.out.println( "Selected "+ feature.getId();
      }
 
-Expressions
-^^^^^^^^^^^
+Expression
+^^^^^^^^^^
 
 Many of the filters mentioned above are presented as a comparison between two (or more) expressions. Expressions are used to access data held in a Feature (or POJO, or Record, or ...).
+
+The core expression abstractions are here - this set is open in that you can define new functions.
+
+
+.. image:: /images/filter_expression.PNG
+
+You evaluate an expression against a feature::
+   
+   Object value = expression.evaluate( feature );
+
+Or against a Java Bean, or even java.util.Map::
+
+   Object value = expression.evaluate( bean );
+
+Out of the box expression is typeless, and will do its best to convert the value
+to the type required.
+
+To do this yourself you can evaluate with a specific type of object in mind::
+   
+   Integer number = expression.evaulate( feature, Integer.class );
+
+As an example of conversion here is an expression converting a String to a Color::
+   
+   Expression expr = ff.literal("#FF0000")
+   Color color = expr.evaualte( null, Color.class );
 
 Expressions are so useful that you will see them pop up in many parts of GeoTools. They are used by styles to select which data for portrayal and so forth.
 

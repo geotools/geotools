@@ -506,7 +506,8 @@ public class XPath {
             final String defaultNamespace = (isXmlAttribute
                     || localName.equals(ComplexFeatureConstants.FEATURE_CHAINING_LINK_NAME
                             .getLocalPart()) || rootName.getNamespaceURI() == null) ? XMLConstants.NULL_NS_URI
-                    : rootName.getNamespaceURI();
+                    : namespaces.getURI("") == null ? rootName.getNamespaceURI() : namespaces
+                            .getURI("");
             namespaceUri = defaultNamespace;
             if (XMLConstants.NULL_NS_URI.equals(defaultNamespace)) {
                 prefix = XMLConstants.DEFAULT_NS_PREFIX;

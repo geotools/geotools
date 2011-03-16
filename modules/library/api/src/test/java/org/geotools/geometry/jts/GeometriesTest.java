@@ -36,7 +36,8 @@ import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
 
 /**
- *
+ * Unit tests for the Geometries enum.
+ * 
  * @author Michael Bedward
  * @since 2.6
  * @source $URL$
@@ -44,7 +45,7 @@ import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
  */
 public class GeometriesTest {
 
-    private static GeometryFactory geomFactory = JTSFactoryFinder.getGeometryFactory(null);
+    private static GeometryFactory geomFactory = new GeometryFactory();
 
     private static final Coordinate[] coords = {
             new Coordinate(0, 0),

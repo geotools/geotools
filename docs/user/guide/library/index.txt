@@ -5,6 +5,7 @@ Library
 The GeoTools library is organised into a series of jars. These jars form a software stack, each building on the services of the others. Individual jars such as "data" are extended with plugins in order to support additional capabilities. For data these plugins include support for common spatial formats such as shapefiles.
 
 .. toctree::
+   :maxdepth: 2
 
    opengis/index
    jts/index

@@ -4,6 +4,7 @@ OpenGIS
 Interfaces for GeoSpatial concepts, often defined by the OGC or ISO standards bodies. The interfaces in this module serve as a great reference if you do not have the time to purchase and read the official standards documents. Approach the standards using an environment you are comfortable with - Java!
 
 .. toctree::
+   :maxdepth: 1
 
    model
    filter

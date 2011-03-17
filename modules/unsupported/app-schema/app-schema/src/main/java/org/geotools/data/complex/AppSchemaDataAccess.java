@@ -489,7 +489,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
     }
 
     public void dispose() {
-        //DataAccessRegistry.unregister(this);
+        DataAccessRegistry.unregister(this);
         // dispose all the source data stores
         for (FeatureTypeMapping mapping : mappings.values()) {
             mapping.getSource().getDataStore().dispose();

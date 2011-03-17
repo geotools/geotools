@@ -128,8 +128,8 @@ public class GMLEncodingUtils {
         List particles = Schemas.getChildElementParticles(type, true);
         List properties = new ArrayList();
 
-    O:  for (Iterator p = particles.iterator(); p.hasNext();) {
-            XSDParticle particle = (XSDParticle) p.next();
+    O:  for (int i = 0; i < particles.size(); i++) {
+            XSDParticle particle = (XSDParticle) particles.get(i);
             XSDElementDeclaration attribute = (XSDElementDeclaration) particle.getContent();
 
             if (attribute.isElementDeclarationReference()) {
@@ -143,6 +143,26 @@ public class GMLEncodingUtils {
                     properties.add(new Object[] { particle, bounds });
                 }
             } else if (featureType instanceof SimpleFeatureType) {
+                // first simple feature hack, if the schema "overrides" gml attributes like
+                // name and description, ignore the gml version
+                boolean skip = false;
+                if (gml.getNamespaceURI().equals(attribute.getTargetNamespace())) {
+                    for (int j = i+1; j < particles.size(); j++) {
+                        XSDParticle particle2 = (XSDParticle) particles.get(j);
+                        XSDElementDeclaration attribute2 = (XSDElementDeclaration) particle2.getContent();
+                        if (attribute2.isElementDeclarationReference()) {
+                            attribute2 = attribute2.getResolvedElementDeclaration();
+                        }
+                        if (attribute2.getName().equals(attribute.getName())) {
+                            skip = true;
+                            break;
+                        }
+                    }
+                }
+                if (skip) {
+                    continue;
+                }
+                
                 // simple feature brain damage: discard namespace
                 // make sure the feature type has an element
                 if (!isValidDescriptor(featureType, new NameImpl(attribute.getName()))) {

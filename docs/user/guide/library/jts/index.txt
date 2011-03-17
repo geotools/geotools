@@ -8,6 +8,7 @@ The JTS Topology Suite is an external project that GeoTools uses to provide an i
 
    geometry
    relate
+   dim9
    operation
    filter
    simplify
@@ -26,7 +27,7 @@ With those notes it may sound like JTS is limited; it is instead focused on the 
 References:
 
 * http://sourceforge.net/projects/jts-topo-suite/
-* tsusiatsoftware.net/jts/main.html
+* http://tsusiatsoftware.net/jts/main.html
 * http://www.vividsolutions.com/jts/bin/JTS%20Developer%20Guide.pdf
 * http://www.vividsolutions.com/jts/bin/JTS%20Technical%20Specs.pdf
 

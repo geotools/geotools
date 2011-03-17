@@ -5,7 +5,7 @@ To create a Geometry object we make use of the GeometryFactory provided by JTS. 
 
 .. image:: /images/geometry.PNG
 
-You can create your own GeometryFactory with a specific PrecisionModel and CoordinateSequenceFactory. These configuration options are only of interest if you are wanting your Coordinates to store values as floats rather than doubles.
+You can create your own GeometryFactory with a specific PrecisionModel and CoordinateSequenceFactory. These "advanced" configuration options are interest if you need to take charge of how your coordinates are stored (perhaps as floats rather than doubles?)
 
 The GeometryFactory created by default works just fine.
 
@@ -88,23 +88,16 @@ The JTS Topology Suite does not have any constructs to represent a "curve" or "c
 In order to represent circles and curves you will need to produce them (yourself) using a little bit of math. If there is general interest in these kinds of functions we can add them to the GeoTools library.
 
 Creating a Circle::
-   
+
    private static Geometry createCircle(double x, double y, final double RADIUS) {
-       final int SIDES = 32;
-       Coordinate coords[] = new Coordinate[SIDES+1];
-       for( int i = 0; i < SIDES; i++){
-           double angle = ((double) i / (double) SIDES) * Math.PI * 2.0;
-           double dx = Math.cos( angle ) * RADIUS;
-           double dy = Math.sin( angle ) * RADIUS;
-           coords[i] = new Coordinate( (double) x + dx, (double) y + dy );
-       }
-       coords[SIDES] = coords[0];
-   
-       LinearRing ring = factory.createLinearRing( coords );
-       Polygon polygon = factory.createPolygon( ring, null );
-      
-       return polygon;
+     GeometricShapeFactory shapeFactory = new GeometricShapeFactory();
+     shapeFactory.setNumPoints(32);
+     shapeFactory.setCentre(new Coordinate(x, y));
+     shapeFactory.setSize(RADIUS * 2);
+     return shapeFactory.createCircle();
    }
+
+Even though "GeometricShapeFactory" is provided out of the box from JTS; there is nothing fancy about the code. It simply creates a series of coordinates in a circle.
 
 Another approach is to create a curve or shape object with one of Java's handy Shape classes and then extract the coordinates from that object to create your geometry.
 
@@ -147,235 +140,47 @@ Here's an example of some randomly orientated and shaped curves generated in thi
 
 Sometimes you need to generate a smooth curve that is guaranteed to pass through a specified set of points. The tried and true approach here is to use a spline function. This generates a set of polynomial (cubic) curves, each of which fits a part of the data and joins smoothly to its neighbouring curves.
 
-Splines (arcs with maths galore)::
+Splines::
    
-   
-   Coordinate[] myPoints = new Coordinate[] {
-               new Coordinate(0,0),
-               new Coordinate(3,6),
-               new Coordinate(9,12),
-               new Coordinate(12,6),
-               new Coordinate(15,4),
-               new Coordinate(20,10),
-               new Coordinate(26,18),
-               new Coordinate(29,16),
-               new Coordinate(32,13),
-               new Coordinate(37,18),
-               new Coordinate(43,24),
-               new Coordinate(50,16)
-           };
-   
-   SplineInterpolator si = new SplineInterpolator();
-   
-   // generate a curve represented by 100 points plus the input points
-   Coordinate[] interpPoints = si.interpolate(myPoints, 100, true);
-   
-   GeometryFactory gf = new GeometryFactory();
-   gf.createLineString(coords.toArray(new Coordinate[coords.size()]));
+   public Geometry splineInterpolatePoints(double[] xPoints, double[] yPoints) {
+      /*
+      * First we create a LineString of segments with the
+      * input points as vertices.
+      */
+      final int N = xPoints.length;
+      Coordinate[] coords = new Coordinate[N];
+      for (int i = 0; i < N; i++) {
+         coords[i] = new Coordinate(xPoints[i], yPoints[i]);
+      }
+      GeometryFactory gf = new GeometryFactory();
+      LineString line = gf.createLineString(coords);
+      
+      /*
+      * Now we use the GeoTools JTS utility class to smooth the
+      * line. The returned Geometry will have all of the vertices
+      * of the input line plus extra vertices tracing a spline
+      * curve. The second argument is the 'fit' parameter which
+      * can be in the range 0 (loose fit) to 1 (tightest fit).
+      */
+      return JTS.smooth(line, 0.0);
+   }
 
-Here is the generated spline curve with the location of the input coordinates shown...
+Here is an example of this in use:
 
-.. image:: /images/geometry_spline.gif
+.. image:: /images/geometry_spline1.png
 
-And here is the code for the SplineInterpolator class...::
+Example smoothing a polygon::
   
-  /*
-   * Copyright 2009 Michael Bedward
-   *
-   * This file is part of jai-tools
-   *
-   * jai-tools is free software: you can redistribute it and/or modify
-   * it under the terms of the GNU Lesser General Public License as
-   * published by the Free Software Foundation, either version 3 of the
-   * License, or (at your option) any later version.
-   * jai-tools is distributed in the hope that it will be useful,
-   * but WITHOUT ANY WARRANTY; without even the implied warranty of
-   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   * GNU Lesser General Public License for more details.
-   * You should have received a copy of the GNU Lesser General Public
-   * License along with jai-tools.  If not, see <http://www.gnu.org/licenses/>.
-   *
-   */
-  package jaitools.util;
+  WKTReader reader = new WKTReader();
+  Geometry tShape = reader.read(
+  "POLYGON((10 0, 10 20, 0 20, 0 30, 30 30, 30 20, 20 20, 20 0, 10 0))");
   
-  import com.vividsolutions.jts.geom.Coordinate;
-  
-  /**
-   * A utility class for cubic spline interpolation in two dimensions.
-   *
-   * @author Michael Bedward
-   */
-  public class SplineInterpolator {
-  
-    /**
-     * Cubic spline interpolation through the set of points with
-     * coordinates given by x and y input arrays.
-     * <P>
-     * Returns the coords of a line interpolated through np points
-     * (including the first and last control points) which are
-     * approximately evenly-spaced (fudged using linear interp).
-     * <P>
-     * Adapted from an algorithm in Press et al. 1992
-     * "Numeical Recipes in C". Cambridge University Press
-     *
-     * @param ctrlCoords the 'control points' that the interpolated curve must pass through
-     * @param numPoints number of interpolation points
-     * @param includeCtrlCoords if true the returned Coordinates will include the input
-     * control points; if false only the first and last control points are guaranteed to
-     * be included (though the curve still passes through the other points)
-     *
-     * @return array of interpolated Coordinates
-     *
-     * @throws java.lang.IllegalArgumentException
-     */
-    public Coordinate[] interpolate(Coordinate[] ctrlCoords, int numPoints, boolean includeCtrlCoords)
-            throws IllegalArgumentException {
+  Geometry tLoose = JTS.smooth(tShape, 0.0);
+  Geometry tTighter = JTS.smooth(tShape, 0.75);
 
-        int N = ctrlCoords.length;
-        if (numPoints <= N) {
-            throw new IllegalArgumentException(
-                    "np should be larger than length of input coords array");
-        }
+Here is the resulting image:
 
-        // x values need to be considered in ascending order
-        int[] o = getXOrder(ctrlCoords);
-
-        // Interpolation (as done below) will fail if any of the input
-        // coordinates x values are equal
-        double prec = 1.0e-8;
-        for (int i = 1; i < N; i++) {
-            if (Math.abs(ctrlCoords[o[i]].x - ctrlCoords[o[i - 1]].x) < prec) {
-                // jiggle the second coord
-                ctrlCoords[o[i - 1]].x += 2 * prec;
-            }
-        }
-
-        // first derivatives
-        double[] dy = new double[N];
-
-        // second derivatives
-        double[] ddy = new double[N];
-
-        /*
-         * In this implementation we set the value of the second
-         * derivatives at the end-points to 0 (the so-called natural
-         * cublic spline). See Press et al. 1992 for alternative
-         * approaches.
-         */
-        ddy[0] = ddy[N - 1] = dy[0] = 0.0;
-
-        // tridiagonal algorithm to calculate the piece-wise splines
-        double sig, p;
-        for (int i = 1; i < N - 1; i++) {
-            sig = (ctrlCoords[o[i]].x - ctrlCoords[o[i - 1]].x) / (ctrlCoords[o[i + 1]].x - ctrlCoords[o[i - 1]].x);
-            p = sig * ddy[i - 1] + 2.0;
-            ddy[i] = (sig - 1.0) / p;
-            dy[i] = (ctrlCoords[o[i + 1]].y - ctrlCoords[o[i]].y) / (ctrlCoords[o[i + 1]].x - ctrlCoords[o[i]].x) - (ctrlCoords[o[i]].y - ctrlCoords[o[i - 1]].y) / (ctrlCoords[o[i]].x - ctrlCoords[o[i - 1]].x);
-            dy[i] = (6.0d * dy[i] / (ctrlCoords[o[i + 1]].x - ctrlCoords[o[i - 1]].x) - sig * dy[i - 1]) / p;
-        }
-
-        for (int i = N - 2; i >= 0; i--) {
-            ddy[i] = ddy[i] * ddy[i + 1] + dy[i];
-        }
-
-        // interpolation
-
-        // first find approximate distance along curve by linear interp
-        double[] dist = new double[N];
-        double[] xdiff = new double[N];
-        dist[0] = xdiff[0] = 0.0;
-        for (int i = 1; i < N; i++) {
-            xdiff[i] = ctrlCoords[o[i]].x - ctrlCoords[o[i - 1]].x;
-            double ydiff = ctrlCoords[o[i]].y - ctrlCoords[o[i - 1]].y;
-            dist[i] = dist[i - 1] + Math.sqrt(xdiff[i] * xdiff[i] +
-                    ydiff * ydiff);
-        }
-
-        // spacing
-        double dIncr = dist[N - 1] / (numPoints - 1);
-
-        Coordinate[] interpCoords;
-        if (includeCtrlCoords) {
-            interpCoords = new Coordinate[numPoints + N - 2];
-        } else {
-            interpCoords = new Coordinate[numPoints];
-        }
-
-        interpCoords[0] = new Coordinate(ctrlCoords[o[0]]);
-        interpCoords[interpCoords.length - 1] = new Coordinate(ctrlCoords[o[N - 1]]);
-
-        double curDist = dIncr;
-        int kCtrl = 1;
-        int kInterp = 1;
-        for (int i = 1; i < numPoints - 1; i++, curDist += dIncr) {
-            while (curDist > dist[kCtrl]) {
-                kCtrl++;
-                if (includeCtrlCoords) {
-                    interpCoords[kInterp++] = new Coordinate(ctrlCoords[o[kCtrl - 1]]);
-                }
-            }
-
-            Coordinate c = new Coordinate();
-
-            // locate the x coord of the interpolated point
-            double delta = (curDist - dist[kCtrl - 1]) / (dist[kCtrl] - dist[kCtrl - 1]);
-            c.x = ctrlCoords[o[kCtrl - 1]].x + delta * xdiff[kCtrl];
-
-            // locate the y coord by evaluating the cubic spline polynomial
-            double h = ctrlCoords[o[kCtrl]].x - ctrlCoords[o[kCtrl - 1]].x;
-            double a = (ctrlCoords[o[kCtrl]].x - c.x) / h;
-            double b = (c.x - ctrlCoords[o[kCtrl - 1]].x) / h;
-            c.y = a * ctrlCoords[o[kCtrl - 1]].y + b * ctrlCoords[o[kCtrl]].y +
-                    ((a * a * a - a) * ddy[kCtrl - 1] + (b * b * b - b) *
-                    ddy[kCtrl]) * (h * h) / 6.0;
-
-            interpCoords[kInterp++] = c;
-        }
-
-        return interpCoords;
-    }
-
-    /*
-     * Get the order of the x ordinates in the given Coordinate array
-     */
-    private static int[] getXOrder(Coordinate[] coords) {
-        if (coords.length == 0) {
-            return null;
-        } else if (coords.length == 1) {
-            return new int[]{0};
-        }
-
-        int[] order = new int[coords.length];
-        for (int i = 0; i < coords.length; i++) {
-            order[i] = i;
-        }
-
-        // using shellsort algorithm as modified from Sedgewick 1990...
-        // Algorithms in C
-        //
-        int[] incs = new int[]{
-            1391376, 463792, 198768, 86961, 33936, 13776,
-            4592, 1968, 861, 336, 112, 48, 21, 7, 3, 1
-        };
-
-        int i0, j;
-        double v;
-        for (int k = 0; k < incs.length; k++) {
-            for (int h = incs[k], i = h; i < coords.length; i++) {
-                j = i;
-                i0 = order[j];
-                v = coords[i0].x;
-                while (j > h - 1 && coords[order[j - h]].x > v) {
-                    order[j] = order[j - h];
-                    j -= h;
-                }
-                order[j] = i0;
-            }
-        }
-
-        return order;
-    }
-  }
+.. image:: /images/geometry_spline2.png
 
 Geometry
 ^^^^^^^^
@@ -439,7 +244,6 @@ A couple of methods are there to store your developer information:
 * getSRID() - stores the "spatial reference id", used as an external key when working with databases
 * getUserData() - intended to be used by developers, a best practice is to store a java.util.Map. GeoTools will occasionally use this field to store a "srsName" or full CoordianteReferenceSystem. 
 
-
 Geometries Enum
 ^^^^^^^^^^^^^^^
 
@@ -452,3 +256,61 @@ We have an enumeration defined to help out in this case:
       :start-after: // geometries start
       :end-before: // geometries end
 
+PrecisionModel
+^^^^^^^^^^^^^^
+
+Out of the box JTS works with a default double precision model. Configuring your GeometryFactory with a PrecisionModel allows you to work at a different resolution than this default.
+
+PrecisionModel forms the heart of "numerical stability" when working with Geometry. When working with large values the mathematics built into Java are not very accurate. By explicitly capturing the "round-off" process in a PrecisionModel JTS allows to manage these sorts of errors and make an appropriate tradeoff of speed vs accuracy for your work.
+
+* Round-off often occur, even when working in double precision.
+  
+  Especially if you are working in a coordinate system with big
+  numbers and you're a long way from the origin.
+
+* The other reason to look at PrecisionModel is to ensure it matches
+  your final use for your data. If you know you are only going to
+  display an answer on the screen, you may be able to get by with
+  reduced precision.
+  
+  By matching the PrecisionModel with your expected use, certain long
+  running operations (that need to converge on an answer) can stop
+  when they have reached the level of detail you expect. No sense
+  doing extra work for more significant digits if the result is going
+  to be rounded off at the end of the day.
+
+The following code example takes into account that the location being passed in was only supplied as a floating point value x/y. We handle this by creating this test point with a GeometryFactory that takes a PrecisionModel argument. The test point will be flagged as having a certain limited precision and all JTS operations will take this into account.
+
+There are various ways of specifying a PrecisionModel but here we base it on the number of decimal places to use for coordinate comparisons.::
+  
+  private boolean polyContains(Polygon poly, float x, float y, int numDecPlaces) {
+    double scale = Math.pow(10, numDecPlaces);
+    PrecisionModel pm = new PrecisionModel(scale);
+    GeometryFactory gf = new GeometryFactory(pm);
+    
+    Geometry testPoint = gf.createPoint(new Coordinate(x, y));
+    return poly.contains(testPoint);
+  }
+
+You can also define the PrecisionModel using a couple of constants::
+
+   pm = new PrecisionModel( PrecisionModel.Type.FIXED ); // fixed decimal point
+   pm = new PrecisionModel( PrecisionModel.Type.FLOATING ); // for Java double
+   pm = new PrecisionModel( PrecisionModel.Type.FLOATING_SINGLE ); // for Java float
+
+
+This is an advanced feature that is not often used.
+
+CoordinateSequence
+^^^^^^^^^^^^^^^^^^
+
+You may wish to provide a custom CoordinateSequenceFactory for reasons of efficiency and/or reducing memory use.
+
+Internally Geometry often works with Coordinate[]. However many of the spatial formats used for JTS will store values as a flat doube[] or float[] for efficiency. By implementing a CoordinateSequenceFactory GeoTools can teach JTS how to handle the values directly out of a shapefile for example.
+
+This is an advanced feature that is not often used.
+
+JTS
+^^^
+
+Some of the code examples used above reference the *JTS* utility class. This class is provided by **gt-api** module; and contains many helpful methods for working with Geometry.

@@ -55,7 +55,6 @@ If you need to represent a line with gaps in it you can use a MultiLineString.
 Creating a Polygon
 ^^^^^^^^^^^^^^^^^^
 
-
 .. image:: /images/geometry_polygon.png
 
 The following makes a Polygon in the shape of a square::
@@ -226,7 +225,7 @@ Some of the most helpful functions are:
 * buffer(double) - used to buffer the edge of a geometry to produce a polygon
 * union() - used on a geometry collection to produce a single geometry
 
-The tree most difficult methods are here (they will be discussed in detail):
+The three most difficult methods are here (they will be discussed in detail):
 
 * equals( Object ) - normal Java equals which checks that the two objects are the same instance
 * equals( Geometry ) - checks if the geometry is the same shape

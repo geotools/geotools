@@ -1,4 +1,0 @@
-Utility
-=======
-
-Utility classes used to support the implementation of GeoTools. For the most part these classes are considered internal, as an example to iron out differences between Java versions.

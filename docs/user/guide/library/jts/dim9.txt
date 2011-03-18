@@ -232,6 +232,10 @@ You can now start to make sense of the JTS javadocs here they define what the op
 
 To complete our example lets see what relationships our "212101212" string represents.
 
+.. image:: /images/intersection.png
+   :width: 186
+   :height: 116
+
 =============== ================= =========== =========================
 Relationship    Area/Area Pattern "212101212" Description
 =============== ================= =========== =========================

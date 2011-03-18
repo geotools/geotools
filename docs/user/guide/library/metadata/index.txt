@@ -1,9 +1,59 @@
 Metadata
 ========
 
-Used to describe GeoSpatial information and services.
+Metadata is used by GeoTools to describe GeoSpatial information and services. The data structure is an implementation of ISO19115 (for metadata describing spatial data).
+
+.. toctree::
+   :maxdepth: 1
+   
+   metadata
+   geotools
+   collections
+   cache
+   range
+   utilities
+   text
 
 References:
 
 * ISO 19115
 * ISO 19119
+
+**Utility Classes**
+
+GeoTools also includes utility classes used to support the implementation of GeoTools. For the most part these classes are considered internal, as an example to iron out differences between Java versions. You are welcome to use these classes in your own application, in the event any of these solutions are deprecated instructions will be provided on how to move on.
+
+The GeoTools library is big nasty (and plays with big nasty amounts of data) and as such is always slight ahead of its time. We run into the limits of Java - often years before good solutions show up as part of the Java language.
+
+In a perfect world none of these utility classes would need to exist - and we could just use software components from off the shelf projects. In many cases we have found that the volume of GeoSpatial information breaks assumptions made by projects, such as commons collections, leaving us no choice but to roll our own.
+
+* Q: Where are the Interfaces?
+  
+  The interfaces are in the gt-opengis module.
+  
+  If you don't have access to the ISO documentation (who does?)
+  just reading the javadocs is a great place to start.
+
+
+* Q: But this Stuff is in Java 6
+  
+  If you are running Java 6 feel free to use Java 6 facilities.
+  
+  Some of the utility classes are just here to get the job done in Java 1.4 - they
+  have nothing to do with spatial anything. You will find examples of checked
+  collections (yes I know that is available in Java 5); an implementation of an
+  object cache (there is a JSR for that); and so on ...
+
+* Q: Why are these things in the Metadata Module?
+  
+  Because metadata is the "lowest" implementation jar in our software stack; needed by
+  everyone else. These classes really are not interesting enough to separate out into
+  their own module.
+
+* Q: Why is all this factory stuff here?
+  
+  This page also introduces some of the "glue code" needed used to hook up GeoTools to services
+  provided by your project. You will find pages here covering logging and JNDI integration.
+  
+  For a more detailed discussion of how to integrate GeoTools into your application please
+  review the advanced section on integration.

@@ -1,0 +1,310 @@
+<class-diagram version="1.0.1" icons="true" automaticImage="PNG" always-add-relationships="true" generalizations="true" 
+  realizations="true" associations="true" dependencies="false" nesting-relationships="true">  
+  <interface id="4" corner="BOTTOM_RIGHT" language="java" name="org.opengis.geometry.Geometry" project="gt-opengis" 
+    file="/gt-opengis/src/main/java/org/opengis/geometry/Geometry.java" binary="false">    
+    <position x="89" y="224" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="5" corner="BOTTOM_RIGHT" language="java" name="org.opengis.geometry.aggregate.Aggregate" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/geometry/aggregate/Aggregate.java" binary="false">    
+    <position x="250" y="749" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="6" corner="BOTTOM_RIGHT" language="java" name="org.opengis.geometry.complex.Complex" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/geometry/complex/Complex.java" binary="false">    
+    <position x="264" y="416" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="7" corner="BOTTOM_RIGHT" language="java" name="org.opengis.geometry.primitive.Primitive" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/geometry/primitive/Primitive.java" binary="false">    
+    <position x="273" y="75" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="8" corner="BOTTOM_RIGHT" language="java" name="org.opengis.geometry.primitive.Point" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/geometry/primitive/Point.java" binary="false">    
+    <position x="274" y="158" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="9" corner="BOTTOM_RIGHT" language="java" name="org.opengis.geometry.primitive.OrientableCurve" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/geometry/primitive/OrientableCurve.java" 
+    binary="false">    
+    <position x="445" y="238" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="10" corner="BOTTOM_RIGHT" language="java" name="org.opengis.geometry.primitive.OrientablePrimitive" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/geometry/primitive/OrientablePrimitive.java" 
+    binary="false">    
+    <position x="443" y="161" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="11" corner="BOTTOM_RIGHT" language="java" name="org.opengis.geometry.primitive.OrientableSurface" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/geometry/primitive/OrientableSurface.java" 
+    binary="false">    
+    <position x="610" y="238" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="12" corner="BOTTOM_RIGHT" language="java" name="org.opengis.geometry.primitive.Curve" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/geometry/primitive/Curve.java" binary="false">    
+    <position x="316" y="306" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="13" corner="BOTTOM_RIGHT" language="java" name="org.opengis.geometry.complex.CompositeCurve" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/geometry/complex/CompositeCurve.java" 
+    binary="false">    
+    <position x="448" y="627" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="14" corner="BOTTOM_RIGHT" language="java" name="org.opengis.geometry.primitive.Ring" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/geometry/primitive/Ring.java" binary="false">    
+    <position x="440" y="701" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="15" corner="BOTTOM_RIGHT" language="java" name="org.opengis.geometry.primitive.Surface" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/geometry/primitive/Surface.java" binary="false">    
+    <position x="712" y="310" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="16" corner="BOTTOM_RIGHT" language="java" name="org.opengis.geometry.complex.CompositeSurface" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/geometry/complex/CompositeSurface.java" 
+    binary="false">    
+    <position x="607" y="626" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="17" corner="BOTTOM_RIGHT" language="java" name="org.opengis.geometry.coordinate.PolyhedralSurface" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/geometry/coordinate/PolyhedralSurface.java" 
+    binary="false">    
+    <position x="711" y="381" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="18" corner="BOTTOM_RIGHT" language="java" name="org.opengis.geometry.coordinate.TriangulatedSurface" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/geometry/coordinate/TriangulatedSurface.java" 
+    binary="false">    
+    <position x="713" y="459" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="19" corner="BOTTOM_RIGHT" language="java" name="org.opengis.geometry.primitive.Shell" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/geometry/primitive/Shell.java" binary="false">    
+    <position x="604" y="698" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="20" corner="BOTTOM_RIGHT" language="java" name="org.opengis.geometry.primitive.Solid" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/geometry/primitive/Solid.java" binary="false">    
+    <position x="645" y="162" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="21" corner="BOTTOM_RIGHT" language="java" name="org.opengis.geometry.Boundary" project="gt-opengis" 
+    file="/gt-opengis/src/main/java/org/opengis/geometry/Boundary.java" binary="false">    
+    <position x="263" y="511" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="22" corner="BOTTOM_RIGHT" language="java" name="org.opengis.geometry.complex.Composite" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/geometry/complex/Composite.java" binary="false">    
+    <position x="385" y="511" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="23" corner="BOTTOM_RIGHT" language="java" name="org.opengis.geometry.complex.CompositePoint" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/geometry/complex/CompositePoint.java" 
+    binary="false">    
+    <position x="300" y="626" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="24" corner="BOTTOM_RIGHT" language="java" name="org.opengis.geometry.aggregate.MultiPrimitive" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/geometry/aggregate/MultiPrimitive.java" 
+    binary="false">    
+    <position x="250" y="822" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="25" corner="BOTTOM_RIGHT" language="java" name="org.opengis.geometry.aggregate.MultiCurve" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/geometry/aggregate/MultiCurve.java" binary="false">    
+    <position x="246" y="901" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="26" corner="BOTTOM_RIGHT" language="java" name="org.opengis.geometry.aggregate.MultiPoint" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/geometry/aggregate/MultiPoint.java" binary="false">    
+    <position x="389" y="899" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="27" corner="BOTTOM_RIGHT" language="java" name="org.opengis.geometry.aggregate.MultiSurface" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/geometry/aggregate/MultiSurface.java" 
+    binary="false">    
+    <position x="527" y="898" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <generalization>    
+    <end type="SOURCE" nodeId="13"/>    
+    <end type="TARGET" nodeId="9"/>  
+  </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="20"/>    
+    <end type="TARGET" nodeId="7"/>  
+  </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="24"/>    
+    <end type="TARGET" nodeId="5"/>  
+  </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="11"/>    
+    <end type="TARGET" nodeId="10"/>  
+  </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="19"/>    
+    <end type="TARGET" nodeId="16"/>  
+  </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="14"/>    
+    <end type="TARGET" nodeId="13"/>  
+  </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="8"/>    
+    <end type="TARGET" nodeId="7"/>  
+  </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="16"/>    
+    <end type="TARGET" nodeId="11"/>  
+  </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="7"/>    
+    <end type="TARGET" nodeId="4"/>  
+  </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="27"/>    
+    <end type="TARGET" nodeId="24"/>  
+  </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="10"/>    
+    <end type="TARGET" nodeId="7"/>  
+  </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="12"/>    
+    <end type="TARGET" nodeId="9"/>  
+  </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="16"/>    
+    <end type="TARGET" nodeId="22"/>  
+  </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="21"/>    
+    <end type="TARGET" nodeId="6"/>  
+  </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="18"/>    
+    <end type="TARGET" nodeId="17"/>  
+  </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="23"/>    
+    <end type="TARGET" nodeId="22"/>  
+  </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="5"/>    
+    <end type="TARGET" nodeId="4"/>  
+  </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="6"/>    
+    <end type="TARGET" nodeId="4"/>  
+  </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="13"/>    
+    <end type="TARGET" nodeId="22"/>  
+  </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="25"/>    
+    <end type="TARGET" nodeId="24"/>  
+  </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="15"/>    
+    <end type="TARGET" nodeId="11"/>  
+  </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="17"/>    
+    <end type="TARGET" nodeId="15"/>  
+  </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="22"/>    
+    <end type="TARGET" nodeId="6"/>  
+  </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="26"/>    
+    <end type="TARGET" nodeId="24"/>  
+  </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="9"/>    
+    <end type="TARGET" nodeId="10"/>  
+  </generalization>  
+  <classifier-display autosize="true" package="false" initial-value="false" signature="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true"/>    
+    <operations public="false" package="false" protected="false" private="false"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

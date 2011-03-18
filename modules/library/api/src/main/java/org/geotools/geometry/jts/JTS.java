@@ -154,7 +154,7 @@ public final class JTS {
      * @param  targetEnvelope  An envelope to expand with the transformation result, or {@code null}
      *                         for returning an new envelope.
      * @param  transform       The transform to use.
-     * @param  npoints         Densification of each side of the rectange.
+     * @param  npoints         Densification of each side of the rectangle.
      * @return {@code targetEnvelope} if it was non-null, or a new envelope otherwise.
      *         In all case, the returned envelope fully contains the transformed envelope.
      * @throws TransformException if a coordinate can't be transformed.

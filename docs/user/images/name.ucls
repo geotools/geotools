@@ -1,0 +1,56 @@
+<class-diagram version="1.0.1" icons="true" automaticImage="PNG" always-add-relationships="true" generalizations="true" 
+  realizations="true" associations="true" dependencies="false" nesting-relationships="true">  
+  <interface id="5" corner="BOTTOM_RIGHT" language="java" name="org.opengis.util.GenericName" project="gt-opengis" 
+    file="/gt-opengis/src/main/java/org/opengis/util/GenericName.java" binary="false">    
+    <position x="500" y="582" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </interface>  
+  <interface id="6" corner="BOTTOM_RIGHT" language="java" name="org.opengis.util.LocalName" project="gt-opengis" 
+    file="/gt-opengis/src/main/java/org/opengis/util/LocalName.java" binary="false">    
+    <position x="633" y="790" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </interface>  
+  <interface id="7" corner="BOTTOM_RIGHT" language="java" name="org.opengis.util.NameSpace" project="gt-opengis" 
+    file="/gt-opengis/src/main/java/org/opengis/util/NameSpace.java" binary="false">    
+    <position x="820" y="581" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </interface>  
+  <interface id="8" corner="BOTTOM_RIGHT" language="java" name="org.opengis.util.ScopedName" project="gt-opengis" 
+    file="/gt-opengis/src/main/java/org/opengis/util/ScopedName.java" binary="false">    
+    <position x="358" y="791" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </interface>  
+  <dependency>    
+    <end type="SOURCE" nodeId="7"/>    
+    <end type="TARGET" nodeId="5"/>  
+  </dependency>  
+  <dependency>    
+    <end type="SOURCE" nodeId="8"/>    
+    <end type="TARGET" nodeId="6"/>  
+  </dependency>  
+  <generalization>    
+    <end type="SOURCE" nodeId="6"/>    
+    <end type="TARGET" nodeId="5"/>  
+  </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="8"/>    
+    <end type="TARGET" nodeId="5"/>  
+  </generalization>  
+  <classifier-display autosize="true" package="false" initial-value="false" signature="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true"/>    
+    <operations public="true" package="true" protected="true" private="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

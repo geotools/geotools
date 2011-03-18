@@ -1,0 +1,234 @@
+<class-diagram version="1.0.1" icons="true" automaticImage="PNG" always-add-relationships="true" generalizations="true" 
+  realizations="true" associations="true" dependencies="true" nesting-relationships="true">  
+  <interface id="1" corner="BOTTOM_RIGHT" language="java" name="org.opengis.geometry.coordinate.LineString" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/geometry/coordinate/LineString.java" binary="false">    
+    <position x="325" y="268" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="false" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="2" corner="BOTTOM_RIGHT" language="java" name="org.opengis.geometry.coordinate.LineSegment" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/geometry/coordinate/LineSegment.java" 
+    binary="false">    
+    <position x="508" y="268" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </interface>  
+  <interface id="3" corner="BOTTOM_RIGHT" language="java" name="org.opengis.geometry.coordinate.GenericCurve" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/geometry/coordinate/GenericCurve.java" 
+    binary="false">    
+    <position x="101" y="121" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="4" corner="BOTTOM_RIGHT" language="java" name="org.opengis.geometry.primitive.CurveSegment" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/geometry/primitive/CurveSegment.java" 
+    binary="false">    
+    <position x="185" y="216" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="5" corner="BOTTOM_RIGHT" language="java" name="org.opengis.geometry.primitive.Curve" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/geometry/primitive/Curve.java" binary="false">    
+    <position x="179" y="41" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="6" corner="BOTTOM_RIGHT" language="java" name="org.opengis.geometry.coordinate.CubicSpline" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/geometry/coordinate/CubicSpline.java" 
+    binary="false">    
+    <position x="507" y="503" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="7" corner="BOTTOM_RIGHT" language="java" name="org.opengis.geometry.coordinate.SplineCurve" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/geometry/coordinate/SplineCurve.java" 
+    binary="false">    
+    <position x="325" y="389" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="8" corner="BOTTOM_RIGHT" language="java" name="org.opengis.geometry.coordinate.PolynomialSpline" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/geometry/coordinate/PolynomialSpline.java" 
+    binary="false">    
+    <position x="523" y="438" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="9" corner="BOTTOM_RIGHT" language="java" name="org.opengis.geometry.coordinate.ArcString" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/geometry/coordinate/ArcString.java" binary="false">    
+    <position x="325" y="6" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="10" corner="BOTTOM_RIGHT" language="java" name="org.opengis.geometry.coordinate.ArcStringByBulge" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/geometry/coordinate/ArcStringByBulge.java" 
+    binary="false">    
+    <position x="342" y="53" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="11" corner="BOTTOM_RIGHT" language="java" name="org.opengis.geometry.coordinate.Clothoid" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/geometry/coordinate/Clothoid.java" binary="false">    
+    <position x="325" y="108" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="12" corner="BOTTOM_RIGHT" language="java" name="org.opengis.geometry.coordinate.Conic" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/geometry/coordinate/Conic.java" binary="false">    
+    <position x="325" y="163" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="13" corner="BOTTOM_RIGHT" language="java" name="org.opengis.geometry.coordinate.GeodesicString" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/geometry/coordinate/GeodesicString.java" 
+    binary="false">    
+    <position x="334" y="216" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="14" corner="BOTTOM_RIGHT" language="java" name="org.opengis.geometry.coordinate.Geodesic" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/geometry/coordinate/Geodesic.java" binary="false">    
+    <position x="507" y="216" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="15" corner="BOTTOM_RIGHT" language="java" name="org.opengis.geometry.coordinate.OffsetCurve" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/geometry/coordinate/OffsetCurve.java" 
+    binary="false">    
+    <position x="325" y="319" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="16" corner="BOTTOM_RIGHT" language="java" name="org.opengis.geometry.coordinate.BSplineCurve" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/geometry/coordinate/BSplineCurve.java" 
+    binary="false">    
+    <position x="510" y="326" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="17" corner="BOTTOM_RIGHT" language="java" name="org.opengis.geometry.coordinate.Bezier" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/geometry/coordinate/Bezier.java" binary="false">    
+    <position x="507" y="386" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="18" corner="BOTTOM_RIGHT" language="java" name="org.opengis.geometry.coordinate.ArcByBulge" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/geometry/coordinate/ArcByBulge.java" binary="false">    
+    <position x="507" y="52" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <generalization>    
+    <end type="SOURCE" nodeId="16"/>    
+    <end type="TARGET" nodeId="7"/>  
+  </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="1"/>    
+    <end type="TARGET" nodeId="4"/>  
+  </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="2"/>    
+    <end type="TARGET" nodeId="1"/>  
+  </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="4"/>    
+    <end type="TARGET" nodeId="3"/>  
+  </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="8"/>    
+    <end type="TARGET" nodeId="7"/>  
+  </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="13"/>    
+    <end type="TARGET" nodeId="4"/>  
+  </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="14"/>    
+    <end type="TARGET" nodeId="13"/>  
+  </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="6"/>    
+    <end type="TARGET" nodeId="8"/>  
+  </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="18"/>    
+    <end type="TARGET" nodeId="10"/>  
+  </generalization>  
+  <dependency>    
+    <end type="SOURCE" nodeId="10"/>    
+    <end type="TARGET" nodeId="9"/>  
+  </dependency>  
+  <generalization>    
+    <end type="SOURCE" nodeId="11"/>    
+    <end type="TARGET" nodeId="4"/>  
+  </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="7"/>    
+    <end type="TARGET" nodeId="4"/>  
+  </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="10"/>    
+    <end type="TARGET" nodeId="4"/>  
+  </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="15"/>    
+    <end type="TARGET" nodeId="4"/>  
+  </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="12"/>    
+    <end type="TARGET" nodeId="4"/>  
+  </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="5"/>    
+    <end type="TARGET" nodeId="3"/>  
+  </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="17"/>    
+    <end type="TARGET" nodeId="16"/>  
+  </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="9"/>    
+    <end type="TARGET" nodeId="4"/>  
+  </generalization>  
+  <classifier-display autosize="true" package="false" initial-value="false" signature="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true"/>    
+    <operations public="false" package="false" protected="false" private="false"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

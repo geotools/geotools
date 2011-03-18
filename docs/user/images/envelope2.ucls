@@ -1,0 +1,54 @@
+<class-diagram version="1.0.1" icons="true" automaticImage="PNG" always-add-relationships="true" generalizations="true" 
+  realizations="true" associations="true" dependencies="true" nesting-relationships="true">  
+  <interface id="2" corner="BOTTOM_RIGHT" language="java" name="org.opengis.geometry.Envelope" project="gt-opengis" 
+    file="/gt-opengis/src/main/java/org/opengis/geometry/Envelope.java" binary="false">    
+    <position x="319" y="61" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <class id="5" corner="BOTTOM_RIGHT" language="java" name="org.geotools.geometry.Envelope2D" project="gt-referencing" 
+    file="/gt-referencing/src/main/java/org/geotools/geometry/Envelope2D.java" binary="false">    
+    <position x="241" y="161" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="8" corner="BOTTOM_RIGHT" language="java" name="org.geotools.geometry.GeneralEnvelope" 
+    project="gt-referencing" file="/gt-referencing/src/main/java/org/geotools/geometry/GeneralEnvelope.java" 
+    binary="false">    
+    <position x="397" y="222" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="9" corner="BOTTOM_RIGHT" language="java" name="org.geotools.geometry.AbstractEnvelope" 
+    project="gt-referencing" file="/gt-referencing/src/main/java/org/geotools/geometry/AbstractEnvelope.java" 
+    binary="false">    
+    <position x="398" y="160" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <generalization>    
+    <end type="SOURCE" nodeId="8"/>    
+    <end type="TARGET" nodeId="9"/>  
+  </generalization>  
+  <realization>    
+    <end type="SOURCE" nodeId="5"/>    
+    <end type="TARGET" nodeId="2"/>  
+  </realization>  
+  <realization>    
+    <end type="SOURCE" nodeId="9"/>    
+    <end type="TARGET" nodeId="2"/>  
+  </realization>  
+  <classifier-display autosize="true" package="false" initial-value="false" signature="true" visibility="true">    
+    <attributes public="false" package="false" protected="false" private="false"/>    
+    <operations public="false" package="false" protected="false" private="false"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

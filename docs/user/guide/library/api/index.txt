@@ -1,4 +1,19 @@
-Application Programming Interface
-=================================
+===
+API
+===
 
-Interfaces for working with GeoSpatial information.
+The **gt-api** module is where we publish out stable interfaces that are implemented by the rest of the library. 
+
+.. toctree::
+   :maxdepth: 1
+
+   envelope
+   jts
+   convert
+
+These interfaces build on the ideas and concepts defined by standards (as captured in the **gt-opengis** module).
+
+In general:
+
+* gt-opengis module defines data structures and concepts
+* gt-api module defines data access and functionality

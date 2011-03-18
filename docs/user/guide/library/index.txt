@@ -10,7 +10,6 @@ The GeoTools library is organised into a series of jars. These jars form a softw
    opengis/index
    jts/index
    api/index
-   util/index
    metadata/index
    referencing/index
    coverage/index

@@ -19,6 +19,8 @@ package org.geotools.filter.function;
 
 
 
+import com.vividsolutions.jts.algorithm.MinimumBoundingCircle;
+import com.vividsolutions.jts.algorithm.MinimumDiameter;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
 import com.vividsolutions.jts.geom.LineString;
@@ -434,7 +436,18 @@ import com.vividsolutions.jts.io.WKTReader;
            return _this.getInteriorRingN(arg1);
      }
      
+     static public Geometry minimumCircle(Geometry arg0) {
+         if (arg0 == null) return null;
+         MinimumBoundingCircle circle = new MinimumBoundingCircle(arg0);
+         return circle.getCircle();
+     }
      
+     static public Geometry minimumRectangle(Geometry arg0) {
+         if (arg0 == null) return null;
+         MinimumDiameter min = new MinimumDiameter(arg0);
+         return min.getMinimumRectangle();
+     }
+
  	//--------------------------------------------------------------------------
   	//JAVA String functions
      static public String strConcat(String s1,String s2)

@@ -42,17 +42,16 @@ package org.geotools.data;
  * </p> 
  * @source $URL$
  */
-public class DefaultFeatureLock implements FeatureLock {
-    private final String authorization;
-    private final long duration;
+public class DefaultFeatureLock extends FeatureLock {
+    //private final String authorization;
+    //private final long duration;
 
     /**
      * Package private constructor - use DefaultFeatureLockFactory methods.
      * @see DefaultFeatureLockFactory.     
      */
     DefaultFeatureLock(String id, long duration){
-        this.authorization = id;
-        this.duration = duration;
+        super( id, duration );
     }
     /** LockId used for transaction authorization. */                
     public String getAuthorization(){

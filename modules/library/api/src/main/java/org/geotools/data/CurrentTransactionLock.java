@@ -26,7 +26,11 @@ package org.geotools.data;
  * </p>
  * @source $URL$
  */
-class CurrentTransactionLock implements FeatureLock {
+class CurrentTransactionLock extends FeatureLock {
+    
+    CurrentTransactionLock() {
+        super( null, -1 );
+    }
     /**
      * Transaction locks do not require Authorization.
      *

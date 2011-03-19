@@ -34,6 +34,8 @@ import org.geotools.factory.FactoryRegistryException;
  * @version $Id$
  * @task REVISIT: Combine this with a factory to also make Query objects?
  * @author Chris Holmes, TOPP
+ * 
+ * @deprecated Please use {@link FeatureLock} directly
  */
 
 public abstract class FeatureLockFactory implements Factory {

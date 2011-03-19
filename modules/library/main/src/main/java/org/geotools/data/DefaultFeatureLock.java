@@ -17,30 +17,13 @@
 package org.geotools.data;
 
 /**
- * Used to lock features when used with LockingDataSource.
- * <p>
- * This class is responsible for supplying a unique Authorization ID and
- * expirery date for LockingDataSource locking operations.
- * </p> 
- * Example:
- * <table border=1, bgcolor="lightgray", width="100%"><tr><td><code><pre>
- * FeatureLock lock1 = FeatureLockFactory.generate( 18*60*60 ); // expire in 18 min
- * FeatureLock lock3 = FeatureLockFactory.generate( "MyLock", 30*60*60 ); // expire in 30 min
- * </pre></code></td></tr></table>
- * <p>
- * Although it is tempting to have these FeatureLock objects stored in a static
- * repository in the manner of GeoServer's TypeRepository.InternalLock -
- * that decision should be left to the individual DataSources.
- * </p>
- * <p>An AbstractLockingDataSource with appropriate overrideable callbacks
- * may be an elegent way to acomplish this.</p>
- * 
- * @see <a href="http://vwfs.refractions.net/docs/Database_Research.pdf">Database_Research.pdf</a>
- * @see <a href="http://vwfs.refractions.net/docs/Transactional_WFS_Design.pdf">Transactional_WFS_Design.pdf</a>
- * @see <a href="http://vwfs.refractions.net/docs/Design_Implications.pdf">Design_Implications.pdf</a>
- * @author jgarnett, Refractions Research, Inc.
+ * Used in conjuction with {@link FeatureLocking} to lock features during a
+ * transaction. This class is responsible for supplying a unique Authorization 
+ * ID and expiry period.
  * </p> 
  * @source $URL$
+ * 
+ * @deprecated Please use {@link FeatureLock}
  */
 public class DefaultFeatureLock extends FeatureLock {
     //private final String authorization;
@@ -52,13 +35,5 @@ public class DefaultFeatureLock extends FeatureLock {
      */
     DefaultFeatureLock(String id, long duration){
         super( id, duration );
-    }
-    /** LockId used for transaction authorization. */                
-    public String getAuthorization(){
-        return authorization;
-    }
-    /** Time from now the lock will expire */    
-    public long getDuration(){        
-        return duration;
     }
 }

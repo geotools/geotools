@@ -18,6 +18,8 @@ package org.geotools.data;
 
 /**
  * Default implementation of the FeatureLockFactory.  Generates id numbers.
+ * 
+ * @deprecated Please use {@link FeatureLock} directly
  *
  * @author Jody Garnett, Refractions Research, Inc.
  * @author Chris Holmes, TOPP.

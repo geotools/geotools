@@ -18,14 +18,13 @@ package org.geotools.data;
 
 
 /**
- * Used to lock features when used with LockingDataSource.
- *
+ * Used in conjuction with {@link FeatureLocking} to lock features during a
+ * transaction. This class is responsible for supplying a unique Authorization 
+ * ID and expiry period.
  * <p>
- * A FeatureLockFactory is used to generate FeatureLocks.
- * </p>
- *
- * <p>
- * A FeatureLock representing the Current Transaction has been provided as a static constant.
+ * 
+ * A FeatureLock representing the Current Transaction has been provided as a 
+ * static constant: {@link #TRANSACTION}.
  *
  * @author Jody Garnett, Refractions Research, Inc.
  * @source $URL$
@@ -43,37 +42,34 @@ package org.geotools.data;
  * @see FeatureLockFactory
  */
 public class FeatureLock {
-    /**
-     * FeatureLock representing Transaction duration locking
-     *
-     * <p>
-     * When this FeatureLock is used locks are expected to last until the
-     * current Transasction ends with a commit() or rollback().
-     * </p>
-     */
     public static final FeatureLock TRANSACTION = new CurrentTransactionLock();
     protected String authorization;
     protected long duration;
     
+    /**
+     * Creates a new lock.
+     * 
+     * @param authorization LockId used to authorize the transaction
+     * @param duration expiry period of this lock (in minutes)
+     */
     public FeatureLock(String authorization, long duration ){
         this.authorization = authorization;
         this.duration = duration;
     }
     
-    
     /**
-     * LockId used for transaction authorization.
+     * Gets the ID used for transaction authorization.
      *
-     * @return A string of the LockId.
+     * @return the authorization ID
      */
     public String getAuthorization(){
         return authorization;
     }
 
     /**
-     * Time from now the lock will expire
+     * Gets the expiry time for this lock (in minutes).
      *
-     * @return A long of the time till the lock expires.
+     * @return expiry period
      */
     public long getDuration(){
         return duration;

@@ -23,23 +23,26 @@ import org.geotools.filter.Filter;
 
 
 /**
- * DOCUMENT ME!
+ * Extension to FeatureLock that
+ * records types and filters effected.
  *
  * @author dzwiers
  * @source $URL$
  */
-public class LockRequest implements FeatureLock {
-    private long duration = 0;
+public class LockRequest extends FeatureLock {
+    //private long duration = 0;
     private String[] types = null;
     private Filter[] filters = null;
-    private String lockId = null;
+    //private String lockId = null;
 
     private LockRequest() {
+        super(null,-1);
         // should not be used
     }
 
     protected LockRequest(long duration, Map dataSets) {
-        this.duration = duration;
+        super( null, duration );
+        //this.duration = duration;
         types = (String[]) dataSets.keySet().toArray(new String[dataSets.size()]);
         filters = new Filter[types.length];
 
@@ -48,21 +51,22 @@ public class LockRequest implements FeatureLock {
     }
 
     protected LockRequest(long duration, String[] types, Filter[] filters) {
-        this.duration = duration;
+        super( null, duration );
         this.types = types;
         this.filters = filters;
     }
 
     /**
+     * Authorisation provided.
      * 
      * @see org.geotools.data.FeatureLock#getAuthorization()
      */
     public String getAuthorization() {
-        return lockId;
+        return authorization;
     }
 
     protected void setAuthorization(String auth) {
-        lockId = auth;
+        authorization = auth;
     }
 
     /**

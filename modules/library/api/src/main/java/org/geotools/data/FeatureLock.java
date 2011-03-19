@@ -25,14 +25,7 @@ package org.geotools.data;
  * </p>
  *
  * <p>
- * A FeatureLock representing the Current Transaction has been provided.
- * </p>
- * <h2>
- *
- * <p>
- * Jody - I have a slightly more consistent specification of this idea in
- * GeoAPI that should be ported back over.
- * </p>
+ * A FeatureLock representing the Current Transaction has been provided as a static constant.
  *
  * @author Jody Garnett, Refractions Research, Inc.
  * @source $URL$
@@ -49,7 +42,7 @@ package org.geotools.data;
  *      Implications</a>
  * @see FeatureLockFactory
  */
-public interface FeatureLock {
+public class FeatureLock {
     /**
      * FeatureLock representing Transaction duration locking
      *
@@ -59,18 +52,30 @@ public interface FeatureLock {
      * </p>
      */
     public static final FeatureLock TRANSACTION = new CurrentTransactionLock();
-
+    protected String authorization;
+    protected long duration;
+    
+    public FeatureLock(String authorization, long duration ){
+        this.authorization = authorization;
+        this.duration = duration;
+    }
+    
+    
     /**
      * LockId used for transaction authorization.
      *
      * @return A string of the LockId.
      */
-    String getAuthorization();
+    public String getAuthorization(){
+        return authorization;
+    }
 
     /**
      * Time from now the lock will expire
      *
      * @return A long of the time till the lock expires.
      */
-    long getDuration();
+    public long getDuration(){
+        return duration;
+    }
 }

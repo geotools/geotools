@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools.demo</groupId>
     <artifactId>demo</artifactId>
-    <version>2.6-SNAPSHOT</version>
+    <version>2.6.6</version>
   </parent>
 
   <!-- =========================================================== -->

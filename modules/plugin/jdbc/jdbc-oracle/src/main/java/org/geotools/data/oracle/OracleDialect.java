@@ -21,6 +21,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Savepoint;
 import java.sql.Statement;
 import java.sql.Types;
 import java.util.ArrayList;
@@ -609,8 +610,12 @@ public class OracleDialect extends PreparedStatementSQLDialect {
         ResultSet rs = null;
 
         List<ReferencedEnvelope> result = new ArrayList<ReferencedEnvelope>();
+        Savepoint savePoint = null;
         try {
             st = cx.createStatement();
+            if(!cx.getAutoCommit()) {
+                savePoint = cx.setSavepoint();
+            }
 
             for (AttributeDescriptor att : featureType.getAttributeDescriptors()) {
                 if (att instanceof GeometryDescriptor) {
@@ -637,7 +642,16 @@ public class OracleDialect extends PreparedStatementSQLDialect {
                     rs.close();
                 }
             }
+        } catch(SQLException e) {
+            if(savePoint != null) {
+                cx.rollback(savePoint);
+            }
+            LOGGER.log(Level.WARNING, "Failed to use SDO_TUNE.EXTENT_OF, falling back on envelope aggregation", e);
+            return null;
         } finally {
+            if(savePoint != null) {
+                cx.rollback(savePoint);
+            }
             dataStore.closeSafe(rs);
             dataStore.closeSafe(st);
         }

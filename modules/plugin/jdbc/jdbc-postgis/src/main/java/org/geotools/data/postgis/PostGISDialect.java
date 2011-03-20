@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Savepoint;
 import java.sql.Statement;
 import java.sql.Types;
 import java.util.ArrayList;
@@ -200,8 +201,12 @@ public class PostGISDialect extends BasicSQLDialect {
         ResultSet rs = null;
 
         List<ReferencedEnvelope> result = new ArrayList<ReferencedEnvelope>();
+        Savepoint savePoint = null;
         try {
             st = cx.createStatement();
+            if(!cx.getAutoCommit()) {
+                savePoint = cx.setSavepoint();
+            }
 
             for (AttributeDescriptor att : featureType.getAttributeDescriptors()) {
                 if (att instanceof GeometryDescriptor) {
@@ -233,9 +238,15 @@ public class PostGISDialect extends BasicSQLDialect {
                 }
             }
         } catch(SQLException e) {
+            if(savePoint != null) {
+                cx.rollback(savePoint);
+            }
             LOGGER.log(Level.WARNING, "Failed to use ST_Estimated_Extent, falling back on envelope aggregation", e);
             return null;
         } finally {
+            if(savePoint != null) {
+                cx.releaseSavepoint(savePoint);
+            }
             dataStore.closeSafe(rs);
             dataStore.closeSafe(st);
         } 

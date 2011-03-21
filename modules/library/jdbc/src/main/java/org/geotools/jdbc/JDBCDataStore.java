@@ -30,6 +30,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -1067,58 +1068,69 @@ public final class JDBCDataStore extends ContentDataStore
     /**
      * Returns the bounds of the features for a particular feature type / table.
      * 
-     * @param featureType The feature type / table.
-     * @param query Specifies rows to include in bounds calculation, as well as how many 
-     *              features and the offset if needed
+     * @param featureType
+     *            The feature type / table.
+     * @param query
+     *            Specifies rows to include in bounds calculation, as well as how many features and
+     *            the offset if needed
      */
-    protected ReferencedEnvelope getBounds(SimpleFeatureType featureType, Query query,
-        Connection cx) throws IOException {
-        
+    protected ReferencedEnvelope getBounds(SimpleFeatureType featureType, Query query, Connection cx)
+            throws IOException {
+
         // handle geometryless case by returning an emtpy envelope
-        if(featureType.getGeometryDescriptor() == null)
+        if (featureType.getGeometryDescriptor() == null)
             return EMPTY_ENVELOPE;
-        
+
         Statement st = null;
         ResultSet rs = null;
-        ReferencedEnvelope bounds = new ReferencedEnvelope(featureType.getCoordinateReferenceSystem());
+        ReferencedEnvelope bounds = new ReferencedEnvelope(featureType
+                .getCoordinateReferenceSystem());
         try {
-            List<ReferencedEnvelope> result = dialect.getOptimizedBounds(databaseSchema, featureType, cx);
-            if(result != null && !result.isEmpty()) {
-                // merge the envelopes into one
-                for (ReferencedEnvelope envelope : result) {
-                    bounds = mergeEnvelope(bounds, envelope);
-                }
-            } else {
-                // build an aggregate query
-                if ( dialect instanceof PreparedStatementSQLDialect ) {
-                    st = selectBoundsSQLPS(featureType, query, cx);
-                    rs = ((PreparedStatement)st).executeQuery();
-                } else {
-                    String sql = selectBoundsSQL(featureType, query);
-                    LOGGER.log(Level.FINE, "Retriving bounding box: {0}", sql);
-            
-                    st = cx.createStatement();
-                    rs = st.executeQuery(sql);
+            // try optimized bounds computation only if we're targeting the entire table
+            if (isFullBoundsQuery(query, featureType)) {
+                List<ReferencedEnvelope> result = dialect.getOptimizedBounds(databaseSchema,
+                        featureType, cx);
+                if (result != null && !result.isEmpty()) {
+                    // merge the envelopes into one
+                    for (ReferencedEnvelope envelope : result) {
+                        bounds = mergeEnvelope(bounds, envelope);
+                    }
+                    return bounds;
                 }
 
-                // scan through all the rows (just in case a non aggregated function was used)
-                // and through all the columns (in case we have multiple geometry columns)
-                CoordinateReferenceSystem flatCRS = CRS.getHorizontalCRS(featureType
-                        .getCoordinateReferenceSystem());
-                final int columns = rs.getMetaData().getColumnCount();
-                while (rs.next()) {
-                    for (int i = 1; i <= columns; i++) {
-                        final Envelope envelope = dialect.decodeGeometryEnvelope(rs, i, st.getConnection());
-                        if(envelope != null) {
-                            if(envelope instanceof ReferencedEnvelope) {
-                                bounds = mergeEnvelope(bounds, (ReferencedEnvelope) envelope);
-                            } else {
-                                bounds = mergeEnvelope(bounds, new ReferencedEnvelope(envelope, flatCRS));
-                            }
+            }
+
+            // build an aggregate query
+            if (dialect instanceof PreparedStatementSQLDialect) {
+                st = selectBoundsSQLPS(featureType, query, cx);
+                rs = ((PreparedStatement) st).executeQuery();
+            } else {
+                String sql = selectBoundsSQL(featureType, query);
+                LOGGER.log(Level.FINE, "Retriving bounding box: {0}", sql);
+
+                st = cx.createStatement();
+                rs = st.executeQuery(sql);
+            }
+
+            // scan through all the rows (just in case a non aggregated function was used)
+            // and through all the columns (in case we have multiple geometry columns)
+            CoordinateReferenceSystem flatCRS = CRS.getHorizontalCRS(featureType
+                    .getCoordinateReferenceSystem());
+            final int columns = rs.getMetaData().getColumnCount();
+            while (rs.next()) {
+                for (int i = 1; i <= columns; i++) {
+                    final Envelope envelope = dialect.decodeGeometryEnvelope(rs, i, st
+                            .getConnection());
+                    if (envelope != null) {
+                        if (envelope instanceof ReferencedEnvelope) {
+                            bounds = mergeEnvelope(bounds, (ReferencedEnvelope) envelope);
+                        } else {
+                            bounds = mergeEnvelope(bounds, new ReferencedEnvelope(envelope,
+                                    flatCRS));
                         }
                     }
                 }
-            }
+                }
         } catch (Exception e) {
             String msg = "Error occured calculating bounds";
             throw (IOException) new IOException(msg).initCause(e);
@@ -1126,8 +1138,39 @@ public final class JDBCDataStore extends ContentDataStore
             closeSafe(rs);
             closeSafe(st);
         }
-        
+
         return bounds;
+    }
+
+    /**
+     * Returns true if the query will hit all the geometry columns with no row filtering
+     * (a condition that allows to use spatial index statistics to compute the table bounds)
+     * @param query
+     * @param schema
+     * @return
+     */
+    private boolean isFullBoundsQuery(Query query, SimpleFeatureType schema) {
+        
+        if(query == null) {
+            return true;
+        }
+        if(!Filter.INCLUDE.equals(query.getFilter())) {
+            return false;
+        }
+        if(query.getProperties() == Query.ALL_PROPERTIES) {
+            return true;
+        }
+        
+        List<String> names = Arrays.asList(query.getPropertyNames());
+        for (AttributeDescriptor ad : schema.getAttributeDescriptors()) {
+            if(ad instanceof GeometryDescriptor) {
+                if(!names.contains(ad.getLocalName())) {
+                    return false;
+                }
+            }
+        }
+        
+        return true;
     }
     
     /**

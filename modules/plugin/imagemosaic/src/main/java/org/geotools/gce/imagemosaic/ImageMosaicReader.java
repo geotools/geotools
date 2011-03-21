@@ -565,7 +565,11 @@ public final class ImageMosaicReader extends AbstractGridCoverage2DReader implem
 	 * @see org.opengis.coverage.grid.GridCoverageReader#read(org.opengis.parameter.GeneralParameterValue[])
 	 */
 	public GridCoverage2D read(GeneralParameterValue[] params) throws IOException {
-
+	   
+	    // check if we were disposed already
+	    if(rasterManager==null){
+	        throw new IOException("Looks like this reader has been already disposed or it has not been properly initialized.");
+	    }
 		if (LOGGER.isLoggable(Level.FINE)) {
     		    if (sourceURL != null) {
     			LOGGER.fine("Reading mosaic from " + sourceURL.toString());
@@ -714,7 +718,15 @@ public final class ImageMosaicReader extends AbstractGridCoverage2DReader implem
 	@Override
 	public synchronized void dispose() {
 		super.dispose();
-		rasterManager.dispose();
+		try{
+		    if(rasterManager!=null)
+		        rasterManager.dispose();
+		} catch (Exception e) {
+                    if(LOGGER.isLoggable(Level.FINE))
+                        LOGGER.log(Level.FINE,e.getLocalizedMessage(),e);
+                } finally {
+                    rasterManager=null;
+                }
 	}
 
 	@Override

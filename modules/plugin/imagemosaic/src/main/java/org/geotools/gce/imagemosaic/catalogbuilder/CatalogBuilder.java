@@ -341,17 +341,18 @@ public class CatalogBuilder implements Runnable {
 		protected void handleCancelled(File startDirectory, Collection results,
 				CancelException cancel) throws IOException {			
 			super.handleCancelled(startDirectory, results, cancel);
-
+                        //clean up objects and rollback transaction
+                        try{
+                                transaction.rollback();
+                        }
+                        finally{
+                                transaction.close();
+                        }      
+                        
 			// close things related to shapefiles
 			closeIndexObjects();
 			
-			//clean up objects and rollback transaction
-			try{
-				transaction.rollback();
-			}
-			finally{
-				transaction.close();
-			}			
+		
 			
 			super.handleEnd(results);
 		}		

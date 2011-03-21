@@ -269,10 +269,10 @@ public class ImageMosaicReaderTest extends Assert{
 	public void timeElevation() throws IOException, ParseException, NoSuchAuthorityCodeException, FactoryException {
 	        TestData.unzipFile(this, "ensmean.zip");
 	        final URL timeElevURL = TestData.url(this, "ensmean");
-	    System.setProperty("org.geotools.shapefile.datetime", "true");
+	        System.setProperty("org.geotools.shapefile.datetime", "true");
 		final AbstractGridFormat format = getFormat(timeElevURL);
 		assertNotNull(format);
-		final ImageMosaicReader reader = getReader(timeElevURL, format);
+		ImageMosaicReader reader = getReader(timeElevURL, format);
 		assertNotNull(format);
 		
 		final String[] metadataNames = reader.getMetadataNames();
@@ -323,6 +323,7 @@ public class ImageMosaicReaderTest extends Assert{
 		// Test the output coverage
 		checkCoverage(reader, new GeneralParameterValue[] {gg,time,bkg ,elevation}, "Time-Elevation Test");
 		
+		reader= getReader(timeElevURL, format);
                 elevation.setValue(Arrays.asList(NumberRange.create(0.0,10.0)));
         
                 // Test the output coverage
@@ -377,7 +378,7 @@ public class ImageMosaicReaderTest extends Assert{
 	public void time() throws IOException, NoSuchAuthorityCodeException, FactoryException, ParseException {
 	        System.setProperty("org.geotools.shapefile.datetime", "true");
 		final AbstractGridFormat format = getFormat(timeURL);
-		final ImageMosaicReader reader = getReader(timeURL, format);
+		ImageMosaicReader reader = getReader(timeURL, format);
 		
 		final String[] metadataNames = reader.getMetadataNames();
 		assertNotNull(metadataNames);
@@ -415,6 +416,7 @@ public class ImageMosaicReaderTest extends Assert{
 		
 		// specify time range
 		// Test the output coverage
+		reader = getReader(timeURL, format);
                 time.setValue(
                         new ArrayList(){{
                             add(new DateRange(formatD.parse("2004-01-01T00:00:00.000Z"), formatD.parse("2004-02-01T00:00:00.000Z")));
@@ -442,7 +444,7 @@ public class ImageMosaicReaderTest extends Assert{
             MismatchedDimensionException, FactoryException {
 
         final AbstractGridFormat format = getFormat(heterogeneousGranulesURL);
-        final ImageMosaicReader reader = getReader(heterogeneousGranulesURL, format);
+        ImageMosaicReader reader = getReader(heterogeneousGranulesURL, format);
 
         final ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         final GeneralEnvelope envelope = reader.getOriginalEnvelope();
@@ -465,16 +467,19 @@ public class ImageMosaicReaderTest extends Assert{
                 "heterogeneous granules test: OverviewPolicy=QUALITY", rasterArea);
 
         LOGGER.info("\nTesting with OverviewPolicy = SPEED");
+        reader = getReader(heterogeneousGranulesURL, format);
         op.setValue(OverviewPolicy.SPEED);
         checkCoverage(reader, new GeneralParameterValue[] { gg, useJai, op },
                 "heterogeneous granules test: OverviewPolicy=SPEED", rasterArea);
 
         LOGGER.info("\nTesting with OverviewPolicy = NEAREST");
+        reader = getReader(heterogeneousGranulesURL, format);
         op.setValue(OverviewPolicy.NEAREST);
         checkCoverage(reader, new GeneralParameterValue[] { gg, useJai, op },
                 "heterogeneous granules test: OverviewPolicy=NEAREST", rasterArea);
 
         LOGGER.info("\nTesting with OverviewPolicy = IGNORE");
+        reader = getReader(heterogeneousGranulesURL, format);
         op.setValue(OverviewPolicy.IGNORE);
         checkCoverage(reader, new GeneralParameterValue[] { gg, useJai, op },
                 "heterogeneous granules test: OverviewPolicy=IGNORE", rasterArea);

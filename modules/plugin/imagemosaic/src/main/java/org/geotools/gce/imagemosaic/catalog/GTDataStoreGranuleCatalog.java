@@ -231,33 +231,59 @@ class GTDataStoreGranuleCatalog extends AbstractGranuleCatalog {
 			throw new IllegalStateException("The index store has been disposed already.");
 		}
 	}
-	private void extractBasicProperties(String typeName) throws IOException {
-		final String[] typeNames = tileIndexStore.getTypeNames();
-		if (typeNames.length <= 0)
-			throw new IllegalArgumentException("Problems when opening the index, no typenames for the schema are defined");
-
-		if (typeName == null)
-			typeName = typeNames[0];
-
-		// loading all the features into memory to build an in-memory index.
-		for (String type : typeNames) {
-			if (type.equals(typeName)) {
-				this.typeName = type;
-				break;
-			}
-		}
-
-		final SimpleFeatureSource featureSource = tileIndexStore.getFeatureSource(this.typeName);
-		if (featureSource == null) 
-			throw new NullPointerException(
-					"The provided SimpleFeatureSource is null, it's impossible to create an index!");
-		bounds=featureSource.getBounds();
-
-
-		final FeatureType schema = featureSource.getSchema();
-		geometryPropertyName = schema.getGeometryDescriptor().getLocalName();
-	}
 	
+        private void extractBasicProperties(String typeName) throws IOException{
+    
+            final String[] typeNames = tileIndexStore.getTypeNames();
+            if (typeNames==null||typeNames.length <= 0)
+                throw new IllegalArgumentException(
+                        "BBOXFilterExtractor::extractBasicProperties(): Problems when opening the index,"
+                                + " no typenames for the schema are defined");
+    
+            if (typeName == null) {
+                typeName = typeNames[0];
+                if (LOGGER.isLoggable(Level.WARNING))
+                    LOGGER.warning("BBOXFilterExtractor::extractBasicProperties(): passed typename is null, using: "
+                            + typeName);
+            }
+    
+            // loading all the features into memory to build an in-memory index.
+            for (String type : typeNames) {
+                if (LOGGER.isLoggable(Level.FINE))
+                    LOGGER.fine("BBOXFilterExtractor::extractBasicProperties(): Looking for type \'"
+                            + typeName + "\' in DataStore:getTypeNames(). Testing: \'" + type + "\'.");
+                if (type.equalsIgnoreCase(typeName)) {
+                    if (LOGGER.isLoggable(Level.FINE))
+                        LOGGER.fine("BBOXFilterExtractor::extractBasicProperties(): SUCCESS -> type \'"
+                                + typeName + "\' is equalsIgnoreCase() to \'" + type + "\'.");
+                    this.typeName = type;
+                    break;
+                }
+            }
+    
+            final SimpleFeatureSource featureSource = tileIndexStore
+                    .getFeatureSource(this.typeName);
+            if (featureSource != null)
+                bounds = featureSource.getBounds();
+            else
+                throw new IOException(
+                        "BBOXFilterExtractor::extractBasicProperties(): unable to get a featureSource for the qualified name"
+                                + this.typeName);
+
+            final FeatureType schema = featureSource.getSchema();
+            if (schema != null) {
+                geometryPropertyName = schema.getGeometryDescriptor().getLocalName();
+                if (LOGGER.isLoggable(Level.FINE))
+                    LOGGER.fine("BBOXFilterExtractor::extractBasicProperties(): geometryPropertyName is set to \'"
+                            + geometryPropertyName + "\'.");
+
+            } else {
+                throw new IOException(
+                        "BBOXFilterExtractor::extractBasicProperties(): unable to get a schema from the featureSource");
+            }
+    
+        }
+		
 	private final ReadWriteLock rwLock= new ReentrantReadWriteLock(true);
 
 	/* (non-Javadoc)

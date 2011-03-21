@@ -19,8 +19,11 @@ package org.geotools.coverage.grid.io.imageio.geotiff;
 import it.geosolutions.imageio.plugins.tiff.BaselineTIFFTagSet;
 import it.geosolutions.imageio.plugins.tiff.GeoTIFFTagSet;
 import it.geosolutions.imageio.plugins.tiff.TIFFTag;
+import it.geosolutions.imageio.plugins.tiff.TIFFTagSet;
 
 import java.awt.geom.AffineTransform;
+import java.util.Iterator;
+import java.util.Map;
 
 import org.geotools.util.KeySortedList;
 import org.jdom.Element;
@@ -44,8 +47,29 @@ import org.jdom.Element;
  *
  * @source $URL$
  */
-public final class GeoTiffIIOMetadataEncoder {
+public class GeoTiffIIOMetadataEncoder {
 
+    public enum TagSet {
+        BASELINE {
+            @Override
+            TIFFTagSet getTagSet() {
+                return BaselineTIFFTagSet.getInstance();
+            }
+        },
+
+        GEOTIFF {
+            @Override
+            TIFFTagSet getTagSet() {
+                return GeoTIFFTagSet.getInstance();
+            }
+        };
+
+        abstract TIFFTagSet getTagSet();
+
+        public static TIFFTagSet getDefault() {
+            return BASELINE.getTagSet();
+        }
+    }
 	private int numModelTiePoints;
 
 	private TiePoint[] modelTiePoints;
@@ -69,6 +93,12 @@ public final class GeoTiffIIOMetadataEncoder {
 	private double noData;
 	
 	private boolean isNodataSet = false;
+
+	
+	/** TiffTAG Ascii metadata: KeyValue pairs where key is the TAG ID and value is the content */
+	private Map<String, String> tiffTagsMetadata;
+
+	private boolean isMetadataSet;
 	
 	public GeoTiffIIOMetadataEncoder() {
 		this(GeoTiffConstants.DEFAULT_GEOTIFF_VERSION,
@@ -369,6 +399,21 @@ public final class GeoTiffIIOMetadataEncoder {
 				GeoTIFFTagSet.TAG_MODEL_TRANSFORMATION);
 	}
 	
+	protected static TIFFTag getAsciiTag(String set, int tagID) {
+		if (set != null && set.length() > 0 ) {
+			try {
+				TagSet tagSet = TagSet.valueOf(set);
+				if (tagSet != null){
+					return tagSet.getTagSet().getTag(tagID);
+				}
+			} catch (Exception e){
+				
+			}
+		}
+		return null;
+		
+	}
+	
 	protected static TIFFTag getNoDataTag() {
 	        return GeoTiffConstants.NODATA_TAG;
         }
@@ -470,6 +515,10 @@ public final class GeoTiffIIOMetadataEncoder {
 		
 		if (isNodataSet) {
 		    ifd.addContent(createNoDataElement());
+		}
+		
+		if (isMetadataSet){
+			createMetadataElement(ifd);
 		}
 
 		return ifd;
@@ -621,6 +670,32 @@ public final class GeoTiffIIOMetadataEncoder {
             data.addContent(createAsciiElement(Double.toString(noData)));
             return field;
         }
+	
+	private void createMetadataElement(Element ifd) {
+		if (ifd != null && tiffTagsMetadata != null && !tiffTagsMetadata.isEmpty()){
+			Iterator<String> keys = tiffTagsMetadata.keySet().iterator();
+			while (keys.hasNext()){
+				String key = keys.next();
+				String setIdPair[] = key.split(":");
+				String set = TagSet.BASELINE.toString();
+				if (setIdPair.length > 1){
+					set = setIdPair[0].toUpperCase();
+				}
+				String keyName = setIdPair[setIdPair.length - 1]; 
+				if (GeoTiffConstants.isNumeric(keyName)){
+					final String value = tiffTagsMetadata.get(key);
+					final TIFFTag tag = getAsciiTag(set, Integer.valueOf(keyName));
+					if (tag != null){
+						Element field = createFieldElement(tag);
+				        Element data = new Element(GeoTiffConstants.GEOTIFF_ASCIIS_TAG);
+				        field.addContent(data);
+				        data.addContent(createAsciiElement(value));
+				        ifd.addContent(field);
+					}
+				}
+			}
+		}
+    }
 
 	private Element createFieldElement(final TIFFTag tag) {
 		Element field = new Element(GeoTiffConstants.GEOTIFF_FIELD_TAG);
@@ -669,4 +744,22 @@ public final class GeoTiffIIOMetadataEncoder {
             this.noData = noData;
             isNodataSet = true;
         }
+
+    /**
+     * Allows to setup metadata by leveraging on Ascii TIFF Tags.
+     * 
+     * @param name
+     *            is the Ascii TIFF Tag identifier. It can be a String representing: 
+     *            1) a simple Integer (referring to a tag ID) (in that case it will refer to the BaselineTIFFTagSet 
+     *            2) OR an identifier in the form: TIFFTagSet:TIFFTagID. As an
+     *            instance: "BaselineTIFFTagSet:305" in order to add the Copyright info.
+     * @param value
+     *            is the value to be assigned to that metadata.
+     * @see GeoTiffIIOMetadataEncoder.TagSet
+     */
+    public void setTiffTagsMetadata(Map<String, String> metadata) {
+        this.tiffTagsMetadata = metadata;
+        isMetadataSet = true;
+    }
+
 }

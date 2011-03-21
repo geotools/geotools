@@ -16,6 +16,8 @@
  */
 package org.geotools.gce.geotiff;
 
+import it.geosolutions.imageio.plugins.tiff.BaselineTIFFTagSet;
+
 import java.awt.geom.AffineTransform;
 import java.io.File;
 import java.io.IOException;
@@ -30,14 +32,14 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.imageio.IIOMetadataDumper;
+import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffIIOMetadataDecoder;
+import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffIIOMetadataEncoder.TagSet;
 import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.coverage.processing.Operations;
-import org.geotools.coverage.processing.operation.Resample;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
-import org.geotools.resources.CRSUtilities;
 import org.geotools.test.TestData;
 import org.junit.Test;
 import org.opengis.coverage.grid.GridCoverageReader;
@@ -338,4 +340,54 @@ public class GeoTiffWriterTest extends Assert {
 	        
 
 	}
+	
+    @Test
+    public void testWriteWithMetadata() throws Exception {
+
+        //
+        // no crs geotiff
+        //
+        final File input = TestData.file(GeoTiffReaderTest.class, "geo.tiff");
+        final AbstractGridFormat format = new GeoTiffFormat();
+        assertTrue(format.accepts(input));
+
+        // getting a reader
+        GeoTiffReader reader = new GeoTiffReader(input);
+
+        // reading the coverage
+        GridCoverage2D coverage = (GridCoverage2D) reader.read(null);
+
+        // check coverage and crs
+        assertNotNull(coverage);
+        assertNotNull(coverage.getCoordinateReferenceSystem());
+        reader.dispose();
+
+        // get a writer
+        final File output = new File(TestData.file(GeoTiffReaderTest.class, "."), "outMetadata.tif");
+        GeoTiffWriter writer = new GeoTiffWriter(output);
+        
+        // Setting a COPYRIGHT metadata
+        String copyrightInfo = "(C) GEOTOOLS sample writer";
+        String software = "GeoTools Coverage Writer test";
+        
+        writer.setMetadataValue(Integer.toString(BaselineTIFFTagSet.TAG_COPYRIGHT), copyrightInfo);
+        writer.setMetadataValue(TagSet.BASELINE + ":" + Integer.toString(BaselineTIFFTagSet.TAG_SOFTWARE), software);
+        
+        writer.write(coverage,null);
+        writer.dispose();
+        coverage.dispose(true);
+        
+        // getting a reader
+        reader = new GeoTiffReader(output);
+
+        GeoTiffIIOMetadataDecoder metadata = reader.getMetadata();
+        String readSoftware = metadata.getAsciiTIFFTag(Integer.toString(BaselineTIFFTagSet.TAG_SOFTWARE));
+        assertTrue(software.equalsIgnoreCase(readSoftware));
+        String readCopyright = metadata.getAsciiTIFFTag(Integer.toString(BaselineTIFFTagSet.TAG_COPYRIGHT));
+        assertTrue(copyrightInfo.equalsIgnoreCase(readCopyright));
+        
+        reader.dispose();
+
+        
+    }
 }

@@ -85,7 +85,7 @@ import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
  *
  * @source $URL$
  */
-public final class GeoTiffWriteParams extends GeoToolsWriteParams {
+public class GeoTiffWriteParams extends GeoToolsWriteParams {
 
 	/**
 	 * Default constructor.

@@ -28,7 +28,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.imageio.IIOException;
 import javax.imageio.IIOImage;
@@ -82,9 +84,10 @@ import org.opengis.referencing.operation.TransformException;
  * @source $URL:
  *         http://svn.geotools.org/geotools/trunk/gt/plugin/geotiff/src/org/geotools/gce/geotiff/GeoTiffWriter.java $
  */
-public final class GeoTiffWriter extends AbstractGridCoverageWriter implements
+public class GeoTiffWriter extends AbstractGridCoverageWriter implements
 		GridCoverageWriter {
 
+	private final Map<String, String> metadataKeyValue = new HashMap<String, String>(); 
 	/** factory for getting tiff writers. */
 	private final static TIFFImageWriterSpi tiffWriterFactory = new TIFFImageWriterSpi();
 
@@ -97,6 +100,23 @@ public final class GeoTiffWriter extends AbstractGridCoverageWriter implements
 	public GeoTiffWriter(Object destination) throws IOException {
 		this(destination, null);
 
+	}
+
+	/**
+	 * Allows to setup metadata by leveraging on Ascii TIFF Tags.
+	 * @param name is the Ascii TIFF Tag identifier.
+	 *     It can be a String representing:
+	 *     1) a simple Integer (referring to a tag ID) (in that case it will refer to the BaselineTIFFTagSet 
+	 *     2) OR an identifier in the form:
+	 *     TIFFTagSet:TIFFTagID. As an instance: "BaselineTIFFTagSet:305" in order to add the Copyright info.
+	 * @param value is the value to be assigned to that tag.
+	 * @see GeoTiffIIOMetadataEncoder.TagSet
+	 */
+	@Override
+	public void setMetadataValue(String name, String value) throws IOException {
+		if (name != null && name.length() > 0){
+			metadataKeyValue.put(name, value);
+		}
 	}
 
 	/**
@@ -219,6 +239,9 @@ public final class GeoTiffWriter extends AbstractGridCoverageWriter implements
 			final GeoTiffIIOMetadataEncoder metadata = adapter.parseCoordinateReferenceSystem();
             if (!Double.isNaN(inNoData)) 
             	metadata.setNoData(inNoData);
+            if (metadataKeyValue != null && !metadataKeyValue.isEmpty()){
+            	metadata.setTiffTagsMetadata(metadataKeyValue);
+            }
 			
 			// setting georeferencing
 			setGeoReference(crs, metadata, tr, range);

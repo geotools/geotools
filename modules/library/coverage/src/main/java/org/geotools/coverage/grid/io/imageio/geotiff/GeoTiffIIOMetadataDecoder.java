@@ -36,15 +36,18 @@
 package org.geotools.coverage.grid.io.imageio.geotiff;
 
 import it.geosolutions.imageio.plugins.tiff.GeoTIFFTagSet;
+import it.geosolutions.imageio.plugins.tiff.TIFFTag;
 
 import java.awt.geom.AffineTransform;
 
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.metadata.IIOMetadataNode;
 
+import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffIIOMetadataEncoder.TagSet;
 import org.geotools.coverage.grid.io.imageio.geotiff.codes.GeoTiffGCSCodes;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
+import org.jdom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -448,6 +451,23 @@ public final class GeoTiffIIOMetadataDecoder {
             if (noData == null || noData.trim().length() == 0)
                     return false;
             return true;
+        }
+        
+        /**
+         * Returns the value of an ASCII TIFFTag referred by tagID.
+         * 
+         * @return the tag value as a String, null if not available.
+         * 
+         */
+        public String getAsciiTIFFTag(final String tagID) {
+            String value = null;
+            if (GeoTiffConstants.isNumeric(tagID)){
+                final IIOMetadataNode metadataNode = getTiffField(Integer.valueOf(tagID));
+                if (metadataNode != null){
+                    value = getTiffAscii(metadataNode);
+                }
+            }
+            return value;
         }
 
 	/**

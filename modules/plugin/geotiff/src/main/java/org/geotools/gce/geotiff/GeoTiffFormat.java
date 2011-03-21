@@ -74,7 +74,7 @@ import org.opengis.referencing.operation.MathTransform;
  * @source $URL:
  *         http://svn.geotools.org/geotools/trunk/gt/plugin/geotiff/src/org/geotools/gce/geotiff/GeoTiffFormat.java $
  */
-public final class GeoTiffFormat extends AbstractGridFormat implements Format {
+public class GeoTiffFormat extends AbstractGridFormat implements Format {
     /** SPI for the writer. */
     private final static TIFFImageReaderSpi spi = new TIFFImageReaderSpi();
 

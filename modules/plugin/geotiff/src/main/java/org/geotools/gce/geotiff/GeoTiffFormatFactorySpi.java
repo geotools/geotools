@@ -61,7 +61,7 @@ import org.geotools.coverage.grid.io.GridFormatFactorySpi;
  * @source $URL:
  *         http://svn.geotools.org/geotools/trunk/gt/plugin/geotiff/src/org/geotools/gce/geotiff/GeoTiffFormatFactorySpi.java $
  */
-public final class GeoTiffFormatFactorySpi implements GridFormatFactorySpi {
+public class GeoTiffFormatFactorySpi implements GridFormatFactorySpi {
 	/**
 	 * Creates a new instance of GeoTiffFormatFactorySpi
 	 */

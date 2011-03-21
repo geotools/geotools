@@ -16,6 +16,9 @@
  */
 package org.geotools.coverage.grid.io.imageio.geotiff;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import it.geosolutions.imageio.plugins.tiff.TIFFTag;
 
 /**
@@ -24,6 +27,8 @@ import it.geosolutions.imageio.plugins.tiff.TIFFTag;
  * @source $URL$
  */
 public final class GeoTiffConstants {
+    
+    final static Pattern NaturalNumberPattern = Pattern.compile("[0-9]*");
     
         public static final int TIFFTAG_NODATA = 42113;
     
@@ -143,4 +148,14 @@ public final class GeoTiffConstants {
 	public static TIFFTag NODATA_TAG = new TIFFTag("GDAL_NODATA", GeoTiffConstants.TIFFTAG_NODATA, 
                 TIFFTag.TIFF_ASCII);
 
+	
+	 public static boolean isNumeric(String number) {
+	        boolean isValid = false;
+	        CharSequence inputStr = number;
+	        Matcher matcher = NaturalNumberPattern.matcher(inputStr);
+	        if (matcher.matches()) {
+	            isValid = true;
+	        }
+	        return isValid;
+	    }
 }

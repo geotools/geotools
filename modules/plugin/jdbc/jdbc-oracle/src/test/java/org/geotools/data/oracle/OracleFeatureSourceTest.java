@@ -16,11 +16,14 @@
  */
 package org.geotools.data.oracle;
 
+import org.geotools.data.DefaultQuery;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCFeatureSourceTest;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.referencing.CRS;
+import org.opengis.filter.FilterFactory;
+import org.opengis.filter.PropertyIsEqualTo;
 
 public class OracleFeatureSourceTest extends JDBCFeatureSourceTest {
 
@@ -33,7 +36,7 @@ public class OracleFeatureSourceTest extends JDBCFeatureSourceTest {
         // enable fast bbox
         ((OracleDialect) ((JDBCDataStore) dataStore).getSQLDialect()).setEstimatedExtentsEnabled(true);
         
-        ReferencedEnvelope bounds = dataStore.getFeatureSource("FT1").getBounds();
+        ReferencedEnvelope bounds = dataStore.getFeatureSource(tname("ft1")).getBounds();
         assertEquals(0l, Math.round(bounds.getMinX()));
         assertEquals(0l, Math.round(bounds.getMinY()));
         assertEquals(2l, Math.round(bounds.getMaxX()));
@@ -42,4 +45,22 @@ public class OracleFeatureSourceTest extends JDBCFeatureSourceTest {
         assertTrue(areCRSEqual(CRS.decode("EPSG:4326"), bounds.getCoordinateReferenceSystem()));
     }
 
+    public void testEstimatedBoundsWithQuery() throws Exception {
+        // enable fast bbox
+        ((OracleDialect) ((JDBCDataStore) dataStore).getSQLDialect()).setEstimatedExtentsEnabled(true);
+        
+        FilterFactory ff = dataStore.getFilterFactory();
+        PropertyIsEqualTo filter = ff.equals(ff.property(aname("stringProperty")), ff.literal("one"));
+
+        DefaultQuery query = new DefaultQuery();
+        query.setFilter(filter);
+
+        ReferencedEnvelope bounds = dataStore.getFeatureSource(tname("ft1")).getBounds(query);
+        assertEquals(1l, Math.round(bounds.getMinX()));
+        assertEquals(1l, Math.round(bounds.getMinY()));
+        assertEquals(1l, Math.round(bounds.getMaxX()));
+        assertEquals(1l, Math.round(bounds.getMaxY()));
+
+        assertTrue(areCRSEqual(CRS.decode("EPSG:4326"), bounds.getCoordinateReferenceSystem()));
+    }
 }

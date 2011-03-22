@@ -45,7 +45,7 @@ import org.opengis.filter.expression.Literal;
 public class FunctionFinder {
 	private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.filter");
 	
-    private Map<String,FunctionFactory> functionFactoryCache;
+    private volatile Map<String,FunctionFactory> functionFactoryCache;
     
     public FunctionFinder(Hints hints) {
         // currently hints are not used, need help :-P
@@ -108,7 +108,7 @@ public class FunctionFinder {
         if (functionFactoryCache == null) {
             synchronized (this) {
                 if (functionFactoryCache == null) {
-                    lookupFunctions();
+                    functionFactoryCache = lookupFunctions();
                 }
             }
         }
@@ -128,17 +128,19 @@ public class FunctionFinder {
         return null;
     }
     
-    private void lookupFunctions() {
+    private HashMap lookupFunctions() {
         // get all filter functions via function factory
-        functionFactoryCache = new HashMap();
+        HashMap result = new HashMap();
         
         Set<FunctionFactory> functionFactories = 
             CommonFactoryFinder.getFunctionFactories(null);
         for (FunctionFactory ff : functionFactories) {
             for (FunctionName functionName : ff.getFunctionNames()) {
-                functionFactoryCache.put(functionName.getName(), ff);
+                result.put(functionName.getName(), ff);
             }
         }
+        
+        return result;
     }
     
 }

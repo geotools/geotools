@@ -201,7 +201,7 @@ public class GML3EncodingUtils {
     public Element AbstractFeatureTypeEncode(Object object, Document document, Element value,
             XSDIdRegistry idSet) {
         Feature feature = (Feature) object;
-        String id = feature.getIdentifier().getID();
+        String id = (feature.getIdentifier() != null ? feature.getIdentifier().getID() : null);
         Name typeName;
         if (feature.getDescriptor() == null) {
             // no descriptor, assume WFS feature type name is the same as the name of the content
@@ -213,21 +213,25 @@ public class GML3EncodingUtils {
         }
         Element encoding = document.createElementNS(typeName.getNamespaceURI(),
                 typeName.getLocalPart());
-        if (!(feature instanceof SimpleFeature) && idSet != null) {
-            if (idSet.idExists(id)) {
-                // XSD type ids can only appear once in the same document, otherwise the document is
-                // not schema valid. Attributes of the same ids should be encoded as xlink:href to
-                // the existing attribute.
-                encoding.setAttributeNS(XLINK.NAMESPACE, XLINK.HREF.getLocalPart(),
-                        "#" + id.toString());
-                // make sure the attributes aren't encoded
-                feature.setValue(Collections.emptyList());
-                return encoding;
-            } else {
-                idSet.add(id);
+        if (id != null) {
+            if (!(feature instanceof SimpleFeature) && idSet != null) {
+                if (idSet.idExists(id)) {
+                    // XSD type ids can only appear once in the same document, otherwise the
+                    // document is
+                    // not schema valid. Attributes of the same ids should be encoded as xlink:href
+                    // to
+                    // the existing attribute.
+                    encoding.setAttributeNS(XLINK.NAMESPACE, XLINK.HREF.getLocalPart(), "#"
+                            + id.toString());
+                    // make sure the attributes aren't encoded
+                    feature.setValue(Collections.emptyList());
+                    return encoding;
+                } else {
+                    idSet.add(id);
+                }
             }
+            encoding.setAttributeNS(gml.getNamespaceURI(), "id", id);
         }
-        encoding.setAttributeNS(gml.getNamespaceURI(), "id", id);
         encodeClientProperties(feature, value);
 
         return encoding;

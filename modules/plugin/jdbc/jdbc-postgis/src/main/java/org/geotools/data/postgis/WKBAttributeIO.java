@@ -27,6 +27,7 @@ import org.geotools.data.DataSourceException;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.io.ByteArrayInStream;
 import com.vividsolutions.jts.io.InStream;
 import com.vividsolutions.jts.io.WKBReader;
 import com.vividsolutions.jts.io.WKBWriter;
@@ -42,7 +43,7 @@ import com.vividsolutions.jts.io.WKBWriter;
  */
 public class WKBAttributeIO {
     WKBReader wkbr;
-    ByteArrayInStream inStream = new ByteArrayInStream();
+    ByteArrayInStream inStream = new ByteArrayInStream(new byte[0]);
 
     public WKBAttributeIO() {
         wkbr = new WKBReader();
@@ -139,41 +140,7 @@ public class WKBAttributeIO {
         }
     }
     
-    private byte[] hexToBytes(String wkb) {
-        // convert the String of hex values to a byte[]
-        byte[] wkbBytes = new byte[wkb.length() / 2];
-
-        for (int i = 0; i < wkbBytes.length; i++) {
-            byte b1 = getFromChar(wkb.charAt(i * 2));
-            byte b2 = getFromChar(wkb.charAt((i * 2) + 1));
-            wkbBytes[i] = (byte) ((b1 << 4) | b2);
-        }
-
-        return wkbBytes;
-      }
     
-    /**
-     * Accelerates data loading compared to the plain InStream shipped along with JTS
-     * @author Andrea Aime - TOPP
-     *
-     */
-    private static class ByteArrayInStream implements InStream {
-        
-        byte[] buffer;
-        int position;
-        
-        public void setBytes(final byte[] buffer) {
-            this.buffer = buffer;
-            this.position = 0;
-        }
-        
-
-        public void read(final byte[] buf) throws IOException {
-            final int size = buf.length;
-            System.arraycopy(buffer, position, buf, 0, size);
-            position += size;
-        }
-        
-    }
+    
 }
 

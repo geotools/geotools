@@ -141,7 +141,7 @@
   <groupId>org.geotools</groupId>
   <artifactId>geotools</artifactId>
   <packaging>pom</packaging>
-  <version>2.7-SNAPSHOT</version>
+  <version>2.7.0</version>
   <name>Geotools</name>
 
   <scm>

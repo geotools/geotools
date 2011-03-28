@@ -28,9 +28,13 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.image.RenderedImage;
 import java.awt.image.renderable.ParameterBlock;
+import java.io.File;
 
+import javax.imageio.ImageIO;
+import javax.media.jai.Interpolation;
 import javax.media.jai.JAI;
 
+import org.geotools.TestData;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GeneralGridEnvelope;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -39,6 +43,8 @@ import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.ViewType;
 import org.geotools.coverage.processing.operation.Extrema;
 import org.geotools.factory.Hints;
+import org.geotools.geometry.Envelope2D;
+import org.geotools.image.test.ImageAssert;
 import org.geotools.metadata.iso.spatial.PixelTranslation;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultProjectedCRS;
@@ -134,7 +140,7 @@ public final class ResampleTest extends GridProcessingTestBase {
         indexedCoverageWithTransparency = EXAMPLES.get(3);
         floatCoverage                   = EXAMPLES.get(4);
         ushortCoverage                  = EXAMPLES.get(5);
-        Hints.putSystemDefault(Hints.RESAMPLE_TOLERANCE, 0.0);
+        Hints.putSystemDefault(Hints.RESAMPLE_TOLERANCE, 0.333);
     }
 
     /**
@@ -239,7 +245,7 @@ public final class ResampleTest extends GridProcessingTestBase {
                 fail=false;
         Assert.assertFalse("Reprojection failed", fail);
         
-        //exception incase the target crs does not comply with the target gg crs
+        //exception in case the target crs does not comply with the target gg crs
         try{
             // we supplied both crs and target gg in different crs, we get an exception backS
             assertEquals("Warp", showProjected(coverage,CRS.parseWKT(GOOGLE_MERCATOR_WKT), coverage.getGridGeometry(), null, true));
@@ -247,6 +253,8 @@ public final class ResampleTest extends GridProcessingTestBase {
         }catch (Exception e) {
             // ok!
         }
+        
+        
     }
 
     /**
@@ -256,6 +264,7 @@ public final class ResampleTest extends GridProcessingTestBase {
      */
     @Test
     public void testsNad83() throws FactoryException {
+        Hints.putSystemDefault(Hints.RESAMPLE_TOLERANCE, 0.0);
         final Hints photo = new Hints(Hints.COVERAGE_PROCESSING_VIEW, ViewType.PHOTOGRAPHIC);
         final CoordinateReferenceSystem crs = CRS.parseWKT(
                 "GEOGCS[\"NAD83\"," +
@@ -270,6 +279,55 @@ public final class ResampleTest extends GridProcessingTestBase {
         assertEquals("Warp", showProjected(indexedCoverage, crs, null, null, false));
         assertEquals("Warp", showProjected(indexedCoverageWithTransparency, crs, null, null, false));
         assertEquals("Warp", showProjected(floatCoverage, crs, null, photo, true));
+    }
+    
+    @Test
+    public void testGoogleWorld() throws Exception {
+        File world = TestData.copy(this, "geotiff/world.tiff");
+        RenderedImage image = ImageIO.read(world);
+        
+        final CoordinateReferenceSystem wgs84 = CRS.decode("EPSG:4326", true);
+        Envelope2D envelope = new Envelope2D(wgs84, -180, -90, 360, 180);
+        GridCoverage2D gcFullWorld = new GridCoverageFactory().create("world", image, envelope);
+
+        // crop, we cannot reproject it fully to the google projection
+        final Envelope2D cropEnvelope = new Envelope2D(wgs84, -180, -80, 360, 160);
+        GridCoverage2D gcCropWorld = (GridCoverage2D) Operations.DEFAULT.crop(gcFullWorld, cropEnvelope);
+        
+        // resample
+        Hints.putSystemDefault(Hints.RESAMPLE_TOLERANCE, 0d);
+        GridCoverage2D gcResampled = (GridCoverage2D) Operations.DEFAULT.resample(gcCropWorld, CRS.decode("EPSG:3857"), 
+                null, Interpolation.getInstance(Interpolation.INTERP_BILINEAR));
+        
+        File expected = new File("src/test/resources/org/geotools/image/test-data/google-reproject.png");
+        // allow one row of difference
+        ImageAssert.assertEquals(expected, gcResampled.getRenderedImage(), 600);
+    }
+    
+    @Test
+    public void testWarpCompareGoogleWorld() throws Exception {
+        File world = TestData.copy(this, "geotiff/world.tiff");
+        RenderedImage image = ImageIO.read(world);
+        
+        final CoordinateReferenceSystem wgs84 = CRS.decode("EPSG:4326", true);
+        Envelope2D envelope = new Envelope2D(wgs84, -180, -90, 360, 180);
+        GridCoverage2D gcFullWorld = new GridCoverageFactory().create("world", image, envelope);
+
+        // crop, we cannot reproject it fully to the google projection
+        final Envelope2D cropEnvelope = new Envelope2D(wgs84, -180, -80, 360, 160);
+        GridCoverage2D gcCropWorld = (GridCoverage2D) Operations.DEFAULT.crop(gcFullWorld, cropEnvelope);
+        
+        // resample with approximation
+        Hints.putSystemDefault(Hints.RESAMPLE_TOLERANCE, 0.333d);
+        GridCoverage2D gcResampledApprox = (GridCoverage2D) Operations.DEFAULT.resample(gcCropWorld, CRS.decode("EPSG:3857"), 
+                null, Interpolation.getInstance(Interpolation.INTERP_BILINEAR));
+        
+        Hints.putSystemDefault(Hints.RESAMPLE_TOLERANCE, 0d);
+        GridCoverage2D gcResampledAccurate = (GridCoverage2D) Operations.DEFAULT.resample(gcCropWorld, CRS.decode("EPSG:3857"), 
+                null, Interpolation.getInstance(Interpolation.INTERP_BILINEAR));
+        
+        // allow one row of difference
+        ImageAssert.assertEquals(gcResampledAccurate.getRenderedImage(), gcResampledApprox.getRenderedImage(), 600);
     }
 
     /**

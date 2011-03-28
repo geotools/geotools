@@ -27,9 +27,10 @@
   <!--                        the default. Only a few modules      -->
   <!--                        check for this profile.              -->
   <!--                                                             -->
-  <!--     interactive.tests  Performs more extensive tests than   -->
-  <!--                        the default. Only a few modules      -->
-  <!--                        check for this profile.              -->
+  <!--     interactive.tests  Allows tests to show up dialogs      -->
+  <!--                                                             -->
+  <!--     interactive.image  Image comparisong will show          -->
+  <!--                        comparison dialogs                   -->
   <!--                                                             -->
   <!--     site.build         The main purpose of this build is to -->
   <!--                        create reports. Consequently, a      -->
@@ -67,6 +68,7 @@
     <allow.test.failure.ignore>false</allow.test.failure.ignore>
     <extensive.tests>false</extensive.tests>
     <interactive.tests>false</interactive.tests>
+    <interactive.image>false</interactive.image>
     <online.skip.pattern>**/*OnlineTest.java</online.skip.pattern>
     <stress.skip.pattern>**/*StressTest.java</stress.skip.pattern>
     <test.maxHeapSize>512M</test.maxHeapSize>
@@ -89,6 +91,12 @@
       <id>interactive.tests</id>
       <properties>
         <interactive.tests>true</interactive.tests>
+      </properties>
+    </profile>
+    <profile>
+      <id>interactive.image</id>
+      <properties>
+        <interactive.image>true</interactive.image>
       </properties>
     </profile>
     <profile>
@@ -1052,7 +1060,7 @@
             <exclude>${stress.skip.pattern}</exclude>
             <exclude>${test.exclude.pattern}</exclude>
           </excludes>
-          <argLine>-Xmx${test.maxHeapSize} ${jvm.opts} -Dorg.geotools.test.extensive=${extensive.tests} -Dorg.geotools.test.interactive=${interactive.tests} -Djava.awt.headless=${java.awt.headless} -Djava.io.tmpdir=${java.io.tmpdir}</argLine>
+          <argLine>-Xmx${test.maxHeapSize} ${jvm.opts} -Dorg.geotools.test.extensive=${extensive.tests} -Dorg.geotools.test.interactive=${interactive.tests} -Dorg.geotools.image.test.interactive=${interactive.image} -Djava.awt.headless=${java.awt.headless} -Djava.io.tmpdir=${java.io.tmpdir}</argLine>
           <!-- Ignores test failure only if we are generating a       -->
           <!-- report for publication on the web site. See the        -->
           <!-- profiles section at the begining of this pom.xml file. -->

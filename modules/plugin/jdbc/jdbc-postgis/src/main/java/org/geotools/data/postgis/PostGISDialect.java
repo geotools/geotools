@@ -367,7 +367,6 @@ public class PostGISDialect extends BasicSQLDialect {
             String columnName, Connection cx) throws SQLException {
 
         // first attempt, try with the geometry metadata
-        Connection conn = null;
         Statement statement = null;
         ResultSet result = null;
         Integer srid = null;
@@ -375,41 +374,56 @@ public class PostGISDialect extends BasicSQLDialect {
             if (schemaName == null)
                 schemaName = "public";
             
+            // try geography_columns
             if(supportsGeography(cx)) {
-                //first look for an entry in geography_columns, if there return 4326
-                String sqlStatement = "SELECT SRID FROM GEOGRAPHY_COLUMNS WHERE " //
-                    + "F_TABLE_SCHEMA = '" + schemaName + "' " //
-                    + "AND F_TABLE_NAME = '" + tableName + "' " //
-                    + "AND F_GEOGRAPHY_COLUMN = '" + columnName + "'";
-                LOGGER.log(Level.FINE, "Geography srid check; {0} ", sqlStatement);
+                try {
+                    //first look for an entry in geography_columns, if there return 4326
+                    String sqlStatement = "SELECT SRID FROM GEOGRAPHY_COLUMNS WHERE " //
+                        + "F_TABLE_SCHEMA = '" + schemaName + "' " //
+                        + "AND F_TABLE_NAME = '" + tableName + "' " //
+                        + "AND F_GEOGRAPHY_COLUMN = '" + columnName + "'";
+                    LOGGER.log(Level.FINE, "Geography srid check; {0} ", sqlStatement);
+                    statement = cx.createStatement();
+                    result = statement.executeQuery(sqlStatement);
+        
+                    if (result.next()) {
+                        return 4326;
+                    }
+                } catch(SQLException e) {
+                    LOGGER.log(Level.WARNING, "Failed to retrieve information about " 
+                            + schemaName + "." + tableName + "."  + columnName 
+                            + " from the geometry_columns table, checking geometry_columns instead", e);
+                } finally {
+                    dataStore.closeSafe(result);
+                }
+            }
+            
+            // try geometry_columns
+            try {
+                String sqlStatement = "SELECT SRID FROM GEOMETRY_COLUMNS WHERE " //
+                        + "F_TABLE_SCHEMA = '" + schemaName + "' " //
+                        + "AND F_TABLE_NAME = '" + tableName + "' " //
+                        + "AND F_GEOMETRY_COLUMN = '" + columnName + "'";
+    
+                LOGGER.log(Level.FINE, "Geometry srid check; {0} ", sqlStatement);
                 statement = cx.createStatement();
                 result = statement.executeQuery(sqlStatement);
     
                 if (result.next()) {
-                    return 4326;
+                    srid = result.getInt(1);
                 }
-                
+            } catch(SQLException e) {
+                LOGGER.log(Level.WARNING, "Failed to retrieve information about " 
+                        + schemaName + "." + tableName + "."  + columnName 
+                        + " from the geometry_columns table, checking the first geometry instead", e);
+            } finally {
                 dataStore.closeSafe(result);
             }
-            
-            String sqlStatement = "SELECT SRID FROM GEOMETRY_COLUMNS WHERE " //
-                    + "F_TABLE_SCHEMA = '" + schemaName + "' " //
-                    + "AND F_TABLE_NAME = '" + tableName + "' " //
-                    + "AND F_GEOMETRY_COLUMN = '" + columnName + "'";
-
-            LOGGER.log(Level.FINE, "Geometry srid check; {0} ", sqlStatement);
-            statement = cx.createStatement();
-            result = statement.executeQuery(sqlStatement);
-
-            if (result.next()) {
-                srid = result.getInt(1);
-            }
-            dataStore.closeSafe(result);
             
             // fall back on inspection of the first geometry, assuming uniform srid (fair assumption
             // an unpredictable srid makes the table un-queriable)
             if(srid == null) {
-                sqlStatement = "SELECT SRID(\"" + columnName + "\") " +
+                String sqlStatement = "SELECT SRID(\"" + columnName + "\") " +
                                "FROM \"" + schemaName + "\".\"" + tableName + "\" " +
                                "LIMIT 1";
                 result = statement.executeQuery(sqlStatement);

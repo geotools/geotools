@@ -396,7 +396,7 @@ public class XSISimpleTypes {
          */
         public Object getValue(Element element, ElementValue[] value,
             Attributes attrsgetValue, Map hints){
-            if ((value.length >= 1) && (value[0].getValue() != null)) {
+            if ((value.length >= 1) && (value[0].getValue() != null) && (!"".equals(value[0].getValue()))) {
                 return new java.lang.Integer((java.lang.String) value[0]
                     .getValue());
             }
@@ -454,7 +454,7 @@ public class XSISimpleTypes {
          */
         public Object getValue(Element element, ElementValue[] value,
             Attributes attrs, Map hints){
-            if ((value.length == 1) && (value[0].getValue() != null)) {
+            if ((value.length == 1) && (value[0].getValue() != null) && (!"".equals(value[0].getValue()))) {
                 return new java.lang.Double((java.lang.String) value[0]
                     .getValue());
             }
@@ -500,7 +500,7 @@ public class XSISimpleTypes {
          */
         public Object getValue(Element element, ElementValue[] value,
             Attributes attrs, Map hints){
-            if ((value.length == 1) && (value[0].getValue() != null)) {
+            if ((value.length == 1) && (value[0].getValue() != null) && (!"".equals(value[0].getValue()))) {
                 java.lang.Integer i = new java.lang.Integer((java.lang.String) value[0]
                         .getValue());
 
@@ -555,7 +555,7 @@ public class XSISimpleTypes {
          */
         public Object getValue(Element element, ElementValue[] value,
             Attributes attrs, Map hints){
-            if ((value.length == 1) && (value[0].getValue() != null)) {
+            if ((value.length == 1) && (value[0].getValue() != null) && (!"".equals(value[0].getValue()))) {
                 java.lang.Integer i = new java.lang.Integer((java.lang.String) value[0]
                         .getValue());
 
@@ -602,7 +602,7 @@ public class XSISimpleTypes {
          */
         public Object getValue(Element element, ElementValue[] value,
             Attributes attrs, Map hints){
-            if ((value.length == 1) && (value[0].getValue() != null)) {
+            if ((value.length == 1) && (value[0].getValue() != null) && (!"".equals(value[0].getValue()))) {
                 java.lang.Integer i = new java.lang.Integer((java.lang.String) value[0]
                         .getValue());
 
@@ -649,7 +649,7 @@ public class XSISimpleTypes {
          */
         public Object getValue(Element element, ElementValue[] value,
             Attributes attrs, Map hints){
-            if ((value.length == 1) && (value[0].getValue() != null)) {
+            if ((value.length == 1) && (value[0].getValue() != null) && (!"".equals(value[0].getValue()))) {
                 java.lang.Integer i = new java.lang.Integer((java.lang.String) value[0]
                         .getValue());
 
@@ -696,7 +696,7 @@ public class XSISimpleTypes {
          */
         public Object getValue(Element element, ElementValue[] value,
             Attributes attrs, Map hints){
-            if ((value.length == 1) && (value[0].getValue() != null)) {
+            if ((value.length == 1) && (value[0].getValue() != null) && (!"".equals(value[0].getValue()))) {
                 java.lang.Long i = new java.lang.Long((java.lang.String) value[0]
                         .getValue());
 
@@ -743,7 +743,7 @@ public class XSISimpleTypes {
          */
         public Object getValue(Element element, ElementValue[] value,
             Attributes attrs, Map hints) {
-            if ((value.length == 1) && (value[0].getValue() != null)) {
+            if ((value.length == 1) && (value[0].getValue() != null) && (!"".equals(value[0].getValue()))) {
                 java.lang.Integer i = new java.lang.Integer((java.lang.String) value[0]
                         .getValue());
 
@@ -790,7 +790,7 @@ public class XSISimpleTypes {
          */
         public Object getValue(Element element, ElementValue[] value,
             Attributes attrs, Map hints) {
-            if ((value.length == 1) && (value[0].getValue() != null)) {
+            if ((value.length == 1) && (value[0].getValue() != null) && (!"".equals(value[0].getValue()))) {
                 java.lang.Short i = new java.lang.Short((java.lang.String) value[0]
                         .getValue());
 
@@ -837,7 +837,7 @@ public class XSISimpleTypes {
          */
         public Object getValue(Element element, ElementValue[] value,
             Attributes attrs, Map hints) {
-            if ((value.length == 1) && (value[0].getValue() != null)) {
+            if ((value.length == 1) && (value[0].getValue() != null) && (!"".equals(value[0].getValue()))) {
                 java.lang.Byte i = new java.lang.Byte((java.lang.String) value[0]
                         .getValue());
 
@@ -884,7 +884,7 @@ public class XSISimpleTypes {
          */
         public Object getValue(Element element, ElementValue[] value,
             Attributes attrs, Map hints) {
-            if ((value.length == 1) && (value[0].getValue() != null)) {
+            if ((value.length == 1) && (value[0].getValue() != null) && (!"".equals(value[0].getValue()))) {
                 java.lang.Long i = new java.lang.Long((java.lang.String) value[0]
                         .getValue());
 
@@ -931,7 +931,7 @@ public class XSISimpleTypes {
          */
         public Object getValue(Element element, ElementValue[] value,
             Attributes attrs, Map hints) {
-            if ((value.length == 1) && (value[0].getValue() != null)) {
+            if ((value.length == 1) && (value[0].getValue() != null) && (!"".equals(value[0].getValue()))) {
                 java.lang.Short i = new java.lang.Short((java.lang.String) value[0]
                         .getValue());
 
@@ -978,7 +978,7 @@ public class XSISimpleTypes {
          */
         public Object getValue(Element element, ElementValue[] value,
             Attributes attrs, Map hints) {
-            if ((value.length == 1) && (value[0].getValue() != null)) {
+            if ((value.length == 1) && (value[0].getValue() != null) && (!"".equals(value[0].getValue()))) {
                 java.lang.Integer i = new java.lang.Integer((java.lang.String) value[0]
                         .getValue());
 
@@ -1025,7 +1025,7 @@ public class XSISimpleTypes {
          */
         public Object getValue(Element element, ElementValue[] value,
             Attributes attrs, Map hints) {
-            if ((value.length == 1) && (value[0].getValue() != null)) {
+            if ((value.length == 1) && (value[0].getValue() != null) && (!"".equals(value[0].getValue()))) {
                 java.lang.Byte i = new java.lang.Byte((java.lang.String) value[0]
                         .getValue());
 
@@ -1072,7 +1072,7 @@ public class XSISimpleTypes {
          */
         public Object getValue(Element element, ElementValue[] value,
             Attributes attrs, Map hints) {
-            if ((value.length == 1) && (value[0].getValue() != null)) {
+            if ((value.length == 1) && (value[0].getValue() != null) && (!"".equals(value[0].getValue()))) {
                 java.lang.Float i = new java.lang.Float((java.lang.String) value[0]
                         .getValue());
 
@@ -1119,7 +1119,7 @@ public class XSISimpleTypes {
          */
         public Object getValue(Element element, ElementValue[] value,
             Attributes attrs, Map hints) {
-            if ((value.length == 1) && (value[0].getValue() != null)) {
+            if ((value.length == 1) && (value[0].getValue() != null) && (!"".equals(value[0].getValue()))) {
                 java.lang.Double i = new java.lang.Double((java.lang.String) value[0]
                         .getValue());
 

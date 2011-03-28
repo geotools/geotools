@@ -1,0 +1,206 @@
+CRS
+---
+
+We have provided the **CRS** helper class as your first point of call when working with the referencing module. This class allows you to quickly accomplish the most common referencing tasks.
+
+References:
+* http://docs.geotools.org/stable/javadocs/org/geotools/referencing/CRS.html
+
+*Before you Start*
+
+The most conservative way to deal with the definition of a **CoordinateReferenceSystem** is not to. Instead make use of an authority that provides complete definitions defined by a simple code.
+
+To hook this up simply make sure you have one of the **gt-epsg** plugins on your CLASSPATH. The **gt-epsg-hsql** plugin is recommended.
+
+Defining a CoordinateReferenceSystem
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This is easily the most common use for the CRS class::
+  
+  import org.geotools.referencing.CRS;
+  
+  CoordinateReferenceSystem sourceCRS = CRS.decode("EPSG:4326");
+
+The example above assumes you have **gt-epsg-hsql** jar on your CLASSPATH.
+
+Depending on the jars you have on your CLASSPATH a range of authorities are available to define a coordinate reference system for you.
+
+Using the "OGC URN" syntax::
+  
+  CoordinateReferenceSystem sourceCRS = CRS.decode("urn:ogc:def:ellipsoid:EPSG:6.0:7001");
+
+Using the WMS AUTO2 syntax (which requires you pass in your current "position"::
+  
+  CoordinateReferenceSystem sourceCRS = CRS.decode("AUTO2:42001,"+lat+","+lon);
+
+Well Known Text
+^^^^^^^^^^^^^^^
+
+**CoordinateReferenceSystem** can also be defined by a text format ((called "Well Known Text" or WKT). This is a standard provided by the OGC and shows up in inside a shapefile "prj" file, or in a databases such as PostGIS and Oracle.
+
+To parse WKT please use the CRS.parseWKT( txt ) method::
+  
+  String wkt = "GEOGCS[" + "\"WGS 84\"," + "  DATUM[" + "    \"WGS_1984\","
+          + "    SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],"
+          + "    TOWGS84[0,0,0,0,0,0,0]," + "    AUTHORITY[\"EPSG\",\"6326\"]],"
+          + "  PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],"
+          + "  UNIT[\"DMSH\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9108\"]],"
+          + "  AXIS[\"Lat\",NORTH]," + "  AXIS[\"Long\",EAST],"
+          + "  AUTHORITY[\"EPSG\",\"4326\"]]";
+
+  CoordinateReferenceSystem crs = CRS.parseWKT(wkt);
+
+The different organisations each have slightly different ideas on how some of the names work in the WKT standard. GeoTools does a good job of listing common aliases in order to read WKT generated from a range of tools.
+
+Matching a CoordinateReferenceSystem
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+You can actually search based on any metadata, not just name, the way you do it is you construct an example of what you are looking for - and than ask for the best match.
+
+This functionality is especially useful when you have produced a CoordinateReferenceSystem by parsing WKT and you would like to find the "official" code for it.::
+  
+  String wkt =
+      "GEOGCS[\"ED50\",\n" +
+      "  DATUM[\"European Datum 1950\",\n" +
+      "  SPHEROID[\"International 1924\", 6378388.0, 297.0]],\n" +
+      "PRIMEM[\"Greenwich\", 0.0],\n" +
+      "UNIT[\"degree\", 0.017453292519943295]]";
+  CoordinateReferenceSystem example = CRS.parseWKT(wkt);
+  
+  String code = CRS.lookupIdentifier( example, true ); // should be "EPSG:4230"
+  CoordinateReferenceSystem crs = CRS.decode( code );
+
+In the above example the projected is named "ED50", which is not the official name.
+
+Finding a Math Transform
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+Here is a quick sample use of the CRS class::
+  
+  import org.geotools.referencing.CRS;
+  
+  CoordinateReferenceSystem sourceCRS = CRS.decode("EPSG:4326");
+  CoordinateReferenceSystem targetCRS = CRS.decode("EPSG:23032");
+  
+  MathTransform transform = CRS.findMathTransform(sourceCRS, targetCRS, true);
+
+When using a CoordinateReferenceSystem that has been parsed from WKT you will
+often need to "relax" the accuracy by setting the **lenient** parameter to true when searching with findMathTransform.
+
+The official CoordinateReferenceSystem definitions provided by the EPSG database have extra metadata (describing how to do Datum shifts for example), beyond what can be provided using WKT.::
+  
+  import org.geotools.referencing.CRS;
+  
+  String wkt = "PROJCS[\"NAD83 / BC Albers\","+
+    "GEOGCS[\"NAD83\", "+
+    "  DATUM[\"North_American_Datum_1983\", "+
+    "    SPHEROID[\"GRS 1980\", 6378137.0, 298.257222101, AUTHORITY[\"EPSG\",\"7019\"]], "+
+    "    TOWGS84[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "+
+    "    AUTHORITY[\"EPSG\",\"6269\"]], "+
+    "  PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]], "+
+    "  UNIT[\"degree\", 0.017453292519943295], "+
+    "  AXIS[\"Lon\", EAST], "+
+    "  AXIS[\"Lat\", NORTH], "+
+    "  AUTHORITY[\"EPSG\",\"4269\"]], "+
+    "PROJECTION[\"Albers_Conic_Equal_Area\"], "+
+    "PARAMETER[\"central_meridian\", -126.0], "+
+    "PARAMETER[\"latitude_of_origin\", 45.0], "+
+    "PARAMETER[\"standard_parallel_1\", 50.0], "+
+    "PARAMETER[\"false_easting\", 1000000.0], "+
+    "PARAMETER[\"false_northing\", 0.0], "+
+    "PARAMETER[\"standard_parallel_2\", 58.5], "+
+    "UNIT[\"m\", 1.0], "+
+    "AXIS[\"x\", EAST], "+
+    "AXIS[\"y\", NORTH], "+
+    "AUTHORITY[\"EPSG\","3005"]]";
+  CoordinateReferenceSystem example = CRS.parseWKT(wkt);
+  CoordinateReferenceSystem targetCRS = CRS.decode("EPSG:4326");
+  
+  MathTransform transform = CRS.findMathTransform(sourceCRS, targetCRS, false);
+
+Transforming a Geometry
+^^^^^^^^^^^^^^^^^^^^^^^
+
+A **MathTransform**, as generated above, can be used by bashing away at the interface and feeding it **DirectPosition** objects one at a time.
+
+Or you could break out the JTS utility class where this work has been done for you::
+  
+  import org.geotools.geometry.jts.JTS;
+  import org.geotools.referencing.CRS;
+  
+  MathTransform transform = CRS.findMathTransform(sourceCRS, targetCRS, false);
+  Geometry targetGeometry = JTS.transform( sourceGeometry, transform);
+
+Transforming an ISO Geometry is more straight forward::
+  
+  CoordinateReferenceSystem targetCRS = CRS.decode("EPSG:23032");
+  Geometry target = geometry.transform( targetCRS );
+
+Axis Order
+^^^^^^^^^^
+
+One thing that often comes up is the question of axis order.
+
+The EPSG database often defines axis in an order that is inconvenient for display; we have a method to quickly check what is going on.::
+  
+  if( CRS.getAxisOrder( coordianteReferenceSystem ) == CRS.AxisOrder.LAT_LON){
+     // lat lon 
+  }
+
+Not all CoordinateReferenceSystems match a well defined axis order::
+  
+  CoordinateReferenceSystem crs = CRS.getHorizontalCRS(DefaultEngineeringCRS.GENERIC_2D));
+  if( CRS.getAxisOrder(crs) == AxisOrder.INAPPLICABLE){
+   // someone just made this up
+  }
+
+Google Maps Projection
+^^^^^^^^^^^^^^^^^^^^^^
+
+Google maps uses a bit of a shortcut, they make the assumption of a perfect sphere in order to be just that much faster (after all they want a pretty picture nothing more).
+
+GeoTools contains an implementation of Google Mercator (it was originally done as an experiment in GeoServer).
+
+Since this code has been donated you integrate your information with projection.
+
+References:
+
+* http://www.iter.dk/post/2008/05/SphericalWeb-Mercator-EPSG-code-3785.aspx
+* http://johndeck.blogspot.com/2005/09/overlaying-mercator-projected-wms.html
+* http://trac.openlayers.org/wiki/SphericalMercator
+
+Using an EPSG code to look up the CoordinateReferenceSystem::
+  
+  CoordinateReferenceSystem sphericalMercator = CRS.decode("EPSG:3785");
+
+If you are using an older copy of the EPSG database, the above code may not be supported yet.
+
+Before this code was official the GeoServer project defined its own code::
+  
+  // Google == 9009l3 in leet!
+  CoordinateReferenceSystem sphericalMercator = CRS.decode("EPSG:900913");
+
+Other than that you will need to define the projection yourself using WKT; or add it into your EPSG database.::
+  
+  ﻿PROJCS["Google Mercator",
+    GEOGCS["WGS 84",
+      DATUM["World Geodetic System 1984",
+        SPHEROID["WGS 84", 6378137.0, 298.257223563, AUTHORITY["EPSG","7030"]],
+        AUTHORITY["EPSG","6326"]],
+      PRIMEM["Greenwich", 0.0, AUTHORITY["EPSG","8901"]],
+      UNIT["degree", 0.017453292519943295],
+      AXIS["Geodetic latitude", NORTH],
+      AXIS["Geodetic longitude", EAST],
+      AUTHORITY["EPSG","4326"]],
+    PROJECTION["Mercator_1SP"],
+    PARAMETER["semi_minor", 6378137.0],
+    PARAMETER["latitude_of_origin", 0.0],
+    PARAMETER["central_meridian", 0.0],
+    PARAMETER["scale_factor", 1.0],
+    PARAMETER["false_easting", 0.0],
+    PARAMETER["false_northing", 0.0],
+    UNIT["m", 1.0],
+    AXIS["Easting", EAST],
+    AXIS["Northing", NORTH],
+    AUTHORITY["EPSG","900913"]]
+

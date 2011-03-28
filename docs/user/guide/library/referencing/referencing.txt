@@ -1,0 +1,225 @@
+Referencing
+-----------
+
+Please note that this page is optional, only for the curious, as it covers some of the implementation classes.
+
+A **CoordinateReferenceSystem** is an **gt-opengis** interface describing how a set of ordinates is to be interpreted as a three dimensional point. This definition is standardised, mathematical and generally not of interest unless something goes wrong.
+
+For most cases you are only interested in using a CoordinateReferenceSystem as a parameter to a mathematical calculation (distance on along the surface of the earth and "re-projection" being the most common).
+
+Creating a CoordinateReferenceSystem::
+  
+  CoordinateReferenceSystem crs = CRS.decode("EPSG:4326");
+
+You will need to ensure GeoTools is configured with the appropriate plugin for this example to work.
+
+There is a "well known text" representation of a CoordinateReferenceSystem that can be parsed as shown::
+  
+  CRSFactory crsFactory = ReferencingFactoryFinder.getCRSFactory(null);
+  CoordinateReferenceSystem crs = crsFactory.createFromWKT( wkt );
+
+Where an example definition is::
+  
+  GEOGCS[
+    "WGS 84",
+    DATUM[
+      "WGS_1984",
+      SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],
+      TOWGS84[0,0,0,0,0,0,0],
+      AUTHORITY["EPSG","6326"]],
+    PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],
+    UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],
+    AXIS["Lat",NORTH],
+    AXIS["Long",EAST],
+    AUTHORITY["EPSG","4326"]]
+
+Internally this method makes use of CRSFactory.
+
+CoordinateReferenceSystem Constants
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Some CoordinateReferenceSystem instances are used so often it is worth making static final constants for them. GeoTools has done so in order to cover the most common cases encountered when programming.
+
+You can use the following math transform to convert from the common "long/lat" representation to three dimensions::
+  
+  MathTransform convert = CRS.findMathTransform( DefaultGeographicCRS.WGS84, DefaultGeocentricCRS.CARTESIAN);
+
+Static final constant CoordinateReferenceSystem in GeoTools:
+
+A coordinate reference system using the WGS84 datum as an approximation of the shape of the earth:
+
+* DefaultGeographicCRS.WGS84 - this is the most commonly used default
+* DefaultGeographicCRS.WGS84_3D
+
+A 3D coordinate reference system with the origin at the approximate centre of mass of the earth:
+
+* DefaultGeocentricCRS.CARTESIAN
+* DefaultGeocentricCRS.SPHERICAL
+
+A contextually local coordinate reference system (for construction projects or moving objects):
+
+* DefaultEngineeringCRS.CARTESIAN_2D
+* DefaultEngineeringCRS.CARTESIAN_3D
+* DefaultEngineeringCRS.GENERIC_2D
+* DefaultEngineeringCRS.GENERIC_3D
+
+A 1D coordinate reference system used for recording heights or depth relative to the ellipsoidal datum:
+
+* DefaultVirticalCRS.ELLIPSOIDAL_HEIGHT
+
+For those into the details; these static final constant CoordinateReferenceSystem cite "GeoTools" as the authority responsible for the definition. This is in marked contrast with the **CoordinateReferenceSystem** instances produced by an AuthorityFactory (those instances will credit a specific organisation like "EPSG").
+
+Creating a CoordinateReferenceSystem
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+You can use factories defined by the referencing system to create things by hand using java code::
+  
+  FactoryGroup factories = new FactoryGroup(null);
+  GeographicCRS geoCRS = DefaultGeographicCRS.WGS84;
+  CartesianCS cartCS = DefaultCartesianCS.PROJECTED;
+  
+  ParameterValueGroup parameters = mtFactory.getDefaultParameters("Oblique Stereographic");
+  parameters.parameter("semi_major").setValue(ConstantesDespliegue.VALOR_SEMI_MAYOR);
+  parameters.parameter("semi_minor").setValue(6356752.314245179);
+  parameters.parameter("central_meridian").setValue(coordinateCentro.x);
+  //parameters.parameter("latitude_of_origin").setValue(70.0);
+  parameters.parameter("latitude_of_origin").setValue(coordinateCentro.y);
+  parameters.parameter("scale_factor").setValue(1.0);
+  parameters.parameter("false_easting").setValue(0.0);
+  parameters.parameter("false_northing").setValue(0.0);
+  Map properties = Collections.singletonMap("name", "WGS 84 / UTM Zone 12N");
+  ProjectedCRS projCRS = factories.createProjectedCRS(properties, geoCRS, null, parameters, cartCS);
+
+The above code example may be out of date FactoryGroup( has been replaced by FactoryContainer).
+
+Referencing Factories
+^^^^^^^^^^^^^^^^^^^^^
+
+These are the "real" factories - interfaces that actually create stuff. These are all just opengis interfaces, so you will need to use ReferencingFactoryFinder to get started:
+
+* DatumFactory:
+  Makes datums!
+* CSFactory
+  Makes CoordinateSystem instances, and many more
+* CRSFactory
+  Makes CoordinateReferenceSystem instances, and many more
+* MathTransformFactory
+  Makes MathTransform instances, and many more
+
+Here is an example::
+  
+  CRSFactory crsFactory = ReferencingFactoryFinder.getCRSFactory(null);
+  CoordinateReferenceSystem crs = crsFactory.createFromWKT( wkt );
+
+Where the wkt (ie well known text) is of the form::
+  
+  GEOGCS[
+    "WGS 84",
+    DATUM[
+      "WGS_1984",
+      SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],
+      TOWGS84[0,0,0,0,0,0,0],
+      AUTHORITY["EPSG","6326"]],
+    PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],
+    UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],
+    AXIS["Lat",NORTH],
+    AXIS["Long",EAST],
+    AUTHORITY["EPSG","4326"]]
+
+* ReferencingFactoryFinder
+  
+  As is custom we have included a "FactoryFinder" so you can look up a good
+  implementation on the CLASSPATH.::
+    
+    DatumFactory datumFactory = ReferencingFactoryFinder.getDatumFactory(null);
+
+  The ReferencingFactoryFinder returns a couple of GeoTools implementations right now, in
+  the future we hope to replace these defaults with an implementation from JScience. 
+
+* ReferencingFactoryContainer
+  
+  You may of noticed that to actually do anything you need several factories; we have
+  gathered these together into a "container" for you - and the container has a few extra
+  methods that use a couple of factories to gang up on a problem
+
+  You can ReferencingFactoryContainer to use your own custom factory using hints
+  as shown below::
+    
+    Hints hints = new Hints(null);
+    hints.put( Hints.DATUM_FACTORY, datumFactory );
+    hints.put( Hints.CS_FACTORY, csFactory );
+    hints.put( Hints.CRS_FACTORY, crsFactory );
+    hints.put( Hints.MATH_TRANSFORM_FACTORY, mtFactory );
+    
+    ReferencingFactoryContainer container = new ReferencingFactoryContainer(hints);
+  
+  Please note that this is not strictly needed since ReferencingFactoryFinder will
+  be smart and recycle instances if possible::
+    
+    Hints hints = GeoTools.getDefaultHints();
+    DatumFactory datumFactory1 = ReferencingFactoryFinder.getDatumFactory( hints );
+    
+    ReferencingFactoryContainer container = new ReferencingFactoryContainer( hints );
+    DatumFactory datumFactory2 = container.getDatumFactory(); // will be the same as datumFactory1 !
+
+Referencing Authority Factories
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Deep behind that CRS utility class is an amazing constellation of "factories" used to define what a CoordinateReferenceSystem is, actually create the parts and stitch them all together in a unified whole.
+
+These things are factories in name only; their real job is to supply the definitions (in pattern speak they are considered builders).
+
+* DatumAuthorityFactory:
+  Defines a Datum using a code provided by a authority such as EPSG
+* CSAuthorityFactory:
+  Defines a CoordinateSystem using a code provided by an authority such as EPSG
+* CRSAuthorityFactory:
+  Defines a CoordinateReferenceSystem for a give authority (such as EPSG)
+* CoordinateOperationAuthorityFactory:
+  Defines coordinate operations from codes, backed by math transforms
+
+To actually perform their function these authorities acquire a definition internally and then call a "real" factory class from ReferencingFactoryContainer.
+
+* Getting the EPSG AuthorityFactory
+  
+  You can make direct use of the CRSAuthorityFactory configured to handle "EPSG" codes::
+    
+    CRSAuthorityFactory factory = ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG", null);
+    CoordinateReferenceSystem crs = factory.createCoordinateReferenceSystem("4326");
+
+You will need to make sure that one of the **epsg** plugins is on your CLASSPATH (such as epsg-hsql).
+
+* Finding the available EPSG Codes::
+  
+    CRSAuthorityFactory factory = ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG", null);
+    Set<String> authorityCodes = factory.getAuthorityCodes(CoordinateReferenceSystem.class);
+
+* Getting Other AuthorityFactory Instances
+  
+  Here are several more examples that are understood by GeoTools::
+    
+    Hints hints = null; // Put optional hints here.
+    CRSAuthorityFactory crsAuthority  = ReferencingFactoryFinder.getCRSAuthorityFactory("CRS",   hints);
+    CRSAuthorityFactory wms2Authority = ReferencingFactoryFinder.getCRSAuthorityFactory("AUTO",  hints);
+    CRSAuthorityFactory wms3Authority = ReferencingFactoryFinder.getCRSAuthorityFactory("AUTO2", hints);
+
+* IdentifiedObject Finder for Controlled Searching
+  
+  One bit of functionality that is not available via the CRSAuthority interfaces directly
+  is the ability to carefully search through all the available definitions.::
+     
+     CRSAuthorityFactory factory = ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG", null);
+     AbstractAuthorityFactory custom = (AbstractAuthorityFactory) factory;
+     
+     IdentifiedObjectFinder finder = custom.getIdentifiedObjectFinder(CoordinateReferenceSystem.class);
+     
+     finder.setFullScanAllowed(true); // will search everything ever defined (may be slow)
+     IdentifiedObject find = finder.find(crs);
+
+     finder.setFullScanAllowed(false); // will limit search to what has been cached in memory
+     IdentifiedObject find = finder.find(crs);
+  
+  As shown above this is additional functionality made available through
+  AbstractAuthorityFactory - it is not part of the normal opengis interfaces.
+
+You can construct finders to search through other categories of referencing Objects (like Datum and ReferencingSystem).

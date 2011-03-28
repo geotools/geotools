@@ -10,9 +10,12 @@ Interfaces for GeoSpatial concepts, often defined by the OGC or ISO standards bo
    filter
    feature
    geometry
-   text
+   cs
    progress
    name
+   text
+   parameter
+   unit
 
 GeoTools is all about implementing spatial solutions, and we do our very best to follow a don't invent here policy (rather than get off topic). By referencing standards we are able to use well understood names for common spatial ideas and constructs.
 

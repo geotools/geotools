@@ -335,6 +335,8 @@ public class CTSTutorial {
     void createCRSByHand3() throws FactoryException {
         System.out.println("------------------------------------------");
         System.out.println("Creating two CRSs by hand:");
+        
+        // createCRSByHand3 start
         CRSFactory crsFactory = ReferencingFactoryFinder.getCRSFactory(null);
         DatumFactory datumFactory = ReferencingFactoryFinder.getDatumFactory(null);
         CSFactory csFactory = ReferencingFactoryFinder.getCSFactory(null);
@@ -417,6 +419,9 @@ public class CTSTutorial {
 
         // finally create the source geographic CRS
         CoordinateReferenceSystem airyCRS = crsFactory.createGeographicCRS(map, wgs84Datum, airyCS);
+        
+        // createCRSByHand3 stop
+        
         // TODO crs.toWKT() throws exceptions here (.toString() works)
         System.out.println("Geographic CRS: " + airyCRS.toString());
 

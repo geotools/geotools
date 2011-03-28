@@ -326,8 +326,8 @@ Now that your environment is setup we can put together a simple Quickstart. This
       :scale: 60
    
 2. Fill in the following code:
-
-.. literalinclude:: ../../src/main/java/org/geotools/tutorial/quickstart/Quickstart.java
+  
+  .. literalinclude:: /../src/main/java/org/geotools/tutorial/quickstart/Quickstart.java
         :language: java
         
 3. We need to download some sample data to work with. The http://www.naturalearthdata.com/ project
@@ -377,7 +377,7 @@ Here are some additional challenges for you to try:
   
   If you would like to ask GeoTools to cache the shapefile in memory try the following code:
 
-  .. literalinclude:: ../../src/main/java/org/geotools/tutorial/quickstart/QuickstartCache.java
+  .. literalinclude:: /../src/main/java/org/geotools/tutorial/quickstart/QuickstartCache.java
      :language: java
      :start-after: // docs start cache
      :end-before:  // docs end cache
@@ -401,7 +401,7 @@ Here are some additional challenges for you to try:
   things is with a map of connection parameters. This techniques gives us a little more control over
   how we work with a shapefile and also allows us to connect to databases and web feature servers.
 
-.. literalinclude:: ../../src/main/java/org/geotools/tutorial/quickstart/QuickstartNotes.java
+.. literalinclude:: /../src/main/java/org/geotools/tutorial/quickstart/QuickstartNotes.java
    :language: java
    :start-after: // start datastore
    :end-before:  // end datastore

@@ -92,7 +92,7 @@ Main Application
 1. Please create the class **Csv2Shape.java**
 2. Copy and paste in the following code:
 
-   .. literalinclude:: ../../src/main/java/org/geotools/tutorial/feature/Csv2Shape.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/feature/Csv2Shape.java
       :language: java
       :start-after: // start source
       :end-before: // docs break feature type
@@ -105,7 +105,7 @@ Create a FeatureType
 We create a FeatureType to describe the data the we are importing from the CSV file and writing to a shapefile.
 Here we use the DataUtilities convenience class:
 
-.. literalinclude:: ../../src/main/java/org/geotools/tutorial/feature/Csv2Shape.java
+.. literalinclude:: /../src/main/java/org/geotools/tutorial/feature/Csv2Shape.java
    :language: java
    :start-after: // docs break feature type
    :end-before: // docs break feature collection
@@ -118,7 +118,7 @@ We can now read the CSV File into a FeatureCollection; please note the following
  * Use of GeometryFactory to create new Points
  * Creation of features (SimpleFeature objects) using SimpleFeatureBuilder
 
-   .. literalinclude:: ../../src/main/java/org/geotools/tutorial/feature/Csv2Shape.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/feature/Csv2Shape.java
       :language: java
       :start-after: // docs break feature collection
       :end-before: // docs break new shapefile
@@ -132,7 +132,7 @@ Things to note as we create the shapefile:
  * The createSchema( SimpleFeatureType ) method to set up the shapefile
  * Our SimpleFeatureType did not include map projection (coordinate reference system) information needed to make a .prj file, so we call forceSchemaCRS to do this
 
- .. literalinclude:: ../../src/main/java/org/geotools/tutorial/feature/Csv2Shape.java
+ .. literalinclude:: /../src/main/java/org/geotools/tutorial/feature/Csv2Shape.java
     :language: java
     :start-after: // docs break new shapefil
     :end-before: // docs break transaction
@@ -142,7 +142,7 @@ Write the feature data to the shapefile
 
 Here we use a Transaction to safely add the FeatureCollection in one go:
 
-   .. literalinclude:: ../../src/main/java/org/geotools/tutorial/feature/Csv2Shape.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/feature/Csv2Shape.java
       :language: java
       :start-after: // docs break transaction
       :end-before: // end main
@@ -155,7 +155,7 @@ Prompt for the output shapefile
 This method prompts the user for an appropriate shapefile to write out to. The original csv file is used to determine a good default
 shapefile name.
 
-   .. literalinclude:: ../../src/main/java/org/geotools/tutorial/feature/Csv2Shape.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/feature/Csv2Shape.java
       :language: java
       :start-after: // start get shapefile
       :end-before: // end get shapefile
@@ -186,7 +186,7 @@ flexible **SimpleFeatureTypeBuilder**.
 
 Here is how to use SimpleFeatureTypeBuilder to accomplish the same result:
 
-   .. literalinclude:: ../../src/main/java/org/geotools/tutorial/feature/Csv2Shape.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/feature/Csv2Shape.java
       :language: java
       :start-after: // start createFeatureType
       :end-before: // end createFeatureType

@@ -95,14 +95,14 @@ Initially we are going to make a read-only datastore accessing CSV content:
 
 # To begin create the file CSVDataStore extending ContentDataStore
 
-   .. literalinclude:: ../../src/main/java/org/geotools/tutorial/datastore/CSVDataStore.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/datastore/CSVDataStore.java
       :language: java
       :start-after: // header start
       :end-before: // header end
       
 # We are going to be working with a single CSV file
 
-   .. literalinclude:: ../../src/main/java/org/geotools/tutorial/datastore/CSVDataStore.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/datastore/CSVDataStore.java
       :language: java
       :start-after: // constructor start
       :end-before: // constructor end
@@ -120,7 +120,7 @@ For our purposes this list will be the name of the csv file.
 
 # We can now implement createTypeNames() returning a the filename
 
-   .. literalinclude:: ../../src/main/java/org/geotools/tutorial/datastore/CSVDataStore.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/datastore/CSVDataStore.java
       :language: java
       :start-after: // createTypeNames start
       :end-before: // createTypeNames end

@@ -25,18 +25,17 @@
       <param name="id" value="user"/>
       <param name="build" value="html"/>
     </antcall>
+    
     <antcall target="sphinx">
       <param name="id" value="web"/>
       <param name="build" value="html"/>
     </antcall>
+    
     <antcall target="sphinx">
       <param name="id" value="index"/>
       <param name="build" value="html"/>
     </antcall>
-    <antcall target="sphinx">
-      <param name="id" value="tutorial"/>
-      <param name="build" value="html"/>
-    </antcall>
+
     <!-- uncomment for developers guide -->
     <antcall target="sphinx">
       <param name="id" value="developer"/>

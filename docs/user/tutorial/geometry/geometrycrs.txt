@@ -63,7 +63,7 @@ the geometry of the features.
     
 2. Create the **CRSLab.java** file and copy and paste the following code.
 
-.. literalinclude:: ../../src/main/java/org/geotools/tutorial/crs/CRSLab.java
+.. literalinclude:: /../src/main/java/org/geotools/tutorial/crs/CRSLab.java
    :language: java
    :start-after: // docs start source
    :end-before: // docs end main
@@ -72,7 +72,7 @@ the geometry of the features.
    toolbar: one to check that feature geometries are valid (e.g. polygon
    boundaries are closed) and one to export reprojected feature data.
 
-.. literalinclude:: ../../src/main/java/org/geotools/tutorial/crs/CRSLab.java
+.. literalinclude:: /../src/main/java/org/geotools/tutorial/crs/CRSLab.java
       :language: java
       :start-after: // docs start display
       :end-before: // docs end display
@@ -94,7 +94,7 @@ done by a helper method in the parent class.
 1. Create the **ValidateGeometryAction** mentioned in the previous section
    as an inner class.
 
-.. literalinclude:: ../../src/main/java/org/geotools/tutorial/crs/CRSLab.java
+.. literalinclude:: /../src/main/java/org/geotools/tutorial/crs/CRSLab.java
    :language: java
    :start-after: // docs start validate action
    :end-before: // docs end validate action
@@ -102,7 +102,7 @@ done by a helper method in the parent class.
 2. This method checks the geometry associated with each feature in our shapefile
    for common problems (such as polygons not having closed boundaries).
 
-.. literalinclude:: ../../src/main/java/org/geotools/tutorial/crs/CRSLab.java
+.. literalinclude:: /../src/main/java/org/geotools/tutorial/crs/CRSLab.java
    :language: java
    :start-after: // docs start validate
    :end-before: // docs end validate
@@ -130,28 +130,28 @@ using a **FeatureWriter**. Please close these objects after use.
 1. The action is a nested class that delegates to the exportToShapefile
    method in the parent class.
 
-.. literalinclude:: ../../src/main/java/org/geotools/tutorial/crs/CRSLab.java
+.. literalinclude:: /../src/main/java/org/geotools/tutorial/crs/CRSLab.java
     :language: java
     :start-after: // docs start export action
     :end-before: // docs end export action
 
 2. Exporting reprojected data to a shapefile
 
-.. literalinclude:: ../../src/main/java/org/geotools/tutorial/crs/CRSLab.java
+.. literalinclude:: /../src/main/java/org/geotools/tutorial/crs/CRSLab.java
    :language: java
    :start-after: // docs start export
    :end-before: // set up the math transform used to process the data
       
 3. Set up a math transform used to process the data
 
-.. literalinclude:: ../../src/main/java/org/geotools/tutorial/crs/CRSLab.java
+.. literalinclude:: /../src/main/java/org/geotools/tutorial/crs/CRSLab.java
    :language: java
    :start-after: // set up the math transform used to process the data
    :end-before: // grab all features
 
 4. Grab all features
 
-.. literalinclude:: ../../src/main/java/org/geotools/tutorial/crs/CRSLab.java
+.. literalinclude:: /../src/main/java/org/geotools/tutorial/crs/CRSLab.java
    :language: java
    :start-after: // grab all features
    :end-before: // And create a new Shapefile with a slight modified schema
@@ -160,7 +160,7 @@ using a **FeatureWriter**. Please close these objects after use.
    similar to our original. The only difference will be the
    CoordinateReferenceSystem of the geometry descriptor.
 
-.. literalinclude:: ../../src/main/java/org/geotools/tutorial/crs/CRSLab.java
+.. literalinclude:: /../src/main/java/org/geotools/tutorial/crs/CRSLab.java
    :language: java
    :start-after: // And create a new Shapefile with a slight modified schema
    :end-before: // carefully open an iterator and writer to process the results
@@ -168,7 +168,7 @@ using a **FeatureWriter**. Please close these objects after use.
 6. We can now carefully open an iterator to go through the contents, and a
    writer to write out the new Shapefile.
         
-.. literalinclude:: ../../src/main/java/org/geotools/tutorial/crs/CRSLab.java
+.. literalinclude:: /../src/main/java/org/geotools/tutorial/crs/CRSLab.java
    :language: java
    :start-after: // carefully open an iterator and writer to process the results
    :end-before: // docs end export
@@ -241,7 +241,7 @@ Here are a couple things to try with the above application.
   
   Replace your ValidateGeometryAction with the following: 
   
-.. literalinclude:: ../../src/main/java/org/geotools/tutorial/crs/CRSLab.java
+.. literalinclude:: /../src/main/java/org/geotools/tutorial/crs/CRSLab.java
    :language: java
    :start-after: // docs start validate action2
    :end-before: // docs end validate action2
@@ -267,7 +267,7 @@ Here are a couple things to try with the above application.
   retrieve reprojected features and write them to a new shapefile instead of
   transforming the features 'by hand' as we did above.
 
-.. literalinclude:: ../../src/main/java/org/geotools/tutorial/crs/CRSLab.java
+.. literalinclude:: /../src/main/java/org/geotools/tutorial/crs/CRSLab.java
    :language: java
    :start-after: // We can now query to retrieve a FeatureCollection in the desired crs
    :end-before: // docs end export2

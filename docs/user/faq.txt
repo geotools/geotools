@@ -159,7 +159,7 @@ Displaying maps
 How do I display a shapefile ?
 ------------------------------
 
-Have a look at the GeoTools :ref:`quickstart` which illustrates simple use of JMapFrame to do this.
+Have a look at :doc:`tutorial/index` which provides a quickstart showing how to do this.
 
 
 Why does does my program crash when I try to display a shapefile over a WMS layer ?

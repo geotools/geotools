@@ -1,31 +1,27 @@
 .. _userdocs:
 
-##################
-User Documentation
-##################
+##########
+User Guide
+##########
+
+This User Guide is  reference for GeoTools with code examples for each module, plugin and extension.
 
 .. toctree::
-   :hidden:
+   :maxdepth: 1
+
+   welcome/index
+
+.. toctree::
+   :maxdepth: 2
+
+   tutorial/index
+
+.. toctree::
+   :maxdepth: 1
+   
+   faq
+   
+.. toctree::
+   :maxdepth: 3
 
    guide/index
-   quickstart
-   examples/index
-   faq
-
-The :doc:`User Guide <guide/index>` provides a reference for GeoTools library with code examples
-for each module.
-
-To set up your development environment:
-
-* `Eclipse Quickstart <http://docs.geotools.org/latest/tutorials/quickstart/eclipse.html>`_
-* `NetBeans Quickstart <http://docs.geotools.org/latest/tutorials/quickstart/netbeans.html>`_
-* :doc:`Quickstart <quickstart>`
-
-Worked code examples introducing GeoTools (and spatial concepts in general):
-
-* `Tutorials <http://docs.geotools.org/latest/tutorials/index.html>`_
-* :doc:`Examples<examples/index>` 
-
-Additional resources:
-
-* :doc:`Frequently Asked Questions<faq>`

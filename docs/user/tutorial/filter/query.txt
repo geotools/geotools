@@ -57,7 +57,7 @@ Michael Bedward
 Query Lab Application
 =====================
 
-The :download:`QueryLab.java <../../src/main/java/org/geotools/tutorial/filter/QueryLab.java>`
+The :download:`QueryLab.java </../src/main/java/org/geotools/tutorial/filter/QueryLab.java>`
 example will go through using a Filter to select a FeatureCollection from a shapefile or other
 DataStore.
 
@@ -74,7 +74,7 @@ example.
 
 2. Create the *QueryLab** class and copy and paste the following to get going.
    
-   .. literalinclude:: ../../src/main/java/org/geotools/tutorial/filter/QueryLab.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/filter/QueryLab.java
       :language: java
       :start-after: // docs start source
       :end-before: // docs end main
@@ -89,7 +89,7 @@ Here is the code to create the controls:
 
 1. Add the following constructor:
 
-   .. literalinclude:: ../../src/main/java/org/geotools/tutorial/filter/QueryLab.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/filter/QueryLab.java
       :language: java
       :start-after: // docs start constructor
       :end-before: // docs start file menu
@@ -99,14 +99,14 @@ Here is the code to create the controls:
    
    Each Action is calling the same method but passing in a different DataStore factory
 
-   .. literalinclude:: ../../src/main/java/org/geotools/tutorial/filter/QueryLab.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/filter/QueryLab.java
       :language: java
       :start-after: // docs start file menu
       :end-before: // docs end file menu
 
 3. Now let us look at the Data menu items and Actions:
    
-   .. literalinclude:: ../../src/main/java/org/geotools/tutorial/filter/QueryLab.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/filter/QueryLab.java
       :language: java
       :start-after: // docs start data menu
       :end-before: // docs end data menu
@@ -128,20 +128,20 @@ used in the Quickstart to prompt the user for a shapefile, but allows greater co
  
 1. The File menu actions call this method to connect.
    
-   .. literalinclude:: ../../src/main/java/org/geotools/tutorial/filter/QueryLab.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/filter/QueryLab.java
       :language: java
       :start-after: // docs start connect
       :end-before: // docs end connect
 
 2. Helper method to update the combo box used to choose a feature type:
    
-   .. literalinclude:: ../../src/main/java/org/geotools/tutorial/filter/QueryLab.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/filter/QueryLab.java
       :language: java
       :start-after: // docs start update
       :end-before: // docs end update
 
 Query
-------
+-----
 
 A **Filter** is similar to the where clause of an SQL statement; defining a condition that each
 selected feature needs to meet in order to be included.
@@ -165,7 +165,7 @@ With this strategy in mind here is the implementation:
 
 1. Getting feature data using featureSource.getFeatures( filter )
    
-   .. literalinclude:: ../../src/main/java/org/geotools/tutorial/filter/QueryLab.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/filter/QueryLab.java
       :language: java
       :start-after: // docs start filterFeatures
       :end-before: // docs end filterFeatures
@@ -175,7 +175,7 @@ With this strategy in mind here is the implementation:
    
    You can ask questions of the FeatureCollection as a whole using the available methods.
 
-   .. literalinclude:: ../../src/main/java/org/geotools/tutorial/filter/QueryLab.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/filter/QueryLab.java
       :language: java
       :start-after: // docs start countFeatures
       :end-before: // docs end countFeatures
@@ -186,7 +186,7 @@ With this strategy in mind here is the implementation:
    
    Here is an example of selecting just the geometry attribute and displaying it in the table.
 
-   .. literalinclude:: ../../src/main/java/org/geotools/tutorial/filter/QueryLab.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/filter/QueryLab.java
       :language: java
       :start-after: // docs start queryFeatures
       :end-before: // docs end queryFeatures
@@ -314,7 +314,7 @@ Things to Try
    Using this idea with **Query** allows you to work with just the geometry when determining the
    center of a collection of features.
    
-   .. literalinclude:: ../../src/main/java/org/geotools/tutorial/filter/QueryLab.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/filter/QueryLab.java
       :language: java
       :start-after: // docs start centerFeatures
       :end-before: // docs end centerFeatures

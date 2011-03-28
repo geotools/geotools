@@ -56,7 +56,7 @@ Image Lab Application
 ======================
 
 In the earlier examples we looked at reading and displaying shapefiles. For 
-:download:`ImageLab.java <../../src/main/java/org/geotools/tutorial/raster/ImageLab.java>` we are
+:download:`ImageLab.java </../src/main/java/org/geotools/tutorial/raster/ImageLab.java>` we are
 going add raster data to the the mix.
 
 By displaying a three-band global satellite image and overlaying it with country boundaries from
@@ -75,7 +75,7 @@ a shapefile.
 
 2. Please create the file **ImageLab.java** and copy and paste in the following code:
 
-.. literalinclude:: ../../src/main/java/org/geotools/tutorial/raster/ImageLab.java
+.. literalinclude:: /../src/main/java/org/geotools/tutorial/raster/ImageLab.java
    :language: java
    :start-after: // docs start source
    :end-before: // docs end main
@@ -91,7 +91,7 @@ We are going to use these same facilities now to prompt the user:
 1. We will use **JParameterListWizard**, to prompt for the raster file and the shapefile that will
    be displayed over it:
 
-   .. literalinclude:: ../../src/main/java/org/geotools/tutorial/raster/ImageLab.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/raster/ImageLab.java
       :language: java
       :start-after: // docs start get layers
       :end-before: // docs end get layers
@@ -132,7 +132,7 @@ and pass it to a **JMapFrame**.
 1. Rather than using the static JMapFrame.showMap method, as we have in previous examples, we create a
    map frame and customize it by adding a menu to choose the image display mode. 
 
-.. literalinclude:: ../../src/main/java/org/geotools/tutorial/raster/ImageLab.java
+.. literalinclude:: /../src/main/java/org/geotools/tutorial/raster/ImageLab.java
    :language: java
    :start-after: // docs start display layers
    :end-before: // docs end display layers
@@ -145,7 +145,7 @@ and pass it to a **JMapFrame**.
 3. Creating a greyscale Style prompts the user for the image band to display; and then generates
    a style accordingly.
 
-.. literalinclude:: ../../src/main/java/org/geotools/tutorial/raster/ImageLab.java
+.. literalinclude:: /../src/main/java/org/geotools/tutorial/raster/ImageLab.java
    :language: java
    :start-after: // docs start create greyscale style
    :end-before: // docs end create greyscale style
@@ -159,7 +159,7 @@ and pass it to a **JMapFrame**.
    The methods checks the image to see if its bands (known as *sample dimensions*) have labels
    indicating which to use. If not, we just use the first three bands and hope for the best !
 
-.. literalinclude:: ../../src/main/java/org/geotools/tutorial/raster/ImageLab.java
+.. literalinclude:: /../src/main/java/org/geotools/tutorial/raster/ImageLab.java
    :language: java
    :start-after: // docs start create rgb style
    :end-before: // docs end source
@@ -202,7 +202,7 @@ Extra things to try
 * Advanced: You can also use GeoTools to work with raster information being served up from a remote
   Web Map Service.
   
-.. literalinclude:: ../../src/main/java/org/geotools/tutorial/wms/WMSLab.java
+.. literalinclude:: /../src/main/java/org/geotools/tutorial/wms/WMSLab.java
    :language: java
 
 Raster Data

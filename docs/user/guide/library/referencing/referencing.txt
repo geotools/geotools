@@ -7,16 +7,31 @@ A **CoordinateReferenceSystem** is an **gt-opengis** interface describing how a 
 
 For most cases you are only interested in using a CoordinateReferenceSystem as a parameter to a mathematical calculation (distance on along the surface of the earth and "re-projection" being the most common).
 
-Creating a CoordinateReferenceSystem::
-  
-  CoordinateReferenceSystem crs = CRS.decode("EPSG:4326");
+Creating a CoordinateReferenceSystem:
 
-You will need to ensure GeoTools is configured with the appropriate plugin for this example to work.
+.. literalinclude:: /../src/main/java/org/geotools/referencing/ReferencingExamples.java
+   :language: java
+   :start-after: // createFromEPSGCode start
+   :end-before: // createFromEPSGCode end
 
-There is a "well known text" representation of a CoordinateReferenceSystem that can be parsed as shown::
-  
-  CRSFactory crsFactory = ReferencingFactoryFinder.getCRSFactory(null);
-  CoordinateReferenceSystem crs = crsFactory.createFromWKT( wkt );
+You will need to ensure GeoTools is configured with an appropriate plugin for this example to work. This plugin
+will provide an CRSAuthorityFactory registered for "EPSG" codes.
+
+Internally the **CRS** class makes use of a **CRSAuthorityFactory** to provide the definition for
+the indicated code. You wish you can make use of the same facilities:
+
+.. literalinclude:: /../src/main/java/org/geotools/referencing/ReferencingExamples.java
+   :language: java
+   :start-after: // createFromEPSGCode2 start
+   :end-before: // createFromEPSGCode2 end
+
+To create the actual **CoordinateReferenceSystem** objects a **CRSFactory** is used, for example when parsing
+"well known text":
+
+.. literalinclude:: /../src/main/java/org/geotools/referencing/ReferencingExamples.java
+   :language: java
+   :start-after: // creatCRSFromWKT start
+   :end-before: // creatCRSFromWKT end
 
 Where an example definition is::
   
@@ -69,33 +84,51 @@ A 1D coordinate reference system used for recording heights or depth relative to
 
 For those into the details; these static final constant CoordinateReferenceSystem cite "GeoTools" as the authority responsible for the definition. This is in marked contrast with the **CoordinateReferenceSystem** instances produced by an AuthorityFactory (those instances will credit a specific organisation like "EPSG").
 
+Here is an example:
+
+.. literalinclude:: /../src/main/java/org/geotools/referencing/ReferencingExamples.java
+   :language: java
+   :start-after: // premadeObjects start
+   :end-before: // premadeObjects end
+
 Creating a CoordinateReferenceSystem
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-You can use factories defined by the referencing system to create things by hand using java code::
-  
-  FactoryGroup factories = new FactoryGroup(null);
-  GeographicCRS geoCRS = DefaultGeographicCRS.WGS84;
-  CartesianCS cartCS = DefaultCartesianCS.PROJECTED;
-  
-  ParameterValueGroup parameters = mtFactory.getDefaultParameters("Oblique Stereographic");
-  parameters.parameter("semi_major").setValue(ConstantesDespliegue.VALOR_SEMI_MAYOR);
-  parameters.parameter("semi_minor").setValue(6356752.314245179);
-  parameters.parameter("central_meridian").setValue(coordinateCentro.x);
-  //parameters.parameter("latitude_of_origin").setValue(70.0);
-  parameters.parameter("latitude_of_origin").setValue(coordinateCentro.y);
-  parameters.parameter("scale_factor").setValue(1.0);
-  parameters.parameter("false_easting").setValue(0.0);
-  parameters.parameter("false_northing").setValue(0.0);
-  Map properties = Collections.singletonMap("name", "WGS 84 / UTM Zone 12N");
-  ProjectedCRS projCRS = factories.createProjectedCRS(properties, geoCRS, null, parameters, cartCS);
+You can use factories defined by the referencing system to create things by hand using java code.
 
-The above code example may be out of date FactoryGroup( has been replaced by FactoryContainer).
+This example shows the creation of a WGS84 / UTM 10N CoordinateReferenceSystem:
+  
+.. literalinclude:: /../src/main/java/org/geotools/referencing/ReferencingExamples.java
+   :language: java
+   :start-after: // createCRSByHand1 start
+   :end-before: // createCRSByHand1 end
+
+The next example shows NAD 27 geographic CRS being defined, with a couple of interesting things to note:
+
+* The datum factory automatically adds aliase names to the datum. 
+  (The DatumAliasesTable.txt file inside gt-referencing has an entry for "North American Datum 1927").
+* The toWGS84 information being supplied for use in a datum transform is added to the Datum
+
+Here is the example:
+
+.. literalinclude:: /../src/main/java/org/geotools/referencing/ReferencingExamples.java
+   :language: java
+   :start-after: // createCRSByHand2 start
+   :end-before: // createCRSByHand2 end
+
+Finally here is a no holds bard creation of a CoordianteReferenceSystem with all the usual helper classes
+stripped away.  It does not use any of the static objects available in GeoTools. The following example
+creates a CoordianteReferenceSystem to represent WGS84.
+
+.. literalinclude:: /../src/main/java/org/geotools/referencing/ReferencingExamples.java
+   :language: java
+   :start-after: // createCRSByHand3 start
+   :end-before: // createCRSByHand3 end
 
 Referencing Factories
 ^^^^^^^^^^^^^^^^^^^^^
 
-These are the "real" factories - interfaces that actually create stuff. These are all just opengis interfaces, so you will need to use ReferencingFactoryFinder to get started:
+These are the "real" factories - interfaces that actually create stuff. These are all just gt-opengis interfaces, so you will need to use ReferencingFactoryFinder to get started:
 
 * DatumFactory:
   Makes datums!
@@ -106,25 +139,12 @@ These are the "real" factories - interfaces that actually create stuff. These ar
 * MathTransformFactory
   Makes MathTransform instances, and many more
 
-Here is an example::
-  
-  CRSFactory crsFactory = ReferencingFactoryFinder.getCRSFactory(null);
-  CoordinateReferenceSystem crs = crsFactory.createFromWKT( wkt );
+You can quickly grab all four factories in one go using **ReferencingFactoryContainer**:
 
-Where the wkt (ie well known text) is of the form::
-  
-  GEOGCS[
-    "WGS 84",
-    DATUM[
-      "WGS_1984",
-      SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],
-      TOWGS84[0,0,0,0,0,0,0],
-      AUTHORITY["EPSG","6326"]],
-    PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],
-    UNIT["DMSH",0.0174532925199433,AUTHORITY["EPSG","9108"]],
-    AXIS["Lat",NORTH],
-    AXIS["Long",EAST],
-    AUTHORITY["EPSG","4326"]]
+.. literalinclude:: /../src/main/java/org/geotools/referencing/ReferencingExamples.java
+   :language: java
+   :start-after: // factories start
+   :end-before: // factories end
 
 * ReferencingFactoryFinder
   
@@ -143,24 +163,20 @@ Where the wkt (ie well known text) is of the form::
   methods that use a couple of factories to gang up on a problem
 
   You can ReferencingFactoryContainer to use your own custom factory using hints
-  as shown below::
-    
-    Hints hints = new Hints(null);
-    hints.put( Hints.DATUM_FACTORY, datumFactory );
-    hints.put( Hints.CS_FACTORY, csFactory );
-    hints.put( Hints.CRS_FACTORY, crsFactory );
-    hints.put( Hints.MATH_TRANSFORM_FACTORY, mtFactory );
-    
-    ReferencingFactoryContainer container = new ReferencingFactoryContainer(hints);
+  as shown below:
   
-  Please note that this is not strictly needed since ReferencingFactoryFinder will
-  be smart and recycle instances if possible::
-    
-    Hints hints = GeoTools.getDefaultHints();
-    DatumFactory datumFactory1 = ReferencingFactoryFinder.getDatumFactory( hints );
-    
-    ReferencingFactoryContainer container = new ReferencingFactoryContainer( hints );
-    DatumFactory datumFactory2 = container.getDatumFactory(); // will be the same as datumFactory1 !
+  .. literalinclude:: /../src/main/java/org/geotools/referencing/ReferencingExamples.java
+     :language: java
+     :start-after: // referencingFactoryContainer start
+     :end-before: // referencingFactoryContainer end
+  
+  Please note that this ReferencingFactoryContainer not strictly needed (it just makes things easier).
+  ReferencingFactoryFinder will be smart and recycle instances if possible:
+  
+  .. literalinclude:: /../src/main/java/org/geotools/referencing/ReferencingExamples.java
+     :language: java
+     :start-after: // referencingFactoryContainer2 start
+     :end-before: // referencingFactoryContainer2 end
 
 Referencing Authority Factories
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

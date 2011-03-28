@@ -223,7 +223,7 @@ public class CTSTutorial {
     void createCRSByHand1() throws Exception {
         System.out.println("------------------------------------------");
         System.out.println("Creating a CRS by hand:");
-        // START SNIPPET: UTM10NcrsByHand
+        // createCRSByHand1 start
         MathTransformFactory mtFactory = ReferencingFactoryFinder.getMathTransformFactory(null);
         CRSFactory crsFactory = ReferencingFactoryFinder.getCRSFactory(null);
 
@@ -241,7 +241,7 @@ public class CTSTutorial {
         Map<String, ?> properties = Collections.singletonMap("name", "WGS 84 / UTM Zone 12N");
         ProjectedCRS projCRS = crsFactory
                 .createProjectedCRS(properties, geoCRS, conversion, cartCS);
-        // END SNIPPET: UTM10NcrsByHand
+        // createCRSByHand1 end
 
         // parameters.parameter("semi_major").setValue(((GeodeticDatum)geoCRS.getDatum()).getEllipsoid().getSemiMajorAxis());
         // parameters.parameter("semi_minor").setValue(((GeodeticDatum)geoCRS.getDatum()).getEllipsoid().getSemiMinorAxis());

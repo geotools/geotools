@@ -60,6 +60,19 @@ Examples:
 
 For more information on the use of these "test fixture" files please see the project contentions section on online tests.
 
+Image tests
+^^^^^^^^^^^
+
+Some tests in raster and rendering handling needs to compare images using a human perception model instead of a raw pixel by pixel comparison. To do this we use `"PerceptualDiff" <http://pdiff.sourceforge.net/>`_, an open source command line tool that can do this kind of comparison.
+
+In order for those tests to run PerceptualDiff needs to be installed in your computer, and added in the PATH of your execution environment (if you are on a Debian based distribution all that is needed to achive that is ''sudo apt-get install perceptualdiff'').
+
+If these tests are failing you can also have the system show you the expected and actual image in a GUI popup, to enable it you'll have to use the following profile::
+   
+   mvn test -P interactive.image
+   
+If PerceptualDiff is not installed the tests will be skipped and a message notifying the lack of PerceptualDiff in the PATH will be printed.
+
 Interactive Tests
 ^^^^^^^^^^^^^^^^^
 

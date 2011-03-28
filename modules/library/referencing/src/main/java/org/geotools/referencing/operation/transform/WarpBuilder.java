@@ -65,7 +65,7 @@ public class WarpBuilder {
     /**
      * The array used to perform all the reprojections
      */
-    final double[] ordinates = new double[6];
+    final double[] ordinates = new double[10];
 
     /**
      * Creates a new warp builder
@@ -252,7 +252,8 @@ public class WarpBuilder {
         }
         
         // check what kind of split are we going to make
-        if(!withinTolHorizontal && !withinTolVertical) {
+        // (and try not to get fooled by symmetrical projections)
+        if((!withinTolHorizontal && !withinTolVertical)) {
             // quad split
             rowDepth++;
             colDepth++;
@@ -292,35 +293,63 @@ public class WarpBuilder {
      */
     boolean isWithinTolerance(MathTransform2D mt, double x1, double y1, double x2,
             double y2, double x3, double y3) throws TransformException {
-        // transform the points
+        // transform the points (use two extra points at quarter distance to avoid being
+        // fooled by symmetrical projections
         ordinates[0] = x1;
         ordinates[1] = y1;
-        ordinates[2] = x2;
-        ordinates[3] = y2;
-        ordinates[4] = x3;
-        ordinates[5] = y3;
-        mt.transform(ordinates, 0, ordinates, 0, 3);
+        ordinates[2] = (x1 + x2) / 2;
+        ordinates[3] = (y1 + y2) / 2;
+        ordinates[4] = x2;
+        ordinates[5] = y2;
+        ordinates[6] = (x2 + x3) / 2;
+        ordinates[7] = (y2 + y3) / 2;
+        ordinates[8] = x3;
+        ordinates[9] = y3;
+        mt.transform(ordinates, 0, ordinates, 0, 5);
         
-        // apply to local variables for readability
-        final double tx1 = ordinates[0];
-        final double ty1 = ordinates[1];
-        final double tx2 = ordinates[2];
-        final double ty2 = ordinates[3];
-        final double tx3 = ordinates[4];
-        final double ty3 = ordinates[5];
-        
-        // check the differences
-        double dx = 0;
-        if(abs(x3 - x1) > EPS) {
-            dx = tx2 - (tx3 - tx1) / (x3 - x1) * (x2  - x1) - tx1;
+        boolean withinTolerance = true;
+        for(int i = 1; i < 4 && withinTolerance; i++) {
+            // apply to local variables for readability
+            final double tx1 = ordinates[0];
+            final double ty1 = ordinates[1];
+            final double tx2 = ordinates[i * 2];
+            final double ty2 = ordinates[i * 2 + 1];
+            final double tx3 = ordinates[8];
+            final double ty3 = ordinates[9];
+            
+            // check the differences
+            double dx = 0;
+            if(abs(x3 - x1) > EPS) {
+                double xmid;
+                if(i == 1) {
+                    xmid = (x1 + x2) / 2;
+                } else if(i == 2){
+                    xmid = x2;
+                } else {
+                    xmid = (x2 + x3) / 2;
+                }
+                 
+                dx = tx2 - (tx3 - tx1) / (x3 - x1) * (xmid - x1) - tx1;
+            }
+            double dy = 0;
+            if(abs(y3 - y1) > EPS) {
+                double ymid;
+                if(i == 1) {
+                    ymid = (y1 + y2) / 2;
+                } else if(i == 2){
+                    ymid = y2;
+                } else {
+                    ymid = (y2 + y3) / 2;
+                }
+                dy = ty2 - (ty3 - ty1) / (y3 - y1) * (ymid - y1) - ty1;
+            }
+            
+            // see if the total distance between predicted and actual is lower than the tolerance
+            final double distance = dx * dx + dy * dy;
+            withinTolerance &= distance < maxDistanceSquared;
         }
-        double dy = 0;
-        if(abs(y3 - y1) > EPS) {
-            dy = ty2 - (ty3 - ty1) / (y3 - y1) * (y2 - y1) - ty1;
-        }
         
-        // see if the total distance between predicted and actual is lower than the tolerance
-        return dx * dx + dy * dy < maxDistanceSquared;
+        return withinTolerance;
     }
     
     /**

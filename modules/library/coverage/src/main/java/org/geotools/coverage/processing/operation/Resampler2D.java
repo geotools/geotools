@@ -987,7 +987,7 @@ final class Resampler2D extends GridCoverage2D {
              * Otherwise we assume that the difference is caused by rounding error and we will try
              * progressive empirical adjustment in order to get the rectangles to fit.
              */
-            final Warp warp = wb.buildWarp(transform, sourceBB);
+            final Warp warp = wb.buildWarp(transform, targetBB);
             if(true) {
                 return warp;
             }

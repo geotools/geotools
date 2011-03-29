@@ -41,24 +41,6 @@ This is in opposition to the ISO Coverage model (where Coverage extends Feature)
 
 GeoTools 'Coverage' objects emerged from an earlier specification published by the OpenGeospatial Consortium (OGC) called "Grid Coverage Services Implementation" (OGC 01-004).
 
-**Direct Access**
-
-The coverage module, while readily usable and very powerful, does not yet provide the programmer with a trivial tool to access data directly from the common formats. Programmers who use the GeoTools library need to write their own code to create the GridCoverage2D objects.
-
-The standard way to access an external data source to create GeoTools GridCoverage instances currently requires creating several classes:
-
-1. A javax.imageio.ImageReader class to access the data source and providing the methods to create:
-   
-  * java.awt.image.RenderedImage
-  * javax.imageio.metadata.IIOMetadata instance defining both:
-    
-    * the meaning of the numeric values in the RenderedImage; and
-    * the georeferencing parameters to geolocate the image
-
-2. A builder of the GridCoverage2D which uses the above information to create an instance.
-
-The first part of this section on the 'Coverage' module explains the concepts behind this work and the steps required to create a GridCoverage2D instance. It should eventually be possible to reduce the work currently required of programmers wishing to use this part of the library; today, this work is still required because there is no existing, standard way to define all the different kinds of metadata which may be required to build grid coverages.
-
 **Background on the Design**
 
 The design of the coverage modules follows closely the design of image handling in Java. Java provides three major subsystems in their Java media API's which are used and extended in GeoTools.

@@ -1,6 +1,27 @@
 Plugin
 ------
 
+The coverage module, while readily usable and very powerful, does not yet provide much by way of assistance for developers
+developers wanting to write their own plugins.
+
+The standard way to access an external data source to create GeoTools GridCoverage instances currently requires creating several classes:
+
+1. A javax.imageio.ImageReader class to access the data source and providing the methods to create:
+   
+  * java.awt.image.RenderedImage
+  * javax.imageio.metadata.IIOMetadata instance defining both:
+    
+    * the meaning of the numeric values in the RenderedImage; and
+    * the georeferencing parameters to geolocate the image
+
+2. A builder of the GridCoverage2D which uses the above information to create an instance.
+
+The gt-opengis module documentation explains the concepts behind this work. It should eventually be possible to reduce the effort required of programmers wishing to use this part of the library (in particular a standard way to define all the different kinds of metadata for grid coverages).
+
+This page explores some of the examples available today.
+
+**ImageReader**
+
 The process of creating a plugin for a new GridCoverage format starts with creating an ImageReader to access the contents of the original data source. We have a range of implementations in you can work from illustrating both disk and database image formats being supported.
 
 This ImageReader will need to provide both a RenderedImage and an object which extends IIOMetaData since the interface calls for these methods.

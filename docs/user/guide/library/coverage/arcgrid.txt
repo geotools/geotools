@@ -1,0 +1,12 @@
+ArcGrid Plugin
+--------------
+
+The arcgrid module in the plugin group provides access to the ARCGRID raster format defined by ESRI and used in that company's software suites.
+
+This is a straightforward plugin with no additional information needed beyond that advertised by the GridCoverageExchange API.
+
+Code Example
+
+// example needed
+
+Please note that this format is well suited to data exchange; especially when considered as a text file is is obviously not suited to high performance.

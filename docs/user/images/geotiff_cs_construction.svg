@@ -1,0 +1,921 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="744.09448"
+   height="1052.3622"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.47pre2 r22153"
+   sodipodi:docname="geotiff_cs_construction.svg"
+   inkscape:export-filename="/Users/jody/java/geotools/head/docs/user/images/geotiff_cs_construction.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
+  <defs
+     id="defs4">
+    <marker
+       inkscape:stockid="Arrow1Lstart"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lstart"
+       style="overflow:visible">
+      <path
+         id="path3621"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;marker-start:none"
+         transform="matrix(0.8,0,0,0.8,10,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lend"
+       style="overflow:visible">
+      <path
+         id="path3624"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;marker-start:none"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)" />
+    </marker>
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       id="perspective10" />
+    <inkscape:perspective
+       id="perspective5397"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1"
+     inkscape:cx="402.78712"
+     inkscape:cy="723.85201"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1276"
+     inkscape:window-height="1002"
+     inkscape:window-x="4"
+     inkscape:window-y="3"
+     inkscape:window-maximized="0" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       sodipodi:type="arc"
+       style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:1, 2;stroke-dashoffset:0;font-family:Arial;-inkscape-font-specification:Arial"
+       id="path2816"
+       sodipodi:cx="129.52756"
+       sodipodi:cy="139.63254"
+       sodipodi:rx="7.3490815"
+       sodipodi:ry="7.3490815"
+       d="m 136.87664,139.63254 a 7.3490815,7.3490815 0 1 1 -14.69816,0 7.3490815,7.3490815 0 1 1 14.69816,0 z"
+       transform="translate(345.27604,-107.83819)" />
+    <text
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+       x="414.51605"
+       y="19.29538"
+       id="text2818"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan2820"
+         x="414.51605"
+         y="19.29538">GeoTiff Metadata</tspan><tspan
+         sodipodi:role="line"
+         x="414.51605"
+         y="34.29538"
+         id="tspan3612">Ingested</tspan></text>
+    <rect
+       style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#969696;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;font-family:Arial;-inkscape-font-specification:Arial"
+       id="rect2826"
+       width="18.832022"
+       height="18.832022"
+       x="264.56619"
+       y="388.07605"
+       transform="matrix(0.70710678,-0.70710678,0.70710678,0.70710678,0,0)" />
+    <path
+       style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Arrow1Lstart);marker-end:none;font-family:Arial;-inkscape-font-specification:Arial"
+       d="m 474.80391,74.018505 -2.6e-4,-34.875076"
+       id="path3610"
+       inkscape:connector-type="polyline"
+       inkscape:connection-start="#rect2826"
+       inkscape:connection-end="#path2816" />
+    <text
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+       x="476.09665"
+       y="120.38257"
+       id="text3614"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3616"
+         x="476.09665"
+         y="120.38257">Check</tspan><tspan
+         sodipodi:role="line"
+         x="476.09665"
+         y="135.38257"
+         id="tspan5409">GTModelTypeGeoKey</tspan></text>
+    <g
+       id="g5798"
+       transform="translate(-18,-416.25)">
+      <rect
+         transform="translate(0,308.2677)"
+         y="173.36554"
+         x="174.31766"
+         height="43.902225"
+         width="135.5804"
+         id="rect5368"
+         style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <text
+         id="text5370"
+         y="499.71063"
+         x="187.39594"
+         style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+         xml:space="preserve"><tspan
+           y="499.71063"
+           x="187.39594"
+           id="tspan5372"
+           sodipodi:role="line">ModelTypeProjected</tspan></text>
+    </g>
+    <g
+       id="g5793"
+       transform="translate(-114,-396.75)">
+      <rect
+         style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+         id="rect5403"
+         width="135.5804"
+         height="43.902225"
+         x="667.31763"
+         y="462.13324" />
+      <text
+         xml:space="preserve"
+         style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+         x="674.33148"
+         y="480.21063"
+         id="text5405"><tspan
+           sodipodi:role="line"
+           id="tspan5407"
+           x="674.33148"
+           y="480.21063">ModelTypeGeographic</tspan></text>
+    </g>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend);display:inline"
+       d="m 488.12023,87.33463 65.1974,-1.36e-4"
+       id="path5417"
+       inkscape:connector-type="polyline"
+       inkscape:connection-start="#rect2826"
+       inkscape:connection-end="#g5793" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend);display:inline"
+       d="M 461.48777,87.334641 291.89806,87.334435"
+       id="path5605"
+       inkscape:connector-type="polyline"
+       inkscape:connection-start="#rect2826"
+       inkscape:connection-end="#g5798" />
+    <rect
+       transform="matrix(0.70710678,-0.70710678,0.70710678,0.70710678,0,0)"
+       y="268.78986"
+       x="29.314888"
+       height="18.832022"
+       width="18.832022"
+       id="rect5811"
+       style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#969696;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;font-family:Arial;-inkscape-font-specification:Arial" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
+       d="m 224.10793,109.28547 1.6e-4,46.7327"
+       id="path5813"
+       inkscape:connector-type="polyline"
+       inkscape:connection-start="#g5798"
+       inkscape:connection-end="#rect5811" />
+    <g
+       id="g5826"
+       transform="translate(12.733864,-424)">
+      <rect
+         style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+         id="rect5817"
+         width="135.5804"
+         height="43.902225"
+         x="7.4759369"
+         y="571.38324" />
+      <text
+         xml:space="preserve"
+         style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+         x="75.248558"
+         y="589.46063"
+         id="text5819"><tspan
+           sodipodi:role="line"
+           id="tspan5821"
+           x="75.248558"
+           y="589.46063">Standard Code</tspan></text>
+    </g>
+    <g
+       id="g5831"
+       transform="translate(284,-424)">
+      <rect
+         y="571.38324"
+         x="7.4759369"
+         height="43.902225"
+         width="135.5804"
+         id="rect5833"
+         style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <text
+         id="text5835"
+         y="589.46063"
+         x="75.248558"
+         style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+         xml:space="preserve"><tspan
+           y="589.46063"
+           x="75.248558"
+           id="tspan5837"
+           sodipodi:role="line">User Defined</tspan></text>
+    </g>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
+       d="m 210.79189,169.33437 -55.00169,-1e-5"
+       id="path5839"
+       inkscape:connector-type="polyline"
+       inkscape:connection-start="#rect5811"
+       inkscape:connection-end="#g5826" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
+       d="m 237.42438,169.33437 54.05156,-1e-5"
+       id="path5841"
+       inkscape:connector-type="polyline"
+       inkscape:connection-start="#rect5811"
+       inkscape:connection-end="#g5831" />
+    <text
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+       x="223"
+       y="197.36218"
+       id="text6215"><tspan
+         sodipodi:role="line"
+         id="tspan6217"
+         x="223"
+         y="197.36218">Check</tspan><tspan
+         sodipodi:role="line"
+         x="223"
+         y="212.36218"
+         id="tspan6219">ProjectedCSTypeGeoKey</tspan></text>
+    <g
+       id="g6417"
+       transform="translate(-18,-462)">
+      <rect
+         rx="16"
+         ry="8"
+         y="688.36218"
+         x="23"
+         height="55"
+         width="166"
+         id="rect6407"
+         style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <text
+         id="text6409"
+         y="708.36218"
+         x="36"
+         style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+         xml:space="preserve"><tspan
+           style="font-size:8px"
+           y="708.36218"
+           x="36"
+           id="tspan6411"
+           sodipodi:role="line">Create ProjectedCoordainteSystem</tspan><tspan
+           style="font-size:8px"
+           id="tspan6413"
+           y="718.36218"
+           x="36"
+           sodipodi:role="line">with CoordinateSystemAuthorityFactory</tspan><tspan
+           style="font-size:8px"
+           id="tspan6415"
+           y="728.36218"
+           x="36"
+           sodipodi:role="line">CS code in ProjectedCSTypeGeoKey</tspan></text>
+    </g>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
+       d="m 88,191.28547 0,35.07671"
+       id="path6424"
+       inkscape:connector-type="polyline"
+       inkscape:connection-start="#g5826"
+       inkscape:connection-end="#g6417" />
+    <g
+       id="g6637"
+       transform="translate(-18,-388)">
+      <path
+         sodipodi:type="arc"
+         style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;font-family:Arial;-inkscape-font-specification:Arial"
+         id="path6633"
+         sodipodi:cx="129.52756"
+         sodipodi:cy="139.63254"
+         sodipodi:rx="7.3490815"
+         sodipodi:ry="7.3490815"
+         d="m 136.87664,139.63254 c 0,4.05878 -3.2903,7.34908 -7.34908,7.34908 -4.05879,0 -7.34908,-3.2903 -7.34908,-7.34908 0,-4.05879 3.29029,-7.34908 7.34908,-7.34908 4.05878,0 7.34908,3.29029 7.34908,7.34908 z"
+         transform="translate(-23.527557,646.16181)" />
+      <path
+         transform="translate(-23.527557,646.10115)"
+         d="m 136.87664,139.63254 c 0,4.05878 -3.2903,7.34908 -7.34908,7.34908 -4.05879,0 -7.34908,-3.2903 -7.34908,-7.34908 0,-4.05879 3.29029,-7.34908 7.34908,-7.34908 4.05878,0 7.34908,3.29029 7.34908,7.34908 z"
+         sodipodi:ry="7.3490815"
+         sodipodi:rx="7.3490815"
+         sodipodi:cy="139.63254"
+         sodipodi:cx="129.52756"
+         id="path6635"
+         style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:none;stroke:#ffffff;stroke-width:1;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;font-family:Arial;-inkscape-font-specification:Arial"
+         sodipodi:type="arc" />
+    </g>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Arrow1Lstart)"
+       d="M 88,390.38461 88,281.36218"
+       id="path6641"
+       inkscape:connector-type="polyline"
+       inkscape:connection-start="#g6637"
+       inkscape:connection-end="#g6417" />
+    <rect
+       style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#969696;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;font-family:Arial;-inkscape-font-specification:Arial"
+       id="rect6829"
+       width="18.832022"
+       height="18.832022"
+       x="11.3759"
+       y="477.87177"
+       transform="matrix(0.70710678,-0.70710678,0.70710678,0.70710678,0,0)"
+       inkscape:connector-avoid="true" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
+       d="m 359.2662,191.28547 3.5e-4,125.26071"
+       id="path6831"
+       inkscape:connector-type="polyline"
+       inkscape:connection-start="#g5831"
+       inkscape:connection-end="#rect6829" />
+    <text
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+       x="358"
+       y="359.36218"
+       id="text7019"><tspan
+         sodipodi:role="line"
+         id="tspan7021"
+         x="358"
+         y="359.36218">Check</tspan><tspan
+         sodipodi:role="line"
+         x="358"
+         y="374.36218"
+         id="tspan7023">ProjectionGeoKey</tspan></text>
+    <g
+       transform="translate(95,-386)"
+       id="g7025">
+      <rect
+         style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+         id="rect7027"
+         width="166"
+         height="55"
+         x="23"
+         y="688.36218"
+         ry="8"
+         rx="16" />
+      <text
+         xml:space="preserve"
+         style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+         x="36"
+         y="708.36218"
+         id="text7029"><tspan
+           sodipodi:role="line"
+           id="tspan7031"
+           x="36"
+           y="708.36218"
+           style="font-size:8px">Create ProjectedCoordainteSystem</tspan><tspan
+           sodipodi:role="line"
+           x="36"
+           y="718.36218"
+           id="tspan7033"
+           style="font-size:8px">with CoordinateSystemAuthorityFactory</tspan><tspan
+           sodipodi:role="line"
+           x="36"
+           y="728.36218"
+           id="tspan7035"
+           style="font-size:8px">CS code in ProjectionGeoKey</tspan></text>
+    </g>
+    <g
+       transform="translate(95,-388)"
+       id="g7037">
+      <path
+         transform="translate(-23.527557,646.16181)"
+         d="m 136.87664,139.63254 c 0,4.05878 -3.2903,7.34908 -7.34908,7.34908 -4.05879,0 -7.34908,-3.2903 -7.34908,-7.34908 0,-4.05879 3.29029,-7.34908 7.34908,-7.34908 4.05878,0 7.34908,3.29029 7.34908,7.34908 z"
+         sodipodi:ry="7.3490815"
+         sodipodi:rx="7.3490815"
+         sodipodi:cy="139.63254"
+         sodipodi:cx="129.52756"
+         id="path7039"
+         style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;font-family:Arial;-inkscape-font-specification:Arial"
+         sodipodi:type="arc" />
+      <path
+         sodipodi:type="arc"
+         style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:none;stroke:#ffffff;stroke-width:1;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;font-family:Arial;-inkscape-font-specification:Arial"
+         id="path7041"
+         sodipodi:cx="129.52756"
+         sodipodi:cy="139.63254"
+         sodipodi:rx="7.3490815"
+         sodipodi:ry="7.3490815"
+         d="m 136.87664,139.63254 c 0,4.05878 -3.2903,7.34908 -7.34908,7.34908 -4.05879,0 -7.34908,-3.2903 -7.34908,-7.34908 0,-4.05879 3.29029,-7.34908 7.34908,-7.34908 4.05878,0 7.34908,3.29029 7.34908,7.34908 z"
+         transform="translate(-23.527557,646.10115)" />
+    </g>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
+       d="m 201,357.36218 0,33.08309"
+       id="path7043"
+       inkscape:connector-type="polyline"
+       inkscape:connection-start="#g7025"
+       inkscape:connection-end="#g7037" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
+       d="M 345.95036,329.86237 284,329.86229"
+       id="path7231"
+       inkscape:connector-type="polyline"
+       inkscape:connection-start="#rect6829"
+       inkscape:connection-end="#g7025" />
+    <g
+       id="g7442"
+       transform="translate(-18,-397.5)"
+       inkscape:connector-avoid="true">
+      <rect
+         rx="16"
+         ry="8"
+         y="706.36218"
+         x="447"
+         height="42"
+         width="166"
+         id="rect7421"
+         style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <text
+         id="text7423"
+         y="726.36218"
+         x="460"
+         style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+         xml:space="preserve"><tspan
+           style="font-size:8px"
+           id="tspan7429"
+           y="726.36218"
+           x="460"
+           sodipodi:role="line">Read ProjCoordTransGeoKey</tspan><tspan
+           style="font-size:8px"
+           y="736.36218"
+           x="460"
+           sodipodi:role="line"
+           id="tspan7436">Read ProjLinearUnitsGeoKey</tspan></text>
+    </g>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
+       d="M 372.58282,329.86237 429,329.86229"
+       id="path7448"
+       inkscape:connector-type="polyline"
+       inkscape:connection-start="#rect6829"
+       inkscape:connection-end="#g7442" />
+    <g
+       id="g7661"
+       transform="translate(-18,-404)"
+       inkscape:connector-avoid="true">
+      <rect
+         rx="16"
+         ry="8"
+         y="762.36218"
+         x="445"
+         height="45"
+         width="166"
+         id="rect7640"
+         style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <text
+         id="text7642"
+         y="782.36218"
+         x="458"
+         style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+         xml:space="preserve"><tspan
+           style="font-size:8px"
+           id="tspan7648"
+           y="782.36218"
+           x="458"
+           sodipodi:role="line">Read Tags appropriate to projection</tspan><tspan
+           style="font-size:8px"
+           y="792.36218"
+           x="458"
+           sodipodi:role="line"
+           id="tspan7655">specified in ProjCoordTransGeoKey</tspan></text>
+    </g>
+    <g
+       id="g7667"
+       transform="translate(-17,-350)"
+       inkscape:connector-avoid="true">
+      <rect
+         style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+         id="rect7669"
+         width="166"
+         height="45"
+         x="445"
+         y="762.36218"
+         ry="8"
+         rx="16" />
+      <text
+         xml:space="preserve"
+         style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+         x="458"
+         y="782.36218"
+         id="text7671"><tspan
+           id="tspan7675"
+           sodipodi:role="line"
+           x="458"
+           y="782.36218"
+           style="font-size:8px">Construct Projection Object with</tspan><tspan
+           sodipodi:role="line"
+           x="458"
+           y="792.36218"
+           style="font-size:8px"
+           id="tspan7679">CoordinateSystemFactory</tspan></text>
+    </g>
+    <rect
+       transform="matrix(0.70710678,-0.70710678,0.70710678,0.70710678,0,0)"
+       y="713.48346"
+       x="-9.6523132"
+       height="18.832022"
+       width="18.832022"
+       id="rect7681"
+       style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#969696;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;font-family:Arial;-inkscape-font-specification:Arial" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
+       d="M 619.75166,109.28547 620,457.36218 519.45806,506.47599"
+       id="path7683"
+       inkscape:connector-type="polyline"
+       sodipodi:nodetypes="ccc"
+       inkscape:connection-end="#rect7681"
+       inkscape:connection-start="#g5793" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
+       d="m 511.00001,457.36218 1e-5,40.65578"
+       id="path7871"
+       inkscape:connector-type="polyline"
+       inkscape:connection-start="#g7667"
+       inkscape:connection-end="#rect7681" />
+    <text
+       xml:space="preserve"
+       style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+       x="509"
+       y="534.36218"
+       id="text8059"><tspan
+         sodipodi:role="line"
+         id="tspan8061"
+         x="509"
+         y="534.36218">Check</tspan><tspan
+         sodipodi:role="line"
+         x="509"
+         y="546.86218"
+         id="tspan8063">GeographicTypeGeoKey</tspan></text>
+    <g
+       id="g8082"
+       transform="translate(127,-325)">
+      <rect
+         style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+         id="rect8067"
+         width="135.5804"
+         height="43.902225"
+         x="162.31766"
+         y="814.38324" />
+      <text
+         xml:space="preserve"
+         style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+         x="191.45355"
+         y="832.46063"
+         id="text8069"><tspan
+           sodipodi:role="line"
+           id="tspan8071"
+           x="191.45355"
+           y="832.46063">StandardCode</tspan></text>
+    </g>
+    <g
+       transform="translate(582,-82)"
+       id="g8087">
+      <rect
+         style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+         id="rect8089"
+         width="135.5804"
+         height="43.902225"
+         x="7.4759369"
+         y="571.38324" />
+      <text
+         xml:space="preserve"
+         style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+         x="75.248558"
+         y="589.46063"
+         id="text8091"><tspan
+           sodipodi:role="line"
+           id="tspan8093"
+           x="75.248558"
+           y="589.46063">User Defined</tspan></text>
+    </g>
+    <g
+       id="g8095"
+       transform="translate(250,-148)">
+      <rect
+         rx="16"
+         ry="8"
+         y="688.36218"
+         x="23"
+         height="55"
+         width="166"
+         id="rect8097"
+         style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <text
+         id="text8099"
+         y="708.36218"
+         x="36"
+         style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+         xml:space="preserve"><tspan
+           style="font-size:8px"
+           id="tspan8105"
+           y="708.36218"
+           x="36"
+           sodipodi:role="line">Create GeographicCoordinateSystem</tspan><tspan
+           style="font-size:8px"
+           y="718.36218"
+           x="36"
+           sodipodi:role="line"
+           id="tspan8112">with CoordinateSystemAuthroityFactory</tspan><tspan
+           style="font-size:8px"
+           y="728.36218"
+           x="36"
+           sodipodi:role="line"
+           id="tspan8114">CS code in GeographicTypeGeoKey</tspan></text>
+    </g>
+    <g
+       transform="translate(546,-144)"
+       id="g8116">
+      <rect
+         style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+         id="rect8118"
+         width="166"
+         height="55"
+         x="23"
+         y="688.36218"
+         ry="8"
+         rx="16" />
+      <text
+         xml:space="preserve"
+         style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+         x="36"
+         y="708.36218"
+         id="text8120"><tspan
+           id="tspan8126"
+           sodipodi:role="line"
+           x="36"
+           y="708.36218"
+           style="font-size:8px">Read geoGeodeticDatumGeoKey</tspan><tspan
+           sodipodi:role="line"
+           x="36"
+           y="718.36218"
+           style="font-size:8px"
+           id="tspan8133">Read GeoAngularUnitsGeoKey</tspan><tspan
+           sodipodi:role="line"
+           x="36"
+           y="728.36218"
+           style="font-size:8px"
+           id="tspan8135">Read GeoPrimeMeridianGeoKey</tspan></text>
+    </g>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
+       d="m 497.68379,511.33422 -72.78573,7e-5"
+       id="path8151"
+       inkscape:connector-type="polyline"
+       inkscape:connection-start="#rect7681"
+       inkscape:connection-end="#g8082" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
+       d="m 524.31626,511.33422 65.15968,7e-5"
+       id="path8153"
+       inkscape:connector-type="polyline"
+       inkscape:connection-start="#rect7681"
+       inkscape:connection-end="#g8087" />
+    <rect
+       style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#969696;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;font-family:Arial;-inkscape-font-specification:Arial"
+       id="rect8341"
+       width="18.832022"
+       height="18.832022"
+       x="-122.08276"
+       y="827.32861"
+       transform="matrix(0.70710678,-0.70710678,0.70710678,0.70710678,0,0)" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
+       d="m 397.46017,595.36218 106.53422,70.66278"
+       id="path8343"
+       inkscape:connector-type="polyline"
+       inkscape:connection-start="#g8095"
+       inkscape:connection-end="#rect8341" />
+    <text
+       xml:space="preserve"
+       style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+       x="511"
+       y="702.36218"
+       id="text8533"><tspan
+         sodipodi:role="line"
+         id="tspan8535"
+         x="511"
+         y="702.36218">Check</tspan><tspan
+         sodipodi:role="line"
+         x="511"
+         y="714.86218"
+         id="tspan8537">GTModelTypeGeoKey</tspan></text>
+    <g
+       id="g8539"
+       transform="translate(570,78)">
+      <rect
+         y="571.38324"
+         x="7.4759369"
+         height="43.902225"
+         width="135.5804"
+         id="rect8541"
+         style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <text
+         id="text8543"
+         y="589.46063"
+         x="75.248558"
+         style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+         xml:space="preserve"><tspan
+           y="589.46063"
+           x="75.248558"
+           id="tspan8545"
+           sodipodi:role="line">ModelTypeGeographic</tspan></text>
+    </g>
+    <g
+       transform="translate(292,78)"
+       id="g8547">
+      <rect
+         style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+         id="rect8549"
+         width="135.5804"
+         height="43.902225"
+         x="7.4759369"
+         y="571.38324" />
+      <text
+         xml:space="preserve"
+         style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+         x="75.248558"
+         y="589.46063"
+         id="text8551"><tspan
+           sodipodi:role="line"
+           id="tspan8553"
+           x="75.248558"
+           y="589.46063">ModelTypeProjected</tspan></text>
+    </g>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
+       d="m 525.31654,671.33513 52.1594,-3.4e-4"
+       id="path8555"
+       inkscape:connector-type="polyline"
+       inkscape:connection-start="#rect8341"
+       inkscape:connection-end="#g8539" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
+       d="m 498.6842,671.33514 -63.62786,-3.8e-4"
+       id="path8557"
+       inkscape:connector-type="polyline"
+       inkscape:connection-start="#rect8341"
+       inkscape:connection-end="#g8547" />
+    <g
+       id="g8745"
+       transform="translate(539.26614,9)">
+      <path
+         sodipodi:type="arc"
+         style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;font-family:Arial;-inkscape-font-specification:Arial"
+         id="path8747"
+         sodipodi:cx="129.52756"
+         sodipodi:cy="139.63254"
+         sodipodi:rx="7.3490815"
+         sodipodi:ry="7.3490815"
+         d="m 136.87664,139.63254 c 0,4.05878 -3.2903,7.34908 -7.34908,7.34908 -4.05879,0 -7.34908,-3.2903 -7.34908,-7.34908 0,-4.05879 3.29029,-7.34908 7.34908,-7.34908 4.05878,0 7.34908,3.29029 7.34908,7.34908 z"
+         transform="translate(-23.527557,646.16181)" />
+      <path
+         transform="translate(-23.527557,646.10115)"
+         d="m 136.87664,139.63254 c 0,4.05878 -3.2903,7.34908 -7.34908,7.34908 -4.05879,0 -7.34908,-3.2903 -7.34908,-7.34908 0,-4.05879 3.29029,-7.34908 7.34908,-7.34908 4.05878,0 7.34908,3.29029 7.34908,7.34908 z"
+         sodipodi:ry="7.3490815"
+         sodipodi:rx="7.3490815"
+         sodipodi:cy="139.63254"
+         sodipodi:cx="129.52756"
+         id="path8749"
+         style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:none;stroke:#ffffff;stroke-width:1;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;font-family:Arial;-inkscape-font-specification:Arial"
+         sodipodi:type="arc" />
+    </g>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
+       d="m 645.26614,693.28547 0,94.1598"
+       id="path8751"
+       inkscape:connector-type="polyline"
+       inkscape:connection-start="#g8539"
+       inkscape:connection-end="#g8745" />
+    <g
+       id="g9906"
+       transform="translate(8,-120)">
+      <text
+         id="text8956"
+         y="842.36218"
+         x="290"
+         style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+         xml:space="preserve"><tspan
+           id="tspan8958"
+           style="font-size:8px"
+           y="842.36218"
+           x="290"
+           sodipodi:role="line">Create ProjectedCoordinateSystem</tspan><tspan
+           id="tspan8960"
+           style="font-size:8px"
+           y="852.36218"
+           x="290"
+           sodipodi:role="line">with CoordinateSystemFactory</tspan><tspan
+           id="tspan8962"
+           style="font-size:8px"
+           y="862.36218"
+           x="290"
+           sodipodi:role="line">using Projection and</tspan><tspan
+           id="tspan8964"
+           style="font-size:8px"
+           y="872.36218"
+           x="290"
+           sodipodi:role="line">GeographicCoordinateSystem</tspan></text>
+      <rect
+         style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+         id="rect8966"
+         width="166"
+         height="61.000004"
+         x="277"
+         y="822.36224"
+         ry="8"
+         rx="16" />
+    </g>
+    <g
+       transform="translate(262,9)"
+       id="g9712">
+      <path
+         transform="translate(-23.527557,646.16181)"
+         d="m 136.87664,139.63254 c 0,4.05878 -3.2903,7.34908 -7.34908,7.34908 -4.05879,0 -7.34908,-3.2903 -7.34908,-7.34908 0,-4.05879 3.29029,-7.34908 7.34908,-7.34908 4.05878,0 7.34908,3.29029 7.34908,7.34908 z"
+         sodipodi:ry="7.3490815"
+         sodipodi:rx="7.3490815"
+         sodipodi:cy="139.63254"
+         sodipodi:cx="129.52756"
+         id="path9714"
+         style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;font-family:Arial;-inkscape-font-specification:Arial"
+         sodipodi:type="arc" />
+      <path
+         sodipodi:type="arc"
+         style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:none;stroke:#ffffff;stroke-width:1;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;font-family:Arial;-inkscape-font-specification:Arial"
+         id="path9716"
+         sodipodi:cx="129.52756"
+         sodipodi:cy="139.63254"
+         sodipodi:rx="7.3490815"
+         sodipodi:ry="7.3490815"
+         d="m 136.87664,139.63254 c 0,4.05878 -3.2903,7.34908 -7.34908,7.34908 -4.05879,0 -7.34908,-3.2903 -7.34908,-7.34908 0,-4.05879 3.29029,-7.34908 7.34908,-7.34908 4.05878,0 7.34908,3.29029 7.34908,7.34908 z"
+         transform="translate(-23.527557,646.10115)" />
+    </g>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend);display:inline"
+       d="m 368,763.36225 0,24.08302"
+       id="path9718"
+       inkscape:connector-type="polyline"
+       inkscape:connection-end="#g9712"
+       inkscape:connection-start="#g9906" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
+       d="m 613.29615,599.36218 -93.51088,66.44169"
+       id="path9914"
+       inkscape:connector-type="polyline"
+       inkscape:connection-start="#g8116"
+       inkscape:connection-end="#rect8341" />
+  </g>
+</svg>

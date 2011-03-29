@@ -2,3 +2,82 @@ Coverage
 ========
 
 Supports the use of coverage information (ie raster) from a range of sources.
+
+The coverage module of the main library provides a way to build and use highly structured grids of numeric values such as imagery data, for instance GeoTIFF format files, or multi-dimensional matrix data, like that found in NetCDF format files.
+
+.. toctree::
+   :maxdepth: 1
+   
+   grid
+   plugin/index
+   plugin/jdbc
+
+Referencing plugins:
+
+.. toctree::
+   :maxdepth: 1
+   
+   arcgrid
+   geotiff
+   gtopo30
+   image
+   imageio
+   jdbc/index
+   mosaic
+   pyramid
+
+Unsupported plugins:
+   
+.. toctree::
+   :maxdepth: 1
+   
+   jp2k
+
+**Relationship with ISO Coverage**
+
+Within GeoTools, the coverage module exists below the main module (where Feature is defined) and therefore a GeoTools GridCoverage is not a feature.
+
+This is in opposition to the ISO Coverage model (where Coverage extends Feature) provided by ISO 19123 specification.
+
+GeoTools 'Coverage' objects emerged from an earlier specification published by the OpenGeospatial Consortium (OGC) called "Grid Coverage Services Implementation" (OGC 01-004).
+
+**Direct Access**
+
+The coverage module, while readily usable and very powerful, does not yet provide the programmer with a trivial tool to access data directly from the common formats. Programmers who use the GeoTools library need to write their own code to create the GridCoverage2D objects.
+
+The standard way to access an external data source to create GeoTools GridCoverage instances currently requires creating several classes:
+
+1. A javax.imageio.ImageReader class to access the data source and providing the methods to create:
+   
+  * java.awt.image.RenderedImage
+  * javax.imageio.metadata.IIOMetadata instance defining both:
+    
+    * the meaning of the numeric values in the RenderedImage; and
+    * the georeferencing parameters to geolocate the image
+
+2. A builder of the GridCoverage2D which uses the above information to create an instance.
+
+The first part of this section on the 'Coverage' module explains the concepts behind this work and the steps required to create a GridCoverage2D instance. It should eventually be possible to reduce the work currently required of programmers wishing to use this part of the library; today, this work is still required because there is no existing, standard way to define all the different kinds of metadata which may be required to build grid coverages.
+
+**Background on the Design**
+
+The design of the coverage modules follows closely the design of image handling in Java. Java provides three major subsystems in their Java media API's which are used and extended in GeoTools.
+
+Image I/O system
+  To access files with image content. This provides code to access many
+  standard image formats.
+  
+Java Advanced Imaging (JAI) system
+  which provides a powerful approach for performing operations on images.
+  Not only does JAI provide efficient code for performing lots of
+  operations, but it creates a system through which a user can create
+  chains of operations which can be applied repeatedly to an image or
+  applied to a whole slew of images.
+
+JAI Image I/O system
+  Combines the two other systems by treating image access as one of the
+  JAI operations allowing for differed access and enabling the treatment
+  of file access as a standard step in an operation chain. The module
+  also provides access to additional file formats.
+
+When combined, these subsystems provide immense power to the GeoTools coverage module but this dependency does require that programmers who wish to use and extend the module must learn to use these other Java modules. Programmers must also learn some complex mathematical ideas, at a minimum they should fully understand Affine Transforms, in order to work effectively with the coverage module. Affines are explained in all decent computer graphics textbooks and on many web sites.

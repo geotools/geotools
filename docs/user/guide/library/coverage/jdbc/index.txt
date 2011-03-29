@@ -1,0 +1,363 @@
+Image Mosaicing Pyramidal JDBC Plugin
+-------------------------------------
+
+This plugin is intended to handle large images stored as tiles in a JDBC database. Tiles created by pyramids are also stored in the database. The utility uses the indexing of databases to speed up access to the requested tiles, the plugin for itself has a multithreaded architecture to make use of dual/quad core CPUs and multiprocessor systems.
+
+.. toctree::
+   :maxdepth: 1
+   
+   setup
+ 
+This plugin should give you the possibility to handle large images with their pyramids in a JDBC database.
+
+This example shows how to use the module::
+  
+  // First, get a reader
+  // the configUrl references the config xml&nbsp; and is object of one of the following types
+  // 1) java.net.URL
+  // 2) java.io.File
+  // 3) java.lang.String (A filename string or an url string)
+  
+  
+  AbstractGridFormat format =(AbstractGridFormat)GridFormatFinder.findFormat(configUrl);
+  ImageMosaicJDBCReader reader= (ImageMosaicJDBCReader)format.getReader(configUrl,null);
+  
+  // get a parameter object for a grid geometry
+  ParameterValue<GridGeometry2D>gg=AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+  
+  // create an envelope, 2 Points, lower left and upper right, x,y order
+  GeneralEnvelope envelope = new GeneralEnvelope(new double[] {10,20},new double[] {30,40});
+  
+  // set a CRS for the envelope
+  envelope.setCoordinateReferenceSystem(CRS.decode"EPSG:4326");
+  
+  // Set the envelope into the parameter object
+  gg.setValue(new GridGeometry2D(new GeneralGridRange(new Rectangle(0, 0, width, heigth)),envelope));
+  
+  // create a parameter Object for the background color (NODATA), this param is optional
+  final ParameterValue outTransp=ImageMosaicJDBCFormat.OUTPUT_TRANSPARENT_COLOR.createValue();
+  outTransp.setValue(Color.WHITE);
+  
+  // call the plugin passing an array with the two parameter objects
+  try {
+      GridCoverage2D coverage = (GridCoverage2D) reader.read(new GeneralParameterValue[] { gg, outTransp});
+  } catch (IOException e) {
+      e.printStackTrace();
+  }
+
+Credits:
+
+* This module was funded by Google as part of the GSOC 08 program.
+
+Tested Database Systems
+
+* DB2 (with or without Spatial Extender)
+* Oracle (with or without Location Based Services, Oracle Spatial not needed)
+* MySql
+* Postgres (with or without Postgis)
+* H2
+
+How to Build image pyramids and tiles
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Creating the pyramids and tiles is not part of this module.
+
+As a recommendation you can use gdal_retile which has been developed exactly for this requirement:
+
+* http://www.gdal.org/gdal_retile.html
+
+A good idea is to download the fwtools containing gdal_retile.py:
+
+* http://fwtools.maptools.org/.
+
+The output of gdal_retile.py can be imported into the database with the import utility (described later).
+
+A good practice is to use a color table for your source image(s). Less memory consumption and a better performance are the results. If you have an already tiled source image, be sure that each source tile uses the same color table, otherwise use gdal_merge.py (Gdal utility) to produce a big single image and apply rgb2pct.py (Gdal utility).
+
+How to import the tiles and the georeferencing information
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Importing the data is database dependent. If you have a spatial extension, the gdal_retile.py utility produces the proper world,shape or csv files which you can import with a database utility.
+
+Outline of the multithreaded architecture
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The multithreaded architecture is based on synchronized Queue available since SDK 5.0. The following threads will be used:
+
+* One ImageComposer thread which reads GridCoverages from the Queue, mosaicing the image and finally rescales the image for the requested dimension.
+* For each tile, a TileDecoder thread which decodes the tile, crops the tile if necessary und puts the result as GridCoverage in the queue.
+* The Main thread for controlling this threads
+
+The Main threads performs the following steps in chronological order
+If the requested CRS ist not equal to the CRS of the tiles, transform the requested CRS
+
+1. Calculate the best pyramid and query the tiles needed from the database
+2. Create the queue and start the ImageComposer Thread
+3. For each tile fetch the image data and immediately start an ImageDecoder Thread
+4. Wait for all ImageDecoder Threads
+5. Put a predefined End Message in the queue which causes the ImageComposer Thread to finish its work
+6. Wait for the ImageComposer Thread
+7. If the requested CRS ist not equal to the CRS of the tiles, reproject the image
+8. Return the GridCoverage
+
+Database Design
+^^^^^^^^^^^^^^^
+
+First, we need a Meta Table for holding Information for each pyramid of the maps. This table has 9 columns as described below
+
+* Name (String): The name of the map
+* SpatialTable (String): The name of the table where to find the georeferencing information
+* TileTable (String): The name of the table where to find the tile data stored as BLOB.
+* ResX (Double): The resolution of the x-axis
+* ResY (Double): The resolution of the y-axis
+* MinX (Double): The minimum X of the extent
+* MinY (Double): The minimum Y of the extent
+* MaxX (Double): The maximum X of the extent
+* MaxY(Double): The maximum Y of the extent
+
+**Important**
+
+The only fields you have to fill are Name,SpatialTable and TileTable. These three fields together are the primary key. All other fields will be calculated by the plugin. It is not necessary to do calculations. The plugin implements the following mechanism during the first request:
+
+1. Check if ResX or ResY is null, if true, calculate the values from a random chosen tile from the corresponding tile table.
+2. Check if one of MinX,MinY,MaxX,MaxY is null, if true, calculate the values from the corresponding spatial table.
+3. If something has been calculated, store these values into to db to avoid recalculation at the next restart
+
+This approach assures that the probably costly calculation is only executed once, but updating,adding or removing tiles requires you to nullify one of the MinX,MinY,MaxX,MaxY Attributes to force a new extent calculation.
+
+**First example**
+
+Assume we have a Map called Europe with 2 Pyramids. Since we have 3 levels, we need 3 tile tables and 3 spatial tables. Lets start filling the META table.
+
+====== ============= ========== ===== ===== ===== ===== ===== =====
+Name   SpatialTable  TileTable  ResX  ResY  MinX  MinY  MaxX  MaxY 
+====== ============= ========== ===== ===== ===== ===== ===== =====
+Europe EUSPAT0       EUTILE0    .     .     .     .     .     .
+Europe EUSPAT1       EUTILE1    .     .     .     .     .     .
+Europe EUSPAT2       EUTILE2    .     .     .     .     .     .
+====== ============= ========== ===== ===== ===== ===== ===== =====
+
+Remember: You do not have to fill the other attributes.
+
+A tile table needs the following attributes:
+
+* Location (String) : A unique identifier for the tile
+* Data (Blob) : The image data (Encoded in a format readable by JAI, e. g. png,jpeg,...)
+
+The table EUTILE0 for example ( 0x.... indicates binary data)
+
+========== ===============
+Location   Data
+========== ===============
+Tile_1_1   0x10011...
+Tile_1_2   0x00011..
+========== ===============
+
+A spatial table contains the georeferencing information. Depending on your database installation, there are 2 possibilites.
+
+1. You have no spatial db extension implies storing the extent in 4 Double fields
+2. Having a spatial extension offers the possiblity to use a geometry column
+
+A spatial Table without using a spatial extension needs the following attributes:
+
+* Location (String) : A unique identifier used for joining into the tiles table
+* MinX (Double): min x of the tile extent
+* MinY (Double): min y of the tile extent
+* MaxX (Double): max x of the tile extent
+* MaxY (Double): max y of the tile extent
+
+The table EUSPAT0 for example.
+
+=========== ===== ===== ===== =====
+Location    MinX  MinY  MaxX  MaxY
+=========== ===== ===== ===== =====
+Tile_1_1    10    10    20    20 
+Tile_1_2    20    10    30    20
+=========== ===== ===== ===== =====
+
+A spatial Table using a spatial extension needs the following attributes:
+
+* Location (String) : A unique identifier used for joining into the tiles table
+* Geometry (Geometry): A Multipoligon type provided by your db
+
+The table EUTILE0 for example
+
+========== ===========
+Location   Geom
+========== ===========
+Tile_1_1   0x00111...
+Tile_1_2   0x10011...
+========== ===========
+
+Reducing the number of tables
+
+Since the number of rows in a spatial table has to be equal to the number of rows in a tile table, there is a one to one relationship. It is no problem to join these tables. Applying this redesign to our samples results in the following table structure:
+
+====== ============= ========== ===== ===== ===== ===== ===== =====
+Name   SpatialTable  TileTable  ResX  ResY  MinX  MinY  MaxX  MaxY 
+====== ============= ========== ===== ===== ===== ===== ===== =====
+Europe EU0           EU0        .     .     .     .     .     .
+Europe EU1           EU1        .     .     .     .     .     .
+Europe EU2           EU2        .     .     .     .     .     .
+====== ============= ========== ===== ===== ===== ===== ===== =====
+
+The EU0 Table 
+
+========== ===== ===== ===== ===== ==========
+Location   MinX  MinY  MaxX  MaxY  Data
+========== ===== ===== ===== ===== ==========
+Tile_1_1   10    10    20    20    0x10011..
+Tile_1_2   20    10    30    20    0x00011..
+========== ===== ===== ===== ===== ==========
+
+or using a geometry column
+
+========== =========== ============
+Location   Geom        Data
+========== =========== ============
+Tile_1_1   0x00111...  0x10011..
+Tile_1_2   0x10011...  0x00011..
+========== =========== ============
+
+Further DB Design Rules
+
+* It is possible to add custom columns to your tables
+* It is possible to create one meta table for all your maps and pyramid levels , or create one meta table for each map containing records for the map and its pyramids, or do any mixture of these two approaches, the only rule is to store a map and its pyramids level together in the same meta table.
+* All primary key attributes will be handled as JDBC String, the exact DB Type and length depends on your needs.
+* All numerical fields will be handled as JDBC Double.
+* Tile image data has to be a BLOB
+
+Mapping of table and attribute names
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Since there a lot of naming conventions in different enterprises, I is not idea to force the use of predefined table and attribute names. In our example, the names of the spatial and tile tables is selectable, the name of the meta table and all the attribute names were assumed. The mapping of these names is part of the XML configuration. The corresponding XML fragment shows the mapping of the assumed names.
+
+A sample XML fragment file **mapping.xml.inc**::
+  
+  <!-- possible values: universal,postgis,db2,mysql,oracle -->
+  <spatialExtension name="universal"/>
+  <mapping>
+        <masterTable name="META" >
+            <coverageNameAttribute name="Name"/>
+            <maxXAttribute name="MaxX"/>
+            <maxYAttribute name="MaxY"/>
+            <minXAttribute name="MinX"/>
+            <minYAttribute name="MinY"/>
+            <resXAttribute name="ResX"/>
+            <resYAttribute name="RresY"/>
+            <tileTableNameAtribute    name="TileTable" />
+            <spatialTableNameAtribute name="SpatialTable" />
+        </masterTable>
+        <tileTable>
+            <blobAttributeName name="Data" />
+            <keyAttributeName name="Location" />
+        </tileTable>
+        <spatialTable>
+            <keyAttributeName name="Location" />
+            <geomAttributeName name="Geom" />
+            <tileMaxXAttribute name="MaxX"/>
+            <tileMaxYAttribute name="MaxY"/>
+            <tileMinXAttribute name="MinX"/>
+            <tileMinYAttribute name="MinY"/>
+        </spatialTable>
+  </mapping>
+
+The structure of this XML Fragment is kept very simple, use it as a pattern.
+
+The name attribute of the <spatialExtension> has to be one of the following values
+
+* universal (a vendor neutral JDBC approach which should work with any jdbc database with BLOB support)
+* db2 (use spatial extender)
+* mysql (use the spatial features of mysql)
+* postgis (use the spatial features of postgis)
+* oracle (use location based services included in every oracle edition, no oracle spatial needed !!!)
+
+If your spatial extension is universal you need to specify <tileMinXAttribute>,<tileMinYAttribute>,<tileMaxXAttribute>,<tileMaxYAttribute>, but you can omit <geomAttributeName>.
+
+In all other cases, you need the <geomAttributeName> Element and can omit <tileMinXAttribute>,<tileMinYAttribute>,<tileMaxXAttribute>,<tileMaxYAttribute>. 
+
+Be careful with the case sensitivity of different DBMS products. Look here http://www.alberton.info/dbms_identifiers_and_case_sensitivity.html and here http://en.wikibooks.org/wiki/SQL_dialects_reference/Data_structure_definition/Delimited_identifiers.
+
+In the above example, we have  <maxXAttribute name="MaxX"/> which will result in an attribute name of MAXX for DB2 and Oracle, but maxx for postgres. A good strategy would be to use identifiers (table and attribute Names ) consisting of uppercase /lowercase letters, depending on your DBMS.
+
+This approach assures that there are no predefined table and attribute names, allowing seamless integration into existing naming conventions. 
+
+Configuration
+^^^^^^^^^^^^^
+
+Each Map with its pyramids is configured by an XML File. The Configuration can be split into 3 parts
+
+1. The database mapping as explained above
+2. The JDBC connect configuration
+3. The Map configuration
+
+JDBC Connect configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Dependent on the deployment environment, there are different possibilities for connection to the database. Using this plugin in a client java application will require a JDBC Driver Connect, operation within a J2EE Container should prefer a JNDI Datasource connect (your admin will be happy) .
+
+A sample XML fragment file for a JDBC Driver Connection to the H2 database **connect.xml.inc**::
+  
+  <connect>
+        <dstype value="DBCP"/>
+        <username value="user" />
+        <password value="password" />
+        <jdbcUrl value="jdbc:h2:target/h2/testdata" />
+        <driverClassName value="org.h2.Driver"/>
+        <maxActive value="10"/>
+        <maxIdle value="0"/>
+  </connect>
+
+XML Fragment for connection to a JNDI Datasource **connect.xml.inc**::
+  
+  <connect>
+        <dstype value="JNDI"/>
+         <jndiReferenceName value="jdbc/myDataSourceName"/>
+  </connect>
+
+Map Configuration
+^^^^^^^^^^^^^^^^^
+
+Now we can put the things together and create the config file for a map.
+
+Example file map.xml::
+  
+  <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+  <!DOCTYPE ImageMosaicJDBCConfig [
+     <!ENTITY mapping PUBLIC "mapping" "mapping.xml.inc">
+     <!ENTITY connect PUBLIC "connect" "connect.xml.inc">
+  ]>
+  
+  
+  <config version="1.0">
+     <coverageName name="oek"/>
+     <coordsys name="EPSG:31287"/>
+     <!-- interpolation 1 = nearest neighbour, 2 = bipolar, 3 = bicubic -->
+     <scaleop interpolation="1"/>
+     <verify cardinality="false"/>
+     &mapping;
+     &connect;
+  </config>
+
+The DOCTYPE includes two XML entity references to the connct.xml.inc and mapping.xml.inc. The XML parser includes these fragments at parsing time.
+
+Elements:
+
+config
+  The root element. The version attribute is reserved for future versions of this plugin. Must be "1.0."
+
+coverageName
+  The name of your map. This name is used for searching the meta data in the meta table.
+
+coordsys
+  The name of a coordinate reference system, will be referenced by CRS.decode() of the geotools library.
+
+scaleop
+  The interpolation method to use (1 = nearest neighbour, 2 = bipolar, 3 = bicubic)
+
+verify
+  if you have image data and georeferencing information in different tables and the the attribute cardinality is true , the plugin will check the number of records in each table. If the numbers are not equal, the image/pyramid will be removed and you see a warning in the log. This check is intended for testing environments, set the value to false in production environments to avoid bad performance.
+
+**Configuration Summary**
+
+A map configuration consists of 3 parts, connect configuration, mapping configuration and map configuration. As a result, you have great flexibilty and can reuse parts of the configuration for many maps.

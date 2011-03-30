@@ -1519,9 +1519,15 @@ public class ImageWorker {
     }
 
     /**
-     * Retains inconditionnaly the last band of {@linkplain #image}. All other
-     * bands (if any) are discarted without any further processing.
+     * Retains unconditionally the last band of {@linkplain #image}. All other
+     * bands (if any) are discarded without any further processing.
      *
+     * <p>
+     * It is worth to point out that we use the true number of bands rather than
+     * the number of color components. This means that if we apply this method on 
+     * a colormapped image we get back the image itself untouched since it originally
+     * contains 1 band although the color components are 3 or 4 as per the attached colormap.
+     * 
      * @return this {@link ImageWorker}.
      *
      * @see #getNumBands

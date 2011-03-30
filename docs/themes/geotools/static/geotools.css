@@ -66,6 +66,7 @@ div.sphinxsidebar h3 a {
 }
 div.document {
     margin: 0 80px;
+    background-image: none;
 }
 div.documentwrapper {
     width: auto;
@@ -299,8 +300,10 @@ display: block;
 
 #breadcrumbs {
 font-size: 0.85em;
-color: #c6e09b;
-border-bottom: 1px solid #c6e09b;
+/*color: #c6e09b;*/
+color: #777777;
+border-bottom: 0px;
+/*border-bottom: 1px solid #c6e09b;*/
 margin: 1em 0 0 0;
 padding: 0 0 0.5em;
 }
@@ -311,7 +314,8 @@ display: inline;
 }
 
 #breadcrumbs a {
-color: #72a629;
+/*color: #72a629;*/
+color: #777777;
 text-decoration: none;
 }
 

@@ -50,10 +50,10 @@
 {% endblock %}
 
 {% block relbar1 %}
-    {%- if not pagename.endswith('index') %}{{ customrelbar(False) }}{% endif %}
+    {%- if pagename != 'index' %}{{ customrelbar(False) }} {% endif %}
 {% endblock %}
 {%- block relbar2 %}
-    {%- if not pagename.endswith('index') %}{{ customrelbar(True) }}{% endif %}
+    {%- if pagename != 'index' %}{{ customrelbar(True) }} {% endif %}
 {% endblock %}
 
 {% block sidebarsearch %}{% endblock %}

@@ -2,3 +2,16 @@ Main
 ====
 
 Implementation of core GeoSpatial data models.
+
+Provides default implementations for the remaining gt-api and gt-opengis interfaces (Filter, Style, Feature etc...) and enough glue code to make creating an application possible (various builders and utility classes).
+
+.. toctree::
+   :maxdepth: 1
+   
+   data
+   filter
+   feature
+   function
+   shape
+   geometry
+   registery

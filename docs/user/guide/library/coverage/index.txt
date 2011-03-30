@@ -9,8 +9,8 @@ The coverage module of the main library provides a way to build and use highly s
    :maxdepth: 1
    
    grid
-   plugin/index
-   plugin/jdbc
+   internal/index
+   internal/jdbc
 
 Referencing plugins:
 
@@ -32,6 +32,7 @@ Unsupported plugins:
    :maxdepth: 1
    
    jp2k
+   oracle
 
 **Relationship with ISO Coverage**
 

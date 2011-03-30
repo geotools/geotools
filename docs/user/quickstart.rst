@@ -51,10 +51,10 @@ First up you'll be presented with a long list of archetypes to select from. Choo
 
 Next you'll get a series of prompts. Enter the following inputs:
 
-**groupId**: *org.geotools.demo*
-**artifactId:** *example*
-**version:** *1.0-SNAPSHOT*
-**package:** *org.geotools.demo.example*
+  :groupId: *org.geotools.demo*
+  :artifactId: *example*
+  :version: *1.0-SNAPSHOT*
+  :package: *org.geotools.demo.example*
 
 The final prompt is just to confirm your choices. Press return and maven will wirr and click, downloading a bunch of
 stuff before creating the *example* directory for you.
@@ -139,7 +139,7 @@ Depending on GeoTools
 
 To make use of GeoTools we are going to add two things to your pom.xml file:
 
-* A *properties* element defining the version of GeoTools that we want to use (2.6.4 for this example)
+* A *properties* element defining the version of GeoTools that we want to use (2.7.0 for this example)
 * A new dependency: ``gt-main``
 * A list of *repositories* where maven can find GeoTools and all the cool stuff it uses
 
@@ -156,7 +156,7 @@ To make use of GeoTools we are going to add two things to your pom.xml file:
       <name>example</name>
       <url>http://maven.apache.org</url>
       <properties>
-        <geotools.version>2.6.4</geotools.version>
+        <geotools.version>2.7.0</geotools.version>
       </properties>
       <dependencies>
         <dependency>
@@ -277,7 +277,7 @@ Running your application from the command line is a bit more cumbersome, requiri
  [INFO] Preparing exec:java
  [INFO] No goals needed for project - skipping
  [INFO] [exec:java]
- Hello GeoTools:2.6.4
+ Hello GeoTools:2.7.0
  [INFO] ------------------------------------------------------------------------
  [INFO] BUILD SUCCESSFUL
  [INFO] ------------------------------------------------------------------------
@@ -385,20 +385,20 @@ dependency:tree`` at the command line::
  [INFO] [dependency:tree]
  [INFO] org.geotools.demo.example:example:jar:1.0-SNAPSHOT
  [INFO] +- junit:junit:jar:3.8.1:test
- [INFO] +- org.geotools:gt-main:jar:2.6.4:compile
- [INFO] |  +- org.geotools:gt-api:jar:2.6.4:compile
+ [INFO] +- org.geotools:gt-main:jar:2.7.0:compile
+ [INFO] |  +- org.geotools:gt-api:jar:2.7.0:compile
  [INFO] |  +- com.vividsolutions:jts:jar:1.9:compile
  [INFO] |  +- jdom:jdom:jar:1.0:compile
  [INFO] |  \- commons-beanutils:commons-beanutils:jar:1.7.0:compile
  [INFO] |     \- commons-logging:commons-logging:jar:1.0.3:compile
- [INFO] +- org.geotools:gt-shapefile:jar:2.6.4:compile
- [INFO] |  \- org.geotools:gt-referencing:jar:2.6.4:compile
+ [INFO] +- org.geotools:gt-shapefile:jar:2.7.0:compile
+ [INFO] |  \- org.geotools:gt-referencing:jar:2.7.0:compile
  [INFO] |     +- java3d:vecmath:jar:1.3.1:compile
  [INFO] |     +- commons-pool:commons-pool:jar:1.3:compile
- [INFO] |     \- org.geotools:gt-metadata:jar:2.6.4:compile
+ [INFO] |     \- org.geotools:gt-metadata:jar:2.7.0:compile
  [INFO] |        +- org.opengis:geoapi:jar:2.2-SNAPSHOT:compile
  [INFO] |        \- net.java.dev.jsr-275:jsr-275:jar:1.0-beta-2:compile
- [INFO] \- org.geotools:gt-epsg-hsql:jar:2.6.4:compile
+ [INFO] \- org.geotools:gt-epsg-hsql:jar:2.7.0:compile
  [INFO]    \- hsqldb:hsqldb:jar:1.8.0.7:compile
  [INFO] ------------------------------------------------------------------------
  [INFO] BUILD SUCCESSFUL
@@ -414,7 +414,7 @@ Example Code
 
 The following example is available from:
 
-  http://svn.osgeo.org/geotools/tags/2.6.4/demo/example/src/main/java/org/geotools/demo/Quickstart.java
+  http://svn.osgeo.org/geotools/tags/2.7.0/demo/example/src/main/java/org/geotools/demo/Quickstart.java
 
 It is also included in the demo directory when you download geotools.
 

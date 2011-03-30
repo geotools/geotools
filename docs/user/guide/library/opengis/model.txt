@@ -4,8 +4,8 @@ Feature Model
 GeoTools provides a clear separation between:
 
 * data model - **feature** responsible for holding values
-* query model - **filter** and **expression** used to select content and drill in and retrieve values
-* metadata model - **feature type** describing contents in sufficient details for validation and query construction
+* query model - **filter** and **expression** used to select content and retrieve values
+* metadata model - **feature type** describing contents in sufficient detail for validation and query construction
 
 References:
 
@@ -45,7 +45,7 @@ To directly create a Feature you can make use of **FeatureFactory**, or use a bu
 Filter
 ^^^^^^
 
-Use **Filter** to select features that are of interest and the **Expression** to drill in and access information.
+Use **Filter** to select features that are of interest and the **Expression** to drill down and access information.
 
 
 .. image:: /images/filter_expression.PNG
@@ -69,11 +69,11 @@ Here is an example of using filter and expression together::
 
 There are a couple other ways to access feature content:
 
-* You can construct a filter or expression using the common query language
+* You can construct a filter or expression using the common query language (CQL)
 * You can construct a filter or expression from XML
 * You can access the feature data structure directly
 
-Here is the same example using common query language and direct feature access::
+Here is the same example using CQL and direct feature access::
 
    Filter filter = CQL.toFilter( "AGE < 12 " );
    
@@ -89,19 +89,19 @@ Here is the same example using common query language and direct feature access::
 FeatureType
 ^^^^^^^^^^^
 
-**FeatureType** provides metadata model describing the represented information.  This is considered "metadata" as it is a description of the information stored in the features.
+**FeatureType** provides a metadata model, ie. a description of the information stored in the features.
 
-FeatureType is used to:
+FeatureType is used:
 
-* When accessing information as a description of the available attribute names when making a Expression
-* When creating a new feature you can check to ensure your values are valid
+* to access a description of the available attribute names when making a Expression
+* when creating a new feature, to ensure that your values are valid
 
 The type is represented by PropertyType, AttributeType, GeometryType, ComplexType, FeatureType.
 
 
 .. image:: /images/feature_type_model.PNG
 
-This forms a "dynamic type system" indicating we can describe new types of information at runtime. To make this a complete type system we have support for references (with AssociationType) and methods (with OperationType) although use of these faciities is considered experimental at present.
+This forms a "dynamic type system" indicating that we can describe new types of information at runtime. To make this a complete type system we have support for references (with AssociationType) and methods (with OperationType) although use of these faciities is considered experimental at present.
 
 As shown above a ComplexType contains a list of **properties** each represented as a PropertyDescriptor with a distinct name and property type.
 
@@ -112,14 +112,15 @@ As shown above a ComplexType contains a list of **properties** each represented 
 Simple Feature
 ^^^^^^^^^^^^^^
 
-Most GIS data does not need a full dynamic type system with associations, operations, multiple values. With this in mind we have a "simple" extension of Feature and FeatureType providing to represent this kind of information.
+Most GIS data does not need a full dynamic type system with associations, operations, multiple values. With this in mind we have a "simple" extension of Feature and FeatureType to represent this kind of information.
 
-SimpleFeature may be used when:
+SimpleFeature may be used when a feature's properties are limited to mandatory GeometryAttribute and Attribute. The following conditions apply:
 
-* a feature's properties are limited to mandatory GeometryAttribute and Attribute (no complex attributes or multiplicity allowed).
-* Attributes values may be null; but each attribute must be represented
-* order of attribute values is considered significant allowing values to be looked up by attribute name, or by the order they are listed
-* These restrictions match the abilities of a simple shapefile or database table
+* No complex attributes or multiplicity is allowed.
+* Attribute values may be null, but each attribute must be represented.
+* The order of attribute values is significant, ie. values can be retrieved by attribute name or by attribute order.
+
+These restrictions match the abilities of a simple shapefile or database table.
 
 
 .. image:: /images/feature_simple.PNG

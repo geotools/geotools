@@ -302,9 +302,9 @@ public class DataUtilities {
     }
 
     /**
-     * Traverses the filter and returns any encoutered property names.
+     * Traverses the filter and returns any encountered property names.
      * <p>
-     * The feautre type is supplied as contexts used to lookup expressions in cases where the
+     * The feature type is supplied as contexts used to lookup expressions in cases where the
      * attributeName does not match the actual name of the type.
      * </p>
      */
@@ -317,20 +317,42 @@ public class DataUtilities {
         String[] attributeNames = attExtractor.getAttributeNames();
         return attributeNames;
     }
-
+    
     /**
-     * Traverses the filter and returns any encoutered property names.
-     * 
-     * @deprecated use {@link #attributeNames(Filter, FeatureType)}/
+     * Traverses the filter and returns any encountered property names.
+     * <p>
+     * The feature type is supplied as contexts used to lookup expressions in cases where the
+     * attributeName does not match the actual name of the type.
+     * </p>
+     */
+    public static Set<PropertyName> propertyNames(Filter filter, final SimpleFeatureType featureType) {
+        if (filter == null) {
+            return Collections.emptySet();
+        }
+        FilterAttributeExtractor attExtractor = new FilterAttributeExtractor(featureType);
+        filter.accept(attExtractor, null);
+        Set<PropertyName> propertyNames = attExtractor.getPropertyNameSet();
+        return propertyNames;
+    }
+    
+    /**
+     * Traverses the filter and returns any encountered property names.
      */
     public static String[] attributeNames(Filter filter) {
         return attributeNames(filter, null);
     }
-
+    
     /**
-     * Traverses the expression and returns any encoutered property names.
+     * Traverses the filter and returns any encountered property names.
+     */
+    public static Set<PropertyName> propertyNames(Filter filter) {
+        return propertyNames(filter, null);
+    }
+    
+    /**
+     * Traverses the expression and returns any encountered property names.
      * <p>
-     * The feautre type is supplied as contexts used to lookup expressions in cases where the
+     * The feature type is supplied as contexts used to lookup expressions in cases where the
      * attributeName does not match the actual name of the type.
      * </p>
      */
@@ -345,14 +367,35 @@ public class DataUtilities {
     }
 
     /**
-     * Traverses the expression and returns any encoutered property names.
-     * 
-     * @deprecated use {@link #attributeNames(Expression, FeatureType)}/
+     * Traverses the expression and returns any encountered property names.
+     * <p>
+     * The feature type is supplied as contexts used to lookup expressions in cases where the
+     * attributeName does not match the actual name of the type.
+     * </p>
+     */
+    public static Set<PropertyName> propertyNames(Expression expression, final SimpleFeatureType featureType) {
+        if (expression == null) {
+            return Collections.emptySet();
+        }
+        FilterAttributeExtractor attExtractor = new FilterAttributeExtractor(featureType);
+        expression.accept(attExtractor, null);
+        Set<PropertyName> propertyNames = attExtractor.getPropertyNameSet();
+        return propertyNames;
+    }
+    /**
+     * Traverses the expression and returns any encountered property names.
      */
     public static String[] attributeNames(Expression expression) {
         return attributeNames(expression, null);
     }
-
+    
+    /**
+     * Traverses the expression and returns any encountered property names.
+     */
+    public static Set<PropertyName> propertyNames(Expression expression) {
+        return propertyNames(expression, null);
+    }
+    
     /**
      * Compare operation for FeatureType.
      * 
@@ -447,14 +490,15 @@ public class DataUtilities {
     }
 
     /**
-     * DOCUMENT ME!
+     * Quickly check if two descriptors are at all compatible.
+     * <p>
+     * This method checks the descriptors name and class binding to see
+     * if the values have any chance of being compatible.
      * 
-     * @param a
-     *            DOCUMENT ME!
-     * @param b
-     *            DOCUMENT ME!
-     * 
-     * @return DOCUMENT ME!
+     * @param a descriptor to compare
+     * @param b descriptor to compare
+     *
+     * @return true to the descriptors name and binding class match
      */
     public static boolean isMatch(AttributeDescriptor a, AttributeDescriptor b) {
         if (a == b) {
@@ -1493,14 +1537,22 @@ public class DataUtilities {
     }
 
     /**
-     * DOCUMENT ME!
+     * Used to compare if two values are equal.
+     * <p>
+     * This method is here to work around the fact that JTS Geometry
+     * requires a specific method to be called rather than object.equals.
      * 
-     * @param att
-     *            DOCUMENT ME!
-     * @param otherAtt
-     *            DOCUMENT ME!
+     * This method uses:
      * 
-     * @return DOCUMENT ME!
+     * <ul>
+     * <li>Object.equals( Object )</li>
+     * <li>Geometry.equals( Geometry )</li>
+     * </ul>
+     * 
+     * @param att Attribute value
+     * @param otherAtt Other value 
+     * 
+     * @return True if the values are equal
      */
     public static boolean attributesEqual(Object att, Object otherAtt) {
         if (att == null) {
@@ -1761,19 +1813,16 @@ public class DataUtilities {
     }
 
     /**
-     * DOCUMENT ME!
+     * Uses Converers to parse the provided text into the correct
+     * values to create a feature.
      * 
-     * @param type
-     *            DOCUMENT ME!
-     * @param fid
-     *            DOCUMENT ME!
-     * @param text
-     *            DOCUMENT ME!
+     * @param type FeatureType
+     * @param fid Feature ID for new feature
+     * @param text Text representation of values
      * 
-     * @return DOCUMENT ME!
+     * @return newly created feature
      * 
      * @throws IllegalAttributeException
-     *             DOCUMENT ME!
      */
     public static SimpleFeature parse(SimpleFeatureType type, String fid, String[] text)
             throws IllegalAttributeException {
@@ -2094,14 +2143,14 @@ public class DataUtilities {
     public static List<PropertyName> addMandatoryProperties (SimpleFeatureType type, List<PropertyName> oldProps)  {
         Iterator<PropertyDescriptor> ii = type.getDescriptors().iterator();
         
-         List<PropertyName> properties = new ArrayList<PropertyName>();
-
+        List<PropertyName> properties = new ArrayList<PropertyName>();
+        
         while (ii.hasNext()) {
             
             PropertyDescriptor descr = ii.next();
             PropertyName propName = ff.property (descr.getName());
             
-            if (oldProps.contains(propName)) {
+            if (oldProps != null && oldProps.contains(propName)) {
                 properties.add(propName);
             } else if (((descr.getMinOccurs() > 0) && (descr.getMaxOccurs() != 0))) {
                 //mandatory, add it

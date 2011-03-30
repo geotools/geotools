@@ -42,10 +42,10 @@ public final class Converters {
     
     private static final Logger LOGGER = Logging.getLogger(Converters.class); 
 
-	/**
-	 * Cached list of converter factories
-	 */
-	static ConverterFactory[] factories;
+    /**
+     * Cached list of converter factories
+     */
+    static ConverterFactory[] factories;
 
     /**
      * The service registry for this manager.
@@ -65,15 +65,15 @@ public final class Converters {
         }
         return registry;
     }
-
-    private static Hints addDefaultHints(final Hints hints) {
-        final Hints completed = GeoTools.getDefaultHints();
-        if (hints != null) {
-            completed.add(hints);
-        }
-        return completed;
-    }
-
+//    /**
+//     * Used to combine provided hints with global GeoTools defaults.
+//     * 
+//     * @param hints
+//     * @return
+//     */
+//    private static Hints addDefaultHints(final Hints hints) {
+//        return GeoTools.addDefaultHints(hints);
+//    }
 
     /**
      * Returns a set of all available implementations for the {@link ConverterFactory} interface.
@@ -81,9 +81,9 @@ public final class Converters {
      * @param  hints An optional map of hints, or {@code null} if none.
      * @return Set of available ConverterFactory implementations.
      */
-    public static synchronized Set getConverterFactories(Hints hints) {
-        hints = addDefaultHints(hints);
-        return new LazySet(getServiceRegistry().getServiceProviders(
+    public static synchronized Set<ConverterFactory> getConverterFactories(Hints hints) {
+        hints = GeoTools.addDefaultHints(hints);
+        return new LazySet<ConverterFactory>(getServiceRegistry().getServiceProviders(
                 ConverterFactory.class, null, hints));
     }
 
@@ -100,90 +100,102 @@ public final class Converters {
      * 
      * @since 2.5
      */
-    public static Set<ConverterFactory> getConverterFactories( Class source, Class target ) {
-        HashSet factories = new HashSet();
+    public static Set<ConverterFactory> getConverterFactories( Class<?> source, Class<?> target ) {
+        HashSet<ConverterFactory> factories = new HashSet<ConverterFactory>();
         for (ConverterFactory factory : factories()) {
             if ( factory.createConverter( source, target, null ) != null ) {
                 factories.add( factory );
             }
         }
-        
         return factories;
     }
 
-	/**
-	 * Convenience for {@link #convert(Object, Class, Hints)}
-	 * @param source The object to convert.
-         * @param target The type of the converted value.
-	 * @return The converted value as an instance of target, or <code>null</code> if a converter
-         * could not be found
-	 * @since 2.4
-	 */
-	public static <T> T convert( Object source, Class<T> target ) {
-	    return convert( source, target, null );
-	}
+    /**
+     * Converts an object of a particular type into an object of a different type.
+     * <p>
+     * Convenience for {@link #convert(Object, Class, Hints)}
+     * 
+     * @param source
+     *            The object to convert.
+     * @param target
+     *            The type of the converted value.
+     * @return The converted value as an instance of target, or <code>null</code> if a converter
+     *         could not be found
+     * @since 2.4
+     */
+    public static <T> T convert(Object source, Class<T> target) {
+        return convert(source, target, null);
+    }
 
-	/**
-	 * Converts an object of a particular type into an object of a differnt type.
-	 * <p>
-	 * This method uses the {@link ConverterFactory} extension point to find a converter capable
-	 * of performing the conversion. The first converter found is the one used. Using this class
-	 * there is no way to guarantee which converter will be used.
-	 * </p>
-	 * @param source The object to convert.
-	 * @param target The type of the converted value.
-	 * @param hints Any hints for the converter factory.
-	 *
-	 * @return The converted value as an instance of target, or <code>null</code> if a converter
-	 * could not be found.
-	 *
-	 * @since 2.4
-	 */
-	public static <T> T convert( Object source, Class<T> target, Hints hints ) {
-		//can't convert null
-        if ( source == null )
-			return null;
-        
+    /**
+     * Converts an object of a particular type into an object of a different type.
+     * <p>
+     * This method uses the {@link ConverterFactory} extension point to find a converter capable of
+     * performing the conversion. The first converter found is the one used. Using this class there
+     * is no way to guarantee which converter will be used.
+     * </p>
+     * 
+     * @param source
+     *            The object to convert.
+     * @param target
+     *            The type of the converted value.
+     * @param hints
+     *            Any hints for the converter factory.
+     * 
+     * @return The converted value as an instance of target, or <code>null</code> if a converter
+     *         could not be found.
+     * 
+     * @since 2.4
+     */
+    public static <T> T convert(Object source, Class<T> target, Hints hints) {
+        // can't convert null
+        if (source == null)
+            return null;
+
         // handle case of source being an instance of target up front
-        final Class sourceClass = source.getClass();
-        if (sourceClass == target ||  sourceClass.equals( target ) 
-                || target.isAssignableFrom(sourceClass) ) {
-            return (T) source;
+        final Class<?> sourceClass = source.getClass();
+        if (sourceClass == target || sourceClass.equals(target)
+                || target.isAssignableFrom(sourceClass)) {
+            return target.cast( source );
         }
 
-		for (ConverterFactory factory : factories()) {
-			Converter converter = factory.createConverter( sourceClass, target, hints );
-			if ( converter != null ) {
-				try {
-					T converted = converter.convert( source, target );
-					if ( converted != null ) {
-						return converted;
-					}
-				} catch (Exception e) {
-				    if(LOGGER.isLoggable(Level.FINER))
-				        LOGGER.log(Level.FINER, "Error applying the converter " + converter.getClass() + " on (" + source + "," + target + ")", e);
-				}
-			}
-		}
+        for (ConverterFactory factory : factories()) {
+            Converter converter = factory.createConverter(sourceClass, target, hints);
+            if (converter != null) {
+                try {
+                    T converted = converter.convert(source, target);
+                    if (converted != null) {
+                        return converted;
+                    }
+                } catch (Exception e) {
+                    if (LOGGER.isLoggable(Level.FINER))
+                        LOGGER.log(Level.FINER,
+                                "Error applying the converter " + converter.getClass() + " on ("
+                                        + source + "," + target + ")", e);
+                }
+            }
+        }
 
-		//a couple of final tries
-		if ( String.class.equals( target ) ) {
-			return (T) source.toString();
-		}
-		return null;
-	}
+        // a couple of final tries
+        if (String.class.equals(target)) {
+            return target.cast( source.toString() );
+        }
+        return null;
+    }
 
-	/**
-	 * Processed the {@link ConverterFactory} extension point.
-	 *
-	 * @return A collection of converter factories.
-	 * @since 2.4
-	 */
-	static ConverterFactory[] factories() {
-	    if(factories == null) {
-	        Collection factoryCollection = getConverterFactories(GeoTools.getDefaultHints());
-	        factories = (ConverterFactory[]) factoryCollection.toArray(new ConverterFactory[factoryCollection.size()]);
-	    }
-	    return factories;
-	}
+    /**
+     * Processed the {@link ConverterFactory} extension point.
+     * 
+     * @return A collection of converter factories.
+     * @since 2.4
+     */
+    static ConverterFactory[] factories() {
+        if (factories == null) {
+            Collection<ConverterFactory> factoryCollection = getConverterFactories(GeoTools
+                    .getDefaultHints());
+            factories = (ConverterFactory[]) factoryCollection
+                    .toArray(new ConverterFactory[factoryCollection.size()]);
+        }
+        return factories;
+    }
 }

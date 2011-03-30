@@ -59,7 +59,7 @@ import org.opengis.filter.spatial.Within;
 /**
  * Utility class for working with Filters & Expression.
  * <p>
- * To get the full benifit you will need to create an instanceof
+ * To get the full benefit you will need to create an instanceof
  * this Object (supports your own custom FilterFactory!). Additional
  * methods to help create expressions are available.
  * </p>
@@ -67,7 +67,7 @@ import org.opengis.filter.spatial.Within;
  * Example use:
  * <pre><code>
  * Filters filters = new Filters( factory );
- * filters.duplicate( origional );
+ * filters.duplicate( original );
  * </code></pre>
  * The above example creates a copy of the provided Filter,
  * the factory provided will be used when creating the duplicated
@@ -75,7 +75,7 @@ import org.opengis.filter.spatial.Within;
  * </p>
  * <h3>Expression</h3>
  * <p>
- * Expressions form an interesting little semi scripting languge,
+ * Expressions form an interesting little semi scripting language,
  * intended for queries.  A interesting Feature of Filter as a language
  * is that it is not strongly typed. This utility class many helper
  * methods that ease the transition from Strongly typed Java to the more
@@ -595,31 +595,51 @@ public class Filters {
     /**
      * Inverse of eval, used to softly type supported
      * types into Text for use as literals.
+     * <p>
+     * This method has been superseeded by Converters
+     * which offers a more general and open ended solution.
+     * </p>
+     * @return String representation of provided object
      */
-    public static String puts( Object obj ){
-    	if( obj == null ) return null;
-    	if( obj instanceof String) return (String) obj;    	
-    	if( obj instanceof Color ){
-    		Color color = (Color) obj;
-    		return puts( color );
-    	}
-    	if( obj instanceof Number ){
-    		Number number = (Number) obj;
-    		return puts( number.doubleValue() );    		
-    	}
-    	return obj.toString();
+    public static String puts(Object obj) {
+        if (obj == null)
+            return null;
+        if (obj instanceof String)
+            return (String) obj;
+        if (obj instanceof Color) {
+            Color color = (Color) obj;
+            return puts(color);
+        }
+        if (obj instanceof Number) {
+            Number number = (Number) obj;
+            return puts(number.doubleValue());
+        }
+        return obj.toString();
     }
-    
-    public static String puts( Color color ){
-    	String redCode = Integer.toHexString(color.getRed());
+
+    /**
+     * Inverse of eval, used to softly type supported types into Text for use as literals.
+     * <p>
+     * This method has been superseeded by Converters which offers a more general and open ended
+     * solution.
+     * </p>
+     * 
+     * @param color
+     * @return String representation of provided color.
+     */
+    public static String puts(Color color) {
+        String redCode = Integer.toHexString(color.getRed());
         String greenCode = Integer.toHexString(color.getGreen());
         String blueCode = Integer.toHexString(color.getBlue());
 
-        if (redCode.length() == 1) redCode = "0" + redCode;
-        if (greenCode.length() == 1) greenCode = "0" + greenCode;
-        if (blueCode.length() == 1) blueCode = "0" + blueCode;
-        
-        return "#" + redCode + greenCode + blueCode;  
+        if (redCode.length() == 1)
+            redCode = "0" + redCode;
+        if (greenCode.length() == 1)
+            greenCode = "0" + greenCode;
+        if (blueCode.length() == 1)
+            blueCode = "0" + blueCode;
+
+        return "#" + redCode + greenCode + blueCode;
     }
 }
 

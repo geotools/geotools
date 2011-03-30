@@ -430,7 +430,20 @@ public final class GeoTools {
     public static Hints getDefaultHints() {
         return Hints.getDefaults(false);
     }
-
+    /**
+     * Used to combine provided hints with global GeoTools defaults.
+     * 
+     * @param hints
+     * @return
+     */
+    public static Hints addDefaultHints(final Hints hints) {
+        final Hints completed = getDefaultHints();
+        if (hints != null) {
+            completed.add(hints);
+        }
+        return completed;
+    }
+    
     /**
      * Returns the default initial context.
      *

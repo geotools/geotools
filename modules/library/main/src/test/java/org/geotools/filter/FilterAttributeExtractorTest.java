@@ -18,6 +18,7 @@ package org.geotools.filter;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 import junit.framework.Test;
@@ -26,6 +27,7 @@ import junit.framework.TestSuite;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.SchemaException;
+import org.opengis.filter.Filter;
 import org.opengis.filter.Id;
 import org.opengis.filter.Or;
 import org.opengis.filter.PropertyIsEqualTo;
@@ -35,11 +37,11 @@ import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.DWithin;
 import org.opengis.filter.spatial.Equals;
+import org.opengis.filter.expression.Expression;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.PrecisionModel;
-
 
 /**
  * Unit test for filters.  Note that this unit test does not encompass all of filter package, just
@@ -101,7 +103,29 @@ public class FilterAttributeExtractorTest extends TestCase {
 
         fac = CommonFactoryFinder.getFilterFactory2(null);
     }
-
+    
+    public void testPropertyNameSet() throws IllegalFilterException {
+        Filter filter = fac.equals(fac.property("testString"), fac.literal("test string data"));
+        Expression expression1 = fac.property("code");
+        Expression expression2 = fac.function("length", fac.property("identification"));
+        
+        FilterAttributeExtractor extract = new FilterAttributeExtractor(null);
+        
+        Set<String> names = new HashSet<String>();
+        // used to collect names from expression1, expression2, and filter
+        
+        expression1.accept(extract, names);
+        expression2.accept(extract, names);
+        filter.accept(extract, names);
+        
+        String array[] = extract.getAttributeNames();
+        Set<String> attributes = extract.getAttributeNameSet();
+        Set<PropertyName> properties = extract.getPropertyNameSet();
+        
+        assertEquals( 3 , array.length );
+        assertEquals( 3, attributes.size() );
+        assertEquals( 3, properties.size() );
+    }
     /**
      * Sets up a schema and a test feature.
      *
@@ -120,7 +144,7 @@ public class FilterAttributeExtractorTest extends TestCase {
         fae.clear();
         filter.accept(fae, null);
 
-        Set attNames = fae.getAttributeNameSet();
+        Set<String> attNames = fae.getAttributeNameSet();
 
         assertNotNull(attNames);
         assertEquals(attNames.size(), names.length);

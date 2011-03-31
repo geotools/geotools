@@ -19,7 +19,6 @@ package org.geotools.data.gen;
 
 import java.awt.RenderingHints.Key;
 import java.io.IOException;
-import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -50,6 +49,7 @@ import org.geotools.factory.Hints;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureTypeImpl;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.util.logging.Logging;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -80,7 +80,7 @@ public class PreGeneralizedFeatureSource implements SimpleFeatureSource {
 
     protected PreGeneralizedDataStore dataStore;
 
-    protected Logger log = Logger.getLogger(this.getClass().getName());
+    protected Logger log = Logging.getLogger(this.getClass());
 
     private SimpleFeatureSource baseFeatureSource;
 
@@ -454,7 +454,14 @@ public class PreGeneralizedFeatureSource implements SimpleFeatureSource {
     }
 
     private Double getRequestedDistance(Query query) {
-        return (Double) query.getHints().get(Hints.GEOMETRY_DISTANCE);
+        Double result =  (Double) query.getHints().get(Hints.GEOMETRY_DISTANCE);
+        if (result == null) {
+            log.warning("No hint for geometry distance in query, fallback to base feature" );
+        }
+        else {
+            log.info("Hint geometry distance: "+result);
+        }
+        return result;
     }
 
     private SimpleFeatureSource getFeatureSourceFor(Query query)

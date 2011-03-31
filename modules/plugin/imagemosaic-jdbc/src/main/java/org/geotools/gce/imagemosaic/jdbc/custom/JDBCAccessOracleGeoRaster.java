@@ -42,6 +42,7 @@ import org.geotools.gce.imagemosaic.jdbc.Config;
 import org.geotools.gce.imagemosaic.jdbc.ImageLevelInfo;
 import org.geotools.gce.imagemosaic.jdbc.TileQueueElement;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.util.logging.Logging;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.sun.media.jai.codec.ByteArraySeekableStream;
@@ -62,7 +63,7 @@ import com.vividsolutions.jts.io.WKBReader;
 
 public class JDBCAccessOracleGeoRaster extends JDBCAccessCustom {
     
-    private final static Logger LOGGER = Logger.getLogger(JDBCAccessOracleGeoRaster.class
+    private final static Logger LOGGER = Logging.getLogger(JDBCAccessOracleGeoRaster.class
             .getPackage().getName());
 
 

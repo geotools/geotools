@@ -28,6 +28,7 @@ import javax.imageio.ImageIO;
 import javax.media.jai.PlanarImage;
 
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.util.logging.Logging;
 
 import com.sun.media.jai.codec.ByteArraySeekableStream;
 import com.sun.media.jai.codec.ImageCodec;
@@ -53,7 +54,7 @@ import com.sun.media.jai.codec.SeekableStream;
  */
 class ImageDecoderThread extends AbstractThread {
 	/** Logger. */
-	protected final static Logger LOGGER = Logger
+	protected final static Logger LOGGER = Logging
 			.getLogger(ImageDecoderThread.class.getPackage().getName());
 
 	private byte[] imageBytes;

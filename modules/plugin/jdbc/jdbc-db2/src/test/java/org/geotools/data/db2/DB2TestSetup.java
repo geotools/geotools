@@ -24,6 +24,7 @@ import java.util.logging.Logger;
 
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.JDBCTestSetup;
+import org.geotools.util.logging.Logging;
 
 
 /**
@@ -36,7 +37,7 @@ import org.geotools.jdbc.JDBCTestSetup;
  */
 public class DB2TestSetup extends JDBCTestSetup {
 	
-	protected final static Logger LOGGER = Logger.getLogger(DB2TestSetup.class.getPackage()
+	protected final static Logger LOGGER = Logging.getLogger(DB2TestSetup.class.getPackage()
             .getName());
 	
 

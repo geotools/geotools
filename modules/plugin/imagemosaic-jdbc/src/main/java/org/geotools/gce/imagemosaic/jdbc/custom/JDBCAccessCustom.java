@@ -41,6 +41,7 @@ import org.geotools.gce.imagemosaic.jdbc.JDBCAccess;
 import org.geotools.gce.imagemosaic.jdbc.TileQueueElement;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.CRS;
+import org.geotools.util.logging.Logging;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
@@ -53,7 +54,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public abstract class JDBCAccessCustom implements JDBCAccess {
 
-    private final static Logger LOGGER = Logger.getLogger(JDBCAccessCustom.class
+    private final static Logger LOGGER = Logging.getLogger(JDBCAccessCustom.class
             .getPackage().getName());
 
     private Config config;

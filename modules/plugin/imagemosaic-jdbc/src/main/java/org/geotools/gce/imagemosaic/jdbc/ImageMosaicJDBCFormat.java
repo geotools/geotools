@@ -33,6 +33,7 @@ import org.geotools.factory.Hints;
 import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.parameter.DefaultParameterDescriptorGroup;
 import org.geotools.parameter.ParameterGroup;
+import org.geotools.util.logging.Logging;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverageWriter;
 import org.opengis.parameter.GeneralParameterDescriptor;
@@ -62,7 +63,7 @@ import org.opengis.parameter.GeneralParameterDescriptor;
  */
 public class ImageMosaicJDBCFormat extends AbstractGridFormat implements Format {
 	/** Logger. */
-	private final static Logger LOGGER = Logger
+	private final static Logger LOGGER = Logging
 			.getLogger(ImageMosaicJDBCFormat.class.getPackage().getName());
 
 	/** Control the transparency of the output coverage. */

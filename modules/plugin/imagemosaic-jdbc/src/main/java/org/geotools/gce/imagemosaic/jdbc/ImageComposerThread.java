@@ -30,6 +30,7 @@ import java.util.logging.Logger;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.util.logging.Logging;
 
 /**
  * This class reads decoded tiles from the queue and performs the mosaicing and
@@ -40,7 +41,7 @@ import org.geotools.geometry.GeneralEnvelope;
  */
 class ImageComposerThread extends AbstractThread {
 	/** Logger. */
-	protected final static Logger LOGGER = Logger
+	protected final static Logger LOGGER = Logging
 			.getLogger(ImageComposerThread.class.getPackage().getName());
 
 	protected GridCoverageFactory coverageFactory;

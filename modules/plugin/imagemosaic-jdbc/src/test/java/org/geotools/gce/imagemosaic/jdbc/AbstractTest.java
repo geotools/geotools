@@ -53,13 +53,14 @@ import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.jdbc.Import.ImportTyp;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.CRS;
+import org.geotools.util.logging.Logging;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public abstract class AbstractTest extends TestCase {
 
-	protected final static Logger LOGGER = Logger.getLogger(AbstractTest.class
+	protected final static Logger LOGGER = Logging.getLogger(AbstractTest.class
 			.getPackage().getName());
 
 	protected static String CRSNAME = "EPSG:4326";

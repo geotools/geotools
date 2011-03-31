@@ -36,6 +36,7 @@ import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
 import org.geotools.data.Repository;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
+import org.geotools.util.logging.Logging;
 import org.opengis.feature.type.Name;
 
 /**
@@ -54,7 +55,7 @@ public class DSFinderRepository implements Repository {
 
     Map<String, DataStore> map = new HashMap<String, DataStore>();
 
-    Logger log = Logger.getLogger(this.getClass().getName());
+    Logger log = Logging.getLogger(this.getClass());
 
     public void clear() {
         map = new HashMap<String, DataStore>();

@@ -46,6 +46,7 @@ import javax.sql.DataSource;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.data.jdbc.datasource.DataSourceFinder;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.util.logging.Logging;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.sun.media.jai.codec.ByteArraySeekableStream;
@@ -70,7 +71,7 @@ import com.vividsolutions.jts.geom.Polygon;
  */
 abstract class JDBCAccessBase implements JDBCAccess {
 	/** Logger. */
-	protected final static Logger LOGGER = Logger
+	protected final static Logger LOGGER = Logging
 			.getLogger(JDBCAccessBase.class.getPackage().getName());
 
 	private List<ImageLevelInfo> levelInfos = new ArrayList<ImageLevelInfo>();

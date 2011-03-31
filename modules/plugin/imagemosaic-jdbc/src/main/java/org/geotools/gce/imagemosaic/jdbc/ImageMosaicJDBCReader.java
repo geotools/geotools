@@ -47,6 +47,7 @@ import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.parameter.Parameter;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.BufferedCoordinateOperationFactory;
+import org.geotools.util.logging.Logging;
 import org.opengis.coverage.grid.Format;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -74,7 +75,7 @@ import com.vividsolutions.jts.geom.Envelope;
  * 
  */
 public class ImageMosaicJDBCReader extends AbstractGridCoverage2DReader {
-    private final static Logger LOGGER = Logger.getLogger(ImageMosaicJDBCReader.class.getPackage()
+    private final static Logger LOGGER = Logging.getLogger(ImageMosaicJDBCReader.class.getPackage()
             .getName());
 
     protected final static CoordinateOperationFactory operationFactory = new BufferedCoordinateOperationFactory(

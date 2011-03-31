@@ -1,47 +1,51 @@
 GridCoverage
 ------------
 
-To quickly read a GridCoverage we can make use of the grid coverage format support.::
-  
-  File file = new File("test.tiff");
-  
-  AbstractGridFormat format = GridFormatFinder.findFormat( file );
-  AbstractGridCoverage2DReader reader = format.getReader(rasterFile);
-  
-  GridCoverage2D coverage = (GridCoverage2D) read.read( null );
+To quickly read a GridCoverage we can make use of the grid coverage format support.:
+   
+.. literalinclude:: /../src/main/java/org/geotools/coverage/CoverageExamples.java
+   :language: java
+   :start-after: // exampleGridFormat start
+   :end-before: // exampleGridFormat end
 
 If you already know what kind of file you have you have you can create the reader directly::
 
   File file = new File("test.tiff");
   
   GeoTiffReader reader = new GeoTiffReader(file, new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE));
-  GridCoverage2D coverage = (GridCoverage2D) reader.read(null);
+  GridCoverage2D coverage = reader.read(null);
 
 You can also create a GridCoverage "by hand" if you have a BufferedImage in memory that you would like to place onto a map.
 
 Here is an example of creating a grid coverage from a tile (containing a bufferedImage and a ReferencedEnvelope location:
 
-  GridCoverageFactory factory = new GridCoverageFactory();
-  
-  ReferencedEnvelope envelope = tile.getExtent();
-  BufferedImage image = tile.getBufferedImage();
-  
-  GridCoverage2D coverage = (GridCoverage2D) factory.create("GridCoverage", image, envelope);
+.. literalinclude:: /../src/main/java/org/geotools/coverage/CoverageExamples.java
+   :language: java
+   :start-after: // exampleGridCoverageUsing start
+   :end-before: // exampleGridCoverageUsing end
 
 Using
 ^^^^^
 
 Once we have created a GridCoverage2D, we can then use the class to perform useful tasks. Many uses require access to the class itself but more generic uses can interact with the instance through its OpenGIS GridCoverage interface.
 
-GridCoverage2D provides access to::
+GridCoverage2D provides access to:
   
-  GridCoverage2D coverage = (GridCoverage2D) reader.read(null);
-  CoordinateReferenceSystem crs = coverage.getCoordinateReferenceSystem2D();
-  Envelope env = coverage.getEnvelope();
-  RenderedImage image = coverage.getRenderedImage();
+.. literalinclude:: /../src/main/java/org/geotools/coverage/CoverageExamples.java
+   :language: java
+   :start-after: // exampleGridCoverageFactory start
+   :end-before: // exampleGridCoverageFactory end
 
 GridCovearge2D supports simple use directly using the methods above.
 For more complex uses we go through the Operations class as explained in the next section.
+
+You can also evaluate the coverage at a specific point in order to determine what values are present at that location.:
+
+.. literalinclude:: /../src/main/java/org/geotools/coverage/CoverageExamples.java
+   :language: java
+   :start-after: // exampleGridCoverageDirect start
+   :end-before: // exampleGridCoverageDirect end
+
 
 Views
 '''''

@@ -29,6 +29,7 @@ import org.geotools.referencing.crs.DefaultProjectedCRS;
 import org.geotools.referencing.operation.matrix.GeneralMatrix;
 import org.geotools.referencing.operation.projection.PointOutsideEnvelopeException;
 import org.geotools.referencing.wkt.Parser;
+import org.opengis.geometry.BoundingBox;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform2D;
@@ -37,6 +38,7 @@ import org.opengis.referencing.operation.TransformException;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Polygon;
 
 
 /**
@@ -203,6 +205,18 @@ public class JTSTest extends TestCase {
        } catch(PointOutsideEnvelopeException e) {
            // fine
        }
-       
+    }
+
+    public void testToGeoemtry(){
+        DefaultGeographicCRS crs = DefaultGeographicCRS.WGS84;
+        
+        // straight up
+        Polygon polygon = JTS.toGeometry(new Envelope(-10, 10, -10, 10) );
+        assertEquals( 5, polygon.getExteriorRing().getCoordinateSequence().size() );
+        
+        // bounding box
+        polygon = JTS.toGeometry( (BoundingBox)  new ReferencedEnvelope(-10, 10, -10, 10, crs) );
+        assertEquals( 5, polygon.getExteriorRing().getCoordinateSequence().size() );
+        
     }
 }

@@ -49,9 +49,6 @@ FeatureType
 
 Working with FeatureType can be a bit troubling, as much like Java String it is immutable (cannot be modified once created). 
 
-* reType(SimpleFeatureType, SimpleFeature)
-* reType(SimpleFeatureType, SimpleFeature, boolean)
-
 FeatureType Creation
 ''''''''''''''''''''
 
@@ -65,28 +62,28 @@ DataUtilities provides the following methods to help you quickly create and modi
   
   If you just want to quickly describe some information::
     
-    FeatureType lineType = DataUtilities.createType("LINE", "centerline:LineString,name:\"\",id:0");
+    SimpleFeatureType lineType = DataUtilities.createType("LINE", "centerline:LineString,name:\"\",id:0");
   
   I admit that looks a bit strange, you can also use a Java class names if it makes you happy::
     
-    FeatureType schema = DataUtilities.createType("EDGE", "edge:Polygon,name:String,timestamp:java.util.Date");
+    SimpleFeatureType schema = DataUtilities.createType("EDGE", "edge:Polygon,name:String,timestamp:java.util.Date");
   
   If you need to set the coordinate reference system as well::
     
-    FeatureType lineType = DataUtilities.createType("LINE", "centerline:LineString:srid=32615,name:\"\",id:0");
+    SimpleFeatureType lineType = DataUtilities.createType("LINE", "centerline:LineString:srid=32615,name:\"\",id:0");
 
   If you are into names spaces that can be handled as well::
   
-    FeatureType lineType = DataUtilities.createType("http://somewhere.net/","LINE", "centerline:LineString,name:\"\",id:0");
+    SimpleFeatureType lineType = DataUtilities.createType("http://somewhere.net/","LINE", "centerline:LineString,name:\"\",id:0");
 
   Now we don't want to see you writing code to build up your initial "definition" String, that means you are doing something
   general (and dynamic!) and   should go figure out SimpleFeatureTypeBuilder and SimpleFeatureBuilder.
 
-* DataUtilities.spec(FeatureType)
+* DataUtilities.spec(SimpleFeatureType)
   
   You can use this method to quickly get a text representation of a FeatureType::
     
-    System.out.println("FeatureType: " + DataUtilities.spec(featureType));
+    System.out.println("FeatureType: " + DataUtilities.spec(schema));
 
   The representation is the same one used by createType above.
 
@@ -191,6 +188,16 @@ correct Java Objects as needed.
   Geometry behaving funny)::
   
     DataUtilities.attributesEquals( feature1.getAttribute(1), feature2.getAttribute(1) );
+
+* reType(SimpleFeatureType, SimpleFeature)
+* reType(SimpleFeatureType, SimpleFeature, boolean)
+  
+  These methods allow you to modify a feature to match a new schema:
+
+.. literalinclude:: /../src/main/java/org/geotools/main/MainExamples.java
+   :language: java
+   :start-after: // exampleRetype start
+   :end-before: // exampleRetype end
 
 FeatureCollection
 ^^^^^^^^^^^^^^^^^
@@ -329,9 +336,9 @@ boilerplate code that you would otherwise need to cut and paste into your applic
 Cast
 ''''
 
-In GeoTools 2.7.0 we introduced the idea of a SimpleFeatureCollection (which is a short hand for FeatureCollection<SimpleFeatureType,SimpleFeature>).
+In GeoTools 2.7 we introduced the idea of a SimpleFeatureCollection (which is a short hand for FeatureCollection<SimpleFeatureType,SimpleFeature>).
 
-While this really with learning the library (and the amount of typing required to use it)
+While this really helped with learning the library (and the amount of typing required to use it)
 we needed to introduce the following methods to help people safely "cast" to a SimpleFeatureCollection when they had a FeatureCollection.
 
 * DataUtilities.simple(FeatureCollection<SimpleFeatureType, SimpleFeature>)
@@ -340,9 +347,14 @@ we needed to introduce the following methods to help people safely "cast" to a S
 * DataUtilities.simple(FeatureType)
 * DataUtilities.simple(FeatureLocking)
 
-In practice these end up being easy to use::
-  
-  SimpleFeatureCollection features = DataUtilities.simple( collection );
+While the above methods do perform an instance of check; they are also willing to apply a wrapper to get the job done if needed.
+
+In practice these methods are quick and easy to use:
+
+.. literalinclude:: /../src/main/java/org/geotools/main/MainExamples.java
+   :language: java
+   :start-after: // exampleDataUtilities start
+   :end-before: // exampleDataUtilities end
 
 Query
 ^^^^^
@@ -358,7 +370,7 @@ A common task with gt-main is preparing a Query against a FeatureSource. DataUti
 * DataUtilities.addMandatoryProperties(SimpleFeatureType, List<PropertyName>)
 
 SortBy
-^^^^^^
+''''''
 
 * DataUtilities.sortComparator(SortBy)
   
@@ -366,7 +378,7 @@ SortBy
   SortBy provided.
 
 Filter and Expression
-^^^^^^^^^^^^^^^^^^^^^
+'''''''''''''''''''''
 
 Part of the fun of preparing a Query is ensuring you ask for the correct values to
 perform the task you have in mind.

@@ -19,8 +19,8 @@ Simple case::
   b.add( "height", Double.class );
   
   //add a geometry property
-  b.setCRS( DefaultGeographicCRS.WSG84 );
-  b.add( "location", Point.class );
+  b.setCRS( DefaultGeographicCRS.WSG84 ); // set crs first
+  b.add( "location", Point.class ); // then add geometry
 
   //build the type
   SimpleFeatureType type = b.buildFeatureType();

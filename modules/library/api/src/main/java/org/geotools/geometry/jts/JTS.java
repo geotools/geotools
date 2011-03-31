@@ -36,8 +36,8 @@ import org.geotools.resources.Classes;
 import org.geotools.resources.geometry.ShapeUtilities;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
-
 import org.opengis.geometry.BoundingBox;
+import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
@@ -53,8 +53,8 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.MultiLineString;
+import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
-
 
 /**
  * JTS Geometry utility methods, bringing Geotools to JTS.
@@ -63,11 +63,11 @@ import com.vividsolutions.jts.geom.Polygon;
  * <p>
  * Responsibilities:
  * <ul>
- *   <li>transformation</li>
- *   <li>coordinate sequence editing</li>
- *   <li>common coordinate sequence implementations for specific uses</li>
+ * <li>transformation</li>
+ * <li>coordinate sequence editing</li>
+ * <li>common coordinate sequence implementations for specific uses</li>
  * </ul>
- *
+ * 
  * @since 2.2
  * @source $URL$
  * @version $Id$
@@ -89,13 +89,13 @@ public final class JTS {
     }
 
     /**
-     * Geodetic calculators already created for a given coordinate reference system.
-     * For use in {@link #orthodromicDistance}.
-     *
+     * Geodetic calculators already created for a given coordinate reference system. For use in
+     * {@link #orthodromicDistance}.
+     * 
      * Note: We would like to use {@link org.geotools.util.CanonicalSet}, but we can't because
-     *       {@link GeodeticCalculator} keep a reference to the CRS which is used as the key.
+     * {@link GeodeticCalculator} keep a reference to the CRS which is used as the key.
      */
-    private static final Map<CoordinateReferenceSystem,GeodeticCalculator> CALCULATORS = new HashMap<CoordinateReferenceSystem,GeodeticCalculator>();
+    private static final Map<CoordinateReferenceSystem, GeodeticCalculator> CALCULATORS = new HashMap<CoordinateReferenceSystem, GeodeticCalculator>();
 
     /**
      * Do not allow instantiation of this class.
@@ -105,68 +105,77 @@ public final class JTS {
 
     /**
      * Makes sure that an argument is non-null.
-     *
-     * @param  name   Argument name.
-     * @param  object User argument.
-     * @throws IllegalArgumentException if {@code object} is null.
+     * 
+     * @param name
+     *            Argument name.
+     * @param object
+     *            User argument.
+     * @throws IllegalArgumentException
+     *             if {@code object} is null.
      */
     private static void ensureNonNull(final String name, final Object object)
-        throws IllegalArgumentException {
+            throws IllegalArgumentException {
         if (object == null) {
             throw new IllegalArgumentException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, name));
         }
     }
 
     /**
-     * Transforms the envelope using the specified math transform.
-     * Note that this method can not handle the case where the envelope contains the North or
-     * South pole, or when it cross the &plusmn;180ï¿½ longitude, because {@linkplain MathTransform
-     * math transforms} do not carry suffisient informations. For a more robust envelope
-     * transformation, use {@link ReferencedEnvelope#transform(CoordinateReferenceSystem,
-     * boolean)} instead.
-     *
-     * @param  envelope  The envelope to transform.
-     * @param  transform The transform to use.
+     * Transforms the envelope using the specified math transform. Note that this method can not
+     * handle the case where the envelope contains the North or South pole, or when it cross the
+     * &plusmn;180ï¿½ longitude, because {@linkplain MathTransform math transforms} do not carry
+     * suffisient informations. For a more robust envelope transformation, use
+     * {@link ReferencedEnvelope#transform(CoordinateReferenceSystem, boolean)} instead.
+     * 
+     * @param envelope
+     *            The envelope to transform.
+     * @param transform
+     *            The transform to use.
      * @return The transformed Envelope
-     * @throws TransformException if at least one coordinate can't be transformed.
+     * @throws TransformException
+     *             if at least one coordinate can't be transformed.
      */
     public static Envelope transform(final Envelope envelope, final MathTransform transform)
-        throws TransformException {
+            throws TransformException {
         return transform(envelope, null, transform, 5);
     }
 
     /**
-     * Transforms the densified envelope using the specified math transform.
-     * The envelope is densified (extra points put around the outside edge)
-     * to provide a better new envelope for high deformed situations.
+     * Transforms the densified envelope using the specified math transform. The envelope is
+     * densified (extra points put around the outside edge) to provide a better new envelope for
+     * high deformed situations.
      * <p>
      * If an optional target envelope is provided, this envelope will be
      * {@linkplain Envelope#expandToInclude expanded} with the transformation result. It will
      * <strong>not</strong> be {@linkplain Envelope#setToNull nullified} before the expansion.
      * <p>
-     * Note that this method can not handle the case where the envelope contains the North or
-     * South pole, or when it cross the &plusmn;180ï¿½ longitude, because {@linkplain MathTransform
-     * math transforms} do not carry suffisient informations. For a more robust envelope
-     * transformation, use {@link ReferencedEnvelope#transform(CoordinateReferenceSystem,
-     * boolean, int)} instead.
-     *
-     * @param  sourceEnvelope  The envelope to transform.
-     * @param  targetEnvelope  An envelope to expand with the transformation result, or {@code null}
-     *                         for returning an new envelope.
-     * @param  transform       The transform to use.
-     * @param  npoints         Densification of each side of the rectangle.
-     * @return {@code targetEnvelope} if it was non-null, or a new envelope otherwise.
-     *         In all case, the returned envelope fully contains the transformed envelope.
-     * @throws TransformException if a coordinate can't be transformed.
+     * Note that this method can not handle the case where the envelope contains the North or South
+     * pole, or when it cross the &plusmn;180ï¿½ longitude, because {@linkplain MathTransform math
+     * transforms} do not carry suffisient informations. For a more robust envelope transformation,
+     * use {@link ReferencedEnvelope#transform(CoordinateReferenceSystem, boolean, int)} instead.
+     * 
+     * @param sourceEnvelope
+     *            The envelope to transform.
+     * @param targetEnvelope
+     *            An envelope to expand with the transformation result, or {@code null} for
+     *            returning an new envelope.
+     * @param transform
+     *            The transform to use.
+     * @param npoints
+     *            Densification of each side of the rectangle.
+     * @return {@code targetEnvelope} if it was non-null, or a new envelope otherwise. In all case,
+     *         the returned envelope fully contains the transformed envelope.
+     * @throws TransformException
+     *             if a coordinate can't be transformed.
      */
     public static Envelope transform(final Envelope sourceEnvelope, Envelope targetEnvelope,
-        final MathTransform transform, int npoints) throws TransformException {
+            final MathTransform transform, int npoints) throws TransformException {
         ensureNonNull("sourceEnvelope", sourceEnvelope);
         ensureNonNull("transform", transform);
 
         if ((transform.getSourceDimensions() != 2) || (transform.getTargetDimensions() != 2)) {
             throw new MismatchedDimensionException(Errors.format(ErrorKeys.BAD_TRANSFORM_$1,
-            		Classes.getShortClassName(transform)));
+                    Classes.getShortClassName(transform)));
         }
 
         npoints++; // for the starting point.
@@ -210,16 +219,19 @@ public final class JTS {
 
     /**
      * Transforms the geometry using the default transformer.
-     *
-     * @param  geom The geom to transform
-     * @param  transform the transform to use during the transformation.
-     * @return the transformed geometry.  It will be a new geometry.
-     * @throws MismatchedDimensionException if the geometry doesn't have the expected dimension
-     *         for the specified transform.
-     * @throws TransformException if a point can't be transformed.
+     * 
+     * @param geom
+     *            The geom to transform
+     * @param transform
+     *            the transform to use during the transformation.
+     * @return the transformed geometry. It will be a new geometry.
+     * @throws MismatchedDimensionException
+     *             if the geometry doesn't have the expected dimension for the specified transform.
+     * @throws TransformException
+     *             if a point can't be transformed.
      */
     public static Geometry transform(final Geometry geom, final MathTransform transform)
-        throws MismatchedDimensionException, TransformException {
+            throws MismatchedDimensionException, TransformException {
         final GeometryCoordinateSequenceTransformer transformer = new GeometryCoordinateSequenceTransformer();
         transformer.setMathTransform(transform);
 
@@ -228,15 +240,18 @@ public final class JTS {
 
     /**
      * Transforms the coordinate using the provided math transform.
-     *
-     * @param source the source coordinate that will be transformed
-     * @param dest the coordinate that will be set.  May be null or the source coordinate
-     *        (or new coordinate of course).
+     * 
+     * @param source
+     *            the source coordinate that will be transformed
+     * @param dest
+     *            the coordinate that will be set. May be null or the source coordinate (or new
+     *            coordinate of course).
      * @return the destination coordinate if not null or a new Coordinate.
-     * @throws TransformException if the coordinate can't be transformed.
+     * @throws TransformException
+     *             if the coordinate can't be transformed.
      */
     public static Coordinate transform(final Coordinate source, Coordinate dest,
-        final MathTransform transform) throws TransformException {
+            final MathTransform transform) throws TransformException {
         ensureNonNull("source", source);
         ensureNonNull("transform", transform);
 
@@ -266,16 +281,19 @@ public final class JTS {
     }
 
     /**
-     * Transforms the envelope from its current crs to WGS84 coordinate reference system.
-     * If the specified envelope is already in WGS84, then it is returned unchanged.
-     *
-     * @param envelope The envelope to transform.
-     * @param crs The CRS the envelope is currently in.
+     * Transforms the envelope from its current crs to WGS84 coordinate reference system. If the
+     * specified envelope is already in WGS84, then it is returned unchanged.
+     * 
+     * @param envelope
+     *            The envelope to transform.
+     * @param crs
+     *            The CRS the envelope is currently in.
      * @return The envelope transformed to be in WGS84 CRS.
-     * @throws TransformException If at least one coordinate can't be transformed.
+     * @throws TransformException
+     *             If at least one coordinate can't be transformed.
      */
     public static Envelope toGeographic(final Envelope envelope, final CoordinateReferenceSystem crs)
-        throws TransformException {
+            throws TransformException {
         if (CRS.equalsIgnoreMetadata(crs, DefaultGeographicCRS.WGS84)) {
             return envelope;
         }
@@ -294,18 +312,22 @@ public final class JTS {
 
     /**
      * Like a transform but eXtreme!
-     *
-     * Transforms an array of coordinates using the provided math transform.
-     * Each coordinate is transformed separately. In case of a transform exception then
-     * the new value of the coordinate is the last coordinate correctly transformed.
-     *
-     * @param transform The math transform to apply.
-     * @param src       The source coordinates.
-     * @param dest      The destination array for transformed coordinates.
-     * @throws TransformException if this method failed to transform any of the points.
+     * 
+     * Transforms an array of coordinates using the provided math transform. Each coordinate is
+     * transformed separately. In case of a transform exception then the new value of the coordinate
+     * is the last coordinate correctly transformed.
+     * 
+     * @param transform
+     *            The math transform to apply.
+     * @param src
+     *            The source coordinates.
+     * @param dest
+     *            The destination array for transformed coordinates.
+     * @throws TransformException
+     *             if this method failed to transform any of the points.
      */
     public static void xform(final MathTransform transform, final double[] src, final double[] dest)
-        throws TransformException {
+            throws TransformException {
         ensureNonNull("transform", transform);
 
         final int sourceDim = transform.getSourceDimensions();
@@ -349,27 +371,30 @@ public final class JTS {
      * Computes the orthodromic distance between two points. This method:
      * <p>
      * <ol>
-     *   <li>Transforms both points to geographic coordinates
-     *       (<var>latitude</var>,<var>longitude</var>).</li>
-     *   <li>Computes the orthodromic distance between the two points using ellipsoidal
-     *       calculations.</li>
+     * <li>Transforms both points to geographic coordinates
+     * (<var>latitude</var>,<var>longitude</var>).</li>
+     * <li>Computes the orthodromic distance between the two points using ellipsoidal calculations.</li>
      * </ol>
      * <p>
      * The real work is performed by {@link GeodeticCalculator}. This convenience method simply
      * manages a pool of pre-defined geodetic calculators for the given coordinate reference system
-     * in order to avoid repetitive object creation. If a large amount of orthodromic distances
-     * need to be computed, direct use of {@link GeodeticCalculator} provides better performance
-     * than this convenience method.
-     *
-     * @param p1  First point
-     * @param p2  Second point
-     * @param crs Reference system the two points are in.
-     * @return    Orthodromic distance between the two points, in meters.
-     * @throws    TransformException if the coordinates can't be transformed from the specified
-     *            CRS to a {@linkplain org.opengis.referencing.crs.GeographicCRS geographic CRS}.
+     * in order to avoid repetitive object creation. If a large amount of orthodromic distances need
+     * to be computed, direct use of {@link GeodeticCalculator} provides better performance than
+     * this convenience method.
+     * 
+     * @param p1
+     *            First point
+     * @param p2
+     *            Second point
+     * @param crs
+     *            Reference system the two points are in.
+     * @return Orthodromic distance between the two points, in meters.
+     * @throws TransformException
+     *             if the coordinates can't be transformed from the specified CRS to a
+     *             {@linkplain org.opengis.referencing.crs.GeographicCRS geographic CRS}.
      */
     public static synchronized double orthodromicDistance(final Coordinate p1, final Coordinate p2,
-        final CoordinateReferenceSystem crs) throws TransformException {
+            final CoordinateReferenceSystem crs) throws TransformException {
         ensureNonNull("p1", p1);
         ensureNonNull("p2", p2);
         ensureNonNull("crs", crs);
@@ -387,8 +412,8 @@ public final class JTS {
         }
         assert crs.equals(gc.getCoordinateReferenceSystem()) : crs;
 
-        final GeneralDirectPosition pos = POSITIONS[Math.min(POSITIONS.length - 1,
-                crs.getCoordinateSystem().getDimension())];
+        final GeneralDirectPosition pos = POSITIONS[Math.min(POSITIONS.length - 1, crs
+                .getCoordinateSystem().getDimension())];
         pos.setCoordinateReferenceSystem(crs);
         copy(p1, pos.ordinates);
         gc.setStartingPosition(pos);
@@ -403,9 +428,11 @@ public final class JTS {
      * destination array can have any length. Only the relevant field of the source coordinate will
      * be copied. If the array length is greater than 3, then all extra dimensions will be set to
      * {@link Double#NaN NaN}.
-     *
-     * @param point The source coordinate.
-     * @param ordinates The destination array.
+     * 
+     * @param point
+     *            The source coordinate.
+     * @param ordinates
+     *            The destination array.
      */
     public static void copy(final Coordinate point, final double[] ordinates) {
         ensureNonNull("point", point);
@@ -428,50 +455,58 @@ public final class JTS {
             break;
         }
     }
-    
+
     /**
-     * Converts an arbitrary Java2D shape into a JTS geometry. The created JTS geometry
-     * may be any of {@link LineString}, {@link LinearRing} or {@link MultiLineString}.
-     *
-     * @param  shape    The Java2D shape to create.
-     * @param  factory  The JTS factory to use for creating geometry.
+     * Converts an arbitrary Java2D shape into a JTS geometry. The created JTS geometry may be any
+     * of {@link LineString}, {@link LinearRing} or {@link MultiLineString}.
+     * 
+     * @param shape
+     *            The Java2D shape to create.
+     * @param factory
+     *            The JTS factory to use for creating geometry.
      * @return The JTS geometry.
      * 
-     * @deprecated Please use {@link #toGeometry(Shape)} or {@link #toGeometry(Shape, GeometryFactory)}
+     * @deprecated Please use {@link #toGeometry(Shape)} or
+     *             {@link #toGeometry(Shape, GeometryFactory)}
      */
     public static Geometry shapeToGeometry(final Shape shape, final GeometryFactory factory) {
         return toGeometry(shape, factory);
     }
 
     /**
-     * Converts an arbitrary Java2D shape into a JTS geometry. The created JTS geometry
-     * may be any of {@link LineString}, {@link LinearRing} or {@link MultiLineString}.
-     *
-     * @param  shape    the input shape
+     * Converts an arbitrary Java2D shape into a JTS geometry. The created JTS geometry may be any
+     * of {@link LineString}, {@link LinearRing} or {@link MultiLineString}.
+     * 
+     * @param shape
+     *            the input shape
      * 
      * @return A new JTS geometry instance
-     * @throws IllegalArgumentException if {@code shape} is {@code null}
+     * @throws IllegalArgumentException
+     *             if {@code shape} is {@code null}
      */
     public static Geometry toGeometry(final Shape shape) {
         return toGeometry(shape, new GeometryFactory());
     }
 
     /**
-     * Converts an arbitrary Java2D shape into a JTS geometry. The created JTS geometry
-     * may be any of {@link LineString}, {@link LinearRing} or {@link MultiLineString}.
-     *
-     * @param  shape    the input shape
-     * @param  factory  the JTS factory to use to create the geometry
+     * Converts an arbitrary Java2D shape into a JTS geometry. The created JTS geometry may be any
+     * of {@link LineString}, {@link LinearRing} or {@link MultiLineString}.
+     * 
+     * @param shape
+     *            the input shape
+     * @param factory
+     *            the JTS factory to use to create the geometry
      * 
      * @return A new JTS geometry instance
-     * @throws IllegalArgumentException if either {@code shape} or {@code factory} 
-     *         is {@code null}
+     * @throws IllegalArgumentException
+     *             if either {@code shape} or {@code factory} is {@code null}
      */
     public static Geometry toGeometry(final Shape shape, final GeometryFactory factory) {
         ensureNonNull("shape", shape);
         ensureNonNull("factory", factory);
 
-        final PathIterator iterator = shape.getPathIterator(null, ShapeUtilities.getFlatness(shape));
+        final PathIterator iterator = shape
+                .getPathIterator(null, ShapeUtilities.getFlatness(shape));
         final double[] buffer = new double[6];
         final List<Coordinate> coords = new ArrayList<Coordinate>();
         final List<LineString> lines = new ArrayList<LineString>();
@@ -479,27 +514,27 @@ public final class JTS {
         while (!iterator.isDone()) {
             switch (iterator.currentSegment(buffer)) {
             /*
-             * Close the polygon: the last point is equal to
-             * the first point, and a LinearRing is created.
+             * Close the polygon: the last point is equal to the first point, and a LinearRing is
+             * created.
              */
             case PathIterator.SEG_CLOSE: {
                 if (!coords.isEmpty()) {
-                    coords.add( coords.get(0) );
-                    lines.add(factory.createLinearRing(
-                            (Coordinate[]) coords.toArray(new Coordinate[coords.size()])));
+                    coords.add(coords.get(0));
+                    lines.add(factory.createLinearRing((Coordinate[]) coords
+                            .toArray(new Coordinate[coords.size()])));
                     coords.clear();
                 }
                 break;
             }
 
-            /*
-             * General case: A LineString is created from previous
-             * points, and a new LineString begin for next points.
-             */
+                /*
+                 * General case: A LineString is created from previous points, and a new LineString
+                 * begin for next points.
+                 */
             case PathIterator.SEG_MOVETO: {
                 if (!coords.isEmpty()) {
-                    lines.add(factory.createLineString(
-                            (Coordinate[]) coords.toArray(new Coordinate[coords.size()])));
+                    lines.add(factory.createLineString((Coordinate[]) coords
+                            .toArray(new Coordinate[coords.size()])));
                     coords.clear();
                 }
 
@@ -523,8 +558,8 @@ public final class JTS {
          * End of loops: create the last LineString if any, then create the MultiLineString.
          */
         if (!coords.isEmpty()) {
-            lines.add(factory.createLineString(
-                    (Coordinate[]) coords.toArray(new Coordinate[coords.size()])));
+            lines.add(factory.createLineString((Coordinate[]) coords.toArray(new Coordinate[coords
+                    .size()])));
         }
 
         switch (lines.size()) {
@@ -540,22 +575,25 @@ public final class JTS {
     }
 
     /**
-     * Converts a JTS 2D envelope in an {@link Envelope2D} for interoperability with the
-     * referencing package.
+     * Converts a JTS 2D envelope in an {@link Envelope2D} for interoperability with the referencing
+     * package.
      * <p>
-     * If the provided envelope is a {@link ReferencedEnvelope} we check
-     * that the provided CRS and the implicit CRS are similar.
-     *
-     * @param envelope The JTS envelope to convert.
-     * @param crs The coordinate reference system for the specified envelope.
+     * If the provided envelope is a {@link ReferencedEnvelope} we check that the provided CRS and
+     * the implicit CRS are similar.
+     * 
+     * @param envelope
+     *            The JTS envelope to convert.
+     * @param crs
+     *            The coordinate reference system for the specified envelope.
      * @return The GeoAPI envelope.
-     * @throws MismatchedDimensionException if a two-dimensional envelope can't be created
-     *         from an envelope with the specified CRS.
-     *
+     * @throws MismatchedDimensionException
+     *             if a two-dimensional envelope can't be created from an envelope with the
+     *             specified CRS.
+     * 
      * @since 2.3
      */
     public static Envelope2D getEnvelope2D(final Envelope envelope,
-        final CoordinateReferenceSystem crs) throws MismatchedDimensionException {
+            final CoordinateReferenceSystem crs) throws MismatchedDimensionException {
         // Initial checks
         ensureNonNull("envelope", envelope);
         ensureNonNull("crs", crs);
@@ -566,21 +604,50 @@ public final class JTS {
 
             if ((crs != null) && !CRS.equalsIgnoreMetadata(crs, implicitCRS)) {
                 throw new IllegalArgumentException(Errors.format(
-                        ErrorKeys.MISMATCHED_ENVELOPE_CRS_$2, crs.getName().getCode(),
-                        implicitCRS.getName().getCode()));
+                        ErrorKeys.MISMATCHED_ENVELOPE_CRS_$2, crs.getName().getCode(), implicitCRS
+                                .getName().getCode()));
             }
         }
 
         // Ensure the CRS is 2D and retrieve the new envelope
         final CoordinateReferenceSystem crs2D = CRS.getHorizontalCRS(crs);
-		if(crs2D==null)
-			throw new MismatchedDimensionException(
-					Errors.format(
-		                    ErrorKeys.CANT_SEPARATE_CRS_$1,crs));
-
+        if (crs2D == null)
+            throw new MismatchedDimensionException(Errors.format(ErrorKeys.CANT_SEPARATE_CRS_$1,
+                    crs));
 
         return new Envelope2D(crs2D, envelope.getMinX(), envelope.getMinY(), envelope.getWidth(),
-            envelope.getHeight());
+                envelope.getHeight());
+    }
+
+    /**
+     * Create a Point from a ISO Geometry DirectPosition.
+     * 
+     * @param position
+     * @return Point
+     */
+    public static Point toGeometry(DirectPosition position) {
+        return toGeometry(position, null);
+    }
+
+    /**
+     * Create a Point from a ISO Geometry DirectPosition.
+     * 
+     * @param position
+     * @param factory
+     *            Optional GeometryFactory
+     * @return Point
+     */
+    public static Point toGeometry(DirectPosition position, GeometryFactory factory) {
+        if (factory == null) {
+            factory = new GeometryFactory();
+        }
+       
+        Coordinate coordinate = new Coordinate(position.getOrdinate(0), position.getOrdinate(1));
+        if( position.getDimension() == 3 ){
+            coordinate.z = position.getOrdinate(2);
+        }
+        return factory.createPoint(coordinate);
+        
     }
 
     /**
@@ -588,11 +655,13 @@ public final class JTS {
      * <p>
      * The resulting polygon contains an outer ring with vertices:
      * (x1,y1),(x2,y1),(x2,y2),(x1,y2),(x1,y1)
-     *
-     * @param envelope The original envelope.
+     * 
+     * @param envelope
+     *            The original envelope.
      * @return The envelope as a polygon.
-     * @throws IllegalArgumentException if {@code env} is {@code null}
-     *
+     * @throws IllegalArgumentException
+     *             if {@code env} is {@code null}
+     * 
      * @since 2.4
      */
     public static Polygon toGeometry(Envelope env) {
@@ -604,74 +673,138 @@ public final class JTS {
      * <p>
      * The resulting polygon contains an outer ring with vertices:
      * (x1,y1),(x2,y1),(x2,y2),(x1,y2),(x1,y1)
-     *
-     * @param envelope The original envelope.
+     * 
+     * @param envelope
+     *            The original envelope.
      * @return The envelope as a polygon.
-     *
+     * 
      * @since 2.8
-     * @throws IllegalArgumentException if either {@code env} or {@code factory} 
-     *         is {@code null}
+     * @throws IllegalArgumentException
+     *             if either {@code env} or {@code factory} is {@code null}
      */
-    public static Polygon toGeometry(final Envelope env, final GeometryFactory factory) {
+    public static Polygon toGeometry(final Envelope env, GeometryFactory factory) {
         ensureNonNull("env", env);
-        ensureNonNull("factory", factory);
-        
-        return factory.createPolygon(factory.createLinearRing(
-                new Coordinate[]{
-                    new Coordinate(env.getMinX(), env.getMinY()),
-                    new Coordinate(env.getMaxX(), env.getMinY()),
-                    new Coordinate(env.getMaxX(), env.getMaxY()),
-                    new Coordinate(env.getMinX(), env.getMaxY()),
-                    new Coordinate(env.getMinX(), env.getMinY())
-                }), null);
+        if (factory == null) {
+            factory = new GeometryFactory();
+        }
+        return factory.createPolygon(
+                factory.createLinearRing(new Coordinate[] {
+                        new Coordinate(env.getMinX(), env.getMinY()),
+                        new Coordinate(env.getMaxX(), env.getMinY()),
+                        new Coordinate(env.getMaxX(), env.getMaxY()),
+                        new Coordinate(env.getMinX(), env.getMaxY()),
+                        new Coordinate(env.getMinX(), env.getMinY()) }), null);
     }
 
     /**
-     * Create a ReferencedEnvelope from the provided geometry, we will
-     * do our best to guess the CoordinateReferenceSystem making use
-     * of getUserData() and getSRID() as needed.
+     * Create a ReferencedEnvelope from the provided geometry, we will do our best to guess the
+     * CoordinateReferenceSystem making use of getUserData() and getSRID() as needed.
      * 
-     * @param geom Provided Geometry
+     * @param geom
+     *            Provided Geometry
      * @return RefernecedEnveleope describing the bounds of the provided Geometry
      */
-    public static ReferencedEnvelope toEnvelope( Geometry geom ){
-        if( geom == null ){
-            return null; //return new ReferencedEnvelope(); // very empty!
+    public static ReferencedEnvelope toEnvelope(Geometry geom) {
+        if (geom == null) {
+            return null; // return new ReferencedEnvelope(); // very empty!
         }
         String srsName = null;
         Object userData = geom.getUserData();
-        if( userData != null && userData instanceof String){
-            srsName = (String) userData;    
-        }
-        else if (geom.getSRID() > 0){
-            srsName = "EPSG:"+geom.getSRID();                                
+        if (userData != null && userData instanceof String) {
+            srsName = (String) userData;
+        } else if (geom.getSRID() > 0) {
+            srsName = "EPSG:" + geom.getSRID();
         }
         CoordinateReferenceSystem crs = null;
-        if( userData != null && userData instanceof CoordinateReferenceSystem){
+        if (userData != null && userData instanceof CoordinateReferenceSystem) {
             crs = (CoordinateReferenceSystem) userData;
-        }
-        else if( srsName != null ){
+        } else if (srsName != null) {
             try {
-                crs = CRS.decode( srsName );
+                crs = CRS.decode(srsName);
             } catch (NoSuchAuthorityCodeException e) {
                 // e.printStackTrace();
             } catch (FactoryException e) {
                 // e.printStackTrace();
             }
         }
-        return new ReferencedEnvelope( geom.getEnvelopeInternal(), crs );
+        return new ReferencedEnvelope(geom.getEnvelopeInternal(), crs);
     }
-    
+
+    /**
+     * Converts a {@link ReferencedEnvelope} to a JTS polygon.
+     * <p>
+     * The resulting polygon contains an outer ring with vertices:
+     * (x1,y1),(x2,y1),(x2,y2),(x1,y2),(x1,y1)
+     * 
+     * @param envelope
+     *            The original envelope.
+     * @return The envelope as a polygon.
+     * @throws IllegalArgumentException
+     *             if {@code bbox} is {@code null}
+     * 
+     * @since 2.4
+     */
+    public static Polygon toGeometry(ReferencedEnvelope bbox) {
+        return toGeometry((BoundingBox) new GeometryFactory());
+    }
+
+    /**
+     * Convert the provided bbox to a polygon, sampling a set number of points along each side.
+     * 
+     * @param bbox
+     *            bounding box being converted to a Polygon
+     * @param factory
+     *            geometry factory used to create the polygon
+     * @param npoints
+     *            number of points to sample along each edge
+     * @return Polygon
+     */
+    public static Polygon toGeometry(BoundingBox bbox, GeometryFactory factory, int npoints) {
+        npoints++; // for the starting point.
+        if (bbox == null) {
+            return null;
+        }
+        if (factory == null) {
+            factory = new GeometryFactory();
+        }
+
+        final Coordinate[] coordinates = new Coordinate[(4 * npoints)];
+        final double xmin = bbox.getMinX();
+        final double xmax = bbox.getMaxX();
+        final double ymin = bbox.getMinY();
+        final double ymax = bbox.getMaxY();
+        final double scaleX = (xmax - xmin) / npoints;
+        final double scaleY = (ymax - ymin) / npoints;
+
+        int top = 0;
+        int right = npoints;
+        int bottom = npoints * 2;
+        int left = npoints * 3;
+
+        for (int t = 0; t < npoints; t++) {
+            final double dx = scaleX * t;
+            final double dy = scaleY * t;
+            coordinates[top + t] = new Coordinate(xmin + dx, ymax);
+            coordinates[left + t] = new Coordinate(xmin, ymin + dy);
+            coordinates[bottom + t] = new Coordinate(xmax - dx, ymin);
+            coordinates[right + t] = new Coordinate(xmax, ymax - dy);
+        }
+
+        return factory.createPolygon(factory.createLinearRing(coordinates), null);
+    }
+
     /**
      * Converts a {@link BoundingBox} to a JTS polygon.
      * <p>
      * The resulting polygon contains an outer ring with vertices:
      * (x1,y1),(x2,y1),(x2,y2),(x1,y2),(x1,y1)
-     *
-     * @param envelope The original envelope.
+     * 
+     * @param envelope
+     *            The original envelope.
      * @return The envelope as a polygon.
-     * @throws IllegalArgumentException if {@code bbox} is {@code null}
-     *
+     * @throws IllegalArgumentException
+     *             if {@code bbox} is {@code null}
+     * 
      * @since 2.4
      */
     public static Polygon toGeometry(BoundingBox bbox) {
@@ -679,38 +812,37 @@ public final class JTS {
     }
 
     /**
-     * Converts a {@link BoundingBox} to a JTS polygon using the given
-     * JTS geometry factory.
+     * Converts a {@link BoundingBox} to a JTS polygon using the given JTS geometry factory.
      * <p>
      * The resulting polygon contains an outer ring with vertices:
      * (x1,y1),(x2,y1),(x2,y2),(x1,y2),(x1,y1)
-     *
-     * @param envelope The original envelope.
+     * 
+     * @param envelope
+     *            The original envelope.
      * @return The envelope as a polygon.
-     *
+     * 
      * @since 2.8
-     * @throws IllegalArgumentException if either {@code bbox} or {@code factory}
-     *         is {@code null}
+     * @throws IllegalArgumentException
+     *             if either {@code bbox} or {@code factory} is {@code null}
      */
     public static Polygon toGeometry(BoundingBox bbox, final GeometryFactory factory) {
         ensureNonNull("bbox", bbox);
         ensureNonNull("factory", factory);
-        
-        return factory.createPolygon(factory.createLinearRing(
-                new Coordinate[] {
-                    new Coordinate(bbox.getMinX(), bbox.getMinY()),
-                    new Coordinate(bbox.getMaxX(), bbox.getMinY()),
-                    new Coordinate(bbox.getMaxX(), bbox.getMaxY()),
-                    new Coordinate(bbox.getMinX(), bbox.getMaxY()),
-                    new Coordinate(bbox.getMinX(), bbox.getMinY())
-                }), null);
+
+        return factory.createPolygon(
+                factory.createLinearRing(new Coordinate[] {
+                        new Coordinate(bbox.getMinX(), bbox.getMinY()),
+                        new Coordinate(bbox.getMaxX(), bbox.getMinY()),
+                        new Coordinate(bbox.getMaxX(), bbox.getMaxY()),
+                        new Coordinate(bbox.getMinX(), bbox.getMaxY()),
+                        new Coordinate(bbox.getMinX(), bbox.getMinY()) }), null);
     }
 
     /**
-     * Checks a Geometry coordinates are within the area of validity of the
-     * specified reference system. If a coordinate falls outside the area of
-     * validity a {@link PointOutsideEnvelopeException} is thrown
-     *
+     * Checks a Geometry coordinates are within the area of validity of the specified reference
+     * system. If a coordinate falls outside the area of validity a
+     * {@link PointOutsideEnvelopeException} is thrown
+     * 
      * @param geom
      *            the geometry to check
      * @param the
@@ -719,7 +851,7 @@ public final class JTS {
      * @since 2.4
      */
     public static void checkCoordinatesRange(Geometry geom, CoordinateReferenceSystem crs)
-        throws PointOutsideEnvelopeException {
+            throws PointOutsideEnvelopeException {
         // named x,y, but could be anything
         CoordinateSystemAxis x = crs.getCoordinateSystem().getAxis(0);
         CoordinateSystemAxis y = crs.getCoordinateSystem().getAxis(1);
@@ -727,9 +859,9 @@ public final class JTS {
         // check if unbounded, many projected systems are, in this case no check
         // is needed
         boolean xUnbounded = Double.isInfinite(x.getMinimumValue())
-            && Double.isInfinite(x.getMaximumValue());
+                && Double.isInfinite(x.getMaximumValue());
         boolean yUnbounded = Double.isInfinite(y.getMinimumValue())
-            && Double.isInfinite(y.getMaximumValue());
+                && Double.isInfinite(y.getMaximumValue());
 
         if (xUnbounded && yUnbounded) {
             return;
@@ -741,159 +873,161 @@ public final class JTS {
         for (int i = 0; i < c.length; i++) {
             if (!xUnbounded && ((c[i].x < x.getMinimumValue()) || (c[i].x > x.getMaximumValue()))) {
                 throw new PointOutsideEnvelopeException(c[i].x + " outside of ("
-                    + x.getMinimumValue() + "," + x.getMaximumValue() + ")");
+                        + x.getMinimumValue() + "," + x.getMaximumValue() + ")");
             }
 
             if (!yUnbounded && ((c[i].y < y.getMinimumValue()) || (c[i].y > y.getMaximumValue()))) {
                 throw new PointOutsideEnvelopeException(c[i].y + " outside of ("
-                    + y.getMinimumValue() + "," + y.getMaximumValue() + ")");
+                        + y.getMinimumValue() + "," + y.getMaximumValue() + ")");
             }
         }
     }
-    
+
     /**
-     * Creates a smoothed copy of the input Geometry. This is only useful
-     * for polygonal and lineal geometries. Point objects will be returned
-     * unchanged. The smoothing algorithm inserts new vertices which are 
-     * positioned using Bezier splines. All vertices of the input Geometry 
-     * will be present in the output Geometry.
+     * Creates a smoothed copy of the input Geometry. This is only useful for polygonal and lineal
+     * geometries. Point objects will be returned unchanged. The smoothing algorithm inserts new
+     * vertices which are positioned using Bezier splines. All vertices of the input Geometry will
+     * be present in the output Geometry.
      * <p>
-     * The {@code fit} parameter controls how tightly the smoothed lines 
-     * conform to the input line segments, with a value of 1 being tightest
-     * and 0 being loosest. Values outside this range will be adjusted up
-     * or down as required.
+     * The {@code fit} parameter controls how tightly the smoothed lines conform to the input line
+     * segments, with a value of 1 being tightest and 0 being loosest. Values outside this range
+     * will be adjusted up or down as required.
      * <p>
-     * The input Geometry can be a simple type (e.g. LineString, Polygon),
-     * a multi-type (e.g. MultiLineString, MultiPolygon) or a GeometryCollection.
-     * The returned object will be of the same type.
+     * The input Geometry can be a simple type (e.g. LineString, Polygon), a multi-type (e.g.
+     * MultiLineString, MultiPolygon) or a GeometryCollection. The returned object will be of the
+     * same type.
      * 
-     * @param geom the input geometry
-     * @param fit tightness of fit from 0 (loose) to 1 (tight)
+     * @param geom
+     *            the input geometry
+     * @param fit
+     *            tightness of fit from 0 (loose) to 1 (tight)
      * 
      * @return a new Geometry object of the same class as {@code geom}
-     * @throws IllegalArgumentException if {@code geom} is {@code null}
+     * @throws IllegalArgumentException
+     *             if {@code geom} is {@code null}
      */
     public static Geometry smooth(final Geometry geom, double fit) {
         return smooth(geom, fit, new GeometryFactory());
     }
-    
+
     /**
-     * Creates a smoothed copy of the input Geometry. This is only useful
-     * for polygonal and lineal geometries. Point objects will be returned
-     * unchanged. The smoothing algorithm inserts new vertices which are 
-     * positioned using Bezier splines. All vertices of the input Geometry 
-     * will be present in the output Geometry.
+     * Creates a smoothed copy of the input Geometry. This is only useful for polygonal and lineal
+     * geometries. Point objects will be returned unchanged. The smoothing algorithm inserts new
+     * vertices which are positioned using Bezier splines. All vertices of the input Geometry will
+     * be present in the output Geometry.
      * <p>
-     * The {@code fit} parameter controls how tightly the smoothed lines 
-     * conform to the input line segments, with a value of 1 being tightest
-     * and 0 being loosest. Values outside this range will be adjusted up
-     * or down as required.
+     * The {@code fit} parameter controls how tightly the smoothed lines conform to the input line
+     * segments, with a value of 1 being tightest and 0 being loosest. Values outside this range
+     * will be adjusted up or down as required.
      * <p>
-     * The input Geometry can be a simple type (e.g. LineString, Polygon),
-     * a multi-type (e.g. MultiLineString, MultiPolygon) or a GeometryCollection.
-     * The returned object will be of the same type.
+     * The input Geometry can be a simple type (e.g. LineString, Polygon), a multi-type (e.g.
+     * MultiLineString, MultiPolygon) or a GeometryCollection. The returned object will be of the
+     * same type.
      * 
-     * @param geom the input geometry
-     * @param fit tightness of fit from 0 (loose) to 1 (tight)
-     * @param factory the GeometryFactory to use for creating smoothed objects
+     * @param geom
+     *            the input geometry
+     * @param fit
+     *            tightness of fit from 0 (loose) to 1 (tight)
+     * @param factory
+     *            the GeometryFactory to use for creating smoothed objects
      * 
      * @return a new Geometry object of the same class as {@code geom}
-     * @throws IllegalArgumentException if either {@code geom} or {@code factory}
-     *         is {@code null}
+     * @throws IllegalArgumentException
+     *             if either {@code geom} or {@code factory} is {@code null}
      */
-    public static Geometry smooth(final Geometry geom, double fit, 
-            final GeometryFactory factory) {
-        
+    public static Geometry smooth(final Geometry geom, double fit, final GeometryFactory factory) {
+
         ensureNonNull("geom", geom);
         ensureNonNull("factory", factory);
-        
+
         // Adjust fit if necessary
         fit = Math.max(0.0, Math.min(1.0, fit));
         return smooth(geom, fit, factory, new GeometrySmoother(factory));
     }
-        
-    private static Geometry smooth(final Geometry geom, final double fit, 
+
+    private static Geometry smooth(final Geometry geom, final double fit,
             final GeometryFactory factory, GeometrySmoother smoother) {
-        
+
         switch (Geometries.get(geom)) {
-            case POINT:
-            case MULTIPOINT:
-                // For points, just return the input geometry
-                return geom;
-                
-            case LINESTRING:
-                // This handles open and closed lines (LinearRings)
-                return smoothLineString(factory, smoother, geom, fit);
-                
-            case MULTILINESTRING:
-                return smoothMultiLineString(factory, smoother, geom, fit);
-                
-            case POLYGON:
-                return smoother.smooth((Polygon)geom, fit);
-                
-            case MULTIPOLYGON:
-                return smoothMultiPolygon(factory, smoother, geom, fit);
-                
-            case GEOMETRYCOLLECTION:
-                return smoothGeometryCollection(factory, smoother, geom, fit);
-                
-            default:
-                throw new UnsupportedOperationException(
-                        "No smoothing method available for " + geom.getGeometryType());
+        case POINT:
+        case MULTIPOINT:
+            // For points, just return the input geometry
+            return geom;
+
+        case LINESTRING:
+            // This handles open and closed lines (LinearRings)
+            return smoothLineString(factory, smoother, geom, fit);
+
+        case MULTILINESTRING:
+            return smoothMultiLineString(factory, smoother, geom, fit);
+
+        case POLYGON:
+            return smoother.smooth((Polygon) geom, fit);
+
+        case MULTIPOLYGON:
+            return smoothMultiPolygon(factory, smoother, geom, fit);
+
+        case GEOMETRYCOLLECTION:
+            return smoothGeometryCollection(factory, smoother, geom, fit);
+
+        default:
+            throw new UnsupportedOperationException("No smoothing method available for "
+                    + geom.getGeometryType());
         }
     }
 
-    private static Geometry smoothLineString(GeometryFactory factory, GeometrySmoother smoother, 
+    private static Geometry smoothLineString(GeometryFactory factory, GeometrySmoother smoother,
             Geometry geom, double fit) {
-        
+
         if (geom instanceof LinearRing) {
             // Treat as a Polygon
-            Polygon poly = factory.createPolygon((LinearRing)geom, null);
+            Polygon poly = factory.createPolygon((LinearRing) geom, null);
             Polygon smoothed = smoother.smooth(poly, fit);
             return smoothed.getExteriorRing();
-            
+
         } else {
-            return smoother.smooth((LineString)geom, fit);
+            return smoother.smooth((LineString) geom, fit);
         }
     }
 
-    private static Geometry smoothMultiLineString(GeometryFactory factory, GeometrySmoother smoother, 
-            Geometry geom, double fit) {
-        
+    private static Geometry smoothMultiLineString(GeometryFactory factory,
+            GeometrySmoother smoother, Geometry geom, double fit) {
+
         final int N = geom.getNumGeometries();
         LineString[] smoothed = new LineString[N];
-        
+
         for (int i = 0; i < N; i++) {
-            smoothed[i] = (LineString) smoothLineString(factory, smoother, geom.getGeometryN(i), fit);
+            smoothed[i] = (LineString) smoothLineString(factory, smoother, geom.getGeometryN(i),
+                    fit);
         }
-        
+
         return factory.createMultiLineString(smoothed);
     }
-    
-    private static Geometry smoothMultiPolygon(GeometryFactory factory, GeometrySmoother smoother, 
+
+    private static Geometry smoothMultiPolygon(GeometryFactory factory, GeometrySmoother smoother,
             Geometry geom, double fit) {
-        
+
         final int N = geom.getNumGeometries();
         Polygon[] smoothed = new Polygon[N];
-        
+
         for (int i = 0; i < N; i++) {
-            smoothed[i] = smoother.smooth((Polygon)geom.getGeometryN(i), fit);
+            smoothed[i] = smoother.smooth((Polygon) geom.getGeometryN(i), fit);
         }
-        
+
         return factory.createMultiPolygon(smoothed);
     }
-    
-    private static Geometry smoothGeometryCollection(GeometryFactory factory, GeometrySmoother smoother, 
-            Geometry geom, double fit) {
-        
+
+    private static Geometry smoothGeometryCollection(GeometryFactory factory,
+            GeometrySmoother smoother, Geometry geom, double fit) {
+
         final int N = geom.getNumGeometries();
         Geometry[] smoothed = new Geometry[N];
-        
+
         for (int i = 0; i < N; i++) {
             smoothed[i] = smooth(geom.getGeometryN(i), fit, factory, smoother);
         }
-        
+
         return factory.createGeometryCollection(smoothed);
     }
-    
+
 }

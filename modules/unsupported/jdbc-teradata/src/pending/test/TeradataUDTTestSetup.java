@@ -28,7 +28,7 @@ public class TeradataUDTTestSetup extends JDBCUDTTestSetup {
         super(setup);
     }
 
-    @Override
+
     protected void createUdtTable() throws Exception {
 // TODO make restriction        run("CREATE TYPE foo AS text CHECK (VALUE ~ '\\\\d{2}\\\\D{2}');");
         run("CREATE TYPE foo AS varchar(4) final");
@@ -37,7 +37,7 @@ public class TeradataUDTTestSetup extends JDBCUDTTestSetup {
 
     }
 
-    @Override
+
     protected void dropUdtTable() throws Exception {
         runSafe("DROP TABLE udt");
         runSafe("DROP TYPE foo");

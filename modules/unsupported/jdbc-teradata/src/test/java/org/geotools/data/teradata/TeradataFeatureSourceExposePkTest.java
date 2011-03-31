@@ -22,7 +22,7 @@ import org.geotools.jdbc.JDBCTestSetup;
 
 public class TeradataFeatureSourceExposePkTest extends JDBCFeatureSourceExposePkTest {
 
-    @Override
+
     protected JDBCTestSetup createTestSetup() {
         return new TeradataTestSetup();
     }

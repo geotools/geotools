@@ -21,7 +21,7 @@ import org.geotools.jdbc.JDBCUDTTestSetup;
 
 public class TeradataUDTTest extends JDBCUDTTest {
 
-    @Override
+
     protected JDBCUDTTestSetup createTestSetup() {
         return new TeradataUDTTestSetup();
     }

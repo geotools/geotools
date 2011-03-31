@@ -23,12 +23,12 @@ import java.io.IOException;
 
 public class TeradataTransactionTest extends JDBCTransactionTest {
 
-    @Override
+
     protected JDBCTestSetup createTestSetup() {
         return new TeradataTestSetup();
     }
 
-    @Override
+
     public void testConcurrentTransactions() throws IOException {
         // TODO enable this
     }

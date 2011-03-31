@@ -26,13 +26,13 @@ public class TeradataEmptyTestSetup extends JDBCEmptyTestSetup {
 
     }
 
-    @Override
+
     protected void createEmptyTable() throws Exception {
         run("CREATE TABLE \"empty\"(\"key\" PRIMARY KEY not null generated always as identity (start with 0) integer, geom ST_GEOMETRY)");
         run("INSERT INTO SYSSPATIAL.GEOMETRY_COLUMNS (F_TABLE_CATALOG, F_TABLE_SCHEMA, F_TABLE_NAME, F_GEOMETRY_COLUMN, COORD_DIMENSION, SRID, GEOM_TYPE) VALUES ('', '" + fixture.getProperty("schema") + "', 'empty', 'geom', 2, 1619, 'GEOMETRY');");
     }
 
-    @Override
+
     protected void dropEmptyTable() throws Exception {
         runSafe("DELETE SYSSPATIAL.GEOMETRY_COLUMNS WHERE F_TABLE_NAME = 'empty'");
         runSafe("DROP TABLE \"empty\"");

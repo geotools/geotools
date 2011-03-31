@@ -8,7 +8,7 @@ import org.geotools.jdbc.SequencedPrimaryKeyColumn;
 
 public class TeradataPrimaryKeyFinderTest extends JDBCPrimaryKeyFinderTest {
 
-    @Override
+
     protected JDBCPrimaryKeyFinderTestSetup createTestSetup() {
         return new TeradataPrimaryKeyFinderTestSetup();
     }

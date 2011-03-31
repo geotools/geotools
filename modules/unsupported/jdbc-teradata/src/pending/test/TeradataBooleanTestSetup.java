@@ -25,14 +25,14 @@ public class TeradataBooleanTestSetup extends JDBCBooleanTestSetup {
         super(delegate);
     }
 
-    @Override
+
     protected void createBooleanTable() throws Exception {
         run("CREATE TABLE \"b\" ( \"id\" serial PRIMARY KEY, \"boolProperty\" boolean)");
         run("INSERT INTO \"b\" (\"boolProperty\") VALUES (false)");
         run("INSERT INTO \"b\" (\"boolProperty\") VALUES (true)");
     }
 
-    @Override
+
     protected void dropBooleanTable() throws Exception {
         run("DROP TABLE \"b\"");
     }

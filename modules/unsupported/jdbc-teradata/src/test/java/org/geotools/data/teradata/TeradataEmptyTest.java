@@ -21,7 +21,7 @@ import org.geotools.jdbc.JDBCEmptyTestSetup;
 
 public class TeradataEmptyTest extends JDBCEmptyTest {
 
-    @Override
+
     protected JDBCEmptyTestSetup createTestSetup() {
         return new TeradataEmptyTestSetup(new TeradataTestSetup());
     }

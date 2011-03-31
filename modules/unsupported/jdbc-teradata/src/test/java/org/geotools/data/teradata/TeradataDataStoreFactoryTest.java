@@ -30,7 +30,7 @@ import static org.geotools.jdbc.JDBCDataStoreFactory.*;
 
 public class TeradataDataStoreFactoryTest extends JDBCTestSupport {
 
-    @Override
+
     protected JDBCTestSetup createTestSetup() {
         return new TeradataTestSetup();
     }

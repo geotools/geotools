@@ -21,17 +21,17 @@ import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 
 public class TeradataDataStoreAPITest extends JDBCDataStoreAPITest {
 
-    @Override
+
     protected JDBCDataStoreAPITestSetup createTestSetup() {
         return new TeradataDataStoreAPITestSetup(new TeradataTestSetup());
     }
 
-    @Override
+
     public void testGetFeatureWriterConcurrency() throws Exception {
         // Teradata will lock indefinitely, won't throw an exception
     }
 
-    @Override
+
     public void testTransactionIsolation() throws Exception {
         // TODO implement writing
     }

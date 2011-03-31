@@ -25,22 +25,22 @@ import java.sql.SQLException;
 
 public class TeradataFeatureStoreExposePkTest extends JDBCFeatureStoreExposePkTest {
 
-    @Override
+
     protected JDBCTestSetup createTestSetup() {
         return new TeradataTestSetup();
     }
 
-    @Override
+
     public void testAddFeaturesUseProvidedFid() throws IOException {
         // TODO support provided fid
     }
 
-    @Override
+
     public void testAddInTransaction() throws IOException {
         // TODO enable transaction isolation  (non-blocking)
     }
 
-    @Override
+
     public void testExternalConnection() throws IOException, SQLException {
         // TODO enable transaction isolation  (non-blocking)
     }

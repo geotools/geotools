@@ -5,7 +5,7 @@ import org.geotools.jdbc.JDBCViewTestSetup;
 
 public class TeradataViewTest extends JDBCViewTest {
 
-    @Override
+
     protected JDBCViewTestSetup createTestSetup() {
         return new TeradataViewTestSetup();
     }

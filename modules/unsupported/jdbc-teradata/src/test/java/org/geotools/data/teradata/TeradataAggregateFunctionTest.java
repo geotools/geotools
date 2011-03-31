@@ -21,7 +21,7 @@ import org.geotools.jdbc.JDBCTestSetup;
 
 public class TeradataAggregateFunctionTest extends JDBCAggregateFunctionTest {
 
-    @Override
+
     protected JDBCTestSetup createTestSetup() {
         return new TeradataTestSetup();
     }

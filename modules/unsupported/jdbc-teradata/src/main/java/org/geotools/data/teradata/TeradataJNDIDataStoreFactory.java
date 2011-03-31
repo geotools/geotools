@@ -34,7 +34,7 @@ public class TeradataJNDIDataStoreFactory extends JDBCJNDIDataStoreFactory {
         super(new TeradataDataStoreFactory());
     }
 
-    @Override
+
     protected void setupParameters(Map parameters) {
         super.setupParameters(parameters);
 

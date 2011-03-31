@@ -24,12 +24,11 @@ import org.geotools.jdbc.JDBCPrimaryKeyTestSetup;
 
 public class TeradataPrimaryKeyTest extends JDBCPrimaryKeyTest {
 
-    @Override
     protected JDBCPrimaryKeyTestSetup createTestSetup() {
         return new TeradataPrimaryKeyTestSetup(new TeradataTestSetup());
     }
 
-    @Override
+
     public void testSequencedPrimaryKey() throws Exception {
         JDBCFeatureStore fs = (JDBCFeatureStore) dataStore.getFeatureSource(tname("seq"));
 

@@ -8,7 +8,7 @@ public class TeradataSkipColumnTestSetup extends JDBCSkipColumnTestSetup {
         super(new TeradataTestSetup());
     }
 
-    @Override
+
     protected void createSkipColumnTable() throws Exception {
         run("CREATE TYPE dollar AS DECIMAL(8,2) FINAL");
         run("CREATE TABLE \"skipcolumn\"(\"fid\" PRIMARY KEY not null generated always as identity (start with 0)  integer, \"id\" integer, \"geom\" ST_GEOMETRY, \"weirdproperty\" dollar,\"name\" varchar(200))");
@@ -19,7 +19,7 @@ public class TeradataSkipColumnTestSetup extends JDBCSkipColumnTestSetup {
 
     }
 
-    @Override
+
     protected void dropSkipColumnTable() throws Exception {
         runSafe("DELETE FROM SYSSPATIAL.GEOMETRY_COLUMNS WHERE F_TABLE_NAME = 'skipcolumn'");
         runSafe("DROP TABLE \"skipcolumn\"");

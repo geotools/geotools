@@ -21,7 +21,7 @@ import org.geotools.jdbc.JDBCBooleanTestSetup;
 
 public class TeradataBooleanTest extends JDBCBooleanTest {
 
-    @Override
+
     protected JDBCBooleanTestSetup createTestSetup() {
         return new TeradataBooleanTestSetup(new TeradataTestSetup());
     }

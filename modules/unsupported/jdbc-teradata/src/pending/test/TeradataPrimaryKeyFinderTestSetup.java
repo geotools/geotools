@@ -24,7 +24,7 @@ public class TeradataPrimaryKeyFinderTestSetup extends JDBCPrimaryKeyFinderTestS
         super(new TeradataTestSetup());
     }
 
-    @Override
+
     protected void createMetadataTable() throws Exception {
         run("CREATE TABLE gt_pk_metadata (" +
                 "table_schema VARCHAR(32) NOT NULL, " +
@@ -38,7 +38,7 @@ public class TeradataPrimaryKeyFinderTestSetup extends JDBCPrimaryKeyFinderTestS
         createExtraTables();
     }
 
-    @Override
+
     protected void dropMetadataTable() throws Exception {
         runSafe("DROP TABLE \"gt_pk_metadata\"");
         dropExtraTables();
@@ -58,7 +58,7 @@ public class TeradataPrimaryKeyFinderTestSetup extends JDBCPrimaryKeyFinderTestS
         runSafe("delete from SYSSPATIAL.GEOMETRY_COLUMNS where f_table_name='uniquetable'");
     }
 
-    @Override
+
     protected void createSequencedPrimaryKeyTable() throws Exception {
         run("CREATE TABLE \"seqtable\" ( \"key\" generated always as identity (start with 0) integer NOT NULL, \"name\" VARCHAR(256), \"geom\" ST_GEOMETRY)");
         run("INSERT INTO SYSSPATIAL.GEOMETRY_COLUMNS (F_TABLE_CATALOG, F_TABLE_SCHEMA, F_TABLE_NAME, F_GEOMETRY_COLUMN, COORD_DIMENSION, SRID, GEOM_TYPE) VALUES ('','" + fixture.getProperty("schema") + "','seqtable', 'geom', 2, 1619, 'GEOMETRY')");
@@ -70,13 +70,13 @@ public class TeradataPrimaryKeyFinderTestSetup extends JDBCPrimaryKeyFinderTestS
         run("INSERT INTO gt_pk_metadata VALUES ('" + fixture.getProperty("schema") + "', 'seqtable', 'key', 0, 'sequence', 'PKSEQUENCE')");
     }
 
-    @Override
+
     protected void dropSequencedPrimaryKeyTable() throws Exception {
         runSafe("DROP TABLE \"seqtable\"");
         runSafe("delete from SYSSPATIAL.GEOMETRY_COLUMNS where f_table_name='seqtable'");
     }
 
-    @Override
+
     protected void createPlainTable() throws Exception {
         run("CREATE TABLE \"plaintable\" ( \"key1\" int, \"key2\" int, \"name\" VARCHAR(256), \"geom\" ST_GEOMETRY)");
         run("INSERT INTO SYSSPATIAL.GEOMETRY_COLUMNS (F_TABLE_CATALOG, F_TABLE_SCHEMA, F_TABLE_NAME, F_GEOMETRY_COLUMN, COORD_DIMENSION, SRID, GEOM_TYPE) VALUES ('','" + fixture.getProperty("schema") + "','plaintable', 'geom', 2, 1619, 'GEOMETRY', -180,-90,180,90)");
@@ -86,24 +86,24 @@ public class TeradataPrimaryKeyFinderTestSetup extends JDBCPrimaryKeyFinderTestS
         run("INSERT INTO \"plaintable\" VALUES (3, 4, 'three', NULL)");
     }
 
-    @Override
+
     protected void dropPlainTable() throws Exception {
         runSafe("DROP TABLE \"plaintable\"");
         runSafe("delete from SYSSPATIAL.GEOMETRY_COLUMNS where f_table_name='plaintable'");
     }
 
-    @Override
+
     protected void createAssignedSinglePkView() throws Exception {
         run("CREATE VIEW \"assignedsinglepk\" AS SELECT * FROM \"plaintable\"");
         run("INSERT INTO gt_pk_metadata VALUES('" + fixture.getProperty("schema") + "', 'assignedsinglepk', 'key1', 0, 'assigned', NULL)");
     }
 
-    @Override
+
     protected void dropAssignedSinglePkView() throws Exception {
         runSafe("DROP VIEW \"assignedsinglepk\"");
     }
 
-    @Override
+
     protected void createAssignedMultiPkView() throws Exception {
         run("CREATE VIEW \"assignedmultipk\" AS SELECT * FROM \"plaintable\"");
         run("INSERT INTO gt_pk_metadata VALUES('" + fixture.getProperty("schema") + "', 'assignedmultipk', 'key1', 0, 'assigned', NULL)");
@@ -111,7 +111,7 @@ public class TeradataPrimaryKeyFinderTestSetup extends JDBCPrimaryKeyFinderTestS
 
     }
 
-    @Override
+
     protected void dropAssignedMultiPkView() throws Exception {
         runSafe("DROP VIEW \"assignedmultipk\"");
     }

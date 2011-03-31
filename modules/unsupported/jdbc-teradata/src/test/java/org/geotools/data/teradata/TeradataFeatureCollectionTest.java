@@ -22,7 +22,7 @@ import org.geotools.jdbc.JDBCTestSetup;
 
 public class TeradataFeatureCollectionTest extends JDBCFeatureCollectionTest {
 
-    @Override
+
     protected JDBCTestSetup createTestSetup() {
         return new TeradataTestSetup();
     }

@@ -78,7 +78,7 @@ public class TeradataGISDialect extends BasicSQLDialect {
         }
     };
 
-    @Override
+
     public boolean includeTable(String schemaName, String tableName,
                                 Connection cx) throws SQLException {
         if (tableName.equalsIgnoreCase("geometry_columns")) {
@@ -96,7 +96,6 @@ public class TeradataGISDialect extends BasicSQLDialect {
     ThreadLocal<WKBAttributeIO> wkbReader = new ThreadLocal<WKBAttributeIO>();
 
     //    WKBAttributeIO reader;
-    @Override
     public Geometry decodeGeometryValue(GeometryDescriptor descriptor,
                                         ResultSet rs, String column, GeometryFactory factory, Connection cx)
             throws IOException, SQLException {
@@ -116,21 +115,20 @@ public class TeradataGISDialect extends BasicSQLDialect {
         return reader;
     }
 
-    @Override
+
     public void encodeGeometryColumn(GeometryDescriptor gatt, int srid,
                                      StringBuffer sql) {
         encodeColumnName(gatt.getLocalName(), sql);
         sql.append(".ST_AsBinary()");
     }
 
-    @Override
     public void encodeGeometryEnvelope(String tableName, String geometryColumn,
                                        StringBuffer sql) {
         encodeColumnName(geometryColumn, sql);
         sql.append(".ST_Envelope().ST_AsBinary()");
     }
 
-    @Override
+
     public List<ReferencedEnvelope> getOptimizedBounds(String schema, SimpleFeatureType featureType,
                                                        Connection cx) throws SQLException, IOException {
         return null;
@@ -181,7 +179,6 @@ public class TeradataGISDialect extends BasicSQLDialect {
         return result;*/
     }
 
-    @Override
     public Envelope decodeGeometryEnvelope(ResultSet rs, int column,
                                            Connection cx) throws SQLException, IOException {
         Geometry envelope = getWkbReader(null).read(rs, column);
@@ -212,7 +209,7 @@ public class TeradataGISDialect extends BasicSQLDialect {
             return new Envelope();*/
     }
 
-    @Override
+
     public Class<?> getMapping(ResultSet columnMetaData, Connection cx)
             throws SQLException {
         String typeName = columnMetaData.getString("TYPE_NAME");
@@ -272,7 +269,7 @@ public class TeradataGISDialect extends BasicSQLDialect {
         return null;
     }
 
-    @Override
+
     public Integer getGeometrySRID(String schemaName, String tableName,
                                    String columnName, Connection cx) throws SQLException {
 
@@ -316,7 +313,7 @@ public class TeradataGISDialect extends BasicSQLDialect {
         return srid;
     }
 
-    @Override
+
     public void registerClassToSqlMappings(Map<Class<?>, Integer> mappings) {
         super.registerClassToSqlMappings(mappings);
 
@@ -324,7 +321,7 @@ public class TeradataGISDialect extends BasicSQLDialect {
         mappings.put(Geometry.class, Types.OTHER);
     }
 
-    @Override
+
     public void registerSqlTypeNameToClassMappings(
             Map<String, Class<?>> mappings) {
         super.registerSqlTypeNameToClassMappings(mappings);
@@ -332,18 +329,18 @@ public class TeradataGISDialect extends BasicSQLDialect {
         mappings.put("ST_Geometry", Geometry.class);
     }
 
-    @Override
+
     public void registerSqlTypeToSqlTypeNameOverrides(
             Map<Integer, String> overrides) {
         overrides.put(Types.VARCHAR, "VARCHAR");
     }
 
-    @Override
+
     public String getGeometryTypeName(Integer type) {
         return "ST_Geometry";
     }
 
-    @Override
+
     public void encodePrimaryKey(String column, StringBuffer sql) {
         encodeColumnName(column, sql);
         sql.append(" PRIMARY KEY not null generated always as identity (start with 0) integer");
@@ -362,7 +359,7 @@ public class TeradataGISDialect extends BasicSQLDialect {
      * Creates GEOMETRY_COLUMN registrations and spatial indexes for all
      * geometry columns
      */
-    @Override
+
     public void postCreateTable(String schemaName,
                                 SimpleFeatureType featureType, Connection cx) throws SQLException {
         schemaName = schemaName != null ? schemaName : "";
@@ -403,7 +400,7 @@ public class TeradataGISDialect extends BasicSQLDialect {
                             + "'" + gd.getLocalName() + "', "
                             + "2, "
                             + srid + ", "
-                            + "'" + geomType + ")";
+                            + "'" + geomType + "')";
                     LOGGER.fine(sql);
                     st.execute(sql);
 
@@ -428,7 +425,7 @@ public class TeradataGISDialect extends BasicSQLDialect {
         }
     }
 
-    @Override
+
     public void encodeGeometryValue(Geometry value, int srid, StringBuffer sql)
             throws IOException {
         if (value == null) {
@@ -438,18 +435,18 @@ public class TeradataGISDialect extends BasicSQLDialect {
         }
     }
 
-    @Override
+
     public FilterToSQL createFilterToSQL() {
         TeradataFilterToSQL sql = new TeradataFilterToSQL(this);
         return sql;
     }
 
-    @Override
+
     public boolean isLimitOffsetSupported() {
         return false;
     }
 
-    @Override
+
     public Object getLastAutoGeneratedValue(String schemaName, String tableName, String columnName, Connection cx) throws SQLException {
         Statement stmt = cx.createStatement();
         try {
@@ -476,7 +473,7 @@ public class TeradataGISDialect extends BasicSQLDialect {
         }
     }
 
-    @Override
+
     public boolean lookupGeneratedValuesPostInsert() {
         return true;
     }

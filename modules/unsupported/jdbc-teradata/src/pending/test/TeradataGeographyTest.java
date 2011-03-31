@@ -23,12 +23,12 @@ import org.opengis.feature.simple.SimpleFeatureType;
 
 public class TeradataGeographyTest extends JDBCGeographyTest {
 
-    @Override
+
     protected JDBCGeographyTestSetup createTestSetup() {
         return new TeradataGeographyTestSetup(new TeradataTestSetup());
     }
 
-    @Override
+
     public void testSchema() throws Exception {
         super.testSchema();
 

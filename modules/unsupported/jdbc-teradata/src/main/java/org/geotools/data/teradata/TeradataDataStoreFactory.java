@@ -61,17 +61,15 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
 //    public static final Param SCHEMA = new Param("schema", String.class, "Schema", false, "public");
 
     // TODO rest of parameters for connection (ACCOUNT, Charset, etc...)
-    @Override
     protected SQLDialect createSQLDialect(JDBCDataStore dataStore) {
         return new TeradataGISDialect(dataStore);
     }
 
-    @Override
     protected String getDatabaseID() {
         return (String) DBTYPE.sample;
     }
 
-    @Override
+
     public String getDisplayName() {
         return "Teradata";
     }
@@ -80,12 +78,11 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
         return "Teradata Database";
     }
 
-    @Override
     protected String getDriverClassName() {
         return "com.teradata.jdbc.TeraDriver";
     }
 
-    @Override
+
     protected boolean checkDBType(Map params) {
         return checkDBType(params, "teradata");
     }
@@ -107,7 +104,7 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
         return dataStore;
     }
 
-    @Override
+
     protected void setupParameters(Map parameters) {
         // NOTE: when adding parameters here remember to add them to TeradataJNDIDataStoreFactory
 
@@ -120,12 +117,11 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
         parameters.put(MAX_OPEN_PREPARED_STATEMENTS.key, MAX_OPEN_PREPARED_STATEMENTS);
     }
 
-    @Override
     protected String getValidationQuery() {
         return "select now()";
     }
 
-    @Override
+
     protected String getJDBCUrl(Map params) throws IOException {
         String host = (String) HOST.lookUp(params);
         String db = (String) DATABASE.lookUp(params);
@@ -146,7 +142,6 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
      */
     private static class TeradataPrimaryKeyFinder extends PrimaryKeyFinder {
 
-        @Override
         public PrimaryKey getPrimaryKey(JDBCDataStore store, String schema,
                                         String table, Connection cx) throws SQLException {
 

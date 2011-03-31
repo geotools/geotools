@@ -28,7 +28,7 @@ public class TeradataFilterToSQL extends FilterToSQL {
     public TeradataFilterToSQL(TeradataGISDialect dialect) {
     }
 
-    @Override
+
     protected void visitLiteralGeometry(Literal expression) throws IOException {
         // evaluate the literal and store it for later
         Geometry geom = (Geometry) evaluateLiteral(expression, Geometry.class);

@@ -30,7 +30,7 @@ public class TeradataGeographyTestSetup extends JDBCGeographyTestSetup {
         super(delegate);
     }
 
-    @Override
+
     protected void createGeoPointTable() throws Exception {
         run("CREATE TABLE geopoint ( id PRIMARY KEY not null generated always as identity (start with 0) integer, name VARCHAR(64), geo ST_GEOMETRY)");
         run("INSERT INTO geopoint(name, geo) VALUES ('Town', ST_GeomFromText('POINT(-110 30)'))");
@@ -38,12 +38,12 @@ public class TeradataGeographyTestSetup extends JDBCGeographyTestSetup {
         run("INSERT INTO geopoint(name, geo) VALUES ('London', ST_GeomFromText('POINT(0 49)') )");
     }
 
-    @Override
+
     protected void dropGeoPointTable() throws Exception {
         runSafe("DROP TABLE geopoint");
     }
 
-    @Override
+
     public boolean isGeographySupportAvailable() throws Exception {
         Connection cx = null;
         Statement st = null;

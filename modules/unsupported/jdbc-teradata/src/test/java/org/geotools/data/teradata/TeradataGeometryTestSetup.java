@@ -26,7 +26,7 @@ public class TeradataGeometryTestSetup extends JDBCGeometryTestSetup {
         super(delegate);
     }
 
-    @Override
+
     protected void dropSpatialTable(String tableName) throws Exception {
         runSafe("DELETE FROM SYSSPATIAL.GEOMETRY_COLUMNS WHERE F_TABLE_NAME = '" + tableName + "'");
         runSafe("DROP TABLE \"" + tableName + "\"");

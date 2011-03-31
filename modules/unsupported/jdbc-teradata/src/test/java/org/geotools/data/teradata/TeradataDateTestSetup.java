@@ -10,7 +10,7 @@ public class TeradataDateTestSetup extends JDBCDateTestSetup {
         super(delegate);
     }
 
-    @Override
+
     protected void createDateTable() throws Exception {
         run("CREATE TABLE dates (d DATE, dt TIMESTAMP, t TIME)");
 
@@ -22,7 +22,7 @@ public class TeradataDateTestSetup extends JDBCDateTestSetup {
 
     }
 
-    @Override
+
     protected void dropDateTable() throws Exception {
         runSafe("DROP TABLE DATES");
     }

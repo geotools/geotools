@@ -25,13 +25,13 @@ import org.geotools.referencing.CRS;
 
 public class TeradataFeatureSourceTest extends JDBCFeatureSourceTest {
 
-    @Override
+
     protected JDBCTestSetup createTestSetup() {
         return new TeradataTestSetup();
     }
 
 
-    @Override
+
     protected void setUpInternal() throws Exception {
         super.setUpInternal();
     }

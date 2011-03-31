@@ -5,7 +5,7 @@ import org.geotools.jdbc.JDBCDateTestSetup;
 
 public class TeradataDateTest extends JDBCDateTest {
 
-    @Override
+
     protected JDBCDateTestSetup createTestSetup() {
         return new TeradataDateTestSetup(new TeradataTestSetup());
     }

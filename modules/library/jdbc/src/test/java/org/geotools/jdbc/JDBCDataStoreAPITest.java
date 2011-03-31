@@ -1,4 +1,4 @@
-./*
+/*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *

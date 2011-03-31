@@ -91,12 +91,10 @@ public abstract class JDBCPrimaryKeyFinderTest extends JDBCTestSupport {
     
     protected void assertPrimaryKeyValues( final FeatureCollection features, int count ) throws Exception {
         assertFeatureIterator(1,count,features.features(),new SimpleFeatureAssertion() {
-            @Override
             public int toIndex(SimpleFeature feature) {
                 return Integer.parseInt(feature.getIdentifier().getID().split("\\.",2)[1]);
             }
 
-            @Override
             public void check(int index, SimpleFeature feature) {
                 assertEquals( tname(features.getSchema().getName().getLocalPart()) + "." + index , feature.getIdentifier().getID() );
             }

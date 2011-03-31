@@ -295,15 +295,12 @@ public abstract class JDBCTestSupport extends OnlineTestCase {
                                  final Iterator<F> iterator,
                                  FeatureAssertion assertion) {
         FeatureIterator<F> adapter = new FeatureIterator<F>() {
-            @Override
             public boolean hasNext() {
                 return iterator.hasNext();
             }
-            @Override
             public F next() {
                 return iterator.next();
             }
-            @Override
             public void close() {}
         };
         assertFeatureIterator(startIndex,numberExpected,adapter,assertion);
@@ -315,7 +312,6 @@ public abstract class JDBCTestSupport extends OnlineTestCase {
                                  FeatureAssertion assertion) throws IOException {
         FeatureIterator<F> iter = new FeatureIterator<F>(){
 
-            @Override
             public boolean hasNext() {
                 try {
                     return reader.hasNext();
@@ -324,7 +320,6 @@ public abstract class JDBCTestSupport extends OnlineTestCase {
                 }
             }
 
-            @Override
             public F next() throws NoSuchElementException {
                 try {
                     return reader.next();
@@ -333,7 +328,6 @@ public abstract class JDBCTestSupport extends OnlineTestCase {
                 }
             }
 
-            @Override
             public void close() {
                 try {
                     reader.close();

@@ -93,12 +93,10 @@ public abstract class JDBCPrimaryKeyTest extends JDBCTestSupport {
     
     protected void assertPrimaryKeyValues( final FeatureCollection features, int count ) throws Exception {
         assertFeatureIterator(1,count,features.features(),new SimpleFeatureAssertion() {
-            @Override
             public int toIndex(SimpleFeature feature) {
                 return Integer.parseInt(feature.getID().split("\\.",2)[1]);
             }
 
-            @Override
             public void check(int index, SimpleFeature feature) {
                 assertEquals( tname(features.getSchema().getName().getLocalPart()) + "." + index , feature.getID() );
             }
@@ -130,12 +128,11 @@ public abstract class JDBCPrimaryKeyTest extends JDBCTestSupport {
     void assertMultiPrimaryKeyValues( final FeatureCollection features, int count ) throws Exception {
         assertFeatureIterator(1,count,features.features(),new SimpleFeatureAssertion() {
             String[] xyz = new String[]{"x","y","z"};
-            @Override
+            
             public int toIndex(SimpleFeature feature) {
                 return Integer.parseInt(feature.getID().split("\\.")[1]);
             }
 
-            @Override
             public void check(int index, SimpleFeature feature) {
 
                 if(index < 4) {

@@ -1,0 +1,18 @@
+testCreateSchemaWithConstraints
+TeradataDatastoreAPITest.testTransactionIsolation
+
+TeradataFeatureStoreTest.testAddFeaturesUseProvidedFid
+TeradataFeatureStoreTest.testAddInTransaction
+TeradataFeatureStoreTest.testExternalConnection
+TeradataTransactionTest.testConcurrentTransactions
+
+make primary key look up more efficient perhaps with one of the metadata methods like getPrimaryKey or something
+
+allow geometry_columns to be in a custom schema
+
+Add Tests:
+ * primary key as unique with and without generated seq
+ * where sequence is descending
+ * where sequence is not declared as unique
+ * where sequence is default instead of always
+ * where primary is not integer

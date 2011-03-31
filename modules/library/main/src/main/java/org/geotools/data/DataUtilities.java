@@ -754,15 +754,12 @@ public class DataUtilities {
     }
 
     /**
-     * DOCUMENT ME!
+     * Produce a set of default values for the provided FeatureType
      * 
      * @param featureType
-     *            DOCUMENT ME!
-     * 
-     * @return DOCUMENT ME!
+     * @return Array of values, that are good starting point for data entry
      * 
      * @throws IllegalAttributeException
-     *             DOCUMENT ME!
      */
     public static Object[] defaultValues(SimpleFeatureType featureType)
             throws IllegalAttributeException {
@@ -770,17 +767,15 @@ public class DataUtilities {
     }
 
     /**
-     * DOCUMENT ME!
+     * Create a new feature from the provided values, using
+     * appropriate default values for any nulls provided.
      * 
      * @param featureType
-     *            DOCUMENT ME!
-     * @param atts
-     *            DOCUMENT ME!
+     * @param atts provided attributes
      * 
-     * @return DOCUMENT ME!
+     * @return newly created feature
      * 
      * @throws IllegalAttributeException
-     *             DOCUMENT ME!
      */
     public static SimpleFeature template(SimpleFeatureType featureType, Object[] atts)
             throws IllegalAttributeException {
@@ -788,19 +783,16 @@ public class DataUtilities {
     }
 
     /**
-     * DOCUMENT ME!
+     * Create a new feature from the provided values, using
+     * appropriate default values for any nulls provided.
      * 
      * @param featureType
-     *            DOCUMENT ME!
      * @param featureID
-     *            DOCUMENT ME!
-     * @param atts
-     *            DOCUMENT ME!
+     * @param atts provided attributes
      * 
-     * @return DOCUMENT ME!
+     * @return newly created feature
      * 
      * @throws IllegalAttributeException
-     *             DOCUMENT ME!
      */
     public static SimpleFeature template(SimpleFeatureType featureType, String featureID,
             Object[] atts) throws IllegalAttributeException {
@@ -808,19 +800,15 @@ public class DataUtilities {
     }
 
     /**
-     * DOCUMENT ME!
+     * Create default values matching the provided feature type.
      * 
      * @param featureType
-     *            DOCUMENT ME!
      * @param values
-     *            DOCUMENT ME!
      * 
-     * @return DOCUMENT ME!
+     * @return set of default values
      * 
      * @throws IllegalAttributeException
-     *             DOCUMENT ME!
      * @throws ArrayIndexOutOfBoundsException
-     *             DOCUMENT ME!
      */
     public static Object[] defaultValues(SimpleFeatureType featureType, Object[] values)
             throws IllegalAttributeException {

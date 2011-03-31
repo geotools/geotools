@@ -16,22 +16,27 @@
  */
 package org.geotools.jdbc;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.util.HashMap;
-import java.util.Map;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Properties;
 
 import javax.sql.DataSource;
 
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-
+import org.geotools.data.FeatureReader;
+import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.NameImpl;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.test.OnlineTestCase;
+import org.opengis.feature.Feature;
+import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;
+import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
@@ -239,4 +244,105 @@ public abstract class JDBCTestSupport extends OnlineTestCase {
 		return areCRSEqual(e1.getCoordinateReferenceSystem(), e2.getCoordinateReferenceSystem());
 	}
 
+    public static interface FeatureAssertion<F extends Feature> {
+        int toIndex(F feature);
+        void check(int index, F feature);
+    }
+    public static interface SimpleFeatureAssertion extends FeatureAssertion<SimpleFeature>{}
+
+    protected <FT extends FeatureType,F extends Feature>
+        void assertFeatureCollection(int startIndex,
+                                 int numberExpected,
+                                 FeatureCollection<FT,F> collection,
+                                 FeatureAssertion assertion) {
+        assertFeatureIterator(startIndex,numberExpected,collection.features(),assertion);
+    }
+    protected <F extends Feature>
+        void assertFeatureIterator(int startIndex,
+                                 int numberExpected,
+                                 FeatureIterator<F> iter,
+                                 FeatureAssertion assertion) {
+        try {
+            boolean[] loadedFeatures = new boolean[numberExpected];
+            for (int j = startIndex; j < numberExpected+startIndex; j++) {
+                F feature = iter.next();
+
+                assertNotNull(feature);
+
+                int i = assertion.toIndex(feature);
+
+                assertTrue(loadedFeatures.length > i-startIndex);
+                assertTrue(i > startIndex-1);
+                assertFalse(loadedFeatures[i-startIndex]);
+
+                loadedFeatures[i-startIndex] = true;
+
+                assertion.check(i, feature);
+
+            }
+            assertFalse(iter.hasNext());
+            for (int i = 0; i < numberExpected; i++) {
+                assertTrue("feature "+i+" is missing",loadedFeatures[i]);
+            }
+        } finally {
+            iter.close();
+        }
+
+    }
+    protected <F extends Feature>
+        void assertFeatureIterator(int startIndex,
+                                 int numberExpected,
+                                 final Iterator<F> iterator,
+                                 FeatureAssertion assertion) {
+        FeatureIterator<F> adapter = new FeatureIterator<F>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+            @Override
+            public F next() {
+                return iterator.next();
+            }
+            @Override
+            public void close() {}
+        };
+        assertFeatureIterator(startIndex,numberExpected,adapter,assertion);
+    }
+    protected <FT extends FeatureType,F extends Feature>
+        void assertFeatureReader(int startIndex,
+                                 int numberExpected,
+                                 final FeatureReader<FT,F> reader,
+                                 FeatureAssertion assertion) throws IOException {
+        FeatureIterator<F> iter = new FeatureIterator<F>(){
+
+            @Override
+            public boolean hasNext() {
+                try {
+                    return reader.hasNext();
+                } catch (IOException e) {
+                    throw new AssertionError(e);
+                }
+            }
+
+            @Override
+            public F next() throws NoSuchElementException {
+                try {
+                    return reader.next();
+                } catch (IOException e) {
+                    throw new AssertionError(e);
+                }
+            }
+
+            @Override
+            public void close() {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    throw new AssertionError(e);
+                }
+            }
+        };
+
+        assertFeatureIterator(startIndex,numberExpected,iter,assertion);
+    }
 }

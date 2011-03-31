@@ -19,11 +19,13 @@ package org.geotools.jdbc;
 import java.io.IOException;
 import java.util.Iterator;
 
+import com.vividsolutions.jts.geom.Point;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.feature.FeatureIterator;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 
@@ -43,30 +45,26 @@ public abstract class JDBCFeatureCollectionTest extends JDBCTestSupport {
     }
 
     public void testIterator() throws Exception {
-        Iterator i = collection.iterator();
+        FeatureIterator<SimpleFeature> i = collection.features();
         assertNotNull(i);
 
-        int base = -1;
+        assertFeatureIterator(0, 3, i, new SimpleFeatureAssertion() {
 
-        for (int x = 0; x < 3; x++) {
-            assertTrue(i.hasNext());
-
-            SimpleFeature feature = (SimpleFeature) i.next();
-            assertNotNull(feature);
-
-            String fid = feature.getID();
-            int id = Integer.parseInt(fid.substring(fid.indexOf('.') + 1));
-
-            if (base == -1) {
-                base = id;
+            public int toIndex(SimpleFeature feature) {
+                return ((Number) feature.getAttribute(aname("intProperty"))).intValue();
             }
 
-            assertEquals(base++, id);
-            assertEquals(x,((Number)feature.getAttribute(aname("intProperty"))).intValue() );
-        }
+            public void check(int index, SimpleFeature feature) {
+                assertNotNull(feature);
 
-        assertFalse(i.hasNext());
-        collection.close(i);
+                String fid = feature.getID();
+
+                int id = Integer.parseInt(fid.substring(fid.indexOf('.') + 1));
+
+
+                assertEquals(index, id);
+            }
+        });
     }
 
     public void testBounds() throws IOException {

@@ -25,10 +25,7 @@ import java.sql.Statement;
 import java.util.Arrays;
 import java.util.HashSet;
 
-import org.geotools.data.DefaultQuery;
-import org.geotools.data.FeatureReader;
-import org.geotools.data.FeatureWriter;
-import org.geotools.data.Transaction;
+import org.geotools.data.*;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -206,27 +203,25 @@ public abstract class JDBCDataStoreTest extends JDBCTestSupport {
     }
 
     public void testGetFeatureReader() throws Exception {
-        GeometryFactory gf = dataStore.getGeometryFactory();
+        final GeometryFactory gf = dataStore.getGeometryFactory();
 
-        DefaultQuery query = new DefaultQuery(tname("ft1"));
-         FeatureReader<SimpleFeatureType, SimpleFeature> reader = dataStore.getFeatureReader(query, Transaction.AUTO_COMMIT);
+        Query query = new Query(tname("ft1"));
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader = dataStore.getFeatureReader(query, Transaction.AUTO_COMMIT);
 
-        for (int i = 0; i < 3; i++) {
-            assertTrue(reader.hasNext());
+         assertFeatureReader(0, 3, reader, new SimpleFeatureAssertion() {
+             public int toIndex(SimpleFeature feature) {
+                 return ((Number) feature.getAttribute(aname("intProperty"))).intValue();
+             }
 
-            SimpleFeature feature = reader.next();
-            assertNotNull(feature);
-            assertEquals(4, feature.getAttributeCount());
+             public void check(int index, SimpleFeature feature) {
+                 assertEquals(4, feature.getAttributeCount());
+                 Point p = gf.createPoint(new Coordinate(index, index));
+                 assertTrue(p.equals((Geometry) feature.getAttribute(aname("geometry"))));
 
-            Point p = gf.createPoint(new Coordinate(i, i));
-            assertTrue(p.equals((Geometry) feature.getAttribute(aname("geometry"))));
-
-            Number ip = (Number) feature.getAttribute(aname("intProperty"));
-            assertEquals(i, ip.intValue());
-        }
-
-        assertFalse(reader.hasNext());
-        reader.close();
+                 Number ip = (Number) feature.getAttribute(aname("intProperty"));
+                 assertEquals(index, ip.intValue());
+             }
+         });
 
         query.setPropertyNames(new String[] { aname("intProperty") });
         reader = dataStore.getFeatureReader(query, Transaction.AUTO_COMMIT);

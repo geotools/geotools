@@ -22,6 +22,7 @@ import org.geotools.data.FeatureStore;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory;
@@ -78,7 +79,7 @@ public abstract class JDBCPrimaryKeyTest extends JDBCTestSupport {
         assertPrimaryKeyValues(features,4);
     }
     
-    void addFeature( SimpleFeatureType featureType, FeatureCollection features ) throws Exception {
+    protected void addFeature( SimpleFeatureType featureType, FeatureCollection features ) throws Exception {
         SimpleFeatureBuilder b = new SimpleFeatureBuilder( featureType );
         b.add("four");
         b.add( new GeometryFactory().createPoint( new Coordinate(4,4) ) );
@@ -90,18 +91,19 @@ public abstract class JDBCPrimaryKeyTest extends JDBCTestSupport {
         assertTrue(((String)f.getUserData().get( "fid" )).matches( tname(featureType.getTypeName()) + ".4(\\..*)?"));
     }
     
-    void assertPrimaryKeyValues( FeatureCollection features, int count ) throws Exception {
-        FeatureIterator i = features.features();
-       
-        for ( int j = 1; j <= count; j++ ) {
-            assertTrue( i.hasNext() );
-            SimpleFeature f = (SimpleFeature) i.next();
-            
-            assertEquals( tname(features.getSchema().getName().getLocalPart()) + "." + j , f.getID() );
-        }
-        
-        features.close( i );
-        
+    protected void assertPrimaryKeyValues( final FeatureCollection features, int count ) throws Exception {
+        assertFeatureIterator(1,count,features.features(),new SimpleFeatureAssertion() {
+            @Override
+            public int toIndex(SimpleFeature feature) {
+                return Integer.parseInt(feature.getID().split("\\.",2)[1]);
+            }
+
+            @Override
+            public void check(int index, SimpleFeature feature) {
+                assertEquals( tname(features.getSchema().getName().getLocalPart()) + "." + index , feature.getID() );
+            }
+        });
+
     }
     
     public void testMultiColumnPrimaryKey() throws Exception {
@@ -110,30 +112,12 @@ public abstract class JDBCPrimaryKeyTest extends JDBCTestSupport {
         assertEquals( 2, fs.getPrimaryKey().getColumns().size() );
                 
         FeatureCollection features = fs.getFeatures();
-        FeatureIterator i = features.features();
         
-        String[] xyz = new String[]{"x","y","z"};
-        for ( int j = 1; j <= 3; j++ ) {
-            assertTrue( i.hasNext() );
-            SimpleFeature f = (SimpleFeature) i.next();
-            
-            assertEquals( tname("multi") + "." + j + "." + xyz[j-1], f.getID() );
-        }
-        features.close( i );
+        assertMultiPrimaryKeyValues(features,3);
         
         addFeature(fs.getSchema(),features);
-        
-        i = features.features();
-        for ( int j = 0; j < 3; j++ ) {
-            i.hasNext();
-            i.next();
-        }
-        
-        assertTrue( i.hasNext() );
-        SimpleFeature f = (SimpleFeature) i.next();
-        assertTrue( f.getID().startsWith( tname("multi") + ".4.") );
-        
-        features.close( i );
+
+        assertMultiPrimaryKeyValues(features,4);
         
         //test with a filter
         FilterFactory ff = dataStore.getFilterFactory();
@@ -142,7 +126,28 @@ public abstract class JDBCPrimaryKeyTest extends JDBCTestSupport {
         features = fs.getFeatures( id );
         assertEquals( 1, features.size() );
     }
-    
+
+    void assertMultiPrimaryKeyValues( final FeatureCollection features, int count ) throws Exception {
+        assertFeatureIterator(1,count,features.features(),new SimpleFeatureAssertion() {
+            String[] xyz = new String[]{"x","y","z"};
+            @Override
+            public int toIndex(SimpleFeature feature) {
+                return Integer.parseInt(feature.getID().split("\\.")[1]);
+            }
+
+            @Override
+            public void check(int index, SimpleFeature feature) {
+
+                if(index < 4) {
+                    assertEquals( tname("multi") + "." + index + "." + xyz[index-1], feature.getID() );
+                } else {
+                    assertTrue( feature.getID().startsWith( tname("multi") + ".4.") );
+                }
+            }
+        });
+
+    }
+
     public void testNullPrimaryKey() throws Exception {
         JDBCFeatureSource fs = (JDBCFeatureSource) dataStore.getFeatureSource(tname("nokey"));
         assertFalse( fs instanceof FeatureStore );
@@ -167,6 +172,5 @@ public abstract class JDBCPrimaryKeyTest extends JDBCTestSupport {
         fs = (JDBCFeatureStore) dataStore.getFeatureSource(tname("noninc"));
         fs.setExposePrimaryKeyColumns(true);
         assertEquals( 3, fs.getSchema().getAttributeCount() );
-        
     }
 }

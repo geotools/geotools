@@ -19,6 +19,7 @@ package org.geotools.jdbc;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -76,7 +77,7 @@ public abstract class JDBCPrimaryKeyFinderTest extends JDBCTestSupport {
         i.close();
     }
     
-    void addFeature( SimpleFeatureType featureType, FeatureCollection features ) throws Exception {
+    protected void addFeature( SimpleFeatureType featureType, FeatureCollection features ) throws Exception {
         SimpleFeatureBuilder b = new SimpleFeatureBuilder( featureType );
         b.add("four");
         b.add( new GeometryFactory().createPoint( new Coordinate(4,4) ) );
@@ -88,17 +89,18 @@ public abstract class JDBCPrimaryKeyFinderTest extends JDBCTestSupport {
         assertTrue(((String)f.getUserData().get( "fid" )).matches( tname(featureType.getTypeName()) + ".4(\\..*)?"));
     }
     
-    void assertPrimaryKeyValues( FeatureCollection features, int count ) throws Exception {
-        FeatureIterator i = features.features();
-       
-        for ( int j = 1; j <= count; j++ ) {
-            assertTrue( i.hasNext() );
-            SimpleFeature f = (SimpleFeature) i.next();
-            
-            assertEquals( tname(features.getSchema().getName().getLocalPart()) + "." + j , f.getID() );
-        }
-        
-        features.close( i );
-        
+    protected void assertPrimaryKeyValues( final FeatureCollection features, int count ) throws Exception {
+        assertFeatureIterator(1,count,features.features(),new SimpleFeatureAssertion() {
+            @Override
+            public int toIndex(SimpleFeature feature) {
+                return Integer.parseInt(feature.getIdentifier().getID().split("\\.",2)[1]);
+            }
+
+            @Override
+            public void check(int index, SimpleFeature feature) {
+                assertEquals( tname(features.getSchema().getName().getLocalPart()) + "." + index , feature.getIdentifier().getID() );
+            }
+        });
     }
+
 }

@@ -303,7 +303,9 @@ final class Resampler2D extends GridCoverage2D {
             }
         }
         
-        // INTERPOLATION
+        //
+        // INTERPOLATION MANAGEMENT as well as BORDER_EXTENDER
+        //
         if(interpolation==null){
 
             //if we did not the interpolation, let's try to get it from hints
@@ -316,12 +318,17 @@ final class Resampler2D extends GridCoverage2D {
             // we have been provided with interpolation, let's override hints
             hints.put(JAI.KEY_INTERPOLATION,interpolation);
         }
+        if (!hints.containsKey(JAI.KEY_BORDER_EXTENDER)) {
+            hints.put(JAI.KEY_BORDER_EXTENDER, BorderExtender.createInstance(BorderExtender.BORDER_COPY));
+        }
+        
         /*
          * The following will tell us if the target GridRange (GR) and GridGeometry (GG) should
          * be computed automatically, or if we should follow strictly what the user said. Note
-         * that "automaticGG" implies "automaticGR" but the converse is not necessarly true.
+         * that "automaticGG" implies "automaticGR" but the converse is not necessarily true.
          */
         final boolean automaticGG, automaticGR;
+        
         /*
          * Grid range and "grid to CRS" transform are the only grid geometry informations used
          * by this method. If they are not available, this is equivalent to not providing grid
@@ -555,24 +562,11 @@ final class Resampler2D extends GridCoverage2D {
             layout.setTileHeight(size.height);
         }
         /*
-         * Creates the border extender from the background values. We add it inconditionnaly as
-         * a matter of principle, but it will be ignored by all JAI operations except "Affine".
-         * There is an exception for the case where the user didn't specified explicitly the
-         * desired target grid range. NOT specifying border extender will allows "Affine" to
-         * shrink the target image bounds to the range containing computed values.
+         * Creates the background values array. 
          */
         final double[] background = backgroundValues != null ? backgroundValues : CoverageUtilities.getBackgroundValues(sourceCoverage);
-        if (background != null && background.length != 0) {
-            if (!automaticGR && !hints.containsKey(JAI.KEY_BORDER_EXTENDER)) {
-                final BorderExtender borderExtender;
-                if (XArray.allEquals(background, 0)) {
-                    borderExtender = BorderExtender.createInstance(BorderExtender.BORDER_ZERO);
-                } else {
-                    borderExtender = new BorderExtenderConstant(background);
-                }
-                hints.put(JAI.KEY_BORDER_EXTENDER, borderExtender);
-            }
-        }
+
+        
         /*
          * We need to correctly manage the Hints to control the replacement of IndexColorModel.
          * It is worth to point out that setting the JAI.KEY_REPLACE_INDEX_COLOR_MODEL hint to

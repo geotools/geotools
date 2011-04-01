@@ -191,7 +191,8 @@ public class H2Dialect extends SQLDialect {
                             continue;
                         }
                         
-                        epsg = CRS.lookupEpsgCode(crs, true);
+                        Integer code = CRS.lookupEpsgCode(crs, true); 
+                        epsg = code != null ? code : -1;
                     } 
                     catch (FactoryException e) {
                         LOGGER.log(Level.FINER, "Unable to look epsg code", e);

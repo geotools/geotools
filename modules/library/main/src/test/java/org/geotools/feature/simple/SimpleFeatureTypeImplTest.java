@@ -26,6 +26,7 @@ import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.FeatureTypeFactoryImpl;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.PropertyDescriptor;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Point;
 
@@ -81,7 +82,7 @@ public class SimpleFeatureTypeImplTest extends TestCase {
      */
     private SimpleFeatureType buildLocationCountType() {
         SimpleFeatureTypeBuilder builder = buildPartialBuilder();
-        builder.add("location", Point.class);
+        builder.add("location", Point.class, (CoordinateReferenceSystem) null );
         builder.add("count", Integer.class);
         return builder.buildFeatureType();
     }
@@ -92,7 +93,7 @@ public class SimpleFeatureTypeImplTest extends TestCase {
     private SimpleFeatureType buildCountLocationType() {
         SimpleFeatureTypeBuilder builder = buildPartialBuilder();
         builder.add("count", Integer.class);
-        builder.add("location", Point.class);
+        builder.add("location", Point.class, (CoordinateReferenceSystem) null);
         return builder.buildFeatureType();
     }
 

@@ -28,6 +28,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.GeometryType;
 import org.opengis.feature.type.Schema;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Point;
 
@@ -56,7 +57,7 @@ public class SimpleTypeBuilderTest extends TestCase {
 	public void testSanity() {
 		builder.setName( "testName" );
 		builder.setNamespaceURI( "testNamespaceURI" );
-		builder.add( "point", Point.class );
+		builder.add( "point", Point.class, (CoordinateReferenceSystem) null );
 		builder.add( "integer", Integer.class );
 		
 		SimpleFeatureType type = builder.buildFeatureType();

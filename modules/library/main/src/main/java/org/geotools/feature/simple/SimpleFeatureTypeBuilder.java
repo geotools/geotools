@@ -26,6 +26,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import org.geotools.feature.AttributeTypeBuilder;
 import org.geotools.feature.NameImpl;
@@ -106,6 +107,11 @@ import com.vividsolutions.jts.geom.Geometry;
  * @source $URL$
  */
 public class SimpleFeatureTypeBuilder {
+    /**
+     * logger
+     */
+    static Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.feature");
+    
 	/**
 	 * factories
 	 */
@@ -114,7 +120,7 @@ public class SimpleFeatureTypeBuilder {
 	/**
 	 * Map of java class bound to properties types.
 	 */
-	protected Map/* <Class,AttributeType> */bindings;
+	protected Map<Class<?>,AttributeType> bindings;
 	
 	// Global state for the feature type
 	//
@@ -148,10 +154,10 @@ public class SimpleFeatureTypeBuilder {
 	 */
 	protected String defaultGeometry;
 
-	/** 
-	 * coordinate reference system of the type 
-	 */
-	protected CoordinateReferenceSystem crs;
+    /**
+     * default coordinate reference system of the type
+     */
+    protected CoordinateReferenceSystem defaultCrs;
 
 	/**
 	 * flag controlling if the type is abstract.
@@ -169,7 +175,7 @@ public class SimpleFeatureTypeBuilder {
 	protected AttributeTypeBuilder attributeBuilder;
 
 	/** Length for next filter */
-    private int length = -1;
+	//private int length = -1;
 	
 	/**
 	 * Constructs the builder.
@@ -245,7 +251,7 @@ public class SimpleFeatureTypeBuilder {
 		description = null;
 		restrictions = null;
 		attributes = null;
-		crs = null;
+		defaultCrs = null;
 		isAbstract = false;
 		superType = BasicFeatureTypes.FEATURE;
 	}
@@ -317,35 +323,45 @@ public class SimpleFeatureTypeBuilder {
 		return defaultGeometry;
 	}
 	
-	/**
-	 * Sets the coordinate reference system of the built type.
-         * The supplied coordinate reference system is only used if 
-         * geometric attributes are later added to the type without
-         * specifying their coordinate reference system.
-	 */
-	public void setCRS(CoordinateReferenceSystem crs) {
-		this.crs = crs;
-	}
-	/**
-	 * The fallback coordinate reference system that will be applied to
-         * any geometric attributes added to the type without their own
-         * coordinate reference system specified.
-	 */
-	public CoordinateReferenceSystem getCRS() {
-		return crs;
-	}
-	
-	/**
-	 * Sets the coordinate reference system of the built type by specifying its
-	 * srs.
-	 * 
-	 * @throws IllegalArgumentException When the srs specified can be decored 
-	 * into a crs.
-	 * 
-	 */
-	public void setSRS(String srs) {
-		setCRS(decode(srs));	
-	}
+    /**
+     * Sets the coordinate reference system of the next attribute being added.
+     * <p>
+     * The supplied coordinate reference is a "default" only used if geometric attributes are later
+     * added to the type without specifying their coordinate reference system.
+     * <p>
+     * You must call this method prior to calling add for it to function.
+     * <p>
+     * Example:
+     * 
+     * <pre>
+     * <code>
+     * builder.setCRS( DefaultGeographicCRS.EGS84 );
+     * builder.add( "geom", Polygon.class );
+     * </code>
+     * </pre>
+     */
+    public void setCRS(CoordinateReferenceSystem crs) {
+        this.defaultCrs = crs;
+    }
+
+    /**
+     * The fallback coordinate reference system that will be applied to any geometric attributes
+     * added to the type without their own coordinate reference system specified.
+     */
+    public CoordinateReferenceSystem getCRS() {
+        return defaultCrs;
+    }
+
+    /**
+     * Sets the coordinate reference system of the next attribute being added by specifying its srs.
+     * 
+     * @throws IllegalArgumentException
+     *             When the srs specified can be decored into a crs.
+     * 
+     */
+    public void setSRS(String srs) {
+        setCRS(decode(srs));
+    }
 	
 	/**
 	 * Sets the flag controlling if the resulting type is abstract.
@@ -398,8 +414,8 @@ public class SimpleFeatureTypeBuilder {
 	 * @see {@link #addBinding(AttributeType)}.
 	 */
 	public void addBindings( Schema schema ) {
-		for (Iterator itr = schema.values().iterator(); itr.hasNext();) {
-			AttributeType type = (AttributeType) itr.next();
+		for (Iterator<AttributeType> itr = schema.values().iterator(); itr.hasNext();) {
+			AttributeType type = itr.next();
 			addBinding(type);
 		}
 	}
@@ -517,19 +533,21 @@ public class SimpleFeatureTypeBuilder {
 		attributeBuilder.setDefaultValue( defaultValue );
 		return this;
 	}
-	/**
-	 * Sets the crs of the next attribute added to the feature type.
-	 * <p>
-	 * This only applies if the attribute added is geometric.
-	 * </p>
-	 * <p>
-	 * This value is reset after a call to {@link #add(String, Class)}
-	 * </p>
-	 */
-	public SimpleFeatureTypeBuilder crs( CoordinateReferenceSystem crs ) {
-		attributeBuilder.setCRS(crs);
-		return this;
-	}
+
+    /**
+     * Sets the crs of the next attribute added to the feature type.
+     * <p>
+     * This only applies if the attribute added is geometric.
+     * </p>
+     * Example: <code> builder.crs( DefaultGeographicCRS.WGS84 ).add( "geom", Polygon.class )</code>
+     * <p>
+     * This value is reset after a call to {@link #add(String, Class)}
+     * </p>
+     */
+    public SimpleFeatureTypeBuilder crs(CoordinateReferenceSystem crs) {
+        attributeBuilder.setCRS(crs);
+        return this;
+    }
 	
 	/**
 	 * Sets the srs of the next attribute added to the feature type.
@@ -614,53 +632,57 @@ public class SimpleFeatureTypeBuilder {
 	    return this;
 	}
 	
-	/**
-	 * Adds a new attribute w/ provided name and class.
-	 * 
-	 * <p>
-	 * The provided class is used to locate an attribute type binding previously 
-	 * specified by {@link #addBinding(AttributeType)},{@link #addBindings(Schema)}, 
-	 * or {@link #setBindings(Schema)}. 
-	 * </p>
-	 * <p>
-	 * If not such binding exists then an attribute type is created on the fly.
-	 * </p>
-	 * @param name The name of the attribute.
-	 * @param bind The class the attribute is bound to.
-	 * 
-	 */
-	public void add(String name, Class binding) {
+    /**
+     * Adds a new attribute w/ provided name and class.
+     * 
+     * <p>
+     * The provided class is used to locate an attribute type binding previously specified by
+     * {@link #addBinding(AttributeType)},{@link #addBindings(Schema)}, or
+     * {@link #setBindings(Schema)}.
+     * </p>
+     * <p>
+     * If not such binding exists then an attribute type is created on the fly.
+     * </p>
+     * 
+     * @param name
+     *            The name of the attribute.
+     * @param bind
+     *            The class the attribute is bound to.
+     * 
+     */
+    public void add(String name, Class<?> binding) {
 
-	    AttributeDescriptor descriptor = null;
-	    
-	    attributeBuilder.setBinding(binding);
+        AttributeDescriptor descriptor = null;
+
+        attributeBuilder.setBinding(binding);
         attributeBuilder.setName(name);
-        
-		//check if this is the name of the default geomtry, in that case we 
-		// better make it a geometry type
-		//also check for jts geometry, if we ever actually get to a point where a
-        // feature can be backed by another geometry model (like iso), we need 
+
+        // check if this is the name of the default geometry, in that case we
+        // better make it a geometry type
+        // also check for jts geometry, if we ever actually get to a point where a
+        // feature can be backed by another geometry model (like iso), we need
         // to remove this check
         //
-        if ( ( defaultGeometry != null && defaultGeometry.equals( name ) ) 
-            || Geometry.class.isAssignableFrom(binding) ) {
-		
-            //if no crs was set, set to the global
-            if ( !attributeBuilder.isCRSSet() ) {
-                attributeBuilder.setCRS(crs);
+        if ((defaultGeometry != null && defaultGeometry.equals(name))
+                || Geometry.class.isAssignableFrom(binding)) {
+
+            // if no crs was set, set to defaultCRS
+            if (!attributeBuilder.isCRSSet()) {
+                if( defaultCrs == null ){
+                    LOGGER.warning("Creating "+name+" with null CoordinateReferenceSystem - did you mean to setCRS?");
+                }
+                attributeBuilder.setCRS(defaultCrs);
             }
-            
+
             GeometryType type = attributeBuilder.buildGeometryType();
             descriptor = attributeBuilder.buildDescriptor(name, type);
-		}
-        else {
+        } else {
             AttributeType type = attributeBuilder.buildType();
-            descriptor = attributeBuilder.buildDescriptor(name, type );
+            descriptor = attributeBuilder.buildDescriptor(name, type);
         }
-		
-        
-		attributes().add(descriptor);
-	}
+
+        attributes().add(descriptor);
+    }
 	
 	/**
 	 * Adds a descriptor directly to the builder.
@@ -681,7 +703,7 @@ public class SimpleFeatureTypeBuilder {
      * @throws IllegalArgumentException if there is no AttributeDescriptor with the name attributeName
      */
     public AttributeDescriptor remove(String attributeName){
-        for (Iterator iterator = attributes.iterator(); iterator.hasNext();) {
+        for (Iterator<AttributeDescriptor> iterator = attributes.iterator(); iterator.hasNext();) {
             AttributeDescriptor descriptor = (AttributeDescriptor) iterator.next();
             if( descriptor.getLocalName().equals(attributeName) ){
                 iterator.remove();
@@ -737,7 +759,7 @@ public class SimpleFeatureTypeBuilder {
 	 * @param binding The class that the attribute is bound to.
 	 * @param crs The crs of of the geometry, may be <code>null</code>.
 	 */
-	public void add(String name, Class binding, CoordinateReferenceSystem crs ) {
+	public void add(String name, Class<?> binding, CoordinateReferenceSystem crs ) {
 		attributeBuilder.setBinding(binding);
 		attributeBuilder.setName(name);
 		attributeBuilder.setCRS(crs);
@@ -757,7 +779,7 @@ public class SimpleFeatureTypeBuilder {
      * @param binding The class that the attribute is bound to.
      * @param srs The srs of of the geometry, may be <code>null</code>.
      */
-	public void add(String name, Class binding, String srs) {
+	public void add(String name, Class<?> binding, String srs) {
 	    if ( srs == null ) {
 	        add(name,binding,(CoordinateReferenceSystem)null);
 	        return;
@@ -776,7 +798,7 @@ public class SimpleFeatureTypeBuilder {
      * @param binding The class that the attribute is bound to.
      * @param srid The srid of of the geometry, may be <code>null</code>.
      */
-	public void add(String name, Class binding, Integer srid) {
+	public void add(String name, Class<?> binding, Integer srid) {
 	    if ( srid == null ) {
 	        add(name,binding,(CoordinateReferenceSystem)null);
 	        return;
@@ -824,11 +846,14 @@ public class SimpleFeatureTypeBuilder {
 			for ( int i = 0; i < atts.size(); i++) {
 				AttributeDescriptor att = atts.get(i);
 				if ( this.defaultGeometry.equals( att.getName().getLocalPart() ) ) {
-					//ensure the attribute is a geometry attribute
+					// ensure the attribute is a geometry attribute
+				        // 
 					if ( !(att instanceof GeometryDescriptor ) ) {
+					    LOGGER.warning("Default Geometry "+this.defaultGeometry+" was not added using add( name, binding, crs )");
 						attributeBuilder.init( att );
-						attributeBuilder.setCRS(crs);
-						GeometryType type = attributeBuilder.buildGeometryType();						
+						attributeBuilder.setCRS(defaultCrs);
+						GeometryType type = attributeBuilder.buildGeometryType();
+						
 						att = attributeBuilder.buildDescriptor(att.getName(),type);
 						atts.set( i, att );
 					}
@@ -862,26 +887,30 @@ public class SimpleFeatureTypeBuilder {
 		return built;
 	}
 	
-	// Internal api available for subclasses to override
-	/**
-	 * Creates a new set instance, this default implementation returns {@link HashSet}.
-	 */
-	protected Set newSet(){
-		return new HashSet();
-	}
-	/**
-	 * Creates a new list instance, this default impelementation returns {@link ArrayList}.
-	 */
-	protected List newList() {
-		return new ArrayList();
-	}
-	
-	/**
-	 * Creates a new map instance, this default implementation returns {@link HashMap}
-	 */
-	protected Map newMap() {
-		return new HashMap();
-	}
+    // Internal api available for subclasses to override
+    /**
+     * Creates a new set instance, this default implementation returns {@link HashSet}.
+     */
+    @SuppressWarnings("rawtypes")
+    protected Set newSet() {
+        return new HashSet();
+    }
+
+    /**
+     * Creates a new list instance, this default impelementation returns {@link ArrayList}.
+     */
+    @SuppressWarnings("rawtypes")
+    protected List newList() {
+        return new ArrayList();
+    }
+
+    /**
+     * Creates a new map instance, this default implementation returns {@link HashMap}
+     */
+    @SuppressWarnings("rawtypes")
+    protected Map newMap() {
+        return new HashMap();
+    }
 	
 	/**
 	 * Creates a new list which is the same type as the provided list.
@@ -890,7 +919,8 @@ public class SimpleFeatureTypeBuilder {
 	 * returned.
 	 * </p>
 	 */
-	protected List newList(List origional) {
+	@SuppressWarnings("rawtypes")
+    protected List newList(List origional) {
 		if (origional == null) {
 			return newList();
 		}
@@ -898,7 +928,7 @@ public class SimpleFeatureTypeBuilder {
 			return newList();
 		}
 		try {
-			return (List) origional.getClass().newInstance();
+			return origional.getClass().newInstance();
 		} catch (InstantiationException e) {
 			return newList();
 		} catch (IllegalAccessException e) {
@@ -924,33 +954,38 @@ public class SimpleFeatureTypeBuilder {
 		return new NameImpl(uri, local);
 	}
 
-	/**
-	 * Accessor for attributes.
-	 */
-	protected List<AttributeDescriptor> attributes() {
-		if (attributes == null) {
-			attributes = newList();
-		}
-		return attributes;
-	}
-	/**
-	 * Accessor for restrictions.
-	 */
-	protected List<Filter> restrictions(){
-		if (restrictions == null) {
-			restrictions = newList();
-		}
-		return restrictions;		
-	}
-	/**
-	 * Accessor for bindings.
-	 */
-	protected Map bindings() {
-		if (bindings == null) {
-			bindings = newMap();
-		}
-		return bindings;
-	}
+    /**
+     * Accessor for attributes (will create attributes list if needed)
+     */
+    @SuppressWarnings("unchecked")
+    protected List<AttributeDescriptor> attributes() {
+        if (attributes == null) {
+            attributes = newList();
+        }
+        return attributes;
+    }
+
+    /**
+     * Accessor for restrictions (will create restrictions list if needed).
+     */
+    @SuppressWarnings("unchecked")
+    protected List<Filter> restrictions() {
+        if (restrictions == null) {
+            restrictions = newList();
+        }
+        return restrictions;
+    }
+
+    /**
+     * Accessor for bindings (will create binding map if needed).
+     */
+    @SuppressWarnings("unchecked")
+    protected Map<Class<?>, AttributeType> bindings() {
+        if (bindings == null) {
+            bindings = newMap();
+        }
+        return bindings;
+    }
 	
 	/**
 	 * Decodes a srs, supplying a useful error message if there is a problem.

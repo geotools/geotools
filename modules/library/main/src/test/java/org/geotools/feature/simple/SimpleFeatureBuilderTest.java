@@ -23,6 +23,7 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.PropertyIsEqualTo;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
@@ -36,7 +37,7 @@ public class SimpleFeatureBuilderTest extends TestCase {
 	protected void setUp() throws Exception {
 		SimpleFeatureTypeBuilder typeBuilder = new SimpleFeatureTypeBuilder();
 		typeBuilder.setName( "test" );
-		typeBuilder.add( "point", Point.class );
+		typeBuilder.add( "point", Point.class, (CoordinateReferenceSystem) null );
 		typeBuilder.add( "integer", Integer.class );
 		typeBuilder.add( "float", Float.class );
 		

@@ -5,18 +5,19 @@ GeoTools makes use of the gt-opengis **Filter** and **Expression** interfaces in
 
 Reference:
 
-* :doc:`../opengis/model` - how feature, featureType and filter fit together
-* :doc:`../opengis/filter` - background on filter
-* :doc:`../cql/index` - gt-cql provides filter parsing from text
-* :doc:`../xml/index` - gt-xml provides filter parsing from xml
+* gt-opengis data :doc:`../opengis/model` for feature, featureType and filter
+* gt-opengis :doc:`../opengis/filter` model
+* gt-cql :doc:`../cql/index`
+* gt-xml :doc:`../xml/index`
+* http://docs.geoserver.org/stable/en/user/filter/function_reference.html
 
 You will find the use of Filter in an number of other locations:
 
 * it is used as part of a Style when we need to select what is drawn on the screen
 * Part of our FeatureType to express any special constraints on data values (such as the length of a String)
 
-Create
-^^^^^^
+Create Filter
+^^^^^^^^^^^^^
 
 Using CQL
 '''''''''
@@ -82,8 +83,8 @@ If you look in the advanced guide you can find out about **PropertyAccessors** w
 You can teach GeoTools how to work with your domain objects by implementing a custom Property Accessor. Using this facility GeoTools
 users have used filters with Java Beans, Maps and Collections and featureTypes.
 
-Writing out XML
-^^^^^^^^^^^^^^^
+Writing XML
+'''''''''''
 
 We have a traditional "Transformer" for quickly writing out an xml fragment for a filter::
   
@@ -99,71 +100,6 @@ You can also **gt-xml** and its **OGCConfiguration** for encoding a filter::
   
   //encode
   encoder.encode( filter, org.geotools.filter.v1_0.OGC.FILTER, outputStream );
-
-Filters
-^^^^^^^
-
-There is a small utility class **Filters** that packages up some common Filter operations.
-
-* Filters.accept(Filter, FilterVisitor)
-  
-  Used to adapt a GeoTools 2.2 FilterVisitor to what we use today. The major additions
-  are allowing for Filter.INCLUDES and Filter.EXCLUDES as "visitable" targets.
-
-* Filters.and(FilterFactory, Filter, Filter)
-* Filters.or(FilterFactory, Filter, Filter)
-  
-  Used to update GeoTools 2.2 code where Filter was mutable.
-
-* asDouble(Expression)
-* asInt(Expression)
-* asString(Expression)
-* asType(Expression, Class<T>)
-* gets(String, Class)
-* number(Object)
-* puts(Color)
-* puts(double)
-* puts(Object)
-  
-  Helper methods for those implementing Filter, these have been
-  replaced with the much more powerful **Converters** class.::
-    
-    // before
-    text = Filters.puts( Color.BLACK );
-    // after
-    text = Converters.convert( Color.BLACK, String.class );
-  
-* Filters.getFilterType(Filter)
-  
-  Assist GeoTools 2.2 code where FeatureType constants were used rather than instanceof checks.::
-    
-    // before
-    switch( Filters.getFilterType( filter ) ){
-    
-    FilterType.GEOMETRY_BBOX:
-      ...
-    }
-    // after
-    if( filter instanceof BBOX ){
-      ..
-    }
-
-* Filters.duplicate( filter )
-  
-  Can be used to perform a deep copy of a Filter::
-    
-    Filters utility = Filters();
-    Filter copy = filters.duplicate( filter );
-
-  Internally this method uses DuplicatingFilterVisitor::
-     
-     DuplicatingFilterVisitor duplicate = new DuplicatingFilterVisitor();
-     Filter copy = (Filter) filter.accept( duplicate, null );
-
-Filter Examples
-^^^^^^^^^^^^^^^
-
-There are many ways to use a filter, here are some examples from the mailing list.
 
 Handling Selection
 ''''''''''''''''''
@@ -332,23 +268,84 @@ Q: What did I click on?
     
     This technique also benefits from adding a BBox check in front.
 
-Join FeatureCollection
-''''''''''''''''''''''
+Expression
+^^^^^^^^^^
 
-You can go through one collection, and use each feature as a starting point for making
-a query resulting in a "Join".
+We can go through the same steps to create an expression.
 
-In the following example we have:
+* CQL
+  
+  Used for human readable code examples, "Common Query Language" parser is provided by **gt-cql** jar.::
+  
+    Expression filter = CQL.toExpression("attName");
 
-* outer:  **while** loop for each polygon
-* inner: **FeatureVisitor** looping through each point
-
-Thanks to Aaron Parks for sending us this example of using the bounding box of a polygon to quickly isolate interesting features; which can then be checked one by one for "intersects" (ie the features touch or overlap our polygon).
+* FilterFactory
+  
+  You have a choice of which filter factory to use:
+  
+  * **FilterFactory** directly create a filter - according to the
+      limitations of the standard standard.
+      
+      Use this if you are making a request of an external Web Feature Server
+      and do not want to accidentally step out of bounds.
+  
+  * **FilterFactory2** directly create a filter.
     
-    .. literalinclude:: /../src/main/java/org/geotools/main/FilterExamples.java
-      :language: java
-      :start-after: // polygonInteraction start
-      :end-before: // polygonInteraction end
+    Has some additional methods for working with JTS Geometry.
+  
+  Here is an example::
+    
+    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2( GeoTools.getDefaultHints );
+    
+    Expression propertyAccess = ff.property( "THE_GEOM");
+    Expression literal = ff.literal( geometry );
+    Expression math = ff.add( ff.literal(1), ff.literal(2) );
+    Expression math = ff.add( ff.literal(1), ff.literal(2) );
+    Expression function = function( "length', ff.property("CITY_NAME") );
+
+Function
+^^^^^^^^
+
+Function is a little special as it is your chance to add new functions to the system.
+
+This is done in two parts:
+
+* Function - implementation of Function
+* FunctionName - description of Function including name and argument names advertising that a Function is available
+* FunctionFactory - used to construct a Function on request by FilterFactory.function( name, expression ... )
+
+If you are interested in implementing a function and registering it with GeoTools
+is the example used to explain the GeoTools plugin system.
+
+FunctionFinder
+^^^^^^^^^^^^^^
+
+You can directly create a Function with a FunctionFinder; this gives you access to the actual implementing
+class; which occasionally offer more options that are accessible through filter factory.
+
+* FunctionFinder(Hints)
+* FunctionFinder.findFunction(String)
+* FunctionFinder.findFunction(String, List<Expression> )
+* FunctionFinder.findFunction(String, List<Expression, Literal)
+
+As an example FunctionFinder gives you a way to lookup a Function, with a "safe" fallback value provided by a Literal
+in the event the function could not be found.::
+  
+  FunctionFinder finder = new FunctionFinder( null );
+  
+  // default answer() of 42
+  Function function = finder.findFunction( "answer", Collections.EMPTY_LIST, ff.literal( 42 ) );
+
+The above class uses CommonFactoryFinder to do the lookup; here an example listing all the functions:
+
+.. literalinclude:: /../src/main/java/org/geotools/main/FilterExamples.java
+   :language: java
+   :start-after: // functionList start
+   :end-before: // functionList end
+
+And the available functions at the time of writing:
+
+.. literalinclude:: /artifacts/function_list
 
 FilterVisitor
 ^^^^^^^^^^^^^
@@ -477,3 +474,64 @@ As static filter contains no "propertyName" elements; and will evaluate to the s
          Color color = expression.evaulate( null, Color.class );
          ...
     }
+
+
+Filters
+^^^^^^^
+
+There is a small utility class **Filters** that packages up some common Filter operations.
+
+* Filters.accept(Filter, FilterVisitor)
+  
+  Used to adapt a GeoTools 2.2 FilterVisitor to what we use today. The major additions
+  are allowing for Filter.INCLUDES and Filter.EXCLUDES as "visitable" targets.
+
+* Filters.and(FilterFactory, Filter, Filter)
+* Filters.or(FilterFactory, Filter, Filter)
+  
+  Used to update GeoTools 2.2 code where Filter was mutable.
+
+* asDouble(Expression)
+* asInt(Expression)
+* asString(Expression)
+* asType(Expression, Class<T>)
+* gets(String, Class)
+* number(Object)
+* puts(Color)
+* puts(double)
+* puts(Object)
+  
+  Helper methods for those implementing Filter, these have been
+  replaced with the much more powerful **Converters** class.::
+    
+    // before
+    text = Filters.puts( Color.BLACK );
+    // after
+    text = Converters.convert( Color.BLACK, String.class );
+  
+* Filters.getFilterType(Filter)
+  
+  Assist GeoTools 2.2 code where FeatureType constants were used rather than instanceof checks.::
+    
+    // before
+    switch( Filters.getFilterType( filter ) ){
+    
+    FilterType.GEOMETRY_BBOX:
+      ...
+    }
+    // after
+    if( filter instanceof BBOX ){
+      ..
+    }
+
+* Filters.duplicate( filter )
+  
+  Can be used to perform a deep copy of a Filter::
+    
+    Filters utility = Filters();
+    Filter copy = filters.duplicate( filter );
+
+  Internally this method uses DuplicatingFilterVisitor::
+     
+     DuplicatingFilterVisitor duplicate = new DuplicatingFilterVisitor();
+     Filter copy = (Filter) filter.accept( duplicate, null );

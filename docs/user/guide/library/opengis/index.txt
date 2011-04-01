@@ -7,8 +7,10 @@ Interfaces for GeoSpatial concepts, often defined by the OGC or ISO standards bo
    :maxdepth: 1
 
    model
-   filter
+   type
    feature
+   simple
+   filter
    coverage
    geometry
    cs

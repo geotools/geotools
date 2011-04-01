@@ -32,10 +32,7 @@ import com.vividsolutions.jts.geom.Geometry;
 /**
  * This class shows how to "join" two feature sources.
  * 
- * @author Jody
- *
- *
- * @source $URL$
+ * @author Gabriella Turk
  */
 public class JoinExample {
 
@@ -77,7 +74,7 @@ public class JoinExample {
         joinExample( shapes, shapes2);
         System.exit(0);
     }
-
+    // joinExample start
     private static void joinExample( SimpleFeatureSource shapes, SimpleFeatureSource shapes2 ) throws Exception {
         SimpleFeatureType schema = shapes.getSchema();
         String typeName = schema.getTypeName();
@@ -120,5 +117,5 @@ public class JoinExample {
         }
         System.out.println("At most "+max+" "+typeName2+" features in a single "+typeName+" feature");
     }
-
+    // joinExample end
 }

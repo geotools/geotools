@@ -17,6 +17,8 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureCollections;
+import org.geotools.filter.FunctionFactory;
+import org.geotools.filter.FunctionFinder;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.geometry.DirectPosition2D;
@@ -33,6 +35,8 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.capability.FunctionName;
+import org.opengis.filter.expression.Expression;
 import org.opengis.filter.identity.FeatureId;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.geometry.DirectPosition;
@@ -324,5 +328,52 @@ private void polygonInteraction() {
         it.close();
     }
 }
+
 // polygonInteraction end
+
+private void expressionExamples() {
+    Geometry geometry = null;
+    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    // expressionExamples start
+    Expression propertyAccess = ff.property("THE_GEOM");
+    Expression literal = ff.literal(geometry);
+    Expression math = ff.add(ff.literal(1), ff.literal(2));
+    Expression function = ff.function("length", ff.property("CITY_NAME"));
+    // expressionExamples end
+}
+
+private static void functionList() {
+    // functionList start
+    Set<FunctionFactory> functionFactories = CommonFactoryFinder.getFunctionFactories(null);
+    
+    for (FunctionFactory factory : functionFactories) {
+        System.out.println( factory.getClass().getName() );
+        for (FunctionName functionName : factory.getFunctionNames()) {
+            System.out.print("    ");
+            System.out.print(functionName.getName());
+            System.out.print("(");
+            for (int i = 0; i < functionName.getArgumentCount(); i++) {
+                if (i > 0) {
+                    System.out.print(", ");
+                }
+                String arg = null;
+                if (functionName.getArgumentNames() != null
+                        && i < functionName.getArgumentNames().size()) {
+                    arg = functionName.getArgumentNames().get(i);
+                }
+                if (arg == null) {
+                    arg = "arg" + (i + 1); // arg1, arg2, etc...
+                }
+                System.out.print(arg);
+            }
+            System.out.println(")");
+        }
+    }
+    // functionList end
+}
+
+public static void main(String args[]) {
+    functionList();
+}
+
 }

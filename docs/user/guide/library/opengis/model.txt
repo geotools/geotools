@@ -1,5 +1,5 @@
-Feature Model
--------------
+Model
+-----
 
 GeoTools provides a clear separation between:
 
@@ -9,153 +9,21 @@ GeoTools provides a clear separation between:
 
 References:
 
-* `org.opengis.feature <http://docs.geotools.org/stable/javadocs/org/opengis/feature/package-summary.html>`_
-* `org.opengis.feature.type <http://docs.geotools.org/stable/javadocs/org/opengis/feature/type/package-summary.html>`_
-* `org.opengis.feature.simple <http://docs.geotools.org/stable/javadocs/org/opengis/feature/simple/package-summary.html>`_
-* ISO19107
-* OGC General Feature Model
-* `OGC Reference Model <http://portal.opengeospatial.org/files/?artifact_id=890>`_
-* `OGC Features <http://portal.opengeospatial.org/files/?artifact_id=890>`_
-* Geographic Markup Language
-
-Feature
-^^^^^^^
-
-The Feature class is used to represents "something that can be drawn on a map". 
-
-Information is stored in a data structure composed of Feature, Attributes, and Associations.
-
-.. image:: /images/feature_data_model.PNG
-
-To directly create a Feature you can make use of **FeatureFactory**, or use a builder which makes things a little easier (as it fills in defaults)::
-
-   //create the builder
-   SimpleFeatureBuilder builder = new SimpleFeatureBuilder(featureType);
-   
-   //add the values
-   builder.add( "Canada" );
-   builder.add( 1 );
-   builder.add( 20.5 );
-   builder.add( new Point( -124, 52 ) );
-
-   //build the feature with provided ID
-   SimpleFeature feature = builder.buildFeature( "fid.1" );
-  
-
-Filter
-^^^^^^
-
-Use **Filter** to select features that are of interest and the **Expression** to drill in and access information.
-
-
-.. image:: /images/filter_expression.PNG
-
-Although Expression forms a closed set of classes, you can extend the system with your own functions.
-
-Here is an example of using filter and expression together::
-   
-   final FilterFactory ff = CommonFactoryFinder.getFilterFactory( GeoTools.getDefaultHints );
-   Filter filter = ff.propertyLessThan( ff.property( "AGE"), ff.literal( 12 ) );
-   
-   SimpleFeatureCollection features = featureSource.getFeatures( filter );
-   features.accepts( new FeatureVisitor<SimpleFeature>() ){
-      public void visit( SimpleFeature feature ){
-          Expression expression = ff.property( "NAME" );
-          String name = expression.evaulate( feature, String.class );
-
-          System.out.println( feature.getID() + " is named: "+ name );
-      }
-   }, null );
-
-There are a couple other ways to access feature content:
-
-* You can construct a filter or expression using the common query language
-* You can construct a filter or expression from XML
-* You can access the feature data structure directly
-
-Here is the same example using common query language and direct feature access::
-
-   Filter filter = CQL.toFilter( "AGE < 12 " );
-   
-   SimpleFeatureCollection features = featureSource.getFeatures( filter );
-   features.accepts( new FeatureVisitor<SimpleFeature>() ){
-      public void visit( SimpleFeature feature ){
-          String name = feature.getAttribute("NAME");
-
-          System.out.println( feature.getID() + " is named: "+ name );
-      }
-   }, null );
-
-FeatureType
-^^^^^^^^^^^
-
-**FeatureType** provides metadata model describing the represented information.  This is considered "metadata" as it is a description of the information stored in the features.
-
-FeatureType is used to:
-
-* When accessing information as a description of the available attribute names when making a Expression
-* When creating a new feature you can check to ensure your values are valid
-
-The type is represented by PropertyType, AttributeType, GeometryType, ComplexType, FeatureType.
-
-
-.. image:: /images/feature_type_model.PNG
-
-This forms a "dynamic type system" indicating we can describe new types of information at runtime. To make this a complete type system we have support for references (with AssociationType) and methods (with OperationType) although use of these faciities is considered experimental at present.
-
-As shown above a ComplexType contains a list of **properties** each represented as a PropertyDescriptor with a distinct name and property type.
-
-
-
-.. image:: /images/feature_type_model_descriptors.PNG
-
-Simple Feature
-^^^^^^^^^^^^^^
-
-Most GIS data does not need a full dynamic type system with associations, operations, multiple values. With this in mind we have a "simple" extension of Feature and FeatureType providing to represent this kind of information.
-
-SimpleFeature may be used when:
-
-* a feature's properties are limited to mandatory GeometryAttribute and Attribute (no complex attributes or multiplicity allowed).
-* Attributes values may be null; but each attribute must be represented
-* order of attribute values is considered significant allowing values to be looked up by attribute name, or by the order they are listed
-* These restrictions match the abilities of a simple shapefile or database table
-
-
-.. image:: /images/feature_simple.PNG
-
-Here is an example of constructing a SimpleFeatureType::
-   
-   SimpleFeatureTypeBuilder b = new SimpleFeatureTypeBuilder();
-   
-   //set the name
-   b.setName( "Flag" );
-   
-   //add some properties
-   b.add( "name", String.class );
-   b.add( "classification", Integer.class );
-   b.add( "height", Double.class );
-   
-   //add a geometry property
-   b.setCRS( DefaultGeographicCRS.WSG84 );
-   b.add( "location", Point.class );
-   
-   //build the type
-   SimpleFeatureType type = b.buildFeatureType();
-
-
-Discussion
-^^^^^^^^^^
+* :doc:`type`
+* :doc:`feature`
+* :doc:`simple`
+* :doc:`../main/feature` gt-main feature code examples
+* :doc:`../main/filter` gt-main filter code examples
 
 Comparison to Java:
 
-* The data structure Feature is used to hold information. Each feature "belongs to" a FeatureType which is used to describe valid contents. This is a dynamic type system because FeatureType is a data structure we can define at runtime.
+* The data structure Feature is used to hold information. Each Feature "belongs to" a FeatureType which is used to describe valid contents. This is a dynamic type system because FeatureType is a data structure we can define at runtime.
 * The data structure Object is used to hold information. Each Object "belongs to" a Class which is used to describe valid contents. This is a static type system because Class is a data structure we need to compile before the application is started.
 
 ========================= ============================================= =======================================
 Java Class System         GeoTools Feature Model                        Java Beans System
 ========================= ============================================= =======================================
-static type syste         dynamic type system                           dynamic type system
+static type system        dynamic type system                           dynamic type system
 Object                    SimpleFeature                                 Object
 (reflection)              Attribute                                     (reflection)
 (reflection)              GeometryAttribute                             (reflection)

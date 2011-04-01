@@ -11,7 +11,7 @@ Provides default implementations for the remaining gt-api and gt-opengis interfa
    data
    filter
    feature
-   function
+   collection
    shape
    geometry
-   registery
+   registry

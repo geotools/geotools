@@ -1,7 +1,55 @@
-Filter Guide
-------------
+Filter
+------
 
 The filter api defines the first step of a Query, it is used when requesting data from a DataStore or Catalog. The Filter specification itself is maintained by the OGC and is used in a number of their specifications (Catalog, WFS, and so on).
+
+In practice **Filter** is used to select features that are of interest and the **Expression** to drill in and access information.
+Although this forms a closed set of classes (for interoperability), you can extend the system with your own functions.
+
+References:
+
+* :doc:`../main/filter` gt-main code examples
+* :doc:`../main/filter` gt-main filter code examples
+
+Example
+^^^^^^^
+
+Here is an example of using filter and expression together::
+   
+   final FilterFactory ff = CommonFactoryFinder.getFilterFactory( GeoTools.getDefaultHints );
+   Filter filter = ff.propertyLessThan( ff.property( "AGE"), ff.literal( 12 ) );
+   
+   SimpleFeatureCollection features = featureSource.getFeatures( filter );
+   features.accepts( new FeatureVisitor<SimpleFeature>() ){
+      public void visit( SimpleFeature feature ){
+          Expression expression = ff.property( "NAME" );
+          String name = expression.evaulate( feature, String.class );
+
+          System.out.println( feature.getID() + " is named: "+ name );
+      }
+   }, null );
+
+There are a couple other ways to access feature content:
+
+* You can construct a filter or expression using the common query language
+* You can construct a filter or expression from XML
+* You can access the feature data structure directly
+
+Here is the same example using common query language and direct feature access::
+
+   Filter filter = CQL.toFilter( "AGE < 12 " );
+   
+   SimpleFeatureCollection features = featureSource.getFeatures( filter );
+   features.accepts( new FeatureVisitor<SimpleFeature>() ){
+      public void visit( SimpleFeature feature ){
+          String name = feature.getAttribute("NAME");
+
+          System.out.println( feature.getID() + " is named: "+ name );
+      }
+   }, null );
+
+Filter
+^^^^^^
 
 The filter interface itself is designed to test set membership. That sounds dry - but it is accurate. A filter is used to test features one at a time to determine what you want returned to you. Being a spatial standard the tests are often spatial in nature (like intersects, bounding box).
 
@@ -17,8 +65,8 @@ You can think of Filter as similar to an SQL WHERE clause.
   
   All hope is not lost - you can define your own custom Functions.
 
-Creating using CQL
-^^^^^^^^^^^^^^^^^^
+CQL
+'''
 
 The common query language is a standard that appeared as part of the OGC Catalog specification. It defines an text syntax similar to SQL for defining Filters.::
    
@@ -31,16 +79,16 @@ In addition to the base standard the GeoTools community has allowed for a couple
 
 In this case the idea of comparing an area expression is an extension as the base CQL specification only allows property values to be compared.
 
-Creating using a FilterFactory
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FilterFactory
+'''''''''''''
 
 By using the FilterFactory you can create objects by hand. The FilterFactory interface is limited to strict specification compliance.::
    
    FilterFactory ff = CommonFactoryFinder.getFilterFactory( GeoTools.getDefaultHints );
    Filter filter = ff.propertyLessThan( ff.property( "AGE"), ff.literal( 12 ) );
 
-Creating using a FilterFactory2
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FilterFactory2
+''''''''''''''
 
 In the real world we need to go beyond the specification. FilterFactory2 will let you work with JTS Geometry instances (the specification is only defined to work with ISO Geometry).::
    
@@ -49,8 +97,8 @@ In the real world we need to go beyond the specification. FilterFactory2 will le
 
 FilterFactory2 also let's you define your filters in a bit more of a free form manner. In the specification all operations must have the PropertyName expression first.
 
-Creating using XML
-^^^^^^^^^^^^^^^^^^
+XML
+'''
 
 Remember that Filter is a standard? Well it actually is an XML standard with documents that look like this::
    
@@ -97,12 +145,12 @@ To parse a DOM fragement::
    }
    System.out.println( "got:"+filter );
 
-Using a Filter
-^^^^^^^^^^^^^^
+Using Filter
+''''''''''''
 
 The core filter abstractions are here. This set of interfaces is closed (you cannot make a new filter class and expect it to work).
 
-
+￼
 .. image:: /images/filter_model.PNG
 
 Here is an example of each that you can cut and paste into your own code:
@@ -113,7 +161,7 @@ Here is an example of each that you can cut and paste into your own code:
       :end-before: // end ff example
 
 Spatial filters are also available.
-
+￼
 .. image:: /images/filter_spatial.PNG
 
 The most common thing todo is use a Filter to evaluate a Feature to see if it is in the set or out of the set.::
@@ -158,7 +206,7 @@ Many of the filters mentioned above are presented as a comparison between two (o
 
 The core expression abstractions are here - this set is open in that you can define new functions.
 
-
+￼
 .. image:: /images/filter_expression.PNG
 
 You evaluate an expression against a feature::
@@ -310,4 +358,4 @@ Here is a quick code example showing the use of a visitor to traverse the data s
   
   System.out.println("Property Names found "+visitor.found );
 
-For more examples please see the Filter Visitor Examples page.
+For more examples please see gt-main where several visitors are defined for your use.

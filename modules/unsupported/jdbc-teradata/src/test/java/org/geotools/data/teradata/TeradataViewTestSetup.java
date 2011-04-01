@@ -25,7 +25,7 @@ public class TeradataViewTestSetup extends JDBCViewTestSetup {
 
 
     protected void createLakesView() throws Exception {
-        run("create view \"lakesview\" as select * from \"lakes\"");
+        run("create view \"lakesview\" ( \"fid\", id, \"geom\",\"name\" )  as select * from \"lakes\"");
         // disabled insert to make sure views work even without geom column declarations
         run("INSERT INTO SYSSPATIAL.GEOMETRY_COLUMNS (F_TABLE_CATALOG, F_TABLE_SCHEMA, F_TABLE_NAME, F_GEOMETRY_COLUMN, COORD_DIMENSION, SRID, GEOM_TYPE) VALUES ('', '" + fixture.getProperty("schema") + "', 'lakesview', 'geom', 2, 1619, 'POLYGON')");
     }

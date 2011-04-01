@@ -90,7 +90,10 @@ public class H2Dialect extends SQLDialect {
         if ("_GEODB".equals(tableName) || tableName.endsWith("_HATBOX")) {
             return false;
         }
-        
+        if ("GEOMETRY_COLUMNS".equalsIgnoreCase(tableName)) {
+            return false;
+        }
+
         return true;
     }
     

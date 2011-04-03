@@ -1,0 +1,148 @@
+Shapefile Plugin
+----------------
+
+Allows the GeoTools library to work with ESRI shapefiles.
+
+References:
+
+* http://en.wikipedia.org/wiki/Shapefile
+* http://en.wikipedia.org/wiki/DBase
+
+Connection Parameter
+^^^^^^^^^^^^^^^^^^^^
+
+"url"	(required)
+  A URL of the file ending in "shp"
+
+"namespace" (optional)
+  optional	 URI to use for the FeatureType
+
+"create spatial index" (optional)
+  Set to Boolean.TRUE to create an index
+
+"charset" (optional)
+  Chartset used to decode strings in the DBF file
+
+This information is also in the javadocs.
+
+Shapefile
+^^^^^^^^^
+
+Access
+''''''
+
+Working with an Existing Shapefile::
+  
+  File file = new File("example.shp");
+  Map map = new HashMap();
+  map.put( "url", file.toURL() );
+  DataStore dataStore = DataStoreFinder.getDataStore( Map map );
+  String typeName = dataStore.getTypeNames()[0];
+  
+  FeatureSource source = dataStore( typeName );
+  
+  Filter filter = CQL.toFilter("BBOX(THE_GEOM, 10,20,30,40)");
+  FeatureCollection collection = source.getFeatures( filter );
+  FeatureIterator iterator = collection.iterator();
+  try {
+      while( iterator.hasNext() ){
+           Feature feature = (Feature) iterator.next();
+           ...
+      }
+  }
+  finally {
+     collection.close( iterator );
+  }
+
+Creating
+''''''''
+
+Here is a quick example::
+  
+  FileDataStoreFactorySpi factory = new IndexedShapefileDataStoreFactory();
+  
+  File file = new File("my.shp");
+  Map map = Collections.singletonMap( "url", file.toURL() );
+  
+  DataStore myData = factory.createNewDataStore( map );
+  FeatureType featureType = DataUtilities.createType( "my", "geom:Point,name:String,age:Integer,description:String" );
+  myData.createSchema( featureType );
+
+The featureType created above was just done quickly, in your application you may wish to use a DefaultFeatureTypeBuilder.
+
+Supports:
+
+* attribute names must be 15 characters or you will get a warning:
+* a single geometry column (stored in the SHP file)
+  * LineString, MultiLineString - Files occasionally contain invalid lines with one point
+  * Polygon, MultiPolygon 
+  * Point, MultiPoint*
+
+* "simple" attributes (stored in the DBF file)
+  
+  * String  max length of 255
+  * Integer
+  * Double 
+  * Boolean
+  * Date - TimeStamp interpretation that is both date and time
+	 
+Limitations:
+
+* only work with MultiLineStirngs, MultiPolygon or MultiPoint. GIS data often travels
+  in herds - so being restricted to the plural form is not a great limitation.
+* only work with fixed length strings (you will find the FeatureType
+  has a restriction to help you check this, and warnings will be produced if
+  your content ends up trimmed).
+* Only supports a single GeometryAttribute
+* Shapefile does not support plain Geometry (ie mixed LineString, Point and Polygon all in the same file).
+
+Force Projection
+''''''''''''''''
+
+If you run the above code, and then load the result in a GIS application like ArcView it will complain that the projection is unknown.
+
+You can "force" the projection using the following code::
+  
+  CoordinateReferenceSystem crs = CRS.decode("EPSG:4326");
+  shape.forceCoordianteReferneceSystem( crs );
+
+This is only a problem if you did not specify the CoordinateReferenceSystem as part of your FeatureType's GeometryAttribute, or if a prj file has not been provided.
+
+Character Sets
+''''''''''''''
+
+If you are working with Acerbic, Chinese or Korean character sets you will need to make use of the "charset" connection parameter when setting up your shapefile. The codes used here are the same as documented/defined for the Java Charset class. Indeed you can provide a Chartset or if you provide a String it will be converted to a Charset.
+
+Thanks to the University of Soul for providing and testing this functionality.
+
+GeoTools Users Guide : DbaseFileReader
+This page last changed on Apr 23, 2010 by jive.
+A shapefile is actually comprised of a core "shp" file and a number of "sidecar" files. One of the sidecar files is a "dbf" file used to record attribtues. This is the original DBF file format provided by one of the origional grandfather databases "DBase".
+
+Reading DBF
+^^^^^^^^^^^
+
+The GeoTools library includes just enough DBF file format support to get out of bed in the morning; indeed you should considered these facilities an internal detail to our shapefile reading code.
+
+Thanks to Larry Reeder form the user list for suppling the following code example::
+  
+  // Here's an example that should work (warning, I haven't
+  // tried to compile this).  The example assumes the first field has a
+  // character data type and the second has a numeric data type:
+  
+  FileInputStream fis = new FileInputStream( "yourfile.dbf" );
+  DbaseFileReader dbfReader =  new DbaseFileReader(fis.getChannel(),
+  false,  Charset.forName("ISO-8859-1"));
+  
+  while ( dbfReader.hasNext() ){
+     final Object[] fields = dbfReader.readEntry();
+     
+     String field1 = (String) fields[0];
+     Integer field2 = (Integer) fields[1];
+     
+     System.out.println("DBF field 1 value is: " + field1);
+     System.out.println("DBF field 2 value is: " + field2);
+  }
+  
+  dbfReader.close();
+  fis.close();

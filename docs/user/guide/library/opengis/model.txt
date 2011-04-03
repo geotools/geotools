@@ -12,8 +12,8 @@ References:
 * :doc:`type`
 * :doc:`feature`
 * :doc:`simple`
-* :doc:`../main/feature` gt-main feature code examples
-* :doc:`../main/filter` gt-main filter code examples
+* :doc:`gt-main feature <../main/feature>` code examples
+* :doc:`gt-main filter <../main/filter>` code examples
 
 Comparison to Java:
 

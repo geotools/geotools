@@ -150,7 +150,7 @@ Using Filter
 
 The core filter abstractions are here. This set of interfaces is closed (you cannot make a new filter class and expect it to work).
 
-￼
+
 .. image:: /images/filter_model.PNG
 
 Here is an example of each that you can cut and paste into your own code:
@@ -161,7 +161,7 @@ Here is an example of each that you can cut and paste into your own code:
       :end-before: // end ff example
 
 Spatial filters are also available.
-￼
+
 .. image:: /images/filter_spatial.PNG
 
 The most common thing todo is use a Filter to evaluate a Feature to see if it is in the set or out of the set.::
@@ -206,7 +206,7 @@ Many of the filters mentioned above are presented as a comparison between two (o
 
 The core expression abstractions are here - this set is open in that you can define new functions.
 
-￼
+
 .. image:: /images/filter_expression.PNG
 
 You evaluate an expression against a feature::

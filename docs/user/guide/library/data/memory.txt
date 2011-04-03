@@ -1,0 +1,7 @@
+MemoryDataStore
+---------------
+
+We do have one MemoryDataStore suitable for storing temporary information in memory prior to saving it out to disk.
+Please be advised that it is set up to accurately mirror information being located on disk and is not performant in
+any way.
+

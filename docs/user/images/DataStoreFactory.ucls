@@ -1,0 +1,52 @@
+<class-diagram version="1.0.1" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
+  realizations="true" associations="true" dependencies="false" nesting-relationships="true">  
+  <interface id="1" corner="BOTTOM_RIGHT" language="java" name="org.geotools.data.DataStoreFactorySpi" project="gt-api" 
+    file="/gt-api/src/main/java/org/geotools/data/DataStoreFactorySpi.java" binary="false">    
+    <position x="306" y="299" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </interface>  
+  <class id="2" corner="BOTTOM_RIGHT" language="java" name="org.geotools.data.DataStoreFinder" project="gt-main" 
+    file="/gt-main/src/main/java/org/geotools/data/DataStoreFinder.java" binary="false">    
+    <position x="702" y="300" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <interface id="3" corner="BOTTOM_RIGHT" language="java" name="org.geotools.data.DataAccessFactory" project="gt-api" 
+    file="/gt-api/src/main/java/org/geotools/data/DataAccessFactory.java" binary="false">    
+    <position x="309" y="172" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </interface>  
+  <class id="4" corner="BOTTOM_RIGHT" language="java" name="org.geotools.data.DataAccessFinder" project="gt-main" 
+    file="/gt-main/src/main/java/org/geotools/data/DataAccessFinder.java" binary="false">    
+    <position x="701" y="168" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <dependency>    
+    <end type="SOURCE" nodeId="2"/>    
+    <end type="TARGET" nodeId="1"/>  
+  </dependency>  
+  <dependency>    
+    <end type="SOURCE" nodeId="4"/>    
+    <end type="TARGET" nodeId="3"/>  
+  </dependency>  
+  <generalization>    
+    <end type="SOURCE" nodeId="1"/>    
+    <end type="TARGET" nodeId="3"/>  
+  </generalization>  
+  <classifier-display autosize="true" package="false" initial-value="true" signature="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true"/>    
+    <operations public="true" package="true" protected="true" private="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

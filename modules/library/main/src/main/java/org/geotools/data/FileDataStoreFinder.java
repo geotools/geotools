@@ -108,6 +108,12 @@ public class FileDataStoreFinder {
         return null;
     }
     
+    /**
+     * Used to look up a FileDataStoreFactorySpi by extension.
+     * 
+     * @param extension Extension such as "shp"
+     * @return FileDataStoreFactorySpi
+     */
     public static FileDataStoreFactorySpi getDataStoreFactory(String extension) {
         String extension2 = null;
         if( !extension.startsWith(".")){

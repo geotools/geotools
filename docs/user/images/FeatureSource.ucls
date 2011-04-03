@@ -1,0 +1,92 @@
+<class-diagram version="1.0.1" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
+  realizations="true" associations="true" dependencies="false" nesting-relationships="true">  
+  <interface id="2" corner="BOTTOM_RIGHT" language="java" name="org.geotools.data.FeatureSource" project="gt-api" 
+    file="/gt-api/src/main/java/org/geotools/data/FeatureSource.java" binary="false">    
+    <position x="201" y="163" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="3" corner="BOTTOM_RIGHT" language="java" name="org.geotools.data.DataAccess" project="gt-api" 
+    file="/gt-api/src/main/java/org/geotools/data/DataAccess.java" binary="false">    
+    <position x="13" y="163" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="4" corner="BOTTOM_RIGHT" language="java" name="org.geotools.data.FeatureStore" project="gt-api" 
+    file="/gt-api/src/main/java/org/geotools/data/FeatureStore.java" binary="false">    
+    <position x="201" y="248" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="5" corner="BOTTOM_RIGHT" language="java" name="org.geotools.data.FeatureLocking" project="gt-api" 
+    file="/gt-api/src/main/java/org/geotools/data/FeatureLocking.java" binary="false">    
+    <position x="200" y="330" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="6" corner="BOTTOM_RIGHT" language="java" name="org.geotools.data.Transaction" project="gt-api" 
+    file="/gt-api/src/main/java/org/geotools/data/Transaction.java" binary="false">    
+    <position x="419" y="249" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <class id="7" corner="BOTTOM_RIGHT" language="java" name="org.geotools.data.FeatureLock" project="gt-api" 
+    file="/gt-api/src/main/java/org/geotools/data/FeatureLock.java" binary="false">    
+    <position x="418" y="329" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="8" corner="BOTTOM_RIGHT" language="java" name="org.geotools.data.Query" project="gt-api" 
+    file="/gt-api/src/main/java/org/geotools/data/Query.java" binary="false">    
+    <position x="411" y="162" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <dependency>    
+    <end type="SOURCE" nodeId="2"/>    
+    <end type="TARGET" nodeId="8"/>  
+  </dependency>  
+  <dependency>    
+    <end type="SOURCE" nodeId="2"/>    
+    <end type="TARGET" nodeId="3"/>  
+  </dependency>  
+  <dependency>    
+    <end type="SOURCE" nodeId="4"/>    
+    <end type="TARGET" nodeId="6"/>  
+  </dependency>  
+  <dependency>    
+    <end type="SOURCE" nodeId="5"/>    
+    <end type="TARGET" nodeId="7"/>  
+  </dependency>  
+  <generalization>    
+    <end type="SOURCE" nodeId="5"/>    
+    <end type="TARGET" nodeId="4"/>  
+  </generalization>  
+  <dependency>    
+    <end type="SOURCE" nodeId="3"/>    
+    <end type="TARGET" nodeId="2"/>  
+  </dependency>  
+  <generalization>    
+    <end type="SOURCE" nodeId="4"/>    
+    <end type="TARGET" nodeId="2"/>  
+  </generalization>  
+  <classifier-display autosize="true" package="false" initial-value="false" signature="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true"/>    
+    <operations public="true" package="true" protected="true" private="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

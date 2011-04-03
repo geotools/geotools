@@ -46,6 +46,7 @@ import org.geotools.data.Transaction;
 import org.geotools.data.TransactionStateDiff;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.data.simple.SimpleFeatureLocking;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.factory.CommonFactoryFinder;
@@ -1187,8 +1188,8 @@ public class MemoryDataStoreTest extends DataTestCase {
      * Test for void lockFeatures()
      */
     public void testLockFeatures() throws IOException {
-        FeatureLock lock = FeatureLockFactory.generate("test", 3600);
-        FeatureLocking<SimpleFeatureType, SimpleFeature> road = (FeatureLocking<SimpleFeatureType, SimpleFeature>) data.getFeatureSource("road");
+        FeatureLock lock = new FeatureLock("test", 3600);
+        SimpleFeatureLocking road = (SimpleFeatureLocking) data.getFeatureSource("road");
         road.setFeatureLock(lock);
 
         assertFalse(isLocked("road", "road.rd1"));
@@ -1196,7 +1197,7 @@ public class MemoryDataStoreTest extends DataTestCase {
         assertTrue(isLocked("road", "road.rd1"));
     }
     public void testUnLockFeatures() throws IOException {
-        FeatureLock lock = FeatureLockFactory.generate("test", 3600);
+        FeatureLock lock = new FeatureLock("test", 3600);
         FeatureLocking<SimpleFeatureType, SimpleFeature> road = (FeatureLocking<SimpleFeatureType, SimpleFeature>) data.getFeatureSource("road");
         road.setFeatureLock(lock);
         road.lockFeatures();
@@ -1217,8 +1218,8 @@ public class MemoryDataStoreTest extends DataTestCase {
         road.unLockFeatures();
     }
     public void testLockFeatureInteraction() throws IOException {
-        FeatureLock lockA = FeatureLockFactory.generate("LockA", 3600);
-        FeatureLock lockB = FeatureLockFactory.generate("LockB", 3600);
+        FeatureLock lockA = new FeatureLock("LockA", 3600);
+        FeatureLock lockB = new FeatureLock("LockB", 3600);
         Transaction t1 = new DefaultTransaction();
         Transaction t2 = new DefaultTransaction();
         FeatureLocking<SimpleFeatureType, SimpleFeature> road1 = (FeatureLocking<SimpleFeatureType, SimpleFeature>) data.getFeatureSource("road");
@@ -1265,7 +1266,7 @@ public class MemoryDataStoreTest extends DataTestCase {
         assertFalse(isLocked("road", "road.rd3"));
     }
     public void testGetFeatureLockingExpire() throws Exception {
-        FeatureLock lock = FeatureLockFactory.generate("Timed", 500);        
+        FeatureLock lock = new FeatureLock("Timed", 500);        
         FeatureLocking<SimpleFeatureType, SimpleFeature> road = (FeatureLocking<SimpleFeatureType, SimpleFeature>) data.getFeatureSource("road");
         road.setFeatureLock(lock);
         assertFalse(isLocked("road", "road.rd1"));

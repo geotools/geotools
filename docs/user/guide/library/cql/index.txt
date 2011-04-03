@@ -2,3 +2,6 @@ Common Query Language
 =====================
 
 Provides a human readable format for writing "filter" expressions for working with geospatial information.
+
+
+..image:: /images/gt-cql.png

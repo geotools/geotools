@@ -1,0 +1,64 @@
+<class-diagram version="1.0.1" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
+  realizations="true" associations="true" dependencies="false" nesting-relationships="true">  
+  <interface id="2" corner="BOTTOM_RIGHT" language="java" name="org.geotools.data.FeatureSource" project="gt-api" 
+    file="/gt-api/src/main/java/org/geotools/data/FeatureSource.java" binary="false">    
+    <position x="6" y="248" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="6" corner="BOTTOM_RIGHT" language="java" name="org.geotools.data.simple.SimpleFeatureSource" 
+    project="gt-api" file="/gt-api/src/main/java/org/geotools/data/simple/SimpleFeatureSource.java" binary="false">    
+    <position x="10" y="425" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="8" corner="BOTTOM_RIGHT" language="java" name="org.geotools.data.FeatureStore" project="gt-api" 
+    file="/gt-api/src/main/java/org/geotools/data/FeatureStore.java" binary="false">    
+    <position x="283" y="248" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </interface>  
+  <interface id="9" corner="BOTTOM_RIGHT" language="java" name="org.geotools.data.simple.SimpleFeatureStore" 
+    project="gt-api" file="/gt-api/src/main/java/org/geotools/data/simple/SimpleFeatureStore.java" binary="false">    
+    <position x="286" y="424" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </interface>  
+  <interface id="10" corner="BOTTOM_RIGHT" language="java" name="org.geotools.data.Transaction" project="gt-api" 
+    file="/gt-api/src/main/java/org/geotools/data/Transaction.java" binary="false">    
+    <position x="597" y="248" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </interface>  
+  <generalization>    
+    <end type="SOURCE" nodeId="9"/>    
+    <end type="TARGET" nodeId="8"/>  
+  </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="8"/>    
+    <end type="TARGET" nodeId="2"/>  
+  </generalization>  
+  <dependency>    
+    <end type="SOURCE" nodeId="8"/>    
+    <end type="TARGET" nodeId="10"/>  
+  </dependency>  
+  <generalization>    
+    <end type="SOURCE" nodeId="9"/>    
+    <end type="TARGET" nodeId="6"/>  
+  </generalization>  
+  <classifier-display autosize="true" package="false" initial-value="false" signature="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true"/>    
+    <operations public="true" package="true" protected="true" private="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

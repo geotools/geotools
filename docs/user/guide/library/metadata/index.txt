@@ -14,6 +14,17 @@ Metadata is used by GeoTools to describe GeoSpatial information and services. Th
    utilities
    text
 
+The gt-metadata module also pulls double duty as the first implementation module it is responsible for providing
+the facilities we use to wire the library together at runtime.
+
+.. image:: /images/gt-metadata.png
+
+The gt-metadata module is responsible for:
+
+* implementation of the metadata interfaces from :doc:`gt-opengis <../opengis/index>` such as Citation and Identifier
+* Configuring the library at runtime with **GeoTools** and **FactoryRegistery** and **Logging** facilities
+* Utility classes with helpful implementations for Collections, Caching and Object pools
+
 References:
 
 * ISO 19115
@@ -29,11 +40,10 @@ In a perfect world none of these utility classes would need to exist - and we co
 
 * Q: Where are the Interfaces?
   
-  The interfaces are in the gt-opengis module.
+  The interfaces are in the :doc:`gt-opengis <../opengis/index>` module.
   
   If you don't have access to the ISO documentation (who does?)
   just reading the javadocs is a great place to start.
-
 
 * Q: But this Stuff is in Java 6
   

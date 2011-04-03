@@ -17,13 +17,16 @@ The JTS Topology Suite is an external project that GeoTools uses to provide an i
    ring
    combine
 
-You will be using JTS a lot as it literally is the "shape" of GeoTools. It captures shapes using constructs like Coordinate, Point, Polygon and LineString.
+GeoTools is all about implementing spatial solutions, and we do our very best to follow a don't invent here policy (rather than get off topic).
+The excellent **JTS Topology Suite** project offers an implementation of Geometry which we use throughout our library.
 
-* Do keep in mind that JTS is pure topology and the Geometry objects are pure shapes with no meaning. For the meaning, placing that shape on the earth, you will need to consult a CoordinateReferenceSystem.
-* JTS topologic operations work in a two dimensional cartesian plane. With this in mind three dimensional shapes can be represented, but not calculated with.
-* JTS focuses on *linear* topology, you will need to represent curves as a LineString with many little segments.
 
-With those notes it may sound like JTS is limited; it is instead focused on the task at hand - Geographic Information Systems. While 3D and curves may be common in CAD systems we will need a lot of funding and raw science to make it work for GIS. Some of that work is happening in GeoTools with ISO Geometry.
+.. image:: /images/gt-jts.png
+
+The GeoTools provides some help for working with JTS:
+
+* :doc:`gt-api <../api/index>` offers helper classes such as JTS and Geometries
+* :doc:`gt-main <../main/index>` offers helper classes to translate Geometry into a Java Shape
 
 References:
 
@@ -34,11 +37,16 @@ References:
 
 **Relationship to GeoTools**
 
-GeoTools is all about implementing spatial solutions, and we do our very best to follow a don't invent here policy (rather than get off topic).
-
 We make use of the Java Topology Suite to represent "Simple" Geometry, and the OpenGIS interfaces to represent everything else. We have been forced to define an API module of our own in a few cases, like data access, where something "standard" is not available.
 
-GeoTools stands on the shoulders of giants. On occasion they kick us down, but that is why we have maven to track the dependencies. Please use maven, life is too short to get class cast exceptions.
+You will be using JTS a lot as it literally is the "shape" of GeoTools. It captures shapes using constructs like Coordinate, Point, Polygon and LineString.
+
+* Do keep in mind that JTS is pure topology and the Geometry objects are pure shapes with no meaning. For the meaning, placing that shape on the earth, you will need to consult a CoordinateReferenceSystem.
+* JTS topologic operations work in a two dimensional cartesian plane. With this in mind three dimensional shapes can be represented, but not calculated with.
+* JTS focuses on *linear* topology, you will need to represent curves as a LineString with many little segments.
+
+With those notes it may sound like JTS is limited; it is instead focused on the task at hand - Geographic Information Systems. While 3D and curves may be common in CAD systems we will need a lot of funding and raw science to make it work for GIS. Some of that work is happening in GeoTools with ISO Geometry.
+
 
 **Geometry Specifications**
 
@@ -52,4 +60,3 @@ ISO Geometry             3D, curves   OpenGIS ISO Geoemtry interfaces
 ======================== ============ ===============================
 
 GeoTools makes a point of working with both implementations, but frankly the ISO Geometry implementations are not ready yet.
-

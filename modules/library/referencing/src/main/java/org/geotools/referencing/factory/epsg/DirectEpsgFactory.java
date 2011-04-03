@@ -181,8 +181,8 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
         Unit<?> target = unit;
         if (code >= 8605) {
             if      (code <= 8607) target = SI   .METER;
-            else if (code <= 8710) target = NonSI.SECOND_ANGLE;
             else if (code == 8611) target = Units.PPM;
+            else if (code <= 8710) target = NonSI.SECOND_ANGLE;
         }
         if (target != unit) {
             value = unit.getConverterTo(target).convert(value);

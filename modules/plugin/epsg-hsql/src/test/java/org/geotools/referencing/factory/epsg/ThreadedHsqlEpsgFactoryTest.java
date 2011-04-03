@@ -16,11 +16,9 @@
  */
 package org.geotools.referencing.factory.epsg;
 
-import java.util.Set;
-
 import static org.junit.Assert.*;
 
-import junit.framework.TestCase;
+import java.util.Set;
 
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.referencing.AbstractIdentifiedObject;
@@ -37,7 +35,6 @@ import org.opengis.referencing.IdentifiedObject;
 import org.opengis.referencing.ReferenceIdentifier;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.crs.GeographicCRS;
-import org.opengis.referencing.datum.GeodeticDatum;
 import org.opengis.referencing.operation.MathTransform;
 
 /**
@@ -222,7 +219,6 @@ public class ThreadedHsqlEpsgFactoryTest {
         GeographicCRS crs = (GeographicCRS) CRS.decode("EPSG:4269");
         DefaultGeodeticDatum datum = (DefaultGeodeticDatum) crs.getDatum();
         BursaWolfParameters[] params = datum.getBursaWolfParameters();
-        final double EPS = 1e-12;
         boolean wgs84Found = false;
         for(int i = 0; i < params.length; i++) {
             if(DefaultGeodeticDatum.isWGS84(params[i].targetDatum)) {
@@ -238,4 +234,25 @@ public class ThreadedHsqlEpsgFactoryTest {
         }
         assertTrue(wgs84Found);        
     }
+    
+    /**
+     * GEOT-3482
+     * @throws Exception
+     */
+    @Test
+    public void testPPMUnit() throws Exception {
+        // Create WGS 72 CRS where we know that the EPSG defines a unique 
+        // Position Vector Transformation to WGS 84 with ppm = 0.219
+        GeographicCRS wgs72 = (GeographicCRS) CRS.decode("EPSG:4322");
+        
+        // Get datum
+        DefaultGeodeticDatum datum = (DefaultGeodeticDatum)wgs72.getDatum();
+        
+        // Get BursaWolf parameters
+        BursaWolfParameters[] params = datum.getBursaWolfParameters();
+        
+        // Check for coherence with the value contained in the EPSG data base
+        assertEquals(0.219, params[0].ppm, EPS);
+    }
+
 }

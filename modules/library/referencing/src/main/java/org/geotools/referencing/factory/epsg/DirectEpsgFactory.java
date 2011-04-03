@@ -1397,6 +1397,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                                  +       " FROM [Coordinate_Operation] AS CO"
                                  + " INNER JOIN [Coordinate Reference System] AS CRS2"
                                  +          " ON CO.TARGET_CRS_CODE = CRS2.COORD_REF_SYS_CODE"
+                                 + " LEFT JOIN [Area] AS AREA on CO.AREA_OF_USE_CODE = AREA.AREA_CODE"
                                  +       " WHERE CO.COORD_OP_METHOD_CODE >= " + BURSA_WOLF_MIN_CODE
                                  +         " AND CO.COORD_OP_METHOD_CODE <= " + BURSA_WOLF_MAX_CODE
                                  +         " AND CO.COORD_OP_CODE <> " + DUMMY_OPERATION // GEOT-1008
@@ -1406,6 +1407,10 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                                  +       " WHERE CRS1.DATUM_CODE = ?)"
                                  +    " ORDER BY CRS2.DATUM_CODE,"
                                  +             " ABS(CO.DEPRECATED), CO.COORD_OP_ACCURACY,"
+                                 + " (AREA_NORTH_BOUND_LAT - AREA_SOUTH_BOUND_LAT) * " +
+                                 "(CASE WHEN AREA_EAST_BOUND_LON > AREA_WEST_BOUND_LON " +
+                                 "     THEN (AREA_EAST_BOUND_LON - AREA_WEST_BOUND_LON) " +
+                                 "     ELSE (360 - AREA_WEST_BOUND_LON - AREA_EAST_BOUND_LON) END) DESC,"
                                  +             " CO.COORD_OP_CODE DESC"); // GEOT-846 fix
         stmt.setInt(1, Integer.parseInt(code));
         ResultSet result = stmt.executeQuery();
@@ -2697,10 +2702,15 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                 if (searchTransformations) {
                     key = "TransformationFromCRS";
                     sql = "SELECT COORD_OP_CODE"
-                        +    " FROM [Coordinate_Operation]"
+                        +    " FROM [Coordinate_Operation] left join [Area] on [Coordinate_Operation].area_of_use_code = [Area].area_code"
                         +    " WHERE SOURCE_CRS_CODE = ?"
                         +      " AND TARGET_CRS_CODE = ?"
-                        + " ORDER BY ABS(DEPRECATED), COORD_OP_ACCURACY";
+                        + " ORDER BY ABS([Coordinate_Operation].DEPRECATED), COORD_OP_ACCURACY," 
+                        + "	(AREA_NORTH_BOUND_LAT - AREA_SOUTH_BOUND_LAT) * " +
+                        		" (CASE WHEN AREA_EAST_BOUND_LON > AREA_WEST_BOUND_LON " +
+                        		"     THEN (AREA_EAST_BOUND_LON - AREA_WEST_BOUND_LON) " +
+                        		"     ELSE (360 - AREA_WEST_BOUND_LON - AREA_EAST_BOUND_LON) END) DESC," +
+                        		" COORD_OP_CODE DESC";
                 } else {
                     key = "ConversionFromCRS";
                     sql = "SELECT PROJECTION_CONV_CODE"

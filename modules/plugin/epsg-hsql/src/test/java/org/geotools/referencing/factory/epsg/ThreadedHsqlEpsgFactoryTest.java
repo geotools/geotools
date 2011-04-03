@@ -16,8 +16,9 @@
  */
 package org.geotools.referencing.factory.epsg;
 
-import java.util.Arrays;
 import java.util.Set;
+
+import static org.junit.Assert.*;
 
 import junit.framework.TestCase;
 
@@ -25,12 +26,18 @@ import org.geotools.geometry.DirectPosition2D;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.ReferencingFactoryFinder;
+import org.geotools.referencing.datum.BursaWolfParameters;
+import org.geotools.referencing.datum.DefaultGeodeticDatum;
 import org.geotools.referencing.factory.IdentifiedObjectFinder;
+import org.junit.Before;
+import org.junit.Test;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.IdentifiedObject;
 import org.opengis.referencing.ReferenceIdentifier;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.crs.GeographicCRS;
+import org.opengis.referencing.datum.GeodeticDatum;
 import org.opengis.referencing.operation.MathTransform;
 
 /**
@@ -41,14 +48,14 @@ import org.opengis.referencing.operation.MathTransform;
  *
  * @source $URL$
  */
-public class ThreadedHsqlEpsgFactoryTest extends TestCase {
+public class ThreadedHsqlEpsgFactoryTest {
     
     private static ThreadedHsqlEpsgFactory factory;
     private static IdentifiedObjectFinder finder;
     static final double EPS = 1e-06;
     
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
         if( factory == null ){
             factory = (ThreadedHsqlEpsgFactory) ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG", null );
         }
@@ -57,6 +64,7 @@ public class ThreadedHsqlEpsgFactoryTest extends TestCase {
         }
     }
 
+    @Test
     public void testCreation() throws Exception {
         assertNotNull(factory);
         CoordinateReferenceSystem epsg4326 = factory.createCoordinateReferenceSystem("EPSG:4326");
@@ -65,6 +73,8 @@ public class ThreadedHsqlEpsgFactoryTest extends TestCase {
         assertEquals("4326 equals EPSG:4326", code4326, epsg4326);
         assertSame("4326 == EPSG:4326", code4326, epsg4326);
     }
+    
+    @Test
     public void testFunctionality() throws Exception {
         CoordinateReferenceSystem crs1 = factory.createCoordinateReferenceSystem("4326");
         CoordinateReferenceSystem crs2 = factory.createCoordinateReferenceSystem("3005");
@@ -74,12 +84,14 @@ public class ThreadedHsqlEpsgFactoryTest extends TestCase {
         DirectPosition pos = new DirectPosition2D(48.417, 123.35);
         transform.transform(pos, null);        
     }
+    @Test
     public void testAuthorityCodes() throws Exception {
         Set authorityCodes = factory.getAuthorityCodes(CoordinateReferenceSystem.class);
         assertNotNull(authorityCodes);
         assertTrue(authorityCodes.size() > 3000);
     }
 
+    @Test
     public void testFindWSG84() throws FactoryException {
         String wkt;
         wkt = "GEOGCS[\"WGS 84\",\n"                                    +
@@ -110,6 +122,8 @@ public class ThreadedHsqlEpsgFactoryTest extends TestCase {
         String id = finder.findIdentifier(crs);
         assertEquals("The CRS should still be in the cache.","EPSG:4326", id);
     }
+    
+    @Test
     public void testFindBeijing1954() throws FactoryException {
         /*
          * The PROJCS below intentionally uses a name different from the one found in the
@@ -151,6 +165,7 @@ public class ThreadedHsqlEpsgFactoryTest extends TestCase {
         assertEquals("The CRS should still be in the cache.","EPSG:2442", id);
     }
     
+    @Test
     public void testGoogleProjection() throws Exception {
         CoordinateReferenceSystem epsg4326 = CRS.decode("EPSG:4326");
         CoordinateReferenceSystem epsg3785 = CRS.decode("EPSG:3857");
@@ -197,5 +212,30 @@ public class ThreadedHsqlEpsgFactoryTest extends TestCase {
             assertEquals(point[1], tp2[1], EPS);
         }
         
+    }
+    
+    /**
+     * GEOT-3497 (given the same accuracy use the transformation method with the largest valid area)
+     */
+    @Test
+    public void testNad83() throws Exception {
+        GeographicCRS crs = (GeographicCRS) CRS.decode("EPSG:4269");
+        DefaultGeodeticDatum datum = (DefaultGeodeticDatum) crs.getDatum();
+        BursaWolfParameters[] params = datum.getBursaWolfParameters();
+        final double EPS = 1e-12;
+        boolean wgs84Found = false;
+        for(int i = 0; i < params.length; i++) {
+            if(DefaultGeodeticDatum.isWGS84(params[i].targetDatum)) {
+                wgs84Found = true;
+                assertEquals(0.0, params[i].dx, EPS);
+                assertEquals(0.0, params[i].dy, EPS);
+                assertEquals(0.0, params[i].dz, EPS);
+                assertEquals(0.0, params[i].ex, EPS);
+                assertEquals(0.0, params[i].ey, EPS);
+                assertEquals(0.0, params[i].ez, EPS);
+                assertEquals(0.0, params[i].ppm, EPS);
+            }
+        }
+        assertTrue(wgs84Found);        
     }
 }

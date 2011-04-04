@@ -1763,9 +1763,33 @@ search:             if (DefaultCoordinateSystemAxis.isCompassDirection(axis.getD
      * @since 2.7
      */
     public static AxisOrder getAxisOrder(CoordinateReferenceSystem crs) {
+        return getAxisOrder(crs, false);
+    }
+    
+    /**
+     * Determines the axis ordering of a specified crs object.
+     * <p>
+     * The <tt>useBaseGeoCRS</tt> parameter is used to control behaviour for 
+     * projected crs. When set to <tt>true</tt> the comparison will use the 
+     * coordinate system for the underlying geographic crs object for the 
+     * comparison. When set to false the comparison will use the coordinate 
+     * system from projected crs itself.
+     * </p>
+     * @param crs The coordinate reference system.
+     * @param useBaseGeoCRS Controls whether the base geo crs is used for 
+     *   projected crs.
+     * 
+     * @return One of {@link AxisOrder#EAST_NORTH}, {@link AxisOrder@NORTH_EAST}, 
+     * or {@link AxisOrder#INAPPLICABLE}
+     */
+    public static AxisOrder getAxisOrder(CoordinateReferenceSystem crs, boolean useBaseGeoCRS) { 
         CoordinateSystem cs = null;
 
-        if (crs instanceof GeographicCRS || crs instanceof ProjectedCRS) {
+        if (crs instanceof ProjectedCRS) {
+            cs = !useBaseGeoCRS ? crs.getCoordinateSystem() :  
+                ((ProjectedCRS)crs).getBaseCRS().getCoordinateSystem();
+        }
+        else if (crs instanceof GeographicCRS) {
             cs = crs.getCoordinateSystem();
         }
         else {

@@ -293,5 +293,6 @@ public final class CrsTest {
         "  AXIS[\"Northing\", NORTH], "+
         "  AUTHORITY[\"EPSG\",\"23031\"]]";
         assertEquals(AxisOrder.EAST_NORTH, CRS.getAxisOrder(CRS.parseWKT(wkt)));
+        assertEquals(AxisOrder.NORTH_EAST, CRS.getAxisOrder(CRS.parseWKT(wkt), true));
     }
 }

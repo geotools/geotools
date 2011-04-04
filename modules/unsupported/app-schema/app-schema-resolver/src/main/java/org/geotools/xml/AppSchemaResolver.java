@@ -185,20 +185,6 @@ public class AppSchemaResolver {
             throw new RuntimeException(String.format("Failed to resolve %s", location));
         }
         resolvedLocationToOriginalLocationMap.put(resolvedLocation, location);
-        try {
-            /*
-             * This monstrous hack is required because org.geotools.xml.Schemas.parse(String, List,
-             * List) uses URLDecoder.decode(String) to handle escaped spaces in a file: URL, causing
-             * an invalid URL (not RFC 1738 compliant) to be passed to the underlying EMF
-             * infrastructure. The workaround is to allow reverse lookups with the decoded string by
-             * inserting the decoded version into the map as well as the undecoded version inserted
-             * above). *Shudder*.
-             */
-            resolvedLocationToOriginalLocationMap.put(URLDecoder.decode(resolvedLocation, "UTF-8"),
-                    location);
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
         LOGGER.fine(String.format("Resolved %s -> %s", location, resolvedLocation));
         return resolvedLocation;
     }

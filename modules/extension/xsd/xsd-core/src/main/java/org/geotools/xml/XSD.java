@@ -183,7 +183,7 @@ public abstract class XSD {
         while (!stack.isEmpty()) {
             XSD xsd = (XSD) stack.pop();
 
-            if (!unpacked.contains(xsd)) {
+            if (!equals(xsd) && !unpacked.contains(xsd)) {
                 unpacked.addFirst(xsd);
                 stack.addAll(xsd.getDependencies());
             }

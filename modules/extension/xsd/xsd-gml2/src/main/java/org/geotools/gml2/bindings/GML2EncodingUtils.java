@@ -44,6 +44,8 @@ import org.geotools.gml2.GML;
 import org.geotools.gml2.GMLConfiguration;
 import org.geotools.gml2.bindings.GMLEncodingUtils;
 import org.geotools.metadata.iso.citation.Citations;
+import org.geotools.referencing.CRS;
+import org.geotools.referencing.CRS.AxisOrder;
 import org.geotools.util.logging.Logging;
 import org.geotools.xlink.XLINK;
 import org.geotools.xml.Configuration;
@@ -88,10 +90,6 @@ public class GML2EncodingUtils {
     /** logging instance */
     static Logger LOGGER = Logging.getLogger( "org.geotools.gml");
     
-    static final int LON_LAT = 0;
-    static final int LAT_LON = 1;
-    static final int INAPPLICABLE = 2;
-    
     static GMLEncodingUtils e = new GMLEncodingUtils(GML.getInstance());
 
     public static String epsgCode(CoordinateReferenceSystem crs) {
@@ -134,10 +132,11 @@ public class GML2EncodingUtils {
      */
     public static String toURI(CoordinateReferenceSystem crs, boolean forceOldStyle) {
         String code = epsgCode(crs);
-        int axisOrder = axisOrder(crs);
+        AxisOrder axisOrder = CRS.getAxisOrder(crs);
 
         if (code != null) {
-            if (forceOldStyle ||( (axisOrder == LON_LAT) || (axisOrder == INAPPLICABLE)) ) {
+            if (forceOldStyle ||( (axisOrder == AxisOrder.EAST_NORTH) || 
+                    (axisOrder == AxisOrder.INAPPLICABLE)) ) {
                 return "http://www.opengis.net/gml/srs/epsg.xml#" + code;
             } else {
                 //return "urn:x-ogc:def:crs:EPSG:6.11.2:" + code;
@@ -146,54 +145,6 @@ public class GML2EncodingUtils {
         }
 
         return null;
-    }
-
-    /**
-     * Returns the axis order of the provided {@link CoordinateReferenceSystem} object.
-     * @param crs
-     * @return <ul>
-     *         <li>LON_LAT if the axis order is longitude/latitude</li>
-     *         <li>LAT_LON if the axis order is latitude/longitude</li>
-     *         <li>INAPPLICABLE if the CRS does not deal with longitude/latitude
-     *         (such as vertical or engineering CRS)</li>
-     */
-    static int axisOrder(CoordinateReferenceSystem crs) {
-        CoordinateSystem cs = null;
-
-        if (crs instanceof ProjectedCRS) {
-            ProjectedCRS pcrs = (ProjectedCRS) crs;
-            cs = pcrs.getBaseCRS().getCoordinateSystem();
-        } else if (crs instanceof GeographicCRS) {
-            cs = crs.getCoordinateSystem();
-        } else {
-            return INAPPLICABLE;
-        }
-
-        int dimension = cs.getDimension();
-        int longitudeDim = -1;
-        int latitudeDim = -1;
-
-        for (int i = 0; i < dimension; i++) {
-            AxisDirection dir = cs.getAxis(i).getDirection().absolute();
-
-            if (dir.equals(AxisDirection.EAST)) {
-                longitudeDim = i;
-            }
-
-            if (dir.equals(AxisDirection.NORTH)) {
-                latitudeDim = i;
-            }
-        }
-
-        if ((longitudeDim >= 0) && (latitudeDim >= 0)) {
-            if (longitudeDim < latitudeDim) {
-                return LON_LAT;
-            } else {
-                return LAT_LON;
-            }
-        }
-
-        return INAPPLICABLE;
     }
 
     /**

@@ -255,6 +255,7 @@ public final class CrsTest {
           "AXIS[\"Geodetic longitude\", EAST]," + 
           "AXIS[\"Geodetic latitude\", NORTH]]";
         assertEquals(AxisOrder.LON_LAT, CRS.getAxisOrder(CRS.parseWKT(wkt)));
+        assertEquals(AxisOrder.EAST_NORTH, CRS.getAxisOrder(CRS.parseWKT(wkt)));
         
         wkt = 
         "GEOGCS[\"WGS84(DD)\"," +  
@@ -265,7 +266,32 @@ public final class CrsTest {
           "AXIS[\"Geodetic latitude\", NORTH]," +
           "AXIS[\"Geodetic longitude\", EAST]]";
         assertEquals(AxisOrder.LAT_LON, CRS.getAxisOrder(CRS.parseWKT(wkt)));
+        assertEquals(AxisOrder.NORTH_EAST, CRS.getAxisOrder(CRS.parseWKT(wkt)));
         
         assertEquals(AxisOrder.INAPPLICABLE, CRS.getAxisOrder(CRS.getHorizontalCRS(DefaultEngineeringCRS.GENERIC_2D)));
+        
+        wkt = 
+        "PROJCS[\"ED50 / UTM zone 31N\", "+
+        "  GEOGCS[\"ED50\", "+
+        "    DATUM[\"European Datum 1950\", "+
+        "      SPHEROID[\"International 1924\", 6378388.0, 297.0, AUTHORITY[\"EPSG\",\"7022\"]], "+
+        "      TOWGS84[-157.89, -17.16, -78.41, 2.118, 2.697, -1.434, -1.1097046576093785], "+
+        "      AUTHORITY[\"EPSG\",\"6230\"]], "+
+        "    PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]], "+
+        "    UNIT[\"degree\", 0.017453292519943295], "+
+        "    AXIS[\"Geodetic latitude\", NORTH], "+
+        "    AXIS[\"Geodetic longitude\", EAST], "+
+        "    AUTHORITY[\"EPSG\",\"4230\"]], "+
+        "  PROJECTION[\"Transverse Mercator\", AUTHORITY[\"EPSG\",\"9807\"]], "+
+        "  PARAMETER[\"central_meridian\", 3.0], "+
+        "  PARAMETER[\"latitude_of_origin\", 0.0], "+
+        "  PARAMETER[\"scale_factor\", 0.9996], "+
+        "  PARAMETER[\"false_easting\", 500000.0], "+
+        "  PARAMETER[\"false_northing\", 0.0], "+
+        "  UNIT[\"m\", 1.0], "+
+        "  AXIS[\"Easting\", EAST], "+
+        "  AXIS[\"Northing\", NORTH], "+
+        "  AUTHORITY[\"EPSG\",\"23031\"]]";
+        assertEquals(AxisOrder.EAST_NORTH, CRS.getAxisOrder(CRS.parseWKT(wkt)));
     }
 }

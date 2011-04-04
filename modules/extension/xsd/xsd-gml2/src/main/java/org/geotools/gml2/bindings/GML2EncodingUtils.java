@@ -132,7 +132,7 @@ public class GML2EncodingUtils {
      */
     public static String toURI(CoordinateReferenceSystem crs, boolean forceOldStyle) {
         String code = epsgCode(crs);
-        AxisOrder axisOrder = CRS.getAxisOrder(crs);
+        AxisOrder axisOrder = CRS.getAxisOrder(crs, true);
 
         if (code != null) {
             if (forceOldStyle ||( (axisOrder == AxisOrder.EAST_NORTH) || 

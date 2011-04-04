@@ -122,17 +122,26 @@ public final class CRS {
         /** 
          * Ordering in which longitude comes before latitude, commonly referred to as x/y ordering. 
          */
-        LON_LAT, 
+        EAST_NORTH,
         
-        /**
-         * Ordering in which latitude comes before longitude, commonly referred to as y/x ordering.
-         */
-        LAT_LON, 
+        NORTH_EAST,
         
         /**
          * Indicates axis ordering is not applicable to the coordinate reference system.
          */
         INAPPLICABLE;
+        
+        /** 
+         * Ordering in which longitude comes before latitude, commonly referred to as x/y ordering.
+         * @deprecated use {@link #EAST_NORTH} 
+         */
+        public static AxisOrder LON_LAT = EAST_NORTH;
+        
+        /**
+         * Ordering in which latitude comes before longitude, commonly referred to as y/x ordering.
+         * @deprecated use {@link #NORTH_EAST}
+         */
+        public static AxisOrder LAT_LON = NORTH_EAST;
     };
     
     /**
@@ -1741,17 +1750,14 @@ search:             if (DefaultCoordinateSystemAxis.isCompassDirection(axis.getD
         DefaultMathTransformFactory.cleanupThreadLocals();
         Formattable.cleanupThreadLocals();
     }
-    
+
     /**
      * Determines the axis ordering of a specified crs object.
-     * <p>
-     * If called with a projected crs object the base crs will be used for the axis 
-     * order determination.
-     * </p>
+     *
      * @param crs The coordinate reference system.
      * 
-     * @return One of {@link AxisOrder#LON_LAT}, {@link AxisOrder@LAT_LON}, or 
-     *  {@link AxisOrder#INAPPLICABLE}
+     * @return One of {@link AxisOrder#EAST_NORTH}, {@link AxisOrder@NORTH_EAST}, 
+     * or {@link AxisOrder#INAPPLICABLE}
      * 
      * @see AxisOrder
      * @since 2.7
@@ -1759,12 +1765,10 @@ search:             if (DefaultCoordinateSystemAxis.isCompassDirection(axis.getD
     public static AxisOrder getAxisOrder(CoordinateReferenceSystem crs) {
         CoordinateSystem cs = null;
 
-        if (crs instanceof ProjectedCRS) {
-            ProjectedCRS pcrs = (ProjectedCRS) crs;
-            cs = pcrs.getBaseCRS().getCoordinateSystem();
-        } else if (crs instanceof GeographicCRS) {
+        if (crs instanceof GeographicCRS || crs instanceof ProjectedCRS) {
             cs = crs.getCoordinateSystem();
-        } else {
+        }
+        else {
             return AxisOrder.INAPPLICABLE;
         }
 
@@ -1786,9 +1790,9 @@ search:             if (DefaultCoordinateSystemAxis.isCompassDirection(axis.getD
 
         if ((longitudeDim >= 0) && (latitudeDim >= 0)) {
             if (longitudeDim < latitudeDim) {
-                return AxisOrder.LON_LAT;
+                return AxisOrder.EAST_NORTH;
             } else {
-                return AxisOrder.LAT_LON;
+                return AxisOrder.NORTH_EAST;
             }
         }
 

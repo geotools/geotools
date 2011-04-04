@@ -58,7 +58,7 @@ public class WrappingProjectionHandler extends ProjectionHandler {
             double[] dst = new double[4];
             mt.transform(src, 0, dst, 0, 2);
 
-            if(CRS.getAxisOrder(targetCRS) == CRS.AxisOrder.LAT_LON) {
+            if(CRS.getAxisOrder(targetCRS) == CRS.AxisOrder.NORTH_EAST) {
                 radius = Math.abs(dst[3] - dst[1]);
             }
             else {

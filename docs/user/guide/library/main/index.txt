@@ -12,7 +12,8 @@ Implementation of core geospatial data models.
    collection
    shape
    geometry
-   registry
+   repository
+   internal
 
 The gt-main module provides default implementations for the remaining gt-api and gt-opengis interfaces (Filter, Style, Feature etc...) and enough glue code to make creating an application possible (various builders and utility classes).
 

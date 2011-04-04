@@ -12,44 +12,47 @@ Resources:
 Connection Parameters
 ^^^^^^^^^^^^^^^^^^^^^
 
-The implementation supports both WFS 1.0 (read/write) and WFS 1.1 (read-only). You are advised that when using read/write access you will need to use a transaction - see the section of WFS-T for more details.
+The following connection parameters are defined for WFS.
 
-The WFSDataStoreFactory provides the following Params as static constants if you need to look up the key, definition or expected data type programatically.
++--------------------------------------------+------------------------------------------------------------------+
+| Param                                      | Description                                                      |
++============================================+==================================================================+
+| "WFSDataStoreFactory:GET_CAPABILITIES_URL" | Link to capabilities document.                                   |
+|                                            | The implementation supports both WFS 1.0 (read/write) and        |
+|                                            | WFS 1.1 (read-only).                                             |
++--------------------------------------------+------------------------------------------------------------------+
+| WFSDataStoreFactory.PROTOCOL"              | Optional: True for Post, False for GET, null for auto            |
++--------------------------------------------+------------------------------------------------------------------+
+|"WFSDataStoreFactory.USERNAME"              | Optional                                                         |
++--------------------------------------------+------------------------------------------------------------------+
+| "WFSDataStoreFactory.PASSWORD"             | Optional                                                         |
++--------------------------------------------+------------------------------------------------------------------+
+| "WFSDataStoreFactory.ENCODING"             | Optional with a default of UTF-8                                 |
++--------------------------------------------+------------------------------------------------------------------+
+| "WFSDataStoreFactory.TIMEOUT"              | Optional with a 3000ms default                                   |
++--------------------------------------------+------------------------------------------------------------------+
+| "WFSDataStoreFactory.BUFFER_SIZE"          | Optional number of features to read in one gulp, defaults of 10  |
++--------------------------------------------+------------------------------------------------------------------+
+| "WFSDataStoreFactory.TRY_GZIP"             | Optional with a default of true, try compression if available    |
++--------------------------------------------+------------------------------------------------------------------+
+| "WFSDataStoreFactory.LENIENT"              | Optional default of true.                                        |
+|                                            | WFS implementations are terrible for actually obeying their      |
+|                                            | DescribeFeatureType schema, setting this to true will try a few  |
+|                                            | tricks to support implementations that are mostly correct:       |
+|                                            |                                                                  |
+|                                            | * Accepting the data in any order                                |
+|                                            | * Not getting too upset if the case of the attributes is wrong   |
++--------------------------------------------+------------------------------------------------------------------+
+| "WFSDataStoreFactory.MAXFEATURES"          | Limit on the number of features                                  |
++--------------------------------------------+------------------------------------------------------------------+
 
-"WFSDataStoreFactory:GET_CAPABILITIES_URL"
-   link to capabilities document
+Historical Note: We apologise for the long connection parameter keys, WFS was one of the first DataStores written and we were unsure at the
+time if they keys for each datastore would need to be unique or not. On the plus side you can see our devotion to stability.
 
-"WFSDataStoreFactory.PROTOCOL"
-   True for Post, False for GET, null for auto
+Hints:
 
-"WFSDataStoreFactory.USERNAME"
-   optional depending on server
-
-"WFSDataStoreFactory.PASSWORD"
-   optional depending on server
-
-"WFSDataStoreFactory.ENCODING"
-   Defaults to UTF-8
-
-"WFSDataStoreFactory.TIMEOUT"
-  3000ms default
-
-"WFSDataStoreFactory.BUFFER_SIZE"
-  number of features to read in one gulp, defaults to 10
-
-"WFSDataStoreFactory.TRY_GZIP"
-  default is to true to try compression if available
-
-"WFSDataStoreFactory.LENIENT"
-  WFS implementations are terrible for actually obeying their DescribeFeatureType schema,
-  setting this to true will try a few tricks to support implementations that are mostly
-  correct (but perhaps get the order wrong)
-
-"WFSDataStoreFactory.MAXFEATURES"
-  Limit on the number of features
-
-Tuning Advice:
-
+* The WFSDataStoreFactory provides keys as static constants if you need to look up the key,
+  definition or expected data type programatically
 * The capabilities URL you provide is important:
   
   * Q: Does it include "VERSION=1.0.0"?
@@ -63,10 +66,12 @@ Tuning Advice:
   * Slower servers respond well to smaller numbers.
   * You are advised that no features will be returned to code until the buffer is filled, and that the higher the number the more memory the WFS will use.
 
-WFS
-^^^
+Web Feature Server
+^^^^^^^^^^^^^^^^^^
 
 Support for **Web Feature Server Example (WFS)** offers access to the raw features being served up from an external server.
+
+* You are advised that when using read/write access you will need to use a transaction - see the section of WFS-T for more details.
 
 The following is a quick example; only the connection parameter code is specific to the WFSDataStore.
 
@@ -114,7 +119,7 @@ You can connect to a Web Feature Server via the DataStore API; the connection pa
   }
 
 WFS-T
-^^^^^
+'''''
 
 Support for **Web Feature Server Transactional (WFS-T)** represents a wfs that offers read/write functionality by virtue of supporting the WFS Transaction operation.
 

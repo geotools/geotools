@@ -5,28 +5,62 @@ Allows the GeoTools library to work with ESRI shapefiles.
 
 References:
 
+* `ShapefileDataStoreFactory <http://docs.geotools.org/latest/javadocs/org/geotools/data/shapefile/ShapefileDataStoreFactory.html>`_ (javadocs)
 * http://en.wikipedia.org/wiki/Shapefile
 * http://en.wikipedia.org/wiki/DBase
 
-Connection Parameter
-^^^^^^^^^^^^^^^^^^^^
+Connection Parameters
+^^^^^^^^^^^^^^^^^^^^^
 
-"url"	(required)
-  A URL of the file ending in "shp"
+The following connection parameters are available:
 
-"namespace" (optional)
-  optional	 URI to use for the FeatureType
++-------------------------+----------------------------------------------------+
+| Param                   | Description                                        |
++=========================+====================================================+
+| "url"                   | A URL of the file ending in "shp"                  |
++-------------------------+----------------------------------------------------+
+| "namespace"             | Optional: URI to use for the FeatureType           |
++-------------------------+----------------------------------------------------+
+| "create spatial index"  | Optional: Use Boolean.TRUE to create an index      |
++-------------------------+----------------------------------------------------+
+| "charset"               | Optional: Chartset used to decode strings in the   |
+|                         | DBF file                                           |
++-------------------------+----------------------------------------------------+
 
-"create spatial index" (optional)
-  Set to Boolean.TRUE to create an index
+This information is also in the `javadocs <http://docs.geotools.org/latest/javadocs/org/geotools/data/shapefile/ShapefileDataStoreFactory.html>`_ .
 
-"charset" (optional)
-  Chartset used to decode strings in the DBF file
-
-This information is also in the javadocs.
+Internally gt-shape provides a two implementations at this time; one for simple access and another that supports the use of an index. The factory will
+be able to sort out which one is appropriate when using DataStoreFinder or FileDataStoreFinder.
 
 Shapefile
 ^^^^^^^^^
+
+A Shapefile is a common file format which contains numerous features of the same type. Each shapefile has a single feature type.
+
+The classic three files:
+
+* filename.shp: shapes
+* filename.shx: shapes to attributes index
+* filename.dbf: attributes
+
+Basic metadata:
+* filename.prj: projection
+
+Open source extensions:
+
+* filename.qix: quadtree spatial index
+* filename.fix: feature id index
+* filename.sld: style-layer-descriptor style xml object
+
+ESRI extensions:
+
+* filename.sbn: attribute index
+* filename.sbx: spatial index
+* filename.lyr: arcmap-only style object
+* filename.avl: arcview style object
+* filename.shp.xml: fgdc metadata
+
+This style of file format (from the dawn of time) is referred to as "sidecar" files, at a minimum filename.shp and its sidecar file filename.dbf are needed. 
 
 Access
 ''''''
@@ -115,12 +149,17 @@ If you are working with Acerbic, Chinese or Korean character sets you will need 
 
 Thanks to the University of Soul for providing and testing this functionality.
 
-GeoTools Users Guide : DbaseFileReader
-This page last changed on Apr 23, 2010 by jive.
-A shapefile is actually comprised of a core "shp" file and a number of "sidecar" files. One of the sidecar files is a "dbf" file used to record attribtues. This is the original DBF file format provided by one of the origional grandfather databases "DBase".
+Reading PRJ
+^^^^^^^^^^^
+
+You can use the CRS utility class to read the PRJ file if required. The contents of the file are in "well known text"::
+  
+  CoordinateReferenceSystem crs = CRS.parseWKT(wkt);
 
 Reading DBF
 ^^^^^^^^^^^
+
+A shapefile is actually comprised of a core "shp" file and a number of "sidecar" files. One of the sidecar files is a "dbf" file used to record attributes. This is the original DBF file format provided by one of the original grandfather databases "DBase".
 
 The GeoTools library includes just enough DBF file format support to get out of bed in the morning; indeed you should considered these facilities an internal detail to our shapefile reading code.
 

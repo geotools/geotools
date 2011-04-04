@@ -16,6 +16,7 @@ Referencing plugins:
    :maxdepth: 1
    
    arcgrid
+   arcsde
    geotiff
    gtopo30
    image

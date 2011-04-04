@@ -1,5 +1,5 @@
-Registry
---------
+Repository
+----------
 
 Applications based on Geotools must keep track of the geographic data accessed by the application. It is important not to create and throw away DataStores at runtime; as they often contain JDBC connections or open file handles.
 

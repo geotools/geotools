@@ -9,7 +9,7 @@ If you do have any commonly used data hacks in your code; please submit a patch 
 
 References:
 
-* `DataUtilities <http://docs.geotools.org/latest/javadocs/org/geotools/data/DataUtilities.html>`_
+* `DataUtilities <http://docs.geotools.org/latest/javadocs/org/geotools/data/DataUtilities.html>`_ (javadocs)
 
 URL and File
 ^^^^^^^^^^^^

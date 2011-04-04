@@ -1,5 +1,5 @@
-Shape
------
+Java2D Shape
+------------
 
 GeoTools includes a couple of classes for generating a Java 2D Shape from a JTS Geometry.
 

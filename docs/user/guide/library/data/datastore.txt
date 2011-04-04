@@ -161,7 +161,7 @@ DataStore's represent a live connection to your file or database:
   * Manage them in a Registry
   * Manage them in an application specific Catalog
   
-  For more details please :doc:`../main/registry`
+  For more details please :doc:`../main/repository`
 
 Direct Access
 '''''''''''''

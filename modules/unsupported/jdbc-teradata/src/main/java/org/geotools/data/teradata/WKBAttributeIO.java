@@ -187,19 +187,6 @@ public class WKBAttributeIO {
         }
     }
 
-    private byte[] hexToBytes(String wkb) {
-        // convert the String of hex values to a byte[]
-        byte[] wkbBytes = new byte[wkb.length() / 2];
-
-        for (int i = 0; i < wkbBytes.length; i++) {
-            byte b1 = getFromChar(wkb.charAt(i * 2));
-            byte b2 = getFromChar(wkb.charAt((i * 2) + 1));
-            wkbBytes[i] = (byte) ((b1 << 4) | b2);
-        }
-
-        return wkbBytes;
-    }
-
     /**
      * Accelerates data loading compared to the plain InStream shipped along with JTS
      *

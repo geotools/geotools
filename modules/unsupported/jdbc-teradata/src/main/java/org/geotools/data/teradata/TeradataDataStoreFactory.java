@@ -16,16 +16,18 @@
  */
 package org.geotools.data.teradata;
 
-import org.geotools.jdbc.*;
-import org.geotools.util.logging.LoggerFactory;
-import org.geotools.util.logging.Logging;
-
 import java.io.IOException;
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+
+import org.geotools.jdbc.CompositePrimaryKeyFinder;
+import org.geotools.jdbc.HeuristicPrimaryKeyFinder;
+import org.geotools.jdbc.JDBCDataStore;
+import org.geotools.jdbc.JDBCDataStoreFactory;
+import org.geotools.jdbc.MetadataTablePrimaryKeyFinder;
+import org.geotools.jdbc.PrimaryKeyFinder;
+import org.geotools.jdbc.SQLDialect;
+import org.geotools.util.logging.Logging;
 
 public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
 
@@ -55,6 +57,11 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
 
     public static final Param CHARSET = new Param("charset", String.class, "charset", false, "UTF8");
 
+    /**
+     * Wheter a prepared statements based dialect should be used, or not
+     */
+    public static final Param PREPARED_STATEMENTS = new Param("preparedStatements", Boolean.class, "Use prepared statements", false, Boolean.FALSE);
+    
     private static final PrimaryKeyFinder KEY_FINDER = new CompositePrimaryKeyFinder(
             new MetadataTablePrimaryKeyFinder(),
             new TeradataPrimaryKeyFinder(),
@@ -70,7 +77,7 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
         return new TeradataGISDialect(dataStore);
     }
 
-    protected String getDatabaseID() {
+    public String getDatabaseID() {
         return (String) DBTYPE.sample;
     }
 
@@ -96,6 +103,7 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
 
         // setup loose bbox
         TeradataGISDialect dialect = (TeradataGISDialect) dataStore.getSQLDialect();
+        
         Boolean loose = (Boolean) LOOSEBBOX.lookUp(params);
         dialect.setLooseBBOXEnabled(loose == null || Boolean.TRUE.equals(loose));
 
@@ -103,8 +111,16 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
         Boolean estimated = (Boolean) ESTIMATED_EXTENTS.lookUp(params);
         dialect.setEstimatedExtentsEnabled(estimated == null || Boolean.TRUE.equals(estimated));
 
-        if (!params.containsKey(PK_METADATA_TABLE.key))
+        if (!params.containsKey(PK_METADATA_TABLE.key)) {
             dataStore.setPrimaryKeyFinder(KEY_FINDER);
+        }
+
+        // setup the ps dialect if need be
+        Boolean usePs = (Boolean) PREPARED_STATEMENTS.lookUp(params);
+        if(Boolean.TRUE.equals(usePs)) {
+            dataStore.setSQLDialect(new TeradataPSDialect(dataStore, dialect));
+        }
+        
         return dataStore;
     }
 
@@ -118,6 +134,7 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
         parameters.put(LOOSEBBOX.key, LOOSEBBOX);
         parameters.put(ESTIMATED_EXTENTS.key, ESTIMATED_EXTENTS);
         parameters.put(PORT.key, PORT);
+        parameters.put(PREPARED_STATEMENTS.key, PREPARED_STATEMENTS);
         parameters.put(MAX_OPEN_PREPARED_STATEMENTS.key, MAX_OPEN_PREPARED_STATEMENTS);
     }
 
@@ -139,210 +156,5 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
         return "jdbc:teradata://" + host + "/DATABASE=" + db + ",PORT=" + port + ",TMODE=" + mode + ",CHARSET=" + charset;
     }
 
-    /**
-     * The Terradata Key Finder
-     *
-     * @author Stéphane Brunner @ camptocamp
-     */
-    private static class TeradataPrimaryKeyFinder extends PrimaryKeyFinder {
-
-        public PrimaryKey getPrimaryKey(JDBCDataStore store, String schema,
-                                        String table, Connection cx) throws SQLException {
-
-            List<PrimaryKeyColumn> columns = tryForPrimaryKey1(schema, table, cx);
-            if (columns.isEmpty()) {
-                columns = tryForPrimaryKey(schema, table, cx);
-            }
-            if (columns.isEmpty()) {
-                columns = tryForSequence(schema, table, cx);
-            }
-/*            if (columns.isEmpty()) {
-                columns = tryAsView(schema, table, cx);
-            }
-*/
-            if (columns.isEmpty()) {
-                return null;
-            } else {
-                return new PrimaryKey(table, columns);
-            }
-        }
-/*
-        private List<PrimaryKeyColumn> tryAsView(String schema, String table, Connection cx) throws SQLException {
-            List<PrimaryKeyColumn> columns = new ArrayList<PrimaryKeyColumn>();
-            StringBuilder sql = new StringBuilder("SELECT RequestText FROM DBC.tables WHERE ");
-            if (schema != null) {
-                sql.append("DatabaseName = '").append(schema).append("' AND ");
-            }
-            sql.append("TableName = '").append(table).append("' AND TableKind='V'");
-            Statement st = cx.createStatement();
-            java.sql.ResultSet result = st.executeQuery(sql.toString());
-
-            if(result.next()) {
-                String createViewSql = result.getString("RequestText");
-                String[] parts = createViewSql.split("as",2);
-                String viewID = parts[0];
-                String[] viewColumnNames = null;
-                int openIndex = viewID.indexOf("(");
-
-                if(openIndex > -1 && viewID.indexOf(")",openIndex) > -1) {
-                    String columnString = viewID.substring(openIndex+1, viewID.indexOf(")", openIndex)).trim();
-                    if(columnString.startsWith("\"")) {
-                        columnString = columnString.substring(1).trim();
-                    }
-                    if(columnString.endsWith("\"")) {
-                        columnString = columnString.substring(0,columnString.length()-1).trim();
-                    }
-                    viewColumnNames = columnString.split("\"?\\s*,\\s*\"?");
-                }
-                String select = parts[1].substring(parts[1].toLowerCase().indexOf("sel"));
-                try {
-                    ResultSet viewResults = st.executeQuery(select);
-                    ResultSetMetaData md = viewResults.getMetaData();
-                    for(int i = 1; i <= md.getColumnCount(); i++) {
-                        if(md.isAutoIncrement(i)) {
-                            String columnLabel;
-                            if(viewColumnNames!=null) {
-                                columnLabel = viewColumnNames[i-1];
-                            } else {
-                                columnLabel = md.getColumnLabel(i);
-                            }
-                            Class columnType;
-                            try {
-                                columnType = Thread.currentThread().getContextClassLoader().loadClass(md.getColumnClassName(i));
-                            } catch (ClassNotFoundException e) {
-                                columnType=Object.class;
-                            }
-                            columns.add(new AutoGeneratedPrimaryKeyColumn(columnLabel,columnType));
-                        }
-                    }
-                } catch (SQLException e) {
-                    String from ="'"+table+"'";
-                    if(schema!=null) {
-                        from ="'"+schema+"'."+from;
-                    }
-                    LOGGER.warning("Unable to perform select used to create view " + from + ".\nSQL: " + select);
-                }
-            }
-            return columns;
-        }    */
-
-        private List<PrimaryKeyColumn> tryForSequence(String schema, String table, Connection cx) throws SQLException {
-            List<PrimaryKeyColumn> columns = new ArrayList<PrimaryKeyColumn>();
-            StringBuilder sql = new StringBuilder("SELECT ColumnName FROM DBC.columns WHERE ");
-            if (schema != null) {
-                sql.append("DatabaseName = '").append(schema).append("' AND ");
-            }
-            sql.append("TableName = '").append(table).append("' AND (IdColType='GA' or IdColType='GD')");
-            Statement st = cx.createStatement();
-            java.sql.ResultSet result = st.executeQuery(sql.toString());
-            boolean next = result.next();
-            try {
-                TableMetadata tableMetadata = new TableMetadata(st, schema, table);
-
-                while (next) {
-                    String columnName = result.getString("ColumnName").trim();
-                    int ordinal = tableMetadata.ordinal(columnName);
-                    Class<?> columnClass = tableMetadata.columnClass(ordinal);
-                    if (tableMetadata.isAutoIncrement(ordinal)) {
-                        columns.add(new AutoGeneratedPrimaryKeyColumn(columnName, columnClass));
-                    }
-                    next = result.next();
-                }
-            } finally {
-                st.close();
-            }
-
-            return columns;
-        }
-
-        private List<PrimaryKeyColumn> tryForPrimaryKey(String schema, String table, Connection cx) throws SQLException {
-            List<PrimaryKeyColumn> columns = new ArrayList<PrimaryKeyColumn>();
-            StringBuilder sql = new StringBuilder("select ColumnName,ColumnPosition from dbc.indices WHERE ");
-            if (schema != null) {
-                sql.append("DatabaseName = '").append(schema).append("' AND ");
-            }
-            sql.append("TableName = '").append(table).append("' AND UniqueFlag = 'Y'");
-            Statement st = cx.createStatement();
-            java.sql.ResultSet result = st.executeQuery(sql.toString());
-            boolean next = result.next();
-            try {
-                TableMetadata tableMetadata = new TableMetadata(st, schema, table);
-
-                while (next) {
-                    int ordinal = Integer.parseInt(result.getString("ColumnPosition").trim());
-                    String columnName = result.getString("ColumnName").trim();
-                    Class<?> columnClass = tableMetadata.columnClass(ordinal);
-                    if (tableMetadata.isAutoIncrement(ordinal)) {
-                        columns.add(new AutoGeneratedPrimaryKeyColumn(columnName, columnClass));
-                    } else {
-                        columns.add(new NonIncrementingPrimaryKeyColumn(columnName, columnClass));
-                    }
-                    next = result.next();
-                }
-            } finally {
-                st.close();
-            }
-
-            return columns;
-        }
-
-        private List<PrimaryKeyColumn> tryForPrimaryKey1(String schema, String table, Connection cx) throws SQLException {
-            List<PrimaryKeyColumn> columns = new ArrayList<PrimaryKeyColumn>();
-            ResultSet md = cx.getMetaData().getPrimaryKeys(null, schema, table);
-            boolean next = md.next();
-            if (next) {
-                Statement stmt = cx.createStatement();
-                try {
-                    TableMetadata tableMetadata = new TableMetadata(stmt, schema, table);
-                    while (next) {
-                        String columnName = md.getString("COLUMN_NAME").trim();
-                        int ordinal = tableMetadata.ordinal(columnName);
-                        Class<?> columnClass = tableMetadata.columnClass(ordinal);
-                        if (tableMetadata.isAutoIncrement(ordinal)) {
-                            columns.add(new AutoGeneratedPrimaryKeyColumn(columnName, columnClass));
-                        } else {
-                            columns.add(new NonIncrementingPrimaryKeyColumn(columnName, columnClass));
-                        }
-                        next = md.next();
-                    }
-                } finally {
-                    stmt.close();
-                }
-            }
-            return columns;
-        }
-    }
-
-    private static class TableMetadata {
-        final Statement stmt;
-        final ResultSet resultSet;
-        final ResultSetMetaData tableMetadata;
-
-        private TableMetadata(Statement stmt, String schema, String table) throws SQLException {
-            this.stmt = stmt;
-            String from = "\"" + table + "\"";
-            if (schema != null) {
-                from = "\"" + schema + "\"." + from;
-            }
-            resultSet = stmt.executeQuery("select * from " + from + " where 1=2");
-            tableMetadata = resultSet.getMetaData();
-        }
-
-
-        public int ordinal(String columnName) throws SQLException {
-            return resultSet.findColumn(columnName);
-        }
-
-        public Class<?> columnClass(int ordinal) throws SQLException {
-            try {
-                return Thread.currentThread().getContextClassLoader().loadClass(tableMetadata.getColumnClassName(ordinal));
-            } catch (ClassNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-        public boolean isAutoIncrement(int ordinal) throws SQLException {
-            return tableMetadata.isAutoIncrement(ordinal);
-        }
-    }
+   
 }

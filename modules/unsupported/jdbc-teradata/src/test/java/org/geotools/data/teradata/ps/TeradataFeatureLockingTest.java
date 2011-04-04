@@ -14,16 +14,16 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.data.teradata;
+package org.geotools.data.teradata.ps;
 
-import org.geotools.jdbc.JDBCNoPrimaryKeyTest;
-import org.geotools.jdbc.JDBCNoPrimaryKeyTestSetup;
+import org.geotools.jdbc.JDBCFeatureLockingTest;
+import org.geotools.jdbc.JDBCTestSetup;
 
-public class TeradataNoPrimaryKeyTest extends JDBCNoPrimaryKeyTest {
+public class TeradataFeatureLockingTest extends JDBCFeatureLockingTest {
 
 
-    protected JDBCNoPrimaryKeyTestSetup createTestSetup() {
-        return new TeradataNoPrimaryKeyTestSetup(new TeradataTestSetup());
+    protected JDBCTestSetup createTestSetup() {
+        return new TeradataPSTestSetup();
     }
 
 }

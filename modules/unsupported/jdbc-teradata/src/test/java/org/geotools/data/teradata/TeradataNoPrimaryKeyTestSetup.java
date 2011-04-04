@@ -17,11 +17,12 @@
 package org.geotools.data.teradata;
 
 import org.geotools.jdbc.JDBCNoPrimaryKeyTestSetup;
+import org.geotools.jdbc.JDBCTestSetup;
 
 public class TeradataNoPrimaryKeyTestSetup extends JDBCNoPrimaryKeyTestSetup {
 
-    protected TeradataNoPrimaryKeyTestSetup() {
-        super(new TeradataTestSetup());
+    public TeradataNoPrimaryKeyTestSetup(JDBCTestSetup delegate) {
+        super(delegate);
     }
 
 

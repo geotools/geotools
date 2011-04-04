@@ -14,16 +14,22 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.data.teradata;
+package org.geotools.data.teradata.ps;
 
-import org.geotools.jdbc.JDBCNoPrimaryKeyTest;
-import org.geotools.jdbc.JDBCNoPrimaryKeyTestSetup;
+import org.geotools.jdbc.JDBCTestSetup;
+import org.geotools.jdbc.JDBCTransactionTest;
 
-public class TeradataNoPrimaryKeyTest extends JDBCNoPrimaryKeyTest {
+import java.io.IOException;
+
+public class TeradataTransactionTest extends JDBCTransactionTest {
 
 
-    protected JDBCNoPrimaryKeyTestSetup createTestSetup() {
-        return new TeradataNoPrimaryKeyTestSetup(new TeradataTestSetup());
+    protected JDBCTestSetup createTestSetup() {
+        return new TeradataPSTestSetup();
     }
 
+
+    public void testConcurrentTransactions() throws IOException {
+        // TODO enable this
+    }
 }

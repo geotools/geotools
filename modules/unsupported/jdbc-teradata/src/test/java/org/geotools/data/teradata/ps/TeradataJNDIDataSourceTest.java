@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2009, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -14,16 +14,16 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.data.teradata;
 
-import org.geotools.jdbc.JDBCNoPrimaryKeyTest;
-import org.geotools.jdbc.JDBCNoPrimaryKeyTestSetup;
+package org.geotools.data.teradata.ps;
 
-public class TeradataNoPrimaryKeyTest extends JDBCNoPrimaryKeyTest {
+import org.geotools.jdbc.JDBCJNDIDataSourceTest;
+import org.geotools.jdbc.JDBCJNDITestSetup;
 
+public class TeradataJNDIDataSourceTest extends JDBCJNDIDataSourceTest {
 
-    protected JDBCNoPrimaryKeyTestSetup createTestSetup() {
-        return new TeradataNoPrimaryKeyTestSetup(new TeradataTestSetup());
+    protected JDBCJNDITestSetup createTestSetup() {
+        return new JDBCJNDITestSetup(new TeradataPSTestSetup());
     }
 
 }

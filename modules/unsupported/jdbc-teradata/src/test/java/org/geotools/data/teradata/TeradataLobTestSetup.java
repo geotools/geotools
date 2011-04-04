@@ -16,7 +16,7 @@ public class TeradataLobTestSetup extends JDBCLobTestSetup {
     protected void createLobTable() throws Exception {
 
         Connection con = getDataSource().getConnection();
-        con.prepareStatement("create table \"testlob\" (\"fid\" PRIMARY KEY not null generated always as identity (start with 0)  integer, \"blob_field\" BYTEA, \"clob_field\" TEXT, \"raw_field\" BYTEA)").execute();
+        con.prepareStatement("create table \"testlob\" (\"fid\" PRIMARY KEY not null generated always as identity (start with 0)  integer, \"blob_field\" binary large object, \"clob_field\" character large object, \"raw_field\" binary large object)").execute();
 
         PreparedStatement ps = con.prepareStatement("INSERT INTO \"testlob\" (\"blob_field\",\"clob_field\",\"raw_field\")  VALUES (?,?,?)");
         ps.setBytes(1, new byte[]{1, 2, 3, 4, 5});

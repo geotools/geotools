@@ -69,6 +69,7 @@ import org.eclipse.xsd.util.XSDResourceImpl;
 import org.eclipse.xsd.util.XSDSchemaLocationResolver;
 import org.eclipse.xsd.util.XSDSchemaLocator;
 import org.eclipse.xsd.util.XSDUtil;
+import org.geotools.data.DataUtilities;
 import org.geotools.util.Utilities;
 import org.geotools.xml.impl.SchemaIndexImpl;
 import org.geotools.xml.impl.TypeWalker;
@@ -220,14 +221,18 @@ public class Schemas {
     public static final XSDSchema parse(String location, List locators, List resolvers)
         throws IOException {
         
-        //url decode to take care of paths with spaces
-        location = URLDecoder.decode( location );
-        
         //check for case of file url, make sure it is an absolute reference
-        if (new File(location).exists()) {
-            location = new File(location).getCanonicalFile().toURI().toString();
-
-            //location = new File(location).getCanonicalPath();
+        File locationFile = null;
+        try {
+            locationFile = DataUtilities.urlToFile(new URL(location));
+        } catch (MalformedURLException e) {
+            // Some tests use relative file URLs, which Schemas.parse cannot
+            // support as it does not permit a context URL. Treat them
+            // as local file paths. Naughty, naughty.
+            locationFile = new File(location);
+        }
+        if (locationFile != null && locationFile.exists()) {
+            location = locationFile.getCanonicalFile().toURI().toString();
         }
 
         URI uri = URI.createURI(location);

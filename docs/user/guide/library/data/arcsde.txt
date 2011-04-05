@@ -1,178 +1,201 @@
 ArcSDE Plugin
 -------------
 
-The ArcSDE plugin allows the GeoTools developer to work with the ArcSDE middle ware.
+The ArcSDE plugin allows the GeoTools developer to work with the `ArcSDE <http://en.wikipedia.org/wiki/ArcSDE>`_ middle ware.
 
-The ArcSDE plugin has been with us since GeoTools 2.0 and is much loved; it took a brief vacation for GeoTools 2.4 as we had legal issues with jar distribution. Thanks to Saul and Gabriel for getting this module back on track.
-
+The ArcSDE plugin has been with us since GeoTools 2.0 and is much loved.
 Before you start
-
-* You will need to supply your own copy of the ArcSDE jars, we cannot distribute
-  them with GeoTools. Please make sure the required jars are available on
-  the CLASSPATH (if not the ArcSDE plugin will report itself as unavailable).
 
 References:
 
 * :doc:`gt-coverage arcsde <../coverage/arcsde>` raster code examples
+* `Esri ArcSDE documentation <http://help.arcgis.com/en/arcgisserver/10.0/help/arcgis_server_dotnet_help/index.html#/What_is_ArcSDE/009300000115000000/>`_
+
+Supported Versions
+^^^^^^^^^^^^^^^^^^
+The GeoTools ArcSDE plugin supports ArcSDE versions ``9.2``, ``9.3`` and ``10``, with their respective service packs. Support for prior
+versions (8.3 and 9.0/9.1) has been dropped since a long time due to lack of licenses for those versions of ArcSDE.
+
+Dependencies
+^^^^^^^^^^^^
+If you're building a project that needs the GeoTools ArcSDE plugin you're hopefuly using Apache Maven so you that you only declare a dependency against the GeoTools ArcSDE plugin
+and let Maven take care of the transitive dependencies (i.e. libraries the ArcSDE plugin depends on but your project doesn't directly).
+
+If that is not the case, the following are the full dependencies of the GeoTools ArcSDE plugin, plus the ones listed in the ref:`esri-jars` section::
+
+    org.geotools:gt-arcsde:jar:<VERSION>
+    +- org.geotools:gt-arcsde-common:jar:<VERSION>
+    |  +- commons-pool:commons-pool:jar:1.5.4    
+    |  \- com.ibm.icu:icu4j:jar:3.4.4    
+    +- jsqlparser:jsqlparser:jar:0.3.14    
+    +- org.geotools:gt-jdbc:jar:<VERSION>    
+    |  +- org.geotools:gt-api:jar:<VERSION>    
+    |  +- org.geotools:gt-main:jar:<VERSION>    
+    |  |  \- jdom:jdom:jar:1.0    
+    |  +- org.geotools:gt-data:jar:<VERSION>    
+    |  +- commons-dbcp:commons-dbcp:jar:1.3    
+    |  \- commons-collections:commons-collections:jar:3.1    
+    +- org.geotools:gt-coverage:jar:<VERSION>    
+    |  +- org.geotools:gt-referencing:jar:<VERSION>    
+    |  |  +- java3d:vecmath:jar:1.3.2    
+    |  |  \- org.geotools:gt-metadata:jar:<VERSION>    
+    |  |     \- org.geotools:gt-opengis:jar:<VERSION>    
+    |  |        \- net.java.dev.jsr-275:jsr-275:jar:1.0-beta-2    
+    |  +- com.vividsolutions:jts:jar:1.11    
+    |  |  \- xerces:xercesImpl:jar:2.7.1     (version managed from 2.4.0)
+    |  \- it.geosolutions.imageio-ext:imageio-ext-tiff:jar:1.0.8    
+    |     \- it.geosolutions.imageio-ext:imageio-ext-utilities:jar:1.0.8    
+    +- org.geotools:gt-epsg-hsql:jar:<VERSION>:provided
+    |  \- hsqldb:hsqldb:jar:1.8.0.7:provided
+    +- javax.media:jai_core:jar:1.1.3:provided
+    +- javax.media:jai_codec:jar:1.1.3:provided
+    +- javax.media:jai_imageio:jar:1.1:provided
+
+.. _esri-jars:
+
+Required Proprietary Libraries
+''''''''''''''''''''''''''''''
+
+Additionally, you'll need the following two jar files:
+
+* jsde_sdk.jar
+* jpe_sdk.jar
+
+We cannot distribute them with GeoTools. Please make sure the required jars are available on
+the CLASSPATH (if not the ArcSDE plugin will report itself as unavailable).
+
+They should be available once you installed the "ArcSDE Java SDK". For example, located in *arcsde install dir**/arcsdesdk/sdeexe92/lib/.
+Make sure you use the same version of the ``jsde_sdk.jar`` and ``jpe_sdk.jar`` libraries than your ArcSDE instance. Or at least that's what ESRI recommends, though
+in some cases we found using a higher version of those jars against a lower version of the ArcSDE instance does not hurt at all, or can even work or perform better.
+But definitely don't use a lower version of the jars against a higher version of ArcSDE.
+
+.. note:: As for version 10.0, ArcSDE is part of the ESRI ArcGIS Server stack, and you may need to request a separate media DVD to ESRI for the ArcSDE Java SDK
+ as it seems it doesn't come with the standard DVD set but you can get it by just asking for it.
+
+Supported Features
+^^^^^^^^^^^^^^^^^^
+* `Connection Pooling`: Allows to configure a DataStore to hold a number of connections to ArcSDE in order to improve performance under concurrency
+* `Transactions`: Support for native ArcSDE transactions is embedded into the GeoTools ArcSDE DataStore. Transaction support is available for any registered ArcSDE featureclass with a proper "unique identifier", either `SDE_MANAGED` or `USER_MANAGED`. Featureclasses with no `row id` are available read-only, as GeoTools needs a steady way of assigning Featrure Identifiers.
+* `Direct Connect`: Allows clients to directly connect to an SDE GEODB 9.2+ without a need of an SDE server instance           
+* `Versioning`:  An ArcSDEDataStore instance may connect to a specific ArcSDE database `version <http://help.arcgis.com/en/arcgisserver/10.0/help/arcgis_server_dotnet_help/index.html#/What_is_a_version/009300001612000000/>`_
+* `Geometry-less` Feature Types: "Non spatial" registered ArcSDE tables can be accessed as GeoTools FeatureTypes
+* `Spatial views`: Registered ArcSDE spatial-views are supported read-only.
+
 
 Configuration Parameters
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 To connect to an ArcSDE instance you must have the following parameters:
 
-+-----------------+------------------------------------------------------------------+
-| Parameter       | Description                                                      |
-+=================+==================================================================+
-|"server"         | Required: The machine which the ArcSDE instance is running on.   |
-+-----------------+------------------------------------------------------------------+
-|"port"           | Required: The port the ArcSDE instance is running on.            |
-|                 | The default is 5151                                              |
-+-----------------+------------------------------------------------------------------+
-|"instance"       | Optional: The ArcSDE instance name (generally "sde", or whatever |
-|                 | you called the database).                                        |
-+-----------------+------------------------------------------------------------------+
-|"user"           | Require: The name of the user to connect with.                   |
-+-----------------+------------------------------------------------------------------+
-|"passwd"         | Required: The password of the user you are connecting with.      |
-+-----------------+------------------------------------------------------------------+
-| "dbtype"        | Required: must be "arcsde"                                       |
-+-----------------+------------------------------------------------------------------+
++-----------------+-------------------------------------------------------------------+
+| Parameter       | Description                                                       |
++=================+===================================================================+
+| "dbtype"        | Required: must be "arcsde"                                        |
++-----------------+-------------------------------------------------------------------+
+|"server"         | Required: The machine which the ArcSDE instance is running on.    |
++-----------------+-------------------------------------------------------------------+
+|"port"           | Required: The port the ArcSDE instance is running on.             |
+|                 | The default is 5151, or if you're using Direct Connect, check the |
+|                 | :ref:`direct-connect`                                             |
+|                 | section for further information on how to format this parameter.  |
++-----------------+-------------------------------------------------------------------+
+|"instance"       | Optional: The ArcSDE instance name (generally "sde", or whatever  |
+|                 | you called the database).                                         |
++-----------------+-------------------------------------------------------------------+
+|"user"           | Required: The name of the user to connect with.                   |
++-----------------+-------------------------------------------------------------------+
+|"password"       | Required: The password of the user you are connecting with.       |
++-----------------+-------------------------------------------------------------------+
 
-As with PostGIS and Oracle configuration of the files directly also needs a 'dbtype' parameter equal to 'arcsde'.
 
 Advanced
 ''''''''
 
 There are also a number of optional parameters to configure the ArcSDE connection 'pool'. GeoTools makes use of a number of connections, but does a decent job of managing them, so that new connections need not be made for each request. The big reason for this is that some ArcSDE licenses only allow a limited number of connections, so these values can be adjusted to minimize the number of simultaneous connections. GeoTools will share the active connections instead of making new ones. Right now it requires at least two connections, as we were having some nasty bugs with ArcSDE connections going stale (only with certain instances, and only with spatial queries, which made debugging a big hassle). With some funded development work this could easily be improved, ArcSDE could definitely benefit from some more effort. If you have more connections available we do recommend upping the pool.maxConnections parameter. The meaning of these optional parameters is as follows:
 
-+-----------------------+------------------------------------------------------------------+
-| Parameter             | Description                                                      |
-+=======================+==================================================================+
-|"pool.minConnections"  | The number of connections the pool makes on start up. If needed  |
-|                       | these will be incremented.                                       |
-+-----------------------+------------------------------------------------------------------+
-|"pool.maxConnections"  | The maximum number of connections that a pool is allowed to      |
-|                       | make. This should be as high as possible, but there may be       |
-|                       | license limitations.                                             |
-+-----------------------+------------------------------------------------------------------+
-|"pool.timeOut"         | The amount of time that a connection request should wait for an  |
-|                       | unused connection before failing.                                |
-+-----------------------+------------------------------------------------------------------+
++----------------------------------+-----------------------------------------------------------------+
+| Parameter                       | Description                                                      |
++=================================+==================================================================+
+|"pool.minConnections"            | The number of connections the pool makes on start up. If needed  |
+|                                 | these will be incremented.                                       |
++---------------------------------+------------------------------------------------------------------+
+|"pool.maxConnections"            | The maximum number of connections that a pool is allowed to      |
+|                                 | make. This should be as high as possible, but there may be       |
+|                                 | license limitations.                                             |
++---------------------------------+------------------------------------------------------------------+
+|"pool.timeOut"                   | The amount of time that a connection request should wait for an  |
+|                                 | unused connection before failing.                                |
++---------------------------------+------------------------------------------------------------------+
+|"namespace"                      | A String literal representing the namespace URL FeatureTypes     |
+|                                 | created by this DataStore will be assigned to. E.g.:             |
+|                                 | ``http://my.company.com/testNamespace``                          |
++---------------------------------+------------------------------------------------------------------+
+|"database.version"               | The ArcSDE database version to use.                              |
++---------------------------------+------------------------------------------------------------------+
+|"datastore.allowNonSpatialTables"| ``true|false`` If enabled, registered non-spatial tables         |
+|                                 |  are also available.                                             |
++---------------------------------+------------------------------------------------------------------+
 
-ArcSDE DataStore
-^^^^^^^^^^^^^^^^
+.. _direct-connect:
 
-ArcSDE is becoming one of the main supported GeoServer DataStores, although its quite hard to maintain without a steady instance to reach, mostly due to the expense and license limitations of setting up ArcSDE instances. We have also found the underlying ESRI ArcSDE connection drivers a bit buggy (and the source is closed so we can't just fix them ourselves), and have also encountered problems that only seem to manifest themselves in certain instances, leading us to do some complicated work-arounds. We suspect the differing problems have to do with the backend data format, but could be different versions of ArcSDE. The DataStore was contributed by Gabriel Roldan and is maintained by Gabriel Roldan and Saul Farber, who are testing against ArcSDE 8.3, 9.0 and 9.2.
+Configuring an ArcSDE DataStore with Direct Connect
+'''''''''''''''''''''''''''''''''''''''''''''''''''
 
-All of the above qualifications aside, multiple GeoServer users are running production web-GIS systems using GeoServer-on-ArcSDE, and the ArcSDE datastore team has done much work in the last year both in the areas of datastore maintenance/bug-fixing, and adding much new functionality to the datastore itself. As of GeoServer 1.5.1, the ArcSDE extension download supports serving certain types of ArcSDE stored raster datasets and work to support more ArcSDE stored raster formats is ongoing.
+ESRI Direct Connect[ESRI DC] allows clients to directly connect to an SDE GEODB 9.2+ without a need of an SDE server instance, and is recommended for high availability environments, as it removes the ArcSDE gateway server as a single point of failure.
+ESRI DC needs additional platform dependent binary drivers and a working Oracle Client ENVIRONMENT (if connecting to an ORACLE DB). See `Properties of a direct connection to an ArcSDE geodatabase <http://webhelp.esri.com/arcgisserver/9.3/java/index.htm#geodatabases/setting1995868008.htm>`_ in the ESRI ArcSDE documentation for more information on Direct Connect, and `Setting up clients for a direct connection <http://webhelp.esri.com/arcgisserver/9.3/java/index.htm#geodatabases/setting1995868008.htm>`_ for information about connecting to the different databases supported by ArcSDE.
 
-Install
-^^^^^^^
+The GeoTools ArcSDE configuration parameters are the same as in the `Configuration Parameters` section above, with a couple differences in how to format the parameters:
 
-For connecting both to ArcSDE 8.x and 9.x you will need the jsde and jpe jars for version 9.x, since the geotools arcsde plugin that GeoServer depends on is built against them. These jars can be found in the following locations:
+ * server: In ESRI Direct Connect Mode a value must be given or the Direct Connect Driver will throw an error, so just put a 'none' there - any String will work!
+ * port: In ESRI Direct Connect Mode the port has a String representation: `sde:oracle10g`, `sde:oracle11g:/:test`, etc. For further information check `ArcSDE connection syntax <http://webhelp.esri.com/arcgisserver/9.3/java/geodatabases/arcsde-2034353163.htm>`_ at the official ArcSDE documentation from ESRI.
+ * instance: In ESRI Direct Connect Mode a value must be given or the Direct Connect Driver will throw an error, so just put a 'none' there - any String will work!
+ * user: The username to authenticate with the geo database.
+ * password: The password associated with the above username for authentication with the geo database.
 
-ArcSDE 9.0: jsde90_sdk.jar and jpe90_sdk.ja
-    
-    Located on **arcsde install dir**/arcsdesdk/sdeexe90/lib/
-    
-    ArcSDE 9.0 Service Pack 3 SDK Download
+.. note:: Be sure to assemble the password like: password@<Oracle Net Service name> for Oracle
 
-ArcSDE 9.1: jsde91_sdk.jar and jpe91_sdk.ja
-    
-    Located in **arcsde install dir**/arcsdesdk/sdeexe91/lib/
-    
-    ArcSDE 9.1 Update 3 SDK Download
 
-ArcSDE 9.2: jsde92_sdk.jar jpe92_sdk.jar and also icu4j_3_2.jar
-     
-    Located in *arcsde install dir**/arcsdesdk/sdeexe92/lib/
-    
-    ArcSDE 9.2 Service Pack 2 SDK Download also get icu4j_3_2.jar
+Access
+^^^^^^
+
+There's nothing special from the GeoTools API point of view in accessing an ArcSDE server. Just use the regular GeoTools DataStore creation mechanism with the correct parameters::
   
-Note that these jars are backwards compatible, so if you need to access an 8 and a 9 instance you can just use the newer jars. If you've used the CD to install the ArcSDE client on your computer than it likely copied the jars in to your JRE and they should be available. Check [GEOSDOC:JAVA_HOME]/lib/ext for the jars.
+  Map map = new HashMap();
+  map.put( "dbtype", "arcsde" );
+  map.put( "server", "my.arcsdeserver.com" );
+  map.put( "port", "5151" );
+  map.put( "instance", "sde" );
+  map.put( "user", "sde" );
+  map.put( "password", "secret" );
 
-Implementation Notes
-^^^^^^^^^^^^^^^^^^^^
-
-A lot of improvements were done for the ArcSDE DataStore implementation that were introduced at the GeoTools 2.4.2 stable version (followed by GeoServer 1.6.3) and 2.5 development branch (followed by uDig 1.2.x).
-
-The ArcSDE DataStore features comprise:
-
-* The ArcSDE GeoTools plugin features vector and raster "featureclass" support.
-* Read/Write support of ArcSDE registered "Layers"
-* Read only support for ArcSDE registered spatial views (new)
-* Ability to edit versioned layers by only editing the default version (new)
-* Native transaction support (new)
-* Concurrent access during transaction (new)
-* Improved concurrency handling by using a per connection work queue
-
-Wish List
-
-At the time of writing the following is a wish list of improvements and new features that we'd like to implement
-
-* Support for non spatial, registered tables
-* Ability to define a run-time, read-only FeatureType based on a SQL query (this is implemented but lacks further testing)
-* Getting the JSDE and JPE jar files
-
-GeoServer Install
-'''''''''''''''''
-
-GeoServer supports ArcSDE 8 and 9, users have reported success on 8.3, 9.0, 9.1 and 9.2. In the past, the GeoServer downloads included the ESRI-distributed ArcSDE client jars (jsde_sdkXX.jar and others). However, due to unclear licensing terms, we decided to discontinue this practice as anyone who has a copy of the ArcSDE install media already has these jars on the installation media itself. In addition, end-users can download the latest ArcSDE client jars for any given ArcSDE version from the ERSI website without clicking through any EULA pages (see the table below for URLs). So the first step in getting GeoServer working is installing the proper arcsde java libraries.
-
-If not you can copy the appropriate jars from a GeoServer install (see geoserver/WEB-INF/lib)
-
-For Unix installs, you may need to check the permissions on the jar files that are added to the GeoServer library directory. Be sure that they correspond to a user and group that can be read by GeoServer.
-
-* In the info.xml file the <name> parameter of the featureType may need to be the full qualified
-  type name. It should be <instance>.<table_owner>.<table_name>, so in the example above a table
-  called roads should be named sde.testsde.roads.
+  DataStore dataStore = DataStoreFinder.getDataStore( Map map );
+  String typeName = dataStore.getTypeNames()[0];
   
-  But some users have also reported success without the instance prepended.
+  FeatureSource source = dataStore( typeName );
+  
+  Filter filter = CQL.toFilter("BBOX(SHAPE, -180,-90,0,0)");
+  FeatureCollection collection = source.getFeatures( filter );
+  FeatureIterator iterator = collection.iterator();
+  try {
+      while( iterator.hasNext() ){
+           Feature feature = (Feature) iterator.next();
+           ...
+      }
+  }
+  finally {
+     collection.close( iterator );
+  }
 
-* ArcSDE GeoServer Extension
-  
-  Next you'll want to download the appropriate ArcSDE jar from GeoServer Extensions.
-  
-  To install the ArcSDE GeoServer Extension with GeoServer version 1.5.1+, simply copy the
-  downloaded zip file into your GeoServer WEB-INF directory GEOSERVER_HOME/webapps/geoserver/WEB-INF/lib
-  Then unzip it in-place in that directory.
-  
-  To install the ArcSDE GeoServer Extension with GeoServer versions 1.5.0 or earlier, copy the downloaded
-  zip file into your GeoServer library directory:
-  
-  * WAR: webapps/geoserver/WEB-INF/lib
-  * Binary: GEOSERVER_HOME/server/geoserver/WEB-INF/lib
-  
-  Then unzip it in-place in that directory.
 
-* Using the ArcSDE GeoServer Extension
-  
-  After you've done that restart GeoServer and you should now have ArcSDE as an option in the drop down menu
-  from the web admin tool at Config -> Data -> Stores -> New and also at Config -> Data -> CoverageStores -> New
+Type Names
+''''''''''
 
-* GeoServer 1.5.1 or above
-  
-  Starting with the GeoServer ArcSDE Extension version 1.5.1, there is preliminary support for
-  serving Rasters stored inside ArcSDE, either as WMS layers or as WCS layers.
-  
-  Connecting to an ArcSDE Raster Layer is done by creating a new CoverageStore
-  (Config -> Data -> CoverageStores -> New) and choosing "ArcSDE Raster Format" from the pull-down list.
-  
-  To connect to a particular ArcSDE raster layer, you must supply an ArcSDE connection URL
-  in the CoverageStore Editor page. These ArcSDE connection URLs use the following syntax::
-    
-    sde://user:pass@host[GEOSDOC::port]/[GEOSDOC:instance]#raster_table_name[GEOSDOC:;extra_param=extra_value]
-  
-  Here's an example::
-    
-    sde://scott:tiger@localhost:5151/gis#SDE.MY_RASTER_TABLE;LZERO_ORIGIN_TILE=0,1438
+ArcSDE plugin's "Feature Type Names" are fully qualified, unlike other GeoTools DataStores.
+That means that ``DataStore.getTypeNames()`` will return the list of spatial tables in a qualified form, as per the 
+`SeLayer.getQualifiedName() <http://help.arcgis.com/en/geodatabase/10.0/sdk/arcsde/api/japi/docs/com/esri/sde/sdk/client/SeLayer.html#getQualifiedName()>`_ ESRI ArcSDE Java API call.
+For example, ``JOHN.GIS.PARCELS`` instead of just ``PARCELS``, where ``JOHN`` is the user name
+the plugin connected to ArcSDE with, and ``GIS`` is the name of the database it's connecting to. 
 
-   NOTE: Since CoverageStores are linked to a URL, you must create a new CoverageStore for each raster
-   layer you wish to serve.
-   
-   Raster layers will try to find an already-existing ArcSDE Connection Pool to connect
-   to the ArcSDE server. If there are other ArcSDE feature layers being served from your
-   GeoServer instance then the ArcSDE raster code will simply use those connections. Otherwise a new ConnectionPool will be created with default settings.
 
 
 

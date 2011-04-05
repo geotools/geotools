@@ -1,7 +1,7 @@
 Internals
 ---------
 
-The Internals of gt-data provide assistance to those writing new format support for the DataStore API with a wealth of abstract classes to extend, and utility classes performing common functions.
+The internals of gt-data provide assistance to those writing new format support for the DataStore API with a wealth of abstract classes to extend, and utility classes performing common functions.
 
 ContentDataStore
 ^^^^^^^^^^^^^^^^

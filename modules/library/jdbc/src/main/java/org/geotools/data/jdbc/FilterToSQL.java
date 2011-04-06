@@ -976,7 +976,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         // JD: the above is no longer true, so instead do a safe conversion
         if(target != null) {
             // use the target type
-            if (target.isAssignableFrom(Number.class)) {
+            if (Number.class.isAssignableFrom(target)) {
                 literal = Converters.convert(expression.evaluate(null), target, 
                         new Hints(ConverterFactory.SAFE_CONVERSION, true));    
             }

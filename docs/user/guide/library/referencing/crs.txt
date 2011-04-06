@@ -4,6 +4,7 @@ CRS
 We have provided the **CRS** helper class as your first point of call when working with the referencing module. This class allows you to quickly accomplish the most common referencing tasks.
 
 References:
+
 * http://docs.geotools.org/stable/javadocs/org/geotools/referencing/CRS.html
 
 *Before you Start*

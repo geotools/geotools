@@ -1,0 +1,10 @@
+Icon
+----
+
+The gt-render module supplies two factories that can be used to teach the rendering system about your custom icons.
+
+MarkFactory
+^^^^^^^^^^^
+
+ExternalGraphicsFactory
+^^^^^^^^^^^^^^^^^^^^^^^

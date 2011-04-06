@@ -1,0 +1,179 @@
+Style
+-----
+
+GeoTools Rendering process is controlled styling information that you provide. The data structures we use to describe styling are based on the Style Layer Descriptor (SLD) and Symbology Encoding (SE) specifications provided by the OGC. The SLD specification defines an XML document you can use to save and load your styles.
+
+The SLD specification is used to document how a Web Map Server draws layers. For most of your time in GeoTools you will be using Style and ignoring the rest.
+
+References:
+
+* http://www.opengeospatial.org/standards/sld (style layer descriptor)
+* http://www.opengeospatial.org/standards/symbol (symbology encoding)
+
+Style Layer Descriptor
+^^^^^^^^^^^^^^^^^^^^^^
+
+The styling constructs form a data model that can represent a style layer descriptor; not all of these constructs are that useful outside of a web map server implementation. That said if you are letting a user manage styles you will want to let them provide names and titles and general organize what is going on.
+
+Styling for a Map is captured with three initial classes:
+
+* StyledLayerDescriptor representing the styling information for an entire Map
+* NamedLayer defines FeatureTypeConstraints to test if the style is applicable to your data, and a list of Style
+* Style defines how features or Rasters are to be drawn
+
+
+.. image:: /images/sld.gif
+
+Create
+''''''
+
+To create a StyleLayerDescriptor object using a StyleFactory::
+        
+        StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory(null);
+        StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
+        sld.setName("example");
+        sld.setAbstract("Example Style Layer Descriptor");
+        {
+            UserLayer layer = styleFactory.createUserLayer();
+            layer.setName("layer");
+            {
+                FeatureTypeConstraint constraint = styleFactory.createFeatureTypeConstraint(
+                        "Feature", Filter.INCLUDE, null);
+                
+                layer.layerFeatureConstraints().add(constraint);
+            }
+            {
+                Style style = styleFactory.createStyle();
+                
+                style.getDescription().setTitle("Style");
+                style.getDescription().setAbstract( "Definition of Style" );
+                
+                // define feature type styles used to actually
+                // define how features are rendered
+                //
+                layer.userStyles().add(style);
+            }
+            sld.layers().add(layer);
+        }
+
+This is the last time we will talk about StyleLayerDescriptor object - it is not really that useful in controlling the rendering process.
+
+To go from a StyleLayerDescriptor object to something useful::
+  
+  FeatureTypeStyle useful[] = SLD.featureTypeStyles( sld );
+
+Or find one that is applicable to a specific feature type::
+  
+  FeatyreTyleStyle applicable = SLD.featureTypeStyle( sld, schema );
+
+Symbology Encoding
+^^^^^^^^^^^^^^^^^^
+
+The feature type style data model captures the symbology encoding information describing how a feature should be drawn on the screen. The FeatureTypeStyle data structure is going to focus on testing the content to make sure it it should be drawn by the current style.
+
+
+.. image:: /images/se.gif
+
+For most practical purposes you will set featureTypeName to be "feature".
+
+FeatureTypeStyle
+''''''''''''''''
+
+When defining a Style you will spend the majority of time working with FeatureTypeStyle.  A FeatureTypeStyle is specifically geared toward drawing features.
+
+The level of detail is similar to CSS in that you need to define some Rules saying when to draw, and some symbolizers saying how to draw it. Individual symbolizers will use expressions to access feature content (as an example TextSymbolizer will use an expression you provide to construct the text to display).
+
+* FeatureTypeStyle.name: machine readable name
+* FeatureTypeStyle.descriptor: human readable title and description
+* FeatureTypeStyle.featureTypeName: the name here is important; it must match the Features you want to draw.
+  
+  Features will be rendered according a FeatureTypeStyle only if their
+  FeatureType name matches what is recorded in the FeatureTypeStyle or a
+  descendant.
+
+* FeatureTypeStyle.semanticTypeIdentifier
+
+Here is a quick example that will draw any "Feature" using a PointSymbolizer::
+
+        StyleBuilder styleBuilder = new StyleBuilder();
+        Style style = styleBuilder.createStyle();        
+        {
+            {   PointSymbolizer pointSymbolizer = styleBuilder.createPointSymbolizer();
+            
+                {   Graphic graphic = styleBuilder.createGraphic();
+                    ExternalGraphic external = styleBuilder.createExternalGraphic( "file:///C:/images/house.gif", "image/gif");
+                    graphic.graphicalSymbols().add( external );
+                    graphic.graphicalSymbols().add( styleBuilder.createMark("circle"));
+                    
+                    pointSymbolizer.setGraphic(graphic);
+                }
+                Rule rule = styleBuilder.createRule(pointSymbolizer);            
+                FeatureTypeStyle featureTypeStyle = styleBuilder.createFeatureTypeStyle("Feature", rule );
+                style.featureTypeStyles().add( featureTypeStyle );
+            }
+        }
+
+Of note is how the PointSymbolizer will first try and use C:\images\house.gif (ie an external graphic) and if that fails it will use a circle (ie a mark).
+
+Rule
+''''
+
+FeatureTypeStyle used **featureTypename** to sort out what kind of features we are dealing with. Rules are used to refine this contents, possibly filtering according to feature attributes or scale, to determine specifically what we are going to draw.
+
+Pay Attention to:
+
+* minimum and maximum map scale, if set and the current scale is outside the specified range, the rule won't apply and thus its symbolizers won't be used
+* Filter that is used to select features to draw, only the features matching the filter will be painted 
+* A rule can have an "else filter". This special kind of filter catches all of the features that still haven't been symbolized by previous rules with a regular filter).
+
+Once FeatureTypeStyle and Rules have determined that a Feature is going to be drawn; the Rule makes use of a list of of Symbolizers to define how the content is painted:
+
+* A Symbolizer describes how to represent a feature on the screen based on the feature contents (geometry and attributes). 
+* Each rule can have a list of Symbolizer attached to it.
+* symbolizers are used like a display language to produce pixels on the display device. 
+
+TextSymbolizer
+''''''''''''''
+
+Used to control the labelling system; labels are generated by TextSymbolizers and
+thrown into the rendering engine which detect overlaps, sorts things out according
+to priorities you have defined and decides on a final label placement.
+
+LineSymbolizer
+''''''''''''''
+
+Used to control how lines (or edges) are drawn.
+
+PolygonSymbolizer
+'''''''''''''''''
+
+Used to control how solid shapes are drawn.
+
+
+Example of creating a quick PolygonSymbolizer::
+
+        // quick polygon symbolizer
+        StyleBuilder styleBuilder = new StyleBuilder();
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        
+        PolygonSymbolizer polygonSymbolizer = styleBuilder.createPolygonSymbolizer( Color.BLUE );
+        polygonSymbolizer.getFill().setOpacity(ff.literal(0.5) ); // 50% blue
+        
+        polygonSymbolizer.setStroke( styleBuilder.createStroke(Color.BLACK, 2.0));
+
+        // will create a default feature type style and rule etc...
+        //
+        Style style = styleBuilder.createStyle( polygonSymbolizer );
+
+
+
+Point Symbolizer
+''''''''''''''''
+
+Used to draw a point location, the actual graphic drawn is referred to as a Mark with the option to use
+some well known marks (circle, square etc..) or your own external graphics such as PNG icons.
+
+Raster Symbolizer
+'''''''''''''''''
+
+Used to control the rendering of raster data with full "color map" control.

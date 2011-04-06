@@ -16,7 +16,6 @@ The GeoTools library is organised into a series of jars. These jars form a softw
    main/index
    data/index
    jdbc/index
-   render/index
-   xml/index
    cql/index
-
+   xml/index
+   render/index

@@ -47,7 +47,6 @@ You will be using JTS a lot as it literally is the "shape" of GeoTools. It captu
 
 With those notes it may sound like JTS is limited; it is instead focused on the task at hand - Geographic Information Systems. While 3D and curves may be common in CAD systems we will need a lot of funding and raw science to make it work for GIS. Some of that work is happening in GeoTools with ISO Geometry.
 
-
 **Geometry Specifications**
 
 JTS is an implementation of the OGC Simple Features for SQL Specification (ie SFSQL). It covers 2D constructs like Point, Line and Polygon. JTS is willing to carry a 3rd point around but does not use it for calculations - making it a 2.5D solution for cartesian space.

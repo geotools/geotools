@@ -32,4 +32,4 @@ Unsupported plugins:
 
 The JDBC module is used as the base for all JDBC/database backed datastores. Alone it does not contain any useful functionality. The useful functionality is contained within modules specific to a particular database. 
 
-..image:: /images/gt-jdbc.png
+.. image:: /images/gt-jdbc.png

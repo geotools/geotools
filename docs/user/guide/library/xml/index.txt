@@ -4,4 +4,4 @@ XML
 Supports the parsing and encoding of geospatial information using XML.
 
 
-..image:: /images/gt-xml.png
+.. image:: /images/gt-xml.png

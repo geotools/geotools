@@ -21,10 +21,9 @@ Connection Parameters
 Creating
 ^^^^^^^^
 
-Here is a quick example::
+Here is a quick example:
 
-  Map params = new HashMap();
-  params.put("dbtype", "h2");
-  params.put("database", "geotools");
-  
-  DataStore datastore = DataStoreFinder.getDataStore(params);
+.. literalinclude:: /../src/main/java/org/geotools/data/SimpleFeatureStoreExamples.java
+   :language: java
+   :start-after: // h2Example start
+   :end-before: // h2Example end

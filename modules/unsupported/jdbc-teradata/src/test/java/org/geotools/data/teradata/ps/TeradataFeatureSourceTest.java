@@ -16,7 +16,7 @@
  */
 package org.geotools.data.teradata.ps;
 
-import org.geotools.data.teradata.TeradataGISDialect;
+import org.geotools.data.teradata.TeradataPSDialect;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCFeatureSourceTest;
@@ -39,7 +39,7 @@ public class TeradataFeatureSourceTest extends JDBCFeatureSourceTest {
 
     public void testEstimatedBounds() throws Exception {
         // enable fast bbox
-        ((TeradataGISDialect) ((JDBCDataStore) dataStore).getSQLDialect()).setEstimatedExtentsEnabled(true);
+        ((TeradataPSDialect) ((JDBCDataStore) dataStore).getSQLDialect()).setEstimatedExtentsEnabled(true);
 
         ReferencedEnvelope bounds = dataStore.getFeatureSource("ft1").getBounds();
         assertEquals(0l, Math.round(bounds.getMinX()));

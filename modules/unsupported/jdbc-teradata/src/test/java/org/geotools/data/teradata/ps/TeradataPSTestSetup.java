@@ -23,18 +23,22 @@ import org.geotools.jdbc.JDBCDataStore;
 
 public class TeradataPSTestSetup extends TeradataTestSetup {
 
+	private static boolean first = true;
+	
     @Override
     protected void setUpDataStore(JDBCDataStore dataStore) {
         super.setUpDataStore(dataStore);
 
-        // uncomment to turn up logging        
-  java.util.logging.ConsoleHandler handler = new java.util.logging.ConsoleHandler();
-  handler.setLevel(java.util.logging.Level.FINE);
-  org.geotools.util.logging.Logging.getLogger("org.geotools.data.jdbc").setLevel(java.util.logging.Level.FINE);
-  org.geotools.util.logging.Logging.getLogger("org.geotools.data.jdbc").addHandler(handler);
-  org.geotools.util.logging.Logging.getLogger("org.geotools.jdbc").setLevel(java.util.logging.Level.FINE);
-  org.geotools.util.logging.Logging.getLogger("org.geotools.jdbc").addHandler(handler);
-       
+        if (first) {
+	        // uncomment to turn up logging        
+//	        java.util.logging.ConsoleHandler handler = new java.util.logging.ConsoleHandler();
+//	        handler.setLevel(java.util.logging.Level.FINE);
+//	        org.geotools.util.logging.Logging.getLogger("org.geotools.data.jdbc").setLevel(java.util.logging.Level.FINE);
+//	        org.geotools.util.logging.Logging.getLogger("org.geotools.data.jdbc").addHandler(handler);
+//	        org.geotools.util.logging.Logging.getLogger("org.geotools.jdbc").setLevel(java.util.logging.Level.FINE);
+//	        org.geotools.util.logging.Logging.getLogger("org.geotools.jdbc").addHandler(handler);
+	        first = false;
+        }       
         // for this test we need a PS based dialect
         TeradataPSDialect dialect = new TeradataPSDialect(dataStore, (TeradataGISDialect) dataStore.getSQLDialect());
         dialect.setLooseBBOXEnabled(false);

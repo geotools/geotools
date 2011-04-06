@@ -13,7 +13,7 @@ Supports access to feature information (ie vector information) from a range of d
    export
    internal
 
-Referencing plugins:
+DataStore plugins:
 
 .. toctree::
    :maxdepth: 1

@@ -9,7 +9,7 @@ Supports accessing information databases using the Java JDBC library.
    datastore
    internal
 
-Referencing plugins:
+DataStore plugins:
 
 .. toctree::
    :maxdepth: 1

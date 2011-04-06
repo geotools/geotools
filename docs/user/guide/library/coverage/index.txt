@@ -10,7 +10,7 @@ Supports the use of coverage information (ie raster) from a range of sources.
    internal/index
    internal/jdbc
 
-Referencing plugins:
+Format plugins:
 
 .. toctree::
    :maxdepth: 1

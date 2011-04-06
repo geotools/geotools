@@ -56,6 +56,9 @@ import java.util.logging.Logger;
  * @version $Id: CQLGrammar.jjt 24966 2007-03-30 11:33:47Z vmpazos $
  */
 public class CQLParser {
+
+  private final static Logger LOGGER = Logger.getLogger(CQLParser.class.getName());
+   
   public void jjtreeOpenNodeScope(Node n) throws ParseException {
  
   }
@@ -63,7 +66,6 @@ public class CQLParser {
   public void jjtreeCloseNodeScope(Node n) throws ParseException {
 
   }
-private static final Logger LOGGER = Logger.getLogger(CQLParser.class.getName());
 
   /**
    * initialize geooperations
@@ -88,8 +90,6 @@ private static final Logger LOGGER = Logger.getLogger(CQLParser.class.getName())
   		boolean OK = 
         			 "(".equals(getToken(2).image)
             		&& GEOOP.contains(tokenImage);
-
-
         return OK;
   }
   
@@ -103,6 +103,32 @@ private static final Logger LOGGER = Logger.getLogger(CQLParser.class.getName())
   
         return "(".equals(getToken(2).image)
             && RELGEOOP.contains(getToken(1).image.toUpperCase());
+  }
+  
+  protected void logDeprecatedWarning(String op ){
+   
+  	 boolean deprecated = true;
+  	 String shouldUse = "";
+  	 if("!".equals(op)){
+  	 	shouldUse = "not";
+  	 } else if( ("eq".equals(op)) || ("==".equals(op)) ){
+  	 	shouldUse= "=";
+  	 } else if("neq".equals(op)){
+  	 	shouldUse= "<>";
+  	 } else if("gt".equals(op)){
+  	 	shouldUse= ">";
+  	 } else if("lt".equals(op)){
+  	 	shouldUse= "<";
+  	 } else if("gte".equals(op)){
+  	 	shouldUse= ">=";
+  	 } else if("lte".equals(op)){
+  	 	shouldUse= "<=";
+	 } else {
+  		 deprecated = false;
+	 }
+	 if(deprecated){
+		LOGGER.warning("\"" + op +"\" is deprecated comparison operator. You should use \"" + shouldUse + "\"");
+	}
   }
   
 }
@@ -346,7 +372,7 @@ void BooleanTerm() #void :
 void BooleanFactor() #void:
 {}
 {
-	 	<NOT> BooleanPrimary() #Boolean_Not_Node
+	 	<NOT> {logDeprecatedWarning(getToken(0).image);} BooleanPrimary() #Boolean_Not_Node
 	|	BooleanPrimary()
 }
 
@@ -380,7 +406,7 @@ void Predicate() #void:
 		| 	LOOKAHEAD(3)ExistencePredicate() 
 		| 	LOOKAHEAD(3)TemporalPredicate() 
 		|   LOOKAHEAD(3)BetweenPredicate()		
-		|	ComparissonPredicate() 
+		|	 {logDeprecatedWarning(getToken(1).image);} ComparisonPredicate()
 	)
 }
 
@@ -573,15 +599,15 @@ void IncludeExcludePredicate() #void:
  * <comparison predicate> ::= 
  *		  <attribute name> <comp op> <literal>
  */
-void ComparissonPredicate() :
+void ComparisonPredicate() :
 {}
 {
-   	 <EQ> 	Expression() #ComparissonPredicate_EQ_Node
-   | <GT> 	Expression() #ComparissonPredicate_GT_Node
-   | <LT> 	Expression() #ComparissonPredicate_LT_Node
-   | <GTE> 	Expression() #ComparissonPredicate_GTE_Node
-   | <LTE>	Expression() #ComparissonPredicate_LTE_Node
-   | <NEQ> 	Expression() #ComparissonPredicate_Not_Equal_Node
+   	 <EQ>  Expression() #COMPARISONPREDICATE_EQ_Node 
+   | <GT>  Expression() #COMPARISONPREDICATE_GT_Node
+   | <LT>  Expression() #COMPARISONPREDICATE_LT_Node
+   | <GTE> Expression() #COMPARISONPREDICATE_GTE_Node
+   | <LTE> Expression() #COMPARISONPREDICATE_LTE_Node
+   | <NEQ> Expression() #COMPARISONPREDICATE_Not_Equal_Node
 }
 
 /*

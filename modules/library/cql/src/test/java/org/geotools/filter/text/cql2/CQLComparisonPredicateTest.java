@@ -19,6 +19,7 @@ package org.geotools.filter.text.cql2;
 
 import org.geotools.filter.text.commons.CompilerUtil;
 import org.geotools.filter.text.commons.Language;
+import org.geotools.filter.text.ecql.ECQLComparisonPredicateTest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.filter.And;
@@ -103,7 +104,33 @@ public class CQLComparisonPredicateTest {
 
         Assert.assertEquals("not equal compare filter error", expected, actual);
 
+        // attr = 5
+        expected = FilterCQLSample.getSample(FilterCQLSample.EQ_FILTER);
+
+        actual = CompilerUtil.parseFilter(this.language, FilterCQLSample.EQ_FILTER);
+
+        Assert.assertNotNull("expects filter not null", actual);
+
+        Assert.assertEquals("equal compare filter error", expected, actual);
     }
+    
+    /**
+     * Equals predicate sample
+     * 
+     * @see ECQLComparisonPredicateTest
+     * 
+     * @throws Exception
+     * @Deprecated
+     */
+    @Test
+    public void deprecatedPredicate() throws Exception{
+
+        CQL.toFilter("POP_RANK eq 6"); 
+        CQL.toFilter("POP_RANK neq 6"); 
+        CQL.toFilter("POP_RANK lte 6");
+        CQL.toFilter("! (POP_RANK = 6)");
+    }
+    
     
     /**
      * Tests attribute names in comparison predicate

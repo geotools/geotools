@@ -272,16 +272,16 @@ public class CQLCompiler extends CQLParser implements ICompiler{
             // ----------------------------------------
             // Compare predicate actions
             // ----------------------------------------
-        case JJTCOMPARISSONPREDICATE_EQ_NODE:
-        case JJTCOMPARISSONPREDICATE_GT_NODE:
-        case JJTCOMPARISSONPREDICATE_LT_NODE:
-        case JJTCOMPARISSONPREDICATE_GTE_NODE:
-        case JJTCOMPARISSONPREDICATE_LTE_NODE:
+        case JJTCOMPARISONPREDICATE_EQ_NODE:
+        case JJTCOMPARISONPREDICATE_GT_NODE:
+        case JJTCOMPARISONPREDICATE_LT_NODE:
+        case JJTCOMPARISONPREDICATE_GTE_NODE:
+        case JJTCOMPARISONPREDICATE_LTE_NODE:
             return buildBinaryComparasionOperator(cqlNode.getType());
 
-        case JJTCOMPARISSONPREDICATE_NOT_EQUAL_NODE:
+        case JJTCOMPARISONPREDICATE_NOT_EQUAL_NODE:
 
-            Filter eq = buildBinaryComparasionOperator(JJTCOMPARISSONPREDICATE_EQ_NODE);
+            Filter eq = buildBinaryComparasionOperator(JJTCOMPARISONPREDICATE_EQ_NODE);
             Not notFilter = this.builder.buildNotFilter(eq);
 
             return notFilter;
@@ -635,7 +635,7 @@ public class CQLCompiler extends CQLParser implements ICompiler{
 
         switch (node.getNodeType()) {
         case JJTDATETIME_NODE:
-            filter = buildBinaryComparasionOperator(JJTCOMPARISSONPREDICATE_LT_NODE);
+            filter = buildBinaryComparasionOperator(JJTCOMPARISONPREDICATE_LT_NODE);
 
             break;
 
@@ -700,7 +700,7 @@ public class CQLCompiler extends CQLParser implements ICompiler{
 
         switch (result.getNodeType()) {
         case JJTDATETIME_NODE:
-            filter = buildBinaryComparasionOperator(JJTCOMPARISSONPREDICATE_GT_NODE);
+            filter = buildBinaryComparasionOperator(JJTCOMPARISONPREDICATE_GT_NODE);
 
             break;
 
@@ -734,19 +734,19 @@ public class CQLCompiler extends CQLParser implements ICompiler{
             int filterType) throws CQLException {
 
         switch (filterType) {
-        case JJTCOMPARISSONPREDICATE_EQ_NODE:
+        case JJTCOMPARISONPREDICATE_EQ_NODE:
             return this.builder.buildEquals();
 
-        case JJTCOMPARISSONPREDICATE_GT_NODE:
+        case JJTCOMPARISONPREDICATE_GT_NODE:
             return this.builder.buildGreater();
 
-        case JJTCOMPARISSONPREDICATE_LT_NODE:
+        case JJTCOMPARISONPREDICATE_LT_NODE:
             return this.builder.buildLess();
 
-        case JJTCOMPARISSONPREDICATE_GTE_NODE:
+        case JJTCOMPARISONPREDICATE_GTE_NODE:
             return this.builder.buildGreaterOrEqual();
 
-        case JJTCOMPARISSONPREDICATE_LTE_NODE:
+        case JJTCOMPARISONPREDICATE_LTE_NODE:
             return this.builder.buildLessOrEqual();
 
         default:

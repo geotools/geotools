@@ -65,6 +65,7 @@ public class FilterCQLSample {
     public static final String LESS_FILTER_SAMPLE = "ATTR1 < 1";
     public static final String LESS_EQ_FILTER_SAMPLE = "ATTR1 <= 1";
     public static final String NOT_EQ_FILTER = "ATTR1 <> 1";
+	public static final String EQ_FILTER = "ATTR1 = 1";
     public static final String FILTER_WITH_PAREN_ROUNDTRIP_EXPR = "ATTR1 > ((1 + 2) / 3)";
     public static final String FILTER_WITH_NESTED_PAREN_EXPR = "ATTR1 < (1 + ((2 / 3) * 4))";
     public static final String FILTER_SIMPLE_EXPR = "ATTR1 > 1 + 2";
@@ -146,6 +147,7 @@ public class FilterCQLSample {
     public static final String BETWEEN_FILTER = "ATTR1 BETWEEN 10 AND 20";
     public static final String NOT_BETWEEN_FILTER = "ATTR1 NOT BETWEEN 10 AND 20";
 
+
     /** Catalog of samples */
     public static Map<String,Object> SAMPLES = new HashMap<String,Object>();
 
@@ -165,6 +167,10 @@ public class FilterCQLSample {
             // ---------------------------------------
             filter = FACTORY.not(FACTORY.equals(FACTORY.property("ATTR1"), FACTORY.literal(1)));
             SAMPLES.put(NOT_EQ_FILTER, filter);
+
+            // ---------------------------------------
+            filter = FACTORY.equals(FACTORY.property("ATTR1"), FACTORY.literal(1));
+            SAMPLES.put(EQ_FILTER, filter);
 
             // ---------------------------------------
             filter = FACTORY.greater(FACTORY.property("ATTR1"),

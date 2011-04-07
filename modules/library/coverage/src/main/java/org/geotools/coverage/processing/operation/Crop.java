@@ -272,9 +272,15 @@ public class Crop extends Operation2D {
              (roiParameter == null || roiParameter.getValue() ==null)                )
             throw new CannotCropException(Errors.format(ErrorKeys.NULL_PARAMETER_$2, PARAMNAME_ENVELOPE, GeneralEnvelope.class.toString()));
 
-        if(envelopeParameter.getValue() != null) {
-            cropEnvelope = new GeneralEnvelope((Envelope) envelopeParameter.getValue()); // may be null
+        Object envelope = envelopeParameter.getValue(); 
+        if (envelope != null){
+            if (envelope instanceof GeneralEnvelope){
+                cropEnvelope = (GeneralEnvelope) envelope;
+            } else if (envelope instanceof Envelope){
+                cropEnvelope = new GeneralEnvelope((Envelope)envelope);
+            } 
         }
+        // may be null
 
         // Check crop ROI
         try {

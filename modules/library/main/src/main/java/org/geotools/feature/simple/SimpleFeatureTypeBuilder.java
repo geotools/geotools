@@ -154,6 +154,7 @@ public class SimpleFeatureTypeBuilder {
 	 */
 	protected String defaultGeometry;
 
+	protected boolean defaultCrsSet = false;
     /**
      * default coordinate reference system of the type
      */
@@ -251,6 +252,7 @@ public class SimpleFeatureTypeBuilder {
 		description = null;
 		restrictions = null;
 		attributes = null;
+		defaultCrsSet = false;
 		defaultCrs = null;
 		isAbstract = false;
 		superType = BasicFeatureTypes.FEATURE;
@@ -342,6 +344,7 @@ public class SimpleFeatureTypeBuilder {
      */
     public void setCRS(CoordinateReferenceSystem crs) {
         this.defaultCrs = crs;
+        this.defaultCrsSet = true; // set to true even if crs is null to avoid warning
     }
 
     /**
@@ -668,7 +671,7 @@ public class SimpleFeatureTypeBuilder {
 
             // if no crs was set, set to defaultCRS
             if (!attributeBuilder.isCRSSet()) {
-                if( defaultCrs == null ){
+                if( defaultCrs == null && !defaultCrsSet){
                     LOGGER.warning("Creating "+name+" with null CoordinateReferenceSystem - did you mean to setCRS?");
                 }
                 attributeBuilder.setCRS(defaultCrs);
@@ -849,7 +852,7 @@ public class SimpleFeatureTypeBuilder {
 					// ensure the attribute is a geometry attribute
 				        // 
 					if ( !(att instanceof GeometryDescriptor ) ) {
-					    LOGGER.warning("Default Geometry "+this.defaultGeometry+" was not added using add( name, binding, crs )");
+					    LOGGER.warning("Default Geometry "+this.defaultGeometry+" was added as a geoemtry");
 						attributeBuilder.init( att );
 						attributeBuilder.setCRS(defaultCrs);
 						GeometryType type = attributeBuilder.buildGeometryType();

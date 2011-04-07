@@ -135,6 +135,7 @@ public abstract class FeatureCollectionTest extends TestCase {
 
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.setName("bounds");
+        tb.setCRS(null);
         tb.add("p1", Point.class);
 
         SimpleFeatureType t = tb.buildFeatureType();

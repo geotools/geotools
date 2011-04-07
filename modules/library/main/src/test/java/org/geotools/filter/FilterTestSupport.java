@@ -75,6 +75,8 @@ public abstract class FilterTestSupport extends TestCase {
         LOGGER.finer("creating flat feature...");
 
         SimpleFeatureTypeBuilder ftb = new SimpleFeatureTypeBuilder();
+        ftb.setCRS(null);
+
 		ftb.add("testGeometry", LineString.class);
 		ftb.add("testBoolean", Boolean.class);
 		ftb.add("testCharacter", Character.class);

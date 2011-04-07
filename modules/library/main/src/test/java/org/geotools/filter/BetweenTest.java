@@ -66,6 +66,7 @@ public class BetweenTest extends TestCase {
         BetweenFilterImpl a = new BetweenFilterImpl();
 
         SimpleFeatureTypeBuilder ftb = new SimpleFeatureTypeBuilder();
+        ftb.setCRS(null);
         ftb.add("value", Integer.class);
         ftb.add("geometry", Geometry.class);
         ftb.setName("testSchema");

@@ -23,6 +23,7 @@ public class FeatureTypesTest {
     public void testNoLength() {
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
         builder.setName("NoLength");
+        builder.setCRS(null);
         builder.add("name", String.class);
         builder.add("geom", Point.class);
         SimpleFeatureType ft = builder.buildFeatureType();
@@ -35,6 +36,7 @@ public class FeatureTypesTest {
     public void testStandardLength() {
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
         builder.setName("StdLength");
+        builder.setCRS(null);
         builder.length(20);
         builder.add("name", String.class);
         builder.add("geom", Point.class);
@@ -67,6 +69,7 @@ public class FeatureTypesTest {
     public void testGetAncestors() {
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
         builder.setName("SomeFeature");
+        builder.setCRS(null);
         builder.add("name", String.class);
         builder.add("geom", Point.class);
         SimpleFeatureType ft = builder.buildFeatureType();

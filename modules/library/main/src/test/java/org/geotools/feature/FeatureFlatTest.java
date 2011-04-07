@@ -128,7 +128,7 @@ public class FeatureFlatTest extends TestCase {
         GeometryCollection gc = gf.createGeometryCollection(g);
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.setName( "bounds" );
-        
+        tb.setCRS(null);
         tb.add("p1", Point.class);
         tb.add("p2", Point.class);
         tb.add("p3", Point.class);

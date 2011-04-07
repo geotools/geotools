@@ -111,6 +111,7 @@ public class FilterEqualsTest extends TestCase {
         set = true;
         
         SimpleFeatureTypeBuilder ftb = new SimpleFeatureTypeBuilder();
+        ftb.setCRS(null);
     	ftb.add("testGeometry", LineString.class);
     	ftb.add("testBoolean", Boolean.class);
     	ftb.add("testCharacter", Character.class);

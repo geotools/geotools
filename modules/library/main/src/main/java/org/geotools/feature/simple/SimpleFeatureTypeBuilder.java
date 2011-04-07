@@ -227,7 +227,8 @@ public class SimpleFeatureTypeBuilder {
 		description = type.getDescription();
 		restrictions = null;
 		restrictions().addAll(type.getRestrictions());
-
+		this.defaultCrs = type.getCoordinateReferenceSystem();
+		this.defaultCrsSet = true;
 		attributes = null;
 		attributes().addAll(type.getAttributeDescriptors());
 		

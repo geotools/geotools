@@ -8,7 +8,7 @@ References:
 
 * :doc:`style </tutorial/map/style>` (tutorial)
 * :doc:`gt-opengis symbology encoding<../opengis/se>`
-* :doc:`gt-render style <../render/index>`
+* :doc:`gt-render style <../render/style>` (code examples)
 * http://www.opengeospatial.org/standards/sld (style layer descriptor)
 * http://www.opengeospatial.org/standards/symbol (symbology encoding)
 
@@ -38,6 +38,8 @@ Symbology Encoding
 This implementation differs slightly in its approach presented in **gt-opengis** in that the objects are mutable and can be modified
 after construction.
 
+This section also introduces some of the interesting GeoTools specific extensions that have been created.
+
 
 .. image:: /images/rule.PNG
 
@@ -58,60 +60,36 @@ In the above example of **Rule** you can see the following differences:
 This style of programming is available when working with symbology encoding data structures
 such as Rule.
 
-StyleFactory
-^^^^^^^^^^^^
+Symbolizer
+''''''''''
 
-We have three style factories offering various levels of standards compliance vs pragmatism.
 
-========== ================ ================ =======================================
-Module     Class            Capability       Description
-========== ================ ================ =======================================
-gt-opengis StyleFactory     get              Strictly limited to the SLD standard
-gt-api     StyleFactory     get/set          Supports GeoTools vendor extensions
-gt-api     StyleFactory2    get/set          Supports text label graphics
-gt-main    StyleBuilder     get/set/defaults Shorter methods, does not do everything
-========== ================ ================ =======================================
+.. image:: /images/symbolizer2.PNG
 
-Here are some examples of these classes in action:
+GeoTools extends the concept of Symbolizer allowing the geometry to be defined using a general Expression (rather than just a PropertyName references). This facility allows a geometry to be defined using a Function expression giving users an opportunity to preprocess the geometry.
 
-* StyleFactory
-  
-  The gt-opengis StyleFactory allows you to create read-only instances.
-  
-  Here is a quick example showing the creation of a PointSymbolizer:
-  
-  .. literalinclude:: /../src/main/java/org/geotools/opengis/StyleExamples.java
-     :language: java
-     :start-after: // styleFactoryExample start
-     :end-before: // styleFactoryExample end
-  
-* StyleFactory2
-  
-  This gt-api interface allows one additional non standard trick; it allows us to place
-  an icon behind text labels. This is a popular technique used for example to place a
-  "label shield" behind hi-way signs.
+TextSymbolizer
+''''''''''''''
 
-* StyleFactory
-  
-  This gt-api interface allows access to all the GeoTools vendor specific options.
-  
-  It has a slightly different style of programming where mutable instances are creating allowing
-  you to call both get and set methods.
-  
-  You are of course not advised to udpate a style while it is being used to draw.
-  
-  .. literalinclude:: /../src/main/java/org/geotools/render/StyleExamples.java
-     :language: java
-     :start-after: // styleFactoryExample start
-     :end-before: // styleFactoryExample end
 
-* StyleBuilder
-  
-  StlyeBuilder is used to quickly create a style filling in many defaults. The use of defaults is
-  less of an issue now as the rendering system is able to correctly handle null as a default
-  for many cases such as default symbol size.
+.. image:: /images/textSymbolizer.PNG
 
-  .. literalinclude:: /../src/main/java/org/geotools/render/StyleExamples.java
-     :language: java
-     :start-after: // styleBuilderExample start
-     :end-before: // styleBuilderExample end
+GeoTools extends the concept of a TextSymbolizer allowing:
+
+* TextSymbolizer.getPriority()
+  
+  Priority used to determine precedence when labels collisions occur during rendering. The label with the highest priority
+  "wins" with the others being moved out of the way (within a tolerance) or simply not displayed.
+
+* TextSymbolizer.getOption(String)
+  
+  Additional vendor specific options used to control the rendering process.
+* TextSymbolizer2.getGraphic()
+  
+  Graphic to display behind the text label\
+* TextSymbolizer2.getSnippet()
+  
+  Used by text renderers such as KML and RSS to specify a snippet of text.
+* TextSymbolizer2.getFeatureDescription()
+  
+  Used by formats like KML or RSS to supply info on a feature. 

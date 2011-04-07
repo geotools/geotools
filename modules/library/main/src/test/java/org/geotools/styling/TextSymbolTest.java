@@ -79,6 +79,7 @@ public class TextSymbolTest extends TestCase {
         GeometryFactory geomFac = new GeometryFactory();
         MemoryDataStore data = new MemoryDataStore();
         SimpleFeatureTypeBuilder ftb = new SimpleFeatureTypeBuilder();
+        ftb.setCRS(null);
 		ftb.add("centre", com.vividsolutions.jts.geom.Point.class);
 		ftb.add("size", Double.class);
 		ftb.add("rotation", Double.class);

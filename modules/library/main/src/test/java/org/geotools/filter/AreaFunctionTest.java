@@ -112,6 +112,7 @@ public class AreaFunctionTest extends TestCase {
         LOGGER.finer("creating flat feature...");
 
         SimpleFeatureTypeBuilder ftb = new SimpleFeatureTypeBuilder();
+        ftb.setCRS(null);
         ftb.add("testGeometry", Polygon.class);
         LOGGER.finer("created geometry attribute");
 

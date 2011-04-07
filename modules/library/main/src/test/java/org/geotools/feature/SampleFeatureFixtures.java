@@ -180,7 +180,7 @@ public class SampleFeatureFixtures {
     public static SimpleFeatureType createTestType() throws SchemaException {
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.setName("test");
-        
+        tb.setCRS(null);
         tb.add("testGeometry", Point.class);
         tb.add("testBoolean", Boolean.class);
         tb.add("testCharacter", Character.class);

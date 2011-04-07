@@ -113,6 +113,11 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
+      <groupId>org.geotools.xsd</groupId>
+      <artifactId>gt-xsd-sld</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-brewer</artifactId>
       <version>${project.version}</version>

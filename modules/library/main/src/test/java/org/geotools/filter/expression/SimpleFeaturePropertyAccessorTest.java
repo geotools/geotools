@@ -117,6 +117,7 @@ public class SimpleFeaturePropertyAccessorTest extends TestCase {
 	public void testGetAnyGeometry() throws Exception {
 	    SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
 	    tb.setName( "test");
+	    tb.setCRS(null);
 	    tb.add("g1", Point.class );
 	    tb.add("g2", Point.class );
 	    tb.setDefaultGeometry( "g1" );

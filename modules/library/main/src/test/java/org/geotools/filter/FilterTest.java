@@ -155,6 +155,7 @@ public class FilterTest extends TestCase {
         
         SimpleFeatureTypeBuilder ftb = new SimpleFeatureTypeBuilder();
         ftb.setName( "testFeatureType");
+        ftb.setCRS(null);
         ftb.add("testGeometry", LineString.class);
         ftb.add("testBoolean", Boolean.class);
         ftb.add("testCharacter", Character.class);

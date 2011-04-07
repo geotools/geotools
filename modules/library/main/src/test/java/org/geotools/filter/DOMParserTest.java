@@ -25,7 +25,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -86,11 +85,12 @@ public class DOMParserTest extends FilterTestSupport {
         junit.textui.TestRunner.run(suite());
     }
 
-    public void setUp() throws SchemaException, IllegalAttributeException {
+    public void setUp() throws SchemaException {
         super.setUp();
 
         SimpleFeatureTypeBuilder ftb = new SimpleFeatureTypeBuilder();
         ftb.init(testSchema);
+        ftb.setCRS( null );
         ftb.add("testZeroDouble", Double.class);
         testSchema = ftb.buildFeatureType();
 

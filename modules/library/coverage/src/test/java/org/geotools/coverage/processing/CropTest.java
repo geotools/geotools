@@ -38,13 +38,16 @@ import org.opengis.referencing.operation.TransformException;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.ViewType;
 import org.geotools.coverage.grid.Viewer;
+import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.JTSFactoryFinder;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultDerivedCRS;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 
 import org.junit.*;
 import static org.junit.Assert.*;
+
 
 
 /**
@@ -108,6 +111,76 @@ public final class CropTest extends GridProcessingTestBase {
             assertNotNull(PlanarImage.wrapRenderedImage(cropped.getRenderedImage()).getTiles());
         }
         RenderedImage raster = cropped.getRenderedImage();
+        assertEquals(168, raster.getMinX());
+        assertEquals(172, raster.getMinY());
+        assertEquals(114, raster.getWidth());
+        assertEquals(116, raster.getHeight());
+        assertEquals(source.getGridGeometry().getGridToCRS2D(),
+                    cropped.getGridGeometry().getGridToCRS2D());
+        assertFalse(cropEnvelope.equals(cropped.getEnvelope()));
+
+    }
+    
+    /**
+     * Tests the "Crop" operation by providing different implementations of the
+     * opengis's Envelope interface instead of GeneralEnvelope in order to fix 
+     * GEOT-3434.
+     *
+     * @throws TransformException if a transformation was required and failed.
+     */
+    @Test
+    public void testCropEnvelopeSupport() throws TransformException {
+        final CoverageProcessor processor = CoverageProcessor.getInstance();
+        /*
+         * Get the source coverage and build the cropped envelope.
+         */
+        final GridCoverage2D source = coverage.view(ViewType.NATIVE);
+        final Envelope oldEnvelope = source.getEnvelope();
+        final GeneralEnvelope cropEnvelope = new GeneralEnvelope(new double[] {
+                oldEnvelope.getMinimum(0) + oldEnvelope.getSpan(0) * 3 / 8,
+                oldEnvelope.getMinimum(1) + oldEnvelope.getSpan(1) * 3 / 8
+        }, new double[] {
+                oldEnvelope.getMinimum(0) + oldEnvelope.getSpan(0) * 5 / 8,
+                oldEnvelope.getMinimum(1) + oldEnvelope.getSpan(1) * 5 / 8
+        });
+        cropEnvelope.setCoordinateReferenceSystem(oldEnvelope.getCoordinateReferenceSystem());
+        Envelope2D env2D = new Envelope2D(cropEnvelope);
+        
+        /*
+         * Do the crop without conserving the envelope.
+         */
+        ParameterValueGroup param = processor.getOperation("CoverageCrop").getParameters();
+        param.parameter("Source").setValue(source);
+        param.parameter("Envelope").setValue(env2D);
+        GridCoverage2D cropped = (GridCoverage2D) processor.doOperation(param);
+        if (SHOW) {
+            Viewer.show(coverage);
+            Viewer.show(cropped);
+        } else {
+            // Force computation
+            assertNotNull(PlanarImage.wrapRenderedImage(cropped.getRenderedImage()).getTiles());
+        }
+        RenderedImage raster = cropped.getRenderedImage();
+        assertEquals(168, raster.getMinX());
+        assertEquals(172, raster.getMinY());
+        assertEquals(114, raster.getWidth());
+        assertEquals(116, raster.getHeight());
+        assertEquals(source.getGridGeometry().getGridToCRS2D(),
+                    cropped.getGridGeometry().getGridToCRS2D());
+        assertFalse(cropEnvelope.equals(cropped.getEnvelope()));
+        
+        
+        ReferencedEnvelope refEnv = new ReferencedEnvelope(cropEnvelope);
+        param.parameter("Envelope").setValue(refEnv);
+        cropped = (GridCoverage2D) processor.doOperation(param);
+        if (SHOW) {
+            Viewer.show(coverage);
+            Viewer.show(cropped);
+        } else {
+            // Force computation
+            assertNotNull(PlanarImage.wrapRenderedImage(cropped.getRenderedImage()).getTiles());
+        }
+        raster = cropped.getRenderedImage();
         assertEquals(168, raster.getMinX());
         assertEquals(172, raster.getMinY());
         assertEquals(114, raster.getWidth());

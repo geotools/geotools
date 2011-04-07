@@ -290,10 +290,10 @@ public class CQLCompiler extends CQLParser implements ICompiler{
             // Text predicate (Like)
             // ----------------------------------------
         case JJTLIKE_NODE:
-            return this.builder.buildLikeFilter();
+            return this.builder.buildLikeFilter(true);
 
         case JJTNOT_LIKE_NODE:
-            return this.builder.buildNotLikeFilter();
+            return this.builder.buildNotLikeFilter(true);
 
             // ----------------------------------------
             // Null predicate

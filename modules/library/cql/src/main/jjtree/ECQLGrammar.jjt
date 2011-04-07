@@ -138,6 +138,7 @@ TOKEN [IGNORE_CASE]:  /* keywords */
    < FALSE: "false"> |
    < UNKNOWN: "unknown"> |
    < LIKE: "like" > |
+   < ILIKE: "ilike" > |
    < BETWEEN: "between"> |
    < ID: "id" > |
    < IN: "in" > |
@@ -380,7 +381,8 @@ void Predicate() #void:
     |   LOOKAHEAD(InPredicate()) InPredicate() 
     |   Expression()  
         (
-                LOOKAHEAD(2) TextPredicate()
+                LOOKAHEAD(2) likePredicate()
+            |   LOOKAHEAD(2) IlikePredicate()
             |   LOOKAHEAD(2) ExistencePredicate() 
             |   LOOKAHEAD(2) NullPredicate() 
             |   LOOKAHEAD(2) BetweenPredicate()     
@@ -821,13 +823,19 @@ void ExistencePredicate() #void:
  *  end <existence predicate>
  * ---------------------------------------- */
 
-void TextPredicate() #void:
+void likePredicate() #void:
 {}
 {
   	 	LOOKAHEAD(2)  <NOT> <LIKE> CharacterPattern() 	#Not_Like_Node
   	|	              <LIKE> CharacterPattern() 		#Like_Node
 }
 
+void IlikePredicate() #void:
+{}
+{
+  	 	LOOKAHEAD(2)  <NOT> <ILIKE> CharacterPattern() 	#Not_ILike_Node
+  	|	              <ILIKE> CharacterPattern() 		#ILike_Node
+}
 
 void CharacterPattern() #void:
 {}

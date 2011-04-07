@@ -311,11 +311,21 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
                 // Text predicate (Like)
                 // ----------------------------------------
             case JJTLIKE_NODE:
-                return this.builder.buildLikeFilter();
+                return this.builder.buildLikeFilter(true);
 
             case JJTNOT_LIKE_NODE:
 
-                return this.builder.buildNotLikeFilter();
+                return this.builder.buildNotLikeFilter(true);
+
+                // ----------------------------------------
+                // Text predicate (ILike)
+                // ----------------------------------------
+            case JJTILIKE_NODE:
+                return this.builder.buildLikeFilter(false);
+
+            case JJTNOT_ILIKE_NODE:
+
+                return this.builder.buildNotLikeFilter(false);
 
                 // ----------------------------------------
                 // Null predicate

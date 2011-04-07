@@ -226,12 +226,14 @@ public abstract class AbstractFilterBuilder {
     }
     
     /**
-     * Bulds a like filter
+     * Builds a like filter
+     * 
+     * @matchCase 
      * 
      * @return a PropertyIsLike
      * @throws CQLException
      */
-    public PropertyIsLike buildLikeFilter() throws CQLException {
+    public PropertyIsLike buildLikeFilter(boolean matchCase) throws CQLException {
         final String WC_MULTI = "%";
         final String WC_SINGLE = "_";
         final String ESCAPE = "\\";
@@ -243,7 +245,7 @@ public abstract class AbstractFilterBuilder {
                     .popExpression();
 
             PropertyIsLike f = filterFactory.like(expr, pattern.toString(),
-                    WC_MULTI, WC_SINGLE, ESCAPE);
+                    WC_MULTI, WC_SINGLE, ESCAPE, matchCase);
 
             return f;
         } catch (IllegalFilterException ife) {
@@ -301,9 +303,9 @@ public abstract class AbstractFilterBuilder {
         return filterFactory.not(buildBetween());
     }
 
-    public Not buildNotLikeFilter() throws CQLException {
+    public Not buildNotLikeFilter(boolean matchCase) throws CQLException {
 
-        Not filter = filterFactory.not(buildLikeFilter());
+        Not filter = filterFactory.not(buildLikeFilter(matchCase));
 
         return filter;
     }

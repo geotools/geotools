@@ -17,6 +17,7 @@
 
 package org.geotools.filter.text.ecql;
 
+import org.geotools.filter.LikeFilterImpl;
 import org.geotools.filter.text.commons.CompilerUtil;
 import org.geotools.filter.text.commons.Language;
 import org.geotools.filter.text.cql2.CQLException;
@@ -108,6 +109,47 @@ public class ECQLLikePredicateTest extends CQLLikePredicateTest {
         
         Assert.assertEquals( resultLike.getLiteral(),  "%año%" );
         
+    }
+    
+    @Test
+    public void likePredicateCaseSensitive() throws Exception {
+
+        // iLike
+        Filter resultFilter = CompilerUtil.parseFilter(this.language, "ATTR1 LIKE 'abc%'");
+
+        Assert.assertNotNull("Filter expected", resultFilter);
+
+        Assert.assertTrue(resultFilter instanceof LikeFilterImpl);
+        LikeFilterImpl likeFilter = (LikeFilterImpl) resultFilter;
+
+        Assert.assertTrue( likeFilter.isMatchingCase() );
+    }
+
+    @Test
+    public void ilikePredicate() throws Exception {
+
+        // iLike
+        Filter resultFilter = CompilerUtil.parseFilter(this.language, "ATTR1 ILIKE 'abc%'");
+
+        Assert.assertNotNull("Filter expected", resultFilter);
+
+        Assert.assertTrue(resultFilter instanceof LikeFilterImpl);
+        LikeFilterImpl likeFilter = (LikeFilterImpl) resultFilter;
+
+        Assert.assertFalse( likeFilter.isMatchingCase() );
+    }
+
+    @Test
+    public void notilikePredicate() throws Exception {
+
+        // not iLike
+        Filter resultFilter = CompilerUtil.parseFilter(this.language, "not ATTR1 ILIKE 'abc%'");
+
+        Not notFilter = (Not)resultFilter;
+        
+        LikeFilterImpl likeFilter = (LikeFilterImpl)notFilter.getFilter();
+
+        Assert.assertFalse( likeFilter.isMatchingCase() );
     }
     
     /**

@@ -14,7 +14,7 @@ Interfaces for GeoSpatial concepts, often defined by the OGC or ISO standards bo
    coverage
    geometry
    cs
-   style
+   se
    progress
    name
    text

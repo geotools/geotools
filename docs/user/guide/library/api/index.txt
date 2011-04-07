@@ -8,6 +8,7 @@ The **gt-api** module is where we publish out stable interfaces that are impleme
    :maxdepth: 1
 
    datastore
+   sld
    parameter
    envelope
    jts

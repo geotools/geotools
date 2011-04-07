@@ -19,7 +19,8 @@ package org.geotools.styling;
 import java.util.List;
 
 /**
- * Indicates how geographical content should be displayed (we call this a style for simplicity; in the spec it is called a UserStyle (user-defined style)).
+ * Indicates how geographical content should be displayed (we call this a style for simplicity; in
+ * the spec it is called a UserStyle (user-defined style)).
  * <p>
  * The details of this object are taken from the
  * <a href="https://portal.opengeospatial.org/files/?artifact_id=1188">

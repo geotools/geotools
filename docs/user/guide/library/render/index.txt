@@ -8,7 +8,6 @@ Supports the rendering of geospatial information using the Java2D api.
    
    gtrenderer
    style
-   sld
    icon
 
 References:

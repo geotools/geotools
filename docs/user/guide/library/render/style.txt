@@ -3,31 +3,23 @@ Style
 
 GeoTools Rendering process is controlled styling information that you provide. The data structures we use to describe styling are based on the Style Layer Descriptor (SLD) and Symbology Encoding (SE) specifications provided by the OGC. The SLD specification defines an XML document you can use to save and load your styles.
 
-The SLD specification is used to document how a Web Map Server draws layers. For most of your time in GeoTools you will be using Style and ignoring the rest.
+This page is devoted to examples, to review the concepts consult the references below.
 
 References:
 
+* :doc:`gt-opengis <../opengis/se>`
+* :doc:`gt-api <../api/sld>`
 * http://www.opengeospatial.org/standards/sld (style layer descriptor)
 * http://www.opengeospatial.org/standards/symbol (symbology encoding)
 
 Style Layer Descriptor
 ^^^^^^^^^^^^^^^^^^^^^^
 
-The styling constructs form a data model that can represent a style layer descriptor; not all of these constructs are that useful outside of a web map server implementation. That said if you are letting a user manage styles you will want to let them provide names and titles and general organize what is going on.
+GeoTools styling does support the style layer descriptor data model.
 
-Styling for a Map is captured with three initial classes:
-
-* StyledLayerDescriptor representing the styling information for an entire Map
-* NamedLayer defines FeatureTypeConstraints to test if the style is applicable to your data, and a list of Style
-* Style defines how features or Rasters are to be drawn
-
-
-.. image:: /images/sld.gif
-
-Create
-''''''
-
-To create a StyleLayerDescriptor object using a StyleFactory::
+* Create
+  
+  To create a StyleLayerDescriptor object using a StyleFactory::
         
         StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory(null);
         StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
@@ -55,26 +47,22 @@ To create a StyleLayerDescriptor object using a StyleFactory::
             }
             sld.layers().add(layer);
         }
-
-This is the last time we will talk about StyleLayerDescriptor object - it is not really that useful in controlling the rendering process.
-
-To go from a StyleLayerDescriptor object to something useful::
   
-  FeatureTypeStyle useful[] = SLD.featureTypeStyles( sld );
+  This is the last time we will talk about StyleLayerDescriptor object - it is not really that useful in
+  controlling the rendering process.
 
-Or find one that is applicable to a specific feature type::
-  
-  FeatyreTyleStyle applicable = SLD.featureTypeStyle( sld, schema );
+* To go from a StyleLayerDescriptor object to something useful::
+    
+    FeatureTypeStyle useful[] = SLD.featureTypeStyles( sld );
+
+* Or find one that is applicable to a specific feature type::
+    
+    FeatyreTyleStyle applicable = SLD.featureTypeStyle( sld, schema );
 
 Symbology Encoding
 ^^^^^^^^^^^^^^^^^^
 
-The feature type style data model captures the symbology encoding information describing how a feature should be drawn on the screen. The FeatureTypeStyle data structure is going to focus on testing the content to make sure it it should be drawn by the current style.
-
-
-.. image:: /images/se.gif
-
-For most practical purposes you will set featureTypeName to be "feature".
+The feature type style data model captures the symbology encoding information describing how a feature should be drawn on the screen and will represent the bulk of our examples.
 
 FeatureTypeStyle
 ''''''''''''''''
@@ -90,6 +78,8 @@ The level of detail is similar to CSS in that you need to define some Rules sayi
   Features will be rendered according a FeatureTypeStyle only if their
   FeatureType name matches what is recorded in the FeatureTypeStyle or a
   descendant.
+  
+  For most practical purposes you will set featureTypeName to be "Feature".
 
 * FeatureTypeStyle.semanticTypeIdentifier
 

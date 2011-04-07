@@ -459,6 +459,13 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
                 rule.symbolizers().add( cast( symbolizer ) );
             }
         }
+        if( filter != null){
+            rule.setFilter( filter );
+            rule.setElseFilter(false);
+        }
+        else {
+            rule.setElseFilter(true);
+        }
         return rule;
     }
     

@@ -1,0 +1,76 @@
+<class-diagram version="1.0.1" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
+  realizations="true" associations="true" dependencies="false" nesting-relationships="true">  
+  <interface id="7" corner="BOTTOM_RIGHT" language="java" name="org.geotools.styling.StyledLayerDescriptor" 
+    project="gt-api" file="/gt-api/src/main/java/org/geotools/styling/StyledLayerDescriptor.java" binary="false">    
+    <position x="-56" y="126" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="true" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="8" corner="BOTTOM_RIGHT" language="java" name="org.geotools.styling.StyledLayer" project="gt-api" 
+    file="/gt-api/src/main/java/org/geotools/styling/StyledLayer.java" binary="false">    
+    <position x="240" y="122" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="true" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="9" corner="BOTTOM_RIGHT" language="java" name="org.geotools.styling.FeatureTypeConstraint" 
+    project="gt-api" file="/gt-api/src/main/java/org/geotools/styling/FeatureTypeConstraint.java" binary="false">    
+    <position x="103" y="593" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="true" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="12" corner="BOTTOM_RIGHT" language="java" name="org.geotools.styling.UserLayer" project="gt-api" 
+    file="/gt-api/src/main/java/org/geotools/styling/UserLayer.java" binary="false">    
+    <position x="240" y="323" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="true" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="13" corner="BOTTOM_RIGHT" language="java" name="org.geotools.styling.Style" project="gt-api" 
+    file="/gt-api/src/main/java/org/geotools/styling/Style.java" binary="false">    
+    <position x="422" y="649" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="true" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="16" corner="BOTTOM_RIGHT" language="java" name="org.geotools.styling.FeatureTypeStyle" project="gt-api" 
+    file="/gt-api/src/main/java/org/geotools/styling/FeatureTypeStyle.java" binary="false">    
+    <position x="422" y="833" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <dependency>    
+    <end type="SOURCE" nodeId="12"/>    
+    <end type="TARGET" nodeId="9"/>  
+  </dependency>  
+  <generalization>    
+    <end type="SOURCE" nodeId="12"/>    
+    <end type="TARGET" nodeId="8"/>  
+  </generalization>  
+  <dependency>    
+    <end type="SOURCE" nodeId="7"/>    
+    <end type="TARGET" nodeId="8"/>  
+  </dependency>  
+  <dependency>    
+    <end type="SOURCE" nodeId="13"/>    
+    <end type="TARGET" nodeId="16"/>  
+  </dependency>  
+  <dependency>    
+    <end type="SOURCE" nodeId="12"/>    
+    <end type="TARGET" nodeId="13"/>  
+  </dependency>  
+  <classifier-display autosize="true" package="true" initial-value="false" signature="true" visibility="true">    
+    <attributes public="false" package="false" protected="false" private="false"/>    
+    <operations public="true" package="false" protected="false" private="false"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

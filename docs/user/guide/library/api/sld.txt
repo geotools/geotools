@@ -1,0 +1,117 @@
+Style Layer Descriptor
+----------------------
+
+The **gt-api** module provides interfaces for the style layer descriptor data structure and
+offers GeoTools specific extensions to the symbology encoding data structure.
+
+References:
+
+* :doc:`style </tutorial/map/style>` (tutorial)
+* :doc:`gt-opengis symbology encoding<../opengis/se>`
+* :doc:`gt-render style <../render/index>`
+* http://www.opengeospatial.org/standards/sld (style layer descriptor)
+* http://www.opengeospatial.org/standards/symbol (symbology encoding)
+
+Style Layer Descriptor
+^^^^^^^^^^^^^^^^^^^^^^
+
+The StyleLayerDescriptor concept comes to us from  the SLD specification. It is aimed at defining how a
+web map server can draw an entire map (with all the layers included in one gulp.)
+
+
+.. image:: /images/sld.PNG
+
+Since many of the elements referenced above assume we are operating inside a WMS this class is not used
+frequently during day to day use.
+
+That said if you are letting a user manage styles you will want to let them provide names and titles and general organise what is going on.
+
+Styling for a Map is captured with three initial classes:
+
+* StyledLayerDescriptor representing the styling information for an entire Map
+* NamedLayer defines FeatureTypeConstraints to test if the style is applicable to your data, and a list of Style
+* Style defines how features or Rasters are to be drawn
+
+Symbology Encoding
+^^^^^^^^^^^^^^^^^^
+
+This implementation differs slightly in its approach presented in **gt-opengis** in that the objects are mutable and can be modified
+after construction.
+
+
+.. image:: /images/rule.PNG
+
+In the above example of **Rule** you can see the following differences:
+
+* Rule.isElseFilter()
+* Rule.setElseFilter()
+  
+  Both getters and setters are now provided.
+
+* Rule.symbolizers() provides direct access to a List<Symbolizer>
+  
+  You can modify the list of symbolizers directly::
+     
+     rule.clear();
+     rule.symbolizers().add( pointSymbolizer );
+
+This style of programming is available when working with symbology encoding data structures
+such as Rule.
+
+StyleFactory
+^^^^^^^^^^^^
+
+We have three style factories offering various levels of standards compliance vs pragmatism.
+
+========== ================ ================ =======================================
+Module     Class            Capability       Description
+========== ================ ================ =======================================
+gt-opengis StyleFactory     get              Strictly limited to the SLD standard
+gt-api     StyleFactory     get/set          Supports GeoTools vendor extensions
+gt-api     StyleFactory2    get/set          Supports text label graphics
+gt-main    StyleBuilder     get/set/defaults Shorter methods, does not do everything
+========== ================ ================ =======================================
+
+Here are some examples of these classes in action:
+
+* StyleFactory
+  
+  The gt-opengis StyleFactory allows you to create read-only instances.
+  
+  Here is a quick example showing the creation of a PointSymbolizer:
+  
+  .. literalinclude:: /../src/main/java/org/geotools/opengis/StyleExamples.java
+     :language: java
+     :start-after: // styleFactoryExample start
+     :end-before: // styleFactoryExample end
+  
+* StyleFactory2
+  
+  This gt-api interface allows one additional non standard trick; it allows us to place
+  an icon behind text labels. This is a popular technique used for example to place a
+  "label shield" behind hi-way signs.
+
+* StyleFactory
+  
+  This gt-api interface allows access to all the GeoTools vendor specific options.
+  
+  It has a slightly different style of programming where mutable instances are creating allowing
+  you to call both get and set methods.
+  
+  You are of course not advised to udpate a style while it is being used to draw.
+  
+  .. literalinclude:: /../src/main/java/org/geotools/render/StyleExamples.java
+     :language: java
+     :start-after: // styleFactoryExample start
+     :end-before: // styleFactoryExample end
+
+* StyleBuilder
+  
+  StlyeBuilder is used to quickly create a style filling in many defaults. The use of defaults is
+  less of an issue now as the rendering system is able to correctly handle null as a default
+  for many cases such as default symbol size.
+
+  .. literalinclude:: /../src/main/java/org/geotools/render/StyleExamples.java
+     :language: java
+     :start-after: // styleBuilderExample start
+     :end-before: // styleBuilderExample end

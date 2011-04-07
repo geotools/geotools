@@ -110,7 +110,7 @@ public interface StyleFactory {
             InternationalString description);
 
     /**
-     * 
+     * Create Displacement
      * @param dx
      * @param dy
      * @return
@@ -118,7 +118,7 @@ public interface StyleFactory {
     Displacement displacement(Expression dx, Expression dy);
 
     /**
-     * 
+     * Create externalGraphic
      * @param resource
      * @param format
      * @param replacements
@@ -128,6 +128,10 @@ public interface StyleFactory {
             String format, Collection<ColorReplacement> replacements);
 
     /**
+     * Create ExternalGraphic using a Java Icon.
+     * <p>
+     * This is used to produce high quality output by allowing you to
+     * directly draw each symbol by supplying your own Icon implementation.
      * 
      * @param inline
      * @param replacements
@@ -169,6 +173,7 @@ public interface StyleFactory {
             Set<SemanticType> types, List<Rule> rules);
 
     /**
+     * Create fill.
      * 
      * @param fill
      * @param color
@@ -178,16 +183,32 @@ public interface StyleFactory {
     Fill fill(GraphicFill fill, Expression color, Expression opacity);
 
     /**
+     * Create font entry; note this captures a list of font families in
+     * the preferred order, with the rendering engine choosing the first
+     * entry in the list available to the runtime environment.
+     * <p>
+     * If fonts are not showing up as you expect please review the list of fonts
+     * installed into your JRE.
      * 
      * @param family
      * @param style
      * @param weight
      * @param size
-     * @return
+     * @return Font
      */
     Font font(List<Expression> family, Expression style,
             Expression weight, Expression size);
-
+    /**
+     * Create a graphic.
+     * 
+     * @param symbols
+     * @param opacity
+     * @param size
+     * @param rotation
+     * @param anchor
+     * @param disp
+     * @return
+     */
     Graphic graphic(List<GraphicalSymbol> symbols,
             Expression opacity, Expression size, Expression rotation,
             AnchorPoint anchor, Displacement disp);

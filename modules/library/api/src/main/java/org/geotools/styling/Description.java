@@ -22,18 +22,18 @@ public interface Description extends org.opengis.style.Description {
     
     /**
      * Human readable description.
-     * @return a human readable description
+     * @param description Abstract providing a summary of contents
      */
     InternationalString getAbstract();
     
-    void setAbstract( InternationalString title );
+    void setAbstract( InternationalString description );
     
     /**
      * Define description in the current locale.
      * 
-     * @param title
+     * @param description Abstract providing summary of contents
      */
-    void setAbstract( String title );
+    void setAbstract( String description );
     
     /**
      * calls the visit method of a StyleVisitor

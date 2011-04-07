@@ -251,7 +251,7 @@ public class RuleImpl implements org.geotools.styling.Rule, Cloneable {
     }
 
     public void setIsElseFilter(boolean flag) {
-        hasElseFilter = flag;        
+        hasElseFilter = flag;
     }
     public void setElseFilter(boolean defaultb) {
         hasElseFilter = defaultb;

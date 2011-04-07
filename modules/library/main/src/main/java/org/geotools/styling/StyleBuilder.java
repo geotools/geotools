@@ -27,6 +27,7 @@ import org.geotools.filter.IllegalFilterException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory;
+import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.PropertyIsBetween;
 import org.opengis.filter.PropertyIsGreaterThan;
 import org.opengis.filter.PropertyIsLessThan;
@@ -34,7 +35,7 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
 
 /**
- * An utility class designed to ease style building by convinience methods.
+ * An utility class designed to ease style building with convenience methods.
  *
  * @author aaime
  * @source $URL$
@@ -62,7 +63,7 @@ public class StyleBuilder {
     public static final String FONT_WEIGHT_BOLD = "bold";
     
     private StyleFactory sf;
-    private FilterFactory ff;
+    private FilterFactory2 ff;
 
     /**
      * use the default StyleFactory and FilterFactory
@@ -97,7 +98,7 @@ public class StyleBuilder {
      */
     public StyleBuilder(StyleFactory styleFactory, FilterFactory filterFactory) {
         this.sf = styleFactory;
-        this.ff = filterFactory;
+        this.ff = (FilterFactory2) filterFactory;
     }
 
     /**
@@ -123,7 +124,7 @@ public class StyleBuilder {
      * @param factory
      */
      public void setFilterFactory( FilterFactory factory ){
-    	 ff = factory;
+    	 ff = (FilterFactory2) factory;
      }
      
     /**
@@ -131,7 +132,7 @@ public class StyleBuilder {
      *
      * @return the FilterFactory being used
      */
-    public FilterFactory getFilterFactory() {
+    public FilterFactory2 getFilterFactory() {
         return ff;
     }
     

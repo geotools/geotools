@@ -157,7 +157,9 @@ public interface Rule extends org.opengis.style.Rule {
     /**
      * This is the filter used to select content for this rule to display
      * <p>
-     * @return Filter use to select content for this rule to display, Filter.INCLUDES to include all content; of isElseFilter for null
+     * 
+     * @return Filter use to select content for this rule to display, Filter.INCLUDES to include all
+     *         content; or use Filter.EXCLUDES to mark this as an "else" Rule accepting all remaining content
      */
     Filter getFilter();
 

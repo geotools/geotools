@@ -49,7 +49,7 @@ public interface Mark extends GraphicalSymbol {
      * The alternative to a WellKnownName is an external mark format.
      * See {@link ExternalMark} for details.
      *
-     * Both WellKnowName and ExternalMark canot be set, but both can be null.
+     * Both WellKnowName and ExternalMark cannot be set, but both can be null.
      * If none are set then the default square symbol is used.
      *
      * @return ExternalMark or null

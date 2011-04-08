@@ -37,6 +37,10 @@ public class TeradataNoPrimaryKeyTestSetup extends JDBCNoPrimaryKeyTestSetup {
 
     protected void dropLakeTable() throws Exception {
         runSafe("DELETE FROM SYSSPATIAL.GEOMETRY_COLUMNS WHERE F_TABLE_NAME = 'lake'");
+		runSafe("DROP TRIGGER \"lake_geom_mi\"");
+		runSafe("DROP TRIGGER \"lake_geom_mu\"");
+		runSafe("DROP TRIGGER \"lake_geom_md\"");
+		runSafe("DROP TABLE \"lake_geom_idx\"");
         runSafe("DROP TABLE \"lake\"");
     }
 

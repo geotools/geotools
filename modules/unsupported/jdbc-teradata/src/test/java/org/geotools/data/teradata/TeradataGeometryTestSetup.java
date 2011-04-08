@@ -29,8 +29,11 @@ public class TeradataGeometryTestSetup extends JDBCGeometryTestSetup {
 
     protected void dropSpatialTable(String tableName) throws Exception {
         runSafe("DELETE FROM SYSSPATIAL.GEOMETRY_COLUMNS WHERE F_TABLE_NAME = '" + tableName + "'");
+		runSafe("DROP TRIGGER \"" + tableName + "_geom_mi\"");
+		runSafe("DROP TRIGGER \"" + tableName + "_geom_mu\"");
+		runSafe("DROP TRIGGER \"" + tableName + "_geom_md\"");
+		runSafe("DROP TABLE \"" + tableName + "_geom_idx\"");
         runSafe("DROP TABLE \"" + tableName + "\"");
-
     }
 
 }

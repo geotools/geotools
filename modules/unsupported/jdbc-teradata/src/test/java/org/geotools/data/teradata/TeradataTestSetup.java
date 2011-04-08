@@ -31,8 +31,8 @@ public class TeradataTestSetup extends JDBCTestSetup {
         
         if (first) {
 	        // uncomment to turn up logging        
-	        java.util.logging.ConsoleHandler handler = new java.util.logging.ConsoleHandler();
-	        handler.setLevel(java.util.logging.Level.FINE);
+//	        java.util.logging.ConsoleHandler handler = new java.util.logging.ConsoleHandler();
+//	        handler.setLevel(java.util.logging.Level.FINE);
 //	        org.geotools.util.logging.Logging.getLogger("org.geotools.data.jdbc").setLevel(java.util.logging.Level.FINE);
 //	        org.geotools.util.logging.Logging.getLogger("org.geotools.data.jdbc").addHandler(handler);
 //	        org.geotools.util.logging.Logging.getLogger("org.geotools.jdbc").setLevel(java.util.logging.Level.FINE);
@@ -69,17 +69,6 @@ public class TeradataTestSetup extends JDBCTestSetup {
     @Override
     public void setUp() throws Exception {
     	super.setUp();
-    	
-        fixture.getProperty("tessellate_index_key", "ID");
-        fixture.getProperty("tessellate_index_u_xmin", "-180");
-        fixture.getProperty("tessellate_index_u_ymin", "-90");
-        fixture.getProperty("tessellate_index_u_xmax", "180");
-        fixture.getProperty("tessellate_index_u_ymax", "90");
-        fixture.getProperty("tessellate_index_g_nx", "1000");
-        fixture.getProperty("tessellate_index_g_ny", "1000");
-        fixture.getProperty("tessellate_index_levels", "1");
-        fixture.getProperty("tessellate_index_scale", "0.01");
-        fixture.getProperty("tessellate_index_shift", "0");
     }
 
     protected void setUpData() throws Exception {

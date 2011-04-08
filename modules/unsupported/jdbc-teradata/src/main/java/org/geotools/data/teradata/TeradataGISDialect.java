@@ -115,6 +115,8 @@ public class TeradataGISDialect extends BasicSQLDialect {
 			return false;
 		} else if (tableName.equalsIgnoreCase("geography_columns")) {
 			return false;
+		} else if (tableName.endsWith("_idx")) {
+			return false;
 		}
 
 		// others?
@@ -433,7 +435,7 @@ public class TeradataGISDialect extends BasicSQLDialect {
 					
 					
 		    		StringBuffer sb = new StringBuffer();
-		    		if (schemaName != null) {
+		    		if (!schemaName.equals("")) {
 			    		encodeSchemaName(schemaName, sb);
 			    		sb.append(".");
 		    		}
@@ -441,7 +443,7 @@ public class TeradataGISDialect extends BasicSQLDialect {
 		    		String encodedTableName = sb.toString();
 		    		
 		    		sb = new StringBuffer();
-		    		if (schemaName != null) {
+		    		if (!schemaName.equals("")) {
 			    		encodeSchemaName(schemaName, sb);
 			    		sb.append(".");
 		    		}
@@ -473,7 +475,7 @@ public class TeradataGISDialect extends BasicSQLDialect {
 							+ "  FOR EACH STATEMENT"
 							+ "  BEGIN ATOMIC"
 							+ "  ("
-							+ "    INSERT INTO {12} SELECT \"{2}\","
+							+ "    INSERT INTO {13} SELECT \"{2}\","
 							+ "    sysspatial.tessellate_index("
 							+ "      \"{1}\".ST_Envelope().ST_ExteriorRing().ST_PointN(1).ST_X(), "
 							+ "      \"{1}\".ST_Envelope().ST_ExteriorRing().ST_PointN(1).ST_Y(), "
@@ -484,7 +486,7 @@ public class TeradataGISDialect extends BasicSQLDialect {
 							+ "    FROM nt;"
 							+ "  ) "
 							+ "END", tableName, gd.getLocalName(), key, u_xmin, u_ymin, u_xmax, u_ymax, g_nx, g_ny, levels, scale, shift,
-							encodedTableName);
+							encodedTableName, encodedIdxTableName);
 //					sql = MessageFormat.format("CREATE TRIGGER \"{0}_{1}_mi\" AFTER INSERT ON {12}"
 //							+ "  REFERENCING NEW AS nt"
 //							+ "  FOR EACH ROW"
@@ -510,7 +512,7 @@ public class TeradataGISDialect extends BasicSQLDialect {
 							+ "  FOR EACH STATEMENT"
 							+ "  BEGIN ATOMIC"
 							+ "  ("
-							+ "    UPDATE {12} SET "
+							+ "    UPDATE {13} SET "
 							+ "    cellid=sysspatial.tessellate_index("
 							+ "      nt.\"{1}\".ST_Envelope().ST_ExteriorRing().ST_PointN(1).ST_X(), "
 							+ "      nt.\"{1}\".ST_Envelope().ST_ExteriorRing().ST_PointN(1).ST_Y(), "
@@ -521,7 +523,7 @@ public class TeradataGISDialect extends BasicSQLDialect {
 							+ "    WHERE id=nt.\"{2}\";"
 							+ "  ) "
 							+ "END", tableName, gd.getLocalName(), key, u_xmin, u_ymin, u_xmax, u_ymax, g_nx, g_ny, levels, scale, shift,
-							encodedTableName);
+							encodedTableName, encodedIdxTableName);
 					
 					sql = MessageFormat.format("CREATE TRIGGER \"{0}_{1}_md\" AFTER DELETE ON {2}"
 							+ "  REFERENCING OLD TABLE AS ot"

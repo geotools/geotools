@@ -132,16 +132,36 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
             dataStore.setPrimaryKeyFinder(KEY_FINDER);
         }
 
-    	dialect.setKey((String)KEY_PARAM.lookUp(params));
-    	dialect.setU_xmin((Double)U_XMIN_PARAM.lookUp(params));
-    	dialect.setU_ymin((Double)U_YMIN_PARAM.lookUp(params));
-    	dialect.setU_xmax((Double)U_XMAX_PARAM.lookUp(params));
-    	dialect.setU_ymax((Double)U_YMAX_PARAM.lookUp(params));
-    	dialect.setG_nx((Integer)G_NX_PARAM.lookUp(params));
-    	dialect.setG_ny((Integer)G_NY_PARAM.lookUp(params));
-    	dialect.setLevels((Integer)LEVELS_PARAM.lookUp(params));
-    	dialect.setScale((Double)SCALE_PARAM.lookUp(params));
-    	dialect.setShift((Integer)SHIFT_PARAM.lookUp(params));
+        if (params.containsKey(KEY_PARAM.key)) {
+        	dialect.setKey((String)KEY_PARAM.lookUp(params));
+        }
+        if (params.containsKey(U_XMIN_PARAM.key)) {
+	    	dialect.setU_xmin((Double)U_XMIN_PARAM.lookUp(params));
+        }
+        if (params.containsKey(U_YMIN_PARAM.key)) {
+	    	dialect.setU_ymin((Double)U_YMIN_PARAM.lookUp(params));
+        }
+        if (params.containsKey(U_XMAX_PARAM.key)) {
+	    	dialect.setU_xmax((Double)U_XMAX_PARAM.lookUp(params));
+        }
+        if (params.containsKey(U_YMAX_PARAM.key)) {
+	    	dialect.setU_ymax((Double)U_YMAX_PARAM.lookUp(params));
+        }
+        if (params.containsKey(G_NX_PARAM.key)) {
+	    	dialect.setG_nx((Integer)G_NX_PARAM.lookUp(params));
+        }
+        if (params.containsKey(G_NY_PARAM.key)) {
+	    	dialect.setG_ny((Integer)G_NY_PARAM.lookUp(params));
+        }
+        if (params.containsKey(LEVELS_PARAM.key)) {
+	    	dialect.setLevels((Integer)LEVELS_PARAM.lookUp(params));
+        }
+        if (params.containsKey(SCALE_PARAM.key)) {
+	    	dialect.setScale((Double)SCALE_PARAM.lookUp(params));
+        }
+        if (params.containsKey(SHIFT_PARAM.key)) {
+	    	dialect.setShift((Integer)SHIFT_PARAM.lookUp(params));
+        }
 
         // setup the ps dialect if need be
         Boolean usePs = (Boolean) PREPARED_STATEMENTS.lookUp(params);

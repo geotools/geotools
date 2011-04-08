@@ -33,13 +33,13 @@ import org.opengis.filter.expression.Expression;
 
 
 /**
- * <b>Extended Common Query Language (ECQL)</b> is an extension of <b>CQL</b>. This class presents the operations available 
+ * <b>Extended Contextual Query Language (ECQL)</b> is an extension of <b>CQL</b>. This class presents the operations available 
  * to parse the ECQL language and generates the correspondent filter.
  * </p>
  * <p>
  * <h2>Usage</h2>
- * Here are some usage examples. Refer to the <a href="http://docs.codehaus.org/display/GEOTOOLS/CQL+Parser+Design">complete
- * grammar</a> to see what exactly you can do.
+ * Here are some usage examples. Refer to the 
+ * <a href="http://docs.codehaus.org/display/GEOTOOLS/ECQL+Parser+Design">BNF of grammar</a> to see what exactly you can do.
  *
  * <pre>
  * <code>

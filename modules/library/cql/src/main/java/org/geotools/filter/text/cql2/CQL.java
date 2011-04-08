@@ -35,9 +35,9 @@ import org.opengis.filter.expression.Expression;
  * {@link Filter}s and {@link Expression}s, respectively.
  *
  * <p>
- * <b>CQL</b> is an acronym for OGC Common Query Language, a query predicate
- * language whose syntax is similar to a SQL WHERE clause, defined in clause
- * 6.2.2 of the OGC Catalog Service for Web, version 2.0.1 implementation
+ * <b>CQL</b> is an acronym for Contextual Query Language, a query predicate
+ * language whose syntax is similar to a SQL WHERE clause, defined as OGC Common Query Language 
+ * in clause 6.2.2 of the OGC Catalog Service for Web, version 2.0.1 implementation
  * specification.
  * </p>
  * <p>
@@ -49,7 +49,7 @@ import org.opengis.filter.expression.Expression;
  * <p>
  * <h2>Usage</h2>
  * Here are some usage examples. Refer to the <a
- * href="http://docs.codehaus.org/display/GEOTOOLS/CQL+Parser+Design">complete
+ * href="href="http://docs.geotools.org/latest/userguide/guide/library/cql/internal.html">BNF of
  * grammar</a> to see what exactly you can do.
  * 
  * 
@@ -82,6 +82,7 @@ import org.opengis.filter.expression.Expression;
  * List filters = CQL.toFilterList(&quot;NAME IS NULL;BBOX(SHAPE, 10,20,30,40);INCLUDE&quot;);
  * </code>
  * </pre>
+ * <A HREF="http://www.opengis.org/docs/02-059.pdf">Implementation specification 1.0</A>
  *
  * @since 2.5
  * @author Mauricio Pazos (Axios Engineering)

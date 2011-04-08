@@ -85,9 +85,8 @@ In a similar fashion Stroke is used to render edges (either polygon edges, lines
 
 .. image:: /images/stroke.PNG
 
-
-Graphics
-''''''''
+Graphic
+'''''''
 
 The idea of a Graphic is used in a number of contexts when drawing:
 

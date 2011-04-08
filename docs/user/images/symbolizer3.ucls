@@ -1,0 +1,190 @@
+<class-diagram version="1.0.1" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
+  realizations="true" associations="true" dependencies="false" nesting-relationships="true">  
+  <interface id="1" corner="BOTTOM_RIGHT" language="java" name="org.geotools.styling.TextSymbolizer" project="gt-api" 
+    file="/gt-api/src/main/java/org/geotools/styling/TextSymbolizer.java" binary="false">    
+    <position x="158" y="149" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="2" corner="BOTTOM_RIGHT" language="java" name="org.geotools.styling.Font" project="gt-api" 
+    file="/gt-api/src/main/java/org/geotools/styling/Font.java" binary="false">    
+    <position x="353" y="111" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="3" corner="BOTTOM_RIGHT" language="java" name="org.geotools.styling.Halo" project="gt-api" 
+    file="/gt-api/src/main/java/org/geotools/styling/Halo.java" binary="false">    
+    <position x="355" y="192" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="4" corner="BOTTOM_RIGHT" language="java" name="org.geotools.styling.LabelPlacement" project="gt-api" 
+    file="/gt-api/src/main/java/org/geotools/styling/LabelPlacement.java" binary="false">    
+    <position x="364" y="153" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="5" corner="BOTTOM_RIGHT" language="java" name="org.opengis.style.Fill" project="gt-opengis" 
+    file="/gt-opengis/src/main/java/org/opengis/style/Fill.java" binary="false">    
+    <position x="353" y="241" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="6" corner="BOTTOM_RIGHT" language="java" name="org.opengis.style.Stroke" project="gt-opengis" 
+    file="/gt-opengis/src/main/java/org/opengis/style/Stroke.java" binary="false">    
+    <position x="353" y="288" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="11" corner="BOTTOM_RIGHT" language="java" name="org.opengis.style.Graphic" project="gt-opengis" 
+    file="/gt-opengis/src/main/java/org/opengis/style/Graphic.java" binary="false">    
+    <position x="353" y="336" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="12" corner="BOTTOM_RIGHT" language="java" name="org.opengis.style.GraphicalSymbol" project="gt-opengis" 
+    file="/gt-opengis/src/main/java/org/opengis/style/GraphicalSymbol.java" binary="false">    
+    <position x="354" y="397" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="13" corner="BOTTOM_RIGHT" language="java" name="org.opengis.style.ExternalGraphic" project="gt-opengis" 
+    file="/gt-opengis/src/main/java/org/opengis/style/ExternalGraphic.java" binary="false">    
+    <position x="287" y="461" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="14" corner="BOTTOM_RIGHT" language="java" name="org.opengis.style.Mark" project="gt-opengis" 
+    file="/gt-opengis/src/main/java/org/opengis/style/Mark.java" binary="false">    
+    <position x="439" y="460" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="15" corner="BOTTOM_RIGHT" language="java" name="org.geotools.styling.RasterSymbolizer" project="gt-api" 
+    file="/gt-api/src/main/java/org/geotools/styling/RasterSymbolizer.java" binary="false">    
+    <position x="165" y="66" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="16" corner="BOTTOM_RIGHT" language="java" name="org.geotools.styling.ColorMap" project="gt-api" 
+    file="/gt-api/src/main/java/org/geotools/styling/ColorMap.java" binary="false">    
+    <position x="353" y="66" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="17" corner="BOTTOM_RIGHT" language="java" name="org.geotools.styling.LineSymbolizer" project="gt-api" 
+    file="/gt-api/src/main/java/org/geotools/styling/LineSymbolizer.java" binary="false">    
+    <position x="158" y="290" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="18" corner="BOTTOM_RIGHT" language="java" name="org.geotools.styling.PolygonSymbolizer" 
+    project="gt-api" file="/gt-api/src/main/java/org/geotools/styling/PolygonSymbolizer.java" binary="false">    
+    <position x="171" y="240" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="19" corner="BOTTOM_RIGHT" language="java" name="org.opengis.style.PointSymbolizer" project="gt-opengis" 
+    file="/gt-opengis/src/main/java/org/opengis/style/PointSymbolizer.java" binary="false">    
+    <position x="164" y="336" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <dependency>    
+    <bendpoint x="438" y="243"/>    
+    <end type="SOURCE" nodeId="14"/>    
+    <end type="TARGET" nodeId="5"/>  
+  </dependency>  
+  <dependency>    
+    <bendpoint x="439" y="292"/>    
+    <end type="SOURCE" nodeId="14"/>    
+    <end type="TARGET" nodeId="6"/>  
+  </dependency>  
+  <generalization>    
+    <end type="SOURCE" nodeId="13"/>    
+    <end type="TARGET" nodeId="12"/>  
+  </generalization>  
+  <dependency>    
+    <end type="SOURCE" nodeId="18"/>    
+    <end type="TARGET" nodeId="5"/>  
+  </dependency>  
+  <dependency>    
+    <end type="SOURCE" nodeId="11"/>    
+    <end type="TARGET" nodeId="12"/>  
+  </dependency>  
+  <dependency>    
+    <end type="SOURCE" nodeId="19"/>    
+    <end type="TARGET" nodeId="11"/>  
+  </dependency>  
+  <generalization>    
+    <end type="SOURCE" nodeId="14"/>    
+    <end type="TARGET" nodeId="12"/>  
+  </generalization>  
+  <dependency>    
+    <end type="SOURCE" nodeId="18"/>    
+    <end type="TARGET" nodeId="6"/>  
+  </dependency>  
+  <dependency>    
+    <end type="SOURCE" nodeId="1"/>    
+    <end type="TARGET" nodeId="3"/>  
+  </dependency>  
+  <dependency>    
+    <end type="SOURCE" nodeId="15"/>    
+    <end type="TARGET" nodeId="16"/>  
+  </dependency>  
+  <dependency>    
+    <end type="SOURCE" nodeId="17"/>    
+    <end type="TARGET" nodeId="6"/>  
+  </dependency>  
+  <dependency>    
+    <end type="SOURCE" nodeId="1"/>    
+    <end type="TARGET" nodeId="2"/>  
+  </dependency>  
+  <dependency>    
+    <end type="SOURCE" nodeId="1"/>    
+    <end type="TARGET" nodeId="5"/>  
+  </dependency>  
+  <dependency>    
+    <end type="SOURCE" nodeId="3"/>    
+    <end type="TARGET" nodeId="5"/>  
+  </dependency>  
+  <dependency>    
+    <end type="SOURCE" nodeId="1"/>    
+    <end type="TARGET" nodeId="4"/>  
+  </dependency>  
+  <classifier-display autosize="true" package="false" initial-value="false" signature="true" visibility="true">    
+    <attributes public="false" package="false" protected="false" private="false"/>    
+    <operations public="false" package="false" protected="false" private="false"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

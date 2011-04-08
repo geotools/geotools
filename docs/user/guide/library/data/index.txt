@@ -28,6 +28,7 @@ Unsupported plugins:
    :maxdepth: 1
    
    wfs
+   property
 
 Additional DataStore plugins are available from :doc:`gt-jdbc <../jdbc/index>` for database access.
 

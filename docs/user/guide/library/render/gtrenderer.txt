@@ -11,12 +11,7 @@ GTRenderer is actually an interface; currently there are two implementations:
 
 .. image:: /images/GTRenderer.PNG
 
-We should get around to moving this interface to gt-api, it just has not been done yet.
-
-Drawing
-^^^^^^^
-
-How to drawn an outputArea rectangle::
+Here is how to drawn an outputArea rectangle::
   
   GTRenderer draw = new StreamingRenderer();
   draw.setContext(map);
@@ -25,53 +20,55 @@ How to drawn an outputArea rectangle::
 
 If you have completed the Quickstart, this is the approach used by the JMapPane class we use in a lot of our tutorials.
 
-Graphics2D
-''''''''''
-
 The important part of the above example is that GTRenderer works on the Java2D class **Graphics2D**. You can find many implementations of Graphics2D allowing GeoTools to work with a range of graphics systems beyond simply the screen.
 
-* Swing JComponent
-  
-  You can create a swing control to render the image interactively; we
-  provide an example JMapPane for use in our tutorials.
-  
-  GTRenderer is just a rendering engine - in your own application you may
-  consider the following ideas:
-  
-  * Experiment with different Java 2D graphics settings such as
-    anti-aliasing
-  * Use background threads to draw tiles, and allowing your swing control
-    to pull the tiles onto the screen for a smooth "slippy" map
+Swing
+^^^^^
 
-* 3D
-  
-  A google summer of code student put together and example of rendering
-  into a texture buffers and using OpenGL to handle panning and zooming.
-  
-  Personally I would look for an Graphics2D implementation that was
-  backed by OpenGL commands and use GeoTools to render out into the scene
-  graph.
-  
-  If you are interested in the students code it is currently in the
-  "spike" directory of GeoTools where we keep experiments.
 
-* Printing
-  
-  You can print using StreamingRenderer, the code works like normal just
-  use the Graphics2D object from your Printer.
-  
-  uDig uses this facility to allow for printing maps directly to the
-  printer.
+You can create a swing control to render the image interactively; we
+provide an example JMapPane for use in our tutorials.
 
-* PDF
-  
-  We have also had success using GTRenderer and Batik for the generation
-  of PDF output (they provide a Graphics2D object).
+GTRenderer is just a rendering engine - in your own application you may
+consider the following ideas:
 
-  You can see this functionality in uDig and GeoServer.
-  
-  The following example is taken from uDig::
-    
+* Experiment with different Java 2D graphics settings such as
+  anti-aliasing
+* Use background threads to draw tiles, and allowing your swing control
+  to pull the tiles onto the screen for a smooth "slippy" map
+
+3D
+^^
+
+A google summer of code student put together and example of rendering
+into a texture buffers and using OpenGL to handle panning and zooming.
+
+Personally I would look for an Graphics2D implementation that was
+backed by OpenGL commands and use GeoTools to render out into the scene
+graph.
+
+If you are interested in the students code it is currently in the
+"spike" directory of GeoTools where we keep experiments.
+
+Printing
+^^^^^^^^
+
+The Java2D library is also used for Java printing. You can print using StreamingRenderer, the code works like normal just
+use the Graphics2D object from your Printer.
+
+uDig uses this facility to allow for printing maps directly to the
+printer.
+
+PDF
+^^^
+
+We have also had success using GTRenderer and Batik for the generation
+of PDF output (they provide a Graphics2D object).
+
+You can see this functionality in uDig and GeoServer.
+
+The following example is taken from uDig::
+
     Rectangle suggestedPageSize = getITextPageSize(page1.getPageSize());                
     Rectangle pageSize = rotatePageIfNecessary(suggestedPageSize);
     //rotate if we need landscape
@@ -98,14 +95,25 @@ The important part of the above example is that GTRenderer works on the Java2D c
   
   You may wish to increase the page size by 2 and then scale the result by 50% in order to produce high resolution raster layers
 
-* SVG
-  
-   Other teams have used the Batik project to generate SVG output.
-   
-   Thanks to James Macgill for the following code example: GenerateSVG.java
+SVG
+^^^
 
-Image Export
-^^^^^^^^^^^^
+ The GeoVista team have used the Batik project to generate SVG output.
+
+ You will need a dependency for gt-svg. This will bring it the correct version of batick for you and add support for svg icons.
+
+Thanks to James Macgill for the following code example:
+
+.. literalinclude:: /../src/main/java/org/geotools/render/GenerateSVG.java
+   :language: java
+   :start-after: // exportSVG start
+   :end-before: // exportSVG end
+
+Image
+^^^^^
+
+You can also ask Java to make you a Graphics2D for a BufferedImage in memory. After drawing into this
+image you can write it out to disk.
 
 Here is an example from Oliver on the email list::
   

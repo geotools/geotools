@@ -286,6 +286,57 @@ private void twoFeatureTypeStyles() {
     // twoFeatureTypeStyles end
 }
 
+private void quickPointSymbolizer() {
+    // quickPointSymbolizer start
+    // "testPoint" feature type style
+    StyleBuilder sb = new StyleBuilder();
+    FilterFactory2 ff = sb.getFilterFactory();
+    
+    Mark testMark = sb.createMark(sb.attributeExpression("name"), sb.createFill(Color.RED, 0.5),
+            null);
+    Graphic graph = sb.createGraphic(null, // An external graphics if needed
+            new Mark[] { testMark }, // a Mark if not an external graphics
+            null, // aSymbol
+            ff.literal(1), // opacity
+            ff.property("size"), // read from feature "size" attribute
+            ff.property("rotation")); // rotation, here read into the feature
+    PointSymbolizer aPointSymbolizer = sb.createPointSymbolizer(graph);
+    
+    // creation of the style
+    Style style = sb.createStyle(aPointSymbolizer);
+    // quickPointSymbolizer end
+}
+
+private void quickTextSymbolizer() {
+    // quickTextSymbolizer start
+    // "labelPoint" feature type style
+    StyleBuilder sb = new StyleBuilder();
+    FilterFactory2 ff = sb.getFilterFactory();
+    
+    // creation of the TextSymbolizer
+    AnchorPoint anchorPoint = sb.createAnchorPoint(sb.attributeExpression("X"),
+            sb.attributeExpression("Y"));
+    PointPlacement pointPlacement = sb.createPointPlacement(anchorPoint, null,
+            sb.literalExpression(0));
+    TextSymbolizer textSymbolizer = sb.createTextSymbolizer(sb.createFill(Color.BLACK), new Font[] {
+            sb.createFont("Lucida Sans", 10), sb.createFont("Arial", 10) }, sb.createHalo(),
+            sb.attributeExpression("name"), pointPlacement, null);
+    
+    // creation of the Point symbolizer
+    Mark circle = sb.createMark(StyleBuilder.MARK_CIRCLE, Color.RED);
+    Graphic graph2 = sb.createGraphic(null, circle, null, 1, 4, 0);
+    PointSymbolizer pointSymbolizer = sb.createPointSymbolizer(graph2);
+    
+    // creation of the style
+    Style style = sb.createStyle();
+    FeatureTypeStyle featureTypeStyle = sb.createFeatureTypeStyle("labelPoint", new Symbolizer[] {
+            textSymbolizer, pointSymbolizer });
+    style.featureTypeStyles().add(featureTypeStyle);
+    
+    // creation of the style
+    // quickTextSymbolizer end
+}
+
 private void quickPolygonSymbolizer() {
     // quickPolygonSymbolizer start
     StyleBuilder styleBuilder = new StyleBuilder();

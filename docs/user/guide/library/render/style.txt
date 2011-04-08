@@ -247,6 +247,32 @@ Here is a quick example that will draw any "Feature" using a PointSymbolizer:
 
 Of note is how the PointSymbolizer will first try and use C:\images\house.gif (ie an external graphic) and if that fails it will use a circle (ie a mark).
 
+Notes on handling of features:
+
+* Each FeatureTypeStyle that applies is used. That means, the layer will be drawn multiple times if the styles
+  contain more than one FeatureTypeStyle that matches the FeatureType of the features in the layer.
+* FeatureTypeStyles are painted in order: a FeatureTypeStyle is painted only once the previous one in the list
+  has been completely painted
+* Each feature is then passed to the rules and their list of symbolizers
+* This means that a single feature can be painted more than once, if more than one rule matches it, or
+  if the rules contain more than one symbolizer.
+* The full set of rules and symbolizers in the current FeatureTypeStyle
+  is applied to the current Feature before considering the next one.
+  
+  The last consideration is important when you need to draw, for example, roads with a double line
+  such as a wide black line below a thin white line. This is possible using two FeatureTypeStyles,
+  since using a Rule with a couple of symbolizers will generate a map that doesn't look good at
+  road intersections.
+  
+  Example of style with two FeatureTypeStyles:
+  
+  .. literalinclude:: /../src/main/java/org/geotools/render/StyleExamples.java
+     :language: java
+     :start-after: // twoFeatureTypeStyles start
+     :end-before: // twoFeatureTypeStyles end
+  
+* For an in depth discussion of the rendering process please refer to * :doc:`style </tutorial/map/style>` (tutorial)
+
 Rule
 ''''
 A FeatureTypeStyle contains one or more rules, these rules are considered in order with the possibility of an "else" Rule being
@@ -278,10 +304,14 @@ Once FeatureTypeStyle and Rules have determined that a Feature is going to be dr
 Symbolizer
 ''''''''''
 
-A Symbolizer describes how to represent a feature on the screen based on the feature contents (geometry and attributes). Each rule can have one or more Symbolizer attached to it.
+A symbolizer describes how a feature should appear on a map.  Each rule has a list of symbolizers which it applies in order.
 
-As you can see, there are many kind of symbolizers, for points, lines, polygons, labels and raster data. You don't need to match the symbolizer with the specific geometry contained in the feature, the renderer will try to do the most appropriate thing on a case by case basis. For example, TextSymbolizer applies to all kinds of geometries, and will generate labels on the map. If you apply a PolygonSymbolizer to a line, the line will be closed to form a polygon, and then the polygon symbolizer will be applied.
 
+.. image:: /images/symbolizer3.PNG
+
+As you can see, there are many kind of symbolizers, for points, lines, polygons, labels and raster data.
+
+You don't need to match the symbolizer with the specific geometry contained in the feature, the renderer will try to do the most appropriate thing on a case by case basis. For example, TextSymbolizer applies to all kinds of geometries, and will generate labels on the map. If you apply a PolygonSymbolizer to a line, the line will be closed to form a polygon, and then the polygon symbolizer will be applied.
 
 
 .. image:: /images/symbolizer2.PNG
@@ -299,11 +329,20 @@ The GeoTools Symbolizer interface offers a couple of advantages over the base st
 
 Notes on the use of symbolizers:
 
-* The most important thing to note here is that symbolizer component objects are composed of
-  Expression objects, which means that they may be made dependent on Feature attributes.
+* The symbolizer describes not just the shape that should appear but also such graphical properties as color and opacity
+* Symbolizers do have a default behaviour, after creating a Symbolizer you should supplying parameters to overide the default settings
+* The original details of this object are taken from the OGC Styled-Layer Descriptor Report (OGC 01-077) version 0.7.2.
+* Renderers can use this information when displaying styled features.
+  Though it must be remembered that not all renderers will be able to fully represent
+  strokes as set out by this interface. For example, opacity may not be supported.
+* The graphical parameters and their values are derived from SVG/CSS2 standards with
+  names and semantics which are as close as possible.
+* The most important thing to note here is that symbolizer component objects are
+  composed of Expression objects, which means that they may be made dependent on
+  Feature attributes.
   
-  For example, you can create a mathematical expression that links some Feature attribute
-  to the line width.
+  For example, you can create a mathematical expression that links some Feature
+  attribute to the line width.
   
   Thus, you have two ways to symbolize different features with different styles:
   
@@ -312,29 +351,6 @@ Notes on the use of symbolizers:
     falls into.
   * By directly linking a symbolizer property to an attribute value;
 
-TextSymbolizer
-''''''''''''''
-
-Used to control the labelling system; labels are generated by TextSymbolizers and
-thrown into the rendering engine which detect overlaps, sorts things out according
-to priorities you have defined and decides on a final label placement.
-
-LineSymbolizer
-''''''''''''''
-
-Used to control how lines (or edges) are drawn.
-
-PolygonSymbolizer
-'''''''''''''''''
-
-Used to control how solid shapes are drawn.
-
-Example of creating a quick PolygonSymbolizer:
-
-.. literalinclude:: /../src/main/java/org/geotools/render/StyleExamples.java
-   :language: java
-   :start-after: // quickPolygonSymbolizer start
-   :end-before: // quickPolygonSymbolizer end
 
 Point Symbolizer
 ''''''''''''''''
@@ -342,37 +358,203 @@ Point Symbolizer
 Used to draw a point location, the actual graphic drawn is referred to as a Mark with the option to use
 some well known marks (circle, square etc..) or your own external graphics such as PNG icons.
 
+Examples: 
+
+* GeoServer SLD cookbook
+  
+  `Points <http://docs.geoserver.org/stable/en/user/styling/sld-cookbook/points.html>`_
+  
+* Quick example creating a PointSymbolizer using StyleBuilder:
+  
+  .. literalinclude:: /../src/main/java/org/geotools/render/StyleExamples.java
+     :language: java
+     :start-after: // quickPointSymbolizer start
+     :end-before: // quickPointSymbolizer end
+  
+  Here is the same style as an xml fragments::
+  
+            <PointSymbolizer>
+                <graphic>
+                    <size><PropertyName>size</PropertyName></size>
+                    <rotation><PropertyName>rotation</PropertyName></rotation>
+                    <mark>
+                        <wellknownname><PropertyName>name</PropertyName></wellknownname>
+                        <Fill>
+                            <!-- CssParameters allowed are fill 
+                            (the color) and fill-opacity -->
+                            <CssParameter name="fill">#FF0000</CssParameter>
+                            <CssParameter name="fill-opacity">0.5</CssParameter>
+                        </Fill>
+                    </mark>
+                </graphic>
+            </PointSymbolizer>
+
+LineSymbolizer
+''''''''''''''
+
+Used to control how lines (or edges) are drawn.
+
+Examples:
+
+* GeoServer SLD cookbook
+  
+  `Lines <http://docs.geoserver.org/stable/en/user/styling/sld-cookbook/lines.html>`_ .
+
+PolygonSymbolizer
+'''''''''''''''''
+
+Used to control how solid shapes are drawn.
+
+Examples:
+
+* GeoServer SLD cookbook
+  
+  `Polygons <http://docs.geoserver.org/stable/en/user/styling/sld-cookbook/polygons.html>`_ .
+  
+* Quick example using StyleBuilder to create a PolygonSymbolizer:
+
+.. literalinclude:: /../src/main/java/org/geotools/render/StyleExamples.java
+   :language: java
+   :start-after: // quickPolygonSymbolizer start
+   :end-before: // quickPolygonSymbolizer end
+  
+TextSymbolizer
+''''''''''''''
+
+Used to control the labelling system; labels are generated by TextSymbolizers and
+thrown into the rendering engine which detect overlaps, sorts things out according
+to priorities you have defined and decides on a final label placement.
+
+This mays TextSymbolizer a little bit odd in that it does not get the final say on how labels are rendered on a pixel by pixel basis.
+
+Examples:
+
+* GeoServer SLD cookbook
+  
+  * `Point Labels <http://docs.geoserver.org/stable/en/user/styling/sld-cookbook/points.html#point-with-default-label>`_
+  * `Line Labels <http://docs.geoserver.org/stable/en/user/styling/sld-cookbook/lines.html#line-with-default-label>`_
+  * `Polygon Labels <http://docs.geoserver.org/stable/en/user/styling/sld-cookbook/polygons.html#polygon-with-default-label>`_
+
+* Here is a quick example of creating a TextSymbolizer with StyleBuilder:
+  
+  .. literalinclude:: /../src/main/java/org/geotools/render/StyleExamples.java
+     :language: java
+     :start-after: // quickTextSymbolizer start
+     :end-before: // quickTextSymbolizer end
+  
+  Here is the same example as an xml fragment::
+  
+            <TextSymbolizer>
+                <Label><PropertyName>name</PropertyName></Label>
+                <Font>
+                    <CssParameter name="font-family">Lucida Sans</CssParameter>
+                    <CssParameter name="font-Size">
+                        <literal>10</literal>
+                    </CssParameter>
+                </Font>
+                <LabelPlacement>
+                    <PointPlacement>
+                        <AnchorPoint>
+                            <AnchorPointX><PropertyName>X</PropertyName> </AnchorPointX>
+                            <AnchorPointY><PropertyName>Y</PropertyName> </AnchorPointY>
+                        </AnchorPoint>
+                    </PointPlacement>
+                </LabelPlacement>
+                <Fill>
+                    <CssParameter name="fill">#000000</CssParameter>
+                </Fill>
+                <Halo/>
+            </TextSymbolizer>
+            <PointSymbolizer>
+                <graphic>
+                    <size>4</size>
+                    <mark>
+                        <wellknownname>circle</wellknownname>
+                        <Fill>
+                            <!-- CssParameters allowed are fill 
+                            (the color) and fill-opacity -->
+                            <CssParameter name="fill">#FF0000</CssParameter>
+                        </Fill>
+                    </mark>
+                </graphic>
+            </PointSymbolizer>
+
 Raster Symbolizer
 '''''''''''''''''
 
 Used to control the rendering of raster data with full "color map" control.
 
-Portrayal
-^^^^^^^^^
-
-For an in depth discussion of the rendering process please refer to * :doc:`style </tutorial/map/style>` (tutorial)
-
-Notes on handling of features:
-
-* Each FeatureTypeStyle that applies is used. That means, the layer will be drawn multiple times if the styles
-  contain more than one FeatureTypeStyle that matches the FeatureType of the features in the layer.
-* FeatureTypeStyles are painted in order: a FeatureTypeStyle is painted only once the previous one in the list
-  has been completely painted
-* Each feature is then passed to the rules and their list of symbolizers
-* This means that a single feature can be painted more than once, if more than one rule matches it, or
-  if the rules contain more than one symbolizer.
-* The full set of rules and symbolizers in the current FeatureTypeStyle
-  is applied to the current Feature before considering the next one.
+* GeoServer SLD cookbook
   
-  The last consideration is important when you need to draw, for example, roads with a double line
-  such as a wide black line below a thin white line. This is possible using two FeatureTypeStyles,
-  since using a Rule with a couple of symbolizers will generate a map that doesn't look good at
-  road intersections.
+  * `Rasters <http://docs.geoserver.org/stable/en/user/styling/sld-cookbook/rasters.html>`_
   
-  Example of style with two FeatureTypeStyles:
-  
-  .. literalinclude:: /../src/main/java/org/geotools/render/StyleExamples.java
-     :language: java
-     :start-after: // twoFeatureTypeStyles start
-     :end-before: // twoFeatureTypeStyles end
+StyleVisitor
+^^^^^^^^^^^^
 
+Just like with the FilterVisitor interface we are going to use these implementation to navigate over a nested data structure and either copy what we see, or modify it as we go.
+
+While the StyleVisitor interface will let modify a style in place we have never found that to be a good idea (at best opening your code up to magic threading issues with what is probably a very active rendering thread).
+
+The generic StyleVisitor interface is everything you would expect from the Gang of Four Visitor pattern, it has a visit methods one for each significant interface in a Style object.
+
+To use a StyleVisitor simply pass it to a style (or any style object)::
+  
+  style.accepts( styleVisitor );
+
+You will find that not all Style objects accept a StyleVisitor; as an example Font does not. This is not really a problem - but it is something to keep in mind when writing your own visitor.
+
+**Ready to Use Implementations**
+
+There are a number of ready to use implementations; while we have provided some examples on this page please explore what is available in the library - you can do this quikly by checking the javadocs.
+
+* StyleAttributeExtractor - return all the attributes mentioned by this style; used by the renderer when constructing a Query
+* DuplicatingStyleVisitor - return a copy of the style
+* RescaleStyleVisitor - return a copy of the style modified for display at a different scale.
+
+**Implementation Tips**
+
+If you are used to simple visitors on list like data structures you are in for a surprise - StyleVisitor does not navigate the Style object structure on its own you are going to have to do the work.::
+  
+  class YourStyleVisitor implements StyleVisitor {
+      ...
+      public void visit(Halo halo) {
+          // do your work here
+  
+          // make sure you visit the "child" objects
+          if( halo.getFill() != null ) halo.getFill().accepts( this );
+          if( halo.getRadius() != null ) halo.getRadius().accepts( this );
+      }
+      ...
+  }
+
+We should have an AbstractStyleVisitor for you to start from; perhaps you would like to write it for us?
+
+DuplicatingStyleVisitor
+'''''''''''''''''''''''
+
+DuplicatingStyleVisitor will copy any style object; it keeps track of what is copied using an internal stack (this means it is not thread safe!).::
+  
+  DuplicatingStyleVisitor xerox = new DuplicatingStyleVisitor();
+  style.accepts( xerox );
+  Style copy = (Style) xerox.getCopy();
+
+Please note this works for everything::
+  
+  DuplicatingStyleVisitor xerox = new DuplicatingStyleVisitor();
+  lineSymbolizer.accepts( xerox );
+  LineSymbolizer copy = (LineSymbolizer) xerox.getCopy();
+
+RescaleStyleVisitor
+'''''''''''''''''''
+
+RescaleStyleVisitor can be used to scale up a provided style; something that is useful when printing. The SLD specification is pretty careful about working with pixels at all times (this is annoying when you switch to 300 DPI).::
+  
+  RescaleStyleVisitor scale = new RescaleStyleVisitor(5.0);
+  style.accepts( scale );
+  Style bigger = (Style) scale.getCopy();
+
+Please note that this also returns a copy; while you could modify a style in place using a visitor we find that life is too short for threading issues.::
+  
+  RescaleStyleVisitor scale = new RescaleStyleVisitor(5.0);
+  lineSymbolizer.accepts( scale );
+  LineSymbolizer bigger = (LineSymbolizer) scale.getCopy();

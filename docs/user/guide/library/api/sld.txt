@@ -93,3 +93,45 @@ GeoTools extends the concept of a TextSymbolizer allowing:
 * TextSymbolizer2.getFeatureDescription()
   
   Used by formats like KML or RSS to supply info on a feature. 
+
+
+SLD Utility Class
+^^^^^^^^^^^^^^^^^
+
+The SLD utility class is used to perform common operations on Style objects. This is the class you can used when you "just" want to hack away at an existing Style object.
+
+This utility class originated as part of the uDig application.
+
+* Changing the Colors
+  
+  Utility methods exits to change the "first" symbolizer found in the Style::
+    
+    SLD.setLineColour(style, Color.BLUE );
+    SLD.setPolyColour(style, Color.RED );
+  
+  You can also perform these kinds of changes on individual symbolizers::
+    
+    SLD.setLineColour( lineSymbolizer, Color.BLUE );
+    SLD.setPolyColour( polygonSymbolizer, Color.RED );
+
+  You can combine this approach with a StyleVisitor to edit the colors for specific rules::
+    
+    DuplicatingStyleVisitor repaint = new DuplicatingStyleVisitor(){
+       boolean flag=false;
+       public void visit(Rule rule){
+            flag=rule.getName().equals("fred");
+    
+            super.visit( rule ); // makes a copy
+            flag=false;        
+       }
+       public void visit(PolygonSymbolizer polygonSymbolizer){
+            super.visit( rule ); // makes a copy
+            if( flag ){
+                PolygonSymbolizer copy = getObject(); // the copy just made
+                SLD.setPolyColour( copy, Color.RED );
+            }
+       }
+    };
+    style.accepts( repaint ):
+    Style modified = (Style) repaint.getObject();
+

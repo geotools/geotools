@@ -16,9 +16,6 @@
  */
 package org.geotools.gce.imagemosaic;
 
-import it.geosolutions.imageio.plugins.jp2ecw.JP2GDALEcwImageReaderSpi;
-import it.geosolutions.imageio.plugins.jp2kakadu.JP2GDALKakaduImageReaderSpi;
-import it.geosolutions.imageio.plugins.jp2mrsid.JP2GDALMrSidImageReaderSpi;
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
 
 import java.awt.RenderingHints;
@@ -33,9 +30,6 @@ import javax.imageio.spi.ImageReaderSpi;
 
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridFormatFactorySpi;
-import org.geotools.coverageio.gdal.jp2ecw.JP2ECWFormatFactory;
-import org.geotools.coverageio.gdal.jp2kak.JP2KFormatFactory;
-import org.geotools.coverageio.gdal.jp2mrsid.JP2MrSIDFormatFactory;
 
 import com.sun.media.imageioimpl.common.PackageUtil;
 import com.sun.media.imageioimpl.plugins.jpeg2000.J2KImageReaderCodecLibSpi;
@@ -55,24 +49,32 @@ public final class ImageMosaicFormatFactory implements GridFormatFactorySpi {
 	private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(ImageMosaicFormatFactory.class);
 	
 	private static final String KAKADU_SPI = "it.geosolutions.imageio.plugins.jp2k.JP2KKakaduImageReaderSpi";
+	
+	private static final String GDAL_SPI = "it.geosolutions.imageio.gdalframework.GDALImageReaderSpi";
+	
+	private static final String GDAL_JP2ECW_SPI = "it.geosolutions.imageio.plugins.jp2ecw.JP2GDALEcwImageReaderSpi";
+	
+	private static final String GDAL_JP2MrSID_SPI = "it.geosolutions.imageio.plugins.jp2mrsid.JP2GDALMrSidImageReaderSpi";
+	
+        private static final String GDAL_JP2KAKADU_SPI = "it.geosolutions.imageio.plugins.jp2kakadu.JP2GDALKakaduImageReaderSpi";
 
 	static {
 	    
 		replaceTIFF();
 		
-		if(JP2KAK()){
-			replaceJP2KAK();
+		if(hasJP2Kakadu()){
+			replaceJP2Kakadu();
 		}
 		
 		else{
-			if(JP2ECW()){
+			if(hasJP2GDALECW()){
 				replaceECW();
 			}
-			if(JP2MRSID()){
+			if(hasJP2GDALMRSID()){
 				replaceMRSID();
 			}
-			if(JP2GDALKAK()){
-				replaceGDALKAK();
+			if(hasJP2GDALKakadu()){
+				replaceGDALKakadu();
 			}
 		}
 		
@@ -102,7 +104,7 @@ public final class ImageMosaicFormatFactory implements GridFormatFactorySpi {
 	}
 
 
-	private static boolean JP2KAK() {
+	private static boolean hasJP2Kakadu() {
 		try{
 			@SuppressWarnings("unused")
 			Class<?> cl = Class.forName(KAKADU_SPI);
@@ -134,7 +136,7 @@ public final class ImageMosaicFormatFactory implements GridFormatFactorySpi {
 		return false;
 	}
 
-	private static void replaceJP2KAK() {
+	private static void replaceJP2Kakadu() {
 		try{
 			Class.forName(KAKADU_SPI);
 
@@ -183,34 +185,66 @@ public final class ImageMosaicFormatFactory implements GridFormatFactorySpi {
 		
 	}
 
-	private static boolean JP2GDALKAK() {
-		return new JP2KFormatFactory().isAvailable();
-	}
+	private static boolean hasJP2GDALKakadu() {
+	    try{
+                @SuppressWarnings("unused")
+                Class<?> cl = Class.forName(GDAL_JP2KAKADU_SPI);
+                Class<?> cGdal = Class.forName(GDAL_SPI);
+                Object jp2Kak = cl.newInstance(); 
+                final Method method = cGdal.getDeclaredMethod("isAvailable", (Class[])null);
+                if (method != null){
+                        Boolean isAvailable = (Boolean) method.invoke(jp2Kak, null);
+                        return isAvailable.booleanValue();
+                    }
+            } catch (ClassNotFoundException e) {
+                if (LOGGER.isLoggable(Level.FINE))
+                    LOGGER.log(Level.FINE, "Unable to load GDAL JP2 Kakadu Reader SPI", e);
+            } catch (SecurityException e) {
+                if (LOGGER.isLoggable(Level.FINE))
+                    LOGGER.log(Level.FINE, "Unable to load GDAL JP2 Kakadu Reader SPI", e);
+            } catch (NoSuchMethodException e) {
+                if (LOGGER.isLoggable(Level.FINE))
+                    LOGGER.log(Level.FINE, "Unable to load GDAL JP2 Kakadu Reader SPI", e);
+            } catch (IllegalArgumentException e) {
+                if (LOGGER.isLoggable(Level.FINE))
+                    LOGGER.log(Level.FINE, "Unable to load GDAL JP2 Kakadu Reader SPI", e);
+            } catch (IllegalAccessException e) {
+                if (LOGGER.isLoggable(Level.FINE))
+                    LOGGER.log(Level.FINE, "Unable to load GDAL JP2 Kakadu Reader SPI", e);
+            } catch (InvocationTargetException e) {
+                if (LOGGER.isLoggable(Level.FINE))
+                    LOGGER.log(Level.FINE, "Unable to load GDAL JP2 Kakadu Reader SPI", e);
+            } catch (InstantiationException e) {
+                if (LOGGER.isLoggable(Level.FINE))
+                    LOGGER.log(Level.FINE, "Unable to load GDAL JP2 Kakadu Reader SPI", e);
+            }
+            return false;
+        }
 
-	private static void replaceGDALKAK() {
+	private static void replaceGDALKakadu() {
 		try{
 			//check if our kakJP2 plugin is in the path
-			final String kakJP2=JP2GDALKakaduImageReaderSpi.class.getName();
-			Class.forName(kakJP2);
+
+			Class.forName(GDAL_JP2KAKADU_SPI);
 
 			// imageio kakJP2 reader
 			final String imageioJ2KImageReaderCodecName=J2KImageReaderCodecLibSpi.class.getName();
 			
 			if(PackageUtil.isCodecLibAvailable()){
-				boolean succeeded=ImageIOUtilities.replaceProvider(ImageReaderSpi.class, kakJP2, imageioJ2KImageReaderCodecName, "JPEG 2000");
+				boolean succeeded=ImageIOUtilities.replaceProvider(ImageReaderSpi.class, GDAL_JP2KAKADU_SPI, imageioJ2KImageReaderCodecName, "JPEG 2000");
 	        	if(!succeeded)
 	        		if (LOGGER.isLoggable(Level.WARNING))
-	        			LOGGER.warning("Unable to set ordering between jp2 readers spi-"+kakJP2+":"+imageioJ2KImageReaderCodecName);	
+	        			LOGGER.warning("Unable to set ordering between jp2 readers spi-"+GDAL_JP2KAKADU_SPI+":"+imageioJ2KImageReaderCodecName);	
 			}
         	
 			// imageio kakJP2 reader
 			final String imageioJ2KImageReaderName=J2KImageReaderSpi.class.getName();
 			
 			
-			final boolean succeeded=ImageIOUtilities.replaceProvider(ImageReaderSpi.class, kakJP2, imageioJ2KImageReaderName, "JPEG 2000");
+			final boolean succeeded=ImageIOUtilities.replaceProvider(ImageReaderSpi.class, GDAL_JP2KAKADU_SPI, imageioJ2KImageReaderName, "JPEG 2000");
         	if(!succeeded)
         		if (LOGGER.isLoggable(Level.WARNING))
-        			LOGGER.warning("Unable to set ordering between jp2 readers spi-"+kakJP2+":"+imageioJ2KImageReaderName);	
+        			LOGGER.warning("Unable to set ordering between jp2 readers spi-"+GDAL_JP2KAKADU_SPI+":"+imageioJ2KImageReaderName);	
 	        
 		} catch (ClassNotFoundException e) {
 			if (LOGGER.isLoggable(Level.WARNING))
@@ -222,27 +256,26 @@ public final class ImageMosaicFormatFactory implements GridFormatFactorySpi {
 	private static void replaceMRSID() {
 		try{
 			//check if our mrsidJP2 plugin is in the path
-			final String mrsidJP2=JP2GDALMrSidImageReaderSpi.class.getName();
-			Class.forName(mrsidJP2);
+			Class.forName(GDAL_JP2MrSID_SPI );
 
 			// imageio tiff reader
 			final String imageioJ2KImageReaderCodecName=J2KImageReaderCodecLibSpi.class.getName();
 			
 			if(PackageUtil.isCodecLibAvailable()){
-				boolean succeeded=ImageIOUtilities.replaceProvider(ImageReaderSpi.class, mrsidJP2, imageioJ2KImageReaderCodecName, "JPEG 2000");
+				boolean succeeded=ImageIOUtilities.replaceProvider(ImageReaderSpi.class, GDAL_JP2MrSID_SPI , imageioJ2KImageReaderCodecName, "JPEG 2000");
 	        	if(!succeeded)
 	        		if (LOGGER.isLoggable(Level.WARNING))
-	        			LOGGER.warning("Unable to set ordering between jp2 readers spi-"+mrsidJP2+":"+imageioJ2KImageReaderCodecName);	
+	        			LOGGER.warning("Unable to set ordering between jp2 readers spi-"+GDAL_JP2MrSID_SPI +":"+imageioJ2KImageReaderCodecName);	
 			}
         	
 			// imageio mrsidJP2 reader
 			final String imageioJ2KImageReaderName=J2KImageReaderSpi.class.getName();
 			
 			
-			final boolean succeeded=ImageIOUtilities.replaceProvider(ImageReaderSpi.class, mrsidJP2, imageioJ2KImageReaderName, "JPEG 2000");
+			final boolean succeeded=ImageIOUtilities.replaceProvider(ImageReaderSpi.class, GDAL_JP2MrSID_SPI , imageioJ2KImageReaderName, "JPEG 2000");
         	if(!succeeded)
         		if (LOGGER.isLoggable(Level.WARNING))
-        			LOGGER.warning("Unable to set ordering between jp2 readers spi-"+mrsidJP2+":"+imageioJ2KImageReaderName);	
+        			LOGGER.warning("Unable to set ordering between jp2 readers spi-"+GDAL_JP2MrSID_SPI +":"+imageioJ2KImageReaderName);	
 	        
 		} catch (ClassNotFoundException e) {
 			if (LOGGER.isLoggable(Level.WARNING))
@@ -251,33 +284,64 @@ public final class ImageMosaicFormatFactory implements GridFormatFactorySpi {
 		
 	}
 
-	private static boolean JP2MRSID() {
-		return new JP2MrSIDFormatFactory().isAvailable();
-	}
+	private static boolean hasJP2GDALMRSID() {
+	    try{
+                @SuppressWarnings("unused")
+                Class<?> cl = Class.forName(GDAL_JP2MrSID_SPI);
+                Class<?> cGdal = Class.forName(GDAL_SPI);
+                Object jp2MrSid = cl.newInstance(); 
+                final Method method = cGdal.getDeclaredMethod("isAvailable", (Class[])null);
+                if (method != null){
+                        Boolean isAvailable = (Boolean) method.invoke(jp2MrSid, null);
+                        return isAvailable.booleanValue();
+                    }
+            } catch (ClassNotFoundException e) {
+                if (LOGGER.isLoggable(Level.FINE))
+                    LOGGER.log(Level.FINE, "Unable to load GDAL JP2 MrSID Reader SPI", e);
+            } catch (SecurityException e) {
+                if (LOGGER.isLoggable(Level.FINE))
+                    LOGGER.log(Level.FINE, "Unable to load GDAL JP2 MrSID Reader SPI", e);
+            } catch (NoSuchMethodException e) {
+                if (LOGGER.isLoggable(Level.FINE))
+                    LOGGER.log(Level.FINE, "Unable to load GDAL JP2 MrSID Reader SPI", e);
+            } catch (IllegalArgumentException e) {
+                if (LOGGER.isLoggable(Level.FINE))
+                    LOGGER.log(Level.FINE, "Unable to load GDAL JP2 MrSID Reader SPI", e);
+            } catch (IllegalAccessException e) {
+                if (LOGGER.isLoggable(Level.FINE))
+                    LOGGER.log(Level.FINE, "Unable to load GDAL JP2 MrSID Reader SPI", e);
+            } catch (InvocationTargetException e) {
+                if (LOGGER.isLoggable(Level.FINE))
+                    LOGGER.log(Level.FINE, "Unable to load GDAL JP2 MrSID Reader SPI", e);
+            } catch (InstantiationException e) {
+                if (LOGGER.isLoggable(Level.FINE))
+                    LOGGER.log(Level.FINE, "Unable to load GDAL JP2 MrSID Reader SPI", e);
+            }
+            return false;
+        }
 
 	private static void replaceECW() {
 		try{
 			//check if our ecwJP2 plugin is in the path
-			final String ecwJP2=JP2GDALEcwImageReaderSpi.class.getName();
-			Class.forName(ecwJP2);
+			Class.forName(GDAL_JP2ECW_SPI);
 
 			// imageio ecwJP2 reader
 			final String imageioJ2KImageReaderCodecName=J2KImageReaderCodecLibSpi.class.getName();
 			
 			if(PackageUtil.isCodecLibAvailable()){
-				boolean succeeded=ImageIOUtilities.replaceProvider(ImageReaderSpi.class, ecwJP2, imageioJ2KImageReaderCodecName, "JPEG 2000");
+				boolean succeeded=ImageIOUtilities.replaceProvider(ImageReaderSpi.class, GDAL_JP2ECW_SPI, imageioJ2KImageReaderCodecName, "JPEG 2000");
 	        	if(!succeeded)
 	        		if (LOGGER.isLoggable(Level.WARNING))
-	        			LOGGER.warning("Unable to set ordering between jp2 readers spi-"+ecwJP2+":"+imageioJ2KImageReaderCodecName);	
+	        			LOGGER.warning("Unable to set ordering between jp2 readers spi-"+GDAL_JP2ECW_SPI+":"+imageioJ2KImageReaderCodecName);	
 			}
         	
 			// imageio ecwJP2 reader
 			final String imageioJ2KImageReaderName=J2KImageReaderSpi.class.getName();
 			
-			final boolean succeeded=ImageIOUtilities.replaceProvider(ImageReaderSpi.class, ecwJP2, imageioJ2KImageReaderName, "JPEG 2000");
+			final boolean succeeded=ImageIOUtilities.replaceProvider(ImageReaderSpi.class, GDAL_JP2ECW_SPI, imageioJ2KImageReaderName, "JPEG 2000");
         	if(!succeeded)
         		if (LOGGER.isLoggable(Level.WARNING))
-        			LOGGER.warning("Unable to set ordering between jp2 readers spi-"+ecwJP2+":"+imageioJ2KImageReaderName);	
+        			LOGGER.warning("Unable to set ordering between jp2 readers spi-"+GDAL_JP2ECW_SPI+":"+imageioJ2KImageReaderName);	
 	        
 		} catch (ClassNotFoundException e) {
 			if (LOGGER.isLoggable(Level.WARNING))
@@ -286,9 +350,41 @@ public final class ImageMosaicFormatFactory implements GridFormatFactorySpi {
 		
 	}
 
-	private static boolean JP2ECW() {
-		return new JP2ECWFormatFactory().isAvailable();
-	}
+	private static boolean hasJP2GDALECW() {
+	    try{
+                @SuppressWarnings("unused")
+                Class<?> cl = Class.forName(GDAL_JP2ECW_SPI);
+                Class<?> cGdal = Class.forName(GDAL_SPI);
+                Object jp2ecwSPI = cl.newInstance(); 
+                final Method method = cGdal.getDeclaredMethod("isAvailable", (Class[])null);
+                if (method != null){
+                        Boolean isAvailable = (Boolean) method.invoke(jp2ecwSPI, null);
+                        return isAvailable.booleanValue();
+                    }
+            } catch (ClassNotFoundException e) {
+                if (LOGGER.isLoggable(Level.FINE))
+                    LOGGER.log(Level.FINE, "Unable to load GDAL JP2 ECW Reader SPI", e);
+            } catch (SecurityException e) {
+                if (LOGGER.isLoggable(Level.FINE))
+                    LOGGER.log(Level.FINE, "Unable to load GDAL JP2 ECW Reader SPI", e);
+            } catch (NoSuchMethodException e) {
+                if (LOGGER.isLoggable(Level.FINE))
+                    LOGGER.log(Level.FINE, "Unable to load GDAL JP2 ECW Reader SPI", e);
+            } catch (IllegalArgumentException e) {
+                if (LOGGER.isLoggable(Level.FINE))
+                    LOGGER.log(Level.FINE, "Unable to load GDAL JP2 ECW Reader SPI", e);
+            } catch (IllegalAccessException e) {
+                if (LOGGER.isLoggable(Level.FINE))
+                    LOGGER.log(Level.FINE, "Unable to load GDAL JP2 ECW Reader SPI", e);
+            } catch (InvocationTargetException e) {
+                if (LOGGER.isLoggable(Level.FINE))
+                    LOGGER.log(Level.FINE, "Unable to load GDAL JP2 ECW Reader SPI", e);
+            } catch (InstantiationException e) {
+                if (LOGGER.isLoggable(Level.FINE))
+                    LOGGER.log(Level.FINE, "Unable to load GDAL JP2 ECW Reader SPI", e);
+            }
+            return false;
+    	}
 
 	/**
 	 * @see GridFormatFactorySpi#createFormat().

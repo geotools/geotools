@@ -476,10 +476,6 @@ class RasterLayerRequest {
         	if (value == null)
         		return;
             final GridGeometry2D gg = (GridGeometry2D) value;
-            if (gg == null) {
-                return;
-            }
-
             requestedBBox = new ReferencedEnvelope((Envelope) gg.getEnvelope2D());
             requestedRasterArea = gg.getGridRange2D().getBounds();
             requestedGridToWorld=(AffineTransform) gg.getGridToCRS2D();

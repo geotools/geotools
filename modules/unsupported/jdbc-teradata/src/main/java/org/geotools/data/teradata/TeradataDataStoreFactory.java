@@ -44,11 +44,6 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
     public static final Param LOOSEBBOX = new Param("Loose bbox", Boolean.class, "Perform only primary filter on bbox", false, Boolean.TRUE);
 
     /**
-     * parameter that enables estimated extends instead of exact ones
-     */
-    public static final Param ESTIMATED_EXTENTS = new Param("Estimated extends", Boolean.class, "Use the spatial index information to quickly get an estimate of the data bounds", false, Boolean.TRUE);
-
-    /**
      * parameter for database port
      */
     public static final Param PORT = new Param("port", Integer.class, "Port", true, 1025);
@@ -124,10 +119,6 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
         Boolean loose = (Boolean) LOOSEBBOX.lookUp(params);
         dialect.setLooseBBOXEnabled(loose == null || Boolean.TRUE.equals(loose));
 
-        // check the estimated extents
-        Boolean estimated = (Boolean) ESTIMATED_EXTENTS.lookUp(params);
-        dialect.setEstimatedExtentsEnabled(estimated == null || Boolean.TRUE.equals(estimated));
-
         if (!params.containsKey(PK_METADATA_TABLE.key)) {
             dataStore.setPrimaryKeyFinder(KEY_FINDER);
         }
@@ -180,7 +171,6 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
         parameters.put(DBTYPE.key, DBTYPE);
 //        parameters.put(SCHEMA.key, SCHEMA);
         parameters.put(LOOSEBBOX.key, LOOSEBBOX);
-        parameters.put(ESTIMATED_EXTENTS.key, ESTIMATED_EXTENTS);
         parameters.put(PORT.key, PORT);
         parameters.put(PREPARED_STATEMENTS.key, PREPARED_STATEMENTS);
         parameters.put(MAX_OPEN_PREPARED_STATEMENTS.key, MAX_OPEN_PREPARED_STATEMENTS);

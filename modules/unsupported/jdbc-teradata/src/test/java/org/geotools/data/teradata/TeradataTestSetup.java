@@ -44,9 +44,6 @@ public class TeradataTestSetup extends JDBCTestSetup {
         // the unit tests assume a non loose behaviour
         ((TeradataGISDialect) dataStore.getSQLDialect()).setLooseBBOXEnabled(false);
 
-        // the tests assume non estimated extents
-        ((TeradataGISDialect) dataStore.getSQLDialect()).setEstimatedExtentsEnabled(false);
-
         // let's work with the most common schema please
         dataStore.setDatabaseSchema(fixture.getProperty("schema"));
     }

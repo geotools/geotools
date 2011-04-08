@@ -53,7 +53,6 @@ import com.vividsolutions.jts.geom.Polygon;
 
 public class TeradataGISDialect extends BasicSQLDialect {
 	private boolean mLooseBBOXEnabled;
-	private boolean mEstimatedExtentsEnabled;
 	private String mLastSchemaName; 
 	private String mLastTableName; 
 	private Set<String> mIndexTables;
@@ -77,10 +76,6 @@ public class TeradataGISDialect extends BasicSQLDialect {
 
 	public void setLooseBBOXEnabled(boolean looseBBOXEnabled) {
 		this.mLooseBBOXEnabled = looseBBOXEnabled;
-	}
-
-	public void setEstimatedExtentsEnabled(boolean estimatedExtentsEnabled) {
-		this.mEstimatedExtentsEnabled = estimatedExtentsEnabled;
 	}
 
 	final static Map<String, Class<?>> TYPE_TO_CLASS = new HashMap<String, Class<?>>() {

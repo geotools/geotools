@@ -168,9 +168,4 @@ public class TeradataPSDialect extends PreparedStatementSQLDialect {
     public void setLooseBBOXEnabled(boolean looseBBOXEnabled) {
         delegate.setLooseBBOXEnabled(looseBBOXEnabled);
     }
-
-	public void setEstimatedExtentsEnabled(boolean estimatedExtentsEnabled) {
-		delegate.setEstimatedExtentsEnabled(estimatedExtentsEnabled);
-	}
-
 }

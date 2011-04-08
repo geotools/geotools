@@ -16,38 +16,13 @@
  */
 package org.geotools.data.teradata;
 
-import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCFeatureSourceTest;
 import org.geotools.jdbc.JDBCTestSetup;
-import org.geotools.referencing.CRS;
 
 
 public class TeradataFeatureSourceTest extends JDBCFeatureSourceTest {
 
-
     protected JDBCTestSetup createTestSetup() {
         return new TeradataTestSetup();
     }
-
-
-
-    protected void setUpInternal() throws Exception {
-        super.setUpInternal();
-    }
-
-    public void testEstimatedBounds() throws Exception {
-        // enable fast bbox
-        ((TeradataGISDialect) ((JDBCDataStore) dataStore).getSQLDialect()).setEstimatedExtentsEnabled(true);
-
-        ReferencedEnvelope bounds = dataStore.getFeatureSource("ft1").getBounds();
-        assertEquals(0l, Math.round(bounds.getMinX()));
-        assertEquals(0l, Math.round(bounds.getMinY()));
-        assertEquals(2l, Math.round(bounds.getMaxX()));
-        assertEquals(2l, Math.round(bounds.getMaxY()));
-
-        assertTrue(areCRSEqual(CRS.decode("EPSG:4326"), bounds.getCoordinateReferenceSystem()));
-    }
-
-
 }

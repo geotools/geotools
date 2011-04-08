@@ -23,10 +23,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
 import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 
 import org.geotools.data.jdbc.FilterToSQL;
@@ -55,7 +56,7 @@ public class TeradataGISDialect extends BasicSQLDialect {
 	private boolean mEstimatedExtentsEnabled;
 	private String mLastSchemaName; 
 	private String mLastTableName; 
-	private List<String> mIndexTables;
+	private Set<String> mIndexTables;
 	
 	// used for tessellate index
 	private String key = "fid";
@@ -477,10 +478,8 @@ public class TeradataGISDialect extends BasicSQLDialect {
 							+ "  FOR EACH STATEMENT"
 							+ "  BEGIN ATOMIC"
 							+ "  ("
-							+ "    INSERT INTO \"{0}_{1}_idx\""
-							+ "    SELECT"
-							+ "    {2},"
-							+ "    sysspatial.tessellate_index ("
+							+ "    INSERT INTO {12} SELECT \"{2}\","
+							+ "    sysspatial.tessellate_index("
 							+ "      \"{1}\".ST_Envelope().ST_ExteriorRing().ST_PointN(1).ST_X(), "
 							+ "      \"{1}\".ST_Envelope().ST_ExteriorRing().ST_PointN(1).ST_Y(), "
 							+ "      \"{1}\".ST_Envelope().ST_ExteriorRing().ST_PointN(3).ST_X(), "
@@ -496,9 +495,9 @@ public class TeradataGISDialect extends BasicSQLDialect {
 //							+ "  FOR EACH ROW"
 //							+ "  BEGIN ATOMIC"
 //							+ "  ("
-//							+ "    INSERT INTO \"{0}_{1}_idx\""
-//							+ "    VALUES (nt.{2},"
-//							+ "    sysspatial.tessellate_index ("
+//							+ "    INSERT INTO {12}"
+//							+ "    VALUES (nt.\"{2}\","
+//							+ "    sysspatial.tessellate_index("
 //							+ "      nt.\"{1}\".ST_Envelope().ST_ExteriorRing().ST_PointN(1).ST_X(), "
 //							+ "      nt.\"{1}\".ST_Envelope().ST_ExteriorRing().ST_PointN(1).ST_Y(), "
 //							+ "      nt.\"{1}\".ST_Envelope().ST_ExteriorRing().ST_PointN(3).ST_X(), "
@@ -511,12 +510,30 @@ public class TeradataGISDialect extends BasicSQLDialect {
 					LOGGER.fine(sql);
 					st.execute(sql);
 
+					sql = MessageFormat.format("CREATE TRIGGER \"{0}_{1}_mu\" AFTER UPDATE OF \"{1}\" ON {12}"
+							+ "  REFERENCING NEW AS nt"
+							+ "  FOR EACH STATEMENT"
+							+ "  BEGIN ATOMIC"
+							+ "  ("
+							+ "    UPDATE {12} SET "
+							+ "    cellid=sysspatial.tessellate_index("
+							+ "      nt.\"{1}\".ST_Envelope().ST_ExteriorRing().ST_PointN(1).ST_X(), "
+							+ "      nt.\"{1}\".ST_Envelope().ST_ExteriorRing().ST_PointN(1).ST_Y(), "
+							+ "      nt.\"{1}\".ST_Envelope().ST_ExteriorRing().ST_PointN(3).ST_X(), "
+							+ "      nt.\"{1}\".ST_Envelope().ST_ExteriorRing().ST_PointN(3).ST_Y(), "
+							+ "      {3,number,0.0#}, {4,number,0.0#}, {5,number,0.0#}, {6,number,0.0#}, "
+							+ "      {7,number,0}, {8,number,0}, {9,number,0}, {10,number,0.0#}, {11,number,0})"
+							+ "    WHERE id=nt.\"{2}\";"
+							+ "  ) "
+							+ "END", tableName, gd.getLocalName(), key, u_xmin, u_ymin, u_xmax, u_ymax, g_nx, g_ny, levels, scale, shift,
+							encodedTableName);
+					
 					sql = MessageFormat.format("CREATE TRIGGER \"{0}_{1}_md\" AFTER DELETE ON {2}"
 							+ "  REFERENCING OLD TABLE AS ot"
 							+ "  FOR EACH STATEMENT"
 							+ "  BEGIN ATOMIC"
 							+ "  ("
-							+ "    DELETE FROM \"{0}_{1}_idx\" WHERE ID IN (SELECT ID from ot);"
+							+ "    DELETE FROM \"{0}_{1}_idx\" WHERE ID IN (SELECT \"{1}\" from ot);"
 							+ "  )"
 							+ "END", tableName, gd.getLocalName(), encodedTableName);
 					LOGGER.fine(sql);
@@ -726,19 +743,11 @@ public class TeradataGISDialect extends BasicSQLDialect {
 	
     public void initializeConnection(Connection cx) throws SQLException {
     	if (mIndexTables == null) {
-    		mIndexTables = new ArrayList<String>();
+    		mIndexTables = new HashSet<String>();
     		ResultSet tables = cx.getMetaData().getTables("", "", "%_idx", new String[] {"TABLE"});
         	while (tables.next()) {
         		mIndexTables.add(tables.getString(3));
         	}
-    	}
-    	
-		System.out.println("---");
-		ResultSet columns = cx.getMetaData().getColumns("", "", "road", null);
-    	while (columns.next()) {
-    		System.out.print(columns.getString(3));
-    		System.out.print(", ");
-    		System.out.println(columns.getString(4));
     	}
     }
 }

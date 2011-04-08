@@ -191,6 +191,23 @@ public class CQL {
     /**
      * WARNING THIS IS A WORK IN PROGRESS.
      * 
+     * @param filterList
+     * @return
+     */
+    public static String toCQL( List<Filter> filterList ){
+        FilterToCQL toCQL = new FilterToCQL();
+        
+        StringBuffer output = new StringBuffer();
+        for( Filter filter : filterList ){
+            filter.accept( toCQL, output );
+            output.append("; ");
+        }        
+        return output.toString();        
+    }
+    
+    /**
+     * WARNING THIS IS A WORK IN PROGRESS.
+     * 
      * @param filter
      * @return
      */
@@ -236,9 +253,13 @@ public class CQL {
 
         return filters;
     }
-
+    /**
+     * Command line expression tester used to try out filters and expressions.
+     * @param args
+     */
     public static final void main(String[] args) {
-        System.out.println("Expression Tester (\"quit\" to finish)");
+        System.out.println("CQL Filter Tester");
+        System.out.println("(\"quit\" to finish)");
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         FilterTransformer filterTransformer = new FilterTransformer();

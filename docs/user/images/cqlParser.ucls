@@ -1,0 +1,138 @@
+<class-diagram version="1.0.1" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
+  realizations="true" associations="true" dependencies="false" nesting-relationships="true">  
+  <class id="1" corner="BOTTOM_RIGHT" language="java" name="org.geotools.filter.text.cql2.CQL" project="gt-cql" 
+    file="/gt-cql/src/main/java/org/geotools/filter/text/cql2/CQL.java" binary="false">    
+    <position x="140" y="120" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="2" corner="BOTTOM_RIGHT" language="java" name="org.geotools.filter.text.commons.AbstractCompilerFactory" 
+    project="gt-cql" file="/gt-cql/src/main/java/org/geotools/filter/text/commons/AbstractCompilerFactory.java" 
+    binary="false">    
+    <position x="346" y="209" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <interface id="3" corner="BOTTOM_RIGHT" language="java" name="org.geotools.filter.text.commons.ICompiler" 
+    project="gt-cql" file="/gt-cql/src/main/java/org/geotools/filter/text/commons/ICompiler.java" binary="false">    
+    <position x="346" y="298" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <class id="4" corner="BOTTOM_RIGHT" language="java" name="org.geotools.filter.text.commons.CompilerUtil" 
+    project="gt-cql" file="/gt-cql/src/main/java/org/geotools/filter/text/commons/CompilerUtil.java" binary="false">    
+    <position x="543" y="297" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="5" corner="BOTTOM_RIGHT" language="java" name="org.geotools.filter.text.cql2.CQLCompilerFactory" 
+    project="gt-cql" file="/gt-cql/src/main/java/org/geotools/filter/text/cql2/CQLCompilerFactory.java" binary="false">    
+    <position x="140" y="206" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="6" corner="BOTTOM_RIGHT" language="java" name="org.geotools.filter.text.cql2.CQLCompiler" project="gt-cql" 
+    file="/gt-cql/src/main/java/org/geotools/filter/text/cql2/CQLCompiler.java" binary="false">    
+    <position x="140" y="296" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="7" corner="BOTTOM_RIGHT" language="java" name="org.geotools.filter.text.cql2.CQLException" project="gt-cql" 
+    file="/gt-cql/src/main/java/org/geotools/filter/text/cql2/CQLException.java" binary="false">    
+    <position x="313" y="127" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="8" corner="BOTTOM_RIGHT" language="java" name="org.geotools.filter.text.cql2.CQLFilterBuilder" 
+    project="gt-cql" file="/gt-cql/src/main/java/org/geotools/filter/text/cql2/CQLFilterBuilder.java" binary="false">    
+    <position x="140" y="399" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="9" corner="BOTTOM_RIGHT" language="java" name="org.geotools.filter.text.commons.AbstractFilterBuilder" 
+    project="gt-cql" file="/gt-cql/src/main/java/org/geotools/filter/text/commons/AbstractFilterBuilder.java" 
+    binary="false">    
+    <position x="331" y="399" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <interface id="10" corner="BOTTOM_RIGHT" language="java" name="org.opengis.filter.FilterFactory" project="gt-opengis" 
+    file="/gt-opengis/src/main/java/org/opengis/filter/FilterFactory.java" binary="false">    
+    <position x="304" y="65" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <association>    
+    <end type="SOURCE" nodeId="6" navigable="false">      
+      <attribute name="builder"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="8" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization>    
+    <end type="SOURCE" nodeId="6"/>    
+    <end type="TARGET" nodeId="3"/>  
+  </realization>  
+  <dependency>    
+    <end type="SOURCE" nodeId="2"/>    
+    <end type="TARGET" nodeId="3"/>  
+  </dependency>  
+  <dependency>    
+    <end type="SOURCE" nodeId="1"/>    
+    <end type="TARGET" nodeId="7"/>  
+  </dependency>  
+  <generalization>    
+    <end type="SOURCE" nodeId="8"/>    
+    <end type="TARGET" nodeId="9"/>  
+  </generalization>  
+  <dependency>    
+    <end type="SOURCE" nodeId="4"/>    
+    <end type="TARGET" nodeId="3"/>  
+  </dependency>  
+  <dependency>    
+    <end type="SOURCE" nodeId="1"/>    
+    <end type="TARGET" nodeId="5"/>  
+  </dependency>  
+  <dependency>    
+    <end type="SOURCE" nodeId="5"/>    
+    <end type="TARGET" nodeId="6"/>  
+  </dependency>  
+  <dependency>    
+    <end type="SOURCE" nodeId="1"/>    
+    <end type="TARGET" nodeId="10"/>  
+  </dependency>  
+  <generalization>    
+    <end type="SOURCE" nodeId="5"/>    
+    <end type="TARGET" nodeId="2"/>  
+  </generalization>  
+  <dependency>    
+    <end type="SOURCE" nodeId="4"/>    
+    <end type="TARGET" nodeId="2"/>  
+  </dependency>  
+  <classifier-display autosize="true" package="true" initial-value="false" signature="true" visibility="true">    
+    <attributes public="false" package="false" protected="false" private="false"/>    
+    <operations public="false" package="false" protected="false" private="false"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

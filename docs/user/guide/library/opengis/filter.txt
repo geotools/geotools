@@ -8,8 +8,8 @@ Although this forms a closed set of classes (for interoperability), you can exte
 
 References:
 
-* :doc:`../main/filter` gt-main code examples
-* :doc:`../main/filter` gt-main filter code examples
+* http://www.opengeospatial.org/standards/filter
+* :doc:`gt-main filter <../main/filter>` code examples
 
 Example
 ^^^^^^^

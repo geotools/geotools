@@ -16,9 +16,16 @@
  */
 package org.geotools.filter.text.ecql;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.List;
 
+import javax.xml.transform.TransformerException;
+
+import org.geotools.filter.FilterTransformer;
 import org.geotools.filter.text.commons.CompilerUtil;
+import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
@@ -26,7 +33,6 @@ import org.opengis.filter.expression.Expression;
 
 
 /**
- * <p>
  * <b>Extended Common Query Language (ECQL)</b> is an extension of <b>CQL</b>. This class presents the operations available 
  * to parse the ECQL language and generates the correspondent filter.
  * </p>
@@ -185,4 +191,73 @@ public class ECQL {
     
     }
     
+
+    /**
+     * WARNING THIS IS A WORK IN PROGRESS.
+     * 
+     * @param filterList
+     * @return
+     */
+    public static String toCQL( List<Filter> filterList ){
+        return CQL.toCQL( filterList );        
+    }
+    
+    /**
+     * WARNING THIS IS A WORK IN PROGRESS.
+     * 
+     * @param filter
+     * @return
+     */
+    public static String toCQL( Filter filter ){
+        return CQL.toCQL( filter );        
+    }
+    /**
+     * WARNING THIS IS A WORK IN PROGRESS.
+     * 
+     * @param filter
+     * @return
+     */
+    public static String toCQL( Expression expression ){
+        return CQL.toCQL( expression );        
+    }
+    
+    /**
+     * Command line expression tester used to try out filters and expressions.
+     * @param args
+     */
+    public static final void main(String[] args) {
+        System.out.println("ECQL Filters Tester");
+        System.out.println("Seperate with \";\" or \"quit\" to finish)");
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        FilterTransformer filterTransformer = new FilterTransformer();
+        filterTransformer.setIndentation(4);
+
+        while (true) {
+            System.out.print(">");
+
+            String line = null;
+
+            try {
+                line = reader.readLine();
+
+                if (line.equals("quit")) {
+                    System.out.println("Bye!");
+                    break;
+                }
+
+                List<Filter> filters = ECQL.toFilterList(line);
+                for( Filter filter : filters ){
+                    System.out.println();
+                    filterTransformer.transform( filter, System.out);
+                }
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            } catch (CQLException cqlex) {
+                System.out.println(cqlex.getSyntaxError());
+            } catch (TransformerException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

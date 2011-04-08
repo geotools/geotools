@@ -192,6 +192,7 @@
     <module>wfs</module>
     <module>geojson</module>
     <module>grid</module>
+    <module>jdbc-teradata</module>
   </modules>
 
 </project>

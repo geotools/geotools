@@ -28,16 +28,15 @@
   <packaging>jar</packaging>
   <name>Teradata DataStore</name>
 
-
   <scm>
     <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/plugin/jdbc/jdbc-teradata
+      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/jdbc-teradata
     </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/plugin/jdbc/jdbc-teradata</url>
+    <url>http://svn.osgeo.org/geotools/trunk/modules/unsupported/jdbc-teradata</url>
   </scm>
 
   <description>
-	DataStore for Teradata Database.
+    DataStore for Teradata Database.
   </description>
 
   <licenses>
@@ -74,39 +73,39 @@
     </developer>
   </developers>
 
-  <dependencies>
-    <dependency>
-		    <groupId>com.teradata</groupId>
-		    <artifactId>terajdbc4</artifactId>
-		    <version>13.10</version>
-		    <scope>system</scope>
-		    <systemPath>${project.basedir}/lib/terajdbc4.jar</systemPath>
-		</dependency>
-    <dependency>
-		    <groupId>com.teradata</groupId>
-		    <artifactId>tdgssconfig</artifactId>
-		    <version>13.10</version>
-		    <scope>system</scope>
-		    <systemPath>${project.basedir}/lib/tdgssconfig.jar</systemPath>
-		</dependency>
-  </dependencies>
+    <dependencies>
+        <dependency>
+            <groupId>com.teradata</groupId>
+            <artifactId>terajdbc4</artifactId>
+            <version>13.10</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/terajdbc4.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.teradata</groupId>
+            <artifactId>tdgssconfig</artifactId>
+            <version>13.10</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/tdgssconfig.jar</systemPath>
+        </dependency>
+    </dependencies>
 
-	<build>
-		<plugins>
-		  <plugin>
-		      <groupId>org.apache.felix</groupId>
-		      <artifactId>maven-bundle-plugin</artifactId>
-		      <version>1.4.0</version>
-		      <extensions>true</extensions>
-		      <configuration>
-		          <instructions>
-		              <Bundle-SymbolicName>${pom.groupId}.${pom.artifactId}</Bundle-SymbolicName>
-		              <Bundle-Name>${pom.artifactId}</Bundle-Name>
-		              <Bundle-Version>1.0.0</Bundle-Version>
-									<Export-Package>org.geotools.data.teradata</Export-Package>
-		          </instructions>
-		      </configuration>
-		  </plugin>
-		</plugins>
-	</build>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <version>1.4.0</version>
+                <extensions>true</extensions>
+                <configuration>
+                      <instructions>
+                        <Bundle-SymbolicName>${pom.groupId}.${pom.artifactId}</Bundle-SymbolicName>
+                        <Bundle-Name>${pom.artifactId}</Bundle-Name>
+                        <Bundle-Version>1.0.0</Bundle-Version>
+                        <Export-Package>org.geotools.data.teradata</Export-Package>
+                    </instructions>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

@@ -22,6 +22,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
+import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,19 +51,35 @@ import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 
 public class TeradataGISDialect extends BasicSQLDialect {
-	private boolean looseBBOXEnabled;
-	private boolean estimatedExtentsEnabled;
+	private boolean mLooseBBOXEnabled;
+	private boolean mEstimatedExtentsEnabled;
+	private String mLastSchemaName; 
+	private String mLastTableName; 
+	private List<String> mIndexTables;
+	
+	// used for tessellate index
+	private String key = "fid";
+	private double u_xmin = -180;
+	private double u_ymin = -90;
+	private double u_xmax = 180;
+	private double u_ymax = 90;
+	private int g_nx = 1000;
+	private int g_ny = 1000;
+	private int levels = 1;
+	private double scale = 0.01;
+	private int shift = 0;
+	
 
 	protected TeradataGISDialect(JDBCDataStore dataStore) {
 		super(dataStore);
 	}
 
 	public void setLooseBBOXEnabled(boolean looseBBOXEnabled) {
-		this.looseBBOXEnabled = looseBBOXEnabled;
+		this.mLooseBBOXEnabled = looseBBOXEnabled;
 	}
 
 	public void setEstimatedExtentsEnabled(boolean estimatedExtentsEnabled) {
-		this.estimatedExtentsEnabled = estimatedExtentsEnabled;
+		this.mEstimatedExtentsEnabled = estimatedExtentsEnabled;
 	}
 
 	final static Map<String, Class<?>> TYPE_TO_CLASS = new HashMap<String, Class<?>>() {
@@ -92,6 +110,7 @@ public class TeradataGISDialect extends BasicSQLDialect {
 		}
 	};
 
+	@Override
 	public boolean includeTable(String schemaName, String tableName,
 			Connection cx) throws SQLException {
 		if (tableName.equalsIgnoreCase("geometry_columns")) {
@@ -110,6 +129,7 @@ public class TeradataGISDialect extends BasicSQLDialect {
 	ThreadLocal<WKBAttributeIO> wkbReader = new ThreadLocal<WKBAttributeIO>();
 
 	// WKBAttributeIO reader;
+	@Override
 	public Geometry decodeGeometryValue(GeometryDescriptor descriptor,
 			ResultSet rs, String column, GeometryFactory factory, Connection cx)
 			throws IOException, SQLException {
@@ -130,18 +150,21 @@ public class TeradataGISDialect extends BasicSQLDialect {
 		return reader;
 	}
 
+	@Override
 	public void encodeGeometryColumn(GeometryDescriptor gatt, int srid,
 			StringBuffer sql) {
 		encodeColumnName(gatt.getLocalName(), sql);
 		sql.append(".ST_AsBinary()");
 	}
 
+	@Override
 	public void encodeGeometryEnvelope(String tableName, String geometryColumn,
 			StringBuffer sql) {
 		encodeColumnName(geometryColumn, sql);
 		sql.append(".ST_Envelope().ST_AsBinary()");
 	}
 
+	@Override
 	public List<ReferencedEnvelope> getOptimizedBounds(String schema,
 			SimpleFeatureType featureType, Connection cx) throws SQLException,
 			IOException {
@@ -177,6 +200,7 @@ public class TeradataGISDialect extends BasicSQLDialect {
 		 */
 	}
 
+	@Override
 	public Envelope decodeGeometryEnvelope(ResultSet rs, int column,
 			Connection cx) throws SQLException, IOException {
 		Geometry envelope = getWkbReader(null).read(rs, column);
@@ -203,6 +227,7 @@ public class TeradataGISDialect extends BasicSQLDialect {
 		 */
 	}
 
+	@Override
 	public Class<?> getMapping(ResultSet columnMetaData, Connection cx)
 			throws SQLException {
 		String typeName = columnMetaData.getString("TYPE_NAME");
@@ -265,6 +290,7 @@ public class TeradataGISDialect extends BasicSQLDialect {
 		return null;
 	}
 
+	@Override
 	public Integer getGeometrySRID(String schemaName, String tableName,
 			String columnName, Connection cx) throws SQLException {
 
@@ -318,6 +344,7 @@ public class TeradataGISDialect extends BasicSQLDialect {
 		return srid;
 	}
 
+	@Override
 	public void registerClassToSqlMappings(Map<Class<?>, Integer> mappings) {
 		super.registerClassToSqlMappings(mappings);
 
@@ -325,6 +352,7 @@ public class TeradataGISDialect extends BasicSQLDialect {
 		mappings.put(Geometry.class, Types.OTHER);
 	}
 
+	@Override
 	public void registerSqlTypeNameToClassMappings(
 			Map<String, Class<?>> mappings) {
 		super.registerSqlTypeNameToClassMappings(mappings);
@@ -332,21 +360,24 @@ public class TeradataGISDialect extends BasicSQLDialect {
 		mappings.put("ST_Geometry", Geometry.class);
 	}
 
+	@Override
 	public void registerSqlTypeToSqlTypeNameOverrides(
 			Map<Integer, String> overrides) {
 		overrides.put(Types.VARCHAR, "VARCHAR");
 	}
 
+	@Override
 	public String getGeometryTypeName(Integer type) {
 		return "ST_Geometry";
 	}
 
+	@Override
 	public void encodePrimaryKey(String column, StringBuffer sql) {
 		encodeColumnName(column, sql);
-		sql
-				.append(" PRIMARY KEY not null generated always as identity (start with 0) integer");
+		sql.append(" PRIMARY KEY not null generated always as identity (start with 0) integer");
 	}
 
+	@Override
 	public void encodeColumnType(String sqlTypeName, StringBuffer sql) {
 		if (sqlTypeName.toUpperCase().startsWith("VARCHAR")) {
 			sql.append(sqlTypeName);
@@ -360,7 +391,7 @@ public class TeradataGISDialect extends BasicSQLDialect {
 	 * Creates GEOMETRY_COLUMN registrations and spatial indexes for all
 	 * geometry columns
 	 */
-
+	@Override
 	public void postCreateTable(String schemaName,
 			SimpleFeatureType featureType, Connection cx) throws SQLException {
 		schemaName = schemaName != null ? schemaName : "";
@@ -396,29 +427,100 @@ public class TeradataGISDialect extends BasicSQLDialect {
 					if (geomType == null)
 						geomType = "GEOMETRY";
 
-					String sql = "INSERT INTO SYSSPATIAL.GEOMETRY_COLUMNS (F_TABLE_CATALOG, F_TABLE_SCHEMA, F_TABLE_NAME, F_GEOMETRY_COLUMN, COORD_DIMENSION, SRID, GEOM_TYPE) VALUES ('', "
-							+ "'"
-							+ schemaName
-							+ "', "
-							+ "'"
-							+ tableName
-							+ "', "
-							+ "'"
-							+ gd.getLocalName()
-							+ "', "
-							+ "2, "
-							+ srid + ", " + "'" + geomType + "')";
+					String sql = MessageFormat.format("INSERT INTO SYSSPATIAL.GEOMETRY_COLUMNS "
+							+ "(F_TABLE_CATALOG, F_TABLE_SCHEMA, F_TABLE_NAME, F_GEOMETRY_COLUMN, COORD_DIMENSION, SRID, GEOM_TYPE)" 
+							+ " VALUES ('''', ''{0}'', ''{1}'', ''{2}'', 2, {3,number,0}, ''{4}'')",
+							schemaName, tableName, gd.getLocalName(), srid, geomType);
 					LOGGER.fine(sql);
 					st.execute(sql);
 
+					
+					
+		    		StringBuffer sb = new StringBuffer();
+		    		if (schemaName != null) {
+			    		encodeSchemaName(schemaName, sb);
+			    		sb.append(".");
+		    		}
+		    		encodeTableName(tableName, sb);
+		    		String encodedTableName = sb.toString();
+		    		
+		    		sb = new StringBuffer();
+		    		if (schemaName != null) {
+			    		encodeSchemaName(schemaName, sb);
+			    		sb.append(".");
+		    		}
+		    		
+		    		String indexTableName = tableName + "_" + gd.getLocalName() + "_idx"; 
+		    		encodeTableName(indexTableName, sb);
+		    		String encodedIdxTableName = sb.toString();
+		    		
+		    		
+					// DROP IF EXISTS workaround
+					try {
+						sql = "DROP TABLE " + encodedIdxTableName;
+						LOGGER.fine(sql);
+						st.execute(sql);
+					}
+					catch (Exception e) {
+						LOGGER.fine(e.getMessage());
+					}
+					
 					// add the spatial index
-					/*
-					 * sql = "CREATE INDEX \"spatial_" + tableName // + "_" +
-					 * gd.getLocalName().toLowerCase() + "\""// + " ON " // +
-					 * "\"" + schemaName + "\"" // + "." // + "\"" + tableName +
-					 * "\"" // + " USING GIST (" // + "\"" + gd.getLocalName() +
-					 * "\"" // + ")"; LOGGER.fine(sql); st.execute(sql);
-					 */
+					sql = "CREATE MULTISET TABLE " + encodedIdxTableName + 
+							" (id INTEGER NOT NULL, cellid INTEGER NOT NULL) PRIMARY INDEX (cellid)";
+					LOGGER.fine(sql);
+					st.execute(sql);
+					mIndexTables.add(indexTableName);
+
+					sql = MessageFormat.format("CREATE TRIGGER \"{0}_{1}_mi\" AFTER INSERT ON {12}"
+							+ "  REFERENCING NEW TABLE AS nt"
+							+ "  FOR EACH STATEMENT"
+							+ "  BEGIN ATOMIC"
+							+ "  ("
+							+ "    INSERT INTO \"{0}_{1}_idx\""
+							+ "    SELECT"
+							+ "    {2},"
+							+ "    sysspatial.tessellate_index ("
+							+ "      \"{1}\".ST_Envelope().ST_ExteriorRing().ST_PointN(1).ST_X(), "
+							+ "      \"{1}\".ST_Envelope().ST_ExteriorRing().ST_PointN(1).ST_Y(), "
+							+ "      \"{1}\".ST_Envelope().ST_ExteriorRing().ST_PointN(3).ST_X(), "
+							+ "      \"{1}\".ST_Envelope().ST_ExteriorRing().ST_PointN(3).ST_Y(), "
+							+ "      {3,number,0.0#}, {4,number,0.0#}, {5,number,0.0#}, {6,number,0.0#}, "
+							+ "      {7,number,0}, {8,number,0}, {9,number,0}, {10,number,0.0#}, {11,number,0})"
+							+ "    FROM nt;"
+							+ "  ) "
+							+ "END", tableName, gd.getLocalName(), key, u_xmin, u_ymin, u_xmax, u_ymax, g_nx, g_ny, levels, scale, shift,
+							encodedTableName);
+//					sql = MessageFormat.format("CREATE TRIGGER \"{0}_{1}_mi\" AFTER INSERT ON {12}"
+//							+ "  REFERENCING NEW AS nt"
+//							+ "  FOR EACH ROW"
+//							+ "  BEGIN ATOMIC"
+//							+ "  ("
+//							+ "    INSERT INTO \"{0}_{1}_idx\""
+//							+ "    VALUES (nt.{2},"
+//							+ "    sysspatial.tessellate_index ("
+//							+ "      nt.\"{1}\".ST_Envelope().ST_ExteriorRing().ST_PointN(1).ST_X(), "
+//							+ "      nt.\"{1}\".ST_Envelope().ST_ExteriorRing().ST_PointN(1).ST_Y(), "
+//							+ "      nt.\"{1}\".ST_Envelope().ST_ExteriorRing().ST_PointN(3).ST_X(), "
+//							+ "      nt.\"{1}\".ST_Envelope().ST_ExteriorRing().ST_PointN(3).ST_Y(), "
+//							+ "      {3,number,0.0#}, {4,number,0.0#}, {5,number,0.0#}, {6,number,0.0#}, "
+//							+ "      {7,number,0}, {8,number,0}, {9,number,0}, {10,number,0.0#}, {11,number,0})"
+//							+ "  );) "
+//							+ "END", tableName, gd.getLocalName(), key, u_xmin, u_ymin, u_xmax, u_ymax, g_nx, g_ny, levels, scale, shift,
+//							encodedTableName);
+					LOGGER.fine(sql);
+					st.execute(sql);
+
+					sql = MessageFormat.format("CREATE TRIGGER \"{0}_{1}_md\" AFTER DELETE ON {2}"
+							+ "  REFERENCING OLD TABLE AS ot"
+							+ "  FOR EACH STATEMENT"
+							+ "  BEGIN ATOMIC"
+							+ "  ("
+							+ "    DELETE FROM \"{0}_{1}_idx\" WHERE ID IN (SELECT ID from ot);"
+							+ "  )"
+							+ "END", tableName, gd.getLocalName(), encodedTableName);
+					LOGGER.fine(sql);
+					st.execute(sql);
 				}
 				cx.commit();
 			}
@@ -427,6 +529,7 @@ public class TeradataGISDialect extends BasicSQLDialect {
 		}
 	}
 
+	@Override
 	public void encodeGeometryValue(Geometry value, int srid, StringBuffer sql)
 			throws IOException {
 		if (value == null) {
@@ -469,15 +572,19 @@ public class TeradataGISDialect extends BasicSQLDialect {
 		}
 	}
 
+	@Override
 	public FilterToSQL createFilterToSQL() {
 		TeradataFilterToSQL sql = new TeradataFilterToSQL(this);
+        sql.setLooseBBOXEnabled(mLooseBBOXEnabled);
 		return sql;
 	}
 
+	@Override
 	public boolean isLimitOffsetSupported() {
 		return false;
 	}
 
+	@Override
 	public Object getLastAutoGeneratedValue(String schemaName,
 			String tableName, String columnName, Connection cx)
 			throws SQLException {
@@ -508,7 +615,130 @@ public class TeradataGISDialect extends BasicSQLDialect {
 		}
 	}
 
+	@Override
 	public boolean lookupGeneratedValuesPostInsert() {
 		return true;
 	}
+
+	public String getKey() {
+		return key;
+	}
+
+	public void setKey(String pKey) {
+		key = pKey;
+	}
+
+	public double getU_xmin() {
+		return u_xmin;
+	}
+
+	public void setU_xmin(double uXmin) {
+		u_xmin = uXmin;
+	}
+
+	public double getU_ymin() {
+		return u_ymin;
+	}
+
+	public void setU_ymin(double uYmin) {
+		u_ymin = uYmin;
+	}
+
+	public double getU_xmax() {
+		return u_xmax;
+	}
+
+	public void setU_xmax(double uXmax) {
+		u_xmax = uXmax;
+	}
+
+	public double getU_ymax() {
+		return u_ymax;
+	}
+
+	public void setU_ymax(double uYmax) {
+		u_ymax = uYmax;
+	}
+
+	public int getG_nx() {
+		return g_nx;
+	}
+
+	public void setG_nx(int gNx) {
+		g_nx = gNx;
+	}
+
+	public int getG_ny() {
+		return g_ny;
+	}
+
+	public void setG_ny(int gNy) {
+		g_ny = gNy;
+	}
+
+	public int getLevels() {
+		return levels;
+	}
+
+	public void setLevels(int levels) {
+		this.levels = levels;
+	}
+
+	public double getScale() {
+		return scale;
+	}
+
+	public void setScale(double scale) {
+		this.scale = scale;
+	}
+
+	public int getShift() {
+		return shift;
+	}
+
+	public void setShift(int shift) {
+		this.shift = shift;
+	}
+	
+	public String getLastTableName() {
+		return mLastTableName;
+	}
+
+	public String getLastSchemaName() {
+		return mLastSchemaName;
+	}
+	
+	@Override
+	public void encodeSchemaName(String raw, StringBuffer sql) {
+		super.encodeSchemaName(raw, sql);
+		mLastSchemaName = raw;
+	}
+	
+	@Override
+	public void encodeTableName(String raw, StringBuffer sql) {
+		super.encodeTableName(raw, sql);
+		mLastTableName = raw;
+	}
+
+	public boolean indexTableExists(String table) {
+		return mIndexTables.contains(table);
+	}
+	
+    public void initializeConnection(Connection cx) throws SQLException {
+    	if (mIndexTables == null) {
+    		mIndexTables = new ArrayList<String>();
+    		ResultSet tables = cx.getMetaData().getTables("", "", "%_idx", new String[] {"TABLE"});
+        	while (tables.next()) {
+        		mIndexTables.add(tables.getString(3));
+        	}
+    	}
+    	
+		System.out.println("---");
+		ResultSet columns = cx.getMetaData().getColumns("", "", "road", null);
+    	while (columns.next()) {
+    		System.out.print(columns.getString(3));
+    		System.out.print(", ");
+    		System.out.println(columns.getString(4));
+    	}
+    }
 }

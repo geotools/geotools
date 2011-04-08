@@ -61,7 +61,18 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
      * Wheter a prepared statements based dialect should be used, or not
      */
     public static final Param PREPARED_STATEMENTS = new Param("preparedStatements", Boolean.class, "Use prepared statements", false, Boolean.FALSE);
-    
+
+    public static final Param KEY_PARAM = new Param("tessellate_index_key", String.class, "tessellate_index_key", false, "ID");
+    public static final Param U_XMIN_PARAM = new Param("tessellate_index_u_xmin", String.class, "tessellate_index_u_xmin", false, "-180");
+    public static final Param U_YMIN_PARAM = new Param("tessellate_index_u_ymin", String.class, "tessellate_index_u_ymin", false, "-90");
+    public static final Param U_XMAX_PARAM = new Param("tessellate_index_u_xmax", String.class, "tessellate_index_u_xmax", false, "180");
+    public static final Param U_YMAX_PARAM = new Param("tessellate_index_u_ymax", String.class, "tessellate_index_u_ymax", false, "90");
+    public static final Param G_NX_PARAM = new Param("tessellate_index_g_nx", String.class, "tessellate_index_g_nx", false, "1000");
+    public static final Param G_NY_PARAM = new Param("tessellate_index_g_ny", String.class, "tessellate_index_g_ny", false, "1000");
+    public static final Param LEVELS_PARAM = new Param("tessellate_index_levels", String.class, "tessellate_index_levels", false, "1");
+    public static final Param SCALE_PARAM = new Param("tessellate_index_scale", String.class, "tessellate_index_scale", false, "0.01");
+    public static final Param SHIFT_PARAM = new Param("tessellate_index_shift", String.class, "tessellate_index_shift", false, "0");
+
     private static final PrimaryKeyFinder KEY_FINDER = new CompositePrimaryKeyFinder(
             new MetadataTablePrimaryKeyFinder(),
             new TeradataPrimaryKeyFinder(),
@@ -71,16 +82,19 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
      * parameter for database schema
      */
 //    public static final Param SCHEMA = new Param("schema", String.class, "Schema", false, "public");
-
+    
     // TODO rest of parameters for connection (ACCOUNT, Charset, etc...)
+    @Override
     protected SQLDialect createSQLDialect(JDBCDataStore dataStore) {
         return new TeradataGISDialect(dataStore);
     }
 
+    @Override
     public String getDatabaseID() {
         return (String) DBTYPE.sample;
     }
 
+    @Override
     public String getDisplayName() {
         return "Teradata";
     }
@@ -89,15 +103,18 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
         return "Teradata Database";
     }
 
+    @Override
     protected String getDriverClassName() {
         return "com.teradata.jdbc.TeraDriver";
     }
 
 
+    @Override
     protected boolean checkDBType(Map params) {
         return checkDBType(params, "teradata");
     }
 
+    @Override
     protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map params)
             throws IOException {
 
@@ -115,6 +132,17 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
             dataStore.setPrimaryKeyFinder(KEY_FINDER);
         }
 
+    	dialect.setKey((String)KEY_PARAM.lookUp(params));
+    	dialect.setU_xmin((Double)U_XMIN_PARAM.lookUp(params));
+    	dialect.setU_ymin((Double)U_YMIN_PARAM.lookUp(params));
+    	dialect.setU_xmax((Double)U_XMAX_PARAM.lookUp(params));
+    	dialect.setU_ymax((Double)U_YMAX_PARAM.lookUp(params));
+    	dialect.setG_nx((Integer)G_NX_PARAM.lookUp(params));
+    	dialect.setG_ny((Integer)G_NY_PARAM.lookUp(params));
+    	dialect.setLevels((Integer)LEVELS_PARAM.lookUp(params));
+    	dialect.setScale((Double)SCALE_PARAM.lookUp(params));
+    	dialect.setShift((Integer)SHIFT_PARAM.lookUp(params));
+
         // setup the ps dialect if need be
         Boolean usePs = (Boolean) PREPARED_STATEMENTS.lookUp(params);
         if(Boolean.TRUE.equals(usePs)) {
@@ -124,7 +152,7 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
         return dataStore;
     }
 
-
+    @Override
     protected void setupParameters(Map parameters) {
         // NOTE: when adding parameters here remember to add them to TeradataJNDIDataStoreFactory
 
@@ -136,13 +164,25 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
         parameters.put(PORT.key, PORT);
         parameters.put(PREPARED_STATEMENTS.key, PREPARED_STATEMENTS);
         parameters.put(MAX_OPEN_PREPARED_STATEMENTS.key, MAX_OPEN_PREPARED_STATEMENTS);
+        
+        parameters.put(KEY_PARAM.key, KEY_PARAM);
+        parameters.put(U_XMIN_PARAM.key, U_XMIN_PARAM);
+        parameters.put(U_YMIN_PARAM.key, U_YMIN_PARAM);
+        parameters.put(U_XMAX_PARAM.key, U_XMAX_PARAM);
+        parameters.put(U_YMAX_PARAM.key, U_YMAX_PARAM);
+        parameters.put(G_NX_PARAM.key, G_NX_PARAM);
+        parameters.put(G_NY_PARAM.key, G_NY_PARAM);
+        parameters.put(LEVELS_PARAM.key, LEVELS_PARAM);
+        parameters.put(SCALE_PARAM.key, SCALE_PARAM);
+        parameters.put(SHIFT_PARAM.key, SHIFT_PARAM);
     }
 
+    @Override
     protected String getValidationQuery() {
         return "select now()";
     }
 
-
+    @Override
     protected String getJDBCUrl(Map params) throws IOException {
         String host = (String) HOST.lookUp(params);
         String db = (String) DATABASE.lookUp(params);
@@ -154,7 +194,5 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
         if (charset == null)
             charset = CHARSET.sample.toString();
         return "jdbc:teradata://" + host + "/DATABASE=" + db + ",PORT=" + port + ",TMODE=" + mode + ",CHARSET=" + charset;
-    }
-
-   
+    }   
 }

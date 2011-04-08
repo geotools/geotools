@@ -17,7 +17,7 @@
 package org.geotools.data.teradata;
 
 import java.io.IOException;
-import java.io.Writer;
+import java.text.MessageFormat;
 
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.filter.FilterCapabilities;
@@ -38,6 +38,7 @@ import org.opengis.filter.spatial.Overlaps;
 import org.opengis.filter.spatial.Touches;
 import org.opengis.filter.spatial.Within;
 
+import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.LinearRing;
 
@@ -116,7 +117,9 @@ public class TeradataFilterToSQL extends FilterToSQL {
 
     	if ((filter instanceof DWithin && !swapped)
                 || (filter instanceof Beyond && swapped)) {
-            property.accept(this, extraData);
+    		addTessellateIndex(property, geometry);
+    		
+    		property.accept(this, extraData);
             out.write(".");
             out.write("ST_DWithin(SYSSPATIAL.ST_GEOMFROMTEXT(");
             geometry.accept(this, extraData);
@@ -126,6 +129,8 @@ public class TeradataFilterToSQL extends FilterToSQL {
         }
         if ((filter instanceof DWithin && swapped)
                 || (filter instanceof Beyond && !swapped)) {
+    		addTessellateIndex(property, geometry);
+    		
             property.accept(this, extraData);
             out.write(".");
             out.write("ST_Distance(SYSSPATIAL.ST_GEOMFROMTEXT(");
@@ -139,7 +144,11 @@ public class TeradataFilterToSQL extends FilterToSQL {
             PropertyName property, Literal geometry, boolean swapped, Object extraData)
             throws IOException {
         
-        property.accept(this, extraData);
+    	if (!(filter instanceof Disjoint)) {
+    		addTessellateIndex(property, geometry);
+    	}
+    	
+    	property.accept(this, extraData);
         out.write(".");
         
         if (filter instanceof Equals) {
@@ -172,4 +181,49 @@ public class TeradataFilterToSQL extends FilterToSQL {
         geometry.accept(this, extraData);
         out.write(")) = 1");
     }
+
+	private void addTessellateIndex(PropertyName property, Literal geometry)
+			throws IOException {
+		String propertyName = property.getPropertyName();
+		if (propertyName.length() == 0) {
+			propertyName = "geom";
+		}
+		
+		String indexTableName = mDialect.getLastTableName() + "_" + propertyName + "_idx";
+		if (!mDialect.indexTableExists("indexTableName")) {
+			return;
+		}
+		
+		StringBuffer sb = new StringBuffer();
+		if (mDialect.getLastSchemaName() != null) {
+			mDialect.encodeSchemaName(mDialect.getLastSchemaName(), sb);
+			sb.append(".");
+		}
+		mDialect.encodeTableName(mDialect.getLastTableName(), sb);
+		String encodedTableName = sb.toString();
+		
+		sb = new StringBuffer();
+		if (mDialect.getLastSchemaName() != null) {
+			mDialect.encodeSchemaName(mDialect.getLastSchemaName(), sb);
+			sb.append(".");
+		}
+		mDialect.encodeTableName(indexTableName, sb);
+		String encodedIdxTableName = sb.toString();
+
+		sb = new StringBuffer();
+		mDialect.encodeColumnName(mDialect.getKey(), sb);
+		String encodedKeyName = sb.toString();
+		
+		Envelope env = ((Geometry)geometry.getValue()).getEnvelopeInternal();
+		out.write(MessageFormat.format("{2} IN (SELECT DISTINCT ti.id " +
+				"FROM {0} ti, TABLE (SYSSPATIAL.tessellate_search(1,"
+				+ "  {12,number,0.0#}, {13,number,0.0#}, {14,number,0.0#}, {15,number,0.0#}, "
+				+ "  {3,number,0.0#}, {4,number,0.0#}, {5,number,0.0#}, {6,number,0.0#}, "
+				+ "  {7,number,0}, {8,number,0}, {9,number,0}, {10,number,0.0#}, {11,number,0})) AS i "
+				+ "WHERE ti.cellid = i.cellid) AND ",
+				encodedIdxTableName, encodedTableName, encodedKeyName, 
+		mDialect.getU_xmin(), mDialect.getU_ymin(), mDialect.getU_xmax(), mDialect.getU_ymax(),
+		mDialect.getG_nx(), mDialect.getG_ny(), mDialect.getLevels(), mDialect.getScale(), mDialect.getShift(),
+		env.getMinX(), env.getMinY(), env.getMaxX(), env.getMaxY()));
+	}
 }

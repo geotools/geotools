@@ -31,8 +31,8 @@ public class TeradataTestSetup extends JDBCTestSetup {
         
         if (first) {
 	        // uncomment to turn up logging        
-//	        java.util.logging.ConsoleHandler handler = new java.util.logging.ConsoleHandler();
-//	        handler.setLevel(java.util.logging.Level.FINE);
+	        java.util.logging.ConsoleHandler handler = new java.util.logging.ConsoleHandler();
+	        handler.setLevel(java.util.logging.Level.FINE);
 //	        org.geotools.util.logging.Logging.getLogger("org.geotools.data.jdbc").setLevel(java.util.logging.Level.FINE);
 //	        org.geotools.util.logging.Logging.getLogger("org.geotools.data.jdbc").addHandler(handler);
 //	        org.geotools.util.logging.Logging.getLogger("org.geotools.jdbc").setLevel(java.util.logging.Level.FINE);
@@ -62,17 +62,6 @@ public class TeradataTestSetup extends JDBCTestSetup {
         fixture.put("port", "1025");
         fixture.put("user", "dbc");
         fixture.put("password", "dbc");
-/*
-        fixture.put("tessellate_index_key", "ID");
-        fixture.put("tessellate_index_u_xmin", "-180");
-        fixture.put("tessellate_index_u_ymin", "-90");
-        fixture.put("tessellate_index_u_xmax", "180");
-        fixture.put("tessellate_index_u_ymax", "90");
-        fixture.put("tessellate_index_g_nx", "1000");
-        fixture.put("tessellate_index_g_ny", "1000");
-        fixture.put("tessellate_index_levels", "1");
-        fixture.put("tessellate_index_scale", "0.01");
-        fixture.put("tessellate_index_shift", "0");*/
         
         return fixture;
     }
@@ -120,6 +109,4 @@ public class TeradataTestSetup extends JDBCTestSetup {
     protected JDBCDataStoreFactory createDataStoreFactory() {
         return new TeradataDataStoreFactory();
     }
-
-
 }

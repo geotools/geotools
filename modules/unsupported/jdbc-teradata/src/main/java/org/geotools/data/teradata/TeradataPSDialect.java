@@ -155,10 +155,6 @@ public class TeradataPSDialect extends PreparedStatementSQLDialect {
         delegate.handleUserDefinedType(columnMetaData, metadata, cx);
     }
 
-    public void setLooseBBOXEnabled(boolean looseBBOXEnabled) {
-        delegate.setLooseBBOXEnabled(looseBBOXEnabled);
-    }
-
     @Override
     public boolean isLimitOffsetSupported() {
         return delegate.isLimitOffsetSupported();
@@ -168,5 +164,13 @@ public class TeradataPSDialect extends PreparedStatementSQLDialect {
     public void applyLimitOffset(StringBuffer sql, int limit, int offset) {
         delegate.applyLimitOffset(sql, limit, offset);
     }
+
+    public void setLooseBBOXEnabled(boolean looseBBOXEnabled) {
+        delegate.setLooseBBOXEnabled(looseBBOXEnabled);
+    }
+
+	public void setEstimatedExtentsEnabled(boolean estimatedExtentsEnabled) {
+		delegate.setEstimatedExtentsEnabled(estimatedExtentsEnabled);
+	}
 
 }

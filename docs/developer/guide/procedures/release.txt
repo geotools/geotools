@@ -209,7 +209,7 @@ Sanity Check
    First, change the default directory according the release to be performed:
    
    ================= =================================================
-   GeoTools 2.8.x    http://svn.osgeo.org/geotools/trunk
+   GeoTools 8.x      http://svn.osgeo.org/geotools/trunk
    GeoTools 2.7.x    http://svn.osgeo.org/geotools/branches/2.7.x
    GeoTools 2.6.x    http://svn.osgeo.org/geotools/branches/2.6.x
    GeoTools 2.5.x    http://svn.osgeo.org/geotools/branches/2.5.x
@@ -291,8 +291,8 @@ perform the full testing of the library to set everything up for release.
      Creates the tag directly from the trunk::
        
        svn copy http://svn.osgeo.org/geotools/trunk
-                http://svn.osgeo.org/geotools/tags/2.6-M2
-                -m "Created 2.6-M2 tag from revision 33797." -r 33797
+                http://svn.osgeo.org/geotools/tags/8.0-M2
+                -m "Created 8.0-M2 tag from revision 33797." -r 33797
      
      The reason we are using -r 33797 is so we don't get tripped up by anyone who committed while
      between when we tested trunk and now.
@@ -302,23 +302,55 @@ perform the full testing of the library to set everything up for release.
      First creates the branch::
         
         svn copy http://svn.osgeo.org/geotools/trunk
-                 http://svn.osgeo.org/geotools/branches/2.6.x
-                 -m "Created 2.6.x branch from revision trunk 34232." -r 34232
+                 http://svn.osgeo.org/geotools/branches/8.x
+                 -m "Created 8.x branch from revision trunk 34232." -r 34232
      
      Then the tag::
         
-        svn copy http://svn.osgeo.org/geotools/branches/2.6.x
-                 http://svn.osgeo.org/geotools/tags/2.6-RC0
-                 -m "Created 2.6-RC0 tag."
+        svn copy http://svn.osgeo.org/geotools/branches/8.x
+                 http://svn.osgeo.org/geotools/tags/8.0-RC0
+                 -m "Created 8.0-RC0 release candidate"
      
-   * Releasing final release or additional release candidate from branch:
+   * Releasing additional releases from a branch (release candidate, release or patch):
      
-     Creates the tag from the branch::
+     Creates an additional release candidate from the branch::
        
-       svn copy http://svn.osgeo.org/geotools/branches/2.6.x
-                http://svn.osgeo.org/geotools/tags/2.6.1
-                -m "Created 2.6.1 release" -r 37232
-     
+       svn copy http://svn.osgeo.org/geotools/branches/8.x
+                http://svn.osgeo.org/geotools/tags/8.0-RC1
+                -m "Created 8.0-RC1 release candidate" -r 37232
+
+     Creates a release::
+       
+       svn copy http://svn.osgeo.org/geotools/branches/8.x
+                http://svn.osgeo.org/geotools/tags/8.0.0
+                -m "Created 8.0.0 release" -r 37232
+
+     Creates a patch release for bug fixes::
+       
+       svn copy http://svn.osgeo.org/geotools/branches/8.x
+                http://svn.osgeo.org/geotools/tags/8.0.1
+                -m "Created 8.0.1 patch release" -r 37232
+
+     Creates a dot release for api or feature addition::
+       
+       svn copy http://svn.osgeo.org/geotools/branches/8.x
+                http://svn.osgeo.org/geotools/tags/8.1.0
+                -m "Created 8.1.0 patch release" -r 37232
+
+   * The odd scenario out is creating a patch release from a previous tag after the branch
+     has already moved on.
+        
+     This only occurs via customer request and is an unusual circumstance.
+    
+       svn copy http://svn.osgeo.org/geotools/tags/8.0.1
+                http://svn.osgeo.org/geotools/tags/8.0.2
+                -m "Created 8.0.2 patch release" -r 37232
+       
+     We would then expect the developer to apply the required fixes to this tag
+     and issue a release.
+
+       svn commit -m "Released 8.0.2 patch release" -r 37232
+
 3. Verify that the tag has been correctly created by visiting the repository web page:
    
    *  http://svn.osgeo.org/geotools/tags/

@@ -1,16 +1,34 @@
 Versioning
 ===========
 
-Each GeoTools module contains it's own version number. Version numbers are based on 3 digits::
-   
-   <major>.<minor>.<patch>
+**Release**
 
-* Major (first digit), is incremented to indicate that a module has lost full compatibility to earlier versions. So you can safely upgrade to later versions of a module so long as the major version has not changed.
+GeoTools jars are versioned as a group with version numbers are based on 3 digits::
+  
+  <major>.<minor>.<patch>
+  
+* Major (first digit), is incremented to indicate that a module has lost full compatibility to earlier versions.
+  
+  So you can safely upgrade to later versions of a module so long as the major version has not changed.
 
 * Minor (second digit) is incremented whenever new features are added.
+  
   Modules are forward compatible across minor versions, but usually not backward compatible.
 
-* Patch (last digit) is for bug fixes. It is used to indicate fixes in bugs only. No new features were made and full compatibility is preserved.
+* Patch (last digit) is for bug fixes.
+  
+  It is used to indicate fixes in bugs only. No new features were made and full compatibility is preserved.
+
+**Trunk**
+
+GeoTools jars released from trunk are versioned with version number based on 2 digits::
+  
+    <major>.<minor>-M<milestone>
+    <major>.<minor>-RC<candidate>
+
+* Milestone is used to mark alpha or beta releases as appropriate (example 8.0-M1)
+* Release Candidates are marked 8.0-RC1 and indicate that the branch has been forked
+  off trunk in preparation for final release.
 
 In practice
 ^^^^^^^^^^^

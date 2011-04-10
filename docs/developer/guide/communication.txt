@@ -10,7 +10,7 @@ Email
 geotools-gt2-users
 ^^^^^^^^^^^^^^^^^^
 
-The users list is for questions regarding the installation or use of the GeoTools2 library. Users of GeoTools2 are usually java developers building applications with spatial capabilities.
+The users list is for questions regarding the installation or use of the GeoTools2 library. Users of GeoTools are usually java developers building applications with spatial capabilities.
 
 * https://lists.sourceforge.net/lists/listinfo/geotools-gt2-users
 * http://sourceforge.net/mailarchive/forum.php?forum_name=geotools-gt2-users

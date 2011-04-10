@@ -1,0 +1,705 @@
+Geometry
+--------
+
+XML Documents come in two parts an XSD file representing the FeatureType; and an XML file with the actual features.
+
+Here is that that looks like with a simple example:
+
+.. image:: /images/gml_xml_xsd.png
+
+If it helps you can think of the XSD file as being similar to the header of a shapefile; it documents what the contents mean. The XML file is the actual contents. Why are the separate? Because you may have several documents that contain the same kind of data.
+
+References:
+
+* http://schemas.opengis.net/gml/2.1.2/feature.xsd
+* http://schemas.opengis.net/gml/2.1.2/geometry.xsd
+
+GML Utility Class
+^^^^^^^^^^^^^^^^^
+
+GeoTools has access to several interesting parsing technologies as earlier noted. The GML utility class gathers these up in a single spot for casual use.
+
+
+.. image:: /images/gml_utility.PNG
+
+While the GML utility class is useful; you may find the need to go under the hood and make use of some of the parsing technologies directly for advanced use.
+
+As indicated the utility class is set up to work with the following versions:
+
+* GML_2
+* GML_3
+* WFS1_0
+* WFS1_1
+
+The examples on this page will start off with the use of the GML class where appropriate.
+
+GML2 Encoding
+^^^^^^^^^^^^^
+
+Schema
+''''''
+
+Encoding FeatureType into an XSD file::
+  
+  SimpleFeatureType TYPE = DataUtilities.createType("Location", "geom:Point,name:String");
+  
+  GML encode = new GML(Version.GML2);
+  encode.setBaseURL(new URL("http://localhost/"));
+  encode.encode(out, TYPE);
+
+This does simply write out an XSD file for the FeatureType and can be combined with the WFS 1.0 XSD file when writing feature collections.
+
+FeatureCollection
+'''''''''''''''''
+
+To write out a SimpleFeatureCollection to match::
+  
+  GML encode = new GML(Version.WFS1_0);
+  encode.setNamespace("geotools", "http://geotools.org");
+  encode.encode(out, featureCollection);
+
+The namespace refers to the XSD file generated earlier (or any other XSD file you happen to have). The contents of the FeatureCollection are written out as is; and you may get a failure if their name does not match up with the XSD file.
+
+In this case we needed to use WFS1_1 when writing out our features (as GML2 does not provide the concept of a feature collection on its own). If you have your own custom schema that extends GML2 AbstractFeatureCollection you can use the parser technologies directly in order to read/write the content (it is not something we have added to this GML utility class yet).
+
+GML2 Encoding Example
+'''''''''''''''''''''
+
+Here is a complete example::
+  
+  SimpleFeatureType TYPE = DataUtilities.createType("location", "geom:Point,name:String");
+  
+  File locationFile = new File("location.xsd");
+  locationFile = locationFile.getCanonicalFile();
+  locationFile.createNewFile();
+  
+  URL locationURL = locationFile.toURI().toURL();
+  URL baseURL = locationFile.getParentFile().toURI().toURL();
+  
+  FileOutputStream xsd = new FileOutputStream(locationFile);
+  
+  GML encode = new GML(Version.GML2);
+  encode.setBaseURL(baseURL);
+  encode.setNamespace("location", locationURL.toExternalForm());
+  encode.encode(xsd, TYPE);
+  
+  xsd.close();
+
+  SimpleFeatureCollection collection = FeatureCollections.newCollection("internal");
+  WKTReader2 wkt = new WKTReader2();
+  
+  collection.add(SimpleFeatureBuilder.build(TYPE, new Object[] { wkt.read("POINT (1 2)"),"name1" }, null));
+  collection.add(SimpleFeatureBuilder.build(TYPE, new Object[] { wkt.read("POINT (4 4)"),"name2" }, null));
+  
+  ByteArrayOutputStream xml = new ByteArrayOutputStream();
+  
+  GML encode2 = new GML(Version.GML2);
+  encode2.setBaseURL(baseURL);
+  encode2.setNamespace("location", "location.xsd");
+  encode2.encode(out2, collection);
+  
+  xml.close();
+
+  String gml = xml.toString();
+
+WFS1.0 Encoding
+'''''''''''''''
+
+The Web Feature Server 1.0 specification extends GML2. You can work with this format using the GML Utility class.::
+
+        GML encode = new GML(Version.WFS1_0);
+        encode.setNamespace("geotools", "http://geotools.org");
+        encode.encode(out, collection);
+
+FeatureTransformer
+''''''''''''''''''
+
+You can read how to use FeatureTransformer directly; however we also provide
+access to this class using the GML Utility class::
+  
+  GML encode = new GML(Version.GML2);
+  encode.setNamespace("location", "http://localhost/location.xsd");
+  encode.setLegacy(true);
+  encode.encode(out, collection);
+
+This method depends on you doing everything exactly right as it blindly writes out a document referring to xsd file that may or may not exist. It is a good choice when encoding content against a WFS DescribeFeatureType URL for example.
+
+Internally you can use the GMLTransform code directly for greater control
+over this process:
+
+.. literalinclude:: /../src/main/java/org/geotools/xml/GMLExamples.java
+   :language: java
+   :start-after: // transformExample start
+   :end-before: // transformExample end
+
+.. note::
+   
+   While this method is fast; but you do have to set things up exactly or the output will be invalid.
+
+Notes:
+
+* Application Schema
+  
+  There is no such thing as a "GML" document; you need to created your own XML
+  Schema. Your XML Schema will extends GML concepts like AbstractFeature and define
+  specific concepts from your application - like ROAD, RIVER, CITY etc...
+  
+  This line is where you tell the Transform about your XML Schema::
+   
+   ft.getFeatureNamesapces().declarePrefix("myns","http://somewhere.org");
+  
+  The "myns" prefix is supposed to line up with an XML Schema document which you
+  have defined to describe your document.
+
+* SRS
+  
+  Internally in GeoTools we use real CoordianteReferenceSystem instances to record
+  what the numbers mean. In GML they use a simple string called "SRS" (ie Spatial
+  Reference System).::
+    
+    transform.setSrsName( "EPSG:4326" );
+  
+  The CRS utility class has a method that can help you determine a good srsName::
+    
+    String srsName = CRS.toSRS(schema.getCoordinateReferenceSystem();
+
+We also have an email from foerster@itc.nl with an example:
+
+.. literalinclude:: /../src/main/java/org/geotools/xml/GMLExamples.java
+   :language: java
+   :start-after: // transformExample2 start
+   :end-before: // transformExample2 end
+
+GML2 Parsing
+^^^^^^^^^^^^
+
+Schema
+''''''
+
+You can parse the XSD document (useful when you want to make additional features)::
+  
+  GML gml = new GML(Version.WFS1_0);
+  gml.setCoordinateReferenceSystem( DefaultGeographicCRS.WGS84 );
+  
+  Name typeName = new NameImpl("http://www.openplans.org/topp", "states");
+  SimpleFeatureType featureType = gml.decodeSimpleFeatureType(schemaLocation, typeName );
+
+XSD files can have more then one entry; so you need to explicitly ask for the one you want. We also need to know the CoordinateReferenceSystem of the content.
+
+You can make use of Configuration and the GTXML class to directly read out the schema information:
+
+.. literalinclude:: /../src/main/java/org/geotools/xml/GMLExamples.java
+   :language: java
+   :start-after: // rawSchemaExample start
+   :end-before: // rawSchemaExample end
+
+Here is a slightly more involved example using a custom configuration:
+
+.. literalinclude:: /../src/main/java/org/geotools/xml/GMLExamples.java
+   :language: java
+   :start-after: // rawSchemaExample2 start
+   :end-before: // rawSchemaExample2 end
+
+FeatureCollection
+'''''''''''''''''
+
+You can parse out a FeatureCollection in one gulp::
+  
+   GML gml = new GML(Version.WFS1_0);
+   SimpleFeatureCollection featureCollection = gml.decodeFeatureCollection(in);
+
+Or for a more responsive user experience (or simply to work with large content) you can parse one feature at a time::
+  
+  URL url = TestData.getResource(this,"states.xml");
+  InputStream in = url.openStream();
+        
+  GML gml = new GML(Version.GML3);
+  SimpleFeatureIterator iter = gml.decodeFeatureIterator(in);
+  while( iter.hasNext() ){
+      SimpleFeature feature = iter.next();
+      ...
+   }
+
+WFS1.0
+''''''
+
+The Web Feature Server 1.0 specification extends GML. You can work with this format using the GML Utility class.::
+
+    GML gml = new GML(Version.WFS1_0);
+    SimpleFeatureCollection featureCollection = gml.decodeFeatureCollection(in);
+
+SAX
+'''
+
+An alternative to the GML utility class is to directly handle the SAX events yourself.
+
+If you have an existing SAX based parser you can make use of **ContentHandlers** defined by GeoTools in order to feed Geometries into your own parser.
+
+* GMLHandlerJTS
+* GMLHandlerGeometry
+* GMLHandlerFeature
+
+To make matters exciting the **ContentHandler** classes are defined at different "levels" for GML.
+
+===== ================= =================== ===================================
+Level Interface         Implementation      Description
+===== ================= =================== ===================================
+1     (raw sax)         GMLFilterDocument   Alerts for GML types
+2     GMLHandlerJTS     GMLHandlerGeometry  GML events into OGC simple types
+3     GMLHandlerFeature (your code)         Implement accept parsed features.
+===== ================= =================== ===================================
+
+Here is what this looks like in the context of your own code.
+
+.. image:: /images/gml_sax.PNG
+
+You can see that in order to use literal JTS Geometries the SAX Filter parser will need to implement GMLHandlerFeature:
+
+.. literalinclude:: /../src/main/java/org/geotools/xml/YourCode.java
+   :language: java
+   :start-after: // yourcode start
+   :end-before: // yourcode end
+
+Then we can get down to actual parsing:
+
+.. literalinclude:: /../src/main/java/org/geotools/xml/GMLExamples.java
+   :language: java
+   :start-after: // saxExample start
+   :end-before: // saxExample end
+
+While the above example is good for understanding how the pieces fit together; Java has introduced inner classes allowing us to do this work in a single example:
+
+.. literalinclude:: /../src/main/java/org/geotools/xml/GMLExamples.java
+   :language: java
+   :start-after: // saxExample2 start
+   :end-before: // saxExample2 end
+
+XDO
+'''
+
+Although it is not commonly used now that GTXML Configurations are available; we do have the earlier prototype XDO available.
+
+Here is an example of parsing a feature type:
+
+.. literalinclude:: /../src/main/java/org/geotools/xml/GMLExamples.java
+   :language: java
+   :start-after: // xdoExample start
+   :end-before: // xdoExample end
+
+This is a very fast parser, designed to address the limitations of the SAX and DOM technologies. The generation of XML content is also supported.
+
+The "Schema Assisted" design makes use of schema information to allow the handing of new content without additional coding on your part. You can however construct additional bindings (teaching the parser how to produce explicit java beans).
+
+XDO allows you to declare w/ Objects the Schema you are interested in, and how it should be parsed.
+
+* reuse occurs on a schema by schema basis
+* You can "generated" a schema explicitly out into code
+* Code has been generated for GML2, WFS, and WMS
+* Custom documents, based on an extention of a known schema can be parsed
+* generated code also includes support for the production of XML documents.
+* validation of content is supported
+
+The exciting thing here is that the technology works, is fast, and allows for GML to be used the way it is intended.
+
+GML2 Parsing TestSchema Example
+'''''''''''''''''''''''''''''''
+
+To start with we have to understand that GML is not a file format that can be parsed; instead it is a tool box of good ideas you can use when defining your own XML file format.
+
+XML file formats are defined using XSD files such as the following::
+  
+  <?xml version="1.0" encoding="UTF-8"?>
+  <schema targetNamespace="http://www.geotools.org/test" xmlns="http://www.w3.org/2001/XMLSchema"
+   xmlns:test="http://www.geotools.org/test" xmlns:gml="http://www.opengis.net/gml">
+   <import namespace="http://www.opengis.net/gml" schemaLocation="feature.xsd" />
+   <complexType name="TestFeatureType">
+    <complexContent>
+     <extension base="gml:AbstractFeatureType">
+      <sequence>
+       <element name="geom" type="gml:PointPropertyType" />
+       <element name="count" type="int" />
+       <element name="date" type="date" />
+      </sequence>
+     </extension>
+    </complexContent>
+   </complexType>
+   <element name="TestFeature" type="test:TestFeatureType" />
+   <complexType name="TestFeatureCollectionType">
+    <complexContent>
+     <extension base="gml:AbstractFeatureCollectionType" />
+    </complexContent>
+   </complexType>
+   <element name="TestFeatureCollection" type="test:TestFeatureCollectionType" />
+  </schema>
+
+The above file defines two new ideas:
+
+* TestFeatureType - it extends the AbstractFeatureType idea from GML
+* TestFeatureCollectionType - it extends the AbstractFeatureCollectionType from GML
+
+Here is what that looks like as a UML diagram:
+
+.. image:: /images/gml_test_schema_example.PNG
+
+.. note::
+   
+   While we cannot parse a gml2 document - nobody can! Since GML2 documents do not exist as a
+   file format. The parser is able to parse an xml file defined by test.xsd above.
+
+Here is an example to parse against the above schema::
+  
+  <test:TestFeatureCollection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:gml="http://www.opengis.net/gml"
+    xmlns:test="http://www.geotools.org/test"
+    xsi:schemaLocation="http://www.geotools.org/test test.xsd">
+    
+    <gml:featureMember>
+       <test:TestFeature fid="0">
+         <gml:pointProperty> 
+            <gml:Point><gml:coordinates>0 0</gml:coordinates></gml:Point>
+         </gml:pointProperty>
+         <test:name>feature 0</test:name>
+      </test:TestFeature>
+    </gml:featureMember>
+  
+    <gml:featureMember>
+       <test:TestFeature fid="1">
+         <gml:pointProperty> 
+           <gml:Point><gml:coordinates>1 1</gml:coordinates></gml:Point>
+         </gml:pointProperty>
+         <test:name>feature 1</test:name>
+      </test:TestFeature>
+    </gml:featureMember>
+    
+    <gml:featureMember>
+       <test:TestFeature fid="2">
+         <gml:pointProperty> 
+            <gml:Point><gml:coordinates>2 2</gml:coordinates></gml:Point>
+         </gml:pointProperty>
+         <test:name>feature 2</test:name>
+      </test:TestFeature>
+    </gml:featureMember>
+  <test:FeatureCollection>
+
+To parse the document::
+  
+  //create the parser with the gml 2.0 configuration
+  org.geotools.xml.Configuration configuration = new org.geotools.gml2.GMLConfiguration();
+  org.geotools.xml.Parser parser = new org.geotools.xml.Parser( configuration );
+  
+  //the xml instance document above
+  InputStream xml = ...
+  
+  //parse
+  FeatureCollection fc = (FeatureCollection) parser.parse( xml );
+  
+  fc.accepts( new AbstractFeatureVisitor(){
+        public void visit( Feature feature ) {
+            SimpleFeature f = (Feature) i.next();
+            
+            Point point = (Point) f.getDefaultGeometry();
+            String name = (String) f.getAttribute( "name" );
+        }
+    }, new NullProgressListener() );
+  }
+
+GML3 Encoding
+^^^^^^^^^^^^^
+
+GML3 encoding is performed in the same fashion as GML2 encoding.
+
+Schema
+''''''
+
+You can encode an XML schema representing your feature type using the GML utility class::
+
+        SimpleFeatureType TYPE = DataUtilities.createType("location", "geom:Point,name:String");
+        
+        GML encode = new GML(Version.GML3);
+        encode.setBaseURL(new URL("http://localhost/"));
+        encode.setNamespace("location", "http://localhost/location.xsd");
+        encode.encode(outputStream, TYPE);
+
+FeatureCollection
+'''''''''''''''''
+
+HEre is an example using GML3::
+
+  GML encode = new GML(Version.GML3);
+  encode.setNamespace("geotools", "http://geotools.org");
+  encode.encode(out, featureCollection);
+
+The good news is that GML3 is able to encode feature collections on its own; it has a concrete feature collection type.
+
+GML3 Parsing
+^^^^^^^^^^^^
+
+GML3 is a actually a pretty significant departure from GML2 with a different representation of Geometry more closely aligned with ISO19017. This means that content is encoded as Curves and so forth even though though we only use JTS LineStrings in GeoTools - we make sure to encode them as a curve of line segments.
+
+Not all GML3 geometry types can be represented in JTS Geometry; we have looked at using ISO19107 representations directly but so far it is a matter of research and collaboration.
+
+Schema
+''''''
+
+You can parse an XML schema file extended from the abstract GML3 schema::
+
+        URL schemaLocation = TestData.getResource(this, "states.xsd");
+        
+        GML gml = new GML(Version.WFS1_1);
+        gml.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
+        
+        SimpleFeatureType featureType = gml.decodeSimpleFeatureType(schemaLocation, new NameImpl(
+                "http://www.openplans.org/topp", "states"));
+        
+        List<AttributeDescriptor> attributes = featureType.getAttributeDescriptors();
+        List<String> names = new ArrayList<String>(attributes.size());
+        for (AttributeDescriptor desc : attributes) {
+            names.add(desc.getLocalName());
+        }
+
+FeatureCollection
+'''''''''''''''''
+
+Parsing out an entire FeatureCollection::
+
+        URL url = TestData.getResource(this, "states.gml");
+        InputStream in = url.openStream();
+        
+        GML gml = new GML(Version.GML3);
+        SimpleFeatureCollection featureCollection = gml.decodeFeatureCollection(in);
+
+
+Streaming content our of a GML3 file is handled in the same manner as above::
+  
+        URL url = TestData.getResource(this, "states.xml");
+        InputStream in = url.openStream();
+
+        GML gml = new GML(Version.GML3);
+        SimpleFeatureIterator iter = gml.decodeFeatureIterator(in);
+        
+        int count = 0;
+        while (iter.hasNext()) {
+            SimpleFeature feature = iter.next();
+            assertNotNull(feature);
+            count++;
+        }
+
+You can also ask for your geometry element by name, it will be wrapped
+up a small feature for you::
+
+        URL url = TestData.getResource(this, "states.xml");
+        InputStream in = url.openStream();
+
+        QName name = new QName("http://www.opengis.net/gml", "MultiSurface");
+
+        GML gml = new GML(Version.GML3);
+        SimpleFeatureIterator iter = gml.decodeFeatureIterator(in, name);
+        
+        int count = 0;
+        while (iter.hasNext()) {
+            SimpleFeature feature = iter.next();
+            assertNotNull(feature);
+            count++;
+        }
+
+GML3 Parsing TestSchema Example
+'''''''''''''''''''''''''''''''
+
+Parsing GML3 works the Works in the same way as for GML2 – just choose a different configuration.
+
+Here is an example XSD extending GML3::
+  
+  <?xml version="1.0" encoding="UTF-8"?>
+  <xsd:schema targetNamespace="http://www.geotools.org/test"
+   xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:test="http://www.geotools.org/test"
+   xmlns:gml="http://www.opengis.net/gml" elementFormDefault="qualified">
+  
+   <xsd:import namespace="http://www.opengis.net/gml"
+    schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd" />
+  
+   <xsd:complexType name="TestFeatureType">
+    <xsd:complexContent>
+     <xsd:extension base="gml:AbstractFeatureType">
+      <xsd:sequence>
+       <xsd:element name="geom" type="gml:PointPropertyType" />
+       <xsd:element name="count" type="xsd:int" />
+       <xsd:element name="date" type="xsd:date" />
+      </xsd:sequence>
+     </xsd:extension>
+    </xsd:complexContent>
+   </xsd:complexType>
+   <xsd:element name="TestFeature" type="test:TestFeatureType"
+        substitutionGroup="gml:_Feature" />
+     <xsd:complexType name="TestFeatureCollectionType">
+      <xsd:complexContent>
+       <xsd:extension base="gml:AbstractFeatureCollectionType" />
+      </xsd:complexContent>
+     </xsd:complexType>
+     <xsd:element name="TestFeatureCollection" type="test:TestFeatureCollectionType" />
+  </xsd:schema>
+
+The document for the above file is slightly different (because GML3 has a different idea about geometry)::
+  
+  <test:TestFeatureCollection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:gml="http://www.opengis.net/gml" xmlns:test="http://www.geotools.org/test"
+   xsi:schemaLocation="http://www.geotools.org/test test.xsd">
+  
+   <gml:featureMember>
+    <test:TestFeature gml:id="fid.0">
+     <test:geom>
+      <gml:Point>
+       <gml:coord>
+        <gml:X>0</gml:X>
+        <gml:Y>0</gml:Y>
+       </gml:coord>
+      </gml:Point>
+     </test:geom>
+     <test:count>0</test:count>
+     <test:date>2001-01-01</test:date>
+    </test:TestFeature>
+   </gml:featureMember>
+  
+   <gml:featureMember>
+    <test:TestFeature gml:id="fid.1">
+     <test:geom>
+      <gml:Point>
+       <gml:coord>
+        <gml:X>1</gml:X>
+        <gml:Y>1</gml:Y>
+       </gml:coord>
+      </gml:Point>
+     </test:geom>
+     <test:count>1</test:count>
+   <test:date>2002-02-02</test:date>
+    </test:TestFeature>
+   </gml:featureMember>
+  
+   <gml:featureMember>
+    <test:TestFeature gml:id="fid.2">
+     <test:geom>
+      <gml:Point>
+       <gml:coord>
+        <gml:X>2</gml:X>
+        <gml:Y>2</gml:Y>
+       </gml:coord>
+      </gml:Point>
+     </test:geom>
+     <test:count>2</test:count>
+     <test:date>2003-03-03</test:date>
+    </test:TestFeature>
+  </gml:featureMember>
+  </test:TestFeatureCollection>
+
+And this time when you parse you can refer to the GML3 configuration::
+  
+  //create the parser with the gml 3.0 configuration
+  org.geotools.xml.Configuration configuration = new org.geotools.gml3.GMLConfiguration();
+  org.geotools.xml.Parser parser = new org.geotools.xml.Parser( configuration );
+  
+  //the xml instance document above
+  InputStream xml = ...
+  
+  //parse
+  SimpleFeatureCollection fc = (SimpleFeatureCollection) parser.parse( xml );
+  fc.accepts( new AbstractFeatureVisitor(){
+        public void visit( Feature feature ) {
+            SimpleFeature f = (Feature) i.next();
+            
+            Point point = (Point) f.getDefaultGeometry();
+            String name = (String) f.getAttribute( "name" );
+        }
+    }, new NullProgressListener() );
+
+
+Advanced
+^^^^^^^^
+
+Application Schema
+''''''''''''''''''
+
+The above TestSchema examples makes reference to an application schema with the namespace "http://www.geotools.org/test", and defined in the schema document "test.xsd". In order for the document to parse correctly, the parser must be able to resolve the schema file correctly, which means that the file test.xsd needs to be in the same directory as the parser is executing from.
+
+Unfortunately, this is rarely the case. GML documents are often encountered in the wild with no schemaLocation attribute attached, or it is inaccurate.
+
+If you do not have an xsd file you are likely to get warnings like the following::
+  
+  Apr 11, 2009 7:29:06 PM org.geotools.xml.impl.ParserHandler startElement
+  INFO: Could not find declaration for: {http://ogr.maptools.org/}FeatureCollection. Creating a mock element declaration and parsing anyways...
+
+Fortunately there are a number of alternatives.
+
+* Alternative 1: Create an Application Schema Configuration
+  
+  This method can be used if the application schema to be parsed is known before
+  hand. The org.geotools.xml.Configuration class is used to configure the parser
+  with the information for a particular schema. The org.geotools.gml.ApplicationSchemaConfiguration can be used to create a
+  configuraion from a namespace,schemaLocation pair.::
+    
+    //create the parser with the filter 1.0 configuration
+    
+    String namespace = http://www.ge"otools.org/test";
+    String schemaLocation =  getClass().getResource("test.xsd").toString();
+    
+    org.geotools.xml.Configuruation configuration = new ApplicationSchemaConfiguration( namespace, schemaLocation );
+    org.geotools.xml.Parser parser = new org.geotools.xml.Parser( configuration );
+   
+   //the xml instance document above
+   InputStream xml = ...
+   
+   //parse
+   SimpleFeatureCollection fc = (SimpleFeatureCollection) parser.parse( xml );
+  
+  In this case we are manually configuring the parser by hand prior to use;
+  normally the xml document itself is supposed to refer to "test.xsd" after all.
+  The above technique allows you to correct the mistake.
+
+* Alternative 2: Ignoring the Application Schema
+  
+  This method can be used if the application is not known before hand. This
+  alternative is to tell the parser to ignore the application schema. This can be
+  done with a parser property. The following instructs the parser to ignore the
+  application schema::
+    
+    org.geotools.xml.Configuration configuration = new org.geotools.gml2.GMLConfiguration();
+    configuration.getProperties().add( Parser.Properties.IGNORE_SCHEMA_LOCATION );
+    configuration.getProperties().add(Parser.Properties.PARSE_UNKNOWN_ELEMENTS);
+    ...
+  
+  Now this has a few consequences. It means that the parser knows nothing about
+  types and elements that have been defined in application schema. Which means they
+  will get parsed differently. In the example, what this means is that the parser
+  will not know that TestFeature is indeed a feature. So instead of parsing it into
+  a Feature, it will parse it into a Map, which is the default for complex types.
+  
+  Therefore parsing the document becomes::
+    
+    //parse
+    Map fc = (Map) parser.parse( xml );
+    List members = (List) fc.get( "featureMember" );
+    for ( Iterator i = members.iterator(); i.hasNext(); ) {
+       Map f = (Map) i.next();
+      Point point = (Point) f.get( "pointProperty" );
+      String name = (String) f.get( "name" );
+    }
+  
+  .. note::
+     
+     This method is used by the GML utility class; it will parse the
+     resulting maps and process them to produce an informal FeatureType based on
+     the data.
+
+  Using the streaming parser in conjunction with this method can be useful if
+  access to the features is not needed. For instance, renderers may wish to only
+  access the geometries.::
+    
+    Configuration configuration = new GMLConfiguration();
+    configuration.getProperties().add( Parser.Properties.IGNORE_SCHEMA_LOCATION );
+    configuration.getProperties().add(Parser.Properties.PARSE_UNKNOWN_ELEMENTS);
+    
+    InputStream xml = ...
+    
+    StreamingParser parser = new StreamingParser( configuration, xml, "//Point" )
+    Point p = null;
+    while ( ( p = (Point) parser.parse() ) != null ) {
+        ...
+    }

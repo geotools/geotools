@@ -452,7 +452,12 @@ public class GML {
         }
         return null;
     }
-
+    /**
+     * Convert parse results into a SimpleFeatureCollection.
+     * 
+     * @param obj SimpleFeatureCollection, Collection<?>, SimpleFeature, etc...
+     * @return SimpleFeatureCollection of the results
+     */
     private SimpleFeatureCollection toFeatureCollection(Object obj) {
         if (obj == null) {
             return null; // not available?

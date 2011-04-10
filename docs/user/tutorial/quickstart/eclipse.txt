@@ -304,7 +304,7 @@ Tips:
 * If maven has trouble downloading any jar; you can try again by selecting
   :menuselection:`Project --> Update All Maven Dependencies`.
     
-  If it really cannot connect you will need to switch to |version|-SNAPSHOT and add the following
+  If it really cannot connect you will need to switch to 8-SNAPSHOT and add the following
   snap shot repository.
     
   .. literalinclude:: artifacts/pom2.xml
@@ -517,8 +517,8 @@ generating eclipse :file:`.project` and :file:`.classpath` files.
 16. Press :guilabel:`Finish` to import your project
 17. Navigate to the pom.xml file and double click to open it up.
 18. We are going to start by defining the version number of GeoTools we wish to use. This workbook
-    was written for |version| although you may wish to try a newer version, or make use of a
-    nightly build by using |version|-SNAPSHOT.
+    was written for |release| although you may wish to try a newer version, or make use of a
+    nightly build by using 8-SNAPSHOT.
     
 .. literalinclude:: artifacts/pom.xml
         :language: xml

@@ -148,6 +148,10 @@
     
     <!-- Other dependencies -->
     <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.apache.xmlgraphics</groupId>
       <artifactId>batik-svggen</artifactId>
       <!-- The version number is specified in the parent POM. -->

@@ -95,7 +95,6 @@
   <modules>
     <module>example</module>
     <module>libraryJTS</module>
-    <module>gmlparsing</module>
     <module>jdbc</module>
     <!--module>xml-po</module-->
   </modules>

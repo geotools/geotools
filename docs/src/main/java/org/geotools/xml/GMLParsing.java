@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.demo.gmlparsing;
+package org.geotools.xml;
 
 import java.io.File;
 import java.io.FileInputStream;

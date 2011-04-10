@@ -398,8 +398,7 @@ public class GML {
      * 
      * @param schemaLocation
      * @param typeName
-     * @param crs
-     * @return
+     * @return SimpleFeatureType
      * @throws IOException
      */
     public SimpleFeatureType decodeSimpleFeatureType(URL schemaLocation, Name typeName)

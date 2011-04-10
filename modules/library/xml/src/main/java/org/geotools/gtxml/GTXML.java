@@ -16,7 +16,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  */
 public class GTXML {
     /**
-     * Parse a fature type; using the provided configuration.
+     * Parse a feature type; using the provided configuration.
      * <p>
      * Usually the configuration is based on org.geotools.wfs.v1_0.WFSConfiguration or
      * org.geotools.wfs.v1_1.WFSConfiguration; you need to indicate which name you want parsed

@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://web.resource.org/cc/"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://inkscape.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="744.09448819"
+   height="1052.3622047"
+   id="svg2"
+   sodipodi:version="0.32"
+   inkscape:version="0.43"
+   sodipodi:docbase="/home/jdeolive"
+   sodipodi:docname="parserOverview.svg">
+  <defs
+     id="defs4">
+    <marker
+       inkscape:stockid="TriangleOutL"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="TriangleOutL"
+       style="overflow:visible">
+      <path
+         id="path3298"
+         d="M 5.77,0.0 L -2.88,5.0 L -2.88,-5.0 L 5.77,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt;marker-start:none"
+         transform="scale(0.8)" />
+    </marker>
+    <marker
+       inkscape:stockid="TriangleOutM"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="TriangleOutM"
+       style="overflow:visible">
+      <path
+         id="path3295"
+         d="M 5.77,0.0 L -2.88,5.0 L -2.88,-5.0 L 5.77,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt;marker-start:none"
+         transform="scale(0.4)" />
+    </marker>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.81436683"
+     inkscape:cx="536.05826"
+     inkscape:cy="779.6966"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showguides="false"
+     inkscape:window-width="1400"
+     inkscape:window-height="975"
+     inkscape:window-x="0"
+     inkscape:window-y="25" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       sodipodi:type="arc"
+       style="fill:#48e216;fill-opacity:0.55248618;stroke:#000000;stroke-width:1.92431867;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path2182"
+       sodipodi:cx="364.4566"
+       sodipodi:cy="283.47632"
+       sodipodi:rx="163.41763"
+       sodipodi:ry="59.958988"
+       d="M 527.87424 283.47632 A 163.41763 59.958988 0 1 1  201.03897,283.47632 A 163.41763 59.958988 0 1 1  527.87424 283.47632 z"
+       transform="matrix(0.530214,0,0,0.79582,141.9632,45.25028)"
+       inkscape:export-filename="/home/jdeolive/encoderOverview.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <g
+       id="g2223"
+       transform="matrix(1.187035,0,0,1.119027,-415.2842,126.7634)"
+       style="fill:#000000;fill-opacity:0.08287293"
+       inkscape:export-filename="/home/jdeolive/encoderOverview.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <path
+         id="path2225"
+         d="M 485.21875,181.25 L 485.21875,197.625 L 486.0625,197.625 C 492.54599,192.8923 498.46707,187.365 503.6875,181.25 L 485.21875,181.25 z "
+         style="fill:#000000;fill-opacity:0.08287293;stroke:#000000;stroke-width:1.375;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <path
+         id="path2227"
+         d="M 372.09106,58.818404 L 372.09106,197.72465 L 485.90356,197.72465 C 492.54448,192.92731 498.60654,187.30972 503.93481,181.0684 L 503.93481,58.818404 L 372.09106,58.818404 z "
+         style="fill:#000000;fill-opacity:0.08287293;stroke:#000000;stroke-width:1.25;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    </g>
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot2229"
+       transform="translate(0,28.4515)"
+       inkscape:export-filename="/home/jdeolive/encoderOverview.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><flowRegion
+         id="flowRegion2231"><rect
+           id="rect2233"
+           width="155.88156"
+           height="176.37303"
+           x="29.273533"
+           y="166.8378" /></flowRegion><flowPara
+         id="flowPara2235">&lt;?xml version=&quot;1.0&quot; ?&gt;</flowPara><flowPara
+         id="flowPara2241">&lt;purchaseOrder</flowPara><flowPara
+         id="flowPara3428">      orderDate=&quot;200...&quot;&gt;</flowPara><flowPara
+         id="flowPara2247">    &lt;shipTo&gt;</flowPara><flowPara
+         id="flowPara3434">     ...</flowPara><flowPara
+         id="flowPara3436">    &lt;/shipTo&gt;</flowPara><flowPara
+         id="flowPara2249">    ...</flowPara><flowPara
+         id="flowPara3432" /><flowPara
+         id="flowPara3430" /></flowRoot>    <g
+       id="g3406"
+       transform="translate(0,8.45151)"
+       inkscape:export-filename="/home/jdeolive/encoderOverview.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <g
+         transform="translate(39.19252,-25.83142)"
+         id="g2342">
+        <rect
+           style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:1.09872389;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+           id="rect2298"
+           width="140.77466"
+           height="42.186684"
+           x="437.95856"
+           y="269.05737" />
+        <flowRoot
+           xml:space="preserve"
+           id="flowRoot2300"
+           transform="translate(-42.26114,82.58744)"><flowRegion
+             id="flowRegion2302"><rect
+               id="rect2304"
+               width="129.37196"
+               height="34.154198"
+               x="502.9982"
+               y="197.47226" /></flowRegion><flowPara
+             id="flowPara2306">:PurchaseOrder</flowPara></flowRoot>      </g>
+      <g
+         transform="translate(38.70149,-16.39526)"
+         id="g2328">
+        <rect
+           style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:1.09872389;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+           id="rect2308"
+           width="140.77466"
+           height="42.186684"
+           x="601.242"
+           y="281.34473" />
+        <flowRoot
+           xml:space="preserve"
+           id="flowRoot2310"
+           transform="translate(115.0223,94.8747)"><flowRegion
+             id="flowRegion2312"><rect
+               id="rect2314"
+               width="129.37196"
+               height="34.154198"
+               x="502.9982"
+               y="197.47226" /></flowRegion><flowPara
+             id="flowPara2316">shipTo:USAddress</flowPara></flowRoot>      </g>
+      <g
+         transform="translate(39.19252,-22.93652)"
+         id="g2335">
+        <rect
+           style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:1.09872389;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+           id="rect2318"
+           width="140.77466"
+           height="42.186684"
+           x="601.14496"
+           y="238.98141" />
+        <flowRoot
+           xml:space="preserve"
+           id="flowRoot2320"
+           transform="translate(118.9252,52.5114)"><flowRegion
+             id="flowRegion2322"><rect
+               id="rect2324"
+               width="129.37196"
+               height="34.154198"
+               x="502.9982"
+               y="197.47226" /></flowRegion><flowPara
+             id="flowPara2326">orderDate:Date</flowPara></flowRoot>      </g>
+      <path
+         inkscape:connector-type="polyline"
+         id="path2349"
+         d="M 618.47514,252.50372 L 639.78816,248.95373"
+         style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;marker-end:url(#TriangleOutM);stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         inkscape:connector-type="polyline"
+         id="path2351"
+         d="M 618.47514,273.78525 L 639.39417,276.57675"
+         style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;marker-end:url(#TriangleOutM);stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    </g>
+    <g
+       id="g3438"
+       transform="matrix(1.187035,0,0,1.119027,-185.2737,-52.13777)"
+       style="fill:#000000;fill-opacity:0.08287293"
+       inkscape:export-filename="/home/jdeolive/encoderOverview.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <path
+         id="path3440"
+         d="M 485.21875,181.25 L 485.21875,197.625 L 486.0625,197.625 C 492.54599,192.8923 498.46707,187.365 503.6875,181.25 L 485.21875,181.25 z "
+         style="fill:#000000;fill-opacity:0.08287293;stroke:#000000;stroke-width:1.375;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <path
+         id="path3442"
+         d="M 372.09106,58.818404 L 372.09106,197.72465 L 485.90356,197.72465 C 492.54448,192.92731 498.60654,187.30972 503.93481,181.0684 L 503.93481,58.818404 L 372.09106,58.818404 z "
+         style="fill:#000000;fill-opacity:0.08287293;stroke:#000000;stroke-width:1.25;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    </g>
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot3444"
+       transform="translate(230.0105,-150.4497)"
+       inkscape:export-filename="/home/jdeolive/encoderOverview.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><flowRegion
+         id="flowRegion3446"><rect
+           id="rect3448"
+           width="155.88156"
+           height="176.37303"
+           x="29.273533"
+           y="166.8378" /></flowRegion><flowPara
+         id="flowPara3450">&lt;schema&gt;</flowPara><flowPara
+         id="flowPara3462">  &lt;element</flowPara><flowPara
+         id="flowPara3488">   name=&quot;PurchaseOrder&quot;</flowPara><flowPara
+         id="flowPara3490">   ...</flowPara><flowPara
+         id="flowPara3464" /><flowPara
+         id="flowPara3466" /></flowRoot>    <path
+       style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;marker-end:url(#TriangleOutL);stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 183.62439,270.48895 L 248.04673,270.64087"
+       id="path3523"
+       inkscape:connector-type="polyline"
+       inkscape:connection-end="#path2182"
+       inkscape:export-filename="/home/jdeolive/encoderOverview.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#TriangleOutL);stroke-miterlimit:4;stroke-dasharray:none"
+       d="M 334.99109,169.84178 L 335.10139,222.36414"
+       id="path4400"
+       inkscape:connector-type="polyline"
+       inkscape:connection-end="#path2182"
+       inkscape:export-filename="/home/jdeolive/encoderOverview.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot4402"
+       style="font-size:16px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;font-family:Bitstream Vera Sans"
+       transform="translate(40,3.380604)"
+       inkscape:export-filename="/home/jdeolive/encoderOverview.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><flowRegion
+         id="flowRegion4404"><rect
+           id="rect4406"
+           width="134.37907"
+           height="37.186665"
+           x="268.75815"
+           y="253.69406"
+           style="font-size:16px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;font-family:Bitstream Vera Sans" /></flowRegion><flowPara
+         id="flowPara4408">Parser</flowPara></flowRoot>    <flowRoot
+       xml:space="preserve"
+       id="flowRoot4418"
+       transform="translate(-6.098344,-6.860637)"
+       inkscape:export-filename="/home/jdeolive/encoderOverview.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><flowRegion
+         id="flowRegion4420"><rect
+           id="rect4422"
+           width="192.69453"
+           height="32.115757"
+           x="32.960907"
+           y="358.49283" /></flowRegion><flowPara
+         id="flowPara4424"
+         style="font-size:16px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;font-family:Bitstream Vera Sans">Instance Document</flowPara></flowRoot>    <path
+       style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#TriangleOutL);stroke-miterlimit:4;stroke-dasharray:none"
+       d="M 422.47451,270.60758 L 476.60172,270.45945"
+       id="path4435"
+       inkscape:connector-type="polyline"
+       inkscape:connection-end="#g3406"
+       inkscape:export-filename="/home/jdeolive/encoderOverview.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot5310"
+       transform="translate(325.3535,-188.1806)"
+       inkscape:export-filename="/home/jdeolive/encoderOverview.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><flowRegion
+         id="flowRegion5312"><rect
+           id="rect5314"
+           width="192.69453"
+           height="32.115757"
+           x="32.960907"
+           y="358.49283" /></flowRegion><flowPara
+         id="flowPara5316"
+         style="font-size:16px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;font-family:Bitstream Vera Sans">Schema Definition</flowPara></flowRoot>    <flowRoot
+       xml:space="preserve"
+       id="flowRoot5318"
+       transform="translate(531.5711,-42.35216)"
+       inkscape:export-filename="/home/jdeolive/encoderOverview.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><flowRegion
+         id="flowRegion5320"><rect
+           id="rect5322"
+           width="192.69453"
+           height="32.115757"
+           x="32.960907"
+           y="358.49283" /></flowRegion><flowPara
+         id="flowPara5324"
+         style="font-size:16px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;font-family:Bitstream Vera Sans">Objects</flowPara></flowRoot>    <path
+       style="fill:#3eb418;fill-opacity:0.55248617;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 500.24372,277.95581 L 595.3215,277.95581"
+       id="path6233"
+       inkscape:export-filename="/home/jdeolive/encoderOverview.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:#3eb418;fill-opacity:0.55248617;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 661.4201,250.93028 L 756.49788,250.93028"
+       id="path6235"
+       inkscape:export-filename="/home/jdeolive/encoderOverview.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:#3eb418;fill-opacity:0.55248617;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 655.85303,299.98867 L 765.53811,299.98867"
+       id="path6237"
+       inkscape:export-filename="/home/jdeolive/encoderOverview.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+  </g>
+</svg>

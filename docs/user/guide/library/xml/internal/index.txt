@@ -6,8 +6,7 @@ The following material has been prepared by Justin Deolivera documenting the GTX
 .. toctree::
    :maxdepth: 1
    
-   parsing
-   encoding
+   overview
    bindings
    configuration
    code

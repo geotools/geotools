@@ -182,6 +182,7 @@
          <module>matfile5</module>
          <module>jai-tools</module>
          <module>sfs</module>
+         <module>mark-wkt</module>
        </modules>
      </profile>
   </profiles>

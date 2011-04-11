@@ -535,7 +535,7 @@ class RasterLayerResponse{
                                 if (footprintManagement){
                                     final ROI footprint = result.getFootprint();
                                     if (footprint != null) {
-                                        if (imageBounds.contains(footprint.getBounds())) {
+                                        if (imageBounds.contains(footprint.getBounds2D().getBounds())) {
                                             imageBounds = footprint;
                                         } else {
                                             imageBounds = imageBounds.intersect(footprint);

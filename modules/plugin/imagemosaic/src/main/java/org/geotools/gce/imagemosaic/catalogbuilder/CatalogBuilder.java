@@ -544,7 +544,7 @@ public class CatalogBuilder implements Runnable {
 					if(schemaDef!=null){
 						// get the schema
 						try{
-							indexSchema=DataUtilities.createType(mosaicConfiguration.getName(), runConfiguration.getSchema());
+							indexSchema=DataUtilities.createType(mosaicConfiguration.getName()/*.toLowerCase()*/, runConfiguration.getSchema());
 							//override the crs in case the provided one was wrong or absent
 							indexSchema=DataUtilities.createSubType(indexSchema, DataUtilities.attributeNames(indexSchema), actualCRS);
 						}

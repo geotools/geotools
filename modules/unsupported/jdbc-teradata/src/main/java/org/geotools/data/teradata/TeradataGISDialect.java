@@ -466,6 +466,9 @@ public class TeradataGISDialect extends BasicSQLDialect {
 									+ "  FOR EACH STATEMENT"
 									+ "  BEGIN ATOMIC"
 									+ "  ("
+									+ "    IF \"{1}\" IS NULL THEN "
+									+ "      RETURN "
+									+ "    END IF;"
 									+ "    INSERT INTO {13} SELECT \"{2}\","
 									+ "    sysspatial.tessellate_index("
 									+ "      \"{1}\".ST_Envelope().ST_ExteriorRing().ST_PointN(1).ST_X(), "
@@ -499,21 +502,25 @@ public class TeradataGISDialect extends BasicSQLDialect {
 							LOGGER.fine(sql);
 							st.execute(sql);
 			            }
-	
+
 						sql = MessageFormat.format("CREATE TRIGGER \"{0}_{1}_mu\" AFTER UPDATE OF \"{1}\" ON {12}"
 								+ "  REFERENCING NEW AS nt"
 								+ "  FOR EACH STATEMENT"
 								+ "  BEGIN ATOMIC"
 								+ "  ("
-								+ "    UPDATE {13} SET "
-								+ "    cellid=sysspatial.tessellate_index("
-								+ "      nt.\"{1}\".ST_Envelope().ST_ExteriorRing().ST_PointN(1).ST_X(), "
-								+ "      nt.\"{1}\".ST_Envelope().ST_ExteriorRing().ST_PointN(1).ST_Y(), "
-								+ "      nt.\"{1}\".ST_Envelope().ST_ExteriorRing().ST_PointN(3).ST_X(), "
-								+ "      nt.\"{1}\".ST_Envelope().ST_ExteriorRing().ST_PointN(3).ST_Y(), "
-								+ "      {3,number,0.0#}, {4,number,0.0#}, {5,number,0.0#}, {6,number,0.0#}, "
-								+ "      {7,number,0}, {8,number,0}, {9,number,0}, {10,number,0.0#}, {11,number,0})"
-								+ "    WHERE id=nt.\"{2}\";"
+								+ "    DELETE FROM {13} WHERE id=nt.\"{2}\"; "								
+								+ "    IF nt.\"{1}\" IS NULL THEN "
+								+ "      RETURN; "
+								+ "    END IF;"
+								+ "    INSERT INTO {13} (id, cellid) VALUES (nt.\"{2}\", "
+								+ "      sysspatial.tessellate_index("
+								+ "        nt.\"{1}\".ST_Envelope().ST_ExteriorRing().ST_PointN(1).ST_X(), "
+								+ "        nt.\"{1}\".ST_Envelope().ST_ExteriorRing().ST_PointN(1).ST_Y(), "
+								+ "        nt.\"{1}\".ST_Envelope().ST_ExteriorRing().ST_PointN(3).ST_X(), "
+								+ "        nt.\"{1}\".ST_Envelope().ST_ExteriorRing().ST_PointN(3).ST_Y(), "
+								+ "        {3,number,0.0#}, {4,number,0.0#}, {5,number,0.0#}, {6,number,0.0#}, "
+								+ "        {7,number,0}, {8,number,0}, {9,number,0}, {10,number,0.0#}, {11,number,0})"
+								+ "    ); "
 								+ "  ) "
 								+ "END", tableName, gd.getLocalName(), key, u_xmin, u_ymin, u_xmax, u_ymax, g_nx, g_ny, levels, scale, shift,
 								encodedTableName, encodedIdxTableName);
@@ -543,7 +550,7 @@ public class TeradataGISDialect extends BasicSQLDialect {
 		if (value == null) {
 			sql.append("NULL");
 		} else {
-			sql.append("'" + value.toText() + "'");
+			sql.append("SYSSPATIAL.ST_GeomFromText('" + value.toText() + "', " + srid + ")");
 		}
 	}
 
@@ -786,21 +793,29 @@ public class TeradataGISDialect extends BasicSQLDialect {
 			String encodedIdxTableName = sb.toString();
 
 			if (mIndexTables.contains(indexTableName)) {
-			
-				String sql = MessageFormat.format("INSERT INTO {13} (id, cellid) VALUES ({14,number,0}, SELECT "
-					+ "    sysspatial.tessellate_index("
-					+ "      \"{1}\".ST_Envelope().ST_ExteriorRing().ST_PointN(1).ST_X(), "
-					+ "      \"{1}\".ST_Envelope().ST_ExteriorRing().ST_PointN(1).ST_Y(), "
-					+ "      \"{1}\".ST_Envelope().ST_ExteriorRing().ST_PointN(3).ST_X(), "
-					+ "      \"{1}\".ST_Envelope().ST_ExteriorRing().ST_PointN(3).ST_Y(), "
-					+ "      {3,number,0.0#}, {4,number,0.0#}, {5,number,0.0#}, {6,number,0.0#}, "
-					+ "      {7,number,0}, {8,number,0}, {9,number,0}, {10,number,0.0#}, {11,number,0})"
-					+ "    FROM {12} WHERE \"{2}\" = {14,number,0};"
-					+ "  ) "
-					+ "END", mLastTableName, geomColumn, key, u_xmin, u_ymin, u_xmax, u_ymax, g_nx, g_ny, levels, scale, shift,
-					encodedTableName, encodedIdxTableName, id);
-				
-				stmt.executeUpdate(sql);
+				try {
+					String sql = MessageFormat.format("DELETE FROM {0} WHERE \"{1}\" = {2,number,0};", 
+							encodedIdxTableName, key, id);
+					stmt.executeUpdate(sql);
+
+					sql = MessageFormat.format("INSERT INTO {13} (id, cellid) VALUES ({14,number,0}, SELECT "
+							+ "    sysspatial.tessellate_index("
+							+ "      \"{1}\".ST_Envelope().ST_ExteriorRing().ST_PointN(1).ST_X(), "
+							+ "      \"{1}\".ST_Envelope().ST_ExteriorRing().ST_PointN(1).ST_Y(), "
+							+ "      \"{1}\".ST_Envelope().ST_ExteriorRing().ST_PointN(3).ST_X(), "
+							+ "      \"{1}\".ST_Envelope().ST_ExteriorRing().ST_PointN(3).ST_Y(), "
+							+ "      {3,number,0.0#}, {4,number,0.0#}, {5,number,0.0#}, {6,number,0.0#}, "
+							+ "      {7,number,0}, {8,number,0}, {9,number,0}, {10,number,0.0#}, {11,number,0})"
+							+ "    FROM {12} WHERE \"{2}\" = {14,number,0};"
+							+ "  ) "
+							+ "END", mLastTableName, geomColumn, key, u_xmin, u_ymin, u_xmax, u_ymax, g_nx, g_ny, levels, scale, shift,
+							encodedTableName, encodedIdxTableName, id);
+					
+					stmt.executeUpdate(sql);
+				}
+				catch (SQLException e) {
+					// geometry is probably null.
+				}
 			}
     	}
 		mLastGeomColumns = null;

@@ -389,7 +389,14 @@ public class StyleGenerator {
 
         return rule;
     }
-
+    /**
+     * Used to update an existing style based on the provided input.
+     * 
+     * @param fts
+     * @param ruleIndex
+     * @param styleExpression
+     * @throws IllegalFilterException
+     */
     public static void modifyFTS(FeatureTypeStyle fts, int ruleIndex, String styleExpression)
         throws IllegalFilterException {
         Rule[] rule = fts.getRules();

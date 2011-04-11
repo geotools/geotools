@@ -473,15 +473,15 @@ have **FeatureIterator** when working on Java 1.4 code before generics were avai
          if( reader != null ) reader.close();
     }
 
-Summary
-'''''''
+Aggregate Functions
+'''''''''''''''''''
 
 One step up from direct access is the use of an "aggregate" function that works on the entire FeatureCollection
 to build you a summary.
 
 Traditionally functions that work on a collection are called "aggregate functions".
 In the world of databases and SQL these functions include "min", "max", "average" and "count". GeoTools supports
-these basic concepts, and a few additions such as bounding box on unique values.
+these basic concepts, and a few additions such as bounding box or unique values.
 
 Internally these functions are implemented as a FeatureVisitor; and are often optimised into raw SQL on supporting DataStores.
 
@@ -536,43 +536,62 @@ Collection_Unique      UniqueVisitor              Set<Object> of unique values
   you can run the same visitor across several collections and look at
   the maximum for all of them.
 
-Partition
-'''''''''
+Classifier Functions
+''''''''''''''''''''
 
 Another set of aggregate functions are aimed at splitting your FeatureCollection
-up into useful groups. These functions produce a classifier for your
+up into useful groups. These functions produce a **Classifier** for your
 FeatureCollection, this concept is similar to a histogram.
 
-These classifiers are often used with StyleBuilder to produce really
-good visualisations of your data.
+
+.. image:: /images/classifier.PNG
+
+These classifiers are used:
+
+* With the function "classifier" to sort features into groups
+* With :doc:`gt-brewer <../../extensions/brewer/index>` to produce attractive styles for visualisation of your data.
+
+Here are some examples of defining and working with classifiers:
 
 1. Create Classifier
    
-   You can produce a Classifier for your FeatureCollection as follows::
-     
-     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
-     Function classify = ff.function("Quantile", ff.property("name"), ff.literal(2));
-     
-     Classifier groups= (Classifier) classify.evaluate( features );
-  
-2. Customising your Classifier
+   You can produce a Classifier for your FeatureCollection as follows:
+   
+   .. literalinclude:: /../src/main/java/org/geotools/brewer/BrewerExamples.java
+     :language: java
+     :start-after: // classiferExample start
+     :end-before: // classiferExample end
+
+2. The following classifier functions are available.
+   
+   * EqualInterval - classifier where each group represents the same sized range
+   * Jenks - generate the Jenks' Natural Breaks classification
+   * Quantile - classifier with an even number of items in each group
+   * StandardDeviation - generated using the standard deviation method
+   * UniqueInterval - variation of EqualInterval that takes into account unique values
+   
+   These functions produce the Java object **Classifier** as an output.
+
+3. Customising your Classifier
    
    You can think of the Classifier as a series of groups or bins into which you
    will sort Features.
    
-   Each partition has a title which you can name as you please.::
-    
-     groups.setTitle(0, "Group A");
-     groups.setTitle(1, "Group B");
-
-3. Using Your Classifier to group Features
+   Each partition has a title which you can name as you please.:
    
-   You can then use this Classifier to sort features into the appropriate group::
-     
-     Function sort = ff.function("classify",ff.property("name"), ff.literal( groups ));
-     int slot = (Integer) sort.evaluate( feature1 );
-     
-     System.out.println( groups.getTitle( slot ) ); // ie. "Group A"
+   .. literalinclude:: /../src/main/java/org/geotools/brewer/BrewerExamples.java
+     :language: java
+     :start-after: // classiferExample2 start
+     :end-before: // classiferExample2 end
+
+4. Using Your Classifier to group Features
+   
+   You can then use this Classifier to sort features into the appropriate group:
+   
+   .. literalinclude:: /../src/main/java/org/geotools/brewer/BrewerExamples.java
+     :language: java
+     :start-after: // classiferExample3 start
+     :end-before: // classiferExample3 end
 
 You can think of a Classifier as a filter function similar to a Java **switch** statement.
 

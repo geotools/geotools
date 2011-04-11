@@ -11,7 +11,7 @@
     <url>http://maven.apache.org</url>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <geotools.version>2.7-M2</geotools.version>
+        <geotools.version>2.7.0</geotools.version>
     </properties>
     <dependencies>
         <dependency>

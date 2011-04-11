@@ -18,6 +18,11 @@ package org.geotools.filter.function;
 
 import java.util.Set;
 
+/**
+ * Explicit classification for a set of values.
+ * 
+ * @author jody
+ */
 public final class ExplicitClassifier extends Classifier {
 
     Set[] values = null; //the contents of each bin (set of objects)

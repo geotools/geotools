@@ -18,7 +18,7 @@ package org.geotools.brewer.color;
 
 
 /**
- * DOCUMENT ME!
+ * Number of samples that can be represented.
  *
  * @author James Macgill
  * @source $URL$

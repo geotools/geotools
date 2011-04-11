@@ -2,3 +2,31 @@
 Brewer
 ======
 
+The Brewer module helps you create interesting or appropriate content based on your data. This is as close to the concept of a "theme" as we come to in the GeoTools library with this extension using categorisation functions defined by gt-main  as a basis for the generation of styles. 
+
+.. toctree::
+   :maxdepth: 1
+   
+   classifier
+   colorbrewer
+
+References:
+
+* http://colorbrewer2.org/
+* :doc:`gt-main collection </guide/library/main/collection>` (covering partition functions)
+
+**FAQ**
+
+* Q: I have 47 classes to represent and ColorBrewer only goes up to 12!
+   
+   Feel free to create your own Color[] for use with StyleGenerator.
+
+* Q: But why does it only go up to 12?
+
+   This is a surprisingly common question!
+   
+   Have a look at the http://colorbrewer2.org/ website above; the point of the research is that the
+   human eye cannot tell very many colours apart. Indeed the number goes down depending on what 
+   you are trying communicate (ie that the things shown are of equal importance, or do they form a smooth spread
+   of values?).
+

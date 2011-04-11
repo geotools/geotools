@@ -510,6 +510,16 @@
         <role>Module Mantainer</role>
       </roles>
     </developer>
+    <developer>
+      <name>Luca Morandini</name>
+      <id>lmoran</id>
+      <email>lmorandini@ieee.org</email>
+      <organization></organization>
+      <roles>
+        <role>Java Developer</role>
+        <role>Module Mantainer</role>
+      </roles>
+    </developer>
   </developers>
 
   <contributors>

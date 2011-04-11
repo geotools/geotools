@@ -17,13 +17,16 @@
 package org.geotools.data.complex.config;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Set;
 import java.util.Stack;
 import java.util.Map.Entry;
 import java.util.logging.Level;
@@ -36,6 +39,9 @@ import org.eclipse.xsd.XSDAttributeUse;
 import org.eclipse.xsd.XSDAttributeUseCategory;
 import org.eclipse.xsd.XSDComplexTypeDefinition;
 import org.eclipse.xsd.XSDElementDeclaration;
+import org.eclipse.xsd.XSDSchema;
+import org.eclipse.xsd.XSDSchemaContent;
+import org.eclipse.xsd.XSDSchemaDirective;
 import org.eclipse.xsd.XSDTypeDefinition;
 import org.geotools.feature.Types;
 import org.geotools.feature.type.ComplexFeatureTypeFactoryImpl;
@@ -113,6 +119,8 @@ public class FeatureTypeRegistry {
     private static Map<Name, AttributeDescriptor> FOUNDATION_DESCRIPTORS = new HashMap<Name, AttributeDescriptor>();
 
     private List<SchemaIndex> schemas;
+    
+    private Set<XSDSchema> schemaSet;
 
     private HashMap<Name, AttributeDescriptor> descriptorRegistry;
 
@@ -144,6 +152,7 @@ public class FeatureTypeRegistry {
         typeRegistry = new HashMap<Name, AttributeType>();
         anonTypeRegistry = new HashMap<Name, AttributeType>();
         processingTypes = new Stack<Name>();
+        schemaSet = new HashSet<XSDSchema>();
 
         if (FOUNDATION_TYPES.isEmpty()) {
             createFoundationTypes();
@@ -156,6 +165,17 @@ public class FeatureTypeRegistry {
 
     public void addSchemas(final SchemaIndex schemaIndex) {
         schemas.add(schemaIndex);
+        for (XSDSchema schema : schemaIndex.getSchemas()) {
+            schemaSet.add(schema);
+            for (XSDSchemaContent content : schema.getContents()) {
+                if (content instanceof XSDSchemaDirective) {
+                    XSDSchemaDirective directive = (XSDSchemaDirective) content;
+                    if (directive.getResolvedSchema() != null) {
+                        schemaSet.add(directive.getResolvedSchema());
+                    }
+                }
+            }
+        }
     }
 
     public AttributeDescriptor getDescriptor(final Name descriptorName,
@@ -305,14 +325,11 @@ public class FeatureTypeRegistry {
             Iterator it = elemDecl.getSubstitutionGroup().iterator();
             while ( it.hasNext()){
                 XSDElementDeclaration sub =  (XSDElementDeclaration)it.next();
-                if (!sub.getName().equals (elemDecl.getName())) {
+                if (!sub.getName().equals (elemDecl.getName()) && schemaSet.contains(elemDecl.getSchema())) {
                    try {
                        substitutionGroup.add( createAttributeDescriptor ( container , sub, minOccurs, maxOccurs, crs, attMappings, false)) ;
                    } catch (Exception e) {
-                        // FIXME: This log level should be WARNING, as an exception here may
-                        // indicate a serious problem. The log level has been temporarily reduced as
-                        // a cosmetic fix. See GEOT-3462.
-                       LOGGER.log(Level.FINE, "Could not create substitution descriptor: " + e.getMessage());
+                        LOGGER.log(Level.WARNING, "Could not create substitution descriptor: " + e.getMessage());
                    }
                 }
             }

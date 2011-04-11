@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!--
+    ======================================================================= Maven Project
+    Configuration File The Geotools Project http://www.geotools.org/ Version: $Id:$
+    =======================================================================
+  -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                               http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.geotools</groupId>
+    <artifactId>library</artifactId>
+    <version>8-SNAPSHOT</version>
+  </parent>
+
+
+  <!-- =========================================================== -->
+  <!--     Module Description                                      -->
+  <!-- =========================================================== -->
+  <groupId>org.geotools</groupId>
+  <artifactId>gt-mark-wkt</artifactId>
+  <name>WKT symbols addition to the renderer</name>
+  <packaging>jar</packaging>
+
+  <description>
+  Extends SLD mark symbols to include symbols made of WKT geometries.
+  In addtion, adds some mark  or custom Java code.
+  </description>
+
+  <scm>
+    <connection>
+      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/mark-wkt/
+    </connection>
+    <url>http://svn.osgeo.org/geotools/trunk/modules/unsupported/mark-wkt/</url>
+  </scm>
+
+  <licenses>
+    <license>
+      <name>Lesser General Public License (LGPL)</name>
+      <url>http://www.gnu.org/copyleft/lesser.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+
+  <!-- =========================================================== -->
+  <!--     Developers and Contributors                             -->
+  <!-- =========================================================== -->
+  <developers>
+    <developer>
+      <name>Luca Morandini</name>
+      <id>lmoran</id>
+      <email>lmorandini@ieee.org</email>
+      <organization>Free-lance consultant</organization>
+      <roles>
+        <role>Module maintaner</role>
+      </roles>
+    </developer>
+  </developers>
+
+
+  <!-- =========================================================== -->
+  <!--     Dependency Management                                   -->
+  <!-- =========================================================== -->
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.5</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-main</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-render</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <testResources>
+      <testResource>
+        <directory>./src/test/java</directory>
+      </testResource>
+    </testResources>
+  </build>
+
+</project>
+

@@ -38,8 +38,7 @@ public class TeradataPSDialect extends PreparedStatementSQLDialect {
                 g = g.getFactory().createLineString(((LinearRing) g).getCoordinateSequence());
             }
             
-            byte[] bytes = new WKBWriter().write(g);
-            ps.setBytes(column, bytes);
+            ps.setString(column, g.toText());
         } else {
             ps.setNull(column, Types.OTHER, "Geometry");
         }
@@ -167,5 +166,10 @@ public class TeradataPSDialect extends PreparedStatementSQLDialect {
 
     public void setLooseBBOXEnabled(boolean looseBBOXEnabled) {
         delegate.setLooseBBOXEnabled(looseBBOXEnabled);
+    }
+
+    @Override
+    public void initializeConnection(Connection cx) throws SQLException {
+        delegate.initializeConnection(cx);
     }
 }

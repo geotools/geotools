@@ -29,7 +29,17 @@ public class TeradataPSDialect extends PreparedStatementSQLDialect {
 		this.delegate = delegate;
 	}
 
-	@Override
+    @Override
+    public void prepareGeometryValue(Geometry g, int srid, Class binding,
+            StringBuffer sql) {
+        if (g != null) {
+            sql.append("ST_GeomFromText.ST_GEOMFROMWKB(?, " + srid + ")");
+        } else {
+            sql.append("?");
+        }
+    }
+    
+    @Override
 	public void setGeometryValue(Geometry g, int srid, Class binding,
 			PreparedStatement ps, int column) throws SQLException {
         if (g != null) {
@@ -38,7 +48,8 @@ public class TeradataPSDialect extends PreparedStatementSQLDialect {
                 g = g.getFactory().createLineString(((LinearRing) g).getCoordinateSequence());
             }
             
-            ps.setString(column, g.toText());
+            byte[] bytes = new WKBWriter().write(g);
+            ps.setBytes(column, bytes);
         } else {
             ps.setNull(column, Types.OTHER, "Geometry");
         }

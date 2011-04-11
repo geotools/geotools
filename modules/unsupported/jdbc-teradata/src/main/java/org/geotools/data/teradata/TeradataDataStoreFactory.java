@@ -57,7 +57,6 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
      */
     public static final Param PREPARED_STATEMENTS = new Param("preparedStatements", Boolean.class, "Use prepared statements", false, Boolean.FALSE);
 
-    public static final Param KEY_PARAM = new Param("tessellate_index_key", String.class, "tessellate_index_key", false, "ID");
     public static final Param U_XMIN_PARAM = new Param("tessellate_index_u_xmin", String.class, "tessellate_index_u_xmin", false, "-180");
     public static final Param U_YMIN_PARAM = new Param("tessellate_index_u_ymin", String.class, "tessellate_index_u_ymin", false, "-90");
     public static final Param U_XMAX_PARAM = new Param("tessellate_index_u_xmax", String.class, "tessellate_index_u_xmax", false, "180");
@@ -123,9 +122,6 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
             dataStore.setPrimaryKeyFinder(KEY_FINDER);
         }
 
-        if (params.containsKey(KEY_PARAM.key)) {
-        	dialect.setKey((String)KEY_PARAM.lookUp(params));
-        }
         if (params.containsKey(U_XMIN_PARAM.key)) {
 	    	dialect.setU_xmin((Double)U_XMIN_PARAM.lookUp(params));
         }
@@ -175,7 +171,6 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
         parameters.put(PREPARED_STATEMENTS.key, PREPARED_STATEMENTS);
         parameters.put(MAX_OPEN_PREPARED_STATEMENTS.key, MAX_OPEN_PREPARED_STATEMENTS);
         
-        parameters.put(KEY_PARAM.key, KEY_PARAM);
         parameters.put(U_XMIN_PARAM.key, U_XMIN_PARAM);
         parameters.put(U_YMIN_PARAM.key, U_YMIN_PARAM);
         parameters.put(U_XMAX_PARAM.key, U_XMAX_PARAM);

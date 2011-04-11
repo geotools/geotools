@@ -90,12 +90,9 @@ public class WKTMarkFactory implements MarkFactory {
      */
     protected String loadWKT(String propName, String wktName) throws IOException {
 
-        BufferedReader in = null;
-
-        in = new BufferedReader(new InputStreamReader(this.getClass().getClassLoader()
-                .getResourceAsStream(propName)));
+        BufferedInputStream in= new BufferedInputStream(this.getClass().getClassLoader()
+                .getResourceAsStream(propName));
         final Properties properties = new Properties();
-
         properties.load(in);
         String wkt = properties.getProperty(wktName);
         in.close();

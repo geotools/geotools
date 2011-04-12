@@ -22,12 +22,25 @@ import org.geotools.graph.structure.Node;
 
 import com.vividsolutions.jts.geom.Coordinate;
 
-//TODO: COMMENT ME!
-
+/**
+ * Builds a graph representing a line network.
+ */
 public interface LineGraphGenerator extends GraphGenerator {
- 
-  public Node getNode(Coordinate c);
-  
-  public Edge getEdge(Coordinate c1, Coordinate c2); 
-  
+    /**
+     * Look up a Node for the provided coordinate.
+     * 
+     * @param coordinate
+     * @return Node
+     */
+    public Node getNode(Coordinate coordinate);
+
+    /**
+     * Retrieve edge between the two coordinates.
+     * 
+     * @param coordinate1
+     * @param coordinate2
+     * @return Edge
+     */
+    public Edge getEdge(Coordinate coordinate1, Coordinate coordinate2);
+
 }

@@ -43,7 +43,7 @@ public class BasicGraphTraversal implements GraphTraversal {
   private GraphIterator m_iterator;
   
   /**
-   * Constrcuts a new graph traversal. 
+   * Constructs a new graph traversal. 
    * 
    * @param graph The graph being traversed.
    * @param walker The walker being traversed over the components of the graph.

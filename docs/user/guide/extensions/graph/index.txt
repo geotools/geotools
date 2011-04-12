@@ -13,19 +13,17 @@ In additional to generic Graph support, Networks based on LineStrings and Direct
 
 This work is originally created at Refractions Research and has been used in Jump before being ported to GeoTools.
 
-Graphing Terms
-''''''''''''''
+**Use of GeoTools**
 
-The Graph module makes use of concepts and (classes) from the geotools core:
+The Graph module makes use of concepts and (classes) from the GeoTools core:
 
 * Feature - atomic unit of geographic information
 * FeatureType - keeps track of what attributes each Feature can hold
 * FeatureID - a unique id associated with each Feature (must start with a non-numeric character)
 
-In addition to the Feature API from core, the graph module makes use of relationships. Usually
-relationships are based on spatial comparisons between features.
-
-Example Relationships:
+In addition to the Feature API from core, the graph module makes use of relationships.
+Usually relationships are based on spatial comparisons between features, although you
+may be able to quickly establish a relationship using your feature attributes.
 
 * Graph constructed from LineStrings based on "shared end points"
   
@@ -35,54 +33,140 @@ Example Relationships:
   
   Example graph of watersheds used for ground water analysis.
 
-Creating and using a Graph
-''''''''''''''''''''''''''
+Graph
+-----
 
-Graph creation is handled using a GraphBuilder. For those familiar with the Builder Pattern (GOF Design Patterns) this will look familiar.
 
-1. Building a Line network::
+.. image:: /images/graph_model.PNG
+
+The basic layout of a Graph is a collection of edges joined together at nodes.
+
+**Graph**
+
+The core graph data structure is simply a collection of nodes and edges, a range of methods are available allowing access using visitors.
+
+**Node**
+
+Represents a node in the graph.
+
+**Edge**
+
+Represents the graph edge between two nodes; with a range of methods to both access and compare.
+
+**Graphable**
+
+We store the following common information for both nodes and edges:
+
+* visited: Used during traversal to mark visited components
+* count: In a similar fashion count is stored
+* object: Used to store the Feature used during creation.
   
-     LineGraphBuilder graphBuilder = new LineGraphBuilder();
-     SimpleFeatureCollection fc = featureSource.getFeatures();
-     
-     FeatureIterator f = fc.features();
-     try {
-        while(f.hasNext()){
-          SimpleFeature feature = f.next();
-          graphBuilder.add(ft);
-        }
-     } finally {
-        f.close();
-     }
-     Graph graph = graphBuilder.build();
+  Depending on the graph constructed you may end up storing the
+  features along the edges (say for a road network) or at each
+  node (say for a watershed network).
+
+Graph Access
+^^^^^^^^^^^^
+
+A Graph supports simple direct access is supported using:
+
+* Graph.getNodes()
+* Graph.getEdges()
+
+You can also pass in a visitor in order to traverse the graph contents:
+
+* Graph.visitNodes( visitor )
+* Graph.visitEdges( visitor )
+
+The visitor can also control when to stop the process using:
+
+* Graph.queryNodes( visitor )
+* Graph.queryEdges( visitor )
+  
+  To provide control your visitor can indicate when it wants to stop, backtrack or continue using:
+  
+  * GraphTraversal.CONTINUE
+  * GraphTraversal.KILL_BRANCH
+  * GraphTraversal.STOP
+  * GraphTraversal.SUSPEND
+
+Graph Traversal
+^^^^^^^^^^^^^^^
+
+
+
+An alternative to direct access is the configure a **GraphTraversal** using:
+
+* **GraphIterator**: iterator specifying the order in which to visit components of 
+  the graph during the traversal.
+  
+* **GraphWalker**: walker being iterated over the graph (usually to accomplish a specific goal)
+  
+   GeoTools provides out of the box implementations for many common problems: finding the the
+   shortest path, partition a graph into sections, or simply visiting all the elements.
+
+Directed Graph
+^^^^^^^^^^^^^^
+
+We also have a straight extension of these ideas to represent a directed graph in which each edge has a direction in which
+it can be traversed. This is the difference between considering each edge a simple connection vs thinking of each edge as
+an arrow.
+
+
+.. image:: /images/directed_graph_model.PNG
+
+Building
+--------
+
+GraphBuilder
+^^^^^^^^^^^^
+
+At a low level graph creation is handled using a GraphBuilder. We have a range
+of implementations available. The important point is that you control them by
+calling buildNode, and buildEdge repeatedly allowing it to build up an internal
+representation of your Graph.
+
+When you are satisfied with the result you can call getGraph() to retrieve the result.
+
+
+.. image:: /images/graph_builder.PNG
+
+Example
+'''''''
+
+1. Building a Line network:
+  
+  .. literalinclude:: /../src/main/java/org/geotools/graph/GraphExamples.java
+    :language: java
+    :start-after: // graphExample start
+    :end-before: // graphExample end
    
-2. To make use of your graph we will use a GraphVisitor (this is the usual GOF Visitor pattern).
+2. To make use of your graph we will use a GraphVisitor:
    
    The following OrphanVistor is called for "each" GraphComponent where
    it has a chance to check if the GraphComponent is an orphan (ie has
    no relationships) or not.
-   
-   Example of making use of the network::
-     
-     class OrphanVisitor implements GraphVisitor{
-       private int count = 0;
-       public int getCount(){return count;}
-       public int visit(GraphComponent element){
-         if(element.getAdjacentElements().size()==0)
-           count++;
-         results.error(element.getFeature(),"Orphaned");
-         return GraphTraversal.CONTINUE;
-       }
-     }
-     OrphanVisitor ov = new OrphanVisitor();
-     SimpleGraphWalker sgv = new SimpleGraphWalker(ov);
-     BasicGraphTraversal bgt = new BasicGraphTraversal(g,sgv);
-     bgt.walkNodes();
-     
-     System.out.println( "Found orphans: "+ ov.getCount() );
 
-Generators
-^^^^^^^^^^
+  .. literalinclude:: /../src/main/java/org/geotools/graph/GraphExamples.java
+    :language: java
+    :start-after: // visitor example start
+    :end-before: // visitor example end
+
+For those familiar with the Builder Pattern (GOF Design Patterns) this will look familiar.
+
+GraphGenerator
+^^^^^^^^^^^^^^
+
+The other approach is we have a number of generators which will automatically create a
+Graph for you based on information you feed in. The GraphGenerators use a GraphBuilder
+to build up each node and edge internally; so you will need to be careful to construct them
+with the correct builder for the problem you are wishing to solve.
+
+
+.. image:: /images/graph_generator.PNG
+
+Each one of these implementations is set up to handle different kinds of data (Features, LineStrings, etc...)
+so please be sure to read the javadocs. 
 
 Building Graph from a FeatureCollection
 '''''''''''''''''''''''''''''''''''''''
@@ -137,21 +221,21 @@ Building a FeatureCollection from your Graph
 
 Once the graph is built each, edge#getObject() will hold the original feature used to built it.
 
-So you can traverse your graph and build up FeatureCollection as you go.::
+You can traverse your graph and build up FeatureCollection as you go.::
     
     SimpleFeatureCollection features = FeatureCollections.newInstance();
     
     for ( Iterator e = graph.getEdges().iterator(); e.hasNext(); ) {
-      Edge edge = (Edge) e.next();
-      SimpleFeature feature = (SimpleFeature) e.getObject();
-      
-      features.add( feature );
+       Edge edge = (Edge) e.next();
+       SimpleFeature feature = (SimpleFeature) e.getObject();
+       
+       features.add( feature );
     }
 
-Finding the Shortest Path between two Nodes
--------------------------------------------
+Shortest Path
+-------------
 
-We have a number of ways to calculate the shortest path:
+We have a number of ways to calculate the shortest path between two nodes:
 
 * The class **DijkstraShortestPathFinder** can be used to calculate a path using Dijkstra's Shortest Path algorithm.::
     
@@ -159,17 +243,20 @@ We have a number of ways to calculate the shortest path:
     Graph graph = ...see above...
     
     //find a source node (usually your user chooses one)
-    Node source = ..
+    Node start = ..
     
-    //create a strategy for weighting edges in the graph
+    // create a strategy for weighting edges in the graph
+    // in this case we are using geometry length
     DijkstraIterator.EdgeWeigter weighter = new DijkstraIterator.EdgeWeighter() {
        public double getWeight(Edge e) {
-          return 1.0;  //constant
+          SimpleFeature feature = (SimpleFeature) e.getObject();
+          Geometry geometry = (Geometry) feature.getDefaultGeometry();
+          return gometry.getLength();
        }
     }
     
-    //create the path finder
-    DijkstraShortestPathFinder pf = new DijkstraShortestPathFinder( graph, source, weighter );
+    // Create GraphWalker - in this case DijkstraShortestPathFinder
+    DijkstraShortestPathFinder pf = new DijkstraShortestPathFinder( graph, start, weighter );
     pf.calculate();
     
     //find some destinations to calculate paths to
@@ -182,3 +269,5 @@ We have a number of ways to calculate the shortest path:
     
       //do something with the path
     }
+
+* **AStarShortestPathFinder** can be used in a similar fashion (and is often quicker)

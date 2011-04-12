@@ -32,7 +32,7 @@ import com.vividsolutions.jts.geom.MultiLineString;
  * a LineGraphGenerator which sets underlying edge objects to be LineString
  * objects, and underlying Node objects to be Point objects. While generating
  * the graph, the generator uses the visited flag of created components to 
- * determine when to create underying objects. For this reason it is not recomended 
+ * determine when to create underlying objects. For this reason it is not recommended 
  * to modify the visited flag of any graph components. 
  * 
  * @see com.vividsolutions.jts.geom.LineString

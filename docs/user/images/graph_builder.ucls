@@ -1,0 +1,119 @@
+<class-diagram version="1.0.1" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
+  realizations="true" associations="true" dependencies="false" nesting-relationships="true">  
+  <interface id="1" corner="BOTTOM_RIGHT" language="java" name="org.geotools.graph.build.GraphBuilder" 
+    project="gt-graph" file="/gt-graph/src/main/java/org/geotools/graph/build/GraphBuilder.java" binary="false">    
+    <position x="111" y="26" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <class id="2" corner="BOTTOM_RIGHT" language="java" name="org.geotools.graph.build.basic.BasicGraphBuilder" 
+    project="gt-graph" file="/gt-graph/src/main/java/org/geotools/graph/build/basic/BasicGraphBuilder.java" 
+    binary="false">    
+    <position x="304" y="119" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="3" corner="BOTTOM_RIGHT" language="java" name="org.geotools.graph.build.basic.BasicDirectedGraphBuilder" 
+    project="gt-graph" file="/gt-graph/src/main/java/org/geotools/graph/build/basic/BasicDirectedGraphBuilder.java" 
+    binary="false">    
+    <position x="304" y="195" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="4" corner="BOTTOM_RIGHT" language="java" name="org.geotools.graph.build.line.BasicLineGraphBuilder" 
+    project="gt-graph" file="/gt-graph/src/main/java/org/geotools/graph/build/line/BasicLineGraphBuilder.java" 
+    binary="false">    
+    <position x="520" y="195" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="5" corner="BOTTOM_RIGHT" language="java" name="org.geotools.graph.build.opt.OptGraphBuilder" 
+    project="gt-graph" file="/gt-graph/src/main/java/org/geotools/graph/build/opt/OptGraphBuilder.java" binary="false">    
+    <position x="42" y="172" width="139" height="47"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="6" corner="BOTTOM_RIGHT" language="java" name="org.geotools.graph.build.line.OptLineGraphBuilder" 
+    project="gt-graph" file="/gt-graph/src/main/java/org/geotools/graph/build/line/OptLineGraphBuilder.java" 
+    binary="false">    
+    <position x="108" y="270" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="7" corner="BOTTOM_RIGHT" language="java" name="org.geotools.graph.build.line.BasicDirectedLineGraphBuilder" 
+    project="gt-graph" file="/gt-graph/src/main/java/org/geotools/graph/build/line/BasicDirectedLineGraphBuilder.java" 
+    binary="false">    
+    <position x="533" y="270" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="8" corner="BOTTOM_RIGHT" language="java" name="org.geotools.graph.build.opt.OptDirectedGraphBuilder" 
+    project="gt-graph" file="/gt-graph/src/main/java/org/geotools/graph/build/opt/OptDirectedGraphBuilder.java" 
+    binary="false">    
+    <position x="305" y="270" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="9" corner="BOTTOM_RIGHT" language="java" name="org.geotools.graph.build.line.OptDirectedLineGraphBuilder" 
+    project="gt-graph" file="/gt-graph/src/main/java/org/geotools/graph/build/line/OptDirectedLineGraphBuilder.java" 
+    binary="false">    
+    <position x="305" y="348" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <realization>    
+    <end type="SOURCE" nodeId="2"/>    
+    <end type="TARGET" nodeId="1"/>  
+  </realization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="5"/>    
+    <end type="TARGET" nodeId="2"/>  
+  </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="4"/>    
+    <end type="TARGET" nodeId="2"/>  
+  </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="8"/>    
+    <end type="TARGET" nodeId="3"/>  
+  </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="9"/>    
+    <end type="TARGET" nodeId="8"/>  
+  </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="7"/>    
+    <end type="TARGET" nodeId="3"/>  
+  </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="6"/>    
+    <end type="TARGET" nodeId="5"/>  
+  </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="3"/>    
+    <end type="TARGET" nodeId="2"/>  
+  </generalization>  
+  <classifier-display autosize="true" package="true" initial-value="false" signature="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true"/>    
+    <operations public="true" package="true" protected="true" private="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

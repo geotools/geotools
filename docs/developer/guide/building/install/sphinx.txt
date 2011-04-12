@@ -28,7 +28,7 @@ Install Python:
         run 'set SETUPTOOLS=C:\Python27\Scripts'
         run 'set PATH=%PATH%;%SETUPTOOLS%'
 
-5. Install Sphinx (We are using Sphinc 0.6.6 in order to be compatible with rst2pdf)::
+5. Install Sphinx::
    
         easy-install sphinx==0.6.6
    
@@ -53,6 +53,9 @@ You can optionally install rst2pdf to build pdf documentation:
 Mac Sphinx Install
 ^^^^^^^^^^^^^^^^^^
 
+You can use the distribution manager of your choice (example bru, macports, etc...). The following example
+is for macports.
+
 1. On OSX Use macports to install Python 2.7::
      
      sudo port install python27
@@ -63,15 +66,22 @@ Mac Sphinx Install
      
      sudo port install py27-pil
      
-3. You can now use python easy_install to install Sphinx 0.6.6::
+3. You can now use python easy_install to install sphinx::
      
-     sudo easy_install sphinx==0.6.6
+     sudo easy_install
 
 4. To build the PDF targets you will also need rst2pdf.::
      
      sudo easy_install rst2pdf
 
 5. If you uses easy_install to grab the python image library it easy to get compile errors.
+
+.. note::
+   
+   You can ask for a specific version if needed - example::
+     
+      sudo easy_install sphinx==0.6.6
+   
 
 Linux Sphinx Install
 ^^^^^^^^^^^^^^^^^^^^

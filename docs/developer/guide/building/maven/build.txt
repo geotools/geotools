@@ -46,6 +46,8 @@ Your First Build
 
 7. The first build takes a while due to the download time for the .jar files.
 
+If you have any trouble check the common build failures at the bottom of this page.
+
 Build Failure
 ^^^^^^^^^^^^^
 
@@ -68,6 +70,7 @@ It is all well and good to recognise a successful build, but how do you recognis
      
      Running org.geotools.data.mif.MIFDataStoreTest
      Tests run: 9, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 6.703 sec <<< FAILURE!
+   
 3. You can open the test results of the indicated failure in order to see what went wrong.
    Test results are contained in the target directory.
 
@@ -189,8 +192,25 @@ Common Build Problems
 The following common problems occur during a::
    mvn -U clean install
 
+Unable to find org.geotools.maven:javadoc:jar
+'''''''''''''''''''''''''''''''''''''''''''''
+
+We have a little of a chicken-and-the-egg problem here. To build the jar by hand.
+
+1. Change to the module directory::
+      
+      cd build/maven/javadoc
+
+2. Build the javadoc module
+     
+      mvn install
+
+3. You can now return to the root of the project and restart your build.
+
+Note that this plugin requires your JAVA_HOME to be set to a JDK as it makes use of the tools.jar (in order to build javadocs).
+
 Failure of Metadata RangeSetTest
-""""""""""""""""""""""""""""""""
+''''''''''''''''''''''''''''''''
 
 This looks like the following::
    
@@ -221,7 +241,7 @@ On GeoTools trunk you can try the following experimental option. This will downl
    mvn install -Pnojai
 
 Failure of GridCoverageRendererTest
-"""""""""""""""""""""""""""""""""""
+'''''''''''''''''''''''''''''''''''
 
 This looks like the following::
    
@@ -252,7 +272,7 @@ This looks like the following::
 This indicates that Image IO support has not been installed into the JRE (please see the dependencies section and try again).
 
 Unable to Delete Directory on Windows
-"""""""""""""""""""""""""""""""""""""
+'''''''''''''''''''''''''''''''''''''
 
 Build systems like maven (that smash files around for a living) are generally incompatible with Microsoft Indexing Service.
 From Lim Goh on email

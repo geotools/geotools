@@ -74,6 +74,7 @@
     <test.maxHeapSize>512M</test.maxHeapSize>
     <src.output>${basedir}/target</src.output>
     <imageio.ext.version>1.0.8</imageio.ext.version>
+    <jt.version>1.1.1</jt.version>
     <jvm.opts></jvm.opts>
     <maven.build.timestamp.format>dd-MMM-yyyy HH:mm</maven.build.timestamp.format>
     <build.timestamp>${maven.build.timestamp}</build.timestamp>
@@ -546,9 +547,11 @@
         <artifactId>jai_imageio</artifactId>
         <version>1.1</version>
       </dependency>
+      
+      <!-- ImageIO-Ext -->
       <dependency>
         <groupId>it.geosolutions.imageio-ext</groupId>
-  	<artifactId>imageio-ext-tiff</artifactId>
+  	    <artifactId>imageio-ext-tiff</artifactId>
         <version>${imageio.ext.version}</version>
       </dependency>
       <dependency>
@@ -626,7 +629,18 @@
         <artifactId>imageio-ext-utilities</artifactId>
         <version>${imageio.ext.version}</version>
       </dependency>
-
+      
+      <!-- JAITools -->
+      <dependency>
+        <groupId>com.googlecode.jaitools</groupId>
+        <artifactId>jt-utils</artifactId>
+        <version>${jt.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.googlecode.jaitools</groupId>
+        <artifactId>jt-vectorbinarize</artifactId>
+        <version>${jt.version}</version>
+      </dependency>
     
       <!-- Mathematic, geometries, SVG... -->
       <dependency>

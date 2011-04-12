@@ -560,7 +560,9 @@ public class TeradataGISDialect extends BasicSQLDialect {
 		if (value == null) {
 			sql.append("NULL");
 		} else {
-			sql.append("SYSSPATIAL.ST_GeomFromText('" + value.toText() + "', " + srid + ")");
+        	// if we want to specify the SRID we should have to store a mapping.
+//			sql.append("SYSSPATIAL.ST_GeomFromText('" + value.toText() + "', " + srid + ")");
+			sql.append("SYSSPATIAL.ST_GeomFromText('" + value.toText() + "')");
 		}
 	}
 

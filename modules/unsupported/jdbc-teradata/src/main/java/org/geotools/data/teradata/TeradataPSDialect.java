@@ -33,7 +33,9 @@ public class TeradataPSDialect extends PreparedStatementSQLDialect {
     public void prepareGeometryValue(Geometry g, int srid, Class binding,
             StringBuffer sql) {
         if (g != null) {
-            sql.append("ST_GeomFromText.ST_GEOMFROMWKB(?, " + srid + ")");
+        	// if we want to specify the SRID we should have to store a mapping.
+            //sql.append("SYSSPATIAL.ST_GeomFromWKB(?, " + srid + ")"); 
+            sql.append("SYSSPATIAL.ST_GeomFromWKB(?)"); 
         } else {
             sql.append("?");
         }

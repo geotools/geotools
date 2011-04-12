@@ -1,0 +1,184 @@
+=====
+Graph
+=====
+
+The gt-graph package defines the concept of a graph (or network) made up of geotools Features.
+
+
+Graph Model
+-----------
+
+The graph module strives to provide a convenient, flexable and performant API for graph construction and query.
+In additional to generic Graph support, Networks based on LineStrings and Directed Networks have been implementations.
+
+This work is originally created at Refractions Research and has been used in Jump before being ported to GeoTools.
+
+Graphing Terms
+''''''''''''''
+
+The Graph module makes use of concepts and (classes) from the geotools core:
+
+* Feature - atomic unit of geographic information
+* FeatureType - keeps track of what attributes each Feature can hold
+* FeatureID - a unique id associated with each Feature (must start with a non-numeric character)
+
+In addition to the Feature API from core, the graph module makes use of relationships. Usually
+relationships are based on spatial comparisons between features.
+
+Example Relationships:
+
+* Graph constructed from LineStrings based on "shared end points"
+  
+  Example a road network used for navigation.
+
+* Graph constructed from Polygons based on "touches"
+  
+  Example graph of watersheds used for ground water analysis.
+
+Creating and using a Graph
+''''''''''''''''''''''''''
+
+Graph creation is handled using a GraphBuilder. For those familiar with the Builder Pattern (GOF Design Patterns) this will look familiar.
+
+1. Building a Line network::
+  
+     LineGraphBuilder graphBuilder = new LineGraphBuilder();
+     SimpleFeatureCollection fc = featureSource.getFeatures();
+     
+     FeatureIterator f = fc.features();
+     try {
+        while(f.hasNext()){
+          SimpleFeature feature = f.next();
+          graphBuilder.add(ft);
+        }
+     } finally {
+        f.close();
+     }
+     Graph graph = graphBuilder.build();
+   
+2. To make use of your graph we will use a GraphVisitor (this is the usual GOF Visitor pattern).
+   
+   The following OrphanVistor is called for "each" GraphComponent where
+   it has a chance to check if the GraphComponent is an orphan (ie has
+   no relationships) or not.
+   
+   Example of making use of the network::
+     
+     class OrphanVisitor implements GraphVisitor{
+       private int count = 0;
+       public int getCount(){return count;}
+       public int visit(GraphComponent element){
+         if(element.getAdjacentElements().size()==0)
+           count++;
+         results.error(element.getFeature(),"Orphaned");
+         return GraphTraversal.CONTINUE;
+       }
+     }
+     OrphanVisitor ov = new OrphanVisitor();
+     SimpleGraphWalker sgv = new SimpleGraphWalker(ov);
+     BasicGraphTraversal bgt = new BasicGraphTraversal(g,sgv);
+     bgt.walkNodes();
+     
+     System.out.println( "Found orphans: "+ ov.getCount() );
+
+Generators
+^^^^^^^^^^
+
+Building Graph from a FeatureCollection
+'''''''''''''''''''''''''''''''''''''''
+
+We have a number of generators that can be used to process a feature collection in different
+ways in order to build up an appropriate Graph.
+
+* This example can be used if you want to build a graph from a feature collection made up of linear
+  features::
+      
+      // get a feature collection somehow
+      SimpleFeatureCollection fCollection = featureSource.getFeatures();
+      
+      //create a linear graph generate
+      LineStringGraphGenerator lineStringGen = new LineStringGraphGenerator();
+      
+      //wrap it in a feature graph generator
+      FeatureGraphGenerator featureGen = new FeatureGraphGenerator( lineStringGen );
+      
+      //throw all the features into the graph generator
+      FeatureIterator iter = fCollection.features();
+      try {
+        while(iter.hasNext()){
+           Feature feature = iter.next();
+           featureGen.add( feature );
+        }
+      } finally {
+        iter.close();
+      }
+      Graph graph = featureGen.getGraph()
+
+Building Graph from Line Segments
+'''''''''''''''''''''''''''''''''
+
+* This example can be used to build a graph from just a set of line segments::
+    
+    //we have some line segments 
+    LineSegment[] lines = ...
+    
+    //create the graph generator
+    BasicLineGraphGenerator graphGen = new BasicLineGraphGenerator();
+    
+    //add the lines to the graph
+    for ( int i = 0; i < lines.length; i++ ) {
+      graphGen.add( lines[i] );
+    }
+    
+    Graph graph = graphGen.getGraph()
+
+Building a FeatureCollection from your Graph
+--------------------------------------------
+
+Once the graph is built each, edge#getObject() will hold the original feature used to built it.
+
+So you can traverse your graph and build up FeatureCollection as you go.::
+    
+    SimpleFeatureCollection features = FeatureCollections.newInstance();
+    
+    for ( Iterator e = graph.getEdges().iterator(); e.hasNext(); ) {
+      Edge edge = (Edge) e.next();
+      SimpleFeature feature = (SimpleFeature) e.getObject();
+      
+      features.add( feature );
+    }
+
+Finding the Shortest Path between two Nodes
+-------------------------------------------
+
+We have a number of ways to calculate the shortest path:
+
+* The class **DijkstraShortestPathFinder** can be used to calculate a path using Dijkstra's Shortest Path algorithm.::
+    
+    //reference to a graph, already built
+    Graph graph = ...see above...
+    
+    //find a source node (usually your user chooses one)
+    Node source = ..
+    
+    //create a strategy for weighting edges in the graph
+    DijkstraIterator.EdgeWeigter weighter = new DijkstraIterator.EdgeWeighter() {
+       public double getWeight(Edge e) {
+          return 1.0;  //constant
+       }
+    }
+    
+    //create the path finder
+    DijkstraShortestPathFinder pf = new DijkstraShortestPathFinder( graph, source, weighter );
+    pf.calculate();
+    
+    //find some destinations to calculate paths to
+    List/*<Node>*/ destinations = ...
+    
+    //calculate the paths
+    for ( Iterator d = destinations.iterator(); d.hasNext(); ) {
+      Node destination = (Node) d.next();
+      Path path = pf.getPath( destination );
+    
+      //do something with the path
+    }

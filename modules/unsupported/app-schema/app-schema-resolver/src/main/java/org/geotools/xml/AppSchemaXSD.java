@@ -17,9 +17,12 @@
 
 package org.geotools.xml;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.xsd.XSDSchema;
+import org.eclipse.xsd.util.XSDSchemaLocator;
 import org.geotools.xml.SchemaLocationResolver;
 import org.geotools.xml.XSD;
 
@@ -28,6 +31,7 @@ import org.geotools.xml.XSD;
  * classpath, or in a cache.
  * 
  * @author Ben Caradoc-Davies, CSIRO Earth Science and Resource Engineering
+ * @author Niels Charlier, Curtin University of Technology
  */
 public class AppSchemaXSD extends XSD {
 
@@ -98,6 +102,37 @@ public class AppSchemaXSD extends XSD {
                 dependencies.add(dependency.getXSD());
             }
         }
+    }
+    
+    @Override
+    public SchemaLocator createSchemaLocator() {
+        return new SchemaLocator(this) {
+            public boolean canHandle( XSDSchema schema, String namespaceURI,
+                    String rawSchemaLocationURI, String resolvedSchemaLocationURI) {
+                return xsd.getNamespaceURI().equals(namespaceURI) &&
+                        xsd.getSchemaLocation().equals(resolvedSchemaLocationURI); 
+            }
+        };
+    }
+    
+    @Override
+    public XSDSchemaLocator getSupplementarySchemaLocator() {
+       return AppSchemaXSDRegistry.getInstance();
+    }
+    
+    @Override
+    protected XSDSchema buildSchema() throws IOException {
+        //check if schema already exists in registry, if so do not build
+        XSDSchema schema = AppSchemaXSDRegistry.getInstance().lookUp(schemaLocation);
+        if (schema == null) {
+            schema = super.buildSchema();
+            //register schema
+            AppSchemaXSDRegistry.getInstance().register(schema);
+        } else {
+            //reset because included schema's are not always complete 
+            schema.reset();
+        }
+        return schema;
     }
 
 }

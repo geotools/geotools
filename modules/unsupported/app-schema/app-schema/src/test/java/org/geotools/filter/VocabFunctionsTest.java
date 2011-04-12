@@ -20,13 +20,9 @@ package org.geotools.filter;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
-import junit.framework.TestCase;
-
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFinder;
 import org.geotools.data.DataUtilities;
@@ -34,9 +30,12 @@ import org.geotools.data.FeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.Types;
-import org.geotools.gml2.bindings.GML2EncodingUtils;
 import org.geotools.gml3.bindings.GML3EncodingUtils;
+import org.geotools.test.AppSchemaTestSupport;
 import org.geotools.util.Converters;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import org.opengis.feature.ComplexAttribute;
 import org.opengis.feature.Feature;
 import org.opengis.feature.Property;
@@ -46,6 +45,9 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Function;
 import org.xml.sax.helpers.NamespaceSupport;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 /**
  * This is the test for vocabulary functions used in mapping file, ie. CategorizeFunction,
@@ -58,7 +60,7 @@ import org.xml.sax.helpers.NamespaceSupport;
  *
  * @source $URL$
  */
-public class VocabFunctionsTest extends TestCase {
+public class VocabFunctionsTest extends AppSchemaTestSupport {
     private DataAccess<FeatureType, Feature> dataAccess;
 
     private FeatureCollection<FeatureType, Feature> exCollection;
@@ -66,6 +68,7 @@ public class VocabFunctionsTest extends TestCase {
     /** namespace aware filter factory **/
     private FilterFactory ff;
 
+    @Before
     public void setUp() throws Exception {
         /**
          * Set up filter factory
@@ -94,6 +97,7 @@ public class VocabFunctionsTest extends TestCase {
         assertEquals(3, size(exCollection));
     }
 
+    @After
     public void tearDown() {
         dataAccess.dispose();
     }
@@ -103,6 +107,7 @@ public class VocabFunctionsTest extends TestCase {
      * 
      * @throws IOException
      */
+    @Test
     public void testRecodeFunction() throws IOException {
         final Map<String, String> VALUE_MAP = new HashMap<String, String>() {
             {
@@ -138,6 +143,7 @@ public class VocabFunctionsTest extends TestCase {
     /**
      * Test CategorizeFunction
      */
+    @Test
     public void testCategorizeFunction() {
         final Map<String, String> VALUE_MAP = new HashMap<String, String>() {
             {
@@ -161,6 +167,7 @@ public class VocabFunctionsTest extends TestCase {
      * Test the VocabFunction making use of a sample mapping provided by Alastair.
      * @throws URISyntaxException 
      */
+    @Test
     public void testVocabFunction() {
         URL file = getClass().getResource("/test-data/minoc_lithology_mapping.properties");
         assertNotNull(file);
@@ -175,6 +182,7 @@ public class VocabFunctionsTest extends TestCase {
                 value);
     }
 
+    @Test
     public void testNoVocabFunction() {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
         Function function = ff.function("Vocab", ff.literal("a"), ff.literal("urn:1234"));
@@ -190,6 +198,7 @@ public class VocabFunctionsTest extends TestCase {
     /**
      * Test VocabFunction in a mapping file
      */
+    @Test
     public void testVocabFunctionInMappingFile() {
         final Map<String, String> VALUE_MAP = new HashMap<String, String>() {
             {

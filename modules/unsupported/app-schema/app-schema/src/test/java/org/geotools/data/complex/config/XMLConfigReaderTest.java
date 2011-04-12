@@ -19,10 +19,12 @@ package org.geotools.data.complex.config;
 
 import java.net.URL;
 import java.util.Set;
-
-import junit.framework.TestCase;
-
 import org.geotools.data.complex.FeatureTypeMapping;
+import org.geotools.test.AppSchemaTestSupport;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * 
@@ -32,19 +34,12 @@ import org.geotools.data.complex.FeatureTypeMapping;
  *         http://svn.geotools.org/trunk/modules/unsupported/community-schemas/community-schema-ds/src/test/java/org/geotools/data/complex/config/XMLConfigReaderTest.java $
  * @since 2.4
  */
-public class XMLConfigReaderTest extends TestCase {
-
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
+public class XMLConfigReaderTest extends AppSchemaTestSupport {
 
     /*
      * Test method for 'org.geotools.data.complex.config.XMLConfigReader.parse(URL)'
      */
+    @Test
     public void testParseURL() throws Exception {
         XMLConfigDigester reader = new XMLConfigDigester();
         URL url = XMLConfigDigester.class.getResource("/test-data/roadsegments.xml");

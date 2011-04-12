@@ -23,9 +23,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-
-import junit.framework.TestCase;
-
 import org.geotools.data.complex.config.EmfAppSchemaReader;
 import org.geotools.data.complex.config.FeatureTypeRegistry;
 import org.geotools.factory.Hints;
@@ -40,6 +37,7 @@ import org.geotools.feature.type.ComplexTypeImpl;
 import org.geotools.feature.type.UniqueNameFeatureTypeFactoryImpl;
 import org.geotools.filter.AttributeExpressionImpl;
 import org.geotools.filter.identity.FeatureIdImpl;
+import org.geotools.test.AppSchemaTestSupport;
 import org.geotools.xml.SchemaIndex;
 import org.junit.Test;
 import org.opengis.feature.Feature;
@@ -53,6 +51,11 @@ import org.opengis.feature.type.Name;
 import org.opengis.feature.type.PropertyDescriptor;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.NamespaceSupport;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * This is to demonstrate evaluating XPaths as attribute expressions when complex
@@ -64,7 +67,7 @@ import org.xml.sax.helpers.NamespaceSupport;
  *
  * @source $URL$
  */
-public class FeaturePropertyAccessorTest extends TestCase {
+public class FeaturePropertyAccessorTest extends AppSchemaTestSupport {
     /**
      * Mock name space prefix
      */
@@ -105,6 +108,7 @@ public class FeaturePropertyAccessorTest extends TestCase {
         }
     };
 
+    @Test
     public void testComplexFeature() {
         FeatureType fType = createFeatureType();
 
@@ -339,32 +343,38 @@ public class FeaturePropertyAccessorTest extends TestCase {
         SchemaIndex schemaIndex = loadSchema("http://schemas.opengis.net/GeoSciML/Gsml.xsd");
 
         FeatureTypeRegistry typeRegistry = new FeatureTypeRegistry();
-        typeRegistry.addSchemas(schemaIndex);
-
-        Name typeName = Types.typeName(GSMLNS, "MappedFeatureType");       
-        ComplexType mf = (ComplexType) typeRegistry.getAttributeType(typeName);
-        assertNotNull(mf);
-        assertTrue(mf instanceof FeatureType);
         
-        AttributeExpressionImpl ex = new AttributeExpressionImpl("gsml:specification/gsml:GeologicUnit/gsml:preferredAge/gsml:GeologicEvent/gsml:eventAge/gsml:CGI_TermRange/gsml:upper/gsml:CGI_TermValue/gsml:value", 
-                new Hints(FeaturePropertyAccessorFactory.NAMESPACE_CONTEXT, GSMLNAMESPACES));
-                
-        Object o = ex.evaluate(mf);
-        assertNotNull(o);
-        assertTrue(o instanceof PropertyDescriptor);
-        
-        ex = new AttributeExpressionImpl("gsml:specification/gsml:GeologicUnit/gsml:composition/gsml:CompositionPart/gsml:lithology/@xlink:href", 
-                new Hints(FeaturePropertyAccessorFactory.NAMESPACE_CONTEXT, GSMLNAMESPACES));
-                
-        o = ex.evaluate(mf);
-        assertNotNull(o);
-        assertTrue(o.equals (Types.typeName(XLINKNS, "href")));
-        
-        ex = new AttributeExpressionImpl("gsml:specification/gsml:GeologicUnit/gsml:composition/gsml:CompositionPart/gsml:lithology/@foo:bar", 
-                new Hints(FeaturePropertyAccessorFactory.NAMESPACE_CONTEXT, GSMLNAMESPACES));
-                
-        o = ex.evaluate(mf);
-        assertNull(o);
+        try {
+            typeRegistry.addSchemas(schemaIndex);
+    
+            Name typeName = Types.typeName(GSMLNS, "MappedFeatureType");       
+            ComplexType mf = (ComplexType) typeRegistry.getAttributeType(typeName);
+            assertNotNull(mf);
+            assertTrue(mf instanceof FeatureType);
+            
+            AttributeExpressionImpl ex = new AttributeExpressionImpl("gsml:specification/gsml:GeologicUnit/gsml:preferredAge/gsml:GeologicEvent/gsml:eventAge/gsml:CGI_TermRange/gsml:upper/gsml:CGI_TermValue/gsml:value", 
+                    new Hints(FeaturePropertyAccessorFactory.NAMESPACE_CONTEXT, GSMLNAMESPACES));
+                    
+            Object o = ex.evaluate(mf);
+            assertNotNull(o);
+            assertTrue(o instanceof PropertyDescriptor);
+            
+            ex = new AttributeExpressionImpl("gsml:specification/gsml:GeologicUnit/gsml:composition/gsml:CompositionPart/gsml:lithology/@xlink:href", 
+                    new Hints(FeaturePropertyAccessorFactory.NAMESPACE_CONTEXT, GSMLNAMESPACES));
+                    
+            o = ex.evaluate(mf);
+            assertNotNull(o);
+            assertTrue(o.equals (Types.typeName(XLINKNS, "href")));
+            
+            ex = new AttributeExpressionImpl("gsml:specification/gsml:GeologicUnit/gsml:composition/gsml:CompositionPart/gsml:lithology/@foo:bar", 
+                    new Hints(FeaturePropertyAccessorFactory.NAMESPACE_CONTEXT, GSMLNAMESPACES));
+                    
+            o = ex.evaluate(mf);
+            assertNull(o);
+        }
+        finally {        
+            typeRegistry.disposeSchemaIndexes();
+        }
         
     }
 

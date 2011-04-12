@@ -23,9 +23,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
-
-import junit.framework.TestCase;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
 import org.geotools.data.DefaultQuery;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.complex.config.AppSchemaDataAccessConfigurator;
@@ -43,6 +44,10 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.type.UniqueNameFeatureTypeFactoryImpl;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.test.AppSchemaTestSupport;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -57,7 +62,6 @@ import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.xml.sax.helpers.NamespaceSupport;
-
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Point;
 
@@ -68,7 +72,7 @@ import com.vividsolutions.jts.geom.Point;
  * @source $URL$
  * @since 2.4
  */
-public class AppSchemaDataAccessTest extends TestCase {
+public class AppSchemaDataAccessTest extends AppSchemaTestSupport {
 
     private final static Logger LOGGER = org.geotools.util.logging.Logging
             .getLogger(AppSchemaDataAccessTest.class.getPackage().getName());
@@ -81,8 +85,8 @@ public class AppSchemaDataAccessTest extends TestCase {
 
     FeatureTypeMapping mapping;
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
         MemoryDataStore ds = createWaterSampleTestFeatures();
         targetType = TestData.createComplexWaterSampleType();
         FeatureTypeFactory tf = new UniqueNameFeatureTypeFactoryImpl();
@@ -101,15 +105,16 @@ public class AppSchemaDataAccessTest extends TestCase {
         dataStore = new AppSchemaDataAccess(Collections.singleton(mapping));
 
     }
-
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    
+    @After
+    public void tearDown() throws Exception {
         DataAccessRegistry.unregisterAll();
     }
 
     /*
      * Test method for 'org.geotools.data.complex.ComplexDataStore.getTypeNames()'
      */
+    @Test
     public void testGetTypeNames() throws IOException {
         Name[] typeNames = dataStore.getTypeNames();
         assertNotNull(typeNames);
@@ -126,10 +131,12 @@ public class AppSchemaDataAccessTest extends TestCase {
     /*
      * Test method for 'org.geotools.data.complex.ComplexDataStore.getSchema(String)'
      */
+    @Test
     public void testTargetType() throws IOException {
         assertEquals(targetType, dataStore.getSchema(targetName));
     }
 
+    @Test
     public void testGetBounds() throws IOException {
         final String namespaceUri = "http://online.socialchange.net.au";
         final String localName = "RoadSegment";
@@ -179,6 +186,7 @@ public class AppSchemaDataAccessTest extends TestCase {
     /*
      * Test method for 'org.geotools.data.complex.ComplexDataStore.getFeatureReader(String)'
      */
+    @Test
     public void testGetFeatureReader() throws IOException {
         FeatureSource<FeatureType, Feature> access = dataStore.getFeatureSource(targetName);
         FeatureType type = access.getSchema();
@@ -233,6 +241,7 @@ public class AppSchemaDataAccessTest extends TestCase {
     /*
      * Test method for 'org.geotools.data.AbstractDataStore.getFeatureSource(String)'
      */
+    @Test
     public void testGetFeatureSource() throws IOException {
         FeatureSource<FeatureType, Feature> complexSource = dataStore.getFeatureSource(targetName);
         assertNotNull(complexSource);
@@ -242,6 +251,7 @@ public class AppSchemaDataAccessTest extends TestCase {
     /*
      * Test method for 'org.geotools.data.AbstractDataStore.getFeatureReader(Query, Transaction)'
      */
+    @Test
     public void testGetFeatureReaderQuery() throws Exception {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
@@ -287,6 +297,7 @@ public class AppSchemaDataAccessTest extends TestCase {
      * 
      * @throws IOException
      */
+    @Test
     public void testWithConfig() throws Exception {
         final String nsUri = "http://online.socialchange.net.au";
         final String localName = "RoadSegment";

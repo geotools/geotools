@@ -289,6 +289,7 @@ public class EmfAppSchemaParser {
 
         XSDElementDeclaration elementDeclaration;
         elementDeclaration = schemaIndex.getElementDeclaration(featureTypeName);
+        schemaIndex.destroy();
         return elementDeclaration;
     }
 }

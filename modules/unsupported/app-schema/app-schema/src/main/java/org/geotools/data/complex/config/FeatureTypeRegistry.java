@@ -177,6 +177,17 @@ public class FeatureTypeRegistry {
             }
         }
     }
+    
+    /**
+     * Destroy all schema Indexes. VERY important to that this is called
+     * to avoid memory leaks, because schema indexes are kept alive otherwise
+     * by static schema's and in this way keep other schema's alive
+     */
+    public void disposeSchemaIndexes(){
+        for (SchemaIndex schemaIndex : schemas) {
+            schemaIndex.destroy();
+        }
+    }
 
     public AttributeDescriptor getDescriptor(final Name descriptorName,
             CoordinateReferenceSystem crs, List<AttributeMapping> attMappings) {

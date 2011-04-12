@@ -20,7 +20,6 @@ package org.geotools.data.complex;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.URI;
@@ -30,7 +29,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
-
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFinder;
 import org.geotools.data.DefaultQuery;
@@ -43,8 +41,8 @@ import org.geotools.data.complex.config.XMLConfigDigester;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.Types;
+import org.geotools.test.AppSchemaTestSupport;
 import org.geotools.xml.SchemaIndex;
-import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opengis.feature.Feature;
@@ -62,7 +60,7 @@ import org.opengis.feature.type.Name;
  *         /community-schema-ds/src/test/java/org/geotools/data/complex/BoreholeTest.java $
  * @since 2.4
  */
-public class GeoSciMLTest {
+public class GeoSciMLTest extends AppSchemaTestSupport {
     private static final Logger LOGGER = org.geotools.util.logging.Logging
             .getLogger(GeoSciMLTest.class.getPackage().getName());
 
@@ -88,11 +86,6 @@ public class GeoSciMLTest {
 
         reader = EmfAppSchemaReader.newInstance();
         // Logging.GEOTOOLS.forceMonolineConsoleOutput(Level.FINEST);
-    }
-    
-    @AfterClass
-    public static void oneTimeTearDown() {
-        DataAccessRegistry.unregisterAll();
     }
 
     /**
@@ -126,17 +119,22 @@ public class GeoSciMLTest {
         }
 
         FeatureTypeRegistry typeRegistry = new FeatureTypeRegistry();
-        typeRegistry.addSchemas(schemaIndex);
-
-        Name typeName = Types.typeName(GSMLNS, "MappedFeatureType");
-        ComplexType mf = (ComplexType) typeRegistry.getAttributeType(typeName);
-        assertNotNull(mf);
-        assertTrue(mf instanceof FeatureType);
-
-        typeName = Types.typeName("http://www.opengis.net/sampling/1.0", "SamplingFeatureType");
-        mf = (ComplexType) typeRegistry.getAttributeType(typeName);
-        assertNotNull(mf);
-        assertTrue(mf instanceof FeatureType);
+        try {
+            typeRegistry.addSchemas(schemaIndex);
+    
+            Name typeName = Types.typeName(GSMLNS, "MappedFeatureType");
+            ComplexType mf = (ComplexType) typeRegistry.getAttributeType(typeName);
+            assertNotNull(mf);
+            assertTrue(mf instanceof FeatureType);
+    
+            typeName = Types.typeName("http://www.opengis.net/sampling/1.0", "SamplingFeatureType");
+            mf = (ComplexType) typeRegistry.getAttributeType(typeName);
+            assertNotNull(mf);
+            assertTrue(mf instanceof FeatureType);
+        }
+        finally {
+            typeRegistry.disposeSchemaIndexes();
+        }
         /*
          * AttributeType superType = mf.getSuper(); assertNotNull(superType); Name superTypeName =
          * Types.typeName(SANS, "ProfileType"); assertEquals(superTypeName, superType.getName());
@@ -180,7 +178,7 @@ public class GeoSciMLTest {
          * typedCategoryListType = (AttributeType) typeRegistry.get(tcl);
          * assertNotNull(typedCategoryListType); assertFalse(typedCategoryListType instanceof
          * ComplexType);
-         */
+         */        
     }
 
     @Test

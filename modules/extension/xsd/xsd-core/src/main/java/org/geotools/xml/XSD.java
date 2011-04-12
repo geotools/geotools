@@ -16,7 +16,10 @@
  */
 package org.geotools.xml;
 
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xsd.XSDSchema;
+import org.eclipse.xsd.util.XSDResourceImpl;
 import org.eclipse.xsd.util.XSDSchemaLocator;
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -240,6 +243,12 @@ public abstract class XSD {
                 resolvers.add(resolver);
             }
         }
+        
+        XSDSchemaLocator suppSchemaLocator = getSupplementarySchemaLocator();
+        
+        if (suppSchemaLocator != null) {
+            locators.add(suppSchemaLocator);
+        }
 
         SchemaLocationResolver resolver = createSchemaLocationResolver();
 
@@ -288,5 +297,33 @@ public abstract class XSD {
 
     public String toString() {
         return getNamespaceURI();
+    }
+    
+    /**
+     * Optionally, a schema locator that helps locating (other) schema's
+     * used for includes/imports that might already exist but are not in 
+     * dependencies
+     * @return Schema Locator
+     */
+    public XSDSchemaLocator getSupplementarySchemaLocator() {
+        return null;
+    }
+
+    /**
+     * Remove all references to this schema, and all schemas built in the same resource set
+     * It is important to call this method for every dynamic schema created that is not needed
+     * anymore, because references in the static schema's will otherwise keep it alive forever
+     */
+    public void dispose() {       
+        if (schema != null) {
+            ResourceSet rs = schema.eResource().getResourceSet();
+            for (Resource r : rs.getResources()) {
+                if (r instanceof XSDResourceImpl) {
+                    Schemas.dispose(((XSDResourceImpl) r).getSchema());
+                }
+            }
+            
+            schema = null;
+        }                
     }
 }

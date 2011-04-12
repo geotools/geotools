@@ -20,14 +20,12 @@ package org.geotools.data.complex;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFinder;
 import org.geotools.data.FeatureSource;
@@ -38,8 +36,8 @@ import org.geotools.data.complex.config.FeatureTypeRegistry;
 import org.geotools.data.complex.config.XMLConfigDigester;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.Types;
+import org.geotools.test.AppSchemaTestSupport;
 import org.geotools.xml.SchemaIndex;
-import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opengis.feature.Feature;
@@ -55,7 +53,7 @@ import org.opengis.feature.type.Name;
  *
  * @source $URL$
  */
-public class GeologicUnitTest {
+public class GeologicUnitTest extends AppSchemaTestSupport {
 
     private static final String GSMLNS = "http://www.cgi-iugs.org/xml/GeoSciML/2";
 
@@ -70,19 +68,8 @@ public class GeologicUnitTest {
      *             If any exception occurs
      */
     @BeforeClass
-    public static void setUp() throws Exception {
+    public static void oneTimeSetUp() throws Exception {
         reader = EmfAppSchemaReader.newInstance();
-    }
-
-    /**
-     * Release resources
-     * 
-     * @throws Exception
-     *             If any exception occurs
-     */
-    @AfterClass
-    public static void tearDown() throws Exception {
-        DataAccessRegistry.unregisterAll();
     }
 
     /**
@@ -109,18 +96,23 @@ public class GeologicUnitTest {
         SchemaIndex schemaIndex = loadSchema("http://schemas.opengis.net/GeoSciML/Gsml.xsd");
 
         FeatureTypeRegistry typeRegistry = new FeatureTypeRegistry();
-        typeRegistry.addSchemas(schemaIndex);
-
-        Name typeName = Types.typeName(GSMLNS, "GeologicUnitType");
-        ComplexType mf = (ComplexType) typeRegistry.getAttributeType(typeName);
-        assertNotNull(mf);
-        assertTrue(mf instanceof FeatureType);
-
-        AttributeType superType = mf.getSuper();
-        assertNotNull(superType);
-        Name superTypeName = Types.typeName(GSMLNS, "GeologicFeatureType");
-        assertEquals(superTypeName, superType.getName());
-        assertTrue(superType instanceof FeatureType);
+        try {
+            typeRegistry.addSchemas(schemaIndex);
+    
+            Name typeName = Types.typeName(GSMLNS, "GeologicUnitType");
+            ComplexType mf = (ComplexType) typeRegistry.getAttributeType(typeName);
+            assertNotNull(mf);
+            assertTrue(mf instanceof FeatureType);
+    
+            AttributeType superType = mf.getSuper();
+            assertNotNull(superType);
+            Name superTypeName = Types.typeName(GSMLNS, "GeologicFeatureType");
+            assertEquals(superTypeName, superType.getName());
+            assertTrue(superType instanceof FeatureType);
+        }
+        finally {
+            typeRegistry.disposeSchemaIndexes();
+        }
     }
 
     /**

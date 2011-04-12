@@ -20,10 +20,16 @@ package org.geotools.data.complex.config;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.Properties;
-
 import org.geotools.data.DataUtilities;
+import org.geotools.test.AppSchemaTestSupport;
+import org.junit.Before;
+import org.junit.Test;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Tests for {@link PropertyInterpolationUtils}.
@@ -32,7 +38,7 @@ import junit.framework.TestCase;
  *
  * @source $URL$
  */
-public class PropertyInterpolationUtilsTest extends TestCase {
+public class PropertyInterpolationUtilsTest extends AppSchemaTestSupport {
 
     /**
      * Base string used for properties and filenames.
@@ -60,12 +66,8 @@ public class PropertyInterpolationUtilsTest extends TestCase {
     public static final String TEST_FILE_SYSTEM_PROPERTY = IDENTIFIER + "-file-identifier"
             + ".properties";
 
-    /**
-     * @see junit.framework.TestCase#setUp()
-     */
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
         System.setProperty(TEST_SYSTEM_PROPERTY, TEST_SYSTEM_PROPERTY_VALUE);
         System.setProperty(TEST_FILE_SYSTEM_PROPERTY, DataUtilities.urlToFile(
                 PropertyInterpolationUtilsTest.class.getResource("/" + IDENTIFIER
@@ -77,7 +79,8 @@ public class PropertyInterpolationUtilsTest extends TestCase {
      * are interpolated as expected. Note that this test includes multiple lines, and also
      * opportunity for excessive regex greed, which must be avoided.
      */
-    public static void testInterpolate() {
+    @Test
+    public void testInterpolate() {
         Properties properties = new Properties();
         properties.put("foo.x", "123");
         properties.put("foo.y", "abc");
@@ -92,7 +95,8 @@ public class PropertyInterpolationUtilsTest extends TestCase {
      * Test for {@link PropertyInterpolationUtils#interpolate(Properties, String)} that
      * interpolating a nonexistent property is an error.
      */
-    public static void testInterpolateNonexistent() {
+    @Test
+    public void testInterpolateNonexistent() {
         boolean interpolatedNonexistentProperty = false;
         try {
             PropertyInterpolationUtils.interpolate(new Properties(), "123 ${does.not.exist} 456");
@@ -106,7 +110,8 @@ public class PropertyInterpolationUtilsTest extends TestCase {
     /**
      * Test for {@link PropertyInterpolationUtils#readAll(InputStream)}.
      */
-    public static void testReadAll() {
+    @Test
+    public void testReadAll() {
         String s = "line one\nline two\n";
         InputStream input = new ByteArrayInputStream("line one\nline two\n".getBytes());
         assertEquals(s, PropertyInterpolationUtils.readAll(input));
@@ -116,7 +121,8 @@ public class PropertyInterpolationUtilsTest extends TestCase {
      * Test that {@link PropertyInterpolationUtils#loadProperties(String)} can load properties from
      * the classpath.
      */
-    public static void testLoadPropertiesFromClasspath() {
+    @Test
+    public void testLoadPropertiesFromClasspath() {
         Properties properties = PropertyInterpolationUtils.loadProperties(IDENTIFIER);
         assertEquals("found-on-classpath", properties.getProperty(TEST_PROPERTY));
         checkSystemProperties(properties);
@@ -126,7 +132,8 @@ public class PropertyInterpolationUtilsTest extends TestCase {
      * Test that in {@link PropertyInterpolationUtils#loadProperties(String)} only system properties
      * are loaded when the properties files does not exist.
      */
-    public static void testLoadPropertiesDoesNotExist() {
+    @Test
+    public void testLoadPropertiesDoesNotExist() {
         Properties properties = PropertyInterpolationUtils.loadProperties(IDENTIFIER
                 + ".does-not-exist");
         assertNull(properties.getProperty(TEST_PROPERTY));
@@ -137,7 +144,8 @@ public class PropertyInterpolationUtilsTest extends TestCase {
      * Test that {@link PropertyInterpolationUtils#loadProperties(String)} can load properties from
      * the a file specified in a system property.
      */
-    public static void testLoadPropertiesFromFile() {
+    @Test
+    public void testLoadPropertiesFromFile() {
         // note that the identifier does *not* match the filename
         Properties properties = PropertyInterpolationUtils.loadProperties(TEST_FILE_SYSTEM_PROPERTY
                 .replace(".properties", ""));
@@ -149,8 +157,8 @@ public class PropertyInterpolationUtilsTest extends TestCase {
      * Check that the system properties are as expected.
      * 
      * @param properties
-     */
-    private static void checkSystemProperties(Properties properties) {
+     */    
+    private void checkSystemProperties(Properties properties) {
         // check that synthetic system property is loaded
         assertNotNull(properties.getProperty(TEST_SYSTEM_PROPERTY));
         assertTrue(properties.getProperty(TEST_SYSTEM_PROPERTY).equals(TEST_SYSTEM_PROPERTY_VALUE));

@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import junit.framework.TestCase;
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFinder;
 import org.geotools.data.FeatureSource;
@@ -33,13 +32,18 @@ import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.Types;
 import org.geotools.filter.FilterFactoryImplNamespaceAware;
+import org.geotools.test.AppSchemaTestSupport;
+import org.junit.Before;
+import org.junit.Test;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.PropertyName;
 import org.xml.sax.helpers.NamespaceSupport;
-
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 /**
  * This tests property selection using nested x-paths, combined with feature selection
  * 
@@ -48,7 +52,7 @@ import org.xml.sax.helpers.NamespaceSupport;
  *
  * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/test/java/org/geotools/data/complex/PropSelectionTest.java $
  */
-public class PropSelectionTest extends TestCase {
+public class PropSelectionTest extends AppSchemaTestSupport {
     
     private static final String schemaBase = "/test-data/";
     
@@ -65,6 +69,7 @@ public class PropSelectionTest extends TestCase {
     /** namespace aware filter factory **/
     private FilterFactory2 ff;
 
+    @Before
     public void setUp() throws Exception {
         /**
          * Set up filter factory
@@ -101,15 +106,12 @@ public class PropSelectionTest extends TestCase {
         mfSource = mfDataAccess.getFeatureSource(MAPPED_FEATURE);            
     }
 
-    public void tearDown() {
-        DataAccessRegistry.unregisterAll();
-    }
-
     /**
      * Testing Property Name Selection
      * 
      * @throws IOException
      */
+    @Test
     public void testPropertyNameSelection() throws IOException {
         
         PropertyName propertyName1 = ff.property("gsml:specification/gsml:GeologicUnit/gml:description");

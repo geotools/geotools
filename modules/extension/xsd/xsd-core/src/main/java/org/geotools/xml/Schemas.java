@@ -61,6 +61,7 @@ import org.eclipse.xsd.XSDNamedComponent;
 import org.eclipse.xsd.XSDParticle;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.XSDSchemaContent;
+import org.eclipse.xsd.XSDSchemaDirective;
 import org.eclipse.xsd.XSDSimpleTypeDefinition;
 import org.eclipse.xsd.XSDTypeDefinition;
 import org.eclipse.xsd.util.XSDConstants;
@@ -217,10 +218,28 @@ public class Schemas {
         return parse(location, (locators != null) ? Arrays.asList(locators) : Collections.EMPTY_LIST,
             (resolvers != null) ? Arrays.asList(resolvers) : Collections.EMPTY_LIST);
     }
-
+    
     public static final XSDSchema parse(String location, List locators, List resolvers)
         throws IOException {
+        ResourceSet resourceSet = new ResourceSetImpl();
         
+        //add the specialized schema location resolvers
+        if ((resolvers != null) && !resolvers.isEmpty()) {
+           AdapterFactory adapterFactory = new SchemaLocationResolverAdapterFactory(resolvers);
+           resourceSet.getAdapterFactories().add(adapterFactory);
+        }
+        
+        //add the specialized schema locators as adapters
+        if ((locators != null) && !locators.isEmpty()) {
+            AdapterFactory adapterFactory = new SchemaLocatorAdapterFactory(locators);
+            resourceSet.getAdapterFactories().add(adapterFactory);
+        }
+               
+        return parse(location, resourceSet); 
+    }
+      
+    public static final XSDSchema parse(String location, ResourceSet resourceSet)
+        throws IOException {
         //check for case of file url, make sure it is an absolute reference
         File locationFile = null;
         try {
@@ -236,25 +255,13 @@ public class Schemas {
         }
 
         URI uri = URI.createURI(location);
-        final ResourceSet resourceSet = new ResourceSetImpl();
-
-        //add the specialized schema location resolvers
-        if ((resolvers != null) && !resolvers.isEmpty()) {
-            AdapterFactory adapterFactory = new SchemaLocationResolverAdapterFactory(resolvers);
-            resourceSet.getAdapterFactories().add(adapterFactory);
-        }
-
-        //add the specialized schema locators as adapters
-        if ((locators != null) && !locators.isEmpty()) {
-            AdapterFactory adapterFactory = new SchemaLocatorAdapterFactory(locators);
-            resourceSet.getAdapterFactories().add(adapterFactory);
-        }
 
         XSDResourceImpl xsdMainResource = (XSDResourceImpl) resourceSet.createResource(URI.createURI(
                     ".xsd"));
         xsdMainResource.setURI(uri);
+        
         xsdMainResource.load(resourceSet.getLoadOptions());
-
+        
         return xsdMainResource.getSchema();
     }
 
@@ -294,6 +301,39 @@ public class Schemas {
         AdapterFactory adapterFactory = new SchemaLocatorAdapterFactory(locators);
         resource.getResourceSet().getAdapterFactories().add( adapterFactory );
         return imprt;
+    }
+    
+    /**
+     * Remove all references to a schema
+     * It is important to call this method for every dynamic schema created that is not needed
+     * anymore, because references in the static schema's will otherwise keep it alive forever
+     * 
+     * @param schema to be flushed
+     */
+    public static final void dispose(XSDSchema schema) {
+        for (XSDSchemaContent content : schema.getContents()) {
+            if (content instanceof XSDSchemaDirective) {
+                XSDSchemaDirective directive = (XSDSchemaDirective) content;
+                XSDSchema resolvedSchema = directive.getResolvedSchema();
+                
+                if (resolvedSchema != null) {
+                    synchronized(resolvedSchema) {
+                        resolvedSchema.getReferencingDirectives().remove(directive);
+                        
+                        for (XSDElementDeclaration dec : resolvedSchema.getElementDeclarations()) {
+                            List<XSDElementDeclaration> toRemove = new ArrayList<XSDElementDeclaration>();
+                            for (XSDElementDeclaration subs : dec.getSubstitutionGroup()) {
+                                if (subs.getContainer().equals(schema)) {
+                                    toRemove.add(subs);
+                                }
+                            }
+                            dec.getSubstitutionGroup().removeAll(toRemove);
+                        }
+                    }
+                }
+            }
+           
+        }
     }
     
     public static final List validateImportsIncludes(String location) throws IOException {

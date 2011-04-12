@@ -53,6 +53,7 @@ import org.geotools.feature.Types;
 import org.geotools.feature.type.UniqueNameFeatureTypeFactoryImpl;
 import org.geotools.filter.FilterFactoryImplNamespaceAware;
 import org.geotools.gml3.GML;
+import org.geotools.test.AppSchemaTestSupport;
 import org.geotools.xlink.XLINK;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -97,7 +98,7 @@ import com.vividsolutions.jts.geom.Polygon;
  *         http://svn.geotools.org/geotools/branches/2.4.x/modules/unsupported/community-schemas/community-schema-ds/src/test/java/org/geotools/data/complex/filter/UnmappingFilterVisitorTest.java $
  * @since 2.4
  */
-public class UnmappingFilterVisitorTest {
+public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
 
     private static FilterFactory2 ff = (FilterFactory2) CommonFactoryFinder.getFilterFactory(null);
 
@@ -131,11 +132,6 @@ public class UnmappingFilterVisitorTest {
         dsParams.put("url", url.toExternalForm());
 
         mappingDataStore = DataAccessFinder.getDataStore(dsParams);
-    }
-
-    @AfterClass
-    public static void oneTimeTearDown() {
-        DataAccessRegistry.unregisterAll();
     }
 
     /**

@@ -18,26 +18,25 @@
 package org.geotools.data.complex.config;
 
 import java.net.URL;
-
-import junit.framework.TestCase;
-
 import org.apache.xml.resolver.Catalog;
 import org.apache.xml.resolver.tools.ResolvingXMLReader;
+import org.geotools.test.AppSchemaTestSupport;
 import org.geotools.test.TestData;
+import org.junit.Before;
+import org.junit.Test;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertEquals;
 
-public class OasisCatalogTest extends TestCase {
+public class OasisCatalogTest extends AppSchemaTestSupport {
     org.apache.xml.resolver.Catalog catalog;
     
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
         catalog = new Catalog();
         catalog.setupReaders();
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
+    @Test
     public void testParseCatalog() throws Exception{
         URL file = TestData.url(this, "commonSchemas_new.oasis.xml");
 

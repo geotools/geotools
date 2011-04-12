@@ -28,11 +28,9 @@ import java.util.Set;
 import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFinder;
 import org.geotools.data.FeatureSource;
@@ -48,8 +46,8 @@ import org.geotools.feature.NameImpl;
 import org.geotools.feature.Types;
 import org.geotools.feature.type.ComplexFeatureTypeImpl;
 import org.geotools.filter.FilterFactoryImplNamespaceAware;
+import org.geotools.test.AppSchemaTestSupport;
 import org.geotools.xlink.XLINK;
-import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.geotools.xml.SchemaIndex;
@@ -78,7 +76,7 @@ import org.xml.sax.helpers.NamespaceSupport;
  *         http://svn.geotools.org/geotools/branches/2.4.x/modules/unsupported/community-schemas/community-schema-ds/src/test/java/org/geotools/data/complex/BoreholeTest.java $
  * @since 2.4
  */
-public class BoreholeTest {
+public class BoreholeTest extends AppSchemaTestSupport {
     private static final Logger LOGGER = org.geotools.util.logging.Logging
             .getLogger(BoreholeTest.class.getPackage().getName());
 
@@ -117,12 +115,7 @@ public class BoreholeTest {
 
         reader = EmfAppSchemaReader.newInstance();
     }
-    
-    @AfterClass
-    public static void oneTimeTearDown() throws IOException {
-        DataAccessRegistry.unregisterAll();
-    }
-    
+        
     /**
      * 
      * @param location
@@ -157,76 +150,81 @@ public class BoreholeTest {
         }
 
         FeatureTypeRegistry typeRegistry = new FeatureTypeRegistry();
-        typeRegistry.addSchemas(schemaIndex);
-
-        Name typeName = Types.typeName(XMMLNS, "BoreholeType");
-        ComplexFeatureTypeImpl borehole = (ComplexFeatureTypeImpl) typeRegistry.getAttributeType(typeName);
-        assertNotNull(borehole);
-        assertTrue(borehole instanceof FeatureType);
-
-        AttributeType superType = borehole.getSuper();
-        assertNotNull(superType);
-        Name superTypeName = Types.typeName(SANS, "ProfileType");
-        assertEquals(superTypeName, superType.getName());
-        assertTrue(superType instanceof FeatureType);
-
-        // ensure all needed types were parsed and aren't just empty proxies
-        Collection properties = borehole.getTypeDescriptors();
-        assertEquals(16, properties.size());
-        Map expectedNamesAndTypes = new HashMap();
-        // from gml:AbstractFeatureType
-        expectedNamesAndTypes.put(name(GMLNS, "metaDataProperty"), typeName(GMLNS,
-                "MetaDataPropertyType"));
-        expectedNamesAndTypes.put(name(GMLNS, "description"), typeName(GMLNS, "StringOrRefType"));
-        expectedNamesAndTypes.put(name(GMLNS, "name"), typeName(GMLNS, "CodeType"));
-        expectedNamesAndTypes.put(name(GMLNS, "boundedBy"), typeName(GMLNS, "BoundingShapeType"));
-        expectedNamesAndTypes.put(name(GMLNS, "location"), typeName(GMLNS, "LocationPropertyType"));
-        // from sa:ProfileType
-        expectedNamesAndTypes.put(name(SANS, "begin"), typeName(GMLNS, "PointPropertyType"));
-        expectedNamesAndTypes.put(name(SANS, "end"), typeName(GMLNS, "PointPropertyType"));
-        expectedNamesAndTypes.put(name(SANS, "length"), typeName(SWENS, "RelativeMeasureType"));
-        expectedNamesAndTypes.put(name(SANS, "shape"), typeName(GEONS, "Shape1DPropertyType"));
-        // sa:SamplingFeatureType
-        expectedNamesAndTypes.put(name(SANS, "member"), typeName(SANS,
-                "SamplingFeaturePropertyType"));
-        expectedNamesAndTypes.put(name(SANS, "surveyDetails"), typeName(SANS,
-                "SurveyProcedurePropertyType"));
-        expectedNamesAndTypes.put(name(SANS, "associatedSpecimen"), typeName(SANS,
-                "SpecimenPropertyType"));
-        expectedNamesAndTypes.put(name(SANS, "relatedObservation"), typeName(OMNS,
-                "AbstractObservationPropertyType"));
-        // from xmml:BoreholeType
-        expectedNamesAndTypes.put(name(XMMLNS, "drillMethod"), typeName(XMMLNS, "drillCode"));
-        expectedNamesAndTypes.put(name(XMMLNS, "collarDiameter"), typeName(GMLNS, "MeasureType"));
-        expectedNamesAndTypes.put(name(XMMLNS, "log"), typeName(XMMLNS, "LogPropertyType"));
-
-        for (Iterator it = expectedNamesAndTypes.entrySet().iterator(); it.hasNext();) {
-            Map.Entry entry = (Entry) it.next();
-            Name dName = (Name) entry.getKey();
-            Name tName = (Name) entry.getValue();
-
-            AttributeDescriptor d = (AttributeDescriptor) Types.descriptor(borehole, dName);
-            assertNotNull("Descriptor not found: " + dName, d);
-            AttributeType type;
-            try {
-                type = (AttributeType) d.getType();
-            } catch (Exception e) {
-                LOGGER.log(Level.SEVERE, "type not parsed for "
-                        + ((AttributeDescriptor) d).getName(), e);
-                throw e;
+        try {
+            typeRegistry.addSchemas(schemaIndex);
+    
+            Name typeName = Types.typeName(XMMLNS, "BoreholeType");
+            ComplexFeatureTypeImpl borehole = (ComplexFeatureTypeImpl) typeRegistry.getAttributeType(typeName);
+            assertNotNull(borehole);
+            assertTrue(borehole instanceof FeatureType);
+    
+            AttributeType superType = borehole.getSuper();
+            assertNotNull(superType);
+            Name superTypeName = Types.typeName(SANS, "ProfileType");
+            assertEquals(superTypeName, superType.getName());
+            assertTrue(superType instanceof FeatureType);
+    
+            // ensure all needed types were parsed and aren't just empty proxies
+            Collection properties = borehole.getTypeDescriptors();
+            assertEquals(16, properties.size());
+            Map expectedNamesAndTypes = new HashMap();
+            // from gml:AbstractFeatureType
+            expectedNamesAndTypes.put(name(GMLNS, "metaDataProperty"), typeName(GMLNS,
+                    "MetaDataPropertyType"));
+            expectedNamesAndTypes.put(name(GMLNS, "description"), typeName(GMLNS, "StringOrRefType"));
+            expectedNamesAndTypes.put(name(GMLNS, "name"), typeName(GMLNS, "CodeType"));
+            expectedNamesAndTypes.put(name(GMLNS, "boundedBy"), typeName(GMLNS, "BoundingShapeType"));
+            expectedNamesAndTypes.put(name(GMLNS, "location"), typeName(GMLNS, "LocationPropertyType"));
+            // from sa:ProfileType
+            expectedNamesAndTypes.put(name(SANS, "begin"), typeName(GMLNS, "PointPropertyType"));
+            expectedNamesAndTypes.put(name(SANS, "end"), typeName(GMLNS, "PointPropertyType"));
+            expectedNamesAndTypes.put(name(SANS, "length"), typeName(SWENS, "RelativeMeasureType"));
+            expectedNamesAndTypes.put(name(SANS, "shape"), typeName(GEONS, "Shape1DPropertyType"));
+            // sa:SamplingFeatureType
+            expectedNamesAndTypes.put(name(SANS, "member"), typeName(SANS,
+                    "SamplingFeaturePropertyType"));
+            expectedNamesAndTypes.put(name(SANS, "surveyDetails"), typeName(SANS,
+                    "SurveyProcedurePropertyType"));
+            expectedNamesAndTypes.put(name(SANS, "associatedSpecimen"), typeName(SANS,
+                    "SpecimenPropertyType"));
+            expectedNamesAndTypes.put(name(SANS, "relatedObservation"), typeName(OMNS,
+                    "AbstractObservationPropertyType"));
+            // from xmml:BoreholeType
+            expectedNamesAndTypes.put(name(XMMLNS, "drillMethod"), typeName(XMMLNS, "drillCode"));
+            expectedNamesAndTypes.put(name(XMMLNS, "collarDiameter"), typeName(GMLNS, "MeasureType"));
+            expectedNamesAndTypes.put(name(XMMLNS, "log"), typeName(XMMLNS, "LogPropertyType"));
+    
+            for (Iterator it = expectedNamesAndTypes.entrySet().iterator(); it.hasNext();) {
+                Map.Entry entry = (Entry) it.next();
+                Name dName = (Name) entry.getKey();
+                Name tName = (Name) entry.getValue();
+    
+                AttributeDescriptor d = (AttributeDescriptor) Types.descriptor(borehole, dName);
+                assertNotNull("Descriptor not found: " + dName, d);
+                AttributeType type;
+                try {
+                    type = (AttributeType) d.getType();
+                } catch (Exception e) {
+                    LOGGER.log(Level.SEVERE, "type not parsed for "
+                            + ((AttributeDescriptor) d).getName(), e);
+                    throw e;
+                }
+                assertNotNull(type);
+                assertNotNull(type.getName());
+                assertNotNull(type.getBinding());
+                if (tName != null) {
+                    assertEquals(tName, type.getName());
+                }
             }
-            assertNotNull(type);
-            assertNotNull(type.getName());
-            assertNotNull(type.getBinding());
-            if (tName != null) {
-                assertEquals(tName, type.getName());
-            }
+    
+            Name tcl = Types.typeName(SWENS, "TypedCategoryListType");
+            AttributeType typedCategoryListType = (AttributeType) typeRegistry.getAttributeType(tcl);
+            assertNotNull(typedCategoryListType);
+            assertTrue(typedCategoryListType instanceof ComplexType);
         }
-
-        Name tcl = Types.typeName(SWENS, "TypedCategoryListType");
-        AttributeType typedCategoryListType = (AttributeType) typeRegistry.getAttributeType(tcl);
-        assertNotNull(typedCategoryListType);
-        assertTrue(typedCategoryListType instanceof ComplexType);
+        finally {
+            typeRegistry.disposeSchemaIndexes();
+        }
     }
 
     private Name typeName(String ns, String localName) {

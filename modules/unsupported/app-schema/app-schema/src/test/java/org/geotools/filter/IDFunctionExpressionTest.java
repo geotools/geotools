@@ -17,17 +17,20 @@
 
 package org.geotools.filter;
 
-import junit.framework.TestCase;
-
 import org.geotools.data.ComplexTestData;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.AttributeBuilder;
 import org.geotools.feature.ValidatingFeatureFactoryImpl;
 import org.geotools.feature.type.UniqueNameFeatureTypeFactoryImpl;
+import org.geotools.test.AppSchemaTestSupport;
+import org.junit.Before;
+import org.junit.Test;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.FeatureTypeFactory;
 import org.opengis.filter.expression.Function;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * 
@@ -36,18 +39,17 @@ import org.opengis.filter.expression.Function;
  *
  * @source $URL$
  */
-public class IDFunctionExpressionTest extends TestCase {
+public class IDFunctionExpressionTest extends AppSchemaTestSupport {
 
     Feature feature;
 
     Function idExpr;
 
     public IDFunctionExpressionTest() {
-        super("IDFunctionExpressionTest");
     }
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
         FeatureTypeFactory typeFactory = new UniqueNameFeatureTypeFactoryImpl();
         FeatureType type = ComplexTestData.createExample02MultipleMultivalued(typeFactory);
         AttributeBuilder ab = new AttributeBuilder(new ValidatingFeatureFactoryImpl());
@@ -56,10 +58,7 @@ public class IDFunctionExpressionTest extends TestCase {
         idExpr = CommonFactoryFinder.getFilterFactory(null).function("getID", new org.opengis.filter.expression.Expression[0]);
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
+    @Test
     public void testGetValue() throws Exception {
         Object fid = feature.getIdentifier();
         Object found = idExpr.evaluate(feature);
@@ -70,6 +69,7 @@ public class IDFunctionExpressionTest extends TestCase {
     /*
      * Test method for 'org.geotools.filter.IDFunctionExpression.getName()'
      */
+    @Test
     public void testGetName() {
         assertEquals("getID", idExpr.getName());
     }
@@ -77,6 +77,7 @@ public class IDFunctionExpressionTest extends TestCase {
     /*
      * Test method for 'org.geotools.filter.IDFunctionExpression.getArgs()'
      */
+    @Test
     public void testGetArgs() {
         assertNotNull(idExpr.getParameters());
         assertEquals(0, idExpr.getParameters().size());

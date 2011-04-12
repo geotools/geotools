@@ -20,22 +20,24 @@ package org.geotools.data.complex.filter;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
 import javax.xml.namespace.QName;
-
-import junit.framework.TestCase;
-
 import org.geotools.data.ComplexTestData;
 import org.geotools.data.complex.filter.XPath.StepList;
 import org.geotools.feature.type.AttributeDescriptorImpl;
-import org.geotools.feature.type.FeatureTypeFactoryImpl;
 import org.geotools.feature.type.UniqueNameFeatureTypeFactoryImpl;
 import org.geotools.gml3.GMLSchema;
+import org.geotools.test.AppSchemaTestSupport;
 import org.geotools.xlink.XLINK;
+import org.junit.Test;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
 import org.xml.sax.helpers.NamespaceSupport;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 /**
  * 
@@ -45,16 +47,9 @@ import org.xml.sax.helpers.NamespaceSupport;
  *         http://svn.geotools.org/geotools/branches/2.4.x/modules/unsupported/community-schemas/community-schema-ds/src/test/java/org/geotools/data/complex/filter/XPathTest.java $
  * @since 2.4
  */
-public class XPathTest extends TestCase {
+public class XPathTest extends AppSchemaTestSupport {
 
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
+    @Test
     public void testSteps() throws Exception {
         FeatureType complexType = ComplexTestData
                 .createExample01MultiValuedComplexProperty(new UniqueNameFeatureTypeFactoryImpl());
@@ -117,6 +112,7 @@ public class XPathTest extends TestCase {
      * 
      * @throws Exception
      */
+    @Test
     public void testStepsWithXmlAttribute() throws Exception {
         FeatureType complexType = ComplexTestData
                 .createExample01MultiValuedComplexProperty(new UniqueNameFeatureTypeFactoryImpl());
@@ -141,6 +137,7 @@ public class XPathTest extends TestCase {
         assertEquals(step2, steps.get(1));
     }
 
+    @Test
     public void testStepEquals() {
         XPath.Step step1 = new XPath.Step(XLINK.FROM, 1);
 
@@ -162,6 +159,7 @@ public class XPathTest extends TestCase {
     /**
      * Test that some simple-content and non-simple-content types are correctly detected.
      */
+    @Test
     public void testIsSimpleContentType() {
         assertTrue(XPath.isSimpleContentType(GMLSchema.CODETYPE_TYPE));
         assertTrue(XPath.isSimpleContentType(GMLSchema.MEASURETYPE_TYPE));

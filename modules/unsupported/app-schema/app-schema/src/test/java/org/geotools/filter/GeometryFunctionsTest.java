@@ -21,12 +21,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
-
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.Types;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -36,6 +34,7 @@ import org.geotools.filter.expression.ToDirectPositionFunction;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.gml3.GMLSchema;
 import org.geotools.referencing.CRS;
+import org.geotools.test.AppSchemaTestSupport;
 import org.geotools.xs.XSSchema;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -61,7 +60,7 @@ import com.vividsolutions.jts.geom.Point;
  *
  * @source $URL$
  */
-public class GeometryFunctionsTest {
+public class GeometryFunctionsTest extends AppSchemaTestSupport {
 
     public static final Logger LOGGER = org.geotools.util.logging.Logging
             .getLogger("org.geotools.data.complex");

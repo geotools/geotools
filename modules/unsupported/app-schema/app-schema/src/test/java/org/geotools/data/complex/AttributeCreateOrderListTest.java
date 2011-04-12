@@ -6,21 +6,24 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-
-import junit.framework.TestCase;
+import org.geotools.test.AppSchemaTestSupport;
+import org.junit.Test;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Russell Petty, GSV
  *
  * @source $URL$
  */
-public class AttributeCreateOrderListTest extends TestCase {
+public class AttributeCreateOrderListTest extends AppSchemaTestSupport {
   
     private static final String ROOT_LABEL = "root";
     
     private AttributeCreateOrderList at;
     private List<AttributeMapping> unProcessedList;
  
+    @Test
     public void testEmptyTree() throws IOException {
         at = new AttributeCreateOrderList(ROOT_LABEL);   
         unProcessedList = new ArrayList<AttributeMapping>();      
@@ -28,6 +31,7 @@ public class AttributeCreateOrderListTest extends TestCase {
         processTestData();
     }
     
+    @Test
     public void testSimpleTree() throws IOException {
         at = new AttributeCreateOrderList(ROOT_LABEL);   
         unProcessedList = new ArrayList<AttributeMapping>();
@@ -41,6 +45,7 @@ public class AttributeCreateOrderListTest extends TestCase {
         processTestData();
     }
 
+    @Test
     public void testComplexTree() throws IOException {
         at = new AttributeCreateOrderList(ROOT_LABEL);   
         unProcessedList = new ArrayList<AttributeMapping>();
@@ -60,6 +65,7 @@ public class AttributeCreateOrderListTest extends TestCase {
         processTestData();
     }
 
+    @Test
     public void testInvalidTree() throws IOException {
         at = new AttributeCreateOrderList(ROOT_LABEL);   
         unProcessedList = new ArrayList<AttributeMapping>();
@@ -79,6 +85,7 @@ public class AttributeCreateOrderListTest extends TestCase {
         }
     }
 
+    @Test
     public void testInvalidRootInTree() throws IOException {
         at = new AttributeCreateOrderList(ROOT_LABEL);   
         unProcessedList = new ArrayList<AttributeMapping>();

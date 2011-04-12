@@ -25,9 +25,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.util.Set;
-
-import junit.framework.TestCase;
-
+import static org.junit.Assert.assertEquals;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.geotools.data.DataUtilities;
@@ -36,6 +34,10 @@ import org.geotools.data.Query;
 import org.geotools.data.complex.AppSchemaDataAccess;
 import org.geotools.data.complex.AppSchemaDataAccessRegistry;
 import org.geotools.data.complex.FeatureTypeMapping;
+import org.geotools.test.AppSchemaTestSupport;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
@@ -47,7 +49,7 @@ import org.opengis.feature.type.Name;
  * @author Tara Athan
  * @author Ben Caradoc-Davies, CSIRO Earth Science and Resource Engineering
  */
-public class AppSchemaFileDataTest extends TestCase {
+public class AppSchemaFileDataTest extends AppSchemaTestSupport {
 
     /**
      * The resource path containing the source data for testing.
@@ -65,6 +67,7 @@ public class AppSchemaFileDataTest extends TestCase {
      * 
      * @see junit.framework.TestCase#setUp()
      */
+    @Before
     public void setUp() throws IOException {
         FileUtils.deleteDirectory(testDir);
         // copy all the test data into the test directory
@@ -81,6 +84,7 @@ public class AppSchemaFileDataTest extends TestCase {
      * 
      * @see junit.framework.TestCase#tearDown()
      */
+    @After
     public void tearDown() throws IOException {
         FileUtils.deleteDirectory(testDir);
         AppSchemaDataAccessRegistry.unregisterAll();
@@ -117,6 +121,7 @@ public class AppSchemaFileDataTest extends TestCase {
      * Test the AppSchemaDataAccessConfigurator.buildMappings method with shapefiles, using a
      * relative paths to the data
      */
+    @Test
     public void testShapeMappings() throws Exception {
         String mappingFileNameRelativeShape = "ArchSiteNillable.xml";
         AppSchemaDataAccess dSRelative = null;
@@ -140,6 +145,7 @@ public class AppSchemaFileDataTest extends TestCase {
      * Test the AppSchemaDataAccessConfigurator.buildMappings method with shapefiles, using an
      * absolute path to the data.
      */
+    @Test
     public void testShapeMappingsAbsolute() throws Exception {
         String mappingFileNameRelativeShape = "ArchSiteNillable.xml";
         String configFilePathRelativeShape = getTestDirPath(mappingFileNameRelativeShape);
@@ -171,6 +177,7 @@ public class AppSchemaFileDataTest extends TestCase {
      * relative and paths to the data just to be sure we didn't break these while we were playing
      * around with shapefiles.
      */
+    @Test
     public void testPropertiesMappings() throws Exception {
         String mappingFileNameRelativeProperties = "AppSchemaFileDataTest.xml";
         AppSchemaDataAccess dSRelative = null;
@@ -195,6 +202,7 @@ public class AppSchemaFileDataTest extends TestCase {
      * an absolute path to the data just to be sure we didn't break these while we were playing
      * around with shapefiles.
      */
+    @Test
     public void testPropertiesMappingsAbsolute() throws Exception {
         String mappingFileNameRelativeProperties = "AppSchemaFileDataTest.xml";
         String configFilePathRelativeProperties = getTestDirPath(mappingFileNameRelativeProperties);

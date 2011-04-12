@@ -20,7 +20,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -31,7 +30,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.logging.Logger;
-
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFinder;
 import org.geotools.data.DataSourceException;
@@ -42,7 +40,7 @@ import org.geotools.data.complex.config.NonFeatureTypeProxy;
 import org.geotools.data.complex.config.SourceDataStore;
 import org.geotools.data.complex.config.TypeMapping;
 import org.geotools.feature.Types;
-import org.junit.AfterClass;
+import org.geotools.test.AppSchemaTestSupport;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opengis.feature.Feature;
@@ -60,7 +58,7 @@ import org.opengis.feature.type.Name;
  *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/test
  *         /java/org/geotools/data/complex/AppSchemaDataAccessRegistryTest.java $
  */
-public class AppSchemaDataAccessRegistryTest {
+public class AppSchemaDataAccessRegistryTest extends AppSchemaTestSupport {
 
     public static final Logger LOGGER = org.geotools.util.logging.Logging
             .getLogger("org.geotools.data.complex");
@@ -219,7 +217,7 @@ public class AppSchemaDataAccessRegistryTest {
      * Create mock app-schema data access config.
      */
     @BeforeClass
-    public static void setUp() {
+    public static void oneTimeSetUp() {
         /**
          * Create mock AppSchemaDataAccessDto to test mappingName
          */
@@ -274,14 +272,6 @@ public class AppSchemaDataAccessRegistryTest {
         dtoNoMappingName.setSourceDataStore(SOURCE_ID);
         dtoNoMappingName.setSourceTypeName(MAPPING_FILE);
         dtoNoMappingName.setTargetElementName(TARGET_ELEMENT_NAME);
-    }
-
-    /**
-     * Clean the registry so it doesn't affect other tests
-     */
-    @AfterClass
-    public static void tearDown() {
-        DataAccessRegistry.unregisterAll();
     }
 
     /**

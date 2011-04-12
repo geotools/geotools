@@ -22,14 +22,21 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-
-import junit.framework.TestCase;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.fail;
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFinder;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.FeatureSource;
 import org.geotools.feature.Types;
+import org.geotools.test.AppSchemaTestSupport;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
@@ -41,7 +48,7 @@ import org.opengis.feature.type.Name;
  * @source $URL$
  * @since 2.4
  */
-public class AppSchemaDataAccessFactoryTest extends TestCase {
+public class AppSchemaDataAccessFactoryTest extends AppSchemaTestSupport {
 
     AppSchemaDataAccessFactory factory;
 
@@ -51,8 +58,8 @@ public class AppSchemaDataAccessFactoryTest extends TestCase {
 
     static final Name mappedTypeName = Types.typeName(NSURI, "RoadSegment");
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
         factory = new AppSchemaDataAccessFactory();
         params = new HashMap();
         params.put("dbtype", "app-schema");
@@ -63,8 +70,8 @@ public class AppSchemaDataAccessFactoryTest extends TestCase {
         params.put("url", resource);
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @After
+    public void tearDown() throws Exception {
         factory = null;
         params = null;
     }
@@ -72,6 +79,7 @@ public class AppSchemaDataAccessFactoryTest extends TestCase {
     /**
      * Test method for 'org.geotools.data.complex.AppSchemaDataAccessFactory.createDataStore(Map)'
      */
+    @Test
     public void testCreateDataStorePreconditions() {
         Map badParams = new HashMap();
         try {
@@ -100,6 +108,7 @@ public class AppSchemaDataAccessFactoryTest extends TestCase {
      * 
      * @throws IOException
      */
+    @Test
     public void testCreateDataStore() throws IOException {
         DataAccess<FeatureType, Feature> ds = factory.createDataStore(params);
         assertNotNull(ds);
@@ -113,6 +122,7 @@ public class AppSchemaDataAccessFactoryTest extends TestCase {
      * 
      * @throws IOException
      */
+    @Test
     public void testFactoryLookup() throws IOException {
         DataAccess<FeatureType, Feature> ds = DataAccessFinder.getDataStore(params);
         assertNotNull(ds);
@@ -128,6 +138,7 @@ public class AppSchemaDataAccessFactoryTest extends TestCase {
      * Test method for
      * 'org.geotools.data.complex.AppSchemaDataAccessFactory.createNewDataStore(Map)'
      */
+    @Test
     public void testCreateNewDataStore() throws IOException {
         try {
             factory.createNewDataStore(Collections.EMPTY_MAP);
@@ -140,6 +151,7 @@ public class AppSchemaDataAccessFactoryTest extends TestCase {
     /**
      * Test method for 'org.geotools.data.complex.AppSchemaDataAccessFactory.getParametersInfo()'
      */
+    @Test
     public void testGetParametersInfo() {
         DataStoreFactorySpi.Param[] params = factory.getParametersInfo();
         assertNotNull(params);
@@ -152,6 +164,7 @@ public class AppSchemaDataAccessFactoryTest extends TestCase {
      * 
      * Test method for 'org.geotools.data.complex.AppSchemaDataAccessFactory.canProcess(Map)'
      */
+    @Test
     public void testCanProcess() {
         Map params = new HashMap();
         assertFalse(factory.canProcess(params));
@@ -170,6 +183,7 @@ public class AppSchemaDataAccessFactoryTest extends TestCase {
      * 
      * Test method for 'org.geotools.data.complex.AppSchemaDataAccessFactory.isAvailable()'
      */
+    @Test
     public void testIsAvailable() {
         assertTrue(factory.isAvailable());
     }
@@ -179,6 +193,7 @@ public class AppSchemaDataAccessFactoryTest extends TestCase {
      * Test method for
      * 'org.geotools.data.complex.AppSchemaDataAccessFactory.getImplementationHints()'
      */
+    @Test
     public void testGetImplementationHints() {
         assertNotNull(factory.getImplementationHints());
         assertEquals(0, factory.getImplementationHints().size());

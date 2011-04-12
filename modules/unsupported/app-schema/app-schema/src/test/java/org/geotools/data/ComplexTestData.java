@@ -18,9 +18,8 @@
 package org.geotools.data;
 
 import java.util.Set;
-
-import junit.framework.TestCase;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import org.geotools.feature.TypeBuilder;
 import org.geotools.referencing.CRS;
 import org.opengis.feature.type.AttributeType;
@@ -43,7 +42,7 @@ import com.vividsolutions.jts.geom.Point;
  *         http://svn.geotools.org/trunk/modules/unsupported/community-schemas/community-schema-ds/src/test/java/org/geotools/data/ComplexTestData.java $
  * @since 2.4
  */
-public abstract class ComplexTestData extends TestCase {
+public abstract class ComplexTestData {
 
     public static final String NSURI = "http://online.socialchange.net.au";
 

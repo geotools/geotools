@@ -20,7 +20,6 @@ package org.geotools.data.complex;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,7 +27,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFinder;
 import org.geotools.data.FeatureSource;
@@ -38,7 +36,7 @@ import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.Types;
 import org.geotools.filter.FilterFactoryImpl;
 import org.geotools.gml3.bindings.GML3EncodingUtils;
-import org.junit.AfterClass;
+import org.geotools.test.AppSchemaTestSupport;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opengis.feature.ComplexAttribute;
@@ -61,7 +59,7 @@ import com.vividsolutions.jts.util.Stopwatch;
  *
  * @source $URL$
  */
-public class FeatureChainingTest {
+public class FeatureChainingTest extends AppSchemaTestSupport {
     public static final String GSMLNS = "urn:cgi:xmlns:CGI:GeoSciML:2.0";
 
     public static final String GMLNS = "http://www.opengis.net/gml";
@@ -166,11 +164,6 @@ public class FeatureChainingTest {
         loadDataAccesses();
         sw.stop();
         System.out.println("Set up time: " + sw.getTimeString());
-    }
-
-    @AfterClass
-    public static void tearDownAfterClass() throws Exception {
-        DataAccessRegistry.unregisterAll();
     }
 
     /**

@@ -49,7 +49,7 @@ import java.util.logging.Logger;
  *
  * @source $URL$
  */
-public final class SchemaLocator implements XSDSchemaLocator {
+public class SchemaLocator implements XSDSchemaLocator {
     /**
      * logging instance
      */

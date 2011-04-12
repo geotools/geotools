@@ -18,27 +18,29 @@
 package org.geotools.data.complex.config;
 
 import java.net.URL;
-
-import junit.framework.TestCase;
-
 import org.geotools.gml3.GMLConfiguration;
+import org.geotools.test.AppSchemaTestSupport;
 import org.geotools.xml.AppSchemaCatalog;
 import org.geotools.xml.AppSchemaConfiguration;
 import org.geotools.xml.AppSchemaResolver;
 import org.geotools.xml.Configuration;
+import org.junit.Test;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * This is a test for a class that no longer exists! But the functionality and behaviour survive.
  * 
  * @author Ben Caradoc-Davies, CSIRO Earth Science and Resource Engineering
  */
-public class CatalogApplicationSchemaConfigurationTest extends TestCase {
+public class CatalogApplicationSchemaConfigurationTest extends AppSchemaTestSupport {
 
     final String schemaBase = "/test-data/";
 
     /**
      * Test that a schema known to be in the catalog is resolved to the expected local file.
      */
+    @Test
     public void testCatalogSchemaResolution() throws Exception {
         URL catalogLocation = getClass().getResource(schemaBase + "mappedPolygons.oasis.xml");
         String namespace = "http://www.cgi-iugs.org/xml/GeoSciML/2";

@@ -19,21 +19,18 @@ package org.geotools.filter;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFinder;
 import org.geotools.data.FeatureSource;
-import org.geotools.data.complex.DataAccessRegistry;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.Types;
-import org.junit.AfterClass;
+import org.geotools.test.AppSchemaTestSupport;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opengis.feature.Feature;
@@ -47,7 +44,7 @@ import org.xml.sax.helpers.NamespaceSupport;
  * 
  * @author Rini Angreani, Curtin University of Technology
  */
-public class BBoxTest {
+public class BBoxTest extends AppSchemaTestSupport {
     private static FilterFactoryImpl ff;
 
     private static DataAccess<FeatureType, Feature> dataAccess;
@@ -55,7 +52,7 @@ public class BBoxTest {
     private static FeatureSource<FeatureType, Feature> fSource;
 
     @BeforeClass
-    public static void setUp() throws Exception {
+    public static void onetimeSetUp() throws Exception {
 
         final String GSML_URI = "urn:cgi:xmlns:CGI:GeoSciML:2.0";
         /**
@@ -79,11 +76,6 @@ public class BBoxTest {
         dataAccess = DataAccessFinder.getDataStore(dsParams);
 
         fSource = (FeatureSource<FeatureType, Feature>) dataAccess.getFeatureSource(FEATURE_TYPE);
-    }
-
-    @AfterClass
-    public static void tearDown() {
-        DataAccessRegistry.unregisterAll();
     }
 
     @Test

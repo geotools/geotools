@@ -169,17 +169,23 @@ public class AppSchemaDataAccessConfigurator {
      */
     private Set<FeatureTypeMapping> buildMappings() throws IOException {
         // -parse target xml schemas, let parsed types on <code>registry</code>
-        parseGmlSchemas();
-        Map<String, DataAccess<FeatureType, Feature>> sourceDataStores = null;
-        Set<FeatureTypeMapping> featureTypeMappings = null;
         try {
-            // -create source datastores
-            sourceDataStores = acquireSourceDatastores();
-            // -create FeatureType mappings
-            featureTypeMappings = createFeatureTypeMappings(sourceDataStores);
-            return featureTypeMappings;        
-        } finally  {
-            disposeUnusedSourceDataStores(sourceDataStores, featureTypeMappings);
+            parseGmlSchemas();
+            Map<String, DataAccess<FeatureType, Feature>> sourceDataStores = null;
+            Set<FeatureTypeMapping> featureTypeMappings = null;
+            try {
+                // -create source datastores
+                sourceDataStores = acquireSourceDatastores();
+                // -create FeatureType mappings
+                featureTypeMappings = createFeatureTypeMappings(sourceDataStores);
+                return featureTypeMappings;        
+            } finally  {
+                disposeUnusedSourceDataStores(sourceDataStores, featureTypeMappings);                
+            }
+        } finally {
+            if (typeRegistry != null) {
+                typeRegistry.disposeSchemaIndexes();
+            }
         }
     }
 

@@ -30,10 +30,12 @@ range of GeoTools Filter and Expression ideas using simple text strings.
   The **CQL** utility class has static methods to parse an input String into either a **Filter**
   or an **Expression**.
 
-  Here is the most common use for the CQL class - asking for Features::
-    
-    Filter filter = CQL.toFilter("attName >= 5");
-    SimpleFeatureCollection features = featureSource.getFeatures( filter );
+  Here is the most common use for the CQL class - asking for Features:
+  
+   .. literalinclude:: /../src/main/java/org/geotools/cql/CQLExamples.java
+      :language: java
+      :start-after: // cqlExample start
+      :end-before: // cqlExample end
   
   The CQL utility class produced is a Filter; you can create Filters by hand (using a FilterFactory)
   but this is much easier.

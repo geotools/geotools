@@ -61,6 +61,7 @@ public class TeradataGISDialect extends BasicSQLDialect {
 	private Set<String> mLastGeomColumns;
 	private Set<String> mIndexTables;
 	private Connection mCurrentConnection;
+	private String mQueryBandingSql;
 	
 	// used for tessellate index
 	private double u_xmin = -180;
@@ -747,6 +748,9 @@ public class TeradataGISDialect extends BasicSQLDialect {
 	}
 	
     public void initializeConnection(Connection cx) throws SQLException {
+    	if (mQueryBandingSql != null) {
+    		cx.createStatement().execute(mQueryBandingSql);
+    	}
     	if (mIndexTables == null) {
     		mIndexTables = new HashSet<String>();
     		ResultSet tables = cx.getMetaData().getTables("", "", "%_idx", new String[] {"TABLE"});
@@ -832,4 +836,8 @@ public class TeradataGISDialect extends BasicSQLDialect {
     	}
 		mLastGeomColumns = null;
     }
+
+	public void setQueryBandingSql(String queryBandingSql) {
+		mQueryBandingSql = queryBandingSql;
+	}
 }

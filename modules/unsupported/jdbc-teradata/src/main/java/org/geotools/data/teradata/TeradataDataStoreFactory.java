@@ -67,6 +67,10 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
     public static final Param SCALE_PARAM = new Param("tessellate_index_scale", String.class, "tessellate_index_scale", false, "0.01");
     public static final Param SHIFT_PARAM = new Param("tessellate_index_shift", String.class, "tessellate_index_shift", false, "0");
 
+    // SET QUERY_BAND = 'ApplicationName=TZA-InsuranceService; Version=01.00.00.00;' FOR Session;
+    public static final Param QUERY_BANDING_SQL = new Param("queryBandingSQL", String.class, "SQL to use Query Banding (example: \"SET QUERY_BAND = 'ApplicationName=TZA-InsuranceService; Version=01.00.00.00;' FOR Session;\")", false, "");
+    
+    
     private static final PrimaryKeyFinder KEY_FINDER = new CompositePrimaryKeyFinder(
             new MetadataTablePrimaryKeyFinder(),
             new TeradataPrimaryKeyFinder(),
@@ -149,6 +153,10 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
         if (params.containsKey(SHIFT_PARAM.key)) {
 	    	dialect.setShift((Integer)SHIFT_PARAM.lookUp(params));
         }
+        
+        if (params.containsKey(QUERY_BANDING_SQL.key)) {
+	    	dialect.setQueryBandingSql((String)QUERY_BANDING_SQL.lookUp(params));
+        }        
 
         // setup the ps dialect if need be
         Boolean usePs = (Boolean) PREPARED_STATEMENTS.lookUp(params);
@@ -180,6 +188,8 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
         parameters.put(LEVELS_PARAM.key, LEVELS_PARAM);
         parameters.put(SCALE_PARAM.key, SCALE_PARAM);
         parameters.put(SHIFT_PARAM.key, SHIFT_PARAM);
+
+        parameters.put(QUERY_BANDING_SQL.key, QUERY_BANDING_SQL);
     }
 
     @Override

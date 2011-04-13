@@ -28,7 +28,7 @@ package org.geotools.filter;
  *
  * @author aaime
  * @source $URL$
- * @deprecated please use instance of check against geoapi class.
+ * @deprecated please use instance of check against gt-opengis class.
  */
 public interface FilterType {
     /* ***********************************************************************

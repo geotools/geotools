@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
+import org.geotools.util.Converters;
 import org.opengis.filter.And;
 import org.opengis.filter.ExcludeFilter;
 import org.opengis.filter.Filter;
@@ -424,7 +425,7 @@ public class Filters {
      * <p>
      * If you have a specific Feature, please do this:
      * <pre><code>
-     * Object value = expr.getValue( feature );
+     * Color value = expr.evaualte( feature, Color.class );
      * return value instanceof Color ? (Color) value : null;
      * </code></pre>
      * </p>
@@ -542,55 +543,74 @@ public class Filters {
      * 
      * @param text
      * @param TYPE
-     * @throws open set of Throwable reflection for TYPE( String ) 
+     * @throws open set of Throwable reflection for TYPE( String )
      */
-    public static Object gets( String text, Class TYPE ) throws Throwable {
-    	if( text == null ) return null;
-    	if( TYPE == String.class ) return text;
-    	if( TYPE == Integer.class ) {
-    		return Integer.decode( text );    		
-    	}
-    	if( TYPE == Double.class ){
-    		return Double.valueOf( text );
-    	}
-    	if( TYPE == Number.class ){
-    		try {
-    			return Double.valueOf( text );
-    		}
-    		catch( NumberFormatException ignore ){
-    		}
-    		return Integer.decode( text );    		
-    	}
-    	if( TYPE == Color.class ){
-    		return new Color( Integer.decode( text ).intValue() );
-    	}    	
-    	try {
-			Constructor create = TYPE.getConstructor( new Class[]{String.class});
-			return create.newInstance( new Object[]{ text } );
-		} catch (SecurityException e) {
-			// hates you
-		} catch (NoSuchMethodException e) {
-			// nope
-		} catch (IllegalArgumentException e) {
-			// should not occur
-		} catch (InstantiationException e) {
-			// should not occur, perhaps the class was abstract?
-			// eg. Number.class is a bad idea
-		} catch (IllegalAccessException e) {
-			// hates you
-		} catch (InvocationTargetException e) {
-			// should of worked but we got a real problem,
-			// an actual problem
-			throw e.getCause();
-		}    	
-    	return null;
+    public static <T> T gets(String text, Class<T> TYPE) throws Throwable {
+        if (text == null) {
+            return null;
+        }
+        if (TYPE == String.class) {
+            return TYPE.cast(text);
+        }
+        if (TYPE == Integer.class) {
+            return TYPE.cast(Integer.decode(text));
+        }
+        if (TYPE == Double.class) {
+            return TYPE.cast(Double.valueOf(text));
+        }
+        if (TYPE == Number.class) {
+            try {
+                return TYPE.cast(Double.valueOf(text));
+            } catch (NumberFormatException ignore) {
+            }
+            return TYPE.cast(Integer.decode(text));
+        }
+        if (TYPE == Color.class) {
+            return TYPE.cast(new Color(Integer.decode(text).intValue()));
+        }
+        // fallback try converters
+        Object value = Converters.convert(text, TYPE);
+        if (value != null) {
+            return TYPE.cast(value);
+        }
+        // Original fall back position of reflection against constructor
+        try {
+            Constructor<T> create = TYPE.getConstructor(new Class[] { String.class });
+            return create.newInstance(new Object[] { text });
+        } catch (SecurityException e) {
+            // hates you
+        } catch (NoSuchMethodException e) {
+            // nope
+        } catch (IllegalArgumentException e) {
+            // should not occur
+        } catch (InstantiationException e) {
+            // should not occur, perhaps the class was abstract?
+            // eg. Number.class is a bad idea
+        } catch (IllegalAccessException e) {
+            // hates you
+        } catch (InvocationTargetException e) {
+            // should of worked but we got a real problem,
+            // an actual problem
+            throw e.getCause();
+        }
+        return null; // give up
     }
-    
-    public static String puts( double number ){
-    	if( Math.rint(number) == number ){
-    		return Integer.toString( (int) number );
-    	}
-    	return Double.toString( number );    	
+    /**
+     * Convert provided number to a suitable text representation
+     * <p>
+     * Examples:
+     * <ul>
+     * <li>Filters.puts( 3.14 ) => "3.14"</li>
+     * <li>Filters.puts( 1.0 ) => "1"</li>
+     * </ul>
+     * @param number
+     * @return text representation
+     */
+    public static String puts(double number) {
+        if (Math.rint(number) == number) {
+            return Integer.toString((int) number);
+        }
+        return Double.toString(number);
     }
     /**
      * Inverse of eval, used to softly type supported
@@ -602,10 +622,12 @@ public class Filters {
      * @return String representation of provided object
      */
     public static String puts(Object obj) {
-        if (obj == null)
+        if (obj == null){
             return null;
-        if (obj instanceof String)
+        }
+        if (obj instanceof String){
             return (String) obj;
+        }
         if (obj instanceof Color) {
             Color color = (Color) obj;
             return puts(color);
@@ -613,6 +635,10 @@ public class Filters {
         if (obj instanceof Number) {
             Number number = (Number) obj;
             return puts(number.doubleValue());
+        }
+        String text = Converters.convert( obj, String.class );
+        if( text != null ){
+            return text;
         }
         return obj.toString();
     }

@@ -17,6 +17,7 @@
 package org.geotools.coverage.grid;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 
@@ -32,6 +33,20 @@ import static org.junit.Assert.*;
  * @author Martin Desruisseaux (IRD)
  */
 public final class GridCoverageTest extends GridCoverageTestBase {
+    
+    /** Used to avoid errors if building on a system where hostname is not defined */
+    private boolean hostnameDefined;
+    
+    @Before
+    public void setup() {
+        try {
+            InetAddress.getLocalHost();
+            hostnameDefined = true;
+        } catch (Exception ex) {
+            hostnameDefined = false;
+        }
+    }
+
     /**
      * Tests a grid coverage filled with random values.
      */
@@ -62,15 +77,17 @@ public final class GridCoverageTest extends GridCoverageTestBase {
      */
     @Test
     public void testSerialization() throws IOException, ClassNotFoundException {
-        GridCoverage2D coverage = EXAMPLES.get(0);
-        GridCoverage2D serial = serialize(coverage);
-        assertNotSame(coverage, serial);
-        assertEquals(GridCoverage2D.class, serial.getClass());
-        // Compares the geophysics view for working around the
-        // conversions of NaN values which may be the expected ones.
-        coverage = coverage.view(ViewType.GEOPHYSICS);
-        serial   = serial  .view(ViewType.GEOPHYSICS);
-        assertRasterEquals(coverage, serial);
+        if (hostnameDefined) {
+            GridCoverage2D coverage = EXAMPLES.get(0);
+            GridCoverage2D serial = serialize(coverage);
+            assertNotSame(coverage, serial);
+            assertEquals(GridCoverage2D.class, serial.getClass());
+            // Compares the geophysics view for working around the
+            // conversions of NaN values which may be the expected ones.
+            coverage = coverage.view(ViewType.GEOPHYSICS);
+            serial = serial.view(ViewType.GEOPHYSICS);
+            assertRasterEquals(coverage, serial);
+        }
     }
 
 }

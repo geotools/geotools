@@ -10,7 +10,6 @@ import java.util.Map;
 
 import org.geotools.jdbc.ColumnMetadata;
 import org.geotools.jdbc.JDBCDataStore;
-import org.geotools.jdbc.PreparedFilterToSQL;
 import org.geotools.jdbc.PreparedStatementSQLDialect;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.GeometryDescriptor;
@@ -19,7 +18,7 @@ import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.io.WKBWriter;
+import com.vividsolutions.jts.io.WKTWriter;
 
 public class TeradataPSDialect extends PreparedStatementSQLDialect {
 	private TeradataGISDialect delegate;
@@ -30,18 +29,6 @@ public class TeradataPSDialect extends PreparedStatementSQLDialect {
 	}
 
     @Override
-    public void prepareGeometryValue(Geometry g, int srid, Class binding,
-            StringBuffer sql) {
-        if (g != null) {
-        	// if we want to specify the SRID we should have to store a mapping.
-            //sql.append("SYSSPATIAL.ST_GeomFromWKB(?, " + srid + ")"); 
-            sql.append("SYSSPATIAL.ST_GeomFromWKB(?)"); 
-        } else {
-            sql.append("?");
-        }
-    }
-    
-    @Override
 	public void setGeometryValue(Geometry g, int srid, Class binding,
 			PreparedStatement ps, int column) throws SQLException {
         if (g != null) {
@@ -50,9 +37,15 @@ public class TeradataPSDialect extends PreparedStatementSQLDialect {
                 g = g.getFactory().createLineString(((LinearRing) g).getCoordinateSequence());
             }
             
-            byte[] bytes = new WKBWriter().write(g);
-            ps.setBytes(column, bytes);
-        } else {
+          ps.setString(column, new WKTWriter().write(g));
+
+//          byte[] bytes = new WKBWriter().write(g);
+//          ps.setBytes(column, bytes);
+//          ps.setString(column, Base64.encodeBytes(bytes));
+//          Reader r = new StringReader(new WKTWriter().write(g));
+//          ps.setBytes(column, new WKBWriter().write(g));
+        }
+        else {
             ps.setNull(column, Types.OTHER, "Geometry");
         }
 	}

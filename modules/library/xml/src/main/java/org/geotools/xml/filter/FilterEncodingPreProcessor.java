@@ -398,7 +398,8 @@ public class FilterEncodingPreProcessor implements FilterVisitor, FilterVisitor2
                 return Filter.EXCLUDE;
             }
 
-            for (org.opengis.filter.Filter filter : f.getChildren() ) {
+            for (Object item : f.getChildren() ) {
+                org.opengis.filter.Filter filter = (org.opengis.filter.Filter) item;
                 if (filter == Filter.INCLUDE) {
                     continue;
                 }
@@ -419,7 +420,8 @@ public class FilterEncodingPreProcessor implements FilterVisitor, FilterVisitor2
                 return Filter.INCLUDE;
             }
 
-            for (org.opengis.filter.Filter filter : f.getChildren() ) {
+            for (Object item : f.getChildren() ) {
+                org.opengis.filter.Filter filter = (org.opengis.filter.Filter) item;
                 if (filter == org.geotools.filter.Filter.ALL) {
                     continue;
                 }
@@ -451,7 +453,7 @@ public class FilterEncodingPreProcessor implements FilterVisitor, FilterVisitor2
         }
     }
 
-    private boolean contains( BinaryLogicOperator f, org.opengis.filter.Filter toFind) {
+    private boolean contains( LogicFilter f, org.opengis.filter.Filter toFind) {
         for (Iterator iter = f.getChildren().iterator(); iter.hasNext();) {
             if( toFind.equals( iter.next() ) ){
                 return true;

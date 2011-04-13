@@ -17,9 +17,9 @@
 package org.geotools.filter;
 
 import java.util.Iterator;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.filter.BinaryLogicOperator;
+import java.util.List;
 
+import org.opengis.feature.simple.SimpleFeature;
 
 /**
  * Defines a logic filter (the only filter type that contains other filters).
@@ -33,7 +33,7 @@ import org.opengis.filter.BinaryLogicOperator;
  *
  * @deprecated use {@link org.opengis.filter.BinaryLogicOperator}
  */
-public interface LogicFilter extends Filter, BinaryLogicOperator {
+public interface LogicFilter extends Filter {
     /**
      * Determines whether the feature matches the appropriate logic
      * relationships.
@@ -47,6 +47,15 @@ public interface LogicFilter extends Filter, BinaryLogicOperator {
      */
     boolean contains(SimpleFeature feature);
 
+    /**
+     * Returns a list containing all of the child filters of this object.
+     * <p>
+     * This list will contain at least two elements, and each element will be an
+     * instance of {@code Filter}.
+     * </p>
+     */
+    List getChildren();
+        
     /**
      * Gets an iterator for the filters held by this logic filter.
      *

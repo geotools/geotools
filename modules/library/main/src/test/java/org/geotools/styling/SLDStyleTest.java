@@ -464,11 +464,12 @@ public class SLDStyleTest extends TestCase {
         Filter filter = fts.getRules()[0].getFilter();
         assertTrue( filter instanceof Not );
 
-        BinarySpatialOperator spatialFilter = (BinarySpatialOperator) ((BinaryLogicOperator) filter).getChildren().get(0);
+        Filter spatialFilter = ((Not) filter).getFilter();
         assertTrue( spatialFilter instanceof Disjoint );
 
-        Expression left = spatialFilter.getExpression1();
-        Expression right = spatialFilter.getExpression2();
+        Disjoint disjoint = (Disjoint) spatialFilter;
+        Expression left = disjoint.getExpression1();
+        Expression right = disjoint.getExpression2();
                 
         assertTrue( left instanceof PropertyName );
         

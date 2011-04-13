@@ -25,7 +25,7 @@ import org.opengis.filter.BinaryLogicOperator;
  *
  * @source $URL$
  */
-public abstract class BinaryLogicAbstract extends AbstractFilter implements BinaryLogicOperator {
+public abstract class BinaryLogicAbstract extends AbstractFilter {
 	protected List/*<Filter>*/ children;
 	
 	protected BinaryLogicAbstract(org.opengis.filter.FilterFactory factory, List/*<Filter>*/ children ) {

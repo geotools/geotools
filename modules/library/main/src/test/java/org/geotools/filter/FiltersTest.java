@@ -3,6 +3,7 @@ package org.geotools.filter;
 import static org.junit.Assert.*;
 
 import java.awt.Color;
+import java.util.Arrays;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.visitor.AbstractFilterVisitor;
@@ -10,8 +11,10 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opengis.filter.And;
+import org.opengis.filter.BinaryLogicOperator;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.Or;
 import org.opengis.filter.PropertyIsGreaterThan;
 import org.opengis.filter.PropertyIsLike;
 
@@ -184,5 +187,37 @@ public class FiltersTest {
     public void testPutsColor() {
         assertEquals("#0000ff", Filters.puts(Color.BLUE));
     }
-
+    
+    @Test
+    public void testAppend() {
+        Filter together = Filters.appendFilter( a, b );
+        assertTrue( together instanceof And );
+        Filter apart = Filters.appendFilter( a, b, true );
+        assertTrue( apart instanceof Or );
+    }
+    
+    private int count( Filter filter ){
+        if( filter instanceof BinaryLogicOperator ){
+            BinaryLogicOperator logic = (BinaryLogicOperator) filter;
+            return logic.getChildren() != null ? logic.getChildren().size() : -1;
+        }
+        return -1;
+    }
+    
+    @Test
+    public void testRemove(){
+        Filter stuff = ff.and( Arrays.asList(new Filter[]{a,b,Filter.INCLUDE}));
+        Filter less = Filters.removeFilter( stuff, Filter.INCLUDE);
+        assertTrue( count( stuff ) > count( less ) );
+        
+        Filter either = ff.or( a, b );
+        Filter ither = Filters.removeFilter(either, a );
+        assertEquals( b, ither );
+    }
+    
+    
+    
+    
+    
+    
 }

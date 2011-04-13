@@ -121,13 +121,16 @@ public abstract class AbstractFinderFilterVisitor implements FilterVisitor, Expr
 
     public Object visit( PropertyIsBetween filter, Object data ) {
         filter.getLowerBoundary().accept(this, data);
+        if( found ) return found;
         filter.getExpression().accept(this, data);
+        if( found ) return found;
         filter.getUpperBoundary().accept(this, data);
         return found;
     }
 
     public Object visit( PropertyIsEqualTo filter, Object data ) {
         filter.getExpression1().accept(this, data);
+        if( found ) return found;
         filter.getExpression2().accept(this, data);
 
         return found;
@@ -135,6 +138,7 @@ public abstract class AbstractFinderFilterVisitor implements FilterVisitor, Expr
 
     public Object visit( PropertyIsNotEqualTo filter, Object data ) {
         filter.getExpression1().accept(this, data);
+        if( found ) return found;
         filter.getExpression2().accept(this, data);
 
         return found;
@@ -142,6 +146,7 @@ public abstract class AbstractFinderFilterVisitor implements FilterVisitor, Expr
 
     public Object visit( PropertyIsGreaterThan filter, Object data ) {
         filter.getExpression1().accept(this, data);
+        if( found ) return found;
         filter.getExpression2().accept(this, data);
 
         return found;
@@ -149,6 +154,7 @@ public abstract class AbstractFinderFilterVisitor implements FilterVisitor, Expr
 
     public Object visit( PropertyIsGreaterThanOrEqualTo filter, Object data ) {
         filter.getExpression1().accept(this, data);
+        if( found ) return found;
         filter.getExpression2().accept(this, data);
 
         return found;
@@ -156,6 +162,7 @@ public abstract class AbstractFinderFilterVisitor implements FilterVisitor, Expr
 
     public Object visit( PropertyIsLessThan filter, Object data ) {
         filter.getExpression1().accept(this, data);
+        if( found ) return found;
         filter.getExpression2().accept(this, data);
 
         return found;
@@ -163,6 +170,7 @@ public abstract class AbstractFinderFilterVisitor implements FilterVisitor, Expr
 
     public Object visit( PropertyIsLessThanOrEqualTo filter, Object data ) {
         filter.getExpression1().accept(this, data);
+        if( found ) return found;
         filter.getExpression2().accept(this, data);
 
         return found;
@@ -170,7 +178,6 @@ public abstract class AbstractFinderFilterVisitor implements FilterVisitor, Expr
 
     public Object visit( PropertyIsLike filter, Object data ) {
         filter.getExpression().accept(this, data);
-
         return found;
     }
 
@@ -205,30 +212,35 @@ public abstract class AbstractFinderFilterVisitor implements FilterVisitor, Expr
 
     public Object visit( Beyond filter, Object data ) {
         filter.getExpression1().accept(this, data);
+        if( found ) return found;
         filter.getExpression2().accept(this, data);
         return found;
     }
 
     public Object visit( Contains filter, Object data ) {
         filter.getExpression1().accept(this, data);
+        if( found ) return found;
         filter.getExpression2().accept(this, data);
         return found;
     }
 
     public Object visit( Crosses filter, Object data ) {
         filter.getExpression1().accept(this, data);
+        if( found ) return found;
         filter.getExpression2().accept(this, data);
         return found;
     }
 
     public Object visit( Disjoint filter, Object data ) {
         filter.getExpression1().accept(this, data);
+        if( found ) return found;
         filter.getExpression2().accept(this, data);
         return found;
     }
 
     public Object visit( DWithin filter, Object data ) {
         filter.getExpression1().accept(this, data);
+        if( found ) return found;
         filter.getExpression2().accept(this, data);
         return found;
     }
@@ -241,6 +253,7 @@ public abstract class AbstractFinderFilterVisitor implements FilterVisitor, Expr
 
     public Object visit( Intersects filter, Object data ) {
         filter.getExpression1().accept(this, data);
+        if( found ) return found;
         filter.getExpression2().accept(this, data);
 
         return found;
@@ -248,6 +261,7 @@ public abstract class AbstractFinderFilterVisitor implements FilterVisitor, Expr
 
     public Object visit( Overlaps filter, Object data ) {
         filter.getExpression1().accept(this, data);
+        if( found ) return found;
         filter.getExpression2().accept(this, data);
 
         return found;
@@ -255,6 +269,7 @@ public abstract class AbstractFinderFilterVisitor implements FilterVisitor, Expr
 
     public Object visit( Touches filter, Object data ) {
         filter.getExpression1().accept(this, data);
+        if( found ) return found;
         filter.getExpression2().accept(this, data);
 
         return found;
@@ -262,6 +277,7 @@ public abstract class AbstractFinderFilterVisitor implements FilterVisitor, Expr
 
     public Object visit( Within filter, Object data ) {
         filter.getExpression1().accept(this, data);
+        if( found ) return found;
         filter.getExpression2().accept(this, data);
         
         return found;
@@ -277,12 +293,14 @@ public abstract class AbstractFinderFilterVisitor implements FilterVisitor, Expr
 
     public Object visit( Add expression, Object data ) {
         expression.getExpression1().accept( this, data);
+        if( found ) return found;
         expression.getExpression2().accept( this, data);
         return found;
     }
 
     public Object visit( Divide expression, Object data ) {
         expression.getExpression1().accept( this, data);
+        if( found ) return found;
         expression.getExpression2().accept( this, data);        
         return found;
     }
@@ -300,6 +318,7 @@ public abstract class AbstractFinderFilterVisitor implements FilterVisitor, Expr
 
     public Object visit( Multiply expression, Object data ) {
         expression.getExpression1().accept( this, data);
+        if( found ) return found;
         expression.getExpression2().accept( this, data);                
         return found;
     }
@@ -310,6 +329,7 @@ public abstract class AbstractFinderFilterVisitor implements FilterVisitor, Expr
 
     public Object visit( Subtract expression, Object data ) {
         expression.getExpression1().accept( this, data);
+        if( found ) return found;
         expression.getExpression2().accept( this, data);                
         return found;
     }

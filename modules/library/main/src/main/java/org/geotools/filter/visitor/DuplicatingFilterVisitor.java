@@ -116,12 +116,14 @@ public class DuplicatingFilterVisitor implements FilterVisitor, ExpressionVisito
 	}
 
 	public Object visit(And filter, Object extraData) {
-		List children = filter.getChildren();
-		List newChildren = new ArrayList();
-		for (Iterator iter = children.iterator(); iter.hasNext();) {
-			Filter child = (Filter) iter.next();
-			if( child!=null )
-				newChildren.add(child.accept(this, extraData));
+		List<Filter> children = filter.getChildren();
+		List<Filter> newChildren = new ArrayList<Filter>();
+		for (Iterator<Filter> iter = children.iterator(); iter.hasNext();) {
+			Filter child = iter.next();
+			if( child!=null ){
+			    Filter newChild = (Filter)child.accept(this, extraData);
+			    newChildren.add( newChild );
+			}
 		}
 		return getFactory(extraData).and(newChildren);
 	}
@@ -135,12 +137,14 @@ public class DuplicatingFilterVisitor implements FilterVisitor, ExpressionVisito
 	}
 
 	public Object visit(Or filter, Object extraData) {
-		List children = filter.getChildren();
-		List newChildren = new ArrayList();
-		for (Iterator iter = children.iterator(); iter.hasNext();) {
-			Filter child = (Filter) iter.next();
-			if( child!=null )
-				newChildren.add(child.accept(this, extraData));
+		List<Filter> children = filter.getChildren();
+		List<Filter> newChildren = new ArrayList<Filter>();
+		for (Iterator<Filter> iter = children.iterator(); iter.hasNext();) {
+			Filter child = iter.next();
+			if( child!=null ){
+                            Filter newChild = (Filter)child.accept(this, extraData);
+                            newChildren.add( newChild );
+			}
 		}
 		return getFactory(extraData).or(newChildren);
 	}

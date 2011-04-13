@@ -16,9 +16,8 @@
  */
 package org.geotools.filter;
 
+import java.util.Collections;
 import java.util.List;
-
-import org.opengis.filter.BinaryLogicOperator;
 
 /**
  * @author jdeolive
@@ -32,9 +31,12 @@ public abstract class BinaryLogicAbstract extends AbstractFilter {
 		super(factory);
 		this.children = children;
 	}
-	
-	public List/*<Filter>*/ getChildren() {
-		return children;
+	/**
+	 * Returned list is unmodifieable.
+	 * For a cheaper access option use visitor
+	 */
+	public List<org.opengis.filter.Filter> getChildren() {
+	    return Collections.unmodifiableList(children);
 	}
 	
 	public void setChildren(List children) {

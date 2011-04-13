@@ -30,11 +30,6 @@ public class TeradataFeatureStoreTest extends JDBCFeatureStoreTest {
     }
 
 
-    public void testAddFeaturesUseProvidedFid() throws IOException {
-        // TODO support provided fid
-    }
-
-
     public void testAddInTransaction() throws IOException {
         // TODO enable transaction isolation  (non-blocking)
     }

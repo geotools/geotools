@@ -46,35 +46,35 @@ import java.util.logging.Logger;
 import javax.media.jai.RasterFactory;
 import javax.media.jai.TiledImage;
 
+import org.geotools.coverage.grid.GridCoordinates2D;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
+import org.geotools.coverage.grid.GridEnvelope2D;
+import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
+import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.jts.Geometries;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.process.feature.AbstractFeatureCollectionProcess;
 import org.geotools.process.feature.AbstractFeatureCollectionProcessFactory;
 import org.geotools.referencing.CRS;
 import org.geotools.util.NullProgressListener;
 import org.geotools.util.SimpleInternationalString;
+
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.expression.Expression;
 import org.opengis.geometry.Envelope;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.operation.TransformException;
 import org.opengis.util.ProgressListener;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.MultiLineString;
-import com.vividsolutions.jts.geom.MultiPoint;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
 
 /**
  * A Process to rasterize vector features in an input FeatureCollection.
@@ -113,11 +113,13 @@ public class VectorToRasterProcess extends AbstractFeatureCollectionProcess {
     private float nodataValue;
 
     private ReferencedEnvelope extent;
+    private GridGeometry2D gridGeom;
+    
     private Geometry extentGeometry;
 
     private int[] coordGridX = new int[COORD_GRID_CHUNK_SIZE];
     private int[] coordGridY = new int[COORD_GRID_CHUNK_SIZE];
-    private double cellsize;
+    // private double cellsize;
 
     TiledImage image;
     Graphics2D graphics;
@@ -267,30 +269,30 @@ public class VectorToRasterProcess extends AbstractFeatureCollectionProcess {
             }
 
             graphics.setColor(valueToColor(value));
-
-            if (geometry.getClass().equals(MultiPolygon.class)) {
-                MultiPolygon mp = (MultiPolygon) geometry;
-                for (int n = 0; n < mp.getNumGeometries(); n++) {
-                    drawGeometry(mp.getGeometryN(n));
-                }
-
-            } else if (geometry.getClass().equals(MultiLineString.class)) {
-                MultiLineString mp = (MultiLineString) geometry;
-                for (int n = 0; n < mp.getNumGeometries(); n++) {
-                    drawGeometry(mp.getGeometryN(n));
-                }
-
-            } else if (geometry.getClass().equals(MultiPoint.class)) {
-                MultiPoint mp = (MultiPoint) geometry;
-                for (int n = 0; n < mp.getNumGeometries(); n++) {
-                    drawGeometry(mp.getGeometryN(n));
-                }
-
-            } else {
-                drawGeometry(geometry);
+            
+            Geometries geomType = Geometries.get(geometry);
+            switch (geomType) {
+                case MULTIPOLYGON:
+                case MULTILINESTRING:
+                case MULTIPOINT:
+                    final int numGeom = geometry.getNumGeometries();
+                    for (int i = 0; i < numGeom; i++) {
+                        Geometry geomN = geometry.getGeometryN(i);
+                        drawGeometry(Geometries.get(geomN), geomN);
+                    }
+                    break;
+                    
+                case POLYGON:
+                case LINESTRING:
+                case POINT:
+                    drawGeometry(geomType, geometry);
+                    
+                default:
+                    throw new UnsupportedOperationException(
+                            "Unsupported geometry type: " + geomType.getName());
+                    
             }
         }
-
     }
 
     private Number getFeatureValue(SimpleFeature feature, Object attribute) {
@@ -345,7 +347,7 @@ public class VectorToRasterProcess extends AbstractFeatureCollectionProcess {
         monitor.complete();
 
         flattenImage();
-
+        
         GridCoverageFactory gcf = new GridCoverageFactory();
         return gcf.create(covName, image, extent);
     }
@@ -396,6 +398,10 @@ public class VectorToRasterProcess extends AbstractFeatureCollectionProcess {
 
         setBounds( features, bounds, gridDim );
         createImage( gridDim );
+        
+        gridGeom = new GridGeometry2D(
+                new GridEnvelope2D(0, 0, gridDim.width, gridDim.height), 
+                extent);
     }
 
     /**
@@ -425,29 +431,28 @@ public class VectorToRasterProcess extends AbstractFeatureCollectionProcess {
                 trEnv = inputBounds;
             }
 
-            com.vividsolutions.jts.geom.Envelope common = trEnv.intersection(features.getBounds());
-            if (common == null || common.isNull()) {
-                throw new VectorToRasterException(
-                        "Features do not lie within the requested rasterizing bounds");
+            // If the provided bounds cover the feature bounds, use them
+            if (trEnv.covers(features.getBounds())) {
+                extent = trEnv;
+                
+            } else {
+                // If the provided bounds partially overlap the feature bounds
+                // use the intersection
+                com.vividsolutions.jts.geom.Envelope common = trEnv.intersection(features.getBounds());
+                if (common == null || common.isNull()) {
+                    throw new VectorToRasterException(
+                            "Features do not lie within the requested rasterizing bounds");
+                }
+                extent = new ReferencedEnvelope(common, featuresCRS);
             }
 
-            extent = new ReferencedEnvelope(common, featuresCRS);
-
         } else {
-
-            /*
-             * The bounds arg was null - interpreted as set bounds to
-             * those of the FeatureCollection
-             */
+            // No bounds provided - use feature bounds
             extent = featureBounds;
         }
 
         GeometryFactory gf = new GeometryFactory();
         extentGeometry = gf.toGeometry(extent);
-
-        double xInterval = extent.getWidth() / gridDim.getWidth();
-        double yInterval = extent.getHeight() / gridDim.getHeight();
-        cellsize = Math.max(xInterval, yInterval);
     }
 
     /**
@@ -554,7 +559,7 @@ public class VectorToRasterProcess extends AbstractFeatureCollectionProcess {
         image = destImage;
     }
 
-    private void drawGeometry(Geometry geometry) {
+    private void drawGeometry(Geometries geomType, Geometry geometry) {
 
         Coordinate[] coords = geometry.getCoordinates();
 
@@ -565,22 +570,36 @@ public class VectorToRasterProcess extends AbstractFeatureCollectionProcess {
             coordGridY = new int[n * COORD_GRID_CHUNK_SIZE];
         }
 
-        // Go through coordinate array in order received (clockwise)
-        for (int n = 0; n < coords.length; n++) {
-            coordGridX[n] = (int) (((coords[n].x - extent.getMinX()) / cellsize));
-            coordGridY[n] = (int) (((coords[n].y - extent.getMinY()) / cellsize));
-            coordGridY[n] = image.getHeight() - coordGridY[n];
+        // Go through coordinate array in order received
+        DirectPosition2D worldPos = new DirectPosition2D();
+        try {
+            for (int n = 0; n < coords.length; n++) {
+                worldPos.setLocation(coords[n].x, coords[n].y);
+                GridCoordinates2D gridPos = gridGeom.worldToGrid(worldPos);
+                coordGridX[n] = gridPos.x;
+                coordGridY[n] = gridPos.y;
+            }
+            
+        } catch (TransformException ex) {
+            throw new RuntimeException(ex);
         }
 
-
-        if (geometry.getClass().equals(Polygon.class)) {
-            graphics.fillPolygon(coordGridX, coordGridY, coords.length);
-        } else if (geometry.getClass().equals(LinearRing.class)) {
-            graphics.drawPolyline(coordGridX, coordGridY, coords.length);
-        } else if (geometry.getClass().equals(LineString.class)) {
-            graphics.drawPolyline(coordGridX, coordGridY, coords.length);
-        } else if (geometry.getClass().equals(Point.class)) {
-            graphics.drawPolyline(coordGridX, coordGridY, coords.length);
+        switch (geomType) {
+            case POLYGON:
+                graphics.fillPolygon(coordGridX, coordGridY, coords.length);
+                break;
+                
+            case LINESTRING:  // includes LinearRing
+                graphics.drawPolyline(coordGridX, coordGridY, coords.length);
+                break;
+                
+            case POINT:
+                graphics.fillRect(coordGridX[0], coordGridY[0], 1, 1);
+                break;
+                
+            default:
+                throw new IllegalArgumentException(
+                        "Invalid geometry type: " + geomType.getName());
         }
     }
 

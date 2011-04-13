@@ -166,12 +166,10 @@
     <dependency>
       <groupId>com.googlecode.jaitools</groupId>
       <artifactId>jt-utils</artifactId>
-      <version>1.1-M3</version>
     </dependency>
     <dependency>
       <groupId>com.googlecode.jaitools</groupId>
       <artifactId>jt-vectorbinarize</artifactId>
-      <version>1.1-M3</version>
     </dependency> 
     <dependency>
       <groupId>net.sf.ehcache</groupId>

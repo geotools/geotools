@@ -22,6 +22,7 @@ import java.awt.geom.Point2D;
 import java.awt.image.RenderedImage;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import javax.media.jai.iterator.RectIter;
 import javax.media.jai.iterator.RectIterFactory;
@@ -35,41 +36,55 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.process.Process;
-import org.geotools.process.ProcessFactory;
 import org.geotools.process.Processors;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
 
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.geometry.DirectPosition;
 import org.opengis.metadata.spatial.PixelOrientation;
 import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.referencing.operation.TransformException;
 import org.opengis.util.ProgressListener;
 
+import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.MultiPoint;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKTReader;
+import org.geotools.coverage.grid.GridCoordinates2D;
+import org.geotools.coverage.grid.GridEnvelope2D;
+import org.geotools.coverage.grid.GridGeometry2D;
+import org.geotools.referencing.crs.DefaultEngineeringCRS;
+import org.geotools.referencing.cs.DefaultCartesianCS;
+
 
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
+ * Unit tests for rasterizing vector features.
+ * 
  * @author Michael Bedward
  *
  * @source $URL$
  */
 public class VectorToRasterProcessTest {
-
-    public VectorToRasterProcessTest() {
+    
+    @Test
+    public void testCreateProcess() throws Exception {
+        System.out.println("   create process");
+        Process p = Processors.createProcess(new NameImpl("gt", "VectorToRaster"));
+        assertNotNull(p);
+        assertTrue(p instanceof VectorToRasterProcess);
     }
 
     @Test
-    public void testProcess() throws Exception {
-        System.out.println("process");
-        SimpleFeatureCollection features = createTestFeatures();
+    public void rasterizePolygons() throws Exception {
+        System.out.println("   rasterize polygons");
+        
+        SimpleFeatureCollection features = createPolys();
         ReferencedEnvelope bounds = features.getBounds();
 
         Dimension gridDim = new Dimension(
@@ -79,8 +94,11 @@ public class VectorToRasterProcessTest {
         String covName = "Test";
         ProgressListener monitor = null;
 
-        GridCoverage2D cov = VectorToRasterProcess.process(features, "value", gridDim, bounds, covName, monitor);
+        GridCoverage2D cov = VectorToRasterProcess.process(
+                features, "value", gridDim, bounds, covName, monitor);
+        
         //textPrint(cov);
+        
         /*
          * Compare the coverage to the input features. We are expecting
          * to see the two small rectangles (values 1 and 3) 'on top' of
@@ -115,14 +133,40 @@ public class VectorToRasterProcessTest {
         }
 
     }
-
+    
     @Test
-    public void testCreateProcess() throws Exception {
-        System.out.println("   create process");
-        Process p = Processors.createProcess(new NameImpl("gt", "VectorToRaster"));
-        assertNotNull(p);
-        assertTrue(p instanceof VectorToRasterProcess);
+    public void rasterizePoints() throws Exception {
+        System.out.println("   rasterize points");
+        
+        ReferencedEnvelope bounds = new ReferencedEnvelope(-10, 10, -20, 20, DefaultEngineeringCRS.GENERIC_2D);
+        Dimension gridDim = new Dimension(100, 100);
+        
+        SimpleFeatureCollection features = createPoints(bounds, gridDim);
+        
+        String covName = "Test";
+        ProgressListener monitor = null;
+
+        GridCoverage2D cov = VectorToRasterProcess.process(
+                features, "value", gridDim, bounds, covName, monitor);
+        
+        SimpleFeatureIterator iter = features.features();
+        int[] covValues = new int[1];
+        try {
+            while (iter.hasNext()) {
+                SimpleFeature feature = iter.next();
+                Coordinate coord = ((Geometry)feature.getDefaultGeometry()).getCoordinate();
+                Point2D worldPos = new Point2D.Double(coord.x, coord.y);
+                int value = (Integer) feature.getAttribute("value");
+                
+                cov.evaluate(worldPos, covValues);
+                assertEquals(value, covValues[0]);
+            }
+        } finally {
+            iter.close();
+        }
+        
     }
+
 
     /**
      * Create a set of three features, each of which is a rectangular
@@ -140,13 +184,9 @@ public class VectorToRasterProcessTest {
      *             |---------------|
      * </pre>
      */
-    private SimpleFeatureCollection createTestFeatures() {
+    private SimpleFeatureCollection createPolys() {
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.setName("testType");
-        tb.setNamespaceURI("http://www.geotools.org/");
-        tb.setCRS(DefaultGeographicCRS.WGS84);
-
-        //add attributes
         tb.add("shape", MultiPolygon.class);
         tb.add("name", String.class);
         tb.add("value", Integer.class);
@@ -170,6 +210,57 @@ public class VectorToRasterProcessTest {
                 "MULTIPOLYGON(((20 0, 20 30, 50 30, 50 0, 20 0)))", "middle", 2);
         fc.add(feature);
 
+        return fc;
+    }
+
+    /**
+     * Creates randomly located points constrained so that only one point can
+     * lie in any grid cell. The number of points will be approx number of
+     * grid cells / 4.
+     * 
+     * @param numPoints
+     * @return 
+     */
+    private SimpleFeatureCollection createPoints(ReferencedEnvelope bounds, Dimension gridDim) 
+            throws Exception {
+        
+        final double PROB_POINT = 0.25;
+        final double xres = bounds.getWidth() / gridDim.width;
+        final double yres = bounds.getHeight() / gridDim.height;
+        
+        final GridGeometry2D gridGeom = new GridGeometry2D(
+                new GridEnvelope2D(0, 0, gridDim.width, gridDim.height), 
+                bounds);
+        
+        SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
+        tb.setName("testType");
+        tb.setCRS(bounds.getCoordinateReferenceSystem());
+        tb.add("shape", MultiPoint.class);
+        tb.add("name", String.class);
+        tb.add("value", Integer.class);
+
+        SimpleFeatureType type = tb.buildFeatureType();
+        SimpleFeatureBuilder builder = new SimpleFeatureBuilder(type);
+        WKTReader reader = new WKTReader();
+
+        SimpleFeatureCollection fc = FeatureCollections.newCollection();
+        Random rand = new Random();
+        
+        GridCoordinates2D gridPos = new GridCoordinates2D();
+        int i = 1;
+        for (int y = 0; y < gridDim.height; y++) {
+            for (int x = 0; x < gridDim.width; x++) {
+                if (rand.nextDouble() < PROB_POINT) {
+                    gridPos.setLocation(x, y);
+                    DirectPosition worldPos = gridGeom.gridToWorld(gridPos);
+                    
+                    String wkt = String.format("MULTIPOINT((%f %f))",
+                            worldPos.getOrdinate(0), worldPos.getOrdinate(1));
+                    fc.add( buildFeature(builder, reader, wkt, "p" + i, i ) );
+                    i++ ;
+                }
+            }
+        }
         return fc;
     }
 

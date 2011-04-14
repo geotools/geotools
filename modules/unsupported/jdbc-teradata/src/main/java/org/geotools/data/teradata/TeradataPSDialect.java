@@ -21,41 +21,44 @@ import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.io.WKTWriter;
 
 public class TeradataPSDialect extends PreparedStatementSQLDialect {
-	private TeradataGISDialect delegate;
+    private TeradataGISDialect delegate;
 
-	public TeradataPSDialect(JDBCDataStore store, TeradataGISDialect delegate) {
-		super(store);
-		this.delegate = delegate;
-	}
+    public TeradataPSDialect(JDBCDataStore store, TeradataGISDialect delegate) {
+        super(store);
+        this.delegate = delegate;
+    }
 
     @Override
-	public void setGeometryValue(Geometry g, int srid, Class binding,
-			PreparedStatement ps, int column) throws SQLException {
+    public void setGeometryValue(Geometry g, int srid, Class binding,
+            PreparedStatement ps, int column) throws SQLException {
         if (g != null) {
             if (g instanceof LinearRing ) {
                 //teradata does not handle linear rings, convert to just a line string
                 g = g.getFactory().createLineString(((LinearRing) g).getCoordinateSequence());
             }
             
-          ps.setString(column, new WKTWriter().write(g));
-
-//          byte[] bytes = new WKBWriter().write(g);
-//          ps.setBytes(column, bytes);
-//          ps.setString(column, Base64.encodeBytes(bytes));
-//          Reader r = new StringReader(new WKTWriter().write(g));
-//          ps.setBytes(column, new WKBWriter().write(g));
+            System.out.println(ps.getClass());
+            ps.setString(column, new WKTWriter().write(g));
+            
+//            Reader r = new StringReader(new WKTWriter().write(g));
+//            ps.setClob(column, r);
+//            byte[] bytes = new WKBWriter().write(g);
+//            ps.setBytes(column, bytes);
+//            ps.setString(column, Base64.encodeBytes(bytes));
+//            Reader r = new StringReader(new WKTWriter().write(g));
+//            ps.setBytes(column, new WKBWriter().write(g));
         }
         else {
             ps.setNull(column, Types.OTHER, "Geometry");
         }
-	}
+    }
 
-	@Override
-	public Geometry decodeGeometryValue(GeometryDescriptor descriptor,
-			ResultSet rs, String column, GeometryFactory factory, Connection cx)
-			throws IOException, SQLException {
+    @Override
+    public Geometry decodeGeometryValue(GeometryDescriptor descriptor,
+            ResultSet rs, String column, GeometryFactory factory, Connection cx)
+            throws IOException, SQLException {
         return delegate.decodeGeometryValue(descriptor, rs, column, factory, cx);
-	}
+    }
 
     @Override
     public Geometry decodeGeometryValue(GeometryDescriptor descriptor, ResultSet rs, int column,
@@ -69,17 +72,17 @@ public class TeradataPSDialect extends PreparedStatementSQLDialect {
     }
 
     @Override
-	public Envelope decodeGeometryEnvelope(ResultSet rs, int column,
-			Connection cx) throws SQLException, IOException {
+    public Envelope decodeGeometryEnvelope(ResultSet rs, int column,
+            Connection cx) throws SQLException, IOException {
         return delegate.decodeGeometryEnvelope(rs, column, cx);
-	}
+    }
 
-	@Override
-	public void encodeGeometryEnvelope(String tableName, String geometryColumn,
-			StringBuffer sql) {
-        delegate.encodeGeometryEnvelope(tableName, geometryColumn, sql);		
-	}
-	
+    @Override
+    public void encodeGeometryEnvelope(String tableName, String geometryColumn,
+            StringBuffer sql) {
+        delegate.encodeGeometryEnvelope(tableName, geometryColumn, sql);        
+    }
+    
     @Override
     public boolean includeTable(String schemaName, String tableName, Connection cx)
             throws SQLException {

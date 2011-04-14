@@ -23,24 +23,20 @@ import java.io.IOException;
 
 public class TeradataTransactionTest extends JDBCTransactionTest {
 
-
     protected JDBCTestSetup createTestSetup() {
         return new TeradataTestSetup();
     }
 
-
     public void testNoCommit() throws IOException {
-    	// Crash Teradata database on windows
+        // Crash Teradata database on windows
     }
-
 
     public void testConcurrentTransactions() throws IOException {
         // TODO enable this
     }
 
-
     public void testSerialTransactions() throws IOException {
-    	// Teradata will block
+        // Teradata will block
         // TODO enable this
     }
 }

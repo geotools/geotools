@@ -41,7 +41,8 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
     /**
      * enables using && in bbox queries
      */
-    public static final Param LOOSEBBOX = new Param("Loose bbox", Boolean.class, "Perform only primary filter on bbox", false, Boolean.TRUE);
+    public static final Param LOOSEBBOX = new Param("Loose bbox", Boolean.class,
+            "Perform only primary filter on bbox", false, Boolean.TRUE);
 
     /**
      * parameter for database port
@@ -55,32 +56,46 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
     /**
      * Wheter a prepared statements based dialect should be used, or not
      */
-    public static final Param PREPARED_STATEMENTS = new Param("preparedStatements", Boolean.class, "Use prepared statements", false, Boolean.FALSE);
+    public static final Param PREPARED_STATEMENTS = new Param("preparedStatements", Boolean.class,
+            "Use prepared statements", false, Boolean.FALSE);
 
-    public static final Param U_XMIN_PARAM = new Param("tessellate_index_u_xmin", String.class, "tessellate_index_u_xmin", false, "-180");
-    public static final Param U_YMIN_PARAM = new Param("tessellate_index_u_ymin", String.class, "tessellate_index_u_ymin", false, "-90");
-    public static final Param U_XMAX_PARAM = new Param("tessellate_index_u_xmax", String.class, "tessellate_index_u_xmax", false, "180");
-    public static final Param U_YMAX_PARAM = new Param("tessellate_index_u_ymax", String.class, "tessellate_index_u_ymax", false, "90");
-    public static final Param G_NX_PARAM = new Param("tessellate_index_g_nx", String.class, "tessellate_index_g_nx", false, "1000");
-    public static final Param G_NY_PARAM = new Param("tessellate_index_g_ny", String.class, "tessellate_index_g_ny", false, "1000");
-    public static final Param LEVELS_PARAM = new Param("tessellate_index_levels", String.class, "tessellate_index_levels", false, "1");
-    public static final Param SCALE_PARAM = new Param("tessellate_index_scale", String.class, "tessellate_index_scale", false, "0.01");
-    public static final Param SHIFT_PARAM = new Param("tessellate_index_shift", String.class, "tessellate_index_shift", false, "0");
+    public static final Param U_XMIN_PARAM = new Param("tessellate_index_u_xmin", String.class,
+            "tessellate_index_u_xmin", false, "-180");
+    public static final Param U_YMIN_PARAM = new Param("tessellate_index_u_ymin", String.class,
+            "tessellate_index_u_ymin", false, "-90");
+    public static final Param U_XMAX_PARAM = new Param("tessellate_index_u_xmax", String.class,
+            "tessellate_index_u_xmax", false, "180");
+    public static final Param U_YMAX_PARAM = new Param("tessellate_index_u_ymax", String.class,
+            "tessellate_index_u_ymax", false, "90");
+    public static final Param G_NX_PARAM = new Param("tessellate_index_g_nx", String.class,
+            "tessellate_index_g_nx", false, "1000");
+    public static final Param G_NY_PARAM = new Param("tessellate_index_g_ny", String.class,
+            "tessellate_index_g_ny", false, "1000");
+    public static final Param LEVELS_PARAM = new Param("tessellate_index_levels", String.class,
+            "tessellate_index_levels", false, "1");
+    public static final Param SCALE_PARAM = new Param("tessellate_index_scale", String.class,
+            "tessellate_index_scale", false, "0.01");
+    public static final Param SHIFT_PARAM = new Param("tessellate_index_shift", String.class,
+            "tessellate_index_shift", false, "0");
 
-    // SET QUERY_BAND = 'ApplicationName=TZA-InsuranceService; Version=01.00.00.00;' FOR Session;
-    public static final Param QUERY_BANDING_SQL = new Param("queryBandingSQL", String.class, "SQL to use Query Banding (example: \"SET QUERY_BAND = 'ApplicationName=TZA-InsuranceService; Version=01.00.00.00;' FOR Session;\")", false, "");
-    
-    
+    // SET QUERY_BAND = 'ApplicationName=TZA-InsuranceService;
+    // Version=01.00.00.00;' FOR Session;
+    public static final Param QUERY_BANDING_SQL = new Param(
+            "queryBandingSQL",
+            String.class,
+            "SQL to use Query Banding (example: \"SET QUERY_BAND = 'ApplicationName=TZA-InsuranceService; Version=01.00.00.00;' FOR Session;\")",
+            false, "");
+
     private static final PrimaryKeyFinder KEY_FINDER = new CompositePrimaryKeyFinder(
-            new MetadataTablePrimaryKeyFinder(),
-            new TeradataPrimaryKeyFinder(),
+            new MetadataTablePrimaryKeyFinder(), new TeradataPrimaryKeyFinder(),
             new HeuristicPrimaryKeyFinder());
 
     /**
      * parameter for database schema
      */
-//    public static final Param SCHEMA = new Param("schema", String.class, "Schema", false, "public");
-    
+    // public static final Param SCHEMA = new Param("schema", String.class,
+    // "Schema", false, "public");
+
     // TODO rest of parameters for connection (ACCOUNT, Charset, etc...)
     @Override
     protected SQLDialect createSQLDialect(JDBCDataStore dataStore) {
@@ -106,7 +121,6 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
         return "com.teradata.jdbc.TeraDriver";
     }
 
-
     @Override
     protected boolean checkDBType(Map params) {
         return checkDBType(params, "teradata");
@@ -118,7 +132,7 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
 
         // setup loose bbox
         TeradataGISDialect dialect = (TeradataGISDialect) dataStore.getSQLDialect();
-        
+
         Boolean loose = (Boolean) LOOSEBBOX.lookUp(params);
         dialect.setLooseBBOXEnabled(loose == null || Boolean.TRUE.equals(loose));
 
@@ -127,58 +141,59 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
         }
 
         if (params.containsKey(U_XMIN_PARAM.key)) {
-	    	dialect.setU_xmin((Double)U_XMIN_PARAM.lookUp(params));
+            dialect.setU_xmin((Double) U_XMIN_PARAM.lookUp(params));
         }
         if (params.containsKey(U_YMIN_PARAM.key)) {
-	    	dialect.setU_ymin((Double)U_YMIN_PARAM.lookUp(params));
+            dialect.setU_ymin((Double) U_YMIN_PARAM.lookUp(params));
         }
         if (params.containsKey(U_XMAX_PARAM.key)) {
-	    	dialect.setU_xmax((Double)U_XMAX_PARAM.lookUp(params));
+            dialect.setU_xmax((Double) U_XMAX_PARAM.lookUp(params));
         }
         if (params.containsKey(U_YMAX_PARAM.key)) {
-	    	dialect.setU_ymax((Double)U_YMAX_PARAM.lookUp(params));
+            dialect.setU_ymax((Double) U_YMAX_PARAM.lookUp(params));
         }
         if (params.containsKey(G_NX_PARAM.key)) {
-	    	dialect.setG_nx((Integer)G_NX_PARAM.lookUp(params));
+            dialect.setG_nx((Integer) G_NX_PARAM.lookUp(params));
         }
         if (params.containsKey(G_NY_PARAM.key)) {
-	    	dialect.setG_ny((Integer)G_NY_PARAM.lookUp(params));
+            dialect.setG_ny((Integer) G_NY_PARAM.lookUp(params));
         }
         if (params.containsKey(LEVELS_PARAM.key)) {
-	    	dialect.setLevels((Integer)LEVELS_PARAM.lookUp(params));
+            dialect.setLevels((Integer) LEVELS_PARAM.lookUp(params));
         }
         if (params.containsKey(SCALE_PARAM.key)) {
-	    	dialect.setScale((Double)SCALE_PARAM.lookUp(params));
+            dialect.setScale((Double) SCALE_PARAM.lookUp(params));
         }
         if (params.containsKey(SHIFT_PARAM.key)) {
-	    	dialect.setShift((Integer)SHIFT_PARAM.lookUp(params));
+            dialect.setShift((Integer) SHIFT_PARAM.lookUp(params));
         }
-        
+
         if (params.containsKey(QUERY_BANDING_SQL.key)) {
-	    	dialect.setQueryBandingSql((String)QUERY_BANDING_SQL.lookUp(params));
-        }        
+            dialect.setQueryBandingSql((String) QUERY_BANDING_SQL.lookUp(params));
+        }
 
         // setup the ps dialect if need be
         Boolean usePs = (Boolean) PREPARED_STATEMENTS.lookUp(params);
-        if(Boolean.TRUE.equals(usePs)) {
+        if (Boolean.TRUE.equals(usePs)) {
             dataStore.setSQLDialect(new TeradataPSDialect(dataStore, dialect));
         }
-        
+
         return dataStore;
     }
 
     @Override
     protected void setupParameters(Map parameters) {
-        // NOTE: when adding parameters here remember to add them to TeradataJNDIDataStoreFactory
+        // NOTE: when adding parameters here remember to add them to
+        // TeradataJNDIDataStoreFactory
 
         super.setupParameters(parameters);
         parameters.put(DBTYPE.key, DBTYPE);
-//        parameters.put(SCHEMA.key, SCHEMA);
+        // parameters.put(SCHEMA.key, SCHEMA);
         parameters.put(LOOSEBBOX.key, LOOSEBBOX);
         parameters.put(PORT.key, PORT);
         parameters.put(PREPARED_STATEMENTS.key, PREPARED_STATEMENTS);
         parameters.put(MAX_OPEN_PREPARED_STATEMENTS.key, MAX_OPEN_PREPARED_STATEMENTS);
-        
+
         parameters.put(U_XMIN_PARAM.key, U_XMIN_PARAM);
         parameters.put(U_YMIN_PARAM.key, U_YMIN_PARAM);
         parameters.put(U_XMAX_PARAM.key, U_XMAX_PARAM);
@@ -208,6 +223,7 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
         String charset = (String) CHARSET.lookUp(params);
         if (charset == null)
             charset = CHARSET.sample.toString();
-        return "jdbc:teradata://" + host + "/DATABASE=" + db + ",PORT=" + port + ",TMODE=" + mode + ",CHARSET=" + charset;
-    }   
+        return "jdbc:teradata://" + host + "/DATABASE=" + db + ",PORT=" + port + ",TMODE=" + mode
+                + ",CHARSET=" + charset;
+    }
 }

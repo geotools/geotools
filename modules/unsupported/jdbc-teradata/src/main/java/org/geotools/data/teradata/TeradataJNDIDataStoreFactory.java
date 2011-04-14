@@ -23,8 +23,8 @@ import java.util.Map;
 import static org.geotools.data.teradata.TeradataDataStoreFactory.LOOSEBBOX;
 
 /**
- * JNDI DataStoreFactory  for Teradata database.
- *
+ * JNDI DataStoreFactory for Teradata database.
+ * 
  * @author Jesse Eichar
  * @source $URL$
  */
@@ -33,7 +33,6 @@ public class TeradataJNDIDataStoreFactory extends JDBCJNDIDataStoreFactory {
     public TeradataJNDIDataStoreFactory() {
         super(new TeradataDataStoreFactory());
     }
-
 
     protected void setupParameters(Map parameters) {
         super.setupParameters(parameters);

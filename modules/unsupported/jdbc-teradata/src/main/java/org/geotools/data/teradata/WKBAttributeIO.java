@@ -17,21 +17,25 @@
 
 package org.geotools.data.teradata;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Blob;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
+
+import org.geotools.data.DataSourceException;
+
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.io.InStream;
 import com.vividsolutions.jts.io.WKBReader;
 import com.vividsolutions.jts.io.WKBWriter;
-import org.geotools.data.DataSourceException;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.sql.*;
-
 
 /**
  * An attribute IO implementation that can manage the WKB
- *
+ * 
  * @author Andrea Aime
  * @source $URL$
  * @since 2.4.1
@@ -50,18 +54,21 @@ public class WKBAttributeIO {
     }
 
     /**
-     * This method will convert a Well Known Binary representation to a
-     * JTS  Geometry object.
-     *
+     * This method will convert a Well Known Binary representation to a JTS
+     * Geometry object.
+     * 
      * @return a JTS Geometry object that is equivalent to the WTB
      *         representation passed in by param wkb
-     * @throws IOException if more than one geometry object was found in  the
-     *                     WTB representation, or if the parser could not parse the WKB
-     *                     representation.
+     * @throws IOException
+     *             if more than one geometry object was found in the WTB
+     *             representation, or if the parser could not parse the WKB
+     *             representation.
      */
-    public Geometry wkb2Geometry(byte[] wkbBytes)
-            throws IOException {
-        if (wkbBytes == null)  //DJB: null value from database --> null geometry (the same behavior as WKT).  NOTE: sending back a GEOMETRYCOLLECTION(EMPTY) is also a possibility, but this is not the same as NULL
+    public Geometry wkb2Geometry(byte[] wkbBytes) throws IOException {
+        if (wkbBytes == null) // DJB: null value from database --> null geometry
+                              // (the same behavior as WKT). NOTE: sending back
+                              // a GEOMETRYCOLLECTION(EMPTY) is also a
+                              // possibility, but this is not the same as NULL
             return null;
         try {
             byteArrayInStream.setBytes(wkbBytes);
@@ -71,9 +78,12 @@ public class WKBAttributeIO {
         }
     }
 
-    public Geometry wkb2Geometry(InputStream inputStream)
-            throws IOException {
-        if (inputStream == null)  //DJB: null value from database --> null geometry (the same behavior as WKT).  NOTE: sending back a GEOMETRYCOLLECTION(EMPTY) is also a possibility, but this is not the same as NULL
+    public Geometry wkb2Geometry(InputStream inputStream) throws IOException {
+        if (inputStream == null) // DJB: null value from database --> null
+                                 // geometry (the same behavior as WKT). NOTE:
+                                 // sending back a GEOMETRYCOLLECTION(EMPTY) is
+                                 // also a possibility, but this is not the same
+                                 // as NULL
             return null;
         try {
             inputStreamInStream.setIn(inputStream);
@@ -95,7 +105,6 @@ public class WKBAttributeIO {
         }
     }
 
-
     /**
      * @see org.geotools.data.jdbc.attributeio.AttributeIO#read(java.sql.ResultSet,
      *      int)
@@ -103,10 +112,10 @@ public class WKBAttributeIO {
     public Geometry read(ResultSet rs, int columnIndex) throws IOException {
         try {
             switch (rs.getMetaData().getColumnType(columnIndex)) {
-                case Types.BLOB:
-                    return readFromBlob(rs, columnIndex);
-                default:
-                    return readFromBytes(rs, columnIndex);
+            case Types.BLOB:
+                return readFromBlob(rs, columnIndex);
+            default:
+                return readFromBytes(rs, columnIndex);
             }
         } catch (SQLException e) {
             throw new DataSourceException("SQL exception occurred while reading the geometry.", e);
@@ -132,7 +141,8 @@ public class WKBAttributeIO {
         InputStream is = null;
         try {
             is = blob.getBinaryStream();
-            if (is == null || is.available() == 0) // ie. its a 0 length column -> return a null geometry!
+            if (is == null || is.available() == 0) // ie. its a 0 length column
+                                                   // -> return a null geometry!
                 return null;
             return wkb2Geometry(is);
         } catch (SQLException e) {
@@ -157,7 +167,8 @@ public class WKBAttributeIO {
     }
 
     /**
-     * @see org.geotools.data.jdbc.attributeio.AttributeIO#write(java.sql.PreparedStatement, int, java.lang.Object)
+     * @see org.geotools.data.jdbc.attributeio.AttributeIO#write(java.sql.PreparedStatement,
+     *      int, java.lang.Object)
      */
     public void write(PreparedStatement ps, int position, Object value) throws IOException {
         try {
@@ -174,7 +185,7 @@ public class WKBAttributeIO {
 
     /**
      * Turns a char that encodes four bits in hexadecimal notation into a byte
-     *
+     * 
      * @param c
      */
     public static byte getFromChar(char c) {
@@ -188,8 +199,9 @@ public class WKBAttributeIO {
     }
 
     /**
-     * Accelerates data loading compared to the plain InStream shipped along with JTS
-     *
+     * Accelerates data loading compared to the plain InStream shipped along
+     * with JTS
+     * 
      * @author Andrea Aime - TOPP
      */
     private static class ByteArrayInStream implements InStream {
@@ -201,7 +213,6 @@ public class WKBAttributeIO {
             this.buffer = buffer;
             this.position = 0;
         }
-
 
         public void read(final byte[] buf) throws IOException {
             final int size = buf.length;
@@ -224,4 +235,3 @@ public class WKBAttributeIO {
 
     }
 }
-

@@ -25,18 +25,15 @@ public class TeradataGeometrylessTestSetup extends JDBCGeometrylessTestSetup {
         super(delegate);
     }
 
-
     protected void createPersonTable() throws Exception {
         run("CREATE TABLE \"person\"(\"fid\" PRIMARY KEY not null generated always as identity (start with 0) integer, \"id\" int, \"name\" varchar(200), \"age\" int)");
         run("INSERT INTO \"person\" (\"id\",\"name\",\"age\") VALUES (0,'Paul',32)");
         run("INSERT INTO \"person\" (\"id\",\"name\",\"age\") VALUES (0,'Anne',40)");
     }
 
-
     protected void dropPersonTable() throws Exception {
         runSafe("DROP TABLE \"person\"");
     }
-
 
     protected void dropZipCodeTable() throws Exception {
         runSafe("DROP TABLE \"zipcode\"");

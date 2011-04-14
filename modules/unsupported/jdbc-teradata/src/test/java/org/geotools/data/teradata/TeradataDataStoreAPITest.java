@@ -16,8 +16,22 @@
  */
 package org.geotools.data.teradata;
 
+import java.util.Collections;
+
+import org.geotools.data.DataUtilities;
+import org.geotools.data.FeatureReader;
+import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.data.simple.SimpleFeatureStore;
+import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.jdbc.JDBCDataStoreAPITest;
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
+import org.geotools.jdbc.TestData;
+import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.AttributeDescriptor;
+
+import com.vividsolutions.jts.geom.Geometry;
 
 public class TeradataDataStoreAPITest extends JDBCDataStoreAPITest {
 
@@ -35,4 +49,5 @@ public class TeradataDataStoreAPITest extends JDBCDataStoreAPITest {
     public void testTransactionIsolation() throws Exception {
         // TODO implement writing
     }
+    
 }

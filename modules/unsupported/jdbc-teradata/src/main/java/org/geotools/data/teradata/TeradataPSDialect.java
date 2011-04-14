@@ -36,8 +36,7 @@ public class TeradataPSDialect extends PreparedStatementSQLDialect {
                 //teradata does not handle linear rings, convert to just a line string
                 g = g.getFactory().createLineString(((LinearRing) g).getCoordinateSequence());
             }
-            
-            System.out.println(ps.getClass());
+
             ps.setString(column, new WKTWriter().write(g));
             
 //            Reader r = new StringReader(new WKTWriter().write(g));

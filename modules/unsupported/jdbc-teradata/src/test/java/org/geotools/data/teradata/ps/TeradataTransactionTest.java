@@ -23,11 +23,9 @@ import java.io.IOException;
 
 public class TeradataTransactionTest extends JDBCTransactionTest {
 
-
     protected JDBCTestSetup createTestSetup() {
         return new TeradataPSTestSetup();
     }
-
 
     public void testConcurrentTransactions() throws IOException {
         // TODO enable this

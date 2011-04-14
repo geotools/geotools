@@ -17,6 +17,7 @@
     <groupId>org.geotools.jdbc</groupId>
     <artifactId>gt-jdbc</artifactId>
     <version>8-SNAPSHOT</version>
+    <relativePath>../../plugin/jdbc/pom.xml</relativePath>
   </parent>
 
 
@@ -73,39 +74,29 @@
     </developer>
   </developers>
 
-    <dependencies>
+  <profiles>
+	<profile>
+	  <id>teradata-jdbc.true</id>
+      <activation>
+         <property>
+            <name>teradata</name>
+         </property>
+      </activation>
+      <dependencies>
         <dependency>
-            <groupId>com.teradata</groupId>
-            <artifactId>terajdbc4</artifactId>
-            <version>13.10</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/terajdbc4.jar</systemPath>
+          <groupId>com.teradata</groupId>
+          <artifactId>terajdbc4</artifactId>
+          <version>${td.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.teradata</groupId>
-            <artifactId>tdgssconfig</artifactId>
-            <version>13.10</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/tdgssconfig.jar</systemPath>
+          <groupId>com.teradata</groupId>
+          <artifactId>tdgssconfig</artifactId>
+          <version>${td.version}</version>
         </dependency>
-    </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>maven-bundle-plugin</artifactId>
-                <version>1.4.0</version>
-                <extensions>true</extensions>
-                <configuration>
-                      <instructions>
-                        <Bundle-SymbolicName>${pom.groupId}.${pom.artifactId}</Bundle-SymbolicName>
-                        <Bundle-Name>${pom.artifactId}</Bundle-Name>
-                        <Bundle-Version>1.0.0</Bundle-Version>
-                        <Export-Package>org.geotools.data.teradata</Export-Package>
-                    </instructions>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+      </dependencies>
+    </profile>
+  </profiles>
+  <properties>
+    <td.version>13.00.00.27</td.version>
+  </properties>
 </project>

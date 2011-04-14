@@ -22,21 +22,17 @@ import org.geotools.jdbc.JDBCTestSetup;
 import java.io.IOException;
 import java.sql.SQLException;
 
-
 public class TeradataFeatureStoreExposePkTest extends JDBCFeatureStoreExposePkTest {
-
 
     protected JDBCTestSetup createTestSetup() {
         return new TeradataTestSetup();
     }
 
-
     public void testAddInTransaction() throws IOException {
-        // TODO enable transaction isolation  (non-blocking)
+        // TODO enable transaction isolation (non-blocking)
     }
 
-
     public void testExternalConnection() throws IOException, SQLException {
-        // TODO enable transaction isolation  (non-blocking)
+        // TODO enable transaction isolation (non-blocking)
     }
 }

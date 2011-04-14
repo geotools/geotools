@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import org.geotools.feature.type.BasicFeatureTypes;
 import org.geotools.feature.type.FeatureTypeFactoryImpl;
 import org.geotools.jdbc.CompositePrimaryKeyFinder;
 import org.geotools.jdbc.HeuristicPrimaryKeyFinder;
@@ -144,6 +145,35 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
         return checkDBType(params, "teradata");
     }
 
+    private int getInteger(Param param, int defaultValue, Map params) {
+        try {
+            return params.containsKey(param.key) ? (Integer) param.lookUp(params) : defaultValue;
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            return defaultValue;
+        }
+    }
+    private double getDouble(Param param, double defaultValue, Map params) {
+        try {
+            return params.containsKey(param.key) ? (Double) param.lookUp(params) : defaultValue;
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            return defaultValue;
+        }
+    }
+    private void fillFeatureType(FeatureType type, Map params) {
+        type.getUserData().put(U_XMIN, getDouble(U_XMIN_PARAM, -180, params));
+        type.getUserData().put(U_YMIN, getDouble(U_YMIN_PARAM, -90, params));
+        type.getUserData().put(U_XMAX, getDouble(U_XMAX_PARAM, 180, params));
+        type.getUserData().put(U_YMAX, getDouble(U_YMAX_PARAM, 90, params));
+        type.getUserData().put(G_NX, getInteger(G_NX_PARAM, 100, params));
+        type.getUserData().put(G_NY, getInteger(G_NY_PARAM, 100, params));
+        type.getUserData().put(LEVELS, getInteger(LEVELS_PARAM, 1, params));
+        type.getUserData().put(SCALE, getDouble(SCALE_PARAM, 0.01, params));
+        type.getUserData().put(SHIFT, getInteger(SHIFT_PARAM, 0, params));
+    }
     @Override
     protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, final Map params)
             throws IOException {
@@ -158,34 +188,6 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
             dataStore.setPrimaryKeyFinder(KEY_FINDER);
         }
 
-        if (params.containsKey(U_XMIN_PARAM.key)) {
-            dialect.setU_xmin((Double) U_XMIN_PARAM.lookUp(params));
-        }
-        if (params.containsKey(U_YMIN_PARAM.key)) {
-            dialect.setU_ymin((Double) U_YMIN_PARAM.lookUp(params));
-        }
-        if (params.containsKey(U_XMAX_PARAM.key)) {
-            dialect.setU_xmax((Double) U_XMAX_PARAM.lookUp(params));
-        }
-        if (params.containsKey(U_YMAX_PARAM.key)) {
-            dialect.setU_ymax((Double) U_YMAX_PARAM.lookUp(params));
-        }
-        if (params.containsKey(G_NX_PARAM.key)) {
-            dialect.setG_nx((Integer) G_NX_PARAM.lookUp(params));
-        }
-        if (params.containsKey(G_NY_PARAM.key)) {
-            dialect.setG_ny((Integer) G_NY_PARAM.lookUp(params));
-        }
-        if (params.containsKey(LEVELS_PARAM.key)) {
-            dialect.setLevels((Integer) LEVELS_PARAM.lookUp(params));
-        }
-        if (params.containsKey(SCALE_PARAM.key)) {
-            dialect.setScale((Double) SCALE_PARAM.lookUp(params));
-        }
-        if (params.containsKey(SHIFT_PARAM.key)) {
-            dialect.setShift((Integer) SHIFT_PARAM.lookUp(params));
-        }
-
         if (params.containsKey(QUERY_BANDING_SQL.key)) {
             dialect.setQueryBandingSql((String) QUERY_BANDING_SQL.lookUp(params));
         }
@@ -196,46 +198,7 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
             dataStore.setSQLDialect(new TeradataPSDialect(dataStore, dialect));
         }
 
-
-        dataStore.setFeatureTypeFactory(new FeatureTypeFactoryImpl() {
-            private int getInteger(Param param, int defaultValue) {
-                try {
-                    return params.containsKey(param.key) ? (Integer) param.lookUp(params) : defaultValue;
-                }
-                catch (IOException e) {
-                    e.printStackTrace();
-                    return defaultValue;
-                }
-            }
-            private double getDouble(Param param, double defaultValue) {
-                try {
-                    return params.containsKey(param.key) ? (Double) param.lookUp(params) : defaultValue;
-                }
-                catch (IOException e) {
-                    e.printStackTrace();
-                    return defaultValue;
-                }
-            }
-            @Override
-            public FeatureType createFeatureType(Name name, Collection schema,
-                    GeometryDescriptor defaultGeometry, boolean isAbstract, List restrictions,
-                    AttributeType superType, InternationalString description) {
-                FeatureType type = super.createFeatureType(name, schema, defaultGeometry, isAbstract, restrictions, superType,
-                        description);
-
-                type.getUserData().put(U_XMIN, getDouble(U_XMIN_PARAM, -180));
-                type.getUserData().put(U_YMIN, getDouble(U_YMIN_PARAM, -90));
-                type.getUserData().put(U_XMAX, getDouble(U_XMAX_PARAM, 180));
-                type.getUserData().put(U_YMAX, getDouble(U_YMAX_PARAM, 90));
-                type.getUserData().put(G_NX, getInteger(G_NX_PARAM, 1000));
-                type.getUserData().put(G_NY, getInteger(G_NY_PARAM, 1000));
-                type.getUserData().put(LEVELS, getInteger(LEVELS_PARAM, 1));
-                type.getUserData().put(SCALE, getDouble(SCALE_PARAM, 0.01));
-                type.getUserData().put(SHIFT, getInteger(SHIFT_PARAM, 0));
-                
-                return type;
-            }
-        });
+        fillFeatureType(BasicFeatureTypes.FEATURE, params);
         
         return dataStore;
     }

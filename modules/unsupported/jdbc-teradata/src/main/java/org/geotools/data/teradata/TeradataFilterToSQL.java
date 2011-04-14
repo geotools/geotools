@@ -21,6 +21,7 @@ import java.text.MessageFormat;
 import java.util.List;
 
 import org.geotools.data.jdbc.FilterToSQL;
+import org.geotools.feature.type.BasicFeatureTypes;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.jdbc.PrimaryKeyColumn;
 import org.geotools.jdbc.SQLDialect;
@@ -209,15 +210,15 @@ public class TeradataFilterToSQL extends FilterToSQL {
                             + "  {7,number,0}, {8,number,0}, {9,number,0}, {10,number,0.0#}, {11,number,0})) AS i "
                             + "WHERE ti.cellid = i.cellid) AND ",
                     encodedIdxTableName, encodedTableName, encodedKeyName,
-                    featureType.getUserData().get(TeradataDataStoreFactory.U_XMIN),
-                    featureType.getUserData().get(TeradataDataStoreFactory.U_YMIN),
-                    featureType.getUserData().get(TeradataDataStoreFactory.U_XMAX),
-                    featureType.getUserData().get(TeradataDataStoreFactory.U_YMAX),
-                    featureType.getUserData().get(TeradataDataStoreFactory.G_NX),
-                    featureType.getUserData().get(TeradataDataStoreFactory.G_NY),
-                    featureType.getUserData().get(TeradataDataStoreFactory.LEVELS),
-                    featureType.getUserData().get(TeradataDataStoreFactory.SCALE),
-                    featureType.getUserData().get(TeradataDataStoreFactory.SHIFT),
+                    BasicFeatureTypes.FEATURE.getUserData().get(TeradataDataStoreFactory.U_XMIN),
+                    BasicFeatureTypes.FEATURE.getUserData().get(TeradataDataStoreFactory.U_YMIN),
+                    BasicFeatureTypes.FEATURE.getUserData().get(TeradataDataStoreFactory.U_XMAX),
+                    BasicFeatureTypes.FEATURE.getUserData().get(TeradataDataStoreFactory.U_YMAX),
+                    BasicFeatureTypes.FEATURE.getUserData().get(TeradataDataStoreFactory.G_NX),
+                    BasicFeatureTypes.FEATURE.getUserData().get(TeradataDataStoreFactory.G_NY),
+                    BasicFeatureTypes.FEATURE.getUserData().get(TeradataDataStoreFactory.LEVELS),
+                    BasicFeatureTypes.FEATURE.getUserData().get(TeradataDataStoreFactory.SCALE),
+                    BasicFeatureTypes.FEATURE.getUserData().get(TeradataDataStoreFactory.SHIFT),
                     env.getMinX(), env.getMinY(), env.getMaxX(), env.getMaxY()));
         }
     }

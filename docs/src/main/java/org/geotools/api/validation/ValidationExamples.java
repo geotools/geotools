@@ -1,32 +1,22 @@
 package org.geotools.api.validation;
 
 import java.io.File;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.geotools.data.DataStore;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.memory.MemoryDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.NameImpl;
-import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.geotools.validation.DefaultFeatureResults;
-import org.geotools.validation.RoadNetworkValidationResults;
 import org.geotools.validation.ValidationProcessor;
 import org.geotools.validation.spatial.IsValidGeometryValidation;
-import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
 
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-
+@SuppressWarnings("unused")
 public class ValidationExamples {
 
 private void validationExample() throws Exception{
@@ -72,7 +62,6 @@ private void validationExample() throws Exception{
 }
 
 private void validationExample2() throws Exception {
-    SimpleFeatureType roadType = null;
     File pluginDirectory = null;
     File testSuiteDirectory = null;
     SimpleFeatureSource lakesFeatureSource = null;

@@ -17,6 +17,7 @@
 package org.geotools.filter.visitor;
 
 import java.util.Iterator;
+import java.util.List;
 
 import org.opengis.filter.And;
 import org.opengis.filter.ExcludeFilter;
@@ -94,8 +95,10 @@ public abstract class DefaultFilterVisitor implements FilterVisitor, ExpressionV
     }
 
     public Object visit( And filter, Object data ) {
-        if (filter.getChildren() != null) {
-            for( Filter child : filter.getChildren()) {
+        List<Filter> childList = filter.getChildren();
+        if (childList != null) {
+            for( Filter child : childList) {
+                if( child == null ) continue;
                 data = child.accept(this, data);
             }
         }
@@ -115,9 +118,11 @@ public abstract class DefaultFilterVisitor implements FilterVisitor, ExpressionV
     }
 
     public Object visit( Or filter, Object data ) {
-        if (filter.getChildren() != null) {
-            for( Filter child : filter.getChildren()) {
-                data = child.accept(this, data);
+        List<Filter> childList = filter.getChildren();
+        if (childList != null) {
+            for( Filter child : childList) {
+                if( child == null ) continue;
+                data = child.accept(this, data);                
             }
         }
         return data;

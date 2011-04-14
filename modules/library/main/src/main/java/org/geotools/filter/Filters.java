@@ -28,6 +28,7 @@ import java.util.Set;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.visitor.AbstractSearchFilterVisitor;
+import org.geotools.filter.visitor.DefaultFilterVisitor;
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 import org.geotools.util.Converters;
 import org.geotools.util.Utilities;
@@ -706,102 +707,19 @@ public class Filters {
 //    }
 
     /**
-     * Creates a new filter by appending a newFilter to a baseFilter.
-     * <p>
-     * This works in a smooth fashion if the baseFilter is a BinaryLogicalOperator
-     * (And or Or). The created filter will be a combination of the baseFilter children with the
-     * newFilter appended on the end.
-     * <p>
-     * Otherwise this method will create an And filter to append newFilter to the end of baseFilter.
-     * @param baseFilter
-     * @param newFilter
-     * @return the combined filters
-     */
-    public Filter append(Filter baseFilter, Filter addFilter) {
-        return append(baseFilter, addFilter, false);
-    }
-    /**
-     * Create a new filter by appending newFilter onto the end of baseFilter.
-     * <p>
-     * Provides quick static access to filters.append( baseFilter, addFilter );
-     * @param ff FilterFactory to use when creating a new filter
-     * @param baseFilter baseFilter 
-     * @param addFilter addFilter being appended
-     * @return
-     */
-    public static Filter appendFilter( Filter baseFilter, Filter addFilter ){
-        return STATIC.append( baseFilter, addFilter );
-    }
-
-    /**
-     * Creates a new filter by appending a newFilter to a baseFilter.
-     * <p>
-     * This works in a smooth fashion if the baseFilter is a BinaryLogicalOperator
-     * (And or Or). The created filter will be a combination of the baseFilter children with the
-     * newFilter appended on the end.
-     * <p>
-     * Otherwise this method will:
-     * <il>
-     * <li>if createOr is true: combine the two filters using Or</li>
-     * <li>if createOr is false: combine the two filters using And</li>
-     * </ul>
-     * filter to append newFilter to the end of baseFilter.
-     * @param baseFilter
-     * @param newFilter
-     * @param createOr True to append with an Or filter if needed, false to append with And
-     * @return the combined filters
-     */
-     public Filter append(Filter baseFilter, Filter newFilter, boolean createOr) {
-        //no need to create a grouping filter if none currently exists
-        if (baseFilter == null){
-            return newFilter;
-        }
-        //similarly, just return the existing one if the new one is null
-        if (newFilter == null){
-            return baseFilter;
-        }
-        if (baseFilter instanceof And){
-            And and = (And) baseFilter;
-            List<Filter> children = new ArrayList<Filter>( and.getChildren() );
-            children.add(newFilter);
-            return ff.and( children );            
-        }
-        if (baseFilter instanceof Or){
-            Or or = (Or) baseFilter;
-            List<Filter> children = new ArrayList<Filter>( or.getChildren() );
-            children.add(newFilter);
-            return ff.or( children );            
-        }
-        if (createOr){
-            return ff.or( baseFilter, newFilter );
-        }
-        else {
-            return ff.and( baseFilter, newFilter );            
-        }
-    }
-     /**
-      * Create a new filter by appending newFilter onto the end of baseFilter.
-      * <p>
-      * Provides quick static access to filters.append( baseFilter, addFilter );
-      * @param ff FilterFactory to use when creating a new filter
-      * @param baseFilter baseFilter 
-      * @param addFilter addFilter being appended
-      * @return
-      */
-     public static Filter appendFilter( Filter baseFilter, Filter addFilter, boolean createOr  ){
-         return STATIC.append( baseFilter, addFilter, createOr );
-     }
-
-    /**
-     * Removes the targetFilter from the baseFilter if the baseFilter is a group filter (And or Or), recursing into any
-     * sub-logic filters to find the targetFilter if necessary.  If removing the targetFilter would leave only a single
-     * term within the baseFilter, then the single remaining term is returned instead of the (now invalid) baseFilter.
-     * If the baseFilter is not a group filter:
+     * Removes the targetFilter from the baseFilter if the baseFilter is a group filter (And or
+     * Or),recursing into any sub-logic filters to find the targetFilter if necessary.
      * <ul>
-     * <li> If the targetFilter equals the baseFilter, then null is returned to indicate that no filters
-     * are left.
-     * <li> If the targetFilter does not equal the base filter, no change is made and the baseFilter is returned.
+     * <li>If the targetFilter equals the baseFilter, then Filter.INCLUDE is returned to indicate
+     * that no filters are left.</li>
+     * <li>If the targetFilter does not equal the base filter, no change is made and the baseFilter
+     * is returned.</li>
+     * <li>If removing the targetFilter would leave only a single term within the baseFilter, then the single
+     * remaining term is returned instead of the (now invalid) baseFilter.
+     * </li>If the last item is removed from an Or statement then Filter.EXCLUDE is return
+     * </li>If the last item is removed from an And statement then Filter.INCLUDE is returned
      * </ul>
+     * 
      * @param baseFilter
      * @param targetFilter
      * @return
@@ -832,9 +750,9 @@ public class Filters {
             //similarly, just return the existing one if the target is null
             return baseFilter;
         }
-        if (baseFilter == targetFilter){
-            //if they are the same filter, return null to signify no filters left
-            return null;
+        if (baseFilter.equals(targetFilter)){
+            //if they are the same filter, return Filter.INCLUDE to signify no filters left
+            return Filter.INCLUDE;
         }
         if( !(baseFilter instanceof BinaryLogicOperator)){
             return baseFilter; // nothing to traverse
@@ -842,24 +760,31 @@ public class Filters {
         if (recurse) {
             DuplicatingFilterVisitor remove = new DuplicatingFilterVisitor() {
                 public Object visit(Or filter, Object extraData) {
-                    List<Filter> children = filter.getChildren();
-                    List<Filter> newChildren = new ArrayList<Filter>();
-                    for (Iterator<Filter> iter = children.iterator(); iter.hasNext();) {
-                        Filter child = iter.next();
-                        if( targetFilter.equals(child)){
-                            continue; // skip this one
-                        }
-                        if (child != null) {
-                            Filter newChild = (Filter) child.accept(this, extraData);
-                            newChildren.add(newChild);
-                        }
-                    }
-                    if( newChildren.size() == 1 ){
+                    List<Filter> newChildren = children(filter, targetFilter, extraData);
+                    if (newChildren.isEmpty()) {
+                        // every time you remove a filter from an Or
+                        // expression you get less stuff, so removing the last is ...
+                        return Filter.EXCLUDE;
+                    } else if (newChildren.size() == 1) {
                         return newChildren.get(0);
+                    } else {
+                        return getFactory(extraData).or(newChildren);
                     }
-                    return getFactory(extraData).or(newChildren);
                 }
                 public Object visit(And filter, Object extraData) {
+                    List<Filter> newChildren = children(filter, targetFilter, extraData);
+                    if (newChildren.isEmpty()) {
+                        // every time you remove a filter from an And
+                        // filter you get more stuff, so removing the last is ...
+                        return Filter.INCLUDE;
+                    } else if (newChildren.size() == 1) {
+                        return newChildren.get(0);
+                    } else {
+                        return getFactory(extraData).and(newChildren);
+                    }
+                }
+                private List<Filter> children(BinaryLogicOperator filter,
+                        final Filter targetFilter, Object extraData) {
                     List<Filter> children = filter.getChildren();
                     List<Filter> newChildren = new ArrayList<Filter>();
                     for (Iterator<Filter> iter = children.iterator(); iter.hasNext();) {
@@ -872,10 +797,7 @@ public class Filters {
                             newChildren.add(newChild);
                         }
                     }
-                    if( newChildren.size() == 1 ){
-                        return newChildren.get(0);
-                    }
-                    return getFactory(extraData).and(newChildren);
+                    return newChildren;
                 }
             };
             return (Filter) baseFilter.accept(remove, ff);
@@ -895,7 +817,19 @@ public class Filters {
                 copy.add( filter );
             }
             if( copy.isEmpty() ){
-                return Filter.EXCLUDE;
+                if( baseFilter instanceof And){
+                    // every time you remove a filter from an And
+                    // filter you get more stuff, so removing the last is ...
+                    return Filter.INCLUDE;
+                }
+                else if( baseFilter instanceof Or){
+                    // every time you remove a filter from an Or
+                    // expression you get less stuff, so removing the last is ...
+                    return Filter.EXCLUDE;
+                }
+                else {
+                    return Filter.EXCLUDE;
+                }
             }
             else if (copy.size() == 1){
                 return copy.get(0); 
@@ -907,7 +841,7 @@ public class Filters {
                 return ff.or( children );
             }
             else {
-                return Filter.EXCLUDE;
+                return Filter.INCLUDE;
             }
         }
     }
@@ -1026,38 +960,131 @@ public class Filters {
         boolean found = (Boolean) filter.accept(search, false );
         return found;
     }
-
     /**
-     * Returns all the base filters, where base is the provided filter (and in the event it is a
-     * BinaryLogicalOperator all of its child features). This represents the space covered by
-     * a number of the search functions.
+     * Check if the provided filter has child filters of some sort.
+     * <p>
+     * Where a child filter is considered:
+     * <ul>
+     * <li>Not: has a single child filter being negated</li>
+     * <li>And: has a list of child filters</li>
+     * <li>Or: has a list of child filters</li>
+     * </ul>
+     * Any other filter will return false.
+     * @param filter
+     * @return list of child filters
+     */
+    static public boolean hasChildren( Filter filter ){
+        return filter instanceof BinaryLogicOperator || filter instanceof Not;
+    }
+    
+    /**
+     * List of child filters.
+     * 
+     * Where a child filter is considered:
+     * <ul>
+     * <li>Not: has a single child filter being negated</li>
+     * <li>And: has a list of child filters</li>
+     * <li>Or: has a list of child filters</li>
+     * </ul>
+     * Any other filters will return false.
+     * <p>
+     * This represents the space covered by a number of the search functions.
      * <p>
      * The returned list is a mutable copy that can be used with filter factory to construct a
      * new filter when you are ready. To make that explicit I am returning an ArrayList so it
      * is clear that the result can be modified.
-     * 
+     * </p>
      * @param filter
      * @return are belong to us
      */
-    static public ArrayList<Filter> allYourBase( Filter filter ){
+    static public ArrayList<Filter> children( Filter filter ){
+        return children( filter, false );
+    }
+    /**
+     * List of child filters.
+     * 
+     * Where a child filter is considered:
+     * <ul>
+     * <li>Not: has a single child filter being negated</li>
+     * <li>And: has a list of child filters</li>
+     * <li>Or: has a list of child filters</li>
+     * </ul>
+     * Any other filters will return false.
+     * <p>
+     * This represents the space covered by a number of the search functions, if *all* is true
+     * this function will recursively search for additional child filters beyond those directly
+     * avaialble from your filter.
+     * <p>
+     * The returned list is a mutable copy that can be used with filter factory to construct a
+     * new filter when you are ready. To make that explicit I am returning an ArrayList so it
+     * is clear that the result can be modified.
+     * </p>
+     * @param filter
+     * @param all true to recurse into the filter and retrieve all children; false to only
+     * return the top level children
+     * @return are belong to us
+     */
+    static public ArrayList<Filter> children( Filter filter, boolean all ){
+        final ArrayList<Filter> children =  new ArrayList<Filter>();
         if( filter == null ){
-            return new ArrayList<Filter>();
+            return children;
         }
-        else if (filter instanceof BinaryLogicOperator ){
-            BinaryLogicOperator parent = (BinaryLogicOperator) filter;
-            List<Filter> children = parent.getChildren();
-            ArrayList<Filter> base = new ArrayList<Filter>(children !=null ? children.size()+1:1 );
-            base.add(0,parent);
-            if( children!=null){
-                base.addAll(children);
-            }
-            return base;
+        if( all ){
+            filter.accept( new DefaultFilterVisitor() {
+                public Object visit(And filter, Object data) {
+                    List<Filter> childList = filter.getChildren();
+                    if (childList != null) {
+                        for( Filter child : childList) {
+                            if (child == null ) continue;
+                            
+                            children.add( child );
+                            data = child.accept(this, data);                            
+                        }
+                    }
+                    return data;
+                }
+                public Object visit(Or filter, Object data) {
+                    List<Filter> childList = filter.getChildren();
+                    if (childList != null) {
+                        for( Filter child : childList) {
+                            if (child == null ) continue;
+                            
+                            children.add( child );
+                            data = child.accept(this, data);                            
+                        }
+                    }
+                    return data;
+                }
+                public Object visit(Not filter, Object data) {
+                    Filter child = filter.getFilter();
+                    if (child != null) {
+                        children.add( child );
+                        data = child.accept(this, data);
+                    }
+                    return data;
+                }
+            }, null );
         }
         else {
-            ArrayList<Filter> base = new ArrayList<Filter>(1);
-            base.add(filter);
-            return base;
+            if( filter instanceof Not){
+                Not not = (Not) filter;
+                if( not.getFilter() != null ){
+                    children.add( not.getFilter() );
+                }
+            }
+            if (filter instanceof BinaryLogicOperator ){
+                BinaryLogicOperator parent = (BinaryLogicOperator) filter;
+                List<Filter> reviewChildren = parent.getChildren();
+                if( reviewChildren != null ){
+                    for( Filter child : reviewChildren ){
+                        if( child != null ){
+                            children.add(child);
+                        }
+                    }
+                }
+            }
         }
+        return children;
     }
     
     /**
@@ -1069,7 +1096,7 @@ public class Filters {
      * @return
      */
     public static <T extends Filter> T search(Filter filter, Class<T> filterType, String propertyName ){
-        ArrayList<Filter> allBase = allYourBase(filter); 
+        List<Filter> allBase = children(filter);
         for( Filter base : allBase ){
             if( filterType.isInstance(base) && uses(base, propertyName) ){                
                 return filterType.cast(base);
@@ -1084,29 +1111,17 @@ public class Filters {
      * @param filter
      * @param filterType
      * @param property
-     * @return
+     * @return all filters that are of the given type using the specified property
      */
     static <T extends Filter> List<T> findAllByTypeAndName(Filter filter, Class<T> filterType, String property) {
-        List<T> retVal = new ArrayList<T>();
-        
-        ArrayList<Filter> allBase = allYourBase(filter); 
-        // The first visitor finds all filters of the specified type, and the second visitor finds all
-        // filters that use the given property.  Intersecting the two gives us all that use both.
-        
-        //FindType findType = new FindType(filterType);
-        //FindProperty findProperty = new FindProperty(property);        
+        List<T> retVal = new ArrayList<T>();        
+        List<Filter> allBase = children(filter);
+        allBase.add( 0, filter );
         for( Filter base : allBase ){
             if( filterType.isInstance(base) && uses(base, property) ){                
                 retVal.add( filterType.cast(base) );
             }
         }
-//        Collection<Filter> intersectFilters = (Collection<Filter>) filter.accept(findType, new LinkedHashSet());
-//        if (intersectFilters != null && !intersectFilters.isEmpty()) {
-//
-//            Collection<Filter> geoFilters = (Collection<Filter>) filter.accept(findProperty, new LinkedHashSet());
-//            intersectFilters.retainAll(geoFilters);
-//            retVal = new ArrayList<Filter>(intersectFilters);
-//        }
         return retVal;
     }
 }

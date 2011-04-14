@@ -87,11 +87,15 @@
           <groupId>com.teradata</groupId>
           <artifactId>terajdbc4</artifactId>
           <version>${td.version}</version>
+          <scope>system</scope>
+          <systemPath>${project.basedir}/lib/terajdbc4.jar</systemPath>
         </dependency>
         <dependency>
           <groupId>com.teradata</groupId>
           <artifactId>tdgssconfig</artifactId>
           <version>${td.version}</version>
+          <scope>system</scope>
+          <systemPath>${project.basedir}/lib/tdgssconfig.jar</systemPath>
         </dependency>
       </dependencies>
     </profile>

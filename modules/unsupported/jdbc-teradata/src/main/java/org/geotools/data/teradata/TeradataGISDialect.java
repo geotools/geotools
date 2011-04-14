@@ -58,18 +58,27 @@ public class TeradataGISDialect extends BasicSQLDialect {
     private String mQueryBandingSql;
 
     // used for tessellate index
+    /** @deprecated consider to don't use id */
     private double u_xmin = -180;
+    /** @deprecated consider to don't use id */
     private double u_ymin = -90;
+    /** @deprecated consider to don't use id */
     private double u_xmax = 180;
+    /** @deprecated consider to don't use id */
     private double u_ymax = 90;
+    /** @deprecated consider to don't use id */
     private int g_nx = 1000;
+    /** @deprecated consider to don't use id */
     private int g_ny = 1000;
+    /** @deprecated consider to don't use id */
     private int levels = 1;
+    /** @deprecated consider to don't use id */
     private double scale = 0.01;
+    /** @deprecated consider to don't use id */
     private int shift = 0;
 
-    public static String TABLE_NAME = "org.geotools.data.teradata.tableName";
-    public static String SPATIAL_INDEX = "org.geotools.data.teradata.spatialIndex";
+    public static final String TABLE_NAME = "org.geotools.data.teradata.tableName";
+    public static final String SPATIAL_INDEX = "org.geotools.data.teradata.spatialIndex";
     
     protected TeradataGISDialect(JDBCDataStore dataStore) {
         super(dataStore);
@@ -465,9 +474,16 @@ public class TeradataGISDialect extends BasicSQLDialect {
                                                     + "      {7,number,0}, {8,number,0}, {9,number,0}, {10,number,0.0#}, {11,number,0})"
                                                     // + ")"
                                                     + "    FROM nt WHERE \"{1}\" IS NOT NULL;"
-                                                    + "  ) " + "END", tableName, gd.getLocalName(),
-                                            key, u_xmin, u_ymin, u_xmax, u_ymax, g_nx, g_ny,
-                                            levels, scale, shift, encodedTableName,
+                                                    + "  ) " + "END", tableName, gd.getLocalName(), key, 
+                                            featureType.getUserData().get(TeradataDataStoreFactory.U_XMIN),
+                                            featureType.getUserData().get(TeradataDataStoreFactory.U_YMIN),
+                                            featureType.getUserData().get(TeradataDataStoreFactory.U_XMAX),
+                                            featureType.getUserData().get(TeradataDataStoreFactory.U_YMAX),
+                                            featureType.getUserData().get(TeradataDataStoreFactory.G_NX),
+                                            featureType.getUserData().get(TeradataDataStoreFactory.G_NY),
+                                            featureType.getUserData().get(TeradataDataStoreFactory.LEVELS),
+                                            featureType.getUserData().get(TeradataDataStoreFactory.SCALE),
+                                            featureType.getUserData().get(TeradataDataStoreFactory.SHIFT), encodedTableName,
                                             encodedIdxTableName);
                             // sql =
                             // MessageFormat.format("CREATE TRIGGER \"{0}_{1}_mi\" AFTER INSERT ON {12}"
@@ -540,8 +556,16 @@ public class TeradataGISDialect extends BasicSQLDialect {
                                                 + "      {3,number,0.0#}, {4,number,0.0#}, {5,number,0.0#}, {6,number,0.0#}, "
                                                 + "      {7,number,0}, {8,number,0}, {9,number,0}, {10,number,0.0#}, {11,number,0})"
                                                 + "    FROM nt WHERE \"{1}\" IS NOT NULL;" + "  ) "
-                                                + "END", tableName, gd.getLocalName(), key, u_xmin,
-                                        u_ymin, u_xmax, u_ymax, g_nx, g_ny, levels, scale, shift,
+                                                + "END", tableName, gd.getLocalName(), key, 
+                                        featureType.getUserData().get(TeradataDataStoreFactory.U_XMIN),
+                                        featureType.getUserData().get(TeradataDataStoreFactory.U_YMIN),
+                                        featureType.getUserData().get(TeradataDataStoreFactory.U_XMAX),
+                                        featureType.getUserData().get(TeradataDataStoreFactory.U_YMAX),
+                                        featureType.getUserData().get(TeradataDataStoreFactory.G_NX),
+                                        featureType.getUserData().get(TeradataDataStoreFactory.G_NY),
+                                        featureType.getUserData().get(TeradataDataStoreFactory.LEVELS),
+                                        featureType.getUserData().get(TeradataDataStoreFactory.SCALE),
+                                        featureType.getUserData().get(TeradataDataStoreFactory.SHIFT),
                                         encodedTableName, encodedIdxTableName);
 
                         sql = MessageFormat
@@ -659,74 +683,47 @@ public class TeradataGISDialect extends BasicSQLDialect {
         return true;
     }
 
-    public double getU_xmin() {
-        return u_xmin;
-    }
-
+    /** @deprecated consider to don't use id */
     public void setU_xmin(double uXmin) {
         u_xmin = uXmin;
     }
 
-    public double getU_ymin() {
-        return u_ymin;
-    }
-
+    /** @deprecated consider to don't use id */
     public void setU_ymin(double uYmin) {
         u_ymin = uYmin;
     }
 
-    public double getU_xmax() {
-        return u_xmax;
-    }
-
+    /** @deprecated consider to don't use id */
     public void setU_xmax(double uXmax) {
         u_xmax = uXmax;
     }
 
-    public double getU_ymax() {
-        return u_ymax;
-    }
-
+    /** @deprecated consider to don't use id */
     public void setU_ymax(double uYmax) {
         u_ymax = uYmax;
     }
 
-    public int getG_nx() {
-        return g_nx;
-    }
-
+    /** @deprecated consider to don't use id */
     public void setG_nx(int gNx) {
         g_nx = gNx;
     }
 
-    public int getG_ny() {
-        return g_ny;
-    }
-
+    /** @deprecated consider to don't use id */
     public void setG_ny(int gNy) {
         g_ny = gNy;
     }
 
-    public int getLevels() {
-        return levels;
-    }
-
+    /** @deprecated consider to don't use id */
     public void setLevels(int levels) {
         this.levels = levels;
     }
 
-    public double getScale() {
-        return scale;
-    }
-
+    /** @deprecated consider to don't use id */
     public void setScale(double scale) {
         this.scale = scale;
     }
 
-    public int getShift() {
-        return shift;
-    }
-
+    /** @deprecated consider to don't use id */
     public void setShift(int shift) {
         this.shift = shift;
     }
@@ -872,4 +869,6 @@ public class TeradataGISDialect extends BasicSQLDialect {
             dataStore.closeSafe(rs);
         }
     }
+    
+    
 }

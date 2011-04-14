@@ -129,7 +129,6 @@ public class TeradataPSDialect extends PreparedStatementSQLDialect {
         return delegate.getNextSequenceValue(schemaName, sequenceName, cx);
     }
 
-
     public String getSequenceForColumn(String schemaName, String tableName,
             String columnName, Connection cx) throws SQLException {
         return delegate.getSequenceForColumn(schemaName, tableName, columnName,

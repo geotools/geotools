@@ -17,9 +17,12 @@
 package org.geotools.data.teradata;
 
 import java.io.IOException;
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import org.geotools.feature.type.FeatureTypeFactoryImpl;
 import org.geotools.jdbc.CompositePrimaryKeyFinder;
 import org.geotools.jdbc.HeuristicPrimaryKeyFinder;
 import org.geotools.jdbc.JDBCDataStore;
@@ -28,6 +31,11 @@ import org.geotools.jdbc.MetadataTablePrimaryKeyFinder;
 import org.geotools.jdbc.PrimaryKeyFinder;
 import org.geotools.jdbc.SQLDialect;
 import org.geotools.util.logging.Logging;
+import org.opengis.feature.type.AttributeType;
+import org.opengis.feature.type.FeatureType;
+import org.opengis.feature.type.GeometryDescriptor;
+import org.opengis.feature.type.Name;
+import org.opengis.util.InternationalString;
 
 public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
 
@@ -78,6 +86,16 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
     public static final Param SHIFT_PARAM = new Param("tessellate_index_shift", String.class,
             "tessellate_index_shift", false, "0");
 
+    public static final String U_XMIN = "org.geotools.data.teradata.tessellate_index_u_xmin";
+    public static final String U_YMIN = "org.geotools.data.teradata.tessellate_index_u_ymin";
+    public static final String U_XMAX = "org.geotools.data.teradata.tessellate_index_u_xmax";
+    public static final String U_YMAX = "org.geotools.data.teradata.tessellate_index_u_ymax";
+    public static final String G_NX = "org.geotools.data.teradata.tessellate_index_g_nx";
+    public static final String G_NY = "org.geotools.data.teradata.tessellate_index_g_ny";
+    public static final String LEVELS = "org.geotools.data.teradata.tessellate_index_levels";
+    public static final String SCALE = "org.geotools.data.teradata.tessellate_index_scale";
+    public static final String SHIFT = "org.geotools.data.teradata.tessellate_index_shift";
+
     // SET QUERY_BAND = 'ApplicationName=TZA-InsuranceService;
     // Version=01.00.00.00;' FOR Session;
     public static final Param QUERY_BANDING_SQL = new Param(
@@ -127,7 +145,7 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
     }
 
     @Override
-    protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map params)
+    protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, final Map params)
             throws IOException {
 
         // setup loose bbox
@@ -178,6 +196,47 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
             dataStore.setSQLDialect(new TeradataPSDialect(dataStore, dialect));
         }
 
+
+        dataStore.setFeatureTypeFactory(new FeatureTypeFactoryImpl() {
+            private int getInteger(Param param, int defaultValue) {
+                try {
+                    return params.containsKey(param.key) ? (Integer) param.lookUp(params) : defaultValue;
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                    return defaultValue;
+                }
+            }
+            private double getDouble(Param param, double defaultValue) {
+                try {
+                    return params.containsKey(param.key) ? (Double) param.lookUp(params) : defaultValue;
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                    return defaultValue;
+                }
+            }
+            @Override
+            public FeatureType createFeatureType(Name name, Collection schema,
+                    GeometryDescriptor defaultGeometry, boolean isAbstract, List restrictions,
+                    AttributeType superType, InternationalString description) {
+                FeatureType type = super.createFeatureType(name, schema, defaultGeometry, isAbstract, restrictions, superType,
+                        description);
+
+                type.getUserData().put(U_XMIN, getDouble(U_XMIN_PARAM, -180));
+                type.getUserData().put(U_YMIN, getDouble(U_YMIN_PARAM, -90));
+                type.getUserData().put(U_XMAX, getDouble(U_XMAX_PARAM, 180));
+                type.getUserData().put(U_YMAX, getDouble(U_YMAX_PARAM, 90));
+                type.getUserData().put(G_NX, getInteger(G_NX_PARAM, 1000));
+                type.getUserData().put(G_NY, getInteger(G_NY_PARAM, 1000));
+                type.getUserData().put(LEVELS, getInteger(LEVELS_PARAM, 1));
+                type.getUserData().put(SCALE, getDouble(SCALE_PARAM, 0.01));
+                type.getUserData().put(SHIFT, getInteger(SHIFT_PARAM, 0));
+                
+                return type;
+            }
+        });
+        
         return dataStore;
     }
 
@@ -226,4 +285,5 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
         return "jdbc:teradata://" + host + "/DATABASE=" + db + ",PORT=" + port + ",TMODE=" + mode
                 + ",CHARSET=" + charset;
     }
+    
 }

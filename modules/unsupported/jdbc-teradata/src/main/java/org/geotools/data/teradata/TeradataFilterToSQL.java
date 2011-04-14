@@ -17,11 +17,12 @@
 package org.geotools.data.teradata;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.text.MessageFormat;
+import java.util.List;
 
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.filter.FilterCapabilities;
+import org.geotools.jdbc.PrimaryKeyColumn;
 import org.geotools.jdbc.SQLDialect;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
@@ -179,60 +180,41 @@ public class TeradataFilterToSQL extends FilterToSQL {
     }
 
     private void addTessellateIndex(PropertyName property, Literal geometry) throws IOException {
-        try {
-            String key = mDialect.getPrimaryKeyName(mDialect.getLastSchemaName(), mDialect
-                    .getLastTableName());
-            if (key != null) {
-                String propertyName = property.getPropertyName();
-                if (propertyName.length() == 0) {
-                    propertyName = "geom";
-                }
-
-                String indexTableName = mDialect.getLastTableName() + "_" + propertyName + "_idx";
-                if (!mDialect.indexTableExists("indexTableName")) {
-                    return;
-                }
-
-                StringBuffer sb = new StringBuffer();
-                if (mDialect.getLastSchemaName() != null) {
-                    mDialect.encodeSchemaName(mDialect.getLastSchemaName(), sb);
-                    sb.append(".");
-                }
-                mDialect.encodeTableName(mDialect.getLastTableName(), sb);
-                String encodedTableName = sb.toString();
-
-                sb = new StringBuffer();
-                if (mDialect.getLastSchemaName() != null) {
-                    mDialect.encodeSchemaName(mDialect.getLastSchemaName(), sb);
-                    sb.append(".");
-                }
-                mDialect.encodeTableName(indexTableName, sb);
-                String encodedIdxTableName = sb.toString();
-
-                sb = new StringBuffer();
-                mDialect.encodeColumnName(key, sb);
-                String encodedKeyName = sb.toString();
-
-                Envelope env = ((Geometry) geometry.getValue()).getEnvelopeInternal();
-                out
-                        .write(MessageFormat
-                                .format(
-                                        "{2} IN (SELECT DISTINCT ti.id "
-                                                + "FROM {0} ti, TABLE (SYSSPATIAL.tessellate_search(1,"
-                                                + "  {12,number,0.0#}, {13,number,0.0#}, {14,number,0.0#}, {15,number,0.0#}, "
-                                                + "  {3,number,0.0#}, {4,number,0.0#}, {5,number,0.0#}, {6,number,0.0#}, "
-                                                + "  {7,number,0}, {8,number,0}, {9,number,0}, {10,number,0.0#}, {11,number,0})) AS i "
-                                                + "WHERE ti.cellid = i.cellid) AND ",
-                                        encodedIdxTableName, encodedTableName, encodedKeyName,
-                                        mDialect.getU_xmin(), mDialect.getU_ymin(), mDialect
-                                                .getU_xmax(), mDialect.getU_ymax(), mDialect
-                                                .getG_nx(), mDialect.getG_ny(), mDialect
-                                                .getLevels(), mDialect.getScale(), mDialect
-                                                .getShift(), env.getMinX(), env.getMinY(), env
-                                                .getMaxX(), env.getMaxY()));
+        String key = null;
+        if (primaryKey != null) {
+            List<PrimaryKeyColumn> colsKey = primaryKey.getColumns();
+            if (colsKey.size() == 1) {
+                PrimaryKeyColumn colKey = colsKey.get(0);
+                key = colKey.getName();
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        }
+        if (key != null) {
+            String encodedTableName = (String)currentGeometry.getUserData().get(TeradataGISDialect.TABLE_NAME);;
+            String encodedIdxTableName = (String)currentGeometry.getUserData().get(TeradataGISDialect.SPATIAL_INDEX);;
+            String propertyName = property.getPropertyName();
+            if (propertyName.length() == 0) {
+                propertyName = "geom";
+            }
+
+            StringBuffer sb = new StringBuffer();
+            mDialect.encodeColumnName(key, sb);
+            String encodedKeyName = sb.toString();
+
+            Envelope env = ((Geometry) geometry.getValue()).getEnvelopeInternal();
+            out.write(MessageFormat.format(
+                    "{2} IN (SELECT DISTINCT ti.id "
+                            + "FROM {0} ti, TABLE (SYSSPATIAL.tessellate_search(1,"
+                            + "  {12,number,0.0#}, {13,number,0.0#}, {14,number,0.0#}, {15,number,0.0#}, "
+                            + "  {3,number,0.0#}, {4,number,0.0#}, {5,number,0.0#}, {6,number,0.0#}, "
+                            + "  {7,number,0}, {8,number,0}, {9,number,0}, {10,number,0.0#}, {11,number,0})) AS i "
+                            + "WHERE ti.cellid = i.cellid) AND ",
+                    encodedIdxTableName, encodedTableName, encodedKeyName,
+                    mDialect.getU_xmin(), mDialect.getU_ymin(), mDialect
+                            .getU_xmax(), mDialect.getU_ymax(), mDialect
+                            .getG_nx(), mDialect.getG_ny(), mDialect
+                            .getLevels(), mDialect.getScale(), mDialect
+                            .getShift(), env.getMinX(), env.getMinY(), env
+                            .getMaxX(), env.getMaxY()));
         }
     }
 }

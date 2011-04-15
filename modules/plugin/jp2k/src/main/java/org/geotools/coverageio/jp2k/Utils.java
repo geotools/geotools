@@ -16,8 +16,7 @@
  */
 package org.geotools.coverageio.jp2k;
 
-import it.geosolutions.imageio.imageioimpl.imagereadmt.CloneableImageReadParam;
-import it.geosolutions.imageio.imageioimpl.imagereadmt.DefaultCloneableImageReadParam;
+import it.geosolutions.imageio.imageioimpl.EnhancedImageReadParam;
 import it.geosolutions.imageio.stream.input.FileImageInputStreamExt;
 
 import java.awt.Rectangle;
@@ -161,7 +160,7 @@ class Utils {
 		// in which there is not a special ImageReadparam used.
 
 		// Create a new ImageReadParam instance.
-		CloneableImageReadParam newParam = new DefaultCloneableImageReadParam();
+	    EnhancedImageReadParam newParam = new EnhancedImageReadParam();
 
 		// Set all fields which need to be set.
 

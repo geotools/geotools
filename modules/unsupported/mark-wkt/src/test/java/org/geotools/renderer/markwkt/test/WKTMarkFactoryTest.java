@@ -1,8 +1,8 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    (C) 2002-2011, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -14,7 +14,6 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-
 package org.geotools.renderer.markwkt.test;
 
 import org.opengis.feature.simple.SimpleFeature;
@@ -39,7 +38,7 @@ import junit.framework.TestCase;
  * 
  * @author Luca Morandini lmorandini@ieee.org
  * 
- * @source $URL:$
+ * @source $URL$
  */
 public class WKTMarkFactoryTest extends TestCase {
 

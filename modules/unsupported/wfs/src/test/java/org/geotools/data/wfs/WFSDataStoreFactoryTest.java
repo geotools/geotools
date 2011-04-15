@@ -89,21 +89,29 @@ public class WFSDataStoreFactoryTest {
         url = TestData.url(this, "geoserver_capabilities_1_1_0.xml");
         in = url.openStream();
         capabilitiesDoc = WFSDataStoreFactory.parseCapabilities(in);
-        strategy = WFSDataStoreFactory.determineCorrectStrategy(url, capabilitiesDoc);
+        strategy = WFSDataStoreFactory.determineCorrectStrategy(url, capabilitiesDoc,null);
         assertNotNull(strategy);
         assertEquals(GeoServerStrategy.class, strategy.getClass());
 
+        // try override
+        url = TestData.url(this, "geoserver_capabilities_1_1_0.xml");
+        in = url.openStream();
+        capabilitiesDoc = WFSDataStoreFactory.parseCapabilities(in);
+        strategy = WFSDataStoreFactory.determineCorrectStrategy(url, capabilitiesDoc,"cubewerx");
+        assertNotNull(strategy);
+        assertEquals(CubeWerxStrategy.class, strategy.getClass());
+        
         url = TestData.url(this, "cubewerx_capabilities_1_1_0.xml");
         in = url.openStream();
         capabilitiesDoc = WFSDataStoreFactory.parseCapabilities(in);
-        strategy = WFSDataStoreFactory.determineCorrectStrategy(url, capabilitiesDoc);
+        strategy = WFSDataStoreFactory.determineCorrectStrategy(url, capabilitiesDoc,null);
         assertNotNull(strategy);
         assertEquals(CubeWerxStrategy.class, strategy.getClass());
 
         url = TestData.url(this, "ionic_capabilities_1_1_0.xml");
         in = url.openStream();
         capabilitiesDoc = WFSDataStoreFactory.parseCapabilities(in);
-        strategy = WFSDataStoreFactory.determineCorrectStrategy(url, capabilitiesDoc);
+        strategy = WFSDataStoreFactory.determineCorrectStrategy(url, capabilitiesDoc,null);
         assertNotNull(strategy);
         assertEquals(IonicStrategy.class, strategy.getClass());
     }

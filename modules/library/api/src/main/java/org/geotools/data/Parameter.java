@@ -105,10 +105,23 @@ public class Parameter<T> {
      * "min" and "max" may be useful for restrictions for things like int sizes, etc.
      */
     public static final String MIN = "min";
+
     /**
      * "min" and "max" may be useful for restrictions for things like int sizes, etc.
      */
     public static final String MAX = "max";
+    
+    /**
+     * As an alternative to "min" and "max" a speciifc List<T> of options can be provided
+     * for a user to choose between. The description should explain what the options
+     * mean.
+     * 
+     * Example: a compliance level of (0-low,1-medium,2-high)
+     * 
+     * Although a List<T> is used here (so you can specifiy order) it is assumed you
+     * will not confuse your users by placing duplicates in the list.
+     */
+    public static final String OPTIONS = "options";
     
     /**
      * File extension expected - "shp", "jpg", etc...
@@ -235,6 +248,7 @@ public class Parameter<T> {
      * @see MAX
      * @see MIN
      */
+    @SuppressWarnings("unchecked")
     public Parameter(String key, Class<T> type, InternationalString title,
     				 InternationalString description,
                      boolean required, int min, int max, Object sample, 
@@ -247,7 +261,7 @@ public class Parameter<T> {
         this.minOccurs = min;
         this.maxOccurs = max;
         this.sample = sample;
-        this.metadata = metadata == null ? null : Collections.unmodifiableMap(metadata);
+        this.metadata = metadata == null ? Collections.EMPTY_MAP : Collections.unmodifiableMap(metadata);
     }
     
     /**

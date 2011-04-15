@@ -21,21 +21,21 @@ The following connection parameters are defined for WFS.
 |                                            | The implementation supports both WFS 1.0 (read/write) and        |
 |                                            | WFS 1.1 (read-only).                                             |
 +--------------------------------------------+------------------------------------------------------------------+
-| WFSDataStoreFactory.PROTOCOL"              | Optional: True for Post, False for GET, null for auto            |
+| "WFSDataStoreFactory:PROTOCOL"             | Optional: True for Post, False for GET, null for auto            |
 +--------------------------------------------+------------------------------------------------------------------+
-|"WFSDataStoreFactory.USERNAME"              | Optional                                                         |
+| "WFSDataStoreFactory:USERNAME"             | Optional                                                         |
 +--------------------------------------------+------------------------------------------------------------------+
-| "WFSDataStoreFactory.PASSWORD"             | Optional                                                         |
+| "WFSDataStoreFactory:PASSWORD"             | Optional                                                         |
 +--------------------------------------------+------------------------------------------------------------------+
-| "WFSDataStoreFactory.ENCODING"             | Optional with a default of UTF-8                                 |
+| "WFSDataStoreFactory:ENCODING"             | Optional with a default of UTF-8                                 |
 +--------------------------------------------+------------------------------------------------------------------+
-| "WFSDataStoreFactory.TIMEOUT"              | Optional with a 3000ms default                                   |
+| "WFSDataStoreFactory:TIMEOUT"              | Optional with a 3000ms default                                   |
 +--------------------------------------------+------------------------------------------------------------------+
-| "WFSDataStoreFactory.BUFFER_SIZE"          | Optional number of features to read in one gulp, defaults of 10  |
+| "WFSDataStoreFactory:BUFFER_SIZE"          | Optional number of features to read in one gulp, defaults of 10  |
 +--------------------------------------------+------------------------------------------------------------------+
-| "WFSDataStoreFactory.TRY_GZIP"             | Optional with a default of true, try compression if available    |
+| "WFSDataStoreFactory:TRY_GZIP"             | Optional with a default of true, try compression if available    |
 +--------------------------------------------+------------------------------------------------------------------+
-| "WFSDataStoreFactory.LENIENT"              | Optional default of true.                                        |
+| "WFSDataStoreFactory:LENIENT"              | Optional default of true.                                        |
 |                                            | WFS implementations are terrible for actually obeying their      |
 |                                            | DescribeFeatureType schema, setting this to true will try a few  |
 |                                            | tricks to support implementations that are mostly correct:       |
@@ -43,7 +43,34 @@ The following connection parameters are defined for WFS.
 |                                            | * Accepting the data in any order                                |
 |                                            | * Not getting too upset if the case of the attributes is wrong   |
 +--------------------------------------------+------------------------------------------------------------------+
-| "WFSDataStoreFactory.MAXFEATURES"          | Limit on the number of features                                  |
+| "WFSDataStoreFactory:MAXFEATURES"          | Limit on the number of features                                  |
++--------------------------------------------+------------------------------------------------------------------+
+| "WFSDataStoreFactory:WFS_STRATEGY"         | Optional used to engage specific work arounds for known servers. |
+|                                            |                                                                  |
+|                                            | * "arcgis"                                                       |
+|                                            | * "cuberx"                                                       |
+|                                            | * "geoserver"                                                    |
+|                                            | * "ionic"                                                        |
+|                                            | * "mapserver"                                                    |
+|                                            | * "nonstrict"                                                    |
+|                                            | * "strict"                                                       |
+|                                            | * null - automatic based GET_CAPABILITIES url                    |
+|                                            |                                                                  |
+|                                            | You may need use this override if you are using mapserver        |
+|                                            | with a custom URL not recognised by auto detection.              |
+|                                            | WFS1.1 supports autodetection based on full capabilities doc for |
+|                                            | greater accuracy.                                                |
++--------------------------------------------+------------------------------------------------------------------+
+| "WFSDataStoreFactory:FILTER_COMPLIANCE"    | Optional used override how GetFeature operations encodes filters |
+|                                            |                                                                  |
+|                                            | * 0 (low compliance) full range of geotools filters represetned  |
+|                                            | * 1 (medium compliance) Id filters mixed with bbox only          |
+|                                            | * 2 (strict compliance) Id filters cannot be combined at all     |
+|                                            |                                                                  |
+|                                            | In general compliance levels stress the handling of Id filters   |
+|                                            | which are not allowed with other filters (AND / OR / NOT).       |
+|                                            | You may relax this constraint when working with some WFS         |
+|                                            | implementations such as GeoServer.                               |
 +--------------------------------------------+------------------------------------------------------------------+
 
 Historical Note: We apologise for the long connection parameter keys, WFS was one of the first DataStores written and we were unsure at the

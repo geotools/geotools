@@ -46,13 +46,19 @@ import com.vividsolutions.jts.geom.Envelope;
  */
 public class MapServerWFSStrategy extends StrictWFSStrategy implements WFSStrategy {
 
+    private Integer compliance;
+
     public MapServerWFSStrategy( WFS_1_0_0_DataStore store ) {
-        super(store);
+        this(store, null);
     }
     
+    public MapServerWFSStrategy(WFS_1_0_0_DataStore store, Integer filterCompliance) {
+        super(store);
+        compliance = filterCompliance;
+    }
+
     protected  FeatureReader<SimpleFeatureType, SimpleFeature> createFeatureReader(Transaction transaction, Query query) throws IOException {
-        return new MapServerWFSFeatureReader(transaction, query, 
-                COMPLIANCE_LEVEL);
+        return new MapServerWFSFeatureReader(transaction, query, compliance == null ? COMPLIANCE_LEVEL : compliance);
     }
     
     protected class MapServerWFSFeatureReader extends StrictFeatureReader{

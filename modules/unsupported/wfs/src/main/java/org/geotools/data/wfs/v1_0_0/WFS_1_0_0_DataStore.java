@@ -80,6 +80,8 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.logging.Logging;
 import org.geotools.xml.DocumentWriter;
 import org.geotools.xml.SchemaFactory;
+import org.geotools.xml.XMLHandlerHints;
+import org.geotools.xml.filter.FilterEncodingPreProcessor;
 import org.geotools.xml.filter.FilterSchema;
 import org.geotools.xml.gml.GMLComplexTypes;
 import org.geotools.xml.gml.WFSFeatureTypeTransformer;
@@ -134,6 +136,10 @@ public class WFS_1_0_0_DataStore extends AbstractDataStore implements WFSDataSto
     private Map fidMap = new HashMap();
 
     private Map xmlSchemaCache = new HashMap();
+    
+    private String wfsStrategy = null;
+    
+    private Integer filterCompliance = null;
 
     /**
      * Construct <code>WFSDataStore</code>.
@@ -161,18 +167,57 @@ public class WFS_1_0_0_DataStore extends AbstractDataStore implements WFSDataSto
      */
     public WFS_1_0_0_DataStore(HttpMethod protocol, WFS100ProtocolHandler protocolHandler,
             int timeout, int buffer, boolean lenient) throws SAXException, IOException {
+        this(protocol, protocolHandler,
+                timeout, buffer, lenient, null, null);
+    }
+
+    /**
+     * Construct <code>WFSDataStore</code>.
+     * 
+     * @param host
+     *            - may not yet be a capabilities url
+     * @param protocol
+     *            - true,false,null (post,get,auto)
+     * @param username
+     *            - iff password
+     * @param password
+     *            - iff username
+     * @param timeout
+     *            - default 3000 (ms)
+     * @param buffer
+     *            - default 10 (features)
+     * @param tryGZIP
+     *            - indicates to use GZIP if server supports it.
+     * @param lenient
+     *            - if true the parsing will be very forgiving to bad data. Errors will be logged
+     *            rather than exceptions.
+     * @param wfsStrategy
+     *            - "mapserver", "geoserver", "strict" and "nonstrict:
+     * @param filterCompliance
+     *            - filter compliance level
+     * <ul>
+     * <li>{@link XMLHandlerHints#VALUE_FILTER_COMPLIANCE_LOW}</li>
+     * <li>{@link XMLHandlerHints#VALUE_FILTER_COMPLIANCE_MEDIUM}</li>
+     * <li>{@link XMLHandlerHints#VALUE_FILTER_COMPLIANCE_HIGH}</li>
+     * </ul>     *            
+     * 
+     * @throws SAXException
+     * @throws IOException
+     */
+    public WFS_1_0_0_DataStore(HttpMethod protocol, WFS100ProtocolHandler protocolHandler,
+            int timeout, int buffer, boolean lenient, String wfsStrategy, Integer filterCompliance) throws SAXException, IOException {
         super(true);
         this.capabilities = protocolHandler.getCapabilities();
         this.protocolHandler = protocolHandler;
         this.lenient = lenient;
-
         this.preferredProtocol = protocol;
-
         this.timeout = timeout;
         this.bufferSize = buffer;
+        this.wfsStrategy = wfsStrategy;
+        this.filterCompliance = filterCompliance; 
         determineCorrectStrategy();
     }
-
+    
     public WFSServiceInfo getInfo() {
         return new WFSServiceInfo() {
             public String getDescription() {
@@ -223,17 +268,32 @@ public class WFS_1_0_0_DataStore extends AbstractDataStore implements WFSDataSto
 
     private void determineCorrectStrategy() {
         URL host = capabilities.getGetCapabilities().getGet();
-        if (host == null) {
-            host = capabilities.getGetCapabilities().getPost();
+        if (wfsStrategy != null && wfsStrategy.equalsIgnoreCase("mapserver")) {
+            strategy = new MapServerWFSStrategy(this, filterCompliance);
         }
-        if (host.toString().indexOf("mapserv") != -1) {
-            strategy = new MapServerWFSStrategy(this);
-        } else if (host.toString().indexOf("geoserver") != -1) {
-            strategy = new NonStrictWFSStrategy(this);
-        } else if (lenient) {
-            strategy = new NonStrictWFSStrategy(this);
-        } else {
-            strategy = new StrictWFSStrategy(this);
+        else if (wfsStrategy != null && wfsStrategy.equalsIgnoreCase("geoserver")) {
+            strategy = new NonStrictWFSStrategy(this, filterCompliance);
+        }
+        else if (wfsStrategy != null && wfsStrategy.equalsIgnoreCase("strict")) {
+            strategy = new StrictWFSStrategy(this, filterCompliance);
+        }
+        else if (wfsStrategy != null && wfsStrategy.equalsIgnoreCase("nonstrict")) {
+            strategy = new NonStrictWFSStrategy(this, filterCompliance);
+        }
+        else
+        {
+            if (host == null) {
+                host = capabilities.getGetCapabilities().getPost();
+            }
+            if (host.toString().indexOf("mapserv") != -1) {
+                strategy = new MapServerWFSStrategy(this, filterCompliance);
+            } else if (host.toString().indexOf("geoserver") != -1) {
+                strategy = new NonStrictWFSStrategy(this, filterCompliance);
+            } else if (lenient) {
+                strategy = new NonStrictWFSStrategy(this, filterCompliance);
+            } else {
+                strategy = new StrictWFSStrategy(this, filterCompliance);
+            }
         }
     }
 

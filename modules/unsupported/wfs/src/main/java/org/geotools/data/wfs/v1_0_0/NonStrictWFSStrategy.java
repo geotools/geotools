@@ -48,11 +48,17 @@ import org.xml.sax.SAXException;
 class NonStrictWFSStrategy implements WFSStrategy {
 
     protected WFS_1_0_0_DataStore store;
+    private Integer compliance;
 
     public NonStrictWFSStrategy(WFS_1_0_0_DataStore store) {
-        this.store = store;
+        this(store, null);
     }
     
+    public NonStrictWFSStrategy(WFS_1_0_0_DataStore store, Integer filterCompliance) {
+        this.store = store;
+        compliance = filterCompliance;
+    }
+
     public  FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(Query query2, Transaction transaction) throws IOException {
         Query query = new DefaultQuery(query2);
         Filter processedFilter = store.processFilter(query.getFilter());

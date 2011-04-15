@@ -48,7 +48,7 @@ public class XMLHandlerHints implements Map {
 	public static final Integer VALUE_FILTER_COMPLIANCE_LOW = new Integer(0);
 	/**
 	 * The value so the parser will be slightly more compliant to the Filter 1.0.0 spec.
-	 *  It will encode:
+	 * It will encode:
 	 *  
 	 *  <pre><code>
 	 *  BBoxFilter
@@ -113,7 +113,6 @@ public class XMLHandlerHints implements Map {
 	 * </p>
 	 * this will return all features and so the filtering must be done on the client.
 	 * </p>
-
 	 */
 	public static final Integer VALUE_FILTER_COMPLIANCE_HIGH = new Integer(2);
 

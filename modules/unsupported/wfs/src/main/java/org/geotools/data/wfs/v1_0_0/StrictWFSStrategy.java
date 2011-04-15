@@ -64,9 +64,15 @@ class StrictWFSStrategy extends NonStrictWFSStrategy {
      * compliance to high compliance.
      */
     protected static final Integer COMPLIANCE_LEVEL = XMLHandlerHints.VALUE_FILTER_COMPLIANCE_MEDIUM;
+    private Integer compliance;
 
     public StrictWFSStrategy(WFS_1_0_0_DataStore store) {
+        this(store, null);
+    }
+
+    public StrictWFSStrategy(WFS_1_0_0_DataStore store, Integer filterCompliance) {
         super(store);
+        compliance = filterCompliance;
     }
 
     protected  FeatureReader<SimpleFeatureType, SimpleFeature> wrapWithFilteringFeatureReader(Filter postFilter,  FeatureReader<SimpleFeatureType, SimpleFeature> reader, Filter processedFilter) {
@@ -81,8 +87,7 @@ class StrictWFSStrategy extends NonStrictWFSStrategy {
     }
 
     protected  FeatureReader<SimpleFeatureType, SimpleFeature> createFeatureReader(Transaction transaction, Query query) throws IOException {
-        return new StrictFeatureReader(transaction, query, 
-                COMPLIANCE_LEVEL);
+        return new StrictFeatureReader(transaction, query, compliance == null ? COMPLIANCE_LEVEL : compliance);
     }
 
     protected CoordinateReferenceSystem correctFilterForServer( String typeName, Filter serverFilter) {

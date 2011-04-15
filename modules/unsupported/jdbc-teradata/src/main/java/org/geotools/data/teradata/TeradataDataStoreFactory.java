@@ -17,13 +17,10 @@
 package org.geotools.data.teradata;
 
 import java.io.IOException;
-import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
 import org.geotools.feature.type.BasicFeatureTypes;
-import org.geotools.feature.type.FeatureTypeFactoryImpl;
 import org.geotools.jdbc.CompositePrimaryKeyFinder;
 import org.geotools.jdbc.HeuristicPrimaryKeyFinder;
 import org.geotools.jdbc.JDBCDataStore;
@@ -32,11 +29,7 @@ import org.geotools.jdbc.MetadataTablePrimaryKeyFinder;
 import org.geotools.jdbc.PrimaryKeyFinder;
 import org.geotools.jdbc.SQLDialect;
 import org.geotools.util.logging.Logging;
-import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.FeatureType;
-import org.opengis.feature.type.GeometryDescriptor;
-import org.opengis.feature.type.Name;
-import org.opengis.util.InternationalString;
 
 public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
 

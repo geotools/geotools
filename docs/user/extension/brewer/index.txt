@@ -14,4 +14,4 @@ The Brewer module helps you create interesting or appropriate content based on y
 References:
 
 * http://colorbrewer2.org/
-* :doc:`gt-main collection </guide/library/main/collection>` (covering partition functions)
+* :doc:`gt-main collection </library/main/collection>` (covering partition functions)

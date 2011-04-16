@@ -163,5 +163,5 @@ to a user interface while still giving the end user the ability to cancel what m
 References:
 
 * http://geoserver.org/display/GEOS/Configuration+Proposal
-* http://help.eclipse.org/helios/topic/org.eclipse.platform.doc.isv/guide/resInt_filesystem.htm
+* http://help.eclipse.org/helios/topic/org.eclipse.platform.doc.isv/resInt_filesystem.htm
 * http://udig.refractions.net/confluence/display/DEV/2+Catalog

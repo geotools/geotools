@@ -24,7 +24,7 @@ GeoTools library. As a result **ValidationProcessor** is is a ready to use
 software component with its own file formats and so forth.
 
 It is not trying to implement any standards in order to integrate with your
-your existing infrastructure; it is up to you to host a :doc:`Repository </guide/library/main/repository>` allowing the **ValidationProcessor** to access your organisations data.
+your existing infrastructure; it is up to you to host a :doc:`Repository </library/main/repository>` allowing the **ValidationProcessor** to access your organisations data.
 
 The key concepts offered by the Validation Processor are:
 

@@ -16,8 +16,10 @@ This User Guide is  reference for GeoTools with code examples for each module, p
 
    welcome/index
    faq
-   
-.. toctree::
-   :maxdepth: 3
 
-   guide/index
+.. toctree::
+   :maxdepth: 2
+   
+   library/index
+   extension/index
+   unsupported/index

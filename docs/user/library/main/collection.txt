@@ -549,7 +549,7 @@ FeatureCollection, this concept is similar to a histogram.
 These classifiers are used:
 
 * With the function "classifier" to sort features into groups
-* With :doc:`gt-brewer <../../extensions/brewer/index>` to produce attractive styles for visualisation of your data.
+* With :doc:`gt-brewer <../../extension/brewer/index>` to produce attractive styles for visualisation of your data.
 
 Here are some examples of defining and working with classifiers:
 

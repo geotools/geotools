@@ -11,16 +11,16 @@ Please direct any comments or suggestions about this page to the `GeoTools user 
 <https://lists.sourceforge.net/lists/listinfo/geotools-gt2-users>`_.
 
 .. include:: /welcome/faq.txt
-.. include:: /guide/library/opengis/faq.txt
-.. include:: /guide/library/jts/faq.txt
-.. include:: /guide/library/api/faq.txt
-.. include:: /guide/library/metadata/faq.txt
-.. include:: /guide/library/referencing/faq.txt
-.. include:: /guide/library/coverage/faq.txt
-.. include:: /guide/library/main/faq.txt
-.. include:: /guide/library/jdbc/faq.txt
-.. include:: /guide/library/cql/faq.txt
-.. include:: /guide/library/xml/faq.txt
-.. include:: /guide/library/render/faq.txt
-.. include:: /guide/extensions/brewer/faq.txt
-.. include:: /guide/extensions/wms/faq.txt
+.. include:: /library/opengis/faq.txt
+.. include:: /library/jts/faq.txt
+.. include:: /library/api/faq.txt
+.. include:: /library/metadata/faq.txt
+.. include:: /library/referencing/faq.txt
+.. include:: /library/coverage/faq.txt
+.. include:: /library/main/faq.txt
+.. include:: /library/jdbc/faq.txt
+.. include:: /library/cql/faq.txt
+.. include:: /library/xml/faq.txt
+.. include:: /library/render/faq.txt
+.. include:: /extension/brewer/faq.txt
+.. include:: /extension/wms/faq.txt

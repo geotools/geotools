@@ -20,7 +20,7 @@ If this doesn't work you can try this more brutal, System wide approach...
 
 See also:
 
-* :doc:`/guide/library/referencing/order`
+* :doc:`/library/referencing/order`
 * A `Jira issue <http://jira.codehaus.org/browse/GEOT-2995>`_ discussing this problem
 
 Q: How to choose an EPSG Authority?

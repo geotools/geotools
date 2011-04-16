@@ -11,7 +11,7 @@ For the most part these classes are considered internal, as an example to iron o
 Q: Where are the Interfaces for Metadata?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The interfaces are in the :doc:`gt-opengis </guide/library/opengis/index>` module.
+The interfaces are in the :doc:`gt-opengis </library/opengis/index>` module.
 
 If you don't have access to the ISO documentation (who does?)
 just reading the javadocs is a great place to start.

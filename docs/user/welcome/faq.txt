@@ -109,7 +109,7 @@ Q: Why can't I find module  X in the GeoTools distribution or javadocs?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 If you're working with a recent GeoTools release then chances are the module that you're looking for is an
-:doc:`unsupported module </guide/unsupported/index>`. These modules not part of the standard GeoTools distribution but are
+:doc:`unsupported module </unsupported/index>`. These modules not part of the standard GeoTools distribution but are
 available from the `Subversion repository <http://svn.osgeo.org/geotools>`_ in the **modules/unsupported** folder. If
 you are using Maven as your build tool you can include a dependency for an unsupported module as you would any other
 GeoTools module.

@@ -1,0 +1,235 @@
+Vector grids
+------------
+
+The gt-grid module makes it easy to create vector grids (also known as lattices). Grids can consist
+of rectangular or hexagonal elements, each of which is represented by a SimpleFeature. Simple grids
+are based on a default feature type which includes the grid element Polygon and an integer ID value.
+More complex grids can be based on a user-supplied feature type, with control over which grid
+elements are created and the attribute values assigned to them.
+
+Grids are currently constructed in memory with the whole grid being built at one time. The next
+stage for work on the module will see grid creation made into a streaming process, with grid
+elements created on demand and accessed via a FeatureIterator. 
+
+References:
+
+* See http://jira.codehaus.org/browse/GEOT-3133 for more details.
+
+Creating square grids
+^^^^^^^^^^^^^^^^^^^^^
+
+When all you need is a vector grid for display purposes, the easiest way to guild one is with the
+static methods offered by the org.geotools.grid.Grids class.
+
+In this example, we create a lat-lon grid with squares 10 degrees wide to display over
+a map of Australia::
+
+     ReferencedEnvelope gridBounds = new ReferencedEnvelope(110, 160, -45, -5, DefaultGeographicCRS.WGS84);
+     double squareWidth = 10.0;
+     SimpleFeatureSource grid = Grids.createSquareGrid(bounds, squareWidth);
+   
+Here is the resulting grid:
+
+.. image:: /images/grid_square.png
+
+Each grid element is represented by a SimpleFeature with a minimal polygon, ie. one with  4 vertices.
+
+Grids for display in different map projections
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The minimal grid above is fine if you only need to display it in the one map projection. But say
+we need to display the above map in EPSG:4462 (Lambert's Conformal Conic for Australia).
+
+When we reproject it the result isn't ideal:
+
+.. image:: /images/grid_tron.png
+
+Because each polygon only has vertices at its corners the lines of latitude look angular rather
+than being smooth curves. We can achieve a better effect with densified polygons which have
+additional vertices added to each edge::
+
+    ReferencedEnvelope gridBounds = new ReferencedEnvelope(110, 160, -45, -8, DefaultGeographicCRS.WGS84);
+    double squareWidth = 10.0;
+    
+    // max distance between vertices
+    double vertexSpacing = squareWidth / 20;
+    SimpleFeatureSource grid = Grids.createSquareGrid(bounds, squareWidth, vertexSpacing);
+
+And here is the (much smoother) result:
+
+.. image:: /images/grid_smooth.png
+
+Creating hexagonal grids
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Grids class also offers methods to create hexagonal grids. These have the useful property that
+all six neighbours of a grid element lie at an equal distance, in contrast to a square grid where
+the diagonal neighbours are more distant than the orthogonal neighbours.
+
+For this reason, hexagonal grids are frequently used in analyses and simulations of propagating
+processes such as disease outbreaks and animal movement.
+
+Creating a basic hexagonal grid is simple::
+
+    ReferencedEnvelope gridBounds = new ReferencedEnvelope(0, 100, 0, 100, null);
+    double sideLen = 5.0;
+    SimpleFeatureSource grid = Grids.createHexagonalGrid(gridBounds, sideLen);
+
+Here is what we get:
+
+.. image:: /images/grid_hex.png
+
+As with square grids, there is also a version of the createHexagonalGrid method that takes an
+additional double argument for vertex spacing.
+
+Working with a user-defined feature type
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+So far, none of the examples have required us to specify a feature type for the vector grid. This
+is because a default feature type was created for us, behind the scenes.
+
+This default type has two attributes:
+
+* 'element' (the Polygon instance)
+* 'id' (a sequential integer ID value.
+
+When we want the grid elements to contain other attributes we can define these by providing
+a custom feature type and using the GridFeatureBuilder class to set values for these attributes.
+
+To illustrate this, here's an example where each grid element has a 'color' attribute, the value
+of which we set according to its position in the grid::
+
+    // Create our feature type
+    SimpleFeatureTypeBuilder typeBuilder = new SimpleFeatureTypeBuilder();
+    typeBuilder.setName("hextype");
+    typeBuilder.add("hexagon", Polygon.class, (CoordinateReferenceSystem)null);
+    typeBuilder.add("color", Color.class);
+    final SimpleFeatureType TYPE = typeBuilder.buildFeatureType();
+    
+    final ReferencedEnvelope gridBounds = new ReferencedEnvelope(0, 100, 0, 100, null);
+    
+    // We create an instance of GridFeatureBuilder and override its
+    // setAttributes method to set the color for each grid element
+    GridFeatureBuilder builder = new GridFeatureBuilder(TYPE) {
+        public void setAttributes(GridElement el, Map<String, Object> attributes) {
+            int g = (int) (255 * el.getCenter().x / bounds.getWidth());
+            int b = (int) (255 * el.getCenter().y / bounds.getHeight());
+            attributes.put("color", new Color(0, g, b));
+        }
+    };
+    
+    final double sideLen = 5.0;
+    // Pass our GridFeatureBuilder to the createHexagonalGrid method
+    // (the -1 value here indicates that we don't need densified polygons)
+    SimpleFeatureSource grid = Grids.createHexagonalGrid(gridBounds, sideLen, -1, builder);
+
+Here is what this looks like:
+
+.. image:: /images/grid_hex_color.png
+
+Selective creation of grid elements
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The GridFeatureBuilder class also offers a mechanism to choose which grid elements are created.
+
+In this example, we build a hexagonal grid and specify that we only want elements whose centers
+lie within the outline of Australia. Firstly, here is the code to create the grid::
+    
+    DataStore dataStore = ... // load Australia map from shapefile
+    final SimpleFeatureSource ozMapSource = dataStore.getFeatureSource();
+    
+    ReferencedEnvelope gridBounds = new ReferencedEnvelope(110, 160, -45, -8, DefaultGeographicCRS.WGS84);
+    final double sideLen = 1.0;
+    
+    // Create our feature type
+    SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
+    tb.setName("grid");
+    tb.add(GridFeatureBuilder.DEFAULT_GEOMETRY_ATTRIBUTE_NAME,
+            Polygon.class, gridBounds.getCoordinateReferenceSystem());
+    tb.add("id", Integer.class);
+    final SimpleFeatureType TYPE = tb.buildFeatureType();
+    
+    GridFeatureBuilder builder = new IntersectionBuilder(TYPE, ozMapSource);
+    SimpleFeatureSource grid = Grids.createHexagonalGrid(gridBounds, sideLen, -1, builder);
+    Next, here is the code for the IntersectionBuilder class. It extends GridFeatureBuilder and is used both to set the attribute values of each grid element and to specify that only elements with their center within Australia are to be created:
+    
+    class IntersectionBuilder extends GridFeatureBuilder {
+        final FilterFactory2 ff2 = CommonFactoryFinder.getFilterFactory2(null);
+        final GeometryFactory gf = JTSFactoryFinder.getGeometryFactory(null);
+    
+        final SimpleFeatureSource source;
+        int id = 0;
+    
+        public IntersectionBuilder(SimpleFeatureType type, SimpleFeatureSource source) {
+            super(type);
+            this.source = source;
+        }
+    
+        @Override
+        public void setAttributes(GridElement el, Map<String, Object> attributes) {
+            attributes.put("id", ++id);
+        }
+    
+        /**
+         * This method gets the center coordinate of the grid element being considered
+         * and uses an 'intersects' filter to test whether it lies within Australia
+         */
+        @Override
+        public boolean getCreateFeature(GridElement el) {
+            Coordinate c = el.getCenter();
+            Geometry p = gf.createPoint(c);
+            Filter filter = ff2.intersects(ff2.property("the_geom"), ff2.literal(p));
+            boolean result = false;
+    
+            try {
+                result = !source.getFeatures(filter).isEmpty();
+            } catch (IOException ex) {
+                throw new IllegalStateException(ex);
+            }
+    
+            return result;
+        }
+    };
+
+And here is the result:
+
+.. image:: /images/grid_hex_shape.png
+
+Finer control over grid element shape
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+All of the examples above use the Grids utility class. For finer control over the shape of grid
+elements you can go down to the next level and use the Oblongs and Hexagons classes.
+
+Oblongs
+'''''''
+
+This class is responsible for creating rectangular grid elements and grids (its name was chosen to avoid confusion with java.awt.Rectangle). You can use this class directly when you want to create a grid with rectangular, rather than square, elements as in this example:
+
+ReferencedEnvelope gridBounds = new ReferencedEnvelope(0, 100, 0, 100, null);
+    double width = 10.0;
+    double height = 5.0;
+    GridFeatureBuilder builder = new DefaultFeatureBuilder();
+    SimpleFeatureSource grid = Oblongs.createGrid(bounds, width, height, builder);
+
+Hexagons
+''''''''
+
+This class is responsible for creating hexagonal grid elements and grids.
+
+Use this class directly if you want to specify the orientation of the hexagons. Two orientations
+are possible, "angled" and "flat":
+
+.. image:: /images/grid_angled_flat.png
+
+When you construct a hexagonal grid via the Grids class orientation defaults to "flat".
+Here is how to create a grid of "angled" hexagons::
+
+    ReferencedEnvelope gridBounds = new ReferencedEnvelope(0, 100, 0, 100, null);
+    double sideLen = 5.0;
+    GridFeatureBuilder builder = new DefaultFeatureBuilder();
+    SimpleFeatureSource grid = Hexagons.createGrid(gridBounds, sideLen, Hexagon.Orientation.ANGLED, builder);
+
+Here is what that looks like:
+
+.. image:: /images/grid_hex_angled.png

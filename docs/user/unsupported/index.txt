@@ -17,18 +17,23 @@ Under active development:
 
    swing/index
    swt/index
+   app-schema
+   grid
 
 Volunteers needed:
 
 .. toctree::
 
-   process/index 
+   process/index
+   wps
+   jts-wrapper
+   geometry/index
+   postgis-versioned/index
 
 Deprecated:
 
 .. toctree::
-
-   postgis-versioned/index
+   
 
 .. note:: 
    

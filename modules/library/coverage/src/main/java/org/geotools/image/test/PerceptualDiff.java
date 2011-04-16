@@ -67,6 +67,7 @@ class PerceptualDiff {
             args.add("perceptualdiff");
             args.add(image1.getAbsolutePath());
             args.add(image2.getAbsolutePath());
+            args.add("-verbose");
             args.add("-fov");
             args.add("89.9");
             if (threshold > 0) {

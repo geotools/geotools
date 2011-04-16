@@ -4,6 +4,7 @@ Process
 API for working with GeoSpatial processes and annotations to make defining additional processes easy.
 
 .. toctree::
+   :maxdepth: 1
 
    process
    implement

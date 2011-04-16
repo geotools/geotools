@@ -167,7 +167,7 @@ For our example, let's create a geometry buffer process (the code for this is al
    Create a JUnit test case in the test folder, let's call it MyProcessTest.java::
 
         public class MyProcessTest extends TestCase {
-        
+         
             public void testBufferProcess() throws Exception {
                 // create a Well-Known-Text reader so we can create a quick polygon geometry for our test
                 WKTReader reader = new WKTReader( new GeometryFactory() );
@@ -188,7 +188,7 @@ For our example, let's create a geometry buffer process (the code for this is al
                 assertTrue( "expected geometry", result instanceof Geometry );
                 Geometry bufferedGeom = geom1.buffer(buffer);
                 assertTrue( bufferedGeom.equals( (Geometry) result ) );
-        
+                
                 // do some more assets to validate the result of your process
             }
         }

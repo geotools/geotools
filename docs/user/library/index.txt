@@ -19,3 +19,10 @@ The GeoTools library is organised into a series of jars. These jars form a softw
    cql/index
    xml/index
    render/index
+
+Implementation details:
+
+.. toctree::
+   :maxdepth: 1
+   
+   internal/index

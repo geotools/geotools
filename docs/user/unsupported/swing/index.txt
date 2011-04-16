@@ -6,6 +6,7 @@ Provides utility classes and examples showing how to use GeoTools facilities and
 The Swing module provides a small selection of helpful user interface classes to get you started on your own project. They include JMapFrame, a simple viewer with optional toolbar and layer list control.
 
 .. toctree::
+   :maxdepth: 1
 
    jmappane
    dialog

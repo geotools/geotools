@@ -14,26 +14,31 @@ The following modules are provided for your amusement only; you can use these pa
 Under active development:
 
 .. toctree::
+   :maxdepth: 1
 
-   swing/index
-   swt/index
    app-schema
    grid
+   swing/index
+   swt/index
 
 Volunteers needed:
 
 .. toctree::
+   :maxdepth: 1
 
-   process/index
-   wps
-   jts-wrapper
    geometry/index
+   jts-wrapper
    postgis-versioned/index
+   process/index
+   /library/data/wfs
+   wps
 
 Deprecated:
 
 .. toctree::
+   :maxdepth: 1
    
+   /library/data/oracle
 
 .. note:: 
    

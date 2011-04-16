@@ -4,6 +4,7 @@ Geometry Plugin
 The Geometry module creates and manipulates geometric objects such as Points, Curves, and Surfaces. Users of this module can assemble the factories needed to create the various objects they will use, use the factories to make the objects, and then manipulate the objects directly.
 
 .. toctree::
+   :maxdepth: 1
 
    build
    operation

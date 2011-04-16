@@ -1,0 +1,59 @@
+CQL FAQ
+-------
+
+Q: What is CQL used for?
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+The **CQL** utility class has static methods to parse an input String into either a **Filter**
+or an **Expression**.
+
+Here is the most common use for the CQL class - asking for Features:
+
+.. literalinclude:: /../src/main/java/org/geotools/cql/CQLExamples.java
+   :language: java
+   :start-after: // cqlExample start
+   :end-before: // cqlExample end
+  
+The CQL utility class produced is a Filter; you can create Filters by hand (using a FilterFactory) but this is much easier.
+
+Q: What does ECQL offer?
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+The ECQL class offers an extension of the basic CQL language, it is backward compatable so
+the following still works::
+
+    Filter filter = ECQL.toFilterList("attName >= 5; geom1 incld");
+    SimpleFeatureCollection features = featureSource.getFeatures( filter );
+  
+The ECQL class offers extensions, allowing a list of Filters to be represented for example.
+
+Q: What version of CQL is implemented?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The input string defining the query predicate that CQL accepts has to respond to the grammar
+of the OGC Common Query Language, defined in the Catalog Service for Web, v2.0.1, from the OGC.
+
+We've added a couple extensions and fixes to that grammar in order to fix a bug in the definition
+of temporal expressions and to leverage its use in the GeoTools library.
+
+Q: Can I just try CQL out?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+If you're developing with GeoTools, you can easily try out the CQL parser by depending on the **gt-cql**
+jar and running the **CQL** class as a normal Java application.
+
+It will present a prompt on the console (standard input) from where you can input cql strings and
+will get back the corresponding Filter in xml encoding.::
+    
+    Expression Tester ("quit" to finish)
+    >attr > 10
+    <?xml version="1.0" encoding="UTF-8"?>
+    <ogc:PropertyIsGreaterThan xmlns="http://www.opengis.net/ogc"
+                               xmlns:ogc="http://www.opengis.net/ogc"
+                               xmlns:gml="http://www.opengis.net/gml">
+      <ogc:PropertyName>attr</ogc:PropertyName>
+      <ogc:Literal>10</ogc:Literal>
+    </ogc:PropertyIsGreaterThan>
+    
+    >quit
+    Bye!

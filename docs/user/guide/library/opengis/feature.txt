@@ -8,7 +8,6 @@ References:
 * `org.opengis.feature <http://docs.geotools.org/stable/javadocs/org/opengis/feature/package-summary.html>`_ (javadocs)
 * :doc:`../main/feature` gt-main code examples
 
-
 Data Structure
 ^^^^^^^^^^^^^^
 

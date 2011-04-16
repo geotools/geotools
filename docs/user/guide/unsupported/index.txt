@@ -5,6 +5,12 @@ Unsupported
 The modules in the unsupported directory have not passed the quality assurance steps required to be included as
 part of the library.
 
+Not everything in the GeoTools code base is ready for public abuse quite yet; for the longest time developers would keep
+these experiments to themselves. With the use of our maven build system we have been able to "deploy" some of these jars
+for those of you wanting a sneak peek.
+
+The following modules are provided for your amusement only; you can use these pages to swap tips, horror stories and we hope collaborate on making these modules part of our library:
+
 Under active development:
 
 .. toctree::
@@ -23,3 +29,17 @@ Deprecated:
 .. toctree::
 
    postgis-versioned/index
+
+.. note:: 
+   
+   If you really need one of these modules to work?
+   
+   Several of the unsupported modules (for example process) are really popular. That does not however mean that there is anyone in the
+   GeoTools community taking care, fixing bugs and providing documentation. In some cases these modules are the work of students, in others
+   a commercial company that donated the code (but in both cases more resources are needed to make the module usable and trustworthy).
+   
+   In the past we simply threw out such work - we are trying a change of policy here by letting you see what can be done
+   (and has been done).
+   
+   If you really do need one of these modules cleaned up, perhaps for a deadline, please check out our support page - a
+   range of commercial support options are available. Any one of these organisations can be hired to bring these modules up to speed.

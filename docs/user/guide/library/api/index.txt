@@ -13,6 +13,7 @@ The **gt-api** module is where we publish out stable interfaces that are impleme
    envelope
    jts
    convert
+   faq
 
 These interfaces build on the ideas and concepts defined by standards (as captured in the **gt-opengis** module).
 
@@ -29,18 +30,3 @@ In general:
 
 * gt-opengis module defines data structures and concepts
 * gt-api module defines data access and functionality
-
-* Q: What does API mean?
-  
-  It stands for "Application Program Interface" (API) is is a contract
-  that GeoTools commits to using to make functionality available to your
-  application.
-  
-  The interfaces in **gt-opengis** and **gt-api** represent the formal
-  GeoTools interfaces advertises to your application defining concepts
-  ideas and data structures.
-  
-  Additional public methods and classes are added by other modules, but
-  they are focused on doing rather than defining.
-  
-  For more information review welcome :doc:`/welcome/api` page.

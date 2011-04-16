@@ -1,0 +1,176 @@
+XML FAQ
+-------
+
+Q: What parser does GeoTools use?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+We have a range of tools to help you with parsing and encoding xml. As a
+general purpose library GeoTools does not have the luxury of choosing a
+parser to work with.
+
+The following parsers are based on W3C APIs (SAX, DOM, and XML Transform).
+You can choose the most appropriate solution for the system you want to
+use GeoTools in.
+
++------------+-----+-----+--------+---------+------------------------------+
+| Technology | SAX | DOM | Encode | Support | Notes                        |
++============+=====+=====+========+=========+==============================+
+| SAX        | sax | dom |        | Filter  | Hard to trace through, parse |
+|            |     |     |        | GML     | not easily extended          |
+|            |     |     |        | SLD     |                              |
++------------+-----+-----+--------+---------+------------------------------+
+| DOM        |     | dom |        | Filter  | Forgiving and easy to trace  |
+|            |     |     |        | GLM     | through and debug, memory    |
+|            |     |     |        | SLD     | limitation for GIS data      |
++------------+-----+-----+--------+---------+------------------------------+
+| Transform  |     |     | xml    | Filter  | Easy to trace through and    |
+|            |     |     |        | GML2    | debug, difficult to          |
+|            |     |     |        | SLD     | configure for specific data  |
++------------+-----+-----+--------+---------+------------------------------+
+| JABX       | sax | dom | xml    | n/a     | Fast but not suitable for    |
+|            |     |     |        |         | dynamic data, precomplied    |
++------------+-----+-----+--------+---------+------------------------------+
+| Pull       | sax | dom |        | n/a     | Should combine the ease of   |
+|            |     |     |        |         | DOM with the streaming       |
+|            |     |     |        |         | performance of XDO and GTXML |
++------------+-----+-----+--------+---------+------------------------------+
+| XDO        | sax | dom | xml    | Filter  | Proof of concept of schema   |
+|            |     |     |        | GML     | assisted parsing allowing    |
+|            |     |     |        | SLD     | streaming into Java Objects. |
+|            |     |     |        | WMS     | Code is fast and well tested |
+|            |     |     |        | WFS1.0  | but is hard to trace through |
+|            |     |     |        | XSD     |                              |
++------------+-----+-----+--------+---------+------------------------------+
+| GTXML      | sax | dom | xml    | Filter  | Schema assisted parsing      |
+|            |     |     |        | GML     | backed by Eclipse XSD        |
+|            |     |     |        | SLD     | to represent schema.         |
+|            |     |     |        | WMS     |                              |
+|            |     |     |        | WFS1.0  | Easier to trace through but  |
+|            |     |     |        | WFS1.1  | still not straight forward   |
+|            |     |     |        | WPS     |                              |
+|            |     |     |        | XSD     | Allows streaming for large   |
+|            |     |     |        |         | GIS data volumnes.           |
++------------+-----+-----+--------+---------+------------------------------+
+
+The XDO and GTXML solutions are configuration based. You set up a configuration
+matching the data you wish to work with and the technology will make use of
+any XML schema available to assist in parsing or encoding your content correctly.
+
+The JAXB library from Java is a little different in that you start from an
+XML schema and generate a parser or encoder class for use. This solution
+performs well but cannot be used for dynamic content such as GML.
+
+Q: What is SAX?
+^^^^^^^^^^^^^^^
+
+SAX is a W3C technology from the early days of XML. SAX Parsers work using
+callbacks, they pass control between several hard coded implementations. For
+basic use you create your own SAX Parser (say responding to a new Geometry being
+parsed) and pass control off on of the geotools implementations and wait for it
+to call you.
+
+* Allows streaming for large content.
+* Rather tricky to set up
+* Reuse of a SAX parser is possible, but is very tricky to reuse
+
+As a result SAX parsers are rather "brittle" and difficult to maintain
+are currently hardcoded to pass control between themselves, making support for
+new specifications tricky.
+
+Example: while parsing a Filter control will be need to be handed over to
+a Geometry parser if the expression contains a literal Geometry.
+
+The later Schema Assisted parsers are an attempt to let mere mortals create a
+tree of handlers on the fly (they use the schema document to do a bunch of the
+grunt work) that is hard coded for the SAX Parsers.
+
+Q: What is DOM?
+^^^^^^^^^^^^^^^
+
+The W3C Document Object Model (DOM) is most popularly used to represent the
+the contents of a web page as a series of **Nodes**. These notes form a 
+tree structure and can be used to represent the contents of an XML document
+in memory.
+
+As a result the GeoTools DOM parsers are functions that can wander through an
+in memory DOM doing their best to extract content.
+
+Delegation is hard coded in much the same way as with the SAX parsers.
+
+* accessible easy to understand technology
+* very nice for quick examples
+* obvious how to use the parser
+* solution does not scale to large content as steaming not available
+* can only handle direct use of GML
+* additional coding is always required to parse your own content
+
+Q: What is XML Transform?
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Traditional xml generation, traverse your data structure and call methods
+to generate as you go.
+
+* very fast, so fast we use it for GeoServer even though it is hard to maintain
+* scalable (does not load features into memory)
+* not open ended
+* need to carefully provide hints before use
+* may revisit data several times (for bounding box and then content)
+
+Q: Schema Assisted -did you make that up?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Yes we did.
+
+This idea of "Schema Assisted" parsers is a GeoTools specific piece of 
+technology. Then general idea is to makes use of XML Schema information to
+minimise the amount of code you need to write.
+
+A parser is supplied a configuration of bindings; each binding maps an xml
+elements or xml attributes to Java class.
+
+While this sounds similar to other xml parsing technologies we do have a
+couple of key differences:
+
+* taking special care to pay attention to the schema at runtime (so we can parse
+  new documents using the "best" binding available rather than fail)
+* Ensure that data is not loaded into memory; allowing us to "stream" the xml
+  document through an application.
+* We are on our third generation schema assisted parser.
+
+Q: XDO?
+^^^^^^^
+
+XML Data Objects (XDO) is the third generation of our schema
+assisted parser idea (where the SAX bindings are referenced by the XMLSchema
+rather then directly hard coded). This is fast scalable solution that supports
+reading and writing.
+
+* fast and proven solution for geospatial data
+* ability to handle MASSIVE content like FeatureCollections
+* how to create new bindings is not obvious
+
+Q: GTXML?
+^^^^^^^^^
+
+GeoTools XML (GTXML) is the forth generation schema assisted parser, using the
+XML Schema data structure (rather then hard coding) to figure out what binding to
+call. The XSD is used to hold our representation of the schema at runtime.
+
+* schema aware allowing use of new content without additional coding
+* code generator for making custom bindings
+* streaming content for MASSIVE content like feature collections
+* support for content generation
+* hard to debug and trace through the parsing or encoding process
+* code generator available to jump start the development of bindings
+* examples how how to use Eclipse Modelling Objects (EMF) based bindings to
+  work directly from the schema
+
+Q: Why doesn't GeoTools use JAXB?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+JAXB is a set of Java technologies (now included as part of Java 6) that are able
+to generate a parser form an XML schema.
+
+A couple of groups have used JAXB have bind things such as OGC Filter. In general
+works well; however it does have trouble responding to content that is
+negotiated dynamically ... such as GML.

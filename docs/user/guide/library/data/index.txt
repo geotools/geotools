@@ -11,7 +11,7 @@ Supports access to feature information (ie vector information) from a range of d
    featuresource
    memory
    export
-   internal
+   faq
 
 DataStore plugins:
 
@@ -29,6 +29,13 @@ Unsupported plugins:
    
    wfs
    property
+
+Implementation details:
+
+.. toctree::
+   :maxdepth: 1
+   
+   internal
 
 Additional DataStore plugins are available from :doc:`gt-jdbc <../jdbc/index>` for database access.
 

@@ -6,7 +6,7 @@ The GeoTools library is organised into a series of jars. These jars form a softw
 
 .. toctree::
    :maxdepth: 1
-
+   
    opengis/index
    jts/index
    api/index

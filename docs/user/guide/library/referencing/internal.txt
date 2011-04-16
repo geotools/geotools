@@ -1,5 +1,5 @@
-Referencing
------------
+Internal
+--------
 
 Please note that this page is optional, only for the curious, as it covers some of the implementation classes.
 

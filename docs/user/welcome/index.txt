@@ -18,4 +18,5 @@ Welcome to the Geotools Users Guide. This space serves as a reference to the Geo
    jump
    netbeans
    udig
+   faq
 

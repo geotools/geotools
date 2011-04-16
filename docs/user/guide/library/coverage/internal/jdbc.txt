@@ -1,5 +1,5 @@
 Image Mosaic JDBC
------------------
+^^^^^^^^^^^^^^^^^
 
 As mentioned above, Christian Mueller has set up a series of base classes that can be reused by those writing plugins for different database backends.
 
@@ -15,14 +15,14 @@ Prerequisites
 * An existing database layout (tables,views) holding the raster data.
 
 Design
-^^^^^^
+''''''
 
 The general idea is to use the Image Mosaicing Pyramidal JDBC Plugin interface called org.geotools.gce.imagemosaic.jdbc.JDBCAccess. Classes implementing this interface are responsible for the jdbc communication. Additionally, there is an abstract base class with some default implementations, org.geotools.gce.imagemosaic.jdbc.JDBCAccessCustom.
 
 A customized implementation should subclass this class and implement two methods. The name of this subclass is a configuration parameter in the xml config file.
 
 Implementation
-^^^^^^^^^^^^^^
+''''''''''''''
 
 The concrete procedure:
 
@@ -182,7 +182,7 @@ The concrete procedure:
   IMPORTANT: This method must be thread safe, do not modify instance vars or implement other actions causing problems under load.
 
 Config file
-^^^^^^^^^^^
+'''''''''''
 
 Here is an example config file::
   
@@ -212,7 +212,7 @@ The *name* attribute of the <spatialExtension> Element must be **custom**.
 The *name* attribute of the <jdbcAccessClassName> Element holds the class name of your implementation (**org.mycompany.jdbc.MyJDBCAccessImpl** in this example).
 
 Deployment
-^^^^^^^^^^
+''''''''''
 
 Package the Java class(es) in a jar file and copy this jar file to your CLASSPATH.
 

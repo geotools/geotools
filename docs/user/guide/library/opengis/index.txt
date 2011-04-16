@@ -20,6 +20,7 @@ Interfaces for GeoSpatial concepts, often defined by the OGC or ISO standards bo
    text
    parameter
    unit
+   faq
 
 GeoTools is all about implementing spatial solutions, and we do our very best to follow a don't invent here policy (rather than get off topic). By referencing standards we are able to use well understood names for common spatial ideas and constructs.
 
@@ -36,13 +37,3 @@ The gt-opengis module provides:
 For more information on the standards covered by the library as whole:
 
 * :ref:`standards`
-
-Historic relationship with "GeoAPI":
-
-* GeoAPI was started in 2002 James McGill (who also set up GeoTools). The aim at that time was to provide common API for independent projects like GeoTools, deegree and OpenJump, allowing the easy exchange of code.
-* Later on, the Open Geospatial consortium started the "GO-1" project with a similar goal. The "Geospatial Object" project was led  Polexis which was at the time based in the United States.
-* Givin the similarity between GO-1 and GeoAPI goals, we got in touch each other and managed to merge the two projects.
-* Polexis produces the following official OGC specification based on GeoAPI 2.0: http://www.opengeospatial.org/standards/go
-* Later Polexis was bough by Sys Technology, with the new owner and priorites their investment in GeoAPI / GO-1 stopped.
-* The GO-1 / GeoAPI working group at OGC was dissolved du to lack of activity.
-* GeoTools contributors gradually over the GeoAPI project and in GeoTools 2.7 folded these interfaces back into the GeoTools OpenGIS module

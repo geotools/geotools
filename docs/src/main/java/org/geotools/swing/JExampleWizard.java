@@ -7,7 +7,7 @@
  *    This file is hereby placed into the Public Domain. This means anyone is
  *    free to do whatever they wish with this file. Use it well and enjoy!
  */
-package org.geotools.demo.swing;
+package org.geotools.swing;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -30,6 +30,7 @@ import org.geotools.swing.wizard.JWizard;
  *
  * @source $URL$
  */
+// example wizard start
 public class JExampleWizard extends JWizard {    
     private static final long serialVersionUID = 2103905729508952829L;
     
@@ -39,12 +40,32 @@ public class JExampleWizard extends JWizard {
     /** Value collected by the first second page */
     Double y = null;
     
-    JPage page1 = new JPage("page1") {
-        {
-            setBackPageIdentifier(null);
-            setNextPageIdentifier("page2");                   
-        }
+    public JExampleWizard() {
+        super("Example Wizard");
         
+        JPage page1 = new Page1("page1");
+        page1.setBackPageIdentifier(null);
+        page1.setNextPageIdentifier("page2");                   
+        registerWizardPanel( page1 );
+        
+        JPage page2 = new Page2("page2");
+        page2.setBackPageIdentifier("page1");
+        page2.setNextPageIdentifier(JPage.FINISH);
+        registerWizardPanel(page2);
+        
+        setCurrentPanel("page1");
+    }
+    
+    public double getAnswer() {
+        return x+y;
+    }
+    // example wizard end
+
+    // page1 start
+    class Page1 extends JPage {
+        public Page1(String id) {
+            super( id);
+        }        
         JTextField field;
 
         @Override
@@ -52,7 +73,7 @@ public class JExampleWizard extends JWizard {
             JPanel page = new JPanel( new MigLayout() );
             page.add(new JLabel("X:"), "skip");
             page.add( field = new JTextField(15), "span, growx");
-            return page;
+            return page;            
         }
 
         @Override
@@ -71,7 +92,6 @@ public class JExampleWizard extends JWizard {
             field.removeKeyListener( getJWizard().getController() );
         };
 
-        @Override
         public boolean isValid() {
             try {
                 String txt = field.getText();
@@ -83,13 +103,12 @@ public class JExampleWizard extends JWizard {
             }
         };
     };
-
-    JPage page2 = new JPage("page2") {
-        {
-            setBackPageIdentifier("page1");
-            setNextPageIdentifier(JPage.FINISH);
+    // page1 end
+    // page2 start
+    class Page2 extends JPage {
+        public Page2( String id) {
+            super( id );
         }
-
         JTextField field;
 
         @Override
@@ -128,20 +147,10 @@ public class JExampleWizard extends JWizard {
             }
         };
     };
-    
-    public JExampleWizard() {
-        super("Example Wizard");
-        registerWizardPanel(page1);
-        registerWizardPanel(page2);
-        
-        setCurrentPanel("page1");
-    }
-    
-    public double getAnswer() {
-        return x+y;
-    }
+    // page2 end
     
     public static void main(String args[]) {
+        // use wizard start
         JExampleWizard wizard = new JExampleWizard();
 
         System.out.println("Show wizard " + wizard.getTitle());
@@ -160,6 +169,7 @@ public class JExampleWizard extends JWizard {
         default:
             System.out.println("unexpected " + result);
         }
+        // use wizard end
     }
     
 }

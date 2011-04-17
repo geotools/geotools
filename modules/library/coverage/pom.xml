@@ -79,19 +79,6 @@
       </roles>
     </developer>
     <developer>
-      <name>Michael Bedward</name>
-      <id>mbedward</id>
-      <email>michael.bedward@gmail.com</email>
-      <organization>Dept Environment and Climate Change</organization>
-      <organizationUrl>http://www.environment.nsw.gov.au</organizationUrl>
-      <timezone>+10</timezone>
-      <roles>
-        <role>Java Developer</role>
-        <role>Documentation</role>
-        <role>Module Maintainer</role>
-      </roles>
-    </developer>
-    <developer>
       <name>Bryce Nordgren</name>
       <id>bnordgren</id>
       <email>bnordgren@fs.fed.us</email>

@@ -51,10 +51,10 @@ public class InterpolateFunctionTest extends SEFunctionTestBase {
 
         Literal fallback = ff2.literal("NOT_FOUND");
         setupParameters(data, values);
-        Function fn = finder.findFunction("interpolate", parameters, fallback);
+        Function fn = finder.findFunction("Interpolate", parameters, fallback);
         Object result = fn.evaluate(feature(0));
 
-        assertFalse("Could not locate 'interpolate' function", result.equals(fallback.getValue()));
+        assertFalse("Could not locate 'Interpolate' function", result.equals(fallback.getValue()));
     }
 
     @Test

@@ -21,8 +21,7 @@ package org.geotools.filter.function;
 import org.geotools.filter.FunctionExpression;
 import org.geotools.filter.FunctionExpressionImpl;
 
-public class FilterFunction_greaterEqualThan extends FunctionExpressionImpl
-        implements FunctionExpression {
+public class FilterFunction_greaterEqualThan extends FunctionExpressionImpl {
 
     public FilterFunction_greaterEqualThan() {
         super("greaterEqualThan");

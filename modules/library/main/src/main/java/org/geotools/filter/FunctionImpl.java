@@ -20,7 +20,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.filter.expression.ExpressionAbstract;
+import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.ExpressionVisitor;
 import org.opengis.filter.expression.Function;
@@ -44,7 +46,17 @@ public class FunctionImpl extends ExpressionAbstract implements Function {
     /** function params **/
     List<Expression> params = Collections.emptyList();
     
+    /**
+     * Fall back value to use when implementation is not available.
+     */
     Literal fallbackValue;
+    
+    /**
+     * FunctionName description for FilterCapabilities, may be provided by
+     * subclass in constructor, or will be lazily created based on name and
+     * number of arguments.
+     */
+    protected FunctionName functionName;
     
     /**
      * Gets the name of this function.
@@ -55,7 +67,13 @@ public class FunctionImpl extends ExpressionAbstract implements Function {
     public String getName() {
         return name;
     }
-
+    public synchronized FunctionName getFunctionName() {
+        if( functionName == null ){
+            functionName = new FunctionNameImpl(name,getParameters().size());
+        }
+        return functionName;
+    }
+    
     /**
      * Sets the name of the function.
      */

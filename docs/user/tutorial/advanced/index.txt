@@ -1,0 +1,18 @@
+.. _advanced:
+
+Advanced Tutorials
+------------------
+
+This page contains a few advanced tutorials that cover the internals of GeoTools.
+
+.. toctree::
+   :maxdepth: 1
+   
+   function
+   datastore
+
+.. note::
+   
+   As these tutorials cover the extension and integration of GeoTools
+   it is worth starting with :doc:`function` above as it provides an
+   cooks tour of the plugin system.

@@ -27,7 +27,7 @@ import org.opengis.annotation.UML;
 import static org.opengis.annotation.Specification.*;
 
 /**
- * Function provided in a filter capabilities.
+ * Function description provided in a filter capabilities.
  * <p>
  * <pre>
  * &lt;xsd:complexType name="FunctionNameType">
@@ -39,6 +39,9 @@ import static org.opengis.annotation.Specification.*;
  *  &lt;/xsd:complexType>
  * </pre>
  * </p>
+ * <p>
+ * We have extended this idea to include a list of argument names to better serve interactive
+ * clients.
  * 
  * @author <a href="mailto:tfr@users.sourceforge.net">Torsten Friebe </A>
  * @author Justin Deoliveira, The Open Planning Project
@@ -47,6 +50,13 @@ public interface FunctionName extends Operator {
     /**
      * Number of arguments the function accepts.
      * <p>
+     * <ul>
+     * <li>Use a postivie number to indicate the number of arguments.
+     *     Example: add( number1, number2 ) = 2</li>
+     * <li>Use a negative number to indicate a minimum number:
+     *    Example: concat( str1, str2,... ) has -2</li>
+     * </ul> 
+     *
      * <pre>
      * &lt;xsd:attribute name="nArgs" type="xsd:string" use="required"/>
      * </pre>

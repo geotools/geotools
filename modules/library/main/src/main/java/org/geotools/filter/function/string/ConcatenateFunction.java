@@ -69,7 +69,8 @@ public class ConcatenateFunction extends FunctionImpl {
         }
     };
     
-    public ConcatenateFunction() {        
+    public ConcatenateFunction() {
+        this.functionName = NAME;
     }
     
     @Override
@@ -78,7 +79,7 @@ public class ConcatenateFunction extends FunctionImpl {
     }
 
     public int getArgCount() {
-        return 2; // treat this as minimum argument count
+        return NAME.getArgumentCount();
     }
 
     public Object evaluate(Object feature) {

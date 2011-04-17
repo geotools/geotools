@@ -31,9 +31,11 @@ import org.geotools.filter.AttributeExpression;
 import org.geotools.filter.Expression;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.IllegalFilterException;
+import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.filter.visitor.AbstractFilterVisitor;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
+import org.opengis.filter.capability.FunctionName;
 
 
 /**
@@ -52,11 +54,14 @@ public class Collection_AverageFunction extends FunctionExpressionImpl {
     Object average = null;
     Expression expr;
 
+    public static FunctionName NAME = new FunctionNameImpl("Collection_Average","expression");
+    
     /**
      * Creates a new instance of Collection_AverageFunction
      */
     public Collection_AverageFunction() {
         super("Collection_Average");
+        functionName = NAME;
     }
 
     public int getArgCount() {

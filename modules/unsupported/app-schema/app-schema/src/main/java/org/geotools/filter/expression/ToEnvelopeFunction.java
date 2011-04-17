@@ -91,6 +91,10 @@ public class ToEnvelopeFunction implements Function {
     public String getName() {
         return "ToEnvelope";
     }
+    
+    public FunctionName getFunctionName() {
+        return NAME;
+    }
 
     public List<Expression> getParameters() {
         return Collections.unmodifiableList(parameters);

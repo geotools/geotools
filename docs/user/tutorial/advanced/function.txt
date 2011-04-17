@@ -1,0 +1,311 @@
+How to write a Plugin
+---------------------
+
+.. note::
+   
+   This page is currently under construction
+   
+In the introduction we saw the difference between the core GeoTools library and plug-ins that
+contribute functionality. One thing that makes a plug-in work is the "Factory SPI" plug-ins system
+(this is actually a part of Java not something we made up).
+
+Each plugin jar has:
+
+* META-INF/services folder
+  
+  The folder contains a list of files (one for each interface name)
+* The files contain a list of classes that implement that interface
+
+This page is where we explain how this all works.
+
+GeoTools is extended using the **Factory** and **FactoryRegistry** classes.
+
+The standard Factory Pattern gives us a clue about what is about to happen:
+
+FACTORY PATTERN
+   a Factory is a object that creates other objects.
+
+Here is where the fun begins ...
+
+Use of an Interface
+^^^^^^^^^^^^^^^^^^^
+
+GeoTools loves to work with interfaces, and this is the reason why. It is the first step of the
+plug-in game.
+
+We are going to use **Function** as an example::
+
+  public interface Function extends Expression {
+      String getName();
+      List<Expression> getParameters();
+      Literal getFallbackValue();
+  }
+  public interface Expression {
+      Object evaluate(Object object);
+      <T> T evaluate( Object object, Class<T> context );
+      Object accept(ExpressionVisitor visitor, Object extraData);
+  }
+
+Implement
+^^^^^^^^^
+
+We can make a quick function implementation:
+
+
+
+Create a Factory
+^^^^^^^^^^^^^^^^
+
+Interfaces are not allowed to have constructors, so anything that would been a Constructor is
+defined as a Factory interface. To continue with our example::
+
+  public interface FunctionFactory {
+      List<FunctionName> getFunctionNames();
+      Function function(String name, List<Expression> args, Literal fallback);
+  }
+
+The factory above describes what functions are available, and allows for Function
+creation.
+
+So far everything looks normal. The above is exactly how the plain "Factory Pattern"
+usually works - hopefully it is familiar to you?
+
+Alternatives:
+
+* Many factories just have a single create method (this is called the factory method)
+  
+  We have a couple of examples of this in GeoTools including DataStoreFactorySpi
+  
+* Some factories have several create method allowing a compatible set of objects to be created
+  together.  We have a couple of examples of these abstract factories, such as FeatureTypeFactory.
+
+.. note:: 
+   
+   Some GeoTools factories extend the Factory interface, but this is optional. This Factory
+   interface is useful only for factories that can be configured through a set of Hints.
+
+Dynamic Loading of Factories
+''''''''''''''''''''''''''''
+
+The **FactoryRegistry** will do the following:
+
+1. Look up key in System properties.
+   
+   * If key doesn't exist or a SecurityException is thrown, fall through.
+   *  Otherwise attempt to instantiate the given class.
+   
+2. Search the resource paths for the key in META-INF/services.
+   
+   * If the resource is found, the file is read and the class is instantiated.
+   * If the resource does not exist, fall through.
+   
+What does this mean? It means that FactoryRegistry will be able find any FunctionFactory that is on the classpath.
+
+All we have to do is put a file in META-INF/services - here is the example:
+
+* META-INF/services/org.geotools.math.FunctionFactory::
+    
+     org.geotools.tutorial.factory.
+
+
+As long as an example plug-in included AddFunction and SubFunction everything would work out
+**FactoryRegistry** would be able to locate them at runtime.
+
+Here are some outline implementations if you want to play along at home::
+    
+    an/example/plugin/AddFunctionFactory.java
+    package an.example.plugin;
+    
+    import org.geotools.math.FunctionFactory;
+    
+    class AddFunctionFactory implements FunctionFactory {
+      static InternationalString name = new InternationalStirng("+");
+      static {
+        name.add( Locale.EN, "sum" );
+      }
+    
+      public static Math create(){
+        create( name, INFIX );
+        return new AbstractFunction( name, fix ){
+           double compute( double params[] ){
+              double sum=0.0;
+              for( int i=0; i<params.length;i++) sum += params[i];
+              return sum;
+           }
+        };
+      }
+    
+      public InternationalString getName(){
+        return name;
+      }
+    
+      public int getFix( Locale location ){
+        return INFIX;
+      }
+    }
+
+Add is implemented as a anonymous inner class in this example. Although you may be wondering about AbstractFunction.
+
+Here is another outline.::
+
+    org/geotools/math/AbstractFunction.java
+    package org.geotools.math;
+    
+    public class AbstractFunction implements Function {
+       InternationalString name;
+    
+       int fix;
+    
+       public AbstractFunction( InternationalString name, int fix ){
+          this.name = name;
+          this.fix = fix;
+       }
+    
+       public double compute( double x ){
+           return compute( new double[]{ x } );
+       }
+    
+       public double compute( double x, double y ){
+           return compute( new double[]{ x, y } );
+       }
+    
+       public abstract double compute( double params[] );
+    
+       String toString(){
+          if( fix = FunctionFactory.PREFIX )
+            return name + "x";
+          if( fix = FunctionFactory.POSTFIX)
+            return "x"+name;
+          if( fix = FunctionFactory.INFIX)
+            return "x "+name+" y";
+          return name+"( x, y, ... )";
+       }
+    }
+    
+Most Geotools Factories are kind enough to give you an Abstract superclass to start your implementation efforts from. When making your own Factories this is a good example to follow.
+
+Creating a FunctionFactoryFinder
+
+Well the above idea allowed GeoTools to latch on to capabilities provided by a plug-in (or even client code). How do you let others in on the fun? Make a custom factory finder, it will make your life easier and it gives plug-in writers a clue that they can play nice with you.
+
+Using a FactoryRegistry
+
+Geotools 2.2 uses javax.imageio.ServiceRegistry magic (where this plug-in system originated from). Please note that the FactoryRegistry will cache the factories already found. Since factories are stateless this should not be a problem.
+
+Direct of FactoryRegistry::
+    
+    Set categories = Collections.singleton(new Class[] {FunctionFactory.class,});
+    FactoryRegistry registry = new FactoryRegistry(categories);
+    
+    Iterator iterator = registry.getProviders(FunctionFactory.class);
+
+Using FactoryRegistry in your own FactoryFinder
+
+It is noted that FactoryRegistry is not synchronized, to protect for this you can wrap the direct use up in a FactoryFinder, which also provide type-safety.::
+
+    public final class FunctionFactoryFinder {
+        private static FactoryRegistry registry;
+        Hints hints;
+        private FunctionFactoryFinder( Hints hints ) {
+            this.hints = addDefaultHints(hints);
+        }
+    
+        public static Hints addDefaultHints(final Hints hints) {
+            final Hints completed = GeoTools.getDefaultHints();
+            if (hints != null) {
+                completed.add(hints);
+            }
+            return completed;
+        }
+    
+        private static FactoryRegistry getServiceRegistry() {
+            assert Thread.holdsLock(FunctionFactoryFinder.class);
+            if (registry == null) {
+                Set categories = Collections.singleton(new Class[] {
+                    FunctionFactory.class
+                });
+                registry = new FactoryRegistry(categories);
+            }
+            return registry;
+        }
+    
+        public synchronized static Set getFactories( Hints hints ){
+            hints = addDefaultHints(hints);
+            return new LazySet( getServiceRegistry().getServiceProviders( FunctionFactory.class, null, hints ) );
+        }
+    
+        public String[] functionNames(){
+            List list = new ArrayList();
+            while( Iterator i=getFactories( hints ).iterator(); i.hasNext(); ) {
+               FunctionFactory factory = (FunctionFactory) i.next();
+               list.add( factory.getName() );
+            }
+            return (String[]) list.toArray( new String[GEOT:list.size()] );
+        }
+    
+        public Iterator search( int fix){
+            List list = new ArrayList();
+            while( Iterator i=getFactories().iterator(); i.hasNext(); ) {
+               FunctionFactory factory = (FunctionFactory) i.next();
+               if( factory.getFix() == fix ){
+                  list.add( factory.getName() );
+            }
+            return list.iterator();
+        }
+    }
+
+Tips:
+
+The code example makes use of LazySet, this keeps us from having to check the classpath each time.
+The utility method addDefaultHints is used to apply the global GeoTools configuration to the hints supplied by the user
+As shown above you can add some helper methods for client code. Often this is used to perform searches based on some criteria, or used to locate the "best" factory for a given task.
+
+Supporting Other Plugin mechanisms
+
+By default the "Factory SPI" mechanism is used to locate the Factories provided by a FactoryFinder (and FactoryRegistry). However in order to support other plugin mechanisms the Factories has a method addFactoryIteratorProvider(...). This method allows a developer to add a iterator that knows how to process another extension mechanism. For example, In eclipse one would add a FactoryIteratorProvider that returns a provider that knows how to process eclipse extension points and can create factories from the eclipse extensions.
+
+Geotools Plugin Checklist
+
+To allow clients to contribute a plugin:
+
+1. Define an interface
+   
+   a.package.Foo
+
+2. Define factory interface
+   
+   a.package.FooFactory
+   
+3. Define FactoryFinder
+   
+   a.package.FooFactoryFinder
+
+4. Define an Abstract class for clients to start with
+   
+   a.package.AbstractFoo
+
+To allow client code access to plug-ins:
+
+1. Make your Factory Finder public
+   
+   a.package.FooFactoryFinder
+
+When implementing a Plugin
+
+1. Create you extention
+   
+   MyFoo extends a.package.Foo
+
+2. Create you extention factory
+   
+   MyFooFactory extends a.package.FooFactory
+
+3. Register with META-INF/services
+   
+   META-INF/services/a.package.FooFactory
+
+Reference:
+
+* Notes on the Eclipse Plug-in Architecture
+* Observer Pattern
+* Factory Pattern

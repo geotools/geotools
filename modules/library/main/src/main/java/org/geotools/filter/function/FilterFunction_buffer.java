@@ -21,17 +21,22 @@ package org.geotools.filter.function;
 // transformations in SLD
 import org.geotools.filter.FunctionExpression;
 import org.geotools.filter.FunctionExpressionImpl;
+import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.opengis.filter.capability.FunctionName;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 
 public class FilterFunction_buffer extends FunctionExpressionImpl implements
-        FunctionExpression, GeometryTransformation {
+        GeometryTransformation {
+
+    public static FunctionName NAME = new FunctionNameImpl("buffer","geometry", "distance");
 
     public FilterFunction_buffer() {
         super("buffer");
+        functionName = NAME;
     }
 
     public int getArgCount() {
@@ -43,7 +48,7 @@ public class FilterFunction_buffer extends FunctionExpressionImpl implements
         double arg1;
 
         try { // attempt to get value and perform conversion
-            arg0 = (Geometry) getExpression(0).evaluate(feature);
+            arg0 = getExpression(0).evaluate(feature,Geometry.class);
         } catch (Exception e) // probably a type error
         {
             throw new IllegalArgumentException(
@@ -51,7 +56,7 @@ public class FilterFunction_buffer extends FunctionExpressionImpl implements
         }
 
         try { // attempt to get value and perform conversion
-            arg1 = ((Number) getExpression(1).evaluate(feature)).doubleValue();
+            arg1 = (getExpression(1).evaluate(feature,Double.class)).doubleValue();
         } catch (Exception e) // probably a type error
         {
             throw new IllegalArgumentException(

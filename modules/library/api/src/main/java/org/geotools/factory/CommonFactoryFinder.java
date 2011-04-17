@@ -122,26 +122,12 @@ public final class CommonFactoryFinder extends FactoryFinder {
     }
 
     /**
-     * Returns a set of all available implementations for the {@link FunctionExpression} interface.
-     *
-     * @param  hints An optional map of hints, or {@code null} if none.
-     * @return Set of available style factory implementations.
-     * @deprecated Use FunctionExpression is now @deprecated
-     */
-    public static synchronized Set getFunctionExpressions(Hints hints) {
-        //hints = mergeSystemHints(hints);
-        //return new LazySet(getServiceRegistry().getServiceProviders(
-        //        FunctionExpression.class, null, hints));
-        return Collections.EMPTY_SET;
-    }
-
-    /**
      * Returns a set of all available implementations for the {@link Function} interface.
      * 
      * @param  hints An optional map of hints, or {@code null} if none.
      * @return Set of available function expression implementations.
      */
-    public static synchronized Set getFunctions(Hints hints) {
+    public static synchronized Set<Function> getFunctions(Hints hints) {
         hints = mergeSystemHints(hints);
         return new LazySet(getServiceRegistry().getServiceProviders(
                 Function.class, null, hints));

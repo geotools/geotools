@@ -18,14 +18,18 @@ package org.geotools.filter.function;
 
 import org.geotools.filter.Expression;
 import org.geotools.filter.FunctionExpressionImpl;
+import org.geotools.filter.capability.FunctionNameImpl;
+import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Literal;
 
 public class ClassifyFunction extends FunctionExpressionImpl {
 
-    //parameters are expression, classifier
+    // parameters are expression, classifier
+    public static FunctionName NAME = new FunctionNameImpl("classify","expression","classifier");
     
     public ClassifyFunction() {
         super("classify");
+        functionName = NAME;
     }
     
     public int getArgCount() {

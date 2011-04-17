@@ -29,8 +29,10 @@ import org.geotools.filter.Expression;
 import org.geotools.filter.ExpressionType;
 import org.geotools.filter.FunctionExpression;
 import org.geotools.filter.LiteralExpression;
+import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.util.ProgressListener;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.ExpressionVisitor;
 import org.opengis.filter.expression.Literal;
 
@@ -114,7 +116,9 @@ public abstract class ClassificationFunction extends DefaultExpression implement
     public String getName() {
         return name;
     }
-
+    public FunctionName getFunctionName() {
+        return new FunctionNameImpl( getName(), getArgCount() );
+    }
     /**
      * Sets the name of the function.
      */

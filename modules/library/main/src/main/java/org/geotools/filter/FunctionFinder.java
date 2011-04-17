@@ -54,8 +54,6 @@ public class FunctionFinder {
     public Function findFunction(String name) {
         return findFunction(name, null);
     }
-
-    
     
     /**
      * Look up a function for the provided name.
@@ -65,9 +63,9 @@ public class FunctionFinder {
      * @return Generated function
      * @throws a RuntimeException if an implementation for name could not be found
      */
-    public Function findFunction(String name, List/* <Expression> */parameters){
+    public Function findFunction(String name, List<org.opengis.filter.expression.Expression> parameters){
     	return findFunction(name, parameters, null );
-	}
+    }
     
     /**
      * Look up a function for the provided name, may return a FallbackFunction if
@@ -81,7 +79,7 @@ public class FunctionFinder {
      * @param fallbackValue Literal to use if an implementation could not be found
      * @return Function for the provided name, may be a FallbackFunction if an implementation could not be found
      */
-    public Function findFunction(String name, List parameters, Literal fallback) {
+    public Function findFunction(String name, List<org.opengis.filter.expression.Expression>  parameters, Literal fallback) {
         //try name as is
         Function f = findFunctionInternal(name, parameters, fallback);
         if (f == null) {
@@ -114,7 +112,8 @@ public class FunctionFinder {
         }
         
         if (functionFactoryCache.containsKey(name)) {
-            return functionFactoryCache.get(name).function(name, parameters, fallback);
+            FunctionFactory functionFactory = functionFactoryCache.get(name);
+            return functionFactory.function(name, parameters, fallback);
         }
         
         //do a lookup from all factories, this is because of the name tricks the default

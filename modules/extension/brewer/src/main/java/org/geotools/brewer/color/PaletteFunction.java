@@ -24,9 +24,11 @@ import java.util.List;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FunctionExpression;
 import org.geotools.filter.FunctionExpressionImpl;
+import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.filter.function.ClassificationFunction;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterFactory;
+import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 
@@ -41,6 +43,8 @@ public class PaletteFunction extends FunctionExpressionImpl implements FunctionE
     String paletteName;
     FilterFactory ff;
 
+    public static FunctionName NAME = new FunctionNameImpl("Palette","classifier","paletteName");
+
     /** Creates a new instance of PaletteFunction */
     public PaletteFunction() {
         this(CommonFactoryFinder.getFilterFactory(null));
@@ -49,6 +53,7 @@ public class PaletteFunction extends FunctionExpressionImpl implements FunctionE
     public PaletteFunction(FilterFactory factory) {
         super("Palette");
         ff = factory;
+        functionName = NAME;
     }
 
     public void setFilterFactory(FilterFactory factory) {

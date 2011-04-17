@@ -28,6 +28,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.geotools.filter.FunctionExpressionImpl;
+import org.geotools.filter.capability.FunctionNameImpl;
+import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Literal;
 
 /**
@@ -120,12 +122,14 @@ public class EnvFunction extends FunctionExpressionImpl {
      */
     private static ConcurrentMap<String, Object> globalLookup = new ConcurrentHashMap<String, Object>();
 
+    public static FunctionName NAME = new FunctionNameImpl("env","variable");
 
     /**
      * Create a new instance of this function.
      */
     public EnvFunction() {
         super("env");
+        functionName = NAME;
     }
 
     /**

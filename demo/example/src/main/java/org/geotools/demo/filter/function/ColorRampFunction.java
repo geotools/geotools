@@ -20,7 +20,9 @@ import java.awt.Color;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FunctionExpressionImpl;
+import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.FilterFactory;
+import org.opengis.filter.capability.FunctionName;
 
 /**
  * Generates a colour based on an input floating point value. First the value is
@@ -60,12 +62,15 @@ import org.opengis.filter.FilterFactory;
 public class ColorRampFunction extends FunctionExpressionImpl {
 
     private static FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory(null);
+    /** value, min, max, saturation, brightness */
+    public static FunctionName NAME = new FunctionNameImpl("colorramp","value","min","max","saturation","brightness");
 
     /**
      * Constructor.
      */
     public ColorRampFunction() {
         super("colorramp");
+        functionName = NAME;
     }
 
     /**

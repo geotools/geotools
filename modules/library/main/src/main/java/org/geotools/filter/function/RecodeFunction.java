@@ -96,7 +96,9 @@ public class RecodeFunction implements Function {
     public String getName() {
         return "Recode";
     }
-
+    public FunctionName getFunctionName() {
+        return NAME;
+    }
     public List<Expression> getParameters() {
         return Collections.unmodifiableList(parameters);
     }

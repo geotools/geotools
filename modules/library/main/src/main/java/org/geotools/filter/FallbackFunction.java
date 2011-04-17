@@ -37,8 +37,9 @@ public class FallbackFunction extends FunctionExpressionImpl {
         super(name, fallback);
         this.setParameters(params);
     }
+    
     public int getArgCount() {
-        return 0;
+        return this.params.size();
     }
     @Override
     public Object evaluate(Object object) {

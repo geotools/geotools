@@ -32,7 +32,9 @@ import org.geotools.filter.Expression;
 import org.geotools.filter.FunctionExpression;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.IllegalFilterException;
+import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.filter.visitor.AbstractFilterVisitor;
+import org.opengis.filter.capability.FunctionName;
 
 
 /**
@@ -50,6 +52,8 @@ public class Collection_SumFunction extends FunctionExpressionImpl
             "org.geotools.filter.function");
     SimpleFeatureCollection previousFeatureCollection = null;
     Object sum = null;
+
+    public static FunctionName NAME = new FunctionNameImpl("Collection_Sum","expression");
 
     /**
      * Creates a new instance of Collection_SumFunction

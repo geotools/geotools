@@ -17,6 +17,8 @@
 package org.geotools.filter.function;
 
 import org.geotools.filter.FunctionExpressionImpl;
+import org.geotools.filter.capability.FunctionNameImpl;
+import org.opengis.filter.capability.FunctionName;
 
 /**
  * Filter function implementing the Symbology Encoding "StringPosition" function.
@@ -33,8 +35,11 @@ import org.geotools.filter.FunctionExpressionImpl;
  */
 public class FilterFunction_strPosition extends FunctionExpressionImpl {
 
+    public static FunctionName NAME = new FunctionNameImpl("strPosition","string","lookup","forward/backToFront");
+
     public FilterFunction_strPosition() {
         super("strPosition");
+        functionName = NAME;
     }
 
     @Override

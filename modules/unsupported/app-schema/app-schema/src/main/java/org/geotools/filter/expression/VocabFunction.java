@@ -98,6 +98,9 @@ public class VocabFunction implements Function {
     public String getName() {
         return "Vocab";
     }
+    public FunctionName getFunctionName() {
+        return NAME;
+    }
 
     public List<Expression> getParameters() {
         return Collections.unmodifiableList(parameters);

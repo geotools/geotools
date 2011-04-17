@@ -30,7 +30,9 @@ import org.geotools.filter.AttributeExpression;
 import org.geotools.filter.Expression;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.IllegalFilterException;
+import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.filter.visitor.AbstractFilterVisitor;
+import org.opengis.filter.capability.FunctionName;
 
 /**
  * Calculates the count value of an attribute for a given SimpleFeatureCollection and
@@ -47,12 +49,15 @@ public class Collection_CountFunction extends FunctionExpressionImpl{
 	SimpleFeatureCollection previousFeatureCollection = null;
 
 	Object count = null;
+	
+	public static FunctionName NAME = new FunctionNameImpl("Collection_Count","expression");
 
 	/**
 	 * Creates a new instance of Collection_CountFunction
 	 */
 	public Collection_CountFunction() {
 	    super("Collection_Count");
+	    functionName = NAME;
 	}
 
 	public int getArgCount() {

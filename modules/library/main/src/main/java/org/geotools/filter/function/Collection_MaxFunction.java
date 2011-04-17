@@ -32,7 +32,9 @@ import org.geotools.filter.Expression;
 import org.geotools.filter.FunctionExpression;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.IllegalFilterException;
+import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.filter.visitor.AbstractFilterVisitor;
+import org.opengis.filter.capability.FunctionName;
 
 
 /**
@@ -43,20 +45,22 @@ import org.geotools.filter.visitor.AbstractFilterVisitor;
  * @since 2.2M2
  * @source $URL$
  */
-public class Collection_MaxFunction extends FunctionExpressionImpl
-    implements FunctionExpression {
+public class Collection_MaxFunction extends FunctionExpressionImpl  {
     
     /** The logger for the filter module. */
     private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(
             "org.geotools.filter.function");
     SimpleFeatureCollection previousFeatureCollection = null;
     Object max = null;
+    
+    public static FunctionName NAME = new FunctionNameImpl("Collection_Max","value");
 
     /**
      * Creates a new instance of Collection_MaxFunction
      */
     public Collection_MaxFunction() {
         super("Collection_Max");
+        functionName = NAME;
     }
 
     public int getArgCount() {

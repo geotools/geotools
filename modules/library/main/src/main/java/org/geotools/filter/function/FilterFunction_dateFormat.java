@@ -21,6 +21,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.geotools.filter.FunctionExpressionImpl;
+import org.geotools.filter.capability.FunctionNameImpl;
+import org.opengis.filter.capability.FunctionName;
 
 /**
  * Formats a date into a string given a certain pattern (specified in the format accepted
@@ -33,8 +35,11 @@ import org.geotools.filter.FunctionExpressionImpl;
  */
 public class FilterFunction_dateFormat extends FunctionExpressionImpl {
     
+    public static FunctionName NAME = new FunctionNameImpl("dateFormat","format" ,"date");
+
     public FilterFunction_dateFormat() {
         super("dateFormat");
+        functionName = NAME;
     }
 
     @Override

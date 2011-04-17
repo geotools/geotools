@@ -54,7 +54,7 @@ public class FunctionFactoryTest {
             public <T> Iterator<T> iterator(Class<T> category) {
                 
                 if (FunctionFactory.class == category) {
-                     List l = new ArrayList();
+                     List<FunctionFactory> l = new ArrayList<FunctionFactory>();
                      l.add(new FunctionFactory( ) {
                         
                         @SuppressWarnings("unchecked")
@@ -76,7 +76,7 @@ public class FunctionFactoryTest {
                         }
                         
                     });
-                    return l.iterator(); 
+                    return (Iterator<T>) l.iterator(); 
                 }
                 return null;
             }

@@ -18,6 +18,8 @@
  */
 package org.geotools.filter;
 
+import org.geotools.filter.capability.FunctionNameImpl;
+import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
 
 
@@ -27,14 +29,17 @@ import org.opengis.filter.expression.Expression;
  * @author James
  * @source $URL$
  * @version $Id$
- * @deprecated - use org.geotools.filter.function.math.MinFunction instead
+ * @deprecated - use org.geotools.filter.function.math.MaxFunction instead
  */
 public class MaxFunction extends FunctionExpressionImpl{
+    public static FunctionName NAME = new FunctionNameImpl("Max","number","number");
+
     /**
      * Creates a new instance of MinFunction
      */
     public MaxFunction() {
         super("Max");
+        functionName = NAME;
     }
 
     /**

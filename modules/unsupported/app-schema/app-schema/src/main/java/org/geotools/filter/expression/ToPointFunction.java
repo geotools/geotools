@@ -101,7 +101,9 @@ public class ToPointFunction implements Function {
     public String getName() {
         return "toPoint";
     }
-
+    public FunctionName getFunctionName() {
+        return NAME;
+    }
     public List<Expression> getParameters() {
         return Collections.unmodifiableList(parameters);
     }

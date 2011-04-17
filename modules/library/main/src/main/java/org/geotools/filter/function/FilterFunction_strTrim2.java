@@ -17,6 +17,8 @@
 package org.geotools.filter.function;
 
 import org.geotools.filter.FunctionExpressionImpl;
+import org.geotools.filter.capability.FunctionNameImpl;
+import org.opengis.filter.capability.FunctionName;
 
 /**
  * Function implementing the Symbology Encoding Trim function.
@@ -33,8 +35,11 @@ import org.geotools.filter.FunctionExpressionImpl;
  */
 public class FilterFunction_strTrim2 extends FunctionExpressionImpl {
 
+    public static FunctionName NAME = new FunctionNameImpl("strTrim2","string","leading/trailing/both","character");
+
     public FilterFunction_strTrim2() {
         super("strTrim2");
+        functionName = NAME;
     }
     
     @Override

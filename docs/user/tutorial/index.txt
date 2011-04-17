@@ -17,9 +17,9 @@ to GIS workshop making use of examples from GeoTools and other Java libraries.
    raster/image
    map/style
 
-The following tutorials are a work in progress:
+The following is more advanced material:
 
 .. toctree::
    :maxdepth: 1
    
-   advanced/datastore
+   advanced/index

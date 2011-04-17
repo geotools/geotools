@@ -99,73 +99,19 @@ class FilterNameTypeMapping {
 	public static Map loadFunctionNameMap() {
 		functionNameMap = new HashMap();
 		functionNameMap.put("", NO_OP_CAPS);
-//		functionNameMap.put("distance", new FilterCapabilities(FilterFunction_distance.class));
-//		FilterCapabilities tmp = new FilterCapabilities(FilterFunction_abs.class);
-//		tmp.addType(FilterFunction_abs_2.class);
-//		tmp.addType(FilterFunction_abs_3.class);
-//		tmp.addType(FilterFunction_abs_4.class);
-//		functionNameMap.put("abs", tmp);
-//		functionNameMap.put("acos", new FilterCapabilities(FilterFunction_acos.class));
-//		functionNameMap.put("area", new FilterCapabilities(FilterFunction_area.class));
-//		functionNameMap.put("asin", new FilterCapabilities(FilterFunction_asin.class));
-//		functionNameMap.put("atan", new FilterCapabilities(FilterFunction_atan.class));
-//		functionNameMap.put("atan2", new FilterCapabilities(FilterFunction_atan2.class));
-//		functionNameMap.put("between", new FilterCapabilities(FilterFunction_between.class));
-//		functionNameMap.put("boundary", new FilterCapabilities(FilterFunction_boundary.class));
-//		functionNameMap.put("boundarydimension", new FilterCapabilities(FilterFunction_boundaryDimension.class));
-//		functionNameMap.put("buffer", new FilterCapabilities(FilterFunction_buffer.class));
-//		functionNameMap.put("bufferwithsegments", new FilterCapabilities(FilterFunction_bufferWithSegments.class));
-//		tmp = new FilterCapabilities(FilterFunction_ceil.class);
-//		functionNameMap.put("ceil", tmp);
-//		functionNameMap.put("ceiling", tmp);
-//		functionNameMap.put("centroid", new FilterCapabilities(FilterFunction_centroid.class));
-//
-//		functionNameMap.put("collection_average", new FilterCapabilities(Collection_AverageFunction.class));
-//		functionNameMap.put("collection_bounds", new FilterCapabilities(Collection_BoundsFunction.class));
-//		functionNameMap.put("collection_count", new FilterCapabilities(Collection_CountFunction.class));
-//		functionNameMap.put("collection_max", new FilterCapabilities(Collection_MaxFunction.class));
-//		functionNameMap.put("collection_median", new FilterCapabilities(Collection_MedianFunction.class));
-//		functionNameMap.put("collection_min", new FilterCapabilities(Collection_MinFunction.class));
-//		functionNameMap.put("collection_sum", new FilterCapabilities(Collection_SumFunction.class));
-//		
-//		functionNameMap.put("contains", new FilterCapabilities(FilterFunction_contains.class));
-//		functionNameMap.put("convexhull", new FilterCapabilities(FilterFunction_convexHull.class));
-//		functionNameMap.put("cos", new FilterCapabilities(FilterFunction_cos.class));
-//		functionNameMap.put("crosses", new FilterCapabilities(FilterFunction_crosses.class));
-//		functionNameMap.put("difference", new FilterCapabilities(FilterFunction_difference.class));
-//		functionNameMap.put("dimension", new FilterCapabilities(FilterFunction_dimension.class));
-//		functionNameMap.put("disjoint", new FilterCapabilities(FilterFunction_disjoint.class));
-//		functionNameMap.put("double2bool", new FilterCapabilities(FilterFunction_double2bool.class));
-//		functionNameMap.put("endpoint", new FilterCapabilities(FilterFunction_endPoint.class));
-//		functionNameMap.put("envelope", new FilterCapabilities(FilterFunction_envelope.class));
-//		functionNameMap.put("equalinterval", new FilterCapabilities(EqualIntervalFunction.class));
-//		functionNameMap.put("equalsexact", new FilterCapabilities(FilterFunction_.class));
-//		functionNameMap.put("equalsexacttolerance", new FilterCapabilities(FilterFunction_buffer.class));
-//		functionNameMap.put("equalto", new FilterCapabilities(FilterFunction_buffer.class));
-//		functionNameMap.put("exp", new FilterCapabilities(FilterFunction_buffer.class));
-//		functionNameMap.put("exteriorring", new FilterCapabilities(FilterFunction_buffer.class));
-//		functionNameMap.put("floor", new FilterCapabilities(FilterFunction_buffer.class));
-//		functionNameMap.put("geometrytype", new FilterCapabilities(FilterFunction_buffer.class));
-//		functionNameMap.put("geomfromtwkt", new FilterCapabilities(FilterFunction_buffer.class));
-//		functionNameMap.put("geomlength", new FilterCapabilities(FilterFunction_buffer.class));
-		
-		Iterator expressions = CommonFactoryFinder.getFunctionExpressions( null ).iterator();
-		while ( expressions.hasNext() ){
-			FunctionExpression exp=(FunctionExpression) expressions.next();
-			functionNameMap.put(exp.getName().toLowerCase(), new FilterCapabilities(exp.getClass()));
+		Iterator<Function> functions = CommonFactoryFinder.getFunctions(null ).iterator();
+		while ( functions.hasNext() ){
+		    Function exp= functions.next();
+		    functionNameMap.put(exp.getName().toLowerCase(), new FilterCapabilities(exp.getClass()));
 		}
-		Iterator functions = CommonFactoryFinder.getFunctions(null ).iterator();
-        while ( functions.hasNext() ){
-            Function exp=(Function) functions.next();
-            functionNameMap.put(exp.getName().toLowerCase(), new FilterCapabilities(exp.getClass()));
+		return functionNameMap;
         }
-        return functionNameMap;
-    }
 
 	public static FilterCapabilities findFunction(String name) {
 		FilterCapabilities filterCapabilities = (FilterCapabilities) functionNameMap.get(name);
-		if( filterCapabilities!=null )
+		if( filterCapabilities!=null ){
 			return filterCapabilities;
+		}
 		return NO_OP_CAPS;
 	}
     

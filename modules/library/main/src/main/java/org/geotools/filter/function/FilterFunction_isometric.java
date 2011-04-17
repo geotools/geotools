@@ -25,8 +25,10 @@ import java.util.List;
 
 import org.geotools.filter.FunctionExpression;
 import org.geotools.filter.FunctionExpressionImpl;
+import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.filter.function.FilterFunction_offset.OffsetOrdinateFilter;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.opengis.filter.capability.FunctionName;
 
 import com.vividsolutions.jts.geom.CoordinateSequence;
 import com.vividsolutions.jts.geom.Geometry;
@@ -36,11 +38,14 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.Polygon;
 
-public class FilterFunction_isometric extends FunctionExpressionImpl implements FunctionExpression,
+public class FilterFunction_isometric extends FunctionExpressionImpl implements 
         GeometryTransformation {
+
+    public static FunctionName NAME = new FunctionNameImpl("isometric", "geometry","extrusion");
 
     public FilterFunction_isometric() {
         super("isometric");
+        functionName = NAME;
     }
 
     public int getArgCount() {
@@ -48,7 +53,7 @@ public class FilterFunction_isometric extends FunctionExpressionImpl implements 
     }
 
     public Object evaluate(Object feature) {
-        Geometry geom = (Geometry) getExpression(0).evaluate(feature, Geometry.class);
+        Geometry geom =  getExpression(0).evaluate(feature, Geometry.class);
         Double extrusion = getExpression(1).evaluate(feature, Double.class);
 
         if (geom != null && extrusion != null) {

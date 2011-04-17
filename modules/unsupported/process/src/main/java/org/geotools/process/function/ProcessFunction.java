@@ -28,9 +28,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.geotools.data.Parameter;
+import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.process.Process;
 import org.geotools.process.ProcessException;
 import org.geotools.util.Converters;
+import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.ExpressionVisitor;
 import org.opengis.filter.expression.Function;
@@ -72,7 +74,9 @@ class ProcessFunction implements Function {
     public String getName() {
         return name;
     }
-
+    public FunctionName getFunctionName() {
+        return new FunctionNameImpl( name, inputExpressions.size() );
+    }
     public List<Expression> getParameters() {
         return inputExpressions;
     }

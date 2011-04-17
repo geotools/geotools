@@ -33,9 +33,11 @@ import org.geotools.filter.Expression;
 import org.geotools.filter.FunctionExpression;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.IllegalFilterException;
+import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.filter.visitor.AbstractFilterVisitor;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
+import org.opengis.filter.capability.FunctionName;
 
 
 /**
@@ -46,19 +48,21 @@ import org.opengis.feature.type.FeatureType;
  * @since 2.2M2
  * @source $URL$
  */
-public class Collection_MedianFunction extends FunctionExpressionImpl
-    implements FunctionExpression {
+public class Collection_MedianFunction extends FunctionExpressionImpl {
     /** The logger for the filter module. */
     private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(
             "org.geotools.filter.function");
     FeatureCollection<? extends FeatureType, ? extends Feature> previousFeatureCollection = null;
     Object median = null;
 
+    public static FunctionName NAME = new FunctionNameImpl("Collection_Median","value");
+
     /**
      * Creates a new instance of Collection_MedianFunction
      */
     public Collection_MedianFunction() {
         super("Collection_Median");
+        functionName = NAME;
     }
 
     public int getArgCount() {

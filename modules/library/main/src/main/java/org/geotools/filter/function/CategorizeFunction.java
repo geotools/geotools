@@ -116,7 +116,9 @@ public class CategorizeFunction implements Function {
     public String getName() {
         return NAME.getName();
     }
-
+    public FunctionName getFunctionName() {
+        return NAME;
+    }
     public List<Expression> getParameters() {
         return Collections.unmodifiableList(parameters);
     }

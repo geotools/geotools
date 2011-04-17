@@ -16,6 +16,8 @@
  */
 package org.geotools.filter;
 
+import org.geotools.filter.capability.FunctionNameImpl;
+import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
 
 /**
@@ -26,9 +28,11 @@ import org.opengis.filter.expression.Expression;
  * @source $URL$
  */
 public class LengthFunction extends FunctionExpressionImpl {
+    public static FunctionName NAME = new FunctionNameImpl("length","string");
 
         public LengthFunction(){
             super("length");
+            functionName = NAME;
         }
         
 	/* (non-Javadoc)

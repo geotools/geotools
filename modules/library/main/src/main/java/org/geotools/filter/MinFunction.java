@@ -18,6 +18,8 @@
  */
 package org.geotools.filter;
 
+import org.geotools.filter.capability.FunctionNameImpl;
+import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
 
 
@@ -30,11 +32,15 @@ import org.opengis.filter.expression.Expression;
  * @deprecated - use org.geotools.filter.function.math.MinFunction instead
  */
 public class MinFunction extends FunctionExpressionImpl{
+    
+    public static FunctionName NAME = new FunctionNameImpl("Min","number","number");
+
     /**
      * Creates a new instance of MinFunction
      */
     public MinFunction() {
         super("Min");
+        functionName = NAME;
     }
 
     /**

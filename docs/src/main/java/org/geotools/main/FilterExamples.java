@@ -352,7 +352,11 @@ private static void functionList() {
             System.out.print("    ");
             System.out.print(functionName.getName());
             System.out.print("(");
-            for (int i = 0; i < functionName.getArgumentCount(); i++) {
+            int count = functionName.getArgumentCount();
+            if( count < 0 ){
+                count = functionName.getArgumentNames().size();
+            }
+            for (int i = 0; i < count; i++) {
                 if (i > 0) {
                     System.out.print(", ");
                 }

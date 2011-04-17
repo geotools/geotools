@@ -740,7 +740,13 @@ import com.vividsolutions.jts.io.WKTReader;
      {
         return o==null;
      }
-     
+     /**
+      * 
+      * @param value
+      * @param low
+      * @param high
+      * @return true if value is between low and high
+      */
      static public boolean between(Object o, Object o_low, Object o_high)
      {
 

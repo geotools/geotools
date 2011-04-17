@@ -24,10 +24,12 @@ import java.lang.reflect.InvocationTargetException;
 
 //import org.apache.commons.beanutils.PropertyUtils;
 import org.geotools.filter.FunctionExpressionImpl;
+import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.util.Utilities;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.FeatureType;
+import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
@@ -39,8 +41,11 @@ import org.opengis.filter.expression.PropertyName;
  */
 public class PropertyExistsFunction extends FunctionExpressionImpl {
 
+    public static FunctionName NAME = new FunctionNameImpl("PropertyExists","propertyName");
+
     public PropertyExistsFunction() {
         super("PropertyExists");
+        functionName = NAME;
     }
 
     public int getArgCount() {

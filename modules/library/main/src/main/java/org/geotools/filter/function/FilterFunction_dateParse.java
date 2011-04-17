@@ -21,6 +21,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import org.geotools.filter.FunctionExpressionImpl;
+import org.geotools.filter.capability.FunctionNameImpl;
+import org.opengis.filter.capability.FunctionName;
 
 /**
  * Parses a date from a string given a certain pattern (specified in the format accepted
@@ -33,8 +35,11 @@ import org.geotools.filter.FunctionExpressionImpl;
  */
 public class FilterFunction_dateParse extends FunctionExpressionImpl {
     
+    public static FunctionName NAME = new FunctionNameImpl("dateParse","format" ,"string");
+
     public FilterFunction_dateParse() {
         super("dateParse");
+        functionName = NAME;
     }
 
     @Override

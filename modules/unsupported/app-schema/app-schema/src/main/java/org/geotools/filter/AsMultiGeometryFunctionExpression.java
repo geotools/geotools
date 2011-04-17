@@ -17,7 +17,9 @@
 
 package org.geotools.filter;
 
+import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.feature.Attribute;
+import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -48,8 +50,12 @@ import com.vividsolutions.jts.geom.Polygon;
  * @source $URL$
  */
 public class AsMultiGeometryFunctionExpression extends FunctionExpressionImpl {
+    
+    public static FunctionName NAME = new FunctionNameImpl("asMultiGeometry","geometry");
+    
     public AsMultiGeometryFunctionExpression() {
         super("asMultiGeometry");
+        functionName = NAME;
     }
 
     public int getArgCount() {

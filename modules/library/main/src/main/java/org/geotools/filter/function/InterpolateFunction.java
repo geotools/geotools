@@ -200,7 +200,9 @@ public class InterpolateFunction implements Function {
     public String getName() {
         return "Interpolate";
     }
-
+    public FunctionName getFunctionName() {
+        return NAME;
+    }
     public List<Expression> getParameters() {
         return Collections.unmodifiableList(parameters);
     }

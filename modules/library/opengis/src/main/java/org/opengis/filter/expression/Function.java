@@ -11,6 +11,7 @@
 import java.util.List;
 
 import org.opengis.annotation.XmlElement;
+import org.opengis.filter.capability.FunctionName;
 
 
 /**
@@ -41,6 +42,13 @@ public interface Function extends Expression {
      * the required parameters you will need to consult the documentation.
      */
     String getName();
+    
+    /**
+     * Access to the FunctionName description as used in a FilterCapabilities document.
+     * 
+     * @return FunctionName description, if available.
+     */
+    // FunctionName getFunctionName();
 
    /**
      * Returns the list subexpressions that will be evaluated to provide the

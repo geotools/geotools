@@ -35,6 +35,7 @@ import org.geotools.factory.Hints;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.filter.expression.PropertyAccessor;
 import org.geotools.filter.expression.PropertyAccessorFactory;
 import org.junit.Assert;
@@ -53,6 +54,7 @@ import org.opengis.filter.PropertyIsLessThan;
 import org.opengis.filter.PropertyIsLessThanOrEqualTo;
 import org.opengis.filter.PropertyIsLike;
 import org.opengis.filter.PropertyIsNull;
+import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.ExpressionVisitor;
 import org.opengis.filter.expression.Function;
@@ -1177,6 +1179,9 @@ public class FilterTest extends TestCase {
 
         public String getName() {
             return "function";
+        }
+        public FunctionName getFunctionName() {
+            return new FunctionNameImpl(getName(), 0);
         }
 
         public List<org.opengis.filter.expression.Expression> getParameters() {

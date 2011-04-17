@@ -19,6 +19,9 @@
 
 package org.geotools.filter;
 
+import org.geotools.filter.capability.FunctionNameImpl;
+import org.opengis.filter.capability.FunctionName;
+
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
@@ -32,11 +35,14 @@ import com.vividsolutions.jts.geom.Polygon;
  * @author  James
  * @source $URL$
  */
-public class AreaFunction extends FunctionExpressionImpl{ 
+public class AreaFunction extends FunctionExpressionImpl { 
+    
+    public static FunctionName NAME = new FunctionNameImpl("Area","geometry");
     
     /** Creates a new instance of AreaFunction */
     public AreaFunction() {
         super("Area");
+        functionName = NAME;
     }
     
     public Object evaluate(Object feature) {

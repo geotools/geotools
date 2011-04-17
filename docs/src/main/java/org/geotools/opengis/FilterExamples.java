@@ -1,6 +1,7 @@
 package org.geotools.opengis;
 
 import java.util.Collections;
+import java.util.List;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FunctionFinder;
@@ -24,7 +25,7 @@ public class FilterExamples {
        // end ff example
        
        FunctionFinder finder = new FunctionFinder(null);
-       finder.findFunction("pi", Collections.emptyList(), ff.literal(Math.PI));
+       finder.findFunction("pi", (List<Expression>)Collections.EMPTY_LIST, ff.literal(Math.PI));
        
    }
 }

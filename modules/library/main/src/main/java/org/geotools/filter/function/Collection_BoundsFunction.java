@@ -31,9 +31,11 @@ import org.geotools.filter.AttributeExpression;
 import org.geotools.filter.Expression;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.IllegalFilterException;
+import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.filter.visitor.AbstractFilterVisitor;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
+import org.opengis.filter.capability.FunctionName;
 
 
 /**
@@ -50,12 +52,15 @@ public class Collection_BoundsFunction extends FunctionExpressionImpl{
             "org.geotools.filter.function");
     FeatureCollection<FeatureType, Feature> previousFeatureCollection = null;
     Object bounds = null;
+    
+    public static FunctionName NAME = new FunctionNameImpl("Collection_Bounds","geometry");
 
     /**
      * Creates a new instance of Collection_BoundsFunction
      */
     public Collection_BoundsFunction() {
         super("Collection_Bounds");
+        functionName = NAME;
     }
 
     public int getArgCount() {

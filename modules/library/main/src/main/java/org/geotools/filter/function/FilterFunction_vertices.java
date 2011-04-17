@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geotools.filter.FunctionExpressionImpl;
+import org.geotools.filter.capability.FunctionNameImpl;
+import org.opengis.filter.capability.FunctionName;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.CoordinateFilter;
@@ -13,8 +15,11 @@ import com.vividsolutions.jts.geom.MultiPoint;
 
 public class FilterFunction_vertices extends FunctionExpressionImpl {
 
+    public static FunctionName NAME = new FunctionNameImpl("vertices","geometry");
+    
     public FilterFunction_vertices() {
         super("vertices");
+        functionName = NAME;
     }
 
     @Override

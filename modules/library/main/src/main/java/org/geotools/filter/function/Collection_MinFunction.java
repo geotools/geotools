@@ -32,7 +32,9 @@ import org.geotools.filter.Expression;
 import org.geotools.filter.FunctionExpression;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.IllegalFilterException;
+import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.filter.visitor.AbstractFilterVisitor;
+import org.opengis.filter.capability.FunctionName;
 
 
 /**
@@ -50,11 +52,14 @@ public class Collection_MinFunction extends FunctionExpressionImpl
     SimpleFeatureCollection previousFeatureCollection = null;
     Object min = null;
 
+    public static FunctionName NAME = new FunctionNameImpl("Collection_Min","expression");
+
     /**
      * Creates a new instance of Collection_MinFunction
      */
     public Collection_MinFunction() {
         super("Collection_Min");
+        functionName = NAME;
     }
 
     public int getArgCount() {

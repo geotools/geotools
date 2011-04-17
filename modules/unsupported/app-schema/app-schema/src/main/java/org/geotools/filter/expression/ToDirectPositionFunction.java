@@ -93,7 +93,10 @@ public class ToDirectPositionFunction implements Function {
     }
 
     public String getName() {
-        return "toDirectPosition";
+        return NAME.getName();
+    }
+    public FunctionName getFunctionName() {
+        return NAME;
     }
 
     public List<Expression> getParameters() {

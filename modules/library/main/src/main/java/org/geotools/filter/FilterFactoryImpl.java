@@ -1024,6 +1024,10 @@ public class FilterFactoryImpl implements FilterFactory {
         return new FunctionNameImpl( name, nargs );
     }
     
+    public FunctionName functionName(String name, int nargs, List<String> argNames ){
+        return new FunctionNameImpl( name, nargs, argNames );
+    }
+    
     public Functions functions(FunctionName[] functionNames) {
         return new FunctionsImpl( functionNames );
     }

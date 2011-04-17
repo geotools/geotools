@@ -16,8 +16,9 @@ package org.geotools.filter.function;
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-import org.geotools.filter.FunctionExpression;
 import org.geotools.filter.FunctionExpressionImpl;
+import org.geotools.filter.capability.FunctionNameImpl;
+import org.opengis.filter.capability.FunctionName;
 
 import com.vividsolutions.jts.geom.Geometry;
 
@@ -25,14 +26,16 @@ import com.vividsolutions.jts.geom.Geometry;
  * A FilterFunction that expects a Geometry and returns it's minimum rectangle.
  * @author Jared Erickson
  */
-public class FilterFunction_minimumRectangle extends FunctionExpressionImpl implements
-        FunctionExpression {
+public class FilterFunction_minimumRectangle extends FunctionExpressionImpl {
 
+    public static FunctionName NAME = new FunctionNameImpl("minrectangle","geometry");
+    
     /**
      * Create a new FilterFunction_minimumRectangle instance
      */
     public FilterFunction_minimumRectangle() {
         super("minrectangle");
+        functionName = NAME;
     }
 
     /**
@@ -54,7 +57,7 @@ public class FilterFunction_minimumRectangle extends FunctionExpressionImpl impl
 
         // attempt to get value and perform conversion
         try {
-            arg0 = (Geometry) getExpression(0).evaluate(feature);
+            arg0 = getExpression(0).evaluate(feature, Geometry.class);
         } catch (Exception e) {
             // probably a type error
             throw new IllegalArgumentException(

@@ -19,13 +19,17 @@ package org.geotools.filter.function;
 
 import org.geotools.filter.FunctionExpression;
 import org.geotools.filter.FunctionExpressionImpl;
+import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.util.Converters;
+import org.opengis.filter.capability.FunctionName;
 
-public class FilterFunction_Convert extends FunctionExpressionImpl implements
-        FunctionExpression {
+public class FilterFunction_Convert extends FunctionExpressionImpl {
+
+    public static FunctionName NAME = new FunctionNameImpl("convert","value","class");
 
     public FilterFunction_Convert() {
         super("convert");
+        functionName = NAME;
     }
 
     public int getArgCount() {

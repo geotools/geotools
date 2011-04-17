@@ -30,6 +30,7 @@ import java.util.logging.Logger;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FunctionExpression;
+import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.FunctionFactory;
 import org.geotools.filter.FunctionImpl;
 import org.geotools.util.logging.Logging;
@@ -40,7 +41,7 @@ import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 
 /**
- * Filter function facotry that uses the spi lookup mechanism to create functions.
+ * Filter function factory that uses the spi lookup mechanism to create functions.
  * 
  * @author Justin Deoliveira, OpenGeo
  *
@@ -52,7 +53,7 @@ public class DefaultFunctionFactory implements FunctionFactory {
     private Map<String,FunctionDescriptor> functionCache;
 
     public List<FunctionName> getFunctionNames() {
-        ArrayList list = new ArrayList(functionCache().size());
+        ArrayList<FunctionName> list = new ArrayList<FunctionName>(functionCache().size());
         for (FunctionDescriptor fd : functionCache().values()) {
             list.add(fd.name);
         }
@@ -62,20 +63,25 @@ public class DefaultFunctionFactory implements FunctionFactory {
     public Function function(String name, List<Expression> parameters, Literal fallback) {
         
         // cache lookup
-        FunctionDescriptor fd = functionCache().get(functionName(name));
+        String key = functionName(name);
+        FunctionDescriptor fd = functionCache().get(key);
         if (fd == null) {
-            //no such function
-            return null;
+            fd = functionCache().get(name);
+            if( fd == null ){
+                //no such function
+                return null;
+            }
+            // LOGGER.warning("Name conflict between '"+name+"' and '"+key+"'");
         }
         
         try {
-            return fd.newFunction(parameters, fallback);
+            Function newFunction = fd.newFunction(parameters, fallback);
+            return newFunction;
         }
         catch(Exception e){
             LOGGER.log( Level.FINER, "Unable to create function " + name + "Function", e);
             //just continue on to return null
-        }
-        
+        }        
         return null;
     }
     
@@ -91,33 +97,43 @@ public class DefaultFunctionFactory implements FunctionFactory {
         return functionCache;
     }
     
-    private void loadFunctions() {
-        functionCache = new HashMap();
+    private FunctionName getFunctionName( Function function ){
+        String name = function.getName();
+        FunctionName functionName = null; // function.getFunctionName();
         
-        // Get all the GeoTools FunctionExpression implementations
-        // and store in functionExpressionCache
-        // (these are implementations of the legacy GeoTools FunctionExpression
-        // interface)
-        Set functions = CommonFactoryFinder.getFunctionExpressions(null);
-        for (Iterator it = functions.iterator(); it.hasNext();) {
-            FunctionExpression function = (FunctionExpression) it.next();
-            FunctionDescriptor fd = new FunctionDescriptor(
-                filterFactory.functionName(function.getName(), function.getArgCount()), 
-                function.getClass()); 
-            
-            functionCache.put(functionName(function.getName()), fd);
+        if( functionName == null && function instanceof FunctionExpressionImpl){
+            functionName = ((FunctionExpressionImpl)function).getFunctionName();
         }
-        
-        // Get all the GeoAPI Function implementations
-        functions = CommonFactoryFinder.getFunctions(null);
-        for (Iterator i = functions.iterator(); i.hasNext();) {
+        if( functionName == null ){
+            int argc;
+            if( function instanceof FunctionExpression ){
+                argc = ((FunctionExpression)function).getArgCount();
+            }
+            else {
+                argc = function.getParameters().size();
+            }
+            functionName = filterFactory.functionName(name, argc );
+        }
+        else {
+            if( !functionName.getName().equals(name )){
+                LOGGER.warning( function.getClass() +" has name conflict betwee '"+name+"' and '"+functionName.getName()+"'");
+            }
+        }
+        return functionName;
+    }
+    private void loadFunctions() {
+        functionCache = new HashMap<String,FunctionDescriptor>();
+
+        Set<Function> functions = CommonFactoryFinder.getFunctions(null);
+        for (Iterator<Function> i = functions.iterator(); i.hasNext();) {
             Function function = (Function) i.next();
-            int argc = function instanceof FunctionExpression ? 
-                ((FunctionExpression)function).getArgCount() : function.getParameters().size();
+            FunctionName functionName = getFunctionName( function );
+            String name = function.getName();
+            FunctionDescriptor fd = new FunctionDescriptor( functionName, function.getClass() );
             
-            FunctionDescriptor fd = new FunctionDescriptor(
-                filterFactory.functionName(function.getName(), argc), function.getClass());
-            functionCache.put(functionName(function.getName()), fd);
+            // needed to insert justin's name hack here to ensure consistent lookup
+            String key = functionName(name);
+            functionCache.put( key, fd );
         }
     }
     

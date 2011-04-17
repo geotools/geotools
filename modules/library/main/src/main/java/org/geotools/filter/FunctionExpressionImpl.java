@@ -16,6 +16,7 @@
  */
 package org.geotools.filter;
 
+import java.awt.RenderingHints.Key;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -23,6 +24,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.geotools.filter.capability.FunctionNameImpl;
+import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.ExpressionVisitor;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
@@ -40,9 +43,12 @@ public abstract class FunctionExpressionImpl
 	protected String name;
 
 	/** function params **/
-	protected List params;
+	protected List<org.opengis.filter.expression.Expression> params;
 	
     protected Literal fallback;
+
+    /** FunctionName provided by subclass; or lazely created */
+    protected FunctionName functionName;
 	
     protected FunctionExpressionImpl(String name ){
         this( name, null );
@@ -53,7 +59,7 @@ public abstract class FunctionExpressionImpl
     protected FunctionExpressionImpl(String name, Literal fallback) {
         this.name = name;
         this.fallback = fallback;
-        params = new ArrayList();
+        params = new ArrayList<org.opengis.filter.expression.Expression>();
     }
 
      /**
@@ -74,6 +80,13 @@ public abstract class FunctionExpressionImpl
     public String getName() {
     	return name;
     }
+    
+    public synchronized FunctionName getFunctionName() {
+        if( functionName == null ){
+            functionName = new FunctionNameImpl( getName(), getArgCount() );
+        }
+        return functionName;
+    }
 
     /**
      * Sets the name of the function.
@@ -91,7 +104,7 @@ public abstract class FunctionExpressionImpl
     /**
      * Returns the function parameters.
      */
-    public List getParameters() {
+    public List<org.opengis.filter.expression.Expression> getParameters() {
     	return params;
     }
     
@@ -150,8 +163,8 @@ public abstract class FunctionExpressionImpl
     /**
      * Returns the implementation hints. The default implementation returns an empty map.
      */
-    public Map getImplementationHints() {
-        return Collections.EMPTY_MAP;
+    public  Map<Key, ?> getImplementationHints() {
+        return Collections.emptyMap();
     }
     
     /**

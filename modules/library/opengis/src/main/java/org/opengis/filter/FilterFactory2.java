@@ -9,7 +9,13 @@
  */
 package org.opengis.filter;
 
+import java.util.List;
+
 import org.opengis.feature.type.Name;
+import org.opengis.filter.capability.FunctionName;
+import org.opengis.filter.capability.GeometryOperand;
+import org.opengis.filter.capability.Operator;
+import org.opengis.filter.capability.SpatialOperator;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.BBOX;
@@ -40,11 +46,30 @@ import org.xml.sax.helpers.NamespaceSupport;
  * @since GeoAPI 2.1
  */
 public interface FilterFactory2 extends FilterFactory {
-////////////////////////////////////////////////////////////////////////////////
-//
-//  FILTERS
-//
-////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
+    //
+    //  CAPABILITIES
+    //
+    ////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * FunctionName used to describe an available function.
+     * 
+     * @param name
+     *            name of function
+     * @param nargs
+     *            number of arguments, use a negative number to indicate a minimum if the function
+     *            supports an open ended number of arguments
+     * @param argNames
+     *            Optional list of argument names
+     */
+    // FunctionName functionName(String name, int nargs, List<String> argNames);
+    
+    ////////////////////////////////////////////////////////////////////////////////
+    //
+    //  FILTERS
+    //
+    ////////////////////////////////////////////////////////////////////////////////
 
     /**
      * Retrieves the value of a {@linkplain org.opengis.feature.Feature feature}'s property.

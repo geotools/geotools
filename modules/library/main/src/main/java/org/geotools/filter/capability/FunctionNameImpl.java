@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.opengis.filter.capability.FunctionName;
+import org.opengis.filter.expression.Function;
 
 /**
  * Implementation of the FunctionName interface.
@@ -30,27 +31,46 @@ import org.opengis.filter.capability.FunctionName;
  * @source $URL$
  */
 public class FunctionNameImpl extends OperatorImpl implements FunctionName {
-    /** Number of required arguments */
+    /**
+     * Number of required arguments.
+     * <p>
+     * <ul>
+     * <li>Use a postivie number to indicate the number of arguments.
+     *     Example: add( number1, number2 ) = 2</li>
+     * <li>Use a negative number to indicate a minimum number:
+     *    Example: concat( str1, str2,... ) has -2</li>
+     * </ul> 
+     */
     int argumentCount;
     
     List<String> argumentNames;
-    
+      
     public FunctionNameImpl( String name, int argumentCount ) {
         super( name );
         this.argumentCount = argumentCount;
         this.argumentNames = null;
     }
     
-    public FunctionNameImpl( String name, String argumentsNames[] ) {
+    public FunctionNameImpl( String name, String ... argumentsNames ) {
         super( name );
         this.argumentCount = argumentsNames.length;
         this.argumentNames = generateArgumentNames( argumentCount, argumentsNames );        
     }
+    
     public FunctionNameImpl( String name, List<String> argumentsNames ) {
+        this( name, argumentsNames.size(), argumentsNames );
+    }
+    public FunctionNameImpl( String name, int argumentCount, List<String> argumentsNames ) {
         super( name );
-        this.argumentCount = argumentsNames.size();
+        this.argumentCount = argumentCount;
         this.argumentNames = generateArgumentNames( argumentCount, argumentsNames );        
     }
+    public FunctionNameImpl( String name, int argumentCount, String ... argumentsNames ) {
+        super( name );
+        this.argumentCount = argumentCount;
+        this.argumentNames = generateArgumentNames( argumentCount, argumentsNames );        
+    }
+    
     public FunctionNameImpl( FunctionName copy ) {
         super( copy );
         this.argumentCount = copy.getArgumentCount();
@@ -104,6 +124,7 @@ public class FunctionNameImpl extends OperatorImpl implements FunctionName {
     }
 
     private static List<String> generateArgumentNames( int count ){
+        count = Math.abs( count );
         List<String> names = Arrays.asList( new String[count]);
         for( int i=0; i < count; i++){
             names.set(i, "arg"+i );

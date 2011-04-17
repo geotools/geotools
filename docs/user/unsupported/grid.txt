@@ -5,24 +5,15 @@ The gt-grid module makes it easy to create vector grids (also known as lattices)
 of rectangular or hexagonal elements, each of which is represented by a SimpleFeature. Simple grids
 are based on a default feature type which includes the grid element Polygon and an integer ID value.
 More complex grids can be based on a user-supplied feature type, with control over which grid
-elements are created and the attribute values assigned to them.
+elements are created and the attribute values assigned to them. 
 
-Grids are currently constructed in memory with the whole grid being built at one time. The next
-stage for work on the module will see grid creation made into a streaming process, with grid
-elements created on demand and accessed via a FeatureIterator. 
-
-References:
-
-* See http://jira.codehaus.org/browse/GEOT-3133 for more details.
+Note: Grids are currently constructed in memory with the whole grid being built at one time. 
 
 Creating square grids
 ^^^^^^^^^^^^^^^^^^^^^
 
-When all you need is a vector grid for display purposes, the easiest way to guild one is with the
-static methods offered by the org.geotools.grid.Grids class.
-
-In this example, we create a lat-lon grid with squares 10 degrees wide to display over
-a map of Australia::
+The easiest way to create a basic grid is with the static methods in the Grids helper class. This
+example creates a lat-lon grid with squares 10 degrees wide to display over a map of Australia::
 
      ReferencedEnvelope gridBounds = new ReferencedEnvelope(110, 160, -45, -5, DefaultGeographicCRS.WGS84);
      double squareWidth = 10.0;
@@ -32,21 +23,21 @@ Here is the resulting grid:
 
 .. image:: /images/grid_square.png
 
-Each grid element is represented by a SimpleFeature with a minimal polygon, ie. one with  4 vertices.
+Each grid element is represented by a SimpleFeature containing a minimal polygon, ie. one with  4
+vertices.
 
 Grids for display in different map projections
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The minimal grid above is fine if you only need to display it in the one map projection. But say
 we need to display the above map in EPSG:4462 (Lambert's Conformal Conic for Australia).
-
-When we reproject it the result isn't ideal:
+Reprojecting the grid results the the lines of latitude, which are now curved, appearing jagged
+rather than smooth:
 
 .. image:: /images/grid_tron.png
 
-Because each polygon only has vertices at its corners the lines of latitude look angular rather
-than being smooth curves. We can achieve a better effect with densified polygons which have
-additional vertices added to each edge::
+This happens because the grid  polygons only have vertices at their corners. For a better effect you
+can create the grid with additional vertices added to each edge::
 
     ReferencedEnvelope gridBounds = new ReferencedEnvelope(110, 160, -45, -8, DefaultGeographicCRS.WGS84);
     double squareWidth = 10.0;
@@ -55,19 +46,18 @@ additional vertices added to each edge::
     double vertexSpacing = squareWidth / 20;
     SimpleFeatureSource grid = Grids.createSquareGrid(bounds, squareWidth, vertexSpacing);
 
-And here is the (much smoother) result:
+And here is the much smoother result:
 
 .. image:: /images/grid_smooth.png
 
 Creating hexagonal grids
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Grids class also offers methods to create hexagonal grids. These have the useful property that
-all six neighbours of a grid element lie at an equal distance, in contrast to a square grid where
-the diagonal neighbours are more distant than the orthogonal neighbours.
-
-For this reason, hexagonal grids are frequently used in analyses and simulations of propagating
-processes such as disease outbreaks and animal movement.
+The Grids class also has methods to create hexagonal grids. These have the property that all six
+neighbours of a grid element lie at an equal distance, in contrast to rectangular grids where the
+diagonal neighbours are more distant than the orthogonal neighbours. This makes hexagonal grids
+useful for analysing contagious spatial processes such as disease spread, wildfire, urban
+development and animal movement.
 
 Creating a basic hexagonal grid is simple::
 
@@ -75,7 +65,7 @@ Creating a basic hexagonal grid is simple::
     double sideLen = 5.0;
     SimpleFeatureSource grid = Grids.createHexagonalGrid(gridBounds, sideLen);
 
-Here is what we get:
+Which gives this result:
 
 .. image:: /images/grid_hex.png
 
@@ -85,19 +75,15 @@ additional double argument for vertex spacing.
 Working with a user-defined feature type
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-So far, none of the examples have required us to specify a feature type for the vector grid. This
-is because a default feature type was created for us, behind the scenes.
-
-This default type has two attributes:
+So far, none of the examples have required specifying a feature type for the vector grid. Instead a
+default feature type was created for us with two attributes:
 
 * 'element' (the Polygon instance)
 * 'id' (a sequential integer ID value.
 
-When we want the grid elements to contain other attributes we can define these by providing
-a custom feature type and using the GridFeatureBuilder class to set values for these attributes.
-
-To illustrate this, here's an example where each grid element has a 'color' attribute, the value
-of which we set according to its position in the grid::
+However, you can also provide your own feature type to associate other attributes with the grid
+elements. The following example creates a feature type with a 'color' attribute and then sets the
+value of each element according to its position in the grid::
 
     // Create our feature type
     SimpleFeatureTypeBuilder typeBuilder = new SimpleFeatureTypeBuilder();
@@ -108,7 +94,7 @@ of which we set according to its position in the grid::
     
     final ReferencedEnvelope gridBounds = new ReferencedEnvelope(0, 100, 0, 100, null);
     
-    // We create an instance of GridFeatureBuilder and override its
+    // Create an instance of GridFeatureBuilder and override its
     // setAttributes method to set the color for each grid element
     GridFeatureBuilder builder = new GridFeatureBuilder(TYPE) {
         public void setAttributes(GridElement el, Map<String, Object> attributes) {
@@ -119,21 +105,21 @@ of which we set according to its position in the grid::
     };
     
     final double sideLen = 5.0;
-    // Pass our GridFeatureBuilder to the createHexagonalGrid method
+    // Pass the GridFeatureBuilder object to the createHexagonalGrid method
     // (the -1 value here indicates that we don't need densified polygons)
     SimpleFeatureSource grid = Grids.createHexagonalGrid(gridBounds, sideLen, -1, builder);
 
-Here is what this looks like:
+Here is the result:
 
 .. image:: /images/grid_hex_color.png
 
 Selective creation of grid elements
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The GridFeatureBuilder class also offers a mechanism to choose which grid elements are created.
-
-In this example, we build a hexagonal grid and specify that we only want elements whose centers
-lie within the outline of Australia. Firstly, here is the code to create the grid::
+The GridFeatureBuilder class also offers a mechanism to choose which grid elements are created. In
+the following example, a hexagonal grid is created with the constraint that only grid elements with
+their center lying within the outline of Australia are included. Firstly, here is the code to create
+the grid::
     
     DataStore dataStore = ... // load Australia map from shapefile
     final SimpleFeatureSource ozMapSource = dataStore.getFeatureSource();
@@ -151,7 +137,9 @@ lie within the outline of Australia. Firstly, here is the code to create the gri
     
     GridFeatureBuilder builder = new IntersectionBuilder(TYPE, ozMapSource);
     SimpleFeatureSource grid = Grids.createHexagonalGrid(gridBounds, sideLen, -1, builder);
-    Next, here is the code for the IntersectionBuilder class. It extends GridFeatureBuilder and is used both to set the attribute values of each grid element and to specify that only elements with their center within Australia are to be created:
+
+To apply the constraint that grid elements must lie within Australia, we extend
+the GridFeatureBuilder class and override the *setAttributes* and *getCreateFeature* methods::
     
     class IntersectionBuilder extends GridFeatureBuilder {
         final FilterFactory2 ff2 = CommonFactoryFinder.getFilterFactory2(null);

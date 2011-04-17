@@ -5,6 +5,8 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -348,7 +350,18 @@ private static void functionList() {
     
     for (FunctionFactory factory : functionFactories) {
         System.out.println( factory.getClass().getName() );
-        for (FunctionName functionName : factory.getFunctionNames()) {
+        List<FunctionName> functionNames = factory.getFunctionNames();
+        ArrayList<FunctionName> sorted = new ArrayList<FunctionName> ( functionNames );
+        Collections.sort( sorted, new Comparator<FunctionName>() {
+            public int compare(FunctionName o1, FunctionName o2) {
+                if( o1 == null && o2 == null ) return 0;
+                if( o1 == null && o2 != null ) return 1;
+                if( o1 != null && o2 == null ) return -1;
+                
+                return o1.getName().compareTo( o2.getName() );
+            }
+        } );
+        for (FunctionName functionName : sorted ) {
             System.out.print("    ");
             System.out.print(functionName.getName());
             System.out.print("(");

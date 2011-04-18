@@ -126,3 +126,17 @@ For our purposes this list will be the name of the csv file.
       :end-before: // createTypeNames end
 
 
+To be continued
+---------------
+
+I have not been able to complete writing this tutorial ... to volunteer to test please
+ask for Jody Garnett on the geotools user list.
+
+Here are the working downloads:
+
+* :download:`CSVDataStore.java </../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVDataStore.java>`
+* :download:`CSVDataStoreFactory.java </../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVDataStoreFactory.java>`
+* :download:`CSVFeatureReader.java </../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVFeatureReader.java>`
+* :download:`CSVFeatureSource.java </../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVFeatureSource.java>`
+* :download:`META-INF/services/org.geotools.data.DataStoreFactorySpi </../../modules/unsupported/csv/src/main/resources/META-INF/services/org.geotools.data.DataStoreFactorySpi>`
+

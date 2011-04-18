@@ -18,6 +18,8 @@ package org.geotools.data.jdbc.datasource;
 
 import java.sql.SQLException;
 
+import javax.sql.DataSource;
+
 import org.apache.commons.dbcp.BasicDataSource;
 
 /**
@@ -35,18 +37,27 @@ public class DBCPDataSource extends AbstractManageableDataSource {
 
     }
 
+    public DataSource getWrapped() {
+        return wrapped;
+    }
+
     public void close() throws SQLException {
         ((BasicDataSource) wrapped).close();
     }
 
-	public boolean isWrapperFor(Class type) throws SQLException {
-		return false;
-		//return this.wrapped.isWrapperFor(type);
-	}
-
-	public Object unwrap(Class type) throws SQLException {
-		return null;
-		//return this.wrapped.unwrap(type);
-	}
-
+    @Override
+    public boolean isWrapperFor(Class c) throws SQLException {
+        if (DataSource.class.isAssignableFrom(c)) {
+            return true;
+        }
+        return false;
+    }
+    
+    @Override
+    public Object unwrap(Class c) throws SQLException {
+        if (isWrapperFor(c)) {
+            return getWrapped();
+        }
+        return null;
+    }
 }

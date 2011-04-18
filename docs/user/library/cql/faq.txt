@@ -11,8 +11,8 @@ Here is the most common use for the CQL class - asking for Features:
 
 .. literalinclude:: /../src/main/java/org/geotools/cql/CQLExamples.java
    :language: java
-   :start-after: // cqlExample start
-   :end-before: // cqlExample end
+   :start-after: // cql comparison start
+   :end-before: // cql comparison end
   
 The CQL utility class produced is a Filter; you can create Filters by hand (using a FilterFactory) but this is much easier.
 

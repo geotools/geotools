@@ -7,14 +7,12 @@ import org.opengis.filter.Filter;
 
 public class CQLExamples {
 
-	void comparisonPredicate() throws Exception {
-		
-		SimpleFeatureSource featureSource = null;
-		// cql comparison  start
-		Filter filter = CQL.toFilter("attName >= 5");
-		SimpleFeatureCollection features = featureSource.getFeatures(filter);
-		// cql comparison  end
-	}
-	
+    void comparisonPredicate() throws Exception {
+        SimpleFeatureSource featureSource = null;
+        // cql comparison start
+        Filter filter = CQL.toFilter("attName >= 5");
+        SimpleFeatureCollection features = featureSource.getFeatures(filter);
+        // cql comparison end
+    }	
 	
 }

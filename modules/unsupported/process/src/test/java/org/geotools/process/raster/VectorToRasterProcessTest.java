@@ -21,6 +21,7 @@ import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.awt.image.RenderedImage;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 
@@ -254,7 +255,7 @@ public class VectorToRasterProcessTest {
                     gridPos.setLocation(x, y);
                     DirectPosition worldPos = gridGeom.gridToWorld(gridPos);
                     
-                    String wkt = String.format("MULTIPOINT((%f %f))",
+                    String wkt = String.format(Locale.US, "MULTIPOINT((%f %f))",
                             worldPos.getOrdinate(0), worldPos.getOrdinate(1));
                     fc.add( buildFeature(builder, reader, wkt, "p" + i, i ) );
                     i++ ;

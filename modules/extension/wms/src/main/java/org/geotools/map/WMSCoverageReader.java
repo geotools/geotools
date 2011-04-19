@@ -24,7 +24,6 @@ import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
-import org.geotools.data.ows.CRSEnvelope;
 import org.geotools.data.ows.Layer;
 import org.geotools.data.wms.WebMapServer;
 import org.geotools.data.wms.request.GetFeatureInfoRequest;
@@ -142,17 +141,24 @@ class WMSCoverageReader extends AbstractGridCoverage2DReader {
 
         if (srsName == null) {
             // initialize from first layer
-            if (layer.getBoundingBoxes().size() > 0) {
-                // we assume the layer is declared in its native bounding box
-                CRSEnvelope envelope = layer.getBoundingBoxes().get(
-                        layer.getBoundingBoxes().keySet().iterator().next());
-                srsName = envelope.getEPSGCode();
-            } else if (layer.getSrs().contains("EPSG:4326")) {
-                // otherwise we try 4326
-                srsName = "EPSG:4326";
-            } else {
-                // if not even that works we just take the first...
-                srsName = (String) layer.getSrs().iterator().next();
+            for(String srs : layer.getBoundingBoxes().keySet()) {
+                try {
+                    // check it's valid, if not we crap out and move to the next
+                    CRS.decode(srs);
+                    srsName = srs;
+                } catch(Exception e) {
+                    // it's fine, we could not decode that code
+                }
+            }
+            
+            if(srsName == null) {
+                if (layer.getSrs().contains("EPSG:4326")) {
+                    // otherwise we try 4326
+                    srsName = "EPSG:4326";
+                } else {
+                    // if not even that works we just take the first...
+                    srsName = (String) layer.getSrs().iterator().next();
+                }
             }
             validSRS = layer.getSrs();
         } else {

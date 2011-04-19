@@ -753,44 +753,15 @@ public class CQLCompiler extends CQLParser implements ICompiler{
             throw new CQLException("unexpeted filter type.");
         }
     }
+    
     /**
      * On line cql interpreter
      * @param args
      * @throws ParseException
+     * @deprecate use CQL.main()
      */
     public static void main(String args[]) throws ParseException {
-
-        System.out.println("Expecting a predicate (q - quit).");
-        while (true) {
-
-            try {
-                InputStreamReader reader = new InputStreamReader(System.in);
-                BufferedReader buf = new BufferedReader(reader);
-                String source = buf.readLine();
-                if ("q".equals(source)) {
-                    System.out.println("bye.");
-                    break;
-                } 
-
-                FilterFactory ff = CommonFactoryFinder
-                            .getFilterFactory((Hints) null);
-                CQLCompiler compiler = new CQLCompiler(source, ff);
-                    
-                compiler.compileFilter();
-
-                Filter filter = compiler.getFilter();
-                    
-                System.out.println("Result: " + filter);
-
-            } catch (CQLException e) {
-                System.out.println("Parsing error.");
-                System.out.println(e.getSyntaxError());
-                //e.printStackTrace();
-            } catch (IOException e) {
-                System.out.println(e.getMessage());
-                e.printStackTrace();
-            }
-        }
+        CQL.main(args);
     }
     
 }

@@ -279,9 +279,11 @@ public class CQL {
                     break;
                 }
 
-                Object newFilter = CQL.toFilter(line);
-                filterTransformer.transform(newFilter, System.out);
-                System.out.println();
+                List<Filter> filters = CQL.toFilterList(line);
+                for( Filter filter : filters ){
+                    System.out.println();
+                    filterTransformer.transform( filter, System.out);
+                }
             } catch (IOException e1) {
                 e1.printStackTrace();
             } catch (CQLException cqlex) {

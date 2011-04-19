@@ -174,3 +174,89 @@ to generate a parser form an XML schema.
 A couple of groups have used JAXB have bind things such as OGC Filter. In general
 works well; however it does have trouble responding to content that is
 negotiated dynamically ... such as GML.
+
+Q: For WFS why does Parser return a Map?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This shows up as the following error:
+
+* ClassCastException "java.util.HashMap cannot be cast to FeatureCollection".
+
+
+To understand this error please remember that the GML returned by a WFS GetFeatures
+request is a normal XML file, with a reference to an XML schemaat the top.
+
+For a WFS GetFeature response the schema reference is usually a DescribeFeatureType call that returns
+an XML Schema.
+
+If this schema is incorrectly configured (common with MapServer) or cannot be reached (common with restricted
+environments) our Parser will give up guessing what is a Feature and just return the values in a HashMap.
+
+.. note::
+   
+   If you are using the GML utility class it will perform a bit of analysis and create an ad-hoc
+   FeatureType in order to return you Features.
+   
+   - looking at the HashMaps returned
+   - building a feature type that matches that kind of contents
+   - building features that match that FeatureType
+   
+   This is similar to the approach taken by OGR; OGR figures out where the "geometry" is; and then
+   goes up two levels and assumes those things are features.
+
+   Both of these approaches are strictly a work around for a common problem of misconfigured WFS servers.
+   
+Here is how to review the configuration of your WFS Server:
+
+1. If you are having a problem with a HashMap being returned when you expect a Feature, you should check
+   GetCapabilities responses for remote server e.g. with browser::
+   
+      http://{URL}?SERVICE=WFS&VERSION=1.1.0&REQUEST=GetCapabilities
+
+2. After that, ensure that <ows:Operation> elements contain urls that actually work
+
+3. In particular check that DescribeFeatureType responds with the expected XML Schema
+
+
+Q: I am in a restricted environment, how to configure SchemaLocator?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+You can configure the Parser with a SchemaLocator (we use this internally to force the parser
+to a copy of the GML schema included in the GeoTools jars; rather than force the Parser to download
+the GML schema each time).
+
+1. To customise how XML Schemas are located in a restricted environment (such as web portal for multiple
+   WFS services that require authorization, or require the use of an http proxy for schema requests).
+
+2. Create custom SchemaLocator we start with configuration like so::
+
+	    GMLConfiguration configuration = new GMLConfiguration() {
+	        public void configureContext(final MutablePicoContainer container) {
+	            super.configureContext(container);
+	            String username = "geotools user";
+	            String password = "support osgeo";
+	            Boolean useProxy = true;
+	            XSDSchemaLocator locator = new CachingSchemaLocator(username, password, useProxy);
+	            QName key = new QName("mycustom", "schemaLocator");
+	            container.registerComponentInstance(key, locator);
+	        }
+	    };
+   
+3. In the above code, CachingSchemaLocator is a custom XSDSchemaLocator::
+          
+	    public class CachingSchemaLocator implements XSDSchemaLocator {
+	        public XSDSchema locateSchema(XSDSchema schema, String namespaceURI, String rawSchemaLocationURI, String resolvedSchemaLocationURI) {
+	
+	             ... Implementation ...
+	
+	        }
+	    }
+   
+4. Set up a configuration for use with the Parser::
+
+	    Parser parser = new Parser(configuration);
+	
+	    parser.setValidating(false);
+	    parser.setFailOnValidationError(false);
+	    parser.setStrict(false);
+	    FeatureCollection<SimpleFeatureType, SimpleFeature> features = parser.parse(... WFS response InputStream Here ...);

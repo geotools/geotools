@@ -146,6 +146,7 @@ class WMSCoverageReader extends AbstractGridCoverage2DReader {
                     // check it's valid, if not we crap out and move to the next
                     CRS.decode(srs);
                     srsName = srs;
+                    break;
                 } catch(Exception e) {
                     // it's fine, we could not decode that code
                 }

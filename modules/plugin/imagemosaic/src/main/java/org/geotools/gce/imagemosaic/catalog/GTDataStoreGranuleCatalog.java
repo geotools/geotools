@@ -60,7 +60,7 @@ import org.geotools.gce.imagemosaic.GranuleDescriptor;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
 import org.geotools.gce.imagemosaic.PathType;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.util.NullProgressListener;
+import org.geotools.util.DefaultProgressListener;
 import org.geotools.util.Utilities;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
@@ -132,6 +132,8 @@ class GTDataStoreGranuleCatalog extends AbstractGranuleCatalog {
 		}
 		
 	}
+	
+	
 	private DataStore tileIndexStore;
 
 	private String typeName;
@@ -482,6 +484,7 @@ class GTDataStoreGranuleCatalog extends AbstractGranuleCatalog {
 				it.close();
 			}
 			
+			final DefaultProgressListener listener= new DefaultProgressListener();
 			features.accepts( new AbstractFeatureVisitor(){
 			    public void visit( Feature feature ) {
 			        if(feature instanceof SimpleFeature)
@@ -496,13 +499,23 @@ class GTDataStoreGranuleCatalog extends AbstractGranuleCatalog {
 								parentLocation,
 								heterogeneous);
 			        	visitor.visit(granule, null);
+			        	
+			        	// check if something bad occurred
+			        	if(listener.isCanceled()||listener.hasExceptions()){
+			        	    if(listener.hasExceptions())
+			        	        throw new RuntimeException(listener.getExceptions().peek());
+			        	    else
+			        	        throw new IllegalStateException("Feature visitor for query "+q+" has been canceled");
+			        	}
 			        }
 			    }            
-			}, new NullProgressListener() );
+			}, listener);
 
 		}
 		catch (Throwable e) {
-			throw new  IllegalArgumentException(e);
+			final IOException ioe= new  IOException();
+			ioe.initCause(e);
+			throw ioe;
 		}
 		finally{
 			lock.unlock();

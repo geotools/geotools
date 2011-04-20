@@ -17,26 +17,6 @@ Here is the most common use for the CQL class - asking for Features:
 
 The CQL utility class produced is a Filter; you can create Filters by hand (using a FilterFactory) but this is much easier.
 
-Q: What does ECQL offer?
-^^^^^^^^^^^^^^^^^^^^^^^^
-
-The ECQL class offers an extension of the basic CQL language, it is backward compatable so
-the following still works:
-
-.. literalinclude:: /../src/main/java/org/geotools/cql/ECQLExamples.java
-   :language: java
-   :start-after: // comparisonCQLCompatibility start
-   :end-before: // comparisonCQLCompatibility end
-
-The ECQL has a syntax more flexible and nearest to the natural language. 
-By example, ECQL allows to use a property Name in the right hand of comparison 
-as is showed in the following example
-
-.. literalinclude:: /../src/main/java/org/geotools/cql/ECQLExamples.java
-   :language: java
-   :start-after: // comparisonPredicateECQL start
-   :end-before: // comparisonPredicateECQL end
-
 Q: What version of CQL is implemented?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -67,3 +47,23 @@ will get back the corresponding Filter in xml encoding.::
     
     >quit
     Bye!
+
+Q: What does ECQL offer?
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+The ECQL class offers an extension of the basic CQL language, it is backward compatable so
+the following still works:
+
+.. literalinclude:: /../src/main/java/org/geotools/cql/ECQLExamples.java
+   :language: java
+   :start-after: // comparisonCQLCompatibility start
+   :end-before: // comparisonCQLCompatibility end
+
+The ECQL has a syntax more flexible and nearest to the natural language. 
+By example, ECQL allows to use a property Name in the right hand of comparison 
+as is showed in the following example
+
+.. literalinclude:: /../src/main/java/org/geotools/cql/ECQLExamples.java
+   :language: java
+   :start-after: // comparisonPredicateECQL start
+   :end-before: // comparisonPredicateECQL end

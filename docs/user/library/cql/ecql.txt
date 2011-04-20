@@ -75,10 +75,23 @@ Examples
   
         Filter filter = ECQL.toFilter("ID IN ('river.1', 'river.2')");
 
-* Filter using a text pattern::
-  
-        Filter filter = ECQL.toFilter("aProperty like '%bb%'");
-        Filter filter = ECQL.toFilter("'aabbcc' like '%bb%'");
+
+* Filter using a text pattern:
+
+.. literalinclude:: /../src/main/java/org/geotools/cql/ECQLExamples.java
+   :language: java
+   :start-after: // ecql likePredicate start
+   :end-before: // ecql likePredicate end
+
+.. literalinclude:: /../src/main/java/org/geotools/cql/ECQLExamples.java
+   :language: java
+   :start-after: // ecql ilikePredicate start
+   :end-before: // ecql ilikePredicate end
+.. literalinclude:: /../src/main/java/org/geotools/cql/ECQLExamples.java
+   :language: java
+   :start-after: // ecql likePredicateInString start
+   :end-before: // ecql likePredicateInString end
+
 
 * Filter by spatial relation:
   

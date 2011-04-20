@@ -20,12 +20,21 @@ Q: What does ECQL offer?
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 The ECQL class offers an extension of the basic CQL language, it is backward compatable so
-the following still works::
+the following still works:
 
-    Filter filter = ECQL.toFilterList("attName >= 5; geom1 incld");
-    SimpleFeatureCollection features = featureSource.getFeatures( filter );
-  
-The ECQL class offers extensions, allowing a list of Filters to be represented for example.
+.. literalinclude:: /../src/main/java/org/geotools/cql/ECQLExamples.java
+   :language: java
+   :start-after: // comparisonCQLCompatibility start
+   :end-before: // comparisonCQLCompatibility end
+
+The ECQL has a syntax more flexible and nearest to the natural language. 
+By example, ECQL allows to use a property Name in the right hand of comparison 
+as is showed in the following example
+
+.. literalinclude:: /../src/main/java/org/geotools/cql/ECQLExamples.java
+   :language: java
+   :start-after: // comparisonPredicateECQL start
+   :end-before: // comparisonPredicateECQL end
 
 Q: What version of CQL is implemented?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

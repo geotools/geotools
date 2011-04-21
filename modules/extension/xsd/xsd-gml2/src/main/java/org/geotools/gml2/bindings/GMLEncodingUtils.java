@@ -364,7 +364,8 @@ public class GMLEncodingUtils {
                 || name.equals(gml.qName("AbstractSurface")) || name.equals(gml.qName("_Surface"))
                 || name.equals(gml.qName("_Curve")) || name.equals(gml.qName("AbstractCurve"))
                 || name.equals(gml.qName("MultiCurve"))
-                || (includeAbstractGeometry && name.equals(gml.qName("_Geometry")))) {
+                || (includeAbstractGeometry && (name.equals(gml.qName("_Geometry"))
+                                                || name.equals(gml.qName("AbstractGeometry"))))) {
             // if the geometry is null, return null
             if (isEmpty(geometry) || makeEmpty) {
                 return null;

@@ -20,29 +20,55 @@ package org.geotools.xml;
 /**
  * XML encoder {@link Configuration} that uses {@link AppSchemaResolver} to obtain schemas.
  * 
+ * <p>
+ * 
+ * Because we do not know the dependent GML {@link Configuration} when an instance is constructed,
+ * it must be added later using {@link #addDependency(Configuration)}. Failure to do this will
+ * result in bindings not being found at encode time.
+ * 
  * @author Ben Caradoc-Davies, CSIRO Earth Science and Resource Engineering
  */
 public class AppSchemaConfiguration extends Configuration {
 
     /**
-     * Because we do not know the dependent Configurations until runtime, they must be specified as
-     * a constructor argument.
+     * Original (unresolved) schema location.
+     */
+    private final String originalSchemaLocation;
+
+    /**
+     * Because we do not know the dependent GML {@link Configuration} until runtime, it must be
+     * specified as a constructor argument.
      * 
      * @param namespace
      *            the namespace URI
      * @param schemaLocation
      *            URL giving canonical schema location
      * @param resolver
-     * @param dependencies
-     *            dependent configurations
      */
     public AppSchemaConfiguration(String namespace, String schemaLocation,
-            AppSchemaResolver resolver, Configuration... dependencies) {
+            AppSchemaResolver resolver) {
         super(new AppSchemaXSD(namespace, schemaLocation, resolver));
-        for (Configuration dependency : dependencies) {
-            addDependency(dependency);
-        }
+        originalSchemaLocation = schemaLocation;
         ((AppSchemaXSD) getXSD()).setConfiguration(this);
+    }
+
+    /**
+     * Get the original (unresolved) schema location.
+     * 
+     * @return the schema location
+     */
+    public String getSchemaLocation() {
+        return originalSchemaLocation;
+    }
+
+    /**
+     * Allow late addition of a dependency such as GML.
+     * 
+     * @see org.geotools.xml.Configuration#addDependency(org.geotools.xml.Configuration)
+     */
+    @Override
+    public void addDependency(Configuration dependency) {
+        super.addDependency(dependency);
     }
 
 }

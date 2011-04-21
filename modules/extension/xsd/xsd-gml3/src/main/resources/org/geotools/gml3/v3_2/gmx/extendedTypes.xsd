@@ -6,7 +6,7 @@
 	</xs:annotation>
 	<!-- ================================== Imports ================================== -->
 	<xs:import namespace="http://www.isotc211.org/2005/gco" schemaLocation="../gco/gco.xsd"/>
-	<xs:import namespace="http://www.w3.org/1999/xlink" schemaLocation="../../../../xlink/1.0.0/xlinks.xsd"/>
+	<xs:import namespace="http://www.w3.org/1999/xlink" schemaLocation="../xlinks.xsd"/>
 	<!-- ########################################################################### -->
 	<!-- ########################################################################### -->
 	<!-- ================================== Classes ================================= -->

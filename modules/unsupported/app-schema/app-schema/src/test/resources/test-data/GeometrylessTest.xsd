@@ -7,8 +7,7 @@
   elementFormDefault="qualified"
   version="2006.12">
   
-<import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/feature.xsd" />
-
+  <import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd" />
 
   <xsd:element name="PointFeature" type="test:PointFeatureType" 
     substitutionGroup="gml:_Feature">

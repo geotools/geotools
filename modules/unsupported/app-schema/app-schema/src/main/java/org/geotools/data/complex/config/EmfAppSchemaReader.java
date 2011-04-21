@@ -20,12 +20,19 @@ package org.geotools.data.complex.config;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
+import javax.xml.namespace.QName;
+
+import org.eclipse.xsd.XSDTypeDefinition;
 import org.geotools.gml3.ApplicationSchemaConfiguration;
+import org.geotools.gml3.GML;
 import org.geotools.gml3.GMLConfiguration;
 import org.geotools.xml.AppSchemaCatalog;
 import org.geotools.xml.AppSchemaConfiguration;
 import org.geotools.xml.AppSchemaResolver;
+import org.geotools.xml.AppSchemaXSD;
 import org.geotools.xml.Binding;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.SchemaIndex;
@@ -113,15 +120,10 @@ public class EmfAppSchemaReader {
      *             if any non recoverable problem occurs while parsing the application schema
      *             pointed out by <code>location</code> or one of its dependencies.
      */
-    public SchemaIndex parse(String nameSpace, String schemaLocation) throws IOException {        
-        /*
-         * FIXME: This hardcoded GML 3.1 dependency will have to change when GML 3.2 support is
-         * added. The solution is probably to resolve the schema and look at the namespaces to see
-         * whether it is a GML 3.1 or 3.2 schema.
-         */
-        final Configuration configuration = new AppSchemaConfiguration(nameSpace, schemaLocation,
-                resolver, new GMLConfiguration());
-
+    public SchemaIndex parse(String nameSpace, String schemaLocation) throws IOException {
+        AppSchemaConfiguration configuration = new AppSchemaConfiguration(nameSpace,
+                schemaLocation, resolver);
+        configuration.addDependency(findGmlConfiguration(configuration));
         return parse(configuration);
     }
     
@@ -196,6 +198,46 @@ public class EmfAppSchemaReader {
 
     public static EmfAppSchemaReader newInstance() {
         return new EmfAppSchemaReader();
+    }
+    
+    /**
+     * Map of the qualified-name of a known type in each supported GML version to the
+     * {@link Configuration} for that GML version.
+     */
+    @SuppressWarnings("serial")
+    private static final Map<QName, Class<? extends Configuration>> SUPPORTED_GML_KNOWN_TYPE_TO_CONFIGURATION_MAP //
+    = new LinkedHashMap<QName, Class<? extends Configuration>>() {
+        {
+            // GML 3.1
+            put(GML.AbstractFeatureType, GMLConfiguration.class);
+            // GML 3.2
+            put(org.geotools.gml3.v3_2.GML.AbstractFeatureType,
+                    org.geotools.gml3.v3_2.GMLConfiguration.class);
+        }
+    };
+
+    public static Configuration findGmlConfiguration(AppSchemaConfiguration configuration) {
+        SchemaIndex index = null;
+        try {
+            index = Schemas.findSchemas(configuration);
+            for (QName name : SUPPORTED_GML_KNOWN_TYPE_TO_CONFIGURATION_MAP.keySet()) {
+                XSDTypeDefinition type = index.getTypeDefinition(name);
+                if (type != null) {
+                    try {
+                        return SUPPORTED_GML_KNOWN_TYPE_TO_CONFIGURATION_MAP.get(name)
+                                .newInstance();
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+            throw new RuntimeException("Unsupported GML version for schema at "
+                    + configuration.getSchemaLocation());
+        } finally {
+            if (index != null) {
+                index.destroy();
+            }
+        }
     }
 
 }

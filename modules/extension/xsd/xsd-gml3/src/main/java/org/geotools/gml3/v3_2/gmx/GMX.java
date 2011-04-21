@@ -20,10 +20,11 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
+import org.geotools.gml3.v3_2.GML;
 import org.geotools.gml3.v3_2.gco.GCO;
 import org.geotools.gml3.v3_2.gmd.GMD;
 import org.geotools.xlink.XLINK;
-import org.geotools.xml.XSD;
+import org.opengis.feature.type.Schema;
 
 /**
  * This interface contains the qualified names of all the types,elements, and 
@@ -33,7 +34,7 @@ import org.geotools.xml.XSD;
  *
  * @source $URL$
  */
-public final class GMX extends XSD {
+public final class GMX extends GML.DelegatingXSD {
 
     /** singleton instance */
     private static final GMX instance = new GMX();
@@ -55,6 +56,11 @@ public final class GMX extends XSD {
         dependencies.add( XLINK.getInstance() );
         dependencies.add( GCO.getInstance() );
         dependencies.add( GMD.getInstance() );
+    }
+    
+    @Override
+    protected Schema buildTypeSchema() {
+        return new GMXSchema();
     }
     
     /**

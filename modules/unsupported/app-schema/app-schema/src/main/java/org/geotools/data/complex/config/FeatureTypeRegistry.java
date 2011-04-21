@@ -25,10 +25,10 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.Stack;
-import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -301,8 +301,8 @@ public class FeatureTypeRegistry {
             type = getTypeOf(elemDecl, crs, attMappings);
         } catch (NoSuchElementException e) {
             String msg = "Type not found for " + elemName + " at type container "
-                    + container.getTargetNamespace() + "#" + container.getName() + " at "
-                    + container.getSchema().getSchemaLocation();
+                    + (container == null ? null : container.getTargetNamespace() + "#" + container.getName() + " at "
+                    + container.getSchema().getSchemaLocation());
             NoSuchElementException nse = new NoSuchElementException(msg);
             nse.initCause(e);
             throw nse;
@@ -660,13 +660,34 @@ public class FeatureTypeRegistry {
             schema = new GMLSchema();
             importSchema(schema);
 
-            LOGGER.info("Creating GMLConfiguration to get the prebuilt gml schemas from");
-            GMLConfiguration configuration = new GMLConfiguration();
-            LOGGER.info("Acquiring prebuilt gml schema and its dependencies");
-            SchemaIndex index = Schemas.findSchemas(configuration);
+            schema = new org.geotools.gml3.v3_2.GMLSchema();
+            importSchema(schema);
+
+            schema = new org.geotools.gml3.v3_2.gco.GCOSchema();
+            importSchema(schema);
+
+            schema = new org.geotools.gml3.v3_2.gmd.GMDSchema();
+            importSchema(schema);
+
+            schema = new org.geotools.gml3.v3_2.gmx.GMXSchema();
+            importSchema(schema);
+
+            schema = new org.geotools.gml3.v3_2.gsr.GSRSchema();
+            importSchema(schema);
+           
+            schema = new org.geotools.gml3.v3_2.gss.GSSSchema();
+            importSchema(schema);
+            
+            schema = new org.geotools.gml3.v3_2.gts.GTSSchema();
+            importSchema(schema);
+
             // schedule the gml schemas to be lazily loaded for any type missing from the above
             // import of prebuilt types
-            addSchemas(index);
+            
+            //GML 3.1
+            addSchemas(Schemas.findSchemas(new GMLConfiguration()));
+            // GML 3.2
+            addSchemas(Schemas.findSchemas(new org.geotools.gml3.v3_2.GMLConfiguration()));
 
             FOUNDATION_TYPES.putAll(typeRegistry);
             FOUNDATION_DESCRIPTORS.putAll(descriptorRegistry);
@@ -697,4 +718,5 @@ public class FeatureTypeRegistry {
         }
         LOGGER.fine("Schema " + schema.getURI() + " imported successfully");
     }
+        
 }

@@ -17,17 +17,24 @@
 package org.geotools.gml3.v3_2;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
 
 import org.eclipse.xsd.XSDSchema;
+import org.eclipse.xsd.util.XSDSchemaLocationResolver;
 import org.geotools.feature.NameImpl;
 import org.geotools.gml2.ReferencingDirectiveLeakPreventer;
 import org.geotools.gml2.SubstitutionGroupLeakPreventer;
 import org.geotools.gml3.v3_2.gmd.GMD;
 import org.geotools.xlink.XLINK;
+import org.geotools.xml.Schemas;
 import org.geotools.xml.XSD;
 import org.opengis.feature.type.Name;
 import org.opengis.feature.type.Schema;
@@ -56,6 +63,13 @@ public final class GML extends XSD {
      * private constructor
      */
     private GML() {
+        // Trigger immediate construction of full GML schema before dependencies are constructed, to
+        // handle cyclic dependencies. See GEOT-3327.
+        try {
+            getSchema();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
     
     protected void addDependencies(Set dependencies) {
@@ -2702,14 +2716,60 @@ public final class GML extends XSD {
         return typeSchema.profile(profile);
     }
     
+    /**
+     * Instead of building the XSDSchema using the declared dependencies, handle cyclic dependencies
+     * by loading all the schemas in the GML 3.2 suite at once by forcing use of a resolver. This
+     * all-in-one XSDSchema is later shared by the other XSD implementations in the suite.
+     * 
+     * @see org.geotools.xml.XSD#buildSchema()
+     */
     @Override
     protected XSDSchema buildSchema() throws IOException {
-        XSDSchema schema =  super.buildSchema();
-        
+        schema = Schemas.parse(getSchemaLocation(), Collections.EMPTY_LIST,
+                Collections.singletonList(new XSDSchemaLocationResolver() {
+                    public String resolveSchemaLocation(XSDSchema xsdSchema, String namespaceURI,
+                            String schemaLocationURI) {
+                        try {
+                            URI contextUri = new URI(xsdSchema.getSchemaLocation());
+                            if (contextUri.isOpaque()) {
+                                // probably a jar:file: URL, which is opaque and thus not
+                                // supported by URI.resolve()
+                                URL contextUrl = new URL(xsdSchema.getSchemaLocation());
+                                return (new URL(contextUrl, schemaLocationURI)).toString();
+                            } else {
+                                return contextUri.resolve(schemaLocationURI).toString();
+                            }
+                        } catch (URISyntaxException e) {
+                            throw new RuntimeException(e);
+                        } catch (MalformedURLException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }));
+        // leak prevention
         schema.resolveElementDeclaration(NAMESPACE, "_Feature").eAdapters()
-            .add(new SubstitutionGroupLeakPreventer());
+                .add(new SubstitutionGroupLeakPreventer());
         schema.eAdapters().add(new ReferencingDirectiveLeakPreventer());
         return schema;
     }
+    
+    /**
+     * An {@link XSD} that delegates to GML for its XSDSchema. This allows us to load the full
+     * schema, including cyclic dependencies, into the top-level GML schema, and have the other
+     * namespaces represented by their own XSD which uses the same GML schema. We override
+     * {@link #buildSchema()} rather than {@link #getSchema()} to ensure the internal implementation
+     * of XSD works correctly, as it makes direct access to the schema via the schema field.
+     */
+    public abstract static class DelegatingXSD extends XSD {
+        
+        /**
+         * @see org.geotools.xml.XSD#buildSchema()
+         */
+        @Override
+        protected XSDSchema buildSchema() throws IOException {
+            return GML.getInstance().getSchema();
+        }
+    }
+
 }
     

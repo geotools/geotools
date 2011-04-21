@@ -5,8 +5,8 @@
 		<xs:documentation>This file was generated from ISO TC/211 UML class diagrams == 01-26-2005 12:00:05 ====== </xs:documentation>
 	</xs:annotation>
 	<!-- ================================== Imports ================================== -->
-	<xs:import namespace="http://www.w3.org/1999/xlink" schemaLocation="../../../../xlink/1.0.0/xlinks.xsd"/>
-	<xs:import namespace="http://www.opengis.net/gml/3.2" schemaLocation="../../../../gml/3.2.1/gml.xsd"/>
+	<xs:import namespace="http://www.w3.org/1999/xlink" schemaLocation="../xlinks.xsd"/>
+	<xs:import namespace="http://www.opengis.net/gml/3.2" schemaLocation="../gml.xsd"/>
 	<xs:include schemaLocation="../gco/gcoBase.xsd"/>
 	<!-- ########################################################################### -->
 	<!-- ########################################################################### -->

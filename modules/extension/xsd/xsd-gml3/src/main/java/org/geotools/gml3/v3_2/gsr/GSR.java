@@ -20,8 +20,9 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
-import org.geotools.gml3.v3_2.StubbedGMLXSD;
+import org.geotools.gml3.v3_2.GML;
 import org.geotools.gml3.v3_2.gco.GCO;
+import org.opengis.feature.type.Schema;
 
 /**
  * This interface contains the qualified names of all the types,elements, and 
@@ -31,13 +32,10 @@ import org.geotools.gml3.v3_2.gco.GCO;
  *
  * @source $URL$
  */
-public final class GSR extends StubbedGMLXSD {
+public final class GSR extends GML.DelegatingXSD {
 
     /** singleton instance */
     private static final GSR instance = new GSR();
-    static {
-        loadSchema( instance );
-    }
     
     /**
      * Returns the singleton instance.
@@ -56,7 +54,12 @@ public final class GSR extends StubbedGMLXSD {
         dependencies.add( GCO.getInstance() );
     }
     
-    /**
+    @Override
+    protected Schema buildTypeSchema() {
+        return new GSRSchema();
+    }
+    
+   /**
      * Returns 'http://www.isotc211.org/2005/gsr'.
      */
     public String getNamespaceURI() {

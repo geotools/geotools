@@ -20,8 +20,9 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
-import org.geotools.gml3.v3_2.StubbedGMLXSD;
+import org.geotools.gml3.v3_2.GML;
 import org.geotools.xlink.XLINK;
+import org.opengis.feature.type.Schema;
 
 /**
  * This interface contains the qualified names of all the types,elements, and 
@@ -31,13 +32,11 @@ import org.geotools.xlink.XLINK;
  *
  * @source $URL$
  */
-public final class GCO extends StubbedGMLXSD {
+public final class GCO extends GML.DelegatingXSD {
 
     /** singleton instance */
     private static final GCO instance = new GCO();
-    static {
-       loadSchema( instance );
-    }
+
     /**
      * Returns the singleton instance.
      */
@@ -53,7 +52,12 @@ public final class GCO extends StubbedGMLXSD {
     
     protected void addDependencies(Set dependencies) {
         dependencies.add( XLINK.getInstance() );
-        //dependencies.add( GML.getInstance() ); JD: cycle
+        dependencies.add( GML.getInstance() );
+    }
+    
+    @Override
+    protected Schema buildTypeSchema() {
+        return new GCOSchema();
     }
     
     /**

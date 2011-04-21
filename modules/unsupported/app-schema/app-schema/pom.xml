@@ -161,6 +161,12 @@
       <version>1.0.0-3</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.geotools.schemas</groupId>
+      <artifactId>geosciml-3.0-seegrid</artifactId>
+      <version>3.0.0-1</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
 

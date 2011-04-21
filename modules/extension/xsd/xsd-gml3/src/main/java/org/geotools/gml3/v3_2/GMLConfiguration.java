@@ -24,6 +24,7 @@ import org.geotools.gml3.bindings.AbstractRingPropertyTypeBinding;
 import org.geotools.gml3.bindings.ArcTypeBinding;
 import org.geotools.gml3.bindings.BoundingShapeTypeBinding;
 import org.geotools.gml3.bindings.CircleTypeBinding;
+import org.geotools.gml3.bindings.ComplexSupportXSAnyTypeBinding;
 import org.geotools.gml3.bindings.CurveArrayPropertyTypeBinding;
 import org.geotools.gml3.bindings.CurvePropertyTypeBinding;
 import org.geotools.gml3.bindings.CurveSegmentArrayPropertyTypeBinding;
@@ -62,6 +63,7 @@ import org.geotools.gml3.bindings.SurfacePropertyTypeBinding;
 import org.geotools.gml3.bindings.SurfaceTypeBinding;
 import org.geotools.gml3.v3_2.bindings.GML32EncodingUtils;
 import org.geotools.xml.Configuration;
+import org.geotools.xs.XS;
 import org.picocontainer.MutablePicoContainer;
 
 /**
@@ -182,7 +184,8 @@ public class GMLConfiguration extends Configuration {
             SurfaceArrayPropertyTypeBinding.class);
         container.registerComponentImplementation(GML.SurfacePropertyType,
             SurfacePropertyTypeBinding.class);
-        
+        container.registerComponentImplementation(XS.ANYTYPE, ComplexSupportXSAnyTypeBinding.class);
+       
         //extended bindings for arc/surface support
         if (isExtendedArcSurfaceSupport()) {
             container.registerComponentImplementation(GML.ArcType,

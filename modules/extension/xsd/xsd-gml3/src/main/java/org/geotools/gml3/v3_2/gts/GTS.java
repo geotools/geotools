@@ -20,8 +20,9 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
-import org.geotools.gml3.v3_2.StubbedGMLXSD;
+import org.geotools.gml3.v3_2.GML;
 import org.geotools.gml3.v3_2.gco.GCO;
+import org.opengis.feature.type.Schema;
 
 /**
  * This interface contains the qualified names of all the types,elements, and 
@@ -31,13 +32,10 @@ import org.geotools.gml3.v3_2.gco.GCO;
  *
  * @source $URL$
  */
-public final class GTS extends StubbedGMLXSD {
+public final class GTS extends GML.DelegatingXSD {
 
     /** singleton instance */
     private static final GTS instance = new GTS();
-    static {
-        loadSchema(instance);
-    }
     
     /**
      * Returns the singleton instance.
@@ -54,6 +52,11 @@ public final class GTS extends StubbedGMLXSD {
     
     protected void addDependencies(Set dependencies) {
         dependencies.add( GCO.getInstance() );
+    }
+
+    @Override
+    protected Schema buildTypeSchema() {
+        return new GTSSchema();
     }
     
     /**

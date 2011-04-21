@@ -17,16 +17,16 @@
 
 package org.geotools.data.complex.config;
 
+import static org.junit.Assert.assertTrue;
+
 import java.net.URL;
-import org.geotools.gml3.GMLConfiguration;
+
 import org.geotools.test.AppSchemaTestSupport;
 import org.geotools.xml.AppSchemaCatalog;
 import org.geotools.xml.AppSchemaConfiguration;
 import org.geotools.xml.AppSchemaResolver;
 import org.geotools.xml.Configuration;
 import org.junit.Test;
-
-import static org.junit.Assert.assertTrue;
 
 /**
  * This is a test for a class that no longer exists! But the functionality and behaviour survive.
@@ -46,12 +46,10 @@ public class CatalogApplicationSchemaConfigurationTest extends AppSchemaTestSupp
         String namespace = "http://www.cgi-iugs.org/xml/GeoSciML/2";
         String schemaLocation = "http://schemas.opengis.net/GeoSciML/geosciml.xsd";
         Configuration config = new AppSchemaConfiguration(namespace, schemaLocation,
-                new AppSchemaResolver(AppSchemaCatalog.build(catalogLocation)),
-                new GMLConfiguration());
+                new AppSchemaResolver(AppSchemaCatalog.build(catalogLocation)));
         String resolvedSchemaLocation = config.getXSD().getSchemaLocation();
         assertTrue(resolvedSchemaLocation.startsWith("file:/"));
         assertTrue(resolvedSchemaLocation.endsWith(schemaBase
                 + "commonSchemas_new/GeoSciML/geosciml.xsd"));
     }
-
 }

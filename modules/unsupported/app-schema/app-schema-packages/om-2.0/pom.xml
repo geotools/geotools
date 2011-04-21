@@ -6,13 +6,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.geotools.schemas</groupId>
-    <artifactId>filter-2.0</artifactId>
-    <version>2.0.0-2</version>
-    <name>OGC Filter 2.0 schema</name>
+    <artifactId>om-2.0</artifactId>
+    <version>2.0.0-1</version>
+    <name>Observations and Measurements 2.0 application schema</name>
 
     <scm>
-        <connection>scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema-packages/filter-2.0/</connection>
-        <url>http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema-packages/filter-2.0/</url>
+        <connection>scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema-packages/om-2.0/</connection>
+        <url>http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema-packages/om-2.0/</url>
     </scm>
 
     <developers>
@@ -25,17 +25,17 @@
             </roles>
         </developer>
     </developers>
-
+    
     <dependencies>
         <dependency>
             <groupId>org.geotools.schemas</groupId>
-            <artifactId>xml-1.0</artifactId>
-            <version>1.0.0-3</version>
+            <artifactId>gml-3.2</artifactId>
+            <version>3.2.1-1</version>
         </dependency>
         <dependency>
             <groupId>org.geotools.schemas</groupId>
-            <artifactId>ows-1.1</artifactId>
-            <version>1.1.0-1</version>
+            <artifactId>iso-19139-2007</artifactId>
+            <version>1.0.0-1</version>
         </dependency>
     </dependencies>
 
@@ -58,15 +58,11 @@
                         <phase>generate-resources</phase>
                         <configuration>
                             <tasks>
-                                <property name="srcdir" value="http://schemas.opengis.net/filter/2.0"/>
-                                <property name="destdir" value="${project.build.outputDirectory}/net/opengis/schemas/filter/2.0"/>
+                                <property name="srcdir" value="http://schemas.opengis.net/om/2.0"/>
+                                <property name="destdir" value="${project.build.outputDirectory}/net/opengis/schemas/om/2.0"/>
                                 <mkdir dir="${destdir}"/>
-                                <get src="${srcdir}/expr.xsd" dest="${destdir}/expr.xsd"/>
-                                <get src="${srcdir}/filter.xsd" dest="${destdir}/filter.xsd"/>
-                                <get src="${srcdir}/filterAll.xsd" dest="${destdir}/filterAll.xsd"/>
-                                <get src="${srcdir}/filterCapabilities.xsd" dest="${destdir}/filterCapabilities.xsd"/>
-                                <get src="${srcdir}/query.xsd" dest="${destdir}/query.xsd"/>
-                                <get src="${srcdir}/sort.xsd" dest="${destdir}/sort.xsd"/>
+                                <get src="${srcdir}/observation.xsd" dest="${destdir}/observation.xsd"/>
+                                <get src="${srcdir}/specializingObservationExample.xsd" dest="${destdir}/specializingObservationExample.xsd"/>
                             </tasks>
                         </configuration>
                         <goals>

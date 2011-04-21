@@ -7,7 +7,7 @@
 
     <groupId>org.geotools.schemas</groupId>
     <artifactId>wfs-2.0</artifactId>
-    <version>2.0.0-1</version>
+    <version>2.0.0-2</version>
     <name>Web Feature Service (WFS) 2.0 schema</name>
 
     <scm>
@@ -45,7 +45,7 @@
         <dependency>
             <groupId>org.geotools.schemas</groupId>
             <artifactId>filter-2.0</artifactId>
-            <version>2.0.0-1</version>
+            <version>2.0.0-2</version>
         </dependency>
     </dependencies>
 
@@ -68,8 +68,8 @@
                         <phase>generate-resources</phase>
                         <configuration>
                             <tasks>
-                                <property name="srcdir" value="http://www.pvretano.com/schemas/wfs/2.0.0"/>
-                                <property name="destdir" value="${project.build.outputDirectory}/net/opengis/schemas/wfs/2.0.0"/>
+                                <property name="srcdir" value="http://schemas.opengis.net/wfs/2.0"/>
+                                <property name="destdir" value="${project.build.outputDirectory}/net/opengis/schemas/wfs/2.0"/>
                                 <mkdir dir="${destdir}"/>
                                 <get src="${srcdir}/wfs.xsd" dest="${destdir}/wfs.xsd"/>
                             </tasks>

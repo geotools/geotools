@@ -45,16 +45,21 @@
         <module>filter-1.1</module>
         <module>filter-2.0</module>
         <module>geosciml-2.0</module>
+        <module>geosciml-3.0-seegrid</module>
         <module>gml-3.1</module>
         <module>gml-3.2</module>
         <module>ic-2.0</module>
         <module>iso-19139-2007</module>
+        <module>iso-19156-seegrid</module>
         <module>om-1.0</module>
+        <module>om-2.0</module>
         <module>ows-1.0</module>
         <module>ows-1.1</module>
         <module>sampling-1.0</module>
+        <module>sampling-2.0</module>
         <module>sensorML-1.0</module>
         <module>sweCommon-1.0</module>
+        <module>sweCommon-1.0-gml32</module>
         <module>wfs-1.1</module>
         <module>wfs-2.0</module>
         <module>xlink-1.0</module>

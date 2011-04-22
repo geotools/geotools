@@ -24,6 +24,7 @@ Referencing plugins:
    access
    postgresql
    wkt
+   3d
    
 Unsupported plugins:
    
@@ -32,7 +33,6 @@ Unsupported plugins:
    
    h2
    oracle
-   3d
 
 Implementation details:
 

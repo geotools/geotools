@@ -29,9 +29,16 @@ Unsupported plugins:
 .. toctree::
    :maxdepth: 1
    
+   coverageio
+   experiment
+   geotiff_new
+   grassraster
    jp2k
+   netCDF
+   matlab   
    oracle
-
+   tools
+   
 Implementation details:
 
 .. toctree::

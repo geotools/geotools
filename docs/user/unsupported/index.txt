@@ -20,7 +20,10 @@ Under active development:
    grid
    swing/index
    swt/index
-
+   example
+   jai-tools
+   gpx2
+   
 Volunteers needed:
 
 .. toctree::
@@ -29,16 +32,47 @@ Volunteers needed:
    geometry/index
    jts-wrapper
    postgis-versioned/index
-   process/index
-   /library/data/wfs
+   process/index   
    wps
+   geojson
 
-Deprecated:
+Unsupported Referencing implementations:
 
-.. toctree::
-   :maxdepth: 1
-   
-   /library/data/oracle
+* :doc:`/library/referencing/oracle`
+* :doc:`/library/referencing/h2`
+
+Unsupported DataStore:
+
+* :doc:`/library/data/caching`
+* :doc:`/library/data/csv`
+* :doc:`/library/data/dxf`
+* :doc:`/library/data/edigeo`
+* :doc:`/library/data/excel`
+* :doc:`/library/data/geometryless`
+* :doc:`/library/data/georest`
+* :doc:`/library/data/ogr`
+* :doc:`/library/data/wfs`
+* :doc:`/library/data/wfs-ng`
+* :doc:`/library/data/sfs`
+* :doc:`/library/data/vpf`
+
+Unsupported Coverage:
+
+* :doc:`/library/coverage/coverageio`
+* :doc:`/library/coverage/experiment`
+* :doc:`/library/coverage/geotiff_new`
+* :doc:`/library/coverage/grassraster`
+* :doc:`/library/coverage/matlab`
+* :doc:`/library/coverage/netCDF`
+* :doc:`/library/coverage/tools`
+
+To removed:
+
+* :doc:`/library/data/oracle` replaced by gt-jdbc-oracle
+* :doc:`/library/data/postgis` replaced by gt-jdbc-postgis
+* :doc:`/library/data/mysql` replaced by gt-jdbc-mysql
+* :doc:`/library/render/shapefile` replaced by gt-render
+* :doc:`/library/data/sql` replaced by gt-jdbc
 
 .. note:: 
    

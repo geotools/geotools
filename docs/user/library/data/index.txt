@@ -28,8 +28,23 @@ Unsupported plugins:
 .. toctree::
    :maxdepth: 1
    
-   wfs
+   caching
+   csv
+   db2
+   dxf
+   edigeo
+   excel
+   geometryless
+   georest
+   mysql
+   ogr
    oracle
+   postgis
+   sfs
+   sql
+   wfs
+   wfs-ng
+   vpf
 
 Implementation details:
 

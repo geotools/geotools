@@ -25,6 +25,7 @@ Unsupported:
    :maxdepth: 1
    
    wkt
+   shapefile
 
 References:
 

@@ -14,27 +14,27 @@ The following material has been prepared by Justin Deolivera documenting the GTX
 
 Schema plugins:
 
-* net.opengis.ows: open web services schema
-* net.opengis.wfs: web feature service
-* net.opengis.wps: web processing service schema
-* net.opengis.wcs: web coverage service schema
-* net.opengis.wfsv: web feature service schema
-* org.w3.xlink: xlink schema
+* :doc:`net.opengis.ows </extension/ogc/ows>` : open web services schema
+* :doc:`net.opengis.wfs </extension/ogc/wfs>` : web feature service
+* :doc:`net.opengis.wps </extension/ogc/wps>` : web processing service schema
+* :doc:`net.opengis.wcs </extension/ogc/wcs>` : web coverage service schema
+* :doc:`net.opengis.wfsv </extension/ogc/wfsv>` : web feature service schema
+* :doc:`org.w3.xlink </extension/ogc/xlink>` : xlink schema
 
 Bindings plugins:
 
-* gt-xsd-core: Basic types defined by XML schema
-* gt-xsd-fes: filter
-* gt-xsd-filter: filter (used by ogc cat and wfs)
-* gt-xsd-kml: keyhole markup language
-* gt-xsd-wfs: web feature service
-* gt-xsd-wps: web processing service
-* gt-xsd-gml3: geographic markup language 3
-* gt-xsd-gml2: geographinc markup language 2
-* gt-xsd-ows: open web services
-* gt-xsd-wcs: web coverage service
-* gt-xsd-wms: web map service
-* gt-xsd-sld: style layer descriptor
+* :doc:`gt-xsd-core </extension/xsd/core>` : Basic types defined by XML schema
+* :doc:`gt-xsd-fes </extension/xsd/fes>` : filter 2.0
+* :doc:`gt-xsd-filter </extension/xsd/filter>` : filter 1.0 (used by ogc cat and wfs)
+* :doc:`gt-xsd-kml </extension/xsd/kml>` : keyhole markup language
+* :doc:`gt-xsd-wfs </extension/xsd/wfs>` : web feature service
+* :doc:`gt-xsd-wps </extension/xsd/wps>` : web processing service
+* :doc:`gt-xsd-gml3 </extension/xsd/gml3>` : geographic markup language 3
+* :doc:`gt-xsd-gml2 </extension/xsd/gml2>` : geographinc markup language 2
+* :doc:`gt-xsd-ows </extension/xsd/ows>` : open web services
+* :doc:`gt-xsd-wcs </extension/xsd/wcs>` : web coverage service
+* :doc:`gt-xsd-wms </extension/xsd/wms>` : web map service
+* :doc:`gt-xsd-sld </extension/xsd/sld>` : style layer descriptor
 
 **XML Development FAQ**
 

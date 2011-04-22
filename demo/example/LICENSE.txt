@@ -1,9 +1,9 @@
-The Geotools library is distributed to all users under the terms of the Lesser 
+The GeoTools library is distributed to all users under the terms of the Lesser 
 General Public License (LGPL). However, the files in the Geotools module 
-demo/introduction/ are explictly excluded from that license in order that users 
+demo/introduction/ are explicitly excluded from that license in order that users 
 can adopt the code contained in that module to any use those users may choose.
  
-The files in the demo/introduction/ directory, including all subirectories, are
+The files in the demo/introduction/ directory, including all sub directories, are
 hereby placed into the 
 
                  PUBLIC DOMAIN

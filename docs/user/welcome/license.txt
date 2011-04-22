@@ -18,8 +18,9 @@ Source License
 
 The source code of the GeoTools library is distributed under the LGPL license::
    
-   GeoTools - The Open Source Java GIS Toolkit http://geotools.org
-   (C) 2004-2011, Open Source Geospatial Foundation (OSGeo)
+   GeoTools - The Open Source Java GIS Toolkit
+   http://geotools.org
+   (C) 2002-2011, Open Source Geospatial Foundation (OSGeo)
    
    This library is free software; you can redistribute it and/or modify it under
    the terms of the GNU Lesser General Public License as published by the Free
@@ -33,53 +34,13 @@ The text of the license itself is included with the library as a "LICENSE" file.
 
 * http://www.gnu.org/licenses/lgpl-2.1.html
 
-**SOSNOKILLLICENSE**
+In addition several modules contain code made available to us under a different license:
 
-The file DateUtils requires that this license be included with your GeoTools documentation.::
-   
-   Copyright (c) 2002-2004, Dennis M. Sosnoski.
-   All rights reserved.
-   Redistribution and use in source and binary forms, with or without modification,
-   are permitted provided that the following conditions are met:
-
-   * Redistributions of source code must retain the above copyright notice, this
-     list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice,
-     this list of conditions and the following disclaimer in the documentation
-     and/or other materials provided with the distribution.
-   * Neither the name of JiBX nor the names of its contributors may be used
-     to endorse or promote products derived from this software without specific
-     prior written permission.
-   
-   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-   ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-   WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-   DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
-   ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-   (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-   LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-   ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-**Apache License**
-
-The module extension/xsd/xsd-core requires that this license be included with
-your GeoTools documentation.::
-   
-   Copyright 2003, 2004 The Apache Software Foundation
-   
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-   
-   http://www.apache.org/licenses/LICENSE-2.0
-   
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+* :doc:`gt-main </library/main/index>` (SOSNOKILLLICENSE)
+* :doc:`gt-xsd-core </extension/xsd/core>` (Apache License)
+* :doc:`gt-brewer </extension/brewer/index>` (Apache License)
+* :doc:`gt-geotiff </library/coverage/geotiff>` (Happy Fun Ball License)
+* :doc:`gt-referencing3d </library/referencing/3d>` (some code available from nasa for unlimited distribution) 
 
 Document License
 ^^^^^^^^^^^^^^^^^
@@ -100,6 +61,23 @@ The original wiki documentation was distributed under the free documentation lic
    Invariant Sections, with the Front-Cover Texts being no Front-Cover Texts, and with
    the Back-Cover Texts being no Back-Cover Texts.
 
+The source code examples cited in thsi documentation is made available to the public domain. This
+covers the source code in:
+
+* demo
+* doc
+
+These examples are explicitly provided under a public domain license in order to allow you to cut and paste
+into your own application.
+
+	GeoTools - The Open Source Java GIS Toolkit
+	http://geotools.org
+	
+	(C) 2006-2011, Open Source Geospatial Foundation (OSGeo)
+	
+	This file is hereby placed into the Public Domain. This means anyone is
+	free to do whatever they wish with this file. Use it well and enjoy!
+    
 Common License Questions
 ^^^^^^^^^^^^^^^^^^^^^^^^
 

@@ -1,5 +1,5 @@
 /*
- *    GeoTools - OpenSource mapping toolkit
+ *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *    (C) 2005-2006, GeoTools Project Management Committee (PMC)
  *

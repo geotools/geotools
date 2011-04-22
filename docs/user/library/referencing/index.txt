@@ -32,6 +32,7 @@ Unsupported plugins:
    
    h2
    oracle
+   3d
 
 Implementation details:
 

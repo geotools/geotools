@@ -1,6 +1,6 @@
 // docs start source
 /*
- *    GeoTools - The Open Source Java GIS Tookit
+ *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
  *    (C) 2006-2008, Open Source Geospatial Foundation (OSGeo)

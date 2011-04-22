@@ -58,7 +58,8 @@ public class TeradataDataStoreFactoryTest extends JDBCTestSupport {
         assertNotNull(store);
         try {
             // check dialect
-            assertTrue(store.getSQLDialect() instanceof TeradataGISDialect);
+            assertTrue(store.getSQLDialect() instanceof TeradataDialect);
+
             // force connection usage
             assertNotNull(store.getSchema(tname("ft1")));
         } finally {

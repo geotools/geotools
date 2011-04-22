@@ -33,20 +33,20 @@ public class TeradataDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
         // add the spatial index
         run("CREATE MULTISET TABLE \"lake_geom_idx\""
                 + " (id INTEGER NOT NULL, cellid INTEGER NOT NULL) PRIMARY INDEX (cellid)");
-        run("CREATE TRIGGER \"lake_geom_mi\" AFTER INSERT ON lake"
-                + "  REFERENCING NEW TABLE AS nt" + "  FOR EACH STATEMENT" + "  BEGIN ATOMIC"
-                + "  (" + "    INSERT INTO \"lake_geom_idx\"" + "    SELECT" + "    id,"
-                + "    sysspatial.tessellate_index ("
-                + "      \"geom\".ST_Envelope().ST_ExteriorRing().ST_PointN(1).ST_X(),"
-                + "      \"geom\".ST_Envelope().ST_ExteriorRing().ST_PointN(1).ST_Y(),"
-                + "      \"geom\".ST_Envelope().ST_ExteriorRing().ST_PointN(3).ST_X(),"
-                + "      \"geom\".ST_Envelope().ST_ExteriorRing().ST_PointN(3).ST_Y(),"
-                + "      -180, -90, 180, 90, 100, 100, 1, 0.01, 0)" + "    FROM nt;" + "  ) "
-                + "END");
-        run("CREATE TRIGGER \"lake_geom_md\" AFTER DELETE ON \"lake\""
-                + "  REFERENCING OLD TABLE AS ot" + "  FOR EACH STATEMENT" + "  BEGIN ATOMIC"
-                + "  (" + "    DELETE FROM \"lake_geom_idx\" WHERE ID IN (SELECT ID from ot);"
-                + "  )" + "END");
+//        run("CREATE TRIGGER \"lake_geom_mi\" AFTER INSERT ON lake"
+//                + "  REFERENCING NEW TABLE AS nt" + "  FOR EACH STATEMENT" + "  BEGIN ATOMIC"
+//                + "  (" + "    INSERT INTO \"lake_geom_idx\"" + "    SELECT" + "    id,"
+//                + "    sysspatial.tessellate_index ("
+//                + "      \"geom\".ST_Envelope().ST_ExteriorRing().ST_PointN(1).ST_X(),"
+//                + "      \"geom\".ST_Envelope().ST_ExteriorRing().ST_PointN(1).ST_Y(),"
+//                + "      \"geom\".ST_Envelope().ST_ExteriorRing().ST_PointN(3).ST_X(),"
+//                + "      \"geom\".ST_Envelope().ST_ExteriorRing().ST_PointN(3).ST_Y(),"
+//                + "      -180, -90, 180, 90, 100, 100, 1, 0.01, 0)" + "    FROM nt;" + "  ) "
+//                + "END");
+//        run("CREATE TRIGGER \"lake_geom_md\" AFTER DELETE ON \"lake\""
+//                + "  REFERENCING OLD TABLE AS ot" + "  FOR EACH STATEMENT" + "  BEGIN ATOMIC"
+//                + "  (" + "    DELETE FROM \"lake_geom_idx\" WHERE ID IN (SELECT ID from ot);"
+//                + "  )" + "END");
 
         // advance the sequence to 1 to compensate for hand insertions
         // run("SELECT nextval(pg_get_serial_sequence('lake','fid'))");
@@ -62,20 +62,20 @@ public class TeradataDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
 
         run("CREATE MULTISET TABLE \"river_geom_idx\""
                 + " (id INTEGER NOT NULL, cellid INTEGER NOT NULL) PRIMARY INDEX (cellid)");
-        run("CREATE TRIGGER \"river_geom_mi\" AFTER INSERT ON river"
-                + "  REFERENCING NEW TABLE AS nt" + "  FOR EACH STATEMENT" + "  BEGIN ATOMIC"
-                + "  (" + "    INSERT INTO \"river_geom_idx\"" + "    SELECT" + "    id,"
-                + "    sysspatial.tessellate_index ("
-                + "      \"geom\".ST_Envelope().ST_ExteriorRing().ST_PointN(1).ST_X(),"
-                + "      \"geom\".ST_Envelope().ST_ExteriorRing().ST_PointN(1).ST_Y(),"
-                + "      \"geom\".ST_Envelope().ST_ExteriorRing().ST_PointN(3).ST_X(),"
-                + "      \"geom\".ST_Envelope().ST_ExteriorRing().ST_PointN(3).ST_Y(),"
-                + "      -180, -90, 180, 90, 100, 100, 1, 0.01, 0)" + "    FROM nt;" + "  ) "
-                + "END");
-        run("CREATE TRIGGER \"river_geom_md\" AFTER DELETE ON \"river\""
-                + "  REFERENCING OLD TABLE AS ot" + "  FOR EACH STATEMENT" + "  BEGIN ATOMIC"
-                + "  (" + "    DELETE FROM \"river_geom_idx\" WHERE ID IN (SELECT ID from ot);"
-                + "  )" + "END");
+//        run("CREATE TRIGGER \"river_geom_mi\" AFTER INSERT ON river"
+//                + "  REFERENCING NEW TABLE AS nt" + "  FOR EACH STATEMENT" + "  BEGIN ATOMIC"
+//                + "  (" + "    INSERT INTO \"river_geom_idx\"" + "    SELECT" + "    id,"
+//                + "    sysspatial.tessellate_index ("
+//                + "      \"geom\".ST_Envelope().ST_ExteriorRing().ST_PointN(1).ST_X(),"
+//                + "      \"geom\".ST_Envelope().ST_ExteriorRing().ST_PointN(1).ST_Y(),"
+//                + "      \"geom\".ST_Envelope().ST_ExteriorRing().ST_PointN(3).ST_X(),"
+//                + "      \"geom\".ST_Envelope().ST_ExteriorRing().ST_PointN(3).ST_Y(),"
+//                + "      -180, -90, 180, 90, 100, 100, 1, 0.01, 0)" + "    FROM nt;" + "  ) "
+//                + "END");
+//        run("CREATE TRIGGER \"river_geom_md\" AFTER DELETE ON \"river\""
+//                + "  REFERENCING OLD TABLE AS ot" + "  FOR EACH STATEMENT" + "  BEGIN ATOMIC"
+//                + "  (" + "    DELETE FROM \"river_geom_idx\" WHERE ID IN (SELECT ID from ot);"
+//                + "  )" + "END");
         // advance the sequence to 1 to compensate for hand insertions
         // run("SELECT nextval(pg_get_serial_sequence('river','fid'))");
 
@@ -95,20 +95,20 @@ public class TeradataDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
 
         run("CREATE MULTISET TABLE \"road_geom_idx\""
                 + " (id INTEGER NOT NULL, cellid INTEGER NOT NULL) PRIMARY INDEX (cellid)");
-        run("CREATE TRIGGER \"road_geom_mi\" AFTER INSERT ON road"
-                + "  REFERENCING NEW TABLE AS nt" + "  FOR EACH STATEMENT" + "  BEGIN ATOMIC"
-                + "  (" + "    INSERT INTO \"road_geom_idx\"" + "    SELECT" + "    id,"
-                + "    sysspatial.tessellate_index ("
-                + "      \"geom\".ST_Envelope().ST_ExteriorRing().ST_PointN(1).ST_X(),"
-                + "      \"geom\".ST_Envelope().ST_ExteriorRing().ST_PointN(1).ST_Y(),"
-                + "      \"geom\".ST_Envelope().ST_ExteriorRing().ST_PointN(3).ST_X(),"
-                + "      \"geom\".ST_Envelope().ST_ExteriorRing().ST_PointN(3).ST_Y(),"
-                + "      -180, -90, 180, 90, 100, 100, 1, 0.01, 0)" + "    FROM nt;" + "  ) "
-                + "END");
-        run("CREATE TRIGGER \"road_geom_md\" AFTER DELETE ON \"road\""
-                + "  REFERENCING OLD TABLE AS ot" + "  FOR EACH STATEMENT" + "  BEGIN ATOMIC"
-                + "  (" + "    DELETE FROM \"road_geom_idx\" WHERE ID IN (SELECT ID from ot);"
-                + "  )" + "END");
+//        run("CREATE TRIGGER \"road_geom_mi\" AFTER INSERT ON road"
+//                + "  REFERENCING NEW TABLE AS nt" + "  FOR EACH STATEMENT" + "  BEGIN ATOMIC"
+//                + "  (" + "    INSERT INTO \"road_geom_idx\"" + "    SELECT" + "    id,"
+//                + "    sysspatial.tessellate_index ("
+//                + "      \"geom\".ST_Envelope().ST_ExteriorRing().ST_PointN(1).ST_X(),"
+//                + "      \"geom\".ST_Envelope().ST_ExteriorRing().ST_PointN(1).ST_Y(),"
+//                + "      \"geom\".ST_Envelope().ST_ExteriorRing().ST_PointN(3).ST_X(),"
+//                + "      \"geom\".ST_Envelope().ST_ExteriorRing().ST_PointN(3).ST_Y(),"
+//                + "      -180, -90, 180, 90, 100, 100, 1, 0.01, 0)" + "    FROM nt;" + "  ) "
+//                + "END");
+//        run("CREATE TRIGGER \"road_geom_md\" AFTER DELETE ON \"road\""
+//                + "  REFERENCING OLD TABLE AS ot" + "  FOR EACH STATEMENT" + "  BEGIN ATOMIC"
+//                + "  (" + "    DELETE FROM \"road_geom_idx\" WHERE ID IN (SELECT ID from ot);"
+//                + "  )" + "END");
         // advance the sequence to 2 to compensate for hand insertions
         // run("SELECT nextval(pg_get_serial_sequence('road','fid'))");
         // run("SELECT nextval(pg_get_serial_sequence('road','fid'))");

@@ -18,13 +18,18 @@ package org.geotools.data.teradata;
 
 import java.io.IOException;
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.feature.type.BasicFeatureTypes;
 import org.geotools.filter.FilterCapabilities;
+import org.geotools.jdbc.PreparedFilterToSQL;
 import org.geotools.jdbc.PrimaryKeyColumn;
 import org.geotools.jdbc.SQLDialect;
+import org.geotools.util.logging.Logging;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.BBOX;
@@ -43,38 +48,16 @@ import org.opengis.filter.spatial.Within;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.LinearRing;
 
-public class TeradataFilterToSQL extends FilterToSQL {
+public class TeradataFilterToSQL extends PreparedFilterToSQL {
 
-    private TeradataGISDialect mDialect;
-    boolean mLooseBBOXEnabled;
+    static final Logger LOGGER = Logging.getLogger(TeradataFilterToSQL.class);
+    
+    boolean looseBBOX;
 
-    public TeradataFilterToSQL(TeradataGISDialect dialect) {
-        mDialect = dialect;
-    }
-
-    public boolean isLooseBBOXEnabled() {
-        return mLooseBBOXEnabled;
-    }
-
-    public void setLooseBBOXEnabled(boolean looseBBOXEnabled) {
-        mLooseBBOXEnabled = looseBBOXEnabled;
-    }
-
-    protected void visitLiteralGeometry(Literal expression) throws IOException {
-        // evaluate the literal and store it for later
-        Geometry geom = (Geometry) evaluateLiteral(expression, Geometry.class);
-
-        if (geom instanceof LinearRing) {
-            // teradata does not handle linear rings, convert to just a line
-            // string
-            geom = geom.getFactory().createLineString(((LinearRing) geom).getCoordinateSequence());
-        }
-
-        out.write("'");
-        out.write(geom.toText());
-        out.write("'");
+    public TeradataFilterToSQL(TeradataDialect dialect) {
+        super(dialect);
+        looseBBOX = dialect.isLooseBBOXEnabled();
     }
 
     @Override
@@ -98,6 +81,23 @@ public class TeradataFilterToSQL extends FilterToSQL {
         return caps;
     }
 
+//    protected void visitLiteralGeometry(Literal expression) throws IOException {
+//        // evaluate the literal and store it for later
+//        Geometry geom = (Geometry) evaluateLiteral(expression, Geometry.class);
+//
+//        if (geom instanceof LinearRing) {
+//            // teradata does not handle linear rings, convert to just a line
+//            // string
+//            geom = geom.getFactory().createLineString(((LinearRing) geom).getCoordinateSequence());
+//        }
+//
+//        out.write("'");
+//        out.write(geom.toText());
+//        out.write("'");
+//    }
+
+    
+
     protected Object visitBinarySpatialOperator(BinarySpatialOperator filter,
             PropertyName property, Literal geometry, boolean swapped, Object extraData) {
         try {
@@ -117,22 +117,20 @@ public class TeradataFilterToSQL extends FilterToSQL {
             Literal geometry, boolean swapped, Object extraData) throws IOException {
 
         if ((filter instanceof DWithin && !swapped) || (filter instanceof Beyond && swapped)) {
-            addTessellateIndex(property, geometry);
+            encodeIndexPredicate(property, geometry);
 
             property.accept(this, extraData);
-            out.write(".");
-            out.write("ST_DWithin(SYSSPATIAL.ST_GEOMFROMTEXT(");
+            out.write(".ST_DWithin(new ST_Geometry(");
             geometry.accept(this, extraData);
-            out.write(",");
+            out.write("),");
             out.write(Double.toString(filter.getDistance()));
-            out.write("))");
+            out.write(")");
         }
         if ((filter instanceof DWithin && swapped) || (filter instanceof Beyond && !swapped)) {
-            addTessellateIndex(property, geometry);
+            encodeIndexPredicate(property, geometry);
 
             property.accept(this, extraData);
-            out.write(".");
-            out.write("ST_Distance(SYSSPATIAL.ST_GEOMFROMTEXT(");
+            out.write(".ST_Distance(SYSSPATIAL.ST_Geometry(");
             geometry.accept(this, extraData);
             out.write(")) > ");
             out.write(Double.toString(filter.getDistance()));
@@ -143,7 +141,9 @@ public class TeradataFilterToSQL extends FilterToSQL {
             Literal geometry, boolean swapped, Object extraData) throws IOException {
 
         if (!(filter instanceof Disjoint)) {
-            addTessellateIndex(property, geometry);
+            if (encodeIndexPredicate(property, geometry)) {
+                out.write( " AND ");
+            }
         }
 
         property.accept(this, extraData);
@@ -175,51 +175,84 @@ public class TeradataFilterToSQL extends FilterToSQL {
             throw new RuntimeException("Unsupported filter type " + filter.getClass());
         }
 
-        out.write("(SYSSPATIAL.ST_GEOMFROMTEXT(");
+        out.write("(new ST_Geometry(");
         geometry.accept(this, extraData);
         out.write(")) = 1");
     }
 
-    private void addTessellateIndex(PropertyName property, Literal geometry) throws IOException {
-        String key = null;
-        if (primaryKey != null) {
-            List<PrimaryKeyColumn> colsKey = primaryKey.getColumns();
-            if (colsKey.size() == 1) {
-                PrimaryKeyColumn colKey = colsKey.get(0);
-                key = colKey.getName();
+    boolean encodeIndexPredicate(PropertyName property, Literal geometry) throws IOException {
+        
+        TessellationInfo tinfo = 
+            (TessellationInfo) currentGeometry.getUserData().get(TessellationInfo.KEY);
+        if (tinfo == null) {
+            LOGGER.info("Tessellation info not available for " + currentGeometry.getLocalName() + 
+                ", unable to perform spatially indexed query");
+            return false;
+        }
+        
+        if (primaryKey == null) {
+            LOGGER.info("No primary key for " + featureType.getTypeName() + 
+                ", unable to perform spatially indexed query");
+            return false;
+        }
+
+        Geometry g = (Geometry) geometry.getValue();
+        
+        //check the geomtry envelope vs the world envelope, if it falls outside of the world bounds
+        // we can't use the index
+        Envelope oenv = g.getEnvelopeInternal();
+        Envelope uenv = tinfo.getUBounds();
+        
+        if (!uenv.contains(oenv)) {
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.fine("Bounds:" + oenv + " falls outside of univerise bounds: " + uenv + 
+                    ". Unable to perform index query.");
+            }
+            return false;
+        }
+        
+        //check coverage... if the geometry bounds covers most of the the index universe don't use
+        // the index since the join query is expensive... it will be more efficient to just do the
+        // direct intersection
+        //TODO: make this threshhold configurable
+        double coverage = uenv.intersection(oenv).getArea() / uenv.getArea(); 
+        if (coverage > 0.5) {
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.fine("Bounds:" + oenv + " covers " + (coverage * 100) + " of universe bounds: " 
+                  + uenv + ". Forgoing index query.");
+            }
+            return false;
+        }
+        
+        for (Iterator<PrimaryKeyColumn> it = primaryKey.getColumns().iterator(); it.hasNext();) {
+            out.write(it.next().getName());
+            if (it.hasNext()) {
+                out.write(", ");
             }
         }
-        if (key != null) {
-            String encodedTableName = (String)currentGeometry.getUserData().get(TeradataGISDialect.TABLE_NAME);;
-            String encodedIdxTableName = (String)currentGeometry.getUserData().get(TeradataGISDialect.SPATIAL_INDEX);;
-            String propertyName = property.getPropertyName();
-            if (propertyName.length() == 0) {
-                propertyName = "geom";
+
+        out.write(" IN (SELECT DISTINCT ");
+        for (Iterator<PrimaryKeyColumn> it = primaryKey.getColumns().iterator(); it.hasNext();) {
+            out.write("t." + it.next().getName());
+            if (it.hasNext()) {
+                out.write(", ");
             }
-
-            StringBuffer sb = new StringBuffer();
-            mDialect.encodeColumnName(key, sb);
-            String encodedKeyName = sb.toString();
-
-            Envelope env = ((Geometry) geometry.getValue()).getEnvelopeInternal();
-            out.write(MessageFormat.format(
-                    "{2} IN (SELECT DISTINCT ti.id "
-                            + "FROM {0} ti, TABLE (SYSSPATIAL.tessellate_search(1,"
-                            + "  {12,number,0.0#}, {13,number,0.0#}, {14,number,0.0#}, {15,number,0.0#}, "
-                            + "  {3,number,0.0#}, {4,number,0.0#}, {5,number,0.0#}, {6,number,0.0#}, "
-                            + "  {7,number,0}, {8,number,0}, {9,number,0}, {10,number,0.0#}, {11,number,0})) AS i "
-                            + "WHERE ti.cellid = i.cellid) AND ",
-                    encodedIdxTableName, encodedTableName, encodedKeyName,
-                    BasicFeatureTypes.FEATURE.getUserData().get(TeradataDataStoreFactory.U_XMIN),
-                    BasicFeatureTypes.FEATURE.getUserData().get(TeradataDataStoreFactory.U_YMIN),
-                    BasicFeatureTypes.FEATURE.getUserData().get(TeradataDataStoreFactory.U_XMAX),
-                    BasicFeatureTypes.FEATURE.getUserData().get(TeradataDataStoreFactory.U_YMAX),
-                    BasicFeatureTypes.FEATURE.getUserData().get(TeradataDataStoreFactory.G_NX),
-                    BasicFeatureTypes.FEATURE.getUserData().get(TeradataDataStoreFactory.G_NY),
-                    BasicFeatureTypes.FEATURE.getUserData().get(TeradataDataStoreFactory.LEVELS),
-                    BasicFeatureTypes.FEATURE.getUserData().get(TeradataDataStoreFactory.SCALE),
-                    BasicFeatureTypes.FEATURE.getUserData().get(TeradataDataStoreFactory.SHIFT),
-                    env.getMinX(), env.getMinY(), env.getMaxX(), env.getMaxY()));
         }
+        
+        out.write(" FROM ");
+        if (tinfo.getSchemaName() != null) {
+            out.write(escapeName(tinfo.getSchemaName()));
+            out.write(".");
+        }
+        out.write(escapeName(tinfo.getIndexTableName()));
+        out.write( " t, TABLE (SYSSPATIAL.tessellate_search(1,");
+        
+        out.write(String.format("%f, %f, %f, %f, %f, %f, %f, %f, %d, %d, %d, %f, %d)) AS i ", 
+            oenv.getMinX(), oenv.getMinY(), oenv.getMaxX(), oenv.getMaxY(), uenv.getMinX(), 
+            uenv.getMinY(), uenv.getMaxX(), uenv.getMaxY(), tinfo.getNx(), tinfo.getNy(), 
+            tinfo.getLevels(), tinfo.getScale(), tinfo.getShift()));
+        
+        out.write(" WHERE t.cellid = i.cellid)");
+        return true;
     }
 }

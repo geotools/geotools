@@ -35,7 +35,12 @@ import com.vividsolutions.jts.geom.Geometry;
 
 public class TeradataDataStoreAPITest extends JDBCDataStoreAPITest {
 
-
+    @Override
+    protected void connect() throws Exception {
+        super.connect();
+        dataStore.setDatabaseSchema(fixture.getProperty("user"));
+    }
+    
     protected JDBCDataStoreAPITestSetup createTestSetup() {
         return new TeradataDataStoreAPITestSetup(new TeradataTestSetup());
     }

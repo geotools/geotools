@@ -16,8 +16,12 @@
  */
 package org.geotools.data.teradata;
 
+import java.io.IOException;
 import java.util.Properties;
 
+import javax.sql.DataSource;
+
+import org.apache.commons.dbcp.BasicDataSource;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.JDBCTestSetup;
@@ -42,12 +46,14 @@ public class TeradataTestSetup extends JDBCTestSetup {
         }
 
         // the unit tests assume a non loose behaviour
-        ((TeradataGISDialect) dataStore.getSQLDialect()).setLooseBBOXEnabled(false);
+        ((TeradataDialect) dataStore.getSQLDialect()).setLooseBBOXEnabled(false);
 
         // let's work with the most common schema please
-        dataStore.setDatabaseSchema(fixture.getProperty("schema"));
+        if (dataStore.getDatabaseSchema() == null) {
+            dataStore.setDatabaseSchema(fixture.getProperty("schema"));
+        }
     }
-
+    
     protected Properties createExampleFixture() {
         Properties fixture = new Properties();
         fixture.put("driver", "com.teradata.jdbc.TeraDriver");
@@ -96,37 +102,7 @@ public class TeradataTestSetup extends JDBCTestSetup {
                 + "', 'ft1', 'geometry', 2, 1619, 'POINT')");
         run("CREATE MULTISET TABLE \"ft1_geometry_idx\""
                 + " (id INTEGER NOT NULL, cellid INTEGER NOT NULL) PRIMARY INDEX (cellid)");
-        run("CREATE TRIGGER \"ft1_geometry_mi\" AFTER INSERT ON ft1"
-                + "  REFERENCING NEW TABLE AS nt" + "  FOR EACH STATEMENT" + "  BEGIN ATOMIC"
-                + "  (" + "    INSERT INTO \"ft1_geometry_idx\"" + "    SELECT" + "    id,"
-                + "    sysspatial.tessellate_index ("
-                + "      \"geometry\".ST_Envelope().ST_ExteriorRing().ST_PointN(1).ST_X(),"
-                + "      \"geometry\".ST_Envelope().ST_ExteriorRing().ST_PointN(1).ST_Y(),"
-                + "      \"geometry\".ST_Envelope().ST_ExteriorRing().ST_PointN(3).ST_X(),"
-                + "      \"geometry\".ST_Envelope().ST_ExteriorRing().ST_PointN(3).ST_Y(),"
-                + "      -180, -90, 180, 90, 100, 100, 1, 0.01, 0)"
-                + "    FROM nt WHERE \"geometry\" IS NOT NULL;" + "  ) " + "END");
-        // run("CREATE TRIGGER \"ft1_geometry_mi\" AFTER INSERT ON ft1"
-        // + "  REFERENCING NEW AS nt"
-        // + "  FOR EACH ROW"
-        // + "    WHEN (nt.\"geometry\" IS NOT NULL) ( "
-        // +
-        // "      INSERT INTO \"ft1_geometry_idx\" (id, cellid) VALUES (nt.id, "
-        // + "      sysspatial.tessellate_index ("
-        // +
-        // "        nt.\"geometry\".ST_Envelope().ST_ExteriorRing().ST_PointN(1).ST_X(),"
-        // +
-        // "        nt.\"geometry\".ST_Envelope().ST_ExteriorRing().ST_PointN(1).ST_Y(),"
-        // +
-        // "        nt.\"geometry\".ST_Envelope().ST_ExteriorRing().ST_PointN(3).ST_X(),"
-        // +
-        // "        nt.\"geometry\".ST_Envelope().ST_ExteriorRing().ST_PointN(3).ST_Y(),"
-        // + "        -180, -90, 180, 90, 100, 100, 1, 0.01, 0));"
-        // + "  ); ");
-        run("CREATE TRIGGER \"ft1_geometry_md\" AFTER DELETE ON \"ft1\""
-                + "  REFERENCING OLD TABLE AS ot" + "  FOR EACH STATEMENT" + "  BEGIN ATOMIC"
-                + "  (" + "    DELETE FROM \"ft1_geometry_idx\" WHERE ID IN (SELECT ID from ot);"
-                + "  )" + "END");
+        
         run("INSERT INTO \"ft1\" VALUES(0, 'POINT(0 0)', 0, 0.0, 'zero')");
         run("INSERT INTO \"ft1\" VALUES(1, 'POINT(1 1)', 1, 1.1, 'one')");
         run("INSERT INTO \"ft1\" VALUES(2, 'POINT(2 2)', 2, 2.2, 'two')");

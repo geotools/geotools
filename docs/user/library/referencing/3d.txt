@@ -1,0 +1,14 @@
+Referencing 3D
+--------------
+
+Experimental support for 3d referencing math transforms.
+
+**License**
+
+The gt-referencing-3d module is disributed under the LGPL license (as described in :doc:`welcome </welcome/license>`).
+Some code and data in the gt-referencing-3d plugin are derived from NGA/NASA work available for unlimited
+distribution.
+
+References:
+
+* http://earth-info.nima.mil/GandG/wgs84/gravitymod/.

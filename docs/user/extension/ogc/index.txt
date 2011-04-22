@@ -1,0 +1,13 @@
+OGC
+===
+
+Captures bindings for gt-xml use.
+
+.. toctree::
+   
+   ows
+   wcs
+   wfs
+   wfsv
+   wps
+   xlink

@@ -1,0 +1,5 @@
+net.opengis.wfsv
+----------------
+
+Bindings for "versioned" extension to web feature service. These bindings extend the basic web feature service protocol
+with the ability to query for feature history.

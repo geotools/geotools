@@ -1,0 +1,4 @@
+net.opengis.ows
+---------------
+
+Bindings for "open web servies" (includes Filter).

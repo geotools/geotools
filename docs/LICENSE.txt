@@ -1,0 +1,14 @@
+The GeoTools library is distributed to all users under the terms of the Lesser 
+General Public License (LGPL). However, the files in the GeoTools directory 
+doc/src are explicitly excluded from that license in order that users 
+can adopt the code contained in that module to any use those users may choose.
+ 
+The files in the demo/introduction/ directory, including all sub directories, are
+hereby placed into the 
+
+                 PUBLIC DOMAIN
+
+and all original rights to that information are hereby waived. Use this code to 
+your best and enjoy!
+
+    -- The GeoTools Project Management Committee 2011.04.22

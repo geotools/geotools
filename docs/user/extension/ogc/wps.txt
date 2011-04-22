@@ -1,4 +1,6 @@
 net.opengis.wps
 ---------------
 
-Bindings for web processing service.
+Additional generated objects for web processing service.
+
+No documentation has been suplied.

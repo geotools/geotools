@@ -1,4 +1,6 @@
 net.opengis.wfs
 ---------------
 
-Bindings for web feature service.
+Additional generated objects for web feature service.
+
+No documentation has been suplied.

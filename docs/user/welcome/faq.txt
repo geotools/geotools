@@ -23,14 +23,6 @@ GeoTools implements specifications of the `Open Geospatial Consortium <http://ww
 GeoTools can be readily extended by adding new modules, either for custom applications or as contributions to the
 library.
 
-Q: What licence does GeoTools use?
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-All GeoTools modules are released under the GNU Lesser General Public License (LGPL). GeoTools can be used for
-commercial applications, any changes made to GeoTools need to be made available to your customers.
-
-An easy way to do this is to contribute the changes back to the GeoTools project (but this is not required).
-
 Q: How do I search the archives of the GeoTools mailing lists?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -105,8 +97,97 @@ The current authoritative list of plugins is of course the source code:
 * http://svn.osgeo.org/geotools/trunk/modules/plugin/
 * http://svn.osgeo.org/geotools/trunk/modules/unsupported/
 
-Q: Why can't I find module  X in the GeoTools distribution or javadocs?
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Common License Questions
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+Q: What licence does GeoTools use?
+''''''''''''''''''''''''''''''''''
+
+All GeoTools modules are released under the GNU Lesser General Public License (LGPL). GeoTools can be used for
+commercial applications, any changes made to GeoTools need to be made available to your customers.
+
+An easy way to do this is to contribute the changes back to the GeoTools project (but this is not required).
+
+Q: Can I use GeoTools in my Commercial Project?
+'''''''''''''''''''''''''''''''''''''''''''''''
+
+Yes. This is one of the reasons we chose the LGPL license. You can build a
+Commercial application which uses GeoTools as a library and re-distribute your
+application under any license you choose. Your users will get a license to your
+application under the terms of your license and a license to the GeoTools
+library under the terms of the LGPL. You only need to give your users some way
+to get the source code of the GeoTools library, most easily by pointing your
+users to the servers of the GeoTools project.
+
+However, if you choose to modify the GeoTools library itself, then you have to
+publish the source code to those changes to the users of your application.
+
+The easiest way to do that will be to submit those changes back to the GeoTools
+project so the changes can be incorporated into the core source code.
+
+Q: Can I use GeoTools in my GPL Project?
+''''''''''''''''''''''''''''''''''''''''
+
+Yes. This is one of the reasons we chose the LGPL license. You can build a free
+software application which uses GeoTools as a library and re-distribute your
+application under the GPL license. Your users will get a license to your
+application under the terms of the GPL and a license to the GeoTools library
+under the terms of the LGPL. You only need to give your users some way to get
+the source code of the GeoTools library, either by pointing your users to the
+servers of the GeoTools project or by giving them the GeoTools code in the same
+way you give them the code to your GPL application.
+
+However, if you choose to modify the GeoTools library itself, then you have to
+publish the source code to those changes to your users.
+
+The easiest way to do that will be to submit those changes back to the GeoTools
+project so the changes can be incorporated into the core source code.
+
+.. note::
+
+   This means you can use GeoTools as a library but you cannot
+   incorporate GeoTools code directly into your GLP application. Legally, the
+   latter amounts to re-licensing GeoTools under a new license and you do not have
+   the right to do so.
+
+Q: What restrictions are there on my use of GeoTools?
+'''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+None. You can read, run, copy, or do anything else you want to do with the
+GeoTools code. This is one of the four core freedoms of free software which we
+grant you under the LGPL: the freedom to use the software for any purpose you
+choose.
+   
+The only restrictions of the LGPL come when you are re-distributing GeoTools,
+that is when you are passing it on to someone else either on its own or as part
+of a larger product, such as when you share it or sell it.
+
+Q: What restrictions are there on my re-distribution of GeoTools?
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Technically, you have to provide everyone who receives a copy of GeoTools from
+you with some way to get the source code to the library. In practice, pointing
+those users to the Geotools project itself is considered an adequate solution.
+   
+However, if you are re-distributing a modified version of GeoTools then you
+need to provide users with access to the modified code. This means that you
+must give your users some way to get the modified code such as by publishing it
+yourself. An alternative way to provide your users with the modifications would
+be to work with us to get your changes integrated into the GeoTools library--
+-you could then use the new library directly. The best way to do this would be
+to open a change request on our issue tracker and add to that request a code
+patch containing your changes.
+
+Q: What should I do if I am still unsure what I am allowed to do?
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+You can clarify any questions you have by sending us questions to the user
+mailing list: 
+   
+*  geotools-gt2-users@lists.sourceforge.net
+
+Q: Why can't I find module X in the GeoTools distribution or javadocs?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 If you're working with a recent GeoTools release then chances are the module that you're looking for is an
 :doc:`unsupported module </unsupported/index>`. These modules not part of the standard GeoTools distribution but are

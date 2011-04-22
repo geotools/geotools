@@ -1,4 +1,6 @@
 org.w3.xlink
 ------------
 
-Bindings for xlink.
+Additional generated objects for xlink.
+
+No documentation has been suplied.

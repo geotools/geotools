@@ -1,4 +1,6 @@
 net.opengis.wcs
 ---------------
 
-Bindings for web coverage service.
+Additional generated objects for web coverage service.
+
+No documentation has been suplied.

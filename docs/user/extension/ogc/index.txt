@@ -1,7 +1,7 @@
 OGC
 ===
 
-Captures bindings for gt-xml use.
+Generated java objects to match the xml schemas employed by gt-xml.
 
 .. toctree::
    
@@ -11,3 +11,8 @@ Captures bindings for gt-xml use.
    wfsv
    wps
    xlink
+
+References:
+
+* :doc:`gt-xml </library/xml/index>`
+* :doc:`gt-xsd </extension/xsd/index>`

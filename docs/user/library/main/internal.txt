@@ -44,6 +44,10 @@ The following classes are related:
 * AbstractFeatureLocking
 * DefaultFeatureResults - the original name of FeatureCollection was FeatureResults!Simpl
 
+References:
+
+* :doc:`/tutorial/advanced/abstractdatastore` (tutorial)
+  
 DataStore
 ^^^^^^^^^
 

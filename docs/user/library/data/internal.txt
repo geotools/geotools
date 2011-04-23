@@ -8,7 +8,6 @@ ContentDataStore
 
 ContentDataStore represents a ground up rewrite of "much loved" AbstractDataStore. Since the form of that love was reflect in lots of workarounds, and extra methods, and complicated class interactions this is generally viewed as a good thing.
 
-
 .. image:: /images/content.PNG
 
 It offers a clear design with a small number of classes to implement. These classes are referenced by ContentDataStore as it goes about
@@ -16,7 +15,7 @@ doing its job, as a result you are not responsible for many of the usual DataSto
 
 There is a tutorial showing how to read a simple comma separated value file:
 
-* :doc:`/tutorial/advanced/datastore`
+* :doc:`/tutorial/advanced/contentdatastore` (tutorial)
 * :download:`CSVDataStore.java </../src/main/java/org/geotools/tutorial/datastore/CSVDataStore.java>`
 * :download:`CSVFeatureReader.java </../src/main/java/org/geotools/tutorial/datastore/CSVFeatureReader.java>`
 * :download:`CSVFeatureSource.java </../src/main/java/org/geotools/tutorial/datastore/CSVFeatureSource.java>`
@@ -119,3 +118,4 @@ Here is an example for "csv" files::
         }
     }
   }
+

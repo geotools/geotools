@@ -1,10 +1,10 @@
 :Author: Jody Garnett
 :Thanks: geotools-devel list
 :Version: |release|
-:License: Create Commons with attribution
+:License: Creative Commons with attribution
 
 AbstractDataStore Tutorial
---------------------------
+==========================
 
 .. sectionauthor:: Jody Garnett <jody.garnett@gmail.org>
 
@@ -53,8 +53,8 @@ References:
     As is usual for open source documentation is held hostage pending a volunteer to QA, or money.
     Open source stops with the code, documentation sounds like work so please help with feedback!
 
-Introducing PropertyDataStore
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Part 1 - Introducing PropertyDataStore
+--------------------------------------
 
 In this tutorial we will build a property file based DataStore, and in the process explore several
 aspects of DataStores and their implementation.
@@ -108,8 +108,7 @@ for each row (ie. a single Feature). The FID is completely different from the id
 
 So, the last data row (a Feature) has FID "rd2", id "2", geom "LINESTRING(20 20,30 30)", and name "road two".
 
-Definitions
-'''''''''''
+**Definitions**
 
 As you walk through this tutorial, please remember the following:
 
@@ -125,11 +124,11 @@ DataStore
 Schema
   Names of the columns and their types
 
-Creating PropertyDataStore
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+Part 2 - Creating PropertyDataStore
+-----------------------------------
 
 PropertyDataStore Implementation
-''''''''''''''''''''''''''''''''
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The first step is to create a basic DataStore that only supports feature extraction. We will read data from a properties file into the GeoTools2 feature model.
 
@@ -525,3 +524,1172 @@ information and the ability to create new physical storage.
                 && params.get("directory") instanceof File;
             }
         }
+
+Part 3 - Using Property DataStore to Read Files
+-----------------------------------------------
+
+In this part we examine the abilities of the PropertyDataStore implemented in Part 2.
+
+DataStore API
+^^^^^^^^^^^^^
+
+Now that we have implemented a simple DataStore we can explore some of the capabilites made available to us.
+
+PropertyDataStore API for data access:
+
+* DataStore.getTypeNames()
+* DataStore.getSchema( typeName )
+* DataStore.getFeatureReader( featureType, filter, transaction )
+* DataStore.getFeatureSource( typeName )
+
+If you would like to follow along with these examples they are available as a JUnit Test along with the source code for PropertyDataStore.
+
+**DataStore.getTypeNames()**
+
+The method getTypeNames provides a list of the available types.
+
+getTypeNames() example::
+
+    PropertyDataStore store = new PropertyDataStore( new File(".") );
+    String names[] = store.getTypeNames();
+    System.out.println( names.length ); // 1
+    System.out.println( names[0] );     // road
+
+**DataStore.getSchema( typeName )**
+
+The method getSchema( typeName ) provides access to a FeatureType referenced by a type name.
+
+getSchema( typeName ) example::
+
+    PropertyDataStore store = new PropertyDataStore( new File(".") );
+    FeatureType type = store.getSchema( "road" );
+    
+    System.out.println( type.getTypeName() );                      // road
+    System.out.println( type.getNameSpace() );                     // directory name of store
+    System.out.println( type.getAttributeCount() );                // 2
+    
+    AttributeType id = type.getAttributeType(0);
+    System.out.println( id.getName() );                            // id
+    System.out.println( id.getType().toString() );                 // class java.lang.Integer
+    
+    AttributeType name = type.getAttributeType(1);
+    System.out.println( name.getName() );                          // name
+    System.out.println( name.getType().toString() );               // class java.lang.String
+
+**DataStore.getFeatureReader( query, transaction )**
+
+The method getFeatureReader( query, transaction ) allows access to the contents of our DataStore. The method signature may be more complicated than expected, we certaintly did not talk about Query or Transactions when we implemented our PropertyDataStore.
+
+Parameters:
+
+* Query.getTypeName()
+
+  Determines which FeatureType is being requested. In addition, Query supports the
+  customization attributes, namespace, and typeName requested from the DataStore.
+  While you may use DataStore.getSchema( typeName ) to retrieve the types as specified by
+  the DataStore, you may also create your own FeatureType to limit the attributes returned
+  or cast the result into a specific namespace.
+
+* Query.getFilter()
+  
+  Used to define constraints on which features should be fetched. The constraints
+  can be on spatial and non-spatial attributes of the features.
+
+* Query.getPropertiesNames()
+  
+  Allows you to limit the number of properties of the returned Features to only those
+  you are interested in.
+
+* Query.getMaxFeatures()
+  
+  Defines an upper limit for the number of features returned.
+
+* Query.getHandle()
+  
+  User-supplied name used to describe a query in user's terms in any generated error messages.
+
+* Transaction
+  
+  Allows access the contents of a DataStore during modification.
+
+DataStore.getFeatureReader( featureType, filter, transaction ) example::
+    
+    PropertyDataStore store = new PropertyDataStore( new File(".") );
+    Query query = new DefaultQuery( "road" );
+    FeatureReader reader = datastore.getFeatureReader( query, Transaction.AUTO_COMMIT );
+    try {
+        int count = 0;
+        while( reader.hasNext() ){
+            reader.next();
+            count++;
+        }
+        System.out.println( count );             // 4
+    } finally {
+        reader.close();
+    }
+
+Example with a Simple Filter::
+
+    PropertyDataStore store = new PropertyDataStore( new File(".") );
+    Filter filter = FilterFactory.createFilterFactory().createFidFilter("fid1");
+    Query query = new DefaultQuery( "road", filter );
+    
+    FeatureReader reader = store.getFeatureReader( query, Transaction.AUTO_COMMIT );
+    
+    System.out.println( reader.next().getID() ); // fid1
+    System.out.println( reader.hasNext() ); // false
+    reader.close();
+
+Example with a Transaction::
+    
+    PropertyDataStore store = new PropertyDataStore( new File(".") );
+    Query query = new DefaultQuery( "road" );
+    Transaction transaction = new DefaultTransaction();
+    FeatureReader reader = store.getFeatureReader( query, transaction );
+    List list = new ArrayList();
+    try {
+        while( reader.hasNext() ){
+            list.add( reader.next().getID() );
+        }
+    }
+    finally {
+        reader.close();
+    }
+    System.out.println( list ); // [GEOTOOLS:fid1, fid2, fid3, fid4]
+
+At the time of writing, Query is expanding its capabilities (and the capabilities of your DataStore) to include support for reprojection.
+
+* Query.getCoordianteSystem()
+  
+  Used to force the use of a user-supplied CoordinateSystem (rather than the one supplied
+  by the DataStore). This capability will allow client code to use our DataStore with a
+  CoordinateSystem of their choice. The coordinates returned by the DataStore will not be
+  modified in any way.
+
+* Query.getCoordianteSystemReproject()
+  
+  Used to reproject the Geometries provided by a DataStore from their original value (or
+  the one provided by Query.getCoordinateSystem) into a different coordinate system.
+  The coordinate returned by the DataStore will be processed , either natively by
+  Advanced DataStores, or using GeoTools reprojection routines.
+
+**DataStore.getFeatureSource( typeName )**
+
+This method is the gateway to our high level as provided by an instance of FeatureSource, FeatureStore or FeatureLocking. The returned instance represents the contents of a single named FeatureType provided by the DataStore. The type of the returned instance indicates the capabilities available.
+
+This far in our tutorial PropertyDataStore will only support an instance of FeatureSource.
+
+Example getFeatureSource::
+    
+    PropertyDataStore store = new PropertyDataStore( new File(".") );
+    FeatureSource road = store.getFeatureSource( "road" );
+
+FeatureSource
+'''''''''''''
+
+FeatureSource provides the ability to query a DataStore and represents the contents of a single FeatureType. In our example, the PropertiesDataStore represents a directory full of properties files. FeatureSource will represent a single one of those files.
+
+FeatureSource defines:
+
+* FeatureSource.getFeatures( query ) - request features specified by query
+* FeatureSource.getFeatures( filter ) - request features based on constraints
+* FeatureSource.getFeatures() - request all features
+* FeatureSource.getSchema() - acquire FeatureType
+* FeatureSource.getBounds - return the bounding box of all features
+* FeatureSource.getBounds( query ) - request bounding box of specified features
+* FeatureSource.getCount( query ) - request number of features specified by query
+
+FeatureSource also defines an event notification system and provides access to the DataStore which created it. You may have more then one FeatureSource operating against a file at any time.
+
+FeatureResults
+''''''''''''''
+
+.. sidebar:: FeatureCollection
+   
+   FeatureResults is the original name of FeatureCollection.
+   Some of these methods have been replaced such as the use of
+   DataUtilities.collection( featureCollection ) to load
+   the contents into memory.
+   
+   It is interesting to note the design goal of capturing a
+   prepared statement (rather than loading the features into memory).
+   
+   The class was renamed FeatureCollection to help those migrating
+   from GeoTools 1.0.
+   
+While the FeatureSource API does allow you to represent a named FeatureType, it still does not allow direct access to a FeatureReader. The getFeatures methods actually return an instance of FeatureResults.
+
+FeatureResults defines:
+
+* FeatureResults.reader() - access to a FeatureReader
+* FeatureResults.getBounds() - bounding box of features
+* FeatureResults.getCount() - number of features
+* FeatureResults.collection() - an in-memory collection of features
+
+FeatureResults is the closest thing we have to a prepared request. Many DataStores are able to provide optimised implementations that handles the above methods natively.
+
+FeatureResults Example::
+    
+    PropertyDataStore store = new PropertyDataStore( new File(".") );
+    FeatureSource road = store.getFeatureSource( "road" );
+    FeatureResults features = road.getFeatures();
+    FeatureReader reader = features.reader();
+    List list = new ArrayList();
+    try {
+        while( reader.hasNext() ){
+        list.add( reader.next().getID() );                
+        }
+    } finally {
+        reader.close();
+    }
+    System.out.println( list );                               // [GEOTOOLS:fid1, fid2, fid3, fid4]
+    System.out.println("count:"+road.getCount(Query.ALL) );   // -1   (not optimized yet)
+    System.out.println("bounds:"+road.getBounds(Query.ALL) ); // null (not optimized yet)
+    System.out.println("count:"+features.getCount() );        // 4
+    System.out.println("count:"+features.getBounds() );       // Env[-1.0 : 0.0, -1.0 : 0.0]
+    System.out.println( features.collection().size() );       // 4
+
+In the above example, road.count(Query.ALL) will return -1, indicating that the value is expensive for the DataStore to calculate, or at least that our PropertyDataStore implementation does not provide an implementation. Features.count() will always produce an answer.
+
+Care should be taken when using the collection() method to capture the contents of a DataStore in memory. GIS applications often produce large volumes of information and can place a strain on memory use.
+
+Part 4 - Making Property DataStore Writable
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+In this part we will complete the PropertyDataStore started above. At the end of this section we will have a full functional PropertyDataStore supporting both read and write operations.
+
+We are going to complete PropertyDataStore, by implementing the following methods:
+
+* DataStore.getFeatureWriter( typeName )
+* createSchema( featureType )
+
+**Extending PropertyDataStore**
+
+To start with, we need to make one change to our PropertyDataStore constructor::
+
+    public PropertyDataStore(File dir) {
+        super( true ); // changed to allow writing
+        if( !dir.isDirectory()){
+            throw new IllegalArgumentException( dir +" is not a directory");
+        }
+        directory = dir;
+    }
+
+This change will tell AbstractDataStore that our subclass is willing to modify Features.
+
+**Implement createSchema( featureType)**
+
+This method provides the ability to create a new FeatureType. For our DataStore we will use this to create new properties files.
+
+To implement this method we will once again make use of the DataUtilities class.
+
+Add createSchema( featureType )::
+   
+    public void createSchema(FeatureType featureType) 
+            throws IOException {
+        String typeName = featureType.getTypeName();
+        File file = new File( path, typeName+".properties");
+        BufferedWriter writer = new BufferedWriter( new FileWriter( file ) );
+        writer.write("_=");
+        writer.write( DataUtilities.spec( featureType ) );
+        writer.close();
+    } 
+
+**Implement getFeatureWriter( typeName )**
+
+FeatureWriter is the low-level API storing Feature content. This method is not part of the DataStore API.
+
+Add getFeatureWriter( typeName )::
+    
+    protected FeatureWriter getFeatureWriter(String typeName) throws IOException {
+        return new PropertiesFeatureWriter( this, typeName );
+    }
+
+FeatureWriter is less intuitive than FeatureReader in that it does not follow the example of Iterator as closely.
+
+PropertyFeatureWriter
+'''''''''''''''''''''
+
+Our implementation of a FeatureWriter needs to do two things: support the FeatureWriter interface and inform the DataStore of modifications.
+
+FeatureWriter Interface:
+
+* FeatureWriter.getFeatureType
+* FeatureWriter.hasNext
+* FeatureWriter.next
+* FeatureWriter.write
+* FeatureWriter.remove
+* FeatureWriter.close
+
+Change notification is made available through several FeatureSource methods::
+
+* FeatureSoruce.addFeatureListener( featureListener )
+* FeatureSoruce.removeFeatureListener( featureListener )
+
+To trigger the featureListeners we will make use of several convenience methods in AbstractDataSource:
+
+* AbstractDataStore.fireAdded( feature )
+* AbstractDataStore.fireRemoved( feature )
+* AbstractDataStore.fireChanged( before, after )
+
+Create the file PropertyFeatureWriter.java::
+
+    package org.geotools.data.property;
+    
+    import java.io.*;
+    import org.geotools.data.*;
+    import org.geotools.feature.*;
+    
+    public class PropertyFeatureWriter implements FeatureWriter {
+        PropertyDataStore store;
+        
+        File read;
+        PropertyAttributeReader reader;
+        
+        File write;
+        PropertyAttributeWriter writer;
+        
+        Feature origional = null;
+        Feature live = null;    
+        public PropertyFeatureWriter( PropertyDataStore dataStore, String typeName ) 
+                throws IOException {
+            store = dataStore;
+            File dir = store.directory;        
+            read = new File( dir, typeName+".properties");
+            write = File.createTempFile( typeName+System.currentTimeMillis(), null, dir );        
+                    
+            reader = new PropertyAttributeReader( read );
+            writer = new PropertyAttributeWriter( write, reader.type );
+        }
+    }
+
+Our constructor creates a PropertyAttributeReader to access the existing contents of the DataStore. We made use of PropertyAttributeReader to implement PropertyFeatureReader in Section 1.
+
+We also create a PropertyAttributeWriter operating against a temporary file. When the FeatureWriter is closed we will delete the original file and replace it with our new file.
+
+Add FeatureWriter.getFeatureType() implementation::
+
+    public FeatureType getFeatureType() {
+        return reader.type;
+    }
+
+Add hasNext() implementation::
+
+    public boolean hasNext() throws IOException {
+        if( live != null && origional != null ){
+            writeImplementation( origional );                                
+            origional = null;
+            live = null;
+        }
+        return reader.hasNext();
+    }
+
+Our FeatureWriter makes use of two Features:
+
+* original: the feature provided by PropertyAttributeReader
+* live: a duplicate of original provided to the user for modification
+
+When the FeatureWriter is used to write or remove information, the contents of both live and feature are set to null. If this has not been done already we will write out the current feature.
+
+Add the helper function writeImplementation( Feature )::
+
+    private void writeImplementation( Feature f ) 
+            throws IOException{
+        writer.writeFeatureID( f.getID() );        
+        for( int i=0; i<f.getNumberOfAttributes(); i++){
+            writer.write( i, f.getAttribute( i ));
+        }
+    }
+
+Add next() implementation::
+
+    public Feature next() throws IOException {
+        String fid = null;
+        FeatureType type = reader.type;                                
+        try {
+            if( hasNext() ){
+                reader.next(); // grab next line
+                
+                fid = reader.getFeatureID();
+                Object values[] = new Object[GEOTOOLS: reader.getAttributeCount() ];
+                for( int i=0; i< reader.getAttributeCount(); i++){
+                    values[i]=reader.read( i );
+                }                            
+                origional = type.create( values, fid );
+                live = type.duplicate( origional );
+                return live;
+            }
+            else {
+                fid = type.getTypeName()+"."+System.currentTimeMillis();
+                Object values[] = DataUtilities.defaultValues( type );
+                origional = null;                                            
+                live = type.create( values, fid );
+                return live;    
+            }                    
+        } catch (IllegalAttributeException e) {
+            throw new IOException( "Problem creating feature "+fid );
+        }
+    }
+
+The next method is used for two purposes:
+
+* To access Features for modification or removal
+* To create new Features
+
+To access existing Features, the AttributeReader is advanced, the current attribute and feature ID assembled into a Feature. This Feature is then duplicated and returned to the user. We will later compare the original to the user's copy to check if any modifications have been made.
+
+Add write() implementation::
+
+    public void write() throws IOException {
+        if( live == null){
+            throw new IOException( "No current feature to write");            
+        }
+        if( live.equals( origional )){
+            writeImplementation( origional );                        
+        }
+        else {
+            writeImplementation( live );
+            if( origional != null){
+                store.fireChanged( origional, live );                
+            }
+            else {
+                store.fireAdded( live );
+            }            
+        }
+        origional = null;
+        live = null;
+    }
+
+In the write method we will need to check to see whether the user has changed anything. If so, we will need to remember to view event notification after writing out their changes.
+
+Add remove() implementation::
+
+    public void remove() throws IOException {
+        if( live == null){
+            throw new IOException( "No current feature to remove");
+        }
+        if( origional != null ){
+            store.fireRemoved( origional );
+        }                     
+        origional = null; 
+        live = null; // prevent live and remove from being written out       
+    } 
+
+To implement remove, we simply won't write out the original Feature.
+
+Add close() Implementation::
+
+    public void close() throws IOException {
+        if( writer == null ){
+            throw new IOException( "writer already closed");            
+        }
+        while( reader.hasNext() ){
+            reader.next(); // advance
+            writer.next();             
+            writer.echoLine( reader.line ); // echo unchanged                        
+        }
+        writer.close();
+        reader.close();        
+        writer = null;
+        reader = null;        
+        read.delete();
+        write.renameTo( read );
+        read = null;
+        write = null;        
+        store = null;                
+    }
+
+To implement close() we must remember to write out any remaining features in the DataStore before closing our new file. To implement this we have performed a small optimization: we simply echo the line acquired by the PropertyFeatureReader.
+
+The last thing our FeatureWriter must do is replace the existing File with our new one.
+
+PropertyAttributeWriter
+'''''''''''''''''''''''
+
+In the previous section we explored the capabilities of our PropertyWriter through actual use.
+
+Create PropertyAttributeWriter::
+    
+    package org.geotools.data.property;
+    
+    import java.io.*;
+    import org.geotools.data.*;
+    import org.geotools.feature.*;
+    import com.vividsolutions.jts.geom.Geometry;
+    
+    public class PropertyAttributeWriter implements AttributeWriter {
+        BufferedWriter writer;    
+        FeatureType type;    
+        public PropertyAttributeWriter( File file, FeatureType featureType ) 
+                throws IOException {
+            writer = new BufferedWriter( new FileWriter( file ) );
+            type = featureType;                
+            writer.write( "_=" );
+            writer.write( DataUtilities.spec( type ) );                                        
+        }
+        public int getAttributeCount() {
+            return type.getAttributeCount();
+        }
+        public AttributeType getAttributeType(int index) throws ArrayIndexOutOfBoundsException {
+            return type.getAttributeType(index);
+        }
+    }
+
+A BufferedWriter is created over the provided File, and the provided featureType is used to implement getAttribtueCount() and getAttributeType( index ).
+
+Add hasNext() and next() implementations::
+
+    public boolean hasNext() throws IOException {
+        return false;
+    }    
+    public void next() throws IOException {
+        writer.newLine();
+        writer.flush();
+    }
+
+Our FeatureWriter does not provide any content of its own. FeatureWriters that are backed by JDBC ResultSets or random access file may use hasNext() to indicate that they are streaming over existing content.
+
+Our implementation of next() will simply start a newLine for the feature that is about to be written.
+
+Add writeFeatureID()::
+
+    public void writeFeatureID( String fid ) throws IOException{
+        if( writer == null){
+            throw new IOException("Writer has been closed");
+        }        
+        writer.write( fid );                
+    }
+
+Our file format is capable of storing FeatureIDs. Many DataStores will need to derive or encode FeatureID information into their Attributes.
+
+Add write( int index, Object value )::
+
+    public void write(int position, Object attribute) throws IOException {
+        writer.write( position == 0 ? "=" : "|" );
+        if( attribute instanceof Geometry){
+            writer.write( ((Geometry)attribute).toText() );
+        }
+        else {
+            writer.write( attribute.toString() );
+        }
+    }
+
+Our implementation needs to prepend an equals sign before the first Attribute, or a bar for any other attribute. We also make sure to encode Geometry as wkt.
+
+Add close()::
+
+    public void close() throws IOException {
+        writer.close();
+        writer = null;
+        type = null;        
+    }
+
+Finally, to implement our FeatureWriter.close() optimization, we need to implement echoLine()::
+
+    public void echoLine( String line ) throws IOException{
+        if( line == null ){
+            return;
+        }
+        writer.write( line );
+    }
+
+
+Part 5 - Using PropertyDataStore to Write Files
+-----------------------------------------------
+
+In this part we will explore the full capabilities of our completed PropertyDataStore.
+
+Complete DataStore API
+^^^^^^^^^^^^^^^^^^^^^^
+
+Now that we have completed our PropertyDataStore implementation, we can explore the remaining capabilities of the DataStore API.
+
+PropertyDataStore API for data modification:
+
+* PropertyDataStore.createSchema( featureType )
+* PropertyDataStore.getFeatureWriter( typeName, filter, Transaction )
+* PropertyDataStore.getFeatureWriter( typeName, Transaction )
+* PropertyDataStore.getFeatureWriterAppend( typeName, Transaction )
+
+If you would like to follow along with these examples, they are available as a JUnit Test along with the source code for PropertyDataStore.
+
+DataStore.getFeatureSource( typeName )
+''''''''''''''''''''''''''''''''''''''
+
+This method is the gateway to our high level, as provided by an instance of FeatureSource, FeatureStore or FeatureLocking.
+
+Now that we have implemented writing operations, the result of this method supports:
+
+* FeatureSource: the query operations outlined in DataStore Tutorial 2: Use
+* FeatureStore: modification and transaction support
+* FeatureLocking: Interaction with a Feature-based Locking
+
+**FeatureStore**
+
+FeatureStore provides Transaction support and modification operations. FeatureStore is an extension of FeatureSource. You may check the result of getFeatureSource( typeName ) with the instanceof operator.
+
+Example of FeatureStore use::
+
+    FeatureSource source = datastore.getFeatureSource( "road" );
+    if(!source instanceof FeatureStore){
+        throw Exception("Modification not supported");
+    }
+    FeatureStore road = (FeatureStore) source;
+
+FeatureStore defines:
+    
+* Featurestore.addFeatures( featureReader)
+* Featurestore.removeFeatures( filter )
+* Featurestore.modifyFeatures( type, value, filter )
+* Featurestore.modifyFeatures( types, values, filter )
+* Featurestore.setFeatures( featureReader )
+* Featurestore.setTransaction( transaction )
+
+Once again, many DataStores are able to provide optimised implementations of these operations.
+
+Transaction Example::
+
+    Transaction t1 = new DefaultTransaction();
+    Transaction t2 = new DefaultTransaction();
+    
+    FeatureType type = store.getSchema( "road" );
+    FeatureStore road = (FeatureStore) store.getFeatureSource("road");
+    FeatureStore road1 = (FeatureStore) store.getFeatureSource("road");
+    FeatureStore road2 = (FeatureStore) store.getFeatureSource("road");
+    
+    road1.setTransaction( t1 );
+    road2.setTransaction( t2 );
+    
+    Filter filter1 = FilterFactory.createFilterFactory().createFidFilter("fid1");
+    Filter filter2 = FilterFactory.createFilterFactory().createFidFilter("fid2");        
+        
+    Feature feature =
+        type.create( new Object[]{ new Integer(5), "chris"}, "fid5" );
+            
+    assertEquals( 4, road.getFeatures().getCount() );
+    assertEquals( 4, road1.getFeatures().getCount() );
+    assertEquals( 4, road2.getFeatures().getCount() );
+                
+    road1.removeFeatures( filter1 ); // road1 removes fid1 on t1
+    assertEquals( 4, road.getFeatures().getCount() );
+    assertEquals( 3, road1.getFeatures().getCount() );
+    assertEquals( 4, road2.getFeatures().getCount() );               
+        
+    FeatureReader reader = DataUtilities.reader( new Feature[]{ feature, });
+    road2.addFeatures( reader ); // road2 adds fid5 on t2
+    
+    assertEquals( 4, road.getFeatures().getCount() );
+    assertEquals( 3, road1.getFeatures().getCount() );
+    assertEquals( 5, road2.getFeatures().getCount() );        
+            
+    t1.commit();
+    assertEquals( 3, road.getFeatures().getCount() );
+    assertEquals( 3, road1.getFeatures().getCount() );
+    assertEquals( 4, road2.getFeatures().getCount() );                
+            
+    t2.commit();
+    assertEquals( 4, road.getFeatures().getCount() );
+    assertEquals( 4, road1.getFeatures().getCount() );
+    assertEquals( 4, road2.getFeatures().getCount() );
+
+FeatureLocking
+''''''''''''''
+
+FeatureLocking is the last extension to our high-level API. It provides support for preventing modifications to features for the duration of a Transaction, or a period of time.
+
+FeatureLocking defines:
+
+* FeatureLocking.setFeatureLock( featureLock )
+* FeatureLocking.lockFeatures( query ) - lock features specified by query
+* FeatureLocking.lockFeatures( filter ) - lock according to constraints
+* FeatureLocking.lockFeatures() - lock all
+* FeatureLocking.unLockFeatures( query )
+* FeatureLocking.unLockFeatures( filter )
+* FeatureLocking.unLockFeatures()
+* FeatureLocking.releaseLock( string )
+* FeatureLocking.refreshLock( string )
+
+The concept of a FeatureLock matches the description provided in the OGC Web Feature Server Specification. Locked Features can only be used via Transactions that have been provided with the correct authorization.
+
+DataStore.getFeatureWriter( typeName, filter, transaction )
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Creates a FeatureWriter used to modify features indicated by a constraint.
+
+Example - removing all features::
+
+    FeatureWriter writer =
+        store.getFeatureWriter( "road", Filter.NONE, Transaction.AUTO_COMMIT  );
+    
+    Feature feature;
+    
+    try {
+        while (writer.hasNext()) {
+            feature = writer.next();
+            writer.remove();
+        }
+    } finally {
+        writer.close();
+    }
+
+This FeatureWriter does not allow the addition of new content. It can be used for modification and removal only.
+
+DataStores can often provide an optimized implementation.
+
+DataStore.getFeatureWriter( typeName, transaction )
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Creates a general purpose FeatureWriter. New content may be added after iterating through the provided content.
+
+Example - completely replace all features::
+    
+    FeatureType type = store.getSchema("replace");
+    FeatureReader reader;
+    FeatureWriter writer;
+    Feature feature, newFeature;
+    
+    reader = store.getFeatureReader(type, Filter.NONE, Transaction.AUTO_COMMIT );
+    writer = store.getFeatureWriter("road", Transaction.AUTO_COMMIT );
+    try {
+        // remove all features
+        while (writer.hasNext()) {
+            feature = writer.next();
+            writer.remove();
+        }
+        // copy new features in
+        while (reader.hasNext()) {
+            feature = reader.next();
+            newFeature = writer.next();
+            newFeature.setAttributes(feature.getAttributes(null));
+            writer.write();
+        }
+    } finally {
+        reader.close();
+        writer.close();
+    }
+
+DataStore.getFeatureWriterAppend( typeName, transaction )
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Creates a FeatureWriter for adding content.
+
+Example - making a copy::
+    
+    FeatureReader reader;
+    FeatureWriter writer;
+    Feature feature, newFeature;
+    
+    FeatureType type = getSchema( "road" );
+    FeatureType type2 = DataUtilities( "copy", "id:Integer,geom:Geometry,name:String" );
+    
+    reader = store.getFeatureReader(type, Filter.NONE, Transaction.AUTO_COMMIT );
+    store.createSchema( copy );
+    writer = store.getFeatureWriterAppend( "copy", Transaction.AUTO_COMMIT );
+    try {
+        while (reader.hasNext()) {
+            feature = reader.next();
+            newFeature = writer.next();
+            newFeature.setAttributes(feature.getAttributes(null));
+            writer.write();
+        }
+    }
+    finally {
+        reader.close();
+        writer.close();
+    }
+
+DataStores can often provide an optimised implementation of this method.
+
+Part 6 - Optimisation of PropertyDataStore
+------------------------------------------
+
+In this part we will explore several optimisations techniques using our PropertyDataStore.
+
+Exploring AbstractDataStore
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+AbstractDataStore provides a lot of functionality based on the five methods we implemented in the Tutorials. By examining its implementation we have an opportunity to discuss several issues with DataStore development. Please keep these issues in mind when applying your own DataStore optimisations.
+
+In general the "Gang of Four" decorator pattern is used to layer functionality around the raw **FeatureReader** and **FeatureWriters** you provided. This is very similar to the design of the **java-io** library (where a BufferedInputStream can be wrapped around a raw FileInputStream).
+
+From AbstractDataStore getFeatureReader( featureType, filter, transaction ):
+
+.. note::
+   
+   This function doesn't appear in AbstractDataStore!
+   
+   As crazy as it sounds, Filter.ALL filters out ALL (accepts none)
+   Filter.NONE filters out NONE (accepts ALL)
+   
+   Update: Filter.ALL has been replaced with Filter.EXCLUDES
+   Update: Filter.NONE has been replaced with Filter.INCLUDES
+
+Here is an example of how wrappers are applied around your raw feature reader::
+
+    public FeatureReader getFeatureReader(FeatureType featureType,
+            Filter filter, Transaction transaction) 
+            throws IOException {
+        if (filter == Filter.EXCLUDES) {
+            return new EmptyFeatureReader(featureType);
+        }
+        String typeName = featureType.getTypeName();
+        FeatureReader reader = getFeatureReader(typeName);
+        if (filter != Filter.INCLUDES) {
+            reader = new FilteringFeatureReader(reader, filter);
+        }
+        if (transaction != Transaction.AUTO_COMMIT) {
+            Map diff = state(transaction).diff(typeName);
+            reader = new DiffFeatureReader(reader, diff);
+        }
+        if (!featureType.equals(reader.getFeatureType())) {
+            reader = new ReTypeFeatureReader(reader, featureType);
+        }
+        return reader;
+    }
+
+Support classes used:
+
+* EmptyFeatureReader represents an empty result (when using Filter.ALL)
+* FilteringFeatureReader skips over filtered elements using hasNext()
+* TransactionStateDiff records a difference Map for the Transaction
+* DiffFeatureReader is used as a wrapper, allowing the Features to be checked for removal, or modification before
+  being provided to the user. Any additions performed against the Transaction are also returned.
+* ReTypeFeatureReader allows on the fly Schema change
+
+From AbstractDataStore getFeatureWriter( typeName, filter, transaction)::
+    
+    public FeatureWriter getFeatureWriter(String typeName, Filter filter,
+            Transaction transaction) 
+            throws IOException {
+        if (filter == Filter.ALL) {
+            FeatureType featureType = getSchema(typeName);
+            return new EmptyFeatureWriter(featureType);
+        }
+        FeatureWriter writer;
+        
+        if (transaction == Transaction.AUTO_COMMIT) {
+            writer = getFeatureWriter(typeName);
+        } else {
+            writer = state(transaction).writer(typeName);
+        }
+        if (lockingManager != null) {
+            writer = lockingManager.checkedWriter(writer, transaction);
+        }
+        if (filter != Filter.NONE) {
+            writer = new FilteringFeatureWriter(writer, filter);
+        }
+        return writer;
+    }
+
+Support classes used:
+
+* EmptyFeatureWriter represents an empty result
+* TransactionStateDiff records a difference map for the Transaction, and provides a FeatureWrapper around a
+  FeatureReader where modifications are stored in the difference Map
+* FeatureLocking support is provided InProcessLockingManager in the form of a wrapper that will prevent
+  modification taking place with out correct authorization
+* FilteringFeatureWriter is used to skip over any Features not meeting the constraints
+
+Low-Level Optimisation
+^^^^^^^^^^^^^^^^^^^^^^
+
+Every helper class we discussed above can be replaced if your external data source supports the functionality.
+
+External Transaction Support
+''''''''''''''''''''''''''''
+
+All JDBC DataStores support the concept of Transactions natively. JDBDataStore supplies an example of using Transaction.State to store JDBC connection rather than the Difference map used above.::
+    
+    public class JDBCTransactionState implements State {
+        private Connection connection;
+        public JDBCTransactionState( Connection c) throws IOException{
+            connection = c;
+        }
+        public Connection getConnection(){
+            return connection;
+        }
+        public void commit() throws IOException {
+            connection.commit();
+        }
+        public void rollback() throws IOException {
+            connection.rollback();            
+        }
+    }
+
+For the purpose of PropertyDataStore we could create a Transaction.State class that records a temporary File name used for a difference file. By externalising differences to a file rather than Memory we will be able to handle larger data sets; and recover changes in the event of an application crash.
+
+Another realistic example is making use of Java Enterprise Edition session information allow "per user" edits.
+
+External Locking Support
+''''''''''''''''''''''''
+
+Several DataStores have an environment that can support native locking. By replacing the use of the InProcessLockingManager we can make use of native Strong Transaction Support.
+
+Single Use Feature Writers
+''''''''''''''''''''''''''
+
+We have a total of three distinct uses for FeatureWriters:
+
+* AbstractDataStore.getFeatureWriter( typeName, transaction )
+  
+  General purpose FeatureWriter
+* AbstractDataStore.getFeatureWriter( typeName, filter, transaction )
+  
+  An optimised version that does not create new content can be created.
+* AbstractDataStore.getFeatureWriterAppend( typeName, transaction)
+  
+  An optimised version that duplicates the origional file, and opens it in append mode can be created.
+  We can also perform special tricks such as returning a Feature delegate to the user, which records when
+  it has been modified.
+
+High-Level Optimisation
+^^^^^^^^^^^^^^^^^^^^^^^
+
+By working with FeatureSource and it subclasses we have an opportunity to optimize specific uses of our DataStore.
+
+FeatureSource Optimization
+
+We are going to quickly walk through an optimization of the getCount() request. Currently FeatureStore getCount() returns -1 indicating that we have not provided an optimization. We would like to improve this by recognizing the special case where the user has asked for the count of Query.ALL. In this case the number of Features is the same as the number of lines in the file, minus one for the header information.
+
+Lets start with our own FeatureSource implementation::
+
+    public FeatureSource getFeatureSource(String typeName) 
+            throws IOException {
+        final FeatureType featureType = getSchema(typeName);        
+        return new AbstractFeatureLocking() {            
+            public DataStore getDataStore() {
+                return PropertyDataStore.this;
+            }    
+            public void addFeatureListener(FeatureListener listener) {
+                listenerManager.addFeatureListener(this, listener);
+            }    
+            public void removeFeatureListener(
+                FeatureListener listener) {
+                listenerManager.removeFeatureListener(this, listener);
+            }    
+            public FeatureType getSchema() {
+                return featureType;
+            }
+        };
+    } 
+
+The above implementation supports Locking, and provides the correct hooks for the listenerManager.
+
+And now for our FeatureSource optimisation::
+
+            public int getCount(Query query) {
+                if( query == Query.ALL && 
+                    getTransaction() == Transaction.AUTO_COMMIT ){
+                    return countFile( new File( directory, typeName+".properties") );
+                }
+                return -1;
+            }
+            private int countFile(File file){
+                try {
+                    LineNumberReader reader = new LineNumberReader( new FileReader( file ) );
+                    while( reader.readLine() != null);                    
+                    return reader.getLineNumber() -1;   
+                }
+                catch( IOException e){
+                    return -1;
+                }                            
+            }
+
+We have made use of LineNumberReader to count the number of lines in the File. Also note that this optimisation is only valid when working against Transaction.AUTO_COMMIT.
+
+A similar optimisation could be applied to the FeatureResults API.
+
+FeatureStore Optimisation
+'''''''''''''''''''''''''
+
+DataStores operating against rich external data sources can often perform high level optimisations. JDBCDataStores for instance can often construct SQL statements that completely fulfil a request without making use of FeatureWriters at all.
+
+When performing these queries please remember two things:
+
+1. Check the lockingManager - If you are not providing your own native locking support, please check the user's
+   authorisation against the the lockingManager
+2. Event Notification - Remember to fire the appropriate notification events when contents change, Feature Caches
+   will depend on this notification to accurately track the contents of your DataStore
+
+Cacheing and FeatureListener
+''''''''''''''''''''''''''''
+
+A common optimisation is to trade memory use for speed by use of a cache. In this section we will present a simple cache for getBounds() and getCount(Query.ALL).
+
+The best place to locate your cache is in your DataStore implementation, you will need to keep a separate cache for each Transaction by making use of Transaction.State. By implementing a cache in the DataStore all operations can benefit.
+
+Another popular technique is to locate the cache in an instance of FeatureSource. While the cache will be duplicated when multiple FeatureStores are in use, it is convenient to locate the cache next to the high-level operations that can best benefit.
+
+Finally FeatureResults represents a great opportunity to cache results, rather than reissue them repeatedly.
+
+FeatureListener (and associated FeatureEvents) provides notification of modification which can be used to keep your cache implementation in sync with the DataStore.
+
+PropertyFeatureSource Optimisation
+''''''''''''''''''''''''''''''''''
+
+To implement our caching example we are going to produce our own implementation of FeatureSource, and add caching support.
+
+Create the file PropertyFeatureSource::
+    
+    package org.geotools.data.property;
+    
+    import java.io.*;
+    import org.geotools.data.*;
+    import org.geotools.feature.*;
+    
+    import com.vividsolutions.jts.geom.Envelope;
+    
+    public class PropertyFeatureSource extends AbstractFeatureLocking {
+        String typeName;
+        FeatureType featureType;
+        PropertyDataStore store;
+        
+        PropertyFeatureSource( PropertyDataStore propertyDataStore, String typeName ) 
+            throws IOException{
+            this.store = propertyDataStore;
+            this.typeName = typeName;
+            this.featureType = store.getSchema( typeName );
+        }
+        public DataStore getDataStore() {
+            return store;
+        }
+        public void addFeatureListener(FeatureListener listener) {
+            store.listenerManager.addFeatureListener(this, listener);
+        }
+        public void removeFeatureListener(
+            FeatureListener listener) {
+            store.listenerManager.removeFeatureListener(this, listener);
+        }
+        public FeatureType getSchema() {
+            return featureType;
+        }
+    }
+
+We will quickly copy getCount() optimisation from our PropertyDataStore::
+
+    public int getCount(Query query) {
+        if( query == Query.ALL && 
+            getTransaction() == Transaction.AUTO_COMMIT ){
+            return countFile( new File( directory, typeName+".properties") );
+        }
+        return -1;
+    }
+    private int countFile(File file){
+        try {
+            LineNumberReader reader = new LineNumberReader( new FileReader( file ) );
+            while( reader.readLine() != null);                    
+            return reader.getLineNumber() -1;   
+        }
+        catch( IOException e){
+            return -1;
+        }                            
+    }
+
+And change PropertyDataStore to make use of our new class::
+
+    public FeatureSource getFeatureSource(final String typeName) 
+            throws IOException {
+        return new PropertyFeatureSource( this, typeName );
+    } 
+
+**Caching getCount()**
+
+We can store the result of getCount(Query.ALL) as a field in PropertyFeatureSource::
+
+    int cacheCount = -1;
+    public int getCount(Query query) {
+        if( query == Query.ALL && getTransaction() == Transaction.AUTO_COMMIT ){
+            if( cacheCount != -1 ){
+                return cacheCount;
+            }
+            cacheCount = countFile( file );
+            return cacheCount;
+        }
+        return -1;
+    }
+
+The next thing we will need to is pay attention to our changes to the DataStore::
+
+    PropertyFeatureSource( PropertyDataStore propertyDataStore, String typeName ) 
+             throws IOException{
+        this.store = propertyDataStore;
+        this.typeName = typeName;
+        this.featureType = store.getSchema( typeName );
+        store.listenerManager.addFeatureListener( this, new FeatureListener(){
+                public void changed(FeatureEvent featureEvent) {
+                    cacheCount = -1;
+                }
+            });
+        }
+    }
+
+**Caching getBounds()**
+
+We can use a similar technique, to record the Envelope for getBounds.::
+
+    Envelope cacheBounds = null;
+    public Envelope getBounds() {
+        if( cacheBounds != null ){            
+            return cacheBounds;
+        }
+        File file = new File( store.directory, typeName+".properties" );
+        try {
+            cacheBounds = getFeatures().getBounds();
+            return cacheBounds;
+        } catch (IOException e) {
+        }
+        return null;
+    }
+
+FeatureEvent provides a bounding box which we can use to selectively invalidate cacheBounds::
+
+    PropertyFeatureSource( PropertyDataStore propertyDataStore, String typeName ) 
+            throws IOException{
+        this.store = propertyDataStore;
+        this.typeName = typeName;
+        this.featureType = store.getSchema( typeName );
+        store.listenerManager.addFeatureListener( this, new FeatureListener(){
+            public void changed(FeatureEvent featureEvent) {
+                if( cacheBounds != null ){
+                    if( featureEvent.getEventType() == FeatureEvent.FEATURES_ADDED ){
+                        cacheBounds.expandToInclude( featureEvent.getBounds() );
+                    }
+                    else {
+                        cacheBounds = null;                                            
+                    }                
+                }
+                cacheCount = -1;
+            }
+        });        
+    }
+
+**Using File timestamp**
+
+Now in a perfect world we would be done, in our world other programs are willing to modify the file we are operating against. We will need to record the timestamp on the file to ensure that our cached results are still valid.::
+
+    long cacheTimestamp = 0;
+    public int getCount(Query query) {
+        if( query == Query.ALL && getTransaction() == Transaction.AUTO_COMMIT ){
+            File file = new File( store.directory, typeName+".properties" );            
+            if( cacheCount != -1 && file.lastModified() == cacheTimestamp){
+                return cacheCount;
+            }
+            cacheCount = countFile( file );
+            cacheTimestamp = file.lastModified();
+            return cacheCount;
+        }
+        return -1;
+    }
+    public Envelope getBounds() {
+        File file = new File( store.directory, typeName+".properties" );                
+        if( cacheBounds != null && file.lastModified() == cacheTimestamp ){            
+            return cacheBounds;
+        }
+        try {
+            cacheBounds = getFeatures().getBounds();
+            cacheTimestamp = file.lastModified();            
+            return cacheBounds;
+        } catch (IOException e) {            
+        }
+        return null;
+    }

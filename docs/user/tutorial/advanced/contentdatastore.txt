@@ -1,7 +1,7 @@
 :Author: Jody Garnett
 :Thanks: geotools-devel list
 :Version: |release|
-:License: Create Commons with attribution
+:License: Creative Commons with attribution
 
 ContentDataStore Tutorial
 -------------------------

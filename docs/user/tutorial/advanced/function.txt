@@ -1,3 +1,7 @@
+:Author: Jody Garnett
+:Version: |release|
+:License: Creative Commons with attribution
+
 How to write a Plugin
 ---------------------
 

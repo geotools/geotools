@@ -2,9 +2,13 @@ package org.geotools.data.property;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
+import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
@@ -40,6 +44,7 @@ public class PropertyExamples {
             example3();
             example4();
             example5();
+            example6();
         } catch (Throwable t) {
             t.printStackTrace();
             System.exit(1);
@@ -162,6 +167,35 @@ public class PropertyExamples {
 
         // example5 end
         System.out.println("\nexample5 end\n");
+    }
+
+    private static void example6() throws IOException, CQLException {
+        System.out.println("example6 start\n");
+        // example6 start
+        PropertyDataStore datastore = new PropertyDataStore(directory);
+
+        SimpleFeatureSource featureSource = datastore
+                .getFeatureSource("example");
+        SimpleFeatureCollection featureCollection = featureSource.getFeatures();
+        SimpleFeatureIterator features = featureCollection.features();
+        List<String> list = new ArrayList<String>();
+        try {
+            while (features.hasNext()) {
+                list.add(features.next().getID());
+            }
+        } finally {
+            features.close();
+        }
+        System.out.println("  contents:" + list);
+        System.out.println("     count:" + featureSource.getCount(Query.ALL));
+        System.out.println("    bounds:" + featureSource.getBounds(Query.ALL));
+        System.out.println("      size:" + featureCollection.size());
+        System.out.println("    bounds:" + featureCollection.getBounds());
+        System.out.println("collection: "
+                + DataUtilities.collection(featureCollection).size());
+
+        // example6 end
+        System.out.println("\nexample6 end\n");
     }
 
 }

@@ -436,8 +436,8 @@ Part 3 - Using Property DataStore to Read Files
 
 In this part we examine the abilities of the PropertyDataStore implemented in Part 2.
 
-DataStore API
-^^^^^^^^^^^^^
+DataStore
+^^^^^^^^^
 
 Now that we have implemented a simple DataStore we can explore some of the capabilites made available to us.
 
@@ -593,7 +593,7 @@ If you would like to follow along with these examples you can
 	fid3 location POINT (20 20)
 
 FeatureSource
-'''''''''''''
+^^^^^^^^^^^^^
 
 FeatureSource provides the ability to query a DataStore and represents the contents of a single FeatureType. In our example, the PropertiesDataStore represents a directory full of properties files. FeatureSource will represent a single one of those files.
 
@@ -609,10 +609,10 @@ FeatureSource defines:
 
 FeatureSource also defines an event notification system and provides access to the DataStore which created it. You may have more then one FeatureSource operating against a file at any time.
 
-FeatureResults
-''''''''''''''
+FeatureCollection
+^^^^^^^^^^^^^^^^^
 
-.. sidebar:: FeatureCollection
+.. sidebar:: FeatureResults
    
    FeatureResults is the original name of FeatureCollection.
    Some of these methods have been replaced such as the use of
@@ -625,44 +625,60 @@ FeatureResults
    The class was renamed FeatureCollection to help those migrating
    from GeoTools 1.0.
    
-While the FeatureSource API does allow you to represent a named FeatureType, it still does not allow direct access to a FeatureReader. The getFeatures methods actually return an instance of FeatureResults.
+While the FeatureSource API does allow you to represent a named FeatureType, it still does not
+allow direct access to a FeatureReader. The getFeatures methods actually return an instance of
+FeatureCollection.
 
-FeatureResults defines:
+FeatureCollection defines:
 
-* FeatureResults.reader() - access to a FeatureReader
-* FeatureResults.getBounds() - bounding box of features
-* FeatureResults.getCount() - number of features
-* FeatureResults.collection() - an in-memory collection of features
+* FeatureCollection.getSchmea()
+* FeatureCollection.features() - access to a FeatureIterator
+* FeatureCollection.accepts( visitor, progress )
+* FeatureCollection.getBounds() - bounding box of features
+* FeatureCollection.getCount() - number of features
+* DataUtilities.collection( featureCollection ) - used to load features into memory
 
-FeatureResults is the closest thing we have to a prepared request. Many DataStores are able to provide optimised implementations that handles the above methods natively.
+FeatureCollection is the closest thing we have to a prepared request. Many DataStores are able to
+provide optimised implementations that handles the above methods natively.
 
-FeatureResults Example::
-    
-    PropertyDataStore store = new PropertyDataStore( new File(".") );
-    FeatureSource road = store.getFeatureSource( "road" );
-    FeatureResults features = road.getFeatures();
-    FeatureReader reader = features.reader();
-    List list = new ArrayList();
-    try {
-        while( reader.hasNext() ){
-        list.add( reader.next().getID() );                
-        }
-    } finally {
-        reader.close();
-    }
-    System.out.println( list );                               // [GEOTOOLS:fid1, fid2, fid3, fid4]
-    System.out.println("count:"+road.getCount(Query.ALL) );   // -1   (not optimized yet)
-    System.out.println("bounds:"+road.getBounds(Query.ALL) ); // null (not optimized yet)
-    System.out.println("count:"+features.getCount() );        // 4
-    System.out.println("count:"+features.getBounds() );       // Env[-1.0 : 0.0, -1.0 : 0.0]
-    System.out.println( features.collection().size() );       // 4
+* FeatureCollection Example:
+  
+  .. literalinclude:: /../src/main/java/org/geotools/data/property/PropertyExamples.java
+     :language: java
+     :start-after: // example5 start
+     :end-before: // example5 end
+  
+  With the following output::
 
-In the above example, road.count(Query.ALL) will return -1, indicating that the value is expensive for the DataStore to calculate, or at least that our PropertyDataStore implementation does not provide an implementation. Features.count() will always produce an answer.
+	  contents:[fid1, fid2, fid3, fid4]
+	     count:-1
+	    bounds:null
+	      size:4
+	    bounds:ReferencedEnvelope[0.0 : 30.0, 0.0 : 30.0]
+	collection: 4
 
-Care should be taken when using the collection() method to capture the contents of a DataStore in memory. GIS applications often produce large volumes of information and can place a strain on memory use.
+.. note::
+   
+   In the above example, FeatureSource.count(Query.ALL) will return -1, indicating that the value
+   is expensive for the DataStore to calculate, or at least that our PropertyDataStore
+   implementation does not provide an optimised implementation.
+   
+   FeatureCollection.size() will always produce an answer
+   
+   You can think of this as:
+   
+   * FeatureSource is a way to perform a quick check for a precanned answer for count and bounds.
+     Some formats such as shapefile will keep this information in the header at the top of the
+     file.
+   * FeatureCollection checks the contents, and possibly checks each item, for an answer to
+     size and bounds.
+     
+Care should be taken when using the collection() method to capture the contents of a DataStore in
+memory. GIS applications often produce large volumes of information and can place a strain
+on memory use.
 
 Part 4 - Making Property DataStore Writable
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+-------------------------------------------
 
 In this part we will complete the PropertyDataStore started above. At the end of this section we will have a full functional PropertyDataStore supporting both read and write operations.
 
@@ -716,7 +732,7 @@ Add getFeatureWriter( typeName )::
 FeatureWriter is less intuitive than FeatureReader in that it does not follow the example of Iterator as closely.
 
 PropertyFeatureWriter
-'''''''''''''''''''''
+^^^^^^^^^^^^^^^^^^^^^
 
 Our implementation of a FeatureWriter needs to do two things: support the FeatureWriter interface and inform the DataStore of modifications.
 
@@ -912,7 +928,7 @@ To implement close() we must remember to write out any remaining features in the
 The last thing our FeatureWriter must do is replace the existing File with our new one.
 
 PropertyAttributeWriter
-'''''''''''''''''''''''
+^^^^^^^^^^^^^^^^^^^^^^^
 
 In the previous section we explored the capabilities of our PropertyWriter through actual use.
 

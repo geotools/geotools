@@ -4,7 +4,7 @@
 :License: Creative Commons with attribution
 
 ContentDataStore Tutorial
--------------------------
+=========================
 
 .. sectionauthor:: Jody Garnett <jody.garnett@gmail.org>
 
@@ -25,20 +25,20 @@ quickly be distributed to to all GeoTools users.
    as AbstractDataStore. You may wish to try both tutorials before deciding on a course
    of action.
 
-Background
-''''''''''
+**Terminology**
 
-The DataStore interface borrows most of its concepts and some of its syntax from the OpenGIS Consortium (OGC) Web Feature Server Specification:
+The DataStore interface borrows most of its concepts and some of its syntax from the OpenGIS
+Consortium (OGC) Web Feature Server Specification:
 
 * Feature - atomic unit of geographic information
 * FeatureType - keeps track of what attributes each Feature can hold
 * FeatureID - a unique id associated with each Feature (must start with a non-numeric character)
 
 Introduction
-=============
+------------
 
-Earlier was made a bit of code to read in a comma seperated value file; and produce a feature
-collection (which we could save out using the shapefile datastore class).
+An earlier tutorial produced a bit of code to read in a comma seperated value file; and produce
+a feature collection (which we could save out using the shapefile datastore class).
 
 This time out we are going to make a DataStore.
 
@@ -50,17 +50,34 @@ Here was the sample file we used:
 
 #. Or download :download:`locations.csv <artifacts/locations.csv>`.
 
-Definitions
-~~~~~~~~~~~~
-As you walk through this tutorial, please remember the following:
 
-* FeatureID or FID - uniquely defines a Feature (row in our csv file)
-* FeatureType - same as the name of the .csv file (ie. "locations" for locations.csv)
-* DataStore - access all the FeatureTypes (.csv files) in a directory
-* FeatureType or Schema - names of the columns and their types
+Approach
+^^^^^^^^
 
+Here is our strategy for representing GeoTools concepts with a CSV file.
+
+* FeatureID or FID - uniquely defines a Feature.
+  
+  We will use the row number in our CSV file.
+
+* FeatureType
+  
+  Same as the name of the .csv file (ie. "locations" for locations.csv)
+
+* DataStore
+  
+  We will create a CSVDataStore to access all the FeatureTypes (.csv files) in a directory
+
+* FeatureType or Schema
+
+  We will represent the names of the columns in our CSV (and if possible their types).
+
+* Geometry
+  
+  We will try and recognise several columns and map them into Point x and y ordinates.
+    
 JavaCSV Reader
-~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^
 
 To read csv files this time out we are going to make use of the Java CSV Reader project.
 
@@ -79,7 +96,7 @@ Time to create a new project making use of this library:
 #. Or download :download:`pom.xml <artifacts/pom.xml>`  
 
 Creating CSVDataStore
-======================
+---------------------
 
 The first step is to create a basic DataStore that only supports feature extraction. We will read
 data from a csv file into the GeoTools feature model.
@@ -114,7 +131,7 @@ Initially we are going to make a read-only datastore accessing CSV content:
       :end-before: // constructor end
 
 Listing TypeNames
-~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^
 
 A DataStore may provide access to several different types of information. The method createTypeNames
 provides a list of the available types. This is called once; and then the same list is returned

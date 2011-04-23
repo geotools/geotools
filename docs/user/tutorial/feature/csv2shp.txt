@@ -21,11 +21,11 @@ Welcome
 
    Welcome to FOSS4G! Please grab a buddy to go through this workbook.
 
-Welcome to Geospatial for Java -this workbook is aimed at Java developers who are new to geospatial
+Welcome to Geospatial for Java - this workbook is aimed at Java developers who are new to geospatial
 and would like to get started.
 
-You should of completed either the GeoTools NetBeans Quickstart or the GeoTools Eclipse Quickstart
-prior to running through this workbench. We need to be sure that you have an environment to work
+You should have completed either the GeoTools NetBeans Quickstart or the GeoTools Eclipse Quickstart
+prior to running through this workbook. We need to be sure that you have an environment to work
 in with GeoTools jars and all their dependencies. For those using maven we will start off each
 section with the dependencies required.
 
@@ -102,7 +102,7 @@ Now we look at the rest of the main method in sections...
 Create a FeatureType
 --------------------
 
-We create a FeatureType to describe the data the we are importing from the CSV file and writing to a shapefile.
+We create a FeatureType to describe the data that we are importing from the CSV file and writing to a shapefile.
 Here we use the DataUtilities convenience class:
 
 .. literalinclude:: /../src/main/java/org/geotools/tutorial/feature/Csv2Shape.java
@@ -172,7 +172,7 @@ Running the Application
 When you run this application it will prompt you for:
 
 * The location of a CSV file to read; and then
-* The a shapefile to create
+* The shapefile to create
 
 Things to Try
 ===============
@@ -302,7 +302,7 @@ Here is a handy cheat sheet:
    Method                 Operation
   ====================== =============================
 
-The Feature model is actually a little bit more crazy then us Java programmers are used to since
+The Feature model is actually a little bit more crazy than us Java programmers are used to since
 it considers both attribute and operation to be “properties” of a Feature. Perhaps when Java gets
 closures we may be able to catch up.
 
@@ -320,7 +320,7 @@ project. In general GeoAPI provides a very strict interface and GeoTools will pr
  .. image:: images/feature.png
  
 It is very common for a Feature to have only simple Attributes (String, Integer, Date and so on)
-rather then references to other Features, or data structures such as List<Date>.  Features that
+rather than references to other Features, or data structures such as List<Date>.  Features that
 meet this requirement are so common we have broken out a sub-class to represent them called
 SimpleFeature. 
 
@@ -385,6 +385,6 @@ The way to tell if a File can be written to in GeoTools is to use an instanceof 
        store.modifyFeature( attribute, value, filter );
     }
 
-We decided to handle write access as a sub-class (rather then an isWritable method) in order to keep
+We decided to handle write access as a sub-class (rather than an isWritable method) in order to keep
 methods out of the way unless they could be used.
 

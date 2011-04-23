@@ -1,28 +1,28 @@
 Public API
 ==========
 
-As an open source library you are free to call any of the GeoTools classes in any needed for your application to be delivered on time.
+As an open source library you are free to call any of the GeoTools classes needed for your application to be delivered on time.
 
 However, GeoTools offers a clean approach which should cause the least amount of disruption to your code during library upgrades as GeoTools matures.
 
-GeoTools cleanly separate out several groups of application programming interfaces (API) from the internal implementation of the library.
+GeoTools cleanly separates out several groups of application programming interfaces (API) from the internal implementation of the library.
 
-If you write your code against these interfaces they offer a stable as target as the library upgrades. In the event these interfaces are changed (sometimes standards change on us) the interfaces which will be deprecated for a single release cycle allowing you a chance to upgrade.
+If you write your code against these interfaces they offer a stable target as the library upgrades. In the event these interfaces are changed (sometimes standards change on us) the interfaces will be deprecated for a single release cycle allowing you a chance to upgrade.
 
 Interfaces for Concepts and Ideas
 ---------------------------------
 
 Formally these interfaces come from three locations:
 
-* gt-opengis - interfaces backed byISO and OGC standards (as explained in the Use of Standards page).
+* gt-opengis - interfaces backed by ISO and OGC standards (as explained in the Use of Standards page).
 * jts topology suite - is a Java Geometry library implementing the Simple Features for SQL (SFSQL) OGC standard.
-* gt-api - interfaces provided by GeoTools
+* gt-api - interfaces provided by GeoTools.
 
 We also have one stalled work in progress:
 
 * gt-opengis has a set of ISO19107 geometry interfaces waiting on an interested party to look into curves and 3D.
 
-These interfaces to represent spatial concepts and data structures in your application and are suitable for use in method signatures.
+These interfaces represent spatial concepts and data structures in your application and are suitable for use in method signatures.
 
 Classes for Implementation
 --------------------------
@@ -42,9 +42,9 @@ Factories for Creation
 
 Interfaces only define what a data structure should look like, and do not provide a way to create an object. In Java the work around is to provide a "factory" that provides "create" methods which you can use instead of **new**.
 
-GeoTools provides Factory classes allowing you to create the various objects used by the library. These factories allow you to create the various objects used by the library such as Features, Styles, Filters, CoordinateReferencingSystems, DataStores.
+GeoTools provides Factory classes allowing you to create the various objects used by the library, such as Features, Styles, Filters, CoordinateReferencingSystems, and DataStores.
 
-GeoTools provides a FactoryFinder system to locates the available factory implementations on the CLASSPATH. By using a FactoryFinder your code can be built to function using only interfaces.
+GeoTools provides a FactoryFinder system to locate the available factory implementations on the CLASSPATH. By using a FactoryFinder your code can be built to function using only interfaces.
 
 For more information review the page How to Create Something which outlines how to locate an appropriate implementation at runtime.
 
@@ -58,10 +58,10 @@ Bad practice with direct dependency on ShapeFileDataStoreFactory::
    ShapefileDataStoreFactory factory = new ShapefileDataStoreFactory();
    ShapeFileDataStore = factory.createDataStore( file );
 
-This code example would of been fine for GeoTools 2.1, however for GeoTools 2.2 an "indexed" shapefile datastore was created with far better performance. The factory would be smart enough to create
+This code example would have been fine for GeoTools 2.1, however for GeoTools 2.2 an "indexed" shapefile datastore was created with far better performance. The factory would be smart enough to create
 an IndexedShapeFileDataStore if an index file was available.
 
-Here is a replacement that allows GeoTools to return an indexed datastore if on is available.::
+Here is a replacement that allows GeoTools to return an indexed datastore if one is available::
    
     DataStore dataStore = DataStoreFinder.getDataStore( file );
 

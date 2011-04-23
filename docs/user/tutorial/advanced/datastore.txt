@@ -31,7 +31,7 @@ The DataStore interface borrows most of its concepts and some of its syntax from
 Introduction
 =============
 
-Earlier was made a bit of code to read in a comma seperated value file; and produce a feature
+Earlier was made a bit of code to read in a comma separated value file; and produce a feature
 collection (which we could save out using the shapefile datastore class).
 
 This time out we are going to make a DataStore.
@@ -50,7 +50,7 @@ As you walk through this tutorial, please remember the following:
 
 * FeatureID or FID - uniquely defines a Feature (row in our csv file)
 * FeatureType - same as the name of the .csv file (ie. "locations" for locations.csv)
-* DataStore - assess all the FeatureTypes (.csv files) in a directory
+* DataStore - access all the FeatureTypes (.csv files) in a directory
 * FeatureType or Schema - names of the columns and their types
 
 JavaCSV Reader
@@ -62,15 +62,15 @@ To read csv files this time out we are going to make use of the Java CSV Reader 
 
 Time to create a new project making use of this library:
 
-# Create a *csv* project using maven
-# Use the following maven dependencies
+#. Create a *csv* project using maven
+#. Use the following maven dependencies
 
 .. literalinclude:: artifacts/pom.xml
    :language: xml
    :start-after: </properties>
    :end-before: <repositories>
 
-# Or download :download:`pom.xml <artifacts/pom.xml>`  
+#. Or download :download:`pom.xml <artifacts/pom.xml>`  
 
 Creating CSVDataStore
 ======================
@@ -86,21 +86,21 @@ all of this for us - as long as we can teach it how to access our content.
 ContentDataStore requires us to implement the following two methods:
 
 * createTypeNames() - name of all the different kinds of content (tables or types). In a CSV file we
-  will only have one kind of content
+  will only have one kind of content.
 * createFeatureSource(ContentEntry entry)
 
 The class *ContentEntry* is a bit of a scratch pad used to keep track of things for each type.
 
 Initially we are going to make a read-only datastore accessing CSV content:
 
-# To begin create the file CSVDataStore extending ContentDataStore
+#. To begin create the file CSVDataStore extending ContentDataStore
 
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/datastore/CSVDataStore.java
       :language: java
       :start-after: // header start
       :end-before: // header end
       
-# We are going to be working with a single CSV file
+#. We are going to be working with a single CSV file
 
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/datastore/CSVDataStore.java
       :language: java
@@ -118,7 +118,7 @@ many times).
 
 For our purposes this list will be the name of the csv file.
 
-# We can now implement createTypeNames() returning a the filename
+#. We can now implement createTypeNames() returning a filename
 
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/datastore/CSVDataStore.java
       :language: java

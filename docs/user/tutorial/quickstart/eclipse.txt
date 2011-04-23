@@ -26,7 +26,7 @@ our preferred option for downloading and managing jars but we will also document
 things by hand.
 
 This is our second year offering visual tutorials allowing you to see what you are working with
-while learning. While these examples will make use of Swing, please be assured that that this is
+while learning. While these examples will make use of Swing, please be assured that this is
 only an aid in making the examples easy and fun to use. 
 
 These sessions are applicable to both server side and client side development.
@@ -155,7 +155,7 @@ To install the M2Eclipse plugin:
 
 .. sidebar:: While you Wait
 
-   The download often takes five minuets, you may wish to read ahead.
+   The download often takes five minutes, you may wish to read ahead.
    
 7. The *Installing Software* dialog will download the software.
   
@@ -296,7 +296,7 @@ such as GeoTools publish their work.
 
 7. For comparison here is the completed :download:`pom.xml <artifacts/pom.xml>` file for download.
 
-   You may find cutting and pasting to be easier then typing, you can choose Source --> Format to
+   You may find cutting and pasting to be easier than typing, you can choose Source --> Format to
    fix indentation
 
 Tips:
@@ -350,7 +350,7 @@ Now that your environment is setup we can put together a simple Quickstart. This
 6. A couple of things to note about the code example:
    
 * The shapefile is not loaded into memory – instead it is read from disk each and every time it is needed
-  This approach allows you to work with data sets larger then available memory.
+  This approach allows you to work with data sets larger than available memory.
       
 * We are using a very basic display style here that just shows feature outlines. In the examples that follow we will see how to specify more sophisticated styles.
 
@@ -424,19 +424,19 @@ Here are some additional challenges for you to try:
    :start-after: </dependencies>
    :end-before: </project>
 
-* So what jars did maven actually use for the Qucikstart application? Open up your :file:`pom.xml`
-  and switch to the :guilabel:`depdendency heirarchy` or :guilabel:`dependency graph` tabs to see
+* So what jars did maven actually use for the Quickstart application? Open up your :file:`pom.xml`
+  and switch to the :guilabel:`dependency heirarchy` or :guilabel:`dependency graph` tabs to see
   what is going on.
   
   .. image:: images/quickstart-dependency.png
      :scale: 60
   
-  We will be making use of some of the project is greater depth in the remaining tutorials.
+  We will be making use of some of the project in greater depth in the remaining tutorials.
   
 Alternatives to M2Eclipse
 =========================
 
-There are two alternatives to the use of the M2Eclipse plugin; you may find these better suite the
+There are two alternatives to the use of the M2Eclipse plugin; you may find these better suit the
 needs of your organisation.
 
 * :ref:`eclipse-mvn-start`
@@ -447,7 +447,7 @@ needs of your organisation.
 Maven Plugin
 ------------
 
-The first alternative to putting maven into eclipse; it to put eclipse into maven.
+The first alternative to putting maven into eclipse is to put eclipse into maven.
 
 The maven build tool also works directly on the command line; and includes a plugin for
 generating eclipse :file:`.project` and :file:`.classpath` files.

@@ -1,10 +1,10 @@
 GeoTools Overview
 =================
 
-Having an understanding of how the GeoTools library is structured for helpful for sorting
+Having an understanding of how the GeoTools library is structured is helpful for sorting
 out what jars you need for your application.
 
-This page introduces the you to the parts of the GeoTools library and how they fit together.
+This page introduces you to the parts of the GeoTools library and how they fit together.
 By including only the jars you need you can select just the right amount of GeoTools for
 your next project.
 
@@ -164,7 +164,7 @@ gt-xsd-kml        keyhole markup language
 gt-xsd-wfs        web feature service
 gt-xsd-wps        web processing service
 gt-xsd-gml3       geographic markup language 3
-gt-xsd-gml2       geographinc markup language 2
+gt-xsd-gml2       geographic markup language 2
 gt-xsd-ows        open web services
 gt-xsd-wcs        web coverage service
 gt-xsd-wms        web map service

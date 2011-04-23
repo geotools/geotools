@@ -30,8 +30,11 @@ Install Python:
 
 5. Install Sphinx::
    
-        easy-install sphinx==0.6.6
+        easy_install sphinx
    
+   Optionally you could install a specific version of sphinx (although we try and use the latest)::
+    
+        easy_install sphinx==1.0.7
 
 rst2pdf Optional Install
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -68,22 +71,35 @@ is for macports.
      
 3. You can now use python easy_install to install sphinx::
      
-     sudo easy_install
-
+     sudo easy_install sphinx
+   
+   Optionally you could ask for a specific version (we try and use the latest)::
+     
+      sudo easy_install sphinx==1.0.7
+ 
 4. To build the PDF targets you will also need rst2pdf.::
      
      sudo easy_install rst2pdf
 
 5. If you uses easy_install to grab the python image library it easy to get compile errors.
-
-.. note::
-   
-   You can ask for a specific version if needed - example::
-     
-      sudo easy_install sphinx==0.6.6
-   
+      
 
 Linux Sphinx Install
 ^^^^^^^^^^^^^^^^^^^^
 
 Use apt-get and easy install.
+
+1. Python is usually available by default, if not::
+     
+      apt-get install Python
+  
+   You may need to use sudo (if for example you are on unbuntu)
+      
+2. Use easy_install to graph sphinx (using sudo if required)::
+     
+     easy_install sphinx
+  
+  Optionally you can install a specifc version::
+  
+     easy_install sphinx==1.0.7
+ 

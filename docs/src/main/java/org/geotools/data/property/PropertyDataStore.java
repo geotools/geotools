@@ -33,8 +33,9 @@ public class PropertyDataStore extends AbstractDataStore {
         directory = dir;
         this.namespaceURI = namespaceURI;
     }
+
     // definition end
-    
+
     // getTypeNames start
     /**
      * Gets the names of feature types available in this {@code DataStore}.
@@ -57,27 +58,29 @@ public class PropertyDataStore extends AbstractDataStore {
 
     // getSchema start
     /**
-     * Creates a Schema (FeatureType) from the first line of the .properties file
+     * Creates a Schema (FeatureType) from the first line of the .properties
+     * file
      * 
-     * @param typeName
-     *            TypeName indicating the property file used
+     * @param typeName TypeName indicating the property file used
      */
     public SimpleFeatureType getSchema(String typeName) throws IOException {
         String typeSpec = property(typeName, "_");
         try {
             String namespace = directory.getName();
-            return DataUtilities.createType(namespace + "." + typeName, typeSpec);
+            return DataUtilities.createType(namespace + "." + typeName,
+                    typeSpec);
         } catch (SchemaException e) {
             e.printStackTrace();
             throw new DataSourceException(typeName + " schema not available", e);
         }
     }
+
     // getSchema end
 
     // property start
     /**
-     * Opens the file given in typeName and reads through looking for a line that begins with key
-     * and then "=".
+     * Opens the file given in typeName and reads through looking for a line
+     * that begins with key and then "=".
      * 
      * @param typeName indicates file to open
      * @param key indicates the line to read
@@ -88,7 +91,8 @@ public class PropertyDataStore extends AbstractDataStore {
         File file = new File(directory, typeName + ".properties");
         BufferedReader reader = new BufferedReader(new FileReader(file));
         try {
-            for (String line = reader.readLine(); line != null; line = reader.readLine()) {
+            for (String line = reader.readLine(); line != null; line = reader
+                    .readLine()) {
                 if (line.startsWith(key + "=")) {
                     return line.substring(key.length() + 1);
                 }
@@ -98,17 +102,20 @@ public class PropertyDataStore extends AbstractDataStore {
         }
         return null;
     }
+
     // property end
 
     // getFeatureReader start
     /**
-     * Implements access to the "raw" FeatureReader, this method is called internally by
-     * AbstractDataStore.
+     * Implements access to the "raw" FeatureReader, this method is called
+     * internally by AbstractDataStore.
+     * 
      * @param typeName TypeName indicating property file to read
      * @return FeatureReader providing access to contents of file
      */
-    protected FeatureReader<SimpleFeatureType,SimpleFeature> getFeatureReader(String typeName) throws IOException {
-        return new PropertyFeatureReader( directory, typeName );        
+    protected FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(
+            String typeName) throws IOException {
+        return new PropertyFeatureReader(directory, typeName);
     }
     // getFeatureReader end
 }

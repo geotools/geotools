@@ -12,14 +12,16 @@ import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
 
 /**
- * DataStore factory that creates {@linkplain org.geotools.data.property.PropertyDataStore}s
+ * DataStore factory that creates
+ * {@linkplain org.geotools.data.property.PropertyDataStore}s
  * 
  * @author Jody Garnett
  */
 public class PropertyDataStoreFactory implements DataStoreFactorySpi {
 
     /**
-     * Public "no arguments" constructor called by Factory Service Provider (SPI) based on entry in
+     * Public "no arguments" constructor called by Factory Service Provider
+     * (SPI) based on entry in
      * META-INF/services/org.geotools.data.DataStoreFactorySpi
      */
     public PropertyDataStoreFactory() {
@@ -44,14 +46,13 @@ public class PropertyDataStoreFactory implements DataStoreFactorySpi {
     }
 
     /**
-     * Test to see if this datastore is available, if it has all the appropriate libraries to
-     * construct a datastore. This datastore just returns true for now.
+     * Test to see if this datastore is available, if it has all the appropriate
+     * libraries to construct a datastore. This datastore just returns true for
+     * now. This method is used for interactive applications, so as to not
+     * advertise data store capabilities they don't actually have.
      * 
-     * This method is used for interactive applications, so as to not advertise data store
-     * capabilities they don't actually have.
-     * 
-     * @return <tt>true</tt> if and only if this factory is available to create DataStores.
-     * 
+     * @return <tt>true</tt> if and only if this factory is available to create
+     *         DataStores.
      * @task <code>true</code> property datastore is always available
      */
     public boolean isAvailable() {
@@ -82,8 +83,8 @@ public class PropertyDataStoreFactory implements DataStoreFactorySpi {
      * Works for a file directory or property file
      * 
      * @param params Connection parameters
-     * 
-     * @return true for connection parameters indicating a directory or property file
+     * @return true for connection parameters indicating a directory or property
+     *         file
      */
     public boolean canProcess(Map<String, Serializable> params) {
         try {
@@ -95,22 +96,23 @@ public class PropertyDataStoreFactory implements DataStoreFactorySpi {
     }
 
     /**
-     * Lookups the directory containing property files in the params argument, and returns the
-     * corresponding <code>java.io.File</code>.
+     * Lookups the directory containing property files in the params argument,
+     * and returns the corresponding <code>java.io.File</code>.
      * <p>
-     * The file is first checked for existence as an absolute path in the filesystem. If such a
-     * directory is not found, then it is treated as a relative path, taking Java system property
-     * <code>"user.dir"</code> as the base.
+     * The file is first checked for existence as an absolute path in the
+     * filesystem. If such a directory is not found, then it is treated as a
+     * relative path, taking Java system property <code>"user.dir"</code> as the
+     * base.
      * </p>
      * 
      * @param params
      * @throws IllegalArgumentException if directory is not a directory.
      * @throws FileNotFoundException if directory does not exists
-     * @throws IOException if {@linkplain #DIRECTORY} doesn't find parameter in <code>params</code>
-     *         file does not exists.
+     * @throws IOException if {@linkplain #DIRECTORY} doesn't find parameter in
+     *         <code>params</code> file does not exists.
      */
-    private File directoryLookup(Map<String, java.io.Serializable> params) throws IOException,
-            FileNotFoundException, IllegalArgumentException {
+    private File directoryLookup(Map<String, java.io.Serializable> params)
+            throws IOException, FileNotFoundException, IllegalArgumentException {
         File file = (File) DIRECTORY.lookUp(params);
         if (!file.exists()) {
             File currentDir = new File(System.getProperty("user.dir"));
@@ -123,11 +125,13 @@ public class PropertyDataStoreFactory implements DataStoreFactorySpi {
         if (file.isDirectory()) {
             return file;
         } else {
-            // check if they pointed to a properties file; and use the parent directory
+            // check if they pointed to a properties file; and use the parent
+            // directory
             if (file.getPath().endsWith(".properties")) {
                 return file.getParentFile();
             } else {
-                throw new IllegalArgumentException(file.getAbsolutePath() + " is not a directory");
+                throw new IllegalArgumentException(file.getAbsolutePath()
+                        + " is not a directory");
             }
         }
     }
@@ -135,7 +139,8 @@ public class PropertyDataStoreFactory implements DataStoreFactorySpi {
     // canProcess end
 
     // createDataStore start
-    public DataStore createDataStore(Map<String, java.io.Serializable> params) throws IOException {
+    public DataStore createDataStore(Map<String, java.io.Serializable> params)
+            throws IOException {
         File dir = directoryLookup(params);
         String namespaceURI = (String) NAMESPACE.lookUp(params);
         if (dir.exists() && dir.isDirectory()) {
@@ -144,6 +149,7 @@ public class PropertyDataStoreFactory implements DataStoreFactorySpi {
             throw new IOException("Directory is required");
         }
     }
+
     public DataStore createNewDataStore(Map<String, java.io.Serializable> params)
             throws IOException {
         File dir = directoryLookup(params);

@@ -19,8 +19,10 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * @version 8.0.0
  * @since 2.0.0
  */
-public class PropertyFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.data.property");
+public class PropertyFeatureReader implements
+        FeatureReader<SimpleFeatureType, SimpleFeature> {
+    private static final Logger LOGGER = Logging
+            .getLogger("org.geotools.data.property");
 
     PropertyAttributeReader reader;
 
@@ -29,10 +31,10 @@ public class PropertyFeatureReader implements FeatureReader<SimpleFeatureType, S
      * 
      * @param directory Directory containing property file
      * @param typeName TypeName indicating file to read
-     * 
      * @throws IOException
      */
-    public PropertyFeatureReader(File directory, String typeName) throws IOException {
+    public PropertyFeatureReader(File directory, String typeName)
+            throws IOException {
         File file = new File(directory, typeName + ".properties");
         reader = new PropertyAttributeReader(file);
     }
@@ -50,7 +52,6 @@ public class PropertyFeatureReader implements FeatureReader<SimpleFeatureType, S
      * Access the next feature (if available).
      * 
      * @return SimpleFeature read from property file
-     * 
      * @throws IOException
      * @throws IllegalAttributeException
      * @throws NoSuchElementException
@@ -79,7 +80,6 @@ public class PropertyFeatureReader implements FeatureReader<SimpleFeatureType, S
      * Check if additional contents are available.
      * 
      * @return <code>true</code> if additional contents are available
-     * 
      * @throws IOException
      */
     public boolean hasNext() throws IOException {

@@ -66,13 +66,9 @@ We will be working with content in the following format::
   rd1=1|wkt|road one
   rd2=2|wkt|road two
   
-The examples use the file road.properties::
+These examples use the file :download:`example.properties </../src/main/java/org/geotools/data/property/example.properties>` ::
   
-  _=id:Integer,name:String,geom:Point
-  fid1=1|jody|POINT(0 0)
-  fid2=2|brent|POINT(10 10)
-  fid3=3|dave|POINT(20 20)
-  fid4=4|justin|POINT(30 30)
+.. literalinclude:: /../src/main/java/org/geotools/data/property/example.properties
   
 If you want to follow along with this tutorial, start a new Java project in your favourite IDE,
 and ensure that GeoTools is on your CLASSPATH.
@@ -452,147 +448,149 @@ PropertyDataStore API for data access:
 * DataStore.getFeatureReader( featureType, filter, transaction )
 * DataStore.getFeatureSource( typeName )
 
-If you would like to follow along with these examples they are available as a JUnit Test along with the source code for PropertyDataStore.
+If you would like to follow along with these examples you can
+:download:`PropertyExamples.java </../src/main/java/org/geotools/data/property/PropertyExamples.java>`.
 
-**DataStore.getTypeNames()**
-
-The method getTypeNames provides a list of the available types.
-
-getTypeNames() example::
-
-    PropertyDataStore store = new PropertyDataStore( new File(".") );
-    String names[] = store.getTypeNames();
-    System.out.println( names.length ); // 1
-    System.out.println( names[0] );     // road
-
-**DataStore.getSchema( typeName )**
-
-The method getSchema( typeName ) provides access to a FeatureType referenced by a type name.
-
-getSchema( typeName ) example::
-
-    PropertyDataStore store = new PropertyDataStore( new File(".") );
-    FeatureType type = store.getSchema( "road" );
-    
-    System.out.println( type.getTypeName() );                      // road
-    System.out.println( type.getNameSpace() );                     // directory name of store
-    System.out.println( type.getAttributeCount() );                // 2
-    
-    AttributeType id = type.getAttributeType(0);
-    System.out.println( id.getName() );                            // id
-    System.out.println( id.getType().toString() );                 // class java.lang.Integer
-    
-    AttributeType name = type.getAttributeType(1);
-    System.out.println( name.getName() );                          // name
-    System.out.println( name.getType().toString() );               // class java.lang.String
-
-**DataStore.getFeatureReader( query, transaction )**
-
-The method getFeatureReader( query, transaction ) allows access to the contents of our DataStore. The method signature may be more complicated than expected, we certaintly did not talk about Query or Transactions when we implemented our PropertyDataStore.
-
-Parameters:
-
-* Query.getTypeName()
-
-  Determines which FeatureType is being requested. In addition, Query supports the
-  customization attributes, namespace, and typeName requested from the DataStore.
-  While you may use DataStore.getSchema( typeName ) to retrieve the types as specified by
-  the DataStore, you may also create your own FeatureType to limit the attributes returned
-  or cast the result into a specific namespace.
-
-* Query.getFilter()
+* DataStore.getTypeNames()
   
-  Used to define constraints on which features should be fetched. The constraints
-  can be on spatial and non-spatial attributes of the features.
-
-* Query.getPropertiesNames()
+  The method getTypeNames provides a list of the available types.
   
-  Allows you to limit the number of properties of the returned Features to only those
-  you are interested in.
+  getTypeNames() example:
 
-* Query.getMaxFeatures()
+  .. literalinclude:: /../src/main/java/org/geotools/data/property/PropertyExamples.java
+     :language: java
+     :start-after: // example1 start
+     :end-before: // example1 end
+
+  Produces the following output (given a directory with example.properties)::
+
+	typenames: 1
+	typename[0]: example
+
+* DataStore.getSchema( typeName )
   
-  Defines an upper limit for the number of features returned.
+  The method getSchema( typeName ) provides access to a FeatureType referenced by a type name.
 
-* Query.getHandle()
+  getSchema( typeName ) example:
+
+  .. literalinclude:: /../src/main/java/org/geotools/data/property/PropertyExamples.java
+     :language: java
+     :start-after: // example2 start
+     :end-before: // example2 end
+
+  Produces the following output::
+
+	       typeName: example
+	           name: property:example
+	attribute count: 3
+	attribute 'id'    name:id
+	attribute 'id'    type:AttributeTypeImpl id<Integer>
+	attribute 'id' binding:null
+	attribute 'name'    name:name
+	attribute 'name' binding:class java.lang.String
+
+* DataStore.getFeatureReader( query, transaction )
   
-  User-supplied name used to describe a query in user's terms in any generated error messages.
-
-* Transaction
+  The method getFeatureReader( query, transaction ) allows access to the contents
+  of our DataStore.
   
-  Allows access the contents of a DataStore during modification.
+  The method signature may be more complicated than expected, we certaintly did not tal
+  about Query or Transactions when we implemented our PropertyDataStore. This is something
+  that AbstractDataStore is handling for you and will be discussed later in the section
+  on optimisation.
 
-DataStore.getFeatureReader( featureType, filter, transaction ) example::
+  * Query.getTypeName()
+  
+    Determines which FeatureType is being requested. In addition, Query supports the
+    customization attributes, namespace, and typeName requested from the DataStore.
+    While you may use DataStore.getSchema( typeName ) to retrieve the types as specified by
+    the DataStore, you may also create your own FeatureType to limit the attributes returned
+    or cast the result into a specific namespace.
+  
+  * Query.getFilter()
     
-    PropertyDataStore store = new PropertyDataStore( new File(".") );
-    Query query = new DefaultQuery( "road" );
-    FeatureReader reader = datastore.getFeatureReader( query, Transaction.AUTO_COMMIT );
-    try {
-        int count = 0;
-        while( reader.hasNext() ){
-            reader.next();
-            count++;
-        }
-        System.out.println( count );             // 4
-    } finally {
-        reader.close();
-    }
+    Used to define constraints on which features should be fetched. The constraints
+    can be on spatial and non-spatial attributes of the features.
 
-Example with a Simple Filter::
-
-    PropertyDataStore store = new PropertyDataStore( new File(".") );
-    Filter filter = FilterFactory.createFilterFactory().createFidFilter("fid1");
-    Query query = new DefaultQuery( "road", filter );
-    
-    FeatureReader reader = store.getFeatureReader( query, Transaction.AUTO_COMMIT );
-    
-    System.out.println( reader.next().getID() ); // fid1
-    System.out.println( reader.hasNext() ); // false
-    reader.close();
-
-Example with a Transaction::
-    
-    PropertyDataStore store = new PropertyDataStore( new File(".") );
-    Query query = new DefaultQuery( "road" );
-    Transaction transaction = new DefaultTransaction();
-    FeatureReader reader = store.getFeatureReader( query, transaction );
-    List list = new ArrayList();
-    try {
-        while( reader.hasNext() ){
-            list.add( reader.next().getID() );
-        }
-    }
-    finally {
-        reader.close();
-    }
-    System.out.println( list ); // [GEOTOOLS:fid1, fid2, fid3, fid4]
-
-At the time of writing, Query is expanding its capabilities (and the capabilities of your DataStore) to include support for reprojection.
-
-* Query.getCoordianteSystem()
+  * Query.getPropertiesNames()
   
-  Used to force the use of a user-supplied CoordinateSystem (rather than the one supplied
-  by the DataStore). This capability will allow client code to use our DataStore with a
-  CoordinateSystem of their choice. The coordinates returned by the DataStore will not be
-  modified in any way.
+    Allows you to limit the number of properties of the returned Features to only those
+    you are interested in.
 
-* Query.getCoordianteSystemReproject()
-  
-  Used to reproject the Geometries provided by a DataStore from their original value (or
-  the one provided by Query.getCoordinateSystem) into a different coordinate system.
-  The coordinate returned by the DataStore will be processed , either natively by
-  Advanced DataStores, or using GeoTools reprojection routines.
-
-**DataStore.getFeatureSource( typeName )**
-
-This method is the gateway to our high level as provided by an instance of FeatureSource, FeatureStore or FeatureLocking. The returned instance represents the contents of a single named FeatureType provided by the DataStore. The type of the returned instance indicates the capabilities available.
-
-This far in our tutorial PropertyDataStore will only support an instance of FeatureSource.
-
-Example getFeatureSource::
+  * Query.getMaxFeatures()
     
-    PropertyDataStore store = new PropertyDataStore( new File(".") );
-    FeatureSource road = store.getFeatureSource( "road" );
+    Defines an upper limit for the number of features returned.
+  
+  * Query.getHandle()
+    
+    User-supplied name used to describe a query in user's terms in any generated error messages.
+  
+  * Transaction
+    
+    Allows access the contents of a DataStore during modification.
+
+  DataStore.getFeatureReader( featureType, filter, transaction ) example:
+    
+  .. literalinclude:: /../src/main/java/org/geotools/data/property/PropertyExamples.java
+     :language: java
+     :start-after: // example3 start
+     :end-before: // example3 end
+
+  Produces the following output::
+  
+	feature 0: fid1
+	feature 1: fid2
+	feature 2: fid3
+	feature 3: fid4
+	read in 4 features
+	
+  Example with a quick "selection" Filter:
+    
+  .. literalinclude:: /../src/main/java/org/geotools/data/property/PropertyExamples.java
+     :language: java
+     :start-after: // example4 start
+     :end-before: // example4 end
+
+  Produces the following output::
+  
+	  feature fid1
+		id = 1
+		name = jody
+		geom = POINT (0 0)
+		
+  At the time of writing, Query is expanding its capabilities (and the capabilities of your DataStore) to include support for reprojection.
+  
+  * Query.getCoordianteSystem()
+    
+    Used to force the use of a user-supplied CoordinateSystem (rather than the one supplied
+    by the DataStore). This capability will allow client code to use our DataStore with a
+    CoordinateSystem of their choice. The coordinates returned by the DataStore will not be
+    modified in any way.
+  
+  * Query.getCoordianteSystemReproject()
+    
+    Used to reproject the Geometries provided by a DataStore from their original value (or
+    the one provided by Query.getCoordinateSystem) into a different coordinate system.
+    The coordinate returned by the DataStore will be processed , either natively by
+    Advanced DataStores, or using GeoTools reprojection routines.
+
+* DataStore.getFeatureSource( typeName )
+  
+  This method is the gateway to our high level as provided by an instance of FeatureSource, FeatureStore or FeatureLocking. The returned instance represents the contents of a single named FeatureType provided by the DataStore. The type of the returned instance indicates the capabilities available.
+  
+  This far in our tutorial PropertyDataStore will only support an instance of FeatureSource.
+
+  Example getFeatureSource:
+    
+  .. literalinclude:: /../src/main/java/org/geotools/data/property/PropertyExamples.java
+     :language: java
+     :start-after: // example5 start
+     :end-before: // example5 end
+  
+  Producing the following output::
+
+	found :1 features
+	fid3 location POINT (20 20)
 
 FeatureSource
 '''''''''''''

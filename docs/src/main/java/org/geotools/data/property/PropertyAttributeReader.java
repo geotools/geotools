@@ -20,16 +20,15 @@ import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * Simple AttributeReader that works against Java properties files.
- * 
  * <p>
- * This AttributeReader is part of the GeoTools AbstractDataStore tutorial, and should be considered
- * a Toy.
+ * This AttributeReader is part of the GeoTools AbstractDataStore tutorial, and
+ * should be considered a Toy.
  * </p>
- * 
  * <p>
- * The content of this file should start with a the property "_" with the value being the typeSpec
- * describing the featureType. Thereafter each line will should have a FeatureID as the property and
- * the attribtues as the value separated by | characters.
+ * The content of this file should start with a the property "_" with the value
+ * being the typeSpec describing the featureType. Thereafter each line will
+ * should have a FeatureID as the property and the attribtues as the value
+ * separated by | characters.
  * </p>
  * 
  * <pre>
@@ -40,10 +39,9 @@ import com.vividsolutions.jts.geom.Geometry;
  * fid3=3|Dave|<i>well known text</i>
  * </code>
  * </pre>
- * 
  * <p>
- * May values may be represented by a special tag: <code><null></code>. An empty element:
- * <code>||</code> is interpreted as the empty string:
+ * May values may be represented by a special tag: <code><null></code>. An empty
+ * element: <code>||</code> is interpreted as the empty string:
  * </p>
  * 
  * <pre>
@@ -56,17 +54,21 @@ import com.vividsolutions.jts.geom.Geometry;
  */
 public class PropertyAttributeReader implements AttributeReader {
     BufferedReader reader;
+
     SimpleFeatureType type;
+
     String line;
+
     String next;
+
     String[] text;
+
     String fid;
 
     /**
      * Creates a new PropertyAttributeReader object.
      * 
      * @param file File being read
-     * 
      * @throws IOException
      * @throws DataSourceException
      */
@@ -114,7 +116,6 @@ public class PropertyAttributeReader implements AttributeReader {
      * Namespace for the provided file
      * 
      * @param file File being read
-     * 
      * @return suitable namespace
      */
     private static String namespace(File file) {
@@ -122,6 +123,7 @@ public class PropertyAttributeReader implements AttributeReader {
 
         return (parent == null) ? "" : (parent.getName() + ".");
     }
+
     // class definition end
     // implementation start
     /**
@@ -138,10 +140,10 @@ public class PropertyAttributeReader implements AttributeReader {
      * 
      * @param index
      * @return AttributeDescriptor describing attribute name and type
-     * 
      * @throws ArrayIndexOutOfBoundsException
      */
-    public AttributeDescriptor getAttributeType(int index) throws ArrayIndexOutOfBoundsException {
+    public AttributeDescriptor getAttributeType(int index)
+            throws ArrayIndexOutOfBoundsException {
         return type.getDescriptor(index);
     }
 
@@ -184,8 +186,9 @@ public class PropertyAttributeReader implements AttributeReader {
             fid = line.substring(0, split);
             text = line.substring(split + 1).split("\\|");
             if (type.getAttributeCount() != text.length)
-                throw new DataSourceException("format error: expected " + type.getAttributeCount()
-                        + " attributes, but found " + text.length + ". [" + line + "]");
+                throw new DataSourceException("format error: expected "
+                        + type.getAttributeCount() + " attributes, but found "
+                        + text.length + ". [" + line + "]");
         } else {
             throw new NoSuchElementException();
         }
@@ -195,15 +198,15 @@ public class PropertyAttributeReader implements AttributeReader {
      * Read attribute in position marked by <code>index</code>.
      * 
      * @param index Attribute position to read
-     * 
      * @return Value for the attribtue in position <code>index</code>
-     * 
      * @throws IOException
      * @throws ArrayIndexOutOfBoundsException
      */
-    public Object read(int index) throws IOException, ArrayIndexOutOfBoundsException {
+    public Object read(int index) throws IOException,
+            ArrayIndexOutOfBoundsException {
         if (line == null) {
-            throw new IOException("No content available - did you remeber to call next?");
+            throw new IOException(
+                    "No content available - did you remeber to call next?");
         }
 
         AttributeDescriptor attType = type.getDescriptor(index);
@@ -235,10 +238,12 @@ public class PropertyAttributeReader implements AttributeReader {
             }
         }
         // Use of Converters to convert from String to requested java binding
-        Object value = Converters.convert(stringValue, attType.getType().getBinding());
+        Object value = Converters.convert(stringValue, attType.getType()
+                .getBinding());
 
         if (attType.getType() instanceof GeometryType) {
-            // this is to be passed on in the geometry objects so the srs name gets encoded
+            // this is to be passed on in the geometry objects so the srs name
+            // gets encoded
             CoordinateReferenceSystem crs = ((GeometryType) attType.getType())
                     .getCoordinateReferenceSystem();
             if (crs != null) {
@@ -250,8 +255,9 @@ public class PropertyAttributeReader implements AttributeReader {
         }
         return value;
     }
+
     // implementation end
-    
+
     // getFeatureID start
     /**
      * Retrieve the FeatureId identifying the current line.

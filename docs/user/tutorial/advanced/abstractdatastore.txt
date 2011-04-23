@@ -8,12 +8,20 @@ AbstractDataStore Tutorial
 
 .. sectionauthor:: Jody Garnett <jody.garnett@gmail.org>
 
+.. sidebar:: gt-property plugin
+   
+   This tutorial takes you through the steps of creating **ProeprtyDataStore** originally this
+   format was only used by this tutorial to show how the DataStore API worked.
+   
+   Over time the property file format has become widely used due to its simplicity; as a result 
+   **PropertyDataStore** is now considered a supported module in it's own right.
+ 
 The GeoTools project strives to support as many geographical data formats as possible because
 getting data into the GeoTools API allows access to a vast suite of tools. In order to transform
 a data format into the GeoTools2 feature representation one must write an implementation of
 the **DataStore** interface.
 
-Once a DataStore implementation is written, any data written in that format becomes available
+Once a DataStore implementation is written, any information written in that format becomes available
 not only for GeoTools users, but also for projects built on top of GeoTools such as GeoServer
 and uDig.
 
@@ -24,6 +32,7 @@ are can be distributed to to all GeoTools users.
 
 References:
 
+* :doc:`/library/data/property`
 * `org.geotools.data.property <http://svn.osgeo.org/geotools/trunk/modules/plugin/property/src/main/java/org/geotools/data/property/>`_ (source code)
 
 .. note::
@@ -37,21 +46,13 @@ References:
    of action.
 
 .. note::
-   
-   This tutorial takes you through the steps of creating **ProeprtyDataStore** originally this
-   format was only used for teaching how the DataStore API worked.
-   
-   Overtime this format has become widely used due to its simplicity; as a result 
-   **PropertyDataStore** is now considered a supported module.
  
- .. note::
- 
-    Help Review
+   Help Review
+   
+   This article is being updated from GeoTools 2.0 - where it was in docbook.
     
-    This article is being updated from GeoTools 2.0 - where it was in docbook.
-     
-    As is usual for open source documentation is held hostage pending a volunteer to QA, or money.
-    Open source stops with the code, documentation sounds like work so please help with feedback!
+   As is usual for open source documentation is held hostage pending a volunteer to QA, or money.
+   Open source stops with the code, documentation sounds like work so please help with feedback!
 
 Part 1 - Introducing PropertyDataStore
 --------------------------------------
@@ -73,16 +74,17 @@ The examples use the file road.properties::
   fid3=3|dave|POINT(20 20)
   fid4=4|justin|POINT(30 30)
   
-If you want to follow along with this tutorial, start a new Java project in your favorite IDE,
+If you want to follow along with this tutorial, start a new Java project in your favourite IDE,
 and ensure that GeoTools is on your CLASSPATH.
 
 The DataStore we will be writing (called "PropertyDataStore") takes a directory full of .property
 files and allows reading and writing to them:
 
-* Each of the .property files represents a "data set" - called a FeatureType in the GeoTools
-  language.
-* Each of these "data sets" contains a set of Features. You can think of each of these .property
-  files as a table in a database or a shapefile (with its corresponding .dbf attributes file).
+* Each of the .property files represents a "data set" - called a FeatureType by GeoTools
+* Each of these "data sets" contains a set of Features.
+  
+  You can think of each of these .property files as a table in a database
+  or a shapefile (with its corresponding .dbf attributes file).
 
 Each of the .properties is very much like a PSV (Pipe Separated Variety) database file. The first
 line defines the names (and types) of the columns, and the rest of the lines contain the data;
@@ -106,14 +108,15 @@ the lines start with a unique identifier ("rd1", and "rd2") - these will be the 
 for each row (ie. a single Feature). The FID is completely different from the id attribute - every
 .properties file will have a FIDs, most will not have an "id" column/attribute.
 
-So, the last data row (a Feature) has FID "rd2", id "2", geom "LINESTRING(20 20,30 30)", and name "road two".
+So, the last data row (a Feature) has FID "rd2", id "2", geom "LINESTRING(20 20,30 30)", and
+name "road two".
 
 **Definitions**
 
 As you walk through this tutorial, please remember the following:
 
 FID
-  Uniquely defines a Feature (row in the .properties file)
+  Uniquely defines a Feature (row in the .properties file).
 
 FeatureType
   Same as the name of the .properties file (ie. "roads" for roads.properties)
@@ -132,182 +135,150 @@ PropertyDataStore Implementation
 
 The first step is to create a basic DataStore that only supports feature extraction. We will read data from a properties file into the GeoTools2 feature model.
 
-**Extending AbstractDataStore**
-
 To implement a DataStore we will subclass AbstractDataStore and implement three abstract methods:
 
 * DataStore.getTypeNames()
 * DataStore.getSchema( typeName )
 * DataStore.getFeatureReader( typeName )
 
-To begin create the file PropertyDataStore as follows::
+1. To begin create the file PropertyDataStore as follows:
 
-    package org.geotools.data.property;
+   .. literalinclude:: /../src/main/java/org/geotools/data/property/PropertyDataStore.java
+      :language: java
+      :end-before: // definition end
     
-    import java.io.*;
-    import org.geotools.data.*;
-    import org.geotools.feature.*;
-    
-    public class PropertyDataStore extends AbstractDataStore {
-        protected File directory;
-        public PropertyDataStore(File dir) {
-            super( false ); // does not allow writing
-            if( !dir.isDirectory()){
-                throw new IllegalArgumentException( dir +" is not a directory");
-            }
-            directory = dir;
-        }
-    }
-
-**getTypeNames()**
-
-A DataStore may provide access to several different types of information. The method getTypeNames
-provides a list of the available types.
-
-For our purposes this list will be the name of the property files in a directory::
-
-    Add getTypeNames():
-    
-        public String[] getTypeNames() {
-            FilenameFilter f;
-            String list[] = directory.list( new FilenameFilter(){
-                public boolean accept(File dir, String name) {
-                    return name.endsWith(".properties");
-                }
-            });
-            for( int i=0; i < list.length; i++){
-                list[i] = list[i].substring(0, list[i].lastIndexOf('.'));
-            }
-            return list;
-        }
-        
-**getSchema( typeName )**
-
-Schema information is provided by the FeatureType class. This method provides access to a
-FeatureType referenced by a type name.
-
-To implement this method we will need to do two things, read a line from a properties file,
-and interpret the line as a FeatureType.
-
-The DataUtilities class provides an assortment of helper functions. In this method we will
-use DataUtilities.createType( name, spec ).
-
-.. note::
+   Our constructor is going to hold on to two fields:
    
-   DataUtilities is a class especially designed for this tutorial.
+   * file: the file we are reading
+   * namespaceURI: namespace (used to tell different property datastore's apart)
+   
+   .. note::
+      
+      As we bring in each snippet of code you will need to import the mentioned
+      classes. In the Eclipse IDE **Control-Shift-o** will organise imports
+      and as a side effect import anything you are missing.
 
-1. Add getSchema( typeName )::
+2. PropertyDataStore.getTypeNames()
+   
+   A DataStore may provide access to several different types of information. The method
+   getTypeNames provides a list of the available types.
 
-    //Creates a Schema (FeatureType) from the first line of the .properties file
-        public FeatureType getSchema(String typeName) throws IOException {
-            String typeSpec = property( typeName, "_");
-            try {
-                String namespace = directory.getName();
-                return DataUtilities.createType( namespace+"."+typeName,typeSpec );
-            } catch (SchemaException e) {
-                e.printStackTrace();
-                throw new DataSourceException( typeName+" schema not available", e);
-            }
-        }
+   For our purposes this list will be the name of the property files in a directory.
 
-2. Add property( typeName, key )::
-
-    //opens the file given in typeName and reads through looking for a line that begins with key and then "=".
-    //returns the key's values (everything to the right of the '='
-        private String property( String typeName, String key ) throws IOException {
-            File file = new File( directory, typeName+".properties");
-            BufferedReader reader = new BufferedReader( new FileReader( file ) );
-            try {        
-                for( String line = reader.readLine(); line != null; line = reader.readLine()){
-                    if( line.startsWith( key+"=" )){
-                        return line.substring( key.length()+1 );
-                    }
-                }
-            }
-            finally {
-                reader.close();            
-            }        
-            return null;        
-        }
+   Add the following implementation for getTypeNames():
+    
+   .. literalinclude:: /../src/main/java/org/geotools/data/property/PropertyDataStore.java
+      :language: java
+      :start-after: // getTypeNames start
+      :end-before: // getTypeNames end
         
+3. PropertyDataStore.getSchema( typeName )
+   
+   Schema information is provided by the FeatureType class. This method provides access to a
+   FeatureType referenced by a type name.
+   
+   To implement this method we will need to do two things, read a line from a properties file,
+   and interpret the line as a FeatureType.
 
-getFeatureReader( typeName )
-''''''''''''''''''''''''''''
-FeatureReader is the low-level API provided by DataStore for accessing Feature content.
+   The DataUtilities class provides an assortment of helper functions. In this method we will
+   use DataUtilities.createType( name, spec ).
 
-The method getFeatureReader( typeName ) is required by AbstractDataStore and is not part of the DataStore API.
+   .. note::
+   
+      DataUtilities is a class especially designed for this tutorial.
+      
+      Those experienced with GeoTools may find these humble begining amusing
+      given how widely used DataUtilities is today.
 
-1. Add getFeatureReader( typeName )::
+   Add getSchema( typeName ):
 
-        protected FeatureReader getFeatureReader(String typeName) throws IOException {
-            return new PropertyFeatureReader( directory, typeName );        
-        }
+   .. literalinclude:: /../src/main/java/org/geotools/data/property/PropertyDataStore.java
+      :language: java
+      :start-after: // getSchema start
+      :end-before: // getSchema end
+
+   Add property( typeName, key ):
+
+   .. literalinclude:: /../src/main/java/org/geotools/data/property/PropertyDataStore.java
+      :language: java
+      :start-after: // property start
+      :end-before: // property end
+
+        
+4. PropertyDataStore.getFeatureReader( typeName )
+   
+   FeatureReader is the low-level API provided by DataStore for accessing Feature content.
+   
+   The method AbstractDataStore.getFeatureReader( typeName ) is required used by the superclass
+   AbstractDataStore and is not part of the public DataStore API accessed by user. We will cover
+   how this method is used at the end of this tutorial where we discuss optimisation.
+
+   Add PropertyDataStore.getFeatureReader( typeName ):
+
+   .. literalinclude:: /../src/main/java/org/geotools/data/property/PropertyDataStore.java
+      :language: java
+      :start-after: // getFeatureReader start
+      :end-before: // getFeatureReader end
+   
+   .. note::
+      
+      Next up we will be implementing PropertyFeatureReader mentioned above.
+      
+      If you are in Eclipse you can:
+      
+      1. Hold down **Control-Shift-1** to bring up a number of "Quickfixes"
+      2. Select **Create class 'PropertyFeatureReader'** from the list
+      3. The Create Class wizard is brought up with all the correct blanks filled in
+      
         
 PropertyFeatureReader
 ^^^^^^^^^^^^^^^^^^^^^
 
-FeatureReader is similar to the Java Iterator construct, with the addition of FeatureType (and IOExceptions).
+FeatureReader is similar to the Java Iterator construct, with the addition of
+FeatureType (and IOExceptions).
 
 FeatureReader interface:
 
-* getFeatureType()
-* next()
-* hasNext()
-* close()
+* FeatureReader.getFeatureType()
+* FeatureReader.next()
+* FeatureReader.hasNext()
+* FeatureReader.close()
 
 To implement our FeatureReader, we will need to do several things: open a File and read through it
 line by line, parsing Features as we go.
 
-1. Create the file PropertyFeatureReader as follows::
+1. PropertyFeatureReader
+   
+   
+   Create the file PropertyFeatureReader as follows:
 
-    package org.geotools.data.property;
-    
-    import java.io.*;
-    import java.util.NoSuchElementException;
-    import org.geotools.data.*;
-    import org.geotools.feature.*;
-    
-    public class PropertyFeatureReader implements FeatureReader {
-        PropertyAttributeReader reader;    
-        public PropertyFeatureReader( File directory, String typeName ) throws IOException {
-            File file = new File( directory, typeName+".properties");
-            reader = new PropertyAttributeReader( file );                        
-        }
-        public FeatureType getFeatureType() {
-            return reader.type;
-        }
-        public Feature next()
-            throws IOException, IllegalAttributeException, NoSuchElementException {
-            reader.next();            
-            FeatureType type = reader.type;
-            String fid = reader.getFeatureID();
-            Object values[] = new Object[GEOTOOLS: reader.getAttributeCount() ];
-            for( int i=0; i< reader.getAttributeCount(); i++){
-                values[i]=reader.read( i );
-            }
-            return type.create( values, fid );                
-        }
-        public boolean hasNext() throws IOException {
-            return reader.hasNext();
-        }
-        public void close() throws IOException {
-            reader.close();
-            reader = null;        
-        }
-    }
-    
-The helper class PropertyAttributeReader will be used to accomplish the bulk of this work.
+   .. literalinclude:: /../src/main/java/org/geotools/data/property/PropertyFeatureReader.java
+      :language: java
+   
+   The helper class PropertyAttributeReader will be used to accomplish the bulk of this work.
+   
+   .. note::
+      
+      Note the use of the GeoTools Logging system. GeoTools provides a wrapper around
+      the usual suspects (Java Logging, Log4J, etc...) allowing users to configure
+      the library to work with the logging system employed by their application.
+      
+      We are just that cool :-)
 
 PropertyAttributeReader
-'''''''''''''''''''''''
+^^^^^^^^^^^^^^^^^^^^^^^
+
+The AttributeReader interface is used to provide access to individual attributes from a
+storage medium. It is hoped that high level operations (such as Joining) coudl make
+use of this capability.
 
 .. note:: 
    
    If it makes sense for your data format you could just do all the work in your FeaureReader.
+   
    Why would you break things up into AttributeReaders? If you had several files you were merging
-   together.
-
-The AttributeReader interface is used to provide access to individual attributes from a storage medium. High level operations, such as Joining make use of this capability.
+   together (such as is the case for Shapefile which has shp, dbf, and shx files).
+   
 
 AttributeReader interface:
 
@@ -318,212 +289,151 @@ AttributeReader interface:
 * AttributeReader.getAttributeType( index )
 * AttributeReader.close()
 
-1. Create the file PropertyAttributeReader as follows::
-    
-        package org.geotools.data.property;
-        
-        import java.io.IOException;
-        import java.io.*;
-        import java.util.NoSuchElementException;
-        import org.geotools.data.*;
-        import org.geotools.feature.*;
-        import com.vividsolutions.jts.geom.GeometryFactory;
-        import com.vividsolutions.jts.io.ParseException;
-        import com.vividsolutions.jts.io.WKTReader;
-        
-        public class PropertyAttributeReader implements AttributeReader {
-            private static final WKTReader wktReader = new WKTReader(new GeometryFactory());
-            BufferedReader reader;
-            FeatureType type;
-            String line;
-            String next;
-            
-            public PropertyAttributeReader( File file ) throws IOException {
-                String typeName = typeName( file );
-                String namespace = namespace( file );    
-                reader = new BufferedReader( new FileReader( file )  );
-                line = reader.readLine();                        
-                if( line == null || !line.startsWith("_=")){
-                    throw new IOException( typeName+" schema not available" );            
-                }
-                String typeSpec = line.substring(2);
-                try {            
-                    type = DataUtilities.createType( namespace+typeName, typeSpec );
-                    
-                } catch (SchemaException e) {As shown above
-                    throw new DataSourceException( typeName+" schema not available", e );
-                }        
-                line = null;
-                next = null;        
-            }
-            private static String typeName( File file ){
-                String name = file.getName();
-                int split = name.lastIndexOf('.');
-                return split == -1 ? name : name.substring(0, split );        
-            }
-            private static String namespace( File file ){
-                File parent = file.getParentFile();
-                return parent == null ? "" : parent.getName()+".";
-            }
-        }
+Because this class actually does some work, we are going to include a few more comments
+in the code to keep our heads on straight.
+
+1. Create the file PropertyAttributeReader as follows:
+
+   .. literalinclude:: /../src/main/java/org/geotools/data/property/PropertyAttributeReader.java
+      :language: java
+      :end-before: // class definition end
 
    Our constructor acquires the type information from the header, using a function form DataUtilities
-   to interpret the type specification. The filename is used as the name for the resulting FeatureType,
-   and the directory name is used for the name space.
+   to interpret the type specification. The filename is used as the name for the resulting
+   FeatureType, and the directory name is used for the name space.
    
-   The BufferedReader, reader, is opened and it will be this class that allows us to stream over
+   The **BufferedReader**, reader, is opened and it will be this class that allows us to stream over
    contents as a series of Features.
+   
+   .. note::
+      
+      We are opening this in the constructor in order raise an IOException if the
+      file cannot be used (rather than wait until next() is called).
    
    We will use a two part strategy for determining if more content is available. We will try and
    acquire the 'next' line in the hasNext() method, using the next() method to update 'line' to
    the contents of 'next'. All attribute operations will be performed against the current 'line'.
 
-2. With these ideas in mind we can implement the required methods::
+2. With these ideas in mind we can implement the required methods:
     
-        public int getAttributeCount() {
-            return type.getAttributeCount();
-        }        
-        public AttributeType getAttributeType(int index)
-            throws ArrayIndexOutOfBoundsException {
-            return type.getAttributeType( index );
-            
-        }
-        public void close() throws IOException {
-            reader.close();
-            reader = null;
-        }
-        public boolean hasNext() throws IOException {        
-            if( next != null){
-                return true;
-            }
-            next = reader.readLine();
-            return next != null;
-        }
-        public void next() throws IOException {
-            if( hasNext() ){
-                line = next;
-                next = null;
-            }
-            else {
-                throw new NoSuchElementException();        
-            }
-        }    
-        public Object read(int index)
-            throws IOException, ArrayIndexOutOfBoundsException {
-            if( line == null ){
-                throw new IOException( "No content available - did you remeber to call next?" );            
-            }
-            int split = line.indexOf('=');
-            String fid = line.substring( 0, split );
-            String text[] = line.substring( split+1 ).split("\\|");
-          
-            AttributeType attType = type.getAttributeType(index);
-            Object value = null;
-            if (attType.isGeometry()) {
-                try {
-                    value = wktReader.read( text[GEOTOOLS: index ]);
-                } catch (ParseException e) {
-                    throw new DataSourceException("Can't parse WKT for fid#" + fid,
-                        e);
-                }
-            } else {
-                value = attType.parse( text[GEOTOOLS: index ]);
-            }
-    
-           return value;
-        }
+   .. literalinclude:: /../src/main/java/org/geotools/data/property/PropertyAttributeReader.java
+      :language: java
+      :start-after: // implementation start
+      :end-before: // implementation end
+
         
 2. Finally, since our file format does support FeatureID we will need a way to let
-   our FeatureReader know::
+   our FeatureReader know:
 
-        public String getFeatureID(){
-            if( line == null ){
-                return null;
-            }
-            int split = line.indexOf('=');
-            if( split == -1){
-                return null;
-            }
-            return line.substring( 0, split );        
-        }
+   .. literalinclude:: /../src/main/java/org/geotools/data/property/PropertyAttributeReader.java
+      :language: java
+      :start-after: // getFeatureID start
+      :end-before: // getFeatureID end
 
-   We can make use of getFeatureID() to supply a FeatureID for FeatureReader. Many other DataStores
-   derive a FeatureID from the attributes.
+   We can make use of getFeatureID() to supply a FeatureID for FeatureReader.
+   
+   .. note::
+      
+      Many other DataStores derive a FeatureID from their attributes, or the current
+      line number.
+      
+      Since a FeatureID must start with a letter a common approach is to prepend
+      the TypeName followed by a dot to the line number, or database row ID number.
 
-   A common approach is to take a unique AttributeType, which is a number, and prepend the typename.
-   This allows the creation of a unique identifier that does not start with a number.
+      FeatureID generation example::
 
-   FeatureID generation example::
+		public String deriveFeatureID(){
+		    return type.getTypeName()+"."+id_number;
+		}
 
-        public String deriveFeatureID(){
-            return type.getTypeName()+"."+Integer.parse( read( 0 ).toString() );
-        }
         
-DataStore Factory Implementation
-''''''''''''''''''''''''''''''''
+DataStoreFactory Implementation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-To make your DataStore truly independent and pluggable, your must create a class implementing the
-DataStoreFactorySpi interface.
+To make your DataStore truly independent and plugable, your must create a class implementing the
+**DataStoreFactorySpi** interface.
 
 This allows the Service Provider Interface mechanism to dynamically plug in your new DataStore with
 no implementation knowledge. Code that uses the DataStoreFinder can just add the new DataStore to
 the classpath and it will work!
 
-This code operates by looking at the services file:
-
-*  META-INF/services/org.geotools.data.DataStoreFactorySpi
-
-This file requires the filename of the factory that implements the DataStoreSpi interface.
-
-Example org.geotools.data.DataStoreFactorySpi file::
-    
-    org.geotools.data.tutorial.PropertiesDataStoreFactory
-
 The DataStoreFactorySpi provides information on the Parameters required for construction.
 DataStoreFactoryFinder provides the ability to create DataStores representing existing
 information and the ability to create new physical storage.
 
-1. Create PropertyDataStoreFactory as follows::
+1. PropertyDataStoreFactory
+   
+   * The "no argument" consturctor is required as it will be used by the
+     Factory Service Provider (SPI) plug-in system.
+   * getImplemetnationHints() is used to report on any "Hints" used for configuration
+     by our factory. As an example our Factory could allow people to specify a specific
+     FeatureFactory to use when creating a feature for each line.
+     
+   Create PropertyDataStoreFactory as follows:
 
-        package org.geotools.data.property;
-        
-        import org.geotools.data.DataStore;
-        import org.geotools.data.DataStoreFactorySpi;
-        import java.io.File;
-        import java.io.IOException;
-        import java.util.Map;
-        
-        public class PropertyDataStoreFactory implements DataStoreFactorySpi {
-            public DataStore createDataStore(Map params) throws IOException {
-                File dir = (File) params.get("directory");        
-                return new PropertyDataStore( dir );
-            }
-            public DataStore createNewDataStore(Map params) throws IOException {
-                File dir = (File) params.get("directory");
-                if (dir.exists()) {
-                    throw new IOException(dir + " already exists");
-                }
-                boolean created;       
-                created = dir.mkdir();
-                if (!created) {
-                    throw new IOException("Could not create the directory" + dir);
-                }
-                return new PropertyDataStore(dir);
-            }
-            public String getDescription() {
-                return "Allows access to Java Property files containing Feature information";
-            }
-            public Param[] getParametersInfo() {
-                Param directory = new Param("directory", File.class,
-                        "Directory containing property files", true);
-        
-                return new Param[] { directory, };
-            }
-            public boolean canProcess(Map params) {
-                return (params != null) && params.containsKey("directory")
-                && params.get("directory") instanceof File;
-            }
-        }
+   .. literalinclude:: /../src/main/java/org/geotools/data/property/PropertyDataStoreFactory.java
+      :language: java
+      :end-before: // definition end
+
+2. We have a couple of methods to describe the DataStore.
+
+   .. literalinclude:: /../src/main/java/org/geotools/data/property/PropertyDataStoreFactory.java
+      :language: java
+      :start-after: // metadata start
+      :end-before: // metadata end
+
+3. The user is expected to supply a Map of connection parameters when creating
+   a datastore.
+   
+   The allowable connection parameters are described using *Parameter* (as defined by gt-api docs).
+   This captures the "key" used to store the value in the map, and the expected java
+   type for the value.
+   
+   .. literalinclude:: /../src/main/java/org/geotools/data/property/PropertyDataStoreFactory.java
+      :language: java
+      :start-after: // getParametersInfo start
+      :end-before: // getParametersInfo end
+      
+4. We have some code to check if a set of provided connection parameters
+   can actually be used.
+   
+   .. literalinclude:: /../src/main/java/org/geotools/data/property/PropertyDataStoreFactory.java
+      :language: java
+      :start-after: // canProcess start
+      :end-before: // canProcess end
+   
+   .. note::
+      
+      The driectoryLookup has gotten considerably more complicated since this tutorial
+      was first written. One of the benifits of PropertyDataStore being used
+      in real world situtations.
+   
+5. Armed with a map of connection parameters we can now:
+   
+   * create a Datastore for an **existing** property file; and
+   * create a datastore for a **new** property file
+
+   Here is the code that finally calls our PropertyDataStore constructor:
+   
+   .. literalinclude:: /../src/main/java/org/geotools/data/property/PropertyDataStoreFactory.java
+      :language: java
+      :start-after: // createDataStore start
+      :end-before: // createDataStore end
+   
+2. The Factory Service Provider (SPI) system operates by looking at the META-INF/services
+   folder and checking for implemetnations of DataStoreFactorySpi
+
+   To "register" our PropertyDataStoreFactory please create the following file:
+
+   *  META-INF/services/org.geotools.data.DataStoreFactorySpi
+
+   This file requires the filename of the factory that implements the DataStoreSpi interface.
+
+   Fille in the following content for your **org.geotools.data.DataStoreFactorySpi** file::
+    
+       org.geotools.data.tutorial.PropertiesDataStoreFactory
+   
+That is it, in the next section we will try out your new DataStore.
 
 Part 3 - Using Property DataStore to Read Files
 -----------------------------------------------
@@ -1316,19 +1226,24 @@ From AbstractDataStore getFeatureReader( featureType, filter, transaction ):
 
 .. note::
    
-   This function doesn't appear in AbstractDataStore!
+   Historically Filter.ALL and Filter.NONE were used as placeholder,
+   as crazy as it sounds, Filter.ALL filters out ALL (accepts none)
+   Filter.NONE filters out NONE (accepts ALL)/
    
-   As crazy as it sounds, Filter.ALL filters out ALL (accepts none)
-   Filter.NONE filters out NONE (accepts ALL)
+   These two have been renamed in GeoTools 2.3 for the following:
    
-   Update: Filter.ALL has been replaced with Filter.EXCLUDES
-   Update: Filter.NONE has been replaced with Filter.INCLUDES
+   * Filter.ALL has been replaced with Filter.EXCLUDES
+   * Filter.NONE has been replaced with Filter.INCLUDES
 
-Here is an example of how wrappers are applied around your raw feature reader::
+Here is an example of how AbstractDataStore applies wrappers around your raw feature reader::
 
-    public FeatureReader getFeatureReader(FeatureType featureType,
-            Filter filter, Transaction transaction) 
-            throws IOException {
+    public  FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(Query query,Transaction transaction) throws IOException {
+        Filter filter = query.getFilter();
+        String typeName = query.getTypeName();
+        String propertyNames[] = query.getPropertyNames();
+        
+        ....
+        
         if (filter == Filter.EXCLUDES) {
             return new EmptyFeatureReader(featureType);
         }

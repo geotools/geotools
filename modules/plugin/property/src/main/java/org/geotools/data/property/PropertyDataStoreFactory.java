@@ -29,12 +29,12 @@ import org.geotools.data.DataStoreFactorySpi;
 /**
  * DataStore factory that creates {@linkplain org.geotools.data.property.PropertyDataStore}s
  *
- * @author jgarnett
+ * @author Jody garnett
  * @source $URL$
  * @version $Id$
  */
 public class PropertyDataStoreFactory implements DataStoreFactorySpi {
-	private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(PropertyDataStoreFactory.class.getPackage().getName());
+    // private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(PropertyDataStoreFactory.class.getPackage().getName());
 	
     public static final Param DIRECTORY = new Param("directory", File.class,
             "Directory containting property files", true);

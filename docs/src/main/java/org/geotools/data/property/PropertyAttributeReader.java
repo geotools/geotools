@@ -56,15 +56,10 @@ import com.vividsolutions.jts.geom.Geometry;
  */
 public class PropertyAttributeReader implements AttributeReader {
     BufferedReader reader;
-
     SimpleFeatureType type;
-
     String line;
-
     String next;
-
     String[] text;
-
     String fid;
 
     /**
@@ -127,7 +122,8 @@ public class PropertyAttributeReader implements AttributeReader {
 
         return (parent == null) ? "" : (parent.getName() + ".");
     }
-
+    // class definition end
+    // implementation start
     /**
      * Number of attributes to expect based on header information.
      * 
@@ -196,19 +192,6 @@ public class PropertyAttributeReader implements AttributeReader {
     }
 
     /**
-     * Retrieve the FeatureId identifying the current line.
-     * 
-     * @return FeatureID for the current line.
-     */
-    public String getFeatureID() {
-        if (line == null) {
-            return null;
-        }
-
-        return fid;
-    }
-
-    /**
      * Read attribute in position marked by <code>index</code>.
      * 
      * @param index Attribute position to read
@@ -267,4 +250,20 @@ public class PropertyAttributeReader implements AttributeReader {
         }
         return value;
     }
+    // implementation end
+    
+    // getFeatureID start
+    /**
+     * Retrieve the FeatureId identifying the current line.
+     * 
+     * @return FeatureID for the current line.
+     */
+    public String getFeatureID() {
+        if (line == null) {
+            return null;
+        }
+
+        return fid;
+    }
+    // getFeatureID end
 }

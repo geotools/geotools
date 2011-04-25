@@ -45,6 +45,8 @@ import org.geotools.factory.Hints;
 import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.filter.identity.FeatureIdImpl;
+import org.opengis.feature.Feature;
+import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -97,6 +99,19 @@ public class PropertyDataStoreTest extends TestCase {
         writer.write("fid3=3|dave"); writer.newLine();
         writer.write("fid4=4|justin");
         writer.close();
+
+        file = new File( dir ,"multiline.properties");
+        if( file.exists()){
+            file.delete();
+        }        
+        writer = new BufferedWriter( new FileWriter( file ) );
+        writer.write("_=id:Integer,name:String"); writer.newLine();
+        writer.write("fid1=1|jody \\"); writer.newLine();
+        writer.write("       garnett"); writer.newLine();
+        writer.write("fid2=2|brent"); writer.newLine();
+        writer.write("fid3=3|dave"); writer.newLine();
+        writer.write("fid4=4|justin\\\n");
+        writer.close();
         
         store = new PropertyDataStore( dir );
         super.setUp();
@@ -114,9 +129,10 @@ public class PropertyDataStoreTest extends TestCase {
     public void testGetNames() {
         String names[] = store.getTypeNames();
         Arrays.sort(names);
-        assertEquals( 2, names.length );
+        assertEquals( 3, names.length );
         assertEquals( "dots.in.name", names[0] );
-        assertEquals( "road", names[1] );              
+        assertEquals( "multiline", names[1] );              
+        assertEquals( "road", names[2] );              
     }
 
     public void testGetSchema() throws IOException {
@@ -370,21 +386,18 @@ public class PropertyDataStoreTest extends TestCase {
         assertEquals( 4, features.size() );
                 
     }
-    private void dir( File file ){
-        File dir;
-        if( file.isDirectory() ){
-            dir = file;
-        }
-        else{
-            dir = file.getParentFile();
-        }
-        if( dir != null){
-            String ls[] = dir.list();
-            System.out.println( "Directory "+dir );
-            for( int i=0; i<ls.length;i++){
-                System.out.println( ls[i] );
+    public void testMultiLine() throws Exception {
+        SimpleFeatureSource road = store.getFeatureSource( "multiline" );
+        FeatureId fid1 = ff.featureId("fid1");
+        Filter select = ff.id( Collections.singleton(fid1));
+        SimpleFeatureCollection featureCollection = road.getFeatures( select );
+        featureCollection.accepts(new FeatureVisitor() {
+            public void visit(Feature f) {
+                SimpleFeature feature = (SimpleFeature) f;
+                String name = (String) feature.getAttribute("name");
+                assertEquals( "jody \ngarnett", name );
             }
-        }
+        },null);
     }
 
     public void testTransactionIndependence() throws Exception {

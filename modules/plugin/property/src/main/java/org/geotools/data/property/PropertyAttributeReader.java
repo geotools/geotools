@@ -169,10 +169,39 @@ public class PropertyAttributeReader implements AttributeReader {
         if (next != null) {
             return true;
         }
-        next = reader.readLine();
+        next = readLine();
         return next != null;
     }
-
+    String readLine() throws IOException {
+        StringBuilder buffer = new StringBuilder();
+        while( true ){
+            String txt = reader.readLine();
+            if( txt == null ){
+                break;
+            }
+            if( txt.startsWith("#")){
+                continue; // skip content
+            }
+            if( txt.endsWith("\\")){
+                buffer.append(txt.substring(0,txt.length()-1) );
+                buffer.append("\n");
+                continue;
+            }
+            else {
+                txt = txt.trim();
+                buffer.append(txt);
+                break;
+            }
+        }
+        if( buffer.length() == 0 ){
+            return null; // there is no line
+        }
+        String raw = buffer.toString();
+        raw = raw.replace("\\n", "\n" );
+        raw = raw.replace("\\r", "\r" );
+        raw = raw.replace("\\t", "\t" );
+        return raw;
+    }
     /**
      * Retrieve the next line.
      * 

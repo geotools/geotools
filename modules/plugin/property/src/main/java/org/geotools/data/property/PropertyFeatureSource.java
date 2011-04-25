@@ -59,7 +59,7 @@ public class PropertyFeatureSource extends AbstractFeatureLocking {
                 }
                 cacheCount = -1;
             }
-        }); 
+        });
         this.queryCapabilities = new QueryCapabilities() {
             @Override
             public boolean isUseProvidedFIDSupported() {

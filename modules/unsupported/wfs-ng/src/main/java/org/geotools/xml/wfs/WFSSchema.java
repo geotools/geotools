@@ -58,22 +58,6 @@ import org.geotools.xml.wfs.WFSCapabilitiesComplexTypes.ResultFormatType;
 import org.geotools.xml.wfs.WFSCapabilitiesComplexTypes.SchemaDescriptionLanguageType;
 import org.geotools.xml.wfs.WFSCapabilitiesComplexTypes.ServiceType;
 import org.geotools.xml.wfs.WFSCapabilitiesComplexTypes.WFS_CapabilitiesType;
-import org.geotools.xml.wfs.WFSTransactionComplexTypes.DeleteElementType;
-import org.geotools.xml.wfs.WFSTransactionComplexTypes.FeaturesLockedType;
-import org.geotools.xml.wfs.WFSTransactionComplexTypes.FeaturesNotLockedType;
-import org.geotools.xml.wfs.WFSTransactionComplexTypes.GetFeatureWithLockType;
-import org.geotools.xml.wfs.WFSTransactionComplexTypes.InsertElementType;
-import org.geotools.xml.wfs.WFSTransactionComplexTypes.InsertResultType;
-import org.geotools.xml.wfs.WFSTransactionComplexTypes.LockFeatureType;
-import org.geotools.xml.wfs.WFSTransactionComplexTypes.LockType;
-import org.geotools.xml.wfs.WFSTransactionComplexTypes.NativeType;
-import org.geotools.xml.wfs.WFSTransactionComplexTypes.PropertyType;
-import org.geotools.xml.wfs.WFSTransactionComplexTypes.StatusType;
-import org.geotools.xml.wfs.WFSTransactionComplexTypes.TransactionResultType;
-import org.geotools.xml.wfs.WFSTransactionComplexTypes.TransactionType;
-import org.geotools.xml.wfs.WFSTransactionComplexTypes.UpdateElementType;
-import org.geotools.xml.wfs.WFSTransactionComplexTypes.WFS_LockFeatureResponseType;
-import org.geotools.xml.wfs.WFSTransactionComplexTypes.WFS_TransactionResponseType;
 import org.geotools.xml.xsi.XSISimpleTypes;
 
 
@@ -125,20 +109,7 @@ public class WFSSchema implements Schema {
             new WFSElement("GML2", EmptyType.getInstance()),
             new WFSElement("GML2-GZIP", EmptyType.getInstance()),
             new WFSElement("XMLSCHEMA", EmptyType.getInstance()), // 21
-            new WFSElement("GetFeatureWithLock",
-                GetFeatureWithLockType.getInstance()),
-            new WFSElement("LockFeature", LockFeatureType.getInstance()),
-            new WFSElement("Transaction", TransactionType.getInstance()),
-            new WFSElement("WFS_TransactionResponse",
-                WFS_TransactionResponseType.getInstance()),
-            new WFSElement("WFS_LockFeatureResponse",
-                WFS_LockFeatureResponseType.getInstance()),
             new WFSElement("LockId", XSISimpleTypes.String.getInstance()),
-            new WFSElement("Insert", InsertElementType.getInstance()),
-            new WFSElement("Update", UpdateElementType.getInstance()),
-            new WFSElement("Delete", DeleteElementType.getInstance()),
-            new WFSElement("Native", NativeType.getInstance()),
-            new WFSElement("Property", PropertyType.getInstance()),
             new WFSElement("SUCCESS", EmptyType.getInstance()),
             new WFSElement("FAILED", EmptyType.getInstance()),
             new WFSElement("PARTIAL", EmptyType.getInstance())
@@ -149,23 +120,13 @@ public class WFSSchema implements Schema {
             QueryType.getInstance(), FeatureCollectionType.getInstance(),
             WFS_CapabilitiesType.getInstance(), ServiceType.getInstance(),
             CapabilityType.getInstance(), FeatureTypeListType.getInstance(),
-            RequestType.getInstance(), TransactionType.getInstance(),
+            RequestType.getInstance(), 
             LockFeatureTypeType.getInstance(), DCPTypeType.getInstance(),
             FeatureTypeType.getInstance(), GetType.getInstance(),
             HTTPType.getInstance(), LatLongBoundingBoxType.getInstance(),
             MetadataURLType.getInstance(), OperationsType.getInstance(),
             PostType.getInstance(), ResultFormatType.getInstance(),
-            SchemaDescriptionLanguageType.getInstance(), EmptyType.getInstance(),
-            GetFeatureWithLockType.getInstance(), LockFeatureType.getInstance(),
-            LockType.getInstance(), InsertElementType.getInstance(),
-            UpdateElementType.getInstance(), DeleteElementType.getInstance(),
-            NativeType.getInstance(), PropertyType.getInstance(),
-            WFS_LockFeatureResponseType.getInstance(),
-            FeaturesLockedType.getInstance(),
-            FeaturesNotLockedType.getInstance(),
-            WFS_TransactionResponseType.getInstance(),
-            TransactionResultType.getInstance(), InsertResultType.getInstance(),
-            StatusType.getInstance()
+            SchemaDescriptionLanguageType.getInstance(), EmptyType.getInstance()            
         };
     static final SimpleType[] simpleTypes = new SimpleType[] {
             new SimpleTypeGT(null, "AllSomeType", NAMESPACE,

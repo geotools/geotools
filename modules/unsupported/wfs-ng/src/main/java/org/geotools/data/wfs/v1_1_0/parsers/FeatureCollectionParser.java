@@ -29,7 +29,7 @@ import org.geotools.data.DataUtilities;
 import org.geotools.data.wfs.protocol.wfs.GetFeatureParser;
 import org.geotools.data.wfs.protocol.wfs.WFSResponse;
 import org.geotools.data.wfs.protocol.wfs.WFSResponseParser;
-import org.geotools.data.wfs.v1_1_0.WFS_1_1_0_DataStore;
+import org.geotools.data.wfs.v1_1_0.WFSNGDataStore;
 import org.geotools.feature.SchemaException;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -49,7 +49,7 @@ public class FeatureCollectionParser implements WFSResponseParser {
     /**
      * @return a {@link GetFeatureParser} to stream the contents of the GML 3.1 response
      */
-    public Object parse(WFS_1_1_0_DataStore wfs, WFSResponse response) throws IOException {
+    public Object parse(WFSNGDataStore wfs, WFSResponse response) throws IOException {
 
         GetFeatureType request = (GetFeatureType) response.getOriginatingRequest();
         QueryType queryType = (QueryType) request.getQuery().get(0);

@@ -9,7 +9,7 @@ import net.opengis.wfs.GetFeatureType;
 import net.opengis.wfs.WfsFactory;
 
 import org.eclipse.emf.ecore.EObject;
-import org.geotools.data.wfs.v1_1_0.WFS_1_1_0_DataStore;
+import org.geotools.data.wfs.v1_1_0.WFSNGDataStore;
 import org.junit.Test;
 
 /**
@@ -40,7 +40,7 @@ public class WFSExtensionsTest {
             return true;
         }
 
-        public WFSResponseParser createParser( WFS_1_1_0_DataStore wfs, WFSResponse response )
+        public WFSResponseParser createParser( WFSNGDataStore wfs, WFSResponse response )
                 throws IOException {
             throw new UnsupportedOperationException("not intended to be called for this test class");
         }

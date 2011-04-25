@@ -22,7 +22,6 @@ import java.net.URL;
 import java.util.Set;
 
 import org.geotools.data.ResourceInfo;
-import org.geotools.data.wfs.WFSDataStore;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
@@ -38,11 +37,11 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *         /data/XmlSimpleFeatureParser.java $
  */
 final class CapabilitiesResourceInfo implements ResourceInfo {
-    private WFS_1_1_0_DataStore wfs;
+    private WFSNGDataStore wfs;
 
     private String typeName;
 
-    public CapabilitiesResourceInfo(String typeName, WFS_1_1_0_DataStore service) {
+    public CapabilitiesResourceInfo(String typeName, WFSNGDataStore service) {
         this.typeName = typeName;
         this.wfs = service;
     }

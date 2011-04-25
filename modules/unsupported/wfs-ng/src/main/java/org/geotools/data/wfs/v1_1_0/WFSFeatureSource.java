@@ -17,22 +17,20 @@
 package org.geotools.data.wfs.v1_1_0;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Set;
 
-import org.geotools.data.DataStore;
-import org.geotools.data.DefaultQuery;
-import org.geotools.data.FeatureListener;
+import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
 import org.geotools.data.QueryCapabilities;
 import org.geotools.data.ResourceInfo;
-import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.data.wfs.WFSDataStore;
+import org.geotools.data.store.ContentEntry;
+import org.geotools.data.store.ContentFeatureSource;
+import org.geotools.data.wfs.protocol.wfs.WFSProtocol;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
-import org.opengis.filter.Filter;
 
 /**
  * Simple implementation of FeatureSource for a WFS 1.1 server.
@@ -49,22 +47,24 @@ import org.opengis.filter.Filter;
  *         /data/XmlSimpleFeatureParser.java $
  */
 
-public class WFSFeatureSource implements SimpleFeatureSource {
+public class WFSFeatureSource extends ContentFeatureSource {
 
     private String typeName;
 
-    private WFS_1_1_0_DataStore dataStore;
+    private WFSNGDataStore dataStore;
 
     private SimpleFeatureType featureType;
 
     private QueryCapabilities queryCapabilities;
 
-    public WFSFeatureSource(final WFS_1_1_0_DataStore dataStore, final String typeName)
-            throws IOException {
+    /*public WFSFeatureSource(final WFS_1_1_0_DataStore dataStore, final String typeName) throws IOException {
         this.typeName = typeName;
         this.dataStore = dataStore;
         this.queryCapabilities = new QueryCapabilities();
         this.featureType = dataStore.getSchema(typeName);
+    }*/
+    public WFSFeatureSource(ContentEntry entry,Query query) throws IOException {
+        super(entry,query);
     }
 
     public Name getName() {
@@ -74,16 +74,16 @@ public class WFSFeatureSource implements SimpleFeatureSource {
     /**
      * @see FeatureSource#getDataStore()
      */
-    public DataStore getDataStore() {
+    /*public WFSDataStore getDataStore() {
         return dataStore;
     }
-
+*/
     /**
      * @see FeatureSource#getSchema()
      */
-    public SimpleFeatureType getSchema() {
+    /*public SimpleFeatureType getSchema() {
         return featureType;
-    }
+    }*/
 
     /**
      * Returns available metadata for this resource
@@ -97,72 +97,72 @@ public class WFSFeatureSource implements SimpleFeatureSource {
     /**
      * @see FeatureSource#addFeatureListener(FeatureListener)
      */
-    public void addFeatureListener(FeatureListener listener) {
+   /* public void addFeatureListener(FeatureListener listener) {
 
-    }
+    }*/
 
     /**
      * @see FeatureSource#removeFeatureListener(FeatureListener)
      */
-    public void removeFeatureListener(FeatureListener listener) {
-    }
+   /* public void removeFeatureListener(FeatureListener listener) {
+    }*/
 
     /**
      * @see FeatureSource#getBounds()
      */
-    public ReferencedEnvelope getBounds() throws IOException {
+/*    public ReferencedEnvelope getBounds() throws IOException {
         return getInfo().getBounds();
-    }
+    }*/
 
     /**
      * @see FeatureSource#getBounds(Query)
      */
-    public ReferencedEnvelope getBounds(Query query) throws IOException {
+    /*public ReferencedEnvelope getBounds(Query query) throws IOException {
         Query namedQuery = namedQuery(typeName, query);
         ReferencedEnvelope bounds = dataStore.getBounds(namedQuery);
         return bounds;
-    }
+    }*/
 
     /**
      * @see FeatureSource#getCount(Query)
      */
-    public int getCount(Query query) throws IOException {
+  /*  public int getCount(Query query) throws IOException {
         Query namedQuery = namedQuery(typeName, query);
         int count = dataStore.getCount(namedQuery);
         return count;
-    }
+    }*/
 
     /**
      * @see FeatureSource#getFeatures(Filter)
      */
-    public WFSFeatureCollection getFeatures(Filter filter) throws IOException {
+    /*public WFSFeatureCollection getFeatures(Filter filter) throws IOException {
         return getFeatures(new DefaultQuery(typeName, filter));
-    }
+    }*/
 
     /**
      * @see FeatureSource#getFeatures()
      */
-    public WFSFeatureCollection getFeatures() throws IOException {
+/*    public WFSFeatureCollection getFeatures() throws IOException {
         return getFeatures(new DefaultQuery(typeName));
-    }
+    }*/
 
     /**
      * @see FeatureSource#getFeatures(Query)
      */
-    public WFSFeatureCollection getFeatures(final Query query) throws IOException {
+/*    public WFSFeatureCollection getFeatures(final Query query) throws IOException {
         Query namedQuery = namedQuery(typeName, query);
         return new WFSFeatureCollection(dataStore, namedQuery);
-    }
+    }*/
 
     /**
      * @see FeatureSource#getSupportedHints()
      */
-    @SuppressWarnings("unchecked")
+/*    @SuppressWarnings("unchecked")
     public Set getSupportedHints() {
         return Collections.EMPTY_SET;
-    }
+    }*/
 
-    private Query namedQuery(final String typeName, final Query query) {
+  /* private Query namedQuery(final String typeName, final Query query) {
         if (query.getTypeName() != null && !query.getTypeName().equals(typeName)) {
             throw new IllegalArgumentException("Wrong query type name: " + query.getTypeName()
                     + ". It should be " + typeName);
@@ -170,9 +170,31 @@ public class WFSFeatureSource implements SimpleFeatureSource {
         DefaultQuery named = new DefaultQuery(query);
         named.setTypeName(typeName);
         return named;
-    }
+    }*/
 
     public QueryCapabilities getQueryCapabilities() {
         return this.queryCapabilities;
     }
+
+    @Override
+    protected ReferencedEnvelope getBoundsInternal(Query query) throws IOException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    protected int getCountInternal(Query query) throws IOException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query) throws IOException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    protected SimpleFeatureType buildFeatureType() throws IOException {
+        throw new UnsupportedOperationException("Not supported yet.");
+        
+    }
+ 
 }

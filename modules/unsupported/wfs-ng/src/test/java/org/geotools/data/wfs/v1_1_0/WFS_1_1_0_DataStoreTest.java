@@ -61,16 +61,16 @@ public class WFS_1_1_0_DataStoreTest {
      */
     @Test
     public void testGetTypeNames() throws IOException {
-        String[] expected = {"gubs:GovernmentalUnitCE", "gubs:GovernmentalUnitMCD",
-                "gubs:GovernmentalUnitST", "hyd:HydroElementARHI", "hyd:HydroElementARMD",
-                "hyd:HydroElementFLHI", "hyd:HydroElementFLMD", "hyd:HydroElementLIHI",
-                "hyd:HydroElementLIMD", "hyd:HydroElementPTHI", "hyd:HydroElementPTMD",
-                "hyd:HydroElementWBHI", "hyd:HydroElementWBMD", "trans:RoadSeg"};
+        String[] expected = {"RoadSeg", "GovernmentalUnitCE",
+                "HydroElementWBMD", "GovernmentalUnitMCD", "GovernmentalUnitST",
+                "HydroElementFLHI", "HydroElementARHI", "HydroElementPTMD",
+                "HydroElementARMD", "HydroElementPTHI", "HydroElementWBHI",
+                "HydroElementLIMD", "HydroElementLIHI", "HydroElementFLMD"};
         List<String> expectedTypeNames = Arrays.asList(expected);
 
         createTestProtocol(CUBEWERX_GOVUNITCE.CAPABILITIES);
 
-        WFS_1_1_0_DataStore ds = new WFS_1_1_0_DataStore(wfs);
+        WFSNGDataStore ds = new WFSNGDataStore(wfs);
 
         String[] typeNames = ds.getTypeNames();
         assertNotNull(typeNames);
@@ -96,12 +96,12 @@ public class WFS_1_1_0_DataStoreTest {
         URL describeUrl = TestData.getResource(this, CUBEWERX_GOVUNITCE.SCHEMA);
         wfs.setDescribeFeatureTypeURLOverride(describeUrl);
 
-        WFS_1_1_0_DataStore ds = new WFS_1_1_0_DataStore(wfs);
+        WFSNGDataStore ds = new WFSNGDataStore(wfs);
 
         try {
             ds.getSchema("nonExistentTypeName");
-            fail("Expected SchemaNotFoundException");
-        } catch (SchemaNotFoundException e) {
+            fail("Expected IOException");
+        } catch (IOException e) {
             assertTrue(true);
         }
 
@@ -121,7 +121,7 @@ public class WFS_1_1_0_DataStoreTest {
         URL describeUrl = TestData.getResource(this, CUBEWERX_GOVUNITCE.SCHEMA);
         wfs.setDescribeFeatureTypeURLOverride(describeUrl);
 
-        WFS_1_1_0_DataStore ds = new WFS_1_1_0_DataStore(wfs);
+        WFSNGDataStore ds = new WFSNGDataStore(wfs);
         DefaultQuery query = new DefaultQuery(CUBEWERX_GOVUNITCE.FEATURETYPENAME);
         FeatureReader<SimpleFeatureType, SimpleFeature> featureReader;
         featureReader = ds.getFeatureReader(query, Transaction.AUTO_COMMIT);

@@ -51,9 +51,9 @@ final class CapabilitiesServiceInfo implements WFSServiceInfo {
         }
     }
 
-    private WFS_1_1_0_DataStore wfs;
+    private WFSNGDataStore wfs;
 
-    public CapabilitiesServiceInfo(WFS_1_1_0_DataStore service) {
+    public CapabilitiesServiceInfo(WFSNGDataStore service) {
         this.wfs = service;
     }
 

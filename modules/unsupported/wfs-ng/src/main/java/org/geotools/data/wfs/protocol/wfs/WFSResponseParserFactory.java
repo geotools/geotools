@@ -19,7 +19,7 @@ package org.geotools.data.wfs.protocol.wfs;
 import java.io.IOException;
 
 import org.eclipse.emf.ecore.EObject;
-import org.geotools.data.wfs.v1_1_0.WFS_1_1_0_DataStore;
+import org.geotools.data.wfs.v1_1_0.WFSNGDataStore;
 
 /**
  * A factory interface meant to be used through the usual GeoTools SPI mechanism to dynamically find
@@ -62,7 +62,7 @@ public interface WFSResponseParserFactory {
      * @return a {@link WFSResponseParser} that can deal with the given WFS response
      * @throws IOException
      */
-    public WFSResponseParser createParser(WFS_1_1_0_DataStore wfs, WFSResponse response)
+    public WFSResponseParser createParser(WFSNGDataStore wfs, WFSResponse response)
             throws IOException;
 
 }

@@ -16,6 +16,9 @@
  */
 package org.geotools.data.wfs.v1_1_0;
 
+import org.geotools.data.store.ContentEntry;
+import org.geotools.data.store.ContentFeatureSource;
+import org.geotools.data.wfs.WFSServiceInfo;
 import static org.geotools.data.wfs.protocol.wfs.WFSOperationType.GET_CAPABILITIES;
 import static org.geotools.data.wfs.protocol.wfs.WFSOperationType.GET_FEATURE;
 
@@ -29,7 +32,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.xml.namespace.QName;
 
@@ -37,42 +39,27 @@ import org.geotools.data.DataAccess;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultQuery;
-import org.geotools.data.EmptyFeatureReader;
-import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureWriter;
-import org.geotools.data.FilteringFeatureReader;
-import org.geotools.data.LockingManager;
-import org.geotools.data.MaxFeatureReader;
 import org.geotools.data.Query;
-import org.geotools.data.ReTypeFeatureReader;
 import org.geotools.data.SchemaNotFoundException;
 import org.geotools.data.Transaction;
-import org.geotools.data.crs.ReprojectFeatureReader;
-import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.data.view.DefaultView;
-import org.geotools.data.wfs.WFSDataStore;
-import org.geotools.data.wfs.WFSServiceInfo;
+import org.geotools.data.store.ContentDataStore;
 import org.geotools.data.wfs.protocol.wfs.GetFeature;
 import org.geotools.data.wfs.protocol.wfs.GetFeatureParser;
-import org.geotools.data.wfs.protocol.wfs.WFSException;
 import org.geotools.data.wfs.protocol.wfs.WFSExtensions;
 import org.geotools.data.wfs.protocol.wfs.WFSOperationType;
 import org.geotools.data.wfs.protocol.wfs.WFSProtocol;
 import org.geotools.data.wfs.protocol.wfs.WFSResponse;
 import org.geotools.data.wfs.protocol.wfs.GetFeature.ResultType;
-import org.geotools.data.wfs.v1_1_0.parsers.EmfAppSchemaParser;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.SchemaException;
-import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.gml2.bindings.GML2EncodingUtils;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
-import org.geotools.util.logging.Logging;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
@@ -99,9 +86,7 @@ import org.opengis.referencing.operation.TransformException;
  *         /wfs/v_1_1_0/data/WFSDataStore.java $
  */
 @SuppressWarnings( { "nls" })
-public final class WFS_1_1_0_DataStore implements WFSDataStore {
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.data.wfs");
-
+public final class WFSNGDataStore extends ContentDataStore {
     /**
      * Whether to use POST as default HTTP method is not explicitly set
      */
@@ -120,7 +105,7 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
      * 
      * @param capabilities
      */
-    public WFS_1_1_0_DataStore(final WFSProtocol wfs) {
+    public WFSNGDataStore(final WFSProtocol wfs) {
         if (wfs == null) {
             throw new NullPointerException("wfs protocol");
         }
@@ -159,13 +144,6 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
     }
 
     /**
-     * @see WFSDataStore#getInfo()
-     */
-    public WFSServiceInfo getInfo() {
-        return new CapabilitiesServiceInfo(this);
-    }
-
-    /**
      * Makes a {@code DescribeFeatureType} request for {@code typeName} feature type, parses the
      * server response into a {@link SimpleFeatureType} and returns it.
      * <p>
@@ -182,7 +160,7 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
      *         document.
      * @see org.geotools.data.DataStore#getSchema(java.lang.String)
      */
-    public SimpleFeatureType getSchema(final String prefixedTypeName) throws IOException {
+    /*public SimpleFeatureType getSchema(final String prefixedTypeName) throws IOException {
         SimpleFeatureType ftype = byTypeNameTypes.get(prefixedTypeName);
         if (ftype == null) {
             // String outputFormat = DEFAULT_OUTPUT_FORMAT;
@@ -226,33 +204,20 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
             byTypeNameTypes.put(prefixedTypeName, ftype);
         }
         return ftype;
-    }
+    }*/
 
-    /**
-     * @see DataAccess#getSchema(Name)
-     * @see #getSchema(String)
-     */
-    public SimpleFeatureType getSchema(Name name) throws IOException {
-        Set<QName> featureTypeNames = wfs.getFeatureTypeNames();
-
-        String namespaceURI;
-        String localPart;
-        for (QName qname : featureTypeNames) {
-            namespaceURI = name.getNamespaceURI();
-            localPart = name.getLocalPart();
-            if (namespaceURI.equals(qname.getNamespaceURI())
-                    && localPart.equals(qname.getLocalPart())) {
-                String prefixedName = qname.getPrefix() + ":" + localPart;
-                return getSchema(prefixedName);
-            }
+    @Override
+    public ContentFeatureSource getFeatureSource(String typeName)
+        throws IOException {
+        if (typeName.indexOf(":")>0){
+            //Set<Qname> types=wfs.getFeatureTypeNames();
+            QName name=wfs.getFeatureTypeName(typeName);
+            return getFeatureSource(new NameImpl(name),Transaction.AUTO_COMMIT);
         }
-        throw new SchemaNotFoundException(name.getURI());
+        return super.getFeatureSource(typeName);
     }
 
-    /**
-     * @see DataAccess#getNames()
-     */
-    public List<Name> getNames() throws IOException {
+    protected List<Name> createTypeNames() throws IOException {
         Set<QName> featureTypeNames = wfs.getFeatureTypeNames();
         List<Name> names = new ArrayList<Name>(featureTypeNames.size());
         String namespaceURI;
@@ -264,11 +229,17 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
         }
         return names;
     }
+    /**
+     * @see DataAccess#getNames()
+     */
+    /*public List<Name> getNames() throws IOException {
+        
+    }*/
 
     /**
      * @see org.geotools.data.DataStore#getTypeNames()
      */
-    public String[] getTypeNames() throws IOException {
+    /*public String[] getTypeNames() throws IOException {
         Set<QName> featureTypeNames = wfs.getFeatureTypeNames();
         List<String> sorted = new ArrayList<String>(featureTypeNames.size());
         for (QName name : featureTypeNames) {
@@ -276,14 +247,14 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
         }
         Collections.sort(sorted);
         return sorted.toArray(new String[sorted.size()]);
-    }
+    }*/
 
     /**
      * @see org.geotools.data.DataStore#dispose()
      */
-    public void dispose() {
+  /*  public void dispose() {
         wfs.dispose();
-    }
+    }*/
 
     private WFSResponse executeGetFeatures(final Query query, final Transaction transaction,
             final ResultType resultType) throws IOException {
@@ -302,7 +273,7 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
      * @see org.geotools.data.DataStore#getFeatureReader(org.geotools.data.Query,
      *      org.geotools.data.Transaction)
      */
-    public FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(Query query,
+    /*public FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(Query query,
             final Transaction transaction) throws IOException {
 
         if (Filter.EXCLUDE.equals(query.getFilter())) {
@@ -368,7 +339,7 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
             reader = new MaxFeatureReader<SimpleFeatureType, SimpleFeature>(reader, maxFeatures);
         }
         return reader;
-    }
+    }*/
 
     /**
      * Sends the GetFeature request using the appropriate HTTP method depending on the
@@ -435,17 +406,9 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
     /**
      * @see org.geotools.data.DataStore#getFeatureSource(java.lang.String)
      */
-    public WFSFeatureSource getFeatureSource(final String typeName) throws IOException {
+    /*public WFSFeatureSource getFeatureSource(final String typeName) throws IOException {
         return new WFSFeatureSource(this, typeName);
-    }
-
-    /**
-     * @return {@code null}, no lock support so far
-     * @see org.geotools.data.DataStore#getLockingManager()
-     */
-    public LockingManager getLockingManager() {
-        return null;
-    }
+    }*/
 
     /**
      * Not supported.
@@ -455,6 +418,7 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
      * @throws UnsupportedOperationException
      *             always since this operation does not apply to a WFS backend
      */
+    @Override
     public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(String typeName,
             Filter filter, Transaction transaction) throws IOException {
         throw new UnsupportedOperationException("This is a read only DataStore");
@@ -468,28 +432,16 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
      * @throws UnsupportedOperationException
      *             always since this operation does not apply to a WFS backend
      */
-    public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(String typeName,
+    /*public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(String typeName,
             Transaction transaction) throws IOException {
         throw new UnsupportedOperationException("This is a read only DataStore");
-    }
-
-    /**
-     * Not supported.
-     * 
-     * @see org.geotools.data.DataStore#getFeatureWriterAppend(java.lang.String,
-     *      org.geotools.data.Transaction)
-     * @throws UnsupportedOperationException
-     *             always since this operation does not apply to a WFS backend
-     */
-    public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriterAppend(String typeName,
-            Transaction transaction) throws IOException {
-        throw new UnsupportedOperationException("This is a read only DataStore");
-    }
+    }*/
 
     /**
      * @see org.geotools.data.DataAccess#getFeatureSource(org.opengis.feature.type.Name)
      */
-    public SimpleFeatureSource getFeatureSource(Name typeName)
+
+   /* public SimpleFeatureSource getFeatureSource(Name typeName)
             throws IOException {
         Set<QName> featureTypeNames = wfs.getFeatureTypeNames();
 
@@ -503,7 +455,7 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
             }
         }
         throw new SchemaNotFoundException(typeName.getURI());
-    }
+    }*/
 
     /**
      * @see DataAccess#updateSchema(Name, org.opengis.feature.type.FeatureType)
@@ -520,9 +472,9 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
      * @throws UnsupportedOperationException
      *             always since this operation does not apply to a WFS backend
      */
-    public void updateSchema(String typeName, SimpleFeatureType featureType) throws IOException {
+    /*public void updateSchema(String typeName, SimpleFeatureType featureType) throws IOException {
         throw new UnsupportedOperationException("WFS does not support update schema");
-    }
+    }*/
 
     /**
      * @see org.geotools.data.DataStore#createSchema(org.opengis.feature.simple.SimpleFeatureType)
@@ -676,6 +628,13 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
     }
 
     /**
+     * Returns the WFSProtocol this Datastore uses
+     */
+    public WFSProtocol getWFSProtocol(){
+        return wfs;
+    }
+
+    /**
      * Only returns the bounds of the query (ie, the bounds of the whole feature type) if the query
      * has no filter set, otherwise the bounds may be too expensive to acquire.
      * 
@@ -794,7 +753,7 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
         final String defaultCrs = wfs.getDefaultCRS(typeName);
 
         if (queryCrs == null) {
-            LOGGER.warning("Query does not provide a CRS, using default: " + query);
+            LOGGER.log(Level.WARNING, "Query does not provide a CRS, using default: {0}", query);
             return defaultCrs;
         }
 
@@ -856,5 +815,20 @@ public final class WFS_1_1_0_DataStore implements WFSDataStore {
             maxFeatures = Math.min(maxFeaturesDataStoreLimit, maxFeatures);
         }
         return maxFeatures;
+    }
+    protected ContentFeatureSource createFeatureSource(ContentEntry entry) throws IOException {
+        // grab the schema, it carries a flag telling us if the feature type is read only
+        SimpleFeatureType schema = entry.getState(Transaction.AUTO_COMMIT).getFeatureType();
+        if (schema == null) {
+            // if the schema still haven't been computed, force its computation so
+            // that we can decide if the feature type is read only
+            schema = new WFSFeatureSource(entry, null).buildFeatureType();
+            entry.getState(Transaction.AUTO_COMMIT).setFeatureType(schema);
+        }
+        return (ContentFeatureSource) schema;
+    }
+
+    public WFSServiceInfo getInfo() {
+        return new CapabilitiesServiceInfo(this);
     }
 }

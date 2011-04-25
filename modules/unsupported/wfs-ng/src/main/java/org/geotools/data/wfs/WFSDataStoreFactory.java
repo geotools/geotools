@@ -16,8 +16,7 @@
  */
 package org.geotools.data.wfs;
 
-import static org.geotools.data.wfs.protocol.http.HttpMethod.GET;
-import static org.geotools.data.wfs.protocol.http.HttpMethod.POST;
+import java.io.Serializable;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -44,24 +43,19 @@ import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.DataStoreFinder;
 import org.geotools.data.wfs.protocol.http.HTTPProtocol;
 import org.geotools.data.wfs.protocol.http.HTTPResponse;
-import org.geotools.data.wfs.protocol.http.HttpMethod;
 import org.geotools.data.wfs.protocol.http.SimpleHttpProtocol;
 import org.geotools.data.wfs.protocol.wfs.Version;
 import org.geotools.data.wfs.protocol.wfs.WFSProtocol;
-import org.geotools.data.wfs.v1_0_0.WFS100ProtocolHandler;
-import org.geotools.data.wfs.v1_0_0.WFS_1_0_0_DataStore;
 import org.geotools.data.wfs.v1_1_0.ArcGISServerStrategy;
 import org.geotools.data.wfs.v1_1_0.CubeWerxStrategy;
 import org.geotools.data.wfs.v1_1_0.DefaultWFSStrategy;
 import org.geotools.data.wfs.v1_1_0.GeoServerStrategy;
 import org.geotools.data.wfs.v1_1_0.IonicStrategy;
 import org.geotools.data.wfs.v1_1_0.WFSStrategy;
-import org.geotools.data.wfs.v1_1_0.WFS_1_1_0_DataStore;
+import org.geotools.data.wfs.v1_1_0.WFSNGDataStore;
 import org.geotools.data.wfs.v1_1_0.WFS_1_1_0_Protocol;
 import org.geotools.util.logging.Logging;
 import org.geotools.wfs.WFS;
-import org.geotools.wfs.protocol.ConnectionFactory;
-import org.geotools.wfs.protocol.DefaultConnectionFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -307,7 +301,7 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
      */
     public static final WFSFactoryParam<Integer> MAXFEATURES = parametersInfo[9];
 
-    protected Map<Map, WFSDataStore> perParameterSetDataStoreCache = new HashMap();
+    protected Map<Map, WFSNGDataStore> perParameterSetDataStoreCache = new HashMap();
 
     /**
      * Requests the WFS Capabilities document from the {@link WFSDataStoreFactory#URL url} parameter
@@ -322,9 +316,9 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
      * 
      * @see org.geotools.data.DataStoreFactorySpi#createDataStore(java.util.Map)
      */
-    public WFSDataStore createDataStore(final Map params) throws IOException {
+    public DataStore createDataStore(final Map<String,Serializable> params) throws IOException {
         if (perParameterSetDataStoreCache.containsKey(params)) {
-            return perParameterSetDataStoreCache.get(params);
+            return (DataStore) perParameterSetDataStoreCache.get(params);
         }
         final URL getCapabilitiesRequest = (URL) URL.lookUp(params);
         final Boolean protocol = (Boolean) PROTOCOL.lookUp(params);
@@ -343,7 +337,7 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
                     "Cannot define only one of USERNAME or PASSWORD, must define both or neither");
         }
 
-        final WFSDataStore dataStore;
+        final WFSNGDataStore dataStore;
 
         final HTTPProtocol http = new SimpleHttpProtocol();
         http.setTryGzip(tryGZIP);
@@ -357,7 +351,7 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
         final String capsVersion = rootElement.getAttribute("version");
         final Version version = Version.find(capsVersion);
 
-        if (Version.v1_0_0 == version) {
+        /*if (Version.v1_0_0 == version) {
             final ConnectionFactory connectionFac = new DefaultConnectionFactory(tryGZIP, user,
                     pass, defaultEncoding, timeoutMillis);
             InputStream reader = new ByteArrayInputStream(wfsCapabilitiesRawData);
@@ -372,17 +366,17 @@ public class WFSDataStoreFactory extends AbstractDataStoreFactory {
                 logger.warning(e.toString());
                 throw new IOException(e.toString());
             }
-        } else {
+        } else {*/
             InputStream capsIn = new ByteArrayInputStream(wfsCapabilitiesRawData);
 
             WFS_1_1_0_Protocol wfs = new WFS_1_1_0_Protocol(capsIn, http);
 
             WFSStrategy strategy = determineCorrectStrategy(getCapabilitiesRequest, capsDoc);
             wfs.setStrategy(strategy);
-            dataStore = new WFS_1_1_0_DataStore(wfs);
+            dataStore = new WFSNGDataStore(wfs);
             dataStore.setMaxFeatures(maxFeatures);
             dataStore.setPreferPostOverGet(protocol);
-        }
+       // }
 
         perParameterSetDataStoreCache.put(new HashMap(params), dataStore);
         return dataStore;

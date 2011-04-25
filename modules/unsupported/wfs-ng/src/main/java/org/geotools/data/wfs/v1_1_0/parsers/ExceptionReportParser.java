@@ -30,12 +30,11 @@ import net.opengis.ows10.ExceptionReportType;
 import net.opengis.ows10.ExceptionType;
 
 import org.eclipse.emf.ecore.EObject;
-import org.geotools.data.wfs.WFSDataStore;
 import org.geotools.data.wfs.protocol.wfs.WFSException;
 import org.geotools.data.wfs.protocol.wfs.WFSProtocol;
 import org.geotools.data.wfs.protocol.wfs.WFSResponse;
 import org.geotools.data.wfs.protocol.wfs.WFSResponseParser;
-import org.geotools.data.wfs.v1_1_0.WFS_1_1_0_DataStore;
+import org.geotools.data.wfs.v1_1_0.WFSNGDataStore;
 import org.geotools.data.wfs.v1_1_0.WFS_1_1_0_Protocol;
 import org.geotools.util.logging.Logging;
 import org.geotools.wfs.v1_1.WFSConfiguration;
@@ -64,7 +63,7 @@ public class ExceptionReportParser implements WFSResponseParser {
      * @return a {@link WFSException} containing the server returned exception report messages
      * @see WFSResponseParser#parse(WFSProtocol, WFSResponse)
      */
-    public Object parse(WFS_1_1_0_DataStore wfs, WFSResponse response) {
+    public Object parse(WFSNGDataStore wfs, WFSResponse response) {
         WFSConfiguration configuration = new WFSConfiguration();
         Parser parser = new Parser(configuration);
         InputStream responseStream = response.getInputStream();

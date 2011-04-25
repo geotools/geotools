@@ -30,7 +30,7 @@ import org.geotools.data.wfs.protocol.wfs.WFSOperationType;
 import org.geotools.data.wfs.protocol.wfs.WFSResponse;
 import org.geotools.data.wfs.protocol.wfs.WFSResponseParser;
 import org.geotools.data.wfs.protocol.wfs.WFSResponseParserFactory;
-import org.geotools.data.wfs.v1_1_0.WFS_1_1_0_DataStore;
+import org.geotools.data.wfs.v1_1_0.WFSNGDataStore;
 import org.geotools.util.logging.Logging;
 
 /**
@@ -99,7 +99,7 @@ public class Gml31GetFeatureResponseParserFactory implements WFSResponseParserFa
      * @see FeatureCollectionParser
      * @see ExceptionReportParser
      */
-    public WFSResponseParser createParser(WFS_1_1_0_DataStore wfs, WFSResponse response)
+    public WFSResponseParser createParser(WFSNGDataStore wfs, WFSResponse response)
             throws IOException {
         final WFSResponseParser parser;
         final String contentType = response.getContentType();

@@ -25,7 +25,6 @@ import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.data.store.DataFeatureCollection;
-import org.geotools.data.wfs.WFSDataStore;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.logging.Logging;
@@ -52,7 +51,7 @@ class WFSFeatureCollection extends DataFeatureCollection {
 
     private Query query;
 
-    private WFS_1_1_0_DataStore dataStore;
+    private WFSNGDataStore dataStore;
 
     private SimpleFeatureType contentType;
 
@@ -72,7 +71,7 @@ class WFSFeatureCollection extends DataFeatureCollection {
      *            properly named query
      * @throws IOException
      */
-    public WFSFeatureCollection(WFS_1_1_0_DataStore dataStore, Query query) throws IOException {
+    public WFSFeatureCollection(WFSNGDataStore dataStore, Query query) throws IOException {
         this.dataStore = dataStore;
         this.query = query;
         this.contentType = dataStore.getQueryType(query);

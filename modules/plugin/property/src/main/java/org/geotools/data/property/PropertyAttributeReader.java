@@ -216,7 +216,7 @@ public class PropertyAttributeReader implements AttributeReader {
 
             int split = line.indexOf('=');
             fid = line.substring(0, split);
-            text = line.substring(split + 1).split("\\|");
+            text = line.substring(split + 1).split("\\|", -1);//use -1 as limit to include empty trailing spaces
             if (type.getAttributeCount() != text.length)
                 throw new DataSourceException("format error: expected " + type.getAttributeCount()
                         + " attributes, but found " + text.length + ". [" + line + "]");

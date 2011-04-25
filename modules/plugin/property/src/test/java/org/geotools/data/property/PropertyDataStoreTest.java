@@ -85,7 +85,8 @@ public class PropertyDataStoreTest extends TestCase {
         writer.write("fid1=1|jody"); writer.newLine();
         writer.write("fid2=2|brent"); writer.newLine();
         writer.write("fid3=3|dave"); writer.newLine();
-        writer.write("fid4=4|justin");
+        writer.write("fid4=4|justin"); writer.newLine();
+        writer.write("fid5=5|");
         writer.close();
         
         file = new File( dir ,"dots.in.name.properties");
@@ -165,7 +166,7 @@ public class PropertyDataStoreTest extends TestCase {
         finally {
             reader.close();
         }
-        assertEquals( 4, count );
+        assertEquals( 5, count );
         
         Filter selectFid1;
         
@@ -175,7 +176,7 @@ public class PropertyDataStoreTest extends TestCase {
         
         Transaction transaction = new DefaultTransaction();
         reader = store.getFeatureReader( roadQuery, transaction );
-        assertEquals( 4, count( reader ));
+        assertEquals( 5, count( reader ));
         
         reader = store.getFeatureReader( roadQuery, transaction );
         List list = new ArrayList();
@@ -187,7 +188,7 @@ public class PropertyDataStoreTest extends TestCase {
         finally {
             reader.close();
         }
-        assertEquals( "[fid1, fid2, fid3, fid4]", list.toString() );        
+        assertEquals( "[fid1, fid2, fid3, fid4, fid5]", list.toString() );        
     }
     /*
      * Test for  FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(String)
@@ -204,7 +205,7 @@ public class PropertyDataStoreTest extends TestCase {
         finally {
             reader.close();
         }
-        assertEquals( 4, count );
+        assertEquals( 5, count );
     }
     private int count(  FeatureReader<SimpleFeatureType, SimpleFeature> reader ) throws Exception {
         int count = 0;
@@ -235,13 +236,13 @@ public class PropertyDataStoreTest extends TestCase {
             writer.next();
             count++;
         }
-        assertEquals( 4, count );
+        assertEquals( 5, count );
         assertTrue( in.exists() );
         assertTrue( out.exists() );
         writer.close();
         assertTrue( in.exists() );        
         
-        assertEquals( 4, count( "road" ) );
+        assertEquals( 5, count( "road" ) );
     }
     public void testWriterChangeName() throws Exception{
         PropertyFeatureWriter writer = (PropertyFeatureWriter)
@@ -255,8 +256,8 @@ public class PropertyDataStoreTest extends TestCase {
             count++;
         }                
         writer.close();        
-        assertEquals( 4, count );
-        assertEquals( 4, count( "road" ));                
+        assertEquals( 5, count );
+        assertEquals( 5, count( "road" ));                
     }
     public void testWriterChangeFirstName() throws Exception{
         PropertyFeatureWriter writer = (PropertyFeatureWriter)
@@ -266,7 +267,7 @@ public class PropertyDataStoreTest extends TestCase {
         f.setAttribute(1,"changed");
         writer.write();
         writer.close();                           
-        assertEquals( 4, count( "road" ));    
+        assertEquals( 5, count( "road" ));    
     }
     public void testWriterChangeLastName() throws Exception{
         PropertyFeatureWriter writer = (PropertyFeatureWriter)
@@ -279,12 +280,13 @@ public class PropertyDataStoreTest extends TestCase {
         f.setAttribute(1,"changed");
         writer.write();
         writer.close();                           
-        assertEquals( 4, count( "road" ));    
+        assertEquals( 5, count( "road" ));    
     }    
     public void testWriterChangeAppend() throws Exception{
         PropertyFeatureWriter writer = (PropertyFeatureWriter)
                     store.getFeatureWriter("road");
         SimpleFeature f;
+        writer.next();
         writer.next();
         writer.next();
         writer.next();
@@ -296,7 +298,7 @@ public class PropertyDataStoreTest extends TestCase {
         f.setAttribute(1,"new");
         writer.write();
         writer.close();
-        assertEquals( 5, count( "road" ));    
+        assertEquals( 6, count( "road" ));    
     }
     public void testWriterAppendLastNull() throws Exception{
         FeatureWriter<SimpleFeatureType, SimpleFeature> writer = (FeatureWriter)
@@ -309,7 +311,7 @@ public class PropertyDataStoreTest extends TestCase {
         f.setAttribute(1,null); // this made the datastore break
         writer.write();
         writer.close();
-        assertEquals( 5, count( "road" ));    
+        assertEquals( 6, count( "road" ));    
     }
     public void testWriterChangeRemoveFirst() throws Exception{
         PropertyFeatureWriter writer = (PropertyFeatureWriter)
@@ -318,7 +320,7 @@ public class PropertyDataStoreTest extends TestCase {
         writer.next();
         writer.remove();
         writer.close();
-        assertEquals( 3, count( "road" ));    
+        assertEquals( 4, count( "road" ));    
     }
     public void testWriterChangeRemoveLast() throws Exception{
         PropertyFeatureWriter writer = (PropertyFeatureWriter)
@@ -329,7 +331,7 @@ public class PropertyDataStoreTest extends TestCase {
         writer.next();
         writer.remove();
         writer.close();
-        assertEquals( 3, count( "road" ));    
+        assertEquals( 4, count( "road" ));    
     }
     public void testWriterChangeRemoveAppend() throws Exception{
         PropertyFeatureWriter writer = (PropertyFeatureWriter)
@@ -339,6 +341,7 @@ public class PropertyDataStoreTest extends TestCase {
         writer.next();
         writer.next();
         writer.next();        
+        writer.next();        
                 
         assertFalse( writer.hasNext() );
         f = writer.next();
@@ -347,12 +350,13 @@ public class PropertyDataStoreTest extends TestCase {
         f.setAttribute(1,"new");
         writer.remove();
         writer.close();
-        assertEquals( 4, count( "road" ));                    
+        assertEquals( 5, count( "road" ));                    
     }
     public void testWriterChangeIgnoreAppend() throws Exception{
         PropertyFeatureWriter writer = (PropertyFeatureWriter)
                     store.getFeatureWriter("road");
         SimpleFeature f;
+        writer.next();
         writer.next();
         writer.next();
         writer.next();
@@ -363,7 +367,7 @@ public class PropertyDataStoreTest extends TestCase {
         f.setAttribute(0,new Integer(-1));        
         f.setAttribute(1,"new");        
         writer.close();
-        assertEquals( 4, count( "road" ));                    
+        assertEquals( 5, count( "road" ));                    
     }
     
     public void testGetFeatureSource() throws Exception {
@@ -378,12 +382,12 @@ public class PropertyDataStoreTest extends TestCase {
         } finally {
             reader.close();
         }
-        assertEquals( "[fid1, fid2, fid3, fid4]", list.toString() );
-        assertEquals( 4, road.getCount(Query.ALL) );
+        assertEquals( "[fid1, fid2, fid3, fid4, fid5]", list.toString() );
+        assertEquals( 5, road.getCount(Query.ALL) );
         assertEquals( null, road.getBounds(Query.ALL) );
-        assertEquals( 4, features.size() );
+        assertEquals( 5, features.size() );
         assertTrue( features.getBounds().isNull() );
-        assertEquals( 4, features.size() );
+        assertEquals( 5, features.size() );
                 
     }
     public void testMultiLine() throws Exception {
@@ -421,32 +425,32 @@ public class PropertyDataStoreTest extends TestCase {
         
             
         // Before we edit everything should be the same
-        assertEquals( "auto before", 4, roadAuto.getFeatures().size() );
-        assertEquals( "client 1 before", 4, roadFromClient1.getFeatures().size() );
-        assertEquals( "client 2 before", 4, roadFromClient2.getFeatures().size() );
+        assertEquals( "auto before", 5, roadAuto.getFeatures().size() );
+        assertEquals( "client 1 before", 5, roadFromClient1.getFeatures().size() );
+        assertEquals( "client 2 before", 5, roadFromClient2.getFeatures().size() );
 
         // Remove Feature with Fid1
         roadFromClient1.removeFeatures( selectFid1 ); // road1 removes fid1 on t1
         
-        assertEquals( "auto after client 1 removes fid1", 4, roadAuto.getFeatures().size() );
-        assertEquals( "client 1 after client 1 removes fid1", 3, roadFromClient1.getFeatures().size() );
-        assertEquals( "client 2 after client 1 removes fid1", 4, roadFromClient2.getFeatures().size() );               
+        assertEquals( "auto after client 1 removes fid1", 5, roadAuto.getFeatures().size() );
+        assertEquals( "client 1 after client 1 removes fid1", 4, roadFromClient1.getFeatures().size() );
+        assertEquals( "client 2 after client 1 removes fid1", 5, roadFromClient2.getFeatures().size() );               
         
         
         roadFromClient2.addFeatures( DataUtilities.collection( chrisFeature )); // road2 adds fid5 on t2    
-        assertEquals( "auto after client 1 removes fid1 and client 2 adds fid5", 4, roadAuto.getFeatures().size() );
-        assertEquals( "client 1 after client 1 removes fid1 and client 2 adds fid5", 3, roadFromClient1.getFeatures().size() );
-        assertEquals( "cleint 2 after client 1 removes fid1 and client 2 adds fid5", 5, roadFromClient2.getFeatures().size() );        
+        assertEquals( "auto after client 1 removes fid1 and client 2 adds fid5", 5, roadAuto.getFeatures().size() );
+        assertEquals( "client 1 after client 1 removes fid1 and client 2 adds fid5", 4, roadFromClient1.getFeatures().size() );
+        assertEquals( "cleint 2 after client 1 removes fid1 and client 2 adds fid5", 6, roadFromClient2.getFeatures().size() );        
 
         transaction1.commit();
-        assertEquals( "auto after client 1 commits removal of fid1 (client 2 has added fid5)", 3, roadAuto.getFeatures().size() );
-        assertEquals( "client 1 after commiting removal of fid1 (client 2 has added fid5)", 3, roadFromClient1.getFeatures().size() );
-        assertEquals( "client 2 after client 1 commits removal of fid1 (client 2 has added fid5)", 4, roadFromClient2.getFeatures().size() );                
+        assertEquals( "auto after client 1 commits removal of fid1 (client 2 has added fid5)", 4, roadAuto.getFeatures().size() );
+        assertEquals( "client 1 after commiting removal of fid1 (client 2 has added fid5)", 4, roadFromClient1.getFeatures().size() );
+        assertEquals( "client 2 after client 1 commits removal of fid1 (client 2 has added fid5)", 5, roadFromClient2.getFeatures().size() );                
             
         transaction2.commit();
-        assertEquals( "auto after client 2 commits addition of fid5 (fid1 previously removed)", 4, roadAuto.getFeatures().size() );
-        assertEquals( "client 1 after client 2 commits addition of fid5 (fid1 previously removed)", 4, roadFromClient1.getFeatures().size() );
-        assertEquals( "client 2 after commiting addition of fid5 (fid1 previously removed)", 4, roadFromClient2.getFeatures().size() );
+        assertEquals( "auto after client 2 commits addition of fid5 (fid1 previously removed)", 5, roadAuto.getFeatures().size() );
+        assertEquals( "client 1 after client 2 commits addition of fid5 (fid1 previously removed)", 5, roadFromClient1.getFeatures().size() );
+        assertEquals( "client 2 after commiting addition of fid5 (fid1 previously removed)", 5, roadFromClient2.getFeatures().size() );
     }
     
     public void testUseExistingFid() throws Exception {

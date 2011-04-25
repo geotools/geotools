@@ -158,7 +158,7 @@ public class PropertyAttributeReader implements AttributeReader {
         reader.close();
         reader = null;
     }
-
+    // multiline start
     /**
      * Check if the file has another line.
      * 
@@ -202,6 +202,7 @@ public class PropertyAttributeReader implements AttributeReader {
         raw = raw.replace("\\t", "\t" );
         return raw;
     }
+    // multiline end
     /**
      * Retrieve the next line.
      * 

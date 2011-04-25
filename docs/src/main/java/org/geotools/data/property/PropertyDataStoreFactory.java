@@ -152,24 +152,8 @@ public class PropertyDataStoreFactory implements DataStoreFactorySpi {
 
     public DataStore createNewDataStore(Map<String, java.io.Serializable> params)
             throws IOException {
-        File dir = directoryLookup(params);
-
-        if (dir.exists()) {
-            throw new IOException(dir + " already exists");
-        }
-
-        boolean created;
-
-        created = dir.mkdir();
-
-        if (!created) {
-            throw new IOException("Could not create the directory" + dir);
-        }
-
-        String namespaceURI = (String) NAMESPACE.lookUp(params);
-        return new PropertyDataStore(dir, namespaceURI);
+        throw new UnsupportedOperationException("PropertyDataStore is read-only");
     }
-
     // createDataStore end
 
 }

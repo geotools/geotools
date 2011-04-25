@@ -53,7 +53,9 @@ public class PropertyDataStore extends AbstractDataStore {
     public PropertyDataStore(File dir) {
         this( dir, null );
     }
+    // constructor start
     public PropertyDataStore(File dir, String namespaceURI) {
+        super( true ); // true indicates we implement getFeatureWriter
         if( !dir.isDirectory()){
             throw new IllegalArgumentException( dir +" is not a directory");
         }
@@ -63,6 +65,20 @@ public class PropertyDataStore extends AbstractDataStore {
         directory = dir;
         this.namespaceURI = namespaceURI;
     }
+    // constructor end
+
+    // createSchema start
+    public void createSchema(SimpleFeatureType featureType) throws IOException {
+        String typeName = featureType.getTypeName();
+        File file = new File( directory, typeName+".properties");
+        BufferedWriter writer = new BufferedWriter( new FileWriter( file ) );
+        writer.write("_=");
+        writer.write( DataUtilities.spec( featureType ) );
+        writer.close();
+    }
+    // createSchema end
+
+    // info start
     public ServiceInfo getInfo() {
         DefaultServiceInfo info = new DefaultServiceInfo();
         info.setDescription("Features from Directory "+directory );
@@ -74,6 +90,7 @@ public class PropertyDataStore extends AbstractDataStore {
         }
         return info;
     }
+    // info start
     
     public void setNamespaceURI(String namespaceURI) {
         this.namespaceURI = namespaceURI;
@@ -120,17 +137,12 @@ public class PropertyDataStore extends AbstractDataStore {
     protected  FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(String typeName) throws IOException {
         return new PropertyFeatureReader( directory, typeName );        
     }
+    // getFeatureWriter start
     protected FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(String typeName) throws IOException {
         return new PropertyFeatureWriter( this, typeName );
     }
-    public void createSchema(SimpleFeatureType featureType) throws IOException {
-        String typeName = featureType.getTypeName();
-        File file = new File( directory, typeName+".properties");
-        BufferedWriter writer = new BufferedWriter( new FileWriter( file ) );
-        writer.write("_=");
-        writer.write( DataUtilities.spec( featureType ) );
-        writer.close();
-    }
+    // getFeatureWriter end
+
     //
     // Access to Optimizations
     //

@@ -26,162 +26,191 @@ import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Transaction;
-import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-public class PropertyFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleFeature> {
+public class PropertyFeatureWriter implements
+        FeatureWriter<SimpleFeatureType, SimpleFeature> {
     PropertyDataStore store;
-        
+
     File read;
+
     PropertyAttributeReader reader;
-    
+
     File write;
+
     PropertyAttributeWriter writer;
-    
+
     SimpleFeature origional = null;
-    SimpleFeature live = null;    
-    public PropertyFeatureWriter( PropertyDataStore dataStore, String typeName ) throws IOException {
+
+    SimpleFeature live = null;
+
+    public PropertyFeatureWriter(PropertyDataStore dataStore, String typeName)
+            throws IOException {
         store = dataStore;
-        File dir = store.directory;        
-        read = new File( dir, typeName+".properties");
-        write = File.createTempFile( typeName+System.currentTimeMillis(), null, dir );        
-                
-        reader = new PropertyAttributeReader( read );
-        writer = new PropertyAttributeWriter( write, reader.type );
-    }    
+        File dir = store.directory;
+        read = new File(dir, typeName + ".properties");
+        write = File.createTempFile(typeName + System.currentTimeMillis(),
+                null, dir);
+
+        reader = new PropertyAttributeReader(read);
+        writer = new PropertyAttributeWriter(write, reader.type);
+    }
+
+    // constructor end
+
+    // getFeatureType start
     public SimpleFeatureType getFeatureType() {
         return reader.type;
     }
+
+    // getFeatureType end
+    // hasNext start
     public boolean hasNext() throws IOException {
-        if( writer == null) {
-            throw new IOException( "Writer has been closed" );
+        if (writer == null) {
+            throw new IOException("Writer has been closed");
         }
-        if( live != null && origional != null ){
+        if (live != null && origional != null) {
             // we have returned something to the user,
             // and it has not been writen out or removed
             //
-            writeImplementation( origional );
+            writeImplementation(origional);
             origional = null;
-            live = null;                                            
+            live = null;
         }
         return reader.hasNext();
     }
-    private void writeImplementation( SimpleFeature f ) throws IOException{
+
+    // hasNext end
+    // writeImplementation start
+    private void writeImplementation(SimpleFeature f) throws IOException {
         writer.next();
-        writer.writeFeatureID( f.getID() );        
-        for( int i=0; i<f.getAttributeCount(); i++) {
-        	if(f.getAttribute(i) == null)
-        		writer.write(i, "<null>");
-        	else
-        		writer.write( i, f.getAttribute( i ));
-        }   
+        writer.writeFeatureID(f.getID());
+        for (int i = 0; i < f.getAttributeCount(); i++) {
+            Object value = f.getAttribute(i);
+            writer.write(i, value );            
+        }
     }
+
+    // writeImplementation end
+    // next start
     public SimpleFeature next() throws IOException {
-        if( writer == null ) {
-            throw new IOException( "Writer has been closed" );
+        if (writer == null) {
+            throw new IOException("Writer has been closed");
         }
         String fid = null;
-        SimpleFeatureType type = reader.type;                                
+        SimpleFeatureType type = reader.type;
         try {
-            if( hasNext() ){
+            if (hasNext()) {
                 reader.next(); // grab next line
-                
+
                 fid = reader.getFeatureID();
-                Object values[] = new Object[ reader.getAttributeCount() ];
-                for( int i=0; i< reader.getAttributeCount(); i++){
-                    values[i]=reader.read( i );
+                Object values[] = new Object[reader.getAttributeCount()];
+                for (int i = 0; i < reader.getAttributeCount(); i++) {
+                    values[i] = reader.read(i);
                 }
-                            
-                origional = SimpleFeatureBuilder.build(type, values, fid );
+
+                origional = SimpleFeatureBuilder.build(type, values, fid);
                 live = SimpleFeatureBuilder.copy(origional);
                 return live;
-            }
-            else {
-                fid = type.getName()+"."+System.currentTimeMillis();
-                Object values[] = DataUtilities.defaultValues( type );
+            } else {
+                fid = type.getName() + "." + System.currentTimeMillis();
+                Object values[] = DataUtilities.defaultValues(type);
 
-                origional = null;                                            
+                origional = null;
                 live = SimpleFeatureBuilder.build(type, values, fid);
-                return live;    
-            }                    
+                return live;
+            }
         } catch (IllegalAttributeException e) {
-            String message = "Problem creating feature "+(fid != null ? fid : "");
-            throw new DataSourceException( message, e );
+            String message = "Problem creating feature "
+                    + (fid != null ? fid : "");
+            throw new DataSourceException(message, e);
         }
-    }       
+    }
+
+    // next end
+    // write start
     public void write() throws IOException {
-        if( live == null){
-            throw new IOException( "No current feature to write");            
+        if (live == null) {
+            throw new IOException("No current feature to write");
         }
-        if( live.equals( origional )){
-            writeImplementation( origional );                        
-        }
-        else {
-            writeImplementation( live );
-            if( origional != null){
-            	ReferencedEnvelope bounds = new ReferencedEnvelope();
+        if (live.equals(origional)) {
+            writeImplementation(origional);
+        } else {
+            writeImplementation(live);
+            String typeName = live.getFeatureType().getTypeName();
+            Transaction autoCommit = Transaction.AUTO_COMMIT;
+            if (origional != null) {
+                ReferencedEnvelope bounds = new ReferencedEnvelope();
                 bounds.include(live.getBounds());
                 bounds.include(origional.getBounds());
-                store.listenerManager.fireFeaturesChanged(live.getFeatureType().getTypeName(), Transaction.AUTO_COMMIT,
-                    bounds, false);                               
+                store.listenerManager.fireFeaturesChanged(typeName, autoCommit,
+                        bounds, false);
+            } else {
+                store.listenerManager.fireFeaturesAdded(typeName, autoCommit,
+                        ReferencedEnvelope.reference(live.getBounds()), false);
             }
-            else {
-                store.listenerManager.fireFeaturesAdded(live.getFeatureType().getTypeName(), Transaction.AUTO_COMMIT,
-                    ReferencedEnvelope.reference(live.getBounds()), false);
-            }            
         }
         origional = null;
         live = null;
     }
+
+    // write end
+    // remove start
     public void remove() throws IOException {
-        if( live == null){
-            throw new IOException( "No current feature to remove");
+        if (live == null) {
+            throw new IOException("No current feature to remove");
         }
-        if( origional != null ){
-            store.listenerManager.fireFeaturesRemoved(live.getFeatureType().getTypeName(), Transaction.AUTO_COMMIT,
+        if (origional != null) {
+            String typeName = live.getFeatureType().getTypeName();
+            Transaction autoCommit = Transaction.AUTO_COMMIT;
+            store.listenerManager.fireFeaturesRemoved(typeName, autoCommit,
                     ReferencedEnvelope.reference(origional.getBounds()), false);
-        }                     
-        origional = null; 
-        live = null; // prevent live and remove from being written out       
-    }    
+        }
+        origional = null;
+        live = null; // prevent live and remove from being written out
+    }
+    // remove end
+
+    // close start
     public void close() throws IOException {
-        if( writer == null ){
-            throw new IOException( "writer already closed");            
+        if (writer == null) {
+            throw new IOException("writer already closed");
         }
         // write out remaining contents from reader
         // if applicable
-        while( reader.hasNext() ){
+        while (reader.hasNext()) {
             reader.next(); // advance
-            writer.next();             
-            writer.echoLine( reader.line ); // echo unchanged                        
+            writer.next();
+            writer.echoLine(reader.line); // echo unchanged
         }
         writer.close();
-        reader.close();        
+        reader.close();
         writer = null;
-        reader = null;                  
+        reader = null;
         read.delete();
-        
+
         if (write.exists() && !write.renameTo(read)) {
             FileChannel out = new FileOutputStream(read).getChannel();
             FileChannel in = new FileInputStream(write).getChannel();
             try {
                 long len = in.size();
                 long copied = out.transferFrom(in, 0, in.size());
-                
+
                 if (len != copied) {
                     throw new IOException("unable to complete write");
                 }
-            }
-            finally {
+            } finally {
                 in.close();
                 out.close();
             }
         }
         read = null;
-        write = null;        
-        store = null;                
-    }    
+        write = null;
+        store = null;
+    }
+    // close end
 }

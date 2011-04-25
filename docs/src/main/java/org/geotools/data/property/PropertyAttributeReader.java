@@ -170,7 +170,6 @@ public class PropertyAttributeReader implements AttributeReader {
         next = reader.readLine();
         return next != null;
     }
-
     /**
      * Retrieve the next line.
      * 

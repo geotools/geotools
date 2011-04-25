@@ -116,7 +116,7 @@ public abstract class AbstractDataStore implements DataStore {
     /**
      * AbstractDataStore creation.
      * 
-     * @param isWriteable true for writeable DataStore. 
+     * @param isWriteable true for writable DataStore. 
      */
     public AbstractDataStore(boolean isWriteable) {
         this.isWriteable = isWriteable;

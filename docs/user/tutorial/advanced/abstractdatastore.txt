@@ -408,6 +408,9 @@ information and the ability to create new physical storage.
    
    * create a Datastore for an **existing** property file; and
    * create a datastore for a **new** property file
+     
+     Since initially our DataStore is read-only we will just thow an UnsupportedOperationException
+     at this time.
 
    Here is the code that finally calls our PropertyDataStore constructor:
    
@@ -416,7 +419,7 @@ information and the ability to create new physical storage.
       :start-after: // createDataStore start
       :end-before: // createDataStore end
    
-2. The Factory Service Provider (SPI) system operates by looking at the META-INF/services
+6. The Factory Service Provider (SPI) system operates by looking at the META-INF/services
    folder and checking for implemetnations of DataStoreFactorySpi
 
    To "register" our PropertyDataStoreFactory please create the following file:
@@ -525,10 +528,32 @@ If you would like to follow along with these examples you can
     
     User-supplied name used to describe a query in user's terms in any generated error messages.
   
+  * Query.getCoordianteSystem()
+    
+    Used to force the use of a user-supplied CoordinateSystem (rather than the one supplied
+    by the DataStore). This capability will allow client code to use our DataStore with a
+    CoordinateSystem of their choice. The coordinates returned by the DataStore will not be
+    modified in any way.
+  
+  * Query.getCoordianteSystemReproject()
+    
+    Used to reproject the Geometries provided by a DataStore from their original value (or
+    the one provided by Query.getCoordinateSystem) into a different coordinate system.
+    The coordinate returned by the DataStore will be processed , either natively by
+    Advanced DataStores, or using GeoTools reprojection routines.
+
+  .. note::
+     
+     Since this tutorial was writen Query has expanding its capabilities
+     (and the capabilities of your DataStore) to include support for reprojection.
+     
+     It also offers an "open ended" pathway for expansion using "query hints".
+     
   * Transaction
     
     Allows access the contents of a DataStore during modification.
 
+  With all of that in mind we can now proceed to our
   DataStore.getFeatureReader( featureType, filter, transaction ) example:
     
   .. literalinclude:: /../src/main/java/org/geotools/data/property/PropertyExamples.java
@@ -557,26 +582,14 @@ If you would like to follow along with these examples you can
 		id = 1
 		name = jody
 		geom = POINT (0 0)
-		
-  At the time of writing, Query is expanding its capabilities (and the capabilities of your DataStore) to include support for reprojection.
-  
-  * Query.getCoordianteSystem()
-    
-    Used to force the use of a user-supplied CoordinateSystem (rather than the one supplied
-    by the DataStore). This capability will allow client code to use our DataStore with a
-    CoordinateSystem of their choice. The coordinates returned by the DataStore will not be
-    modified in any way.
-  
-  * Query.getCoordianteSystemReproject()
-    
-    Used to reproject the Geometries provided by a DataStore from their original value (or
-    the one provided by Query.getCoordinateSystem) into a different coordinate system.
-    The coordinate returned by the DataStore will be processed , either natively by
-    Advanced DataStores, or using GeoTools reprojection routines.
+		  
 
 * DataStore.getFeatureSource( typeName )
   
-  This method is the gateway to our high level as provided by an instance of FeatureSource, FeatureStore or FeatureLocking. The returned instance represents the contents of a single named FeatureType provided by the DataStore. The type of the returned instance indicates the capabilities available.
+  This method is the gateway to our high level as provided by an instance of FeatureSource,
+  FeatureStore or FeatureLocking. The returned instance represents the contents of a single
+  named FeatureType provided by the DataStore. The type of the returned instance indicates
+  the capabilities available.
   
   This far in our tutorial PropertyDataStore will only support an instance of FeatureSource.
 
@@ -595,7 +608,9 @@ If you would like to follow along with these examples you can
 FeatureSource
 ^^^^^^^^^^^^^
 
-FeatureSource provides the ability to query a DataStore and represents the contents of a single FeatureType. In our example, the PropertiesDataStore represents a directory full of properties files. FeatureSource will represent a single one of those files.
+FeatureSource provides the ability to query a DataStore and represents the contents of a single
+FeatureType. In our example, the PropertiesDataStore represents a directory full of properties
+files. FeatureSource will represent a single one of those files.
 
 FeatureSource defines:
 
@@ -607,7 +622,8 @@ FeatureSource defines:
 * FeatureSource.getBounds( query ) - request bounding box of specified features
 * FeatureSource.getCount( query ) - request number of features specified by query
 
-FeatureSource also defines an event notification system and provides access to the DataStore which created it. You may have more then one FeatureSource operating against a file at any time.
+FeatureSource also defines an event notification system and provides access to the DataStore
+which created it. You may have more then one FeatureSource operating against a file at any time.
 
 FeatureCollection
 ^^^^^^^^^^^^^^^^^
@@ -680,63 +696,21 @@ on memory use.
 Part 4 - Making Property DataStore Writable
 -------------------------------------------
 
-In this part we will complete the PropertyDataStore started above. At the end of this section we will have a full functional PropertyDataStore supporting both read and write operations.
+In this part we will complete the PropertyDataStore started above. At the end of this section we
+will have a full functional PropertyDataStore supporting both read and write operations.
 
-We are going to complete PropertyDataStore, by implementing the following methods:
+The DataStore API has two methods that are involved in making content writable.
 
 * DataStore.getFeatureWriter( typeName )
-* createSchema( featureType )
+* DataStore.createSchema( featureType )
 
-**Extending PropertyDataStore**
+AbstractDataStore asks us to implement two things in our subclass:
 
-To start with, we need to make one change to our PropertyDataStore constructor::
+* PropertyDataStore() constructor must call super( true ) to indicate we are
+  working with writable content
+* PropertyDataStore.getFeatureWriter( typeName )
 
-    public PropertyDataStore(File dir) {
-        super( true ); // changed to allow writing
-        if( !dir.isDirectory()){
-            throw new IllegalArgumentException( dir +" is not a directory");
-        }
-        directory = dir;
-    }
-
-This change will tell AbstractDataStore that our subclass is willing to modify Features.
-
-**Implement createSchema( featureType)**
-
-This method provides the ability to create a new FeatureType. For our DataStore we will use this to create new properties files.
-
-To implement this method we will once again make use of the DataUtilities class.
-
-Add createSchema( featureType )::
-   
-    public void createSchema(FeatureType featureType) 
-            throws IOException {
-        String typeName = featureType.getTypeName();
-        File file = new File( path, typeName+".properties");
-        BufferedWriter writer = new BufferedWriter( new FileWriter( file ) );
-        writer.write("_=");
-        writer.write( DataUtilities.spec( featureType ) );
-        writer.close();
-    } 
-
-**Implement getFeatureWriter( typeName )**
-
-FeatureWriter is the low-level API storing Feature content. This method is not part of the DataStore API.
-
-Add getFeatureWriter( typeName )::
-    
-    protected FeatureWriter getFeatureWriter(String typeName) throws IOException {
-        return new PropertiesFeatureWriter( this, typeName );
-    }
-
-FeatureWriter is less intuitive than FeatureReader in that it does not follow the example of Iterator as closely.
-
-PropertyFeatureWriter
-^^^^^^^^^^^^^^^^^^^^^
-
-Our implementation of a FeatureWriter needs to do two things: support the FeatureWriter interface and inform the DataStore of modifications.
-
-FeatureWriter Interface:
+FeatureWriter defines the following methods:
 
 * FeatureWriter.getFeatureType
 * FeatureWriter.hasNext
@@ -745,278 +719,219 @@ FeatureWriter Interface:
 * FeatureWriter.remove
 * FeatureWriter.close
 
-Change notification is made available through several FeatureSource methods::
+Change notification for users is made available through several FeatureSource methods::
 
 * FeatureSoruce.addFeatureListener( featureListener )
 * FeatureSoruce.removeFeatureListener( featureListener )
 
-To trigger the featureListeners we will make use of several convenience methods in AbstractDataSource:
+To trigger the featureListeners we will make use of several helper methods in AbstractDataSource:
 
 * AbstractDataStore.fireAdded( feature )
 * AbstractDataStore.fireRemoved( feature )
 * AbstractDataStore.fireChanged( before, after )
 
-Create the file PropertyFeatureWriter.java::
+Extending PropertyDataStore
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-    package org.geotools.data.property;
+1. To start with, we need to make one change to our PropertyDataStore constructor:
+
+   .. literalinclude:: /../../modules/plugin/property/src/main/java/org/geotools/data/property/PropertyDataStore.java
+      :language: java
+      :start-after: // constructor start
+      :end-before: // constructor end
+
+   This change will tell AbstractDataStore that our subclass is willing to modify Features.
+
+2. Implement createSchema( featureType)
+   
+   This method provides the ability to create a new FeatureType. For our DataStore we
+   will use this to create new properties files.
+   
+  To implement this method we will once again make use of the DataUtilities class.
+
+Add createSchema( featureType ):
+   
+   .. literalinclude:: /../../modules/plugin/property/src/main/java/org/geotools/data/property/PropertyDataStore.java
+      :language: java
+      :start-after: // createSchema start
+      :end-before: // createSchema end
+
+3. Implement getFeatureWriter( typeName )
+   
+   FeatureWriter is the low-level API storing Feature content. This method is not part of the
+   public DataStore API and is only used by AbstractDataStore.
+   
+   Add getFeatureWriter( typeName ):
     
-    import java.io.*;
-    import org.geotools.data.*;
-    import org.geotools.feature.*;
+   .. literalinclude:: /../../modules/plugin/property/src/main/java/org/geotools/data/property/PropertyDataStore.java
+      :language: java
+      :start-after: // createSchema start
+      :end-before: // createSchema end
+  
+  FeatureWriter is less intuitive than FeatureReader in that it does not follow the example of
+  Iterator as closely.
+
+PropertyFeatureWriter
+^^^^^^^^^^^^^^^^^^^^^
+
+Our implementation of a FeatureWriter needs to do two things: support the FeatureWriter interface
+and inform the DataStore of modifications.
+
+1. Create the file PropertyFeatureWriter.java:
+
+   .. literalinclude:: /../../modules/plugin/property/src/main/java/org/geotools/data/property/PropertyFeatureWriter.java
+      :language: java
+      :end-before: // constructor end
+
+   Our constructor creates a PropertyAttributeReader to access the existing contents of
+   the DataStore. We made use of PropertyAttributeReader to implement
+   PropertyFeatureReader in Section 1.
+
+  We also create a PropertyAttributeWriter operating against a temporary file. When the
+  FeatureWriter is closed we will delete the original file and replace it with our new file.
+
+2. Add FeatureWriter.getFeatureType() implementation:
+
+   .. literalinclude:: /../../modules/plugin/property/src/main/java/org/geotools/data/property/PropertyFeatureWriter.java
+      :language: java
+      :start-after: // getFeatureType start
+      :end-before: // getFeatureType end
+
+3. Add hasNext() implementation:
+
+   .. literalinclude:: /../../modules/plugin/property/src/main/java/org/geotools/data/property/PropertyFeatureWriter.java
+      :language: java
+      :start-after: // next start
+      :end-before: // next end
     
-    public class PropertyFeatureWriter implements FeatureWriter {
-        PropertyDataStore store;
-        
-        File read;
-        PropertyAttributeReader reader;
-        
-        File write;
-        PropertyAttributeWriter writer;
-        
-        Feature origional = null;
-        Feature live = null;    
-        public PropertyFeatureWriter( PropertyDataStore dataStore, String typeName ) 
-                throws IOException {
-            store = dataStore;
-            File dir = store.directory;        
-            read = new File( dir, typeName+".properties");
-            write = File.createTempFile( typeName+System.currentTimeMillis(), null, dir );        
-                    
-            reader = new PropertyAttributeReader( read );
-            writer = new PropertyAttributeWriter( write, reader.type );
-        }
-    }
+   Our FeatureWriter makes use of two Features:
+   
+   * original: the feature provided by PropertyAttributeReader
+   * live: a duplicate of original provided to the user for modification
+   
+   When the FeatureWriter is used to write or remove information, the contents of both live
+   and feature are set to null. If this has not been done already we will write out the
+   current feature.
 
-Our constructor creates a PropertyAttributeReader to access the existing contents of the DataStore. We made use of PropertyAttributeReader to implement PropertyFeatureReader in Section 1.
+4. Add the helper function writeImplementation( Feature ):
 
-We also create a PropertyAttributeWriter operating against a temporary file. When the FeatureWriter is closed we will delete the original file and replace it with our new file.
+   .. literalinclude:: /../../modules/plugin/property/src/main/java/org/geotools/data/property/PropertyFeatureWriter.java
+      :language: java
+      :start-after: // writeImplementation start
+      :end-before: // writeImplementation end
 
-Add FeatureWriter.getFeatureType() implementation::
+5. Add next() implementation:
 
-    public FeatureType getFeatureType() {
-        return reader.type;
-    }
+   .. literalinclude:: /../../modules/plugin/property/src/main/java/org/geotools/data/property/PropertyFeatureWriter.java
+      :language: java
+      :start-after: // next start
+      :end-before: // next end
 
-Add hasNext() implementation::
+   The next method is used for two purposes:
+   
+   * To access Features for modification or removal (when working through existing content)
+   * To create new Features (when working past the end of the file)
+   
+   To access existing Features, the AttributeReader is advanced, the current attribute and feature ID assembled into a Feature. This Feature is then duplicated and returned to the user. We will later compare the original to the user's copy to check if any modifications have been made.
 
-    public boolean hasNext() throws IOException {
-        if( live != null && origional != null ){
-            writeImplementation( origional );                                
-            origional = null;
-            live = null;
-        }
-        return reader.hasNext();
-    }
+6. Add write() implementation:
 
-Our FeatureWriter makes use of two Features:
+   .. literalinclude:: /../../modules/plugin/property/src/main/java/org/geotools/data/property/PropertyFeatureWriter.java
+      :language: java
+      :start-after: // write start
+      :end-before: // write end
 
-* original: the feature provided by PropertyAttributeReader
-* live: a duplicate of original provided to the user for modification
+   In the write method we will need to check to see whether the user has changed anything. If so,
+   we will need to remember to issue event notification after writing out their changes.
 
-When the FeatureWriter is used to write or remove information, the contents of both live and feature are set to null. If this has not been done already we will write out the current feature.
+7. Add remove() implementation:
 
-Add the helper function writeImplementation( Feature )::
+   .. literalinclude:: /../../modules/plugin/property/src/main/java/org/geotools/data/property/PropertyFeatureWriter.java
+      :language: java
+      :start-after: // remove start
+      :end-before: // remove end
 
-    private void writeImplementation( Feature f ) 
-            throws IOException{
-        writer.writeFeatureID( f.getID() );        
-        for( int i=0; i<f.getNumberOfAttributes(); i++){
-            writer.write( i, f.getAttribute( i ));
-        }
-    }
+  To implement remove, we simply won't write out the original Feature.
+  Most of the method is devoted gathering up the information needed to issue
+  a feature removed event.
 
-Add next() implementation::
+8. Add close() Implementation:
 
-    public Feature next() throws IOException {
-        String fid = null;
-        FeatureType type = reader.type;                                
-        try {
-            if( hasNext() ){
-                reader.next(); // grab next line
-                
-                fid = reader.getFeatureID();
-                Object values[] = new Object[GEOTOOLS: reader.getAttributeCount() ];
-                for( int i=0; i< reader.getAttributeCount(); i++){
-                    values[i]=reader.read( i );
-                }                            
-                origional = type.create( values, fid );
-                live = type.duplicate( origional );
-                return live;
-            }
-            else {
-                fid = type.getTypeName()+"."+System.currentTimeMillis();
-                Object values[] = DataUtilities.defaultValues( type );
-                origional = null;                                            
-                live = type.create( values, fid );
-                return live;    
-            }                    
-        } catch (IllegalAttributeException e) {
-            throw new IOException( "Problem creating feature "+fid );
-        }
-    }
+   .. literalinclude:: /../../modules/plugin/property/src/main/java/org/geotools/data/property/PropertyFeatureWriter.java
+      :language: java
+      :start-after: // close start
+      :end-before: // close end
 
-The next method is used for two purposes:
-
-* To access Features for modification or removal
-* To create new Features
-
-To access existing Features, the AttributeReader is advanced, the current attribute and feature ID assembled into a Feature. This Feature is then duplicated and returned to the user. We will later compare the original to the user's copy to check if any modifications have been made.
-
-Add write() implementation::
-
-    public void write() throws IOException {
-        if( live == null){
-            throw new IOException( "No current feature to write");            
-        }
-        if( live.equals( origional )){
-            writeImplementation( origional );                        
-        }
-        else {
-            writeImplementation( live );
-            if( origional != null){
-                store.fireChanged( origional, live );                
-            }
-            else {
-                store.fireAdded( live );
-            }            
-        }
-        origional = null;
-        live = null;
-    }
-
-In the write method we will need to check to see whether the user has changed anything. If so, we will need to remember to view event notification after writing out their changes.
-
-Add remove() implementation::
-
-    public void remove() throws IOException {
-        if( live == null){
-            throw new IOException( "No current feature to remove");
-        }
-        if( origional != null ){
-            store.fireRemoved( origional );
-        }                     
-        origional = null; 
-        live = null; // prevent live and remove from being written out       
-    } 
-
-To implement remove, we simply won't write out the original Feature.
-
-Add close() Implementation::
-
-    public void close() throws IOException {
-        if( writer == null ){
-            throw new IOException( "writer already closed");            
-        }
-        while( reader.hasNext() ){
-            reader.next(); // advance
-            writer.next();             
-            writer.echoLine( reader.line ); // echo unchanged                        
-        }
-        writer.close();
-        reader.close();        
-        writer = null;
-        reader = null;        
-        read.delete();
-        write.renameTo( read );
-        read = null;
-        write = null;        
-        store = null;                
-    }
-
-To implement close() we must remember to write out any remaining features in the DataStore before closing our new file. To implement this we have performed a small optimization: we simply echo the line acquired by the PropertyFeatureReader.
-
-The last thing our FeatureWriter must do is replace the existing File with our new one.
+   To implement close() we must remember to write out any remaining features in the DataStore
+   before closing our new file. To implement this we have performed a small optimization: we
+   simply echo the line acquired by the PropertyFeatureReader.
+   
+   The last thing our FeatureWriter must do is replace the existing File with our new one.
 
 PropertyAttributeWriter
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-In the previous section we explored the capabilities of our PropertyWriter through actual use.
+In the previous section we explored the capabilities of our PropertyWriter through actual use;
+now we can go ahead and define the class.
 
-Create PropertyAttributeWriter::
+1. Create PropertyAttributeWriter:
     
-    package org.geotools.data.property;
-    
-    import java.io.*;
-    import org.geotools.data.*;
-    import org.geotools.feature.*;
-    import com.vividsolutions.jts.geom.Geometry;
-    
-    public class PropertyAttributeWriter implements AttributeWriter {
-        BufferedWriter writer;    
-        FeatureType type;    
-        public PropertyAttributeWriter( File file, FeatureType featureType ) 
-                throws IOException {
-            writer = new BufferedWriter( new FileWriter( file ) );
-            type = featureType;                
-            writer.write( "_=" );
-            writer.write( DataUtilities.spec( type ) );                                        
-        }
-        public int getAttributeCount() {
-            return type.getAttributeCount();
-        }
-        public AttributeType getAttributeType(int index) throws ArrayIndexOutOfBoundsException {
-            return type.getAttributeType(index);
-        }
-    }
+   .. literalinclude:: /../../modules/plugin/property/src/main/java/org/geotools/data/property/PropertyAttributeWriter.java
+      :language: java
+      :end-before: // constructor end
 
-A BufferedWriter is created over the provided File, and the provided featureType is used to implement getAttribtueCount() and getAttributeType( index ).
+   A BufferedWriter is created over the provided File, and the provided featureType is used to
+   implement getAttribtueCount() and getAttributeType( index ).
 
-Add hasNext() and next() implementations::
+2. Add hasNext() and next() implementations:
 
-    public boolean hasNext() throws IOException {
-        return false;
-    }    
-    public void next() throws IOException {
-        writer.newLine();
-        writer.flush();
-    }
+   .. literalinclude:: /../../modules/plugin/property/src/main/java/org/geotools/data/property/PropertyAttributeWriter.java
+      :language: java
+      :start-after: // next start
+      :end-before: // next end
 
-Our FeatureWriter does not provide any content of its own. FeatureWriters that are backed by JDBC ResultSets or random access file may use hasNext() to indicate that they are streaming over existing content.
+  Our FeatureWriter does not provide any content of its own. FeatureWriters that are backed by
+  JDBC ResultSets or random access file may use hasNext() to indicate that they are streaming
+  over existing result set.
+  
+  Our implementation of next() will simply start a newLine for the feature that is about to be written.
 
-Our implementation of next() will simply start a newLine for the feature that is about to be written.
+3. Add writeFeatureID():
 
-Add writeFeatureID()::
+   .. literalinclude:: /../../modules/plugin/property/src/main/java/org/geotools/data/property/PropertyAttributeWriter.java
+      :language: java
+      :start-after: // writeFeatureID start
+      :end-before: // writeFeatureID end
 
-    public void writeFeatureID( String fid ) throws IOException{
-        if( writer == null){
-            throw new IOException("Writer has been closed");
-        }        
-        writer.write( fid );                
-    }
+  Our file format is capable of storing FeatureIDs. Many DataStores will need to derive or encode
+  FeatureID information into their Attributes.
 
-Our file format is capable of storing FeatureIDs. Many DataStores will need to derive or encode FeatureID information into their Attributes.
+4. Add write( int index, Object value ):
 
-Add write( int index, Object value )::
+   .. literalinclude:: /../../modules/plugin/property/src/main/java/org/geotools/data/property/PropertyAttributeWriter.java
+      :language: java
+      :start-after: // write start
+      :end-before: // write end
 
-    public void write(int position, Object attribute) throws IOException {
-        writer.write( position == 0 ? "=" : "|" );
-        if( attribute instanceof Geometry){
-            writer.write( ((Geometry)attribute).toText() );
-        }
-        else {
-            writer.write( attribute.toString() );
-        }
-    }
+  Our implementation needs to prepend an equals sign before the first Attribute, or a bar for any
+  other attribute.
+  
+  We also make sure to encode any newlines in String content, Geometry as wkt, and use the Converters
+  class to handle any other objects correctly.
 
-Our implementation needs to prepend an equals sign before the first Attribute, or a bar for any other attribute. We also make sure to encode Geometry as wkt.
+5. Add close():
 
-Add close()::
+   .. literalinclude:: /../../modules/plugin/property/src/main/java/org/geotools/data/property/PropertyAttributeWriter.java
+      :language: java
+      :start-after: // close start
+      :end-before: // close end
 
-    public void close() throws IOException {
-        writer.close();
-        writer = null;
-        type = null;        
-    }
+6. Finally, to implement our FeatureWriter.close() optimization, we need to implement echoLine():
 
-Finally, to implement our FeatureWriter.close() optimization, we need to implement echoLine()::
-
-    public void echoLine( String line ) throws IOException{
-        if( line == null ){
-            return;
-        }
-        writer.write( line );
-    }
-
+   .. literalinclude:: /../../modules/plugin/property/src/main/java/org/geotools/data/property/PropertyAttributeWriter.java
+      :language: java
+      :start-after: // echoLine start
+      :end-before: // echoLine end
 
 Part 5 - Using PropertyDataStore to Write Files
 -----------------------------------------------
@@ -1622,3 +1537,43 @@ Now in a perfect world we would be done, in our world other programs are willing
         }
         return null;
     }
+
+Part 7 - Module
+---------------
+
+Since this tutorial has been written the gt-property module has been pressed into service as a
+supported module in its own right.
+
+References:
+
+* :doc:`gt-property </library/data/property>` (User Guide)
+* http://docs.geotools.org/latest/developer/guide/procedures/create.html (Developers Guide)
+* http://docs.geotools.org/latest/developer/guide/procedures/supported.html (Developers Guide)
+
+To get an idea of what kind of "extra" is required for a supported module:
+
+* Package up as a maven module.
+* JUnit Test Cases
+* Multiline (reported issue)
+  
+  A bug report asking that gt-properties support multi-line string values.
+  
+  The suggestion was to use the Properties class, which we could not do and still retain our idea
+  of streaming the content from disk.
+  
+  The following change was made To PropertyAttributeReader allow for multi-line enteries::
+
+   .. literalinclude:: /../../modules/plugin/property/src/main/java/org/geotools/data/property/PropertyAttributeReader.java
+      :language: java
+      :start-after: // multieline start
+      :end-before: // multieline end
+      
+ * Info (reported issue)
+   
+   You can fill in a "info" data strucutre to more accurately describe your information to the
+   uDig or GeoServer catalog.
+
+   .. literalinclude:: /../../modules/plugin/property/src/main/java/org/geotools/data/property/PropertyDataStore.java
+      :language: java
+      :start-after: // info start
+      :end-before: // info end

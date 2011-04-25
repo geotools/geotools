@@ -52,6 +52,7 @@ public class PropertyDataStoreFactory implements DataStoreFactorySpi {
         }
     }
 
+    // createNewDataStore start
     public DataStore createNewDataStore(Map params) throws IOException {
     	File dir = directoryLookup(params);
 
@@ -70,6 +71,7 @@ public class PropertyDataStoreFactory implements DataStoreFactorySpi {
         String namespaceURI = (String) NAMESPACE.lookUp(params);
         return new PropertyDataStore(dir,namespaceURI);
     }
+    // createNewDataStore end
 
     public String getDisplayName() {
         return "Properties";

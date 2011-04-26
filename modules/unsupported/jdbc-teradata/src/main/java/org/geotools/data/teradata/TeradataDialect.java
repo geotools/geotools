@@ -2,6 +2,9 @@ package org.geotools.data.teradata;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.sql.Clob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -40,6 +43,7 @@ import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKBReader;
+import com.vividsolutions.jts.io.WKTReader;
 import com.vividsolutions.jts.io.WKTWriter;
 
 public class TeradataDialect extends PreparedStatementSQLDialect {
@@ -177,15 +181,20 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
             if (wkb != null) {
                 return new WKBReader(factory).read(wkb);
             }
+            
+            //in "locator" form the geometry comes across as text
+            Clob clob = rs.getClob(column);
+            InputStream in = clob.getAsciiStream();
+            try {
+                return new WKTReader(factory).read(new InputStreamReader(in));
+            }
+            finally {
+                if (in != null) in.close();
+            }
         }
-        catch(SQLException e) {
-            //ok, just fall back to reading blob
-        } 
         catch (ParseException e) {
-            throw (IOException) new IOException("Error parsing well known binary").initCause(e);
+            throw (IOException) new IOException("Error parsing geometry").initCause(e);
         }
-        
-        return getWkbReader(factory).read(rs, column);
     }
 
     WKBAttributeIO getWkbReader(GeometryFactory factory) {
@@ -230,12 +239,15 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
         // geometries we will have to check and fall back onto readin the Blob, but for smaller 
         // geometries this will save us the second trip
         // see decodeGeometryValue()
-       
+        // CASE WHEN CHARACTERS("the_geom") > 16000 THEN NULL ELSE CAST("the_geom" AS VARCHAR(16000)) END  as "the_geom_inline
         for (AttributeDescriptor att : featureType.getAttributeDescriptors()) {
             if (att instanceof GeometryDescriptor) {
-                sql.append(", CAST(");
+                sql.append(", CASE WHEN CHARACTERS(");
                 encodeColumnName(att.getLocalName(), sql);
-                sql.append(".ST_AsBinary() AS VARBYTE(16000))");
+                sql.append(") > 32000 THEN NULL ELSE CAST (");
+                encodeColumnName(att.getLocalName(), sql);
+                //
+                sql.append(".ST_AsBinary() AS VARBYTE(32000)) END");
                 encodeColumnAlias(att.getLocalName() + "_inline", sql);
             }
         }

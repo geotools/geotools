@@ -445,6 +445,23 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
     
     /**
      * Looks up tessellation info for the schema/table.
+     * <p>
+     * The schema of the tessellation table is:
+     * <pre>
+     * F_TABLE_SCHEMA VARCHAR(128) CHARACTER SET UNICODE NOT CASESPECIFIC NOT NULL,
+     * F_TABLE_NAME VARCHAR(128) CHARACTER SET UNICODE NOT CASESPECIFIC NOT NULL,
+     * F_GEOMETRY_COLUMN VARCHAR(128) CHARACTER SET UNICODE NOT CASESPECIFIC NOT NULL,
+     * U_XMIN FLOAT,
+     * U_YMIN FLOAT,
+     * U_XMAX FLOAT,
+     * U_YMAX FLOAT,
+     * G_NX INTEGER,
+     * G_NY INTEGER,
+     * LEVELS INTEGER,
+     * SCALE FLOAT,
+     * SHIFT INTEGER)
+     * </pre>
+     * </p>
      */
     List<TessellationInfo> lookupTessellationInfos(Connection cx, String schemaName, String tableName, 
         String columnName) throws SQLException {
@@ -495,10 +512,10 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
             try {
                 if (rs.next()) {
                     TessellationInfo tinfo = new TessellationInfo();
-                    tinfo.setUBounds(new Envelope(rs.getDouble("UxMin"), rs.getDouble("UxMax"), 
-                        rs.getDouble("UyMin"), rs.getDouble("UyMax")));
-                    tinfo.setNx(rs.getInt("NX"));
-                    tinfo.setNy(rs.getInt("NY"));
+                    tinfo.setUBounds(new Envelope(rs.getDouble("U_XMIN"), rs.getDouble("U_XMAX"), 
+                        rs.getDouble("U_YMIN"), rs.getDouble("U_YMAX")));
+                    tinfo.setNx(rs.getInt("G_NX"));
+                    tinfo.setNy(rs.getInt("G_NY"));
                     tinfo.setLevels(rs.getInt("LEVELS"));
                     tinfo.setScale(rs.getDouble("SCALE"));
                     tinfo.setShift(rs.getInt("SHIFT"));

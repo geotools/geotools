@@ -20,8 +20,11 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import org.geotools.data.DefaultQuery;
+import org.geotools.data.FeatureStore;
+import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
 import org.geotools.data.QueryCapabilities;
+import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ContentFeatureSource;
@@ -35,10 +38,13 @@ import org.geotools.referencing.CRS;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.And;
+import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.Not;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.PropertyIsLike;
+import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 import org.opengis.filter.spatial.BBOX;
@@ -435,6 +441,14 @@ public abstract class JDBCFeatureSourceTest extends JDBCTestSupport {
         PropertyIsEqualTo f = ff.equals(ff.property(aname("doubleProperty")), 
             ff.add(ff.property(aname("intProperty")), ff.literal("0.1")));
         assertEquals(1, featureSource.getCount(new Query(null, f)));
+    }
+    
+    public void testNotFilter() throws Exception {
+        FilterFactory ff = dataStore.getFilterFactory();
+        Filter f = ff.equal(ff.property(aname("stringProperty")), ff.literal("one"), true);
+        f = ff.not(f);
+        
+        assertEquals(featureSource.getCount(Query.ALL)-1, featureSource.getCount(new Query(null, f)));
     }
     
 }

@@ -504,7 +504,15 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * 
      */
     public Object visit(Not filter, Object extraData) {
-        return visit((BinaryLogicOperator)filter, "NOT");
+        try {
+            out.write("NOT (");
+            filter.getFilter().accept(this, extraData);
+            out.write(")");
+            return extraData;
+        }
+        catch(IOException e) {
+            throw new RuntimeException(IO_ERROR, e);
+        }
     }
     
     /**
@@ -533,23 +541,19 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         try {
             java.util.Iterator list = filter.getChildren().iterator();
 
-            if (filter instanceof Not) {
-                out.write(type + " (");
+            //AND or OR
+            out.write("(");
+
+            while (list.hasNext()) {
                 ((Filter) list.next()).accept(this, extraData);
-                out.write(")");
-            } else { //AND or OR
-                out.write("(");
 
-                while (list.hasNext()) {
-                    ((Filter) list.next()).accept(this, extraData);
-
-                    if (list.hasNext()) {
-                        out.write(" " + type + " ");
-                    }
+                if (list.hasNext()) {
+                    out.write(" " + type + " ");
                 }
-
-                out.write(")");
             }
+
+            out.write(")");
+
         } catch (java.io.IOException ioe) {
             throw new RuntimeException(IO_ERROR, ioe);
         }

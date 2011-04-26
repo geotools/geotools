@@ -17,6 +17,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.JDBCDataStore;
@@ -805,7 +807,54 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
 
     @Override
     public boolean isLimitOffsetSupported() {
-        return false;
+        //JD: Currently we don't have the ability to specify either limit or
+        // offset, and currently we actually only do limit. Change this method
+        // to return false if you want to pass the test suite
+        return true;
+    }
+    
+    static Pattern ORDER_BY_QUERY = 
+        Pattern.compile(".*(ORDER BY (?:,? *\"?[\\w]+\"?(?: (?:ASC)|(:?DESC))?)+)");
+    static Pattern ORDER_BY = 
+        Pattern.compile("ORDER BY (?:,? *\"?[\\w]+\"?(?: (?:ASC)|(:?DESC))?)+");
+    
+    @Override
+    public void applyLimitOffset(StringBuffer sql, int limit, int offset) {
+        if (offset == 0) {
+            //use TOP N 
+            int i = sql.indexOf("SELECT");
+            sql.insert(i+6, " TOP " + limit);
+        }
+        else {
+            //use ROW_NUMBER() function
+            //TODO: this actually doesn't work when an ORDER BY is present because the row_number()
+            // gets sorted as well
+
+            //this is a hack but subqueries can't have ORDER BY clause... so strip it off and
+            // append it to the end
+            Matcher m = ORDER_BY_QUERY.matcher(sql.toString());
+            String orderBy = null;
+            if (m.matches()) {
+                orderBy = m.group(1);
+                
+                //strip it out
+                m = ORDER_BY.matcher(sql.toString());
+                String s = m.replaceAll("");
+                sql.setLength(0);
+                sql.append(s);
+            }
+            
+            sql.insert(0, "SELECT t.*, ROW_NUMBER() OVER (ORDER BY 'foo') AS row_num FROM (");
+            sql.append(") AS t ");
+            
+            if (orderBy != null) {
+                sql.append(orderBy).append(" ");
+            }
+            
+            long max = (limit == Integer.MAX_VALUE ? Long.MAX_VALUE : limit + offset);
+            sql.append("QUALIFY row_num > ").append(offset).append(" AND row_num <= ")
+               .append(max);
+        }
     }
     
     @Override

@@ -11,9 +11,10 @@ Install
    sphinx
 
 Download Links
-^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^
 
-Before using or developing GeoTools you should download the software listed here. You can start downloading now before proceeding on to the install instructions.
+Before using or developing GeoTools you should download the software listed here. You can start
+downloading now before proceeding on to the install instructions.
 
 * Apache Maven 2.2.1
   
@@ -29,13 +30,13 @@ Before using or developing GeoTools you should download the software listed here
 * Java Advanced Imaging
   
   * Java Advanced Imaging API 1.1.3 
-  * https://jai.dev.java.net/binary-builds.html
+  * http://download.java.net/media/jai/builds/release/1_1_3/
   * Java extension for image processing
 
 * Java ImageIO
   
   * Java Image I/O Tools 1.1
-  * https://jai-imageio.dev.java.net/binary-builds.html
+  * http://download.java.net/media/jai-imageio/builds/release/1.1/
   * Low-level image Access
 
 * Java ImageIO-Ext:
@@ -48,8 +49,5 @@ Before using or developing GeoTools you should download the software listed here
 
 * ArcSDE (Optional):
   
-  * Not downloadable - Included on CD
+  * Not available for download - Included on CD
 
-* DB2:
-  
-  * db2jcc.jar

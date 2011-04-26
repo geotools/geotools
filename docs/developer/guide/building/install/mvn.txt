@@ -66,3 +66,54 @@ It is not actually apache maven as provided by apache; and it has a build failur
    [ERROR] BUILD ERROR
    [INFO] ------------------------------------------------------------------------
    [INFO] Error extracting plugin descriptor: 'No mojo definitions were found for plugin: org.geotools.maven:javadoc.
+
+Kenneth Gulbrandsoy has supplied the following notes on unbuntu:
+
+References:
+
+* http://usingmaven.bachew.net/manually-install-maven-on-linux
+
+1. Download apache-maven-2.2.1-bin.tar.gz
+   
+   * http://www.apache.org/dyn/closer.cgi/maven/binaries/apache-maven-2.2.1-bin.tar.gz
+
+2. Unpack into /usr/local/lib (or any other path you choose)::
+     
+     > cd /usr/local/lib
+     > sudo tar -xzf apache-maven-2.2.1-bin.tar.gz
+
+   This unpacks the folder apache-maven-2.2.1 to pwd
+
+   ..note::
+     
+     At this point > usr/local/lib/apache-maven-2.2.1/bin/mvn --version will complain::
+   
+       Warning: JAVA_HOME environment variable is not set. 
+
+     Step 4 solves this using a application specific environment (profile.d) script. This script
+     also set the M2_HOME and PATH variables. Note that step 5 registers the script with
+     current session.
+
+3. Link apache-maven-2.2.1 to apache-maven (optional)::
+     
+     > ln -sT apache-maven-2.2.1 apache-maven
+     
+   This makes it easier to upgrade later on
+
+4. Add maven script that set environment variables (su required)::
+     
+     > cat > /etc/profile.d/apache-maven.sh
+     export JAVA_HOME=/usr/lib/jvm/java-6-sun/jre
+     export M2_HOME=/usr/local/lib/apache-maven
+     export PATH=$PATH:$M2_HOME/bin
+     <Ctrl-D>
+     > . /etc/profile 
+
+5. Test Maven2. The following command should not produce any warnings::
+     
+     > mvn --version
+     Apache Maven 2.2.1 (r801777; 2009-08-06 21:16:01+0200)
+     Java version: 1.6.0_24
+     Java home: /usr/lib/jvm/java-6-sun-1.6.0.24/jre
+     Default locale: nb_NO, platform encoding: UTF-8
+     OS name: "linux" version: "2.6.32-30-generic" arch: "amd64" Family: "unix"

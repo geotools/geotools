@@ -11,14 +11,14 @@ Java 2 Standard Edition Software Developers Kit
 3. When it asks if you want to install a JRE you can say yes
 
 Be careful with Java 6
-^^^^^^^^^^^^^^^^^^^^^^^
+''''''''''''''''''''''
 
 The API has changed in a few areas so making use of Java 6 for building is a little risky (you may accidentally use a new method).
 
 GeoTools requires a Java 1.5 SDK for versions 2.5 and above; for older versions of java please use GeoTools 2.4.
 
 Why JAVA_HOME does not work on Windows
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+''''''''''''''''''''''''''''''''''''''
 
 How to Build using Java 5 and run using Java 6 on windows.
 
@@ -43,7 +43,8 @@ One technique is to set up a batch file similar to the following:
    appear before ``SystemRoot\system32`` as the system32 contains a stub java.exe that looks up
    the correct version of java to run in the registry.
    
-
+   .. image:: /images/jdk.png
+   
 5. You can see in the above screen snap that the
    ``My Computer\HKEY_LOCAL_MACHINE\SOFTWARE\JavaSoft > Java Development Kit > CurrentVersion``
    is set to **1.6**.
@@ -52,8 +53,8 @@ One technique is to set up a batch file similar to the following:
    
    Placing JAVA_HOME on the path before System32 shortcuts this annoying "feature".
 
-Java Extensions
----------------
+Java Extensions (Optional)
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. note::
    Optional
@@ -74,52 +75,75 @@ These extensions end up adding:
 Please follow the installation instructions carefully.
 
 Java Advanced Imaging
-^^^^^^^^^^^^^^^^^^^^^
+'''''''''''''''''''''
+
+Java Advanced Imaging is an image processing library allowing you to form chains of operations
+to process rasters in a manner similar to functional programming.
+
+References:
+
+* http://java.net/projects/jai-core
 
 1. Download this Version of JAI
    
    * Java Advanced Imaging API 1.1.3
-   * http://java.net/projects/jai-core
-   * (at the time of writing the above was a placeholder as Oracle is migrating java projects around)
+     
+   At the time of writing Oracle is migrating java projects around - try the following:
+     
+   * http://download.java.net/media/jai/builds/release/1_1_3/
+   * http://download.java.net/media/jai/builds/release/1_1_3/INSTALL.html
 
-2. Download JAI for your JDK by clicking on the above link. 
+2. Download JAI for your JDK by clicking on the link for your platform:
    
    Example: jai-1_1_3-lib-windows-i586-jdk.exe
 
 3. Use the one click installer to install JAI into your JDK
-4. Download JAI for your JRE by clicking on the above link.
+4. Download JAI for your JRE by clicking on the link for your platform:
    
    Example: jai-1_1_3-lib-windows-i586-jre.exe
 
 5. Use the one click installer to install JAI into your JRE
 
-If you are working on linux you will of course need to choose the appropriate download.
-
-For More Information:
-
-* Java Media Home Page: http://java.sun.com/products/java-media/jai/index.jsp
+   (If you are working on linux you will of course need to choose the appropriate download)
 
 Java Image IO
-^^^^^^^^^^^^^
+'''''''''''''
+
+Java ImageIO provides the raw "formats" that allow both Java and JAI to read in additional image
+files. This is similar in practice to the JDBC library allowing data vendors to supply JDBC drivers.
+
+
+References:
+
+* http://java.net/projects/imageio
 
 1. Download this Version of ImageIO:
    
    * JAI Image I/O Tools 1.1
-   * http://java.net/projects/imageio
-   * (at the time of writing the above was a placeholder as Oracle is migrating java projects around)
+   
+   At the time of writing Oracle is migrating java projects around - try the following:
+   
+   * http://download.java.net/media/jai-imageio/builds/release/1.1/
+   * http://download.java.net/media/jai-imageio/builds/release/1.1/INSTALL-jai_imageio.html
 
 2. Download ImageIO for your JDK by clicking on the above link.
    
    Example: jai_imageio-1_1-lib-windows-i586-jdk.exe
 
-3. Download ImageIO for your JRE by clicking on the above link.
+3. Use the one click installer to install ImageIO into your JDK
+   
+   (Depending on your configuration this may be sufficient for your needs)
+
+4. Download ImageIO for your JRE by clicking on the link for your platform
    
    Example: jai_imageio-1_1-lib-windows-i586-jre.exe
 
-If you are working on linux you will of course need to choose the appropriate download.
+5. Use the one click installer to install the ImageIO into your JRE.
+   
+   (If you are working on linux you will of course need to choose the appropriate download)
 
 ImageIO-Ext Install
-^^^^^^^^^^^^^^^^^^^
+'''''''''''''''''''
 
 .. note::
    
@@ -143,7 +167,7 @@ The installer from the ImageIO-Ext website can be used to install into your JAVA
 4. Make a copy of these files into your *JRE_HOME/ext/libs**
 
 Alternate CLASSPATH Install
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+'''''''''''''''''''''''''''
 
 This is only needed if the windows one-click installers don't work for you:
 
@@ -154,7 +178,7 @@ This is only needed if the windows one-click installers don't work for you:
 The goal is to place the required jars into your lib/ext directory of both your JDK (for compiling) and your JRE (for running).
 
 Optional: Mac ImageIO
-^^^^^^^^^^^^^^^^^^^^^
+'''''''''''''''''''''
 
 Java Advanced Imaging is included with recent releases of Mac OS (but that may be changing in the future).
 

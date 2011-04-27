@@ -38,6 +38,7 @@ import org.opengis.filter.And;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.PropertyIsEqualTo;
+import org.opengis.filter.PropertyIsGreaterThan;
 import org.opengis.filter.PropertyIsLike;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
@@ -108,6 +109,17 @@ public abstract class JDBCFeatureSourceTest extends JDBCTestSupport {
 
     public void testCountWithOffsetLimit() throws Exception {
         DefaultQuery query = new DefaultQuery();
+        query.setStartIndex(1);
+        query.setMaxFeatures(1);
+        assertEquals(1, featureSource.getCount(query));
+    }
+    
+    public void testCountWithFilterOffsetLimit() throws Exception {
+        FilterFactory ff = dataStore.getFilterFactory();
+        PropertyIsGreaterThan filter = ff.greater(ff.property(aname("doubleProperty")), ff.literal(1));
+
+        DefaultQuery query = new DefaultQuery();
+        query.setFilter(filter);
         query.setStartIndex(1);
         query.setMaxFeatures(1);
         assertEquals(1, featureSource.getCount(query));

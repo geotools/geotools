@@ -3240,7 +3240,7 @@ public final class JDBCDataStore extends ContentDataStore
 
         boolean limitOffset = checkLimitOffset(query);
         if(limitOffset) {
-            sql.append("SELECT * FROM ");
+            sql.append("SELECT /*+ ALL_ROWS OPTIMIZER_FEATURES_ENABLE('8.1.7') */ * FROM ");
         } else {
             sql.append("SELECT ");
             encodeFunction(function,att,query,sql);

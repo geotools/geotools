@@ -88,7 +88,7 @@ public class BufferedAuthorityFactory extends AbstractAuthorityFactory implement
      * @see #getBackingStore
      * @see DeferredAuthorityFactory#createBackingStore
      */
-    AbstractAuthorityFactory backingStore;
+    volatile AbstractAuthorityFactory backingStore;
 
     /**
      * The pool of cached objects.
@@ -228,7 +228,7 @@ public class BufferedAuthorityFactory extends AbstractAuthorityFactory implement
      * {@link DeferredAuthorityFactory#createBackingStore} throws an exception.
      */
     @Override
-    synchronized boolean isAvailable() {
+    boolean isAvailable() {
         try {
             return getBackingStore().isAvailable();
         } catch (FactoryNotFoundException exception) {
@@ -289,7 +289,7 @@ public class BufferedAuthorityFactory extends AbstractAuthorityFactory implement
      * Returns the vendor responsible for creating the underlying factory implementation.
      */
     @Override
-    public synchronized Citation getVendor() {
+    public Citation getVendor() {
         return (backingStore!=null) ? backingStore.getVendor() : super.getVendor();
     }
 
@@ -297,7 +297,7 @@ public class BufferedAuthorityFactory extends AbstractAuthorityFactory implement
      * Returns the organization or party responsible for definition and maintenance of the
      * underlying database.
      */
-    public synchronized Citation getAuthority() {
+    public Citation getAuthority() {
         return (backingStore!=null) ? backingStore.getAuthority() : null;
     }
 
@@ -308,7 +308,7 @@ public class BufferedAuthorityFactory extends AbstractAuthorityFactory implement
      * @throws FactoryException if a failure occured while fetching the engine description.
      */
     @Override
-    public synchronized String getBackingStoreDescription() throws FactoryException {
+    public String getBackingStoreDescription() throws FactoryException {
         return getBackingStore().getBackingStoreDescription();
     }
 
@@ -322,7 +322,7 @@ public class BufferedAuthorityFactory extends AbstractAuthorityFactory implement
      *         returns an {@linkplain java.util.Collections#EMPTY_SET empty set}.
      * @throws FactoryException if access to the underlying database failed.
      */
-    public synchronized Set<String> getAuthorityCodes(final Class<? extends IdentifiedObject> type)
+    public Set<String> getAuthorityCodes(final Class<? extends IdentifiedObject> type)
             throws FactoryException
     {
         return getBackingStore().getAuthorityCodes(type);
@@ -337,7 +337,7 @@ public class BufferedAuthorityFactory extends AbstractAuthorityFactory implement
      * @throws NoSuchAuthorityCodeException if the specified {@code code} was not found.
      * @throws FactoryException if the query failed for some other reason.
      */
-    public synchronized InternationalString getDescriptionText(final String code)
+    public InternationalString getDescriptionText(final String code)
             throws NoSuchAuthorityCodeException, FactoryException
     {
         return getBackingStore().getDescriptionText(code);

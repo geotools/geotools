@@ -136,8 +136,7 @@ public class ManyAuthoritiesFactory extends AuthorityFactoryAdapter implements C
      * Sets the factories. This method is invoked by the {@link AllAuthoritiesFactory} subclass
      * only. No one else should invoke this method, since factories should be immutable.
      */
-    final void setFactories(final Collection<AuthorityFactory> factories) {
-        assert Thread.holdsLock(this);
+    synchronized final void setFactories(final Collection<AuthorityFactory> factories) {
         this.factories = createFallbacks(factories);
     }
 

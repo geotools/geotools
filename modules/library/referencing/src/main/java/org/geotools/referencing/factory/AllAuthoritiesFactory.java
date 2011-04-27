@@ -89,7 +89,7 @@ public class AllAuthoritiesFactory extends ManyAuthoritiesFactory {
      * recreate the set.
      */
     @Override
-    synchronized Collection<AuthorityFactory> getFactories() {
+    Collection<AuthorityFactory> getFactories() {
         final Collection<String> authorities = ReferencingFactoryFinder.getAuthorityNames();
         if (authorities != authorityNames) {
             authorityNames = authorities;

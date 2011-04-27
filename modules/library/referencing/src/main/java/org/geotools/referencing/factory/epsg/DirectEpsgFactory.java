@@ -313,7 +313,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
      * This authority will contains the database version in the {@linkplain Citation#getEdition
      * edition} attribute, together with the {@linkplain Citation#getEditionDate edition date}.
      */
-    private transient Citation authority;
+    private volatile transient Citation authority;
 
     /**
      * Last object type returned by {@link #createObject}, or -1 if none.
@@ -466,30 +466,34 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
      * This authority will contains the database version in the {@linkplain Citation#getEdition
      * edition} attribute, together with the {@linkplain Citation#getEditionDate edition date}.
      */
-    public synchronized Citation getAuthority() {
+    public Citation getAuthority() {
         if (authority == null) try {
-            // we sort on version_number too since in v7.4 they had two entries with the same version date
-            final String query = adaptSQL("SELECT VERSION_NUMBER, VERSION_DATE FROM [Version History]" +
-                                          " ORDER BY VERSION_DATE DESC, VERSION_NUMBER DESC");
-            final DatabaseMetaData metadata  = getConnection().getMetaData();
-            final Statement        statement = getConnection().createStatement();
-            final ResultSet        result    = statement.executeQuery(query);
-            if (result.next()) {
-                final String version = result.getString(1);
-                final Date   date    = result.getDate  (2);
-                final String engine  = metadata.getDatabaseProductName();
-                final CitationImpl c = new CitationImpl(Citations.EPSG);
-                c.getAlternateTitles().add(Vocabulary.formatInternational(
-                        VocabularyKeys.DATA_BASE_$3, "EPSG", version, engine));
-                c.setEdition(new SimpleInternationalString(version));
-                c.setEditionDate(date);
-                authority = (Citation) c.unmodifiable();
-                hints.put(Hints.VERSION, new Version(version));  // For getImplementationHints()
-            } else {
-                authority = Citations.EPSG;
+            synchronized (this) {
+                if(authority == null) {
+                    // we sort on version_number too since in v7.4 they had two entries with the same version date
+                    final String query = adaptSQL("SELECT VERSION_NUMBER, VERSION_DATE FROM [Version History]" +
+                                                  " ORDER BY VERSION_DATE DESC, VERSION_NUMBER DESC");
+                    final DatabaseMetaData metadata  = getConnection().getMetaData();
+                    final Statement        statement = getConnection().createStatement();
+                    final ResultSet        result    = statement.executeQuery(query);
+                    if (result.next()) {
+                        final String version = result.getString(1);
+                        final Date   date    = result.getDate  (2);
+                        final String engine  = metadata.getDatabaseProductName();
+                        final CitationImpl c = new CitationImpl(Citations.EPSG);
+                        c.getAlternateTitles().add(Vocabulary.formatInternational(
+                                VocabularyKeys.DATA_BASE_$3, "EPSG", version, engine));
+                        c.setEdition(new SimpleInternationalString(version));
+                        c.setEditionDate(date);
+                        authority = (Citation) c.unmodifiable();
+                        hints.put(Hints.VERSION, new Version(version));  // For getImplementationHints()
+                    } else {
+                        authority = Citations.EPSG;
+                    }
+                    result.close();
+                    statement.close();
+                }
             }
-            result.close();
-            statement.close();
         } catch (SQLException exception) {
             Logging.unexpectedException(LOGGER, DirectEpsgFactory.class, "getAuthority", exception);
             return Citations.EPSG;

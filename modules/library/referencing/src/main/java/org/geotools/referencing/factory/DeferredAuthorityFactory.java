@@ -125,13 +125,16 @@ public abstract class DeferredAuthorityFactory extends BufferedAuthorityFactory
      */
     @Override
     final AbstractAuthorityFactory getBackingStore() throws FactoryException {
-        assert Thread.holdsLock(this);
         if (backingStore == null) {
-            backingStore = createBackingStore();
-            if (backingStore == null) {
-                throw new FactoryNotFoundException(Errors.format(ErrorKeys.NO_DATA_SOURCE));
+            synchronized (this) {
+                if(backingStore == null) {
+                    backingStore = createBackingStore();
+                    if (backingStore == null) {
+                        throw new FactoryNotFoundException(Errors.format(ErrorKeys.NO_DATA_SOURCE));
+                    }
+                    completeHints();
+                }
             }
-            completeHints();
         }
         used = true; // Tell to the disposer to wait again.
         return backingStore;

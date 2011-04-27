@@ -107,20 +107,19 @@ public class FactoryRegistry extends ServiceRegistry {
      * as a guard against infinite recursivity (i.e. when a factory to be scanned request
      * an other dependency of the same category).
      */
-    private final Set<Class<?>> scanningCategories = new HashSet<Class<?>>();
+    private final RecursionCheckingHelper scanningCategories = new RecursionCheckingHelper();
 
     /**
      * Factories under testing for availability. This is used by
      * {@link #isAvailable} as a guard against infinite recursivity.
      */
-    private final Set<Class<? extends OptionalFactory>> testingAvailability =
-            new HashSet<Class<? extends OptionalFactory>>();
+    private final RecursionCheckingHelper testingAvailability = new RecursionCheckingHelper();
 
     /**
      * Factories under testing for hints compatibility. This is used by
      * {@link #usesAcceptableHints} as a guard against infinite recursivity.
      */
-    private final Set<Factory> testingHints = new HashSet<Factory>();
+    private final RecursionCheckingHelper testingHints = new RecursionCheckingHelper();
 
     /**
      * Constructs a new registry for the specified category.
@@ -175,7 +174,7 @@ public class FactoryRegistry extends ServiceRegistry {
      *
      * @since 2.3
      */
-    public <T> Iterator<T> getServiceProviders(final Class<T> category, final Filter filter, final Hints hints) {
+    public synchronized <T> Iterator<T> getServiceProviders(final Class<T> category, final Filter filter, final Hints hints) {
         /*
          * The implementation of this method is very similar to the 'getUnfilteredProviders'
          * one except for filter handling. See the comments in 'getUnfilteredProviders' for
@@ -543,16 +542,14 @@ public class FactoryRegistry extends ServiceRegistry {
          * ending loop if we don't put a 'testingHints' guard here. It is also a safety
          * against broken factory implementations.
          */
-        if (!testingHints.add(factory)) {
+        if (!testingHints.addAndCheck(factory)) {
             return false;
         }
         final Map<RenderingHints.Key, ?> implementationHints;
         try {
             implementationHints = Hints.stripNonKeys(factory.getImplementationHints());
         } finally {
-            if (!testingHints.remove(factory)) {
-                throw new AssertionError(factory); // Should never happen.
-            }
+            testingHints.removeAndCheck(factory);
         }
         if (implementationHints == null) {
             // factory was bad and did not meet contract - assume it used no Hints
@@ -661,18 +658,16 @@ public class FactoryRegistry extends ServiceRegistry {
         }
         final OptionalFactory factory = (OptionalFactory) provider;
         final Class<? extends OptionalFactory> type = factory.getClass();
-        if (!testingAvailability.add(type)) {
+        if (!testingAvailability.addAndCheck(type)) {
             throw new RecursiveSearchException(type);
         }
         try {
             return factory.isAvailable();
         } finally {
-            if (!testingAvailability.remove(type)) {
-                throw new AssertionError(type); // Should never happen.
-            }
+            testingAvailability.removeAndCheck(type);
         }
     }
-
+    
     /**
      * Returns all class loaders to be used for scanning plugins. Current implementation
      * returns the following class loaders:
@@ -760,7 +755,7 @@ public class FactoryRegistry extends ServiceRegistry {
      * @param category The category to scan for plug-ins.
      */
     private <T> void scanForPlugins(final Collection<ClassLoader> loaders, final Class<T> category) {
-        if (!scanningCategories.add(category)) {
+        if (!scanningCategories.addAndCheck(category)) {
             throw new RecursiveSearchException(category);
         }
         try {
@@ -790,9 +785,7 @@ public class FactoryRegistry extends ServiceRegistry {
                 log("scanForPlugins", message);
             }
         } finally {
-            if (!scanningCategories.remove(category)) {
-                throw new AssertionError(category);
-            }
+            scanningCategories.removeAndCheck(category);
         }
     }
 

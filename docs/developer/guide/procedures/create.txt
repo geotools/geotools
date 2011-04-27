@@ -79,12 +79,17 @@ The modules/unsupported/ directory is there to welcome your experimental work; t
    
    Choose a module that is close to what you want, copy it to capture the 5.3 Module Directory Structure, and gut the src/main/java, src/test/java and pom.xml files. Make sure to not copy the hidden .svn directories.
   
-3. We have an "example" module all ready for you to copy:
+3. We have an "example" module all ready for you to copy::
   
-    svn cp http://svn.geotools.org/geotools/trunk/gt/modules/unsupported/example
-       http://svn.geotools.org/geotools/trunk/gt/modules/unsupported/fish
+      svn cp http://svn.osgeo.org/geotools/trunk/modules/unsupported/example/ \
+             http://svn.osgeo.org/geotools/trunk/modules/unsupported/fish
 
-4. That should give you a working skeleton for your work.
+   Alternatively::
+     
+      cd modules/unsupported
+      svn cp example fish
+   
+4. Th should give you a working skeleton for your work.
 
 5. Edit the base files
    

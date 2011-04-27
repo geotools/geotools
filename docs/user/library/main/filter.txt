@@ -353,9 +353,25 @@ FunctionName):
    :start-after: // functionList start
    :end-before: // functionList end
 
+Function List
+'''''''''''''
+
 And the available functions at the time of writing:
 
 .. literalinclude:: /artifacts/function_list
+
+Variable Arguments
+''''''''''''''''''
+
+Here are some examples that allow for a variable number of arguments:
+
+* Definition of stroke-width based on attribute::
+  
+     categorize( attribute, 1, 5000, 2, 15000, 3, 40000, 4,750000, 5 );
+
+* fill-color smoothly interpolated based on attribute::
+      
+     interpolation( attribute, 0.0, '#005500', 3300.0, 'AA1100', 5000.0, #FFFFFF, "linear", "color", )
 
 FilterVisitor
 ^^^^^^^^^^^^^

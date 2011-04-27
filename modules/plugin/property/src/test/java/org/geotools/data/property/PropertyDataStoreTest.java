@@ -113,6 +113,18 @@ public class PropertyDataStoreTest extends TestCase {
         writer.write("fid3=3|dave"); writer.newLine();
         writer.write("fid4=4|justin\\\n");
         writer.close();
+
+        file = new File( dir ,"table.properties");
+        if( file.exists()){
+            file.delete();
+        }        
+        writer = new BufferedWriter( new FileWriter( file ) );
+        writer.write("_=description:String,name:String"); writer.newLine();
+        writer.write("GenericEntity.f004=description-f004|name-f004"); writer.newLine();
+        writer.write("GenericEntity.f003=description-f003|<null>"); writer.newLine();
+        writer.write("GenericEntity.f007=description-f007|"); writer.newLine();
+        writer.write("  GenericEntity.f009=description-f009| "); writer.newLine();
+        writer.close();
         
         store = new PropertyDataStore( dir );
         super.setUp();
@@ -130,10 +142,11 @@ public class PropertyDataStoreTest extends TestCase {
     public void testGetNames() {
         String names[] = store.getTypeNames();
         Arrays.sort(names);
-        assertEquals( 3, names.length );
+        assertEquals( 4, names.length );
         assertEquals( "dots.in.name", names[0] );
         assertEquals( "multiline", names[1] );              
         assertEquals( "road", names[2] );              
+        assertEquals( "table", names[3] );              
     }
 
     public void testGetSchema() throws IOException {
@@ -390,6 +403,14 @@ public class PropertyDataStoreTest extends TestCase {
         assertEquals( 5, features.size() );
                 
     }
+
+    /**
+     * In response to <a
+     * href="https://jira.codehaus.org/browse/GEOT-1409">GEOT-1409 Property
+     * datastore ruins the property file if a string attribute has newlines</a>.
+     * 
+     * @throws Exception
+     */
     public void testMultiLine() throws Exception {
         SimpleFeatureSource road = store.getFeatureSource( "multiline" );
         FeatureId fid1 = ff.featureId("fid1");
@@ -404,6 +425,64 @@ public class PropertyDataStoreTest extends TestCase {
         },null);
     }
 
+    /**
+     * In response to <a
+     * href="http://jira.codehaus.org/browse/GEOT-3540">GEOT-3540
+     * PropertyDataStore doesn't support empty trailing spaces</a>.
+     * <p>
+     * Table with no geoemtry, containing null and empty strings at end of line
+     * </p>
+     * 
+     * @throws Exception
+     */
+    public void testTable() throws Exception{
+        SimpleFeatureSource table = store.getFeatureSource( "table" );
+        //GenericEntity.f004=description-f004|name-f004
+        FeatureId fid1 = ff.featureId("GenericEntity.f004");
+        Filter select = ff.id( Collections.singleton(fid1));
+        SimpleFeatureCollection featureCollection = table.getFeatures( select );
+        featureCollection.accepts(new FeatureVisitor() {
+            public void visit(Feature f) {
+                SimpleFeature feature = (SimpleFeature) f;
+                String name = (String) feature.getAttribute("name");
+                assertEquals( "name-f004", name );
+            }
+        },null);
+        //GenericEntity.f003=description-f003|<null>
+        fid1 = ff.featureId("GenericEntity.f003");
+        select = ff.id( Collections.singleton(fid1));
+        featureCollection = table.getFeatures( select );
+        featureCollection.accepts(new FeatureVisitor() {
+            public void visit(Feature f) {
+                SimpleFeature feature = (SimpleFeature) f;
+                String name = (String) feature.getAttribute("name");
+                System.out.println( name );
+                assertNull( "represent null", name );
+            }
+        },null);
+        //GenericEntity.f007=description-f007|
+        fid1 = ff.featureId("GenericEntity.f007");
+        select = ff.id( Collections.singleton(fid1));
+        featureCollection = table.getFeatures( select );
+        featureCollection.accepts(new FeatureVisitor() {
+            public void visit(Feature f) {
+                SimpleFeature feature = (SimpleFeature) f;
+                String name = (String) feature.getAttribute("name");
+                assertEquals( "represent empty string", "", name );
+            }
+        },null);
+        //"  GenericEntity.f009=description-f009| "
+        fid1 = ff.featureId("GenericEntity.f009");
+        select = ff.id( Collections.singleton(fid1));
+        featureCollection = table.getFeatures( select );
+        featureCollection.accepts(new FeatureVisitor() {
+            public void visit(Feature f) {
+                SimpleFeature feature = (SimpleFeature) f;
+                String name = (String) feature.getAttribute("name");
+                assertEquals( "represent empty string", " ", name );
+            }
+        },null);
+    }
     public void testTransactionIndependence() throws Exception {
         SimpleFeatureType ROAD = store.getSchema( "road" );
         SimpleFeature chrisFeature =

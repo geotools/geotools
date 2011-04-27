@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.NoSuchElementException;
+import java.util.Properties;
 
 import org.geotools.data.AttributeReader;
 import org.geotools.data.DataSourceException;
@@ -179,16 +180,16 @@ public class PropertyAttributeReader implements AttributeReader {
             if( txt == null ){
                 break;
             }
-            if( txt.startsWith("#")){
+            if( txt.startsWith("#") || txt.startsWith("!")){
                 continue; // skip content
             }
+            txt = trimLeft( txt );
             if( txt.endsWith("\\")){
                 buffer.append(txt.substring(0,txt.length()-1) );
                 buffer.append("\n");
                 continue;
             }
             else {
-                txt = txt.trim();
                 buffer.append(txt);
                 break;
             }
@@ -201,6 +202,27 @@ public class PropertyAttributeReader implements AttributeReader {
         raw = raw.replace("\\r", "\r" );
         raw = raw.replace("\\t", "\t" );
         return raw;
+    }
+    /**
+     * Trim leading white space as described Properties.
+     * @see Properties#load(java.io.Reader)
+     * @param txt
+     * @return txt leading whitespace removed
+     */
+    String trimLeft( String txt ){
+        // trim
+        int start = 0;
+        WHITESPACE: for( int i=0; i < txt.length(); i++ ){
+            char ch = txt.charAt(i);
+            if( Character.isWhitespace(ch)){
+                continue;
+            }
+            else {
+                start = i;
+                break WHITESPACE;
+            }
+        }
+        return txt.substring(start);        
     }
     // multiline end
     /**
@@ -256,29 +278,22 @@ public class PropertyAttributeReader implements AttributeReader {
         AttributeDescriptor attType = type.getDescriptor(index);
 
         String stringValue = null;
+        boolean isEmpty = "".equals(stringValue);
         try {
             // read the value
             stringValue = text[index];
-
-            // trim off any whitespace
-            if (stringValue != null) {
-                stringValue = stringValue.trim();
-            }
-            if ("".equals(stringValue)) {
-                stringValue = null;
-            }
         } catch (RuntimeException e1) {
             e1.printStackTrace();
             stringValue = null;
         }
-
         // check for special <null> flag
         if ("<null>".equals(stringValue)) {
             stringValue = null;
+            isEmpty = true;
         }
         if (stringValue == null) {
             if (attType.isNillable()) {
-                return null;
+                return null; // it was an explicit "<null>"
             }
         }
         // Use of Converters to convert from String to requested java binding

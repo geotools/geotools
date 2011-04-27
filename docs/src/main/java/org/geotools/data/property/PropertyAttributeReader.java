@@ -171,6 +171,27 @@ public class PropertyAttributeReader implements AttributeReader {
         return next != null;
     }
     /**
+     * Read the next line from the reader.
+     * 
+     * @return line
+     * @throws IOException
+     */
+    String readLine() throws IOException {
+        while( true ){
+            String line = reader.readLine();
+            if( line == null ){
+                return null; // no more content
+            }
+            if( line.startsWith("#") || line.startsWith("!")){
+                continue; // skip comments
+            }
+            else {
+                return line;
+            }
+        }
+    }
+    
+    /**
      * Retrieve the next line.
      * 
      * @throws IOException

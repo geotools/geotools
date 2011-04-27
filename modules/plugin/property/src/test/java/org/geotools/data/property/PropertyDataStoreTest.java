@@ -500,9 +500,7 @@ public class PropertyDataStoreTest extends TestCase {
 
         FilterFactory2 ff = (FilterFactory2) CommonFactoryFinder.getFilterFactory(null);
         Filter selectFid1 = ff.id( Collections.singleton( ff.featureId("fid1") ));
-        Filter selectFid2 = ff.id( Collections.singleton( ff.featureId("fid2") ));        
-        
-            
+       
         // Before we edit everything should be the same
         assertEquals( "auto before", 5, roadAuto.getFeatures().size() );
         assertEquals( "client 1 before", 5, roadFromClient1.getFeatures().size() );
@@ -514,7 +512,6 @@ public class PropertyDataStoreTest extends TestCase {
         assertEquals( "auto after client 1 removes fid1", 5, roadAuto.getFeatures().size() );
         assertEquals( "client 1 after client 1 removes fid1", 4, roadFromClient1.getFeatures().size() );
         assertEquals( "client 2 after client 1 removes fid1", 5, roadFromClient2.getFeatures().size() );               
-        
         
         roadFromClient2.addFeatures( DataUtilities.collection( chrisFeature )); // road2 adds fid5 on t2    
         assertEquals( "auto after client 1 removes fid1 and client 2 adds fid5", 5, roadAuto.getFeatures().size() );

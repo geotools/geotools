@@ -1,0 +1,34 @@
+Removing tempfile /var/folders/xv/xvN1hpRQE-8KP+iyx3ETuU+++TI/-Tmp-/example8117216612737702548
+featureStoreExample start
+
+
+featureStoreExample end
+
+transactionExample start
+
+start     auto-commit=4 t1=4 t2=4 features
+t1 remove auto-commit=4 t1=3 t2=4 features
+t2 add    auto-commit=4 t1=3 t2=5 features
+t1 commit auto-commit=3 t1=4 t2=5 features
+t2 commit auto-commit=4 t1=4 t2=4 features
+
+transactionExample end
+
+removeAllExample start
+
+remove fid2
+remove fid3
+remove fid4
+remove example8117216612737702548.:example.1303829939983
+commit transaction
+
+removeAllExample end
+
+copyContent start
+
+
+copyContent end
+
+remove /var/folders/xv/xvN1hpRQE-8KP+iyx3ETuU+++TI/-Tmp-/example8117216612737702548/duplicate.properties
+remove /var/folders/xv/xvN1hpRQE-8KP+iyx3ETuU+++TI/-Tmp-/example8117216612737702548/example.properties
+remove /var/folders/xv/xvN1hpRQE-8KP+iyx3ETuU+++TI/-Tmp-/example8117216612737702548

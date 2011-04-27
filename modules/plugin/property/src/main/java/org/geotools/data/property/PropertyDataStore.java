@@ -230,6 +230,7 @@ public class PropertyDataStore extends AbstractDataStore {
         else {
             return new PropertyFeatureSource(this, typeName);
         }
+        //return super.getFeatureSource(typeName);
     }
     // getFeatureSource stop
 }

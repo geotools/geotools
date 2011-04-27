@@ -1,0 +1,58 @@
+Removing tempfile /var/folders/xv/xvN1hpRQE-8KP+iyx3ETuU+++TI/-Tmp-/example4149306500761583641
+example1 start
+
+typenames: 1
+typename[0]: example
+
+example1 end
+
+example2 start
+
+       typeName: example
+           name: example4149306500761583641:example
+attribute count: 3
+attribute 'id'    name:id
+attribute 'id'    type:AttributeTypeImpl id<Integer>
+attribute 'id' binding:null
+attribute 'name'    name:name
+attribute 'name' binding:class java.lang.String
+
+example2 end
+
+example3 start
+
+feature 0: fid1
+feature 1: fid2
+feature 2: fid3
+feature 3: fid4
+read in 4 features
+
+example3 end
+
+example4 start
+
+feature fid1
+	id = 1
+	name = jody garnett
+	geom = POINT (0 0)
+
+example4 end
+
+example5 start
+
+found :1 feature
+fid3 location POINT (20 20)
+
+example5 end
+
+example6 start
+
+  contents:[fid1, fid2, fid3, fid4]
+     count:-1
+    bounds:null
+      size:4
+    bounds:ReferencedEnvelope[0.0 : 30.0, 0.0 : 30.0]
+collection: 4
+
+example6 end
+

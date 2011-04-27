@@ -471,8 +471,8 @@ If you would like to follow along with these examples you can
 
   .. literalinclude:: artifacts/output
      :language: text
-     :start-after: // example1 start
-     :end-before: // example1 end
+     :start-after: example1 start
+     :end-before: example1 end
 
 * DataStore.getSchema( typeName )
   
@@ -487,10 +487,10 @@ If you would like to follow along with these examples you can
 
   Produces the following output:
 
-  .. literalinclude:: /tutorial/advanced/artifacts/output
+  .. literalinclude:: artifacts/output
      :language: text
-     :start-after: // example2 start
-     :end-before: // example2 end
+     :start-after: example2 start
+     :end-before: example2 end
 
 * DataStore.getFeatureReader( query, transaction )
   
@@ -565,8 +565,8 @@ If you would like to follow along with these examples you can
   
   .. literalinclude:: artifacts/output
      :language: text
-     :start-after: // example3 start
-     :end-before: // example3 end
+     :start-after: example3 start
+     :end-before: example3 end
 
 	
   Example with a quick "selection" Filter:
@@ -580,8 +580,8 @@ If you would like to follow along with these examples you can
   
   .. literalinclude:: artifacts/output
      :language: text
-     :start-after: // example3 start
-     :end-before: // example3 end
+     :start-after: example4 start
+     :end-before: example4 end
 
 * DataStore.getFeatureSource( typeName )
   
@@ -603,8 +603,8 @@ If you would like to follow along with these examples you can
 
   .. literalinclude:: artifacts/output
      :language: text
-     :start-after: // example5 start
-     :end-before: // example5 end
+     :start-after: example5 start
+     :end-before: example5 end
 
 
 FeatureSource
@@ -663,15 +663,15 @@ provide optimised implementations that handles the above methods natively.
   
   .. literalinclude:: /../src/main/java/org/geotools/data/property/PropertyExamples.java
      :language: java
-     :start-after: // example5 start
-     :end-before: // example5 end
+     :start-after: // example6 start
+     :end-before: // example6 end
   
   With the following output:
 
   .. literalinclude:: artifacts/output
      :language: text
-     :start-after: // example5 start
-     :end-before: // example5 end
+     :start-after: example6 start
+     :end-before: example6 end
 
 .. note::
    
@@ -747,7 +747,7 @@ Now that we are going to be writing files we can fill in the createNewDataStore 
 PropertyDataStore
 ^^^^^^^^^^^^^^^^^
 
-1. To start with, we need to make one change to our PropertyDataStore constructor:
+1. To start with, we need to make a change to our PropertyDataStore constructor:
 
    .. literalinclude:: /../../modules/plugin/property/src/main/java/org/geotools/data/property/PropertyDataStore.java
       :language: java
@@ -761,9 +761,9 @@ PropertyDataStore
    This method provides the ability to create a new FeatureType. For our DataStore we
    will use this to create new properties files.
    
-  To implement this method we will once again make use of the DataUtilities class.
-
-Add createSchema( featureType ):
+   To implement this method we will once again make use of the DataUtilities class.
+   
+   Add createSchema( featureType ):
    
    .. literalinclude:: /../../modules/plugin/property/src/main/java/org/geotools/data/property/PropertyDataStore.java
       :language: java
@@ -1010,7 +1010,7 @@ Transaction Example:
 
 This produces the following output:
 
-  .. literalinclude:: artifacts/output
+  .. literalinclude:: artifacts/output2
      :language: text
      :start-after: // featureStoreExample start
      :end-before: // featureStoreExample end
@@ -1375,7 +1375,7 @@ We can fill in the following methods for PropertyDataStore:
    .. literalinclude:: /../../modules/plugin/property/src/main/java/org/geotools/data/property/PropertyDataStore.java
       :language: java
       :start-after: // getFeatureSource start
-      :end-before: // getFeatureSource end
+      :end-before: // getFeatureSource stop
 
    For a writable file we extend AbstractFeatureLocking which supports thread-safe Locking, and
    provides the correct hooks into the AbstractDataStore listenerManager.

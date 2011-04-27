@@ -82,6 +82,12 @@
       <scope>test</scope>
       <version>${project.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-cql</artifactId>
+      <scope>test</scope>
+      <version>${project.version}</version>
+    </dependency>
   </dependencies>
 
 </project>

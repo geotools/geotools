@@ -66,9 +66,9 @@ We will be working with content in the following format::
   rd1=1|wkt|road one
   rd2=2|wkt|road two
   
-These examples use the file :download:`example.properties </../src/main/java/org/geotools/data/property/example.properties>` ::
+These examples use the file :download:`example.properties <artifacts/example.properties>` ::
   
-.. literalinclude:: /../src/main/java/org/geotools/data/property/example.properties
+.. literalinclude:: artifacts/example.properties
   
 If you want to follow along with this tutorial, start a new Java project in your favourite IDE,
 and ensure that GeoTools is on your CLASSPATH.
@@ -126,8 +126,10 @@ Schema
 Part 2 - Creating PropertyDataStore
 -----------------------------------
 
-PropertyDataStore Implementation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Okay with the background out of the way we can get to work.
+
+PropertyDataStore
+^^^^^^^^^^^^^^^^^
 
 The first step is to create a basic DataStore that only supports feature extraction. We will read data from a properties file into the GeoTools2 feature model.
 
@@ -343,8 +345,8 @@ in the code to keep our heads on straight.
 		}
 
         
-DataStoreFactory Implementation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+DataStoreFactory
+^^^^^^^^^^^^^^^^
 
 To make your DataStore truly independent and plugable, your must create a class implementing the
 **DataStoreFactorySpi** interface.
@@ -465,10 +467,12 @@ If you would like to follow along with these examples you can
      :start-after: // example1 start
      :end-before: // example1 end
 
-  Produces the following output (given a directory with example.properties)::
+  Produces the following output (given a directory with example.properties):
 
-	typenames: 1
-	typename[0]: example
+  .. literalinclude:: artifacts/output
+     :language: text
+     :start-after: // example1 start
+     :end-before: // example1 end
 
 * DataStore.getSchema( typeName )
   
@@ -481,16 +485,12 @@ If you would like to follow along with these examples you can
      :start-after: // example2 start
      :end-before: // example2 end
 
-  Produces the following output::
+  Produces the following output:
 
-	       typeName: example
-	           name: property:example
-	attribute count: 3
-	attribute 'id'    name:id
-	attribute 'id'    type:AttributeTypeImpl id<Integer>
-	attribute 'id' binding:null
-	attribute 'name'    name:name
-	attribute 'name' binding:class java.lang.String
+  .. literalinclude:: /tutorial/advanced/artifacts/output
+     :language: text
+     :start-after: // example2 start
+     :end-before: // example2 end
 
 * DataStore.getFeatureReader( query, transaction )
   
@@ -561,13 +561,13 @@ If you would like to follow along with these examples you can
      :start-after: // example3 start
      :end-before: // example3 end
 
-  Produces the following output::
+  Produces the following output:
   
-	feature 0: fid1
-	feature 1: fid2
-	feature 2: fid3
-	feature 3: fid4
-	read in 4 features
+  .. literalinclude:: artifacts/output
+     :language: text
+     :start-after: // example3 start
+     :end-before: // example3 end
+
 	
   Example with a quick "selection" Filter:
     
@@ -576,13 +576,12 @@ If you would like to follow along with these examples you can
      :start-after: // example4 start
      :end-before: // example4 end
 
-  Produces the following output::
+  Produces the following output:
   
-	  feature fid1
-		id = 1
-		name = jody
-		geom = POINT (0 0)
-		  
+  .. literalinclude:: artifacts/output
+     :language: text
+     :start-after: // example3 start
+     :end-before: // example3 end
 
 * DataStore.getFeatureSource( typeName )
   
@@ -600,10 +599,13 @@ If you would like to follow along with these examples you can
      :start-after: // example5 start
      :end-before: // example5 end
   
-  Producing the following output::
+  Producing the following output:
 
-	found :1 features
-	fid3 location POINT (20 20)
+  .. literalinclude:: artifacts/output
+     :language: text
+     :start-after: // example5 start
+     :end-before: // example5 end
+
 
 FeatureSource
 ^^^^^^^^^^^^^
@@ -664,14 +666,12 @@ provide optimised implementations that handles the above methods natively.
      :start-after: // example5 start
      :end-before: // example5 end
   
-  With the following output::
+  With the following output:
 
-	  contents:[fid1, fid2, fid3, fid4]
-	     count:-1
-	    bounds:null
-	      size:4
-	    bounds:ReferencedEnvelope[0.0 : 30.0, 0.0 : 30.0]
-	collection: 4
+  .. literalinclude:: artifacts/output
+     :language: text
+     :start-after: // example5 start
+     :end-before: // example5 end
 
 .. note::
    
@@ -719,7 +719,7 @@ FeatureWriter defines the following methods:
 * FeatureWriter.remove
 * FeatureWriter.close
 
-Change notification for users is made available through several FeatureSource methods::
+Change notification for users is made available through several FeatureSource methods:
 
 * FeatureSoruce.addFeatureListener( featureListener )
 * FeatureSoruce.removeFeatureListener( featureListener )
@@ -730,8 +730,22 @@ To trigger the featureListeners we will make use of several helper methods in Ab
 * AbstractDataStore.fireRemoved( feature )
 * AbstractDataStore.fireChanged( before, after )
 
-Extending PropertyDataStore
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PropertyDataStoreFactory
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+Now that we are going to be writing files we can fill in the createNewDataStore method.
+
+1. Open up PropertyDataStoreFactory and replace createNewDataStore with the following:
+
+   .. literalinclude:: /../../modules/plugin/property/src/main/java/org/geotools/data/property/PropertyDataStoreFactory.java
+      :language: java
+      :start-after: // createNewDataStore start
+      :end-before: // createNewDataStore end
+   
+   No surprises here; the code simply creates a directory for PropertyDataStore to work in.
+  
+PropertyDataStore
+^^^^^^^^^^^^^^^^^
 
 1. To start with, we need to make one change to our PropertyDataStore constructor:
 
@@ -765,8 +779,8 @@ Add createSchema( featureType ):
     
    .. literalinclude:: /../../modules/plugin/property/src/main/java/org/geotools/data/property/PropertyDataStore.java
       :language: java
-      :start-after: // createSchema start
-      :end-before: // createSchema end
+      :start-after: // getFeatureWriter start
+      :end-before: // getFeatureWriter end
   
   FeatureWriter is less intuitive than FeatureReader in that it does not follow the example of
   Iterator as closely.
@@ -781,6 +795,7 @@ and inform the DataStore of modifications.
 
    .. literalinclude:: /../../modules/plugin/property/src/main/java/org/geotools/data/property/PropertyFeatureWriter.java
       :language: java
+      :start-after: */
       :end-before: // constructor end
 
    Our constructor creates a PropertyAttributeReader to access the existing contents of
@@ -878,6 +893,7 @@ now we can go ahead and define the class.
     
    .. literalinclude:: /../../modules/plugin/property/src/main/java/org/geotools/data/property/PropertyAttributeWriter.java
       :language: java
+      :start-after: */
       :end-before: // constructor end
 
    A BufferedWriter is created over the provided File, and the provided featureType is used to
@@ -938,10 +954,8 @@ Part 5 - Using PropertyDataStore to Write Files
 
 In this part we will explore the full capabilities of our completed PropertyDataStore.
 
-Complete DataStore API
-^^^^^^^^^^^^^^^^^^^^^^
-
-Now that we have completed our PropertyDataStore implementation, we can explore the remaining capabilities of the DataStore API.
+Now that we have completed our PropertyDataStore implementation, we can explore the remaining
+capabilities of the DataStore API.
 
 PropertyDataStore API for data modification:
 
@@ -949,13 +963,13 @@ PropertyDataStore API for data modification:
 * PropertyDataStore.getFeatureWriter( typeName, filter, Transaction )
 * PropertyDataStore.getFeatureWriter( typeName, Transaction )
 * PropertyDataStore.getFeatureWriterAppend( typeName, Transaction )
+* PropertyDataStore.getFeatureSource( typeName )
 
-If you would like to follow along with these examples, they are available as a JUnit Test along with the source code for PropertyDataStore.
+FeatureSource
+^^^^^^^^^^^^^
 
-DataStore.getFeatureSource( typeName )
-''''''''''''''''''''''''''''''''''''''
-
-This method is the gateway to our high level, as provided by an instance of FeatureSource, FeatureStore or FeatureLocking.
+The DataStore.getFeatureSource( typeName ) method is the gateway to our high level api, as
+provided by an instance of FeatureSource, FeatureStore or FeatureLocking.
 
 Now that we have implemented writing operations, the result of this method supports:
 
@@ -963,17 +977,18 @@ Now that we have implemented writing operations, the result of this method suppo
 * FeatureStore: modification and transaction support
 * FeatureLocking: Interaction with a Feature-based Locking
 
-**FeatureStore**
+FeatureStore
+''''''''''''
 
-FeatureStore provides Transaction support and modification operations. FeatureStore is an extension of FeatureSource. You may check the result of getFeatureSource( typeName ) with the instanceof operator.
+FeatureStore provides Transaction support and modification operations. FeatureStore is an
+extension of FeatureSource. You may check the result of getFeatureSource( typeName ) with the instanceof operator.
 
-Example of FeatureStore use::
+Example of FeatureStore use:
 
-    FeatureSource source = datastore.getFeatureSource( "road" );
-    if(!source instanceof FeatureStore){
-        throw Exception("Modification not supported");
-    }
-    FeatureStore road = (FeatureStore) source;
+.. literalinclude:: /../../modules/plugin/property/src/test/java/org/geotools/data/property/PropertyExamples.java
+   :language: java
+   :start-after: // featureStoreExample start
+   :end-before: // featureStoreExample end
 
 FeatureStore defines:
     
@@ -986,55 +1001,45 @@ FeatureStore defines:
 
 Once again, many DataStores are able to provide optimised implementations of these operations.
 
-Transaction Example::
+Transaction Example:
 
-    Transaction t1 = new DefaultTransaction();
-    Transaction t2 = new DefaultTransaction();
-    
-    FeatureType type = store.getSchema( "road" );
-    FeatureStore road = (FeatureStore) store.getFeatureSource("road");
-    FeatureStore road1 = (FeatureStore) store.getFeatureSource("road");
-    FeatureStore road2 = (FeatureStore) store.getFeatureSource("road");
-    
-    road1.setTransaction( t1 );
-    road2.setTransaction( t2 );
-    
-    Filter filter1 = FilterFactory.createFilterFactory().createFidFilter("fid1");
-    Filter filter2 = FilterFactory.createFilterFactory().createFidFilter("fid2");        
-        
-    Feature feature =
-        type.create( new Object[]{ new Integer(5), "chris"}, "fid5" );
-            
-    assertEquals( 4, road.getFeatures().getCount() );
-    assertEquals( 4, road1.getFeatures().getCount() );
-    assertEquals( 4, road2.getFeatures().getCount() );
-                
-    road1.removeFeatures( filter1 ); // road1 removes fid1 on t1
-    assertEquals( 4, road.getFeatures().getCount() );
-    assertEquals( 3, road1.getFeatures().getCount() );
-    assertEquals( 4, road2.getFeatures().getCount() );               
-        
-    FeatureReader reader = DataUtilities.reader( new Feature[]{ feature, });
-    road2.addFeatures( reader ); // road2 adds fid5 on t2
-    
-    assertEquals( 4, road.getFeatures().getCount() );
-    assertEquals( 3, road1.getFeatures().getCount() );
-    assertEquals( 5, road2.getFeatures().getCount() );        
-            
-    t1.commit();
-    assertEquals( 3, road.getFeatures().getCount() );
-    assertEquals( 3, road1.getFeatures().getCount() );
-    assertEquals( 4, road2.getFeatures().getCount() );                
-            
-    t2.commit();
-    assertEquals( 4, road.getFeatures().getCount() );
-    assertEquals( 4, road1.getFeatures().getCount() );
-    assertEquals( 4, road2.getFeatures().getCount() );
+.. literalinclude:: /../../modules/plugin/property/src/test/java/org/geotools/data/property/PropertyExamples.java
+   :language: java
+   :start-after: // featureStoreExample start
+   :end-before: // featureStoreExample end
 
+This produces the following output:
+
+  .. literalinclude:: artifacts/output
+     :language: text
+     :start-after: // featureStoreExample start
+     :end-before: // featureStoreExample end
+
+.. note::
+   
+   Pleaes review the above code exmple carefuly as it is the best explaintaion
+   of transaction independence you will find.
+   
+   Specifically:
+   
+   * "auto-commit" represents the current contents of the file on disk
+   * Notice how the transactions only reflect the changes the user made relative to
+     the current file contents.
+     
+     This is shown after t1 commit, where transaction t2 is seeing 4 features (ie the
+     current file contents plus the one feature that has been added on t2).
+   * This really shows that FeatureSource and FeatureStore are simply "views" into your data.
+     
+     * If you configure two FeatureStores with the same transaction they will act the same.
+     * Transaction is important and represents what you are working on
+       FeatureStore is not as important and is just use to make working with your data
+       easier (or more efficient) then direct use of FeatureWriter.
+  
 FeatureLocking
 ''''''''''''''
 
-FeatureLocking is the last extension to our high-level API. It provides support for preventing modifications to features for the duration of a Transaction, or a period of time.
+FeatureLocking is the last extension to our high-level API. It provides support for preventing
+modifications to features for the duration of a Transaction, or a period of time.
 
 FeatureLocking defines:
 
@@ -1048,94 +1053,61 @@ FeatureLocking defines:
 * FeatureLocking.releaseLock( string )
 * FeatureLocking.refreshLock( string )
 
-The concept of a FeatureLock matches the description provided in the OGC Web Feature Server Specification. Locked Features can only be used via Transactions that have been provided with the correct authorization.
+The concept of a FeatureLock matches the description provided in the OGC Web Feature Server
+Specification. Locked Features can only be used via Transactions that have been provided with
+the correct authorization.
 
-DataStore.getFeatureWriter( typeName, filter, transaction )
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FeatureWriter
+^^^^^^^^^^^^^
 
-Creates a FeatureWriter used to modify features indicated by a constraint.
+We have a number of FeatureWriters available for different uses; these implementations
+are used by the default implementation of AbstractFeatureStore and AbstractFeatureLocking.
 
-Example - removing all features::
+These classes serve as a good example of how to use FeatureWriter.
 
-    FeatureWriter writer =
-        store.getFeatureWriter( "road", Filter.NONE, Transaction.AUTO_COMMIT  );
-    
-    Feature feature;
-    
-    try {
-        while (writer.hasNext()) {
-            feature = writer.next();
-            writer.remove();
-        }
-    } finally {
-        writer.close();
-    }
+FeatureWriter Filter
+''''''''''''''''''''
+
+The DataStore.getFeatureWriter( typeName, filter, transaction ) method 
+creates a FeatureWriter used to modify features indicated by a constraint.
+
+Example - removing all features:
+
+.. literalinclude:: /../../modules/plugin/property/src/test/java/org/geotools/data/property/PropertyExamples.java
+   :language: java
+   :start-after: // removeAllExample start
+   :end-before: // removeAllExample end
 
 This FeatureWriter does not allow the addition of new content. It can be used for modification and removal only.
 
 DataStores can often provide an optimized implementation.
 
-DataStore.getFeatureWriter( typeName, transaction )
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FeatureWriter
+'''''''''''''
 
-Creates a general purpose FeatureWriter. New content may be added after iterating through the provided content.
+The DataStore.getFeatureWriter( typeName, transaction )  method creates a general purpose
+FeatureWriter. New content may be added after iterating through the
+provided content.
 
-Example - completely replace all features::
-    
-    FeatureType type = store.getSchema("replace");
-    FeatureReader reader;
-    FeatureWriter writer;
-    Feature feature, newFeature;
-    
-    reader = store.getFeatureReader(type, Filter.NONE, Transaction.AUTO_COMMIT );
-    writer = store.getFeatureWriter("road", Transaction.AUTO_COMMIT );
-    try {
-        // remove all features
-        while (writer.hasNext()) {
-            feature = writer.next();
-            writer.remove();
-        }
-        // copy new features in
-        while (reader.hasNext()) {
-            feature = reader.next();
-            newFeature = writer.next();
-            newFeature.setAttributes(feature.getAttributes(null));
-            writer.write();
-        }
-    } finally {
-        reader.close();
-        writer.close();
-    }
+Example - completely replace all features:
 
-DataStore.getFeatureWriterAppend( typeName, transaction )
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. literalinclude:: /../../modules/plugin/property/src/test/java/org/geotools/data/property/PropertyExamples.java
+   :language: java
+   :start-after: // replaceAll start
+   :end-before: // replaceAll end
 
-Creates a FeatureWriter for adding content.
+FeatureWriter Append
+''''''''''''''''''''
 
-Example - making a copy::
-    
-    FeatureReader reader;
-    FeatureWriter writer;
-    Feature feature, newFeature;
-    
-    FeatureType type = getSchema( "road" );
-    FeatureType type2 = DataUtilities( "copy", "id:Integer,geom:Geometry,name:String" );
-    
-    reader = store.getFeatureReader(type, Filter.NONE, Transaction.AUTO_COMMIT );
-    store.createSchema( copy );
-    writer = store.getFeatureWriterAppend( "copy", Transaction.AUTO_COMMIT );
-    try {
-        while (reader.hasNext()) {
-            feature = reader.next();
-            newFeature = writer.next();
-            newFeature.setAttributes(feature.getAttributes(null));
-            writer.write();
-        }
-    }
-    finally {
-        reader.close();
-        writer.close();
-    }
+The DataStore.getFeatureWriterAppend( typeName, transaction ) method creates a FeatureWriter
+for adding content.
+
+Example - making a copy:
+
+.. literalinclude:: /../../modules/plugin/property/src/test/java/org/geotools/data/property/PropertyExamples.java
+   :language: java
+   :start-after: // copyContent start
+   :end-before: // copyContent end
 
 DataStores can often provide an optimised implementation of this method.
 
@@ -1144,12 +1116,18 @@ Part 6 - Optimisation of PropertyDataStore
 
 In this part we will explore several optimisations techniques using our PropertyDataStore.
 
-Exploring AbstractDataStore
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Low-Level Optimisation
+^^^^^^^^^^^^^^^^^^^^^^
 
-AbstractDataStore provides a lot of functionality based on the five methods we implemented in the Tutorials. By examining its implementation we have an opportunity to discuss several issues with DataStore development. Please keep these issues in mind when applying your own DataStore optimisations.
+AbstractDataStore provides a lot of functionality based on the five methods we implemented in the
+Tutorials. By examining its implementation we have an opportunity to discuss several issues with
+DataStore development. Please keep these issues in mind when applying your own DataStore
+optimisations.
 
-In general the "Gang of Four" decorator pattern is used to layer functionality around the raw **FeatureReader** and **FeatureWriters** you provided. This is very similar to the design of the **java-io** library (where a BufferedInputStream can be wrapped around a raw FileInputStream).
+In general the "Gang of Four" decorator pattern is used to layer functionality around the
+raw **FeatureReader** and **FeatureWriters** you provided. This is very similar to the design
+of the **java-io** library (where a BufferedInputStream can be wrapped around a raw
+FileInputStream).
 
 From AbstractDataStore getFeatureReader( featureType, filter, transaction ):
 
@@ -1161,8 +1139,8 @@ From AbstractDataStore getFeatureReader( featureType, filter, transaction ):
    
    These two have been renamed in GeoTools 2.3 for the following:
    
-   * Filter.ALL has been replaced with Filter.EXCLUDES
-   * Filter.NONE has been replaced with Filter.INCLUDES
+   * Filter.ALL has been replaced with Filter.EXCLUDE
+   * Filter.NONE has been replaced with Filter.INCLUDE
 
 Here is an example of how AbstractDataStore applies wrappers around your raw feature reader::
 
@@ -1196,15 +1174,15 @@ Support classes used:
 * EmptyFeatureReader represents an empty result (when using Filter.ALL)
 * FilteringFeatureReader skips over filtered elements using hasNext()
 * TransactionStateDiff records a difference Map for the Transaction
-* DiffFeatureReader is used as a wrapper, allowing the Features to be checked for removal, or modification before
-  being provided to the user. Any additions performed against the Transaction are also returned.
+* DiffFeatureReader is used as a wrapper, allowing the Features to be checked for removal, or
+  modification before being provided to the user. Any additions performed against the
+  Transaction are also returned.
 * ReTypeFeatureReader allows on the fly Schema change
 
 From AbstractDataStore getFeatureWriter( typeName, filter, transaction)::
     
     public FeatureWriter getFeatureWriter(String typeName, Filter filter,
-            Transaction transaction) 
-            throws IOException {
+            Transaction transaction) throws IOException {
         if (filter == Filter.ALL) {
             FeatureType featureType = getSchema(typeName);
             return new EmptyFeatureWriter(featureType);
@@ -1228,21 +1206,21 @@ From AbstractDataStore getFeatureWriter( typeName, filter, transaction)::
 Support classes used:
 
 * EmptyFeatureWriter represents an empty result
-* TransactionStateDiff records a difference map for the Transaction, and provides a FeatureWrapper around a
-  FeatureReader where modifications are stored in the difference Map
-* FeatureLocking support is provided InProcessLockingManager in the form of a wrapper that will prevent
-  modification taking place with out correct authorization
+* TransactionStateDiff records a difference map for the Transaction, and provides a FeatureWrapper
+  around a FeatureReader where modifications are stored in the difference Map
+* FeatureLocking support is provided InProcessLockingManager in the form of a wrapper that will
+  prevent modification taking place with out correct authorization
 * FilteringFeatureWriter is used to skip over any Features not meeting the constraints
 
-Low-Level Optimisation
-^^^^^^^^^^^^^^^^^^^^^^
-
-Every helper class we discussed above can be replaced if your external data source supports the functionality.
+Every helper class we discussed above can be replaced if your external data source supports the
+functionality.
 
 External Transaction Support
 ''''''''''''''''''''''''''''
 
-All JDBC DataStores support the concept of Transactions natively. JDBDataStore supplies an example of using Transaction.State to store JDBC connection rather than the Difference map used above.::
+All JDBC DataStores support the concept of Transactions natively. JDBDataStore supplies an
+example of using Transaction.State to store JDBC connection rather than the Difference map
+used above.::
     
     public class JDBCTransactionState implements State {
         private Connection connection;
@@ -1260,14 +1238,19 @@ All JDBC DataStores support the concept of Transactions natively. JDBDataStore s
         }
     }
 
-For the purpose of PropertyDataStore we could create a Transaction.State class that records a temporary File name used for a difference file. By externalising differences to a file rather than Memory we will be able to handle larger data sets; and recover changes in the event of an application crash.
+For the purpose of PropertyDataStore we could create a Transaction.State class that records a
+temporary File name used for a difference file. By externalising differences to a file rather
+than Memory we will be able to handle larger data sets; and recover changes in the event of
+an application crash.
 
-Another realistic example is making use of Java Enterprise Edition session information allow "per user" edits.
+Another realistic example is making use of Java Enterprise Edition session information allow
+"per user" edits.
 
 External Locking Support
 ''''''''''''''''''''''''
 
-Several DataStores have an environment that can support native locking. By replacing the use of the InProcessLockingManager we can make use of native Strong Transaction Support.
+Several DataStores have an environment that can support native locking. By replacing the use
+of the InProcessLockingManager we can make use of native Strong Transaction Support.
 
 Single Use Feature Writers
 ''''''''''''''''''''''''''
@@ -1282,261 +1265,191 @@ We have a total of three distinct uses for FeatureWriters:
   An optimised version that does not create new content can be created.
 * AbstractDataStore.getFeatureWriterAppend( typeName, transaction)
   
-  An optimised version that duplicates the origional file, and opens it in append mode can be created.
-  We can also perform special tricks such as returning a Feature delegate to the user, which records when
-  it has been modified.
+  An optimised version that duplicates the origional file, and opens it in append mode can be
+  created. We can also perform special tricks such as returning a Feature delegate to the user,
+  which records when it has been modified.
 
 High-Level Optimisation
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-By working with FeatureSource and it subclasses we have an opportunity to optimize specific uses of our DataStore.
+DataStore, FeatureSource and FeatureStore provide a few methods specifically set up
+for optimisation.
 
-FeatureSource Optimization
+DataStore Optimisation
+''''''''''''''''''''''
 
-We are going to quickly walk through an optimization of the getCount() request. Currently FeatureStore getCount() returns -1 indicating that we have not provided an optimization. We would like to improve this by recognizing the special case where the user has asked for the count of Query.ALL. In this case the number of Features is the same as the number of lines in the file, minus one for the header information.
+AbstractDataStore leaves open a number of methods for high-level optmisations:
 
-Lets start with our own FeatureSource implementation::
+* PropertyDataStore.getCount( query )
+* PropertyDatastore.getBounds( query )
 
-    public FeatureSource getFeatureSource(String typeName) 
-            throws IOException {
-        final FeatureType featureType = getSchema(typeName);        
-        return new AbstractFeatureLocking() {            
-            public DataStore getDataStore() {
-                return PropertyDataStore.this;
-            }    
-            public void addFeatureListener(FeatureListener listener) {
-                listenerManager.addFeatureListener(this, listener);
-            }    
-            public void removeFeatureListener(
-                FeatureListener listener) {
-                listenerManager.removeFeatureListener(this, listener);
-            }    
-            public FeatureType getSchema() {
-                return featureType;
-            }
-        };
-    } 
+These methods are designed to allow you to easily report the contents of information that
+is often contained in your file header. Implementing them is optional, and each method
+provides a way for you to indicate if the information is unavilable.
 
-The above implementation supports Locking, and provides the correct hooks for the listenerManager.
+* PropertyDatastore.getFeatureSource( typeName );
 
-And now for our FeatureSource optimisation::
-
-            public int getCount(Query query) {
-                if( query == Query.ALL && 
-                    getTransaction() == Transaction.AUTO_COMMIT ){
-                    return countFile( new File( directory, typeName+".properties") );
-                }
-                return -1;
-            }
-            private int countFile(File file){
-                try {
-                    LineNumberReader reader = new LineNumberReader( new FileReader( file ) );
-                    while( reader.readLine() != null);                    
-                    return reader.getLineNumber() -1;   
-                }
-                catch( IOException e){
-                    return -1;
-                }                            
-            }
-
-We have made use of LineNumberReader to count the number of lines in the File. Also note that this optimisation is only valid when working against Transaction.AUTO_COMMIT.
-
-A similar optimisation could be applied to the FeatureResults API.
+By default the implementations returned are based simply on FeatureReader and FeatureWriter.
+Override this method to return your own subclasses that are tuned for your data format.
 
 FeatureStore Optimisation
 '''''''''''''''''''''''''
 
-DataStores operating against rich external data sources can often perform high level optimisations. JDBCDataStores for instance can often construct SQL statements that completely fulfil a request without making use of FeatureWriters at all.
+DataStores operating against rich external data sources can often perform high level optimisations.
+JDBCDataStores for instance can often construct SQL statements that completely fulfil a request
+without making use of FeatureWriters at all.
 
 When performing these queries please remember two things:
 
-1. Check the lockingManager - If you are not providing your own native locking support, please check the user's
-   authorisation against the the lockingManager
-2. Event Notification - Remember to fire the appropriate notification events when contents change, Feature Caches
-   will depend on this notification to accurately track the contents of your DataStore
+1. Check the lockingManager - If you are not providing your own native locking support, please
+   check the user's authorisation against the the lockingManager
+2. Event Notification - Remember to fire the appropriate notification events when contents change,
+   Feature Caches will depend on this notification to accurately track the contents of your
+   DataStore
 
 Cacheing and FeatureListener
 ''''''''''''''''''''''''''''
 
-A common optimisation is to trade memory use for speed by use of a cache. In this section we will present a simple cache for getBounds() and getCount(Query.ALL).
+A common optimisation is to trade memory use for speed by use of a cache. In this section we will
+present a simple cache for getBounds() and getCount(Query.ALL).
 
-The best place to locate your cache is in your DataStore implementation, you will need to keep a separate cache for each Transaction by making use of Transaction.State. By implementing a cache in the DataStore all operations can benefit.
+The best place to locate your cache is in your DataStore implementation, you will need to keep
+a separate cache for each Transaction by making use of Transaction.State. By implementing a cache
+in the DataStore all operations can benefit.
 
-Another popular technique is to locate the cache in an instance of FeatureSource. While the cache will be duplicated when multiple FeatureStores are in use, it is convenient to locate the cache next to the high-level operations that can best benefit.
+Another popular technique is to locate the cache in an instance of FeatureSource. While the cache
+will be duplicated when multiple FeatureStores are in use, it is convenient to locate the cache 
+next to the high-level operations that can best benefit.
 
-Finally FeatureResults represents a great opportunity to cache results, rather than reissue them repeatedly.
+Finally FeatureResults represents a great opportunity to cache results, rather than reissue them
+repeatedly.
 
-FeatureListener (and associated FeatureEvents) provides notification of modification which can be used to keep your cache implementation in sync with the DataStore.
+FeatureListener (and associated FeatureEvents) provides notification of modification which can be
+used to keep your cache implementation in sync with the DataStore.
 
-PropertyFeatureSource Optimisation
-''''''''''''''''''''''''''''''''''
+PropertyDataStore
+^^^^^^^^^^^^^^^^^
 
-To implement our caching example we are going to produce our own implementation of FeatureSource, and add caching support.
+We can fill in the following methods for PropertyDataStore:
 
-Create the file PropertyFeatureSource::
-    
-    package org.geotools.data.property;
-    
-    import java.io.*;
-    import org.geotools.data.*;
-    import org.geotools.feature.*;
-    
-    import com.vividsolutions.jts.geom.Envelope;
-    
-    public class PropertyFeatureSource extends AbstractFeatureLocking {
-        String typeName;
-        FeatureType featureType;
-        PropertyDataStore store;
-        
-        PropertyFeatureSource( PropertyDataStore propertyDataStore, String typeName ) 
-            throws IOException{
-            this.store = propertyDataStore;
-            this.typeName = typeName;
-            this.featureType = store.getSchema( typeName );
-        }
-        public DataStore getDataStore() {
-            return store;
-        }
-        public void addFeatureListener(FeatureListener listener) {
-            store.listenerManager.addFeatureListener(this, listener);
-        }
-        public void removeFeatureListener(
-            FeatureListener listener) {
-            store.listenerManager.removeFeatureListener(this, listener);
-        }
-        public FeatureType getSchema() {
-            return featureType;
-        }
-    }
+1. getCount( Query )
+   
+   We would like to improve this by recognizing the special case where the user has asked for
+   the count of all of the features. In this case the number of Features is the same as
+   the number of lines in the file (minus one for the header information and any comments).
 
-We will quickly copy getCount() optimisation from our PropertyDataStore::
+   Things to look out for when reviewing the code:
+   
+   * File time stamp used to indicate when we cached the value, this is used to invalidate our
+     cache if the file is changed at all.
+   * A little bit of care is taken to avoid counting the header, any comment lines,
+     and multiple lines
+   
+   We can offer a simple optimisation by counting the number of lines in our file,
+   when the Query requests all features (using Filter.INLCUDE):
 
-    public int getCount(Query query) {
-        if( query == Query.ALL && 
-            getTransaction() == Transaction.AUTO_COMMIT ){
-            return countFile( new File( directory, typeName+".properties") );
-        }
-        return -1;
-    }
-    private int countFile(File file){
-        try {
-            LineNumberReader reader = new LineNumberReader( new FileReader( file ) );
-            while( reader.readLine() != null);                    
-            return reader.getLineNumber() -1;   
-        }
-        catch( IOException e){
-            return -1;
-        }                            
-    }
+   .. literalinclude:: /../../modules/plugin/property/src/main/java/org/geotools/data/property/PropertyDataStore.java
+      :language: java
+      :start-after: // getCount start
+      :end-before: // getCount end
 
-And change PropertyDataStore to make use of our new class::
+2. getBounds( Query )
+   
+   Our file format does not offer an easy way to sort out the bounds (spatial file formats
+   often include this information in the header). As such we won't be implementing getBounds()
 
-    public FeatureSource getFeatureSource(final String typeName) 
-            throws IOException {
-        return new PropertyFeatureSource( this, typeName );
-    } 
+   .. literalinclude:: /../../modules/plugin/property/src/main/java/org/geotools/data/property/PropertyDataStore.java
+      :language: java
+      :start-after: // getBounds start
+      :end-before: // getBounds end
 
-**Caching getCount()**
+3. getFeatureSource( typeName )
 
-We can store the result of getCount(Query.ALL) as a field in PropertyFeatureSource::
+   We will be returning the following classes (which we will create in the next section).
 
-    int cacheCount = -1;
-    public int getCount(Query query) {
-        if( query == Query.ALL && getTransaction() == Transaction.AUTO_COMMIT ){
-            if( cacheCount != -1 ){
-                return cacheCount;
-            }
-            cacheCount = countFile( file );
-            return cacheCount;
-        }
-        return -1;
-    }
+   * PropertyFeatureSource - if the file is read-only
+   * PropertyFeatureStore - if the file is writable
 
-The next thing we will need to is pay attention to our changes to the DataStore::
+   Here is what that looks like:
 
-    PropertyFeatureSource( PropertyDataStore propertyDataStore, String typeName ) 
-             throws IOException{
-        this.store = propertyDataStore;
-        this.typeName = typeName;
-        this.featureType = store.getSchema( typeName );
-        store.listenerManager.addFeatureListener( this, new FeatureListener(){
-                public void changed(FeatureEvent featureEvent) {
-                    cacheCount = -1;
-                }
-            });
-        }
-    }
+   .. literalinclude:: /../../modules/plugin/property/src/main/java/org/geotools/data/property/PropertyDataStore.java
+      :language: java
+      :start-after: // getFeatureSource start
+      :end-before: // getFeatureSource end
 
-**Caching getBounds()**
+   For a writable file we extend AbstractFeatureLocking which supports thread-safe Locking, and
+   provides the correct hooks into the AbstractDataStore listenerManager.
 
-We can use a similar technique, to record the Envelope for getBounds.::
+PropertyFeatureSource
+^^^^^^^^^^^^^^^^^^^^^
 
-    Envelope cacheBounds = null;
-    public Envelope getBounds() {
-        if( cacheBounds != null ){            
-            return cacheBounds;
-        }
-        File file = new File( store.directory, typeName+".properties" );
-        try {
-            cacheBounds = getFeatures().getBounds();
-            return cacheBounds;
-        } catch (IOException e) {
-        }
-        return null;
-    }
+To implement a caching example we are going to produce our own implementation of FeatureSource:
 
-FeatureEvent provides a bounding box which we can use to selectively invalidate cacheBounds::
+1. Create the file PropertyFeatureSource:
 
-    PropertyFeatureSource( PropertyDataStore propertyDataStore, String typeName ) 
-            throws IOException{
-        this.store = propertyDataStore;
-        this.typeName = typeName;
-        this.featureType = store.getSchema( typeName );
-        store.listenerManager.addFeatureListener( this, new FeatureListener(){
-            public void changed(FeatureEvent featureEvent) {
-                if( cacheBounds != null ){
-                    if( featureEvent.getEventType() == FeatureEvent.FEATURES_ADDED ){
-                        cacheBounds.expandToInclude( featureEvent.getBounds() );
-                    }
-                    else {
-                        cacheBounds = null;                                            
-                    }                
-                }
-                cacheCount = -1;
-            }
-        });        
-    }
+   .. literalinclude:: /../../modules/plugin/property/src/main/java/org/geotools/data/property/PropertyFeatureSource.java
+      :language: java
+      :start-after: */
+      :end-before: // constructor end
 
-**Using File timestamp**
+2. We are extending AbstractFeatureSource here, as such we not need to implement
+   FeatureSource.getCount( query ) as the default implementation will call up to
+   PropertyDataStore.getCount( query ) implemented earlier.
+   
+3. We can however generate the bounds information and cache the result.
+   
+   Once again we are using a timestamp of the file to notice if the file is changed
+   on disk.
 
-Now in a perfect world we would be done, in our world other programs are willing to modify the file we are operating against. We will need to record the timestamp on the file to ensure that our cached results are still valid.::
+   .. literalinclude:: /../../modules/plugin/property/src/main/java/org/geotools/data/property/PropertyFeatureSource.java
+      :language: java
+      :start-after: // getBounds start
+      :end-before: // getBounds end
 
-    long cacheTimestamp = 0;
-    public int getCount(Query query) {
-        if( query == Query.ALL && getTransaction() == Transaction.AUTO_COMMIT ){
-            File file = new File( store.directory, typeName+".properties" );            
-            if( cacheCount != -1 && file.lastModified() == cacheTimestamp){
-                return cacheCount;
-            }
-            cacheCount = countFile( file );
-            cacheTimestamp = file.lastModified();
-            return cacheCount;
-        }
-        return -1;
-    }
-    public Envelope getBounds() {
-        File file = new File( store.directory, typeName+".properties" );                
-        if( cacheBounds != null && file.lastModified() == cacheTimestamp ){            
-            return cacheBounds;
-        }
-        try {
-            cacheBounds = getFeatures().getBounds();
-            cacheTimestamp = file.lastModified();            
-            return cacheBounds;
-        } catch (IOException e) {            
-        }
-        return null;
-    }
+4. Earlier we modified PropertyDataStore to create an instance of this class if the file
+   was read-only.
+   
+PropertyFeatureStore
+^^^^^^^^^^^^^^^^^^^^
+
+We are going to perform a similar set of optimisations to PropertyFeatureStore; with the added
+wrinkle of listening to feature events so we can update our cached values in the event
+modifications are made.
+
+1. Create PropertyFeatureStore as follows:
+   
+   .. literalinclude:: /../../modules/plugin/property/src/main/java/org/geotools/data/property/PropertyFeatureStore.java
+      :language: java
+      :start-after: */
+      :end-before: // constructor end
+   
+   FeatureEvent provides a bounding box which we can use to selectively invalidate cacheBounds
+   
+2. Yes it is a little akward not being able to smoothly extend PropertyFeatureSource (this
+   is one of the fixes we have addressed for ContentDataStore covered in the next tutorial).
+
+   .. literalinclude:: /../../modules/plugin/property/src/main/java/org/geotools/data/property/PropertyFeatureStore.java
+      :language: java
+      :start-after: // implementation start
+      :end-before: // implementation end
+
+3. This time we can implement getCount( query ) locally; being sure to check both
+   the filter (includes all features) and the transaction (auto_commit):
+   
+   .. literalinclude:: /../../modules/plugin/property/src/main/java/org/geotools/data/property/PropertyFeatureStore.java
+      :language: java
+      :start-after: // getCount start
+      :end-before: // getCount end
+
+4. In a similar fashion getBounds( query ) can be generated and cached:
+
+   .. literalinclude:: /../../modules/plugin/property/src/main/java/org/geotools/data/property/PropertyFeatureStore.java
+      :language: java
+      :start-after: // getBounds start
+      :end-before: // getBounds end
+      
+5. We have already modified PropertyDataStore to return an instance of this class
+   if the file was writable.
 
 Part 7 - Quality Assurance
 --------------------------
@@ -1563,18 +1476,18 @@ A bug report asking that gt-properties support multi-line string values.
 The suggestion was to use the Properties class, which we could not do and still retain our idea
 of streaming the content from disk.
   
-The following change was made To PropertyAttributeReader allow for multi-line enteries::
+The following change was made To PropertyAttributeReader allow for multi-line enteries:
 
    .. literalinclude:: /../../modules/plugin/property/src/main/java/org/geotools/data/property/PropertyAttributeReader.java
       :language: java
-      :start-after: // multieline start
-      :end-before: // multieline end
+      :start-after: // multiline start
+      :end-before: // multiline end
 
 References:
 
 * http://download.oracle.com/javase/6/docs/api/java/util/Properties.html#load(java.io.Reader)
 
-.. note::
+.. hide
    
    Properties are processed in terms of lines. There are two kinds of line, natural lines and
    logical lines. A natural line is defined as a line of characters that is terminated either

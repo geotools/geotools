@@ -211,24 +211,24 @@ public abstract class AbstractFeatureSource implements SimpleFeatureSource {
             return collection; // no geometry no reprojection needed
         }
         
-        if( false ){ // we need to have our CRS forced
-            if ( query.getCoordinateSystem() != null ){
-                try {
-                    collection = new ForceCoordinateSystemFeatureResults(collection, query.getCoordinateSystem() );
-                } catch (SchemaException e) {
-                    throw new IOException( "Could not force CRS "+query.getCoordinateSystem() ); 
-                }
-            }
-        }
-        if( false ){ // we need our data reprojected
-            if ( query.getCoordinateSystemReproject() != null){
-                try {
-                    collection = new ReprojectFeatureResults(collection, query.getCoordinateSystemReproject() );
-                } catch (Exception e) {
-                    throw new IOException( "Could not reproject to "+query.getCoordinateSystemReproject() );
-                }
-            }            
-        }
+//        if( false ){ // we need to have our CRS forced
+//            if ( query.getCoordinateSystem() != null ){
+//                try {
+//                    collection = new ForceCoordinateSystemFeatureResults(collection, query.getCoordinateSystem() );
+//                } catch (SchemaException e) {
+//                    throw new IOException( "Could not force CRS "+query.getCoordinateSystem() ); 
+//                }
+//            }
+//        }
+//        if( false ){ // we need our data reprojected
+//            if ( query.getCoordinateSystemReproject() != null){
+//                try {
+//                    collection = new ReprojectFeatureResults(collection, query.getCoordinateSystemReproject() );
+//                } catch (Exception e) {
+//                    throw new IOException( "Could not reproject to "+query.getCoordinateSystemReproject() );
+//                }
+//            }            
+//        }
         return collection;
     }
     
@@ -291,7 +291,7 @@ public abstract class AbstractFeatureSource implements SimpleFeatureSource {
      *
      * @return null representing the lack of an optimization
      *
-     * @throws IOException DOCUMENT ME!
+     * @throws IOException
      */
     public ReferencedEnvelope getBounds(Query query) throws IOException {
         if (query.getFilter() == Filter.EXCLUDE) {

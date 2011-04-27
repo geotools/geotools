@@ -110,7 +110,7 @@ public interface FeatureWriter<T extends FeatureType, F extends Feature> {
     void remove() throws IOException;
 
     /**
-     * Wrties the current Feature, must be called before hasNext.
+     * Writes the current Feature, must be called before hasNext.
      *
      * <p>
      * FeautreWriters will need to allow FeatureSources of the same typeName to

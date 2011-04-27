@@ -127,7 +127,11 @@ class DirectoryTypeCache {
                 updateCache();
             // TODO: check about re-creating the datastore when the cache
             // is turned into a soft map
-            return ftCache.get(typeName).getStore(true);
+            FileEntry fileEntry = ftCache.get(typeName);
+            if( fileEntry == null){
+                throw new IOException("Not available: "+typeName );
+            }
+            return fileEntry.getStore(true);
         } finally {
             lock.readLock().unlock();
         }

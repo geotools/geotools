@@ -1,13 +1,19 @@
 package org.geotools.data.property;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import org.geotools.data.DataStore;
+import org.geotools.data.DataStoreFinder;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
@@ -33,28 +39,64 @@ public class PropertyExamples {
     static File directory;
 
     public static void main(String[] args) {
-        if (args.length == 0) {
-            System.out.println("Please supply a directory");
-            System.exit(1);
-        }
-        directory = new File(args[0]);
+        File tmp = null;
         try {
-            example1();
-            example2();
-            example3();
-            example4();
-            example5();
-            example6();
-        } catch (Throwable t) {
-            t.printStackTrace();
-            System.exit(1);
+            tmp = File.createTempFile("example", "");
+            boolean exists = tmp.exists();
+            if (exists) {
+                System.err.println("Removing tempfile " + tmp);
+                tmp.delete();
+            }
+            boolean created = tmp.mkdirs();
+            if (!created) {
+                System.err.println("Could not create " + tmp);
+                System.exit(1);
+            }
+            File example = new File(tmp, "example.properties");
+
+            BufferedWriter writer = new BufferedWriter(new FileWriter(example));            
+            writer.write("_=id:Integer,name:String,geom:Point");
+            writer.newLine();
+            writer.write("fid1=1|jody garnett|POINT(0 0)");
+            writer.newLine();
+            writer.write("fid2=2|brent|POINT(10 10)");
+            writer.newLine();
+            writer.write("fid3=3|dave|POINT(20 20)");
+            writer.newLine();
+            writer.write("fid4=4|justin deolivera|POINT(30 30)");
+            writer.newLine();
+            writer.close();
+
+            directory = tmp;
+            try {
+                example1();
+                example2();
+                example3();
+                example4();
+                example5();
+                example6();
+            } catch (Throwable t) {
+                t.printStackTrace();
+                System.exit(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            File list[] = tmp.listFiles();
+            for (int i = 0; i < list.length; i++) {
+                list[i].delete();
+            }
+            tmp.delete();
         }
     }
 
-    private static void example1() {
+    private static void example1() throws IOException {
         System.out.println("example1 start\n");
         // example1 start
-        PropertyDataStore store = new PropertyDataStore(directory);
+        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        params.put("directory", directory);
+        DataStore store = DataStoreFinder.getDataStore(params);
+
         String names[] = store.getTypeNames();
         System.out.println("typenames: " + names.length);
         System.out.println("typename[0]: " + names[0]);
@@ -65,8 +107,10 @@ public class PropertyExamples {
     private static void example2() throws IOException {
         System.out.println("example2 start\n");
         // example2 start
+        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        params.put("directory", directory);
+        DataStore store = DataStoreFinder.getDataStore(params);
 
-        PropertyDataStore store = new PropertyDataStore(directory);
         SimpleFeatureType type = store.getSchema("example");
 
         System.out.println("       typeName: " + type.getTypeName());
@@ -90,7 +134,10 @@ public class PropertyExamples {
     private static void example3() throws IOException {
         System.out.println("example3 start\n");
         // example3 start
-        PropertyDataStore datastore = new PropertyDataStore(directory);
+        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        params.put("directory", directory);
+        DataStore datastore = DataStoreFinder.getDataStore(params);
+
         Query query = new Query("example");
         FeatureReader<SimpleFeatureType, SimpleFeature> reader = datastore
                 .getFeatureReader(query, Transaction.AUTO_COMMIT);
@@ -112,7 +159,9 @@ public class PropertyExamples {
     private static void example4() throws IOException {
         System.out.println("example4 start\n");
         // example4 start
-        PropertyDataStore store = new PropertyDataStore(directory);
+        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        params.put("directory", directory);
+        DataStore store = DataStoreFinder.getDataStore(params);
 
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
@@ -147,9 +196,11 @@ public class PropertyExamples {
     private static void example5() throws IOException, CQLException {
         System.out.println("example5 start\n");
         // example5 start
-        PropertyDataStore datastore = new PropertyDataStore(directory);
-        SimpleFeatureSource featureSource = datastore
-                .getFeatureSource("example");
+        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        params.put("directory", directory);
+        DataStore store = DataStoreFinder.getDataStore(params);
+
+        SimpleFeatureSource featureSource = store.getFeatureSource("example");
 
         Filter filter = CQL.toFilter("name = 'dave'");
         SimpleFeatureCollection features = featureSource.getFeatures(filter);
@@ -172,10 +223,11 @@ public class PropertyExamples {
     private static void example6() throws IOException, CQLException {
         System.out.println("example6 start\n");
         // example6 start
-        PropertyDataStore datastore = new PropertyDataStore(directory);
+        Map<String, Serializable> params = new HashMap<String, Serializable>();
+        params.put("directory", directory);
+        DataStore store = DataStoreFinder.getDataStore(params);
 
-        SimpleFeatureSource featureSource = datastore
-                .getFeatureSource("example");
+        SimpleFeatureSource featureSource = store.getFeatureSource("example");
         SimpleFeatureCollection featureCollection = featureSource.getFeatures();
         SimpleFeatureIterator features = featureCollection.features();
         List<String> list = new ArrayList<String>();
@@ -197,5 +249,4 @@ public class PropertyExamples {
         // example6 end
         System.out.println("\nexample6 end\n");
     }
-
 }

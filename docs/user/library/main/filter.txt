@@ -308,7 +308,9 @@ Function
 
 Function is a little special as it is your chance to add new functions to the system.
 
-This is done in two parts:
+.. image:: /images/filter_function.PNG
+
+You accomplish this by providing three peices of information:
 
 * Function - implementation of Function
 * FunctionName - description of Function including name and argument names advertising that a Function is available
@@ -323,7 +325,8 @@ FunctionFinder
 You can directly create a Function with a FunctionFinder; this gives you access to the actual implementing
 class; which occasionally offer more options that are accessible through filter factory.
 
-* FunctionFinder(Hints)
+* getAllFunctionDescriptions()
+* findFunctionDescription(String)  
 * FunctionFinder.findFunction(String)
 * FunctionFinder.findFunction(String, List<Expression> )
 * FunctionFinder.findFunction(String, List<Expression, Literal)
@@ -336,7 +339,14 @@ in the event the function could not be found.::
   // default answer() of 42
   Function function = finder.findFunction( "answer", Collections.EMPTY_LIST, ff.literal( 42 ) );
 
-The above class uses CommonFactoryFinder to do the lookup; here an example listing all the functions:
+FunctionFactory
+^^^^^^^^^^^^^^^
+
+Internally FunctionFinder uses CommonFactoryFinder to retrieve a list of FunctionFactory instances
+that are available on the CLASSPATH.
+
+Here an example listing all the functions (where each function is described by a FunctionName): FunctionDescription is provided by the
+FunctionName):
 
 .. literalinclude:: /../src/main/java/org/geotools/main/FilterExamples.java
    :language: java

@@ -32,10 +32,16 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 
+/**
+ * Implementation used for writeable property files.
+ * Supports limited caching of number of features and bounds.
+ */
 public class PropertyFeatureStore extends AbstractFeatureLocking {
+
     String typeName;
     SimpleFeatureType featureType;
     PropertyDataStore store;
+    
     long cacheTimestamp = 0;
     ReferencedEnvelope cacheBounds = null;
     int cacheCount = -1;
@@ -96,7 +102,8 @@ public class PropertyFeatureStore extends AbstractFeatureLocking {
             cacheTimestamp = file.lastModified();
             return cacheCount;
         }
-        return super.getCount(query); // super class checks transaction state diff
+        return -1;
+        // return super.getCount(query); // super class checks transaction state diff
     }
     // getCount end
 

@@ -226,6 +226,7 @@ public class PropertyDataStore extends AbstractDataStore {
         }        
         if( file.canWrite() ){
             return new PropertyFeatureStore(this, typeName);
+            //return new PropertyFeatureLocking(this, typeName);
         }
         else {
             return new PropertyFeatureSource(this, typeName);

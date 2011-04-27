@@ -741,7 +741,7 @@ public class GeodeticCalculator {
      *
      * @param  azimuth The azimuth in decimal degrees from -180° to 180°.
      * @param  distance The orthodromic distance in the same units as the
-     *         {@linkplain #getEllipsoid ellipsoid} axis.
+     *         {@linkplain #getEllipsoid ellipsoid} axis (meters by default)
      * @throws IllegalArgumentException if the azimuth or the distance is out of bounds.
      *
      * @see #getAzimuth
@@ -787,8 +787,8 @@ public class GeodeticCalculator {
     }
 
     /**
-     * Returns the orthodromic distance. This method returns the value set by the last call to
-     * <code>{@linkplain #setDirection(double,double) setDirection}(azimuth,distance)</code>,
+     * Returns the orthodromic distance (expressed in meters). This method returns the value set 
+     * by the last call to <code>{@linkplain #setDirection(double,double) setDirection}(azimuth,distance)</code>,
      * <strong>except</strong> if <code>{@linkplain #setDestinationGeographicPoint(double,double)
      * setDestinationGeographicPoint}(...)</code> has been invoked after. In this later case, the
      * distance will be computed from the {@linkplain #getStartingGeographicPoint starting point}

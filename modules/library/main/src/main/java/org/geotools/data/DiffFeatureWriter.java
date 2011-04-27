@@ -17,8 +17,10 @@
 package org.geotools.data;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
+import org.geotools.factory.Hints;
 import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -163,7 +165,16 @@ public abstract class DiffFeatureWriter implements FeatureWriter<SimpleFeatureTy
         } else if ((live == null) && (current != null)) {
             // We have new content to record
             //
-            diff.add(current.getID(), current);
+            String fid = current.getID();
+            if( Boolean.TRUE.equals(current.getUserData().get(Hints.USE_PROVIDED_FID) ) ){
+                if( current.getUserData().containsKey(Hints.PROVIDED_FID)){
+                    fid = (String) current.getUserData().get(Hints.PROVIDED_FID);
+                    Map<Object, Object> userData = current.getUserData();
+                    current = SimpleFeatureBuilder.build(current.getFeatureType(), current.getAttributes(), fid );
+                    current.getUserData().putAll( userData );
+                }
+            }
+            diff.add( fid, current);
             fireNotification(FeatureEvent.FEATURES_ADDED, ReferencedEnvelope.reference(current.getBounds()));
             current = null;
         } else {

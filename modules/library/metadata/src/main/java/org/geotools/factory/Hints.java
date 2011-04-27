@@ -375,18 +375,35 @@ public class Hints extends RenderingHints {
     ////////              Query hints                               ////////
     ////////                                                        ////////
     ////////////////////////////////////////////////////////////////////////
-    
 
     /**
      * When this key is used in the user data section of a feature and the feature store
      * query capabilities reports being able to use provided feature ids the store will
      * try to use the user provided feature id during insertion, and will fail if the FID
      * cannot be parsed into a valid storage identifier
-     *
+     * <p>
+     * Example use with Feature.getUserData():<code>
+     * feature.getUserData().put( Hints.USE_PROVIDED_FID, true );
+     * </code>
      * @since 2.7
      */
-    public static final Key USE_PROVIDED_FID = new Key("org.geotools.fidPolicy.UseExisting");
+    //public static final Key USE_PROVIDED_FID = new Key("org.geotools.fidPolicy.UseExisting");
+    public static final Key USE_PROVIDED_FID = new Key(Boolean.class);
     
+    /**
+     * Optional Hint used in conjunction with USE_POVIDED_FID above.
+     * <o>
+     * This is used when adding Features to the end of a FeatureWriter, allowing you to override
+     * the generated feature ID when write() is called.
+     * <p>
+     * Example use with Feature.getUserData():<pre><code>
+     * feature.getUserData().put( Hints.USE_PROVIDED_FID, true );
+     * feature.getUserData().put( Hints.PROVIDED_FID, "fid5" );
+     * </p>
+     * </code></pre>
+     * @since 8.0
+     */
+    public static final Key PROVIDED_FID = new Key( String.class );
     
     ////////////////////////////////////////////////////////////////////////
     ////////                                                        ////////

@@ -154,6 +154,7 @@ public class PropertyExamples {
         SimpleFeature feature = SimpleFeatureBuilder.build(type, new Object[] {
                 5, "chris", null }, "fid5");
         feature.getUserData().put(Hints.USE_PROVIDED_FID,true);
+        feature.getUserData().put(Hints.PROVIDED_FID, "fid5");
         
         SimpleFeatureCollection collection = DataUtilities.collection(feature);
         featureStore2.addFeatures(collection);

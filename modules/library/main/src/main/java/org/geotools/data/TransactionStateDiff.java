@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.geotools.data.Transaction.State;
+import org.geotools.factory.Hints;
 import org.geotools.feature.IllegalAttributeException;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.GeometryAttribute;
@@ -201,7 +202,7 @@ public class TransactionStateDiff implements State {
 
         try {
             while (writer.hasNext()) {
-                feature = (SimpleFeature)writer.next();
+                feature = (SimpleFeature) writer.next();
                 fid = feature.getID();
 
                 if (diff.modified2.containsKey(fid)) {
@@ -249,6 +250,16 @@ public class TransactionStateDiff implements State {
             			try {
             				nextFeature.setAttributes(addedFeature
             						.getAttributes());
+                                        //if( Boolean.TRUE.equals( addedFeature.getUserData().get(Hints.USE_PROVIDED_FID)) ){
+                                            nextFeature.getUserData().put(Hints.USE_PROVIDED_FID, true );
+                                            if( addedFeature.getUserData().containsKey(Hints.PROVIDED_FID)){
+                                                String providedFid = (String) addedFeature.getUserData().get(Hints.PROVIDED_FID);
+                                                nextFeature.getUserData().put(Hints.PROVIDED_FID, providedFid );                                    
+                                            }
+                                            else {
+                                                nextFeature.getUserData().put(Hints.PROVIDED_FID, addedFeature.getID() );
+                                            }
+                                        //}
             				writer.write();
             				
             				// notify                        

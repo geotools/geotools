@@ -26,26 +26,25 @@ import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Transaction;
+import org.geotools.factory.Hints;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
+/**
+ * Uses PropertyAttributeWriter to generate a property file on disk.
+ */
 public class PropertyFeatureWriter implements
         FeatureWriter<SimpleFeatureType, SimpleFeature> {
+
     PropertyDataStore store;
-
     File read;
-
     PropertyAttributeReader reader;
-
     File write;
-
     PropertyAttributeWriter writer;
-
     SimpleFeature origional = null;
-
     SimpleFeature live = null;
 
     public PropertyFeatureWriter(PropertyDataStore dataStore, String typeName)
@@ -88,7 +87,13 @@ public class PropertyFeatureWriter implements
     // writeImplementation start
     private void writeImplementation(SimpleFeature f) throws IOException {
         writer.next();
-        writer.writeFeatureID(f.getID());
+        String fid = f.getID();
+        if( Boolean.TRUE.equals( f.getUserData().get(Hints.USE_PROVIDED_FID) ) ){
+            if( f.getUserData().containsKey(Hints.PROVIDED_FID)){
+                fid = (String) f.getUserData().get(Hints.PROVIDED_FID);
+            }
+        }
+        writer.writeFeatureID(fid);
         for (int i = 0; i < f.getAttributeCount(); i++) {
             Object value = f.getAttribute(i);
             writer.write(i, value );            
@@ -117,7 +122,7 @@ public class PropertyFeatureWriter implements
                 live = SimpleFeatureBuilder.copy(origional);
                 return live;
             } else {
-                fid = type.getName() + "." + System.currentTimeMillis();
+                fid = type.getTypeName() + "." + System.currentTimeMillis();
                 Object values[] = DataUtilities.defaultValues(type);
 
                 origional = null;

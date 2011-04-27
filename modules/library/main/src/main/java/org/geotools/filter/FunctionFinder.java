@@ -16,6 +16,9 @@
  */
 package org.geotools.filter;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,6 +54,46 @@ public class FunctionFinder {
         // currently hints are not used, need help :-P
     }
 
+    /**
+     * Return a List of FunctionName's describing the functions currently available.
+     * @return List describing available functions
+     */
+    public List<FunctionName> getAllFunctionDescriptions(){
+        Set<FunctionFactory> functionFactories = CommonFactoryFinder.getFunctionFactories(null);
+        List<FunctionName> allFunctionDescriptions = new ArrayList<FunctionName>();
+        
+        for (FunctionFactory factory : functionFactories) {
+            List<FunctionName> functionNames = factory.getFunctionNames();
+            allFunctionDescriptions.addAll( functionNames );
+        }
+        Collections.sort( allFunctionDescriptions, new Comparator<FunctionName>() {
+            public int compare(FunctionName o1, FunctionName o2) {
+                if( o1 == null && o2 == null ) return 0;
+                if( o1 == null && o2 != null ) return 1;
+                if( o1 != null && o2 == null ) return -1;
+                
+                return o1.getName().compareTo( o2.getName() );
+            }
+        } );
+        return Collections.unmodifiableList(allFunctionDescriptions);
+    }
+    /**
+     * Lookup the FunctionName description.
+     * @param name Function name; this will need to be an exact match
+     * @return FunctioName description, or null if function is not available
+     */
+    FunctionName findFunctionDescription(String name ){
+        Set<FunctionFactory> functionFactories = CommonFactoryFinder.getFunctionFactories(null);
+        for (FunctionFactory factory : functionFactories) {
+            List<FunctionName> functionNames = factory.getFunctionNames();
+            for( FunctionName description : functionNames ){
+                if( description.getName().equals( name )){
+                    return description;
+                }
+            }
+        }
+        return null; // not found
+    }
     public Function findFunction(String name) {
         return findFunction(name, null);
     }

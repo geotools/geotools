@@ -102,7 +102,7 @@ public class DefaultFunctionFactory implements FunctionFactory {
         FunctionName functionName = null; // function.getFunctionName();
         
         if( functionName == null && function instanceof FunctionExpressionImpl){
-            functionName = ((FunctionExpressionImpl)function).getFunctionName();
+            functionName = function.getFunctionName();
         }
         if( functionName == null ){
             int argc;

@@ -460,9 +460,9 @@ public class ReprojectingFilterVisitor extends DuplicatingFilterVisitor {
             return delegate.getName();
         }
         
-//        public FunctionName getFunctionName() {
-//            return delegate.getFunctionName();
-//        }
+        public FunctionName getFunctionName() {
+            return delegate.getFunctionName();
+        }
         
         public List<Expression> getParameters() {
             return delegate.getParameters();

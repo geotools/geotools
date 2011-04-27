@@ -63,7 +63,7 @@ public interface FilterFactory2 extends FilterFactory {
      * @param argNames
      *            Optional list of argument names
      */
-    // FunctionName functionName(String name, int nargs, List<String> argNames);
+    FunctionName functionName(String name, int nargs, List<String> argNames);
     
     ////////////////////////////////////////////////////////////////////////////////
     //

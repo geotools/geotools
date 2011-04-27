@@ -48,7 +48,7 @@ public interface Function extends Expression {
      * 
      * @return FunctionName description, if available.
      */
-    // FunctionName getFunctionName();
+    FunctionName getFunctionName();
 
    /**
      * Returns the list subexpressions that will be evaluated to provide the

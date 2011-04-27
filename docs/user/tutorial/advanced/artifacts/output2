@@ -1,4 +1,4 @@
-Removing tempfile /var/folders/xv/xvN1hpRQE-8KP+iyx3ETuU+++TI/-Tmp-/example8117216612737702548
+Removing tempfile /var/folders/xv/xvN1hpRQE-8KP+iyx3ETuU+++TI/-Tmp-/example2316746005912266277
 featureStoreExample start
 
 
@@ -6,11 +6,35 @@ featureStoreExample end
 
 transactionExample start
 
-start     auto-commit=4 t1=4 t2=4 features
-t1 remove auto-commit=4 t1=3 t2=4 features
-t2 add    auto-commit=4 t1=3 t2=5 features
-t1 commit auto-commit=3 t1=4 t2=5 features
-t2 commit auto-commit=4 t1=4 t2=4 features
+Step 1
+------
+start     auto-commit: [fid3, fid4, fid1, fid2]
+start              t1: [fid3, fid4, fid1, fid2]
+start              t2: [fid3, fid4, fid1, fid2]
+
+Step 2 transaction 1 removes feature 'fid1'
+------
+t1 remove auto-commit: [fid3, fid4, fid1, fid2]
+t1 remove          t1: [fid3, fid4, fid2]
+t1 remove          t2: [fid3, fid4, fid1, fid2]
+
+Step 3 transaction 2 adds a new feature 'fid5'
+------
+t2 add    auto-commit: [fid3, fid4, fid1, fid2]
+t2 add             t1: [fid3, fid4, fid2]
+t1 add             t2: [fid3, fid4, fid1, fid2, fid5]
+
+Step 4 transaction 1 commits the removal of feature 'fid1'
+------
+t1 commit auto-commit: [fid3, fid4, fid2]
+t1 commit          t1: [fid3, fid4, fid2]
+t1 commit          t2: [fid3, fid4, fid2, fid5]
+
+Step 5 transaction 2 commits the addition of 'fid5'
+------
+t2 commit auto-commit: [fid3, fid4, fid2, fid5]
+t2 commit          t1: [fid3, fid4, fid2, fid5]
+t2 commit          t2: [fid3, fid4, fid2, fid5]
 
 transactionExample end
 
@@ -19,7 +43,7 @@ removeAllExample start
 remove fid2
 remove fid3
 remove fid4
-remove example8117216612737702548.:example.1303829939983
+remove fid5
 commit transaction
 
 removeAllExample end
@@ -29,6 +53,6 @@ copyContent start
 
 copyContent end
 
-remove /var/folders/xv/xvN1hpRQE-8KP+iyx3ETuU+++TI/-Tmp-/example8117216612737702548/duplicate.properties
-remove /var/folders/xv/xvN1hpRQE-8KP+iyx3ETuU+++TI/-Tmp-/example8117216612737702548/example.properties
-remove /var/folders/xv/xvN1hpRQE-8KP+iyx3ETuU+++TI/-Tmp-/example8117216612737702548
+remove /var/folders/xv/xvN1hpRQE-8KP+iyx3ETuU+++TI/-Tmp-/example2316746005912266277/duplicate.properties
+remove /var/folders/xv/xvN1hpRQE-8KP+iyx3ETuU+++TI/-Tmp-/example2316746005912266277/example.properties
+remove /var/folders/xv/xvN1hpRQE-8KP+iyx3ETuU+++TI/-Tmp-/example2316746005912266277

@@ -1005,15 +1005,15 @@ Transaction Example:
 
 .. literalinclude:: /../../modules/plugin/property/src/test/java/org/geotools/data/property/PropertyExamples.java
    :language: java
-   :start-after: // featureStoreExample start
-   :end-before: // featureStoreExample end
+   :start-after: // transactionExample start
+   :end-before: // transactionExample end
 
 This produces the following output:
 
   .. literalinclude:: artifacts/output2
      :language: text
-     :start-after: // featureStoreExample start
-     :end-before: // featureStoreExample end
+     :start-after: transactionExample start
+     :end-before: transactionExample end
 
 .. note::
    

@@ -13,6 +13,7 @@ Used to interpret referencing information allowing the determination of a locati
    epsg
    parameter
    transform
+   calculator
    faq
 
 Referencing plugins:

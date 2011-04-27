@@ -17,6 +17,8 @@
 package org.geotools.geometry.jts;
 
 import org.opengis.geometry.BoundingBox;
+import org.opengis.geometry.DirectPosition;
+
 import com.vividsolutions.jts.geom.Envelope;
 import java.awt.Polygon;
 import java.awt.Shape;
@@ -29,6 +31,7 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 
 import org.geotools.geometry.Envelope2D;
+import org.geotools.geometry.GeneralDirectPosition;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 
@@ -123,7 +126,18 @@ public class JTSTest extends JTSTestBase {
         ReferencedEnvelope refEnv = JTS.toEnvelope(geom);
         assertTrue(geom.getEnvelopeInternal().equals(refEnv));
     }
-
+    
+    @Test
+    public void toDirectPosition() {
+        Coordinate c = new Coordinate(40,40);
+        DirectPosition wrapper = JTS.toDirectPosition(c, DefaultGeographicCRS.WGS84 );
+        
+        GeneralDirectPosition expected = new GeneralDirectPosition( DefaultGeographicCRS.WGS84);
+        expected.setOrdinate(0,40);
+        expected.setOrdinate(1,40);
+        
+        assertEquals( expected, wrapper );
+    }
     @Test
     public void toGeometry_BoundingBox() {
         BoundingBox bbox = new ReferencedEnvelope(-10, 10, -5, 5, null);

@@ -1,6 +1,7 @@
 package org.geotools.referencing;
 
 import java.awt.RenderingHints.Key;
+import java.awt.geom.Point2D;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -11,6 +12,8 @@ import javax.measure.unit.SI;
 
 import org.geotools.factory.GeoTools;
 import org.geotools.factory.Hints;
+import org.geotools.geometry.GeneralDirectPosition;
+import org.geotools.geometry.jts.JTS;
 import org.geotools.referencing.datum.BursaWolfParameters;
 import org.geotools.referencing.datum.DefaultGeodeticDatum;
 import org.geotools.referencing.factory.ReferencingFactoryContainer;
@@ -36,6 +39,8 @@ import org.opengis.referencing.datum.PrimeMeridian;
 import org.opengis.referencing.operation.Conversion;
 import org.opengis.referencing.operation.MathTransformFactory;
 import org.opengis.util.GenericName;
+
+import com.vividsolutions.jts.geom.Coordinate;
 
 /**
  * The following examples are taken from CTSTutorial provided by Rueben Schulz. The examples were
@@ -460,7 +465,47 @@ void printIdentifierStuff(IdentifiedObject identObj) {
     }
 }
 
-// END SNIPPET: identifiedObject
+//END SNIPPET: identifiedObject
+
+public void distance() throws Exception {
+    Coordinate start = null;
+    Coordinate end = null;
+    CoordinateReferenceSystem crs = null;
+    // distance start
+    
+    // the following code is based on JTS.orthodromicDistance( start, end, crs )
+    GeodeticCalculator gc = new GeodeticCalculator(crs);
+    gc.setStartingPosition( JTS.toDirectPosition( start, crs ) );
+    gc.setDestinationPosition( JTS.toDirectPosition( end, crs ) );
+    
+    double distance = gc.getOrthodromicDistance();
+    
+    int totalmeters = (int) distance;
+    int km = totalmeters / 1000;
+    int meters = totalmeters - (km * 1000);
+    float remaining_cm = (float) (distance - totalmeters) * 10000;
+    remaining_cm = Math.round(remaining_cm);
+    float cm = remaining_cm / 100;
+
+    System.out.println("Distance = " + km + "km " + meters + "m " + cm + "cm");
+    // distance end
+    // angle start
+    double angle = gc.getAzimuth();
+
+    System.out.println("Angle = " + angle );
+    // angle end
+}
+
+public void movePoint() {
+    // movePoint start
+    GeodeticCalculator calc = new GeodeticCalculator();
+    // mind, this is lon/lat
+    calc.setStartingGeographicPoint(45.4644, 9.1908);
+    calc.setDirection(90 /* azimuth */, 200/* distance */);
+    Point2D dest = calc.getDestinationGeographicPoint();
+    System.out.println("Longitude: " + dest.getX() + " Latitude: " + dest.getY());
+    // movePoint end
+}
 
 public static void main(String[] args) {
     new ReferencingExamples();

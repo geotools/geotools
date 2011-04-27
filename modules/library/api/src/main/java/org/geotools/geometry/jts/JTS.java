@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.geotools.geometry.AbstractDirectPosition;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralDirectPosition;
 import org.geotools.referencing.CRS;
@@ -423,6 +424,61 @@ public final class JTS {
         return gc.getOrthodromicDistance();
     }
 
+    /**
+     * Creates a DirectPosition from the provided point.
+     * 
+     * @param point
+     * @param crs
+     * @return DirectPosition
+     */
+    public static DirectPosition toDirectPosition(final Coordinate point,
+            final CoordinateReferenceSystem crs) {
+        // GeneralDirectPosition directPosition = new GeneralDirectPosition(crs);
+        // copy( point, directPosition.ordinates );
+        // return directPosition;
+    
+        return new AbstractDirectPosition() {
+    
+            public CoordinateReferenceSystem getCoordinateReferenceSystem() {
+                return crs;
+            }
+    
+            public int getDimension() {
+                return crs.getCoordinateSystem().getDimension();
+            }
+    
+            public double getOrdinate(int dimension)
+                    throws IndexOutOfBoundsException {
+                switch (dimension) {
+                case 0:
+                    return point.x;
+                case 1:
+                    return point.y;
+                case 2:
+                    return point.z;
+                default:
+                    return Double.NaN;
+                }
+            }
+    
+            public void setOrdinate(int dimension, double value)
+                    throws IndexOutOfBoundsException {
+                switch (dimension) {
+                case 0:
+                    point.x = value;
+                    return;
+                case 1:
+                    point.y = value;
+                    return;
+                case 2:
+                    point.z = value;
+                    return;
+                default:
+                    // ignore
+                }
+            }    
+        };
+    }
     /**
      * Copies the ordinates values from the specified JTS coordinates to the specified array. The
      * destination array can have any length. Only the relevant field of the source coordinate will

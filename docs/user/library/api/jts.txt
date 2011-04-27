@@ -7,6 +7,21 @@ JTS Geometry activities.
 Reference:
 
 * http://docs.geotools.org/stable/javadocs/org/geotools/geometry/jts/JTS.html
+* :doc:`/tutorial/geometry/geometrycrs` (tutorial)
+
+Distance
+^^^^^^^^
+
+There is a helper method allowing you to calcualte the real-world distance between two points:
+  
+.. literalinclude:: /../src/main/java/org/geotools/jts/JTSExamples.java
+   :language: java
+   :start-after: // orthodromicDistance start
+   :end-before: // orthodromicDistance end
+
+Internally this method makes use of GeodeticCalculator which offers a more general purpose solution
+able to take the distance between any two points (even if they are provided in different
+coordiante reference systems).
 
 Transform
 ^^^^^^^^^

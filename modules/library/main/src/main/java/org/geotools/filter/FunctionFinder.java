@@ -82,7 +82,7 @@ public class FunctionFinder {
      * @param name Function name; this will need to be an exact match
      * @return FunctioName description, or null if function is not available
      */
-    FunctionName findFunctionDescription(String name ){
+    public FunctionName findFunctionDescription(String name ){
         Set<FunctionFactory> functionFactories = CommonFactoryFinder.getFunctionFactories(null);
         for (FunctionFactory factory : functionFactories) {
             List<FunctionName> functionNames = factory.getFunctionNames();

@@ -215,7 +215,7 @@ public final class GeoTiffFormat extends AbstractGridFormat implements Format {
 			    return true;
 			
 			// now look for info into a WLD file
-            MathTransform raster2Model = GeoTiffReader.parseWorldFile(o);
+            MathTransform raster2Model = Utils.parseWorldFile(o);
             if (raster2Model != null)
                 return true;
             else{              

@@ -40,6 +40,8 @@ import it.geosolutions.imageio.utilities.ImageIOUtilities;
 import java.awt.RenderingHints;
 import java.util.Collections;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.imageio.spi.ImageReaderSpi;
 
@@ -66,77 +68,117 @@ import org.geotools.coverage.grid.io.GridFormatFactorySpi;
  *         http://svn.geotools.org/geotools/trunk/gt/plugin/geotiff/src/org/geotools/gce/geotiff/GeoTiffFormatFactorySpi.java $
  */
 public final class GeoTiffFormatFactorySpi implements GridFormatFactorySpi {    
-    
-    static{
-        
-        try{
-                        //check if our tiff plugin is in the path
-                        final String tiffName=it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi.class.getName();
-                        Class.forName(tiffName);
 
-                        // imageio jp2k reader
-                        final String standardTiffName=com.sun.media.imageioimpl.plugins.tiff.TIFFImageReaderSpi.class.getName();
-                        
-                        ImageIOUtilities.replaceProvider(ImageReaderSpi.class, tiffName, standardTiffName, "TIFF");
+    /** Logger for the {@link GeoTiffReader} class. */
+    private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(GeoTiffFormatFactorySpi.class.toString());
+    private final static boolean AVAILABLE;
+    
+    static {
+
+        boolean av=true;
+        try {
+            
+            // replace order for tiff readers
+            // check if our tiff plugin is in the path
+            final String customTiffReaderName = it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi.class.getName();
+
+            // imageio jp2k reader
+            final String standardTiffReaderName = com.sun.media.imageioimpl.plugins.tiff.TIFFImageReaderSpi.class.getName();
+
+            if(!ImageIOUtilities.replaceProvider(ImageReaderSpi.class, customTiffReaderName, standardTiffReaderName,"TIFF")){
+
+                if(LOGGER.isLoggable(Level.FINE))
+                    LOGGER.fine("Unable to replace order between tiff readers");
+            }
                 
-                } catch (ClassNotFoundException e) {
-                    //TODO: LOGME
-                } 
+            // replace order for tiff writers
+            // check if our tiff plugin is in the path
+            final String tiffName = it.geosolutions.imageioimpl.plugins.tiff.TIFFImageWriterSpi.class.getName();
+
+            // imageio jp2k reader
+            final String standardTiffName = com.sun.media.imageioimpl.plugins.tiff.TIFFImageWriterSpi.class.getName();
+
+            if(!ImageIOUtilities.replaceProvider(ImageReaderSpi.class, tiffName, standardTiffName,"TIFF")){
+
+                if (LOGGER.isLoggable(Level.FINE))
+                    LOGGER.fine("Unable to replace order between tiff writers");
+            }
+            
+            // we also require JAI
+            // if these classes are here, then the runtime environment has
+            // access to JAI and the JAI ImageI/O toolbox.
+            Class.forName("javax.media.jai.JAI");
+            Class.forName("com.sun.media.jai.operator.ImageReadDescriptor"); 
+        } catch (Exception e) {
+           if(LOGGER.isLoggable(Level.FINE))
+               LOGGER.log(Level.FINE,e.getLocalizedMessage(),e);
+           av=false;
+        }
+        //assign
+        AVAILABLE=av;
     }
     
     /**
-	 * Creates a new instance of GeoTiffFormatFactorySpi
-	 */
-	public GeoTiffFormatFactorySpi() {
-	}
+     * Creates a new instance of GeoTiffFormatFactorySpi
+     */
+    public GeoTiffFormatFactorySpi() {
+    }
 
-	/**
-	 * Creates and returns a new instance of the <CODE>GeoTiffFormat</CODE>
-	 * class if the required libraries are present. If JAI and JAI Image I/O are
-	 * not present, will throw an <CODE>UnsupportedOperationException</CODE>.
-	 * 
-	 * @return <CODE>GeoTiffFormat</CODE> object.
-	 * 
-	 * @throws UnsupportedOperationException
-	 *             if this format is unavailable.
-	 */
-	public AbstractGridFormat createFormat() {
-		if (!isAvailable()) {
-			throw new UnsupportedOperationException(
-					"The GeoTiff plugin requires the JAI and JAI ImageI/O libraries!");
-		}
+    /**
+     * Creates and returns a new instance of the <CODE>GeoTiffFormat</CODE> class if the required
+     * libraries are present. If JAI and JAI Image I/O are not present, will throw an
+     * <CODE>UnsupportedOperationException</CODE>.
+     * 
+     * @return <CODE>GeoTiffFormat</CODE> object.
+     * 
+     * @throws UnsupportedOperationException
+     *             if this format is unavailable.
+     */
+    public AbstractGridFormat createFormat() {
+        if (!isAvailable()) {
+            throw new UnsupportedOperationException(
+                    "The GeoTiff plugin cannot be instantiated");
+        }
 
-		return new GeoTiffFormat();
-	}
+        return new GeoTiffFormat();
+    }
 
-	/**
-	 * Informs the caller whether the libraries required by the GeoTiff reader
-	 * are installed or not.
-	 * 
-	 * @return availability of the GeoTiff format.
-	 */
-	public boolean isAvailable() {
-		boolean available = true;
+//	/**
+//	 * Informs the caller whether the libraries required by the GeoTiff reader
+//	 * are installed or not.
+//	 * 
+//	 * @return availability of the GeoTiff format.
+//	 */
+//	public boolean isAvailable() {
+//		boolean available = true;
+//
+//		// if these classes are here, then the runtime environment has
+//		// access to JAI and the JAI ImageI/O toolbox.
+//		try {
+//			Class.forName("javax.media.jai.JAI");
+//			Class.forName("com.sun.media.jai.operator.ImageReadDescriptor");
+//		} catch (ClassNotFoundException cnf) {
+//			available = false;
+//		}
+//
+//		return available;
+//	}
+    /**
+     * Informs the caller whether the libraries required by the GeoTiff reader
+     * are installed or not.
+     * 
+     * @return availability of the GeoTiff format.
+     */
+    public boolean isAvailable() {
+        return AVAILABLE;
+    }
 
-		// if these classes are here, then the runtine environment has
-		// access to JAI and the JAI ImageI/O toolbox.
-		try {
-			Class.forName("javax.media.jai.JAI");
-			Class.forName("com.sun.media.jai.operator.ImageReadDescriptor");
-		} catch (ClassNotFoundException cnf) {
-			available = false;
-		}
-
-		return available;
-	}
-
-	/**
-	 * Returns the implementation hints. The default implementation returns an
-	 * empty map.
-	 * 
-	 * @return Empty Map.
-	 */
-	public Map<RenderingHints.Key, ?>  getImplementationHints() {
-		return Collections.emptyMap();
-	}
+    /**
+     * Returns the implementation hints. The default implementation returns an empty map.
+     * 
+     * @return Empty Map.
+     */
+    public Map<RenderingHints.Key, ?> getImplementationHints() {
+        return Collections.emptyMap();
+    }
 }

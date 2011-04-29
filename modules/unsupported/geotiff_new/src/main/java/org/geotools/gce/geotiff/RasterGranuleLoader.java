@@ -19,7 +19,6 @@ import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
 import javax.media.jai.ImageLayout;
-import javax.media.jai.Interpolation;
 import javax.media.jai.InterpolationNearest;
 import javax.media.jai.JAI;
 import javax.media.jai.operator.AffineDescriptor;
@@ -40,7 +39,6 @@ import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.referencing.operation.TransformException;
 
-import com.sun.media.jai.util.Rational;
 
 /**
  * A rasterGranuleLoader is an elementar piece of data iamge, with its own overviews and
@@ -123,120 +121,6 @@ class RasterGranuleLoader {
     //
     
 
-	private static float rationalTolerance = 0.000001F;
-    private static Rectangle2D layoutHelper(RenderedImage source,
-                                            float scaleX,
-                                            float scaleY,
-                                            float transX,
-                                            float transY,
-                                            Interpolation interp) {
-
-        // Represent the scale factors as Rational numbers.
-		// Since a value of 1.2 is represented as 1.200001 which
-		// throws the forward/backward mapping in certain situations.
-		// Convert the scale and translation factors to Rational numbers
-		Rational scaleXRational = Rational.approximate(scaleX,rationalTolerance);
-		Rational scaleYRational = Rational.approximate(scaleY,rationalTolerance);
-
-		long scaleXRationalNum = (long) scaleXRational.num;
-		long scaleXRationalDenom = (long) scaleXRational.denom;
-		long scaleYRationalNum = (long) scaleYRational.num;
-		long scaleYRationalDenom = (long) scaleYRational.denom;
-
-		Rational transXRational = Rational.approximate(transX,rationalTolerance);
-		Rational transYRational = Rational.approximate(transY,rationalTolerance);
-
-		long transXRationalNum = (long) transXRational.num;
-		long transXRationalDenom = (long) transXRational.denom;
-		long transYRationalNum = (long) transYRational.num;
-		long transYRationalDenom = (long) transYRational.denom;
-
-		int x0 = source.getMinX();
-		int y0 = source.getMinY();
-		int w = source.getWidth();
-		int h = source.getHeight();
-
-		// Variables to store the calculated destination upper left coordinate
-		long dx0Num, dx0Denom, dy0Num, dy0Denom;
-
-		// Variables to store the calculated destination bottom right
-		// coordinate
-		long dx1Num, dx1Denom, dy1Num, dy1Denom;
-
-		// Start calculations for destination
-
-		dx0Num = x0;
-		dx0Denom = 1;
-
-		dy0Num = y0;
-		dy0Denom = 1;
-
-		// Formula requires srcMaxX + 1 = (x0 + w - 1) + 1 = x0 + w
-		dx1Num = x0 + w;
-		dx1Denom = 1;
-
-		// Formula requires srcMaxY + 1 = (y0 + h - 1) + 1 = y0 + h
-		dy1Num = y0 + h;
-		dy1Denom = 1;
-
-		dx0Num *= scaleXRationalNum;
-		dx0Denom *= scaleXRationalDenom;
-
-		dy0Num *= scaleYRationalNum;
-		dy0Denom *= scaleYRationalDenom;
-
-		dx1Num *= scaleXRationalNum;
-		dx1Denom *= scaleXRationalDenom;
-
-		dy1Num *= scaleYRationalNum;
-		dy1Denom *= scaleYRationalDenom;
-
-		// Equivalent to subtracting 0.5
-		dx0Num = 2 * dx0Num - dx0Denom;
-		dx0Denom *= 2;
-
-		dy0Num = 2 * dy0Num - dy0Denom;
-		dy0Denom *= 2;
-
-		// Equivalent to subtracting 1.5
-		dx1Num = 2 * dx1Num - 3 * dx1Denom;
-		dx1Denom *= 2;
-
-		dy1Num = 2 * dy1Num - 3 * dy1Denom;
-		dy1Denom *= 2;
-
-		// Adding translation factors
-
-		// Equivalent to float dx0 += transX
-		dx0Num = dx0Num * transXRationalDenom + transXRationalNum * dx0Denom;
-		dx0Denom *= transXRationalDenom;
-
-		// Equivalent to float dy0 += transY
-		dy0Num = dy0Num * transYRationalDenom + transYRationalNum * dy0Denom;
-		dy0Denom *= transYRationalDenom;
-
-		// Equivalent to float dx1 += transX
-		dx1Num = dx1Num * transXRationalDenom + transXRationalNum * dx1Denom;
-		dx1Denom *= transXRationalDenom;
-
-		// Equivalent to float dy1 += transY
-		dy1Num = dy1Num * transYRationalDenom + transYRationalNum * dy1Denom;
-		dy1Denom *= transYRationalDenom;
-
-		// Get the integral coordinates
-		int l_x0, l_y0, l_x1, l_y1;
-
-		l_x0 = Rational.ceil(dx0Num, dx0Denom);
-		l_y0 = Rational.ceil(dy0Num, dy0Denom);
-
-		l_x1 = Rational.ceil(dx1Num, dx1Denom);
-		l_y1 = Rational.ceil(dy1Num, dy1Denom);
-
-		// Set the top left coordinate of the destination
-		final Rectangle2D retValue= new Rectangle2D.Double();
-		retValue.setFrame(l_x0, l_y0, l_x1 - l_x0 + 1, l_y1 - l_y0 + 1);
-		return retValue;
-	}
 	/**
 	 * This class represent an overview level in a single rasterGranuleLoader.
 	 * 
@@ -551,7 +435,7 @@ class RasterGranuleLoader {
 			
 			final InterpolationNearest nearest = new InterpolationNearest();
 			//paranoiac check to avoid that JAI freaks out when computing its internal layouT on images that are too small
-			Rectangle2D finalLayout= layoutHelper(
+			Rectangle2D finalLayout= Utils.layoutHelper(
 					raster, 
 					(float)translationTransform.getScaleX(), 
 					(float)translationTransform.getScaleY(), 

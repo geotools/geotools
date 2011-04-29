@@ -73,6 +73,9 @@ class RasterLayerResponse{
 	
 	class GranuleWorker {
 
+            private boolean doInputTransparency;
+            private Color inputTransparentColor;
+            private RasterGranuleLoader rasterGranuleLoader;
 		
 		/**
 		 * Default {@link Constructor}
@@ -83,10 +86,6 @@ class RasterLayerResponse{
 			init(aoi, gridToWorldCorner);
 		}
 
-
-		private boolean doInputTransparency;
-		private Color inputTransparentColor;
-		private RasterGranuleLoader rasterGranuleLoader;
 
 		private void init(final ReferencedEnvelope aoi, final MathTransform gridToWorld) {
 
@@ -185,8 +184,6 @@ class RasterLayerResponse{
 	private GeneralEnvelope coverageEnvelope;
 
 	private URL inputURL;
-
-	private boolean frozen = false;
 
 	private RasterManager rasterManager;
 
@@ -288,13 +285,10 @@ class RasterLayerResponse{
 	 * 
 	 * @throws java.io.IOException
 	 */
-	private  synchronized void processRequest() throws IOException {
+	private void processRequest() throws IOException {
 
 		if (request.isEmpty())
-			throw new IOException("Empty request " + request.toString());
-
-		if (frozen)
-			return;
+			throw new DataSourceException("Empty request: " + request.toString());
 		
 		// assemble granules
 		final RenderedImage image = prepareResponse();
@@ -304,8 +298,6 @@ class RasterLayerResponse{
 		//create the coverage
 		gridCoverage=prepareCoverage(finalRaster);
 		
-		//freeze
-		frozen = true;
 		
 	}
 
@@ -377,7 +369,7 @@ class RasterLayerResponse{
 			
 			//
 			// Did we actually load anything?? Notice that it might happen that
-			// either we have wholes inside the definition area for the mosaic
+			// either we have wholes inside the definition area for the image
 			// or we had some problem with missing tiles, therefore it might
 			// happen that for some bboxes we don't have anything to load.
 			//

@@ -25,7 +25,7 @@ import org.geotools.resources.i18n.Errors;
 
 
 /**
- * This enum can be used to distinguish between differet read methods, namely, JAI ImageRead based and Java2D direct read via ImageReader.
+ * This enum can be used to distinguish between different read methods, namely, JAI ImageRead based and Java2D direct read via ImageReader.
  * 
  * @author Simone Giannecchini, GeoSolutions SAS
  *

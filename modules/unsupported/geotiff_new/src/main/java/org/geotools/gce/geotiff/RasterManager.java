@@ -460,7 +460,6 @@ class RasterManager {
 	 *         {@link Hints#VALUE_OVERVIEW_POLICY_SPEED}, {@link Hints#VALUE_OVERVIEW_POLICY_QUALITY}.
 	 *         Default is {@link Hints#VALUE_OVERVIEW_POLICY_NEAREST}.
 	 */
-	@SuppressWarnings("deprecation")
 	private OverviewPolicy extractOverviewPolicy() {
 		
 		// check if a policy was provided using hints (check even the

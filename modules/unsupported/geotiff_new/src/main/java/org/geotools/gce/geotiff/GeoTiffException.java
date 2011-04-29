@@ -73,7 +73,7 @@ import org.geotools.coverage.grid.io.imageio.geotiff.TiePoint;
  * @source $URL:
  *         http://svn.geotools.org/geotools/trunk/gt/plugin/geotiff/src/org/geotools/gce/geotiff/GeoTiffException.java $
  */
-public final class GeoTiffException extends IOException {
+final class GeoTiffException extends IOException {
 
 	/**
 	 * 

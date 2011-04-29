@@ -16,8 +16,6 @@
  */
 package org.geotools.gce.geotiff;
 
-import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageMetadata;
-import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageWriterSpi;
 
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
@@ -29,14 +27,13 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URL;
 import java.util.List;
+import java.util.logging.Logger;
 
-import javax.imageio.IIOException;
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageTypeSpecifier;
 import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
-import javax.imageio.metadata.IIOInvalidTreeException;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.stream.ImageOutputStream;
 
@@ -58,12 +55,6 @@ import org.geotools.parameter.Parameter;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.resources.i18n.Vocabulary;
 import org.geotools.resources.i18n.VocabularyKeys;
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.jdom.Parent;
-import org.jdom.input.DOMBuilder;
-import org.jdom.output.DOMOutputter;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.coverage.grid.GridCoverageWriter;
@@ -85,10 +76,10 @@ import org.opengis.referencing.operation.TransformException;
 public final class GeoTiffWriter extends AbstractGridCoverageWriter implements
 		GridCoverageWriter {
 
-	/** factory for getting tiff writers. */
-	private final static TIFFImageWriterSpi tiffWriterFactory = new TIFFImageWriterSpi();
+	/** Logger for the {@link GeoTiffReader} class. */
+    private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(GeoTiffWriter.class.toString());
 
-	/**
+    /**
 	 * Constructor for a {@link GeoTiffWriter}.
 	 * 
 	 * @param destination
@@ -161,7 +152,6 @@ public final class GeoTiffWriter extends AbstractGridCoverageWriter implements
 	 * @see org.opengis.coverage.grid.GridCoverageWriter#write(org.opengis.coverage.grid.GridCoverage,
 	 *      org.opengis.parameter.GeneralParameterValue[])
 	 */
-	@SuppressWarnings("unchecked")
 	public void write(final GridCoverage gc,
 			final GeneralParameterValue[] params)
 			throws IllegalArgumentException, IOException,
@@ -396,8 +386,8 @@ public final class GeoTiffWriter extends AbstractGridCoverageWriter implements
 		//
 		// GETTING READER AND METADATA
 		//
-		final ImageWriter writer = tiffWriterFactory.createWriterInstance();
-		final IIOMetadata metadata = createGeoTiffIIOMetadata(writer,ImageTypeSpecifier.createFromRenderedImage(image),geoTIFFMetadata, params);
+		final ImageWriter writer = Utils.TIFFWRITERFACTORY.createWriterInstance();
+		final IIOMetadata metadata = Utils.createGeoTiffIIOMetadata(writer,ImageTypeSpecifier.createFromRenderedImage(image),geoTIFFMetadata, params);
 
 
 		try{
@@ -439,59 +429,6 @@ public final class GeoTiffWriter extends AbstractGridCoverageWriter implements
 		return true;
 	}
 
-	/**
-	 * Creates image metadata which complies to the GeoTIFFWritingUtilities
-	 * specification for the given image writer, image type and
-	 * GeoTIFFWritingUtilities metadata.
-	 * 
-	 * @param writer
-	 *            the image writer, must not be null
-	 * @param type
-	 *            the image type, must not be null
-	 * @param geoTIFFMetadata
-	 *            the GeoTIFFWritingUtilities metadata, must not be null
-	 * @param params
-	 * @return the image metadata, never null
-	 * @throws IIOException
-	 *             if the metadata cannot be created
-	 */
-	public final static IIOMetadata createGeoTiffIIOMetadata(
-			ImageWriter writer, ImageTypeSpecifier type,
-			GeoTiffIIOMetadataEncoder geoTIFFMetadata, ImageWriteParam params)
-			throws IIOException {
-		IIOMetadata imageMetadata = writer
-				.getDefaultImageMetadata(type, params);
-		imageMetadata = writer
-				.convertImageMetadata(imageMetadata, type, params);
-		org.w3c.dom.Element w3cElement = (org.w3c.dom.Element) imageMetadata
-				.getAsTree(GeoTiffConstants.GEOTIFF_IIO_METADATA_FORMAT_NAME);
-		final Element element = new DOMBuilder().build(w3cElement);
-
-		geoTIFFMetadata.assignTo(element);
-
-		final Parent parent = element.getParent();
-		parent.removeContent(element);
-
-		final Document document = new Document(element);
-
-		try {
-			final org.w3c.dom.Document w3cDoc = new DOMOutputter()
-					.output(document);
-			final IIOMetadata iioMetadata = new TIFFImageMetadata(
-					TIFFImageMetadata.parseIFD(w3cDoc.getDocumentElement()
-							.getFirstChild()));
-			imageMetadata = iioMetadata;
-		} catch (JDOMException e) {
-			throw new IIOException(
-					"Failed to set GeoTIFFWritingUtilities specific tags.", e);
-		} catch (IIOInvalidTreeException e) {
-			throw new IIOException(
-					"Failed to set GeoTIFFWritingUtilities specific tags.", e);
-		}
-
-		return imageMetadata;
-	}
-	
 	static double getCandidateNoData(GridCoverage gc) {
 	        // no data management
 	        final GridSampleDimension sd = (GridSampleDimension) gc

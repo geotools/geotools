@@ -120,17 +120,24 @@ public class AbstractGeometryTypeBinding extends AbstractComplexBinding {
             }
         }
 
-        if (GML.id.equals(name)) {
+        // FIXME: should be gml:id, but which GML?
+        // Refactor bindings or introduce a new one for GML 3.2
+        if ("id".equals(name.getLocalPart())) {
             return GML3EncodingUtils.getID(geometry);
         }
 
-        if (GML.name.equals(name)) {
+        // FIXME: should be gml:name, but which GML?
+        // Refactor bindings or introduce a new one for GML 3.2
+        if ("name".equals(name.getLocalPart())) {
             return GML3EncodingUtils.getName(geometry);
         }
         
-        if (GML.description.equals(name)) {
+        // FIXME: should be gml:description, but which GML?
+        // Refactor bindings or introduce a new one for GML 3.2
+        if ("description".equals(name.getLocalPart())) {
             return GML3EncodingUtils.getDescription(geometry);
         }
+
         return null;
     }
 }

@@ -61,7 +61,6 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
-import org.geotools.coverage.grid.io.imageio.IIOMetadataDumper;
 import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffIIOMetadataDecoder;
 import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffMetadata2CRSAdapter;
 import org.geotools.data.DataSourceException;
@@ -248,13 +247,12 @@ public final class GeoTiffReader extends AbstractGridCoverage2DReader implements
 	 * @param hints
 	 * @throws IOException
 	 * @throws FactoryException
-	 * @throws GeoTiffException
 	 * @throws TransformException
 	 * @throws MismatchedDimensionException
 	 * @throws DataSourceException
 	 */
 	private void getHRInfo(Hints hints) throws IOException, FactoryException,
-			GeoTiffException, TransformException, MismatchedDimensionException,
+			TransformException, MismatchedDimensionException,
 			DataSourceException {
 		// //
 		//

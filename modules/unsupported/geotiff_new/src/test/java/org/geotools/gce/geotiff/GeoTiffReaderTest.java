@@ -67,7 +67,7 @@ public class GeoTiffReaderTest extends TestCase {
 	public void testReader() throws IllegalArgumentException, IOException,
 			NoSuchAuthorityCodeException {
 
-		final File file = TestData.file(GeoTiffReaderTest.class, "");
+		final File file = new File( "C:\\work\\data\\geotiff\\spain\\");
 		final File files[] = file.listFiles();
 		final int numFiles = files.length;
 		final AbstractGridFormat format = new GeoTiffFormat();

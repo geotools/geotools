@@ -61,11 +61,10 @@ public class WFS_1_1_0_DataStoreTest {
      */
     @Test
     public void testGetTypeNames() throws IOException {
-        String[] expected = {"RoadSeg", "GovernmentalUnitCE",
-                "HydroElementWBMD", "GovernmentalUnitMCD", "GovernmentalUnitST",
-                "HydroElementFLHI", "HydroElementARHI", "HydroElementPTMD",
-                "HydroElementARMD", "HydroElementPTHI", "HydroElementWBHI",
-                "HydroElementLIMD", "HydroElementLIHI", "HydroElementFLMD"};
+        String[] expected = {"GovernmentalUnitMCD", "HydroElementLIMD", "HydroElementARHI",
+        "RoadSeg", "HydroElementFLHI","HydroElementWBMD", "GovernmentalUnitCE",
+        "HydroElementPTHI", "GovernmentalUnitST","HydroElementWBHI","HydroElementARMD",
+        "HydroElementFLMD","HydroElementLIHI","HydroElementPTMD"};
         List<String> expectedTypeNames = Arrays.asList(expected);
 
         createTestProtocol(CUBEWERX_GOVUNITCE.CAPABILITIES);

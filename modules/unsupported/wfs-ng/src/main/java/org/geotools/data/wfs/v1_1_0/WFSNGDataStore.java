@@ -825,9 +825,9 @@ public final class WFSNGDataStore extends ContentDataStore {
             schema = new WFSFeatureSource(entry, null).buildFeatureType();
             entry.getState(Transaction.AUTO_COMMIT).setFeatureType(schema);
         }
-        return (ContentFeatureSource) schema;
+        return new WFSFeatureSource(entry, null);
     }
-
+    
     public WFSServiceInfo getInfo() {
         return new CapabilitiesServiceInfo(this);
     }

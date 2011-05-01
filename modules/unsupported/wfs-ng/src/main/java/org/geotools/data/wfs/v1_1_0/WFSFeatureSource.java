@@ -17,6 +17,10 @@
 package org.geotools.data.wfs.v1_1_0;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.Iterator;
+import java.util.Set;
+import javax.xml.namespace.QName;
 
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureSource;
@@ -26,26 +30,18 @@ import org.geotools.data.ResourceInfo;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.data.wfs.protocol.wfs.WFSProtocol;
+import org.geotools.data.wfs.v1_1_0.parsers.EmfAppSchemaParser;
+import org.geotools.feature.AttributeTypeBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.referencing.CRS;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.feature.type.Name;
-
-/**
- * Simple implementation of FeatureSource for a WFS 1.1 server.
- * <p>
- * This implementation is really simple in the sense that it delegates all the hard work to the
- * {@link WFSDataStore} provided.
- * </p>
- * 
- * @author Gabriel Roldan (TOPP)
- * @version $Id: WFSFeatureSource.java 35310 2010-04-30 10:32:15Z jive $
- * @since 2.5.x
- * @source $URL:
- *         http://svn.geotools.org/trunk/modules/plugin/wfs/src/main/java/org/geotools/wfs/v_1_1_0
- *         /data/XmlSimpleFeatureParser.java $
- */
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.NoSuchAuthorityCodeException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public class WFSFeatureSource extends ContentFeatureSource {
 
@@ -192,9 +188,67 @@ public class WFSFeatureSource extends ContentFeatureSource {
     }
 
     @Override
-    protected SimpleFeatureType buildFeatureType() throws IOException {
-        throw new UnsupportedOperationException("Not supported yet.");
+    protected SimpleFeatureType buildFeatureType() throws IOException {       
+        WFSNGDataStore datastore=(WFSNGDataStore) getDataStore();
+        WFSProtocol wfs= datastore.getWFSProtocol();
+
+        //make the prefixedTypeName
+        String prefixedTypeName=null;
+        Set<QName> names=wfs.getFeatureTypeNames();
+        Iterator<QName> it=names.iterator();
+        while(it.hasNext()&& prefixedTypeName==null){
+            QName name=it.next();
+            if (entry.getName().getLocalPart().equals(name.getLocalPart()) &&
+                    entry.getName().getNamespaceURI().equals(name.getNamespaceURI())){
+                prefixedTypeName=name.getPrefix()+entry.getName().getSeparator()+name.getLocalPart();
+            }
+        }
+        /*Parser not working (yet)
+        WFSResponse response;
+        String outputFormat=wfs.getDefaultOutputFormat(WFSOperationType.GET_FEATURE);
+        if(datastore.isPreferPostOverGet()){
+            response = wfs.describeFeatureTypePOST(getCapTypeName, outputFormat);
+        }else{
+            response = wfs.describeFeatureTypeGET(getCapTypeName, outputFormat);
+        }
+        Object result = WFSExtensions.process(datastore, response);
+        */
+        final SimpleFeatureType fType;
+        //CoordinateReferenceSystem crs = getFeatureTypeCRS(prefixedTypeName);
+        CoordinateReferenceSystem crs;
+        try {
+            crs = CRS.decode(wfs.getDefaultCRS(prefixedTypeName));
+        } catch (NoSuchAuthorityCodeException ex) {
+            IOException exception = new IOException("can't decode default CRS for featureType "+prefixedTypeName);
+            exception.initCause(ex);
+            throw exception;
+        } catch (FactoryException ex) {
+            IOException exception = new IOException("can't decode default CRS for featureType "+prefixedTypeName);
+            exception.initCause(ex);
+            throw exception;
+        }
+        final URL describeUrl = wfs.getDescribeFeatureTypeURLGet(prefixedTypeName);
+        QName featureDescriptorName = wfs.getFeatureTypeName(prefixedTypeName);
+        fType = EmfAppSchemaParser.parseSimpleFeatureType(featureDescriptorName,
+                describeUrl, crs);
         
+        SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
+        //tb.setFeatureTypeFactory( getDataStore().getFeatureTypeFactory() );
+
+        tb.init(fType);
+        //set name
+        tb.setName(entry.getName());
+        GeometryDescriptor defaultGeometry = fType.getGeometryDescriptor();
+        if (defaultGeometry != null) {
+            tb.setDefaultGeometry(defaultGeometry.getLocalName());
+            tb.setCRS(defaultGeometry.getCoordinateReferenceSystem());
+        }
+        try{
+            featureType = tb.buildFeatureType();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return featureType;    
     }
  
 }

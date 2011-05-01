@@ -286,7 +286,7 @@ class RasterLayerResponse{
 	 * @author Simone Giannecchini, GeoSolutions SAS
 	 *
 	 */
-	public static class MaxVisitor2 extends MaxVisitor{
+	static class MaxVisitor2 extends MaxVisitor{
 
 		@SuppressWarnings("unchecked")
 		private Comparable oldValue;

@@ -25,10 +25,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.awt.image.ColorModel;
-import java.awt.image.ComponentColorModel;
 import java.awt.image.ImagingOpException;
-import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
@@ -41,12 +38,7 @@ import javax.media.jai.ImageLayout;
 import javax.media.jai.Interpolation;
 import javax.media.jai.InterpolationNearest;
 import javax.media.jai.JAI;
-import javax.media.jai.LookupTableJAI;
-import javax.media.jai.RenderedOp;
 import javax.media.jai.operator.AffineDescriptor;
-import javax.media.jai.operator.BandMergeDescriptor;
-import javax.media.jai.operator.ConstantDescriptor;
-import javax.media.jai.operator.LookupDescriptor;
 import javax.media.jai.operator.ScaleDescriptor;
 
 import org.geotools.coverage.CoverageFactoryFinder;
@@ -120,7 +112,7 @@ public final class GridCoverageRenderer {
             } else
                {
                         debugDir = tempDir.getAbsolutePath();
-                         System.out.println("Debug dir "+debugDir);
+                         System.out.println("Rendering debug dir "+debugDir);
                }
         }
 

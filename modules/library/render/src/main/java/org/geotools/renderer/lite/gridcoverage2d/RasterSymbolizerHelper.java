@@ -57,19 +57,17 @@ public class RasterSymbolizerHelper extends
 	public synchronized GridCoverage2D execute() {
 		///////////////////////////////////////////////////////////////////////
 		//
-		// We get the non-geophysics view of this coverage in order to try to
-		// preserve as much as possible the native color maps applied at reading
-		// time. This is especially true if we do not want to use the
-		// RasterSymbolizer capabilities; to achieve this we can just use an
-		// empty raster symbolizer element.
+		// We get the geophysics view of this coverage and we check if we give away 
+	        // something that can visualized directly. If the final data type is still floating 
+	        // point numbers (no direct rendering) we do our best to cope with it doing a local 
 		//
 		///////////////////////////////////////////////////////////////////////
 		//get the output coverage and its RenderedImage
 		final GridCoverage2D output= (GridCoverage2D) super.execute();
-		final GridCoverage2D outputNonGeo=output.geophysics(false);
-		//if we have an index color model we are ok, this way we preserve the non geo view or whatever it is now called
-		if(outputNonGeo.getRenderedImage().getColorModel() instanceof IndexColorModel)
-			return output;
+//		final GridCoverage2D outputNonGeo=output.geophysics(false);
+//		//if we have an index color model we are ok, this way we preserve the non geo view or whatever it is now called
+//		if(outputNonGeo.getRenderedImage().getColorModel() instanceof IndexColorModel)
+//			return output;
 		RenderedImage outputImage=output.getRenderedImage();
 		
 
@@ -98,9 +96,12 @@ public class RasterSymbolizerHelper extends
 		else
 			sd=output.getSampleDimensions();
 
-		//more general case, let's check the data type
+		//more general case, let's check the data type and let go only USHORT and BYTE
+		// TODO I am not sure this will work with multipacked types (using INT for an RGB as an instance)
+		// TODO should we go to component color model also?
+		// TODO use JAI TOOLS statistics and ignore no data properly.
 		switch(dataType){
-		case DataBuffer.TYPE_DOUBLE:
+		        case DataBuffer.TYPE_DOUBLE:
 			case DataBuffer.TYPE_FLOAT:
 			case DataBuffer.TYPE_INT:
 			case DataBuffer.TYPE_SHORT:

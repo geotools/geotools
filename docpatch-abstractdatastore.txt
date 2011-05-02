@@ -1,0 +1,254 @@
+### Eclipse Workspace Patch 1.0
+#P docs
+Index: user/tutorial/advanced/abstractdatastore.txt
+===================================================================
+--- user/tutorial/advanced/abstractdatastore.txt	(revision 37028)
++++ user/tutorial/advanced/abstractdatastore.txt	(working copy)
+@@ -66,20 +66,20 @@
+   rd1=1|wkt|road one
+   rd2=2|wkt|road two
+   
+-These examples use the file :download:`example.properties <artifacts/example.properties>` ::
++These examples use the file :download:`example.properties <artifacts/example.properties>`.
+   
+ .. literalinclude:: artifacts/example.properties
+   
+ If you want to follow along with this tutorial, start a new Java project in your favourite IDE,
+ and ensure that GeoTools is on your CLASSPATH.
+ 
+-The DataStore we will be writing (called "PropertyDataStore") takes a directory full of .property
++The DataStore we will be writing (called "PropertyDataStore") takes a directory full of .properties
+ files and allows reading and writing to them:
+ 
+-* Each of the .property files represents a "data set" - called a FeatureType by GeoTools
++* Each of the .properties files represents a "data set" - called a FeatureType by GeoTools
+ * Each of these "data sets" contains a set of Features.
+   
+-  You can think of each of these .property files as a table in a database
++  You can think of each of these .properties files as a table in a database
+   or a shapefile (with its corresponding .dbf attributes file).
+ 
+ Each of the .properties is very much like a PSV (Pipe Separated Variety) database file. The first
+@@ -98,7 +98,7 @@
+ 
+ The first row has id "1", geom "LINESTRING(0 0,10 10)", and name "road one".
+ 
+-Now, about lets consider the information to the left of the "=" sign. The first line begins with
++Now, lets consider the information to the left of the "=" sign. The first line begins with
+ "_=". This indicates this is a special line - it defines the column names and types. The rest of
+ the lines start with a unique identifier ("rd1", and "rd2") - these will be the FIDs (Feature IDs)
+ for each row (ie. a single Feature). The FID is completely different from the id attribute - every
+@@ -118,7 +118,7 @@
+   Same as the name of the .properties file (ie. "roads" for roads.properties)
+ 
+ DataStore
+-  Access all the FeatureTypes (.property files) in a directory
++  Access all the FeatureTypes (.properties files) in a directory
+ 
+ Schema
+   Names of the columns and their types
+@@ -185,7 +185,7 @@
+    
+       DataUtilities is a class especially designed for this tutorial.
+       
+-      Those experienced with GeoTools may find these humble begining amusing
++      Those experienced with GeoTools may find these humble beginnings amusing
+       given how widely used DataUtilities is today.
+ 
+    Add getSchema( typeName ):
+@@ -207,7 +207,7 @@
+    
+    FeatureReader is the low-level API provided by DataStore for accessing Feature content.
+    
+-   The method AbstractDataStore.getFeatureReader( typeName ) is required used by the superclass
++   The method AbstractDataStore.getFeatureReader( typeName ) is required by the superclass
+    AbstractDataStore and is not part of the public DataStore API accessed by user. We will cover
+    how this method is used at the end of this tutorial where we discuss optimisation.
+ 
+@@ -267,7 +267,7 @@
+ ^^^^^^^^^^^^^^^^^^^^^^^
+ 
+ The AttributeReader interface is used to provide access to individual attributes from a
+-storage medium. It is hoped that high level operations (such as Joining) coudl make
++storage medium. It is hoped that high level operations (such as Joining) could make
+ use of this capability.
+ 
+ .. note:: 
+@@ -296,9 +296,9 @@
+       :language: java
+       :end-before: // class definition end
+ 
+-   Our constructor acquires the type information from the header, using a function form DataUtilities
++   Our constructor acquires the type information from the header, using a function from DataUtilities
+    to interpret the type specification. The filename is used as the name for the resulting
+-   FeatureType, and the directory name is used for the name space.
++   FeatureType, and the directory name is used for the namespace.
+    
+    The **BufferedReader**, reader, is opened and it will be this class that allows us to stream over
+    contents as a series of Features.
+@@ -348,7 +348,7 @@
+ DataStoreFactory
+ ^^^^^^^^^^^^^^^^
+ 
+-To make your DataStore truly independent and plugable, your must create a class implementing the
++To make your DataStore truly independent and plugable, you must create a class implementing the
+ **DataStoreFactorySpi** interface.
+ 
+ This allows the Service Provider Interface mechanism to dynamically plug in your new DataStore with
+@@ -363,7 +363,7 @@
+    
+    * The "no argument" consturctor is required as it will be used by the
+      Factory Service Provider (SPI) plug-in system.
+-   * getImplemetnationHints() is used to report on any "Hints" used for configuration
++   * getImplementationHints() is used to report on any "Hints" used for configuration
+      by our factory. As an example our Factory could allow people to specify a specific
+      FeatureFactory to use when creating a feature for each line.
+      
+@@ -402,7 +402,7 @@
+    
+    .. note::
+       
+-      The driectoryLookup has gotten considerably more complicated since this tutorial
++      The directoryLookup has gotten considerably more complicated since this tutorial
+       was first written. One of the benifits of PropertyDataStore being used
+       in real world situtations.
+    
+@@ -411,7 +411,7 @@
+    * create a Datastore for an **existing** property file; and
+    * create a datastore for a **new** property file
+      
+-     Since initially our DataStore is read-only we will just thow an UnsupportedOperationException
++     Since initially our DataStore is read-only we will just throw an UnsupportedOperationException
+      at this time.
+ 
+    Here is the code that finally calls our PropertyDataStore constructor:
+@@ -430,7 +430,7 @@
+ 
+    This file requires the filename of the factory that implements the DataStoreSpi interface.
+ 
+-   Fille in the following content for your **org.geotools.data.DataStoreFactorySpi** file::
++   Fill in the following content for your **org.geotools.data.DataStoreFactorySpi** file::
+     
+        org.geotools.data.tutorial.PropertiesDataStoreFactory
+    
+@@ -497,7 +497,7 @@
+   The method getFeatureReader( query, transaction ) allows access to the contents
+   of our DataStore.
+   
+-  The method signature may be more complicated than expected, we certaintly did not tal
++  The method signature may be more complicated than expected, we certainly did not talk
+   about Query or Transactions when we implemented our PropertyDataStore. This is something
+   that AbstractDataStore is handling for you and will be discussed later in the section
+   on optimisation.
+@@ -528,14 +528,14 @@
+     
+     User-supplied name used to describe a query in user's terms in any generated error messages.
+   
+-  * Query.getCoordianteSystem()
++  * Query.getCoordinateSystem()
+     
+     Used to force the use of a user-supplied CoordinateSystem (rather than the one supplied
+     by the DataStore). This capability will allow client code to use our DataStore with a
+     CoordinateSystem of their choice. The coordinates returned by the DataStore will not be
+     modified in any way.
+   
+-  * Query.getCoordianteSystemReproject()
++  * Query.getCoordinateSystemReproject()
+     
+     Used to reproject the Geometries provided by a DataStore from their original value (or
+     the one provided by Query.getCoordinateSystem) into a different coordinate system.
+@@ -625,7 +625,7 @@
+ * FeatureSource.getCount( query ) - request number of features specified by query
+ 
+ FeatureSource also defines an event notification system and provides access to the DataStore
+-which created it. You may have more then one FeatureSource operating against a file at any time.
++which created it. You may have more than one FeatureSource operating against a file at any time.
+ 
+ FeatureCollection
+ ^^^^^^^^^^^^^^^^^
+@@ -721,8 +721,8 @@
+ 
+ Change notification for users is made available through several FeatureSource methods:
+ 
+-* FeatureSoruce.addFeatureListener( featureListener )
+-* FeatureSoruce.removeFeatureListener( featureListener )
++* FeatureSource.addFeatureListener( featureListener )
++* FeatureSource.removeFeatureListener( featureListener )
+ 
+ To trigger the featureListeners we will make use of several helper methods in AbstractDataSource:
+ 
+@@ -867,7 +867,7 @@
+       :end-before: // remove end
+ 
+   To implement remove, we simply won't write out the original Feature.
+-  Most of the method is devoted gathering up the information needed to issue
++  Most of the method is devoted to gathering up the information needed to issue
+   a feature removed event.
+ 
+ 8. Add close() Implementation:
+@@ -992,12 +992,12 @@
+ 
+ FeatureStore defines:
+     
+-* Featurestore.addFeatures( featureReader)
+-* Featurestore.removeFeatures( filter )
+-* Featurestore.modifyFeatures( type, value, filter )
+-* Featurestore.modifyFeatures( types, values, filter )
+-* Featurestore.setFeatures( featureReader )
+-* Featurestore.setTransaction( transaction )
++* FeatureStore.addFeatures( featureReader)
++* FeatureStore.removeFeatures( filter )
++* FeatureStore.modifyFeatures( type, value, filter )
++* FeatureStore.modifyFeatures( types, values, filter )
++* FeatureStore.setFeatures( featureReader )
++* FeatureStore.setTransaction( transaction )
+ 
+ Once again, many DataStores are able to provide optimised implementations of these operations.
+ 
+@@ -1017,7 +1017,7 @@
+ 
+ .. note::
+    
+-   Pleaes review the above code exmple carefuly as it is the best explaintaion
++   Please review the above code example carefully as it is the best explanation
+    of transaction independence you will find.
+    
+    Specifically:
+@@ -1032,8 +1032,8 @@
+      
+      * If you configure two FeatureStores with the same transaction they will act the same.
+      * Transaction is important and represents what you are working on
+-       FeatureStore is not as important and is just use to make working with your data
+-       easier (or more efficient) then direct use of FeatureWriter.
++       FeatureStore is not as important and is just used to make working with your data
++       easier (or more efficient) than direct use of FeatureWriter.
+   
+ FeatureLocking
+ ''''''''''''''
+@@ -1114,7 +1114,7 @@
+ Part 6 - Optimisation of PropertyDataStore
+ ------------------------------------------
+ 
+-In this part we will explore several optimisations techniques using our PropertyDataStore.
++In this part we will explore several optimisation techniques using our PropertyDataStore.
+ 
+ Low-Level Optimisation
+ ^^^^^^^^^^^^^^^^^^^^^^
+@@ -1425,7 +1425,7 @@
+    
+    FeatureEvent provides a bounding box which we can use to selectively invalidate cacheBounds
+    
+-2. Yes it is a little akward not being able to smoothly extend PropertyFeatureSource (this
++2. Yes it is a little awkward not being able to smoothly extend PropertyFeatureSource (this
+    is one of the fixes we have addressed for ContentDataStore covered in the next tutorial).
+ 
+    .. literalinclude:: /../../modules/plugin/property/src/main/java/org/geotools/data/property/PropertyFeatureStore.java
+@@ -1476,7 +1476,7 @@
+ The suggestion was to use the Properties class, which we could not do and still retain our idea
+ of streaming the content from disk.
+   
+-The following change was made To PropertyAttributeReader allow for multi-line enteries:
++The following change was made To PropertyAttributeReader allow for multi-line entries:
+ 
+    .. literalinclude:: /../../modules/plugin/property/src/main/java/org/geotools/data/property/PropertyAttributeReader.java
+       :language: java

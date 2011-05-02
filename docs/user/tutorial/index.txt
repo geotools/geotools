@@ -9,8 +9,7 @@ to GIS workshop making use of examples from GeoTools and other Java libraries.
 .. toctree::
    :maxdepth: 1
    
-   quickstart/eclipse
-   quickstart/netbeans
+   quickstart/index
    feature/csv2shp
    geometry/geometrycrs
    filter/query

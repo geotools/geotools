@@ -11,6 +11,7 @@
     <url>http://maven.apache.org</url>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- use the latest snapshot -->
         <geotools.version>8-SNAPSHOT</geotools.version>
     </properties>
     <dependencies>

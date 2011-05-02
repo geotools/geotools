@@ -274,7 +274,7 @@ The good news is that the `Maven shade plugin <http://maven.apache.org/plugins/m
 used instead and it will correctly merge the META-INF/services files from each of the GeoTools modules used by your
 application.
 
-The POM below will create an executable jar for the GeoTools Quickstart module which includes all of the required
+The POM below will create an executable jar for the GeoTools :doc:`/tutorial/quickstart/index` module which includes all of the required
 GeoTools modules and their dependencies.
 
 .. sourcecode:: xml

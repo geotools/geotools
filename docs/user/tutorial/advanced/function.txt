@@ -34,7 +34,7 @@ GeoTools is extended using the **Factory** and **FactoryRegistry** classes. The 
 Pattern gives us a clue about what is about to happen:
 
 FACTORY PATTERN
-   a Factory is a object that creates other objects.
+   a Factory is an object that creates other objects.
 
 Here is where the fun begins ...
 
@@ -153,12 +153,12 @@ Direct use of FactoryRegistry
       
       Iterator iterator = registry.getProviders(FunctionFactory.class);
    
-2. Internally The **FactoryRegistry** will Look up key in System properties.
+2. Internally The **FactoryRegistry** will look up key in System properties.
    
    * If key doesn't exist or a SecurityException is thrown, fall through.
    *  Otherwise attempt to instantiate the given class.
    
-3. Then FactoryRegisery will search the resource paths for the key in META-INF/services.
+3. Then FactoryRegistry will search the resource paths for the key in META-INF/services.
    
    * If the resource is found, the file is read and the class is instantiated.
    * If the resource does not exist, fall through.
@@ -168,9 +168,9 @@ Direct use of FactoryRegistry
 
 .. note::
    
-   GeoTools already has a FactoryRegistery for handling FunctionFactory, as part of
+   GeoTools already has a FactoryRegistry for handling FunctionFactory, as part of
    CommonFactory finder. There is however nothing stopping you from using your
-   own FactoryRegistery (other than wasing resources).
+   own FactoryRegistry (other than wasing resources).
 
 Defining your own FactoryFinder
 '''''''''''''''''''''''''''''''
@@ -182,12 +182,12 @@ direct use up in a FactoryFinder, which also provide type-safety.
    
    Finders are named after the interface they are responsible for; thus FunctionFinder.
 
-Here is an use of FactoryRegistery as part of FactoryFinder:
+Here is an use of FactoryRegistry as part of FactoryFinder:
 
-1. Create the FactoryRegistery in a lazy fashion, listing the interfaces you are interested
+1. Create the FactoryRegistry in a lazy fashion, listing the interfaces you are interested
    in obtaining (known as categories).
 
-2. GeoTools traditionally holds a FactoryRegistery in a "Finder" class:
+2. GeoTools traditionally holds a FactoryRegistry in a "Finder" class:
    
    * Create ExampleFinder
 
@@ -202,19 +202,19 @@ Tips for implementing your own FactoryFinder:
 
 * The code example makes use of LazySet, this keeps us from having to check the classpath each time.
 * The utility method addDefaultHints is used to apply the global GeoTools configuration to the hints
-  supplied by the user
+  supplied by the user.
 * As shown above you can add some helper methods for client code. Often this is used to perform
   searches based on some criteria, or used to locate the "best" factory for a given task.
 
 FactoryIteratorProviders
 ''''''''''''''''''''''''
 
-FactoryIteratorProviders is used to supporting Other Plugin mechanisms.
+FactoryIteratorProviders is used to support other Plugin mechanisms.
 
 By default the "Factory SPI" mechanism is used to locate the Factories provided by a
 FactoryFinder (and FactoryRegistry). However in order to support other plugin mechanisms
 the Factories has a method addFactoryIteratorProvider(...). This method allows a developer
-to add a iterator that knows how to process another extension mechanism. For example, In
+to add an iterator that knows how to process another extension mechanism. For example, in
 eclipse one would add a FactoryIteratorProvider that returns a provider that knows how to
 process eclipse extension points and can create factories from the eclipse extensions.
 
@@ -243,7 +243,7 @@ implementation efforts from. When making your own Factories this is a good examp
    
    Note we have cut down on the number of methods the developer needs to fill in, and we have
    provided a helper method to avoid some of the "boiler plate" cut and paste coding associated
-   with evaulating a parameter:
+   with evaluating a parameter:
    
    .. literalinclude:: /../src/main/java/org/geotools/tutorial/function/ExampleFunctionFactory2.java
       :language: java

@@ -6,7 +6,8 @@
             http://www.geotools.org/                                            
                                                                                 
         Version: $Id: pom.xml 34196 2009-10-22 13:32:49Z groldan $              
-     ======================================================================= --><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                 http://maven.apache.org/maven-v4_0_0.xsd">
+     ======================================================================= -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -226,7 +227,7 @@
                 <ant antfile="build.xml" dir="${basedir}" target="build">
                   <property name="build.directory" value="${build.directory}"/>
                   <!-- may be ${project.version} when tagged -->
-                  <property name="project.version" value="8.0-M1"/>
+                  <property name="project.version" value="8.0-M0"/>
                 </ant>
               </tasks>
             </configuration>

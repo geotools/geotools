@@ -26,6 +26,8 @@ import java.awt.image.SampleModel;
 import java.awt.image.WritableRaster;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.media.jai.BorderExtender;
 import javax.media.jai.BorderExtenderConstant;
@@ -55,6 +57,8 @@ import com.sun.media.jai.util.ImageUtil;
 @SuppressWarnings("unchecked")
 public final class ArtifactsFilterOpImage extends PointOpImage {
 
+    private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(ArtifactsFilterOpImage.class);
+    
     class RoiAccessor{
         RandomIter iterator;
         ROI roi;
@@ -86,6 +90,8 @@ public final class ArtifactsFilterOpImage extends PointOpImage {
         
         public void dispose(){
             image.dispose();
+            iterator.done();
+            roi = null;
         }
       
     }
@@ -200,9 +206,15 @@ public final class ArtifactsFilterOpImage extends PointOpImage {
             sourceExtensionConstant = -Double.MAX_VALUE;
         }
         this.sourceExtender = sourceExtensionConstant == 0.0 ? BorderExtender
-                .createInstance(BorderExtender.BORDER_ZERO)
-                : new BorderExtenderConstant(new double[] { sourceExtensionConstant });
+                .createInstance(BorderExtender.BORDER_ZERO) : new BorderExtenderConstant(
+                new double[] { sourceExtensionConstant });
 
+        roiAccessor = buildRoiAccessor(sourceROI);
+        thresholdRoiAccessor = buildRoiAccessor(thresholdRoi);
+        zeroRoiAccessor = buildRoiAccessor(zeroRoi);
+    }
+
+    private RoiAccessor buildRoiAccessor(ROI sourceROI) {
         if (sourceROI != null) {
             final PlanarImage roiImage = sourceROI.getAsImage();
             final RandomIter roiIter = RandomIterFactory.create(roiImage, null);
@@ -210,28 +222,9 @@ public final class ArtifactsFilterOpImage extends PointOpImage {
             final int minRoiY = roiImage.getMinY();
             final int roiW = roiImage.getWidth();
             final int roiH = roiImage.getHeight();
-            roiAccessor = new RoiAccessor(roiIter, sourceROI, roiImage, minRoiX, minRoiY, roiW, roiH);
+            return new RoiAccessor(roiIter, sourceROI, roiImage, minRoiX, minRoiY, roiW, roiH);
         }
-
-        if (thresholdRoi != null){
-            final PlanarImage thresholdRoiImage = thresholdRoi.getAsImage();
-            final RandomIter thresholdRoiIter = RandomIterFactory.create(thresholdRoiImage, null);
-            final int minRoiThX = thresholdRoiImage.getMinX();
-            final int minRoiThY= thresholdRoiImage.getMinY();
-            final int roiThW = thresholdRoiImage.getWidth();
-            final int roiThH = thresholdRoiImage.getHeight();
-            thresholdRoiAccessor = new RoiAccessor(thresholdRoiIter, thresholdRoi, thresholdRoiImage, minRoiThX, minRoiThY, roiThW, roiThH);
-        }
-        
-        if (zeroRoi != null){
-            final PlanarImage zeroRoiImage = zeroRoi.getAsImage();
-            final RandomIter zeroRoiIter = RandomIterFactory.create(zeroRoiImage, null);
-            final int minX = zeroRoiImage.getMinX();
-            final int minY= zeroRoiImage.getMinY();
-            final int w = zeroRoiImage.getWidth();
-            final int h = zeroRoiImage.getHeight();
-            zeroRoiAccessor = new RoiAccessor(zeroRoiIter, zeroRoi, zeroRoiImage, minX, minY, w, h);            
-        }
+        return null;
     }
 
     @Override
@@ -276,7 +269,6 @@ public final class ArtifactsFilterOpImage extends PointOpImage {
         return dest;
     }
 
-
     private void computeRect(final Raster sources, final WritableRaster destinationRaster, final Rectangle destRect) {
         // Clear the background and return if no sources.
         if (sources == null) {
@@ -309,7 +301,7 @@ public final class ArtifactsFilterOpImage extends PointOpImage {
      * Compute operation for the provided dest.
      * @param dest
      */
-    private void computeRect(RasterAccessor dest) {
+    private synchronized void computeRect(RasterAccessor dest) {
         int dwidth = dest.getWidth();
         int dheight = dest.getHeight();
         int dnumBands = dest.getNumBands();
@@ -501,50 +493,14 @@ public final class ArtifactsFilterOpImage extends PointOpImage {
         }
     }
     
-//    private byte computeValue2(int[] sourceValue, int valueCount) {
-//        if (valueCount  == 1){
-//            if (sourceValue[0] >= threshold){
-//                return (byte) (sourceValue[0]/2);
-//            }
-//            return (byte) threshold;
-//        } else {
-//            int values = 0;
-//            int sum = 0;
-//            for (int i=0;i<valueCount;i++){
-//                if (sourceValue[i] >= threshold){
-//                    sum += sourceValue[i];
-//                    values++;
-//                }
-//            }
-//            return (byte)(values > 0? (sum/values): 0);
-//        }
-//    }
-//    private static boolean isBorder1(RoiAccessor roi, int dstX, int dstY) {
-//        int leftX = dstX - 1;
-//        int lowerY = dstY - 1;
-//        int rightX = dstX + 1;
-//        int upperY = dstY + 1;
-//        
-//        if (!contains(roi, leftX, lowerY))
-//            return true;
-//        if (!contains(roi, leftX, dstY))
-//            return true;
-//        if (!contains(roi, leftX, upperY))
-//            return true;
-//        if (!contains(roi, dstX, lowerY))
-//            return true;
-//        if (!contains(roi, dstX, upperY))
-//            return true;
-//        if (!contains(roi, rightX, lowerY))
-//            return true;
-//        if (!contains(roi, rightX, dstY))
-//            return true;
-//        if (!contains(roi, rightX, upperY))
-//            return true;
-//        return false;
-//    }
-    
-    private static boolean isBorder(RoiAccessor roi, int dstX, int dstY) {
+    /**
+     * 
+     * @param roi
+     * @param dstX
+     * @param dstY
+     * @return
+     */
+    private boolean isBorder(RoiAccessor roi, int dstX, int dstY) {
         int leftX = dstX - 1;
         int lowerY = dstY - 1;
         int rightX = dstX + 1;
@@ -623,15 +579,19 @@ public final class ArtifactsFilterOpImage extends PointOpImage {
         super.dispose();
         if (roiAccessor != null){
             roiAccessor.dispose();
+            roiAccessor = null;
         }
         
         if (thresholdRoiAccessor != null){
             thresholdRoiAccessor.dispose();
+            thresholdRoiAccessor = null;
         }
 
         if (zeroRoiAccessor != null){
             zeroRoiAccessor.dispose();
+            zeroRoiAccessor = null;
         }
+        iter.done();
 
     }
 }

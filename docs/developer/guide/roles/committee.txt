@@ -18,7 +18,6 @@ Current PMC members:
 * Ian Turton
 * Justin Deoliveira
 * Jody Garnett (current OSGeo representative)
-* Michael Bedward
 * Simone Giannecchini
 
 Our thanks to previous PMC members:

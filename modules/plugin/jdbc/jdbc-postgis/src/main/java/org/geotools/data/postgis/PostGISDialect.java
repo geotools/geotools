@@ -137,16 +137,12 @@ public class PostGISDialect extends BasicSQLDialect {
     }
 
     ThreadLocal<WKBAttributeIO> wkbReader = new ThreadLocal<WKBAttributeIO>();
-//    WKBAttributeIO reader;
+
     @Override
     public Geometry decodeGeometryValue(GeometryDescriptor descriptor,
             ResultSet rs, String column, GeometryFactory factory, Connection cx)
             throws IOException, SQLException {
-        WKBAttributeIO reader = wkbReader.get();
-        if(reader == null) {
-            reader = new WKBAttributeIO(factory);
-            wkbReader.set(reader);
-        }
+        WKBAttributeIO reader = getWKBReader(factory);
         
         return (Geometry) reader.read(rs, column);
     }
@@ -154,13 +150,20 @@ public class PostGISDialect extends BasicSQLDialect {
     public Geometry decodeGeometryValue(GeometryDescriptor descriptor,
             ResultSet rs, int column, GeometryFactory factory, Connection cx)
             throws IOException, SQLException {
+        WKBAttributeIO reader = getWKBReader(factory);
+        
+        return (Geometry) reader.read(rs, column);
+    }
+
+    private WKBAttributeIO getWKBReader(GeometryFactory factory) {
         WKBAttributeIO reader = wkbReader.get();
         if(reader == null) {
             reader = new WKBAttributeIO(factory);
             wkbReader.set(reader);
+        }  else {
+            reader.setGeometryFactory(factory);
         }
-        
-        return (Geometry) reader.read(rs, column);
+        return reader;
     }
 
     @Override

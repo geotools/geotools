@@ -49,6 +49,9 @@ import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 import org.opengis.filter.spatial.BBOX;
 
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
+
 
 
 public abstract class JDBCFeatureSourceTest extends JDBCTestSupport {
@@ -435,7 +438,6 @@ public abstract class JDBCFeatureSourceTest extends JDBCTestSupport {
         assertEquals(1, featureSource.getCount(new Query(null, caseInsensitiveLike2)));
     }
     
-    
     public void testConversionFilter() throws Exception {
         FilterFactory ff = dataStore.getFilterFactory();
         PropertyIsEqualTo f = ff.equals(ff.property(aname("doubleProperty")), 
@@ -451,4 +453,40 @@ public abstract class JDBCFeatureSourceTest extends JDBCTestSupport {
         assertEquals(featureSource.getCount(Query.ALL)-1, featureSource.getCount(new Query(null, f)));
     }
     
+    public void testGeometryFactoryHint() throws Exception {
+        FilterFactory ff = dataStore.getFilterFactory();
+        PropertyIsEqualTo filter = ff.equals(ff.property(aname("stringProperty")), ff.literal("one"));
+         
+        Query query = new Query();
+        query.setFilter(filter);
+
+        // check we're respecting the geometry factory hint
+        GeometryFactory gf1 = new GeometryFactory();
+        query.setHints(new Hints(Hints.JTS_GEOMETRY_FACTORY, gf1));
+        SimpleFeature f1 = getFirstFeature(featureSource.getFeatures(query));
+        assertSame(gf1, ((Geometry) f1.getDefaultGeometry()).getFactory());
+        
+        // check we're respecting the geometry factory when changing it
+        GeometryFactory gf2 = new GeometryFactory();
+        query.setHints(new Hints(Hints.JTS_GEOMETRY_FACTORY, gf2));
+        SimpleFeature f2 = getFirstFeature(featureSource.getFeatures(query));
+        assertSame(gf2, ((Geometry) f2.getDefaultGeometry()).getFactory());
+
+    }
+    
+    SimpleFeature getFirstFeature(SimpleFeatureCollection fc) {
+        SimpleFeatureIterator fi = null;
+        try {
+            fi = fc.features();
+            if(!fi.hasNext()) {
+                return null;
+            } else {
+                return fi.next();
+            }
+        } finally {
+            if(fi != null) {
+                fi.close();
+            }
+        }
+    }
 }

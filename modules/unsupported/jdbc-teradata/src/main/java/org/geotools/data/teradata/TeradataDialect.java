@@ -20,6 +20,7 @@ import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.geotools.filter.function.EnvFunction;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.NullPrimaryKey;
@@ -127,6 +128,38 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
     
     public boolean isEstimatedBounds() {
         return estimatedBounds;
+    }
+    
+    @Override
+    public void initializeConnection(Connection cx) throws SQLException {
+        //TODO: make this a datastore connection paramater
+        
+        //JD: for some reason this does not work if we use a prepared statement
+        String sql = String.format("SET QUERY_BAND='%s' FOR SESSION", QueryBand.APPLICATION + "=GeoTools;");
+        if (LOGGER.isLoggable(Level.FINE)) {
+            LOGGER.fine(sql);
+        }
+        
+        Statement st = cx.createStatement();
+        try {
+            st.execute(sql);
+        }
+        finally {
+            st.close();
+        }
+//        String sql = "SET QUERY_BAND=? FOR SESSION";
+//        String qb = QueryBand.APPLICATION + "=GeoTools;";
+//        if (LOGGER.isLoggable(Level.FINE)) {
+//            LOGGER.fine(String.format("%s;1=%s", sql, qb));
+//        }
+//        PreparedStatement ps = cx.prepareStatement(sql);
+//        try {
+//            ps.setString(1, qb);
+//            ps.execute();
+//        }
+//        finally {
+//            dataStore.closeSafe(ps);
+//        }
     }
     
     @Override
@@ -860,5 +893,45 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
     @Override
     public PreparedFilterToSQL createPreparedFilterToSQL() {
         return new TeradataFilterToSQL(this);
+    }
+    
+    @Override
+    public void onSelect(PreparedStatement select, Connection cx) throws SQLException {
+        setQueryBand(cx, "SELECT");
+    }
+    @Override
+    public void onDelete(PreparedStatement delete, Connection cx) throws SQLException {
+        setQueryBand(cx, "DELETE");
+    }
+    @Override
+    public void onInsert(PreparedStatement insert, Connection cx) throws SQLException {
+        setQueryBand(cx, "INSERT");
+    }
+    @Override
+    public void onUpdate(PreparedStatement update, Connection cx) throws SQLException {
+        setQueryBand(cx, "UPDATE");
+    }
+    
+    void setQueryBand(Connection cx, String process) throws SQLException {
+        String sql = "SET QUERY_BAND=? FOR TRANSACTION";
+        
+        StringBuffer qb = new StringBuffer();
+        for (Map.Entry<String, String> e : QueryBand.local().entrySet()) {
+            qb.append(e.getKey()).append("=").append(e.getValue()).append(";");
+        }
+        qb.append(QueryBand.PROCESS).append("=").append(process).append(";");
+
+        if (LOGGER.isLoggable(Level.FINE)) {
+            LOGGER.fine(String.format("%s;1=%s", sql, qb.toString()));
+        }
+        
+        PreparedStatement ps = cx.prepareStatement(sql);
+        try {
+            ps.setString(1, qb.toString());
+            ps.execute();
+        }
+        finally {
+            dataStore.closeSafe(ps);
+        }
     }
 }

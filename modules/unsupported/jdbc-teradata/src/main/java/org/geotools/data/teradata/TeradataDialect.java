@@ -904,19 +904,23 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
     }
     
     @Override
-    public void onSelect(PreparedStatement select, Connection cx) throws SQLException {
+    public void onSelect(PreparedStatement select, Connection cx, SimpleFeatureType featureType) 
+        throws SQLException {
         setQueryBand(cx, "SELECT");
     }
     @Override
-    public void onDelete(PreparedStatement delete, Connection cx) throws SQLException {
+    public void onDelete(PreparedStatement delete, Connection cx, SimpleFeatureType featureType) 
+        throws SQLException {
         setQueryBand(cx, "DELETE");
     }
     @Override
-    public void onInsert(PreparedStatement insert, Connection cx) throws SQLException {
+    public void onInsert(PreparedStatement insert, Connection cx, SimpleFeatureType featureType) 
+        throws SQLException {
         setQueryBand(cx, "INSERT");
     }
     @Override
-    public void onUpdate(PreparedStatement update, Connection cx) throws SQLException {
+    public void onUpdate(PreparedStatement update, Connection cx, SimpleFeatureType featureType) 
+        throws SQLException {
         setQueryBand(cx, "UPDATE");
     }
     

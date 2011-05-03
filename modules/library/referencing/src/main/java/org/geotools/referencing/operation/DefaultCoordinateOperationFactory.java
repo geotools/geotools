@@ -204,6 +204,23 @@ public class DefaultCoordinateOperationFactory extends AbstractCoordinateOperati
                 return candidate;
             }
         }
+        
+        /////////////////////////////////////////
+        ////                                 ////
+        ////     Generic  -->  various CS    ////
+        ////     Various CS --> Generic      ////
+        ////                                 ////
+        /////////////////////////////////////////
+        if (isWildcard(sourceCRS) || isWildcard(targetCRS))
+        {
+            final int dimSource = getDimension(sourceCRS);
+            final int dimTarget = getDimension(targetCRS);
+            if (dimTarget == dimSource) {
+                final Matrix matrix = MatrixFactory.create(dimTarget+1, dimSource+1);
+                return createFromAffineTransform(IDENTITY, sourceCRS, targetCRS, matrix);
+            }
+        }
+        
         /*
          * Before to process, performs a special check for CompoundCRS where the target contains
          * every elements included in the source.  CompoundCRS are usually verified last, but in
@@ -367,25 +384,16 @@ public class DefaultCoordinateOperationFactory extends AbstractCoordinateOperati
                 return createOperationStep(source, target);
             }
         }
-        /////////////////////////////////////////
-        ////                                 ////
-        ////     Generic  -->  various CS    ////
-        ////     Various CS --> Generic      ////
-        ////                                 ////
-        /////////////////////////////////////////
-        if (sourceCRS == DefaultEngineeringCRS.GENERIC_2D ||
-            targetCRS == DefaultEngineeringCRS.GENERIC_2D ||
-            sourceCRS == DefaultEngineeringCRS.GENERIC_3D ||
-            targetCRS == DefaultEngineeringCRS.GENERIC_3D)
-        {
-            final int dimSource = getDimension(sourceCRS);
-            final int dimTarget = getDimension(targetCRS);
-            if (dimTarget == dimSource) {
-                final Matrix matrix = MatrixFactory.create(dimTarget+1, dimSource+1);
-                return createFromAffineTransform(IDENTITY, sourceCRS, targetCRS, matrix);
-            }
-        }
         throw new OperationNotFoundException(getErrorMessage(sourceCRS, targetCRS));
+    }
+
+    /**
+     * Returns true if the the CRS is a {@link DefaultEngineeringCRS} wildcard one (like
+     * {@link DefaultEngineeringCRS#GENERIC_2D})
+     */
+    boolean isWildcard(final CoordinateReferenceSystem sourceCRS) {
+        return sourceCRS instanceof DefaultEngineeringCRS
+                && ((DefaultEngineeringCRS) sourceCRS).isWildcard();
     }
 
     /**

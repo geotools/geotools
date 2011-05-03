@@ -68,37 +68,12 @@ public class DefaultEngineeringCRS extends AbstractSingleCRS implements Engineer
      * Serial number for interoperability with different versions.
      */
     private static final long serialVersionUID = 6695541732063382701L;
-
+    
     /**
-     * A cartesian local coordinate system.
+     * Marks the CRS as a wildcard one. Wildcard CRS will transform to any other CRS with the
+     * identity transform
      */
-    private static final class Cartesian extends DefaultEngineeringCRS {
-        /** Serial number for interoperability with different versions. */
-        private static final long serialVersionUID = -1773381554353809683L;
-
-        /** Constructs a coordinate system with the given name. */
-        public Cartesian(final int key, final CoordinateSystem cs) {
-            super(name(key), DefaultEngineeringDatum.UNKNOW, cs);
-        }
-
-        /**
-         * Compares the specified object to this CRS for equality. This method is overridden
-         * because, otherwise, {@code CARTESIAN_xD} and {@code GENERIC_xD} would be considered
-         * equals when metadata are ignored.
-         */
-        @Override
-        public boolean equals(final AbstractIdentifiedObject object, final boolean compareMetadata) {
-            if (super.equals(object, compareMetadata)) {
-                if (compareMetadata) {
-                    // No need to performs the check below if metadata were already compared.
-                    return true;
-                }
-                final Cartesian that = (Cartesian) object;
-                return Utilities.equals(this.getName().getCode(), that.getName().getCode());
-            }
-            return false;
-        }
-    }
+    protected boolean wildcard;
 
     /**
      * A two-dimensional cartesian coordinate reference system with
@@ -109,7 +84,7 @@ public class DefaultEngineeringCRS extends AbstractSingleCRS implements Engineer
      * {@linkplain DefaultGeographicCRS geographic coordinate reference system} for example).
      */
     public static final DefaultEngineeringCRS CARTESIAN_2D =
-            new Cartesian(VocabularyKeys.CARTESIAN_2D, DefaultCartesianCS.GENERIC_2D);
+            new DefaultEngineeringCRS(VocabularyKeys.CARTESIAN_2D, DefaultCartesianCS.GENERIC_2D, false);
 
     /**
      * A three-dimensional cartesian coordinate reference system with
@@ -121,7 +96,7 @@ public class DefaultEngineeringCRS extends AbstractSingleCRS implements Engineer
      * {@linkplain DefaultGeographicCRS geographic coordinate reference system} for example).
      */
     public static final DefaultEngineeringCRS CARTESIAN_3D =
-            new Cartesian(VocabularyKeys.CARTESIAN_3D, DefaultCartesianCS.GENERIC_3D);
+            new DefaultEngineeringCRS(VocabularyKeys.CARTESIAN_3D, DefaultCartesianCS.GENERIC_3D, false);
 
     /**
      * A two-dimensional wildcard coordinate system with
@@ -136,7 +111,7 @@ public class DefaultEngineeringCRS extends AbstractSingleCRS implements Engineer
      * transform. This CRS is usefull as a kind of wildcard when no CRS were explicitly specified.
      */
     public static final DefaultEngineeringCRS GENERIC_2D =
-            new Cartesian(VocabularyKeys.GENERIC_CARTESIAN_2D, DefaultCartesianCS.GENERIC_2D);
+            new DefaultEngineeringCRS(VocabularyKeys.GENERIC_CARTESIAN_2D, DefaultCartesianCS.GENERIC_2D, true);
 
     /**
      * A three-dimensional wildcard coordinate system with
@@ -152,7 +127,13 @@ public class DefaultEngineeringCRS extends AbstractSingleCRS implements Engineer
      * transform. This CRS is usefull as a kind of wildcard when no CRS were explicitly specified.
      */
     public static final DefaultEngineeringCRS GENERIC_3D =
-            new Cartesian(VocabularyKeys.GENERIC_CARTESIAN_3D, DefaultCartesianCS.GENERIC_3D);
+            new DefaultEngineeringCRS(VocabularyKeys.GENERIC_CARTESIAN_3D, DefaultCartesianCS.GENERIC_3D, true);
+    
+    
+    DefaultEngineeringCRS(final int key, final CoordinateSystem cs, boolean wildcard) {
+        this(name(key), DefaultEngineeringDatum.UNKNOW, cs);
+        this.wildcard = wildcard;
+    }
 
     /**
      * Constructs a new enginnering CRS with the same values than the specified one.
@@ -197,6 +178,24 @@ public class DefaultEngineeringCRS extends AbstractSingleCRS implements Engineer
     {
         super(properties, datum, cs);
     }
+    
+    /**
+     * Constructs an engineering CRS from a set of properties. The properties are given unchanged to
+     * the {@linkplain AbstractReferenceSystem#AbstractReferenceSystem(Map) super-class constructor}.
+     *
+     * @param properties Set of properties. Should contains at least {@code "name"}.
+     * @param datum The datum.
+     * @param cs The coordinate system.
+     * @param wildcard When true the CRS will transform to any other CRS with the identity transform
+     */
+    public DefaultEngineeringCRS(final Map<String,?> properties,
+                                 final EngineeringDatum   datum,
+                                 final CoordinateSystem      cs,
+                                 final boolean         wildcard)
+    {
+        super(properties, datum, cs);
+        this.wildcard = wildcard;
+    }
 
     /**
      * Returns the datum.
@@ -230,4 +229,33 @@ public class DefaultEngineeringCRS extends AbstractSingleCRS implements Engineer
         formatDefaultWKT(formatter);
         return "LOCAL_CS";
     }
+    
+    /**
+     * Compares the specified object to this CRS for equality. This method is overridden
+     * because, otherwise, {@code CARTESIAN_xD} and {@code GENERIC_xD} would be considered
+     * equals when metadata are ignored.
+     */
+    @Override
+    public boolean equals(final AbstractIdentifiedObject object, final boolean compareMetadata) {
+        if (super.equals(object, compareMetadata)) {
+            if (compareMetadata) {
+                // No need to performs the check below if metadata were already compared.
+                return true;
+            }
+            final DefaultEngineeringCRS that = (DefaultEngineeringCRS) object;
+            return this.wildcard == that.wildcard;
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if this is a wildcard CRS, that is, one that will transform from and to
+     * any other CRS using the identity transformation
+     * @return
+     */
+    public boolean isWildcard() {
+        return wildcard;
+    }
+    
+    
 }

@@ -282,7 +282,7 @@ public class ManyAuthoritiesFactory extends AuthorityFactoryAdapter implements C
             }
             c = code.charAt(i);
         } while (Character.isWhitespace(c));
-        return Character.isJavaIdentifierPart(c);
+        return Character.isJavaIdentifierPart(c) || c == '-';
     }
 
     /**

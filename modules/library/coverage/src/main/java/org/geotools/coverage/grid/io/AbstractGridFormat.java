@@ -28,6 +28,7 @@ import org.geotools.factory.GeoTools;
 import org.geotools.factory.Hints;
 import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
+import org.geotools.referencing.factory.epsg.CartesianAuthorityFactory;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverageReader;
 import org.opengis.coverage.grid.GridCoverageWriter;
@@ -92,7 +93,7 @@ public abstract class AbstractGridFormat implements Format {
 	/**
 	 * Default {@link CoordinateReferenceSystem} used by all the plugins.
 	 */
-	private static CoordinateReferenceSystem crs=DefaultEngineeringCRS.GENERIC_2D;
+	private static CoordinateReferenceSystem crs = CartesianAuthorityFactory.GENERIC_2D;
 
 	/**
 	 * This {@link GeneralParameterValue} cacn be provided to the

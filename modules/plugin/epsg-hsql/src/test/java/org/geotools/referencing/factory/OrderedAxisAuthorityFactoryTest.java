@@ -18,6 +18,7 @@ package org.geotools.referencing.factory;
 
 // J2SE dependencies
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 
 // JUnit dependencies
@@ -46,6 +47,7 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.LinearTransform;
 import org.geotools.referencing.operation.matrix.GeneralMatrix;
 import org.geotools.referencing.cs.DefaultCoordinateSystemAxis;
+import org.geotools.referencing.factory.epsg.CartesianAuthorityFactory;
 import org.geotools.referencing.factory.epsg.LongitudeFirstFactory;
 
 
@@ -100,6 +102,19 @@ public class OrderedAxisAuthorityFactoryTest extends TestCase {
      */
     public OrderedAxisAuthorityFactoryTest(final String name) {
         super(name);
+    }
+    
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        
+        // this test does not work if there is more than one EPSG factory around
+        Set<CRSAuthorityFactory> factories = ReferencingFactoryFinder.getCRSAuthorityFactories(null);
+        for (CRSAuthorityFactory factory : factories) {
+            if(factory instanceof CartesianAuthorityFactory) {
+                ReferencingFactoryFinder.removeAuthorityFactory(factory);
+            }
+        }
     }
 
     /**

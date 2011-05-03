@@ -2216,7 +2216,7 @@ public final class StreamingRenderer implements GTRenderer {
                     // //
                     final Object grid = gridPropertyName.evaluate(drawMe.content);
                     if (grid instanceof GridCoverage2D) {
-                        coverage = (GridCoverage2D) drawMe.content;
+                        coverage = (GridCoverage2D) grid;
                     } else if (grid instanceof AbstractGridCoverage2DReader) {
                         final Object params = paramsPropertyName.evaluate(drawMe.content);
                         GridGeometry2D readGG = new GridGeometry2D(new GridEnvelope2D(screenSize), mapExtent);

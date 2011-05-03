@@ -96,7 +96,7 @@ import com.vividsolutions.jts.geom.Geometry;
 public class GranuleDescriptor {
     
 	/** Logger. */
-	private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(GranuleDescriptor.class); 
+	private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(GranuleDescriptor.class);
 
     static {
         try {
@@ -682,11 +682,11 @@ public class GranuleDescriptor {
 			final double x = finalRaster2Model.getTranslateX();
                         final double y = finalRaster2Model.getTranslateY();
                         
-			if(!XAffineTransform.isIdentity(backToBaseLevelScaleTransform,10E-6))
+			if(!XAffineTransform.isIdentity(backToBaseLevelScaleTransform,Utils.AFFINE_IDENTITY_EPS))
 				finalRaster2Model.concatenate(backToBaseLevelScaleTransform);
-			if(!XAffineTransform.isIdentity(afterDecimationTranslateTranform,10E-6))
+			if(!XAffineTransform.isIdentity(afterDecimationTranslateTranform,Utils.AFFINE_IDENTITY_EPS))
 				finalRaster2Model.concatenate(afterDecimationTranslateTranform);
-			if(!XAffineTransform.isIdentity(decimationScaleTranform,10E-6))
+			if(!XAffineTransform.isIdentity(decimationScaleTranform,Utils.AFFINE_IDENTITY_EPS))
 				finalRaster2Model.concatenate(decimationScaleTranform);
 
 			// keep into account translation factors to place this tile

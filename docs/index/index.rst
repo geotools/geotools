@@ -1,38 +1,30 @@
 GeoTools Documentation
 ======================
 
-Getting Started
----------------
+Quickstart to get up and running with GeoTools in minutes:
 
-Follow the `quickstart <http://docs.geotools.org/stable/userguide/quickstart.html>`_ to get up and running with GeoTools in minutes.
-  
-Examples
---------
-
-Visit the `examples <http://docs.geotools.org/stable/userguide/examples/>`_ section for 
-tutorial notes and source code that illustrate some of the common uses of GeoTools.
-
-FAQ
----
-
-Our `faq <http://docs.geotools.org/stable/userguide/faq.html>`_ convey wisdom gleaned from the
-GeoTools user list.
+* `Eclipse Quickstart <http://docs.geotools.org/latest/userguide/tutorial/quickstart/eclipse.html>`_ ( `stable <http://docs.geotools.org/stable/tutorials/quickstart/eclipse.html>`_ )
+* `NetBeans Quickstart <http://docs.geotools.org/latest/userguide/tutorial/quickstart/netbeans.html>`_ ( `stable <http://docs.geotools.org/stable/tutorials/quickstart/netbeans.html>`_ )
 
 GeoTools API
 ------------
 
-`Browse <http://docs.geotools.org/stable/javadocs/>`_ the GeoTools API javadocs online or `download <http://sourceforge.net/projects/geotools/files/>`_ them as a zip file.
+GeoTools javadocs are `available online <http://docs.geotools.org/latest/javadocs/>`_ ( `stable <http://docs.geotools.org/stable/javadocs/>`_ )
+or `download <http://sourceforge.net/projects/geotools/files/>`_ them as a zip file.
 
-Tutorials
----------
+User Guide
+----------
 
-A number of `tutorials <http://docs.geotools.org/latest/tutorials>`_ are 
-available online. These tutorials are written against the latest/trunk.
+The GeoTools user guide is available online:
 
-Latest (Trunk)
---------------
- 
-  * `Latest User Guide <http://docs.geotools.org/latest/userguide/>`_
-  * `Latest Examples <http://docs.geotools.org/latest/userguide/examples/>`_
-  * `Latest API <http://docs.geotools.org/latest/javadocs/>`_
-  * `Latest Tutorials <http://docs.geotools.org/latest/tutorials/>`_
+`User Guide <http://docs.geotools.org/latest/userguide/>`_ ( `stable <http://docs.geotools.org/stable/userguide/>`_ )
+    Tutorials, module reference and examples illustrating the uses of GeoTools.
+    
+    The user guide is also available for `download <http://sourceforge.net/projects/geotools/files/>`_
+    as a zip file.
+       
+`Tutorials <http://docs.geotools.org/latest/tutorials/>`_ ( `stable <http://docs.geotools.org/stable/tutorials/>`_ )
+    Step by step tutorials intorducing both GeoTools and geospatial concepts for Java developers.
+
+`FAQ <http://docs.geotools.org/latest/userguide/faq.html>`_ ( `stable <http://docs.geotools.org/stable/userguide/faq.html>`_ )  
+    Convey wisdom gleaned from the GeoTools user list.

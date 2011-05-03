@@ -21,9 +21,10 @@
 				<available file="latex" filepath="${env.PATH}"/>
 			</or>
 		</condition>
+
 		<antcall target="sphinx-ignore-warnings">
-			<param name="id" value="docs"/>
-			<param name="build" value="html" />
+			<param name="id" value="index"/>
+			<param name="build" value="html"/>
 		</antcall>
 
 		<antcall target="sphinx">
@@ -33,11 +34,6 @@
 
 		<antcall target="sphinx">
 			<param name="id" value="web"/>
-			<param name="build" value="html"/>
-		</antcall>
-
-		<antcall target="sphinx">
-			<param name="id" value="index"/>
 			<param name="build" value="html"/>
 		</antcall>
 

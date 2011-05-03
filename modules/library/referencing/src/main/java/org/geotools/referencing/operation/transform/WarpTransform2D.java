@@ -370,7 +370,7 @@ public class WarpTransform2D extends AbstractMathTransform implements MathTransf
             return ((WarpTransform2D) transform).getWarp();
         }
         if (name == null) {
-            name = Vocabulary.formatInternational(VocabularyKeys.UNKNOW);
+            name = Vocabulary.formatInternational(VocabularyKeys.UNKNOWN);
         }
         return new WarpAdapter(name, transform);
     }

@@ -451,7 +451,7 @@ public abstract class MathTransformBuilder {
      */
     private EngineeringCRS createEngineeringCRS(final boolean target) throws FactoryException {
         final Map<String,Object> properties = new HashMap<String,Object>(4);
-        properties.put(CoordinateReferenceSystem.NAME_KEY, Vocabulary.format(VocabularyKeys.UNKNOW));
+        properties.put(CoordinateReferenceSystem.NAME_KEY, Vocabulary.format(VocabularyKeys.UNKNOWN));
         final GeographicExtent validArea = getValidArea(target);
         if (validArea != null) {
             final ExtentImpl extent = new ExtentImpl();

@@ -68,9 +68,9 @@ public class GeoTiffReaderTest extends Assert {
         assertTrue(format.accepts(noCrs));
         GeoTiffReader reader = (GeoTiffReader) format.getReader(noCrs);
         CoordinateReferenceSystem crs=reader.getCrs();
-        assertTrue(crs.toWKT().equalsIgnoreCase(DefaultEngineeringCRS.GENERIC_2D.toWKT()));
+        assertTrue(CRS.equalsIgnoreMetadata(crs, DefaultEngineeringCRS.GENERIC_2D));
         GridCoverage2D coverage=reader.read(null);
-        assertTrue(coverage.getCoordinateReferenceSystem().toWKT().equalsIgnoreCase(DefaultEngineeringCRS.GENERIC_2D.toWKT()));
+        assertTrue(CRS.equalsIgnoreMetadata(coverage.getCoordinateReferenceSystem(), DefaultEngineeringCRS.GENERIC_2D));
         
 
         // hint for CRS

@@ -407,7 +407,7 @@ public class ThreadedEpsgFactory extends DeferredAuthorityFactory
      */
     protected AbstractAuthorityFactory createBackingStore() throws FactoryException {
         final AbstractAuthorityFactory factory;
-        String product = '<' + Vocabulary.format(VocabularyKeys.UNKNOW) + '>';
+        String product = '<' + Vocabulary.format(VocabularyKeys.UNKNOWN) + '>';
         String url = product;
         try {
             factory = createBackingStore0();

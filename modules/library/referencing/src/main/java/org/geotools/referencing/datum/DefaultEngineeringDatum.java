@@ -46,14 +46,26 @@ public class DefaultEngineeringDatum extends AbstractDatum implements Engineerin
     private static final long serialVersionUID = 1498304918725248637L;
 
     /**
-     * An engineering datum for unknow coordinate reference system. Such CRS are usually
+     * An engineering datum for unknown coordinate reference system. Such CRS are usually
+     * assumed cartesian, but will not have any transformation path to other CRS.
+     *
+     * @see org.geotools.referencing.crs.DefaultEngineeringCRS#CARTESIAN_2D
+     * @see org.geotools.referencing.crs.DefaultEngineeringCRS#CARTESIAN_3D
+     * 
+     * @deprecated Use UKNONWN instead
+     */
+    public static final DefaultEngineeringDatum UNKNOW =
+            new DefaultEngineeringDatum(name(VocabularyKeys.UNKNOW));
+    
+    /**
+     * An engineering datum for unknown coordinate reference system. Such CRS are usually
      * assumed cartesian, but will not have any transformation path to other CRS.
      *
      * @see org.geotools.referencing.crs.DefaultEngineeringCRS#CARTESIAN_2D
      * @see org.geotools.referencing.crs.DefaultEngineeringCRS#CARTESIAN_3D
      */
-    public static final DefaultEngineeringDatum UNKNOW =
-            new DefaultEngineeringDatum(name(VocabularyKeys.UNKNOW));
+    public static final DefaultEngineeringDatum UNKNOWN =
+            new DefaultEngineeringDatum(name(VocabularyKeys.UNKNOWN));
 
     /**
      * Constructs a new datum with the same values than the specified one.

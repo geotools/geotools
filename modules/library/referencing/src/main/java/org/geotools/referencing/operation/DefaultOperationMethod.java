@@ -115,7 +115,7 @@ public class DefaultOperationMethod extends AbstractIdentifiedObject implements 
             final AbstractMathTransform mt = (AbstractMathTransform) transform;
             properties = getProperties(mt.getParameterDescriptors(), null);
         } else {
-            properties = Collections.singletonMap(NAME_KEY, Vocabulary.format(VocabularyKeys.UNKNOW));
+            properties = Collections.singletonMap(NAME_KEY, Vocabulary.format(VocabularyKeys.UNKNOWN));
         }
         return properties;
     }

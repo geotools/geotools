@@ -47,7 +47,7 @@ public final class IndexedResourceCompiler implements Comparator<Object> {
      *
      * @see #sourceDirectory
      */
-    private static final File SOURCE_DIRECTORY = new File("/home/aaime/devel/gttrunk/modules/library/metadata/src/main");
+    private static final File SOURCE_DIRECTORY = new File("./src/main");
 
     /**
      * The resources to process.

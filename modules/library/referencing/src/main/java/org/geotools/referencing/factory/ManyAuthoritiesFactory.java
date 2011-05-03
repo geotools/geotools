@@ -478,7 +478,7 @@ public class ManyAuthoritiesFactory extends AuthorityFactoryAdapter implements C
     {
         final String message;
         if (authority == null) {
-            authority = Vocabulary.format(VocabularyKeys.UNKNOW);
+            authority = Vocabulary.format(VocabularyKeys.UNKNOWN);
             message   = Errors.format(ErrorKeys.MISSING_AUTHORITY_$1, code);
         } else {
             message = Errors.format(ErrorKeys.UNKNOW_AUTHORITY_$1, authority);

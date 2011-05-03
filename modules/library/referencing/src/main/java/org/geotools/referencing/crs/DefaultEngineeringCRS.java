@@ -131,7 +131,7 @@ public class DefaultEngineeringCRS extends AbstractSingleCRS implements Engineer
     
     
     DefaultEngineeringCRS(final int key, final CoordinateSystem cs, boolean wildcard) {
-        this(name(key), DefaultEngineeringDatum.UNKNOW, cs);
+        this(name(key), DefaultEngineeringDatum.UNKNOWN, cs);
         this.wildcard = wildcard;
     }
 

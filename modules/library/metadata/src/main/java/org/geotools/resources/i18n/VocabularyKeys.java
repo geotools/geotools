@@ -1207,6 +1207,11 @@ public final class VocabularyKeys {
     public static final int UNKNOW = 230;
 
     /**
+     * Unknown
+     */
+    public static final int UNKNOWN = 252;
+
+    /**
      * {0} bits unsigned integer ({1} bits/pixel)
      */
     public static final int UNSIGNED_INTEGER_$2 = 231;

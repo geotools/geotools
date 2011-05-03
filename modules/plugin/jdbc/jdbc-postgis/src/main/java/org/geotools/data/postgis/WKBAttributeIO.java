@@ -28,7 +28,6 @@ import org.geotools.data.DataSourceException;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.io.ByteArrayInStream;
-import com.vividsolutions.jts.io.InStream;
 import com.vividsolutions.jts.io.WKBReader;
 import com.vividsolutions.jts.io.WKBWriter;
 
@@ -44,12 +43,17 @@ import com.vividsolutions.jts.io.WKBWriter;
 public class WKBAttributeIO {
     WKBReader wkbr;
     ByteArrayInStream inStream = new ByteArrayInStream(new byte[0]);
+    GeometryFactory gf;
 
     public WKBAttributeIO() {
-        wkbr = new WKBReader();
+        this(new GeometryFactory());
     }
     
     public WKBAttributeIO(GeometryFactory gf) {
+        wkbr = new WKBReader(gf);
+    }
+    
+    public void setGeometryFactory(GeometryFactory gf) {
         wkbr = new WKBReader(gf);
     }
 

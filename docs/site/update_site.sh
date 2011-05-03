@@ -78,8 +78,8 @@ if [ "$1" == "latest" ] && [ -e ~/$1/web.zip ]; then
 fi
 
 if [ "$1" == "latest" ] && [ -e ~/$1/index.zip ]; then
-  unzip -o -d docs ~/$1/docs.zip 
-  mv ~/$1/docs.zip ~/$1/docs.old.zip
+  unzip -o -d docs ~/$1/index.zip 
+  mv ~/$1/index.zip ~/$1/index.old.zip
 fi
 
 popd

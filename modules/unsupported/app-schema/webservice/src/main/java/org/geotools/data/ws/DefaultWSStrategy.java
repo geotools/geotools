@@ -16,14 +16,12 @@
  */
 package org.geotools.data.ws;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 
 import java.util.Map;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import net.opengis.wfs.GetFeatureType;
@@ -63,7 +61,7 @@ public class DefaultWSStrategy implements WSStrategy {
     private static final org.geotools.xml.Configuration ws_Configuration = new WFSConfiguration();
 
     public DefaultWSStrategy(URL templateDirectory, String templateName) {
-        LOGGER.log(Level.WARNING, "template directory is: " + templateDirectory);
+        LOGGER.info("template directory is: " + templateDirectory);
         initialiseFreeMarkerConfiguration(templateDirectory);
         try {
             requestTemplate = cfg.getTemplate(templateName);
@@ -106,9 +104,9 @@ public class DefaultWSStrategy implements WSStrategy {
         String filterString = filter.toString();
         String cqlFilter = CQL.toCQL(filter);
        
-        LOGGER.log(Level.WARNING, "Filter string: " + filterString);
-        LOGGER.log(Level.WARNING, "Filter CQL: " + cqlFilter);
-        LOGGER.log(Level.WARNING, "MaxFeatures: " + maxfeatures);
+        LOGGER.info("Filter string: " + filterString);
+        LOGGER.info("Filter CQL: " + cqlFilter);
+        LOGGER.info("MaxFeatures: " + maxfeatures);
         
         root.put("filterString", filterString);
         root.put("filterCql", cqlFilter);

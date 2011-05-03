@@ -135,26 +135,31 @@
 	<!--     Compilation (including non-standard plugins)     -->
 	<!-- ==================================================== -->
 	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<configuration>
-					<excludes></excludes>
-				</configuration>
-			</plugin>
-		</plugins>
-		<testResources>
-			<testResource>
-	            <directory>src/test/resources</directory>
-	            <includes>
-		            <include>**/*.properties</include>
-		            <include>**/*.xml</include>
-		            <include>**/*.xsd</include>
-		            <include>**/*.ftl</include>
-		            <include>**/META-INF/**</include>
-	            </includes>
-			</testResource>
-		</testResources>
+	<plugins>
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-jar-plugin</artifactId>
+			<executions>
+				<execution>
+					<phase>package</phase>
+					<goals>
+						<goal>test-jar</goal>
+					</goals>
+				</execution>
+			</executions>
+		</plugin>
+	</plugins>
+	<testResources>
+		<testResource>
+			<directory>src/test/resources</directory>
+			<includes>
+				<include>**/*.properties</include>
+				<include>**/*.xml</include>
+				<include>**/*.xsd</include>
+				<include>**/*.ftl</include>
+				<include>**/META-INF/**</include>
+			</includes>
+		</testResource>
+	</testResources>
 	</build>
 </project>

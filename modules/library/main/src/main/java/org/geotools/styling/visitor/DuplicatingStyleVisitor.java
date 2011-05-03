@@ -481,6 +481,10 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         
         ContrastEnhancement copy = sf.createContrastEnhancement();
         copy.setGammaValue( copy( contrast.getGammaValue()));
+        copy.setMethod(contrast.getMethod());
+        if(contrast.getType() != null) {
+            copy.setType(contrast.getType());
+        }
         return copy;
     }
     

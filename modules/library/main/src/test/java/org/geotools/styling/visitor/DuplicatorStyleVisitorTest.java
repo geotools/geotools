@@ -28,6 +28,7 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.styling.AnchorPoint;
 import org.geotools.styling.ColorMapEntry;
+import org.geotools.styling.ContrastEnhancement;
 import org.geotools.styling.Displacement;
 import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.FeatureTypeConstraint;
@@ -63,6 +64,7 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
+import org.opengis.style.ContrastMethod;
 import org.opengis.util.Cloneable;
 
 
@@ -617,6 +619,22 @@ public class DuplicatorStyleVisitorTest extends TestCase {
         int testHash = test.hashCode();
         assertTrue("Equal objects should return equal hashcodes",controlEqHash == testHash);
     }
+    
+    public void testContrastEnhancementDuplication() throws Exception {
+
+        ContrastEnhancement ce = sf.createContrastEnhancement();
+        ce.setGammaValue(sb.literalExpression(0.5));
+        ce.setMethod(ContrastMethod.HISTOGRAM);
+        ce.setHistogram();
+        ce.accept(visitor);
+        ContrastEnhancement ce2 = (ContrastEnhancement) visitor.getCopy();
+
+        assertEquals("Gamma value incorrest after duplication", ((Literal)ce.getGammaValue()).getValue(), ((Literal)ce2.getGammaValue()).getValue());
+        assertEquals("ContrastMethod must be equal after duplication ", ce.getMethod(), ce2.getMethod());
+        assertEquals("Contrast Type must be equal after duplication ", ((Literal)ce.getType()).getValue(),  ((Literal)ce2.getType()).getValue());
+
+    }
+    
     
     public void testColorMapEntryDuplication() throws Exception {
 

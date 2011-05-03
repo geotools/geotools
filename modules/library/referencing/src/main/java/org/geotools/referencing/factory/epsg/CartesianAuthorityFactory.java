@@ -83,7 +83,7 @@ public class CartesianAuthorityFactory extends DirectAuthorityFactory implements
             throws FactoryException {
         if (type.isAssignableFrom(EngineeringCRS.class)) {
             final Set set = new LinkedHashSet();
-            set.add("0");
+            set.add(GENERIC_2D_CODE);
             return set;
         } else {
             return Collections.EMPTY_SET;

@@ -22,7 +22,7 @@ public class CartesianAuthorityFactoryTest {
     @Test 
     public void testCodeInList() {
         Set<String> supportedCodes = CRS.getSupportedCodes("EPSG");
-        assertTrue(supportedCodes.contains("0"));
+        assertTrue(supportedCodes.contains(CODE));
     }
 
     @Test

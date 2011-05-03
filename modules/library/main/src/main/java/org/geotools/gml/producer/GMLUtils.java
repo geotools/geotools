@@ -80,22 +80,21 @@ final class GMLUtils {
     public static String getGeometryName(Geometry geometry) {
         LOGGER.entering("GMLUtils", "getGeometryName", geometry);
         
-        Class geomClass = geometry.getClass();
         String returnValue = null;
         
-        if (geomClass.equals(Point.class)) {
+        if (geometry instanceof Point) {
             returnValue = "Point";
-        } else if (geomClass.equals(LineString.class)) {
+        } else if (geometry instanceof LineString) {
             returnValue = "LineString";
-        } else if (geomClass.equals(Polygon.class)) {
+        } else if (geometry instanceof Polygon) {
             returnValue = "Polygon";
-        } else if (geomClass.equals(MultiPoint.class)) {
+        } else if (geometry instanceof MultiPoint) {
             returnValue = "MultiPoint";
-        } else if (geomClass.equals(MultiLineString.class)) {
+        } else if (geometry instanceof MultiPoint) {
             returnValue = "MultiLineString";
-        } else if (geomClass.equals(MultiPolygon.class)) {
+        } else if (geometry instanceof MultiPolygon) {
             returnValue = "MultiPolygon";
-        } else if (geomClass.equals(GeometryCollection.class)) {
+        } else if (geometry instanceof GeometryCollection) {
             returnValue = "GeometryCollection";
         } else {
             //HACK!!! throw exception
@@ -117,26 +116,25 @@ final class GMLUtils {
     public static int getGeometryType(Geometry geometry) {
         //LOGGER.entering("GMLUtils", "getGeometryType", geometry);
         
-        Class geomClass = geometry.getClass();
         int returnValue = -1;
         
-        if (geomClass.equals(Point.class)) {
+        if (geometry instanceof Point) {
             //LOGGER.finest("found point");
             returnValue = POINT;
-        } else if (geomClass.equals(LineString.class)) {
+        } else if (geometry instanceof LineString) {
             //LOGGER.finest("found linestring");
             returnValue = LINESTRING;
-        } else if (geomClass.equals(Polygon.class)) {
+        } else if (geometry instanceof Polygon) {
             //LOGGER.finest("found polygon");
             returnValue = POLYGON;
-        } else if (geomClass.equals(MultiPoint.class)) {
+        } else if (geometry instanceof MultiPoint) {
             //LOGGER.finest("found multiPoint");
             returnValue = MULTIPOINT;
-        } else if (geomClass.equals(MultiLineString.class)) {
+        } else if (geometry instanceof MultiLineString) {
             returnValue = MULTILINESTRING;
-        } else if (geomClass.equals(MultiPolygon.class)) {
+        } else if (geometry instanceof MultiPolygon) {
             returnValue = MULTIPOLYGON;
-        } else if (geomClass.equals(GeometryCollection.class)) {
+        } else if (geometry instanceof GeometryCollection) {
             returnValue = MULTIGEOMETRY;
         } else {
             returnValue = -1;

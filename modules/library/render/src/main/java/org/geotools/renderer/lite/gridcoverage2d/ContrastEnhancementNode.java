@@ -42,6 +42,7 @@ import javax.media.jai.operator.LookupDescriptor;
 
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
+import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.factory.Hints;
 import org.geotools.image.ImageWorker;
@@ -427,27 +428,32 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
 				// /////////////////////////////////////////////////////////////////////
 				final int numSourceBands=source.getNumSampleDimensions();
 				final int numActualBands= finalImage.getSampleModel().getNumBands();
-				if(numActualBands==numSourceBands)
-					output = getCoverageFactory().create(
-					        "ce_coverage"+source.getName().toString(), 
+				final GridCoverageFactory factory = getCoverageFactory();
+                final HashMap<Object,Object> props = new HashMap<Object,Object>();
+                if(source.getProperties() != null) {
+                    props.putAll(source.getProperties());
+                }
+                if(numActualBands==numSourceBands) {
+                    final String name = "ce_coverage" + source.getName();
+                    output = factory.create(
+					        name, 
 					        finalImage,
 					        (GridGeometry2D)source.getGridGeometry(),
 					        source.getSampleDimensions(),
 					        new GridCoverage[]{source},
-					        new HashMap<Object,Object>(source.getProperties()));
-				else
-				{
-					//replicate input bands
+					        props);
+                } else {
+					// replicate input bands
 					final GridSampleDimension sd[]= new GridSampleDimension[numActualBands];
 					for(int i=0;i<numActualBands;i++)
 						sd[i]=(GridSampleDimension) source.getSampleDimension(0);
-					output = getCoverageFactory().create(
+					output = factory.create(
 					        "ce_coverage"+source.getName().toString(), 
 					        finalImage,
 					        (GridGeometry2D)source.getGridGeometry(),
 					        sd,
 					        new GridCoverage[]{source},
-					        new HashMap<Object,Object>(source.getProperties()));
+					        props);
 				}
 
 

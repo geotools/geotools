@@ -99,6 +99,7 @@ public class DisplayCoverageTest {
             public void featureRenderer(SimpleFeature feature) {}
 
             public void errorOccurred(Exception e) {
+                e.printStackTrace();
                 fail("Failed to render coverage");
             }
         };

@@ -109,7 +109,10 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
     
     /** estimated bounds */
     boolean estimatedBounds = false;
-
+    
+    /** ApplicationName query band */
+    String application;
+    
     public TeradataDialect(JDBCDataStore store) {
         super(store);
     }
@@ -130,12 +133,17 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
         return estimatedBounds;
     }
     
+    public void setApplication(String application) {
+        this.application = application;
+    }
+
     @Override
     public void initializeConnection(Connection cx) throws SQLException {
         //TODO: make this a datastore connection paramater
         
         //JD: for some reason this does not work if we use a prepared statement
-        String sql = String.format("SET QUERY_BAND='%s' FOR SESSION", QueryBand.APPLICATION + "=GeoTools;");
+        String sql = String.format("SET QUERY_BAND='%s;' FOR SESSION", QueryBand.APPLICATION + "=" 
+            + (application != null ? application : TeradataDataStoreFactory.APPLICATION.sample));
         if (LOGGER.isLoggable(Level.FINE)) {
             LOGGER.fine(sql);
         }

@@ -45,5 +45,12 @@ public class QueryBand {
     public static Map<String,String> local() {
         return LOCAL.get();
     }
+    
+    /**
+     * Clears the local query band thread local.
+     */
+    public static void remove() {
+        LOCAL.remove();
+    }
 
 }

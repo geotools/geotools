@@ -78,14 +78,9 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
     public static final Param ESTIMATED_BOUNDS = new Param("estimatedBounds", Boolean.class, 
         "Use estimated bounds from tessellation table", false, false);
 
-    
-    // SET QUERY_BAND = 'ApplicationName=TZA-InsuranceService;
-    // Version=01.00.00.00;' FOR Session;
-    public static final Param QUERY_BANDING_SQL = new Param(
-            "queryBandingSQL",
-            String.class,
-            "SQL to use Query Banding (example: \"SET QUERY_BAND = 'ApplicationName=TZA-InsuranceService; Version=01.00.00.00;' FOR Session;\")",
-            false, "");
+
+    public static final Param APPLICATION = new Param(
+        "application", String.class, "ApplicationName query band", false, "GeoTools");
 
     private static final PrimaryKeyFinder KEY_FINDER = new CompositePrimaryKeyFinder(
             new MetadataTablePrimaryKeyFinder(), new TeradataPrimaryKeyFinder(),
@@ -141,8 +136,8 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
             dialect.setEstimatedBounds(estimatedBounds);
         }
         
-        if (params.containsKey(QUERY_BANDING_SQL.key)) {
-            //dialect.setQueryBandingSql((String) QUERY_BANDING_SQL.lookUp(params));
+        if (params.containsKey(APPLICATION.key)) {
+            dialect.setApplication((String) APPLICATION.lookUp(params));
         }
 
         //set schema to be same as user
@@ -181,8 +176,7 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
         parameters.put(TESSELLATION_TABLE.key, TESSELLATION_TABLE);
         parameters.put(ESTIMATED_BOUNDS.key, ESTIMATED_BOUNDS);
         parameters.put(MAX_OPEN_PREPARED_STATEMENTS.key, MAX_OPEN_PREPARED_STATEMENTS);
-                
-        //parameters.put(QUERY_BANDING_SQL.key, QUERY_BANDING_SQL);
+        parameters.put(APPLICATION.key, APPLICATION);
     }
 
     @Override

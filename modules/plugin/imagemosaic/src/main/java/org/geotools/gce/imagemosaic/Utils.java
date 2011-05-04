@@ -1451,7 +1451,7 @@ public class Utils {
 
     static final double SAMEBBOX_THRESHOLD_FACTOR = 20;
 
-    static final double AFFINE_IDENTITY_EPS = 1E-3;
+    static final double AFFINE_IDENTITY_EPS = 1E-6;
     
     /**
      * Private constructor to initialize the ehCache instance.

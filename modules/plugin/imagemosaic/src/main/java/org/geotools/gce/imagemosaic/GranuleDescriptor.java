@@ -521,7 +521,7 @@ public class GranuleDescriptor {
 		final ReferencedEnvelope bbox = inclusionGeometry != null? new ReferencedEnvelope(granuleBBOX.intersection(inclusionGeometry.getEnvelopeInternal()), granuleBBOX.getCoordinateReferenceSystem()):granuleBBOX;
 		boolean doFiltering = false;
                 if (filterMe){
-                    doFiltering = Utils.checkEqualArea(inclusionGeometry,baseGridToWorld, granuleBBOX);
+                    doFiltering = Utils.checkEqualArea(inclusionGeometry, baseGridToWorld, granuleBBOX);
                 }
 		
 		
@@ -682,11 +682,11 @@ public class GranuleDescriptor {
 			final double x = finalRaster2Model.getTranslateX();
                         final double y = finalRaster2Model.getTranslateY();
                         
-			if(!XAffineTransform.isIdentity(backToBaseLevelScaleTransform,Utils.AFFINE_IDENTITY_EPS))
+			if(!XAffineTransform.isIdentity(backToBaseLevelScaleTransform, Utils.AFFINE_IDENTITY_EPS))
 				finalRaster2Model.concatenate(backToBaseLevelScaleTransform);
-			if(!XAffineTransform.isIdentity(afterDecimationTranslateTranform,Utils.AFFINE_IDENTITY_EPS))
+			if(!XAffineTransform.isIdentity(afterDecimationTranslateTranform, Utils.AFFINE_IDENTITY_EPS))
 				finalRaster2Model.concatenate(afterDecimationTranslateTranform);
-			if(!XAffineTransform.isIdentity(decimationScaleTranform,Utils.AFFINE_IDENTITY_EPS))
+			if(!XAffineTransform.isIdentity(decimationScaleTranform, Utils.AFFINE_IDENTITY_EPS))
 				finalRaster2Model.concatenate(decimationScaleTranform);
 
 			// keep into account translation factors to place this tile
@@ -703,7 +703,7 @@ public class GranuleDescriptor {
 			if(finalLayout.isEmpty()){
 				if(LOGGER.isLoggable(java.util.logging.Level.INFO))
 					LOGGER.info("Unable to create a granuleDescriptor " + this.toString() 
-					        + " due to jai scale bugcreating a null source area");
+					        + " due to jai scale bug creating a null source area");
 				return null;
 			}
 			ROI granuleLoadingShape = null;

@@ -1,11 +1,19 @@
 Internal
 --------
 
-Please note that this page is optional, only for the curious, as it covers some of the implementation classes.
+Please note that this page is optional, only for the curious, as it covers some of the
+implementation classes.
 
-A **CoordinateReferenceSystem** is an **gt-opengis** interface describing how a set of ordinates is to be interpreted as a three dimensional point. This definition is standardised, mathematical and generally not of interest unless something goes wrong.
+A **CoordinateReferenceSystem** is an **gt-opengis** interface describing how a set of
+ordinates is to be interpreted as a three dimensional point. This definition is standardised,
+mathematical and generally not of interest unless something goes wrong.
 
-For most cases you are only interested in using a CoordinateReferenceSystem as a parameter to a mathematical calculation (distance on along the surface of the earth and "re-projection" being the most common).
+CoordinateReferenceSystem
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+For most cases you are only interested in using a CoordinateReferenceSystem as a parameter to a
+mathematical calculation (distance on along the surface of the earth and "re-projection"
+being the most common).
 
 Creating a CoordinateReferenceSystem:
 
@@ -14,8 +22,11 @@ Creating a CoordinateReferenceSystem:
    :start-after: // createFromEPSGCode start
    :end-before: // createFromEPSGCode end
 
-You will need to ensure GeoTools is configured with an appropriate plugin for this example to work. This plugin
-will provide an CRSAuthorityFactory registered for "EPSG" codes.
+You will need to ensure GeoTools is configured with an appropriate plugin for this example to work.
+This plugin will provide an CRSAuthorityFactory registered for "EPSG" codes.
+
+CRSAuthorityFactory
+^^^^^^^^^^^^^^^^^^^
 
 Internally the **CRS** class makes use of a **CRSAuthorityFactory** to provide the definition for
 the indicated code. You wish you can make use of the same facilities:
@@ -50,49 +61,8 @@ Where an example definition is::
 
 Internally this method makes use of CRSFactory.
 
-CoordinateReferenceSystem Constants
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Some CoordinateReferenceSystem instances are used so often it is worth making static final constants for them. GeoTools has done so in order to cover the most common cases encountered when programming.
-
-You can use the following math transform to convert from the common "long/lat" representation to three dimensions::
-  
-  MathTransform convert = CRS.findMathTransform( DefaultGeographicCRS.WGS84, DefaultGeocentricCRS.CARTESIAN);
-
-Static final constant CoordinateReferenceSystem in GeoTools:
-
-A coordinate reference system using the WGS84 datum as an approximation of the shape of the earth:
-
-* DefaultGeographicCRS.WGS84 - this is the most commonly used default
-* DefaultGeographicCRS.WGS84_3D
-
-A 3D coordinate reference system with the origin at the approximate centre of mass of the earth:
-
-* DefaultGeocentricCRS.CARTESIAN
-* DefaultGeocentricCRS.SPHERICAL
-
-A contextually local coordinate reference system (for construction projects or moving objects):
-
-* DefaultEngineeringCRS.CARTESIAN_2D
-* DefaultEngineeringCRS.CARTESIAN_3D
-* DefaultEngineeringCRS.GENERIC_2D
-* DefaultEngineeringCRS.GENERIC_3D
-
-A 1D coordinate reference system used for recording heights or depth relative to the ellipsoidal datum:
-
-* DefaultVirticalCRS.ELLIPSOIDAL_HEIGHT
-
-For those into the details; these static final constant CoordinateReferenceSystem cite "GeoTools" as the authority responsible for the definition. This is in marked contrast with the **CoordinateReferenceSystem** instances produced by an AuthorityFactory (those instances will credit a specific organisation like "EPSG").
-
-Here is an example:
-
-.. literalinclude:: /../src/main/java/org/geotools/referencing/ReferencingExamples.java
-   :language: java
-   :start-after: // premadeObjects start
-   :end-before: // premadeObjects end
-
 Creating a CoordinateReferenceSystem
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+''''''''''''''''''''''''''''''''''''
 
 You can use factories defined by the referencing system to create things by hand using java code.
 

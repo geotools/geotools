@@ -122,7 +122,8 @@ The official CoordinateReferenceSystem definitions provided by the EPSG database
 Transforming a Geometry
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-A **MathTransform**, as generated above, can be used by bashing away at the interface and feeding it **DirectPosition** objects one at a time.
+A **MathTransform**, as generated above, can be used by bashing away at the interface and feeding
+it **DirectPosition** objects one at a time.
 
 Or you could break out the JTS utility class where this work has been done for you::
   
@@ -142,7 +143,8 @@ Axis Order
 
 One thing that often comes up is the question of axis order.
 
-The EPSG database often defines axis in an order that is inconvenient for display; we have a method to quickly check what is going on.::
+The EPSG database often defines axis in an order that is inconvenient for display; we have a
+method to quickly check what is going on.::
   
   if( CRS.getAxisOrder( coordianteReferenceSystem ) == CRS.AxisOrder.LAT_LON){
      // lat lon 
@@ -155,12 +157,105 @@ Not all CoordinateReferenceSystems match a well defined axis order::
    // someone just made this up
   }
 
-Google Maps Projection
-^^^^^^^^^^^^^^^^^^^^^^
+CoordinateReferenceSystem
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Google maps uses a bit of a shortcut, they make the assumption of a perfect sphere in order to be just that much faster (after all they want a pretty picture nothing more).
+The central user facing class for gt-referencing is **CoordianteReferenceSystem**.
 
-GeoTools contains an implementation of Google Mercator (it was originally done as an experiment in GeoServer).
+Constants
+'''''''''
+
+Some CoordinateReferenceSystem instances are used so often it is worth making static final constants
+for them. GeoTools has done so in order to cover the most common cases encountered when programming.
+
+Static final constant CoordinateReferenceSystem in GeoTools:
+
+A coordinate reference system using the WGS84 datum as an approximation of the shape of the earth:
+
+* DefaultGeographicCRS.WGS84 - this is the most commonly used default
+* DefaultGeographicCRS.WGS84_3D
+
+A 3D coordinate reference system with the origin at the approximate centre of mass of the earth:
+
+* DefaultGeocentricCRS.CARTESIAN
+* DefaultGeocentricCRS.SPHERICAL
+
+A contextually local coordinate reference system (for construction projects or moving objects):
+
+* DefaultEngineeringCRS.CARTESIAN_2D
+* DefaultEngineeringCRS.CARTESIAN_3D
+* DefaultEngineeringCRS.GENERIC_2D
+* DefaultEngineeringCRS.GENERIC_3D
+
+A 1D coordinate reference system used for recording heights or depth relative to the ellipsoidal datum:
+
+* DefaultVirticalCRS.ELLIPSOIDAL_HEIGHT
+
+.. note::
+   
+   For those into the details; these static final constant CoordinateReferenceSystem cite "GeoTools"
+   as the authority responsible for the definition. This is in marked contrast with the
+   **CoordinateReferenceSystem** instances produced by an AuthorityFactory (those instances will
+   credit a specific organisation like "EPSG").
+
+Examples:
+
+* Here is an example of accessing several of the predefined constants:
+  
+  .. literalinclude:: /../src/main/java/org/geotools/referencing/ReferencingExamples.java
+     :language: java
+     :start-after: // premadeObjects start
+     :end-before: // premadeObjects end
+
+* You can use the following math transform to convert from the common "long/lat" representation
+  to three dimensions::
+  
+     MathTransform convert = CRS.findMathTransform( DefaultGeographicCRS.WGS84, DefaultGeocentricCRS.CARTESIAN);
+
+GENERIC_2D
+''''''''''
+
+One constant deserves special mention as it is used as a "wild card" placeholder for when you
+are unsure of your data. The concept of a "Generic 2D" CoordianteReferenceSystem is formally
+intended for working with things like CAD drawings where the results are measured in meters.
+
+When considered in the context of GIS we treat it as a "wildcard" allowing you to get a visual
+of some sort.
+
+Formally this is expressed by the `DefaultEngineeringCRS.GENERIC_2D javadocs <http://docs.geotools.org/latest/javadocs/org/geotools/referencing/crs/DefaultEngineeringCRS.html#GENERIC_2D>`_ as:
+    A two-dimensional wildcard coordinate system with x, y axis in metres. At the difference of
+    CARTESIAN_2D, this coordinate system is treated specially by the default coordinate operation
+    factory with loose transformation rules: if no transformation path were found (for example
+    through a derived CRS), then the transformation from this CRS to any CRS with a compatible
+    number of dimensions is assumed to be the identity transform. This CRS is usefull as a
+    kind of wildcard when no CRS were explicitly specified.
+
+The concept is available three ways:
+  
+* CartesianAuthoryFactory.GENERIC_2D
+  
+  This is the preferred way to represent an unknown CoordianteReferenceSystem in GeoTools.
+    
+  This is the same as DefaultEngineeringCRS.GENERIC_2D (with a epsg identifier and description).
+  Since only this descriptive information is different *equals ignores metadata* will return true.
+
+* DefaultEngineeringCRS.GENERIC_2D
+    
+  This is the same as CartesianAuthoryFactory.GENERIC_2D above; however it lacks an EPSG identifier
+  hindering interoperability with external systems.
+
+* This value is also availble via "EPSG:404000" (this is a custom epsg code defined by GeoTools)::
+    
+    CoordinateReferenceSystem sphericalMercator = CRS.decode("EPSG:404000");
+
+Google Maps
+'''''''''''
+
+Google maps uses a bit of a shortcut, they make the assumption of a perfect sphere in order to be
+just that much faster (after all they want a pretty picture nothing more).
+
+GeoTools contains an implementation of Google Mercator (it was originally done as an experiment
+in GeoServer).
 
 Since this code has been donated you integrate your information with projection.
 
@@ -172,16 +267,19 @@ References:
 
 Using an EPSG code to look up the CoordinateReferenceSystem::
   
-  CoordinateReferenceSystem sphericalMercator = CRS.decode("EPSG:3785");
+     CoordinateReferenceSystem sphericalMercator = CRS.decode("EPSG:3857");
 
 If you are using an older copy of the EPSG database, the above code may not be supported yet.
 
-Before this code was official the GeoServer project defined its own code::
+Before this code was official there were a couple earlier attempts::
   
-  // Google == 9009l3 in leet!
+  // Google == 9009l3 in leet! (as defined by GeoServer)
   CoordinateReferenceSystem sphericalMercator = CRS.decode("EPSG:900913");
+  // Deprecated EPSG code (they messed up something and issued EPSG:3857 as a replacement)
+  CoordinateReferenceSystem sphericalMercator = CRS.decode("EPSG:3785");
 
-Other than that you will need to define the projection yourself using WKT; or add it into your EPSG database.::
+Other than that you will need to define the projection yourself using WKT; or add it
+into your EPSG database.::
   
   ﻿PROJCS["Google Mercator",
     GEOGCS["WGS 84",

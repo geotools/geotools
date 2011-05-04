@@ -1,2 +1,2 @@
-org.geotools.renderext.WKTMarkFactory
-org.geotools.renderext.MeteoMarkFactory
+org.geotools.renderer.markwkt.WKTMarkFactory
+org.geotools.renderer.markwkt.MeteoMarkFactory

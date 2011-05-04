@@ -148,6 +148,7 @@ public class FeatureLayer extends Layer {
      */
     public void setStyle(Style style) {
         this.style = style;
+        fireMapLayerListenerLayerChanged(MapLayerEvent.STYLE_CHANGED);
     }
 
     /**

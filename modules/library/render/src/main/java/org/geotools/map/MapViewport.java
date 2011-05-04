@@ -96,7 +96,7 @@ public class MapViewport {
                 try {
                     ReferencedEnvelope old = bounds;
                     bounds = bounds.transform(crs, true);
-                    fireMapBoundsListenerMapBoundsChanged(MapBoundsEvent.Type.BOUNDS, old, bounds);
+                    fireMapBoundsListenerMapBoundsChanged(MapBoundsEvent.Type.CRS, old, bounds);
                 } catch (Exception e) {
                     LOGGER.log(Level.FINE, "Difficulty transforming to {0}", crs);
                 }

@@ -182,7 +182,7 @@ A 3D coordinate reference system with the origin at the approximate centre of ma
 
 A contextually local coordinate reference system (for construction projects or moving objects):
 
-* DefaultEngineeringCRS.CARTESIAN_2D
+* DefaultEngineeringCRS.CARTESIAN_2D (see the next section for a discussion of this value)
 * DefaultEngineeringCRS.CARTESIAN_3D
 * DefaultEngineeringCRS.GENERIC_2D
 * DefaultEngineeringCRS.GENERIC_3D
@@ -230,23 +230,25 @@ Formally this is expressed by the `DefaultEngineeringCRS.GENERIC_2D javadocs <ht
     number of dimensions is assumed to be the identity transform. This CRS is usefull as a
     kind of wildcard when no CRS were explicitly specified.
 
-The concept is available three ways:
+The concept is available two ways:
   
-* CartesianAuthoryFactory.GENERIC_2D
-  
-  This is the preferred way to represent an unknown CoordianteReferenceSystem in GeoTools.
-    
-  This is the same as DefaultEngineeringCRS.GENERIC_2D (with a epsg identifier and description).
-  Since only this descriptive information is different *equals ignores metadata* will return true.
-
 * DefaultEngineeringCRS.GENERIC_2D
     
   This is the same as CartesianAuthoryFactory.GENERIC_2D above; however it lacks an EPSG identifier
   hindering interoperability with external systems.
 
-* This value is also availble via "EPSG:404000" (this is a custom epsg code defined by GeoTools)::
-    
-    CoordinateReferenceSystem sphericalMercator = CRS.decode("EPSG:404000");
+* Using the code "EPSG:404000" (a custom code defined by GeoTools)::
+
+    CoordinateReferenceSystem generic = CRS.decode("EPSG:404000");
+  
+  This value the same as DefaultEngineeringCRS.GENERIC_2D (with a epsg identifier and description).
+  Since only this descriptive information is different *equals ignores metadata* will return true.
+  
+  The same value is also provided as a static constant::
+     
+     CartesianAuthoryFactory.GENERIC_2D
+  
+  This is the preferred way to represent an unknown CoordianteReferenceSystem in GeoTools.
 
 Google Maps
 '''''''''''

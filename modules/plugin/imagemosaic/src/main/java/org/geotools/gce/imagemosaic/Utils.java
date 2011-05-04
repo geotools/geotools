@@ -20,6 +20,8 @@ import it.geosolutions.imageio.stream.input.spi.URLImageInputStreamSpi;
 
 import java.awt.Color;
 import java.awt.Rectangle;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.DataBuffer;
@@ -58,6 +60,7 @@ import javax.imageio.ImageReader;
 import javax.imageio.spi.ImageInputStreamSpi;
 import javax.imageio.stream.ImageInputStream;
 import javax.media.jai.Histogram;
+import javax.media.jai.Interpolation;
 import javax.media.jai.RasterFactory;
 import javax.media.jai.RenderedOp;
 import javax.media.jai.remote.SerializableRenderedImage;
@@ -82,12 +85,16 @@ import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilderConfiguration;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
 import org.geotools.util.Converters;
 import org.geotools.util.Utilities;
 
 import com.sun.media.jai.operator.ImageReadDescriptor;
+import com.sun.media.jai.util.Rational;
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * Sparse utilities for the various mosaic classes. I use them to extract
@@ -135,6 +142,178 @@ public class Utils {
         final static String CACHING= "Caching";
         static final String RUN_TIME = "RuntimeAttribute";
     }
+    // FORMULAE FOR FORWARD MAP are derived as follows
+    //     Nearest
+    //        Minimum:
+    //            srcMin = floor ((dstMin + 0.5 - trans) / scale)
+    //            srcMin <= (dstMin + 0.5 - trans) / scale < srcMin + 1
+    //            srcMin*scale <= dstMin + 0.5 - trans < (srcMin + 1)*scale
+    //            srcMin*scale - 0.5 + trans
+    //                       <= dstMin < (srcMin + 1)*scale - 0.5 + trans
+    //            Let A = srcMin*scale - 0.5 + trans,
+    //            Let B = (srcMin + 1)*scale - 0.5 + trans
+    //
+    //            dstMin = ceil(A)
+    //
+    //        Maximum:
+    //            Note that srcMax is defined to be srcMin + dimension - 1
+    //            srcMax = floor ((dstMax + 0.5 - trans) / scale)
+    //            srcMax <= (dstMax + 0.5 - trans) / scale < srcMax + 1
+    //            srcMax*scale <= dstMax + 0.5 - trans < (srcMax + 1)*scale
+    //            srcMax*scale - 0.5 + trans
+    //                       <= dstMax < (srcMax+1) * scale - 0.5 + trans
+    //            Let float A = (srcMax + 1) * scale - 0.5 + trans
+    //
+    //            dstMax = floor(A), if floor(A) < A, else
+    //            dstMax = floor(A) - 1
+    //            OR dstMax = ceil(A - 1)
+    //
+    //     Other interpolations
+    //
+    //        First the source should be shrunk by the padding that is
+    //        required for the particular interpolation. Then the
+    //        shrunk source should be forward mapped as follows:
+    //
+    //        Minimum:
+    //            srcMin = floor (((dstMin + 0.5 - trans)/scale) - 0.5)
+    //            srcMin <= ((dstMin + 0.5 - trans)/scale) - 0.5 < srcMin+1
+    //            (srcMin+0.5)*scale <= dstMin+0.5-trans <
+    //                                                  (srcMin+1.5)*scale
+    //            (srcMin+0.5)*scale - 0.5 + trans
+    //                       <= dstMin < (srcMin+1.5)*scale - 0.5 + trans
+    //            Let A = (srcMin+0.5)*scale - 0.5 + trans,
+    //            Let B = (srcMin+1.5)*scale - 0.5 + trans
+    //
+    //            dstMin = ceil(A)
+    //
+    //        Maximum:
+    //            srcMax is defined as srcMin + dimension - 1
+    //            srcMax = floor (((dstMax + 0.5 - trans) / scale) - 0.5)
+    //            srcMax <= ((dstMax + 0.5 - trans)/scale) - 0.5 < srcMax+1
+    //            (srcMax+0.5)*scale <= dstMax + 0.5 - trans <
+    //                                                   (srcMax+1.5)*scale
+    //            (srcMax+0.5)*scale - 0.5 + trans
+    //                       <= dstMax < (srcMax+1.5)*scale - 0.5 + trans
+    //            Let float A = (srcMax+1.5)*scale - 0.5 + trans
+    //
+    //            dstMax = floor(A), if floor(A) < A, else
+    //            dstMax = floor(A) - 1
+    //            OR dstMax = ceil(A - 1)
+    //
+    private static float rationalTolerance = 0.000001F;
+    static Rectangle2D layoutHelper(RenderedImage source,
+                                            float scaleX,
+                                            float scaleY,
+                                            float transX,
+                                            float transY,
+                                            Interpolation interp) {
+
+        // Represent the scale factors as Rational numbers.
+                // Since a value of 1.2 is represented as 1.200001 which
+                // throws the forward/backward mapping in certain situations.
+                // Convert the scale and translation factors to Rational numbers
+                Rational scaleXRational = Rational.approximate(scaleX,rationalTolerance);
+                Rational scaleYRational = Rational.approximate(scaleY,rationalTolerance);
+
+                long scaleXRationalNum = (long) scaleXRational.num;
+                long scaleXRationalDenom = (long) scaleXRational.denom;
+                long scaleYRationalNum = (long) scaleYRational.num;
+                long scaleYRationalDenom = (long) scaleYRational.denom;
+
+                Rational transXRational = Rational.approximate(transX,rationalTolerance);
+                Rational transYRational = Rational.approximate(transY,rationalTolerance);
+
+                long transXRationalNum = (long) transXRational.num;
+                long transXRationalDenom = (long) transXRational.denom;
+                long transYRationalNum = (long) transYRational.num;
+                long transYRationalDenom = (long) transYRational.denom;
+
+                int x0 = source.getMinX();
+                int y0 = source.getMinY();
+                int w = source.getWidth();
+                int h = source.getHeight();
+
+                // Variables to store the calculated destination upper left coordinate
+                long dx0Num, dx0Denom, dy0Num, dy0Denom;
+
+                // Variables to store the calculated destination bottom right
+                // coordinate
+                long dx1Num, dx1Denom, dy1Num, dy1Denom;
+
+                // Start calculations for destination
+
+                dx0Num = x0;
+                dx0Denom = 1;
+
+                dy0Num = y0;
+                dy0Denom = 1;
+
+                // Formula requires srcMaxX + 1 = (x0 + w - 1) + 1 = x0 + w
+                dx1Num = x0 + w;
+                dx1Denom = 1;
+
+                // Formula requires srcMaxY + 1 = (y0 + h - 1) + 1 = y0 + h
+                dy1Num = y0 + h;
+                dy1Denom = 1;
+
+                dx0Num *= scaleXRationalNum;
+                dx0Denom *= scaleXRationalDenom;
+
+                dy0Num *= scaleYRationalNum;
+                dy0Denom *= scaleYRationalDenom;
+
+                dx1Num *= scaleXRationalNum;
+                dx1Denom *= scaleXRationalDenom;
+
+                dy1Num *= scaleYRationalNum;
+                dy1Denom *= scaleYRationalDenom;
+
+                // Equivalent to subtracting 0.5
+                dx0Num = 2 * dx0Num - dx0Denom;
+                dx0Denom *= 2;
+
+                dy0Num = 2 * dy0Num - dy0Denom;
+                dy0Denom *= 2;
+
+                // Equivalent to subtracting 1.5
+                dx1Num = 2 * dx1Num - 3 * dx1Denom;
+                dx1Denom *= 2;
+
+                dy1Num = 2 * dy1Num - 3 * dy1Denom;
+                dy1Denom *= 2;
+
+                // Adding translation factors
+
+                // Equivalent to float dx0 += transX
+                dx0Num = dx0Num * transXRationalDenom + transXRationalNum * dx0Denom;
+                dx0Denom *= transXRationalDenom;
+
+                // Equivalent to float dy0 += transY
+                dy0Num = dy0Num * transYRationalDenom + transYRationalNum * dy0Denom;
+                dy0Denom *= transYRationalDenom;
+
+                // Equivalent to float dx1 += transX
+                dx1Num = dx1Num * transXRationalDenom + transXRationalNum * dx1Denom;
+                dx1Denom *= transXRationalDenom;
+
+                // Equivalent to float dy1 += transY
+                dy1Num = dy1Num * transYRationalDenom + transYRationalNum * dy1Denom;
+                dy1Denom *= transYRationalDenom;
+
+                // Get the integral coordinates
+                int l_x0, l_y0, l_x1, l_y1;
+
+                l_x0 = Rational.ceil(dx0Num, dx0Denom);
+                l_y0 = Rational.ceil(dy0Num, dy0Denom);
+
+                l_x1 = Rational.ceil(dx1Num, dx1Denom);
+                l_y1 = Rational.ceil(dy1Num, dy1Denom);
+
+                // Set the top left coordinate of the destination
+                final Rectangle2D retValue= new Rectangle2D.Double();
+                retValue.setFrame(l_x0, l_y0, l_x1 - l_x0 + 1, l_y1 - l_y0 + 1);
+                return retValue;
+        }
     
 	/**
 	 * Logger.
@@ -1269,6 +1448,10 @@ public class Utils {
         }
         return null;
     }
+
+    static final double SAMEBBOX_THRESHOLD_FACTOR = 20;
+
+    static final double AFFINE_IDENTITY_EPS = 1E-6;
     
     /**
      * Private constructor to initialize the ehCache instance.
@@ -1339,5 +1522,63 @@ public class Utils {
             }
         }
         return histogram;
+    }
+
+    /**
+         * Check if the provided granule's footprint covers the same area of the granule's bbox.
+         * @param granuleFootprint the granule Footprint
+         * @param granuleBBOX the granule bbox
+         * @return {@code true} in case the footprint is covering the full granule's bbox. 
+         */
+        static boolean checkEqualArea(
+                final Geometry granuleFootprint,
+                final AffineTransform baseGridToWorld,
+                final ReferencedEnvelope granuleBBOX) {
+            
+            // // 
+            //
+            // First preliminar check:
+            // check if the footprint's bbox corners are the same of the granule's bbox
+            // (Using a threshold)
+            //
+            // //
+            final Envelope envelope = granuleFootprint.getEnvelope().getEnvelopeInternal();
+            double deltaMinX = Math.abs(envelope.getMinX() - granuleBBOX.getMinX());
+            double deltaMinY = Math.abs(envelope.getMinY() - granuleBBOX.getMinY());
+            double deltaMaxX = Math.abs(envelope.getMaxX() - granuleBBOX.getMaxX());
+            double deltaMaxY = Math.abs(envelope.getMaxY() - granuleBBOX.getMaxY());
+            final double resX = XAffineTransform.getScaleX0(baseGridToWorld);
+            final double resY = XAffineTransform.getScaleY0(baseGridToWorld);
+            final double toleranceX = resX / Utils.SAMEBBOX_THRESHOLD_FACTOR;
+            final double toleranceY = resY / Utils.SAMEBBOX_THRESHOLD_FACTOR;
+            
+            // Taking note of the area of a single cell
+            final double cellArea = resX * resY;
+    
+            if (deltaMinX > toleranceX || deltaMaxX > toleranceX || deltaMinY > toleranceY || deltaMaxY > toleranceY){
+                // delta exceed tolerance. Area is not the same	        
+                return true;
+            }
+            
+            // //
+            //
+            // Second check:
+            // Here, the footprint's bbox and the granule's bbox are equal.
+            // However this is not enough:
+            // - suppose the footprint is a diamond
+            // - Create a rectangle by circumscribing the diamond
+            // - If this rectangle match with the granule's bbox, this doesn't imply
+            // that the diamond covers the same area of the bbox.
+            // Therefore, we need to compute the area and compare them.
+            //
+            // //
+            final double footprintArea = granuleFootprint.getArea();
+            //final double bboxArea = granuleBBOX.getArea();
+            final double bboxArea = granuleBBOX.getHeight() * granuleBBOX.getWidth();
+            	    
+            // If 2 areas are different more than the cellArea, then they are not the same area
+            if (Math.abs(footprintArea - bboxArea) > cellArea)
+                return true;
+            return false;
     }
 }

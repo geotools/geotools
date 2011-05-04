@@ -86,6 +86,7 @@ import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.resources.coverage.FeatureUtilities;
@@ -776,6 +777,13 @@ class RasterLayerResponse{
                         
                         //update final grid to world
                         finalGridToWorldCorner=new AffineTransform2D(targetGridToWorld);
+                        //
+                        // Check and see if the affine transform is doing a copy.
+                        // If so call the copy operation.
+                        //
+                        // we are in raster space here, so 1E-3 is safe
+                        if(XAffineTransform.isIdentity(targetWorldToGrid, Utils.AFFINE_IDENTITY_EPS))
+                            return mosaic;
 		        
 		        // create final image
 		        // TODO this one could be optimized further depending on how the affine is created

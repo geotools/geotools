@@ -234,8 +234,7 @@ The concept is available two ways:
   
 * DefaultEngineeringCRS.GENERIC_2D
     
-  This is the same as CartesianAuthoryFactory.GENERIC_2D above; however it lacks an EPSG identifier
-  hindering interoperability with external systems.
+  This option lacks an EPSG identifier hindering interoperability with external systems.
 
 * Using the code "EPSG:404000" (a custom code defined by GeoTools)::
 

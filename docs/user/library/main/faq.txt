@@ -48,3 +48,17 @@ You can however use a FeatureTypeBuilder to create a modified copy::
     b.add(0, "geom", Point.class );
     SimpleFeatureType pointType = b.buildFeatureType();
 
+Q: How to get FeatureCollection to work with a 'for each' loop?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Feature collection is a wrapper around a live data stream; as such we need to be sure to *close*
+the iterator after we are through with it:
+
+.. literalinclude:: /../src/main/java/org/geotools/main/MainExamples.java
+   :language: java
+   :start-after: // exampleIterator start
+   :end-before: // exampleIterator end
+
+This requirement prevents us implementing Collection (and being compatible with 'for each' syntax.
+I am afraid this is a fundamental limitation of Java and not something that can or should be
+addressed in a future release.

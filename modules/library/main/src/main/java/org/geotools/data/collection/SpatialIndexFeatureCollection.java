@@ -19,6 +19,7 @@ import org.geotools.feature.FeatureIterator;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.NullProgressListener;
 import org.geotools.util.logging.Logging;
+import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -58,7 +59,12 @@ public class SpatialIndexFeatureCollection implements SimpleFeatureCollection {
         this.index = new STRtree();
         this.schema = schema;
     }
-
+    
+    public SpatialIndexFeatureCollection(SimpleFeatureCollection copy ) throws IOException {
+        this( copy.getSchema() );
+        addAll( copy );
+    }
+    
     public synchronized void addListener(CollectionListener listener) throws NullPointerException {
         if (listeners == null) {
             listeners = Collections.synchronizedList(new ArrayList<CollectionListener>());

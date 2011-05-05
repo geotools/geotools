@@ -16,6 +16,7 @@
  */
 package org.geotools.data.collection;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -27,6 +28,8 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.collection.AbstractFeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.opengis.feature.Feature;
+import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
@@ -86,6 +89,25 @@ public class ListFeatureCollection extends AbstractFeatureCollection {
      public ListFeatureCollection(SimpleFeatureType schema, List<SimpleFeature> list ){
          super(schema);
          this.list = list;
+     }
+     /**
+      * Create a ListFeatureCollection around the provided list. The contents
+      * of the list should all be of the provided schema for this to make sense.
+      * Please keep in mind the feature collection control, no two Features in the list
+      * should have the same feature id, and you should not insert the same feature more
+      * then once.
+      * <p>
+      * The provided list is directly used for storage, most feature collection
+      * operations just use a simple iterator so there is no performance advantaged
+      * to be gained over using an ArrayList vs a LinkedList (other then for the size()
+      * method of course).
+      * 
+      * @param schema
+      * @param list
+      */
+     public ListFeatureCollection(SimpleFeatureCollection copy ) throws IOException {
+         this( copy.getSchema() );
+         addAll(copy );
      }
      
      @Override

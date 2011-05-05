@@ -6,29 +6,32 @@ A **FeatureCollection** is a collection of Features similar to a JDBC **ResultSe
 Overview
 ^^^^^^^^
 
-FeatureCollection is similar to a java Collection<Feature>. The crucial difference is the requirement to close each FeatureIterator after use in order to prevent memory and connection leaks.
+FeatureCollection is similar to a java Collection<Feature>. The crucial difference is the
+requirement to close each FeatureIterator after use in order to prevent memory and connection
+leaks.
 
-In addition to the above key requirement, FeatureCollection provides methods to review the FeatureType of the members, ask for the bounds (rather than just the size) and so on.
+In addition to the above key requirement, FeatureCollection provides methods to review the
+FeatureType of the members, ask for the bounds (rather than just the size) and so on.
 
 With this in mind:
 
 * FeatureCollection is method compatible with java.util.Collection where possible
 * **Iterator** need to be closed.
   
-  As provided::
-    
-    Iterator<Feature> iterator = featureCollection.iterator();
-    try {
-       ...
-    finally {
-      featureCopllection.close( iterator );
-    }
+  As provided:
+  
+  .. literalinclude:: /../src/main/java/org/geotools/main/MainExamples.java
+     :language: java
+     :start-after: // exampleIterator start
+     :end-before: // exampleIterator end
 
 * All the content is of the same type.
   
   As indicated by indicated by::
     
     FeatureType type = featureCollection.getSchema();
+
+* We cannot support the java 'for each' loop syntax; as we need to be sure to close our iterator().
 
 **FeatureCollection**
 

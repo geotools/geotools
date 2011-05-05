@@ -18,7 +18,10 @@ package org.geotools.resources.image;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBuffer;
 import java.awt.image.DataBufferByte;
@@ -43,6 +46,7 @@ import java.util.List;
 import java.util.Vector;
 
 import javax.imageio.ImageIO;
+import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import javax.imageio.spi.IIORegistry;
 import javax.imageio.spi.ImageInputStreamSpi;
@@ -59,14 +63,22 @@ import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.RenderedOp;
 
+import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
+import org.geotools.metadata.iso.spatial.PixelTranslation;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.resources.Classes;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
 import org.geotools.util.Utilities;
+import org.opengis.geometry.BoundingBox;
+import org.opengis.metadata.extent.GeographicBoundingBox;
+import org.opengis.referencing.datum.PixelInCell;
 
 import com.sun.media.imageioimpl.common.PackageUtil;
 import com.sun.media.jai.operator.ImageReadDescriptor;
+import com.sun.media.jai.util.Rational;
 
 
 /**
@@ -245,6 +257,66 @@ public final class ImageUtilities {
     public final static RenderingHints BORDER_EXTENDER_HINTS = new RenderingHints(JAI.KEY_BORDER_EXTENDER, DEFAULT_BORDER_EXTENDER);
 
     public static final String DIRECT_KAKADU_PLUGIN = "it.geosolutions.imageio.plugins.jp2k.JP2KKakaduImageReader";
+
+    // FORMULAE FOR FORWARD MAP are derived as follows
+    //     Nearest
+    //        Minimum:
+    //            srcMin = floor ((dstMin + 0.5 - trans) / scale)
+    //            srcMin <= (dstMin + 0.5 - trans) / scale < srcMin + 1
+    //            srcMin*scale <= dstMin + 0.5 - trans < (srcMin + 1)*scale
+    //            srcMin*scale - 0.5 + trans
+    //                       <= dstMin < (srcMin + 1)*scale - 0.5 + trans
+    //            Let A = srcMin*scale - 0.5 + trans,
+    //            Let B = (srcMin + 1)*scale - 0.5 + trans
+    //
+    //            dstMin = ceil(A)
+    //
+    //        Maximum:
+    //            Note that srcMax is defined to be srcMin + dimension - 1
+    //            srcMax = floor ((dstMax + 0.5 - trans) / scale)
+    //            srcMax <= (dstMax + 0.5 - trans) / scale < srcMax + 1
+    //            srcMax*scale <= dstMax + 0.5 - trans < (srcMax + 1)*scale
+    //            srcMax*scale - 0.5 + trans
+    //                       <= dstMax < (srcMax+1) * scale - 0.5 + trans
+    //            Let float A = (srcMax + 1) * scale - 0.5 + trans
+    //
+    //            dstMax = floor(A), if floor(A) < A, else
+    //            dstMax = floor(A) - 1
+    //            OR dstMax = ceil(A - 1)
+    //
+    //     Other interpolations
+    //
+    //        First the source should be shrunk by the padding that is
+    //        required for the particular interpolation. Then the
+    //        shrunk source should be forward mapped as follows:
+    //
+    //        Minimum:
+    //            srcMin = floor (((dstMin + 0.5 - trans)/scale) - 0.5)
+    //            srcMin <= ((dstMin + 0.5 - trans)/scale) - 0.5 < srcMin+1
+    //            (srcMin+0.5)*scale <= dstMin+0.5-trans <
+    //                                                  (srcMin+1.5)*scale
+    //            (srcMin+0.5)*scale - 0.5 + trans
+    //                       <= dstMin < (srcMin+1.5)*scale - 0.5 + trans
+    //            Let A = (srcMin+0.5)*scale - 0.5 + trans,
+    //            Let B = (srcMin+1.5)*scale - 0.5 + trans
+    //
+    //            dstMin = ceil(A)
+    //
+    //        Maximum:
+    //            srcMax is defined as srcMin + dimension - 1
+    //            srcMax = floor (((dstMax + 0.5 - trans) / scale) - 0.5)
+    //            srcMax <= ((dstMax + 0.5 - trans)/scale) - 0.5 < srcMax+1
+    //            (srcMax+0.5)*scale <= dstMax + 0.5 - trans <
+    //                                                   (srcMax+1.5)*scale
+    //            (srcMax+0.5)*scale - 0.5 + trans
+    //                       <= dstMax < (srcMax+1.5)*scale - 0.5 + trans
+    //            Let float A = (srcMax+1.5)*scale - 0.5 + trans
+    //
+    //            dstMax = floor(A), if floor(A) < A, else
+    //            dstMax = floor(A) - 1
+    //            OR dstMax = ceil(A - 1)
+    //
+    public static final float RATIONAL_TOLERANCE = 0.000001F;
 
     /**
      * Do not allow creation of instances of this class.
@@ -876,5 +948,268 @@ public final class ImageUtilities {
             w.forceComponentColorModel();
         }
         return w.makeColorTransparent(transparentColor).getRenderedImage();
+    }
+
+    static public ImageReadParam cloneImageReadParam(ImageReadParam param) {
+    
+    	// The ImageReadParam passed in is non-null. As the
+    	// ImageReadParam class is not Cloneable, if the param
+    	// class is simply ImageReadParam, then create a new
+    	// ImageReadParam instance and set all its fields
+    	// which were set in param. This will eliminate problems
+    	// with concurrent modification of param for the cases
+    	// in which there is not a special ImageReadparam used.
+    
+    	// Create a new ImageReadParam instance.
+    	ImageReadParam newParam = new ImageReadParam();
+    
+    	// Set all fields which need to be set.
+    
+    	// IIOParamController field.
+    	if (param.hasController()) {
+    		newParam.setController(param.getController());
+    	}
+    
+    	// Destination fields.
+    	newParam.setDestination(param.getDestination());
+    	if (param.getDestinationType() != null) {
+    		// Set the destination type only if non-null as the
+    		// setDestinationType() clears the destination field.
+    		newParam.setDestinationType(param.getDestinationType());
+    	}
+    	newParam.setDestinationBands(param.getDestinationBands());
+    	newParam.setDestinationOffset(param.getDestinationOffset());
+    
+    	// Source fields.
+    	newParam.setSourceBands(param.getSourceBands());
+    	newParam.setSourceRegion(param.getSourceRegion());
+    	if (param.getSourceMaxProgressivePass() != Integer.MAX_VALUE) {
+    		newParam.setSourceProgressivePasses(param
+    				.getSourceMinProgressivePass(), param
+    				.getSourceNumProgressivePasses());
+    	}
+    	if (param.canSetSourceRenderSize()) {
+    		newParam.setSourceRenderSize(param.getSourceRenderSize());
+    	}
+    	newParam.setSourceSubsampling(param.getSourceXSubsampling(), param
+    			.getSourceYSubsampling(), param.getSubsamplingXOffset(), param
+    			.getSubsamplingYOffset());
+    
+    	// Replace the local variable with the new ImageReadParam.
+    	return newParam;
+    
+    }
+
+    public static Rectangle2D layoutHelper(RenderedImage source,
+                                        float scaleX,
+                                        float scaleY,
+                                        float transX,
+                                        float transY,
+                                        Interpolation interp) {
+    
+    // Represent the scale factors as Rational numbers.
+            // Since a value of 1.2 is represented as 1.200001 which
+            // throws the forward/backward mapping in certain situations.
+            // Convert the scale and translation factors to Rational numbers
+            Rational scaleXRational = Rational.approximate(scaleX,RATIONAL_TOLERANCE);
+            Rational scaleYRational = Rational.approximate(scaleY,RATIONAL_TOLERANCE);
+    
+            long scaleXRationalNum = (long) scaleXRational.num;
+            long scaleXRationalDenom = (long) scaleXRational.denom;
+            long scaleYRationalNum = (long) scaleYRational.num;
+            long scaleYRationalDenom = (long) scaleYRational.denom;
+    
+            Rational transXRational = Rational.approximate(transX,RATIONAL_TOLERANCE);
+            Rational transYRational = Rational.approximate(transY,RATIONAL_TOLERANCE);
+    
+            long transXRationalNum = (long) transXRational.num;
+            long transXRationalDenom = (long) transXRational.denom;
+            long transYRationalNum = (long) transYRational.num;
+            long transYRationalDenom = (long) transYRational.denom;
+    
+            int x0 = source.getMinX();
+            int y0 = source.getMinY();
+            int w = source.getWidth();
+            int h = source.getHeight();
+    
+            // Variables to store the calculated destination upper left coordinate
+            long dx0Num, dx0Denom, dy0Num, dy0Denom;
+    
+            // Variables to store the calculated destination bottom right
+            // coordinate
+            long dx1Num, dx1Denom, dy1Num, dy1Denom;
+    
+            // Start calculations for destination
+    
+            dx0Num = x0;
+            dx0Denom = 1;
+    
+            dy0Num = y0;
+            dy0Denom = 1;
+    
+            // Formula requires srcMaxX + 1 = (x0 + w - 1) + 1 = x0 + w
+            dx1Num = x0 + w;
+            dx1Denom = 1;
+    
+            // Formula requires srcMaxY + 1 = (y0 + h - 1) + 1 = y0 + h
+            dy1Num = y0 + h;
+            dy1Denom = 1;
+    
+            dx0Num *= scaleXRationalNum;
+            dx0Denom *= scaleXRationalDenom;
+    
+            dy0Num *= scaleYRationalNum;
+            dy0Denom *= scaleYRationalDenom;
+    
+            dx1Num *= scaleXRationalNum;
+            dx1Denom *= scaleXRationalDenom;
+    
+            dy1Num *= scaleYRationalNum;
+            dy1Denom *= scaleYRationalDenom;
+    
+            // Equivalent to subtracting 0.5
+            dx0Num = 2 * dx0Num - dx0Denom;
+            dx0Denom *= 2;
+    
+            dy0Num = 2 * dy0Num - dy0Denom;
+            dy0Denom *= 2;
+    
+            // Equivalent to subtracting 1.5
+            dx1Num = 2 * dx1Num - 3 * dx1Denom;
+            dx1Denom *= 2;
+    
+            dy1Num = 2 * dy1Num - 3 * dy1Denom;
+            dy1Denom *= 2;
+    
+            // Adding translation factors
+    
+            // Equivalent to float dx0 += transX
+            dx0Num = dx0Num * transXRationalDenom + transXRationalNum * dx0Denom;
+            dx0Denom *= transXRationalDenom;
+    
+            // Equivalent to float dy0 += transY
+            dy0Num = dy0Num * transYRationalDenom + transYRationalNum * dy0Denom;
+            dy0Denom *= transYRationalDenom;
+    
+            // Equivalent to float dx1 += transX
+            dx1Num = dx1Num * transXRationalDenom + transXRationalNum * dx1Denom;
+            dx1Denom *= transXRationalDenom;
+    
+            // Equivalent to float dy1 += transY
+            dy1Num = dy1Num * transYRationalDenom + transYRationalNum * dy1Denom;
+            dy1Denom *= transYRationalDenom;
+    
+            // Get the integral coordinates
+            int l_x0, l_y0, l_x1, l_y1;
+    
+            l_x0 = Rational.ceil(dx0Num, dx0Denom);
+            l_y0 = Rational.ceil(dy0Num, dy0Denom);
+    
+            l_x1 = Rational.ceil(dx1Num, dx1Denom);
+            l_y1 = Rational.ceil(dy1Num, dy1Denom);
+    
+            // Set the top left coordinate of the destination
+            final Rectangle2D retValue= new Rectangle2D.Double();
+            retValue.setFrame(l_x0, l_y0, l_x1 - l_x0 + 1, l_y1 - l_y0 + 1);
+            return retValue;
+    }
+
+    /**
+     * Look for an {@link ImageReader} instance that is able to read the
+     * provided {@link ImageInputStream}, which must be non null.
+     * 
+     * <p>
+     * In case no reader is found, <code>null</code> is returned.
+     * 
+     * @param inStream
+     *            an instance of {@link ImageInputStream} for which we need to
+     *            find a suitable {@link ImageReader}.
+     * @return a suitable instance of {@link ImageReader} or <code>null</code>
+     *         if one cannot be found.
+     */
+    static public ImageReader getImageioReader(final ImageInputStream inStream) {
+    	Utilities.ensureNonNull("inStream", inStream);
+    	// get a reader
+    	inStream.mark();
+    	final Iterator<ImageReader> readersIt = ImageIO
+    			.getImageReaders(inStream);
+    	if (!readersIt.hasNext()) {
+    		return null;
+    	}
+    	return readersIt.next();
+    }
+
+    /**
+     * Builds a {@link ReferencedEnvelope} from a {@link GeographicBoundingBox}.
+     * This is useful in order to have an implementation of {@link BoundingBox}
+     * from a {@link GeographicBoundingBox} which strangely does implement
+     * {@link GeographicBoundingBox}.
+     * 
+     * @param geographicBBox
+     *            the {@link GeographicBoundingBox} to convert.
+     * @return an instance of {@link ReferencedEnvelope}.
+     */
+    static public ReferencedEnvelope getReferencedEnvelopeFromGeographicBoundingBox(
+    		final GeographicBoundingBox geographicBBox) {
+    	Utilities.ensureNonNull("GeographicBoundingBox", geographicBBox);
+    	return new ReferencedEnvelope(geographicBBox.getEastBoundLongitude(),
+    			geographicBBox.getWestBoundLongitude(), geographicBBox
+    					.getSouthBoundLatitude(), geographicBBox
+    					.getNorthBoundLatitude(), DefaultGeographicCRS.WGS84);
+    }
+
+    /**
+     * Builds a {@link ReferencedEnvelope} in WGS84 from a {@link GeneralEnvelope}.
+     * 
+     * @param coverageEnvelope
+     *            the {@link GeneralEnvelope} to convert.
+     * @return an instance of {@link ReferencedEnvelope} in WGS84 or <code>null</code> in case a problem during the conversion occurs.
+     */
+    static public ReferencedEnvelope getWGS84ReferencedEnvelope(
+    		final GeneralEnvelope coverageEnvelope) {
+    	Utilities.ensureNonNull("coverageEnvelope", coverageEnvelope);
+    	final ReferencedEnvelope refEnv= new ReferencedEnvelope(coverageEnvelope);
+    	try{
+    	    return refEnv.transform(DefaultGeographicCRS.WGS84, true);
+    	}catch (Exception e) {
+                return null;
+            }
+    }
+
+    /**
+     * Retrieves the dimensions of the {@link RenderedImage} at index
+     * <code>imageIndex</code> for the provided {@link ImageReader} and
+     * {@link ImageInputStream}.
+     * 
+     * <p>
+     * Notice that none of the input parameters can be <code>null</code> or a
+     * {@link NullPointerException} will be thrown. Morevoer the
+     * <code>imageIndex</code> cannot be negative or an
+     * {@link IllegalArgumentException} will be thrown.
+     * 
+     * @param imageIndex
+     *            the index of the image to get the dimensions for.
+     * @param inStream
+     *            the {@link ImageInputStream} to use as an input
+     * @param reader
+     *            the {@link ImageReader} to decode the image dimensions.
+     * @return a {@link Rectangle} that contains the dimensions for the image at
+     *         index <code>imageIndex</code>
+     * @throws IOException
+     *             in case the {@link ImageReader} or the
+     *             {@link ImageInputStream} fail.
+     */
+    public static Rectangle getDimension(final int imageIndex,
+    		final ImageInputStream inStream, final ImageReader reader)
+    		throws IOException {
+    	Utilities.ensureNonNull("inStream", inStream);
+    	Utilities.ensureNonNull("reader", reader);
+    	if (imageIndex < 0)
+    		throw new IllegalArgumentException(Errors.format(
+    				ErrorKeys.INDEX_OUT_OF_BOUNDS_$1, imageIndex));
+    	inStream.reset();
+    	reader.setInput(inStream);
+    	return new Rectangle(0, 0, reader.getWidth(imageIndex), reader
+    			.getHeight(imageIndex));
     }
 }

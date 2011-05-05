@@ -90,7 +90,7 @@ final class GMLUtils {
             returnValue = "Polygon";
         } else if (geometry instanceof MultiPoint) {
             returnValue = "MultiPoint";
-        } else if (geometry instanceof MultiPoint) {
+        } else if (geometry instanceof MultiLineString) {
             returnValue = "MultiLineString";
         } else if (geometry instanceof MultiPolygon) {
             returnValue = "MultiPolygon";

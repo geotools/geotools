@@ -37,6 +37,7 @@ import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.metadata.iso.extent.GeographicBoundingBoxImpl;
 import org.geotools.referencing.CRS;
+import org.geotools.resources.image.ImageUtilities;
 import org.geotools.util.SoftValueHashMap;
 import org.geotools.util.Utilities;
 import org.opengis.coverage.grid.GridCoverage;
@@ -346,7 +347,7 @@ class RasterManager {
 			//
 			// basic initialization
 			//
-			coverageGeographicBBox =Utils.getReferencedEnvelopeFromGeographicBoundingBox(new GeographicBoundingBoxImpl(coverageEnvelope));
+			coverageGeographicBBox =ImageUtilities.getReferencedEnvelopeFromGeographicBoundingBox(new GeographicBoundingBoxImpl(coverageEnvelope));
 			coverageGeographicCRS2D=coverageGeographicBBox.getCoordinateReferenceSystem();
 		    
 		    //

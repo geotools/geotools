@@ -19,9 +19,6 @@ package org.geotools.coverageio.jp2k;
 import it.geosolutions.imageio.imageioimpl.EnhancedImageReadParam;
 import it.geosolutions.imageio.stream.input.FileImageInputStreamExt;
 
-import java.awt.Rectangle;
-import java.awt.geom.AffineTransform;
-import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -38,15 +35,7 @@ import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
-import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.metadata.iso.spatial.PixelTranslation;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
 import org.geotools.util.Utilities;
-import org.opengis.geometry.BoundingBox;
-import org.opengis.metadata.extent.GeographicBoundingBox;
-import org.opengis.referencing.datum.PixelInCell;
 
 /**
  * Sparse utilities for the various classes. I use them to extract
@@ -65,25 +54,6 @@ class Utils {
 	final static Logger LOGGER = org.geotools.util.logging.Logging
 			.getLogger(Utils.class.toString());
 	
-	/**
-	 * {@link AffineTransform} that can be used to go from an image datum placed
-	 * at the center of pixels to one that is placed at ULC.
-	 */
-	final static AffineTransform CENTER_TO_CORNER = AffineTransform
-			.getTranslateInstance(PixelTranslation
-					.getPixelTranslation(PixelInCell.CELL_CORNER),
-					PixelTranslation
-							.getPixelTranslation(PixelInCell.CELL_CORNER));
-	/**
-	 * {@link AffineTransform} that can be used to go from an image datum placed
-	 * at the ULC corner of pixels to one that is placed at center.
-	 */
-	final static AffineTransform CORNER_TO_CENTER = AffineTransform
-			.getTranslateInstance(-PixelTranslation
-					.getPixelTranslation(PixelInCell.CELL_CORNER),
-					-PixelTranslation
-							.getPixelTranslation(PixelInCell.CELL_CORNER));
-
 	static URL checkSource(Object source) throws MalformedURLException,
 			DataSourceException {
 		URL sourceURL = null;
@@ -131,76 +101,6 @@ class Utils {
 	}
 
 	/**
-	 * Builds a {@link ReferencedEnvelope} from a {@link GeographicBoundingBox}.
-	 * This is useful in order to have an implementation of {@link BoundingBox}
-	 * from a {@link GeographicBoundingBox} which strangely does implement
-	 * {@link GeographicBoundingBox}.
-	 * 
-	 * @param geographicBBox
-	 *            the {@link GeographicBoundingBox} to convert.
-	 * @return an instance of {@link ReferencedEnvelope}.
-	 */
-	static ReferencedEnvelope getReferencedEnvelopeFromGeographicBoundingBox(
-			final GeographicBoundingBox geographicBBox) {
-		Utilities.ensureNonNull("GeographicBoundingBox", geographicBBox);
-		return new ReferencedEnvelope(geographicBBox.getEastBoundLongitude(),
-				geographicBBox.getWestBoundLongitude(), geographicBBox
-						.getSouthBoundLatitude(), geographicBBox
-						.getNorthBoundLatitude(), DefaultGeographicCRS.WGS84);
-	}
-
-	static ImageReadParam cloneImageReadParam(ImageReadParam param) {
-
-		// The ImageReadParam passed in is non-null. As the
-		// ImageReadParam class is not Cloneable, if the param
-		// class is simply ImageReadParam, then create a new
-		// ImageReadParam instance and set all its fields
-		// which were set in param. This will eliminate problems
-		// with concurrent modification of param for the cases
-		// in which there is not a special ImageReadparam used.
-
-		// Create a new ImageReadParam instance.
-	    EnhancedImageReadParam newParam = new EnhancedImageReadParam();
-
-		// Set all fields which need to be set.
-
-		// IIOParamController field.
-		if (param.hasController()) {
-			newParam.setController(param.getController());
-		}
-
-		// Destination fields.
-		newParam.setDestination(param.getDestination());
-		if (param.getDestinationType() != null) {
-			// Set the destination type only if non-null as the
-			// setDestinationType() clears the destination field.
-			newParam.setDestinationType(param.getDestinationType());
-		}
-		newParam.setDestinationBands(param.getDestinationBands());
-		newParam.setDestinationOffset(param.getDestinationOffset());
-
-		// Source fields.
-		newParam.setSourceBands(param.getSourceBands());
-		newParam.setSourceRegion(param.getSourceRegion());
-		if (param.getSourceMaxProgressivePass() != Integer.MAX_VALUE) {
-	        newParam.setSourceProgressivePasses(
-	            param.getSourceMinProgressivePass(),
-	            param.getSourceNumProgressivePasses());
-		}
-		if (param.canSetSourceRenderSize()) {
-			newParam.setSourceRenderSize(param.getSourceRenderSize());
-		}
-	    newParam.setSourceSubsampling(param.getSourceXSubsampling(),
-	                                  param.getSourceYSubsampling(),
-	                                  param.getSubsamplingXOffset(),
-	                                  param.getSubsamplingYOffset());
-
-		// Replace the local variable with the new ImageReadParam.
-		return newParam;
-
-	}
-
-	/**
 	 * Look for an {@link ImageReader} instance that is able to read the
 	 * provided {@link ImageInputStream}, which must be non null.
 	 * 
@@ -233,43 +133,6 @@ class Utils {
 	}
 
 	/**
-	 * Retrieves the dimensions of the {@link RenderedImage} at index
-	 * <code>imageIndex</code> for the provided {@link ImageReader} and
-	 * {@link ImageInputStream}.
-	 * 
-	 * <p>
-	 * Notice that none of the input parameters can be <code>null</code> or a
-	 * {@link NullPointerException} will be thrown. Morevoer the
-	 * <code>imageIndex</code> cannot be negative or an
-	 * {@link IllegalArgumentException} will be thrown.
-	 * 
-	 * @param imageIndex
-	 *            the index of the image to get the dimensions for.
-	 * @param inStream
-	 *            the {@link ImageInputStream} to use as an input
-	 * @param reader
-	 *            the {@link ImageReader} to decode the image dimensions.
-	 * @return a {@link Rectangle} that contains the dimensions for the image at
-	 *         index <code>imageIndex</code>
-	 * @throws IOException
-	 *             in case the {@link ImageReader} or the
-	 *             {@link ImageInputStream} fail.
-	 */
-	static Rectangle getDimension(final int imageIndex,
-			final ImageInputStream inStream, final ImageReader reader)
-			throws IOException {
-		Utilities.ensureNonNull("inStream", inStream);
-		Utilities.ensureNonNull("reader", reader);
-		if (imageIndex < 0)
-			throw new IllegalArgumentException(Errors.format(
-					ErrorKeys.INDEX_OUT_OF_BOUNDS_$1, imageIndex));
-		inStream.reset();
-		reader.setInput(inStream);
-		return new Rectangle(0, 0, reader.getWidth(imageIndex), reader
-				.getHeight(imageIndex));
-	}
-
-	/**
 	 * Retrieves an {@link ImageInputStream} for the provided input {@link File}
 	 * .
 	 * 
@@ -284,12 +147,7 @@ class Utils {
 		return inStream;
 	}
 
-	
 
-	/**
-	 * Default priority for the underlying {@link Thread}.
-	 */
-	public static final int DEFAULT_PRIORITY = Thread.NORM_PRIORITY;
 
 	/**
 	 * Setup a double from an array of bytes.

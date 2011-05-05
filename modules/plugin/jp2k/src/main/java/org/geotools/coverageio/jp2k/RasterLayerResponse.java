@@ -76,7 +76,6 @@ import com.sun.media.jai.codecimpl.util.ImagingException;
  * @author Daniele Romagnoli, GeoSolutions S.A.S.
  * @author Simone Giannecchini, GeoSolutions S.A.S.
  */
-@SuppressWarnings("deprecation")
 class RasterLayerResponse{
 	
 	/**
@@ -107,7 +106,7 @@ class RasterLayerResponse{
 				final Dimension tilesDimension) {
 			super();
 			
-			this.readParameters = Utils.cloneImageReadParam(readParameters);
+			this.readParameters = ImageUtilities.cloneImageReadParam(readParameters);
 			this.imageIndex = imageIndex;
 			this.cropBBox = cropBBox;
 			this.worldToGrid = worldToGrid;
@@ -173,9 +172,6 @@ class RasterLayerResponse{
 
 			// If the granule is not there, dump a message and continue
 			final File rasterFile = new File(location);
-			if (rasterFile == null) {
-				return;
-			}
 			if (LOGGER.isLoggable(Level.FINE))
 				LOGGER.fine("File found "+ location);
 			
@@ -468,7 +464,7 @@ class RasterLayerResponse{
 			// base grid to world for the center of pixels
 			final AffineTransform g2w = new AffineTransform((AffineTransform) baseGridToWorld);
 			// move it to the corner
-			g2w.concatenate(Utils.CENTER_TO_CORNER);
+			g2w.concatenate(CoverageUtilities.CENTER_TO_CORNER);
 			
 			//keep into account overviews and subsampling
 			final OverviewLevel level = rasterManager.overviewsController.resolutionsLevels.get(imageChoice);

@@ -27,6 +27,7 @@ import javax.media.jai.JAI;
 import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.RasterLayerResponse.GranuleLoadingResult;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.resources.image.ImageUtilities;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.referencing.operation.MathTransform2D;
 
@@ -59,7 +60,7 @@ class GranuleLoader implements Callable<GranuleLoadingResult>{
 			final GranuleDescriptor granuleDescriptor,
 			final RasterLayerRequest request,
 			final Hints hints) {
-		this.readParameters = Utils.cloneImageReadParam(readParameters);
+		this.readParameters = ImageUtilities.cloneImageReadParam(readParameters);
 		this.imageIndex = imageIndex;
 		this.cropBBox = cropBBox;
 		this.mosaicWorldToGrid = mosaicWorldToGrid;

@@ -674,7 +674,7 @@ public class CatalogBuilder implements Runnable {
                             transaction.close();
                             
                             try{
-                                indexingPostamble(canceled);
+                                indexingPostamble(!canceled);
                             } catch (Exception e) {
                                 // eat me
                             }

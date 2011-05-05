@@ -256,7 +256,7 @@ public class GranuleDescriptor {
 				}
 				else{
 					inStream.mark();
-					reader = Utils.getReader(inStream);
+					reader = ImageUtilities.getImageioReader(inStream);
 					if(reader != null)
 						cachedReaderSPI = reader.getOriginatingProvider();
 					inStream.reset();
@@ -268,7 +268,7 @@ public class GranuleDescriptor {
 				throw new IllegalArgumentException("Unable to get an ImageReader for the provided file "+granuleUrl.toString());
 			
 			//get selected level and base level dimensions
-			final Rectangle originalDimension = Utils.getDimension(0,inStream, reader);
+			final Rectangle originalDimension = ImageUtilities.getDimension(0,inStream, reader);
 			
 			// build the g2W for this tile, in principle we should get it
 			// somehow from the tile itself or from the index, but at the moment
@@ -549,7 +549,7 @@ public class GranuleDescriptor {
 	
 			// get a reader and try to cache the relevant SPI
 			if(cachedReaderSPI==null){
-				reader = Utils.getReader( inStream);
+				reader = ImageUtilities.getImageioReader( inStream);
 				if(reader!=null)
 					cachedReaderSPI=reader.getOriginatingProvider();
 			}
@@ -693,7 +693,7 @@ public class GranuleDescriptor {
 			finalRaster2Model.preConcatenate((AffineTransform) mosaicWorldToGrid);
 			final Interpolation interpolation = request.getInterpolation();
 			//paranoiac check to avoid that JAI freaks out when computing its internal layouT on images that are too small
-			Rectangle2D finalLayout= Utils.layoutHelper(
+			Rectangle2D finalLayout= ImageUtilities.layoutHelper(
 					raster, 
 					(float)finalRaster2Model.getScaleX(), 
 					(float)finalRaster2Model.getScaleY(), 
@@ -861,7 +861,7 @@ public class GranuleDescriptor {
 					//
 					
 					//get selected level and base level dimensions
-					final Rectangle levelDimension = Utils.getDimension(index,inStream, reader);
+					final Rectangle levelDimension = ImageUtilities.getDimension(index,inStream, reader);
 					
 					final GranuleOverviewLevelDescriptor baseLevel= granuleLevels.get(0);
 					final double scaleX=baseLevel.width/(1.0*levelDimension.width);
@@ -900,7 +900,7 @@ public class GranuleDescriptor {
 		
 				// get a reader and try to cache the relevant SPI
 				if(cachedReaderSPI==null){
-					reader = Utils.getReader( inStream);
+					reader = ImageUtilities.getImageioReader( inStream);
 					if(reader!=null)
 						cachedReaderSPI=reader.getOriginatingProvider();
 				}

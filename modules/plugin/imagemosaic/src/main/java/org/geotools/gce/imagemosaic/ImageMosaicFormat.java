@@ -196,7 +196,7 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
     }
 
     /**
-     * @see org.geotools.data.coverage.grid.AbstractGridFormat#getReader(Object)
+     * @see org.geotools.data.coverage.grid.AbstractGridFormat#getImageioReader(Object)
      */
     @Override
     public ImageMosaicReader getReader( Object source ) {

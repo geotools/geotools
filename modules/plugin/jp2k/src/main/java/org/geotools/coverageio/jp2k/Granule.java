@@ -17,7 +17,7 @@
 package org.geotools.coverageio.jp2k;
 
 
-import it.geosolutions.imageio.utilities.Utilities;
+import it.geosolutions.imageio.utilities.ImageIOUtilities;
 
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -37,7 +37,6 @@ import javax.imageio.ImageReader;
 import javax.imageio.spi.ImageReaderSpi;
 import javax.imageio.stream.ImageInputStream;
 import javax.media.jai.ImageLayout;
-import javax.media.jai.Interpolation;
 import javax.media.jai.InterpolationNearest;
 import javax.media.jai.JAI;
 import javax.media.jai.operator.AffineDescriptor;
@@ -51,13 +50,13 @@ import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
+import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.resources.geometry.XRectangle2D;
+import org.geotools.resources.image.ImageUtilities;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.referencing.operation.TransformException;
-
-import com.sun.media.jai.util.Rational;
 
 /**
  * A granule is an elementar piece of data image, with its own overviews and
@@ -81,181 +80,7 @@ class Granule {
 
     /** Logger. */
 	private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(Granule.class); 
-	   
-    // FORMULAE FOR FORWARD MAP are derived as follows
-    //     Nearest
-    //        Minimum:
-    //            srcMin = floor ((dstMin + 0.5 - trans) / scale)
-    //            srcMin <= (dstMin + 0.5 - trans) / scale < srcMin + 1
-    //            srcMin*scale <= dstMin + 0.5 - trans < (srcMin + 1)*scale
-    //            srcMin*scale - 0.5 + trans
-    //                       <= dstMin < (srcMin + 1)*scale - 0.5 + trans
-    //            Let A = srcMin*scale - 0.5 + trans,
-    //            Let B = (srcMin + 1)*scale - 0.5 + trans
-    //
-    //            dstMin = ceil(A)
-    //
-    //        Maximum:
-    //            Note that srcMax is defined to be srcMin + dimension - 1
-    //            srcMax = floor ((dstMax + 0.5 - trans) / scale)
-    //            srcMax <= (dstMax + 0.5 - trans) / scale < srcMax + 1
-    //            srcMax*scale <= dstMax + 0.5 - trans < (srcMax + 1)*scale
-    //            srcMax*scale - 0.5 + trans
-    //                       <= dstMax < (srcMax+1) * scale - 0.5 + trans
-    //            Let float A = (srcMax + 1) * scale - 0.5 + trans
-    //
-    //            dstMax = floor(A), if floor(A) < A, else
-    //            dstMax = floor(A) - 1
-    //            OR dstMax = ceil(A - 1)
-    //
-    //     Other interpolations
-    //
-    //        First the source should be shrunk by the padding that is
-    //        required for the particular interpolation. Then the
-    //        shrunk source should be forward mapped as follows:
-    //
-    //        Minimum:
-    //            srcMin = floor (((dstMin + 0.5 - trans)/scale) - 0.5)
-    //            srcMin <= ((dstMin + 0.5 - trans)/scale) - 0.5 < srcMin+1
-    //            (srcMin+0.5)*scale <= dstMin+0.5-trans <
-    //                                                  (srcMin+1.5)*scale
-    //            (srcMin+0.5)*scale - 0.5 + trans
-    //                       <= dstMin < (srcMin+1.5)*scale - 0.5 + trans
-    //            Let A = (srcMin+0.5)*scale - 0.5 + trans,
-    //            Let B = (srcMin+1.5)*scale - 0.5 + trans
-    //
-    //            dstMin = ceil(A)
-    //
-    //        Maximum:
-    //            srcMax is defined as srcMin + dimension - 1
-    //            srcMax = floor (((dstMax + 0.5 - trans) / scale) - 0.5)
-    //            srcMax <= ((dstMax + 0.5 - trans)/scale) - 0.5 < srcMax+1
-    //            (srcMax+0.5)*scale <= dstMax + 0.5 - trans <
-    //                                                   (srcMax+1.5)*scale
-    //            (srcMax+0.5)*scale - 0.5 + trans
-    //                       <= dstMax < (srcMax+1.5)*scale - 0.5 + trans
-    //            Let float A = (srcMax+1.5)*scale - 0.5 + trans
-    //
-    //            dstMax = floor(A), if floor(A) < A, else
-    //            dstMax = floor(A) - 1
-    //            OR dstMax = ceil(A - 1)
-    //
-    
 
-	private static float rationalTolerance = 0.000001F;
-    private static Rectangle2D layoutHelper(RenderedImage source,
-                                            float scaleX,
-                                            float scaleY,
-                                            float transX,
-                                            float transY,
-                                            Interpolation interp) {
-
-        // Represent the scale factors as Rational numbers.
-		// Since a value of 1.2 is represented as 1.200001 which
-		// throws the forward/backward mapping in certain situations.
-		// Convert the scale and translation factors to Rational numbers
-		Rational scaleXRational = Rational.approximate(scaleX,rationalTolerance);
-		Rational scaleYRational = Rational.approximate(scaleY,rationalTolerance);
-
-		long scaleXRationalNum = (long) scaleXRational.num;
-		long scaleXRationalDenom = (long) scaleXRational.denom;
-		long scaleYRationalNum = (long) scaleYRational.num;
-		long scaleYRationalDenom = (long) scaleYRational.denom;
-
-		Rational transXRational = Rational.approximate(transX,rationalTolerance);
-		Rational transYRational = Rational.approximate(transY,rationalTolerance);
-
-		long transXRationalNum = (long) transXRational.num;
-		long transXRationalDenom = (long) transXRational.denom;
-		long transYRationalNum = (long) transYRational.num;
-		long transYRationalDenom = (long) transYRational.denom;
-
-		int x0 = source.getMinX();
-		int y0 = source.getMinY();
-		int w = source.getWidth();
-		int h = source.getHeight();
-
-		// Variables to store the calculated destination upper left coordinate
-		long dx0Num, dx0Denom, dy0Num, dy0Denom;
-
-		// Variables to store the calculated destination bottom right
-		// coordinate
-		long dx1Num, dx1Denom, dy1Num, dy1Denom;
-
-		// Start calculations for destination
-
-		dx0Num = x0;
-		dx0Denom = 1;
-
-		dy0Num = y0;
-		dy0Denom = 1;
-
-		// Formula requires srcMaxX + 1 = (x0 + w - 1) + 1 = x0 + w
-		dx1Num = x0 + w;
-		dx1Denom = 1;
-
-		// Formula requires srcMaxY + 1 = (y0 + h - 1) + 1 = y0 + h
-		dy1Num = y0 + h;
-		dy1Denom = 1;
-
-		dx0Num *= scaleXRationalNum;
-		dx0Denom *= scaleXRationalDenom;
-
-		dy0Num *= scaleYRationalNum;
-		dy0Denom *= scaleYRationalDenom;
-
-		dx1Num *= scaleXRationalNum;
-		dx1Denom *= scaleXRationalDenom;
-
-		dy1Num *= scaleYRationalNum;
-		dy1Denom *= scaleYRationalDenom;
-
-		// Equivalent to subtracting 0.5
-		dx0Num = 2 * dx0Num - dx0Denom;
-		dx0Denom *= 2;
-
-		dy0Num = 2 * dy0Num - dy0Denom;
-		dy0Denom *= 2;
-
-		// Equivalent to subtracting 1.5
-		dx1Num = 2 * dx1Num - 3 * dx1Denom;
-		dx1Denom *= 2;
-
-		dy1Num = 2 * dy1Num - 3 * dy1Denom;
-		dy1Denom *= 2;
-
-		// Adding translation factors
-
-		// Equivalent to float dx0 += transX
-		dx0Num = dx0Num * transXRationalDenom + transXRationalNum * dx0Denom;
-		dx0Denom *= transXRationalDenom;
-
-		// Equivalent to float dy0 += transY
-		dy0Num = dy0Num * transYRationalDenom + transYRationalNum * dy0Denom;
-		dy0Denom *= transYRationalDenom;
-
-		// Equivalent to float dx1 += transX
-		dx1Num = dx1Num * transXRationalDenom + transXRationalNum * dx1Denom;
-		dx1Denom *= transXRationalDenom;
-
-		// Equivalent to float dy1 += transY
-		dy1Num = dy1Num * transYRationalDenom + transYRationalNum * dy1Denom;
-		dy1Denom *= transYRationalDenom;
-
-		// Get the integral coordinates
-		int l_x0, l_y0, l_x1, l_y1;
-
-		l_x0 = Rational.ceil(dx0Num, dx0Denom);
-		l_y0 = Rational.ceil(dy0Num, dy0Denom);
-
-		l_x1 = Rational.ceil(dx1Num, dx1Denom);
-		l_y1 = Rational.ceil(dy1Num, dy1Denom);
-
-		// Set the top left coordinate of the destination
-		final Rectangle2D retValue= new Rectangle2D.Double();
-		retValue.setFrame(l_x0, l_y0, l_x1 - l_x0 + 1, l_y1 - l_y0 + 1);
-		return retValue;
-	}
 	/**
 	 * This class represent an overview level in a single granule.
 	 * 
@@ -305,7 +130,7 @@ class Granule {
 			this.baseToLevelTransform=new AffineTransform2D( XAffineTransform.getScaleInstance(scaleX,scaleY,0,0));
 			
 			final AffineTransform gridToWorldTransform_ = new AffineTransform(baseToLevelTransform);
-			gridToWorldTransform_.preConcatenate(Utils.CENTER_TO_CORNER);
+			gridToWorldTransform_.preConcatenate(CoverageUtilities.CENTER_TO_CORNER);
 			gridToWorldTransform_.preConcatenate(baseGridToWorld);
 			this.gridToWorldTransform=new AffineTransform2D(gridToWorldTransform_);
 			this.width = width;
@@ -376,7 +201,7 @@ class Granule {
 				throw new IllegalArgumentException("Unable to get an ImageReader for the provided file "+granuleFile.getAbsolutePath());
 			
 			//get selected level and base level dimensions
-			final Rectangle originalDimension = Utils.getDimension(0,inStream, reader);
+			final Rectangle originalDimension = ImageUtilities.getDimension(0,inStream, reader);
 			
 			// build the g2W for this tile, in principle we should get it
 			// somehow from the tile itself or from the index, but at the moment
@@ -483,7 +308,7 @@ class Granule {
 						sourceArea).toString()));
 			final int ssx = readParameters.getSourceXSubsampling();
 			final int ssy = readParameters.getSourceYSubsampling();
-			final int newSubSamplingFactor = Utilities.getSubSamplingFactor2(ssx,ssy);
+			final int newSubSamplingFactor = ImageIOUtilities.getSubSamplingFactor2(ssx,ssy);
 			if (newSubSamplingFactor != 0){
 				readParameters.setSourceSubsampling(newSubSamplingFactor, newSubSamplingFactor,0,0);
 			}
@@ -528,7 +353,7 @@ class Granule {
 			
 			// now create the overall transform
 			final AffineTransform finalRaster2Model = new AffineTransform(baseGridToWorld);
-			finalRaster2Model.concatenate(Utils.CENTER_TO_CORNER);
+			finalRaster2Model.concatenate(CoverageUtilities.CENTER_TO_CORNER);
 			if(!XAffineTransform.isIdentity(backToBaseLevelScaleTransform,EPS))
 				finalRaster2Model.concatenate(backToBaseLevelScaleTransform);
 			if(!XAffineTransform.isIdentity(afterDecimationTranslateTranform,EPS))
@@ -541,7 +366,7 @@ class Granule {
 			
 			final InterpolationNearest nearest = new InterpolationNearest();
 			//paranoiac check to avoid that JAI freaks out when computing its internal layouT on images that are too small
-			Rectangle2D finalLayout= layoutHelper(
+			Rectangle2D finalLayout= ImageUtilities.layoutHelper(
 					raster, 
 					(float)finalRaster2Model.getScaleX(), 
 					(float)finalRaster2Model.getScaleY(), 
@@ -634,7 +459,7 @@ class Granule {
 						throw new IllegalArgumentException("Unable to get an ImageReader for the provided file "+granuleFile.getAbsolutePath());					
 					
 					//get selected level and base level dimensions
-					final Rectangle levelDimension = Utils.getDimension(index,inStream, reader);
+					final Rectangle levelDimension = ImageUtilities.getDimension(index,inStream, reader);
 					final Level baseLevel= granuleLevels.get(0);
 					final double scaleX=baseLevel.width/(1.0*levelDimension.width);
 					final double scaleY=baseLevel.height/(1.0*levelDimension.height);

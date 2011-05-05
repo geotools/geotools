@@ -46,6 +46,7 @@ import org.geotools.gce.imagemosaic.catalog.GranuleCatalogVisitor;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
+import org.geotools.resources.image.ImageUtilities;
 import org.geotools.util.Utilities;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.geometry.BoundingBox;
@@ -133,7 +134,7 @@ class RasterManager {
             //
             // basic initialization
             //
-            coverageGeographicBBox = Utils.getWGS84ReferencedEnvelope(coverageEnvelope);
+            coverageGeographicBBox = ImageUtilities.getWGS84ReferencedEnvelope(coverageEnvelope);
             coverageGeographicCRS2D = coverageGeographicBBox==null?coverageGeographicBBox.getCoordinateReferenceSystem():null;
 
             //

@@ -100,7 +100,6 @@ public class PanTool extends CursorTool {
     @Override
     public void onMouseReleased(MapMouseEvent ev) {
         panning = false;
-        getMapPane().repaint();
     }
 
     /**

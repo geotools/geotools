@@ -32,6 +32,7 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.DefaultMapContext;
+import org.geotools.map.Layer;
 import org.geotools.map.MapContext;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Fill;
@@ -56,6 +57,7 @@ import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
+import org.geotools.map.FeatureLayer;
 
 /**
  * In this example we create a map tool to select a feature clicked
@@ -255,7 +257,8 @@ public class SelectionLab {
             style = createSelectedStyle(IDs);
         }
 
-        mapFrame.getMapContext().getLayer(0).setStyle(style);
+        Layer layer = mapFrame.getMapContext().layers().get(0);
+        ((FeatureLayer) layer).setStyle(style);
         mapFrame.getMapPane().repaint();
     }
 // docs end display selected

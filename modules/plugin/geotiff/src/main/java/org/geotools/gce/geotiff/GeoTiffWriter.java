@@ -56,6 +56,7 @@ import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffException;
 import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffIIOMetadataEncoder;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.Hints;
+import org.geotools.image.io.ImageIOExt;
 import org.geotools.parameter.Parameter;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.resources.coverage.CoverageUtilities;
@@ -130,18 +131,18 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements
 
 		this.destination = destination;
 		if (destination instanceof File)
-			this.outStream = ImageIO.createImageOutputStream(destination);
+			this.outStream = ImageIOExt.createImageOutputStream(null, destination);
 		else if (destination instanceof URL) {
 			final URL dest = (URL) destination;
 			if (dest.getProtocol().equalsIgnoreCase("file")) {
 				final File destFile = DataUtilities.urlToFile(dest);
-				this.outStream = ImageIO.createImageOutputStream(destFile);
+				this.outStream = ImageIOExt.createImageOutputStream(null, destFile);
 			}
 
 		} else if (destination instanceof OutputStream) {
 
-			this.outStream = ImageIO
-					.createImageOutputStream((OutputStream) destination);
+			this.outStream = ImageIOExt
+					.createImageOutputStream(null, (OutputStream) destination);
 
 		} else if (destination instanceof ImageOutputStream)
 			this.outStream = (ImageOutputStream) destination;

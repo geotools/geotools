@@ -89,6 +89,7 @@ import javax.media.jai.operator.RescaleDescriptor;
 import javax.media.jai.operator.XorConstDescriptor;
 
 import org.geotools.factory.Hints;
+import org.geotools.image.io.ImageIOExt;
 import org.geotools.resources.Arguments;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
@@ -2408,7 +2409,7 @@ public class ImageWorker {
         if(LOGGER.isLoggable(Level.FINER))
 			LOGGER.finer("Setting write parameters for this writer");
         ImageWriteParam iwp = null;
-        final ImageOutputStream memOutStream = ImageIO.createImageOutputStream(destination);
+        final ImageOutputStream memOutStream = ImageIOExt.createImageOutputStream(image, destination);
         if(memOutStream==null)
         	throw new IIOException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1,"stream"));        
         if (nativeAcc && writer.getClass().getName().equals(
@@ -2515,7 +2516,7 @@ public class ImageWorker {
         if (spi == null) {
             throw new IIOException(Errors.format(ErrorKeys.NO_IMAGE_WRITER));
         }
-        final ImageOutputStream stream = ImageIO.createImageOutputStream(destination);
+        final ImageOutputStream stream = ImageIOExt.createImageOutputStream(image, destination);
         if(stream==null)
         	throw new IIOException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1,"stream"));
         final ImageWriter       writer = spi.createWriterInstance();
@@ -2611,7 +2612,7 @@ public class ImageWorker {
 
         // Compression is available on both lib
         final ImageWriteParam iwp = writer.getDefaultWriteParam();
-        final ImageOutputStream outStream = ImageIO.createImageOutputStream(destination);
+        final ImageOutputStream outStream = ImageIOExt.createImageOutputStream(image, destination);
         if(outStream==null)
         	throw new IIOException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1,"stream"));
          
@@ -2713,7 +2714,7 @@ public class ImageWorker {
                     writer.setOutput(output);
                     stream = null;
                 } else if (acceptInputType(outputTypes, ImageOutputStream.class)) {
-                    stream = ImageIO.createImageOutputStream(output);
+                    stream = ImageIOExt.createImageOutputStream(image, output);
                     writer.setOutput(stream);
                 } else {
                     continue;

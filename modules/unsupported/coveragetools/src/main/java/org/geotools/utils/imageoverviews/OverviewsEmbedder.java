@@ -56,6 +56,7 @@ import org.apache.commons.cli2.Option;
 import org.apache.commons.cli2.validation.InvalidArgumentException;
 import org.apache.commons.cli2.validation.Validator;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
+import org.geotools.image.io.ImageIOExt;
 import org.geotools.resources.image.ImageUtilities;
 import org.geotools.utils.CoverageToolsConstants;
 import org.geotools.utils.WriteProgressListenerAdapter;
@@ -788,7 +789,7 @@ public void run() {
 				//
 				// output image stream
 				//
-				streamOut = ImageIO.createImageOutputStream(files[fileBeingProcessed]);
+				streamOut = ImageIOExt.createImageOutputStream(null, files[fileBeingProcessed]);
 				if (streamOut == null) {
 					message = new StringBuilder(
 							"Unable to acquire an ImageOutputStream for the file ")

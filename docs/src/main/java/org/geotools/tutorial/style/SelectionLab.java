@@ -32,6 +32,8 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.DefaultMapContext;
+import org.geotools.map.FeatureLayer;
+import org.geotools.map.Layer;
 import org.geotools.map.MapContext;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Fill;
@@ -255,7 +257,8 @@ public class SelectionLab {
             style = createSelectedStyle(IDs);
         }
 
-        mapFrame.getMapContext().getLayer(0).setStyle(style);
+        Layer layer = mapFrame.getMapContext().layers().get(0);
+        ((FeatureLayer) layer).setStyle(style);
         mapFrame.getMapPane().repaint();
     }
 // docs end display selected

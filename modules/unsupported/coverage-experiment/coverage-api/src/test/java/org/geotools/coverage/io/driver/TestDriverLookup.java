@@ -19,7 +19,6 @@ public class TestDriverLookup extends Assert {
     public void testDriver(){
         final Set<Driver> drivers = CoverageIO.getAvailableDrivers();
         assertFalse(drivers.isEmpty());
-        assertFalse(drivers.isEmpty());
     }
 
 }

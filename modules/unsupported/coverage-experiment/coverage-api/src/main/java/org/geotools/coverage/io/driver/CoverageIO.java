@@ -174,7 +174,7 @@ public class CoverageIO{
     public static synchronized Set<Driver> getAvailableDrivers() {
         // get all Driver implementations
         scanForPlugins();
-        final Iterator<Driver> it = getServiceRegistry().getServiceProviders(Driver.class, true);
+        final Iterator<Driver> it = getServiceRegistry().getServiceProviders(Driver.class, false);
         final Set<Driver> drivers = new HashSet<Driver>();
         while (it.hasNext()) {
             final Driver spi = (Driver) it.next();

@@ -12,14 +12,8 @@
 
 .. sectionauthor:: Jody Garnett <jody.garnett@gmail.org>
 
-.. contents::
-
 Welcome
 =======
-
-.. sidebar:: FOSS4G
-
-   Welcome to FOSS4G! Please grab a buddy to go through this workbook.
 
 Welcome to Geospatial for Java - this workbook is aimed at Java developers who are new to geospatial
 and would like to get started.

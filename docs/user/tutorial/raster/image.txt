@@ -12,8 +12,6 @@
 Image Tutorial
 *****************
 
-.. contents::
-
 Welcome
 ========
 

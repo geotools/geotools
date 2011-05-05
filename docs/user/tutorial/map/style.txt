@@ -12,8 +12,6 @@
  Map Style Tutorial
 *********************
 
-.. contents::
-
 Style is all about looking good. In this lab we are going to learn the basics of how to make good looking maps.
 
 Style

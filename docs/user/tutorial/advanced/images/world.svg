@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="1052.3622"
+   height="744.09448"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.47pre2 r22153"
+   sodipodi:docname="world.svg">
+  <defs
+     id="defs4">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       id="perspective10" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.8923598"
+     inkscape:cx="433.01992"
+     inkscape:cy="372.04724"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1440"
+     inkscape:window-height="856"
+     inkscape:window-x="1280"
+     inkscape:window-y="418"
+     inkscape:window-maximized="0" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-308.2677)">
+    <rect
+       style="font-size:14px;fill:#e9e9e9;stroke:#000000;stroke-width:3.54330707000000000;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;fill-opacity:1"
+       id="rect2816"
+       width="466.17969"
+       height="311.53354"
+       x="21.291853"
+       y="355.33389"
+       rx="10"
+       ry="10"
+       inkscape:export-filename="/Users/jody/java/geotools/trunk/docs/user/tutorial/advanced/images/world.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886" />
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+       x="258.86417"
+       y="479.72318"
+       id="text2818"
+       inkscape:export-filename="/Users/jody/java/geotools/trunk/docs/user/tutorial/advanced/images/world.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886"><tspan
+         sodipodi:role="line"
+         id="tspan2820"
+         x="258.86417"
+         y="479.72318"
+         style="font-size:28px">World</tspan><tspan
+         sodipodi:role="line"
+         x="258.86417"
+         y="514.72314"
+         id="tspan2822"
+         style="font-size:28px" /><tspan
+         sodipodi:role="line"
+         x="258.86417"
+         y="535.94611"
+         id="tspan2824"
+         style="font-size:14px">(Units from CoordinateReferenceSystem)</tspan></text>
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot2826"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+       transform="translate(-88.529313,230.94463)"
+       inkscape:export-filename="/Users/jody/java/geotools/trunk/docs/user/tutorial/advanced/images/world.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886"><flowRegion
+         id="flowRegion2828"><rect
+           id="rect2830"
+           width="114.30367"
+           height="25.774357"
+           x="180.4205"
+           y="229.72797" /></flowRegion><flowPara
+         id="flowPara2832" /></flowRoot>    <flowRoot
+       xml:space="preserve"
+       id="flowRoot2834"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+       transform="translate(-88.529313,230.94463)"
+       inkscape:export-filename="/Users/jody/java/geotools/trunk/docs/user/tutorial/advanced/images/world.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886"><flowRegion
+         id="flowRegion2836"><rect
+           id="rect2838"
+           width="103.09743"
+           height="31.377478"
+           x="122.14804"
+           y="133.35428" /></flowRegion><flowPara
+         id="flowPara2840"></flowPara></flowRoot>    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+       x="21.291853"
+       y="327.3183"
+       id="text2842"
+       inkscape:export-filename="/Users/jody/java/geotools/trunk/docs/user/tutorial/advanced/images/world.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886"><tspan
+         sodipodi:role="line"
+         id="tspan2844"
+         x="21.291853"
+         y="327.3183"
+         style="text-align:start;text-anchor:start">Upper Left Corner</tspan><tspan
+         sodipodi:role="line"
+         x="21.291853"
+         y="344.8183"
+         id="tspan2846"
+         style="text-align:start;text-anchor:start">(ULC)</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+       x="21.291853"
+       y="687.0387"
+       id="text2848"
+       inkscape:export-filename="/Users/jody/java/geotools/trunk/docs/user/tutorial/advanced/images/world.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886"><tspan
+         sodipodi:role="line"
+         id="tspan2850"
+         x="21.291853"
+         y="687.0387">(LLC)</tspan><tspan
+         sodipodi:role="line"
+         x="21.291853"
+         y="704.5387"
+         id="tspan2852">Lower Left Corner</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:end;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+       x="487.47153"
+       y="328.4389"
+       id="text2854"
+       inkscape:export-filename="/Users/jody/java/geotools/trunk/docs/user/tutorial/advanced/images/world.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886"><tspan
+         sodipodi:role="line"
+         id="tspan2856"
+         x="487.47153"
+         y="328.4389">Upper Right Corner</tspan><tspan
+         sodipodi:role="line"
+         x="487.47153"
+         y="345.9389"
+         id="tspan2858">(URC)</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:end;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+       x="487.47153"
+       y="684.79742"
+       id="text2860"
+       inkscape:export-filename="/Users/jody/java/geotools/trunk/docs/user/tutorial/advanced/images/world.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886"><tspan
+         sodipodi:role="line"
+         id="tspan2862"
+         x="487.47153"
+         y="684.79742">(LRC)</tspan><tspan
+         sodipodi:role="line"
+         x="487.47153"
+         y="702.29742"
+         id="tspan2864">Lower Right Corner</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+       x="262.22607"
+       y="646.69629"
+       id="text2866"
+       inkscape:export-filename="/Users/jody/java/geotools/trunk/docs/user/tutorial/advanced/images/world.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886"><tspan
+         sodipodi:role="line"
+         id="tspan2868"
+         x="262.22607"
+         y="646.69629">8000</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.99999994px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 111.37404,653.22786 263.67014,0 17.17429,0 0,1.31273"
+       id="path2884"
+       inkscape:export-filename="/Users/jody/java/geotools/trunk/docs/user/tutorial/advanced/images/world.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886" />
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:end;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+       x="460.57654"
+       y="512.22131"
+       id="text2886"
+       inkscape:export-filename="/Users/jody/java/geotools/trunk/docs/user/tutorial/advanced/images/world.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886"><tspan
+         sodipodi:role="line"
+         id="tspan2888"
+         x="460.57654"
+         y="512.22131">9000</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 468.42092,381.09187 0,258.89696"
+       id="path2890"
+       inkscape:export-filename="/Users/jody/java/geotools/trunk/docs/user/tutorial/advanced/images/world.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886" />
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+       x="31.377478"
+       y="373.26389"
+       id="text2892"
+       inkscape:export-filename="/Users/jody/java/geotools/trunk/docs/user/tutorial/advanced/images/world.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886"><tspan
+         sodipodi:role="line"
+         id="tspan2894"
+         x="31.377478"
+         y="373.26389">(2000,12000)</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+       x="443.76718"
+       y="657.90247"
+       id="text2896"
+       inkscape:export-filename="/Users/jody/java/geotools/trunk/docs/user/tutorial/advanced/images/world.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886"><tspan
+         sodipodi:role="line"
+         id="tspan2898"
+         x="443.76718"
+         y="657.90247">(10000,3000)</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+       x="30.256857"
+       y="657.90247"
+       id="text2900"
+       inkscape:export-filename="/Users/jody/java/geotools/trunk/docs/user/tutorial/advanced/images/world.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886"><tspan
+         sodipodi:role="line"
+         id="tspan2902"
+         x="30.256857"
+         y="657.90247">(2000,3000)</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:end;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+       x="473.7496"
+       y="371.02264"
+       id="text2904"
+       inkscape:export-filename="/Users/jody/java/geotools/trunk/docs/user/tutorial/advanced/images/world.png"
+       inkscape:export-xdpi="90.054886"
+       inkscape:export-ydpi="90.054886"><tspan
+         sodipodi:role="line"
+         id="tspan2906"
+         x="473.7496"
+         y="371.02264">(10000,12000)</tspan></text>
+  </g>
+</svg>

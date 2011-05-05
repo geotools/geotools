@@ -12,8 +12,6 @@
 
 .. sectionauthor:: Jody Garnett <jody.garnett@gmail.org>
 
-.. contents::
-
 Welcome
 =========
 

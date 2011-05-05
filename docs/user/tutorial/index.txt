@@ -9,7 +9,6 @@ to GIS workshop making use of examples from GeoTools and other Java libraries.
 .. toctree::
    :maxdepth: 1
 
-   affinetransform/affinetransform   
    quickstart/index
    feature/csv2shp
    geometry/geometrycrs

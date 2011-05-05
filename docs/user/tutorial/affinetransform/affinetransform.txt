@@ -1,0 +1,499 @@
+:Author: Christian Mueller
+:Thanks: geotools-user list
+:Version: |release|
+:License: Create Commons with attribution
+
+.. _affinetransform_tutorial:
+
+********************************
+ Affine Transformation  Tutorial
+********************************
+
+.. sectionauthor:: Christian Mueller
+
+.. contents::
+
+Welcome
+=======
+
+.. sidebar:: FOSS4G
+
+   Welcome to FOSS4G! Please grab a buddy to go through this workbook.
+
+Welcome to this tutorial about affine transformations. As an example we will map world coordinates to pixel coordinates.
+Some mathematical background is needed and will be introduced to show the power of this kind of calculations.
+
+About Your Instructor
+
+* Christian Mueller is a geotools developer and is working for a big customer to build up a GIS infrastructure.
+  Let it be enough, I do not want to bore you.
+
+The Assignment
+==============
+
+We want to map world coordinates to pixel coordinates and  pixel coordinates to world coordinates. 
+Before we start, some important definitions.::
+
+ ============= ====================
+  Abbreviation Meaning
+ ============= ====================
+  LLC           lower left corner 
+  ULC           upper left corner 
+  URC           upper right corner
+  LRC           lower right corner
+ ============= ====================
+
+We have a rectangle in world coordinates, the origin is at the LLC, x = 2000, y = 3000, width = 8000 units an height = 9000 units.
+The resulting corner points are::
+
+ ============= ====================
+  Point         world x,y coords
+ ============= ====================
+  LLC            2000,  3000 
+  ULC            2000, 12000 
+  URC           10000, 12000 
+  LRC           10000,  3000 
+ ============= ====================
+
+Next, we want to map this rectangle to a screen, using pixel coordinates. The available scree size = 400x300 pixels. Unfortunately,
+pixel coordinates have their origin in the ULC normally, not in the LLC. The next table shows the mappings.::
+
+
+ ============= ==================== ====================
+  Point         world x,y coords     pixel x,y coords
+ ============= ==================== ====================
+  LLC            2000, 3000              0,300
+  ULC            2000,12000              0,  0 
+  URC           10000,12000            400,  0
+  LRC           10000, 3000            400,300
+ ============= ==================== ====================
+
+The challenge is to find a method how to transform each point within the world rectangle to a point in the pixel rectangle.
+(And the other way around)
+
+Mathematical Background
+=======================
+
+Since most people I know dislike mathematics I will reduce this section to an absolute minimum. An affine transformation is based on a matrix. Here we need a 3x3 matrix like this one::
+
+	[ m00 m01 m02 ] 
+	[ m10 m11 m12 ] 
+	[   0   0   1 ] 
+
+The last row is filled with constant values. A point is represented as a vector.::
+
+	[ x ] 
+	[ y ] 
+	[ 1 ] 
+
+The third component is always 1. The transformation process itself is executed by multiplying the matrix with the vector.
+To get the new point x_new and y_new, the following calculation has to be done.::
+
+
+        [ x_new] = [ m00 m01 m02 ] [ x ] = [ m00x + m01y + m02 ]
+        [ y_new] = [ m10 m11 m12 ] [ y ] = [ m10x + m11y + m12 ]
+        [ 1 ]    = [ 0   0     1 ] [ 1 ] = [ 0 + 0 + 1 ]
+
+.. note::
+
+   It is very important to understand this, but I am sure you will if you read the tutorial to the end.
+
+A quick test. Why is the matrix:: 
+
+
+	[ 1 0 0 ] 
+	[ 0 1 0 ] 
+	[ 0 0 1 ] 
+
+called the identity matrix ?
+
+Answer::
+
+
+	[ 1 0 0 ] [ x ] = [ x ] 
+	[ 0 1 0 ] [ y ] = [ y ]
+	[ 0 0 1 ] [ 1 ] = [ 1 ]
+
+The detailed calculation::
+
+	1*x + 0*y + 0*1 = x
+	0*x + 1*y + 0*1 = y
+	0*x + 0*y + 1*1 = 1
+
+
+A second test. What is this matrix responsible for:: 
+
+
+	[ 0 1 0 ] 
+	[ 1 0 0 ] 
+	[ 0 0 1 ] 
+
+This matrix swaps x and y::
+
+
+	[ 0 1 0 ] [ x ] = [ y ] 
+	[ 1 0 0 ] [ y ] = [ x ]
+	[ 0 0 1 ] [ 1 ] = [ 1 ]
+
+The detailed calculation::
+
+	0*x + 1*y + 0*1 = y
+	1*x + 0*y + 0*1 = x
+	0*x + 0*y + 1*1 = 1
+
+
+
+The calculations
+================
+
+We need three steps for getting pixel x/y from world x/y.
+
+Translate Operation
+-------------------
+We have to shift the origin of the world rectangle to 0,0. This is easy. The LLC has values 2000,3000, we only need to subtract 2000 from x 
+and 3000 from y. We use the URC with values 10000,12000 to demonstrate the calculation.
+
+Java Code
+
+.. code-block:: java
+
+        AffineTransform translate= AffineTransform.getTranslateInstance(-2000, -3000);
+        System.out.println("Translate:" + translate.toString());
+        Point2D p = new Point2D.Double(2000,3000);
+        System.out.println(translate.transform(p, null));
+
+Output::
+
+	Translate:AffineTransform[[1.0, 0.0, -2000.0], [0.0, 1.0, -3000.0]]
+	Point2D.Double[0.0, 0.0]
+
+
+.. note::
+   
+   The toString() method of the AffineTransform class only shows the first two rows of the matrix. The static method getTranslateInstance is
+   a convenience method, otherwise you have to call a constructor with 6 values.
+
+The used matrix is::
+
+ [  1.00  0.00 -2000.00 ] 
+ [  0.00  1.00 -3000.00 ] 
+ [  0.00  0.00  1.00 ] 
+
+The detailed calculation::
+
+	1 * 2000 + 0 * 3000 + 1 * -2000 = 0
+	0 * 2000 + 1 * 3000 + 1 * -3000 = 0
+	0 * 2000 + 0 * 3000 + 1 * 1     = 1
+
+
+The result of all four corner points is::
+
+ ======= ==================== ====================
+  Point           before               after
+ ======= ==================== ====================
+  LLC              2000, 3000             0,    0
+  ULC              2000,12000             0, 9000
+  URC             10000,12000          8000, 9000
+  LRC             10000, 3000          8000,    0
+ ======= ==================== ====================
+
+
+Scale Operation
+---------------
+The world rectangle has a width of 8000 units and a height of 9000 units, the pixel dimension has a width of 400 pixels and a height of 300 
+pixels. We need to scale with 400/8000.0 and 300 / 9000.0. Let us use the point in the middle of the world rectangle after the translate operation, having its LLC at 0,0.
+
+Java Code
+
+.. code-block:: java
+
+        AffineTransform scale= AffineTransform.getScaleInstance(400/8000.0, 300 / 9000.0);
+        System.out.println("Scale:" + scale.toString());
+        p = new Point2D.Double(4000,4500);
+        System.out.println(scale.transform(p, null));
+
+
+Output::
+
+       Scale:AffineTransform[[0.05, 0.0, 0.0], [0.0, 0.033333333333333, 0.0]]
+       Point2D.Double[200.0, 150.0]
+
+The detailed calculation (omitting the last one, the result is always 1) ::
+
+	0.05 * 4000 + 0      * 5000 + 1 * 0 = 200
+	0    * 4000 + 0.03.. * 5000 + 1 * 0 = 150
+
+
+The used matrix is::
+
+ [  0.05  0.00    0.00 ] 
+ [  0.00  0.03..  0.00 ] 
+ [  0.00  0.00    1.00 ] 
+
+Using the output of the translation operation as the input for the mirror operation, the result of all four corner points is::
+
+ ======= ==================== ====================
+  Point           before               after
+ ======= ==================== ====================
+  LLC                 0,    0             0,    0
+  ULC                 0, 9000             0,  300
+  URC              8000, 9000           400,  300
+  LRC              8000,    0           400,    0
+ ======= ==================== ====================
+
+	
+Mirror Operation
+----------------
+Remember: The world rectangle has its origin in the LLC and  the pixel rectangle has its origin  in the ULC !
+There is a need for a mirroring operation. After the scale operation, we have already pixel values, but we must mirror the y value.
+The x value should not change. For mirroring, we must calculate:: 
+
+	y_new = 300 - y
+
+Let us create the appropriate affine transform.
+
+Java Code
+
+.. code-block:: java
+
+        AffineTransform mirror_y = new AffineTransform(1, 0, 0, -1, 0, 300);
+        System.out.println("Mirror:" + mirror_y.toString());
+        p = new Point2D.Double(100,50);
+        System.out.println(mirror_y.transform(p, null));
+
+.. code-block:: java
+
+	Mirror:AffineTransform[[1.0, 0.0, 0.0], [0.0, -1.0, 300.0]]
+	Point2D.Double[100.0, 250.0]
+
+The x value is unchanged, but the y value is mirrored.
+
+The used matrix is::
+
+ [  1.00  0.00   0.00 ] 
+ [  0.00 -1.00 300.00 ] 
+ [  0.00  0.00   1.00 ] 
+
+The detailed calculation::
+
+   1 * 100 +  0 * 50  + 1 *   0 = 100
+   0 * 100 + -1 * 50 +  1 * 300 = 250
+
+
+Using the output of the scale operation as the input for the scale operation, the result of all four corner points is::
+
+ ======= ==================== ====================
+  Point           before               after
+ ======= ==================== ====================
+  LLC                 0,    0             0,  300
+  ULC                 0,  300             0,    0
+  URC               400,  300           400,    0
+  LRC               400,    0           400,  300
+ ======= ==================== ====================
+
+
+
+Matrix Concatenation
+====================
+
+Here comes the magic, part I.
+
+Until now, most of you will say that it is easier to write this calculations without the use of the AffineTransform class, be patient.
+We have created 3 AffineTransform objects, now we combine them. There is a method 
+
+.. code-block:: java
+
+   concatenate(AffineTransform other) 
+
+which I want to introduce. The only important thing to know is that you have to START with the LAST AffineTransform object, NOT with the first.
+
+Java Code
+
+.. code-block:: java
+
+        AffineTransform world2pixel = new AffineTransform(mirror_y);        
+        world2pixel.concatenate(scale);
+        world2pixel.concatenate(translate);
+        System.out.println("World2Pixel:" + world2pixel.toString());
+
+        p = new Point2D.Double(2000,3000);
+        System.out.println("LLC: " + world2pixel.transform(p,null));
+        p = new Point2D.Double(2000,12000);
+        System.out.println("ULC: " + world2pixel.transform(p,null));        
+        p = new Point2D.Double(10000,12000);
+        System.out.println("URC: " + world2pixel.transform(p,null));
+        p = new Point2D.Double(10000,3000);
+        System.out.println("LRC: " + world2pixel.transform(p,null));
+
+Output::
+
+	LLC: Point2D.Double[  0.0, 300.0]
+	ULC: Point2D.Double[  0.0,   0.0]
+	URC: Point2D.Double[400.0,   0.0]
+	LRC: Point2D.Double[400.0, 300.0]
+
+The combined matrix is::
+
+ [  0.05  0.00 -100.00 ] 
+ [  0.00 -0.03  400.00 ] 
+ [  0.00  0.00    1.00 ] 
+
+Lets use LRC (10000,3000) to show a detailed calculation::
+
+  0.05 * 10000 +     0 * 3000 + 1 * -100  = 400
+  0    * 10000 + -0.03.. 3000 + 1 *  400  = 300 
+
+At the end of the day, you have exactly one AffineTransform object doing the job. As an example, the java.awt.Graphics2D class has a method 
+
+.. code-block:: java
+
+   public void setTransform(AffineTransform tx)
+
+.. hint::
+
+   If you set our transform object in your Graphics2D object, you can draw and paint with world coordinates.
+
+
+Inversion
+=========
+
+Create an inverse transformation
+--------------------------------
+
+Here comes the magic, part II.
+
+What about calculating world coordinates from pixel coordinates. This is easy, get the inverse transform. Look at this code segment
+
+Java Code
+
+.. code-block:: java
+
+        AffineTransform pixel2World=null;
+        try {
+            pixel2World = world2pixel.createInverse();
+        } catch (NoninvertibleTransformException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Pixel2World:" + pixel2World.toString());
+        
+        p = new Point2D.Double(200,150);
+        System.out.println("World : " + pixel2World.transform(p,null));
+
+Output::
+
+	Pixel2World:AffineTransform[[20.0, 0.0, 2000.0], [0.0, -30.0, 12000.0]]
+	World : Point2D.Double[6000.0, 7500.0]
+
+
+The inverse matrix is::
+
+ [ 20.00  0.00 2000.00 ] 
+ [  0.00 -30.00 12000.00 ] 
+ [  0.00  0.00  1.00 ] 
+
+Let us use the pixel values  200,150 (representing the center of the pixel rectangle) to show a detailed calculation::
+
+ 20 * 200 +   0 * 150 + 1 * 2000 =  6000
+  0 * 200 + -30 * 150 + 1* 12000 =  7500
+
+The point 6000,7500 is indeed the center of our world rectangle.
+
+The inversion result of our pixel corner points is::
+
+ ======= ==================== ====================
+ Point           before               after
+ ======= ==================== ====================
+  LLC                 0,  300          2000, 3000
+  ULC                 0,    0          2000,12000
+  URC               400,    0         10000,12000
+  LRC               400,  300         10000, 3000
+ ======= ==================== ====================
+
+.. hint::
+
+ As an example, if you want to show the world coordinates while a user moves the mouse over a map, this transform is what you need.
+
+About the NoninvertibleTransformException
+-----------------------------------------
+
+It can happen that a matrix is not invertible. This chapter is for the interested reader, if you dislike mathematics, you can skip it.
+The only import thing you should now is that for this kind of matrices the exception can never occur.
+
+A matrix has a determinant. For creating the inverse matrix, divisions by the determinant are needed. As we know from school, it is not 
+allowed to divide by zero. As a consequence, the determinant with value 0 prevents the creation of an inverse matrix.
+
+For a 2x2 matrix::
+
+ [ a b ]
+ [ c d ]
+
+the determinant is::
+
+  a*d - c*b
+
+
+For a 3x3 matrix::
+
+ [ a b c]
+ [ d e f]
+ [ g h i]
+
+the determinant is::
+
+ a * ( e*i-h*f ) - d * (b*i -h *c) + g * ( b*f -e *c)
+
+Fortunately, our matrices always have g = 0,  h = 0 and i = 1. Setting 0 for g results in::
+
+ a * ( e*i-h*f ) - d * (b*i -h *c) 
+
+Setting i to 1 results in::
+
+  a * ( e-h*f ) - d * (b -h *c) 
+
+Finally, we set h to 0::
+
+  a * e - d * b
+
+This is in fact the same calculation as for the 2x2 matrix.
+
+Let as construct such a matrix 
+
+.. code-block:: java
+
+    	AffineTransform noInvert = new AffineTransform(5,3,5,3,0,0);
+    	System.out.println("NoInvert : "+noInvert.toString());
+    	System.out.println("Determinant : "+noInvert.getDeterminant());
+    	try {
+		noInvert.createInverse();
+	} catch (NoninvertibleTransformException e) {
+		e.printStackTrace();
+	}
+
+Output::
+
+	NoInvert : AffineTransform[[5.0, 5.0, 0.0], [3.0, 3.0, 0.0]]
+	Determinant : 0.0
+	java.awt.geom.NoninvertibleTransformException: Determinant is 0.0
+		at java.awt.geom.AffineTransform.createInverse(AffineTransform.java:2666)
+		at at.linux4all.affine.TestAffineTransform.test(TestAffineTransform.java:164)
+		at at.linux4all.affine.TestAffineTransform.main(TestAffineTransform.java:84)
+
+Remember, our matrix for world to pixel transformation was::
+
+
+ [  0.05  0.00 -100.00 ] 
+ [  0.00 -0.03  400.00 ] 
+ [  0.00  0.00    1.00 ] 
+
+The determinant is::
+
+  0.05 *  (-0.03..) - 0 * 0 
+
+which is not equal 0 and we can create the inverse matrix.
+
+Conclusion
+==========
+
+I hope this tutorial helps to demystify affine transforms, if you are used to them, you will never step back for such kind of calculations.
+Take a look at the Java API of the java.awt.geom.AffineTransform class to see further possibilities. (rotate, shear,...)
+

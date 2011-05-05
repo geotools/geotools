@@ -1,0 +1,319 @@
+<class-diagram version="1.0.1" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+  associations="true" dependencies="false" nesting-relationships="true">  
+  <class id="1" corner="BOTTOM_RIGHT" language="java" name="org.geotools.gce.geotiff.GeoTiffFormat" 
+    project="gt-geotiff-new-2.8-SNAPSHOT" 
+    file="/gt-geotiff-new-2.8-SNAPSHOT/src/main/java/org/geotools/gce/geotiff/GeoTiffFormat.java" binary="false">    
+    <position x="917" y="37" width="107" height="45"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="2" corner="BOTTOM_RIGHT" language="java" name="org.geotools.gce.geotiff.RasterManager.OverviewLevel" 
+    project="gt-geotiff-new-2.8-SNAPSHOT" 
+    file="/gt-geotiff-new-2.8-SNAPSHOT/src/main/java/org/geotools/gce/geotiff/RasterManager.java" binary="false">    
+    <position x="721" y="377" width="107" height="45"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="3" corner="BOTTOM_RIGHT" language="java" name="org.geotools.gce.geotiff.GeoTiffReader" 
+    project="gt-geotiff-new-2.8-SNAPSHOT" 
+    file="/gt-geotiff-new-2.8-SNAPSHOT/src/main/java/org/geotools/gce/geotiff/GeoTiffReader.java" binary="false">    
+    <position x="388" y="292" width="107" height="45"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <enumeration id="4" corner="BOTTOM_RIGHT" language="java" name="org.geotools.gce.geotiff.ReadType" 
+    project="gt-geotiff-new-2.8-SNAPSHOT" 
+    file="/gt-geotiff-new-2.8-SNAPSHOT/src/main/java/org/geotools/gce/geotiff/ReadType.java" binary="false">    
+    <position x="557" y="207" width="116" height="45"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </enumeration>  
+  <class id="5" corner="BOTTOM_RIGHT" language="java" name="org.geotools.gce.geotiff.RasterManager.DecimationController" 
+    project="gt-geotiff-new-2.8-SNAPSHOT" 
+    file="/gt-geotiff-new-2.8-SNAPSHOT/src/main/java/org/geotools/gce/geotiff/RasterManager.java" binary="false">    
+    <position x="535" y="292" width="143" height="45"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="6" corner="BOTTOM_RIGHT" language="java" name="org.geotools.gce.geotiff.GeoTiffWriteParams" 
+    project="gt-geotiff-new-2.8-SNAPSHOT" 
+    file="/gt-geotiff-new-2.8-SNAPSHOT/src/main/java/org/geotools/gce/geotiff/GeoTiffWriteParams.java" binary="false">    
+    <position x="42" y="37" width="139" height="45"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="7" corner="BOTTOM_RIGHT" language="java" name="org.geotools.gce.geotiff.RasterLayerResponse.GranuleWorker" 
+    project="gt-geotiff-new-2.8-SNAPSHOT" 
+    file="/gt-geotiff-new-2.8-SNAPSHOT/src/main/java/org/geotools/gce/geotiff/RasterLayerResponse.java" binary="false">    
+    <position x="407" y="122" width="110" height="45"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="8" corner="BOTTOM_RIGHT" language="java" name="org.geotools.gce.geotiff.RasterManager.OverviewsController" 
+    project="gt-geotiff-new-2.8-SNAPSHOT" 
+    file="/gt-geotiff-new-2.8-SNAPSHOT/src/main/java/org/geotools/gce/geotiff/RasterManager.java" binary="false">    
+    <position x="796" y="328" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="9" corner="BOTTOM_RIGHT" language="java" name="org.geotools.gce.geotiff.GeoTiffWriter" 
+    project="gt-geotiff-new-2.8-SNAPSHOT" 
+    file="/gt-geotiff-new-2.8-SNAPSHOT/src/main/java/org/geotools/gce/geotiff/GeoTiffWriter.java" binary="false">    
+    <position x="221" y="37" width="107" height="45"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="10" corner="BOTTOM_RIGHT" language="java" name="org.geotools.gce.geotiff.RasterLayout" 
+    project="gt-geotiff-new-2.8-SNAPSHOT" 
+    file="/gt-geotiff-new-2.8-SNAPSHOT/src/main/java/org/geotools/gce/geotiff/RasterLayout.java" binary="false">    
+    <position x="409" y="462" width="107" height="45"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="11" corner="BOTTOM_RIGHT" language="java" name="org.geotools.gce.geotiff.RasterGranuleLoader.Level" 
+    project="gt-geotiff-new-2.8-SNAPSHOT" 
+    file="/gt-geotiff-new-2.8-SNAPSHOT/src/main/java/org/geotools/gce/geotiff/RasterGranuleLoader.java" binary="false">    
+    <position x="241" y="292" width="107" height="45"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="12" corner="BOTTOM_RIGHT" language="java" name="org.geotools.gce.geotiff.GeoTiffFormatFactorySpi" 
+    project="gt-geotiff-new-2.8-SNAPSHOT" 
+    file="/gt-geotiff-new-2.8-SNAPSHOT/src/main/java/org/geotools/gce/geotiff/GeoTiffFormatFactorySpi.java" 
+    binary="false">    
+    <position x="368" y="37" width="163" height="45"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="13" corner="BOTTOM_RIGHT" language="java" name="org.geotools.gce.geotiff.RasterLayerResponse" 
+    project="gt-geotiff-new-2.8-SNAPSHOT" 
+    file="/gt-geotiff-new-2.8-SNAPSHOT/src/main/java/org/geotools/gce/geotiff/RasterLayerResponse.java" binary="false">    
+    <position x="849" y="27" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="14" corner="BOTTOM_RIGHT" language="java" name="org.geotools.gce.geotiff.RasterManager" 
+    project="gt-geotiff-new-2.8-SNAPSHOT" 
+    file="/gt-geotiff-new-2.8-SNAPSHOT/src/main/java/org/geotools/gce/geotiff/RasterManager.java" binary="false">    
+    <position x="932" y="177" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="15" corner="BOTTOM_RIGHT" language="java" name="org.geotools.gce.geotiff.Utils" 
+    project="gt-geotiff-new-2.8-SNAPSHOT" 
+    file="/gt-geotiff-new-2.8-SNAPSHOT/src/main/java/org/geotools/gce/geotiff/Utils.java" binary="false">    
+    <position x="571" y="37" width="107" height="45"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="16" corner="BOTTOM_RIGHT" language="java" name="org.geotools.gce.geotiff.RasterGranuleLoader" 
+    project="gt-geotiff-new-2.8-SNAPSHOT" 
+    file="/gt-geotiff-new-2.8-SNAPSHOT/src/main/java/org/geotools/gce/geotiff/RasterGranuleLoader.java" binary="false">    
+    <position x="241" y="207" width="145" height="45"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="17" corner="BOTTOM_RIGHT" language="java" name="org.geotools.gce.geotiff.RasterLayerRequest" 
+    project="gt-geotiff-new-2.8-SNAPSHOT" 
+    file="/gt-geotiff-new-2.8-SNAPSHOT/src/main/java/org/geotools/gce/geotiff/RasterLayerRequest.java" binary="false">    
+    <position x="557" y="122" width="140" height="45"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class id="18" corner="BOTTOM_RIGHT" language="java" name="org.geotools.gce.geotiff.RasterManager.DomainManager" 
+    project="gt-geotiff-new-2.8-SNAPSHOT" 
+    file="/gt-geotiff-new-2.8-SNAPSHOT/src/main/java/org/geotools/gce/geotiff/RasterManager.java" binary="false">    
+    <position x="918" y="292" width="116" height="45"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <association>    
+    <end type="SOURCE" nodeId="17" navigable="false">      
+      <attribute name="rasterManager"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="14" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="2" navigable="false">      
+      <attribute name="rasterLayout"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="10" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting>    
+    <end type="SOURCE" nodeId="16"/>    
+    <end type="TARGET" nodeId="11"/>  
+  </nesting>  
+  <nesting>    
+    <end type="SOURCE" nodeId="14"/>    
+    <end type="TARGET" nodeId="8"/>  
+  </nesting>  
+  <association>    
+    <bendpoint x="418" y="377"/>    
+    <end type="SOURCE" nodeId="3" navigable="false">      
+      <attribute name="hrLayout"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="10" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="14" navigable="false">      
+      <attribute name="overviewsController"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="8" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="17" navigable="false">      
+      <attribute name="readType"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="16" navigable="false">      
+      <attribute name="granuleLevels"/>      
+      <multiplicity minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" nodeId="11" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting>    
+    <bendpoint x="887" y="292"/>    
+    <end type="SOURCE" nodeId="14"/>    
+    <end type="TARGET" nodeId="2"/>  
+  </nesting>  
+  <nesting>    
+    <end type="SOURCE" nodeId="14"/>    
+    <end type="TARGET" nodeId="5"/>  
+  </nesting>  
+  <association>    
+    <end type="SOURCE" nodeId="7" navigable="false">      
+      <attribute name="rasterGranuleLoader"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="16" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="14" navigable="false">      
+      <attribute name="domainManager"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="18" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="14" navigable="false">      
+      <attribute name="parent"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting>    
+    <end type="SOURCE" nodeId="14"/>    
+    <end type="TARGET" nodeId="18"/>  
+  </nesting>  
+  <association>    
+    <end type="SOURCE" nodeId="3" navigable="false">      
+      <attribute name="rasterManager"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="14" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="14" navigable="false">      
+      <attribute name="decimationController"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting>    
+    <end type="SOURCE" nodeId="13"/>    
+    <end type="TARGET" nodeId="7"/>  
+  </nesting>  
+  <association>    
+    <end type="SOURCE" nodeId="8" navigable="false">      
+      <attribute name="resolutionsLevels"/>      
+      <multiplicity minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" nodeId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <bendpoint x="727" y="122"/>    
+    <end type="SOURCE" nodeId="13" navigable="false">      
+      <attribute name="rasterManager"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="14" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <bendpoint x="397" y="377"/>    
+    <end type="SOURCE" nodeId="3" navigable="false">      
+      <attribute name="overViewLayouts"/>      
+      <multiplicity minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" nodeId="10" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="13" navigable="false">      
+      <attribute name="request"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="17" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <classifier-display autosize="true" package="true" initial-value="false" signature="true" visibility="true">    
+    <attributes public="false" package="false" protected="false" private="false"/>    
+    <operations public="true" package="true" protected="true" private="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

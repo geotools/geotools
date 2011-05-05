@@ -387,7 +387,7 @@ class Utils {
      * @throws IIOException
      *             if the metadata cannot be created
      */
-    public final static IIOMetadata createGeoTiffIIOMetadata(
+    final static IIOMetadata createGeoTiffIIOMetadata(
     		ImageWriter writer, ImageTypeSpecifier type,
     		GeoTiffIIOMetadataEncoder geoTIFFMetadata, ImageWriteParam params)
     		throws IIOException {
@@ -431,13 +431,72 @@ class Utils {
 
 
     /** Move to base utils*/
+    
     static Rectangle2D layoutHelper(RenderedImage source,
                                         float scaleX,
                                         float scaleY,
                                         float transX,
                                         float transY,
                                         Interpolation interp) {
-    
+        
+        // FORMULAE FOR FORWARD MAP are derived as follows
+        //     Nearest
+        //        Minimum:
+        //            srcMin = floor ((dstMin + 0.5 - trans) / scale)
+        //            srcMin <= (dstMin + 0.5 - trans) / scale < srcMin + 1
+        //            srcMin*scale <= dstMin + 0.5 - trans < (srcMin + 1)*scale
+        //            srcMin*scale - 0.5 + trans
+        //                       <= dstMin < (srcMin + 1)*scale - 0.5 + trans
+        //            Let A = srcMin*scale - 0.5 + trans,
+        //            Let B = (srcMin + 1)*scale - 0.5 + trans
+        //
+        //            dstMin = ceil(A)
+        //
+        //        Maximum:
+        //            Note that srcMax is defined to be srcMin + dimension - 1
+        //            srcMax = floor ((dstMax + 0.5 - trans) / scale)
+        //            srcMax <= (dstMax + 0.5 - trans) / scale < srcMax + 1
+        //            srcMax*scale <= dstMax + 0.5 - trans < (srcMax + 1)*scale
+        //            srcMax*scale - 0.5 + trans
+        //                       <= dstMax < (srcMax+1) * scale - 0.5 + trans
+        //            Let float A = (srcMax + 1) * scale - 0.5 + trans
+        //
+        //            dstMax = floor(A), if floor(A) < A, else
+        //            dstMax = floor(A) - 1
+        //            OR dstMax = ceil(A - 1)
+        //
+        //     Other interpolations
+        //
+        //        First the source should be shrunk by the padding that is
+        //        required for the particular interpolation. Then the
+        //        shrunk source should be forward mapped as follows:
+        //
+        //        Minimum:
+        //            srcMin = floor (((dstMin + 0.5 - trans)/scale) - 0.5)
+        //            srcMin <= ((dstMin + 0.5 - trans)/scale) - 0.5 < srcMin+1
+        //            (srcMin+0.5)*scale <= dstMin+0.5-trans <
+        //                                                  (srcMin+1.5)*scale
+        //            (srcMin+0.5)*scale - 0.5 + trans
+        //                       <= dstMin < (srcMin+1.5)*scale - 0.5 + trans
+        //            Let A = (srcMin+0.5)*scale - 0.5 + trans,
+        //            Let B = (srcMin+1.5)*scale - 0.5 + trans
+        //
+        //            dstMin = ceil(A)
+        //
+        //        Maximum:
+        //            srcMax is defined as srcMin + dimension - 1
+        //            srcMax = floor (((dstMax + 0.5 - trans) / scale) - 0.5)
+        //            srcMax <= ((dstMax + 0.5 - trans)/scale) - 0.5 < srcMax+1
+        //            (srcMax+0.5)*scale <= dstMax + 0.5 - trans <
+        //                                                   (srcMax+1.5)*scale
+        //            (srcMax+0.5)*scale - 0.5 + trans
+        //                       <= dstMax < (srcMax+1.5)*scale - 0.5 + trans
+        //            Let float A = (srcMax+1.5)*scale - 0.5 + trans
+        //
+        //            dstMax = floor(A), if floor(A) < A, else
+        //            dstMax = floor(A) - 1
+        //            OR dstMax = ceil(A - 1)
+        //
     // Represent the scale factors as Rational numbers.
     	// Since a value of 1.2 is represented as 1.200001 which
     	// throws the forward/backward mapping in certain situations.

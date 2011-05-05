@@ -44,7 +44,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @source $URL$
  * @version $Id$
  */
-public final class DefaultFeatureBuilder extends GridFeatureBuilder {
+public class DefaultFeatureBuilder extends GridFeatureBuilder {
 
     /** Default feature TYPE name: "grid" */
     public static final String DEFAULT_TYPE_NAME = "grid";

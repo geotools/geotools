@@ -49,7 +49,7 @@ public abstract class GridFeatureBuilder {
     private final SimpleFeatureType TYPE;
 
     /**
-     * Creates an {@code GridFeatureBuilder} to work with the given feature type.
+     * Creates a {@code GridFeatureBuilder} to work with the given feature type.
      *
      * @param type the feature type
      */
@@ -58,7 +58,7 @@ public abstract class GridFeatureBuilder {
     }
 
     /**
-     * Gets the feature type used by this {@code GridFeatureBuilder}.
+     * Gets the feature type. 
      *
      * @return the feature type
      */
@@ -98,8 +98,7 @@ public abstract class GridFeatureBuilder {
     /**
      * Tests whether a feature will be constructed for the given {@code GridElement}.
      * This can be overriden to create vector grids with 'holes' where elements are not
-     * required, for example, based on location or the results of intersection with
-     * other data layers.
+     * required, for example, based on location or the relationship to other data layers.
      * <p>
      * The base implementation always returns {@code true}.
      *

@@ -14,7 +14,6 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-
 package org.geotools.grid;
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -34,35 +33,35 @@ public interface GridElement {
      *
      * @return the area
      */
-    public double getArea();
+    double getArea();
 
     /**
      * Gets the bounds of this grid element.
      *
      * @return the bounding rectangle
      */
-    public ReferencedEnvelope getBounds();
+    ReferencedEnvelope getBounds();
 
     /**
      * Gets the center coordinates of this grid element.
      *
      * @return the center coordinates
      */
-    public Coordinate getCenter();
+    Coordinate getCenter();
 
     /**
      * Gets the vertices of this grid element.
      *
      * @return the vertices
      */
-    public Coordinate[] getVertices();
+    Coordinate[] getVertices();
 
     /**
      * Creates a new {@code Polygon} from this grid element.
      * 
      * @return a new {@code Polygon}
      */
-    public Polygon toPolygon();
+    Polygon toPolygon();
 
     /**
      * Creates a new, densified {@code Polygon} from this grid element.
@@ -73,5 +72,5 @@ public interface GridElement {
      *
      * @throws IllegalArgumentException if maxSpacing is {@code <=} 0
      */
-    public Polygon toDensePolygon(double maxSpacing);
+    Polygon toDensePolygon(double maxSpacing);
 }

@@ -16,24 +16,20 @@
  */
 package org.geotools.swing;
 
-import java.awt.AlphaComposite;
 import java.awt.Color;
-import java.awt.Composite;
 import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.HierarchyBoundsAdapter;
+import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.util.HashMap;
@@ -41,9 +37,13 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.swing.JPanel;
-import javax.swing.Timer;
 import javax.swing.event.MouseInputAdapter;
 
 import org.geotools.geometry.DirectPosition2D;
@@ -73,8 +73,6 @@ import org.opengis.geometry.Envelope;
  * <p>
  * Rendering is performed on a background thread and is managed by
  * the {@linkplain RenderingExecutor} class.
- * <p>
- * Adapted from original code by Ian Turton.
  *
  * @see JMapFrame
  * @see MapPaneListener
@@ -96,18 +94,24 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
      */
     public static final int DEFAULT_RESIZING_PAINT_DELAY = 500;  // delay in milliseconds
 
-    private Timer resizeTimer;
+    private ScheduledExecutorService paneTaskExecutor = Executors.newSingleThreadScheduledExecutor();
+    private Future<?> resizedFuture;
+    private Future<?> imageMovedFuture;
+
     private int resizingPaintDelay;
     private boolean acceptRepaintRequests;
 
-    /**
+    /*
      * If the user sets the display area before the pane is shown on
      * screen we store the requested envelope with this field and refer
      * to it when the pane is shown.
      */
     private ReferencedEnvelope pendingDisplayArea;
 
-    /**
+    /* Current display area */
+    private ReferencedEnvelope currentDisplayArea;
+
+    /*
      * This field is used to cache the full extent of the combined map
      * layers.
      */
@@ -177,14 +181,13 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
     private Set<MapPaneListener> listeners = new HashSet<MapPaneListener>();
     private AffineTransform worldToScreen;
     private AffineTransform screenToWorld;
-    private Rectangle curPaintArea;
+    private Rectangle currentPaintArea;
     private BufferedImage baseImage;
     private Graphics2D baseImageGraphics;
     private Point imageOrigin;
-    private boolean redrawBaseImage;
-    private boolean needNewBaseImage;
-    private boolean baseImageMoved;
-    private boolean clearLabelCache;
+
+    private AtomicBoolean baseImageMoved;
+    private AtomicBoolean clearLabelCache;
 
 
     /**
@@ -206,10 +209,8 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
         imageOrigin = new Point(0, 0);
 
         acceptRepaintRequests = true;
-        needNewBaseImage = true;
-        redrawBaseImage = true;
-        baseImageMoved = false;
-        clearLabelCache = false;
+        baseImageMoved = new AtomicBoolean();
+        clearLabelCache = new AtomicBoolean();
 
         /*
          * We use a Timer object to avoid rendering delays and
@@ -221,16 +222,9 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
          * drag-resizing.
          */
         resizingPaintDelay = DEFAULT_RESIZING_PAINT_DELAY;
-        resizeTimer = new Timer(resizingPaintDelay, new ActionListener() {
 
-            public void actionPerformed(ActionEvent e) {
-                onResizingCompleted();
-            }
-        });
-        resizeTimer.setRepeats(false);
-
-        setRenderer(renderer);
-        setMapContext(context);
+        doSetRenderer(renderer);
+        doSetMapContext(context);
 
         renderingExecutor = new RenderingExecutor(this);
 
@@ -251,7 +245,6 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
          * on OSX)
          */
         this.addMouseListener(new MouseInputAdapter() {
-
             @Override
             public void mouseEntered(MouseEvent e) {
                 super.mouseEntered(e);
@@ -262,32 +255,51 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
             }
         });
 
-        addComponentListener(new ComponentAdapter() {
 
+        /*
+         * Note: we listen for both resizing events (with HierarchyBoundsListener) 
+         * and showing events (with HierarchyListener). Although showing
+         * is often accompanied by resizing this is not reliable in Swing.
+         */
+        addHierarchyListener(new HierarchyListener() {
+            public void hierarchyChanged(HierarchyEvent he) {
+                if ((he.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
+                    if (isShowing() && baseImage == null) {
+                        onShownOrResized();
+                        //repaint();
+                    }
+                }
+            }
+        });
+
+        addHierarchyBoundsListener(new HierarchyBoundsAdapter() {
             @Override
-            public void componentResized(ComponentEvent ev) {
-                acceptRepaintRequests = false;
-                renderingExecutor.cancelTask();
-                resizeTimer.restart();
+            public void ancestorResized(HierarchyEvent he) {
+                if (isShowing()) {
+                    onShownOrResized();
+                }
             }
         });
     }
 
-    /**
-     * Repaint the map when resizing has finished. This method will
-     * also be called if the user pauses drag-resizing for a period
-     * longer than resizingPaintDelay milliseconds, and when the
-     * map pane is first displayed.
-     */
-    private void onResizingCompleted() {
-        acceptRepaintRequests = true;
-        needNewBaseImage = true;
+    private void onShownOrResized() {
+        if (resizedFuture != null && !resizedFuture.isDone()) {
+            resizedFuture.cancel(true);
+        }
+        
+        resizedFuture = paneTaskExecutor.schedule(new Runnable() {
+            public void run() {
+                setForNewSize();
+            }
+        }, resizingPaintDelay, TimeUnit.MILLISECONDS);
+    }
 
-        curPaintArea = getVisibleRect();
+    private void setForNewSize() {
+        currentPaintArea = getVisibleRect();
 
         // allow a single pixel margin at the right and bottom edges
-        curPaintArea.width -= 1;
-        curPaintArea.height -= 1;
+        currentPaintArea.width -= 1;
+        currentPaintArea.height -= 1;
 
         if (context != null && context.getLayerCount() > 0) {
             if (fullExtent == null) {
@@ -302,12 +314,12 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
                 doSetDisplayArea(fullExtent);
             }
 
-            repaint();
+            acceptRepaintRequests = true;
+            drawBaseImage(true);
 
             MapPaneEvent ev = new MapPaneEvent(this, MapPaneEvent.Type.PANE_RESIZED);
             publishEvent(ev);
         }
-
     }
 
     /**
@@ -404,6 +416,10 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
      * @param renderer the renderer to use
      */
     public void setRenderer(GTRenderer renderer) {
+        doSetRenderer(renderer);
+    }
+
+    private void doSetRenderer(GTRenderer renderer) {
         if (renderer != null) {
             Map<Object, Object> hints;
             if (renderer instanceof StreamingRenderer) {
@@ -442,6 +458,10 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
      * @param context the map context
      */
     public void setMapContext(MapContext context) {
+        doSetMapContext(context);
+    }
+    
+    private void doSetMapContext(MapContext context) {
         if (this.context != context) {
 
             if (this.context != null) {
@@ -492,30 +512,27 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
      * @return the display area in world coordinates as a new {@code ReferencedEnvelope}
      */
     public ReferencedEnvelope getDisplayArea() {
-        ReferencedEnvelope aoi = null;
+        return new ReferencedEnvelope(currentDisplayArea);
+    }
 
-        if (curPaintArea != null && screenToWorld != null) {
-            Point2D p0 = new Point2D.Double(curPaintArea.getMinX(), curPaintArea.getMinY());
-            Point2D p1 = new Point2D.Double(curPaintArea.getMaxX(), curPaintArea.getMaxY());
+    private void calculateDisplayArea() {
+        if (currentPaintArea != null && screenToWorld != null) {
+            Point2D p0 = new Point2D.Double(currentPaintArea.getMinX(), currentPaintArea.getMinY());
+            Point2D p1 = new Point2D.Double(currentPaintArea.getMaxX(), currentPaintArea.getMaxY());
             screenToWorld.transform(p0, p0);
             screenToWorld.transform(p1, p1);
 
-            aoi = new ReferencedEnvelope(
+            currentDisplayArea = new ReferencedEnvelope(
                     Math.min(p0.getX(), p1.getX()),
                     Math.max(p0.getX(), p1.getX()),
                     Math.min(p0.getY(), p1.getY()),
                     Math.max(p0.getY(), p1.getY()),
                     context.getCoordinateReferenceSystem());
         }
-
-        return aoi;
     }
 
     /**
-     * Sets the area to display by calling the {@linkplain MapContext#setAreaOfInterest}
-     * method of this pane's map context. Does nothing if the MapContext has not been set.
-     * If neither the context or the envelope have coordinate reference systems defined
-     * this method does nothing.
+     * Sets the area to display. Does nothing if the MapContext has not been set.
      * <p>
      * The map area that ends up being displayed will often be larger than the requested
      * display area. For instance, if the square area is requested, but the map pane's
@@ -539,12 +556,12 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
              * just record the requested display area and defer setting transforms
              * etc.
              */
-            if (curPaintArea == null || curPaintArea.isEmpty()) {
+            if (currentPaintArea == null || currentPaintArea.isEmpty()) {
                 pendingDisplayArea = new ReferencedEnvelope(envelope);
             } else {
                 doSetDisplayArea(envelope);
-                clearLabelCache = true;
-                repaint();
+                clearLabelCache.set(true);
+                drawBaseImage(false);
             }
 
         } else {
@@ -560,16 +577,15 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
      * @param envelope requested display area
      */
     private void doSetDisplayArea(Envelope envelope) {
-        assert (context != null && curPaintArea != null && !curPaintArea.isEmpty());
+        assert (context != null && currentPaintArea != null && !currentPaintArea.isEmpty());
 
         if (equalsFullExtent(envelope)) {
-            setTransforms(fullExtent, curPaintArea);
+            setTransforms(fullExtent, currentPaintArea);
         } else {
-            setTransforms(envelope, curPaintArea);
+            setTransforms(envelope, currentPaintArea);
         }
-        ReferencedEnvelope adjustedEnvelope = getDisplayArea();
-        context.setAreaOfInterest(adjustedEnvelope);
 
+        calculateDisplayArea();
         MapPaneEvent ev = new MapPaneEvent(this, MapPaneEvent.Type.DISPLAY_AREA_CHANGED);
         publishEvent(ev);
     }
@@ -771,33 +787,46 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
      */
     public void moveImage(int dx, int dy) {
         imageOrigin.translate(dx, dy);
-        redrawBaseImage = false;
-        baseImageMoved = true;
+        baseImageMoved.set(true);
         repaint();
+        onImageMoved();
     }
 
-    /**
-     * Called by the system to draw the layers currently visible layers.
-     * Client code should not use this method directly; instead call
-     * repaint().
-     */
+    private void onImageMoved() {
+        if (imageMovedFuture != null && !imageMovedFuture.isDone()) {
+            imageMovedFuture.cancel(true);
+        }
+
+        imageMovedFuture = paneTaskExecutor.schedule(new Runnable() {
+            public void run() {
+                afterImageMoved();
+                clearLabelCache.set(true);
+                drawBaseImage(false);
+                repaint();
+            }
+        }, resizingPaintDelay, TimeUnit.MILLISECONDS);
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
+        if (baseImage != null) {
+            Graphics2D g2 = (Graphics2D) g;
+            g2.drawImage(baseImage, imageOrigin.x, imageOrigin.y, null);
+            return;
+        }
+    }
+
+    private void drawBaseImage(boolean createNewImage) {
+        if (currentPaintArea == null) {
+            return;
+        }
+        
         if (acceptRepaintRequests) {
-
-            if (curPaintArea == null ||
-                context == null ||
-                context.getLayerCount() == 0 ||
-                renderer == null) {
-
-                return;
-            }
-
-            if (needNewBaseImage) {
+            if (createNewImage) {
                 baseImage = new BufferedImage(
-                        curPaintArea.width + 1, curPaintArea.height + 1,
+                        currentPaintArea.width + 1, currentPaintArea.height + 1,
                         BufferedImage.TYPE_INT_ARGB);
 
                 if (baseImageGraphics != null) {
@@ -805,38 +834,19 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
                 }
                 
                 baseImageGraphics = baseImage.createGraphics();
-                needNewBaseImage = false;
-                redrawBaseImage = true;
-                clearLabelCache = true;
+                clearLabelCache.set(true);
             }
 
-            final ReferencedEnvelope mapAOI = context.getAreaOfInterest();
-            if (mapAOI == null) {
-                return;
-            }
-
-            if (redrawBaseImage) {
-                if (baseImageMoved) {
-                    afterImageMove(mapAOI, curPaintArea);
-                    baseImageMoved = false;
-                    clearLabelCache = true;
-                }
-
-                if (renderingExecutor.submit(mapAOI, curPaintArea, baseImageGraphics)) {
-                    MapPaneEvent ev = new MapPaneEvent(this, MapPaneEvent.Type.RENDERING_STARTED);
-                    publishEvent(ev);
-
-                } else {
-                    onRenderingRejected();
-                }
-
+            if (renderingExecutor.submit(currentDisplayArea, currentPaintArea, baseImageGraphics)) {
+                MapPaneEvent ev = new MapPaneEvent(this, MapPaneEvent.Type.RENDERING_STARTED);
+                publishEvent(ev);
+                
             } else {
-                Graphics2D g2 = (Graphics2D) g;
-                g2.drawImage(baseImage, imageOrigin.x, imageOrigin.y, null);
+                onRenderingRejected();
             }
-
-            redrawBaseImage = true;
         }
+
+        return;
     }
 
     /**
@@ -847,13 +857,12 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
      * @see MapPaneListener#onRenderingStopped(org.geotools.swing.event.MapPaneEvent)
      */
     public void onRenderingCompleted() {
-        if (clearLabelCache) {
+        if (clearLabelCache.get()) {
             labelCache.clear();
         }
-        clearLabelCache = false;
 
-        Graphics2D paneGr = (Graphics2D) this.getGraphics();
-        paneGr.drawImage(baseImage, imageOrigin.x, imageOrigin.y, null);
+        clearLabelCache.set(false);
+        repaint();
 
         MapPaneEvent ev = new MapPaneEvent(this, MapPaneEvent.Type.RENDERING_STOPPED);
         publishEvent(ev);
@@ -885,7 +894,7 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
 
     /**
      * Called when a rendering request has been rejected. This will be common, such as
-     * when the user pauses during drag-resizing fo the map pane. The base implementation
+     * when the user pauses during drag-resizing of the map pane. The base implementation
      * does nothing. It is provided for sub-classes to override if required.
      */
     public void onRenderingRejected() {
@@ -895,18 +904,19 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
     /**
      * Called after the base image has been dragged. Sets the new map area and
      * transforms
-     * @param env the display area (world coordinates) prior to the image being moved
-     * @param paintArea the current drawing area (screen units)
      */
-    protected void afterImageMove(ReferencedEnvelope env, Rectangle paintArea) {
+    protected void afterImageMoved() {
         int dx = imageOrigin.x;
         int dy = imageOrigin.y;
         DirectPosition2D newPos = new DirectPosition2D(dx, dy);
         screenToWorld.transform(newPos, newPos);
 
+        ReferencedEnvelope env = new ReferencedEnvelope(currentDisplayArea);
         env.translate(env.getMinimum(0) - newPos.x, env.getMaximum(1) - newPos.y);
         doSetDisplayArea(env);
+
         imageOrigin.setLocation(0, 0);
+        baseImageMoved.set(false);
     }
 
     /**
@@ -931,6 +941,7 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
             reset();
         }
 
+        drawBaseImage(false);
         repaint();
     }
 
@@ -953,6 +964,7 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
             setFullExtent();
         }
 
+        drawBaseImage(false);
         repaint();
     }
 
@@ -972,14 +984,17 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
         }
 
         if (reason != MapLayerEvent.SELECTION_CHANGED) {
-            repaint();
+            drawBaseImage(false);
         }
+
+        repaint();
     }
 
     /**
      * Called when the bounds of a map layer have changed
      */
     public void layerMoved(MapLayerListEvent event) {
+        drawBaseImage(false);
         repaint();
     }
 
@@ -1078,22 +1093,8 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
             screenToWorld = worldToScreen.createInverse();
 
         } catch (NoninvertibleTransformException ex) {
-            ex.printStackTrace();
+            throw new RuntimeException("Unable to create coordinate transforms.", ex);
         }
-    }
-
-    /**
-     * Erase the base image. This is much faster than recreating a new BufferedImage
-     * object each time we need to redraw the image
-     */
-    private void clearBaseImage() {
-        assert(baseImage != null && baseImageGraphics != null);
-        Composite composite = baseImageGraphics.getComposite();
-        baseImageGraphics.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR, 0.0f));
-        Rectangle2D.Double rect = new Rectangle2D.Double(
-                0, 0, baseImage.getWidth(), baseImage.getHeight());
-        baseImageGraphics.fill(rect);
-        baseImageGraphics.setComposite(composite);
     }
 
     /**

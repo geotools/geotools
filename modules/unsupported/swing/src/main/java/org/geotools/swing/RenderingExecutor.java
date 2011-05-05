@@ -28,6 +28,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -99,6 +100,14 @@ public class RenderingExecutor {
 
     private long numFeatures;
 
+    private static class DaemonThreadFactory implements ThreadFactory {
+        public Thread newThread(Runnable r) {
+            Thread t = new Thread(r);
+            t.setDaemon(true);
+            return t;
+        }
+    }
+
     /**
      * A rendering task
      */
@@ -146,6 +155,7 @@ public class RenderingExecutor {
                     graphics.setComposite(composite);
 
                     numFeatures = 0;
+
                     renderer.paint(graphics, mapPane.getVisibleRect(), envelope, mapPane.getWorldToScreenTransform());
 
                 } finally {
@@ -208,7 +218,7 @@ public class RenderingExecutor {
         taskRunning = new AtomicBoolean(false);
         this.mapPane = mapPane;
         taskExecutor = Executors.newSingleThreadExecutor();
-        watchExecutor = Executors.newSingleThreadScheduledExecutor();
+        watchExecutor = Executors.newSingleThreadScheduledExecutor(new DaemonThreadFactory());
         pollingInterval = DEFAULT_POLLING_INTERVAL;
         cancelLatch = new CountDownLatch(0);
     }
@@ -322,12 +332,5 @@ public class RenderingExecutor {
         return taskRunning.get();
     }
 
-    @Override
-    protected void finalize() throws Throwable {
-        if (this.isRunning()) {
-            taskExecutor.shutdownNow();
-            watchExecutor.shutdownNow();
-        }
-    }
 }
 

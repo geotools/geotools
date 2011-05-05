@@ -415,6 +415,8 @@ public final class ImageWorkerTest {
         worker.writeTIFF(outFile, "Deflate", 0.75f, 32, 32);
         readWorker.setImage(ImageIO.read(outFile));
         show(readWorker, "Tiff jpeg compressed, tiled");
+        
+        outFile.delete();
     }
 
     /**

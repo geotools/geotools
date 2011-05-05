@@ -57,6 +57,6 @@ public class CoverageToolsConstants {
 	/**
 	 * Default number of resolution steps.. 
 	 */
-	public final int DEFAULT_RESOLUTION_STEPS = 5;
+	public static final int DEFAULT_RESOLUTION_STEPS = 5;
 
 }

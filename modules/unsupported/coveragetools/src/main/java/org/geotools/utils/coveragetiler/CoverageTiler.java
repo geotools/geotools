@@ -81,8 +81,7 @@ import org.opengis.parameter.ParameterValueGroup;
 public class CoverageTiler extends BaseArgumentsManager implements
 		ProcessingEventListener, Runnable {
 	/** Default Logger * */
-	private final static Logger LOGGER = Logger.getLogger(CoverageTiler.class
-			.toString());
+	private final static Logger LOGGER = Logger.getLogger(CoverageTiler.class.toString());
 
 	/** Program Version */
 	private final static String VERSION = "0.3";

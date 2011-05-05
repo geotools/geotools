@@ -23,6 +23,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
@@ -38,10 +39,11 @@ import org.apache.commons.io.FileUtils;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridFormatFinder;
+import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilder;
+import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilderConfiguration;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.utils.CoverageToolsConstants;
 import org.geotools.utils.coveragetiler.CoverageTiler;
-import org.geotools.utils.imagemosaic.MosaicIndexBuilder;
 import org.geotools.utils.progress.BaseArgumentsManager;
 import org.geotools.utils.progress.ExceptionEvent;
 import org.geotools.utils.progress.ProcessingEvent;
@@ -568,15 +570,51 @@ public class PyramidBuilder extends BaseArgumentsManager implements Runnable,
 	}
 
 	private double[] mosaicLevel(int level) {
-		MosaicIndexBuilder builder = new MosaicIndexBuilder();
-		builder.addProcessingEventListener(slaveToolsListener);
-		builder.setLocationPath(new File(outputLocation, String.valueOf(level))
-				.getAbsolutePath());
-		builder.setIndexName(name);
-		builder.run();
+	    
+	        // prepare the configuration
+	        final CatalogBuilderConfiguration configuration = new CatalogBuilderConfiguration();
+                configuration.setRootMosaicDirectory(new File(outputLocation, String.valueOf(level)).getAbsolutePath());   
+                configuration.setIndexName(name);
+//	        configuration.setAbsolute(runner.absolute);
+//	        configuration.setFootprintManagement(runner.footprintManagement);
+//	        configuration.setCaching(runner.caching);
+//	        configuration.setWildcard(runner.wildcardString);
+//	        configuration.setLocationAttribute(runner.locationAttribute);
+//	        
+//
+//	        final String directories = runner.indexingDirectoriesString;
+//	        final String[] dirs_ = directories.split(",");
+//	        final List<String> dirs = new ArrayList<String>();
+//	        for (String dir : dirs_)
+//	            dirs.add(dir);
+//	        configuration.setIndexingDirectories(dirs);
+                configuration.setIndexingDirectories(Arrays.asList(configuration.getRootMosaicDirectory()));
+
+	        // prepare and run the index builder
+	        final CatalogBuilder builder = new CatalogBuilder(configuration);
+	        builder.run();	    
+	        builder.addProcessingEventListener(new CatalogBuilder.ProcessingEventListener() {
+                    
+                    @Override
+                    public void getNotification(
+                            org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilder.ProcessingEvent event) {
+                       slaveToolsListener.getNotification(
+                               new ProcessingEvent(
+                                       event.getSource(),
+                                       event.getMessage(),
+                                       event.getPercentage()));
+                        
+                    }
+                    
+                    @Override
+                    public void exceptionOccurred(
+                            org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilder.ExceptionEvent event) {
+                        slaveToolsListener.exceptionOccurred(new ExceptionEvent(event.getSource(),event.getMessage(),event.getPercentage(),event.getException()));
+                        
+                    }
+                });
 		builder.removeAllProcessingEventListeners();
-		return new double[] { builder.getResolutionX(),
-				builder.getResolutionY() };
+		return new double[] { builder.getMosaicConfiguration().getLevels()[0][0],builder.getMosaicConfiguration().getLevels()[0][1]};
 	}
 
 	/**

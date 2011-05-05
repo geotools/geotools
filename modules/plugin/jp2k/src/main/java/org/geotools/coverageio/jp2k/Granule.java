@@ -77,7 +77,9 @@ import com.sun.media.jai.util.Rational;
  */
 class Granule {
 	
-	/** Logger. */
+	static final double EPS = 10E-6;
+
+    /** Logger. */
 	private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(Granule.class); 
 	   
     // FORMULAE FOR FORWARD MAP are derived as follows
@@ -527,11 +529,11 @@ class Granule {
 			// now create the overall transform
 			final AffineTransform finalRaster2Model = new AffineTransform(baseGridToWorld);
 			finalRaster2Model.concatenate(Utils.CENTER_TO_CORNER);
-			if(!XAffineTransform.isIdentity(backToBaseLevelScaleTransform,10E-6))
+			if(!XAffineTransform.isIdentity(backToBaseLevelScaleTransform,EPS))
 				finalRaster2Model.concatenate(backToBaseLevelScaleTransform);
-			if(!XAffineTransform.isIdentity(afterDecimationTranslateTranform,10E-6))
+			if(!XAffineTransform.isIdentity(afterDecimationTranslateTranform,EPS))
 				finalRaster2Model.concatenate(afterDecimationTranslateTranform);
-			if(!XAffineTransform.isIdentity(decimationScaleTranform,10E-6))
+			if(!XAffineTransform.isIdentity(decimationScaleTranform,EPS))
 				finalRaster2Model.concatenate(decimationScaleTranform);
 
 			// keep into account translation factors to place this tile

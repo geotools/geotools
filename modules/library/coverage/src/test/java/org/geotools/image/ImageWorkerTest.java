@@ -387,6 +387,35 @@ public final class ImageWorkerTest {
         show(readWorker, "Pure  PNG8");
         outFile.delete();
     }
+    
+    /**
+     * Testing TIFF capabilities.
+     *
+     * @throws IOException If an error occured while writting the image.
+     */
+    @Test
+    public void testTIFFWrite() throws IOException {
+        assertTrue("Assertions should be enabled.", ImageWorker.class.desiredAssertionStatus());
+        // Get the image of the world with transparency.
+        final ImageWorker worker = new ImageWorker(worldImage);
+        show(worker, "Input file");
+
+        // /////////////////////////////////////////////////////////////////////
+        // tiff deflated untiled
+        // /////////////////////////////////////////////////////////////////////
+        final File outFile = TestData.temp(this, "temp.tiff");
+        worker.writeTIFF(outFile, "Deflate", 0.75f, -1, -1);
+        final ImageWorker readWorker = new ImageWorker(ImageIO.read(outFile));
+        show(readWorker, "Tiff untiled");
+
+        // /////////////////////////////////////////////////////////////////////
+        // tiff deflated compressed tiled
+        // /////////////////////////////////////////////////////////////////////
+        worker.setImage(worldImage);
+        worker.writeTIFF(outFile, "Deflate", 0.75f, 32, 32);
+        readWorker.setImage(ImageIO.read(outFile));
+        show(readWorker, "Tiff jpeg compressed, tiled");
+    }
 
     /**
      * Tests the conversion between RGB and indexed color model.

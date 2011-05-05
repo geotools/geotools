@@ -2668,6 +2668,87 @@ public class ImageWorker {
        
 
     }
+    
+    /**
+     * Writes outs the image contained into this {@link ImageWorker} as a TIFF
+     * using the provided destination, compression and compression rate and basic tiling information
+     * <p>
+     * The destination object can be anything providing that we have an
+     * {@link ImageOutputStreamSpi} that recognizes it.
+     *
+     * @param destination
+     *            where to write the internal {@link #image} as a TIFF.
+     * @param compression
+     *            algorithm.
+     * @param compressionRate
+     *            percentage of compression.
+     * @param nativeAcc
+     *            should we use native acceleration.
+     * @param tileSizeX
+     *            tile size x direction (or -1 if tiling is not desired)
+     * @param tileSizeY
+     *            tile size y direction (or -1 if tiling is not desired)
+     * @return this {@link ImageWorker}.
+     * @throws IOException
+     *             In case an error occurs during the search for an
+     *             {@link ImageOutputStream} or during the eoncding process.
+     */
+    public final void writeTIFF(final Object destination, final String compression,
+                                final float compressionRate, final int tileSizeX, final int tileSizeY)
+            throws IOException
+    {
+        // Reformatting this image for jpeg.
+        if(LOGGER.isLoggable(Level.FINER))
+            LOGGER.finer("Encoding input image to write out as TIFF.");
+
+        // Getting a writer.
+        if(LOGGER.isLoggable(Level.FINER))
+            LOGGER.finer("Getting a TIFF writer and configuring it.");
+        final Iterator<ImageWriter> it = ImageIO.getImageWritersByFormatName("TIFF");
+        if (!it.hasNext()) {
+            throw new IllegalStateException(Errors.format(ErrorKeys.NO_IMAGE_WRITER));
+        }
+        ImageWriter writer = it.next();
+        
+        final ImageWriteParam iwp = writer.getDefaultWriteParam();
+        final ImageOutputStream outStream = ImageIOExt.createImageOutputStream(image, destination);
+        if(outStream==null)
+            throw new IIOException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1,"stream"));
+        
+        iwp.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+        iwp.setCompressionType(compression);        
+        iwp.setCompressionQuality(compressionRate); // We can control quality here.
+        if(tileSizeX > 0 && tileSizeY > 0) {
+            iwp.setTilingMode(ImageWriteParam.MODE_EXPLICIT);
+            iwp.setTiling(tileSizeX, tileSizeY, 0, 0);
+        }
+
+        if(LOGGER.isLoggable(Level.FINER))
+            LOGGER.finer("Writing out...");
+        
+        try{
+
+            writer.setOutput(outStream);
+            writer.write(null, new IIOImage(image, null, null), iwp);
+        } finally{
+            try{
+                writer.dispose();
+            }catch (Throwable e) {
+                if(LOGGER.isLoggable(Level.FINEST))
+                    LOGGER.log(Level.FINEST,e.getLocalizedMessage(),e);
+            }
+            try{
+                outStream.close();
+            }catch (Throwable e) {
+                if(LOGGER.isLoggable(Level.FINEST))
+                    LOGGER.log(Level.FINEST,e.getLocalizedMessage(),e);
+            }           
+            
+            
+        }
+       
+
+    }
 
     /**
      * Writes the {@linkplain #image} to the specified output, trying all

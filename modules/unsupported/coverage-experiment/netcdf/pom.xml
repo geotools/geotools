@@ -81,22 +81,22 @@
     <dependency>
       <groupId>it.geosolutions.imageio-ext</groupId>
       <artifactId>imageio-ext-netcdf</artifactId>
-      <version>1.1-SNAPSHOT</version>
+      <version>${imageio.ext.version}</version>
     </dependency>
        <dependency>
       <groupId>it.geosolutions.imageio-ext</groupId>
       <artifactId>imageio-ext-imagereadmt</artifactId>
-      <version>1.1-SNAPSHOT</version>
+      <version>${imageio.ext.version}</version>
     </dependency>
     <dependency>
       <groupId>it.geosolutions.imageio-ext</groupId>
       <artifactId>imageio-ext-utilities</artifactId>
-      <version>1.1-SNAPSHOT</version>
+      <version>${imageio.ext.version}</version>
     </dependency>
     <dependency>
       <groupId>it.geosolutions.imageio-ext</groupId>
       <artifactId>imageio-ext-geocore</artifactId>
-      <version>1.1-SNAPSHOT</version>
+      <version>${imageio.ext.version}</version>
     </dependency>
    
     <!-- Test dependencies -->

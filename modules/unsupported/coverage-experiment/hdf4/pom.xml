@@ -81,22 +81,22 @@
     <dependency>
       <groupId>it.geosolutions.imageio-ext</groupId>
       <artifactId>imageio-ext-hdf4</artifactId>
-      <version>1.1-RC1</version>
+      <version>${imageio.ext.version}</version>
     </dependency>
        <dependency>
       <groupId>it.geosolutions.imageio-ext</groupId>
       <artifactId>imageio-ext-imagereadmt</artifactId>
-      <version>1.1-RC1</version>
+      <version>${imageio.ext.version}</version>
     </dependency>
     <dependency>
       <groupId>it.geosolutions.imageio-ext</groupId>
       <artifactId>imageio-ext-utilities</artifactId>
-      <version>1.1-RC1</version>
+      <version>${imageio.ext.version}</version>
     </dependency>
     <dependency>
       <groupId>it.geosolutions.imageio-ext</groupId>
       <artifactId>imageio-ext-geocore</artifactId>
-      <version>1.1-RC1</version>
+      <version>${imageio.ext.version}</version>
     </dependency>
     <!-- Test dependencies -->
     <dependency>

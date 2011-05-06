@@ -12,18 +12,10 @@
 Welcome
 =======
 
-Welcome to this tutorial about affine transformations. As an example we will map world coordinates
-to pixel coordinates. Some mathematical background is needed and will be introduced to show
-the power of these kind of calculations.
-
-The goal of this tutorial is to map betwen:
-
-* world coordinates to pixel coordinates; and
-* pixel coordinates to world coordinates.
-
-References:
-
-* http://download.oracle.com/javase/6/docs/api/java/awt/geom/AffineTransform.html
+Welcome to this tutorial about affine transformations which are used to convert coordinates from one
+domain to another. As an example we will convert world coordinates to pixel (screen or image)
+coordinates. All of the mathematics required will be introduced along the way and you will soon be
+making use of the power of these kind of calculations.
 
 .. topic:: About Your Instructor
    
@@ -90,6 +82,8 @@ An affine transformation is based on a matrix.
     [ m00 m01 m02 ] 
     [ m10 m11 m12 ] 
     [   0   0   1 ] 
+
+  The numbers are row and column indices, e.g. **m12** is the matrix element in row 1, column 2.
 
 * The last row is filled with constant values. A point is represented as a vector.::
   
@@ -539,4 +533,15 @@ you will never return to doing coordiante calcualtions "by hand".
 
 Take a look at the Java API of the java.awt.geom.AffineTransform class to see further
 possibilities. (rotate, shear,...)
+
+References
+==========
+
+* Java AffineTransform `class javadocs`_. 
+
+.. _class javadocs: http://download.oracle.com/javase/6/docs/api/java/awt/geom/AffineTransform.html
+
+* Wikipedia article on `affine transformation`_.
+
+.. _affine transformation: http://en.wikipedia.org/wiki/Affine_transformation
 

@@ -83,19 +83,19 @@ An affine transformation is based on a matrix.
     [ m10 m11 m12 ] 
     [   0   0   1 ] 
 
-  The numbers are row and column indices, e.g. **m12** is the matrix element in row 1, column 2.
+  The numbers are row and column indices, e.g. **m12** is the matrix element in
+  row 1, column 2. The values in the bottom row are always as shown.
 
-* The last row is filled with constant values. A point is represented as a vector.::
+* A point is represented as a *column vector*::
   
     [ x ] 
     [ y ] 
     [ 1 ] 
 
-* The third component is always 1. The transformation process itself is executed by multiplying
-  the matrix with the vector.
-  
-  To get the new point x_new and y_new, the following calculation has to be done.::
-  
+  Once again, the bottom element is a constant (always 1).
+
+* Transforming the point coordinates involves multiplying the point's column vector by
+  the affine transform matrix::
   
         [ x_new] = [ m00 m01 m02 ] [ x ] = [ m00x + m01y + m02 ]
         [ y_new] = [ m10 m11 m12 ] [ y ] = [ m10x + m11y + m12 ]
@@ -103,8 +103,8 @@ An affine transformation is based on a matrix.
 
 .. note::
 
-   It is very important to understand this, but I am sure you will if you read the tutorial
-   to the end.
+   It is very important to understand this, but don't worry if you are unfamiliar with 
+   matrix arithmetic because the steps are explained in detail below.
 
 * **Identify Matrix**
   

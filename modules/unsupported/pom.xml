@@ -92,8 +92,6 @@
          <property><name>all</name></property>
        </activation>
        <modules>
-         <module>coverageio</module>
-         <module>coverageio-netcdf</module>
          <module>coveragetools</module>
        </modules>
      </profile>

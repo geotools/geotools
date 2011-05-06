@@ -1,10 +1,10 @@
 Internal
 --------
 
-Please note that this page is optional, only for the curious, as it covers some of the
+Please note that this page is optional and only for the curious. It covers some of the
 implementation classes.
 
-A **CoordinateReferenceSystem** is an **gt-opengis** interface describing how a set of
+A **CoordinateReferenceSystem** is a **gt-opengis** interface describing how a set of
 ordinates is to be interpreted as a three dimensional point. This definition is standardised,
 mathematical and generally not of interest unless something goes wrong.
 
@@ -12,7 +12,7 @@ CoordinateReferenceSystem
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
 For most cases you are only interested in using a CoordinateReferenceSystem as a parameter to a
-mathematical calculation (distance on along the surface of the earth and "re-projection"
+mathematical calculation (distance along the surface of the earth and "re-projection"
 being the most common).
 
 Creating a CoordinateReferenceSystem:
@@ -29,22 +29,22 @@ CRSAuthorityFactory
 ^^^^^^^^^^^^^^^^^^^
 
 Internally the **CRS** class makes use of a **CRSAuthorityFactory** to provide the definition for
-the indicated code. You wish you can make use of the same facilities:
+the indicated code. If you wish you can make use of the same facilities directly:
 
 .. literalinclude:: /../src/main/java/org/geotools/referencing/ReferencingExamples.java
    :language: java
    :start-after: // createFromEPSGCode2 start
    :end-before: // createFromEPSGCode2 end
 
-To create the actual **CoordinateReferenceSystem** objects a **CRSFactory** is used, for example when parsing
-"well known text":
+To create the actual **CoordinateReferenceSystem** object a **CRSFactory** is used, for example when parsing
+a "well known text" (WKT) definition:
 
 .. literalinclude:: /../src/main/java/org/geotools/referencing/ReferencingExamples.java
    :language: java
    :start-after: // creatCRSFromWKT start
    :end-before: // creatCRSFromWKT end
 
-Where an example definition is::
+Where the code above corresponds to this definition::
   
   GEOGCS[
     "WGS 84",
@@ -59,7 +59,6 @@ Where an example definition is::
     AXIS["Long",EAST],
     AUTHORITY["EPSG","4326"]]
 
-Internally this method makes use of CRSFactory.
 
 Creating a CoordinateReferenceSystem
 ''''''''''''''''''''''''''''''''''''
@@ -75,7 +74,7 @@ This example shows the creation of a WGS84 / UTM 10N CoordinateReferenceSystem:
 
 The next example shows NAD 27 geographic CRS being defined, with a couple of interesting things to note:
 
-* The datum factory automatically adds aliase names to the datum. 
+* The datum factory automatically adds alias names to the datum. 
   (The DatumAliasesTable.txt file inside gt-referencing has an entry for "North American Datum 1927").
 * The toWGS84 information being supplied for use in a datum transform is added to the Datum
 
@@ -86,7 +85,7 @@ Here is the example:
    :start-after: // createCRSByHand2 start
    :end-before: // createCRSByHand2 end
 
-Finally here is a no holds bard creation of a CoordianteReferenceSystem with all the usual helper classes
+Finally, here is no-holds-barred creation of a CoordianteReferenceSystem with all the usual helper classes
 stripped away.  It does not use any of the static objects available in GeoTools. The following example
 creates a CoordianteReferenceSystem to represent WGS84.
 
@@ -98,7 +97,8 @@ creates a CoordianteReferenceSystem to represent WGS84.
 Referencing Factories
 ^^^^^^^^^^^^^^^^^^^^^
 
-These are the "real" factories - interfaces that actually create stuff. These are all just gt-opengis interfaces, so you will need to use ReferencingFactoryFinder to get started:
+These are the "real" factories - interfaces that actually create stuff. All are gt-opengis interfaces, so you will need
+to use ReferencingFactoryFinder to get started:
 
 * DatumFactory:
   Makes datums!
@@ -109,7 +109,7 @@ These are the "real" factories - interfaces that actually create stuff. These ar
 * MathTransformFactory
   Makes MathTransform instances, and many more
 
-You can quickly grab all four factories in one go using **ReferencingFactoryContainer**:
+You can quickly grab all four factories at once using **ReferencingFactoryContainer**:
 
 .. literalinclude:: /../src/main/java/org/geotools/referencing/ReferencingExamples.java
    :language: java
@@ -119,7 +119,7 @@ You can quickly grab all four factories in one go using **ReferencingFactoryCont
 * ReferencingFactoryFinder
   
   As is custom we have included a "FactoryFinder" so you can look up a good
-  implementation on the CLASSPATH.::
+  implementation on the CLASSPATH::
     
     DatumFactory datumFactory = ReferencingFactoryFinder.getDatumFactory(null);
 
@@ -128,20 +128,20 @@ You can quickly grab all four factories in one go using **ReferencingFactoryCont
 
 * ReferencingFactoryContainer
   
-  You may of noticed that to actually do anything you need several factories; we have
-  gathered these together into a "container" for you - and the container has a few extra
-  methods that use a couple of factories to gang up on a problem
+  You may have noticed that to actually do anything you need several factories. We have gathered
+  these together into a "container" for you. The container also adds a few more methods which use a
+  couple of factories to gang up on a problem
 
-  You can ReferencingFactoryContainer to use your own custom factory using hints
-  as shown below:
+  You can set up ReferencingFactoryContainer to use your own custom factory using hints as shown
+  below:
   
   .. literalinclude:: /../src/main/java/org/geotools/referencing/ReferencingExamples.java
      :language: java
      :start-after: // referencingFactoryContainer start
      :end-before: // referencingFactoryContainer end
   
-  Please note that this ReferencingFactoryContainer not strictly needed (it just makes things easier).
-  ReferencingFactoryFinder will be smart and recycle instances if possible:
+  Please note that ReferencingFactoryContainer is not strictly needed, it just makes things easier.
+  ReferencingFactoryFinder will be smart and recycle instances where possible:
   
   .. literalinclude:: /../src/main/java/org/geotools/referencing/ReferencingExamples.java
      :language: java
@@ -151,16 +151,19 @@ You can quickly grab all four factories in one go using **ReferencingFactoryCont
 Referencing Authority Factories
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Deep behind that CRS utility class is an amazing constellation of "factories" used to define what a CoordinateReferenceSystem is, actually create the parts and stitch them all together in a unified whole.
+Deep behind that CRS utility class is an amazing constellation of "factories" used to define what a
+CoordinateReferenceSystem is, actually create the parts, and finally stitch them all together in a
+unified whole.
 
-These things are factories in name only; their real job is to supply the definitions (in pattern speak they are considered builders).
+These things are factories in name only; their real job is to supply the definitions (in pattern
+speak they would be called *builders*).
 
 * DatumAuthorityFactory:
   Defines a Datum using a code provided by a authority such as EPSG
 * CSAuthorityFactory:
   Defines a CoordinateSystem using a code provided by an authority such as EPSG
 * CRSAuthorityFactory:
-  Defines a CoordinateReferenceSystem for a give authority (such as EPSG)
+  Defines a CoordinateReferenceSystem for a given authority (such as EPSG)
 * CoordinateOperationAuthorityFactory:
   Defines coordinate operations from codes, backed by math transforms
 
@@ -206,6 +209,6 @@ You will need to make sure that one of the **epsg** plugins is on your CLASSPATH
      IdentifiedObject find = finder.find(crs);
   
   As shown above this is additional functionality made available through
-  AbstractAuthorityFactory - it is not part of the normal opengis interfaces.
+  AbstractAuthorityFactory - it is not part of the normal gt-opengis interfaces.
 
 You can construct finders to search through other categories of referencing Objects (like Datum and ReferencingSystem).

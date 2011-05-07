@@ -538,7 +538,7 @@ public class LambertAzimuthalEqualArea extends MapProjection {
                     new NamedIdentifier(Citations.OGC,      "latitude_of_center"),
                     new NamedIdentifier(Citations.EPSG,     "Latitude of natural origin"),
                     new NamedIdentifier(Citations.EPSG,     "Spherical latitude of origin"),
-                    new NamedIdentifier(Citations.ESRI,     "latitude_of_origin"),
+                    new NamedIdentifier(Citations.ESRI,     "Latitude_Of_Origin"),
                     new NamedIdentifier(Citations.GEOTIFF,  "ProjCenterLat")
                 },
                 0, -90, 90, NonSI.DEGREE_ANGLE);
@@ -552,7 +552,7 @@ public class LambertAzimuthalEqualArea extends MapProjection {
                     new NamedIdentifier(Citations.OGC,      "longitude_of_center"),
                     new NamedIdentifier(Citations.EPSG,     "Longitude of natural origin"),
                     new NamedIdentifier(Citations.EPSG,     "Spherical longitude of origin"),
-                    new NamedIdentifier(Citations.ESRI,     "central_meridian"),
+                    new NamedIdentifier(Citations.ESRI,     "Central_Meridian"),
                     new NamedIdentifier(Citations.GEOTIFF,  "ProjCenterLong")
                 },
                 0, -180, 180, NonSI.DEGREE_ANGLE);

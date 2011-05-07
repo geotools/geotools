@@ -1444,8 +1444,10 @@ public abstract class MapProjection extends AbstractMathTransform
                     new NamedIdentifier(Citations.EPSG,    "Longitude of natural origin"),
                     new NamedIdentifier(Citations.EPSG,    "Longitude of false origin"),
                     new NamedIdentifier(Citations.EPSG,    "Longitude of origin"),
-                    new NamedIdentifier(Citations.ESRI,    "Longitude_Of_Origin"),
                     new NamedIdentifier(Citations.ESRI,    "Longitude_Of_Center"),
+                    new NamedIdentifier(Citations.ESRI,    "longitude_of_center"),
+                    new NamedIdentifier(Citations.ESRI,    "Longitude_Of_Origin"),
+                    new NamedIdentifier(Citations.ESRI,    "longitude_of_origin"),
                     new NamedIdentifier(Citations.GEOTIFF, "NatOriginLong")
                     // ESRI uses "Longitude_Of_Origin" in orthographic (not to
                     // be confused with "Longitude_Of_Center" in oblique mercator).
@@ -1461,7 +1463,10 @@ public abstract class MapProjection extends AbstractMathTransform
                     new NamedIdentifier(Citations.OGC,     "latitude_of_origin"),
                     new NamedIdentifier(Citations.EPSG,    "Latitude of false origin"),
                     new NamedIdentifier(Citations.EPSG,    "Latitude of natural origin"),
+                    new NamedIdentifier(Citations.ESRI,    "Latitude_Of_Origin"),                   
+                    new NamedIdentifier(Citations.ESRI,    "latitude_of_origin"),
                     new NamedIdentifier(Citations.ESRI,    "Latitude_Of_Center"),
+                    new NamedIdentifier(Citations.ESRI,    "latitude_of_center"),
                     new NamedIdentifier(Citations.GEOTIFF, "NatOriginLat")
                     // ESRI uses "Latitude_Of_Center" in orthographic.
                 },
@@ -1475,6 +1480,8 @@ public abstract class MapProjection extends AbstractMathTransform
                 new NamedIdentifier[] {
                     new NamedIdentifier(Citations.OGC,      "standard_parallel_1"),
                     new NamedIdentifier(Citations.EPSG,     "Latitude of 1st standard parallel"),
+                    new NamedIdentifier(Citations.ESRI,     "Standard_Parallel_1"),                    
+                    new NamedIdentifier(Citations.ESRI,     "standard_parallel_1"),
                     new NamedIdentifier(Citations.GEOTIFF,  "StdParallel1")
                 },
                 0, -90, 90, NonSI.DEGREE_ANGLE);
@@ -1487,6 +1494,8 @@ public abstract class MapProjection extends AbstractMathTransform
                 new NamedIdentifier[] {
                     new NamedIdentifier(Citations.OGC,      "standard_parallel_2"),
                     new NamedIdentifier(Citations.EPSG,     "Latitude of 2nd standard parallel"),
+                    new NamedIdentifier(Citations.ESRI,     "Standard_Parallel_2"),                    
+                    new NamedIdentifier(Citations.ESRI,     "standard_parallel_2"),
                     new NamedIdentifier(Citations.GEOTIFF,  "StdParallel2")
                 },
                 -90, 90, NonSI.DEGREE_ANGLE);
@@ -1503,7 +1512,9 @@ public abstract class MapProjection extends AbstractMathTransform
                     new NamedIdentifier(Citations.EPSG,    "Scale factor at natural origin"),
                     new NamedIdentifier(Citations.EPSG,    "Scale factor on initial line"),
                     new NamedIdentifier(Citations.GEOTIFF, "ScaleAtNatOrigin"),
-                    new NamedIdentifier(Citations.GEOTIFF, "ScaleAtCenter")
+                    new NamedIdentifier(Citations.GEOTIFF, "ScaleAtCenter"),
+                    new NamedIdentifier(Citations.ESRI,    "Scale_Factor"),
+                    new NamedIdentifier(Citations.ESRI,    "scale_factor"),
                 },
                 1, 0, Double.POSITIVE_INFINITY, Unit.ONE);
 
@@ -1517,7 +1528,8 @@ public abstract class MapProjection extends AbstractMathTransform
                     new NamedIdentifier(Citations.EPSG,    "False easting"),
                     new NamedIdentifier(Citations.EPSG,    "Easting at false origin"),
                     new NamedIdentifier(Citations.EPSG,    "Easting at projection centre"),
-                    new NamedIdentifier(Citations.GEOTIFF, "FalseEasting")
+                    new NamedIdentifier(Citations.GEOTIFF, "FalseEasting"),
+                    new NamedIdentifier(Citations.ESRI,    "false_easting")
                 },
                 0, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, SI.METER);
 
@@ -1531,7 +1543,9 @@ public abstract class MapProjection extends AbstractMathTransform
                     new NamedIdentifier(Citations.EPSG,    "False northing"),
                     new NamedIdentifier(Citations.EPSG,    "Northing at false origin"),
                     new NamedIdentifier(Citations.EPSG,    "Northing at projection centre"),
-                    new NamedIdentifier(Citations.GEOTIFF, "FalseNorthing")
+                    new NamedIdentifier(Citations.GEOTIFF, "FalseNorthing"),
+                    new NamedIdentifier(Citations.ESRI,    "False_Northing"),
+                    new NamedIdentifier(Citations.ESRI,    "false_northing")
                 },
                 0, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, SI.METER);
 

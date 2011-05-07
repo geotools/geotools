@@ -84,6 +84,7 @@ import org.geotools.resources.i18n.Vocabulary;
 import org.geotools.resources.i18n.VocabularyKeys;
 import org.geotools.io.TableWriter;
 import org.geotools.util.LocalName;
+import org.geotools.util.NameFactory;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.ScopedName;
 import org.geotools.util.Version;
@@ -2270,10 +2271,22 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                 final int sourceDimensions = encoded >>> 16;
                 final int targetDimensions = encoded & 0xFFFF;
                 final ParameterDescriptor[] descriptors = createParameterDescriptors(epsg);
-                final Map<String,Object> properties = createProperties(name, epsg, remarks);
+                
+                // see if we have any alias for this operation, if so add them
+                GenericName[] aliases = null;
+                try {
+                    ParameterValueGroup pvg = factories.getMathTransformFactory().getDefaultParameters(name);
+                    if(pvg != null && pvg.getDescriptor() != null && pvg.getDescriptor().getAlias() != null) {
+                        aliases = (GenericName[]) pvg.getDescriptor().getAlias().toArray(new GenericName[pvg.getDescriptor().getAlias().size()]);
+                    }
+                } catch(NoSuchIdentifierException e) {
+                    // lookup for aliases failed, no problem
+                }
+                Map<String,Object> properties = addAliases(createProperties(name, epsg, remarks), aliases);
                 if (formula != null) {
                     properties.put(OperationMethod.FORMULA_KEY, formula);
                 }
+                
                 method = new DefaultOperationMethod(properties, sourceDimensions, targetDimensions,
                          new DefaultParameterDescriptorGroup(properties, descriptors));
                 returnValue = ensureSingleton(method, returnValue, code);
@@ -2285,6 +2298,74 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
              throw noSuchAuthorityCode(OperationMethod.class, code);
         }
         return returnValue;
+    }
+    
+    private Map<String,Object> addAliases(Map<String,Object> properties, GenericName[] aliases) {
+        ensureNonNull("properties", properties);
+        Object value = properties.get(IdentifiedObject.NAME_KEY);
+        ensureNonNull("name", value);
+        final String name;
+        if (value instanceof Identifier) {
+            name = ((Identifier) value).getCode();
+        } else {
+            name = value.toString();
+        }
+        if (aliases != null && aliases.length > 0) {
+            /*
+             * Aliases have been found. Before to add them to the properties map, overrides them
+             * with the aliases already provided by the users, if any. The 'merged' map is the
+             * union of aliases know to this factory and aliases provided by the user. User's
+             * aliases will be added first, for preserving the user's order (the LinkedHashMap
+             * acts as a FIFO queue).
+             */
+            int count = aliases.length;
+            value = properties.get(IdentifiedObject.ALIAS_KEY);
+            if (value != null) {
+                final Map<String,GenericName> merged = new LinkedHashMap<String,GenericName>();
+                putAll(NameFactory.toArray(value), merged);
+                count -= putAll(aliases, merged);
+                final Collection<GenericName> c = merged.values();
+                aliases = c.toArray(new GenericName[c.size()]);
+            }
+            /*
+             * Now set the aliases. This replacement will not be performed if
+             * all our aliases were replaced by user's aliases (count <= 0).
+             */
+            if (count > 0) {
+                final Map<String,Object> copy = new HashMap<String,Object>(properties);
+                copy.put(IdentifiedObject.ALIAS_KEY, aliases);
+                properties = copy;
+            }
+        }
+        return properties;
+    }
+    
+    /**
+     * Puts all elements in the {@code names} array into the specified map. Order matter, since the
+     * first element in the array should be the first element returned by the map if the map is
+     * actually an instance of {@link LinkedHashMap}. This method returns the number of elements
+     * ignored.
+     */
+    private static final int putAll(final GenericName[] names, final Map<String,GenericName> map) {
+        int ignored = 0;
+        for (int i=0; i<names.length; i++) {
+            final GenericName   name = names[i];
+            final GenericName scoped = name.toFullyQualifiedName();
+            final String         key = toCaseless(scoped.toString());
+            final GenericName    old = map.put(key, name);
+            if (old instanceof ScopedName) {
+                map.put(key, old); // Preserves the user value, except if it was unscoped.
+                ignored++;
+            }
+        }
+        return ignored;
+    }
+    
+    /**
+     * Returns a caseless version of the specified key, to be stored in the map.
+     */
+    private static String toCaseless(final String key) {
+        return key.replace('_', ' ').trim().toLowerCase();
     }
 
     /**

@@ -23,7 +23,8 @@ import java.lang.reflect.Array;
 import java.text.FieldPosition;
 import java.text.NumberFormat;
 import java.util.Collection;
-import javax.measure.unit.NonSI;
+import java.util.Locale;
+
 import javax.measure.unit.SI;
 import javax.measure.unit.Unit;
 import javax.measure.unit.UnitFormat;
@@ -108,7 +109,7 @@ public class Formatter {
      * @see AbstractParser#getAuthority
      * @see AbstractParser#setAuthority
      */
-    Citation authority = Citations.OGC;
+    private Citation authority = Citations.OGC;
 
     /**
      * Whatever we allow syntax coloring on ANSI X3.64 compatible terminal.
@@ -130,6 +131,16 @@ public class Formatter {
      * take the same units than itself.
      */
     private Unit<Angle> angularUnit;
+    
+    public Citation getAuthority() {
+        return authority;
+    }
+
+    public void setAuthority(Citation authority) {
+        this.authority = authority;
+        this.unitFormat = GeoToolsUnitFormat.getInstance(authority);
+    }
+
 
     /**
      * The object to use for formatting numbers.
@@ -139,7 +150,7 @@ public class Formatter {
     /**
      * The object to use for formatting units.
      */
-    private final UnitFormat unitFormat = UnitFormat.getInstance();
+    private UnitFormat unitFormat = GeoToolsUnitFormat.getInstance(Citations.EPSG);
 
     /**
      * Dummy field position.
@@ -588,11 +599,7 @@ public class Formatter {
             buffer.append("UNIT").append(symbols.open);
             setColor(UNIT_COLOR);
             buffer.append(symbols.quote);
-            if (NonSI.DEGREE_ANGLE.equals(unit)) {
-                buffer.append("degree");
-            } else {
-                unitFormat.format(unit, buffer, dummy);
-            }
+            unitFormat.format(unit, buffer, dummy);
             buffer.append(symbols.quote);
             resetColor();
             Unit<?> base = null;

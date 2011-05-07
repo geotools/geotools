@@ -671,7 +671,7 @@ public class PolarStereographic extends Stereographic {
          */
         public static final ParameterDescriptor STANDARD_PARALLEL = createDescriptor(
                 new NamedIdentifier[] {
-                    new NamedIdentifier(Citations.ESRI, "standard_parallel_1"),
+                    new NamedIdentifier(Citations.ESRI, "Standard_Parallel_1"),
                     new NamedIdentifier(Citations.EPSG, "Latitude of standard parallel")
                 },
                 90, -90, 90, NonSI.DEGREE_ANGLE);
@@ -739,7 +739,7 @@ public class PolarStereographic extends Stereographic {
          */
         public static final ParameterDescriptor STANDARD_PARALLEL = createDescriptor(
                 new NamedIdentifier[] {
-                    new NamedIdentifier(Citations.ESRI, "standard_parallel_1"),
+                    new NamedIdentifier(Citations.ESRI, "Standard_Parallel_1"),
                     new NamedIdentifier(Citations.EPSG, "Latitude of standard parallel")
                 },
                 -90, -90, 90, NonSI.DEGREE_ANGLE);

@@ -157,10 +157,10 @@ public class Formattable {
         Formatter formatter = FORMATTER.get();
         if (formatter             == null        ||
             formatter.indentation != indentation ||
-            formatter.authority   != authority)
+            formatter.getAuthority()   != authority)
         {
             formatter = new Formatter(Symbols.DEFAULT, indentation);
-            formatter.authority = authority;
+            formatter.setAuthority(authority);
             FORMATTER.set(formatter);
         }
         try {

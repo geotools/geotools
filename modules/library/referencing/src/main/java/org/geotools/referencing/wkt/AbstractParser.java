@@ -106,7 +106,7 @@ public abstract class AbstractParser extends Format {
      * @return The expected authority.
      */
     public Citation getAuthority() {
-        return getFormatter().authority;
+        return getFormatter().getAuthority();
     }
 
     /**
@@ -121,7 +121,7 @@ public abstract class AbstractParser extends Format {
             throw new IllegalArgumentException(Errors.format(
                       ErrorKeys.NULL_ARGUMENT_$1, "authority"));
         }
-        getFormatter().authority = authority;
+        getFormatter().setAuthority(authority);
     }
 
     /**

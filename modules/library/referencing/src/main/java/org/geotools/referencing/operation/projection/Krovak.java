@@ -424,7 +424,8 @@ public class Krovak extends MapProjection {
                 new NamedIdentifier[] {
                     new NamedIdentifier(Citations.OGC,     "azimuth"),
                     new NamedIdentifier(Citations.EPSG,    "Azimuth of initial line"),
-                    new NamedIdentifier(Citations.GEOTIFF, "AzimuthAngle")
+                    new NamedIdentifier(Citations.GEOTIFF, "AzimuthAngle"),
+                    new NamedIdentifier(Citations.ESRI,    "Azimuth"),                    
                 }, 30.28813972222222, 0, 360, NonSI.DEGREE_ANGLE);
 
         /**
@@ -435,7 +436,8 @@ public class Krovak extends MapProjection {
         public static final ParameterDescriptor PSEUDO_STANDARD_PARALLEL =
                 createDescriptor(new NamedIdentifier[] {
                     new NamedIdentifier(Citations.OGC,  "pseudo_standard_parallel_1"),
-                    new NamedIdentifier(Citations.EPSG, "Latitude of Pseudo Standard Parallel")
+                    new NamedIdentifier(Citations.EPSG, "Latitude of Pseudo Standard Parallel"),
+                    new NamedIdentifier(Citations.ESRI,  "Pseudo_Standard_Parallel_1")
                 }, 78.5, -90, 90, NonSI.DEGREE_ANGLE);
 
         /**
@@ -446,7 +448,8 @@ public class Krovak extends MapProjection {
                 new NamedIdentifier[] {
                     new NamedIdentifier(Citations.OGC,  "scale_factor"),
                     new NamedIdentifier(Citations.EPSG, "Scale factor on pseudo standard parallel"),
-                    new NamedIdentifier(Citations.GEOTIFF, "ScaleAtCenter")
+                    new NamedIdentifier(Citations.GEOTIFF, "ScaleAtCenter"),
+                    new NamedIdentifier(Citations.OGC,  "Scale_Factor")
                 }, 0.9999, 0, Double.POSITIVE_INFINITY, Unit.ONE);             
        
   	    /**

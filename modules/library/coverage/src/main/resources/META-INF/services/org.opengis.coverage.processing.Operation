@@ -23,3 +23,4 @@ org.geotools.coverage.processing.operation.SubtractConst
 org.geotools.coverage.processing.operation.SubtractFromConst
 org.geotools.coverage.processing.operation.Extrema
 org.geotools.coverage.processing.operation.Histogram
+org.geotools.coverage.processing.operation.ZonalStats

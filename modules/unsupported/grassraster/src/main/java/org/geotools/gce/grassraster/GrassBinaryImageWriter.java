@@ -122,8 +122,7 @@ public class GrassBinaryImageWriter extends ImageWriter {
             else
                 processImageComplete();
         }
-        rasterWriter.close();
-
+        // rasterWriter.close();
     }
 
     /**

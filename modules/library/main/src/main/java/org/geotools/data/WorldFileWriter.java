@@ -56,7 +56,7 @@ import org.opengis.referencing.operation.MathTransform;
  * which translates into the following affine transformation.
  * 
  * |				:			|
- * | scalex	shearx	: translatex|
+ * | scalex shearx	: translatex|
  * |				:			|
  * | sheary scaley	: transaltey|
  * |----------------------------|	
@@ -239,7 +239,8 @@ public class WorldFileWriter {
 
 	private void close(BufferedWriter writer) {
 		try{
-			writer.close();
+			if(writer!=null)
+			    writer.close();
 		}catch (Throwable t) {
 			if(LOGGER.isLoggable(Level.FINE))
 				LOGGER.log(Level.FINE,t.getLocalizedMessage(),t);
@@ -266,7 +267,7 @@ public class WorldFileWriter {
 		checkMathTransform(transform);
 		if(transform.getSourceDimensions()!=2||transform.getTargetDimensions()!=2)
 			throw new IllegalArgumentException(Errors.format(ErrorKeys.MISMATCHED_DIMENSION_$3,"transform",transform.getSourceDimensions(),2));
-		if( !outLocation.canRead()
+		if( !outLocation.canWrite()
 			|| !outLocation.isFile() ) 
 			throw new IllegalArgumentException(Errors.format(ErrorKeys.FILE_DOES_NOT_EXIST_$1,outLocation));
 		// create a writer

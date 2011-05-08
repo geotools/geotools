@@ -75,6 +75,6 @@ public class Exp extends OperationJAI {
         final NumberRange range = ranges[0];
         final double min = Math.exp(range.getMinimum());
         final double max = Math.exp(range.getMaximum());
-        return new NumberRange(min, max);
+        return NumberRange.create(min, max);
     }
 }

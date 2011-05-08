@@ -33,8 +33,6 @@ import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
 import org.opengis.referencing.operation.MathTransform;
 
-import sun.misc.IOUtils;
-
 /**
  * This class is responsible for creating a world file from a
  * {@link MathTransform} or {@link AffineTransform}.
@@ -269,6 +267,9 @@ public class WorldFileWriter {
 		checkMathTransform(transform);
 		if(transform.getSourceDimensions()!=2||transform.getTargetDimensions()!=2)
 			throw new IllegalArgumentException(Errors.format(ErrorKeys.MISMATCHED_DIMENSION_$3,"transform",transform.getSourceDimensions(),2));
+		if(!outLocation.exists())
+		    if(!outLocation.createNewFile())
+		        throw new IOException(Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$1,"Unable to create file "+outLocation)); 
 		if( !outLocation.canWrite()
 			|| !outLocation.isFile() ) 
 			throw new IllegalArgumentException(Errors.format(ErrorKeys.FILE_DOES_NOT_EXIST_$1,outLocation));

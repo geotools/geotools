@@ -14,10 +14,12 @@ import org.geotools.factory.GeoTools;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralDirectPosition;
 import org.geotools.geometry.jts.JTS;
+import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.datum.BursaWolfParameters;
 import org.geotools.referencing.datum.DefaultGeodeticDatum;
 import org.geotools.referencing.factory.ReferencingFactoryContainer;
 import org.geotools.referencing.operation.DefiningConversion;
+import org.geotools.referencing.wkt.Formattable;
 import org.opengis.metadata.Identifier;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
@@ -68,6 +70,8 @@ ReferencingExamples() {
         // createAndUseMathTransform();
         // hintExample();
         // createTransformFromAuthorityCode();
+        toWKT();
+        toWKTFormat();
     } catch (Exception e) {
         e.printStackTrace();
     }
@@ -505,6 +509,26 @@ public void movePoint() {
     Point2D dest = calc.getDestinationGeographicPoint();
     System.out.println("Longitude: " + dest.getX() + " Latitude: " + dest.getY());
     // movePoint end
+}
+
+public void toWKT() throws Exception {
+    // toWKT start
+    CoordinateReferenceSystem crs = CRS.decode("EPSG:32735");
+    String wkt = crs.toWKT();
+    System.out.println("wkt for EPSG:32735");
+    System.out.println( wkt );
+    // toWKT end
+}
+
+public void toWKTFormat() throws Exception {
+    // toWKTFormat start
+    CoordinateReferenceSystem crs = CRS.decode("EPSG:32735");
+    Formattable f = (Formattable) CRS.decode("EPSG:32735", true);
+    String wkt = f.toWKT(Citations.ESRI, 2); // use 0 indent for single line
+    
+    System.out.println("wkt for EPSG:32735 (ESRI)");
+    System.out.println( wkt );
+    // toWKTFormat end
 }
 
 public static void main(String[] args) {

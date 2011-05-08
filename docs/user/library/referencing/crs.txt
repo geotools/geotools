@@ -35,7 +35,7 @@ Using the WMS AUTO2 syntax (which requires you pass in your current "position"::
   CoordinateReferenceSystem sourceCRS = CRS.decode("AUTO2:42001,"+lat+","+lon);
 
 Well Known Text
-^^^^^^^^^^^^^^^
+'''''''''''''''
 
 **CoordinateReferenceSystem** can also be defined by a text format ((called "Well Known Text" or WKT). This is a standard provided by the OGC and shows up in inside a shapefile "prj" file, or in a databases such as PostGIS and Oracle.
 
@@ -51,14 +51,108 @@ To parse WKT please use the CRS.parseWKT( txt ) method::
 
   CoordinateReferenceSystem crs = CRS.parseWKT(wkt);
 
-The different organisations each have slightly different ideas on how some of the names work in the WKT standard. GeoTools does a good job of listing common aliases in order to read WKT generated from a range of tools.
+The different organisations each have slightly different ideas on how some of the names work in
+the WKT standard. GeoTools does a good job of listing common aliases in order to read WKT
+generated from a range of tools.
+
+To generate WKT:
+
+* To generate WKT against the standard:
+    
+  .. literalinclude:: /../src/main/java/org/geotools/referencing/ReferencingExamples.java
+     :language: java
+     :start-after: // toWKT start
+     :end-before: // toWKT end
+  
+  produces the following::
+    
+    PROJCS["WGS 84 / UTM zone 35S", 
+      GEOGCS["WGS 84", 
+        DATUM["World Geodetic System 1984", 
+          SPHEROID["WGS 84", 6378137.0, 298.257223563, AUTHORITY["EPSG","7030"]], 
+          AUTHORITY["EPSG","6326"]], 
+        PRIMEM["Greenwich", 0.0, AUTHORITY["EPSG","8901"]], 
+        UNIT["degree", 0.017453292519943295], 
+        AXIS["Geodetic latitude", NORTH], 
+        AXIS["Geodetic longitude", EAST], 
+        AUTHORITY["EPSG","4326"]], 
+      PROJECTION["Transverse Mercator", AUTHORITY["EPSG","9807"]], 
+      PARAMETER["central_meridian", 27.0], 
+      PARAMETER["latitude_of_origin", 0.0], 
+      PARAMETER["scale_factor", 0.9996], 
+      PARAMETER["false_easting", 500000.0], 
+      PARAMETER["false_northing", 10000000.0], 
+      UNIT["m", 1.0], 
+      AXIS["Easting", EAST], 
+      AXIS["Northing", NORTH], 
+      AUTHORITY["EPSG","32735"]]
+
+* To generate WKT that matches a bit more the ESRI use:
+  
+  As mentioned above differnt vendors don't exactly follow the standard. For the WKT above
+  ESRI ArcMap produces the following::
+     
+     PROJCS["WGS_1984_UTM_Zone_35S",GEOGCS["GCS_WGS_1984",DATUM["D_WGS_1984",SPHEROID["WGS_1984",6378137,298.257223563]],
+     PRIMEM["Greenwich",0],UNIT["Degree",0.017453292519943295]],PROJECTION["Transverse_Mercator"],PARAMETER["Central_Meridian",27],
+     PARAMETER["Latitude_Of_Origin",0],PARAMETER["Scale_Factor",0.9996],PARAMETER["False_Easting",500000],PARAMETER["False_Northing",10000000],
+     UNIT["Meter",1]
+  
+  Notable differences are:
+  
+  * the way the datum, unit of measure, projection and projection parameters are spelled out
+  * it's all in one line.
+  
+  We can produce something similar using:
+  
+  .. literalinclude:: /../src/main/java/org/geotools/referencing/ReferencingExamples.java
+     :language: java
+     :start-after: // toWKTFormat start
+     :end-before: // toWKTFormat end
+  
+  You can change the indent to 0 in order to get everything on a single line.
+  
+  Produces the following::
+  
+    PROJCS["WGS 84 / UTM zone 35S", 
+      GEOGCS["WGS 84", 
+        DATUM["D_WGS_1984", 
+          SPHEROID["D_WGS_1984", 6378137.0, 298.257223563, AUTHORITY["EPSG","7030"]], 
+          AUTHORITY["EPSG","6326"]], 
+        PRIMEM["Greenwich", 0.0, AUTHORITY["EPSG","8901"]], 
+        UNIT["degree", 0.017453292519943295], 
+        AXIS["Geodetic longitude", EAST], 
+        AXIS["Geodetic latitude", NORTH], 
+        AUTHORITY["EPSG","4326"]], 
+      PROJECTION["Transverse Mercator", AUTHORITY["EPSG","9807"]], 
+      PARAMETER["Longitude_Of_Origin", 27.0], 
+      PARAMETER["Latitude_Of_Center", 0.0], 
+      PARAMETER["scale_factor", 0.9996], 
+      PARAMETER["false_easting", 500000.0], 
+      PARAMETER["false_northing", 10000000.0], 
+      UNIT["m", 1.0], 
+      AXIS["Easting", EAST], 
+      AXIS["Northing", NORTH], 
+      AUTHORITY["EPSG","32735"]]
+  
+  While not 1-1 equal, the datum, projection, projection parameters and units are spelled
+  out the same.
+
+.. note:: Formatable
+  
+  The code above casted the CRS into a Formattable object, that gives the developer more
+  control on how things are converted in WKT, and then asked to generate the WKT using the
+  ESRI aliases and 2 indentation when generating the output.
+  
+  The default is CITATIONS.ESPG, indent 2 instead.
 
 Matching a CoordinateReferenceSystem
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+''''''''''''''''''''''''''''''''''''
 
-You can actually search based on any metadata, not just name, the way you do it is you construct an example of what you are looking for - and than ask for the best match.
+You can actually search based on any metadata, not just name, the way you do it is you construct
+an example of what you are looking for - and than ask for the best match.
 
-This functionality is especially useful when you have produced a CoordinateReferenceSystem by parsing WKT and you would like to find the "official" code for it.::
+This functionality is especially useful when you have produced a CoordinateReferenceSystem by
+parsing WKT and you would like to find the "official" code for it.::
   
   String wkt =
       "GEOGCS[\"ED50\",\n" +

@@ -24,15 +24,12 @@ import org.geotools.factory.FactoryRegistryException;
 import org.geotools.feature.SchemaException;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.map.event.MapLayerEvent;
 import org.geotools.resources.coverage.FeatureUtilities;
 import org.geotools.styling.Style;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.TransformException;
 
-public class GridCoverageLayer extends Layer {
-
-    protected Style style;
+public class GridCoverageLayer extends StyleLayer {
 
     protected GridCoverage2D coverage;
 
@@ -47,14 +44,13 @@ public class GridCoverageLayer extends Layer {
      * @throws TransformException
      */
     public GridCoverageLayer(GridCoverage2D coverage, Style style) {
+        super(style);
         this.coverage = coverage;
-        this.style = style;
     }
 
     public GridCoverageLayer(GridCoverage2D coverage, Style style, String title) {
+        super(style,title);
         this.coverage = coverage;
-        this.style = style;
-        setTitle(title);
     }
 
     @Override
@@ -64,7 +60,7 @@ public class GridCoverageLayer extends Layer {
                 coverage.dispose(true);
             }catch (Exception e) {
                 // eat me
-            }            
+            }
             coverage = null;
         }
         if( style == null ){
@@ -88,32 +84,6 @@ public class GridCoverageLayer extends Layer {
             }
         }
         return null;
-    }
-
-    /**
-     * Getter for property style.
-     * 
-     * @return Value of property style.
-     */
-    public Style getStyle() {
-        return style;
-    }
-
-    /**
-     * Setter for property style.
-     * 
-     * @param style
-     *            New value of property style.
-     * 
-     * @throws NullPointerException
-     *             DOCUMENT ME!
-     */
-    public void setStyle(Style style) {
-        if (style == null) {
-            throw new NullPointerException();
-        }
-        this.style = style;
-        fireMapLayerListenerLayerChanged(MapLayerEvent.STYLE_CHANGED);
     }
 
     public SimpleFeatureCollection toFeatureCollection() {

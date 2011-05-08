@@ -11,7 +11,6 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.event.MapLayerEvent;
-import org.geotools.map.event.MapLayerListener;
 import org.geotools.referencing.CRS;
 import org.geotools.styling.Style;
 import org.opengis.feature.Feature;
@@ -31,9 +30,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * rendering requirements for an entire Map; while a Style (defined by SE) is focused on a single
  * layer of content
  */
-public class FeatureLayer extends Layer {
-    /** Style used for rendering */
-    protected Style style;
+public class FeatureLayer extends StyleLayer {
 
     /** FeatureSource offering content for display */
     protected FeatureSource<? extends FeatureType, ? extends Feature> featureSource;
@@ -52,30 +49,29 @@ public class FeatureLayer extends Layer {
      * @param style
      *            the style used to represent this layer
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public FeatureLayer(FeatureSource featureSource, Style style) {
+        super(style);
         this.featureSource = featureSource;
-        this.style = style;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public FeatureLayer(FeatureSource featureSource, Style style, String title) {
+        super(style,title);
         this.featureSource = featureSource;
-        this.style = style;
-        setTitle(title);
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public FeatureLayer(FeatureCollection collection, Style style) {
+        super(style);
         this.featureSource = DataUtilities.source(collection);
         this.style = style;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public FeatureLayer(FeatureCollection collection, Style style, String title) {
+        super( style, title );
         this.featureSource = DataUtilities.source(collection);
-        this.style = style;
-        setTitle(title);
     }
 
     /**
@@ -114,7 +110,7 @@ public class FeatureLayer extends Layer {
      * 
      * @return feature source for the contents of this layer
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "rawtypes" })
     public FeatureSource getFeatureSource() {
         return featureSource;
     }
@@ -129,26 +125,6 @@ public class FeatureLayer extends Layer {
             return (SimpleFeatureSource) featureSource;
         }
         return null; // not available
-    }
-
-    /**
-     * Get the style for this layer. If style has not been set, then null is returned.
-     * 
-     * @return The style (SLD).
-     */
-    public Style getStyle() {
-        return style;
-    }
-
-    /**
-     * Sets the style for this layer. If a style has not been defined a default one is used.
-     * 
-     * @param style
-     *            The new style
-     */
-    public void setStyle(Style style) {
-        this.style = style;
-        fireMapLayerListenerLayerChanged(MapLayerEvent.STYLE_CHANGED);
     }
 
     /**

@@ -31,9 +31,7 @@ import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.TransformException;
 
-public class GridReaderLayer extends Layer {
-
-    protected Style style;
+public class GridReaderLayer extends StyleLayer {
 
     protected AbstractGridCoverage2DReader reader;
 
@@ -56,10 +54,9 @@ public class GridReaderLayer extends Layer {
      */
     public GridReaderLayer(AbstractGridCoverage2DReader reader, Style style, String title,
             GeneralParameterValue[] params) {
+        super(style,title);
         this.reader = reader;
         this.params = params;
-        this.style = style;
-        setTitle(title);
     }
 
     @Override
@@ -108,9 +105,9 @@ public class GridReaderLayer extends Layer {
      * @throws TransformException
      */
     public GridReaderLayer(AbstractGridCoverage2DReader reader, Style style, String title) {
+        super(style,title);
         this.reader = reader;
         this.style = style;
-        setTitle(title);
     }
 
     /**
@@ -125,8 +122,8 @@ public class GridReaderLayer extends Layer {
      * @throws TransformException
      */
     public GridReaderLayer(AbstractGridCoverage2DReader reader, Style style) {
+        super(style);
         this.reader = reader;
-        this.style = style;
     }
 
     /**

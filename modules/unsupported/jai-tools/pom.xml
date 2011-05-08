@@ -92,13 +92,13 @@
     </dependency>
     <dependency>
        <groupId>com.googlecode.jaitools</groupId>
-       <artifactId>zonalstats</artifactId>
-       <version>1.0.1</version>
+       <artifactId>jt-zonalstats</artifactId>
+       <version>1.1.1</version>
      </dependency>
      <dependency>
        <groupId>com.googlecode.jaitools</groupId>
-       <artifactId>utils</artifactId>
-       <version>1.0.1</version>
+       <artifactId>jt-utils</artifactId>
+       <version>1.1.1</version>
      </dependency>
     <dependency>
       <groupId>javax.media</groupId>

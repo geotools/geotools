@@ -146,17 +146,7 @@
        <modules>
          <module>shapefile-renderer</module>
        </modules>
-     </profile>
-     
-     <profile>
-       <id>jai-tools</id>
-       <activation>
-         <property><name>all</name></property>
-       </activation>
-       <modules>
-         <module>jai-tools</module>
-       </modules>
-     </profile>     
+     </profile>  
 
      <profile>
        <id>unsupported</id>
@@ -166,19 +156,14 @@
        <modules>
          <module>app-schema</module>
          <module>csv</module>
-         <module>db2</module>
          <module>epsg-oracle</module>
          <module>epsg-h2</module>
          <module>jdbc-ng</module>
-         <module>mysql</module>
-         <module>oracle-spatial</module>
          <module>postgis</module>
          <module>postgis-versioned</module>
          <module>vpf</module>
-         <module>caching</module>
          <module>shapefile-renderer</module>
          <module>matfile5</module>
-         <module>jai-tools</module>
          <module>sfs</module>
          <module>mark-wkt</module>
        </modules>

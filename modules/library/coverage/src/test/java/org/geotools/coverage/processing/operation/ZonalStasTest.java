@@ -17,6 +17,8 @@
 package org.geotools.coverage.processing.operation;
 
 import static java.lang.Math.round;
+import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReader;
+import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
 import jaitools.CollectionFactory;
 import jaitools.media.jai.zonalstats.Result;
 import jaitools.media.jai.zonalstats.ZonalStats;
@@ -27,6 +29,7 @@ import jaitools.numeric.Statistic;
 
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,23 +39,29 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import javax.imageio.ImageIO;
+import javax.media.jai.PlanarImage;
 import javax.media.jai.ROI;
 import javax.media.jai.ROIShape;
 
 import junit.framework.TestCase;
 
 import org.geotools.TestData;
+import org.geotools.coverage.CoverageFactoryFinder;
+import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
+import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.coverage.processing.OperationJAI;
 import org.geotools.data.DataStore;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.FileDataStoreFinder;
+import org.geotools.data.WorldFileReader;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
-import org.geotools.gce.geotiff.GeoTiffReader;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.util.logging.Logging;
 import org.junit.Before;
@@ -236,9 +245,24 @@ public class ZonalStasTest extends TestCase {
 	
 	@Test
     public void testPolygonZoneGlobalStats() throws Exception {
-		final File file = TestData.file(this,"test.tif");
-		final GeoTiffReader reader = new GeoTiffReader(file);
-		final GridCoverage2D coverage2D = (GridCoverage2D) reader.read(null);
+        final File tiff = TestData.file(this, "test.tif");
+        final File tfw  = TestData.file(this, "test.tfw");
+        
+        final TIFFImageReader reader= (it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReader) new TIFFImageReaderSpi().createReaderInstance();
+        reader.setInput(ImageIO.createImageInputStream(tiff));
+        final BufferedImage image = reader.read(0);
+        reader.dispose();
+        
+        
+        final MathTransform transform = new WorldFileReader(tfw).getTransform();
+        final GridCoverage2D coverage2D = CoverageFactoryFinder.getGridCoverageFactory(null).
+            create(
+                       "coverage",
+                       image,
+                       new GridGeometry2D(new GridEnvelope2D(PlanarImage.wrapRenderedImage(image).getBounds()), transform, DefaultGeographicCRS.WGS84),
+                       new GridSampleDimension[]{new GridSampleDimension("coverage")},
+                       null,
+                       null);
         
         final File fileshp = TestData.file(this,"testpolygon.shp");
         final DataStore store = FileDataStoreFinder.getDataStore(fileshp.toURI().toURL());
@@ -307,17 +331,32 @@ public class ZonalStasTest extends TestCase {
         assertEquals(statistics.get(Statistic.MAX).get(0).getValue().doubleValue(), 1300.0, DELTA);
 
         reader.dispose();
+        coverage2D.dispose(true);
+        image.flush();
     }
 	
 	@Test
-//	@Ignore
     public void testPolygonZoneLocalStats() throws Exception {
-		final File file = TestData.file(this,"test.tif");
-		final GeoTiffReader reader = new GeoTiffReader(file);
-		final GridCoverage2D coverage2D = (GridCoverage2D) reader.read(null);
+        final File tiff = TestData.file(this, "test.tif");
+        final File tfw = TestData.file(this, "test.tfw");
+
+        final TIFFImageReader reader = (it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReader) new TIFFImageReaderSpi()
+                .createReaderInstance();
+        reader.setInput(ImageIO.createImageInputStream(tiff));
+        final BufferedImage image = reader.read(0);
+        reader.dispose();
+
+        final MathTransform transform = new WorldFileReader(tfw).getTransform();
+        final GridCoverage2D coverage2D = CoverageFactoryFinder.getGridCoverageFactory(null)
+                .create("coverage",
+                        image,
+                        new GridGeometry2D(new GridEnvelope2D(PlanarImage.wrapRenderedImage(image)
+                                .getBounds()), transform, DefaultGeographicCRS.WGS84),
+                        new GridSampleDimension[] { new GridSampleDimension("coverage") }, null,
+                        null);
         
         final File fileshp = TestData.file(this,"testpolygon.shp");
-        final DataStore store = FileDataStoreFinder.getDataStore(fileshp.toURL());
+        final DataStore store = FileDataStoreFinder.getDataStore(fileshp.toURI().toURL());
         FeatureSource<SimpleFeatureType, SimpleFeature> featureSource = store.getFeatureSource(store.getNames().get(0));
         FeatureCollection<SimpleFeatureType, SimpleFeature> featureCollection = featureSource.getFeatures();
         List<SimpleFeature> polygonList = new ArrayList<SimpleFeature>();
@@ -368,6 +407,8 @@ public class ZonalStasTest extends TestCase {
         assertEquals(statistics.get(Statistic.MAX).get(1).getValue().doubleValue(), 1598.0, DELTA);
         
         reader.dispose();
+        coverage2D.dispose(true);
+        image.flush();
     }
 
 }

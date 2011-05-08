@@ -161,18 +161,6 @@
     <!-- Test dependencies -->
     <dependency>
       <groupId>org.geotools</groupId>
-      <artifactId>gt-geotiff</artifactId>
-      <version>${project.version}</version>
-      <scope>test</scope>
-    </dependency>
-     <dependency>
-      <groupId>org.geotools</groupId>
-      <artifactId>gt-epsg-hsql</artifactId>
-      <version>${project.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.geotools</groupId>
       <artifactId>gt-shapefile</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>

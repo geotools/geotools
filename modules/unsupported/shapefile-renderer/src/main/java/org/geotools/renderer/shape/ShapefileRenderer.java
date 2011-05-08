@@ -376,7 +376,7 @@ public class ShapefileRenderer implements GTRenderer {
                 // TODO: find a better way to declare the scale ranges so that
                 // we
                 // get style caching also between multiple rendering runs
-                NumberRange scaleRange = new NumberRange(scaleDenominator, scaleDenominator);
+                NumberRange<Double> scaleRange = NumberRange.create(scaleDenominator, scaleDenominator);
 
                 Set modifiedFIDs = processTransaction(graphics, bbox, mt, datastore, transaction,
                         typeName, query, ruleList, elseRuleList, scaleRange, layerId);

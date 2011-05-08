@@ -17,6 +17,10 @@
  */
 package org.geotools.image;
 
+import java.awt.image.ColorModel;
+import java.awt.image.RenderedImage;
+import java.awt.image.SampleModel;
+
 import javax.media.jai.ImageLayout;
 
 /**
@@ -27,17 +31,38 @@ import javax.media.jai.ImageLayout;
  */
 public class ImageLayout2 extends ImageLayout{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -7921590012423277029L;
+        private static final long serialVersionUID = -7921590012423277029L;
+
+        public ImageLayout2() {
+            super();
+        }
+    
+        public ImageLayout2(int minX, int minY, int width, int height, int tileGridXOffset,
+                int tileGridYOffset, int tileWidth, int tileHeight, SampleModel sampleModel,
+                ColorModel colorModel) {
+            super(minX, minY, width, height, tileGridXOffset, tileGridYOffset, tileWidth, tileHeight,
+                    sampleModel, colorModel);
+        }
+    
+        public ImageLayout2(int tileGridXOffset, int tileGridYOffset, int tileWidth, int tileHeight,
+                SampleModel sampleModel, ColorModel colorModel) {
+            super(tileGridXOffset, tileGridYOffset, tileWidth, tileHeight, sampleModel, colorModel);
+        }
+    
+        public ImageLayout2(int minX, int minY, int width, int height) {
+            super(minX, minY, width, height);
+        }
+    
+        public ImageLayout2(RenderedImage im) {
+            super(im);
+        }
 
 	@Override
 	public int hashCode() {
 		int code = 0, i = 1;
 		
         // This implementation is quite arbitrary.
-        // hashCode's NEED not be uniqe for two "different" objects
+        // hashCode's NEED not be unique for two "different" objects
 		if(isValid(ImageLayout2.WIDTH_MASK))
 			code += (getWidth(null) * i++);
 		

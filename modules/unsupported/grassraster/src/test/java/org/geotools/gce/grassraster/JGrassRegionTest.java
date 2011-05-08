@@ -14,7 +14,7 @@ import junit.framework.TestCase;
  * @author Andrea Antonello (www.hydrologis.com)
  */
 @SuppressWarnings("nls")
-public class TestJGrassRegion extends TestCase {
+public class JGrassRegionTest extends TestCase {
 
     private static final double EPSI = 0.0001;
 

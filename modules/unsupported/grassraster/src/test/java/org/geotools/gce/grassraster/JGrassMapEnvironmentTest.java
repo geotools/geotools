@@ -13,7 +13,7 @@ import junit.framework.TestCase;
  * @author Andrea Antonello (www.hydrologis.com)
  */
 @SuppressWarnings("nls")
-public class TestJGrassMapEnvironment extends TestCase {
+public class JGrassMapEnvironmentTest extends TestCase {
 
     public void test() {
         URL pitUrl = this.getClass().getClassLoader().getResource("testlocation/test/cell/pit");

@@ -20,7 +20,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @author Andrea Antonello (www.hydrologis.com)
  */
 @SuppressWarnings("nls")
-public class TestJGrassUtils extends TestCase {
+public class JGrassUtilsTest extends TestCase {
 
     public void testScaling() throws IOException, NoSuchAuthorityCodeException, FactoryException {
         double[][] mapData = new double[][]{//

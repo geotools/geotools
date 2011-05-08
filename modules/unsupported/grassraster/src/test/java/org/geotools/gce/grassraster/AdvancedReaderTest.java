@@ -28,7 +28,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * 
  * @author Andrea Antonello (www.hydrologis.com)
  */
-public class AdvancedReaderTests extends TestCase {
+public class AdvancedReaderTest extends TestCase {
 
     private CoordinateReferenceSystem crs = null;
     private CoordinateReferenceSystem crs32632 = null;

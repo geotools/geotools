@@ -329,7 +329,7 @@ public class Drawer {
             float[] point=new float[6];
             shape.getPathIterator(null).currentSegment(point);
             SLDStyleFactory styleFactory=new SLDStyleFactory();
-            Style2D tmp = styleFactory.createStyle(feature, pointSymbolizer, new NumberRange(Double.MIN_VALUE, Double.MAX_VALUE));
+            Style2D tmp = styleFactory.createStyle(feature, pointSymbolizer, NumberRange.create(Double.MIN_VALUE, Double.MAX_VALUE));
  
             if( tmp instanceof MarkStyle2D ){
                 MarkStyle2D style=(MarkStyle2D) tmp;

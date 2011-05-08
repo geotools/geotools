@@ -19,9 +19,8 @@ package org.geotools.coverage.processing.operation;
 // JAI dependencies (for javadoc)
 import javax.media.jai.operator.MultiplyConstDescriptor;
 
-// Geotools dependencies
-import org.geotools.util.NumberRange;
 import org.geotools.coverage.processing.OperationJAI;
+import org.geotools.util.NumberRange;
 
 
 /**
@@ -91,7 +90,7 @@ public class MultiplyConst extends OperationJAI {
             final NumberRange range = ranges[0];
             final double min = range.getMinimum() * c;
             final double max = range.getMaximum() * c;
-            return (max<min) ? new NumberRange(max, min) : new NumberRange(min, max);
+            return (max<min) ? NumberRange.create(max, min) : NumberRange.create(min, max);
         }
         return super.deriveRange(ranges, parameters);
     }

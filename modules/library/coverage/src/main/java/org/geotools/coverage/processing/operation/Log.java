@@ -75,6 +75,6 @@ public class Log extends OperationJAI {
         final NumberRange range = ranges[0];
         final double min = Math.log(range.getMinimum());
         final double max = Math.log(range.getMaximum());
-        return new NumberRange(min, max);
+        return NumberRange.create(min, max);
     }
 }

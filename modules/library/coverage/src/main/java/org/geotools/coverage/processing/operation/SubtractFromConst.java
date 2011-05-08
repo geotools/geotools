@@ -91,7 +91,7 @@ public class SubtractFromConst extends OperationJAI {
             final NumberRange range = ranges[0];
             final double min = c - range.getMaximum();
             final double max = c - range.getMinimum();
-            return new NumberRange(min, max);
+            return NumberRange.create(min, max);
         }
         return super.deriveRange(ranges, parameters);
     }

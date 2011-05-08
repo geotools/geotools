@@ -375,7 +375,7 @@ public class GradientMagnitude extends OperationJAI {
             final double minimum = range.getMinimum();
             final double maximum = range.getMaximum();
             factor *= (maximum - minimum) * DEFAULT_RANGE_SCALE;
-            range = new NumberRange(0, factor);
+            range = NumberRange.create(0, factor);
         }
         if (range != null) {
             category = new Category(category.getName(), DEFAULT_COLOR_PALETTE, samples, range);

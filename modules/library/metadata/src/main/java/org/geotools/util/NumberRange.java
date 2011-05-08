@@ -16,12 +16,13 @@
  */
 package org.geotools.util;
 
-import org.geotools.resources.XMath;
-import org.geotools.resources.ClassChanger;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.i18n.ErrorKeys;
 import static org.geotools.resources.ClassChanger.getFinestClass;
 import static org.geotools.resources.ClassChanger.getWidestClass;
+
+import org.geotools.resources.ClassChanger;
+import org.geotools.resources.XMath;
+import org.geotools.resources.i18n.ErrorKeys;
+import org.geotools.resources.i18n.Errors;
 
 
 /**
@@ -57,11 +58,6 @@ public class NumberRange<T extends Number & Comparable<? super T>> extends Range
         return create(minimum, true, maximum, true);
     }
 
-    /** @deprecated Use {@code create} method instead. */
-    public NumberRange(final byte minimum, final byte maximum) {
-        this(minimum, true, maximum, true);
-    }
-
     /**
      * Constructs a range of {@code byte} values.
      *
@@ -80,16 +76,6 @@ public class NumberRange<T extends Number & Comparable<? super T>> extends Range
                 Byte.valueOf(maximum), isMaxIncluded);
     }
 
-    /** @deprecated Use {@code create} method instead. */
-    @Deprecated @SuppressWarnings("unchecked")
-    public NumberRange(final byte minimum, final boolean isMinIncluded,
-                       final byte maximum, final boolean isMaxIncluded)
-    {
-        super((Class) Byte.class,
-                (T) (Object) Byte.valueOf(minimum), isMinIncluded,
-                (T) (Object) Byte.valueOf(maximum), isMaxIncluded);
-    }
-
     /**
      * Constructs an inclusive range of {@code short} values.
      *
@@ -100,11 +86,6 @@ public class NumberRange<T extends Number & Comparable<? super T>> extends Range
      */
     public static NumberRange<Short> create(final short minimum, final short maximum) {
         return create(minimum, true, maximum, true);
-    }
-
-    /** @deprecated Use {@code create} method instead. */
-    public NumberRange(final short minimum, final short maximum) {
-        this(minimum, true, maximum, true);
     }
 
     /**
@@ -125,16 +106,6 @@ public class NumberRange<T extends Number & Comparable<? super T>> extends Range
                 Short.valueOf(maximum), isMaxIncluded);
     }
 
-    /** @deprecated Use {@code create} method instead. */
-    @Deprecated @SuppressWarnings("unchecked")
-    public NumberRange(final short minimum, final boolean isMinIncluded,
-                       final short maximum, final boolean isMaxIncluded)
-    {
-        super((Class) Short.class,
-                (T) (Object) Short.valueOf(minimum), isMinIncluded,
-                (T) (Object) Short.valueOf(maximum), isMaxIncluded);
-    }
-
     /**
      * Constructs an inclusive range of {@code int} values.
      *
@@ -145,11 +116,6 @@ public class NumberRange<T extends Number & Comparable<? super T>> extends Range
      */
     public static NumberRange<Integer> create(final int minimum, final int maximum) {
         return create(minimum, true, maximum, true);
-    }
-
-    /** @deprecated Use {@code create} method instead. */
-    public NumberRange(final int minimum, final int maximum) {
-        this(minimum, true, maximum, true);
     }
 
     /**
@@ -170,16 +136,6 @@ public class NumberRange<T extends Number & Comparable<? super T>> extends Range
                 Integer.valueOf(maximum), isMaxIncluded);
     }
 
-    /** @deprecated Use {@code create} method instead. */
-    @Deprecated @SuppressWarnings("unchecked")
-    public NumberRange(final int minimum, final boolean isMinIncluded,
-                       final int maximum, final boolean isMaxIncluded)
-    {
-        super((Class) Integer.class,
-                (T) (Object) Integer.valueOf(minimum), isMinIncluded,
-                (T) (Object) Integer.valueOf(maximum), isMaxIncluded);
-    }
-
     /**
      * Constructs an inclusive range of {@code long} values.
      *
@@ -190,11 +146,6 @@ public class NumberRange<T extends Number & Comparable<? super T>> extends Range
      */
     public static NumberRange<Long> create(final long minimum, final long maximum) {
         return create(minimum, true, maximum, true);
-    }
-
-    /** @deprecated Use {@code create} method instead. */
-    public NumberRange(final long minimum, final long maximum) {
-        this(minimum, true, maximum, true);
     }
 
     /**
@@ -215,16 +166,6 @@ public class NumberRange<T extends Number & Comparable<? super T>> extends Range
                 Long.valueOf(maximum), isMaxIncluded);
     }
 
-    /** @deprecated Use {@code create} method instead. */
-    @Deprecated @SuppressWarnings("unchecked")
-    public NumberRange(final long minimum, final boolean isMinIncluded,
-                       final long maximum, final boolean isMaxIncluded)
-    {
-        super((Class) Long.class,
-                (T) (Object) Long.valueOf(minimum), isMinIncluded,
-                (T) (Object) Long.valueOf(maximum), isMaxIncluded);
-    }
-
     /**
      * Constructs an inclusive range of {@code float} values.
      *
@@ -235,11 +176,6 @@ public class NumberRange<T extends Number & Comparable<? super T>> extends Range
      */
     public static NumberRange<Float> create(final float minimum, final float maximum) {
         return create(minimum, true, maximum, true);
-    }
-
-    /** @deprecated Use {@code create} method instead. */
-    public NumberRange(final float minimum, final float maximum) {
-        this(minimum, true, maximum, true);
     }
 
     /**
@@ -260,16 +196,6 @@ public class NumberRange<T extends Number & Comparable<? super T>> extends Range
                 Float.valueOf(maximum), isMaxIncluded);
     }
 
-    /** @deprecated Use {@code create} method instead. */
-    @Deprecated @SuppressWarnings("unchecked")
-    public NumberRange(final float minimum, final boolean isMinIncluded,
-                       final float maximum, final boolean isMaxIncluded)
-    {
-        super((Class) Float.class,
-                (T) (Object) Float.valueOf(minimum), isMinIncluded,
-                (T) (Object) Float.valueOf(maximum), isMaxIncluded);
-    }
-
     /**
      * Constructs an inclusive range of {@code double} values.
      *
@@ -280,11 +206,6 @@ public class NumberRange<T extends Number & Comparable<? super T>> extends Range
      */
     public static NumberRange<Double> create(final double minimum, final double maximum) {
         return create(minimum, true, maximum, true);
-    }
-
-    /** @deprecated Use {@code create} method instead. */
-    public NumberRange(final double minimum, final double maximum) {
-        this(minimum, true, maximum, true);
     }
 
     /**
@@ -303,16 +224,6 @@ public class NumberRange<T extends Number & Comparable<? super T>> extends Range
         return new NumberRange<Double>(Double.class,
                 Double.valueOf(minimum), isMinIncluded,
                 Double.valueOf(maximum), isMaxIncluded);
-    }
-
-    /** @deprecated Use {@code create} method instead. */
-    @Deprecated @SuppressWarnings("unchecked")
-    public NumberRange(final double minimum, final boolean isMinIncluded,
-                       final double maximum, final boolean isMaxIncluded)
-    {
-        super((Class) Double.class,
-                (T) (Object) Double.valueOf(minimum), isMinIncluded,
-                (T) (Object) Double.valueOf(maximum), isMaxIncluded);
     }
 
     /**

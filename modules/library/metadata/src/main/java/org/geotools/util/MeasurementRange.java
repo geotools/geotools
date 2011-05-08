@@ -59,12 +59,6 @@ public class MeasurementRange<T extends Number & Comparable<? super T>> extends 
         return create(minimum, true, maximum, true, units);
     }
 
-    /** @deprecated Use {@code create} methods instead. */
-    public MeasurementRange(final float minimum, final float maximum, final Unit<?> units) {
-        super(minimum, maximum);
-        this.units = units;
-    }
-
     /**
      * Constructs a range of {@code float} values.
      *
@@ -84,14 +78,6 @@ public class MeasurementRange<T extends Number & Comparable<? super T>> extends 
                 Float.valueOf(maximum), isMaxIncluded, units);
     }
 
-    /** @deprecated Use {@code create} methods instead. */
-    public MeasurementRange(final float minimum, final boolean isMinIncluded,
-                            final float maximum, final boolean isMaxIncluded, final Unit<?> units)
-    {
-        super(minimum, isMinIncluded, maximum, isMaxIncluded);
-        this.units = units;
-    }
-
     /**
      * Constructs an inclusive range of {@code double} values.
      *
@@ -102,12 +88,6 @@ public class MeasurementRange<T extends Number & Comparable<? super T>> extends 
      */
     public static MeasurementRange<Double> create(double minimum, double maximum, Unit<?> units) {
         return create(minimum, true, maximum, true, units);
-    }
-
-    /** @deprecated Use {@code create} methods instead. */
-    public MeasurementRange(final double minimum, final double maximum, final Unit<?> units) {
-        super(minimum, maximum);
-        this.units = units;
     }
 
     /**
@@ -125,14 +105,6 @@ public class MeasurementRange<T extends Number & Comparable<? super T>> extends 
     {
         return new MeasurementRange<Double>(Double.class, Double.valueOf(minimum), isMinIncluded,
                 Double.valueOf(maximum), isMaxIncluded, units);
-    }
-
-    /** @deprecated Use {@code create} methods instead. */
-    public MeasurementRange(final double minimum, final boolean isMinIncluded,
-                            final double maximum, final boolean isMaxIncluded, final Unit<?> units)
-    {
-        super(minimum, isMinIncluded, maximum, isMaxIncluded);
-        this.units = units;
     }
 
     /**

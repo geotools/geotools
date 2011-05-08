@@ -91,7 +91,7 @@ public class AddConst extends OperationJAI {
             final NumberRange range = ranges[0];
             final double min = range.getMinimum() + c;
             final double max = range.getMaximum() + c;
-            return new NumberRange(min, max);
+            return NumberRange.create(min, max);
         }
         return super.deriveRange(ranges, parameters);
     }

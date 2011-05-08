@@ -1869,7 +1869,7 @@ public final class StreamingRenderer implements GTRenderer {
         final FeatureSource featureSource =  currLayer.getFeatureSource();
 
         final CoordinateReferenceSystem sourceCrs;
-        final NumberRange scaleRange = new NumberRange(scaleDenominator,scaleDenominator);
+        final NumberRange scaleRange = NumberRange.create(scaleDenominator,scaleDenominator);
         final ArrayList<LiteFeatureTypeStyle> lfts ;
 
         if ( featureSource != null ) {

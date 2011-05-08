@@ -80,6 +80,6 @@ public class Invert extends OperationJAI {
         final NumberRange range = ranges[0];
         final double min = -range.getMaximum();
         final double max = -range.getMinimum();
-        return new NumberRange(min, max);
+        return NumberRange.create(min, max);
     }
 }

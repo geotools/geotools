@@ -104,6 +104,9 @@ public class ImageProperty {
     public ImageReaderSpi spi;
 
     public ImageProperty() {
+        path = Utils.DEFAULT_IMAGE_PATH;
+        width = Integer.MAX_VALUE;
+        height = Integer.MAX_VALUE;
     }
 
     /**

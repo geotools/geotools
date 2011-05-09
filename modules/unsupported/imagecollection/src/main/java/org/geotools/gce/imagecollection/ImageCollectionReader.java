@@ -16,13 +16,16 @@
  */
 package org.geotools.gce.imagecollection;
 
-import java.awt.geom.Rectangle2D;
 import java.awt.image.ColorModel;
 import java.awt.image.SampleModel;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collection;
+import java.util.List;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -34,13 +37,11 @@ import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.TypeMap;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
-import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
-import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.opengis.coverage.ColorInterpretation;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverage;
@@ -70,12 +71,14 @@ public final class ImageCollectionReader extends AbstractGridCoverage2DReader im
     URL sourceURL;
     
     String parentPath;
+    
+    String defaultPath;
 
 //    RasterLayout[] overViewLayouts;
 
 //    RasterLayout hrLayout;
 
-    boolean expandMe;
+    boolean expandMe = true;
     
     @Override
     public void dispose() {
@@ -117,75 +120,137 @@ public final class ImageCollectionReader extends AbstractGridCoverage2DReader im
             throws DataSourceException {
         super(input, uHints);
 
-//        //
-//        // Forcing longitude first 
-//        //
-//        if (uHints != null) {
-//            // prevent the use from reordering axes
-//            this.hints.remove(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER);
-//            this.hints.add(new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER,
-//                    Boolean.TRUE));
-//
-//        }
-
         //
         // Set the source being careful in case it is an URL pointing to a file
         //
         File file = null;
         try {
-//            // /////////////////////////////////////////////////////////////////////
-//            //
-//            // Get a stream in order to read from it for getting the basic
-//            // information for this coverage
-//            //
-//            // /////////////////////////////////////////////////////////////////////
-//            if ((source instanceof InputStream)
-//                    || (source instanceof ImageInputStream))
-//                closeMe = false;
-//            if (source instanceof ImageInputStream)
-//                inStream = (ImageInputStream) source;
-//            else
-//                inStream = ImageIO.createImageInputStream(source);
-//            if (inStream == null)
-//                throw new IllegalArgumentException(
-//                        "No input stream for the provided source");
-
             this.sourceURL = Utils.checkSource(source);
             source = DataUtilities.urlToFile(sourceURL);
             if (source instanceof File){
                 file = (File) source;
-                parentPath = FilenameUtils.getFullPath(FilenameUtils.normalizeNoEndSeparator(file.getAbsolutePath())+Utils.SEPARATOR);
+                parentPath = FilenameUtils.getFullPath(FilenameUtils.normalizeNoEndSeparator(file.getAbsolutePath()) + Utils.SEPARATOR);
+                loadConfig();
             }
-            
-            // /////////////////////////////////////////////////////////////////////
-            //
-            // Informations about multiple levels and such
-            //
-            // /////////////////////////////////////////////////////////////////////
-//            getHRInfo(this.hints);
-            originalGridRange = new GridEnvelope2D(0, 0, Integer.MAX_VALUE, Integer.MAX_VALUE);
-            originalEnvelope = new GeneralEnvelope(new Rectangle2D.Double(0, 0, Integer.MAX_VALUE, Integer.MAX_VALUE));
-            originalEnvelope.setCoordinateReferenceSystem(Utils.DEFAULT_IMAGE_CRS);
-            crs = Utils.DEFAULT_IMAGE_CRS;
-            
-            // /////////////////////////////////////////////////////////////////////
-            //
-            // Coverage name
-            //
-            // /////////////////////////////////////////////////////////////////////
-            //TODO: FIXME
-            highestRes = new double[]{1.0, 1.0};
-            coverageName = "sample_coverage"; //Take some naming from folders id
-//            hrLayout = new RasterLayout(0, 0, Integer.MAX_VALUE, Integer.MAX_VALUE);
             
         } catch (IOException e) {
             throw new DataSourceException(e);
         }
 
         rasterManager = new RasterManager(this);
+        getHRInfo();
     }
 
 
+    /**
+     * Setup basic referencing info.
+     */
+    private void getHRInfo() {
+        
+      originalGridRange = rasterManager.getCoverageGridrange();
+      originalEnvelope = rasterManager.getCoverageEnvelope();
+      originalEnvelope.setCoordinateReferenceSystem(rasterManager.getCoverageCRS());
+      crs = rasterManager.getCoverageCRS();
+      raster2Model = rasterManager.getRaster2Model();
+        
+//        originalGridRange = new GridEnvelope2D(0, 0, Integer.MAX_VALUE, Integer.MAX_VALUE);
+//        originalEnvelope = new GeneralEnvelope(new Rectangle2D.Double(0, 0, Integer.MAX_VALUE, Integer.MAX_VALUE));
+//        originalEnvelope.setCoordinateReferenceSystem(Utils.DEFAULT_IMAGE_CRS);
+//        crs = Utils.DEFAULT_IMAGE_CRS;
+        
+      highestRes = new double[]{1.0, 1.0};
+        
+    }
+
+    /** 
+     * Setup collection configuration by checking for a properties file containing basic info such as
+     * coverageName, relative path of the default image, expand RGB flag.
+     * @throws FileNotFoundException
+     */
+    private void loadConfig() throws FileNotFoundException {
+        final String propertiesPath = parentPath + Utils.CONFIG_FILE;
+        final File propertiesFile = new File(propertiesPath);
+        String coverage = null;
+        if (Utils.checkFileReadable(propertiesFile)){
+            
+            // //
+            //
+            // STEP 0:
+            // Loading configuration from properties file
+            //
+            // //
+            Properties props = new Properties();
+            FileInputStream fis = null;
+            try {
+                fis = new FileInputStream(propertiesFile);
+                props.load(fis);
+
+                // Getting coverage name
+                if (props.containsKey(Utils.ImageCollectionProperties.COVERAGE_NAME)) {
+                    final String coverageName = (String) props.get(Utils.ImageCollectionProperties.COVERAGE_NAME);
+                    if (coverageName != null&& coverageName.trim().length() > 0) {
+                        coverage = coverageName;
+                    }
+                }
+                // Getting default path
+                if (props.containsKey(Utils.ImageCollectionProperties.DEFAULT_PATH)) {
+                    final String defaultPath = (String) props.get(Utils.ImageCollectionProperties.DEFAULT_PATH);
+                    if (defaultPath != null && defaultPath.trim().length() > 0) {
+                        this.defaultPath = defaultPath;
+                    }
+                }
+                // Getting expand to rgb property (used to deal with paletted
+                // images)
+                if (props.containsKey(Utils.ImageCollectionProperties.EXPAND_RGB)) {
+                    final String expand = (String) props.get(Utils.ImageCollectionProperties.EXPAND_RGB);
+                    if (expand != null && expand.trim().length() > 0) {
+                        this.expandMe = Boolean.parseBoolean(expand);
+                    }
+                }
+            } catch (FileNotFoundException e) {
+                if (LOGGER.isLoggable(Level.WARNING)) {
+                    LOGGER.log(Level.WARNING, "Unable to parse the config file: " + propertiesPath, e);
+                }
+
+            } catch (IOException e) {
+                if (LOGGER.isLoggable(Level.WARNING)) {
+                    LOGGER.log(Level.WARNING, "Unable to parse the config file: " + propertiesPath, e);
+                }
+            } finally {
+                if (fis != null) {
+                    try {
+                        fis.close();
+                    } catch (Throwable t) {
+                        // Does nothing
+                    }
+                }
+            }
+        }
+
+        // //
+        //
+        // STEP 1:
+        // Setting parameter which haven't been found in the property file
+        //
+        // //
+        if (coverage == null){
+            coverageName = FilenameUtils.getBaseName(FilenameUtils.getFullPathNoEndSeparator(parentPath));    
+        } else {
+            coverageName = coverage;
+        }
+        
+        if (defaultPath == null){
+            final File parent = new File(parentPath);
+            final List<File> files;
+            if (parent.exists() && parent.isDirectory() && parent.canRead()){
+                files = Utils.getFileList(parent, Utils.FILE_FILTER, true);
+                if (!files.isEmpty()){
+                    defaultPath = files.get(0).getAbsolutePath();
+                }
+            }
+        }
+    }
+    
     /**
      * @see org.opengis.coverage.grid.GridCoverageReader#getFormat()
      */
@@ -201,15 +266,17 @@ public final class ImageCollectionReader extends AbstractGridCoverage2DReader im
             throws IOException {
 
         if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine("Reading image from " + sourceURL.toString());
-            LOGGER.fine(new StringBuffer("Highest res ").append(highestRes[0])
-                    .append(" ").append(highestRes[1]).toString());
+            LOGGER.fine("Reading image from " + sourceURL.toString() + "\nHighest res " 
+                    + highestRes[0] + " " + highestRes[1]);
         }
 
         final Collection<GridCoverage2D> response = rasterManager.read(params);
-        if (response.isEmpty())
-            throw new DataSourceException("Unable to create a coverage for this request ");
-        else
+        if (response.isEmpty()){
+            if (LOGGER.isLoggable(Level.FINE)){
+                LOGGER.fine("The response is empty. ==> returning a null GridCoverage");
+            }
+            return null;
+        } else
             return response.iterator().next();
     }
 
@@ -244,13 +311,11 @@ public final class ImageCollectionReader extends AbstractGridCoverage2DReader im
             if (colorInterpretation == null)
                 throw new IOException("Unrecognized sample dimension type");
             Category[] categories = null;
-            bands[i] = new GridSampleDimension(colorInterpretation.name(),
-                    categories, null).geophysics(true);
+            bands[i] = new GridSampleDimension(colorInterpretation.name(), categories, null).geophysics(true);
         }
         // creating coverage
         if (raster2Model != null) {
-            return coverageFactory.create(coverageName, image, crs,
-                    raster2Model, bands, null, null);
+            return coverageFactory.create(coverageName, image, crs, raster2Model, bands, null, null);
         }
         return coverageFactory.create(coverageName, image, new GeneralEnvelope(
                 originalEnvelope), bands, null, null);

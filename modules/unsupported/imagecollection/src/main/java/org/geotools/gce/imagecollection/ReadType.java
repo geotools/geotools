@@ -136,7 +136,7 @@ enum ReadType {
                 inStream.reset();
                 reader.setInput(inStream);
 
-                // check source regionepbjMosaic,
+                // check source region
                 if (Utils.checkEmptySourceRegion(readP, readDimension))
                     return null;
 
@@ -212,7 +212,7 @@ enum ReadType {
      * 
      * <p>
      * We use the JAI ImageRead as the default type so that we can be sure that
-     * we can read very large mosaics with deferred loading.
+     * we can read very large images with deferred loading.
      * 
      * @return the default {@link ReadType}.
      */

@@ -45,6 +45,7 @@ import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
+import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.resources.geometry.XRectangle2D;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.referencing.datum.PixelInCell;
@@ -122,7 +123,7 @@ class RasterGranuleLoader {
                     XAffineTransform.getScaleInstance(scaleX, scaleY, 0, 0));
 
             final AffineTransform gridToWorldTransform_ = new AffineTransform(levelToBaseTransform);
-            gridToWorldTransform_.preConcatenate(Utils.CENTER_TO_CORNER);
+            gridToWorldTransform_.preConcatenate(CoverageUtilities.CENTER_TO_CORNER);
             gridToWorldTransform_.preConcatenate(baseGridToWorld);
             this.gridToWorldTransform = new AffineTransform2D(gridToWorldTransform_);
             this.width = width;
@@ -160,8 +161,7 @@ class RasterGranuleLoader {
 
     File granuleFile;
 
-    final Map<Integer, Level> granuleLevels = Collections
-            .synchronizedMap(new HashMap<Integer, Level>());
+    final Map<Integer, Level> granuleLevels = Collections.synchronizedMap(new HashMap<Integer, Level>());
 
     AffineTransform baseGridToWorld;
 
@@ -231,7 +231,7 @@ class RasterGranuleLoader {
 
     public RenderedImage loadRaster(final ImageReadParam readParameters,
             final int imageIndex, final ReferencedEnvelope cropBBox,
-            final MathTransform2D mosaicWorldToGrid,
+            final MathTransform2D worldToGrid,
             final RasterLayerRequest request, final Dimension tileDimension)
             throws IOException {
 
@@ -291,11 +291,6 @@ class RasterGranuleLoader {
             XRectangle2D.intersect(sourceArea, selectedlevel.rasterDimensions,
                     sourceArea);// make sure roundings don't bother us
 
-//            final Rectangle sourceAreaWithCollar = (Rectangle) sourceArea
-//                    .clone();
-//            sourceAreaWithCollar.grow((int) (sourceArea.width * 0.05),
-//                    (int) (sourceArea.height * 0.05));
-
             // is it empty??
             if (sourceArea.isEmpty()) {
                 if (LOGGER.isLoggable(java.util.logging.Level.WARNING))
@@ -328,25 +323,6 @@ class RasterGranuleLoader {
                 return null;
             }
 
-//            // //
-//            //
-//            // collar management
-//            //
-//            // //
-//            if (!sourceArea.equals(sourceAreaWithCollar)) {
-//                if (raster instanceof BufferedImage) {
-//                    final BufferedImage image = (BufferedImage) raster;
-//                    raster = image.getSubimage(sourceArea.x
-//                            - sourceAreaWithCollar.x, sourceArea.y
-//                            - sourceAreaWithCollar.y, sourceArea.width,
-//                            sourceArea.height);
-//                } else
-//                    raster = CropDescriptor.create(raster, (float) sourceArea.x
-//                            - sourceAreaWithCollar.x, (float) sourceArea.y
-//                            - sourceAreaWithCollar.y, (float) sourceArea.width,
-//                            (float) sourceArea.height, null);
-//            }
-            
             // use fixed source area
             sourceArea.setRect(readParameters.getSourceRegion());
 
@@ -360,7 +336,6 @@ class RasterGranuleLoader {
             // ratio between the cropped source region sizes and the read
             // image sizes.
             //
-            // place it in the mosaic using the coords created above;
             double decimationScaleX = ((1.0 * sourceArea.width) / raster.getWidth());
             double decimationScaleY = ((1.0 * sourceArea.height) / raster.getHeight());
             final AffineTransform decimationScaleTranform = XAffineTransform
@@ -376,7 +351,7 @@ class RasterGranuleLoader {
 
             // now create the overall transform
             final AffineTransform tempRaster2Model = new AffineTransform(baseGridToWorld);
-            tempRaster2Model.concatenate(Utils.CENTER_TO_CORNER);
+            tempRaster2Model.concatenate(CoverageUtilities.CENTER_TO_CORNER);
             if (!XAffineTransform.isIdentity(backToBaseLevelScaleTransform, 10E-6))
                 tempRaster2Model.concatenate(backToBaseLevelScaleTransform);
             if (!XAffineTransform.isIdentity(afterDecimationTranslateTranform, 10E-6))
@@ -386,7 +361,7 @@ class RasterGranuleLoader {
 
             // keep into account translation factors to place this tile
             final AffineTransform translationTransform = tempRaster2Model;
-            translationTransform.preConcatenate((AffineTransform) mosaicWorldToGrid);
+            translationTransform.preConcatenate((AffineTransform) worldToGrid);
 
             final InterpolationNearest nearest = new InterpolationNearest();
             // paranoiac check to avoid that JAI freaks out when computing its

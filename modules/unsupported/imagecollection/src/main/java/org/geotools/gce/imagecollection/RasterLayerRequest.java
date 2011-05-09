@@ -366,8 +366,32 @@ class RasterLayerRequest {
         String path = null; 
         if (filter != null) {
             path = parsePath(filter);
+        } else {
+            if (LOGGER.isLoggable(Level.INFO)){
+                LOGGER.info("No PATH have been specified through a Filter. Proceeding with default Image");
+            }
+            if (rasterManager.parent.defaultPath == null){
+                imageManager = rasterManager.getDatasetManager(Utils.DEFAULT_IMAGE_PATH);
+                return;
+            } else {
+                path = rasterManager.parent.defaultPath;
+            }
         }
-        final String filePath = FilenameUtils.concat(rasterManager.parent.parentPath, path);
+        final String storePath = rasterManager.parent.parentPath;
+        
+        //First normalization
+        path = FilenameUtils.normalize(path);
+        if (path.startsWith(storePath)){
+            // Removing the store path prefix from the specified path
+            // allow to deal with the case of parentPath = /home/user1/folder1/ and path = /home/user1/folder1/folder3 
+            // which comes back to path = folder3
+            path = path.substring(storePath.length(), path.length());
+        }
+        final String filePath = FilenameUtils.normalize(FilenameUtils.concat(storePath, path));
+        if (!filePath.startsWith(storePath)){
+            throw new DataSourceException("Possible attempt to access data outside the coverate store path:\n" 
+                    + "Store Path: " + storePath + "\nSpecified File Path: " + filePath);
+        }
         imageManager = rasterManager.getDatasetManager(filePath);
         
         //
@@ -400,7 +424,8 @@ class RasterLayerRequest {
     }
 
     /**
-     * TODO: FIXME DOCUMENTME
+     * Extract a PATH from the specified filter. Filter should be an IsEqualsToImpl in order to support 
+     * Filtering like CQL_FILTER=PATH='folder2/subfolder1/sample.tif'
      * @param filter
      * @return
      */
@@ -522,7 +547,6 @@ class RasterLayerRequest {
     }
 
     /**
-     * @TODO: FIXME
      * @throws DataSourceException
      *             in case something bad occurs
      */

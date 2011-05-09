@@ -48,8 +48,8 @@ import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
 import org.geotools.referencing.CRS;
-import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
+import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.resources.image.ImageUtilities;
 import org.opengis.coverage.ColorInterpretation;
 import org.opengis.coverage.grid.GridCoverage;
@@ -100,8 +100,6 @@ class RasterLayerResponse {
 
         public void produce() {
 
-            // reusable parameters
-            int granuleIndex = 0;
             // inputTransparentColor = request.getInputTransparentColor();
             // doInputTransparency = inputTransparentColor != null;
             // execute them all
@@ -116,8 +114,7 @@ class RasterLayerResponse {
                 if (loadedImage == null) {
                     if (LOGGER.isLoggable(Level.FINE))
                         LOGGER.log(Level.FINE,
-                                "Unable to load the raster for rasterGranuleLoader "
-                                        + granuleIndex + " with request "
+                                "Unable to load the raster with request "
                                         + request.toString());
 
                 }
@@ -131,13 +128,11 @@ class RasterLayerResponse {
 
             } catch (ImagingException e) {
                 if (LOGGER.isLoggable(Level.INFO))
-                    LOGGER.fine("Adding to mosaic image number " + granuleIndex
-                            + " failed, original request was " + request);
+                    LOGGER.fine("Loading image failed, original request was " + request);
                 loadedImage = null;
             } catch (Throwable e) {
                 if (LOGGER.isLoggable(Level.INFO))
-                    LOGGER.fine("Adding to mosaic image number " + granuleIndex
-                            + " failed, original request was " + request);
+                    LOGGER.fine("Loading image failed, original request was " + request);
                 loadedImage = null;
             }
 
@@ -154,8 +149,7 @@ class RasterLayerResponse {
             // granuleIndex, alphaIn, doInputTransparency,
             // inputTransparentColor);
             //
-            final RenderedImage raster = processGranuleRaster(loadedImage,
-                    granuleIndex, alphaIn, false, null);
+            final RenderedImage raster = processGranuleRaster(loadedImage, alphaIn, false, null);
 
             theImage = raster;
 
@@ -273,8 +267,14 @@ class RasterLayerResponse {
      */
     private void processRequest() throws IOException {
 
-        if (request.isEmpty())
+        if (request.isEmpty()) {
             throw new DataSourceException("Empty request: " + request.toString());
+        } else if (request.imageManager.property.path.equalsIgnoreCase(Utils.DEFAULT_IMAGE_PATH)){
+            finalGridToWorldCorner = Utils.IDENTITY_2D;
+//            finalGridToWorldCorner = Utils.IDENTITY_HALFPIXEL_2D;
+            gridCoverage = prepareCoverage(Utils.DEFAULT_IMAGE);
+            return;
+        }
 
         // assemble granules
         final RenderedImage image = prepareResponse();
@@ -295,31 +295,18 @@ class RasterLayerResponse {
 
         try {
 
-            //
-            // prepare the params for executing a mosaic operation.
-            //
             // final double[] backgroundValues = request.getBackgroundValues();
 
             // select the relevant overview, notice that at this time we have
-            // relaxed a bit the requirement to have the same exact resolution
-            // for all the overviews, but still we do not allow for reading the
-            // various grid to world transform directly from the input files,
-            // therefore we are assuming that each rasterGranuleLoader has a
-            // scale and
-            // translate only grid to world that can be deduced from its base
-            // level dimension and envelope. The grid to world transforms for
-            // the other levels can be computed accordingly knowning the scale
-            // factors.
-            if (request.getRequestedBBox() != null
-                    && request.getRequestedRasterArea() != null)
-                imageChoice = setReadParams(request.getOverviewPolicy(),
-                        baseReadParameters, request);
+            // The grid to world transforms for the other levels can be computed 
+            // accordingly knowning the scale factors.
+            if (request.getRequestedBBox() != null && request.getRequestedRasterArea() != null)
+                imageChoice = setReadParams(request.getOverviewPolicy(), baseReadParameters, request);
             else
                 imageChoice = 0;
             assert imageChoice >= 0;
             if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.fine("Loading level " + imageChoice
-                        + " with subsampling factors "
+                LOGGER.fine("Loading level " + imageChoice + "with subsampling factors "
                         + baseReadParameters.getSourceXSubsampling() + " "
                         + baseReadParameters.getSourceYSubsampling());
 
@@ -329,13 +316,12 @@ class RasterLayerResponse {
             else
                 bbox = new ReferencedEnvelope(coverageEnvelope);
 
-            XAffineTransform.getFlip((AffineTransform) baseGridToWorld);
+//            XAffineTransform.getFlip((AffineTransform) baseGridToWorld);
             // compute final world to grid
             // base grid to world for the center of pixels
-            final AffineTransform g2w = new AffineTransform(
-                    (AffineTransform) baseGridToWorld);
+            final AffineTransform g2w = new AffineTransform((AffineTransform) baseGridToWorld);
             // move it to the corner
-            g2w.concatenate(Utils.CENTER_TO_CORNER);
+            g2w.concatenate(CoverageUtilities.CENTER_TO_CORNER);
 
             // keep into account overviews and subsampling
             final OverviewLevel level = request.imageManager.overviewsController.resolutionsLevels
@@ -348,9 +334,7 @@ class RasterLayerResponse {
                             * baseReadParameters.getSourceYSubsampling(), 0, 0);
             g2w.concatenate(adjustments);
             finalGridToWorldCorner = new AffineTransform2D(g2w);
-            finalWorldToGridCorner = finalGridToWorldCorner.inverse();// compute
-                                                                      // raster
-                                                                      // bounds
+            finalWorldToGridCorner = finalGridToWorldCorner.inverse();
             rasterBounds = new GeneralGridEnvelope(CRS.transform(
                     finalWorldToGridCorner, bbox), PixelInCell.CELL_CORNER,
                     false).toRectangle();
@@ -360,19 +344,9 @@ class RasterLayerResponse {
             worker.produce();
 
             //
-            // Did we actually load anything?? Notice that it might happen that
-            // either we have wholes inside the definition area for the image
-            // or we had some problem with missing tiles, therefore it might
-            // happen that for some bboxes we don't have anything to load.
+            // Did we actually load anything?
             //
             if (theImage != null) {
-
-                //
-                // Create the mosaic image by doing a crop if necessary and also
-                // managing the transparent color if applicable. Be aware that
-                // management of the transparent color involves removing
-                // transparency information from the input images.
-                //
                 if (LOGGER.isLoggable(Level.FINE))
                     LOGGER.fine("Loaded bbox " + bbox.toString()
                             + " while crop bbox " + request.getCropBBox());
@@ -380,13 +354,6 @@ class RasterLayerResponse {
                 return theImage;
 
             } else {
-                // if we get here that means that we do not have anything to
-                // load
-                // but still we are inside the definition area for the mosaic,
-                // therefore we create a fake coverage using the background
-                // values,
-                // if provided (defaulting to 0), as well as the compute raster
-                // bounds, envelope and grid to world.
 
                 if (backgroundValues == null) {
 
@@ -409,14 +376,13 @@ class RasterLayerResponse {
             }
 
         } catch (IOException e) {
-            throw new DataSourceException("Unable to create this mosaic", e);
+            throw new DataSourceException("Unable to create this response", e);
         } catch (TransformException e) {
-            throw new DataSourceException("Unable to create this mosaic", e);
+            throw new DataSourceException("Unable to create this response", e);
         }
     }
 
-    private RenderedImage processGranuleRaster(RenderedImage granule,
-            final int granuleIndex, final boolean alphaIn,
+    private RenderedImage processGranuleRaster(RenderedImage granule, final boolean alphaIn,
             final boolean doTransparentColor, final Color transparentColor) {
 
         //
@@ -453,8 +419,7 @@ class RasterLayerResponse {
         //
         if (doTransparentColor) {
             if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.fine("Support for alpha on input image number "
-                        + granuleIndex);
+                LOGGER.fine("Support for alpha on input image");
             granule = ImageUtilities.maskColor(transparentColor, granule);
         }
         return granule;
@@ -553,17 +518,16 @@ class RasterLayerResponse {
         return imageChoice;
     }
 
-//    private RenderedImage postProcessRaster(RenderedImage mosaic) {
-//        // alpha on the final mosaic
+//    private RenderedImage postProcessRaster(RenderedImage image) {
 //        if (transparentColor != null) {
 //            if (LOGGER.isLoggable(Level.FINE))
-//                LOGGER.fine("Support for alpha on final mosaic");
-//            final ImageWorker w = new ImageWorker(mosaic);
-//            if (mosaic.getSampleModel() instanceof MultiPixelPackedSampleModel)
+//                LOGGER.fine("Support for alpha on final image");
+//            final ImageWorker w = new ImageWorker(image);
+//            if (image.getSampleModel() instanceof MultiPixelPackedSampleModel)
 //                w.forceComponentColorModel();
 //            return w.makeColorTransparent(transparentColor).getRenderedImage();
 //
 //        }
-//        return mosaic;
+//        return image;
 //    }
 }

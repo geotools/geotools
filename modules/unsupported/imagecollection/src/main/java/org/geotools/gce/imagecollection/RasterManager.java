@@ -17,6 +17,7 @@
 package org.geotools.gce.imagecollection;
 
 import java.awt.Rectangle;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.IOException;
@@ -109,10 +110,9 @@ class RasterManager {
     }
 
     class OverviewsController {
-        final ArrayList<RasterManager.OverviewLevel> resolutionsLevels = new ArrayList<OverviewLevel>();
+        ArrayList<RasterManager.OverviewLevel> resolutionsLevels = new ArrayList<OverviewLevel>();;
 
         public OverviewsController(RasterLayout hrLayout) {
-
             // notice that we assume what follows:
             // -highest resolution image is at level 0.
             // -all the overviews share the same envelope
@@ -311,9 +311,16 @@ class RasterManager {
      */
     class ImageManager {
 
+//        public ImageManager() {
+//            this.property = new ImageProperty();
+//            this.coverageEnvelope = new GeneralEnvelope(new Rectangle2D.Double(0, 0, Integer.MAX_VALUE, Integer.MAX_VALUE));
+//            this.coverageRasterArea = new GridEnvelope2D(0, 0, Integer.MAX_VALUE, Integer.MAX_VALUE);
+//            this.coverageCRS = Utils.DEFAULT_IMAGE_CRS;
+//        }
+        
         public ImageManager(ImageProperty property) {
             this.property = property;
-            setParameters();
+            init();
         }
 
         ImageProperty property;
@@ -345,13 +352,17 @@ class RasterManager {
          * Set the main parameters of this coverage request, getting basic
          * information from the reader.
          */
-        private void setParameters() {
+        private void init() {
             this.coverageEnvelope = new GeneralEnvelope(new Rectangle2D.Double(0, 0, property.width, property.height));
+            this.coverageEnvelope.setCoordinateReferenceSystem(Utils.DEFAULT_IMAGE_CRS);
+//            this.coverageEnvelope = new GeneralEnvelope(new Rectangle2D.Double(0, -property.height, property.width, property.height));
             this.coverageRasterArea = new GridEnvelope2D(0, 0, property.width, property.height);
-            this.coverageCRS = DefaultEngineeringCRS.CARTESIAN_2D;
+            this.coverageCRS = Utils.DEFAULT_IMAGE_CRS;
             
             //TODO: Set Identity
-            this.coverageGridToWorld2D = ProjectiveTransform.create(Utils.IDENTITY_HALFPIXEL);
+            this.coverageGridToWorld2D = ProjectiveTransform.create(Utils.IDENTITY); 
+//            this.coverageGridToWorld2D = ProjectiveTransform.create(new AffineTransform(1, 0, 0, -1, 0, property.height));
+//            this.coverageGridToWorld2D = ProjectiveTransform.create(Utils.IDENTITY_HALFPIXEL);
             this.coverageFullResolution = new double[]{1.0, 1.0};
 //            final OverviewLevel highestLevel = RasterManager.this.overviewsController.resolutionsLevels.get(0);
 //            coverageFullResolution[0] = highestLevel.resolutionX;
@@ -422,30 +433,34 @@ class RasterManager {
         coverageFactory = reader.getGridCoverageFactory();
         // get the overviews policy
         extractOverviewPolicy();
+        highestRes = new double[]{1.0, 1.0};
+        
+        //TODO: What to do when I remove that default file?
+        
+        ImageManager imageManager = getDatasetManager(parent.parentPath + parent.defaultPath);
+        coverageEnvelope = imageManager.coverageEnvelope;
+        coverageGridrange = new GridEnvelope2D(imageManager.coverageRasterArea);
+        coverageCRS = imageManager.coverageCRS;
+        raster2Model = imageManager.coverageGridToWorld2D;
+        
+        
+//        coverageEnvelope = reader.getOriginalEnvelope();
+//        coverageGridrange = reader.getOriginalGridRange();
+//        coverageCRS = reader.getCrs();
+//        highestRes = reader.getHighestRes();
 
-        coverageEnvelope = reader.getOriginalEnvelope();
-        coverageGridrange = reader.getOriginalGridRange();
-        coverageCRS = reader.getCrs();
-
-        // TODO: USE IDENTITY??
-        raster2Model = ProjectiveTransform.create(Utils.IDENTITY_HALFPIXEL);
+//
+//        // TODO: USE IDENTITY??
+//        raster2Model = ProjectiveTransform.create(Utils.IDENTITY);
+//        raster2Model = ProjectiveTransform.create(Utils.IDENTITY_HALFPIXEL);
         // reader.getOriginalGridToWorld(PixelInCell.CELL_CENTER);
 
         // resolution values
-        highestRes = reader.getHighestRes();
 //        numberOfOverwies = reader.getNumberOfOverviews();
 //        overviewsResolution = reader.getOverviewsResolution();
 
         // instantiating controller for subsampling and overviews
         decimationController = new DecimationController();
-//        try {
-//            domainManager = new DomainManager();
-//        } catch (TransformException e) {
-//            throw new DataSourceException(e);
-//        } catch (FactoryException e) {
-//            throw new DataSourceException(e);
-//        }
-
     }
 
     /**
@@ -541,6 +556,12 @@ class RasterManager {
      * @throws DataSourceException
      */
     synchronized ImageManager getDatasetManager(String filePath) throws DataSourceException {
+        if (filePath == null){
+            throw new IllegalArgumentException("Must specify a valid filePath whilst NULL have been provided");
+        }
+        if (filePath.equalsIgnoreCase(Utils.DEFAULT_IMAGE_PATH)){
+            return new ImageManager(new ImageProperty());
+        }
         ImageManager imageManager = null;
         boolean isValid = false;
         if (datasetManagerCache.containsKey(filePath)) {
@@ -552,7 +573,7 @@ class RasterManager {
                 if((now - imageManager.property.lastCheckTime) > CHECK_INTERVAL) {
                    imageManager.property.lastCheckTime = now;
                    final File file = new File(filePath);
-                   if (file.exists() && file.canRead()){
+                   if (Utils.checkFileReadable(file)){
                        final long modTime = file.lastModified();
                        if (modTime == imageManager.property.lastModifiedTime){
                            // The lastModifiedTime of the file isn't changed.
@@ -607,9 +628,10 @@ class RasterManager {
                     imageManager = new ImageManager(property);
 
                 } else {
-                    throw new DataSourceException(
-                            "Unable to get a reader for the specified path " + filePath);
+                    throw new DataSourceException("Unable to get a reader for the specified path " + filePath);
                 }
+            } else {
+                throw new DataSourceException("The specified path doesn't exist or can't be read: " + filePath);
             }
         } catch (IOException ioe) {
             DataSourceException dse = new DataSourceException("IOException occurred while accessing the specified path " + filePath);

@@ -145,9 +145,11 @@ public final class ImageCollectionFormat extends AbstractGridFormat implements F
     public boolean accepts(Object input, Hints hints) {
         try {
             URL url = Utils.checkSource(input);
-            File file = DataUtilities.urlToFile(url);
-            if (file.isDirectory()) {
-                return true;
+            if (url != null){
+                File file = DataUtilities.urlToFile(url);
+                if (file.isDirectory()) {
+                    return true;
+                }
             }
         } catch (MalformedURLException e) {
             if (LOGGER.isLoggable(Level.SEVERE)){

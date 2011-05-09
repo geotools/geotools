@@ -28,6 +28,7 @@ import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.test.TestData;
 import org.junit.Ignore;
@@ -35,7 +36,10 @@ import org.junit.Test;
 import org.opengis.filter.Filter;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
+import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
+import org.opengis.referencing.crs.CRSAuthorityFactory;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  */
@@ -46,14 +50,26 @@ public class ImageCollectionReaderTest {
         
     }
     
-    @Ignore
+    @Test
     public void testReader() throws IllegalArgumentException, IOException,
             NoSuchAuthorityCodeException, CQLException {
 
-        final File file = null;//new File("D:\\data\\dynamic");
+        
+        final File file = new File("D:/data/dynamic");
         // getting a reader
-        final String string = "PATH='folder2/subfolder1/a.TIF'";
+        final String string = "PATH='../../folder2/subfolder1/a.TIF'";
         Filter filter = CQL.toFilter(string);
+        
+        try {
+            CoordinateReferenceSystem crs = CRS.decode("EPSG:404001");
+            String s1 =crs.getCoordinateSystem().getAxis(1).getDirection().identifier();
+            String s2 =crs.getCoordinateSystem().getAxis(1).getDirection().name();
+            int i=0;
+            i++;
+        } catch (FactoryException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         
         ImageCollectionReader reader = new ImageCollectionReader(file);
         final ParameterValue<GridGeometry2D> gg =  AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
@@ -75,10 +91,10 @@ public class ImageCollectionReaderTest {
             // reading the coverage
             GridCoverage2D coverage = (GridCoverage2D) reader.read(params);
 
-            if (TestData.isInteractiveTest())
-                coverage.show();
-            else
-                coverage.getRenderedImage().getData();
+//            if (TestData.isInteractiveTest())
+                coverage.show();System.in.read();
+//            else
+//                coverage.getRenderedImage().getData();
 
         }
 

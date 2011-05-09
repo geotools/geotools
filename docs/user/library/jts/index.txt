@@ -4,6 +4,13 @@ JTS
 
 The JTS Topology Suite is an external project that GeoTools uses to provide an implementation of the Geometry data structure. The major benefit is the numerically stable geometry operations as a result of years of dedicated effort.
 
+.. sidebar:: Details
+   
+   .. toctree::
+      :maxdepth: 1
+      
+      faq
+
 .. toctree::
    :maxdepth: 1
 
@@ -16,11 +23,9 @@ The JTS Topology Suite is an external project that GeoTools uses to provide an i
    snap
    ring
    combine
-   faq
 
 GeoTools is all about implementing spatial solutions, and we do our very best to follow a don't invent here policy (rather than get off topic).
 The excellent **JTS Topology Suite** project offers an implementation of Geometry which we use throughout our library.
-
 
 .. image:: /images/gt-jts.png
 

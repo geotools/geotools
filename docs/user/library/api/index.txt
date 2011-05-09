@@ -4,6 +4,15 @@ API
 
 The **gt-api** module is where we publish out stable interfaces that are implemented by the rest of the library. 
 
+.. sidebar:: Details
+   
+   .. toctree::
+      :maxdepth: 1
+      
+      faq
+      status
+      internal
+
 .. toctree::
    :maxdepth: 1
 
@@ -13,8 +22,6 @@ The **gt-api** module is where we publish out stable interfaces that are impleme
    envelope
    jts
    convert
-   faq
-   internal
 
 These interfaces build on the ideas and concepts defined by standards (as captured in the **gt-opengis** module).
 

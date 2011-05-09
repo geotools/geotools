@@ -4,13 +4,19 @@ CQL
 The gt-cql module a human readable "Contextual Query Language
 " for writing filter expressions for working with geospatial information.
 
+.. sidebar:: Details
+   
+   .. toctree::
+      :maxdepth: 1
+      
+      faq
+      internal
+
 .. toctree::
    :maxdepth: 1
    
    cql
    ecql
-   faq
-   internal
 
 References:
 

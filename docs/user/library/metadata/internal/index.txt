@@ -1,3 +1,6 @@
+Metadata Internals
+------------------
+
 The GeoTools library is big nasty (and plays with big nasty amounts of data) and as such is always slight ahead of its time. We run into the limits of Java - often years before good solutions show up as part of the Java language.
 
 .. toctree::

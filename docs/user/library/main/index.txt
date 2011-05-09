@@ -3,6 +3,14 @@ Main
 
 Implementation of core geospatial data models.
 
+.. sidebar:: Details
+   
+   .. toctree::
+      :maxdepth: 1
+      
+      faq
+      internal
+
 .. toctree::
    :maxdepth: 1
    
@@ -13,14 +21,6 @@ Implementation of core geospatial data models.
    shape
    geometry
    repository
-   faq
-
-Implementation details:
-
-.. toctree::
-   :maxdepth: 1
-   
-   internal
 
 The gt-main module provides default implementations for the remaining gt-api and gt-opengis interfaces (Filter, Style, Feature etc...) and enough glue code to make creating an application possible (various builders and utility classes).
 

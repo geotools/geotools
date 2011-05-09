@@ -3,6 +3,13 @@ Render
 
 Supports the rendering of geospatial information using the Java2D api.
 
+.. sidebar:: Details
+   
+   .. toctree::
+      :maxdepth: 1
+      
+      faq
+
 .. toctree::
    :maxdepth: 1
    
@@ -10,7 +17,6 @@ Supports the rendering of geospatial information using the Java2D api.
    map
    style
    icon
-   faq
 
 Graphic plugins:
 

@@ -5,6 +5,14 @@ Used to interpret referencing information allowing the determination of a locati
 coordinates. Includes implementation of CoordinateReferenceSystem (CRS), conversion and
 transformation services.
 
+.. sidebar:: Details
+   
+   .. toctree::
+      :maxdepth: 1
+      
+      faq
+      internal
+
 .. toctree::
    :maxdepth: 1
    
@@ -16,7 +24,6 @@ transformation services.
    parameter
    transform
    calculator
-   faq
 
 Referencing plugins (choose only one epsg jar):
 
@@ -36,13 +43,6 @@ Unsupported plugins:
    
    h2
    oracle
-
-Implementation details:
-
-.. toctree::
-   :maxdepth: 1
-   
-   internal
 
 The gt-referencing module is our first example that makes use of the plugin system provided
 by :doc:`gt-metadata <../metadata/index>`. It does require a little bit of care when configuring

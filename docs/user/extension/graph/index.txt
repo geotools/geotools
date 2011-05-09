@@ -4,7 +4,6 @@ Graph
 
 The gt-graph package defines the concept of a graph (or network) made up of geotools Features.
 
-
 Graph Model
 -----------
 

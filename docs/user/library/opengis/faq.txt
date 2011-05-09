@@ -1,4 +1,4 @@
-Opengis FAQ
+OpenGIS FAQ
 -----------
 
 Q: Relationship with "GeoAPI"?

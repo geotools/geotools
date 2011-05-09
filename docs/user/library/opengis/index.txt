@@ -3,6 +3,13 @@ OpenGIS
 
 Interfaces for GeoSpatial concepts, often defined by the OGC or ISO standards bodies. The interfaces in this module serve as a great reference if you do not have the time to purchase and read the official standards documents. Approach the standards using an environment you are comfortable with - Java!
 
+.. sidebar:: Details
+   
+   .. toctree::
+      :maxdepth: 1
+      
+      faq
+
 .. toctree::
    :maxdepth: 1
 
@@ -20,10 +27,8 @@ Interfaces for GeoSpatial concepts, often defined by the OGC or ISO standards bo
    text
    parameter
    unit
-   faq
 
 GeoTools is all about implementing spatial solutions, and we do our very best to follow a don't invent here policy (rather than get off topic). By referencing standards we are able to use well understood names for common spatial ideas and constructs.
-
 
 .. image:: /images/gt-opengis.png
 

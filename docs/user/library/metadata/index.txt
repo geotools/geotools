@@ -3,6 +3,14 @@ Metadata
 
 Metadata is used by GeoTools to describe GeoSpatial information and services. The data structure is an implementation of ISO19115 (for metadata describing spatial data).
 
+.. sidebar:: Details
+   
+   .. toctree::
+      :maxdepth: 1
+      
+      faq
+      internal/index
+
 .. toctree::
    :maxdepth: 1
    
@@ -10,14 +18,6 @@ Metadata is used by GeoTools to describe GeoSpatial information and services. Th
    geotools
    range
    text
-   faq
-
-Implementation details:
-
-.. toctree::
-   :maxdepth: 1
-   
-   internal/index
 
 The gt-metadata module also pulls double duty as the first implementation module it is responsible for providing
 the facilities we use to wire the library together at runtime.

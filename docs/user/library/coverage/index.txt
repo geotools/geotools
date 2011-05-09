@@ -3,11 +3,18 @@ Coverage
 
 Supports the use of coverage information (ie raster) from a range of sources.
 
+.. sidebar:: Details
+   
+   .. toctree::
+      :maxdepth: 1
+      
+      faq
+      internal/index
+
 .. toctree::
    :maxdepth: 1
    
    grid
-   faq
 
 Format plugins:
 
@@ -38,13 +45,6 @@ Unsupported plugins:
    matlab   
    oracle
    tools
-   
-Implementation details:
-
-.. toctree::
-   :maxdepth: 1
-   
-   internal/index
 
 The gt-coverage module provides a way to build and use highly structured grids of numeric values such as imagery data, for instance GeoTIFF format files, or multi-dimensional matrix data, like that found in NetCDF format files.
 

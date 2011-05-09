@@ -24,3 +24,4 @@ Please direct any comments or suggestions about this page to the `GeoTools user 
 .. include:: /library/render/faq.txt
 .. include:: /extension/brewer/faq.txt
 .. include:: /extension/wms/faq.txt
+.. include:: /unsupported/swing/faq.txt

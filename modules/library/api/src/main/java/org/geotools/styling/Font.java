@@ -18,13 +18,7 @@ package org.geotools.styling;
 
 import java.util.List;
 
-import org.geotools.util.ConverterFactory;
-import org.geotools.util.Utilities;
 import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.ExpressionVisitor;
-import org.opengis.filter.expression.Literal;
-
-import com.vividsolutions.jts.geom.Geometry;
 
 
 /**

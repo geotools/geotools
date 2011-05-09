@@ -19,7 +19,6 @@ package org.geotools.styling;
 import java.util.List;
 
 import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Function;
 import org.opengis.metadata.citation.OnLineResource;
 
 /**

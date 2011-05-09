@@ -48,5 +48,5 @@ public interface PropertyAccessorFactory {
      * @return The property accessor, or <code>null</code> if this factory cannot create
      * an accessor for the specified type.
      */
-    PropertyAccessor createPropertyAccessor(Class type, String xpath, Class target, Hints hints);
+    PropertyAccessor createPropertyAccessor(Class<?> type, String xpath, Class<?> target, Hints hints);
 }

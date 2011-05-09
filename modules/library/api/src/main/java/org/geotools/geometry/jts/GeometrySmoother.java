@@ -273,7 +273,7 @@ class GeometrySmoother {
 
         Coordinate anchor = new Coordinate();
         double[] vdist = new double[2];
-        double mdist;
+        // double mdist;
 
         // Start with dummy coordinate preceding first real coordinate
         v[1] = new Coordinate(
@@ -347,7 +347,7 @@ class GeometrySmoother {
 
         Coordinate anchor = new Coordinate();
         double[] vdist = new double[2];
-        double mdist;
+        //double mdist;
 
         v[1] = coords[N - 1];
         v[2] = coords[0];

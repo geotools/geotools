@@ -177,9 +177,9 @@ public interface Graphic extends GraphicLegend,
                 return ConstantExpression.NULL;
             }
 
-            public String getGeometryPropertyName() {
-                return "";
-            }
+//            public String getGeometryPropertyName() {
+//                return "";
+//            }
 
         };
 

@@ -18,7 +18,6 @@ package org.geotools.styling;
 
 import org.geotools.filter.ConstantExpression;
 import org.opengis.filter.expression.Expression;
-import org.opengis.style.StyleVisitor;
 
 
 /**

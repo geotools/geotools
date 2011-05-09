@@ -231,6 +231,7 @@ public interface StyleVisitor {
      * Called when accept is called on a raster {@link OverlapBehavior} element
      * @param cs the {@link OverlapBehavior} to visit.
      */
+    @SuppressWarnings("deprecation")
     void visit(OverlapBehavior ob);
 
     /**

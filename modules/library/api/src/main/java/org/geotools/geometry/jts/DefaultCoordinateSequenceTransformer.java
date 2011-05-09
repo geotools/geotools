@@ -21,7 +21,8 @@ package org.geotools.geometry.jts;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.CoordinateSequence;
 import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
-import com.vividsolutions.jts.geom.DefaultCoordinateSequenceFactory;
+import com.vividsolutions.jts.geom.impl.CoordinateArraySequenceFactory;
+
 import org.opengis.geometry.MismatchedDimensionException;
 
 // OpenGIS dependencies
@@ -63,7 +64,7 @@ public class DefaultCoordinateSequenceTransformer implements CoordinateSequenceT
      * Constructs a default coordinate sequence transformer.
      */
     public DefaultCoordinateSequenceTransformer() {
-        csFactory = DefaultCoordinateSequenceFactory.instance();
+        csFactory = CoordinateArraySequenceFactory.instance();
     }
     
     public DefaultCoordinateSequenceTransformer(CoordinateSequenceFactory csFactory) {
@@ -121,7 +122,7 @@ public class DefaultCoordinateSequenceTransformer implements CoordinateSequenceT
                 ib = 0;
 
                 for (int j = 0; j < n; j++) {
-                    final Coordinate t;
+                    //final Coordinate t;
                     
                     // copy the transformed portion
                     int oi = 0;

@@ -17,11 +17,11 @@
 package org.geotools.styling;
 
 import org.opengis.filter.expression.Expression;
-import org.opengis.style.Description;
 
 
 /**
- * Contains label shield hack
+ * Contains label shield hack.
+ * 
  * @source $URL$
  */
 public interface TextSymbolizer2 extends TextSymbolizer {

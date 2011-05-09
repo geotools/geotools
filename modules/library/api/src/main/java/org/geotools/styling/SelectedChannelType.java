@@ -16,7 +16,6 @@
  */
 package org.geotools.styling;
 
-import org.opengis.annotation.XmlElement;
 import org.opengis.filter.expression.Expression;
 
 

@@ -42,12 +42,6 @@
 
 
   <profiles>
-     <profile>
-       <id>nd</id>
-       <modules>
-         <module>ndplugins</module>
-       </modules>
-     </profile>
 
      <!-- ================================================== -->
      <!--     Modules not yet included in the build          -->
@@ -56,8 +50,6 @@
        <id>pending</id>
        <modules>
          <module>coveragetools</module>
-         <module>sql-datastore</module>
-         <module>geometryless</module>
          <module>excel</module>
        </modules>
      </profile>

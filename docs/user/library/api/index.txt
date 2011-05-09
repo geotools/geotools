@@ -14,9 +14,9 @@ The **gt-api** module is where we publish out stable interfaces that are impleme
    jts
    convert
    faq
+   internal
 
 These interfaces build on the ideas and concepts defined by standards (as captured in the **gt-opengis** module).
-
 
 .. image:: /images/gt-api.png
 

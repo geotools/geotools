@@ -54,6 +54,7 @@ public interface LogicFilter extends Filter {
      * instance of {@code Filter}.
      * </p>
      */
+    @SuppressWarnings("rawtypes")
     List getChildren();
         
     /**
@@ -61,6 +62,7 @@ public interface LogicFilter extends Filter {
      *
      * @return the iterator of the filters.
      */
+    @SuppressWarnings("rawtypes")
     Iterator getFilterIterator();
 
     /**

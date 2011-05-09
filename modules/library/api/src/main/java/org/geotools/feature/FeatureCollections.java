@@ -16,6 +16,7 @@
  */
 package org.geotools.feature;
 
+import java.awt.RenderingHints;
 import java.util.Collections;
 import java.util.Map;
 
@@ -78,7 +79,7 @@ public abstract class FeatureCollections implements Factory {
   /**
    * Returns the implementation hints. The default implementation returns en empty map.
    */
-  public Map getImplementationHints() {
-    return Collections.EMPTY_MAP;
+  public Map<RenderingHints.Key,Object> getImplementationHints() {
+    return Collections.emptyMap();
   }  
 }

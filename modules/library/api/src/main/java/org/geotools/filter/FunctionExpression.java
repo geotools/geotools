@@ -82,5 +82,5 @@ public interface FunctionExpression extends Expression, Factory, Function {
     /**
      * Sets the paramters for the function.
      */
-    void setParameters(List parameters);
+    void setParameters(List<org.opengis.filter.expression.Expression> parameters);
 }

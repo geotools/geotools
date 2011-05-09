@@ -36,6 +36,7 @@ package org.geotools.filter;
  * @author Jody Garnett, Refractions Research.
  * @source $URL$
  */
+@SuppressWarnings("deprecation")
 public interface SortBy2 extends SortBy {
     /**
      * GeoTools allows for more pervase use of Expression then is strictly

@@ -39,7 +39,7 @@ public interface PropertyAccessor {
      *
      * @return <code>true</code> if the property can be accessed, otherwise <code>false</code>
      */
-    boolean canHandle(Object object, String xpath, Class target);
+    boolean canHandle(Object object, String xpath, Class<?> target);
 
     /**
      * Accesses a property of <param>object</param> via xpath expression.
@@ -54,7 +54,7 @@ public interface PropertyAccessor {
      *
      * @throws IllegalArgumentException In the even that xpath is not supported.
      */
-    Object get(Object object, String xpath, Class target)
+    <T> T get(Object object, String xpath, Class<T> target)
         throws IllegalArgumentException;
 
     /**
@@ -70,6 +70,6 @@ public interface PropertyAccessor {
      *
      * @throws IllegalArgumentException In the even that xpath is not supported.
      */
-    void set(Object object, String xpath, Object value, Class target)
+    <T> void set(Object object, String xpath, T value, Class<T> target)
         throws IllegalArgumentException;
 }

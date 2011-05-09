@@ -22,7 +22,6 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -244,7 +243,7 @@ public interface DataAccessFactory extends Factory {
      * Subclasses may provide specific setAsText()/getAsText() requirements
      * </p>
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public static class Param extends Parameter {
 
         /**
@@ -327,7 +326,7 @@ public interface DataAccessFactory extends Factory {
          * @param sample Sample value as an example for user input
          */
         public Param(String key,
-                     Class type,
+                     Class<?> type,
                      InternationalString description,
                      boolean required,
                      Object sample) {
@@ -347,7 +346,7 @@ public interface DataAccessFactory extends Factory {
          * like {@link Parameter#IS_PASSWORD}
          */
         public Param(String key,
-                     Class type,
+                     Class<?> type,
                      String description,
                      boolean required,
                      Object sample,
@@ -355,7 +354,7 @@ public interface DataAccessFactory extends Factory {
             this(key, type, new SimpleInternationalString(description), required, sample, metadata);
         }
         public Param(String key,
-                Class type,
+                Class<?> type,
                 String description,
                 boolean required,
                 Object sample,
@@ -376,7 +375,7 @@ public interface DataAccessFactory extends Factory {
          * like {@link Parameter#IS_PASSWORD}
          */
         public Param(String key,
-                     Class type,
+                     Class<?> type,
                      InternationalString description,
                      boolean required,
                      Object sample,

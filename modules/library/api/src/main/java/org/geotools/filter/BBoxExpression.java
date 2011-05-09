@@ -25,7 +25,9 @@ import com.vividsolutions.jts.geom.Envelope;
  * @author Ian Turton, CCG
  * @source $URL$
  * @version $Id$
+ * @depreaced Please just use a simple literal
  */
+@SuppressWarnings("deprecation")
 public interface BBoxExpression extends LiteralExpression {
     /**
      * Set the bbox for this expression

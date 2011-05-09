@@ -28,6 +28,7 @@ import org.opengis.feature.simple.SimpleFeature;
  *
  * @author James
  * @source $URL$
+ * @deprecated Please use the environmental variable function
  */
 public interface EnvironmentVariable extends Expression {
 	

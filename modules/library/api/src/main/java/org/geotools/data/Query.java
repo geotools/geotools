@@ -764,7 +764,7 @@ public class Query {
      */
     public Hints getHints() {
         if(hints == null){
-            hints = new Hints(Collections.EMPTY_MAP);
+            hints = new Hints();
         }
         return hints;
     }

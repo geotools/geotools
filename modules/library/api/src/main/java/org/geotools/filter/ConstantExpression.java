@@ -47,6 +47,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * @author Jody Garnett, Refractions Research
  * @source $URL$
  */
+@SuppressWarnings("deprecation")
 public class ConstantExpression implements LiteralExpression, Cloneable {
     public static final ConstantExpression NULL = constant(null);
     public static final ConstantExpression BLACK = color(Color.BLACK);

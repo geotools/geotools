@@ -18,10 +18,11 @@ package org.geotools.filter;
 
 
 /**
- * DOCUMENT ME!
+ * Environmental variable.
  *
  * @author James
  * @source $URL$
+ * @deprecated pelase use the environmental variable function
  */
 public interface MapScaleDenominator extends EnvironmentVariable {
     static final String EV_NAME = "sld:MapScaleDenominator";

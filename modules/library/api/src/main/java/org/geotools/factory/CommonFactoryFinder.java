@@ -16,17 +16,13 @@
  */
 package org.geotools.factory;
 
-import java.awt.RenderingHints;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Set;
 
 import org.geotools.data.FeatureLockFactory;
 import org.geotools.data.FileDataStoreFactorySpi;
 import org.geotools.feature.FeatureCollections;
-import org.geotools.filter.FunctionExpression;
 import org.geotools.filter.FunctionFactory;
-//import org.geotools.filter.FunctionImpl;
 import org.geotools.resources.LazySet;
 import org.geotools.styling.StyleFactory;
 import org.opengis.feature.FeatureFactory;
@@ -71,6 +67,7 @@ public final class CommonFactoryFinder extends FactoryFinder {
      * Returns the service registry. The registry will be created the first
      * time this method is invoked.
      */
+    @SuppressWarnings("deprecation")
     private static FactoryRegistry getServiceRegistry() {
         assert Thread.holdsLock(CommonFactoryFinder.class);
         if (registry == null) {
@@ -115,9 +112,9 @@ public final class CommonFactoryFinder extends FactoryFinder {
      * @param  hints An optional map of hints, or {@code null} if none.
      * @return Set of available style factory implementations.
      */
-    public static synchronized Set getStyleFactories(Hints hints) {
+    public static synchronized Set<StyleFactory> getStyleFactories(Hints hints) {
         hints = mergeSystemHints(hints);
-        return new LazySet(getServiceRegistry().getServiceProviders(
+        return new LazySet<StyleFactory>(getServiceRegistry().getServiceProviders(
                 StyleFactory.class, null, hints));
     }
 
@@ -129,7 +126,7 @@ public final class CommonFactoryFinder extends FactoryFinder {
      */
     public static synchronized Set<Function> getFunctions(Hints hints) {
         hints = mergeSystemHints(hints);
-        return new LazySet(getServiceRegistry().getServiceProviders(
+        return new LazySet<Function>(getServiceRegistry().getServiceProviders(
                 Function.class, null, hints));
     }
 
@@ -142,7 +139,7 @@ public final class CommonFactoryFinder extends FactoryFinder {
      */
     public static synchronized Set<FunctionFactory> getFunctionFactories(Hints hints) {
         hints = mergeSystemHints(hints);
-        return new LazySet(getServiceRegistry().getServiceProviders(
+        return new LazySet<FunctionFactory>(getServiceRegistry().getServiceProviders(
                 FunctionFactory.class, null, hints));
     }
     
@@ -157,6 +154,7 @@ public final class CommonFactoryFinder extends FactoryFinder {
      *         {@link FeatureLockFactory} interface.
      *
      * @see Hints#FEATURE_LOCK_FACTORY
+     * @deprecated FeautreLockFactory is no longer needed; please create a FeatureLock directly
      */
     public static FeatureLockFactory getFeatureLockFactory(Hints hints) {
         hints = mergeSystemHints(hints);
@@ -168,10 +166,11 @@ public final class CommonFactoryFinder extends FactoryFinder {
      * 
      * @param  hints An optional map of hints, or {@code null} if none.
      * @return Set<FeatureLockFactory> of available style factory implementations.
+     * @deprecated FeatureLockFactory is no longer needed
      */
-    public static synchronized Set getFeatureLockFactories(Hints hints) {
+    public static synchronized Set<FeatureLockFactory> getFeatureLockFactories(Hints hints) {
         hints = mergeSystemHints(hints);
-        return new LazySet(getServiceRegistry().getServiceProviders(
+        return new LazySet<FeatureLockFactory>(getServiceRegistry().getServiceProviders(
                 FeatureLockFactory.class, null, hints));
     }
 
@@ -181,9 +180,9 @@ public final class CommonFactoryFinder extends FactoryFinder {
      * @param  hints An optional map of hints, or {@code null} if none.
      * @return Set of available file data store factory implementations.
      */
-    public static synchronized Set getFileDataStoreFactories(Hints hints) {
+    public static synchronized Set<FileDataStoreFactorySpi> getFileDataStoreFactories(Hints hints) {
         hints = mergeSystemHints(hints);
-        return new LazySet(getServiceRegistry().getServiceProviders(
+        return new LazySet<FileDataStoreFactorySpi>(getServiceRegistry().getServiceProviders(
                 FileDataStoreFactorySpi.class, null, hints));
     }
     
@@ -246,9 +245,9 @@ public final class CommonFactoryFinder extends FactoryFinder {
      * @param  hints An optional map of hints, or {@code null} if none.
      * @return Set of available feature collections implementations.
      */
-    public static synchronized Set getFeatureCollectionsSet(Hints hints) {
+    public static synchronized Set<FeatureCollections> getFeatureCollectionsSet(Hints hints) {
         hints = mergeSystemHints(hints);
-        return new LazySet(getServiceRegistry().getServiceProviders(
+        return new LazySet<FeatureCollections>(getServiceRegistry().getServiceProviders(
                 FeatureCollections.class, null, hints));
     }    
 
@@ -281,7 +280,7 @@ public final class CommonFactoryFinder extends FactoryFinder {
      * @param key
      * @return
      */
-    private static Object lookup(Class category, Hints hints, Hints.Key key) {
+    private static <T> T lookup(Class<T> category, Hints hints, Hints.Key key) {
         // nulls?
         if(hints == null || key == null) {
             return null;
@@ -291,7 +290,7 @@ public final class CommonFactoryFinder extends FactoryFinder {
         final Object hint = hints.get(key);
         if (hint != null) {
             if (category.isInstance(hint)) {
-                return hint;
+                return category.cast(hint);
             }
         } 
 
@@ -307,9 +306,9 @@ public final class CommonFactoryFinder extends FactoryFinder {
      * @param  hints An optional map of hints, or {@code null} if none.
      * @return Set of available filter factory implementations.
      */
-    public static synchronized Set getFilterFactories(Hints hints) {
+    public static synchronized Set<FilterFactory> getFilterFactories(Hints hints) {
         hints = mergeSystemHints(hints);
-        return new LazySet(getServiceRegistry().getServiceProviders(
+        return new LazySet<FilterFactory>(getServiceRegistry().getServiceProviders(
                 FilterFactory.class, null, hints));
     }
 
@@ -331,7 +330,7 @@ public final class CommonFactoryFinder extends FactoryFinder {
         hints = mergeSystemHints(hints);
         
         final Object h = hints.get(Hints.FILTER_FACTORY);
-        if (!(h instanceof Class ? FilterFactory2.class.isAssignableFrom((Class) h)
+        if (!(h instanceof Class ? FilterFactory2.class.isAssignableFrom((Class<?>) h)
                                  : h instanceof FilterFactory2))
         {
             /*

@@ -29,7 +29,8 @@ import org.opengis.feature.type.Name;
  * @deprecated Please use org.opengis.feature.IllegalAttributeException
  */
 public class IllegalAttributeException extends org.opengis.feature.IllegalAttributeException {
-    
+    /** serialVersionUID */
+    private static final long serialVersionUID = 3775548331744387093L;
     private static final AttributeDescriptor NULL_ATTRIBUTE_DESCRIPTOR = new NullAttributeDescriptor();
     
     /**

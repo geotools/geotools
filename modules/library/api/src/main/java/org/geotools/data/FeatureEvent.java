@@ -226,8 +226,8 @@ public class FeatureEvent extends EventObject {
      * Transactions this value will not always line up with original
      * FeatureSource represented by Event.getSource().
      */
-    @SuppressWarnings("unchecked")
-	protected FeatureSource featureSource;
+    @SuppressWarnings({ "rawtypes" })
+    protected FeatureSource featureSource;
     
     /**
      * Filter used to indicate what content has changed.
@@ -254,7 +254,7 @@ public class FeatureEvent extends EventObject {
      *        FEATURE_ADDED
      * @param bounds The area modified by this change
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
 	public FeatureEvent(Object source, Type type, ReferencedEnvelope bounds, Filter filter) {
         super(source);
         this.type = type;
@@ -303,7 +303,7 @@ public class FeatureEvent extends EventObject {
     public FeatureSource<? extends FeatureType, ? extends Feature> getFeatureSource() {
         return (FeatureSource<? extends FeatureType, ? extends Feature>) source;
     }
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
 	public void setFeatureSource( FeatureSource featureSource ){
     	source = featureSource;
     }

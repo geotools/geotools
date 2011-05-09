@@ -29,9 +29,9 @@ The GeoTools user guide is available online:
 `FAQ <http://docs.geotools.org/latest/userguide/faq.html>`_ ( `stable <http://docs.geotools.org/stable/userguide/faq.html>`_ )  
     Convey wisdom gleaned from the GeoTools user list.
 
-Developer Guide
----------------
+Developing GeoTools
+-------------------
 
-We welcome new contributors to GeoTools. The `Developer Guide <http://docs.geotools.org/latest/developer/>`_ will tell you all you need to
-know to get started with the project.
+See the `Get Involved <http://geotools.org/getinvolved.html>`_ page for instructions on building the library, the Developer's Guide,
+issue tracking and more !
 

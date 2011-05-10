@@ -1,0 +1,10 @@
+proj:   0
+zone:   0
+north:   1000.0
+south:   0.0
+west:   0.0
+east:   1000.0
+rows:   10
+cols:   10
+e-w resol:   100.0
+n-s resol:   100.0

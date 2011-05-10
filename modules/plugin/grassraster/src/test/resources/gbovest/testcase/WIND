@@ -1,0 +1,10 @@
+proj:   0
+zone:   0
+north:   5140020.0
+south:   5139780.0
+west:   1640650.0
+east:   1640950.0
+rows:   8
+cols:   10
+e-w resol:   30.0
+n-s resol:   30.0

@@ -75,9 +75,9 @@ public final class ArcGridVisualizationTest extends ArcGridTestCaseAdapter {
 		junit.textui.TestRunner.run(ArcGridVisualizationTest.class);
 	}
 
-    public void XtestFormatFinder() throws Exception {
+    public void testFormatFinder() throws Exception {
         // get a gzipped ascii grid
-        final File f = TestData.file(this, "arcgrid/ArcGrid.asc");
+        final File f = TestData.file(this, "arcgrid/arcGrid.asc");
         // Reading the coverage through a file
         AbstractGridFormat format = GridFormatFinder.findFormat(f);
         AbstractGridCoverage2DReader reader = format.getReader(f);

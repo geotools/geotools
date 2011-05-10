@@ -353,14 +353,14 @@ class RasterManager {
          * information from the reader.
          */
         private void init() {
-            this.coverageEnvelope = new GeneralEnvelope(new Rectangle2D.Double(0, 0, property.width, property.height));
-            this.coverageEnvelope.setCoordinateReferenceSystem(Utils.DEFAULT_IMAGE_CRS);
-//            this.coverageEnvelope = new GeneralEnvelope(new Rectangle2D.Double(0, -property.height, property.width, property.height));
+            final boolean useDisplayCRS = parent.epsgCode == 404001; 
+            this.coverageEnvelope = new GeneralEnvelope(new Rectangle2D.Double(0, useDisplayCRS? 0 : -property.height, property.width, property.height));
             this.coverageRasterArea = new GridEnvelope2D(0, 0, property.width, property.height);
-            this.coverageCRS = Utils.DEFAULT_IMAGE_CRS;
+            this.coverageCRS = useDisplayCRS ? Utils.DISPLAY_CRS : Utils.GENERIC2D_CRS;
+            this.coverageEnvelope.setCoordinateReferenceSystem(this.coverageCRS);
             
             //TODO: Set Identity
-            this.coverageGridToWorld2D = ProjectiveTransform.create(Utils.IDENTITY); 
+            this.coverageGridToWorld2D = ProjectiveTransform.create(useDisplayCRS ? Utils.IDENTITY : Utils.IDENTITY_FLIP); 
 //            this.coverageGridToWorld2D = ProjectiveTransform.create(new AffineTransform(1, 0, 0, -1, 0, property.height));
 //            this.coverageGridToWorld2D = ProjectiveTransform.create(Utils.IDENTITY_HALFPIXEL);
             this.coverageFullResolution = new double[]{1.0, 1.0};

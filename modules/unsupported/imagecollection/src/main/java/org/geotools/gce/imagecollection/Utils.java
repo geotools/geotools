@@ -52,11 +52,13 @@ import javax.media.jai.RasterFactory;
 import org.apache.commons.io.FilenameUtils;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
+import org.geotools.referencing.factory.epsg.CartesianAuthorityFactory;
 import org.geotools.referencing.factory.epsg.DisplayCRSAuthorityFactory;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
 import org.geotools.util.Utilities;
+import org.opengis.referencing.crs.CRSAuthorityFactory;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.sun.media.jai.util.Rational;
@@ -72,7 +74,9 @@ class Utils {
     
     final static String DEFAULT_IMAGE_PATH = "$_DEFAULT_$";
     
-    final static CoordinateReferenceSystem DEFAULT_IMAGE_CRS = DisplayCRSAuthorityFactory.DISPLAY;
+    final static CoordinateReferenceSystem DISPLAY_CRS = DisplayCRSAuthorityFactory.DISPLAY;
+    
+    final static CoordinateReferenceSystem GENERIC2D_CRS = CartesianAuthorityFactory.GENERIC_2D;
     
     final static String SEPARATOR = File.separator; 
     
@@ -138,6 +142,7 @@ class Utils {
         final static String COVERAGE_NAME = "coverageName";
         final static String DEFAULT_PATH = "defaultPath";
         final static String EXPAND_RGB = "expand";
+        final static String EPSG_CODE = "epsg";
         
     }
     
@@ -151,7 +156,11 @@ class Utils {
     
     final static AffineTransform IDENTITY = new AffineTransform(1, 0, 0, 1, -0.5, -0.5);
     
+    final static AffineTransform IDENTITY_FLIP = new AffineTransform(1, 0, 0, -1, -0.5, -0.5);
+    
     final static AffineTransform2D IDENTITY_2D = new AffineTransform2D(IDENTITY);
+    
+    final static AffineTransform2D IDENTITY_2D_FLIP = new AffineTransform2D(IDENTITY_FLIP);
     
     static URL checkSource(Object source) throws MalformedURLException, DataSourceException {
         URL sourceURL = null;

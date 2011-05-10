@@ -80,6 +80,8 @@ public final class ImageCollectionReader extends AbstractGridCoverage2DReader im
 
     boolean expandMe = true;
     
+    int epsgCode = 404000; 
+    
     @Override
     public void dispose() {
         super.dispose();
@@ -207,6 +209,13 @@ public final class ImageCollectionReader extends AbstractGridCoverage2DReader im
                         this.expandMe = Boolean.parseBoolean(expand);
                     }
                 }
+                if (props.containsKey(Utils.ImageCollectionProperties.EPSG_CODE)) {
+                    final String epsgCode = (String) props.get(Utils.ImageCollectionProperties.EPSG_CODE);
+                    if (epsgCode != null && epsgCode.trim().length() > 0) {
+                        this.epsgCode = Integer.parseInt(epsgCode);
+                    }
+                }
+                
             } catch (FileNotFoundException e) {
                 if (LOGGER.isLoggable(Level.WARNING)) {
                     LOGGER.log(Level.WARNING, "Unable to parse the config file: " + propertiesPath, e);

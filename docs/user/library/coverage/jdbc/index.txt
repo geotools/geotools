@@ -35,8 +35,12 @@ This example shows how to use the module::
   gg.setValue(new GridGeometry2D(new GeneralGridRange(new Rectangle(0, 0, width, heigth)),envelope));
   
   // create a parameter Object for the background color (NODATA), this param is optional
-  final ParameterValue outTransp=ImageMosaicJDBCFormat.OUTPUT_TRANSPARENT_COLOR.createValue();
+  final ParameterValue outTransp=ImageMosaicJDBCFormat.BACKGROUND_COLOR.createValue();
   outTransp.setValue(Color.WHITE);
+
+  // if you like a transparent background, use this
+  // final ParameterValue outTransp=ImageMosaicJDBCFormat.OUTPUT_TRANSPARENT_COLOR.createValue();
+  // outTransp.setValue(Color.WHITE);
   
   // call the plugin passing an array with the two parameter objects
   try {

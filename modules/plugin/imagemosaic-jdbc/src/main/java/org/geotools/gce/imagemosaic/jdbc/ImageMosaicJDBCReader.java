@@ -21,6 +21,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
@@ -32,6 +33,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageReadParam;
+import javax.media.jai.RenderedImageAdapter;
 
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -47,6 +49,7 @@ import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.parameter.Parameter;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.BufferedCoordinateOperationFactory;
+import org.geotools.resources.image.ImageUtilities;
 import org.geotools.util.logging.Logging;
 import org.opengis.coverage.grid.Format;
 import org.opengis.parameter.GeneralParameterValue;
@@ -277,6 +280,10 @@ public class ImageMosaicJDBCReader extends AbstractGridCoverage2DReader {
         // /////////////////////////////////////////////////////////////////////
         Color outputTransparentColor = (Color) ImageMosaicJDBCFormat.OUTPUT_TRANSPARENT_COLOR
                 .getDefaultValue();
+        
+        Color backgroundColor = (Color) ImageMosaicJDBCFormat.BACKGROUND_COLOR
+        .getDefaultValue();
+
 
         Rectangle dim = null;
 
@@ -292,6 +299,9 @@ public class ImageMosaicJDBCReader extends AbstractGridCoverage2DReader {
                 } else if (param.getDescriptor().getName().getCode().equals(
                         ImageMosaicJDBCFormat.OUTPUT_TRANSPARENT_COLOR.getName().toString())) {
                     outputTransparentColor = (Color) param.getValue();
+                } else if (param.getDescriptor().getName().getCode().equals(
+                        ImageMosaicJDBCFormat.BACKGROUND_COLOR.getName().toString())) {
+                    backgroundColor = (Color) param.getValue();                    
                 }
             }
         }
@@ -301,7 +311,7 @@ public class ImageMosaicJDBCReader extends AbstractGridCoverage2DReader {
         // Loading tiles trying to optimize as much as possible
         //
         // /////////////////////////////////////////////////////////////////////
-        GridCoverage2D coverage = loadTiles(outputTransparentColor, dim, state);
+        GridCoverage2D coverage = loadTiles(backgroundColor,outputTransparentColor, dim, state);
         LOGGER.info("Mosaic Reader needs : " + ((new Date()).getTime() - start.getTime())
                 + " millisecs");
 
@@ -373,13 +383,15 @@ public class ImageMosaicJDBCReader extends AbstractGridCoverage2DReader {
     }
 
     /**
+     * @param backgroundColor
+     *          the background color
      * @param outputTransparentColor
-     *            the background color
+     *          the transparent color
      * @param pixelDimension
      * @return the gridcoverage as the final result
      * @throws IOException
      */
-    private GridCoverage2D loadTiles(Color outputTransparentColor, Rectangle pixelDimension,
+    private GridCoverage2D loadTiles(Color backgroundColor,Color outputTransparentColor, Rectangle pixelDimension,
             ImageMosaicJDBCReaderState state) throws IOException {
         if (LOGGER.isLoggable(Level.FINE)) {
             LOGGER.fine(new StringBuffer("Creating mosaic to comply with envelope ").append(
@@ -404,7 +416,7 @@ public class ImageMosaicJDBCReader extends AbstractGridCoverage2DReader {
             LOGGER.warning(originalEnvelope.toString());
 
             return coverageFactory.create(coverageName, getEmptyImage((int) pixelDimension
-                    .getWidth(), (int) pixelDimension.getHeight(), outputTransparentColor), state
+                    .getWidth(), (int) pixelDimension.getHeight(), backgroundColor, outputTransparentColor), state
                     .getRequestedEnvelope());
         }
 
@@ -427,7 +439,7 @@ public class ImageMosaicJDBCReader extends AbstractGridCoverage2DReader {
                 LOGGER.severe(e.getLocalizedMessage());
 
                 return coverageFactory.create(coverageName, getEmptyImage((int) pixelDimension
-                        .getWidth(), (int) pixelDimension.getHeight(), outputTransparentColor),
+                        .getWidth(), (int) pixelDimension.getHeight(), backgroundColor,outputTransparentColor),
                         state.getRequestedEnvelope());
             }
         } else {
@@ -438,7 +450,7 @@ public class ImageMosaicJDBCReader extends AbstractGridCoverage2DReader {
         LOGGER.info("Coverage " + info.getCoverageName() + " using spatial table "
                 + info.getSpatialTableName() + ", image table " + info.getTileTableName());
 
-        ImageComposerThread imageComposerThread = new ImageComposerThread(outputTransparentColor,
+        ImageComposerThread imageComposerThread = new ImageComposerThread(backgroundColor,outputTransparentColor,
                 pixelDimension, state.getRequestEnvelopeTransformed(), info, state.getTileQueue(),
                 config, state.isXAxisSwitch(), coverageFactory);
         imageComposerThread.start();
@@ -498,17 +510,20 @@ public class ImageMosaicJDBCReader extends AbstractGridCoverage2DReader {
     /**
      * @param width
      * @param height
+     * @param backgroundColor
      * @param outputTransparentColor
      * @return BufferdImage filled with outputTransparentColor
      */
-    private BufferedImage getEmptyImage(int width, int height, Color outputTransparentColor) {
+    private BufferedImage getEmptyImage(int width, int height, Color backGroundcolor,Color outputTransparentColor) {
         BufferedImage emptyImage = new BufferedImage(width, height, DEFAULT_IMAGE_TYPE);
         Graphics2D g2D = (Graphics2D) emptyImage.getGraphics();
         Color save = g2D.getColor();
-        g2D.setColor(outputTransparentColor);
+        g2D.setColor(backGroundcolor);
         g2D.fillRect(0, 0, emptyImage.getWidth(), emptyImage.getHeight());
         g2D.setColor(save);
-
+        if (outputTransparentColor!=null)
+            emptyImage = new RenderedImageAdapter(
+                    ImageUtilities.maskColor(outputTransparentColor,emptyImage)).getAsBufferedImage();
         return emptyImage;
     }
 

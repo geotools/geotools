@@ -24,12 +24,15 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.IndexColorModel;
+import java.awt.image.RenderedImage;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.resources.image.ImageUtilities;
 import org.geotools.util.logging.Logging;
 
 /**
@@ -48,16 +51,17 @@ class ImageComposerThread extends AbstractThread {
 
 	private GridCoverage2D gridCoverage2D;
 
-	private Color outputTransparentColor;
+	private Color outputTransparentColor,backgroundColor;
 
 	private boolean xAxisSwitch;
 
-	ImageComposerThread(Color outputTransparentColor, Rectangle pixelDimension,
+	ImageComposerThread(Color backgroundColor,Color outputTransparentColor, Rectangle pixelDimension,
 			GeneralEnvelope requestEnvelope, ImageLevelInfo levelInfo,
 			LinkedBlockingQueue<TileQueueElement> tileQueue, Config config,
 			boolean xAxisSwitch, GridCoverageFactory coverageFactory) {
 		super(pixelDimension, requestEnvelope, levelInfo, tileQueue, config);
 		this.outputTransparentColor = outputTransparentColor;
+		this.backgroundColor = backgroundColor;
 		this.xAxisSwitch = xAxisSwitch;
 		this.coverageFactory = coverageFactory;
 	}
@@ -91,7 +95,7 @@ class ImageComposerThread extends AbstractThread {
 
 		Graphics2D g2D = (Graphics2D) image.getGraphics();
 		Color save = g2D.getColor();
-		g2D.setColor(outputTransparentColor);
+		g2D.setColor(backgroundColor);
 		g2D.fillRect(0, 0, image.getWidth(), image.getHeight());
 		g2D.setColor(save);
 
@@ -109,7 +113,7 @@ class ImageComposerThread extends AbstractThread {
 
 		Graphics2D g2D = (Graphics2D) image.getGraphics();
 		Color save = g2D.getColor();
-		g2D.setColor(outputTransparentColor);
+		g2D.setColor(backgroundColor);
 		g2D.fillRect(0, 0, image.getWidth(), image.getHeight());
 		g2D.setColor(save);
 
@@ -158,9 +162,18 @@ class ImageComposerThread extends AbstractThread {
 		} else {
 			resultEnvelope = requestEnvelope;
 		}
-
-		gridCoverage2D = coverageFactory.create(config.getCoverageName(),
-				rescaleImage(image), resultEnvelope);
+		
+		image = rescaleImage(image);
+		if (outputTransparentColor == null)
+		    gridCoverage2D= coverageFactory.create(config.getCoverageName(),
+                            image, resultEnvelope);		
+		else {
+                    if (LOGGER.isLoggable(Level.FINE))
+                            LOGGER.fine("Support for alpha on final mosaic");
+                    RenderedImage result =  ImageUtilities.maskColor(outputTransparentColor,image);
+                    gridCoverage2D = coverageFactory.create(config.getCoverageName(),
+                            result, resultEnvelope);
+		}				
 	}
 
 	GridCoverage2D getGridCoverage2D() {

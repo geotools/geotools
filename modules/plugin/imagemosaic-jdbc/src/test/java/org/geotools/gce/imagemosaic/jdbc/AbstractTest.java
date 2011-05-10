@@ -558,11 +558,11 @@ public abstract class AbstractTest extends TestCase {
 
 	protected void imageMosaic(String name, String configUrl,
 			GeneralEnvelope envelope, int width, int heigth) throws IOException {
-		imageMosaic(name, configUrl, envelope, width, heigth, null, null);
+		imageMosaic(name, configUrl, envelope, width, heigth,null, null, null);
 	}
 
 	protected void imageMosaic(String name, String configUrl,
-			GeneralEnvelope envelope, int width, int heigth, Color bColor,
+			GeneralEnvelope envelope, int width, int heigth, Color bColor,Color transparentColor,
 			CoordinateReferenceSystem crs) throws IOException {
 		// Hints hints = new
 		// Hints(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM,CRS.parseWKT(M34_PRJ));
@@ -577,7 +577,7 @@ public abstract class AbstractTest extends TestCase {
 		ImageMosaicJDBCReader reader = (ImageMosaicJDBCReader) format
 				.getReader(configUrl, hints);
 
-		ParameterValue gg = AbstractGridFormat.READ_GRIDGEOMETRY2D
+		ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D
 				.createValue();
 
 		if (envelope == null) {
@@ -590,15 +590,20 @@ public abstract class AbstractTest extends TestCase {
 		gg.setValue(new GridGeometry2D(new GridEnvelope2D(new Rectangle(0, 0,
 				width, heigth)), envelope));
 
-		final ParameterValue outTransp = ImageMosaicJDBCFormat.OUTPUT_TRANSPARENT_COLOR
-				.createValue();
-		outTransp
-				.setValue((bColor == null) ? ImageMosaicJDBCFormat.OUTPUT_TRANSPARENT_COLOR
+		final ParameterValue<Color> outTransp = 
+		    ImageMosaicJDBCFormat.OUTPUT_TRANSPARENT_COLOR.createValue();
+		outTransp.setValue((transparentColor == null) ? ImageMosaicJDBCFormat.OUTPUT_TRANSPARENT_COLOR
 						.getDefaultValue()
-						: bColor);
+						: transparentColor);
+                final ParameterValue<Color> bgColor = 
+                    ImageMosaicJDBCFormat.BACKGROUND_COLOR.createValue();
+                bgColor.setValue((bColor == null) ? ImageMosaicJDBCFormat.BACKGROUND_COLOR
+                        .getDefaultValue()
+                        : bColor);
+
 
 		GridCoverage2D coverage = (GridCoverage2D) reader
-				.read(new GeneralParameterValue[] { gg, outTransp });
+				.read(new GeneralParameterValue[] { gg, outTransp,bgColor });
 
 		ImageIO.write(coverage.getRenderedImage(), "tif", new File(
 				getOutPutDir() + File.separator + name + ".tif"));
@@ -729,7 +734,7 @@ public abstract class AbstractTest extends TestCase {
 
 		try {
 			env.setCoordinateReferenceSystem(CRS.decode(CRSNAME));
-			imageMosaic(name, getConfigUrl(), env, 400, 400);
+			imageMosaic(name, getConfigUrl(), env, 400, 400,Color.green,null,null);
 		} catch (Exception e) {
 			Assert.fail(e.getMessage());
 		}
@@ -906,8 +911,8 @@ public abstract class AbstractTest extends TestCase {
 
 	                try {
 	                        env.setCoordinateReferenceSystem(CRS.decode(CRSNAME));
-	                        imageMosaic("partialgreen", getConfigUrl(), env, 400, 400,
-	                                        Color.GREEN, null);
+	                        imageMosaic("transparent", getConfigUrl(), env, 400, 400,
+	                                        null,Color.black, null);
 	                } catch (Exception e) {
 	                        Assert.fail(e.getMessage());
 	                }
@@ -924,8 +929,8 @@ public abstract class AbstractTest extends TestCase {
 
 	                try {
 	                        env.setCoordinateReferenceSystem(CRS.decode(CRSNAME));
-	                        imageMosaic("partialgreen2", getConfigUrl(), env, 400, 400,
-	                                        Color.GREEN, null);
+	                        imageMosaic("transparent2", getConfigUrl(), env, 400, 400,
+	                                        Color.GREEN,Color.GREEN, null);
 	                } catch (Exception e) {
 	                        Assert.fail(e.getMessage());
 	                }

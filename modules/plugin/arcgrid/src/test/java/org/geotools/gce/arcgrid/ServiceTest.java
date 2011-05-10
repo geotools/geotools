@@ -17,12 +17,18 @@
  */
 package org.geotools.gce.arcgrid;
 
+import java.io.File;
 import java.util.Iterator;
 
 import junit.framework.TestCase;
 
+import org.geotools.coverage.grid.GridCoverage2D;
+import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
+import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridFormatFactorySpi;
 import org.geotools.coverage.grid.io.GridFormatFinder;
+import org.geotools.test.TestData;
+import org.opengis.coverage.grid.GridCoverageReader;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 

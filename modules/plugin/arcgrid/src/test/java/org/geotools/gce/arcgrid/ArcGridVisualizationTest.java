@@ -27,6 +27,9 @@ import javax.imageio.stream.ImageInputStream;
 import javax.media.jai.PlanarImage;
 
 import org.geotools.coverage.grid.GridCoverage2D;
+import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
+import org.geotools.coverage.grid.io.AbstractGridFormat;
+import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.factory.Hints;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.test.TestData;
@@ -71,6 +74,19 @@ public final class ArcGridVisualizationTest extends ArcGridTestCaseAdapter {
 	public static final void main(String[] args) throws Exception {
 		junit.textui.TestRunner.run(ArcGridVisualizationTest.class);
 	}
+
+    public void testFormatFinder() throws Exception {
+        // get a gzipped ascii grid
+        final File f = TestData.file(this, "arcgrid/ArcGrid.asc");
+        // Reading the coverage through a file
+        AbstractGridFormat format = GridFormatFinder.findFormat(f);
+        AbstractGridCoverage2DReader reader = format.getReader(f);
+
+        GridCoverage2D gc = reader.read(null);
+
+        assertNotNull(gc);
+
+    }
 
 	/**
 	 * This test tries to read GZipped ascii grids first by supplying the

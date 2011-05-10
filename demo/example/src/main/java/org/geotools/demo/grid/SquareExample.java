@@ -20,16 +20,14 @@ package org.geotools.demo.grid;
 import java.awt.Color;
 import java.util.Map;
 
-import com.vividsolutions.jts.geom.Polygon;
-
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.grid.GridFeatureBuilder;
+import org.geotools.grid.Element;
 import org.geotools.grid.GridElement;
+import org.geotools.grid.GridFeatureBuilder;
 import org.geotools.grid.Grids;
-import org.geotools.grid.PolygonElement;
 import org.geotools.map.DefaultMapContext;
 import org.geotools.styling.Fill;
 import org.geotools.styling.PolygonSymbolizer;
@@ -38,10 +36,11 @@ import org.geotools.styling.Stroke;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
 import org.geotools.swing.JMapFrame;
-
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+
+import com.vividsolutions.jts.geom.Polygon;
 
 /**
  * Demonstrates creating a vector grid of square elements and setting
@@ -61,10 +60,10 @@ public class SquareExample {
         final ReferencedEnvelope bounds = new ReferencedEnvelope(0, 100, 0, 100, null);
 
         GridFeatureBuilder builder = new GridFeatureBuilder(TYPE) {
-            public void setAttributes(GridElement gridEl, Map<String, Object> attributes) {
-                PolygonElement polyEl = (PolygonElement) gridEl;
-                int g = (int) (255 * polyEl.getCenter().x / bounds.getWidth());
-                int b = (int) (255 * polyEl.getCenter().y / bounds.getHeight());
+            public void setAttributes(Element element, Map<String, Object> attributes) {
+                GridElement gridEl = (GridElement) element;
+                int g = (int) (255 * gridEl.getCenter().x / bounds.getWidth());
+                int b = (int) (255 * gridEl.getCenter().y / bounds.getHeight());
                 attributes.put("color", new Color(0, g, b));
             }
         };

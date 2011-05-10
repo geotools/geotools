@@ -14,11 +14,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Map;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Polygon;
-
 import org.geotools.data.FileDataStore;
 import org.geotools.data.FileDataStoreFinder;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -26,19 +21,23 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.grid.Element;
 import org.geotools.grid.Envelopes;
 import org.geotools.grid.GridElement;
 import org.geotools.grid.GridFeatureBuilder;
 import org.geotools.grid.Grids;
-import org.geotools.grid.PolygonElement;
 import org.geotools.map.DefaultMapContext;
 import org.geotools.map.MapContext;
 import org.geotools.styling.SLD;
 import org.geotools.swing.JMapFrame;
-
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
+
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Polygon;
 
 /**
  * This example shows how to control the creation of vector grid elements
@@ -90,14 +89,12 @@ public class IntersectionExample {
             this.source = source;
         }
 
-        @Override
-        public void setAttributes(GridElement el, Map<String, Object> attributes) {
+        public void setAttributes(Element el, Map<String, Object> attributes) {
             attributes.put("id", ++id);
         }
 
-        @Override
-        public boolean getCreateFeature(GridElement el) {
-            Coordinate c = ((PolygonElement) el).getCenter();
+        public boolean getCreateFeature(Element el) {
+            Coordinate c = ((GridElement) el).getCenter();
             Geometry p = gf.createPoint(c);
             Filter filter = ff2.intersects(ff2.property("the_geom"), ff2.literal(p));
             boolean result = false;

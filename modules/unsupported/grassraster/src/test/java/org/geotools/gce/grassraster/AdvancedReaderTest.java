@@ -290,16 +290,24 @@ public class AdvancedReaderTest extends TestCase {
         // JGrassRegion jgr = new JGrassRegion(w, e, s, n, rows, cols);
         // return read(file, jgr, crs);
 
+        // readgrassraster start
+        
+        /*
+         * read a grassraster given the bounds and the number of rows and cols. 
+         */
+        // prepare the parameters
         GeneralParameterValue[] readParams = new GeneralParameterValue[1];
         Parameter<GridGeometry2D> readGG = new Parameter<GridGeometry2D>(AbstractGridFormat.READ_GRIDGEOMETRY2D);
         GridEnvelope2D gridEnvelope = new GridEnvelope2D(0, 0, cols, rows);
         ReferencedEnvelope env = new ReferencedEnvelope(w, e, s, n, crs);
         readGG.setValue(new GridGeometry2D(gridEnvelope, env));
         readParams[0] = readGG;
-
+        // do the reading
         AbstractGridFormat format = (AbstractGridFormat) new GrassCoverageFormatFactory().createFormat();
         GridCoverageReader reader = format.getReader(file);
         GridCoverage2D gc = ((GridCoverage2D) reader.read(readParams));
+        
+        // readgrassraster stop
         return gc;
     }
 

@@ -37,6 +37,16 @@
         <role>Java Developer</role>
       </roles>
     </developer>
+    <developer>
+      <id>LeeBreisacher</id>
+      <name>Lee Breisacher</name>
+      <email>leebreisacher@verizon.net</email>
+      <organization>n/a</organization>
+      <roles>
+        <role>Contributor</role>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
   </developers>
 
 

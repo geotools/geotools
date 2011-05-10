@@ -37,6 +37,7 @@ import org.geotools.util.logging.Logging;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverageWriter;
 import org.opengis.parameter.GeneralParameterDescriptor;
+import org.opengis.parameter.ParameterDescriptor;
 
 /**
  * {@link AbstractGridFormat} sublass for controlling
@@ -67,8 +68,15 @@ public class ImageMosaicJDBCFormat extends AbstractGridFormat implements Format 
 			.getLogger(ImageMosaicJDBCFormat.class.getPackage().getName());
 
 	/** Control the transparency of the output coverage. */
-	public static final DefaultParameterDescriptor OUTPUT_TRANSPARENT_COLOR = new DefaultParameterDescriptor(
-			"OutputTransparentColor", Color.class, null, null);
+
+	       public static final ParameterDescriptor<Color> OUTPUT_TRANSPARENT_COLOR = new DefaultParameterDescriptor<Color>(
+                       "OutputTransparentColor", Color.class, null, null);
+           /** Control the background values for the output coverage */
+
+//        public static final ParameterDescriptor<Color> BACKGROUND_COLOR = new DefaultParameterDescriptor<Color>(
+//                "BackgroundColor", Color.class, null, Color.BLACK);
+
+
 
 	/**
 	 * Creates an instance and sets the metadata.
@@ -131,7 +139,7 @@ public class ImageMosaicJDBCFormat extends AbstractGridFormat implements Format 
 		readParameters = new ParameterGroup(
 				new DefaultParameterDescriptorGroup(mInfo,
 						new GeneralParameterDescriptor[] { READ_GRIDGEOMETRY2D,
-								OUTPUT_TRANSPARENT_COLOR }));
+								OUTPUT_TRANSPARENT_COLOR, BACKGROUND_COLOR }));
 
 		// reading parameters
 		writeParameters = null;

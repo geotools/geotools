@@ -152,8 +152,8 @@ public class H2Test extends AbstractTest {
 			// Rectangle2D.Double(300000,300000,400000,400000));
 			// TARGET=CRS.decode("EPSG:31287");
 			tenv.setCoordinateReferenceSystem(TARGET);
-			imageMosaic("partialgreen_reprojected", getConfigUrl(), tenv, 400,
-					400, Color.GREEN, null);
+			imageMosaic("transparent_reprojected", getConfigUrl(), tenv, 400,
+					400, Color.BLACK,Color.BLACK, null);
 		} catch (Exception e) {
 			Assert.fail(e.getMessage());
 		}

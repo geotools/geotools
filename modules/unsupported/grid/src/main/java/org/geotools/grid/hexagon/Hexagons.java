@@ -24,7 +24,6 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.grid.GridFeatureBuilder;
-import org.geotools.grid.Orientation;
 import org.geotools.referencing.CRS;
 
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -94,7 +93,7 @@ public class Hexagons {
      *         if {@code orientation} is {@code null}
      */
     public static Hexagon create(double minX, double minY, double sideLen,
-            Orientation orientation, CoordinateReferenceSystem crs) {
+            HexagonOrientation orientation, CoordinateReferenceSystem crs) {
         return new HexagonImpl(minX, minY, sideLen, orientation, crs);
     }
 
@@ -122,7 +121,7 @@ public class Hexagons {
     public static SimpleFeatureSource createGrid(
             ReferencedEnvelope bounds,
             double sideLen,
-            Orientation orientation,
+            HexagonOrientation orientation,
             GridFeatureBuilder gridBuilder) {
 
         return createGrid(bounds, sideLen, -1, orientation, gridBuilder);
@@ -159,7 +158,7 @@ public class Hexagons {
             ReferencedEnvelope bounds,
             double sideLen,
             double vertexSpacing,
-            Orientation orientation,
+            HexagonOrientation orientation,
             GridFeatureBuilder gridFeatureBuilder) {
         
         if (bounds == null || bounds.isEmpty() || bounds.isNull()) {
@@ -178,7 +177,7 @@ public class Hexagons {
         CoordinateReferenceSystem builderCRS = gridFeatureBuilder.getType().getCoordinateReferenceSystem();
         if (boundsCRS != null && builderCRS != null &&
                 !CRS.equalsIgnoreMetadata(boundsCRS, builderCRS)) {
-            throw new IllegalArgumentException("Different CRS set for bounds and grid feature builder");
+            throw new IllegalArgumentException("Different CRS set for bounds and the feature builder");
         }
 
         final SimpleFeatureCollection fc = new ListFeatureCollection(gridFeatureBuilder.getType());

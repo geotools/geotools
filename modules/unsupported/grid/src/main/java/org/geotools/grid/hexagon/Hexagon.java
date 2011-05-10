@@ -17,7 +17,6 @@
 
 package org.geotools.grid.hexagon;
 
-import org.geotools.grid.Orientation;
 import org.geotools.grid.GridElement;
 
 /**
@@ -35,13 +34,13 @@ public interface Hexagon extends GridElement {
      *
      * @return side length
      */
-    public double getSideLength();
+    double getSideLength();
 
     /**
      * Gets the orientation of this hexagon.
      *
      * @return either {@linkplain Orientation#ANGLED} or {@linkplain Orientation#FLAT}
      */
-    public Orientation getOrientation();
+    HexagonOrientation getOrientation();
 
 }

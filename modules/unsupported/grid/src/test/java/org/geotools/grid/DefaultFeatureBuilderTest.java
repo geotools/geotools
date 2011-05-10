@@ -37,21 +37,21 @@ public class DefaultFeatureBuilderTest {
 
     @Test
     public void defaultConstructor() {
-        DefaultFeatureBuilder setter = new DefaultFeatureBuilder();
-        assertSetter(setter, DefaultFeatureBuilder.DEFAULT_TYPE_NAME, null);
+        DefaultGridFeatureBuilder setter = new DefaultGridFeatureBuilder();
+        assertSetter(setter, DefaultGridFeatureBuilder.DEFAULT_TYPE_NAME, null);
     }
     
     @Test
     public void crsConstructor() {
         CoordinateReferenceSystem crs = DefaultGeographicCRS.WGS84;
-        DefaultFeatureBuilder setter = new DefaultFeatureBuilder(crs);
-        assertSetter(setter, DefaultFeatureBuilder.DEFAULT_TYPE_NAME, crs);
+        DefaultGridFeatureBuilder setter = new DefaultGridFeatureBuilder(crs);
+        assertSetter(setter, DefaultGridFeatureBuilder.DEFAULT_TYPE_NAME, crs);
     }
 
     @Test
     public void nameConstructor() {
         String name = "foo";
-        DefaultFeatureBuilder setter = new DefaultFeatureBuilder(name);
+        DefaultGridFeatureBuilder setter = new DefaultGridFeatureBuilder(name);
         assertSetter(setter, name, null);
     }
 
@@ -59,7 +59,7 @@ public class DefaultFeatureBuilderTest {
     public void fullConstructor() {
         String name = "foo";
         CoordinateReferenceSystem crs = DefaultGeographicCRS.WGS84;
-        DefaultFeatureBuilder setter = new DefaultFeatureBuilder(name, crs);
+        DefaultGridFeatureBuilder setter = new DefaultGridFeatureBuilder(name, crs);
         assertSetter(setter, name, crs);
     }
 
@@ -69,11 +69,11 @@ public class DefaultFeatureBuilderTest {
         // empty
     }
 
-    private void assertSetter(DefaultFeatureBuilder setter, String typeName, CoordinateReferenceSystem crs) {
+    private void assertSetter(DefaultGridFeatureBuilder setter, String typeName, CoordinateReferenceSystem crs) {
         SimpleFeatureType type = setter.getType();
         assertEquals(2, type.getAttributeCount());
         assertNotNull(type.getDescriptor(GridFeatureBuilder.DEFAULT_GEOMETRY_ATTRIBUTE_NAME));
-        assertNotNull(type.getDescriptor(DefaultFeatureBuilder.ID_ATTRIBUTE_NAME));
+        assertNotNull(type.getDescriptor(DefaultGridFeatureBuilder.ID_ATTRIBUTE_NAME));
 
         assertEquals(type.getTypeName(), typeName);
         if (crs == null) {

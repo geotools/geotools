@@ -21,7 +21,6 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.grid.AbstractGridBuilder;
 import org.geotools.grid.GridElement;
 import org.geotools.grid.Neighbor;
-import org.geotools.grid.Orientation;
 
 /**
  * Used by {@code Hexagons} class to build grids.
@@ -33,18 +32,18 @@ import org.geotools.grid.Orientation;
  */
 class HexagonGridBuilder extends AbstractGridBuilder {
     private final double sideLen;
-    private final Orientation orientation;
+    private final HexagonOrientation orientation;
     private final Neighbor[] nextX = new Neighbor[2];
     private final Neighbor[] nextY = new Neighbor[2];
     private int xIndex = 0;
     private int yIndex = 0;
 
-    public HexagonGridBuilder(ReferencedEnvelope gridBounds, double sideLen, Orientation orientation) {
+    public HexagonGridBuilder(ReferencedEnvelope gridBounds, double sideLen, HexagonOrientation orientation) {
         super(gridBounds);
         this.sideLen = sideLen;
         this.orientation = orientation;
 
-        if (orientation == Orientation.ANGLED) {
+        if (orientation == HexagonOrientation.ANGLED) {
             nextX[0] = nextX[1] = Neighbor.RIGHT;
             nextY[0] = Neighbor.UPPER_RIGHT;
             nextY[1] = Neighbor.UPPER_LEFT;
@@ -75,11 +74,11 @@ class HexagonGridBuilder extends AbstractGridBuilder {
         switch (neighbor) {
             case LEFT:
             case RIGHT:
-                return orientation == Orientation.ANGLED;
+                return orientation == HexagonOrientation.ANGLED;
 
             case LOWER:
             case UPPER:
-                return orientation == Orientation.FLAT;
+                return orientation == HexagonOrientation.FLAT;
 
             case LOWER_LEFT:
             case LOWER_RIGHT:
@@ -144,7 +143,7 @@ class HexagonGridBuilder extends AbstractGridBuilder {
                 break;
 
             case LOWER_LEFT:
-                if (hexagon.getOrientation() == Orientation.FLAT) {
+                if (hexagon.getOrientation() == HexagonOrientation.FLAT) {
                     dx = -0.75 * bounds.getWidth();
                     dy = -0.5 * bounds.getHeight();
                 } else {  // ANGLED
@@ -154,7 +153,7 @@ class HexagonGridBuilder extends AbstractGridBuilder {
                 break;
 
             case LOWER_RIGHT:
-                if (hexagon.getOrientation() == Orientation.FLAT) {
+                if (hexagon.getOrientation() == HexagonOrientation.FLAT) {
                     dx = 0.75 * bounds.getWidth();
                     dy = -0.5 * bounds.getHeight();
                 } else {  // ANGLED
@@ -174,7 +173,7 @@ class HexagonGridBuilder extends AbstractGridBuilder {
                 break;
 
             case UPPER_LEFT:
-                if (hexagon.getOrientation() == Orientation.FLAT) {
+                if (hexagon.getOrientation() == HexagonOrientation.FLAT) {
                     dx = -0.75 * bounds.getWidth();
                     dy = 0.5 * bounds.getHeight();
                 } else {  // ANGLED
@@ -184,7 +183,7 @@ class HexagonGridBuilder extends AbstractGridBuilder {
                 break;
 
             case UPPER_RIGHT:
-                if (hexagon.getOrientation() == Orientation.FLAT) {
+                if (hexagon.getOrientation() == HexagonOrientation.FLAT) {
                     dx = 0.75 * bounds.getWidth();
                     dy = 0.5 * bounds.getHeight();
                 } else {  // ANGLED

@@ -65,9 +65,9 @@ public abstract class AbstractGridBuilder {
                         gridFeatureBuilder.setAttributes(el, attrMap);
 
                         if (densify) {
-                            fb.set(geomPropName, el.toDensePolygon(vertexSpacing));
+                            fb.set(geomPropName, el.toDenseGeometry(vertexSpacing));
                         } else {
-                            fb.set(geomPropName, el.toPolygon());
+                            fb.set(geomPropName, el.toGeometry());
                         }
 
                         for (String propName : attrMap.keySet()) {

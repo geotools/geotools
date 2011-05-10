@@ -109,9 +109,9 @@ public class OblongTest extends TestBase {
     }
 
     @Test
-    public void toPolygon() {
+    public void toGeometry() {
         GridElement oblong = new OblongImpl(MINX, MINY, WIDTH, HEIGHT, null);
-        Geometry polygon = oblong.toPolygon();
+        Geometry polygon = oblong.toGeometry();
         assertNotNull(polygon);
         assertTrue(polygon instanceof Polygon);
 
@@ -122,13 +122,13 @@ public class OblongTest extends TestBase {
     }
 
     @Test
-    public void toDensePolygon() {
+    public void toDenseGeometry() {
         GridElement oblong = new OblongImpl(0, 0, WIDTH, HEIGHT, null);
 
         final int density = 10;
         final double maxSpacing = Math.min(WIDTH, HEIGHT) / density;
 
-        Geometry polygon = oblong.toDensePolygon(maxSpacing);
+        Geometry polygon = oblong.toDenseGeometry(maxSpacing);
         assertNotNull(polygon);
         assertTrue(polygon instanceof Polygon);
         assertTrue(polygon.getCoordinates().length - 1 >= 2 * (WIDTH + HEIGHT) * density);

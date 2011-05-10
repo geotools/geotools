@@ -18,60 +18,26 @@
 package org.geotools.grid;
 
 import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Polygon;
-
-import org.geotools.geometry.jts.ReferencedEnvelope;
 
 /**
  * Defines basic methods for grid elements.
  *
  * @author michael
  */
-public interface GridElement {
+public interface GridElement extends Element {
 
     /**
      * Gets the area of this grid element.
      *
      * @return the area
      */
-    public double getArea();
-
-    /**
-     * Gets the bounds of this grid element.
-     *
-     * @return the bounding rectangle
-     */
-    public ReferencedEnvelope getBounds();
+    double getArea();
 
     /**
      * Gets the center coordinates of this grid element.
      *
      * @return the center coordinates
      */
-    public Coordinate getCenter();
+    Coordinate getCenter();
 
-    /**
-     * Gets the vertices of this grid element.
-     *
-     * @return the vertices
-     */
-    public Coordinate[] getVertices();
-
-    /**
-     * Creates a new {@code Polygon} from this grid element.
-     * 
-     * @return a new {@code Polygon}
-     */
-    public Polygon toPolygon();
-
-    /**
-     * Creates a new, densified {@code Polygon} from this grid element.
-     *
-     * @param maxSpacing the maximum distance between adjacent vertices
-     *
-     * @return a new {@code Polygon} with additional vertices on each edge
-     *
-     * @throws IllegalArgumentException if maxSpacing is {@code <=} 0
-     */
-    public Polygon toDensePolygon(double maxSpacing);
 }

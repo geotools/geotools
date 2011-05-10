@@ -19,8 +19,8 @@ package org.geotools.grid.oblong;
 
 import com.vividsolutions.jts.densify.Densifier;
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Polygon;
 
 import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -100,15 +100,15 @@ public class OblongImpl implements Oblong {
     /**
      * {@inheritDoc}
      */
-    public Polygon toPolygon() {
-        return (Polygon) geomFactory.toGeometry(envelope);
+    public Geometry toGeometry() {
+        return geomFactory.toGeometry(envelope);
     }
 
     /**
      * {@inheritDoc}
      */
-    public Polygon toDensePolygon(double maxSpacing) {
-        return (Polygon) Densifier.densify(this.toPolygon(), maxSpacing);
+    public Geometry toDenseGeometry(double maxSpacing) {
+        return Densifier.densify(this.toGeometry(), maxSpacing);
     }
 
 }

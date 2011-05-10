@@ -19,6 +19,7 @@ package org.geotools.grid;
 
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.grid.hexagon.HexagonOrientation;
 import org.geotools.grid.hexagon.Hexagons;
 import org.geotools.grid.oblong.Oblongs;
 
@@ -75,7 +76,7 @@ public class Grids {
         }
 
         return Oblongs.createGrid(bounds, sideLen, sideLen,
-                new DefaultFeatureBuilder(bounds.getCoordinateReferenceSystem()));
+                new DefaultGridFeatureBuilder(bounds.getCoordinateReferenceSystem()));
     }
 
     /**
@@ -123,7 +124,7 @@ public class Grids {
         }
 
         return Oblongs.createGrid(bounds, sideLen, sideLen, vertexSpacing,
-                new DefaultFeatureBuilder(bounds.getCoordinateReferenceSystem()));
+                new DefaultGridFeatureBuilder(bounds.getCoordinateReferenceSystem()));
     }
 
     /**
@@ -209,8 +210,8 @@ public class Grids {
             throw new IllegalArgumentException("bounds should not be null");
         }
 
-        return Hexagons.createGrid(bounds, sideLen, Orientation.FLAT,
-                new DefaultFeatureBuilder(bounds.getCoordinateReferenceSystem()));
+        return Hexagons.createGrid(bounds, sideLen, HexagonOrientation.FLAT,
+                new DefaultGridFeatureBuilder(bounds.getCoordinateReferenceSystem()));
     }
 
     /**
@@ -262,8 +263,8 @@ public class Grids {
             throw new IllegalArgumentException("bounds should not be null");
         }
 
-        return Hexagons.createGrid(bounds, sideLen, vertexSpacing, Orientation.FLAT,
-                new DefaultFeatureBuilder(bounds.getCoordinateReferenceSystem()));
+        return Hexagons.createGrid(bounds, sideLen, vertexSpacing, HexagonOrientation.FLAT,
+                new DefaultGridFeatureBuilder(bounds.getCoordinateReferenceSystem()));
     }
 
     /**
@@ -324,7 +325,7 @@ public class Grids {
         }
 
         return Hexagons.createGrid(bounds, sideLen, vertexSpacing,
-                Orientation.FLAT, builder);
+                HexagonOrientation.FLAT, builder);
     }
 
 }

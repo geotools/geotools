@@ -22,9 +22,8 @@ import java.util.Map;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.grid.Element;
 import org.geotools.grid.GridFeatureBuilder;
-import org.geotools.grid.GridElement;
-import org.geotools.grid.Orientation;
 
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -63,20 +62,20 @@ public class HexagonsTest extends HexagonTestBase {
 
     @Test
     public void createHexagon() {
-        Hexagon hexagon = Hexagons.create(0.0, 0.0, SIDE_LEN, Orientation.FLAT, null);
+        Hexagon hexagon = Hexagons.create(0.0, 0.0, SIDE_LEN, HexagonOrientation.FLAT, null);
         assertNotNull(hexagon);
     }
 
     @Test
     public void getVerticesFlat() {
-        Hexagon hexagon = Hexagons.create(0.0, 0.0, SIDE_LEN, Orientation.FLAT, null);
-        assertVertices(hexagon, 0.0, 0.0, SIDE_LEN, Orientation.FLAT);
+        Hexagon hexagon = Hexagons.create(0.0, 0.0, SIDE_LEN, HexagonOrientation.FLAT, null);
+        assertVertices(hexagon, 0.0, 0.0, SIDE_LEN, HexagonOrientation.FLAT);
     }
     
     @Test
     public void getVerticesAngled() {
-        Hexagon hexagon = Hexagons.create(0.0, 0.0, SIDE_LEN, Orientation.ANGLED, null);
-        assertVertices(hexagon, 0.0, 0.0, SIDE_LEN, Orientation.ANGLED);
+        Hexagon hexagon = Hexagons.create(0.0, 0.0, SIDE_LEN, HexagonOrientation.ANGLED, null);
+        assertVertices(hexagon, 0.0, 0.0, SIDE_LEN, HexagonOrientation.ANGLED);
     }
 
     @Test
@@ -94,14 +93,14 @@ public class HexagonsTest extends HexagonTestBase {
             }
 
             @Override
-            public void setAttributes(GridElement el, Map<String, Object> attributes) {
+            public void setAttributes(Element el, Map<String, Object> attributes) {
                 attributes.put("id", ++id);
             }
         }
 
         Setter setter = new Setter(TYPE);
 
-        SimpleFeatureSource gridSource = Hexagons.createGrid(bounds, SIDE_LEN, Orientation.FLAT, setter);
+        SimpleFeatureSource gridSource = Hexagons.createGrid(bounds, SIDE_LEN, HexagonOrientation.FLAT, setter);
         assertNotNull(gridSource);
 
         int expectedCols = (int) ((SPAN - 2 * SIDE_LEN) / (1.5 * SIDE_LEN)) + 1;

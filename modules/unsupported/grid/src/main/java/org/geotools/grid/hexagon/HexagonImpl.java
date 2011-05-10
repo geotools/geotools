@@ -17,11 +17,10 @@
 
 package org.geotools.grid.hexagon;
 
-import org.geotools.grid.Orientation;
 import com.vividsolutions.jts.densify.Densifier;
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Polygon;
 
 import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -45,7 +44,7 @@ public class HexagonImpl implements Hexagon {
     private final double area;
     private final double minX;
     private final double minY;
-    private final Orientation orientation;
+    private final HexagonOrientation orientation;
     private Coordinate[] vertices;
     private final CoordinateReferenceSystem crs;
 
@@ -64,7 +63,7 @@ public class HexagonImpl implements Hexagon {
      * @param crs the coordinate reference system (may be {@code null})
      */
     public HexagonImpl(double minX, double minY, double sideLen, 
-            Orientation orientation, CoordinateReferenceSystem crs) {
+            HexagonOrientation orientation, CoordinateReferenceSystem crs) {
 
         if (sideLen <= 0.0) {
             throw new IllegalArgumentException("side length must be > 0");
@@ -101,7 +100,7 @@ public class HexagonImpl implements Hexagon {
     /**
      * {@inheritDoc}
      */
-    public Orientation getOrientation() {
+    public HexagonOrientation getOrientation() {
         return orientation;
     }
 
@@ -122,7 +121,7 @@ public class HexagonImpl implements Hexagon {
      * {@inheritDoc}
      */
     public ReferencedEnvelope getBounds() {
-        if (orientation == Orientation.FLAT) {
+        if (orientation == HexagonOrientation.FLAT) {
             return new ReferencedEnvelope(
                     minX, minX + 2.0 * sideLen,
                     minY, minY + ROOT3 * sideLen,
@@ -140,7 +139,7 @@ public class HexagonImpl implements Hexagon {
      * {@inheritDoc}
      */
     public Coordinate getCenter() {
-        if (orientation == Orientation.FLAT) {
+        if (orientation == HexagonOrientation.FLAT) {
             return new Coordinate(minX + sideLen, minY + ROOT3 * 0.5 * sideLen);
         } else {  // ANGLED
             return new Coordinate(minX + ROOT3 * 0.5 * sideLen, minY + sideLen);
@@ -150,11 +149,9 @@ public class HexagonImpl implements Hexagon {
     /**
      * {@inheritDoc}
      */
-    public Polygon toPolygon() {
+    public Geometry toGeometry() {
         Coordinate[] ring = new Coordinate[7];
-        for (int i = 0; i < 6; i++) {
-            ring[i] = vertices[i];
-        }
+        System.arraycopy(vertices, 0, ring, 0, 6);
         ring[6] = vertices[0];
 
         return geomFactory.createPolygon(geomFactory.createLinearRing(ring), null);
@@ -165,12 +162,12 @@ public class HexagonImpl implements Hexagon {
      *
      * @throws IllegalArgumentException if {@code maxSpacing} is not a positive value
      */
-    public Polygon toDensePolygon(double maxSpacing) {
+    public Geometry toDenseGeometry(double maxSpacing) {
         if (maxSpacing <= 0.0) {
             throw new IllegalArgumentException("maxSpacing must be a positive value");
         }
         
-        return (Polygon) Densifier.densify(this.toPolygon(), maxSpacing);
+        return Densifier.densify(this.toGeometry(), maxSpacing);
     }
 
     /**
@@ -185,7 +182,7 @@ public class HexagonImpl implements Hexagon {
         vertices = new Coordinate[6];
 
         final double span = ROOT3 * sideLen;
-        if (orientation == Orientation.FLAT) {
+        if (orientation == HexagonOrientation.FLAT) {
             vertices[0] = new Coordinate(minX + 0.5 * sideLen, minY + span);
             vertices[1] = new Coordinate(minX + 1.5 * sideLen, minY + span);
             vertices[2] = new Coordinate(minX + 2.0 * sideLen, minY + span/2.0);

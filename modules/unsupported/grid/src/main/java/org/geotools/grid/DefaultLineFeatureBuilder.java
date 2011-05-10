@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2010, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -19,7 +19,7 @@ package org.geotools.grid;
 
 import java.util.Map;
 
-import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.geom.LineString;
 
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 
@@ -27,32 +27,41 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
- * A basic implementation of {@code GridFeatureBuilder} which will create a
+ * A basic implementation of {@code LineFeatureBuilder} which will create a
  * {@code SimpleFeatureType} having two properties:
  * <ul>
- * <li>element - TYPE Polygon
+ * <li>element - TYPE LineString
  * <li>id - TYPE Integer
  * </ul>
  * The attribute names can also be referred to using
- * {@linkplain GridFeatureBuilder#DEFAULT_GEOMETRY_ATTRIBUTE_NAME} and
+ * {@linkplain LineFeatureBuilder#DEFAULT_GEOMETRY_ATTRIBUTE_NAME} and
  * {@linkplain #ID_ATTRIBUTE_NAME}
  * <p>
- * Grid elements will be assigned sequential id values starting with 1.
+ * Line elements will be assigned sequential id values starting with 1.
  *
  * @author mbedward
  * @since 2.7
  * @source $URL$
  * @version $Id$
  */
-public final class DefaultFeatureBuilder extends GridFeatureBuilder {
-
+public class DefaultLineFeatureBuilder extends GridFeatureBuilder {
     /** Default feature TYPE name: "grid" */
     public static final String DEFAULT_TYPE_NAME = "grid";
 
     /** Name used for the integer id attribute: "id" */
     public static final String ID_ATTRIBUTE_NAME = "id";
     
-    private int id;
+    /**
+     * Name of the Integer level attribute ("level")
+     */
+    public static final String LEVEL_ATTRIBUTE_NAME = "level";
+
+    /**
+     * Name of the Object value attribute ("value")
+     */
+    public static final String VALUE_ATTRIBUTE_NAME = "value";
+
+    protected int id;
 
     /**
      * Creates the feature TYPE
@@ -74,8 +83,11 @@ public final class DefaultFeatureBuilder extends GridFeatureBuilder {
 
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.setName(finalName);
-        tb.add(DEFAULT_GEOMETRY_ATTRIBUTE_NAME, Polygon.class, crs);
-        tb.add("id", Integer.class);
+        tb.add(DEFAULT_GEOMETRY_ATTRIBUTE_NAME, LineString.class, crs);
+        tb.add(ID_ATTRIBUTE_NAME, Integer.class);
+        tb.add(VALUE_ATTRIBUTE_NAME, Object.class);
+        tb.add(LEVEL_ATTRIBUTE_NAME, Integer.class);
+        
         return tb.buildFeatureType();
     }
 
@@ -85,7 +97,7 @@ public final class DefaultFeatureBuilder extends GridFeatureBuilder {
      *
      * @see #DEFAULT_TYPE_NAME
      */
-    public DefaultFeatureBuilder() {
+    public DefaultLineFeatureBuilder() {
         this(DEFAULT_TYPE_NAME, null);
     }
 
@@ -95,7 +107,7 @@ public final class DefaultFeatureBuilder extends GridFeatureBuilder {
      * @param typeName name for the feature TYPE; if {@code null} or empty,
      *        {@linkplain #DEFAULT_TYPE_NAME} will be used
      */
-    DefaultFeatureBuilder(String typeName) {
+    DefaultLineFeatureBuilder(String typeName) {
         this(typeName, null);
     }
 
@@ -107,7 +119,7 @@ public final class DefaultFeatureBuilder extends GridFeatureBuilder {
      *
      * @see #DEFAULT_TYPE_NAME
      */
-    public DefaultFeatureBuilder(CoordinateReferenceSystem crs) {
+    public DefaultLineFeatureBuilder(CoordinateReferenceSystem crs) {
         this(DEFAULT_TYPE_NAME, crs);
     }
 
@@ -119,23 +131,32 @@ public final class DefaultFeatureBuilder extends GridFeatureBuilder {
      *
      * @param crs coordinate reference system (may be {@code null})
      */
-    public DefaultFeatureBuilder(String typeName, CoordinateReferenceSystem crs) {
+    public DefaultLineFeatureBuilder(String typeName, CoordinateReferenceSystem crs) {
         super(createType(typeName, crs));
         id = 0;
     }
 
     /**
-     * Overrides {@linkplain GridFeatureBuilder#setAttributes(GridElement, Map)}
+     * Overrides {@linkplain LineFeatureBuilder#setAttributes(LineElement, Map)}
      * to assign a sequential integer id value to each grid element feature
      * as it is constructed.
      *
      * @param el the element from which the new feature is being constructed
      *
-     * @param attributes a {@code Map} with the single key "id"
+     * @param attributes a {@code Map} into which the attributes will be put
      */
     @Override
-    public void setAttributes(GridElement el, Map<String, Object> attributes) {
-        attributes.put("id", ++id);
+    public void setAttributes(Element el, Map<String, Object> attributes) {
+        if (el instanceof LineElement) {
+            LineElement geoEl = (LineElement) el;
+
+            attributes.put(ID_ATTRIBUTE_NAME, ++id);
+            attributes.put(VALUE_ATTRIBUTE_NAME, geoEl.getValue());
+            attributes.put(LEVEL_ATTRIBUTE_NAME, geoEl.getLevel());
+            
+        } else {
+            throw new IllegalArgumentException("Expected an instance of LineElement");
+        }
     }
 
 }

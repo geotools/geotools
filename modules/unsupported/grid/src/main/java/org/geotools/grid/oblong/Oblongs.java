@@ -138,7 +138,7 @@ public class Oblongs {
         CoordinateReferenceSystem builderCRS = gridFeatureBuilder.getType().getCoordinateReferenceSystem();
         if (boundsCRS != null && builderCRS != null &&
                 !CRS.equalsIgnoreMetadata(boundsCRS, builderCRS)) {
-            throw new IllegalArgumentException("Different CRS set for bounds and grid feature builder");
+            throw new IllegalArgumentException("Different CRS set for bounds and the feature builder");
         }
 
         final SimpleFeatureCollection fc = new ListFeatureCollection(gridFeatureBuilder.getType());

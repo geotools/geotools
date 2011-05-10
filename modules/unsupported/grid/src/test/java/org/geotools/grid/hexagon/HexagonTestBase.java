@@ -17,8 +17,8 @@
 
 package org.geotools.grid.hexagon;
 
-import org.geotools.grid.Orientation;
 import com.vividsolutions.jts.geom.Coordinate;
+
 import org.geotools.grid.GridElement;
 import org.geotools.grid.TestBase;
 
@@ -38,7 +38,7 @@ public class HexagonTestBase extends TestBase {
     protected final double AREA = Math.sqrt(3.0) * 1.5;
 
     protected void assertVertices(GridElement hexagon,
-            double minx, double miny, double sideLen, Orientation orientation) {
+            double minx, double miny, double sideLen, HexagonOrientation orientation) {
 
         assertTrue("error in test code", hexagon instanceof Hexagon);
 
@@ -46,7 +46,7 @@ public class HexagonTestBase extends TestBase {
         final double span = Math.sqrt(3.0) * sideLen;
         Coordinate[] expected = new Coordinate[6];
 
-        if (orientation == Orientation.FLAT) {
+        if (orientation == HexagonOrientation.FLAT) {
             expected[0] = new Coordinate(minx + 0.5 * sideLen, miny + span);
             expected[1] = new Coordinate(minx + 1.5 * sideLen, miny + span);
             expected[2] = new Coordinate(minx + 2.0 * sideLen, miny + 0.5 * span);

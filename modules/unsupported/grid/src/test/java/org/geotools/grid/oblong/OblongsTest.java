@@ -22,7 +22,8 @@ import java.util.Map;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.grid.DefaultFeatureBuilder;
+import org.geotools.grid.DefaultGridFeatureBuilder;
+import org.geotools.grid.Element;
 import org.geotools.grid.GridFeatureBuilder;
 import org.geotools.grid.GridElement;
 import org.geotools.grid.TestBase;
@@ -79,7 +80,7 @@ public class OblongsTest extends TestBase {
             }
 
             @Override
-            public void setAttributes(GridElement el, Map<String, Object> attributes) {
+            public void setAttributes(Element el, Map<String, Object> attributes) {
                 attributes.put("id", ++id);
             }
         }
@@ -100,22 +101,22 @@ public class OblongsTest extends TestBase {
     
     @Test(expected=IllegalArgumentException.class)
     public void createGrid_InvalidBounds() {
-        Oblongs.createGrid(ReferencedEnvelope.EVERYTHING, 1.0, 1.0, new DefaultFeatureBuilder());
+        Oblongs.createGrid(ReferencedEnvelope.EVERYTHING, 1.0, 1.0, new DefaultGridFeatureBuilder());
     }
 
     @Test(expected=IllegalArgumentException.class)
     public void createGrid_NullBounds() {
-        Oblongs.createGrid(null, 1.0, 1.0, new DefaultFeatureBuilder());
+        Oblongs.createGrid(null, 1.0, 1.0, new DefaultGridFeatureBuilder());
     }
     
     @Test(expected=IllegalArgumentException.class)
     public void createGrid_badWidth() {
-        Oblongs.createGrid(new ReferencedEnvelope(0, 10, 0, 10, null), 0, 1.0, new DefaultFeatureBuilder());
+        Oblongs.createGrid(new ReferencedEnvelope(0, 10, 0, 10, null), 0, 1.0, new DefaultGridFeatureBuilder());
     }
 
     @Test(expected=IllegalArgumentException.class)
     public void createGrid_badHeight() {
-        Oblongs.createGrid(new ReferencedEnvelope(0, 10, 0, 10, null), 1, 0, new DefaultFeatureBuilder());
+        Oblongs.createGrid(new ReferencedEnvelope(0, 10, 0, 10, null), 1, 0, new DefaultGridFeatureBuilder());
     }
 
     @Test(expected=IllegalArgumentException.class)
@@ -123,7 +124,7 @@ public class OblongsTest extends TestBase {
         try {
         ReferencedEnvelope env = new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84);
         CoordinateReferenceSystem otherCRS = CRS.parseWKT(getSydneyWKT());
-        GridFeatureBuilder builder = new DefaultFeatureBuilder(otherCRS);
+        GridFeatureBuilder builder = new DefaultGridFeatureBuilder(otherCRS);
 
         Oblongs.createGrid(env, 0, 1.0, builder);
         

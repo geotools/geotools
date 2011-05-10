@@ -49,7 +49,7 @@ public abstract class GridFeatureBuilder {
     private final SimpleFeatureType TYPE;
 
     /**
-     * Creates an {@code GridFeatureBuilder} to work with the given feature type.
+     * Creates a {@code GridFeatureBuilder} to work with the given feature type.
      *
      * @param type the feature type
      */
@@ -58,7 +58,7 @@ public abstract class GridFeatureBuilder {
     }
 
     /**
-     * Gets the feature type used by this {@code GridFeatureBuilder}.
+     * Gets the feature type. 
      *
      * @return the feature type
      */
@@ -78,7 +78,7 @@ public abstract class GridFeatureBuilder {
      * @param attributes a {@code Map} with attribute names as keys and
      *        attribute values as values
      */
-    public abstract void setAttributes(GridElement el, Map<String, Object> attributes);
+    public abstract void setAttributes(Element el, Map<String, Object> attributes);
 
     /**
      * Gets the {@code FeatureID} as a {@code String} for a new {@code SimpleFeature}
@@ -91,15 +91,14 @@ public abstract class GridFeatureBuilder {
      *
      * @return value to use as the feature ID
      */
-    public String getFeatureID(GridElement el) {
+    public String getFeatureID(Element el) {
         return null;
     }
 
     /**
      * Tests whether a feature will be constructed for the given {@code GridElement}.
      * This can be overriden to create vector grids with 'holes' where elements are not
-     * required, for example, based on location or the results of intersection with
-     * other data layers.
+     * required, for example, based on location or the relationship to other data layers.
      * <p>
      * The base implementation always returns {@code true}.
      *
@@ -108,7 +107,7 @@ public abstract class GridFeatureBuilder {
      * @return {@code true} to create a feature for the element; {@code false}
      *         to skip the element
      */
-    public boolean getCreateFeature(GridElement el) {
+    public boolean getCreateFeature(Element el) {
         return true;
     }
 

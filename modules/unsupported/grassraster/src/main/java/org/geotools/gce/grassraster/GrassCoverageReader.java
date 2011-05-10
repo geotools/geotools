@@ -528,11 +528,9 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader implements
             JGrassUtilities.makeColorRulesPersistent(colrFile, defColorTable, range, 255);
         }
 
-        int rulesNum = colorRulesSplit.length;
-
-        int COLORNUM = 60000;
-
         if (colorRulesSplit != null) {
+            int COLORNUM = 60000;
+            int rulesNum = colorRulesSplit.length;
             if (colorRulesSplit.length > COLORNUM) {
                 COLORNUM = colorRulesSplit.length + 1;
             }

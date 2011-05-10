@@ -24,7 +24,7 @@ import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
- * Reader tests for different active redgion cases.
+ * Reader tests for different active region cases.
  * 
  * @author Andrea Antonello (www.hydrologis.com)
  */
@@ -197,18 +197,6 @@ public class AdvancedReaderTest extends TestCase {
 
     }
 
-    /**
-    * Test for the nearster neighbour.
-    */
-    public void testDifferentResolution2() throws IOException {
-        JGrassRegion r = new JGrassRegion(1640650.0, 1640950.0, 5139780.0, 5140020.0, 40.0, 40.0);
-        GridCoverage2D gc = read(pitFile, r, crs);
-
-        // TODO: got 600 (rather than 500) on mac osx
-        // checkMatrixEqual(gc.getRenderedImage(), TestMaps.matrixDifferentResolution2, 0);
-
-    }
-
     public void testRasterReaderBoundsOnly() throws Exception {
         double[][] mapData = new double[][]{//
         {1000, 1000, 1200, 1250, 1300, 1350, 1450}, //
@@ -251,10 +239,8 @@ public class AdvancedReaderTest extends TestCase {
     public void testRasterReaderBoundsAndRes() throws Exception {
         double[][] mapData = new double[][]{//
         {1000.0, 1200.0, 1250.0, 1300.0, 1450.0}, //
-                {750.0, 860.0, 900.0, 1000.0, 1250.0}, //
-                // {700.0, 800.0, 850.0, 900.0, 1100.0}, //
+                {700.0, 800.0, 850.0, 900.0, 1100.0}, //
                 {650.0, 750.0, 800.0, 850.0, 450.0}, //
-                {430.0, 600.0, 700.0, 800.0, 450.0}, //
                 {700.0, 760.0, 770.0, 850.0, 1150.0} //
         };
 
@@ -262,12 +248,11 @@ public class AdvancedReaderTest extends TestCase {
         double s = 5139840.0;
         double w = 1640710.0;
         double e = 1640920.0;
-        double xres = 40.0;
-        double yres = 40.0;
+        double xres = 45.0;
+        double yres = 45.0;
         JGrassRegion r = new JGrassRegion(w, e, s, n, xres, yres);
         GridCoverage2D readCoverage = read(grassFile, r, crs32632);
-        //TODO: got 700 (rather than 650) on osx
-        //checkMatrixEqual(readCoverage.getRenderedImage(), mapData, 0);
+        checkMatrixEqual(readCoverage.getRenderedImage(), mapData, 0);
     }
 
     protected void printImage( RenderedImage image ) {

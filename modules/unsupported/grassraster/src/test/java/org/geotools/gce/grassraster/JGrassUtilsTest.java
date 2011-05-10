@@ -34,9 +34,8 @@ public class JGrassUtilsTest extends TestCase {
 
         double[][] mapDataAfter = new double[][]{//
         {1000.0, 1200.0, 1250.0, 1300.0, 1450.0}, //
-                {750.0, 860.0, 900.0, 1000.0, 1250.0}, //
+                {700.0, 800.0, 850.0, 900.0, 1100.0}, //
                 {650.0, 750.0, 800.0, 850.0, 450.0}, //
-                {430.0, 600.0, 700.0, 800.0, 450.0}, //
                 {700.0, 760.0, 770.0, 850.0, 1150.0} //
         };
 
@@ -47,15 +46,47 @@ public class JGrassUtilsTest extends TestCase {
         CoordinateReferenceSystem crs = CRS.decode("EPSG:32632");
         GridCoverage2D elevationCoverage = JGrassUtilities.buildCoverage("elevation", mapData, n, s, w, e, crs, true);
 
-        // JGrassUtilities.printImage(elevationCoverage);
-        RenderedImage scaledJAIImage = JGrassUtilities.scaleJAIImage(5, 5, elevationCoverage.getRenderedImage(), null);
-        // System.out.println("***************************");
-
-        // JGrassUtilities.printImage(scaledJAIImage);
-        // TODO: got 700 (rather than 650) on mac osx
-        //checkMatrixEqual(scaledJAIImage, mapDataAfter, 0.0);
-
+        RenderedImage scaledJAIImage = JGrassUtilities.scaleJAIImage(5, 4, elevationCoverage.getRenderedImage(), null);
+        checkMatrixEqual(scaledJAIImage, mapDataAfter, 0.0);
     }
+
+    // public void testScaling2() throws IOException, NoSuchAuthorityCodeException, FactoryException
+    // {
+    // double[][] mapData = new double[][]{//
+    // {1000.0, 1000.0, 1200.0, 1250.0, 1300.0, 1350.0, 1450.0}, //
+    // {750.0, 850.0, 860.0, 900.0, 1000.0, 1200.0, 1250.0}, //
+    // {700.0, 750.0, 800.0, 850.0, 900.0, 1000.0, 1100.0}, //
+    // {650.0, 700.0, 750.0, 800.0, 850.0, 490.0, 450.0}, //
+    // {430.0, 500.0, 600.0, 700.0, 800.0, 500.0, 450.0}, //
+    // {700.0, 750.0, 760.0, 770.0, 850.0, 1000.0, 1150.0} //
+    // };
+    //
+    // double[][] mapDataAfter = new double[][]{//
+    // {1000.0, 1200.0, 1250.0, 1300.0, 1450.0}, //
+    // {750.0, 860.0, 900.0, 1000.0, 1250.0}, //
+    // {700.0, 800.0, 850.0, 900.0, 1100.0}, //
+    // // {650.0, 750.0, 800.0, 850.0, 450.0}, //
+    // {430.0, 600.0, 700.0, 800.0, 450.0}, //
+    // {700.0, 760.0, 770.0, 850.0, 1150.0} //
+    // };
+    //
+    // double n = 5140020.0;
+    // double s = 5139840.0;
+    // double w = 1640710.0;
+    // double e = 1640920.0;
+    // CoordinateReferenceSystem crs = CRS.decode("EPSG:32632");
+    // GridCoverage2D elevationCoverage = JGrassUtilities.buildCoverage("elevation", mapData, n, s,
+    // w, e, crs, true);
+    //
+    // // JGrassUtilities.printImage(elevationCoverage);
+    // RenderedImage scaledJAIImage = JGrassUtilities.scaleJAIImage(5, 5,
+    // elevationCoverage.getRenderedImage(), null);
+    // // System.out.println("***************************");
+    //
+    // // JGrassUtilities.printImage(scaledJAIImage);
+    // // TODO: got 700 (rather than 650) on mac osx
+    // checkMatrixEqual(scaledJAIImage, mapDataAfter, 0.0);
+    // }
 
     protected void checkMatrixEqual( RenderedImage image, double[][] matrix, double delta ) {
         RectIter rectIter = RectIterFactory.create(image, null);

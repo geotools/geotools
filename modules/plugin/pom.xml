@@ -52,6 +52,7 @@
     <module>epsg-wkt</module>
     <module>feature-pregeneralized</module>
     <module>geotiff</module>
+	<module>grassraster</module>
     <module>gtopo30</module>
     <module>image</module>
     <module>imagemosaic</module>

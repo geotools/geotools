@@ -29,6 +29,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.grid.GridFeatureBuilder;
 import org.geotools.grid.GridElement;
 import org.geotools.grid.Grids;
+import org.geotools.grid.PolygonElement;
 import org.geotools.map.DefaultMapContext;
 import org.geotools.styling.Fill;
 import org.geotools.styling.PolygonSymbolizer;
@@ -62,9 +63,11 @@ public class HexagonExample {
         final ReferencedEnvelope bounds = new ReferencedEnvelope(0, 100, 0, 100, null);
 
         GridFeatureBuilder builder = new GridFeatureBuilder(TYPE) {
-            public void setAttributes(GridElement el, Map<String, Object> attributes) {
-                int g = (int) (255 * el.getCenter().x / bounds.getWidth());
-                int b = (int) (255 * el.getCenter().y / bounds.getHeight());
+            @Override
+            public void setAttributes(GridElement gridEl, Map<String, Object> attributes) {
+                PolygonElement polyEl = (PolygonElement) gridEl;
+                int g = (int) (255 * polyEl.getCenter().x / bounds.getWidth());
+                int b = (int) (255 * polyEl.getCenter().y / bounds.getHeight());
                 attributes.put("color", new Color(0, g, b));
             }
         };

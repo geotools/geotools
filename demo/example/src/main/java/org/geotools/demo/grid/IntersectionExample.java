@@ -9,6 +9,7 @@
  */
 package org.geotools.demo.grid;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Map;
@@ -17,7 +18,6 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Polygon;
-import java.awt.Color;
 
 import org.geotools.data.FileDataStore;
 import org.geotools.data.FileDataStoreFinder;
@@ -30,6 +30,7 @@ import org.geotools.grid.Envelopes;
 import org.geotools.grid.GridElement;
 import org.geotools.grid.GridFeatureBuilder;
 import org.geotools.grid.Grids;
+import org.geotools.grid.PolygonElement;
 import org.geotools.map.DefaultMapContext;
 import org.geotools.map.MapContext;
 import org.geotools.styling.SLD;
@@ -96,7 +97,7 @@ public class IntersectionExample {
 
         @Override
         public boolean getCreateFeature(GridElement el) {
-            Coordinate c = el.getCenter();
+            Coordinate c = ((PolygonElement) el).getCenter();
             Geometry p = gf.createPoint(c);
             Filter filter = ff2.intersects(ff2.property("the_geom"), ff2.literal(p));
             boolean result = false;

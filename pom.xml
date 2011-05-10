@@ -65,7 +65,7 @@
   <properties>
     <oracle>false</oracle>
     <allow.test.skip>true</allow.test.skip>
-    <allow.test.failure.ignore>false</allow.test.failure.ignore>
+    <allow.test.failure.ignore>true</allow.test.failure.ignore>
     <extensive.tests>false</extensive.tests>
     <interactive.tests>false</interactive.tests>
     <interactive.image>false</interactive.image>
@@ -639,6 +639,26 @@
         <artifactId>imageio-ext-utilities</artifactId>
         <version>${imageio.ext.version}</version>
       </dependency>
+      <dependency>
+        <groupId>it.geosolutions.imageio-ext</groupId>
+        <artifactId>imageio-ext-netcdf</artifactId>
+        <version>${imageio.ext.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>it.geosolutions.imageio-ext</groupId>
+        <artifactId>imageio-ext-geocore</artifactId>
+        <version>${imageio.ext.version}</version>
+      </dependency> 
+      <dependency>
+        <groupId>it.geosolutions.imageio-ext</groupId>
+        <artifactId>imageio-ext-hdf4</artifactId>
+        <version>${imageio.ext.version}</version>
+      </dependency>   
+      <dependency>
+        <groupId>it.geosolutions.imageio-ext</groupId>
+        <artifactId>imageio-ext-grib1</artifactId>
+        <version>${imageio.ext.version}</version>
+      </dependency>                          
 
       <!-- JAITools -->
       <dependency>
@@ -651,7 +671,12 @@
         <artifactId>jt-vectorbinarize</artifactId>
         <version>${jt.version}</version>
       </dependency> 
-    
+      <dependency>
+        <groupId>com.googlecode.jaitools</groupId>
+        <artifactId>jt-zonalstats</artifactId>
+        <version>${jt.version}</version>
+       </dependency>
+      
       <!-- Mathematic, geometries, SVG... -->
       <dependency>
         <groupId>java3d</groupId>
@@ -1351,7 +1376,6 @@
   <modules>
     <module>build</module>
     <module>modules</module>
-    <module>docs</module>
     <module>demo</module>
   </modules>
 </project>

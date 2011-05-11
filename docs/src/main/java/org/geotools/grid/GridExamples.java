@@ -2,9 +2,11 @@ package org.geotools.grid;
 
 import java.awt.Color;
 import java.net.URL;
+import java.util.List;
 import java.util.Map;
 
 import com.vividsolutions.jts.geom.Polygon;
+import java.util.Arrays;
 
 import org.geotools.data.FileDataStore;
 import org.geotools.data.FileDataStoreFinder;
@@ -14,6 +16,8 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.grid.hexagon.HexagonOrientation;
 import org.geotools.grid.hexagon.Hexagons;
 import org.geotools.grid.oblong.Oblongs;
+import org.geotools.grid.ortholine.LineOrientation;
+import org.geotools.grid.ortholine.OrthoLineDef;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -135,6 +139,33 @@ private void exampleOblong() {
     SimpleFeatureSource grid = Oblongs.createGrid(gridBounds, width, height, builder);
     
     // exampleOblong end
+}
+
+private void exampleMajorMinorLines() {
+    // exampleMajorMinorLines start
+    ReferencedEnvelope gridBounds = new ReferencedEnvelope(
+            110.0, 150.0, -45.0, -5.0, DefaultGeographicCRS.WGS84);
+    
+    /*
+     * Line definitions: 
+     * major lines at 10 degree spacing are indicated by level = 2
+     * minor lines at 2 degree spacing are indicated by level = 1
+     * (level values are arbitrary; only rank order matters)
+     */
+    List<OrthoLineDef> lineDefs = Arrays.asList(
+            // vertical (longitude) lines
+            new OrthoLineDef(LineOrientation.VERTICAL, 2, 10.0),
+            new OrthoLineDef(LineOrientation.VERTICAL, 1, 2.0),
+    
+            // horizontal (latitude) lines
+            new OrthoLineDef(LineOrientation.HORIZONTAL, 2, 10.0),
+            new OrthoLineDef(LineOrientation.HORIZONTAL, 1, 2.0));
+    
+    // Specify vertex spacing to get "densified" polygons
+    double vertexSpacing = 0.1;
+    SimpleFeatureSource grid = Lines.createOrthoLines(gridBounds, lineDefs, vertexSpacing);
+    
+    // exampleMajorMinorLines end
 }
 
 }

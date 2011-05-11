@@ -1,23 +1,23 @@
 Vector grids
 ============
 
-The gt-grid module makes it easy to create vector grids (also known as lattices) consisting of
-either polygon or line elements, each of which is represented as a SimpleFeature. Simple grids can
-be generated easily using either the Grids or Lines utility classes, while lower level classes are
-availble for when more control over grid layout and attributes is required.
+The GeoTools vector grid classes make it easy to create vector grids (also known as lattices)
+consisting of either polygon or line elements, each of which is represented as a SimpleFeature.
+Simple grids can be generated easily using either the Grids or Lines utility classes, while lower
+level classes are availble for when more control over grid layout and attributes is required.
 
 Note: Grids are currently constructed in memory with the whole grid being built at one time. 
 
-Grids of polygons
------------------
+Polygon grids
+-------------
 
 The Grids utility class provides methods to create grids of rectangular or hexagonal elements.
 
 Creating square grids
 ^^^^^^^^^^^^^^^^^^^^^
 
-The easiest way to create a basic grid is with the static methods in the Grids helper class. This
-example creates a lat-lon grid with squares 10 degrees wide to display over a map of Australia:
+The easiest way to create a basic grid is with the static methods in the **Grids** utility class.
+This example creates a lat-lon grid with squares 10 degrees wide to display over a map of Australia:
 
 .. literalinclude:: /../src/main/java/org/geotools/grid/GridExamples.java
    :language: java
@@ -162,3 +162,24 @@ Here is how to create a grid of "angled" hexagons:
 Here is what that looks like:
 
 .. image:: /images/grid_hex_angled.png
+
+
+Line grids
+----------
+
+For displaying a map grid over features you don't really need polygons. Lines will suffice and also
+have the advantage that they can be more flexibly styled, e.g. different line thickness, color and
+labelling for major vs minor grid lines.
+
+The **Lines** utility class provides method to create *ortho-lines*, ie. lines parallel to the map
+projection axes. In the example below, we create a grid of lines at two *levels*: major lines at
+10 degree spacing and minor lines at 2 degree spacing. The levels are indicated by integer values
+with larger values taking precedence over smaller (values are arbitrary, only their rank order
+matters):
+
+.. literalinclude:: /../src/main/java/org/geotools/grid/GridExamples.java
+   :language: java
+   :start-after: // exampleMajorMinorLines start
+   :end-before: // exampleMajorMinorLines end
+
+

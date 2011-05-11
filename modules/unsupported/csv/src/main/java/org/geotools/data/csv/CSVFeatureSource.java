@@ -3,9 +3,12 @@ package org.geotools.data.csv;
 import java.io.IOException;
 
 import org.geotools.data.FeatureReader;
+import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
+import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ContentEntry;
-import org.geotools.data.store.ContentFeatureSource;
+import org.geotools.data.store.ContentFeatureCollection;
+import org.geotools.data.store.ContentFeatureStore;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -15,7 +18,8 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import com.csvreader.CsvReader;
 import com.vividsolutions.jts.geom.Point;
 
-public class CSVFeatureSource extends ContentFeatureSource {
+@SuppressWarnings("unchecked")
+public class CSVFeatureSource extends ContentFeatureStore {
     
     public CSVFeatureSource(ContentEntry entry, Query query) {
         super(entry,query);
@@ -48,26 +52,38 @@ public class CSVFeatureSource extends ContentFeatureSource {
     }
 
     protected int getCountInternal(Query query) throws IOException {
-        CsvReader reader = getDataStore().read();
-        try {
-            boolean connect = reader.readHeaders();
-            if( connect == false ){
-                throw new IOException("Unable to connect");
-            }
-            int count = 0;
-            while( reader.readRecord() ){
-                count += 1;
-            }
-            return count;
+        ContentFeatureCollection cfc = this.getFeatures(query);
+        int count = 0;
+        SimpleFeatureIterator iter = cfc.features();
+        while(iter.hasNext()) {
+            iter.next();
+            count++;
         }
-        finally {
-            reader.close();
-        }
+        iter.close();
+        return count;
+//
+//        
+//        CsvReader reader = getDataStore().read();
+//        try {
+//            boolean connect = reader.readHeaders();
+//            if( connect == false ){
+//                throw new IOException("Unable to connect");
+//            }
+//            int count = 0;
+//            while( reader.readRecord() ){
+//                count += 1;
+//            }
+//            return count;
+//        }
+//        finally {
+//            reader.close();
+//        }
     }
 
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
             throws IOException {
-        return new CSVFeatureReader( getState(), query );
+        // Note we ignore 'query' because querying/filtering is handled in superclasses.
+        return new CSVFeatureReader( getState() );
     }
 
     protected SimpleFeatureType buildFeatureType() throws IOException {
@@ -96,6 +112,10 @@ public class CSVFeatureSource extends ContentFeatureSource {
                 if( "lon".equalsIgnoreCase(column)){
                     continue; // skip as it is part of Location
                 }
+                if( "number".equalsIgnoreCase(column)){
+                    builder.add(column, Integer.class);
+                    continue;
+                }
                 builder.add(column, String.class);
             }
             
@@ -106,6 +126,11 @@ public class CSVFeatureSource extends ContentFeatureSource {
         finally {
             reader.close();
         }
+    }
+    
+    @Override
+    protected FeatureWriter<SimpleFeatureType, SimpleFeature> getWriterInternal(Query query, int flags) throws IOException {
+        return new CSVFeatureWriter(getState(), query, flags);
     }
 
 }

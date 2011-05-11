@@ -4,33 +4,27 @@ import java.io.IOException;
 import java.util.NoSuchElementException;
 
 import org.geotools.data.FeatureReader;
-import org.geotools.data.Query;
-import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentState;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
 
 import com.csvreader.CsvReader;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Point;
 
 public class CSVFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
 
     private ContentState state;
-    private Query query;
     private CsvReader reader;
     private SimpleFeature next;
     private SimpleFeatureBuilder builder;
     private int row;
     private GeometryFactory geometryFactory;
 
-    public CSVFeatureReader(ContentState contentState, Query query) throws IOException {
+    public CSVFeatureReader(ContentState contentState) throws IOException {
         this.state = contentState;
-        this.query = query;
         CSVDataStore csv = (CSVDataStore) contentState.getEntry().getDataStore();
         reader = csv.read(); // this may throw an IOException if it could not connect
         boolean header = reader.readHeaders();
@@ -76,6 +70,9 @@ public class CSVFeatureReader implements FeatureReader<SimpleFeatureType, Simple
             }
             else if( "lon".equalsIgnoreCase(column)){
                 coordinate.x = Double.valueOf( value.trim() );
+            }
+            else if( "number".equalsIgnoreCase(column)){
+                builder.set(column, Integer.parseInt(value) );
             }
             else {
                 builder.set(column, value );

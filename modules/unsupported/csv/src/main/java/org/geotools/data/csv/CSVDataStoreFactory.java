@@ -4,26 +4,24 @@ import java.awt.RenderingHints.Key;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
-import java.net.URL;
 import java.util.Map;
 
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
-import org.geotools.data.DataAccessFactory.Param;
 import org.geotools.util.KVP;
 
 public class CSVDataStoreFactory implements DataStoreFactorySpi {
-    /**
-     * url to the .shp file.
-     */
+
+    private static final String FILE_TYPE = "csv";
+
     public static final Param FILE_PARAM = new Param("file", File.class,
-            ".csv file",true, null,
-            new KVP(Param.EXT,"csv"));
+            FILE_TYPE + " file",true, null,
+            new KVP(Param.EXT,FILE_TYPE));
     
     public String getDisplayName() {
-        return "CSV";
+        return FILE_TYPE.toUpperCase();
     }
-    /** Comma delimited text file */
+
     public String getDescription() {
         return "Comma delimited text file";
     }
@@ -36,9 +34,10 @@ public class CSVDataStoreFactory implements DataStoreFactorySpi {
         try {
             File file = (File) FILE_PARAM.lookUp(params);
             if ( file != null ){
-                return file.getPath().endsWith(".csv") || file.getPath().endsWith("CSV");
+                return file.getPath().toLowerCase().endsWith("." + FILE_TYPE);
             }
         } catch (IOException e) {
+            // ignore
         }
         return false;
     }
@@ -52,7 +51,8 @@ public class CSVDataStoreFactory implements DataStoreFactorySpi {
     }
 
     public DataStore createDataStore(Map<String, Serializable> params) throws IOException {
-        return null;
+        File file = (File) FILE_PARAM.lookUp(params);
+        return new CSVDataStore(file);
     }
 
     public DataStore createNewDataStore(Map<String, Serializable> params) throws IOException {

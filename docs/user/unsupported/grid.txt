@@ -1,52 +1,52 @@
 Vector grids
-------------
+============
 
-The gt-grid module makes it easy to create vector grids (also known as lattices). Grids can consist
-of rectangular or hexagonal elements, each of which is represented by a SimpleFeature. Simple grids
-are based on a default feature type which includes the grid element Polygon and an integer ID value.
-More complex grids can be based on a user-supplied feature type, with control over which grid
-elements are created and the attribute values assigned to them. 
+The gt-grid module makes it easy to create vector grids (also known as lattices) consisting of
+either polygon or line elements, each of which is represented as a SimpleFeature. Simple grids can
+be generated easily using either the Grids or Lines utility classes, while lower level classes are
+availble for when more control over grid layout and attributes is required.
 
 Note: Grids are currently constructed in memory with the whole grid being built at one time. 
+
+Grids of polygons
+-----------------
+
+The Grids utility class provides methods to create grids of rectangular or hexagonal elements.
 
 Creating square grids
 ^^^^^^^^^^^^^^^^^^^^^
 
 The easiest way to create a basic grid is with the static methods in the Grids helper class. This
-example creates a lat-lon grid with squares 10 degrees wide to display over a map of Australia::
+example creates a lat-lon grid with squares 10 degrees wide to display over a map of Australia:
 
-     ReferencedEnvelope gridBounds = new ReferencedEnvelope(110, 160, -45, -5, DefaultGeographicCRS.WGS84);
-     double squareWidth = 10.0;
-     SimpleFeatureSource grid = Grids.createSquareGrid(bounds, squareWidth);
-   
+.. literalinclude:: /../src/main/java/org/geotools/grid/GridExamples.java
+   :language: java
+   :start-after: // exampleSquareGrid start
+   :end-before: // exampleSquareGrid end
+
 Here is the resulting grid:
 
 .. image:: /images/grid_square.png
 
-Each grid element is represented by a SimpleFeature containing a minimal polygon, ie. one with  4
-vertices.
-
 Grids for display in different map projections
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The minimal grid above is fine if you only need to display it in the one map projection. But say
-we need to display the above map in EPSG:4462 (Lambert's Conformal Conic for Australia).
-Reprojecting the grid results the the lines of latitude, which are now curved, appearing jagged
-rather than smooth:
+The grid created in the previous section consists of SimpleFeatures, each of which has a minimal
+polygon, ie. one represented by four corner vertices. This is fine if you only need to display it in
+the one map projection. But say we need to display the above map in EPSG:4462 (Lambert's Conformal
+Conic for Australia).  Reprojecting the grid results in the lines of latitude, which are now
+curved, appearing jagged rather than smooth:
 
 .. image:: /images/grid_tron.png
 
-This happens because the grid  polygons only have vertices at their corners. For a better effect you
-can create the grid with additional vertices added to each edge::
+We can achieve a much better result by creating a grid where the polygons are *densified* by
+inserting additional vertices along each side, so that when they are reprojected their edges
+appear smoother:
 
-    ReferencedEnvelope gridBounds = new ReferencedEnvelope(110, 160, -45, -8, DefaultGeographicCRS.WGS84);
-    double squareWidth = 10.0;
-    
-    // max distance between vertices
-    double vertexSpacing = squareWidth / 20;
-    SimpleFeatureSource grid = Grids.createSquareGrid(bounds, squareWidth, vertexSpacing);
-
-And here is the much smoother result:
+.. literalinclude:: /../src/main/java/org/geotools/grid/GridExamples.java
+   :language: java
+   :start-after: // exampleDensifiedSquareGrid start
+   :end-before: // exampleDensifiedSquareGrid end
 
 .. image:: /images/grid_smooth.png
 
@@ -59,11 +59,12 @@ diagonal neighbours are more distant than the orthogonal neighbours. This makes 
 useful for analysing contagious spatial processes such as disease spread, wildfire, urban
 development and animal movement.
 
-Creating a basic hexagonal grid is simple::
+Creating a basic hexagonal grid is simple:
 
-    ReferencedEnvelope gridBounds = new ReferencedEnvelope(0, 100, 0, 100, null);
-    double sideLen = 5.0;
-    SimpleFeatureSource grid = Grids.createHexagonalGrid(gridBounds, sideLen);
+.. literalinclude:: /../src/main/java/org/geotools/grid/GridExamples.java
+   :language: java
+   :start-after: // exampleHexagonalGrid start
+   :end-before: // exampleHexagonalGrid end
 
 Which gives this result:
 

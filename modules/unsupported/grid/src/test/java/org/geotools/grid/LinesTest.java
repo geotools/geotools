@@ -4,6 +4,7 @@
  */
 package org.geotools.grid;
 
+import org.geotools.grid.ortholine.OrthoLineFeatureBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -95,11 +96,11 @@ public class LinesTest {
                     continue;
                 }
                 
-                obj = lineFeature.getAttribute(DefaultLineFeatureBuilder.VALUE_ATTRIBUTE_NAME);
+                obj = lineFeature.getAttribute(OrthoLineFeatureBuilder.VALUE_ATTRIBUTE_NAME);
                 assertTrue(obj instanceof Number);
                 double value = ((Number) obj).doubleValue();
                 
-                obj = lineFeature.getAttribute(DefaultLineFeatureBuilder.LEVEL_ATTRIBUTE_NAME);
+                obj = lineFeature.getAttribute(OrthoLineFeatureBuilder.LEVEL_ATTRIBUTE_NAME);
                 assertTrue(obj instanceof Number);
                 int level = ((Number) obj).intValue();
 

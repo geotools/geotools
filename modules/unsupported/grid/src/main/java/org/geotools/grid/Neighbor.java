@@ -18,7 +18,7 @@
 package org.geotools.grid;
 
 /**
- * Constants for neighbor positions.
+ * Constants for neighbor positions used when bulding polygonal grids.
  *
  * @author mbedward
  * @since 2.7

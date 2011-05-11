@@ -26,7 +26,7 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 
 /**
- * This is a base class for building polygonal grid elements.
+ * The base class for builders that generate polygonal grid elements.
  * 
  * @see org.geotools.grid.hexagon.HexagonGridBuilder
  * @see org.geotools.grid.oblong.OblongGridBuilder

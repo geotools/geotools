@@ -17,6 +17,7 @@
 
 package org.geotools.grid;
 
+import org.geotools.grid.ortholine.OrthoLineFeatureBuilder;
 import java.util.Collection;
 
 import org.geotools.data.DataUtilities;
@@ -71,7 +72,7 @@ public class Lines {
             Collection<OrthoLineDef> lineDefs, double vertexSpacing) {
 
         return createOrthoLines(bounds, lineDefs, vertexSpacing,
-                new DefaultLineFeatureBuilder(bounds.getCoordinateReferenceSystem()));
+                new OrthoLineFeatureBuilder(bounds.getCoordinateReferenceSystem()));
     }
 
     /**

@@ -20,7 +20,7 @@ package org.geotools.grid;
 import com.vividsolutions.jts.geom.Coordinate;
 
 /**
- * Defines basic methods for grid elements.
+ * Represents a {@code GridElement} that is a polygon.
  *
  * @author michael
  */

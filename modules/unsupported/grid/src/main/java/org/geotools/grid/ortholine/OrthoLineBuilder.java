@@ -1,7 +1,20 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
  */
+
 package org.geotools.grid.ortholine;
 
 import java.util.ArrayList;
@@ -16,8 +29,12 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.grid.GridFeatureBuilder;
 
 /**
- *
- * @author michael
+ * A builder to generate a grid of horizontal and/or vertical ortho-lines.
+ * 
+ * @author mbedward
+ * @since 8.0
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/grid/src/main/java/org/geotools/grid/Grids.java $
+ * @version $Id: Grids.java 37149 2011-05-10 11:47:02Z mbedward $
  */
 public class OrthoLineBuilder {
     private static final double TOL = 1.0e-8;
@@ -29,10 +46,28 @@ public class OrthoLineBuilder {
 
     private SimpleFeatureBuilder featureBuilder;
 
+    /**
+     * Creates a new builder for the specified envelope.
+     * 
+     * @param gridBounds bounds of the area for which lines will be generated
+     */
     public OrthoLineBuilder(ReferencedEnvelope gridBounds) {
         this.gridBounds = gridBounds;
     }
 
+    /**
+     * Creates line features according to the provided {@code OrthoLineDef} objects and 
+     * places them into the feature collection.
+     * Densified lines (lines strings with additional vertices along their length) can be
+     * created by setting the value of {@code vertexSpacing} greater than zero; if so, any
+     * lines more than twice as long as this value will be densified.
+     * 
+     * @param lineDefs line definitions specifying the orientation, spacing and level of lines
+     * @param lineFeatureBuilder the feature build to create {@code SimpleFeatures} from
+     *        line elements
+     * @param vertexSpacing maximum distance between adjacent vertices along a line
+     * @param fc the feature collection into which generated line features are placed
+     */
     public void buildGrid(Collection<OrthoLineDef> lineDefs, 
             GridFeatureBuilder lineFeatureBuilder, double vertexSpacing, SimpleFeatureCollection fc) {
         
@@ -137,9 +172,8 @@ public class OrthoLineBuilder {
                  */
                 for (int i = 0; i < NDEFS; i++) {
                     if (generate[i]) {
-                        OrthoLine element = new OrthoLineImpl(
-                                gridBounds, orientation, pos[i],
-                                lineDefs.get(i).getLevel(), new Double(pos[i]));
+                        OrthoLine element = new OrthoLine(gridBounds, orientation, 
+                                pos[i], lineDefs.get(i).getLevel());
 
                         if (lineFeatureBuilder.getCreateFeature(element)) {
                             lineFeatureBuilder.setAttributes(element, attributes);

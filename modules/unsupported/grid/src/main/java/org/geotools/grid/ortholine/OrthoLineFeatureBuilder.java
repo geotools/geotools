@@ -15,13 +15,17 @@
  *    Lesser General Public License for more details.
  */
 
-package org.geotools.grid;
+package org.geotools.grid.ortholine;
 
+import com.vividsolutions.jts.geom.Coordinate;
 import java.util.Map;
 
 import com.vividsolutions.jts.geom.LineString;
 
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.grid.GridElement;
+import org.geotools.grid.GridFeatureBuilder;
+import org.geotools.grid.LineElement;
 
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -44,9 +48,9 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @source $URL$
  * @version $Id$
  */
-public class DefaultLineFeatureBuilder extends GridFeatureBuilder {
-    /** Default feature TYPE name: "grid" */
-    public static final String DEFAULT_TYPE_NAME = "grid";
+public class OrthoLineFeatureBuilder extends GridFeatureBuilder {
+    /** Default feature TYPE name: "linegrid" */
+    public static final String DEFAULT_TYPE_NAME = "linegrid";
 
     /** Name used for the integer id attribute: "id" */
     public static final String ID_ATTRIBUTE_NAME = "id";
@@ -97,7 +101,7 @@ public class DefaultLineFeatureBuilder extends GridFeatureBuilder {
      *
      * @see #DEFAULT_TYPE_NAME
      */
-    public DefaultLineFeatureBuilder() {
+    public OrthoLineFeatureBuilder() {
         this(DEFAULT_TYPE_NAME, null);
     }
 
@@ -107,7 +111,7 @@ public class DefaultLineFeatureBuilder extends GridFeatureBuilder {
      * @param typeName name for the feature TYPE; if {@code null} or empty,
      *        {@linkplain #DEFAULT_TYPE_NAME} will be used
      */
-    DefaultLineFeatureBuilder(String typeName) {
+    OrthoLineFeatureBuilder(String typeName) {
         this(typeName, null);
     }
 
@@ -119,7 +123,7 @@ public class DefaultLineFeatureBuilder extends GridFeatureBuilder {
      *
      * @see #DEFAULT_TYPE_NAME
      */
-    public DefaultLineFeatureBuilder(CoordinateReferenceSystem crs) {
+    public OrthoLineFeatureBuilder(CoordinateReferenceSystem crs) {
         this(DEFAULT_TYPE_NAME, crs);
     }
 
@@ -131,31 +135,40 @@ public class DefaultLineFeatureBuilder extends GridFeatureBuilder {
      *
      * @param crs coordinate reference system (may be {@code null})
      */
-    public DefaultLineFeatureBuilder(String typeName, CoordinateReferenceSystem crs) {
+    public OrthoLineFeatureBuilder(String typeName, CoordinateReferenceSystem crs) {
         super(createType(typeName, crs));
         id = 0;
     }
 
     /**
-     * Overrides {@linkplain LineFeatureBuilder#setAttributes(LineElement, Map)}
-     * to assign a sequential integer id value to each grid element feature
-     * as it is constructed.
-     *
+     * Sets the following attributes in the provided {@code Map}:
+     * <ul>
+     * <li>id: sequential integer</li>
+     * <li>level: integer level of associated with the element</li>
+     * <li>value: X-ordinate for a vertical line; Y-ordinate for a horizontal line</li>
+     * </ul>
+     * 
      * @param el the element from which the new feature is being constructed
-     *
      * @param attributes a {@code Map} into which the attributes will be put
      */
     @Override
     public void setAttributes(GridElement el, Map<String, Object> attributes) {
-        if (el instanceof LineElement) {
-            LineElement geoEl = (LineElement) el;
-
+        if (el instanceof OrthoLine) {
+            OrthoLine orthoLine = (OrthoLine) el;
             attributes.put(ID_ATTRIBUTE_NAME, ++id);
-            attributes.put(VALUE_ATTRIBUTE_NAME, geoEl.getValue());
-            attributes.put(LEVEL_ATTRIBUTE_NAME, geoEl.getLevel());
+            attributes.put(LEVEL_ATTRIBUTE_NAME, orthoLine.getLevel());
+            
+            Coordinate v0 = orthoLine.getVertices()[0];
+            Double value = null;
+            if (orthoLine.getOrientation() == LineOrientation.HORIZONTAL) {
+                value = v0.y;
+            } else {
+                value = v0.x;
+            }
+            attributes.put(VALUE_ATTRIBUTE_NAME, value);
             
         } else {
-            throw new IllegalArgumentException("Expected an instance of LineElement");
+            throw new IllegalArgumentException("Expected an instance of OrthoLine");
         }
     }
 

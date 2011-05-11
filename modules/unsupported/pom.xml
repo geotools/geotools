@@ -129,7 +129,13 @@
        <modules>
          <module>shapefile-renderer</module>
        </modules>
-     </profile>  
+     </profile>
+     <profile>
+       <id>swt</id>
+       <modules>
+         <module>swt</module>
+       </modules>
+     </profile>
 
      <profile>
        <id>unsupported</id>

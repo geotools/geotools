@@ -83,32 +83,14 @@ default feature type was created for us with two attributes:
 * 'id' (a sequential integer ID value.
 
 However, you can also provide your own feature type to associate other attributes with the grid
-elements. The following example creates a feature type with a 'color' attribute and then sets the
-value of each element according to its position in the grid::
+elements. To do this you override the **setAttributes** method of the **GridFeatureBuilder** class.
+The following example creates a feature type with a 'color' attribute. The color value is then set
+according to the position of each hexagonal element in the grid:
 
-    // Create our feature type
-    SimpleFeatureTypeBuilder typeBuilder = new SimpleFeatureTypeBuilder();
-    typeBuilder.setName("hextype");
-    typeBuilder.add("hexagon", Polygon.class, (CoordinateReferenceSystem)null);
-    typeBuilder.add("color", Color.class);
-    final SimpleFeatureType TYPE = typeBuilder.buildFeatureType();
-    
-    final ReferencedEnvelope gridBounds = new ReferencedEnvelope(0, 100, 0, 100, null);
-    
-    // Create an instance of GridFeatureBuilder and override its
-    // setAttributes method to set the color for each grid element
-    GridFeatureBuilder builder = new GridFeatureBuilder(TYPE) {
-        public void setAttributes(GridElement el, Map<String, Object> attributes) {
-            int g = (int) (255 * el.getCenter().x / bounds.getWidth());
-            int b = (int) (255 * el.getCenter().y / bounds.getHeight());
-            attributes.put("color", new Color(0, g, b));
-        }
-    };
-    
-    final double sideLen = 5.0;
-    // Pass the GridFeatureBuilder object to the createHexagonalGrid method
-    // (the -1 value here indicates that we don't need densified polygons)
-    SimpleFeatureSource grid = Grids.createHexagonalGrid(gridBounds, sideLen, -1, builder);
+.. literalinclude:: /../src/main/java/org/geotools/grid/GridExamples.java
+   :language: java
+   :start-after: // exampleCustomFeatureType start
+   :end-before: // exampleCustomFeatureType end
 
 Here is the result:
 
@@ -117,68 +99,24 @@ Here is the result:
 Selective creation of grid elements
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The GridFeatureBuilder class also offers a mechanism to choose which grid elements are created. In
+The **GridFeatureBuilder** class also offers a mechanism to choose which grid elements are created. In
 the following example, a hexagonal grid is created with the constraint that only grid elements with
-their center lying within the outline of Australia are included. Firstly, here is the code to create
-the grid::
-    
-    DataStore dataStore = ... // load Australia map from shapefile
-    final SimpleFeatureSource ozMapSource = dataStore.getFeatureSource();
-    
-    ReferencedEnvelope gridBounds = new ReferencedEnvelope(110, 160, -45, -8, DefaultGeographicCRS.WGS84);
-    final double sideLen = 1.0;
-    
-    // Create our feature type
-    SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
-    tb.setName("grid");
-    tb.add(GridFeatureBuilder.DEFAULT_GEOMETRY_ATTRIBUTE_NAME,
-            Polygon.class, gridBounds.getCoordinateReferenceSystem());
-    tb.add("id", Integer.class);
-    final SimpleFeatureType TYPE = tb.buildFeatureType();
-    
-    GridFeatureBuilder builder = new IntersectionBuilder(TYPE, ozMapSource);
-    SimpleFeatureSource grid = Grids.createHexagonalGrid(gridBounds, sideLen, -1, builder);
+their center lying within the outline of Australia are included.
 
-To apply the constraint that grid elements must lie within Australia, we extend
-the GridFeatureBuilder class and override the *setAttributes* and *getCreateFeature* methods::
+First, we sub-class **GridFeatureBuilder** and provide an implementation of its **getCreateFeature**
+method that tests if a grid element lies within the polygon for Australia:
     
-    class IntersectionBuilder extends GridFeatureBuilder {
-        final FilterFactory2 ff2 = CommonFactoryFinder.getFilterFactory2(null);
-        final GeometryFactory gf = JTSFactoryFinder.getGeometryFactory(null);
-    
-        final SimpleFeatureSource source;
-        int id = 0;
-    
-        public IntersectionBuilder(SimpleFeatureType type, SimpleFeatureSource source) {
-            super(type);
-            this.source = source;
-        }
-    
-        @Override
-        public void setAttributes(GridElement el, Map<String, Object> attributes) {
-            attributes.put("id", ++id);
-        }
-    
-        /**
-         * This method gets the center coordinate of the grid element being considered
-         * and uses an 'intersects' filter to test whether it lies within Australia
-         */
-        @Override
-        public boolean getCreateFeature(GridElement el) {
-            Coordinate c = el.getCenter();
-            Geometry p = gf.createPoint(c);
-            Filter filter = ff2.intersects(ff2.property("the_geom"), ff2.literal(p));
-            boolean result = false;
-    
-            try {
-                result = !source.getFeatures(filter).isEmpty();
-            } catch (IOException ex) {
-                throw new IllegalStateException(ex);
-            }
-    
-            return result;
-        }
-    };
+.. literalinclude:: /../src/main/java/org/geotools/grid/IntersectionBuilder.java
+   :language: java
+   :start-after: // IntersectionBuilder start
+   :end-before: // IntersectionBuilder end
+
+Next, we use our custom feature builder to create the grid:
+
+.. literalinclude:: /../src/main/java/org/geotools/grid/GridExamples.java
+   :language: java
+   :start-after: // exampleIntersection start
+   :end-before: // exampleIntersection end
 
 And here is the result:
 
@@ -193,13 +131,15 @@ elements you can go down to the next level and use the Oblongs and Hexagons clas
 Oblongs
 '''''''
 
-This class is responsible for creating rectangular grid elements and grids (its name was chosen to avoid confusion with java.awt.Rectangle). You can use this class directly when you want to create a grid with rectangular, rather than square, elements as in this example:
+This class is responsible for creating rectangular grid elements and grids (its name was chosen to
+avoid confusion with java.awt.Rectangle). You can use this class directly when you want to create a
+grid with rectangular, rather than square, elements as in this example:
 
-ReferencedEnvelope gridBounds = new ReferencedEnvelope(0, 100, 0, 100, null);
-    double width = 10.0;
-    double height = 5.0;
-    GridFeatureBuilder builder = new DefaultFeatureBuilder();
-    SimpleFeatureSource grid = Oblongs.createGrid(bounds, width, height, builder);
+.. literalinclude:: /../src/main/java/org/geotools/grid/GridExamples.java
+   :language: java
+   :start-after: // exampleOblong start
+   :end-before: // exampleOblong end
+
 
 Hexagons
 ''''''''
@@ -212,12 +152,12 @@ are possible, "angled" and "flat":
 .. image:: /images/grid_angled_flat.png
 
 When you construct a hexagonal grid via the Grids class orientation defaults to "flat".
-Here is how to create a grid of "angled" hexagons::
+Here is how to create a grid of "angled" hexagons:
 
-    ReferencedEnvelope gridBounds = new ReferencedEnvelope(0, 100, 0, 100, null);
-    double sideLen = 5.0;
-    GridFeatureBuilder builder = new DefaultFeatureBuilder();
-    SimpleFeatureSource grid = Hexagons.createGrid(gridBounds, sideLen, Hexagon.Orientation.ANGLED, builder);
+.. literalinclude:: /../src/main/java/org/geotools/grid/GridExamples.java
+   :language: java
+   :start-after: // exampleHexagonOrientation start
+   :end-before: // exampleHexagonOrientation end
 
 Here is what that looks like:
 

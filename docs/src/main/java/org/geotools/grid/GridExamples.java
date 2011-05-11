@@ -1,8 +1,24 @@
 package org.geotools.grid;
 
+import java.awt.Color;
+import java.net.URL;
+import java.util.Map;
+
+import com.vividsolutions.jts.geom.Polygon;
+
+import org.geotools.data.FileDataStore;
+import org.geotools.data.FileDataStoreFinder;
 import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.grid.hexagon.HexagonOrientation;
+import org.geotools.grid.hexagon.Hexagons;
+import org.geotools.grid.oblong.Oblongs;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+
+import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+
 
 public class GridExamples {
     
@@ -41,4 +57,84 @@ private void exampleHexagonalGrid() {
 
     // exampleHexagonalGrid end
 }
+
+private void exampleCustomFeatureType() {
+    // exampleCustomFeatureType start
+    SimpleFeatureTypeBuilder typeBuilder = new SimpleFeatureTypeBuilder();
+    typeBuilder.setName("hextype");
+    typeBuilder.add("hexagon", Polygon.class, (CoordinateReferenceSystem)null);
+    typeBuilder.add("color", Color.class);
+    SimpleFeatureType TYPE = typeBuilder.buildFeatureType();
+
+    final ReferencedEnvelope bounds = new ReferencedEnvelope(0, 100, 0, 100, null);
+
+    GridFeatureBuilder builder = new GridFeatureBuilder(TYPE) {
+        @Override
+        public void setAttributes(GridElement element, Map<String, Object> attributes) {
+            PolygonElement polyEl = (PolygonElement) element;
+            int g = (int) (255 * polyEl.getCenter().x / bounds.getWidth());
+            int b = (int) (255 * polyEl.getCenter().y / bounds.getHeight());
+            attributes.put("color", new Color(0, g, b));
+        }
+    };
+    
+    // Pass the GridFeatureBuilder object to the createHexagonalGrid method
+    // (the -1 value here indicates that we don't need densified polygons)
+    final double sideLen = 5.0;
+    SimpleFeatureSource grid = Grids.createHexagonalGrid(bounds, sideLen, -1, builder);
+
+    // exampleCustomFeatureType end
+}
+
+private void exampleIntersection() throws Exception {
+    // exampleIntersection start
+    
+    // Load the outline of Australia from a shapefile
+    URL url = getClass().getResource("oz.shp");
+    FileDataStore dataStore = FileDataStoreFinder.getDataStore(url);
+    SimpleFeatureSource ozMapSource = dataStore.getFeatureSource();
+
+    // Set the grid size (1 degree) and create a bounding envelope
+    // that is neatly aligned with the grid size
+    double sideLen = 1.0;
+    ReferencedEnvelope gridBounds =
+            Envelopes.expandToInclude(ozMapSource.getBounds(), sideLen);
+
+    // Create a feature type
+    SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
+    tb.setName("grid");
+    tb.add(GridFeatureBuilder.DEFAULT_GEOMETRY_ATTRIBUTE_NAME,
+            Polygon.class, gridBounds.getCoordinateReferenceSystem());
+    tb.add("id", Integer.class);
+    SimpleFeatureType TYPE = tb.buildFeatureType();
+
+    // Build the grid the custom feature builder class
+    GridFeatureBuilder builder = new IntersectionBuilder(TYPE, ozMapSource);
+    SimpleFeatureSource grid = Grids.createHexagonalGrid(gridBounds, sideLen, -1, builder);
+
+    // exampleIntersection end
+}
+
+private void exampleHexagonOrientation() {
+    // exampleHexagonOrientation start
+    ReferencedEnvelope gridBounds = new ReferencedEnvelope(0, 100, 0, 100, null);
+    double sideLen = 5.0;
+    GridFeatureBuilder builder = new DefaultGridFeatureBuilder();
+    SimpleFeatureSource grid = Hexagons.createGrid(
+            gridBounds, sideLen, HexagonOrientation.ANGLED, builder);
+
+    // exampleHexagonOrientation end
+}
+
+private void exampleOblong() {
+    // exampleOblong start
+    ReferencedEnvelope gridBounds = new ReferencedEnvelope(0, 100, 0, 100, null);
+    double width = 10.0;
+    double height = 5.0;
+    GridFeatureBuilder builder = new DefaultGridFeatureBuilder();
+    SimpleFeatureSource grid = Oblongs.createGrid(gridBounds, width, height, builder);
+    
+    // exampleOblong end
+}
+
 }

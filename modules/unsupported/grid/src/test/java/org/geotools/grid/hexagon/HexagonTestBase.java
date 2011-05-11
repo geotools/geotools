@@ -19,7 +19,7 @@ package org.geotools.grid.hexagon;
 
 import com.vividsolutions.jts.geom.Coordinate;
 
-import org.geotools.grid.GridElement;
+import org.geotools.grid.PolygonElement;
 import org.geotools.grid.TestBase;
 
 import static org.junit.Assert.*;
@@ -37,7 +37,7 @@ public class HexagonTestBase extends TestBase {
     protected final double SIDE_LEN = 1.0;
     protected final double AREA = Math.sqrt(3.0) * 1.5;
 
-    protected void assertVertices(GridElement hexagon,
+    protected void assertVertices(PolygonElement hexagon,
             double minx, double miny, double sideLen, HexagonOrientation orientation) {
 
         assertTrue("error in test code", hexagon instanceof Hexagon);

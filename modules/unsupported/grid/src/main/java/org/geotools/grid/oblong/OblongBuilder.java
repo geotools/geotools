@@ -18,8 +18,8 @@
 package org.geotools.grid.oblong;
 
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.grid.AbstractGridBuilder;
-import org.geotools.grid.GridElement;
+import org.geotools.grid.PolygonBuilder;
+import org.geotools.grid.PolygonElement;
 import org.geotools.grid.Neighbor;
 
 /**
@@ -30,11 +30,11 @@ import org.geotools.grid.Neighbor;
  * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/grid/src/main/java/org/geotools/grid/hexagon/Hexagon.java $
  * @version $Id: Hexagon.java 35637 2010-06-01 09:24:43Z mbedward $
  */
-class OblongGridBuilder extends AbstractGridBuilder {
+public class OblongBuilder extends PolygonBuilder {
     private final double elementWidth;
     private final double elementHeight;
 
-    OblongGridBuilder(ReferencedEnvelope bounds, double width, double height) {
+    OblongBuilder(ReferencedEnvelope bounds, double width, double height) {
         super(bounds);
         this.elementWidth = width;
         this.elementHeight = height;
@@ -59,7 +59,7 @@ class OblongGridBuilder extends AbstractGridBuilder {
      *         if {@code el} is not an instance of {@code Oblong}
      */
     @Override
-    public Oblong createNeighbor(GridElement el, Neighbor neighbor) {
+    public Oblong createNeighbor(PolygonElement el, Neighbor neighbor) {
         if (el == null || neighbor == null) {
             throw new IllegalArgumentException(
                     "el and neighbour position must both be non-null");
@@ -129,19 +129,19 @@ class OblongGridBuilder extends AbstractGridBuilder {
     }
 
     @Override
-    public GridElement getFirstElement() {
+    public PolygonElement getFirstElement() {
         return Oblongs.create(
                 gridBounds.getMinX(), gridBounds.getMinY(),
                 elementWidth, elementHeight, gridBounds.getCoordinateReferenceSystem());
     }
 
     @Override
-    public GridElement getNextXElement(GridElement el) {
+    public PolygonElement getNextXElement(PolygonElement el) {
         return createNeighbor(el, Neighbor.RIGHT);
     }
 
     @Override
-    public GridElement getNextYElement(GridElement el) {
+    public PolygonElement getNextYElement(PolygonElement el) {
         return createNeighbor(el, Neighbor.UPPER);
     }
 

@@ -10,7 +10,7 @@ package org.geotools.grid;
  * 
  * @author michael
  */
-public interface LineElement extends Element {
+public interface LineElement extends GridElement {
 
     int getLevel();
 

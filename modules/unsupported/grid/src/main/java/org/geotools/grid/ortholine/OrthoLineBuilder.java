@@ -5,6 +5,7 @@
 package org.geotools.grid.ortholine;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,32 +19,36 @@ import org.geotools.grid.GridFeatureBuilder;
  *
  * @author michael
  */
-public class OrthoLineGridBuilder {
+public class OrthoLineBuilder {
     private static final double TOL = 1.0e-8;
 
-    private ReferencedEnvelope bounds;
+    private final ReferencedEnvelope gridBounds;
     private boolean hasVerticals;
     private boolean hasHorizontals;
     private boolean densify;
 
     private SimpleFeatureBuilder featureBuilder;
 
-    public void buildGrid(ReferencedEnvelope bounds, List<OrthoLineControl> controls,
+    public OrthoLineBuilder(ReferencedEnvelope gridBounds) {
+        this.gridBounds = gridBounds;
+    }
+
+    public void buildGrid(Collection<OrthoLineDef> lineDefs, 
             GridFeatureBuilder lineFeatureBuilder, double vertexSpacing, SimpleFeatureCollection fc) {
         
-        init(bounds, controls, lineFeatureBuilder, vertexSpacing);
+        init(lineDefs, lineFeatureBuilder, vertexSpacing);
         
-        List<OrthoLineControl> horizontal = new ArrayList<OrthoLineControl>();
-        List<OrthoLineControl> vertical = new ArrayList<OrthoLineControl>();
+        List<OrthoLineDef> horizontal = new ArrayList<OrthoLineDef>();
+        List<OrthoLineDef> vertical = new ArrayList<OrthoLineDef>();
 
-        for (OrthoLineControl control : controls) {
-            switch (control.getOrientation()) {
+        for (OrthoLineDef lineDef : lineDefs) {
+            switch (lineDef.getOrientation()) {
                 case HORIZONTAL:
-                    horizontal.add(control);
+                    horizontal.add(lineDef);
                     break;
 
                 case VERTICAL:
-                    vertical.add(control);
+                    vertical.add(lineDef);
                     break;
             }
         } 
@@ -54,45 +59,46 @@ public class OrthoLineGridBuilder {
                 lineFeatureBuilder, densify, vertexSpacing, fc);
     }
 
-    private void doBuildLineFeatures(List<OrthoLineControl> controls, 
+
+    private void doBuildLineFeatures(List<OrthoLineDef> lineDefs, 
             LineOrientation orientation,
             GridFeatureBuilder lineFeatureBuilder, 
             boolean densify,
             double vertexSpacing,
             SimpleFeatureCollection fc) {
 
-        final int NLINES = controls.size();
-        if (NLINES > 0) {
+        final int NDEFS = lineDefs.size();
+        if (NDEFS > 0) {
             double minOrdinate, maxOrdinate;
             
             if (orientation == LineOrientation.HORIZONTAL) {
-                minOrdinate = bounds.getMinY();
-                maxOrdinate = bounds.getMaxY();
+                minOrdinate = gridBounds.getMinY();
+                maxOrdinate = gridBounds.getMaxY();
             } else {
-                minOrdinate = bounds.getMinX();
-                maxOrdinate = bounds.getMaxX();
+                minOrdinate = gridBounds.getMinX();
+                maxOrdinate = gridBounds.getMaxX();
             }
             
-            double[] pos = new double[NLINES];
-            boolean[] active = new boolean[NLINES];
-            boolean[] atCurPos = new boolean[NLINES];
-            boolean[] generate = new boolean[NLINES];
+            double[] pos = new double[NDEFS];
+            boolean[] active = new boolean[NDEFS];
+            boolean[] atCurPos = new boolean[NDEFS];
+            boolean[] generate = new boolean[NDEFS];
 
             Map<String, Object> attributes = new HashMap<String, Object>();
             String geomPropName = lineFeatureBuilder.getType().getGeometryDescriptor().getLocalName();
             
-            for (int i = 0; i < NLINES; i++) {
+            for (int i = 0; i < NDEFS; i++) {
                 pos[i] = minOrdinate;
                 active[i] = true;
             }
             
-            int numActive = NLINES;
+            int numActive = NDEFS;
             while (numActive > 0) {
                 /*
                  * Update scan position (curPos)
                  */
                 double curPos = maxOrdinate;
-                for (int i = 0; i < NLINES; i++) {
+                for (int i = 0; i < NDEFS; i++) {
                     if (active[i] && pos[i] < curPos - TOL) {
                         curPos = pos[i];
                     }
@@ -101,19 +107,19 @@ public class OrthoLineGridBuilder {
                 /*
                  * Check which line elements are at the current scan position
                  */
-                for (int i = 0; i < NLINES; i++) {
+                for (int i = 0; i < NDEFS; i++) {
                     atCurPos[i] = active[i] && Math.abs(pos[i] - curPos) < TOL;
                 }
                 
                 /*
                  * Get line with highest precedence for the current position
                  */
-                System.arraycopy(atCurPos, 0, generate, 0, NLINES);
-                for (int i = 0; i < NLINES - 1; i++) {
+                System.arraycopy(atCurPos, 0, generate, 0, NDEFS);
+                for (int i = 0; i < NDEFS - 1; i++) {
                     if (generate[i] && atCurPos[i]) {
-                        for (int j = i + 1; j < NLINES; j++) {
+                        for (int j = i + 1; j < NDEFS; j++) {
                             if (generate[j] && atCurPos[j]) {
-                                if (controls.get(i).getLevel() >= controls.get(j).getLevel()) {
+                                if (lineDefs.get(i).getLevel() >= lineDefs.get(j).getLevel()) {
                                     generate[j] = false;
                                 } else {
                                     generate[i] = false;
@@ -129,11 +135,11 @@ public class OrthoLineGridBuilder {
                 /*
                  * Create the line feature with highest precedence
                  */
-                for (int i = 0; i < NLINES; i++) {
+                for (int i = 0; i < NDEFS; i++) {
                     if (generate[i]) {
                         OrthoLine element = new OrthoLineImpl(
-                                bounds, orientation, pos[i],
-                                controls.get(i).getLevel(), new Double(pos[i]));
+                                gridBounds, orientation, pos[i],
+                                lineDefs.get(i).getLevel(), new Double(pos[i]));
 
                         if (lineFeatureBuilder.getCreateFeature(element)) {
                             lineFeatureBuilder.setAttributes(element, attributes);
@@ -156,9 +162,9 @@ public class OrthoLineGridBuilder {
                 /*
                  * Update line element positions 
                  */
-                for (int i = 0; i < NLINES; i++) {
+                for (int i = 0; i < NDEFS; i++) {
                     if (atCurPos[i]) {
-                        pos[i] += controls.get(i).getSpacing();
+                        pos[i] += lineDefs.get(i).getSpacing();
                         if (pos[i] > maxOrdinate + TOL) {
                             active[i] = false;
                             numActive-- ;
@@ -169,37 +175,35 @@ public class OrthoLineGridBuilder {
         }
     }
 
+
     private boolean isValidDenseVertexSpacing(double v) {
         double minDim;
 
         if (hasVerticals) {
             if (hasHorizontals) {
-                minDim = Math.min(bounds.getWidth(), bounds.getHeight());
+                minDim = Math.min(gridBounds.getWidth(), gridBounds.getHeight());
             } else {
-                minDim = bounds.getHeight();
+                minDim = gridBounds.getHeight();
             }
         } else {
-            minDim = bounds.getWidth();
+            minDim = gridBounds.getWidth();
         }
         
         return v > 0 && v < minDim / 2;
     }
 
-    private void init(ReferencedEnvelope bounds, 
-            List<OrthoLineControl> controls,
+    private void init(Collection<OrthoLineDef> controls,
             GridFeatureBuilder lineFeatureBuilder,
             double vertexSpacing) {
 
-        if (bounds == null || bounds.isEmpty()) {
-            throw new IllegalArgumentException("bounds must not be null or empty");
+        if (gridBounds == null || gridBounds.isEmpty()) {
+            throw new IllegalArgumentException("gridBounds must not be null or empty");
         }
         if (controls == null || controls.isEmpty()) {
             throw new IllegalArgumentException("required one or more line parameters");
         }
         
-        this.bounds = bounds;
-        
-        for (OrthoLineControl param : controls) {
+        for (OrthoLineDef param : controls) {
             if (param.getOrientation() == LineOrientation.HORIZONTAL) {
                 hasHorizontals = true;
             } else if (param.getOrientation() == LineOrientation.VERTICAL) {
@@ -213,5 +217,5 @@ public class OrthoLineGridBuilder {
         densify = isValidDenseVertexSpacing(vertexSpacing);
         featureBuilder = new SimpleFeatureBuilder(lineFeatureBuilder.getType());
     }
-    
+
 }

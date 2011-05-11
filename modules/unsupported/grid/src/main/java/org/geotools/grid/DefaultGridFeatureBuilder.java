@@ -134,7 +134,7 @@ public final class DefaultGridFeatureBuilder extends GridFeatureBuilder {
      * @param attributes a {@code Map} with the single key "id"
      */
     @Override
-    public void setAttributes(Element el, Map<String, Object> attributes) {
+    public void setAttributes(GridElement el, Map<String, Object> attributes) {
         attributes.put("id", ++id);
     }
 

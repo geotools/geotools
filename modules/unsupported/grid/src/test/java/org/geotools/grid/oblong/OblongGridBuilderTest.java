@@ -44,11 +44,11 @@ public class OblongGridBuilderTest extends TestBase {
     private static final double WIDTH = 10;
     private static final double HEIGHT = 5;
 
-    private OblongGridBuilder gridBuilder;
+    private OblongBuilder gridBuilder;
 
     @Before
     public void setup() {
-        gridBuilder = new OblongGridBuilder(bounds, WIDTH, HEIGHT);
+        gridBuilder = new OblongBuilder(bounds, WIDTH, HEIGHT);
     }
 
     @Test

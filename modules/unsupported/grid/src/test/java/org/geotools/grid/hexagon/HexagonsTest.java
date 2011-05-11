@@ -22,7 +22,7 @@ import java.util.Map;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.grid.Element;
+import org.geotools.grid.GridElement;
 import org.geotools.grid.GridFeatureBuilder;
 
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -93,7 +93,7 @@ public class HexagonsTest extends HexagonTestBase {
             }
 
             @Override
-            public void setAttributes(Element el, Map<String, Object> attributes) {
+            public void setAttributes(GridElement el, Map<String, Object> attributes) {
                 attributes.put("id", ++id);
             }
         }

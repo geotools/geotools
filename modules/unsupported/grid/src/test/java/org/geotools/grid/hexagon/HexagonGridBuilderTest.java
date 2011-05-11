@@ -23,7 +23,7 @@ import java.util.Map;
 import com.vividsolutions.jts.geom.Coordinate;
 
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.grid.AbstractGridBuilder;
+import org.geotools.grid.PolygonBuilder;
 import org.geotools.grid.Neighbor;
 
 import org.junit.Before;
@@ -41,13 +41,13 @@ import static org.junit.Assert.*;
 public class HexagonGridBuilderTest extends HexagonTestBase {
     
     private final ReferencedEnvelope bounds = new ReferencedEnvelope(0, 10, 0, 10, null);
-    private HexagonGridBuilder angledBuilder;
-    private HexagonGridBuilder flatBuilder;
+    private HexagonBuilder angledBuilder;
+    private HexagonBuilder flatBuilder;
 
     @Before
     public void setup() {
-        angledBuilder = new HexagonGridBuilder(bounds, SIDE_LEN, HexagonOrientation.ANGLED);
-        flatBuilder = new HexagonGridBuilder(bounds, SIDE_LEN, HexagonOrientation.FLAT);
+        angledBuilder = new HexagonBuilder(bounds, SIDE_LEN, HexagonOrientation.ANGLED);
+        flatBuilder = new HexagonBuilder(bounds, SIDE_LEN, HexagonOrientation.FLAT);
     }
 
     @Test
@@ -133,7 +133,7 @@ public class HexagonGridBuilderTest extends HexagonTestBase {
         table.put(HexagonOrientation.ANGLED, angledShifts);
 
         for (HexagonOrientation o : HexagonOrientation.values()) {
-            AbstractGridBuilder gridBuilder =
+            PolygonBuilder gridBuilder =
                     o == HexagonOrientation.ANGLED ? angledBuilder : flatBuilder;
 
             Hexagon h0 = Hexagons.create(0.0, 0.0, SIDE_LEN, o, null);

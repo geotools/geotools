@@ -1,43 +1,48 @@
 /*
- *    GeoTools - The Open Source Java GIS Toolkit
- *    http://geotools.org
- *
- *    (C) 2010, Open Source Geospatial Foundation (OSGeo)
- *
- *    This library is free software; you can redistribute it and/or
- *    modify it under the terms of the GNU Lesser General Public
- *    License as published by the Free Software Foundation;
- *    version 2.1 of the License.
- *
- *    This library is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *    Lesser General Public License for more details.
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
  */
-
 package org.geotools.grid;
 
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Geometry;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 
 /**
- * Defines basic methods for grid elements.
  *
  * @author michael
  */
-public interface GridElement extends Element {
+public interface GridElement {
 
     /**
-     * Gets the area of this grid element.
+     * Gets the bounds of this grid element.
      *
-     * @return the area
+     * @return the bounding rectangle
      */
-    double getArea();
+    ReferencedEnvelope getBounds();
 
     /**
-     * Gets the center coordinates of this grid element.
+     * Gets the vertices of this grid element.
      *
-     * @return the center coordinates
+     * @return the vertices
      */
-    Coordinate getCenter();
+    Coordinate[] getVertices();
 
+    /**
+     * Creates a new {@code Geometry} from this grid element.
+     * 
+     * @return a new {@code Geometry}
+     */
+    Geometry toGeometry();
+
+    /**
+     * Creates a new, densified {@code Geometry} from this grid element.
+     *
+     * @param maxSpacing the maximum distance between adjacent vertices
+     *
+     * @return a new {@code Geometry}
+     *
+     * @throws IllegalArgumentException if maxSpacing is {@code <=} 0
+     */
+    Geometry toDenseGeometry(double maxSpacing);
 }

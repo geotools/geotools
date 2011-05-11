@@ -181,8 +181,8 @@ public class Hexagons {
         }
 
         final SimpleFeatureCollection fc = new ListFeatureCollection(gridFeatureBuilder.getType());
-        HexagonGridBuilder gridBuilder = new HexagonGridBuilder(bounds, sideLen, orientation);
-        gridBuilder.buildGrid(fc, gridFeatureBuilder, vertexSpacing);
+        HexagonBuilder gridBuilder = new HexagonBuilder(bounds, sideLen, orientation);
+        gridBuilder.buildGrid(gridFeatureBuilder, vertexSpacing, fc);
         return DataUtilities.source(fc);
     }
 

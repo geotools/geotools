@@ -23,9 +23,9 @@ import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.grid.DefaultGridFeatureBuilder;
-import org.geotools.grid.Element;
-import org.geotools.grid.GridFeatureBuilder;
 import org.geotools.grid.GridElement;
+import org.geotools.grid.GridFeatureBuilder;
+import org.geotools.grid.PolygonElement;
 import org.geotools.grid.TestBase;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -50,7 +50,7 @@ public class OblongsTest extends TestBase {
 
     @Test
     public void create() {
-        GridElement oblong = Oblongs.create(1, 2, 3, 4, null);
+        PolygonElement oblong = Oblongs.create(1, 2, 3, 4, null);
         assertNotNull(oblong);
         assertEnvelope(new ReferencedEnvelope(1, 4, 2, 6, null), oblong.getBounds());
     }
@@ -80,7 +80,7 @@ public class OblongsTest extends TestBase {
             }
 
             @Override
-            public void setAttributes(Element el, Map<String, Object> attributes) {
+            public void setAttributes(GridElement el, Map<String, Object> attributes) {
                 attributes.put("id", ++id);
             }
         }

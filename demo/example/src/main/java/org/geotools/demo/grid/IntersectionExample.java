@@ -21,11 +21,11 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.grid.Element;
 import org.geotools.grid.Envelopes;
 import org.geotools.grid.GridElement;
 import org.geotools.grid.GridFeatureBuilder;
 import org.geotools.grid.Grids;
+import org.geotools.grid.PolygonElement;
 import org.geotools.map.DefaultMapContext;
 import org.geotools.map.MapContext;
 import org.geotools.styling.SLD;
@@ -89,12 +89,13 @@ public class IntersectionExample {
             this.source = source;
         }
 
-        public void setAttributes(Element el, Map<String, Object> attributes) {
+        public void setAttributes(GridElement el, Map<String, Object> attributes) {
             attributes.put("id", ++id);
         }
 
-        public boolean getCreateFeature(Element el) {
-            Coordinate c = ((GridElement) el).getCenter();
+        @Override
+        public boolean getCreateFeature(GridElement el) {
+            Coordinate c = ((PolygonElement) el).getCenter();
             Geometry p = gf.createPoint(c);
             Filter filter = ff2.intersects(ff2.property("the_geom"), ff2.literal(p));
             boolean result = false;

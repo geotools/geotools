@@ -108,7 +108,7 @@ public class GridsSquareTest extends TestBase {
 
         GridFeatureBuilder builder = new GridFeatureBuilder(createFeatureType(builderCRS)) {
             @Override
-            public void setAttributes(Element el, Map<String, Object> attributes) {
+            public void setAttributes(GridElement el, Map<String, Object> attributes) {
                 throw new UnsupportedOperationException("Should not be called");
             }
         };

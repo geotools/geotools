@@ -26,7 +26,7 @@ import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Polygon;
 
-import org.geotools.grid.GridElement;
+import org.geotools.grid.PolygonElement;
 
 
 import org.junit.Test;
@@ -46,19 +46,19 @@ public class HexagonTest extends HexagonTestBase {
     public void getVerticesFlat() {
         double minx = 1.0;
         double miny = -1.0;
-        GridElement hexagon = new HexagonImpl(minx, miny, SIDE_LEN, HexagonOrientation.FLAT, null);
+        PolygonElement hexagon = new HexagonImpl(minx, miny, SIDE_LEN, HexagonOrientation.FLAT, null);
 
         assertVertices(hexagon, minx, miny, SIDE_LEN, HexagonOrientation.FLAT);
     }
 
     @Test(expected=IllegalArgumentException.class)
     public void badSideLen() throws Exception {
-        GridElement h = new HexagonImpl(0.0, 0.0, 0.0, HexagonOrientation.FLAT, null);
+        PolygonElement h = new HexagonImpl(0.0, 0.0, 0.0, HexagonOrientation.FLAT, null);
     }
 
     @Test(expected=IllegalArgumentException.class)
     public void badOrientation() throws Exception {
-        GridElement h = new HexagonImpl(0.0, 0.0, SIDE_LEN, null, null);
+        PolygonElement h = new HexagonImpl(0.0, 0.0, SIDE_LEN, null, null);
     }
 
     @Test
@@ -74,14 +74,14 @@ public class HexagonTest extends HexagonTestBase {
     public void getVerticesAngled() {
         double minx = 1.0;
         double miny = -1.0;
-        GridElement hexagon = new HexagonImpl(minx, miny, SIDE_LEN, HexagonOrientation.ANGLED, null);
+        PolygonElement hexagon = new HexagonImpl(minx, miny, SIDE_LEN, HexagonOrientation.ANGLED, null);
 
         assertVertices(hexagon, minx, miny, SIDE_LEN, HexagonOrientation.ANGLED);
     }
 
     @Test
     public void getCenterFlat() throws Exception {
-        GridElement hexagon = new HexagonImpl(0.0, 0.0, SIDE_LEN, HexagonOrientation.FLAT, null);
+        PolygonElement hexagon = new HexagonImpl(0.0, 0.0, SIDE_LEN, HexagonOrientation.FLAT, null);
         Coordinate expected = new Coordinate(SIDE_LEN, 0.5 * Math.sqrt(3.0) * SIDE_LEN);
         Coordinate result = hexagon.getCenter();
 
@@ -90,7 +90,7 @@ public class HexagonTest extends HexagonTestBase {
 
     @Test
     public void getCenterAngled() {
-        GridElement hexagon = new HexagonImpl(0.0, 0.0, SIDE_LEN, HexagonOrientation.ANGLED, null);
+        PolygonElement hexagon = new HexagonImpl(0.0, 0.0, SIDE_LEN, HexagonOrientation.ANGLED, null);
         Coordinate expected = new Coordinate(0.5 * Math.sqrt(3.0) * SIDE_LEN, SIDE_LEN);
         Coordinate result = hexagon.getCenter();
 
@@ -99,7 +99,7 @@ public class HexagonTest extends HexagonTestBase {
 
     @Test
     public void getBoundsFlat() {
-        GridElement hexagon = new HexagonImpl(0.0, 0.0, SIDE_LEN, HexagonOrientation.FLAT, null);
+        PolygonElement hexagon = new HexagonImpl(0.0, 0.0, SIDE_LEN, HexagonOrientation.FLAT, null);
 
         Envelope expected = new Envelope(
                 0.0,
@@ -114,7 +114,7 @@ public class HexagonTest extends HexagonTestBase {
 
     @Test
     public void getBoundsAngled() {
-        GridElement hexagon = new HexagonImpl(0.0, 0.0, SIDE_LEN, HexagonOrientation.ANGLED, null);
+        PolygonElement hexagon = new HexagonImpl(0.0, 0.0, SIDE_LEN, HexagonOrientation.ANGLED, null);
 
         Envelope expected = new Envelope(
                 0.0,
@@ -129,7 +129,7 @@ public class HexagonTest extends HexagonTestBase {
 
     @Test
     public void toGeometry() {
-        GridElement hexagon = new HexagonImpl(0.0, 0.0, SIDE_LEN, HexagonOrientation.FLAT, null);
+        PolygonElement hexagon = new HexagonImpl(0.0, 0.0, SIDE_LEN, HexagonOrientation.FLAT, null);
         Geometry polygon = hexagon.toGeometry();
         assertNotNull(polygon);
         assertTrue(polygon instanceof Polygon);
@@ -142,7 +142,7 @@ public class HexagonTest extends HexagonTestBase {
 
     @Test
     public void toDenseGeometry() {
-        GridElement hexagon = new HexagonImpl(0.0, 0.0, SIDE_LEN, HexagonOrientation.FLAT, null);
+        PolygonElement hexagon = new HexagonImpl(0.0, 0.0, SIDE_LEN, HexagonOrientation.FLAT, null);
 
         final int density = 10;
         final double maxSpacing = SIDE_LEN / density;

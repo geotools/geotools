@@ -78,7 +78,7 @@ public abstract class GridFeatureBuilder {
      * @param attributes a {@code Map} with attribute names as keys and
      *        attribute values as values
      */
-    public abstract void setAttributes(Element el, Map<String, Object> attributes);
+    public abstract void setAttributes(GridElement el, Map<String, Object> attributes);
 
     /**
      * Gets the {@code FeatureID} as a {@code String} for a new {@code SimpleFeature}
@@ -91,7 +91,7 @@ public abstract class GridFeatureBuilder {
      *
      * @return value to use as the feature ID
      */
-    public String getFeatureID(Element el) {
+    public String getFeatureID(GridElement el) {
         return null;
     }
 
@@ -107,7 +107,7 @@ public abstract class GridFeatureBuilder {
      * @return {@code true} to create a feature for the element; {@code false}
      *         to skip the element
      */
-    public boolean getCreateFeature(Element el) {
+    public boolean getCreateFeature(GridElement el) {
         return true;
     }
 

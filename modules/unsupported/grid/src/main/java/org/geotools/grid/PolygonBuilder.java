@@ -26,26 +26,29 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 
 /**
- * Base class for vector grid builders.
+ * This is a base class for building polygonal grid elements.
+ * 
+ * @see org.geotools.grid.hexagon.HexagonGridBuilder
+ * @see org.geotools.grid.oblong.OblongGridBuilder
  *
  * @author mbedward
- * @since 2.7
+ * @since 8.0
  * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/grid/src/main/java/org/geotools/grid/DefaultFeatureBuilder.java $
  * @version $Id: DefaultFeatureBuilder.java 35637 2010-06-01 09:24:43Z mbedward $
  */
-public abstract class AbstractGridBuilder {
+public abstract class PolygonBuilder {
 
-    private static final Logger LOGGER = Logger.getLogger(AbstractGridBuilder.class.getName());
-
+    private static final Logger LOGGER = Logger.getLogger("org.geotools.grid");
+    
     protected final ReferencedEnvelope gridBounds;
 
-    public AbstractGridBuilder(ReferencedEnvelope gridBounds) {
-        this.gridBounds = new ReferencedEnvelope(gridBounds);
+    public PolygonBuilder(ReferencedEnvelope gridBounds) {
+        this.gridBounds = gridBounds;
     }
 
-    public boolean buildGrid(SimpleFeatureCollection fc,
-            GridFeatureBuilder gridFeatureBuilder,
-            double vertexSpacing) {
+    public boolean buildGrid(GridFeatureBuilder gridFeatureBuilder,
+            double vertexSpacing,
+            SimpleFeatureCollection fc) {
 
         boolean result = true;
 
@@ -54,8 +57,8 @@ public abstract class AbstractGridBuilder {
         final SimpleFeatureBuilder fb = new SimpleFeatureBuilder(gridFeatureBuilder.getType());
         final String geomPropName = gridFeatureBuilder.getType().getGeometryDescriptor().getLocalName();
 
-        GridElement el0 = getFirstElement();
-        GridElement el = el0;
+        PolygonElement el0 = getFirstElement();
+        PolygonElement el = el0;
 
         while (el.getBounds().getMinY() <= gridBounds.getMaxY()) {
             while (el.getBounds().getMaxX() <= gridBounds.getMaxX()) {
@@ -90,13 +93,13 @@ public abstract class AbstractGridBuilder {
 
     public abstract boolean isValidNeighbor(Neighbor neighbor);
 
-    public abstract GridElement createNeighbor(GridElement el, Neighbor neighbor);
+    public abstract PolygonElement createNeighbor(PolygonElement el, Neighbor neighbor);
 
-    public abstract GridElement getFirstElement();
+    public abstract PolygonElement getFirstElement();
 
-    public abstract GridElement getNextXElement(GridElement el);
+    public abstract PolygonElement getNextXElement(PolygonElement el);
 
-    public abstract GridElement getNextYElement(GridElement el);
+    public abstract PolygonElement getNextYElement(PolygonElement el);
 
     public abstract boolean isValidDenseVertexSpacing(double v);
 }

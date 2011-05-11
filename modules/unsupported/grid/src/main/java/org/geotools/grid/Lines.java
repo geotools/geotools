@@ -1,54 +1,103 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
  */
+
 package org.geotools.grid;
 
-import java.util.List;
+import java.util.Collection;
 
 import org.geotools.data.DataUtilities;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.grid.ortholine.OrthoLineControl;
-import org.geotools.grid.ortholine.OrthoLineGridBuilder;
+import org.geotools.grid.ortholine.OrthoLineBuilder;
+import org.geotools.grid.ortholine.OrthoLineDef;
 import org.geotools.referencing.CRS;
-
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
+
 /**
- *
- * @author michael
+ * A utility class to create line grids with basic attributes. 
+ * @author mbedward
+ * @since 8.0
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/grid/src/main/java/org/geotools/grid/Grids.java $
+ * @version $Id: Grids.java 37149 2011-05-10 11:47:02Z mbedward $
  */
 public class Lines {
 
-    public static SimpleFeatureSource createLines(ReferencedEnvelope bounds,
-            List<OrthoLineControl> controls) {
+    /**
+     * Creates a grid of ortho-lines. Lines are parallel to the bounding envelope's
+     * X-axis, Y-axis or both according to the provided line definitions.
+     * 
+     * @param bounds the bounding envelope
+     * @param lineDefs one or more ortho-line definitions
+     * @return the vector grid of lines
+     * 
+     * @see OrthoLineDef
+     */
+    public static SimpleFeatureSource createOrthoLines(ReferencedEnvelope bounds,
+            Collection<OrthoLineDef> lineDefs) {
 
-        return createLines(bounds, 
-                new DefaultLineFeatureBuilder(bounds.getCoordinateReferenceSystem()),
-                0.0, controls);
+        return createOrthoLines(bounds, lineDefs, 0.0);
     }
 
-    public static SimpleFeatureSource createLines(ReferencedEnvelope bounds,
-            double vertexSpacing, List<OrthoLineControl> controls) {
+    /**
+     * Creates a grid of ortho-lines. Lines are parallel to the bounding envelope's
+     * X-axis, Y-axis or both according to the provided line definitions.
+     * Densified lines (lines strings with additional vertices along their length) can be
+     * created by setting the value of {@code vertexSpacing} greater than zero; if so, any
+     * lines more than twice as long as this value will be densified.
+     * 
+     * @param bounds the bounding envelope
+     * @param lineDefs one or more ortho-line definitions
+     * @param vertexSpacing maximum distance between adjacent vertices along a line
+     * @return the vector grid of lines
+     */
+    public static SimpleFeatureSource createOrthoLines(ReferencedEnvelope bounds,
+            Collection<OrthoLineDef> lineDefs, double vertexSpacing) {
 
-        return createLines(bounds, 
-                new DefaultLineFeatureBuilder(bounds.getCoordinateReferenceSystem()),
-                vertexSpacing, controls);
+        return createOrthoLines(bounds, lineDefs, vertexSpacing,
+                new DefaultLineFeatureBuilder(bounds.getCoordinateReferenceSystem()));
     }
 
-    public static SimpleFeatureSource createLines(ReferencedEnvelope bounds, 
-            GridFeatureBuilder lineFeatureBuilder,
+    /**
+     * Creates a grid of ortho-lines. Lines are parallel to the bounding envelope's
+     * X-axis, Y-axis or both according to the provided line definitions. 
+     * Line features will be created using the supplied feature builder.
+     * Densified lines (lines strings with additional vertices along their length) can be
+     * created by setting the value of {@code vertexSpacing} greater than zero; if so, any
+     * lines more than twice as long as this value will be densified.
+     * 
+     * @param bounds the bounding envelope
+     * @param lineDefs one or more ortho-line definitions
+     * @param vertexSpacing maximum distance between adjacent vertices along a line
+     * @param lineFeatureBuilder feature build to create line features
+     * @return the vector grid of lines
+     */
+    public static SimpleFeatureSource createOrthoLines(ReferencedEnvelope bounds, 
+            Collection<OrthoLineDef> lineDefs,
             double vertexSpacing,
-            List<OrthoLineControl> controls) {
+            GridFeatureBuilder lineFeatureBuilder) {
 
         if (bounds == null || bounds.isEmpty() || bounds.isNull()) {
             throw new IllegalArgumentException("The bounds should not be null or empty");
         }
 
-        if (controls == null || controls.isEmpty()) {
+        if (lineDefs == null || lineDefs.isEmpty()) {
             throw new IllegalArgumentException("One or more line controls must be provided");
         }
 
@@ -61,8 +110,8 @@ public class Lines {
         }
 
         final SimpleFeatureCollection fc = new ListFeatureCollection(lineFeatureBuilder.getType());
-        OrthoLineGridBuilder lineBuilder = new OrthoLineGridBuilder();
-        lineBuilder.buildGrid(bounds, controls, lineFeatureBuilder, vertexSpacing, fc);
+        OrthoLineBuilder lineBuilder = new OrthoLineBuilder(bounds);
+        lineBuilder.buildGrid(lineDefs, lineFeatureBuilder, vertexSpacing, fc);
         return DataUtilities.source(fc);
     }
 

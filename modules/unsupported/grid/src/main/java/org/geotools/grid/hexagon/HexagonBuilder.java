@@ -18,8 +18,8 @@
 package org.geotools.grid.hexagon;
 
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.grid.AbstractGridBuilder;
-import org.geotools.grid.GridElement;
+import org.geotools.grid.PolygonBuilder;
+import org.geotools.grid.PolygonElement;
 import org.geotools.grid.Neighbor;
 
 /**
@@ -30,7 +30,7 @@ import org.geotools.grid.Neighbor;
  * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/grid/src/main/java/org/geotools/grid/hexagon/Hexagon.java $
  * @version $Id: Hexagon.java 35637 2010-06-01 09:24:43Z mbedward $
  */
-class HexagonGridBuilder extends AbstractGridBuilder {
+public class HexagonBuilder extends PolygonBuilder {
     private final double sideLen;
     private final HexagonOrientation orientation;
     private final Neighbor[] nextX = new Neighbor[2];
@@ -38,7 +38,7 @@ class HexagonGridBuilder extends AbstractGridBuilder {
     private int xIndex = 0;
     private int yIndex = 0;
 
-    public HexagonGridBuilder(ReferencedEnvelope gridBounds, double sideLen, HexagonOrientation orientation) {
+    public HexagonBuilder(ReferencedEnvelope gridBounds, double sideLen, HexagonOrientation orientation) {
         super(gridBounds);
         this.sideLen = sideLen;
         this.orientation = orientation;
@@ -110,7 +110,7 @@ class HexagonGridBuilder extends AbstractGridBuilder {
      * @see #isValidNeighbor(Hexagon.Orientation, Hexagon.Neighbor)
      */
     @Override
-    public Hexagon createNeighbor(GridElement el, Neighbor neighbor) {
+    public Hexagon createNeighbor(PolygonElement el, Neighbor neighbor) {
         if (el == null || neighbor == null) {
             throw new IllegalArgumentException(
                     "el and neighbour position must both be non-null");
@@ -202,21 +202,21 @@ class HexagonGridBuilder extends AbstractGridBuilder {
     }
 
     @Override
-    public GridElement getFirstElement() {
+    public PolygonElement getFirstElement() {
         return Hexagons.create(
                 gridBounds.getMinX(), gridBounds.getMinY(),
                 sideLen, orientation, gridBounds.getCoordinateReferenceSystem());
     }
 
     @Override
-    public GridElement getNextXElement(GridElement el) {
+    public PolygonElement getNextXElement(PolygonElement el) {
         Hexagon h = createNeighbor(el, nextX[xIndex]);
         xIndex = (xIndex + 1) % 2;
         return h;
     }
 
     @Override
-    public GridElement getNextYElement(GridElement el) {
+    public PolygonElement getNextYElement(PolygonElement el) {
         Hexagon h = createNeighbor(el, nextY[yIndex]);
         yIndex = (yIndex + 1) % 2;
         xIndex = 0;

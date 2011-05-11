@@ -15,19 +15,29 @@
  *    Lesser General Public License for more details.
  */
 
-package org.geotools.grid.oblong;
+package org.geotools.grid;
 
-import org.geotools.grid.PolygonElement;
+import com.vividsolutions.jts.geom.Coordinate;
 
 /**
- * Marker interface for oblong grid elements. The name was
- * chosen to avoid the inevitable confusion with {@code java.awt.Rectangle}
+ * Defines basic methods for grid elements.
  *
- * @author mbedward
- * @since 2.7
- * @source $URL$
- * @version $Id$
+ * @author michael
  */
-public interface Oblong extends PolygonElement {
+public interface PolygonElement extends GridElement {
+
+    /**
+     * Gets the area of this grid element.
+     *
+     * @return the area
+     */
+    double getArea();
+
+    /**
+     * Gets the center coordinates of this grid element.
+     *
+     * @return the center coordinates
+     */
+    Coordinate getCenter();
 
 }

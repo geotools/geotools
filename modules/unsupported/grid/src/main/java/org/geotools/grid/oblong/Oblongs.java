@@ -142,8 +142,8 @@ public class Oblongs {
         }
 
         final SimpleFeatureCollection fc = new ListFeatureCollection(gridFeatureBuilder.getType());
-        OblongGridBuilder gridBuilder = new OblongGridBuilder(bounds, width, height);
-        gridBuilder.buildGrid(fc, gridFeatureBuilder, vertexSpacing);
+        OblongBuilder gridBuilder = new OblongBuilder(bounds, width, height);
+        gridBuilder.buildGrid(gridFeatureBuilder, vertexSpacing, fc);
         return DataUtilities.source(fc);
     }
 

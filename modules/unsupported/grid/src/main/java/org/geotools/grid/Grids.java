@@ -24,16 +24,10 @@ import org.geotools.grid.hexagon.Hexagons;
 import org.geotools.grid.oblong.Oblongs;
 
 /**
- * A utility class to create vector grids with basic attributes. Where grids are
- * only being used for display purposes this is the only class that you have to
- * deal with.
- * <p>
- * For finer control of grid attributes, such as working with a user-supplied
- * SimpleFeatureType, see the {@code Oblongs} and {@code Hexagons} utility
- * classes.
- *
- * @see org.geotools.grid.hexagon.Hexagons
- * @see Oblongs
+ * A utility class to create polygonal vector grids with basic attributes. For simple
+ * grids this is the only class you need. For finer control of grid attributes, such
+ * as working with a user-supplied SimpleFeatureType, see the {@link Oblongs} and 
+ * {@link Hexagons} utility classes.
  *
  * @author mbedward
  * @since 2.7

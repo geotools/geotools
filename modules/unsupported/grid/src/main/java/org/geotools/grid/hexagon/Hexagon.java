@@ -17,7 +17,7 @@
 
 package org.geotools.grid.hexagon;
 
-import org.geotools.grid.GridElement;
+import org.geotools.grid.PolygonElement;
 
 /**
  * Defines methods and enum constants to work with hexagons.
@@ -27,7 +27,7 @@ import org.geotools.grid.GridElement;
  * @source $URL$
  * @version $Id$
  */
-public interface Hexagon extends GridElement {
+public interface Hexagon extends PolygonElement {
 
     /**
      * Gets the side length of this hexagon.

@@ -146,7 +146,7 @@ public class DefaultLineFeatureBuilder extends GridFeatureBuilder {
      * @param attributes a {@code Map} into which the attributes will be put
      */
     @Override
-    public void setAttributes(Element el, Map<String, Object> attributes) {
+    public void setAttributes(GridElement el, Map<String, Object> attributes) {
         if (el instanceof LineElement) {
             LineElement geoEl = (LineElement) el;
 

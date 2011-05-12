@@ -47,6 +47,7 @@ import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.resources.geometry.XRectangle2D;
+import org.geotools.resources.image.ImageUtilities;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.MathTransform;
@@ -193,7 +194,7 @@ class RasterGranuleLoader {
             }
 
             // get selected level and base level dimensions
-            final Rectangle originalDimension = Utils.getDimension(0, inStream, reader);
+            final Rectangle originalDimension = ImageUtilities.getDimension(0, inStream, reader);
 
             // build the g2W for this tile, in principle we should get it
             // somehow from the tile itself or from the index, but at the moment
@@ -366,7 +367,7 @@ class RasterGranuleLoader {
             final InterpolationNearest nearest = new InterpolationNearest();
             // paranoiac check to avoid that JAI freaks out when computing its
             // internal layouT on images that are too small
-            Rectangle2D finalLayout = Utils.layoutHelper(raster,
+            Rectangle2D finalLayout = ImageUtilities.layoutHelper(raster,
                     (float) translationTransform.getScaleX(),
                     (float) translationTransform.getScaleY(),
                     (float) translationTransform.getTranslateX(),
@@ -468,7 +469,7 @@ class RasterGranuleLoader {
                     }
 
                     // get selected level and base level dimensions
-                    final Rectangle levelDimension = Utils.getDimension(index,
+                    final Rectangle levelDimension = ImageUtilities.getDimension(index,
                             inStream, reader);
 
                     final Level baseLevel = granuleLevels.get(0);

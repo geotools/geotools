@@ -25,7 +25,7 @@ import java.io.Serializable;
 /**
  * A class describing the layout of a Raster element.
  */
-public class RasterLayout extends Object implements Cloneable, Serializable {
+class RasterLayout extends Object implements Cloneable, Serializable {
 
     private static final long serialVersionUID = 1L;
 

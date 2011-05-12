@@ -24,7 +24,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 /**
- * Utility calss that can be used to dump a DOM tree in a formatted way.
+ * Utility class that can be used to dump a DOM tree in a formatted way.
  * <p>
  * It is useful for inspecting the metadata inside GeoTiff files.
  * 
@@ -69,7 +69,7 @@ public final class IIOMetadataDumper {
 	/**
 	 * Constructor for a {@link IIOMetadataDumper} accepting an
 	 * {@link IIOMetadataNode}. It has no way to choose the format of the
-	 * metadata to parse since this choice has been alreadu done previously.
+	 * metadata to parse since this choice has been already done previously.
 	 * 
 	 * @param rootNode
 	 */

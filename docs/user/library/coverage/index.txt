@@ -28,6 +28,7 @@ Format plugins:
    image
    imageio
    jdbc/index
+   oracle
    mosaic
    pyramid
 
@@ -42,8 +43,7 @@ Unsupported plugins:
    grassraster
    jp2k
    netCDF
-   matlab   
-   oracle
+   matlab      
    tools
 
 The gt-coverage module provides a way to build and use highly structured grids of numeric values such as imagery data, for instance GeoTIFF format files, or multi-dimensional matrix data, like that found in NetCDF format files.

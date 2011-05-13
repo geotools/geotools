@@ -350,7 +350,8 @@ class RasterManager {
          * information from the reader.
          */
         private void init() {
-            final boolean useDisplayCRS = parent.epsgCode == 404001; 
+            //TODO: Re-enable this code when leveraging on y as DISPLAY_DOWN
+            final boolean useDisplayCRS = false;//parent.defaultValues.epsgCode == 404001 ? false : true; 
             this.coverageEnvelope = new GeneralEnvelope(new Rectangle2D.Double(0, useDisplayCRS? 0 : -property.height, property.width, property.height));
             this.coverageRasterArea = new GridEnvelope2D(0, 0, property.width, property.height);
             this.coverageCRS = useDisplayCRS ? Utils.DISPLAY_CRS : Utils.GENERIC2D_CRS;
@@ -358,8 +359,6 @@ class RasterManager {
             
             //TODO: Set Identity
             this.coverageGridToWorld2D = ProjectiveTransform.create(useDisplayCRS ? Utils.IDENTITY : Utils.IDENTITY_FLIP); 
-//            this.coverageGridToWorld2D = ProjectiveTransform.create(new AffineTransform(1, 0, 0, -1, 0, property.height));
-//            this.coverageGridToWorld2D = ProjectiveTransform.create(Utils.IDENTITY_HALFPIXEL);
             this.coverageFullResolution = new double[]{1.0, 1.0};
 //            final OverviewLevel highestLevel = RasterManager.this.overviewsController.resolutionsLevels.get(0);
 //            coverageFullResolution[0] = highestLevel.resolutionX;
@@ -434,7 +433,7 @@ class RasterManager {
         
         //TODO: What to do when I remove that default file?
         
-        ImageManager imageManager = getDatasetManager(Utils.DEFAULT_IMAGE_PATH);
+        ImageManager imageManager = getDatasetManager(Utils.FAKE_IMAGE_PATH);
         
 //        ImageManager imageManager = getDatasetManager(parent.rootPath + parent.defaultPath);
         coverageEnvelope = imageManager.coverageEnvelope;
@@ -607,8 +606,12 @@ class RasterManager {
      */
     private ImageManager initDatasetManager(final String filePath) throws DataSourceException {
         
-        if (filePath.equalsIgnoreCase(Utils.DEFAULT_IMAGE_PATH)){
-            return new ImageManager(new ImageProperty());
+        if (filePath.equalsIgnoreCase(Utils.FAKE_IMAGE_PATH)){
+            //USING FAKE VALUES
+            ImageProperty imageProperty = new ImageProperty();
+            imageProperty.height = parent.defaultValues.maxHeight;
+            imageProperty.width = parent.defaultValues.maxWidth;
+            return new ImageManager(imageProperty);
         }
         ImageManager imageManager = null;
         final File file = new File(filePath);

@@ -66,7 +66,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  */
 class Utils {
     
-    final static String DEFAULT_IMAGE_PATH = "$_DEFAULT_$";
+    final static String FAKE_IMAGE_PATH = "$_!FAKE!_$";
     
     final static CoordinateReferenceSystem DISPLAY_CRS = DisplayCRSAuthorityFactory.DISPLAY;
     
@@ -139,6 +139,8 @@ class Utils {
         final static String EXPAND_RGB = "expand";
         final static String EPSG_CODE = "epsg";
         final static String TIME_BETWEEN_CHECKS = "timeBetweenChecks";
+        final static String MAX_WIDTH = "maxWidth";
+        final static String MAX_HEIGHT = "maxHeight";
         
     }
     

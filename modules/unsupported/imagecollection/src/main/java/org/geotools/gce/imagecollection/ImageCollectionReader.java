@@ -57,6 +57,24 @@ public final class ImageCollectionReader extends AbstractGridCoverage2DReader im
     /** Logger for the {@link ImageCollectionReader} class. */
     private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(ImageCollectionReader.class.toString());
 
+    class DefaultsValue {
+        String path;
+        
+        int maxWidth = 65536;
+        
+        int maxHeight = 65536;
+        
+        /** 
+         * Time which needs to elapse between 2 consecutive checks for a file changes
+         * (Milliseconds)
+         */
+        long timeBetweenChecks = 1000 * 600;
+        
+        int epsgCode = 404000; 
+    }
+    
+    DefaultsValue defaultValues = new DefaultsValue();
+    
     /**
      * Number of coverages for this reader is
      * 
@@ -73,21 +91,11 @@ public final class ImageCollectionReader extends AbstractGridCoverage2DReader im
     
     String rootPath;
     
-    String defaultPath;
-    
-    /** 
-     * Time which needs to elapse between 2 consecutive checks for a file changes
-     * (Milliseconds)
-     */
-    long timeBetweenChecks = 1000 * 600;
-
 //    RasterLayout[] overViewLayouts;
 
 //    RasterLayout hrLayout;
 
     boolean expandMe = true;
-    
-    int epsgCode = 404000; 
     
     @Override
     public void dispose() {
@@ -194,50 +202,7 @@ public final class ImageCollectionReader extends AbstractGridCoverage2DReader im
             try {
                 fis = new FileInputStream(propertiesFile);
                 props.load(fis);
-
-                // Getting coverage name
-                if (props.containsKey(Utils.ImageCollectionProperties.COVERAGE_NAME)) {
-                    final String coverageName = (String) props.get(Utils.ImageCollectionProperties.COVERAGE_NAME);
-                    if (coverageName != null&& coverageName.trim().length() > 0) {
-                        coverage = coverageName;
-                    }
-                }
-                // Getting default path
-                if (props.containsKey(Utils.ImageCollectionProperties.DEFAULT_PATH)) {
-                    final String defaultPath = (String) props.get(Utils.ImageCollectionProperties.DEFAULT_PATH);
-                    if (defaultPath != null && defaultPath.trim().length() > 0) {
-                        this.defaultPath = defaultPath;
-                    }
-                }
-                // Getting expand to rgb property (used to deal with paletted images)
-                if (props.containsKey(Utils.ImageCollectionProperties.EXPAND_RGB)) {
-                    final String expand = (String) props.get(Utils.ImageCollectionProperties.EXPAND_RGB);
-                    if (expand != null && expand.trim().length() > 0) {
-                        this.expandMe = Boolean.parseBoolean(expand);
-                    }
-                }
-                
-                // Getting timeIntervalCheck. 
-                if (props.containsKey(Utils.ImageCollectionProperties.TIME_BETWEEN_CHECKS)) {
-                    final String timeCheck = (String) props.get(Utils.ImageCollectionProperties.TIME_BETWEEN_CHECKS);
-                    if (timeCheck != null && timeCheck.trim().length() > 0) {
-                        try {
-                            this.timeBetweenChecks = Long.parseLong(timeCheck) * 1000;
-                        } catch (NumberFormatException nfe){
-                            if (LOGGER.isLoggable(Level.WARNING)){
-                                LOGGER.log(Level.WARNING, "Unable to parse the specified time interval check.", nfe);
-                            }
-                        }
-                    }
-                }
-                
-                //TODO: Re-enable this or modify this once we get support for CRS with y as DISPLAY_DOWN
-//                if (props.containsKey(Utils.ImageCollectionProperties.EPSG_CODE)) {
-//                    final String epsgCode = (String) props.get(Utils.ImageCollectionProperties.EPSG_CODE);
-//                    if (epsgCode != null && epsgCode.trim().length() > 0) {
-//                        this.epsgCode = Integer.parseInt(epsgCode);
-//                    }
-//                }
+                coverage = initProperties(props);
                 
             } catch (FileNotFoundException e) {
                 if (LOGGER.isLoggable(Level.WARNING)) {
@@ -271,16 +236,16 @@ public final class ImageCollectionReader extends AbstractGridCoverage2DReader im
             coverageName = coverage;
         }
         
-        if (defaultPath == null){
+        if (defaultValues.path == null){
             final File parent = new File(rootPath);
             final List<File> files;
             if (parent.exists() && parent.isDirectory() && parent.canRead()){
                 files = Utils.getFileList(parent, Utils.FILE_FILTER, true);
                 if (!files.isEmpty()){
                     String path = files.get(0).getAbsolutePath();
-                    defaultPath = path;
+                    defaultValues.path = path;
                     if (path.startsWith(rootPath)){
-                        defaultPath = path.substring(rootPath.length()); 
+                        defaultValues.path = path.substring(rootPath.length()); 
                     }
                 }
             }
@@ -291,13 +256,96 @@ public final class ImageCollectionReader extends AbstractGridCoverage2DReader im
         }
     }
     
+    /**
+     * Init coverage properties from the provided Properties file
+     * @param props
+     * @return
+     */
+    private String initProperties(Properties props) {
+        String coverage = null;
+        // Getting coverage name
+        if (props.containsKey(Utils.ImageCollectionProperties.COVERAGE_NAME)) {
+            final String coverageName = (String) props.get(Utils.ImageCollectionProperties.COVERAGE_NAME);
+            if (coverageName != null && coverageName.trim().length() > 0) {
+                coverage = coverageName;
+            }
+        }
+        // Getting default path
+        if (props.containsKey(Utils.ImageCollectionProperties.DEFAULT_PATH)) {
+            final String defaultPath = (String) props.get(Utils.ImageCollectionProperties.DEFAULT_PATH);
+            if (defaultPath != null && defaultPath.trim().length() > 0) {
+                defaultValues.path = defaultPath;
+            }
+        }
+        // Getting expand to rgb property (used to deal with paletted images)
+        if (props.containsKey(Utils.ImageCollectionProperties.EXPAND_RGB)) {
+            final String expand = (String) props.get(Utils.ImageCollectionProperties.EXPAND_RGB);
+            if (expand != null && expand.trim().length() > 0) {
+                this.expandMe = Boolean.parseBoolean(expand);
+            }
+        }
+        
+        // Getting timeIntervalCheck. 
+        if (props.containsKey(Utils.ImageCollectionProperties.TIME_BETWEEN_CHECKS)) {
+            final String timeCheck = (String) props.get(Utils.ImageCollectionProperties.TIME_BETWEEN_CHECKS);
+            if (timeCheck != null && timeCheck.trim().length() > 0) {
+                try {
+                    defaultValues.timeBetweenChecks = Long.parseLong(timeCheck) * 1000;
+                } catch (NumberFormatException nfe){
+                    if (LOGGER.isLoggable(Level.WARNING)){
+                        LOGGER.log(Level.WARNING, "Unable to parse the specified time interval check.", nfe);
+                    }
+                }
+            }
+        }
+        
+        // Getting MaxWidth parameter. 
+        if (props.containsKey(Utils.ImageCollectionProperties.MAX_WIDTH)) {
+            final String maxW = (String) props.get(Utils.ImageCollectionProperties.MAX_WIDTH);
+            if (maxW != null && maxW.trim().length() > 0) {
+                try {
+                    defaultValues.maxWidth = Integer.parseInt(maxW);
+                } catch (NumberFormatException nfe){
+                    if (LOGGER.isLoggable(Level.WARNING)){
+                        LOGGER.log(Level.WARNING, "Unable to parse the specified Max Width property.", nfe);
+                    }
+                }
+            }
+        }
+        
+        // Getting MaxHeight parameter. 
+        if (props.containsKey(Utils.ImageCollectionProperties.MAX_HEIGHT)) {
+            final String maxH = (String) props.get(Utils.ImageCollectionProperties.MAX_HEIGHT);
+            if (maxH != null && maxH.trim().length() > 0) {
+                try {
+                    defaultValues.maxHeight = Integer.parseInt(maxH);
+                } catch (NumberFormatException nfe){
+                    if (LOGGER.isLoggable(Level.WARNING)){
+                        LOGGER.log(Level.WARNING, "Unable to parse the specified Max Height property.", nfe);
+                    }
+                }
+            }
+        }
+        
+        
+        //TODO: Re-enable this or modify this once we get support for CRS with y as DISPLAY_DOWN
+//        if (props.containsKey(Utils.ImageCollectionProperties.EPSG_CODE)) {
+//            final String epsgCode = (String) props.get(Utils.ImageCollectionProperties.EPSG_CODE);
+//            if (epsgCode != null && epsgCode.trim().length() > 0) {
+//                this.epsgCode = Integer.parseInt(epsgCode);
+//            }
+//        }
+        
+        return coverage;
+    }
+
     private void updatePropertiesFile(File propertiesFile) {
         if (!propertiesFile.exists()){
             FileOutputStream fos = null;
             try {
                 fos = new FileOutputStream(propertiesFile);
                 Properties prop = new Properties();
-                prop.put(Utils.ImageCollectionProperties.DEFAULT_PATH, defaultPath);
+                prop.put(Utils.ImageCollectionProperties.DEFAULT_PATH, defaultValues.path);
                 prop.store(fos, null);
             } catch (IOException e) {
                 if (LOGGER.isLoggable(Level.WARNING)){

@@ -269,9 +269,10 @@ class RasterLayerResponse {
 
         if (request.isEmpty()) {
             throw new DataSourceException("Empty request: " + request.toString());
-        } else if (request.imageManager.property.path.equalsIgnoreCase(Utils.DEFAULT_IMAGE_PATH)){
-            finalGridToWorldCorner = rasterManager.parent.epsgCode == 404001 ? Utils.IDENTITY_2D : Utils.IDENTITY_2D_FLIP ;
-//            finalGridToWorldCorner = Utils.IDENTITY_HALFPIXEL_2D;
+        } else if (request.imageManager.property.path.equalsIgnoreCase(Utils.FAKE_IMAGE_PATH)){
+            finalGridToWorldCorner = Utils.IDENTITY_2D_FLIP ;
+            //TODO Re-enable this when supportin y as DISPLAY_DOWN
+//            finalGridToWorldCorner = rasterManager.parent.defaultValues.epsgCode == 404001 ? Utils.IDENTITY_2D : Utils.IDENTITY_2D_FLIP ;
             gridCoverage = prepareCoverage(Utils.DEFAULT_IMAGE);
             return;
         }

@@ -371,11 +371,11 @@ class RasterLayerRequest {
             if (LOGGER.isLoggable(Level.INFO)){
                 LOGGER.info("No PATH have been specified through a Filter. Proceeding with default Image");
             }
-            if (rasterManager.parent.defaultPath == null){
-                imageManager = rasterManager.getDatasetManager(Utils.DEFAULT_IMAGE_PATH);
+            if (rasterManager.parent.defaultValues.path == null){
+                imageManager = rasterManager.getDatasetManager(Utils.FAKE_IMAGE_PATH);
                 return;
             } else {
-                path = rasterManager.parent.defaultPath;
+                path = rasterManager.parent.defaultValues.path;
             }
         }
         final String storePath = rasterManager.parent.rootPath;
@@ -440,7 +440,7 @@ class RasterLayerRequest {
             if (LOGGER.isLoggable(Level.FINE)){
                 LOGGER.fine("Using DEFAULT Path");
             }
-            return rasterManager.parent.defaultPath;
+            return rasterManager.parent.defaultValues.path;
         }
         if (!(filter instanceof IsEqualsToImpl)){
             throw new IllegalArgumentException("The provided filter should be an \"equals to\" filter: \"" + PATH_KEY + "=value\"");

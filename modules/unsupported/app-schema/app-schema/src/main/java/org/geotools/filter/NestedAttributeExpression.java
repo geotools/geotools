@@ -101,29 +101,33 @@ public class NestedAttributeExpression extends AttributeExpressionImpl {
 
         return getValues(0, 0, roots, mappings, null);
     }
+    
+    private boolean isLastStep(int index) {
+        return index == fullSteps.size();
+    }
 
     private List<Object> getValues(int startIndex, int endIndex, List<Feature> roots,
             FeatureTypeMapping fMapping, AttributeMapping prevMapping) {
         List<Object> values = new ArrayList<Object>();
+
+        if (startIndex > fullSteps.size() || endIndex > fullSteps.size()) {
+            return values;
+        }
+ 
         while (startIndex <= endIndex) {
             List<AttributeMapping> attMappings = new ArrayList<AttributeMapping>();
             StepList steps = null;
-            if (endIndex == fullSteps.size()) {
-                if (startIndex < fullSteps.size() - 1) {
-                    // last try
-                    startIndex++;
-                    endIndex = startIndex;
-                } else {
-                    // exhausted all paths
-                    return values;
-                }
+            Step lastStep = null;
+            if (isLastStep(endIndex)) {
+                // exhausted all paths
+                return values;
             }
-
+            
             while (attMappings.isEmpty() && endIndex < fullSteps.size()) {
                 endIndex++;
                 steps = fullSteps.subList(startIndex, endIndex);
-
-                if (steps.get(steps.size() - 1).isXmlAttribute()) {
+                lastStep = steps.get(steps.size() - 1);
+                if (isLastStep(endIndex) && lastStep.isXmlAttribute()) {
                     if (steps.size() == 1) {
                         if (prevMapping == null) {
                             return values;
@@ -146,17 +150,15 @@ public class NestedAttributeExpression extends AttributeExpressionImpl {
                     attMappings = fMapping.getAttributeMappingsIgnoreIndex(steps);
                 }
 
-                if (attMappings.isEmpty()) {
-                    if (steps.size() == 1) {
-                        if (Types.equals(fMapping.getTargetFeature().getName(), steps.get(0)
-                                .getName())) {
-                            // skip element name
-                            startIndex++;
-                            endIndex = startIndex;
-                        }
-                    }
-                    continue;
-                }
+                if (steps.size() == 1) {
+                     if (Types.equals(fMapping.getTargetFeature().getName(), steps.get(0)
+                             .getName())) {
+                         // skip element name
+                         startIndex++;
+                         endIndex = startIndex;
+                         continue;                         
+                     }
+                 }
             }
 
             if (attMappings.isEmpty()) {
@@ -164,10 +166,10 @@ public class NestedAttributeExpression extends AttributeExpressionImpl {
                 // and polymorphic
                 continue;
             }
-            if (steps.get(steps.size() - 1).isXmlAttribute()) {
+            if (lastStep.isXmlAttribute()) {
                 // a client properties
                 for (AttributeMapping mapping : attMappings) {
-                    Expression exp = getClientPropertyExpression(steps.get(steps.size() - 1),
+                    Expression exp = getClientPropertyExpression(lastStep,
                             mapping, this.attPath);
                     if (exp != null) {
                         for (Feature root : roots) {
@@ -179,6 +181,7 @@ public class NestedAttributeExpression extends AttributeExpressionImpl {
                     }
                 }
             } else {
+                int nextIndex = startIndex + 1;
                 for (AttributeMapping mapping : attMappings) {
                     if (mapping instanceof NestedAttributeMapping) {
                         // feature chaining mapping
@@ -194,7 +197,7 @@ public class NestedAttributeExpression extends AttributeExpressionImpl {
                                 // polymorphism
                                 List<Feature> nestedRoots = new ArrayList<Feature>(1);
                                 nestedRoots.add(root);
-                                List<Object> nestedValues = getValues(++startIndex, startIndex,
+                                List<Object> nestedValues = getValues(nextIndex, nextIndex,
                                         nestedRoots, fMapping, mapping);
                                 if (nestedValues != null) {
                                     values.addAll(nestedValues);
@@ -208,16 +211,16 @@ public class NestedAttributeExpression extends AttributeExpressionImpl {
                                 if (nestedFeatures == null || nestedFeatures.isEmpty()) {
                                     continue;
                                 }
-                                Step step = steps.get(steps.size() - 1);
-                                if (step.isIndexed()) {
-                                    int index = step.getIndex() - 1;
+
+                                if (lastStep.isIndexed()) {
+                                    int index = lastStep.getIndex() - 1;
                                     Feature f = nestedFeatures.get(index);
                                     nestedFeatures.clear();
                                     nestedFeatures.add(f);
                                 }
 
                                 if (fMapping != null) {
-                                    List<Object> nestedValues = getValues(++startIndex, startIndex,
+                                    List<Object> nestedValues = getValues(nextIndex, nextIndex,
                                             nestedFeatures, fMapping, mapping);
                                     if (nestedValues != null) {
                                         values.addAll(nestedValues);
@@ -228,7 +231,7 @@ public class NestedAttributeExpression extends AttributeExpressionImpl {
                                                     + attPath
                                                     + ". This shouldn't happen if it's set in AppSchemaDataAccess mapping file!");
                                 } else {
-                                    List<Object> nestedValues = getValues(++startIndex, endIndex,
+                                    List<Object> nestedValues = getValues(nextIndex, nextIndex,
                                             nestedFeatures, fMapping, mapping);
                                     if (nestedValues != null) {
                                         values.addAll(nestedValues);

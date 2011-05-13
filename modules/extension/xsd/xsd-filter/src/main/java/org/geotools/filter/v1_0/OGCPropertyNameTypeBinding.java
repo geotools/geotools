@@ -50,7 +50,7 @@ import org.geotools.xml.Node;
  * @source $URL$
  */
 public class OGCPropertyNameTypeBinding extends AbstractComplexBinding {
-    FilterFactory factory;
+    protected FilterFactory factory;
 
     public OGCPropertyNameTypeBinding(FilterFactory factory) {
         this.factory = factory;

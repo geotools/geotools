@@ -434,7 +434,9 @@ class RasterManager {
         
         //TODO: What to do when I remove that default file?
         
-        ImageManager imageManager = getDatasetManager(parent.parentPath + parent.defaultPath);
+        ImageManager imageManager = getDatasetManager(Utils.DEFAULT_IMAGE_PATH);
+        
+//        ImageManager imageManager = getDatasetManager(parent.rootPath + parent.defaultPath);
         coverageEnvelope = imageManager.coverageEnvelope;
         coverageGridrange = new GridEnvelope2D(imageManager.coverageRasterArea);
         coverageCRS = imageManager.coverageCRS;
@@ -556,9 +558,9 @@ class RasterManager {
         if (filePath == null){
             throw new IllegalArgumentException("Must specify a valid filePath whilst NULL have been provided");
         }
-        if (filePath.equalsIgnoreCase(Utils.DEFAULT_IMAGE_PATH)){
-            return new ImageManager(new ImageProperty());
-        }
+//        if (filePath.equalsIgnoreCase(Utils.DEFAULT_IMAGE_PATH)){
+//            return new ImageManager(new ImageProperty());
+//        }
         ImageManager imageManager = null;
         boolean isValid = false;
         if (datasetManagerCache.containsKey(filePath)) {
@@ -604,6 +606,10 @@ class RasterManager {
      * @throws DataSourceException
      */
     private ImageManager initDatasetManager(final String filePath) throws DataSourceException {
+        
+        if (filePath.equalsIgnoreCase(Utils.DEFAULT_IMAGE_PATH)){
+            return new ImageManager(new ImageProperty());
+        }
         ImageManager imageManager = null;
         final File file = new File(filePath);
         ImageInputStream stream = null;

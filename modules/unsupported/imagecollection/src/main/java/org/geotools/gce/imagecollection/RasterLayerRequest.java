@@ -41,6 +41,7 @@ import org.geotools.referencing.operation.LinearTransform;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.opengis.filter.Filter;
+import org.opengis.filter.IncludeFilter;
 import org.opengis.filter.expression.Literal;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.geometry.Envelope;
@@ -377,7 +378,7 @@ class RasterLayerRequest {
                 path = rasterManager.parent.defaultPath;
             }
         }
-        final String storePath = rasterManager.parent.parentPath;
+        final String storePath = rasterManager.parent.rootPath;
         
         //First normalization
         path = FilenameUtils.normalize(path);
@@ -385,7 +386,7 @@ class RasterLayerRequest {
             // Removing the store path prefix from the specified path
             // allow to deal with the case of parentPath = /home/user1/folder1/ and path = /home/user1/folder1/folder3 
             // which comes back to path = folder3
-            path = path.substring(storePath.length(), path.length());
+            path = path.substring(storePath.length());
         }
         final String filePath = FilenameUtils.normalize(FilenameUtils.concat(storePath, path));
         if (!filePath.startsWith(storePath)){
@@ -432,6 +433,14 @@ class RasterLayerRequest {
     private String parsePath(Filter filter) {
         if (filter == null){
             throw new IllegalArgumentException("The provided filter is null");
+        }
+        //Workaround to deal with the case of Filter.INCLUDE 
+        //being saved when creating the store
+        if (filter instanceof IncludeFilter){
+            if (LOGGER.isLoggable(Level.FINE)){
+                LOGGER.fine("Using DEFAULT Path");
+            }
+            return rasterManager.parent.defaultPath;
         }
         if (!(filter instanceof IsEqualsToImpl)){
             throw new IllegalArgumentException("The provided filter should be an \"equals to\" filter: \"" + PATH_KEY + "=value\"");

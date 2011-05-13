@@ -138,6 +138,7 @@ class Utils {
         final static String DEFAULT_PATH = "defaultPath";
         final static String EXPAND_RGB = "expand";
         final static String EPSG_CODE = "epsg";
+        final static String TIME_BETWEEN_CHECKS = "timeBetweenChecks";
         
     }
     

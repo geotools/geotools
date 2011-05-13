@@ -21,6 +21,7 @@ import java.awt.image.SampleModel;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collection;
@@ -70,9 +71,15 @@ public final class ImageCollectionReader extends AbstractGridCoverage2DReader im
 
     URL sourceURL;
     
-    String parentPath;
+    String rootPath;
     
     String defaultPath;
+    
+    /** 
+     * Time which needs to elapse between 2 consecutive checks for a file changes
+     * (Milliseconds)
+     */
+    long timeBetweenChecks = 1000 * 600;
 
 //    RasterLayout[] overViewLayouts;
 
@@ -131,7 +138,7 @@ public final class ImageCollectionReader extends AbstractGridCoverage2DReader im
             source = DataUtilities.urlToFile(sourceURL);
             if (source instanceof File){
                 file = (File) source;
-                parentPath = FilenameUtils.getFullPath(FilenameUtils.normalizeNoEndSeparator(file.getAbsolutePath()) + Utils.SEPARATOR);
+                rootPath = FilenameUtils.getFullPath(FilenameUtils.normalizeNoEndSeparator(file.getAbsolutePath()) + Utils.SEPARATOR);
                 loadConfig();
             }
             
@@ -166,14 +173,15 @@ public final class ImageCollectionReader extends AbstractGridCoverage2DReader im
 
     /** 
      * Setup collection configuration by checking for a properties file containing basic info such as
-     * coverageName, relative path of the default image, expand RGB flag.
+     * coverageName, relative path of the default image, expand RGB flag, timeBetweenChecks.
      * @throws FileNotFoundException
      */
     private void loadConfig() throws FileNotFoundException {
-        final String propertiesPath = parentPath + Utils.CONFIG_FILE;
+        final String propertiesPath = rootPath + Utils.CONFIG_FILE;
         final File propertiesFile = new File(propertiesPath);
         String coverage = null;
-        if (Utils.checkFileReadable(propertiesFile)){
+        final boolean hasPropertiesFile = Utils.checkFileReadable(propertiesFile);
+        if (hasPropertiesFile){
             
             // //
             //
@@ -201,20 +209,35 @@ public final class ImageCollectionReader extends AbstractGridCoverage2DReader im
                         this.defaultPath = defaultPath;
                     }
                 }
-                // Getting expand to rgb property (used to deal with paletted
-                // images)
+                // Getting expand to rgb property (used to deal with paletted images)
                 if (props.containsKey(Utils.ImageCollectionProperties.EXPAND_RGB)) {
                     final String expand = (String) props.get(Utils.ImageCollectionProperties.EXPAND_RGB);
                     if (expand != null && expand.trim().length() > 0) {
                         this.expandMe = Boolean.parseBoolean(expand);
                     }
                 }
-                if (props.containsKey(Utils.ImageCollectionProperties.EPSG_CODE)) {
-                    final String epsgCode = (String) props.get(Utils.ImageCollectionProperties.EPSG_CODE);
-                    if (epsgCode != null && epsgCode.trim().length() > 0) {
-                        this.epsgCode = Integer.parseInt(epsgCode);
+                
+                // Getting timeIntervalCheck. 
+                if (props.containsKey(Utils.ImageCollectionProperties.TIME_BETWEEN_CHECKS)) {
+                    final String timeCheck = (String) props.get(Utils.ImageCollectionProperties.TIME_BETWEEN_CHECKS);
+                    if (timeCheck != null && timeCheck.trim().length() > 0) {
+                        try {
+                            this.timeBetweenChecks = Long.parseLong(timeCheck) * 1000;
+                        } catch (NumberFormatException nfe){
+                            if (LOGGER.isLoggable(Level.WARNING)){
+                                LOGGER.log(Level.WARNING, "Unable to parse the specified time interval check.", nfe);
+                            }
+                        }
                     }
                 }
+                
+                //TODO: Re-enable this or modify this once we get support for CRS with y as DISPLAY_DOWN
+//                if (props.containsKey(Utils.ImageCollectionProperties.EPSG_CODE)) {
+//                    final String epsgCode = (String) props.get(Utils.ImageCollectionProperties.EPSG_CODE);
+//                    if (epsgCode != null && epsgCode.trim().length() > 0) {
+//                        this.epsgCode = Integer.parseInt(epsgCode);
+//                    }
+//                }
                 
             } catch (FileNotFoundException e) {
                 if (LOGGER.isLoggable(Level.WARNING)) {
@@ -243,23 +266,56 @@ public final class ImageCollectionReader extends AbstractGridCoverage2DReader im
         //
         // //
         if (coverage == null){
-            coverageName = FilenameUtils.getBaseName(FilenameUtils.getFullPathNoEndSeparator(parentPath));    
+            coverageName = FilenameUtils.getBaseName(FilenameUtils.getFullPathNoEndSeparator(rootPath));    
         } else {
             coverageName = coverage;
         }
         
         if (defaultPath == null){
-            final File parent = new File(parentPath);
+            final File parent = new File(rootPath);
             final List<File> files;
             if (parent.exists() && parent.isDirectory() && parent.canRead()){
                 files = Utils.getFileList(parent, Utils.FILE_FILTER, true);
                 if (!files.isEmpty()){
-                    defaultPath = files.get(0).getAbsolutePath();
+                    String path = files.get(0).getAbsolutePath();
+                    defaultPath = path;
+                    if (path.startsWith(rootPath)){
+                        defaultPath = path.substring(rootPath.length()); 
+                    }
+                }
+            }
+        }
+        
+        if (!hasPropertiesFile){
+            updatePropertiesFile(propertiesFile);
+        }
+    }
+    
+    private void updatePropertiesFile(File propertiesFile) {
+        if (!propertiesFile.exists()){
+            FileOutputStream fos = null;
+            try {
+                fos = new FileOutputStream(propertiesFile);
+                Properties prop = new Properties();
+                prop.put(Utils.ImageCollectionProperties.DEFAULT_PATH, defaultPath);
+                prop.store(fos, null);
+            } catch (IOException e) {
+                if (LOGGER.isLoggable(Level.WARNING)){
+                    LOGGER.log(Level.WARNING, "Unable to store properties in a config.property file ", e );
+                }
+            } finally {
+                if (fos != null){
+                    try {
+                        fos.close();
+                        fos = null;
+                    } catch (Throwable t){
+                        //Doesn nothing
+                    }
                 }
             }
         }
     }
-    
+
     /**
      * @see org.opengis.coverage.grid.GridCoverageReader#getFormat()
      */

@@ -105,8 +105,8 @@ public class ImageProperty {
 
     public ImageProperty() {
         path = Utils.DEFAULT_IMAGE_PATH;
-        width = Integer.MAX_VALUE;
-        height = Integer.MAX_VALUE;
+        width = 65536;//Integer.MAX_VALUE;
+        height = 65536;//Integer.MAX_VALUE;
     }
 
     /**

@@ -31,8 +31,10 @@ import org.geotools.data.ows.FeatureSetDescription;
 import org.geotools.data.ows.WFSCapabilities;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.Filters;
+import org.geotools.filter.visitor.FixBBOXFilterVisitor;
 import org.geotools.filter.visitor.WFSBBoxFilterVisitor;
 import org.geotools.geometry.jts.JTS;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.xml.XMLHandlerHints;
@@ -119,8 +121,10 @@ class StrictWFSStrategy extends NonStrictWFSStrategy {
         
         // Rewrite request if we have a maxbox
         if (maxbbox != null) {
-            WFSBBoxFilterVisitor clipVisitor = new WFSBBoxFilterVisitor(maxbbox);
-            Filters.accept(serverFilter, clipVisitor);
+            FixBBOXFilterVisitor clipVisitor = new FixBBOXFilterVisitor(ReferencedEnvelope.reference(maxbbox));
+            serverFilter = (Filter) serverFilter.accept(clipVisitor, null );
+//            WFSBBoxFilterVisitor clipVisitor = new WFSBBoxFilterVisitor(maxbbox);
+//            Filters.accept(serverFilter, clipVisitor);
         } else { // give up an request everything
             WFS_1_0_0_DataStore.LOGGER.log(Level.FINE,
                     "Unable to clip your query against the latlongboundingbox element");

@@ -28,6 +28,7 @@ import org.geotools.data.ows.FeatureSetDescription;
 import org.geotools.data.ows.WFSCapabilities;
 import org.geotools.feature.SchemaException;
 import org.geotools.filter.Filters;
+import org.geotools.filter.visitor.FixBBOXFilterVisitor;
 import org.geotools.filter.visitor.WFSBBoxFilterVisitor;
 import org.geotools.referencing.CRS;
 import org.opengis.feature.simple.SimpleFeature;
@@ -215,8 +216,9 @@ class NonStrictWFSStrategy implements WFSStrategy {
         // we are going to assume that to assume that we don't need to clip or
         // anything; and just return the dataCRS
         // Rewrite request if we have a maxbox
-        WFSBBoxFilterVisitor visitor = new WFSBBoxFilterVisitor(null);
-        Filters.accept(serverFilter, visitor);
+        FixBBOXFilterVisitor visitor = new FixBBOXFilterVisitor(null);
+        serverFilter = (Filter) serverFilter.accept(visitor, null );
+        //Filters.accept(serverFilter, visitor);
         return dataCRS;
     }
 

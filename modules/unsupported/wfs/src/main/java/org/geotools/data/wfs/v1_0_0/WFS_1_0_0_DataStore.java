@@ -53,7 +53,6 @@ import javax.xml.namespace.QName;
 import org.geotools.data.AbstractDataStore;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
-import org.geotools.data.DefaultQuery;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.ReTypeFeatureReader;
@@ -81,7 +80,6 @@ import org.geotools.util.logging.Logging;
 import org.geotools.xml.DocumentWriter;
 import org.geotools.xml.SchemaFactory;
 import org.geotools.xml.XMLHandlerHints;
-import org.geotools.xml.filter.FilterEncodingPreProcessor;
 import org.geotools.xml.filter.FilterSchema;
 import org.geotools.xml.gml.GMLComplexTypes;
 import org.geotools.xml.gml.WFSFeatureTypeTransformer;
@@ -103,14 +101,13 @@ import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 
 /**
+ * DataStore used for connecting to 1.0.0 protocol.
  * <p>
- * DOCUMENT ME!
- * </p>
+ * Please note this datastore uses the first version of the GTXML parsing / encoding technology
+ * and may be a bit difficult to follow as a result.
  * 
  * @author dzwiers
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/wfs/src/main/java/org/geotools
- *         /wfs/v_1_0_0/data/WFSDataStore.java $
+ * @source $URL:http://svn.geotools.org/geotools/trunk/gt/modules/plugin/wfs/src/main/java/org/geotools/wfs/v_1_0_0/data/WFSDataStore.java $
  */
 public class WFS_1_0_0_DataStore extends AbstractDataStore implements WFSDataStore {
     public static final Logger LOGGER = Logging.getLogger("org.geotools.data.wfs.1.1.0");
@@ -133,9 +130,9 @@ public class WFS_1_0_0_DataStore extends AbstractDataStore implements WFSDataSto
 
     private Map<String, SimpleFeatureType> featureTypeCache = new HashMap<String, SimpleFeatureType>();
 
-    private Map fidMap = new HashMap();
+    private Map<String,String> fidMap = new HashMap<String,String>();
 
-    private Map xmlSchemaCache = new HashMap();
+    //private Map xmlSchemaCache = new HashMap();
     
     private String wfsStrategy = null;
     
@@ -463,10 +460,10 @@ public class WFS_1_0_0_DataStore extends AbstractDataStore implements WFSDataSto
 
         // write request
         Writer osw = getOutputStream(hc);
-        Map hints = new HashMap();
+        Map<String,Object> hints = new HashMap<String,Object>();
         hints.put(DocumentWriter.BASE_ELEMENT, WFSSchema.getInstance().getElements()[1]); // DescribeFeatureType
-        List l = capabilities.getFeatureTypes();
-        Iterator it = l.iterator();
+        List<FeatureSetDescription> l = capabilities.getFeatureTypes();
+        Iterator<FeatureSetDescription> it = l.iterator();
         URI uri = null;
         while (it.hasNext() && uri == null) {
             FeatureSetDescription fsd = (FeatureSetDescription) it.next();
@@ -654,7 +651,7 @@ public class WFS_1_0_0_DataStore extends AbstractDataStore implements WFSDataSto
 
     private String printFilter(Filter f) throws IOException, SAXException {
         // ogc filter
-        Map hints = new HashMap();
+        Map<String,Object> hints = new HashMap<String,Object>();
         hints.put(DocumentWriter.BASE_ELEMENT, FilterSchema.getInstance().getElements()[2]); // Filter
 
         StringWriter w = new StringWriter();
@@ -767,14 +764,14 @@ public class WFS_1_0_0_DataStore extends AbstractDataStore implements WFSDataSto
 
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(String typeName)
             throws IOException {
-        return getFeatureReader(typeName, new DefaultQuery(typeName));
+        return getFeatureReader(typeName, new Query(typeName));
     }
 
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(String typeName,
             Query query) throws IOException {
         if ((query.getTypeName() == null) || !query.getTypeName().equals(typeName)) {
-            Query q = new DefaultQuery(query);
-            ((DefaultQuery) q).setTypeName(typeName);
+            Query q = new Query(query);
+            ((Query) q).setTypeName(typeName);
 
             return getFeatureReader(q, Transaction.AUTO_COMMIT);
         }
@@ -800,7 +797,7 @@ public class WFS_1_0_0_DataStore extends AbstractDataStore implements WFSDataSto
         if (query.getFilter() instanceof BBOX) {
             DuplicatingFilterVisitor dfv = new DuplicatingFilterVisitor();
             Filter filter = (Filter) dfv.visit((BBOX)query.getFilter(), null);
-            DefaultQuery q = new DefaultQuery(query);
+            Query q = new Query(query);
             q.setFilter(filter);
             query = q;
         }
@@ -901,7 +898,7 @@ public class WFS_1_0_0_DataStore extends AbstractDataStore implements WFSDataSto
      */
     protected Filter getUnsupportedFilter(String typeName, Filter filter) {
         try {
-            return splitFilters(new DefaultQuery(typeName, filter), Transaction.AUTO_COMMIT)[1];
+            return splitFilters(new Query(typeName, filter), Transaction.AUTO_COMMIT)[1];
         } catch (IOException e) {
             return filter;
         }
@@ -923,16 +920,16 @@ public class WFS_1_0_0_DataStore extends AbstractDataStore implements WFSDataSto
     }
 
     /**
-     * Runs {@link FidFilterVisitor} on the filter and returns the result as long as transaction is
+     * Runs {@link UpdateFidFilterVisitor} on the filter and returns the result as long as transaction is
      * not AUTO_COMMIT or null.
      * 
      * @param filter
      *            filter to process.
-     * @return Runs {@link FidFilterVisitor} on the filter and returns the result as long as
+     * @return Runs {@link UpdateFidFilterVisitor} on the filter and returns the result as long as
      *         transaction is not AUTO_COMMIT or null.
      */
     public Filter processFilter(Filter filter) {
-        FidFilterVisitor visitor = new FidFilterVisitor(fidMap);
+        UpdateFidFilterVisitor visitor = new UpdateFidFilterVisitor(fidMap);
         return (Filter) filter.accept(visitor, null);
     }
 

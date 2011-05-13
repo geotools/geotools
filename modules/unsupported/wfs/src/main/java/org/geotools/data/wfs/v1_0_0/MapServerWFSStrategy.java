@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
-import org.geotools.data.DefaultQuery;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
@@ -76,8 +75,8 @@ public class MapServerWFSStrategy extends StrictWFSStrategy implements WFSStrate
                     SimpleFeatureType schema = store.getSchema(query.getTypeName());
                     String attName = schema.getGeometryDescriptor().getLocalName();
                     
-                    List fts = store.capabilities.getFeatureTypes(); // FeatureSetDescription
-                    Iterator i = fts.iterator();
+                    List<FeatureSetDescription> fts = store.capabilities.getFeatureTypes(); // FeatureSetDescription
+                    Iterator<FeatureSetDescription> i = fts.iterator();
                     String desiredType = query.getTypeName().substring(query.getTypeName()
                             .indexOf(":") + 1);
                     
@@ -99,7 +98,7 @@ public class MapServerWFSStrategy extends StrictWFSStrategy implements WFSStrate
                         BBOX newFilter = fac.bbox(attName, bbox.getMinX(), bbox.getMinY(), 
                                 bbox.getMaxX(), bbox.getMaxY(), "EPSG:4326");
                         
-                        query2=new DefaultQuery(query.getTypeName(), query.getNamespace(), newFilter, 
+                        query2=new Query(query.getTypeName(), query.getNamespace(), newFilter, 
                                 query.getMaxFeatures(), query.getPropertyNames(), query.getHandle());
                     }
                 } catch (IllegalFilterException e) {

@@ -69,8 +69,9 @@ public class WFSTransactionState implements State {
 
     /**
      * A map of <String, String[]>. String is the typename and String[] are the
-     * fids returned by Transaction Results during the last commit. They are the
-     * fids of the inserted elements.
+     * fids returned by Transaction Results during the last commit.
+     * <p>
+     * They are the fids of the inserted elements.
      */
     private Map<String, String[]> fids = new HashMap<String, String[]>();
 
@@ -84,7 +85,9 @@ public class WFSTransactionState implements State {
     private long latestFid = Long.MAX_VALUE;
 
     /** Private - should not be used */
+    @SuppressWarnings("unused")
     private WFSTransactionState() {
+        // subclass must supply ds
     }
 
     /**
@@ -132,21 +135,21 @@ public class WFSTransactionState implements State {
         // transaction ...
         TransactionResult transactionResult = null;
 
-        Map copiedActions;
+        Map<String, List<Action>> copiedActions;
         synchronized (actionMap) {
             combineActions();
             copiedActions = copy(actionMap);
         }
-        Iterator iter = copiedActions.entrySet().iterator();
+        Iterator<Entry<String, List<Action>>> iter = copiedActions.entrySet().iterator();
         while (iter.hasNext()) {
-            Map.Entry entry = (Entry) iter.next();
-            List actions = (List) entry.getValue();
+            Entry<String, List<Action>> entry = iter.next();
+            List<Action> actions = entry.getValue();
             String typeName = (String) entry.getKey();
 
-            if (actions.isEmpty())
+            if (actions.isEmpty()){
                 continue;
+            }
 
-            //if (ds.preferredProtocol == POST && 
             if (transactionResult == null) {
                 try {
                     transactionResult = commitPost(actions);
@@ -159,20 +162,6 @@ public class WFSTransactionState implements State {
                 }
             }
 
-            // if (((ds.protocol & WFSDataStore.GET_PROTOCOL) ==
-            // WFSDataStore.GET_PROTOCOL)
-            // && (tr == null)) {
-            // try {
-            // tr = commitPost();
-            // } catch (OperationNotSupportedException e) {
-            // WFSDataSTore.LOGGER.warning(e.toString());
-            // tr = null;
-            // } catch (SAXException e) {
-            // WFSDataSTore.LOGGER.warning(e.toString());
-            // tr = null;
-            // }
-            // }
-
             if (transactionResult == null) {
                 throw new IOException("An error occured while committing.");
             }
@@ -181,10 +170,10 @@ public class WFSTransactionState implements State {
                 throw new IOException(transactionResult.getError().toString());
             }
 
-            List newFids = transactionResult.getInsertResult();
+            List<String> newFids = transactionResult.getInsertResult();
             int currentInsertIndex = 0;
-            for (Iterator iter2 = actions.iterator(); iter2.hasNext();) {
-                Object action = iter2.next();
+            for (Iterator<Action> iter2 = actions.iterator(); iter2.hasNext();) {
+                Action action = iter2.next();
                 if (action instanceof InsertAction) {
                     InsertAction insertAction = (InsertAction) action;
                     if (currentInsertIndex >= newFids.size()) {
@@ -192,15 +181,16 @@ public class WFSTransactionState implements State {
                                 "Expected more fids to be returned by " + "TransactionResponse!");
                         break;
                     }
-                    ds.addFidMapping(insertAction.getFeature().getID(), (String) newFids
-                            .get(currentInsertIndex));
+                    String tempFid = insertAction.getFeature().getID();
+                    String finalFid = newFids.get(currentInsertIndex);
+                    
+                    ds.addFidMapping(tempFid, finalFid);
                     currentInsertIndex++;
                 }
             }
             synchronized (this.fids) {
                 this.fids.put(typeName, (String[]) newFids.toArray(new String[0]));
             }
-
             if (currentInsertIndex != newFids.size()) {
                 Logging.getLogger("org.geotools.data.wfs").severe(
                         "number of fids inserted do not match number of fids returned "
@@ -208,23 +198,23 @@ public class WFSTransactionState implements State {
                                 + currentInsertIndex);
             }
             synchronized (actionMap) {
-                ((List) actionMap.get(typeName)).removeAll(actions);
+                ((List<Action>) actionMap.get(typeName)).removeAll(actions);
             }
         }
     }
 
-    private Map copy(Map actionMap2) {
-        Map newMap = new HashMap();
-        Iterator entries = actionMap2.entrySet().iterator();
+    private Map<String, List<Action>> copy(Map<String, List<Action>> actionMap2) {
+        Map<String, List<Action>> newMap = new HashMap<String, List<Action>>();
+        Iterator<Entry<String, List<Action>>> entries = actionMap2.entrySet().iterator();
         while (entries.hasNext()) {
-            Map.Entry entry = (Entry) entries.next();
-            List list = (List) entry.getValue();
-            newMap.put(entry.getKey(), new ArrayList(list));
+            Entry<String, List<Action>> entry = entries.next();
+            List<Action> list =  entry.getValue();
+            newMap.put(entry.getKey(), new ArrayList<Action>(list));
         }
         return newMap;
     }
 
-    private TransactionResult commitPost(List toCommit) throws OperationNotSupportedException,
+    private TransactionResult commitPost(List<Action> toCommit) throws OperationNotSupportedException,
             IOException, SAXException {
         
         URL postUrl = ds.capabilities.getTransaction().getPost();
@@ -237,19 +227,19 @@ public class WFSTransactionState implements State {
         HttpURLConnection hc = ds.protocolHandler.getConnectionFactory().getConnection(postUrl,
                 POST);
         // System.out.println("connection to commit");
-        Map hints = new HashMap();
+        Map<String,Object> hints = new HashMap<String,Object>();
         hints.put(DocumentWriter.BASE_ELEMENT, WFSSchema.getInstance().getElements()[24]); // Transaction
-        Set fts = new HashSet();
-        Iterator i = toCommit.iterator();
+        Set<String> fts = new HashSet<String>();
+        Iterator<Action> i = toCommit.iterator();
         while (i.hasNext()) {
             Action a = (Action) i.next();
             fts.add(a.getTypeName());
         }
-        Set ns = new HashSet();
+        Set<String> ns = new HashSet<String>();
         ns.add(WFSSchema.NAMESPACE.toString());
-        i = fts.iterator();
-        while (i.hasNext()) {
-            String target = (String) i.next();
+        Iterator<String> i2 = fts.iterator();
+        while (i2.hasNext()) {
+            String target = (String) i2.next();
             SimpleFeatureType schema = ds.getSchema(target);
             
             try {
@@ -294,7 +284,7 @@ public class WFSTransactionState implements State {
 
         InputStream is = this.ds.protocolHandler.getConnectionFactory().getInputStream(hc);
 
-        hints = new HashMap();
+        hints = new HashMap<String,Object>();
 
         TransactionResult ft = (TransactionResult) DocumentFactory.getInstance(is, hints,
                 Level.WARNING);
@@ -315,7 +305,7 @@ public class WFSTransactionState implements State {
      */
     public String[] getFids(String typeName) {
         synchronized (fids) {
-            return (String[]) fids.get(typeName);
+            return fids.get(typeName);
         }
     }
 
@@ -324,9 +314,9 @@ public class WFSTransactionState implements State {
      */
     public void addAction(String typeName, Action a) {
         synchronized (actionMap) {
-            List list = (List) actionMap.get(typeName);
+            List<Action> list =  actionMap.get(typeName);
             if (list == null) {
-                list = new ArrayList();
+                list = new ArrayList<Action>();
                 actionMap.put(typeName, list);
             }
             list.add(a);
@@ -336,12 +326,12 @@ public class WFSTransactionState implements State {
     /**
      * @return List of Actions
      */
-    public List getActions(String typeName) {
+    public List<Action> getActions(String typeName) {
         synchronized (actionMap) {
-            Collection collection = (Collection) actionMap.get(typeName);
+            Collection<Action> collection = (Collection<Action>) actionMap.get(typeName);
             if (collection == null || collection.isEmpty())
-                return new ArrayList();
-            return new ArrayList(collection);
+                return new ArrayList<Action>();
+            return new ArrayList<Action>(collection);
         }
     }
 
@@ -350,11 +340,11 @@ public class WFSTransactionState implements State {
      * 
      * @return all the actions for all FeatureTypes
      */
-    public List getAllActions() {
+    public List<Action> getAllActions() {
         synchronized (actionMap) {
-            List all = new ArrayList();
-            for (Iterator iter = actionMap.values().iterator(); iter.hasNext();) {
-                List actions = (List) iter.next();
+            List<Action> all = new ArrayList<Action>();
+            for (Iterator<List<Action>> iter = actionMap.values().iterator(); iter.hasNext();) {
+                List<Action> actions = (List<Action>) iter.next();
                 all.addAll(actions);
             }
             return all;
@@ -409,8 +399,8 @@ public class WFSTransactionState implements State {
      * </p>
      */
     protected void combineActions() {
-        EACH_FEATURE_TYPE: for (Iterator iter = actionMap.values().iterator(); iter.hasNext();) {
-            List actions = (List) iter.next();
+        EACH_FEATURE_TYPE: for (Iterator<List<Action>> iter = actionMap.values().iterator(); iter.hasNext();) {
+            List<Action> actions = iter.next();
 
             removeFilterAllActions(actions);
             InsertAction firstAction = null;
@@ -431,8 +421,8 @@ public class WFSTransactionState implements State {
     /**
      * Removes all actions whose filter is Filter.EXCLUDE
      */
-    private void removeFilterAllActions(List actions) {
-        for (Iterator iter = actions.iterator(); iter.hasNext();) {
+    private void removeFilterAllActions(List<Action> actions) {
+        for (Iterator<Action> iter = actions.iterator(); iter.hasNext();) {
             Action element = (Action) iter.next();
             Filter filter = element.getFilter();
 
@@ -442,9 +432,9 @@ public class WFSTransactionState implements State {
         }
     }
 
-    private InsertAction findFirstInsertAction(List actions) {
+    private InsertAction findFirstInsertAction(List<Action> actions) {
         int i = 0;
-        for (Iterator iter = actions.iterator(); iter.hasNext(); i++) {
+        for (Iterator<Action> iter = actions.iterator(); iter.hasNext(); i++) {
             Object action = iter.next();
             if (action instanceof InsertAction) {
                 return (InsertAction) action;
@@ -453,7 +443,7 @@ public class WFSTransactionState implements State {
         return null;
     }
 
-    private void processInsertAction(List actions, InsertAction action) {
+    private void processInsertAction(List<Action> actions, InsertAction action) {
         int indexOf = actions.indexOf(action);
         while (indexOf + 1 < actions.size() && indexOf != -1) {
             moveUpdateAndMoveInsertAction(actions, indexOf, action);
@@ -461,7 +451,7 @@ public class WFSTransactionState implements State {
         }
     }
 
-    private void moveUpdateAndMoveInsertAction(List actions, int i, InsertAction action) {
+    private void moveUpdateAndMoveInsertAction(List<Action> actions, int i, InsertAction action) {
         if (i + 1 < actions.size()) {
             Object nextAction = actions.get(i + 1);
             if (nextAction instanceof DeleteAction) {
@@ -473,7 +463,7 @@ public class WFSTransactionState implements State {
         }
     }
 
-    private void handleDeleteAction(List actions, int i, InsertAction action,
+    private void handleDeleteAction(List<Action> actions, int i, InsertAction action,
             DeleteAction deleteAction) {
         // if inserted action has been deleted then remove action
         if (deleteAction.getFilter().evaluate(action.getFeature())) {
@@ -491,7 +481,7 @@ public class WFSTransactionState implements State {
         }
     }
 
-    private int handleUpdateAction(List actions, int i, InsertAction action,
+    private int handleUpdateAction(List<Action> actions, int i, InsertAction action,
             UpdateAction updateAction) {
         // if update action applies to feature then update feature
         if (updateAction.getFilter().evaluate(action.getFeature())) {
@@ -516,8 +506,8 @@ public class WFSTransactionState implements State {
      * @param i
      *            item to swap
      */
-    private void swap(List actions, int i) {
-        Object item = actions.remove(i);
+    private void swap(List<Action> actions, int i) {
+        Action item = actions.remove(i);
         actions.add(i + 1, item);
     }
 

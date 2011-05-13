@@ -24,23 +24,23 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Transaction;
-import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.data.wfs.v1_0_0.Action.DeleteAction;
 import org.geotools.data.wfs.v1_0_0.Action.InsertAction;
 import org.geotools.data.wfs.v1_0_0.Action.UpdateAction;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
-import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.LenientBuilder;
 import org.geotools.feature.LenientFeatureFactory;
 import org.geotools.feature.NameImpl;
 import org.geotools.filter.identity.FeatureIdImpl;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -54,14 +54,20 @@ import com.vividsolutions.jts.geom.Geometry;
 
 
 /**
- * DOCUMENT ME!
+ * FeatureStore used to assemble a Transaction Request (issued during commit).
+ * <p>
+ * Please note this FeatureStore does not support working on Transaction.AUTO_COMMIT.
+ * Instead it builds up the Transaction request in a WFSTransactionState; each call
+ * to addFeatures, removeFeatures etc results in a series of "Actions" being recorded.
+ * These actions are used to both modify the contents you are looking at prior to commit
+ * being called; and to construct the Transaction Request when commit() is called.
  *
  * @author dzwiers 
  * @source $URL$
  */
 public class WFSFeatureStore extends WFSFeatureSource implements SimpleFeatureStore {
     protected Transaction trans = Transaction.AUTO_COMMIT;
-
+    
     /**
      * 
      * @param ds
@@ -70,7 +76,11 @@ public class WFSFeatureStore extends WFSFeatureSource implements SimpleFeatureSt
     public WFSFeatureStore(WFS_1_0_0_DataStore ds, String typeName) {
         super(ds, typeName);
     }
-
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @Override
+    public Set getSupportedHints() {
+        return super.getSupportedHints();
+    }
     /**
      * 
      * @see org.geotools.data.AbstractFeatureSource#getTransaction()
@@ -80,7 +90,7 @@ public class WFSFeatureStore extends WFSFeatureSource implements SimpleFeatureSt
     }
 
     public List<FeatureId> addFeatures(final  FeatureReader<SimpleFeatureType, SimpleFeature> reader) throws IOException {
-        List features=new ArrayList();
+        List<SimpleFeature> features=new ArrayList<SimpleFeature>();
         while(reader.hasNext()){
             try {
                 SimpleFeature next = reader.next();
@@ -144,8 +154,9 @@ public class WFSFeatureStore extends WFSFeatureSource implements SimpleFeatureSt
                     	if(geom instanceof Geometry){
 	                        Geometry g = (Geometry) geom;
 	                        CoordinateReferenceSystem cs = ((GeometryDescriptor)att).getCoordinateReferenceSystem();
-	                        if( g==null )
-	                            continue;
+//	                        if( g==null ){
+//	                            continue;
+//	                        }
 	                        if( cs!=null && !cs.getIdentifiers().isEmpty() )
 	                            g.setUserData(cs.getIdentifiers().iterator().next().toString());
 	                        if( bounds==null ){
@@ -253,8 +264,9 @@ public class WFSFeatureStore extends WFSFeatureSource implements SimpleFeatureSt
                 if( cs!=null && !cs.getIdentifiers().isEmpty() )
                     g.setUserData(cs.getIdentifiers().iterator().next().toString());
                 // set/expand the bounds that are being changed.
-                if( g==null )
-                	continue;
+//                if( g==null ){
+//                    continue;
+//                }
                 if( bounds==null ){
                     bounds=new ReferencedEnvelope(g.getEnvelopeInternal(),cs);
                 }else{

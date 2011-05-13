@@ -1952,11 +1952,11 @@ public class WFSTransactionComplexTypes {
                 throw new SAXException("Invalid type name for element provided");
             }
 
-            List fidSet = new ArrayList();
+            List<String> fidSet = new ArrayList<String>();
 
-            for (int i = 0; i < (value.length - 1); i++)
-                fidSet.addAll( (Collection) value[i].getValue());
-
+            for (int i = 0; i < (value.length - 1); i++){
+                fidSet.addAll( (Collection<String>) value[i].getValue());
+            }
             Object[] t = (Object[]) value[value.length - 1].getValue();
             int status = ((Integer) t[0]).intValue();
             SAXException error = (SAXException) ((t.length < 2) ? null : t[1]);

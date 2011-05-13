@@ -187,7 +187,7 @@ public class WFSFeatureReader extends FCBuffer {
                 next = super.next();
             }
         } else {
-            List l = ts.getActions(ft.getTypeName());
+            List<Action> l = ts.getActions(ft.getTypeName());
 
             if ((insertSearchIndex < l.size()) && (next == null) ) {
                 // look for an insert then
@@ -218,7 +218,7 @@ public class WFSFeatureReader extends FCBuffer {
                 if ((ts != null) && (next != null)) {
                     // 	check to make sure it wasn't deleted
                     // 	check for updates
-                    Iterator i = l.iterator();
+                    Iterator<Action> i = l.iterator();
 
                     while (i.hasNext() && (next != null)) {
                         Action a = (Action) i.next();

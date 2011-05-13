@@ -29,7 +29,7 @@ import java.util.logging.Logger;
 import org.geotools.data.AbstractFeatureSource;
 import org.geotools.data.DataStore;
 import org.geotools.data.DefaultFeatureResults;
-import org.geotools.data.DefaultQuery;
+import org.geotools.data.Query;
 import org.geotools.data.FeatureListener;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureSource;
@@ -98,7 +98,7 @@ public class WFSFeatureSource extends AbstractFeatureSource implements SimpleFea
         return new ResourceInfo(){
             public ReferencedEnvelope getBounds() {
                 try {
-                    return ds.getBounds(new DefaultQuery(fname));
+                    return ds.getBounds(new Query(fname));
                 } catch (IOException e) {
                     return new ReferencedEnvelope();
                 }
@@ -184,7 +184,7 @@ public class WFSFeatureSource extends AbstractFeatureSource implements SimpleFea
      * @see org.geotools.data.FeatureSource#getBounds()
      */
     public ReferencedEnvelope getBounds() throws IOException {
-        return getBounds((fname == null) ? Query.ALL : new DefaultQuery(fname));
+        return getBounds((fname == null) ? Query.ALL : new Query(fname));
     }
 
     /**
@@ -198,7 +198,7 @@ public class WFSFeatureSource extends AbstractFeatureSource implements SimpleFea
      * @see org.geotools.data.FeatureSource#getFeatures()
      */
     public SimpleFeatureCollection getFeatures() throws IOException {
-        return getFeatures(new DefaultQuery(getSchema().getTypeName(), Filter.INCLUDE));
+        return getFeatures(new Query(getSchema().getTypeName(), Filter.INCLUDE));
     }
 
     /**
@@ -206,7 +206,7 @@ public class WFSFeatureSource extends AbstractFeatureSource implements SimpleFea
      */
     public SimpleFeatureCollection getFeatures( Filter filter )
             throws IOException {
-        return getFeatures(new DefaultQuery(getSchema().getTypeName(), filter));
+        return getFeatures(new Query(getSchema().getTypeName(), filter));
     }
 
     /**
@@ -219,9 +219,9 @@ public class WFSFeatureSource extends AbstractFeatureSource implements SimpleFea
 
         if (query.getTypeName() == null) { // typeName unspecified we will
             // "any" use a default
-            DefaultQuery defaultQuery = new DefaultQuery(query);
-            defaultQuery.setTypeName(typeName);
-            query = defaultQuery;
+            Query Query = new Query(query);
+            Query.setTypeName(typeName);
+            query = Query;
         }
 
         if (!typeName.equals(query.getTypeName())) {

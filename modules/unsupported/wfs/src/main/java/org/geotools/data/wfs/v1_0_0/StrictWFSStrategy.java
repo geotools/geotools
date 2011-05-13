@@ -23,14 +23,12 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.logging.Level;
 
-import org.geotools.data.DefaultQuery;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FilteringFeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.data.ows.FeatureSetDescription;
 import org.geotools.data.ows.WFSCapabilities;
-import org.geotools.feature.IllegalAttributeException;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.Filters;
 import org.geotools.filter.visitor.WFSBBoxFilterVisitor;
@@ -39,6 +37,7 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.xml.XMLHandlerHints;
 import org.geotools.xml.filter.FilterEncodingPreProcessor;
+import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
@@ -143,7 +142,7 @@ class StrictWFSStrategy extends NonStrictWFSStrategy {
         protected Filter filter;
         private Query query;
         private Transaction transaction;
-        private Set foundFids=new HashSet();
+        private Set<String> foundFids=new HashSet<String>();
         private SimpleFeature next;
 
         public StrictFeatureReader(Transaction transaction, Query query, Integer level) throws IOException {
@@ -158,16 +157,16 @@ class StrictWFSStrategy extends NonStrictWFSStrategy {
             if( visitor.requiresPostProcessing() && query.getPropertyNames()!=Query.ALL_NAMES){
                 FilterAttributeExtractor attributeExtractor=new FilterAttributeExtractor();
                 query.getFilter().accept( attributeExtractor, null );
-                Set properties=new HashSet(attributeExtractor.getAttributeNameSet());
+                Set<String> properties=new HashSet<String>(attributeExtractor.getAttributeNameSet());
                 properties.addAll(Arrays.asList(query.getPropertyNames()));
-                this.query=new DefaultQuery(query.getTypeName(), query.getFilter(), query.getMaxFeatures(),
+                this.query=new Query(query.getTypeName(), query.getFilter(), query.getMaxFeatures(),
                         (String[]) properties.toArray(new String[0]), query.getHandle());
             }else
                 this.query=query;
             
             this.filter=visitor.getFilter();
 
-            DefaultQuery nonFidQuery=new DefaultQuery(query);
+            Query nonFidQuery=new Query(query);
             Id fidFilter = visitor.getFidFilter();
             nonFidQuery.setFilter(fidFilter);
             if( fidFilter.getIDs().size()>0 ){
@@ -221,7 +220,7 @@ class StrictWFSStrategy extends NonStrictWFSStrategy {
             if( filter==null || filter==Filter.EXCLUDE )
                 return null;
 
-            DefaultQuery query2=new DefaultQuery(query);
+            Query query2=new Query(query);
             query2.setFilter(filter);
             
              FeatureReader<SimpleFeatureType, SimpleFeature> nextReader = StrictWFSStrategy.super.createFeatureReader(transaction, query2);

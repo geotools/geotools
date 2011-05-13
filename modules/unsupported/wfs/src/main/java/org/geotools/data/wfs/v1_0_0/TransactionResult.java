@@ -22,7 +22,7 @@ import org.xml.sax.SAXException;
 
 
 /**
- * DOCUMENT ME!
+ * Holds the transaction response document.
  *
  * @author dzwiers
  * @source $URL$
@@ -44,18 +44,14 @@ public class TransactionResult {
      * partial
      */
     public static final int PARTIAL = 4;
+    
     /**
-     * A list of the fids returned in the TransactionResult in the order they were received.  
+     * A list of the fids returned in the TransactionResult in the order they were received.
      * The first element is the FID of the first InsertResults response.
      */
-    private List insertResult;
+    private List<String> insertResult;
     private int status;
-
     private SAXException error;
-
-    private TransactionResult() {
-        // should not be used
-    }
 
     /**
      * 
@@ -63,7 +59,7 @@ public class TransactionResult {
      * @param insertResult
      * @param error
      */
-    public TransactionResult(int status, List insertResult,
+    public TransactionResult(int status, List<String> insertResult,
         SAXException error) {
         this.status = status;
         this.insertResult = insertResult;
@@ -77,7 +73,7 @@ public class TransactionResult {
      * @param locator nullable
      * @param message
      */
-    public TransactionResult(int status, List insertResult,
+    public TransactionResult(int status, List<String> insertResult,
         String locator, String message) {
         this.status = status;
         this.insertResult = insertResult;
@@ -107,7 +103,7 @@ public class TransactionResult {
     }
 
     /**
-     * 
+     * Used to convert getStatus() into a string for display.
      * @param i
      * @return String representation of the constant value in i
      */
@@ -128,7 +124,7 @@ public class TransactionResult {
     }
 
     /**
-     * DOCUMENT ME!
+     * SAXException in the event the response could not be processed.
      *
      * @return Returns the error.
      */
@@ -142,12 +138,12 @@ public class TransactionResult {
      *
      * @return list of the fids returned in the TransactionResult in the order they were received.  
      */
-    public List getInsertResult() {
+    public List<String> getInsertResult() {
         return insertResult;
     }
 
     /**
-     * DOCUMENT ME!
+     * Status of result (either FAILED, NO_STATUS, PARTIAL or SUCCESS).
      *
      * @return Returns the status.
      */

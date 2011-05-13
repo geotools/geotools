@@ -18,7 +18,6 @@ package org.geotools.data.wfs.v1_0_0;
 
 import java.io.IOException;
 
-import org.geotools.data.DefaultQuery;
 import org.geotools.data.EmptyFeatureReader;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FilteringFeatureReader;
@@ -60,10 +59,10 @@ class NonStrictWFSStrategy implements WFSStrategy {
     }
 
     public  FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(Query query2, Transaction transaction) throws IOException {
-        Query query = new DefaultQuery(query2);
+        Query query = new Query(query2);
         Filter processedFilter = store.processFilter(query.getFilter());
         // process the filter to update fidfilters using the transaction.
-        ((DefaultQuery) query).setFilter(processedFilter);
+        ((Query) query).setFilter(processedFilter);
         Filter serverFilter;
         Filter postFilter;
         {
@@ -74,7 +73,7 @@ class NonStrictWFSStrategy implements WFSStrategy {
 
         CoordinateReferenceSystem dataCRS = correctFilterForServer( query.getTypeName(), serverFilter);
 
-        ((DefaultQuery) query).setFilter(serverFilter);
+        ((Query) query).setFilter(serverFilter);
          FeatureReader<SimpleFeatureType, SimpleFeature> reader = createFeatureReader(transaction, query);
 
         if (reader.hasNext()) { // opportunity to throw exception

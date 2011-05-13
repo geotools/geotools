@@ -30,6 +30,7 @@ public class LockResult {
     protected FidFilter supported;
     protected FidFilter notSupported;
 
+    @SuppressWarnings("unused")
     private LockResult() {
         // should not be used
     }

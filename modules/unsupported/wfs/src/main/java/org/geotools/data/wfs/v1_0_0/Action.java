@@ -22,9 +22,9 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.LenientBuilder;
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
+import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
@@ -73,7 +73,7 @@ public interface Action {
      */
     public static class UpdateAction implements Action {
         private final Filter filter;
-        private final Map properties;
+        private final Map<String,Object> properties;
         private final String typeName;
 
         /**
@@ -84,12 +84,12 @@ public interface Action {
          * @param properties The properties to update.  Entries must be <String, Object>  where String is an attribute to 
          * update and Object is the new Value.
          */
-        public UpdateAction(String typeName, Filter f, Map properties) {
-            DuplicatingFilterVisitor duplicator = new DuplicatingFilterVisitor();
+        public UpdateAction(String typeName, Filter f, Map<String,Object> properties) {
+            //DuplicatingFilterVisitor duplicator = new DuplicatingFilterVisitor();
             
             DuplicatingFilterVisitor visitor=new DuplicatingFilterVisitor();
             filter = (Filter) f.accept(visitor, null );
-            this.properties = new HashMap(properties);
+            this.properties = new HashMap<String,Object>(properties);
             this.typeName = typeName;
         }
 
@@ -125,8 +125,8 @@ public interface Action {
         /**
          * @return a clone of the properties map, null if it does not exist. 
          */
-        public Map getProperties() {
-            return properties==null?null:new HashMap(properties);
+        public Map<String,Object> getProperties() {
+            return properties==null?null:new HashMap<String,Object>(properties);
         }
 
         /**

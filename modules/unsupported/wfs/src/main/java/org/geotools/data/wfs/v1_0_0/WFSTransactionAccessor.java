@@ -27,10 +27,10 @@ import org.opengis.filter.FilterFactory;
 
 public class WFSTransactionAccessor implements ClientTransactionAccessor {
 
-    private List actions;
+    private List<Action> actions;
     private static FilterFactory ff = CommonFactoryFinder.getFilterFactory( null );
     
-	WFSTransactionAccessor(List actions){
+	WFSTransactionAccessor(List<Action> actions){
         this.actions=actions;
 	}
 	
@@ -41,8 +41,8 @@ public class WFSTransactionAccessor implements ClientTransactionAccessor {
      * @return all the filters indicating deleted feature anded together. 
      */
 	public Filter getDeleteFilter() {
-		List l = actions;
-		Iterator i = l.iterator();
+		List<Action> l = actions;
+		Iterator<Action> i = l.iterator();
 		Filter deleteFilter=null;
 		while(i.hasNext()){
 			Action a = (Action)i.next();
@@ -65,7 +65,7 @@ public class WFSTransactionAccessor implements ClientTransactionAccessor {
      * @return all the filters of updates that affect the attribute in the expression ORed together.
      */
     public Filter getUpdateFilter(String attributePath) {
-        Iterator i = actions.iterator();
+        Iterator<Action> i = actions.iterator();
         Filter updateFilter=null;
         while(i.hasNext()){
         	Action a = (Action)i.next();

@@ -40,7 +40,7 @@ public class LockRequest extends FeatureLock {
         // should not be used
     }
 
-    protected LockRequest(long duration, Map dataSets) {
+    protected LockRequest(long duration, Map<String,Filter> dataSets) {
         super( null, duration );
         //this.duration = duration;
         types = (String[]) dataSets.keySet().toArray(new String[dataSets.size()]);

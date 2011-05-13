@@ -43,7 +43,7 @@ import org.opengis.filter.identity.FeatureId;
  */
 public class FidFilterVisitorTest extends TestCase {
 
-	private FidFilterVisitor visitor;
+	private UpdateFidFilterVisitor visitor;
 	private FilterFactory2 ff=CommonFactoryFinder.getFilterFactory2(null);
 	private Map<String,String> state;
 	
@@ -53,7 +53,7 @@ public class FidFilterVisitorTest extends TestCase {
 		state.put("new2","final2");
 		state.put("new3","final3");
 		
-		visitor=new FidFilterVisitor(state); 
+		visitor=new UpdateFidFilterVisitor(state); 
 	}
 
    /**
@@ -100,7 +100,7 @@ public class FidFilterVisitorTest extends TestCase {
     }
     
 	/**
-	 * Test method for {@link org.geotools.wfs.v_1_0_0.data.FidFilterVisitor#visit(org.geotools.filter.LogicFilter)}.
+	 * Test method for {@link org.geotools.wfs.UpdateFidFilterVisitor.data.FidFilterVisitor#visit(org.geotools.filter.LogicFilter)}.
 	 */
 	public void testVisitLogicFilterOR() throws Exception {
 	    Set<FeatureId> fidSet1 = Collections.singleton(ff.featureId("new1"));
@@ -115,7 +115,7 @@ public class FidFilterVisitorTest extends TestCase {
 	}
 	
 	/**
-	 * Test method for {@link org.geotools.wfs.v_1_0_0.data.FidFilterVisitor#visit(org.geotools.filter.FidFilter)}.
+	 * Test method for {@link org.geotools.wfs.UpdateFidFilterVisitor.data.FidFilterVisitor#visit(org.geotools.filter.FidFilter)}.
 	 */
 	public void testVisitLogicFilterNOT() {
         Set<FeatureId> fidSet1 = Collections.singleton(ff.featureId("new1"));

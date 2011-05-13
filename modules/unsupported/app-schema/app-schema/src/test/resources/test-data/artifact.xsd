@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="urn:example:xmlns:ArtifactML:1.0" version="1.0.0" elementFormDefault="qualified" attributeFormDefault="unqualified"
+           xmlns="http://www.w3.org/2001/XMLSchema"
+           xmlns:ex="urn:example:xmlns:ArtifactML:1.0"
+           xmlns:gml="http://www.opengis.net/gml"
+        >
+
+    <annotation>
+        <documentation>Schema of new artifact repository
+        </documentation>
+    </annotation>
+    <import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+
+    <element name="Artifact" substitutionGroup="gml:_Feature" type="ex:ArtifactType"/>
+    <complexType name="ArtifactType">
+        <complexContent>
+            <extension base="gml:AbstractFeatureType">
+                <sequence minOccurs="1">
+                    <element name="id" type="unsignedLong"/>
+                    <element name="seqId" type="unsignedLong"/>
+                    <element maxOccurs="unbounded" minOccurs="0" name="attributes" type="ex:AttributePropertyType"/>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="AttributeListType">
+        <sequence minOccurs="0" maxOccurs="unbounded">
+            <element ref="ex:Attribute"/>
+        </sequence>
+    </complexType>
+    <complexType name="AttributePropertyType">
+        <sequence minOccurs="1">
+            <element ref="ex:Attribute"/>
+        </sequence>
+    </complexType>
+
+    <element name="Attribute" type="ex:AttributeType"/>
+    <complexType name="AttributeType" abstract="true">
+        <sequence minOccurs="1" maxOccurs="1">
+            <element name="key" type="anyURI" minOccurs="1" maxOccurs="1"/>
+            <element name="dateCreated" type="dateTime"/>
+            <element name="dateModified" type="dateTime" minOccurs="0"/>
+            <element name="provenance" type="string" minOccurs="0"/>
+        </sequence>
+    </complexType>
+
+    <element name="StringAttribute" substitutionGroup="ex:Attribute">
+        <complexType>
+            <complexContent>
+                <extension base="ex:AttributeType">
+                    <sequence>
+                        <element name="value" type="string"/>
+                    </sequence>
+                </extension>
+            </complexContent>
+        </complexType>
+    </element>
+    <element name="TemporalAttribute" substitutionGroup="ex:Attribute">
+        <complexType>
+            <complexContent>
+                <extension base="ex:AttributeType">
+                    <sequence>
+                        <element name="value" type="dateTime"/>
+                    </sequence>
+                </extension>
+            </complexContent>
+        </complexType>
+    </element>
+    <element name="NumberAttribute" substitutionGroup="ex:Attribute">
+        <complexType>
+            <complexContent>
+                <extension base="ex:AttributeType">
+                    <choice>
+                        <element name="value" type="double"/>
+                        <element name="value" type="long"/>
+                    </choice>
+                </extension>
+            </complexContent>
+        </complexType>
+    </element>
+    <element name="GeoAttribute" substitutionGroup="ex:Attribute">
+        <complexType>
+            <complexContent>
+                <extension base="ex:AttributeType">
+                    <sequence>
+                        <element name="value" type="gml:GeometryPropertyType"/>
+                    </sequence>
+                </extension>
+            </complexContent>
+        </complexType>
+    </element>
+
+</schema>

@@ -16,19 +16,19 @@
  */
 package org.geotools.data.wfs.v1_0_0;
 
-import org.geotools.filter.FidFilter;
+import org.opengis.filter.Id;
 
 
 /**
- * DOCUMENT ME!
+ * Result of locking features (listing both locked and unlocked features).
  *
  * @author dzwiers
  * @source $URL$
  */
 public class LockResult {
     protected String lockId;
-    protected FidFilter supported;
-    protected FidFilter notSupported;
+    protected Id supported;
+    protected Id notSupported;
 
     @SuppressWarnings("unused")
     private LockResult() {
@@ -41,7 +41,7 @@ public class LockResult {
      * @param supported
      * @param notSupported
      */
-    public LockResult(String lockId, FidFilter supported, FidFilter notSupported) {
+    public LockResult(String lockId, Id supported, Id notSupported) {
         this.lockId = lockId;
         this.supported = supported;
         this.notSupported = notSupported;
@@ -57,20 +57,20 @@ public class LockResult {
     }
 
     /**
-     * DOCUMENT ME!
+     * Filter of all the features that could not be locked.
      *
      * @return Returns the notSupported.
      */
-    public FidFilter getNotSupported() {
+    public Id getNotSupported() {
         return notSupported;
     }
 
     /**
-     * DOCUMENT ME!
+     * Filter of all the features that were locked.
      *
      * @return Returns the supported.
      */
-    public FidFilter getSupported() {
+    public Id getSupported() {
         return supported;
     }
 }

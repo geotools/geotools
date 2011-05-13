@@ -47,6 +47,7 @@ import org.xml.sax.SAXException;
 class NonStrictWFSStrategy implements WFSStrategy {
 
     protected WFS_1_0_0_DataStore store;
+    @SuppressWarnings("unused")
     private Integer compliance;
 
     public NonStrictWFSStrategy(WFS_1_0_0_DataStore store) {

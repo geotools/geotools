@@ -19,7 +19,7 @@ package org.geotools.data.wfs.v1_0_0;
 import java.util.Map;
 
 import org.geotools.data.FeatureLock;
-import org.geotools.filter.Filter;
+import org.opengis.filter.Filter;
 
 
 /**

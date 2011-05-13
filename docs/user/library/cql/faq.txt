@@ -60,10 +60,10 @@ the following still works:
    :end-before: // comparisonCQLCompatibility end
 
 The ECQL has a syntax more flexible and nearest to the natural language. 
-By example, ECQL allows to use a property Name in the right hand of comparison 
+By example, ECQL allows to use an expression in the left hand of comparison 
 as is showed in the following example
 
 .. literalinclude:: /../src/main/java/org/geotools/cql/ECQLExamples.java
    :language: java
-   :start-after: // comparisonPredicateECQL start
-   :end-before: // comparisonPredicateECQL end
+   :start-after: // expressionLessThanOrEqualToProperty start
+   :end-before: // expressionLessThanOrEqualToProperty end

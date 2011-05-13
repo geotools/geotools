@@ -41,15 +41,29 @@ Examples
   
   The CQL language limited us to referencing a propertyName against
   a more general expression.
-  
-  ECQL allows you to use full expressions everywhere::
+
+  ECQL allows you to use full expressions everywhere:
+
+  .. literalinclude:: /../src/main/java/org/geotools/cql/ECQLExamples.java
+    :language: java
+    :start-after: // expressionLessThanOrEqualToProperty start
+    :end-before: // expressionLessThanOrEqualToProperty end        
+
+  .. literalinclude:: /../src/main/java/org/geotools/cql/ECQLExamples.java
+    :language: java
+    :start-after: // comparisonUsingExpressions start
+    :end-before: // comparisonUsingExpressions end        
         
-        Filter filter = ECQL.toFilter("POP_RANK > 6");
-        Filter filter = ECQL.toFilter("(x+4) > (y - 5)");
-        Filter filter = ECQL.toFilter("POP_RANK BETWEEN 10 AND 20");
+  .. literalinclude:: /../src/main/java/org/geotools/cql/ECQLExamples.java
+    :language: java
+    :start-after: // betweenPredicate start
+    :end-before: // betweenPredicate end        
         
- 
-        Filter filter = ECQL.toFilter("area( SHAPE ) BETWEEN 10000 AND 30000");
+  .. literalinclude:: /../src/main/java/org/geotools/cql/ECQLExamples.java
+    :language: java
+    :start-after: // betweenUsingExpression start
+    :end-before: // betweenUsingExpression end        
+
 
 * Filter by a List of Features' ID
   
@@ -78,19 +92,26 @@ Examples
 
 * Filter using a text pattern:
 
-.. literalinclude:: /../src/main/java/org/geotools/cql/ECQLExamples.java
-   :language: java
-   :start-after: // ecql likePredicate start
-   :end-before: // ecql likePredicate end
+  Filter for a text pattern using **LIKE** keyword:
 
-.. literalinclude:: /../src/main/java/org/geotools/cql/ECQLExamples.java
-   :language: java
-   :start-after: // ecql ilikePredicate start
-   :end-before: // ecql ilikePredicate end
-.. literalinclude:: /../src/main/java/org/geotools/cql/ECQLExamples.java
-   :language: java
-   :start-after: // ecql likePredicateInString start
-   :end-before: // ecql likePredicateInString end
+  .. literalinclude:: /../src/main/java/org/geotools/cql/ECQLExamples.java
+     :language: java
+     :start-after: // ecql likePredicate start
+     :end-before: // ecql likePredicate end
+
+  Case insensitive example with **ILIKE** keyword:
+
+  .. literalinclude:: /../src/main/java/org/geotools/cql/ECQLExamples.java
+     :language: java
+     :start-after: // ecql ilikePredicate start
+     :end-before: // ecql ilikePredicate end
+     
+  ECQL allows you to test any two expression, including literals:
+
+  .. literalinclude:: /../src/main/java/org/geotools/cql/ECQLExamples.java
+     :language: java
+     :start-after: // ecql likePredicateInString start
+     :end-before: // ecql likePredicateInString end
 
 
 * Filter by spatial relation:

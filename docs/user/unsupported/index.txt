@@ -11,24 +11,16 @@ for those of you wanting a sneak peek.
 
 The following modules are provided for your amusement only; you can use these pages to swap tips, horror stories and we hope collaborate on making these modules part of our library:
 
-Under active development:
 
 .. toctree::
    :maxdepth: 1
+   :hidden:
 
    app-schema
    grid
    swing/index
    swt/index
    example
-   jai-tools
-   gpx2
-   
-Volunteers needed:
-
-.. toctree::
-   :maxdepth: 1
-
    geometry/index
    jts-wrapper
    postgis-versioned/index
@@ -36,43 +28,167 @@ Volunteers needed:
    wps
    geojson
 
-Unsupported Referencing implementations:
+| 
 
-* :doc:`/library/referencing/oracle`
-* :doc:`/library/referencing/h2`
+.. list-table:: **Modules under active development**
+   :header-rows: 1
 
-Unsupported DataStore:
+   * - Module
+     - Description
 
-* :doc:`/library/data/caching`
-* :doc:`/library/data/csv`
-* :doc:`/library/data/dxf`
-* :doc:`/library/data/edigeo`
-* :doc:`/library/data/excel`
-* :doc:`/library/data/geometryless`
-* :doc:`/library/data/georest`
-* :doc:`/library/data/ogr`
-* :doc:`/library/data/wfs`
-* :doc:`/library/data/wfs-ng`
-* :doc:`/library/data/sfs`
-* :doc:`/library/data/vpf`
+   * - :doc:`app-schema`
+     - Provides support for complex features defined by a GML application schema
 
-Unsupported Coverage:
+   * - :doc:`grid`
+     - Generates vector grids (lattices) of polygons or lines
 
-* :doc:`/library/coverage/coverageio`
-* :doc:`/library/coverage/experiment`
-* :doc:`/library/coverage/geotiff_new`
-* :doc:`/library/coverage/grassraster`
-* :doc:`/library/coverage/matlab`
-* :doc:`/library/coverage/netCDF`
-* :doc:`/library/coverage/tools`
+   * - :doc:`swing/index`
+     - A small collection of GUI components and utilities based on the Swing framework
 
-To removed:
+   * - :doc:`swt/index`
+     - A small collection of GUI components and utilities based on the SWT framework
 
-* :doc:`/library/data/oracle` replaced by gt-jdbc-oracle
-* :doc:`/library/data/postgis` replaced by gt-jdbc-postgis
-* :doc:`/library/data/mysql` replaced by gt-jdbc-mysql
-* :doc:`/library/render/shapefile` replaced by gt-render
-* :doc:`/library/data/sql` replaced by gt-jdbc
+   * - :doc:`example`
+     - An example that can be used when creating a new unsupported module
+
+|
+
+.. list-table:: **Modules for which volunteers are needed**
+   :header-rows: 1
+
+   * - Module
+     - Description
+
+   * - :doc:`geometry/index`
+     - Alternative geometry implementation with support for curves and surfaces. Not currently used by any
+       GeoTools modules
+
+   * - :doc:`jts-wrapper`
+     - ISO Geometry interfaces implemented as wrappers around the Java Topology Suite SFSQL implementations
+
+   * - :doc:`postgis-versioned/index`
+     - Builds a data model supporting feature revisions on top of the PostGIS datastore
+
+   * - :doc:`process/index`
+     - API for working with GeoSpatial processes and annotations to make defining additional processes easy
+
+   * - :doc:`wps`
+     - Provides a “WPS client” API so programmers can easily build Web Process Service requests and parse the responses
+
+   * - :doc:`geojson`
+     - Demonstrates how to encode and decode GeoJSON files into GeoTools Feature Collections
+
+|
+
+.. list-table:: **Unsupported Referencing implementations**
+   :header-rows: 1
+
+   * - Module
+     - Description
+
+   * - :doc:`/library/referencing/oracle`
+     - description pending
+
+   * - :doc:`/library/referencing/h2`
+     - description pending
+
+|
+
+.. list-table:: **Unsupported DataStore implementations**
+   :header-rows: 1
+
+   * - Module
+     - Description
+
+   * - :doc:`/library/data/caching`
+     - description pending
+
+   * - :doc:`/library/data/csv`
+     - description pending
+
+   * - :doc:`/library/data/dxf`
+     - description pending
+
+   * - :doc:`/library/data/edigeo`
+     - description pending
+
+   * - :doc:`/library/data/excel`
+     - description pending
+
+   * - :doc:`/library/data/geometryless`
+     - description pending
+
+   * - :doc:`/library/data/georest`
+     - description pending
+
+   * - :doc:`/library/data/ogr`
+     - description pending
+
+   * - :doc:`/library/data/wfs`
+     - description pending
+
+   * - :doc:`/library/data/wfs-ng`
+     - description pending
+
+   * - :doc:`/library/data/sfs`
+     - description pending
+
+   * - :doc:`/library/data/vpf`
+     - description pending
+
+|
+
+.. list-table:: **Unsupported raster data modules**
+   :header-rows: 1
+
+   * - Module
+     - Description
+
+   * - :doc:`/library/coverage/coverageio`
+     - description pending
+
+   * - :doc:`/library/coverage/experiment`
+     - description pending
+
+   * - :doc:`/library/coverage/geotiff_new`
+     - description pending
+
+   * - :doc:`/library/coverage/grassraster`
+     - description pending
+
+   * - :doc:`/library/coverage/matlab`
+     - description pending
+
+   * - :doc:`/library/coverage/netCDF`
+     - description pending
+
+   * - :doc:`/library/coverage/tools`
+     - description pending
+
+|
+
+.. list-table:: **Modules scheduled to be removed**
+   :header-rows: 1
+
+   * - Module
+     - Description
+
+   * - :doc:`/library/data/oracle` replaced by gt-jdbc-oracle
+     - description pending
+
+   * - :doc:`/library/data/postgis` replaced by gt-jdbc-postgis
+     - description pending
+
+   * - :doc:`/library/data/mysql` replaced by gt-jdbc-mysql
+     - description pending
+
+   * - :doc:`/library/render/shapefile` replaced by gt-render
+     - description pending
+
+   * - :doc:`/library/data/sql` replaced by gt-jdbc
+     - description pending
+
+|
 
 .. note:: 
    

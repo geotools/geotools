@@ -22,7 +22,7 @@
   <!-- =========================================================== -->
   <groupId>org.geotools</groupId>
   <artifactId>docs</artifactId>
-  <packaging>jar</packaging>
+  <packaging>pom</packaging>
   <name>Geotools Documentation</name>
   <description>GeoTools website, user and developer guides.</description>
 
@@ -224,7 +224,7 @@
             <phase>compile</phase>
             <configuration>
               <tasks>
-                <ant antfile="build.xml" dir="${basedir}" target="build">
+                <ant antfile="build.xml" dir="${basedir}" target="${target}">
                   <property name="build.directory" value="${build.directory}"/>
                   <!-- may be ${project.version} when tagged -->
                   <property name="project.version" value="8.0-M0"/>
@@ -239,5 +239,36 @@
       </plugin>
     </plugins>
   </build>
+
+  <properties>
+     <target>full</target>
+  </properties>
+
+  <profiles>
+    <profile>
+      <id>index</id>
+      <properties>
+        <target>index</target>
+      </properties>
+    </profile>
+    <profile>
+      <id>user</id>
+      <properties>
+        <target>user</target>
+      </properties>
+    </profile>
+    <profile>
+      <id>web</id>
+      <properties>
+        <target>web</target>
+      </properties>
+    </profile>
+    <profile>
+      <id>developer</id>
+      <properties>
+        <target>developer</target>
+      </properties>
+    </profile>
+  </profiles>
 
 </project>

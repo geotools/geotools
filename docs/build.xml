@@ -1,7 +1,7 @@
-<project name="docs" default="build">
+<project name="docs" default="full">
 
-	<target name="build">
-		<property environment="env"/>
+        <target name="init">
+                <property environment="env"/>
 		<condition property="sphinx.available">
 			<or>
 				<available file="sphinx-build" filepath="${env.PATH}"/>
@@ -22,53 +22,72 @@
 			</or>
 		</condition>
 
+		<condition property="build.directory" value="${build.directory}" else="${basedir}/target">
+			<isset property="build.directory" />
+		</condition>
+
+                <condition property="project.version" value="${project.version}" else="8.0-M0">
+			<isset property="project.version" />
+		</condition>
+
+                <echo message="Build directory is ${build.directory} and project version is ${project.version}"/>
+        </target>
+
+	<target name="clean" depends="init">
+		<delete includeemptydirs="true">
+			<fileset dir="${build.directory}" defaultexcludes="false">
+				<include name="**/" />
+			</fileset>
+		</delete>
+	</target>
+
+	<target name="index" depends="init">
 		<antcall target="sphinx-ignore-warnings">
 			<param name="id" value="index"/>
 			<param name="build" value="html"/>
-		</antcall>
+		</antcall>	
+	</target>
 
+	<target name="user" depends="init">
 		<antcall target="sphinx">
 			<param name="id" value="user" />
 			<param name="build" value="html" />
 		</antcall>
+	</target>
 
+	<target name="web" depends="init">
 		<antcall target="sphinx">
 			<param name="id" value="web"/>
 			<param name="build" value="html"/>
 		</antcall>
+	</target>
 
-		<!-- uncomment for developers guide -->
+	<target name="developer" depends="init">
 		<antcall target="sphinx">
 			<param name="id" value="developer"/>
 			<param name="build" value="html"/>
 		</antcall>
-		<!-- uncomment for pdf -->
-		<!--antcall target="pdf">
-      <param name="id" value="tutorial"/>
-      <param name="build" value="pdf"/>
-    </antcall-->
-		<!--antcall target="latex">
-      <param name="id" value="tutorial"/>
-      <param name="build" value="latex"/>
-    </antcall-->
 	</target>
 
+	<target name="full" depends="index,user,web,developer">
+	</target>
 
 	<target name="sphinx-ignore-warnings" if="sphinx.available">
 		<exec executable="sphinx-build" failonerror="true" dir="${basedir}/${id}">
-			<arg line="-D release=${project.version} -a -E -b ${build} -d &quot;${build.directory}/${id}/doctrees&quot; . &quot;${build.directory}/${id}/${build}&quot;"/>
+			<arg line="-D release=${project.version} -b ${build} -d &quot;${build.directory}/${id}/doctrees&quot; . &quot;${build.directory}/${id}/${build}&quot;"/>
 		</exec>
 	</target>
     
     <target name="sphinx" if="sphinx.available">
+                <echo message="Running sphinx-build -D release=${project.version} -b ${build} -d &quot;${build.directory}/${id}/doctrees&quot; . &quot;${build.directory}/${id}/${build}&quot;"/> 
 		<exec executable="sphinx-build" failonerror="true" dir="${basedir}/${id}">
-			<arg line="-D release=${project.version} -a -W -E -b ${build} -d &quot;${build.directory}/${id}/doctrees&quot; . &quot;${build.directory}/${id}/${build}&quot;"/>
+			<arg line="-D release=${project.version} -b ${build} -d &quot;${build.directory}/${id}/doctrees&quot; . &quot;${build.directory}/${id}/${build}&quot;"/>
 		</exec>
 	</target>
 
 	<target name="latex" if="latex.available">
 		<exec executable="sphinx-build" failonerror="true" dir="${basedir}/${id}">
-			<arg line="-D release=${project.version} -a -E -b latex -d &quot;${build.directory}/${id}/doctrees&quot; . &quot;${build.directory}/${id}/${build}&quot;"/>
+			<arg line="-D release=${project.version} -b latex -d &quot;${build.directory}/${id}/doctrees&quot; . &quot;${build.directory}/${id}/${build}&quot;"/>
 		</exec>
 	</target>
 

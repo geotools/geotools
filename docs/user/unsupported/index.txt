@@ -11,7 +11,7 @@ for those of you wanting a sneak peek.
 
 The following modules are provided for your amusement only; you can use these pages to swap tips, horror stories and we hope collaborate on making these modules part of our library:
 
-
+   
 .. toctree::
    :maxdepth: 1
    :hidden:
@@ -87,11 +87,11 @@ The following modules are provided for your amusement only; you can use these pa
      - Description
 
    * - :doc:`/library/referencing/oracle`
-     - Allows an application to work an :ref:`EPSG <http://www.epsg-registry.org/>` table of map projections in an 
+     - Allows an application to work an `EPSG <http://www.epsg-registry.org/>`_ table of map projections in an 
        Oracle database
 
    * - :doc:`/library/referencing/h2`
-     - Allows an application to work an :ref:`EPSG <http://www.epsg-registry.org/>` table of map projections in an 
+     - Allows an application to work an `EPSG <http://www.epsg-registry.org/>`_ table of map projections in an 
        H2 (pure Java) database
 
 |
@@ -180,10 +180,10 @@ The following modules are provided for your amusement only; you can use these pa
      - Description
 
    * - :doc:`/library/data/postgis` replaced by gt-jdbc-postgis
-     - description pending
+     - A DataStore implementation to access a PostGIS database. Old code, replacd by gt-jdbc-postgis, still available because postgis-versioning depends on it
 
    * - :doc:`/library/render/shapefile` replaced by gt-render
-     - description pending
+     - A custom renderer for shapefiles. About to be dropped since most of the optimizations have already been generalized and moved to gt-renderer, does not have anymore a maintainer interested in it
 
 |
 

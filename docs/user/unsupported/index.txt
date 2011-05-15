@@ -17,16 +17,19 @@ The following modules are provided for your amusement only; you can use these pa
    :hidden:
 
    app-schema
-   grid
-   swing/index
-   swt/index
    example
+   geojson
+   grid
    geometry/index
+   image-collection
    jts-wrapper
+   mark-wkt
    postgis-versioned/index
    process/index   
+   swing/index
+   swt/index
    wps
-   geojson
+   
 
 | 
 
@@ -45,6 +48,9 @@ The following modules are provided for your amusement only; you can use these pa
    * - :doc:`grid`
      - Generates vector grids (lattices) of polygons or lines
 
+   * - :doc:`image-collection`
+     - Publishes a large collection of non georeferenced images as a coverage reader     
+     
    * - :doc:`mark-wkt`
      - A MarkFactory allowing the user to specify the shape using the simple geometry WKT syntax
 

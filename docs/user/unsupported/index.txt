@@ -23,7 +23,7 @@ The following modules are provided for your amusement only; you can use these pa
    geometry/index
    image-collection
    jts-wrapper
-   mark-wkt
+   wkt
    postgis-versioned/index
    process/index   
    swing/index
@@ -51,7 +51,7 @@ The following modules are provided for your amusement only; you can use these pa
    * - :doc:`image-collection`
      - Publishes a large collection of non georeferenced images as a coverage reader     
      
-   * - :doc:`mark-wkt`
+   * - :doc:`wkt`
      - A MarkFactory allowing the user to specify the shape using the simple geometry WKT syntax
 
    * - :doc:`swing/index`

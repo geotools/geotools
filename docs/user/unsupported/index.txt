@@ -165,13 +165,7 @@ The following modules are provided for your amusement only; you can use these pa
    * - :doc:`/library/coverage/geotiff_new`
      - description pending
 
-   * - :doc:`/library/coverage/grassraster`
-     - description pending
-
    * - :doc:`/library/coverage/matlab`
-     - description pending
-
-   * - :doc:`/library/coverage/netCDF`
      - description pending
 
    * - :doc:`/library/coverage/tools`
@@ -185,19 +179,10 @@ The following modules are provided for your amusement only; you can use these pa
    * - Module
      - Description
 
-   * - :doc:`/library/data/oracle` replaced by gt-jdbc-oracle
-     - description pending
-
    * - :doc:`/library/data/postgis` replaced by gt-jdbc-postgis
      - description pending
 
-   * - :doc:`/library/data/mysql` replaced by gt-jdbc-mysql
-     - description pending
-
    * - :doc:`/library/render/shapefile` replaced by gt-render
-     - description pending
-
-   * - :doc:`/library/data/sql` replaced by gt-jdbc
      - description pending
 
 |

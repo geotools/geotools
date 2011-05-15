@@ -87,10 +87,12 @@ The following modules are provided for your amusement only; you can use these pa
      - Description
 
    * - :doc:`/library/referencing/oracle`
-     - description pending
+     - Allows an application to work an :ref:`EPSG <http://www.epsg-registry.org/>` table of map projections in an 
+       Oracle database
 
    * - :doc:`/library/referencing/h2`
-     - description pending
+     - Allows an application to work an :ref:`EPSG <http://www.epsg-registry.org/>` table of map projections in an 
+       H2 (pure Java) database
 
 |
 
@@ -99,42 +101,52 @@ The following modules are provided for your amusement only; you can use these pa
 
    * - Module
      - Description
+     - Status
 
    * - :doc:`/library/data/caching`
-     - description pending
+     - Shows how to to cache a FeatureSource. Intended for use with a web feature server, maintaining a cache of 
+       retrieved features.
+     - Working example
 
    * - :doc:`/library/data/csv`
-     - description pending
+     - Support for the comma-separated values (CSV) file format
+     - Under development
 
    * - :doc:`/library/data/dxf`
-     - description pending
+     - Support for DXF format files
+     - Inactive
 
    * - :doc:`/library/data/edigeo`
-     - description pending
+     - Support for EDIGEO file format
+     - Inactive
 
    * - :doc:`/library/data/excel`
-     - description pending
-
-   * - :doc:`/library/data/geometryless`
-     - description pending
+     - Support for Microsoft Excel files
+     - Under development ?
 
    * - :doc:`/library/data/georest`
-     - description pending
+     - Support for a REST service using GeoJSON
+     - Unknown
 
    * - :doc:`/library/data/ogr`
-     - description pending
+     - Support for a range of vector file formats using the OGR library
+     - Inactive
 
    * - :doc:`/library/data/wfs`
-     - description pending
+     - Supports communcation with a Web Feature Server using the standard GeoTools DataStore API
+     - Stable but not actively maintained
 
    * - :doc:`/library/data/wfs-ng`
-     - description pending
+     - Experimental code for "next generation" Web Feature Server support
+     - Inactive
 
    * - :doc:`/library/data/sfs`
-     - description pending
+     - Support for the experimental GeoServer Simple Feature Service
+     - Unknown
 
    * - :doc:`/library/data/vpf`
-     - description pending
+     - Support for VPF (Vector Product Format) files
+     - Inactive
 
 |
 

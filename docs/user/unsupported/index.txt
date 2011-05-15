@@ -39,18 +39,21 @@ The following modules are provided for your amusement only; you can use these pa
    * - :doc:`app-schema`
      - Provides support for complex features defined by a GML application schema
 
+   * - :doc:`example`
+     - An example that can be used when creating a new unsupported module
+     
    * - :doc:`grid`
      - Generates vector grids (lattices) of polygons or lines
+
+   * - :doc:`mark-wkt`
+     - A MarkFactory allowing the user to specify the shape using the simple geometry WKT syntax
 
    * - :doc:`swing/index`
      - A small collection of GUI components and utilities based on the Swing framework
 
    * - :doc:`swt/index`
      - A small collection of GUI components and utilities based on the SWT framework
-
-   * - :doc:`example`
-     - An example that can be used when creating a new unsupported module
-
+     
 |
 
 .. list-table:: **Modules for which volunteers are needed**

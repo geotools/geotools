@@ -898,7 +898,7 @@ public class Encoder {
                     schemaLocations = null;
                 }
 
-                start(entry.encoding, entry.element);
+                start(entry.encoding);
 
                 //TODO: this method of getting at properties wont maintain order very well, need
                 // to come up with a better system that is capable of hanlding feature types
@@ -1107,7 +1107,7 @@ O:
         return null;
     }
 
-    protected void start(Element element, XSDElementDeclaration declaration) throws SAXException {
+    protected void start(Element element) throws SAXException {
         String uri = element.getNamespaceURI();
         String local = element.getLocalName();
 
@@ -1115,7 +1115,7 @@ O:
 
         NamespaceSupport namespaces = this.namespaces;
 
-        if (namespaceAware && declaration.isGlobal()) {
+        if (namespaceAware) {
             uri = (uri != null) ? uri : namespaces.getURI("");
             qName = namespaces.getPrefix(uri) + ":" + qName;
         } else {
@@ -1141,10 +1141,8 @@ O:
             Node node = (Node) element.getChildNodes().item(i);
 
             if (node instanceof Element) {
-                Element child = (Element) node;
-				start(child, Schemas.getChildElementDeclaration(declaration, 
-						new QName(child.getNamespaceURI(), child.getNodeName())));
-                end(child);
+                start((Element) node);
+                end((Element) node);
             }
         }
 

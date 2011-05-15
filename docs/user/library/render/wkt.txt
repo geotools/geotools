@@ -1,5 +1,5 @@
-Mark WKT Plugin
----------------
+WKT Plugin
+----------
 
 This plugin adds the rendering of marks built from WKT geometries; moreover, it adds some Java-generated shapes that are used to draw meteorological symbols... hope the weathermen will find this useful.
 
@@ -78,8 +78,6 @@ To reference the above property file in your SLD, prefixed like this (note the p
   
   <WellKnownName>wktlib://wkt.properties#ls</WellKnownName>
 
-The location of the property file is either to be provided as an absolute path, or should be relative to a search root which can be programmatically set using ``WKTMarkFactory.setRoot(URL)``
-  
 Weather symbols
 ^^^^^^^^^^^^^^^
 

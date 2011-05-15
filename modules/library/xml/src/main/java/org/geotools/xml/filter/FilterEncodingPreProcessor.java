@@ -101,19 +101,17 @@ public class FilterEncodingPreProcessor implements FilterVisitor, FilterVisitor2
     private static final int MEDIUM = 1;
     private static final int HIGH = 2;
     private int complianceInt;
-    private Stack current = new Stack();
+    private Stack<Data> current = new Stack<Data>();
     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
     
     private boolean requiresPostProcessing=false;
 
     public FilterEncodingPreProcessor(Integer complianceLevel) {
-        if ((complianceLevel != XMLHandlerHints.VALUE_FILTER_COMPLIANCE_LOW)
-                && (complianceLevel != XMLHandlerHints.VALUE_FILTER_COMPLIANCE_MEDIUM)
-                && (complianceLevel != XMLHandlerHints.VALUE_FILTER_COMPLIANCE_HIGH)) {
+        if ((complianceLevel != LOW) && (complianceLevel != MEDIUM) && (complianceLevel != HIGH)) {
             throw new IllegalArgumentException(
-                "compliance level must be one of: XMLHandlerHints.VALUE_FILTER_COMPLIANCE_LOOSE "
-                + "XMLHandlerHints.VALUE_FILTER_COMPLIANCE_MEDIUM or "
-                + "XMLHandlerHints.VALUE_FILTER_COMPLIANCE_MAXIMUM");
+                    "compliance level must be one of: XMLHandlerHints.VALUE_FILTER_COMPLIANCE_LOOSE "
+                            + "XMLHandlerHints.VALUE_FILTER_COMPLIANCE_MEDIUM or "
+                            + "XMLHandlerHints.VALUE_FILTER_COMPLIANCE_MAXIMUM");
         }
 
         this.complianceInt = complianceLevel.intValue();

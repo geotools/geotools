@@ -32,7 +32,6 @@ import org.geotools.data.ows.WFSCapabilities;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.Filters;
 import org.geotools.filter.visitor.FixBBOXFilterVisitor;
-import org.geotools.filter.visitor.WFSBBoxFilterVisitor;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;

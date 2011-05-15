@@ -1,8 +1,6 @@
 How to cut a release
 ====================
 
-GeoTools Developers Guidin how to create a GeoTools release.
-
 The instructions are meant for those making a formal milestone, a release candidate, a final
 release, or a point release of the GeoTools project itself. However, the instructions can also
 be used by any project or anyone that needs to make their own release, for example to use a new

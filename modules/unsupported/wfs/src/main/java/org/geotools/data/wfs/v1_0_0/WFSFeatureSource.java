@@ -29,7 +29,6 @@ import java.util.logging.Logger;
 import org.geotools.data.AbstractFeatureSource;
 import org.geotools.data.DataStore;
 import org.geotools.data.DefaultFeatureResults;
-import org.geotools.data.Query;
 import org.geotools.data.FeatureListener;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureSource;
@@ -42,13 +41,13 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.store.EmptyFeatureCollection;
 import org.geotools.feature.NameImpl;
-import org.geotools.filter.Filter;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
+import org.opengis.filter.Filter;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -77,6 +76,10 @@ public class WFSFeatureSource extends AbstractFeatureSource implements SimpleFea
                 fname);
     }
 
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    public Set getSupportedHints() {
+        return super.getSupportedHints();
+    }
     /**
      * @since 2.5
      * @see FeatureSource#getName()
@@ -128,6 +131,7 @@ public class WFSFeatureSource extends AbstractFeatureSource implements SimpleFea
                 return fname;
             }
 
+            @SuppressWarnings("deprecation")
             public URI getSchema() {
                 try {
                     return ds.protocolHandler.getDescribeFeatureTypeURLGet(fname).toURI();

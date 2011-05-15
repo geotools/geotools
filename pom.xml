@@ -65,7 +65,7 @@
   <properties>
     <oracle>false</oracle>
     <allow.test.skip>true</allow.test.skip>
-    <allow.test.failure.ignore>true</allow.test.failure.ignore>
+    <allow.test.failure.ignore>false</allow.test.failure.ignore>
     <extensive.tests>false</extensive.tests>
     <interactive.tests>false</interactive.tests>
     <interactive.image>false</interactive.image>

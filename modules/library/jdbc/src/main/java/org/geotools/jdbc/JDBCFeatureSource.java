@@ -556,11 +556,15 @@ public class JDBCFeatureSource extends ContentFeatureSource {
     
                 reader = new JDBCFeatureReader( sql, cx, this, querySchema, query.getHints() );
             }
-        } catch (Exception e) {
-            // close the connection 
+        } catch (Throwable e) { // NOSONAR
+            // close the connection
             getDataStore().closeSafe(cx);
             // safely rethrow
-            throw (IOException) new IOException().initCause(e);
+            if (e instanceof Error) {
+                throw (Error) e;
+            } else {
+                throw (IOException) new IOException().initCause(e);
+            }
         }
         
 

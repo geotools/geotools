@@ -24,6 +24,7 @@ Format plugins:
    arcgrid
    arcsde
    geotiff
+   grassraster
    gtopo30
    image
    imageio
@@ -40,7 +41,6 @@ Unsupported plugins:
    coverageio
    experiment
    geotiff_new
-   grassraster
    jp2k
    netCDF
    matlab      

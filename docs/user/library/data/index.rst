@@ -31,26 +31,26 @@ DataStore plugins:
 
 Unsupported plugins:
 
+* :doc:`/unsupported/app-schema`
+
 .. toctree::
    :maxdepth: 1
    
    caching
    csv
-   db2
    dxf
    edigeo
    excel
    geometryless
    georest
-   mysql
    ogr
-   oracle
    postgis
    sfs
    sql
    wfs
    wfs-ng
    vpf
+
 
 Additional DataStore plugins are available from :doc:`gt-jdbc <../jdbc/index>` for database access.
 

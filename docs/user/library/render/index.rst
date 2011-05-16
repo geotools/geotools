@@ -33,6 +33,8 @@ Unsupported:
    
    shapefile
 
+* :doc:`/unsupported/wkt`
+
 References:
 
 * :doc:`style </tutorial/map/style>` (tutorial)

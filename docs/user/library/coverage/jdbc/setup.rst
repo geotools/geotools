@@ -62,9 +62,15 @@ Setup Example
    
    As an alternative, there is a java utility doing the job.
    
-   Using the java import utility
+   .. toctree::
+      :maxdepth: 1
+      
+      import
 
 5. Last not least, we have to speed up access times.
    
-   Creating indexes for performance
+     .. toctree::
+      :maxdepth: 1
+      
+      performance
 

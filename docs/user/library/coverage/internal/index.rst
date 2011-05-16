@@ -7,4 +7,3 @@ The coverage module, while readily usable and very powerful, does not yet provid
    :maxdepth: 1
    
    format
-   jdbc

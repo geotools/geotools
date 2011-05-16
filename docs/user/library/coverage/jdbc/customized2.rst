@@ -1,9 +1,12 @@
-Image Mosaic JDBC
-^^^^^^^^^^^^^^^^^
+Custom JDBC Access for Images 2
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-As mentioned above, Christian Mueller has set up a series of base classes that can be reused by those writing plugins for different database backends.
+As mentioned above, Christian Mueller has set up a series of base classes that can be reused by
+those writing plugins for different database backends.
 
-This plugin is an extension to the Image Mosaicing Pyramidal JDBC Plugin. It is targeted to users having a special database layout for storing their image data or use a special data base extension concerning raster data.
+This plugin is an extension to the Image Mosaicing Pyramidal JDBC Plugin. It is targeted to users
+having a special database layout for storing their image data or use a special data base extension
+concerning raster data.
 
 Credits
 

@@ -292,13 +292,15 @@ public final class JDBCFeatureStore extends ContentFeatureStore {
                     writer = new JDBCUpdateInsertFeatureWriter( sql, cx, delegate, query.getHints() );
                 }
             }
-            
-        } 
-        catch (Exception e) {
+        } catch (Throwable e) { // NOSONAR
             // close the connection
             getDataStore().closeSafe(cx);
-            // now we can safely rethrow the exception
-            throw (IOException) new IOException( ).initCause(e);
+            // safely rethrow
+            if (e instanceof Error) {
+                throw (Error) e;
+            } else {
+                throw (IOException) new IOException().initCause(e);
+            }
         }
         
         //check for post filter and wrap accordingly

@@ -672,7 +672,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
             // in case the expression is wrapped in a function, eg. strConcat
             // that's why we don't always filter by id, but do a PropertyIsEqualTo
             query.setFilter(namespaceAwareFilterFactory.equals(mapping.getFeatureIdExpression(),
-                    namespaceAwareFilterFactory.literal(featureId)));
+                    namespaceAwareFilterFactory.literal(fId)));
             matchingFeatures = this.mappedSource.getFeatures(query);
         }
 

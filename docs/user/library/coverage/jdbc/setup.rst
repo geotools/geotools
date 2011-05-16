@@ -69,7 +69,7 @@ Setup Example
 
 5. Last not least, we have to speed up access times.
    
-     .. toctree::
+   .. toctree::
       :maxdepth: 1
       
       performance

@@ -3,7 +3,7 @@ sys.path.append(os.path.abspath('..'))
 from common import *
 
 # The suffix of source filenames.
-source_suffix = '.txt'
+source_suffix = '.rst'
 
 # The encoding of source files.
 #source_encoding = 'utf-8'

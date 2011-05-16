@@ -66,6 +66,7 @@ import org.geotools.data.DataUtilities;
 import org.geotools.data.PrjFileReader;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.image.io.ImageIOExt;
 import org.geotools.resources.i18n.Vocabulary;
 import org.geotools.resources.i18n.VocabularyKeys;
 import org.geotools.resources.image.ImageUtilities;
@@ -279,7 +280,7 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader implements
                             inStream = ImageIO.createImageInputStream(new GZIPInputStream(
                                 new FileInputStream(sourceFile)));	
 			else{
-			    inStreamSPI=ImageUtilities.getImageInputStreamSPI(sourceFile);
+			    inStreamSPI= ImageIOExt.getImageInputStreamSPI(sourceFile);
 			    if (inStreamSPI == null)
 	                        throw new DataSourceException(
 	                                        "No input stream for the provided source");

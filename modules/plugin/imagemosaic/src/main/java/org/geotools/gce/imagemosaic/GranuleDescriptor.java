@@ -57,6 +57,7 @@ import org.geotools.gce.imagemosaic.RasterLayerResponse.GranuleLoadingResult;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.image.io.ImageIOExt;
 import org.geotools.image.jai.Registry;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
@@ -256,7 +257,7 @@ public class GranuleDescriptor {
 				}
 				else{
 					inStream.mark();
-					reader = ImageUtilities.getImageioReader(inStream);
+					reader = ImageIOExt.getImageioReader(inStream);
 					if(reader != null)
 						cachedReaderSPI = reader.getOriginatingProvider();
 					inStream.reset();
@@ -549,7 +550,7 @@ public class GranuleDescriptor {
 	
 			// get a reader and try to cache the relevant SPI
 			if(cachedReaderSPI==null){
-				reader = ImageUtilities.getImageioReader( inStream);
+				reader = ImageIOExt.getImageioReader(inStream);
 				if(reader!=null)
 					cachedReaderSPI=reader.getOriginatingProvider();
 			}
@@ -900,7 +901,7 @@ public class GranuleDescriptor {
 		
 				// get a reader and try to cache the relevant SPI
 				if(cachedReaderSPI==null){
-					reader = ImageUtilities.getImageioReader( inStream);
+					reader = ImageIOExt.getImageioReader( inStream);
 					if(reader!=null)
 						cachedReaderSPI=reader.getOriginatingProvider();
 				}

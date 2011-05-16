@@ -20,7 +20,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBuffer;
@@ -48,7 +47,6 @@ import java.util.Vector;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
-import javax.imageio.spi.IIORegistry;
 import javax.imageio.spi.ImageInputStreamSpi;
 import javax.imageio.spi.ImageReaderWriterSpi;
 import javax.imageio.stream.ImageInputStream;
@@ -66,7 +64,7 @@ import javax.media.jai.RenderedOp;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
-import org.geotools.metadata.iso.spatial.PixelTranslation;
+import org.geotools.image.io.ImageIOExt;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.resources.Classes;
 import org.geotools.resources.i18n.ErrorKeys;
@@ -74,7 +72,6 @@ import org.geotools.resources.i18n.Errors;
 import org.geotools.util.Utilities;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.metadata.extent.GeographicBoundingBox;
-import org.opengis.referencing.datum.PixelInCell;
 
 import com.sun.media.imageioimpl.common.PackageUtil;
 import com.sun.media.jai.operator.ImageReadDescriptor;
@@ -628,34 +625,12 @@ public final class ImageUtilities {
      * @param category {@code ImageReaderSpi.class} to set the reader, or
      *        {@code ImageWriterSpi.class} to set the writer.
      * @param allowed {@code false} to disallow native acceleration.
+     * @deprecated Use {@link ImageIOExt#allowNativeCodec(String, Class, boolean)} instead
      */
     public static synchronized <T extends ImageReaderWriterSpi> void allowNativeCodec(
             final String format, final Class<T> category, final boolean allowed)
     {
-        T standard = null;
-        T codeclib = null;
-        final IIORegistry registry = IIORegistry.getDefaultInstance();
-        for (final Iterator<T> it = registry.getServiceProviders(category, false); it.hasNext();) {
-            final T provider = it.next();
-            final String[] formats = provider.getFormatNames();
-            for (int i=0; i<formats.length; i++) {
-                if (formats[i].equalsIgnoreCase(format)) {
-                    if (Classes.getShortClassName(provider).startsWith("CLib")) {
-                        codeclib = provider;
-                    } else {
-                        standard = provider;
-                    }
-                    break;
-                }
-            }
-        }
-        if (standard!=null && codeclib!=null) {
-            if (allowed) {
-                registry.setOrdering(category, codeclib, standard);
-            } else {
-                registry.setOrdering(category, standard, codeclib);
-            }
-        }
+        ImageIOExt.allowNativeCodec(format, category, allowed);
     }
 
     /**
@@ -824,6 +799,7 @@ public final class ImageUtilities {
      * Tells me whether or not the native libraries for JAI/ImageIO are active or not.
      * 
      * @return <code>false</code> in case the JAI/ImageIO native libs are not in the path, <code>true</code> otherwise.
+     * @deprecated Use {@link ImageIOExt#isCLibAvailable()} instead
      */
 	public static boolean isCLibAvailable() {
 		return PackageUtil.isCodecLibAvailable();
@@ -834,9 +810,10 @@ public final class ImageUtilities {
      * trying to create an {@link ImageInputStream}.
      *  
      * @see #getImageInputStreamSPI(Object, boolean) 
+     * @deprecated Use {@link ImageIOExt#getImageInputStreamSPI(Object, boolean)} instead
      */
     public final static ImageInputStreamSpi getImageInputStreamSPI(final Object input) {
-        return getImageInputStreamSPI(input, true);
+        return ImageIOExt.getImageInputStreamSPI(input);
     }
 
     /**
@@ -847,50 +824,10 @@ public final class ImageUtilities {
      * for the provided input, use it to try creating an {@link ImageInputStream} on top of the input.  
      * 
      * @return an {@link ImageInputStreamSpi} instance.
+     * @deprecated Use {@link ImageIOExt#getImageInputStreamSPI(Object, boolean)} instead
      */
     public final static ImageInputStreamSpi getImageInputStreamSPI(final Object input, final boolean streamCreationCheck) {
-    
-        Iterator<ImageInputStreamSpi> iter;
-        // Ensure category is present
-        try {
-            iter = IIORegistry.getDefaultInstance().getServiceProviders(ImageInputStreamSpi.class,
-                    true);
-        } catch (IllegalArgumentException e) {
-            return null;
-        }
-    
-        boolean usecache = ImageIO.getUseCache();
-    
-        ImageInputStreamSpi spi = null;
-        while (iter.hasNext()) {
-            spi = (ImageInputStreamSpi) iter.next();
-            if (spi.getInputClass().isInstance(input)) {
-                
-                // Stream creation check
-                if (streamCreationCheck){
-                    ImageInputStream stream = null;
-                    try {
-                        stream = spi.createInputStreamInstance(input, usecache, ImageIO.getCacheDirectory());
-                        break;
-                    } catch (IOException e) {
-                        return null;
-                    } finally {
-                        //Make sure to close the created stream
-                        if (stream != null){
-                            try {
-                                stream.close();
-                            } catch (Throwable t){
-                                //eat exception
-                            }
-                        }
-                    }
-                } else {
-                    break;
-                }
-            }
-        }
-    
-        return spi;
+        return ImageIOExt.getImageInputStreamSPI(input, streamCreationCheck);
     }
     
     /**
@@ -1126,17 +1063,10 @@ public final class ImageUtilities {
      *            find a suitable {@link ImageReader}.
      * @return a suitable instance of {@link ImageReader} or <code>null</code>
      *         if one cannot be found.
+     * @deprecated Use {@link ImageIOExt#getImageioReader(ImageInputStream)} instead
      */
     static public ImageReader getImageioReader(final ImageInputStream inStream) {
-    	Utilities.ensureNonNull("inStream", inStream);
-    	// get a reader
-    	inStream.mark();
-    	final Iterator<ImageReader> readersIt = ImageIO
-    			.getImageReaders(inStream);
-    	if (!readersIt.hasNext()) {
-    		return null;
-    	}
-    	return readersIt.next();
+    	return ImageIOExt.getImageioReader(inStream);
     }
 
     /**

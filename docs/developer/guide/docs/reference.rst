@@ -147,11 +147,11 @@ Recommended Pages
 
 We have the following recommended page structure:
 
-* module/index.txt
-* module/faq.txt (frequently asked questions; included in overall geotools faq)
-* module/internal.xt (design documentation, class diagrams and any other stuff not involved in use)
-* module/foo.txt
-* module/bar.txt
+* module/index.rst
+* module/faq.rst (frequently asked questions; included in overall geotools faq)
+* module/internal.rst (design documentation, class diagrams and any other stuff not involved in use)
+* module/foo.rst
+* module/bar.rst
 
 Index Page
 ''''''''''
@@ -238,7 +238,7 @@ FAQ Page
 ''''''''
 The faq is pretty simple; please use headings so that people can quickly find content.
 
-1. Create a faq.txt page similar to the example below::
+1. Create a faq.rst page similar to the example below::
 
         Swing FAQ
         ---------
@@ -269,9 +269,9 @@ The faq is pretty simple; please use headings so that people can quickly find co
         
         * `FeatureCollection Performance </library/main/collection>`_
 
-2. Update the root faq.txt to include your new page::
+2. Update the root faq.rst to include your new page::
 
-        .. include:: /unsupported/name/faq.txt
+        .. include:: /unsupported/name/faq.rst
 
 Internal
 ''''''''

@@ -43,6 +43,7 @@ import org.geotools.coverage.grid.io.AbstractGridCoverageWriter;
 import org.geotools.data.DataSourceException;
 import org.geotools.factory.Hints;
 import org.geotools.image.ImageWorker;
+import org.geotools.image.io.ImageIOExt;
 import org.geotools.parameter.Parameter;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.opengis.coverage.grid.Format;
@@ -204,8 +205,7 @@ public final class WorldImageWriter extends AbstractGridCoverageWriter
 		// Encoding of the original coverage
 		//
 		// ////////////////////////////////////////////////////////////////////
-		outStream = (destination instanceof ImageOutputStream) ? (ImageOutputStream) destination
-				: ImageIO.createImageOutputStream(destination);
+		outStream = ImageIOExt.createImageOutputStream(gc.getRenderedImage(), destination);
 		if (outStream == null)
 			throw new IOException(
 					"WorldImageWriter::write:No image output stream avalaible for the provided destination");

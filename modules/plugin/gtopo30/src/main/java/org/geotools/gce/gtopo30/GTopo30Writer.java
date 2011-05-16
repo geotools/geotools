@@ -30,12 +30,9 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
-import java.net.URLDecoder;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -65,6 +62,7 @@ import org.geotools.coverage.processing.operation.SelectSampleDimension;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.Hints;
+import org.geotools.image.io.ImageIOExt;
 import org.geotools.parameter.Parameter;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.resources.coverage.CoverageUtilities;
@@ -678,15 +676,16 @@ final public class GTopo30Writer extends AbstractGridCoverageWriter implements
 		gc = gc.geophysics(false);
 		ImageOutputStream out = null;
 
+		RenderedImage image = gc.getRenderedImage();
 		if (dest instanceof File) {
-			out = ImageIO.createImageOutputStream(new File((File) dest,
-					new StringBuffer(name).append(".SRC").toString()));
+			final File file = new File((File) dest, new StringBuffer(name).append(".SRC").toString());
+            out = ImageIOExt.createImageOutputStream(image, file);
 		} else {
 			final ZipOutputStream outZ = (ZipOutputStream) dest;
 			final ZipEntry e = new ZipEntry(gc.getName().toString() + ".SRC");
 			outZ.putNextEntry(e);
 
-			out = ImageIO.createImageOutputStream(outZ);
+			out = ImageIOExt.createImageOutputStream(image, outZ);
 		}
 
 		// setting byte order
@@ -697,7 +696,6 @@ final public class GTopo30Writer extends AbstractGridCoverageWriter implements
 		// Prepare to write
 		//
 		// /////////////////////////////////////////////////////////////////////
-		RenderedImage image = gc.getRenderedImage();
 		image = untileImage(image);
 
 		final ParameterBlockJAI pbj = new ParameterBlockJAI("imagewrite");
@@ -740,26 +738,28 @@ final public class GTopo30Writer extends AbstractGridCoverageWriter implements
 			Object dest) throws IOException {
 		ImageOutputStream out = null;
 
+	      // rescaling to a smaller resolution in order to save space on storage
+        final GridCoverage2D gc1 = rescaleCoverage(gc);
+
+        // get the non-geophysiscs view
+        final GridCoverage2D gc2 = gc1.geophysics(false);
+
+        // get the underlying image
+        final RenderedImage image = gc2.getRenderedImage();
+
+        // get the image out stream
 		if (dest instanceof File) {
 			// writing gif image
-			out = ImageIO.createImageOutputStream(new File((File) dest,
-					new StringBuffer(name).append(".GIF").toString()));
+			final File file = new File((File) dest,
+					new StringBuffer(name).append(".GIF").toString());
+            out = ImageIOExt.createImageOutputStream(image, file);
 		} else {
 			final ZipOutputStream outZ = (ZipOutputStream) dest;
 			final ZipEntry e = new ZipEntry(gc.getName().toString() + ".GIF");
 			outZ.putNextEntry(e);
 
-			out = ImageIO.createImageOutputStream(outZ);
+			out = ImageIOExt.createImageOutputStream(image, outZ);
 		}
-
-		// rescaling to a smaller resolution in order to save space on storage
-		final GridCoverage2D gc1 = rescaleCoverage(gc);
-
-		// get the non-geophysiscs view
-		final GridCoverage2D gc2 = gc1.geophysics(false);
-
-		// get the underlying image
-		final RenderedImage image = gc2.getRenderedImage();
 
 		// write it down as a gif
 		final ParameterBlockJAI pbj = new ParameterBlockJAI("ImageWrite");
@@ -1050,16 +1050,14 @@ final public class GTopo30Writer extends AbstractGridCoverageWriter implements
 
 		if (dest instanceof File) {
 			// write statistics
-			if (dest instanceof File) {
-				dest = new File((File) dest, new StringBuffer(name).append(
+			dest = new File((File) dest, new StringBuffer(name).append(
 						".DEM").toString());
-			}
-			out = ImageIO.createImageOutputStream((File) dest);
+			out = ImageIOExt.createImageOutputStream(image, (File) dest);
 		} else {
 			final ZipOutputStream outZ = (ZipOutputStream) dest;
 			final ZipEntry e = new ZipEntry(name + ".DEM");
 			outZ.putNextEntry(e);
-			out = ImageIO.createImageOutputStream(outZ);
+			out = ImageIOExt.createImageOutputStream(image, outZ);
 		}
 
 		out.setByteOrder(java.nio.ByteOrder.BIG_ENDIAN);

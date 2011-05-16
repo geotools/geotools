@@ -54,6 +54,7 @@ import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.image.io.ImageIOExt;
 import org.geotools.parameter.Parameter;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.resources.coverage.CoverageUtilities;
@@ -138,7 +139,7 @@ public final class ArcGridWriter extends AbstractGridCoverageWriter implements G
 		this.destination = destination;
 		if (destination instanceof File)
 			try {
-				super.outStream = ImageIO.createImageOutputStream(destination);
+				super.outStream = ImageIOExt.createImageOutputStream(null, destination);
 			} catch (IOException e) {
 				if (LOGGER.isLoggable(Level.SEVERE))
 					LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
@@ -150,7 +151,7 @@ public final class ArcGridWriter extends AbstractGridCoverageWriter implements G
 				File destFile;
 				destFile = DataUtilities.urlToFile(dest);
 				try {
-					super.outStream = ImageIO.createImageOutputStream(destFile);
+					super.outStream = ImageIOExt.createImageOutputStream(null, destFile);
 				} catch (IOException e) {
 					if (LOGGER.isLoggable(Level.SEVERE))
 						LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
@@ -161,8 +162,8 @@ public final class ArcGridWriter extends AbstractGridCoverageWriter implements G
 		} else if (destination instanceof OutputStream) {
 
 			try {
-				super.outStream = ImageIO
-						.createImageOutputStream((OutputStream) destination);
+				super.outStream = ImageIOExt
+						.createImageOutputStream(null, (OutputStream) destination);
 			} catch (IOException e) {
 				if (LOGGER.isLoggable(Level.SEVERE))
 					LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);

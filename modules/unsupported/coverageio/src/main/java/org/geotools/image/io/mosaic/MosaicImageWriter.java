@@ -45,6 +45,7 @@ import java.util.concurrent.ExecutionException;
 import java.lang.reflect.UndeclaredThrowableException;
 
 import org.geotools.factory.GeoTools;
+import org.geotools.image.io.ImageIOExt;
 import org.geotools.resources.XArray;
 import org.geotools.resources.i18n.Errors;
 import org.geotools.resources.i18n.ErrorKeys;
@@ -196,7 +197,7 @@ public class MosaicImageWriter extends ImageWriter {
             }
             final File file = File.createTempFile("MIW", ".png");
             try {
-                final ImageOutputStream output = ImageIO.createImageOutputStream(file);
+                final ImageOutputStream output = ImageIOExt.createImageOutputStream(image.getRenderedImage(), file);
                 writer.setOutput(output);
                 writer.write(metadata, image, param);
                 output.close();
@@ -963,7 +964,7 @@ search: for (final Tile tile : tiles) {
              * Creates an image output stream from it and try again.
              */
             if (count != 0) {
-                stream = ImageIO.createImageOutputStream(output);
+                stream = ImageIOExt.createImageOutputStream(image, output);
                 if (stream != null) {
                     final Class<? extends ImageOutputStream> streamType = stream.getClass();
                     for (int i=0; i<count; i++) {
@@ -1012,7 +1013,7 @@ search: for (final Tile tile : tiles) {
             }
             if (!writers.isEmpty()) {
                 if (stream == null) {
-                    stream = ImageIO.createImageOutputStream(output);
+                    stream = ImageIOExt.createImageOutputStream(image, output);
                     if (stream == null) {
                         break;
                     }

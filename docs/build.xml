@@ -79,7 +79,7 @@
 	</target>
     
     <target name="sphinx" if="sphinx.available">
-                <echo message="Running sphinx-build -D release=${project.version} -b ${build} -d &quot;${build.directory}/${id}/doctrees&quot; . &quot;${build.directory}/${id}/${build}&quot;"/> 
+                <echo message="Running sphinx-build -D release=${project.version} -W -b ${build} -d &quot;${build.directory}/${id}/doctrees&quot; . &quot;${build.directory}/${id}/${build}&quot;"/> 
 		<exec executable="sphinx-build" failonerror="true" dir="${basedir}/${id}">
 			<arg line="-D release=${project.version} -b ${build} -d &quot;${build.directory}/${id}/doctrees&quot; . &quot;${build.directory}/${id}/${build}&quot;"/>
 		</exec>
@@ -93,7 +93,7 @@
 
 	<target name="pdf" if="rst2pdf.available">
 		<exec executable="sphinx-build" failonerror="true" dir="${basedir}/${id}">
-			<arg line="-D release=${project.version} -c ${basedir}/${id}/pdf -a -E -b pdf -d &quot;${build.directory}/${id}/doctrees&quot; . &quot;${build.directory}/${id}/${build}&quot;"/>
+			<arg line="-D release=${project.version} -c ${basedir}/${id}/pdf -b pdf -d &quot;${build.directory}/${id}/doctrees&quot; . &quot;${build.directory}/${id}/${build}&quot;"/>
 		</exec>
 	</target>
 

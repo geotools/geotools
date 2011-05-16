@@ -83,6 +83,7 @@ import org.geotools.data.PrjFileReader;
 import org.geotools.data.WorldFileReader;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.image.io.ImageIOExt;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
@@ -194,7 +195,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
 			if(source instanceof ImageInputStream )
 				inStream=(ImageInputStream) source;
 			else{
-			    inStreamSPI=ImageUtilities.getImageInputStreamSPI(source);
+			    inStreamSPI = ImageIOExt.getImageInputStreamSPI(source);
 			    if (inStreamSPI == null)
                                 throw new IllegalArgumentException("No input stream for the provided source");
 			    inStream = inStreamSPI.createInputStreamInstance(source, ImageIO.getUseCache(), ImageIO.getCacheDirectory());

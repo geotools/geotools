@@ -38,13 +38,10 @@ import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
-import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
-import javax.imageio.spi.IIORegistry;
 import javax.imageio.spi.ImageInputStreamSpi;
 import javax.imageio.spi.ImageReaderWriterSpi;
 import javax.imageio.stream.ImageInputStream;
@@ -60,6 +57,7 @@ import javax.media.jai.PlanarImage;
 import javax.media.jai.RenderedOp;
 
 import org.geotools.image.ImageWorker;
+import org.geotools.image.io.ImageIOExt;
 import org.geotools.resources.Classes;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
@@ -556,34 +554,12 @@ public final class ImageUtilities {
      * @param category {@code ImageReaderSpi.class} to set the reader, or
      *        {@code ImageWriterSpi.class} to set the writer.
      * @param allowed {@code false} to disallow native acceleration.
+     * @deprecated Use {@link ImageIOExt#allowNativeCodec(String, Class, boolean)} instead
      */
     public static synchronized <T extends ImageReaderWriterSpi> void allowNativeCodec(
             final String format, final Class<T> category, final boolean allowed)
     {
-        T standard = null;
-        T codeclib = null;
-        final IIORegistry registry = IIORegistry.getDefaultInstance();
-        for (final Iterator<T> it = registry.getServiceProviders(category, false); it.hasNext();) {
-            final T provider = it.next();
-            final String[] formats = provider.getFormatNames();
-            for (int i=0; i<formats.length; i++) {
-                if (formats[i].equalsIgnoreCase(format)) {
-                    if (Classes.getShortClassName(provider).startsWith("CLib")) {
-                        codeclib = provider;
-                    } else {
-                        standard = provider;
-                    }
-                    break;
-                }
-            }
-        }
-        if (standard!=null && codeclib!=null) {
-            if (allowed) {
-                registry.setOrdering(category, codeclib, standard);
-            } else {
-                registry.setOrdering(category, standard, codeclib);
-            }
-        }
+        ImageIOExt.allowNativeCodec(format, category, allowed);
     }
 
     /**
@@ -752,6 +728,7 @@ public final class ImageUtilities {
      * Tells me whether or not the native libraries for JAI/ImageIO are active or not.
      * 
      * @return <code>false</code> in case the JAI/ImageIO native libs are not in the path, <code>true</code> otherwise.
+     * @deprecated Use {@link ImageIOExt#isCLibAvailable()} instead
      */
 	public static boolean isCLibAvailable() {
 		return PackageUtil.isCodecLibAvailable();
@@ -762,9 +739,10 @@ public final class ImageUtilities {
      * trying to create an {@link ImageInputStream}.
      *  
      * @see #getImageInputStreamSPI(Object, boolean) 
+     * @deprecated Use {@link ImageIOExt#getImageInputStreamSPI(Object, boolean)} instead
      */
     public final static ImageInputStreamSpi getImageInputStreamSPI(final Object input) {
-        return getImageInputStreamSPI(input, true);
+        return ImageIOExt.getImageInputStreamSPI(input);
     }
 
     /**
@@ -775,50 +753,10 @@ public final class ImageUtilities {
      * for the provided input, use it to try creating an {@link ImageInputStream} on top of the input.  
      * 
      * @return an {@link ImageInputStreamSpi} instance.
+     * @deprecated Use {@link ImageIOExt#getImageInputStreamSPI(Object, boolean)} instead
      */
     public final static ImageInputStreamSpi getImageInputStreamSPI(final Object input, final boolean streamCreationCheck) {
-    
-        Iterator<ImageInputStreamSpi> iter;
-        // Ensure category is present
-        try {
-            iter = IIORegistry.getDefaultInstance().getServiceProviders(ImageInputStreamSpi.class,
-                    true);
-        } catch (IllegalArgumentException e) {
-            return null;
-        }
-    
-        boolean usecache = ImageIO.getUseCache();
-    
-        ImageInputStreamSpi spi = null;
-        while (iter.hasNext()) {
-            spi = (ImageInputStreamSpi) iter.next();
-            if (spi.getInputClass().isInstance(input)) {
-                
-                // Stream creation check
-                if (streamCreationCheck){
-                    ImageInputStream stream = null;
-                    try {
-                        stream = spi.createInputStreamInstance(input, usecache, ImageIO.getCacheDirectory());
-                        break;
-                    } catch (IOException e) {
-                        return null;
-                    } finally {
-                        //Make sure to close the created stream
-                        if (stream != null){
-                            try {
-                                stream.close();
-                            } catch (Throwable t){
-                                //eat exception
-                            }
-                        }
-                    }
-                } else {
-                    break;
-                }
-            }
-        }
-    
-        return spi;
+        return ImageIOExt.getImageInputStreamSPI(input, streamCreationCheck);
     }
     
     /**

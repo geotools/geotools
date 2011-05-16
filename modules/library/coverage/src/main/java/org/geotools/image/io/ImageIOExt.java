@@ -20,12 +20,20 @@ import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Iterator;
 
 import javax.imageio.ImageIO;
+import javax.imageio.spi.IIORegistry;
+import javax.imageio.spi.ImageInputStreamSpi;
+import javax.imageio.spi.ImageReaderWriterSpi;
 import javax.imageio.stream.FileCacheImageOutputStream;
 import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.ImageOutputStream;
 import javax.imageio.stream.MemoryCacheImageOutputStream;
+
+import org.geotools.resources.Classes;
+
+import com.sun.media.imageioimpl.common.PackageUtil;
 
 /**
  * Provides an alternative source of image input and output streams that uses optimized behavior.
@@ -38,6 +46,7 @@ import javax.imageio.stream.MemoryCacheImageOutputStream;
  * </p>
  * 
  * @author Andrea Aime - GeoSolutions
+ * @since 2.7.2
  */
 public class ImageIOExt {
 
@@ -135,6 +144,125 @@ public class ImageIOExt {
     public static void setFilesystemThreshold(Long filesystemThreshold) {
         ImageIOExt.filesystemThreshold = filesystemThreshold;
     }
+    
+    /**
+     * Allows or disallows native acceleration for the specified image format. By default, the
+     * image I/O extension for JAI provides native acceleration for PNG and JPEG. Unfortunatly,
+     * those native codec has bug in their 1.0 version. Invoking this method will force the use
+     * of standard codec provided in J2SE 1.4.
+     * <p>
+     * <strong>Implementation note:</strong> the current implementation assume that JAI codec
+     * class name start with "CLib". It work for Sun's 1.0 implementation, but may change in
+     * future versions. If this method doesn't recognize the class name, it does nothing.
+     *
+     * @param format The format name (e.g. "png").
+     * @param category {@code ImageReaderSpi.class} to set the reader, or
+     *        {@code ImageWriterSpi.class} to set the writer.
+     * @param allowed {@code false} to disallow native acceleration.
+     */
+    public static synchronized <T extends ImageReaderWriterSpi> void allowNativeCodec(
+            final String format, final Class<T> category, final boolean allowed)
+    {
+        T standard = null;
+        T codeclib = null;
+        final IIORegistry registry = IIORegistry.getDefaultInstance();
+        for (final Iterator<T> it = registry.getServiceProviders(category, false); it.hasNext();) {
+            final T provider = it.next();
+            final String[] formats = provider.getFormatNames();
+            for (int i=0; i<formats.length; i++) {
+                if (formats[i].equalsIgnoreCase(format)) {
+                    if (Classes.getShortClassName(provider).startsWith("CLib")) {
+                        codeclib = provider;
+                    } else {
+                        standard = provider;
+                    }
+                    break;
+                }
+            }
+        }
+        if (standard!=null && codeclib!=null) {
+            if (allowed) {
+                registry.setOrdering(category, codeclib, standard);
+            } else {
+                registry.setOrdering(category, standard, codeclib);
+            }
+        }
+    }
+    
+    /**
+     * Get a proper {@link ImageInputStreamSpi} instance for the provided {@link Object} input without
+     * trying to create an {@link ImageInputStream}.
+     *  
+     * @see #getImageInputStreamSPI(Object, boolean) 
+     */
+    public final static ImageInputStreamSpi getImageInputStreamSPI(final Object input) {
+        return getImageInputStreamSPI(input, true);
+    }
+
+    /**
+     * Get a proper {@link ImageInputStreamSpi} instance for the provided {@link Object} input.
+     *   
+     * @param input the input object for which we need to find a proper {@link ImageInputStreamSpi} instance
+     * @param streamCreationCheck if <code>true</code>, when a proper {@link ImageInputStreamSpi} have been found 
+     * for the provided input, use it to try creating an {@link ImageInputStream} on top of the input.  
+     * 
+     * @return an {@link ImageInputStreamSpi} instance.
+     */
+    public final static ImageInputStreamSpi getImageInputStreamSPI(final Object input, final boolean streamCreationCheck) {
+    
+        Iterator<ImageInputStreamSpi> iter;
+        // Ensure category is present
+        try {
+            iter = IIORegistry.getDefaultInstance().getServiceProviders(ImageInputStreamSpi.class,
+                    true);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+    
+        boolean usecache = ImageIO.getUseCache();
+    
+        ImageInputStreamSpi spi = null;
+        while (iter.hasNext()) {
+            spi = (ImageInputStreamSpi) iter.next();
+            if (spi.getInputClass().isInstance(input)) {
+                
+                // Stream creation check
+                if (streamCreationCheck){
+                    ImageInputStream stream = null;
+                    try {
+                        stream = spi.createInputStreamInstance(input, usecache, ImageIO.getCacheDirectory());
+                        break;
+                    } catch (IOException e) {
+                        return null;
+                    } finally {
+                        //Make sure to close the created stream
+                        if (stream != null){
+                            try {
+                                stream.close();
+                            } catch (Throwable t){
+                                //eat exception
+                            }
+                        }
+                    }
+                } else {
+                    break;
+                }
+            }
+        }
+    
+        return spi;
+    }
+    
+    /**
+     * Tells me whether or not the native libraries for JAI/ImageIO are active or not.
+     * 
+     * @return <code>false</code> in case the JAI/ImageIO native libs are not in the path, <code>true</code> otherwise.
+     */
+    public static boolean isCLibAvailable() {
+        return PackageUtil.isCodecLibAvailable();
+    }
+
+    
 
     /**
      * Computes the image size based on the SampleModel and image dimension

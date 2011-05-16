@@ -56,6 +56,7 @@ import org.geotools.data.PrjFileReader;
 import org.geotools.data.WorldFileReader;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.image.io.ImageIOExt;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
@@ -226,7 +227,7 @@ public final class WorldImageReader extends AbstractGridCoverage2DReader
 			if (input instanceof ImageInputStream){
 			    closeMe = false;
 			}else{
-			    inStreamSPI=ImageUtilities.getImageInputStreamSPI(source);
+			    inStreamSPI= ImageIOExt.getImageInputStreamSPI(source);
 			    if (inStreamSPI == null)
 			        throw new DataSourceException(
 			                "No input stream for the provided source");

@@ -16,7 +16,6 @@
  */
 package org.geotools.xml;
 
-import org.apache.commons.beanutils.converters.SqlDateConverter;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Calendar;

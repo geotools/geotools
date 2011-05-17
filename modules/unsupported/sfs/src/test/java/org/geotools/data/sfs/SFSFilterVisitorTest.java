@@ -17,8 +17,18 @@
 
 package org.geotools.data.sfs;
 
-import org.geotools.data.sfs.SFSFilterVisitor;
+import java.net.URLDecoder;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import junit.framework.TestCase;
+
+import org.geotools.data.DefaultQuery;
+import org.geotools.data.Query;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.factory.Hints;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.PropertyIsGreaterThan;
@@ -33,21 +43,18 @@ import org.opengis.filter.spatial.Intersects;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.geom.Point;
-import java.net.URLDecoder;
 
 
-public class SFSFilterVisitorTest extends OnlineTest {
-
+public class SFSFilterVisitorTest extends TestCase {
+    private static final String URL = "http://localhost:8082/simplefeatureservice/";
     private static final String URL_LAYER_ASIA = URL+"/layerAsia";
     private static final String PROPERTY_NAME = "aProperty";
     private static final String PROPERTY_VALUE = "342";
     private static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2(null);
 
     public void testBBOX() throws Exception {
-    	if(super.onlineTest("testBBOX"))
-    		return;
-
         StringBuilder builder = new StringBuilder(URL_LAYER_ASIA);
         SFSFilterVisitor visitor = new SFSFilterVisitor(true);
         BBOX bbox = FF.bbox("prop0", 0, 0, 10, 10, "EPSG:4326");
@@ -157,7 +164,6 @@ public class SFSFilterVisitorTest extends OnlineTest {
     }
 
     public void testPropertyIsLike() throws Exception {
-    	
         StringBuilder builder = new StringBuilder(URL_LAYER_ASIA);
         SFSFilterVisitor visitor = new SFSFilterVisitor(true);
         PropertyIsLike filter = FF.like(FF.property(PROPERTY_NAME), PROPERTY_VALUE, "%", "_", "\\", true);
@@ -166,5 +172,26 @@ public class SFSFilterVisitorTest extends OnlineTest {
         assertEquals(URL_LAYER_ASIA + "?" + PROPERTY_NAME + "__like=" + PROPERTY_VALUE + "&queryable="
                 + PROPERTY_NAME, URLDecoder.decode(builder.toString(),"UTF-8"));
     }
+    
+    public void testHints() throws Exception {
+        SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
+        tb.add("CFCC", String.class);
+        tb.add("NAME", String.class);
+        tb.add("the_geom", MultiLineString.class);
+        tb.setName("layerAsia");
+        SimpleFeatureType ft = tb.buildFeatureType();
+        
+        
+        Query q = new DefaultQuery("layerAsia");
+        q.setFilter(FF.less(FF.property(PROPERTY_NAME), FF.literal(PROPERTY_VALUE)));
+        Map<String, String> vtParams = new LinkedHashMap<String, String>();
+        vtParams.put("first", "a=b");
+        vtParams.put("second", "a%b");
+        q.setHints(new Hints(Hints.VIRTUAL_TABLE_PARAMETERS, vtParams));
+        
+        String result = SFSDataStoreUtil.encodeQuery(q, ft);
+        assertEquals("aProperty__lt=342&queryable=aProperty&hints=first:a%3Db;second:a%25b", result);
+    }
+    
 
 }

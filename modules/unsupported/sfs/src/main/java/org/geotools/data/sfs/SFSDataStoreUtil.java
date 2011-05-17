@@ -193,6 +193,7 @@ class SFSDataStoreUtil {
 
             urlBuilder.append(getGlueChar(firstChar));
             firstChar = false;
+            urlBuilder.append("hints=");
 
             for (Iterator it = params.entrySet().iterator(); it.hasNext();) {
                 Map.Entry<String, String> pair = (Map.Entry<String, String>) it.next();

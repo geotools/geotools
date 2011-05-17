@@ -81,10 +81,14 @@ public class FeatureJSON {
     boolean encodeFeatureCollectionCRS = false;
     
     public FeatureJSON() {
-        gjson = new GeometryJSON();
+        this(new GeometryJSON());
+    }
+
+    public FeatureJSON(GeometryJSON gjson) {
+        this.gjson = gjson; 
         attio = new DefaultAttributeIO();
     }
-    
+
     /**
      * Sets the target feature type for parsing.
      * <p>

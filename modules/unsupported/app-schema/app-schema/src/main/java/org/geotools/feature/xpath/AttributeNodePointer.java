@@ -63,15 +63,15 @@ public class AttributeNodePointer extends NodePointer {
     }
 
     public boolean isLeaf() {
-        return !(feature instanceof ComplexAttribute);
+        return !(feature instanceof ComplexAttribute);       
     }
 
     public boolean isCollection() {
-        return !isLeaf();
+        return false;
     }
 
     public int getLength() {
-        return isLeaf() ? 0 : ((Collection) feature.getValue()).size();
+        return 1;
     }
 
     public QName getName() {

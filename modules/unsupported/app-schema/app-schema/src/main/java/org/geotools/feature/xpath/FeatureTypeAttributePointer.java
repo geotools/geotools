@@ -131,21 +131,21 @@ public class FeatureTypeAttributePointer extends NodePointer {
      * 
      */
     public boolean isLeaf() {
-        return !isCollection();
+        return !(attType instanceof ComplexType);
     }
 
     /**
      * 
      */
     public boolean isCollection() {
-        return attType instanceof ComplexType;
+        return false;
     }
 
     /**
      * Return number of elements
      */
     public int getLength() {
-        return isLeaf() ? 0 : ((ComplexType) attType).getDescriptors().size();
+        return 1;
     }
 
     /**

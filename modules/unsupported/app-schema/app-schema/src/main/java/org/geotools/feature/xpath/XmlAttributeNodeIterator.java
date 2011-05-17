@@ -47,6 +47,8 @@ public class XmlAttributeNodeIterator implements NodeIterator {
      * The name
      */
     Name name;
+    
+    int position = 0;
 
 
     public XmlAttributeNodeIterator(AttributeNodePointer pointer, Name name) {
@@ -60,13 +62,14 @@ public class XmlAttributeNodeIterator implements NodeIterator {
      * Always return 1, only a single property.
      */
     public int getPosition() {
-        return 1;
+        return position;
     }
 
     /**
      * Return true if position == 1.
      */
     public boolean setPosition(int position) {
+        this.position = position;
         return position < 2;
     }
 

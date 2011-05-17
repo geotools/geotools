@@ -16,9 +16,6 @@
  */
 package org.geotools.feature.xpath;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.jxpath.ri.Compiler;
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.compiler.NodeNameTest;
@@ -28,7 +25,6 @@ import org.apache.commons.jxpath.ri.model.NodeIterator;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.geotools.feature.Types;
 import org.opengis.feature.type.ComplexType;
-import org.opengis.feature.type.PropertyDescriptor;
 
 /**
  * Special node pointer for {@link org.geotools.feature.FeatureType}.
@@ -68,19 +64,11 @@ public class FeatureTypePointer extends NodePointer {
     }
 
     public boolean isCollection() {
-        return true;
+        return false;
     }
 
     public int getLength() {
-        //get list of descriptors from types and all supertypes
-        List<PropertyDescriptor> children = new ArrayList<PropertyDescriptor>();
-        ComplexType loopType = featureType;
-        while (loopType != null) { 
-            children.addAll(loopType.getDescriptors());
-            loopType = loopType.getSuper() instanceof ComplexType? (ComplexType) loopType.getSuper() : null;
-        }
-        
-        return children.size();
+        return 1;
     }
 
     public QName getName() {

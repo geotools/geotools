@@ -17,7 +17,10 @@
 
 package org.geotools.filter.expression;
 
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.List;
 
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathIntrospector;
@@ -264,10 +267,19 @@ public class FeaturePropertyAccessorFactory implements PropertyAccessorFactory {
                 String uri = namespaces.getURI(prefix);
                 context.registerNamespace(prefix, uri);
             }
-
-            Object value = context.getValue(xpath);
-
-            return value;
+            
+            Iterator it = context.iterate(xpath);
+            List results = new ArrayList<Object>();
+            while(it.hasNext()) {
+                results.add(it.next());
+            }
+            if (results.size()==0) {
+                throw new IllegalArgumentException("x-path gives no results.");
+            } else if (results.size()==1) {
+                return results.get(0);
+            } else {
+                return results;
+            }
         }
 
         public void set(Object object, String xpath, Object value, Class target)

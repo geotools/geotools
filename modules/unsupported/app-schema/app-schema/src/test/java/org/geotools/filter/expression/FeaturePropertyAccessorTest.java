@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.geotools.data.complex.config.EmfAppSchemaReader;
 import org.geotools.data.complex.config.FeatureTypeRegistry;
@@ -153,6 +154,7 @@ public class FeaturePropertyAccessorTest extends AppSchemaTestSupport {
         Collection<Property> rootPropertiesTwo = new ArrayList<Property>();
         // eg:complexAttribute/eg:rootAttribute[2]/eg:multiLeafAttribute[1]
         rootPropertiesTwo.add(leafOne);
+        rootPropertiesTwo.add(singleLeaf);
         AttributeImpl rootTwo = new ComplexAttributeImpl(rootPropertiesTwo, rootDesc, null);
 
         // eg:complexAttribute/eg:rootAttribute[3]
@@ -187,10 +189,29 @@ public class FeaturePropertyAccessorTest extends AppSchemaTestSupport {
         // test multi-valued nested properties
         ex = new AttributeExpressionImpl("eg:complexAttribute/eg:rootAttribute", new Hints(
                 FeaturePropertyAccessorFactory.NAMESPACE_CONTEXT, NAMESPACES));
-        // no index would return the first one
-        assertEquals(rootOne, ex.evaluate(feature));
-
+        // no index would return array of all features
+        Object o = ex.evaluate(feature);
+        assertTrue( o instanceof List );        
+        assertEquals(3,  ((List) o).size());
+        assertEquals(rootOne,  ((List) o).get(0));
+        assertEquals(rootTwo,  ((List) o).get(1));
+        assertEquals(rootThree,  ((List) o).get(2));
+        
+        //test nested on multi-valued attributes
+        ex = new AttributeExpressionImpl("eg:complexAttribute/eg:rootAttribute/eg:singleLeafAttribute", new Hints(
+                FeaturePropertyAccessorFactory.NAMESPACE_CONTEXT, NAMESPACES));
+        // no index would return array of all features
+        o = ex.evaluate(feature);
+        assertTrue( o instanceof List );     
+        assertEquals(3,  ((List) o).size());
+        assertEquals(singleLeaf,  ((List) o).get(0));
+        assertEquals(singleLeaf,  ((List) o).get(1));
+        assertEquals(singleLeaf,  ((List) o).get(2));
+        
         // index specified
+        ex = new AttributeExpressionImpl("eg:complexAttribute/eg:rootAttribute[1]", new Hints(
+                FeaturePropertyAccessorFactory.NAMESPACE_CONTEXT, NAMESPACES));
+         assertEquals(rootOne, ex.evaluate(feature));
         ex = new AttributeExpressionImpl("eg:complexAttribute/eg:rootAttribute[2]", new Hints(
                 FeaturePropertyAccessorFactory.NAMESPACE_CONTEXT, NAMESPACES));
         assertEquals(rootTwo, ex.evaluate(feature));

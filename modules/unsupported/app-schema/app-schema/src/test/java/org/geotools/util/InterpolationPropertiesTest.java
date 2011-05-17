@@ -15,13 +15,15 @@
  *    Lesser General Public License for more details.
  */
 
-package org.geotools.data.complex.config;
+package org.geotools.util;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.Properties;
 import org.geotools.data.DataUtilities;
+import org.geotools.data.complex.config.XMLConfigDigester;
 import org.geotools.test.AppSchemaTestSupport;
+import org.geotools.util.InterpolationProperties;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -38,12 +40,12 @@ import static org.junit.Assert.assertNotNull;
  *
  * @source $URL$
  */
-public class PropertyInterpolationUtilsTest extends AppSchemaTestSupport {
+public class InterpolationPropertiesTest extends AppSchemaTestSupport {
 
     /**
      * Base string used for properties and filenames.
      */
-    public static final String IDENTIFIER = "property-interpolation-utils-test";
+    public static final String IDENTIFIER = "interpolation-properties-test";
 
     /**
      * Test property set in the property files.
@@ -70,7 +72,7 @@ public class PropertyInterpolationUtilsTest extends AppSchemaTestSupport {
     public void setUp() throws Exception {
         System.setProperty(TEST_SYSTEM_PROPERTY, TEST_SYSTEM_PROPERTY_VALUE);
         System.setProperty(TEST_FILE_SYSTEM_PROPERTY, DataUtilities.urlToFile(
-                PropertyInterpolationUtilsTest.class.getResource("/" + IDENTIFIER
+                InterpolationProperties.class.getResource("/" + IDENTIFIER
                         + ".file.properties")).getPath());
     }
 
@@ -85,7 +87,8 @@ public class PropertyInterpolationUtilsTest extends AppSchemaTestSupport {
         properties.put("foo.x", "123");
         properties.put("foo.y", "abc");
         properties.put("foo.z", "bar");
-        String result = PropertyInterpolationUtils.interpolate(properties,
+        InterpolationProperties props = new InterpolationProperties(properties);
+        String result = props.interpolate(
                 "123ajh${foo.z} akl ${foo.y}${foo.y} laskj ${foo.x}\n"
                         + "foo.x${foo.x}${foo.x} ${foo.z}${foo.y}");
         assertEquals("123ajhbar akl abcabc laskj 123\nfoo.x123123 barabc", result);
@@ -99,7 +102,8 @@ public class PropertyInterpolationUtilsTest extends AppSchemaTestSupport {
     public void testInterpolateNonexistent() {
         boolean interpolatedNonexistentProperty = false;
         try {
-            PropertyInterpolationUtils.interpolate(new Properties(), "123 ${does.not.exist} 456");
+            InterpolationProperties props = new InterpolationProperties(new Properties());
+            props.interpolate("123 ${does.not.exist} 456");
             interpolatedNonexistentProperty = true;
         } catch (Exception e) {
             // success
@@ -108,24 +112,14 @@ public class PropertyInterpolationUtilsTest extends AppSchemaTestSupport {
     }
 
     /**
-     * Test for {@link PropertyInterpolationUtils#readAll(InputStream)}.
-     */
-    @Test
-    public void testReadAll() {
-        String s = "line one\nline two\n";
-        InputStream input = new ByteArrayInputStream("line one\nline two\n".getBytes());
-        assertEquals(s, PropertyInterpolationUtils.readAll(input));
-    }
-
-    /**
      * Test that {@link PropertyInterpolationUtils#loadProperties(String)} can load properties from
      * the classpath.
      */
     @Test
     public void testLoadPropertiesFromClasspath() {
-        Properties properties = PropertyInterpolationUtils.loadProperties(IDENTIFIER);
-        assertEquals("found-on-classpath", properties.getProperty(TEST_PROPERTY));
-        checkSystemProperties(properties);
+        InterpolationProperties props = new InterpolationProperties(IDENTIFIER);
+        assertEquals("found-on-classpath", props.getProperty(TEST_PROPERTY));
+        checkSystemProperties(props);
     }
 
     /**
@@ -134,10 +128,9 @@ public class PropertyInterpolationUtilsTest extends AppSchemaTestSupport {
      */
     @Test
     public void testLoadPropertiesDoesNotExist() {
-        Properties properties = PropertyInterpolationUtils.loadProperties(IDENTIFIER
-                + ".does-not-exist");
-        assertNull(properties.getProperty(TEST_PROPERTY));
-        checkSystemProperties(properties);
+        InterpolationProperties props = new InterpolationProperties(IDENTIFIER+ ".does-not-exist");
+        assertNull(props.getProperty(TEST_PROPERTY));
+        checkSystemProperties(props);
     }
 
     /**
@@ -147,10 +140,10 @@ public class PropertyInterpolationUtilsTest extends AppSchemaTestSupport {
     @Test
     public void testLoadPropertiesFromFile() {
         // note that the identifier does *not* match the filename
-        Properties properties = PropertyInterpolationUtils.loadProperties(TEST_FILE_SYSTEM_PROPERTY
+        InterpolationProperties props = new InterpolationProperties(TEST_FILE_SYSTEM_PROPERTY
                 .replace(".properties", ""));
-        assertEquals("found-in-file", properties.getProperty(TEST_PROPERTY));
-        checkSystemProperties(properties);
+        assertEquals("found-in-file", props.getProperty(TEST_PROPERTY));
+        checkSystemProperties(props);
     }
 
     /**
@@ -158,7 +151,7 @@ public class PropertyInterpolationUtilsTest extends AppSchemaTestSupport {
      * 
      * @param properties
      */    
-    private void checkSystemProperties(Properties properties) {
+    private void checkSystemProperties(InterpolationProperties properties) {
         // check that synthetic system property is loaded
         assertNotNull(properties.getProperty(TEST_SYSTEM_PROPERTY));
         assertTrue(properties.getProperty(TEST_SYSTEM_PROPERTY).equals(TEST_SYSTEM_PROPERTY_VALUE));
@@ -166,6 +159,18 @@ public class PropertyInterpolationUtilsTest extends AppSchemaTestSupport {
         assertNotNull(properties.getProperty("java.version"));
         // system properties should override this
         assertFalse(properties.getProperty("java.version").equals("should-be-overridden"));
+    }
+    
+
+    
+    /**
+     * Test for {@link XMLConfigDigester#readAll(InputStream)}.
+     */
+    @Test
+    public void testReadAll() {
+        String s = "line one\nline two\n";
+        InputStream input = new ByteArrayInputStream("line one\nline two\n".getBytes());
+        assertEquals(s, InterpolationProperties.readAll(input));
     }
 
 }

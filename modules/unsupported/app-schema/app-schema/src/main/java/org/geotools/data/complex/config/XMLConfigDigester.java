@@ -17,8 +17,10 @@
 
 package org.geotools.data.complex.config;
 
-import java.io.IOException;
 import java.io.InputStream;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.net.URL;
 import java.util.ArrayList;
@@ -29,6 +31,8 @@ import java.util.logging.Logger;
 
 import org.apache.commons.digester.Digester;
 import org.geotools.data.complex.AppSchemaDataAccessFactory;
+import org.geotools.data.complex.AppSchemaDataAccessRegistry;
+import org.geotools.util.InterpolationProperties;
 import org.xml.sax.SAXException;
 
 /**
@@ -49,12 +53,26 @@ public class XMLConfigDigester {
 
     /** Namespace URI for the AppSchemaDataAccess configuration files */
     private static final String CONFIG_NS_URI = "http://www.geotools.org/app-schema";
-
+    
+    /** 
+     * Properties
+     */
+    protected InterpolationProperties properties;
+    
     /**
      * Creates a new XMLConfigReader object.
      */
     public XMLConfigDigester() {
-        super();
+        this (AppSchemaDataAccessRegistry.getAppSchemaProperties());
+    }
+
+    /**
+     * Creates a new XMLConfigReader object.
+     * 
+     * @param properties Properties to use for interpolation
+     */
+    public XMLConfigDigester(InterpolationProperties properties) {
+        this.properties = properties;
     }
 
     /**
@@ -100,9 +118,7 @@ public class XMLConfigDigester {
             if (configStream == null) {
                 throw new IOException("Can't open datastore config file " + dataStoreConfigUrl);
             } else {
-                configString = PropertyInterpolationUtils.interpolate(PropertyInterpolationUtils
-                        .loadProperties(AppSchemaDataAccessFactory.DBTYPE_STRING),
-                        PropertyInterpolationUtils.readAll(configStream));
+                configString = properties.interpolate(InterpolationProperties.readAll(configStream));
             }
         } finally {
             if (configStream != null) {

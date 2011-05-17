@@ -22,6 +22,7 @@ import java.util.Arrays;
 
 import org.geotools.data.DataAccess;
 import org.geotools.data.FeatureSource;
+import org.geotools.util.InterpolationProperties;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
@@ -34,6 +35,30 @@ public class AppSchemaDataAccessRegistry extends DataAccessRegistry {
      * @author Rini Angreani, Curtin University of Technology
      */
     private static final long serialVersionUID = -373404928035022963L;
+    
+    /**
+     * Properties for interpolation / configuration settings
+     */
+    protected static InterpolationProperties properties = null;
+    
+    /**
+     * Get App-schema properties
+     * 
+     * @return app-schema properties
+     */
+    public static synchronized InterpolationProperties getAppSchemaProperties() {
+        if (properties == null) {
+            properties = new InterpolationProperties(AppSchemaDataAccessFactory.DBTYPE_STRING);
+        }
+        return properties;
+    }
+    
+    /**
+     * Clean-up properties, mainly used for cleaning up after tests
+     */
+    public static synchronized void clearAppSchemaProperties() {
+        properties = null;
+    }
 
     /**
      * Get a feature type mapping from a registered app-schema data access. Please note that this is

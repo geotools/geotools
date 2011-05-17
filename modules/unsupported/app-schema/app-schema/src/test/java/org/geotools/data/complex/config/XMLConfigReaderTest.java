@@ -17,6 +17,8 @@
 
 package org.geotools.data.complex.config;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.Set;
 import org.geotools.data.complex.FeatureTypeMapping;
@@ -57,6 +59,6 @@ public class XMLConfigReaderTest extends AppSchemaTestSupport {
 
         // Map/*<String, Expression>*/idMappings = mapping.getIdMappings();
         // assertEquals(idMappings.get("RoadSegment"), ExpressionBuilder.parse("getId()"));
-    }
+    }    
 
 }

@@ -15,7 +15,7 @@
  *    Lesser General Public License for more details.
  */
 
-package org.geotools.data.complex.config;
+package org.geotools.util;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -31,7 +31,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Utility methods to support interpolation of properties in a file.
+ * Stores properties and provides methods to support interpolation of properties in a file.
  * 
  * <p>
  * 
@@ -44,19 +44,83 @@ import java.util.regex.Pattern;
  * loops are supported. This is not a feature.
  * 
  * @author Ben Caradoc-Davies, CSIRO Exploration and Mining
+ * @author Niels Charlier, Curtin University of Technology
  *
  * @source $URL$
  */
-public class PropertyInterpolationUtils {
+public class InterpolationProperties {
 
     private static final Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger(PropertyInterpolationUtils.class.getPackage().getName());
+            .getLogger(InterpolationProperties.class.getPackage().getName());
 
     /**
      * Pattern to match a property to be substituted. Note the reluctant quantifier.
      */
     private static final Pattern PROPERTY_INTERPOLATION_PATTERN = Pattern.compile("\\$\\{(.+?)\\}");
 
+    /**
+     * the properties
+     */
+    protected Properties theProperties;
+        
+    /**
+     * Load with existing Properties
+     * @param theProperties properties
+     */
+    public InterpolationProperties(Properties theProperties) {
+        this.theProperties = theProperties;        
+    }
+    
+    /**
+     * Load properties from a configuration file.
+     * 
+     * <p>
+     * 
+     * The name of the properties file is constructed by appending ".properties" to the identifier.
+     * If there is a system property with the name of this property file, it is used as a file to
+     * load, otherwise the property file is loaded from the root of the classpath.
+     * 
+     * <p>
+     * 
+     * For example, if the identifier is <tt>app-schema</tt>:
+     * 
+     * <ul>
+     * 
+     * <li>If the system property <tt>app-schema.properties</tt> is set, e.g.
+     * <tt>-Dapp-schema.properties=/path/to/some/local.properties</tt>, the indicated file, in this
+     * case <tt>/path/to/some/local.properties</tt>, is loaded.
+     * 
+     * <li>Otherwise, the classpath resource <tt>/app-schema.properties</tt> is loaded.
+     * 
+     * </ul>
+     * 
+     * Before the properties are returned, all system properties are copied; this means that system
+     * properties override any properties in the configuration file.
+     * 
+     * @param identifier
+     *            string used to construct property file name
+     */
+    public InterpolationProperties(String identifier) {
+        this(loadProperties(identifier));        
+    }    
+
+    /**
+     * Create Empty 
+     */
+    public InterpolationProperties() {
+        this (new Properties());        
+    }
+    
+    /**
+     * Retrieve Property
+     * 
+     * @param propName property name
+     * @return property value
+     */
+    public String getProperty(String propName) {
+        return theProperties.getProperty(propName);
+    }
+    
     /**
      * Interpolate all the properties in the input string.
      * 
@@ -76,17 +140,17 @@ public class PropertyInterpolationUtils {
      *            string on which interpolation is to be performed
      * @return string with all properties expanded
      */
-    public static String interpolate(Properties properties, String input) {
+    public String interpolate(String input) {
         String result = input;
         Matcher matcher = PROPERTY_INTERPOLATION_PATTERN.matcher(result);
         while (matcher.find()) {
             String propertyName = matcher.group(1);
-            String propertyValue = (String) properties.get(propertyName);
+            String propertyValue = (String) theProperties.get(propertyName);
             if (propertyValue == null) {
                 throw new RuntimeException("Interpolation failed for missing property "
                         + propertyName);
             } else {
-                result = result.replace(matcher.group(), propertyValue);
+                result = result.replace(matcher.group(), propertyValue).trim();
                 matcher.reset(result);
             }
         }
@@ -123,13 +187,13 @@ public class PropertyInterpolationUtils {
      *            string used to construct property file name
      * @return loaded properties
      */
-    public static Properties loadProperties(String identifier) {
+    protected static Properties loadProperties(String identifier) {
         String propertiesName = identifier + ".properties";
         Properties properties = new Properties();
         String propertiesFileName = System.getProperty(propertiesName);
         if (propertiesFileName == null) {
             String propertiesResourceName = "/" + propertiesName;
-            InputStream stream = PropertyInterpolationUtils.class
+            InputStream stream = InterpolationProperties.class
                     .getResourceAsStream(propertiesResourceName);
             if (stream != null) {
                 try {
@@ -177,7 +241,7 @@ public class PropertyInterpolationUtils {
         properties.putAll(System.getProperties());
         return properties;
     }
-
+    
     /**
      * Read everything from an input stream into a String, reconstructing line endings.
      * 
@@ -204,5 +268,6 @@ public class PropertyInterpolationUtils {
         }
         return buffer.toString();
     }
+  
 
 }

@@ -16,6 +16,9 @@
  */
 package org.geotools.filter;
 
+import java.util.Collection;
+import java.util.Collections;
+
 import org.geotools.util.Converters;
 import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.expression.Expression;
@@ -47,16 +50,37 @@ public class IsBetweenImpl extends CompareFilterImpl implements BetweenFilter {
 	}
 	
 	//@Override
-	public boolean evaluate(Object feature) {
-		Object value = eval( expression, feature );
-		if ( value == null ) {
-			return false;
-		}
-		
-		//get the boundaries
-		Object lower = eval( getExpression1(), feature );
-		Object upper = eval( getExpression2(), feature );
-		
+        public boolean evaluate(Object feature) {
+	    //NC - support for multiple values
+            final Object object0 = eval(expression, feature);
+            final Object object1 = eval(expression1, feature);
+            final Object object2 = eval(expression2, feature);
+            
+            if (!(object0 instanceof Collection) && !(object1 instanceof Collection) && !(object2 instanceof Collection)) {
+                return evaluateInternal(object0, object1, object2);
+            }
+    
+            Collection<Object> oValues = object0 instanceof Collection ? (Collection<Object>) object0
+                    : Collections.<Object>singletonList(object0);
+            Collection<Object> leftValues = object1 instanceof Collection ? (Collection<Object>) object1
+                    : Collections.<Object>singletonList(object1);
+            Collection<Object> rightValues = object2 instanceof Collection ? (Collection<Object>) object2
+                    : Collections.<Object>singletonList(object2);
+    
+            for (Object value1 : leftValues) {
+                for (Object value2 : rightValues) {
+                    for (Object value0 : oValues) {
+                        if (evaluateInternal(value0, value1, value2)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+    
+            return false;
+        }
+	
+	public boolean evaluateInternal(Object value, Object lower, Object upper) {
 		//first try to evaluate the bounds in terms of the middle
 		Object o = value;
 		Object l = Converters.convert(lower, o.getClass());

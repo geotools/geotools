@@ -24,7 +24,7 @@ import org.opengis.filter.expression.Expression;
  *
  * @source $URL$
  */
-public class IsGreaterThanImpl extends CompareFilterImpl implements PropertyIsGreaterThan {
+public class IsGreaterThanImpl extends MultiCompareFilterImpl implements PropertyIsGreaterThan {
 
 	protected IsGreaterThanImpl(org.opengis.filter.FilterFactory factory) {
 		this(factory,null,null);
@@ -37,9 +37,9 @@ public class IsGreaterThanImpl extends CompareFilterImpl implements PropertyIsGr
 		this.filterType = COMPARE_GREATER_THAN;
 	}
 
-	//@Override
-	public boolean evaluate(Object feature) {
-		Object[] values = eval( feature );
+	@Override
+	public boolean evaluateInternal(Object v1, Object v2) {
+		Object[] values = eval( v1, v2 );
 		Comparable value1 = comparable( values[0] );
 		Comparable value2 = comparable( values[1] );
 		

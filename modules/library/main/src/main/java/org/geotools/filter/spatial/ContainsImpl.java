@@ -16,9 +16,6 @@
  */
 package org.geotools.filter.spatial;
 
-import org.geotools.filter.FilterFactory;
-import org.geotools.filter.GeometryFilterImpl;
-import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.spatial.Contains;
@@ -34,29 +31,21 @@ public class ContainsImpl extends AbstractPreparedGeometryFilter implements Cont
 		this.filterType = GEOMETRY_CONTAINS;
 	}
 	
-	public boolean evaluate(Object feature) {
-		if (feature instanceof SimpleFeature && !validate((SimpleFeature)feature))
-			return false;
+	@Override
+	public boolean evaluateInternal(Geometry left, Geometry right) {
 		
-		Geometry left;
-        Geometry right;
-
         switch (literals) {
         case BOTH:
             return cacheValue;
         case RIGHT: {
         	// since it is left contains right there is no
         	// benefit of having a prepared geometry for the right side
-            left = getLeftGeometry(feature);
-            right = rightPreppedGeom.getGeometry();
             return basicEvaluate(left, right);
         }
         case LEFT: {
-            return leftPreppedGeom.contains(getRightGeometry(feature));
+            return leftPreppedGeom.contains(right);
         }
         default: {
-            left = getLeftGeometry(feature);
-            right = getRightGeometry(feature);
             return basicEvaluate(left, right);
         }
         }

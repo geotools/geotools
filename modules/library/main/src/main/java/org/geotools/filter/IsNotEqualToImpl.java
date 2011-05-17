@@ -20,7 +20,7 @@ import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.PropertyIsNotEqualTo;
 import org.opengis.filter.expression.Expression;
 
-public class IsNotEqualToImpl extends CompareFilterImpl
+public class IsNotEqualToImpl extends MultiCompareFilterImpl
 	implements PropertyIsNotEqualTo {
     
     IsEqualsToImpl delegate;
@@ -41,9 +41,9 @@ public class IsNotEqualToImpl extends CompareFilterImpl
 		this.filterType = COMPARE_NOT_EQUALS;
 	}
 
-	//@Override
-	public boolean evaluate(Object feature) {
-		return !delegate.evaluate(feature);
+	@Override
+	public boolean evaluateInternal(Object v1, Object v2) {
+		return !delegate.evaluateInternal(v1, v2);
 	}
 	
 	public Object accept(FilterVisitor visitor, Object extraData) {

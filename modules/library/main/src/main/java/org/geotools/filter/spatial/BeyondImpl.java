@@ -33,16 +33,8 @@ public class BeyondImpl extends CartesianDistanceFilter implements Beyond {
 		this.filterType = GEOMETRY_BEYOND;
 	}
 	
-	public boolean evaluate(SimpleFeature feature) {
-		if (!validate(feature))
-			return false;
-		return evaluate((Object)feature);
-	}
-
-	public boolean evaluate(Object feature) {
-		Geometry left = getLeftGeometry(feature);
-		Geometry right = getRightGeometry(feature);
-		
+	@Override
+	public boolean evaluateInternal(Geometry left, Geometry right) {
 		if( left==null || right == null ){
 			return false;
 		}

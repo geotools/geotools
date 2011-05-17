@@ -16,9 +16,6 @@
  */
 package org.geotools.filter.spatial;
 
-import org.geotools.filter.FilterFactory;
-import org.geotools.filter.GeometryFilterImpl;
-import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.spatial.Disjoint;
@@ -35,25 +32,19 @@ public class DisjointImpl extends AbstractPreparedGeometryFilter implements Disj
 		this.filterType = GEOMETRY_DISJOINT;
 	}
 	
-	public boolean evaluate(Object feature) {
-		if (feature instanceof SimpleFeature && !validate((SimpleFeature)feature))
-			return false;
+	@Override
+        public boolean evaluateInternal(Geometry left, Geometry right) {
 		
-		Geometry left;
-        Geometry right;
-
         switch (literals) {
         case BOTH:
             return cacheValue;
         case RIGHT: {
-            return rightPreppedGeom.disjoint(getLeftGeometry(feature));
+            return rightPreppedGeom.disjoint(left);
         }
         case LEFT: {
-            return leftPreppedGeom.disjoint(getRightGeometry(feature));
+            return leftPreppedGeom.disjoint(right);
         }
         default: {
-            left = getLeftGeometry(feature);
-            right = getRightGeometry(feature);
             return basicEvaluate(left, right);
         }
         }

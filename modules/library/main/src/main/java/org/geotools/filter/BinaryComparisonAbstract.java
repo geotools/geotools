@@ -83,7 +83,7 @@ public abstract class BinaryComparisonAbstract extends AbstractFilter
 	public Filter not() {
 		return (Filter) factory.not(this);
 	}
-
+	
     /**
      * Convenience method which evaluates the expressions and trys to align the values to be of the
      * same type.
@@ -93,10 +93,23 @@ public abstract class BinaryComparisonAbstract extends AbstractFilter
      * 
      * @return
      */
-    protected Object[] eval(Object object) {
-        Object v1 = eval(getExpression1(), object);
-        Object v2 = eval(getExpression2(), object);
-    
+     protected Object[] eval(Object object) {
+         Object v1 = eval(getExpression1(), object);
+         Object v2 = eval(getExpression2(), object);
+         
+         return eval(v1, v2);
+     }
+	
+    /**
+     * Convenience method which evaluates the expressions and trys to align the values to be of the
+     * same type.
+     * <p>
+     * If the values can not be aligned, the original values are returned.
+     * </p>
+     * 
+     * @return
+     */
+    protected Object[] eval(Object v1, Object v2) {
         if (v1 != null && v2 != null) {
             // try to convert so that values are of same type
             if (v1.getClass().equals(v2.getClass())) {

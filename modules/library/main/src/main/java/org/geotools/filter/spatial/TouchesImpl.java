@@ -16,9 +16,7 @@
  */
 package org.geotools.filter.spatial;
 
-import org.geotools.filter.FilterFactory;
 import org.geotools.filter.GeometryFilterImpl;
-import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.spatial.Touches;
@@ -34,13 +32,7 @@ public class TouchesImpl extends GeometryFilterImpl implements Touches {
 		this.filterType = GEOMETRY_TOUCHES;
 	}
 	
-	public boolean evaluate(Object feature) {
-		if (feature instanceof SimpleFeature && !validate((SimpleFeature)feature))
-			return false;
-		
-		Geometry left = getLeftGeometry(feature);
-		Geometry right = getRightGeometry(feature);
-		
+	public boolean evaluateInternal(Geometry left, Geometry right) {
 		return left.touches(right);
 	}
 	

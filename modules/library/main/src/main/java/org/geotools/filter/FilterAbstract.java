@@ -17,6 +17,10 @@
 package org.geotools.filter;
 
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import org.geotools.feature.NameImpl;
 import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
@@ -87,8 +91,33 @@ public abstract class FilterAbstract implements org.opengis.filter.Filter
 	}
 	
 	/**
-	 * Helper method for subclasses to reduce null checks
-     * 
+	 * Unpacks a value from an attribute container
+	 * 
+	 * @param value
+	 * @return
+	 */
+	private Object unpack(Object value) {
+	    
+	    if (value instanceof org.opengis.feature.ComplexAttribute){
+                Property simpleContent = ((org.opengis.feature.ComplexAttribute)value).getProperty(new NameImpl("simpleContent"));
+                if (simpleContent == null) {
+                    return null;
+                } else {
+                    return simpleContent.getValue();
+                }
+            }
+            
+            if(value instanceof org.opengis.feature.Attribute){
+                return ((org.opengis.feature.Attribute)value).getValue();
+            }
+            
+            return value;
+	}
+	
+	/**
+	 * Helper method for subclasses to reduce null checks and 
+	 * automatically unpack values from attributes and collections
+         * 
 	 * @param expression
 	 * @param object
 	 * @return value or null
@@ -97,25 +126,16 @@ public abstract class FilterAbstract implements org.opengis.filter.Filter
 		if( expression == null ) return null;
 		Object value = expression.evaluate( object );
 	
-		//NC - HACK (similar to below), but for complex features
-	        if (value instanceof org.opengis.feature.ComplexAttribute){
-	            Property simpleContent = ((org.opengis.feature.ComplexAttribute)value).getProperty(new NameImpl("simpleContent"));
-	            if (simpleContent == null) {
-	                value = null;
-	            } else {
-	                value = simpleContent.getValue();
-	            }
-	        }
-		
-	        //HACK as this method is used internally for filter 
-                //evaluation comparisons, etc, they work over the
-                //contents (i.e. comparing an attexpresion with a literal)
-                //so, lacking a better way of doing so, I'm putting this
-                //check here
-                if(value instanceof org.opengis.feature.Attribute){
-                    value = ((org.opengis.feature.Attribute)value).getValue();
-                }            
-                return value;
+		if (value instanceof Collection) {
+		    //unpack all elements
+		    List<Object> list = new ArrayList<Object>();
+		    for (Object member : (Collection<Object>) value) {
+		        list.add(unpack(member));
+		    }
+		    return list;
+		}
+		            
+                return unpack(value);
 	}
 	/**
 	 * Helper method for subclasses to reduce null checks

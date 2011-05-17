@@ -17,6 +17,7 @@
 package org.geotools.filter;
 
 
+import java.util.Collection;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -449,14 +450,26 @@ public class LikeFilterImpl extends AbstractFilterImpl implements LikeFilter {
             //LOGGER.finest("pattern: " + pattern);
             //LOGGER.finest("string: " + attribute.getValue(feature));
             //return attribute.getValue(feature).toString().matches(pattern);
-            Object value = attribute.evaluate(feature);
+            
+            Object value = eval(attribute, feature);
 
             if (null == value) {
                 return false;
             }
-
-            Matcher matcher = getMatcher(value.toString());
-            return matcher.matches();
+            
+            //NC - support multiple values            
+            if (value instanceof Collection) {
+                for (Object element : (Collection<Object>) value){
+                    Matcher matcher = getMatcher(element.toString());
+                    if (matcher.matches()) {
+                        return true;
+                    }
+                }
+                return false;
+            } else {
+                Matcher matcher = getMatcher(value.toString());
+                return matcher.matches();
+            }
     }
     
     /**

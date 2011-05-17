@@ -16,10 +16,15 @@
  */
 package org.geotools.filter;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.util.Converters;
 import org.opengis.feature.simple.SimpleFeature;
 
 
@@ -187,6 +192,8 @@ public abstract class GeometryFilterImpl extends BinaryComparisonAbstract
     /**
      * Subclass convenience method for returning left expression as a 
      * JTS geometry.
+     * 
+     * * @deprecated use {@link org.geotools.filter#getGeometries(org.opengis.filter.expression.Expression expr, Object feature)}
      */
     protected Geometry getLeftGeometry(Object feature) {
         org.opengis.filter.expression.Expression leftGeometry = getExpression1();
@@ -205,6 +212,8 @@ public abstract class GeometryFilterImpl extends BinaryComparisonAbstract
     /**
      * Subclass convenience method for returning right expression as a 
      * JTS geometry.
+     * 
+     * @deprecated use {@link org.geotools.filter#getGeometries(org.opengis.filter.expression.Expression expr, Object feature)}
      */
     protected Geometry getRightGeometry(Object feature) {
         org.opengis.filter.expression.Expression rightGeometry = getExpression2();
@@ -218,22 +227,25 @@ public abstract class GeometryFilterImpl extends BinaryComparisonAbstract
     }
     
     /**
-     * Subclass convenience method to make sure we have
-     * geometry instances on both the left and right hand sides.
-     * <p>
-     * @return true iff we can perform a geometry operation
+     * NC - support for multiple values
+     * Convenience method for returning expression as either a geometry or a list of geometries.
      */
-    protected boolean validate(SimpleFeature feature) {     
-        // Checks for error condition
-        Geometry right = getRightGeometry(feature);
-        Geometry left = getLeftGeometry(feature);
-
-        if(left == null || right == null ){
-            // default behaviour: if the geometry that is to be filtered is not
-            // there we default to not returning anything
-            return false;
-        }        
-        return true;
+    protected static Object getGeometries(org.opengis.filter.expression.Expression expr, Object feature) {
+        
+         Object o = expr.evaluate(feature);
+         
+         if (o instanceof Collection) {
+             List<Geometry> list = new ArrayList<Geometry>();
+             for (Object item : (Collection<Object>) o) {
+                 Geometry geometry = (Geometry) Converters.convert(item, Geometry.class);
+                 if (geometry != null) {
+                     list.add(geometry);
+                 }
+             }
+             return list.size()>0 ? list : null;
+         }
+         
+         return Converters.convert(o, Geometry.class);
     }
     
     /**
@@ -349,5 +361,46 @@ public abstract class GeometryFilterImpl extends BinaryComparisonAbstract
 
         return result;
     }
+    
+    public final boolean evaluate(Object feature) {
+        
+        Object object1 = getGeometries(getExpression1(), feature);
+        Object object2 = getGeometries(getExpression2(), feature);
+        
+        if(object1 == null || object2 == null ){
+            // default behaviour: if the geometry that is to be filtered is not
+            // there we default to not returning anything
+            return false;
+        }  
+        
+        if (!(object1 instanceof Collection) && !(object2 instanceof Collection)) {
+            return evaluateInternal((Geometry) object1, (Geometry)  object2);
+        }
+
+        Collection<Geometry> leftValues = object1 instanceof Collection ? (Collection<Geometry>) object1
+                : Collections.<Geometry>singletonList((Geometry) object1);
+        Collection<Geometry> rightValues = object2 instanceof Collection ? (Collection<Geometry>) object2
+                : Collections.<Geometry>singletonList((Geometry) object2);
+                
+        for (Geometry leftValue : leftValues) {
+            for (Geometry rightValue : rightValues) {
+                if (evaluateInternal(leftValue, rightValue)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+        
+    }
+    
+    
+    /**
+     * Performs the calculation on the two geometries.  
+     * 
+     * @param left the geometry on the left of the equations (the geometry obtained from evaluating Expression1)
+     * @param right the geometry on the right of the equations (the geometry obtained from evaluating Expression2)
+     * @return true if the filter evaluates to true for the two geometries
+     */
+    protected abstract boolean evaluateInternal(Geometry left, Geometry right);
 
 }

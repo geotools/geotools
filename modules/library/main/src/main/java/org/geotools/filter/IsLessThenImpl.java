@@ -24,7 +24,7 @@ import org.opengis.filter.expression.Expression;
  *
  * @source $URL$
  */
-public class IsLessThenImpl extends CompareFilterImpl implements
+public class IsLessThenImpl extends MultiCompareFilterImpl implements
 		PropertyIsLessThan {
 
 	protected IsLessThenImpl(org.opengis.filter.FilterFactory factory) {
@@ -42,9 +42,9 @@ public class IsLessThenImpl extends CompareFilterImpl implements
             this.filterType = COMPARE_LESS_THAN;
     }
 	
-	//@Override
-	public boolean evaluate(Object feature) {
-		Object[] values = eval( feature );
+	@Override
+	public boolean evaluateInternal(Object v1, Object v2) {
+		Object[] values = eval( v1, v2 );
 		Comparable value1 = comparable( values[ 0 ] );
 		Comparable value2 = comparable( values[ 1 ] );
 		

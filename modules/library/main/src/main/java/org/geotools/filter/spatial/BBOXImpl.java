@@ -20,7 +20,6 @@ import org.geotools.filter.AttributeExpressionImpl;
 import org.geotools.filter.BBoxExpressionImpl;
 import org.geotools.filter.FilterFactoryImpl;
 import org.geotools.referencing.CRS;
-import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
@@ -139,28 +138,18 @@ public class BBOXImpl extends AbstractPreparedGeometryFilter implements BBOX {
         });
     }
 
-    public boolean evaluate(Object feature) {
-        if (feature instanceof SimpleFeature && !validate((SimpleFeature) feature))
-            return false;
-        Geometry left;
-        Geometry right;
+    @Override
+    public boolean evaluateInternal(Geometry left, Geometry right) {
         switch (literals) {
         case BOTH:
             return cacheValue;
         case RIGHT: {
-            left = getLeftGeometry(feature);
-            right = getRightGeometry(feature);
-
             return preppedEvaluate(rightPreppedGeom, left);
         }
         case LEFT: {
-            left = getLeftGeometry(feature);
-            right = getRightGeometry(feature);
             return preppedEvaluate(leftPreppedGeom, right);
         }
         default: {
-            left = getLeftGeometry(feature);
-            right = getRightGeometry(feature);
             return basicEvaluate(left, right);
         }
         }

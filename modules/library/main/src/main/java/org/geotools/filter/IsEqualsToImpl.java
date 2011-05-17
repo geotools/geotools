@@ -28,7 +28,7 @@ import org.opengis.filter.expression.Literal;
  *
  * @source $URL$
  */
-public class IsEqualsToImpl extends CompareFilterImpl implements PropertyIsEqualTo {
+public class IsEqualsToImpl extends MultiCompareFilterImpl implements PropertyIsEqualTo {
 
     protected IsEqualsToImpl(org.opengis.filter.FilterFactory factory) {
         this(factory, null, null);
@@ -46,11 +46,8 @@ public class IsEqualsToImpl extends CompareFilterImpl implements PropertyIsEqual
         this.filterType = COMPARE_EQUALS;
     }
 
-    // @Override
-    public boolean evaluate(Object feature) {
-        final Object value1 = eval(expression1, feature);
-        final Object value2 = eval(expression2, feature);
-
+    @Override
+    public boolean evaluateInternal(Object value1, Object value2) {
         if (value1 == value2) {
             // Includes the (value1 == null && value2 == null) case.
             return true;

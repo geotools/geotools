@@ -16,7 +16,6 @@
  */
 package org.geotools.filter.spatial;
 
-import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.spatial.Within;
@@ -33,31 +32,22 @@ public class WithinImpl extends AbstractPreparedGeometryFilter implements Within
 		this.filterType = GEOMETRY_WITHIN;
 	}
 	
-	public boolean evaluate(Object feature) {
-		if (feature instanceof SimpleFeature && !validate((SimpleFeature)feature))
-			return false;
+	@Override
+        public boolean evaluateInternal(Geometry left, Geometry right) {
 		
-		Geometry left;
-        Geometry right;
-
         switch (literals) {
         case BOTH:
             return cacheValue;
         case RIGHT: {
         	// if the right contains left then left is within right
-            left = getLeftGeometry(feature);
             return rightPreppedGeom.contains(left);
         }
         case LEFT: {
         	// since within does not have an optimization with prepared geometries
         	// there is nothing to be gained in this case so use the normal check
-            left = leftPreppedGeom.getGeometry();
-            right = getRightGeometry(feature);
-            return basicEvaluate(left, right);
+            return basicEvaluate(leftPreppedGeom.getGeometry(), right);
         }
         default: {
-            left = getLeftGeometry(feature);
-            right = getRightGeometry(feature);
             return basicEvaluate(left, right);
         }
         }

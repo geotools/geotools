@@ -130,6 +130,6 @@
     <module>jdbc-db2</module>
     <module>jdbc-mysql</module>
     <module>jdbc-sqlserver</module>
-    <!--module>jdbc-spatialite</module-->
+    <module>jdbc-spatialite</module>
   </modules>
 </project>

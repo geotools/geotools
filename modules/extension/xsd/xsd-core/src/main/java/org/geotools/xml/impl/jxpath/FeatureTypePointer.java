@@ -56,11 +56,11 @@ public class FeatureTypePointer extends NodePointer {
     }
 
     public boolean isCollection() {
-        return true;
+        return false;
     }
 
     public int getLength() {
-        return featureType.getAttributeCount();
+        return 1;
     }
 
     public QName getName() {

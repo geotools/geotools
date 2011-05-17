@@ -239,12 +239,12 @@ public class CurveImpl extends OrientableCurveImpl implements Curve {
 		Point pt0 = toPoint( p0 );
 		Point pt1 = toPoint( p1 );
 		if (pt0 == null) {
-			DirectPositionImpl copy = new DirectPositionImpl(p0.getPosition());
+			DirectPositionImpl copy = new DirectPositionImpl(p0.getDirectPosition());
 			pt0 = new PointImpl(copy);
 			//pt0 = this.getFeatGeometryFactory().getPrimitiveFactory().createPoint(p0);
 		}
 		if (pt1 == null) {
-			DirectPositionImpl copy = new DirectPositionImpl(p1.getPosition());
+			DirectPositionImpl copy = new DirectPositionImpl(p1.getDirectPosition());
 			pt1 = new PointImpl(copy);
 			//pt1 = this.getFeatGeometryFactory().getPrimitiveFactory().createPoint(p1);
 		}
@@ -446,8 +446,8 @@ public class CurveImpl extends OrientableCurveImpl implements Curve {
 		ParamForPoint paramForPoints = this.curveSegments.get(0)
 				.getParamForPoint(p);
 
-		double minDistanceSquare = AlgoPointND.getDistanceSquare(p.getCoordinates(), paramForPoints.getPosition().getCoordinates());
-		//double minDistanceSquare = ((DirectPositionImpl) p).distanceSquare(paramForPoints.getPosition());
+		double minDistanceSquare = AlgoPointND.getDistanceSquare(p.getCoordinate(), paramForPoints.getPosition().getCoordinate());
+		//double minDistanceSquare = ((DirectPositionImpl) p).distanceSquare(paramForPoints.getDirectPosition());
 		double actDistanceSquare = 0.0;
 
 		/* Loop all other segments and check if the distance of them is smaller */
@@ -455,8 +455,8 @@ public class CurveImpl extends OrientableCurveImpl implements Curve {
 			ParamForPoint paramForPoints1 = this.curveSegments.get(i)
 					.getParamForPoint(p);
 			
-			actDistanceSquare = AlgoPointND.getDistanceSquare(p.getCoordinates(), paramForPoints1.getPosition().getCoordinates());
-			//actDistanceSquare = ((DirectPositionImpl) p).distanceSquare(paramForPoints1.getPosition());
+			actDistanceSquare = AlgoPointND.getDistanceSquare(p.getCoordinate(), paramForPoints1.getPosition().getCoordinate());
+			//actDistanceSquare = ((DirectPositionImpl) p).distanceSquare(paramForPoints1.getDirectPosition());
 			
 			if (actDistanceSquare <= minDistanceSquare) {
 				// TODO
@@ -831,9 +831,9 @@ public class CurveImpl extends OrientableCurveImpl implements Curve {
 		// point2 = new PositionImpl(this.getEndPoint());
 
 		/* Get all Params for closest points to startposition point1 */
-		ParamForPoint startParams = this.getParamForPoint(point1.getPosition());
+		ParamForPoint startParams = this.getParamForPoint(point1.getDirectPosition());
 		/* Get all Params for closest points to endposition point2 */
-		ParamForPoint endParams = this.getParamForPoint(point2.getPosition());
+		ParamForPoint endParams = this.getParamForPoint(point2.getDirectPosition());
 
 		/*
 		 * Compare the distances between each found startParam and endParam and
@@ -878,7 +878,7 @@ public class CurveImpl extends OrientableCurveImpl implements Curve {
 				LineSegment tLineSegment = tLineSegmentIter.next();
 				// Add new Coordinate, which is the start point of the actual
 				// LineSegment
-				rList.add( tLineSegment.getStartPoint().getPosition() );
+				rList.add( tLineSegment.getStartPoint().getDirectPosition() );
 			}
 		}
 		// Add new Coordinate, which is the end point of the last curveSegment

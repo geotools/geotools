@@ -200,10 +200,10 @@ public class GeoTiffWriterTest extends TestCase {
 		// Crop the original coverage.
 		//
 		// /////////////////////////////////////////////////////////////////////
-		double xc = sourceEnvelope.getCenter(0);
-		double yc = sourceEnvelope.getCenter(1);
-		double xl = sourceEnvelope.getLength(0);
-		double yl = sourceEnvelope.getLength(1);
+		double xc = sourceEnvelope.getMedian(0);
+		double yc = sourceEnvelope.getMedian(1);
+		double xl = sourceEnvelope.getSpan(0);
+		double yl = sourceEnvelope.getSpan(1);
 		final GeneralEnvelope cropEnvelope = new GeneralEnvelope(new double[] {
 				xc - xl / 4.0, yc - yl / 4.0 }, new double[] { xc + xl / 4.0,
 				yc + yl / 4.0 });

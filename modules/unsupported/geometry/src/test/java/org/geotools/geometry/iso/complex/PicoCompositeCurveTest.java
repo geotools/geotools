@@ -123,10 +123,10 @@ public class PicoCompositeCurveTest extends TestCase {
 		CompositeCurve compcurve = complf.createCompositeCurve(curveList);
 		
 		assertNotNull(compcurve);
-		double[] dp = compcurve.getEnvelope().getLowerCorner().getCoordinates();
+		double[] dp = compcurve.getEnvelope().getLowerCorner().getCoordinate();
 		assertEquals(dp[0], 20.0);
 		assertEquals(dp[1], 20.0);
-		dp = compcurve.getEnvelope().getUpperCorner().getCoordinates();
+		dp = compcurve.getEnvelope().getUpperCorner().getCoordinate();
 		assertEquals(dp[0], 100.0);
 		assertEquals(dp[1], 80.0);
 		

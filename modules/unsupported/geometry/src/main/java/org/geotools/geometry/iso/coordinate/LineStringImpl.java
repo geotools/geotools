@@ -169,7 +169,7 @@ public class LineStringImpl extends CurveSegmentImpl implements LineString {
     public DirectPosition getStartPoint() {
         // ok
         /* Return DirectPosition of first Control Point */
-        return controlPoints.getFirst().getPosition();
+        return controlPoints.getFirst().getDirectPosition();
     }
 
     /*
@@ -181,7 +181,7 @@ public class LineStringImpl extends CurveSegmentImpl implements LineString {
     public DirectPosition getEndPoint() {
         // ok
         /* Return Direct Position of last Control Point */
-        return controlPoints.getLast().getPosition();
+        return controlPoints.getLast().getDirectPosition();
     }
 
     /*

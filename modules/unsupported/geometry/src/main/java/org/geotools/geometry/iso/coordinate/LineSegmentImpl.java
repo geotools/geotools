@@ -162,7 +162,7 @@ public class LineSegmentImpl extends LineStringImpl implements LineSegment {
 		// 0.0 <= factor <= 1.0
 		// par = 0 => result = dp0
 		// par = 1 => result = dp1
-		double[] coord = AlgoPointND.evaluate(p0.getCoordinates(), p1.getCoordinates(), par);
+		double[] coord = AlgoPointND.evaluate(p0.getCoordinate(), p1.getCoordinate(), par);
         return new DirectPositionImpl( p0.getCoordinateReferenceSystem(), coord );
 	}
 	
@@ -187,14 +187,14 @@ public class LineSegmentImpl extends LineStringImpl implements LineSegment {
 		// Works for n dimensional coordinates
 		
 		// Calculate the normative vector from origin
-		double[] startpoint = this.getStartPoint().getCoordinates();
-		double[] endpoint = this.getEndPoint().getCoordinates();
+		double[] startpoint = this.getStartPoint().getCoordinate();
+		double[] endpoint = this.getEndPoint().getCoordinate();
 		double[] newEndPoint = AlgoPointND.subtract(startpoint, endpoint);
 		newEndPoint = AlgoPointND.normalize(newEndPoint);
 
 		// TODO this part depends from forParam() - implement this method!
 		// Add the coordinate at distance to the normative vector
-		double[] posAtDistance = this.forParamInSegment(distance).getCoordinates();
+		double[] posAtDistance = this.forParamInSegment(distance).getCoordinate();
 		newEndPoint = AlgoPointND.add(newEndPoint, posAtDistance);
 		return newEndPoint;
 	}
@@ -361,13 +361,13 @@ public class LineSegmentImpl extends LineStringImpl implements LineSegment {
 	// }
 	// // choose the most apropriated axis
 	// double coord[];
-	// coord = p0.getCoordinates();
+	// coord = p0.getCoordinate();
 	// double p0x = coord[0];
 	// double p0y = coord[1];
-	// coord = p1.getCoordinates();
+	// coord = p1.getCoordinate();
 	// double p1x = coord[0];
 	// double p1y = coord[1];
-	// coord = dp.getCoordinates();
+	// coord = dp.getCoordinate();
 	// double dpx = coord[0];
 	// double dpy = coord[1];
 	// if (Math.abs(p0x - p1x) > Math.abs(p0y - p1y))
@@ -463,9 +463,9 @@ public class LineSegmentImpl extends LineStringImpl implements LineSegment {
 	// DirectPositionImpl.EPSILON;
 	// }
 	//    
-	// public double[] getCoordinates() {
-	// double[] c0 = this.getStartPoint().getCoordinates();
-	// double[] c1 = this.getEndPoint().getCoordinates();
+	// public double[] getCoordinate() {
+	// double[] c0 = this.getStartPoint().getCoordinate();
+	// double[] c1 = this.getEndPoint().getCoordinate();
 	// return new double[] {c0[0],c0[1],c1[0],c1[1]};
 	// }
 

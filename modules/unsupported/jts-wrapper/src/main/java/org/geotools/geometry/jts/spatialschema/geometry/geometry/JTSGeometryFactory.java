@@ -167,14 +167,14 @@ public class JTSGeometryFactory implements GeometryFactory {
 //                list.add(o);
 //            } else if (o instanceof Position) {
 //                Position p = (Position) o;
-//                DirectPosition dp = p.getPosition();
+//                DirectPosition dp = p.getDirectPosition();
 //                /*if (dp == null) {
-//                    dp = p.getIndirect().getPosition();
+//                    dp = p.getIndirect().getDirectPosition();
 //                }*/
 //                list.add(dp);
 //            }
             Position position = (Position) it.next();
-            DirectPosition directPosition = position.getPosition();
+            DirectPosition directPosition = position.getDirectPosition();
             list.add(directPosition);
         }
         return result;

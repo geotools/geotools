@@ -22,6 +22,7 @@ import javax.media.jai.RenderedOp;
 
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
+import org.geotools.resources.image.ImageUtilities;
 
 
 /**
@@ -63,7 +64,7 @@ enum ReadType {
     			reader.setInput(inStream);
     			
     			//check source regione
-    			if(Utils.checkEmptySourceRegion(readP, readDimension))
+    			if(ImageUtilities.checkEmptySourceRegion(readP, readDimension))
     				return null;
     			
     			if (LOGGER.isLoggable(Level.FINE))
@@ -131,7 +132,7 @@ enum ReadType {
 
     			
     			//check source regionepbjMosaic,
-    			if(Utils.checkEmptySourceRegion(readP, readDimension))
+    			if(ImageUtilities.checkEmptySourceRegion(readP, readDimension))
     				return null;
     			
 

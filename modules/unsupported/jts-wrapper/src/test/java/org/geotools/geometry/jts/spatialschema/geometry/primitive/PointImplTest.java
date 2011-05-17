@@ -40,7 +40,7 @@ public class PointImplTest extends TestCase {
 	public void testNewEmptyPoint() {
 		Point point = new PointImpl();
 		assertNotNull(point.getCoordinateReferenceSystem());
-		DirectPosition position = point.getPosition();
+		DirectPosition position = point.getDirectPosition();
 		assertNotNull(position);
 	}
 
@@ -53,8 +53,8 @@ public class PointImplTest extends TestCase {
 		assertNotNull(point.getCoordinateReferenceSystem());
 		assertEquals(here.getCoordinateReferenceSystem(), point
 				.getCoordinateReferenceSystem());
-		assertEquals(here, point.getPosition());
-		assertEquals(here.hashCode(), point.getPosition().hashCode());
+		assertEquals(here, point.getDirectPosition());
+		assertEquals(here.hashCode(), point.getDirectPosition().hashCode());
 	}
 
 	public void testNewFactoryPointHere() {
@@ -67,8 +67,8 @@ public class PointImplTest extends TestCase {
 		assertNotNull(point.getCoordinateReferenceSystem());
 		assertEquals(here.getCoordinateReferenceSystem(), point
 				.getCoordinateReferenceSystem());
-		assertEquals(here, point.getPosition());
-		assertEquals(here.hashCode(), point.getPosition().hashCode());
+		assertEquals(here, point.getDirectPosition());
+		assertEquals(here.hashCode(), point.getDirectPosition().hashCode());
 	}
 
 	public void testPicoStuff() {
@@ -128,8 +128,8 @@ public class PointImplTest extends TestCase {
 		assertNotNull(point.getCoordinateReferenceSystem());
 		assertEquals(here.getCoordinateReferenceSystem(), point
 				.getCoordinateReferenceSystem());
-		assertEquals(here, point.getPosition());
-		assertEquals(here.hashCode(), point.getPosition().hashCode());
+		assertEquals(here, point.getDirectPosition());
+		assertEquals(here.hashCode(), point.getDirectPosition().hashCode());
 	}
 	
 	public void testWSG843DPoint(){
@@ -146,8 +146,8 @@ public class PointImplTest extends TestCase {
 		assertNotNull(point.getCoordinateReferenceSystem());
 		assertEquals(here.getCoordinateReferenceSystem(), point
 				.getCoordinateReferenceSystem());
-		assertEquals(here, point.getPosition());
-		assertEquals(here.hashCode(), point.getPosition().hashCode());
+		assertEquals(here, point.getDirectPosition());
+		assertEquals(here.hashCode(), point.getDirectPosition().hashCode());
 	}
 	
 }

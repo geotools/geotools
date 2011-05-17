@@ -78,12 +78,12 @@ public class PicoPointTest extends TestCase {
 		assertNotNull(here.getCoordinateReferenceSystem());
 		assertNotNull(point.getCoordinateReferenceSystem());
 		assertEquals(here.getCoordinateReferenceSystem(), point.getCoordinateReferenceSystem());
-		assertEquals(here, point.getPosition());
-		assertEquals(here.hashCode(), point.getPosition().hashCode());
+		assertEquals(here, point.getDirectPosition());
+		assertEquals(here.hashCode(), point.getDirectPosition().hashCode());
 		assertEquals(point.getCentroid(), here);
 		
 		// get ordinates out of point
-		double[] ords2 = point.getCentroid().getCoordinates();
+		double[] ords2 = point.getCentroid().getCoordinate();
 	}
 	
 	public void testWSG84Point(){

@@ -136,7 +136,7 @@ public class GeometryToWKTString {
 	 * @return Format: "x1 y1 z1"
 	 */
 	private String directPositionToString(DirectPosition dp) {
-		double coord[] = dp.getCoordinates();
+		double coord[] = dp.getCoordinate();
 		String str = Double.toString(coord[0]);
 		for (int i = 1; i < coord.length; ++i) {
 			str += " " + Double.toString(coord[i]);
@@ -159,7 +159,7 @@ public class GeometryToWKTString {
 			if (i > 1) {
 				rString += ", ";
 			}
-			rString += directPositionToString(positions.get(i).getPosition());
+			rString += directPositionToString(positions.get(i).getDirectPosition());
 		}
 		return rString;
 	}
@@ -258,7 +258,7 @@ public class GeometryToWKTString {
 
 	
 	private String pointCoordToString(Point p) {
-		return this.directPositionToString(p.getPosition());
+		return this.directPositionToString(p.getDirectPosition());
 	}
 
 	private String multiPrimitiveCoordToString(MultiPrimitive mp) {

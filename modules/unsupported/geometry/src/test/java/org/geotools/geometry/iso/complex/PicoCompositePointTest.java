@@ -85,10 +85,10 @@ public class PicoCompositePointTest extends TestCase {
 		
 		assertNotNull(comppoint1);
 		assertNotNull(comppoint2);
-		double[] dp = comppoint1.getEnvelope().getLowerCorner().getCoordinates();
+		double[] dp = comppoint1.getEnvelope().getLowerCorner().getCoordinate();
 		assertEquals(dp[0], 50.0);
 		assertEquals(dp[1], 20.0);
-		dp = comppoint2.getEnvelope().getLowerCorner().getCoordinates();
+		dp = comppoint2.getEnvelope().getLowerCorner().getCoordinate();
 		assertEquals(dp[0], 70.0);
 		assertEquals(dp[1], 80.0);
 		

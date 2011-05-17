@@ -103,18 +103,6 @@ public interface DirectPosition extends Position {
     double[] getCoordinate();
 
     /**
-     * The deprecated method to obtain a <b>copy</b> of the ordinates for the
-     * DirectPosition, presented as an array of double values. For details, see
-     * the current method {@link #getCoordinate()}.
-     *
-     * @deprecated Renamed as {@link #getCoordinate} for consistency with ISO 19107.
-     *
-     * @return A copy of the coordinates.
-     */
-    @Deprecated
-    double[] getCoordinates();
-
-    /**
      * Returns the ordinate at the specified dimension.
      *
      * @param dimension The dimension in the range 0 to {@linkplain #getDimension dimension}-1.

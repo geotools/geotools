@@ -265,33 +265,33 @@ public class PicoLineStringLineSegmentTest extends TestCase {
 		assertEquals(seg2.asLineSegments().size() , 1);
 		
 		// ***** forParam(double distance)
-		double[] dp = line1.forParam(0).getCoordinates();
+		double[] dp = line1.forParam(0).getCoordinate();
 		assertEquals( -50.0, dp[0] );
 		assertEquals( 0.0, dp[1]);
 		
-		dp = line1.forParam(line1.length()).getCoordinates();
+		dp = line1.forParam(line1.length()).getCoordinate();
 		assertEquals(50.0, dp[0]);
 		assertEquals(0.0, dp[1]);
 		
-		dp = line1.forParam(seg1.getEndParam()).getCoordinates();
+		dp = line1.forParam(seg1.getEndParam()).getCoordinate();
 		assertEquals(-30.0, dp[0]);
 		assertEquals(30.0, dp[1]);
 
-		dp = line1.forParam(50).getCoordinates();
+		dp = line1.forParam(50).getCoordinate();
 		////System.outprintln("forParam: " + dp[0] + "," + dp[1]);
 		assertEquals(Math.round(dp[0]*1000) , -18397);
 		assertEquals(Math.round(dp[1]*1000) , 37735);
 
 		// ***** forConstructiveParam(double distance)
-		dp = line1.forConstructiveParam(0.0).getCoordinates();
+		dp = line1.forConstructiveParam(0.0).getCoordinate();
         assertEquals(-50.0, dp[0] );
         assertEquals(0.0, dp[1]);
 
-		dp = line1.forConstructiveParam(1.0).getCoordinates();
+		dp = line1.forConstructiveParam(1.0).getCoordinate();
         assertEquals(50.0, dp[0]);
         assertEquals(0.0, dp[1]);
 		
-		dp = line1.forConstructiveParam(50 / line1.length()).getCoordinates();
+		dp = line1.forConstructiveParam(50 / line1.length()).getCoordinate();
         assertEquals(Math.round(dp[0]*1000) , -18397);
         assertEquals(Math.round(dp[1]*1000) , 37735);
 

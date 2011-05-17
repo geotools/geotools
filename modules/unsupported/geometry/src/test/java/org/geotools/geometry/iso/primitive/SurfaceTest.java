@@ -216,7 +216,7 @@ public class SurfaceTest extends TestCase {
 		this.testSurfaces((SurfaceImpl) surface3);
 		
 		// ***** getRepresentativePoint()
-		double[] dp = surface2.getRepresentativePoint().getCoordinates();
+		double[] dp = surface2.getRepresentativePoint().getCoordinate();
 		assertTrue(dp[0] == 20);
 		assertTrue(dp[1] == 10);
 

@@ -80,9 +80,9 @@ public class GeometryFactoryTest extends TestCase {
 		
 		// public Position createPosition(DirectPosition dp);
 		Position pos1 = cf.createPosition(dp2);
-		assertTrue(pos1.getPosition().getOrdinate(0) == 10.0);
-		assertTrue(pos1.getPosition().getOrdinate(1) == -115000.0);
-		assertTrue(pos1.getPosition().getOrdinate(2) == 0.0000000125);
+		assertTrue(pos1.getDirectPosition().getOrdinate(0) == 10.0);
+		assertTrue(pos1.getDirectPosition().getOrdinate(1) == -115000.0);
+		assertTrue(pos1.getDirectPosition().getOrdinate(2) == 0.0000000125);
 
 		// public LineSegment createLineSegment(Position startPoint, Position endPoint);
 		Position pos2 = cf.createPosition(dp1);

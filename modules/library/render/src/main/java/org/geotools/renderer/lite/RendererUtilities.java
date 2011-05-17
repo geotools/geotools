@@ -587,10 +587,10 @@ public final class RendererUtilities {
 					throw new IllegalArgumentException(
 							"The provided envelope is outside the source CRS definition area");
 				if (!intersectedEnvelope.equals(envelope)) {
-					final double scale0 = intersectedEnvelope.getLength(0)
-							/ envelope.getLength(0);
-					final double scale1 = intersectedEnvelope.getLength(1)
-							/ envelope.getLength(1);
+					final double scale0 = intersectedEnvelope.getSpan(0)
+							/ envelope.getSpan(0);
+					final double scale1 = intersectedEnvelope.getSpan(1)
+							/ envelope.getSpan(1);
 					imageWidth *= scale0;
 					imageHeight *= scale1;
 				}

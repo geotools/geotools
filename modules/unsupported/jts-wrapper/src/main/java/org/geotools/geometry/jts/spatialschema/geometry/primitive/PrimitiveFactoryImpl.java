@@ -122,7 +122,7 @@ public class PrimitiveFactoryImpl implements PrimitiveFactory {
      * Creates a point at the specified position.
      */
     public Point createPoint(final Position position) {
-        return new PointImpl(position.getPosition(), crs);
+        return new PointImpl(position.getDirectPosition(), crs);
     }
 
     /**

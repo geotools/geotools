@@ -148,7 +148,7 @@ public class LineStringImpl extends GenericCurveImpl
         List list = pa.positions();
         int n = controlPoints.length();
         for (int i=n-1; i>=0; i--) {
-            list.add(new DirectPositionImpl(controlPoints.positions().get(i).getPosition()));
+            list.add(new DirectPositionImpl(controlPoints.positions().get(i).getDirectPosition()));
         }
         return result;
     }

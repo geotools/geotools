@@ -25,7 +25,8 @@ import org.opengis.coverage.grid.Format;
 
 /**
  * Implementation of the {@link Format} service provider interface for image collections.
- * 
+ * @author Simone Giannecchini, GeoSolutions SAS
+ * @author Daniele Romagnoli, GeoSolutions SAS
  * @author Simone Giannecchini, GeoSolutions SAS
  * @author Daniele Romagnoli, GeoSolutions SAS
  */

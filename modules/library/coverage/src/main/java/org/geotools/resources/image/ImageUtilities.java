@@ -1142,4 +1142,32 @@ public final class ImageUtilities {
     	return new Rectangle(0, 0, reader.getWidth(imageIndex), reader
     			.getHeight(imageIndex));
     }
+
+    /**
+     * Checks that the provided <code>dimensions</code> when intersected with
+     * the source region used by the provided {@link ImageReadParam} instance
+     * does not result in an empty {@link Rectangle}.
+     * 
+     * <p>
+     * Input parameters cannot be null.
+     * 
+     * @param readParameters
+     *            an instance of {@link ImageReadParam} for which we want to
+     *            check the source region element.
+     * @param dimensions
+     *            an instance of {@link Rectangle} to use for the check.
+     * @return <code>true</code> if the intersection is not empty,
+     *         <code>false</code> otherwise.
+     */
+    public final static boolean checkEmptySourceRegion(final ImageReadParam readParameters,
+    		final Rectangle dimensions) {
+            Utilities.ensureNonNull("readDimension", dimensions);
+            Utilities.ensureNonNull("readP", readParameters);
+    	final Rectangle sourceRegion = readParameters.getSourceRegion();
+    	Rectangle.intersect(sourceRegion, dimensions, sourceRegion);
+    	if (sourceRegion.isEmpty())
+    		return true;
+    	readParameters.setSourceRegion(sourceRegion);
+    	return false;
+    }
 }

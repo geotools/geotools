@@ -178,7 +178,7 @@ public class PointArrayImpl extends NotifyingArrayList<Position> implements Poin
      */
     public void setDirectPosition(int column, DirectPosition position) throws IndexOutOfBoundsException {
         DirectPosition thisPosition = (DirectPosition) get(column);
-        DirectPosition otherPosition = position.getPosition();
+        DirectPosition otherPosition = position.getDirectPosition();
         for (int i = 0; i < thisPosition.getDimension(); i++) {
             thisPosition.setOrdinate(i, otherPosition.getOrdinate(i));
         }

@@ -37,21 +37,6 @@ public interface Precision extends Comparable<Precision> {
     int compareTo(Precision other);
 
     /**
-     * Returns the maximum number of significant digits provided by this precision model..
-     * <p>
-     * Apparently this is usually used for output, note GML generation usually has its own concept
-     * of significant digits. You may be able to capture this in terms of the getScale().
-     * </p>
-     *
-     * @return number of significant digits
-     * @see #getScale()
-     *
-     * @deprecated This is redundant with {@link #getScale}.
-     */
-    @Deprecated
-    int getMaximumSignificantDigits();
-
-    /**
      * Multiplying factor used to obtain a precise ordinate.
      * <p>
      * Multiply by this value and then divide by this value to round correctly:

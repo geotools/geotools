@@ -142,9 +142,9 @@ public class BursaWolfTransformBuilder extends MathTransformBuilder {
         GeneralMatrix x = new GeneralMatrix(3 * sourcePoints.length, 1);
 
         for (int j = 0; j < (x.getNumRow()); j = j + 3) {
-            x.setElement(j, 0, sourcePoints[j / 3].getCoordinates()[0]);
-            x.setElement(j + 1, 0, sourcePoints[j / 3].getCoordinates()[1]);
-            x.setElement(j + 2, 0, sourcePoints[j / 3].getCoordinates()[2]);
+            x.setElement(j, 0, sourcePoints[j / 3].getCoordinate()[0]);
+            x.setElement(j + 1, 0, sourcePoints[j / 3].getCoordinate()[1]);
+            x.setElement(j + 2, 0, sourcePoints[j / 3].getCoordinate()[2]);
         }
 
         return x;
@@ -161,9 +161,9 @@ public class BursaWolfTransformBuilder extends MathTransformBuilder {
         GeneralMatrix X = new GeneralMatrix(3 * sourcePoints.length, 1);
 
         for (int j = 0; j < (X.getNumRow()); j = j + 3) {
-            X.setElement(j, 0, targetPoints[j / 3].getCoordinates()[0]);
-            X.setElement(j + 1, 0, targetPoints[j / 3].getCoordinates()[1]);
-            X.setElement(j + 2, 0, targetPoints[j / 3].getCoordinates()[2]);
+            X.setElement(j, 0, targetPoints[j / 3].getCoordinate()[0]);
+            X.setElement(j + 1, 0, targetPoints[j / 3].getCoordinate()[1]);
+            X.setElement(j + 2, 0, targetPoints[j / 3].getCoordinate()[2]);
         }
 
         return X;

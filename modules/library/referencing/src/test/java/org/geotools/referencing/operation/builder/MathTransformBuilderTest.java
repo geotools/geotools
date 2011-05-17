@@ -113,13 +113,13 @@ public final class MathTransformBuilderTest {
         double[] points = new double[pts.size() * 2];
         double[] ptCalculated = new double[pts.size() * 2];
         for (int i = 0; i < pts.size(); i++) {
-            points[(2 * i)    ] = pts.get(i).getSource().getCoordinates()[0];
-            points[(2 * i) + 1] = pts.get(i).getSource().getCoordinates()[1];
+            points[(2 * i)    ] = pts.get(i).getSource().getCoordinate()[0];
+            points[(2 * i) + 1] = pts.get(i).getSource().getCoordinate()[1];
         }
         mt.transform(points, 0, ptCalculated, 0, pts.size());
         for (int i = 0; i < pts.size(); i++) {
-            assertEquals(pts.get(i).getTarget().getCoordinates()[0], ptCalculated[2 * i],       0.001);
-            assertEquals(pts.get(i).getTarget().getCoordinates()[1], ptCalculated[(2 * i) + 1], 0.001);
+            assertEquals(pts.get(i).getTarget().getCoordinate()[0], ptCalculated[2 * i],       0.001);
+            assertEquals(pts.get(i).getTarget().getCoordinate()[1], ptCalculated[(2 * i) + 1], 0.001);
         }
     }
 

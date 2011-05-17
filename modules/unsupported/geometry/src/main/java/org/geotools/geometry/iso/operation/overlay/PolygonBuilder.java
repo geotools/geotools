@@ -253,7 +253,7 @@ public class PolygonBuilder {
 				.getUpperCorner().getOrdinate(Y));
 		// Take a point on the ring to do the point in ring test
 		DirectPosition dp = testRing.getRepresentativePoint();
-		Coordinate testPt = new Coordinate(dp.getCoordinates());
+		Coordinate testPt = new Coordinate(dp.getCoordinate());
 
 		EdgeRing minShell = null;
 		Envelope minEnv = null;

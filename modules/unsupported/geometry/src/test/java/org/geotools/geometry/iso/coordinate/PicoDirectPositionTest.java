@@ -84,8 +84,8 @@ public class PicoDirectPositionTest extends TestCase {
 		GeometryFactoryImpl gf = (GeometryFactoryImpl) c.getComponentInstanceOfType(GeometryFactory.class);
 		DirectPosition dp1 = gf.createDirectPosition(coords1);
 		
-		// getCoordinates()
-		resultCoords = dp1.getCoordinates();
+		// getCoordinate()
+		resultCoords = dp1.getCoordinate();
 		assertTrue(coords1[0] == resultCoords[0]);
 		assertTrue(coords1[1] == resultCoords[1]);
 		assertTrue(coords1[2] == resultCoords[2]);
@@ -102,14 +102,14 @@ public class PicoDirectPositionTest extends TestCase {
 		dp1.setOrdinate(0, 10.5);
 		dp1.setOrdinate(1, 20.7);
 		dp1.setOrdinate(2, -30.666);
-		resultCoords = dp1.getCoordinates();
+		resultCoords = dp1.getCoordinate();
 		assertTrue(resultCoords[0] == 10.5);
 		assertTrue(resultCoords[1] == 20.7);
 		assertTrue(resultCoords[2] == -30.666);
 		
 		// Test if clone() returned a copy, and not a reference
 		// The values of dp2 should not be modified by the previous setOrdinate call in dp1
-		resultCoords = dp2.getCoordinates();
+		resultCoords = dp2.getCoordinate();
 		assertTrue(x1 == resultCoords[0]);
 		assertTrue(y1 == resultCoords[1]);
 		assertTrue(z1 == resultCoords[2]);

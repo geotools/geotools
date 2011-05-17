@@ -9,14 +9,14 @@
  */
 package org.opengis.geometry.coordinate;
 
+import static org.opengis.annotation.Specification.ISO_19107;
+
 import java.util.List;
+
+import org.opengis.annotation.Extension;
+import org.opengis.annotation.UML;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.annotation.UML;
-import org.opengis.annotation.Extension;
-
-import static org.opengis.annotation.Obligation.*;
-import static org.opengis.annotation.Specification.*;
 
 
 /**
@@ -47,21 +47,6 @@ import static org.opengis.annotation.Specification.*;
  */
 @UML(identifier="GM_PointArray", specification=ISO_19107)
 public interface PointArray extends List<Position> {
-    /**
-     * Returns the length (the number of elements) of this array. This is equivalent to
-     * <code>{@linkplain #positions positions}().{@linkplain List#size size}()</code>.
-     *
-     * @deprecated Please use {@link #size()}
-     *
-     * @return The array length.
-     *
-     * @see List#size
-     * @see PointGrid#width
-     */
-    @Extension
-    @Deprecated
-    int length();
-
     /**
      * Returns the dimensionality of the coordinates in this array. It should be equals to the
      * dimensionality of the {@linkplain #getCoordinateReferenceSystem() coordinate reference system}
@@ -134,20 +119,4 @@ public interface PointArray extends List<Position> {
     @Extension
     void setDirectPosition(int index, DirectPosition position)
             throws IndexOutOfBoundsException, UnsupportedOperationException;
-
-    /**
-     * Returns a view of the points in this array as a list of {@linkplain Position positions}. The
-     * list is backed by this {@code PointArray}, so changes to the point array are reflected in
-     * the list, and vice-versa.
-     * <p>
-     * Note that random access may be costly in some implementations. If the returned list doesn't
-     * implement the {@link java.util.RandomAccess} interface, then consider avoiding the
-     * {@link List#get(int)} method. Favor the {@linkplain List#iterator list iterator} instead.
-     *
-     * @deprecated use <b>this</b>
-     * @return The list of positions in this array.
-     */
-    @Deprecated
-    @UML(identifier="column", obligation=MANDATORY, specification=ISO_19107)
-    List<Position> positions();
 }

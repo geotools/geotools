@@ -47,7 +47,7 @@ public class PositionFactoryImpl implements PositionFactory {
 	}
 
 	public Position createPosition(Position position) {
-		return new DirectPositionImpl( position.getPosition() );
+		return new DirectPositionImpl( position.getDirectPosition() );
 	}
 
 	public List createPositionList() {

@@ -127,10 +127,10 @@ public final class EsriHdrTest extends GDALTestCase {
         final GeneralEnvelope oldEnvelope = reader.getOriginalEnvelope();
         final GeneralEnvelope cropEnvelope = new GeneralEnvelope(new double[] {
                 oldEnvelope.getLowerCorner().getOrdinate(0)
-                        + (oldEnvelope.getLength(0) / cropFactor),
+                        + (oldEnvelope.getSpan(0) / cropFactor),
 
                 oldEnvelope.getLowerCorner().getOrdinate(1)
-                        + (oldEnvelope.getLength(1) / cropFactor) },
+                        + (oldEnvelope.getSpan(1) / cropFactor) },
                 new double[] { oldEnvelope.getUpperCorner().getOrdinate(0),
                         oldEnvelope.getUpperCorner().getOrdinate(1) });
         cropEnvelope.setCoordinateReferenceSystem(reader.getCrs());
@@ -154,8 +154,8 @@ public final class EsriHdrTest extends GDALTestCase {
         // Attempt to read an envelope which doesn't intersect the dataset one
         //
         // /////////////////////////////////////////////////////////////////////
-        final double translate0 = oldEnvelope.getLength(0) + 100;
-        final double translate1 = oldEnvelope.getLength(1) + 100;
+        final double translate0 = oldEnvelope.getSpan(0) + 100;
+        final double translate1 = oldEnvelope.getSpan(1) + 100;
         final GeneralEnvelope wrongEnvelope = new GeneralEnvelope(new double[] {
                 oldEnvelope.getLowerCorner().getOrdinate(0) + translate0,
                 oldEnvelope.getLowerCorner().getOrdinate(1) + translate1 },

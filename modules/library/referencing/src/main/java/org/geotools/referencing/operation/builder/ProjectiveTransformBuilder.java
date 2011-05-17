@@ -153,18 +153,18 @@ public class ProjectiveTransformBuilder extends MathTransformBuilder {
 
         // fill first half of matrix
         for (int j = 0; j < ((2 * sourcePoints.length) / 2); j++) {
-            double xs = sourcePoints[j].getCoordinates()[0];
-            double ys = sourcePoints[j].getCoordinates()[1];
-            double xd = targetPoints[j].getCoordinates()[0];
+            double xs = sourcePoints[j].getCoordinate()[0];
+            double ys = sourcePoints[j].getCoordinate()[1];
+            double xd = targetPoints[j].getCoordinate()[0];
 
             A.setRow(j, new double[] { xs, ys, 1, 0, 0, 0, -xd * xs, -xd * ys });
         }
 
         // fill second half
         for (int j = numRow / 2; j < numRow; j++) {
-            double xs = sourcePoints[j - (numRow / 2)].getCoordinates()[0];
-            double ys = sourcePoints[j - (numRow / 2)].getCoordinates()[1];
-            double yd = targetPoints[j - (numRow / 2)].getCoordinates()[1];
+            double xs = sourcePoints[j - (numRow / 2)].getCoordinate()[0];
+            double ys = sourcePoints[j - (numRow / 2)].getCoordinate()[1];
+            double yd = targetPoints[j - (numRow / 2)].getCoordinate()[1];
 
             A.setRow(j, new double[] { 0, 0, 0, xs, ys, 1, -yd * xs, -yd * ys });
         }
@@ -181,12 +181,12 @@ public class ProjectiveTransformBuilder extends MathTransformBuilder {
 
         // Creates X matrix
         for (int j = 0; j < (numRow / 2); j++) {
-            X.setElement(j, 0, getTargetPoints()[j].getCoordinates()[0]);
+            X.setElement(j, 0, getTargetPoints()[j].getCoordinate()[0]);
         }
 
         for (int j = numRow / 2; j < numRow; j++) {
             X.setElement(j, 0,
-                getTargetPoints()[j - (numRow / 2)].getCoordinates()[1]);
+                getTargetPoints()[j - (numRow / 2)].getCoordinate()[1]);
         }
     }
 

@@ -73,7 +73,7 @@ public class EnvelopeImpl implements Envelope, Serializable {
      * @param p0
      */
     public EnvelopeImpl(Position position) {
-        this( position.getPosition() );
+        this( position.getDirectPosition() );
     }
 	/**
 	 * @param p0
@@ -198,8 +198,8 @@ public class EnvelopeImpl implements Envelope, Serializable {
 			throw new IllegalArgumentException("Error 1 on setValues"); //$NON-NLS-1$
         
         CoordinateReferenceSystem crs = p0.getCoordinateReferenceSystem();
-		double[] min = p0.getCoordinates();
-		double[] max = p1.getCoordinates();
+		double[] min = p0.getCoordinate();
+		double[] max = p1.getCoordinate();
 		// Check wheater all Min values are smaller than max values
 		for (int i = 0, n = p0.getDimension(); i < n; ++i) {
 			if (min[i] > max[i]) {
@@ -244,8 +244,8 @@ public class EnvelopeImpl implements Envelope, Serializable {
 	 * @param env
 	 */
 	public void expand(Envelope env) {
-		this.expand(env.getLowerCorner().getCoordinates());
-		this.expand(env.getUpperCorner().getCoordinates());
+		this.expand(env.getLowerCorner().getCoordinate());
+		this.expand(env.getUpperCorner().getCoordinate());
 	}
 
 	/**
@@ -255,8 +255,8 @@ public class EnvelopeImpl implements Envelope, Serializable {
 	 */
 	public void expand(double coord[]) {
 		int n = Math.min(this.getDimension(), coord.length);
-		double min[] = this.pMin.getCoordinates();
-		double max[] = this.pMax.getCoordinates();
+		double min[] = this.pMin.getCoordinate();
+		double max[] = this.pMax.getCoordinate();
 		for (int i = 0; i < n; ++i) {
 			if (coord[i] < min[i])
 				this.pMin.setOrdinate(i, coord[i]);
@@ -276,8 +276,8 @@ public class EnvelopeImpl implements Envelope, Serializable {
 	public void add(double[] coord) {
 		assert (coord.length == this.getDimension());
         
-		double[] minCoord = this.pMin.getCoordinates();
-		double[] maxCoord = this.pMax.getCoordinates();
+		double[] minCoord = this.pMin.getCoordinate();
+		double[] maxCoord = this.pMax.getCoordinate();
         
 		for (int i = 0; i < this.getDimension(); ++i) {
 			double ci = coord[i];
@@ -295,7 +295,7 @@ public class EnvelopeImpl implements Envelope, Serializable {
 	 * @param p
 	 */
 	public void add(DirectPosition p) {
-		this.add(p.getCoordinates());
+		this.add(p.getCoordinate());
 	}
 
 	/**
@@ -333,9 +333,9 @@ public class EnvelopeImpl implements Envelope, Serializable {
 	 * @return TRUE, if envelopes intersect; FALSE, if they dont intersect
 	 */
 	public boolean intersects(Envelope other) {
-		return AlgoRectangleND.intersects(this.pMin.getCoordinates(), this.pMax
-				.getCoordinates(), other.getLowerCorner().getCoordinates(),
-				other.getUpperCorner().getCoordinates());
+		return AlgoRectangleND.intersects(this.pMin.getCoordinate(), this.pMax
+				.getCoordinate(), other.getLowerCorner().getCoordinate(),
+				other.getUpperCorner().getCoordinate());
 	}
 
 	/**
@@ -346,10 +346,10 @@ public class EnvelopeImpl implements Envelope, Serializable {
 	 * @return boolean
 	 */
 	public boolean intersects(DirectPosition dp) {
-//		return AlgoRectangleND.intersects(this.pMin.getCoordinates(), this.pMax
-//				.getCoordinates(), dp.getCoordinates());
-		return AlgoRectangleND.contains(this.pMin.getCoordinates(), this.pMax
-				.getCoordinates(), dp.getCoordinates());
+//		return AlgoRectangleND.intersects(this.pMin.getCoordinate(), this.pMax
+//				.getCoordinate(), dp.getCoordinate());
+		return AlgoRectangleND.contains(this.pMin.getCoordinate(), this.pMax
+				.getCoordinate(), dp.getCoordinate());
 
 	}
 	
@@ -455,8 +455,8 @@ public class EnvelopeImpl implements Envelope, Serializable {
 	public boolean contains(DirectPosition p) {
 		// TODO Semantics: Should return true, if a DirectPosition lays on the
 		// border of the envelope?
-		return AlgoRectangleND.contains(this.pMin.getCoordinates(), this.pMax
-				.getCoordinates(), p.getCoordinates());
+		return AlgoRectangleND.contains(this.pMin.getCoordinate(), this.pMax
+				.getCoordinate(), p.getCoordinate());
 	}
 
 //	/**
@@ -464,8 +464,8 @@ public class EnvelopeImpl implements Envelope, Serializable {
 //	 * @return boolean
 //	 */
 //	public boolean touches(DirectPosition p) {
-//		return AlgoRectangleND.touches(this.pMin.getCoordinates(), this.pMax
-//				.getCoordinates(), p.getCoordinates());
+//		return AlgoRectangleND.touches(this.pMin.getCoordinate(), this.pMax
+//				.getCoordinate(), p.getCoordinate());
 //	}
 
 //	/**
@@ -474,8 +474,8 @@ public class EnvelopeImpl implements Envelope, Serializable {
 //	 * @return boolean
 //	 */
 //	public boolean touches(DirectPositionImpl p, int side) {
-//		return AlgoRectangleND.touches(this.pMin.getCoordinates(), this.pMax
-//				.getCoordinates(), p.getCoordinates(), side);
+//		return AlgoRectangleND.touches(this.pMin.getCoordinate(), this.pMax
+//				.getCoordinate(), p.getCoordinate(), side);
 //	}
 
 //	/**
@@ -483,12 +483,12 @@ public class EnvelopeImpl implements Envelope, Serializable {
 //	 * @return boolean
 //	 */
 //	public boolean contains(Envelope env) {
-//		double[] min = this.pMin.getCoordinates();
-//		double[] max = this.pMax.getCoordinates();
+//		double[] min = this.pMin.getCoordinate();
+//		double[] max = this.pMax.getCoordinate();
 //		return AlgoRectangleND.contains(min, max, env.getLowerCorner()
-//				.getCoordinates())
+//				.getCoordinate())
 //				&& AlgoRectangleND.contains(min, max, env.getUpperCorner()
-//						.getCoordinates());
+//						.getCoordinate());
 //	}
 
 //	/**
@@ -515,8 +515,8 @@ public class EnvelopeImpl implements Envelope, Serializable {
 //	 */
 //	public double maxLength() {
 //		double result = 0.0;
-//		double minCoord[] = this.pMin.getCoordinates();
-//		double maxCoord[] = this.pMax.getCoordinates();
+//		double minCoord[] = this.pMin.getCoordinate();
+//		double maxCoord[] = this.pMax.getCoordinate();
 //		int n = Math.min(minCoord.length, maxCoord.length);
 //		for (int i = 1; i < n; ++i) {
 //			if ((maxCoord[i] - minCoord[i]) > result)

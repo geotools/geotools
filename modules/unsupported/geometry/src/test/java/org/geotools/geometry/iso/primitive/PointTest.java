@@ -76,7 +76,7 @@ public class PointTest extends TestCase {
 		Point p1 = tPrimFactory.createPoint(coord);
 
 		// ***** getRepresentativePoint()
-		double[] dp = p1.getRepresentativePoint().getCoordinates();
+		double[] dp = p1.getRepresentativePoint().getCoordinate();
 		assertTrue(dp[0] == 10);
 		assertTrue(dp[1] == 32000);
 		
@@ -104,7 +104,7 @@ public class PointTest extends TestCase {
 		
 		double[] coord2 = new double[]{5, 20};
 		dp1 = tCoordFactory.createDirectPosition(coord2);
-		p1.setPosition(dp1);
+		p1.setDirectPosition(dp1);
 		//System.out.println("P1: " + p1);
 		//System.out.println("P2: " + p2);
 		assertTrue(!p1.equals(p2));

@@ -47,7 +47,7 @@ public class EdgeData extends HashMap {
                         c = new Coordinate[ coords.length ];
                         double[] c_pair = null;  
                         for( int i = 0; i < coords.length; i++ ) {
-                            c_pair = coords[i].getCoordinates();
+                            c_pair = coords[i].getCoordinate();
                             if ( coords[i].getDimension() == 2 ) {
                                 c[i] = new Coordinate( c_pair[0], c_pair[1] );
                             } else if (coords[i].getDimension() == 3 ) {

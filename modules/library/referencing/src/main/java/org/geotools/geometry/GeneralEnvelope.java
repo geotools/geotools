@@ -19,33 +19,34 @@ package org.geotools.geometry;
 import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
 import java.util.Arrays;
-import javax.measure.unit.Unit;
-import javax.measure.converter.ConversionException;
 
-import org.opengis.util.Cloneable;
+import javax.measure.converter.ConversionException;
+import javax.measure.unit.Unit;
+
+import org.geotools.metadata.iso.spatial.PixelTranslation;
+import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.resources.Classes;
+import org.geotools.resources.geometry.XRectangle2D;
+import org.geotools.resources.i18n.ErrorKeys;
+import org.geotools.resources.i18n.Errors;
+import org.geotools.util.Utilities;
 import org.opengis.coverage.grid.GridEnvelope;
-import org.opengis.metadata.extent.GeographicBoundingBox;
-import org.opengis.referencing.datum.PixelInCell;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.TransformException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.cs.CoordinateSystemAxis;
-import org.opengis.referencing.cs.CoordinateSystem;
-import org.opengis.referencing.cs.AxisDirection;
-import org.opengis.referencing.cs.RangeMeaning;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.Envelope;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.geometry.MismatchedReferenceSystemException;
-
-import org.geotools.referencing.CRS;
-import org.geotools.resources.Classes;
-import org.geotools.util.Utilities;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.geometry.XRectangle2D;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.metadata.iso.spatial.PixelTranslation;
+import org.opengis.metadata.extent.GeographicBoundingBox;
+import org.opengis.parameter.InvalidParameterValueException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.cs.AxisDirection;
+import org.opengis.referencing.cs.CoordinateSystem;
+import org.opengis.referencing.cs.CoordinateSystemAxis;
+import org.opengis.referencing.cs.RangeMeaning;
+import org.opengis.referencing.datum.PixelInCell;
+import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.TransformException;
+import org.opengis.util.Cloneable;
 
 /**
  * A minimum bounding box or rectangle. Regardless of dimension, an {@code Envelope} can be
@@ -551,21 +552,6 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
      * A coordinate position consisting of all the {@linkplain #getCenter(int) middle ordinates} for
      * each dimension for all points within the {@code Envelope}.
      * 
-     * @return The center coordinates.
-     * 
-     * @since 2.3
-     * 
-     * @deprecated Renamed as {@link #getMedian(}.
-     */
-    @Deprecated
-    public DirectPosition getCenter() {
-        return getMedian();
-    }
-
-    /**
-     * A coordinate position consisting of all the {@linkplain #getCenter(int) middle ordinates} for
-     * each dimension for all points within the {@code Envelope}.
-     * 
      * @return The median coordinates.
      * 
      * @since 2.5
@@ -622,20 +608,6 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
     }
 
     /**
-     * Returns the center ordinate along the specified dimension.
-     * 
-     * @param dimension
-     *            The dimension to query.
-     * @return The mid ordinate value along the given dimension.
-     * 
-     * @deprecated Renamed as {@link #getMedian(int)}.
-     */
-    @Deprecated
-    public final double getCenter(final int dimension) {
-        return getMedian(dimension);
-    }
-
-    /**
      * Returns the median ordinate along the specified dimension. The result should be equals (minus
      * rounding error) to <code>({@linkplain #getMaximum getMaximum}(dimension) -
      * {@linkplain #getMinimum getMinimum}(dimension)) / 2</code>.
@@ -651,21 +623,6 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
     }
 
     /**
-     * Returns the envelope length along the specified dimension. This length is equals to the
-     * maximum ordinate minus the minimal ordinate.
-     * 
-     * @param dimension
-     *            The dimension to query.
-     * @return The difference along maximal and minimal ordinates in the given dimension.
-     * 
-     * @deprecated Renamed as {@link #getSpan(int)}.
-     */
-    @Deprecated
-    public final double getLength(final int dimension) {
-        return getSpan(dimension);
-    }
-
-    /**
      * Returns the envelope span (typically width or height) along the specified dimension. The
      * result should be equals (minus rounding error) to <code>{@linkplain #getMaximum
      * getMaximum}(dimension) - {@linkplain #getMinimum getMinimum}(dimension)</code>.
@@ -678,26 +635,6 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
      */
     public final double getSpan(final int dimension) throws IndexOutOfBoundsException {
         return ordinates[dimension + ordinates.length / 2] - ordinates[dimension];
-    }
-
-    /**
-     * Returns the envelope length along the specified dimension, in terms of the given units.
-     * 
-     * @param dimension
-     *            The dimension to query.
-     * @param unit
-     *            The unit for the return value.
-     * @return The length in terms of the given unit.
-     * @throws ConversionException
-     *             if the length can't be converted to the specified units.
-     * 
-     * @since 2.2
-     * 
-     * @deprecated Renamed as {@link #getSpan(int,Unit)}.
-     */
-    @Deprecated
-    public double getLength(final int dimension, final Unit<?> unit) throws ConversionException {
-        return getSpan(dimension, unit);
     }
 
     /**

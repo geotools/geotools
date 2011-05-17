@@ -124,7 +124,7 @@ public class DirectPositionImpl implements Cloneable, DirectPosition, Position, 
      * Construct a position initialized to the same values than the specified point.
      */
     public DirectPositionImpl(final DirectPosition point) {
-        ordinates = (double[]) point.getCoordinates().clone();
+        ordinates = (double[]) point.getCoordinate().clone();
         crs = point.getCoordinateReferenceSystem();
     }
 

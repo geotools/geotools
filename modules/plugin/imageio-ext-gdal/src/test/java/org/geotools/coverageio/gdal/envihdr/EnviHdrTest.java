@@ -118,10 +118,10 @@ public class EnviHdrTest extends GDALTestCase {
         final GeneralEnvelope oldEnvelope = reader.getOriginalEnvelope();
         final GeneralEnvelope cropEnvelope = new GeneralEnvelope(new double[] {
                 oldEnvelope.getLowerCorner().getOrdinate(0)
-                        + (oldEnvelope.getLength(0) / cropFactor),
+                        + (oldEnvelope.getSpan(0) / cropFactor),
 
                 oldEnvelope.getLowerCorner().getOrdinate(1)
-                        + (oldEnvelope.getLength(1) / cropFactor) },
+                        + (oldEnvelope.getSpan(1) / cropFactor) },
                 new double[] { oldEnvelope.getUpperCorner().getOrdinate(0),
                         oldEnvelope.getUpperCorner().getOrdinate(1) });
         cropEnvelope.setCoordinateReferenceSystem(reader.getCrs());

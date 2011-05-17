@@ -108,7 +108,7 @@ public class CurveTest extends TestCase {
 
 	private CurveImpl createCurve(DirectPosition positionA, DirectPosition positionB) {
 		List segments = new ArrayList(1);
-		segments.add( new LineSegmentImpl( positionA.getCoordinateReferenceSystem(), positionA.getCoordinates(), positionB.getCoordinates(), 0) );
+		segments.add( new LineSegmentImpl( positionA.getCoordinateReferenceSystem(), positionA.getCoordinate(), positionB.getCoordinate(), 0) );
 		
 		return new CurveImpl( positionA.getCoordinateReferenceSystem(), segments );	
 	}
@@ -179,47 +179,47 @@ public class CurveTest extends TestCase {
 		//System.out.println("\n*** TEST: .getBoundary()\n" + curve1.getBoundary());
 		CurveBoundary cb = curve1.getBoundary();
 		assertTrue(cb != null);
-		double[] dp = cb.getStartPoint().getPosition().getCoordinates();
+		double[] dp = cb.getStartPoint().getDirectPosition().getCoordinate();
 		assertTrue(dp[0] == -50);
 		assertTrue(dp[1] == 0);
-		dp = cb.getEndPoint().getPosition().getCoordinates();
+		dp = cb.getEndPoint().getDirectPosition().getCoordinate();
 		assertTrue(dp[0] == 50);
 		assertTrue(dp[1] == 0);
 		
 		// ***** getEnvelope()
 		//System.out.println("\n*** TEST: .getEnvelope()\n" + curve1.getEnvelope());
 		assertTrue(curve1.getEnvelope() != null);
-		dp = curve1.getEnvelope().getLowerCorner().getCoordinates();
+		dp = curve1.getEnvelope().getLowerCorner().getCoordinate();
 		assertTrue(dp[0] == -50);
 		assertTrue(dp[1] == 0);
-		dp = curve1.getEnvelope().getUpperCorner().getCoordinates();
+		dp = curve1.getEnvelope().getUpperCorner().getCoordinate();
 		assertTrue(dp[0] == 50);
 		assertTrue(dp[1] == 50);
 		
 		// ***** forParam(double distance) : DirectPosition
-		dp = curve1.forParam(0).getCoordinates();
+		dp = curve1.forParam(0).getCoordinate();
 		assertTrue(dp[0] == -50);
 		assertTrue(dp[1] == 0.0);
 		
-		dp = curve1.forParam(curve1.length()).getCoordinates();
+		dp = curve1.forParam(curve1.length()).getCoordinate();
 		assertTrue(dp[0] == 50);
 		assertTrue(dp[1] == 0.0);
 		
-		dp = curve1.forParam(50).getCoordinates();
+		dp = curve1.forParam(50).getCoordinate();
 		////System.out.println("forParam: " + dp[0] + "," + dp[1]);
 		assertTrue(Math.round(dp[0]*1000) == -18397);
 		assertTrue(Math.round(dp[1]*1000) == 37735);
 
 		// ***** forConstructiveParam(double distance)
-		dp = curve1.forConstructiveParam(0.0).getCoordinates();
+		dp = curve1.forConstructiveParam(0.0).getCoordinate();
 		assertTrue(dp[0] == -50);
 		assertTrue(dp[1] == 0.0);
 
-		dp = curve1.forConstructiveParam(1.0).getCoordinates();
+		dp = curve1.forConstructiveParam(1.0).getCoordinate();
 		assertTrue(dp[0] == 50);
 		assertTrue(dp[1] == 0.0);
 		
-		dp = curve1.forConstructiveParam(50 / curve1.length()).getCoordinates();
+		dp = curve1.forConstructiveParam(50 / curve1.length()).getCoordinate();
 		assertTrue(Math.round(dp[0]*1000) == -18397);
 		assertTrue(Math.round(dp[1]*1000) == 37735);
 		
@@ -239,7 +239,7 @@ public class CurveTest extends TestCase {
 		assertTrue(Math.round(dp[1]*100) == -83);
 		
 		// ***** getRepresentativePoint()
-		dp = curve1.getRepresentativePoint().getCoordinates();
+		dp = curve1.getRepresentativePoint().getCoordinate();
 		////System.out.print("REPRER" + dp);
 		assertTrue(dp[0] == 0);
 		assertTrue(dp[1] == 50);
@@ -252,7 +252,7 @@ public class CurveTest extends TestCase {
 		
 		List<DirectPosition> directPositions = new ArrayList<DirectPosition>();
 		
-		directPositions.add(p5.getPosition());
+		directPositions.add(p5.getDirectPosition());
 		directPositions.add(p6);
 		directPositions.add(p7);
 		CurveImpl curve2 = (CurveImpl) tPrimFactory.createCurveByDirectPositions(directPositions);

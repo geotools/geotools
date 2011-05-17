@@ -70,11 +70,11 @@ class TINTriangle extends Polygon {
         CoordinateReferenceSystem crs = ((DirectPosition) reducedVertices
             .get(1)).getCoordinateReferenceSystem();
 
-        double x1 = ((DirectPosition) reducedVertices.get(1)).getCoordinates()[0];
-        double y1 = ((DirectPosition) reducedVertices.get(1)).getCoordinates()[1];
+        double x1 = ((DirectPosition) reducedVertices.get(1)).getCoordinate()[0];
+        double y1 = ((DirectPosition) reducedVertices.get(1)).getCoordinate()[1];
 
-        double x2 = ((DirectPosition) reducedVertices.get(2)).getCoordinates()[0];
-        double y2 = ((DirectPosition) reducedVertices.get(2)).getCoordinates()[1];
+        double x2 = ((DirectPosition) reducedVertices.get(2)).getCoordinate()[0];
+        double y2 = ((DirectPosition) reducedVertices.get(2)).getCoordinate()[1];
 
         // Calculation of Circumcicle center
         double t = (0.5 * (((x1 * x1) + (y1 * y1)) - (x1 * x2) - (y1 * y2))) / ((y1 * x2)
@@ -82,10 +82,10 @@ class TINTriangle extends Polygon {
 
         //t = Math.abs(t);
         DirectPosition2D center = new DirectPosition2D(crs,
-                (x2 / 2) - (t * y2) + p0.getCoordinates()[0],
-                (y2 / 2) + (t * x2) + p0.getCoordinates()[1]);
+                (x2 / 2) - (t * y2) + p0.getCoordinate()[0],
+                (y2 / 2) + (t * x2) + p0.getCoordinate()[1]);
 
-        return new Circle(center.getPosition(),
+        return new Circle(center.getDirectPosition(),
             center.distance(new DirectPosition2D(p0)));
     }
 

@@ -30,8 +30,8 @@ public class EnvelopeExample {
         
         System.out.println( world );
         
-        double width = world.getLength(0);
-        double height = world.getLength(1);
+        double width = world.getSpan(0);
+        double height = world.getSpan(1);
         
         System.out.println( "width:"+width);
         System.out.println( "height:"+height);

@@ -135,12 +135,12 @@ class MapTriangulationFactory {
         List <MappedPosition> vertices) {
         MappedPosition nearestOne = nearestMappedCoordinate(x, vertices);
 
-        double dstX = x.getCoordinates()[0]
-            + (nearestOne.getTarget().getCoordinates()[0]
-            - nearestOne.getSource().getCoordinates()[0]);
-        double dstY = x.getCoordinates()[1]
-            + (nearestOne.getTarget().getCoordinates()[1]
-            - nearestOne.getSource().getCoordinates()[1]);
+        double dstX = x.getCoordinate()[0]
+            + (nearestOne.getTarget().getCoordinate()[0]
+            - nearestOne.getSource().getCoordinate()[0]);
+        double dstY = x.getCoordinate()[1]
+            + (nearestOne.getTarget().getCoordinate()[1]
+            - nearestOne.getSource().getCoordinate()[1]);
         DirectPosition dst = new DirectPosition2D(nearestOne.getTarget()
                                                             .getCoordinateReferenceSystem(),
                 dstX, dstY);

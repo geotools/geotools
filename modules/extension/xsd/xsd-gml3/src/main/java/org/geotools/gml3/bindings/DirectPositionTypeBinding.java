@@ -118,7 +118,7 @@ public class DirectPositionTypeBinding extends AbstractComplexBinding {
         throws Exception {
         DirectPosition dp = (DirectPosition) object;
 
-        double[] coordinates = dp.getCoordinates();
+        double[] coordinates = dp.getCoordinate();
 
         StringBuffer sb = new StringBuffer();
 

@@ -262,7 +262,7 @@ public class GeometryBuilder {
         // - The curve will be set as parent curves for the Curve segments
         // - Start and end params for the CurveSegments will be set
         List/*<LineSegment>*/ segmentList = new ArrayList/*<LineSegment>*/();
-        for( int i=0; i<points.length();i++){
+        for( int i=0; i<points.size();i++){
             int start = i;
             int end = (i+1)%points.size();
             DirectPosition point1 = points.getDirectPosition( start, null );
@@ -312,8 +312,8 @@ public class GeometryBuilder {
 		if (position == null) {
 			throw new NullPointerException();
 		}
-		setCoordianteReferenceSystem(position.getPosition().getCoordinateReferenceSystem());
-		DirectPosition copy = (DirectPosition) getPositionFactory().createDirectPosition(position.getPosition().getCoordinates());
+		setCoordianteReferenceSystem(position.getDirectPosition().getCoordinateReferenceSystem());
+		DirectPosition copy = (DirectPosition) getPositionFactory().createDirectPosition(position.getDirectPosition().getCoordinate());
 		return getPrimitiveFactory().createPoint(copy);
 	}
 
@@ -334,16 +334,16 @@ public class GeometryBuilder {
 	}
 	
 	private Ring processBoundsToRing( Envelope bounds, LineSegment segment, final int D ){
-		DirectPosition one =  getPositionFactory().createDirectPosition(segment.getStartPoint().getCoordinates());
+		DirectPosition one =  getPositionFactory().createDirectPosition(segment.getStartPoint().getCoordinate());
 		one.setOrdinate( D, bounds.getMinimum(D) );
 		
-		DirectPosition two =  getPositionFactory().createDirectPosition(segment.getEndPoint().getCoordinates());
+		DirectPosition two =  getPositionFactory().createDirectPosition(segment.getEndPoint().getCoordinate());
 		two.setOrdinate( D, bounds.getMinimum(D) );
 		
-		DirectPosition three =  getPositionFactory().createDirectPosition(two.getCoordinates()); 
+		DirectPosition three =  getPositionFactory().createDirectPosition(two.getCoordinate()); 
 		three.setOrdinate( D, bounds.getMaximum(D) );
 		
-		DirectPosition four =  getPositionFactory().createDirectPosition(one.getCoordinates());
+		DirectPosition four =  getPositionFactory().createDirectPosition(one.getCoordinate());
 		four.setOrdinate( D, bounds.getMaximum(D) );
 		
 		LineSegment edge1 = getGeometryFactory().createLineSegment(one, two);

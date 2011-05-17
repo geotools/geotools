@@ -74,8 +74,8 @@ class Polygon {
         String wkt = "";
 
         for (int i = 0; i < vertices.length; i++) {
-            wkt = wkt + vertices[i].getCoordinates()[0] + " "
-                + vertices[i].getCoordinates()[1];
+            wkt = wkt + vertices[i].getCoordinate()[0] + " "
+                + vertices[i].getCoordinate()[1];
 
             if (i != (vertices.length - 1)) {
                 wkt = wkt + ", ";
@@ -96,13 +96,13 @@ class Polygon {
         GeneralPath ring = new GeneralPath();
 
         // Set the initiakl coordinates of the general Path
-        ring.moveTo((float) points[0].getCoordinates()[0],
-            (float) points[0].getCoordinates()[1]);
+        ring.moveTo((float) points[0].getCoordinate()[0],
+            (float) points[0].getCoordinate()[1]);
 
         // Create the star. Note: this does not draw the star.
         for (int i = 1; i < points.length; i++) {
-            ring.lineTo((float) points[i].getCoordinates()[0],
-                (float) points[i].getCoordinates()[1]);
+            ring.lineTo((float) points[i].getCoordinate()[0],
+                (float) points[i].getCoordinate()[1]);
         }
 
         return ring;
@@ -153,8 +153,8 @@ class Polygon {
         double sumY = 0;
 
         for (int i = 0; i < vertices.length; i++) {
-            sumX = sumX + vertices[i].getCoordinates()[0];
-            sumY = sumY + vertices[i].getCoordinates()[1];
+            sumX = sumX + vertices[i].getCoordinate()[0];
+            sumY = sumY + vertices[i].getCoordinate()[1];
         }
 
         // The center of polygon is calculated.
@@ -163,10 +163,10 @@ class Polygon {
 
         // The homothetic transformation is made.
         for (int i = 0; i < vertices.length; i++) {
-            vertices[i].getCoordinates()[0] = (scale * (vertices[i]
-                .getCoordinates()[0] - sumX)) + sumX;
-            vertices[i].getCoordinates()[1] = (scale * (vertices[i]
-                .getCoordinates()[1] - sumY)) + sumY;
+            vertices[i].getCoordinate()[0] = (scale * (vertices[i]
+                .getCoordinate()[0] - sumX)) + sumX;
+            vertices[i].getCoordinate()[1] = (scale * (vertices[i]
+                .getCoordinate()[1] - sumY)) + sumY;
         }
     }
 
@@ -183,10 +183,10 @@ class Polygon {
         for (int i = 0; i < vertices.length; i++) {
             redCoords.add(new DirectPosition2D(
                     vertices[i].getCoordinateReferenceSystem(),
-                    vertices[i].getCoordinates()[0]
-                    - vertices[0].getCoordinates()[0],
-                    vertices[i].getCoordinates()[1]
-                    - vertices[0].getCoordinates()[1]));
+                    vertices[i].getCoordinate()[0]
+                    - vertices[0].getCoordinate()[0],
+                    vertices[i].getCoordinate()[1]
+                    - vertices[0].getCoordinate()[1]));
         }
 
         return redCoords;

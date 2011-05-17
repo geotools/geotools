@@ -121,11 +121,11 @@ public class CurveBoundaryImpl extends PrimitiveBoundaryImpl implements
 	public EnvelopeImpl getEnvelope() {
 		// TODO Test
 		/* Build Envelope with StartPoint */
-		// EnvelopeImpl tmpEnv = new EnvelopeImpl(this.startPoint.getPosition(), this.startPoint.getPosition());
+		// EnvelopeImpl tmpEnv = new EnvelopeImpl(this.startPoint.getDirectPosition(), this.startPoint.getDirectPosition());
 		
 		EnvelopeImpl tmpEnv = new EnvelopeImpl(this.startPoint.getEnvelope());
 		/* Extend Envelope with EndPoint */
-		tmpEnv.expand(this.endPoint.getPosition().getCoordinates());
+		tmpEnv.expand(this.endPoint.getDirectPosition().getCoordinate());
 		return tmpEnv;
 	}
 
@@ -160,7 +160,7 @@ public class CurveBoundaryImpl extends PrimitiveBoundaryImpl implements
 	@Override
 	public DirectPosition getRepresentativePoint() {
 		// Use start point of Boundary as representative point
-		return this.startPoint.getPosition();
+		return this.startPoint.getDirectPosition();
 	}
 
 	@Override

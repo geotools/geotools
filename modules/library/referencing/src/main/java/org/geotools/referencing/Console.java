@@ -528,7 +528,7 @@ public class Console extends AbstractConsole {
         if (point != null) {
             table.nextColumn();
             table.write("  (");
-            final double[] coords = point.getCoordinates();
+            final double[] coords = point.getCoordinate();
             for (int i=0; i<coords.length; i++) {
                 if (i != 0) {
                     table.write(", ");
@@ -559,8 +559,8 @@ public class Console extends AbstractConsole {
         if (position2 != null) {
             if (crs instanceof AbstractCRS) try {
                 final Measure distance;
-                distance = ((AbstractCRS)crs).distance(position1.getCoordinates(),
-                                                       position2.getCoordinates());
+                distance = ((AbstractCRS)crs).distance(position1.getCoordinate(),
+                                                       position2.getCoordinate());
                 table.setAlignment(TableWriter.ALIGN_RIGHT);
                 table.write(numberFormat.format(distance.doubleValue()));
                 table.write("  ");

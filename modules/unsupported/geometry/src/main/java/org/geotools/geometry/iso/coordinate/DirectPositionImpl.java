@@ -74,7 +74,7 @@ public class DirectPositionImpl implements DirectPosition, Cloneable, Serializab
 	}
 
     public DirectPositionImpl( Position position ){
-        this( position.getPosition() );
+        this( position.getDirectPosition() );
     }
 	/**
 	 * Creates a direct Position by using coordinates of another direct Position
@@ -96,7 +96,7 @@ public class DirectPositionImpl implements DirectPosition, Cloneable, Serializab
         // the above seems to say that the array must be explicitly copied
         // but the direct position javadocs say that getCoordinate produces
         // a copy ... so we should be good without the clone.
-		this.coordinate = position.getCoordinates(); //.clone()
+		this.coordinate = position.getCoordinate(); //.clone()
 	}
 
 	/**
@@ -144,10 +144,6 @@ public class DirectPositionImpl implements DirectPosition, Cloneable, Serializab
 		return (double[]) this.coordinate.clone(); // JG: modified to return clone each time
 	}
 
-        @Deprecated
-	public double[] getCoordinates() {
-            return getCoordinate();
-        }
 
 	/*
 	 * (non-Javadoc)
@@ -328,7 +324,7 @@ public class DirectPositionImpl implements DirectPosition, Cloneable, Serializab
 
 	
 	public String toString() {
-		double coord[] = this.getCoordinates();
+		double coord[] = this.getCoordinate();
 		String str = "(" + Double.toString(coord[0]);
 		for (int i = 1; i < coord.length; ++i) {
 			str += " " + Double.toString(coord[i]);
@@ -344,7 +340,7 @@ public class DirectPositionImpl implements DirectPosition, Cloneable, Serializab
 	 * @return Distance
 	 */
 	public double distance(DirectPosition p) {
-		return AlgoPointND.getDistance(this.coordinate, p.getCoordinates());
+		return AlgoPointND.getDistance(this.coordinate, p.getCoordinate());
 	}
 
 	/**
@@ -355,7 +351,7 @@ public class DirectPositionImpl implements DirectPosition, Cloneable, Serializab
 	 */
 	public double distanceSquare(DirectPosition p) {
 		return AlgoPointND.getDistanceSquare(this.coordinate, p
-				.getCoordinates());
+				.getCoordinate());
 	}
 	
 	
@@ -434,17 +430,6 @@ public class DirectPositionImpl implements DirectPosition, Cloneable, Serializab
 		for (int i=0; i < this.coordinate.length; i++) {
 			this.coordinate[i] = DoubleOperation.div(this.coordinate[i], factor);
 		}		
-	}
-
-	
-	// TODO This method exists because of the extend of Position
-	// Is this extend really correct??? Check interfaces!!!
-	/* (non-Javadoc)
-	 * @see org.opengis.geometry.coordinate.Position#getPosition()
-	 */
-        @Deprecated
-	public DirectPosition getPosition() {
-		return this;
 	}
 
 	/* (non-Javadoc)

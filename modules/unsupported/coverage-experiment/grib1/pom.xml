@@ -49,7 +49,7 @@
     <developer>
       <name>Daniele Romagnoli</name>
       <id>danieler</id>
-      <email>dany.geotools@gmail.com</email>
+      <email>daniele.romagnoli@geo-solutions.it</email>
       <organization>GeoSolutions</organization>
       <roles>
         <role>Module Maintainer</role>
@@ -59,10 +59,10 @@
     <developer>
       <name>Simone Giannecchini</name>
       <id>simboss</id>
-      <email>simboss1@gmail.com</email>
+      <email>simone.giannecchini@geo-solutions.it</email>
       <organization>GeoSolutions</organization>
       <roles>
-        <role>Boss</role>
+        <role>Module Maintainer</role>
         <role>Java Developer</role>
       </roles>
     </developer>

@@ -271,7 +271,7 @@ public class GeometryFactoryImpl implements Factory, GeometryFactory {
 	 * @return DirectPositionImpl
 	 */
 	public DirectPosition createDirectPosition(DirectPosition dp) {
-		return (DirectPosition) positionFactory.createDirectPosition(dp.getCoordinates() );
+		return (DirectPosition) positionFactory.createDirectPosition(dp.getCoordinate() );
 	}
 
 	/**

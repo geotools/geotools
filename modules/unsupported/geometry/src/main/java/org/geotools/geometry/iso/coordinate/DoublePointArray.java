@@ -182,7 +182,7 @@ public class DoublePointArray extends AbstractList<Position> implements PointArr
 		else {
 			assert(dest.getCoordinateReferenceSystem().equals(crs));
 			DirectPosition dp = new DirectPositionImpl(get(index));
-			for (int i=0; i < dp.getCoordinates().length; i++) {
+			for (int i=0; i < dp.getCoordinate().length; i++) {
 				dest.setOrdinate(i, dp.getOrdinate(i));
 			}
 		}
@@ -232,7 +232,7 @@ class DoubleDirectPosition implements DirectPosition, Serializable {
     /*
     private void writeObject(java.io.ObjectOutputStream out) throws IOException {
         if( index != 0 || array.length != getDimension() ){
-            array = getCoordinates();
+            array = getCoordinate();
             index = 0;
         }
         out.defaultWriteObject();
@@ -248,10 +248,6 @@ class DoubleDirectPosition implements DirectPosition, Serializable {
         return coords;
     }
 
-    @Deprecated
-    public double[] getCoordinates() {
-        return getCoordinate();
-    }
 
     public int getDimension() {
         return crs.getCoordinateSystem().getDimension();
@@ -272,13 +268,13 @@ class DoubleDirectPosition implements DirectPosition, Serializable {
         return this;
     }
     public DirectPosition clone() {
-        return new DoubleDirectPosition( crs, getCoordinates() );                                
+        return new DoubleDirectPosition( crs, getCoordinate() );                                
     }
     @Override
     public int hashCode() {
         final int PRIME = 31;
         int result = 1;
-        double coord[] = this.getCoordinates();
+        double coord[] = this.getCoordinate();
         result = PRIME * result + Arrays.hashCode(coord);
         result = PRIME * result + ((crs == null) ? 0 : crs.hashCode());
         return result;
@@ -322,7 +318,7 @@ class DoubleDirectPosition implements DirectPosition, Serializable {
         return true;
     }       
     public String toString() {
-        double coord[] = this.getCoordinates();
+        double coord[] = this.getCoordinate();
         int D = crs.getCoordinateSystem().getDimension();        
         String str = "(" + array[index];        
         for (int i = 1; i < coord.length; ++i) {

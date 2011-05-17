@@ -39,14 +39,6 @@ import static org.opengis.annotation.Specification.*;
  */
 @UML(identifier="GM_Position", specification=ISO_19107)
 public interface Position {
-    /**
-     * @deprecated Renamed as {@link #getDirectPosition} for avoiding ambiguity.
-     *
-     * @return The direct position.
-     */
-    @Deprecated
-    @UML(identifier="direct", obligation=CONDITIONAL, specification=ISO_19107)
-    DirectPosition getPosition();
 
     /**
      * Returns the direct position. This method shall never returns {@code null}, but may returns

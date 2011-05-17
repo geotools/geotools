@@ -363,9 +363,9 @@ public abstract class GeometryImpl implements Geometry, Serializable  {
         			// loop through each linesegment and check for the min distance
         			double minDistance = Double.POSITIVE_INFINITY;
         			for (int i=0; i<lines1.size(); i++) {
-        				Coordinate c1 = new Coordinate(point2.getRepresentativePoint().getCoordinates());
-        				Coordinate cA = new Coordinate(lines1.get(i).getStartPoint().getCoordinates());
-        				Coordinate cB = new Coordinate(lines1.get(i).getEndPoint().getCoordinates());
+        				Coordinate c1 = new Coordinate(point2.getRepresentativePoint().getCoordinate());
+        				Coordinate cA = new Coordinate(lines1.get(i).getStartPoint().getCoordinate());
+        				Coordinate cB = new Coordinate(lines1.get(i).getEndPoint().getCoordinate());
         				double d = CGAlgorithms.distancePointLine(c1, cA, cB);
         				if ( d < minDistance) {
         					minDistance = d;
@@ -380,10 +380,10 @@ public abstract class GeometryImpl implements Geometry, Serializable  {
         			double minDistance = Double.POSITIVE_INFINITY;
         			for (int i=0; i<lines1.size(); i++) {
         				for (int y=0; y<lines2.size(); y++) {
-	        				Coordinate A = new Coordinate(lines1.get(i).getStartPoint().getCoordinates());
-	        				Coordinate B = new Coordinate(lines1.get(i).getEndPoint().getCoordinates());
-	        				Coordinate C = new Coordinate(lines2.get(y).getStartPoint().getCoordinates());
-	        				Coordinate D = new Coordinate(lines2.get(y).getEndPoint().getCoordinates());
+	        				Coordinate A = new Coordinate(lines1.get(i).getStartPoint().getCoordinate());
+	        				Coordinate B = new Coordinate(lines1.get(i).getEndPoint().getCoordinate());
+	        				Coordinate C = new Coordinate(lines2.get(y).getStartPoint().getCoordinate());
+	        				Coordinate D = new Coordinate(lines2.get(y).getEndPoint().getCoordinate());
 	        				double d = CGAlgorithms.distanceLineLine(A, B, C, D);
 	        				if ( d < minDistance) {
 	        					minDistance = d;
@@ -400,9 +400,9 @@ public abstract class GeometryImpl implements Geometry, Serializable  {
         			// loop through each linesegment and check for the min distance
         			double minDistance = Double.POSITIVE_INFINITY;
         			for (int i=0; i<lines2.size(); i++) {
-        				Coordinate c1 = new Coordinate(point1.getRepresentativePoint().getCoordinates());
-        				Coordinate cA = new Coordinate(lines2.get(i).getStartPoint().getCoordinates());
-        				Coordinate cB = new Coordinate(lines2.get(i).getEndPoint().getCoordinates());
+        				Coordinate c1 = new Coordinate(point1.getRepresentativePoint().getCoordinate());
+        				Coordinate cA = new Coordinate(lines2.get(i).getStartPoint().getCoordinate());
+        				Coordinate cB = new Coordinate(lines2.get(i).getEndPoint().getCoordinate());
         				double d = CGAlgorithms.distancePointLine(c1, cA, cB);
         				if ( d < minDistance) {
         					minDistance = d;

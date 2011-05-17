@@ -39,9 +39,9 @@ public class WKTParserTest extends TestCase {
         assertNotNull( geometry );
         assertTrue( geometry instanceof Point );
         Point point = (Point) geometry;
-        assertNotNull( point.getPosition() );
-        assertEquals( 80, point.getPosition().getOrdinate(0), 0.0);
-        assertEquals( 340, point.getPosition().getOrdinate(1), 0.0);
+        assertNotNull( point.getDirectPosition() );
+        assertEquals( 80, point.getDirectPosition().getOrdinate(0), 0.0);
+        assertEquals( 340, point.getDirectPosition().getOrdinate(1), 0.0);
     }
     public void testPoint2() throws Exception {
         String WKT = "POINT (320.324 180.234)";
@@ -50,8 +50,8 @@ public class WKTParserTest extends TestCase {
         assertNotNull( geometry );
         assertTrue( geometry instanceof Point );
         Point point = (Point) geometry;
-        assertEquals( 320.324, point.getPosition().getOrdinate(0), 0.0);
-        assertEquals( 180.234, point.getPosition().getOrdinate(1), 0.0);
+        assertEquals( 320.324, point.getDirectPosition().getOrdinate(0), 0.0);
+        assertEquals( 180.234, point.getDirectPosition().getOrdinate(1), 0.0);
     }
     public void testPoint3() throws Exception {
         String WKT = "POINT (260.01 -360.55)";
@@ -60,8 +60,8 @@ public class WKTParserTest extends TestCase {
         assertNotNull( geometry );
         assertTrue( geometry instanceof Point );
         Point point = (Point) geometry;
-        assertEquals( 260.01, point.getPosition().getOrdinate(0), 0.0);
-        assertEquals( -360.55, point.getPosition().getOrdinate(1), 0.0);   
+        assertEquals( 260.01, point.getDirectPosition().getOrdinate(0), 0.0);
+        assertEquals( -360.55, point.getDirectPosition().getOrdinate(1), 0.0);   
     }
     
     public void testLine1() throws Exception {

@@ -66,16 +66,16 @@ public class CompositeSurfaceTest extends TestCase {
 		CompositeSurface comps1 = complf.createCompositeSurface(surfaceList);
 		
 		//System.out.println(comps1.getEnvelope());
-		double[] dp = comps1.getEnvelope().getLowerCorner().getCoordinates();
+		double[] dp = comps1.getEnvelope().getLowerCorner().getCoordinate();
 		assertTrue(dp[0] == 10);
 		assertTrue(dp[1] == 10);
-		dp = comps1.getEnvelope().getUpperCorner().getCoordinates();
+		dp = comps1.getEnvelope().getUpperCorner().getCoordinate();
 		assertTrue(dp[0] == 50);
 		assertTrue(dp[1] == 50);
 
 		
 		// ***** getRepresentativePoint()
-		dp = comps1.getRepresentativePoint().getCoordinates();
+		dp = comps1.getRepresentativePoint().getCoordinate();
 		assertTrue(dp[0] == 20);
 		assertTrue(dp[1] == 10);
 		

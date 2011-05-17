@@ -152,9 +152,9 @@ public class PrimitiveFactoryTest extends TestCase {
 		da[1] = -115000.0;
 		da[2] = 0.0000000125;
 		Point p1 = pf.createPoint(da);
-		assertTrue(p1.getPosition().getOrdinate(0) == 10.0);
-		assertTrue(p1.getPosition().getOrdinate(1) == -115000.0);
-		assertTrue(p1.getPosition().getOrdinate(2) == 0.0000000125);
+		assertTrue(p1.getDirectPosition().getOrdinate(0) == 10.0);
+		assertTrue(p1.getDirectPosition().getOrdinate(1) == -115000.0);
+		assertTrue(p1.getDirectPosition().getOrdinate(2) == 0.0000000125);
 
 		// public PointImpl createPoint(Position position);
 		// public PointImpl createPoint(DirectPositionImpl dp);
@@ -163,9 +163,9 @@ public class PrimitiveFactoryTest extends TestCase {
 		da[2] = -0.00000565;
 		Position pos1 = new DirectPositionImpl( pf.getCoordinateReferenceSystem(),  da );
 		Point p2 = pf.createPoint(pos1);
-		assertTrue(p2.getPosition().getOrdinate(0) == 999999999.0);
-		assertTrue(p2.getPosition().getOrdinate(1) == 100.0);
-		assertTrue(p2.getPosition().getOrdinate(2) == -0.00000565);
+		assertTrue(p2.getDirectPosition().getOrdinate(0) == 999999999.0);
+		assertTrue(p2.getDirectPosition().getOrdinate(1) == 100.0);
+		assertTrue(p2.getDirectPosition().getOrdinate(2) == -0.00000565);
 		
 	}
 
@@ -182,9 +182,9 @@ public class PrimitiveFactoryTest extends TestCase {
 		da[1] = -115000.0;
 		da[2] = 0.0000000125;
 		Point p1 = pf.createPoint(da);
-		assertTrue(p1.getPosition().getOrdinate(0) == 10.0);
-		assertTrue(p1.getPosition().getOrdinate(1) == -115000.0);
-		assertTrue(p1.getPosition().getOrdinate(2) == 0.0000000125);
+		assertTrue(p1.getDirectPosition().getOrdinate(0) == 10.0);
+		assertTrue(p1.getDirectPosition().getOrdinate(1) == -115000.0);
+		assertTrue(p1.getDirectPosition().getOrdinate(2) == 0.0000000125);
 
 		// public PointImpl createPoint(Position position);
 		// public PointImpl createPoint(DirectPositionImpl dp);
@@ -193,9 +193,9 @@ public class PrimitiveFactoryTest extends TestCase {
 		da[2] = -0.00000565;
 		Position pos1 = new DirectPositionImpl( pf.getCoordinateReferenceSystem(),  da );
 		Point p2 = pf.createPoint(pos1);
-		assertTrue(p2.getPosition().getOrdinate(0) == 999999999.0);
-		assertTrue(p2.getPosition().getOrdinate(1) == 100.0);
-		assertTrue(p2.getPosition().getOrdinate(2) == -0.00000565);
+		assertTrue(p2.getDirectPosition().getOrdinate(0) == 999999999.0);
+		assertTrue(p2.getDirectPosition().getOrdinate(1) == 100.0);
+		assertTrue(p2.getDirectPosition().getOrdinate(2) == -0.00000565);
 
 	}
 

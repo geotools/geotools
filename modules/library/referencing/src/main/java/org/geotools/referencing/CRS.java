@@ -1206,7 +1206,7 @@ search:             if (DefaultCoordinateSystemAxis.isCompassDirection(axis.getD
             e.setCoordinateReferenceSystem(null);
             if (targetPt != null) {
                 for (int i=envelope.getDimension(); --i>=0;) {
-                    targetPt.setOrdinate(i, e.getCenter(i));
+                    targetPt.setOrdinate(i, e.getMedian(i));
                 }
             }
             return e;
@@ -1260,7 +1260,7 @@ search:             if (DefaultCoordinateSystemAxis.isCompassDirection(axis.getD
                 switch (n % 3) {
                     case 0:  sourcePt.setOrdinate(i, envelope.getMinimum(i)); n /= 3; break;
                     case 1:  sourcePt.setOrdinate(i, envelope.getMaximum(i)); continue loop;
-                    case 2:  sourcePt.setOrdinate(i, envelope.getCenter (i)); continue loop;
+                    case 2:  sourcePt.setOrdinate(i, envelope.getMedian (i)); continue loop;
                     default: throw new AssertionError(n); // Should never happen
                 }
             }
@@ -1335,7 +1335,7 @@ search:             if (DefaultCoordinateSystemAxis.isCompassDirection(axis.getD
                     if (sourcePt == null) {
                         sourcePt = new GeneralDirectPosition(dimension);
                         for (int j=0; j<dimension; j++) {
-                            sourcePt.setOrdinate(j, envelope.getCenter(j));
+                            sourcePt.setOrdinate(j, envelope.getMedian(j));
                         }
                     }
                     if (b1) {
@@ -1346,7 +1346,7 @@ search:             if (DefaultCoordinateSystemAxis.isCompassDirection(axis.getD
                         sourcePt.setOrdinate(i, v2);
                         transformed.add(targetPt = mt.transform(sourcePt, targetPt));
                     }
-                    sourcePt.setOrdinate(i, envelope.getCenter(i));
+                    sourcePt.setOrdinate(i, envelope.getMedian(i));
                 }
             }
         }

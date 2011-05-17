@@ -61,9 +61,9 @@ public final class BursaWolfTransformBuilderTest {
         double[] points = new double[vectors.size() * 3];
 
         for (int i = 0; i < vectors.size(); i++) {
-            points[i * 3]       = vectors.get(i).getSource().getCoordinates()[0];
-            points[(i * 3) + 1] = vectors.get(i).getSource().getCoordinates()[1];
-            points[(i * 3) + 2] = vectors.get(i).getSource().getCoordinates()[2];
+            points[i * 3]       = vectors.get(i).getSource().getCoordinate()[0];
+            points[(i * 3) + 1] = vectors.get(i).getSource().getCoordinate()[1];
+            points[(i * 3) + 2] = vectors.get(i).getSource().getCoordinate()[2];
         }
 
         double[] dstPoints = new double[points.length];
@@ -73,9 +73,9 @@ public final class BursaWolfTransformBuilderTest {
             .transform(points, 0, dstPoints, 0, (points.length / 3));
 
         for (int i = 0; i < vectors.size(); i++) {
-            assertEquals(dstPoints[i * 3],       vectors.get(i).getTarget().getCoordinates()[0], 1E-2);
-            assertEquals(dstPoints[(i * 3) + 1], vectors.get(i).getTarget().getCoordinates()[1], 1E-2);
-            assertEquals(dstPoints[(i * 3) + 2], vectors.get(i).getTarget().getCoordinates()[2], 1E-2);
+            assertEquals(dstPoints[i * 3],       vectors.get(i).getTarget().getCoordinate()[0], 1E-2);
+            assertEquals(dstPoints[(i * 3) + 1], vectors.get(i).getTarget().getCoordinate()[1], 1E-2);
+            assertEquals(dstPoints[(i * 3) + 2], vectors.get(i).getTarget().getCoordinate()[2], 1E-2);
         }
     }
 
@@ -121,7 +121,7 @@ public final class BursaWolfTransformBuilderTest {
             double[] pom = new double[3];
 
             //  generates destination points
-            gt.transform(ptSrc.getCoordinates(), 0, pom, 0, 1);
+            gt.transform(ptSrc.getCoordinate(), 0, pom, 0, 1);
             ptDst = new GeneralDirectPosition(pom);
             vectors.add(new MappedPosition(ptSrc,ptDst));
         }

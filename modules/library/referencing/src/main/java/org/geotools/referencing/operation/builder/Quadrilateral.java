@@ -65,11 +65,11 @@ class Quadrilateral extends Polygon {
      * @return whether the diagonals intersects
      */
     public boolean isConvex() {
-        return Line2D.linesIntersect(p0.getCoordinates()[0],
-            p0.getCoordinates()[1], p2.getCoordinates()[0],
-            p2.getCoordinates()[1], p1.getCoordinates()[0],
-            p1.getCoordinates()[1], p3.getCoordinates()[0],
-            p3.getCoordinates()[1]);
+        return Line2D.linesIntersect(p0.getCoordinate()[0],
+            p0.getCoordinate()[1], p2.getCoordinate()[0],
+            p2.getCoordinate()[1], p1.getCoordinate()[0],
+            p1.getCoordinate()[1], p3.getCoordinate()[0],
+            p3.getCoordinate()[1]);
     }
 
     /**

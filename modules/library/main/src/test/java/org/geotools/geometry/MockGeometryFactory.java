@@ -143,7 +143,7 @@ public class MockGeometryFactory implements GeometryFactory, PrimitiveFactory {
 
         public MockDirectPosition( DirectPosition position ) {
             assert position.getCoordinateReferenceSystem() == crs;
-            coordinates = position.getCoordinates();
+            coordinates = position.getCoordinate();
         }
 
         public CoordinateReferenceSystem getCoordinateReferenceSystem() {
@@ -154,10 +154,7 @@ public class MockGeometryFactory implements GeometryFactory, PrimitiveFactory {
             System.arraycopy(coordinates, 0, copy, 0, getDimension());
             return copy;
         }
-        @Deprecated
-        public double[] getCoordinates() {
-            return getCoordinate();
-        }
+
         public int getDimension() {
             return crs.getCoordinateSystem().getDimension();
         }
@@ -173,10 +170,6 @@ public class MockGeometryFactory implements GeometryFactory, PrimitiveFactory {
         public DirectPosition getDirectPosition() {
             return this;
         }
-        @Deprecated
-        public DirectPosition getPosition() {
-            return this;
-        }
         public MockDirectPosition clone() {
             return new MockDirectPosition(this);
         }
@@ -186,9 +179,6 @@ public class MockGeometryFactory implements GeometryFactory, PrimitiveFactory {
             final DirectPosition upperCorner ) throws MismatchedReferenceSystemException,
             MismatchedDimensionException {
         return new Envelope(){
-            public double getCenter( int dimension ) {
-                return getMedian( dimension );
-            }
             public double getMedian( int dimension ) {
                 double lower = lowerCorner.getOrdinate(dimension);
                 double upper = upperCorner.getOrdinate(dimension);
@@ -584,7 +574,7 @@ public class MockGeometryFactory implements GeometryFactory, PrimitiveFactory {
     }
     public Point createPoint( Position position ) throws MismatchedReferenceSystemException,
             MismatchedDimensionException {
-        return new MockPoint(position.getPosition());
+        return new MockPoint(position.getDirectPosition());
     }
     class MockPoint implements Point {
         private DirectPosition position;
@@ -600,17 +590,11 @@ public class MockGeometryFactory implements GeometryFactory, PrimitiveFactory {
         public DirectPosition getDirectPosition() {
             return position;
         }
-        @Deprecated
-        public DirectPosition getPosition() {
-            return position;
-        }
+
         public void setDirectPosition( DirectPosition position ) throws UnmodifiableGeometryException {
             this.position = position;
         }
-        @Deprecated
-        public void setPosition( DirectPosition position ) throws UnmodifiableGeometryException {
-            this.position = position;
-        }
+
         public Set getComplexes() {
             return null;
         }

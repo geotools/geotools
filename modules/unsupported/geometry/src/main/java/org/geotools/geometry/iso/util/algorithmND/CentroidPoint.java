@@ -60,11 +60,11 @@ public class CentroidPoint {
 	 */
 	public void add(GeometryImpl geom) {
 		if (geom instanceof PointImpl) {
-			this.add(((PointImpl)geom).getPosition());
+			this.add(((PointImpl)geom).getDirectPosition());
 		} else if (geom instanceof MultiPointImpl) {
 			Iterator<Point> points = ((MultiPointImpl) geom).getElements().iterator();
 			while (points.hasNext()) {
-				this.add((DirectPositionImpl) points.next().getPosition());
+				this.add((DirectPositionImpl) points.next().getDirectPosition());
 			}
 		} else if (geom instanceof CompositePointImpl) {
 			this.add((DirectPositionImpl) ((CompositePointImpl)geom).getGenerators().get(0));
@@ -79,7 +79,7 @@ public class CentroidPoint {
 	 */
 	private void add(DirectPositionImpl pt) {
 		this.ptCount += 1;
-		this.centSum.add(pt.getCoordinates());
+		this.centSum.add(pt.getCoordinate());
 	}
 
 	/**

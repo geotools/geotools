@@ -410,7 +410,7 @@ public class CoordinateArrays {
 		Coordinate[] rCoords = new Coordinate[aPositions.size()];
 
 		for (int i = 0; i < aPositions.size(); i++) {
-			rCoords[i] = new Coordinate(aPositions.get(i).getCoordinates());
+			rCoords[i] = new Coordinate(aPositions.get(i).getCoordinate());
 		}
 
 		return rCoords;

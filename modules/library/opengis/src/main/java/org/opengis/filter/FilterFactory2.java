@@ -13,9 +13,6 @@ import java.util.List;
 
 import org.opengis.feature.type.Name;
 import org.opengis.filter.capability.FunctionName;
-import org.opengis.filter.capability.GeometryOperand;
-import org.opengis.filter.capability.Operator;
-import org.opengis.filter.capability.SpatialOperator;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.BBOX;

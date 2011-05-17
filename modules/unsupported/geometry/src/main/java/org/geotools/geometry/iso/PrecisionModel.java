@@ -322,7 +322,7 @@ public class PrecisionModel implements Serializable, Precision {
         if( precision == null ) return 0;
         
         int sigDigits = getMaximumSignificantDigits();
-        int otherSigDigits = precision.getMaximumSignificantDigits();
+        int otherSigDigits = ((PrecisionModel) precision).getMaximumSignificantDigits();
         return (new Integer(sigDigits)).compareTo(new Integer(otherSigDigits));        
     }
         
@@ -330,7 +330,7 @@ public class PrecisionModel implements Serializable, Precision {
         if (modelType.isFloating()){ // somekind of optimization
             return;
         }
-        double coords[] = position.getCoordinates();
+        double coords[] = position.getCoordinate();
         position.setOrdinate( 0, makePrecise( coords[0] ));
         position.setOrdinate( 1, makePrecise( coords[1] ));
         if( coords.length == 2 ) return;

@@ -109,7 +109,7 @@ public class RingTest extends TestCase {
 		assertTrue(ring1.isCycle());
 		
 		// ***** getRepresentativePoint()
-		double[] dp = ring1.getRepresentativePoint().getCoordinates();
+		double[] dp = ring1.getRepresentativePoint().getCoordinate();
 		assertTrue(dp[0] == 50);
 		assertTrue(dp[1] == 20);
 

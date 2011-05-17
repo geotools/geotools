@@ -482,7 +482,7 @@ public abstract class MathTransformBuilder {
         final GeneralEnvelope envelope = getEnvelope(target);
         double length = 0;
         for (int i=envelope.getDimension(); --i>=0;) {
-            final double candidate = envelope.getLength(i);
+            final double candidate = envelope.getSpan(i);
             if (candidate > length) {
                 length = candidate;
             }
@@ -512,7 +512,7 @@ public abstract class MathTransformBuilder {
             final DirectPosition point = target ? mp.getTarget() : mp.getSource();
             if (point != null) {
                 if (envelope == null) {
-                    final double[] coordinates = point.getCoordinates();
+                    final double[] coordinates = point.getCoordinate();
                     envelope = new GeneralEnvelope(coordinates, coordinates);
                 } else {
                     envelope.add(point);

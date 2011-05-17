@@ -76,17 +76,17 @@ public class CentroidTest extends TestCase {
 
 		// Point
 
-		res = this.createPointA().getCentroid().getCoordinates();
+		res = this.createPointA().getCentroid().getCoordinate();
 		assertTrue(res[0] == 30.0);
 		assertTrue(res[1] == 50.0);
 
-		res = this.createPointB().getCentroid().getCoordinates();
+		res = this.createPointB().getCentroid().getCoordinate();
 		assertTrue(res[0] == 100.0);
 		assertTrue(res[1] == 120.0);
 
 		// MultiPoint
 
-		res = this.createMultiPointA().getCentroid().getCoordinates();
+		res = this.createMultiPointA().getCentroid().getCoordinate();
 		assertTrue(res[0] == 67.5);
 		assertTrue(res[1] == 50.0);
 
@@ -98,19 +98,19 @@ public class CentroidTest extends TestCase {
 
 		// Point
 
-		res = this.createPointA3D().getCentroid().getCoordinates();
+		res = this.createPointA3D().getCentroid().getCoordinate();
 		assertTrue(res[0] == 30.0);
 		assertTrue(res[1] == 50.0);
 		assertTrue(res[2] == 10.0);
 
-		res = this.createPointB3D().getCentroid().getCoordinates();
+		res = this.createPointB3D().getCentroid().getCoordinate();
 		assertTrue(res[0] == 100.0);
 		assertTrue(res[1] == 120.0);
 		assertTrue(res[2] == 20.0);
 
 		// MultiPoint
 
-		res = this.createMultiPointA3D().getCentroid().getCoordinates();
+		res = this.createMultiPointA3D().getCentroid().getCoordinate();
 		////System.out.println(this.createMultiPointA3D().getCentroid());
 		assertTrue(Math.round(res[0] * 100) == 6667);
 		assertTrue(Math.round(res[1] * 100) == 6333);
@@ -126,36 +126,36 @@ public class CentroidTest extends TestCase {
 
 		// Curve
 
-		res = this.createCurveA().getCentroid().getCoordinates();
+		res = this.createCurveA().getCentroid().getCoordinate();
 		//System.out.println(Math.round(res[0] * 1000));
 		assertTrue(Math.round(res[0] * 1000) == 58146);
 		assertTrue(Math.round(res[1] * 100) == 8811);
 
-		res = this.createCurveB().getCentroid().getCoordinates();
+		res = this.createCurveB().getCentroid().getCoordinate();
 		assertTrue(res[0] == 55);
 		assertTrue(res[1] == 20);
 
-		res = this.createCurveC().getCentroid().getCoordinates();
+		res = this.createCurveC().getCentroid().getCoordinate();
 		assertTrue(res[0] == 40);
 		assertTrue(res[1] == 35);
 
-		res = this.createCurveD().getCentroid().getCoordinates();
+		res = this.createCurveD().getCentroid().getCoordinate();
 		assertTrue(res[0] == 92.5);
 		assertTrue(res[1] == 27.5);
 
-		res = this.createCurveX().getCentroid().getCoordinates();
+		res = this.createCurveX().getCentroid().getCoordinate();
 		assertTrue(Math.round(res[0] * 100) == 4263);
 		assertTrue(Math.round(res[1] * 100) == 13986);
 
 		// MultiCurve
 
-		res = this.createMultiCurveA().getCentroid().getCoordinates();
+		res = this.createMultiCurveA().getCentroid().getCoordinate();
 		assertTrue(Math.round(res[0] * 100) == 6025);
 		assertTrue(Math.round(res[1] * 100) == 6766);
 
 		// CurveBoundary
 
-		res = this.createCurveA().getBoundary().getCentroid().getCoordinates();
+		res = this.createCurveA().getBoundary().getCentroid().getCoordinate();
 		assertTrue(res[0] == 20);
 		assertTrue(res[1] == 80);
 
@@ -174,41 +174,41 @@ public class CentroidTest extends TestCase {
 
 		// Surface
 		
-		res = this.createSurfaceX().getCentroid().getCoordinates();
+		res = this.createSurfaceX().getCentroid().getCoordinate();
 		assertTrue(res[0] == 50);
 		assertTrue(res[1] == 50);
 
-		res = this.createSurfaceAwithoutHole().getCentroid().getCoordinates();
+		res = this.createSurfaceAwithoutHole().getCentroid().getCoordinate();
 		assertTrue(Math.round(res[0] * 1000) == 82161);
 		assertTrue(Math.round(res[1] * 100) == 9122);
 
-		res = this.createSurfaceAwithHole().getCentroid().getCoordinates();
+		res = this.createSurfaceAwithHole().getCentroid().getCoordinate();
 		assertTrue(Math.round(res[0] * 1000) == 81309);
 		assertTrue(Math.round(res[1] * 100) == 9167);
 		
-		res = this.createSurfaceAwithTwoHoles().getCentroid().getCoordinates();
+		res = this.createSurfaceAwithTwoHoles().getCentroid().getCoordinate();
 		assertTrue(Math.round(res[0] * 1000) == 82692);
 		assertTrue(Math.round(res[1] * 100) == 9106);
 
-		res = this.createSurfaceBwithoutHole().getCentroid().getCoordinates();
+		res = this.createSurfaceBwithoutHole().getCentroid().getCoordinate();
 		assertTrue(Math.round(res[0] * 1000) == 135734);
 		assertTrue(Math.round(res[1] * 100) == 6977);
 
 		// MultiSurface
 
-		res = this.createMultiSurfaceA().getCentroid().getCoordinates();
+		res = this.createMultiSurfaceA().getCentroid().getCoordinate();
 		assertTrue(Math.round(res[0] * 10) == 1068);
 		assertTrue(Math.round(res[1] * 1000) == 81357);
 
 		// SurfaceBoundary
 
-		res = this.createSurfaceAwithoutHole().getBoundary().getCentroid().getCoordinates();
+		res = this.createSurfaceAwithoutHole().getBoundary().getCentroid().getCoordinate();
 		assertTrue(Math.round(res[0] * 1000) == 82178);
 		assertTrue(Math.round(res[1] * 1000) == 91658);
 
 		// Ring
 		
-		res = this.createSurfaceAwithoutHole().getBoundary().getExterior().getCentroid().getCoordinates();
+		res = this.createSurfaceAwithoutHole().getBoundary().getExterior().getCentroid().getCoordinate();
 		////System.out.println(this.createSurfaceAwithoutHole().getBoundary().getExterior().getCentroid());
 		assertTrue(Math.round(res[0] * 1000) == 82178);
 		assertTrue(Math.round(res[1] * 1000) == 91658);

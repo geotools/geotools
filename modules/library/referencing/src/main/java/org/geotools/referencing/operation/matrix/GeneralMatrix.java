@@ -185,7 +185,7 @@ public class GeneralMatrix extends GMatrix implements XMatrix {
         final int srcDim = srcRegion.getDimension();
         final int dstDim = dstRegion.getDimension();
         for (int i=Math.min(srcDim, dstDim); --i>=0;) {
-            double scale     = dstRegion.getLength (i) / srcRegion.getLength (i);
+            double scale     = dstRegion.getSpan (i) / srcRegion.getSpan (i);
             double translate = dstRegion.getMinimum(i) - srcRegion.getMinimum(i)*scale;
             setElement(i, i,         scale);
             setElement(i, srcDim, translate);
@@ -301,8 +301,8 @@ public class GeneralMatrix extends GMatrix implements XMatrix {
                     if (validRegions) {
                         translate  = (normal) ? dstRegion.getMinimum(dstIndex)
                                               : dstRegion.getMaximum(dstIndex);
-                        scale     *= dstRegion.getLength(dstIndex) /
-                                     srcRegion.getLength(srcIndex);
+                        scale     *= dstRegion.getSpan(dstIndex) /
+                                     srcRegion.getSpan(srcIndex);
                         translate -= srcRegion.getMinimum(srcIndex) * scale;
                     }
                     setElement(dstIndex, srcIndex,       scale);

@@ -76,6 +76,6 @@ public class PicoLineSegmentTest extends TestCase {
 	}
 
 	private LineSegmentImpl createLineSegment(DirectPosition positionA, DirectPosition positionB) {
-		return new LineSegmentImpl( positionA.getCoordinateReferenceSystem(), positionA.getCoordinates(), positionB.getCoordinates(), 0);
+		return new LineSegmentImpl( positionA.getCoordinateReferenceSystem(), positionA.getCoordinate(), positionB.getCoordinate(), 0);
 	}
 }

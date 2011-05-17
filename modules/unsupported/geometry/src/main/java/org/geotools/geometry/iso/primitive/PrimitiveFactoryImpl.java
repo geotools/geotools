@@ -213,10 +213,10 @@ public class PrimitiveFactoryImpl implements Serializable, Factory, PrimitiveFac
 		if (position == null) {
 			throw new IllegalArgumentException("Parameter position is null.");
 		}
-		if (position.getPosition().getDimension() != this.getDimension()) {
+		if (position.getDirectPosition().getDimension() != this.getDimension()) {
 			throw new MismatchedDimensionException();
 		}
-		DirectPosition copy = positionFactory.createDirectPosition(position.getPosition().getCoordinates());
+		DirectPosition copy = positionFactory.createDirectPosition(position.getDirectPosition().getCoordinate());
 		return new PointImpl(copy);
 	}
 
@@ -446,7 +446,7 @@ public class PrimitiveFactoryImpl implements Serializable, Factory, PrimitiveFac
 //				// copy and update max
 //				List<DirectPosition> copy = new ArrayList<DirectPosition>();
 //				for (DirectPosition position : positions) {
-//					DirectPositionImpl maxN = (DirectPositionImpl) positionFactory.createDirectPosition(position.getCoordinates()); //new DirectPositionImpl(position);
+//					DirectPositionImpl maxN = (DirectPositionImpl) positionFactory.createDirectPosition(position.getCoordinate()); //new DirectPositionImpl(position);
 //					maxN.setOrdinate(d, max);
 //				}
 //				positions.addAll(copy);
@@ -526,16 +526,16 @@ public class PrimitiveFactoryImpl implements Serializable, Factory, PrimitiveFac
 	 * @return
 	 */
 	public Ring processBoundsToRing( Envelope bounds, LineSegment segment, final int D ){
-		DirectPosition one = positionFactory.createDirectPosition(segment.getStartPoint().getCoordinates()); //new DirectPositionImpl( segment.getStartPoint() );
+		DirectPosition one = positionFactory.createDirectPosition(segment.getStartPoint().getCoordinate()); //new DirectPositionImpl( segment.getStartPoint() );
 		one.setOrdinate( D, bounds.getMinimum(D) );
 		
-		DirectPosition two = positionFactory.createDirectPosition(segment.getEndPoint().getCoordinates()); //new DirectPositionImpl( segment.getEndPoint() );
+		DirectPosition two = positionFactory.createDirectPosition(segment.getEndPoint().getCoordinate()); //new DirectPositionImpl( segment.getEndPoint() );
 		two.setOrdinate( D, bounds.getMinimum(D) );
 		
-		DirectPosition three = positionFactory.createDirectPosition(two.getCoordinates()); //new DirectPositionImpl( two );
+		DirectPosition three = positionFactory.createDirectPosition(two.getCoordinate()); //new DirectPositionImpl( two );
 		three.setOrdinate( D, bounds.getMaximum(D) );
 		
-		DirectPosition four = positionFactory.createDirectPosition(one.getCoordinates()); //new DirectPositionImpl( one );
+		DirectPosition four = positionFactory.createDirectPosition(one.getCoordinate()); //new DirectPositionImpl( one );
 		four.setOrdinate( D, bounds.getMaximum(D) );
 		
 		LineSegment edge1 = new LineSegmentImpl( one, two, 0.0 );

@@ -133,11 +133,11 @@ public class PicoEnvelopeTest extends TestCase {
 //		//System.outprintln(env1 + " intersects with " + env3 + " : " + env1.intersects(env3));
 		
 		//System.outprintln("TEST EXPAND");
-		env1 = gf.createEnvelope(dp1.getCoordinates());
+		env1 = gf.createEnvelope(dp1.getCoordinate());
 		//System.outprintln(env1);
-		env1.expand(dp2.getCoordinates());
+		env1.expand(dp2.getCoordinate());
 		//System.outprintln(env1);
-		env1.expand(dp5.getCoordinates());
+		env1.expand(dp5.getCoordinate());
 		//System.outprintln(env1);
 		
 		// TODO Test Intersects		

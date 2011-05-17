@@ -118,25 +118,6 @@ public interface Envelope {
     double getMaximum(int dimension) throws IndexOutOfBoundsException;
 
     /**
-     * Returns the center ordinate along the specified dimension.
-     *
-     * @param  dimension The dimension for which to obtain the ordinate value.
-     * @return The center ordinate at the given dimension.
-     * @throws IndexOutOfBoundsException If the given index is negative or is equals or greater
-     *         than the {@linkplain #getDimension envelope dimension}.
-     *
-     * @see Rectangle2D#getCenterX
-     * @see Rectangle2D#getCenterY
-     *
-     * @since GeoAPI 2.0
-     *
-     * @deprecated Renamed as {@link #getMedian}.
-     */
-    @Extension
-    @Deprecated
-    double getCenter(int dimension) throws IndexOutOfBoundsException;
-
-    /**
      * Returns the median ordinate along the specified dimension. The result should be equals
      * (minus rounding error) to:
      *
@@ -156,27 +137,6 @@ public interface Envelope {
      */
     @Extension
     double getMedian(int dimension) throws IndexOutOfBoundsException;
-
-    /**
-     * Returns the envelope length along the specified dimension.
-     * This length is equals to the {@linkplain #getMaximum maximum ordinate}
-     * minus the {@linkplain #getMinimum minimal ordinate}.
-     *
-     * @param  dimension The dimension for which to obtain the ordinate value.
-     * @return The length at the given dimension.
-     * @throws IndexOutOfBoundsException If the given index is negative or is equals or greater
-     *         than the {@linkplain #getDimension envelope dimension}.
-     *
-     * @see Rectangle2D#getWidth
-     * @see Rectangle2D#getHeight
-     *
-     * @since GeoAPI 2.0
-     *
-     * @deprecated Renamed as {@link #getSpan}.
-     */
-    @Extension
-    @Deprecated
-    double getLength(int dimension) throws IndexOutOfBoundsException;
 
     /**
      * Returns the envelope span (typically width or height) along the specified dimension.

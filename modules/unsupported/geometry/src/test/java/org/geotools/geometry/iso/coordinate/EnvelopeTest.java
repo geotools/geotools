@@ -105,11 +105,11 @@ public class EnvelopeTest extends TestCase {
 //		//System.outprintln(env1 + " intersects with " + env3 + " : " + env1.intersects(env3));
 		
 		//System.outprintln("TEST EXPAND");
-		env1 = tCoordFactory.createEnvelope(dp1.getCoordinates());
+		env1 = tCoordFactory.createEnvelope(dp1.getCoordinate());
 		//System.outprintln(env1);
-		env1.expand(dp2.getCoordinates());
+		env1.expand(dp2.getCoordinate());
 		//System.outprintln(env1);
-		env1.expand(dp5.getCoordinates());
+		env1.expand(dp5.getCoordinate());
 		//System.outprintln(env1);
 		
 		// Test other envelope methods

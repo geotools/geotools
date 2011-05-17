@@ -129,7 +129,7 @@ public class PositionFactoryImpl implements Serializable, Factory, PositionFacto
 	}
 
 	public Position createPosition(Position position) {
-		DirectPosition directPosition = position.getPosition();
+		DirectPosition directPosition = position.getDirectPosition();
 		return new DirectPositionImpl(directPosition);
 	}
 

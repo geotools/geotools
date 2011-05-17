@@ -88,7 +88,7 @@ public class PointArrayImpl extends ArrayList<Position> implements PointArray {
             Position copy = new PositionImpl( aPointArray.getDirectPosition(i, null) );
 			add( copy );
 		}
-        crs = getPosition(0).getPosition().getCoordinateReferenceSystem();
+        crs = getDirectPosition(0).getDirectPosition().getCoordinateReferenceSystem();
 	}
 
     
@@ -104,7 +104,7 @@ public class PointArrayImpl extends ArrayList<Position> implements PointArray {
 		if (positions.size() == 0){
 			throw new IllegalArgumentException("Parameter positions is empty. Cannot create empty PointArray as we need the CRS");
         }
-        crs = getPosition(0).getPosition().getCoordinateReferenceSystem();
+        crs = getDirectPosition(0).getDirectPosition().getCoordinateReferenceSystem();
 	}
 	
 	
@@ -118,7 +118,7 @@ public class PointArrayImpl extends ArrayList<Position> implements PointArray {
 		if (this.isEmpty()) {
 			return null;
 		}
-		DirectPositionImpl tDP = get(0).getPosition();
+		DirectPositionImpl tDP = get(0).getDirectPosition();
 		return tDP.getGeometryFactory();		
 	}*/
 	
@@ -139,16 +139,16 @@ public class PointArrayImpl extends ArrayList<Position> implements PointArray {
 	public double[] getCoordinate(int index) {
 		// test ok
 		
-		Position pos = getPosition(index);
-		return pos.getPosition().getCoordinates();
+		Position pos = getDirectPosition(index);
+		return pos.getDirectPosition().getCoordinate();
 
 		// Auskommentiert und geändert durch Sanjay am 21.08.2006
 		// der komplette code hat nicht soviel sinn gemacht, wurde nicht getestet
 		// Position nicht berücksichtigt wurde
 		// OLD CODE:
 		// return (obj instanceof PointImpl)
-		// (PointImpl)obj).getPosition().getCoordinates();
-		// ((PointImpl)obj).getPosition().getCoordinates():
+		// (PointImpl)obj).getDirectPosition().getCoordinate();
+		// ((PointImpl)obj).getDirectPosition().getCoordinate():
 		// (double[])obj;
 	}
 
@@ -158,7 +158,7 @@ public class PointArrayImpl extends ArrayList<Position> implements PointArray {
 	 * @param arg0
 	 * @return PositionImpl
 	 */
-	public Position getPosition(int index) {
+	public Position getDirectPosition(int index) {
 		// test ok
 		return get(index);
 	}
@@ -278,7 +278,7 @@ public class PointArrayImpl extends ArrayList<Position> implements PointArray {
 	 * @return envelope for all points in point array
 	 */
 	public EnvelopeImpl getEnvelope() {
-        Position position = getPosition( 0 );        
+        Position position = getDirectPosition( 0 );        
 		EnvelopeImpl env = new EnvelopeImpl( position );
 		
 		for (int i = 1, n = length(); i < n; i++) {
@@ -321,7 +321,7 @@ public class PointArrayImpl extends ArrayList<Position> implements PointArray {
 		// Test ok (SJ)
 		Position pos = get(col);
 
-		double[] coords = pos.getPosition().getCoordinates();		
+		double[] coords = pos.getDirectPosition().getCoordinate();		
 		if (dest != null) {
             if( dest instanceof DirectPositionImpl ){
                 DirectPositionImpl fast = (DirectPositionImpl) dest;
@@ -334,7 +334,7 @@ public class PointArrayImpl extends ArrayList<Position> implements PointArray {
                 }
             }			
 		} else {
-            dest = pos.getPosition();			
+            dest = pos.getDirectPosition();			
 		}		
 		return dest;
 	}
@@ -347,8 +347,8 @@ public class PointArrayImpl extends ArrayList<Position> implements PointArray {
 		// Test ok
 		// Set copy of the coordinates of the given DirectPosition
         Position pos = get(index);
-        DirectPosition inPlace = pos.getPosition();
-        double[] coord = position.getCoordinates();
+        DirectPosition inPlace = pos.getDirectPosition();
+        double[] coord = position.getCoordinate();
         for( int i=0; i<coord.length; i++){
             inPlace.setOrdinate( i, coord[i] );
         }
@@ -363,7 +363,7 @@ public class PointArrayImpl extends ArrayList<Position> implements PointArray {
 		// TODO test
 		// Manipulate the coordinates at the Position entry at the index
 		Position pos = get(index);
-        DirectPosition position = pos.getPosition();
+        DirectPosition position = pos.getDirectPosition();
         for( int i=0; i<coord.length; i++){
             position.setOrdinate( i, coord[i] );
         }
@@ -493,7 +493,7 @@ public class PointArrayImpl extends ArrayList<Position> implements PointArray {
 		 */
 		public DirectPosition getStartDirectPositionCoordinate(int arg0,
 				DirectPosition dp) {
-			return this.pointArray.getPosition(arg0, dp);
+			return this.pointArray.getDirectPosition(arg0, dp);
 		}
 
 		/**
@@ -503,7 +503,7 @@ public class PointArrayImpl extends ArrayList<Position> implements PointArray {
 		 */
 		public DirectPosition getEndDirectPositionCoordinate(int arg0,
 				DirectPosition dp) {
-			return this.pointArray.getPosition(arg0 + 1, dp);
+			return this.pointArray.getDirectPosition(arg0 + 1, dp);
 		}
 
 		/**
@@ -604,7 +604,7 @@ public class PointArrayImpl extends ArrayList<Position> implements PointArray {
 		else {
 			assert(dest.getCoordinateReferenceSystem().equals(crs));
 			DirectPosition dp = new DirectPositionImpl(get(index));
-			for (int i=0; i < dp.getCoordinates().length; i++) {
+			for (int i=0; i < dp.getCoordinate().length; i++) {
 				dest.setOrdinate(i, dp.getOrdinate(i));
 			}
 		}

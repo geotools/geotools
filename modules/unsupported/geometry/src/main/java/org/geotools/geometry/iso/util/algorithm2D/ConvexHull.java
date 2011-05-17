@@ -206,9 +206,9 @@ public class ConvexHull {
 		while (posIter.hasNext()) {
 			Object pos = posIter.next();
 			if (pos instanceof DirectPositionImpl) {
-				filter.filter(new Coordinate(((DirectPositionImpl)pos).getCoordinates()));
+				filter.filter(new Coordinate(((DirectPositionImpl)pos).getCoordinate()));
 			} else if (pos instanceof PointImpl) {
-				filter.filter(new Coordinate(((PointImpl)pos).getPosition().getCoordinates()));
+				filter.filter(new Coordinate(((PointImpl)pos).getPosition().getCoordinate()));
 			} else
 				Assert.isTrue(false, "Invalid coordinate type");
 		}
@@ -235,7 +235,7 @@ public class ConvexHull {
 		}
 		if (inputPts.length == 1) {
 			// 1 point: return Point
-			return new PointImpl( new DirectPositionImpl(crs, inputPts[0].getCoordinates()) ); //this.geomFactory.getPrimitiveFactory().createPoint(inputPts[0].getCoordinates());
+			return new PointImpl( new DirectPositionImpl(crs, inputPts[0].getCoordinates()) ); //this.geomFactory.getPrimitiveFactory().createPoint(inputPts[0].getCoordinate());
 		}
 		if (inputPts.length == 2) {
 			List<Position> positions = CoordinateArrays.toPositionList(this.crs, this.inputPts);

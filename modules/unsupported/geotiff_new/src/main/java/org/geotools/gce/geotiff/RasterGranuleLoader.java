@@ -6,7 +6,6 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
@@ -22,7 +21,6 @@ import javax.media.jai.ImageLayout;
 import javax.media.jai.InterpolationNearest;
 import javax.media.jai.JAI;
 import javax.media.jai.operator.AffineDescriptor;
-import javax.media.jai.operator.CropDescriptor;
 
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.geometry.GeneralEnvelope;
@@ -33,6 +31,7 @@ import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.resources.geometry.XRectangle2D;
+import org.geotools.resources.image.ImageUtilities;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.MathTransform;
@@ -61,8 +60,6 @@ class RasterGranuleLoader {
 	/** Logger. */
 	private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(RasterGranuleLoader.class); 
 	
-    
-
 	/**
 	 * This class represent an overview level in a single rasterGranuleLoader.
 	 * 
@@ -179,11 +176,10 @@ class RasterGranuleLoader {
 			reader = Utils.getReader(inStream);
 			if(reader==null)
 			{
-				throw new IllegalArgumentException("Unable to get an ImageReader for the provided file "+granuleFile.toString());
 			}
 			
 			//get selected level and base level dimensions
-			final Rectangle originalDimension = Utils.getDimension(0,inStream, reader);
+			final Rectangle originalDimension = ImageUtilities.getDimension(0,inStream, reader);
 			
 			// build the g2W for this tile, in principle we should get it
 			// somehow from the tile itself or from the index, but at the moment
@@ -378,7 +374,7 @@ class RasterGranuleLoader {
 			
 			final InterpolationNearest nearest = new InterpolationNearest();
 			//paranoiac check to avoid that JAI freaks out when computing its internal layouT on images that are too small
-			Rectangle2D finalLayout= Utils.layoutHelper(
+			Rectangle2D finalLayout= ImageUtilities.layoutHelper(
 					raster, 
 					(float)translationTransform.getScaleX(), 
 					(float)translationTransform.getScaleY(), 
@@ -472,7 +468,7 @@ class RasterGranuleLoader {
 					}
 					
 					//get selected level and base level dimensions
-					final Rectangle levelDimension = Utils.getDimension(index,inStream, reader);
+					final Rectangle levelDimension = ImageUtilities.getDimension(index,inStream, reader);
 					
 					
 					final Level baseLevel= granuleLevels.get(0);

@@ -13,7 +13,6 @@ architecture to make use of dual/quad core CPUs and multiprocessor systems.
       
       internal
       customized
-      customized2
       faq
 
 .. toctree::

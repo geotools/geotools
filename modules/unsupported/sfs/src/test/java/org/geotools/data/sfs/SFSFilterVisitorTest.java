@@ -18,7 +18,7 @@
 package org.geotools.data.sfs;
 
 import java.net.URLDecoder;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import junit.framework.TestCase;
@@ -184,7 +184,7 @@ public class SFSFilterVisitorTest extends TestCase {
         
         Query q = new DefaultQuery("layerAsia");
         q.setFilter(FF.less(FF.property(PROPERTY_NAME), FF.literal(PROPERTY_VALUE)));
-        Map<String, String> vtParams = new HashMap<String, String>();
+        Map<String, String> vtParams = new LinkedHashMap<String, String>();
         vtParams.put("first", "a=b");
         vtParams.put("second", "a%b");
         q.setHints(new Hints(Hints.VIRTUAL_TABLE_PARAMETERS, vtParams));

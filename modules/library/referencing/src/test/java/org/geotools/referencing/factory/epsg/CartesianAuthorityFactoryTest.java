@@ -65,15 +65,15 @@ public class CartesianAuthorityFactoryTest {
         Formattable formattable = (Formattable) crs;
         String wkt = formattable.toWKT(Citations.EPSG, 2);
         
-        String expected = "LOCAL_CS[\"Wildcard 2D cartesian plane in metric unit\", \n" + 
-        		"  LOCAL_DATUM[\"Unknown\", 0], \n" + 
-        		"  UNIT[\"m\", 1.0], \n" + 
-        		"  AXIS[\"x\", EAST], \n" + 
-        		"  AXIS[\"y\", NORTH], \n" + 
+        final String lineSep=System.getProperty("line.separator", "\n");
+        String expected = "LOCAL_CS[\"Wildcard 2D cartesian plane in metric unit\", " +lineSep + 
+        		"  LOCAL_DATUM[\"Unknown\", 0], " +lineSep + 
+        		"  UNIT[\"m\", 1.0], " +lineSep + 
+        		"  AXIS[\"x\", EAST], " +lineSep + 
+        		"  AXIS[\"y\", NORTH], " +lineSep + 
         		"  AUTHORITY[\"EPSG\",\"" + CODE + "\"]]";
         
         System.out.println(wkt);
-        
         assertEquals(expected, wkt);
     }
 }

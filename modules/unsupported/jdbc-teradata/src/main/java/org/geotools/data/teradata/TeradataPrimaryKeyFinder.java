@@ -62,18 +62,33 @@ class TeradataPrimaryKeyFinder extends PrimaryKeyFinder {
             int as = createViewSql.toLowerCase().indexOf("as");
             String[] parts = new String[]{ 
                 createViewSql.substring(0, as), createViewSql.substring(as+2)};
-            
+/*
             String viewID = parts[0];
             String[] viewColumnNames = null;
 
-            String select = parts[1].substring(parts[1].toLowerCase().indexOf("sel"));
-            try {
+			int openIndex = viewID.indexOf("(");
+			if (openIndex > -1 && viewID.indexOf(")", openIndex) > -1) {
+				String columnString = viewID.substring(openIndex + 1,
+						viewID.indexOf(")", openIndex)).trim();
+				if (columnString.startsWith("\"")) {
+					columnString = columnString.substring(1).trim();
+				}
+				if (columnString.endsWith("\"")) {
+					columnString = columnString.substring(0,columnString.length() - 1).trim();
+				}
+				viewColumnNames = columnString.split("\"?\\s*,\\s*\"?");
+			}
+			*/
+			String select = parts[1].substring(parts[1].toLowerCase().indexOf("sel"));
+
+			try {
                 ResultSet viewResults = st.executeQuery(select);
                 ResultSetMetaData md = viewResults.getMetaData();
                 for (int i = 1; i <= md.getColumnCount(); i++) {
                     if (md.isAutoIncrement(i)) {
                         String columnLabel;
-                        columnLabel = viewColumnNames[i - 1];
+//                        columnLabel = viewColumnNames[i - 1];
+                        columnLabel = md.getColumnLabel(i);
                         Class<?> columnType;
                         try {
                             columnType = Thread.currentThread().getContextClassLoader().loadClass(

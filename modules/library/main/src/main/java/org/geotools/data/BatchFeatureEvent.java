@@ -17,6 +17,7 @@
 package org.geotools.data;
 
 import java.util.List;
+import java.util.ArrayList;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.identity.FeatureIdImpl;
@@ -102,15 +103,17 @@ public class BatchFeatureEvent extends FeatureEvent {
         }
         bounds.expandToInclude(change.getBounds());
 
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+
         if (filter == Filter.EXCLUDE) {
             // we are just starting out
             filter = change.getFilter();
         } else if (filter instanceof And) {
             And and = (And) filter;
-            List<Filter> children = and.getChildren();
+            List<Filter> children = new ArrayList(and.getChildren());
             children.add(change.getFilter());
+            filter = ff.and(children);
         } else {
-            FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
             filter = ff.and(filter, change.getFilter());
         }
     }

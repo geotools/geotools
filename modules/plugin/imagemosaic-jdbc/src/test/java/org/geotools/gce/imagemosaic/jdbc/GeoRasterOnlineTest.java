@@ -125,7 +125,7 @@ public class GeoRasterOnlineTest extends AbstractTest {
 
     @Override
     protected String getXMLConnectFragmentName() {
-        return "connect.oracle.xml.inc";
+        return "connect.georaster.xml.inc";
     }
 
 

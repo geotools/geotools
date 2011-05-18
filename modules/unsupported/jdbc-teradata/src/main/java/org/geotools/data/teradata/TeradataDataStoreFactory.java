@@ -159,7 +159,11 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
                 }
             }
         }
-        dataStore.setDatabaseSchema(username);
+        if(params.containsKey(SCHEMA.key)) {
+          dataStore.setDatabaseSchema((String) SCHEMA.lookUp(params));
+        } else {
+          dataStore.setDatabaseSchema(username);
+        }
         return dataStore;
     }
 

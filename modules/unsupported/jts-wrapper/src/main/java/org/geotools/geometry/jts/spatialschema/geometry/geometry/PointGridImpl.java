@@ -53,7 +53,7 @@ public class PointGridImpl implements PointGrid {
      * @see PointArray#size
      */
     public int width() {
-        return pointGrid[0].length();
+        return pointGrid[0].size();
     }
 
     /**
@@ -125,7 +125,7 @@ public class PointGridImpl implements PointGrid {
      */
      DirectPosition getInternal( int row, int column ){
         PointArray pointArray = pointGrid[row];
-        return (DirectPosition) pointArray.positions().get( column ); 
+        return (DirectPosition) pointArray.get( column ); 
     }
 
     /**

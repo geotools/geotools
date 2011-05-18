@@ -233,7 +233,7 @@ public class LineStringLineSegmentTest extends TestCase {
 		//System.out.println(resultPos);
 		
 		// ***** LineSegment.getControlPoints()
-		assertEquals(seg1.getControlPoints().length() , 2);
+		assertEquals(seg1.getControlPoints().size() , 2);
 		
 		// ***** LineSegment.asLineSegments()
 		assertEquals(seg2.asLineSegments().size() , 1);
@@ -332,7 +332,7 @@ public class LineStringLineSegmentTest extends TestCase {
 		line1.reverse();
 		// number of control points is unchanged
 		PointArray controlPoints = line1.getControlPoints();
-		assertEquals(controlPoints.length() , 5);
+		assertEquals(controlPoints.size() , 5);
 		// control points are in opposite order
 		assertEquals(controlPoints.getDirectPosition(0, null), p5.getPosition());
 		assertEquals(controlPoints.getDirectPosition(1, null), p4.getPosition());

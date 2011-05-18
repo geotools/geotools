@@ -152,14 +152,13 @@ public class GeometryToWKTString {
 	
 	private String pointArrayCoordToStringWithoutFirstCoord(PointArray pa) {
 		String rString = "";
-		List<Position> positions = pa.positions();
-		if (positions.size() == 0)
+		if (pa.size() == 0)
 			return "";
-		for (int i = 1; i < positions.size(); i++) {
+		for (int i = 1; i < pa.size(); i++) {
 			if (i > 1) {
 				rString += ", ";
 			}
-			rString += directPositionToString(positions.get(i).getDirectPosition());
+			rString += directPositionToString(pa.get(i).getDirectPosition());
 		}
 		return rString;
 	}

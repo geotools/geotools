@@ -550,11 +550,10 @@ public final class GeometryUtils {
      * @param dps The new array of points
      */
     public static void populatePointArray(PointArray pointArray, DirectPosition[] dps) {
-    	List pts = pointArray.positions();
-    	pts.clear();
+    	pointArray.clear();
     	int count = dps.length;
     	for (int i = 0; i < count; i++) {
-    		pts.add(dps[i]);
+    		pointArray.add(dps[i]);
     	}
     }
     
@@ -646,8 +645,8 @@ public final class GeometryUtils {
     
     public static DirectPosition[] getDirectPositions(final LineString lineString) {
         final PointArray controlPoints = lineString.getControlPoints();
-        final DirectPosition[] returnable = new DirectPosition[controlPoints.length()];
-        for (int i = 0; i < controlPoints.length(); i++) {
+        final DirectPosition[] returnable = new DirectPosition[controlPoints.size()];
+        for (int i = 0; i < controlPoints.size(); i++) {
             returnable[i] = controlPoints.getDirectPosition(i, null);
         }
         return returnable;

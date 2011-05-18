@@ -68,7 +68,7 @@ public class SurfaceImplTest extends TestCase {
          // - The curve will be set as parent curves for the Curve segments
          // - Start and end params for the CurveSegments will be set
          List<CurveSegment> segmentList = new ArrayList<CurveSegment>();
-         for( int i=0; i<points.length();i++){
+         for( int i=0; i<points.size();i++){
              int start = i;
              int end = (i+1)%points.size();
              DirectPosition point1 = points.getDirectPosition( start, null );

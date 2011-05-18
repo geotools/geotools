@@ -192,13 +192,13 @@ public class CurveImpl extends GeometryImpl implements Curve {
 			boolean allLineString = true;
 			LineStringImpl lsi = new LineStringImpl();
 			LineString ls = null;
-			List retList = lsi.getControlPoints().positions();
+			List retList = lsi.getControlPoints();
 			Object lastPoint = null;
 			List segList = null;
 			for (int i = 0; i < count && allLineString; i++) {
 	    		Object segment = curveSegments.get(0);
 	    		if (segment instanceof LineString) {
-	    			segList = ((LineString) segment).getControlPoints().positions();
+	    			segList = ((LineString) segment).getControlPoints();
 	    			if (segList.get(0).equals(lastPoint)) {
 	    				retList.remove(retList.size() - 1);
 	    			}

@@ -145,10 +145,9 @@ public class LineStringImpl extends GenericCurveImpl
     public CurveSegment reverse() {
         LineStringImpl result = new LineStringImpl();
         PointArray pa = result.getSamplePoints();
-        List list = pa.positions();
-        int n = controlPoints.length();
+        int n = controlPoints.size();
         for (int i=n-1; i>=0; i--) {
-            list.add(new DirectPositionImpl(controlPoints.positions().get(i).getDirectPosition()));
+            pa.add(new DirectPositionImpl(controlPoints.get(i).getDirectPosition()));
         }
         return result;
     }
@@ -158,7 +157,7 @@ public class LineStringImpl extends GenericCurveImpl
      * @see org.opengis.geometry.coordinate.GenericCurve#getStartPoint()
      */
     public DirectPosition getStartPoint() {
-        return (DirectPosition) controlPoints.positions().get(0);
+        return (DirectPosition) controlPoints.get(0);
     }
 
     /**
@@ -166,7 +165,7 @@ public class LineStringImpl extends GenericCurveImpl
      * @see org.opengis.geometry.coordinate.GenericCurve#getEndPoint()
      */
     public DirectPosition getEndPoint() {
-        return (DirectPosition) controlPoints.positions().get(controlPoints.length() - 1);
+        return (DirectPosition) controlPoints.get(controlPoints.size() - 1);
     }
 
     /**
@@ -260,12 +259,12 @@ public class LineStringImpl extends GenericCurveImpl
      * @see com.polexis.lite.spatialschema.geometry.geometry.GenericCurveImpl#computeJTSPeer()
      */
     protected Geometry computeJTSPeer() {
-        int n = controlPoints.length();
+        int n = controlPoints.size();
         com.vividsolutions.jts.geom.Coordinate [] coords =
             new com.vividsolutions.jts.geom.Coordinate[n];
         for (int i=0; i<n; i++) {
             coords[i] = JTSUtils.directPositionToCoordinate(
-                (DirectPosition) controlPoints.positions().get(i));
+                (DirectPosition) controlPoints.get(i));
         }
         return JTSUtils.GEOMETRY_FACTORY.createLineString(coords);
     }

@@ -883,12 +883,17 @@
       <dependency>
         <groupId>org.eclipse.emf</groupId>
         <artifactId>common</artifactId>
-        <version>2.2.1</version>
+        <version>2.6.0</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.emf</groupId>
         <artifactId>ecore</artifactId>
-        <version>2.2.2</version>
+        <version>2.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.xsd</groupId>
+        <artifactId>xsd</artifactId>
+        <version>2.6.0</version>
       </dependency>
 
       <!-- Tests or legacy -->

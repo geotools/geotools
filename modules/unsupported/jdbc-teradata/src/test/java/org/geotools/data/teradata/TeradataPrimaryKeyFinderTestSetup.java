@@ -25,7 +25,10 @@ public class TeradataPrimaryKeyFinderTestSetup extends JDBCPrimaryKeyFinderTestS
         super(delegate);
     }
 
-
+    public TeradataTestSetup getDelegate() {
+        return (TeradataTestSetup) delegate;
+    }
+    
     protected void createMetadataTable() throws Exception {
         run("CREATE TABLE gt_pk_metadata (" +
                 "table_schema VARCHAR(32) NOT NULL, " +
@@ -54,7 +57,9 @@ public class TeradataPrimaryKeyFinderTestSetup extends JDBCPrimaryKeyFinderTestS
 
     protected void createPlainTable() throws Exception {
         run("CREATE TABLE \"plaintable\" ( \"key1\" int, \"key2\" int, \"name\" VARCHAR(256), \"geom\" ST_GEOMETRY)");
-        run("INSERT INTO SYSSPATIAL.GEOMETRY_COLUMNS (F_TABLE_CATALOG, F_TABLE_SCHEMA, F_TABLE_NAME, F_GEOMETRY_COLUMN, COORD_DIMENSION, SRID, GEOM_TYPE) VALUES ('','" + fixture.getProperty("schema") + "','plaintable', 'geom', 2, 1619, 'GEOMETRY')");
+        run("INSERT INTO SYSSPATIAL.GEOMETRY_COLUMNS (F_TABLE_CATALOG, F_TABLE_SCHEMA, F_TABLE_NAME," +
+            " F_GEOMETRY_COLUMN, COORD_DIMENSION, SRID, GEOM_TYPE) VALUES ('','" 
+                + fixture.getProperty("schema") + "','plaintable', 'geom', 2, " + getDelegate().getSrid4326() + ", 'GEOMETRY')");
 
         run("INSERT INTO \"plaintable\" VALUES (1, 2, 'one', NULL)");
         run("INSERT INTO \"plaintable\" VALUES (2, 3, 'two', NULL)");

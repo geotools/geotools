@@ -175,9 +175,17 @@ public class TeradataFilterToSQL extends PreparedFilterToSQL {
             throw new RuntimeException("Unsupported filter type " + filter.getClass());
         }
 
-        out.write("(new ST_Geometry(");
-        geometry.accept(this, extraData);
-        out.write(")) = 1");
+        int tdVersion = ((TeradataDialect)dialect).getTdVersion();
+        if (tdVersion > 12) {
+            out.write("(new ST_Geometry(");
+            geometry.accept(this, extraData);
+            out.write(")) = 1");
+        }
+        else {
+            out.write("(CAST (");
+            geometry.accept(this, extraData);
+            out.write(" AS ST_Geometry)) = 1");
+        }
     }
 
     boolean encodeIndexPredicate(PropertyName property, Literal geometry) throws IOException {

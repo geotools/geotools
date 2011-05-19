@@ -9,6 +9,10 @@ public class TeradataSkipColumnTestSetup extends JDBCSkipColumnTestSetup {
         super(delegate);
     }
 
+    public TeradataTestSetup getDelegate() {
+        return (TeradataTestSetup) delegate;
+    }
+
     protected void createSkipColumnTable() throws Exception {
         // type dollar allready exists on Teradata 13 linux
         try {
@@ -17,7 +21,7 @@ public class TeradataSkipColumnTestSetup extends JDBCSkipColumnTestSetup {
         }
         run("CREATE TABLE \"skipcolumn\"(\"fid\" PRIMARY KEY not null generated always as identity (start with 0)  integer, \"id\" integer, \"geom\" ST_GEOMETRY, \"weirdproperty\" dollar,\"name\" varchar(200))");
         run("INSERT INTO SYSSPATIAL.GEOMETRY_COLUMNS (F_TABLE_CATALOG, F_TABLE_SCHEMA, F_TABLE_NAME, F_GEOMETRY_COLUMN, COORD_DIMENSION, SRID, GEOM_TYPE) VALUES ('', '"
-                + fixture.getProperty("schema") + "', 'skipcolumn', 'geom', 2, 1619, 'POINT')");
+                + fixture.getProperty("schema") + "', 'skipcolumn', 'geom', 2, " + getDelegate().getSrid4326() + ", 'POINT')");
         // run("CREATE INDEX SKIPCOLUMN_GEOM_INDEX ON \"skipcolumn\" USING GIST (\"geom\") ");
 
         run("INSERT INTO \"skipcolumn\" VALUES(0, 0, 'POINT(0 0)', null, 'GeoTools')");

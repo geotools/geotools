@@ -7,6 +7,10 @@ public class TeradataViewTestSetup extends JDBCViewTestSetup {
     public TeradataViewTestSetup() {
         super(new TeradataTestSetup());
     }
+    
+    public TeradataTestSetup getDelegate() {
+        return (TeradataTestSetup) delegate;
+    }
 
     @Override
     protected void createLakesTable() throws Exception {
@@ -14,7 +18,7 @@ public class TeradataViewTestSetup extends JDBCViewTestSetup {
             "name VARCHAR(100))");
         run("INSERT INTO SYSSPATIAL.GEOMETRY_COLUMNS (F_TABLE_CATALOG, F_TABLE_SCHEMA, F_TABLE_NAME," +
             " F_GEOMETRY_COLUMN, COORD_DIMENSION, SRID, GEOM_TYPE) VALUES ('', '" + 
-                fixture.getProperty("database") + "', 'lakes', 'geom', 2, 1619, 'POLYGON')");
+                fixture.getProperty("database") + "', 'lakes', 'geom', 2, " + getDelegate().getSrid4326() + ", 'POLYGON')");
         
         run("INSERT INTO lakes VALUES (0, 0, 'POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))', 'muddy')");
     }
@@ -30,7 +34,7 @@ public class TeradataViewTestSetup extends JDBCViewTestSetup {
         run("CREATE VIEW lakesview AS SELECT * FROM lakes");
         run("INSERT INTO SYSSPATIAL.GEOMETRY_COLUMNS (F_TABLE_CATALOG, F_TABLE_SCHEMA, F_TABLE_NAME," +
             " F_GEOMETRY_COLUMN, COORD_DIMENSION, SRID, GEOM_TYPE) VALUES ('', '" + 
-                fixture.getProperty("database") + "', 'lakesview', 'geom', 2, 1619, 'POLYGON')");
+                fixture.getProperty("database") + "', 'lakesview', 'geom', 2, " + getDelegate().getSrid4326() + ", 'POLYGON')");
     }
 
     @Override

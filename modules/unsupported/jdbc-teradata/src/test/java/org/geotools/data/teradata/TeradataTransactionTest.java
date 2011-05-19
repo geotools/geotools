@@ -27,10 +27,6 @@ public class TeradataTransactionTest extends JDBCTransactionTest {
         return new TeradataTestSetup();
     }
 
-    public void testNoCommit() throws IOException {
-        // Crash Teradata database on windows
-    }
-
     public void testConcurrentTransactions() throws IOException {
         // TODO enable this
     }

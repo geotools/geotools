@@ -113,6 +113,9 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
     /** ApplicationName query band */
     String application;
     
+    /** teradata version */
+    int tdVersion = -1;
+    
     public TeradataDialect(JDBCDataStore store) {
         super(store);
     }
@@ -133,13 +136,19 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
         return estimatedBounds;
     }
     
+    public int getTdVersion() {
+        return tdVersion;
+    }
+    
     public void setApplication(String application) {
         this.application = application;
     }
 
     @Override
     public void initializeConnection(Connection cx) throws SQLException {
-        //TODO: make this a datastore connection paramater
+        if (tdVersion == -1) {
+            tdVersion = cx.getMetaData().getDatabaseMajorVersion();
+        }
         
         //JD: for some reason this does not work if we use a prepared statement
         String sql = String.format("SET QUERY_BAND='%s;' FOR SESSION", QueryBand.APPLICATION + "=" 
@@ -220,13 +229,42 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
     public Geometry decodeGeometryValue(GeometryDescriptor descriptor, ResultSet rs, String column,
             GeometryFactory factory, Connection cx) throws IOException, SQLException {
         try {
-            byte[] wkb = rs.getBytes(column + "_inline");
+            //first check for the inline geometry value, applied in td 13 and above
+            byte[] wkb = null;
+            try {
+                wkb = rs.getBytes(column + "_inline");
+            }
+            catch(SQLException e) {}
+            
             if (wkb != null) {
                 return new WKBReader(factory).read(wkb);
             }
             
             //in "locator" form the geometry comes across as text
+            
+            //figure out index so we can inspect type
+            int index = -1;
+            for (int i = 0; i < rs.getMetaData().getColumnCount(); i++) {
+                if (column.equals(rs.getMetaData().getColumnName(i+1))) {
+                    index = i+1;
+                    break;
+                }
+            }
+            
+            if ("java.lang.String".equals(rs.getMetaData().getColumnClassName(index))) {
+                String wkt = rs.getString(index);
+                if (wkt == null) {
+                    return null;
+                }
+                return new WKTReader(factory).read(wkt);
+            }
+            
+            //assume its a clob
+            
             Clob clob = rs.getClob(column);
+            if (clob == null) {
+                return null;
+            }
             InputStream in = clob.getAsciiStream();
             try {
                 return new WKTReader(factory).read(new InputStreamReader(in));
@@ -283,15 +321,18 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
         // geometries this will save us the second trip
         // see decodeGeometryValue()
         // CASE WHEN CHARACTERS("the_geom") > 16000 THEN NULL ELSE CAST("the_geom" AS VARCHAR(16000)) END  as "the_geom_inline
-        for (AttributeDescriptor att : featureType.getAttributeDescriptors()) {
-            if (att instanceof GeometryDescriptor) {
-                sql.append(", CASE WHEN CHARACTERS(");
-                encodeColumnName(att.getLocalName(), sql);
-                sql.append(") > 32000 THEN NULL ELSE CAST (");
-                encodeColumnName(att.getLocalName(), sql);
-                //
-                sql.append(".ST_AsBinary() AS VARBYTE(32000)) END");
-                encodeColumnAlias(att.getLocalName() + "_inline", sql);
+        // Note: this only applies to TD 13 and up
+        if (tdVersion > 12) {
+            for (AttributeDescriptor att : featureType.getAttributeDescriptors()) {
+                if (att instanceof GeometryDescriptor) {
+                    sql.append(", CASE WHEN CHARACTERS(");
+                    encodeColumnName(att.getLocalName(), sql);
+                    sql.append(") > 32000 THEN NULL ELSE CAST (");
+                    encodeColumnName(att.getLocalName(), sql);
+                    //
+                    sql.append(".ST_AsBinary() AS VARBYTE(32000)) END");
+                    encodeColumnAlias(att.getLocalName() + "_inline", sql);
+                }
             }
         }
     }

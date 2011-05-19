@@ -16,34 +16,48 @@
  */
 package org.geotools.data.teradata;
 
-import java.io.IOException;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.Properties;
 
-import javax.sql.DataSource;
-
-import org.apache.commons.dbcp.BasicDataSource;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.JDBCTestSetup;
 
 public class TeradataTestSetup extends JDBCTestSetup {
 
-    private static boolean first = true;
+    protected int srid4326 = 1619;
 
+    public int getSrid4326() {
+        return srid4326;
+    }
+    @Override
+    protected void initializeDatabase() throws Exception {
+        super.initializeDatabase();
+        
+        //figure out the 4326 native srid
+        Connection cx = getConnection();
+        try {
+            Statement st = cx.createStatement();
+            try {
+                ResultSet rs = st.executeQuery("SELECT srid FROM sysspatial.spatial_ref_sys " 
+                    + "WHERE auth_srid = 4326");
+                rs.next();
+                srid4326 = rs.getInt(1);
+                rs.close();
+            }
+            finally {
+                st.close();
+            }
+        }
+        finally {
+            cx.close();
+        }
+    }
+    
     protected void setUpDataStore(JDBCDataStore dataStore) {
         super.setUpDataStore(dataStore);
-
-        if (first) {
-            // uncomment to turn up logging
-            // java.util.logging.ConsoleHandler handler = new
-            // java.util.logging.ConsoleHandler();
-            // handler.setLevel(java.util.logging.Level.FINE);
-            // org.geotools.util.logging.Logging.getLogger("org.geotools.data.jdbc").setLevel(java.util.logging.Level.FINE);
-            // org.geotools.util.logging.Logging.getLogger("org.geotools.data.jdbc").addHandler(handler);
-            // org.geotools.util.logging.Logging.getLogger("org.geotools.jdbc").setLevel(java.util.logging.Level.FINE);
-            // org.geotools.util.logging.Logging.getLogger("org.geotools.jdbc").addHandler(handler);
-            first = false;
-        }
 
         // the unit tests assume a non loose behaviour
         ((TeradataDialect) dataStore.getSQLDialect()).setLooseBBOXEnabled(false);
@@ -69,11 +83,6 @@ public class TeradataTestSetup extends JDBCTestSetup {
         return fixture;
     }
 
-    @Override
-    public void setUp() throws Exception {
-        super.setUp();
-    }
-
     protected void setUpData() throws Exception {
 
         runSafe("DELETE FROM SYSSPATIAL.GEOMETRY_COLUMNS WHERE F_TABLE_NAME = 'ft1'");
@@ -95,11 +104,10 @@ public class TeradataTestSetup extends JDBCTestSetup {
                 + "\"intProperty\" int," //
                 + "\"doubleProperty\" double precision, " //
                 + "\"stringProperty\" varchar(200) casespecific)");
-        run("INSERT INTO SYSSPATIAL.GEOMETRY_COLUMNS (F_TABLE_CATALOG, F_TABLE_SCHEMA, F_TABLE_NAME, F_GEOMETRY_COLUMN, COORD_DIMENSION, SRID, GEOM_TYPE) VALUES ('"
-                + fixture.getProperty("database")
-                + "', '"
-                + fixture.getProperty("schema")
-                + "', 'ft1', 'geometry', 2, 1619, 'POINT')");
+        run("INSERT INTO SYSSPATIAL.GEOMETRY_COLUMNS (F_TABLE_CATALOG, F_TABLE_SCHEMA, F_TABLE_NAME," +
+            " F_GEOMETRY_COLUMN, COORD_DIMENSION, SRID, GEOM_TYPE) VALUES ('"
+                + fixture.getProperty("database") + "', '" + fixture.getProperty("schema")
+                + "', 'ft1', 'geometry', 2, " + srid4326 + ", 'POINT')");
         run("CREATE MULTISET TABLE \"ft1_geometry_idx\""
                 + " (id INTEGER NOT NULL, cellid INTEGER NOT NULL) PRIMARY INDEX (cellid)");
         

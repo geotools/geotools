@@ -33,12 +33,24 @@ public class IsNotEqualToImpl extends MultiCompareFilterImpl
 		this( factory, e1, e2, true );
 	}
 	
+	protected IsNotEqualToImpl(org.opengis.filter.FilterFactory factory, MatchAction matchAction) {
+            this(factory,null,null, matchAction);
+        }
+        
+        protected IsNotEqualToImpl(org.opengis.filter.FilterFactory factory, Expression e1, Expression e2, MatchAction matchAction) {
+            this( factory, e1, e2, true, matchAction );
+        }
+	
 	protected IsNotEqualToImpl(org.opengis.filter.FilterFactory factory, Expression expression1, Expression expression2, boolean matchCase ) {
-		super(factory, expression1, expression2, matchCase);
-		delegate = new IsEqualsToImpl(factory, expression1, expression2, matchCase);
-		
-		//backwards compat with old type system
-		this.filterType = COMPARE_NOT_EQUALS;
+	    this( factory, expression1, expression2, matchCase, MatchAction.ANY );
+	}
+	
+	protected IsNotEqualToImpl(org.opengis.filter.FilterFactory factory, Expression expression1, Expression expression2, boolean matchCase, MatchAction matchAction ) {
+            super(factory, expression1, expression2, matchCase, matchAction);
+            delegate = new IsEqualsToImpl(factory, expression1, expression2, matchCase);
+            
+            //backwards compat with old type system
+            this.filterType = COMPARE_NOT_EQUALS;
 	}
 
 	@Override

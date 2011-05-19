@@ -16,6 +16,7 @@
  */
 package org.geotools.filter;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -23,8 +24,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.junit.Test;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.MultiValuedFilter;
+import org.opengis.filter.MultiValuedFilter.MatchAction;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.Filter;
 
@@ -47,7 +51,102 @@ public class MultiFilterTest {
     private FilterFactory2 fac = CommonFactoryFinder.getFilterFactory2(null);
     
     @Test
-    public void testCompareStringOperators() {
+    public void testFactoryAndGetter() {
+        MultiValuedFilter filter;
+        Expression expr1 = fac.property("foo");
+        Expression expr2 = fac.property("bar");
+        Expression expr3 = fac.property("noo");
+        
+        //test default is MatchAction.ANY
+        filter = fac.bbox(expr1, new ReferencedEnvelope());
+        assertEquals(filter.getMatchAction(), MatchAction.ANY);        
+        filter = fac.beyond(expr1, expr2, 0.1, "");
+        assertEquals(filter.getMatchAction(), MatchAction.ANY);        
+        filter = fac.beyond(expr1, expr2, 0.1, "");
+        assertEquals(filter.getMatchAction(), MatchAction.ANY);        
+        filter = fac.contains(expr1, expr2);
+        assertEquals(filter.getMatchAction(), MatchAction.ANY);        
+        filter = fac.crosses(expr1, expr2);        
+        assertEquals(filter.getMatchAction(), MatchAction.ANY);
+        filter = fac.disjoint(expr1, expr2);        
+        assertEquals(filter.getMatchAction(), MatchAction.ANY);
+        filter = fac.dwithin(expr1, expr2, 0.1, "");        
+        assertEquals(filter.getMatchAction(), MatchAction.ANY);
+        filter = fac.equal(expr1, expr2);        
+        assertEquals(filter.getMatchAction(), MatchAction.ANY);
+        filter = fac.intersects(expr1, expr2);        
+        assertEquals(filter.getMatchAction(), MatchAction.ANY);
+        filter = fac.overlaps(expr1, expr2);        
+        assertEquals(filter.getMatchAction(), MatchAction.ANY);
+        filter = fac.touches(expr1, expr2);        
+        assertEquals(filter.getMatchAction(), MatchAction.ANY);
+        filter = fac.within(expr1, expr2);        
+        assertEquals(filter.getMatchAction(), MatchAction.ANY);
+        
+        filter = fac.equal(expr1, expr2, false);
+        assertEquals(filter.getMatchAction(), MatchAction.ANY);
+        filter = fac.less(expr1, expr2, false);
+        assertEquals(filter.getMatchAction(), MatchAction.ANY);
+        filter = fac.greater(expr1, expr2, false);
+        assertEquals(filter.getMatchAction(), MatchAction.ANY);
+        filter = fac.lessOrEqual(expr1, expr2, false);
+        assertEquals(filter.getMatchAction(), MatchAction.ANY);
+        filter = fac.greaterOrEqual(expr1, expr2,false);
+        assertEquals(filter.getMatchAction(), MatchAction.ANY);
+        filter = fac.notEqual(expr1, expr2, false);
+        assertEquals(filter.getMatchAction(), MatchAction.ANY);
+        filter = fac.between(expr1, expr2, expr3);
+        assertEquals(filter.getMatchAction(), MatchAction.ANY);  
+        filter = fac.like(expr1, "");
+        assertEquals(filter.getMatchAction(), MatchAction.ANY);
+        
+        //test custom match action
+        filter = fac.bbox(expr1, new ReferencedEnvelope(), MatchAction.ONE);
+        assertEquals(filter.getMatchAction(), MatchAction.ONE);        
+        filter = fac.beyond(expr1, expr2, 0.1, "", MatchAction.ALL);
+        assertEquals(filter.getMatchAction(), MatchAction.ALL);        
+        filter = fac.beyond(expr1, expr2, 0.1, "", MatchAction.ONE);
+        assertEquals(filter.getMatchAction(), MatchAction.ONE);        
+        filter = fac.contains(expr1, expr2, MatchAction.ALL);
+        assertEquals(filter.getMatchAction(), MatchAction.ALL);        
+        filter = fac.crosses(expr1, expr2, MatchAction.ONE);        
+        assertEquals(filter.getMatchAction(), MatchAction.ONE);
+        filter = fac.disjoint(expr1, expr2, MatchAction.ALL);        
+        assertEquals(filter.getMatchAction(), MatchAction.ALL);
+        filter = fac.dwithin(expr1, expr2, 0.1, "", MatchAction.ONE);        
+        assertEquals(filter.getMatchAction(), MatchAction.ONE);
+        filter = fac.equal(expr1, expr2, MatchAction.ALL);        
+        assertEquals(filter.getMatchAction(), MatchAction.ALL);
+        filter = fac.intersects(expr1, expr2, MatchAction.ONE);        
+        assertEquals(filter.getMatchAction(), MatchAction.ONE);
+        filter = fac.overlaps(expr1, expr2, MatchAction.ALL);        
+        assertEquals(filter.getMatchAction(), MatchAction.ALL);
+        filter = fac.touches(expr1, expr2, MatchAction.ONE);        
+        assertEquals(filter.getMatchAction(), MatchAction.ONE);
+        filter = fac.within(expr1, expr2, MatchAction.ALL);        
+        assertEquals(filter.getMatchAction(), MatchAction.ALL);
+        
+        filter = fac.equal(expr1, expr2, false, MatchAction.ALL);
+        assertEquals(filter.getMatchAction(), MatchAction.ALL);
+        filter = fac.less(expr1, expr2, false, MatchAction.ONE);
+        assertEquals(filter.getMatchAction(), MatchAction.ONE);
+        filter = fac.greater(expr1, expr2, false, MatchAction.ALL);
+        assertEquals(filter.getMatchAction(), MatchAction.ALL);
+        filter = fac.lessOrEqual(expr1, expr2, false, MatchAction.ONE);
+        assertEquals(filter.getMatchAction(), MatchAction.ONE);
+        filter = fac.greaterOrEqual(expr1, expr2,false, MatchAction.ALL);
+        assertEquals(filter.getMatchAction(), MatchAction.ALL);
+        filter = fac.notEqual(expr1, expr2, false, MatchAction.ONE);
+        assertEquals(filter.getMatchAction(), MatchAction.ONE);        
+        filter = fac.between(expr1, expr2, expr3, MatchAction.ALL);
+        assertEquals(filter.getMatchAction(), MatchAction.ALL);        
+        filter = fac.like(expr1, "", "*", "?", "\\", false, MatchAction.ONE);
+        assertEquals(filter.getMatchAction(), MatchAction.ONE);
+        
+    }
+    
+    @Test
+    public void testCompareStringOperators_Any() {
         Filter filter;
         List<String> list = new ArrayList<String>();
         
@@ -147,7 +246,82 @@ public class MultiFilterTest {
     }
     
     @Test
-    public void testCompareNumberOperators() {
+    public void testCompareStringOperators_All() {
+        Filter filter;
+        List<String> list = new ArrayList<String>();
+        
+        list.add("foo-1");
+        list.add("foo-2");
+        list.add("foo-3");
+        
+        List<String> list2 = new ArrayList<String>();
+        
+        list2.add("fOo-2");
+        list2.add("foO-2");
+        list2.add("Foo-2");
+        
+        Expression e1 = new LiteralExpressionImpl(list);        
+        Expression e2 = new LiteralExpressionImpl(list2);        
+                
+        filter = fac.equal(e1, new LiteralExpressionImpl("foo-2"), false, MatchAction.ALL);
+        assertFalse(filter.evaluate(null));
+        
+        filter = fac.equal(new LiteralExpressionImpl("foo-2"), e2, false, MatchAction.ALL);
+        assertTrue(filter.evaluate(null));
+        
+        filter = fac.notEqual(e1, new LiteralExpressionImpl("blah"), false, MatchAction.ALL);
+        assertTrue(filter.evaluate(null));
+        
+        filter = fac.notEqual(new LiteralExpressionImpl("foo-2"), e1, false, MatchAction.ALL);
+        assertFalse(filter.evaluate(null));   
+        
+        filter = fac.like(e1, "foo-*", "*", "?", "\\", false, MatchAction.ALL);
+        assertTrue(filter.evaluate(null));
+        
+        filter = fac.like(e1, "*-1", "*", "?", "\\", false, MatchAction.ALL);
+        assertFalse(filter.evaluate(null));
+    }
+    
+    @Test
+    public void testCompareStringOperators_One() {
+        Filter filter;
+        List<String> list = new ArrayList<String>();
+        
+        list.add("foo-1");
+        list.add("foo-2");
+        list.add("foo-3");
+        
+        List<String> list2 = new ArrayList<String>();
+        
+        list2.add("Foo-1");
+        list2.add("fOo-2");
+        list2.add("foO-2");
+        list2.add("Foo-2");
+        
+        Expression e1 = new LiteralExpressionImpl(list);        
+        Expression e2 = new LiteralExpressionImpl(list2);        
+                
+        filter = fac.equal(e1, new LiteralExpressionImpl("foo-2"), false, MatchAction.ONE);
+        assertTrue(filter.evaluate(null));
+        
+        filter = fac.equal(new LiteralExpressionImpl("foo-2"), e2, false, MatchAction.ONE);
+        assertFalse(filter.evaluate(null));
+        
+        filter = fac.notEqual(e1, new LiteralExpressionImpl("blah"), false, MatchAction.ONE);
+        assertFalse(filter.evaluate(null));
+        
+        filter = fac.notEqual(new LiteralExpressionImpl("foo-2"), e2, false, MatchAction.ONE);
+        assertTrue(filter.evaluate(null));   
+        
+        filter = fac.like(e1, "foo-*", "*", "?", "\\", false, MatchAction.ONE);
+        assertFalse(filter.evaluate(null));
+        
+        filter = fac.like(e1, "*-1", "*", "?", "\\", false, MatchAction.ONE);
+        assertTrue(filter.evaluate(null));
+    }
+        
+    @Test
+    public void testCompareNumberOperators_Any() {
         Filter filter;
         List<Double> list = new ArrayList<Double>();
                 
@@ -253,7 +427,175 @@ public class MultiFilterTest {
     }
     
     @Test
-    public void testGeometries() {
+    public void testCompareNumberOperators_All() {
+        Filter filter;
+        List<Double> list = new ArrayList<Double>();                
+        list.add(35.2);
+        list.add(202.3);        
+        list.add(201.7);
+        list.add(10000.5);
+        
+        List<Double> list2 = new ArrayList<Double>();        
+        list2.add(35.2);
+        list2.add(35.2);        
+        list2.add(35.2);
+        
+        Expression e1 = new LiteralExpressionImpl(list);        
+        Expression e2 = new LiteralExpressionImpl(list2);        
+        
+        filter = fac.equal(e1, new LiteralExpressionImpl(35.2), false, MatchAction.ALL);
+        assertFalse(filter.evaluate(null));
+        
+        filter = fac.equal(new LiteralExpressionImpl(35.2), e2, false, MatchAction.ALL);
+        assertTrue(filter.evaluate(null));
+        
+        filter = fac.notEqual(e1, new LiteralExpressionImpl(201.7), false, MatchAction.ALL);
+        assertFalse(filter.evaluate(null));
+        
+        filter = fac.notEqual(new LiteralExpressionImpl(55), e1, false, MatchAction.ALL);
+        assertTrue(filter.evaluate(null));
+        
+        filter = fac.greater(e1, new LiteralExpressionImpl(9999), false, MatchAction.ALL);
+        assertFalse(filter.evaluate(null));
+        
+        filter = fac.greater(e1, new LiteralExpressionImpl(32), false, MatchAction.ALL);
+        assertTrue(filter.evaluate(null));
+        
+        filter = fac.greater(new LiteralExpressionImpl(100000000), e1, false, MatchAction.ALL);
+        assertTrue(filter.evaluate(null));
+        
+        filter = fac.greater(new LiteralExpressionImpl(700), e1, false, MatchAction.ALL);
+        assertFalse(filter.evaluate(null));
+        
+        filter = fac.less(e1, new LiteralExpressionImpl(100000000), false, MatchAction.ALL);
+        assertTrue(filter.evaluate(null));
+        
+        filter = fac.less(e1, new LiteralExpressionImpl(9999), false, MatchAction.ALL);
+        assertFalse(filter.evaluate(null));
+        
+        filter = fac.less(new LiteralExpressionImpl(32), e1, false, MatchAction.ALL);
+        assertTrue(filter.evaluate(null));
+        
+        filter = fac.less(new LiteralExpressionImpl(700), e1, false, MatchAction.ALL);
+        assertFalse(filter.evaluate(null));
+        
+        filter = fac.greaterOrEqual (e1, new LiteralExpressionImpl(35.2), false, MatchAction.ALL);
+        assertTrue(filter.evaluate(null));
+        
+        filter = fac.greaterOrEqual (e1, new LiteralExpressionImpl(201.7), false, MatchAction.ALL);
+        assertFalse(filter.evaluate(null));
+        
+        filter = fac.greaterOrEqual (new LiteralExpressionImpl(10000.5), e1, false, MatchAction.ALL);
+        assertTrue(filter.evaluate(null));
+        
+        filter = fac.greaterOrEqual (new LiteralExpressionImpl(201.7), e1, false, MatchAction.ALL);
+        assertFalse(filter.evaluate(null));
+                
+        filter = fac.lessOrEqual (e1, new LiteralExpressionImpl(10000.5), false, MatchAction.ALL);
+        assertTrue(filter.evaluate(null));
+        
+        filter = fac.lessOrEqual (e1, new LiteralExpressionImpl(201.7), false, MatchAction.ALL);
+        assertFalse(filter.evaluate(null));
+        
+        filter = fac.lessOrEqual (new LiteralExpressionImpl(35.2), e1, false, MatchAction.ALL);
+        assertTrue(filter.evaluate(null));
+        
+        filter = fac.lessOrEqual (new LiteralExpressionImpl(201.7), e1, false, MatchAction.ALL);
+        assertFalse(filter.evaluate(null));
+        
+        filter = fac.between(e1, new LiteralExpressionImpl(34), new LiteralExpressionImpl(300), MatchAction.ALL);
+        assertFalse(filter.evaluate(null));
+        
+        filter = fac.between(e1, new LiteralExpressionImpl(34), new LiteralExpressionImpl(10000000), MatchAction.ALL);
+        assertTrue(filter.evaluate(null));
+    }
+    
+    @Test
+    public void testCompareNumberOperators_One() {
+        Filter filter;
+        List<Double> list = new ArrayList<Double>();                
+        list.add(35.2);
+        list.add(202.3);        
+        list.add(201.7);
+        list.add(10000.5);
+        
+        List<Double> list2 = new ArrayList<Double>();        
+        list2.add(35.2);
+        list2.add(35.2);        
+        list2.add(202.3);        
+        
+        Expression e1 = new LiteralExpressionImpl(list);        
+        Expression e2 = new LiteralExpressionImpl(list2);        
+         
+        filter = fac.equal(e1, new LiteralExpressionImpl(35.2), false, MatchAction.ONE);
+        assertTrue(filter.evaluate(null));
+        
+        filter = fac.equal(new LiteralExpressionImpl(35.2), e2, false, MatchAction.ONE);
+        assertFalse(filter.evaluate(null));
+        
+        filter = fac.notEqual(e1, new LiteralExpressionImpl(35.2), false, MatchAction.ONE);
+        assertFalse(filter.evaluate(null));
+        
+        filter = fac.notEqual(new LiteralExpressionImpl(35.2), e2, false, MatchAction.ONE);
+        assertTrue(filter.evaluate(null));
+        
+        filter = fac.greater(e1, new LiteralExpressionImpl(100), false, MatchAction.ONE);
+        assertFalse(filter.evaluate(null));
+        
+        filter = fac.greater(e1, new LiteralExpressionImpl(9000), false, MatchAction.ONE);
+        assertTrue(filter.evaluate(null));
+        
+        filter = fac.greater(new LiteralExpressionImpl(40), e1, false, MatchAction.ONE);
+        assertTrue(filter.evaluate(null));
+        
+        filter = fac.greater(new LiteralExpressionImpl(700), e1, false, MatchAction.ONE);
+        assertFalse(filter.evaluate(null));
+        
+        filter = fac.less(e1, new LiteralExpressionImpl(40), false, MatchAction.ONE);
+        assertTrue(filter.evaluate(null));
+        
+        filter = fac.less(e1, new LiteralExpressionImpl(700), false, MatchAction.ONE);
+        assertFalse(filter.evaluate(null));
+        
+        filter = fac.less(new LiteralExpressionImpl(9000), e1, false, MatchAction.ONE);
+        assertTrue(filter.evaluate(null));
+        
+        filter = fac.less(new LiteralExpressionImpl(100), e1, false, MatchAction.ONE);
+        assertFalse(filter.evaluate(null));
+        
+        filter = fac.greaterOrEqual (e1, new LiteralExpressionImpl(10000.5), false, MatchAction.ONE);
+        assertTrue(filter.evaluate(null));
+        
+        filter = fac.greaterOrEqual (e1, new LiteralExpressionImpl(201.7), false, MatchAction.ONE);
+        assertFalse(filter.evaluate(null));
+        
+        filter = fac.greaterOrEqual (new LiteralExpressionImpl(35.2), e1, false, MatchAction.ONE);
+        assertTrue(filter.evaluate(null));
+        
+        filter = fac.greaterOrEqual (new LiteralExpressionImpl(10001), e1, false, MatchAction.ONE);
+        assertFalse(filter.evaluate(null));
+                
+        filter = fac.lessOrEqual (e1, new LiteralExpressionImpl(35.2), false, MatchAction.ONE);
+        assertTrue(filter.evaluate(null));
+        
+        filter = fac.lessOrEqual (e1, new LiteralExpressionImpl(10001), false, MatchAction.ONE);
+        assertFalse(filter.evaluate(null));
+        
+        filter = fac.lessOrEqual (new LiteralExpressionImpl(10000.5), e1, false, MatchAction.ONE);
+        assertTrue(filter.evaluate(null));
+        
+        filter = fac.lessOrEqual (new LiteralExpressionImpl(201.7), e1, false, MatchAction.ONE);
+        assertFalse(filter.evaluate(null));
+        
+        filter = fac.between(e1, new LiteralExpressionImpl(34), new LiteralExpressionImpl(300), MatchAction.ONE);
+        assertFalse(filter.evaluate(null));
+        
+        filter = fac.between(e1, new LiteralExpressionImpl(34), new LiteralExpressionImpl(36), MatchAction.ONE);
+        assertTrue(filter.evaluate(null));
+    }
+    
+    @Test
+    public void testGeometries_Any() {
         Filter filter;
         GeometryFactory gf = new GeometryFactory(new PrecisionModel());
        
@@ -335,6 +677,155 @@ public class MultiFilterTest {
         assertTrue(filter.evaluate(null));
         filter = fac.intersects(new LiteralExpressionImpl(list), new LiteralExpressionImpl(list2));
         assertTrue(filter.evaluate(null));
+        
+    }
+    
+    @Test
+    public void testGeometries_One() {
+        Filter filter;
+        GeometryFactory gf = new GeometryFactory(new PrecisionModel());
+       
+        Coordinate[] coords1 = {
+                new Coordinate(0, 0),
+                new Coordinate(6, 0),
+                new Coordinate(6, 7),
+                new Coordinate(0, 7),
+                new Coordinate(0, 0)};                
+        Polygon geom1 = gf.createPolygon(gf.createLinearRing(coords1), new LinearRing[0]);
+        
+        Coordinate[] coords2 = new Coordinate[] {
+                new Coordinate(2, 2),
+                new Coordinate(6, 0),
+                new Coordinate(6, 7),
+                new Coordinate(0, 7),
+                new Coordinate(2, 2)
+        };              
+        Polygon geom2 = gf.createPolygon(gf.createLinearRing(coords2), new LinearRing[0]);
+        
+        Coordinate[] coords3 = new Coordinate[] {
+                new Coordinate(2, 2),
+                new Coordinate(6, 0),
+                new Coordinate(11, 12),
+                new Coordinate(0, 7),
+                new Coordinate(2, 2)
+        };              
+        Polygon geom3 = gf.createPolygon(gf.createLinearRing(coords3), new LinearRing[0]);
+        
+        Coordinate[] coords4 = new Coordinate[] {
+                new Coordinate(20, 20),
+                new Coordinate(60, 30),
+                new Coordinate(110, 120),
+                new Coordinate(30, 70),
+                new Coordinate(20, 20)
+        };              
+        Polygon geom4 = gf.createPolygon(gf.createLinearRing(coords4), new LinearRing[0]);
+                        
+        List<Geometry> list = new ArrayList<Geometry>();
+        list.add(geom4);
+        
+        filter = fac.equal(new LiteralExpressionImpl(list), new LiteralExpressionImpl(geom4), MatchAction.ONE);
+        assertTrue(filter.evaluate(null));
+
+        filter = fac.overlaps(new LiteralExpressionImpl(list), new LiteralExpressionImpl(geom1), MatchAction.ONE);
+        assertFalse(filter.evaluate(null));
+        filter = fac.disjoint(new LiteralExpressionImpl(geom1), new LiteralExpressionImpl(list), MatchAction.ONE);
+        assertTrue(filter.evaluate(null));
+        
+        list.add(geom3);
+        
+        filter = fac.equal(new LiteralExpressionImpl(list), new LiteralExpressionImpl(geom4), MatchAction.ONE);
+        assertTrue(filter.evaluate(null));
+        
+        filter = fac.overlaps(new LiteralExpressionImpl(list), new LiteralExpressionImpl(geom1), MatchAction.ONE);
+        assertTrue(filter.evaluate(null));
+                
+        filter = fac.within(new LiteralExpressionImpl(list), new LiteralExpressionImpl(geom1), MatchAction.ONE);
+        assertFalse(filter.evaluate(null));
+        
+        list.add(geom2);
+        filter = fac.within(new LiteralExpressionImpl(list), new LiteralExpressionImpl(geom1), MatchAction.ONE);
+        assertTrue(filter.evaluate(null));
+        
+        filter = fac.overlaps(new LiteralExpressionImpl(list), new LiteralExpressionImpl(geom1), MatchAction.ONE);
+        assertTrue(filter.evaluate(null));
+                
+        filter = fac.equal(new LiteralExpressionImpl(list), new LiteralExpressionImpl(geom1), MatchAction.ONE);
+        assertFalse(filter.evaluate(null));
+        
+        list.add(geom1);        
+        filter = fac.equal(new LiteralExpressionImpl(list), new LiteralExpressionImpl(geom1), MatchAction.ONE);
+        assertTrue(filter.evaluate(null));
+        
+    }
+    
+    @Test
+    public void testGeometries_All() {
+        Filter filter;
+        GeometryFactory gf = new GeometryFactory(new PrecisionModel());
+       
+        Coordinate[] coords1 = {
+                new Coordinate(0, 0),
+                new Coordinate(6, 0),
+                new Coordinate(6, 7),
+                new Coordinate(0, 7),
+                new Coordinate(0, 0)};                
+        Polygon geom1 = gf.createPolygon(gf.createLinearRing(coords1), new LinearRing[0]);
+        
+        Coordinate[] coords2 = new Coordinate[] {
+                new Coordinate(2, 2),
+                new Coordinate(6, 0),
+                new Coordinate(6, 7),
+                new Coordinate(0, 7),
+                new Coordinate(2, 2)
+        };              
+        Polygon geom2 = gf.createPolygon(gf.createLinearRing(coords2), new LinearRing[0]);
+        
+        Coordinate[] coords3 = new Coordinate[] {
+                new Coordinate(2, 2),
+                new Coordinate(6, 0),
+                new Coordinate(11, 12),
+                new Coordinate(0, 7),
+                new Coordinate(2, 2)
+        };              
+        Polygon geom3 = gf.createPolygon(gf.createLinearRing(coords3), new LinearRing[0]);
+        
+        Coordinate[] coords4 = new Coordinate[] {
+                new Coordinate(20, 20),
+                new Coordinate(60, 30),
+                new Coordinate(110, 120),
+                new Coordinate(30, 70),
+                new Coordinate(20, 20)
+        };              
+        Polygon geom4 = gf.createPolygon(gf.createLinearRing(coords4), new LinearRing[0]);
+                        
+        List<Geometry> list = new ArrayList<Geometry>();
+        list.add(geom4);
+        
+        filter = fac.equal(new LiteralExpressionImpl(list), new LiteralExpressionImpl(geom4), MatchAction.ALL);
+        assertTrue(filter.evaluate(null));
+
+        filter = fac.overlaps(new LiteralExpressionImpl(list), new LiteralExpressionImpl(geom1), MatchAction.ALL);
+        assertFalse(filter.evaluate(null));
+        filter = fac.disjoint(new LiteralExpressionImpl(geom1), new LiteralExpressionImpl(list), MatchAction.ALL);
+        assertTrue(filter.evaluate(null));
+        
+        list.add(geom3);
+        
+        filter = fac.equal(new LiteralExpressionImpl(list), new LiteralExpressionImpl(geom4), MatchAction.ALL);
+        assertFalse(filter.evaluate(null));
+        
+        filter = fac.overlaps(new LiteralExpressionImpl(list), new LiteralExpressionImpl(geom1), MatchAction.ALL);
+        assertFalse(filter.evaluate(null));
+                
+        filter = fac.within(new LiteralExpressionImpl(list), new LiteralExpressionImpl(geom1), MatchAction.ALL);
+        assertFalse(filter.evaluate(null));
+        
+        list.remove(geom4);
+        list.add(geom2);
+        
+        filter = fac.intersects(new LiteralExpressionImpl(geom1), new LiteralExpressionImpl(list), MatchAction.ALL);
+        assertTrue(filter.evaluate(null));
+                              
         
     }
 

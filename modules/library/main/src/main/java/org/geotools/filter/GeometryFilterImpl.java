@@ -26,6 +26,7 @@ import java.util.logging.Logger;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.Converters;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.filter.MultiValuedFilter.MatchAction;
 
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -72,13 +73,25 @@ public abstract class GeometryFilterImpl extends BinaryComparisonAbstract
     implements GeometryFilter {
     /** Class logger */
     private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.filter");
+    
+    protected MatchAction matchAction;
 
-    protected GeometryFilterImpl(org.opengis.filter.FilterFactory factory) {
+    protected GeometryFilterImpl(org.opengis.filter.FilterFactory factory, MatchAction matchAction) {
         super(factory);
+        this.matchAction = matchAction;
+    }
+    
+    protected GeometryFilterImpl(org.opengis.filter.FilterFactory factory,org.opengis.filter.expression.Expression e1,org.opengis.filter.expression.Expression e2, MatchAction matchAction) {
+        super(factory,e1,e2);
+        this.matchAction = matchAction;
+    }
+    
+    protected GeometryFilterImpl(org.opengis.filter.FilterFactory factory) {
+        this (factory, MatchAction.ANY);
     }
     
     protected GeometryFilterImpl(org.opengis.filter.FilterFactory factory,org.opengis.filter.expression.Expression e1,org.opengis.filter.expression.Expression e2) {
-        super(factory,e1,e2);
+        this(factory,e1,e2, MatchAction.ANY);        
     }
     
     /**
@@ -362,6 +375,10 @@ public abstract class GeometryFilterImpl extends BinaryComparisonAbstract
         return result;
     }
     
+    public MatchAction getMatchAction() {
+        return matchAction;
+    }
+    
     public final boolean evaluate(Object feature) {
         
         Object object1 = getGeometries(getExpression1(), feature);
@@ -381,18 +398,31 @@ public abstract class GeometryFilterImpl extends BinaryComparisonAbstract
                 : Collections.<Geometry>singletonList((Geometry) object1);
         Collection<Geometry> rightValues = object2 instanceof Collection ? (Collection<Geometry>) object2
                 : Collections.<Geometry>singletonList((Geometry) object2);
-                
+            
+        int count = 0;
         for (Geometry leftValue : leftValues) {
             for (Geometry rightValue : rightValues) {
-                if (evaluateInternal(leftValue, rightValue)) {
-                    return true;
+                
+                boolean temp = evaluateInternal(leftValue, rightValue);
+                if (temp) {
+                    count++;
                 }
+                   
+                switch (matchAction){
+                    case ONE: if (count > 1) return false; break;
+                    case ALL: if (!temp) return false; break;
+                    case ANY: if (temp) return true; break;
+                } 
             }
         }
-        return false;
-        
+       
+        switch (matchAction){
+            case ONE: return (count == 1);
+            case ALL: return true;
+            case ANY: return false;
+            default: return false;
+        }
     }
-    
     
     /**
      * Performs the calculation on the two geometries.  

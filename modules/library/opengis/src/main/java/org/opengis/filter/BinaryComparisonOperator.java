@@ -23,7 +23,7 @@ import org.opengis.filter.expression.Expression;
  * @since GeoAPI 2.0
  */
 @XmlElement("BinaryComparisonOpType")
-public interface BinaryComparisonOperator extends Filter {
+public interface BinaryComparisonOperator extends MultiValuedFilter {
     /**
      * Returns the first of the two expressions to be compared by this operator.
      */

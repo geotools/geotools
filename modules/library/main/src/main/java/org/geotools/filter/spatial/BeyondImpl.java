@@ -33,6 +33,13 @@ public class BeyondImpl extends CartesianDistanceFilter implements Beyond {
 		this.filterType = GEOMETRY_BEYOND;
 	}
 	
+	public BeyondImpl(org.opengis.filter.FilterFactory factory,Expression e1,Expression e2,MatchAction matchAction) {
+            super(factory,e1,e2, matchAction);
+            
+            //backwards compat with old type system
+            this.filterType = GEOMETRY_BEYOND;
+        }
+	
 	@Override
 	public boolean evaluateInternal(Geometry left, Geometry right) {
 		if( left==null || right == null ){

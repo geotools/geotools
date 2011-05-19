@@ -12,6 +12,7 @@ package org.opengis.filter;
 import java.util.List;
 import java.util.Set;
 
+import org.opengis.filter.MultiValuedFilter.MatchAction;
 import org.opengis.filter.capability.ArithmeticOperators;
 import org.opengis.filter.capability.ComparisonOperators;
 import org.opengis.filter.capability.FilterCapabilities;
@@ -109,6 +110,9 @@ public interface FilterFactory {
 
     /** A compact way of encoding a range check. */
     PropertyIsBetween between(Expression expr, Expression lower, Expression upper);
+    
+    /** A compact way of encoding a range check. */
+    PropertyIsBetween between(Expression expr, Expression lower, Expression upper, MatchAction matchAction);
 
     /** Compares that two sub-expressions are equal to each other.
      * @todo should be equal (so equals can refer to geometry)
@@ -117,10 +121,13 @@ public interface FilterFactory {
 
     /** Compares that two sub-expressions are equal to eacher other */
     PropertyIsEqualTo equal(Expression expr1, Expression expr2, boolean matchCase);
+    
+    /** Compares that two sub-expressions are equal to eacher other */
+    PropertyIsEqualTo equal(Expression expr1, Expression expr2, boolean matchCase, MatchAction matchAction);
 
     /** Checks that the first sub-expression is not equal to the second subexpression. */
     PropertyIsNotEqualTo notEqual(Expression expr1, Expression expr2 );
-    
+        
     /**
      * Checks that the first sub-expression is not equal to the second subexpression.
      * 
@@ -130,6 +137,17 @@ public interface FilterFactory {
      * @return evaluates to true of expr1 not equal to expr2 
      */
     PropertyIsNotEqualTo notEqual(Expression expr1, Expression expr2, boolean matchCase);
+    
+    /**
+     * Checks that the first sub-expression is not equal to the second subexpression.
+     * 
+     * @param expr1 first expression
+     * @param expr2 second expression
+     * @param matchCase true if the comparison should be case insensitive
+     * @param matchAction action for multi-valued properties
+     * @return evaluates to true of expr1 not equal to expr2 
+     */
+    PropertyIsNotEqualTo notEqual(Expression expr1, Expression expr2, boolean matchCase, MatchAction matchAction);
 
     /** Checks that the first sub-expression is greater than the second subexpression. */
     PropertyIsGreaterThan greater(Expression expr1, Expression expr2);
@@ -143,22 +161,39 @@ public interface FilterFactory {
      * @return evaluates to true of expr1 is greater than expr2
      */
     PropertyIsGreaterThan greater(Expression expr1, Expression expr2, boolean matchCase);
+       
+    /**
+     * Checks that the first sub-expression is greater than the second subexpression.
+     * 
+     * @param expr1 first expression
+     * @param expr2 second expression
+     * @param matchCase true if the comparison should be case insensitive
+     * @return evaluates to true of expr1 is greater than expr2
+     */
+    PropertyIsGreaterThan greater(Expression expr1, Expression expr2, boolean matchCase, MatchAction matchAction);
 
     /** Checks that the first sub-expression is greater or equal to the second subexpression. */
     PropertyIsGreaterThanOrEqualTo greaterOrEqual(Expression expr1, Expression expr2);
     
     /** Checks that the first sub-expression is greater or equal to the second subexpression. */
     PropertyIsGreaterThanOrEqualTo greaterOrEqual(Expression expr1, Expression expr2, boolean matchCase);
+    
+    /** Checks that the first sub-expression is greater or equal to the second subexpression. */
+    PropertyIsGreaterThanOrEqualTo greaterOrEqual(Expression expr1, Expression expr2, boolean matchCase, MatchAction matchAction);
 
     /** Checks that its first sub-expression is less than its second subexpression. */
     PropertyIsLessThan less(Expression expr1, Expression expr2);
     
     PropertyIsLessThan less(Expression expr1, Expression expr2, boolean matchCase);
     
+    PropertyIsLessThan less(Expression expr1, Expression expr2, boolean matchCase, MatchAction matchAction);
+    
     /** Checks that its first sub-expression is less than or equal to its second subexpression. */
     PropertyIsLessThanOrEqualTo lessOrEqual(Expression expr1, Expression expr2);
     
     PropertyIsLessThanOrEqualTo lessOrEqual(Expression expr1, Expression expr2, boolean matchCase);
+    
+    PropertyIsLessThanOrEqualTo lessOrEqual(Expression expr1, Expression expr2, boolean matchCase, MatchAction matchAction);
 
     /** Character string comparison operator with pattern matching and default wildcards. */
     PropertyIsLike like(Expression expr, String pattern);
@@ -168,6 +203,9 @@ public interface FilterFactory {
 
     /** Character string comparison operator with pattern matching and specified wildcards. */
     PropertyIsLike like(Expression expr, String pattern, String wildcard, String singleChar, String escape, boolean matchCase);
+    
+    /** Character string comparison operator with pattern matching and specified wildcards. */
+    PropertyIsLike like(Expression expr, String pattern, String wildcard, String singleChar, String escape, boolean matchCase, MatchAction matchAction);
     
     /** Checks if an expression's value is {@code null}. */
     PropertyIsNull isNull(Expression expr);
@@ -192,36 +230,81 @@ public interface FilterFactory {
      * @param srs Indicating the CoordianteReferenceSystem to use for a literal BoundingBox
      */
     BBOX        bbox(String propertyName, double minx, double miny, double maxx, double maxy, String srs);
+    
+    /**
+     * Checks if the bounding box of the feature's geometry overlaps the indicated bounds.
+     * <p>
+     * This method is defined in strict accordance with the Filter 1.0 specification, you may
+     * find the FilterFactory2.bbox(Expression, BoundingBox) to be easier to use.
+     * </p>
+     * @param propertyName Name of geometry property (for a PropertyName to access a Feature's Geometry)
+     * @param minx Minimum "x" value (for a literal BoundingBox)
+     * @param miny Minimum "y" value (for a literal BoundingBox)
+     * @param maxx Maximum "x" value (for a literal BoundingBox)
+     * @param maxy Maximum "y" value (for a literal BoundingBox)
+     * @param srs Indicating the CoordianteReferenceSystem to use for a literal BoundingBox
+     */
+    BBOX        bbox(String propertyName, double minx, double miny, double maxx, double maxy, String srs, MatchAction matchAction);
 
     /** Check if all of a feature's geometry is more distant than the given distance from this object's geometry. */
     Beyond      beyond(String propertyName, Geometry geometry, double distance, String units);
 
+    /** Check if all of a feature's geometry is more distant than the given distance from this object's geometry. */
+    Beyond      beyond(String propertyName, Geometry geometry, double distance, String units, MatchAction matchAction);
+    
     /** Checks if the the first geometric operand contains the second. */
     Contains    contains(String propertyName, Geometry geometry);
+    
+    /** Checks if the the first geometric operand contains the second. */
+    Contains    contains(String propertyName, Geometry geometry, MatchAction matchAction);
 
     /** Checks if the first geometric operand crosses the second. */
     Crosses     crosses(String propertyName, Geometry geometry);
+    
+    /** Checks if the first geometric operand crosses the second. */
+    Crosses     crosses(String propertyName, Geometry geometry, MatchAction matchAction);
 
     /** Checks if the first operand is disjoint from the second. */
     Disjoint    disjoint(String propertyName, Geometry geometry);
+    
+    /** Checks if the first operand is disjoint from the second. */
+    Disjoint    disjoint(String propertyName, Geometry geometry, MatchAction matchAction);
 
-    /** Checks if any part of the first geometry lies within the given distance of the second geometry. */
+    /** Checks if any part of the first geometry lies within the given distance of the second geometry. */    
     DWithin     dwithin(String propertyName, Geometry geometry, double distance, String units);
+    
+    /** Checks if any part of the first geometry lies within the given distance of the second geometry. */
+    DWithin     dwithin(String propertyName, Geometry geometry, double distance, String units, MatchAction matchAction);
 
     /** Checks if the geometry of the two operands are equal. */
     Equals      equals(String propertyName, Geometry geometry);
 
+    /** Checks if the geometry of the two operands are equal. */
+    Equals      equals(String propertyName, Geometry geometry, MatchAction matchAction);
+    
     /** Checks if the two geometric operands intersect. */
     Intersects  intersects(String propertyName, Geometry geometry);
+    
+    /** Checks if the two geometric operands intersect. */
+    Intersects  intersects(String propertyName, Geometry geometry, MatchAction matchAction);
 
     /** Checks if the interior of the first geometry somewhere overlaps the interior of the second geometry. */
     Overlaps    overlaps(String propertyName, Geometry geometry);
+    
+    /** Checks if the interior of the first geometry somewhere overlaps the interior of the second geometry. */
+    Overlaps    overlaps(String propertyName, Geometry geometry, MatchAction matchAction);
 
     /** Checks if the feature's geometry touches, but does not overlap with the geometry held by this object. */
     Touches     touches(String propertyName, Geometry geometry);
+    
+    /** Checks if the feature's geometry touches, but does not overlap with the geometry held by this object. */
+    Touches     touches(String propertyName, Geometry geometry, MatchAction matchAction);
 
     /** Checks if the feature's geometry is completely contained by the specified constant geometry. */
     Within      within(String propertyName, Geometry geometry);
+    
+    /** Checks if the feature's geometry is completely contained by the specified constant geometry. */
+    Within      within(String propertyName, Geometry geometry, MatchAction matchAction);
 
 ////////////////////////////////////////////////////////////////////////////////
 //

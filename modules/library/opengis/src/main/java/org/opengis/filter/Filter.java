@@ -43,6 +43,7 @@ import org.opengis.filter.expression.Function;
  */
 @XmlElement("Filter")
 public interface Filter {
+    
     /**
      * Placeholder Filter that evaulates to {@code true}.
      * <p>

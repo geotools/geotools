@@ -65,6 +65,7 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.Id;
 import org.opengis.filter.PropertyIsNull;
+import org.opengis.filter.MultiValuedFilter.MatchAction;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.identity.FeatureId;
@@ -293,6 +294,10 @@ public class GeoServerOnlineTest {
             
             public double getMaxX() {
                 return bbox.getMaxX();
+            }
+            
+            public MatchAction getMatchAction() {
+                return MatchAction.ANY;
             }
         };
         

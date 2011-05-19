@@ -31,6 +31,12 @@ public class ContainsImpl extends AbstractPreparedGeometryFilter implements Cont
 		this.filterType = GEOMETRY_CONTAINS;
 	}
 	
+	public ContainsImpl(org.opengis.filter.FilterFactory factory,Expression e1,Expression e2, MatchAction matchAction) {
+            super(factory,e1,e2, matchAction);
+            
+            this.filterType = GEOMETRY_CONTAINS;
+        }
+	
 	@Override
 	public boolean evaluateInternal(Geometry left, Geometry right) {
 		

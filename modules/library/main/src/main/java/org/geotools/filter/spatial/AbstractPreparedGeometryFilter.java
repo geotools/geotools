@@ -160,6 +160,15 @@ public abstract class AbstractPreparedGeometryFilter extends GeometryFilterImpl 
         if( e2!=null ) setExpression2(e2);
         
     }
+    
+    protected AbstractPreparedGeometryFilter(FilterFactory factory,
+            Expression e1, Expression e2, MatchAction matchAction) {
+        super(factory, e1, e2, matchAction);
+        pGeomFac = new PreparedGeometryFactory();
+        if( e1!=null ) setExpression1(e1);
+        if( e2!=null ) setExpression2(e2);
+        
+    }
 
 	private void prepare() {
 		if( expression1==null || expression2==null ){

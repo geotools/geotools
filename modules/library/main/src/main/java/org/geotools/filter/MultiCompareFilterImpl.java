@@ -29,16 +29,36 @@ import org.opengis.filter.expression.Expression;
  * 
  */
 public abstract class MultiCompareFilterImpl extends CompareFilterImpl {
-
+    
+    protected MatchAction matchAction;
+    
     protected MultiCompareFilterImpl(FilterFactory factory, Expression e1, Expression e2) {
         super(factory, e1, e2);
+        this.matchAction = MatchAction.ANY;
     }
 
     protected MultiCompareFilterImpl(FilterFactory factory, Expression e1, Expression e2,
             boolean matchCase) {
         super(factory, e1, e2, matchCase);
+        this.matchAction = MatchAction.ANY;
+    }
+    
+    protected MultiCompareFilterImpl(FilterFactory factory, Expression e1, Expression e2,
+            MatchAction matchAction) {
+        super(factory, e1, e2);
+        this.matchAction = matchAction;
+    }
+    
+    protected MultiCompareFilterImpl(FilterFactory factory, Expression e1, Expression e2,
+            boolean matchCase, MatchAction matchAction) {
+        super(factory, e1, e2, matchCase);
+        this.matchAction = matchAction;
     }
 
+    public MatchAction getMatchAction() {
+        return matchAction;
+    }
+    
     public final boolean evaluate(Object feature) {
         final Object object1 = eval(expression1, feature);
         final Object object2 = eval(expression2, feature);
@@ -52,15 +72,29 @@ public abstract class MultiCompareFilterImpl extends CompareFilterImpl {
         Collection<Object> rightValues = object2 instanceof Collection ? (Collection<Object>) object2
                 : Collections.<Object>singletonList(object2);
 
+        int count = 0;
+        
         for (Object value1 : leftValues) {
             for (Object value2 : rightValues) {
-                if (evaluateInternal(value1, value2)) {
-                    return true;
+                boolean temp = evaluateInternal(value1, value2);
+                if (temp) {
+                    count++;
+                }
+                   
+                switch (matchAction){
+                    case ONE: if (count > 1) return false; break;
+                    case ALL: if (!temp) return false; break;
+                    case ANY: if (temp) return true; break;
                 }
             }
         }
 
-        return false;
+        switch (matchAction){
+            case ONE: return (count == 1);
+            case ALL: return true;
+            case ANY: return false;
+            default: return false;
+        }
     }
 
     public abstract boolean evaluateInternal(Object value1, Object value2);

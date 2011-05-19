@@ -36,6 +36,14 @@ public class IsGreaterThanImpl extends MultiCompareFilterImpl implements Propert
 		//backwards compat with old type system
 		this.filterType = COMPARE_GREATER_THAN;
 	}
+	
+        protected IsGreaterThanImpl(org.opengis.filter.FilterFactory factory, Expression expression1,
+                Expression expression2, MatchAction matchAction) {
+            super(factory, expression1, expression2, matchAction);
+    
+            // backwards compat with old type system
+            this.filterType = COMPARE_GREATER_THAN;
+        }
 
 	@Override
 	public boolean evaluateInternal(Object v1, Object v2) {

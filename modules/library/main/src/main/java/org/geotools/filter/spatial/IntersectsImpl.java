@@ -33,6 +33,14 @@ public class IntersectsImpl extends AbstractPreparedGeometryFilter implements
         // backwards compat with type system
         this.filterType = GEOMETRY_INTERSECTS;
     }
+    
+    public IntersectsImpl(org.opengis.filter.FilterFactory factory,
+            Expression e1, Expression e2, MatchAction matchAction) {
+        super(factory, e1, e2, matchAction);
+
+        // backwards compat with type system
+        this.filterType = GEOMETRY_INTERSECTS;
+    }
 
     @Override
     public boolean evaluateInternal(Geometry left, Geometry right) {

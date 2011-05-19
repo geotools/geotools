@@ -37,10 +37,22 @@ public class IsEqualsToImpl extends MultiCompareFilterImpl implements PropertyIs
     protected IsEqualsToImpl(org.opengis.filter.FilterFactory factory, Expression expression1, Expression expression2) {
         this(factory, expression1, expression2, true);
     }
+    
+    protected IsEqualsToImpl(org.opengis.filter.FilterFactory factory, Expression expression1, Expression expression2, MatchAction matchAction) {
+        this(factory, expression1, expression2, true, matchAction);
+    }
 
     protected IsEqualsToImpl(org.opengis.filter.FilterFactory factory, Expression expression1, Expression expression2,
             boolean matchCase) {
         super(factory, expression1, expression2, matchCase);
+
+        // backwards compat with old type system
+        this.filterType = COMPARE_EQUALS;
+    }
+    
+    protected IsEqualsToImpl(org.opengis.filter.FilterFactory factory, Expression expression1, Expression expression2,
+            boolean matchCase, MatchAction matchAction) {
+        super(factory, expression1, expression2, matchCase, matchAction);
 
         // backwards compat with old type system
         this.filterType = COMPARE_EQUALS;

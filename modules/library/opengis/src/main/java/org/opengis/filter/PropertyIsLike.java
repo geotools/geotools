@@ -31,7 +31,7 @@ import org.opengis.filter.expression.Expression;
  * @since GeoAPI 2.0
  */
 @XmlElement("PropertyIsLike")
-public interface PropertyIsLike extends Filter {
+public interface PropertyIsLike extends MultiValuedFilter {
 	/** Operator name used to check FilterCapabilities */
 	public static String NAME = "Like";
     /**

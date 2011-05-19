@@ -25,6 +25,7 @@ import java.util.regex.Pattern;
 import org.geotools.factory.CommonFactoryFinder;
 import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.PropertyIsLike;
+import org.opengis.filter.MultiValuedFilter.MatchAction;
 
 
 /**
@@ -56,6 +57,9 @@ public class LikeFilterImpl extends AbstractFilterImpl implements LikeFilter {
 
     /** Used to indicate if case should be ignored or not */
     boolean matchingCase;
+    
+    /** Used to indicate action with multiple values **/
+    protected MatchAction matchAction;
     
     /**
      * Given OGC PropertyIsLike Filter information, construct
@@ -181,6 +185,10 @@ public class LikeFilterImpl extends AbstractFilterImpl implements LikeFilter {
     public boolean isMatchingCase() {
             return matchingCase;
     }
+    
+    public MatchAction getMatchAction() {
+        return matchAction;
+    }
 
     public void setMatchingCase(boolean matchingCase) {
             this.matchingCase = matchingCase;
@@ -293,13 +301,28 @@ public class LikeFilterImpl extends AbstractFilterImpl implements LikeFilter {
      * Constructor which flags the operator as like.
      */
     protected LikeFilterImpl() {
-        super(CommonFactoryFinder.getFilterFactory(null));
-        filterType = LIKE;
+        this(MatchAction.ANY);
     }
 
     public LikeFilterImpl(org.opengis.filter.expression.Expression expr, String pattern, String wildcardMulti,
             String wildcardSingle, String escape) {
         this();
+        setExpression(expr);
+        setLiteral(pattern);
+        setWildCard(wildcardMulti);
+        setSingleChar(wildcardSingle);
+        setEscape(escape);
+    }
+    
+    protected LikeFilterImpl(MatchAction matchAction) {
+        super(CommonFactoryFinder.getFilterFactory(null));
+        filterType = LIKE;
+        this.matchAction = matchAction;
+    }
+
+    public LikeFilterImpl(org.opengis.filter.expression.Expression expr, String pattern, String wildcardMulti,
+            String wildcardSingle, String escape, MatchAction matchAction) {
+        this(matchAction);
         setExpression(expr);
         setLiteral(pattern);
         setWildCard(wildcardMulti);
@@ -459,13 +482,27 @@ public class LikeFilterImpl extends AbstractFilterImpl implements LikeFilter {
             
             //NC - support multiple values            
             if (value instanceof Collection) {
+                int count = 0;
+                
                 for (Object element : (Collection<Object>) value){
                     Matcher matcher = getMatcher(element.toString());
-                    if (matcher.matches()) {
-                        return true;
+                    boolean temp = matcher.matches();
+                    if (temp) {
+                        count++;
                     }
+                       
+                    switch (matchAction){
+                        case ONE: if (count > 1) return false; break;
+                        case ALL: if (!temp) return false; break;
+                        case ANY: if (temp) return true; break;
+                    } 
                 }
-                return false;
+                switch (matchAction){
+                    case ONE: return (count == 1);
+                    case ALL: return true;
+                    case ANY: return false;
+                    default: return false;
+                }
             } else {
                 Matcher matcher = getMatcher(value.toString());
                 return matcher.matches();

@@ -31,6 +31,13 @@ public class DWithinImpl extends CartesianDistanceFilter implements DWithin {
 		// backwards compat with old type system
 		this.filterType = GEOMETRY_DWITHIN;
 	}
+	
+	public DWithinImpl(org.opengis.filter.FilterFactory factory,Expression e1,Expression e2,MatchAction matchAction) {
+            super(factory,e1,e2,matchAction);
+            
+            // backwards compat with old type system
+            this.filterType = GEOMETRY_DWITHIN;
+        }
 
 	@Override
         public boolean evaluateInternal(Geometry left, Geometry right) {

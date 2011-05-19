@@ -33,6 +33,13 @@ public class CrossesImpl extends GeometryFilterImpl implements Crosses {
 		this.filterType = GEOMETRY_CROSSES;
 	}
 	
+	public CrossesImpl(org.opengis.filter.FilterFactory factory,Expression e1,Expression e2, MatchAction matchAction) {
+            super(factory,e1,e2, matchAction);
+            
+            //backwards compat with old type system
+            this.filterType = GEOMETRY_CROSSES;
+	}
+	
 	@Override
         public boolean evaluateInternal(Geometry left, Geometry right) {
 				

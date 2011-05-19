@@ -24,7 +24,7 @@ import org.opengis.filter.expression.Expression;
  * @since GeoAPI 2.0
  */
 @XmlElement("PropertyIsBetween")
-public interface PropertyIsBetween extends Filter {
+public interface PropertyIsBetween extends MultiValuedFilter {
 	/** Operator name used to check FilterCapabilities */
 	public static String NAME = "Between";
 	

@@ -20,6 +20,7 @@ import org.geotools.factory.Hints;
 import org.geotools.util.ConverterFactory;
 import org.geotools.util.Converters;
 import org.opengis.filter.BinaryComparisonOperator;
+import org.opengis.filter.MultiValuedFilter.MatchAction;
 import org.opengis.filter.expression.Expression;
 
 /**
@@ -70,6 +71,10 @@ public abstract class BinaryComparisonAbstract extends AbstractFilter
 	
 	public boolean isMatchingCase() {
 		return matchingCase;
+	}
+	
+	public MatchAction getMatchAction() {
+	       return MatchAction.ANY; //default
 	}
 	
 	public Filter and(org.opengis.filter.Filter filter) {        

@@ -64,6 +64,10 @@ public abstract class CartesianDistanceFilter extends GeometryFilterImpl
     	super(factory,e1,e2);
     }
     
+    protected CartesianDistanceFilter(org.opengis.filter.FilterFactory factory, Expression e1,Expression e2, MatchAction matchAction) {
+        super(factory,e1,e2, matchAction);
+    }
+    
     /**
      * Constructor which flags the operator as between.
      *

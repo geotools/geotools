@@ -63,6 +63,7 @@ import org.opengis.feature.type.Name;
 import org.opengis.filter.And;
 import org.opengis.filter.Filter;
 import org.opengis.filter.Id;
+import org.opengis.filter.MultiValuedFilter.MatchAction;
 import org.opengis.filter.Not;
 import org.opengis.filter.Or;
 import org.opengis.filter.PropertyIsBetween;
@@ -96,6 +97,7 @@ import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.expression.Subtract;
 import org.opengis.filter.identity.FeatureId;
 import org.opengis.filter.identity.GmlObjectId;
+import org.opengis.filter.identity.Identifier;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 import org.opengis.filter.spatial.BBOX;
@@ -185,6 +187,11 @@ public class FilterFactoryImpl implements FilterFactory {
             Expression upper) {
         return new IsBetweenImpl(this,lower,expr,upper);
     }
+    
+    public PropertyIsBetween between(Expression expr, Expression lower, Expression upper,
+            MatchAction matchAction) {
+        return new IsBetweenImpl(this,lower,expr,upper, matchAction);
+    }    
 
     public PropertyIsEqualTo equals(Expression expr1, Expression expr2) {
         return equal( expr1,expr2,true);
@@ -192,6 +199,11 @@ public class FilterFactoryImpl implements FilterFactory {
     
     public PropertyIsEqualTo equal(Expression expr1, Expression expr2, boolean matchCase) {
         return new IsEqualsToImpl(this,expr1,expr2,matchCase); 
+    }
+    
+    public PropertyIsEqualTo equal(Expression expr1, Expression expr2, boolean matchCase,
+            MatchAction matchAction) {
+        return new IsEqualsToImpl(this,expr1,expr2,matchCase,matchAction);
     }
     
     public PropertyIsNotEqualTo notEqual(Expression expr1, Expression expr2) {
@@ -202,12 +214,22 @@ public class FilterFactoryImpl implements FilterFactory {
         return new IsNotEqualToImpl(this,expr1,expr2,matchCase);
     }
     
+    public PropertyIsNotEqualTo notEqual(Expression expr1, Expression expr2, boolean matchCase,
+            MatchAction matchAction) {
+        return new IsNotEqualToImpl(this,expr1,expr2,matchCase,matchAction);
+    }
+    
     public PropertyIsGreaterThan greater(Expression expr1, Expression expr2) {
         return greater(expr1,expr2,false);
     }
     
     public PropertyIsGreaterThan greater(Expression expr1, Expression expr2, boolean matchCase) {
         return new IsGreaterThanImpl(this, expr1, expr2);
+    }
+    
+    public PropertyIsGreaterThan greater(Expression expr1, Expression expr2, boolean matchCase,
+            MatchAction matchAction) {
+        return new IsGreaterThanImpl(this, expr1, expr2, matchAction);
     }
     
     public PropertyIsGreaterThanOrEqualTo greaterOrEqual(Expression expr1,
@@ -219,6 +241,11 @@ public class FilterFactoryImpl implements FilterFactory {
                         Expression expr2, boolean matchCase) {
         return new IsGreaterThanOrEqualToImpl(this,expr1,expr2,matchCase);
     }
+    
+    public PropertyIsGreaterThanOrEqualTo greaterOrEqual(Expression expr1, Expression expr2,
+            boolean matchCase, MatchAction matchAction) {
+        return new IsGreaterThanOrEqualToImpl(this,expr1,expr2,matchCase,matchAction);
+    }
 
     public PropertyIsLessThan less(Expression expr1, Expression expr2) {
         return less(expr1,expr2,false);
@@ -227,6 +254,11 @@ public class FilterFactoryImpl implements FilterFactory {
     public PropertyIsLessThan less(Expression expr1, Expression expr2,
                     boolean matchCase) {
         return new IsLessThenImpl(this,expr1,expr2,matchCase);
+    }
+    
+    public PropertyIsLessThan less(Expression expr1, Expression expr2,
+            boolean matchCase, MatchAction matchAction) {
+        return new IsLessThenImpl(this,expr1,expr2,matchCase,matchAction);
     }
 
     public PropertyIsLessThanOrEqualTo lessOrEqual(Expression expr1,
@@ -237,6 +269,11 @@ public class FilterFactoryImpl implements FilterFactory {
     public PropertyIsLessThanOrEqualTo lessOrEqual(Expression expr1,
                         Expression expr2, boolean matchCase) {
         return new IsLessThenOrEqualToImpl(this,expr1,expr2,false);
+    }
+    
+    public PropertyIsLessThanOrEqualTo lessOrEqual(Expression expr1, Expression expr2,
+            boolean matchCase, MatchAction matchAction) {
+        return new IsLessThenOrEqualToImpl(this,expr1,expr2,false, matchAction);        
     }
     
     public PropertyIsLike like(Expression expr, String pattern) {
@@ -250,6 +287,16 @@ public class FilterFactoryImpl implements FilterFactory {
     public PropertyIsLike like(Expression expr, String pattern,
                         String wildcard, String singleChar, String escape, boolean matchCase) {
             LikeFilterImpl filter = new LikeFilterImpl();
+        filter.setExpression(expr);
+        filter.setPattern(pattern,wildcard,singleChar,escape);
+        filter.setMatchingCase( matchCase );
+        
+        return filter;
+    }
+    
+    public PropertyIsLike like(Expression expr, String pattern, String wildcard, String singleChar,
+            String escape, boolean matchCase, MatchAction matchAction) {
+        LikeFilterImpl filter = new LikeFilterImpl(matchAction);
         filter.setExpression(expr);
         filter.setPattern(pattern,wildcard,singleChar,escape);
         filter.setMatchingCase( matchCase );
@@ -290,7 +337,23 @@ public class FilterFactoryImpl implements FilterFactory {
                 CRS.toSRS( bounds.getCoordinateReferenceSystem() ) );
     }
     
-    public BBOX bbox(Expression e, double minx, double miny, double maxx, double maxy, String srs) {
+    public BBOX bbox(Expression geometry, BoundingBox bounds, MatchAction matchAction) {
+        return bbox( geometry, bounds.getMinX(), bounds.getMinY(), bounds.getMaxX(), bounds.getMaxY(),
+                CRS.toSRS( bounds.getCoordinateReferenceSystem() ), matchAction );
+    }
+    
+    public BBOX bbox(String propertyName, double minx, double miny, double maxx, double maxy,
+            String srs, MatchAction matchAction) {
+        PropertyName name = property(propertyName);
+        return bbox(name, minx, miny, maxx, maxy, srs, matchAction);
+    }
+    
+
+    public BBOX bbox(Expression geometry, double minx, double miny, double maxx, double maxy, String srs) {
+        return bbox(geometry, minx, miny, maxx, maxy, srs, MatchAction.ANY);
+    }
+    
+    public BBOX bbox(Expression e, double minx, double miny, double maxx, double maxy, String srs, MatchAction matchAction) {
         PropertyName name = null;
         if ( e instanceof PropertyName ) {
             name = (PropertyName) e;
@@ -307,7 +370,7 @@ public class FilterFactoryImpl implements FilterFactory {
             new IllegalArgumentException().initCause(ife);
         }
         
-        BBOXImpl box = new BBOXImpl(this,e,bbox);
+        BBOXImpl box = new BBOXImpl(this,e,bbox, matchAction);
         if (e == null) {
             // otherwise this line is redundant. Also complex
             // features with bbox request would fail as this would remove the
@@ -328,15 +391,32 @@ public class FilterFactoryImpl implements FilterFactory {
         
         PropertyName name = property(propertyName);
         Literal geom = literal(geometry);
-        
+          
         return beyond( name, geom, distance, units );
     }
 
+    public Beyond beyond(String propertyName, Geometry geometry, double distance, String units,
+                MatchAction matchAction) {
+        PropertyName name = property(propertyName);
+        Literal geom = literal(geometry);
+          
+        return beyond( name, geom, distance, units, matchAction );
+    }
+    
     public Beyond beyond( 
         Expression geometry1, Expression geometry2, double distance, String units
     ) {
         
         BeyondImpl beyond = new BeyondImpl(this,geometry1,geometry2);
+        beyond.setDistance(distance);
+        beyond.setUnits(units);
+        
+        return beyond;
+    }
+    
+    public Beyond beyond(Expression geometry1, Expression geometry2, double distance, String units,
+            MatchAction matchAction) {
+        BeyondImpl beyond = new BeyondImpl(this,geometry1,geometry2,matchAction);
         beyond.setDistance(distance);
         beyond.setUnits(units);
         
@@ -353,6 +433,17 @@ public class FilterFactoryImpl implements FilterFactory {
     public Contains contains(Expression geometry1, Expression geometry2) {
         return new ContainsImpl( this, geometry1, geometry2 );
     }
+    
+    public Contains contains(Expression geometry1, Expression geometry2, MatchAction matchAction) {
+        return new ContainsImpl( this, geometry1, geometry2, matchAction );
+    }
+    
+    public Contains contains(String propertyName, Geometry geometry, MatchAction matchAction) {
+        PropertyName name = property(propertyName);
+        Literal geom = literal(geometry);
+        
+        return contains( name, geom, matchAction );
+    }
 
     public Crosses crosses(String propertyName, Geometry geometry) {
         PropertyName name = property(propertyName);
@@ -361,10 +452,20 @@ public class FilterFactoryImpl implements FilterFactory {
         return crosses( name, geom );
     }
     
+    public Crosses crosses(String propertyName, Geometry geometry, MatchAction matchAction) {
+        PropertyName name = property(propertyName);
+        Literal geom = literal(geometry);
+        
+        return crosses( name, geom, matchAction );
+    }
+    
     public Crosses crosses(Expression geometry1, Expression geometry2) {
         return new CrossesImpl( this, geometry1, geometry2 );
     }
     
+    public Crosses crosses(Expression geometry1, Expression geometry2, MatchAction matchAction) {
+        return new CrossesImpl( this, geometry1, geometry2 , matchAction );
+    }
 
     public Disjoint disjoint(String propertyName, Geometry geometry) {
         PropertyName name = property(propertyName);
@@ -372,7 +473,17 @@ public class FilterFactoryImpl implements FilterFactory {
         
         return disjoint( name, geom );
     }
-
+    
+    public Disjoint disjoint(String propertyName, Geometry geometry, MatchAction matchAction) {
+        PropertyName name = property(propertyName);
+        Literal geom = literal(geometry);
+        
+        return disjoint( name, geom, matchAction );
+    }
+    
+    public Disjoint disjoint(Expression geometry1, Expression geometry2, MatchAction matchAction) {
+        return new DisjointImpl( this, geometry1, geometry2, matchAction );
+    }
     
     public Disjoint disjoint(Expression geometry1, Expression geometry2) {
         return new DisjointImpl( this, geometry1, geometry2 );
@@ -384,6 +495,23 @@ public class FilterFactoryImpl implements FilterFactory {
         Literal geom = literal(geometry);
         
         return dwithin( name, geom, distance, units );
+    }
+    
+    public DWithin dwithin(String propertyName, Geometry geometry, double distance, String units,
+            MatchAction matchAction) {
+        PropertyName name = property(propertyName);
+        Literal geom = literal(geometry);
+        
+        return dwithin( name, geom, distance, units, matchAction );
+    }
+    
+    public DWithin dwithin(Expression geometry1, Expression geometry2, double distance,
+            String units, MatchAction matchAction) {
+        DWithinImpl dwithin =  new DWithinImpl( this, geometry1, geometry2, matchAction );
+        dwithin.setDistance( distance );
+        dwithin.setUnits( units );
+        
+        return dwithin;
     }
 
     public DWithin dwithin(Expression geometry1, Expression geometry2, double distance, String units) {
@@ -401,8 +529,19 @@ public class FilterFactoryImpl implements FilterFactory {
         return equal( name, geom );
     }
     
+    public Equals equals(String propertyName, Geometry geometry, MatchAction matchAction) {
+        PropertyName name = property(propertyName);
+        Literal geom = literal(geometry);
+        
+        return equal( name, geom, matchAction );
+    }
+    
     public Equals equal(Expression geometry1, Expression geometry2) {
         return new EqualsImpl( this, geometry1, geometry2 );
+    }
+    
+    public Equals equal(Expression geometry1, Expression geometry2, MatchAction matchAction) {
+        return new EqualsImpl( this, geometry1, geometry2, matchAction );
     }
 
     public Intersects intersects(String propertyName, Geometry geometry) {
@@ -411,9 +550,20 @@ public class FilterFactoryImpl implements FilterFactory {
         
         return intersects( name, geom );
     }
+    
+    public Intersects intersects(String propertyName, Geometry geometry, MatchAction matchAction) {
+        PropertyName name = property(propertyName);
+        Literal geom = literal(geometry);
+        
+        return intersects( name, geom, matchAction );
+    }
 
     public Intersects intersects(Expression geometry1, Expression geometry2) {
         return new IntersectsImpl( this, geometry1, geometry2 );
+    }
+    
+    public Intersects intersects(Expression geometry1, Expression geometry2, MatchAction matchAction) {
+        return new IntersectsImpl( this, geometry1, geometry2, matchAction );
     }
     
     public Overlaps overlaps(String propertyName, Geometry geometry) {
@@ -422,9 +572,20 @@ public class FilterFactoryImpl implements FilterFactory {
         
         return overlaps( name, geom );
     }
+    
+    public Overlaps overlaps(String propertyName, Geometry geometry, MatchAction matchAction) {
+        PropertyName name = property(propertyName);
+        Literal geom = literal(geometry);
+        
+        return overlaps( name, geom, matchAction );
+    }
 
     public Overlaps overlaps(Expression geometry1, Expression geometry2) {
         return new OverlapsImpl( this, geometry1, geometry2 );
+    }
+    
+    public Overlaps overlaps(Expression geometry1, Expression geometry2, MatchAction matchAction) {
+        return new OverlapsImpl( this, geometry1, geometry2, matchAction );
     }
     
     public Touches touches(String propertyName, Geometry geometry) {
@@ -433,9 +594,20 @@ public class FilterFactoryImpl implements FilterFactory {
         
         return touches( name, geom );
     }
+    
+    public Touches touches(String propertyName, Geometry geometry, MatchAction matchAction) {
+        PropertyName name = property(propertyName);
+        Literal geom = literal(geometry);
+        
+        return touches( name, geom, matchAction );
+    }
 
     public Touches touches(Expression geometry1, Expression geometry2) {
         return new TouchesImpl(this,geometry1,geometry2);
+    }
+    
+    public Touches touches(Expression geometry1, Expression geometry2, MatchAction matchAction) {
+        return new TouchesImpl(this,geometry1,geometry2, matchAction);
     }
     
     public Within within(String propertyName, Geometry geometry) {
@@ -444,9 +616,20 @@ public class FilterFactoryImpl implements FilterFactory {
         
         return within( name, geom );
     }
+    
+    public Within within(String propertyName, Geometry geometry, MatchAction matchAction) {
+        PropertyName name = property(propertyName);
+        Literal geom = literal(geometry);
+        
+        return within( name, geom, matchAction );
+    }
 
     public Within within(Expression geometry1, Expression geometry2) {
         return new WithinImpl( this, geometry1, geometry2 );
+    }
+    
+    public Within within(Expression geometry1, Expression geometry2, MatchAction matchAction) {
+        return new WithinImpl( this, geometry1, geometry2, matchAction );
     }
     
     public Add add(Expression expr1, Expression expr2) {
@@ -1065,5 +1248,6 @@ public class FilterFactoryImpl implements FilterFactory {
     public IdCapabilities idCapabilities(boolean eid, boolean fid) {
         return new IdCapabilitiesImpl( eid, fid );
     }
+  
         
 }

@@ -21,6 +21,7 @@ import java.util.Collections;
 
 import org.geotools.util.Converters;
 import org.opengis.filter.FilterVisitor;
+import org.opengis.filter.MultiValuedFilter.MatchAction;
 import org.opengis.filter.expression.Expression;
 
 /**
@@ -33,20 +34,31 @@ import org.opengis.filter.expression.Expression;
 public class IsBetweenImpl extends CompareFilterImpl implements BetweenFilter {
 
 	private Expression expression;
+	
+	protected MatchAction matchAction;
 
-	protected IsBetweenImpl(org.opengis.filter.FilterFactory factory, Expression lower, Expression expression, Expression upper ){
+	protected IsBetweenImpl(org.opengis.filter.FilterFactory factory, Expression lower, Expression expression, Expression upper, MatchAction matchAction ){
 		super( factory, lower, upper );
 		this.expression = expression;
+		this.matchAction = matchAction;
 		
 		//backwards compatability
 		filterType = FilterType.BETWEEN;
 	}
+	
+	protected IsBetweenImpl(org.opengis.filter.FilterFactory factory, Expression lower, Expression expression, Expression upper ){
+            this( factory, lower, expression, upper, MatchAction.ANY );
+        }
 	
 	public Expression getExpression() {
 		return expression;
 	}
 	public void setExpression(Expression expression) {
 		this.expression = expression;
+	}
+	
+	public MatchAction getMatchAction() {
+	        return matchAction;
 	}
 	
 	//@Override
@@ -67,17 +79,31 @@ public class IsBetweenImpl extends CompareFilterImpl implements BetweenFilter {
             Collection<Object> rightValues = object2 instanceof Collection ? (Collection<Object>) object2
                     : Collections.<Object>singletonList(object2);
     
+            int count = 0;
+           
             for (Object value1 : leftValues) {
                 for (Object value2 : rightValues) {
                     for (Object value0 : oValues) {
-                        if (evaluateInternal(value0, value1, value2)) {
-                            return true;
+                        boolean temp = evaluateInternal(value0, value1, value2);
+                        if (temp) {
+                           count++;
                         }
+                               
+                        switch (matchAction){
+                           case ONE: if (count > 1) return false; break;
+                           case ALL: if (!temp) return false; break;
+                           case ANY: if (temp) return true; break;
+                        }                        
                     }
                 }
             }
     
-            return false;
+            switch (matchAction){
+                case ONE: return (count == 1);
+                case ALL: return true;
+                case ANY: return false;
+                default: return false;
+            }
         }
 	
 	public boolean evaluateInternal(Object value, Object lower, Object upper) {

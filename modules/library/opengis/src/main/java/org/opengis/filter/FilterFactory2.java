@@ -12,6 +12,7 @@ package org.opengis.filter;
 import java.util.List;
 
 import org.opengis.feature.type.Name;
+import org.opengis.filter.MultiValuedFilter.MatchAction;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
@@ -98,6 +99,21 @@ public interface FilterFactory2 extends FilterFactory {
      */
     PropertyIsLike like(Expression expr, String pattern, String wildcard, String singleChar, String escape, boolean matchCase);
     
+    /**
+     * Character string comparison operator with pattern matching and specified wildcards.
+     *      
+     * @param expr
+     * @param pattern
+     * @param wildcard
+     * @param singleChar
+     * @param escape
+     * @param matchCase
+     * @param matchAction
+     * @return
+     */
+    PropertyIsLike like(Expression expr, String pattern, String wildcard, String singleChar, String escape, boolean matchCase, MatchAction matchAction);
+    
+    
 ////////////////////////////////////////////////////////////////////////////////
 //
 //  SPATIAL FILTERS
@@ -106,6 +122,9 @@ public interface FilterFactory2 extends FilterFactory {
 
     /** Checks if the geometry expression overlaps the specified bounding box. */
     BBOX        bbox( Expression geometry, double minx, double miny, double maxx, double maxy, String srs);
+    
+    /** Checks if the geometry expression overlaps the specified bounding box. */
+    BBOX        bbox( Expression geometry, double minx, double miny, double maxx, double maxy, String srs, MatchAction matchAction);
 
     /**
      * Checks if the bounding box of the feature's geometry overlaps the indicated bounds.
@@ -117,37 +136,81 @@ public interface FilterFactory2 extends FilterFactory {
      * @param bounds Indicates the bounds to check geometry against
      */
     BBOX        bbox( Expression geometry, BoundingBox bounds);
+    
+    /**
+     * Checks if the bounding box of the feature's geometry overlaps the indicated bounds.
+     * <p>
+     * This method does not strictly confirm to the the Filter 1.0 specification, you may
+     * use it to check expressions other than PropertyName.
+     * </p>
+     * @param geometry Expression used to access a Geometry, in order to check for interaction with bounds
+     * @param bounds Indicates the bounds to check geometry against
+     * @param matchAction Match Action
+     */
+    BBOX        bbox( Expression geometry, BoundingBox bounds, MatchAction matchAction);
 
 
     /** Check if all of a geometry is more distant than the given distance from this object's geometry. */
     Beyond      beyond( Expression geometry1, Expression geometry2, double distance, String units);
+    
+    /** Check if all of a geometry is more distant than the given distance from this object's geometry. */
+    Beyond      beyond( Expression geometry1, Expression geometry2, double distance, String units, MatchAction matchAction);
 
     /** Checks if the the first geometric operand contains the second. */
     Contains    contains(Expression geometry1, Expression geometry2);
+    
+    /** Checks if the the first geometric operand contains the second. */
+    Contains    contains(Expression geometry1, Expression geometry2, MatchAction matchAction);
 
     /** Checks if the first geometric operand crosses the second. */
     Crosses     crosses(Expression geometry1, Expression geometry2);
+    
+    /** Checks if the first geometric operand crosses the second. */
+    Crosses     crosses(Expression geometry1, Expression geometry2, MatchAction matchAction);
 
     /** Checks if the first operand is disjoint from the second. */
     Disjoint    disjoint(Expression geometry1, Expression geometry2);
+    
+    /** Checks if the first operand is disjoint from the second. */
+    Disjoint    disjoint(Expression geometry1, Expression geometry2, MatchAction matchAction);
 
     /** Checks if any part of the first geometry lies within the given distance of the second geometry. */
     DWithin     dwithin(Expression geometry1, Expression geometry2, double distance, String units);
+    
+    /** Checks if any part of the first geometry lies within the given distance of the second geometry. */
+    DWithin     dwithin(Expression geometry1, Expression geometry2, double distance, String units, MatchAction matchAction);
 
     /** Checks if the geometry of the two operands are equal.
      * @todo should be equals, resolve conflict with PropertyIsEqualTo equals( Expression, Expression )
      */
     Equals      equal(Expression geometry1, Expression geometry2);
+  
+    /** Checks if the geometry of the two operands are equal.
+     * @todo should be equals, resolve conflict with PropertyIsEqualTo equals( Expression, Expression )
+     */
+    Equals      equal(Expression geometry1, Expression geometry2, MatchAction matchAction);
 
     /** Checks if the two geometric operands intersect. */
     Intersects  intersects(Expression geometry1, Expression geometry2);
+    
+    /** Checks if the two geometric operands intersect. */
+    Intersects  intersects(Expression geometry1, Expression geometry2, MatchAction matchAction);
 
     /** Checks if the interior of the first geometry somewhere overlaps the interior of the second geometry. */
     Overlaps    overlaps(Expression geometry1, Expression geometry2);
+    
+    /** Checks if the interior of the first geometry somewhere overlaps the interior of the second geometry. */
+    Overlaps    overlaps(Expression geometry1, Expression geometry2, MatchAction matchAction);
 
     /** Checks if the feature's geometry touches, but does not overlap with the geometry held by this object. */
     Touches     touches(Expression propertyName1, Expression geometry2);
+    
+    /** Checks if the feature's geometry touches, but does not overlap with the geometry held by this object. */
+    Touches     touches(Expression propertyName1, Expression geometry2, MatchAction matchAction);
 
     /** Checks if the feature's geometry is completely contained by the specified constant geometry. */
     Within      within(Expression geometry1, Expression geometry2);
+    
+    /** Checks if the feature's geometry is completely contained by the specified constant geometry. */
+    Within      within(Expression geometry1, Expression geometry2, MatchAction matchAction);
 }

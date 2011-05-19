@@ -24,7 +24,7 @@ import org.apache.commons.dbcp.BasicDataSource;
 
 public class JDBCDelegatingTestSetup extends JDBCTestSetup {
 
-    JDBCTestSetup delegate;
+    protected JDBCTestSetup delegate;
     
     protected JDBCDelegatingTestSetup( JDBCTestSetup delegate ) {
         this.delegate = delegate;

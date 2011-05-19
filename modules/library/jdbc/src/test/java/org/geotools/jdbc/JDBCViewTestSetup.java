@@ -7,11 +7,9 @@ public abstract class JDBCViewTestSetup extends JDBCDelegatingTestSetup {
     protected JDBCViewTestSetup(JDBCTestSetup delegate) {
         super(delegate);
     }
-    
+
     @Override
-    public void setUp() throws Exception {
-        super.setUp();
-        
+    protected void setUpData() throws Exception {
         try {
             dropLakesView();
         } catch (SQLException e) {

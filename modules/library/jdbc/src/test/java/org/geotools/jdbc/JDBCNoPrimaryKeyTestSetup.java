@@ -24,11 +24,8 @@ public abstract class JDBCNoPrimaryKeyTestSetup extends JDBCDelegatingTestSetup 
         super(delegate);
     }
 
-
     @Override
-    public void setUp() throws Exception {
-        super.setUp();
-        
+    protected void setUpData() throws Exception {
         try {
             dropLakeTable();
         } catch (SQLException e) {

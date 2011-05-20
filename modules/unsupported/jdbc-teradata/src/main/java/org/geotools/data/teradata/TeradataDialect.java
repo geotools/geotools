@@ -360,6 +360,81 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
             return null;
         }
         
+        String tableName = featureType.getTypeName();
+        
+        if (tdVersion > 12) {
+            //first check the geometry_columns
+            StringBuffer sql = new StringBuffer();
+            sql.append("SELECT gc.UxMin, gc.UyMin, gc.UxMax, gc.UyMax, srs.AUTH_SRID FROM ");
+            
+            encodeTableName(SYSSPATIAL, GEOMETRY_COLUMNS, sql);
+            encodeTableAlias("gc", sql);
+            sql.append(", ");
+            encodeTableName(SYSSPATIAL, SPATIAL_REF_SYS, sql);
+            encodeTableAlias("srs", sql);
+            
+            sql.append(" WHERE ");
+            sql.append("gc.");
+            encodeColumnName("SRID", sql);
+            sql.append(" = ");
+            sql.append("srs.");
+            encodeColumnName("SRID", sql);
+            
+            sql.append(" AND gc.");
+            encodeColumnName("F_TABLE_SCHEMA", sql);
+            sql.append(" = ?").append(" AND ");
+        
+            sql.append("gc.");
+            encodeColumnName("F_TABLE_NAME", sql);
+            sql.append(" = ? ");
+            
+            //AND gc.UxMin IS NOT NULL AND gc.UyMin IS NOT NULL AND UxMax IS NOT NULL")
+            //   .append(" AND ymax is NOT NULL");
+
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.fine(String.format("%s;1=%s;2=%s", sql.toString(), schema, tableName));
+            }
+
+            PreparedStatement ps = cx.prepareStatement(sql.toString());
+            try {
+                ps.setString(1, schema);
+                ps.setString(2, tableName);
+                
+                ResultSet rs = null;
+                try {
+                    rs = ps.executeQuery();
+                    
+                    List<ReferencedEnvelope> envs = new ArrayList();
+                    if (rs.next()) {
+                        int srid = rs.getInt(5);
+                        ReferencedEnvelope env = new ReferencedEnvelope(rs.getDouble(1), 
+                            rs.getDouble(3), rs.getDouble(2), rs.getDouble(4), CRS.decode("EPSG:"+srid));
+                        
+                        //check for "empty" envelope, means values were not set in geometry_columns
+                        // table, fall out
+                        if (env.isEmpty() || env.isNull() || 
+                                (env.getWidth() == 0 && env.getMinX() == 0)) {
+                            throw new Exception("Empty universe in geometry columns");
+                        }
+                        envs.add(env);
+                    }
+                    
+                    return envs;
+                }
+                catch(Exception e) {
+                    //ignore and fall through
+                    LOGGER.log(Level.FINER, "Error query geometry_columns", e);
+                }
+                finally {
+                    dataStore.closeSafe(rs);
+                }
+            }
+            finally {
+                dataStore.closeSafe(ps);
+            }
+        }
+        
+        //fall back on tessellation entry
         List<TessellationInfo> tinfos = 
             lookupTessellationInfos(cx, schema, featureType.getTypeName(), null);
         if (tinfos.isEmpty()) {

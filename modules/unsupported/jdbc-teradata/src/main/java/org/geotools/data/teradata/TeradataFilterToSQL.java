@@ -198,6 +198,12 @@ public class TeradataFilterToSQL extends PreparedFilterToSQL {
             return false;
         }
         
+        if (tinfo.getIndexTableName() == null) {
+            LOGGER.info("Tessellation info available for " + currentGeometry.getLocalName() + 
+                ", but index table does not exist, unable to perform spatially index query.");
+            return false;
+        }
+        
         if (primaryKey == null) {
             LOGGER.info("No primary key for " + featureType.getTypeName() + 
                 ", unable to perform spatially indexed query");

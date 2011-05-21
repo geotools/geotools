@@ -843,8 +843,8 @@ public final class GridCoverageRenderer {
             // It's a integer translate
             return new TranslateIntOpImage(finalImage,
             								hints,
-                                           (int) finalRaster2Model.getShearX(),
-                                           (int) finalRaster2Model.getShearY());
+                                           (int) finalRaster2Model.getTranslateX(),
+                                           (int) finalRaster2Model.getTranslateY());
         }                                
                           
         // final transformation

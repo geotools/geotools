@@ -109,6 +109,12 @@ public class ShapefileDataStore extends AbstractFileDataStore {
     public static final Charset DEFAULT_STRING_CHARSET = Charset
             .forName("ISO-8859-1");
     
+    // User-data keyword names for storing the original field name and its
+    // instance number when the field name is replaced with a new name built
+    // using the original+count convention.
+    public static final String ORIGINAL_FIELD_NAME = "original";
+    public static final String ORIGINAL_FIELD_DUPLICITY_COUNT = "count";
+    
     /**
      * When true, the stack trace that got a lock that wasn't released is recorded and then
      * printed out when warning the user about this.
@@ -801,6 +807,8 @@ public class ShapefileDataStore extends AbstractFileDataStore {
                             count++;
                             name = origional + count;
                         }
+                    	build.addUserData(ORIGINAL_FIELD_NAME, origional);
+                    	build.addUserData(ORIGINAL_FIELD_DUPLICITY_COUNT, count);
                     }
                     usedNames.add(name);
                     int length = header.getFieldLength(i);

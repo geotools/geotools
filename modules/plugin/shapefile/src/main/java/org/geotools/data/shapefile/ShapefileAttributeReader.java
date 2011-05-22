@@ -99,8 +99,14 @@ public class ShapefileAttributeReader extends AbstractAttributeIO implements
             DbaseFileHeader head = dbf.getHeader();
             AT: for (int i = 0; i < atts.length; i++) {
                 String attName = atts[i].getLocalName();
+                int count = 0;
+                if (atts[i].getUserData().get(ShapefileDataStore.ORIGINAL_FIELD_NAME) != null){
+                	attName = (String)atts[i].getUserData().get(ShapefileDataStore.ORIGINAL_FIELD_NAME);
+                	count = (Integer)atts[i].getUserData().get(ShapefileDataStore.ORIGINAL_FIELD_DUPLICITY_COUNT);
+                }
+
                 for(int j = 0; j < head.getNumFields(); j++) {
-                    if(head.getFieldName(j).equals(attName)){
+                    if(head.getFieldName(j).equals(attName) && count-- <= 0){
                         dbfindexes[i] = j;
                         continue AT;
                     }

@@ -426,6 +426,40 @@ public class AngleFormat extends Format {
         return value;
     }
 
+	/**
+	 * This method senses that there is an overflow in the formatted field.
+	 * 
+	 * <li>60 seconds represent an overflow</li>
+	 * 
+	 * <li>60 minutes represent an overflow</li>
+	 * 
+	 * <li>360 degrees or more represent an overflow</li>
+	 * 
+	 * @param value
+	 *            the value to be checked for overflow
+	 * @param field
+	 *            degrees, minutes or seconds
+	 * @param last
+	 *            {@code true} if this is the last field and we need to add the decimals part
+	 * @return {@code true} if we have an overflow scenario and {@code false} otherwise
+	 * 	
+	 */
+	private boolean isOverflow(double value, final int field, final boolean last) {
+
+		boolean overflow = false;
+		if (last) {
+			value = doRounding(value, widthDecimal);
+		}
+		if (field != DEGREES_FIELD && value == 60) {
+			overflow = true;
+		}
+		if (field == DEGREES_FIELD && value >= 360d) {
+			overflow = true;
+		}
+
+		return overflow;
+	}
+
     /**
      * Constructs a new {@code AngleFormat} using
      * the current default locale and a default pattern.
@@ -699,6 +733,27 @@ public class AngleFormat extends Format {
         } else {
             field=PREFIX_FIELD;
         }
+
+		// Check and manage the seconds overflow
+		if (!Double.isNaN(secondes) && isOverflow(secondes, SECONDS_FIELD, true)) {
+			// set seconds to 0
+			secondes = 0d;
+			// carry over 1 minute
+			minutes = minutes + 1;
+		}
+		// Check and manage the minutes overflow
+		if (!Double.isNaN(minutes) && isOverflow(minutes, MINUTES_FIELD, width2 == 0)) {
+			// set minutes to 0
+			minutes = 0d;
+			// carry over 1 degree
+			degrees = degrees + 1;
+		}
+		// Check and manage the degrees overflow
+		if (isOverflow(degrees, DEGREES_FIELD, width1 == 0)) {
+			// Normalize degrees by 360
+			degrees = degrees - 360d;
+		}
+		
         toAppendTo = formatField(degrees, toAppendTo,
                                  field == DEGREES_FIELD ? pos : null,
                                  width0, width1==0, suffix0);

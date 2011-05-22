@@ -204,4 +204,80 @@ public final class FormatTest {
          // af2 should be using ROUND_HALF_UP
          assertEquals("4", af2.format(value));
      }
+
+ 	@Test
+ 	public void testOverflow() {
+
+ 		AngleFormat af = new AngleFormat("DD MM SS.ss");
+ 		af.setRoundingMethod(AngleFormat.RoundingMethod.ROUND_HALF_EVEN);
+ 		double value = 0d;
+ 		assertEquals("00 00 00.00", af.format(value));
+
+ 		value = 0.001d / 3600d;
+ 		assertEquals("00 00 00.00", af.format(value));
+
+ 		value = 0.01d / 3600d;
+ 		assertEquals("00 00 00.01", af.format(value));
+
+ 		value = 59.99d / 3600d;
+ 		assertEquals("00 00 59.99", af.format(value));
+
+ 		value = 59.999d / 3600d;
+ 		assertEquals("00 01 00.00", af.format(value));
+
+ 		value = 1.5d / 60d + 29.99d / 3600d;
+ 		assertEquals("00 01 59.99", af.format(value));
+
+ 		value = 1.5d / 60d + 29.999d / 3600d;
+ 		assertEquals("00 02 00.00", af.format(value));
+
+ 		value = 0d + 59d / 60d + 59.99d / 3600d;
+ 		assertEquals("00 59 59.99", af.format(value));
+
+ 		value = 0d + 59d / 60d + 59.999d / 3600d;
+ 		assertEquals("01 00 00.00", af.format(value));
+
+ 		value = 359d + 59d / 60d + 59.99d / 3600d;
+ 		assertEquals("359 59 59.99", af.format(value));
+
+ 		value = 359d + 59d / 60d + 59.999d / 3600d;
+ 		assertEquals("00 00 00.00", af.format(value));
+
+ 		af = new AngleFormat("DD MM SS");
+ 		af.setRoundingMethod(AngleFormat.RoundingMethod.ROUND_HALF_EVEN);
+ 		value = 59d / 3600d;
+ 		assertEquals("00 00 59", af.format(value));
+
+ 		value = 59.9d / 3600d;
+ 		assertEquals("00 01 00", af.format(value));
+
+ 		value = 59d / 60d;
+ 		assertEquals("00 59 00", af.format(value));
+
+ 		value = 59.999d / 60d;
+ 		assertEquals("01 00 00", af.format(value));
+
+ 		value = 0d + 59d / 60d + 59.9d / 3600d;
+ 		assertEquals("01 00 00", af.format(value));
+
+ 		af = new AngleFormat("DD MM");
+ 		af.setRoundingMethod(AngleFormat.RoundingMethod.ROUND_HALF_EVEN);
+ 		value = 0d + 59d / 60d + 59.9d / 3600d;
+ 		assertEquals("01 00", af.format(value));
+
+ 		value = 361;
+ 		assertEquals("01 00", af.format(value));
+
+ 		af = new AngleFormat("DDD");
+ 		af.setRoundingMethod(AngleFormat.RoundingMethod.ROUND_HALF_EVEN);
+ 		value = 0.9999;
+ 		assertEquals("001", af.format(value));
+
+ 		value = 361.1111;
+ 		assertEquals("001", af.format(value));
+
+ 		value = 361.999;
+ 		assertEquals("002", af.format(value));
+
+ 	}
 }

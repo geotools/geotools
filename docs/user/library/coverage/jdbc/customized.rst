@@ -1,5 +1,5 @@
-Customized JDBC Access for images
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Custom JDBC Access for Images
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This plugin is an extension to the Image Mosaicing Pyramidal JDBC Plugin. It is targeted to users
 having a special database layout for storing their image data or use a special data base extension

@@ -24,12 +24,12 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.geotools.data.DefaultQuery;
 import org.geotools.data.FeatureLock;
 import org.geotools.data.FeatureLockException;
 import org.geotools.data.FeatureLocking;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureWriter;
+import org.geotools.data.FilteringFeatureWriter;
 import org.geotools.data.InProcessLockingManager;
 import org.geotools.data.LockingManager;
 import org.geotools.data.Query;
@@ -38,7 +38,6 @@ import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.factory.Hints;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.NameImpl;
-import org.geotools.feature.simple.SimpleFeatureImpl;
 import org.geotools.filter.identity.FeatureIdImpl;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -125,7 +124,7 @@ public abstract class ContentFeatureStore extends ContentFeatureSource implement
      * @param flags flags specifying writing mode
      */
     public final FeatureWriter<SimpleFeatureType, SimpleFeature> getWriter( Filter filter, int flags  ) throws IOException {
-        return getWriter( new DefaultQuery( getSchema().getTypeName(), filter ), flags );
+        return getWriter( new Query( getSchema().getTypeName(), filter ), flags );
     }
     
     /**
@@ -150,6 +149,12 @@ public abstract class ContentFeatureStore extends ContentFeatureSource implement
         FeatureWriter<SimpleFeatureType, SimpleFeature> writer = getWriterInternal( query, flags );
         
         //TODO: apply wrappers
+        //filtering
+        if ( !canFilter() ) {
+            if (query.getFilter() != null && query.getFilter() != Filter.INCLUDE ) {
+                writer = new FilteringFeatureWriter( writer, query.getFilter() );
+            }    
+        }
         
         //TODO: turn locking on / off
         LockingManager lockingManager = getDataStore().getLockingManager();
@@ -407,7 +412,6 @@ public abstract class ContentFeatureStore extends ContentFeatureSource implement
             while( writer.hasNext() ) {
                 writer.next();
                 writer.remove();
-                writer.write();
             }
             
         }

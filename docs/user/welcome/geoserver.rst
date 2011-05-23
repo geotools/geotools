@@ -5,7 +5,7 @@ Welcome GeoServer Developers
    
    http://www.geoserver.org/
    
-   .. image:: /images/logo/geoserver_200.png
+   .. image:: /images/logo/GeoServer_200.png
    
    Allows users to share and edit geospatial data. Designed for interoperability, it publishes
    data from any major spatial data source using open standards (WFS, WCS, WMS).

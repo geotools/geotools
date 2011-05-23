@@ -14,9 +14,11 @@ Welcome to the Geotools Users Guide. This space serves as a reference to the Geo
    create
    factory
    standards
+   upgrade
    eclipse
-   jump
    netbeans
+   jump
+   geomajas
    udig
    faq
 

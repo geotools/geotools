@@ -1,5 +1,5 @@
 Image collection plug-in
------------------------
+------------------------
 
 An ``ImageReader`` and ``Format`` implementation working against a directory tree of non georeferenced images (scanned maps or plain photos). The directory tree location is specified while building the reader (it's the location being read).
 

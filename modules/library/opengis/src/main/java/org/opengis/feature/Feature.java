@@ -24,9 +24,11 @@ import org.opengis.geometry.BoundingBox;
  * <li>The bounds of all the geometric attributes of the feature
  * </ul>
  * </p>
+ * @see FeatureType
  * @author Jody Garnett (Refractions Research)
  * @author Justin Deoliveira (The Open Planning Project)
- * @version GeoAPI 2.2
+ * @since GeoAPI 2.2
+ * @version 8.0
  */
 public interface Feature extends ComplexAttribute {
 

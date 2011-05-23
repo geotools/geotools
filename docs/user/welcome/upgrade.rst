@@ -26,15 +26,15 @@ But first to upgrade - change your dependency to 8-SNAPSHOT (or an appropriate s
         ....
     </dependencies>
 
-Upgrade from GeoTools 2.7
--------------------------
+GeoTools 8.0
+------------
 
 .. sidebar:: Wiki
    
    * `GeoTools 8.0 <http://docs.codehaus.org/display/GEOTOOLS/8.x>`_
    
    You are encourged to review the change proposals for GeoTools 8.0 for background information
-   on the following changes:
+   on the following changes.
 
 The changes moving from GeoTools 2.7 to GeoTools 8.0 have a great emphasis on usability and
 documentation. Because of the focus on ease of use; many of the changes here are marked "Optional"
@@ -139,9 +139,16 @@ The **gt-metadata** NumberRange class is finally sheading some of its deprecated
       NumberRange<Double> after1 = new NumberRange( Double.class, 0.0, 5.0 );
       NumberRange<Double> after2 = NumberRage.create( 0.0, 5.0 );
 
-Upgrade from GeoTools 2.6
--------------------------
+GeoTools 2.7
+------------
 
+.. sidebar:: Wiki
+   
+   * `GeoTools 2.7.0 <http://docs.codehaus.org/display/GEOTOOLS/2.7.x>`_
+   
+   You are encourged to review the change proposals for GeoTools 2.7.0 for background information
+   on the following changes.
+   
 The changes from GeoTools 2.6 to GeoTools 2.7 focus on making your code more readible; you will
 find a number of optional changes (such as using Query rather than DefaultQuery) which will
 simply make your code easier to follow.
@@ -329,3 +336,540 @@ double getCenter()              double getMedian(dimension)
 double getLength(dimension)     double getSpan(dimension)
 getLength(dimension, unit)      double getSpan(dimension, unit)
 =============================== ===============================================
+
+GeoTools 2.6
+------------
+
+.. sidebar:: Wiki
+   
+   * `GeoTools 2.6.0 <http://docs.codehaus.org/display/GEOTOOLS/2.6.x>`_
+   
+   You are encourged to review the change proposals for GeoTools 2.6.0 for background information
+   on the following changes.
+
+The GeoTools 2.6.0 release is incremental in nature with the main change being the introduction
+of the "JDBC-NG" datastores the idea of Query capabilities (so you can check what hints are
+supported).
+
+GridRange Removed
+^^^^^^^^^^^^^^^^^
+
+GridRange implementations have been removed as the result of a change we are inheriting from GeoAPI
+where a swtich from GridRange to GridEnvelope has been made. GridRange comes from
+Grid Coverages Implementation specification 1.0 (which is basically dead) while
+GridEnvelope comes from ISO 19123 which looks like the replacement.
+
+There is a big difference between interfaces though:
+
+* **GridRange** treats its own maximum grid coordinates as EXCLUSIVES (like Java2D classes
+  Rectangle2D, RenderedImage and Raster do); while
+* **GridEnvelope** uses a different convention where maximum grid coordinates are INCLUSIVES.
+
+This is shown in the code example below with the maxx variable.
+
+As far as switching over to the new classes, the equivalence are as follows:
+
+1. Replace **GridRange2D** with **GridEnvelope2D**
+   
+   Notice that now GridEnvelope2D is a Java2D rectangle and that it is also mutable!
+2. Replace **GeneralGridRange** with **GeneralGridEnvelope**
+
+There are a few more caveats, which we are showing here below.
+
+BEFORE:
+
+1. Use getSpan where getLength was used
+2. Be EXTREMELY careful with the convetions for the inclusion/exclusion of the maximum coordinates.
+3. GridRange2D IS a Ractangle and is mutable now!
+   
+   BEFORE::
+
+        import org.geotools.coverage.grid.GeneralGridRange;
+        final Rectangle actualDim = new Rectangle(0, 0, hrWidth, hrHeight);
+        final GeneralGridRange originalGridRange = new GeneralGridRange(actualDim);
+        final int w = originalGridRange.getLength(0);
+        final int maxx = originalGridRange.getUpper(0);
+        
+        ...
+        import org.geotools.coverage.grid.GridRange2D;
+        final Rectangle actualDim = new Rectangle(0, 0, hrWidth, hrHeight);
+        final GridRange2D originalGridRange2D = new GridRange2D(actualDim);
+        final int w = originalGridRange2D.getLength(0);
+        final int maxx = originalGridRange2D.getUpper(0);
+        final Rectangle rect = (Rectangle)originalGridRange2D.clone();
+    {code}
+   
+   AFTER::
+   
+        import org.geotools.coverage.grid.GeneralGridEnvelope;
+        final Rectangle actualDim = new Rectangle(0, 0, hrWidth, hrHeight);
+        final GeneralGridEnvelope originalGridRange=new GeneralGridEnvelope (actualDim,2);
+        final int w = originalGridRange.getSpan(0);
+        final int maxx = originalGridRange.getHigh(0)+1;
+        
+        import org.geotools.coverage.grid.GridEnvelope2D;
+        final Rectangle actualDim = new Rectangle(0, 0, hrWidth, hrHeight);
+        final GridEnvelope2D originalGridRange2D = new GridEnvelope2D(actualDim);
+        final int w = originalGridRange2D.getSpan(0);
+        final int maxx = originalGridRange2D.getHigh(0)+1;
+        final Rectangle rect = (Rectangle)originalGridRange2D.clone();
+
+OverviewPolicy Enum replace Hint use
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The hints to control overviews were deprecated and have now been removed.
+
+The current deprecated values have been remove from the Hints class inside the Metadata module:
+
+* VALUE_OVERVIEW_POLICY_QUALITY
+* IGNORE_COVERAGE_OVERVIEW
+* VALUE_OVERVIEW_POLICY_IGNORE
+* VALUE_OVERVIEW_POLICY_NEAREST
+* VALUE_OVERVIEW_POLICY_SPEED
+
+You should use the enum that comes with the OverviewPolicy enum. Here below you will find a few examples:
+
+* BEFORE::
+
+        Hints hints = new Hints();
+        hints.put(Hints.OVERVIEW_POLICY, Hints.VALUE_OVERVIEW_POLICY_SPEED);
+        WorldImageReader wiReader = new WorldImageReader(file, hints);
+
+* AFTER::
+
+        Hints hints = new Hints();
+        hints.put(Hints.OVERVIEW_POLICY, OverviewPolicy.SPEED);
+        WorldImageReader wiReader = new WorldImageReader(file, hints);
+
+Hints:
+
+* Please, notice that the OverviewPolicy enum provide a method to get the default policy for
+  overviews. The method is getDefaultPolicy().
+
+h1. CoverageUtilities and FeatureUtilities
+
+Deprecated methods have been remove from coverage utilities classes&nbsp;
+
+We have removed deprecated methods from classes:
+
+* CoverageUtilities.java
+* FeatureUtilities.java
+
+Existing code should change as follows:
+
+* BEFORE::
+    
+    final FeatureCollection<SimpleFeatureType, SimpleFeature> fc=FeatureUtilities.wrapGridCoverageReader(reader)
+
+* AFTER::
+    
+    final GeneralParameterValue[] params=...
+    
+    final FeatureCollection<SimpleFeatureType, SimpleFeature> fc=FeatureUtilities.wrapGridCoverageReader(reader,params)
+
+Hints:
+
+* This change allows us to store basic parameters to control how we will perform subsequent
+  reads from this reader. The&nbsp; AbstractGridFormat READ_GRIDGEOMETRY2D parameter will be
+  always overriden during a subsequent read.
+
+Coverage Processing Classes
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Deprecated methods have been remove from coverage processing classes:
+
+* filteredSubsample(GridCoverage, int, int, float[], Interpolation, BorderExtender) has been removed
+
+Here is what that looks like in code:
+
+* BEFORE::
+
+    public GridCoverage filteredSubsample(final GridCoverage   source,
+                                          final int            scaleX,
+                                          final int            scaleY,
+                                          final float\[\]      qsFilter,
+                                          final Interpolation  interpolation,
+                                          final BorderExtender be) throws CoverageProcessingException {
+         return filteredSubsample(source, scaleX, scaleY, qsFilter, interpolation);
+    }
+
+* AFTER::
+
+    public GridCoverage filteredSubsample(final GridCoverage source,
+                                          final int scaleX, final int scaleY,
+                                          final float\[\] qsFilter,
+                                          final Interpolation interpolation){
+           // recolor(GridCoverage, Map\[\]) has been removed
+           ...
+    }
+
+* BEFORE::
+        
+        recolor(final GridCoverage source, final Map[] colorMaps)
+
+* AFTER::
+        
+        recolor(final GridCoverage source, final ColorMap[] colorMaps);
+        // scale(GridCoverage, double, double, double, double, Interpolation, BorderExtender) has been removed
+
+* BEFORE::
+        
+        scale(GridCoverage, double, double, double, double, Interpolation, BorderExtender)
+
+* AFTER::
+        
+        scale(GridCoverage,double,double,double,double,Interpolation)
+        // scale(GridCoverage, double, double, double, double, Interpolation, BorderExtender) has been removedBEFORE:
+
+* BEFORE::
+        
+        scale(GridCoverage, double, double, double, double, Interpolation, BorderExtender)
+
+* AFTER::
+        
+        scale(GridCoverage,double,double,double,double,Interpolation)
+
+h1. DefaultParameterDescriptor and Parameter constructors
+
+Removed deprecated constructors from DefaultParameterDescriptor and Parameter classes.
+
+* BEFORE::
+
+    DefaultParameterDescriptor(Map<String,?>,defaultValue,minimum, maximum, unit, required)
+    DefaultParameterDescriptor(Map<String,?>, defaultValue, minimum, maximum, required)
+    DefaultParameterDescriptor(name, defaultValue, minimum, maximum)
+    DefaultParameterDescriptor(name, defaultValue, minimum, maximum, unit)
+    DefaultParameterDescriptor(name, remarks, defaultValue, required)
+    DefaultParameterDescriptor(name, defaultValue)
+    DefaultParameterDescriptor( name, valueClass, defaultValue)
+    Parameter(name, value)
+    Parameter(name, value, unit)
+    Parameter(name, value)
+
+* AFTER::
+    
+    DefaultParameterDescriptor.create(...)
+    Parameter.create(...)
+
+GeoTools 2.5
+------------
+
+.. sidebar:: Wiki
+   
+   * `GeoTools 2.5.0 <http://docs.codehaus.org/display/GEOTOOLS/2.5.x>`_
+   
+   You are encourged to review the change proposals for GeoTools 2.5.0 for background information
+   on the following changes.
+
+The GeoTools 2.5.0 release is a major change to the GeoTools library due to the adoption of both
+Java 5 and a new feature model.
+
+FeatureCollction
+^^^^^^^^^^^^^^^^
+
+In transitioning your code to Java 5 please be careful not use use the *for each* loop construct.
+We still need to call FeatureCollection.close( iterator).
+
+Due to this restriction (of not using *for each* loop construct we have had to make FeatureCollection
+no longer Colection.
+
+* Example (GeoTools 2.5 code)::
+    
+    FeatureCollection<SimpleFeatureType,SimpleFeature> featureCollection = feaureSource.getFeatures();
+    Iterator<SimpleFeature> iterator = featureCollection.iterator();
+    try {
+        while( iterator.hasNext() ){
+           SimpleFeature feature = iterator.next();
+           ...
+        }
+    }
+    finally {
+       featureCollection.close( iterator );
+    }
+
+* Example (GeoTools 2.7 code)
+  
+  We have removed the need for the use of generics to minimize typing::
+  
+    SimpleFeatureCollection featureCollection = feaureSource.getFeatures();
+    SimpleFeatureIterator iterator = featureCollection.features();
+    try {
+        while( iterator.hasNext() ){
+           SimpleFeature feature = iterator.next();
+           ...
+        }
+    }
+    finally {
+       iterator.close();
+    }
+
+JTSFactory
+^^^^^^^^^^
+
+We are cutting down on "anonymous" FactoryFinder use; creating JTSFactory to allow the
+entire GeoTools library to share a JTS GeometryFactory.
+
+* BEFORE (GeoTools 2.4 code)::
+  
+     GeometryFactory factory = new FactoryFinder().getGeometryFactory( null );
+
+* AFTER (GeoTools 2.5 code)::
+    
+    GeometryFactory factory = JTSFactoryFinder.getGeometryFactory( null );
+
+ProgressListener
+^^^^^^^^^^^^^^^^
+
+Transition to gt-opengis ProgressListener.
+
+* Before (GeoTools 2.2 Code)::
+    
+    progress.setDescription( message );
+
+* After (GeoTools 2.4 Code)::
+    
+    progress.setTask( new SimpleInternationalString( message ) );
+
+To upgrade:
+
+1. Search: import org.geotools.util.ProgressListener
+   
+   Replace: import org.opengis.util.ProgressListener
+
+2. Update::
+     
+     setTask( new SimpleInternationalString( message ) ); // was setDescription( message );
+
+SimpleFeature
+^^^^^^^^^^^^^
+
+We have (finally) made the move to an improved feature model. Please take the opportunity
+to change your existing code to use *org.opengis.feature.simple.SimpleFeature*. The existing
+GeoTools Feature interface is still in use; but it has been updated in
+place to extend SimpleFeature.
+
+* Before (GeoTools 2.4 Code)::
+
+        import org.geotools.feature.FeatureType;
+        ...
+        CoordianteReferenceSystem crs = CRS.decode("EPSG:4326");
+        final AttributeType GEOM =
+            AttributeTypeFactory.newAttributeType("Location",Point.class,true, null,null,crs );
+        final AttributeType NAME =
+            AttributeTypeFactory.newAttributeType("Name",String.class, true );
+        
+        final FeatureType FLAG =
+            FeatureTypeFactory.newFeatureType(new AttributeType[] { GEOM, NAME },"Flag");
+        
+        Feature flag1 = FLAG.create( "flag.1", new Object[]{ point, "Here" } );
+        
+        AttributeType attributes[] = FLAG.getAttributeTypes();
+        AttributeType location = FLAG.getAttribute("Location");
+        String label = location.getName();
+        Class binding = location.getType();
+        Geometry geom = flag1.getDefaultGeometry();
+
+* After (GeoTools 2.5 Code)::
+
+        import org.opengis.feature.simple.SimpleFeatureType;
+        ...
+        SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
+        builder.setName( "Flag" );
+        builder.setNamespaceURI( "http://localhost/" );
+        builder.setCRS( "EPSG:4326" );
+        builder.add( "Location", Point.class );
+        builder.add( "Name", String.class );
+        
+        SimpleFeatureType FLAG = builder.buildFeatureType();
+        
+        SimpleFeature flag1 = SimpleFeatureBuilder.build( FLAG, new Object[]{ point, "Here"}, "flag.1" );
+        
+        List<AttributeDescriptor> attributes = FLAG.getAttributes();
+        AttributeDescriptor location = FLAG.getAttribute("Location");
+        String label = location.getLocationName();
+        Class binding = location.getType().getBinding();
+        Geometry geom = (Geometry) flag1.getDefaultGeometry();
+
+Here are some steps to start you off updating your code:
+
+1. Search Replace
+   
+   * Search: **Feature** replace with **SimpleFeature**
+   * Search: **FeatureType** replace with **SimpleFeatureType**
+
+2. Fix the imports
+   
+   * Control-Shift-O in Eclipse IDE
+   * Add casts as required for getDefaultGeometry()
+
+3. FeatureType.create has been replaced with SimpleFeatureBuilder
+   
+   There is a static method to make the transition easier::
+      
+      SimpleFeatureFeatureBuilder.build( schema, attributes, fid );
+
+4. For more code examples please see:
+   
+   * :doc:`/library/main/feature`
+
+AttributeDescriptor and AttributeType
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The concept of an AttributeType has been split into two now (allowing you to reuse common types).
+
+* BEFORE (GeoTools 2.4 Code)::
+    
+    import org.geotools.feature.AttributeType;
+    ...
+    GeometryAttributeType att =
+              (GeometryAttributeType) AttributeTypeBuilder.newAttributeDescriptor(geomTypeName,
+                                                                                  targetGeomType,
+                                                                                  isNillable,
+                                                                                  Integer.MAX_VALUE,
+                                                                                  Collections.EMPTY_LIST,
+                                                                                  crs );
+
+* AFTER (GeoTools 2.5 Code)::
+
+    import org.geotools.feature.AttributeTypeBuilder;
+    import org.opengis.feature.type.AttributeDescriptor
+    ...
+    AttributeTypeBuilder build = new AttributeTypeBuilder();
+    build.setName( geomTypeName );
+    build.setBinding( targetGeomType );
+    build.setNillable(true);
+    build.setCRS(crs);
+    GeometryType type = build.buildGeometryType();
+    GeometryDescriptor attribute = build.buildDescriptor( geomTypeName, type );
+
+Name
+^^^^
+
+In order to better support app-schema work we can no longer assume names are a simple String. The
+**Name** class has been introduced to make this easier and is availble
+throughout the library: example FeatureSource.getName().
+
+* BEFORE  (GeoTools 2.4 Code)::
+
+    DataStore ds = ...
+    String []typeNames = ds.getTypeNames();
+    SimpleFeatureType type = ds.getSchema(typeNames[0]);
+    assert type.getTypeName() == typeNames[0];
+    FeatureSource source = ds.getFeatureSource(type.getTypeName());
+
+* AFTER  (GeoTools 2.5 Code)::
+
+    import org.opengis.feature.type.Name;
+    ...
+    
+    DataStore ds = ...
+    List<Name> featureNames = ds.getNames();
+    SimpleFeatureType type = ds.getSchema(featureNames.get(0));
+    // type.getName() may or may not be equal to featureNames.get(0), assume not. If they're its just an implementation detail.
+    FeatureSource source = ds.getFeatureSource(featureNames.get(0));
+
+DataStore
+^^^^^^^^^
+
+Transition to use of Java 5 Generics with DataStore API.
+
+.. tip
+   
+   We have removed the need to use Generics in GeoTools 2.7 allowing the use of
+   SimpleFeatureSource, SimpleFeatureCollection, SimpleFeatureStore etc.
+
+* BEFORE  (GeoTools 2.4 Code)::
+
+    DataStore ds = ...
+    FeatureSource source = ds.getSource(typeName);
+    FeatureStore store = (FeatureStore)source;
+    FeatureLocking locking = (FeatureLocking)source;
+    
+    FeatureCollection collection = source.getFeatures();
+    FeatureIterator features = collection.features();
+    while(features.hasNext){
+      SimpleFeature feature = features.next();
+    }
+    
+    Transaction transaction = Transaction.AUTO_COMMIT;
+    FeatureReader reader = ds.getFeatureReader(new DefaultQuery(typeName), transaction);
+    FeatureWriter writer = ds.getFeatureWriter(typeName, transaction);
+
+* AFTER  (GeoTools 2.5 Code)::
+
+    DataStore ds = ...
+    FeatureSource<SimpleFeatureType,SimpleFeature> source = ds.getSource(typeName);
+    FeatureStore<SimpleFeatureType,SimpleFeature> store = (FeatureStore<SimpleFeatureType,SimpleFeature>)source;
+    FeatureLocking<SimpleFeatureType,SimpleFeature> locking = (FeatureLocking<SimpleFeatureType,SimpleFeature>)source;
+    
+    FeatureCollection<SimpleFeatureType,SimpleFeature> collection = source.getFeatures();
+    FeatureIterator<SimpleFeatureType,SimpleFeature> features = collection.features();
+    while(features.hasNext){
+       SimpleFeature feature = features.next();
+    }
+    Transaction transaction = Transaction.AUTO_COMMIT;
+    FeatureReader<SimpleFeatureType,SimpleFeature> reader = ds.getFeatureReader(new DefaultQuery(typeName), transaction);
+    FeatureWriter<SimpleFeatureType,SimpleFeature> writer = ds.getFeatureWriter(typeName, transaction);
+
+* AFTER (GeoTools 2.7 Code)::
+
+    DataStore ds = ...
+    SimpleFeatureSource<SimpleFeatureType,SimpleFeature> source = ds.getSource(typeName);
+    SimpleFeatureStore store = (SimpleFeatureStore) source;
+    SimpleFeatureLocking locking = (SimpleFeatureLocking) source;
+    
+    SimpleFeatureCollection collection = source.getFeatures();
+    SimpleFeatureIterator features = collection.features();
+    while(features.hasNext){
+       SimpleFeature feature = features.next();
+    }
+    Transaction transaction = Transaction.AUTO_COMMIT;
+    FeatureReader<SimpleFeatureType,SimpleFeature> reader = ds.getFeatureReader(new DefaultQuery(typeName), transaction);
+    FeatureWriter<SimpleFeatureType,SimpleFeature> writer = ds.getFeatureWriter(typeName, transaction);
+
+DataAccess and DataStore
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+* The DataAcess super class has been introduced, leaving DataStore to *only* work with SimpleFeature
+  capable implementations.::
+
+    import org.opengis.feature.type.Name;
+    ...
+    
+    java.util.Map paramsMap = ...
+    DataStore ds = DataStoreFinder.getDataStore(paramsMap);
+    Name featureName = new org.geotools.feature.Name(namespace, localName);
+    FeatureSource<SimpleFeatureType, SimpleFeature> source = ds.getSource(featureName);
+    FeatureStore<SimpleFeatureType, SimpleFeature> store = (FeatureStore)source;
+    FeatureLocking<SimpleFeatureType, SimpleFeature> locking = (FeatureLocking)source;
+    
+    FeatureCollection<SimpleFeatureType, SimpleFeature> collection = source.getFeatures();
+    FeatureIterator<SimpleFeature> features = collection.features();
+    while(features.hasNext){
+     SimpleFeature feature = features.next();
+    }
+    
+    Transaction transaction = Transaction.AUTO_COMMIT;
+    FeatureReader<SimpleFeatureType, SimpleFeature> reader = ds.getFeatureReader(new DefaultQuery(typeName), transaction);
+    FeatureWriter<SimpleFeatureType, SimpleFeature> writer = ds.getFeatureWriter(typeName, transaction);
+
+* DataAccess: works both with SimpleFeature and normal Feature capable implementations::
+
+    import org.opengis.feature.FeatureType;
+    import org.opengis.feature.Feature;
+    import org.opengis.feature.type.Name;
+    ...
+    
+    java.util.Map paramsMap = ...
+    DataAccess<FeatureType, Feature> ds = DataAccessFinder.getDataAccess(paramsMap);
+    Name featureName = new org.geotools.feature.Name(namespace, localName);
+    FeatureSource<FeatureType, Feature> source = ds.getSource(featureName);
+    FeatureStore<FeatureType, Feature> store = (FeatureStore)source;
+    FeatureLocking<FeatureType, Feature> locking = (FeatureLocking)source;
+    
+    FeatureCollection<FeatureType, Feature> collection = source.getFeatures();
+    FeatureIterator<Feature> features = collection.features();
+    while(features.hasNext){
+     Feature feature = features.next();
+    }
+    //No DataAccess.getFeatureReader/Writer

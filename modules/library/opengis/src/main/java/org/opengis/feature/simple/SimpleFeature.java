@@ -16,7 +16,7 @@ import org.opengis.feature.Feature;
 import org.opengis.feature.type.Name;
 
 /**
- * An instance of {@link SimpleFeature} composed of fixed list values in a known order.
+ * An instance of {@link SimpleFeatureType} composed of fixed list values in a known order.
  * <p>
  * The definition of a "simple feature" can be summed up as the following:
  * <ul>
@@ -32,8 +32,8 @@ import org.opengis.feature.type.Name;
  *  values accessible via an index. For example consider the following shapefile
  *  entry:
  *  <pre>
- *  | GEOMETRY | INT | STRING |
- *  |POINT(0 0)|  0  | "zero" |
+ *  | GEOMETRY   | INT | STRING |
+ *  | POINT(0 0) |  0  | "zero" |
  *  </pre>
  *  Accessing attributes via index would look like:
  *  <pre>
@@ -60,8 +60,11 @@ import org.opengis.feature.type.Name;
  *
  * @see SimpleFeatureType
  *
- * @author Jody Garnett (Refractions Research)
+ * @author Jody Garnett (LISAsoft)
  * @author Justin Deoliveira (The Open Planning Project)
+ * @since 2.5
+ * @version 8.0
+ * @source $URL:http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/feature/simple/SimpleFeature.java $
  */
 public interface SimpleFeature extends Feature {
     /**
@@ -74,8 +77,8 @@ public interface SimpleFeature extends Feature {
      * @return A unique identifier for the attribute, or <code>null</code> if
      *         the attribute is non-identifiable.
      */
-	String getID();
-	
+    String getID();
+
     /**
      * Override and type narrow to SimpleFeatureType.
      */

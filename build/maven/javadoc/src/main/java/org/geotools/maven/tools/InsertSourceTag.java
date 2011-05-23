@@ -1,5 +1,5 @@
 /*
- *    GeoTools - The Open Source Java GIS Tookit
+ *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
  *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.geotools.maven.taglet.Source;
 
 /**
  * Inserts the @source tag into class header javadocs. Only modifies source files that
@@ -54,6 +56,12 @@ public class InsertSourceTag {
 
     private final String lineSeparator = System.getProperty("line.separator", "\n");
 
+    private static final String REPLACE_OPTION = "--replace";
+    private static final String SVN_OPTION = "--svn";
+    
+    private boolean replaceExistingTag;
+    private boolean addSVNKeyword;
+
     /**
      * Main method. Takes the name of the file or directory to process from the
      * first command line argument provided (only the first is examined). If a
@@ -63,7 +71,13 @@ public class InsertSourceTag {
      */
     public static void main(String[] args) {
         if (args.length == 0) {
-            System.out.println("usage: InsertSourceTag fileOrDirName");
+            System.out.println("usage: InsertSourceTag {options} fileOrDirName");
+            System.out.println("options:");
+            System.out.println("   " + REPLACE_OPTION + 
+                    ": Replaces existing source tags (default no replacement)");
+            System.out.println("   " + SVN_OPTION + 
+                    ": Add the svn URL keyword (omitted by default)");
+            return;
         }
 
         File file = new File(args[0]);
@@ -73,6 +87,19 @@ public class InsertSourceTag {
         }
 
         InsertSourceTag me = new InsertSourceTag();
+
+        for (int i = 1; i < args.length; i++) {
+            String s = args[i].trim();
+            if (REPLACE_OPTION.equals(s)) {
+                me.replaceExistingTag = true;
+            } else if (SVN_OPTION.equals(s)) {
+                me.addSVNKeyword = true;
+            } else {
+                System.out.println("Unrecognized option: " + s);
+                return;
+            }
+        }
+
         me.process(file);
     }
 
@@ -95,8 +122,7 @@ public class InsertSourceTag {
                     processFile(file);
                     
                 } catch (Exception ex) {
-                    ex.printStackTrace();
-                    System.exit(1);
+                    throw new RuntimeException(ex);
                 }
             }
         }
@@ -123,6 +149,7 @@ public class InsertSourceTag {
         int commentStartLine = -1;
         int commentEndLine = -1;
         int sourceTagLine = -1;
+        boolean replaceLine = false;
 
         Matcher matcher = null;
         String text;
@@ -135,10 +162,16 @@ public class InsertSourceTag {
         if (matcher.matches()) {
             int pos = matcher.start(1);
 
-            StringBuilder sb = new StringBuilder(" * @source $URL: ");
-            sb.append("http://svn.somewhere.foo/org/geotools/");
+            String repoURL = Source.SVN_REPO_URL;
+            StringBuilder sb = new StringBuilder(" * @source ");
+            if (addSVNKeyword) {
+                sb.append("$URL: ");
+            }
+            sb.append(Source.SVN_REPO_URL);
             sb.append(file.getAbsolutePath().substring(pos));
-            sb.append(" $");
+            if (addSVNKeyword) {
+                sb.append(" $");
+            }
             sourceTagText = sb.toString();
 
         } else {
@@ -195,24 +228,35 @@ public class InsertSourceTag {
                         }
 
                         /*
-                         * Check if the source tag already exists
+                         * Check if the source tag already exists and skip the file
+                         * if it does and the replace tag option is false
                          */
                         for (int i = commentStartLine; i <= commentEndLine; i++) {
                             matcher = findSourceTag.matcher(buffer.get(i));
                             if (matcher.find()) {
-                                return false;
+                                if (replaceExistingTag) { 
+                                    sourceTagLine = i;
+                                    // delete the original tag from the buffer
+                                    buffer.remove(i);
+                                    break;
+                                } else {
+                                    return false;
+                                }
+                                    
                             }
                         }
 
-                        /*
-                         * Check if the version tag exists. If it does we
-                         * will place the source tag on the line before it
-                         */
-                        for (int i = commentStartLine; i <= commentEndLine; i++) {
-                            matcher = findVersionTag.matcher(buffer.get(i));
-                            if (matcher.find()) {
-                                sourceTagLine = i;
-                                break;
+                        if (sourceTagLine < 0) {
+                            /*
+                             * Check if the version tag exists. If it does we
+                             * will place the source tag on the line before it
+                             */
+                            for (int i = commentStartLine; i <= commentEndLine; i++) {
+                                matcher = findVersionTag.matcher(buffer.get(i));
+                                if (matcher.find()) {
+                                    sourceTagLine = i;
+                                    break;
+                                }
                             }
                         }
 
@@ -261,7 +305,8 @@ public class InsertSourceTag {
      * 
      * @throws IOException
      */
-    private boolean writeFile(File file, List<String> buffer, int sourceTagLine, String sourceTag)
+    private boolean writeFile(File file, List<String> buffer, 
+            int sourceTagLine, String sourceTag)
             throws IOException {
         
         FileWriter writer = new FileWriter(file);

@@ -1,5 +1,5 @@
 /*
- *    GeoTools - The Open Source Java GIS Tookit
+ *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
  *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
@@ -48,20 +48,18 @@ public final class Source implements Taglet {
     static final char SVN_KEYWORD_DELIMITER = '$';
 
     /**
-     * The base URL for Maven reports.
-     */
-    //private static final String MAVEN_REPORTS_BASE_URL = "http://maven.geotools.fr/reports/";
-
-    /**
      * The base URL for Maven repository.
      */
-    private static final String MAVEN_REPOSITORY_BASE_URL = "http://download.osgeo.org/webdav/geotools/";
+    public static final String SVN_REPO_URL = "http://svn.osgeo.org/geotools/";
 
     /**
-     * The pattern to use for fetching the URL.
+     * The pattern to use for fetching the URL. The bit we want is in capture group 2
      */
     final Pattern findURL = Pattern.compile(
-            "\\s*\\" + SVN_KEYWORD_DELIMITER + "URL\\s*\\:\\s*(.+)\\s*\\" + SVN_KEYWORD_DELIMITER + "\\s*");
+            "\\s*(\\" + SVN_KEYWORD_DELIMITER + "URL\\s*\\:)?\\s*(.+)\\s*"
+            + "(\\" + SVN_KEYWORD_DELIMITER + "\\s*)?");
+
+    static final int URL_CAPTURE_GROUP = 2;
 
     /**
      * The pattern to use for fetching the module name from an URL.
@@ -185,7 +183,7 @@ public final class Source implements Taglet {
             if (!matchURL.matches()) {
                 continue;
             }
-            final String url = matchURL.group(1).trim();
+            final String url = matchURL.group(URL_CAPTURE_GROUP).trim();
             final Matcher matchModule = findModule.matcher(url);
             if (!matchModule.matches()) {
                 continue;

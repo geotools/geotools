@@ -23,6 +23,11 @@ and :doc:`extension </extension/index>`.
    * `Jody Garnett <mailto: jody.garnett@gmail.com>`_ (Module Maintainer)
    
    For small typos and source code corrections email the module maintainer above.
+
+.. toctree::
+   :maxdepth: 1
+
+   welcome/index
    
 .. toctree::
    :maxdepth: 2
@@ -32,7 +37,6 @@ and :doc:`extension </extension/index>`.
 .. toctree::
    :maxdepth: 1
 
-   welcome/index
    faq
 
 .. toctree::

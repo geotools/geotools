@@ -446,7 +446,8 @@ Hints:
 * Please, notice that the OverviewPolicy enum provide a method to get the default policy for
   overviews. The method is getDefaultPolicy().
 
-h1. CoverageUtilities and FeatureUtilities
+CoverageUtilities and FeatureUtilities
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Deprecated methods have been remove from coverage utilities classes&nbsp;
 
@@ -529,7 +530,8 @@ Here is what that looks like in code:
         
         scale(GridCoverage,double,double,double,double,Interpolation)
 
-h1. DefaultParameterDescriptor and Parameter constructors
+DefaultParameterDescriptor and Parameter
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Removed deprecated constructors from DefaultParameterDescriptor and Parameter classes.
 
@@ -873,3 +875,574 @@ DataAccess and DataStore
      Feature feature = features.next();
     }
     //No DataAccess.getFeatureReader/Writer
+
+GeoTools 2.4
+------------
+
+.. sidebar:: Wiki
+   
+   * `GeoTools 2.4.0 <http://docs.codehaus.org/display/GEOTOOLS/2.4.x>`_
+   
+   You are encourged to review the change proposals for GeoTools 2.4.0 for background information
+   on the following changes.
+
+The GeoTools 2.4.0 release is a major change to the GeoTools library due to the adoption of geoapi
+Filter model. This new fileter model is immutable making it impossible to modify filters that
+have already been constructed; in trade it is threadsafe.
+
+The following is needed when upgrading to 2.4.
+
+ReferencingFactoryFinder
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+Rename FactoryFinder to ReferencingFactoryFinder
+
+* BEFORE (GeoTools 2.2 Code)::
+    
+    CRSFactory factory = FactoryFinder.getCSFactory( null );
+
+* AFTER (GeoTools 2.4 Code)::
+    
+    CRSFactory factory = ReferencingFactoryFinder.getCSFactory( null );
+
+FeatureStore addFeatures
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+The use of FeatureReader has been revmoved from the FeatureStore API.
+
+* Before (GeoTools 2.2 Code)::
+    
+    featureStore.addFeatures( DataUtilities.reader( collection )); // add FeatureCollection
+    featureStore.addFeatures( DataUtilities.reader(array)); // add Feature[]
+    featureStore.addFeatures( DataUtilities.reader(feature )); // add Feature
+    featureStore.addFeatures( reader );
+
+* After (GeoTools 2.4 Code)::
+
+    featureStore.addFeatures( collection ); // add FeatureCollection
+    featureStore.addFeatures( DataUtilities.collection( array ) ); // add Feature[]
+    featureStore.addFeatures( DataUtilities.collection( feature )); // add Feature
+    featureStore.addFeatures( DataUtilities.collection( reader )); // add FeatureReader
+
+Note:
+
+* DataUtilities.collection( reader ) will currently load the contents into memory, if you have
+  any volunteer time a "lazy" implementation would be helpful.
+
+FeatureSource getSupportedHints
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+We added a getSupportedHints() method that can be used to check which Query hints are supported
+by a certain FeatureSource. If your FeatureSource does not intend to leverage query hints, just
+return an empty set.
+
+* After (GeoTools 2.4 Code)::
+
+    /**
+     * By default, no Hints are supported
+     */
+    public Set getSupportedHints() {
+        return Collections.EMPTY_SET;
+    }
+
+Query getHints
+^^^^^^^^^^^^^^
+
+We have added the method Query.getHints() allow users to pass in hints to control the query
+process.
+
+If you have a Query implementation other than DefaultQuery you'll need to add the getHints() method.
+The default implementation, if you don't plan to leverage hints, can just return an
+empty Hints object.
+
+* After (GeoTools 2.4 Code)::
+
+    /**
+     * Returns an empty Hints set
+     */
+    public Hints getHints() {
+        return new Hints(Collections.EMPTY_MAP);
+    }
+
+Filter
+^^^^^^
+
+We have completed the transition to GeoAPI Filter.
+
+* Before (GeoTools 2.2 Code)::
+
+    package org.geotools.filter;
+    
+    import junit.framework.TestCase;
+    
+    import org.geotools.filter.LogicFilter;
+    import org.geotools.filter.FilterFactory;
+    import org.geotools.filter.Filter;
+    
+    public class FilterFactoryBeforeTest extends TestCase {
+    
+        public void testBefore() throws Exception {
+            FilterFactory ff = FilterFactoryFinder.createFilterFactory();
+    
+            CompareFilter filter = ff.createCompareFilter(Filter.COMPARE_GREATER_THAN);
+            filter.addLeftValue( ff.createLiteralExpression(2));
+            filter.addRightValue( ff.createLiteralExpression(1));
+    
+            assertTrue( filter.contrains( null ) );
+            assertTrue( filter.getFilterType() == FilterType.COMPARE_GREATER_THAN );
+            assertTrue( Filter.NONE != filter );
+        }
+    }
+
+* AFTER (Quick GeoTools 2.3 Code)::
+
+    public void testQuick() throws Exception {
+        FilterFactory ff = FilterFactoryFinder.createFilterFactory();
+
+        CompareFilter filter = ff.createCompareFilter(FilterType.COMPARE_GREATER_THAN);
+        filter.addLeftValue( ff.createLiteralExpression(2));
+        filter.addRightValue( ff.createLiteralExpression(1));
+
+        assertTrue( filter.evaluate( null ) );
+        assertTrue( Filters.getFilterType( filter ) == FilterType.COMPARE_GREATER_THAN);
+        assertTrue( Filter.INCLUDE != filter );
+    }
+
+Here are the steps to follow to update your own code:
+
+1. Substitute.
+   
+   =================================== =================================================
+   Search                              Replace
+   =================================== =================================================
+   import org.geotools.filter.Filter;  import org.opengis.filter.Filter;
+   import org.geotools.filter.SortBy;  import org.opengis.filter.sort.SortBy;
+   Filter.NONE                         Filter.INCLUDE
+   Filter.ALL                          Filter.EXCLUDE
+   AbstractFilter.COMPARE              FilterType.COMPARE
+   Filter.COMPARE                      FilterType.COMPARE
+   Filter.GEOMETRY                     FilterType.GEOMETRY
+   Filter.LOGIC                        FilterType.LOGIC
+   =================================== =================================================
+
+2. FilterType is no longer supported directly.
+   
+   BEFORE:
+      
+      int type = filter.getFilterType();
+   
+   AFTER:
+      
+      int type = Filters.getFilterType( filter );
+
+3. You can no longer chain filters together.
+   
+   BEFORE::
+     
+     filter = filter.and( other )
+   
+   AFTER::
+     
+     filter = filterFactory.and( filter, other );
+
+4. We have provided an adaptor for your old filter visitors.
+   
+   BEFORE::
+     
+     filter.accept( visitor )
+     
+   AFTER::
+     
+     Filters.accept( filter, visitor );
+
+3. Update your code to use the new factory methods.
+   
+   BEFORE::
+     
+     filter = filterFactory.createCompareFilter(FilterType.COMPARE_EQUALS)
+     filter.setLeftGeoemtry( expr1 );
+     filter.setRightGeometry( expr3 );
+   
+   AFTER::
+   
+     filter = FilterFactory.equals(expr1,expr);
+
+4. Literals cannot be modified once created.
+   
+   BEFORE::
+     
+     Literal literal = filterFactory.createLiteral();
+     literal.setLiteral( obj );
+   
+   AFTER::
+     
+     Filter filter = filterFactory.literal( obj );
+
+5. Property name support.
+   
+   BEFORE::
+   
+     filter = = filterFac.createAttributeExpression(schema, "name");
+   
+   AFTER::
+   
+     Filter filter = filterFactory.property(name);
+
+h4. After (GeoTools 2.4 Code)::
+  
+        public void testAfter() throws Exception {
+            FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+        
+            Expression left = ff.literal(2);
+            Expression right = ff.literal(2);
+            PropertyIsGreaterThan filter = ff.greater( left, right );
+        
+            assertTrue( filter.evaluate( null ) );
+            assertTrue( Fitler.INCLUDE != filter );
+        }
+
+1. Substitute
+   
+   
+   =============================================== ===================================================
+   Search                                          Replace
+   =============================================== ===================================================
+   import org.geotools.filter.FilterFactory;       import org.opengis.filter.FilterFactory;
+   FilterFactoryFinder.createFilterFactory()       CommonFactoryFinder.getFilterFactory(null);
+   import org.geotools.filter.FilterFactoryFinder; import org.geotools.factory.CommonFactoryFinder
+   import org.geotools.filter.CompareFilter;       import org.geoapi.spatial.BinaryComparisonOperator
+   CompareFilter                                   BinaryComparisonOperator
+   =============================================== ===================================================
+
+2. Update code to use evaulate.
+   
+   BEFORE::
+      
+      if( filter.contains( feature ){
+   
+   AFTER::
+   
+      if( filter.evaluate( feature ){
+   
+3. Update code to use instanceof checks.
+   
+   BEFORE::
+       
+       if( filter.getFilterType() == FilterType.GEOMETRY_CONTAIN ) {
+       
+   AFTER::
+       
+       if( filter instanceof Contains ){
+       
+
+Note regarding different Geometries
+
+* Geotools was formally limited to only JTS Geometry
+* GeoTools filter nows can take either JTS Geometry or ISO Geometry
+
+* If you need to convert from one to the other::
+  
+     JTSUtils.jtsToGo1(p, CRS.decode("EPSG:4326"));
+
+Feature.getParent removed
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The feature.getParent() method have been deprecated as a mistake and has now been removed.
+
+* BEFORE (GeoTools 2.0 Code)::
+
+    public void example( FeatureSource source ){
+        FeatureCollection features = source.getFeatures();
+        Iterator i = features.iterator();
+        try {
+            while( i.hasNext() ){
+                  Feature feature = (Feature) i.next();
+                  System.out.println( precentBoxed( feature ));
+            }
+        }
+        finally {
+            features.close( i );
+        }
+    }
+    private double precentBoxed( Feature feature ){
+         Envelope context = feature.getParent().getBounds();
+         Envelope bbox = feature.getBounds();
+         double boxedContext = context.width * context.height;
+         double boxed = bbox.width * bbox.height;
+         return (boxed / boxedContext) * 100.0
+    }
+
+* AFTER (GeoTools 2.2 Code)::
+
+    public void example( FeatureSource source ){
+        FeatureCollection features = source.getFeatures();
+        Iterator i = features.iterator();
+        try {
+            while( i.hasNext() ){
+                  Feature feature = (Feature) i.next();
+                  System.out.println( precentBoxed( feature, features ));
+            }
+        }
+        finally {
+            features.close( i );
+        }
+    }
+    private double precentBoxed( Feature feature, FeatureCollection parent ){
+         Envelope context = parent.getBounds();
+         Envelope bbox = feature.getBounds();
+         double boxedContext = context.width * context.height;
+         double boxed = bbox.width * bbox.height;
+         return (boxed / boxedContext) * 100.0
+    }
+
+Notes:
+
+* you will have to make API changes to pass the intended parent collection in
+
+This is a mistake with the previous feature model (for a feature can exist in more then one
+collection) and we appologize for the inconvience.
+
+Split Classification Expressions
+
+The biggest user of the feature.getParent() mistake was the implementation of classificaiton
+functions. You will now need to split up these expressions into two parts.
+
+* BEFORE (GeoTools 2.3):
+  
+  1. equal_interval( SPEED, 12 )
+  2. uses getParent() internally to produce classification on feature collection;
+  3. then checks which category each feature falls into
+
+  Notes:
+  
+  * please note the above code depends on getParent(), so it is not safe even for GeoTools 2.3 (as some features have a null parent).
+
+* AFTER (GeoTools 2.4):
+
+  Apply the aggregation function to the feature collection:
+  
+  1. equalInterval( SPEED, 12 )
+  2. produce classification on provided feature collection
+  3. Construct a slot expression using the resulting literal::
+     
+        classify( SPEED, {0} )
+     
+  4. uses literal classification from step one
+
+GTRenderer
+^^^^^^^^^^
+
+The GTRender interface was produced as a nuetral ground for client code; traditional users of
+LiteRenderer and LiteRenderer2 are asked to move to the implementation of GTRenderer called
+StreamingRenderer.
+
+* BEFORE (GeoTools 2.1):
+  
+  How to paint to an *outputArea* Rectangle::
+    
+    LiteRenderer2 draw = new LiteRenderer2(map);
+    
+    Envelope dataArea = map.getLayerBounds();
+    AffineTransform transform = renderer.worldToScreenTransform(dataArea, outputArea);
+    
+    draw.paint(g2d, outputArea, transform);
+
+* QUICK (GeoTools 2.2)
+  
+  How to paint to an *outputArea* Rectangle::
+
+    StreamingRenderer draw = new StreamingRenderer();
+    draw.setContext(map);
+    
+    draw.paint(g2d, outputArea, map.getLayerBounds() );
+
+* BEST PRACTICE (GeoTools 2.2)::
+
+    GTRenderer draw = new StreamingRenderer();
+    draw.setContext(map);
+    
+    draw.paint(g2d, outputArea, map.getLayerBounds() );
+  
+  By letting your code depend only on the GTRenderer interface you can experiment with
+  alternative implementations to find the best fit.
+
+JTS
+^^^
+
+Swap moved to JTS utility class.
+
+* BEFORE (GeoTools 2.1)::
+  
+    import org.geotools.geometry.JTS;
+    import org.geotools.geometry.JTS.ReferencedEnvelope
+
+* AFTER (GeoTools 2.2)::
+
+    import org.geotools.geometry.jts.JTS;
+    import org.geotools.geometry.jts.ReferencedEnvelope
+
+JTS to Shape converters
+^^^^^^^^^^^^^^^^^^^^^^^
+
+Swap to moved Renderer JTS-to-Shape converters.
+
+* BEFORE (GeoTools 2.3)::
+
+    import org.geotools.renderer.lite.LiteShape;
+    import org.geotools.renderer.lite.LiteShape2;
+    import org.geotools.renderer.lite.PackedLineIterator;
+    import org.geotools.renderer.lite.PointIterator;
+    import org.geotools.renderer.lite.PolygonIterator;
+    import org.geotools.renderer.lite.LineIterator;
+    import org.geotools.renderer.lite.LineIterator2;
+    import org.geotools.renderer.lite.Decimator;
+    import org.geotools.renderer.lite.AbstractLiteIterator;
+    import org.geotools.renderer.lite.TransformedShape;
+    import org.geotools.renderer.lite.LiteCoordinateSequence;
+    import org.geotools.renderer.lite.LiteCoordinateSequenceFactory;
+    import org.geotools.renderer.lite.LiteCoordinateSequence;
+
+* AFTER (GeoTools 2.4)::
+
+    import org.geotools.geometry.jts.LiteShape;
+    import org.geotools.geometry.jts.LiteShape2;
+    import org.geotools.geometry.jts.PackedLineIterator;
+    import org.geotools.geometry.jts.PointIterator;
+    import org.geotools.geometry.jts.PolygonIterator;
+    import org.geotools.geometry.jts.LineIterator;
+    import org.geotools.geometry.jts.LineIterator2;
+    import org.geotools.geometry.jts.Decimator;
+    import org.geotools.geometry.jts.AbstractLiteIterator;
+    import org.geotools.geometry.jts.TransformedShape;
+    import org.geotools.geometry.jts.LiteCoordinateSequence;
+    import org.geotools.geometry.jts.LiteCoordinateSequenceFactory;
+    import org.geotools.geometry.jts.LiteCoordinateSequence;
+
+Coverage utility classes
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+Swap to moved Coverage utility classes.
+
+* BEFORE (GeoTools 2.3)::
+
+    import org.geotools.data.coverage.grid.*
+    import org.geotools.image.imageio.*
+  
+  Wrapping a GridCoverage into a feature in 2.3::
+
+    org.geotools.data.DataUtilities#wrapGc(GridCoverage gridCoverage)
+    org.geotools.data.DataUtilities#wrapGcReader(
+                AbstractGridCoverage2DReader gridCoverageReader,
+                GeneralParameterValue[] params)
+
+  GridCoverageExchange Utility classes in 2.3::
+
+    org.geotools.data.coverage.grid.file.*
+    org.geotools.data.coverage.grid.stream .*
+
+  org.geotools.coverage.io classes in 2.3::
+
+    org.geotools.coverage.io.AbstractGridCoverageReader.java,
+    org.geotools.coverage.io.AmbiguousMetadataException.java,
+    org.geotools.coverage.io.ExoreferencedGridCoverageReader.java,
+    org.geotools.coverage.io.MetadataBuilder.java,
+    org.geotools.coverage.io.MetadataException.java,
+    org.geotools.coverage.io.MissingMetadataException.java
+
+* AFTER (GeoTools 2.4)::
+
+    import org.geotools.coverage.grid.io.*
+    import  org.geotools.coverage.grid.io.imageio.*
+  
+  Wrapping a GridCoverage into a feature in 2.4::
+  
+    org.geotools.resources.coverage.CoverageUtilities #wrapGc(GridCoverage gridCoverage)
+    org.geotools.resources.coverage.CoverageUtilities #wrapGcReader(
+                AbstractGridCoverage2DReader gridCoverageReader,
+                GeneralParameterValue[] params)
+  
+  GridCoverageExchange Utility classes in 2.4.
+  
+  The classes have been dismissed since apparently nobody was using. If needed
+  we can reintroduce them as deprecated.
+  
+  org.geotools.coverage.io classes in 2.4.
+  
+  These classes have been moved to spike/exoreferenced waiting for Martin to review and merge into
+  org.geotools.coverage.grid.io package
+
+spatialschema
+^^^^^^^^^^^^^
+
+Renamed spatialschema to geometry.
+
+* Do you know what **spatialschema** was? We did not find it clear either.
+  
+  Renamed to **geometry**?
+
+* BEFORE::
+
+    import org.opengis.spatialschema.geometry;
+    import org.opengis.spatialschema.geometry.aggregate;
+    import org.opengis.spatialschema.geometry.complex;
+    import org.opengis.spatialschema.geometry.geometry;
+    import org.opengis.spatialschema.geometry.primitive;
+
+* AFTER::
+
+    import org.opengis.geometry;
+    import org.opengis.geometry.aggregate;
+    import org.opengis.geometry.complex;
+    import org.opengis.geometry.coordinate;
+    import org.opengis.geometry.primitive;
+
+Repackage ArcSDE
+^^^^^^^^^^^^^^^^
+
+Repackage arcsde datastore.
+
+* BEFORE::
+
+    import org.geotools.data.arcsde.ArcSDEDataStoreFactory;
+
+* AFTER::
+  
+    import org.geotools.arcsde.ArcSDEDataStoreFactory;
+
+WorldImage
+^^^^^^^^^^
+
+Sets of WorldImage extensions. Changed from a single String to a Set<String> .. because
+one wld is not enough?
+
+* BEFORE::
+
+    private File toWorldFile(String fileRoot, String fileExt){
+        File worldFile = new File( fileRoot + ".wld" );
+        if( worldFile.exists() ){
+            return worldFile;
+        }
+        String ext = WorldImageFormat.getWorldExtension( fileExt );
+        File otherWorldFile = new File( fileRoot + ext );
+        if( otherWorldFile.exists() ){
+            return otherWorldFile;
+        }
+        return null;
+    }
+
+* AFTER::
+
+     private File toWorldFile(String fileRoot, String fileExt){
+        Set<String> other = WorldImageFormat.getWorldExtension( fileExt );
+        File worldFile = new File( fileRoot + ".wld" );
+        if( worldFile.exists() ){
+            return worldFile;
+        }
+        for( String ext : other ){
+            File otherWorldFile = new File( fileRoot + ext );
+            if( otherWorldFile.exists() ){
+                return otherWorldFile;
+            }
+        }
+        return null;
+    }

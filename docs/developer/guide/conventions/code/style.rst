@@ -116,17 +116,23 @@ We do encourage developers to:
   The taglet code discards \$URL: \$ if you would like to use svn to expand the correct path
   as needed.
   
-  There is a tool you can use to fill in the \@src annotation.
+  You can use the InsertSourceTag tool to add the \@source to files. 
   
-  To insert missing source tag in all source files for module **gt-wps**.::
+  The following will insert the \@source tag in any source file in module **gt-wps** that does
+  not already contain it::
     
     cd trunk/build/maven/javadoc
-    mvn exec:java -Dexec.mainClass=org.geotools.maven.tools.InsertSourceTag
-            -DcommandlineArgs=../../modules/unsupported/wps/src
-  
-  If you are using svn expansion you can set the svn:keyword expansion up::
-    
-    find ../modules/unsupported/wps/src -type f -name '*.java' -exec svn ps svn:keywords "Id URL" {} \;
+    mvn exec:java -Dexec.mainClass=org.geotools.maven.tools.InsertSourceTag -Dexec.args="../../../modules/unsupported/wps/src"
+
+  Adding ``--replace`` after the source path argument above will cause any existing \@source tags to be replaced by newly
+  generated ones.
+
+  Adding ``--svn`` will result in the \@source tag content being enclosed in svn keyword delimiters (\$URL, \$) which enables
+  svn keyword expansion to update the path if the source file is later moved to another package or module. Note, keyword
+  expansion only works with svn, and not for git-svn. When using the ``--svn option`` it is also a good idea to ensure that
+  the svn properties of all source files are set. On a 'nix system you can do this::
+
+    find modules/unsupported/wps/src -type f -name '*.java' -exec svn ps svn:keywords "Id URL" {} \;
 
 * If you would like to include any diagrams or pictures please add them to a *doc-files* folder.
   (This is a reminder of normal javadoc convention).

@@ -34,6 +34,8 @@ import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.data.simple.SimpleFeatureStore;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.CollectionEvent;
 import org.geotools.feature.CollectionListener;
 import org.geotools.feature.FeatureCollection;
@@ -50,7 +52,9 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
+import org.opengis.filter.FilterFactory;
 import org.opengis.filter.identity.FeatureId;
+import org.opengis.filter.identity.Identifier;
 
 /**
  * A FeatureCollection that completely delegates to a backing FetaureSource#getReader
@@ -354,160 +358,169 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
         return new ContentFeatureCollection( featureSource, query );    
     }
     
-    //Unsupported
+    //
+    // The following were slated to be unsupported by a proposal from
+    // jdeolive; since it has not been accepted the following
+    // implementations are provided but not recommended
+    //
+    // There are completely implemented in terms of reader.
+    /**
+     * Returns <tt>true</tt> if this collection contains the specified
+     * element.
+     * <tt></tt>.<p>
+     *
+     * This implementation iterates over the elements in the collection,
+     * checking each element in turn for equality with the specified element.
+     *
+     * @param o object to be checked for containment in this collection.
+     * @return <tt>true</tt> if this collection contains the specified element.
+     */
     public boolean contains(Object o) {
-        throw new UnsupportedOperationException();
+        // TODO: base this on reader
+        SimpleFeatureIterator e = null;
+        try {
+            e = this.features();
+            if (o==null) {
+                while (e.hasNext()){
+                    if (e.next()==null){
+                        return true;
+                    }
+                }
+            } else {
+                while (e.hasNext()){
+                if (o.equals(e.next())){
+                    return true;
+                }
+                }
+            }
+            return false;
+        }
+        finally {
+            if( e != null ){
+                e.close();
+            }
+        }
     }
-
-    public boolean containsAll(Collection collection) {
-        throw new UnsupportedOperationException();
+    /**
+     * Returns <tt>true</tt> if this collection contains all of the elements
+     * in the specified collection. <p>
+     * 
+     * @param c collection to be checked for containment in this collection.
+     * @return <tt>true</tt> if this collection contains all of the elements
+     *         in the specified collection.
+     * @throws NullPointerException if the specified collection is null.
+     * 
+     * @see #contains(Object)
+     */
+    public boolean containsAll(Collection<?> c) {
+        // TODO: base this on reader
+        Iterator<?> e = c.iterator();
+        try {
+            while (e.hasNext()){
+                if(!contains(e.next())){
+                    return false;
+                }
+            }
+            return true;
+        } finally {
+            close( e );
+        }
     }
 
     public boolean remove(Object o) {
-        throw new UnsupportedOperationException();
+//        if( featureSource instanceof SimpleFeatureStore){
+//            SimpleFeatureStore featureStore = (SimpleFeatureStore) featureSource;
+//            if( o instanceof SimpleFeature ){
+//                SimpleFeature feature = (SimpleFeature) o;
+//                FeatureId fid = feature.getIdentifier();
+//                FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+//                Set<FeatureId> ids = Collections.singleton(fid);
+//                Filter remove = ff.id(ids);
+//                try {
+//                    featureStore.removeFeatures( remove );
+//                    return true;
+//                } catch (IOException e) {
+//                    //LOGGER.log(Level.FINER, e.getMessage(), e);
+//                    return false; // unable to remove
+//                }
+//            }
+//            else {
+//                return false; // nothing to do; we can only remove features
+//            }
+//        }
+        throw new UnsupportedOperationException("Content is not writable; FeatureStore not available" );
     }
 
     public boolean removeAll(Collection collection) {
+//        if( featureSource instanceof SimpleFeatureStore){
+//            SimpleFeatureStore featureStore = (SimpleFeatureStore) featureSource;
+//            FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+//            Set<FeatureId> ids = new HashSet<FeatureId>();
+//            for( Object o : collection ){
+//                if( o instanceof SimpleFeature){
+//                    SimpleFeature feature = (SimpleFeature) o;
+//                    FeatureId fid = feature.getIdentifier();
+//                    ids.add( fid );
+//                }
+//            }
+//            Filter remove = ff.id(ids);
+//            try {
+//                featureStore.removeFeatures( remove );
+//                return true;
+//            } catch (IOException e) {
+//                //LOGGER.log(Level.FINER, e.getMessage(), e);
+//                return false; // unable to remove
+//            }
+//        }
         throw new UnsupportedOperationException();
     }
 
     public boolean retainAll(Collection collection) {
         throw new UnsupportedOperationException();
     }
-
+    /**
+     * Array of all the elements.
+     * 
+     * @return an array containing all of the elements in this collection.
+     */
     public Object[] toArray() {
-        throw new UnsupportedOperationException();
+        // code based on AbstractFeatureCollection
+        // TODO: base this on reader
+        ArrayList<SimpleFeature> array = new ArrayList<SimpleFeature>();
+        Iterator<SimpleFeature> e = null;
+        try {
+            e = iterator();
+            while( e.hasNext() ){
+                array.add( e.next() );
+            }
+            return array.toArray( new SimpleFeature[array.size()]);
+        } finally {
+            close( e );
+        }
     }
 
-    public Object[] toArray(Object[] array) {
-        throw new UnsupportedOperationException();
-    }
-    public String getID() {
-        throw new UnsupportedOperationException();
-    }
-    //
-    // Deprecated Feature methods
-    // From when FeatureCollection extends Feature
-    //
-/*  public Object getAttribute(String name) {
-        throw new UnsupportedOperationException();
-    }
-
-    public Object getAttribute(Name name) {
-        throw new UnsupportedOperationException();
-    }
-
-    public Object getAttribute(int indedx) throws IndexOutOfBoundsException {
-        throw new UnsupportedOperationException();
-    }
-
-    public int getAttributeCount() {
-        throw new UnsupportedOperationException();
-    }
-
-    public List<Object> getAttributes() {
-        throw new UnsupportedOperationException();
-    }
-
-    public Object getDefaultGeometry() {
-        throw new UnsupportedOperationException();
-    }
-
-    public SimpleFeatureType getFeatureType() {
-        throw new UnsupportedOperationException();
-    }
-
-    public SimpleFeatureType getType() {
-        throw new UnsupportedOperationException();
-    }
-
-    public void setAttribute(String name, Object value) {
-        throw new UnsupportedOperationException();
-    }
-
-    public void setAttribute(Name name, Object value) {
-        throw new UnsupportedOperationException();
-    }
-
-    public void setAttribute(int index, Object value)
-            throws IndexOutOfBoundsException {
-        throw new UnsupportedOperationException();
-    }
-
-    public void setAttributes(List<Object> attributes) {
-        throw new UnsupportedOperationException();
-    }
-
-    public void setAttributes(Object[] attributes) {
-        throw new UnsupportedOperationException();
-    }
-
-    public void setDefaultGeometry(Object defaultGeometry) {
-        throw new UnsupportedOperationException();
-    }
-
-    public GeometryAttribute getDefaultGeometryProperty() {
-        throw new UnsupportedOperationException();
-    }
-    public FeatureId getIdentifier() {
-        throw new UnsupportedOperationException();
+    public <T> T[] toArray(T[] array) {
+        int size = size();
+        if (array.length < size){
+            array = (T[])java.lang.reflect.Array.newInstance(array.getClass().getComponentType(), size);
+         }
+        Iterator<SimpleFeature> it = iterator();
+        try {
+            Object[] result = array;
+            for (int i=0; it.hasNext() && i<size; i++){
+                result[i] = it.next();
+            }
+            if (array.length > size){
+                array[size] = null;
+            }
+            return array;
+        }
+        finally {
+            close( it );
+        }
     }
     public String getID() {
         throw new UnsupportedOperationException();
     }
 
-    public void setDefaultGeometryProperty(GeometryAttribute defaultGeometryProperty) {
-        throw new UnsupportedOperationException();
-    }
-
-    public Collection<Property> getProperties() {
-        throw new UnsupportedOperationException();
-    }
-
-    public Collection<Property> getProperties(Name name) {
-        throw new UnsupportedOperationException();
-    }
-
-    public Collection<Property> getProperties(String name) {
-        throw new UnsupportedOperationException();
-    }
-
-    public Property getProperty(Name name) {
-        throw new UnsupportedOperationException();
-    }
-
-    public Property getProperty(String name) {
-        throw new UnsupportedOperationException();
-    }
-
-    public Collection<? extends Property> getValue() {
-        throw new UnsupportedOperationException();
-    }
-
-    public void setValue(Collection<Property> value) {
-        throw new UnsupportedOperationException();
-    }
-
-    public AttributeDescriptor getDescriptor() {
-        throw new UnsupportedOperationException();
-    }
-
-    public Name getName() {
-        throw new UnsupportedOperationException();
-    }
-
-    public Map<Object, Object> getUserData() {
-        throw new UnsupportedOperationException();
-    }
-
-    public boolean isNillable() {
-        throw new UnsupportedOperationException();
-    }
-
-    public void setValue(Object value) {
-        throw new UnsupportedOperationException();
-    }
-    public void validate() {
-    }
-    */
 }

@@ -5,7 +5,7 @@ Welcome Geomajas Developers
    
    http://www.geomajas.org/
    
-   .. image:: /../web/logo/geomajas_logo.gif
+   .. image:: /images/logo/geomajas_logo.gif
    
    Geomajas is an enterprise-ready open source GIS framework for the web. Built using GeoTools
    Spring, and Google Web Toolkit for a fast efficeint all-Java solution!

@@ -44,4 +44,3 @@ The `developers guide <http://docs.geotools.org/latest/developer/>`_ records the
 policies, procedures and build environment for the GeoTools project. If you would
 like to know how to get commit access, or build GeoTools from scratch this is the
 right place.
-

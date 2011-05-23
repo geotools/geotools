@@ -33,5 +33,13 @@ Developing GeoTools
 -------------------
 
 See the `Get Involved <http://geotools.org/getinvolved.html>`_ page for instructions on building the library, the Developer's Guide,
-issue tracking and more !
+issue tracking and more!
 
+Welcome Developers
+------------------
+
+We would like to welcome developers from the following GeoTools powered projects.
+
+`Geomajas <http://docs.geotools.org/latest/userguide/welcome/geomajas.html>`_
+`GeoServer <http://docs.geotools.org/latest/userguide/welcome/geoserver.html>`_ 
+`uDig <http://docs.geotools.org/latest/userguide/welcome/udig.html>`_ 

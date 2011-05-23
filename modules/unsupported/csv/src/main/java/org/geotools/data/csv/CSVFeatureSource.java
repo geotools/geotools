@@ -112,10 +112,6 @@ public class CSVFeatureSource extends ContentFeatureStore {
                 if( "lon".equalsIgnoreCase(column)){
                     continue; // skip as it is part of Location
                 }
-                if( "number".equalsIgnoreCase(column)){
-                    builder.add(column, Integer.class);
-                    continue;
-                }
                 builder.add(column, String.class);
             }
             
@@ -130,7 +126,8 @@ public class CSVFeatureSource extends ContentFeatureStore {
     
     @Override
     protected FeatureWriter<SimpleFeatureType, SimpleFeature> getWriterInternal(Query query, int flags) throws IOException {
-        return new CSVFeatureWriter(getState(), query, flags);
+        // TODO Perhaps: make separate writers for update and append.
+        return new CSVFeatureWriter(getState(), query, (flags | WRITER_ADD) == WRITER_ADD);
     }
 
 }

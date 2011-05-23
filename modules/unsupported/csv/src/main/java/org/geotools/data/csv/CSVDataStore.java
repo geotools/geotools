@@ -8,6 +8,7 @@ import java.io.Reader;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.geotools.data.Query;
 import org.geotools.data.store.ContentDataStore;
 import org.geotools.data.store.ContentEntry;
@@ -37,6 +38,10 @@ public class CSVDataStore extends ContentDataStore {
         Reader reader = new FileReader(file);
         CsvReader csvReader = new CsvReader(reader);
         return csvReader;
+    }
+
+    void write(File tempFile) throws IOException {
+        FileUtils.copyFile(tempFile, this.file);
     }
 
     // createTypeNames start

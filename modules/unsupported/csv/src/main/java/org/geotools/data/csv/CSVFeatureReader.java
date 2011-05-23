@@ -16,10 +16,10 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 
 public class CSVFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
 
-    private ContentState state;
-    private CsvReader reader;
+    protected ContentState state;
+    protected CsvReader reader;
     private SimpleFeature next;
-    private SimpleFeatureBuilder builder;
+    protected SimpleFeatureBuilder builder;
     private int row;
     private GeometryFactory geometryFactory;
 
@@ -71,15 +71,16 @@ public class CSVFeatureReader implements FeatureReader<SimpleFeatureType, Simple
             else if( "lon".equalsIgnoreCase(column)){
                 coordinate.x = Double.valueOf( value.trim() );
             }
-            else if( "number".equalsIgnoreCase(column)){
-                builder.set(column, Integer.parseInt(value) );
-            }
             else {
                 builder.set(column, value );
             }
         }
         builder.set("Location", geometryFactory.createPoint( coordinate ) );
         
+        return this.buildFeature();
+    }
+    
+    protected SimpleFeature buildFeature() {
         row += 1;
         return builder.buildFeature( state.getEntry().getTypeName()+"."+row );
     }

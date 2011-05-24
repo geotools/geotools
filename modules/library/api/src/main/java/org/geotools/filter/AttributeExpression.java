@@ -27,6 +27,7 @@ import org.opengis.filter.expression.PropertyName;
  * It should handle xpath attributePaths of features, and should
  * report the attribute found at the attributePath of a feature.
  * </p>
+ *
  * @source $URL$
  * @version $Id$
  *

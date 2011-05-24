@@ -80,6 +80,7 @@ import org.geotools.factory.Hints;
  * </code></pre>
  *
  * @author Chris Holmes
+ *
  * @source $URL$
  * @version $Id$
  */

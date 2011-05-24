@@ -27,6 +27,7 @@ package org.geotools.data;
  * static constant: {@link #TRANSACTION}.
  *
  * @author Jody Garnett, Refractions Research, Inc.
+ *
  * @source $URL$
  * @version $Id$
  *

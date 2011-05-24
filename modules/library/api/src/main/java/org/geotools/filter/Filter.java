@@ -23,6 +23,7 @@ import org.opengis.feature.simple.SimpleFeature;
  * Defines an OpenGIS Filter object, with default behaviors for all methods.
  *
  * @author Rob Hranac, Vision for New York
+ *
  * @source $URL$
  * @version $Id$
  *

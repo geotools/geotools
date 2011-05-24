@@ -66,6 +66,7 @@ import org.opengis.filter.expression.Expression;
  * $Id$
  *
  * @author Ian Turton, CCG
+ *
  * @source $URL$
  */
 public interface Halo extends org.opengis.style.Halo{

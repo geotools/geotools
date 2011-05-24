@@ -24,6 +24,7 @@ package org.geotools.filter.expression;
  * @author Justin Deoliveira, The Open Planning Project
  *
  *
+ *
  * @source $URL$
  */
 public interface PropertyAccessor {

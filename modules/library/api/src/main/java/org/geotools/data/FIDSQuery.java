@@ -47,6 +47,7 @@ import org.geotools.factory.Hints;
  * featureSource.getFeatures( fids );
  * </code></pre>
  * 
+ *
  * @source $URL$
  */
 class FIDSQuery extends Query {

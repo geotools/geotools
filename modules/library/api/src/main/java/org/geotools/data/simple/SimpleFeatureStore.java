@@ -8,6 +8,11 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 
+/**
+ * 
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/api/src/main/java/org/geotools/data/simple/SimpleFeatureStore.java $
+ */
 public interface SimpleFeatureStore extends FeatureStore<SimpleFeatureType,SimpleFeature>, SimpleFeatureSource {
     
     public void modifyFeatures(String name, Object attributeValue, Filter filter)

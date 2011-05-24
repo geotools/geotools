@@ -20,6 +20,7 @@ package org.geotools.filter;
 /**
  * Defines an exception for illegal filters.
  *
+ *
  * @source $URL$
  * TODO: JD: Changed this exception to runtime exception. Go through all methods
  * that throw this expception and reflect the new geoapi method throws it with

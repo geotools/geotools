@@ -38,6 +38,7 @@ import static org.junit.Assert.*;
  * Unit tests for the JTS utility class smooth method.
  * 
  * @author Michael Bedward
+ *
  * @source $URL$
  * @version $Id$
  * @since 2.8

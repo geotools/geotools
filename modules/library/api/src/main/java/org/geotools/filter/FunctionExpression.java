@@ -25,6 +25,7 @@ import org.geotools.factory.Factory;
  * Interface for a function expression implementation
  *
  * @author James Macgill, PSU
+ *
  * @source $URL$
  *
  * @deprecated use {@link org.opengis.filter.expression.Function}

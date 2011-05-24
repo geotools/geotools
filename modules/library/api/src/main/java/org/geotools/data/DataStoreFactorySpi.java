@@ -71,6 +71,7 @@ import java.util.Map;
  * </p>
  * 
  * @author Jody Garnett, Refractions Research
+ *
  * @source $URL$
  */
 public interface DataStoreFactorySpi extends DataAccessFactory {

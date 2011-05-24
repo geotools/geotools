@@ -27,6 +27,7 @@ import org.opengis.filter.expression.Expression;
  * font-style, font-weight and font-size.
  *
  * @author Ian Turton, CCG
+ *
  * @source $URL$
  * @version $Id$
  */

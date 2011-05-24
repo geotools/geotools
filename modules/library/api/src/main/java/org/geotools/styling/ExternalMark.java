@@ -11,6 +11,7 @@ import org.opengis.metadata.citation.OnLineResource;
  * into a preferred order with the most specific (say SVG) followed by common formats (PNG, GIF) and ending
  * with an appropriate WellKnownName.
  *
+ *
  * @source $URL$
  */
 public interface ExternalMark extends org.opengis.style.ExternalMark {

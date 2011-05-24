@@ -77,6 +77,7 @@ import org.opengis.style.GraphicLegend;
  * &lt;/xsd:element&gt;
  * </code></pre>
  * </p>
+ *
  * @source $URL$
  */
 public interface Rule extends org.opengis.style.Rule {

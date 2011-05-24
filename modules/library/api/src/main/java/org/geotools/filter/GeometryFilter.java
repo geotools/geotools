@@ -43,6 +43,7 @@ import org.opengis.filter.spatial.BinarySpatialOperator;
  *
  * @author Rob Hranac, TOPP
  * @author Chris Holmes, TOPP
+ *
  * @source $URL$
  * @version $Id$
  *

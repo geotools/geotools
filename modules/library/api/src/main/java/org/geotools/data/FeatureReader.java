@@ -77,6 +77,7 @@ import org.opengis.feature.type.FeatureType;
  *
  * @author Ian Schneider
  * @author Sean Geoghegan, Defence Science and Technology Organisation.
+ *
  * @source $URL$
  * @version $Id$
  */

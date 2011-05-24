@@ -29,6 +29,8 @@ import org.opengis.filter.expression.Literal;
  * @author Justin Deoliveira, OpenGeo
  *
  * @since 2.7
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/api/src/main/java/org/geotools/filter/FunctionFactory.java $
  */
 public interface FunctionFactory {
 

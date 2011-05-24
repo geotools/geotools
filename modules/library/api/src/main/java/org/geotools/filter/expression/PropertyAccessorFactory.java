@@ -25,6 +25,7 @@ import org.geotools.factory.Hints.Key;
  * @author Justin Deoliveira, The Open Planning Project
  *
  *
+ *
  * @source $URL$
  */
 public interface PropertyAccessorFactory {

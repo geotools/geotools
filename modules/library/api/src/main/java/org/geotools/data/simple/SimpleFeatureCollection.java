@@ -12,6 +12,8 @@ import org.opengis.filter.sort.SortBy;
  * Please keep in mind that a FeatureCollection is similar to a result set; and may not
  * necessarily load everything in to memory. Treat each iterator as a forward only cursor
  * in the JDBC sense; and take care to close iterators when not in use.
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/api/src/main/java/org/geotools/data/simple/SimpleFeatureCollection.java $
  */
 public interface SimpleFeatureCollection extends FeatureCollection<SimpleFeatureType,SimpleFeature>{
 	

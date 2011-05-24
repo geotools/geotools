@@ -28,6 +28,7 @@ import org.opengis.style.StyleVisitor;
  *
  * @author Ian Turton, CCG
  * @version $Id$
+ *
  * @source $URL$
  */
 public interface Displacement extends org.opengis.style.Displacement{

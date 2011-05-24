@@ -6,6 +6,8 @@ import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
  * FeatureWriter for updating SimpleFeature content.
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/api/src/main/java/org/geotools/data/simple/SimpleFeatureWriter.java $
  */
 public interface SimpleFeatureWriter extends FeatureWriter<SimpleFeatureType, SimpleFeature>{
 

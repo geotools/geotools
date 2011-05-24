@@ -25,6 +25,7 @@ import org.opengis.filter.expression.Expression;
  * "anchor" for positioning it relative to a point geometry.
  * 
  * @author Ian Turton
+ *
  * @source $URL$
  * @version $Id$
  */

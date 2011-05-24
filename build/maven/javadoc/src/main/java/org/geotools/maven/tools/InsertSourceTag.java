@@ -16,12 +16,12 @@
  */
 package org.geotools.maven.tools;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.LineNumberReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -30,14 +30,26 @@ import java.util.regex.Pattern;
 import org.geotools.maven.taglet.Source;
 
 /**
- * Inserts the @source tag into class header javadocs. Only modifies source files that
- * meet the following criteria:
- * <ul>
- * <li> Contain a public class or interface
- * <li> Already have a class header javadoc comment block
- * <li> Do not already have the @source tag present
- * </ul>
- *
+ * This program adds the @source tag to class header javadocs. Optionally, it will also
+ * replace an existing @source tag with a new one. The tag is used to generate the module
+ * module listing in the class javadocs. For example, this tag:
+ * <pre><code>
+ * &#64source http://svn.osgeo.org/geotools/trunk/modules/library/api/src/main/java/org/geotools/data/DataStore.java
+ * </code></pre>
+ * Will result in this content at the end of the class header javadocs:
+ * <p>
+ * <b>Module:</b><br>
+ * &nbsp;&nbsp;&nbsp;&nbsp;modules/library/api (gt-api.jar)<br>
+ * <b>Source repository:</b><br>
+ * &nbsp;&nbsp;&nbsp;&nbsp;http://svn.osgeo.org/geotools/trunk/modules/library/api/src/main/java/org/geotools/data/DataStore.java
+ * <p>
+ * To run this program on the command line using Maven:
+ * <pre><code>
+ * cd /topgtdir/build/maven/javadoc
+ * mvn exec:java
+ * </code></pre>
+ * 
+ * <p>
  * Adapted from the CommentUpdater class previously in this package that was written
  * by Martin Desruisseaux.
  *
@@ -48,19 +60,37 @@ import org.geotools.maven.taglet.Source;
 public class InsertSourceTag {
 
     private final Pattern findSVNLine = Pattern.compile(".+\\/(trunk|tags|branches)\\/.*\\.java");
-    private final Pattern findCommentStart = Pattern.compile("^\\s*\\Q/**\\E");
-    private final Pattern findCommentEnd = Pattern.compile("\\Q*/\\E");
-    private final Pattern findSourceTag = Pattern.compile("^(\\s|\\*)*\\Q@source\\E");
-    private final Pattern findVersionTag = Pattern.compile("^(\\s|\\*)*\\Q@version\\E");
-    private final Pattern findClass = Pattern.compile("\\s*public[a-zA-Z\\s]+(class|interface)");
-
-    private final String lineSeparator = System.getProperty("line.separator", "\n");
-
-    private static final String REPLACE_OPTION = "--replace";
-    private static final String SVN_OPTION = "--svn";
     
+    private final Pattern findJavadocStart = Pattern.compile("^\\s*\\Q/**\\E");
+    
+    private final Pattern findCommentStart = Pattern.compile("^\\s*\\Q/*\\E([^\\*]|$)");
+    
+    private final Pattern findCommentEnd = Pattern.compile("\\Q*/\\E");
+    
+    private final Pattern findSourceTag = Pattern.compile("^.*?\\Q@source\\E");
+    
+    private final Pattern findCompleteSourceTag = Pattern.compile(
+            "^.*?\\Q@source\\E(.*?)\\Q.java\\E\\s*\\$?");
+    
+    private final Pattern findVersionTag = Pattern.compile("^(\\s|\\*)*\\Q@version\\E");
+    
+    private final Pattern findPublicClass = Pattern.compile(
+            "\\s*public[a-zA-Z\\s]+(class|interface|enum)");
+    
+    private final Pattern findClass = Pattern.compile(".*?(class|interface|enum)");
+    
+    private final Pattern findAnnotation = Pattern.compile("^@[a-zA-Z]+");
+    
+    private final String lineSeparator = System.getProperty("line.separator", "\n");
+    
+    private static final String REPLACE_OPTION = "--replace";
     private boolean replaceExistingTag;
+    
+    private static final String SVN_OPTION = "--svn";
     private boolean addSVNKeyword;
+    
+    private static final String ANY_CLASS_OPTION = "--anyclass";
+    private boolean processAnyClass;
 
     /**
      * Main method. Takes the name of the file or directory to process from the
@@ -73,10 +103,12 @@ public class InsertSourceTag {
         if (args.length == 0) {
             System.out.println("usage: InsertSourceTag {options} fileOrDirName");
             System.out.println("options:");
-            System.out.println("   " + REPLACE_OPTION + 
-                    ": Replaces existing source tags (default no replacement)");
-            System.out.println("   " + SVN_OPTION + 
-                    ": Add the svn URL keyword (omitted by default)");
+            System.out.println("   " + REPLACE_OPTION
+                    + ": Replaces existing source tags (default no replacement)");
+            System.out.println("   " + SVN_OPTION
+                    + ": Add the svn URL keyword (omitted by default)");
+            System.out.println("   " + ANY_CLASS_OPTION
+                    + ": Process any class (default is only public classes)");
             return;
         }
 
@@ -94,6 +126,8 @@ public class InsertSourceTag {
                 me.replaceExistingTag = true;
             } else if (SVN_OPTION.equals(s)) {
                 me.addSVNKeyword = true;
+            } else if (ANY_CLASS_OPTION.equals(s)) {
+                me.processAnyClass = true;
             } else {
                 System.out.println("Unrecognized option: " + s);
                 return;
@@ -120,7 +154,7 @@ public class InsertSourceTag {
                 try {
                     System.out.println(file.getPath());
                     processFile(file);
-                    
+
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
                 }
@@ -140,22 +174,10 @@ public class InsertSourceTag {
      * @throws IOException
      */
     private boolean processFile(File file) throws FileNotFoundException, IOException {
-        List<String> buffer = new ArrayList<String>();
-
-        boolean inCommentBlock = false;
-        boolean nonEmptyLines = false;
-        boolean completedSearch = false;
-
-        int commentStartLine = -1;
-        int commentEndLine = -1;
-        int sourceTagLine = -1;
-        boolean replaceLine = false;
-
         Matcher matcher = null;
-        String text;
         String sourceTagText;
 
-        /**
+        /*
          * Find the svn repo path: trunk, tags or branches
          */
         matcher = findSVNLine.matcher(file.getAbsolutePath());
@@ -176,116 +198,161 @@ public class InsertSourceTag {
 
         } else {
             // don't process this file
+            System.out.println("   --- skipped this file");
+            System.out.println();
             return false;
         }
 
-        LineNumberReader reader = new LineNumberReader( new FileReader(file) );
+        BufferedReader reader = new BufferedReader(new FileReader(file));
+        List<String> buffer = new ArrayList<String>();
+        String line;
 
-        /**
-         * We want the first line of text to be line 0 so
-         * that line numbers match buffer indices
+        while ((line = reader.readLine()) != null) {
+            buffer.add(line);
+        }
+        reader.close();
+
+        /*
+         * Search the buffer for class header docs and, within that,
+         * the @source tag
          */
-        reader.setLineNumber(-1);
-        
-        while ( (text = reader.readLine()) != null ) {
-            buffer.add(text);
-            
-            if (completedSearch) {
-                continue;
-            }
+        boolean inJavadocBlock = false;
+        boolean inCommentBlock = false;
+        boolean unknownPrecedingContent = false;
+        boolean classFound = false;
 
-            if (inCommentBlock) {
+        int javadocStartLine = -1;
+        int javadocEndLine = -1;
+        int sourceTagLine = -1;
+
+        for (int lineNo = 0; sourceTagLine < 0 && lineNo < buffer.size(); lineNo++) {
+            String text = buffer.get(lineNo);
+
+            if (inJavadocBlock || inCommentBlock) {
                 matcher = findCommentEnd.matcher(text);
                 if (matcher.find()) {
-                    inCommentBlock = false;
-                    commentEndLine = reader.getLineNumber();
+                    if (inJavadocBlock) {
+                        inJavadocBlock = false;
+                        javadocEndLine = lineNo;
+                    } else if (inCommentBlock) {
+                        inCommentBlock = false;
+                    } else {
+                        System.out.println("   *** Mis-placed end marker for comment block "
+                                + "- skipping this file ***");
+                        System.out.println();
+                        return false;
+                    }
                 }
-                
-            } else {
-                matcher = findCommentStart.matcher(text);
+
+            } else if (findJavadocStart.matcher(text).find()) {
+                inJavadocBlock = true;
+                unknownPrecedingContent = false;
+                javadocStartLine = lineNo;
+
+            } else if (findCommentStart.matcher(text).find()) {
+                inCommentBlock = true;
+
+            // Guard against nested or following classes and mention of classes in
+            // comment blocks
+            } else if (!inJavadocBlock && !inCommentBlock && !classFound) {
+                if (processAnyClass) {
+                    matcher = findClass.matcher(text);
+                } else {
+                    matcher = findPublicClass.matcher(text);
+                }
                 if (matcher.find()) {
-                    inCommentBlock = true;
-                    nonEmptyLines = false;
-                    commentStartLine = reader.getLineNumber();
+                    classFound = true;
+                    /*
+                     * If no javadoc comment block preceded the class header
+                     * there is nothing to do
+                     */
+                    if (javadocStartLine < 0) {
+                        System.out.println("   *** No class javadocs - skipping file ***");
+                        System.out.println();
+                        return false;
+                    }
+
+                    /* If there were any non-blank lines between the comment and
+                     * the class header we will act safely and not modify the file
+                     */
+                    if (unknownPrecedingContent) {
+                        System.out.println("   *** Javadocs do not directly precede class"
+                                + " - skipping file ***");
+                        System.out.println();
+                        return false;
+                    }
+
+                    /*
+                     * Check if the source tag already exists. If it does, and
+                     * the replace tag option is false, skip this file.
+                     */
+                    for (int i = javadocStartLine; i <= javadocEndLine; i++) {
+                        String commentText = buffer.get(i);
+                        matcher = findSourceTag.matcher(commentText);
+                        if (matcher.find()) {
+                            /* 
+                             * Check that those pesky Eclipse users haven't
+                             * split the source tag across multiple lines with
+                             * their auto-format thing.
+                             */
+                            matcher = findCompleteSourceTag.matcher(commentText);
+                            if (!matcher.find()) {
+                                System.out.println("   *** Incomplete source tag detected"
+                                        + "- skipping this file ***");
+                                System.out.println();
+                                return false;
+                            }
+
+                            if (replaceExistingTag) {
+                                sourceTagLine = i;
+                                // delete the original tag from the buffer
+                                buffer.remove(i);
+                                break;
+                            } else {
+                                return false;
+                            }
+
+                        }
+                    }
+
+                    if (sourceTagLine < 0) {
+                        /*
+                         * Check if the version tag exists. If it does we
+                         * will place the source tag on the line before it
+                         */
+                        for (int i = javadocStartLine; i <= javadocEndLine; i++) {
+                            matcher = findVersionTag.matcher(buffer.get(i));
+                            if (matcher.find()) {
+                                sourceTagLine = i;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (sourceTagLine < 0) {
+                        sourceTagLine = javadocEndLine;
+                    }
 
                 } else {
-                    matcher = findClass.matcher(text);
-                    if (matcher.find()) {
-
-                        /*
-                         * If no javadoc comment block preceded the class header
-                         * there is nothing to do
-                         */
-                        if (commentStartLine < 0) {
-                            return false;
-                        }
-
-                        /* If there were any non-blank lines between the comment and
-                         * the class header we will act safely and not modify the file
-                         */
-                        if (nonEmptyLines) {
-                            return false;
-                        }
-
-                        /*
-                         * Check if the source tag already exists and skip the file
-                         * if it does and the replace tag option is false
-                         */
-                        for (int i = commentStartLine; i <= commentEndLine; i++) {
-                            matcher = findSourceTag.matcher(buffer.get(i));
-                            if (matcher.find()) {
-                                if (replaceExistingTag) { 
-                                    sourceTagLine = i;
-                                    // delete the original tag from the buffer
-                                    buffer.remove(i);
-                                    break;
-                                } else {
-                                    return false;
-                                }
-                                    
-                            }
-                        }
-
-                        if (sourceTagLine < 0) {
-                            /*
-                             * Check if the version tag exists. If it does we
-                             * will place the source tag on the line before it
-                             */
-                            for (int i = commentStartLine; i <= commentEndLine; i++) {
-                                matcher = findVersionTag.matcher(buffer.get(i));
-                                if (matcher.find()) {
-                                    sourceTagLine = i;
-                                    break;
-                                }
-                            }
-                        }
-
-                        if (sourceTagLine < 0) {
-                            sourceTagLine = commentEndLine;
-                        }
-
-                        completedSearch = true;
-
-                    } else {
-                        /**
-                         * Not a comment line or the class header. Check if it is
-                         * a non-emptyLine
-                         */
-                        if (text.trim().length() > 0) {
-                            nonEmptyLines = true;
+                    /*
+                     * Not a comment line or the class header. Check if it is
+                     * a non-emptyLine
+                     */
+                    if (text.trim().length() > 0) {
+                        // Annotations are OK
+                        matcher = findAnnotation.matcher(text);
+                        if (!matcher.find()) {
+                            unknownPrecedingContent = true;
                         }
                     }
                 }
             }
         }
 
-        reader.close();
-
         /*
-         * Close the input file and call the writing method
-         * that will insert the source tag
+         * If the search was successful write the results to file
          */
-        if (completedSearch) {
+        if (sourceTagLine > 0) {
             return writeFile(file, buffer, sourceTagLine, sourceTagText);
         }
 
@@ -305,10 +372,10 @@ public class InsertSourceTag {
      * 
      * @throws IOException
      */
-    private boolean writeFile(File file, List<String> buffer, 
+    private boolean writeFile(File file, List<String> buffer,
             int sourceTagLine, String sourceTag)
             throws IOException {
-        
+
         FileWriter writer = new FileWriter(file);
         for (int i = 0; i < buffer.size(); i++) {
             if (i == sourceTagLine) {
@@ -321,8 +388,7 @@ public class InsertSourceTag {
             writer.write(lineSeparator);
         }
         writer.close();
-        
+
         return true;
     }
-
 }

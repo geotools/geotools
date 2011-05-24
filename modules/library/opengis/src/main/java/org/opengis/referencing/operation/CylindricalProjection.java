@@ -23,6 +23,8 @@ import org.opengis.annotation.Extension;
  *
  * @see org.opengis.referencing.crs.ProjectedCRS
  * @see <A HREF="http://mathworld.wolfram.com/CylindricalProjection.html">Cylindrical projection on MathWorld</A>
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/referencing/operation/CylindricalProjection.java $
  */
 @Extension
 public interface CylindricalProjection extends Projection {

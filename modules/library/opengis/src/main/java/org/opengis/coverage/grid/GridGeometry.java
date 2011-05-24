@@ -23,6 +23,8 @@ import static org.opengis.annotation.Specification.*;
  * for calculation of grid size. A grid coverage may or may not have georeferencing.
  *
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/coverage/grid/GridGeometry.java $
  * @version <A HREF="http://www.opengis.org/docs/01-004.pdf">Grid Coverage specification 1.0</A>
  * @author  Martin Desruisseaux (IRD)
  * @since   GeoAPI 1.0

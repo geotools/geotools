@@ -20,6 +20,8 @@ import static org.opengis.annotation.Specification.*;
  * Basis for 3-dimensional geometry. The extent of a solid is
  * defined by the boundary surfaces.
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/geometry/primitive/Solid.java $
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

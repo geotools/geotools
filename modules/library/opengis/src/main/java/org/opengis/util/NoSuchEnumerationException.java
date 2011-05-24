@@ -18,6 +18,8 @@ package org.opengis.util;
  * @since GeoAPI 1.0
  *
  * @deprecated Not used.
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/util/NoSuchEnumerationException.java $
  */
 @Deprecated
 public class NoSuchEnumerationException extends Exception {

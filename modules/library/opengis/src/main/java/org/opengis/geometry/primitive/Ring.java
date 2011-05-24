@@ -30,6 +30,8 @@ import static org.opengis.annotation.Specification.*;
  * case of this is where one of the interior rings of a surface is tangent to its exterior ring.
  * Implementations may enforce stronger restrictions on the interaction of boundary elements.
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/geometry/primitive/Ring.java $
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

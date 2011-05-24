@@ -21,6 +21,8 @@ import static org.opengis.annotation.Specification.*;
  * value; the Julian date is a decimal value that allows greater resolution.
  *
  * @author Stephane Fellah (Image Matters)
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/temporal/JulianDate.java $
  */
 @UML(identifier="JulianDate", specification=ISO_19108)
 public interface JulianDate extends TemporalCoordinate {

@@ -21,6 +21,8 @@ import static org.opengis.annotation.Specification.*;
 /**
  * Geometry that is an aggregate of other geometries.
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/geometry/aggregate/Aggregate.java $
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @since GeoAPI 1.0
  */

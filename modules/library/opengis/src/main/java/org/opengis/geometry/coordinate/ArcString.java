@@ -27,6 +27,8 @@ import static org.opengis.annotation.Specification.*;
  * this {@linkplain Position position} is not repeated in the {@linkplain #getControlPoints
  * control points} sequence.
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/geometry/coordinate/ArcString.java $
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

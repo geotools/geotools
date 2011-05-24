@@ -22,6 +22,8 @@ import static org.opengis.annotation.Specification.*;
  * Name of point and vector spatial objects used to locate zero-, one-, and twodimensional
  * spatial locations in the dataset.
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/metadata/spatial/GeometricObjectType.java $
  * @version <A HREF="http://www.opengeospatial.org/standards/as#01-111">ISO 19115</A>
  * @author  Martin Desruisseaux (IRD)
  * @author  Cory Horner (Refractions Research)

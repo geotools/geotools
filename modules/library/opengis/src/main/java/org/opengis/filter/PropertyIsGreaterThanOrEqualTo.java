@@ -17,6 +17,8 @@ import org.opengis.annotation.XmlElement;
  * Filter operator that checks that its first sub-expression is greater or equal
  * to its second subexpression.
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/filter/PropertyIsGreaterThanOrEqualTo.java $
  * @version <A HREF="http://www.opengis.org/docs/02-059.pdf">Implementation specification 1.0</A>
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.0

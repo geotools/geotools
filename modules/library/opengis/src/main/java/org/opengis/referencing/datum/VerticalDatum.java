@@ -23,6 +23,8 @@ import static org.opengis.annotation.Specification.*;
  * {@linkplain org.opengis.referencing.cs.CoordinateSystemAxis Coordinate Axis} with which
  * it is combined to create a {@linkplain org.opengis.referencing.crs.VerticalCRS Vertical CRS}.
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/referencing/datum/VerticalDatum.java $
  * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract specification 2.0</A>
  * @author  Martin Desruisseaux (IRD)
  * @since   GeoAPI 1.0

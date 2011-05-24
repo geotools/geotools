@@ -29,6 +29,8 @@ import org.opengis.parameter.InvalidParameterValueException;
  * @see GridCoverageExchange#getWriter
  * @see javax.imageio.ImageWriter
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/coverage/grid/GridCoverageWriter.java $
  */
 public interface GridCoverageWriter {
     /**

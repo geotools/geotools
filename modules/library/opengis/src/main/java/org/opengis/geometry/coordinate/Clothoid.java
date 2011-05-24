@@ -29,6 +29,8 @@ import static org.opengis.annotation.Specification.*;
  * where <var>A</var> is a constant, <var>R</var> is the varying radius of curvature along
  * the curve and <var>t</var> is the length along the curve and given in the Fresnel integrals.
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/geometry/coordinate/Clothoid.java $
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0

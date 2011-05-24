@@ -26,6 +26,8 @@ import static org.opengis.annotation.Specification.*;
  * Filter passes, then every Symbolizer for that rule is applied to the given
  * feature.
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/style/Rule.java $
  * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding Implementation Specification 1.1.0</A>
  * @author Open Geospatial Consortium
  * @author Johann Sorel (Geomatys)

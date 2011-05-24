@@ -24,6 +24,8 @@ import static org.opengis.annotation.Specification.*;
 /**
  * Information about the source data used in creating the data specified by the scope.
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/metadata/lineage/Source.java $
  * @version <A HREF="http://www.opengeospatial.org/standards/as#01-111">ISO 19115</A>
  * @author  Martin Desruisseaux (IRD)
  * @author  Cory Horner (Refractions Research)

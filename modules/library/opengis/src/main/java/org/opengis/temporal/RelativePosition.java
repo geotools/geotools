@@ -28,6 +28,8 @@ import static org.opengis.annotation.Specification.*;
  * @author Martin Desruisseaux (IRD)
  *
  * @todo Need javadoc for each enumeration.
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/temporal/RelativePosition.java $
  */
 @UML(identifier="TM_RelativePosition", specification=ISO_19108)
 public final class RelativePosition extends CodeList<RelativePosition> {

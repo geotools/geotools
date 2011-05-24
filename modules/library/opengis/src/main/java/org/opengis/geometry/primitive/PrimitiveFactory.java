@@ -29,6 +29,8 @@ import static org.opengis.annotation.Specification.*;
  * Creating primitives in a different CRS may requires a different instance of
  * {@code PrimitiveFactory}.
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/geometry/primitive/PrimitiveFactory.java $
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

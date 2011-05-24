@@ -27,6 +27,8 @@ import static org.opengis.annotation.Specification.*;
  * @author Alexander Petkov
  * @author Martin Desruisseaux (IRD)
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/temporal/Position.java $
  */
 @UML(identifier="TM_Position", specification=ISO_19108)
 public interface Position {

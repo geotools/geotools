@@ -24,6 +24,8 @@ import static org.opengis.annotation.Specification.*;
  *
  * @todo The javadoc doesn't seem accurate.
  * @todo Missing UML annotations.
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/temporal/OrdinalReferenceSystem.java $
  */
 public interface OrdinalReferenceSystem extends TemporalReferenceSystem {
     /**

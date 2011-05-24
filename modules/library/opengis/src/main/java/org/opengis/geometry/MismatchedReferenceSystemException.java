@@ -17,6 +17,8 @@ package org.opengis.geometry;
  *
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/geometry/MismatchedReferenceSystemException.java $
  */
 public class MismatchedReferenceSystemException extends IllegalArgumentException {
     /**

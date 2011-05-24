@@ -27,6 +27,8 @@ import org.opengis.filter.expression.Expression;
  * for the height of the “hills.” A value of around 55 (times) gives reasonable results for
  * Earth-based DEMs. The default value is system-dependent.
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/style/ShadedRelief.java $
  * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding Implementation Specification 1.1.0</A>
  * @author Open Geospatial Consortium
  * @author Ian Turton, CCG

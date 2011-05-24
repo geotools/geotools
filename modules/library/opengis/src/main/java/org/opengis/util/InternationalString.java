@@ -27,6 +27,8 @@ import org.opengis.annotation.Extension;
  *
  * @see javax.xml.registry.infomodel.InternationalString
  * @see NameFactory#createInternationalString
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/util/InternationalString.java $
  */
 @Extension
 public interface InternationalString extends CharSequence, Comparable<InternationalString> {

@@ -48,6 +48,8 @@ import static org.opengis.annotation.Specification.*;
  * milliseconds (signal travel time). A second time axis indicates how it changes with time
  * (years), e.g. as a reservoir is gradually exhausted of its recoverable oil or gas).
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/referencing/crs/CompoundCRS.java $
  * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract specification 2.0</A>
  * @author  Martin Desruisseaux (IRD)
  * @since   GeoAPI 1.0

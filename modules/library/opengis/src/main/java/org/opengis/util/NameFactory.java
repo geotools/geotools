@@ -25,6 +25,8 @@ import org.opengis.annotation.Extension;
  * @author Jesse Crossley (SYS Technologies)
  * @author Martin Desruisseaux (Geomatys)
  * @since GeoAPI 2.0
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/util/NameFactory.java $
  */
 @Extension
 public interface NameFactory {

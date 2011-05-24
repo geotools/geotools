@@ -25,6 +25,8 @@ import org.opengis.annotation.XmlElement;
  *
  * @return LATEST_ON_TOP, EARLIEST_ON_TOP, AVERAGE or RANDOM
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/style/OverlapBehavior.java $
  * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding Implementation Specification 1.1.0</A>
  * @author Open Geospatial Consortium
  * @author Johann Sorel (Geomatys)

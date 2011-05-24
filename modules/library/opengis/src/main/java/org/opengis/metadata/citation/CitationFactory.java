@@ -21,6 +21,8 @@ import org.opengis.referencing.Factory;
  * All factory methods accept null value for {@linkplain Obligation#OPTIONAL optional} arguments.
  * The value must be non-null for {@linkplain Obligation#MANDATORY mandatory} arguments.
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/metadata/citation/CitationFactory.java $
  * @version <A HREF="http://www.opengeospatial.org/standards/as#01-111">ISO 19115</A>
  * @author  Jesse Crossley (SYS Technologies)
  * @since   GeoAPI 2.0

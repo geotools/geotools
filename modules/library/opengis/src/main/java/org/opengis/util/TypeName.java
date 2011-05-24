@@ -21,6 +21,8 @@ import static org.opengis.annotation.Specification.*;
  * @author Bryce Nordgren (USDA)
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.1
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/util/TypeName.java $
  */
 @UML(identifier="TypeName", specification=ISO_19103)
 public interface TypeName extends LocalName {

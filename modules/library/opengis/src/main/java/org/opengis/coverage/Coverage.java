@@ -63,6 +63,8 @@ import org.opengis.util.RecordType;
  * encouraged to implement the {@link javax.media.jai.PropertySource} or
  * {@link javax.media.jai.WritablePropertySource} interface.
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/coverage/Coverage.java $
  * @version ISO 19123:2004
  * @author  Stephane Fellah
  * @author  Martin Desruisseaux (IRD)

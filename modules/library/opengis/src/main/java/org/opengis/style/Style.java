@@ -29,6 +29,8 @@ import static org.opengis.annotation.Specification.*;
  * 
  * This class is a merged between ISO 19117 Portrayal and OGC SLD 1.1.0
  *  
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/style/Style.java $
  * @version <A HREF="http://www.opengeospatial.org/standards/sld">Implementation specification 1.1.0</A>
  * 
  * @author Open Geospatial Consortium

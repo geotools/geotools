@@ -23,6 +23,8 @@ import static java.lang.annotation.RetentionPolicy.*;
  *
  * @author  Martin Desruisseaux (IRD)
  * @since   GeoAPI 2.1
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/annotation/Association.java $
  */
 @Documented
 @Target(METHOD)

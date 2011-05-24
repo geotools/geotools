@@ -42,6 +42,8 @@ import java.util.Set;
  *
  * @author Jody Garnett, Refractions Research, Inc.
  * @author Justin Deoliveira, The Open Planning Project
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/feature/type/Schema.java $
  */
 public interface Schema extends Map<Name, AttributeType> {
 

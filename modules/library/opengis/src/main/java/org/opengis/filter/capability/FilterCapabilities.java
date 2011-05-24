@@ -31,6 +31,8 @@ import static org.opengis.annotation.Specification.*;
  *
  * @author <a href="mailto:tfr@users.sourceforge.net">Torsten Friebe</a>
  * @author <a href="mailto:mschneider@lat-lon.de">Markus Schneider</a>
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/filter/capability/FilterCapabilities.java $
  */
 public interface FilterCapabilities {
 

@@ -24,6 +24,8 @@ import static org.opengis.annotation.Specification.OGC_02059;
  * @see <a href="http://schemas.opengis.net/filter/1.1.0/sort.xsd">
  * @author Jody Garnett (Refractions Research)
  * @since GeoAPI 2.1
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/filter/sort/SortOrder.java $
  */
 public final class SortOrder extends CodeList<SortOrder> {
     /**

@@ -25,6 +25,8 @@ import static org.opengis.annotation.Specification.*;
  * values in datasets in which the underlying geometry has been decomposed, usually to expose its
  * topological nature.
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/geometry/complex/Composite.java $
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

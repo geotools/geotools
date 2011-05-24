@@ -25,6 +25,8 @@ import org.opengis.annotation.Extension;
  *
  * @see Coverage#evaluate(DirectPosition, byte[])
  * @see Coverage#evaluate(DirectPosition, double[])
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/coverage/CannotEvaluateException.java $
  */
 public class CannotEvaluateException extends RuntimeException {
     /**

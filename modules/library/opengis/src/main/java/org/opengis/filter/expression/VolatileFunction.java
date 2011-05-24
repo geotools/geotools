@@ -38,6 +38,8 @@ package org.opengis.filter.expression;
  * <em>volatile</em>
  * 
  * @author Andrea Aime - GeoSolutions
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/filter/expression/VolatileFunction.java $
  */
 public interface VolatileFunction extends Function {
 

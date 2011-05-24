@@ -21,6 +21,8 @@ import org.opengis.feature.Feature;
  * metadata.  The ability to access "attributes" based on the provided content is
  * defined based on XPath queries currently.
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/filter/expression/Expression.java $
  * @version <A HREF="http://www.opengis.org/docs/02-059.pdf">Implementation specification 1.0</A>
  * @author Chris Dillard (SYS Technologies)
  * @author Justin Deoliveira (The Open Planning Project)

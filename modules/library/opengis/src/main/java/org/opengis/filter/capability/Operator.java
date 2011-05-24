@@ -40,6 +40,8 @@ import org.opengis.annotation.UML;
  * @author <a href="mailto:tfr@users.sourceforge.net">Torsten Friebe</A>
  * @author Jody Garnett (Refractions Research)
  * @todo Which relationship with Filter and expressions?
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/filter/capability/Operator.java $
  */
 public interface Operator {	
     /**

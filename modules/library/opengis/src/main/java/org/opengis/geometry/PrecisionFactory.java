@@ -40,6 +40,8 @@ package org.opengis.geometry;
  *
  * @author Jody Garnett
  * @since GeoAPI 2.1
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/geometry/PrecisionFactory.java $
  */
 public interface PrecisionFactory {
 

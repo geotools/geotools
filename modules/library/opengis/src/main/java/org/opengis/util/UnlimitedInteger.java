@@ -23,6 +23,8 @@ import static org.opengis.annotation.Specification.*;
  * @author Jody Garnett (Refractions Research)
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.1
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/util/UnlimitedInteger.java $
  */
 @UML(identifier="UnlimitedInteger", specification=ISO_19103)
 public final class UnlimitedInteger extends Number implements Comparable<UnlimitedInteger> {

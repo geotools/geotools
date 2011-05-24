@@ -24,6 +24,8 @@ import static org.opengis.annotation.Specification.*;
  * the network, the circle passing through its vertexes does not contain, in its interior, the
  * vertex of any other triangle.
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/geometry/coordinate/Tin.java $
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0

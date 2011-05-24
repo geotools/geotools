@@ -40,6 +40,8 @@ import static org.opengis.annotation.Specification.*;
  * The sub-interfaces provided in this package define some of the most commonly encountered surfaces
  * that can be represented in this manner.
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/geometry/coordinate/GriddedSurface.java $
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0

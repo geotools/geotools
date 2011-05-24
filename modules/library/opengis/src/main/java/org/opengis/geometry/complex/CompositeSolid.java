@@ -23,6 +23,8 @@ import static org.opengis.annotation.Specification.*;
  * a composite solid is a set of solids that join in pairs on common boundary surfaces to form
  * a single solid.
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/geometry/complex/CompositeSolid.java $
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (Geomatys)
  * @since GeoAPI 2.1

@@ -22,6 +22,8 @@ import org.opengis.annotation.XmlParameter;
  * or vector-graphic source type. The term "graphic" is used since the term "symbol" is
  * similar to "Symbolizer" which is used in a different context in SE.
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/style/Graphic.java $
  * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding Implementation Specification 1.1.0</A>
  * @author Open Geospatial Consortium
  * @author Johann Sorel (Geomatys)

@@ -20,6 +20,8 @@ import org.opengis.annotation.XmlElement;
  * Abstract base class for operators that perform a spatial comparison on
  * geometric attributes of a feature.
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/filter/spatial/SpatialOperator.java $
  * @version <A HREF="http://www.opengis.org/docs/02-059.pdf">Implementation specification 1.0</A>
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.0

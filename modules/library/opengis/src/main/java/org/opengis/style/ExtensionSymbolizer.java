@@ -19,6 +19,8 @@ import org.opengis.filter.expression.Expression;
  * @author Open Geospatial Consortium
  * @author Johann Sorel (Geomatys)
  * @since GeoAPI 2.3
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/style/ExtensionSymbolizer.java $
  */
 public interface ExtensionSymbolizer extends Symbolizer {
     

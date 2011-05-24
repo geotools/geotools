@@ -35,6 +35,8 @@ import org.xml.sax.helpers.NamespaceSupport;
  * filters with SFSQL Geometry constructs. Consider this a bridge to
  * existing projects allowing GeoAPI to be used.
  * </p>
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/filter/FilterFactory2.java $
  * @version <A HREF="http://www.opengis.org/docs/02-059.pdf">Implementation specification 1.1</A>
  * @author Jody Garnett, Refractions Research Inc.
  * @since GeoAPI 2.1

@@ -18,6 +18,8 @@ import org.opengis.annotation.XmlElement;
  * A Halo is a type of Fill that is applied to the backgrounds of font glyphs. The use of
  * halos greatly improves the readability of text labels.
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/style/Halo.java $
  * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding Implementation Specification 1.1.0</A>
  * @author Open Geospatial Consortium
  * @author Johann Sorel (Geomatys)

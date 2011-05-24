@@ -21,6 +21,8 @@ import static org.opengis.annotation.Specification.*;
  * primitives}. This is the only subclass of {@linkplain TemporalComplex temporal complex}.
  *
  * @author Alexander Petkov
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/temporal/TemporalTopologicalComplex.java $
  */
 @UML(identifier="TM_TopologicalComplex", specification=ISO_19108)
 public interface TemporalTopologicalComplex extends TemporalComplex {

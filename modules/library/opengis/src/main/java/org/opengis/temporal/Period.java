@@ -20,6 +20,8 @@ import static org.opengis.annotation.Specification.*;
  *
  * @author Stephane Fellah (Image Matters)
  * @author Alexander Petkov
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/temporal/Period.java $
  */
 @UML(identifier="TM_Period", specification=ISO_19108)
 public interface Period extends TemporalGeometricPrimitive {

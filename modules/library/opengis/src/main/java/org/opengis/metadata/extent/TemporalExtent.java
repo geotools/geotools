@@ -19,6 +19,8 @@ import static org.opengis.annotation.Specification.*;
 /**
  * Time period covered by the content of the dataset.
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/metadata/extent/TemporalExtent.java $
  * @version <A HREF="http://www.opengeospatial.org/standards/as#01-111">ISO 19115</A>
  * @author  Martin Desruisseaux (IRD)
  * @since   GeoAPI 1.0

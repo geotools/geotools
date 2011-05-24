@@ -22,6 +22,8 @@ import static org.opengis.annotation.Specification.*;
 /**
  * Brief description of ways in which the resource(s) is/are currently used.
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/metadata/identification/Usage.java $
  * @version <A HREF="http://www.opengeospatial.org/standards/as#01-111">ISO 19115</A>
  * @author  Martin Desruisseaux (IRD)
  * @since   GeoAPI 2.0

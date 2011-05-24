@@ -24,6 +24,8 @@ package org.opengis.feature;
  * (such as "bounds" or reprojection) and engage an alternate work flow.
  * </p>
  * @author Cory Horner (Refractions Research, Inc)
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/feature/FeatureVisitor.java $
  */
 public interface FeatureVisitor {
     /**

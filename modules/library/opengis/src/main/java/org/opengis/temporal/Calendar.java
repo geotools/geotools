@@ -22,6 +22,8 @@ import static org.opengis.annotation.Specification.*;
  * basis for defining temporal position to a resolution of one day.
  *
  * @author Alexander Petkov
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/temporal/Calendar.java $
  */
 @UML(identifier="TM_Calendar", specification=ISO_19108)
 public interface Calendar extends TemporalReferenceSystem {

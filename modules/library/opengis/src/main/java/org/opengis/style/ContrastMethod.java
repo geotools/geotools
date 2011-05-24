@@ -28,6 +28,8 @@ import org.opengis.annotation.XmlElement;
  * pixels in the image at each brightness level on output. This has the effect of revealing
  * many subtle ground features.
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/style/ContrastMethod.java $
  * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding Implementation Specification 1.1.0</A>
  * @author Open Geospatial Consortium
  * @author Johann Sorel (Geomatys)

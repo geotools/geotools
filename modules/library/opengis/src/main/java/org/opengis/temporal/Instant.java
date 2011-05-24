@@ -25,6 +25,8 @@ import static org.opengis.annotation.Specification.*;
  * TODO There is a bit of a conflict in the spec document as to what should be returned
  * for "position." The diagram shows that Position should be returned, while the text in the document
  * demands that TemporalPosition should represent position in time.
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/temporal/Instant.java $
  */
 @UML(identifier="TM_Instant", specification=ISO_19108)
 public interface Instant extends TemporalGeometricPrimitive {

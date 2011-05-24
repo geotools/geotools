@@ -34,6 +34,8 @@ import org.opengis.util.InternationalString;
  * @author Open Geospatial Consortium
  * @author Johann Sorel (Geomatys)
  * @since GeoAPI 2.2
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/style/StyleFactory.java $
  */
 public interface StyleFactory {
     /**

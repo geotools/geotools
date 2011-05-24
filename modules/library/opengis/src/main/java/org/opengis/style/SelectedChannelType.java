@@ -16,6 +16,8 @@ import org.opengis.annotation.XmlElement;
 /**
  * A class to hold Channel information for use in ChannelSelection objects.
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/style/SelectedChannelType.java $
  * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding Implementation Specification 1.1.0</A>
  * @author Open Geospatial Consortium
  * @author Ian Turton, CCG

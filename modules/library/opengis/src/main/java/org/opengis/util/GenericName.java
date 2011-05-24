@@ -121,6 +121,8 @@ import static org.opengis.annotation.Specification.*;
  * @since GeoAPI 1.0
  *
  * @see javax.naming.Name
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/util/GenericName.java $
  */
 @UML(identifier="GenericName", specification=ISO_19103)
 public interface GenericName extends Comparable<GenericName> {

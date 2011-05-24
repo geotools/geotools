@@ -21,6 +21,8 @@ import org.opengis.filter.Filter;
  * parameters and expected result for an Operation.
  *
  * @author Jody Garnett, Refractions Research, Inc.
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/feature/type/OperationType.java $
  */
  public interface OperationType extends PropertyType {
 

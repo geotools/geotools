@@ -44,6 +44,8 @@ import org.opengis.annotation.UML;
  * @author <a href="mailto:tfr@users.sourceforge.net">Torsten Friebe </a>
  * @author <a href="mailto:mschneider@lat-lon.de">Markus Schneider </a>
  * @author Justin Deoliveira, The Open Planning Project
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/filter/capability/ScalarCapabilities.java $
  */
 public interface ScalarCapabilities {
     /**

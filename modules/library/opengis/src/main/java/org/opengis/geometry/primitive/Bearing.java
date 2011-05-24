@@ -22,6 +22,8 @@ import static org.opengis.annotation.Specification.*;
  * is possible. If both a set of angles and a vector are given, then they shall be consistent
  * with one another.
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/geometry/primitive/Bearing.java $
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

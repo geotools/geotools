@@ -24,6 +24,8 @@ import static org.opengis.annotation.Specification.*;
  * Essentially, a composite surface is a collection of oriented surfaces that join in pairs on
  * common boundary curves and which, when considered as a whole, form a single surface.
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/geometry/complex/CompositeSurface.java $
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

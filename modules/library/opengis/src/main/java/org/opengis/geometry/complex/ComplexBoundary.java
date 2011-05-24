@@ -21,6 +21,8 @@ import static org.opengis.annotation.Specification.*;
  * objects shall return a {@code ComplexBoundary}, which is a collection of primitives
  * and a {@linkplain Complex complex} of dimension 1 less than the original object.
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/geometry/complex/ComplexBoundary.java $
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

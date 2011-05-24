@@ -20,6 +20,8 @@ import static org.opengis.annotation.Specification.*;
  *
  * @author Stephane Fellah (Image Matters)
  * @author Alexander Petkov
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/temporal/TemporalGeometricPrimitive.java $
  */
 @UML(identifier="TM_GeometricPrimitive", specification=ISO_19108)
 public interface TemporalGeometricPrimitive extends TemporalPrimitive, Separation {

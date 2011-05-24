@@ -31,6 +31,8 @@ import java.util.List;
  * @see ParameterValueGroup#values
  * @see ParameterDescriptor#getMinimumOccurs
  * @see ParameterDescriptor#getMaximumOccurs
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/parameter/InvalidParameterCardinalityException.java $
  */
 public class InvalidParameterCardinalityException extends IllegalStateException {
     /**

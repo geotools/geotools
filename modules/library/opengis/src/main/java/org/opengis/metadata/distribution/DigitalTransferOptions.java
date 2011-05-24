@@ -23,6 +23,8 @@ import static org.opengis.annotation.ComplianceLevel.*;
 /**
  * Technical means and media by which a resource is obtained from the distributor.
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/metadata/distribution/DigitalTransferOptions.java $
  * @version <A HREF="http://www.opengeospatial.org/standards/as#01-111">ISO 19115</A>
  * @author  Martin Desruisseaux (IRD)
  * @author  Cory Horner (Refractions Research)

@@ -92,6 +92,8 @@ import org.opengis.filter.expression.Expression;
  * @author Jody Garnett, Refractions Research
  * @author Gabriel Roldan, Axios Engineering
  * @author Justin Deoliveira, The Open Planning Project
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/feature/ComplexAttribute.java $
  */
 public interface ComplexAttribute extends Attribute {
 

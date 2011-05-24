@@ -33,6 +33,8 @@ import org.opengis.annotation.Extension;
  * @author Jody Garnett (Refractions Research)
  * @author Martin Desruisseaux (Geomatys)
  * @since GeoAPI 2.1
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/geometry/BoundingBox.java $
  */
 @Extension
 public interface BoundingBox extends Envelope {

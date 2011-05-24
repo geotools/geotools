@@ -20,6 +20,8 @@ import org.opengis.annotation.XmlElement;
  * other logical values as inputs.  Currently, the only two subclasses are
  * {@link And} and {@link Or}.
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/filter/BinaryLogicOperator.java $
  * @version <A HREF="http://www.opengis.org/docs/02-059.pdf">Implementation specification 1.0</A>
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.0

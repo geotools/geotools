@@ -33,6 +33,8 @@ import static org.opengis.annotation.Specification.*;
  * internal structures of the geometry containing this position. A direct position may or may
  * not be cloneable at implementor choice.
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/geometry/DirectPosition.java $
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

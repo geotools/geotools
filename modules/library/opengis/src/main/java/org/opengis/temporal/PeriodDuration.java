@@ -23,6 +23,8 @@ import static org.opengis.annotation.Specification.*;
  * @author Alexander Petkov
  *
  * @todo Uses Java 1.5 {@link javax.xml.datatype.Duration}.
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/temporal/PeriodDuration.java $
  */
 @UML(identifier="TM_PeriodDuration", specification=ISO_19108)
 public interface PeriodDuration extends Duration {

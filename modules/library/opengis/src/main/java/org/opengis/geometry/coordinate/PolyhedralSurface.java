@@ -22,6 +22,8 @@ import static org.opengis.annotation.Specification.*;
  * boundary curves. This differs from {@link Surface} only in the restriction on the types of
  * surface patches acceptable.
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/geometry/coordinate/PolyhedralSurface.java $
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0

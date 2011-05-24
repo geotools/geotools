@@ -23,6 +23,8 @@ package org.opengis.filter.capability;
  * </p>
  * @author Justin Deoliveira, The Open Planning Project
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/filter/capability/ArithmeticOperators.java $
  */
 public interface ArithmeticOperators {
 

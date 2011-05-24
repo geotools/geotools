@@ -35,6 +35,8 @@ import static org.opengis.annotation.Specification.*;
  *   specification was mostly a workaround for introducing {@code IdentifiedObject} in ISO 19111
  *   without changing the {@code ReferenceSystem} definition in ISO 19115.
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/referencing/IdentifiedObject.java $
  * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract specification 2.0</A>
  * @author  Martin Desruisseaux (IRD)
  * @since   GeoAPI 2.0

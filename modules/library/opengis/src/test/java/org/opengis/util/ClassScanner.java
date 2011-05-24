@@ -26,6 +26,8 @@ import static org.junit.Assert.*;
  * Scans every classes in the OpenGIS classpath.
  *
  * @author Martin Desruisseaux (IRD)
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/test/java/org/opengis/util/ClassScanner.java $
  */
 final class ClassScanner implements Iterator<Class<?>> {
     /**

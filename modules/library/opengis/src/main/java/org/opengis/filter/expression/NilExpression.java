@@ -21,6 +21,8 @@ import java.io.Serializable;
  *
  * @author Jody Garnett (Refractions Research, Inc.)
  * @author Martin Desruisseaux (Geomatys)
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/filter/expression/NilExpression.java $
  */
 public final class NilExpression implements Expression, Serializable {
     /**

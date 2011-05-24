@@ -19,6 +19,8 @@ import static org.opengis.annotation.Specification.*;
  * A zero dimensional topological primitive in time.
  *
  * @author Alexander Petkov
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/temporal/TemporalNode.java $
  */
 @UML(identifier="TM_Node", specification=ISO_19108)
 public interface TemporalNode extends TemporalTopologicalPrimitive {

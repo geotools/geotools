@@ -21,6 +21,8 @@ import org.opengis.annotation.XmlElement;
  * our Record does not have a getID() method).
  * </p>
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/filter/identity/RecordId.java $
  * @version <A HREF="http://www.opengis.org/docs/02-059.pdf">Implementation specification 1.0</A>
  * @author Jody Garnett, Refractions Research Inc.
  * @since GeoAPI 2.1

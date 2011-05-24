@@ -22,6 +22,8 @@ import static org.opengis.annotation.Specification.*;
  *
  * &lt;&lt;P1, P2, P3&gt;, &lt;P4, P5, P6&gt;&gt;.
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/geometry/coordinate/Cylinder.java $
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0

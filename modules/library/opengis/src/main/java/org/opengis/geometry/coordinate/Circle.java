@@ -23,6 +23,8 @@ import static org.opengis.annotation.Specification.*;
  * This still requires at least 3 distinct non-co-linear points to be unambiguously
  * defined. The arc is simply extended until the first point is encountered.
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/geometry/coordinate/Circle.java $
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

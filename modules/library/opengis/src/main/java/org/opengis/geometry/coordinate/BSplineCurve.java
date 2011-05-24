@@ -26,6 +26,8 @@ import static org.opengis.annotation.Specification.*;
  * that has only two knots, 0.0, and 1.0, each of multiplicity (degree+1), is equivalent
  * to a simple Bézier curve.
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/geometry/coordinate/BSplineCurve.java $
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0

@@ -25,6 +25,8 @@ package org.opengis.parameter;
  *
  * @see ParameterValue#intValue
  * @see ParameterValue#doubleValue
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/parameter/InvalidParameterTypeException.java $
  */
 public class InvalidParameterTypeException extends IllegalStateException {
     /**

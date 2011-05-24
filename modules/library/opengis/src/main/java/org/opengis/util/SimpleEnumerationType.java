@@ -29,6 +29,8 @@ import javax.swing.ImageIcon;
  *       The name doesn't said what is the difference between this class and {@link CodeList}.
  *       Furthermore, according ISO 19103, enumeration and code list are not the same thing.
  *       This base class is closer to a code list than an enumeration.
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/util/SimpleEnumerationType.java $
  */
 @Deprecated
 public abstract class SimpleEnumerationType<E extends SimpleEnumerationType<E>> extends CodeList<E> {

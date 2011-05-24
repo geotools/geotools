@@ -20,6 +20,8 @@ import static org.opengis.annotation.Specification.*;
  * context only. For an image datum, the anchor point is usually either the centre of the image
  * or the corner of the image.
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/referencing/datum/ImageDatum.java $
  * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract specification 2.0</A>
  * @author  Martin Desruisseaux (IRD)
  * @since   GeoAPI 1.0

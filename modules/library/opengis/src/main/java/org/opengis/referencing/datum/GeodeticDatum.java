@@ -20,6 +20,8 @@ import static org.opengis.annotation.Specification.*;
  * (or sphere) that approximates the shape of the earth. Used also for Cartesian coordinate
  * system centered in this ellipsoid (or sphere).
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/referencing/datum/GeodeticDatum.java $
  * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract specification 2.0</A>
  * @author  Martin Desruisseaux (IRD)
  * @since   GeoAPI 1.0

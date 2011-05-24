@@ -22,6 +22,8 @@ import static org.opengis.annotation.Specification.*;
  * be used to interpolate other positions. Any other point in the {@link #getControlPoints controlPoint}
  * array must fall on this geodesic.
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/geometry/coordinate/Geodesic.java $
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

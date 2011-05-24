@@ -22,6 +22,8 @@ import static org.opengis.annotation.Specification.*;
 /**
  * Indicates which sort of curve may be approximated by a particular B-spline.
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/opengis/src/main/java/org/opengis/geometry/coordinate/SplineCurveForm.java $
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0

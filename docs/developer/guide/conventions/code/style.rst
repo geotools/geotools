@@ -110,6 +110,8 @@ We do encourage developers to:
 * Use \@author tags to credit individuals involved, you can credit their organisation in brackets
 * Use \@since to list the version number in which the interface first appeared
 * Update \@version annotation if the interface is ever modified
+* If you would like to include any diagrams or pictures please add them to a *doc-files* folder.
+  (This is a reminder of normal javadoc convention).
 * We have a custom \@source annotation to help our javadocs look pretty (and reference the
   appropraite module).
   
@@ -122,10 +124,15 @@ We do encourage developers to:
   not already contain it::
     
     cd trunk/build/maven/javadoc
-    mvn exec:java -Dexec.mainClass=org.geotools.maven.tools.InsertSourceTag -Dexec.args="../../../modules/unsupported/wps/src"
+    mvn exec:java -Dexec.args="../../../modules/unsupported/wps/src"
 
-  Adding ``--replace`` after the source path argument above will cause any existing \@source tags to be replaced by newly
+  Note, there is no need to specify the ``exec.mainClass`` argument on the command line as this is specified in the 
+  javadoc module's pom.xml file.
+
+  Adding ``--replace`` after the source path argument above will force any existing \@source tags to be replaced by newly
   generated ones.
+
+  Adding ``--anyclass`` will result in non-public classes also being processed.
 
   Adding ``--svn`` will result in the \@source tag content being enclosed in svn keyword delimiters (\$URL, \$) which enables
   svn keyword expansion to update the path if the source file is later moved to another package or module. Note, keyword
@@ -134,5 +141,3 @@ We do encourage developers to:
 
     find modules/unsupported/wps/src -type f -name '*.java' -exec svn ps svn:keywords "Id URL" {} \;
 
-* If you would like to include any diagrams or pictures please add them to a *doc-files* folder.
-  (This is a reminder of normal javadoc convention).

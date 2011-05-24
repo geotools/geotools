@@ -32,6 +32,7 @@ import org.opengis.filter.PropertyIsBetween;
  * filter.
  *
  * @author Rob Hranac, TOPP
+ *
  * @source $URL$
  * @version $Id$
  *

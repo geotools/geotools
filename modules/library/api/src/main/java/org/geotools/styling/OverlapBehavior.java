@@ -48,6 +48,7 @@ import org.geotools.filter.ConstantExpression;
  *
  * @author Justin Deoliveira, The Open Planning Project
  *
+ *
  * @source $URL$
  * @deprecated Please use org.opengis.style.OverlapBehavior
  */

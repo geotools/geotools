@@ -36,6 +36,7 @@ import org.geotools.data.simple.SimpleFeatureSource;
  * @see SimpleFeature
  *
  * @author Jody Garnett, Refractions Research
+ *
  * @source $URL$
  * @version $Id$
  */

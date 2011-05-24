@@ -73,6 +73,7 @@ package org.geotools.util;
  * Note the use of try and catch to report exceptions.
  *
  * @since 2.0
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (PMO, IRD)

@@ -28,6 +28,7 @@ import org.opengis.filter.identity.FeatureId;
  * uniquely.
  *
  * @author Rob Hranac, TOPP
+ *
  * @source $URL$
  * @version $Id$
  *

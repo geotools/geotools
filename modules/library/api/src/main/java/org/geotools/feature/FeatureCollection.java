@@ -92,6 +92,7 @@ import org.opengis.util.ProgressListener;
  * @author Rob Hranac, VFNY
  * @author Ian Schneider, USDA-ARS
  * @author Jody Garnett, Refractions Research, Inc.
+ *
  * @source $URL$
  * @version $Id$
  *

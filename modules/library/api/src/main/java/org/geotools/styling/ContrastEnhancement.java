@@ -57,6 +57,7 @@ import org.opengis.style.ContrastMethod;
  * enhancement is performed.
  *
  * @author iant
+ *
  * @source $URL$
  * 
  */

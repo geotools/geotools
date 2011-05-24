@@ -27,6 +27,7 @@ import org.opengis.feature.type.FeatureType;
 /**
  * A simple event object to represent all events triggered by FeatureCollection
  * instances (typically change events).
+ *
  * @source $URL$
  */
 public class CollectionEvent extends EventObject {

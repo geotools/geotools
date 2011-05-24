@@ -38,6 +38,7 @@ import org.opengis.referencing.operation.TransformException;
  * or target dimensions. This transformer is not thread-safe.
  *
  * @since 2.1
+ *
  * @source $URL$
  * @version $Id$
  * @author Andrea Aime

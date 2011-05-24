@@ -25,6 +25,7 @@ package org.geotools.data;
  * problems from external services, providing the root cause is
  * important.
  * </p>
+ *
  * @source $URL$
  */
 public class DataSourceException extends java.io.IOException {

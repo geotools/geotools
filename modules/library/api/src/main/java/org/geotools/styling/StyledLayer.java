@@ -25,6 +25,7 @@ package org.geotools.styling;
  * <p>
  * TODO: investigate why this is here.
  * </p>
+ *
  * @source $URL$
  */
 public interface StyledLayer {

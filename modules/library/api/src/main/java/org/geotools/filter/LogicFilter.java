@@ -28,6 +28,7 @@ import org.opengis.filter.BinaryLogicOperator;
  *
  * @author Rob Hranac, TOPP
  * @author Chris Holmes, TOPP
+ *
  * @source $URL$
  * @version $Id$
  *

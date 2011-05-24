@@ -63,6 +63,7 @@ import org.opengis.filter.expression.Expression;
  * </p>
  *
  * @author James Macgill
+ *
  * @source $URL$
  * @version $Id$
  */

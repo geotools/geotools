@@ -25,6 +25,7 @@ import org.opengis.filter.expression.Expression;
  * As of Symbology Encoding 1.1 specificationt here is a clean way to work with character
  * symbols - using an ExternalMark.getMarkIndex() to indicate which character to use.
  * 
+ *
  * @source $URL$
  * @deprecated Please use a ExternalMark.getMarkIndex() to pick out a character from a true type font
  */

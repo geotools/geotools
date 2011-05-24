@@ -25,6 +25,7 @@ import org.opengis.filter.IncludeFilter;
  *
  * @deprecated use {@link org.opengis.filter.FilterVisitor}
  *
+ *
  * @source $URL$
  */
 public interface FilterVisitor2 extends FilterVisitor {

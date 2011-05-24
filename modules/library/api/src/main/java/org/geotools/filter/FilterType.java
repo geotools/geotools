@@ -27,6 +27,7 @@ package org.geotools.filter;
  * </code></pre>
  *
  * @author aaime
+ *
  * @source $URL$
  * @deprecated please use instance of check against geoapi class.
  */

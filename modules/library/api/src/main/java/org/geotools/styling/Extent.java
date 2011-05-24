@@ -41,6 +41,7 @@ package org.geotools.styling;
  * </p>
  *
  * @author Justin Deoliveira, The Open Planning Project
+ *
  * @source $URL$
  */
 public interface Extent {

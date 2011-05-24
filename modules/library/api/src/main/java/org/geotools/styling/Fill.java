@@ -74,6 +74,7 @@ import org.opengis.style.StyleVisitor;
  * </p>
  *
  * @author James Macgill, CCG
+ *
  * @source $URL$
  * @version $Id$
  */

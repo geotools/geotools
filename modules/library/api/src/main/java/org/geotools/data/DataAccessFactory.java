@@ -89,6 +89,7 @@ import org.opengis.util.InternationalString;
  * </p>
  * 
  * @author Jody Garnett (Refractions Research)
+ *
  * @source $URL$
  */
 public interface DataAccessFactory extends Factory {

@@ -84,6 +84,7 @@ import org.opengis.filter.expression.Expression;
  * $Id$
  *
  * @author Ian Turton, CCG
+ *
  * @source $URL$
  */
 public interface TextSymbolizer extends org.opengis.style.TextSymbolizer,Symbolizer {

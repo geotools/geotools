@@ -45,6 +45,7 @@ import org.opengis.filter.spatial.DistanceBufferOperator;
  * <p></p>
  *
  * @author Chris Holmes, TOPP
+ *
  * @source $URL$
  * @version $Id$
  *

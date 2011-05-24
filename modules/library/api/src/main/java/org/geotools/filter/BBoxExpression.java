@@ -23,6 +23,7 @@ import com.vividsolutions.jts.geom.Envelope;
  * A convenience expression to form a geometry literal from an  envelope.
  *
  * @author Ian Turton, CCG
+ *
  * @source $URL$
  * @version $Id$
  */

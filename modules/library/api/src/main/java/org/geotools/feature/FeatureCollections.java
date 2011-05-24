@@ -28,6 +28,7 @@ import org.geotools.factory.GeoTools;
  * A utility class for working with FeatureCollections.
  * Provides a mechanism for obtaining a SimpleFeatureCollection instance.
  * @author  Ian Schneider
+ *
  * @source $URL$
  */
 public abstract class FeatureCollections implements Factory {

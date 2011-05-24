@@ -22,6 +22,7 @@ import org.opengis.style.Description;
 
 /**
  * Contains label shield hack
+ *
  * @source $URL$
  */
 public interface TextSymbolizer2 extends TextSymbolizer {

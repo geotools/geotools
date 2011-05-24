@@ -27,6 +27,7 @@ import org.opengis.feature.simple.SimpleFeature;
  * refer to an environmental variable "DPI", for details review the SLD specification.
  *
  * @author James
+ *
  * @source $URL$
  */
 public interface EnvironmentVariable extends Expression {

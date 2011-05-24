@@ -26,6 +26,7 @@ import org.opengis.style.StyleVisitor;
  * "anchor" for positioning it relative to a point geometry.
  * 
  * @author Ian Turton
+ *
  * @source $URL$
  * @version $Id$
  */

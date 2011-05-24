@@ -24,6 +24,7 @@ package org.geotools.data;
  * The single instance of this class is available as
  * <code>FeatureLock.TRANSACTION</code>.
  * </p>
+ *
  * @source $URL$
  */
 class CurrentTransactionLock extends FeatureLock {

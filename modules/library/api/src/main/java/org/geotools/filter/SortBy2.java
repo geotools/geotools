@@ -34,6 +34,7 @@ package org.geotools.filter;
  * to the use of SortBy.
  * <p>
  * @author Jody Garnett, Refractions Research.
+ *
  * @source $URL$
  */
 public interface SortBy2 extends SortBy {

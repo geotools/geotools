@@ -32,8 +32,8 @@ import org.opengis.filter.sort.SortBy;
  * @author Gabriel Roldan (TOPP)
  * @version $Id$
  * @since 2.5.x
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/library/api/src/main/java/org/geotools/data/QueryCapabilities.java $
+ *
+ * @source $URL$
  */
 public class QueryCapabilities {
 

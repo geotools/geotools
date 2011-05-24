@@ -19,6 +19,7 @@ package org.geotools.feature;
 
 /**
  * Indicates client class has attempted to create an invalid schema.
+ *
  * @source $URL$
  */
 public class SchemaException extends Exception {

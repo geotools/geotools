@@ -31,6 +31,7 @@ import org.opengis.referencing.operation.TransformException;
  * {@linkplain CoordinateSequence coordinate sequence}.
  *
  * @since 2.1
+ *
  * @source $URL$
  * @version $Id$
  * @author Andrea Aime

@@ -2,6 +2,11 @@ package org.geotools.styling;
 
 import org.opengis.util.InternationalString;
 
+/**
+ * 
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/api/src/main/java/org/geotools/styling/Description.java $
+ */
 public interface Description extends org.opengis.style.Description {
 
     /**

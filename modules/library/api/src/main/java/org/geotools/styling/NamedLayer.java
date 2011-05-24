@@ -46,6 +46,7 @@ import java.util.List;
  * &lt;/xsd:element&gt;
  * </code></pre>
  * </p>
+ *
  * @source $URL$
  */
 public interface NamedLayer extends StyledLayer {

@@ -37,6 +37,7 @@ import org.opengis.feature.simple.SimpleFeature;
  * are kept in memory.
  * </p>
  * @author Jody Garnett, Refractions Research Inc.
+ *
  * @source $URL$
  */
 public interface RandomFeatureAccess extends SimpleFeatureCollection {

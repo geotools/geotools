@@ -41,6 +41,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @author Justin Deoliveira, The Open Planning Project
  * @since 2.5
  *
+ *
  * @source $URL$
  */
 public interface ResourceInfo {

@@ -48,6 +48,7 @@ import org.opengis.filter.expression.Function;
  * factories from a central point.
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

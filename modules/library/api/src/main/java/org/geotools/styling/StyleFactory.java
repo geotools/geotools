@@ -36,6 +36,7 @@ import org.opengis.util.InternationalString;
 
 /**
  * Abstract base class for implementing style factories.
+ *
  * @source $URL$
  */
 public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {

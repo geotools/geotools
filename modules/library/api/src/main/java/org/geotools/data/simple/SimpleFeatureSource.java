@@ -11,6 +11,8 @@ import org.opengis.filter.Filter;
 
 /**
  * FeatureSource explicitly working with SimpleFeatureCollection.
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/api/src/main/java/org/geotools/data/simple/SimpleFeatureSource.java $
  */
 public interface SimpleFeatureSource extends FeatureSource<SimpleFeatureType,SimpleFeature> {
     public SimpleFeatureCollection getFeatures() throws IOException;

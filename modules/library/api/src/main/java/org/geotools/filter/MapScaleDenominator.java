@@ -21,6 +21,7 @@ package org.geotools.filter;
  * DOCUMENT ME!
  *
  * @author James
+ *
  * @source $URL$
  */
 public interface MapScaleDenominator extends EnvironmentVariable {

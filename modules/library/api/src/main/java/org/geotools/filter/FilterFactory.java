@@ -37,6 +37,7 @@ import org.geotools.factory.Factory;
 /**
  * This specifies the interface to create filters.
  *
+ *
  * @source $URL$
  * @version $Id$
  *

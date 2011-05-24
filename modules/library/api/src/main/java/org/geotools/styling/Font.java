@@ -33,6 +33,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * font-style, font-weight and font-size.
  *
  * @author Ian Turton, CCG
+ *
  * @source $URL$
  * @version $Id$
  */

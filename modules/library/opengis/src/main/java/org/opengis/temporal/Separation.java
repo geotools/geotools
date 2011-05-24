@@ -23,6 +23,8 @@ import static org.opengis.annotation.Specification.*;
  *
  * @todo The Javadoc suggest that this interface should extends some kind of
  *       {@linkplain TemporalGeometricPrimitive temporal geometric primitive}.
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/temporal/Separation.java $
  */
 @UML(identifier="TM_Separation", specification=ISO_19108)
 public interface Separation {

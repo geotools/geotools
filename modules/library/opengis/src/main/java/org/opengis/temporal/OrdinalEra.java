@@ -22,6 +22,8 @@ import static org.opengis.annotation.Specification.*;
  * Provides a reference to the ordinal era in which the instant occurs.
  *
  * @author Alexander Petkov
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/temporal/OrdinalEra.java $
  */
 @UML(identifier="TM_OrdinalEra", specification=ISO_19108)
 public interface OrdinalEra {

@@ -38,6 +38,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * {@link java.util.RandomAccess} interface. Otherwise, users should read the positions through the
  * {@link #iterator() iterator()} instead.
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/geometry/coordinate/PointArray.java $
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

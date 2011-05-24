@@ -20,6 +20,8 @@ import static org.opengis.annotation.Specification.*;
  *
  * @author Stephane Fellah (Image Matters)
  * @author Alexander Petkov
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/temporal/TemporalPosition.java $
  */
 @UML(identifier="TM_TemporalPosition", specification=ISO_19108)
 public interface TemporalPosition {

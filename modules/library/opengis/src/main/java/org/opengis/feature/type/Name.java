@@ -48,6 +48,8 @@ import org.opengis.annotation.UML;
  * </p>
  *
  * @author Jody Garnett (Refractions Research, Inc.)
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/feature/type/Name.java $
  */
 public interface Name {
 

@@ -16,6 +16,8 @@ import org.opengis.annotation.XmlElement;
  * 
  * @author Niels Charlier, Curtin University of Technology
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/filter/MultiValuedFilter.java $
  */
 public interface MultiValuedFilter extends Filter {
         

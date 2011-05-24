@@ -17,6 +17,8 @@ import org.opengis.feature.type.AttributeDescriptor;
  * 
  * @author Jody Garnett (Refractions Research, Inc.)
  * @since GeoAPI 2.2
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/feature/IllegalAttributeException.java $
  */
 public class IllegalAttributeException extends IllegalArgumentException {
     private static final long serialVersionUID = 3373066465585246605L;

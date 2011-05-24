@@ -83,6 +83,8 @@ import org.opengis.feature.Property;
  *
  * @author Jody Garnett (Refractions Research)
  * @author Justin Deoliveira (The Open Planning Project)
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/feature/type/ComplexType.java $
  */
 public interface ComplexType extends AttributeType {
     /**

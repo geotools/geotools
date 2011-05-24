@@ -23,6 +23,8 @@ import org.opengis.annotation.Extension;
  *
  * @see org.opengis.referencing.crs.ProjectedCRS
  * @see <A HREF="http://mathworld.wolfram.com/AzimuthalProjection.html">Azimuthal projection on MathWorld</A>
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/referencing/operation/PlanarProjection.java $
  */
 @Extension
 public interface PlanarProjection extends Projection {

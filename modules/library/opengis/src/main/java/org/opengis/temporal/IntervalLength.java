@@ -24,6 +24,8 @@ import static org.opengis.annotation.Specification.*;
  * @author Stephane Fellah (Image Matters)
  * @author Alexander Petkov
  * @author Martin Desruisseaux (IRD)
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/temporal/IntervalLength.java $
  */
 @UML(identifier="TM_IntervalLength", specification=ISO_19108)
 public interface IntervalLength extends Duration {

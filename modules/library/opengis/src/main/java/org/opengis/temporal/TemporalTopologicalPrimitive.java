@@ -20,6 +20,8 @@ import static org.opengis.annotation.Specification.*;
  * topological primitives within a topological complex.
  *
  * @author Alexander Petkov
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/temporal/TemporalTopologicalPrimitive.java $
  */
 @UML(identifier="TM_TopologicalPrimitive", specification=ISO_19108)
 public interface TemporalTopologicalPrimitive {

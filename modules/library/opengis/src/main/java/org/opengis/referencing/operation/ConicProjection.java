@@ -23,6 +23,8 @@ import org.opengis.annotation.Extension;
  *
  * @see org.opengis.referencing.crs.ProjectedCRS
  * @see <A HREF="http://mathworld.wolfram.com/ConicProjection.html">Conic projection on MathWorld</A>
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/referencing/operation/ConicProjection.java $
  */
 @Extension
 public interface ConicProjection extends Projection {

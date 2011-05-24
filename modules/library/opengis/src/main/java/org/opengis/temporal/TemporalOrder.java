@@ -24,6 +24,8 @@ import static org.opengis.annotation.Specification.*;
  *
  * @todo The javadoc suggests that this interface should extends some kind of
  *       {@link TemporalPrimitive}.
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/temporal/TemporalOrder.java $
  */
 @UML(identifier="TM_Order", specification=ISO_19108)
 public interface TemporalOrder {

@@ -29,6 +29,8 @@ import org.opengis.annotation.XmlElement;
  * state or operations between systems.
  * <p>
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/filter/expression/Literal.java $
  * @version <A HREF="http://www.opengis.org/docs/02-059.pdf">Implementation specification 1.0</A>
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.0

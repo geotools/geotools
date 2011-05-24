@@ -32,6 +32,8 @@ import org.opengis.annotation.UML;
  *
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/util/CodeList.java $
  */
 public abstract class CodeList<E extends CodeList<E>> implements Comparable<E>, Serializable {
     /**

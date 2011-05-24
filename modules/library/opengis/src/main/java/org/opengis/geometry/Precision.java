@@ -23,6 +23,8 @@ package org.opengis.geometry;
  *
  * @author Jody Garnett
  * @since GeoAPI 2.1
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/geometry/Precision.java $
  */
 public interface Precision extends Comparable<Precision> {
     /**

@@ -29,6 +29,8 @@ import static org.junit.Assert.*;
  * Tests every {@link CodeList}.
  *
  * @author Martin desruisseaux (IRD)
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/test/java/org/opengis/util/CodeListTest.java $
  */
 public final class CodeListTest {
     /**

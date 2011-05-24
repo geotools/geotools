@@ -21,6 +21,8 @@ import static org.junit.Assert.*;
  * Tests the value of key constants.
  *
  * @author Martin Desruisseaux (Geomatys)
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/test/java/org/opengis/referencing/KeyConstantsTest.java $
  */
 public final class KeyConstantsTest {
     /**

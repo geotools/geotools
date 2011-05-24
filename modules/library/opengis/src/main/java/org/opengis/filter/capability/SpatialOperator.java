@@ -37,6 +37,8 @@ import java.util.Collection;
  * FilterCapabilities.
  * 
  * @author <a href="mailto:schneider@lat-lon.de">Markus Schneider </a>
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/filter/capability/SpatialOperator.java $
  */
 public interface SpatialOperator extends Operator {
     /**

@@ -29,6 +29,8 @@ import static org.opengis.annotation.Specification.*;
  * @since GeoAPI 2.1
  *
  * @see RecordType
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/opengis/src/main/java/org/opengis/util/Record.java $
  */
 @UML(identifier="Record", specification=ISO_19103)
 public interface Record {

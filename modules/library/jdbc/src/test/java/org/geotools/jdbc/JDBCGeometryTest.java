@@ -36,6 +36,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * database. You might need to override some of the tests method to fix the expectations
  * for specific geometry class types.
  *
+ *
  * @source $URL$
  */
 public abstract class JDBCGeometryTest extends JDBCTestSupport {

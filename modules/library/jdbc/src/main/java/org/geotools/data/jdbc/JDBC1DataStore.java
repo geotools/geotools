@@ -144,6 +144,7 @@ import com.vividsolutions.jts.geom.Envelope;
  * @author Sean Geoghegan, Defence Science and Technology Organisation
  * @author Chris Holmes, TOPP
  * @author Andrea Aime
+ *
  * @source $URL$
  * @version $Id$
  * 

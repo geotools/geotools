@@ -44,6 +44,7 @@ import org.opengis.feature.type.GeometryDescriptor;
  * make requests cached allowing at the same time to keep it in-line with a  changing database.
  *
  * @author wolf
+ *
  * @source $URL$
  * 
  * @deprecated scheduled for removal in 2.7, use classes in org.geotools.jdbc

@@ -106,6 +106,7 @@ import org.geotools.data.jdbc.fidmapper.FIDMapperFactory;
  * 
  * @author Amr Alam, Refractions Research
  * @author Jody Garnett, Refractions Research
+ *
  * @source $URL$
  * 
  * @deprecated scheduled for removal in 2.7, use classes in org.geotools.jdbc

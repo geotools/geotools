@@ -29,6 +29,7 @@ import org.opengis.feature.simple.SimpleFeature;
  * the resulting fid follow the &ltfeatureTypeName&gt.&ltbasic_fid&gt pattern.
  *
  * @author wolf
+ *
  * @source $URL$
  * @deprecated scheduled for removal in 2.7, use classes in org.geotools.jdbc
  */

@@ -47,8 +47,8 @@ import org.geotools.factory.FactoryRegistry;
  * Example:<br/><code>org.geotools.data.jdbc.DBCPDataSourceFactory</code>
  * </p>
  * 
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/unsupported/h2/src/main/java/org/geotools/data/jdbc/ds/DataSourceFinder.java $
+ *
+ * @source $URL$
  */
 public final class DataSourceFinder {
     /** The logger for the filter module. */

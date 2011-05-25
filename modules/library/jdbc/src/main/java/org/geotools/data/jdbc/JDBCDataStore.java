@@ -108,6 +108,7 @@ import org.opengis.filter.Filter;
  * @author Sean  Geoghegan, Defence Science and Technology Organisation
  * @author Chris Holmes, TOPP
  * @author Andrea Aime
+ *
  * @source $URL$
  * @version $Id$
  * 

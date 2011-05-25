@@ -24,6 +24,7 @@ import java.sql.SQLException;
  * @author Justin Deoliveira, OpenGEO
  *
  *
+ *
  * @source $URL$
  */
 public abstract class JDBCEmptyTestSetup extends JDBCDelegatingTestSetup {

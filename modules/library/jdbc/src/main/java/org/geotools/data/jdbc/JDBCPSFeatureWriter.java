@@ -47,8 +47,8 @@ import org.opengis.feature.type.GeometryDescriptor;
  * </p>
  * 
  * @author Andrea Aime
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/library/jdbc/src/main/java/org/geotools/data/jdbc/JDBCPSFeatureWriter.java $
+ *
+ * @source $URL$
  *         
  * @deprecated scheduled for removal in 2.7, use classes in org.geotools.jdbc
  */

@@ -30,6 +30,7 @@ import org.geotools.factory.GeoTools;
  * @author Administrator
  *
  *
+ *
  * @source $URL$
  */
 public class JNDIDataSourceFactory extends AbstractDataSourceFactorySpi {

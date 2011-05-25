@@ -34,6 +34,8 @@ import org.geotools.util.logging.Logging;
  * 
  * @author Andrea Aime - OpenGeo
  * 
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/jdbc/src/main/java/org/geotools/jdbc/HeuristicPrimaryKeyFinder.java $
  */
 public class HeuristicPrimaryKeyFinder extends PrimaryKeyFinder {
     protected static final Logger LOGGER = Logging.getLogger(HeuristicPrimaryKeyFinder.class);

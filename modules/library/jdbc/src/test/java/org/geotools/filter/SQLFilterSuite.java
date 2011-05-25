@@ -29,6 +29,7 @@ import junit.framework.TestSuite;
  *
  * @task REVISIT: Is there still need for this with maven?  It runs everything
  *       that ends with Test.
+ *
  * @source $URL$
  */
 public class SQLFilterSuite extends TestCase {

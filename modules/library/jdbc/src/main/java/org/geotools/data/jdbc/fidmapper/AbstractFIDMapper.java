@@ -26,6 +26,7 @@ package org.geotools.data.jdbc.fidmapper;
  * same way in all fid mappers.
  *
  * @author wolf
+ *
  * @source $URL$
  * @deprecated scheduled for removal in 2.7, use classes in org.geotools.jdbc
  */

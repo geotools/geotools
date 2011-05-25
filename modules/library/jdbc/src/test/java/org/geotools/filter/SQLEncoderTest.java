@@ -30,6 +30,7 @@ import org.opengis.filter.expression.Add;
  * @author Chris Holmes, TOPP
  *
  * @task REVISIT: validate these so we know if they break.
+ *
  * @source $URL$
  */
 public class SQLEncoderTest extends SQLFilterTestSupport {

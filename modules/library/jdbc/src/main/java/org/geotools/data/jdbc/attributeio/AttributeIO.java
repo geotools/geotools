@@ -26,6 +26,7 @@ import java.sql.ResultSet;
  * how to parse and encode Feature attributes into resultset fields
  *
  * @author wolf
+ *
  * @source $URL$
  * 
  * @deprecated scheduled for removal in 2.7, use classes in org.geotools.jdbc

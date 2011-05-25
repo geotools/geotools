@@ -79,6 +79,7 @@ import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
  * @author Justin Deoliveira, The Open Plannign Project.
  *
  *
+ *
  * @source $URL$
  */
 public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, SimpleFeature> {

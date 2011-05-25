@@ -34,6 +34,7 @@ import org.opengis.feature.simple.SimpleFeature;
  * each time it is loaded from the datastore.
  *
  * @author wolf
+ *
  * @source $URL$
  * @deprecated scheduled for removal in 2.7, use classes in org.geotools.jdbc
  */

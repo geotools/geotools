@@ -24,6 +24,8 @@ import org.geotools.jdbc.VirtualTableParameter.Validator;
  * A regular expression based validator
  * 
  * @author Andrea Aime - OpenGeo
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/jdbc/src/main/java/org/geotools/jdbc/RegexpValidator.java $
  */
 public class RegexpValidator implements Validator {
     Pattern pattern;

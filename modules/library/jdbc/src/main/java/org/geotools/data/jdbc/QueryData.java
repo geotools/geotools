@@ -53,8 +53,8 @@ import org.opengis.feature.type.GeometryDescriptor;
  * 
  * 
  * @author aaime
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/library/jdbc/src/main/java/org/geotools/data/jdbc/QueryData.java $
+ *
+ * @source $URL$
  * @deprecated scheduled for removal in 2.7, use classes in org.geotools.jdbc
  */
 public class QueryData implements AttributeReader, AttributeWriter {

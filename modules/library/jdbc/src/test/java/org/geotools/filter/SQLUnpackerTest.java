@@ -28,6 +28,7 @@ import org.geotools.filter.expression.AddImpl;
  * Unit test for SQLUnpacker.
  *
  * @author Chris Holmes, TOPP
+ *
  * @source $URL$
  */
 public class SQLUnpackerTest extends SQLFilterTestSupport {

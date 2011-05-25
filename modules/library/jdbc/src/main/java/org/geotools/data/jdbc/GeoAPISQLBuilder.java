@@ -54,6 +54,7 @@ import org.opengis.filter.sort.SortOrder;
  * </p>
  *
  * @author Sean Geoghegan, Defence Science and Technology Organisation.
+ *
  * @source $URL$
  * 
  * @deprecated scheduled for removal in 2.7, use classes in org.geotools.jdbc

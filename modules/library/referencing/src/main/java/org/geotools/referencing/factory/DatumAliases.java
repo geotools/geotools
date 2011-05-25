@@ -67,6 +67,7 @@ import org.geotools.referencing.ReferencingFactoryFinder;
  * factory will takes advantage of the aliases table.
  *
  * @since 2.1
+ *
  * @source $URL$
  * @version $Id$
  * @author Rueben Schulz

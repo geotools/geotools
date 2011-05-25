@@ -34,6 +34,7 @@ import static org.junit.Assert.*;
 /**
  * Tests the {@link GeocentricTranslation} class.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

@@ -43,6 +43,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * 
  * @author Johann Sorel (AlterSIG)
  *
+ *
  * @source $URL$
  */
 public class Glyph {

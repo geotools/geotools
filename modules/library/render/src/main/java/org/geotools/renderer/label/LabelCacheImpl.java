@@ -85,8 +85,8 @@ import com.vividsolutions.jts.operation.linemerge.LineMerger;
  * @author jeichar
  * @author dblasby
  * @author Andrea Aime - OpenGeo
- * @source $URL:
- *         https://svn.codehaus.org/geoserver/branches/1.7.x/src/wms/src/main/java/org/vfny/geoserver/wms/responses/GSLabelCache.java $
+ *
+ * @source $URL$
  */
 public final class LabelCacheImpl implements LabelCache {
     

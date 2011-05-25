@@ -42,6 +42,7 @@ import org.geotools.resources.i18n.ErrorKeys;
  * Abstract parameter value or group of parameter values.
  *
  * @since 2.1
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

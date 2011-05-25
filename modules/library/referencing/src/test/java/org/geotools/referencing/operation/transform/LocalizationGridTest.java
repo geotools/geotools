@@ -26,6 +26,7 @@ import static org.junit.Assert.*;
 /**
  * Test the {@link LocalizationGrid} implementation.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Remi Eve

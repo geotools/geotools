@@ -27,6 +27,7 @@ import org.geotools.referencing.wkt.Formatter;
  * public because the {@code formatWKT(Formatter)} method usually has a protected access.
  *
  * @since 2.0
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

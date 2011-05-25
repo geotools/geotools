@@ -30,6 +30,8 @@ import org.opengis.parameter.ParameterValue;
  * that will cut geometries 45° away from the projection central meridian  
  * 
  * @author Andrea Aime - OpenGeo
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/render/src/main/java/org/geotools/renderer/crs/PolarStereographicHandlerFactory.java $
  */
 public class PolarStereographicHandlerFactory implements ProjectionHandlerFactory {
 

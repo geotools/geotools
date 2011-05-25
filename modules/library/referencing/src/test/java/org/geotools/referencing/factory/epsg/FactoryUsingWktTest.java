@@ -37,6 +37,7 @@ import static org.junit.Assert.*;
 /**
  * Tests {@link FactoryUsingWKT}.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (Geomatys)

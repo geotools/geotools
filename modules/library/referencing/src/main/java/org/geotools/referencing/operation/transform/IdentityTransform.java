@@ -38,6 +38,7 @@ import org.geotools.referencing.operation.matrix.MatrixFactory;
  * own optimisations.
  *
  * @since 2.0
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

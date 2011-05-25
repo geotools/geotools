@@ -30,6 +30,7 @@ import org.opengis.temporal.Period;
  *
  * @author Mehdi Sidhoum (Geomatys)
  *
+ *
  * @source $URL$
  */
 public class DefaultPeriodTest {

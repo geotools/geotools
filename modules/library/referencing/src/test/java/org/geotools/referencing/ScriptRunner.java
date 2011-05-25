@@ -32,6 +32,7 @@ import org.opengis.geometry.MismatchedDimensionException;
  * used by {@link ScriptTest}. It can also be run from the command line for executing all
  * files specified in argument.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

@@ -54,6 +54,7 @@ import org.geotools.resources.i18n.Errors;
  * coordinate points. Input points must be longitudes, latitudes and heights above the ellipsoid.
  *
  * @since 2.0
+ *
  * @source $URL$
  * @version $Id$
  * @author Frank Warmerdam

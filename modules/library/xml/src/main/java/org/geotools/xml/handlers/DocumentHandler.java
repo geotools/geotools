@@ -34,6 +34,7 @@ import org.xml.sax.SAXNotRecognizedException;
  * </p>
  *
  * @author dzwiers www.refractions.net
+ *
  * @source $URL$
  */
 public class DocumentHandler extends XMLElementHandler {

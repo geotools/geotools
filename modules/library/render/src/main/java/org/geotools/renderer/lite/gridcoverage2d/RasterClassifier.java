@@ -47,6 +47,7 @@ import org.geotools.renderer.i18n.Errors;
 /**
  * Images are created using the        {@code                LinearClassifier.CRIF}        inner class, where "CRIF" stands for       {@link java.awt.image.renderable.ContextualRenderedImageFactory}        . The image operation name is "org.geotools.RasterClassifier".
  *
+ *
  * @source $URL$
  * @version        $Id$
  * @author        Simone Giannecchini - GeoSolutions

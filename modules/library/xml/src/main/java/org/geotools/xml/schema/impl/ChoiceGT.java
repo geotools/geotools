@@ -28,6 +28,7 @@ import org.geotools.xml.schema.ElementGrouping;
  * </p>
  *
  * @author dzwiers
+ *
  * @source $URL$
  */
 public class ChoiceGT implements Choice {

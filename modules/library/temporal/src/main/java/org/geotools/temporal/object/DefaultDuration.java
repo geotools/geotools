@@ -23,6 +23,7 @@ import org.opengis.temporal.Duration;
  *
  * @author Mehdi Sidhoum (Geomatys)
  *
+ *
  * @source $URL$
  */
 public abstract class DefaultDuration implements Duration {

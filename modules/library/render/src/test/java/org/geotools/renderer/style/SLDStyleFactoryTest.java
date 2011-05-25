@@ -54,6 +54,7 @@ import com.vividsolutions.jts.geom.Point;
 /**
  *
  * @author jamesm
+ *
  * @source $URL$
  */
 public class SLDStyleFactoryTest extends TestCase {

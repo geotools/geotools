@@ -32,6 +32,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * </p>
  * @author Jody Garnett
  *
+ *
  * @source $URL$
  */
 public interface GlyphFactory {

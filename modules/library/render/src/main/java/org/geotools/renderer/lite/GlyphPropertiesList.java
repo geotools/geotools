@@ -25,6 +25,7 @@ import org.opengis.filter.expression.Expression;
 /**
  *
  * @author  jfc173
+ *
  * @source $URL$
  */
 public class GlyphPropertiesList {

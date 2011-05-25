@@ -36,6 +36,8 @@ import javax.imageio.ImageIO;
  * memory (it is streamed through the path iterator)
  * 
  * @author Andrea Aime - OpenGeo
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/render/src/main/java/org/geotools/renderer/lite/DashedShape.java $
  */
 public class DashedShape implements Shape {
     Shape shape;

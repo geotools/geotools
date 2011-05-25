@@ -106,6 +106,7 @@ import org.geotools.util.UnsupportedImplementationException;
  * 
  *
  * @since 2.1
+ *
  * @source $URL$
  * @version $Id$
  * @author Jody Garnett (Refractions Research)

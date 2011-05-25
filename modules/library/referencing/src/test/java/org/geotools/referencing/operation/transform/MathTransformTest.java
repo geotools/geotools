@@ -51,6 +51,7 @@ import static org.junit.Assert.*;
  * Actually, there is many {@link ConcatenatedTransform}, each optimized for special cases.
  * This test tries to test a wide range of subclasses.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

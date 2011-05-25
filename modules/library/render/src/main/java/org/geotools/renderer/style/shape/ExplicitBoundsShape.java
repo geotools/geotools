@@ -29,6 +29,8 @@ import java.awt.geom.Rectangle2D;
  * actual shape's bounds).
  * 
  * @author fmoura
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/render/src/main/java/org/geotools/renderer/style/shape/ExplicitBoundsShape.java $
  */
 public class ExplicitBoundsShape implements Shape {
 

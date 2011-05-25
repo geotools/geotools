@@ -37,6 +37,7 @@ import static org.junit.Assert.*;
 /**
  * Tests the {@link WarpTransform2D} and {@link WarpAdapter} classes.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

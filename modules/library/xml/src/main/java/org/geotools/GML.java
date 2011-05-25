@@ -80,6 +80,8 @@ import com.vividsolutions.jts.geom.Geometry;
  * grain control over the encoding process please review the source code of this class and take your
  * own measures.
  * <p>
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/xml/src/main/java/org/geotools/GML.java $
  */
 public class GML {
     /** Version of encoder to use */

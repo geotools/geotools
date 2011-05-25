@@ -51,6 +51,7 @@ import org.geotools.resources.i18n.VocabularyKeys;
  * use none. Each coordinate operation using the method assigns values to these parameters.
  *
  * @since 2.1
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

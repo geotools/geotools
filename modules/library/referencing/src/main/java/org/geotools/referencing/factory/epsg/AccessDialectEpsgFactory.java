@@ -29,6 +29,7 @@ import org.geotools.factory.Hints;
  * EPSG database is MS-Access there is very little work to do in our {@link #adaptSQL} method.
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Jody Garnett

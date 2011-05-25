@@ -48,6 +48,7 @@ import org.geotools.styling.Rule;
  * NOTE: a) this also sets up the image -- clears it et al.
  * 
  * @author dblasby
+ *
  * @source $URL$
  */
 public final class LiteFeatureTypeStyle {

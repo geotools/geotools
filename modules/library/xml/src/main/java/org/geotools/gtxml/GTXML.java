@@ -13,6 +13,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * <p>
  * This is a simple utility class; if you need more control please look at the implementation of
  * the provided methods.
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/xml/src/main/java/org/geotools/gtxml/GTXML.java $
  */
 public class GTXML {
     /**

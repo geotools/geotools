@@ -43,6 +43,7 @@ import org.xml.sax.SAXNotRecognizedException;
  *
  * @author dzwiers, Refractions Research, Inc. http://www.refractions.net
  * @author $Author:$ (last modification)
+ *
  * @source $URL$
  * @version $Id$
  */

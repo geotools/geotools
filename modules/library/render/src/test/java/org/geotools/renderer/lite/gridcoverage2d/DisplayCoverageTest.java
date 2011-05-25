@@ -51,6 +51,7 @@ import org.junit.Test;
  * Tests rendering a GridCoverage2D object directly (ie. not via a coverage reader).
  * 
  * @author mbedward
+ *
  * @source $URL$
  * @since 2.7
  * @version $Id$

@@ -37,6 +37,7 @@ import org.geotools.resources.i18n.ErrorKeys;
 /**
  * The translation to apply for different values of {@link PixelOrientation}.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

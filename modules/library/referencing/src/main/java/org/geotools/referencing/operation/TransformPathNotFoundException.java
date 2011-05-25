@@ -46,6 +46,7 @@ import org.opengis.referencing.operation.OperationNotFoundException;   // For ja
  * from the API point of view.
  *
  * @since 2.2
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

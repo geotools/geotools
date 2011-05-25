@@ -30,6 +30,7 @@ import org.geotools.map.MapLayer;
  *
  * @see MapLayer
  * @see MapLayerEvent
+ *
  * @source $URL$
  */
 public interface MapLayerListener extends EventListener {

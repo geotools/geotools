@@ -25,6 +25,7 @@ import org.opengis.filter.expression.Expression;
 /**
  * Symbol handler for a Mark.
  *
+ *
  * @source $URL$
  */
 public interface MarkFactory {

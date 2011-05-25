@@ -15,6 +15,8 @@ import org.geotools.util.logging.Logging;
  * A Layer to be rendered.
  * <p>
  * Layers usually represent a single dataset; and arranged into a z-order by a Map for display.
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/render/src/main/java/org/geotools/map/Layer.java $
  */
 public abstract class Layer {
 

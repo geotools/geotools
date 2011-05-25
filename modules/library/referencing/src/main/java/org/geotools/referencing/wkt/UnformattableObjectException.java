@@ -32,6 +32,7 @@ import org.geotools.resources.i18n.Errors;
  * implementations can be formatted as WKT.
  *
  * @since 2.0
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

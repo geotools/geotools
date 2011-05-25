@@ -31,6 +31,7 @@ import org.opengis.feature.simple.SimpleFeature;
  * of caching them
  *
  * @author jamesm
+ *
  * @source $URL$
  */
 public class DynamicPolygonStyle2D extends org.geotools.renderer.style.PolygonStyle2D {

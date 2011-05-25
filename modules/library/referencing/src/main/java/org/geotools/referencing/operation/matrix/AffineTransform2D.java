@@ -39,6 +39,7 @@ import org.geotools.util.Utilities;
  * would fails in most cases, and {@code isAffine()} would be useless.
  *
  * @since 2.3
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

@@ -51,6 +51,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * 
  * @author jeichar
  * @since 0.9.0
+ *
  * @source $URL$
  */
 public class LabelingTest extends TestCase {

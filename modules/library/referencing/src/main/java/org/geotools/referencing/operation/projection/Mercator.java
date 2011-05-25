@@ -56,6 +56,7 @@ import static java.lang.Math.*;
  * @see <A HREF="http://www.remotesensing.org/geotiff/proj_list/mercator_2sp.html">"mercator_2sp" on RemoteSensing.org</A>
  *
  * @since 2.1
+ *
  * @source $URL$
  * @version $Id$
  * @author André Gosselin

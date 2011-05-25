@@ -44,6 +44,7 @@ import static java.lang.Math.*;
  * can inline on the stack. We assume that Jave 6 and above can do this optimization.
  *
  * @since 2.2
+ *
  * @source $URL$
  * @version $Id$
  * @author Justin Deoliveira

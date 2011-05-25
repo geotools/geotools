@@ -22,6 +22,7 @@ package org.geotools.xml.schema;
  * </p>
  *
  * @author dzwiers
+ *
  * @source $URL$
  */
 public interface AttributeValue {

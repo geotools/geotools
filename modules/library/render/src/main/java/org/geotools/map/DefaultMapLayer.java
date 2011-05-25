@@ -33,7 +33,8 @@ import org.opengis.referencing.operation.TransformException;
  * Default Implementation of MapLayer.
  * 
  * @author wolf
- * @source $URL:
+ *
+ * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/library/render/src/main/java/org/geotools
  *         /map/DefaultMapLayer.java $
  *         

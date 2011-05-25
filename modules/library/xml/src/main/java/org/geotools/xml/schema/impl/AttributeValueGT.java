@@ -25,6 +25,7 @@ import org.geotools.xml.schema.AttributeValue;
  * </p>
  *
  * @author dzwiers
+ *
  * @source $URL$
  */
 public class AttributeValueGT implements AttributeValue {

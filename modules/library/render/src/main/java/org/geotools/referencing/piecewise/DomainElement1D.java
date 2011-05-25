@@ -32,6 +32,7 @@ import org.opengis.util.InternationalString;
  * @author Simone Giannecchini, GeoSolutions
  * 
  *
+ *
  * @source $URL$
  */
 public interface DomainElement1D extends Serializable, Comparable<DomainElement1D> {

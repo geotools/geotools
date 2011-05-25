@@ -40,7 +40,8 @@ import org.opengis.referencing.operation.MathTransform;
  * @see <A HREF="http://www.remotesensing.org/geotiff/proj_list/robinson.html">"Robinson" on RemoteSensing.org</A>
  *
  * @since 2.6.3
- * @source $URL: http://svn.osgeo.org/geotools/branches/2.6.x/modules/library/referencing/src/main/java/org/geotools/referencing/operation/projection/Mercator.java $
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/referencing/src/main/java/org/geotools/referencing/operation/projection/Robinson.java $
  * @author Andrea Aime
  */
 public class Robinson extends MapProjection {

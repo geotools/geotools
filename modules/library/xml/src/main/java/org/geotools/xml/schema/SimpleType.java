@@ -29,6 +29,7 @@ import javax.naming.OperationNotSupportedException;
  * </p>
  *
  * @author dzwiers www.refractions.net
+ *
  * @source $URL$
  */
 public interface SimpleType extends Type {

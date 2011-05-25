@@ -53,6 +53,7 @@ import org.geotools.resources.i18n.ErrorKeys;
  * a call to {@link #getTargetDimensions}.</P>
  *
  * @since 2.1
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

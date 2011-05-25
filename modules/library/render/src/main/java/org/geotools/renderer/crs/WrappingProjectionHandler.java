@@ -38,6 +38,8 @@ import com.vividsolutions.jts.geom.Polygon;
  * replicate the geometries generating a Google Maps like effect
  * 
  * @author Andrea Aime - OpenGeo
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/render/src/main/java/org/geotools/renderer/crs/WrappingProjectionHandler.java $
  */
 public class WrappingProjectionHandler extends ProjectionHandler {
 

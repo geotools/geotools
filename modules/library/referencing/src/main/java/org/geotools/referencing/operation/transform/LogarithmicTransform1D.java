@@ -51,6 +51,7 @@ import org.geotools.resources.i18n.Vocabulary;
  * This transform is the inverse of {@link ExponentialTransform1D}.
  *
  * @since 2.0
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

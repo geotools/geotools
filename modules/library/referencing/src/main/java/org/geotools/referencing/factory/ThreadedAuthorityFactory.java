@@ -65,6 +65,7 @@ import org.geotools.resources.i18n.LoggingKeys;
  * discarted (and recreated on the fly if needed) otherwise.
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

@@ -51,6 +51,7 @@ import org.geotools.util.logging.Logging;
  * element in <cite>Well Known Text</cite> terminology.
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

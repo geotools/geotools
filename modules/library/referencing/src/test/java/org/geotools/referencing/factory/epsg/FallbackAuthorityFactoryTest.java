@@ -37,6 +37,7 @@ import static org.junit.Assert.*;
  * Checks the exception thrown by the fallback system do report actual errors when the code is
  * available but for some reason broken, and not "code not found" ones.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Andrea Aime (TOPP)

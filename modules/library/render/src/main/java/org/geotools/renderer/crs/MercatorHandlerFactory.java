@@ -25,6 +25,8 @@ import org.geotools.referencing.operation.projection.MapProjection.AbstractProvi
 
 /**
  * Returns a {@link ProjectionHandler} for the {@link Mercator} projection
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/render/src/main/java/org/geotools/renderer/crs/MercatorHandlerFactory.java $
  */
 public class MercatorHandlerFactory implements ProjectionHandlerFactory {
 

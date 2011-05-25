@@ -51,6 +51,7 @@ import org.geotools.util.CheckedCollection;
  * {@link CoordinateReferenceSystem}.
  *
  * @since 2.1
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

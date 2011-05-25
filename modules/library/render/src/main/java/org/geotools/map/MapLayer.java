@@ -45,7 +45,8 @@ import org.opengis.referencing.operation.TransformException;
  * 
  * @author Cameron Shorter
  * @author Martin Desruisseaux
- * @source $URL:
+ *
+ * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/library/render/src/main/java/org/geotools
  *         /map/MapLayer.java $
  * @version $Id$

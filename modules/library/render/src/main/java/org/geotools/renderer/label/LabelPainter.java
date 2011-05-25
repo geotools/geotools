@@ -69,6 +69,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  * @author Andrea Aime
  * 
  *
+ *
  * @source $URL$
  */
 public class LabelPainter {

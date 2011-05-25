@@ -42,6 +42,7 @@ import org.geotools.resources.i18n.Errors;
  * meters without affecting the latitude and longitude values.
  *
  * @since 2.0
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

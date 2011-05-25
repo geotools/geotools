@@ -28,6 +28,7 @@ import javax.measure.quantity.Dimensionless;
  * A set of units to use in addition of {@link SI} and {@link NonSI}.
  *
  * @since 2.1
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

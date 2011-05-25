@@ -31,6 +31,7 @@ import org.opengis.referencing.operation.CylindricalProjection;
 /**
  * Base class for cylindrical map projections.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

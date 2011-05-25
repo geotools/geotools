@@ -42,6 +42,8 @@ import org.opengis.referencing.operation.MathTransform;
  * it has a straight central meridian along which the scale is true, all other
  * meridians and parallels are curved, and the scale distortion increases
  * rapidly with increasing distance from the central meridian. 
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/referencing/src/main/java/org/geotools/referencing/operation/projection/CassiniSoldner.java $
  */
 public class CassiniSoldner extends MapProjection {
 

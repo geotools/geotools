@@ -71,6 +71,7 @@ import org.geotools.util.Utilities;
  * This class is not thread-safe.
  *
  * @since 2.2
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

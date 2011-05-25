@@ -34,6 +34,7 @@ import org.opengis.filter.expression.Expression;
  * Builder facility for creating a        {@link LinearColorMap}        using elements from       {@link RasterSymbolizer}               {@link ColorMapTransform}        element. <p> This class is not intended to be thread safe.
  * @author        Simone Giannecchini, GeoSolutions
  *
+ *
  * @source $URL$
  */
 public class SLDColorMapBuilder {

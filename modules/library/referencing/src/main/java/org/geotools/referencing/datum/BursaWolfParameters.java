@@ -45,6 +45,7 @@ import org.geotools.util.Utilities;
  * <p align="center"><img src="../doc-files/BursaWolf.png"></p>
  *
  * @since 2.1
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

@@ -72,6 +72,7 @@ import java.util.zip.ZipFile;
  * of this one.
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author James McGill

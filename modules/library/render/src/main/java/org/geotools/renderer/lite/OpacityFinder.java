@@ -56,6 +56,7 @@ import org.opengis.filter.expression.Literal;
  * Searches for translucent symbolizers
  *
  * @author jones
+ *
  * @source $URL$
  */
 public class OpacityFinder implements StyleVisitor {

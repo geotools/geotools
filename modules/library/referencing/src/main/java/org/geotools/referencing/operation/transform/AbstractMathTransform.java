@@ -70,6 +70,7 @@ import org.geotools.resources.i18n.VocabularyKeys;
  * themself if they know to maps two-dimensional coordinate systems.
  *
  * @since 2.0
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

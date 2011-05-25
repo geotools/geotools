@@ -44,7 +44,8 @@ import org.opengis.referencing.operation.TransformException;
  * This object is similar to early drafts of the OGC Open Web Service Context specification.
  *
  * @author Jody Garnett
- * @source $URL:
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/render/src/main/java/org/geotools/map/MapContent.java $
  *         http://svn.osgeo.org/geotools/trunk/modules/library/render/src/main/java/org/geotools
  *         /map/MapContext.java $
  * @version $Id: Map.java 35310 2010-04-30 10:32:15Z jive $

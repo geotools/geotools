@@ -68,6 +68,7 @@ import static org.junit.Assert.*;
  * Tests the creation of {@link CoordinateReferenceSystem} objects and dependencies through
  * factories (not authority factories).
  *
+ *
  * @source $URL$
  * @version $Id$
  */

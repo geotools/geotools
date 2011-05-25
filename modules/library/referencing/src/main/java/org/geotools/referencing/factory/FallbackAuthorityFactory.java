@@ -48,6 +48,7 @@ import org.geotools.factory.FactoryNotFoundException;
  * and fallback on an other one if the primary factory failed.
  *
  * @since 2.3
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

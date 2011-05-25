@@ -42,6 +42,8 @@ import org.opengis.referencing.operation.TransformException;
  * rectangular domain within the specified tolerance
  * 
  * @author Andrea Aime - GeoSolutions
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/referencing/src/main/java/org/geotools/referencing/operation/transform/WarpBuilder.java $
  */
 public class WarpBuilder {
     static final Logger LOGGER = Logging.getLogger(WarpBuilder.class);

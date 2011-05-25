@@ -24,6 +24,7 @@ import org.geotools.xml.schema.Facet;
  * </p>
  *
  * @author dzwiers
+ *
  * @source $URL$
  */
 public class FacetGT implements Facet {

@@ -37,6 +37,7 @@ import org.xml.sax.SAXException;
  * @
  *
  * @author dzwiers www.refractions.net
+ *
  * @source $URL$
  */
 public class GMLParser2Test extends TestCase {

@@ -37,6 +37,7 @@ import java.util.logging.Logger;
  * Lookup and caches font definitions for faster retrieval
  * 
  * @author Andrea Aime - TOPP
+ *
  * @source $URL$
  */
 public class FontCache {

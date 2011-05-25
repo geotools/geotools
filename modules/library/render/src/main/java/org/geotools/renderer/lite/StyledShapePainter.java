@@ -60,6 +60,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * out since both renderers do use the same painting logic.
  * 
  * @author Andrea Aime
+ *
  * @source $URL$
  */
 public final class StyledShapePainter {

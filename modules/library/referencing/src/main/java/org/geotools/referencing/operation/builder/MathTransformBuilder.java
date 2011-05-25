@@ -102,6 +102,7 @@ import org.geotools.resources.Classes;
  * {@link #computeMathTransform()} methods.
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Jan Jezek

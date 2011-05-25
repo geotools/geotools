@@ -58,7 +58,8 @@ import org.opengis.referencing.operation.MathTransform;
  * @see <A HREF="http://www.remotesensing.org/geotiff/proj_list/polyconic.html">"Polyconic" on RemoteSensing.org</A>
  *
  * @since 2.6.1
- * @source $URL: http://svn.osgeo.org/geotools/branches/2.6.x/modules/library/referencing/src/main/java/org/geotools/referencing/operation/projection/Mercator.java $
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/referencing/src/main/java/org/geotools/referencing/operation/projection/Polyconic.java $
  * @version $Id: Mercator.java 30641 2008-06-12 17:42:27Z acuster $
  * @author Andrea Aime
  */

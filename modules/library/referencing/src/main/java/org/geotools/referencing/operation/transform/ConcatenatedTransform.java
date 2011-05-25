@@ -46,6 +46,7 @@ import org.geotools.util.Utilities;
  * serializable if all their step transforms are serializables.
  *
  * @since 2.0
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

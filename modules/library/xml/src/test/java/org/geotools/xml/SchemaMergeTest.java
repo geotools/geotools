@@ -32,6 +32,7 @@ import org.geotools.xml.schema.Schema;
 /**
  * @author dzwiers
  *
+ *
  * @source $URL$
  */
 public class SchemaMergeTest extends TestCase {

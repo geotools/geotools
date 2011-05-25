@@ -54,6 +54,7 @@ import org.geotools.resources.i18n.VocabularyKeys;
  * a set of names determined from all available authority factories.
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

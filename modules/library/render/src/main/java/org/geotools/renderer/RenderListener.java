@@ -23,6 +23,7 @@ import org.opengis.feature.simple.SimpleFeature;
  * an error occurs during rendering.  Therefore <b>VERY LITTLE WORK</b> should be done in the listener!!!
  * 
  * @author jeichar
+ *
  * @source $URL$
  */
 public interface RenderListener {

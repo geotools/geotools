@@ -47,6 +47,7 @@ import static org.junit.Assert.*;
 /**
  * Tests some operation steps involved in coordinate operation creation.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

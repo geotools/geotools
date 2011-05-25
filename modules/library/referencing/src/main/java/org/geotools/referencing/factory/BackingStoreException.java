@@ -27,6 +27,7 @@ import java.sql.SQLException;  // For javadoc
  * has an {@link IOException} or a {@link SQLException} as its {@linkplain #getCause cause}.
  *
  * @since 2.3
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

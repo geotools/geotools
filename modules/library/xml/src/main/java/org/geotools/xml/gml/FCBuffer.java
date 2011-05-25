@@ -39,6 +39,7 @@ import org.xml.sax.SAXException;
  * </p>
  *
  * @author dzwiers
+ *
  * @source $URL$
  */
 public class FCBuffer extends Thread implements  FeatureReader<SimpleFeatureType, SimpleFeature> {

@@ -34,6 +34,7 @@ import org.geotools.resources.i18n.Vocabulary;
  * @see <A HREF="http://www.remotesensing.org/geotiff/proj_list/mercator_2sp.html">"Mercator 2SP" on RemoteSensing.org</A>
  *
  * @since 2.2
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

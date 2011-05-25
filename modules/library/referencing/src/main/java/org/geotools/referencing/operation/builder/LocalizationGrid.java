@@ -124,6 +124,7 @@ import org.geotools.referencing.operation.transform.ProjectiveTransform;
  * </pre></td></tr></table></blockquote>
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Remi Eve

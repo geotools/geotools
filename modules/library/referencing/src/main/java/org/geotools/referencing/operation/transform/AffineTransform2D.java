@@ -48,6 +48,7 @@ import org.geotools.util.Utilities;
  * used as a bridge between Java2D and the referencing module.
  *
  * @since 2.5
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

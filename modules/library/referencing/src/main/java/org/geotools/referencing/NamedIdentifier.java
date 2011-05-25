@@ -70,6 +70,7 @@ import org.geotools.util.Utilities;
  * "<cite>Digital Chart of the World</cite>").
  *
  * @since 2.1
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

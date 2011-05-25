@@ -28,6 +28,7 @@ import org.geotools.resources.i18n.ErrorKeys;
  * better accuracy than {@link GeneralMatrix} for matrix inversion and multiplication.
  *
  * @since 2.2
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

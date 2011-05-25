@@ -39,6 +39,7 @@ import org.opengis.util.InternationalString;
  * @author Simone Giannecchini, GeoSolutions.
  * 
  *
+ *
  * @source $URL$
  */
 public interface CoverageProcessingNode {

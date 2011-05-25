@@ -68,6 +68,7 @@ import org.opengis.style.GraphicalSymbol;
 /**
  * Parses a style or part of it and returns the size of the largest stroke and the biggest point symbolizer whose width is specified with a literal expression.<br> Also provides an indication whether the stroke width is accurate, or if a non literal width has been found.
  *
+ *
  * @source $URL$
  */
 

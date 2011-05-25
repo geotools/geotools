@@ -36,6 +36,7 @@ import org.geotools.resources.i18n.ErrorKeys;
  * or {@link org.geotools.util.Cloneable} interfaces is left to implementors.
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

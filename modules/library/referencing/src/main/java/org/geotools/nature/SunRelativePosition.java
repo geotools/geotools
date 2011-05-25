@@ -64,6 +64,7 @@ import java.util.TimeZone;
  * potential for error is higher.
  *
  * @since 2.1
+ *
  * @source $URL$
  * @version $Id$
  * @author Remi Eve

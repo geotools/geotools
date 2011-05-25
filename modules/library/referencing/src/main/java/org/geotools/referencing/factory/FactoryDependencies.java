@@ -53,6 +53,7 @@ import org.geotools.resources.X364;
  * Build a tree of factory dependencies.
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

@@ -63,6 +63,7 @@ import org.geotools.util.Utilities;
  * and {@link CRSAuthorityFactory} interfaces to implement.
  *
  * @since 2.3
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

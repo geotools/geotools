@@ -91,6 +91,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * complexType definition to be used by the GMLSchema
  *
  * @author $author$
+ *
  * @source $URL$
  * @version $Revision: 1.9 $
  *

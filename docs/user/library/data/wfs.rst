@@ -146,19 +146,70 @@ You can connect to a Web Feature Server via the DataStore API; the connection pa
   }
 
 WFS-T
-'''''
+^^^^^
 
-Support for **Web Feature Server Transactional (WFS-T)** represents a wfs that offers read/write functionality by virtue of supporting the WFS Transaction operation.
+Support for **Web Feature Server Transactional (WFS-T)** represents a wfs that offers read/write
+functionality by virtue of supporting the WFS Transaction operation.
 
 Please note that WFS-T (ie Transaction) only works when:
 
-* you have started a GeoTools transaction. Transaction.AUTO_COMMIT is not supported for editing.
-* you use WFS 1.0 (talk to Gabriel if you would like to supply a patch; or fund the development of 1.1 WFS-T)
+* you have started a GeoTools transaction.
+
+  (Transaction.AUTO_COMMIT is not supported for editing)
+* you use WFS 1.0
+  
+  (talk to Gabriel if you would like to supply a patch; or fund the development of 1.1 WFS-T)
 
 The usual FeatureStore methods work:
 
-* addFeatures - be sure your FeatureCollection has exactly the same FeatureType as that expected by the DataStore, you may need to make sure your JTS Geometry object has a getUserData() with the srsName expected by the WebFeatureServer.
+* addFeatures - be sure your FeatureCollection has exactly the same FeatureType as that expected
+  by the DataStore, you may need to make sure your JTS Geometry object has a getUserData() with
+  the srsName expected by the WebFeatureServer.
 * removeFeatures
 * updateFeatures
 
-There is likely to be some additional support for WFS options involving the management of newly created FeatureIDs. Work is happening in trunk currently to support this and the GeoTools level - it is another option to talk to Gabriel if you find your organisation needs this ability.
+There is likely to be some additional support for WFS options involving the management of newly
+created FeatureIDs. Work is happening in trunk currently to support this and the GeoTools level -
+it is another option to talk to Gabriel if you find your organisation needs this ability.
+
+FeatureID
+'''''''''
+
+The handling of FeatureIDs is tricky; in that he Web Feature Server does not assign an ID until you
+call commit().  The FeatureIDs returned by FeatureStore.addFeatures() is temporary (often beginning
+with "new").
+
+
+There are two ways to get advised of the official feature ids.
+
+1. Listen for a BatchFeatureEvent; this contains the mapping of temporary feature id to official
+   feature id.
+
+2. Dig into the WFSTransaction for the details.
+   
+   During commit() the WFSTransaction object is used to build up the Transaction request to be
+   sent to the web feature server. When the TransactionResponse comes back, it is parsed, and
+   some of the results (such as new feature ids) saved in the WFSTransaction where you can
+   get at them.
+   
+   Example acccessing WFSTransaction::
+   
+        Transaction transaction = new transaction("insert");
+        try {
+             SimpleFeatureStore featureStore =
+                   (SimpleFeatureStore) wfs.getFeatureSource( typeName );
+
+             featureStore.setTransaction( transaction );
+             featureStore.addFeatures( DataUtilities.collection( feature ) );
+             transaction.commit();
+             
+             // get the final feature id
+             WFSTransactionState state = (WFSTransactionState) transaction.getState(wfs);
+        
+             // In this example there is only one fid. Get it.
+             String[] fids = state.getFids( typeName );
+             String result = fids[0];
+        }
+        finally {
+             transaction.close();
+        }

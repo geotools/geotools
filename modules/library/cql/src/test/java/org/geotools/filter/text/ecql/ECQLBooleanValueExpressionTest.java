@@ -31,6 +31,7 @@ import org.geotools.filter.text.cql2.CQLBooleanValueExpressionTest;
  * @author Mauricio Pazos (Axios Engineering)
  * @since 2.6
  *
+ *
  * @source $URL$
  */
 public class ECQLBooleanValueExpressionTest extends CQLBooleanValueExpressionTest {

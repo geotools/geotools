@@ -31,6 +31,7 @@ import org.opengis.filter.expression.PropertyName;
  * @author Mauricio Pazos (Axios Engineering)
  * @since 2.6
  *
+ *
  * @source $URL$
  */
 public class CQLExpressionTest {

@@ -36,6 +36,7 @@ import org.opengis.filter.Filter;
  * @author Mauricio Pazos (Axios Engineering)
  * @since 2.5 
  *
+ *
  * @source $URL$
  */
 public class CQLNullPredicateTest  {

@@ -37,6 +37,7 @@ import org.opengis.filter.expression.PropertyName;
 /**
  * A new function to check if a property exists.
  *
+ *
  * @source $URL$
  */
 public class PropertyExistsFunction extends FunctionExpressionImpl {

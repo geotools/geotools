@@ -61,6 +61,7 @@ import org.opengis.filter.spatial.DistanceBufferOperator;
  * @author Mauricio Pazos (Axios Engineering)
  * 
  *
+ *
  * @source $URL$
  * @version $Id$
  * @since 2.5

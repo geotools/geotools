@@ -70,6 +70,7 @@ import org.opengis.filter.spatial.Touches;
  * @author Mauricio Pazos (Axios Engineering)
  * @since 2.6
  *
+ *
  * @source $URL$
  */
 public final class ECQLGeoOperationTest extends CQLGeoOperationTest{

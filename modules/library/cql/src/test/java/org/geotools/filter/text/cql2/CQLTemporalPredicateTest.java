@@ -38,6 +38,7 @@ import org.opengis.filter.expression.Literal;
  * @author Mauricio Pazos (Axios Engineering)
  * @since 2.5
  *
+ *
  * @source $URL$
  */
 public class CQLTemporalPredicateTest {

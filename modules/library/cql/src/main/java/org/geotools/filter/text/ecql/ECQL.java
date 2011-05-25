@@ -71,6 +71,7 @@ import org.opengis.filter.expression.Expression;
  * 
  * @since 2.6
  *
+ *
  * @source $URL$
  */
 public class ECQL {

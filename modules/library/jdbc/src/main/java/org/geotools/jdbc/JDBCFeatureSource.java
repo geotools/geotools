@@ -697,11 +697,11 @@ public class JDBCFeatureSource extends ContentFeatureSource {
                 column.binding = vtable.getGeometryType(column.name);
                 if(column.binding == null) {
                     // determine from type mappings
-                    column.binding = store.getMapping(column.sqlType);
+                    column.binding = store.getMapping(column.typeName);
     
                     if (column.binding == null) {
                         //determine from type name mappings
-                        column.binding = store.getMapping(column.typeName);
+                        column.binding = store.getMapping(column.sqlType);
                     }
                 }
                 result.add(column);

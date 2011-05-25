@@ -21,6 +21,8 @@ package org.geotools.gce.imagemosaic.jdbc;
  * 
  * @author mcr
  * 
+ *
+ * @source $URL$
  */
 public enum SpatialExtension {
 	DB2("DB2"), ORACLE("ORACLE"), POSTGIS("POSTGIS"), MYSQL("MYSQL"), UNIVERSAL(

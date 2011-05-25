@@ -64,6 +64,8 @@ import com.vividsolutions.jts.util.Stopwatch;
 /**
  * Tests over legacy data that should not be deleted
  * 
+ *
+ * @source $URL$
  */
 @SuppressWarnings("nls")
 public class ArcSDEGridCoverage2DReaderJAILegacyOnlineTest {

@@ -26,8 +26,8 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * Reader that returns FeatureIds in a quick fashion.
  * 
  * @author Tommaso Nolli
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/shapefile/src/main/java/org/geotools/data/shapefile/indexed/ShapeFIDReader.java $
+ *
+ * @source $URL$
  */
 public class ShapeFIDReader implements FIDReader {
     protected static final String CLOSE_MESG = "Close has already been called"

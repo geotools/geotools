@@ -38,8 +38,8 @@ import com.vividsolutions.jts.geom.Envelope;
  * DOCUMENT ME!
  * 
  * @author Tommaso Nolli
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/shapefile/src/main/java/org/geotools/index/quadtree/fs/FileSystemIndexStore.java $
+ *
+ * @source $URL$
  */
 public class FileSystemIndexStore implements IndexStore {
     private static final Logger LOGGER = org.geotools.util.logging.Logging

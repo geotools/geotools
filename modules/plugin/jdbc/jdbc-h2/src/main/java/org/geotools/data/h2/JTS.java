@@ -36,6 +36,7 @@ import com.vividsolutions.jts.io.WKTReader;
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
  *
  *
+ *
  * @source $URL$
  */
 public class JTS {

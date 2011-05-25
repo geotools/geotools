@@ -80,7 +80,8 @@ import com.vividsolutions.jts.geom.Polygon;
  * </p>
  * 
  * @author Gabriel Rold?n
- * @source $URL:
+ *
+ * @source $URL$
  *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
  *         /org/geotools/arcsde/filter/GeometryEncoderSDE.java $
  */

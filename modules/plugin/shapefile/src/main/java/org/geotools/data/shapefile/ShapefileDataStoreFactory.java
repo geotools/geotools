@@ -55,8 +55,8 @@ import com.vividsolutions.jts.geom.Geometry;
  * </ul>
  * 
  * @author Chris Holmes, TOPP
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/shapefile/src/main/java/org/geotools/data/shapefile/ShapefileDataStoreFactory.java $
+ *
+ * @source $URL$
  * @version $Id: ShapefileDataStoreFactory.java 27856 2007-11-12 17:23:35Z
  *          desruisseaux $
  */

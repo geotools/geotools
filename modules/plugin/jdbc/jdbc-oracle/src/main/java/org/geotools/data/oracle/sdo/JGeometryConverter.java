@@ -30,6 +30,7 @@ package org.geotools.data.oracle.sdo;
  * @author Andrea Aime - OpenGeo
  * 
  *
+ *
  * @source $URL$
  */
 public class JGeometryConverter {

@@ -36,6 +36,7 @@ import org.geotools.data.DataUtilities;
  * 
  * @author jesse
  *
+ *
  * @source $URL$
  */
 public final class StorageFile implements Comparable<StorageFile>, FileWriter {

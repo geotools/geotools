@@ -100,8 +100,8 @@ import com.vividsolutions.jts.geom.Polygon;
  * @author Ian Schneider
  * 
  * @todo fix file creation bug
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/shapefile/src/main/java/org/geotools/data/shapefile/ShapefileDataStore.java $
+ *
+ * @source $URL$
  */
 public class ShapefileDataStore extends AbstractFileDataStore {
     

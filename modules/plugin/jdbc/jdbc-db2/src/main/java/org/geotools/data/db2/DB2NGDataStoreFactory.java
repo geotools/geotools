@@ -43,6 +43,7 @@ import com.vividsolutions.jts.io.WKBConstants;
  * @author Christian Mueller
  *
  *
+ *
  * @source $URL$
  */
 public class DB2NGDataStoreFactory extends JDBCDataStoreFactory {

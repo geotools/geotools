@@ -32,6 +32,7 @@ import org.junit.Test;
  * @author Simone Giannecchini, GeoSolutions SAS
  * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for jar:file:foo.jar/bar.properties like URLs
  *
+ *
  * @source $URL$
  */
 public class PathTypeTest extends Assert {

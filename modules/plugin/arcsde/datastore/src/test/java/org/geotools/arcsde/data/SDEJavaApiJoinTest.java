@@ -139,7 +139,8 @@ import com.vividsolutions.jts.geom.Point;
  * 2008-11-22 20:44:25Z groldan $ &#064;since 2.3.x
  * 
  * 
- * @source $URL:
+ *
+ * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/test/java/org
  *         /geotools/arcsde/data/SDEJavaApiJoinTest.java $
  */

@@ -22,6 +22,7 @@ package org.geotools.gce.imagemosaic.jdbc;
  * @author mcr
  * 
  *
+ *
  * @source $URL$
  */
 public class PostgisDialect extends DBDialect {

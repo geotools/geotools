@@ -33,6 +33,7 @@ import com.vividsolutions.jts.geom.Envelope;
  * default geometry is at position 0, and all dbf columns follow. <BR/>The dbf
  * file may not be necessary, if not, just pass null as the DbaseFileReader
  *
+ *
  * @source $URL$
  */
 public class IndexedShapefileAttributeReader extends ShapefileAttributeReader {

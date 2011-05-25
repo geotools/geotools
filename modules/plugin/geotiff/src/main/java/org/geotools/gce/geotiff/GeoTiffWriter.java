@@ -82,8 +82,8 @@ import org.opengis.referencing.operation.TransformException;
  * {@link AbstractGridCoverageWriter} implementation for the geotiff format.
  * 
  * @author Simone Giannecchini, GeoSolutions SAS
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/plugin/geotiff/src/org/geotools/gce/geotiff/GeoTiffWriter.java $
+ *
+ * @source $URL$
  */
 public class GeoTiffWriter extends AbstractGridCoverageWriter implements
 		GridCoverageWriter {

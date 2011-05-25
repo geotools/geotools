@@ -75,7 +75,8 @@ import com.vividsolutions.jts.geom.Polygon;
  * mapping SDE types to Java ones and JTS Geometries, etc.
  * 
  * @author Gabriel Roldan
- * @source $URL:
+ *
+ * @source $URL$
  *         http://svn.geotools.org/geotools/trunk/gt/modules/unsupported/arcsde/datastore/src/main
  *         /java/org/geotools/arcsde/data/ArcSDEAdapter.java $
  * @version $Id$

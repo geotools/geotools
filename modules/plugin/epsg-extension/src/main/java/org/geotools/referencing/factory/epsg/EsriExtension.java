@@ -28,6 +28,7 @@ import org.geotools.metadata.iso.citation.Citations;
  * defined by ESRI. Those CRS will be registered both in {@code "ESRI"} and {@code "EPSG"} name space.
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

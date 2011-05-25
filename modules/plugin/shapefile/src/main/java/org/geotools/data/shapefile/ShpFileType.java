@@ -23,6 +23,8 @@ import java.net.URL;
  * Enumerates the known types of files associated with a shapefile.
  * 
  * @author jesse
+ *
+ * @source $URL$
  */
 public enum ShpFileType {
 

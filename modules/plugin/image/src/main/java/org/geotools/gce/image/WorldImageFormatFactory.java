@@ -27,8 +27,8 @@ import org.geotools.coverage.grid.io.GridFormatFactorySpi;
  * 
  * @author rgould TODO To change the template for this generated type comment go
  *         to Window - Preferences - Java - Code Style - Code Templates
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/plugin/image/src/org/geotools/gce/image/WorldImageFormatFactory.java $
+ *
+ * @source $URL$
  */
 public final class WorldImageFormatFactory implements GridFormatFactorySpi {
 	public WorldImageFormat createFormat() {

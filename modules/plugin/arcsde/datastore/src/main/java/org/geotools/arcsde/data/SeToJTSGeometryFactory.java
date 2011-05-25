@@ -20,7 +20,8 @@ import com.vividsolutions.jts.geom.Polygon;
  * instead of fetching an {@link SeShape} through {@link SeRow#getShape(int)} and then converting it
  * to a JTS geometry. This is work in progress and _experimental_, though.
  * 
- * @source $URL:
+ *
+ * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/main/java/org
  *         /geotools/arcsde/data/SeToJTSGeometryFactory.java $
  */

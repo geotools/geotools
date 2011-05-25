@@ -32,6 +32,8 @@ import org.geotools.util.Utilities;
  * 
  * @author Simone Giannecchini, GeoSolutions SAS
  * 
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/imagemosaic/src/main/java/org/geotools/gce/imagemosaic/catalogbuilder/CatalogBuilderConfiguration.java $
  */
 public class CatalogBuilderConfiguration {
 

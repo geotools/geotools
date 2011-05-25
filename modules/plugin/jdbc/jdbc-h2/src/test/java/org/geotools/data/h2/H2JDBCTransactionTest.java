@@ -28,6 +28,7 @@ import org.geotools.jdbc.JDBCTransactionTest;
  * @author Justin Deoliveira, The Open Planning Project
  *
  *
+ *
  * @source $URL$
  */
 public class H2JDBCTransactionTest extends JDBCTransactionTest {

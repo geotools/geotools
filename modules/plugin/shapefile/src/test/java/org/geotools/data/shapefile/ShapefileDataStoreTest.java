@@ -71,8 +71,8 @@ import com.vividsolutions.jts.geom.Polygon;
 
 /**
  * 
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/shapefile/src/test/java/org/geotools/data/shapefile/ShapefileDataStoreTest.java $
+ *
+ * @source $URL$
  * @version $Id$
  * @author Ian Schneider
  */

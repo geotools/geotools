@@ -51,7 +51,8 @@ import com.vividsolutions.jts.io.WKTReader;
  * Functional tests for {@link ArcSdeFeatureStore} when working with versioned tables
  * 
  * @author Gabriel Roldan
- * @source $URL:
+ *
+ * @source $URL$
  *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/da/src/test/java/org
  *         /geotools/arcsde/data/ArcSDEFeatureStoreTest.java $
  * @version $Id$

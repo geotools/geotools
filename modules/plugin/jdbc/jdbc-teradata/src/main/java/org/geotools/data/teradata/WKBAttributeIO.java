@@ -37,7 +37,8 @@ import com.vividsolutions.jts.io.WKBWriter;
  * An attribute IO implementation that can manage the WKB
  * 
  * @author Andrea Aime
- * @source $URL$
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/jdbc/jdbc-teradata/src/main/java/org/geotools/data/teradata/WKBAttributeIO.java $
  * @since 2.4.1
  */
 public class WKBAttributeIO {

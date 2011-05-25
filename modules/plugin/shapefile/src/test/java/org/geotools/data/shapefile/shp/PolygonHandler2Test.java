@@ -27,8 +27,8 @@ import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.PrecisionModel;
 
 /**
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/shapefile/src/test/java/org/geotools/data/shapefile/shp/PolygonHandler2Test.java $
+ *
+ * @source $URL$
  * @version $Id$
  * @author Ian Schneider
  */

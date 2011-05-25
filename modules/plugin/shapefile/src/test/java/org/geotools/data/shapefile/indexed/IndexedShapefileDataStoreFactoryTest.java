@@ -32,8 +32,8 @@ import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.data.shapefile.TestCaseSupport;
 
 /**
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/shapefile/src/test/java/org/geotools/data/shapefile/indexed/IndexedShapefileDataStoreFactoryTest.java $
+ *
+ * @source $URL$
  */
 public class IndexedShapefileDataStoreFactoryTest extends TestCaseSupport {
     private ShapefileDataStoreFactory factory;

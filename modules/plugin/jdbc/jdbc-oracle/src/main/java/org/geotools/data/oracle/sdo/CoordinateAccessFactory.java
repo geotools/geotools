@@ -29,6 +29,7 @@ import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
  * This allows us to determine the dimensions of a Geometry.
  * </p>
  * @author jgarnett
+ *
  * @source $URL$
  */
 public interface CoordinateAccessFactory extends CoordinateSequenceFactory {

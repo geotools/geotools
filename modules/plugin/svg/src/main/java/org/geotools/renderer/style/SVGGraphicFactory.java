@@ -54,7 +54,8 @@ import org.w3c.dom.NodeList;
  * 
  * @author Andrea Aime - TOPP
  * 
- * @source $URL:
+ *
+ * @source $URL$
  *         http://svn.osgeo.org/geotools/branches/2.6.x/modules/plugin/svg/src/main/java/org/geotools
  *         /renderer/style/SVGGraphicFactory.java $
  */

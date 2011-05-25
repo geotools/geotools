@@ -50,6 +50,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * 
  * @author mcr
  * 
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/imagemosaic-jdbc/src/main/java/org/geotools/gce/imagemosaic/jdbc/custom/JDBCAccessCustom.java $
  */
 
 public abstract class JDBCAccessCustom implements JDBCAccess {

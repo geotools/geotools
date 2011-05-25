@@ -70,6 +70,8 @@ import com.vividsolutions.jts.geom.Envelope;
  * 
  * @author Andrea Antonello - www.hydrologis.com
  * @since 1.1.0
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/grassraster/src/main/java/org/geotools/gce/grassraster/JGrassUtilities.java $
  */
 public class JGrassUtilities {
     public static final String NORTH = "NORTH"; //$NON-NLS-1$

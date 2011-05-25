@@ -30,6 +30,8 @@ import org.geotools.geometry.GeneralEnvelope;
  * @author mcr
  * @since 2.6
  * 
+ *
+ * @source $URL$
 */
 public class ImageMosaicJDBCReaderState {
 

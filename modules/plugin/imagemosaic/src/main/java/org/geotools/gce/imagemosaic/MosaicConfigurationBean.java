@@ -29,6 +29,8 @@ import org.geotools.util.Utilities;
  * 
  * @author Simone Giannecchini, GeoSolutions S.A.S.
  * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for jar:file:foo.jar/bar.properties URLs
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/imagemosaic/src/main/java/org/geotools/gce/imagemosaic/MosaicConfigurationBean.java $
  */
 public class MosaicConfigurationBean {
 

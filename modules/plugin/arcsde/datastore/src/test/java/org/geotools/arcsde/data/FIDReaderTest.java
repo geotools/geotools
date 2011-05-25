@@ -39,7 +39,8 @@ import com.esri.sde.sdk.client.SeTable;
 /**
  * @author Gabriel Roldan (TOPP)
  * 
- * @source $URL:
+ *
+ * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/test/java/org
  *         /geotools/arcsde/data/FIDReaderTest.java $
  * @version $Id$

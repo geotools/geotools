@@ -50,8 +50,8 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  * @author aaime
  * @author Ian Schneider
  * 
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/shapefile/src/main/java/org/geotools/data/shapefile/shp/ShapefileWriter.java $
+ *
+ * @source $URL$
  */
 public class ShapefileWriter {
     FileChannel shpChannel;

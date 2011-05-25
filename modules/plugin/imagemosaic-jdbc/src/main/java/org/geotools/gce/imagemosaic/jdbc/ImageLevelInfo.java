@@ -29,6 +29,8 @@ import com.vividsolutions.jts.geom.Envelope;
  * 
  * @author mcr
  * 
+ *
+ * @source $URL$
  */
 public class ImageLevelInfo implements Comparable<ImageLevelInfo> {
 

@@ -76,6 +76,8 @@ import org.opengis.referencing.datum.PixelInCell;
  * @author Stefan Alfons Krueger (alfonx), Wikisquare.de 
  * @since 2.3
  * 
+ *
+ * @source $URL$
  */
 @SuppressWarnings("deprecation")
 public class ImageMosaicReaderTest extends Assert{

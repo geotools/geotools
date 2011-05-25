@@ -68,6 +68,8 @@ import com.vividsolutions.jts.geom.PrecisionModel;
  * @author Stefan Alfons Krueger (alfonx), Wikisquare.de 
  * @since 2.3
  * 
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/imagemosaic/src/test/java/org/geotools/gce/imagemosaic/DataStoreTimeTest.java $
  */
 @SuppressWarnings("deprecation")
 public class DataStoreTimeTest{

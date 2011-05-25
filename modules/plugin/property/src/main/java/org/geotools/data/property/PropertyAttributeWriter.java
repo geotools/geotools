@@ -52,6 +52,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * </pre>
  * 
  * @author Jody Garnett
+ *
  * @source $URL$
  */
 public class PropertyAttributeWriter implements AttributeWriter {

@@ -26,7 +26,8 @@ import com.esri.sde.sdk.client.SeStreamOp;
  * @author Gabriel Roldan (TOPP)
  * @version $Id$
  * @since 2.5.x
- * @source $URL:
+ *
+ * @source $URL$
  *         http://svn.geotools.org/trunk/modules/plugin/arcsde/datastore/src/main/java/org/geotools
  *         /arcsde/data/versioning/ArcSdeVersionHandler.java $
  */

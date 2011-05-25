@@ -26,6 +26,8 @@ import java.util.List;
  * @author Andrea Antonello - www.hydrologis.com
  * @author John Preston
  * @since 1.1.0
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/grassraster/src/main/java/org/geotools/gce/grassraster/core/color/ColorRule.java $
  */
 public class ColorRule {
     // public static final byte[] blank = {0, 0, 0, 0};

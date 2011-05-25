@@ -69,6 +69,7 @@ import org.opengis.filter.sort.SortBy;
  * 
  * 
  *
+ *
  * @source $URL$
  */
 public class PreGeneralizedFeatureSource implements SimpleFeatureSource {

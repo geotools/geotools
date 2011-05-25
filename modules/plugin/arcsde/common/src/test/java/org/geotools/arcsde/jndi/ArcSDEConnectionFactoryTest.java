@@ -45,6 +45,7 @@ import org.junit.Test;
  * 
  * @author Gabriel Roldan (OpenGeo)
  * 
+ *
  * @source $URL$
  * @version $Id$
  * @since 2.5.7

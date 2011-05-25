@@ -23,6 +23,8 @@ import org.opengis.util.ProgressListener;
  * A dummy progress listener.
  * 
  * @author Andrea Antonello (www.hydrologis.com)
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/grassraster/src/main/java/org/geotools/gce/grassraster/DummyProgressListener.java $
  */
 public class DummyProgressListener implements ProgressListener {
 

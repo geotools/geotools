@@ -33,7 +33,8 @@ import org.geotools.TestData;
 /**
  * @author Giannecchini
  * 
- * @source $URL:
+ *
+ * @source $URL$
  */
 public abstract class ArcGridBaseTestCase extends TestCase {
 

@@ -32,6 +32,7 @@ import org.geotools.data.shapefile.shp.IndexFile;
  * 
  * @author Jesse
  *
+ *
  * @source $URL$
  */
 public class FidIndexer {

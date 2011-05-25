@@ -117,6 +117,8 @@ import org.opengis.referencing.operation.TransformException;
  * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for jar:file:foo.jar/bar.properties like URLs
  * @since 2.3
  * 
+ *
+ * @source $URL$
  */
 public final class ImagePyramidReader extends AbstractGridCoverage2DReader implements GridCoverageReader {
 

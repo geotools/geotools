@@ -54,6 +54,7 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
  * 
  * Testing {@link ECWReader}
  *
+ *
  * @source $URL$
  */
 public final class ECWTest extends GDALTestCase {

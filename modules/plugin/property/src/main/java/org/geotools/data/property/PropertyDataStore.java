@@ -50,6 +50,7 @@ import org.opengis.filter.Filter;
  * users docs.
  * 
  * @author Jody Garnett, Refractions Research Inc.
+ *
  * @source $URL$
  */
 public class PropertyDataStore extends AbstractDataStore {

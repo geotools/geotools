@@ -53,8 +53,8 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  * Utility class for Shapefile spatial indexing
  * 
  * @author Tommaso Nolli
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/shapefile/src/main/java/org/geotools/data/shapefile/indexed/ShapeFileIndexer.java $
+ *
+ * @source $URL$
  */
 public class ShapeFileIndexer implements FileWriter {
     private static final Logger LOGGER = Logging.getLogger(ShapeFileIndexer.class);

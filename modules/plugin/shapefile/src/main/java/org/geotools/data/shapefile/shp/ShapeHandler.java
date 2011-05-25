@@ -24,8 +24,8 @@ import java.nio.ByteBuffer;
  * 
  * @author aaime
  * @author Ian Schneider
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/shapefile/src/main/java/org/geotools/data/shapefile/shp/ShapeHandler.java $
+ *
+ * @source $URL$
  * 
  */
 public interface ShapeHandler {

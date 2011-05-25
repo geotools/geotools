@@ -41,6 +41,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * Test non functionality of PropertyDataStore.
  * 
  * @author Jody Garnett, Refractions Research Inc.
+ *
  * @source $URL$
  */
 public class PropertyDataStore2Test extends TestCase {

@@ -18,6 +18,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * Test the {@link JGrassMapEnvironment} class and the created paths.
  * 
  * @author Andrea Antonello (www.hydrologis.com)
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/grassraster/src/test/java/org/geotools/gce/grassraster/JGrassUtilsTest.java $
  */
 @SuppressWarnings("nls")
 public class JGrassUtilsTest extends TestCase {

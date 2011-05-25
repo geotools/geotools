@@ -66,6 +66,8 @@ import java.util.ArrayList;
 
 /**
  * Fast, simple, and yet useful formattings.
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/grassraster/src/main/java/org/geotools/gce/grassraster/core/color/Format.java $
  */
 public class Format {
     private int width;

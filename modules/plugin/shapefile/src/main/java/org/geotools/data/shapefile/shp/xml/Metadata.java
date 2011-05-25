@@ -30,8 +30,8 @@ package org.geotools.data.shapefile.shp.xml;
  * 
  * @author jgarnett
  * @since 0.3
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/shapefile/src/main/java/org/geotools/data/shapefile/shp/xml/Metadata.java $
+ *
+ * @source $URL$
  */
 public class Metadata {
 

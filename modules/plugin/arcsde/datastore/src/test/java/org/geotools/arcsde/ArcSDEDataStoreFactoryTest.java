@@ -55,7 +55,8 @@ import com.esri.sde.sdk.client.SeVersion;
  * Test suite for {@link ArcSDEDataStoreFactory}
  * 
  * @author Gabriel Roldan, Axios Engineering
- * @source $URL:
+ *
+ * @source $URL$
  *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/test/java
  *         /org/geotools/arcsde/ArcSDEDataStoreFactoryTest.java $
  * @version $Id$

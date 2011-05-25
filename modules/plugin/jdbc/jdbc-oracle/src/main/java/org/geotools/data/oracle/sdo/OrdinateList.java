@@ -28,6 +28,7 @@ import java.util.AbstractList;
  * 
  * @see net.refractions.jspatial.jts
  * @author jgarnett, Refractions Reasearch Inc.
+ *
  * @source $URL$
  * @version CVS Version
  */

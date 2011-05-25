@@ -57,6 +57,8 @@ import com.vividsolutions.jts.geom.Envelope;
  * @since 3.0
  * 
  * @see {@link JGrassMapEnvironment}
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/grassraster/src/main/java/org/geotools/gce/grassraster/JGrassRegion.java $
  */
 public class JGrassRegion {
 

@@ -31,6 +31,8 @@ import org.geotools.factory.FactoryRegistry;
  * 
  * @author Simone Giannecchini, GeoSolutions SAS
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/imagemosaic/src/main/java/org/geotools/gce/imagemosaic/properties/PropertiesCollectorFinder.java $
  */
 public final class PropertiesCollectorFinder {
 	/**

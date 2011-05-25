@@ -34,6 +34,7 @@ import org.sqlite.SQLiteConfig;
  * @author Justin Deoliveira, OpenGeo
  *
  *
+ *
  * @source $URL$
  */
 public class SpatiaLiteDataStoreFactory extends JDBCDataStoreFactory {

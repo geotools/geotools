@@ -37,6 +37,8 @@ import org.junit.Before;
  * @author Simone Giannecchini (simboss), GeoSolutions
  *
  * Base testing class initializing JAI properties to be used during tests.
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/imageio-ext-gdal/src/test/java/org/geotools/coverageio/gdal/GDALTestCase.java $
  */
 @SuppressWarnings("deprecation")
 public class GDALTestCase  {

@@ -63,7 +63,8 @@ import com.vividsolutions.jts.geom.Polygon;
  * 
  * @author cdillard
  * @author Gabriel Roldan
- * @source $URL:
+ *
+ * @source $URL$
  *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/test/java
  *         /org/geotools/arcsde/data/FilterTest.java.fixme $
  * @version $Id$

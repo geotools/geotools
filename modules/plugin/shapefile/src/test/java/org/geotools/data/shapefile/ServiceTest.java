@@ -27,8 +27,8 @@ import org.geotools.data.DataStoreFinder;
 
 /**
  * 
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/shapefile/src/test/java/org/geotools/data/shapefile/ServiceTest.java $
+ *
+ * @source $URL$
  * @version $Id$
  * @author ian
  */

@@ -27,8 +27,8 @@ import com.vividsolutions.jts.geom.Envelope;
  * DOCUMENT ME!
  * 
  * @author Tommaso Nolli
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/shapefile/src/main/java/org/geotools/index/quadtree/Node.java $
+ *
+ * @source $URL$
  */
 public class Node {
     protected int numShapesId;

@@ -29,6 +29,7 @@ import java.io.IOException;
  * dataSourceNameSpace the namespace of the datasource, may be null
  * 
  *
+ *
  * @source $URL$
  */
 public class Generalization implements Comparable<Generalization> {

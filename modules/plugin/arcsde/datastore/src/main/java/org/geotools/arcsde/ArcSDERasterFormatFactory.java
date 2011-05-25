@@ -37,7 +37,8 @@ import com.esri.sde.sdk.pe.PeCoordinateSystem;
  * @author Saul Farber (saul.farber)
  * @author aaime
  * @author Simone Giannecchini (simboss)
- * @source $URL:
+ *
+ * @source $URL$
  *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
  *         /org/geotools/arcsde/ArcSDERasterFormatFactory.java $
  */

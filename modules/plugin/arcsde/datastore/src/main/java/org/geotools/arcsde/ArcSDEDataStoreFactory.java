@@ -64,9 +64,10 @@ import com.esri.sde.sdk.pe.PeFactory;
  * Factory to create DataStores over a live ArcSDE instance.
  * 
  * @author Gabriel Roldan, Axios Engineering
- * @source $URL: http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/
+ *
+ * @source $URL$
  *         datastore/src/main/java /org/geotools/arcsde/ArcSDEDataStoreFactory.java $
- * @version $Id: ArcSDEDataStoreFactory.java 95099 2011-01-13 14:18:17Z WIEN1::lanadvhmu $
+ * @version $Id$
  */
 @SuppressWarnings("unchecked")
 public final class ArcSDEDataStoreFactory implements DataStoreFactorySpi {

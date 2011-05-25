@@ -36,8 +36,8 @@ import org.opengis.referencing.FactoryException;
 
 /**
  * 
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/shapefile/src/main/java/org/geotools/data/shapefile/prj/PrjFileReader.java $
+ *
+ * @source $URL$
  */
 public class PrjFileReader implements FileReader {
 

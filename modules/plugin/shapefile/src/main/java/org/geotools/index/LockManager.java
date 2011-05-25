@@ -20,8 +20,8 @@ package org.geotools.index;
  * DOCUMENT ME!
  * 
  * @author Tommaso Nolli
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/shapefile/src/main/java/org/geotools/index/LockManager.java $
+ *
+ * @source $URL$
  */
 public class LockManager {
     private static final int EXCLUSIVE_LOCK_TIMEOUT = 20;

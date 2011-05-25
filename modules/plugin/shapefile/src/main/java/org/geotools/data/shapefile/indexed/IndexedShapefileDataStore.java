@@ -97,8 +97,8 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  * @author Tommaso Nolli
  * @author jesse eichar
  * 
- * @source $URL:
- *         http://svn.geotools.org/geotools/branches/constantTimeFid/src/org/geotools/data/shapefile/indexed/IndexedShapefileDataStore.java $
+ *
+ * @source $URL$
  */
 public class IndexedShapefileDataStore extends ShapefileDataStore implements
         FileWriter {

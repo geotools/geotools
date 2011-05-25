@@ -71,7 +71,8 @@ import com.vividsolutions.jts.geom.Envelope;
  * Test suite for the {@link ArcSDEQuery} query wrapper
  * 
  * @author Gabriel Roldan
- * @source $URL:
+ *
+ * @source $URL$
  *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/test/java
  *         /org/geotools/arcsde/data/ArcSDEQueryTest.java $
  * @version $Revision: 1.9 $

@@ -62,8 +62,8 @@ import org.opengis.referencing.operation.TransformException;
  * @author Simone Giannecchini, GeoSolutions
  * @author rgould
  * @author Alessio Fabiani, GeoSolutions
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/plugin/image/src/org/geotools/gce/image/WorldImageWriter.java $
+ *
+ * @source $URL$
  */
 public final class WorldImageWriter extends AbstractGridCoverageWriter
 		implements GridCoverageWriter {

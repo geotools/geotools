@@ -28,6 +28,7 @@ import org.geotools.test.TestData;
 /**
  * @author Simone Giannecchini
  * 
+ *
  * @source $URL$
  */
 public abstract class GT30TestBase extends TestCase {

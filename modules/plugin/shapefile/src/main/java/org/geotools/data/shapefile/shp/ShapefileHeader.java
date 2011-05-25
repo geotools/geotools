@@ -27,7 +27,8 @@ import java.nio.channels.FileChannel;
  * 
  * @author jamesm
  * @author Ian Schneider
- * @source $URL:
+ *
+ * @source $URL$
  *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/shapefile/src/main/java/org
  *         /geotools/data/shapefile/shp/ShapefileHeader.java $
  */

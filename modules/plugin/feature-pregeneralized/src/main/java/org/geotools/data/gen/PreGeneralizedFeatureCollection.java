@@ -47,6 +47,7 @@ import org.opengis.util.ProgressListener;
  * 
  * This collection is read only, modifying methods result in {@link UnsupportedOperationException}
  *
+ *
  * @source $URL$
  */
 

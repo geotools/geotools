@@ -96,8 +96,8 @@ import com.sun.media.imageioimpl.plugins.raw.RawImageReaderSpi;
  * @author Simone Giannecchini
  * @author jeichar
  * @author mkraemer
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/plugin/gtopo30/src/org/geotools/gce/gtopo30/GTopo30Reader.java $
+ *
+ * @source $URL$
  */
 public final class GTopo30Reader extends AbstractGridCoverage2DReader implements
 		GridCoverageReader {

@@ -82,8 +82,8 @@ import com.sun.media.jai.operator.ImageWriteDescriptor;
  * @author Simone Giannecchini
  * @author jeichar
  * @author mkraemer
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/plugin/gtopo30/src/org/geotools/gce/gtopo30/GTopo30Writer.java $
+ *
+ * @source $URL$
  */
 final public class GTopo30Writer extends AbstractGridCoverageWriter implements
 		GridCoverageWriter {

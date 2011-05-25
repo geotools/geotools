@@ -51,6 +51,7 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
  *
  * Testing {@link ErdasImgReader}
  *
+ *
  * @source $URL$
  */
 public final class ErdasImgTest extends GDALTestCase {

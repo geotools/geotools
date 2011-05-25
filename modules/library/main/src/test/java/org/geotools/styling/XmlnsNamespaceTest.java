@@ -31,6 +31,7 @@ import org.geotools.test.TestData;
  * @author Vitalus
  *
  *
+ *
  * @source $URL$
  */
 public class XmlnsNamespaceTest extends TestCase {

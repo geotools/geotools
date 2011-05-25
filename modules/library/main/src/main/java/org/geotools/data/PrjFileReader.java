@@ -34,8 +34,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 /**
  * @author Simone Giannecchini
  * @since 2.3
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/module/main/src/org/geotools/data/PrjFileReader.java $
+ *
+ * @source $URL$
  */
 public class PrjFileReader {
 

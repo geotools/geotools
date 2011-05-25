@@ -28,6 +28,7 @@ import org.jdom.JDOMException;
  * for a ServiceException and parses it if it encounters one.
  *
  * @author rgould
+ *
  * @source $URL$
  */
 public abstract class Response {

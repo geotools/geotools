@@ -38,6 +38,7 @@ import org.geotools.factory.Hints;
  * @author Justin Deoliveira, The Open Planning Project
  * @since 2.4
  * @version 2.7
+ *
  * @source $URL$
  */
 public class CommonsConverterFactory implements ConverterFactory {

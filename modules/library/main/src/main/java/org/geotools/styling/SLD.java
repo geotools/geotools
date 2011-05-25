@@ -52,6 +52,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * Rule, Symbolizer, Stroke and Fill).
  *
  * @author Jody Garnett
+ *
  * @source $URL$
  * @version $Id$
  */

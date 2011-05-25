@@ -52,6 +52,7 @@ import com.vividsolutions.jts.geom.MultiPolygon;
  * @author Leprosy
  * @since 0.3 TODO: test wkt geometry parse.
  *
+ *
  * @source $URL$
  */
 public class GeometryAttributeImpl extends AttributeImpl implements

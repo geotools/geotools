@@ -41,6 +41,7 @@ import junit.framework.TestCase;
 
 /**
  * Purpose: these tests ensure that the output of CalcResult converts as expected.
+ *
  * @source $URL$
  */
 public class CalcResultTest extends TestCase {

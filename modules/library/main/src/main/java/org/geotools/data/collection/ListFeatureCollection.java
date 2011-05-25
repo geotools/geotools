@@ -54,6 +54,8 @@ import org.opengis.geometry.BoundingBox;
  * @see Hints#FEATURE_DETACHED
  * @author Oliver Gottwald
  * @author Jody
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/data/collection/ListFeatureCollection.java $
  */
 @SuppressWarnings("unchecked")
 public class ListFeatureCollection extends AbstractFeatureCollection {

@@ -69,6 +69,7 @@ import org.opengis.referencing.operation.MathTransform;
  * @author Simone Giannecchini, GeoSolutions
  * 
  *
+ *
  * @source $URL$
  */
 public class WorldFileWriter {

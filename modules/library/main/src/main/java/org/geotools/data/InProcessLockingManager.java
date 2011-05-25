@@ -53,6 +53,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *       This is now fixed, but the loop to do it is really damn complex.
  *       I'm not sure of the solution, but there should be something that is
  *       less confusing.
+ *
  * @source $URL$
  */
 public class InProcessLockingManager implements LockingManager {

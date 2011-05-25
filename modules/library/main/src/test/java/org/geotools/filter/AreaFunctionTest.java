@@ -45,6 +45,7 @@ import com.vividsolutions.jts.geom.PrecisionModel;
  *
  * @author James MacGill, CCG
  * @author Rob Hranac, TOPP
+ *
  * @source $URL$
  */                                
 public class AreaFunctionTest extends TestCase {

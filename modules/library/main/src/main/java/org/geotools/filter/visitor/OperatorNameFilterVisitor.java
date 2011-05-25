@@ -53,6 +53,7 @@ import org.opengis.filter.spatial.Within;
  * <p>
  * @author Jody Garnett
  *
+ *
  * @source $URL$
  */
 public class OperatorNameFilterVisitor implements FilterVisitor {

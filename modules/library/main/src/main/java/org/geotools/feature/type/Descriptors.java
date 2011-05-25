@@ -40,6 +40,7 @@ import org.opengis.feature.type.Name;
  * 
  * @since 2.5
  *
+ *
  * @source $URL$
  */
 public class Descriptors {

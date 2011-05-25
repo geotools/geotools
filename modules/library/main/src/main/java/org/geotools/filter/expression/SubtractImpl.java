@@ -29,6 +29,7 @@ import org.opengis.filter.expression.Subtract;
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
  *
  *
+ *
  * @source $URL$
  */
 public class SubtractImpl extends MathExpressionImpl implements Subtract {

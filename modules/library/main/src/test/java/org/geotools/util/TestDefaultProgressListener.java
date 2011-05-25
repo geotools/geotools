@@ -11,6 +11,8 @@ import org.junit.Test;
 /**
  * @author Simone Giannecchini, GeoSolutions SAS
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/main/src/test/java/org/geotools/util/TestDefaultProgressListener.java $
  */
 public class TestDefaultProgressListener extends Assert {
 

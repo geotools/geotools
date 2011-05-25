@@ -32,6 +32,7 @@ import com.vividsolutions.jts.geom.Point;
  * This is a support class which creates test features for use in testing.
  *
  * @author jamesm
+ *
  * @source $URL$
  */
 public class SampleFeatureFixtures {

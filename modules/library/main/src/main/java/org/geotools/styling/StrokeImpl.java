@@ -33,6 +33,7 @@ import org.opengis.util.Cloneable;
  * stroke defines how a line is rendered.
  *
  * @author James Macgill, CCG
+ *
  * @source $URL$
  * @version $Id$
  */

@@ -50,6 +50,7 @@ import org.xml.sax.helpers.XMLFilterImpl;
  * the translator public so it can be used by others as well.
  *
  * @author Ian Schneider
+ *
  * @source $URL$
  */
 public abstract class TransformerBase {

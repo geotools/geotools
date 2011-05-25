@@ -45,6 +45,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @author Jody Garnett, Refractions Research
  *
  * @see TransactionStateDiff
+ *
  * @source $URL$
  */
 public abstract class DiffFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleFeature> {

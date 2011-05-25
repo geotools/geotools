@@ -125,7 +125,8 @@ import org.geotools.data.view.DefaultView;
  * </p>
  * 
  * @author Jody Garnett, Refractions Research
- * @source $URL:
+ *
+ * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/
  *         data/DataUtilities.java $
  */

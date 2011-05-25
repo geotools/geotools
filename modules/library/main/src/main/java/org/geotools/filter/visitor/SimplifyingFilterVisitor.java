@@ -59,6 +59,7 @@ import org.opengis.filter.identity.Identifier;
  * @author Gabriel Roldan (OpenGeo)
  * @since 2.5.x
  * @version $Id$
+ *
  * @source $URL$
  */
 public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {

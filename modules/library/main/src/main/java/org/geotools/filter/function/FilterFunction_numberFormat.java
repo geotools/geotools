@@ -29,6 +29,7 @@ import org.opengis.filter.capability.FunctionName;
  * @author Andrea Aime - OpenGeo
  *
  *
+ *
  * @source $URL$
  */
 public class FilterFunction_numberFormat extends FunctionExpressionImpl {

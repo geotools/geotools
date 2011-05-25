@@ -40,6 +40,7 @@ import org.geotools.resources.LazySet;
  * {@linkplain CoordinateSequenceFactory coordinate sequence} or
  * {@linkplain PrecisionModel precision model} factories.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

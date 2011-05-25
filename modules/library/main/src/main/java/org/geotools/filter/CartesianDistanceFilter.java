@@ -44,6 +44,7 @@ import org.opengis.filter.expression.Expression;
  * <p></p>
  *
  * @author Chris Holmes, TOPP
+ *
  * @source $URL$
  * @version $Id$
  *

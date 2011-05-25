@@ -59,6 +59,8 @@ import org.opengis.filter.sort.SortBy;
  * provides support for IOException.
  * 
  * @author Jody
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/data/collection/CollectionFeatureSource.java $
  */
 public class CollectionFeatureSource implements SimpleFeatureSource {
     protected SimpleFeatureCollection collection;

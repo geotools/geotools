@@ -82,6 +82,7 @@ import org.opengis.filter.Filter;
  * </p>
  *
  * @author jgarnett
+ *
  * @source $URL$
  */
 public abstract class AbstractDataStore implements DataStore {

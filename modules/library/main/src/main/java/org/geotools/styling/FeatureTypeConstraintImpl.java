@@ -24,6 +24,7 @@ import org.opengis.filter.Filter;
 
 /**
  *
+ *
  * @source $URL$
  */
 public class FeatureTypeConstraintImpl implements FeatureTypeConstraint, Cloneable {

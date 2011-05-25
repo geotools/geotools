@@ -25,6 +25,7 @@ import org.opengis.feature.type.AttributeDescriptor;
  * Attribute Reader that joins.
  *
  * @author Ian Schneider
+ *
  * @source $URL$
  * @version $Id$
  */

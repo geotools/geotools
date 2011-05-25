@@ -29,6 +29,7 @@ import org.opengis.filter.expression.PropertyName;
  * @deprecated This class is now synonymous with the {@linkplain Query} class.
  * @see Query
  * @author Chris Holmes
+ *
  * @source $URL$
  */
 public class DefaultQuery extends Query {

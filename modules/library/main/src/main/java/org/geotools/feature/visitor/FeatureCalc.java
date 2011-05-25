@@ -26,6 +26,7 @@ import org.opengis.feature.FeatureVisitor;
  *
  * @see FeatureVisitor
  * @since 2.2.M2
+ *
  * @source $URL$
  */
 public interface FeatureCalc extends FeatureVisitor {

@@ -47,7 +47,8 @@ import org.opengis.filter.expression.Expression;
  * @author Andrea Aime
  * @author Michael Bedward
  * @since 2.6
- * @source $URL: $
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/main/src/test/java/org/geotools/filter/function/EnvFunctionTest.java $
  * @version $Id $
  */
 

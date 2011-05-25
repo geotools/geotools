@@ -30,6 +30,7 @@ import org.opengis.util.Cloneable;
  * Direct implementation of AnchorPoint.
  *
  * @author Ian Turton, CCG
+ *
  * @source $URL$
  * @version $Id$
  */

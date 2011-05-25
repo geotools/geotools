@@ -31,6 +31,7 @@ import org.opengis.style.StyleVisitor;
  * </p>
  *
  * @author jamesm
+ *
  * @source $URL$
  */
 public class NamedStyleImpl extends StyleImpl implements NamedStyle {

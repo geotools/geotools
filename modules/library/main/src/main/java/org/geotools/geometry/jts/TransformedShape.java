@@ -37,8 +37,8 @@ import org.geotools.referencing.operation.matrix.XAffineTransform;
  * different affine transforms and shapes. This class is <strong>not</strong>
  * thread-safe.
  * 
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/module/render/src/org/geotools/renderer/lite/TransformedShape.java $
+ *
+ * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

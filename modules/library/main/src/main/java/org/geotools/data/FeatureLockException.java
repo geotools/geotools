@@ -24,6 +24,7 @@ import java.io.IOException;
  * out Authroization.
  *
  * @author Jody Garnett, Refractions Research
+ *
  * @source $URL$
  */
 public class FeatureLockException extends IOException {

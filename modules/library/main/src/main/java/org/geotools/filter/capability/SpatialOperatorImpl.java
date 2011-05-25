@@ -28,6 +28,7 @@ import org.opengis.filter.capability.SpatialOperator;
  * 
  * @author Justin Deoliveira, The Open Planning Project
  *
+ *
  * @source $URL$
  */
 public class SpatialOperatorImpl extends OperatorImpl 

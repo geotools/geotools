@@ -24,6 +24,7 @@ import org.geotools.data.Query;
  * @author Frank Gasdorf, fgdrf@users.sourceforge.net
  *
  *
+ *
  * @source $URL$
  */
 public class MemoryDataStoreBoundsTest extends DataTestCase {

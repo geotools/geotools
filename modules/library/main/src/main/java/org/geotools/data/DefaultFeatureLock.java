@@ -21,6 +21,7 @@ package org.geotools.data;
  * transaction. This class is responsible for supplying a unique Authorization 
  * ID and expiry period.
  * </p> 
+ *
  * @source $URL$
  * 
  * @deprecated Please use {@link FeatureLock}

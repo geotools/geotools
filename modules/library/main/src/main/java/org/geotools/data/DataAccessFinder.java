@@ -54,8 +54,8 @@ import org.opengis.feature.type.FeatureType;
  * Example:<br/><code>org.geotools.data.mytype.MyTypeDataAccessFacotry</code>
  * </p>
  * 
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/library/main/src/main/java/org/geotools/data/DataAccessFinder.java $
+ *
+ * @source $URL$
  */
 public final class DataAccessFinder {
     /** The logger for the filter module. */

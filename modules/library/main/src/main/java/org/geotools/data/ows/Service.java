@@ -27,6 +27,7 @@ import org.opengis.metadata.citation.ResponsibleParty;
  * extended while implementing other OWSs. Name, Title and OnlineResource are 
  * required. Everything else is optional.
  * 
+ *
  * @source $URL$
  */
 public class Service {

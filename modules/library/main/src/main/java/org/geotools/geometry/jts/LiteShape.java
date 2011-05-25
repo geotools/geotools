@@ -45,8 +45,8 @@ import com.vividsolutions.jts.geom.impl.PackedCoordinateSequenceFactory;
  * </p>
  * 
  * @author Andrea Aime
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/library/main/src/main/java/org/geotools/geometry/jts/LiteShape.java $
+ *
+ * @source $URL$
  * @version $Id$
  */
 public class LiteShape implements Shape, Cloneable {

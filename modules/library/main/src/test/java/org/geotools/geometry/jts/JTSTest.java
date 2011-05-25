@@ -45,6 +45,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * Tests the {@link JTS} implementation.
  *
  * @since 2.2
+ *
  * @source $URL$
  * @version $Id$
  * @author Jess Eichar

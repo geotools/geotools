@@ -41,6 +41,7 @@ import org.opengis.filter.identity.FeatureId;
  * This is a starting point for providing your own FeatureStore implementation.
  *
  * @author Jody Garnett, Refractions Research
+ *
  * @source $URL$
  */
 public abstract class AbstractFeatureStore extends AbstractFeatureSource

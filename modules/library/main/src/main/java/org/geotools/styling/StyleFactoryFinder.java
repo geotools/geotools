@@ -23,6 +23,7 @@ import org.geotools.factory.GeoTools;
 
 /**
  *
+ *
  * @source $URL$
  *
  * @deprecated Replaced by {@link org.geotools.factory.CommonFactoryFinder#getStyleFactory}.

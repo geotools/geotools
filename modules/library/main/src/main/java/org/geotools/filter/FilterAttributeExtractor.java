@@ -39,6 +39,7 @@ import org.opengis.filter.expression.PropertyName;
  * </ul>
  * 
  * @author wolf
+ *
  * @source $URL$
  */
 public class FilterAttributeExtractor extends DefaultFilterVisitor {

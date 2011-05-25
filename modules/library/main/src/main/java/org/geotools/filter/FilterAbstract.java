@@ -31,6 +31,7 @@ import org.opengis.filter.FilterVisitor;
  *
  * @author Jody Garnett
  *
+ *
  * @source $URL$
  */
 public abstract class FilterAbstract implements org.opengis.filter.Filter 

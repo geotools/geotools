@@ -41,6 +41,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * @since 2.5
  * 
  *
+ *
  * @source $URL$
  */
 public class DecoratingFeature implements SimpleFeature {

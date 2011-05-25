@@ -48,7 +48,8 @@ import org.opengis.feature.type.Name;
  * And possibly for "Query".
  * 
  * @author Jody Garnett
- * @source $URL: http://svn.geotools.org/trunk/modules/library/main/src/main/java/org/geotools/data/
+ *
+ * @source $URL$
  *         DefaultRepository.java $
  */
 public class DefaultRepository implements Repository {

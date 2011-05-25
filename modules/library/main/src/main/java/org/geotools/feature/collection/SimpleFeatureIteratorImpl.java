@@ -27,7 +27,8 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * Note this does not implement Iterator (FeatureIterator is a separate class).
  * 
  * @author Ian Schneider
- * @source $URL: http://svn.osgeo.org/geotools/branches/simple-features/modules/library/main/src/main/java/org/geotools/feature/collection/FeatureIteratorImpl.java $
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/feature/collection/SimpleFeatureIteratorImpl.java $
  */
 public class SimpleFeatureIteratorImpl extends FeatureIteratorImpl<SimpleFeature> implements SimpleFeatureIterator {
      

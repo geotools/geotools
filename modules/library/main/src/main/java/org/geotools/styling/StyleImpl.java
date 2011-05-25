@@ -31,6 +31,7 @@ import org.opengis.util.Cloneable;
  * Implementation of style.
  *
  * @author James Macgill, CCG
+ *
  * @source $URL$
  * @version $Id$
  */

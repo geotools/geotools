@@ -28,6 +28,7 @@ import org.opengis.filter.expression.Function;
  * @author Justin Deoliveira, The Open Planning Project
  *
  *
+ *
  * @source $URL$
  */
 public class FunctionNameImpl extends OperatorImpl implements FunctionName {

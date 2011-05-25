@@ -32,8 +32,8 @@ import java.util.logging.Logger;
  * </p>
  * 
  * @author Jody Garnett, Refractions Research
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/library/main/src/main/java/org/geotools/data/DefaultTransaction.java $
+ *
+ * @source $URL$
  */
 public class DefaultTransaction implements Transaction {
     /** The logger for the data module. */

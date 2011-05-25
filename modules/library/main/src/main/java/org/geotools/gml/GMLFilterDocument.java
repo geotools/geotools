@@ -43,6 +43,7 @@ import org.xml.sax.SAXException;
  * <p></p>
  *
  * @author Rob Hranac, Vision for New York
+ *
  * @source $URL$
  * @version $Id$
  */

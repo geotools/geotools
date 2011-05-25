@@ -31,6 +31,7 @@ import org.opengis.filter.FilterVisitor;
  * filter.
  *
  * @author Rob Hranac, TOPP
+ *
  * @source $URL$
  * @version $Id$
  *

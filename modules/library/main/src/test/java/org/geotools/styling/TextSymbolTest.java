@@ -44,6 +44,7 @@ import com.vividsolutions.jts.geom.Point;
  *
  * @task REVISIT: redo the Map stuff - I commented it out since DefaultMap is
  *       deprecated - cholmes.
+ *
  * @source $URL$
  */
 public class TextSymbolTest extends TestCase {

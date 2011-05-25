@@ -23,6 +23,7 @@ import java.awt.geom.PathIterator;
  * 
  * @since 2.4
  *
+ *
  * @source $URL$
  */
 public class EmptyIterator extends AbstractLiteIterator {

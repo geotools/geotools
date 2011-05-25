@@ -29,6 +29,7 @@ import com.vividsolutions.jts.geom.LineString;
  *
  * @author Ian Turton, CCG
  * @author Rob Hranac, Vision for New York
+ *
  * @source $URL$
  * @version $Id$
  */

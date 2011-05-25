@@ -49,6 +49,7 @@ import com.vividsolutions.jts.geom.PrecisionModel;
  * @author Chris Holmes, TOPP
  * @author James MacGill, CCG
  * @author Rob Hranac, TOPP
+ *
  * @source $URL$
  */            
 public class FilterEqualsTest extends TestCase {

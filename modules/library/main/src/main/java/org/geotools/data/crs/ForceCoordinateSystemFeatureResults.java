@@ -57,6 +57,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * </p>
  *
  * @author aaime
+ *
  * @source $URL$
  * @version $Id$
  */

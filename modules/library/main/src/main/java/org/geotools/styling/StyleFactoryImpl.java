@@ -58,6 +58,7 @@ import org.opengis.util.InternationalString;
  * </ul>
  * 
  * @author iant
+ *
  * @source $URL$
  * @version $Id$
  */

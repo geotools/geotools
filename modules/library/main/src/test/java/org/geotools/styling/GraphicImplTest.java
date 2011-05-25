@@ -24,6 +24,7 @@ import junit.framework.TestCase;
  * This test case captures specific problems encountered with the GraphicImpl code.
  *
  *
+ *
  * @source $URL$
  */
 public class GraphicImplTest extends TestCase {

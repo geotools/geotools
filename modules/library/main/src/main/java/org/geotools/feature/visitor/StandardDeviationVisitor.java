@@ -38,6 +38,7 @@ import org.opengis.filter.expression.Expression;
  * @author Cory Horner, Refractions Research Inc.
  * @author Andrea Aime, GeoSolutions
  *
+ *
  * @source $URL$
  */
 public class StandardDeviationVisitor implements FeatureCalc {

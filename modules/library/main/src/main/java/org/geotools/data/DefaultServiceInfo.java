@@ -26,6 +26,7 @@ import java.util.Set;
  * 
  * @author Jody Garnett (Refractions Research)
  *
+ *
  * @source $URL$
  */
 public class DefaultServiceInfo implements ServiceInfo, Serializable {    

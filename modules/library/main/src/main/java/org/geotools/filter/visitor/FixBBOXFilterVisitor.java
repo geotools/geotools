@@ -33,7 +33,8 @@ import com.vividsolutions.jts.geom.Geometry;
  * <p>
  * 
  * @author Jody
- * @source $URL$
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/filter/visitor/FixBBOXFilterVisitor.java $
  */
 public class FixBBOXFilterVisitor extends DuplicatingFilterVisitor {
 

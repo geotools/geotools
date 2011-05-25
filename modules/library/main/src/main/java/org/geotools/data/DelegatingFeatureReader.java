@@ -26,6 +26,7 @@ import org.opengis.feature.type.FeatureType;
  * @since 2.5
  *
  *
+ *
  * @source $URL$
  */
 public interface DelegatingFeatureReader<T extends FeatureType,F extends Feature> extends FeatureReader<T, F> {

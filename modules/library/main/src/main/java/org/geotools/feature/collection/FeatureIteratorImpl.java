@@ -27,6 +27,7 @@ import org.opengis.feature.type.FeatureType;
  * Note this does not implement Iterator (FeatureIterator is a separate class).
  * 
  * @author Ian Schneider
+ *
  * @source $URL$
  */
 public class FeatureIteratorImpl<F extends Feature> implements FeatureIterator<F> {

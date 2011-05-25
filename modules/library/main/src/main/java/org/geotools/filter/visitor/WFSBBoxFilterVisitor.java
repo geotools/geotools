@@ -48,6 +48,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  * it will be used to clip this request envelope.
  * <p> 
  * @author Jody
+ *
  * @source $URL$
  * @deprecated Use the replacement FixBBOXFilterVisitor
  */

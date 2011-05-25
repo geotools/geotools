@@ -55,6 +55,7 @@ import org.opengis.parameter.ParameterValue;
  * }</code></pre>
  *
  * @author Jody Garnett, Refractions Research
+ *
  * @source $URL$
  */
 public abstract class AbstractDataStoreFactory implements DataStoreFactorySpi {

@@ -33,6 +33,7 @@ import com.vividsolutions.jts.geom.Polygon;
 /**
  *
  * @author  James
+ *
  * @source $URL$
  */
 public class AreaFunction extends FunctionExpressionImpl { 

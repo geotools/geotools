@@ -68,6 +68,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * </p>
  * 
  * @author Gabriel Roldï¿½n
+ *
  * @source $URL$
  */
 public class DefaultView implements SimpleFeatureSource {

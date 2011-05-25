@@ -114,6 +114,7 @@ import org.opengis.filter.spatial.Within;
  * @author dzwiers
  * @author commented and ported from gt to ogc filters by saul.farber
  * @author ported to work upon {@code org.geotools.filter.Capabilities} by Gabriel Roldan
+ *
  * @source $URL$
  * @since 2.5.3
  */

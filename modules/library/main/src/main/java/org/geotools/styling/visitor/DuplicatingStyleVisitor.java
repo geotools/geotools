@@ -89,6 +89,7 @@ import org.opengis.style.Description;
  * </p>
  * @author Jesse Eichar
  *
+ *
  * @source $URL$
  */
 public class DuplicatingStyleVisitor implements StyleVisitor {

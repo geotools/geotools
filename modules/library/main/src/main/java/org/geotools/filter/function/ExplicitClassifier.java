@@ -22,6 +22,8 @@ import java.util.Set;
  * Explicit classification for a set of values.
  * 
  * @author jody
+ *
+ * @source $URL$
  */
 public final class ExplicitClassifier extends Classifier {
 

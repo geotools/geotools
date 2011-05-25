@@ -36,6 +36,7 @@ import org.opengis.util.Cloneable;
  *
  * @author Ian Turton, CCG
  * @author Johann Sorel (Geomatys)
+ *
  * @source $URL$
  * @version $Id$
  */

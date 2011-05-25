@@ -33,6 +33,8 @@ import static org.junit.Assert.*;
 
 /**
  * @author jody
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/main/src/test/java/org/geotools/filter/FunctionFinderTest.java $
  */
 public class FunctionFinderTest {
     static org.opengis.filter.FilterFactory ff;

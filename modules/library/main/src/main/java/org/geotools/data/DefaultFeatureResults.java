@@ -50,6 +50,7 @@ import org.opengis.referencing.operation.MathTransform;
  * </p>
  *
  * @author Jody Garnett, Refractions Research
+ *
  * @source $URL$
  */
 public class DefaultFeatureResults extends DataFeatureCollection {

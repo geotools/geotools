@@ -51,6 +51,8 @@ import org.opengis.filter.spatial.Within;
  * you are looking for.
  * 
  * @author Jody Garnett
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/filter/visitor/AbstractSearchFilterVisitor.java $
  */
 public abstract class AbstractSearchFilterVisitor implements FilterVisitor, ExpressionVisitor {
     /**

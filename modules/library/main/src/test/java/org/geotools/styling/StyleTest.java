@@ -29,6 +29,7 @@ import org.opengis.style.StyleVisitor;
  * instances.
  * </ul>
  *
+ *
  * @source $URL$
  */
 public class StyleTest {

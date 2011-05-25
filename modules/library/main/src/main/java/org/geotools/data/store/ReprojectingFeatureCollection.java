@@ -53,6 +53,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * 
  * @author Justin
  *
+ *
  * @source $URL$
  */
 public class ReprojectingFeatureCollection extends DecoratingSimpleFeatureCollection {

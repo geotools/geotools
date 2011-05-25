@@ -32,6 +32,7 @@ import org.opengis.feature.simple.SimpleFeature;
  *
  * @author Ray Gallagher
  * @author Ian Schneider
+ *
  * @source $URL$
  * @version $Id$
  */

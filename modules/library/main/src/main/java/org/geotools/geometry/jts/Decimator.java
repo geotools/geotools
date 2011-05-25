@@ -39,6 +39,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * 
  * @author jeichar
  * @since 2.1.x
+ *
  * @source $URL$
  */
 public final class Decimator {

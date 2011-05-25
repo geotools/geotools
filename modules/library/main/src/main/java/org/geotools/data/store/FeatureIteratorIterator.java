@@ -28,6 +28,7 @@ import org.opengis.feature.Feature;
  * @since 2.4
  *
  *
+ *
  * @source $URL$
  */
 public class FeatureIteratorIterator<F extends Feature> implements Iterator<F> {

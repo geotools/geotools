@@ -30,6 +30,7 @@ import org.geotools.util.NullProgressListener;
  * Breaks a SimpleFeatureCollection into classes using the standard deviation classification method.
  * 
  * @author Cory Horner, Refractions Research Inc.
+ *
  * @source $URL$
  */
 public class StandardDeviationFunction extends ClassificationFunction {

@@ -29,6 +29,7 @@ import org.geotools.filter.function.math.FilterFunction_min;
 /**
  *
  * @author  jamesm
+ *
  * @source $URL$
  */
 public class FilterVisitorTest extends TestCase implements FilterVisitor {

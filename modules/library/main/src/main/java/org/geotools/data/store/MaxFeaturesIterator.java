@@ -26,7 +26,8 @@ import org.opengis.feature.Feature;
  * @author Justin Deoliveira, The Open Planning Project
  * 
  * 
- * @source $URL:
+ *
+ * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/
  *         data/store/MaxFeaturesIterator.java $
  */

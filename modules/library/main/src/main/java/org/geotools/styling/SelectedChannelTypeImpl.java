@@ -25,6 +25,7 @@ import org.opengis.style.StyleVisitor;
 /**
  * Default implementation of SelectedChannelType.
  * 
+ *
  * @source $URL$
  */
 public class SelectedChannelTypeImpl implements SelectedChannelType {

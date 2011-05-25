@@ -45,6 +45,8 @@ import com.vividsolutions.jts.geom.PrecisionModel;
  * 
  * @author Niels Charlier, Curtin University of Technology
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/main/src/test/java/org/geotools/filter/MultiFilterTest.java $
  */
 public class MultiFilterTest {
     

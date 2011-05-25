@@ -27,6 +27,7 @@ import org.geotools.resources.Arguments;
 /**
  * A writer that put line number in front of every line.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

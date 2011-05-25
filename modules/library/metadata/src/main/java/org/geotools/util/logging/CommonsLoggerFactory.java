@@ -27,6 +27,7 @@ import org.apache.commons.logging.impl.Jdk14Logger;
  * <A HREF="http://jakarta.apache.org/commons/logging/">Commons-logging</A> framework.
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

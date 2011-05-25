@@ -37,6 +37,7 @@ import org.opengis.util.TypeName;
  * what comes first the record or the member during creation time.
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Jody Garnett

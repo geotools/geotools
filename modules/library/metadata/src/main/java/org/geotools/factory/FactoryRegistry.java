@@ -65,6 +65,7 @@ import org.geotools.resources.i18n.LoggingKeys;
  * service registry (e.g. {@link org.geotools.referencing.ReferencingFactoryFinder}).
  *
  * @since 2.1
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

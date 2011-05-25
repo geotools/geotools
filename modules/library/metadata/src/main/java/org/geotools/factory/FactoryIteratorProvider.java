@@ -29,6 +29,7 @@ import java.util.Iterator;
  * the Eclipse platform for instance.
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

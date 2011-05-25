@@ -30,6 +30,7 @@ import org.geotools.metadata.iso.MetadataEntity;
 /**
  * Information about the distributor of and options for obtaining the resource.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

@@ -29,6 +29,7 @@ import org.opengis.metadata.citation.Citation;
 /**
  * Information about the application schema used to build the dataset.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

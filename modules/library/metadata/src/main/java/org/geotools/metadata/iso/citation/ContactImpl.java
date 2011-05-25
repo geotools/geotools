@@ -31,6 +31,7 @@ import org.geotools.metadata.iso.MetadataEntity;
  * Information required to enable contact with the responsible person and/or organization.
  *
  * @since 2.1
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

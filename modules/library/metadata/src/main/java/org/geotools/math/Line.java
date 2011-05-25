@@ -36,6 +36,7 @@ import org.opengis.util.Cloneable;
  * {@link #x} compute the converse and should work even if the line is vertical.
  *
  * @since 2.0
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (PMO, IRD)

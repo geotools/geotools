@@ -28,6 +28,7 @@ import org.geotools.resources.i18n.Errors;
  * A scale where {@linkplain #getDenominator denominator} = {@code 1 / scale}.
  * This implementation is set up as a {@linkplain Number number} - because it is.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Jody Garnett

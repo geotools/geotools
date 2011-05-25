@@ -26,6 +26,7 @@ import org.geotools.metadata.iso.MetadataEntity;
 /**
  * Type of test applied to the data specified by a data quality scope.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

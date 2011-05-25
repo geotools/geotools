@@ -26,6 +26,7 @@ import org.opengis.metadata.quality.TopologicalConsistency;
  * Correctness of the explicitly encoded topological characteristics of the dataset as
  * described by the scope.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

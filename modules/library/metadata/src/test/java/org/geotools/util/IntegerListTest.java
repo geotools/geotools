@@ -25,6 +25,7 @@ import static org.junit.Assert.*;
  * Tests {@link IntegerList} implementations.
  *
  * @author Martin Desruisseaux
+ *
  * @source $URL$
  * @version $Id$
  */

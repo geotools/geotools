@@ -27,6 +27,7 @@ import org.opengis.metadata.content.ImagingCondition;
 /**
  * Information about an image's suitability for use.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

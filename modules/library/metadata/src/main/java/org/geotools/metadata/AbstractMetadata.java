@@ -30,6 +30,7 @@ import org.geotools.util.logging.Logging;
  * {@link #equals} and {@link #hashCode} methods.
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (Geomatys)

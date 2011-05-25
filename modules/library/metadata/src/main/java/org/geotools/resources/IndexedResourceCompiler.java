@@ -36,6 +36,7 @@ import java.lang.reflect.Field;
  * them.
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

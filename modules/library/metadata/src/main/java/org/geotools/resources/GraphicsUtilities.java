@@ -37,6 +37,7 @@ import org.geotools.io.ExpandedTabWriter;
  * module toward the GUI one, especially since the extracted methods are not Swing specific.
  *
  * @since 2.0
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

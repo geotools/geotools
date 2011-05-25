@@ -25,6 +25,7 @@ import org.opengis.metadata.quality.CompletenessCommission;
 /**
  * Excess data present in the dataset, as described by the scope.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

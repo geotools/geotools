@@ -29,6 +29,7 @@ import org.geotools.metadata.iso.MetadataEntity;
 /**
  * Restrictions on the access and use of a resource or metadata.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

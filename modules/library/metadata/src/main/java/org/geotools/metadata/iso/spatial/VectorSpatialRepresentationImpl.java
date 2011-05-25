@@ -28,6 +28,7 @@ import org.opengis.metadata.spatial.VectorSpatialRepresentation;
 /**
  * Information about the vector spatial objects in the dataset.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

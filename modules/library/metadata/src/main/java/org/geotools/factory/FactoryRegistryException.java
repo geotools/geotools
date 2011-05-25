@@ -21,6 +21,7 @@ package org.geotools.factory;
  * Thrown when a factory can't be found or can't be instantiate.
  *
  * @since 2.1
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

@@ -32,6 +32,7 @@ import org.geotools.metadata.iso.MetadataEntity;
  * community profile name and extended metadata elements can be obtained.
  *
  * @since 2.1
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

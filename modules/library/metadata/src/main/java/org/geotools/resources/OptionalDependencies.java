@@ -37,6 +37,7 @@ import org.w3c.dom.Node;
  * @todo Most methods of this class need to move as a {@code Trees} class in a {@code util} module.
  *
  * @since 2.0
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

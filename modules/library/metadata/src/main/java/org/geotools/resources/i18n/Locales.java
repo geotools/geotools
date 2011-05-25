@@ -26,6 +26,7 @@ import org.geotools.resources.XArray;
  * Static i18n methods.
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

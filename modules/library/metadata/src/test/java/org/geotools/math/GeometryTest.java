@@ -28,6 +28,7 @@ import static org.junit.Assert.*;
 /**
  * Tests the {@link Line} and {@link Plane} classes.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (PMO, IRD)

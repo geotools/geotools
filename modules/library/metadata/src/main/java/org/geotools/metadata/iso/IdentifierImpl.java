@@ -26,6 +26,7 @@ import org.opengis.metadata.citation.Citation;
 /**
  * Value uniquely identifying an object within a namespace.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

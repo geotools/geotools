@@ -28,6 +28,7 @@ import java.io.Serializable;
  * General purpose comparators.
  *
  * @since 2.5
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

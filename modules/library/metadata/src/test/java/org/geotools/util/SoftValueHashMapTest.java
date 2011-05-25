@@ -29,6 +29,7 @@ import static org.junit.Assert.*;
 /**
  * Tests {@link SoftValueHashMap}.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

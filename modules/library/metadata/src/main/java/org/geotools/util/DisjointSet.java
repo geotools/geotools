@@ -45,6 +45,7 @@ import java.io.Serializable;
  * @param <E> The type of elements in this set.
  *
  * @since 2.0
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

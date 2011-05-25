@@ -25,6 +25,7 @@ import org.opengis.metadata.quality.ThematicClassificationCorrectness;
 /**
  * Comparison of the classes assigned to features or their attributes to a universe of discourse.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

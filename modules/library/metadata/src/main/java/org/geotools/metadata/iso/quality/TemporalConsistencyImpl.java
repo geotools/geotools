@@ -25,6 +25,7 @@ import org.opengis.metadata.quality.TemporalConsistency;
 /**
  * Correctness of ordered events or sequences, if reported.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

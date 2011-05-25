@@ -26,6 +26,7 @@ import org.opengis.metadata.quality.LogicalConsistency;
  * Degree of adherence to logical rules of data structure, attribution and relationships (data
  * structure can be conceptual, logical or physical).
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

@@ -27,6 +27,7 @@ import org.geotools.metadata.iso.MetadataEntity;
 /**
  * Number of objects, listed by geometric object type, used in the dataset.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

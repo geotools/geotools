@@ -30,6 +30,7 @@ import java.util.regex.Pattern;
  * numbers, and for performing comparaisons.
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

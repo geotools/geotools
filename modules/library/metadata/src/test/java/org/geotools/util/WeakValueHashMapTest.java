@@ -26,6 +26,7 @@ import static org.junit.Assert.*;
 /**
  * Tests the {@link WeakHashSet}. A standard {@link HashMap} object is used for comparaison purpose.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

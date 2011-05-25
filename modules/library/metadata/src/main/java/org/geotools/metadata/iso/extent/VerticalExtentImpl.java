@@ -29,6 +29,7 @@ import org.geotools.metadata.iso.MetadataEntity;
 /**
  * Vertical domain of dataset.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

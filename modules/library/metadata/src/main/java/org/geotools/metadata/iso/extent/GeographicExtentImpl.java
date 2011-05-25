@@ -26,6 +26,7 @@ import org.geotools.metadata.iso.MetadataEntity;
 /**
  * Base class for geographic area of the dataset.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

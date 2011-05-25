@@ -29,6 +29,7 @@ package org.geotools.math;
  * This class is final for performance reason.
  *
  * @since 2.5
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (MPO)

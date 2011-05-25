@@ -39,6 +39,7 @@ interface InternalFactory extends Factory {
  * Dummy factory interface for {@link FactoryRegistryTest}.
  *
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

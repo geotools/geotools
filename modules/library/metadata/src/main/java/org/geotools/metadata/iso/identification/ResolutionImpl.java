@@ -27,6 +27,7 @@ import org.geotools.metadata.iso.MetadataEntity;
 /**
  * Level of detail expressed as a scale factor or a ground distance.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

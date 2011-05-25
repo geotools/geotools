@@ -22,6 +22,7 @@ package org.geotools.factory;
  * adding type safety, default hints and synchronization for multi-thread environments.
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

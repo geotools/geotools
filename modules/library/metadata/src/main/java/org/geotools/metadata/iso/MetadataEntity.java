@@ -31,6 +31,7 @@ import org.geotools.resources.i18n.ErrorKeys;
  * <A HREF="http://geoapi.sourceforge.net">GeoAPI</A>.
  *
  * @since 2.1
+ *
  * @source $URL$
  * @version $Id$
  * @author Jody Garnett

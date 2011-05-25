@@ -35,6 +35,7 @@ import org.geotools.util.logging.Logging;
  * Utility class for managing memory mapped buffers.
  *
  * @since 2.0
+ *
  * @source $URL$
  * @version $Id$
  * @author Andrea Aimes

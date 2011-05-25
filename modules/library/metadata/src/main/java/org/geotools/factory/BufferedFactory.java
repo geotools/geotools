@@ -21,6 +21,7 @@ package org.geotools.factory;
  * A marker interface for factories that are buffering their objects in some way.
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

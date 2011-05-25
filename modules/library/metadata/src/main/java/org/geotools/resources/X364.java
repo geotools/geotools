@@ -20,6 +20,7 @@ package org.geotools.resources;
 /**
  * Escape codes from ANSI X3.64 standard (aka ECMA-48 and ISO/IEC 6429).
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

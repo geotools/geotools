@@ -45,6 +45,7 @@ import org.geotools.util.logging.Logging;
  * @param <E> The type of elements in the set.
  *
  * @since 2.0
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

@@ -29,6 +29,7 @@ import org.opengis.metadata.MetadataExtensionInformation;
 /**
  * Information describing metadata extensions.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

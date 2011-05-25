@@ -35,9 +35,11 @@ import org.junit.Test;
 public class AppSchemaCacheOnlineTest extends OnlineTestSupport {
 
     /**
-     * Test cache built here.
+     * Downloaded files are stored in this directory. We intentionally use a non-canonical cache
+     * directory to test that resolved locations are canonical.
      */
-    private static final File CACHE_DIRECTORY = new File("target/app-schema-cache");
+    private static final File CACHE_DIRECTORY = new File(
+            "target/app-schema-cache/../app-schema-cache");
 
     /**
      * Schema that is downloaded.
@@ -159,6 +161,12 @@ public class AppSchemaCacheOnlineTest extends OnlineTestSupport {
             Assert.assertTrue(location.startsWith("file:"));
             Assert.assertTrue(location.endsWith(SCHEMA_FILENAME));
             Assert.assertTrue(DataUtilities.urlToFile((new URI(location)).toURL()).exists());
+            // test that cache path is not canonical
+            Assert.assertFalse(CACHE_DIRECTORY.toString().equals(
+                    CACHE_DIRECTORY.getCanonicalFile().toString()));
+            // test that resolved location is canonical, despite cache directory not being canonical
+            Assert.assertEquals(location, DataUtilities.urlToFile((new URI(location)).toURL())
+                    .getCanonicalFile().toURI().toString());
         }
     }
 

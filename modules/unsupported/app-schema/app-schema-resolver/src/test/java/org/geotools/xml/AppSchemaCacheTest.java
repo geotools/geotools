@@ -19,7 +19,7 @@ package org.geotools.xml;
 
 import java.io.File;
 import java.io.PrintWriter;
-import java.net.URL;
+import java.net.URI;
 
 import org.geotools.data.DataUtilities;
 import org.junit.Assert;
@@ -54,15 +54,23 @@ public class AppSchemaCacheTest {
      */
     @Test
     public void resolve() throws Exception {
-        File cacheDirectory = DataUtilities.urlToFile(AppSchemaCacheTest.class
-                .getResource("/test-data/cache"));
+        // intentionally construct non-canonical cache directory
+        File cacheDirectory = new File(DataUtilities.urlToFile(AppSchemaCacheTest.class
+                .getResource("/test-data/cache")), "../cache");
         AppSchemaResolver resolver = new AppSchemaResolver(
                 new AppSchemaCache(cacheDirectory, false));
         String resolvedLocation = resolver
                 .resolve("http://schemas.example.org/cache-test/cache-test.xsd");
         Assert.assertTrue(resolvedLocation.startsWith("file:"));
         Assert.assertTrue(resolvedLocation.endsWith("cache-test.xsd"));
-        Assert.assertTrue(DataUtilities.urlToFile(new URL(resolvedLocation)).exists());
+        Assert.assertTrue(DataUtilities.urlToFile((new URI(resolvedLocation)).toURL()).exists());
+        // test that cache path is not canonical
+        Assert.assertFalse(cacheDirectory.toString().equals(
+                cacheDirectory.getCanonicalFile().toString()));
+        // test that resolved location is canonical, despite cache directory not being canonical
+        Assert.assertEquals(resolvedLocation,
+                DataUtilities.urlToFile((new URI(resolvedLocation)).toURL()).getCanonicalFile()
+                        .toURI().toString());
     }
 
 }

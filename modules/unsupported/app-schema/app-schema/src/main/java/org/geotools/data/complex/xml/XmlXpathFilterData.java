@@ -26,6 +26,8 @@ import org.xml.sax.helpers.NamespaceSupport;
  * 
  * @author Russell Petty, GSV
  * @version $Id$
+ *
+ *
  * @source $URL$
  */
 public class XmlXpathFilterData {

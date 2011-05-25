@@ -36,6 +36,9 @@ import org.restlet.resource.Variant;
  * http://localhost:8082/simplefeatureservice/data/layerAsia
  * It generates a list of features satifsying the provided filters 
  * @author narad
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/sfs/src/test/java/org/geotools/data/sfs/mock/DataLayerResource.java $
  */
 public class DataLayerResource extends Resource {
 

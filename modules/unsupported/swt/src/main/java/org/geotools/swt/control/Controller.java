@@ -18,6 +18,9 @@ package org.geotools.swt.control;
  * Strategy object for 
  * @author Jesse
  * @since 1.1.0
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/control/Controller.java $
  */
 public interface Controller {
 

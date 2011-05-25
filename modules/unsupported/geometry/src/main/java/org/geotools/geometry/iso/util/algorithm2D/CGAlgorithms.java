@@ -30,6 +30,8 @@ import org.opengis.geometry.DirectPosition;
  * algorithms. The algorithms supplied in this class are robust for
  * double-precision floating point.
  *
+ *
+ *
  * @source $URL$
  */
 public class CGAlgorithms {

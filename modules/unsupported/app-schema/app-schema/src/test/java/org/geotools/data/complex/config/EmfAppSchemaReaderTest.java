@@ -52,8 +52,9 @@ import com.vividsolutions.jts.geom.Point;
  * @author Gabriel Roldan, Axios Engineering
  * @author Ben Caradoc-Davies, CSIRO Earth Science and Resource Engineering
  * @version $Id$
- * @source $URL:
- *         http://svn.geotools.org/trunk/modules/unsupported/community-schemas/community-schema-ds/src/test/java/org/geotools/data/complex/config/EmfAppSchemaReaderTest.java $
+ *
+ *
+ * @source $URL$
  * @since 2.4
  */
 public class EmfAppSchemaReaderTest extends AppSchemaTestSupport {

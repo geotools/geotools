@@ -59,6 +59,8 @@ import com.vividsolutions.jts.geom.Envelope;
  * to the cache.</p>
  * 
  *
+ *
+ *
  * @source $URL$
  */
 public class GridFeatureCache extends AbstractFeatureCache {

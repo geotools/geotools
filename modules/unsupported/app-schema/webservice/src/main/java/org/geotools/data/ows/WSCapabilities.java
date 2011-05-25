@@ -29,6 +29,8 @@ import org.geotools.filter.FilterCapabilities;
  * </p>
  *
  * @author rpetty
+ *
+ *
  * @source $URL$
  */
 public class WSCapabilities extends Capabilities {

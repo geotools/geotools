@@ -65,6 +65,8 @@ import com.vividsolutions.jts.geom.Envelope;
  *
  * @author Norman Barker www.comsine.com
  * @author dzwiers
+ *
+ *
  * @source $URL$
  */
 public class WFSCapabilitiesComplexTypes {

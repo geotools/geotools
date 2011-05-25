@@ -54,6 +54,9 @@ import org.opengis.util.InternationalString;
  * TODO: Improve the contents leveraging on some
  *         Standard like, as an instance: UCUM or NetCDF CF Standard Names
  *         table: http://cf-pcmdi.llnl.gov/documents/cf-standard-names/
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/netcdf/src/main/java/org/geotools/coverage/io/netcdf/NetCDFProductFieldType.java $
  */
 public class NetCDFProductFieldType implements FieldType {
 	

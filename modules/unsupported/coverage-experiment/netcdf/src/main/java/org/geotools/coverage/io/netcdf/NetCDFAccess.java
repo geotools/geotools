@@ -85,6 +85,9 @@ import org.opengis.util.ProgressListener;
  * 
  * @author Romagnoli Daniele, GeoSolutions
  * 
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/netcdf/src/main/java/org/geotools/coverage/io/netcdf/NetCDFAccess.java $
  */
 public class NetCDFAccess extends DefaultCoverageAccess {
 

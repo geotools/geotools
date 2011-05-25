@@ -23,6 +23,8 @@ import org.opengis.filter.Id;
  * Result of locking features (listing both locked and unlocked features).
  *
  * @author dzwiers
+ *
+ *
  * @source $URL$
  */
 public class LockResult {

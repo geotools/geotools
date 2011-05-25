@@ -24,6 +24,8 @@ package org.geotools.geometry.iso;
  * @author Sanjay Dominik Jena
  * 
  *
+ *
+ *
  * @source $URL$
  */
 public class UnsupportedDimensionException extends Exception {

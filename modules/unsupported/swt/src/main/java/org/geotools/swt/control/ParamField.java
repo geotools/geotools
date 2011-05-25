@@ -31,7 +31,9 @@ import com.vividsolutions.jts.geom.Geometry;
  * 
  * @author gdavis
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swing/src/main/java/org/geotools/swing/wizard/ParamField.java $
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/control/ParamField.java $
  */
 public abstract class ParamField {
 

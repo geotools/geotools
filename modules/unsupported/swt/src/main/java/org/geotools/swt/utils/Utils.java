@@ -48,6 +48,9 @@ import com.vividsolutions.jts.geom.Polygon;
  * Utilities class.
  * 
  * @author Andrea Antonello (www.hydrologis.com)
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/utils/Utils.java $
  */
 public class Utils {
     /**

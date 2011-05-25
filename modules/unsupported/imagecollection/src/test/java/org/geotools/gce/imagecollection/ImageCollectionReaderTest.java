@@ -41,6 +41,9 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 /**
  * @author Simone Giannecchini, GeoSolutions
  * @author Alessio Fabiani, GeoSolutions
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/imagecollection/src/test/java/org/geotools/gce/imagecollection/ImageCollectionReaderTest.java $
  */
 public class ImageCollectionReaderTest {
 

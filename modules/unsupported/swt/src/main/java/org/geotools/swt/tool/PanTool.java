@@ -32,6 +32,9 @@ import org.geotools.swt.utils.Messages;
  * 
  * @author Michael Bedward
  * @since 2.6
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/tool/PanTool.java $
  */
 public class PanTool extends CursorTool {
 

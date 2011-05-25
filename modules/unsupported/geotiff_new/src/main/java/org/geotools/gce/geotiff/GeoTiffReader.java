@@ -93,8 +93,9 @@ import org.opengis.referencing.operation.TransformException;
  * @author Bryce Nordgren, USDA Forest Service
  * @author Simone Giannecchini
  * @since 2.1
- * @source $URL:
- *         http://svn.geotools.org/geotools/branches/coverages_branch/trunk/gt/plugin/geotiff/src/org/geotools/gce/geotiff/GeoTiffReader.java $
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/geotiff_new/src/main/java/org/geotools/gce/geotiff/GeoTiffReader.java $
  */
 public final class GeoTiffReader extends AbstractGridCoverage2DReader implements
 		GridCoverageReader {

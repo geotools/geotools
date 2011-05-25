@@ -43,6 +43,9 @@ import org.opengis.util.InternationalString;
  * 
  * @author Simone Giannecchini, GeoSolutions
  *
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/coverage-api/src/main/java/org/geotools/coverage/io/impl/range/BaseFieldType.java $
  */
 public class BaseFieldType implements FieldType {
 

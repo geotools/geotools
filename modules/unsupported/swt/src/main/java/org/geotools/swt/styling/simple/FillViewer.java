@@ -58,6 +58,9 @@ import org.geotools.swt.utils.Messages;
  * </p>  
  * @author Jody Garnett
  * @since 1.0.0
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/styling/simple/FillViewer.java $
  */
 public class FillViewer {
     boolean enabled;

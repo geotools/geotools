@@ -29,7 +29,9 @@ import org.opengis.feature.type.Name;
  * @author Gabriel Roldan, Axios Engineering
  * 
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/main/java/org/geotools/feature/xpath/AttributeNodeIterator.java $
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/main/java/org/geotools/feature/xpath/XmlAttributeNodeIterator.java $
  */
 public class XmlAttributeNodeIterator implements NodeIterator {
 

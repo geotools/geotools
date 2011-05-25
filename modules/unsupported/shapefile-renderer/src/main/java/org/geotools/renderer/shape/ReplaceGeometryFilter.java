@@ -40,6 +40,8 @@ import org.geotools.filter.NullFilter;
  * process SimpleGeometries.
  *
  * @author Jesse
+ *
+ *
  * @source $URL$
  */
 public class ReplaceGeometryFilter implements FilterVisitor {

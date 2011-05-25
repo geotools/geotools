@@ -27,7 +27,9 @@ import org.geotools.grid.Neighbor;
  *
  * @author mbedward
  * @since 2.7
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/grid/src/main/java/org/geotools/grid/hexagon/Hexagon.java $
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/grid/src/main/java/org/geotools/grid/hexagon/HexagonBuilder.java $
  * @version $Id: Hexagon.java 35637 2010-06-01 09:24:43Z mbedward $
  */
 public class HexagonBuilder extends PolygonBuilder {

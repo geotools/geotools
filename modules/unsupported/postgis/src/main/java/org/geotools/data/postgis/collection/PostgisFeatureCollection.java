@@ -30,6 +30,8 @@ import org.geotools.data.jdbc.JDBCFeatureSource;
  * 
  * @author Cory Horner, Refractions Research
  * 
+ *
+ *
  * @source $URL$
  */
 public class PostgisFeatureCollection extends JDBCFeatureCollection  {

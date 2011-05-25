@@ -13,6 +13,9 @@ import org.apache.commons.logging.LogFactory;
  * specified message.
  *
  * @author Matthijs Laan, B3Partners
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/dxf/src/main/java/org/geotools/data/dxf/parser/DXFParseException.java $
  */
 public class DXFParseException extends Exception {
     private static final Log log = LogFactory.getLog(DXFParseException.class);

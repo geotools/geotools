@@ -37,6 +37,9 @@ import org.geotools.swt.utils.Messages;
  * @author Michael Bedward
  * @author Andrea Antonello (www.hydrologis.com)
  * @since 2.6
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/tool/ZoomOutTool.java $
  */
 public class ZoomOutTool extends AbstractZoomTool {
 

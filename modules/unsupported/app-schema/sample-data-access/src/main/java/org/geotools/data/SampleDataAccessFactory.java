@@ -36,6 +36,8 @@ import org.opengis.feature.type.FeatureType;
  * 
  * @author Ben Caradoc-Davies, CSIRO Exploration and Mining
  * @version $Id$
+ *
+ *
  * @source $URL$
  * @since 2.6
  */

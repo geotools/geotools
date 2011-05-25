@@ -47,6 +47,9 @@ import org.geotools.swt.utils.Utils;
  * A {@link TableViewer table viewer} for {@link MapLayer map layers}.
  *
  * @author Andrea Antonello (www.hydrologis.com)
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/control/MaplayerTableViewer.java $
  */
 public class MaplayerTableViewer extends TableViewer implements ISelectionChangedListener {
     private List<MapLayer> layersList = new ArrayList<MapLayer>();

@@ -49,6 +49,8 @@ import org.opengis.geometry.primitive.Ring;
  * Instances of this class are not reentrant.
  * 
  *
+ *
+ *
  * @source $URL$
  */
 public class PointLocator {

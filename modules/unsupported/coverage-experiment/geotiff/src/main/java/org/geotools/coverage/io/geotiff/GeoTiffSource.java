@@ -46,6 +46,9 @@ import org.opengis.util.ProgressListener;
  * or stream.
  * 
  * @author simone
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/geotiff/src/main/java/org/geotools/coverage/io/geotiff/GeoTiffSource.java $
  */
 public class GeoTiffSource implements CoverageSource {
 

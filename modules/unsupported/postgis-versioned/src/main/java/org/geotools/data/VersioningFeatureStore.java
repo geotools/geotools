@@ -28,6 +28,8 @@ import org.opengis.filter.Filter;
  * 
  * @author Andrea Aime, TOPP
  *
+ *
+ *
  * @source $URL$
  */
 public interface VersioningFeatureStore extends VersioningFeatureSource, SimpleFeatureStore {

@@ -24,6 +24,9 @@ package org.geotools.swt.styling.simple;
  * 
  * @author Jody Garnett
  * @since 1.0.0
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/styling/simple/Mode.java $
  */
 public enum Mode { 
     /** <code>POINT</code> Mode - editing a Point or MultiPoint. */

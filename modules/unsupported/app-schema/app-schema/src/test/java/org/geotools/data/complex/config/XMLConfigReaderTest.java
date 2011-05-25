@@ -32,8 +32,9 @@ import static org.junit.Assert.assertNotNull;
  * 
  * @author Gabriel Roldan, Axios Engineering
  * @version $Id$
- * @source $URL:
- *         http://svn.geotools.org/trunk/modules/unsupported/community-schemas/community-schema-ds/src/test/java/org/geotools/data/complex/config/XMLConfigReaderTest.java $
+ *
+ *
+ * @source $URL$
  * @since 2.4
  */
 public class XMLConfigReaderTest extends AppSchemaTestSupport {

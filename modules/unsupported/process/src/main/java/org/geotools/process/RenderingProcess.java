@@ -30,6 +30,9 @@ import org.opengis.coverage.grid.GridGeometry;
  * </p>
  * 
  * @author Andrea Aime - GeoSolutions
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/process/src/main/java/org/geotools/process/RenderingProcess.java $
  */
 public interface RenderingProcess extends Process {
 

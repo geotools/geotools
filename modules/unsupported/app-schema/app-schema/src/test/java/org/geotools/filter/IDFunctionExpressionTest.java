@@ -37,6 +37,8 @@ import static org.junit.Assert.assertNotNull;
  * @author gabriel
  * @deprecated use the following property expression instead: <code>@gml:id</code>
  *
+ *
+ *
  * @source $URL$
  */
 public class IDFunctionExpressionTest extends AppSchemaTestSupport {

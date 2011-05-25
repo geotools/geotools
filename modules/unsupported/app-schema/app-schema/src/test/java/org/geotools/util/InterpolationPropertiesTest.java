@@ -38,6 +38,8 @@ import static org.junit.Assert.assertNotNull;
  * 
  * @author Ben Caradoc-Davies, CSIRO Exploration and Mining
  *
+ *
+ *
  * @source $URL$
  */
 public class InterpolationPropertiesTest extends AppSchemaTestSupport {

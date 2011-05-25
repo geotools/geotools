@@ -31,6 +31,9 @@ import org.geotools.data.Parameter;
  * The parameter list wizard.
  * 
  * @author Andrea Antonello (www.hydrologis.com)
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/control/JParameterListWizard.java $
  */
 public class JParameterListWizard extends Wizard {
 

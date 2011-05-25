@@ -28,6 +28,9 @@ import org.geotools.swt.event.MapPaneEvent;
  * The notifier for the statusbar. 
  * 
  * @author Andrea Antonello (www.hydrologis.com)
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/utils/StatusBarNotifier.java $
  */
 public class StatusBarNotifier {
     private final ApplicationWindow applicationWindow;

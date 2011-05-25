@@ -24,6 +24,8 @@ import com.vividsolutions.jts.geom.Geometry;
  * system of the geometry is attached as the "userData" property of the
  * returned JTS object.
  *
+ *
+ *
  * @source $URL$
  */
 public interface JTSGeometry {

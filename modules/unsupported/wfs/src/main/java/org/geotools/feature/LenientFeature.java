@@ -36,6 +36,8 @@ import org.opengis.feature.type.AttributeDescriptor;
  * 
  * @author Jesse Eichar
  *
+ *
+ *
  * @source $URL$
  */
 public class LenientFeature extends SimpleFeatureImpl {

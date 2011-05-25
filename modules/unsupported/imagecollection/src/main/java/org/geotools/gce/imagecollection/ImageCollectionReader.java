@@ -52,6 +52,9 @@ import org.opengis.referencing.operation.MathTransform;
 
 /**
  *
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/imagecollection/src/main/java/org/geotools/gce/imagecollection/ImageCollectionReader.java $
  */
 public final class ImageCollectionReader extends AbstractGridCoverage2DReader implements GridCoverageReader {
     /** Logger for the {@link ImageCollectionReader} class. */

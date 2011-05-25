@@ -23,6 +23,8 @@ import org.opengis.geometry.PrecisionType;
 /**
  * Implementation set up to create PrecisionModel
  *
+ *
+ *
  * @source $URL$
  */
 public class PrecisionFactoryImpl implements PrecisionFactory {

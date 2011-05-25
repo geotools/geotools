@@ -37,7 +37,9 @@ import org.geotools.util.logging.Logging;
 /**
  * 
  * @author rpetty
- * @source $URL:
+ *
+ *
+ * @source $URL$
  *         http://svn.geotools.org/geotools/trunk/gt/modules/unsupported/app-schema/webservice/
  *         src/main/java/org/geotools /data/wfs/WSDataStoreFactory.java $
  * @see XmlDataStore

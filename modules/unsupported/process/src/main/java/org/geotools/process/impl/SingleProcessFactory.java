@@ -34,6 +34,8 @@ import org.opengis.util.InternationalString;
  * 
  * @author Andrea Aime - OpenGeo
  *
+ *
+ *
  * @source $URL$
  */
 public abstract class SingleProcessFactory implements ProcessFactory {

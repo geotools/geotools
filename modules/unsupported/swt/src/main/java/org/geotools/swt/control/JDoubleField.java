@@ -29,6 +29,9 @@ import org.geotools.data.Parameter;
  * @author Andrea Antonello (www.hydrologis.com)
  * @author gdavis
  *
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/control/JDoubleField.java $
  */
 public class JDoubleField extends ParamField {
 

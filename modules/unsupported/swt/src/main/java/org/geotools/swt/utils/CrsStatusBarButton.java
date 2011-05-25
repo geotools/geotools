@@ -39,6 +39,9 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * The {@link CoordinateReferenceSystem} button to put on the statusbar.
  * 
  * @author Andrea Antonello - www.hydrologis.com
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/utils/CrsStatusBarButton.java $
  */
 public class CrsStatusBarButton extends ControlContribution implements MapBoundsListener {
 

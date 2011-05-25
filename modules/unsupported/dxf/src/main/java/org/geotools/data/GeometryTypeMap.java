@@ -7,6 +7,9 @@ import java.util.Iterator;
 /**
  *
  * @author Gertjan
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/dxf/src/main/java/org/geotools/data/GeometryTypeMap.java $
  */
 public class GeometryTypeMap extends HashMap<String, GeometryType> {
 

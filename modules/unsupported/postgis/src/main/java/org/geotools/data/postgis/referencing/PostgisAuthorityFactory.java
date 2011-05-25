@@ -39,6 +39,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * Access CRS informationj from the PostGIS SPATIAL_REF_SYS table.
  * 
  * @author Jesse Eichar
+ *
+ *
  * @source $URL$
  */
 public class PostgisAuthorityFactory extends JDBCAuthorityFactory {

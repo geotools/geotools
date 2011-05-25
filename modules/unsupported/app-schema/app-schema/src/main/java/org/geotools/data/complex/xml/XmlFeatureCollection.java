@@ -22,6 +22,8 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 /**
  * @author Russell Petty, GSV
  * @version $Id$
+ *
+ *
  * @source $URL$
  */
 public interface XmlFeatureCollection extends SimpleFeatureCollection {

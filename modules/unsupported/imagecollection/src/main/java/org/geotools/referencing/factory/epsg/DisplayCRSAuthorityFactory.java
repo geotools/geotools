@@ -47,6 +47,9 @@ import org.opengis.util.InternationalString;
  * @author Andrea Aime - GeoSolutions
  * @author Daniele Romagnoli - GeoSolutions
  *
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/imagecollection/src/main/java/org/geotools/referencing/factory/epsg/DisplayCRSAuthorityFactory.java $
  */
 public class DisplayCRSAuthorityFactory extends DirectAuthorityFactory implements
         CRSAuthorityFactory {

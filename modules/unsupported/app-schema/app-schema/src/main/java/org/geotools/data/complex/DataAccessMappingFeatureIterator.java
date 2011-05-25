@@ -73,7 +73,9 @@ import org.xml.sax.Attributes;
  * @author Rini Angreani, Curtin University of Technology
  * @author Russell Petty, GSV
  * @version $Id$
- * @source $URL:
+ *
+ *
+ * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/main
  *         /java/org/geotools/data/complex/DataAccessMappingFeatureIterator.java $
  * @since 2.4

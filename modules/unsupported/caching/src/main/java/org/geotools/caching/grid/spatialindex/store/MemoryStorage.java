@@ -36,6 +36,8 @@ import org.opengis.feature.type.FeatureType;
  * @author crousson
  *
  *
+ *
+ *
  * @source $URL$
  */
 public class MemoryStorage implements Storage {

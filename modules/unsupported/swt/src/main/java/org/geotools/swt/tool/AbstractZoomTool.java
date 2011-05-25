@@ -24,6 +24,9 @@ package org.geotools.swt.tool;
  * 
  * @author Michael Bedward
  * @since 2.6
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/tool/AbstractZoomTool.java $
  */
 
 public abstract class AbstractZoomTool extends CursorTool {

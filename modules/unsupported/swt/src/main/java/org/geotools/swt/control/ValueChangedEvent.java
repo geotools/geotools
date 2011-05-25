@@ -29,6 +29,9 @@ import org.eclipse.swt.widgets.Control;
  * @author Michael Bedward
  * @author Andrea Antonello (www.hydrologis.com)
  * @since 2.7
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/control/ValueChangedEvent.java $
  */
 public class ValueChangedEvent<T> {
 

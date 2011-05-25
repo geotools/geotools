@@ -31,6 +31,9 @@ import org.junit.Test;
 /**
  * @author Simone Giannecchini, GeoSolutions
  *
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/coverage-api/src/test/java/org/geotools/coverage/io/range/impl/EnumMeasureTest.java $
  */
 public class EnumMeasureTest extends Assert {
 	

@@ -28,6 +28,9 @@ import org.opengis.coverage.Coverage;
  * @todo revisit and improve when feedback starts to flow in
  * @todo inherit {@link CoverageReadRequest} and add a method to obtain the capabilities 
  * for a {@link CoverageStore}
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/coverage-api/src/main/java/org/geotools/coverage/io/impl/CoverageUpdateRequest.java $
  */
 public class CoverageUpdateRequest extends CoverageRequest  {
 

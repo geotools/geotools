@@ -23,6 +23,8 @@ import org.geotools.caching.spatialindex.NodeIdentifier;
  * from the cache when the maximum cache size is reached.
  * 
  *
+ *
+ *
  * @source $URL$
  */
 public interface EvictionPolicy {

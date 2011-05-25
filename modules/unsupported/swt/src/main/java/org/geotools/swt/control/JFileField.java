@@ -39,6 +39,9 @@ import org.geotools.data.Parameter;
  * Widget for File; provides a "Browse" button to open a file dialog.
  * 
  * @author Jody Garnett
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/control/JFileField.java $
  */
 public class JFileField extends ParamField {
 

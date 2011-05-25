@@ -32,6 +32,8 @@ import com.vividsolutions.jts.geom.Polygon;
  * @author Jesse
  *
  *
+ *
+ *
  * @source $URL$
  */
 public class CreateFeatureTypeTest extends TestCase {

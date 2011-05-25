@@ -69,6 +69,9 @@ import com.vividsolutions.jts.geom.Geometry;
  * </p>
  * @author Justin Deoliveira, OpenGeo
  *
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/geojson/src/main/java/org/geotools/geojson/feature/FeatureJSON.java $
  */
 public class FeatureJSON {
 

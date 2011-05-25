@@ -38,6 +38,8 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * </p>
  * @author dzwiers Refractions Research
  *
+ *
+ *
  * @source $URL$
  */
 public class WFSDemo {

@@ -33,7 +33,9 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
  *
  * @author mbedward
  * @since 8.0
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/grid/src/main/java/org/geotools/grid/DefaultFeatureBuilder.java $
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/grid/src/main/java/org/geotools/grid/PolygonBuilder.java $
  * @version $Id: DefaultFeatureBuilder.java 35637 2010-06-01 09:24:43Z mbedward $
  */
 public abstract class PolygonBuilder {

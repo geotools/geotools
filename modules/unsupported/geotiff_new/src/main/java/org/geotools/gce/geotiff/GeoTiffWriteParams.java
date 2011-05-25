@@ -82,6 +82,9 @@ import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
  * @author Simone Giannecchini
  * @since 2.3.x
  * 
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/geotiff_new/src/main/java/org/geotools/gce/geotiff/GeoTiffWriteParams.java $
  */
 public final class GeoTiffWriteParams extends GeoToolsWriteParams {
 

@@ -42,7 +42,9 @@ import org.geotools.swt.utils.Utils;
  *
  * @author Michael Bedward
  * @since 2.6
- * @source $Id: JTextReporter.java 35310 2010-04-30 10:32:15Z jive $
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/control/JTextReporter.java $
  * @version $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swing/src/main/java/org/geotools/swing/JTextReporter.java $
  */
 public class JTextReporter extends Dialog {

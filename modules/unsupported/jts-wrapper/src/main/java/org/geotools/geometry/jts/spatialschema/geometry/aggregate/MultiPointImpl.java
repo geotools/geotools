@@ -14,6 +14,8 @@ import org.opengis.geometry.aggregate.MultiPoint;
 
 /**
  *
+ *
+ *
  * @source $URL$
  */
 public class MultiPointImpl extends AggregateImpl 

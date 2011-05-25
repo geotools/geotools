@@ -30,6 +30,8 @@ import com.vividsolutions.jts.geom.Envelope;
  * </p>
  *
  * @author rpetty
+ *
+ *
  * @source $URL$
  */
 public class FeatureSetDescription {

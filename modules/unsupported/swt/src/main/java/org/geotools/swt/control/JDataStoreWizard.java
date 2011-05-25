@@ -34,6 +34,9 @@ import org.geotools.data.FileDataStoreFinder;
  * Data store wizard.
  * 
  * @author Andrea Antonello (www.hydrologis.com)
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/control/JDataStoreWizard.java $
  */
 public class JDataStoreWizard extends Wizard {
 

@@ -55,6 +55,9 @@ import com.vividsolutions.jts.index.strtree.STRtree;
  * <p>
  * This feature source is used as a wrapper offering a spatial index, for a quick
  * user interface experience at the cost of memory.
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swing/src/main/java/org/geotools/data/CachingFeatureSource.java $
  */
 public class CachingFeatureSource implements SimpleFeatureSource {
     private SimpleFeatureSource wrapped;

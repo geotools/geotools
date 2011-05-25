@@ -28,6 +28,9 @@ import org.eclipse.swt.widgets.Display;
  * <p>This takes care of creating, reusing and managing the various cursors.
  * 
  * @author Andrea Antonello (www.hydrologis.com).
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/utils/CursorManager.java $
  */
 public class CursorManager {
     /** Info Cursor hotspot coordinates */

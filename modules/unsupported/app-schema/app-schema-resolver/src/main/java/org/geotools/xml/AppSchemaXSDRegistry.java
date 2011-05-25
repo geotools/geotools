@@ -34,6 +34,9 @@ import org.eclipse.xsd.util.XSDSchemaLocator;
  * 
  * @author Niels Charlier, Curtin University of Technology
  * 
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema-resolver/src/main/java/org/geotools/xml/AppSchemaXSDRegistry.java $
  */
 public final class AppSchemaXSDRegistry implements XSDSchemaLocator {
 

@@ -39,6 +39,8 @@ import javax.swing.event.DocumentListener;
  *
  * @author Michael Bedward
  * @since 2.6.1
+ *
+ *
  * @source $URL$
  * @version $Id$
  */

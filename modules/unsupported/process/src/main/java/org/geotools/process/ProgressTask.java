@@ -32,6 +32,8 @@ import org.opengis.util.ProgressListener;
  *
  * @author gdavis, Jody
  *
+ *
+ *
  * @source $URL$
  */
 public class ProgressTask implements Runnable, Progress {

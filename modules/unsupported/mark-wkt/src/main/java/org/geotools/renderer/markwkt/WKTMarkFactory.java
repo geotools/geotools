@@ -54,6 +54,9 @@ import org.geotools.util.SoftValueHashMap;
  * method.
  * 
  * @author Luca Morandini lmorandini@ieee.org
+ *
+ *
+ * @source $URL$
  * @version $Id$
  * 
  */

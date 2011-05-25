@@ -79,6 +79,9 @@ import com.vividsolutions.jts.geom.Polygon;
  * </p>
  * @author Jody Garnett, Refractions Research.
  * @since 0.7.0
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/styling/simple/SLDs.java $
  */
 public class SLDs extends SLD {
     private static FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);

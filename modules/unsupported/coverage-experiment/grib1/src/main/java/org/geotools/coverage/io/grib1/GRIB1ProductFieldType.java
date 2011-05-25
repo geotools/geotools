@@ -45,6 +45,9 @@ import org.opengis.util.InternationalString;
  * 
  * TODO: Improve the mapping pairs.
  *         (leveraging on class) 
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/grib1/src/main/java/org/geotools/coverage/io/grib1/GRIB1ProductFieldType.java $
  */
 public class GRIB1ProductFieldType implements FieldType {
 	

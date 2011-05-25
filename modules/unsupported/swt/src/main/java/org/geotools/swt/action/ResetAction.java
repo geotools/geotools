@@ -25,6 +25,9 @@ import org.geotools.swt.utils.Messages;
  * Action that triggers view reset for the current {@link SwtMapPane map pane}.
  * 
  * @author Andrea Antonello (www.hydrologis.com)
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/action/ResetAction.java $
  */
 public class ResetAction extends MapAction {
     /** Name for this tool */

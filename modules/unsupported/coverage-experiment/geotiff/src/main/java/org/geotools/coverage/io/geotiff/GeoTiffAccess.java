@@ -81,6 +81,9 @@ import org.opengis.util.ProgressListener;
  * 
  * @author Simone Giannecchini, GeoSolutions.
  * @author Jody Garnett
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/geotiff/src/main/java/org/geotools/coverage/io/geotiff/GeoTiffAccess.java $
  */
 @SuppressWarnings("deprecation")
 public class GeoTiffAccess extends DefaultCoverageAccess implements CoverageAccess {

@@ -57,6 +57,9 @@ import com.vividsolutions.jts.geom.Geometry;
  *
  * @author Michael Bedward
  * @since 2.6
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/tool/InfoTool.java $
  */
 public class InfoTool extends CursorTool {
 

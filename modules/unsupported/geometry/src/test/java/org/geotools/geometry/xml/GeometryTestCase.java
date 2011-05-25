@@ -35,6 +35,8 @@ import org.opengis.geometry.Geometry;
  * to those geometries
  * @author <a href="mailto:joel@lggi.com">Joel Skelton</a>
  *
+ *
+ *
  * @source $URL$
  */
 public class GeometryTestCase implements Test {

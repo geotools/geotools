@@ -38,6 +38,9 @@ import org.geotools.swt.utils.ImageCache;
  * Action to open image files.
  * 
  * @author Andrea Antonello (www.hydrologis.com)
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/action/OpenWorldimageAction.java $
  */
 public class OpenWorldimageAction extends MapAction implements ISelectionChangedListener {
 

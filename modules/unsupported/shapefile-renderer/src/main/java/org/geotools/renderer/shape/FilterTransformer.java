@@ -48,6 +48,8 @@ import com.vividsolutions.jts.geom.Geometry;
  * </p>
  * @author Jesse
  *
+ *
+ *
  * @source $URL$
  */
 public class FilterTransformer extends DuplicatingFilterVisitor {

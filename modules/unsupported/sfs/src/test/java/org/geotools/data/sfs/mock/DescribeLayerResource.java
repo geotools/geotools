@@ -31,6 +31,9 @@ import org.restlet.resource.Variant;
  * http://localhost:8084/simplefeatureservice/describe/layerAsia
  * Returns a description of the feature type
  * @author narad
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/sfs/src/test/java/org/geotools/data/sfs/mock/DescribeLayerResource.java $
  */
 public class DescribeLayerResource extends Resource {
 

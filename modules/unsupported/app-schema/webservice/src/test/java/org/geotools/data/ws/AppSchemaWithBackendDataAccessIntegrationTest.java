@@ -56,6 +56,9 @@ import org.xml.sax.helpers.NamespaceSupport;
  * chained as per normal. See FeatureChainingTest.java to see feature chaining in action.
  * 
  * @author Rini Angreani, Curtin University of Technology
+ *
+ *
+ * @source $URL$
  */
 public class AppSchemaWithBackendDataAccessIntegrationTest extends TestCase {
 

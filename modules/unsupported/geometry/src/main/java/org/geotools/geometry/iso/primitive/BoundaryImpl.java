@@ -30,6 +30,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * 
  * @author Jackson Roehrig & Sanjay Jena
  *
+ *
+ *
  * @source $URL$
  */
 public abstract class BoundaryImpl extends ComplexImpl implements Boundary {

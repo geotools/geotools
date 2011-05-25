@@ -29,6 +29,8 @@ package org.geotools.caching.spatialindex;
  * For tracking spatial index statistics.
  *
  *
+ *
+ *
  * @source $URL$
  */
 public interface Statistics {

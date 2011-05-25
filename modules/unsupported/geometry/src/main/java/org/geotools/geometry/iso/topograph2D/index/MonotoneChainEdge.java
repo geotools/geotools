@@ -36,6 +36,8 @@ import org.geotools.geometry.iso.topograph2D.Envelope;
  * segment comparisons, producing substantial speed gains.
  * 
  *
+ *
+ *
  * @source $URL$
  */
 public class MonotoneChainEdge {

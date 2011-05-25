@@ -27,6 +27,8 @@ import org.geotools.swing.wizard.JWizard.Controller;
  * 
  * @author gdavis
  *
+ *
+ *
  * @source $URL$
  */
 public class JDoubleField extends ParamField {

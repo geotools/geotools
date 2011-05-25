@@ -29,6 +29,9 @@ import org.opengis.util.ProgressListener;
  * 
  * @author Simone Giannecchini, GeoSolutions
  *
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/coverage-api/src/main/java/org/geotools/coverage/io/impl/CoverageResponse.java $
  */
 @SuppressWarnings("unchecked")
 public class CoverageResponse {

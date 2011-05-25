@@ -32,6 +32,9 @@ import org.opengis.util.ProgressListener;
 
 /**
  * Base Implementation for the {@link Driver} interface.
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/coverage-api/src/main/java/org/geotools/coverage/io/driver/DefaultDriver.java $
  */
 public class DefaultDriver implements Driver {
 

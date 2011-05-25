@@ -50,6 +50,8 @@ import static org.junit.Assert.assertNull;
  * @author Niels Charlier, Curtin University of Technology
  * 
  *
+ *
+ *
  * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/test/java/org/geotools/data/complex/PropSelectionTest.java $
  */
 public class PropSelectionTest extends AppSchemaTestSupport {

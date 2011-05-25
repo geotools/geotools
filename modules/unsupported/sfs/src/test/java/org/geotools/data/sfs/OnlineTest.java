@@ -12,6 +12,9 @@ import junit.framework.TestCase;
 
 /**
  * To have the online tests run start the {@link MockSimpleFeatureService} class 
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/sfs/src/test/java/org/geotools/data/sfs/OnlineTest.java $
  */
 public abstract class OnlineTest extends TestCase {
 

@@ -22,6 +22,8 @@ package org.geotools.geometry.iso.topograph2D;
  * Also, constants representing the dimensions of the empty geometry and
  * non-empty geometries, and a wildcard dimension meaning "any dimension".
  *
+ *
+ *
  * @source $URL$
  */
 public class Dimension {

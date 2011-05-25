@@ -32,6 +32,9 @@ import org.geotools.xml.XSD;
  * 
  * @author Ben Caradoc-Davies, CSIRO Earth Science and Resource Engineering
  * @author Niels Charlier, Curtin University of Technology
+ *
+ *
+ * @source $URL$
  */
 public class AppSchemaXSD extends XSD {
 

@@ -46,6 +46,9 @@ import org.geotools.data.DataStoreFactorySpi;
  * </p>
  * 
  * @author Pieter De Graef, Geosparc
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/georest/src/main/java/org/geotools/data/georest/GeoRestDataStoreFactory.java $
  */
 public class GeoRestDataStoreFactory implements DataStoreFactorySpi {
 

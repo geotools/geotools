@@ -16,6 +16,8 @@ import org.opengis.util.InternationalString;
  * 
  * @author Rini Angreani, Curtin University of Technology 
  *
+ *
+ *
  * @source $URL$
  */
 public class ComplexFeatureTypeFactoryImpl extends UniqueNameFeatureTypeFactoryImpl {

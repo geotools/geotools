@@ -25,6 +25,9 @@ import org.opengis.feature.type.Name;
 /**
  * @author Simone Giannecchini, GeoSolutions
  * @author Jody Garnett
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/coverage-api/src/main/java/org/geotools/coverage/io/impl/CoverageRequest.java $
  */
 public abstract class CoverageRequest  {
 

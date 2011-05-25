@@ -30,6 +30,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * OGC SFS spatial data model.
  * 
  *
+ *
+ *
  * @source $URL$
  */
 public class MinimalEdgeRing extends EdgeRing {

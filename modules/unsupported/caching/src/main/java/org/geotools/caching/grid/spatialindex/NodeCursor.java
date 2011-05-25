@@ -11,6 +11,8 @@ import org.geotools.caching.spatialindex.Shape;
  * @author Emily
  * @since 1.2.0
  *
+ *
+ *
  * @source $URL$
  */
 public class NodeCursor {

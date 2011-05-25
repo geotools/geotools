@@ -52,6 +52,9 @@ import org.geotools.resources.i18n.Errors;
  * be made in a single expression.  This provides a way of modifying an
  * <code>RasterLayout</code> within a superclass constructor call.
  *
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/coverage-api/src/main/java/org/geotools/coverage/io/domain/RasterLayout.java $
  */
 public class RasterLayout extends Object implements Cloneable, Serializable {
     /**

@@ -42,6 +42,8 @@ import com.vividsolutions.jts.geom.Polygon;
  * Creates Geometries for area objects
  *
  * @author <a href="mailto:jeff@ionicenterprise.com">Jeff Yutzler</a>
+ *
+ *
  * @source $URL$
  */
 public class AreaGeometryFactory extends VPFGeometryFactory

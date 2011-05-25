@@ -26,6 +26,8 @@ import org.opengis.feature.type.FeatureType;
  * Interface for cache storage options.
  * 
  *
+ *
+ *
  * @source $URL$
  */
 public interface Storage {

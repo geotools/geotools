@@ -20,6 +20,8 @@ import org.opengis.geometry.primitive.SurfaceBoundary;
 /**
  * LiteGO1 implementation of the SurfaceBoundary interface.
  *
+ *
+ *
  * @source $URL$
  */
 public class SurfaceBoundaryImpl extends PrimitiveBoundaryImpl implements SurfaceBoundary {

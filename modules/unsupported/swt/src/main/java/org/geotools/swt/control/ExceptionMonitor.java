@@ -28,6 +28,9 @@ import org.eclipse.swt.widgets.Shell;
  *
  * @since 2.7
  * @author Andrea Antonello (www.hydrologis.com)
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/control/ExceptionMonitor.java $
  */
 public final class ExceptionMonitor {
     /**

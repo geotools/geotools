@@ -30,6 +30,8 @@ import org.geotools.geometry.iso.index.quadtree.Quadtree;
  * A EdgeList is a list of Edges. It supports locating edges that are pointwise
  * equals to a target edge.
  *
+ *
+ *
  * @source $URL$
  */
 public class EdgeList {

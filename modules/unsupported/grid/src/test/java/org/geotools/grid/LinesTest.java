@@ -26,6 +26,9 @@ import static org.junit.Assert.*;
 /**
  *
  * @author michael
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/grid/src/test/java/org/geotools/grid/LinesTest.java $
  */
 public class LinesTest {
 

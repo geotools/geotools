@@ -47,6 +47,8 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * 
  * @author Ben Caradoc-Davies, CSIRO Exploration and Mining
  * @version $Id$
+ *
+ *
  * @source $URL$
  * @since 2.4
  */

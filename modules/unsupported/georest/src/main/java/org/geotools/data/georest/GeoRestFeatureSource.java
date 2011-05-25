@@ -43,6 +43,9 @@ import com.vividsolutions.jts.geom.Geometry;
  * </p>
  * 
  * @author Pieter De Graef, Geosparc
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/georest/src/main/java/org/geotools/data/georest/GeoRestFeatureSource.java $
  */
 public class GeoRestFeatureSource extends ContentFeatureSource implements SimpleFeatureSource {
 

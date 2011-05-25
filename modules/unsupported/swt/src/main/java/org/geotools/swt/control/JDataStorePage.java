@@ -36,6 +36,9 @@ import org.geotools.data.Parameter;
  * Data store wizard page for the {@link JDataStoreWizard data store wizard}.
  * 
  * @author Andrea Antonello (www.hydrologis.com)
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/control/JDataStorePage.java $
  */
 public class JDataStorePage extends WizardPage {
     public static final String ID = "org.geotools.swt.data.DataStorePage";

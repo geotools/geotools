@@ -50,8 +50,9 @@ import org.opengis.referencing.operation.TransformException;
 /**
  * @author Simone Giannecchini
  * 
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/plugin/geotiff/test/org/geotools/gce/geotiff/GeoTiffVisualizationTest.java $
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/geotiff_new/src/test/java/org/geotools/gce/geotiff/GeoTiffWriterTest.java $
  */
 public class GeoTiffWriterTest extends TestCase {
 	private static final Logger logger = org.geotools.util.logging.Logging.getLogger(GeoTiffWriterTest.class.toString());

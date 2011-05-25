@@ -21,6 +21,8 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * {@code JTable}
  * <p>
  *
+ *
+ *
  * @source $URL$
  */
 public class FeatureCollectionTableModel extends AbstractTableModel {

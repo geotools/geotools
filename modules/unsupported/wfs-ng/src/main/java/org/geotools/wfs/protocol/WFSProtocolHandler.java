@@ -38,8 +38,9 @@ import org.geotools.util.logging.Logging;
  * @author Gabriel Roldan
  * @version $Id: WFSProtocolHandler.java 31823 2008-11-11 16:11:49Z groldan $
  * @since 2.5.x
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/wfs/src/main/java/org/geotools/wfs/io/WFSConnectionFactory.java $
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs-ng/src/main/java/org/geotools/wfs/protocol/WFSProtocolHandler.java $
  * @deprecated use {@link WFSProtocol}
  */
 public abstract class WFSProtocolHandler {

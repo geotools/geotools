@@ -46,6 +46,8 @@ import java.util.regex.Pattern;
  * @author Ben Caradoc-Davies, CSIRO Exploration and Mining
  * @author Niels Charlier, Curtin University of Technology
  *
+ *
+ *
  * @source $URL$
  */
 public class InterpolationProperties {

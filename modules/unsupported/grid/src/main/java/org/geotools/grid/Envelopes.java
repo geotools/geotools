@@ -39,6 +39,8 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
  *
  * @author mbedward
  * @since 2.7
+ *
+ *
  * @source $URL$
  * @version $Id$
  */

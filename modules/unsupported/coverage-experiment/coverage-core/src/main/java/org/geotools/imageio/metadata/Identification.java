@@ -23,6 +23,9 @@ import java.io.Serializable;
 /**
  * @author Martin Desruisseaux
  * @author Daniele Romagnoli, GeoSolutions
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/coverage-core/src/main/java/org/geotools/imageio/metadata/Identification.java $
  */
 public class Identification implements CharSequence, Serializable {
     /**

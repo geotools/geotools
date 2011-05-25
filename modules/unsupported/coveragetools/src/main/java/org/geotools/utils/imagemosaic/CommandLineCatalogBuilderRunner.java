@@ -64,7 +64,9 @@ import org.geotools.utils.progress.ProcessingEventListener;
  * @author Alessio Fabiani, GeoSolutions
  * @author Blaz Repnik
  *
- * @source $URL: https://svn.osgeo.org/geotools/trunk/modules/unsupported/coveragetools/src/main/java/org/geotools/utils/imagemosaic/MosaicIndexBuilder.java $
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coveragetools/src/main/java/org/geotools/utils/imagemosaic/CommandLineCatalogBuilderRunner.java $
  * @version 0.3
  * 
  */

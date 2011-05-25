@@ -38,7 +38,9 @@ import org.opengis.feature.type.PropertyDescriptor;
  * 
  * @author Niels Charlier, Curtin University of Technology
  * 
- * @source $URL:
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/main/java/org/geotools/feature/xpath/FeatureTypeAttributePointer.java $
  *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/main
  *         /java/org/geotools/feature/xpath/FeatureTypeAttributePointer.java $
  * 

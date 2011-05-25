@@ -32,6 +32,8 @@ import org.opengis.feature.type.FeatureType;
  * 
  * @author Gabriel Roldan
  *
+ *
+ *
  * @source $URL$
  */
 public class AttributeDescriptorPropertyHandler implements DynamicPropertyHandler {

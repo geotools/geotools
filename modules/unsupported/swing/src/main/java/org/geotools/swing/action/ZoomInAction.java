@@ -29,6 +29,8 @@ import org.geotools.swing.tool.ZoomInTool;
  * 
  * @author Michael Bedward
  * @since 2.6
+ *
+ *
  * @source $URL$
  * @version $Id$
  */

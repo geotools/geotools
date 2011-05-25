@@ -25,6 +25,8 @@ import java.io.InputStream;
  * @author Gabriel Roldan (OpenGeo)
  * @version $Id$
  * @since 2.6
+ *
+ *
  * @source $URL$
  */
 public interface HTTPResponse {

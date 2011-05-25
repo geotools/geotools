@@ -35,6 +35,8 @@ import org.opengis.geometry.complex.Complex;
  * @author Jackson Roehrig & Sanjay Jena
  * 
  *
+ *
+ *
  * @source $URL$
  */
 public class CompositeSolidImpl extends CompositeImpl<SolidImpl> {

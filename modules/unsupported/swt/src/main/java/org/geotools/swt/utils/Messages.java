@@ -23,6 +23,9 @@ import java.util.ResourceBundle;
  * i18n utility.
  * 
  * @author Andrea Antonello (www.hydrologis.com)
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/utils/Messages.java $
  */
 public class Messages {
     private static final ResourceBundle stringRes = ResourceBundle.getBundle("resources/Text"); //$NON-NLS-1$

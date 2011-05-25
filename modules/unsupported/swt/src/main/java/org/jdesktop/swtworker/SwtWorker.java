@@ -205,7 +205,9 @@ import org.eclipse.swt.widgets.Display;
  *  
  * @author Igor Kushnirskiy
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swing/src/main/java/org/jdesktop/swingworker/SwingWorker.java $
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/jdesktop/swtworker/SwtWorker.java $
  * @version $Revision: 1.6 $ $Date: 2008/07/25 19:32:29 $
  * 
  * @param <T> the result type returned by this {@code SwingWorker's}

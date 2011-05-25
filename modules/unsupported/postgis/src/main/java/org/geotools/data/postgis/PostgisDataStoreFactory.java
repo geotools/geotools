@@ -40,6 +40,8 @@ import org.geotools.util.SimpleInternationalString;
  * </p>
  *
  * @author Jody Garnett, Refractions Research
+ *
+ *
  * @source $URL$
  */
 public class PostgisDataStoreFactory extends AbstractDataStoreFactory

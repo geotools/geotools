@@ -62,6 +62,9 @@ import org.opengis.style.GraphicalSymbol;
  * </p>  
  * @author Jody Garnett
  * @since 1.0.0
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/styling/simple/GraphicViewer.java $
  */
 public class GraphicViewer {
     boolean enabled;

@@ -93,7 +93,9 @@ import com.vividsolutions.jts.geom.Polygon;
  * 
  * @author Andrea Aime - OpenGeo
  * 
- * @source $URL:
+ *
+ *
+ * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/ogr/src/main/java/org/geotools
  *         /data/ogr/OGRDataStore.java $
  */

@@ -27,6 +27,9 @@ package org.geotools.imageio.metadata;
  * 
  * @author Daniele Romagnoli, GeoSolutions
  * @author Alessio Fabiani, GeoSolutions
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/coverage-core/src/main/java/org/geotools/imageio/metadata/AbstractCoordinateReferenceSystem.java $
  */
 public abstract class AbstractCoordinateReferenceSystem extends
         IdentifiableMetadataAccessor {

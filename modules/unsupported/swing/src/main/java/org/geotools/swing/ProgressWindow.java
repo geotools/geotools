@@ -60,6 +60,8 @@ import org.opengis.util.ProgressListener;
  *
  * @author Martin Desruisseaux
  * @since 2.0
+ *
+ *
  * @source $URL$
  * @version $Id$
  */

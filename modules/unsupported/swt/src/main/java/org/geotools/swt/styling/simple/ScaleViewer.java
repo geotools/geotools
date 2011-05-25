@@ -52,6 +52,9 @@ import org.geotools.swt.utils.Messages;
  * </p>  
  * @author Andrea Aime
  * @since 1.1
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/styling/simple/ScaleViewer.java $
  */
 public class ScaleViewer {
     public static final int MIN = 0;

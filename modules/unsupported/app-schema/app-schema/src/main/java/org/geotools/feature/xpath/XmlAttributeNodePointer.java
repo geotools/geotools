@@ -30,7 +30,9 @@ import org.xml.sax.Attributes;
  * @author Niels Charlier, Curtin University of Technology
  * 
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/main/java/org/geotools/feature/xpath/AttributeNodePointer.java $
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/main/java/org/geotools/feature/xpath/XmlAttributeNodePointer.java $
  */
 public class XmlAttributeNodePointer extends NodePointer {
 

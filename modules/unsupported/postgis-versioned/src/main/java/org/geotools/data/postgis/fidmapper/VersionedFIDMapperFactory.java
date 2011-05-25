@@ -36,6 +36,8 @@ import org.geotools.data.postgis.VersionedPostgisDataStore;
  * @author aaime
  * @since 2.4
  *
+ *
+ *
  * @source $URL$
  */
 public class VersionedFIDMapperFactory extends DefaultFIDMapperFactory {

@@ -48,6 +48,9 @@ import org.opengis.feature.type.Name;
  * 
  * @author Tara Athan
  * @author Ben Caradoc-Davies, CSIRO Earth Science and Resource Engineering
+ *
+ *
+ * @source $URL$
  */
 public class AppSchemaFileDataTest extends AppSchemaTestSupport {
 

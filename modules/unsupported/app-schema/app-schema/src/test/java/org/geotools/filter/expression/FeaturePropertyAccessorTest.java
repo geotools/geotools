@@ -66,6 +66,8 @@ import static org.junit.Assert.fail;
  * 
  * @author Rini Angreani, Curtin University of Technology
  *
+ *
+ *
  * @source $URL$
  */
 public class FeaturePropertyAccessorTest extends AppSchemaTestSupport {

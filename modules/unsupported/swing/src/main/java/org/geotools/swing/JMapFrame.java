@@ -61,6 +61,8 @@ import org.geotools.swing.action.ZoomOutAction;
  * @author Michael Bedward
  * @since 2.6
  *
+ *
+ *
  * @source $URL$
  */
 public class JMapFrame extends JFrame {

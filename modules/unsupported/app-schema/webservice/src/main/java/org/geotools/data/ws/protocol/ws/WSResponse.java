@@ -31,6 +31,8 @@ import org.geotools.util.logging.Logging;
  * @author rpetty
  * @version $Id$
  * @since 2.6
+ *
+ *
  * @source $URL$
  */
 @SuppressWarnings("nls")

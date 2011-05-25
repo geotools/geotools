@@ -58,6 +58,9 @@ import org.geotools.swt.utils.Messages;
  * </p>  
  * @author Emily Gouge (Refractions Research, Inc.)
  * @since 1.0.0
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/styling/simple/OpacityViewer.java $
  */
 public class OpacityViewer {
     double opacity = Double.NaN;

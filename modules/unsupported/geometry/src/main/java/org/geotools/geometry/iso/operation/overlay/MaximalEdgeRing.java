@@ -46,6 +46,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * using the {@link #buildMinimalRings() } method.
  * 
  *
+ *
+ *
  * @source $URL$
  */
 public class MaximalEdgeRing extends EdgeRing {

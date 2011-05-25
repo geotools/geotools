@@ -12,6 +12,8 @@ package org.geotools.caching.spatialindex;
 * @author Christophe Rousson, SoC 2007, CRG-ULAVAL
 *
  *
+ *
+ *
  * @source $URL$
 */
 public class SpatialIndexStatistics implements Statistics {

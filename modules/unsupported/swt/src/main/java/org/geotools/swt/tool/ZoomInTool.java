@@ -44,6 +44,9 @@ import org.geotools.swt.utils.Messages;
  * 
  * @author Michael Bedward
  * @author Andrea Antonello (www.hydrologis.com)
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/tool/ZoomInTool.java $
  */
 public class ZoomInTool extends AbstractZoomTool {
 

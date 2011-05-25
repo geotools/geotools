@@ -3,6 +3,9 @@ package org.geotools.data.dxf.parser;
 /**
  *
  * @author Chris
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/dxf/src/main/java/org/geotools/data/dxf/parser/DXFConstants.java $
  */
 public interface DXFConstants {
 

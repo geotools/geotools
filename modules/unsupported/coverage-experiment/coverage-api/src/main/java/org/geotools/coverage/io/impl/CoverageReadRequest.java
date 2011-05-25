@@ -42,6 +42,9 @@ import org.opengis.temporal.TemporalGeometricPrimitive;
 /**
  * Request information from a   {@link CoverageSource}. 
  * <p> Note that we are working with the assumption that the queried coverage has separable dimensions.
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/coverage-api/src/main/java/org/geotools/coverage/io/impl/CoverageReadRequest.java $
  */
 public class CoverageReadRequest extends CoverageRequest  {
 	

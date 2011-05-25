@@ -23,6 +23,8 @@ package org.geotools.caching.spatialindex;
  * @author crousson
  *
  *
+ *
+ *
  * @source $URL$
  */
 public final class RegionNodeIdentifier extends NodeIdentifier {

@@ -47,6 +47,8 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 
 /**
  *
+ *
+ *
  * @source $URL$
  */ 
 public class QueryTest extends TestCase {

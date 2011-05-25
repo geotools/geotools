@@ -35,6 +35,9 @@ import org.geotools.swt.utils.Messages;
  * 
  * @author Andrea Antonello (www.hydrologis.com)
  * @author Michael Bedward
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/tool/MapToolManager.java $
  */
 public class MapToolManager implements MouseListener, MouseMoveListener, MouseWheelListener, MouseTrackListener {
 

@@ -22,6 +22,9 @@ import org.opengis.filter.spatial.BBOX;
  * </p>
  * 
  * @author Pieter De Graef, Geosparc
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/georest/src/test/java/org/geotools/data/georest/GeoRestFilterVisitorTest.java $
  */
 public class GeoRestFilterVisitorTest extends TestCase {
 

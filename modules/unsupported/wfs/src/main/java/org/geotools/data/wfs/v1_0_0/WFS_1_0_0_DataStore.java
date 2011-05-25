@@ -107,7 +107,9 @@ import com.vividsolutions.jts.geom.Geometry;
  * and may be a bit difficult to follow as a result.
  * 
  * @author dzwiers
- * @source $URL:http://svn.geotools.org/geotools/trunk/gt/modules/plugin/wfs/src/main/java/org/geotools/wfs/v_1_0_0/data/WFSDataStore.java $
+ *
+ *
+ * @source $URL$
  */
 public class WFS_1_0_0_DataStore extends AbstractDataStore implements WFSDataStore {
     public static final Logger LOGGER = Logging.getLogger("org.geotools.data.wfs.1.1.0");

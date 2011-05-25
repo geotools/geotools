@@ -33,6 +33,8 @@ import org.geotools.data.jdbc.datasource.DataSourceUtil;
  * 
  * @author aaime
  * @author $Author: jive $ (last modification)
+ *
+ *
  * @source $URL$
  * @version $Id$
  */

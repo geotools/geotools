@@ -110,6 +110,8 @@ import com.vividsolutions.jts.io.WKTReader;
  * @author Chris Holmes, TOPP
  * @author Andrea Aime
  * @author Paolo Rizzi
+ *
+ *
  * @source $URL$
  * @version $Id$
  *

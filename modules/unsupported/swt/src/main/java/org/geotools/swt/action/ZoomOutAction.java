@@ -25,6 +25,9 @@ import org.geotools.swt.utils.ImageCache;
  * Action that activates the Zoom tool for the current {@link SwtMapPane map pane}.
  * 
  * @author Andrea Antonello (www.hydrologis.com)
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/action/ZoomOutAction.java $
  */
 public class ZoomOutAction extends MapAction {
 

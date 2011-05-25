@@ -15,6 +15,9 @@ import org.junit.Test;
 /**
  * @author Gabriel Roldan
  * @since 2.6.x
+ *
+ *
+ * @source $URL$
  * @version $Id$
  */
 @SuppressWarnings("nls")

@@ -39,6 +39,9 @@ import org.eclipse.swt.widgets.Composite;
  *
  * @author Michael Bedward
  * @author Andrea Antonello (www.hydrologis.com)
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/control/JIntegerField.java $
  */
 public class JIntegerField extends JValueField implements ModifyListener {
 

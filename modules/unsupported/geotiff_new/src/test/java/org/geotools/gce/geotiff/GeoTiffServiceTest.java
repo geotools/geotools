@@ -28,6 +28,9 @@ import org.geotools.coverage.grid.io.GridFormatFinder;
  * 
  * @author Simone Giannecchini
  * 
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/geotiff_new/src/test/java/org/geotools/gce/geotiff/GeoTiffServiceTest.java $
  */
 public class GeoTiffServiceTest extends TestCase {
 

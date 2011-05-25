@@ -74,6 +74,9 @@ import org.opengis.filter.expression.Expression;
  * </p>  
  * @author Jody Garnett
  * @since 1.0.0
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/styling/simple/LabelViewer.java $
  */
 public class LabelViewer {
     boolean enabled;

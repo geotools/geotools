@@ -25,6 +25,9 @@ import org.geotools.swt.utils.ImageCache;
  * Action that activates the Pan tool for the current {@link SwtMapPane map pane}.
  * 
  * @author Andrea Antonello (www.hydrologis.com)
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/action/PanAction.java $
  */
 public class PanAction extends MapAction {
 

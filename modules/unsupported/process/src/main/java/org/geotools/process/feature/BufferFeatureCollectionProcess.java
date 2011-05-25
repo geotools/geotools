@@ -34,6 +34,8 @@ import com.vividsolutions.jts.geom.Polygon;
  * @author Justin Deoliveira, OpenGEO
  * @since 2.6
  *
+ *
+ *
  * @source $URL$
  */
 public class BufferFeatureCollectionProcess extends FeatureToFeatureProcess {

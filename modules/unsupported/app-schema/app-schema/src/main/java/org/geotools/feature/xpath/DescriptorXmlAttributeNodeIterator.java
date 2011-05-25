@@ -30,7 +30,9 @@ import org.opengis.feature.type.PropertyDescriptor;
  * @author Gabriel Roldan, Axios Engineering
  * 
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/main/java/org/geotools/feature/xpath/AttributeNodeIterator.java $
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/main/java/org/geotools/feature/xpath/DescriptorXmlAttributeNodeIterator.java $
  */
 public class DescriptorXmlAttributeNodeIterator implements NodeIterator {
 

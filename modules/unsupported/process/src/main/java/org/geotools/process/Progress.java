@@ -27,6 +27,8 @@ import java.util.concurrent.Future;
  * 
  * @author Jody
  *
+ *
+ *
  * @source $URL$
  */
 public interface Progress extends Future<Map<String,Object>> {

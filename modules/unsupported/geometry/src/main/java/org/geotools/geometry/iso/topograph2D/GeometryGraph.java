@@ -53,6 +53,8 @@ import org.opengis.geometry.primitive.Surface;
 /**
  * A GeometryGraph is a graph that models a given Geometry
  *
+ *
+ *
  * @source $URL$
  */
 public class GeometryGraph extends PlanarGraph {

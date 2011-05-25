@@ -65,6 +65,8 @@ import com.vividsolutions.jts.geom.Envelope;
  * </p>
  * 
  *
+ *
+ *
  * @source $URL$
  */
 public abstract class AbstractFeatureCache implements FeatureCache, FeatureListener {

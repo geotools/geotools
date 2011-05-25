@@ -24,6 +24,9 @@ package org.geotools.swt.control;
  * @see ValueChangedEvent
  * 
  * @author Michael Bedward
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/control/ValueChangedListener.java $
  */
 public interface ValueChangedListener {
 

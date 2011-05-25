@@ -39,6 +39,8 @@ import org.opengis.feature.type.FeatureType;
  * 
  *
  *
+ *
+ *
  * @source $URL$
  */
 public class BufferedDiskStorage implements Storage {

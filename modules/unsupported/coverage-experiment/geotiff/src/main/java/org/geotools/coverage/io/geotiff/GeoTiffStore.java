@@ -24,6 +24,9 @@ import org.opengis.util.ProgressListener;
 /**
  * @author simone
  * 
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/geotiff/src/main/java/org/geotools/coverage/io/geotiff/GeoTiffStore.java $
  */
 public class GeoTiffStore extends GeoTiffSource implements CoverageStore {
 

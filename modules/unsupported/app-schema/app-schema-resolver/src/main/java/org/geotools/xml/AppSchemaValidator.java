@@ -43,6 +43,9 @@ import org.xml.sax.XMLReader;
  * .
  * 
  * @author Ben Caradoc-Davies, CSIRO Earth Science and Resource Engineering
+ *
+ *
+ * @source $URL$
  */
 public class AppSchemaValidator {
 

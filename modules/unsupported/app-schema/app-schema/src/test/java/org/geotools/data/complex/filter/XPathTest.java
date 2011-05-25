@@ -43,8 +43,9 @@ import static org.junit.Assert.fail;
  * 
  * @author Gabriel Roldan, Axios Engineering
  * @version $Id$
- * @source $URL:
- *         http://svn.geotools.org/geotools/branches/2.4.x/modules/unsupported/community-schemas/community-schema-ds/src/test/java/org/geotools/data/complex/filter/XPathTest.java $
+ *
+ *
+ * @source $URL$
  * @since 2.4
  */
 public class XPathTest extends AppSchemaTestSupport {

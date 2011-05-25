@@ -26,7 +26,9 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
  * 
  * @author mbedward
  * @since 8.0
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/grid/src/main/java/org/geotools/grid/Grids.java $
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/grid/src/main/java/org/geotools/grid/GridElement.java $
  * @version $Id: Grids.java 37149 2011-05-10 11:47:02Z mbedward $
  */
 public interface GridElement {

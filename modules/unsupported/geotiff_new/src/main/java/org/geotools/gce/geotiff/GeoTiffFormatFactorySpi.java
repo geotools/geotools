@@ -64,8 +64,9 @@ import org.geotools.coverage.grid.io.GridFormatFactorySpi;
  * 
  * @author Bryce Nordgren / USDA Forest Service
  * @author Simone Giannecchini
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/plugin/geotiff/src/org/geotools/gce/geotiff/GeoTiffFormatFactorySpi.java $
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/geotiff_new/src/main/java/org/geotools/gce/geotiff/GeoTiffFormatFactorySpi.java $
  */
 public final class GeoTiffFormatFactorySpi implements GridFormatFactorySpi {    
 

@@ -46,6 +46,9 @@ import org.geotools.swt.utils.Messages;
  *
  * @author Andrea Antonello (www.hydrologis.com)
  * @author Michael Bedward
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/MapLayerComposite.java $
  */
 public class MapLayerComposite extends Composite {
     private SwtMapPane pane;

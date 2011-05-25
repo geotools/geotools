@@ -85,6 +85,9 @@ import org.opengis.referencing.operation.MathTransform;
  * @author Andrea Antonello (www.hydrologis.com)
  * @author Michael Bedward
  * @author Ian Turton
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/SwtMapPane.java $
  */
 public class SwtMapPane extends Canvas implements Listener, MapLayerListListener, MapBoundsListener {
     private static final PaletteData PALETTE_DATA = new PaletteData(0xFF0000, 0xFF00, 0xFF);

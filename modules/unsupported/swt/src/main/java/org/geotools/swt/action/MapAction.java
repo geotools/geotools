@@ -26,6 +26,9 @@ import org.geotools.swt.SwtMapPane;
  * 
  * @author Andrea Antonello (www.hydrologis.com)
  * @since 2.7
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/action/MapAction.java $
  */
 public abstract class MapAction extends Action {
 

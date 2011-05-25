@@ -29,6 +29,8 @@ import org.geotools.data.DataStore;
  * 
  * @author jgarnett, Refractions Research, Inc.
  * @author $Author: jive $ (last modification)
+ *
+ *
  * @source $URL$
  * @version $Id$
  */

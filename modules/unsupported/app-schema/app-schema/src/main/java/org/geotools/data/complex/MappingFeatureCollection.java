@@ -43,7 +43,9 @@ import com.vividsolutions.jts.geom.Geometry;
  * 
  * @author Ben Caradoc-Davies, CSIRO Exploration and Mining
  * @version $Id$
- * @source $URL:
+ *
+ *
+ * @source $URL$
  *         http://svn.geotools.org/trunk/modules/unsupported/app-schema/app-schema/src/main/java
  *         /org/geotools/data/complex/MappingFeatureCollection.java $
  * @since 2.6

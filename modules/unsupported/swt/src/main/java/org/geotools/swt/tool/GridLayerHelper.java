@@ -41,6 +41,9 @@ import org.opengis.referencing.operation.MathTransform;
  *
  * @author Michael Bedward
  * @since 2.6
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/tool/GridLayerHelper.java $
  */
 public class GridLayerHelper extends InfoToolHelper<List<Number>> {
     protected final WeakReference<GridCoverage2D> covRef;

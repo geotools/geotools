@@ -66,6 +66,8 @@ import org.opengis.feature.simple.SimpleFeature;
  *
  * @author Michael Bedward
  * @since 2.7
+ *
+ *
  * @source $URL$
  * @version $Id$
  *

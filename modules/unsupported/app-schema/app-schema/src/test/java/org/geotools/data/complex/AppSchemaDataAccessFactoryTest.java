@@ -45,6 +45,8 @@ import org.opengis.feature.type.Name;
  * 
  * @author Gabriel Roldan, Axios Engineering
  * @version $Id$
+ *
+ *
  * @source $URL$
  * @since 2.4
  */

@@ -58,6 +58,9 @@ import org.eclipse.swt.widgets.Shell;
  *
  * @author Andrea Antonello (www.hydrologis.com)
  * @author Michael Bedward
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/control/JFileImageChooser.java $
  */
 public class JFileImageChooser {
 

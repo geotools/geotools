@@ -25,6 +25,8 @@ import org.xml.sax.SAXException;
  * Holds the transaction response document.
  *
  * @author dzwiers
+ *
+ *
  * @source $URL$
  */
 public class TransactionResult {

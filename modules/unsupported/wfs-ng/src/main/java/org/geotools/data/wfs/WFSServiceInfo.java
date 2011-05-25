@@ -24,7 +24,9 @@ import org.geotools.data.ServiceInfo;
  * @author Gabriel Roldan
  * @version $Id: WFSServiceInfo.java 31823 2008-11-11 16:11:49Z groldan $
  * @since 2.5.x
- * @source $URL:
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs-ng/src/main/java/org/geotools/data/wfs/WFSServiceInfo.java $
  *         http://gtsvn.refractions.net/trunk/modules/plugin/wfs/src/main/java/org/geotools/data
  *         /wfs/WFSServiceInfo.java $
  * @see WFSDataStore#getInfo()

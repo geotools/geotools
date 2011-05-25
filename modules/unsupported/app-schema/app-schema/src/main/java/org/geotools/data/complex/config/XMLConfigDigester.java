@@ -43,6 +43,8 @@ import org.xml.sax.SAXException;
  * @author Ben Caradoc-Davies, CSIRO Exploration and Mining
  * @author Russell Petty, GSV
  * @version $Id$
+ *
+ *
  * @source $URL$
  * @since 2.4
  */

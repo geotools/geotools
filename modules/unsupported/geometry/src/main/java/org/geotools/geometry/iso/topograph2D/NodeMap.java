@@ -27,6 +27,8 @@ import java.util.TreeMap;
 /**
  * A map of nodes, indexed by the coordinate of the node
  *
+ *
+ *
  * @source $URL$
  */
 public class NodeMap {

@@ -29,6 +29,9 @@ import org.opengis.util.ProgressListener;
  * Wrapper for geotools' {@link ProgressListener}.
  * 
  * @author Andrea Antonello (www.hydrologis.com)
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swt/src/main/java/org/geotools/swt/control/ProgressWindow.java $
  */
 public class ProgressWindow extends ProgressMonitorDialog implements ProgressListener {
 

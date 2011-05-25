@@ -25,7 +25,9 @@ import java.awt.event.WindowEvent;
  *
  * @author Michael Bedward
  * @since 2.6
- * @source $Id$
+ *
+ *
+ * @source $URL$
  * @version $URL$
  */
 public interface TextReporterListener {

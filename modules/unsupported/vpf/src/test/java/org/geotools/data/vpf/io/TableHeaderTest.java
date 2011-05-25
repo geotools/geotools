@@ -66,6 +66,8 @@ import org.geotools.test.TestData;
  *     </ol>
  *   </li>
  * </ul>
+ *
+ *
  * @source $URL$
  */
 public class TableHeaderTest extends TestCase

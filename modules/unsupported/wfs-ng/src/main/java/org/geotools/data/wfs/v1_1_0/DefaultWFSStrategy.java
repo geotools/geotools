@@ -64,7 +64,9 @@ import org.opengis.filter.sort.SortBy;
  * @author Gabriel Roldan (OpenGeo)
  * @version $Id: DefaultWFSStrategy.java 35310 2010-04-30 10:32:15Z jive $
  * @since 2.6
- * @source $URL:
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs-ng/src/main/java/org/geotools/data/wfs/v1_1_0/DefaultWFSStrategy.java $
  *         http://gtsvn.refractions.net/trunk/modules/plugin/wfs/src/main/java/org/geotools/data
  *         /wfs/v1_1_0/DefaultWFSStrategy.java $
  */

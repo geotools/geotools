@@ -35,6 +35,9 @@ import org.restlet.resource.Variant;
  * This class return the bounds for a layer. Example request:
  * http://localhost:8082/simplefeatureservice/data/layerAsia?mode=bounds
  * @author narad
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/sfs/src/test/java/org/geotools/data/sfs/mock/FeatureBoundsResource.java $
  */
 public class FeatureBoundsResource extends Resource {
 

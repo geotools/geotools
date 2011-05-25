@@ -52,6 +52,8 @@ import org.xml.sax.helpers.AttributesImpl;
  * </p>
  *
  * @author dzwiers
+ *
+ *
  * @source $URL$
  */
 public class WFSBasicComplexTypes {

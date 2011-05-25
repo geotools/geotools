@@ -37,6 +37,8 @@ import org.opengis.feature.ComplexAttribute;
  * @author Gabriel Roldan, Axios Engineering
  * 
  *
+ *
+ *
  * @source $URL$
  */
 public class AttributeNodePointer extends NodePointer {

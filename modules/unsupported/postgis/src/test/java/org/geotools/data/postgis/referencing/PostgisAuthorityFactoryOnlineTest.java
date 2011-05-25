@@ -37,6 +37,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * Test PostgisAuthorityFactory
  * 
  * @author Jesse Eichar, Refractions Research Inc.
+ *
+ *
  * @source $URL$
  */
 public class PostgisAuthorityFactoryOnlineTest extends TestCase {

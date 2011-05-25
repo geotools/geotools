@@ -30,6 +30,9 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
  * 
  * @author Simone Giannecchini
  * @author Daniele Romagnoli
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/netcdf/src/test/java/org/geotools/coverage/io/netcdf/ServiceTest.java $
  */
 public class ServiceTest extends TestCase {
 

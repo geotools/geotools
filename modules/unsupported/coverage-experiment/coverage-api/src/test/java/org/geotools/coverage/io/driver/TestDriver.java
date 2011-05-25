@@ -7,6 +7,9 @@ import org.geotools.factory.Hints;
  * 
  * @author Simone Giannecchini, GeoSolutions
  *
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/coverage-api/src/test/java/org/geotools/coverage/io/driver/TestDriver.java $
  */
 public class TestDriver extends DefaultDriver implements Driver {
 

@@ -12,6 +12,9 @@ import junit.framework.Assert;
  * 
  * @author Simone Giannecchini, GeoSolutions
  *
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/coverage-api/src/test/java/org/geotools/coverage/io/driver/TestDriverLookup.java $
  */
 public class TestDriverLookup extends Assert {
     

@@ -23,6 +23,9 @@ import org.geotools.coverage.io.CoverageAccess.AccessType;
  * 
  * @author Simone Giannecchini, GeoSolutions SAS
  *
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/coverage-experiment/coverage-api/src/main/java/org/geotools/coverage/io/CoverageCapabilities.java $
  */
 public enum CoverageCapabilities {
 	READ_SUBSAMPLING(AccessType.READ_ONLY),

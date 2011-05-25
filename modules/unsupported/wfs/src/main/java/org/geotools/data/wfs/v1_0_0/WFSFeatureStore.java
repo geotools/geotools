@@ -63,6 +63,8 @@ import com.vividsolutions.jts.geom.Geometry;
  * being called; and to construct the Transaction Request when commit() is called.
  *
  * @author dzwiers 
+ *
+ *
  * @source $URL$
  */
 public class WFSFeatureStore extends WFSFeatureSource implements SimpleFeatureStore {

@@ -37,6 +37,8 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * @author crousson
  *
  *
+ *
+ *
  * @source $URL$
  */
 public abstract class NodeIdentifier implements Serializable {

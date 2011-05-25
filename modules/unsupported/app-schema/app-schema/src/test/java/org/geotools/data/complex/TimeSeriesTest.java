@@ -74,6 +74,8 @@ import org.xml.sax.helpers.NamespaceSupport;
  * 
  * @author Rob Atkinson
  * @version $Id$
+ *
+ *
  * @source $URL$
  * @since 2.4
  */

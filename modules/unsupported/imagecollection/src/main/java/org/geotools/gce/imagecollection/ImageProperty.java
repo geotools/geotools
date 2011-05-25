@@ -24,6 +24,9 @@ import javax.imageio.spi.ImageReaderSpi;
  * 
  * @author Daniele Romagnoli, GeoSolutions SAS
  * 
+ *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/imagecollection/src/main/java/org/geotools/gce/imagecollection/ImageProperty.java $
  */
 public class ImageProperty {
     public int width;

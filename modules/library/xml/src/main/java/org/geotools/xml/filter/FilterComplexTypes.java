@@ -68,6 +68,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * Subclass must override encode and getValue as usual.
  * </p>
  * @author dzwiers
+ *
  * @source $URL$
  */
 public class FilterComplexTypes {

@@ -47,6 +47,8 @@ import org.junit.Before;
  * 
  * @author Ben Caradoc-Davies, CSIRO Earth Science and Resource Engineering
  * @see OnlineTestCase
+ *
+ * @source $URL$
  */
 public abstract class OnlineTestSupport {
 

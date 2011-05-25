@@ -23,6 +23,7 @@ package org.geotools.xml.filter;
  * @author Jesse
  * @since 2.2.1
  *
+ *
  * @source $URL$
  */
 public class UnsupportedFilterException extends RuntimeException {

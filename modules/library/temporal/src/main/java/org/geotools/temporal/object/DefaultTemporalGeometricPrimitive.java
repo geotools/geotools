@@ -32,6 +32,7 @@ import org.opengis.temporal.TemporalGeometricPrimitive;
  * 
  * @author Mehdi Sidhoum (Geomatys)
  *
+ *
  * @source $URL$
  */
 public abstract class DefaultTemporalGeometricPrimitive extends DefaultTemporalPrimitive implements TemporalGeometricPrimitive, Separation {

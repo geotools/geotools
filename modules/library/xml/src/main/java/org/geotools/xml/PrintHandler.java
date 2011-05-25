@@ -28,6 +28,7 @@ import org.xml.sax.Attributes;
  * PrintHandler accepts SAXish events and generated output.
  *
  * @author dzwiers
+ *
  * @source $URL$
  */
 public interface PrintHandler {

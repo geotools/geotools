@@ -41,7 +41,8 @@ import org.xml.sax.SAXException;
  * 
  * @author dzwiers, Refractions Research, Inc. http://www.refractions.net
  * @author $Author:$ (last modification)
- * @source $URL:
+ *
+ * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/library/xml/src/main/java/org/geotools/xml
  *         /DocumentFactory.java $
  * @version $Id$

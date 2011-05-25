@@ -56,6 +56,7 @@ import org.xml.sax.SAXException;
  * 
  * @author dzwiers, Refractions Research, Inc. http://www.refractions.net
  * @author $Author:$ (last modification)
+ *
  * @source $URL$
  * @version $Id$
  */

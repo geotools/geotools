@@ -29,6 +29,7 @@ import java.net.URI;
  * </p>
  *
  * @author dzwiers www.refractions.net
+ *
  * @source $URL$
  */
 public interface AttributeGroup {

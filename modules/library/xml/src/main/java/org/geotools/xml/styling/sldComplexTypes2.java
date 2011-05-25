@@ -105,6 +105,7 @@ import org.xml.sax.SAXException;
  * </p>
  * @author Leprosy
  * @since 0.3
+ *
  * @source $URL$
  */
 public class sldComplexTypes2 {

@@ -94,6 +94,7 @@ import org.opengis.filter.identity.FeatureId;
  *
  * @author Jesse
  *
+ *
  * @source $URL$
  */
 public class FilterEncodingPreProcessor implements FilterVisitor, FilterVisitor2 {

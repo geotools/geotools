@@ -22,6 +22,8 @@ import org.junit.runners.Suite;
 /**
  *
  * @author Mehdi Sidhoum (Geomatys)
+ *
+ * @source $URL$
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({org.geotools.temporal.reference.DefaultTemporalReferenceSystemTest.class, org.geotools.temporal.reference.DefaultOrdinalEraTest.class, org.geotools.temporal.reference.DefaultTemporalCoordinateSystemTest.class, org.geotools.temporal.reference.DefaultClockTest.class, org.geotools.temporal.reference.DefaultOrdinalReferenceSystemTest.class, org.geotools.temporal.reference.DefaultCalendarEraTest.class, org.geotools.temporal.reference.DefaultCalendarTest.class})

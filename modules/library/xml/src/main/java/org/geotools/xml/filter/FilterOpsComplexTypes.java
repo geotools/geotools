@@ -79,6 +79,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * Encode/Decode Filter types.
  *
  * @author dzwiers
+ *
  * @source $URL$
  */
 public class FilterOpsComplexTypes {    

@@ -30,6 +30,8 @@ import junit.framework.TestCase;
  * {@link OnlineTestCase} and {@link OnlineTestSupport} for details.
  * 
  * @author Ben Caradoc-Davies, CSIRO Earth Science and Resource Engineering
+ *
+ * @source $URL$
  */
 public class FixtureUtilities {
 

@@ -36,6 +36,7 @@ import org.geotools.TestData;
  * @
  *
  * @author dzwiers www.refractions.net
+ *
  * @source $URL$
  */
 public class SchemaParserTest extends TestCase {

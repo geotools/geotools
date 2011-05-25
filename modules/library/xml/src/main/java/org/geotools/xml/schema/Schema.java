@@ -48,6 +48,7 @@ import org.geotools.factory.Factory;
  * </p>
  *
  * @author dzwiers www.refractions.net
+ *
  * @source $URL$
  */
 public interface Schema extends Factory {

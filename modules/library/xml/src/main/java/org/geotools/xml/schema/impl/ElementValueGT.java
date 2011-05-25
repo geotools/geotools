@@ -25,6 +25,7 @@ import org.geotools.xml.schema.ElementValue;
  * </p>
  *
  * @author dzwiers
+ *
  * @source $URL$
  */
 public class ElementValueGT implements ElementValue {

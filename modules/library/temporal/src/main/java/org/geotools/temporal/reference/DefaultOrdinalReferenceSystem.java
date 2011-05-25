@@ -27,6 +27,7 @@ import org.opengis.temporal.OrdinalReferenceSystem;
  *
  * @author Mehdi Sidhoum (Geomatys)
  *
+ *
  * @source $URL$
  */
 public class DefaultOrdinalReferenceSystem extends DefaultTemporalReferenceSystem implements OrdinalReferenceSystem {

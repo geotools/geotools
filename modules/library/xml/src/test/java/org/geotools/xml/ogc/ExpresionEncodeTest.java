@@ -40,6 +40,7 @@ import org.opengis.filter.FilterFactory2;
  *  For now just writes the expression built.
  *  
  * @author David Zwiers, Refractions Research
+ *
  * @source $URL$
  */
 public class ExpresionEncodeTest extends TestCase {

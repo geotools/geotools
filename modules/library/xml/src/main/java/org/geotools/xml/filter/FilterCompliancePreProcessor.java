@@ -112,7 +112,8 @@ import org.opengis.filter.spatial.Within;
  * </ul>
  * 
  * @author Jody
- * @source $URL$
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/xml/src/main/java/org/geotools/xml/filter/FilterCompliancePreProcessor.java $
  */
 public class FilterCompliancePreProcessor implements FilterVisitor {
 

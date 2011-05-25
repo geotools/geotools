@@ -32,6 +32,7 @@ import org.opengis.temporal.TemporalPrimitive;
  *
  * @author Mehdi Sidhoum (Geomatys)
  *
+ *
  * @source $URL$
  */
 public class DefaultTemporalPrimitiveTest {

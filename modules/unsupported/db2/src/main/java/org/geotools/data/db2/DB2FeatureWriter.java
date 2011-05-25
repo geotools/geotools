@@ -35,6 +35,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * DOCUMENT ME!
  *
  * @author David Adler - IBM Corporation
+ *
  * @source $URL$
  */
 public class DB2FeatureWriter extends JDBCTextFeatureWriter {

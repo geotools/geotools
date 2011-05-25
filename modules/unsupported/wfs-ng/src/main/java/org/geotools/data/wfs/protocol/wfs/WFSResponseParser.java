@@ -26,7 +26,8 @@ import org.geotools.data.wfs.v1_1_0.WFS_1_1_0_DataStore;
  * @author Gabriel Roldan (OpenGeo)
  * @version $Id: WFSResponseParser.java 31823 2008-11-11 16:11:49Z groldan $
  * @since 2.6
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs/src/main/java/org/geotools/data/wfs/protocol/wfs/WFSResponseParser.java $
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/wfs-ng/src/main/java/org/geotools/data/wfs/protocol/wfs/WFSResponseParser.java $
  * @see WFSResponseParserFactory
  * @see WFSResponse
  */

@@ -115,6 +115,7 @@ import static java.lang.Math.max;
  * serializable, but its class must be known to {@link IIORegistry} at deserialization time.
  *
  * @since 2.5
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

@@ -35,6 +35,7 @@ import org.opengis.filter.identity.FeatureId;
  * This interface represents pending actions within a transaction.
  *
  * @author dzwiers
+ *
  * @source $URL$
  */
 public interface Action {

@@ -65,6 +65,7 @@ import org.h2.jdbcx.JdbcDataSource;
  * nammed {@value #DIRECTORY_KEY}.
  *
  * @since 2.6
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

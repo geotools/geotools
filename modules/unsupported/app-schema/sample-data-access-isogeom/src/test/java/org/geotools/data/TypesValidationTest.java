@@ -33,6 +33,7 @@ import org.geotools.gml3.GMLSchema;
  * 
  * @author Ben Caradoc-Davies, CSIRO Exploration and Mining
  * @version $Id$
+ *
  * @source $URL$
  * @since 2.6
  */

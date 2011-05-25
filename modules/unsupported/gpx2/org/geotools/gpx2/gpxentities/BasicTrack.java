@@ -19,6 +19,7 @@ import java.util.*;
 /**
  * Provides the default implementation of the Track interface.
  *
+ *
  * @source $URL$
  */
 public class BasicTrack implements Track

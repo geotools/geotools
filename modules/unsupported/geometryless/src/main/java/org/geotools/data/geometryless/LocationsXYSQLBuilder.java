@@ -33,8 +33,8 @@ import org.opengis.feature.type.Name;
  * specified with x,y columns
  * 
  * @author Chris Holmes, TOPP
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/unsupported/geometryless/src/main/java/org/geotools/data/geometryless/LocationsXYSQLBuilder.java $
+ *
+ * @source $URL$
  * @version $Id: LocationsXYSQLBuilder.java 25031 2007-04-05 09:52:31Z
  *          robatkinson $
  */

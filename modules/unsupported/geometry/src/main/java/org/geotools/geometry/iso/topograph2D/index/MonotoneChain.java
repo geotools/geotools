@@ -32,6 +32,7 @@ package org.geotools.geometry.iso.topograph2D.index;
  * segment comparisons, producing substantial speed gains.
  * 
  *
+ *
  * @source $URL$
  */
 public class MonotoneChain {

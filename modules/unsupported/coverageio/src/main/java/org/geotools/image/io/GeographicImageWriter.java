@@ -47,6 +47,7 @@ import org.geotools.resources.IndexedResourceBundle;
  * Base class for writers of geographic images.
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

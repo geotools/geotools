@@ -29,8 +29,8 @@ import org.geotools.util.CheckedArrayList;
  * @author Gabriel Roldan, Axios Engineering
  * @author Russell Petty, GSV
  * @version $Id$
- * @source $URL:
- *         http://svn.geotools.org/trunk/modules/unsupported/community-schemas/community-schema-ds/src/main/java/org/geotools/data/complex/config/TypeMapping.java $
+ *
+ * @source $URL$
  * @since 2.4
  */
 public class TypeMapping implements Serializable {

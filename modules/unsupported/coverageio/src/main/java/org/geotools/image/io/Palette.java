@@ -48,6 +48,7 @@ import org.geotools.util.Utilities;
  * memory usage; the purpose is not to provide caching.
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Antoine Hnawia

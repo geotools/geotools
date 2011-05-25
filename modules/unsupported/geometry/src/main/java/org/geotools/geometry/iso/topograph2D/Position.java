@@ -21,6 +21,7 @@ package org.geotools.geometry.iso.topograph2D;
  * A Position indicates the position of a Location relative to a graph component
  * (Node, Edge, or Area).
  *
+ *
  * @source $URL$
  */
 public class Position {

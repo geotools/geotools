@@ -22,6 +22,7 @@ package org.geotools.geometry.iso.util.elem2D;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  *
+ *
  * @source $URL$
  */
 public class Quadrilateral2D extends Simplex2D {

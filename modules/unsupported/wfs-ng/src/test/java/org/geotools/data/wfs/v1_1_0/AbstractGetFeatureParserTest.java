@@ -68,7 +68,8 @@ import com.vividsolutions.jts.geom.Polygon;
  * @author Gabriel Roldan
  * @version $Id: AbstractGetFeatureParserTest.java 35310 2010-04-30 10:32:15Z jive $
  * @since 2.5.x
- * @source $URL: http://svn.geotools.org/geotools/trunk/gt/modules/plugin/wfs/src /test/
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/wfs-ng/src/test/java/org/geotools/data/wfs/v1_1_0/AbstractGetFeatureParserTest.java $
  *         java/org/geotools/wfs/v_1_1_0/data/StreamingParserFeatureReaderTest .java $
  * @see XmlSimpleFeatureParserTest
  * @see StreamingParserFeatureReaderTest

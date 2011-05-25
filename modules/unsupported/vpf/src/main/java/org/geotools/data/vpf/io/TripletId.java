@@ -27,6 +27,7 @@ import org.geotools.data.vpf.exc.VPFDataFormatException;
  *         OneMap
  * @version 1.0.0
  * @author <a href="mailto:jeff@ionicenterprise.com">Jeff Yutzler</a>
+ *
  * @source $URL$
  */
 public class TripletId extends Number {

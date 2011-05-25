@@ -67,6 +67,8 @@ import ucar.nc2.dataset.VariableDS;
  * 
  * @author Alessio Fabiani, GeoSolutions
  * @author Daniele Romagnoli, GeoSolutions
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/coverage-experiment/netcdf/src/main/java/org/geotools/imageio/netcdf/NetCDFSpatioTemporalMetadata.java $
  */
 public class NetCDFSpatioTemporalMetadata extends SpatioTemporalMetadata {
 

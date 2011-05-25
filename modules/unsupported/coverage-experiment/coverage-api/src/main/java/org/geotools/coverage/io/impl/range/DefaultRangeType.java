@@ -31,6 +31,8 @@ import org.opengis.util.InternationalString;
  * Default implementation of {@link RangeType}
  * 
  * @author Simone Giannecchini, GeoSolutions.
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/coverage-experiment/coverage-api/src/main/java/org/geotools/coverage/io/impl/range/DefaultRangeType.java $
  */
 public class DefaultRangeType implements RangeType {
 	private InternationalString description;

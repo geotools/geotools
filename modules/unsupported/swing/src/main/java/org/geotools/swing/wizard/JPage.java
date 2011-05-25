@@ -25,6 +25,7 @@ import javax.swing.JPanel;
  * @author Jody Garnett (LISAsoft)
  * @author Graham Davis (Refractions Research)
  *
+ *
  * @source $URL$
  */
 public abstract class JPage {

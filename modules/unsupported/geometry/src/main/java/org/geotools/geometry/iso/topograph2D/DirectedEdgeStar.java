@@ -29,6 +29,7 @@ import org.geotools.geometry.iso.util.Assert;
  * around a node. It supports labelling the edges as well as linking the edges
  * to form both MaximalEdgeRings and MinimalEdgeRings.
  *
+ *
  * @source $URL$
  */
 public class DirectedEdgeStar extends EdgeEndStar {

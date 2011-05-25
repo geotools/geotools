@@ -39,6 +39,8 @@ import org.opengis.util.ProgressListener;
 
 /**
  * Base class extending {@link BaseDriver} leveraging on URLs.
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/coverage-experiment/coverage-api/src/main/java/org/geotools/coverage/io/driver/BaseFileDriver.java $
  */
 public abstract class BaseFileDriver extends BaseDriver implements FileDriver {
 	

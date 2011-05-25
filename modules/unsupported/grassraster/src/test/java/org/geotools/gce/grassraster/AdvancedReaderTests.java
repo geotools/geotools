@@ -28,6 +28,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * Reader tests for different active redgion cases.
  * 
  * @author Andrea Antonello (www.hydrologis.com)
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/grassraster/src/test/java/org/geotools/gce/grassraster/AdvancedReaderTests.java $
  */
 public class AdvancedReaderTests extends TestCase {
 

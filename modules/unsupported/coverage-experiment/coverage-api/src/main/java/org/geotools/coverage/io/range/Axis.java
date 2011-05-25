@@ -41,6 +41,8 @@ import org.opengis.util.InternationalString;
  * @author Simone Giannecchini, GeoSolutions
  * @param V Value being used to define this Axis
  * @param QA Quantity being represented by this Axis
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/coverage-experiment/coverage-api/src/main/java/org/geotools/coverage/io/range/Axis.java $
  */
 public interface Axis<V,QA extends Quantity> {
     /**

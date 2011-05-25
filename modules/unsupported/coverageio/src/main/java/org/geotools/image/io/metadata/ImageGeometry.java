@@ -43,6 +43,7 @@ import org.geotools.resources.i18n.ErrorKeys;
  * However <var>n</var>-dimensional grid coverages may contains additional entries.
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

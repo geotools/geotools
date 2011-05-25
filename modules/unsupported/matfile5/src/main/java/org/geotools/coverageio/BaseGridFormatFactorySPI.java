@@ -30,6 +30,8 @@ import org.geotools.coverage.grid.io.UnknownFormat;
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini, GeoSolutions
  * @since 2.5.x
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/matfile5/src/main/java/org/geotools/coverageio/BaseGridFormatFactorySPI.java $
  */
 public class BaseGridFormatFactorySPI implements GridFormatFactorySpi {
 

@@ -77,6 +77,8 @@ import org.xml.sax.SAXException;
  * 
  * @author Gabriel Roldan (OpenGeo)
  * @since 2.6.x
+ *
+ * @source $URL$
  */
 @SuppressWarnings("nls")
 public class WFS_1_1_0_ProtocolTest {

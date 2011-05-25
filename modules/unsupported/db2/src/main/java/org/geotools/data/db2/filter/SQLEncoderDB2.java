@@ -90,6 +90,7 @@ import com.vividsolutions.jts.io.WKTWriter;
  * </p>
  *
  * @author David Adler - IBM Corporation
+ *
  * @source $URL$
  */
 public class SQLEncoderDB2 extends FilterToSQL{

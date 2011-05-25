@@ -30,6 +30,7 @@ import static org.junit.Assert.*;
 /**
  * Tests {@link GeographicImageReader}.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

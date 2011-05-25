@@ -32,6 +32,8 @@ import com.vividsolutions.jts.io.WKTWriter;
 /**
  * Converts between JTS and OGR geometries
  * @author Andrea Aime - OpenGeo
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/ogr/src/main/java/org/geotools/data/ogr/GeometryMapper.java $
  */
 public class GeometryMapper {
     /**

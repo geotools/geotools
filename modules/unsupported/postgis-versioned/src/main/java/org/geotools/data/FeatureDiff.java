@@ -26,6 +26,8 @@ import org.opengis.feature.simple.SimpleFeature;
  * @author Andrea Aime - OpenGeo
  * @since 2.6
  * 
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/postgis-versioned/src/main/java/org/geotools/data/FeatureDiff.java $
  */
 public interface FeatureDiff {
 

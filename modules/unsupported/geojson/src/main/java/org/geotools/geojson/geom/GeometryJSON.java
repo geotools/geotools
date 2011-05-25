@@ -60,6 +60,8 @@ import com.vividsolutions.jts.geom.Polygon;
  * </p>
  * @author Justin Deoliveira, OpenGeo
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/geojson/src/main/java/org/geotools/geojson/geom/GeometryJSON.java $
  */
 public class GeometryJSON {
 

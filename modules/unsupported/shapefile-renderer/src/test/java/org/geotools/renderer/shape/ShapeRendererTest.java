@@ -79,8 +79,8 @@ import com.vividsolutions.jts.geom.MultiLineString;
  * 
  * @author jeichar
  * @since 2.1.x
- * @source $URL:
- *         http://svn.geotools.org/geotools/branches/2.2.x/ext/shaperenderer/test/org/geotools/renderer/shape/ShapeRendererTest.java $
+ *
+ * @source $URL$
  */
 public class ShapeRendererTest extends TestCase {
     private static final boolean INTERACTIVE = false;

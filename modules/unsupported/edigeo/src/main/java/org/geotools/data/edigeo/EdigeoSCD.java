@@ -25,6 +25,7 @@ import java.util.HashMap;
  *
  * @author mcoudert
  *
+ *
  * @source $URL$
  */
 public class EdigeoSCD {

@@ -33,6 +33,8 @@ import org.opengis.feature.type.PropertyDescriptor;
 /**
  * This is just a compilation of constants used in app-schema module. 
  * @author Rini Angreani, CSIRO Earth Science and Resource Engineering
+ *
+ * @source $URL$
  */
 public class ComplexFeatureConstants {
     /**

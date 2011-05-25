@@ -36,6 +36,7 @@ import org.geotools.filter.SQLEncoderPostgis;
  *
  * @author Andrea Aime
  *
+ *
  * @source $URL$
  */
 public class PostgisFIDMapperFactory extends DefaultFIDMapperFactory {

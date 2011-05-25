@@ -53,6 +53,7 @@ import org.opengis.feature.type.FeatureType;
  * @author Christophe Rousson, SoC 2007, CRG-ULAVAL
  *
  *
+ *
  * @source $URL$
  */
 public class GridSpatialIndex extends AbstractSpatialIndex implements EvictableTree  {

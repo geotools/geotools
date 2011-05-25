@@ -39,6 +39,7 @@ import org.apache.commons.cli2.util.HelpFormatter;
  * @author Simone Giannecchini, GeoSolutions.
  * 
  *
+ *
  * @source $URL$
  */
 public abstract class BaseArgumentsManager extends ProgressManager {

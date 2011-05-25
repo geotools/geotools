@@ -32,6 +32,7 @@ import org.geotools.geometry.iso.util.algorithm2D.SimplePointInAreaLocator;
  * maintained in CCW order (starting with the positive x-axis) around the node
  * for efficient lookup and topology building.
  *
+ *
  * @source $URL$
  */
 abstract public class EdgeEndStar {

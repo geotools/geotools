@@ -83,6 +83,7 @@ import org.geotools.util.UnsupportedImplementationException;
  *
  * @since 2.4
  * @version $Id$
+ *
  * @source $URL$
  * @author Martin Desruisseaux
  * @author Cédric Briançon

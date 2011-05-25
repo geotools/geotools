@@ -30,6 +30,8 @@ import org.opengis.util.ProgressListener;
  * @author Simone Giannecchini, GeoSolutions
  * @author Jody Garnett
  * @todo revisit and improve when feedback starts to flow in
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/coverage-experiment/coverage-api/src/main/java/org/geotools/coverage/io/CoverageStore.java $
  */
 public interface CoverageStore extends CoverageSource {
 

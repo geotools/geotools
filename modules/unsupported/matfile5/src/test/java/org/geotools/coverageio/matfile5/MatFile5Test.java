@@ -35,6 +35,8 @@ import org.junit.Test;
  * @author Simone Giannecchini (simboss), GeoSolutions
  * 
  * Testing {@link MatFile5Reader}
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/matfile5/src/test/java/org/geotools/coverageio/matfile5/MatFile5Test.java $
  */
 public final class MatFile5Test extends Assert {
 

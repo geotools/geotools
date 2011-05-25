@@ -60,6 +60,7 @@ import junit.framework.TestSuite;
  *     </ol>
  *   </li>
  * </ul>
+ *
  * @source $URL$
  */
 public class VPFDateTest extends TestCase

@@ -33,7 +33,8 @@ import org.apache.commons.codec.binary.Base64;
  * @author Gabriel Roldan (OpenGeo)
  * @since 2.6.x
  * @version $Id: SimpleHttpProtocol.java 35068 2010-03-20 05:46:56Z jive $
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs/src/main/java/org/geotools/data/wfs/protocol/http/SimpleHttpProtocol.java $
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/wfs-ng/src/main/java/org/geotools/data/wfs/protocol/http/SimpleHttpProtocol.java $
  */
 @SuppressWarnings("nls")
 public class SimpleHttpProtocol extends AbstractHttpProtocol {

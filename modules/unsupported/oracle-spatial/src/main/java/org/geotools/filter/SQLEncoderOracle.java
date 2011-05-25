@@ -67,6 +67,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * </p>
  *
  * @author $Author: seangeo $
+ *
  * @source $URL$
  * @version $Id$
  */

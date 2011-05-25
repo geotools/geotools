@@ -29,6 +29,7 @@ import javax.imageio.event.IIOWriteWarningListener;
  * @see IIOWriteWarningListener
  * 
  *
+ *
  * @source $URL$
  */
 public class WriteProgressListenerAdapter implements IIOWriteProgressListener,

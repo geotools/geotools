@@ -45,8 +45,8 @@ import com.vividsolutions.jts.geom.Geometry;
  * @author Rob Atkinson , SCO
  * @author Debasish Sahu, debasish.sahu@rmsi.com
  * 
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/unsupported/geometryless/src/main/java/org/geotools/data/geometryless/filter/SQLEncoderLocationsXY.java $
+ *
+ * @source $URL$
  */
 public class SQLEncoderLocationsXY extends UnaliasSQLEncoder {
     /** Standard java logger */

@@ -39,7 +39,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * 
  * @author Rini Angreani, Curtin University of Technology
  * 
- * @source $URL:
+ *
+ * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/main
  *         /java/org/geotools/data/complex/config/NonFeatureTypeProxy.java $
  */

@@ -31,6 +31,8 @@ import org.restlet.resource.Variant;
  * http://localhost:8082/simplefeatureservice/capabilities
  * It generates a list of available layers
  * @author 
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/sfs/src/test/java/org/geotools/data/sfs/mock/CapabilitiesResource.java $
  */
 public class CapabilitiesResource extends Resource {
 

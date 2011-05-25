@@ -29,6 +29,8 @@ import org.opengis.util.CodeList;
  * to a domain you should use the appropriate value and Unit to define them.
  * 
  * @param <V> CodeList provided an open set of machine readable strings
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/coverage-experiment/coverage-api/src/main/java/org/geotools/coverage/io/impl/range/CodeMeasure.java $
  */
 public class CodeMeasure<V extends CodeList<V>> extends Measure<V, Dimensionless> {
 	private static final long serialVersionUID = 2403097126807167994L;

@@ -76,6 +76,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * </p>
  *
  * @author David Adler - IBM Corporation
+ *
  * @source $URL$
  */
 public class DB2DataStore extends JDBCDataStore implements DataStore{

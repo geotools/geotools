@@ -40,7 +40,8 @@ import org.opengis.referencing.operation.MathTransform;
  *
  * @author Michael Bedward
  * @since 2.6
- * @source $Id$
+ *
+ * @source $URL$
  * @version $URL$
  */
 public abstract class InfoToolHelper<T> {

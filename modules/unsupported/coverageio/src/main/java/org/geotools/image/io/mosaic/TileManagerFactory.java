@@ -35,6 +35,7 @@ import org.geotools.util.logging.Logging;
  * Creates {@link TileManager} instances from a collection of tiles.
  *
  * @since 2.5
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

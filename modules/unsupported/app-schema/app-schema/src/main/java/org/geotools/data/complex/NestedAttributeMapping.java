@@ -55,7 +55,8 @@ import org.xml.sax.helpers.NamespaceSupport;
  * 
  * @author Rini Angreani, Curtin University of Technology
  * 
- * @source $URL:
+ *
+ * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/main
  *         /java/org/geotools/data/complex/NestedAttributeMapping.java $
  */

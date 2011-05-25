@@ -60,6 +60,7 @@ import org.xml.sax.InputSource;
  * - spaces must be replaced by "_" in description
  * - "No_description" is the default
  *
+ *
  * @source $URL$
  */
 public class GeometryConformanceTestCases extends TestCase {

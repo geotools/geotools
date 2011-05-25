@@ -94,6 +94,7 @@ import org.geotools.resources.i18n.ErrorKeys;
  * copied in a temporary file.
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Antoine Hnawia

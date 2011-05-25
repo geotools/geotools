@@ -30,6 +30,7 @@ import org.geotools.geometry.iso.util.algorithm2D.LineIntersector;
  * Keeps informations about the intersections of Segments.
  * Uses a LineIntersector to calculate the intersection between two line segments.
  *
+ *
  * @source $URL$
  */
 public class SegmentIntersector {

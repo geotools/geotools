@@ -76,6 +76,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @author Jackson Roehrig & Sanjay Jena
  * 
  *
+ *
  * @source $URL$
  */
 public class GeometryFactoryImpl implements Factory, GeometryFactory {

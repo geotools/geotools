@@ -72,6 +72,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  * be created by VPFFileFactory.
  *
  * @author <a href="mailto:jeff@ionicenterprise.com">Jeff Yutzler</a>
+ *
  * @source $URL$
  */
 public class VPFFile implements SimpleFeatureType, FileConstants, DataTypesDefinition {

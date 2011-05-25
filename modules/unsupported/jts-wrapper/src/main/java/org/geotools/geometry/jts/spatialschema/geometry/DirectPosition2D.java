@@ -46,6 +46,7 @@ import org.geotools.geometry.jts.GeometryUtils;
  * {@linkplain AxisDirection#NORTH_EAST North-East} direction?).
  * 
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

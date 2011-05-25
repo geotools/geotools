@@ -31,6 +31,7 @@ import org.opengis.feature.IllegalAttributeException;
  * Private FeatureReader inner class for reading Features from the MIF file
  * </p>
  *
+ *
  * @source $URL$
  */
 public class EdigeoFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {

@@ -27,6 +27,7 @@ import java.util.PropertyResourceBundle;
  * 
  * @author Justin Deoliveira, The Open Planning Project
  *
+ *
  * @source $URL$
  * deprecated please use PostgisOnlineTestCase
  */

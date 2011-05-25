@@ -48,7 +48,8 @@ import com.vividsolutions.jts.geom.Geometry;
  * @author Andrea Aime - The Open Planning Project
  * @todo: this class is copied from GeoServer, and it seems it would be good to port it to GeoTools
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs/src/main/java/org/geotools/data/wfs/v1_1_0/ReprojectingFilterVisitor.java $
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/wfs-ng/src/main/java/org/geotools/data/wfs/v1_1_0/ReprojectingFilterVisitor.java $
  */
 public class ReprojectingFilterVisitor extends DuplicatingFilterVisitor {
     SimpleFeatureType featureType;

@@ -42,6 +42,7 @@ import com.vividsolutions.jts.geom.Envelope;
  * @author Emily
  * @since 1.2.0
  *
+ *
  * @source $URL$
  */
 public class StreamingGridFeatureCache extends GridFeatureCache {

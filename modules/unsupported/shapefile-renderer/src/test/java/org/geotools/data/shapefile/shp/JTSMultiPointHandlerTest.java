@@ -44,8 +44,8 @@ import com.vividsolutions.jts.geom.Geometry;
  * 
  * @author jeichar
  * @since 2.1.x
- * @source $URL:
- *         http://svn.geotools.org/geotools/branches/2.2.x/ext/shaperenderer/test/org/geotools/data/shapefile/shp/MultiPointHandlerTest.java $
+ *
+ * @source $URL$
  */
 public class JTSMultiPointHandlerTest extends TestCase {
 

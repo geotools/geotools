@@ -41,6 +41,7 @@ import java.util.Properties;
  * Modified by Christophe Rousson
  * Modified by Emily Gouge
  *
+ *
  * @source $URL$
  */
 public interface SpatialIndex {

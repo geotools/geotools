@@ -11,6 +11,8 @@ import junit.framework.TestCase;
  * Test the {@link JGrassMapEnvironment} class and the created paths.
  * 
  * @author Andrea Antonello (www.hydrologis.com)
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/grassraster/src/test/java/org/geotools/gce/grassraster/TestJGrassMapEnvironment.java $
  */
 @SuppressWarnings("nls")
 public class TestJGrassMapEnvironment extends TestCase {

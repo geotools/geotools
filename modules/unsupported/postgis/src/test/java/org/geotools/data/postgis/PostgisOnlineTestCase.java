@@ -28,6 +28,7 @@ import org.geotools.test.OnlineTestCase;
  * @since 2.4
  * @author Cory Horner, Refractions Research
  *
+ *
  * @source $URL$
  */
 public abstract class PostgisOnlineTestCase extends OnlineTestCase {

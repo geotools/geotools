@@ -23,6 +23,7 @@ package org.geotools.data.wfs.protocol.http;
  * @author Gabriel Roldan
  * @version $Id$
  * @since 2.5.x
+ *
  * @source $URL$
  */
 public enum HttpMethod {

@@ -62,6 +62,7 @@ import org.geotools.resources.i18n.ErrorKeys;
  * would not know what to do with the extra coordinate systems anyway.
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

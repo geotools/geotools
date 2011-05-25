@@ -56,6 +56,7 @@ import org.geotools.data.jdbc.datasource.DataSourceUtil;
  *
  * @author Chris Holmes, TOPP
  * @author Bernard de Terwangne, star.be
+ *
  * @source $URL$
  */
 public class OracleOCIDataStoreFactory implements DataStoreFactorySpi {

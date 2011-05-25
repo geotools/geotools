@@ -52,6 +52,7 @@ import org.opengis.referencing.cs.CoordinateSystem;
  *
  * @author Michael Bedward
  * @since 2.6.1
+ *
  * @source $URL$
  * @version $Id$
  */

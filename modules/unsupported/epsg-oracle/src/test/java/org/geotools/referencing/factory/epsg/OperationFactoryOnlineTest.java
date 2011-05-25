@@ -42,6 +42,7 @@ import org.opengis.referencing.operation.Transformation;
  * Tests the usage of {@link CoordinateOperationFactory} with the help of the
  * EPSG database.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

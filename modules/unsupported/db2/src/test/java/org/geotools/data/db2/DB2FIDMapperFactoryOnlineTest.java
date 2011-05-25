@@ -31,6 +31,7 @@ import org.geotools.data.jdbc.fidmapper.TypedFIDMapper;
  * Exercise DB2FIDMapperFactory.
  *
  * @author David Adler - IBM Corporation
+ *
  * @source $URL$
  */
 public class DB2FIDMapperFactoryOnlineTest extends AbstractDB2OnlineTestCase {

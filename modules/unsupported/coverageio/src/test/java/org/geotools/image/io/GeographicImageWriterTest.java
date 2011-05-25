@@ -32,6 +32,7 @@ import static org.junit.Assert.*;
 /**
  * Tests {@link GeographicImageWriter}, especially the {@link RectIter} creation.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

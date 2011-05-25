@@ -26,6 +26,7 @@ import org.geotools.geometry.iso.util.Assert;
  * does not have a defined extent.
  * 
  *
+ *
  * @source $URL$
  * @version 1.7.2
  */

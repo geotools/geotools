@@ -27,6 +27,7 @@ import java.util.logging.Logger;
  * @author Jesse
  * @since 1.1.0
  *
+ *
  * @source $URL$
  */
 public class LogWriterDecorator extends Writer {

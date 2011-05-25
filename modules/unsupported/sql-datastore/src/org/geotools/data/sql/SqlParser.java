@@ -34,6 +34,7 @@ import net.sf.jsqlparser.statement.select.SelectBody;
  *
  * @author Gabriel Roldan, Axios Engineering
  * @version $Id$
+ *
  * @source $URL$
  * @since 2.3.x
   */

@@ -34,6 +34,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * Generates the geometry for a connected node based on attributes already in the feature
  *
  * @author <a href="mailto:jeff@ionicenterprise.com">Jeff Yutzler</a>
+ *
  * @source $URL$
  */
 public class ConnectedNodeGeometryFactory extends VPFGeometryFactory implements FileConstants {

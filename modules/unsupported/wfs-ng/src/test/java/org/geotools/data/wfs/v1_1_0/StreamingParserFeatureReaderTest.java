@@ -35,7 +35,8 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * @author Gabriel Roldan
  * @version $Id: StreamingParserFeatureReaderTest.java 32043 2008-12-19 03:23:35Z jdeolive $
  * @since 2.5.x
- * @source $URL:
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/wfs-ng/src/test/java/org/geotools/data/wfs/v1_1_0/StreamingParserFeatureReaderTest.java $
  *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/wfs/src/test/java/org/geotools
  *         /wfs/v_1_1_0/data/StreamingParserFeatureReaderTest.java $
  */

@@ -37,7 +37,8 @@ import org.opengis.filter.expression.Expression;
  * 
  * @author Russell Petty, GSV
  * @version $Id$
- * @source $URL:
+ *
+ * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/main
  *         /java/org/geotools/data/complex/filter/UnmappingFilterVisitor.java $
  * @since 2.4

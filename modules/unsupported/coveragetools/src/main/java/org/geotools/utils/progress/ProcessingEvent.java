@@ -22,6 +22,7 @@ import java.util.EventObject;
  * @author Simone Giannecchini, GeoSolutions.
  * 
  *
+ *
  * @source $URL$
  */
 public class ProcessingEvent extends EventObject {

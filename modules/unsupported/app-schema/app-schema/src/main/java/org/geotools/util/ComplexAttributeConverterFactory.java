@@ -11,6 +11,7 @@ import org.opengis.feature.Property;
  * This converter retrieves the values out of attributes. 
  * @author Rini Angreani, Curtin University of Technology 
  *
+ *
  * @source $URL$
  */
 public class ComplexAttributeConverterFactory implements ConverterFactory {

@@ -42,6 +42,7 @@ import java.util.logging.Logger;
  * 
  * @author Rob Atkinson rob@socialchange.net.NOSPAM.au
  * @author Peter Barrs@socialchange.net.NOSPAM.au
+ *
  * @source $URL$
  */
 public class PGConnectionPool extends org.postgresql.jdbc2.optional.ConnectionPool { 

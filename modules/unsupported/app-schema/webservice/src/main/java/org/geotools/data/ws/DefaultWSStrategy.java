@@ -45,7 +45,8 @@ import freemarker.template.Template;
  * @author rpetty
  * @version $Id$
  * @since 2.6
- * @source $URL:
+ *
+ * @source $URL$
  *         http://gtsvn.refractions.net/trunk/modules/unsupported/app-schema/webservice/src/main
  *         /java/org/geotools/data /ws/v1_1_0/DefaultWSStrategy.java $
  */

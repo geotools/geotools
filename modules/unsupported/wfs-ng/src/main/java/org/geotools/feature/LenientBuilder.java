@@ -32,7 +32,8 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * <p>
  * @author Jody Garnett
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs/src/main/java/org/geotools/feature/LenientBuilder.java $
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/wfs-ng/src/main/java/org/geotools/feature/LenientBuilder.java $
  */
 public class LenientBuilder {
     private SimpleFeatureType schema;

@@ -32,6 +32,7 @@ import org.opengis.geometry.primitive.SurfacePatch;
  * triangle in the network, the circle passing through its vertexes does not
  * contain, in its interior, the vertex of any other triangle.
  *
+ *
  * @source $URL$
  */
 public class TinImpl extends TriangulatedSurfaceImpl {

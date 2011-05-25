@@ -44,6 +44,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * Forms JTS LineStrings out of a the graph of {@link DirectedEdge}s created by
  * an {@link OverlayOp}.
  *
+ *
  * @source $URL$
  */
 public class LineBuilder {

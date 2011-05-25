@@ -30,6 +30,7 @@ import junit.framework.TestCase;
  * 
  * @author Ben Caradoc-Davies, CSIRO Exploration and Mining
  *
+ *
  * @source $URL$
  */
 public class PropertyInterpolationUtilsTest extends TestCase {

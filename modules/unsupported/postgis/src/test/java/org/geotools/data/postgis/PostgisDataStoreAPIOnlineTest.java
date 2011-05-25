@@ -107,8 +107,8 @@ import com.vividsolutions.jts.geom.Point;
  * </p>
  * 
  * @author Jody Garnett, Refractions Research
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/postgis/src/test/java/org/geotools/data/postgis/PostgisDataStoreAPIOnlineTest.java $
+ *
+ * @source $URL$
  */
 public class PostgisDataStoreAPIOnlineTest extends AbstractPostgisDataTestCase {
 

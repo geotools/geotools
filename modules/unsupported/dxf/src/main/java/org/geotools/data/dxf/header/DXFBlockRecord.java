@@ -22,6 +22,8 @@ import org.apache.commons.logging.LogFactory;
 /**
  *
  * @author Gertjan
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/dxf/src/main/java/org/geotools/data/dxf/header/DXFBlockRecord.java $
  */
 public class DXFBlockRecord extends DXFBlock {
 

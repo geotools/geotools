@@ -26,6 +26,7 @@ import org.geotools.data.vpf.ifc.VPFRow;
  * SpatialIndexInputStream.java Created: Mon Feb 24 22:25:15 2003
  *
  * @author <a href="mailto:kobit@users.sourceforge.net">Artur Hefczyc</a>
+ *
  * @source $URL$
  * @version $Id$
  */

@@ -116,6 +116,7 @@ import com.vividsolutions.jts.geom.PrecisionModel;
  * @author Alessio Fabiani, GeoSolutions
  * @author Blaz Repnik
  *
+ *
  * @source $URL$
  * @version 0.3
  * 

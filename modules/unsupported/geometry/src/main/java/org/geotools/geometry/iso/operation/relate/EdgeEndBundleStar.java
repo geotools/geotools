@@ -29,6 +29,7 @@ import org.geotools.geometry.iso.topograph2D.IntersectionMatrix;
  * node for efficient lookup and topology building.
  * 
  *
+ *
  * @source $URL$
  * @version 1.7.2
  */

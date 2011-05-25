@@ -36,6 +36,7 @@ import org.geotools.caching.spatialindex.Shape;
  * @author Christophe Rousson, SoC 2007, CRG-ULAVAL
  *
  *
+ *
  * @source $URL$
  */
 public class GridNode implements Node, Serializable {

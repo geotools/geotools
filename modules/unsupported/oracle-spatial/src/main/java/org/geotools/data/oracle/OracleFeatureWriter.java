@@ -55,6 +55,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * work faster - this should probably be done in the superclass.
  *
  * @author Chris Holmes, TOPP
+ *
  * @source $URL$
  * @version $Id$
  */

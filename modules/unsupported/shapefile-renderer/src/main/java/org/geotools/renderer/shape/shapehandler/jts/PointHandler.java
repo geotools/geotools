@@ -34,8 +34,8 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  * 
  * @author jeichar
  * @since 2.1.x
- * @source $URL:
- *         http://svn.geotools.org/geotools/branches/2.2.x/ext/shaperenderer/src/org/geotools/renderer/shape/PointHandler.java $
+ *
+ * @source $URL$
  */
 public class PointHandler extends org.geotools.renderer.shape.shapehandler.simple.PointHandler{
     private static final GeometryFactory factory=new GeometryFactory(new LiteCoordinateSequenceFactory());

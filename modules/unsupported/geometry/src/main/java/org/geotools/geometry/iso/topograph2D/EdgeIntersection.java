@@ -27,6 +27,7 @@ import java.io.PrintStream;
  * be precise.
  * 
  *
+ *
  * @source $URL$
  */
 public class EdgeIntersection implements Comparable {

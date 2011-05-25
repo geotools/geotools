@@ -25,6 +25,7 @@ import org.geotools.caching.spatialindex.Visitor;
  * This visitor makes nodes as valid.
  * 
  *
+ *
  * @source $URL$
  */
 public class ValidatingVisitor implements Visitor {

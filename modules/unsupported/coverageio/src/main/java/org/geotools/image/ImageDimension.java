@@ -28,7 +28,8 @@ import org.geotools.resources.Classes;
  * An image dimension, including the number of bands.
  *
  * @since 2.4
- * @source $URL$
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/coverageio/src/main/java/org/geotools/image/ImageDimension.java $
  * @version $Id$
  * @author Martin Desruisseaux
  */

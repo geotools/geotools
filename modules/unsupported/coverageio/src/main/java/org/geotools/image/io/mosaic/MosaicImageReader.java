@@ -55,6 +55,7 @@ import org.geotools.util.logging.Logging;
  * collection of {@link Tile} objects, organized in a {@link TileManager}.
  *
  * @since 2.5
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

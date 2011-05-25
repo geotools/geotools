@@ -26,6 +26,7 @@ import org.jdom.Document;
  * 
  * @author Russell Petty, GSV
  * @version $Id$
+ *
  * @source $URL$
  */
 public class XmlResponse {

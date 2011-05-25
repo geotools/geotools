@@ -27,6 +27,7 @@ import java.awt.geom.PathIterator;
  * @author jeichar
  *
  * @since 2.1.x
+ *
  * @source $URL$
  */
 public class MultiLineShape extends AbstractShape implements Shape {

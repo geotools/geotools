@@ -59,6 +59,7 @@ import org.geotools.swing.data.JParameterListWizard;
  *
  * @author Michael Bedward
  * @since 2.6.1
+ *
  * @source $URL$
  * @version $Id$
  */

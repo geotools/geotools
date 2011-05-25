@@ -25,6 +25,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * Hold information about a DB2 geometry column and provide access.
  *
  * @author David Adler - IBM Corporation
+ *
  * @source $URL$
  */
 public class DB2GeometryColumn {

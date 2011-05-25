@@ -32,6 +32,7 @@ import com.vividsolutions.jts.io.WKBReader;
  * 
  * @author David Adler - IBM Corporation
  *
+ *
  * @source $URL$
  */
 public class DB2WKBAttributeIO implements AttributeIO {

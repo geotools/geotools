@@ -11,6 +11,7 @@ import org.geotools.caching.spatialindex.Visitor;
  * @author Emily
  *
  *
+ *
  * @source $URL$
  */
 public class GridInvalidatingVisitor implements Visitor {

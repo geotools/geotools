@@ -59,6 +59,7 @@ import com.vividsolutions.jts.geom.Point;
  * 
  * @author Rini Angreani, Curtin University of Technology
  *
+ *
  * @source $URL$
  */
 public class GeometryFunctionsTest {

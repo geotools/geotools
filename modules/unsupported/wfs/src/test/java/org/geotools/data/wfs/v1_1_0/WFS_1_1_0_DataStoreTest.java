@@ -47,7 +47,8 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * @author Gabriel Roldan
  * @version $Id$
  * @since 2.5.x
- * @source $URL:
+ *
+ * @source $URL$
  *         http://gtsvn.refractions.net/trunk/modules/plugin/wfs/src/test/java/org/geotools/data
  *         /wfs/v1_1_0/WFSDataStoreTest.java $
  */

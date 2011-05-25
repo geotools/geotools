@@ -23,6 +23,7 @@ package org.geotools.geometry.iso.util.algorithm2D;
  * 
  * @see HCoordinate
  *
+ *
  * @source $URL$
  */
 public class NotRepresentableException extends Exception {

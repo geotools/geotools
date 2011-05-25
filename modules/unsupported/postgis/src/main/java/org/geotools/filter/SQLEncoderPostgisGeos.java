@@ -22,6 +22,7 @@ package org.geotools.filter;
  *
  * @deprecated use SQLEncoderPostgis with setSupportsGEOS(true)
  * @author Chris Holmes, TOPP
+ *
  * @source $URL$
  * @version $Id$
  */

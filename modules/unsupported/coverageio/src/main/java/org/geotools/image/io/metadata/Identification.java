@@ -24,6 +24,7 @@ import org.geotools.util.Utilities;
  * An immutable ({@code "name"}, {@code "type"}) pair.
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

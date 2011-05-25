@@ -35,6 +35,7 @@ import org.opengis.geometry.DirectPosition;
  *
  * @author <a href="mailto:kobit@users.sourceforge.net">Artur Hefczyc</a>
  * @author <a href="mailto:knuterik@onemap.org">Knut-Erik Johnsen</a>, Project OneMap
+ *
  * @source $URL$
  * @version $Id$
  */

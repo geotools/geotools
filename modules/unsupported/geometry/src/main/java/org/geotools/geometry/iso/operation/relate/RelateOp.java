@@ -26,6 +26,7 @@ import org.opengis.geometry.Geometry;
 /**
  * Implements the relate() operation on {@link Geometry}s.
  *
+ *
  * @source $URL$
  */
 public class RelateOp extends GeometryGraphOperation {

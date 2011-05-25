@@ -37,6 +37,8 @@ import org.geotools.imageio.metadata.SpatioTemporalMetadata;
 /**
  * @author Daniele Romagnoli, GeoSolutions
  * @author Alessio Fabiani, GeoSolutions
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/coverage-experiment/grib1/src/main/java/org/geotools/imageio/grib1/GRIB1SpatioTemporalImageReader.java $
  */
 public class GRIB1SpatioTemporalImageReader extends SpatioTemporalImageReader {
 

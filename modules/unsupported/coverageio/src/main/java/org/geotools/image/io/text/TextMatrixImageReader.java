@@ -49,6 +49,7 @@ import org.geotools.image.io.metadata.GeographicMetadata;
  * the {@link #getRawDataType} method.
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

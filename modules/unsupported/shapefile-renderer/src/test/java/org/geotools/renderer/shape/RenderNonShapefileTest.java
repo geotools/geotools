@@ -40,6 +40,7 @@ import com.vividsolutions.jts.geom.Envelope;
  * @author Jesse
  * @author Ben Caradoc-Davies, CSIRO Exploration and Mining
  *
+ *
  * @source $URL$
  */
 public class RenderNonShapefileTest extends TestCase {

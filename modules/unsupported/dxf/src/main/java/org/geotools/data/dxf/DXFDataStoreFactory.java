@@ -23,6 +23,8 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
 
 /**
  * @author Matthijs Laan, B3Partners
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/dxf/src/main/java/org/geotools/data/dxf/DXFDataStoreFactory.java $
  */
 public class DXFDataStoreFactory implements FileDataStoreFactorySpi {
     private static final Log log = LogFactory.getLog(DXFDataStoreFactory.class);

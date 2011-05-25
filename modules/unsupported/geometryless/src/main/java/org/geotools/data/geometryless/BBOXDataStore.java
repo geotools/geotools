@@ -52,6 +52,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * Please see {@link org.geotools.data.jdbc.JDBCDataStore class JDBCDataStore} and
  * {@link org.geotools.data.DataStore interface DataStore} for DataStore usage details.
  * @author Rob Atkinson Social Change Online
+ *
  * @source $URL$
  */
 

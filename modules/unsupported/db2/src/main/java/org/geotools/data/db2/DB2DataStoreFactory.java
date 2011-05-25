@@ -36,6 +36,7 @@ import org.geotools.data.jdbc.datasource.ManageableDataSource;
  * DB2DataStore.
  *
  * @author David Adler - IBM Corporation
+ *
  * @source $URL$
  */
 public class DB2DataStoreFactory extends AbstractDataStoreFactory

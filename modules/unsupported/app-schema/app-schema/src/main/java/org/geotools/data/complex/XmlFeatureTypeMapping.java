@@ -41,7 +41,8 @@ import org.xml.sax.helpers.NamespaceSupport;
 /**
  * @author Russell Petty, GSV Victoria
  * @version $Id$
- * @source $URL:
+ *
+ * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/main
  *         /java/org/geotools/data/complex/FeatureTypeMapping.java $
  */

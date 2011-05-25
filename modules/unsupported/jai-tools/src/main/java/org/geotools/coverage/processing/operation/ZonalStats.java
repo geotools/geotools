@@ -48,6 +48,8 @@ import org.opengis.util.InternationalString;
  * 
  * @author Andrea Antonello (www.hydrologis.com)
  * @author Daniele Romagnoli, GeoSolutions SAS
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/jai-tools/src/main/java/org/geotools/coverage/processing/operation/ZonalStats.java $
  */
 public class ZonalStats extends AbstractStatisticsOperationJAI {
     

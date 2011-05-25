@@ -29,7 +29,8 @@ import org.geotools.util.CheckedHashMap;
  * @author Gabriel Roldan, Axios Engineering
  * @author Rini Angreani, Curtin University of Technology
  * @version $Id$
- * @source $URL:
+ *
+ * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/main
  *         /java/org/geotools/data/complex/config/SourceDataStore.java $
  * @since 2.4

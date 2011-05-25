@@ -30,6 +30,7 @@ import org.opengis.geometry.DirectPosition;
  * @author sanjay
  *
  *
+ *
  * @source $URL$
  */
 public class EnvelopeTest extends TestCase {

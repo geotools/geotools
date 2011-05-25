@@ -27,6 +27,7 @@ import org.geotools.data.wfs.v1_1_0.parsers.ExceptionReportParser;
  * @author Gabriel Roldan (OpenGeo)
  * @version $Id$
  * @since 2.6
+ *
  * @source $URL$
  */
 public class WFSException extends IOException {

@@ -38,6 +38,7 @@ import junit.framework.TestSuite;
 /**
  * Tests {@link TextMatrixImageWriter}.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

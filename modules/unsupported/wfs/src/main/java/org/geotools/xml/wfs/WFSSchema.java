@@ -86,6 +86,7 @@ import org.geotools.xml.xsi.XSISimpleTypes;
  * </p>
  *
  * @author Norman Barker www.comsine.com
+ *
  * @source $URL$
  */
 public class WFSSchema implements Schema {

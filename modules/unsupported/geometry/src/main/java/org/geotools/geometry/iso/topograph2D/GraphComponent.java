@@ -23,6 +23,7 @@ import org.geotools.geometry.iso.util.Assert;
  * A GraphComponent is the parent class for the objects' that form a graph. Each
  * GraphComponent can carry a Label.
  *
+ *
  * @source $URL$
  */
 abstract public class GraphComponent {

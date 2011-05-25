@@ -35,6 +35,7 @@ import org.geotools.util.logging.Logging;
  * A service provider for {@link ImageInputStream} from {@link URL} connection.
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

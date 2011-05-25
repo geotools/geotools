@@ -29,6 +29,7 @@ import org.geotools.data.jdbc.datasource.ManageableDataSource;
  * to the database.
  * </p>
  * @author jgarnett
+ *
  * @source $URL$
  */
 public class OracleTestFixture {	

@@ -40,6 +40,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * Extender geometry datatypes.
  *
  * @author David Adler - IBM Corporation
+ *
  * @source $URL$
  */
 public class DB2SQLBuilder extends GeoAPISQLBuilder {

@@ -31,7 +31,8 @@ import org.opengis.filter.capability.FilterCapabilities;
  * @author rpetty
  * @version $Id$
  * @since 2.6
- * @source $URL:
+ *
+ * @source $URL$
  *         http://gtsvn.refractions.net/trunk/modules/unsupported/app-schema/webservice/src/main/java/org/geotools/data
  *         /wfs/protocol/wfs/WFSProtocol.java $
  */

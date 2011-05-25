@@ -23,6 +23,7 @@ import org.geotools.caching.featurecache.FeatureCacheException;
  * size of the features being added to the cache exceeds the
  * size of the cache.
  *
+ *
  * @source $URL$
  */
 public class CacheOversizedException extends FeatureCacheException {

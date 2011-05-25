@@ -57,7 +57,8 @@ import com.vividsolutions.jts.geom.Geometry;
  *
  * @author Michael Bedward
  * @since 2.6
- * @source $Id$
+ *
+ * @source $URL$
  * @version $URL$
  */
 public class InfoTool extends CursorTool implements TextReporterListener {

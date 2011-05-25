@@ -38,7 +38,8 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * </p>
  * @author dzwiers Refractions Research
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs/src/test/java/org/geotools/data/wfs/v1_0_0/demo/WFSDemo.java $
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/wfs-ng/src/test/java/org/geotools/data/wfs/v1_0_0/demo/WFSDemo.java $
  */
 public class WFSDemo {
     public static void main(String[] args){

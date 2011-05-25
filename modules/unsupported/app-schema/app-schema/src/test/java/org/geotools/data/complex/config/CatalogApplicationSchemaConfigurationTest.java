@@ -31,6 +31,8 @@ import org.geotools.xml.Configuration;
  * This is a test for a class that no longer exists! But the functionality and behaviour survive.
  * 
  * @author Ben Caradoc-Davies, CSIRO Earth Science and Resource Engineering
+ *
+ * @source $URL$
  */
 public class CatalogApplicationSchemaConfigurationTest extends TestCase {
 

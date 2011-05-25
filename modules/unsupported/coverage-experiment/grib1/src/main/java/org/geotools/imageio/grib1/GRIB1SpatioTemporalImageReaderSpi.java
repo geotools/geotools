@@ -31,6 +31,8 @@ import org.geotools.imageio.SpatioTemporalImageReaderSpi;
  * 
  * @author Daniele Romagnoli, GeoSolutions
  * @author Alessio Fabiani, GeoSolutions
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/coverage-experiment/grib1/src/main/java/org/geotools/imageio/grib1/GRIB1SpatioTemporalImageReaderSpi.java $
  */
 public class GRIB1SpatioTemporalImageReaderSpi extends
         SpatioTemporalImageReaderSpi {

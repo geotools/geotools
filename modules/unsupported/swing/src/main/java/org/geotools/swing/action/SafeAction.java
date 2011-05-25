@@ -15,6 +15,7 @@ import org.geotools.swing.ExceptionMonitor;
  * </p>
  * TODO: provide a background Runnable...
  *
+ *
  * @source $URL$
  */
 public abstract class SafeAction extends AbstractAction {

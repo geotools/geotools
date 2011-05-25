@@ -27,6 +27,7 @@ import org.geotools.geometry.iso.topograph2D.Coordinate;
  *  A {@link CoordinateFilter} that builds a set of <code>Coordinate</code>s.
  *  The set of coordinates contains no duplicate points.
  *
+ *
  * @source $URL$
  */
 public class UniqueCoordinateArrayFilter implements CoordinateFilter {

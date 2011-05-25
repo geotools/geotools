@@ -42,8 +42,8 @@ import com.vividsolutions.jts.geom.LineString;
  * filter test suite.
  * 
  * @author Chris Holmes, TOPP
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/unsupported/mysql/src/test/java/org/geotools/filter/SQLEncoderMySQLTest.java $
+ *
+ * @source $URL$
  */
 public class SQLEncoderMySQLTest extends TestCase {
     /** Standard logging instance */

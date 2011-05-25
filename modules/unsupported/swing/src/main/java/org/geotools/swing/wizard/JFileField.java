@@ -42,6 +42,7 @@ import org.geotools.swing.wizard.JWizard.Controller;
  * 
  * @author Jody Garnett
  *
+ *
  * @source $URL$
  */
 public class JFileField extends ParamField {

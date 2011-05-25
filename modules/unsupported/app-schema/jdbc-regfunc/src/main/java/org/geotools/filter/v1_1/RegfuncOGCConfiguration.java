@@ -40,6 +40,7 @@ import org.picocontainer.MutablePicoContainer;
  * 
  * @author Ben Caradoc-Davies, CSIRO Exploration and Mining
  * @version $Id$
+ *
  * @source $URL$
  * @since 2.4
  */

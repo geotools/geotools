@@ -88,6 +88,7 @@ import org.geotools.image.io.metadata.Band;
  * operators after reading.
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

@@ -48,6 +48,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * 
  * @author Rini Angreani, Curtin University of Technology
  *
+ *
  * @source $URL$
  */
 public class ToDirectPositionFunction implements Function {

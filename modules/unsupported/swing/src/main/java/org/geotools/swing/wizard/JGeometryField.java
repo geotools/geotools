@@ -36,6 +36,7 @@ import com.vividsolutions.jts.io.WKTWriter;
 /**
  * Text field for filling in a Geometry parameter using WKT.
  *
+ *
  * @source $URL$
  */
 public class JGeometryField extends ParamField {

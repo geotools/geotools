@@ -33,6 +33,8 @@ import org.junit.Before;
  * @author Simone Giannecchini (simboss), GeoSolutions
  * 
  * Base testing class initializing JAI properties to be used during tests.
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/matfile5/src/test/java/org/geotools/coverageio/matfile5/AbstractMatFileTestCase.java $
  */
 public class AbstractMatFileTestCase extends Assert {
 

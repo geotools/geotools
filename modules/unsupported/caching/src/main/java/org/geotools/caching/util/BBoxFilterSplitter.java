@@ -69,6 +69,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * @author Christophe Rousson, SoC 2007, CRG-ULAVAL
  *
  *
+ *
  * @source $URL$
  */
 public class BBoxFilterSplitter implements FilterVisitor {

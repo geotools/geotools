@@ -82,6 +82,7 @@ import com.vividsolutions.jts.io.ParseException;
 
 /**
  * @author Sean Geoghegan, Defence Science and Technology Organisation.
+ *
  * @source $URL$
  */
 public class OracleDataStore extends JDBCDataStore {

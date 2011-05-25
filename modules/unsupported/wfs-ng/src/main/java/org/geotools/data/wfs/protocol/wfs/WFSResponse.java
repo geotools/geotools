@@ -31,7 +31,8 @@ import org.geotools.util.logging.Logging;
  * @author Gabriel Roldan (OpenGeo)
  * @version $Id: WFSResponse.java 31888 2008-11-20 13:34:53Z groldan $
  * @since 2.6
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs/src/main/java/org/geotools/data/wfs/protocol/wfs/WFSResponse.java $
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/wfs-ng/src/main/java/org/geotools/data/wfs/protocol/wfs/WFSResponse.java $
  */
 @SuppressWarnings("nls")
 public class WFSResponse {

@@ -30,6 +30,7 @@ import com.vividsolutions.jts.geom.Envelope;
  * 
  * @author jeichar
  * @since 2.1.x
+ *
  * @source $URL$
  */
 public class MultiPointShapeTest extends TestCase {

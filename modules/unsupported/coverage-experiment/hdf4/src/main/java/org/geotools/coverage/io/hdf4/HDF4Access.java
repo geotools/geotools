@@ -82,6 +82,8 @@ import org.opengis.util.ProgressListener;
  * 
  * @author Romagnoli Daniele, GeoSolutions
  * 
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/coverage-experiment/hdf4/src/main/java/org/geotools/coverage/io/hdf4/HDF4Access.java $
  */
 public class HDF4Access extends DefaultCoverageAccess {
     

@@ -57,6 +57,7 @@ import static org.junit.Assert.*;
  * MS-Access database. Otherwise, the default will probably be the one backed by the HSQL
  * database, since this test live in the {@code epsg-hsql} module.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

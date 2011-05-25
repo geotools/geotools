@@ -40,6 +40,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * </p>
  * @author Jody
  *
+ *
  * @source $URL$
  */
 public class DoublePointArray extends AbstractList<Position> implements PointArray, Serializable {

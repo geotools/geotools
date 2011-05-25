@@ -81,6 +81,7 @@ import org.geotools.image.io.metadata.GeographicMetadata;
  * {@code TextRecordImageReader}, unless you want more control on the decoding process.
  *
  * @since 2.1
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

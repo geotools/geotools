@@ -60,6 +60,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  * out since both renderers do use the same painting logic.
  *
  * @author Andrea Aime
+ *
  * @source $URL$
  */
 public class StyledShapePainter {

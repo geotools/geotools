@@ -38,6 +38,7 @@ package org.geotools.geometry.iso.util.algorithm2D;
  * *************************************************************************
  * </pre>
  *
+ *
  * @source $URL$
  */
 public class RobustDeterminant {

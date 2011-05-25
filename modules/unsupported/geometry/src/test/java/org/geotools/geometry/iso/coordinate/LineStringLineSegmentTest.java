@@ -42,6 +42,7 @@ import org.opengis.geometry.primitive.CurveSegment;
  * @author Sanjay Jena
  *
  *
+ *
  * @source $URL$
  */
 public class LineStringLineSegmentTest extends TestCase {

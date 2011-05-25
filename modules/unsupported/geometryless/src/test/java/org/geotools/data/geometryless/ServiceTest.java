@@ -34,6 +34,7 @@ import org.geotools.data.DataStoreFinder;
 /**
  *
  * @author ian
+ *
  * @source $URL$
  */
 public class ServiceTest extends TestCase {

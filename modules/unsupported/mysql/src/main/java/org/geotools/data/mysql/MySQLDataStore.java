@@ -78,6 +78,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * @author Gary Sheppard garysheppard@psu.edu
  * @author Andrea Aime aaime@users.sourceforge.net
  * @author Debasish Sahu debasish.sahu@rmsi.com
+ *
  * @source $URL$
  */
 public class MySQLDataStore extends JDBCDataStore {

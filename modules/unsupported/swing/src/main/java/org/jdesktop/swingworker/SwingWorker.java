@@ -204,6 +204,7 @@ import javax.swing.Timer;
  *  
  * @author Igor Kushnirskiy
  *
+ *
  * @source $URL$
  * @version $Revision: 1.6 $ $Date: 2008/07/25 19:32:29 $
  * 

@@ -133,8 +133,8 @@ import com.vividsolutions.jts.geom.Polygon;
  * 
  * @author jeichar
  * @since 2.1.x
- * @source $URL:
- *         http://svn.geotools.org/geotools/branches/2.2.x/ext/shaperenderer/src/org/geotools/renderer/shape/ShapefileRenderer.java $
+ *
+ * @source $URL$
  */
 public class ShapefileRenderer implements GTRenderer {
     public static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.renderer.shape");

@@ -51,7 +51,8 @@ import net.miginfocom.swing.MigLayout;
  *
  * @author Michael Bedward
  * @since 2.6
- * @source $Id$
+ *
+ * @source $URL$
  * @version $URL$
  */
 public class JTextReporter extends JDialog {

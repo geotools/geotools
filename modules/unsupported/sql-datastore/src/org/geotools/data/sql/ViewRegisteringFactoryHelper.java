@@ -65,6 +65,7 @@ import net.sf.jsqlparser.statement.select.Union;
  * 
  * @author Gabriel Roldan, Axios Engineering
  *
+ *
  * @source $URL$
  */
 public class ViewRegisteringFactoryHelper {

@@ -52,6 +52,8 @@ import org.opengis.referencing.datum.PixelInCell;
  * @since 3.0
  * @see {@link JGrassConstants}
  * @see {@link JGrassRegion}
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/grassraster/src/main/java/org/geotools/gce/grassraster/JGrassMapEnvironment.java $
  */
 public class JGrassMapEnvironment {
 

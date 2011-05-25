@@ -77,6 +77,8 @@ import org.xml.sax.SAXException;
  * 
  * @author Gabriel Roldan (OpenGeo)
  * @since 2.6.x
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/wfs-ng/src/test/java/org/geotools/data/wfs/v1_1_0/WFS_1_1_0_ProtocolTest.java $
  */
 @SuppressWarnings("nls")
 public class WFS_1_1_0_ProtocolTest {

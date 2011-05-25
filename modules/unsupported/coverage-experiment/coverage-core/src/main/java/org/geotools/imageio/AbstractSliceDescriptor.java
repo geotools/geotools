@@ -33,6 +33,8 @@ import org.opengis.temporal.TemporalGeometricPrimitive;
  * Class holding main properties of each 2D Raster.
  * 
  * @author Daniele Romagnoli, GeoSolutions
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/coverage-experiment/coverage-core/src/main/java/org/geotools/imageio/AbstractSliceDescriptor.java $
  */
 public abstract class AbstractSliceDescriptor implements SliceDescriptor {
 

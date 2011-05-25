@@ -77,6 +77,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * </p>
  *
  * @author David Adler - IBM Corporation
+ *
  * @source $URL$
  */
 public class DB2SpatialCatalog {

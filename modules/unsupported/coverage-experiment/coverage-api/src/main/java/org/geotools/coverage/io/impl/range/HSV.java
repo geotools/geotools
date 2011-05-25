@@ -17,6 +17,8 @@ import org.opengis.util.CodeList;
  * <p>
  * Please understand that this is not the only possible subtractive color model
  * - a commerical alternative is the Pantone (tm)) colors.
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/coverage-experiment/coverage-api/src/main/java/org/geotools/coverage/io/impl/range/HSV.java $
  */
 public class HSV extends CodeList<HSV> {
 	private static final long serialVersionUID = 2772167658847829287L;

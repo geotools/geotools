@@ -27,6 +27,7 @@ import org.opengis.feature.Attribute;
 /**
  * @author Russell Petty, GSV
  * @version $Id$
+ *
  * @source $URL$
  */
 public class PathAttributeList {

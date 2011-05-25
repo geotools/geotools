@@ -56,7 +56,8 @@ import org.opengis.feature.type.Name;
  * 
  * @author Rini Angreani, Curtin Universtiy of Technology
  * 
- * @source $URL:
+ *
+ * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/test
  *         /java/org/geotools/data/complex/AppSchemaDataAccessRegistryTest.java $
  */

@@ -39,6 +39,8 @@ import org.geotools.util.SimpleInternationalString;
 /**
  *
  * @author 
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/sfs/src/main/java/org/geotools/data/sfs/SFSDataStoreFactory.java $
  */
 public class SFSDataStoreFactory implements DataStoreFactorySpi {
 

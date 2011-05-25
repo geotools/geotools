@@ -72,6 +72,8 @@ import org.w3c.dom.Node;
  * 
  * @author Alessio Fabiani, GeoSolutions
  * @author Daniele Romagnoli, GeoSolutions
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/coverage-experiment/hdf4/src/main/java/org/geotools/imageio/hdf4/HDF4SpatioTemporalMetadata.java $
  */
 public class HDF4SpatioTemporalMetadata extends SpatioTemporalMetadata {
 	

@@ -29,6 +29,7 @@ import org.opengis.filter.expression.Function;
  * 
  * @author Ben Caradoc-Davies, CSIRO Exploration and Mining
  * @version $Id$
+ *
  * @source $URL$
  * @since 2.4
  */

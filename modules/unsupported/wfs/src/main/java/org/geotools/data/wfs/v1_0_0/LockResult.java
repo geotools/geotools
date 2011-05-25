@@ -23,6 +23,7 @@ import org.geotools.filter.FidFilter;
  * DOCUMENT ME!
  *
  * @author dzwiers
+ *
  * @source $URL$
  */
 public class LockResult {

@@ -63,6 +63,7 @@ import org.opengis.geometry.PrecisionType;
  * JTS methods currently do not handle inputs with different precision models.
  * 
  *
+ *
  * @source $URL$
  * @version 1.7.2
  */

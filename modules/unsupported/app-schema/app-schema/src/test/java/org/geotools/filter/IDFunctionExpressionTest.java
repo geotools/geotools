@@ -34,6 +34,7 @@ import org.opengis.filter.expression.Function;
  * @author gabriel
  * @deprecated use the following property expression instead: <code>@gml:id</code>
  *
+ *
  * @source $URL$
  */
 public class IDFunctionExpressionTest extends TestCase {

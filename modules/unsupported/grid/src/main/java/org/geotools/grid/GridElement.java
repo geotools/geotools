@@ -25,6 +25,8 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
  * Defines basic methods for grid elements.
  *
  * @author michael
+ *
+ * @source $URL$
  */
 public interface GridElement {
 

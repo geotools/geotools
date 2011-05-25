@@ -28,6 +28,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  * DOCUMENT ME!
  *
  * @author <a href="mailto:jeff@ionicenterprise.com">Jeff Yutzler</a>
+ *
  * @source $URL$
  */
 public abstract class VPFGeometryFactory {

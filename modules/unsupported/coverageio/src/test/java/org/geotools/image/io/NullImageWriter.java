@@ -34,6 +34,7 @@ import org.geotools.resources.i18n.VocabularyKeys;
  * This is sometime useful for testing purpose.
  *
  * @since 2.5
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

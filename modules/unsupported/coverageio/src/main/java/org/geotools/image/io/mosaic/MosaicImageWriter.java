@@ -66,6 +66,7 @@ import org.geotools.util.logging.Logging;
  * images to mosaic are typically bigger than {@link RenderedImage} capacity.
  *
  * @since 2.5
+ *
  * @source $URL$
  * @version $Id$
  * @author Cédric Briançon

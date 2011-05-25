@@ -20,6 +20,7 @@ package org.geotools.data.vpf.exc;
  * VPFRowDataException.java Created: Mon Jan 27 21:29:00 2003
  *
  * @author <a href="mailto:kobit@users.sourceforge.net">Artur Hefczyc</a>
+ *
  * @source $URL$
  */
 public class VPFRowDataException extends VPFDataException {

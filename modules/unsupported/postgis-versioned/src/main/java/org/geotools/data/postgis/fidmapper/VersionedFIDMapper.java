@@ -29,6 +29,7 @@ import org.geotools.data.jdbc.fidmapper.FIDMapper;
  * @author aaime
  * @since 2.4
  *
+ *
  * @source $URL$
  */
 public interface VersionedFIDMapper extends FIDMapper {

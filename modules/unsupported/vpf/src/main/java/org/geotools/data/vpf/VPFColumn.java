@@ -34,6 +34,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * A column in a VPF File.
  *
  * @author <a href="mailto:jeff@ionicenterprise.com">Jeff Yutzler</a>
+ *
  * @source $URL$
  */
 public class VPFColumn implements AttributeDescriptor, DataTypesDefinition {

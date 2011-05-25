@@ -50,6 +50,7 @@ import org.geotools.factory.AbstractFactory;
  *
  * @author Rob Atkinson, Social Change Online
  * @author Chris Holmes, TOPP
+ *
  * @source $URL$
  * @version $Id$
  */

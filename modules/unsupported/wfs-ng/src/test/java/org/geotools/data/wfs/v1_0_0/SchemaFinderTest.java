@@ -29,7 +29,8 @@ import org.geotools.xml.wfs.WFSSchema;
  * </p>
  * @author dzwiers
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs/src/test/java/org/geotools/data/wfs/v1_0_0/SchemaFinderTest.java $
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/wfs-ng/src/test/java/org/geotools/data/wfs/v1_0_0/SchemaFinderTest.java $
  */
 public class SchemaFinderTest extends TestCase {
     public void testFinder(){

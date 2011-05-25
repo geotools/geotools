@@ -41,6 +41,7 @@ import com.vividsolutions.jts.geom.PrecisionModel;
  *
  * @author bowens , Refractions Research, Inc.
  * @author $Author: jgarnett $ (last modification)
+ *
  * @source $URL$
  * @version $Id$
  */

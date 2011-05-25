@@ -21,6 +21,8 @@ package org.geotools.xml;
  * XML encoder {@link Configuration} that uses {@link AppSchemaResolver} to obtain schemas.
  * 
  * @author Ben Caradoc-Davies, CSIRO Earth Science and Resource Engineering
+ *
+ * @source $URL$
  */
 public class AppSchemaConfiguration extends Configuration {
 

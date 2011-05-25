@@ -41,6 +41,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  * </p>
  ** @author Rob Atkinson, Social Change Online
  * @author Chris Holmes, TOPP
+ *
  * @source $URL$
  * @version $Id$
  */

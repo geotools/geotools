@@ -26,6 +26,7 @@ import org.geotools.data.DataAccessFactory.Param;
  * Exercise DB2DataStoreFactory.
  *
  * @author David Adler - IBM Corporation
+ *
  * @source $URL$
  */
 public class DB2DataStoreFactoryOnlineTest extends AbstractDB2OnlineTestCase {

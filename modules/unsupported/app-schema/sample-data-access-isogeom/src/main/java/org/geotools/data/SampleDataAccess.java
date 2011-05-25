@@ -33,7 +33,8 @@ import com.sun.org.apache.xml.internal.utils.UnImplNode;
  * 
  * @author Ben Caradoc-Davies, CSIRO Exploration and Mining
  * @version $Id$
- * @source $URL:
+ *
+ * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/sample-data-access
  *         /src/main/java/org/geotools/data/SampleDataAccess.java $
  * @since 2.6

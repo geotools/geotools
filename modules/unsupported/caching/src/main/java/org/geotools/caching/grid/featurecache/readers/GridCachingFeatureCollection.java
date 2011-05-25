@@ -60,6 +60,7 @@ import com.vividsolutions.jts.geom.Envelope;
  * @author Emily
  *
  *
+ *
  * @source $URL$
  */
 public class GridCachingFeatureCollection implements SimpleFeatureCollection {

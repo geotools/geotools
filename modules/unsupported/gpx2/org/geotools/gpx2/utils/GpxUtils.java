@@ -20,6 +20,7 @@ package org.geotools.gpx2.utils;
  * working with latitude and longitude values represented as doubles in 
  * decimal degrees format.
  *
+ *
  * @source $URL$
  */
 public final class GpxUtils 

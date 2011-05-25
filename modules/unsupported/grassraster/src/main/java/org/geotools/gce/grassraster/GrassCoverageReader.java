@@ -82,6 +82,8 @@ import org.opengis.util.ProgressListener;
  * @since 3.0
  * @see GrassBinaryImageReader
  * @see GrassBinaryRasterReadHandler
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/grassraster/src/main/java/org/geotools/gce/grassraster/GrassCoverageReader.java $
  */
 public class GrassCoverageReader extends AbstractGridCoverage2DReader implements GridCoverageReader {
     private GrassBinaryImageReader imageReader = null;

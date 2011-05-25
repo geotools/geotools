@@ -41,6 +41,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * @author Gabriel Roldan (OpenGeo)
  * @version $Id$
  * @since 2.6
+ *
  * @source $URL$
  * @see Gml31GetFeatureResponseParserFactory
  */

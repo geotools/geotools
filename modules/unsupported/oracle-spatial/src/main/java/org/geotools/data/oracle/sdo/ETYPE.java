@@ -24,6 +24,7 @@ package org.geotools.data.oracle.sdo;
  * 
  * @author Jody Garnett, Refractions Research, Inc.
  * @author $Author: jgarnett $ (last modification)
+ *
  * @source $URL$
  * @version $Id$
  */

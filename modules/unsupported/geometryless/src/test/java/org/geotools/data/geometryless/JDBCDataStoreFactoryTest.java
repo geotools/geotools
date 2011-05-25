@@ -43,8 +43,8 @@ import com.vividsolutions.jts.geom.Point;
  * @auther Rob Atkinson, Social Change Online
  * @author jgarnett, Refractions Research, Inc.
  * @author $Author: aaime $ (last modification)
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/unsupported/geometryless/src/test/java/org/geotools/data/geometryless/JDBCDataStoreFactoryTest.java $
+ *
+ * @source $URL$
  * @version $Id: JDBCDataStoreFactoryTest.java 17707 2006-01-23 03:45:14Z
  *          desruisseaux $
  */

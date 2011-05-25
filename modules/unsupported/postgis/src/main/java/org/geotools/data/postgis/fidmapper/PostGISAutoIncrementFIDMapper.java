@@ -33,6 +33,7 @@ import org.opengis.feature.simple.SimpleFeature;
  * @author Jesse Eichar, Refractions Research, Inc.
  * @author Cory Horner, Refractions Research, Inc.
  *
+ *
  * @source $URL$
  */
 public class PostGISAutoIncrementFIDMapper extends AutoIncrementFIDMapper

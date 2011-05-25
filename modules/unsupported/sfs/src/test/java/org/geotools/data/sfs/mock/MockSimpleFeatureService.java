@@ -53,6 +53,8 @@ import org.restlet.resource.StringRepresentation;
  * you can just fire up your favorite browser and test the mock service
  *
  * @author 
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/sfs/src/test/java/org/geotools/data/sfs/mock/MockSimpleFeatureService.java $
  */
 public class MockSimpleFeatureService extends Application {
 

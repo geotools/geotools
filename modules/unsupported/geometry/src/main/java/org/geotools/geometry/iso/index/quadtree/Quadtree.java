@@ -47,6 +47,7 @@ import org.geotools.geometry.iso.topograph2D.Envelope;
  * usage of Samet and others.
  * 
  *
+ *
  * @source $URL$
  */
 public class Quadtree implements SpatialIndex {

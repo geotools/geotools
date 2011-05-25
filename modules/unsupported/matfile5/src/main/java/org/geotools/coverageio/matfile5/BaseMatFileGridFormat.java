@@ -39,6 +39,8 @@ import org.opengis.parameter.GeneralParameterValue;
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini, GeoSolutions
  * 
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/matfile5/src/main/java/org/geotools/coverageio/matfile5/BaseMatFileGridFormat.java $
  */
 public abstract class BaseMatFileGridFormat extends AbstractGridFormat implements
         Format {

@@ -52,6 +52,7 @@ import org.geotools.image.io.GeographicImageWriter;
  * treat some warnings as fatal errors.
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

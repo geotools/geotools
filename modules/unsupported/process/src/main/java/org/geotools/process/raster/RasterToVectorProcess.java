@@ -131,6 +131,7 @@ import com.vividsolutions.jts.operation.polygonize.Polygonizer;
  * @author Jody Garnett
  * @author Michael Bedward
  * @since 2.6
+ *
  * @source $URL$
  * @version $Id$
  */

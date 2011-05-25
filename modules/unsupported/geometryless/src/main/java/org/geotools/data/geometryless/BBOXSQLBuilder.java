@@ -31,6 +31,7 @@ import org.opengis.feature.type.Name;
  * are specified with x,y columns
  *
  * @author Chris Holmes, TOPP
+ *
  * @source $URL$
  * @version $Id$
  */

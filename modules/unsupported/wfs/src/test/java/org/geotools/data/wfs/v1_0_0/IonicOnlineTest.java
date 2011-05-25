@@ -31,8 +31,8 @@ import org.xml.sax.SAXException;
 /**
  * @author dzwiers
  * @since 0.6.0
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/plugin/wfs/test/org/geotools/data/wfs/IonicTest.java $
+ *
+ * @source $URL$
  */
 public class IonicOnlineTest extends TestCase {
 

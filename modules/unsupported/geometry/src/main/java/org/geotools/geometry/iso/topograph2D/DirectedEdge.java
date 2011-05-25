@@ -28,6 +28,7 @@ import java.io.PrintStream;
  * a client using a <code>PlanarGraph</code> will subclass <code>DirectedEdge</code>
  * to add its own application-specific data and methods.
  *
+ *
  * @source $URL$
  */
 public class DirectedEdge extends EdgeEnd {

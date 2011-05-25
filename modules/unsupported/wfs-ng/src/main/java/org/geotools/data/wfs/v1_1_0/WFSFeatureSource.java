@@ -44,7 +44,8 @@ import org.opengis.filter.Filter;
  * @author Gabriel Roldan (TOPP)
  * @version $Id: WFSFeatureSource.java 35310 2010-04-30 10:32:15Z jive $
  * @since 2.5.x
- * @source $URL:
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/wfs-ng/src/main/java/org/geotools/data/wfs/v1_1_0/WFSFeatureSource.java $
  *         http://svn.geotools.org/trunk/modules/plugin/wfs/src/main/java/org/geotools/wfs/v_1_1_0
  *         /data/XmlSimpleFeatureParser.java $
  */

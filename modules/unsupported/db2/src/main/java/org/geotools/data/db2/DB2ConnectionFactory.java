@@ -36,6 +36,7 @@ import com.ibm.db2.jcc.DB2ConnectionPoolDataSource;
  * A factory to create a DB2 Connection based on the needed parameters.
  *
  * @author David Adler - IBM Corporation
+ *
  * @source $URL$
  * @deprecated Use {@link DataSource}, {@link DataSourceUtil} and {@link DataSourceFinder} instead
  */

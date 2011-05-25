@@ -46,6 +46,8 @@ import java.util.logging.Logger;
  * </ol>
  * 
  * @author Ben Caradoc-Davies, CSIRO Earth Science and Resource Engineering
+ *
+ * @source $URL$
  */
 public class AppSchemaResolver {
 

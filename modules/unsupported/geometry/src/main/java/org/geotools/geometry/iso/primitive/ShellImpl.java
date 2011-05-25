@@ -33,6 +33,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * 
  * @author Jackson Roehrig & Sanjay Jena
  *
+ *
  * @source $URL$
  */
 public class ShellImpl extends CompositeSurfaceImpl implements Shell {

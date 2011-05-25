@@ -41,6 +41,7 @@ import org.geotools.xml.Parser;
  * @author Gabriel Roldan (OpenGeo)
  * @version $Id$
  * @since 2.6
+ *
  * @source $URL$
  */
 public class DescribeFeatureTypeParser implements WFSResponseParser {

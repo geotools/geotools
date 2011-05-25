@@ -29,6 +29,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  * 
  * @author jones
  *
+ *
  * @source $URL$
  */
 public class BoundsExtractor extends AbstractFilterVisitor{

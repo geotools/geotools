@@ -48,6 +48,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * @author Andrea Aime - The Open Planning Project
  * @todo: this class is copied from GeoServer, and it seems it would be good to port it to GeoTools
  *
+ *
  * @source $URL$
  */
 public class ReprojectingFilterVisitor extends DuplicatingFilterVisitor {

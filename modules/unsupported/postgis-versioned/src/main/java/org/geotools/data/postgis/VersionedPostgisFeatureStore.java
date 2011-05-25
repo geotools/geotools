@@ -78,6 +78,7 @@ import org.opengis.filter.sort.SortOrder;
  * @since 2.4
  * 
  *
+ *
  * @source $URL$
  */
 public class VersionedPostgisFeatureStore extends AbstractFeatureStore implements VersioningFeatureStore {

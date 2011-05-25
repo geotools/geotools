@@ -39,6 +39,7 @@ import org.geotools.data.jdbc.datasource.ManageableDataSource;
  *
  * @author Jody Garnett, Refractions Research
  * @author Sean Geoghegan, Defence Science and Technology Organisation
+ *
  * @source $URL$
  */
 public class OracleDataStoreFactory implements DataStoreFactorySpi {

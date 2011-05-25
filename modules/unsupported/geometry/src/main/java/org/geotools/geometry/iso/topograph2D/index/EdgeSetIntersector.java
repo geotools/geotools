@@ -31,6 +31,7 @@ import java.util.List;
  * segments and to record statistics about what kinds of intersections were
  * found.
  *
+ *
  * @source $URL$
  */
 public abstract class EdgeSetIntersector {

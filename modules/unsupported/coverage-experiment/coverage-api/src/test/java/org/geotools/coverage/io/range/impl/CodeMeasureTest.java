@@ -33,6 +33,8 @@ import org.opengis.util.CodeList;
 /**
  * @author Simone Giannecchini, GeoSolutions
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/coverage-experiment/coverage-api/src/test/java/org/geotools/coverage/io/range/impl/CodeMeasureTest.java $
  */
 public class CodeMeasureTest extends Assert {
 	

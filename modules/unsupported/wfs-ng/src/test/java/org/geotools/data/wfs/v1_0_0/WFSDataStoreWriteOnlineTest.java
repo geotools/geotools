@@ -50,7 +50,8 @@ import org.opengis.filter.identity.FeatureId;
  * </p>
  * @author dzwiers
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs/src/test/java/org/geotools/data/wfs/v1_0_0/WFSDataStoreWriteOnlineTest.java $
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/wfs-ng/src/test/java/org/geotools/data/wfs/v1_0_0/WFSDataStoreWriteOnlineTest.java $
  */
 public class WFSDataStoreWriteOnlineTest extends TestCase {
     public void testEmpty() throws NoSuchElementException, IOException, IllegalAttributeException, FactoryRegistryException{

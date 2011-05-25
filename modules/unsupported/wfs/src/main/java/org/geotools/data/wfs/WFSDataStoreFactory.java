@@ -104,7 +104,8 @@ import org.xml.sax.SAXException;
  * 
  * @author dzwiers
  * @author Gabriel Roldan (TOPP)
- * @source $URL:
+ *
+ * @source $URL$
  *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/wfs/src/main/java/org/geotools
  *         /data/wfs/WFSDataStoreFactory.java $
  * @see WFSDataStore

@@ -34,6 +34,8 @@ import org.opengis.util.InternationalString;
 /**
  * Implementation of a simple {@link Axis} which can be used
  * when defining your own field type.
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/coverage-experiment/coverage-api/src/main/java/org/geotools/coverage/io/impl/range/DefaultAxis.java $
  */
 public class DefaultAxis<V,Q extends Quantity> implements Axis<V,Q> {
 	private SingleCRS crs;

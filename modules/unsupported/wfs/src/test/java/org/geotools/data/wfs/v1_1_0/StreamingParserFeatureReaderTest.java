@@ -35,7 +35,8 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * @author Gabriel Roldan
  * @version $Id$
  * @since 2.5.x
- * @source $URL:
+ *
+ * @source $URL$
  *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/wfs/src/test/java/org/geotools
  *         /wfs/v_1_1_0/data/StreamingParserFeatureReaderTest.java $
  */

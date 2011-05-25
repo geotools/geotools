@@ -41,6 +41,7 @@ import org.opengis.feature.type.AttributeDescriptor;
  *
  * @author  <a href="mailto:knuterik@onemap.org">Knut-Erik Johnsen</a>, Project OneMap
  * @author Chris Holmes, Fulbright.
+ *
  * @source $URL$
  */
 public class VPFFeatureReader

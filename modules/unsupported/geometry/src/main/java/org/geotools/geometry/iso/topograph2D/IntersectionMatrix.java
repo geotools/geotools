@@ -37,6 +37,7 @@ package org.geotools.geometry.iso.topograph2D;
  * Specification for SQL</A> .
  * 
  *
+ *
  * @source $URL$
  */
 public class IntersectionMatrix implements Cloneable {

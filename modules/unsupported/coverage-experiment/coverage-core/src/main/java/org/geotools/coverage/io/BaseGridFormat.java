@@ -38,6 +38,8 @@ import org.opengis.parameter.GeneralParameterValue;
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini, GeoSolutions
  * 
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/coverage-experiment/coverage-core/src/main/java/org/geotools/coverage/io/BaseGridFormat.java $
  */
 @SuppressWarnings("deprecation")
 public abstract class BaseGridFormat extends AbstractGridFormat implements

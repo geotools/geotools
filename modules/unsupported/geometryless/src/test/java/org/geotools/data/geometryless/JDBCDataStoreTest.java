@@ -64,6 +64,7 @@ import com.vividsolutions.jts.geom.Polygon;
  *
  * @author Rob Atkinson
  * @author Chris Holmes, TOPP
+ *
  * @source $URL$
  */
 public class JDBCDataStoreTest extends TestCase {

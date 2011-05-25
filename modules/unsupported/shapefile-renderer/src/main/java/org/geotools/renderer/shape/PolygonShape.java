@@ -24,6 +24,7 @@ import java.awt.geom.PathIterator;
  * java.awt.Shape Wrapper around geometry.
  *
  * @author jeichar
+ *
  * @source $URL$
  */
 public class PolygonShape extends AbstractShape {

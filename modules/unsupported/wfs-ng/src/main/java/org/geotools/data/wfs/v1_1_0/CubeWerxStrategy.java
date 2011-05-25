@@ -56,7 +56,8 @@ import org.opengis.filter.spatial.BinarySpatialOperator;
  * @author Gabriel Roldan (OpenGeo)
  * @version $Id: CubeWerxStrategy.java 35132 2010-03-29 13:45:48Z groldan $
  * @since 2.6
- * @source $URL:
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/wfs-ng/src/main/java/org/geotools/data/wfs/v1_1_0/CubeWerxStrategy.java $
  *         http://gtsvn.refractions.net/trunk/modules/plugin/wfs/src/main/java/org/geotools/data
  *         /wfs/v1_1_0/CubeWerxStrategy.java $
  */

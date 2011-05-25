@@ -29,6 +29,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * A feature reader for the VPFFile object
  *
  * @author <a href="mailto:jeff@ionicenterprise.com">Jeff Yutzler</a>
+ *
  * @source $URL$
  */
 public class VPFFileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {

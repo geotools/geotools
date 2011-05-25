@@ -32,6 +32,8 @@ import org.restlet.resource.Variant;
  * http://localhost:8082/simplefeatureservice/data/layerAsia?mode=count
  * It returns a json array with the requested features bounds
  * @author narad
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/sfs/src/test/java/org/geotools/data/sfs/mock/FeatureCountResource.java $
  */
 public class FeatureCountResource extends Resource {
 

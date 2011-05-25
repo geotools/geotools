@@ -34,6 +34,7 @@ import com.vividsolutions.jts.io.WKTReader;
  * Exercise DB2FeatureWriter.
  *
  * @author David Adler - IBM Corporation
+ *
  * @source $URL$
  */
 public class DB2FeatureWriterOnlineTest extends AbstractDB2OnlineTestCase {

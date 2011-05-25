@@ -27,6 +27,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * 
  * @author Andrea Aime, TOPP
  *
+ *
  * @source $URL$
  */
 public interface VersioningFeatureLocking extends VersioningFeatureStore,

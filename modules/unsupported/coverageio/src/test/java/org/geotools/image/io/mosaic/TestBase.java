@@ -38,6 +38,7 @@ import static org.junit.Assert.*;
  * tiles created from the source tiles by the {@linkplain #builder}. A {@linkplain #manager
  * tile manager} is created for those target tiles.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

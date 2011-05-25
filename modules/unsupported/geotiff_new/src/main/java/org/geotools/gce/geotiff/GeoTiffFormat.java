@@ -73,8 +73,8 @@ import org.opengis.referencing.operation.MathTransform;
  * 
  * @author Bryce Nordgren, USDA Forest Service
  * @author Simone Giannecchini
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/plugin/geotiff/src/org/geotools/gce/geotiff/GeoTiffFormat.java $
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/geotiff_new/src/main/java/org/geotools/gce/geotiff/GeoTiffFormat.java $
  */
 @SuppressWarnings("deprecation")
 public final class GeoTiffFormat extends AbstractGridFormat implements Format {

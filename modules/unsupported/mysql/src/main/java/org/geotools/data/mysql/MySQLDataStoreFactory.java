@@ -39,6 +39,7 @@ import org.geotools.data.jdbc.datasource.ManageableDataSource;
  * </p>
  *
  * @author Andrea Aime, University of Modena and Reggio Emilia
+ *
  * @source $URL$
  */
 public class MySQLDataStoreFactory extends AbstractDataStoreFactory {

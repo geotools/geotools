@@ -31,6 +31,7 @@ import org.geotools.image.io.metadata.GeographicMetadata;
 /**
  * A null implementation of {@link GeographicImageReader} for testing purpose.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

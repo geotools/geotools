@@ -52,6 +52,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
  * 
  *
+ *
  * @source $URL$
  */
 public class AttributeBuilder {

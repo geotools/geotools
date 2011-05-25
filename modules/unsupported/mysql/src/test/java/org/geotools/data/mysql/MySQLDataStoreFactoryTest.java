@@ -32,6 +32,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *
  * @author jgarnett, Refractions Research, Inc.
  * @author $Author: aaime $ (last modification)
+ *
  * @source $URL$
  * @version $Id$
  */

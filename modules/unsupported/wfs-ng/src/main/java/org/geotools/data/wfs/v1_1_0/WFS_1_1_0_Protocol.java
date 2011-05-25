@@ -95,7 +95,8 @@ import org.xml.sax.SAXException;
  * @author Gabriel Roldan (OpenGeo)
  * @version $Id: WFS_1_1_0_Protocol.java 35853 2010-07-06 09:44:55Z rbraam $
  * @since 2.6
- * @source $URL:
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/wfs-ng/src/main/java/org/geotools/data/wfs/v1_1_0/WFS_1_1_0_Protocol.java $
  *         http://gtsvn.refractions.net/trunk/modules/plugin/wfs/src/main/java/org/geotools/data
  *         /wfs/v1_1_0/WFS_1_1_0_Protocol.java $
  */

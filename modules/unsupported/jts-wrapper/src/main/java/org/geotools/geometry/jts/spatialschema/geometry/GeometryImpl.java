@@ -43,6 +43,7 @@ import org.geotools.factory.BasicFactories;
  * Base class for our JTS-based implementation of the various ISO 19107 geometry
  * classes.
  *
+ *
  * @source $URL$
  */
 public abstract class GeometryImpl 

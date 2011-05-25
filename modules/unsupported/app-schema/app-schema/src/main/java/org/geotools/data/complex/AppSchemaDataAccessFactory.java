@@ -46,6 +46,7 @@ import org.opengis.feature.type.FeatureType;
  * @author Gabriel Roldan, Axios Engineering
  * @author Rini Angreani, Curtin University of Technology
  * @version $Id$
+ *
  * @source $URL$
  * @since 2.4
  */

@@ -61,8 +61,8 @@ import org.xml.sax.SAXException;
  * Hold the list of actions to perform in the Transaction.
  * 
  * @author dzwiers
- * @source $URL:
- *         http://svn.geotools.org/geotools/branches/2.2.x/plugin/wfs/src/org/geotools/data/wfs/WFSTransactionState.java $
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/wfs-ng/src/main/java/org/geotools/data/wfs/v1_0_0/WFSTransactionState.java $
  */
 public class WFSTransactionState implements State {
     private WFS_1_0_0_DataStore ds = null;

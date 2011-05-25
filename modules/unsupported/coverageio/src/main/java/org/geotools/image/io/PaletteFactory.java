@@ -61,6 +61,7 @@ import org.geotools.util.CanonicalSet;
  * color map size}. RGB codes will be automatically interpolated as needed.
  *
  * @since 2.1
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

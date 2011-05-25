@@ -27,6 +27,7 @@ import javax.sql.PooledConnection;
  * 
  * @author Rob Atkinson rob@socialchange.net.NOSPAM.au
  * @author Gary Sheppard garysheppard@psu.edu
+ *
  * @source $URL$
  */
 public class ConnectionPoolFacade implements ConnectionPoolDataSource {

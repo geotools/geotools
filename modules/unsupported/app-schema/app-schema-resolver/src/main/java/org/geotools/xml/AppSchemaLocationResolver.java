@@ -24,6 +24,8 @@ import org.eclipse.xsd.XSDSchema;
  * in a catalog, on the classpath, or in a cache..
  * 
  * @author Ben Caradoc-Davies, CSIRO Earth Science and Resource Engineering
+ *
+ * @source $URL$
  */
 public class AppSchemaLocationResolver extends SchemaLocationResolver {
 

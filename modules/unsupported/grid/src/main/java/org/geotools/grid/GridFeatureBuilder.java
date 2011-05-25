@@ -38,6 +38,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *
  * @author mbedward
  * @since 2.7
+ *
  * @source $URL$
  * @version $Id$
  */

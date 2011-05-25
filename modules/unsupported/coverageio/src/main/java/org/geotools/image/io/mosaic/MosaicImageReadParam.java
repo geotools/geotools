@@ -54,6 +54,7 @@ import javax.imageio.IIOParamController;
  * and can be queried once the reading is finished.
  *
  * @since 2.5
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

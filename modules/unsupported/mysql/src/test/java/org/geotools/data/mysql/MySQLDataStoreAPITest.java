@@ -96,6 +96,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * </p>
  *
  * @author Jody Garnett, Refractions Research
+ *
  * @source $URL$
  */
 public class MySQLDataStoreAPITest extends DataTestCase {

@@ -100,6 +100,7 @@ import org.geotools.referencing.factory.AbstractAuthorityFactory;
  * database.
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Didier Richard

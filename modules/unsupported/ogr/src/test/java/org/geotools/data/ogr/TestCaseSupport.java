@@ -47,6 +47,7 @@ import com.vividsolutions.jts.io.WKTReader;
  * <p>
  * Note: a nearly identical copy of this file exists in the {@code ext/shape} module.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author  Ian Schneider

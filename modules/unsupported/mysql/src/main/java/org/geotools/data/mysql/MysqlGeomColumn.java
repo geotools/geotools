@@ -48,6 +48,7 @@ import com.vividsolutions.jts.io.WKTReader;
  * of the column when queried with the ID from the feature table.
  *
  * @author Chris Holmes, Vision for New York
+ *
  * @source $URL$
  * @version $Id$
  */

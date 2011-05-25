@@ -28,6 +28,7 @@ import org.opengis.feature.type.Name;
 /**
  * A Geometryless-specific instance of DefaultSQLBuilder, which supports geometries created form standard data types
  * @author Rob Atkinson rob@socialchange.net.au
+ *
  * @source $URL$
  */
 public class GeometrylessSQLBuilder extends GeoAPISQLBuilder {

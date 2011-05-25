@@ -29,6 +29,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * a In-Memory FeatureCollection 
  * 
  *
+ *
  * @source $URL$
  */
 public class FeatureCollectingVisitor implements Visitor {

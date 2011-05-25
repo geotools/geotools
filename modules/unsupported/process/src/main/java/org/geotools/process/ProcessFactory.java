@@ -30,7 +30,8 @@ import org.opengis.util.InternationalString;
  * @author gdavis
  * @author Andrea Aime - OpenGeo
  * 
- * @source $URL:
+ *
+ * @source $URL$
  *         http://svn.osgeo.org/geotools/branches/2.6.x/modules/unsupported/process/src/main/java
  *         /org/geotools/process/ProcessFactory.java $
  */

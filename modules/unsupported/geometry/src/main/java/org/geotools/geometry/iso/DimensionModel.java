@@ -50,6 +50,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * 
  * @author Sanjay Dominik Jena
  *
+ *
  * @source $URL$
  */
 public class DimensionModel {

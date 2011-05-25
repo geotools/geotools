@@ -66,6 +66,7 @@ import org.geotools.data.DataStoreFinder;
  * @author Gabriel Roldan, Axios Engineering
  * @version $id$
  * @since 2.3.x
+ *
  * @source $URL$
  */
 public class SqlDataStoreFactory implements DataStoreFactorySpi {

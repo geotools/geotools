@@ -17,6 +17,7 @@ import org.opengis.feature.simple.SimpleFeature;
  * @author Michael Bedward
  * @since 2.6
  *
+ *
  * @source $URL$
  */
 public abstract class AbstractFeatureCollectionProcess extends AbstractProcess {

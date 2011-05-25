@@ -25,6 +25,8 @@ import org.w3c.dom.Node;
  * 
  * @author Daniele Romagnoli, GeoSolutions
  * @author Alessio Fabiani, GeoSolutions
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/coverage-experiment/coverage-core/src/main/java/org/geotools/imageio/metadata/IdentifiableMetadataAccessor.java $
  */
 public class IdentifiableMetadataAccessor extends MetadataAccessor {
 

@@ -50,7 +50,8 @@ import com.vividsolutions.jts.geom.Geometry;
  * implementation.
  * 
  * @author David Adler - IBM Corporation
- * @source $URL:
+ *
+ * @source $URL$
  * @source $URL:
  *         http://svn.geotools.org/geotools/trunk/gt/modules/unsupported/db2/src/main/java/org/geotools/data/db2/DB2FeatureSource.java $
  */

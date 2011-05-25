@@ -33,6 +33,7 @@ import org.geotools.data.DataStoreFactorySpi;
  * but is here for completeness.
  *
  * @author jeff yutzler
+ *
  * @source $URL$
  */
 public class VPFFileFactory implements DataStoreFactorySpi {

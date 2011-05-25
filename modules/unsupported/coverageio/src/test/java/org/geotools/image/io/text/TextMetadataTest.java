@@ -31,6 +31,7 @@ import static org.junit.Assert.*;
  * Tests the {@link DefaultTextMetadataParser} class.
  *
  * @since 2.5
+ *
  * @source $URL$
  * @version $Id$
  * @author Cédric Briançon

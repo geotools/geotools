@@ -28,6 +28,7 @@ import java.awt.Component;
  *
  * @author Michael Bedward
  * @since 2.6.1
+ *
  * @source $URL$
  * @version $Id$
  */

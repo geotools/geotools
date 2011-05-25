@@ -34,7 +34,8 @@ import org.geotools.data.postgis.PostgisTests;
  * 
  * @author aaime
  * @author $Author: jive $ (last modification)
- * @source $URL: http://svn.osgeo.org/geotools/branches/2.6.x/modules/unsupported/postgis-versioned/src/test/java/org/geotools/data/postgis/VersiondPostgisDataStoreFactoryOnlineTest.java $
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/postgis-versioned/src/test/java/org/geotools/data/postgis/synch/SynchronizedPostgisDataStoreFactoryOnlineTest.java $
  * @version $Id: VersiondPostgisDataStoreFactoryOnlineTest.java 35219 2010-04-12 12:30:55Z aaime $
  */
 public class SynchronizedPostgisDataStoreFactoryOnlineTest extends TestCase {

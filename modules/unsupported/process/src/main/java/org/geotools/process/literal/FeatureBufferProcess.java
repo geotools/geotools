@@ -35,6 +35,7 @@ import com.vividsolutions.jts.geom.Geometry;
  *
  * @author Lucas Reed, Refractions Research Inc
  *
+ *
  * @source $URL$
  */
 public class FeatureBufferProcess extends AbstractProcess

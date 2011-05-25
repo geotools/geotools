@@ -28,6 +28,7 @@ import org.opengis.feature.type.PropertyDescriptor;
  *
  * @author Michael Bedward
  * @since 2.7
+ *
  * @source $URL$
  * @version $Id$
  */

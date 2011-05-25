@@ -31,6 +31,7 @@ import org.geotools.geometry.iso.topograph2D.Envelope;
  * spatial relationships.
  * 
  *
+ *
  * @source $URL$
  */
 public interface SpatialIndex {

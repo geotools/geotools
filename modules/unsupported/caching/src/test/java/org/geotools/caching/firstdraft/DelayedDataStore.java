@@ -36,6 +36,7 @@ import org.opengis.filter.Filter;
 /**
  * @author  crousson
  *
+ *
  * @source $URL$
  */
 public class DelayedDataStore implements DataStore {

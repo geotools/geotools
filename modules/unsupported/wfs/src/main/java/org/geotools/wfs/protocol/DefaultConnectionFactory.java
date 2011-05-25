@@ -42,8 +42,8 @@ import org.geotools.util.logging.Logging;
  * @version $Id: DefaultConnectionFactory.java 29055 2008-02-02 17:38:44Z
  *          groldan $
  * @since 2.5.x
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/wfs/src/main/java/org/geotools/wfs/io/WFSConnectionFactory.java $
+ *
+ * @source $URL$
  * @deprecated use {@link DefaultHTTPProtocol}
  */
 public class DefaultConnectionFactory implements ConnectionFactory {

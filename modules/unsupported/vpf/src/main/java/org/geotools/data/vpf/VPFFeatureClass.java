@@ -66,6 +66,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * delegate its schema related operations to its feature class.
  *
  * @author <a href="mailto:jeff@ionicenterprise.com">Jeff Yutzler</a>
+ *
  * @source $URL$
  */
 public class VPFFeatureClass implements DataTypesDefinition, FileConstants,

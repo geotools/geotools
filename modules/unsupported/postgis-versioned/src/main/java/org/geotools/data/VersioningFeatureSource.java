@@ -34,6 +34,7 @@ import org.opengis.filter.Filter;
  * @author Andrea Aime, TOPP TODO: this shall be moved in a more generic module
  *         (api?) once the interfaces are good
  *
+ *
  * @source $URL$
  */
 public interface VersioningFeatureSource extends SimpleFeatureSource {

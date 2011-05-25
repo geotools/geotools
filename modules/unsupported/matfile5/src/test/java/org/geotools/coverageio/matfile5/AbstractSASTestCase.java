@@ -25,6 +25,8 @@ import org.geotools.coverageio.matfile5.AbstractMatFileTestCase;
  * @author Simone Giannecchini (simboss), GeoSolutions
  * 
  * Base Matfile 5 testing class.
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/matfile5/src/test/java/org/geotools/coverageio/matfile5/AbstractSASTestCase.java $
  */
 public abstract class AbstractSASTestCase extends AbstractMatFileTestCase {
 	public AbstractSASTestCase() {

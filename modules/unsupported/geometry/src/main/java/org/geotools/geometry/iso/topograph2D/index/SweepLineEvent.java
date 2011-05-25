@@ -20,6 +20,7 @@ package org.geotools.geometry.iso.topograph2D.index;
 /**
  * Models an Event point within the Sweep Line Intersection Algorithm
  *
+ *
  * @source $URL$
  */
 public class SweepLineEvent implements Comparable {

@@ -70,6 +70,8 @@ import org.opengis.util.ProgressListener;
  * Implementation of a coverage source for netcdf data
  * @author Simone Giannecchini, GeoSolutions SAS
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/coverage-experiment/netcdf/src/main/java/org/geotools/coverage/io/netcdf/NetCDFSource.java $
  */
 public class NetCDFSource implements CoverageSource {
 	private class NetCDFRasterDatasetDomainManager extends RasterDatasetDomainManager{

@@ -51,8 +51,8 @@ import com.vividsolutions.jts.io.WKTReader;
  * DOCUMENT ME!
  * 
  * @author David Adler
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/unsupported/db2/src/test/java/org/geotools/data/db2/SQLEncoderDB2Test.java $
+ *
+ * @source $URL$
  */
 public class SQLEncoderDB2Test extends TestCase {
 //	private static Map DB2_SPATIAL_PREDICATES = new HashMap();

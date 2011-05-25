@@ -26,6 +26,7 @@ import java.io.IOException;
  * 
  * @author Andrea Aime, TOPP
  *
+ *
  * @source $URL$
  */
 public interface VersioningDataStore extends DataStore {

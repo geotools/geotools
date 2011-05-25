@@ -76,6 +76,7 @@ import com.vividsolutions.jts.io.WKTWriter;
  * do some solid tests to see which is actually faster.
  *
  * @author Chris Holmes, TOPP
+ *
  * @source $URL$
  * @version $Id$
  *

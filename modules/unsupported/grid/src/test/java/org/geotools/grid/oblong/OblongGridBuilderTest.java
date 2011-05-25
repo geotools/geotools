@@ -35,7 +35,8 @@ import static org.junit.Assert.*;
  *
  * @author mbedward
  * @since 2.7
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/grid/src/test/java/org/geotools/grid/oblong/OblongsTest.java $
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/grid/src/test/java/org/geotools/grid/oblong/OblongGridBuilderTest.java $
  * @version $Id: OblongsTest.java 35655 2010-06-03 02:36:24Z mbedward $
  */
 public class OblongGridBuilderTest extends TestBase {

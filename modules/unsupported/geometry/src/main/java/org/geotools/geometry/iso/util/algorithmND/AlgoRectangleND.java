@@ -21,6 +21,7 @@ package org.geotools.geometry.iso.util.algorithmND;
  * @author roehrig
  *
  *
+ *
  * @source $URL$
  */
 public class AlgoRectangleND {

@@ -31,6 +31,7 @@ import org.geotools.geometry.iso.topograph2D.Node;
  * Represents a node in the topological graph used to compute spatial
  * relationships.
  *
+ *
  * @source $URL$
  */
 public class RelateNode extends Node {

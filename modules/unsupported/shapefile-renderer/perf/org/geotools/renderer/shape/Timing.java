@@ -73,8 +73,8 @@ import com.vividsolutions.jts.geom.Envelope;
  * 
  * @author jeichar
  * @since 2.1.x
- * @source $URL:
- *         http://svn.geotools.org/geotools/branches/2.2.x/ext/shaperenderer/perf/org/geotools/renderer/shape/Timing.java $
+ *
+ * @source $URL$
  */
 public class Timing {
 

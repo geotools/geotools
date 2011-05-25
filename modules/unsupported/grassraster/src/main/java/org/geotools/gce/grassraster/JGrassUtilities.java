@@ -53,6 +53,8 @@ import com.vividsolutions.jts.geom.Envelope;
  * 
  * @author Andrea Antonello - www.hydrologis.com
  * @since 1.1.0
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/grassraster/src/main/java/org/geotools/gce/grassraster/JGrassUtilities.java $
  */
 public class JGrassUtilities {
     public static final String[] COLORS = {"snow", "GhostWhite", "WhiteSmoke", "gainsboro",

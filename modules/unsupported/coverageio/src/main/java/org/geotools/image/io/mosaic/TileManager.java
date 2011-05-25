@@ -46,6 +46,7 @@ import org.geotools.resources.i18n.ErrorKeys;
  * But subclasses can make such assumption for better performances.
  *
  * @since 2.5
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

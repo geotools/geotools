@@ -25,6 +25,7 @@ package org.geotools.geometry.iso.index.quadtree;
  * lie strictly between the endpoints.
  * 
  *
+ *
  * @source $URL$
  * @version 1.7.2
  */

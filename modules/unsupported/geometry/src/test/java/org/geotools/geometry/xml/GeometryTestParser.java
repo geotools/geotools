@@ -43,6 +43,7 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 /**
  * @author <a href="mailto:joel@lggi.com">Joel Skelton</a>
  *
+ *
  * @source $URL$
  */
 public class GeometryTestParser {

@@ -68,6 +68,7 @@ import org.xml.sax.helpers.NamespaceSupport;
  * @author Ben Caradoc-Davies, CSIRO Exploration and Mining
  * @author Rini Angreani, Curtin University of Technology
  * @version $Id$
+ *
  * @source $URL$
  * @since 2.4
  */

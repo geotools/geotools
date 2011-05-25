@@ -42,6 +42,7 @@ import org.opengis.util.InternationalString;
  * @author Steve Ansari, NOAA
  * @author Michael Bedward
  *
+ *
  * @source $URL$
  */
 public class VectorToRasterFactory extends AbstractFeatureCollectionProcessFactory {

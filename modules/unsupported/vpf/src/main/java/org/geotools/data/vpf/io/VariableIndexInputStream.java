@@ -26,6 +26,7 @@ import org.geotools.data.vpf.ifc.VPFRow;
  * VariableIndexInputStream.java Created: Mon Feb 24 22:23:58 2003
  *
  * @author <a href="mailto:kobit@users.sourceforge.net">Artur Hefczyc</a>
+ *
  * @source $URL$
  * @version $Id$
  */

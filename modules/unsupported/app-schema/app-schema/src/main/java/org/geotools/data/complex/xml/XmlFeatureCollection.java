@@ -25,6 +25,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 /**
  * @author Russell Petty, GSV
  * @version $Id$
+ *
  * @source $URL$
  */
 public interface XmlFeatureCollection extends SimpleFeatureCollection {

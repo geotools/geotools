@@ -43,8 +43,8 @@ import com.vividsolutions.jts.geom.Point;
  * Exercise DB2SQLBuilder.
  * 
  * @author David Adler - IBM Corporation
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/unsupported/db2/src/test/java/org/geotools/data/db2/DB2SQLBuilderTest.java $
+ *
+ * @source $URL$
  */
 public class DB2SQLBuilderOnlineTest extends AbstractDB2OnlineTestCase {
 	private DB2SQLBuilder sqlBuilder = null;

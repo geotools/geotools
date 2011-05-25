@@ -30,6 +30,7 @@ import java.io.IOException;
  * small portion of an image. However it is needed in some case, typically to represent an image
  * before a mosaic is built from it.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

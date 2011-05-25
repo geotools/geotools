@@ -60,7 +60,8 @@ import com.vividsolutions.jts.io.WKTReader;
  * @author GDavis
  * 
  * 
- * @source $URL:
+ *
+ * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/wps/src/test/java/org/geotools
  *         /data/wps/OnlineWPSManualRequestTest.java $
  */

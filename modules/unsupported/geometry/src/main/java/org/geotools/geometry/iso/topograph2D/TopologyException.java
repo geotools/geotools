@@ -22,6 +22,7 @@ package org.geotools.geometry.iso.topograph2D;
  * Indicates an invalid or inconsistent topological situation encountered during
  * processing
  *
+ *
  * @source $URL$
  */
 public class TopologyException extends RuntimeException {

@@ -65,7 +65,8 @@ import com.vividsolutions.jts.geom.Polygon;
  * @author Gabriel Roldan (TOPP)
  * @version $Id: XmlSimpleFeatureParser.java 31888 2008-11-20 13:34:53Z groldan $
  * @since 2.5.x
- * @source $URL:
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/wfs-ng/src/main/java/org/geotools/data/wfs/v1_1_0/parsers/XmlSimpleFeatureParser.java $
  *         http://svn.geotools.org/trunk/modules/plugin/wfs/src/main/java/org/geotools/wfs/v_1_1_0
  *         /data/XmlSimpleFeatureParser.java $ //@deprecated should be removed as long as
  *         {@link StreamingParserFeatureReader} works well

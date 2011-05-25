@@ -47,6 +47,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * @author Michael Bedward, Jody Garnett
  * @since 2.6
  *
+ *
  * @source $URL$
  */
 public class RasterToVectorFactory extends SingleProcessFactory {

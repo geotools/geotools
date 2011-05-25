@@ -39,6 +39,7 @@ import org.xml.sax.helpers.NamespaceSupport;
  * @author Gabriel Roldan, Axios Engineering
  * @author Rini Angreani, Curtin University of Technology
  * @version $Id$
+ *
  * @source $URL$
  * @since 2.4
  */

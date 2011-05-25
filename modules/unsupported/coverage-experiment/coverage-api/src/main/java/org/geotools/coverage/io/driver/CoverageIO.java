@@ -49,6 +49,8 @@ import org.opengis.util.ProgressListener;
  * @todo add caching mechanism
  * @todo add method for removing and creating connections to access
  * @todo fix javadocs
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/coverage-experiment/coverage-api/src/main/java/org/geotools/coverage/io/driver/CoverageIO.java $
  */
 public class CoverageIO{
     /** The {@link Logger}. */

@@ -32,7 +32,8 @@ import org.geotools.data.wfs.protocol.http.HttpMethod;
  * @author Gabriel Roldan (TOPP)
  * @version $Id: ConnectionFactory.java 31823 2008-11-11 16:11:49Z groldan $
  * @since 2.5.x
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs/src/main/java/org/geotools/wfs/protocol/ConnectionFactory.java $
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/wfs-ng/src/main/java/org/geotools/wfs/protocol/ConnectionFactory.java $
  * @deprecated in favour of {@link HTTPProtocol}
  */
 public interface ConnectionFactory {

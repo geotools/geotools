@@ -23,6 +23,8 @@ import org.opengis.filter.expression.PropertyName;
  * 
  * @author Niels Charlier, Curtin University of Technology
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/app-schema/app-schema/src/main/java/org/geotools/filter/FilterFactoryImplReportInvalidProperty.java $
  */
 public class FilterFactoryImplReportInvalidProperty extends FilterFactoryImpl {
     

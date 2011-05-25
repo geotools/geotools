@@ -30,7 +30,8 @@ import org.opengis.feature.simple.SimpleFeature;
  * @author aaime
  * @since 2.4
  * 
- * @source $URL:
+ *
+ * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/postgis-versioned/src/main/java
  *         /org/geotools/data/postgis/FeatureDiff.java $
  */

@@ -48,8 +48,8 @@ import com.vividsolutions.jts.geom.Envelope;
  * layer can be obtained by
  * 
  * @author jones
- * @source $URL:
- *         http://svn.geotools.org/geotools/branches/2.2.x/ext/shaperenderer/src/org/geotools/renderer/shape/IndexInfo.java $
+ *
+ * @source $URL$
  */
 public class IndexInfo implements FileReader {
     final IndexType treeType;

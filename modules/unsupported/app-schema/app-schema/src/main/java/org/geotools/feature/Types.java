@@ -55,7 +55,8 @@ import org.xml.sax.helpers.NamespaceSupport;
  * @author Jody Garnett, Refractions Research
  * @author Justin Deoliveira, The Open Planning Project
  * 
- * @source $URL:
+ *
+ * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/main
  *         /java/org/geotools/feature/Types.java $
  */

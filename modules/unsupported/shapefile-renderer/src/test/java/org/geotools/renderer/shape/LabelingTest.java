@@ -40,6 +40,7 @@ import com.vividsolutions.jts.geom.Envelope;
  * @author jeichar
  *
  * @since 0.9.0
+ *
  * @source $URL$
  */
 public class LabelingTest extends TestCase {

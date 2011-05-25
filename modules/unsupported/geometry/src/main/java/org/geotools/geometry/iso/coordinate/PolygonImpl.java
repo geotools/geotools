@@ -33,6 +33,7 @@ import org.opengis.geometry.coordinate.PolyhedralSurface;
  * that the curves are coplanar and the polygon uses planar interpolation in its
  * interior.
  *
+ *
  * @source $URL$
  */
 public class PolygonImpl extends SurfacePatchImpl implements Polygon {

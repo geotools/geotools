@@ -43,6 +43,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @author Michael Bedward
  * @since 2.6
+ *
  * @source $URL$
  * @version $Id$
  */

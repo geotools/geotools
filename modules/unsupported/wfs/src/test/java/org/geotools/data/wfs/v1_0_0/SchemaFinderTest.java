@@ -29,6 +29,7 @@ import org.geotools.xml.wfs.WFSSchema;
  * </p>
  * @author dzwiers
  *
+ *
  * @source $URL$
  */
 public class SchemaFinderTest extends TestCase {

@@ -24,6 +24,7 @@ import org.geotools.image.io.text.DefaultTextMetadataParser;
  * The base class for error related to grid coverage's metadata.
  * This exception is thrown by the helper class {@link MetadataBuilder}.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

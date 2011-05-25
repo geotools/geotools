@@ -53,6 +53,8 @@ import ucar.nc2.dataset.VariableDS;
  * data source.
  * 
  * @author Daniele Romagnoli, GeoSolutions
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/coverage-experiment/netcdf/src/main/java/org/geotools/imageio/netcdf/NetCDFSpatioTemporalImageReader.java $
  */
 public class NetCDFSpatioTemporalImageReader extends SpatioTemporalImageReader {
     

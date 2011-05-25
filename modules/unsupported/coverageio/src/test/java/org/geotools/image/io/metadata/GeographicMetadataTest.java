@@ -28,6 +28,7 @@ import static org.junit.Assert.*;
 /**
  * Tests {@link GeographicMetadata}.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

@@ -34,6 +34,8 @@ import org.opengis.filter.Filter;
  * in hasNext().
  * 
  * @author Rini Angreani, CSIRO Earth Science and Resource Engineering
+ *
+ * @source $URL$
  */
 public class FilteringMappingFeatureIterator extends DataAccessMappingFeatureIterator {
 

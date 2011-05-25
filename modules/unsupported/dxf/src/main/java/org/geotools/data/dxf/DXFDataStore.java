@@ -27,6 +27,8 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * error: String
  *  * 
  * @author Chris van Lith B3Partners
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/dxf/src/main/java/org/geotools/data/dxf/DXFDataStore.java $
  */
 public class DXFDataStore extends AbstractFileDataStore {
 

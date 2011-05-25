@@ -85,6 +85,8 @@ import org.w3c.dom.NodeList;
  * @author Martin Desruisseaux
  * @author Daniele Romagnoli, GeoSolutions
  * @author Alessio Fabiani, GeoSolutions
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/coverage-experiment/coverage-core/src/main/java/org/geotools/imageio/metadata/MetadataAccessor.java $
  */
 public class MetadataAccessor {
 

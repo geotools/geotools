@@ -26,6 +26,7 @@ import java.util.ArrayList;
  * 
  * @author Jackson Roehrig & Sanjay Jena
  *
+ *
  * @source $URL$
  */
 public class PointGridImpl {

@@ -24,6 +24,7 @@ package org.geotools.data.vpf.exc;
  * </p>
  *
  * @author <a href="mailto:kobit@users.sourceforge.net">Artur Hefczyc</a>
+ *
  * @source $URL$
  * @version $Id$
  */

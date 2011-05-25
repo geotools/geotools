@@ -27,8 +27,8 @@ import java.util.List;
  * @author Gabriel Roldan
  * @version $Id: Version.java 31731 2008-10-29 13:51:20Z groldan $
  * @since 2.5.x
- * @source $URL:
- *      http://svn.geotools.org/geotools/trunk/gt/modules/plugin/wfs/src/main/java/org/geotools/data/wfs/Version.java $
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/wfs-ng/src/main/java/org/geotools/data/wfs/protocol/wfs/Version.java $
  */
 public enum Version {
     v1_0_0("1.0.0"), v1_1_0("1.1.0");

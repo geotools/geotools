@@ -40,6 +40,7 @@ import org.postgresql.PGStatement;
  * 
  * @author wolf
  *
+ *
  * @source $URL$
  */
 public class OIDFidMapper extends AbstractFIDMapper {

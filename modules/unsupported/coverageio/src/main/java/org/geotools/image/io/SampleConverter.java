@@ -46,6 +46,7 @@ import org.geotools.resources.Classes;
  * which match the primitive types expected by the {@link java.awt.image.Raster} API.
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

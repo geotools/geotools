@@ -35,6 +35,7 @@ import org.opengis.util.Cloneable;
  * @author ISO/DIS 19107
  * @author <A HREF="http://www.opengis.org">OpenGIS&reg; consortium</A>
  *
+ *
  * @source $URL$
  * @version $Revision: 1.9 $, $Date: 2005/11/02 05:39:33 $
  *

@@ -44,6 +44,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * <code>http://www.faqs.org/faqs/graphics/algorithms-faq/</code> for further
  * details of the basic approach.
  *
+ *
  * @source $URL$
  */
 public class CentroidArea2D {

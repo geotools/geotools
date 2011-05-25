@@ -23,7 +23,8 @@ import org.geotools.filter.FidFilter;
  * DOCUMENT ME!
  *
  * @author dzwiers
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs/src/main/java/org/geotools/data/wfs/v1_0_0/LockResult.java $
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/wfs-ng/src/main/java/org/geotools/data/wfs/v1_0_0/LockResult.java $
  */
 public class LockResult {
     protected String lockId;

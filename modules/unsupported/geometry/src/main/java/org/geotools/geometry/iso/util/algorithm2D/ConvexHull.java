@@ -66,6 +66,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * <p>
  * Uses the Graham Scan algorithm. Asymptotic running time: O(n*log(n))
  *
+ *
  * @source $URL$
  */
 public class ConvexHull {

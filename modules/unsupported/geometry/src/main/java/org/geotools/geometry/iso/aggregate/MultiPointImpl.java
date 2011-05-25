@@ -27,6 +27,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @author roehrig
  * 
  *
+ *
  * @source $URL$
  */
 public class MultiPointImpl extends MultiPrimitiveImpl implements MultiPoint {

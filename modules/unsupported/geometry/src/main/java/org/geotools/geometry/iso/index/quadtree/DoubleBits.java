@@ -27,6 +27,7 @@ package org.geotools.geometry.iso.index.quadtree;
  * double-precision floating point format.
  * 
  *
+ *
  * @source $URL$
  * @version 1.7.2
  */

@@ -42,6 +42,7 @@ import com.vividsolutions.jts.geom.Envelope;
  * @author Jesse
  * @since 1.1.0
  *
+ *
  * @source $URL$
  */
 public class MapServerWFSStrategy extends StrictWFSStrategy implements WFSStrategy {

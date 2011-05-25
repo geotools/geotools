@@ -26,6 +26,7 @@ import org.geotools.geometry.iso.topograph2D.NodeMap;
  * Used by the {@link NodeMap} in a {@link RelateNodeGraph} to create
  * {@link RelateNode}s.
  *
+ *
  * @source $URL$
  */
 public class RelateNodeFactory extends NodeFactory {

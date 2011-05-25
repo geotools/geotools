@@ -25,6 +25,7 @@ import org.opengis.util.InternationalString;
  * 
  * @author gdavis
  *
+ *
  * @source $URL$
  */
 public class ProcessDescription {

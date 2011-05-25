@@ -41,7 +41,8 @@ import org.geotools.factory.GeoTools;
  * @author Gabriel Roldan (OpenGeo)
  * @version $Id: DefaultHTTPProtocol.java 31929 2008-11-28 19:10:03Z groldan $
  * @since 2.6
- * @source $URL:
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/wfs-ng/src/main/java/org/geotools/data/wfs/protocol/http/DefaultHTTPProtocol.java $
  *         http://gtsvn.refractions.net/trunk/modules/plugin/wfs/src/main/java/org/geotools/data
  *         /wfs/protocol/http/DefaultHTTPProtocol.java $
  */

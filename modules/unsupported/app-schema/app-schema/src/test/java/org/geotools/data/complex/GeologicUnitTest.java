@@ -53,6 +53,7 @@ import org.opengis.feature.type.Name;
  * 
  * @author Rini Angreani, Curtin University of Technology
  *
+ *
  * @source $URL$
  */
 public class GeologicUnitTest {

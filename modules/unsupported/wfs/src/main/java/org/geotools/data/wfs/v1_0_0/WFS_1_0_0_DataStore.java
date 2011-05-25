@@ -106,7 +106,8 @@ import com.vividsolutions.jts.geom.Geometry;
  * </p>
  * 
  * @author dzwiers
- * @source $URL:
+ *
+ * @source $URL$
  *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/wfs/src/main/java/org/geotools
  *         /wfs/v_1_0_0/data/WFSDataStore.java $
  */

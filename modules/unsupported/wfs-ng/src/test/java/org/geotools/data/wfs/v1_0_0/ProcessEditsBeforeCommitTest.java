@@ -48,7 +48,8 @@ import com.vividsolutions.jts.geom.Point;
  * 
  * @author Jesse
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs/src/test/java/org/geotools/data/wfs/v1_0_0/ProcessEditsBeforeCommitTest.java $
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/wfs-ng/src/test/java/org/geotools/data/wfs/v1_0_0/ProcessEditsBeforeCommitTest.java $
  */
 public class ProcessEditsBeforeCommitTest extends TestCase {
 

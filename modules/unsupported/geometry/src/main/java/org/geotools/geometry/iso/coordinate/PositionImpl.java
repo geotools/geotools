@@ -34,6 +34,7 @@ import org.opengis.geometry.primitive.Point;
  * DirectPosition2D Position::indirect [0,1] : PointRef Position: {direct.isNull =
  * indirect.isNotNull}
  *
+ *
  * @source $URL$
  */
 

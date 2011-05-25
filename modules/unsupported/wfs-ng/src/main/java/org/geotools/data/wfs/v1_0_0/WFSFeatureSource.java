@@ -57,7 +57,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * {@link FeatureSource} extension interface to provide WFS specific extra information.
  * 
  * @author dzwiers
- * @source $URL:
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/wfs-ng/src/main/java/org/geotools/data/wfs/v1_0_0/WFSFeatureSource.java $
  *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/wfs/src/main/java/org/geotools
  *         /wfs/v_1_0_0/data/WFSFeatureSource.java $
  */

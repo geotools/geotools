@@ -21,6 +21,7 @@ package org.geotools.data.ows;
  *
  * @author gdavis
  *
+ *
  * @source $URL$
  */
 public class WPSCapabilities extends Capabilities {

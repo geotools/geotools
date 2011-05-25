@@ -42,6 +42,7 @@ import java.net.URL;
  * </p>
  * @author dzwiers
  * @since 0.6.0
+ *
  * @source $URL$
  */
 public class PostDemo {

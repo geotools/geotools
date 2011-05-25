@@ -28,6 +28,7 @@ import org.geotools.swing.tool.PanTool;
  * 
  * @author Michael Bedward
  * @since 2.6
+ *
  * @source $URL$
  * @version $Id$
  */

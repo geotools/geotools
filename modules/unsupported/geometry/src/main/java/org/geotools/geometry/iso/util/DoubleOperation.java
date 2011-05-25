@@ -25,6 +25,7 @@ package org.geotools.geometry.iso.util;
  * @author Sanjay Jena
  *
  *
+ *
  * @source $URL$
  */
 public class DoubleOperation {

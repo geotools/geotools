@@ -51,6 +51,7 @@ import org.opengis.geometry.primitive.Primitive;
  * 
  * @author Jackson Roehrig & Sanjay Jena
  *
+ *
  * @source $URL$
  */
 public class CompositeCurveImpl extends CompositeImpl<OrientableCurveImpl>

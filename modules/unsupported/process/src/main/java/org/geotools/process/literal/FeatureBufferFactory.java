@@ -34,6 +34,7 @@ import org.opengis.util.InternationalString;
  *
  * @author Lucas Reed, Refractions Research Inc
  *
+ *
  * @source $URL$
  */
 public class FeatureBufferFactory extends SingleProcessFactory  {

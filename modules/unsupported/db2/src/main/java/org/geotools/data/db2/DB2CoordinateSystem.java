@@ -32,6 +32,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * Extender catalog tables.
  *
  * @author David Adler - IBM Corporation
+ *
  * @source $URL$
  */
 public class DB2CoordinateSystem {

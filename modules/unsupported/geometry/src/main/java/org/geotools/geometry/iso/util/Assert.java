@@ -23,6 +23,7 @@ package org.geotools.geometry.iso.util;
 /**
  * A utility for making programming assertions.
  *
+ *
  * @source $URL$
  */
 public class Assert {

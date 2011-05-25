@@ -31,6 +31,7 @@ import org.opengis.filter.expression.Expression;
  * 
  * @author Russell Petty, GSV
  * @version $Id$
+ *
  * @source $URL$
  */
 public class TreeAttributeMapping extends AttributeMapping {

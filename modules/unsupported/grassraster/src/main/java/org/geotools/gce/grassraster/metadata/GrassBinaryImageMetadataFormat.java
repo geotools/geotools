@@ -31,6 +31,8 @@ import org.geotools.gce.grassraster.core.GrassBinaryRasterReadHandler;
  * @see GrassBinaryImageMetadata
  * @see GrassBinaryRasterReadHandler
  * @see JGrassRegion
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/grassraster/src/main/java/org/geotools/gce/grassraster/metadata/GrassBinaryImageMetadataFormat.java $
  */
 public final class GrassBinaryImageMetadataFormat extends IIOMetadataFormatImpl {
 

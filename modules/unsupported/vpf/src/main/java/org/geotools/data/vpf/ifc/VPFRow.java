@@ -20,6 +20,7 @@ package org.geotools.data.vpf.ifc;
  * VPFRow.java Created: Mon Feb 24 22:51:21 2003
  *
  * @author <a href="mailto:kobit@users.sourceforge.net">Artur Hefczyc</a>
+ *
  * @source $URL$
  * @version $Id$
  */

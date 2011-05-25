@@ -25,6 +25,7 @@ import java.util.Iterator;
  * meet. A node is connected to each of its incident Edges via an outgoing
  * DirectedEdge.
  *
+ *
  * @source $URL$
  */
 public class Node extends GraphComponent {

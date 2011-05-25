@@ -26,6 +26,7 @@ import java.util.Iterator;
  * A list of {@link Coordinate}s, which may be set to prevent repeated
  * coordinates from occuring in the list.
  *
+ *
  * @source $URL$
  */
 public class CoordinateList extends ArrayList {

@@ -30,7 +30,8 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
  *
  * @author mbedward
  * @since 2.7
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/grid/src/main/java/org/geotools/grid/DefaultFeatureBuilder.java $
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/grid/src/main/java/org/geotools/grid/AbstractGridBuilder.java $
  * @version $Id: DefaultFeatureBuilder.java 35637 2010-06-01 09:24:43Z mbedward $
  */
 public abstract class AbstractGridBuilder {

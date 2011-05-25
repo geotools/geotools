@@ -59,6 +59,7 @@ import org.opengis.feature.type.FeatureType;
  * @author Christophe Rousson <christophe.rousson@gmail.com>, Google SoC 2007 
  *
  *
+ *
  * @source $URL$
  */
 public class DiskStorage implements Storage {

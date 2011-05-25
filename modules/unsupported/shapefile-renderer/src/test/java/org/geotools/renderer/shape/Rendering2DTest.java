@@ -52,6 +52,7 @@ import com.vividsolutions.jts.geom.Envelope;
  * DOCUMENT ME!
  *
  * @author jamesm
+ *
  * @source $URL$
  */
 public class Rendering2DTest extends TestCase {

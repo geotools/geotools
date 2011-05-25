@@ -27,6 +27,7 @@ import org.geotools.geometry.iso.util.algorithm2D.LineIntersector;
  * in fact simply acts as a central point of reference for two opposite
  * {@link DirectedEdge}s.
  *
+ *
  * @source $URL$
  */
 public class Edge extends GraphComponent {

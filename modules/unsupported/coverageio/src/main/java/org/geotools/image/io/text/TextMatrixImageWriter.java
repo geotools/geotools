@@ -40,6 +40,7 @@ import org.geotools.util.Utilities;
  * An image encoder for matrix of floating-point numbers.
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

@@ -26,6 +26,7 @@ import org.geotools.geometry.iso.topograph2D.Envelope;
  * the size of the node envelope
  * 
  *
+ *
  * @source $URL$
  * @version 1.7.2
  */

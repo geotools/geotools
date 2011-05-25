@@ -81,7 +81,8 @@ import com.vividsolutions.jts.geom.Geometry;
  * </p>
  *
  * @author dzwiers
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs/src/main/java/org/geotools/xml/wfs/WFSTransactionComplexTypes.java $
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/wfs-ng/src/main/java/org/geotools/xml/wfs/WFSTransactionComplexTypes.java $
  */
 public class WFSTransactionComplexTypes {
     /**

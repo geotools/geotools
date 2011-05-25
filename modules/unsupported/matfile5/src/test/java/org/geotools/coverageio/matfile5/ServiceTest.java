@@ -30,6 +30,8 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
  * 
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini (simboss), GeoSolutions
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/matfile5/src/test/java/org/geotools/coverageio/matfile5/ServiceTest.java $
  */
 public class ServiceTest extends AbstractSASTestCase {
 

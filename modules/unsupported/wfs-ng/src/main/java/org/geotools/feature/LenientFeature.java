@@ -36,7 +36,8 @@ import org.opengis.feature.type.AttributeDescriptor;
  * 
  * @author Jesse Eichar
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs/src/main/java/org/geotools/feature/LenientFeature.java $
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/wfs-ng/src/main/java/org/geotools/feature/LenientFeature.java $
  */
 public class LenientFeature extends SimpleFeatureImpl {
     static Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.data.wfs");

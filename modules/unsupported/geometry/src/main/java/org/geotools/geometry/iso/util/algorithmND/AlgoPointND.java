@@ -23,6 +23,7 @@ package org.geotools.geometry.iso.util.algorithmND;
  * @author Jackson Roehrig and Sanjay Jena
  *
  *
+ *
  * @source $URL$
  */
 public class AlgoPointND {

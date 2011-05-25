@@ -25,6 +25,7 @@ import org.geotools.grid.GridElement;
  *
  * @author mbedward
  * @since 2.7
+ *
  * @source $URL$
  * @version $Id$
  */

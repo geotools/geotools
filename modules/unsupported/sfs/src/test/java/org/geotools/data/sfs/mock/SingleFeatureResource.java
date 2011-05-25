@@ -34,6 +34,8 @@ import org.restlet.resource.Variant;
  * This class handle single feature requests with url like
  * http://localhost:8082/simplefeatureservice/data/layerAsia/tiger_roads.1
  * @author narad
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/sfs/src/test/java/org/geotools/data/sfs/mock/SingleFeatureResource.java $
  */
 public class SingleFeatureResource extends Resource {
 

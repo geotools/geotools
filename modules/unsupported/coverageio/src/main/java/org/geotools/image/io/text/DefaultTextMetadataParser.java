@@ -31,6 +31,7 @@ import org.opengis.referencing.cs.CoordinateSystem;
  * <a href="http://www.opengeospatial.org/standards/gmljp2">GML in JPEG 2000</a> standard.
  *
  * @since 2.5
+ *
  * @source $URL$
  * @version $Id$
  * @author Cédric Briançon

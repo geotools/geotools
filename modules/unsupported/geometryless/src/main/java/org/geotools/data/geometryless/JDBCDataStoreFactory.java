@@ -38,6 +38,7 @@ import org.geotools.factory.AbstractFactory;
  * </p>
  *
  * @author Rob Atkinson, Social Change Online
+ *
  * @source $URL$
  */
 public class JDBCDataStoreFactory extends AbstractFactory

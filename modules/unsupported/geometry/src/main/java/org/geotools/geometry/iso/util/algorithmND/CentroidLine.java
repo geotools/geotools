@@ -38,6 +38,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * Compute the average of the midpoints of all line segments weighted by the
  * segment length.
  *
+ *
  * @source $URL$
  */
 public class CentroidLine {

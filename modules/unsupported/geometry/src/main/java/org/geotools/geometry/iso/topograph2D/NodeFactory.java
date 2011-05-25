@@ -21,6 +21,7 @@ package org.geotools.geometry.iso.topograph2D;
 /**
  * Factory for creating {@link Node}s
  *
+ *
  * @source $URL$
  */
 public class NodeFactory {

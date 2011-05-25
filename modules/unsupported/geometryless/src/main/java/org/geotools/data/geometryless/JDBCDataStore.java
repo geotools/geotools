@@ -70,8 +70,8 @@ import org.opengis.filter.Filter;
  * usage details.
  * 
  * @author Rob Atkinson rob@socialchange.net.au
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/unsupported/geometryless/src/main/java/org/geotools/data/geometryless/JDBCDataStore.java $
+ *
+ * @source $URL$
  */
 
 public class JDBCDataStore extends org.geotools.data.jdbc.JDBCDataStore implements SqlDataStore {

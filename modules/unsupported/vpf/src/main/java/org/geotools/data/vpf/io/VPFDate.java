@@ -27,6 +27,7 @@ import java.util.TimeZone;
  * VPFDate.java Created: Tue Jan 28 20:50:51 2003
  *
  * @author <a href="mailto:kobit@users.sourceforge.net">Artur Hefczyc</a>
+ *
  * @source $URL$
  * 
  */

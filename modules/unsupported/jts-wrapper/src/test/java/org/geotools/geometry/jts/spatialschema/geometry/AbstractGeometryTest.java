@@ -44,6 +44,7 @@ import junit.framework.TestCase;
  * @author Jody Garnett
  * @author Joel Skelton
  *
+ *
  * @source $URL$
  */
 public abstract class AbstractGeometryTest extends TestCase {

@@ -29,6 +29,8 @@ package org.geotools.grid;
  * lower edges of its bounding rectangle
  * </li>
  * </ul>
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/grid/src/main/java/org/geotools/grid/Orientation.java $
  */
 public enum Orientation {
 

@@ -29,7 +29,8 @@ import org.geotools.swing.JMapPane;
  * 
  * @author Michael Bedward (adapted from code by Cameron Shorter)
  * @since 2.6
- * @source $URL:
+ *
+ * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/swing/src/main/java/org/geotools
  *         /swing/event/MapMouseEvent.java $
  * @version $Id$

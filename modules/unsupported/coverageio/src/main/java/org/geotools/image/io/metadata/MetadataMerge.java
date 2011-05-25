@@ -29,6 +29,7 @@ import org.geotools.resources.XArray;
  *       a real merge of two {@link GeographicMetadata} objects.
  *
  * @since 2.5
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

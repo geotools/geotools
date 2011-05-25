@@ -36,7 +36,8 @@ import org.geotools.util.logging.Logging;
  * @author Gabriel Roldan (OpenGeo)
  * @version $Id: AbstractHttpProtocol.java 35133 2010-03-29 13:50:29Z groldan $
  * @since 2.6
- * @source $URL:
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/wfs-ng/src/main/java/org/geotools/data/wfs/protocol/http/AbstractHttpProtocol.java $
  *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs/src/main/java/org/geotools
  *         /data/wfs/protocol/http/AbstractHttpProtocol.java $
  * 

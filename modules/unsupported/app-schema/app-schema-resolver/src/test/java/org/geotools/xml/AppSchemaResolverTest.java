@@ -25,6 +25,8 @@ import org.junit.Test;
  * Tests for {@link AppSchemaResolver}.
  * 
  * @author Ben Caradoc-Davies, CSIRO Earth Science and Resource Engineering
+ *
+ * @source $URL$
  */
 public class AppSchemaResolverTest {
 

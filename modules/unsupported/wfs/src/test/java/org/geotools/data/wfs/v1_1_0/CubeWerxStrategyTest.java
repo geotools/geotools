@@ -57,6 +57,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  * @author Gabriel Roldan (OpenGeo)
  * @version $Id$
  * @since 2.6.x
+ *
  * @source $URL$
  */
 public class CubeWerxStrategyTest {

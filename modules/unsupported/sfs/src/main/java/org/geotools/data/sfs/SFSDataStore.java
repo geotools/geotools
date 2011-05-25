@@ -59,6 +59,8 @@ import com.vividsolutions.jts.geom.Envelope;
  * encoding format loosely based on RESTFUL principles. This code expanded on 
  * from GeoREST in Unsupported Modules.
  * @author 
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/sfs/src/main/java/org/geotools/data/sfs/SFSDataStore.java $
  */
 public class SFSDataStore extends ContentDataStore {
     

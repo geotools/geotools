@@ -10,6 +10,7 @@ import org.geotools.caching.spatialindex.SpatialIndexStatistics;
  * also tracks the number of evictions.</p>
  *
  *
+ *
  * @source $URL$
  */
 public class GridSpatialIndexStatistics extends SpatialIndexStatistics {

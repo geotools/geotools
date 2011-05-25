@@ -57,7 +57,8 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  * @author Gabriel Roldan (OpenGeo)
  * @version $Id: CubeWerxStrategyTest.java 35132 2010-03-29 13:45:48Z groldan $
  * @since 2.6.x
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs/src/test/java/org/geotools/data/wfs/v1_1_0/CubeWerxStrategyTest.java $
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/wfs-ng/src/test/java/org/geotools/data/wfs/v1_1_0/CubeWerxStrategyTest.java $
  */
 public class CubeWerxStrategyTest {
 

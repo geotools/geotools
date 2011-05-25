@@ -32,7 +32,8 @@ import org.h2.jdbcx.JdbcDataSource;
 /**
  * Utility used to create a HSQL zipped version of the official EPSG database 
  *
- * @source $URL: http://svn.osgeo.org/geotools/branches/2.6.x/modules/plugin/epsg-hsql/src/main/java/org/geotools/referencing/factory/epsg/DatabaseCreationScript.java $
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/epsg-h2/src/main/java/org/geotools/referencing/factory/epsg/DatabaseCreationScript.java $
  */
 public class DatabaseCreationScript {
 

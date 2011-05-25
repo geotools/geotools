@@ -19,6 +19,7 @@ import java.util.*;
 /**
  * Provides a basic implementation of the TrackSegment interface.
  *
+ *
  * @source $URL$
  */
 public class BasicTrackSegment implements TrackSegment 

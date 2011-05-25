@@ -51,6 +51,7 @@ import org.geotools.swing.wizard.JWizard;
         File shapeFile = (File) wizard.getConnectionParameters().get("shape");
  * </pre></code>
  *
+ *
  * @source $URL$
  */
 public class JParameterListWizard extends JWizard {

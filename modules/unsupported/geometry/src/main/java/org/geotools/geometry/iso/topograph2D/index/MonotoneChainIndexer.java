@@ -38,6 +38,7 @@ import org.geotools.geometry.iso.topograph2D.Quadrant;
  * segment comparisons, producing substantial speed gains.
  * 
  *
+ *
  * @source $URL$
  */
 public class MonotoneChainIndexer {

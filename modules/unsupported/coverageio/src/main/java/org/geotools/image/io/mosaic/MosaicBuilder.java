@@ -54,6 +54,7 @@ import org.opengis.referencing.datum.PixelInCell;
  * builder can also write the tiles to disk from an initially untiled image.
  *
  * @since 2.5
+ *
  * @source $URL$
  * @version $Id$
  * @author Cédric Briançon

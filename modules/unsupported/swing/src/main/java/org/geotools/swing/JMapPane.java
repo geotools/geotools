@@ -81,6 +81,7 @@ import org.opengis.geometry.Envelope;
  * @author Michael Bedward
  * @author Ian Turton
  * @since 2.6
+ *
  * @source $URL$
  * @version $Id$
  */

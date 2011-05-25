@@ -49,6 +49,8 @@ import org.opengis.util.InternationalString;
  * 
  * @author Simone Giannecchini, GeoSolutions
  * 
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/coverage-experiment/coverage-api/src/main/java/org/geotools/coverage/io/range/FieldType.java $
  */
 public interface FieldType {
 

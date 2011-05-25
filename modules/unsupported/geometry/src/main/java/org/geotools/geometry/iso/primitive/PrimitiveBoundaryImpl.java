@@ -28,6 +28,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * 
  * @author Jackson Roehrig & Sanjay Jena
  *
+ *
  * @source $URL$
  */
 public abstract class PrimitiveBoundaryImpl extends BoundaryImpl implements

@@ -30,6 +30,7 @@ import org.geotools.resources.IndexedResourceBundle;
  * Default parameters for {@link GeographicImageReader}.
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

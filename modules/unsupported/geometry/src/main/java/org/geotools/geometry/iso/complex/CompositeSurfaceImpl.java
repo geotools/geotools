@@ -43,6 +43,7 @@ import org.opengis.geometry.primitive.SurfaceBoundary;
  * @author Jackson Roehrig & Sanjay Jena
  * 
  *
+ *
  * @source $URL$
  */
 public class CompositeSurfaceImpl extends CompositeImpl<OrientableSurfaceImpl>

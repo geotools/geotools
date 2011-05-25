@@ -22,6 +22,7 @@ package org.geotools.swing.wizard;
  * 
  * @author Graham Davis
  *
+ *
  * @source $URL$
  */
 public class ParamWidgetFactory {

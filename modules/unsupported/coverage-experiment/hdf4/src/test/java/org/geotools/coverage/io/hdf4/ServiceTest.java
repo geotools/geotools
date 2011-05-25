@@ -30,6 +30,8 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
  * 
  * @author Simone Giannecchini
  * @author Daniele Romagnoli
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/coverage-experiment/hdf4/src/test/java/org/geotools/coverage/io/hdf4/ServiceTest.java $
  */
 public class ServiceTest extends TestCase {
 

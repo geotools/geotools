@@ -32,6 +32,7 @@ import org.geotools.geometry.iso.topograph2D.Edge;
  * improvement in performance over a sweep-line alone.
  * 
  *
+ *
  * @source $URL$
  */
 public class SimpleMonotoneChainSweepLineIntersector extends EdgeSetIntersector {

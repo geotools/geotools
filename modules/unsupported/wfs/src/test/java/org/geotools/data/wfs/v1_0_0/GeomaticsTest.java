@@ -44,6 +44,7 @@ import org.xml.sax.SAXException;
  * </p>
  * @author dzwiers
  * @since 0.6.0
+ *
  * @source $URL$
  */
 public class GeomaticsTest extends TestCase {

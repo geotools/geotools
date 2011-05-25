@@ -22,6 +22,7 @@ package org.geotools.image.io.mosaic;
  * when a file to be written already exists.
  *
  * @since 2.5
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

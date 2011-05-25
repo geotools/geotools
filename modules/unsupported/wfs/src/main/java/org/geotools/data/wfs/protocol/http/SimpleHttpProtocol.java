@@ -33,6 +33,7 @@ import org.apache.commons.codec.binary.Base64;
  * @author Gabriel Roldan (OpenGeo)
  * @since 2.6.x
  * @version $Id$
+ *
  * @source $URL$
  */
 @SuppressWarnings("nls")

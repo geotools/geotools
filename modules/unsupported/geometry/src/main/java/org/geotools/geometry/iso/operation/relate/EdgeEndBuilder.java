@@ -34,6 +34,7 @@ import org.geotools.geometry.iso.topograph2D.Label;
  * intersections determined for an Edge.
  * Computes the {@link EdgeEnd}s which arise from a noded {@link Edge}.
  *
+ *
  * @source $URL$
  */
 public class EdgeEndBuilder {

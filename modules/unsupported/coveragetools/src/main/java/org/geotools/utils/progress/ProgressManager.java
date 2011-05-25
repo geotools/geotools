@@ -25,6 +25,7 @@ import javax.swing.SwingUtilities;
  * @author Simone Giannecchini, GeoSolutions.
  *
  *
+ *
  * @source $URL$
  */
 public abstract class ProgressManager {

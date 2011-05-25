@@ -22,6 +22,7 @@ package org.geotools.image.io.mosaic;
  * in some commonly used layout.
  *
  * @since 2.5
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

@@ -29,6 +29,7 @@ import org.geotools.swing.event.MapMouseAdapter;
  * 
  * @author Michael Bedward
  * @since 2.6
+ *
  * @source $URL$
  * @version $Id$
  */

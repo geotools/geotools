@@ -23,6 +23,7 @@ package org.geotools.data.vpf.ifc;
  * Created: Fri Apr 04 14:06:29 2003
  *
  * @author <a href="mailto:kobit@users.sourceforge.net">Artur Hefczyc</a>
+ *
  * @source $URL$
  * @version $Id$
  */

@@ -51,6 +51,8 @@ import org.geotools.data.DataUtilities;
  * {@link AppSchemaResolver#getSimpleHttpResourcePath(URI))}.
  * 
  * @author Ben Caradoc-Davies, CSIRO Earth Science and Resource Engineering
+ *
+ * @source $URL$
  */
 public class AppSchemaCache {
 

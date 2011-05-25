@@ -25,6 +25,7 @@ import java.sql.Statement;
  * 
  * @author Cory Horner, Refractions Research
  *
+ *
  * @source $URL$
  */
 public class AbstractPostgisOnlineTestCase extends PostgisOnlineTestCase {

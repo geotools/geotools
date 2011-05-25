@@ -28,7 +28,8 @@ import org.opengis.filter.Filter;
 /**
  * @author Russell Petty, GSV
  * 
- * @source $URL:
+ *
+ * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/main
  *         /java/org/geotools/data/complex/MappingFeatureIteratorFactory.java $
  */

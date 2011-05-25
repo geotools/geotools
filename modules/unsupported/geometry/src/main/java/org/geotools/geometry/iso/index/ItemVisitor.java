@@ -20,6 +20,7 @@ package org.geotools.geometry.iso.index;
 /**
  * A visitor for items in an index.
  *
+ *
  * @source $URL$
  */
 

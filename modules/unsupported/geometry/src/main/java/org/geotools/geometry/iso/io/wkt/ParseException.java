@@ -20,6 +20,7 @@ package org.geotools.geometry.iso.io.wkt;
 /**
  * Thrown by a <code>WKTReader</code> when a parsing problem occurs.
  *
+ *
  * @source $URL$
  */
 public class ParseException extends Exception {

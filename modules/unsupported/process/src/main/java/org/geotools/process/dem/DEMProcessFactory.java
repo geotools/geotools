@@ -58,7 +58,8 @@ import com.vividsolutions.jts.geom.Polygon;
  * ProcessFactory for several digital elevation model processes.
  * 
  * @since 2.7
- * @source $URL:
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/process/src/main/java/org/geotools/process/dem/DEMProcessFactory.java $
  *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/process/src/main/java/org/geotools
  *         /process/raster/RasterToVectorFactory.java $
  */

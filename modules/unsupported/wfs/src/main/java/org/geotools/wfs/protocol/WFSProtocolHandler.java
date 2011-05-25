@@ -38,8 +38,8 @@ import org.geotools.util.logging.Logging;
  * @author Gabriel Roldan
  * @version $Id$
  * @since 2.5.x
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/wfs/src/main/java/org/geotools/wfs/io/WFSConnectionFactory.java $
+ *
+ * @source $URL$
  * @deprecated use {@link WFSProtocol}
  */
 public abstract class WFSProtocolHandler {

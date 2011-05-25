@@ -37,6 +37,7 @@ import com.mysql.jdbc.jdbc2.optional.MysqlConnectionPoolDataSource;
 /**
  * Creates ConnectionPool objects for a certain MySQL database instance.
  * @author Gary Sheppard garysheppard@psu.edu
+ *
  * @source $URL$
  * @deprecated Use {@link DataSource}, {@link DataSourceUtil} and {@link DataSourceFinder} instead
  */

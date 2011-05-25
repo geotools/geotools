@@ -42,6 +42,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * 
  * @author gdavis
  *
+ *
  * @source $URL$
  */
 public class UnionFactory extends SingleProcessFactory {

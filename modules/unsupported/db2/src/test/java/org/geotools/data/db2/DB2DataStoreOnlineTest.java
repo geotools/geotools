@@ -21,6 +21,7 @@ package org.geotools.data.db2;
  * Exercise DB2DataStore.
  *
  * @author David Adler - IBM Corporation
+ *
  * @source $URL$
  */
 public class DB2DataStoreOnlineTest extends AbstractDB2OnlineTestCase {

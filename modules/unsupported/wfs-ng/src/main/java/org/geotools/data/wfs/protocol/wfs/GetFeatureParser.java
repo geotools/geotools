@@ -27,7 +27,8 @@ import org.opengis.feature.simple.SimpleFeature;
  * @author Gabriel Roldan (TOPP)
  * @version $Id: GetFeatureParser.java 31824 2008-11-11 19:22:41Z groldan $
  * @since 2.5.x
- * @source $URL:
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/wfs-ng/src/main/java/org/geotools/data/wfs/protocol/wfs/GetFeatureParser.java $
  *         http://gtsvn.refractions.net/trunk/modules/plugin/wfs/src/main/java/org/geotools/data
  *         /wfs/protocol/wfs/GetFeatureParser.java $
  */

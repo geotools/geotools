@@ -72,6 +72,7 @@ import com.vividsolutions.jts.geom.PrecisionModel;
  * Test for mysql.  Must use a locally available instance of mysql.
  *
  * @author Chris Holmes, TOPP
+ *
  * @source $URL$
  */
 public class MySQLDataStoreTest extends TestCase {

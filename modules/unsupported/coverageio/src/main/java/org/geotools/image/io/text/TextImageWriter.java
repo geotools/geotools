@@ -38,6 +38,7 @@ import org.geotools.image.io.StreamImageWriter;
  * containing pixel values (often geophysical values, like sea level anomalies).
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

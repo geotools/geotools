@@ -29,6 +29,7 @@ import org.geotools.gpx2.utils.*;
  * created to represent a waypoint collected with a GPS receiver will have
  * non-null vales for these attributes. 
  *
+ *
  * @source $URL$
  */
 public class BasicWaypoint implements SimpleWaypoint

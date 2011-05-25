@@ -34,6 +34,7 @@ import org.geotools.util.logging.Logging;
  * @author Gabriel Roldan (OpenGeo)
  * @since 2.6.x
  * @version $Id$
+ *
  * @source $URL$
  */
 @SuppressWarnings("nls")

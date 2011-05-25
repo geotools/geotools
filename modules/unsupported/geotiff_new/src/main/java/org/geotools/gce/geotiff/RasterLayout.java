@@ -8,6 +8,8 @@ import java.io.Serializable;
 
 /**
  * A class describing the layout of a Raster element of the {@link HorizontalDomain}.
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/geotiff_new/src/main/java/org/geotools/gce/geotiff/RasterLayout.java $
  */
 public class RasterLayout extends Object implements Cloneable, Serializable {
     /**

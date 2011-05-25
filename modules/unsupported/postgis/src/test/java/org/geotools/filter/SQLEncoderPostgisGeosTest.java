@@ -43,6 +43,7 @@ import com.vividsolutions.jts.geom.LineString;
  * 
  * TODO: roll into SQLEncoderPostgisTest (SQLEncoderPostgisGeos is deprecated)
  *
+ *
  * @source $URL$
  */
 public class SQLEncoderPostgisGeosTest extends TestCase {

@@ -41,7 +41,8 @@ import org.geotools.swing.wizard.JPage;
 /**
  * A wizard page that will allow the user to choose a format (ie DataAccess factory).
  *
- * @source $URL: http://svn.osgeo.org/geotools/branches/2.6.x/modules/unsupported/swing/src/main/java/org/geotools/swing/data/JDataStorePage.java $
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/swing/src/main/java/org/geotools/swing/data/JDataChoosePage.java $
  */
 public class JDataChoosePage extends JPage {
     /**

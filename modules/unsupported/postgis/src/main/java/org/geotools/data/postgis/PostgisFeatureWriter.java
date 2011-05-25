@@ -40,6 +40,7 @@ import com.vividsolutions.jts.io.WKTWriter;
 /**
  * An implementation of FeatureWriter that will work over a result set.
  * 
+ *
  * @source $URL$
  */
 public class PostgisFeatureWriter extends JDBCTextFeatureWriter {

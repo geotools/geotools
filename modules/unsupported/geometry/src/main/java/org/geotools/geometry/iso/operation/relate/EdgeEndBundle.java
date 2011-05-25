@@ -35,6 +35,7 @@ import org.geotools.geometry.iso.topograph2D.Position;
  * Contains all {@link EdgeEnd}s which start at the same point and are
  * parallel.
  *
+ *
  * @source $URL$
  */
 public class EdgeEndBundle extends EdgeEnd {

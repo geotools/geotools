@@ -90,7 +90,8 @@ import org.xml.sax.helpers.NamespaceSupport;
  * 
  * @author Russell Petty
  * @version $Id$
- * @source $URL: http://svn.geotools.org/trunk/modules/library/main/src/test/java/org/geotools/data/
+ *
+ * @source $URL$
  *         DataAccessFinderTest.java $
  */
 public class XmlDataStoreTest extends TestCase {

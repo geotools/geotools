@@ -24,6 +24,7 @@ import org.opengis.parameter.ParameterValue;
  * {@linkplain GeographicMetadataFormat geographic metadata format}.
  *
  * @since 2.5
+ *
  * @source $URL$
  * @version $Id$
  * @author Cédric Briançon

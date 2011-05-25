@@ -27,8 +27,8 @@ import java.util.List;
  * @author rpetty
  * @version $Id$
  * @since 2.5.x
- * @source $URL:
- *      http://svn.geotools.org/geotools/trunk/gt/modules/unsupported/app-schema/webservice/src/main/java/org/geotools/data/wfs/Version.java $
+ *
+ * @source $URL$
  */
 public enum Version {
     v1_0_0("1.0.0"), v1_1_0("1.1.0");

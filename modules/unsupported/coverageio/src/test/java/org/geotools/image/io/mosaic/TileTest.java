@@ -26,6 +26,7 @@ import static org.junit.Assert.*;
 /**
  * Tests {@link Tile}.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

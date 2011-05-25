@@ -26,6 +26,7 @@ import org.geotools.data.jdbc.fidmapper.NullFIDMapper;
  * Overrides NullFIDMapper methods for DB2-specific handling.
  *
  * @author David Adler - IBM Corporation
+ *
  * @source $URL$
  */
 public class DB2NullFIDMapper extends NullFIDMapper {

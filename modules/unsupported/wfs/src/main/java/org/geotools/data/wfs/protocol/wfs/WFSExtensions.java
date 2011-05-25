@@ -41,7 +41,8 @@ import org.geotools.factory.FactoryNotFoundException;
  * @author Gabriel Roldan (OpenGeo)
  * @version $Id$
  * @since 2.6
- * @source $URL:
+ *
+ * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs/src/main/java/org/geotools
  *         /data/wfs/protocol/wfs/WFSExtensions.java $
  */

@@ -21,6 +21,7 @@ package org.geotools.image.io.mosaic;
  * The policy for {@link MosaicImageReader#getImageTypes computing image types} in a mosaic.
  *
  * @since 2.5
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

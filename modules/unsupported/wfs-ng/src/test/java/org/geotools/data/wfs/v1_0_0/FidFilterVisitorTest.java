@@ -39,7 +39,8 @@ import org.opengis.filter.identity.FeatureId;
  * 
  * @author Jesse
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs/src/test/java/org/geotools/data/wfs/v1_0_0/FidFilterVisitorTest.java $
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/wfs-ng/src/test/java/org/geotools/data/wfs/v1_0_0/FidFilterVisitorTest.java $
  */
 public class FidFilterVisitorTest extends TestCase {
 

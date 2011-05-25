@@ -36,6 +36,7 @@ import org.geotools.geometry.jts.spatialschema.geometry.DirectPositionImpl;
  * @author SYS Technologies
  * @author crossley
  *
+ *
  * @source $URL$
  * @version $Revision $
  */

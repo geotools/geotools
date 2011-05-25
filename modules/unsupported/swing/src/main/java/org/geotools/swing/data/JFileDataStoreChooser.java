@@ -48,6 +48,7 @@ import org.geotools.data.FileDataStoreFinder;
  *
  * @author Jody Garnett
  * @since 2.6
+ *
  * @source $URL$
  * @version $Id$
  */

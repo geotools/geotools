@@ -36,8 +36,8 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
  * Testing {@link GeoTiffReader} as well as {@link IIOMetadataDumper}.
  * 
  * @author Simone Giannecchini
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/plugin/geotiff/test/org/geotools/gce/geotiff/GeoTiffReaderTest.java $
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/geotiff_new/src/test/java/org/geotools/gce/geotiff/GeoTiffReaderTest.java $
  */
 public class GeoTiffReaderTest extends TestCase {
 	private final static Logger LOGGER = org.geotools.util.logging.Logging

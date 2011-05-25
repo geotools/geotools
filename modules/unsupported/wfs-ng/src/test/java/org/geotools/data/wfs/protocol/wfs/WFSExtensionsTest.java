@@ -15,6 +15,8 @@ import org.junit.Test;
 /**
  * @author Gabriel Roldan
  * @since 2.6.x
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/wfs-ng/src/test/java/org/geotools/data/wfs/protocol/wfs/WFSExtensionsTest.java $
  * @version $Id: WFSExtensionsTest.java 35310 2010-04-30 10:32:15Z jive $
  */
 @SuppressWarnings("nls")

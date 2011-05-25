@@ -59,8 +59,8 @@ import com.vividsolutions.jts.geom.Point;
  * usage details.
  * 
  * @author Rob Atkinson rob@socialchange.net.au
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/unsupported/geometryless/src/main/java/org/geotools/data/geometryless/LocationsXYDataStore.java $
+ *
+ * @source $URL$
  */
 
 public class LocationsXYDataStore extends org.geotools.data.geometryless.JDBCDataStore {

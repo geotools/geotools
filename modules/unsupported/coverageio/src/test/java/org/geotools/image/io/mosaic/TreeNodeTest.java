@@ -35,6 +35,7 @@ import static org.junit.Assert.*;
  * {@link TreeNode} except for the {@link RTree#searchTiles} method, which is not
  * tested here (see {@link TileManagerTest} for that).
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

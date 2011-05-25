@@ -40,6 +40,7 @@ import com.vividsolutions.jts.geom.PrecisionModel;
 * 
 * @see net.refractions.jspatial.jts
 * @author jgarnett, Refractions Reasearch Inc.
+ *
  * @source $URL$
 * @version CVS Version
 */

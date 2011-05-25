@@ -39,6 +39,8 @@ import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
  * @author Matthijs Laan, B3Partners
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/dxf/src/main/java/org/geotools/data/dxf/DXFFeatureReader.java $
  */
 public class DXFFeatureReader implements FeatureReader {
 

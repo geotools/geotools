@@ -29,6 +29,7 @@ import org.geotools.data.vpf.ifc.VPFHeader;
  * Objects of this type are immutable.  Created: Thu Jan 02 22:50:59 2003
  *
  * @author <a href="mailto:kobit@users.fs.net">Artur Hefczyc</a>
+ *
  * @source $URL$
  * @version 1.0
  */

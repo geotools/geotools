@@ -52,7 +52,8 @@ import com.vividsolutions.jts.io.WKTReader;
  * 
  * @author Ben Caradoc-Davies, CSIRO Exploration and Mining
  * @version $Id$
- * @source $URL:
+ *
+ * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/sample-data-access
  *         /src/main/java/org/geotools/data/SampleDataAccessData.java $
  * @since 2.6

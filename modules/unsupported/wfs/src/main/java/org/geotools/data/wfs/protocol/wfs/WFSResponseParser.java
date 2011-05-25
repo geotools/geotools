@@ -26,6 +26,7 @@ import org.geotools.data.wfs.v1_1_0.WFS_1_1_0_DataStore;
  * @author Gabriel Roldan (OpenGeo)
  * @version $Id$
  * @since 2.6
+ *
  * @source $URL$
  * @see WFSResponseParserFactory
  * @see WFSResponse

@@ -42,6 +42,8 @@ import org.opengis.geometry.Envelope;
  * 
  * @author Simone Giannecchini
  * 
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/coverage-experiment/geotiff/src/test/java/org/geotools/gce/geotiff/GeoTiffServiceTest.java $
  */
 public class GeoTiffServiceTest extends TestCase {
 

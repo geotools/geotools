@@ -27,6 +27,7 @@ import org.geotools.filter.Filter;
  * records types and filters effected.
  *
  * @author dzwiers
+ *
  * @source $URL$
  */
 public class LockRequest extends FeatureLock {

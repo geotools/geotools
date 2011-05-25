@@ -41,6 +41,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  * </p>
  *
  * @author Chris Holmes, TOPP
+ *
  * @source $URL$
  * @version $Id$
  */

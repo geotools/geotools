@@ -25,6 +25,7 @@ import java.io.IOException;
  * @author rpetty
  * @version $Id$
  * @since 2.6
+ *
  * @source $URL$
  */
 public class WSException extends IOException {

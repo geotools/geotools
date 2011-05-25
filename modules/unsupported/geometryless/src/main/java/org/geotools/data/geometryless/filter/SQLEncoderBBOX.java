@@ -44,6 +44,7 @@ import com.vividsolutions.jts.geom.Geometry;
  *
  * @author Rob Atkinson , SCO
  * 
+ *
  * @source $URL$
  */
 public class SQLEncoderBBOX extends FilterToSQL {

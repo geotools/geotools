@@ -31,6 +31,7 @@ import junit.framework.TestSuite;
  * {@code GeometryTestCase}s and provides a way to execute them all.
  * @author <a href="mailto:joel@lggi.com">Joel Skelton</a>
  *
+ *
  * @source $URL$
  */
 public class GeometryTestContainer {

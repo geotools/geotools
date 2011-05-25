@@ -22,6 +22,8 @@ import javax.measure.unit.Unit;
  * to a domain you should use the appropriate value and Unit to define them.
  * 
  * @param <V> Enumeration provided a fixed set of machine readable strings
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/coverage-experiment/coverage-api/src/main/java/org/geotools/coverage/io/impl/range/EnumMeasure.java $
  */
 public class EnumMeasure<V extends Enum<V>> extends Measure<V, Dimensionless> {
 	private static final long serialVersionUID = 2403097126807167994L;

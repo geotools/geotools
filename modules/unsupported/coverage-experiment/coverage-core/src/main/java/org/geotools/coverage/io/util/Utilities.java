@@ -107,6 +107,8 @@ import org.w3c.dom.Node;
  * 
  * @author Daniele Romagnoli, GeoSolutions
  * 
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/coverage-experiment/coverage-core/src/main/java/org/geotools/coverage/io/util/Utilities.java $
  */
 public class Utilities {
 

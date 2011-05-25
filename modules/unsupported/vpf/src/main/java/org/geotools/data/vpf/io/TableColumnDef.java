@@ -27,6 +27,7 @@ import org.geotools.data.vpf.util.DataUtils;
  * 2003
  *
  * @author <a href="mailto:kobit@users.fs.net">Artur Hefczyc</a>
+ *
  * @source $URL$
  * @version 1.0
  */

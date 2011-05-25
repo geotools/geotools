@@ -48,6 +48,7 @@ import com.vividsolutions.jts.geom.Envelope;
  * @author Florence Tan, Curtin University of Technology
  * 
  *
+ *
  * @source $URL$
  */
 public class ToEnvelopeFunction implements Function {

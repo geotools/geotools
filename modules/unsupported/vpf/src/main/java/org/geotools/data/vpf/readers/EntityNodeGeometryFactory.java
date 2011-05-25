@@ -33,6 +33,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * DOCUMENT ME!
  *
  * @author <a href="mailto:jeff@ionicenterprise.com">Jeff Yutzler</a>
+ *
  * @source $URL$
  */
 public class EntityNodeGeometryFactory extends VPFGeometryFactory implements FileConstants {

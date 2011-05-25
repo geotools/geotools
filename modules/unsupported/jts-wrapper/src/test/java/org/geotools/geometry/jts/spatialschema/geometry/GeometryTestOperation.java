@@ -31,6 +31,7 @@ import java.util.HashMap;
  * @author Jody Garnett
  * @author Joel Skelton
  *
+ *
  * @source $URL$
  */
 public class GeometryTestOperation {

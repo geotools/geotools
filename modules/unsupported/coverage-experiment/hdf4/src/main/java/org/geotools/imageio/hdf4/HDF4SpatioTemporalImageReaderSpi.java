@@ -34,6 +34,8 @@ import org.geotools.imageio.SpatioTemporalImageReaderSpi;
  * 
  * @author Daniele Romagnoli, GeoSolutions
  * @author Alessio Fabiani, GeoSolutions
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/coverage-experiment/hdf4/src/main/java/org/geotools/imageio/hdf4/HDF4SpatioTemporalImageReaderSpi.java $
  */
 public class HDF4SpatioTemporalImageReaderSpi extends SpatioTemporalImageReaderSpi {
 

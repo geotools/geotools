@@ -32,6 +32,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @author Jackson Roehrig & Sanjay Jena
  * 
  *
+ *
  * @source $URL$
  */
 public class SolidBoundaryImpl extends PrimitiveBoundaryImpl implements

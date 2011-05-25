@@ -22,6 +22,8 @@ import java.net.URI;
  * A {@code rectifiedGrid} node in the metadata tree.
  * 
  * @author Daniele Romagnoli, GeoSolutions
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/coverage-experiment/coverage-core/src/main/java/org/geotools/imageio/metadata/RectifiedGrid.java $
  */
 public class RectifiedGrid extends MetadataAccessor {
 

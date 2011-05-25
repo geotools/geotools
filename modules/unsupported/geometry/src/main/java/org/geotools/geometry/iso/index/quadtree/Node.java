@@ -26,6 +26,7 @@ import org.geotools.geometry.iso.util.Assert;
  * spatial extent corresponding to the node's position in the quadtree.
  * 
  *
+ *
  * @source $URL$
  * @version 1.7.2
  */

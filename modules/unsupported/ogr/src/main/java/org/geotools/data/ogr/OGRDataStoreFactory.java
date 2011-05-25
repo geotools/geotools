@@ -37,6 +37,7 @@ import org.geotools.data.FileDataStoreFactorySpi;
  * Implementation of the DataStore service provider interface for OGR.
  *
  * @author Andrea Aime, TOPP
+ *
  * @source $URL$
  * @version $Id$
  */

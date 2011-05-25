@@ -47,7 +47,8 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * @author Gabriel Roldan
  * @version $Id: WFS_1_1_0_DataStoreTest.java 31902 2008-11-22 00:37:35Z groldan $
  * @since 2.5.x
- * @source $URL:
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/wfs-ng/src/test/java/org/geotools/data/wfs/v1_1_0/WFS_1_1_0_DataStoreTest.java $
  *         http://gtsvn.refractions.net/trunk/modules/plugin/wfs/src/test/java/org/geotools/data
  *         /wfs/v1_1_0/WFSDataStoreTest.java $
  */

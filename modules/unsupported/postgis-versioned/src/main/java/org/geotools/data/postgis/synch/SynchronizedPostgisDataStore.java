@@ -33,6 +33,8 @@ import org.opengis.filter.Filter;
  * 
  * @author markles
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/postgis-versioned/src/main/java/org/geotools/data/postgis/synch/SynchronizedPostgisDataStore.java $
  */
 public class SynchronizedPostgisDataStore implements VersioningDataStore {
 	

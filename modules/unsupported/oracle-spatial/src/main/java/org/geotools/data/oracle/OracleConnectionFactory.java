@@ -35,6 +35,7 @@ import org.geotools.data.jdbc.datasource.DataSourceUtil;
  *
  * @author Sean Geoghegan, Defence Science and Technology Organisation
  * @author $Author: seangeo $
+ *
  * @source $URL$
  * @version $Id$
  * @deprecated Use {@link DataSource}, {@link DataSourceUtil} and {@link DataSourceFinder} instead

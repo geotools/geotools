@@ -23,6 +23,7 @@ import java.io.IOException;
  * VPFDataException.java Created: Mon Mar 03 21:32:32 2003
  *
  * @author <a href="mailto:kobit@users.sourceforge.net">Artur Hefczyc</a>
+ *
  * @source $URL$
  * @version $Id$
  */

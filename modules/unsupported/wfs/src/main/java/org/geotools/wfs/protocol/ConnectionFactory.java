@@ -32,6 +32,7 @@ import org.geotools.data.wfs.protocol.http.HttpMethod;
  * @author Gabriel Roldan (TOPP)
  * @version $Id$
  * @since 2.5.x
+ *
  * @source $URL$
  * @deprecated in favour of {@link HTTPProtocol}
  */

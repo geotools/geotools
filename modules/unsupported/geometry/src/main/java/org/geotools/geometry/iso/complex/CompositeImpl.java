@@ -34,6 +34,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * 
  * @param <T>
  *
+ *
  * @source $URL$
  */
 public abstract class CompositeImpl<T> extends ComplexImpl implements Composite {

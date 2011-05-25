@@ -51,7 +51,8 @@ import org.opengis.util.ProgressListener;
  * Testing {@link GeoTiffReader} as well as {@link IIOMetadataDumper}.
  * 
  * @author Simone Giannecchini
- * @source $URL:
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/coverage-experiment/geotiff/src/test/java/org/geotools/gce/geotiff/GeoTiffReaderTest.java $
  *         http://svn.geotools.org/geotools/trunk/gt/plugin/geotiff/test/org
  *         /geotools/gce/geotiff/GeoTiffReaderTest.java $
  */

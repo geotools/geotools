@@ -28,6 +28,7 @@ DataStore plugins:
    postgis
    spatiallite
    sqlserver
+   teradata
 
 Unsupported plugins:
 
@@ -35,7 +36,6 @@ Unsupported plugins:
    :maxdepth: 1
    
    ingres
-   teradata
 
 The JDBC module is used as the base for all JDBC/database backed datastores. Alone it does not contain any useful functionality. The useful functionality is contained within modules specific to a particular database. 
 

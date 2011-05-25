@@ -1401,15 +1401,18 @@ public final class JDBCDataStore extends ContentDataStore
                     if ( dialect instanceof PreparedStatementSQLDialect ) {
                         PreparedStatement ps = insertSQLPS( featureType, feature, keyValues, cx );
                         try {
-                            ps.execute();    
+                            ((PreparedStatementSQLDialect)dialect).onInsert(ps, cx, featureType);
+                            ps.execute();
                         } finally {
                             closeSafe( ps );
                         }
                     } else {
                         String sql = insertSQL(featureType, feature, keyValues, cx);
-                        LOGGER.log(Level.FINE, "Inserting new feature: {0}", sql);
-
+                        
                         //TODO: execute in batch to improve performance?
+                        ((BasicSQLDialect)dialect).onInsert(st, cx, featureType);
+                        
+                        LOGGER.log(Level.FINE, "Inserting new feature: {0}", sql);
                         st.execute(sql);
                     }
                     
@@ -1458,6 +1461,7 @@ public final class JDBCDataStore extends ContentDataStore
             try {
                 PreparedStatement ps = updateSQLPS(featureType, attributes, values, filter, cx);
                 try {
+                    ((PreparedStatementSQLDialect)dialect).onUpdate(ps, cx, featureType);
                     ps.execute();
                 }
                 finally {
@@ -1470,12 +1474,14 @@ public final class JDBCDataStore extends ContentDataStore
         }
         else {
             String sql = updateSQL(featureType, attributes, values, filter);
-            LOGGER.log(Level.FINE, "Updating feature: {0}", sql);
-            
+
             try {
                 Statement st = cx.createStatement();
 
                 try {
+                    ((BasicSQLDialect)dialect).onUpdate(st, cx, featureType);
+                    
+                    LOGGER.log(Level.FINE, "Updating feature: {0}", sql);
                     st.execute(sql);
                 }
                 finally {
@@ -1508,13 +1514,18 @@ public final class JDBCDataStore extends ContentDataStore
             try {
                 if ( dialect instanceof PreparedStatementSQLDialect ) {
                     st = deleteSQLPS(featureType,filter,cx);
-                    ((PreparedStatement)st).execute();
+                    PreparedStatement ps = (PreparedStatement) st;
+                    
+                    ((PreparedStatementSQLDialect) dialect).onDelete(ps, cx, featureType);
+                    ps.execute();
                 }
                 else {
                     String sql = deleteSQL(featureType, filter);
-                    LOGGER.log(Level.FINE, "Removing feature(s): {0}", sql);
-    
+
                     st = cx.createStatement();
+                    ((BasicSQLDialect) dialect).onDelete(st, cx, featureType);
+                    
+                    LOGGER.log(Level.FINE, "Removing feature(s): {0}", sql);
                     st.execute(sql);
                 }
             }
@@ -1894,12 +1905,18 @@ public final class JDBCDataStore extends ContentDataStore
             ResultSet rs = null;
             if ( getSQLDialect() instanceof PreparedStatementSQLDialect ) {
                 st = selectSQLPS(featureType, query, cx);
-                rs = ((PreparedStatement)st).executeQuery();
+                
+                PreparedStatement ps = (PreparedStatement) st;
+                ((PreparedStatementSQLDialect)getSQLDialect()).onSelect(ps, cx, featureType);
+                rs = ps.executeQuery();
             }
             else {
                 String sql = selectSQL(featureType, query);
-                LOGGER.fine( sql );
+                
                 st = cx.createStatement();
+                ((BasicSQLDialect)getSQLDialect()).onSelect(st, cx, featureType);
+                
+                LOGGER.fine( sql );
                 rs = st.executeQuery( sql );
             }
             

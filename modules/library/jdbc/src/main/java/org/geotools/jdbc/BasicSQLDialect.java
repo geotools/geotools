@@ -18,8 +18,12 @@ package org.geotools.jdbc;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import org.geotools.data.jdbc.FilterToSQL;
+import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.expression.Literal;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -98,5 +102,68 @@ public abstract class BasicSQLDialect extends SQLDialect {
         f2s.setCapabilities(BASE_DBMS_CAPABILITIES);
         return f2s;
     }
-    
+
+    /**
+     * Callback invoked before a SELECT statement is executed against the database.
+     * <p>
+     * The callback is provided with both the statement being executed and the database connection.
+     * Neither should be closed. Any statements created from the connection however in this method
+     * should be closed.
+     * </p>
+     * @param select The select statement being executed
+     * @param cx The database connection
+     * @param featureType The feature type the select is executing against.
+     * 
+     * @throws SQLException
+     */
+    public void onSelect(Statement select, Connection cx, SimpleFeatureType featureType) throws SQLException {
+    }
+
+    /**
+     * Callback invoked before a DELETE statement is executed against the database.
+     * <p>
+     * The callback is provided with both the statement being executed and the database connection.
+     * Neither should be closed. Any statements created from the connection however in this method
+     * should be closed.
+     * </p>
+     * @param delete The delete statement being executed
+     * @param cx The database connection
+     * @param featureType The feature type the delete is executing against.
+     * 
+     * @throws SQLException
+     */
+    public void onDelete(Statement delete, Connection cx, SimpleFeatureType featureType) throws SQLException {
+    }
+
+    /**
+     * Callback invoked before an INSERT statement is executed against the database.
+     * <p>
+     * The callback is provided with both the statement being executed and the database connection.
+     * Neither should be closed. Any statements created from the connection however in this method
+     * should be closed.
+     * </p>
+     * @param insert The delete statement being executed
+     * @param cx The database connection
+     * @param featureType The feature type the insert is executing against.
+     * 
+     * @throws SQLException
+     */
+    public void onInsert(Statement insert, Connection cx, SimpleFeatureType featureType) throws SQLException {
+    }
+
+    /**
+     * Callback invoked before an UPDATE statement is executed against the database.
+     * <p>
+     * The callback is provided with both the statement being executed and the database connection.
+     * Neither should be closed. Any statements created from the connection however in this method
+     * should be closed.
+     * </p>
+     * @param update The delete statement being executed
+     * @param cx The database connection
+     * @param featureType The feature type the update is executing against.
+     * 
+     * @throws SQLException
+     */
+    public void onUpdate(Statement update, Connection cx, SimpleFeatureType featureType) throws SQLException {
+    }
 }

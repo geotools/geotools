@@ -50,6 +50,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * 
  * @author Simone Giannecchini (simboss)
  * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for jar:file:foo.jar/bar.properties like URLs
+ *
+ * @source $URL$
  */
 public final class ImagePyramidFormat extends AbstractGridFormat implements Format {
 

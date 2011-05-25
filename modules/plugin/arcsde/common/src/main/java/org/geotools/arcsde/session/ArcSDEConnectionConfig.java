@@ -25,7 +25,8 @@ import java.util.Map;
  * Represents a set of ArcSDE database connection parameters.
  * 
  * @author Gabriel Roldan
- * @source $URL:
+ *
+ * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/common/src/main/java/org/geotools
  *         /arcsde/session/ArcSDEConnectionConfig.java $
  * @version $Id$

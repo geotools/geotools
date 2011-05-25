@@ -23,6 +23,7 @@ import junit.framework.TestCase;
  * DOCUMENT ME!
  *
  * @author rgoulds
+ *
  * @source $URL$
  */
 public class WorldImageFormatTest extends TestCase {

@@ -28,8 +28,8 @@ import org.geotools.index.quadtree.StoreException;
  * DOCUMENT ME!
  * 
  * @author Tommaso Nolli
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/shapefile/src/main/java/org/geotools/index/quadtree/fs/IndexHeader.java $
+ *
+ * @source $URL$
  */
 public class IndexHeader {
     public static final byte LSB_ORDER = -1;

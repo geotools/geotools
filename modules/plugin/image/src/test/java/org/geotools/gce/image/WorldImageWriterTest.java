@@ -40,8 +40,8 @@ import org.opengis.referencing.operation.TransformException;
  * 
  * @author Simone Giannecchini
  * @author rgould
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/image/src/test/java/org/geotools/gce/image/WorldImageWriterTest.java $
+ *
+ * @source $URL$
  */
 public class WorldImageWriterTest extends WorldImageBaseTestCase {
 	private final static String[] supportedFormat = new String[] { "tiff",

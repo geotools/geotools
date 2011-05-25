@@ -29,6 +29,7 @@ import org.geotools.jdbc.SQLDialect;
  * @author Justin Deoliveira, OpenGEO
  *
  *
+ *
  * @source $URL$
  */
 public class SQLServerDataStoreFactory extends JDBCDataStoreFactory {

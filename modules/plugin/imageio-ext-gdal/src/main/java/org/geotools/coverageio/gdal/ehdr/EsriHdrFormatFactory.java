@@ -35,6 +35,8 @@ import org.opengis.coverage.grid.Format;
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini (simboss), GeoSolutions
  * @since 2.5.x
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/plugin/imageio-ext-gdal/src/main/java/org/geotools/coverageio/gdal/ehdr/EsriHdrFormatFactory.java $
  */
 public final class EsriHdrFormatFactory implements GridFormatFactorySpi {
     /** Logger. */

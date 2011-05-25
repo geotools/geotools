@@ -60,8 +60,8 @@ import org.geotools.resources.NIOUtilities;
  * 
  * @author Ian Schneider
  * @author Tommaso Nolli
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/shapefile/src/main/java/org/geotools/data/shapefile/dbf/IndexedDbaseFileReader.java $
+ *
+ * @source $URL$
  */
 public class IndexedDbaseFileReader extends DbaseFileReader {
 

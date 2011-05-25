@@ -55,6 +55,7 @@ import com.vividsolutions.jts.io.WKTWriter;
  * @author Justin Deoliveira, OpenGeo
  *
  *
+ *
  * @source $URL$
  */
 public class SpatiaLiteDialect extends BasicSQLDialect {

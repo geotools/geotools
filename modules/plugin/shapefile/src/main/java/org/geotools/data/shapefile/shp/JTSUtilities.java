@@ -39,8 +39,8 @@ import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
  * 
  * @author aaime
  * @author Ian Schneider
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/shapefile/src/main/java/org/geotools/data/shapefile/shp/JTSUtilities.java $
+ *
+ * @source $URL$
  */
 public class JTSUtilities {
 

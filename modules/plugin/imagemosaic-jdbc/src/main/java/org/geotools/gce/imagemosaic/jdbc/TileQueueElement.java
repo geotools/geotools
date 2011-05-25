@@ -27,6 +27,8 @@ import org.geotools.geometry.GeneralEnvelope;
  * 
  * @author mcr
  * 
+ *
+ * @source $URL$
  */
 public class TileQueueElement {
 

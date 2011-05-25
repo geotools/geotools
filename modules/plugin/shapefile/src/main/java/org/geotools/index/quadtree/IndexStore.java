@@ -22,8 +22,8 @@ import org.geotools.data.shapefile.shp.IndexFile;
  * DOCUMENT ME!
  * 
  * @author Tommaso Nolli
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/shapefile/src/main/java/org/geotools/index/quadtree/IndexStore.java $
+ *
+ * @source $URL$
  */
 public interface IndexStore {
     /**

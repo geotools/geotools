@@ -59,6 +59,8 @@ import com.vividsolutions.jts.geom.Point;
  * </pre>
  * @author Justin Deoliveira, OpenGeo
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/plugin/charts/src/main/java/org/geotools/renderer/chart/GeometryRenderer.java $
  */
 public class GeometryRenderer extends AbstractXYItemRenderer {
 

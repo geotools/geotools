@@ -28,6 +28,7 @@ import java.nio.channels.ReadableByteChannel;
  * 
  * @author jesse
  *
+ *
  * @source $URL$
  */
 public class ReadableByteChannelDecorator implements ReadableByteChannel {

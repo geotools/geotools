@@ -40,8 +40,8 @@ import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * 
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/shapefile/src/test/java/org/geotools/data/shapefile/ShapefileReadWriteTest.java $
+ *
+ * @source $URL$
  * @version $Id$
  * @author Ian Schneider
  */

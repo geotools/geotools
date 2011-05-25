@@ -39,9 +39,10 @@ import org.geotools.arcsde.session.ArcSDEConnectionConfig;
  * connection properties
  * 
  * @author Gabriel Roldan
- * @source $URL: http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/
+ *
+ * @source $URL$
  *         datastore/src/main/java /org/geotools/arcsde/pool/ArcSDEConnectionConfig.java $
- * @version $Id: ArcSDEDataStoreConfig.java 95099 2011-01-13 14:18:17Z WIEN1::lanadvhmu $
+ * @version $Id$
  */
 public class ArcSDEDataStoreConfig {
     /*

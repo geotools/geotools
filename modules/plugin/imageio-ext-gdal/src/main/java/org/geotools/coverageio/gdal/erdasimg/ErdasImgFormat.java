@@ -39,6 +39,8 @@ import org.opengis.parameter.GeneralParameterDescriptor;
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini (simboss), GeoSolutions
  * @since 2.5.x
+ *
+ * @source $URL$
  */
 public final class ErdasImgFormat extends BaseGDALGridFormat implements Format {
     /**

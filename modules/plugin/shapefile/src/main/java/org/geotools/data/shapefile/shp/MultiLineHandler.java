@@ -34,8 +34,8 @@ import com.vividsolutions.jts.geom.MultiLineString;
  * The default JTS handler for shapefile. Currently uses the default JTS
  * GeometryFactory, since it doesn't seem to matter.
  * 
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/shapefile/src/main/java/org/geotools/data/shapefile/shp/MultiLineHandler.java $
+ *
+ * @source $URL$
  */
 public class MultiLineHandler implements ShapeHandler {
     final ShapeType shapeType;

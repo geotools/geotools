@@ -69,6 +69,8 @@ import com.vividsolutions.jts.geom.Geometry;
  * 
  * @author Daniele Romagnoli, GeoSolutions SAS
  * 
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/plugin/imagemosaic/src/test/java/org/geotools/gce/imagemosaic/OverviewsControllerTest.java $
  */
 public class OverviewsControllerTest extends Assert{
 

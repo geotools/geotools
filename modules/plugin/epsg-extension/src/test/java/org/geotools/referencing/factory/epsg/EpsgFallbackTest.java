@@ -38,6 +38,7 @@ import junit.framework.TestSuite;
  * Tests {@link FactoryUsingWKT} as a fallback after {@link DefaultFactory}.
  * This method performs the tests through the {@link CRS#decode} method.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Jody Garnett

@@ -39,6 +39,8 @@ import org.opengis.parameter.GeneralParameterDescriptor;
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini (simboss), GeoSolutions
  * @since 2.5.x
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/plugin/imageio-ext-gdal/src/main/java/org/geotools/coverageio/gdal/ehdr/EsriHdrFormat.java $
  */
 public final class EsriHdrFormat extends BaseGDALGridFormat implements Format {
     /**

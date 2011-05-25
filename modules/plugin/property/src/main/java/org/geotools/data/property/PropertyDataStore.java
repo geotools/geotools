@@ -45,6 +45,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * 
  * @author Jody Garnett, Refractions Research Inc.
  *
+ *
  * @source $URL$
  */
 public class PropertyDataStore extends AbstractDataStore {

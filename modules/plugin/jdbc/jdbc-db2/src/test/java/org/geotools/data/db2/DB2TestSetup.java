@@ -33,6 +33,7 @@ import org.geotools.util.logging.Logging;
  * @author Christian Mueller
  *
  *
+ *
  * @source $URL$
  */
 public class DB2TestSetup extends JDBCTestSetup {

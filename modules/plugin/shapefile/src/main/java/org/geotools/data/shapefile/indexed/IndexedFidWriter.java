@@ -35,6 +35,7 @@ import org.geotools.resources.NIOUtilities;
  * 
  * @author Jesse
  *
+ *
  * @source $URL$
  */
 public class IndexedFidWriter implements FileWriter {

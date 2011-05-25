@@ -40,8 +40,8 @@ import org.geotools.resources.NIOUtilities;
  * Class to represent the header of a Dbase III file. Creation date: (5/15/2001
  * 5:15:30 PM)
  * 
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/shapefile/src/main/java/org/geotools/data/shapefile/dbf/DbaseFileHeader.java $
+ *
+ * @source $URL$
  */
 public class DbaseFileHeader {
     // Constant for the size of a record

@@ -77,6 +77,8 @@ import org.opengis.referencing.operation.TransformException;
  * 
  * @author Daniele Romagnoli, GeoSolutions.
  * @author Simone Giannecchini (simboss), GeoSolutions
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/plugin/jp2k/src/main/java/org/geotools/coverageio/jp2k/JP2KReader.java $
  */
 public final class JP2KReader extends AbstractGridCoverage2DReader implements
         GridCoverageReader {

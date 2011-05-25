@@ -41,8 +41,8 @@ import org.geotools.resources.NIOUtilities;
  * May 1997'</i></a>
  * 
  * @author Ian Schneider
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/shapefile/src/main/java/org/geotools/data/shapefile/shp/IndexFile.java $
+ *
+ * @source $URL$
  */
 public class IndexFile implements FileReader {
     private static final Logger LOGGER = org.geotools.util.logging.Logging

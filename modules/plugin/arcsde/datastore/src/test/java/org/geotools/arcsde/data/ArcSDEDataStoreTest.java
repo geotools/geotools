@@ -60,7 +60,8 @@ import com.vividsolutions.jts.geom.Point;
  * ArcSDEDAtaStore test cases
  * 
  * @author Gabriel Roldan, Axios Engineering
- * @source $URL:
+ *
+ * @source $URL$
  *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/test/java
  *         /org/geotools/arcsde/data/ArcSDEDataStoreTest.java $
  * @version $Id$

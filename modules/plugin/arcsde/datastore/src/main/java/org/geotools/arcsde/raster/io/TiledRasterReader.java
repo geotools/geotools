@@ -54,6 +54,8 @@ import org.opengis.coverage.grid.GridEnvelope;
  * </p>
  * 
  * @author Gabriel Roldan
+ *
+ * @source $URL$
  * @version $Id$
  * @since 2.5.7
  */

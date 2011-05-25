@@ -39,7 +39,8 @@ import com.esri.sde.sdk.client.SeVersion;
  * @author Gabriel Roldan (TOPP)
  * @version $Id$
  * @since 2.5.x
- * @source $URL:
+ *
+ * @source $URL$
  *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
  *         /org/geotools/arcsde/data/versioning/TransactionVersionHandler.java $
  */

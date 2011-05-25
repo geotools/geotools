@@ -50,7 +50,8 @@ import org.opengis.referencing.operation.MathTransform;
  *
  * Testing {@link JP2KReader}
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/jp2k/src/test/java/org/geotools/coverageio/jp2kak/JP2KTest.java $
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/plugin/jp2k/src/test/java/org/geotools/coverageio/jp2k/JP2KTest.java $
  */
 public final class JP2KTest extends BaseJP2K {
 	

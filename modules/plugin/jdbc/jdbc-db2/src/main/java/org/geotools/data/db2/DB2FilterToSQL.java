@@ -99,6 +99,7 @@ import java.util.logging.Logger;
  *
  * @author Mueller Christian
  *
+ *
  * @source $URL$
  */
 public class DB2FilterToSQL extends PreparedFilterToSQL{

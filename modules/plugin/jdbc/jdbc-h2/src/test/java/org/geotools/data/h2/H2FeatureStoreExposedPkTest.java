@@ -29,7 +29,8 @@ import org.geotools.jdbc.JDBCTestSetup;
  * @author Justin Deoliveira, The Open Planning Project
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/jdbc/jdbc-h2/src/test/java/org/geotools/data/h2/H2FeatureStoreTest.java $
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/plugin/jdbc/jdbc-h2/src/test/java/org/geotools/data/h2/H2FeatureStoreExposedPkTest.java $
  */
 public class H2FeatureStoreExposedPkTest extends JDBCFeatureStoreExposePkTest {
     protected JDBCTestSetup createTestSetup() {

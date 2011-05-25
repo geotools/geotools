@@ -40,6 +40,8 @@ import org.opengis.util.ProgressListener;
  * 
  * @author Andrea Antonello (www.hydrologis.com)
  * @since 1.1.0
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/plugin/grassraster/src/main/java/org/geotools/gce/grassraster/core/CompressesRasterWriter.java $
  */
 public class CompressesRasterWriter {
 

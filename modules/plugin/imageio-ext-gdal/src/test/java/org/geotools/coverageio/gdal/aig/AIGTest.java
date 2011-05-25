@@ -46,7 +46,8 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
  * 
  * Testing {@link AIGReader}
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/imageio-ext-gdal/src/test/java/org/geotools/coverageio/gdal/ehdr/EsriHdrTest.java $
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/plugin/imageio-ext-gdal/src/test/java/org/geotools/coverageio/gdal/aig/AIGTest.java $
  */
 public final class AIGTest extends GDALTestCase {
      /**

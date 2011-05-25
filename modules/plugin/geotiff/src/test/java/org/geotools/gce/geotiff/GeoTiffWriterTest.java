@@ -57,8 +57,8 @@ import org.opengis.referencing.operation.TransformException;
 /**
  * @author Simone Giannecchini
  * 
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/plugin/geotiff/test/org/geotools/gce/geotiff/GeoTiffVisualizationTest.java $
+ *
+ * @source $URL$
  */
 @SuppressWarnings("deprecation")
 public class GeoTiffWriterTest extends Assert {

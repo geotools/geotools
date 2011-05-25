@@ -827,7 +827,8 @@ class ArcSDEQuery {
      * 
      * @author $author$
      * 
-     * @source $URL:
+ *
+ * @source $URL$
      *         http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/main/java
      *         /org/geotools/arcsde/data/ArcSDEQuery.java $
      * @version $Revision: 1.9 $

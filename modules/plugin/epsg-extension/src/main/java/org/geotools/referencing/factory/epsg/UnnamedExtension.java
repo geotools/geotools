@@ -27,6 +27,7 @@ import org.geotools.factory.Hints;
  * {@code "EPSG"} name space.
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Andrea Aime

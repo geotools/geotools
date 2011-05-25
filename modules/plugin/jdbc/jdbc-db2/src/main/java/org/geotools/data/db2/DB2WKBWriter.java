@@ -44,6 +44,7 @@ import com.vividsolutions.jts.util.Assert;
  * for JTS Java Doc
  *
  *
+ *
  * @source $URL$
  */
 

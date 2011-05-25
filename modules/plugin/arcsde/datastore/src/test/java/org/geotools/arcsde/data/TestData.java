@@ -77,7 +77,8 @@ import com.vividsolutions.jts.operation.valid.TopologyValidationError;
  * Provides access to the ArcSDEDataStore test data configuration.
  * 
  * @author Gabriel Roldan, Axios Engineering
- * @source $URL:
+ *
+ * @source $URL$
  *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/test/java
  *         /org/geotools/arcsde/data/TestData.java $
  * @version $Id$

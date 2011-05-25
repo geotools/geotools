@@ -29,6 +29,8 @@ import org.opengis.coverage.grid.Format;
  * 
  * @author Simone Giannecchini (simboss)
  * @since 2.3
+ *
+ * @source $URL$
  */
 public final class ImagePyramidFormatFactory implements GridFormatFactorySpi {
 	/**

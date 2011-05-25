@@ -6,6 +6,7 @@ package com.esri.sde.sdk;
  * @author sfarber
  *
  *
+ *
  * @source $URL$
  */
 public class GeoToolsDummyAPI {

@@ -37,6 +37,7 @@ import com.vividsolutions.jts.geom.Envelope;
  * <BR/>The dbf file may not be necessary, if not, just pass null as the
  * DbaseFileReader
  *
+ *
  * @source $URL$
  */
 public class ShapefileAttributeReader extends AbstractAttributeIO implements

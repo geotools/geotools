@@ -76,6 +76,8 @@ import com.vividsolutions.jts.geom.Envelope;
  * @since 2.5
  * 
  * 
+ *
+ * @source $URL$
  */
 public class ImageMosaicJDBCReader extends AbstractGridCoverage2DReader {
     private final static Logger LOGGER = Logging.getLogger(ImageMosaicJDBCReader.class.getPackage()

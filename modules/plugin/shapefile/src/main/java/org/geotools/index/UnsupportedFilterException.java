@@ -21,8 +21,8 @@ package org.geotools.index;
  * contain a geometry literal (or anything else we can guess a bounds for).
  * 
  * @author Tommaso Nolli
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/shapefile/src/main/java/org/geotools/index/UnsupportedFilterException.java $
+ *
+ * @source $URL$
  */
 public class UnsupportedFilterException extends Exception {
     private static final long serialVersionUID = 3292904738782996000L;

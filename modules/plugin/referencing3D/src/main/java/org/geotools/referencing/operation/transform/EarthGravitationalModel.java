@@ -63,6 +63,7 @@ import org.geotools.metadata.iso.citation.Citations;
  * file, with some spaces trimmed.
  *
  * @since 2.3
+ *
  * @source $URL$
  * @version $Id$
  * @author Pierre Cardinal

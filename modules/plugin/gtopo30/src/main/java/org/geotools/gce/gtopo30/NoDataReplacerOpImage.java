@@ -65,6 +65,7 @@ import org.geotools.resources.image.ImageUtilities;
  * {@link java.awt.image.renderable.ContextualRenderedImageFactory}. The image
  * operation name is "org.geotools.gce.NoDataReplacer".
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Simone Giannecchini

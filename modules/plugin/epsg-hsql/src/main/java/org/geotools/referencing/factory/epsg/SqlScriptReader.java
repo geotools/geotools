@@ -24,6 +24,7 @@ import java.io.Reader;
  * Reads a multiline SQL file extracting each command separately. Skips empty lines, assumes
  * comments start with "--" and are on their own line 
  *
+ *
  * @source $URL$
  */
 public class SqlScriptReader {

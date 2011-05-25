@@ -41,8 +41,8 @@ import com.vividsolutions.jts.geom.Polygon;
  * 
  * @author aaime
  * @author Ian Schneider
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/shapefile/src/main/java/org/geotools/data/shapefile/shp/PolygonHandler.java $
+ *
+ * @source $URL$
  * @version $Id$
  */
 public class PolygonHandler implements ShapeHandler {

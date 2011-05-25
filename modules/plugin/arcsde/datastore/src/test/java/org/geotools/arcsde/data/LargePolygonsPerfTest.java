@@ -48,6 +48,8 @@ import com.vividsolutions.jts.util.Stopwatch;
 /**
  * This is a legacy benchmarking suite I'm using to assess the performance of some very large
  * datasets. Will be removed.
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/plugin/arcsde/datastore/src/test/java/org/geotools/arcsde/data/LargePolygonsPerfTest.java $
  */
 @Ignore
 public class LargePolygonsPerfTest {

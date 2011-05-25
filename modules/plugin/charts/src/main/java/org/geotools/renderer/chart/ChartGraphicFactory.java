@@ -59,6 +59,7 @@ import org.opengis.filter.expression.Expression;
  * </p>
  * @since 2.5.6
  *
+ *
  * @source $URL$
  */
 public class ChartGraphicFactory implements ExternalGraphicFactory {

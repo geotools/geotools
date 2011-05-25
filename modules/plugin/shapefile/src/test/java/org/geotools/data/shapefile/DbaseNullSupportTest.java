@@ -24,6 +24,8 @@ import org.geotools.data.shapefile.dbf.DbaseFileWriter;
  * 
  * This is a separate test from the DbaseFileTest#testEmptyFields method
  * since it seems to be checking for something else.
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/plugin/shapefile/src/test/java/org/geotools/data/shapefile/DbaseNullSupportTest.java $
  */
 public class DbaseNullSupportTest extends TestCase {
     /** declare a specific charset for test portability */

@@ -26,6 +26,8 @@ import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
  * @author Daniele Romagnoli, GeoSolutions S.A.S.
  * @author Simone Giannecchini, GeoSolutions S.A.S.
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/plugin/imagemosaic/src/main/java/org/geotools/gce/imagemosaic/ImageMosaicDescriptor.java $
  */
 public class ImageMosaicDescriptor {
     

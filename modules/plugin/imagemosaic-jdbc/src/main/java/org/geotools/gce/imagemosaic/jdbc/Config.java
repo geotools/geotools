@@ -39,6 +39,8 @@ import org.xml.sax.InputSource;
  * 
  * @author mcr
  * 
+ *
+ * @source $URL$
  */
 public class Config {
     static private Map<String, Config> ConfigMap = new Hashtable<String, Config>(); // Hashtable

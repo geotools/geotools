@@ -44,6 +44,8 @@ import com.sun.media.imageioimpl.plugins.jpeg2000.J2KImageReaderSpi;
  *
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini (simboss), GeoSolutions
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/plugin/jp2k/src/main/java/org/geotools/coverageio/jp2k/JP2KFormatFactory.java $
  */
 public final class JP2KFormatFactory implements GridFormatFactorySpi {
     /** Logger. */

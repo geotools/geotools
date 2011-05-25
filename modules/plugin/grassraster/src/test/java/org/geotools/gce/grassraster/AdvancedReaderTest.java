@@ -27,6 +27,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * Reader tests for different active region cases.
  * 
  * @author Andrea Antonello (www.hydrologis.com)
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/plugin/grassraster/src/test/java/org/geotools/gce/grassraster/AdvancedReaderTest.java $
  */
 public class AdvancedReaderTest extends TestCase {
 

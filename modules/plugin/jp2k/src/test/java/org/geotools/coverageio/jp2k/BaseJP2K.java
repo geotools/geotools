@@ -33,6 +33,8 @@ import org.junit.Assert;
  * @author Simone Giannecchini (simboss), GeoSolutions
  *
  * Base testing class initializing JAI properties to be used during tests.
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/plugin/jp2k/src/test/java/org/geotools/coverageio/jp2k/BaseJP2K.java $
  */
 @SuppressWarnings("deprecation")
 public class BaseJP2K extends Assert{

@@ -40,8 +40,8 @@ import org.opengis.parameter.ParameterValueGroup;
  * write back the in gtopo30 format.
  * 
  * @author Simone Giannecchini
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/plugin/gtopo30/test/org/geotools/gce/gtopo30/GT30ReaderWriterTest.java $
+ *
+ * @source $URL$
  */
 public class GT30DecimationTest extends GT30TestBase {
 	/**

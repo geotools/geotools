@@ -56,6 +56,7 @@ import org.opengis.filter.identity.FeatureId;
  * Test functioning of PropertyDataStore.
  * 
  * @author Jody Garnett, Refractions Research Inc.
+ *
  * @source $URL$
  */
 public class PropertyDataStoreTest extends TestCase {

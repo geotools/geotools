@@ -286,6 +286,8 @@ class RasterLayerResponse{
 	 * My specific {@link MaxVisitor} that keeps track of the feature used for the maximum.
 	 * @author Simone Giannecchini, GeoSolutions SAS
 	 *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/plugin/imagemosaic/src/main/java/org/geotools/gce/imagemosaic/RasterLayerResponse.java $
 	 */
 	public static class MaxVisitor2 extends MaxVisitor{
 

@@ -42,6 +42,8 @@ import org.geotools.util.logging.Logging;
  * 
  * @author Simone Giannecchini, GeoSolutions SAS
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/plugin/imagemosaic/src/main/java/org/geotools/gce/imagemosaic/catalog/GranuleCatalogFactory.java $
  */
 public abstract class GranuleCatalogFactory {	
 	

@@ -46,6 +46,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * fid3=3|Dave|<i>well known text</i>
  * </code></pre>
  * @author jgarnett
+ *
  * @source $URL$
  */
 public class PropertyAttributeWriter implements AttributeWriter {

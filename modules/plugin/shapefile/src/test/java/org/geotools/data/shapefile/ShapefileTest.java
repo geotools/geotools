@@ -39,8 +39,8 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 
 /**
  * 
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/shapefile/src/test/java/org/geotools/data/shapefile/ShapefileTest.java $
+ *
+ * @source $URL$
  * @version $Id$
  * @author Ian Schneider
  * @author James Macgill

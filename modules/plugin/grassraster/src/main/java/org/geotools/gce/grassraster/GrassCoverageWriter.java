@@ -53,6 +53,8 @@ import org.opengis.util.ProgressListener;
  * @since 3.0
  * @see GrassBinaryImageWriter
  * @see GrassBinaryRasterWriteHandler
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/plugin/grassraster/src/main/java/org/geotools/gce/grassraster/GrassCoverageWriter.java $
  */
 public class GrassCoverageWriter extends AbstractGridCoverageWriter implements GridCoverageWriter {
     private File output;

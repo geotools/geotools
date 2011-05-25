@@ -37,6 +37,8 @@ import org.opengis.coverage.grid.GridCoverageReader;
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini (simboss), GeoSolutions
  * @since 2.5.x
+ *
+ * @source $URL$
  */
 public final class MrSIDReader extends BaseGDALGridCoverage2DReader implements
         GridCoverageReader {

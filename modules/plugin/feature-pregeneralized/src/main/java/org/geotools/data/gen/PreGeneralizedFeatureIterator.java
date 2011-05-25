@@ -29,6 +29,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * 
  * Implementation of {@link FeatureIterator} for {@link PreGeneralizedSimpleFeature}
  *
+ *
  * @source $URL$
  */
 public class PreGeneralizedFeatureIterator implements SimpleFeatureIterator {

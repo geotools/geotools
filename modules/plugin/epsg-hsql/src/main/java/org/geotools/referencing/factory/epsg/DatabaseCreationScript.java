@@ -35,6 +35,7 @@ import org.hsqldb.jdbc.jdbcDataSource;
 /**
  * Utility used to create a HSQL zipped version of the official EPSG database 
  *
+ *
  * @source $URL$
  */
 public class DatabaseCreationScript {

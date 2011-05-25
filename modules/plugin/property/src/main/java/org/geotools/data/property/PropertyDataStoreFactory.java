@@ -30,6 +30,7 @@ import org.geotools.data.DataStoreFactorySpi;
  * DataStore factory that creates {@linkplain org.geotools.data.property.PropertyDataStore}s
  *
  * @author jgarnett
+ *
  * @source $URL$
  * @version $Id$
  */

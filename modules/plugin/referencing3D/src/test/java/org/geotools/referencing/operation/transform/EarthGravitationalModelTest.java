@@ -36,6 +36,7 @@ import org.geotools.geometry.GeneralDirectPosition;
  * Tests the {@link EarthGravitationalModel} class.
  *
  * @since 2.3
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

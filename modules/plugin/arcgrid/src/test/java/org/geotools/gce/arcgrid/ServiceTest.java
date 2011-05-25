@@ -31,6 +31,7 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
  * 
  * @author Simone Giannecchini
  * @author ian
+ *
  * @source $URL$
  */
 public class ServiceTest extends TestCase {

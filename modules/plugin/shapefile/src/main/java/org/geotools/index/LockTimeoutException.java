@@ -20,8 +20,8 @@ package org.geotools.index;
  * DOCUMENT ME!
  * 
  * @author Tommaso Nolli
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/shapefile/src/main/java/org/geotools/index/LockTimeoutException.java $
+ *
+ * @source $URL$
  */
 public class LockTimeoutException extends Exception {
     /**

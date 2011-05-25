@@ -53,6 +53,7 @@ import org.opengis.referencing.FactoryException;
  * <p>
  * 
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Jody Garnett

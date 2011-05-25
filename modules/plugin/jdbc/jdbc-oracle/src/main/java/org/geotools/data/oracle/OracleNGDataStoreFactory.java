@@ -30,6 +30,7 @@ import org.geotools.jdbc.SQLDialect;
  * @author Justin Deoliveira, OpenGEO
  * @author Andrea Aime, OpenGEO
  *
+ *
  * @source $URL$
  */
 public class OracleNGDataStoreFactory extends JDBCDataStoreFactory {

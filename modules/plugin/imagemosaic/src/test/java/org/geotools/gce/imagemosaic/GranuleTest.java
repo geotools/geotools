@@ -58,6 +58,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for jar:file:foo.jar/bar.properties URLs
  *
  *
+ *
  * @source $URL$
  */
 public class GranuleTest extends Assert {

@@ -42,8 +42,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * Testing {@link GeoTiffReader} as well as {@link IIOMetadataDumper}.
  * 
  * @author Simone Giannecchini
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/plugin/geotiff/test/org/geotools/gce/geotiff/GeoTiffReaderTest.java $
+ *
+ * @source $URL$
  */
 public class GeoTiffReaderTest extends Assert {
 	private final static Logger LOGGER = org.geotools.util.logging.Logging

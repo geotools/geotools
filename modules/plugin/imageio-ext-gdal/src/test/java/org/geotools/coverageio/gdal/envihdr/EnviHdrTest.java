@@ -50,6 +50,8 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
 /**
  * @author Mathew Wyatt, CSIRO Australia
  * @author Daniele Romagnoli, GeoSolutions SAS
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/plugin/imageio-ext-gdal/src/test/java/org/geotools/coverageio/gdal/envihdr/EnviHdrTest.java $
  */
 public class EnviHdrTest extends GDALTestCase {
 

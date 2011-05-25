@@ -30,6 +30,8 @@ import org.geotools.coverage.grid.io.GridFormatFactorySpi;
  * format.
  * 
  * @author Andrea Antonello (www.hydrologis.com)
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/plugin/grassraster/src/main/java/org/geotools/gce/grassraster/format/GrassCoverageFormatFactory.java $
  */
 public class GrassCoverageFormatFactory implements GridFormatFactorySpi {
 

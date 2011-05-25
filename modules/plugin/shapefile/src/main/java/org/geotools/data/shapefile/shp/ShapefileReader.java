@@ -62,8 +62,8 @@ import com.vividsolutions.jts.geom.Polygon;
  * @author jamesm
  * @author aaime
  * @author Ian Schneider
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/shapefile/src/main/java/org/geotools/data/shapefile/shp/ShapefileReader.java $
+ *
+ * @source $URL$
  */
 public class ShapefileReader implements FileReader {
     private static final Logger LOGGER = Logging.getLogger(ShapefileReader.class);

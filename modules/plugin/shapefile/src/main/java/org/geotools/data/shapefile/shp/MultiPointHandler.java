@@ -29,8 +29,8 @@ import com.vividsolutions.jts.geom.MultiPoint;
  * 
  * @author aaime
  * @author Ian Schneider
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/shapefile/src/main/java/org/geotools/data/shapefile/shp/MultiPointHandler.java $
+ *
+ * @source $URL$
  * 
  */
 public class MultiPointHandler implements ShapeHandler {

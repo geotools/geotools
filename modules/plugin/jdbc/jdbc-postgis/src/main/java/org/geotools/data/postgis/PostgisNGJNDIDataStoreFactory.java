@@ -27,6 +27,7 @@ import static org.geotools.data.postgis.PostgisNGDataStoreFactory.*;
  * @author Christian Mueller
  * 
  *
+ *
  * @source $URL$
  */
 public class PostgisNGJNDIDataStoreFactory extends JDBCJNDIDataStoreFactory {

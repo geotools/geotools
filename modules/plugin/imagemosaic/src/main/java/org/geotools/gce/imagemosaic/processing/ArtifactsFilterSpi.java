@@ -27,6 +27,8 @@ import javax.media.jai.registry.RenderedRegistryMode;
  * OperationRegistrySpi implementation to register the "ArtifactsFilter"
  * operation and its associated image factories.
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/plugin/imagemosaic/src/main/java/org/geotools/gce/imagemosaic/processing/ArtifactsFilterSpi.java $
  */
 public class ArtifactsFilterSpi implements OperationRegistrySpi {
 

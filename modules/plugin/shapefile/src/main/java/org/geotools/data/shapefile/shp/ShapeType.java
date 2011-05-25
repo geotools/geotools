@@ -24,8 +24,8 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  * that.
  * 
  * @author Ian Schneider
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/shapefile/src/main/java/org/geotools/data/shapefile/shp/ShapeType.java $
+ *
+ * @source $URL$
  */
 public final class ShapeType {
 

@@ -58,7 +58,8 @@ import org.geotools.arcsde.session.ISession;
  * 
  * @author Gabriel Roldan, Axios Engineering
  * @version $Id$
- * @source $URL:
+ *
+ * @source $URL$
  *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
  *         /org/geotools/arcsde/data/view/SelectQualifier.java $
  * @since 2.3.x

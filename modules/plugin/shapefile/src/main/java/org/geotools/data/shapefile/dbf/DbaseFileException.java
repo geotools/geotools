@@ -21,8 +21,8 @@ import org.geotools.data.DataSourceException;
 /**
  * Thrown when an error relating to the shapefile occurs.
  * 
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/shapefile/src/main/java/org/geotools/data/shapefile/dbf/DbaseFileException.java $
+ *
+ * @source $URL$
  */
 public class DbaseFileException extends DataSourceException {
 

@@ -48,8 +48,8 @@ import org.opengis.parameter.ParameterDescriptor;
  * the format specific extension (jpg+wld, etc) Designed to be used with
  * GridCoverageExchange.
  * 
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/plugin/image/src/org/geotools/gce/image/WorldImageFormat.java $
+ *
+ * @source $URL$
  * @author Simone Giannecchini
  */
 public final class WorldImageFormat extends AbstractGridFormat implements

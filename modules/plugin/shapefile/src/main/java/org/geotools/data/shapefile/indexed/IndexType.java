@@ -22,6 +22,8 @@ import org.geotools.data.shapefile.ShpFileType;
  * Enumerates the different types of Shapefile geometry indices there are.
  * 
  * @author jesse
+ *
+ * @source $URL$
  */
 public enum IndexType {
     /**

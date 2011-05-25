@@ -43,6 +43,7 @@ import com.vividsolutions.jts.io.WKTWriter;
  * @author Justin Deoliveira, OpenGEO
  *
  *
+ *
  * @source $URL$
  */
 public class H2DialectBasic extends BasicSQLDialect {

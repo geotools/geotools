@@ -46,6 +46,7 @@ import com.vividsolutions.jts.io.WKBWriter;
  * @author Justin Deoliveira, OpenGEO
  *
  *
+ *
  * @source $URL$
  */
 public class H2DialectPrepared extends PreparedStatementSQLDialect {

@@ -29,6 +29,7 @@ import java.util.TreeSet;
  * Container for for GeneralizationInfo objects
  * 
  *
+ *
  * @source $URL$
  */
 public class GeneralizationInfos {

@@ -59,6 +59,8 @@ import com.vividsolutions.jts.io.WKBReader;
  * @author Christian Mueller based on the code of Steve Way and Pablo Najarro
  * 
  * 
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/plugin/imagemosaic-jdbc/src/main/java/org/geotools/gce/imagemosaic/jdbc/custom/JDBCAccessOracleGeoRaster.java $
  **/
 
 public class JDBCAccessOracleGeoRaster extends JDBCAccessCustom {

@@ -41,7 +41,8 @@ import com.esri.sde.sdk.pe.PeProjectionException;
  * implementations
  * 
  * @author Gabriel Roldan
- * @source $URL:
+ *
+ * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/main/java/org
  *         /geotools/arcsde/util/ArcSDEUtils.java $
  * @version $Id$

@@ -32,8 +32,8 @@ import org.geotools.coverage.grid.io.GridFormatFactorySpi;
  * 
  * @author Simone Giannecchini
  * @author mkraemer
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/plugin/gtopo30/src/org/geotools/gce/gtopo30/GTopo30FormatFactory.java $
+ *
+ * @source $URL$
  */
 public class GTopo30FormatFactory implements GridFormatFactorySpi {
 

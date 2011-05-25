@@ -25,8 +25,8 @@ import org.geotools.index.Data;
  * read dbf & shape file forward only
  * 
  * @author Tommaso Nolli
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/shapefile/src/main/java/org/geotools/data/shapefile/indexed/DataComparator.java $
+ *
+ * @source $URL$
  */
 public class DataComparator implements Comparator {
     /**

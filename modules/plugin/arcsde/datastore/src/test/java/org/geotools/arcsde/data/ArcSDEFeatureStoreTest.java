@@ -97,7 +97,8 @@ import com.vividsolutions.jts.io.WKTReader;
  * Unit tests for transaction support
  * 
  * @author Gabriel Roldan, Axios Engineering
- * @source $URL:
+ *
+ * @source $URL$
  *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/da/src/test/java/org
  *         /geotools/arcsde/data/ArcSDEFeatureStoreTest.java $
  * @version $Id$

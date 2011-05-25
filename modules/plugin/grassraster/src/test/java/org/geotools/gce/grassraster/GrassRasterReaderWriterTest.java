@@ -43,6 +43,8 @@ import org.opengis.geometry.Envelope;
  * Test the grass raster reader abd writer.
  * 
  * @author Andrea Antonello (www.hydrologis.com)
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/plugin/grassraster/src/test/java/org/geotools/gce/grassraster/GrassRasterReaderWriterTest.java $
  */
 public class GrassRasterReaderWriterTest extends TestCase {
     private double n = 5140020.0;

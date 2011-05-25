@@ -31,6 +31,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 /**
  * @author Jesse
  *
+ *
  * @source $URL$
  */
 public class LineLazySearchCollectionTest extends TestCaseSupport {

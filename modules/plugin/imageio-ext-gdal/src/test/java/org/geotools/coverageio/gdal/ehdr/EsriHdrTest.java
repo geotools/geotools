@@ -56,6 +56,7 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
  * 
  * Testing {@link ECWReader}
  *
+ *
  * @source $URL$
  */
 public final class EsriHdrTest extends GDALTestCase {

@@ -37,6 +37,8 @@ import org.geotools.arcsde.session.UnavailableConnectionException;
  * 
  * 
  * @author Gabriel Roldan (OpenGeo)
+ *
+ * @source $URL$
  * @version $Id$
  * @since 2.5.7
  * 

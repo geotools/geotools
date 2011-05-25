@@ -33,8 +33,8 @@ import com.vividsolutions.jts.geom.Envelope;
  * DOCUMENT ME!
  * 
  * @author Tommaso Nolli
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/shapefile/src/main/java/org/geotools/index/quadtree/fs/FileSystemNode.java $
+ *
+ * @source $URL$
  */
 public class FileSystemNode extends Node {
     static final int[] ZERO = new int[0];

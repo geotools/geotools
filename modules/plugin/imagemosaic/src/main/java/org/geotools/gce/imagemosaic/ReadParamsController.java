@@ -33,6 +33,8 @@ import org.opengis.referencing.operation.TransformException;
  * Class that fills up properly read params given a {@link RasterLayerRequest}, an {@link OverviewsController}
  * @author Simone Giannecchini, GeoSolutions SAS
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/plugin/imagemosaic/src/main/java/org/geotools/gce/imagemosaic/ReadParamsController.java $
  */
 public class ReadParamsController {
 

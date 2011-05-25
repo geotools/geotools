@@ -31,6 +31,7 @@ import org.geotools.jdbc.JDBCTestSetup;
  * @author Justin Deoliveira, The Open Planning Project
  *
  *
+ *
  * @source $URL$
  */
 public class MySQLTestSetup extends JDBCTestSetup {

@@ -81,8 +81,8 @@ import com.vividsolutions.jts.geom.Point;
 
 /**
  * 
- * @source $URL:
- *         http://svn.geotools.org/geotools/branches/shpLazyLoadingIndex/ext/shape/test/org/geotools/data/shapefile/indexed/ShapefileDataStoreTest.java $
+ *
+ * @source $URL$
  * @version $Id$
  * @author Ian Schneider
  */

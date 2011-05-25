@@ -48,6 +48,8 @@ import com.sun.media.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
  * 
  * @author Simone Giannecchini, GeoSolutions S.A.S.
  * @since 2.3
+ *
+ * @source $URL$
  */
 public final class ImageMosaicFormatFactory implements GridFormatFactorySpi {
         

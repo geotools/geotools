@@ -54,6 +54,8 @@ import org.geotools.gce.grassraster.JGrassMapEnvironment;
  * 
  * @author Andrea Antonello (www.hydrologis.com)
  * @since 3.0
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/plugin/grassraster/src/main/java/org/geotools/gce/grassraster/core/color/JGrassColorTable.java $
  */
 public class JGrassColorTable {
 

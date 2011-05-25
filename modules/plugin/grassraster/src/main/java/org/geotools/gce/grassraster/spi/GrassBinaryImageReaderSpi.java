@@ -34,6 +34,8 @@ import org.geotools.gce.grassraster.GrassBinaryImageWriter;
  * @see GrassBinaryImageReader
  * @see GrassBinaryImageWriter
  * @see GrassBinaryImageReaderSpi
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/plugin/grassraster/src/main/java/org/geotools/gce/grassraster/spi/GrassBinaryImageReaderSpi.java $
  */
 @SuppressWarnings("nls")
 public class GrassBinaryImageReaderSpi extends ImageReaderSpi {

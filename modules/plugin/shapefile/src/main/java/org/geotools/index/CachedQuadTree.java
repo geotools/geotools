@@ -33,6 +33,8 @@ import com.vividsolutions.jts.geom.Envelope;
  * memory structure that 
  * @author Andrea Aime - OpenGeo
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/plugin/shapefile/src/main/java/org/geotools/index/CachedQuadTree.java $
  */
 public class CachedQuadTree {
     static final DataDefinition DATA_DEFINITION = new DataDefinition("US-ASCII");

@@ -53,6 +53,8 @@ import org.opengis.util.ProgressListener;
  * @see ImageReader
  * @see GrassBinaryRasterReadHandler
  * @see GrassBinaryImageMetadata
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/plugin/grassraster/src/main/java/org/geotools/gce/grassraster/GrassBinaryImageReader.java $
  */
 public class GrassBinaryImageReader extends ImageReader {
 

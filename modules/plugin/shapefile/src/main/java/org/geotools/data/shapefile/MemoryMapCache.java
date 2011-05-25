@@ -163,6 +163,8 @@ class MemoryMapCache {
 	/**
 	 * Cleans up the buffers before the soft reference gets deallocated
 	 * @author Andrea Aime
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/plugin/shapefile/src/main/java/org/geotools/data/shapefile/MemoryMapCache.java $
 	 */
 	public class BufferCleaner implements ValueCleaner {
 

@@ -47,6 +47,8 @@ import org.opengis.parameter.GeneralParameterValue;
  * 
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini (simboss), GeoSolutions
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/plugin/jp2k/src/main/java/org/geotools/coverageio/jp2k/JP2KFormat.java $
  */
 public final class JP2KFormat extends AbstractGridFormat implements Format {
     

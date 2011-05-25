@@ -52,6 +52,7 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
  * 
  * Testing {@link MrSIDReader}
  *
+ *
  * @source $URL$
  */
 public final class MrSIDTest extends GDALTestCase {

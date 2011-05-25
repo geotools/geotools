@@ -29,6 +29,8 @@ import org.h2.jdbc.JdbcClob;
  * 
  * @author Andrea Aime - GeoSolutions
  * 
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/plugin/jdbc/jdbc-h2/src/main/java/org/geotools/data/h2/H2ClobConverterFactory.java $
  */
 public class H2ClobConverterFactory implements ConverterFactory {
 

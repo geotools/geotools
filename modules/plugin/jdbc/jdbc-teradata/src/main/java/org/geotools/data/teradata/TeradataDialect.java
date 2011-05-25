@@ -967,7 +967,8 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
             Map<String, Class<?>> mappings) {
         super.registerSqlTypeNameToClassMappings(mappings);
 
-        mappings.put("ST_Geometry", Geometry.class);
+        mappings.put("ST_GEOMETRY", Geometry.class);
+        mappings.put("SYSUDTLIB.ST_GEOMETRY", Geometry.class);
     }
     
     @Override

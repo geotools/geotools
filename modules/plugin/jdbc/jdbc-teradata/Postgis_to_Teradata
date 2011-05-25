@@ -1,0 +1,11 @@
+serial PRIMARY KEY  -> generated always as identity integer
+varchar -> varchar(<number>)
+GeomFromText('wkt') -> 'wkt'
+type geometry -> ST_GEOMETRY
+
+Entering data into geometry columns is similar but spatial_ref_sys table is different
+    srid column in postgis == auth_srid column
+    srid n geometry_columns must be srid so there needs to be a translation.  For example in the default
+    installation srid 4326 == 1619 in teradata so the correct method for inserting 4326 into geometry_columns
+    is to do a SELECT srid FROM spatial_ref_sys WHERE auth_srid=4326;
+creating an index is very different

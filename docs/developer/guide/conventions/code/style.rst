@@ -112,32 +112,7 @@ We do encourage developers to:
 * Update \@version annotation if the interface is ever modified
 * If you would like to include any diagrams or pictures please add them to a *doc-files* folder.
   (This is a reminder of normal javadoc convention).
-* We have a custom \@source annotation to help our javadocs look pretty (and reference the
-  appropraite module).
+* We have a custom \@source taglet to help our javadocs look pretty (and reference the
+  appropriate module). See :doc:`javadocutils`
   
-  The taglet code discards \$URL: \$ if you would like to use svn to expand the correct path
-  as needed.
-  
-  You can use the InsertSourceTag tool to add the \@source to files. 
-  
-  The following will insert the \@source tag in any source file in module **gt-wps** that does
-  not already contain it::
-    
-    cd trunk/build/maven/javadoc
-    mvn exec:java -Dexec.args="../../../modules/unsupported/wps/src"
-
-  Note, there is no need to specify the ``exec.mainClass`` argument on the command line as this is specified in the 
-  javadoc module's pom.xml file.
-
-  Adding ``--replace`` after the source path argument above will force any existing \@source tags to be replaced by newly
-  generated ones.
-
-  Adding ``--anyclass`` will result in non-public classes also being processed.
-
-  Adding ``--svn`` will result in the \@source tag content being enclosed in svn keyword delimiters (\$URL, \$) which enables
-  svn keyword expansion to update the path if the source file is later moved to another package or module. Note, keyword
-  expansion only works with svn, and not for git-svn. When using the ``--svn option`` it is also a good idea to ensure that
-  the svn properties of all source files are set. On a 'nix system you can do this::
-
-    find modules/unsupported/wps/src -type f -name '*.java' -exec svn ps svn:keywords "Id URL" {} \;
 

@@ -512,11 +512,6 @@ There is a small utility class **Filters** that packages up some common Filter o
   Used to adapt a GeoTools 2.2 FilterVisitor to what we use today. The major additions
   are allowing for Filter.INCLUDES and Filter.EXCLUDES as "visitable" targets.
 
-* Filters.and(FilterFactory, Filter, Filter)
-* Filters.or(FilterFactory, Filter, Filter)
-  
-  Used to update GeoTools 2.2 code where Filter was mutable.
-
 * asDouble(Expression)
 * asInt(Expression)
 * asString(Expression)
@@ -561,3 +556,50 @@ There is a small utility class **Filters** that packages up some common Filter o
      
      DuplicatingFilterVisitor duplicate = new DuplicatingFilterVisitor();
      Filter copy = (Filter) filter.accept( duplicate, null );
+
+* Filters.attributeNames(filter, SimpleFeatureType)
+* Filters.propertyNames(expression)
+* Filters.propertyNames(expression, SimpleFeatureType)
+* Filters.propertyNames(filter)
+* Filters.propertyNames(filter, SimpleFeatureType)
+* Filters.findPropertyName( filter );
+  
+  Methods use to query the structure of the provided Filter. Internally these
+  usually use a FilterVisitor to transerse the provided Filter
+  to determine the answer.
+  
+  Here is a quick example using findPropertyName( filter )::
+      
+      String xpath = Filters.findPropertyName(b);
+      if( xpath != null ){
+          // proeprty name found with indicated xpath expression
+      }
+      else {
+          // filter does not contain any references to PropertyName
+      }
+
+* Filters.hasChildren(Filter)
+* Filters.children(Filter)
+* Filters.children(Filter, boolean)
+  
+  Query methods regard "children" only apply to filters *and*, *or* and *not*
+  which are used to combine the results of several filters.
+
+* Filters.and(FilterFactory, Filter, Filter)
+* Filters.or(FilterFactory, Filter, Filter)
+  
+  Used to combine two filters; will sensibly "append" filters
+  onto an existing *and* or *or* filter.
+  
+  The result is a new filter combining the two filters as requested.
+  
+  Tip: Used to update GeoTools 2.2 code where Filter was mutable.
+
+* Filters.removeFilter(Filter, Filter)
+* Filters.removeFilter(Filter, Filter, boolean)
+  
+  Used to seperate out a child from the provided filter.
+  
+  Much like *and* and *or* above these methods return a modified
+  filter.
+  

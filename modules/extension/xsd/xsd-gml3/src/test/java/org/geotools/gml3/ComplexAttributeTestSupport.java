@@ -39,6 +39,8 @@ import org.opengis.feature.type.PropertyDescriptor;
  * Create ComplexAttributes to assist in testing bindings
  * 
  * @author Rob Atkinson, CSIRO Land and Water
+ *
+ * @source $URL$
  */
 
 public abstract class ComplexAttributeTestSupport extends GML3TestSupport {

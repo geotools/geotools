@@ -45,6 +45,7 @@ import org.geotools.xml.InstanceComponent;
  *
  * @generated
  *
+ *
  * @source $URL$
  */
 public class MLMimeTopLevelTypeBinding extends AbstractSimpleBinding {

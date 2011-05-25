@@ -49,6 +49,7 @@ import org.geotools.xml.InstanceComponent;
  *
  * @generated
  *
+ *
  * @source $URL$
  */
 public class OperationTypeBinding extends AbstractSimpleBinding {

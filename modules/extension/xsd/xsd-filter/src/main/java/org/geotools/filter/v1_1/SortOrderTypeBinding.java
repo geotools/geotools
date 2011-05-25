@@ -43,6 +43,7 @@ import org.geotools.xml.InstanceComponent;
  *
  * @generated
  *
+ *
  * @source $URL$
  */
 public class SortOrderTypeBinding extends AbstractSimpleBinding {

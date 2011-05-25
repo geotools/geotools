@@ -71,6 +71,7 @@ import com.vividsolutions.jts.index.quadtree.Quadtree;
 
  * @author Justin Deoliveira, The Open Planning Project
  *
+ *
  * @source $URL$
  */
 public class PolygonGraphGenerator implements GraphGenerator {

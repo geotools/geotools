@@ -29,6 +29,7 @@ import org.geotools.gml3.v3_2.gco.GCO;
  *
  * @generated
  *
+ *
  * @source $URL$
  */
 public final class GTS extends StubbedGMLXSD {

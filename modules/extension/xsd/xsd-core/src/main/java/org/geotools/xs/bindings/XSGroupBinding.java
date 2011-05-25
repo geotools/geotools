@@ -50,6 +50,7 @@ import org.geotools.xs.XS;
  *
  * @generated
  *
+ *
  * @source $URL$
  */
 public class XSGroupBinding extends AbstractComplexBinding {

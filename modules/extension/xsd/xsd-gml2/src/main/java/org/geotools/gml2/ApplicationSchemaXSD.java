@@ -33,7 +33,8 @@ import org.geotools.xml.XSD;
  * Copied from org.geotools.gml3 making use of addDependencies with our gml2.GML instance.
  * </p>
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-gml3/src/main/java/org/geotools/gml3/ApplicationSchemaXSD.java $
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/extension/xsd/xsd-gml2/src/main/java/org/geotools/gml2/ApplicationSchemaXSD.java $
  */
 public class ApplicationSchemaXSD extends XSD {
     /** application schema namespace */

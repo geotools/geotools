@@ -34,6 +34,7 @@ import org.geotools.validation.attributes.UniqueFIDValidation;
  *
  * @author jgarnett, Refractions Research, Inc.
  * @author $Author: sploreg $ (last modification)
+ *
  * @source $URL$
  * @version $Id$
  */

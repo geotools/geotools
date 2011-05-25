@@ -31,6 +31,7 @@ import org.geotools.xml.XSD;
  * @author Justin Deoliveira, OpenGEO
  *
  *
+ *
  * @source $URL$
  */
 public abstract class StubbedGMLXSD extends XSD {

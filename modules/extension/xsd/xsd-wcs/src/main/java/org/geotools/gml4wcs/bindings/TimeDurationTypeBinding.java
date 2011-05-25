@@ -30,6 +30,8 @@ import org.opengis.temporal.Duration;
  * </p>
  * 
  * @generated
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/extension/xsd/xsd-wcs/src/main/java/org/geotools/gml4wcs/bindings/TimeDurationTypeBinding.java $
  */
 public class TimeDurationTypeBinding extends AbstractSimpleBinding {
 

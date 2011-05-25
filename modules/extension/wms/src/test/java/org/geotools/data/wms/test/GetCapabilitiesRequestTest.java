@@ -30,6 +30,7 @@ import org.geotools.ows.ServiceException;
 
 /**
  *
+ *
  * @source $URL$
  */
 public class GetCapabilitiesRequestTest extends ServerTestCase {

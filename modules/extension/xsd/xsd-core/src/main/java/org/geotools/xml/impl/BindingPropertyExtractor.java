@@ -43,6 +43,7 @@ import org.geotools.xml.Schemas;
  * @author Justin Deoliveira, The Open Planning Project
  *
  *
+ *
  * @source $URL$
  */
 public class BindingPropertyExtractor implements PropertyExtractor {

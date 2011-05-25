@@ -34,6 +34,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
  * 
  * @author Jody Garnett
  *
+ *
  * @source $URL$
  */
 public class LocalGeoServerOnlineTest extends TestCase {

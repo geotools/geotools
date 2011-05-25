@@ -13,6 +13,7 @@ import org.opengis.filter.spatial.Equals;
  * FilterBuilder is a main entry from a fluent programming point of view. We will mostly test using
  * this as a starting point; and break out other test cases on an as needed basis.
  *
+ *
  * @source $URL$
  */
 public class FilterBuilderTest {

@@ -25,6 +25,8 @@ import org.geotools.xml.XSD;
  * attributes in the http://www.opengis.net/wms schema.
  *
  * @generated
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/extension/xsd/xsd-wms/src/main/java/org/geotools/wms/v1_3/WMS.java $
  */
 public final class WMS extends XSD {
 

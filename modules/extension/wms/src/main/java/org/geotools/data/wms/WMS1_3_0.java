@@ -25,6 +25,7 @@ import org.geotools.data.ows.GetCapabilitiesRequest;
 /**
  * @author rgould
  *
+ *
  * @source $URL$
  */
 public class WMS1_3_0 extends WMS1_1_1 {

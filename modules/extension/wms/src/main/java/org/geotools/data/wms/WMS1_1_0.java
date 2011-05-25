@@ -41,6 +41,7 @@ import org.geotools.ows.ServiceException;
 /**
  * @author Richard Gould
  *
+ *
  * @source $URL$
  */
 public class WMS1_1_0 extends WMS1_0_0 {

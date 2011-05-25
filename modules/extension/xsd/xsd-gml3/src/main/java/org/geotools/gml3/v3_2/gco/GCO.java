@@ -29,6 +29,7 @@ import org.geotools.xlink.XLINK;
  *
  * @generated
  *
+ *
  * @source $URL$
  */
 public final class GCO extends StubbedGMLXSD {

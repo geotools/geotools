@@ -41,6 +41,7 @@ import org.opengis.feature.type.Name;
  * @author Justin Deoliveira, The Open Planning Project
  *
  *
+ *
  * @source $URL$
  */
 public class XSSchema extends SchemaImpl {

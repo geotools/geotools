@@ -59,6 +59,7 @@ import org.geotools.xml.Binding;
  *
  * @generated
  *
+ *
  * @source $URL$
  */
 public class GeometryOperandTypeBindingTest extends OGCTestSupport {

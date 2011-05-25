@@ -55,6 +55,7 @@ import com.vividsolutions.jts.geom.MultiLineString;
  *
  * @generated
  *
+ *
  * @source $URL$
  */
 public class MultiLineStringTypeBinding extends AbstractComplexBinding {

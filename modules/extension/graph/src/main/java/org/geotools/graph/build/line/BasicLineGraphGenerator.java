@@ -51,6 +51,7 @@ import com.vividsolutions.jts.geom.LineSegment;
  * 
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
  *
+ *
  * @source $URL$
  */
 public class BasicLineGraphGenerator implements LineGraphGenerator {

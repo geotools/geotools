@@ -40,6 +40,7 @@ import org.geotools.xml.Node;
  *
  * @generated
  *
+ *
  * @source $URL$
  */
 public class FeatureTypeType_NoSRSBinding extends AbstractComplexEMFBinding {

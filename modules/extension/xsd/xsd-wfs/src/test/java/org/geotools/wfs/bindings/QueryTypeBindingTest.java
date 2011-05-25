@@ -48,8 +48,8 @@ import org.w3c.dom.Element;
  * @author Gabriel Roldan
  * @version $Id$
  * @since 2.5.x
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/extension/xsd/wfs/src/test/java/org/geotools/wfs/bindings/QueryTypeBindingTest.java $
+ *
+ * @source $URL$
  */
 public class QueryTypeBindingTest extends WFSTestSupport {
     public QueryTypeBindingTest() {

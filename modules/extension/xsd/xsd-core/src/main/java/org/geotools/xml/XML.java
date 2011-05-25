@@ -24,6 +24,7 @@ import javax.xml.namespace.QName;
  *
  * @generated
  *
+ *
  * @source $URL$
  */
 public final class XML extends XSD {

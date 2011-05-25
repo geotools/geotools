@@ -38,6 +38,7 @@ import org.opengis.feature.type.Name;
  * Validator<br>
  * @author bowens<br>
  * Created Jun 25, 2004<br>
+ *
  * @source $URL$
  * @version <br>
  * 

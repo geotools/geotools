@@ -63,6 +63,7 @@ import org.xml.sax.helpers.NamespaceSupport;
  * </p>
  * @author Justin Deoliveira, The Open Planning Project
  *
+ *
  * @source $URL$
  */
 public class Parser {

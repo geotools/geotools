@@ -27,6 +27,7 @@ import org.geotools.xml.Configuration;
  *
  * @generated
  *
+ *
  * @source $URL$
  */
 public class OGCConfiguration extends Configuration {

@@ -22,6 +22,8 @@ import org.picocontainer.MutablePicoContainer;
  * Parser configuration for the http://www.opengis.net/wms schema.
  *
  * @generated
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/extension/xsd/xsd-wms/src/main/java/org/geotools/wms/v1_3/WMSConfiguration.java $
  */
 public class WMSConfiguration extends Configuration {
 

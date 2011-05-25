@@ -26,6 +26,7 @@ import org.geotools.ows.OWS;
  * 
  * @author Justin Deoliveira, OpenGEO
  *
+ *
  * @source $URL$
  */
 public final class WFS extends org.geotools.wfs.WFS {

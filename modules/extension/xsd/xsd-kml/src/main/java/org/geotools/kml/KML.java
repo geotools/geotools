@@ -27,6 +27,7 @@ import org.geotools.xml.XSD;
  *
  * @generated
  *
+ *
  * @source $URL$
  */
 public final class KML extends XSD {

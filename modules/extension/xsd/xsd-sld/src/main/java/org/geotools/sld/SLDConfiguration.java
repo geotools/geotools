@@ -78,6 +78,7 @@ import org.geotools.xml.Parser;
  * @author Justin Deoliveira, The Open Planning Project
  *
  *
+ *
  * @source $URL$
  */
 public class SLDConfiguration extends Configuration {

@@ -54,7 +54,8 @@ import com.vividsolutions.jts.geom.Envelope;
  * @author dzwiers, Refractions Research, Inc.
  * @author $Author: dmzwiers $ (last modification)
  * @author bowens
- * @source $URL:
+ *
+ * @source $URL$
  *         http://svn.geotools.org/trunk/modules/extension/validation/src/test/java/org/geotools
  *         /validation/BatchValidator.java $
  * @version $Id$

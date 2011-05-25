@@ -29,6 +29,7 @@ import org.eclipse.xsd.XSDAttributeDeclaration;
  *
  * @author Justin Deoliveira,Refractions Research Inc.,jdeolive@refractions.net
  *
+ *
  * @source $URL$
  */
 public interface AttributeHandler extends Handler {

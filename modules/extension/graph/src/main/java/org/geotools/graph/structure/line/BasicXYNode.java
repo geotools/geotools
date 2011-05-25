@@ -28,6 +28,7 @@ import com.vividsolutions.jts.geom.Coordinate;
  * 
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
  * 
+ *
  * @source $URL$
  */
 public class BasicXYNode extends BasicNode implements XYNode {

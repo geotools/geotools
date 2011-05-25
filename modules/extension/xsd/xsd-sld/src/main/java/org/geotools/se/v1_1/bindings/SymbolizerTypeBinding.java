@@ -56,6 +56,8 @@ import javax.xml.namespace.QName;
  * </p>
  * 
  * @generated
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/extension/xsd/xsd-sld/src/main/java/org/geotools/se/v1_1/bindings/SymbolizerTypeBinding.java $
  */
 public class SymbolizerTypeBinding extends AbstractComplexBinding {
 

@@ -39,6 +39,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * contains part of itself.
  * </p>
  *
+ *
  * @source $URL$
  */
 public class ContainsIntegrity extends RelationIntegrity {

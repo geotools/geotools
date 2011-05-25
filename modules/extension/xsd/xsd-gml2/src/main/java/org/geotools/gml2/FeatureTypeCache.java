@@ -24,6 +24,7 @@ import org.opengis.feature.type.Name;
 /**
  * Holds a cache of FeatureTypes by Name.
  *
+ *
  * @source $URL$
  */
 public class FeatureTypeCache {

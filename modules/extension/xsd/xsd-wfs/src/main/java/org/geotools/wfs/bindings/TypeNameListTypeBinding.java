@@ -55,6 +55,7 @@ import org.geotools.xml.InstanceComponent;
  * @generated
  * @deprecated this binding is not used, there's no emf object for TypeNameListType
  *
+ *
  * @source $URL$
  */
 public class TypeNameListTypeBinding extends AbstractSimpleBinding {

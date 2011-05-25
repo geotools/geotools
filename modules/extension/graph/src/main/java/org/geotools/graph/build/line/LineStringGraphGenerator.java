@@ -40,6 +40,7 @@ import com.vividsolutions.jts.geom.MultiLineString;
  * 
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
  *
+ *
  * @source $URL$
  */
 public class LineStringGraphGenerator extends BasicLineGraphGenerator {

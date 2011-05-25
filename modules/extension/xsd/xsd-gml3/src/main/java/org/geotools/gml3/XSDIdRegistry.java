@@ -24,7 +24,8 @@ import java.util.HashSet;
  * @author Rini Angreani, Curtin University of Technology (with Gabriel Roldan and Justin
  *         Deoliveira's help)
  * 
- * @source $URL:
+ *
+ * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-gml3/src/main/java/org
  *         /geotools/gml3/XSDIdRegistry.java $
  */

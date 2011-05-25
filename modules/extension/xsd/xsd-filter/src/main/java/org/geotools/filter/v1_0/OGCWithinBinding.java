@@ -40,6 +40,7 @@ import org.geotools.xml.Node;
  *
  * @generated
  *
+ *
  * @source $URL$
  */
 public class OGCWithinBinding extends AbstractComplexBinding {

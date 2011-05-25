@@ -27,6 +27,8 @@ import org.geotools.xml.XSD;
  * attributes in the http://www.opengis.net/se schema.
  *
  * @generated
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/extension/xsd/xsd-sld/src/main/java/org/geotools/se/v1_1/SE.java $
  */
 public final class SE extends XSD {
 

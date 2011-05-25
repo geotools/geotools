@@ -19,6 +19,8 @@ package org.geotools.gml3;
 /**
  *
  * @author Erik van de Pol
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/extension/xsd/xsd-gml3/src/main/java/org/geotools/gml3/ArcParameters.java $
  */
 public class ArcParameters {
     protected LinearizationTolerance linearizationTolerance;

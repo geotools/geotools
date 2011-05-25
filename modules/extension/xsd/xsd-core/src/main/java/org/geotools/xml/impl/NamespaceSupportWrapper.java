@@ -25,6 +25,7 @@ import javax.xml.namespace.NamespaceContext;
 /**
  * NamespaceContext wrapper around namespace support.
  *
+ *
  * @source $URL$
  */
 public class NamespaceSupportWrapper implements NamespaceContext {

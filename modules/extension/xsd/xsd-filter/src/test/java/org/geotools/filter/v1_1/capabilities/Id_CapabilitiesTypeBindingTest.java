@@ -42,6 +42,7 @@ import org.geotools.xml.Binding;
  *
  * @generated
  *
+ *
  * @source $URL$
  */
 public class Id_CapabilitiesTypeBindingTest extends OGCTestSupport {

@@ -74,6 +74,8 @@ import org.xml.sax.Attributes;
  * simpleContent property, as well as encoding XML attributes stored in the UserData map.
  * 
  * @author Ben Caradoc-Davies, CSIRO Earth Science and Resource Engineering
+ *
+ * @source $URL$
  */
 public class ComplexSupportXSAnyTypeBinding extends XSAnyTypeBinding {
 

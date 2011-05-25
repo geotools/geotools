@@ -30,6 +30,7 @@ import org.geotools.xml.XSD;
  *
  * @generated
  *
+ *
  * @source $URL$
  */
 public final class SMIL20LANG extends XSD {

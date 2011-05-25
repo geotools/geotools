@@ -23,6 +23,7 @@ import java.io.IOException;
  * Contains the suitability information for a single palette with several colour schemes.
  *
  * @author Cory Horner, Refractions Research Inc.
+ *
  * @source $URL$
  */
 public class PaletteSuitability {

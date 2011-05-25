@@ -6,6 +6,7 @@ package org.geotools;
  * @param <T>
  *            class of object under construction
  *
+ *
  * @source $URL$
  */
 public interface Builder<T> {

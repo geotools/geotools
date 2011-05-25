@@ -13,6 +13,8 @@ import org.picocontainer.MutablePicoContainer;
  * Parser configuration for the http://www.opengis.net/wfs/2.0 schema.
  *
  * @generated
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/extension/xsd/xsd-wfs/src/main/java/org/geotools/wfs/v2_0/WFSConfiguration.java $
  */
 public class WFSConfiguration extends Configuration {
 

@@ -44,6 +44,8 @@ import com.vividsolutions.jts.geom.LineString;
  *
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/extension/xsd/xsd-wcs/src/main/java/org/geotools/gml4wcs/bindings/GML3EncodingUtils.java $
  */
 public class GML3EncodingUtils {
     static DirectPosition[] positions(LineString line) {

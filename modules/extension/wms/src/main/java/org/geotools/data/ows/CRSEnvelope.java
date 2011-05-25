@@ -29,7 +29,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * A pair of coordinates and a reference system that represents a section of the Earth
  * 
  * @author Richard Gould
- * @source $URL:
+ *
+ * @source $URL$
  *         http://svn.osgeo.org/geotools/branches/2.6.x/modules/extension/wms/src/main/java/org
  *         /geotools/data/ows/CRSEnvelope.java $
  */

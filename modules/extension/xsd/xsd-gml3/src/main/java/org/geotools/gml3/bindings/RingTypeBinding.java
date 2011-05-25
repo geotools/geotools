@@ -36,6 +36,8 @@ import java.util.List;
 /**
  *
  * @author Erik van de Pol. B3Partners BV.
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/extension/xsd/xsd-gml3/src/main/java/org/geotools/gml3/bindings/RingTypeBinding.java $
  */
 public class RingTypeBinding extends AbstractComplexBinding {
     protected GeometryFactory gf;

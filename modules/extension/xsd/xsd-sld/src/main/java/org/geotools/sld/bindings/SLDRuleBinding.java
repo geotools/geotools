@@ -66,6 +66,7 @@ import org.picocontainer.MutablePicoContainer;
  *
  * @generated
  *
+ *
  * @source $URL$
  */
 public class SLDRuleBinding extends AbstractComplexBinding {

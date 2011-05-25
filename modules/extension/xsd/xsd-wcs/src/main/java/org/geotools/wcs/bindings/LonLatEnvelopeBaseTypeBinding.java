@@ -51,6 +51,8 @@ import org.w3c.dom.Element;
  * </p>
  * 
  * @generated
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/extension/xsd/xsd-wcs/src/main/java/org/geotools/wcs/bindings/LonLatEnvelopeBaseTypeBinding.java $
  */
 public class LonLatEnvelopeBaseTypeBinding extends AbstractComplexBinding {
 

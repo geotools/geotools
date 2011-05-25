@@ -21,6 +21,8 @@ package org.geotools.se.v1_1.bindings;
  * 
  * @author Justin Deoliveira, OpenGeo
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/extension/xsd/xsd-sld/src/main/java/org/geotools/se/v1_1/bindings/InlineContent.java $
  */
 public class InlineContent {
 

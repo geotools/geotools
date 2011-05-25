@@ -44,6 +44,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  * 
  * @author bowens, Refractions Research, Inc.
  * @author $Author: sploreg $ (last modification)
+ *
  * @source $URL$
  * @version $Id$
  */

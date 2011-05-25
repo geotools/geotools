@@ -30,6 +30,8 @@ import org.picocontainer.MutablePicoContainer;
  * Parser configuration for the http://www.opengis.net/sld schema.
  *
  * @generated
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/extension/xsd/xsd-sld/src/main/java/org/geotools/sld/v1_1/SLDConfiguration.java $
  */
 public class SLDConfiguration extends Configuration {
 

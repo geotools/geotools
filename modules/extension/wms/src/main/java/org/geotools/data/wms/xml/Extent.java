@@ -15,6 +15,8 @@ import java.util.List;
  * what _values_ along a dimension are valid. --> <!ELEMENT Extent (#PCDATA) > <!ATTLIST Extent name
  * CDATA #REQUIRED default CDATA #IMPLIED nearestValue (0 | 1) "0">
  * 
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/extension/wms/src/main/java/org/geotools/data/wms/xml/Extent.java $
  * @version SVN $Id$
  * @author Per Engstrom, Curalia AB, pereng@gmail.com
  * 

@@ -39,6 +39,8 @@ import javax.xml.namespace.QName;
  * </p>
  *
  * @generated
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/extension/xsd/xsd-wcs/src/main/java/org/geotools/wcs/bindings/AbstractDescriptionTypeBinding.java $
  */
 public class AbstractDescriptionTypeBinding extends AbstractComplexBinding {
 

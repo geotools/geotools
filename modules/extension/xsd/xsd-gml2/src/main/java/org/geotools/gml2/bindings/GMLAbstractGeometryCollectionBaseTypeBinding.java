@@ -53,6 +53,7 @@ import com.vividsolutions.jts.geom.GeometryCollection;
  *
  * @generated
  *
+ *
  * @source $URL$
  * JD: this binding should not longer be used
  */

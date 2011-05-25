@@ -28,6 +28,7 @@ import org.geotools.xml.XSD;
  *
  * @generated
  *
+ *
  * @source $URL$
  */
 public final class OGC extends XSD {

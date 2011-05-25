@@ -56,6 +56,7 @@ import org.geotools.xml.*;
  *
  * @generated
  *
+ *
  * @source $URL$
  */
 public class SLDUserLayerBinding extends AbstractComplexBinding {

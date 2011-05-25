@@ -22,6 +22,7 @@ import org.geotools.data.ows.Request;
  * A request used to get the legend graphic for a given layer
  * 
  * @author Richard Gould
+ *
  * @source $URL$
  */
 public interface GetLegendGraphicRequest extends Request {

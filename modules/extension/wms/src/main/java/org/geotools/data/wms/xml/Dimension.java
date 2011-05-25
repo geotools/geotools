@@ -16,6 +16,8 @@ package org.geotools.data.wms.xml;
  * name="multipleValues" type="boolean"/> <attribute name="nearestValue" type="boolean"/> <attribute
  * name="current" type="boolean"/> </extension> </simpleContent> </complexType> </element>
  * 
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/extension/wms/src/main/java/org/geotools/data/wms/xml/Dimension.java $
  * @version SVN $Id$
  * @author Per Engstrom, Curalia AB, pereng@gmail.com
  * 

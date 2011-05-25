@@ -24,6 +24,7 @@ import sun.misc.BASE64Encoder;
 
 /** A utility class for working with base64 encoding.
  *
+ *
  * @source $URL$
  */
 public class Base64Binary {

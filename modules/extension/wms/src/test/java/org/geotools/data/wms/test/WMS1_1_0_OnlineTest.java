@@ -35,6 +35,7 @@ import org.xml.sax.SAXException;
  *
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
+ *
  * @source $URL$
  */
 public class WMS1_1_0_OnlineTest extends WMS1_0_0_OnlineTest {

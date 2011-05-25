@@ -48,6 +48,7 @@ import org.geotools.xs.XS;
  *
  * @generated
  *
+ *
  * @source $URL$
  */
 public class XSNoFixedFacetBinding extends AbstractComplexBinding {

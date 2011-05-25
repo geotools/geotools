@@ -28,6 +28,7 @@ import org.geotools.validation.DefaultIntegrityValidation;
  *
  * @author dzwiers, Refractions Research, Inc.
  * @author $Author: dmzwiers $ (last modification)
+ *
  * @source $URL$
  * @version $Id$
  */

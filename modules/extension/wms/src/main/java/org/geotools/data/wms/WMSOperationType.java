@@ -24,6 +24,7 @@ import org.geotools.data.ows.OperationType;
  * having to cast them.
  *
  * @author Richard Gould
+ *
  * @source $URL$
  * @deprecated Use of OperationType should be sufficient
  */

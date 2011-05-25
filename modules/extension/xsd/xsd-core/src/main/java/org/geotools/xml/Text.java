@@ -23,6 +23,8 @@ import java.util.regex.Pattern;
  * 
  * @author Justin Deoliveira, OpenGeo
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/extension/xsd/xsd-core/src/main/java/org/geotools/xml/Text.java $
  */
 public class Text {
 

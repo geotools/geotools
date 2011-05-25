@@ -54,6 +54,7 @@ import org.picocontainer.MutablePicoContainer;
  *
  * @generated
  *
+ *
  * @source $URL$
  */
 public class SLDHaloBinding extends AbstractComplexBinding {

@@ -55,6 +55,7 @@ import org.picocontainer.MutablePicoContainer;
  *
  * @generated
  *
+ *
  * @source $URL$
  */
 public class SLDParameterValueTypeBinding extends AbstractComplexBinding {

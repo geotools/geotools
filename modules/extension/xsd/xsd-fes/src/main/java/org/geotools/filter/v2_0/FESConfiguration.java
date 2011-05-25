@@ -10,6 +10,8 @@ import org.picocontainer.MutablePicoContainer;
  * Parser configuration for the http://www.opengis.net/fes/2.0 schema.
  *
  * @generated
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/extension/xsd/xsd-fes/src/main/java/org/geotools/filter/v2_0/FESConfiguration.java $
  */
 public class FESConfiguration extends Configuration {
 

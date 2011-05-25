@@ -58,6 +58,7 @@ import org.geotools.xs.XS;
  *
  * @generated
  *
+ *
  * @source $URL$
  */
 public class XSTimeBinding implements SimpleBinding {

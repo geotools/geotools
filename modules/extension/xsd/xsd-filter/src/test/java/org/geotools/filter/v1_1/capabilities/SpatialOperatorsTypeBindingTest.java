@@ -41,6 +41,7 @@ import org.geotools.xml.Binding;
  *
  * @generated
  *
+ *
  * @source $URL$
  */
 public class SpatialOperatorsTypeBindingTest extends OGCTestSupport {

@@ -47,6 +47,8 @@ import org.opengis.referencing.operation.MathTransform;
  * choosing which style to use
  * 
  * @author Andrea Aime - OpenGeo
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/extension/wms/src/main/java/org/geotools/map/WMSLayer.java $
  */
 public class WMSLayer extends GridReaderLayer {
 

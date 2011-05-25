@@ -56,6 +56,7 @@ import org.picocontainer.MutablePicoContainer;
  *
  * @generated
  *
+ *
  * @source $URL$
  */
 public class SLDShadedReliefBinding extends AbstractComplexBinding {

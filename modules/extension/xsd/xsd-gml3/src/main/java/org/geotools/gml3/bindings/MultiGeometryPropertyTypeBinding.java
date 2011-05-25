@@ -52,6 +52,7 @@ import com.vividsolutions.jts.geom.GeometryCollection;
  * 
  * @generated
  *
+ *
  * @source $URL$
  */
 public class MultiGeometryPropertyTypeBinding extends AbstractComplexBinding {

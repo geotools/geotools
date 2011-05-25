@@ -23,6 +23,7 @@ package org.geotools.xml.impl;
  * @author Justin Deoliveira, The Open Planning Project
  *
  *
+ *
  * @source $URL$
  */
 public class Buffer {

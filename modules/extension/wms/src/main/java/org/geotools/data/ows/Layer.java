@@ -46,7 +46,8 @@ import org.opengis.referencing.operation.TransformException;
  * information that we currently find interesting. Feel free to add your own.
  * 
  * @author rgould
- * @source $URL:
+ *
+ * @source $URL$
  *         http://svn.osgeo.org/geotools/branches/2.6.x/modules/extension/wms/src/main/java/org
  *         /geotools/data/ows/Layer.java $
  */

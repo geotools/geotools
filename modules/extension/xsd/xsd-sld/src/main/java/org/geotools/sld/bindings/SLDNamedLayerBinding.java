@@ -57,6 +57,7 @@ import org.geotools.xml.*;
  *
  * @generated
  *
+ *
  * @source $URL$
  */
 public class SLDNamedLayerBinding extends AbstractComplexBinding {

@@ -17,6 +17,8 @@ import org.geotools.wps.WPSTestSupport;
  * start from a root that can be found in the WPS schema (and in that alone)
  * @author Andrea Aime
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/extension/xsd/xsd-wps/src/test/java/org/geotools/wps/bindings/ExecuteBindingTest.java $
  */
 public class ExecuteBindingTest extends WPSTestSupport {
 

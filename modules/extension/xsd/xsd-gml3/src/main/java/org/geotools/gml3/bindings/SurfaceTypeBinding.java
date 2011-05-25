@@ -78,6 +78,7 @@ import com.vividsolutions.jts.geom.MultiPolygon;
  * 
  * @generated
  *
+ *
  * @source $URL$
  */
 public class SurfaceTypeBinding extends AbstractComplexBinding implements Comparable {

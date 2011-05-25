@@ -93,6 +93,7 @@ import org.geotools.gml3.bindings.SurfacePatchArrayPropertyTypeBinding;
  * @author Justin Deoliveira, The Open Planning Project
  *
  *
+ *
  * @source $URL$
  */
 public class GMLConfiguration extends Configuration {

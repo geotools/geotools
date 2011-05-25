@@ -38,6 +38,7 @@ import org.w3c.dom.Element;
  * @author Gabriel Roldan (TOPP)
  * @version $Id$
  * @since 2.5.x
+ *
  * @source $URL$
  */
 public class DeleteElementTypeBindingTest extends WFSTestSupport {

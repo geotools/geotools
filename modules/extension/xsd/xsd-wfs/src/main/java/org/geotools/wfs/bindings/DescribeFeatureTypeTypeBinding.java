@@ -101,6 +101,7 @@ import org.geotools.xml.Node;
  *
  * @generated
  *
+ *
  * @source $URL$
  */
 public class DescribeFeatureTypeTypeBinding extends AbstractComplexEMFBinding {

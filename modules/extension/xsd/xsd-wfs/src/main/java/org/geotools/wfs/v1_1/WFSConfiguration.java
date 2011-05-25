@@ -24,6 +24,7 @@ import org.geotools.ows.OWSConfiguration;
  *
  * @generated
  *
+ *
  * @source $URL$
  */
 public class WFSConfiguration extends org.geotools.wfs.WFSConfiguration {

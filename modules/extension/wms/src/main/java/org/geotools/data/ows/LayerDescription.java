@@ -22,6 +22,7 @@ import java.net.URL;
  * Used to hold data regarding Layers. Used by the DescribeLayerResponse
  * 
  * @author Richard Gould
+ *
  * @source $URL$
  */
 public class LayerDescription {

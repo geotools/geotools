@@ -45,6 +45,7 @@ import org.geotools.xml.Binding;
  *
  * @generated
  *
+ *
  * @source $URL$
  */
 public class Scalar_CapabilitiesTypeBindingTest extends OGCTestSupport {

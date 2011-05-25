@@ -34,6 +34,7 @@ import org.opengis.feature.type.Schema;
  *
  * @generated
  *
+ *
  * @source $URL$
  */
 public final class GML extends XSD {

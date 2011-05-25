@@ -67,6 +67,8 @@ import javax.xml.namespace.QName;
  * </p>
  * 
  * @generated
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/extension/xsd/xsd-sld/src/main/java/org/geotools/sld/v1_1/bindings/UserLayerBinding.java $
  */
 public class UserLayerBinding extends SLDUserLayerBinding {
 

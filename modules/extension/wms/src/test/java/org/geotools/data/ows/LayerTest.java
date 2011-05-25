@@ -7,6 +7,8 @@ import java.util.HashMap;
 import org.junit.Test;
 /**
  * Simple API designed to keep the API stable.
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/extension/wms/src/test/java/org/geotools/data/ows/LayerTest.java $
  */
 public class LayerTest {
     public static final HashMap<String, CRSEnvelope> BBOXES;

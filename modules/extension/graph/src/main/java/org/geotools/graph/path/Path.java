@@ -25,6 +25,7 @@ import java.util.HashSet;
  *
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
  *
+ *
  * @source $URL$
  */
 public class Path extends Walk {

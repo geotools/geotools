@@ -38,6 +38,8 @@ import org.geotools.util.Utilities;
  * </p>
  * @author Justin Deoliveira, OpenGeo
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/extension/xsd/xsd-gml2/src/main/java/org/geotools/gml2/ReferencingDirectiveLeakPreventer.java $
  */
 public class ReferencingDirectiveLeakPreventer implements Adapter {
 

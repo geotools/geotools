@@ -46,6 +46,7 @@ import org.geotools.xml.Node;
  * @author Justin Deoliveira, OpenGEO
  *
  *
+ *
  * @source $URL$
  */
 public class ComplexDataTypeBinding extends AbstractComplexBinding

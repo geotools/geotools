@@ -47,6 +47,7 @@ import org.xml.sax.SAXException;
  * </p>
  *
  * @author Richard Gould
+ *
  * @source $URL$
  */
 public class GetFeatureInfoResponse extends Response {

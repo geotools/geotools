@@ -31,6 +31,8 @@ import org.picocontainer.MutablePicoContainer;
  * Parser configuration for the http://www.opengis.net/wcs schema.
  *
  * @generated
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/extension/xsd/xsd-wcs/src/main/java/org/geotools/wcs/WCSConfiguration.java $
  */
 public class WCSConfiguration extends Configuration {
 

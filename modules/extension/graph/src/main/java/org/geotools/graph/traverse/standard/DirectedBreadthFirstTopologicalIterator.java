@@ -30,6 +30,7 @@ import org.geotools.graph.util.Queue;
 
 
 /**
+ *
  * @source $URL$
  */
 public class DirectedBreadthFirstTopologicalIterator 

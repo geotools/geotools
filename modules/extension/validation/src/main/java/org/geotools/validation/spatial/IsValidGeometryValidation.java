@@ -37,6 +37,7 @@ import com.vividsolutions.jts.geom.Geometry;
  *
  * @author bowens, Refractions Research, Inc.
  * @author $Author: dmzwiers $ (last modification)
+ *
  * @source $URL$
  * @version $Id$
  */

@@ -28,6 +28,8 @@ import org.geotools.xml.Binding;
 
 /**
  * Test {@link GMLConfiguration}.
+ *
+ * @source $URL$
  */
 public class GMLConfigurationTest extends TestCase {
 

@@ -31,6 +31,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * @author Justin Deoliveira, OpenGeo
  *
  *
+ *
  * @source $URL$
  */
 public class ValidatorHandler extends DefaultHandler {

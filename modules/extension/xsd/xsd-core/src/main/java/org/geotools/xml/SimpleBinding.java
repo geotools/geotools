@@ -86,6 +86,7 @@ package org.geotools.xml;
  * @author Justin Deoliveira,Refractions Research Inc.,jdeolive@refractions.net
  *
  *
+ *
  * @source $URL$
  */
 public interface SimpleBinding extends Binding {

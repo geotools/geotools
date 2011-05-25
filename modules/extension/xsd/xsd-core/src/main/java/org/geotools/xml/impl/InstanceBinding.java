@@ -25,6 +25,7 @@ package org.geotools.xml.impl;
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
  *
  *
+ *
  * @source $URL$
  */
 public interface InstanceBinding {

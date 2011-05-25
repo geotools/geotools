@@ -12,6 +12,8 @@ import org.geotools.xml.XSD;
  * attributes in the http://www.opengis.net/fes/2.0 schema.
  *
  * @generated
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/extension/xsd/xsd-fes/src/main/java/org/geotools/filter/v2_0/FES.java $
  */
 public final class FES extends XSD {
 

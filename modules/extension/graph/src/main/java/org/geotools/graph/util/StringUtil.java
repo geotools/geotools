@@ -34,6 +34,7 @@ package org.geotools.graph.util;
 
 /**
  *  Various string utilities. 
+ *
  * @source $URL$
  */
 public class StringUtil {

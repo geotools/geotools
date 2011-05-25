@@ -79,6 +79,7 @@ import org.opengis.geometry.BoundingBox;
  * </p>
  *
  * @author Richard Gould, Refractions Research
+ *
  * @source $URL$
  */
 public interface GetMapRequest extends Request{

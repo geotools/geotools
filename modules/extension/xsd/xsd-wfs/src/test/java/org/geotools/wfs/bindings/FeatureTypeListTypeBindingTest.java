@@ -46,8 +46,8 @@ import org.w3c.dom.NodeList;
  * @version $Id: FeatureTypeListTypeBindingTest.java 27749 2007-11-05 09:51:33Z
  *          groldan $
  * @since 2.5.x
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/extension/xsd/wfs/src/test/java/org/geotools/wfs/bindings/FeatureTypeListTypeBindingTest.java $
+ *
+ * @source $URL$
  */
 public class FeatureTypeListTypeBindingTest extends WFSTestSupport {
     public FeatureTypeListTypeBindingTest() {

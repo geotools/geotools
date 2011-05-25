@@ -37,6 +37,7 @@ import com.vividsolutions.jts.geom.MultiLineString;
  *
  * @author Jody Garnett, Refractions Research, Inc.
  * @author $Author: jive $ (last modification)
+ *
  * @source $URL$
  * @version $Id$
  */

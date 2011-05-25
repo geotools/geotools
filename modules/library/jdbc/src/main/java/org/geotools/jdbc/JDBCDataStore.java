@@ -2828,7 +2828,8 @@ public final class JDBCDataStore extends ContentDataStore
         }
 
         sql.setLength(sql.length() - 1);
-
+        dialect.encodePostSelect(featureType, sql);
+        
         sql.append(" FROM ");
         encodeTableName(featureType.getTypeName(), sql, query.getHints());
 
@@ -2956,7 +2957,8 @@ public final class JDBCDataStore extends ContentDataStore
         }
 
         sql.setLength(sql.length() - 1);
-
+        dialect.encodePostSelect(featureType, sql);
+        
         sql.append(" FROM ");
         encodeTableName(featureType.getTypeName(), sql, query.getHints());
 

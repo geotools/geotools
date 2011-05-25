@@ -780,6 +780,16 @@ public abstract class SQLDialect {
     }
 
     /**
+     * Encodes anything after the SELECT clause and before the FROM clause. 
+     * <p>
+     * This method does not nothing, subclass may override to add additional columns. 
+     * </p>
+     * @param featureType The feature type being queried.
+     */
+    public void encodePostSelect(SimpleFeatureType featureType, StringBuffer sql) {
+    }
+
+    /**
      * Callback to execute any additional sql statements post a create table
      * statement.
      * <p>

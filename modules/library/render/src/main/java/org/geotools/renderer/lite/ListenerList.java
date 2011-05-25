@@ -42,6 +42,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * }
  * </pre>
  * </p>
+ *
  * @source $URL$
  * @deprecated Use {@link CopyOnWriteArrayList} instead, it's part of the JDK and it's more efficient
  */

@@ -60,8 +60,8 @@ import org.opengis.referencing.operation.MathTransform;
 
 /**
  * @author Simone Giannecchini
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/module/render/test/org/geotools/renderer/lite/GridCoverageRendererTest.java $
+ *
+ * @source $URL$
  */
 public class GridCoverageRendererTest  {
 

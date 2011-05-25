@@ -29,6 +29,7 @@ import org.opengis.util.InternationalString;
  * @author Simone Giannecchini, GeoSolutions
  * 
  *
+ *
  * @source $URL$
  */
 public interface Domain1D<T extends DomainElement1D> extends List<T>{

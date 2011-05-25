@@ -23,6 +23,8 @@ import org.opengis.annotation.XmlElement;
 /**
  * Interpolation mode used by interpolate function.
  *
+ *
+ * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding Implementation Specification 1.1.0</A>
  * @author Johann Sorel (Geomatys)
  */

@@ -39,6 +39,7 @@ import org.opengis.util.InternationalString;
  * Base implementation of a      {@link CoverageProcessingNode}      . <p> This implementation provides convenient methods for managing sinks and source for a      {@link CoverageProcessingNode}      . The      {@link #getOutput()}      is used to get the output of this      {@link CoverageProcessingNode}      (a     {@link CoverageProcessingException}      is thrown in case something bad happens while processing <p> Implementors must implement the abstract method      {@link #execute()}      which is guaranteed to run in a critical section where the sources and sinks for this     {@link CoverageProcessingNode}      will not be touched.
  * @author      Simone Giannecchini, GeoSolutions.
  *
+ *
  * @source $URL$
  */
 public abstract class BaseCoverageProcessingNode implements

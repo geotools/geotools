@@ -81,7 +81,8 @@ import com.vividsolutions.jts.geom.impl.PackedCoordinateSequenceFactory;
 
 /**
  * @author  jamesm
- * @source  $URL$
+ *
+ * @source $URL$
  */
 public class Rendering2DTest extends TestCase {
 

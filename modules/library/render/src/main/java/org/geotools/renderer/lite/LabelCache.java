@@ -33,6 +33,7 @@ import org.opengis.feature.Feature;
  * 
  * @author jeichar
  * @since 2.2
+ *
  * @source $URL$
  */
 public interface LabelCache {

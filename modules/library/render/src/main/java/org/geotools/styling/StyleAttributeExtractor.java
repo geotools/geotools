@@ -37,6 +37,7 @@ import org.opengis.filter.expression.PropertyName;
  * properly
  *
  * @author Andrea Aime - OpenGeo
+ *
  * @source $URL$
  */
 public class StyleAttributeExtractor extends FilterAttributeExtractor

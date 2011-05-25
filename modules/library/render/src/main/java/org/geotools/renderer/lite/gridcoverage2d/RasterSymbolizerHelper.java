@@ -43,6 +43,7 @@ import org.opengis.coverage.grid.GridCoverage;
  * 
  * @author Simone Giannecchini, GeoSolutions
  *
+ *
  * @source $URL$
  */
 public class RasterSymbolizerHelper extends

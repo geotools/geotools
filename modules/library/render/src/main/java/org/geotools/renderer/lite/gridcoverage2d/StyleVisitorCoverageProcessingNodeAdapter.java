@@ -32,6 +32,7 @@ import org.opengis.util.InternationalString;
  * This class implements an adapter to allow a      {@link CoverageProcessingNode}      to feed itself by visiting an SLD      {@link Style}      . <p> This class can be used to tie together      {@link CoverageProcessingNode}      s built from a chains as specified by the      {@link RasterSymbolizer}      SLd element.
  * @author      Simone Giannecchini, GeoSolutions
  *
+ *
  * @source $URL$
  */
 public abstract class StyleVisitorCoverageProcessingNodeAdapter extends

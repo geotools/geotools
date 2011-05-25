@@ -36,6 +36,8 @@ import javax.swing.tree.TreePath;
  * @author Daniele Romagnoli, GeoSolutions SAS
  * @author Simone Giannecchini, GeoSolutions SAS
  * 
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/render/src/main/java/org/geotools/renderedimage/viewer/RenderedImageBrowser.java $
  */
 public class RenderedImageBrowser extends JPanel {
 

@@ -27,6 +27,7 @@ import junit.framework.TestCase;
  * @author Andrea Aime - TOPP
  *
  *
+ *
  * @source $URL$
  */
 public class DynamicSymbolFactoryFinderTest extends TestCase {

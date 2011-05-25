@@ -44,6 +44,8 @@ import com.vividsolutions.jts.geom.GeometryCollection;
  * 
  * WARNING: this API is not finalized and is meant to be used by StreamingRenderer only
  * @author Andrea Aime - OpenGeo
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/render/src/main/java/org/geotools/renderer/crs/ProjectionHandler.java $
  */
 public class ProjectionHandler {
 

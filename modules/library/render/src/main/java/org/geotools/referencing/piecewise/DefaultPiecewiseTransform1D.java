@@ -32,6 +32,7 @@ import org.opengis.referencing.operation.TransformException;
  * Convenience implementation of the   {@link PiecewiseTransform1D}   interface which subclass the   {@link DefaultDomain1D}   class in order to provide a suitable framework to handle a list of   {@link PiecewiseTransform1DElement}   s. <p>
  * @author   Simone Giannecchini, GeoSolutions
  *
+ *
  * @source $URL$
  */
 public class DefaultPiecewiseTransform1D<T extends DefaultPiecewiseTransform1DElement> extends DefaultDomain1D<T>

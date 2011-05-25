@@ -10,6 +10,8 @@ import javax.swing.JPanel;
 /**
  * @author pc
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/render/src/main/java/org/geotools/renderedimage/viewer/HistogramPanel.java $
  */
 public class HistogramPanel extends JPanel {
 

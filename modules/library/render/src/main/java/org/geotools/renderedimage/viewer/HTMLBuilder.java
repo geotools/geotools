@@ -21,6 +21,8 @@ package org.geotools.renderedimage.viewer;
  * 
  * @author Andrea Aime
  * 
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/render/src/main/java/org/geotools/renderedimage/viewer/HTMLBuilder.java $
  */
 public class HTMLBuilder {
 	

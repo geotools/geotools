@@ -24,6 +24,8 @@ import org.opengis.referencing.operation.TransformException;
  * rendering.
  * 
  * @author Jody
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/render/src/main/java/org/geotools/map/MapViewport.java $
  */
 public class MapViewport {
     /** The logger for the map module. */

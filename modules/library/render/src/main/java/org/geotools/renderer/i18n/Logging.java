@@ -31,6 +31,7 @@ import org.geotools.resources.IndexedResourceBundle;
  * or use static convenience methods instead.
  *
  * @since 2.2
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

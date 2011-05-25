@@ -85,7 +85,8 @@ import com.vividsolutions.jts.geom.Envelope;
  * @author  Simone Giannecchini, GeoSolutions SAS
  * @author  Andrea Aime, GeoSolutions SAS
  * @author  Alessio Fabiani, GeoSolutions SAS
- * @source  $URL$
+ *
+ * @source $URL$
  * @version  $Id$
  *
  */

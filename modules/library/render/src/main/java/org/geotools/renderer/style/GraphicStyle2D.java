@@ -23,6 +23,7 @@ import java.awt.image.BufferedImage;
  * graphic icon
  * 
  * @author Andrea Aime
+ *
  * @source $URL$
  * @version $Id$
  */

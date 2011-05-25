@@ -32,6 +32,7 @@ import org.opengis.util.InternationalString;
  * Convenience implementation of the    {@link Domain1D}    interface.
  * @author    Simone Giannecchini
  *
+ *
  * @source $URL$
  */
 public class DefaultDomain1D<E extends DefaultDomainElement1D>  extends AbstractList<E> implements Domain1D<E>{

@@ -76,6 +76,7 @@ import com.sun.media.jai.widget.DisplayJAI;
 /**
  * @author  Simone Giannecchini, GeoSolutions.
  *
+ *
  * @source $URL$
  */
 public class RasterSymbolizerTest  {

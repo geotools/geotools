@@ -42,6 +42,8 @@ import javax.swing.event.ChangeListener;
  * @author Daniele Romagnoli, GeoSolutions SAS
  * @author Simone Giannecchini, GeoSolutions SAS
  * 
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/render/src/main/java/org/geotools/renderedimage/viewer/ImageViewer.java $
  */
 public class ImageViewer extends JPanel {
         private ZoomableImageDisplay display;

@@ -69,6 +69,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * 
  * @author dblasby
  * @author Simone Giannecchini
+ *
  * @source $URL$
  */
 public final class RendererUtilities {

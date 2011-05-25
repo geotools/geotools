@@ -28,7 +28,8 @@ import org.geotools.map.MapLayer;
  * Event object used to report changes in the list of layers managed by a MapContext
  * 
  * @author wolf
- * @source $URL:
+ *
+ * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/library/render/src/main/java/org/geotools
  *         /map/event/MapLayerListEvent.java $
  */

@@ -24,6 +24,8 @@ import java.util.List;
  * 
  * @author Andrea Aime
  * 
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/render/src/main/java/org/geotools/renderedimage/viewer/HTMLRenderers.java $
  */
 public class HTMLRenderers {
 	private static List<HTMLRenderer> renderers = new ArrayList<HTMLRenderer>();

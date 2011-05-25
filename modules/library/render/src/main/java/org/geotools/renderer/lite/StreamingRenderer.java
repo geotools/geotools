@@ -157,8 +157,8 @@ import com.vividsolutions.jts.geom.Point;
  * @author Andrea Aime
  * @author Alessio Fabiani
  * 
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/module/render/src/org/geotools/renderer/lite/StreamingRenderer.java $
+ *
+ * @source $URL$
  * @version $Id$
  */
 public final class StreamingRenderer implements GTRenderer {

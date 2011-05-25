@@ -50,6 +50,8 @@ import javax.swing.JTabbedPane;
  * @author Daniele Romagnoli, GeoSolutions SAS
  * @author Simone Giannecchini, GeoSolutions SAS
  * 
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/render/src/main/java/org/geotools/renderedimage/viewer/RenderedImageInfoPanel.java $
  */
 public class RenderedImageInfoPanel extends JPanel {
 	// Data buffer type to name map

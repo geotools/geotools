@@ -18,6 +18,8 @@ import java.awt.Graphics2D;
  * While any and all data sources could be wrapped up as a DirectLayer we encourage you to consider
  * a separate data mode, style model and renderer. 
  * @author Jody
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/render/src/main/java/org/geotools/map/DirectLayer.java $
  */
 public abstract class DirectLayer extends Layer {
 

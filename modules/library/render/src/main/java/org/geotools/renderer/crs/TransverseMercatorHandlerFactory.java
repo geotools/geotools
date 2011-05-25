@@ -28,6 +28,8 @@ import org.geotools.referencing.operation.projection.MapProjection.AbstractProvi
  * that will cut geometries 45° away from the projection central meridian  
  * 
  * @author Andrea Aime - OpenGeo
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/render/src/main/java/org/geotools/renderer/crs/TransverseMercatorHandlerFactory.java $
  */
 public class TransverseMercatorHandlerFactory implements ProjectionHandlerFactory {
 

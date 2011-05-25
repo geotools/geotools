@@ -13,6 +13,8 @@ import org.geotools.styling.Style;
  * Please note that a StyleLayerDescriptor (defined by SLD) document is usually used to describe the
  * rendering requirements for an entire Map; while a Style (defined by SE) is focused on a single
  * layer of content
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/render/src/main/java/org/geotools/map/StyleLayer.java $
  */
 public abstract class StyleLayer extends Layer {
     /** Style used for rendering */

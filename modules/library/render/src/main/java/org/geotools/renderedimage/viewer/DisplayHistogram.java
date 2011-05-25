@@ -40,6 +40,8 @@ import javax.swing.JComponent;
  * Only the first histogram band ins considered for plotting. 
  * The component has a tooltip which displays the bin index and bin count for the 
  * bin under the mouse cursor. 
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/render/src/main/java/org/geotools/renderedimage/viewer/DisplayHistogram.java $
  */
 public class DisplayHistogram extends JComponent implements MouseMotionListener
   {

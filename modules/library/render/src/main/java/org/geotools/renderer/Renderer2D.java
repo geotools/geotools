@@ -27,6 +27,7 @@ import java.awt.geom.AffineTransform;
  * bounding box, size, and style from the {@linkplain org.geotools.map.Context context}.
  *
  * @author Cameron Shorter
+ *
  * @source $URL$
  * @version $Id$
  *

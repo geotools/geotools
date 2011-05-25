@@ -28,7 +28,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * Event object for MapContext area of interest and coordinate system changes.
  * 
  * @author wolf
- * @source $URL:
+ *
+ * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/library/render/src/main/java/org/geotools
  *         /map/event/MapBoundsEvent.java $
  */

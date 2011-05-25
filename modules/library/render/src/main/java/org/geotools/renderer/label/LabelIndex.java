@@ -30,6 +30,7 @@ import com.vividsolutions.jts.index.quadtree.Quadtree;
  * @author Andrea Aime
  * 
  *
+ *
  * @source $URL$
  */
 public class LabelIndex {

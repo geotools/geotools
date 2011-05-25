@@ -17,7 +17,6 @@
     <groupId>org.geotools.jdbc</groupId>
     <artifactId>gt-jdbc</artifactId>
     <version>8-SNAPSHOT</version>
-    <relativePath>../../plugin/jdbc/pom.xml</relativePath>
   </parent>
 
 

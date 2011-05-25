@@ -24,6 +24,7 @@ import java.util.logging.Logger;
  * type.
  *
  * @author Rob Hranac, Vision for New York
+ *
  * @source $URL$
  * @version $Id$
  */

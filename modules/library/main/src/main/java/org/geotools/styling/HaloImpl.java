@@ -31,6 +31,7 @@ import org.opengis.util.Cloneable;
  * Direct implementation of Halo.
  *
  * @author Ian Turton, CCG
+ *
  * @source $URL$
  * @version $Id$
  */

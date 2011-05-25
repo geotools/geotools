@@ -58,6 +58,8 @@ import com.vividsolutions.jts.geom.Geometry;
  * Please note that this FeatureSource is strictly "read-only" and thus does not support feature
  * events.
  * </p>
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/main/src/main/java/org/geotools/data/collection/SpatialIndexFeatureSource.java $
  */
 public class SpatialIndexFeatureSource implements SimpleFeatureSource {
     SpatialIndexFeatureCollection contents;

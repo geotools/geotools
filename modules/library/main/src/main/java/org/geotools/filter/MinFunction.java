@@ -25,6 +25,7 @@ import org.opengis.filter.expression.Expression;
  * A function that returns the minimum of two arguments.
  *
  * @author James
+ *
  * @source $URL$
  * @version $Id$
  * @deprecated - use org.geotools.filter.function.math.MinFunction instead

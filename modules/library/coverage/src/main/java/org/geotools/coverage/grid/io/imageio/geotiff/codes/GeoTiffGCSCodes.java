@@ -32,6 +32,7 @@ package org.geotools.coverage.grid.io.imageio.geotiff.codes;
  * @since 2.3
  * 
  *
+ *
  * @source $URL$
  */
 public final class GeoTiffGCSCodes {

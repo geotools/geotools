@@ -38,6 +38,7 @@ import org.geotools.resources.i18n.ErrorKeys;
  * This string also defines the {@linkplain CharSequence character sequence}.
  *
  * @since 2.1
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

@@ -56,6 +56,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * </p>
  * @author Justin Deoliveira, The Open Planning Project
  *
+ *
  * @source $URL$
  */
 public final class JDBCFeatureStore extends ContentFeatureStore {

@@ -32,6 +32,7 @@ import static org.junit.Assert.*;
  * Tests the various {@link InternationalString} implementations.
  *
  * @author Martin Desruisseaux (IRD)
+ *
  * @source $URL$
  * @version $Id$
  */

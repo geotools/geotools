@@ -35,6 +35,7 @@ import org.geotools.image.jai.Registry;
  * This operation is simply a wrapper for the JAI scale operation which allows
  * me to arbitrarly scale and translate a rendered image.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Simone Giannecchini

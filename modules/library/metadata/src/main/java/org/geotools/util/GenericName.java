@@ -41,6 +41,7 @@ import org.opengis.util.InternationalString;
  * character separator} between name elements.
  *
  * @since 2.1
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

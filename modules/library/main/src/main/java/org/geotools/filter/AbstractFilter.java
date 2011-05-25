@@ -26,6 +26,7 @@ import org.opengis.feature.simple.SimpleFeature;
  * methods.
  *
  * @author Rob Hranac, Vision for New York
+ *
  * @source $URL$
  * @version $Id$
  */

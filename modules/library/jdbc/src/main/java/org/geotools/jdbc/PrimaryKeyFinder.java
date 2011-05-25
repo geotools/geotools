@@ -27,6 +27,8 @@ import org.opengis.feature.type.FeatureType;
  * 
  * @author Andrea Aime - OpenGeo
  * 
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/jdbc/src/main/java/org/geotools/jdbc/PrimaryKeyFinder.java $
  */
 public abstract class PrimaryKeyFinder {
 

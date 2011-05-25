@@ -25,6 +25,7 @@ import static org.junit.Assert.*;
  *
  * @author Jody Garnett
  *
+ *
  * @source $URL$
  */
 public final class RangeTest {

@@ -27,6 +27,7 @@ import java.util.ArrayList;
  * @author Justin Deoliveira, The Open Planning Project
  *
  *
+ *
  * @source $URL$
  */
 public class NullPrimaryKey extends PrimaryKey {

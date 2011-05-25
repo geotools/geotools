@@ -8,6 +8,8 @@ import org.opengis.filter.expression.Function;
 /**
  * Given an original rendering envelope it visits an expression, finds all
  * {@link GeometryTransformation}, collects and merges all the returned query envelopes
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/main/src/main/java/org/geotools/filter/function/GeometryTransformationVisitor.java $
  */
 public class GeometryTransformationVisitor extends DefaultFilterVisitor {
 

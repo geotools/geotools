@@ -40,6 +40,7 @@ import org.opengis.util.TypeName;
  * and are usually defined in the context of a schema.
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Jody Garnet

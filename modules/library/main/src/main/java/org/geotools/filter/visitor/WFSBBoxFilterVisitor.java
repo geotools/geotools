@@ -49,6 +49,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  * <p> 
  * @author Jody
  *
+ *
  * @source $URL$
  */
 public class WFSBBoxFilterVisitor implements org.geotools.filter.FilterVisitor2 {

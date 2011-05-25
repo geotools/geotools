@@ -27,6 +27,7 @@ import com.vividsolutions.jts.geom.Envelope;
  * @author Cory Horner, Refractions
  *
  * @since 2.2.M2
+ *
  * @source $URL$
  */
 public class BoundsVisitor implements FeatureCalc {

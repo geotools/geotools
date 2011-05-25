@@ -25,6 +25,7 @@ import org.opengis.filter.expression.PropertyName;
 /**
  *
  * @author James
+ *
  * @source $URL$
  */
 public class EqualIntervalFunctionTest extends FunctionTestSupport {

@@ -62,6 +62,7 @@ import org.opengis.filter.identity.FeatureId;
  * @task UPDATE: made modify atomic as an example, I actually have
  *       the beginings of a smart idea in mind. Similar to
  *       SwingUtilities.runLater...
+ *
  * @source $URL$
  * 
  * @deprecated scheduled for removal in 2.7, use classes in org.geotools.jdbc

@@ -51,6 +51,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * geometry classes.
  * </p>
  * @author Jesse Eichar
+ *
  * @source $URL$
  * @version $Id$
  */

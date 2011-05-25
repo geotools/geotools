@@ -55,6 +55,7 @@ import org.opengis.geometry.BoundingBox;
  * </p>
  * 
  * @author Ian Schneider
+ *
  * @source $URL$
  * @version $Id$
  */

@@ -60,6 +60,7 @@ import org.opengis.util.InternationalString;
  * retarget the geotools library for their needs.
  *
  * @since 2.1
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

@@ -87,8 +87,8 @@ import org.w3c.dom.NodeList;
  * @author Mike Nidel
  * @author Simone Giannecchini, GeoSolutions
  * 
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/plugin/geotiff/src/org/geotools/gce/geotiff/IIOMetadataAdpaters/GeoTiffIIOMetadataDecoder.java $
+ *
+ * @source $URL$
  * @todo we can improve a little bt this class caching the pixel scale, the transformation, etc...
  */
 public final class GeoTiffIIOMetadataDecoder {

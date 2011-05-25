@@ -26,7 +26,8 @@ import java.util.logging.Logger;
  * associated subclasses are not thread safe.
  * 
  * @author Andrea Aime
- * @source $URL:
+ *
+ * @source $URL$
  */
 public abstract class AbstractLiteIterator implements PathIterator {
 

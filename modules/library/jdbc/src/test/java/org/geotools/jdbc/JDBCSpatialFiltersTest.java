@@ -43,6 +43,7 @@ import com.vividsolutions.jts.geom.impl.PackedCoordinateSequenceFactory;
  * 
  * @author Andrea Aime - OpenGeo
  *
+ *
  * @source $URL$
  */
 public abstract class JDBCSpatialFiltersTest extends JDBCTestSupport {

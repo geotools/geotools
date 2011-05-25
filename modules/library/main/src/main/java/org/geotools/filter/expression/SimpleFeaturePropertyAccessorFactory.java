@@ -43,6 +43,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * @author Justin Deoliveira, The Open Planning Project
  * 
  *
+ *
  * @source $URL$
  */
 public class SimpleFeaturePropertyAccessorFactory implements

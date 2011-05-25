@@ -50,6 +50,7 @@ import org.geotools.resources.image.ColorUtilities;
  * {@link org.geotools.coverage.processing.operation.Recolor} operation.
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

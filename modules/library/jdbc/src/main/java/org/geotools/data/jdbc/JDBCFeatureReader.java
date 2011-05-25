@@ -34,6 +34,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * JDBCDataStore specific implementation of the  FeatureReader<SimpleFeatureType, SimpleFeature> interface
  *
  * @author aaime
+ *
  * @source $URL$
  * 
  * @deprecated scheduled for removal in 2.7, use classes in org.geotools.jdbc

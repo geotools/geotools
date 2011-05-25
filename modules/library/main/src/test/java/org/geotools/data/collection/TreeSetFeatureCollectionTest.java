@@ -46,7 +46,8 @@ import com.vividsolutions.jts.geom.PrecisionModel;
 /**
  * Verify TreeSetFeatureCollection is conforming to the FeatureCollection api contract.
  * @author  Jody
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/main/src/test/java/org/geotools/feature/FeatureCollectionTest.java $
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/main/src/test/java/org/geotools/data/collection/TreeSetFeatureCollectionTest.java $
  */
 public class TreeSetFeatureCollectionTest extends org.geotools.data.collection.FeatureCollectionTest {
     public TreeSetFeatureCollectionTest(String testName) {

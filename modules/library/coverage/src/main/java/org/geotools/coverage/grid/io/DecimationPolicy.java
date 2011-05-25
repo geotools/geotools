@@ -20,7 +20,8 @@ package org.geotools.coverage.grid.io;
  * Decimation policies.
  *
  * @since 2.7
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/coverage/src/main/java/org/geotools/coverage/grid/io/DecimationPolicy.java $
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/coverage/src/main/java/org/geotools/coverage/grid/io/DecimationPolicy.java $
  * @author Daniele Romagnoli, GeoSolutions SAS.
  * @author Simone Giannecchini, GeoSolutions SAS.
  */

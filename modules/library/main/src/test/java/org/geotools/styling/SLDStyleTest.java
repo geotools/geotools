@@ -55,6 +55,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * Try out our SLD parser and see how well it does.
  *
  * @author jamesm
+ *
  * @source $URL$
  */
 public class SLDStyleTest extends TestCase {

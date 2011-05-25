@@ -46,6 +46,7 @@ import static java.lang.Math.*;
  * 
  * 
  *
+ *
  * @source $URL$
  * @version 1.7
  * @see WKTWriter

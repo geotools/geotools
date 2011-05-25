@@ -46,6 +46,7 @@ import org.opengis.feature.type.Schema;
  * </p>
  * @author Jody Garnett, Refractions Research Inc.
  *
+ *
  * @source $URL$
  */
 public class ProfileImpl implements Schema {

@@ -26,6 +26,8 @@ import java.util.List;
  * 
  * @author Andrea Aime - OpenGeo
  * 
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/jdbc/src/main/java/org/geotools/jdbc/CompositePrimaryKeyFinder.java $
  */
 public class CompositePrimaryKeyFinder extends PrimaryKeyFinder {
 

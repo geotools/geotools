@@ -26,6 +26,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * handler just prints every JTS geometry that it gets to the standard output.
  *
  * @author Rob Hranac, Vision for New York
+ *
  * @source $URL$
  * @version $Id$
  */

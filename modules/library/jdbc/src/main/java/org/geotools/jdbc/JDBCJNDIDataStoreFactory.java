@@ -39,6 +39,7 @@ import org.geotools.factory.GeoTools;
  * 
  * @author Christian Mueller
  *
+ *
  * @source $URL$
  */
 public abstract class JDBCJNDIDataStoreFactory extends JDBCDataStoreFactory {

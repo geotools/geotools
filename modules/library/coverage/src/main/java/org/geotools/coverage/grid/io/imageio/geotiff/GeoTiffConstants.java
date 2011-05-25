@@ -24,6 +24,7 @@ import it.geosolutions.imageio.plugins.tiff.TIFFTag;
 /**
  * @author simone
  * 
+ *
  * @source $URL$
  */
 public final class GeoTiffConstants {

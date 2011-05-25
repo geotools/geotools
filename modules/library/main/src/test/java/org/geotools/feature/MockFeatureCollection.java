@@ -31,8 +31,8 @@ import org.opengis.filter.sort.SortBy;
 
 /**
  * @author jamesm
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/library/main/src/test/java/org/geotools/feature/MockFeatureCollection.java $
+ *
+ * @source $URL$
  */
 public class MockFeatureCollection implements SimpleFeatureCollection {
 

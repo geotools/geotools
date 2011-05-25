@@ -50,6 +50,7 @@ import org.geotools.resources.i18n.ErrorKeys;
  *            of {@link Number}.
  *
  * @since 2.5
+ *
  * @source $URL$
  * @version $Id$
  * @author Jody Garnett

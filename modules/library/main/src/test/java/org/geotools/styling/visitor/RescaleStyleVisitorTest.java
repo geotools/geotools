@@ -39,6 +39,7 @@ import org.opengis.filter.FilterFactory2;
  * Unit test for RescaleStyleVisitor.
  *
  * @author Jody Garnett (Refractions Research Inc)
+ *
  * @source $URL$
  */
 public class RescaleStyleVisitorTest extends TestCase {

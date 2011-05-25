@@ -25,6 +25,7 @@ import static org.junit.Assert.*;
  *
  * @author Cory Horner (Refractions Research)
  *
+ *
  * @source $URL$
  */
 public final class ObjectCacheEntryTest {

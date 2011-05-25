@@ -42,6 +42,7 @@ import org.opengis.filter.Filter;
  * @author Jody Garnett, LISAsoft
  * @author Justin Deoliveira, The Open Planning Project
  *
+ *
  * @source $URL$
  */
 public class Types {

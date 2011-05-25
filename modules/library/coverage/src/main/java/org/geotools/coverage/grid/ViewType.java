@@ -43,6 +43,7 @@ import org.geotools.resources.image.ImageUtilities;
  * can not be processed directly by an {@linkplain IndexColorModel index color model}.
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

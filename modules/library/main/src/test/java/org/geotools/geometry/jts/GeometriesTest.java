@@ -39,6 +39,7 @@ import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
  *
  * @author Michael Bedward
  * @since 2.6
+ *
  * @source $URL$
  * @version $Id$
  */

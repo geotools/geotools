@@ -23,6 +23,7 @@ import org.xml.sax.helpers.NamespaceSupport;
  * A Translator is used in an XMLEncoding process by the FeatureTransformer 
  * class.
  * @author  Ian Schneider
+ *
  * @source $URL$
  */
 public interface Translator {

@@ -32,6 +32,7 @@ import com.vividsolutions.jts.geom.Geometry;
  *
  * @author Rob Hranac, TOPP<br>
  * @author Chris Holmes, TOPP
+ *
  * @source $URL$
  * @version $Id$
  */

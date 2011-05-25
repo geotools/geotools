@@ -41,6 +41,7 @@ import org.opengis.filter.FilterVisitor;
  * to simplify/make meaningful filter logic.
  *
  * @author Rob Hranac, Vision for New York
+ *
  * @source $URL$
  * @version $Id$
  */

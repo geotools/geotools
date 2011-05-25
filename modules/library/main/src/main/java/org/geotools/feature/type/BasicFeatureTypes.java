@@ -48,6 +48,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * </p>
  *
  * @author John Meagher
+ *
  * @source $URL$
  */
 public class BasicFeatureTypes

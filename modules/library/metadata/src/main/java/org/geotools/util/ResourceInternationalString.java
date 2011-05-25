@@ -47,6 +47,7 @@ import java.util.ResourceBundle;
  * for Italian, <cite>etc.</cite>
  *
  * @since 2.1
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

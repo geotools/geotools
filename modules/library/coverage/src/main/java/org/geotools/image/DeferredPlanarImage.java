@@ -89,6 +89,7 @@ import org.geotools.util.logging.Logging;
  * </pre></blockquote>
  *
  * @since 2.3
+ *
  * @source $URL$
  * @version $Id$
  * @author Remi Eve

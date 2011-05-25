@@ -27,6 +27,7 @@ import java.util.Iterator;
  * This set is constructed by {@link org.geotools.referencing.FactoryFinder}.
  *
  * @since 2.0
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

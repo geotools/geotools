@@ -29,6 +29,7 @@ import org.geotools.metadata.iso.MetadataEntity;
  * Common ways in which the resource may be obtained or received, and related instructions
  * and fee information.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

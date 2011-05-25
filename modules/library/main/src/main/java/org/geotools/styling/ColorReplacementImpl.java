@@ -25,7 +25,8 @@ import org.opengis.style.StyleVisitor;
  * of the "Recode" function as defined by SymbologyEncoding 1.1.
  *
  * @author Jody Garnett
- * @source $URL: http://svn.geotools.org/trunk/modules/library/main/src/main/java/org/geotools/styling/ColorReplacmeentImpl.java $
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/main/src/main/java/org/geotools/styling/ColorReplacementImpl.java $
  */
 public class ColorReplacementImpl implements org.geotools.styling.ColorReplacement {
 

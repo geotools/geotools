@@ -106,6 +106,8 @@ import com.vividsolutions.jts.geom.Geometry;
  * @task REVISIT: need to figure out exceptions, we're currently eating io
  *       errors, which is bad. Probably need a generic visitor exception.
  * 
+ *
+ * @source $URL$
  */
 /*
  * TODO: Use the new FilterCapabilities.  This may fall out of using the new

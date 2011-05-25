@@ -44,6 +44,7 @@ import org.opengis.referencing.operation.MathTransform;
 /**
  * Base class for tests on {@link AbstractCoverage} subclasses.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

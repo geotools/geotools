@@ -28,6 +28,7 @@ import org.opengis.metadata.PortrayalCatalogueReference;
 /**
  * Information identifying the portrayal catalogue used.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

@@ -26,6 +26,7 @@ import org.opengis.filter.expression.Literal;
  * 
  * @author jdeolive TODO: rename this class to IsEqualToImpl
  *
+ *
  * @source $URL$
  */
 public class IsEqualsToImpl extends CompareFilterImpl implements PropertyIsEqualTo {

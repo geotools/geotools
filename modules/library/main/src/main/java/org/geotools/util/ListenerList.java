@@ -40,6 +40,7 @@ package org.geotools.util;
  * }
  * </pre>
  * </p>
+ *
  * @source $URL$
  */
 public class ListenerList {

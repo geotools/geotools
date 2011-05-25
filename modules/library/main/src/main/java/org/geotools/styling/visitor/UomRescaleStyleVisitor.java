@@ -50,6 +50,8 @@ import org.opengis.filter.expression.Expression;
  * result.
  * 
  * @author milton
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/main/src/main/java/org/geotools/styling/visitor/UomRescaleStyleVisitor.java $
  */
 public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
 

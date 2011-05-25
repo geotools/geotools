@@ -46,6 +46,7 @@ import com.vividsolutions.jts.geom.PrecisionModel;
 /**
  *
  * @author  en
+ *
  * @source $URL$
  */
 public class FeatureCollectionTest extends org.geotools.data.collection.FeatureCollectionTest {

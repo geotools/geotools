@@ -55,6 +55,7 @@ import java.util.*;
  * the Java date handling, which uses a discontinuous Gregorian calendar.
  *
  * @author Dennis M. Sosnoski
+ *
  * @source $URL$
  * @version 1.0
  */

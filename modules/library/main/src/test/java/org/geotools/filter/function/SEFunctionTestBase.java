@@ -32,6 +32,8 @@ import org.opengis.filter.expression.Expression;
 /**
  * Fields and helper method for unit test classes
  * @author Michael Bedward
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/main/src/test/java/org/geotools/filter/function/SEFunctionTestBase.java $
  */
 public class SEFunctionTestBase {
 

@@ -31,6 +31,7 @@ import org.geotools.resources.Classes;
  * A factory for {@link GenericName} objects.
  *
  * @since 2.1
+ *
  * @source $URL$
  * @version $Id$
  * @author  Martin Desruisseaux

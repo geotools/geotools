@@ -41,6 +41,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  * Unit test for sax parser.
  *
  * @author James MacGill, CCG
+ *
  * @source $URL$
  */
 public class ParserTest extends FilterTestSupport {

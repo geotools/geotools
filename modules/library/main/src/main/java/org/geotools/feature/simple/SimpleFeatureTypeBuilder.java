@@ -103,6 +103,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * @author Justin Deolivera
  * @author Jody Garnett
  *
+ *
  * @source $URL$
  */
 public class SimpleFeatureTypeBuilder {

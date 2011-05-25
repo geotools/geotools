@@ -42,7 +42,8 @@ import org.opengis.filter.sort.SortBy;
  * @since 2.5
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/feature/collection/DecoratingFeatureCollection.java $
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/main/src/main/java/org/geotools/feature/collection/DecoratingSimpleFeatureCollection.java $
  */
 public class DecoratingSimpleFeatureCollection implements SimpleFeatureCollection {
 

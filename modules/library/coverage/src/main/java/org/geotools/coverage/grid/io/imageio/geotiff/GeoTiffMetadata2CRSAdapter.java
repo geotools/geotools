@@ -119,8 +119,8 @@ import org.opengis.referencing.operation.MathTransformFactory;
  * @author Simone Giannecchini
  * @author Daniele Romagnoli
  * 
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/plugin/geotiff/src/org/geotools/gce/geotiff/crs_adapters/GeoTiffMetadata2CRSAdapter.java $
+ *
+ * @source $URL$
  */
 public final class GeoTiffMetadata2CRSAdapter {
 

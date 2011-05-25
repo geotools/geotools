@@ -30,8 +30,9 @@ import org.opengis.filter.PropertyIsLike;
  * Defines a like filter, which checks to see if an attribute matches a REGEXP.
  *
  * @author Rob Hranac, Vision for New York
- * @source $URL: http://svn.osgeo.org/geotools/tags/2.6-RC1/modules/library/main/src/main/java/org/geotools/filter/LikeFilterImpl.java $
- * @version $Id: LikeFilterImpl.java 34034 2009-10-01 15:15:03Z jdeolive $
+ *
+ * @source $URL$
+ * @version $Id$
  */
 public class LikeFilterImpl extends AbstractFilterImpl implements LikeFilter {
 

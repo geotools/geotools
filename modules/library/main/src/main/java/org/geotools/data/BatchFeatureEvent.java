@@ -39,6 +39,7 @@ import org.opengis.filter.identity.Identifier;
  * 
  * @author Jody Garnett
  *
+ *
  * @source $URL$
  */
 public class BatchFeatureEvent extends FeatureEvent {

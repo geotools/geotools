@@ -77,6 +77,7 @@ import com.sun.media.jai.operator.ImageReadDescriptor;
  * It may change in incompatible way in any future version.
  *
  * @since 2.0
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

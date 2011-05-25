@@ -35,6 +35,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * @author Mauricio Pazos - Axios Engineering
  * @author Gabriel Roldan - Axios Engineering
  *
+ *
  * @source $URL$
  * @version $Id$
  * @since 2.4

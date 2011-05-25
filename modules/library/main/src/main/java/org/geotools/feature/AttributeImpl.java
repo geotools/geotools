@@ -34,6 +34,7 @@ import org.opengis.filter.identity.Identifier;
  * @author Jody Garnett
  * @author Gabriel Roldan
  *
+ *
  * @source $URL$
  * @version $Id$
  */

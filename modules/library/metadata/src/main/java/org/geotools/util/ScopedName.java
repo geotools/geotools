@@ -37,6 +37,7 @@ import org.opengis.util.NameSpace;
  * as {@linkplain #getScope tail}.
  *
  * @since 2.1
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

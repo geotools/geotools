@@ -24,6 +24,7 @@ import static org.junit.Assert.*;
  * Tests the {@link Version} class, especially the {@code compareTo} method.
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

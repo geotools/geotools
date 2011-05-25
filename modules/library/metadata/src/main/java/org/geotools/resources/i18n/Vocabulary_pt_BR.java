@@ -20,6 +20,7 @@ package org.geotools.resources.i18n;
 /**
  * Brazil Portuguese language resource.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

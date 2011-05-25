@@ -57,6 +57,7 @@ import com.vividsolutions.jts.geom.Geometry;
  *       encoded.
  * @task REVISIT: need to figure out exceptions, we're currently eating io
  *       errors, which is bad. Probably need a generic visitor exception.
+ *
  * @source $URL$
  * @deprecated scheduled for removal in 2.7, use classes in org.geotools.jdbc
  */

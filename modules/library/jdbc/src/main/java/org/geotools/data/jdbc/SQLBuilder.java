@@ -29,6 +29,7 @@ import org.opengis.filter.sort.SortBy;
  *  <p>Currently just doing query building, but obviously this can be extended.
  * 
  *  @author Sean Geoghegan, Defence Science and Technology Organisation.
+ *
  * @source $URL$
  * 
  * @deprecated scheduled for removal in 2.7, use classes in org.geotools.jdbc

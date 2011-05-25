@@ -59,6 +59,7 @@ import org.geotools.util.Version;
  * </ul>
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Jody Garnett

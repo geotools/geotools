@@ -30,6 +30,7 @@ import org.geotools.metadata.iso.MetadataEntity;
 /**
  * Brief description of ways in which the resource(s) is/are currently used.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

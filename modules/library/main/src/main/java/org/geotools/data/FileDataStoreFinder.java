@@ -42,6 +42,7 @@ import org.geotools.factory.CommonFactoryFinder;
  * @author dzwiers
  *
  * @see DataStoreFinder
+ *
  * @source $URL$
  */
 public class FileDataStoreFinder {

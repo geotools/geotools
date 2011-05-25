@@ -69,6 +69,7 @@ import org.opengis.referencing.operation.MathTransform1D;
  * Base class for grid coverage tests. This base class provides factory methods for sample
  * {@link GridCoverage2D}, and {@code assertEqual} methods for comparing values.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

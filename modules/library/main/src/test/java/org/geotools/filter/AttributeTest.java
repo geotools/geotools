@@ -36,6 +36,7 @@ import com.vividsolutions.jts.geom.PrecisionModel;
  * Tests for Attribute Expressions
  *
  * @author James Macgill
+ *
  * @source $URL$
  */
 public class AttributeTest extends TestCase {

@@ -42,6 +42,7 @@ import org.opengis.feature.type.FeatureType;
  * 
  * @author Cory Horner
  * @since 2.2M2
+ *
  * @source $URL$
  */
 public class Collection_AverageFunction extends FunctionExpressionImpl {

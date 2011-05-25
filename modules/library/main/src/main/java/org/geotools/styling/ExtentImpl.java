@@ -22,6 +22,7 @@ import org.opengis.util.Cloneable;
 
 /**
  *
+ *
  * @source $URL$
  */
 public class ExtentImpl implements Extent,

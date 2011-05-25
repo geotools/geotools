@@ -34,6 +34,7 @@ import com.vividsolutions.jts.geom.Point;
  * 
  * @author Ben Caradoc-Davies, CSIRO Exploration and Mining
  *
+ *
  * @source $URL$
  */
 public class SimpleFeatureTypeImplTest extends TestCase {

@@ -38,6 +38,7 @@ import org.opengis.geometry.Envelope;
  * opposite of Java2D usage where {@link Rectangle} maximal values are exclusive.
  *
  * @since 2.5
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

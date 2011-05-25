@@ -54,6 +54,7 @@ import org.opengis.util.InternationalString;
  * optimizations in case we were dealing with non-geo view of coverage.
  * 
  * @author Simone Giannecchini, GeoSolutions.
+ *
  * @source $URL$
  * @since 2.5
  */

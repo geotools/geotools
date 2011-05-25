@@ -27,6 +27,7 @@ import org.geotools.util.WeakValueHashMap;
  * forward directly all log methods to an other framework.
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

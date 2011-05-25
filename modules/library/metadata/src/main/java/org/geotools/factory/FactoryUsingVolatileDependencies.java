@@ -36,6 +36,7 @@ package org.geotools.factory;
  *       Retaining all hints will prevents their garbage collection.<p></li>
  * </ul>
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

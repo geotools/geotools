@@ -46,8 +46,8 @@ import org.opengis.filter.identity.Identifier;
  * 
  * TODO: this class shoul be renamed to IdFilterImpl
  * 
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/library/main/src/main/java/org/geotools/filter/FidFilterImpl.java $
+ *
+ * @source $URL$
  * @version $Id$
  */
 public class FidFilterImpl extends AbstractFilterImpl implements FidFilter {

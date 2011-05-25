@@ -12,6 +12,7 @@ import org.junit.Test;
  * 
  * @author Emily Gouge (Refractions Research)
  *
+ *
  * @source $URL$
  */
 public class SoftObjectCacheTest {

@@ -34,6 +34,7 @@ import static org.junit.Assert.*;
 /**
  * Tests the {@link PropertyAccessor} class.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

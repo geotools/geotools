@@ -29,8 +29,8 @@ import org.geotools.filter.text.commons.IToken;
  * @author Mauricio Pazos - Axios Engineering
  * @author Gabriel Roldan - Axios Engineering
  * @version $Id$
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/library/cql/src/main/java/org/geotools/text/filter/Result.java $
+ *
+ * @source $URL$
  */
 public final class Result {
     private int nodeType = 0;

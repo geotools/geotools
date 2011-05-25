@@ -51,6 +51,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  *
  * @author  en
  * @author jgarnett
+ *
  * @source $URL$
  */
 public class FeatureTypeTest extends DataTestCase {

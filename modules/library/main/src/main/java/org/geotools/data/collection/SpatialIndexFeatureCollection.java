@@ -37,6 +37,8 @@ import com.vividsolutions.jts.index.strtree.STRtree;
  * Please note that this feature collection cannot be modified after the spatial index is created.
  * 
  * @author Jody
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/main/src/main/java/org/geotools/data/collection/SpatialIndexFeatureCollection.java $
  */
 public class SpatialIndexFeatureCollection implements SimpleFeatureCollection {
 

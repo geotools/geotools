@@ -21,6 +21,7 @@ package org.geotools.data.jdbc;
  * 
  * @author Sean Geoghegan, Defence Science and Technology Organisation
  * @author $Author: seangeo $
+ *
  * @source $URL$
  * @version $Id$
  * Last Modified: $Date: 2003/11/28 08:49:51 $

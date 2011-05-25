@@ -26,6 +26,7 @@ import org.opengis.filter.Id;
  * <p>
  * Example:<code>Set<String> fids = (Set<String>) filter.accept( IdCollectorFilterVisitor.ID_COLLECTOR, new HashSet() );</code>
  *
+ *
  * @source $URL$
  */
 public class IdCollectorFilterVisitor extends DefaultFilterVisitor {

@@ -86,6 +86,7 @@ import com.vividsolutions.jts.geom.prep.PreparedGeometryFactory;
  * 
  * @author jesse
  *
+ *
  * @source $URL$
  */
 public abstract class AbstractPreparedGeometryFilter extends GeometryFilterImpl {

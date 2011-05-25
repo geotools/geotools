@@ -78,6 +78,7 @@ import java.awt.RenderingHints;
  * @author Ian Schneider
  * @author Martin Desruisseaux
  * @author Jody Garnett
+ *
  * @source $URL$
  * @version $Id$
  *

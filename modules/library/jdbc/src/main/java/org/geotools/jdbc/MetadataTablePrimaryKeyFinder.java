@@ -49,6 +49,8 @@ import org.geotools.util.logging.Logging;
  * 
  * @author Andrea Aime - OpenGeo
  * 
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/jdbc/src/main/java/org/geotools/jdbc/MetadataTablePrimaryKeyFinder.java $
  */
 public class MetadataTablePrimaryKeyFinder extends PrimaryKeyFinder {
     protected static final Logger LOGGER = Logging.getLogger(MetadataTablePrimaryKeyFinder.class);

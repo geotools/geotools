@@ -28,6 +28,7 @@ import org.geotools.ows.ServiceException;
  * This represents a Request to be made against a Open Web Service.
  * 
  * @author rgould
+ *
  * @source $URL$
  */
 public interface Request {

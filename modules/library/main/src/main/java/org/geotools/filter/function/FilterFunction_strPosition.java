@@ -30,6 +30,8 @@ import org.geotools.filter.FunctionExpressionImpl;
  * </p>
  * @author Justin Deoliveira, OpenGeo
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/main/src/main/java/org/geotools/filter/function/FilterFunction_strPosition.java $
  */
 public class FilterFunction_strPosition extends FunctionExpressionImpl {
 

@@ -56,6 +56,7 @@ import org.opengis.filter.expression.Literal;
  * 
  * @author Jody Garnett (Refractions Research)
  *
+ *
  * @source $URL$
  */
 public class RescaleStyleVisitor extends DuplicatingStyleVisitor {

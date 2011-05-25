@@ -19,6 +19,8 @@ package org.geotools.jdbc;
 /**
  * Metadata about a table column used to carry information through the type mapping process.
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/jdbc/src/main/java/org/geotools/jdbc/ColumnMetadata.java $
  */
 public class ColumnMetadata {
 

@@ -46,6 +46,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * Base class for Geotools implementation of grid coverage.
  *
  * @since 2.1
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

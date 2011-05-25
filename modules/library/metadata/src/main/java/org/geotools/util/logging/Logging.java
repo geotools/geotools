@@ -46,6 +46,7 @@ import org.geotools.resources.i18n.ErrorKeys;
  * </code></blockquote>
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

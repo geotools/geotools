@@ -31,6 +31,7 @@ import org.opengis.filter.expression.Literal;
  * Abstract class for a function expression implementation
  *
  * @author James Macgill, PSU
+ *
  * @source $URL$
  */
 public abstract class FunctionExpressionImpl

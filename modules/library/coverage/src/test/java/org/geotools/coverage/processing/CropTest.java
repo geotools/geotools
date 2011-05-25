@@ -53,6 +53,7 @@ import static org.junit.Assert.*;
 /**
  * Tests the crop operation.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Simone Giannecchini (GeoSolutions)

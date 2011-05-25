@@ -26,6 +26,7 @@ import org.geotools.metadata.iso.MetadataEntity;
 /**
  * Method used to represent geographic information in the dataset.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

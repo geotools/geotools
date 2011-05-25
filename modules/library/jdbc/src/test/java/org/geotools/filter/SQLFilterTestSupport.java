@@ -36,6 +36,7 @@ import com.vividsolutions.jts.geom.LineString;
  * Common filter testing code factored up here.
  *
  * @author Chris Holmes
+ *
  * @source $URL$
  */
 public abstract class SQLFilterTestSupport extends TestCase {

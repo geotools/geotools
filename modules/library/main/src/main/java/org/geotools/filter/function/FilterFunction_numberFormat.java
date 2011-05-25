@@ -27,6 +27,7 @@ import org.geotools.filter.FunctionExpressionImpl;
  * @author Andrea Aime - OpenGeo
  *
  *
+ *
  * @source $URL$
  */
 public class FilterFunction_numberFormat extends FunctionExpressionImpl {

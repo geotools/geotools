@@ -42,7 +42,8 @@ import org.opengis.filter.sort.SortBy;
  * @author Justin Deoliveira, The Open Planning Project
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/data/store/MaxFeaturesFeatureCollection.java $
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/main/src/main/java/org/geotools/feature/collection/MaxSimpleFeatureCollection.java $
  */
 public class MaxSimpleFeatureCollection extends
         DecoratingSimpleFeatureCollection {

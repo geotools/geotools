@@ -37,6 +37,7 @@ import org.opengis.filter.expression.PropertyName;
  * An utility class designed to ease style building by convinience methods.
  *
  * @author aaime
+ *
  * @source $URL$
  */
 public class StyleBuilder {

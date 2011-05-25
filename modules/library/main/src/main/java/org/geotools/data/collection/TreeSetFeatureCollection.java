@@ -70,7 +70,8 @@ import org.opengis.geometry.BoundingBox;
  * problems between threads when debugging. It is excellent for its intended purpose of test cases.
  * 
  * @author Ian Schneider
- * @source $URL:
+ *
+ * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/
  *         data/collection/TreeSetFeatureCollection.java $
  * @version $Id$

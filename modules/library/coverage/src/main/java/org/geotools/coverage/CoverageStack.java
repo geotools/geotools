@@ -118,6 +118,7 @@ import org.opengis.referencing.operation.TransformException;
  * {@code CoverageStack} implementation is thread-safe.
  *
  * @since 2.1
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

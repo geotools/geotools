@@ -71,6 +71,7 @@ import org.opengis.util.InternationalString;
  * @see javax.media.jai.Histogram
  * 
  *
+ *
  * @source $URL$
  */
 public class Histogram extends AbstractStatisticsOperationJAI {

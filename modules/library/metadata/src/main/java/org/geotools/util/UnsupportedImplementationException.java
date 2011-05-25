@@ -27,6 +27,7 @@ import org.geotools.resources.i18n.ErrorKeys;
  * <A HREF="http://geoapi.sourceforge.net">GeoAPI</A> interface.
  *
  * @since 2.0
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

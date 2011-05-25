@@ -115,6 +115,7 @@ import com.sun.media.jai.util.ImageUtil;
  * is left in an undetermined state and should not be used anymore.
  *
  * @since 2.3
+ *
  * @source $URL$
  * @version $Id$
  * @author Simone Giannecchini

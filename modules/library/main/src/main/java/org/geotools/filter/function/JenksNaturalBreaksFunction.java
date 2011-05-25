@@ -32,6 +32,8 @@ import org.geotools.util.logging.Logging;
  * Calculate the Jenks' Natural Breaks classification for a featurecollection
  * 
  * @author Ian Turton
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/main/src/main/java/org/geotools/filter/function/JenksNaturalBreaksFunction.java $
  */
 public class JenksNaturalBreaksFunction extends ClassificationFunction {
     org.opengis.util.ProgressListener progress;

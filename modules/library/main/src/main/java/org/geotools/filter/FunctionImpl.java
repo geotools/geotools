@@ -34,6 +34,7 @@ import org.opengis.filter.expression.Literal;
  * @author Cory Horner, Refractions Research
  *
  *
+ *
  * @source $URL$
  */
 public class FunctionImpl extends ExpressionAbstract implements Function {

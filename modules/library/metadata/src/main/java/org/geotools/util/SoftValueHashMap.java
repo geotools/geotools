@@ -54,6 +54,7 @@ import org.geotools.util.logging.Logging;
  * @param <V> The type of values in the map.
  *
  * @since 2.3
+ *
  * @source $URL$
  * @version $Id$
  * @author Simone Giannecchini

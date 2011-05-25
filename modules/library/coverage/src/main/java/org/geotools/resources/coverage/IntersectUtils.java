@@ -31,6 +31,8 @@ import org.geotools.util.Utilities;
  * supporting them.
  *
  * @author Emanuele Tajariol (GeoSolutions)
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/coverage/src/main/java/org/geotools/resources/coverage/IntersectUtils.java $
  */
 public class IntersectUtils {
 

@@ -29,6 +29,7 @@ import org.opengis.feature.type.FeatureType;
 /**
  * Description of the class of information covered by the information.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

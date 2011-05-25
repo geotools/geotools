@@ -29,6 +29,7 @@ import org.opengis.feature.simple.SimpleFeature;
  * @author Cory Horner, Refractions
  *
  * @since 2.2.M2
+ *
  * @source $URL$
  */
 public class CollectionUtil {

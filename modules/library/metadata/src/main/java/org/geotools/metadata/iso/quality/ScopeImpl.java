@@ -31,6 +31,7 @@ import org.geotools.metadata.iso.MetadataEntity;
 /**
  * Description of the data specified by the scope.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

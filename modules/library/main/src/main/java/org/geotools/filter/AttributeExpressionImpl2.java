@@ -29,6 +29,7 @@ import org.xml.sax.helpers.NamespaceSupport;
  * internally defined manner.
  *
  * @author Rob Hranac, TOPP
+ *
  * @source $URL$
  * @version $Id$
  */

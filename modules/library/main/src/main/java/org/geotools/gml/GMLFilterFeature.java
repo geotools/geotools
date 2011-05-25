@@ -43,6 +43,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * </p>
  *
  * @author Rob Hranac, Vision for New York
+ *
  * @source $URL$
  * @version $Id$
  */

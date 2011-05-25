@@ -72,6 +72,7 @@ import org.opengis.filter.spatial.Within;
  * @author Jesse
  *
  *
+ *
  * @source $URL$
  */
 public class DuplicatingFilterVisitor implements FilterVisitor, ExpressionVisitor {

@@ -23,6 +23,7 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 /**
  *
  * @author  jamesm
+ *
  * @source $URL$
  */
 public class MockFeatureCollections extends org.geotools.feature.FeatureCollections {

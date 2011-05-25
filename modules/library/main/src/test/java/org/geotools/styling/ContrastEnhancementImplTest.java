@@ -26,6 +26,8 @@ import static org.junit.Assert.*;
 /**
  * The ContrastEnhancementImpl UnitTest
  * @author Jared Erickson
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/main/src/test/java/org/geotools/styling/ContrastEnhancementImplTest.java $
  */
 public class ContrastEnhancementImplTest extends TestCase {
 

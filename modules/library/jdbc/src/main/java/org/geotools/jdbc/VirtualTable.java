@@ -45,6 +45,8 @@ import com.vividsolutions.jts.geom.Geometry;
  * 
  * @author Andrea Aime - OpenGeo
  * 
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/jdbc/src/main/java/org/geotools/jdbc/VirtualTable.java $
  */
 public class VirtualTable implements Serializable {
     static final Logger LOGGER = Logging.getLogger(VirtualTable.class);

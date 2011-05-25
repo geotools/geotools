@@ -34,6 +34,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * Tests the ArrayFeatureReader class
  *
  * @author jones
+ *
  * @source $URL$
  */
 public class ArrayFeatureReaderTest extends TestCase {

@@ -25,6 +25,7 @@ import org.opengis.metadata.quality.TemporalValidity;
 /**
  * Validity of data specified by the scope with respect to time.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

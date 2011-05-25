@@ -31,6 +31,8 @@ import static org.junit.Assert.*;
  * Unit tests for the Interpolate function.
  *
  * @author Michael Bedward
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/main/src/test/java/org/geotools/filter/function/InterpolateFunctionTest.java $
  */
 public class InterpolateFunctionTest extends SEFunctionTestBase {
 

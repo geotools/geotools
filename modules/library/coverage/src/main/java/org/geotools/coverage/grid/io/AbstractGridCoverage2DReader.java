@@ -86,6 +86,8 @@ import org.opengis.referencing.operation.TransformException;
  * 
  * @author Simone Giannecchini, GeoSolutions
  * @since 2.3
+ *
+ * @source $URL$
  */
 public abstract class AbstractGridCoverage2DReader implements GridCoverageReader {
 

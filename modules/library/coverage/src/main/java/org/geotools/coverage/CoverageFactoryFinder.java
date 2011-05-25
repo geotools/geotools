@@ -33,6 +33,7 @@ import org.geotools.resources.LazySet;
  * {@linkplain GridCoverageFactory factory} implementation.
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

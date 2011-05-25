@@ -26,6 +26,7 @@ import org.opengis.filter.expression.Expression;
  * DOCUMENT ME!
  *
  * @author iant
+ *
  * @source $URL$
  */
 public class TextMarkImpl extends MarkImpl implements TextMark {

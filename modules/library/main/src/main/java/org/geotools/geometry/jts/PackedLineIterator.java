@@ -31,7 +31,8 @@ import com.vividsolutions.jts.geom.impl.PackedCoordinateSequence.Double;
  * LineString object.
  *
  * @author Andrea Aime
- * @author simone giannecchini  * @source $URL$
+ *
+ * @source $URL$
  *
  * @source $URL$
  * @version $Id$

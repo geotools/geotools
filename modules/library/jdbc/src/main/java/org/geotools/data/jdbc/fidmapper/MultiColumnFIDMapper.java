@@ -35,6 +35,7 @@ import org.opengis.feature.simple.SimpleFeature;
  * A simple implementation of FIDMapper for multi column primary keys
  *
  * @author wolf
+ *
  * @source $URL$
  * @deprecated scheduled for removal in 2.7, use classes in org.geotools.jdbc
  */

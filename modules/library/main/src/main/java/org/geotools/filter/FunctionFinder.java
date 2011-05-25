@@ -40,6 +40,7 @@ import org.opengis.filter.expression.Literal;
  * 
  * @author Jody Garnett
  *
+ *
  * @source $URL$
  */
 public class FunctionFinder {

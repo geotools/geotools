@@ -44,6 +44,8 @@ import org.opengis.filter.expression.Literal;
  * 
  * @author Justin Deoliveira, OpenGeo
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/main/src/main/java/org/geotools/filter/function/DefaultFunctionFactory.java $
  */
 public class DefaultFunctionFactory implements FunctionFactory {
     private static final Logger LOGGER = Logging.getLogger("org.geotools.filter");

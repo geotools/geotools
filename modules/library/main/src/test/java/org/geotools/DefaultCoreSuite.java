@@ -31,6 +31,7 @@ import org.geotools.styling.TextSymbolTest;
 /**
  *
  * @author jamesm
+ *
  * @source $URL$
  */                                
 public class DefaultCoreSuite extends TestCase {

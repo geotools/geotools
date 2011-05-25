@@ -20,6 +20,8 @@ package org.geotools.jdbc;
  * Tests data modification when the expose primary key flag is raised
  * 
  * @author Andrea Aime - OpenGeo
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/jdbc/src/test/java/org/geotools/jdbc/JDBCFeatureStoreExposePkTest.java $
  */
 public abstract class JDBCFeatureStoreExposePkTest extends JDBCFeatureStoreTest {
 

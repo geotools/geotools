@@ -33,6 +33,7 @@ import org.opengis.feature.FeatureVisitor;
  * 
  * @author Jody Garnett
  *
+ *
  * @source $URL$
  */
 public abstract class AbstractFeatureVisitor implements FeatureVisitor {

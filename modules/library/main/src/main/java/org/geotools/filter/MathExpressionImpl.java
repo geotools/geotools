@@ -30,6 +30,7 @@ package org.geotools.filter;
  * the denominator in an ExpressionMath division operation.
  *
  * @author Rob Hranac, Vision for New York
+ *
  * @source $URL$
  * @version $Id$
  */

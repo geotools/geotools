@@ -36,7 +36,8 @@ import org.opengis.coverage.Coverage;
  * may be big, consider wrapping {@code DefaultProcessor} instances in {@link BufferedProcessor}.
  *
  * @since 2.2
- * @source $URL$
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/coverage/src/main/java/org/geotools/coverage/processing/DefaultProcessor.java $
  * @version $Id$
  * @author Martin Desruisseaux (IRD) * 
  * @deprecated use {@link CoverageProcessor}

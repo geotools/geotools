@@ -40,6 +40,7 @@ import org.opengis.filter.sort.SortBy;
  * 
  * @author Jody Garnett (Refractions Research Inc)
  *
+ *
  * @source $URL$
  */
 public abstract class AbstractFeatureCollection implements SimpleFeatureCollection {

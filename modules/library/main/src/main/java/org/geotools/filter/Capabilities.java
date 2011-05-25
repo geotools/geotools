@@ -90,6 +90,7 @@ import org.opengis.filter.spatial.Within;
  * 
  * @author Jody Garnett
  *
+ *
  * @source $URL$
  */
 public class Capabilities {    

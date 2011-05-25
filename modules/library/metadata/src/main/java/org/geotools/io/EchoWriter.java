@@ -27,6 +27,7 @@ import java.io.Writer;
  * to the standard output the content sent to a file. This writer is usefull for debugging
  * purpose.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

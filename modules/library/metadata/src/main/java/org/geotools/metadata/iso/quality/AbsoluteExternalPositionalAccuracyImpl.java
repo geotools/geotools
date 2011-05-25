@@ -26,6 +26,7 @@ import org.opengis.metadata.quality.AbsoluteExternalPositionalAccuracy;
 /**
  * Closeness of reported coordinate values to values accepted as or being true.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

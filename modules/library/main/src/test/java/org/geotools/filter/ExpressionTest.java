@@ -50,8 +50,8 @@ import com.vividsolutions.jts.geom.PrecisionModel;
  * 
  * @author James MacGill, CCG
  * @author Rob Hranac, TOPP
- * @source $URL:
- *         http://gtsvn.refractions.net/geotools/trunk/gt/modules/library/main/src/test/java/org/geotools/filter/ExpressionTest.java $
+ *
+ * @source $URL$
  */
 public class ExpressionTest extends TestCase {
 	/** Standard logging instance */

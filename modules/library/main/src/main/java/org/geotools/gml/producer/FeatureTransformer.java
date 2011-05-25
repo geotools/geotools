@@ -95,6 +95,7 @@ import com.vividsolutions.jts.geom.Geometry;
  *
  * @author Ian Schneider
  * @author Chris Holmes, TOPP
+ *
  * @source $URL$
  * @version $Id$
  *

@@ -66,6 +66,7 @@ import org.opengis.referencing.operation.TransformException;
  * rigorous; must of them should be seen as temporary implementations.
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

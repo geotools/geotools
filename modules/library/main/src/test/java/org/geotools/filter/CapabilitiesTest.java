@@ -28,6 +28,7 @@ import org.opengis.filter.spatial.Beyond;
  * Unit test for FilterCapabilities.
  *
  * @author Chris Holmes, TOPP
+ *
  * @source $URL$
  */
 public class CapabilitiesTest extends TestCase {

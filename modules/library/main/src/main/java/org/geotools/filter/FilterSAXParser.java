@@ -29,6 +29,7 @@ import org.xml.sax.Attributes;
  *
  * @author Rob Hranac, Vision for New York<br>
  * @author Chris Holmes, TOPP
+ *
  * @source $URL$
  * @version $Id$
  */

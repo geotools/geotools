@@ -65,6 +65,7 @@ import org.geotools.util.SimpleInternationalString;
  * {@code CI_Telephone} table.
  *
  * @since 2.1
+ *
  * @source $URL$
  * @version $Id$
  * @author Touraïvane

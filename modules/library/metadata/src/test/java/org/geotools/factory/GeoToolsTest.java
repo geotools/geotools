@@ -29,6 +29,7 @@ import static org.junit.Assert.*;
  * Tests {@link GeoTools}.
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Jody Garnett

@@ -25,6 +25,7 @@ import org.opengis.metadata.quality.TemporalAccuracy;
 /**
  * Accuracy of the temporal attributes and temporal relationships of features.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

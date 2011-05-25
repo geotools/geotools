@@ -30,6 +30,7 @@ import javax.imageio.ImageWriteParam;
  * @since 2.3.x
  * 
  *
+ *
  * @source $URL$
  */
 public abstract class GeoToolsWriteParams extends ImageWriteParam {

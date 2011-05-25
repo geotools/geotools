@@ -64,6 +64,7 @@ import org.geotools.util.Utilities;
  * </li>
  * </ul>
  * </p>
+ *
  * @source $URL$
  */
 public class StyledLayerDescriptorImpl implements StyledLayerDescriptor {

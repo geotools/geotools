@@ -30,6 +30,7 @@ import org.opengis.filter.expression.Expression;
  * @author Cory Horner, Refractions Research Inc.
  *
  * @since 2.2.M2
+ *
  * @source $URL$
  */
 public class MaxVisitor implements FeatureCalc {

@@ -36,6 +36,7 @@ import static org.junit.Assert.*;
 /**
  * Tests the "filtered subsample" operation.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Simone Giannecchini (GeoSolutions)

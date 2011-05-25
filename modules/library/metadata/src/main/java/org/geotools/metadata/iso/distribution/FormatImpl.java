@@ -30,6 +30,7 @@ import org.geotools.metadata.iso.MetadataEntity;
  * Description of the computer language construct that specifies the representation
  * of data objects in a record, file, message, storage device or transmission channel.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

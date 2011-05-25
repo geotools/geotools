@@ -29,6 +29,7 @@ import static org.geotools.resources.ClassChanger.getWidestClass;
  * are computed as usual, except that widening conversions will be applied as needed.
  *
  * @since 2.0
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

@@ -26,6 +26,7 @@ import static org.junit.Assert.*;
 /**
  * Tests the {@link Logging} class.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

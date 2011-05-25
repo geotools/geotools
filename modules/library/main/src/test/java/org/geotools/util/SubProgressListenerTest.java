@@ -27,6 +27,7 @@ import org.opengis.util.ProgressListener;
  * 
  * @author groldan
  * @version $Id$
+ *
  * @source $URL$
  */
 public class SubProgressListenerTest {

@@ -70,6 +70,7 @@ import org.geotools.resources.UnmodifiableArrayList;
  * </pre></blockquote>
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

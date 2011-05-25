@@ -36,6 +36,7 @@ import org.geotools.resources.i18n.ErrorKeys;
  * previously created factory can fit.
  *
  * @since 2.1
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

@@ -36,7 +36,8 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 /**
  * 
  * @author James
- * @source $URL:
+ *
+ * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/library/main/src/test/java/org/geotools/
  *         filter/function/FunctionTestSupport.java $
  */

@@ -87,8 +87,8 @@ import org.opengis.filter.expression.Expression;
  * @author Mauricio Pazos (Axios Engineering)
  * @author Gabriel Roldan (Axios Engineering)
  * @version $Id$
- * @source $URL:
- *        http://svn.geotools.org/geotools/trunk/gt/modules/library/cql/src/main/java/org/geotools/filter/text/cql2/CQL.java $
+ *
+ * @source $URL$
  */
 public class CQL {
     private CQL() {

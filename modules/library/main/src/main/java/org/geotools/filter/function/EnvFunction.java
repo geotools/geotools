@@ -87,6 +87,7 @@ import org.opengis.filter.expression.Literal;
  * @author Andrea Aime
  * @author Michael Bedward
  * @since 2.6
+ *
  * @source $URL$
  * @version $Id $
  */

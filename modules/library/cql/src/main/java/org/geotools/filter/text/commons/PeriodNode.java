@@ -35,8 +35,8 @@ import org.opengis.filter.expression.Literal;
  * @author Mauricio Pazos - Axios Engineering
  * @author Gabriel Roldan - Axios Engineering
  * @version $Id$
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/library/cql/src/main/java/org/geotools/text/filter/PeriodNode.java $
+ *
+ * @source $URL$
  *
  */
 public class PeriodNode {

@@ -36,6 +36,7 @@ import org.opengis.filter.expression.Literal;
  * Unit test for DuplicatorFilterVisitor.
  *
  * @author Cory Horner, Refractions Research Inc.
+ *
  * @source $URL$
  */
 public class DuplicateFilterVisitorTest extends TestCase {

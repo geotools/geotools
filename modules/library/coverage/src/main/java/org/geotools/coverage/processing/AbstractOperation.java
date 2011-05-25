@@ -41,6 +41,7 @@ import org.opengis.util.InternationalString;
  * description, and number of source grid coverages required for the operation.
  *
  * @since 2.2
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

@@ -62,6 +62,7 @@ import org.geotools.resources.i18n.Errors;
  * {@linkplain java.io.Serializable} classes can use {@code (int) serialVersionUID} for example.
  *
  * @since 2.5
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

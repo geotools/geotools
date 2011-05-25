@@ -31,6 +31,7 @@ import org.w3c.dom.Node;
  * @author Simone Giannecchini
  * @since 2.3.x
  *
+ *
  * @source $URL$
  */
 public final class IIOMetadataDumper {

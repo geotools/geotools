@@ -28,6 +28,7 @@ import org.opengis.filter.Filter;
 /**
  * Records FeatureEvents and provides a record that we can check.
  *
+ *
  * @source $URL$
  */
 public class FeatureEventWatcher implements FeatureListener {

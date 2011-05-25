@@ -31,6 +31,7 @@ import org.opengis.filter.expression.PropertyName;
  * @author Justin Deoliveira, OpenGEO
  * @since 2.6
  *
+ *
  * @source $URL$
  */
 public class PropertyNameResolvingVisitor extends DuplicatingFilterVisitor {

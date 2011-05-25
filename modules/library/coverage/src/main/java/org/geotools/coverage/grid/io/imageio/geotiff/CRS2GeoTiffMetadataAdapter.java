@@ -82,8 +82,8 @@ import org.opengis.referencing.operation.OperationMethod;
  * 
  * @since 2.2
  * 
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/plugin/geotiff/src/org/geotools/gce/geotiff/crs_adapters/CRS2GeoTiffMetadataAdapter.java $
+ *
+ * @source $URL$
  */
 public final class CRS2GeoTiffMetadataAdapter {
 

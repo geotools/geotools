@@ -22,6 +22,7 @@ package org.geotools.metadata;
  * metadata entity}, but this entity was declared unmodifiable.
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (Geomatys)

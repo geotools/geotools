@@ -26,6 +26,7 @@ import static org.junit.Assert.*;
  * 
  * @see org.geotools.data
  * @author jgarnett, Refractions Reasearch Inc.
+ *
  * @source $URL$
  * @version CVS Version
  */

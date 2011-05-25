@@ -31,6 +31,7 @@ import org.opengis.filter.expression.PropertyName;
  * A simple visitor that extracts every attribute used by a filter or an expression
  *
  * @author wolf
+ *
  * @source $URL$
  */
 public class FilterAttributeExtractor extends DefaultFilterVisitor {

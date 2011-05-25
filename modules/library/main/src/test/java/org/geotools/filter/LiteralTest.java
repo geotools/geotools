@@ -34,6 +34,7 @@ import com.vividsolutions.jts.geom.PrecisionModel;
  * Tests the literal expressions.
  *
  * @author James Macgill
+ *
  * @source $URL$
  */
 public class LiteralTest extends TestCase {

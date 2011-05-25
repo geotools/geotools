@@ -26,6 +26,7 @@ import org.geotools.util.Utilities;
 /**
  * Writes characters to a stream while expanding tabs ({@code '\t'}) into spaces.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

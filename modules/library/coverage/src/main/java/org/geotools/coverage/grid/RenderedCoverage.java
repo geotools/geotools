@@ -24,6 +24,7 @@ import org.opengis.coverage.grid.GridCoverage;
 /**
  * A grid coverage backed by a {@linkplain RenderedImage rendered image}.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

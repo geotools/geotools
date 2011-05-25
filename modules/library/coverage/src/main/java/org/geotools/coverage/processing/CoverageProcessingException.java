@@ -21,6 +21,7 @@ package org.geotools.coverage.processing;
  * Throws when a coverage operation failed.
  *
  * @since 2.3
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

@@ -27,6 +27,7 @@ import org.opengis.util.InternationalString;
 /**
  * Handling restrictions imposed on the resource for national security or similar security concerns.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

@@ -51,7 +51,8 @@ import com.vividsolutions.jts.geom.PrecisionModel;
  * implementations.
  * 
  * @author Jody
- * @source $URL:
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/main/src/main/java/org/geotools/data/collection/FeatureCollectionTest.java $
  *         http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/
  *         data/collection/FeatureCollectionTest.java $
  */

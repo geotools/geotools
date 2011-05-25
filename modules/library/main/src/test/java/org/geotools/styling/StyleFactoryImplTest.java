@@ -39,6 +39,7 @@ import org.opengis.filter.expression.Expression;
  * any regressions as we move forward to SE 1.1 interfaces.
  *
  * @author iant
+ *
  * @source $URL$
  */
 public class StyleFactoryImplTest extends TestCase {

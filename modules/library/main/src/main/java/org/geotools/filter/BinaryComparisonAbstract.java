@@ -27,6 +27,7 @@ import org.opengis.filter.expression.Expression;
  * 
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
  *
+ *
  * @source $URL$
  */
 public abstract class BinaryComparisonAbstract extends AbstractFilter 

@@ -33,6 +33,7 @@ import org.geotools.resources.i18n.ErrorKeys;
  * when a method first need it.
  *
  * @since 2.3
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

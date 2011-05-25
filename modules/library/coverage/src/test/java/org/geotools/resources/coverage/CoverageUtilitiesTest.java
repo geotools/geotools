@@ -28,7 +28,8 @@ import org.junit.Test;
 /**
  * Tests {@link CoverageUtilities}.
  *
- * @source $URL: http://svn.osgeo.org/geotools/branches/2.6.x/modules/library/coverage/src/test/java/org/geotools/resources/coverage/CoverageUtilitiesTest.java $
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/coverage/src/test/java/org/geotools/resources/coverage/CoverageUtilitiesTest.java $
  */
 public final class CoverageUtilitiesTest {
     /**

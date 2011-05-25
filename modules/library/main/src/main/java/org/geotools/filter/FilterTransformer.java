@@ -70,6 +70,7 @@ import com.vividsolutions.jts.geom.Geometry;
 /**
  * An XMLEncoder for Filters and Expressions.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Ian Schneider

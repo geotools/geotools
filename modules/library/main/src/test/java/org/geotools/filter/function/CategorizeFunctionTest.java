@@ -34,7 +34,8 @@ import static org.junit.Assert.*;
  * @author Jody
  * @author mbedward
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/render/src/test/java/org/geotools/filter/CategorizeFunctionTest.java $
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/main/src/test/java/org/geotools/filter/function/CategorizeFunctionTest.java $
  */
 public class CategorizeFunctionTest extends SEFunctionTestBase {
 

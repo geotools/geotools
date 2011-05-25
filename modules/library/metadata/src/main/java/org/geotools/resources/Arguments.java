@@ -51,6 +51,7 @@ import org.geotools.resources.i18n.VocabularyKeys;
  * and exits the virtual machine with a call to {@link System#exit} with error code 1.
  *
  * @since 2.0
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

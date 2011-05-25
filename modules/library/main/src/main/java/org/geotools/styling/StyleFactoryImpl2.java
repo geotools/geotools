@@ -58,7 +58,8 @@ import org.opengis.util.InternationalString;
  * builder.
  * 
  * @author Jody Garnett
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/styling/StyleFactoryImpl.java $
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/main/src/main/java/org/geotools/styling/StyleFactoryImpl2.java $
  * @version $Id: StyleFactoryImpl2.java 32736 2009-04-04 06:51:02Z jive $
  */
 public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {

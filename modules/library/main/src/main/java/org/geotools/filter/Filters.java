@@ -106,6 +106,7 @@ import org.opengis.filter.spatial.Within;
  * 
  * @author Jody Garnett, Refractions Research
  * @since GeoTools 2.2.M3
+ *
  * @source $URL$
  */
 public class Filters {

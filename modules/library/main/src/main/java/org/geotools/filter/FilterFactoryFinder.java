@@ -26,6 +26,7 @@ import org.opengis.feature.type.FeatureTypeFactory;
 /**
  * This specifies the interface to create filters.
  *
+ *
  * @source $URL$
  * @version $Id$
  *

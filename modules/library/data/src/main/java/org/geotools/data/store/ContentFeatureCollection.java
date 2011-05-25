@@ -57,6 +57,7 @@ import org.opengis.filter.identity.FeatureId;
  * 
  * @author Jody Garnett (Refractions Research, Inc.)
  *
+ *
  * @source $URL$
  */
 public class ContentFeatureCollection implements SimpleFeatureCollection {

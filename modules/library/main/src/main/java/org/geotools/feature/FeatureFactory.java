@@ -32,6 +32,7 @@ import org.opengis.feature.simple.SimpleFeature;
  * Please see experimental FeatureFactory2 (a subclass) for the current best
  * idea of what is needed.
  * </p>
+ *
  * @source $URL$
  * @version $Id$
  *

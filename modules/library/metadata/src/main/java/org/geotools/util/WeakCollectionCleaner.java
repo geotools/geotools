@@ -31,6 +31,7 @@ import org.geotools.util.logging.Logging;
  * is invoked.
  *
  * @since 2.0
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

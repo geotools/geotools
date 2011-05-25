@@ -39,6 +39,7 @@ import com.vividsolutions.jts.geom.PrecisionModel;
  * tests for between filters.
  *
  * @author James Macgill
+ *
  * @source $URL$
  */
 public class BetweenTest extends TestCase {

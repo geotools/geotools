@@ -27,6 +27,7 @@ import org.geotools.data.store.ContentState;
  * @author Jody Garnett, Refractions Research Inc.
  * @author Justin Deoliveira, The Open Planning Project
  *
+ *
  * @source $URL$
  */
 public final class JDBCState extends ContentState {

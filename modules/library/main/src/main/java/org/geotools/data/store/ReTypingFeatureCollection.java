@@ -37,6 +37,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * @author Justin Deoliveira, The Open Planning Project
  *
  *
+ *
  * @source $URL$
  */
 public class ReTypingFeatureCollection extends DecoratingSimpleFeatureCollection {

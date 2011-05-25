@@ -25,6 +25,8 @@ import javax.measure.unit.Unit;
  * Defines the Units of Measure (UOMs) specified by the OGC SE standard and their mappings to Java
  * Units defined in <code>javax.measure.unit</code>. Each entry in this enum provides both the Java
  * Unit for the given UOM and the corresponding String that is defined by the SE standard.
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/main/src/main/java/org/geotools/styling/UomOgcMapping.java $
  */
 public enum UomOgcMapping {
 

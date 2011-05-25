@@ -8,6 +8,8 @@ import org.opengis.filter.Filter;
 
 /**
  * Filter simple reader content as it is being read.
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/main/src/main/java/org/geotools/data/simple/FilteringSimpleFeatureReader.java $
  */
 public class FilteringSimpleFeatureReader extends
         FilteringFeatureReader<SimpleFeatureType, SimpleFeature> implements SimpleFeatureReader {

@@ -41,6 +41,8 @@ import java.awt.image.WritableRaster;
  * @author Simone Giannecchini - GeoSolutions SAS
  * @see EfficientInverseColorMapComputation
  * 
+ *
+ * @source $URL$
  */
 public final class InverseColorMapOp implements BufferedImageOp {
 

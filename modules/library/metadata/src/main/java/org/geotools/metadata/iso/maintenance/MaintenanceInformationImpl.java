@@ -36,6 +36,7 @@ import org.geotools.metadata.iso.MetadataEntity;
 /**
  * Information about the scope and frequency of updating.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

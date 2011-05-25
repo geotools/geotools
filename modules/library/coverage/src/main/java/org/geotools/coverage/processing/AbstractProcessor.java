@@ -23,7 +23,8 @@ import org.opengis.coverage.Coverage;
  * Base class for {@linkplain Coverage coverage} processor implementations.
  *
  * @since 2.2
- * @source $URL$
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/coverage/src/main/java/org/geotools/coverage/processing/AbstractProcessor.java $
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @deprecated use {@link CoverageProcessor}

@@ -39,6 +39,7 @@ import org.opengis.util.InternationalString;
  * @author gabriel
  * @author Ben Caradoc-Davies, CSIRO Exploration and Mining
  *
+ *
  * @source $URL$
  */
 public class ComplexTypeImpl extends AttributeTypeImpl implements ComplexType {

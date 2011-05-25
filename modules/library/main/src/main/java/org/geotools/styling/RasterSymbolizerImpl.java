@@ -33,6 +33,7 @@ import org.opengis.style.StyleVisitor;
  *
  * @author iant
  * @author Johann Sorel (Geomatys)
+ *
  * @source $URL$
  */
 public class RasterSymbolizerImpl extends AbstractSymbolizer implements RasterSymbolizer {

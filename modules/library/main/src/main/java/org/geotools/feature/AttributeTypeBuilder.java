@@ -89,6 +89,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
  *
  *
+ *
  * @source $URL$
  */
 public class AttributeTypeBuilder {

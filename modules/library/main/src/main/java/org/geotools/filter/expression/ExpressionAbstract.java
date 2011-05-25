@@ -42,6 +42,7 @@ import org.opengis.filter.expression.ExpressionVisitor;
  * @author Jody Garnett
  *
  *
+ *
  * @source $URL$
  */
 public abstract class ExpressionAbstract implements Expression {

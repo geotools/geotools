@@ -64,6 +64,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * @author jgarnett, Refractions Research, Inc.
  * @author aaime
  * @author $Author: jive $ (last modification)
+ *
  * @source $URL$
  * @version $Id$
  */

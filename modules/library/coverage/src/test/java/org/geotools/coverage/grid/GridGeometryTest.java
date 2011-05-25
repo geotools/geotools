@@ -39,6 +39,7 @@ import static org.junit.Assert.*;
 /**
  * Test the {@link GridGeometry} implementation.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

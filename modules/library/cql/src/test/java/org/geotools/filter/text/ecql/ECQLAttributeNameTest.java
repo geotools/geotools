@@ -31,7 +31,8 @@ import org.geotools.filter.text.cql2.CQLAttributeNameTest;
  * @author Mauricio Pazos (Axios Engineering)
  * @since 2.7
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/cql/src/test/java/org/geotools/filter/text/ecql/ECQLAttributeNameTest $
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/cql/src/test/java/org/geotools/filter/text/ecql/ECQLAttributeNameTest.java $
  */
 public class ECQLAttributeNameTest extends CQLAttributeNameTest{
 	public ECQLAttributeNameTest(){

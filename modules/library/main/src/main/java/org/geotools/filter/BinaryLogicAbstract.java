@@ -23,6 +23,7 @@ import org.opengis.filter.BinaryLogicOperator;
 /**
  * @author jdeolive
  *
+ *
  * @source $URL$
  */
 public abstract class BinaryLogicAbstract extends AbstractFilter implements BinaryLogicOperator {

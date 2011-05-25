@@ -29,6 +29,7 @@ import org.opengis.filter.Filter;
  * 
  * @author Johann Sorel
  *
+ *
  * @source $URL$
  */
 public class FilterToCQLTest{

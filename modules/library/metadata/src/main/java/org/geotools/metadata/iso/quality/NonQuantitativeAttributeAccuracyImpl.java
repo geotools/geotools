@@ -25,6 +25,7 @@ import org.opengis.metadata.quality.NonQuantitativeAttributeAccuracy;
 /**
  * Accuracy of non-quantitative attributes.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Cory Horner (Refractions Research)

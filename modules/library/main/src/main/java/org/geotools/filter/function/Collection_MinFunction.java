@@ -40,6 +40,7 @@ import org.geotools.filter.visitor.AbstractFilterVisitor;
  * and Expression.
  *
  * @author James
+ *
  * @source $URL$
  */
 public class Collection_MinFunction extends FunctionExpressionImpl

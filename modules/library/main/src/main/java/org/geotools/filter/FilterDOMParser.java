@@ -44,6 +44,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * A dom based parser to build filters as per OGC 01-067
  *
  * @author Ian Turton, CCG
+ *
  * @source $URL$
  * @version $Id$
  *

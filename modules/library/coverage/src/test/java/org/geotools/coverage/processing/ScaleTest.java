@@ -33,6 +33,7 @@ import static org.junit.Assert.*;
 /**
  * Tests the scale operation.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Simone Giannecchini (GeoSolutions)

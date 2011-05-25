@@ -38,6 +38,7 @@ import org.geotools.resources.i18n.ErrorKeys;
  * @param <E> The type of elements in the list.
  *
  * @since 2.1
+ *
  * @source $URL$
  * @version $Id$
  * @author Jody Garnett (Refractions Research)

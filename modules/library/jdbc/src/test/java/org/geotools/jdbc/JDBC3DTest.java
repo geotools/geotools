@@ -56,6 +56,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * 
  * @author Andrea Aime - OpenGeo
  *
+ *
  * @source $URL$
  */
 public abstract class JDBC3DTest extends JDBCTestSupport {

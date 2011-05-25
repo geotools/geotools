@@ -26,6 +26,7 @@ import static org.junit.Assert.*;
  * Tests the {@link LoggingAdapter} class.
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

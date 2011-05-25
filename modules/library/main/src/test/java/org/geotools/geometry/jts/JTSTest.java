@@ -43,6 +43,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  * Tests the {@link JTS} implementation.
  *
  * @since 2.2
+ *
  * @source $URL$
  * @version $Id$
  * @author Jess Eichar

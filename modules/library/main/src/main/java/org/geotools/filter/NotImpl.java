@@ -22,6 +22,7 @@ import org.opengis.filter.Not;
 /**
  * @author jdeolive
  *
+ *
  * @source $URL$
  */
 public class NotImpl extends LogicFilterImpl implements Not {

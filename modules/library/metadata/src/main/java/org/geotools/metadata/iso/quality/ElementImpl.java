@@ -40,6 +40,7 @@ import org.geotools.resources.i18n.Errors;
 /**
  * Type of test applied to the data specified by a data quality scope.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

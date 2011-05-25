@@ -39,6 +39,7 @@ import org.opengis.filter.expression.Literal;
  * 
  * @author James Macgill
  * @author Cory Horner, Refractions Research Inc.
+ *
  * @source $URL$
  */
 public abstract class ClassificationFunction extends DefaultExpression implements FunctionExpression {

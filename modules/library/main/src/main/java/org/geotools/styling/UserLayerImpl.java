@@ -68,6 +68,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *this off to the lite renderer as normal.
  *
  * @author  jamesm
+ *
  * @source $URL$
  */
 public class UserLayerImpl extends StyledLayerImpl implements UserLayer {

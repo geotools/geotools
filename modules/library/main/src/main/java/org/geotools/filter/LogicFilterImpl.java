@@ -37,8 +37,9 @@ import org.opengis.filter.Or;
  * with an internally defined type (AND, OR, NOT).
  *
  * @author Rob Hranac, TOPP
- * @source $URL: http://svn.osgeo.org/geotools/tags/2.6-RC1/modules/library/main/src/main/java/org/geotools/filter/LogicFilterImpl.java $
- * @version $Id: LogicFilterImpl.java 31682 2008-10-19 13:23:25Z aaime $
+ *
+ * @source $URL$
+ * @version $Id$
  */
 public abstract class LogicFilterImpl extends BinaryLogicAbstract implements LogicFilter {
     /** The logger for the default core module. */

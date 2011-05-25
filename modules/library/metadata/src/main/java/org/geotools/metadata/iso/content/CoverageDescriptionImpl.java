@@ -30,6 +30,7 @@ import org.opengis.util.RecordType;
  * Information about the content of a grid data cell.
  *
  * @since 2.1
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

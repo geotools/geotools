@@ -41,6 +41,7 @@ import org.geotools.resources.i18n.ErrorKeys;
  * but the datum doesn't need to be WGS84.
  *
  * @since 2.1
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

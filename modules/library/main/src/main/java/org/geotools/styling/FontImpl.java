@@ -34,6 +34,7 @@ import org.opengis.util.Cloneable;
  * Provides a Java representation of the Font element of an SLD.
  *
  * @author Ian Turton, CCG
+ *
  * @source $URL$
  * @version $Id$
  */

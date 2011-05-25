@@ -10,6 +10,8 @@ import org.opengis.filter.expression.Function;
  * <p>It gives the renderer a hint of what area should be queried given a certain rendering area
  * @author aaime
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/main/src/main/java/org/geotools/filter/function/GeometryTransformation.java $
  */
 public interface GeometryTransformation extends Function {
     /**

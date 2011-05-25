@@ -32,6 +32,8 @@ import org.opengis.filter.expression.Expression;
  * 
  * @author Jesse
  * @author ported from PostPreProcessFilterSplittingVisitor at 2.5.2 by Gabriel Roldan
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/main/src/test/java/org/geotools/filter/visitor/CapabilitiesFilterSplitterFunctionTest.java $
  */
 @SuppressWarnings({"nls", "unchecked"})
 public class CapabilitiesFilterSplitterFunctionTest extends AbstractCapabilitiesFilterSplitterTests {

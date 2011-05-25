@@ -49,6 +49,7 @@ import org.opengis.filter.expression.Subtract;
  * 
  * @author Jody
  *
+ *
  * @source $URL$
  */
 public abstract class DefaultExpressionVisitor implements ExpressionVisitor {

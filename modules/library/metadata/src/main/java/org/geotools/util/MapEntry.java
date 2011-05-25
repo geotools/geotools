@@ -30,6 +30,7 @@ import org.geotools.resources.Classes;
  * @param <V> The class of value elements.
  *
  * @since 2.1
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

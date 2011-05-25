@@ -26,6 +26,7 @@ import org.opengis.metadata.identification.ServiceIdentification;
  * Identification of capabilities which a service provider makes available to a service user
  * through a set of interfaces that define a behaviour.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

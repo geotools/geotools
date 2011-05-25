@@ -29,6 +29,7 @@ import org.opengis.filter.Filter;
  * @author Justin Deoliveira, The Open Planning Project
  *
  *
+ *
  * @source $URL$
  */
 public class FilteringFeatureIterator implements SimpleFeatureIterator {

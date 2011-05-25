@@ -33,6 +33,7 @@ package org.geotools.util;
  * 
  * @author Jody
  *
+ *
  * @source $URL$
  */
 public class SubProgressListener extends DelegateProgressListener {

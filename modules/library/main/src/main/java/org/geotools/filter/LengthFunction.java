@@ -23,6 +23,7 @@ import org.opengis.filter.expression.Expression;
  * 
  * @author dzwiers
  *
+ *
  * @source $URL$
  */
 public class LengthFunction extends FunctionExpressionImpl {

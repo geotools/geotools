@@ -37,6 +37,8 @@ import org.opengis.filter.spatial.BBOX;
  * 
  * @author Jesse
  * @author ported from PostPreProcessFilterSplittingVisitor at 2.5.2 by Gabriel Roldan
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/main/src/test/java/org/geotools/filter/visitor/CapabilitiesFilterSplitterTest.java $
  */
 @SuppressWarnings( { "nls", "unchecked" })
 public class CapabilitiesFilterSplitterTest extends AbstractCapabilitiesFilterSplitterTests {

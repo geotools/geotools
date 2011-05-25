@@ -37,6 +37,7 @@ import org.opengis.feature.simple.SimpleFeature;
  *
  * @author aaime Andrea Aime
  * @author Dani Daniele Franzoni
+ *
  * @source $URL$
  * @deprecated scheduled for removal in 2.7, use classes in org.geotools.jdbc
  */

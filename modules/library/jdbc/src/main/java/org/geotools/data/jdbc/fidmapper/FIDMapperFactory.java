@@ -28,6 +28,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * FIDMapper given the FeatureType name and the database metadata
  *
  * @author aaime
+ *
  * @source $URL$
  * @deprecated scheduled for removal in 2.7, use classes in org.geotools.jdbc
  */

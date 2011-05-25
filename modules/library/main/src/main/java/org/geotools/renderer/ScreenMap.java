@@ -49,6 +49,8 @@ import com.vividsolutions.jts.geom.Polygon;
  * 
  * @author jeichar
  * @author Andrea Aime - OpenGeo
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/main/src/main/java/org/geotools/renderer/ScreenMap.java $
  */
 public class ScreenMap {
     double[] point = new double[2];

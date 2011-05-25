@@ -24,6 +24,8 @@ import com.vividsolutions.jts.geom.Geometry;
 /**
  * A FilterFunction that expects a Geometry and returns it's minimum bounding circle.
  * @author Jared Erickson
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/main/src/main/java/org/geotools/filter/function/FilterFunction_minimumCircle.java $
  */
 public class FilterFunction_minimumCircle extends FunctionExpressionImpl implements
         FunctionExpression {

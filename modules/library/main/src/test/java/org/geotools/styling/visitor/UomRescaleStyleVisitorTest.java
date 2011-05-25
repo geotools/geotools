@@ -58,6 +58,8 @@ import com.vividsolutions.jts.geom.LineString;
 /**
  * @author milton
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/main/src/test/java/org/geotools/styling/visitor/UomRescaleStyleVisitorTest.java $
  */
 public class UomRescaleStyleVisitorTest extends TestCase
 {

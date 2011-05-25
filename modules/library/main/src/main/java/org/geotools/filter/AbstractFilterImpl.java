@@ -26,6 +26,7 @@ import org.opengis.filter.FilterFactory;
  * to use.
  *
  * @author Ian Turton, CCG
+ *
  * @source $URL$
  * @version $Id$
  */

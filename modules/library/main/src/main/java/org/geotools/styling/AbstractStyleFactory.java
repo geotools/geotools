@@ -26,6 +26,7 @@ import org.opengis.filter.expression.Expression;
 
 /**
  * Abstract base class for implementing style factories.
+ *
  * @source $URL$
  */
 public abstract class AbstractStyleFactory implements StyleFactory {

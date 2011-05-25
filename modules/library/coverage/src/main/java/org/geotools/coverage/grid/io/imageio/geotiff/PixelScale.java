@@ -55,6 +55,7 @@ import org.geotools.util.Utilities;
  * @since 2.3
  * 
  *
+ *
  * @source $URL$
  */
 public final class PixelScale {

@@ -45,6 +45,8 @@ import com.vividsolutions.jts.geom.impl.PackedCoordinateSequenceFactory;
  * 
  * @author Andrea Aime - GeoSolutions
  * 
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/library/main/src/main/java/org/geotools/geometry/jts/GeometryCollector.java $
  */
 public class GeometryCollector {
     List<Geometry> geometries = new ArrayList<Geometry>();

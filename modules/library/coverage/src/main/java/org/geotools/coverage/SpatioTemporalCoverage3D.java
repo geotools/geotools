@@ -75,6 +75,7 @@ import org.geotools.resources.i18n.ErrorKeys;
  * users should create one instance of {@code SpatioTemporalCoverage3D} for each thread.
  *
  * @since 2.1
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

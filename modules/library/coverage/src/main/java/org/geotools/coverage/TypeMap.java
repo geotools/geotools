@@ -48,6 +48,7 @@ import org.geotools.util.NumberRange;
  * to {@link DataBuffer} types.
  *
  * @since 2.1
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

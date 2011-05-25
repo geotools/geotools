@@ -37,6 +37,7 @@ import com.vividsolutions.jts.geom.LinearRing;
 
  * @author Andrea Aime
  * @author simone giannecchini  
+ *
  * @source $URL$
  * @version $Id$
  */

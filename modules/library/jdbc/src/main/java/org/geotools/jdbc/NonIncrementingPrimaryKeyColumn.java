@@ -27,6 +27,7 @@ package org.geotools.jdbc;
  * @author Justin Deoliveira, OpenGEO
  *
  *
+ *
  * @source $URL$
  */
 public class NonIncrementingPrimaryKeyColumn extends PrimaryKeyColumn {

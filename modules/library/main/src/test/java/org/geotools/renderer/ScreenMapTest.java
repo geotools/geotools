@@ -21,8 +21,8 @@ import org.geotools.renderer.ScreenMap;
 import junit.framework.TestCase;
 
 /**
- * @source $URL:
- *         http://svn.geotools.org/geotools/branches/2.2.x/ext/shaperenderer/test/org/geotools/renderer/shape/ScreenMapTest.java $
+ *
+ * @source $URL$
  */
 public class ScreenMapTest extends TestCase {
     private int xmin;

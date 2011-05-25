@@ -46,8 +46,24 @@ import org.geotools.maven.taglet.Source;
  * To run this program on the command line using Maven:
  * <pre><code>
  * cd /topgtdir/build/maven/javadoc
- * mvn exec:java
+ * mvn exec:java -Dexec.args="path-to-module-src-dir options"
  * </code></pre>
+ * Where<br>
+ * 
+ * {@code path-to-module-src-dir} is a full or relative path to the module's top src directory<br>
+ * 
+ * {@code options} is zero or more of the following:<br>
+ * 
+ * {@code --replace} to force replacement of existing source tags (default is no replacement)<br>
+ * 
+ * {@code --anyclass} process all classes, interfaces and enums (default is only those 
+ * that are public)<br>
+ * 
+ * {@code --svn} add Subversion delimiters ($URL, $) to the source path to enable auto-updating
+ * when the file is committed using svn (default is no delimiters)<br>
+ * 
+ * {@code --fix} attempt to fix existing source tags that have been incorrectly broken across lines
+ * (default is just report broken tags)
  * 
  * <p>
  * Adapted from the CommentUpdater class previously in this package that was written
@@ -68,11 +84,14 @@ public class InsertSourceTag {
     private final Pattern findCommentEnd = Pattern.compile("\\Q*/\\E");
     
     private final Pattern findSourceTag = Pattern.compile("^.*?\\Q@source\\E");
-    
+
     private final Pattern findCompleteSourceTag = Pattern.compile(
             "^.*?\\Q@source\\E(.*?)\\Q.java\\E\\s*\\$?");
+
+    private final Pattern findCompletePath = Pattern.compile(
+            "^.*?http.*?\\Q.java\\E\\s*\\$?");
     
-    private final Pattern findVersionTag = Pattern.compile("^(\\s|\\*)*\\Q@version\\E");
+    private final Pattern findVersionTag = Pattern.compile("^.*?\\Q@version\\E");
     
     private final Pattern findPublicClass = Pattern.compile(
             "\\s*public[a-zA-Z\\s]+(class|interface|enum)");
@@ -84,13 +103,16 @@ public class InsertSourceTag {
     private final String lineSeparator = System.getProperty("line.separator", "\n");
     
     private static final String REPLACE_OPTION = "--replace";
-    private boolean replaceExistingTag;
+    private boolean optionReplace;
     
     private static final String SVN_OPTION = "--svn";
-    private boolean addSVNKeyword;
+    private boolean optionSVNDelims;
     
     private static final String ANY_CLASS_OPTION = "--anyclass";
-    private boolean processAnyClass;
+    private boolean optionAnyClass;
+
+    private static final String FIX_BROKEN_TAGS = "--fix";
+    private boolean optionFixBreaks;
 
     /**
      * Main method. Takes the name of the file or directory to process from the
@@ -112,29 +134,41 @@ public class InsertSourceTag {
             return;
         }
 
-        File file = new File(args[0]);
-        if (!file.exists()) {
-            System.out.println("Can't find " + file);
-            return;
-        }
-
+        File inputPath = null;
         InsertSourceTag me = new InsertSourceTag();
 
-        for (int i = 1; i < args.length; i++) {
-            String s = args[i].trim();
-            if (REPLACE_OPTION.equals(s)) {
-                me.replaceExistingTag = true;
-            } else if (SVN_OPTION.equals(s)) {
-                me.addSVNKeyword = true;
-            } else if (ANY_CLASS_OPTION.equals(s)) {
-                me.processAnyClass = true;
-            } else {
-                System.out.println("Unrecognized option: " + s);
-                return;
+        for (String s : args) {
+            s = s.trim();
+            if (s.startsWith("--")) {
+                if (REPLACE_OPTION.equals(s)) {
+                    me.optionReplace = true;
+                } else if (SVN_OPTION.equals(s)) {
+                    me.optionSVNDelims = true;
+                } else if (ANY_CLASS_OPTION.equals(s)) {
+                    me.optionAnyClass = true;
+                } else if (FIX_BROKEN_TAGS.equals(s)) {
+                    me.optionFixBreaks = true;
+                } else {
+                    System.out.println("Unrecognized option: " + s);
+                    return;
+                }
+            } else { // not an option, treat as input path
+                if (inputPath == null) {
+                    inputPath = new File(s);
+                    if (!inputPath.exists()) {
+                        System.out.println("Can't find " + inputPath);
+                        return;
+                    }
+                } else {
+                    System.out.println("Two input paths ?");
+                    System.out.println("   " + inputPath);
+                    System.out.println("   " + s);
+                    return;
+                }
             }
-        }
+        } 
 
-        me.process(file);
+        me.process(inputPath);
     }
 
     /**
@@ -186,12 +220,12 @@ public class InsertSourceTag {
 
             String repoURL = Source.SVN_REPO_URL;
             StringBuilder sb = new StringBuilder(" * @source ");
-            if (addSVNKeyword) {
+            if (optionSVNDelims) {
                 sb.append("$URL: ");
             }
             sb.append(Source.SVN_REPO_URL);
             sb.append(file.getAbsolutePath().substring(pos));
-            if (addSVNKeyword) {
+            if (optionSVNDelims) {
                 sb.append(" $");
             }
             sourceTagText = sb.toString();
@@ -255,7 +289,7 @@ public class InsertSourceTag {
             // Guard against nested or following classes and mention of classes in
             // comment blocks
             } else if (!inJavadocBlock && !inCommentBlock && !classFound) {
-                if (processAnyClass) {
+                if (optionAnyClass) {
                     matcher = findClass.matcher(text);
                 } else {
                     matcher = findPublicClass.matcher(text);
@@ -286,8 +320,9 @@ public class InsertSourceTag {
                      * Check if the source tag already exists. If it does, and
                      * the replace tag option is false, skip this file.
                      */
-                    for (int i = javadocStartLine; i <= javadocEndLine; i++) {
-                        String commentText = buffer.get(i);
+                    for (int blockLineNo = javadocStartLine; 
+                            blockLineNo <= javadocEndLine; blockLineNo++) {
+                        String commentText = buffer.get(blockLineNo);
                         matcher = findSourceTag.matcher(commentText);
                         if (matcher.find()) {
                             /* 
@@ -297,16 +332,37 @@ public class InsertSourceTag {
                              */
                             matcher = findCompleteSourceTag.matcher(commentText);
                             if (!matcher.find()) {
-                                System.out.println("   *** Incomplete source tag detected"
-                                        + "- skipping this file ***");
-                                System.out.println();
-                                return false;
+                                if (optionFixBreaks) {
+                                    matcher = findCompletePath.matcher(buffer.get(blockLineNo + 1));
+                                    if (matcher.find()) {
+                                        buffer.remove(blockLineNo + 1);
+                                        buffer.remove(blockLineNo);
+                                        sourceTagLine = blockLineNo;
+                                        if (!optionReplace) {
+                                            // Make the new tag text the old lines joined together.
+                                            // 
+                                            String http = matcher.group();
+                                            int start = http.indexOf("$URL");
+                                            if (start < 0) start = http.indexOf("http"); 
+                                            http = http.substring(start, http.length());
+                                            sourceTagText = commentText + http;
+                                        }
+                                        System.out.println("   *** Fixing broken source tag ***");
+                                        break;
+                                    }
+                                } else {
+                                    // Just report the broken tag and skip this file
+                                    System.out.println("   *** Incomplete source tag detected"
+                                            + "- skipping this file ***");
+                                    System.out.println();
+                                    return false;
+                                }
                             }
 
-                            if (replaceExistingTag) {
-                                sourceTagLine = i;
+                            if (optionReplace) {
+                                sourceTagLine = blockLineNo;
                                 // delete the original tag from the buffer
-                                buffer.remove(i);
+                                buffer.remove(blockLineNo);
                                 break;
                             } else {
                                 return false;

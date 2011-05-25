@@ -56,6 +56,7 @@ import org.opengis.util.InternationalString;
  * @param <T> The type of elements to be returned by {@link ParameterValue#getValue}.
  *
  * @since 2.1
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

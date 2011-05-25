@@ -32,6 +32,7 @@ import org.geotools.referencing.operation.matrix.XMatrix;
  * {@linkplain #getTargetDimensions target dimensions} plus 1.
  *
  * @since 2.0
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

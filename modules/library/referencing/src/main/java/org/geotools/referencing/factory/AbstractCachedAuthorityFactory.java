@@ -86,8 +86,8 @@ import org.opengis.util.InternationalString;
  * </p>
  *
  * @since 2.4
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/library/referencing/src/main/java/org/geotools/referencing/factory/AbstractBufferedAuthorityFactory.java $
+ *
+ * @source $URL$
  * @version $Id: BufferedAuthorityDecorator.java 26038 2007-06-27 01:58:12Z
  *          jgarnett $
  * @author Jody Garnett

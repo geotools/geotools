@@ -25,6 +25,7 @@ import static org.junit.Assert.*;
 /**
  * Tests the {@link NewZealandMapGrid} implementation.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Justin Deoliveira

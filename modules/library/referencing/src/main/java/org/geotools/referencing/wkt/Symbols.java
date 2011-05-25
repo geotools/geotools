@@ -25,6 +25,7 @@ import java.util.Locale;
  * The set of symbols to use for WKT parsing and formatting.
  *
  * @since 2.1
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

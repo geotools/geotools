@@ -30,6 +30,7 @@ import static org.junit.Assert.*;
 /**
  * Tests the {@link DefaultTemporalDatum} class.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

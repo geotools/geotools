@@ -81,6 +81,7 @@ import org.geotools.resources.i18n.VocabularyKeys;
  * <code>{@linkplain ReferencingFactoryFinder}.getFooAuthorityFactory("EPSG")</code> methods instead.
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

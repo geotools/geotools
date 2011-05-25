@@ -36,6 +36,7 @@ import static org.junit.Assert.*;
  * Tests the {@link AuthorityFactoryProxy} implementation.
  *
  * @author Martin Desruisseaux
+ *
  * @source $URL$
  * @version $Id$
  */

@@ -37,6 +37,7 @@ import static java.lang.Math.*;
  *       It could be moved to the oblique with an isEquatorial flag.
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Rueben Schulz

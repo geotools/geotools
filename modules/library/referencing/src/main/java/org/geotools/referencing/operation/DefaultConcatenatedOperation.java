@@ -57,6 +57,7 @@ import org.geotools.resources.i18n.ErrorKeys;
  * system associated with the concatenated operation.
  *
  * @since 2.1
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

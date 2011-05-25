@@ -40,6 +40,7 @@ import org.geotools.resources.i18n.LoggingKeys;
  * automatically disposed after a timeout and recreated when needed again.
  *
  * @since 2.1
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

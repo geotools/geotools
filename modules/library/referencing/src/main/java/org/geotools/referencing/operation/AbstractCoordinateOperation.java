@@ -77,6 +77,7 @@ import org.geotools.resources.i18n.ErrorKeys;
  * identify the exact type.
  *
  * @since 2.1
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

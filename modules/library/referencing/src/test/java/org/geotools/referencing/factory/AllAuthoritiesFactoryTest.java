@@ -36,6 +36,7 @@ import static org.junit.Assert.*;
  * Tests the {@link AllAuthoritiesFactory} implementation.
  *
  * @author Martin Desruisseaux (IRD)
+ *
  * @source $URL$
  * @version $Id$
  */

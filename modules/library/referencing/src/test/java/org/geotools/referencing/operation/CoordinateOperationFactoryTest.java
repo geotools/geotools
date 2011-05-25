@@ -63,6 +63,7 @@ import static org.junit.Assert.*;
  * the IDE however, in which case the tests are disabled in order to allows normal
  * execution of other tests.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

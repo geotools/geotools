@@ -82,6 +82,7 @@ import org.geotools.resources.i18n.Errors;
  * values except in the last column, which contains 1.
  *
  * @since 2.0
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

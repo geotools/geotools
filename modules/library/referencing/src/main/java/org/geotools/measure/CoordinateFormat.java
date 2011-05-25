@@ -66,6 +66,7 @@ import org.geotools.resources.i18n.Errors;
  * <strong>Note:</strong> parsing is not yet implemented in this version.
  *
  * @since 2.0
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (PMO, IRD)

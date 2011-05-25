@@ -57,7 +57,8 @@ import static java.lang.Math.*;
  * @see <A HREF="http://www.remotesensing.org/geotiff/proj_list/equidistant_conic.html">"Equidistant Conic" on www.remotesensing.org</A>
  *
  * @since 2.6.1
- * @source $URL: $
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/referencing/src/main/java/org/geotools/referencing/operation/projection/EquidistantConic.java $
  * @version $Id: $
  * @author Ivan Boldyrev
  */

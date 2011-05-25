@@ -43,6 +43,7 @@ import org.geotools.metadata.iso.citation.Citations;
  * registered for use in {@link org.opengis.referencing.ReferencingFactoryFinder}.
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Justin Deoliveira

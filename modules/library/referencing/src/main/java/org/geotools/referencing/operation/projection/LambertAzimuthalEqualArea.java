@@ -51,6 +51,7 @@ import static java.lang.Math.*;
  *
  * @since 2.4
  * @version $Id$
+ *
  * @source $URL$
  * @author Gerald Evenden  (for original code in Proj4)
  * @author Beate Stollberg

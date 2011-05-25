@@ -39,6 +39,7 @@ import static org.junit.Assert.*;
 /**
  * Tests formatting done by the {@link CoordinateFormat} class.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

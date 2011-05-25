@@ -47,6 +47,7 @@ import javax.vecmath.GMatrix;
  *  Dx = (A<sup>T</sup>A)<sup>-1</sup> A<sup>T</sup>l  </pre></p>
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Jan Jezek

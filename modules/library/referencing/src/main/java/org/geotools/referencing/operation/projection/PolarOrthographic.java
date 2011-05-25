@@ -33,6 +33,7 @@ import static java.lang.Math.*;
  * form is given here.
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Rueben Schulz

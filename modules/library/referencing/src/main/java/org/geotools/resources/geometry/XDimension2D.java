@@ -26,6 +26,7 @@ import java.io.Serializable;
  * {@code Dimension2D.Float} and {@code Dimension2D.Double}.
  *
  * @since 2.0
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

@@ -35,6 +35,7 @@ import static java.lang.Math.*;
  * {@linkplain #latitudeOfOrigin latitude of origin} == 0.0.
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author André Gosselin

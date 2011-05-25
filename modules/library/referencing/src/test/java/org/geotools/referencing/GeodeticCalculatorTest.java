@@ -41,6 +41,7 @@ import static org.junit.Assert.*;
 /**
  * Tests the geodetic calculator.
  *
+ *
  * @source $URL$
  * @version $Id$
  */

@@ -44,6 +44,7 @@ import org.geotools.referencing.ReferencingFactoryFinder;
  *
  * @since 2.3
  * @version $Id$
+ *
  * @source $URL$
  * @author Simone Giannecchini
  * @author Martin Desruisseaux

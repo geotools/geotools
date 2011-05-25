@@ -54,6 +54,7 @@ import org.geotools.util.Utilities;
  * @param <T> The value type.
  *
  * @since 2.1
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

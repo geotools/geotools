@@ -47,6 +47,7 @@ import org.geotools.referencing.factory.DirectAuthorityFactory;
  * space.
  *
  * @since 2.2
+ *
  * @source $URL$
  * @version $Id$
  * @author Jody Garnett

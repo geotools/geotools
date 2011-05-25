@@ -59,6 +59,7 @@ import org.geotools.resources.i18n.ErrorKeys;
  * {@link BufferedAuthorityFactory}.
  *
  * @since 2.1
+ *
  * @source $URL$
  * @version $Id$
  * @author Jody Garnett

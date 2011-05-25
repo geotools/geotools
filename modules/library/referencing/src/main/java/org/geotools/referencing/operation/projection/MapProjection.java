@@ -73,6 +73,7 @@ import static java.lang.Math.*;
  *
  * @since 2.0
  * @version $Id$
+ *
  * @source $URL$
  * @author André Gosselin
  * @author Martin Desruisseaux (PMO, IRD)

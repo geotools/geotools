@@ -76,6 +76,7 @@ import org.geotools.util.logging.Logging;
  * so it's used as an extension).
  *
  * @since 2.1
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

@@ -164,6 +164,7 @@ import org.opengis.util.InternationalString;
  * {@link #isPrimaryKey} method.
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Yann Cézard

@@ -50,7 +50,8 @@ import org.opengis.referencing.operation.MathTransform;
  * @see <A HREF="http://www.remotesensing.org/geotiff/proj_list/polyconic.html">"Polyconic" on RemoteSensing.org</A>
  *
  * @since 2.6.3
- * @source $URL: http://svn.osgeo.org/geotools/branches/2.6.x/modules/library/referencing/src/main/java/org/geotools/referencing/operation/projection/Mercator.java $
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/referencing/src/main/java/org/geotools/referencing/operation/projection/WinkelTripel.java $
  * @author Andrea Aime
  */
 public class WinkelTripel extends MapProjection {

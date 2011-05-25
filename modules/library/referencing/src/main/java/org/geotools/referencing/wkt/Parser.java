@@ -72,6 +72,7 @@ import org.geotools.resources.i18n.ErrorKeys;
  * objects as well, which is part of the WKT's {@code FITTED_CS} element.
  *
  * @since 2.0
+ *
  * @source $URL$
  * @version $Id$
  * @author Remi Eve

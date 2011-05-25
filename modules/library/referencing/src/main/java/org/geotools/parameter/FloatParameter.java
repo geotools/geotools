@@ -41,6 +41,7 @@ import org.geotools.resources.i18n.ErrorKeys;
  * than {@code ParameterValue} since it avoid the creation of {@link Double} objects.
  *
  * @since 2.1
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

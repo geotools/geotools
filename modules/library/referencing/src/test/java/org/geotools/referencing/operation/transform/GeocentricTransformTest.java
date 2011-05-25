@@ -42,6 +42,7 @@ import static org.junit.Assert.*;
  *   <li>{@link DefaultEllipsoid}</li>
  * </ul>
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

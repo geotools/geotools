@@ -27,6 +27,7 @@ import org.geotools.resources.i18n.ErrorKeys;
  * A matrix of fixed {@value #SIZE}&times;{@value #SIZE} size.
  *
  * @since 2.2
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

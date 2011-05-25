@@ -92,8 +92,8 @@ import org.opengis.util.InternationalString;
  * </p>
  *
  * @since 2.4
- * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/library/referencing/src/main/java/org/geotools/referencing/factory/AbstractBufferedAuthorityFactory.java $
+ *
+ * @source $URL$
  * @version $Id$
  * @author Jody Garnett (Refractions Research)
  * @author Cory Horner (Refractions Research)

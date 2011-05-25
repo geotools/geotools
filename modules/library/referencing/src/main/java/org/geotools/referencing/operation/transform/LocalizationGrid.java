@@ -21,6 +21,7 @@ package org.geotools.referencing.operation.transform;
  * @deprecated Moved to {@link org.geotools.referencing.operation.builder} package.
  *
  * @since 2.0
+ *
  * @source $URL$
  * @version $Id$
  * @author Remi Eve

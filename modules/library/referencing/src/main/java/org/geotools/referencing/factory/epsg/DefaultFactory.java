@@ -23,6 +23,7 @@ import org.geotools.factory.Hints;
  * Base class for EPSG factories to be registered in {@link GeometryFactoryFinder}.
  *
  * @since 2.1
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

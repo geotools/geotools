@@ -43,6 +43,7 @@ import org.geotools.util.logging.LoggedFormat;
  * Elements can be pull in a <cite>first in, first out</cite> order.
  *
  * @since 2.0
+ *
  * @source $URL$
  * @version $Id$
  * @author Remi Eve

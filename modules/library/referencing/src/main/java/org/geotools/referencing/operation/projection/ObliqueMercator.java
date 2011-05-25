@@ -149,6 +149,7 @@ import static java.lang.Math.*;
  * @see <A HREF="http://www.remotesensing.org/geotiff/proj_list/oblique_mercator.html">"oblique_mercator" on RemoteSensing.org</A>
  *
  * @since 2.1
+ *
  * @source $URL$
  * @version $Id$
  * @author Gerald I. Evenden (for original code in Proj4)

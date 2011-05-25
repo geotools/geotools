@@ -32,6 +32,7 @@ import static org.junit.Assert.*;
 /**
  * Tests the creation of {@link AbstractIdentifiedObject} and a few subclasses.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

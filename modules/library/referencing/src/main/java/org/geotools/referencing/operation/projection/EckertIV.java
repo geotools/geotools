@@ -43,7 +43,8 @@ import org.opengis.referencing.operation.MathTransform;
  *      RemoteSensing.org</A>
  * 
  * @since 2.7.0
- * @source $URL:
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/referencing/src/main/java/org/geotools/referencing/operation/projection/EckertIV.java $
  *         http://svn.osgeo.org/geotools/branches/2.6.x/modules/library/referencing/src/main/java
  *         /org/geotools/referencing/operation/projection/Mercator.java $
  * @author Andrea Aime

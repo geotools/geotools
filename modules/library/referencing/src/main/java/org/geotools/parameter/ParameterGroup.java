@@ -52,6 +52,7 @@ import org.geotools.util.Utilities;
  * those groups.
  *
  * @since 2.1
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

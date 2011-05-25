@@ -32,6 +32,7 @@ import org.geotools.resources.i18n.VocabularyKeys;
 /**
  * A temporal datum defines the origin of a temporal coordinate reference system.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

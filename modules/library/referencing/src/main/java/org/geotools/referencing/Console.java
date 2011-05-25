@@ -108,6 +108,7 @@ import org.geotools.resources.i18n.VocabularyKeys;
  * </table>
  *
  * @since 2.1
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

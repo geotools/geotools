@@ -75,6 +75,7 @@ import org.geotools.resources.i18n.ErrorKeys;
  * parameter), the parameter name is a suffisient key.
  *
  * @since 2.1
+ *
  * @source $URL$
  * @version $Id$
  * @author Jody Garnett (Refractions Research)

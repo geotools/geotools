@@ -62,6 +62,7 @@ import org.geotools.resources.i18n.Vocabulary;
  * situation, a plain {@code AbstractCS} object may be instantiated.
  *
  * @since 2.1
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

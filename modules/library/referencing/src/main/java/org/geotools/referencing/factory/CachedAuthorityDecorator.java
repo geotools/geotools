@@ -88,6 +88,7 @@ import org.opengis.util.InternationalString;
  * </p>
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Jody Garnett

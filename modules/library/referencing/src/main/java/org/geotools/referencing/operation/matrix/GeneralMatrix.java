@@ -44,6 +44,7 @@ import org.geotools.resources.i18n.ErrorKeys;
  * A two dimensional array of numbers. Row and column numbering begins with zero.
  *
  * @since 2.2
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

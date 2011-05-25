@@ -50,6 +50,7 @@ import org.geotools.metadata.iso.citation.Citations;
  * </pre></blockquote>
  *
  * @since 2.3
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

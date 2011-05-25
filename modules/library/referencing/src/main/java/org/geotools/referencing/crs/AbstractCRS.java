@@ -42,6 +42,7 @@ import org.geotools.util.UnsupportedImplementationException;
  * Abstract coordinate reference system, usually defined by a coordinate system and a datum.
  *
  * @since 2.1
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

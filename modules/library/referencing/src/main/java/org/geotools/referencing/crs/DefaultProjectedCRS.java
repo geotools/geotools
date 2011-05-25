@@ -59,6 +59,7 @@ import org.geotools.referencing.operation.DefaultOperationMethod;
  * </TD></TR></TABLE>
  *
  * @since 2.1
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

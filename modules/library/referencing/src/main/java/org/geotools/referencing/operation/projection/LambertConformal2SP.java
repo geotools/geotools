@@ -38,6 +38,7 @@ import org.geotools.util.Utilities;
  * @see <A HREF="http://www.remotesensing.org/geotiff/proj_list/lambert_conic_conformal_2sp.html">lambert_conic_conformal_2sp</A>
  *
  * @since 2.2
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

@@ -115,9 +115,9 @@ import org.opengis.filter.spatial.Within;
  * lets many things (like URL and Date) function without modification.
  * </p>
  * 
- * @author Jody Garnett, Refractions Research
- * @since GeoTools 2.2.M3
- *
+ * @author Jody Garnett (LISAsoft)
+ * @since GeoTools 2.2
+ * @version 8.0
  * @source $URL$
  */
 public class Filters {
@@ -1105,7 +1105,29 @@ public class Filters {
         }
         return null; // not found
     }
-    
+
+    /**
+     * Given a filter which contains a term which is a PropertyName, returns the name of the property.
+     * Returns null if no PropertyName is passed
+     * @param filter
+     * @return
+     */
+    public static String findPropertyName(Filter filter) {
+        if (filter == null)
+            return null;
+
+        class SearchFilterVisitor extends AbstractSearchFilterVisitor {
+            protected boolean found(Object data) {
+                return data != null;
+            }
+            public Object visit(PropertyName name, Object data) {
+                return name.getPropertyName();
+            }
+        };
+        SearchFilterVisitor search = new SearchFilterVisitor();
+        return (String)filter.accept(search, null );
+    }
+
     /**
      * Find all filters (including the base filter itself) that are of the given type and use
      * the specified property.

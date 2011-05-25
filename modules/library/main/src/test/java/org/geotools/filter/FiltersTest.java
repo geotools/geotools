@@ -255,4 +255,22 @@ public class FiltersTest {
         results = Filters.removeFilter(results, b);
         assertEquals(Filter.INCLUDE, results);
     }
+
+    @Test
+    public void testFindPropertyName() {
+        String results = Filters.findPropertyName(b);
+        assertEquals("suburb", results);
+
+        Filter f = ff.equals(ff.literal("bar"), ff.literal("foo"));
+
+    }
+
+    @Test
+    public void testFindPropertyNameEmpty() {
+        assertNull(Filters.findPropertyName(null));
+
+        Filter f = ff.equals(ff.literal("bar"), ff.literal("foo"));
+        String results = Filters.findPropertyName(b);
+        assertNull(Filters.findPropertyName(f));
+    }
 }

@@ -27,6 +27,7 @@ import org.geotools.xml.impl.BindingWalker;
  *
  * TODO: rename, this isnt really a factory!!
  *
+ *
  * @source $URL$
  */
 public interface BindingWalkerFactory {

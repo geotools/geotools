@@ -29,6 +29,7 @@ import org.geotools.data.ows.Layer;
 /**
  * A base class for GetFeatureInfoRequests that provides some
  * functionality.
+ *
  * @source $URL$
  */
 public abstract class AbstractGetFeatureInfoRequest extends AbstractWMSRequest implements GetFeatureInfoRequest {

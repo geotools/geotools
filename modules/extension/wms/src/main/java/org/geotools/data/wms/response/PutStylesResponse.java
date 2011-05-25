@@ -29,6 +29,7 @@ import org.xml.sax.SAXException;
  * Success can be checked using the success() method.
  * 
  * @author Richard Gould
+ *
  * @source $URL$
  */
 public class PutStylesResponse extends Response {

@@ -37,6 +37,7 @@ import org.geotools.xml.*;
  *
  * @generated
  *
+ *
  * @source $URL$
  */
 public class SLDGrayChannelBinding extends AbstractComplexBinding {

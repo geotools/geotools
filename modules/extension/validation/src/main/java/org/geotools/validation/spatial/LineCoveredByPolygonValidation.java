@@ -64,6 +64,7 @@ import com.vividsolutions.jts.geom.Polygon;
  *
  * @author Jody Garnett, Refractions Research, Inc.
  * @author $Author: dmzwiers $ (last modification)
+ *
  * @source $URL$
  * @version $Id$
  */

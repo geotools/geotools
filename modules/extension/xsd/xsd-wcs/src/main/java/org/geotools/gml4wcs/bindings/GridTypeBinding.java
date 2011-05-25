@@ -47,6 +47,8 @@ import org.geotools.xml.Node;
  * </p>
  * 
  * @generated
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-wcs/src/main/java/org/geotools/gml4wcs/bindings/GridTypeBinding.java $
  */
 public class GridTypeBinding extends AbstractComplexBinding {
 

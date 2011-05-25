@@ -38,6 +38,8 @@ import com.vividsolutions.jts.geom.impl.CoordinateArraySequenceFactory;
  * Parser configuration for the http://www.opengis.net/gml schema.
  *
  * @generated
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-wcs/src/main/java/org/geotools/gml4wcs/GMLConfiguration.java $
  */
 public class GMLConfiguration extends Configuration {
 

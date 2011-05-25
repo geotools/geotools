@@ -30,6 +30,7 @@ import org.geotools.xml.Configuration;
  * @author Justin Deoliveira, The Open Planning Project
  *
  *
+ *
  * @source $URL$
  */
 public class OGCConfiguration extends Configuration {

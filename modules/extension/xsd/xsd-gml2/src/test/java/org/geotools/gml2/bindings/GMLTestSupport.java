@@ -27,6 +27,7 @@ import org.geotools.xml.test.XMLTestSupport;
  * @author Justin Deoliveira, The Open Planning Project
  *
  *
+ *
  * @source $URL$
  */
 public class GMLTestSupport extends XMLTestSupport {

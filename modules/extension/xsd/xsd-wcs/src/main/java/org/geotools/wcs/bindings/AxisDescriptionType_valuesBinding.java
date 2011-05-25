@@ -32,6 +32,8 @@ import javax.xml.namespace.QName;
  * </p>
  *
  * @generated
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-wcs/src/main/java/org/geotools/wcs/bindings/AxisDescriptionType_valuesBinding.java $
  */
 public class AxisDescriptionType_valuesBinding extends AbstractComplexBinding {
 

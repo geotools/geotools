@@ -26,6 +26,7 @@ import org.picocontainer.MutablePicoContainer;
  * @author Justin Deoliveira, The Open Planning Project
  *
  *
+ *
  * @source $URL$
  */
 public class SMIL20Configuration extends Configuration {

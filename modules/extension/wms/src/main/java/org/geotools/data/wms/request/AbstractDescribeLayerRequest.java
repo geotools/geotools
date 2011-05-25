@@ -24,6 +24,7 @@ import java.util.Properties;
  * the versioning info, which subclasses must implement.
  * 
  * @author Richard Gould
+ *
  * @source $URL$
  */
 public abstract class AbstractDescribeLayerRequest extends AbstractWMSRequest implements DescribeLayerRequest {

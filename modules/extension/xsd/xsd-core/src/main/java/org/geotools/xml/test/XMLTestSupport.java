@@ -150,6 +150,7 @@ import org.geotools.xml.impl.SchemaIndexImpl;
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
  *
  *
+ *
  * @source $URL$
  */
 public abstract class XMLTestSupport extends TestCase {

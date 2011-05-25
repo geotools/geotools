@@ -25,6 +25,7 @@ import org.geotools.filter.v1_0.OGC;
  * 
  * @author Justin Deoliveira, OpenGEO
  *
+ *
  * @source $URL$
  */
 public final class WFS extends org.geotools.wfs.WFS {

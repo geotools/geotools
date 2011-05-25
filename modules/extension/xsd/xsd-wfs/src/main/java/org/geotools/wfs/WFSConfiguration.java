@@ -68,6 +68,7 @@ import org.picocontainer.MutablePicoContainer;
  *
  * @generated
  *
+ *
  * @source $URL$
  */
 public abstract class WFSConfiguration extends Configuration {

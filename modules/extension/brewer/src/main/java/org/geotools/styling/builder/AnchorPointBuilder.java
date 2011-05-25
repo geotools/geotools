@@ -16,6 +16,7 @@ import org.geotools.styling.StyleFactory;
  * 
  * @author Jody Garnett (LISAsoft)
  *
+ *
  * @source $URL$
  */
 public class AnchorPointBuilder<P> implements Builder<AnchorPoint> {

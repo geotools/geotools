@@ -22,6 +22,8 @@ import org.geotools.gml3.GML3TestSupport;
 /**
  *
  * @author Erik van de Pol
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-gml3/src/test/java/org/geotools/gml3/bindings/CircleTypeBindingTest.java $
  */
 public class CircleTypeBindingTest extends GML3TestSupport {
     

@@ -22,6 +22,7 @@ package org.geotools.xml.impl;
  *
  * @author <a href="mailto:joe@ispsoft.de">Jochen Wiedmann</a>
  *
+ *
  * @source $URL$
  */
 public class XsTimeFormat extends XsDateTimeFormat {

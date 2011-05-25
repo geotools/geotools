@@ -46,6 +46,8 @@ import org.w3c.dom.Element;
  * </p>
  * 
  * @generated
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-wcs/src/main/java/org/geotools/gml4wcs/bindings/TimePositionTypeBinding.java $
  */
 public class TimePositionTypeBinding extends AbstractComplexBinding {
 

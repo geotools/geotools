@@ -32,6 +32,7 @@ import org.geotools.styling.FeatureTypeStyle;
  * @author Justin Deoliveira, The Open Planning Project
  *
  *
+ *
  * @source $URL$
  */
 public class StyleMap {

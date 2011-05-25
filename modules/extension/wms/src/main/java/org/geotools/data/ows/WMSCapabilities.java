@@ -24,6 +24,7 @@ import java.util.List;
  * Represents a base object for a WMS getCapabilities response.
  *
  * @author Richard Gould, Refractions Research
+ *
  * @source $URL$
  */
 public class WMSCapabilities extends Capabilities {

@@ -32,6 +32,7 @@ import org.opengis.feature.simple.SimpleFeature;
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
  *
  *
+ *
  * @source $URL$
  */
 public class FeatureGraphGenerator extends BasicGraphGenerator {

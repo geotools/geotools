@@ -25,6 +25,7 @@ package org.geotools.graph.structure;
  * @see DirectedGraph
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
  * 
+ *
  * @source $URL$
  */
 public interface DirectedEdge extends Edge, DirectedGraphable {

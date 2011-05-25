@@ -43,6 +43,7 @@ import org.geotools.xml.*;
  *
  * @generated
  *
+ *
  * @source $URL$
  */
 public class SLDPerpendicularOffsetBinding extends AbstractComplexBinding {

@@ -110,6 +110,7 @@ import org.geotools.xml.Node;
  *
  * @generated
  *
+ *
  * @source $URL$
  */
 public class TransactionTypeBinding extends AbstractComplexEMFBinding {

@@ -60,6 +60,7 @@ import org.geotools.xs.bindings.XSQNameBinding;
  *
  * @generated
  *
+ *
  * @source $URL$
  */
 public class GeometryOperandTypeBinding extends AbstractSimpleBinding {

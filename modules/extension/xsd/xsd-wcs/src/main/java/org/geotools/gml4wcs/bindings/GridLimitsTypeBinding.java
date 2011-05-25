@@ -27,6 +27,8 @@ import org.opengis.coverage.grid.GridEnvelope;
  * </p>
  * 
  * @generated
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-wcs/src/main/java/org/geotools/gml4wcs/bindings/GridLimitsTypeBinding.java $
  */
 public class GridLimitsTypeBinding extends AbstractComplexBinding {
 

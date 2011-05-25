@@ -49,6 +49,7 @@ import org.geotools.xml.*;
  *
  * @generated
  *
+ *
  * @source $URL$
  */
 public class SLDGeometryBinding extends AbstractComplexBinding {

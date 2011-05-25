@@ -15,6 +15,8 @@ import org.picocontainer.MutablePicoContainer;
  * If a mismatched biding is found for a complex attribute, the binding for xs:anyType is visited.
  * 
  * @author Ben Caradoc-Davies, CSIRO Earth Science and Resource Engineering
+ *
+ * @source $URL$
  */
 public class BindingVisitorDispatch {
 

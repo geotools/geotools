@@ -48,6 +48,8 @@ import org.w3c.dom.Element;
  * </p>
  * 
  * @generated
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-wcs/src/main/java/org/geotools/wcs/bindings/TimeSequenceTypeBinding.java $
  */
 public class TimeSequenceTypeBinding extends AbstractComplexBinding {
 

@@ -36,6 +36,8 @@ import org.geotools.xml.InstanceComponent;
  * </p>
  * 
  * @generated
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-wcs/src/main/java/org/geotools/gml4wcs/bindings/TemporalPositionTypeBinding.java $
  */
 public class TemporalPositionTypeBinding extends AbstractSimpleBinding {
 

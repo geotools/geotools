@@ -46,6 +46,7 @@ import org.geotools.xml.impl.AttributeImpl;
  * 
  * @generated
  *
+ *
  * @source $URL$
  */
 public class AllSomeTypeBinding extends AbstractSimpleBinding {

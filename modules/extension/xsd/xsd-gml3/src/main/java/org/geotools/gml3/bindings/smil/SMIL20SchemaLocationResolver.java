@@ -24,6 +24,7 @@ import org.eclipse.xsd.util.XSDSchemaLocationResolver;
  *
  * @generated
  *
+ *
  * @source $URL$
  */
 public class SMIL20SchemaLocationResolver implements XSDSchemaLocationResolver {

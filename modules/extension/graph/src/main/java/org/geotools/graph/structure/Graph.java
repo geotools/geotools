@@ -59,6 +59,7 @@ import java.util.List;
  *  
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
  *
+ *
  * @source $URL$
  */
 public interface Graph {

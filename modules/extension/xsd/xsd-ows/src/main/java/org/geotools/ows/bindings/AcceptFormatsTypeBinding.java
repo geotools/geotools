@@ -44,6 +44,7 @@ import org.geotools.xml.*;
  *
  * @generated
  *
+ *
  * @source $URL$
  */
 public class AcceptFormatsTypeBinding extends AbstractComplexEMFBinding {

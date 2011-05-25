@@ -90,6 +90,7 @@ import org.eclipse.xsd.XSDWildcard;
  * @author Justin Deoliveira, The Open Planning Project
  *
  *
+ *
  * @source $URL$
  */
 public class Schemas {

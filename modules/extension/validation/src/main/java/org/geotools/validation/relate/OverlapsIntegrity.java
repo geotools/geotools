@@ -46,6 +46,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * OverlapsIntegrity<br>
  * @author bowens, ptozer<br>
  * Created Apr 27, 2004<br>
+ *
  * @source $URL$
  * @version <br>
  * 

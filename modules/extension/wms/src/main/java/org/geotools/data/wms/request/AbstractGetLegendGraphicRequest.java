@@ -22,6 +22,7 @@ import java.net.URL;
  * Provides functionality for a basic GetLegendGraphic request
  * 
  * @author Richard Gould
+ *
  * @source $URL$
  */
 public abstract class AbstractGetLegendGraphicRequest extends AbstractWMSRequest implements GetLegendGraphicRequest {

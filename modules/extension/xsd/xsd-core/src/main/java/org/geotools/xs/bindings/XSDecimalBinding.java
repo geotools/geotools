@@ -60,6 +60,7 @@ import org.geotools.xs.XS;
  *
  * @generated
  *
+ *
  * @source $URL$
  */
 public class XSDecimalBinding implements SimpleBinding {

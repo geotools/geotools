@@ -44,6 +44,7 @@ import com.vividsolutions.jts.geom.Point;
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
  *
  *
+ *
  * @source $URL$
  */
 public class GML3ParsingUtils {

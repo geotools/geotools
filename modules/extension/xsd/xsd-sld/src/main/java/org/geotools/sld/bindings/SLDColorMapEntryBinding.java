@@ -49,6 +49,7 @@ import org.picocontainer.MutablePicoContainer;
  *
  * @generated
  *
+ *
  * @source $URL$
  */
 public class SLDColorMapEntryBinding extends AbstractComplexBinding {

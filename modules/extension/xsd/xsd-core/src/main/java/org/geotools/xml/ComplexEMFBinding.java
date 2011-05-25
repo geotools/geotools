@@ -36,6 +36,7 @@ import org.geotools.xml.impl.InstanceBinding;
  *
  * @see Configuration#registerBindings(java.util.Map)
  *
+ *
  * @source $URL$
  */
 public class ComplexEMFBinding extends AbstractComplexEMFBinding

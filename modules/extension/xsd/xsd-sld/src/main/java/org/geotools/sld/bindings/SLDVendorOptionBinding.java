@@ -30,6 +30,8 @@ import org.opengis.filter.FilterFactory;
  * </pre>
  * @author Justin Deoliveira, OpenGeo
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-sld/src/main/java/org/geotools/sld/bindings/SLDVendorOptionBinding.java $
  */
 public class SLDVendorOptionBinding extends AbstractComplexBinding {
 

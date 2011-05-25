@@ -58,6 +58,7 @@ import com.vividsolutions.jts.geom.Point;
  *
  * @generated
  *
+ *
  * @source $URL$
  */
 public class GMLPointTypeBinding extends AbstractComplexBinding {

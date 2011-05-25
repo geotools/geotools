@@ -54,6 +54,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  * 
  * @generated
  *
+ *
  * @source $URL$
  */
 public class MultiGeometryTypeBinding extends AbstractComplexBinding {

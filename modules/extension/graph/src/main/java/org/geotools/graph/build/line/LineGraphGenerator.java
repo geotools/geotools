@@ -24,6 +24,8 @@ import com.vividsolutions.jts.geom.Coordinate;
 
 /**
  * Builds a graph representing a line network.
+ *
+ * @source $URL$
  */
 public interface LineGraphGenerator extends GraphGenerator {
     /**

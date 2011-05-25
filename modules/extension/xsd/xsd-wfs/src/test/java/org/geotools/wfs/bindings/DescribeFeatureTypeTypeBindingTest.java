@@ -37,6 +37,7 @@ import org.w3c.dom.Element;
  * @version $Id: DescribeFeatureTypeTypeBindingTest.java 27759 2007-11-05
  *          19:46:45Z groldan $
  * @since 2.5.x
+ *
  * @source $URL$
  */
 public class DescribeFeatureTypeTypeBindingTest extends WFSTestSupport {

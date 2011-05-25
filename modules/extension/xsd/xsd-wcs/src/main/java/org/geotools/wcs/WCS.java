@@ -12,6 +12,8 @@ import org.geotools.xml.XSD;
  * attributes in the http://www.opengis.net/wcs schema.
  * 
  * @generated
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-wcs/src/main/java/org/geotools/wcs/WCS.java $
  */
 public final class WCS extends XSD {
 

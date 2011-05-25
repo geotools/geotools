@@ -24,6 +24,7 @@ import org.geotools.data.ows.Request;
  * 
  * The only parameter it takes is a list of named layers which it uses to 
  * return the information about.
+ *
  * @source $URL$
  */
 public interface DescribeLayerRequest extends Request {

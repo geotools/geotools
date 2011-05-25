@@ -37,6 +37,8 @@ import org.geotools.xml.Node;
  * </p>
  *
  * @generated
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-wcs/src/main/java/org/geotools/gml4wcs/bindings/CodeTypeBinding.java $
  */
 
 public class CodeTypeBinding extends AbstractComplexBinding {

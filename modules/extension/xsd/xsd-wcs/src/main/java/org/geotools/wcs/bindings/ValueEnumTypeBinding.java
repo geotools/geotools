@@ -38,6 +38,8 @@ import javax.xml.namespace.QName;
  * </p>
  *
  * @generated
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-wcs/src/main/java/org/geotools/wcs/bindings/ValueEnumTypeBinding.java $
  */
 public class ValueEnumTypeBinding extends AbstractComplexBinding {
 

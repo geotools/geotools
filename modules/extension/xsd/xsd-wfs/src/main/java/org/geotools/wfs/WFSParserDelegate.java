@@ -24,6 +24,7 @@ import org.geotools.xml.XSDParserDelegate;
  * @author Justin Deoliveira, OpenGEO
  * @since 2.6
  *
+ *
  * @source $URL$
  */
 public class WFSParserDelegate extends XSDParserDelegate {

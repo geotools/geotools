@@ -44,6 +44,7 @@ import org.geotools.xml.*;
  *
  * @generated
  *
+ *
  * @source $URL$
  */
 public class Scalar_CapabilitiesTypeBinding extends AbstractComplexBinding {

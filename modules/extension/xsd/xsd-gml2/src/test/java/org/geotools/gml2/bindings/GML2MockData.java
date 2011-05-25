@@ -53,6 +53,7 @@ import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
  * @author Justin Deoliveira, The Open Planning Project
  *
  *
+ *
  * @source $URL$
  */
 public class GML2MockData {

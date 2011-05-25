@@ -27,6 +27,8 @@ import javax.xml.namespace.QName;
  * </p>
  *
  * @generated
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-wcs/src/main/java/org/geotools/gml4wcs/bindings/ReferenceTypeBinding.java $
  */
 public class ReferenceTypeBinding extends AbstractComplexBinding {
 

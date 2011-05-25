@@ -45,6 +45,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * <p>
  * 
  * </p>
+ *
  * @source $URL$
  */
 public class WithinIntegrity extends RelationIntegrity {

@@ -41,6 +41,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * @author Justin Deoliveira, The Open Planning Project
  * @deprecated This interface is replaced with {@link ComplexBinding#getProperties(Object, XSDElementDeclaration)}
  *
+ *
  * @source $URL$
  */
 public class FeaturePropertyExtractor implements PropertyExtractor {

@@ -47,6 +47,7 @@ import java.util.List;
  * @author Justin Deoliveira, The Open Planning Project
  *
  *
+ *
  * @source $URL$
  */
 public class SchemaLocationResolver implements XSDSchemaLocationResolver {

@@ -75,6 +75,7 @@ import org.geotools.xml.*;
  *
  * @generated
  *
+ *
  * @source $URL$
  */
 public class AddressTypeBinding extends AbstractComplexEMFBinding {

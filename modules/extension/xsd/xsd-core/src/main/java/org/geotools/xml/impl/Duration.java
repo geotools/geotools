@@ -21,6 +21,7 @@ import java.io.Serializable;
 
 /** <p>Implementation of xs:duration.</p>
  *
+ *
  * @source $URL$
  */
 public class Duration implements Serializable, Comparable {

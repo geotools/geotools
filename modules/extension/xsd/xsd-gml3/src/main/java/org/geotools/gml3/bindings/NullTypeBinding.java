@@ -57,6 +57,7 @@ import com.vividsolutions.jts.geom.Envelope;
  * 
  * @generated
  *
+ *
  * @source $URL$
  */
 public class NullTypeBinding extends AbstractSimpleBinding {

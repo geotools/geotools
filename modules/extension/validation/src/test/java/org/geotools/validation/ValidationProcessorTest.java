@@ -43,6 +43,7 @@ import org.opengis.feature.simple.SimpleFeature;
  * 
  * @author bowens, Refractions Research, Inc.
  * @author $Author: sploreg $ (last modification)
+ *
  * @source $URL$
  * @version $Id$
  */

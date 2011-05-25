@@ -25,6 +25,7 @@ import org.geotools.graph.structure.DirectedGraph;
  * 
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
  *
+ *
  * @source $URL$
  */
 public class BasicDirectedGraph extends BasicGraph implements DirectedGraph {

@@ -35,6 +35,7 @@ import org.xml.sax.SAXException;
  * has been issued.
  * 
  * @author Richard Gould
+ *
  * @source $URL$
  */
 public class DescribeLayerResponse extends Response {

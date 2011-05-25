@@ -34,6 +34,8 @@ import org.geotools.gml3.Circle;
 /**
  *
  * @author Erik van de Pol. B3Partners BV.
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-gml3/src/main/java/org/geotools/gml3/bindings/CircleTypeBinding.java $
  */
 public class CircleTypeBinding extends AbstractComplexBinding {
     GeometryFactory gFactory;

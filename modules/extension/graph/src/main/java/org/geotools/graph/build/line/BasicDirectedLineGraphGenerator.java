@@ -39,6 +39,7 @@ import org.geotools.graph.build.basic.BasicDirectedGraphBuilder;
  * 
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
  *
+ *
  * @source $URL$
  */
 public class BasicDirectedLineGraphGenerator extends BasicLineGraphGenerator {

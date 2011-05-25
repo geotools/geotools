@@ -164,6 +164,7 @@ import org.geotools.graph.structure.Graphable;
  * @see GraphTraversal
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
  *
+ *
  * @source $URL$
  */
 public interface GraphIterator {

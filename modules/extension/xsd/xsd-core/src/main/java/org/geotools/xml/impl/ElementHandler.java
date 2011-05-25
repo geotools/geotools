@@ -42,6 +42,7 @@ import javax.xml.namespace.QName;
  * @author Justin Deoliveira,Refractions Research Inc.,jdeolive@refractions.net
  *
  *
+ *
  * @source $URL$
  */
 public interface ElementHandler extends Handler {

@@ -25,6 +25,7 @@ import org.geotools.graph.io.GraphReaderWriter;
  * 
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
  *
+ *
  * @source $URL$
  */
 public abstract class AbstractReaderWriter implements GraphReaderWriter {

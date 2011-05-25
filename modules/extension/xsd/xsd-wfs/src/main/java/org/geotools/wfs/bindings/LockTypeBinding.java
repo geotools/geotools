@@ -80,6 +80,7 @@ import org.geotools.xml.AbstractComplexEMFBinding;
  *
  * @generated
  *
+ *
  * @source $URL$
  */
 public class LockTypeBinding extends AbstractComplexEMFBinding {

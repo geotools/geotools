@@ -42,6 +42,7 @@ import org.geotools.graph.util.Queue;
  * 
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
  *
+ *
  * @source $URL$
  */
 public class BreadthFirstIterator extends SourceGraphIterator {

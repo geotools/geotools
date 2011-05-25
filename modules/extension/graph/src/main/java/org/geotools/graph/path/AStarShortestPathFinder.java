@@ -31,6 +31,7 @@ import org.geotools.graph.traverse.standard.AStarIterator.AStarFunctions;
  * @see AStarIterator 
  * @author Germán E. Trouillet, Francisco G. Malbrán. Universidad Nacional de Córdoba (UNC)
  *
+ *
  * @source $URL$
  */
 public class AStarShortestPathFinder implements GraphWalker {

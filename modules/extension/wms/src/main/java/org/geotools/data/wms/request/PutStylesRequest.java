@@ -23,6 +23,7 @@ import org.geotools.data.ows.Request;
  * Represents a PutStyles request
  * 
  * @author Richard Gould
+ *
  * @source $URL$
  */
 public interface PutStylesRequest extends Request {

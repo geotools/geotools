@@ -63,6 +63,7 @@ import org.geotools.xs.XS;
  *
  * @generated
  *
+ *
  * @source $URL$
  */
 public class XSAllBinding extends AbstractComplexBinding {

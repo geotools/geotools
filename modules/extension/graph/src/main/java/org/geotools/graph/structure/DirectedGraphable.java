@@ -24,6 +24,7 @@ import java.util.Iterator;
  * @see DirectedGraph
  * 
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
+ *
  * @source $URL$
  */
 public interface DirectedGraphable extends Graphable {

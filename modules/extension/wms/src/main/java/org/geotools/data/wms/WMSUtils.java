@@ -37,6 +37,7 @@ import org.opengis.referencing.operation.MathTransform;
  * Provides miscellaneous utility methods for use with WMSs.
  *
  * @author Richard Gould
+ *
  * @source $URL$
  */
 public class WMSUtils {

@@ -23,6 +23,7 @@ import org.opengis.feature.simple.SimpleFeature;
 
 
 /**
+ *
  * @source $URL$
  */
 public final class DefaultFeatureResults implements ValidationResults {

@@ -32,6 +32,7 @@ import org.geotools.graph.structure.Node;
  * 
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
  *
+ *
  * @source $URL$
  */
 public class BasicDirectedNode extends BasicGraphable implements DirectedNode {

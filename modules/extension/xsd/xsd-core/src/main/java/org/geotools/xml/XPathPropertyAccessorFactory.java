@@ -36,6 +36,7 @@ import org.geotools.xml.impl.jxpath.FeatureNodeFactory;
  * @author Justin Deoliveira, The Open Planning Project
  *
  *
+ *
  * @source $URL$
  */
 public class XPathPropertyAccessorFactory implements PropertyAccessorFactory {

@@ -60,6 +60,7 @@ import org.xml.sax.helpers.NamespaceSupport;
  * @author Justin Deoliveira,Refractions Research Inc.,jdeolive@refractions.net
  *
  *
+ *
  * @source $URL$
  */
 public class ParserHandler extends DefaultHandler {

@@ -38,6 +38,8 @@ import java.util.List;
  * Date: Oct 15, 2007
  *
  * @author Tom Acree
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-gml3/src/main/java/org/geotools/gml3/Circle.java $
  */
 public class Circle {
 

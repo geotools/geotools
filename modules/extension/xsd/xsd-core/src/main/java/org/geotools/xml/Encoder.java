@@ -127,6 +127,7 @@ import org.xml.sax.helpers.NamespaceSupport;
  * @author Justin Deoliveira, The Open Planning Project
  *
  *
+ *
  * @source $URL$
  */
 public class Encoder {

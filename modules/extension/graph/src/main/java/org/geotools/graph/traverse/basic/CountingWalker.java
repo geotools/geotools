@@ -29,6 +29,7 @@ import org.geotools.graph.traverse.GraphWalker;
  * 
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
  *
+ *
  * @source $URL$
  */
 public class CountingWalker implements GraphWalker {

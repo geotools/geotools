@@ -54,6 +54,7 @@ import org.geotools.xml.*;
  *
  * @generated
  *
+ *
  * @source $URL$
  */
 public class Spatial_OperatorsTypeBinding extends AbstractComplexBinding {

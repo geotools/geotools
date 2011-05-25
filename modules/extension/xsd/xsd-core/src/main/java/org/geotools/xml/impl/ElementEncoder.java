@@ -34,6 +34,7 @@ import java.util.logging.Logger;
  * TODO: rename this class, it is not just for element.s
  *
  *
+ *
  * @source $URL$
  */
 public class ElementEncoder {

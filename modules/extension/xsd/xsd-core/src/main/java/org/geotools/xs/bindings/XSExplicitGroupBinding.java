@@ -53,6 +53,7 @@ import org.geotools.xs.XS;
  *
  * @generated
  *
+ *
  * @source $URL$
  */
 public class XSExplicitGroupBinding extends AbstractComplexBinding {

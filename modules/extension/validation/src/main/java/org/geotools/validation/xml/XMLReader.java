@@ -40,6 +40,7 @@ import org.xml.sax.SAXException;
  *
  * @author dzwiers, Refractions Research, Inc.
  * @author $Author: jive $ (last modification)
+ *
  * @source $URL$
  * @version $Id$
  */

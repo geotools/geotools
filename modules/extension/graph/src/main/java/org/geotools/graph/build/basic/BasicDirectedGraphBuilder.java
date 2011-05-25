@@ -33,6 +33,7 @@ import org.geotools.graph.structure.basic.BasicDirectedNode;
  * 
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
  *
+ *
  * @source $URL$
  */
 public class BasicDirectedGraphBuilder extends BasicGraphBuilder {

@@ -60,6 +60,7 @@ import com.vividsolutions.jts.geom.Point;
  *
  * @generated
  *
+ *
  * @source $URL$
  */
 public class MultiPointTypeBinding extends AbstractComplexBinding {

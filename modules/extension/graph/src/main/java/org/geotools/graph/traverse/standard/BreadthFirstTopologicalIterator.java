@@ -46,6 +46,7 @@ import org.geotools.graph.util.Queue;
  *  
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
  *
+ *
  * @source $URL$
  */
 public class BreadthFirstTopologicalIterator extends AbstractGraphIterator {

@@ -86,6 +86,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * </p>
  *
  * @author Jody Garnett, Refractions Research, Inc.
+ *
  * @source $URL$
  * @version $Id$
  */

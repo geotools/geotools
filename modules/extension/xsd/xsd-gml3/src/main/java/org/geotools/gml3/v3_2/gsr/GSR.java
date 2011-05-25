@@ -30,6 +30,7 @@ import org.opengis.feature.type.Schema;
  *
  * @generated
  *
+ *
  * @source $URL$
  */
 public final class GSR extends GML.DelegatingXSD {

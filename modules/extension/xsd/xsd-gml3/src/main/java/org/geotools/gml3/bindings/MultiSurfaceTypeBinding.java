@@ -61,6 +61,7 @@ import com.vividsolutions.jts.geom.Polygon;
  *
  * @generated
  *
+ *
  * @source $URL$
  */
 public class MultiSurfaceTypeBinding extends AbstractComplexBinding {

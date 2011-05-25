@@ -36,6 +36,7 @@ import org.geotools.graph.structure.basic.BasicGraph;
  *
  * @author jfc173
  *
+ *
  * @source $URL$
  */
 public class AutoClust {        

@@ -39,6 +39,7 @@ import org.geotools.xml.impl.ParserHandler;
  * @author Justin Deoliveira, The Open Planning Project
  *
  *
+ *
  * @source $URL$
  */
 public class DOMParser {

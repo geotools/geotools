@@ -52,7 +52,8 @@ import com.vividsolutions.jts.geom.Polygon;
  * 
  * @generated
  * 
- * @source $URL:
+ *
+ * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-gml3/src/main/java/org
  *         /geotools/gml3/bindings/SurfacePropertyTypeBinding.java $
  */

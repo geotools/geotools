@@ -48,6 +48,8 @@ import org.opengis.util.InternationalString;
  * 
  * @author Ben Caradoc-Davies, CSIRO Earth Science and Resource Engineering
  * @see <a href="http://jira.codehaus.org/browse/GEOT-3112">GEOT-3112</a>
+ *
+ * @source $URL$
  */
 public class EPSGCRSAuthorityFactory extends AbstractFactory implements CRSAuthorityFactory {
 

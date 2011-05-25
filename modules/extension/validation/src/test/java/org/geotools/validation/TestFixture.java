@@ -47,6 +47,7 @@ import org.geotools.validation.xml.XMLReader;
  * The complete confDemo also includes a large road and building shapefile.
  * </p>
  * @author Jody Garnett
+ *
  * @source $URL$
  */
 public class TestFixture {

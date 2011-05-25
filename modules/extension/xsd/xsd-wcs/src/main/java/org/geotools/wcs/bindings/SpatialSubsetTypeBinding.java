@@ -46,6 +46,8 @@ import org.geotools.xml.Node;
  * </p>
  * 
  * @generated
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-wcs/src/main/java/org/geotools/wcs/bindings/SpatialSubsetTypeBinding.java $
  */
 public class SpatialSubsetTypeBinding extends AbstractComplexBinding {
 

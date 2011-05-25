@@ -40,6 +40,7 @@ import org.geotools.xml.Node;
  * @author Justin Deoliveira, The Open Planning Project
  *
  *
+ *
  * @source $URL$
  */
 public class OGCUtils {

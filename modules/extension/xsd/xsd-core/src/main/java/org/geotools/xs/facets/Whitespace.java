@@ -38,6 +38,7 @@ import java.util.List;
  * @author jgarnett
  * @since 1.0.0
  *
+ *
  * @source $URL$
  */
 public abstract class Whitespace implements Comparable {

@@ -44,6 +44,7 @@ import com.vividsolutions.jts.geom.Point;
 *
 * @author bowens, Refractions Research, Inc.
 * @author $Author: jive $ (last modification)
+ *
  * @source $URL$
 * @version $Id$
 */

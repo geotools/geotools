@@ -76,6 +76,7 @@ import org.w3c.dom.Text;
  *
  * @generated
  *
+ *
  * @source $URL$
  */
 public class _XlinkPropertyNameBinding extends AbstractComplexEMFBinding {

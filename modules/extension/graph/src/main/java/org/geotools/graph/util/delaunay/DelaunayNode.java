@@ -23,6 +23,7 @@ import org.opengis.feature.simple.SimpleFeature;
  *
  * @author jfc173
  *
+ *
  * @source $URL$
  */
 public class DelaunayNode extends BasicXYNode{    

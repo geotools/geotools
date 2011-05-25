@@ -43,6 +43,7 @@ import org.geotools.xs.XS;
  *
  * @generated
  *
+ *
  * @source $URL$
  */
 public class XSUnsignedByteBinding implements SimpleBinding {

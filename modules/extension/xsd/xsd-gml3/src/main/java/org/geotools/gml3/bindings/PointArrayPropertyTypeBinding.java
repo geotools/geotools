@@ -50,6 +50,7 @@ import com.vividsolutions.jts.geom.Point;
  *
  * @generated
  *
+ *
  * @source $URL$
  */
 public class PointArrayPropertyTypeBinding extends AbstractComplexBinding {

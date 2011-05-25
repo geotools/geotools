@@ -19,6 +19,8 @@ package org.geotools.gml3;
 /**
  *
  * @author Erik van de Pol
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-gml3/src/main/java/org/geotools/gml3/LinearizationTolerance.java $
  */
 public interface LinearizationTolerance {
     /**

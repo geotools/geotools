@@ -9,6 +9,7 @@ import org.opengis.filter.FilterFactory;
 /**
  * FitlerBuilder acting as a simple wrapper around an Expression.
  *
+ *
  * @source $URL$
  */
 public class FilterBuilder implements Builder<Filter> {

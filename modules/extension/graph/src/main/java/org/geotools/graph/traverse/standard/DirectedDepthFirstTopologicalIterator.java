@@ -22,6 +22,7 @@ import org.geotools.graph.util.Stack;
 
 
 /**
+ *
  * @source $URL$
  */
 public class DirectedDepthFirstTopologicalIterator 

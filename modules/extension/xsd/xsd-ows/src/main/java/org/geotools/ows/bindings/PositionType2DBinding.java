@@ -45,6 +45,7 @@ import org.geotools.xml.*;
  *
  * @generated
  *
+ *
  * @source $URL$
  */
 public class PositionType2DBinding extends AbstractSimpleBinding {

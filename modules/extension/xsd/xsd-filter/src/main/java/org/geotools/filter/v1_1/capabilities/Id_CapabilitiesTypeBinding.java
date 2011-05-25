@@ -42,6 +42,7 @@ import org.geotools.xml.*;
  *
  * @generated
  *
+ *
  * @source $URL$
  */
 public class Id_CapabilitiesTypeBinding extends AbstractComplexBinding {

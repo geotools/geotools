@@ -78,7 +78,7 @@ public abstract class JDBCPrimaryKeyTest extends JDBCTestSupport {
         assertPrimaryKeyValues(features,4);
     }
     
-    void addFeature( SimpleFeatureType featureType, FeatureCollection features ) throws Exception {
+    protected void addFeature( SimpleFeatureType featureType, FeatureCollection features ) throws Exception {
         SimpleFeatureBuilder b = new SimpleFeatureBuilder( featureType );
         b.add("four");
         b.add( new GeometryFactory().createPoint( new Coordinate(4,4) ) );
@@ -90,7 +90,7 @@ public abstract class JDBCPrimaryKeyTest extends JDBCTestSupport {
         assertTrue(((String)f.getUserData().get( "fid" )).matches( tname(featureType.getTypeName()) + ".4(\\..*)?"));
     }
     
-    void assertPrimaryKeyValues( FeatureCollection features, int count ) throws Exception {
+    protected void assertPrimaryKeyValues( FeatureCollection features, int count ) throws Exception {
         FeatureIterator i = features.features();
        
         for ( int j = 1; j <= count; j++ ) {

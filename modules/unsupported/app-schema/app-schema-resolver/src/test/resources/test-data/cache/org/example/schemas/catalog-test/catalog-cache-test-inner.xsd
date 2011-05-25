@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://schemas.example.org/demo" xmlns:ex="http://schemas.example.org/demo"
+    xmlns:gsml="urn:cgi:xmlns:CGI:GeoSciML:2.0" xmlns="http://www.w3.org/2001/XMLSchema"
+    elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+
+    <import namespace="urn:cgi:xmlns:CGI:GeoSciML:2.0" schemaLocation="http://www.geosciml.org/geosciml/2.0/xsd/geosciml.xsd" />
+
+    <element name="InnerGeologicUnit" substitutionGroup="gsml:GeologicFeature" type="gsml:GeologicUnitType" />
+
+</schema>
+

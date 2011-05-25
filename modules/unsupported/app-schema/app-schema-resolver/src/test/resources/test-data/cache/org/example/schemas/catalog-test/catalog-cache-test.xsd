@@ -5,6 +5,8 @@
 
     <import namespace="urn:cgi:xmlns:CGI:GeoSciML:2.0" schemaLocation="http://www.geosciml.org/geosciml/2.0/xsd/geosciml.xsd" />
 
+    <include schemaLocation="catalog-cache-test-inner.xsd" />
+
     <element name="GeologicUnit" substitutionGroup="gsml:GeologicFeature" type="ex:CommentedGeologicUnitType" />
 
     <complexType name="CommentedGeologicUnitType">

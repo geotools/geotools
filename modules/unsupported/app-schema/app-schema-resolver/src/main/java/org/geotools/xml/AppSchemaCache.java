@@ -20,6 +20,7 @@ package org.geotools.xml;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -214,8 +215,8 @@ public class AppSchemaCache {
             connection.connect();
             if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
                 LOGGER.warning(String.format("Unexpected response \"%d %s\" while downloading %s",
-                        connection.getResponseCode(), connection.getResponseMessage(), location
-                                .toString()));
+                        connection.getResponseCode(), connection.getResponseMessage(),
+                        location.toString()));
                 return null;
             }
             // read all the blocks into a list
@@ -271,7 +272,7 @@ public class AppSchemaCache {
      * 
      * @param location
      *            the absolute http/https URL of the schema
-     * @return the local file URL of the schema, or null if not found
+     * @return the canonical local file URL of the schema, or null if not found
      */
     public String resolveLocation(String location) {
         String path = AppSchemaResolver.getSimpleHttpResourcePath(location);
@@ -279,7 +280,12 @@ public class AppSchemaCache {
             return null;
         }
         String relativePath = path.substring(1);
-        File file = new File(getDirectory(), relativePath);
+        File file;
+        try {
+            file = new File(getDirectory(), relativePath).getCanonicalFile();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         if (file.exists()) {
             return DataUtilities.fileToURL(file).toExternalForm();
         } else if (isDownloadAllowed()) {

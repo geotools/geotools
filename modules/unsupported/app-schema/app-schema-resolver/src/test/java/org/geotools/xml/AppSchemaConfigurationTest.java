@@ -24,6 +24,8 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
+import javax.xml.namespace.QName;
+
 import junit.framework.Assert;
 
 import org.eclipse.xsd.XSDSchema;
@@ -100,18 +102,30 @@ public class AppSchemaConfigurationTest {
                 "http://schemas.example.org/catalog-test",
                 "http://schemas.example.org/catalog-test/catalog-test.xsd", new AppSchemaResolver(
                         AppSchemaCatalog.build(getClass().getResource("/test-data/catalog.xml"))));
-        SchemaIndex schemaIndex = Schemas.findSchemas(configuration);
-        Assert.assertEquals(3, schemaIndex.getSchemas().length);
-        String schemaLocation = null;
-        for (XSDSchema schema : schemaIndex.getSchemas()) {
-            if (schema.getSchemaLocation().endsWith("catalog-test.xsd")) {
-                schemaLocation = schema.getSchemaLocation();
-                break;
+        SchemaIndex schemaIndex = null;
+        try {
+            schemaIndex = Schemas.findSchemas(configuration);
+            Assert.assertEquals(3, schemaIndex.getSchemas().length);
+            String schemaLocation = null;
+            for (XSDSchema schema : schemaIndex.getSchemas()) {
+                if (schema.getSchemaLocation().endsWith("catalog-test.xsd")) {
+                    schemaLocation = schema.getSchemaLocation();
+                    break;
+                }
+            }
+            Assert.assertNotNull(schemaLocation);
+            Assert.assertTrue(schemaLocation.startsWith("file:"));
+            Assert.assertTrue(DataUtilities.urlToFile(new URL(schemaLocation)).exists());
+            Assert.assertNotNull(schemaIndex.getElementDeclaration(new QName(
+                    "http://schemas.example.org/demo", "GeologicUnit")));
+            // test that relative import can be resolved
+            Assert.assertNotNull(schemaIndex.getElementDeclaration(new QName(
+                    "http://schemas.example.org/demo", "InnerGeologicUnit")));
+        } finally {
+            if (schemaIndex != null) {
+                schemaIndex.destroy();
             }
         }
-        Assert.assertNotNull(schemaLocation);
-        Assert.assertTrue(schemaLocation.startsWith("file:"));
-        Assert.assertTrue(DataUtilities.urlToFile(new URL(schemaLocation)).exists());
     }
 
     /**
@@ -121,17 +135,24 @@ public class AppSchemaConfigurationTest {
     public void classpath() {
         Configuration configuration = new AppSchemaConfiguration("urn:cgi:xmlns:CGI:GeoSciML:2.0",
                 "http://www.geosciml.org/geosciml/2.0/xsd/geosciml.xsd", new AppSchemaResolver());
-        SchemaIndex schemaIndex = Schemas.findSchemas(configuration);
-        Assert.assertEquals(3, schemaIndex.getSchemas().length);
-        String schemaLocation = null;
-        for (XSDSchema schema : schemaIndex.getSchemas()) {
-            if (schema.getSchemaLocation().endsWith("geosciml.xsd")) {
-                schemaLocation = schema.getSchemaLocation();
-                break;
+        SchemaIndex schemaIndex = null;
+        try {
+            schemaIndex = Schemas.findSchemas(configuration);
+            Assert.assertEquals(3, schemaIndex.getSchemas().length);
+            String schemaLocation = null;
+            for (XSDSchema schema : schemaIndex.getSchemas()) {
+                if (schema.getSchemaLocation().endsWith("geosciml.xsd")) {
+                    schemaLocation = schema.getSchemaLocation();
+                    break;
+                }
+            }
+            Assert.assertNotNull(schemaLocation);
+            Assert.assertTrue(schemaLocation.startsWith("jar:file:"));
+        } finally {
+            if (schemaIndex != null) {
+                schemaIndex.destroy();
             }
         }
-        Assert.assertNotNull(schemaLocation);
-        Assert.assertTrue(schemaLocation.startsWith("jar:file:"));
     }
 
     /**
@@ -139,25 +160,41 @@ public class AppSchemaConfigurationTest {
      */
     @Test
     public void cache() throws Exception {
-        File cacheDirectory = DataUtilities.urlToFile(AppSchemaCacheTest.class
-                .getResource("/test-data/cache"));
+        // intentionally use a non-canonical cache path to ensure these handled correctly
+        File cacheDirectory = new File(DataUtilities.urlToFile(AppSchemaConfigurationTest.class
+                .getResource("/test-data/cache")), "../cache");
         AppSchemaResolver resolver = new AppSchemaResolver(
                 new AppSchemaCache(cacheDirectory, false));
         Configuration configuration = new AppSchemaConfiguration(
                 "http://schemas.example.org/cache-test",
                 "http://schemas.example.org/cache-test/cache-test.xsd", resolver);
-        SchemaIndex schemaIndex = Schemas.findSchemas(configuration);
-        Assert.assertEquals(3, schemaIndex.getSchemas().length);
-        String schemaLocation = null;
-        for (XSDSchema schema : schemaIndex.getSchemas()) {
-            if (schema.getSchemaLocation().endsWith("cache-test.xsd")) {
-                schemaLocation = schema.getSchemaLocation();
-                break;
+        SchemaIndex schemaIndex = null;
+        try {
+            schemaIndex = Schemas.findSchemas(configuration);
+            Assert.assertEquals(3, schemaIndex.getSchemas().length);
+            String schemaLocation = null;
+            for (XSDSchema schema : schemaIndex.getSchemas()) {
+                if (schema.getSchemaLocation().endsWith("cache-test.xsd")) {
+                    schemaLocation = schema.getSchemaLocation();
+                    break;
+                }
+            }
+            Assert.assertNotNull(schemaLocation);
+            Assert.assertTrue(schemaLocation.startsWith("file:"));
+            Assert.assertTrue(DataUtilities.urlToFile(new URL(schemaLocation)).exists());
+            Assert.assertNotNull(schemaIndex.getElementDeclaration(new QName(
+                    "http://schemas.example.org/demo", "GeologicUnit")));
+            // test that cache path is not canonical
+            Assert.assertFalse(cacheDirectory.toString().equals(
+                    cacheDirectory.getCanonicalFile().toString()));
+            // test that relative import can be resolved despite non-canonical cache path
+            Assert.assertNotNull(schemaIndex.getElementDeclaration(new QName(
+                    "http://schemas.example.org/demo", "InnerGeologicUnit")));
+        } finally {
+            if (schemaIndex != null) {
+                schemaIndex.destroy();
             }
         }
-        Assert.assertNotNull(schemaLocation);
-        Assert.assertTrue(schemaLocation.startsWith("file:"));
-        Assert.assertTrue(DataUtilities.urlToFile(new URL(schemaLocation)).exists());
     }
 
     /**
@@ -174,18 +211,30 @@ public class AppSchemaConfigurationTest {
         Configuration configuration = new AppSchemaConfiguration(
                 "http://schemas.example.org/catalog-test",
                 "http://schemas.example.org/catalog-test/catalog-cache-test.xsd", resolver);
-        SchemaIndex schemaIndex = Schemas.findSchemas(configuration);
-        Assert.assertEquals(3, schemaIndex.getSchemas().length);
-        String schemaLocation = null;
-        for (XSDSchema schema : schemaIndex.getSchemas()) {
-            if (schema.getSchemaLocation().endsWith("catalog-cache-test.xsd")) {
-                schemaLocation = schema.getSchemaLocation();
-                break;
+        SchemaIndex schemaIndex = null;
+        try {
+            schemaIndex = Schemas.findSchemas(configuration);
+            Assert.assertEquals(3, schemaIndex.getSchemas().length);
+            String schemaLocation = null;
+            for (XSDSchema schema : schemaIndex.getSchemas()) {
+                if (schema.getSchemaLocation().endsWith("catalog-cache-test.xsd")) {
+                    schemaLocation = schema.getSchemaLocation();
+                    break;
+                }
+            }
+            Assert.assertNotNull(schemaLocation);
+            Assert.assertTrue(schemaLocation.startsWith("file:"));
+            Assert.assertTrue(DataUtilities.urlToFile(new URL(schemaLocation)).exists());
+            Assert.assertNotNull(schemaIndex.getElementDeclaration(new QName(
+                    "http://schemas.example.org/demo", "GeologicUnit")));
+            // test that relative import can be resolved
+            Assert.assertNotNull(schemaIndex.getElementDeclaration(new QName(
+                    "http://schemas.example.org/demo", "InnerGeologicUnit")));
+        } finally {
+            if (schemaIndex != null) {
+                schemaIndex.destroy();
             }
         }
-        Assert.assertNotNull(schemaLocation);
-        Assert.assertTrue(schemaLocation.startsWith("file:"));
-        Assert.assertTrue(DataUtilities.urlToFile(new URL(schemaLocation)).exists());
     }
 
     /**
@@ -195,7 +244,16 @@ public class AppSchemaConfigurationTest {
     public void classpathGml32() {
         Configuration configuration = new AppSchemaConfiguration("http://www.opengis.net/gml/3.2",
                 "http://schemas.opengis.net/gml/3.2.1/gml.xsd", new AppSchemaResolver());
-        Schemas.findSchemas(configuration);
+        SchemaIndex schemaIndex = null;
+        try {
+            schemaIndex = Schemas.findSchemas(configuration);
+            Assert.assertNotNull(schemaIndex.getElementDeclaration(new QName(
+                    "http://www.opengis.net/gml/3.2", "AbstractFeature")));
+        } finally {
+            if (schemaIndex != null) {
+                schemaIndex.destroy();
+            }
+        }
     }
 
 }

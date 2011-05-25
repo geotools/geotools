@@ -97,6 +97,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  * @author Jody Garnett, Refractions Research Inc.
  * @author Justin Deoliveira, The Open Planning Project
  *
+ *
  * @source $URL$
  */
 public abstract class ContentDataStore implements DataStore {

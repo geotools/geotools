@@ -30,6 +30,7 @@ import org.geotools.data.Transaction;
  * @author Andrea Aime - OpenGeo
  *
  *
+ *
  * @source $URL$
  */
 public class DirectoryLockingManager implements LockingManager {

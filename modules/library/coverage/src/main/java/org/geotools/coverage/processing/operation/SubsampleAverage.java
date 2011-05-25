@@ -27,6 +27,7 @@ import org.geotools.coverage.processing.BaseScaleOperationJAI;
  * @version $Id: SubsampleAverage.java 23157 2006-12-01 01:29:53Z desruisseaSubsampleAveragedCoverageator.SubsampleAverageDescriptor
  * @since 2.3
  * @see javax.media.jai.operator.SubsampleAverageDescriptor
+ *
  * @source $URL$
  */
 public class SubsampleAverage extends BaseScaleOperationJAI {

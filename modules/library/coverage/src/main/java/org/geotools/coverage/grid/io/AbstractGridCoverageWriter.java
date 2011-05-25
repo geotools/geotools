@@ -39,6 +39,8 @@ import org.opengis.coverage.grid.GridCoverageWriter;
  * @author Simone Giannecchini
  * @since 2.3.x
  *
+ *
+ * @source $URL$
  */
 public abstract class AbstractGridCoverageWriter implements GridCoverageWriter {
 

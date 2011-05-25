@@ -38,6 +38,8 @@ import org.junit.Test;
  * 
  * @author Simone Giannecchini, GeoSolutions SAS
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/coverage/src/test/java/org/geotools/image/palette/CustomPaletteBuilderTest.java $
  */
 public class CustomPaletteBuilderTest extends TestCase {
 

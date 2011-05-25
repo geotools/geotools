@@ -41,6 +41,7 @@ import org.opengis.referencing.operation.MathTransform;
  * Base class for grid processing tests. This class provides a few convenience
  * methods performing some operations on {@link GridCoverage2D}.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

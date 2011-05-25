@@ -51,6 +51,7 @@ import org.geotools.factory.OptionalFactory;
  *
  * @author Jody Garnett, Refractions Research
  * @author Simone Giannecchini, GeoSolutions
+ *
  * @source $URL$
  */
 public interface GridFormatFactorySpi extends OptionalFactory {

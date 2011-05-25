@@ -34,6 +34,8 @@ import org.geotools.util.logging.Logging;
  * different to a human being
  * 
  * @author Andrea Aime - GeoSolutions
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/coverage/src/main/java/org/geotools/image/test/ImageAssert.java $
  */
 public class ImageAssert {
 

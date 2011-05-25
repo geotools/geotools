@@ -38,6 +38,8 @@ import javax.media.jai.operator.MultiplyConstDescriptor;
  * 
  * @author Simone Giannecchini, GeoSolutions
  *
+ *
+ * @source $URL$
  */
 @SuppressWarnings("unchecked")
 public class ColorReduction extends PointOpImage {

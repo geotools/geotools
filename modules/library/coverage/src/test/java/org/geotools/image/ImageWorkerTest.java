@@ -64,6 +64,7 @@ import com.sun.media.imageioimpl.common.PackageUtil;
 /**
  * Tests the {@link ImageWorker} implementation.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Simone Giannecchini (GeoSolutions)

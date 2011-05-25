@@ -21,6 +21,7 @@ package org.geotools.coverage.processing;
  * Throws when a "resample" operation has been requested
  * but the specified grid coverage can't be reprojected.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author  Martin Desruisseaux

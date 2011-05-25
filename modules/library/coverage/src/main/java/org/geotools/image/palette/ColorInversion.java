@@ -28,6 +28,8 @@ import javax.media.jai.PointOpImage;
  * 
  * @author Simone Giannecchini, GeoSolutions
  *
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/coverage/src/main/java/org/geotools/image/palette/ColorInversion.java $
  */
 @SuppressWarnings("unchecked")
 public class ColorInversion extends PointOpImage {

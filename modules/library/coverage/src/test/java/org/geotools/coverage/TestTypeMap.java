@@ -28,6 +28,8 @@ import org.opengis.coverage.SampleDimensionType;
  * Testing {@link TypeMap} class.
  * 
  * @author Simone Giannecchini, GeoSolutions SAS
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/coverage/src/test/java/org/geotools/coverage/TestTypeMap.java $
  */
 public class TestTypeMap {
 

@@ -40,6 +40,7 @@ import static org.junit.Assert.*;
  * of the referencing module because it need an implementation of {@link GridRange}.
  *
  * @since 2.3
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux

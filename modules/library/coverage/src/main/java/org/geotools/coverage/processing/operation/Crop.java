@@ -137,6 +137,7 @@ import com.vividsolutions.jts.geom.PrecisionModel;
  * coverage. The key for this property will be GC_ROI and the type of the object
  * {@link Polygon}.
  * 
+ *
  * @source $URL$
  * @todo make this operation more t,z friendly
  * @version $Id$

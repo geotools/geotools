@@ -105,6 +105,7 @@ import org.geotools.util.logging.Logging;
  * </table></blockquote>
  *
  * @since 2.2
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

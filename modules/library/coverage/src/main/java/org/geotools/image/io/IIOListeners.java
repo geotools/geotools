@@ -36,6 +36,7 @@ import org.geotools.resources.XArray;
  * {@link ImageReader} instance is not yet know or available.
  *
  * @since 2.1
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

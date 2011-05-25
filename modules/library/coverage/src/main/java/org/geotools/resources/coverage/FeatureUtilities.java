@@ -66,6 +66,7 @@ import com.vividsolutions.jts.geom.PrecisionModel;
  * should be seen as temporary implementations.
  *
  * @since 2.4
+ *
  * @source $URL$
  * @version $Id$
  * @author Simone Giannecchini

@@ -48,6 +48,7 @@ import org.opengis.referencing.operation.TransformException;
  * selected by users in some widget), use the {@linkplain CoverageProcessor processor} directly.
  *
  * @since 2.2
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

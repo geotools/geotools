@@ -70,6 +70,7 @@ import org.opengis.referencing.operation.MathTransform;
  * Visual test of the "Resample" operation. A remote sensing image is projected from a fitted
  * coordinate system to a geographic one.
  *
+ *
  * @source $URL$
  * @version $Id$
  * @author Rémi Eve (IRD)

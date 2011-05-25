@@ -28,6 +28,7 @@ import javax.imageio.event.IIOReadProgressListener;
  *
  * @since 2.1
  * @author Martin Desruisseaux (IRD)
+ *
  * @source $URL$
  * @version $Id$
  */

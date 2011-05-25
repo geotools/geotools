@@ -43,6 +43,7 @@ import org.geotools.metadata.iso.spatial.PixelTranslation;
  * context is ambiguous, an explicit {@code isHighIncluded} argument is required.
  *
  * @since 2.5
+ *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)

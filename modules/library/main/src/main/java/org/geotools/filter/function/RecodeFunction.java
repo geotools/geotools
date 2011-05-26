@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
@@ -64,26 +65,8 @@ public class RecodeFunction implements Function {
     /**
      * Make the instance of FunctionName available in a consistent spot.
      */
-    public static final FunctionName NAME = new Name();
-
-    /**
-     * Describe how this function works. (should be available via FactoryFinder lookup...)
-     */
-    public static class Name implements FunctionName {
-
-        public int getArgumentCount() {
-            return -2; // indicating unbounded, 2 minimum
-        }
-
-        public List<String> getArgumentNames() {
-            return Arrays.asList(new String[] { "LookupValue", "Data 1", "Value 1", "Data 2",
-                    "Value 2" });
-        }
-
-        public String getName() {
-            return "Recode";
-        }
-    };
+    public static final FunctionName NAME = new FunctionNameImpl("Recode", "LookupValue", "Data 1", 
+        "Value 1", "Data 2", "Value 2");
 
     public RecodeFunction() {
         this(new ArrayList<Expression>(), null);

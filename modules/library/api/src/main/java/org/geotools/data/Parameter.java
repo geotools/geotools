@@ -30,7 +30,7 @@ import org.opengis.util.InternationalString;
  *
  * @source $URL$
  */
-public class Parameter<T> {
+public class Parameter<T> implements org.opengis.parameter.Parameter<T>{
     /**
      * This is the key (ie machine readable text) used to represent this parameter in a
      * java.util.Map.
@@ -263,6 +263,60 @@ public class Parameter<T> {
         this.maxOccurs = max;
         this.sample = sample;
         this.metadata = metadata == null ? Collections.EMPTY_MAP : Collections.unmodifiableMap(metadata);
+    }
+
+    /**
+     * Constructs a parameter from key and type
+     * 
+     * @param key machine readable key for use in a java.util.Map
+     * @param type Java class for the expected value
+     */    
+    public Parameter(String key, Class<T> type) {
+        this(key, type, null, null,true, 1, 1, null, null);
+    }
+
+    /**
+     * Constructs a parameter from key, type, and min/max occurs.
+     * 
+     * @param key machine readable key for use in a java.util.Map
+     * @param type Java class for the expected value
+     * @param min Minimum value of occurrences
+     * @param max Maximum value of occurrences
+     */
+    public Parameter(String key, Class<T> type, int min, int max) {
+        this(key, type, null, null, min > 0, min, max, null, null);
+    }
+    
+    public String getName() {
+        return key;
+    }
+    
+    public InternationalString getTitle() {
+        return title;
+    }
+    
+    public InternationalString getDescription() {
+        return description;
+    }
+    
+    public Class<T> getType() {
+        return type;
+    }
+    
+    public Boolean isRequired() {
+        return required;
+    }
+    
+    public int getMinOccurs() {
+        return minOccurs;
+    }
+    
+    public int getMaxOccurs() {
+        return maxOccurs;
+    }
+    
+    public T getDefaultValue() {
+        return (T) sample;
     }
     
     /**

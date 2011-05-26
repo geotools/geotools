@@ -113,6 +113,8 @@ import org.opengis.filter.spatial.Touches;
 import org.opengis.filter.spatial.Within;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.geometry.Geometry;
+import org.opengis.parameter.Parameter;
+import org.opengis.util.InternationalString;
 import org.xml.sax.helpers.NamespaceSupport;
 
 import com.vividsolutions.jts.geom.Envelope;
@@ -1203,13 +1205,23 @@ public class FilterFactoryImpl implements FilterFactory {
             String name, GeometryOperand[] geometryOperands) {
         return new SpatialOperatorImpl( name, geometryOperands );
     }
-    
+
+    public <T> Parameter<T> parameter(String name, Class<T> type, InternationalString title, 
+        InternationalString description, boolean required, int minOccurs, int maxOccurs, T defaultValue) {
+        return new org.geotools.data.Parameter<T>(name, type, title, description, required, 
+            minOccurs, maxOccurs, defaultValue, null);
+    };
+
     public FunctionName functionName(String name, int nargs) {
         return new FunctionNameImpl( name, nargs );
     }
     
     public FunctionName functionName(String name, int nargs, List<String> argNames ){
         return new FunctionNameImpl( name, nargs, argNames );
+    }
+    
+    public FunctionName functionName(String name, List<Parameter<?>> args, Parameter<?> ret) {
+        return new FunctionNameImpl( name, ret, args );
     }
     
     public Functions functions(FunctionName[] functionNames) {

@@ -169,6 +169,14 @@ public abstract class FunctionExpressionImpl
     }
     
     /**
+     * Convenience method for creating a function name.
+     * @see FunctionImpl#functionName(String, String, String...)
+     */
+    protected static FunctionName functionName(String name, String ret, String... args) {
+        return FunctionImpl.functionName(name, ret, args);
+    }
+
+    /**
      * Creates a String representation of this Function with
      * the function name and the arguments. The String created
      * should be good for most subclasses

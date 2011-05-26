@@ -16,11 +16,16 @@
  */
 package org.geotools.filter.capability;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Function;
+import org.opengis.geometry.coordinate.ParametricCurveSurface;
+import org.opengis.parameter.Parameter;
 
 /**
  * Implementation of the FunctionName interface.
@@ -32,66 +37,71 @@ import org.opengis.filter.expression.Function;
  * @source $URL$
  */
 public class FunctionNameImpl extends OperatorImpl implements FunctionName {
-    /**
-     * Number of required arguments.
-     * <p>
-     * <ul>
-     * <li>Use a postivie number to indicate the number of arguments.
-     *     Example: add( number1, number2 ) = 2</li>
-     * <li>Use a negative number to indicate a minimum number:
-     *    Example: concat( str1, str2,... ) has -2</li>
-     * </ul> 
-     */
-    int argumentCount;
     
-    List<String> argumentNames;
-      
+    /** function arguments */
+    List<Parameter<?>> args;
+    
+    /** funtion return */
+    Parameter<?> ret;
+
+    
     public FunctionNameImpl( String name, int argumentCount ) {
-        super( name );
-        this.argumentCount = argumentCount;
-        this.argumentNames = null;
+        this(name, generateReturn(), generateArguments(argumentCount));
     }
     
     public FunctionNameImpl( String name, String ... argumentsNames ) {
-        super( name );
-        this.argumentCount = argumentsNames.length;
-        this.argumentNames = generateArgumentNames( argumentCount, argumentsNames );        
+        this(name, argumentsNames.length, Arrays.asList(argumentsNames));
     }
     
     public FunctionNameImpl( String name, List<String> argumentsNames ) {
         this( name, argumentsNames.size(), argumentsNames );
     }
+    
     public FunctionNameImpl( String name, int argumentCount, List<String> argumentsNames ) {
-        super( name );
-        this.argumentCount = argumentCount;
-        this.argumentNames = generateArgumentNames( argumentCount, argumentsNames );        
+        this(name, generateReturn(), generateArguments(argumentsNames));
     }
+    
     public FunctionNameImpl( String name, int argumentCount, String ... argumentsNames ) {
-        super( name );
-        this.argumentCount = argumentCount;
-        this.argumentNames = generateArgumentNames( argumentCount, argumentsNames );        
+        this(name, argumentCount, Arrays.asList(argumentsNames));
     }
     
     public FunctionNameImpl( FunctionName copy ) {
         super( copy );
-        this.argumentCount = copy.getArgumentCount();
-        this.argumentNames = generateArgumentNames( argumentCount, copy.getArgumentNames() );
+        this.ret = copy.getReturn();
+        this.args = copy.getArguments();
+        validate();
     }
     
-    public void setArgumentCount( int argumentCount ) {
-        this.argumentCount = argumentCount;
-        this.argumentNames = generateArgumentNames( argumentCount, argumentNames );
+    public FunctionNameImpl( String name, Parameter<?> retern, Parameter<?>... arguments) {
+        this(name, retern, Arrays.asList(arguments));
+    }
+    
+    public FunctionNameImpl( String name, Parameter<?> retern, List<Parameter<?>> arguments) {
+        super(name);
+        this.ret = retern;
+        this.args = arguments;
+        validate();
     }
     
     public int getArgumentCount() {
-        return argumentCount;
+        return args.size();
+    }
+    
+    public List<Parameter<?>> getArguments() {
+        return args;
+    }
+    
+    public Parameter<?> getReturn() {
+        return ret;
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = super.hashCode();
-        result = prime * result + argumentCount;
+        if (args != null) {
+            result = prime * result + args.hashCode();
+        }
         return result;
     }
 
@@ -104,54 +114,92 @@ public class FunctionNameImpl extends OperatorImpl implements FunctionName {
         if (getClass() != obj.getClass())
             return false;
         final FunctionNameImpl other = (FunctionNameImpl) obj;
-        if (argumentCount != other.argumentCount)
-            return false;
-        return true;
+        if (args == null) {
+            return other.args == null;
+        }
+        return args.equals(other.args);
     }
     
-    public void setArgumentNames( List<String> argumentNames ) {
-        this.argumentNames = argumentNames;
-    }
     /**
      * Optional ArgumentNames.
      * <p>
      * This is a fixed length list the same size as getArgumentCount(). 
      */
     public List<String> getArgumentNames() {
-        if( argumentNames == null ){
-            argumentNames = generateArgumentNames( argumentCount );
+        List<String> names = new ArrayList();
+        for (Parameter<?> arg : args) {
+            names.add(arg.getName());
         }
-        return argumentNames;
+        return names;
+        
+    }
+    
+    /**
+     * Validates the structure of arguments, basically enforcing java conventions for variable 
+     * level arguments.
+     */
+    private void validate() {
+        for (int i = 0; i < args.size(); i++) {
+            Parameter<?> arg = args.get(i);
+            if (arg.getMaxOccurs() == 0) {
+                throw new IllegalArgumentException(String.format("Argument %s has zero max"));
+            }
+            if (arg.getMinOccurs() != 1 || arg.getMaxOccurs() != 1) {
+                //this can only happen for the last argument
+                if (i != args.size()-1) {
+                    throw new IllegalArgumentException(String.format("Argument %s(%d,%d) invalid." +
+                        " Variable arguments must be the last argument of function.", 
+                    arg.getName(), arg.getMinOccurs(), arg.getMaxOccurs()));
+                }
+            }
+        }
     }
 
-    private static List<String> generateArgumentNames( int count ){
-        count = Math.abs( count );
-        List<String> names = Arrays.asList( new String[count]);
-        for( int i=0; i < count; i++){
-            names.set(i, "arg"+i );
-        }
-        return names;
+    private static Parameter<?> generateReturn() {
+        return parameter("return", Object.class);
     }
-    private static List<String> generateArgumentNames( int count, List<String> copy ){
-        List<String> names = Arrays.asList( new String[count]);    
-        for( int i=0; i < count; i++){
-            String name = "arg"+i;
-            if( copy != null && i < copy.size() && copy.get(i) != null ){
-                name = copy.get(i);
-            }
-            names.set(i, name );
+    
+    /**
+     * Number of required arguments.
+     * <p>
+     * <ul>
+     * <li>Use a postivie number to indicate the number of arguments.
+     *     Example: add( number1, number2 ) = 2</li>
+     * <li>Use a negative number to indicate a minimum number:
+     *    Example: concat( str1, str2,... ) has -2</li>
+     * </ul> 
+     */
+    private static List<Parameter<?>> generateArguments(int count) {
+        List<Parameter<?>> args = new ArrayList();
+        if (count < 0) {
+            //negative count used to represent variable arguments, create a single argument 
+            // with minOccurs == abs(count)
+            args.add(parameter("arg", Object.class, Math.abs(count), Integer.MAX_VALUE));
         }
-        return names;
+        else {
+            for (int i = 0; i < count; i++) {
+                args.add(parameter("arg" + i, Object.class, 1, 1));
+            }
+        }
+        
+        return args;
     }
-    private static List<String> generateArgumentNames( int count, String[] copy ){        
-        List<String> names = Arrays.asList( new String[count]);
-        for( int i=0; i < count; i++){
-            String name = "arg"+i;
-            if( copy != null && i < copy.length && copy[i] != null ){
-                name = copy[i];
-            }
-            names.set(i, name );
+    
+    private static List<Parameter<?>> generateArguments(List<String> names) {
+        List<Parameter<?>> args = new ArrayList();
+
+        for(String name : names) {
+            args.add(parameter(name, Object.class, 1, 1));
         }
-        return names;        
+        
+        return args;
+    }
+    
+    public static Parameter<?> parameter(String name, Class type) {
+        return parameter(name, type, 1, 1);
+    }
+    
+    public static Parameter<?> parameter(String name, Class type, int min, int max) {
+        return new org.geotools.data.Parameter(name, type, min, max);
     }
 }

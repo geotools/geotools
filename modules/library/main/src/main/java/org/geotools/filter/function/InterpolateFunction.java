@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.util.Converters;
 import org.opengis.filter.FilterFactory2;
 
@@ -162,32 +163,8 @@ public class InterpolateFunction implements Function {
      * Make the instance of FunctionName available in
      * a consistent spot.
      */
-    public static final FunctionName NAME = new Name();
-
-    /**
-     * Describe how this function works.
-     * (should be available via FactoryFinder lookup...)
-     */
-    public static class Name implements FunctionName {
-
-        public int getArgumentCount() {
-            return -2; // indicating unbounded, 2 minimum
-        }
-
-        public List<String> getArgumentNames() {
-            return Arrays.asList(new String[]{
-                        "LookupValue",
-                        "Data 1", "Value 1",
-                        "Data 2", "Value 2",
-                        "linear, cosine or cubic",
-                        "numeric or color"
-                    });
-        }
-
-        public String getName() {
-            return "Interpolate";
-        }
-    };
+    public static final FunctionName NAME = new FunctionNameImpl("Interpolate", "LookupValue",
+        "Data 1", "Value 1", "Data 2", "Value 2", "linear, cosine or cubic", "numeric or color");
 
     public InterpolateFunction() {
         this( new ArrayList<Expression>(), null);

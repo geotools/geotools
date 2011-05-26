@@ -20,10 +20,11 @@
 package org.opengis.filter.capability;
 
 // Annotations
-import java.util.Collection;
 import java.util.List;
 
 import org.opengis.annotation.UML;
+import org.opengis.parameter.Parameter;
+
 import static org.opengis.annotation.Specification.*;
 
 /**
@@ -63,14 +64,33 @@ public interface FunctionName extends Operator {
      * &lt;xsd:attribute name="nArgs" type="xsd:string" use="required"/>
      * </pre>
      * </p>
+     * <p>
+     * This value is derived from {@link #getArguments()}
+     * </p>
      */
     @UML(identifier="argumentCount", specification=UNSPECIFIED)
     int getArgumentCount();
     
     /**
      * Argument names for documentation purposes if known.
-     * 
+     * <p>
+     * This value is derived from {@link #getArguments()}
+     * </p>
      * @return Argument names (for documentation purposes) if known
      */
     List<String> getArgumentNames();
+    
+    /**
+     * Arguments for the function accepts.
+     * 
+     * @version 8.0
+     */
+    List<Parameter<?>> getArguments();
+
+    /**
+     * Return type of the function.
+     * 
+     * @version 8.0
+     */
+    Parameter<?> getReturn();
 }

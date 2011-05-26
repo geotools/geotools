@@ -28,6 +28,8 @@ import org.opengis.filter.spatial.Overlaps;
 import org.opengis.filter.spatial.Touches;
 import org.opengis.filter.spatial.Within;
 import org.opengis.geometry.BoundingBox;
+import org.opengis.parameter.Parameter;
+import org.opengis.util.InternationalString;
 import org.xml.sax.helpers.NamespaceSupport;
 
 
@@ -51,7 +53,23 @@ public interface FilterFactory2 extends FilterFactory {
     //  CAPABILITIES
     //
     ////////////////////////////////////////////////////////////////////////////////
-
+    
+    /**
+     * Creates a parameter of a function.
+     * 
+     * @param name Parameter name
+     * @param type Parameter type/class
+     * @param title Human readable title of the parameter
+     * @param description Extended description of the parameter
+     * @param required Flag indicating if the parameter is required or not
+     * @param minOccurs The minimum number of occurrences of the parameter
+     * @param maxOccurs The maximum number of occurrences of the parameter
+     * @param defaultValue Default value for the parameter
+     */
+    <T> Parameter<T> parameter(String name, Class<T> type, InternationalString title, 
+        InternationalString description, boolean required, int minOccurs, int maxOccurs, 
+        T defaultValue );
+    
     /**
      * FunctionName used to describe an available function.
      * 
@@ -64,6 +82,15 @@ public interface FilterFactory2 extends FilterFactory {
      *            Optional list of argument names
      */
     FunctionName functionName(String name, int nargs, List<String> argNames);
+    
+    /**
+     * FunctionName used to describe an available function.
+     * 
+     * @param name name of function
+     * @param args Parameters describing function arguments.
+     * @param ret Parameter describing function return. 
+     */
+    FunctionName functionName(String name, List<Parameter<?>> args, Parameter<?> ret);
     
     ////////////////////////////////////////////////////////////////////////////////
     //

@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.capability.FunctionName;
@@ -78,32 +79,8 @@ public class CategorizeFunction implements Function {
      * Make the instance of FunctionName available in
      * a consistent spot.
      */
-    public static final FunctionName NAME = new Name();
-
-    /**
-     * Describe how this function works.
-     * (should be available via FactoryFinder lookup...)
-     */
-    public static class Name implements FunctionName {
-
-        public int getArgumentCount() {
-            return 2; // indicating unbounded, 2 minimum
-        }
-
-        public List<String> getArgumentNames() {
-            return Arrays.asList(new String[]{
-                        "LookupValue",
-                        "Value",
-                        "Threshold 1", "Value 1",
-                        "Threshold 2", "Value 2",
-                        "succeeding or preceding"
-                    });
-        }
-
-        public String getName() {
-            return "Categorize";
-        }
-    };
+    public static final FunctionName NAME = new FunctionNameImpl("Categorize", "LookupValue",
+        "Value", "Threshold 1", "Value 1", "Threshold 2", "Value 2", "succeeding or preceding"); 
 
     public CategorizeFunction() {
         this( new ArrayList<Expression>(), null);

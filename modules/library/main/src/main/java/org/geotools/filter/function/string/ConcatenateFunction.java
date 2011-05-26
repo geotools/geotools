@@ -22,6 +22,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.geotools.filter.FunctionImpl;
+import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.ExpressionVisitor;
@@ -45,31 +46,9 @@ public class ConcatenateFunction extends FunctionImpl {
      * Make the instance of FunctionName available in
      * a consistent spot.
      */
-    public static final FunctionName NAME = new Name();
+    public static final FunctionName NAME = new FunctionNameImpl("Concatenate", "text 1", "text 2",
+        "text 3");
 
-    /**
-     * Describe how this function works.
-     * (should be available via FactoryFinder lookup...)
-     */
-    public static class Name implements FunctionName {
-
-        public int getArgumentCount() {
-            return 2; // indicating unbounded, 2 minimum
-        }
-
-        public List<String> getArgumentNames() {
-            return Arrays.asList(new String[]{
-                        "text 1",
-                        "text 2",
-                        "text 3"
-                    });
-        }
-
-        public String getName() {
-            return "Concatenate";
-        }
-    };
-    
     public ConcatenateFunction() {
         this.functionName = NAME;
     }

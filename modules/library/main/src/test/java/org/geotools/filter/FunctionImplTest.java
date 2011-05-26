@@ -23,6 +23,7 @@ import junit.framework.TestCase;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.parameter.Parameter;
 
+import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.MultiPolygon;
 
 public class FunctionImplTest extends TestCase {
@@ -38,8 +39,12 @@ public class FunctionImplTest extends TestCase {
         check(fn.getArguments().get(2), "y", MultiPolygon.class, 1, 1);
         check(fn.getArguments().get(3), "z", Date.class, 1, -1);
         
-        fn = FunctionImpl.functionName("foo", "a", "b:Object:,");
-        check(fn.getArguments().get(0), "b", Object.class, -1, -1);
+        fn = FunctionImpl.functionName("foo", "a", "geom::1,1", "b:Object:,");
+        check(fn.getArguments().get(0), "geom", Geometry.class, 1, 1);
+        check(fn.getArguments().get(1), "b", Object.class, -1, -1);
+        
+        fn = FunctionImpl.functionName("foo", "value", "geom::,");
+        check(fn.getArguments().get(0), "geom", Geometry.class, -1, -1);
     }
     
     void check(Parameter p, String name, Class type, int min, int max) {

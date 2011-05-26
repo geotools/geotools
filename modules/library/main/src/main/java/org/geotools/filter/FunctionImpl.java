@@ -35,6 +35,8 @@ import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 import org.opengis.parameter.Parameter;
 
+import com.vividsolutions.jts.geom.Geometry;
+
 /**
  * Default implementation of a Function; you may extend this class to
  * implement specific functionality.
@@ -186,7 +188,7 @@ public class FunctionImpl extends ExpressionAbstract implements Function {
     /**
      * regex for parameter specification
      */
-    static Pattern PARAM = Pattern.compile("(\\w+)(?::([\\.\\w]+)(?::(\\d*),(\\d*))?+)?+");
+    static Pattern PARAM = Pattern.compile("(\\w+)(?::([\\.\\w]*)(?::(\\d*),(\\d*))?+)?+");
 
     /**
      * Convenience method for creating a function name from a set of strings describing the return
@@ -240,11 +242,14 @@ public class FunctionImpl extends ExpressionAbstract implements Function {
         }
         
         String name = m.group(1);
-        Class type = Object.class;
+        Class type = null;
         int min = 1;
         int max = 1;
         
         String grp = m.group(2);
+        if ("".equals(grp)) {
+            grp = null;
+        }
         if (grp != null) {
             try {
                 type = Class.forName(grp);
@@ -265,6 +270,17 @@ public class FunctionImpl extends ExpressionAbstract implements Function {
             }
         }
 
+        //recognize some well known names
+        if (type == null) {
+            if ("geom".equals(name)) {
+                type = Geometry.class;
+            }
+        }
+
+        if (type == null) {
+            type = Object.class;
+        }
+        
         grp = m.group(3);
         if (grp != null) {
            min = !"".equals(grp) ? Integer.parseInt(grp) : -1;

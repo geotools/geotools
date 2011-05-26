@@ -155,14 +155,17 @@ public class PropertyDataStore extends AbstractDataStore {
             String typeName) throws IOException {
         return new PropertyFeatureReader(directory, typeName);
     }
-
     // getFeatureWriter start
-    protected FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(
-            String typeName) throws IOException {
+    protected FeatureWriter<SimpleFeatureType, SimpleFeature> createFeatureWriter(String typeName,
+            Transaction transaction) throws IOException {
         return new PropertyFeatureWriter(this, typeName);
     }
-
     // getFeatureWriter end
+//  protected FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(
+//  String typeName) throws IOException {
+//return new PropertyFeatureWriter(this, typeName);
+//}
+
     
     // getCount start
     int cacheCount;

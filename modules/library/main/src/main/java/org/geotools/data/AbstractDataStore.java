@@ -480,17 +480,17 @@ public abstract class AbstractDataStore implements DataStore {
         FeatureWriter<SimpleFeatureType, SimpleFeature> writer;
 
         if (transaction == Transaction.AUTO_COMMIT) {
-        	try{
-        		writer = createFeatureWriter(typeName, transaction);
-        	}catch (UnsupportedOperationException e) {
-				// This is for backward compatibility.
-            	try {
-            		writer = getFeatureWriter(typeName);
-            	}
-            	catch( UnsupportedOperationException eek){
-            		throw e; // throw original - our fallback did not work
-            	}
-			}
+            try {
+                writer = createFeatureWriter(typeName, transaction);
+            } catch (UnsupportedOperationException e) {
+                // This is for backward compatibility.
+                try {
+                    writer = getFeatureWriter(typeName);
+                } catch (UnsupportedOperationException eek) {
+                    throw e; // throw original - our fallback did not work
+                }
+                throw e;
+            }
         } else {
             TransactionStateDiff state = state(transaction);
             if( state != null ){

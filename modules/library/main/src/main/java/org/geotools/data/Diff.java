@@ -32,14 +32,29 @@ import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.index.SpatialIndex;
 import com.vividsolutions.jts.index.quadtree.Quadtree;
 
+/**
+ * Captures changes made to a FeatureStore prior to being committed.
+ * <p>
+ * This is used to simulate the functionality of a database including transaction
+ * independence.
+ * 
+ * @author Jody Garnett
+ */
 public class Diff{
-	private final Map<String,SimpleFeature> modifiedFeatures;
-	private final Map<String,SimpleFeature> addedFeatures;
-	
-	/**
-	 * Unmodifiable view of modified features.
-     * It is imperative that the user manually synchronize on the
-     * map when iterating over any of its collection views:
+    /** Map of modified features; by feature id */
+    private final Map<String,SimpleFeature> modifiedFeatures;
+    
+    /**
+     * Map of added features; by feature id.
+     * <p>
+     * Note deleted features are represented as a null value recorded against their feature id
+     */
+    private final Map<String,SimpleFeature> addedFeatures;
+    
+    /**
+     * Unmodifiable view of modified features. It is imperative that the user manually synchronize
+     * on the map when iterating over any of its collection views:
+     * 
      * <pre>
      *  Set s = diff.modified2.keySet();  // Needn't be in synchronized block
      *      ...
@@ -49,16 +64,18 @@ public class Diff{
      *          foo(i.next());
      *  }
      * </pre>
+     * 
      * Failure to follow this advice may result in non-deterministic behavior.
-     *
-     * <p>The returned map will be serializable if the specified map is
-     * serializable.
-	 */
-	public final Map<String,SimpleFeature> modified2;
-	/**
-	 * Unmodifiable view of added features.
-     * It is imperative that the user manually synchronize on the
-     * map when iterating over any of its collection views:
+     * 
+     * <p>
+     * The returned map will be serializable if the specified map is serializable.
+     */
+    public final Map<String, SimpleFeature> modified2;
+    
+    /**
+     * Unmodifiable view of added features. It is imperative that the user manually synchronize on
+     * the map when iterating over any of its collection views:
+     * 
      * <pre>
      *  Set s = diff.added.keySet();  // Needn't be in synchronized block
      *      ...
@@ -68,51 +85,74 @@ public class Diff{
      *          foo(i.next());
      *  }
      * </pre>
+     * 
      * Failure to follow this advice may result in non-deterministic behavior.
-     *
-     * <p>The returned map will be serializable if the specified map is
-     * serializable.
-	 */
-	public final Map<String,SimpleFeature> added;
-	
-	public int nextFID=0;
-	private SpatialIndex spatialIndex;
-	Object mutex;
-	
-	public Diff( ){
-		modifiedFeatures=new ConcurrentHashMap<String,SimpleFeature>();
-		addedFeatures=new ConcurrentHashMap<String,SimpleFeature>();
-		modified2=Collections.unmodifiableMap(modifiedFeatures);
-		added=Collections.unmodifiableMap(addedFeatures);
-		spatialIndex=new Quadtree();
-		mutex=this;
-	}
-	
-	public boolean isEmpty() {
-		synchronized (mutex) {
-			return modifiedFeatures.isEmpty() && addedFeatures.isEmpty();
-		}
-	}
+     * 
+     * <p>
+     * The returned map will be serializable if the specified map is serializable.
+     */
+    public final Map<String, SimpleFeature> added;
 
-	public void clear() {
-		synchronized (mutex) {
-			nextFID=0;
-			addedFeatures.clear();
-			modifiedFeatures.clear();
-			spatialIndex=new Quadtree();				
-		}
-	}
+    /** counter used to genreate the "next" new feature id */
+    public int nextFID = 0;
+    
+    /** Spatial index; allowing quick qccess to features */
+    private SpatialIndex spatialIndex;
 
-	public Diff(Diff other){
-		modifiedFeatures=Collections.synchronizedMap(new HashMap<String,SimpleFeature>(other.modifiedFeatures));
-		addedFeatures=Collections.synchronizedMap(new HashMap<String,SimpleFeature>(other.addedFeatures));
-		modified2=Collections.unmodifiableMap(modifiedFeatures);
-		added=Collections.unmodifiableMap(addedFeatures);
-		spatialIndex=copySTRtreeFrom(other);
-		nextFID=other.nextFID;
-		mutex=this;
-	}
-	
+    /** Simple object used for locking */
+    Object mutex;
+
+    /** Create an empty Diff */
+    public Diff() {
+        modifiedFeatures = new ConcurrentHashMap<String, SimpleFeature>();
+        addedFeatures = new ConcurrentHashMap<String, SimpleFeature>();
+        modified2 = Collections.unmodifiableMap(modifiedFeatures);
+        added = Collections.unmodifiableMap(addedFeatures);
+        spatialIndex = new Quadtree();
+        mutex = this;
+    }
+    /**
+     * Diff copy.
+     * @param other
+     */
+    public Diff(Diff other){
+        modifiedFeatures=Collections.synchronizedMap(new HashMap<String,SimpleFeature>(other.modifiedFeatures));
+        addedFeatures=Collections.synchronizedMap(new HashMap<String,SimpleFeature>(other.addedFeatures));
+        modified2=Collections.unmodifiableMap(modifiedFeatures);
+        added=Collections.unmodifiableMap(addedFeatures);
+        spatialIndex=copySTRtreeFrom(other);
+        nextFID=other.nextFID;
+        mutex=this;
+    }
+    
+    /**
+     * Check if modifiedFeatures and addedFeatures are empty.
+     * 
+     * @return true if Diff is empty
+     */
+    public boolean isEmpty() {
+        synchronized (mutex) {
+            return modifiedFeatures.isEmpty() && addedFeatures.isEmpty();
+        }
+    }
+    /**
+     * Clear diff - called during rollback.
+     */
+    public void clear() {
+        synchronized (mutex) {
+            nextFID = 0;
+            addedFeatures.clear();
+            modifiedFeatures.clear();
+            spatialIndex = new Quadtree();
+        }
+    }
+
+    /**
+     * Record a modification to the indicated fid
+     * 
+     * @param fid
+     * @param f replacement feature; null to indicate remove
+     */
 	public void modify(String fid, SimpleFeature f) {
 		synchronized (mutex) {
 			SimpleFeature old;

@@ -240,7 +240,7 @@ public class PropertyDataStoreTest extends TestCase {
     
     public void testWriterSkipThrough() throws Exception {
         PropertyFeatureWriter writer = (PropertyFeatureWriter)
-            store.getFeatureWriter("road");
+            store.createFeatureWriter("road",Transaction.AUTO_COMMIT);
             
         File in = writer.read;
         File out = writer.write;
@@ -260,7 +260,7 @@ public class PropertyDataStoreTest extends TestCase {
     }
     public void testWriterChangeName() throws Exception{
         PropertyFeatureWriter writer = (PropertyFeatureWriter)
-            store.getFeatureWriter("road");
+            store.createFeatureWriter("road",Transaction.AUTO_COMMIT);
             
         int count = 0;
         while( writer.hasNext() ){
@@ -275,7 +275,7 @@ public class PropertyDataStoreTest extends TestCase {
     }
     public void testWriterChangeFirstName() throws Exception{
         PropertyFeatureWriter writer = (PropertyFeatureWriter)
-                    store.getFeatureWriter("road");
+                    store.createFeatureWriter("road",Transaction.AUTO_COMMIT);
         SimpleFeature f;
         f = writer.next();
         f.setAttribute(1,"changed");
@@ -285,7 +285,7 @@ public class PropertyDataStoreTest extends TestCase {
     }
     public void testWriterChangeLastName() throws Exception{
         PropertyFeatureWriter writer = (PropertyFeatureWriter)
-                    store.getFeatureWriter("road");
+                    store.createFeatureWriter("road",Transaction.AUTO_COMMIT);
         SimpleFeature f;
         writer.next();
         writer.next();
@@ -298,7 +298,7 @@ public class PropertyDataStoreTest extends TestCase {
     }    
     public void testWriterChangeAppend() throws Exception{
         PropertyFeatureWriter writer = (PropertyFeatureWriter)
-                    store.getFeatureWriter("road");
+                    store.createFeatureWriter("road",Transaction.AUTO_COMMIT);
         SimpleFeature f;
         writer.next();
         writer.next();
@@ -329,7 +329,7 @@ public class PropertyDataStoreTest extends TestCase {
     }
     public void testWriterChangeRemoveFirst() throws Exception{
         PropertyFeatureWriter writer = (PropertyFeatureWriter)
-                    store.getFeatureWriter("road");
+                    store.createFeatureWriter("road",Transaction.AUTO_COMMIT);
         
         writer.next();
         writer.remove();
@@ -338,7 +338,7 @@ public class PropertyDataStoreTest extends TestCase {
     }
     public void testWriterChangeRemoveLast() throws Exception{
         PropertyFeatureWriter writer = (PropertyFeatureWriter)
-                    store.getFeatureWriter("road");
+                    store.createFeatureWriter("road",Transaction.AUTO_COMMIT);
         
         writer.next();
         writer.next();
@@ -349,7 +349,7 @@ public class PropertyDataStoreTest extends TestCase {
     }
     public void testWriterChangeRemoveAppend() throws Exception{
         PropertyFeatureWriter writer = (PropertyFeatureWriter)
-                    store.getFeatureWriter("road");
+                    store.createFeatureWriter("road",Transaction.AUTO_COMMIT);
         SimpleFeature f;
         writer.next();
         writer.next();
@@ -368,7 +368,7 @@ public class PropertyDataStoreTest extends TestCase {
     }
     public void testWriterChangeIgnoreAppend() throws Exception{
         PropertyFeatureWriter writer = (PropertyFeatureWriter)
-                    store.getFeatureWriter("road");
+                    store.createFeatureWriter("road",Transaction.AUTO_COMMIT);
         SimpleFeature f;
         writer.next();
         writer.next();

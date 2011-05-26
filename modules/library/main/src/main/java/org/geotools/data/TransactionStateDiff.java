@@ -193,12 +193,11 @@ public class TransactionStateDiff implements State {
         }
         SimpleFeature feature;
         SimpleFeature update;
-        String fid;
 
         try {
             while (writer.hasNext()) {
                 feature = (SimpleFeature) writer.next();
-                fid = feature.getID();
+                String fid = feature.getID();
 
                 if (diff.modified2.containsKey(fid)) {
                     update = (SimpleFeature) diff.modified2.get(fid);
@@ -232,10 +231,8 @@ public class TransactionStateDiff implements State {
             SimpleFeature nextFeature;
             
             synchronized (diff) {
-            	for (Iterator<SimpleFeature> i = diff.added.values().iterator(); i.hasNext();) {
-            		addedFeature = (SimpleFeature) i.next();
-            		
-            		fid = addedFeature.getID();
+                for( String fid : diff.getAddedOrder() ){
+                    addedFeature = diff.getAdded().get(fid);
             		
             		nextFeature = (SimpleFeature)writer.next();
             		

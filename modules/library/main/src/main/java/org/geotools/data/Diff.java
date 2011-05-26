@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.simple.SimpleFeature;
@@ -51,6 +52,9 @@ public class Diff{
      */
     private final Map<String,SimpleFeature> addedFeatures;
     
+    /** List of added feature ids; values stored in added above */
+    private final List<String> addedFidList;
+
     /**
      * Unmodifiable view of modified features. It is imperative that the user manually synchronize
      * on the map when iterating over any of its collection views:
@@ -69,6 +73,7 @@ public class Diff{
      * 
      * <p>
      * The returned map will be serializable if the specified map is serializable.
+     * @deprecated Please use getModified();
      */
     public final Map<String, SimpleFeature> modified2;
     
@@ -90,9 +95,12 @@ public class Diff{
      * 
      * <p>
      * The returned map will be serializable if the specified map is serializable.
+     * @deprecated please use getAdded()
      */
     public final Map<String, SimpleFeature> added;
-
+    
+    private final List<String> order;
+    
     /** counter used to genreate the "next" new feature id */
     public int nextFID = 0;
     
@@ -104,22 +112,35 @@ public class Diff{
 
     /** Create an empty Diff */
     public Diff() {
+        // private fields
         modifiedFeatures = new ConcurrentHashMap<String, SimpleFeature>();
-        addedFeatures = new ConcurrentHashMap<String, SimpleFeature>();
+        addedFeatures =new ConcurrentHashMap<String, SimpleFeature>();
+        addedFidList = new CopyOnWriteArrayList<String>();
+        
+        // public "views" requiring synchronised( mutex )
         modified2 = Collections.unmodifiableMap(modifiedFeatures);
         added = Collections.unmodifiableMap(addedFeatures);
+        order = Collections.unmodifiableList(addedFidList);
+
         spatialIndex = new Quadtree();
         mutex = this;
     }
+    
     /**
      * Diff copy.
      * @param other
      */
     public Diff(Diff other){
-        modifiedFeatures=Collections.synchronizedMap(new HashMap<String,SimpleFeature>(other.modifiedFeatures));
-        addedFeatures=Collections.synchronizedMap(new HashMap<String,SimpleFeature>(other.addedFeatures));
+        // copy data
+        modifiedFeatures=new ConcurrentHashMap<String, SimpleFeature>(other.modifiedFeatures);
+        addedFeatures=new ConcurrentHashMap<String, SimpleFeature>(other.addedFeatures);
+        addedFidList=new CopyOnWriteArrayList<String>(other.addedFidList);
+        
+        // create public "views"
         modified2=Collections.unmodifiableMap(modifiedFeatures);
         added=Collections.unmodifiableMap(addedFeatures);
+        order = Collections.unmodifiableList(addedFidList);
+
         spatialIndex=copySTRtreeFrom(other);
         nextFID=other.nextFID;
         mutex=this;
@@ -142,6 +163,7 @@ public class Diff{
         synchronized (mutex) {
             nextFID = 0;
             addedFeatures.clear();
+            addedFidList.clear();
             modifiedFeatures.clear();
             spatialIndex = new Quadtree();
         }
@@ -157,10 +179,17 @@ public class Diff{
 		synchronized (mutex) {
 			SimpleFeature old;
             if( addedFeatures.containsKey(fid) ){
-            	old=(SimpleFeature) addedFeatures.get(fid);
-                addedFeatures.put(fid, f);
-            }else{
-            	old=(SimpleFeature) modifiedFeatures.get(fid);
+                old = addedFeatures.get(fid);
+                if( f == null ){
+                    addedFeatures.remove(fid);
+                    addedFidList.remove(fid);
+                }
+                else {
+                    addedFeatures.put(fid, f);
+                }
+            }
+            else{
+                old = modifiedFeatures.get(fid);
                 modifiedFeatures.put(fid, f);
             }
             if(old != null) {
@@ -173,6 +202,7 @@ public class Diff{
 	public void add(String fid, SimpleFeature f) {
 		synchronized (mutex) {
 			addedFeatures.put(fid, f);
+			addedFidList.add(fid); // preserve order features are added in
 			addToSpatialIndex(f);
 		}
 	}
@@ -192,6 +222,7 @@ public class Diff{
 			if( addedFeatures.containsKey(fid) ){
 				old = (SimpleFeature) addedFeatures.get(fid);
 				addedFeatures.remove(fid);
+				addedFidList.remove(fid);
 			} else {
 				old = (SimpleFeature) modifiedFeatures.get(fid);
 				modifiedFeatures.put(fid, TransactionStateDiff.NULL);
@@ -208,7 +239,61 @@ public class Diff{
 			return spatialIndex.query(env);
 		}
 	}
-	
+
+    /** Unmodifieable list indicating the order features were added */
+    public List<String> getAddedOrder() {
+        return addedFidList;
+    }
+
+    /**
+     * Unmodifiable view of modified features. It is imperative that the user manually synchronize
+     * on the map when iterating over any of its collection views:
+     * 
+     * <pre>
+     *  Set s = diff.modified2.keySet();  // Needn't be in synchronized block
+     *      ...
+     *  synchronized(diff) {  // Synchronizing on diff, not diff.modified2 or s!
+     *      Iterator i = s.iterator(); // Must be in synchronized block
+     *      while (i.hasNext())
+     *          foo(i.next());
+     *  }
+     * </pre>
+     * 
+     * Failure to follow this advice may result in non-deterministic behavior.
+     * 
+     * <p>
+     * The returned map will be serializable if the specified map is serializable.
+     * 
+     * @return Map of modified features, null user to represent a removed feature
+     */
+    public Map<String, SimpleFeature> getModified() {
+        return modified2;
+    }
+
+    /**
+     * Unmodifiable view of added features. It is imperative that the user manually synchronize on
+     * the map when iterating over any of its collection views:
+     * 
+     * <pre>
+     *  Set s = diff.added.keySet();  // Needn't be in synchronized block
+     *      ...
+     *  synchronized(diff) {  // Synchronizing on m, not diff.added or s!
+     *      Iterator i = s.iterator(); // Must be in synchronized block
+     *      while (i.hasNext())
+     *          foo(i.next());
+     *  }
+     * </pre>
+     * 
+     * Failure to follow this advice may result in non-deterministic behavior.
+     * 
+     * <p>
+     * The returned map will be serializable if the specified map is serializable.
+     * 
+     * @return Map of added features
+     */
+    public Map<String, SimpleFeature> getAdded() {
+        return added;
+    }
 	protected Quadtree copySTRtreeFrom(Diff diff) {
 		Quadtree tree = new Quadtree();
 		

@@ -144,7 +144,7 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
             setPropertyNames(query.getProperties());
         } else {
             setPropertyNames(null); // we need the actual property names (not surrogates) to do
-                                    // this... otherwise need to set manually
+                                    // this...
         }
         
         this.maxFeatures = query.getMaxFeatures();
@@ -158,7 +158,9 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
         xpathAttributeBuilder.setFilterFactory(namespaceAwareFilterFactory);
     }
     
-    public void setPropertyNames(Collection<PropertyName> propertyNames) {
+    //properties can only be set by constructor, before initialising source features 
+    //(for joining nested mappings)
+    private void setPropertyNames(Collection<PropertyName> propertyNames) {
         selectedProperties = new HashMap<AttributeMapping, List<PropertyName>>();
 
         if (propertyNames == null) {

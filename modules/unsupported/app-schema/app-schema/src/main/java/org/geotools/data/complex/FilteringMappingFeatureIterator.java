@@ -19,6 +19,7 @@ package org.geotools.data.complex;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ListIterator;
 
 import org.apache.commons.collections.IteratorUtils;
@@ -74,8 +75,10 @@ public class FilteringMappingFeatureIterator extends DataAccessMappingFeatureIte
         while (super.hasNext()) {
             // apply filter
             if (filter.evaluate(curSrcFeature)) {
-                return true;
+               return true;
             }
+                
+            setHasNextCalled(false);            
         }
         return false;
     }

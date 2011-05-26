@@ -82,6 +82,15 @@ public class JDBCFeatureSource extends ContentFeatureSource {
         primaryKey = ((JDBCDataStore) entry.getDataStore()).getPrimaryKey(entry);
     }
     
+    /**
+     * Copy existing feature source
+     * @param featureSource jdbc feature source
+     * @throws IOException
+     */
+    protected JDBCFeatureSource(JDBCFeatureSource featureSource) throws IOException{
+        super(featureSource.entry, featureSource.query);
+    }
+    
     @Override
     protected QueryCapabilities buildQueryCapabilities() {
         return new JDBCQueryCapabilities(this);

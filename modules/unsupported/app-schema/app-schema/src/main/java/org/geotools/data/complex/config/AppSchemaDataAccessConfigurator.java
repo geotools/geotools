@@ -46,6 +46,7 @@ import org.geotools.data.DataAccessFinder;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureSource;
+import org.geotools.data.complex.AppSchemaDataAccessRegistry;
 import org.geotools.data.complex.AttributeMapping;
 import org.geotools.data.complex.FeatureTypeMapping;
 import org.geotools.data.complex.FeatureTypeMappingFactory;
@@ -54,6 +55,7 @@ import org.geotools.data.complex.filter.XPath;
 import org.geotools.data.complex.filter.XPath.Step;
 import org.geotools.data.complex.filter.XPath.StepList;
 import org.geotools.data.complex.xml.XmlFeatureSource;
+import org.geotools.data.joining.JoiningNestedAttributeMapping;
 import org.geotools.factory.Hints;
 import org.geotools.feature.Types;
 import org.geotools.filter.AttributeExpressionImpl;
@@ -95,6 +97,8 @@ public class AppSchemaDataAccessConfigurator {
     /** DOCUMENT ME! */
     private static final Logger LOGGER = org.geotools.util.logging.Logging
             .getLogger(AppSchemaDataAccessConfigurator.class.getPackage().getName());
+    
+    public static String PROPERTY_JOINING = "app-schema.joining"; 
 
     /** DOCUMENT ME! */
     private AppSchemaDataAccessDTO config;
@@ -110,6 +114,16 @@ public class AppSchemaDataAccessConfigurator {
     private NamespaceSupport namespaces;
     
     private Map schemaURIs;
+    
+    
+    /**
+     * Convenience method for "joining" property.
+     * @return
+     */
+    public static boolean isJoining() {
+        String s=AppSchemaDataAccessRegistry.getAppSchemaProperties().getProperty(PROPERTY_JOINING);
+        return s!=null && s.equalsIgnoreCase("true");
+    }
 
     /**
      * Creates a new ComplexDataStoreConfigurator object.
@@ -373,9 +387,16 @@ public class AppSchemaDataAccessConfigurator {
                     sourceFieldSteps = XPath.steps(root, sourceField, namespaces);
                 }
                 // a nested feature
-                attMapping = new NestedAttributeMapping(idExpression, sourceExpression,
+                if (isJoining()) {
+                    attMapping = new JoiningNestedAttributeMapping(idExpression, sourceExpression,
+                            targetXPathSteps, isMultiValued, clientProperties, elementExpr,
+                            sourceFieldSteps, namespaces);
+                } else {
+                    attMapping = new NestedAttributeMapping(idExpression, sourceExpression,
                         targetXPathSteps, isMultiValued, clientProperties, elementExpr,
                         sourceFieldSteps, namespaces);
+                }
+                
             } else {
                 attMapping = new AttributeMapping(idExpression, sourceExpression, targetXPathSteps,
                         expectedInstanceOf, isMultiValued, clientProperties);

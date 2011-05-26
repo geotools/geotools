@@ -1,14 +1,13 @@
 package org.geotools.data.complex.filter;
 
+import java.util.Collections;
 import java.util.List;
-
 import org.geotools.filter.BinaryComparisonAbstract;
 import org.geotools.filter.LikeFilterImpl;
 import org.geotools.filter.NestedAttributeExpression;
 import org.geotools.filter.OrImpl;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
-import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 
@@ -33,7 +32,7 @@ public class MultiValuedOrImpl extends OrImpl {
     private NestedAttributeExpression expression;
 
     public MultiValuedOrImpl(FilterFactory ff, Filter filter, NestedAttributeExpression expression) {
-        super(ff, null);
+        super(ff, Collections.<Expression>emptyList());
         this.filter = filter;
         this.expression = expression;
     }
@@ -99,8 +98,9 @@ public class MultiValuedOrImpl extends OrImpl {
         return false;
     }
 
+    /*
     @Override
     public Object accept(FilterVisitor visitor, Object extraData) {
         return null;
-    }
+    }*/
 }

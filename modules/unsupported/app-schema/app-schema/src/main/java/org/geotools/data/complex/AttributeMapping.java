@@ -40,9 +40,9 @@ public class AttributeMapping {
     /** Expression to set the Attribute's ID from, or {@linkplain Expression#NIL} */
     private Expression identifierExpression;
 
-    private Expression sourceExpression;
+    protected Expression sourceExpression;
 
-    private StepList targetXPath;
+    protected StepList targetXPath;
 
     private boolean isMultiValued;
 

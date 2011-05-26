@@ -30,6 +30,7 @@ import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
 import org.geotools.data.QueryCapabilities;
 import org.geotools.data.ResourceInfo;
+import org.geotools.data.joining.JoiningQuery;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -79,9 +80,13 @@ class MappingFeatureSource implements FeatureSource<FeatureType, Feature> {
     public ReferencedEnvelope getBounds() throws IOException {
         return store.getBounds(namedQuery(Filter.INCLUDE, Integer.MAX_VALUE));
     }
-
+    
     private Query namedQuery(Filter filter, int countLimit) {
-       Query query = new Query();
+        return namedQuery(filter, countLimit, false);
+    }
+
+    private Query namedQuery(Filter filter, int countLimit, boolean isJoining) {
+       Query query = isJoining ? new JoiningQuery() : new Query();
         if (getName().getNamespaceURI() != null) {
             try {
                 query.setNamespace(new URI(getName().getNamespaceURI()));
@@ -96,7 +101,7 @@ class MappingFeatureSource implements FeatureSource<FeatureType, Feature> {
     }
 
     private Query namedQuery(Query query) {
-        Query namedQuery = namedQuery(query.getFilter(), query.getMaxFeatures());        
+        Query namedQuery = namedQuery(query.getFilter(), query.getMaxFeatures(), query instanceof JoiningQuery);        
         namedQuery.setProperties(query.getProperties());
         namedQuery.setCoordinateSystem(query.getCoordinateSystem());
         namedQuery.setCoordinateSystemReproject(query.getCoordinateSystemReproject());
@@ -104,6 +109,9 @@ class MappingFeatureSource implements FeatureSource<FeatureType, Feature> {
         namedQuery.setMaxFeatures(query.getMaxFeatures());
         namedQuery.setSortBy(query.getSortBy());
         namedQuery.setHints(query.getHints());
+        if (query instanceof JoiningQuery) {
+            ((JoiningQuery) namedQuery).setJoins(((JoiningQuery) query).getJoins());
+        }
         return namedQuery;
     }
 

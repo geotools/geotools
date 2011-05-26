@@ -20,10 +20,21 @@ package org.geotools.data.complex;
 import java.io.IOException;
 import java.util.logging.Logger;
 
+import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
+import org.geotools.data.complex.config.AppSchemaDataAccessConfigurator;
+import org.geotools.data.complex.filter.ComplexFilterSplitter;
 import org.geotools.data.complex.filter.MultiValuedOrImpl;
+import org.geotools.data.joining.JoiningQuery;
 import org.geotools.filter.FidFilterImpl;
+import org.geotools.filter.FilterCapabilities;
+import org.geotools.filter.NestedAttributeExpression;
+import org.geotools.filter.visitor.DefaultFilterVisitor;
+import org.geotools.jdbc.JDBCFeatureSource;
+import org.geotools.jdbc.JoiningJDBCFeatureSource;
 import org.opengis.filter.Filter;
+import org.opengis.filter.Or;
+import org.opengis.filter.expression.PropertyName;
 
 /**
  * @author Russell Petty, GSV
@@ -37,55 +48,100 @@ import org.opengis.filter.Filter;
 public class MappingFeatureIteratorFactory {
     protected static final Logger LOGGER = org.geotools.util.logging.Logging
             .getLogger("org.geotools.data.complex");
+    
+    
+    protected static class CheckIfNestedFilterVisitor extends DefaultFilterVisitor {
+        
+        public boolean hasNestedAttributes = false;
+        
+        public Object visit( PropertyName expression, Object data ) {
+            if (expression instanceof NestedAttributeExpression) {
+                hasNestedAttributes = true;
+            }
+            return data;
+        }
+        
+        public Object visit( Or filter, Object data ) {
+            if (filter instanceof MultiValuedOrImpl) {
+                hasNestedAttributes = true;
+            }
+            return super.visit(filter, data);
+            
+        }
+        
+    }
 
     public static IMappingFeatureIterator getInstance(AppSchemaDataAccess store,
-            FeatureTypeMapping mapping, Query query) throws IOException {
+            FeatureTypeMapping mapping, Query query, Filter unrolledFilter) throws IOException {
 
         if (mapping instanceof XmlFeatureTypeMapping) {
             return new XmlMappingFeatureIterator(store, mapping, query);
         }
-
-        boolean isFiltered = false;
-        if (query.getFilter() != null) {
-            Query unrolledQuery = store.unrollQuery(query, mapping);
-            Filter filter = unrolledQuery.getFilter();
-            if (filter instanceof MultiValuedOrImpl) {
-                // has nested attribute in the filter expression
-                unrolledQuery.setFilter(Filter.INCLUDE);
-                return new FilteringMappingFeatureIterator(store, mapping, query, unrolledQuery, filter);
-            } else if (!filter.equals(Filter.INCLUDE) && !filter.equals(Filter.EXCLUDE)
-                    && !(filter instanceof FidFilterImpl)) {
-                // normal filters
-                isFiltered = true;
+        
+        if (AppSchemaDataAccessConfigurator.isJoining()) {
+            if (!(query instanceof JoiningQuery)) {
+                query = new JoiningQuery(query);
             }
-        }
+            FeatureSource mappedSource = mapping.getSource();
+            FilterCapabilities capabilities = null;
+            if (mappedSource instanceof JDBCFeatureSource) {
+                capabilities = ((JDBCFeatureSource) mappedSource).getDataStore().getFilterCapabilities();
+            }
+            else {
+                throw new IllegalArgumentException("Joining Queries only work on JDBC Feature Source!");
+            }
+            
+            IMappingFeatureIterator iterator;
+            if (unrolledFilter != null) {
+                query.setFilter(Filter.INCLUDE);
+                Query unrolledQuery = store.unrollQuery(query, mapping);
+                unrolledQuery.setFilter(unrolledFilter);
+                iterator = new DataAccessMappingFeatureIterator(store, mapping, query, false, unrolledQuery);
+                
+            } else {
+                Filter filter = query.getFilter();            
+                ComplexFilterSplitter splitter = new ComplexFilterSplitter( capabilities , mapping );
+                filter.accept(splitter, null);
+               
+                //--just verifying this for certainty
+                CheckIfNestedFilterVisitor visitor = new CheckIfNestedFilterVisitor();
+                splitter.getFilterPre().accept(visitor, null);
+                if (visitor.hasNestedAttributes) {
+                    throw new IllegalArgumentException("Internal Error: filter was not split properly.");
+                }
+                
+                query.setFilter(splitter.getFilterPre());
+                filter = splitter.getFilterPost();
+                int maxFeatures = Query.DEFAULT_MAX;
+                if (filter != null && filter != Filter.INCLUDE) {
+                    maxFeatures = query.getMaxFeatures();
+                    query.setMaxFeatures(Query.DEFAULT_MAX);
+                }
+                iterator = new DataAccessMappingFeatureIterator(store, mapping, query, false);            
+                if (filter != null && filter != Filter.INCLUDE) {
+                    iterator = new PostFilteringMappingFeatureIterator(iterator, filter, maxFeatures);
+                }
+            }
+            return iterator;
+        } else {
 
-        DataAccessMappingFeatureIterator iterator = null;
-        try {
-            iterator = new DataAccessMappingFeatureIterator(store, mapping, query, isFiltered);
-        } catch (IOException e) {
-            // HACK HACK HACK
-            // could mean it's a combination of filters (such as AND) involving nested attribute
-            // it's hard to predetermine such condition, because a filter could be deeply nested
-            // and combined endlessly, i.e. AND inside AND, etc.
-            // it's also a bit naughty to catch Exception in general, but it's unpredicatable
-            // what's going to be thrown, could be different for different datastore backend
-            if (isFiltered) {
-                LOGGER
-                        .info("Caught exception: "
-                                + e.getMessage()
-                                + "in DataAccessMappingFeatureIterator."
-                                + "Assuming this is caused by filtering nested attribute."
-                                + "Retrying with FilteringMappingFeatureIterator.");
+            if (query.getFilter() != null) {
                 Query unrolledQuery = store.unrollQuery(query, mapping);
                 Filter filter = unrolledQuery.getFilter();
-                unrolledQuery.setFilter(Filter.INCLUDE);
-                iterator = new FilteringMappingFeatureIterator(store, mapping, query, unrolledQuery,
-                        filter);
-            } else {
-                throw e;
+                CheckIfNestedFilterVisitor visitor = new CheckIfNestedFilterVisitor();
+                filter.accept(visitor, null);
+                if (visitor.hasNestedAttributes) {
+                    //has nested attribute in the filter expression
+                    unrolledQuery.setFilter(Filter.INCLUDE);
+                    return new FilteringMappingFeatureIterator(store, mapping, query, unrolledQuery, filter);
+                } else if (!filter.equals(Filter.INCLUDE) && !filter.equals(Filter.EXCLUDE)
+                        && !(filter instanceof FidFilterImpl)) {
+                    // normal filters
+                    return new DataAccessMappingFeatureIterator(store, mapping, query, true, unrolledQuery);
+                } 
             }
+    
+            return new DataAccessMappingFeatureIterator(store, mapping, query, false);            
         }
-        return iterator;
     }
 }

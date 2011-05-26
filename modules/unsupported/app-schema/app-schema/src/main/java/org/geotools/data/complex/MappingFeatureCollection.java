@@ -57,12 +57,18 @@ public class MappingFeatureCollection implements FeatureCollection<FeatureType, 
     private final FeatureTypeMapping mapping;
 
     private final Query query;
+    
+    private Filter unrolledFilter = null;
 
     public MappingFeatureCollection(AppSchemaDataAccess store, FeatureTypeMapping mapping,
             Query query) {
         this.store = store;
         this.mapping = mapping;
         this.query = query;
+    }
+    
+    public void setUnrolledFilter(Filter unrolledFilter) {
+        this.unrolledFilter = unrolledFilter;
     }
 
     /**
@@ -180,7 +186,7 @@ public class MappingFeatureCollection implements FeatureCollection<FeatureType, 
      */
     public FeatureIterator<Feature> features() {
         try {
-            return MappingFeatureIteratorFactory.getInstance(store, mapping, query);
+            return MappingFeatureIteratorFactory.getInstance(store, mapping, query, unrolledFilter);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -254,7 +260,7 @@ public class MappingFeatureCollection implements FeatureCollection<FeatureType, 
      */
     public Iterator<Feature> iterator() {
         try {
-            return MappingFeatureIteratorFactory.getInstance(store, mapping, query);
+            return MappingFeatureIteratorFactory.getInstance(store, mapping, query, unrolledFilter);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

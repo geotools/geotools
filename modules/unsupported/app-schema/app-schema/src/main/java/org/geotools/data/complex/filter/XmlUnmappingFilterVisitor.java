@@ -62,64 +62,6 @@ public class XmlUnmappingFilterVisitor extends UnmappingFilterVisitor {
         super(mappings);
     }
 
-    /**
-     * Looks up for attribute mappings matching the xpath expression <code>propertyName</code>.
-     * <p>
-     * If any step in <code>propertyName</code> has index greater than 1, any mapping for the same
-     * property applies, regardless of the mapping. For example, if there are mappings for
-     * <code>gml:name[1]</code>, <code>gml:name[2]</code> and <code>gml:name[3]</code>, but
-     * propertyName is just <code>gml:name</code>, all three mappings apply.
-     * </p>
-     * 
-     * @param mappings
-     *            Feature type mapping to search for
-     * @param simplifiedSteps
-     * @return
-     */
-    @Override
-    protected List<Expression> findMappingsFor(FeatureTypeMapping mappings,
-            final StepList propertyName) {
-        XmlFeatureTypeMapping xmlMapping = (XmlFeatureTypeMapping) mappings;
-
-        List<Expression> expressions = null;
-        
-        // get all matching mappings if index is not specified, otherwise
-        // get the specified mapping
-        if (!propertyName.toString().contains("[")) {
-            // collect all the mappings for the given property
-            List<String> candidates = xmlMapping.getStringMappingsIgnoreIndex(propertyName);
-            expressions = getExpressions(candidates);
-        }
-
-        if (expressions == null || expressions.isEmpty()) {
-            // get specified mapping if indexed or that expressions is not found because it
-            // could be attribute mapping with OCQL containing functions, instead of inputattribute
-            // with xpath
-            expressions = new ArrayList<Expression>(1);
-            AttributeMapping mapping = xmlMapping.getStringMapping(propertyName);
-            if (mapping != null) {   
-//TODO handle instancepath and also consider functions
-//                if (mapping.getInstanceXpath() != null) {
-//                    // add prefix
-//                } else {
-                    expressions.add(mapping.getSourceExpression());
-//                }
-            }
-        }
-        return expressions;
-        
-        
-    }
-
-    private List<Expression> getExpressions(List<String> candidates) {
-        List<Expression> ls = new ArrayList<Expression>(candidates.size());
-        Iterator<String> itr = candidates.iterator();
-        while (itr.hasNext()) {
-            String element = itr.next();
-            Expression ex = ff.property(element);
-            ls.add(ex);
-        }
-        return ls;
-    }
+    
     
 }

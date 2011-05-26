@@ -921,11 +921,11 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
             }
             if ( attribute != null ) {
                 //use the name of the attribute
-                out.write(escapeName(attribute.getLocalName()));
+                out.write(fieldEncoder.encode(escapeName(attribute.getLocalName())));
             }
             else {
                 //fall back to just encoding the properyt name
-                out.write(escapeName(expression.getPropertyName()));
+                out.write(fieldEncoder.encode(escapeName(expression.getPropertyName())));
             }
     		
         } catch (java.io.IOException ioe) {
@@ -1181,5 +1181,43 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      */
     public String escapeName(String name) {
         return sqlNameEscape + name + sqlNameEscape;
+    }
+    
+    /**
+     * Interface for customizing the encoding of Fields, irrespective of which subclass of
+     * FilterToSQL we are using. 
+     *
+     */
+    public static interface FieldEncoder {
+        public String encode(String s);
+    }
+    
+    /**
+     * Default Field Encoder: simply returns name of field. 
+     *
+     */
+    private static class DefaultFieldEncoder implements FieldEncoder {
+        
+        public static DefaultFieldEncoder DEFAULT_FIELD_ENCODER = new DefaultFieldEncoder();
+        
+        private DefaultFieldEncoder() {};
+        
+        public String encode(String s){
+            return s;
+        }
+    }
+        
+    /**
+     * Current field encoder
+     */
+    protected FieldEncoder fieldEncoder = DefaultFieldEncoder.DEFAULT_FIELD_ENCODER;
+    
+    /**
+     * Set custom field encoder
+     * 
+     * @param fieldEncoder the field encoder
+     */
+    public void setFieldEncoder(FieldEncoder fieldEncoder) {
+        this.fieldEncoder = fieldEncoder;
     }
 }

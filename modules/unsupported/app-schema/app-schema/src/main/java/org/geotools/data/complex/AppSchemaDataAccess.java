@@ -41,9 +41,11 @@ import org.geotools.data.complex.filter.UnmappingFilterVisitor;
 import org.geotools.data.complex.filter.UnmappingFilterVistorFactory;
 import org.geotools.data.complex.filter.XPath;
 import org.geotools.data.complex.filter.XPath.StepList;
+import org.geotools.data.joining.JoiningQuery;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.Types;
 import org.geotools.filter.FilterAttributeExtractor;
+import org.geotools.filter.SortByImpl;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -56,6 +58,8 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
+import org.opengis.filter.sort.SortBy;
+import org.opengis.filter.sort.SortOrder;
 
 /**
  * A {@link DataAccess} that maps a "simple" source {@link DataStore} into a source of full Feature
@@ -322,7 +326,22 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
             newQuery.setHandle(query.getHandle());
             newQuery.setMaxFeatures(query.getMaxFeatures());
             
-            unrolledQuery = newQuery;
+            if (query instanceof JoiningQuery) {
+                FilterAttributeExtractor extractor = new FilterAttributeExtractor();
+                mapping.getFeatureIdExpression().accept(extractor, null);
+                List<SortBy> sort = new ArrayList<SortBy>();
+                for (String att : extractor.getAttributeNameSet()) {
+                    sort.add(new SortByImpl(filterFac.property(att), SortOrder.ASCENDING ));
+                }
+                newQuery.setSortBy( sort.toArray(new SortBy[sort.size()])  );
+            
+               JoiningQuery jQuery = new JoiningQuery(newQuery);
+               jQuery.setJoins(((JoiningQuery)query).getJoins());                
+               unrolledQuery = jQuery;
+            }
+            else {
+                unrolledQuery = newQuery;
+            }
         }
         return unrolledQuery;
     }

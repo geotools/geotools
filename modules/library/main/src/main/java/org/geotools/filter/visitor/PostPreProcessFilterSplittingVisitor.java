@@ -128,13 +128,13 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
          * The stack holding the bits of the filter that are not processable
          * by something with the given {@link FilterCapabilities}
          */
-	    private Stack postStack = new Stack();
+	    protected Stack postStack = new Stack();
         
         /**
          * The stack holding the bits of the filter that <b>are</b> processable
          * by something with the given {@link FilterCapabilities}
          */
-	    private Stack preStack = new Stack();
+	    protected Stack preStack = new Stack();
 	    
         /** 
 	     * Operates similar to postStack.  When a update is determined to affect an attribute expression the update
@@ -145,7 +145,7 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
         /**
          * The given filterCapabilities that we're splitting on.
          */
-	    private FilterCapabilities fcs = null;
+	    protected FilterCapabilities fcs = null;
 	    private SimpleFeatureType parent = null;
 		private Filter original = null;
         

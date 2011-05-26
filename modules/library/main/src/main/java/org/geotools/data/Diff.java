@@ -33,8 +33,8 @@ import com.vividsolutions.jts.index.SpatialIndex;
 import com.vividsolutions.jts.index.quadtree.Quadtree;
 
 public class Diff{
-	private final Map modifiedFeatures;
-	private final Map addedFeatures;
+	private final Map<String,SimpleFeature> modifiedFeatures;
+	private final Map<String,SimpleFeature> addedFeatures;
 	
 	/**
 	 * Unmodifiable view of modified features.
@@ -54,7 +54,7 @@ public class Diff{
      * <p>The returned map will be serializable if the specified map is
      * serializable.
 	 */
-	public final Map modified2;
+	public final Map<String,SimpleFeature> modified2;
 	/**
 	 * Unmodifiable view of added features.
      * It is imperative that the user manually synchronize on the
@@ -73,15 +73,15 @@ public class Diff{
      * <p>The returned map will be serializable if the specified map is
      * serializable.
 	 */
-	public final Map added;
+	public final Map<String,SimpleFeature> added;
 	
 	public int nextFID=0;
 	private SpatialIndex spatialIndex;
 	Object mutex;
 	
 	public Diff( ){
-		modifiedFeatures=new ConcurrentHashMap();
-		addedFeatures=new ConcurrentHashMap();
+		modifiedFeatures=new ConcurrentHashMap<String,SimpleFeature>();
+		addedFeatures=new ConcurrentHashMap<String,SimpleFeature>();
 		modified2=Collections.unmodifiableMap(modifiedFeatures);
 		added=Collections.unmodifiableMap(addedFeatures);
 		spatialIndex=new Quadtree();
@@ -104,8 +104,8 @@ public class Diff{
 	}
 
 	public Diff(Diff other){
-		modifiedFeatures=Collections.synchronizedMap(new HashMap(other.modifiedFeatures));
-		addedFeatures=Collections.synchronizedMap(new HashMap(other.addedFeatures));
+		modifiedFeatures=Collections.synchronizedMap(new HashMap<String,SimpleFeature>(other.modifiedFeatures));
+		addedFeatures=Collections.synchronizedMap(new HashMap<String,SimpleFeature>(other.addedFeatures));
 		modified2=Collections.unmodifiableMap(modifiedFeatures);
 		added=Collections.unmodifiableMap(addedFeatures);
 		spatialIndex=copySTRtreeFrom(other);
@@ -162,7 +162,8 @@ public class Diff{
 		}
 	}
 	
-	public List queryIndex(Envelope env) {
+	@SuppressWarnings("unchecked")
+    public List<SimpleFeature> queryIndex(Envelope env) {
 		synchronized (mutex) {
 			return spatialIndex.query(env);
 		}
@@ -172,17 +173,17 @@ public class Diff{
 		Quadtree tree = new Quadtree();
 		
 		synchronized (diff) {
-			Iterator i = diff.added.entrySet().iterator();
+			Iterator<Entry<String,SimpleFeature>> i = diff.added.entrySet().iterator();
 			while (i.hasNext()) {
-				Entry e = (Map.Entry) i.next();
+				Entry<String,SimpleFeature> e = i.next();
 				SimpleFeature f = (SimpleFeature) e.getValue();
 				if (!diff.modifiedFeatures.containsKey(f.getID())) {
 					tree.insert(ReferencedEnvelope.reference(f.getBounds()), f);
 				}
 			}
-			Iterator j = diff.modified2.entrySet().iterator();
+			Iterator<Entry<String,SimpleFeature>> j = diff.modified2.entrySet().iterator();
 			while( j.hasNext() ){
-				Entry e = (Map.Entry) j.next();
+				Entry<String,SimpleFeature> e = j.next();
 				SimpleFeature f = (SimpleFeature) e.getValue();
 				tree.insert(ReferencedEnvelope.reference(f.getBounds()), f);
 			}

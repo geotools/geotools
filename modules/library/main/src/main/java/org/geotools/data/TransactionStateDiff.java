@@ -27,9 +27,9 @@ import java.util.Map.Entry;
 
 import org.geotools.data.Transaction.State;
 import org.geotools.factory.Hints;
-import org.geotools.feature.IllegalAttributeException;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.GeometryAttribute;
+import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -69,7 +69,7 @@ public class TransactionStateDiff implements State {
      * a commit() or rollback().
      * </p>
      */
-    Map typeNameDiff = new HashMap();
+    Map<String,Diff> typeNameDiff = new HashMap<String,Diff>();
 
     public TransactionStateDiff(AbstractDataStore dataStore) {
         store = dataStore;
@@ -83,7 +83,7 @@ public class TransactionStateDiff implements State {
             this.transaction = null;
 
             if (typeNameDiff != null) {
-                for (Iterator i = typeNameDiff.values().iterator();
+                for (Iterator<Diff> i = typeNameDiff.values().iterator();
                         i.hasNext();) {
                     Diff diff = (Diff) i.next();
                     diff.clear();
@@ -137,13 +137,13 @@ public class TransactionStateDiff implements State {
      * @see org.geotools.data.Transaction.State#commit()
      */
     public synchronized void commit() throws IOException {
-        Map.Entry entry;
+        Map.Entry<String,Diff> entry;
 
-        for (Iterator i = typeNameDiff.entrySet().iterator(); i.hasNext();) {
-            entry = (Entry) i.next();
+        for (Iterator<Entry<String,Diff>> i = typeNameDiff.entrySet().iterator(); i.hasNext();) {
+            entry = i.next();
 
-            String typeName = (String) entry.getKey();
-            Diff diff = (Diff) entry.getValue();
+            String typeName = entry.getKey();
+            Diff diff = entry.getValue();
             applyDiff(typeName, diff);
         }
     }
@@ -238,7 +238,7 @@ public class TransactionStateDiff implements State {
             SimpleFeature nextFeature;
             
             synchronized (diff) {
-            	for (Iterator i = diff.added.values().iterator(); i.hasNext();) {
+            	for (Iterator<SimpleFeature> i = diff.added.values().iterator(); i.hasNext();) {
             		addedFeature = (SimpleFeature) i.next();
             		
             		fid = addedFeature.getID();
@@ -284,10 +284,10 @@ public class TransactionStateDiff implements State {
      * @see org.geotools.data.Transaction.State#rollback()
      */
     public synchronized void rollback() throws IOException {
-        Map.Entry entry;
+        Entry<String,Diff> entry;
 
-        for (Iterator i = typeNameDiff.entrySet().iterator(); i.hasNext();) {
-            entry = (Entry) i.next();
+        for (Iterator<Entry<String,Diff>> i = typeNameDiff.entrySet().iterator(); i.hasNext();) {
+            entry = i.next();
 
             String typeName = (String) entry.getKey();
             Diff diff = (Diff) entry.getValue();
@@ -337,7 +337,7 @@ public class TransactionStateDiff implements State {
     public synchronized FeatureWriter<SimpleFeatureType, SimpleFeature> writer(final String typeName, Filter filter)
         throws IOException {
         Diff diff = diff(typeName);
-         FeatureReader<SimpleFeatureType, SimpleFeature> reader = new FilteringFeatureReader<SimpleFeatureType, SimpleFeature>(store.getFeatureReader(typeName, new DefaultQuery(typeName, filter)), filter);
+         FeatureReader<SimpleFeatureType, SimpleFeature> reader = new FilteringFeatureReader<SimpleFeatureType, SimpleFeature>(store.getFeatureReader(typeName, new Query(typeName, filter)), filter);
 
         return new DiffFeatureWriter(reader, diff, filter) {
                 public void fireNotification(int eventType, ReferencedEnvelope bounds) {
@@ -383,9 +383,9 @@ public class TransactionStateDiff implements State {
             return null;
         }
 
-        public Object[] getAttributes(Object[] attributes) {
-            return null;
-        }
+//        public Object[] getAttributes(Object[] attributes) {
+//            return null;
+//        }
 
         public ReferencedEnvelope getBounds() {
             return null;
@@ -405,9 +405,9 @@ public class TransactionStateDiff implements State {
         public FeatureId getIdentifier() {
         	return null;
         }
-        public int getNumberOfAttributes() {
-            return 0;
-        }
+//        public int getNumberOfAttributes() {
+//            return 0;
+//        }
 
         public void setAttribute(int position, Object val) {
         }
@@ -416,9 +416,9 @@ public class TransactionStateDiff implements State {
                 throws IllegalAttributeException {
         }
 
-        public void setDefaultGeometry(Geometry geometry)
-                throws IllegalAttributeException {
-        }
+//        public void setDefaultGeometry(Geometry geometry)
+//                throws IllegalAttributeException {
+//        }
 
         public Object getAttribute(Name name) {
             return null;

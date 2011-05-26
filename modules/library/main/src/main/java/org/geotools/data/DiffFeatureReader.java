@@ -109,8 +109,8 @@ public class DiffFeatureReader<T extends FeatureType, F extends Feature> impleme
         	if( indexedGeometryFilter ){
         		spatialIndexIterator=getIndexedFeatures().iterator();
         	}
-        	addedIterator=diff.added.values().iterator();
-        	modifiedIterator=diff.modified2.values().iterator();
+        	addedIterator=(Iterator<F>)diff.added.values().iterator();
+        	modifiedIterator=(Iterator<F>)diff.modified2.values().iterator();
         }
     }
 

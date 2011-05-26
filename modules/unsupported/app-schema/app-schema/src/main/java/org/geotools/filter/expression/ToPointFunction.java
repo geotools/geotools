@@ -17,14 +17,13 @@
 package org.geotools.filter.expression;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.referencing.CRS;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.capability.FunctionName;
@@ -59,37 +58,20 @@ import com.vividsolutions.jts.geom.PrecisionModel;
  * @source $URL$
  */
 public class ToPointFunction implements Function {
+
     private final List<Expression> parameters;
 
     private final Literal fallback;
-
-    /**
-     * Make the instance of FunctionName available in a consistent spot.
-     */
-    public static final FunctionName NAME = new Name();
+    
+    private static final String USAGE = "Usage: toPoint('SRS_NAME'(optional), srsName(optional), point 1, point 2, gml:id(optional))";
+    
+    public static final FunctionName NAME = new FunctionNameImpl("toPoint",
+            FunctionNameImpl.parameter("return", Point.class), FunctionNameImpl.parameter(
+                    "parameter", Object.class, 2, 5));
 
     private static FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
 
     public static final Expression GML_ID = ff.literal("gml:id");
-
-    /**
-     * Describe how this function works. (should be available via FactoryFinder lookup...)
-     */
-    public static class Name implements FunctionName {
-
-        public int getArgumentCount() {
-            return 2; // 2 minimum, if gml:id and srsName aren't defined
-        }
-
-        public List<String> getArgumentNames() {
-            return Arrays.asList(new String[] { "toPoint", "SRS_NAME", "srsName value",
-                    "double value 1", "double value 2", "gml:id expression" });
-        }
-
-        public String getName() {
-            return "toPoint";
-        }
-    };
 
     public ToPointFunction() {
         this(new ArrayList<Expression>(), null);
@@ -101,7 +83,7 @@ public class ToPointFunction implements Function {
     }
 
     public String getName() {
-        return "toPoint";
+        return NAME.getName();
     }
     public FunctionName getFunctionName() {
         return NAME;
@@ -122,6 +104,7 @@ public class ToPointFunction implements Function {
         return evaluate(object, Point.class);
     }
 
+    @SuppressWarnings("unchecked")
     public <T> T evaluate(Object object, Class<T> context) {
         Point point;
         Expression param1 = parameters.get(0);
@@ -130,9 +113,8 @@ public class ToPointFunction implements Function {
 
             if (parameters.size() > 5 || parameters.size() < 4) {
                 throw new IllegalArgumentException(
-                        "Wrong number of parameters for toPoint function: "
-                                + parameters.toString()
-                                + ". Usage: toPoint('SRS_NAME'(optional), srsName(optional), point 1, point 2, gml:id(optional))");
+                        "Wrong number of parameters for toPoint function: " + parameters.toString()
+                                + ". " + USAGE);
             }
             CoordinateReferenceSystem crs = null;
             String srsName = parameters.get(1).evaluate(object, String.class);
@@ -159,9 +141,8 @@ public class ToPointFunction implements Function {
 
             if (parameters.size() > 3 || parameters.size() < 2) {
                 throw new IllegalArgumentException(
-                        "Wrong number of parameters for toPoint function: "
-                                + parameters.toString()
-                                + ". Usage: toPoint('SRS_NAME'(optional), srsName(optional), point 1, point 2, gml:id(optional))");
+                        "Wrong number of parameters for toPoint function: " + parameters.toString()
+                                + ". " + USAGE);
             }
             GeometryFactory fac = new GeometryFactory();
 

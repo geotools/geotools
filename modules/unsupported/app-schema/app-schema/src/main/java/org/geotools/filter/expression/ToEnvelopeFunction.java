@@ -17,10 +17,10 @@
 package org.geotools.filter.expression;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.util.Converters;
@@ -31,7 +31,8 @@ import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem; 
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 
@@ -53,34 +54,15 @@ import com.vividsolutions.jts.geom.Envelope;
  * @source $URL$
  */
 public class ToEnvelopeFunction implements Function {
+
     private final List<Expression> parameters;
 
     private final Literal fallback;
 
-    /**
-     * Make the instance of FunctionName available in a consistent spot.
-     */
-    public static final FunctionName NAME = new Name();
-
-    /**
-     * Describe how this function works. (should be available via FactoryFinder lookup...)
-     */
-    public static class Name implements FunctionName {
-
-        public int getArgumentCount() {
-            return 2; // minimum 2 required
-        }
-
-        public List<String> getArgumentNames() {
-            return Arrays.asList(new String[] { "minxvalue", "maxxvalue", "minyvalue", "maxyvalue",
-                    "crsvalue" });
-        }
-
-        public String getName() {
-            return "ToEnvelope";
-        }
-    };
-
+    public static final FunctionName NAME = new FunctionNameImpl("ToEnvelope",
+            FunctionNameImpl.parameter("return", Envelope.class), FunctionNameImpl.parameter(
+                    "parameter", Object.class, 2, 5));
+ 
     public ToEnvelopeFunction() {
         this(new ArrayList<Expression>(), null);
     }
@@ -91,7 +73,7 @@ public class ToEnvelopeFunction implements Function {
     }
 
     public String getName() {
-        return "ToEnvelope";
+        return NAME.getName();
     }
     
     public FunctionName getFunctionName() {

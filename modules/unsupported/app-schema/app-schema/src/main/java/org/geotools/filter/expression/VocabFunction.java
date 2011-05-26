@@ -22,12 +22,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.util.Converters;
 import org.geotools.util.SoftValueHashMap;
 import org.opengis.filter.capability.FunctionName;
@@ -57,36 +57,12 @@ import org.opengis.filter.expression.Literal;
  * @source $URL$
  */
 public class VocabFunction implements Function {    
+
     private final List<Expression> parameters;
+
     private final Literal fallback;
-        
-    /**
-     * Make the instance of FunctionName available in
-     * a consistent spot.
-     */
-    public static final FunctionName NAME = new Name();
 
-    /**
-     * Describe how this function works.
-     * (should be available via FactoryFinder lookup...)
-     */
-    public static class Name implements FunctionName {
-
-        public int getArgumentCount() {
-            return 2; // indicating 2 required
-        }
-
-        public List<String> getArgumentNames() {
-            return Arrays.asList(new String[]{
-                        "Vocab",
-                        "expr", "vocab",
-                    });
-        }
-
-        public String getName() {
-            return "Vocab";
-        }
-    };
+    public static final FunctionName NAME = new FunctionNameImpl("Vocab", "expr", "vocab");
 
     public VocabFunction() {
         this( new ArrayList<Expression>(), null);
@@ -98,7 +74,7 @@ public class VocabFunction implements Function {
     }
 
     public String getName() {
-        return "Vocab";
+        return NAME.getName();
     }
     public FunctionName getFunctionName() {
         return NAME;

@@ -17,12 +17,12 @@
 package org.geotools.filter.expression;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import org.geotools.data.complex.ComplexFeatureConstants;
 import org.geotools.factory.Hints;
+import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.ExpressionVisitor;
@@ -45,32 +45,11 @@ import org.opengis.filter.expression.Literal;
  */
 public class ToXlinkHrefFunction implements Function {
 
-    /**
-     * Make the instance of FunctionName available in a consistent spot.
-     */
-    public static final FunctionName NAME = new Name();
+    public static final FunctionName NAME = new FunctionNameImpl("toXlinkHref", "REFERENCE_VALUE");
 
     private final List<Expression> parameters;
 
     private final Literal fallback;
-
-    /**
-     * Describe how this function works. (should be available via FactoryFinder lookup...)
-     */
-    public static class Name implements FunctionName {
-
-        public int getArgumentCount() {
-            return 1;
-        }
-
-        public List<String> getArgumentNames() {
-            return Arrays.asList(new String[] { getName(), "REFERENCE_VALUE" });
-        }
-
-        public String getName() {
-            return "toXlinkHref";
-        }
-    };
 
     public ToXlinkHrefFunction() {
         this(new ArrayList<Expression>(), null);
@@ -82,7 +61,7 @@ public class ToXlinkHrefFunction implements Function {
     }
 
     public String getName() {
-        return "toXlinkHref";
+        return NAME.getName();
     }
     public FunctionName getFunctionName() {
         return NAME;

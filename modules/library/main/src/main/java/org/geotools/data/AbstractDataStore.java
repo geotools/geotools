@@ -189,21 +189,6 @@ public abstract class AbstractDataStore implements DataStore {
      */
     protected abstract  FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(String typeName)
         throws IOException;
-    /**
-     * Subclass can implement this to provide writing support.
-     *
-     * @param typeName
-     *
-     * @return FeatureWriter over contents of typeName
-     * @throws IOException 
-     *
-     * @throws IOException Subclass may throw IOException
-     * @throws UnsupportedOperationException Subclass may implement
-     * @deprecated
-     */
-    protected FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(String typeName) throws IOException{
-        throw new UnsupportedOperationException("FeatureWriter not implemented - is this a Read-only DataStore?");    	
-    }
 
     /**
      * Subclass should implement this to provide writing support.
@@ -483,12 +468,6 @@ public abstract class AbstractDataStore implements DataStore {
             try {
                 writer = createFeatureWriter(typeName, transaction);
             } catch (UnsupportedOperationException e) {
-                // This is for backward compatibility.
-                try {
-                    writer = getFeatureWriter(typeName);
-                } catch (UnsupportedOperationException eek) {
-                    throw e; // throw original - our fallback did not work
-                }
                 throw e;
             }
         } else {

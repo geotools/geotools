@@ -44,7 +44,7 @@ import org.xml.sax.helpers.NamespaceSupport;
 
 /**
  * Nested attribute mapping used for joining system
- * 
+ *
  * @author Niels Charlier, Curtin University Of Technology
  *
  */
@@ -52,24 +52,24 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
 
 
     /**
-     * Instance that holds temporary data for going through the features, 
+     * Instance that holds temporary data for going through the features,
      * for each 'caller' (any object going through the features) there is one.
      */
     protected class Instance {
         public Map<Name, DataAccessMappingFeatureIterator> featureIterators = new HashMap<Name, DataAccessMappingFeatureIterator>();
         public Map<Name, Expression> nestedSourceExpressions = new HashMap<Name, Expression> ();
         public List<Object> skipped = new ArrayList<Object>();
-        public Query baseTableQuery;        
+        public Query baseTableQuery;
     }
 
     /**
-     * The instances. 
+     * The instances.
      */
     protected Map<Object, Instance> instances = new HashMap<Object, Instance>();
 
     /**
      * Constructor
-     * 
+     *
      * @param idExpression
      * @param parentExpression
      * @param targetXPath
@@ -95,7 +95,7 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
 
     /**
      * Initialise a new iterator (for polymorphism, there could be multiple per instance)
-     * 
+     *
      * @param instance
      * @param featureTypeName
      * @param reprojection
@@ -116,7 +116,7 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
                     + this.nestedTargetXPath + "'!");
         }
         Expression nestedSourceExpression = mappings.get(0).getSourceExpression();
-        
+
         List<JoiningQuery.Join> joins = new ArrayList<JoiningQuery.Join> ();
         if (instance.baseTableQuery instanceof JoiningQuery) {
             if (((JoiningQuery)instance.baseTableQuery).getJoins() != null) {
@@ -182,7 +182,7 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
     /**
      * Open an instance (cursor) for a specific caller.
      * An instance holds a cursor and any additional information to move through the features.
-     * 
+     *
      * @param caller
      * @param baseTableQuery
      * @throws IOException
@@ -190,17 +190,17 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
     public void open(Object caller, Query baseTableQuery) throws IOException {
         if (instances.get(caller) != null) {
             throw new IllegalArgumentException ("Trying to open Joining Nested Attribute Mapping that is already open!");
-        } else {            
+        } else {
             Instance instance = new Instance();
             instance.baseTableQuery = baseTableQuery;
 
             instances.put(caller, instance);
-        } 
+        }
     }
 
     /**
      * Close the instance of this caller.
-     * 
+     *
      * @param caller
      */
     public void close(Object caller){
@@ -218,7 +218,7 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
 
     /**
      * Get matching input features that are stored in this mapping using a supplied link value.
-     * 
+     *
      * @param foreignKeyValue
      * @return The matching input feature
      * @throws IOException
@@ -235,7 +235,7 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
 
         Instance instance = instances.get(caller);
         if (instance == null) {
-            throw new IllegalArgumentException ("Trying to read Joining Nested Attribute Mapping that is not open.");            
+            throw new IllegalArgumentException ("Trying to read Joining Nested Attribute Mapping that is not open.");
         }
 
         Object featureTypeName = getNestedFeatureType(feature);
@@ -260,13 +260,14 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
         }
 
         //skip all others
-        for ( DataAccessMappingFeatureIterator fIt : instance.featureIterators.values()) {
+        for ( Name name : instance.featureIterators.keySet()) {
+            DataAccessMappingFeatureIterator fIt = instance.featureIterators.get(name);
             if (fIt != featureIterator) {
-                while (fIt.hasNext() && fIt.peekNextValue(nestedSourceExpression).equals(foreignKeyValue)) {
-                    fIt.skip();
-                }
-            }
-        }
+                 while (fIt.hasNext() && fIt.peekNextValue(instance.nestedSourceExpressions.get(name)).equals(foreignKeyValue)) {
+                     fIt.skip();
+                 }
+             }
+         }
         instance.skipped.add(foreignKeyValue);
 
         return matchingFeatures;
@@ -274,7 +275,7 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
 
     /**
      * Get the maching built features that are stored in this mapping using a supplied link value
-     * 
+     *
      * @param foreignKeyValue
      * @param reprojection
      *            Reprojected CRS or null
@@ -290,11 +291,11 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
             // should use the same table, and handles it differently
             throw new UnsupportedOperationException(
             "Link field is missing from feature chaining mapping!");
-        }        
+        }
 
         Instance instance = instances.get(caller);
         if (instance == null) {
-            throw new IllegalArgumentException ("Trying to read Joining Nested Attribute Mapping that is not open.");            
+            throw new IllegalArgumentException ("Trying to read Joining Nested Attribute Mapping that is not open.");
         }
 
         Object featureTypeName = getNestedFeatureType(feature);
@@ -319,9 +320,10 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
         }
 
         //skip all others
-        for ( DataAccessMappingFeatureIterator fIt : instance.featureIterators.values()) {
-            if (fIt != featureIterator) {
-                while (fIt.hasNext() && fIt.peekNextValue(nestedSourceExpression).equals(foreignKeyValue)) {
+        for ( Name name : instance.featureIterators.keySet()) {
+           DataAccessMappingFeatureIterator fIt = instance.featureIterators.get(name);
+           if (fIt != featureIterator) {
+                while (fIt.hasNext() && fIt.peekNextValue(instance.nestedSourceExpressions.get(name)).equals(foreignKeyValue)) {
                     fIt.skip();
                 }
             }
@@ -332,9 +334,9 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
     }
 
     /**
-     * If we have decided not to build the parent feature, we need to skip all rows that 
+     * If we have decided not to build the parent feature, we need to skip all rows that
      * were returned to build it
-     * 
+     *
      * @param caller
      * @param foreignKeyValue
      * @throws IOException
@@ -342,10 +344,10 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
     public void skip (Object caller, Object foreignKeyValue) throws IOException {
         Instance instance = instances.get(caller);
         if (instance == null) {
-            throw new IllegalArgumentException ("Trying to read Joining Nested Attribute Mapping that is not open.");            
+            throw new IllegalArgumentException ("Trying to read Joining Nested Attribute Mapping that is not open.");
         }
 
-        //skip all 
+        //skip all
         for ( Name name : instance.featureIterators.keySet()) {
             DataAccessMappingFeatureIterator fIt = instance.featureIterators.get(name);
             while (fIt.hasNext() && fIt.peekNextValue(instance.nestedSourceExpressions.get(name)).equals(foreignKeyValue)) {

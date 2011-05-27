@@ -112,6 +112,17 @@ public class InterpolationProperties {
     public InterpolationProperties() {
         this (new Properties());        
     }
+
+    /**
+     * Set Property
+     *
+     * @param propName
+     *            property name
+     * @value property value
+     */
+    public void setProperty(String propName, String value) {
+        theProperties.setProperty(propName, value);
+    }
     
     /**
      * Retrieve Property

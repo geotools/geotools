@@ -165,6 +165,7 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
         }
 
         DataAccessMappingFeatureIterator daFeatureIterator = (DataAccessMappingFeatureIterator) featureIterator;
+        daFeatureIterator.setForeignKey(nestedSourceExpression);
 
         instance.featureIterators.put(featureTypeName, daFeatureIterator);
         instance.nestedSourceExpressions.put(featureTypeName, nestedSourceExpression);

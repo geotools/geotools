@@ -73,7 +73,7 @@ import org.xml.sax.Attributes;
  * <p>
  * This iterator acts like a one-to-one mapping, producing a Feature of the target type for each
  * feature of the source type.
- * 
+ *
  * @author Gabriel Roldan, Axios Engineering
  * @author Ben Caradoc-Davies, CSIRO Exploration and Mining
  * @author Rini Angreani, Curtin University of Technology
@@ -106,10 +106,12 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
 
     protected FeatureCollection<SimpleFeatureType, SimpleFeature> sourceFeatures;
 
+    protected Expression foreignKey = null;
+
     private boolean isNextFeatureSet;
 
     private boolean isFiltered;
-    
+
     private ArrayList<String> filteredFeatures;
 
     public DataAccessMappingFeatureIterator(AppSchemaDataAccess store, FeatureTypeMapping mapping,
@@ -118,7 +120,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
     }
 
     /**
-     * 
+     *
      * @param store
      * @param mapping
      *            place holder for the target type, the surrogate FeatureSource and the mappings
@@ -142,7 +144,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
         if (isHasNextCalled()) {
             return !isNextSourceFeatureNull();
         }
-        
+
         setHasNextCalled(true);
 
         boolean exists = false;
@@ -184,7 +186,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
 
         return exists;
     }
-    
+
     protected Iterator<SimpleFeature> getSourceFeatureIterator() {
         return sourceFeatureIterator;
     }
@@ -192,7 +194,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
     protected boolean isSourceFeatureIteratorNull() {
         return getSourceFeatureIterator() == null;
     }
-    
+
     public Object peekNextValue(Expression prop) {
         Object o = prop.evaluate (curSrcFeature);
         if (o instanceof Attribute) {
@@ -200,11 +202,19 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
         }
         return o;
     }
-    
+
+    /**
+     * Only used for Joining, to make sure that rows with different foreign key
+     * aren't interpreted as one feature and merged.
+     */
+    public void setForeignKey(Expression key) {
+        foreignKey = key;
+    }
+
     protected void initialiseSourceFeatures(FeatureTypeMapping mapping, Query query)
             throws IOException {
         mappedSource = mapping.getSource();
-        
+
         //NC - joining query
         if (query instanceof JoiningQuery) {
             if (mappedSource instanceof JDBCFeatureSource) {
@@ -212,9 +222,9 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
             } else {
                 throw new IllegalArgumentException("Joining Query only works on JDBC Feature Source!");
             }
-            
+
         }
-        
+
         this.reprojection = query.getCoordinateSystemReproject();
         // we need to disable the max number of features retrieved so we can
         // sort them manually just in case the data is denormalised
@@ -228,19 +238,19 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
             }
         }
         if (!(this instanceof XmlMappingFeatureIterator)) {
-            this.sourceFeatureIterator = sourceFeatures.iterator();            
+            this.sourceFeatureIterator = sourceFeatures.iterator();
         }
-        
+
         // NC - joining nested atts
-        for (AttributeMapping attMapping : selectedMapping) { 
-            
+        for (AttributeMapping attMapping : selectedMapping) {
+
             if (attMapping instanceof JoiningNestedAttributeMapping) {
                 ((JoiningNestedAttributeMapping) attMapping).open(this, query);
-              
+
             }
-            
+
         }
-        
+
     }
 
     protected boolean unprocessedFeatureExists() {
@@ -264,7 +274,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
 			} else {
 				return feature.getIdentifier().getID();
 			}
-		} 
+		}
 		return mapping.getFeatureIdExpression().evaluate(feature, String.class);
 	}
 
@@ -313,12 +323,12 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
 
     /**
      * Sets the values of grouping attributes.
-     * 
+     *
      * @param target
      * @param source
      * @param attMapping
      * @param values
-     * 
+     *
      * @return Feature. Target feature sets with simple attributes
      */
     protected Attribute setAttributeValue(Attribute target, final Object source,
@@ -326,8 +336,8 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
 
         final Expression sourceExpression = attMapping.getSourceExpression();
         final AttributeType targetNodeType = attMapping.getTargetNodeInstance();
-        StepList xpath = inputXpath == null ? attMapping.getTargetXPath().clone() : inputXpath;       
-                       
+        StepList xpath = inputXpath == null ? attMapping.getTargetXPath().clone() : inputXpath;
+
         Map<Name, Expression> clientPropsMappings = attMapping.getClientProperties();
         boolean isNestedFeature = attMapping.isNestedAttribute();
         String id = null;
@@ -454,7 +464,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
             }
             Attribute instance = xpathAttributeBuilder.set(target, xpath, values, id,
                     targetNodeType, false, sourceExpression);
-            setClientProperties(instance, source, clientPropsMappings);      
+            setClientProperties(instance, source, clientPropsMappings);
 
             // required by XmlMappingFeatureIterator so it can be passed on for setting
             // client properties there
@@ -467,7 +477,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
     /**
      * Special handling for polymorphic mapping where the value of the attribute determines that
      * this attribute should be a placeholder for an xlink:href.
-     * 
+     *
      * @param xlinkHrefHints
      *            the xlink:href hints holding the URI
      * @param clientPropsMappings
@@ -498,7 +508,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
     /**
      * Special handling for polymorphic mapping. Works out the polymorphic type name by evaluating
      * the function on the feature, then set the relevant sub-type values.
-     * 
+     *
      * @param target
      *            The target feature to be encoded
      * @param id
@@ -548,7 +558,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
      * Set xlink:href client property for multi-valued chained features. This has to be specially
      * handled because we don't want to encode the nested features attributes, since it's already an
      * xLink. Also we need to eliminate duplicates.
-     * 
+     *
      * @param target
      *            The target attribute
      * @param clientPropsMappings
@@ -597,7 +607,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
         }
     }
 
-    protected void setNextFeature(String fId, ArrayList<Feature> features) throws IOException {
+    protected void setNextFeature(String fId, Object foreignKeyValue, ArrayList<Feature> features) throws IOException {
         if (features.isEmpty()) {
             features.add(curSrcFeature);
         }
@@ -605,7 +615,8 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
 
         while (getSourceFeatureIterator().hasNext()) {
             Feature next = getSourceFeatureIterator().next();
-            if (extractIdForFeature(next).equals(fId)) {
+            if (extractIdForFeature(next).equals(fId)
+                    && (foreignKey==null || foreignKey.evaluate(next).equals(foreignKeyValue))) {
                 features.add(next);
             } else {
                 curSrcFeature = next;
@@ -656,26 +667,30 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
 
         curSrcFeature = null;
     }
-    
+
     protected List<Feature> getSources() throws IOException {
         String id = extractIdForFeature(curSrcFeature);
-        
+
         ArrayList<Feature> sources = new ArrayList<Feature>();
         if (isFiltered) {
              setNextFilteredFeature(id, sources);
         } else {
-            setNextFeature(id, sources);
+            Object foreignKeyValue = null;
+            if (foreignKey != null) {
+                foreignKeyValue = peekNextValue(foreignKey);
+            }
+            setNextFeature(id, foreignKeyValue, sources);
         }
-        
+
         return sources;
     }
-    
+
     public void skipNestedMapping(AttributeMapping attMapping, List<Feature> sources) throws IOException {
         if (attMapping instanceof JoiningNestedAttributeMapping) {
-            
+
             for (Feature source : sources) {
                 Object value = getValues(attMapping.isMultiValued(), attMapping.getSourceExpression(), source);
-                
+
                 if (value instanceof Collection) {
                     for (Object val : (Collection) value){
                         ((JoiningNestedAttributeMapping)attMapping).skip(this, val);
@@ -687,10 +702,10 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
             }
         }
     }
-    
+
     public List<Feature> skip() throws IOException {
         setHasNextCalled(false);
-        
+
         List<Feature> sources = getSources();
         for (AttributeMapping attMapping : selectedMapping) {
             skipNestedMapping(attMapping, sources);
@@ -708,22 +723,22 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
 
         String id = extractIdForFeature(curSrcFeature);
         List<Feature> sources = getSources();
-                
+
         final AttributeDescriptor targetNode = mapping.getTargetFeature();
         final Name targetNodeName = targetNode.getName();
-        
+
         AttributeBuilder builder = new AttributeBuilder(attf);
         builder.setDescriptor(targetNode);
         Feature target = (Feature) builder.build(id);
 
-        for (AttributeMapping attMapping : selectedMapping) { 
+        for (AttributeMapping attMapping : selectedMapping) {
             try {
                 if (isTopLevelmapping(targetNodeName, attMapping.getTargetXPath())) {
                     // ignore the top level mapping for the Feature itself
                     // as it was already set
                     continue;
                 }
-                
+
                 // extract the values from multiple source features of the same id
                 // and set them to one built feature
                 if (attMapping.isMultiValued()) {
@@ -732,22 +747,22 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                     }
                 } else {
                     setAttributeValue(target, sources.get(0), attMapping, null, null, selectedProperties.get(attMapping));
-                    // When a feature is not multi-valued but still has multiple rows with the same ID in 
-                    // a denormalised table, by default app-schema only takes the first row and ignores 
-                    // the rest (see above). The following line is to make sure that the cursors in the 
-                    // 'joining nested mappings'skip any extra rows that were linked to those rows that are being ignored. 
-                    // Otherwise the cursor will stay there in the wrong spot and none of the following feature chaining 
-                    // will work. That can really only occur if the foreign key is not unique for the ID of the parent 
-                    // feature (otherwise all of those rows would be already passed when creating the feature based on 
-                    // the first row). This never really occurs in practice I have noticed, but it is a theoretic 
+                    // When a feature is not multi-valued but still has multiple rows with the same ID in
+                    // a denormalised table, by default app-schema only takes the first row and ignores
+                    // the rest (see above). The following line is to make sure that the cursors in the
+                    // 'joining nested mappings'skip any extra rows that were linked to those rows that are being ignored.
+                    // Otherwise the cursor will stay there in the wrong spot and none of the following feature chaining
+                    // will work. That can really only occur if the foreign key is not unique for the ID of the parent
+                    // feature (otherwise all of those rows would be already passed when creating the feature based on
+                    // the first row). This never really occurs in practice I have noticed, but it is a theoretic
                     // possibility, as there is no requirement for the foreign key to be unique per id.
                     skipNestedMapping(attMapping, sources.subList(1, sources.size()));
                 }
             } catch (Exception e) {
                 throw new RuntimeException("Error applying mapping with targetAttribute "
-                        + attMapping.getTargetXPath(), e);    
-            }             
-        }       
+                        + attMapping.getTargetXPath(), e);
+            }
+        }
         return target;
     }
 
@@ -772,15 +787,15 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
             sourceFeatureIterator = null;
             sourceFeatures = null;
             filteredFeatures = null;
-            
+
             //NC - joining nested atts
-            for (AttributeMapping attMapping : selectedMapping) {                
+            for (AttributeMapping attMapping : selectedMapping) {
                 if (attMapping instanceof JoiningNestedAttributeMapping) {
                     ((JoiningNestedAttributeMapping) attMapping).close(this);
-                  
-                }                
+
+                }
             }
-        }        
+        }
     }
 
     protected Object getValue(final Expression expression, Object sourceFeature) {
@@ -793,7 +808,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
 
     /**
      * Returns first matching attribute from provided root and xPath.
-     * 
+     *
      * @param root
      *            The root attribute to start searching from
      * @param xpath
@@ -820,7 +835,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
 
     /**
      * Return all matching properties from provided root attribute and xPath.
-     * 
+     *
      * @param root
      *            The root attribute to start searching from
      * @param xpath
@@ -861,7 +876,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
 
     /**
      * Checks if client property has xlink:ref in it, if the attribute is for chained features.
-     * 
+     *
      * @param clientPropsMappings
      *            the client properties mappings
      * @param isNested

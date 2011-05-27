@@ -33,7 +33,7 @@ import org.opengis.filter.Filter;
  * filter is present. Since join query between 2 or more tables isn't supported, the only way we can
  * query nested features is by applying the filter per simple feature (database row). This is done
  * in hasNext().
- * 
+ *
  * @author Rini Angreani, CSIRO Earth Science and Resource Engineering
  *
  *
@@ -77,14 +77,14 @@ public class FilteringMappingFeatureIterator extends DataAccessMappingFeatureIte
             if (filter.evaluate(curSrcFeature)) {
                return true;
             }
-                
-            setHasNextCalled(false);            
+
+            setHasNextCalled(false);
         }
         return false;
     }
 
     @Override
-    protected void setNextFeature(String fId, ArrayList<Feature> features) throws IOException {
+    protected void setNextFeature(String fId, Object foreignKey, ArrayList<Feature> features) throws IOException {
         int prevCount = 0;
         while (listFeatureIterator.hasPrevious()) {
             Feature prev = listFeatureIterator.previous();
@@ -102,6 +102,6 @@ public class FilteringMappingFeatureIterator extends DataAccessMappingFeatureIte
             listFeatureIterator.next();
         }
         // then add next features to same id
-        super.setNextFeature(fId, features);
+        super.setNextFeature(fId, foreignKey, features);
     }
 }

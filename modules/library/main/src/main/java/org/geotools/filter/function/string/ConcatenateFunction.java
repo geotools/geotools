@@ -46,8 +46,7 @@ public class ConcatenateFunction extends FunctionImpl {
      * Make the instance of FunctionName available in
      * a consistent spot.
      */
-    public static final FunctionName NAME = new FunctionNameImpl("Concatenate", "text 1", "text 2",
-        "text 3");
+    public static final FunctionName NAME = functionName("Concatenate", "text:String,2,");
 
     public ConcatenateFunction() {
         this.functionName = NAME;

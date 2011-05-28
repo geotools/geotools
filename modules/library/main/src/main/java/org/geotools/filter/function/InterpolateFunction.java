@@ -188,18 +188,18 @@ public class InterpolateFunction implements Function {
                                                                })
                                                        ));
         Parameter<String> method = new Parameter<String>("method",
-                String.class,
-                Text.text("method"),
-                Text.text("numeric or color"),
-                false,
-                0,
-                1,
-                METHOD_NUMERIC,
-                new KVP(Parameter.OPTIONS,
-                        Arrays.asList(new String[]{
-                                METHOD_NUMERIC, METHOD_COLOR
-                        })
-                ));
+                                                         String.class,
+                                                         Text.text("method"),
+                                                         Text.text("numeric or color"),
+                                                         false,
+                                                         0,
+                                                         1,
+                                                         METHOD_NUMERIC,
+                                                         new KVP(Parameter.OPTIONS,
+                                                                 Arrays.asList(new String[]{
+                                                                         METHOD_NUMERIC, METHOD_COLOR
+                                                                 })
+                                                         ));
 
         NAME = new FunctionNameImpl("Interpolate", lookup,data1,value1,pairs,mode,method);
     }

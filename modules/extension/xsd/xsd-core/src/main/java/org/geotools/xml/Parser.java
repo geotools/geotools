@@ -480,10 +480,6 @@ public class Parser {
         parser.setProperty("http://apache.org/xml/properties/schema/external-schemaLocation",
             schemaLocation.toString());
 
-        //set the default location
-        parser.setProperty("http://apache.org/xml/properties/schema/external-noNamespaceSchemaLocation",
-            handler.getConfiguration().getSchemaFileURL());
-
         return parser;
     }
 

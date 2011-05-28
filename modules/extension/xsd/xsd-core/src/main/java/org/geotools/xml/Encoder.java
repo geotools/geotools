@@ -50,6 +50,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.xsd.XSDAttributeDeclaration;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDFactory;
+import org.eclipse.xsd.XSDForm;
 import org.eclipse.xsd.XSDModelGroup;
 import org.eclipse.xsd.XSDNamedComponent;
 import org.eclipse.xsd.XSDParticle;
@@ -899,7 +900,7 @@ public class Encoder {
                     schemaLocations = null;
                 }
 
-                start(entry.encoding);
+                start(entry.encoding, entry.element);
 
                 //TODO: this method of getting at properties wont maintain order very well, need
                 // to come up with a better system that is capable of hanlding feature types
@@ -1108,7 +1109,7 @@ O:
         return null;
     }
 
-    protected void start(Element element) throws SAXException {
+    protected void start(Element element, XSDElementDeclaration declaration) throws SAXException {
         String uri = element.getNamespaceURI();
         String local = element.getLocalName();
 
@@ -1116,12 +1117,15 @@ O:
 
         NamespaceSupport namespaces = this.namespaces;
 
-        if (namespaceAware) {
+        // declaration == null -> gml3 envelope encoding test failing
+        // declaration.getSchema() == null -> wfs 2.0 feature collection encoding test failing
+        if (namespaceAware && (declaration == null || declaration.isGlobal() || 
+        		declaration.getSchema() == null || 
+        		declaration.getSchema().getElementFormDefault() == XSDForm.QUALIFIED_LITERAL)) {
             uri = (uri != null) ? uri : namespaces.getURI("");
             qName = namespaces.getPrefix(uri) + ":" + qName;
         } else {
             uri = "";
-            namespaces = null;
         }
 
         DOMAttributes atts = new DOMAttributes(element.getAttributes(), namespaces);
@@ -1142,8 +1146,10 @@ O:
             Node node = (Node) element.getChildNodes().item(i);
 
             if (node instanceof Element) {
-                start((Element) node);
-                end((Element) node);
+                Element child = (Element) node;
+				start(child, Schemas.getChildElementDeclaration(declaration, 
+						new QName(child.getNamespaceURI(), child.getNodeName())));
+                end(child);
             }
         }
 

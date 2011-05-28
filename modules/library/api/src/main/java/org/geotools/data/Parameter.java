@@ -217,13 +217,13 @@ public class Parameter<T> implements org.opengis.parameter.Parameter<T>{
      * @param description Human readable description
      * @param metadata Hints to the user interface (read the javadocs for each metadata key)
      * 
-     * @see CRS
-     * @see ELEMENT
-     * @see FEATURE_TYPE
-     * @see IS_PASSWORD
-     * @see LENGTH
-     * @see MAX
-     * @see MIN
+     * @see #CRS
+     * @see #ELEMENT
+     * @see #FEATURE_TYPE
+     * @see #IS_PASSWORD
+     * @see #LENGTH
+     * @see #MAX
+     * @see #MIN
      */
      public Parameter(String key, Class<T> type, InternationalString title,
      		InternationalString description, Map<String,Object> metadata ) {
@@ -236,22 +236,22 @@ public class Parameter<T> implements org.opengis.parameter.Parameter<T>{
      * @param title Human readable title used for use in a user interface
      * @param description Human readable description
      * @param required true if the value is required
-     * @param min Minimum value; or null if not needed
-     * @param max Maximum value; or null if not needed
+     * @param min Minimum value; or -1 if not needed
+     * @param max Maximum value; or -1 for unbound
      * @param sample Sample value; may be used as a default in a user interface
      * @param metadata Hints to the user interface (read the javadocs for each metadata key)
      * 
-     * @see CRS
-     * @see ELEMENT
-     * @see FEATURE_TYPE
-     * @see IS_PASSWORD
-     * @see LENGTH
-     * @see MAX
-     * @see MIN
+     * @see #CRS
+     * @see #ELEMENT
+     * @see #FEATURE_TYPE
+     * @see #IS_PASSWORD
+     * @see #LENGTH
+     * @see #MAX
+     * @see #MIN
      */
     @SuppressWarnings("unchecked")
     public Parameter(String key, Class<T> type, InternationalString title,
-    				 InternationalString description,
+                     InternationalString description,
                      boolean required, int min, int max, Object sample, 
                      Map<String,Object> metadata) {
         this.key = key;
@@ -280,8 +280,8 @@ public class Parameter<T> implements org.opengis.parameter.Parameter<T>{
      * 
      * @param key machine readable key for use in a java.util.Map
      * @param type Java class for the expected value
-     * @param min Minimum value of occurrences
-     * @param max Maximum value of occurrences
+     * @param min Minimum value of occurrences, -1 if not needed
+     * @param max Maximum value of occurrences, -1 for unbound
      */
     public Parameter(String key, Class<T> type, int min, int max) {
         this(key, type, null, null, min > 0, min, max, null, null);

@@ -23,9 +23,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.geotools.data.Parameter;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.capability.FunctionNameImpl;
+import org.geotools.text.Text;
 import org.geotools.util.Converters;
+import org.geotools.util.KVP;
 import org.opengis.filter.FilterFactory2;
 
 import org.opengis.filter.capability.FunctionName;
@@ -33,6 +37,8 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.ExpressionVisitor;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
+
+import com.sun.xml.internal.bind.marshaller.MinimumEscapeHandler;
 
 /**
  * This is an implemenation of the Interpolate function as defined by
@@ -158,14 +164,45 @@ public class InterpolateFunction implements Function {
     private final List<Expression> parameters;
     private final Literal fallback;
 
-
     /**
      * Make the instance of FunctionName available in
      * a consistent spot.
      */
-    public static final FunctionName NAME = new FunctionNameImpl("Interpolate", "LookupValue",
-        "Data 1", "Value 1", "Data 2", "Value 2", "linear, cosine or cubic", "numeric or color");
+    public static final FunctionName NAME;
+    static {
+        Parameter<Object> lookup = new Parameter<Object>("lookup",Object.class,1,1);
+        Parameter<Object> data1 = new Parameter<Object>("data",Object.class,1,1);
+        Parameter<Object> value1 = new Parameter<Object>("value",Object.class,1,1);
+        Parameter<Object> pairs = new Parameter<Object>("data value pairs",Object.class,0,Integer.MAX_VALUE);
+        Parameter<String> mode = new Parameter<String>("mode",
+                                                       String.class,
+                                                       Text.text("mode"),
+                                                       Text.text("linear, cosine or cubic"),
+                                                       true,
+                                                       1,
+                                                       1,
+                                                       MODE_LINEAR,
+                                                       new KVP(Parameter.OPTIONS,
+                                                               Arrays.asList(new String[]{
+                                                                       MODE_LINEAR, MODE_COSINE, MODE_CUBIC
+                                                               })
+                                                       ));
+        Parameter<String> method = new Parameter<String>("method",
+                String.class,
+                Text.text("method"),
+                Text.text("numeric or color"),
+                false,
+                0,
+                1,
+                METHOD_NUMERIC,
+                new KVP(Parameter.OPTIONS,
+                        Arrays.asList(new String[]{
+                                METHOD_NUMERIC, METHOD_COLOR
+                        })
+                ));
 
+        NAME = new FunctionNameImpl("Interpolate", lookup,data1,value1,pairs,mode,method);
+    }
     public InterpolateFunction() {
         this( new ArrayList<Expression>(), null);
     }

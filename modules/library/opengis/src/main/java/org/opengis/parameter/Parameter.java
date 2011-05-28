@@ -47,11 +47,13 @@ public interface Parameter<T> {
     
     /**
      * The minimum number of occurrences of the parameter.
+     * @return minimum number of occurrences, or -1 if no minimum needed
      */
     int getMinOccurs();
     
     /**
      * The maximum number of occurrences of the parameter.
+     * @return maximum number of occurences, or -1 for unbound
      */
     int getMaxOccurs();
     

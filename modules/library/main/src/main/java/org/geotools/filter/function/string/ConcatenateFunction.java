@@ -64,14 +64,15 @@ public class ConcatenateFunction extends FunctionImpl {
 
     public Object evaluate(Object feature) {
         StringBuffer text = new StringBuffer();
-        for( Expression expression: (List<Expression>) getParameters() ){
-        	try {
-        		String str = (String) expression.evaluate(feature, String.class);
-        		text.append( str );
-        	}
-        	catch( Exception couldNotCompute){
-        		// log me please
-        	}
+        for (Expression expression : (List<Expression>) getParameters()) {
+            try {
+                String str = (String) expression.evaluate(feature, String.class);
+                if (str != null) {
+                    text.append(str);
+                }
+            } catch (Exception couldNotCompute) {
+                // log me please
+            }
         }
         return text.toString();
     }

@@ -38,8 +38,6 @@ import org.opengis.filter.expression.ExpressionVisitor;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 
-import com.sun.xml.internal.bind.marshaller.MinimumEscapeHandler;
-
 /**
  * This is an implemenation of the Interpolate function as defined by
  * OGC Symbology Encoding (SE) 1.1 specification.

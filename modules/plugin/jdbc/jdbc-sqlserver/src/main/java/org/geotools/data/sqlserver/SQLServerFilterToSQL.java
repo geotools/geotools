@@ -20,6 +20,7 @@ import java.io.IOException;
 
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.filter.FilterCapabilities;
+import org.geotools.jdbc.SQLDialect;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.BBOX;
@@ -44,6 +45,7 @@ public class SQLServerFilterToSQL extends FilterToSQL {
     @Override
     protected FilterCapabilities createFilterCapabilities() {
         FilterCapabilities caps = super.createFilterCapabilities();
+        caps.addAll(SQLDialect.BASE_DBMS_CAPABILITIES);
         caps.addType(BBOX.class);
         caps.addType(Contains.class);
         caps.addType(Crosses.class);

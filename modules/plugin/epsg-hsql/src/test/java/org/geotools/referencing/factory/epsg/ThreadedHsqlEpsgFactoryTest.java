@@ -57,6 +57,8 @@ public class ThreadedHsqlEpsgFactoryTest {
         if( factory == null ){
             factory = (ThreadedHsqlEpsgFactory) ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG", null );
         }
+        // force in the standard timeout
+        factory.setTimeout(30 * 60 * 1000);
         if( finder == null ){
             finder = factory.getIdentifiedObjectFinder(CoordinateReferenceSystem.class);
         }
@@ -256,4 +258,28 @@ public class ThreadedHsqlEpsgFactoryTest {
         assertEquals(0.219, params[0].ppm, EPS);
     }
 
+    @Test
+    public void testDelay() throws Exception {
+        // force a short timeout
+        factory.setTimeout(200);
+        
+        // make it do some work
+        factory.createCoordinateReferenceSystem("EPSG:4326");
+        factory.getAuthorityCodes(CoordinateReferenceSystem.class);
+        
+        // sleep and force gc to allow the backing store to be released
+        Thread.currentThread().sleep(2000);
+        for(int i = 0; i < 6; i++) {
+            System.gc(); System.runFinalization();
+        }
+        Thread.currentThread().sleep(2000);
+        
+        // check it has been disposed of
+        assertFalse(factory.isConnected());
+        
+        // see if it's able to reconnect
+        factory.createCoordinateReferenceSystem("EPSG:4327");
+        factory.getAuthorityCodes(CoordinateReferenceSystem.class);
+        assertTrue(factory.isConnected());
+    }
 }

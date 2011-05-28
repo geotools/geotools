@@ -218,6 +218,29 @@ public abstract class DeferredAuthorityFactory extends BufferedAuthorityFactory
             TIMER = null;
         }
     }
+    
+    /**
+     * Disposes of the backing store
+     * @throws FactoryException
+     */
+    protected synchronized void disposeBackingStore() {
+        try {
+            if(backingStore != null) {
+                LOGGER.log(Level.INFO, "Disposing " + getClass() + " backing store");
+                backingStore.dispose();
+                backingStore = null;
+            }
+        } catch (FactoryException exception) {
+            backingStore = null;
+            final LogRecord record = Loggings.format(Level.WARNING,
+                    LoggingKeys.CANT_DISPOSE_BACKING_STORE);
+            record.setSourceMethodName("run");
+            record.setSourceClassName(Disposer.class.getName());
+            record.setThrown(exception);
+            record.setLoggerName(LOGGER.getName());
+            LOGGER.log(record);
+        }
+    }
 
     /**
      * The task for closing the backing store after the timeout.
@@ -231,18 +254,8 @@ public abstract class DeferredAuthorityFactory extends BufferedAuthorityFactory
                 }
                 if (cancel()) {
                     disposer = null;
-                    if (backingStore != null) try {
-                        backingStore.dispose();
-                        backingStore = null;
-                    } catch (FactoryException exception) {
-                        backingStore = null;
-                        final LogRecord record = Loggings.format(Level.WARNING,
-                                LoggingKeys.CANT_DISPOSE_BACKING_STORE);
-                        record.setSourceMethodName("run");
-                        record.setSourceClassName(Disposer.class.getName());
-                        record.setThrown(exception);
-                        record.setLoggerName(LOGGER.getName());
-                        LOGGER.log(record);
+                    if (backingStore != null) { 
+                        disposeBackingStore();
                     }
                     // Needed in order to lets GC do its job.
                     hints.remove(Hints.DATUM_AUTHORITY_FACTORY);

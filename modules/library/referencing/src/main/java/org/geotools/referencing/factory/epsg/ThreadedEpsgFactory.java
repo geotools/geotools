@@ -135,7 +135,12 @@ public class ThreadedEpsgFactory extends DeferredAuthorityFactory
     /**
      * The data source, or {@code null} if the connection has not yet been etablished.
      */
-    private DataSource datasource;
+    protected DataSource datasource;
+    
+    /**
+     * Whether the DataSource is created along with the backing store, or it's a stable, long lived one
+     */
+    protected boolean dynamicDataSource = true;
 
     /**
      * Constructs an authority factory using the default set of factories.
@@ -184,10 +189,24 @@ public class ThreadedEpsgFactory extends DeferredAuthorityFactory
             datasource = (DataSource) hint;
             hints.put(Hints.EPSG_DATA_SOURCE, datasource);
             datasourceName = DATASOURCE_NAME;
-            //datasourceName = GeoTools.fixName(DATASOURCE_NAME);
+            dynamicDataSource = false;
         }
         factories = ReferencingFactoryContainer.instance(userHints);
-        setTimeout(30*60*1000L); // Close the connection after at least 30 minutes of inactivity.
+        long timeout = 30 * 60 * 1000;
+        String defaultTimeout = System.getProperty("org.geotools.epsg.factory.timeout", String.valueOf(30 * 60 * 1000));
+        try {
+            timeout = Long.valueOf(defaultTimeout);
+        } catch(NumberFormatException e) {
+            LOGGER.log(Level.WARNING, "Invalid value for org.geotools.epsg.factory.timeout, " +
+            		"using the default (30 minutes) instead");
+        }
+        // in case of negative timeout, we don't release the data source and backing store
+        if(timeout > 0) {
+            LOGGER.log(Level.INFO, "Setting the EPSG factory " + getClass().getName() + " to a " + timeout + "ms timeout");
+            setTimeout(timeout); // Close the connection after 1 second of inactivity.
+        } else {
+            LOGGER.log(Level.INFO, "The EPSG factory " + getClass().getName() + " will not timeout");
+        }
     }
 
     /**
@@ -451,6 +470,20 @@ public class ThreadedEpsgFactory extends DeferredAuthorityFactory
             return ((DirectEpsgFactory) backingStore).canDispose();
         }
         return super.canDisposeBackingStore(backingStore);
+    }
+    
+    @Override
+    protected void disposeBackingStore() {
+        super.disposeBackingStore();
+        if(dynamicDataSource) {
+            datasource = null;
+        }
+    }
+    
+    @Override
+    public synchronized void dispose() throws FactoryException {
+        super.dispose();
+        datasource = null;
     }
 
 }

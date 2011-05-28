@@ -206,6 +206,9 @@ public class ThreadedHsqlEpsgFactory extends ThreadedEpsgFactory {
      * Returns a data source for the HSQL database.
      */
     protected DataSource createDataSource() throws SQLException {
+        final Logger logger = Logging.getLogger(LOGGER);
+        logger.log(Level.INFO, "Building new data source for " + getClass().getName());
+        
         DataSource candidate = super.createDataSource();
         if (candidate instanceof jdbcDataSource) {
             return candidate;
@@ -263,6 +266,9 @@ public class ThreadedHsqlEpsgFactory extends ThreadedEpsgFactory {
      * @throws SQLException if connection to the database failed.
      */
     protected AbstractAuthorityFactory createBackingStore(final Hints hints) throws SQLException {
+        final Logger logger = Logging.getLogger(LOGGER);
+        logger.log(Level.INFO, "Building backing store for " + getClass().getName());
+
         final DataSource source = getDataSource();
         final File directory    = getDirectory(source);
         directory.mkdirs();
@@ -280,7 +286,6 @@ public class ThreadedHsqlEpsgFactory extends ThreadedEpsgFactory {
                      * a full SQL statement. For this plugin however, we have compressed "INSERT
                      * INTO" statements using Compactor class in this package.
                      */
-                    final Logger logger = Logging.getLogger(LOGGER);
                     final LogRecord record = Loggings.format(Level.INFO,
                             LoggingKeys.CREATING_CACHED_EPSG_DATABASE_$1, VERSION);
                     record.setLoggerName(logger.getName());
@@ -358,4 +363,5 @@ public class ThreadedHsqlEpsgFactory extends ThreadedEpsgFactory {
         
         return lock;
     }
+
 }

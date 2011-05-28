@@ -767,11 +767,12 @@ public final class ImageUtilities {
      */
     public static void disposePlanarImageChain(PlanarImage pi) {
     	Utilities.ensureNonNull("PlanarImage", pi);
-        disposePlanarImageChain(pi, null);
+        disposePlanarImageChain(pi, new HashSet<PlanarImage>());
     }
     
 	private static void disposePlanarImageChain(PlanarImage pi, HashSet<PlanarImage> visited) {
         Vector sinks = pi.getSinks();
+        // check all the sinks (the image might be in the middle of a chain)
         if(sinks != null) {
             for (Object sink: sinks) {
                 if(sink instanceof PlanarImage && !visited.contains(sink))
@@ -781,8 +782,11 @@ public final class ImageUtilities {
                 }
             }
         }
+        // dispose the image itself
         pi.dispose();
         visited.add(pi);
+        
+        // check the image sources
         Vector sources = pi.getSources();
         if(sources != null) {
             for (Object child : sources) {
@@ -790,6 +794,21 @@ public final class ImageUtilities {
                     disposePlanarImageChain((PlanarImage) child, visited);
                 else if(child instanceof BufferedImage) {
                     ((BufferedImage) child).flush();
+                }
+            }
+        }
+        
+        // ImageRead might also hold onto a image input stream that we have to close
+        if(pi instanceof RenderedOp) {
+            RenderedOp op = (RenderedOp) pi;
+            for(Object param : op.getParameterBlock().getParameters()) {
+                if(param instanceof ImageInputStream) {
+                    ImageInputStream iis = (ImageInputStream) param;
+                    try {
+                        iis.close();
+                    } catch(IOException e) {
+                        // fine, we tried
+                    }
                 }
             }
         }

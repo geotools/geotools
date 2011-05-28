@@ -26,6 +26,7 @@ import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
 import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -46,6 +47,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.media.jai.Interpolation;
+import javax.media.jai.JAI;
+import javax.media.jai.PlanarImage;
 
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
@@ -89,6 +94,8 @@ import org.geotools.renderer.label.LabelCacheImpl.LabelRenderingMode;
 import org.geotools.renderer.lite.gridcoverage2d.GridCoverageRenderer;
 import org.geotools.renderer.style.SLDStyleFactory;
 import org.geotools.renderer.style.Style2D;
+import org.geotools.resources.coverage.FeatureUtilities;
+import org.geotools.resources.image.ImageUtilities;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.RasterSymbolizer;
@@ -2960,8 +2967,13 @@ public final class StreamingRenderer implements GTRenderer {
                 } finally {
                     // we need to try and dispose this coverage if was created on purpose for
                     // rendering
-                    if (coverage != null && disposeCoverage)
+                    if (coverage != null && disposeCoverage) {
                         coverage.dispose(true);
+                        final RenderedImage image = coverage.getRenderedImage();
+                        if(image instanceof PlanarImage) {
+                            ImageUtilities.disposePlanarImageChain((PlanarImage) image);
+                        }
+                    }
                 }
                 
                 if (LOGGER.isLoggable(Level.FINE)) {

@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- edited with XMLSpy v2006 sp2 U (http://www.altova.com) by Peter Schut (Agriculture & Agri-Food Canada) -->
-<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:wps="http://www.opengis.net/wps/1.0.0" targetNamespace="http://www.opengis.net/wps/1.0.0" elementFormDefault="qualified" version="1.0.0" xml:lang="en">
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:wps="http://www.opengis.net/wps/1.0.0" targetNamespace="http://www.opengis.net/wps/1.0.0" xml:lang="en" version="1.0.0 2010-02-03">
 	<annotation>
 		<appinfo>$Id: wpsDescribeProcess_response.xsd 2007-10-09 $</appinfo>
 		<documentation>
 			<description>This XML Schema Document encodes the WPS DescribeProcess operation response.</description>
-			<copyright>Copyright (c) 2007 OGC, All Rights Reserved. 
-For conditions, see OGC Software Notice http://www.opengeospatial.org/ogc/software</copyright>
+			<copyright>
+	WPS is an OGC Standard.
+	Copyright (c) 2007,2010 Open Geospatial Consortium, Inc. All Rights Reserved.
+	To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .
+			</copyright>
 		</documentation>
 	</annotation>
 	<!-- =============================================================
@@ -15,7 +17,7 @@ For conditions, see OGC Software Notice http://www.opengeospatial.org/ogc/softwa
 	<include schemaLocation="common/ResponseBaseType.xsd"/>
 	<include schemaLocation="common/DescriptionType.xsd"/>
 	<include schemaLocation="common/ProcessBriefType.xsd"/>
-	<import namespace="http://www.opengis.net/ows/1.1" schemaLocation="../../ows/1.1.0/owsAll.xsd"/>
+	<import namespace="http://www.opengis.net/ows/1.1" schemaLocation="http://schemas.opengis.net/ows/1.1.0/owsAll.xsd"/>
 	<!-- =============================================================
 		elements and types
 	============================================================== -->

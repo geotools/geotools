@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:wps="http://www.opengis.net/wps/1.0.0" targetNamespace="http://www.opengis.net/wps/1.0.0" elementFormDefault="qualified" version="1.0.0" xml:lang="en">
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:wps="http://www.opengis.net/wps/1.0.0" targetNamespace="http://www.opengis.net/wps/1.0.0" elementFormDefault="qualified" xml:lang="en" version="1.0.0 2010-02-03">
 	<annotation>
 		<appinfo>$Id: wpsGetCapabilities_response.xsd 2007-10-09 $</appinfo>
 		<documentation>
 			<description>This XML Schema Document encodes the WPS GetCapabilities operation response.</description>
-			<copyright>Copyright (c) 2007 OGC, All Rights Reserved. 
-For conditions, see OGC Software Notice http://www.opengeospatial.org/ogc/software</copyright>
+			<copyright>
+	WPS is an OGC Standard.
+	Copyright (c) 2007,2010 Open Geospatial Consortium, Inc. All Rights Reserved.
+	To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .
+			</copyright>
 		</documentation>
 	</annotation>
 	<!-- ==============================================================
@@ -13,8 +16,8 @@ For conditions, see OGC Software Notice http://www.opengeospatial.org/ogc/softwa
 	============================================================== -->
 	<include schemaLocation="common/WSDL.xsd"/>
 	<include schemaLocation="common/ProcessBriefType.xsd"/>
-	<import namespace="http://www.opengis.net/ows/1.1" schemaLocation="../../ows/1.1.0/owsAll.xsd"/>
-	<import namespace="http://www.w3.org/1999/xlink" schemaLocation="../../xlink/1.0.0/xlinks.xsd"/>
+	<import namespace="http://www.opengis.net/ows/1.1" schemaLocation="http://schemas.opengis.net/ows/1.1.0/owsAll.xsd"/>
+	<import namespace="http://www.w3.org/1999/xlink" schemaLocation="http://schemas.opengis.net/xlink/1.0.0/xlinks.xsd"/>
 	<import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/2001/xml.xsd"/>
 	<!-- ==============================================================
 		elements and types

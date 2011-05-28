@@ -188,7 +188,7 @@ public class PostGISDialect extends BasicSQLDialect {
     @Override
     public void encodeGeometryEnvelope(String tableName, String geometryColumn,
             StringBuffer sql) {
-        sql.append("ST_AsText(ST_Force_2D(Envelope(");
+        sql.append("ST_AsText(ST_Force_2D(ST_Envelope(");
         sql.append("ST_Extent(\"" + geometryColumn + "\"::geometry))))");
     }
     
@@ -650,7 +650,7 @@ public class PostGISDialect extends BasicSQLDialect {
                             + "\"" + tableName + "\"" //
                             + " ADD CONSTRAINT \"enforce_dims_" // 
                             + gd.getLocalName() + "\""// 
-                            + " CHECK (ndims(\"" + gd.getLocalName() + "\")" //
+                            + " CHECK (st_ndims(\"" + gd.getLocalName() + "\")" //
                             + " = 2)";
                     LOGGER.fine(sql);
                     st.execute(sql);
@@ -800,4 +800,4 @@ public class PostGISDialect extends BasicSQLDialect {
         return getVersion(cx).compareTo(V_1_5_0) >= 0;
     }
     
-    }
+}

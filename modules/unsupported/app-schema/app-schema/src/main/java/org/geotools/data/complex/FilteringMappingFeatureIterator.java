@@ -83,7 +83,7 @@ public class FilteringMappingFeatureIterator extends DataAccessMappingFeatureIte
     }
 
     @Override
-    protected void setNextFeature(String fId, Object foreignKey, ArrayList<Feature> features) throws IOException {
+    protected void setNextFeature(String fId, List<Object> foreignIds, ArrayList<Feature> features) throws IOException {
         int prevCount = 0;
         while (listFeatureIterator.hasPrevious()) {
             Feature prev = listFeatureIterator.previous();
@@ -101,6 +101,6 @@ public class FilteringMappingFeatureIterator extends DataAccessMappingFeatureIte
             listFeatureIterator.next();
         }
         // then add next features to same id
-        super.setNextFeature(fId, foreignKey, features);
+        super.setNextFeature(fId, foreignIds, features);
     }
 }

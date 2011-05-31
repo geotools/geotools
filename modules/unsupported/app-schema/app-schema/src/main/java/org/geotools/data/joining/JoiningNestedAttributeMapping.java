@@ -35,6 +35,7 @@ import org.geotools.data.complex.filter.XPath.StepList;
 import org.geotools.factory.Hints;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
+import org.geotools.jdbc.JoiningJDBCFeatureSource;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.expression.Expression;
@@ -165,7 +166,15 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
         }
 
         DataAccessMappingFeatureIterator daFeatureIterator = (DataAccessMappingFeatureIterator) featureIterator;
-        daFeatureIterator.setForeignKey(nestedSourceExpression);
+        
+        List<Expression> foreignIds = new ArrayList<Expression>();
+        for (int i=0; i<query.getJoins().size(); i++) {
+            for (int j=0; j<query.getJoins().get(i).getSortBy().length; j++) {
+                foreignIds.add ( filterFac.property(JoiningJDBCFeatureSource.FOREIGN_ID + "_" + i + "_" + j));                    
+            }
+        }
+        
+        daFeatureIterator.setForeignIds(foreignIds);
 
         instance.featureIterators.put(featureTypeName, daFeatureIterator);
         instance.nestedSourceExpressions.put(featureTypeName, nestedSourceExpression);

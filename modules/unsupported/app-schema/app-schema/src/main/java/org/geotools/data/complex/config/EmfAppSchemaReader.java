@@ -32,7 +32,6 @@ import org.geotools.gml3.GMLConfiguration;
 import org.geotools.xml.AppSchemaCatalog;
 import org.geotools.xml.AppSchemaConfiguration;
 import org.geotools.xml.AppSchemaResolver;
-import org.geotools.xml.AppSchemaXSD;
 import org.geotools.xml.Binding;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.SchemaIndex;

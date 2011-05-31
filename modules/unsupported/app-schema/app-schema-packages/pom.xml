@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
@@ -10,32 +9,55 @@
         <artifactId>app-schema</artifactId>
         <version>8-SNAPSHOT</version>
     </parent>
- 
+
     <groupId>org.geotools</groupId>
     <artifactId>app-schema-packages</artifactId>
-    <name>Application schema packages</name>
     <packaging>pom</packaging>
+    <name>Application Schema Packages</name>
 
     <scm>
         <connection>scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema-packages/</connection>
         <url>http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema-packages/</url>
     </scm>
-  
+
     <description>
         This is an aggregating pom used to build remote schema resources into
         maven artifacts so they can be used in offline GeoTools testing.
         This module should not be part of the standard build.
         Modules below have no parent, by design.
+        
+        Once artifacts are built with "mvn clean install", selected
+        artifacts can be deployed to the osgeo GeoTools maven repository.
+        See the developer manual:
+        http://docs.codehaus.org/display/GEOT/How+to+add+a+3rd+party+jar
+
+        Please be sure to deploy with the provided pom.xml, so that
+        dependency information is preserved.
+
+        For example, to deploy cgiutilities-1.0 and geosciml-2.0 (only),
+        under Linux, use something like:
+
+            for groupId in cgiutilities-1.0 geosciml-2.0; do
+                mvn deploy:deploy-file \
+                    -DrepositoryId=osgeo \
+                    -Durl=dav:http://download.osgeo.org/webdav/geotools/ \
+                    -DpomFile=$groupId/pom.xml \
+                    -Dfile=`find $groupId -name "*.jar"`
+            done
+        
     </description>
 
     <developers>
         <developer>
             <name>Ben Caradoc-Davies</name>
+            <id>bencaradocdavies</id>
             <email>Ben.Caradoc-Davies@csiro.au</email>
             <organization>CSIRO Earth Science and Resource Engineering </organization>
             <roles>
-                <role>packager</role>
+                <role>Module Maintainer</role>
+                <role>Schema Packager</role>
             </roles>
+            <timezone>8</timezone>
         </developer>
     </developers>
 
@@ -65,26 +87,5 @@
         <module>xlink-1.0</module>
         <module>xml-1.0</module>
     </modules>
-
-    <!--
-        Once artifacts are built with "mvn clean install", selected
-        artifacts can be deployed to the osgeo GeoTools maven repository.
-        See the developer manual:
-        http://docs.codehaus.org/display/GEOT/How+to+add+a+3rd+party+jar
-
-        Please be sure to deploy with the provided pom.xml, so that
-        dependency information is preserved.
-
-        For example, to deploy cgiutilities-1.0 and geosciml-2.0 (only),
-        under Linux, use something like:
-
-            for groupId in cgiutilities-1.0 geosciml-2.0; do
-                mvn deploy:deploy-file \
-                    -DrepositoryId=osgeo \
-                    -Durl=dav:http://download.osgeo.org/webdav/geotools/ \
-                    -DpomFile=$groupId/pom.xml \
-                    -Dfile=`find $groupId -name "*.jar"`
-            done
-    -->
 
 </project>

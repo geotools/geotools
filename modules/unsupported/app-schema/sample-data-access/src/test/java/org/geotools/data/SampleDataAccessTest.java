@@ -17,26 +17,20 @@
 
 package org.geotools.data;
 
-import java.util.Iterator;
+import junit.framework.TestCase;
 
-import org.geotools.data.DataAccess;
-import org.geotools.data.DataAccessFinder;
-import org.geotools.data.FeatureSource;
-import org.geotools.data.SampleDataAccessData;
-import org.geotools.data.SampleDataAccessFactory;
 import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.FeatureIterator;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
-
-import junit.framework.TestCase;
 
 /**
  * Test for {@link SampleDataAccess}.
  * 
  * @author Ben Caradoc-Davies, CSIRO Exploration and Mining
  * @version $Id$
- *
- *
+ * 
+ * 
  * @source $URL$
  * @since 2.6
  */
@@ -54,7 +48,7 @@ public class SampleDataAccessTest extends TestCase {
                 .getFeatureSource(SampleDataAccessData.MAPPEDFEATURE_TYPE_NAME);
         FeatureCollection<FeatureType, Feature> featureCollection = featureSource.getFeatures();
         int count = 0;
-        for (Iterator<Feature> iterator = featureCollection.iterator(); iterator.hasNext(); iterator
+        for (FeatureIterator<Feature> iterator = featureCollection.features(); iterator.hasNext(); iterator
                 .next()) {
             count++;
         }

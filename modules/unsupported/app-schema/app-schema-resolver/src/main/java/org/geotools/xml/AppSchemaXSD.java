@@ -97,7 +97,7 @@ public class AppSchemaXSD extends XSD {
     /**
      * @see org.geotools.xml.XSD#addDependencies(java.util.Set)
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     protected void addDependencies(Set dependencies) {
         if (configuration != null) {

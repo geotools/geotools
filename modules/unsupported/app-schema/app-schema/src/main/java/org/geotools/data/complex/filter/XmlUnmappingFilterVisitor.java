@@ -17,20 +17,11 @@
 
 package org.geotools.data.complex.filter;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import java.util.logging.Logger;
 
-import org.geotools.data.complex.AttributeMapping;
 import org.geotools.data.complex.FeatureTypeMapping;
-import org.geotools.data.complex.XmlFeatureTypeMapping;
-import org.geotools.data.complex.filter.XPath.StepList;
-
 import org.geotools.filter.FilterFactoryImpl;
 import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Expression;
 
 /**
  * A Filter visitor that customises UnMappingFilterVisitor to map to xpath expressions.

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
@@ -18,14 +17,17 @@
     <developers>
         <developer>
             <name>Ben Caradoc-Davies</name>
+            <id>bencaradocdavies</id>
             <email>Ben.Caradoc-Davies@csiro.au</email>
             <organization>CSIRO Earth Science and Resource Engineering </organization>
             <roles>
-                <role>packager</role>
+                <role>Module Maintainer</role>
+                <role>Schema Packager</role>
             </roles>
+            <timezone>8</timezone>
         </developer>
     </developers>
-    
+
     <dependencies>
         <dependency>
             <groupId>org.geotools.schemas</groupId>
@@ -45,9 +47,9 @@
     </dependencies>
 
     <build>
-    
+
         <plugins>
-            
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
@@ -63,22 +65,23 @@
                         <phase>generate-resources</phase>
                         <configuration>
                             <tasks>
-                                <property name="srcdir" value="http://www.geosciml.org/geosciml/2.0/xsd"/>
-                                <property name="destdir" value="${project.build.outputDirectory}/org/geosciml/www/geosciml/2.0/xsd"/>
-                                <mkdir dir="${destdir}"/>
-                                <get src="${srcdir}/GeologicUnitType.xml" dest="${destdir}/GeologicUnitType.xml"/>
-                                <get src="${srcdir}/borehole.xsd" dest="${destdir}/borehole.xsd"/>
-                                <get src="${srcdir}/collection.xsd" dest="${destdir}/collection.xsd"/>
-                                <get src="${srcdir}/earthMaterial.xsd" dest="${destdir}/earthMaterial.xsd"/>
-                                <get src="${srcdir}/fossil.xsd" dest="${destdir}/fossil.xsd"/>
-                                <get src="${srcdir}/geologicAge.xsd" dest="${destdir}/geologicAge.xsd"/>
-                                <get src="${srcdir}/geologicFeature.xsd" dest="${destdir}/geologicFeature.xsd"/>
-                                <get src="${srcdir}/geologicRelation.xsd" dest="${destdir}/geologicRelation.xsd"/>
-                                <get src="${srcdir}/geologicStructure.xsd" dest="${destdir}/geologicStructure.xsd"/>
-                                <get src="${srcdir}/geologicUnit.xsd" dest="${destdir}/geologicUnit.xsd"/>
-                                <get src="${srcdir}/geosciml.xsd" dest="${destdir}/geosciml.xsd"/>
-                                <get src="${srcdir}/value.xsd" dest="${destdir}/value.xsd"/>
-                                <get src="${srcdir}/vocabulary.xsd" dest="${destdir}/vocabulary.xsd"/>
+                                <property name="srcdir" value="http://www.geosciml.org/geosciml/2.0/xsd" />
+                                <property name="destdir"
+                                    value="${project.build.outputDirectory}/org/geosciml/www/geosciml/2.0/xsd" />
+                                <mkdir dir="${destdir}" />
+                                <get src="${srcdir}/GeologicUnitType.xml" dest="${destdir}/GeologicUnitType.xml" />
+                                <get src="${srcdir}/borehole.xsd" dest="${destdir}/borehole.xsd" />
+                                <get src="${srcdir}/collection.xsd" dest="${destdir}/collection.xsd" />
+                                <get src="${srcdir}/earthMaterial.xsd" dest="${destdir}/earthMaterial.xsd" />
+                                <get src="${srcdir}/fossil.xsd" dest="${destdir}/fossil.xsd" />
+                                <get src="${srcdir}/geologicAge.xsd" dest="${destdir}/geologicAge.xsd" />
+                                <get src="${srcdir}/geologicFeature.xsd" dest="${destdir}/geologicFeature.xsd" />
+                                <get src="${srcdir}/geologicRelation.xsd" dest="${destdir}/geologicRelation.xsd" />
+                                <get src="${srcdir}/geologicStructure.xsd" dest="${destdir}/geologicStructure.xsd" />
+                                <get src="${srcdir}/geologicUnit.xsd" dest="${destdir}/geologicUnit.xsd" />
+                                <get src="${srcdir}/geosciml.xsd" dest="${destdir}/geosciml.xsd" />
+                                <get src="${srcdir}/value.xsd" dest="${destdir}/value.xsd" />
+                                <get src="${srcdir}/vocabulary.xsd" dest="${destdir}/vocabulary.xsd" />
                             </tasks>
                         </configuration>
                         <goals>
@@ -89,7 +92,7 @@
             </plugin>
 
         </plugins>
-    
+
     </build>
 
 </project>

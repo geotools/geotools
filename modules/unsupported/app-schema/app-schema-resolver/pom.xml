@@ -12,7 +12,31 @@
 
     <groupId>org.geotools</groupId>
     <artifactId>gt-app-schema-resolver</artifactId>
-    <name>Application schema resolver</name>
+    <name>Application Schema Resolver</name>
+
+    <scm>
+        <connection>scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema-resolver</connection>
+        <url>http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema-resolver</url>
+    </scm>
+
+    <description>
+        Support for resolution of GML application schemas obtained from an OASIS Catalog,
+        the Java classpath, or cached network download.
+    </description>
+
+    <developers>
+        <developer>
+            <name>Ben Caradoc-Davies</name>
+            <id>bencaradocdavies</id>
+            <email>Ben.Caradoc-Davies@csiro.au</email>
+            <organization>CSIRO Earth Science and Resource Engineering</organization>
+            <roles>
+                <role>Module Maintainer</role>
+                <role>Java Developer</role>
+            </roles>
+            <timezone>8</timezone>
+        </developer>
+    </developers>
 
     <dependencies>
         <dependency>

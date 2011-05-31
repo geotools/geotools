@@ -28,7 +28,6 @@ import org.geotools.feature.TypeBuilder;
 import org.geotools.feature.Types;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
-import org.geotools.feature.type.FeatureTypeFactoryImpl;
 import org.geotools.feature.type.UniqueNameFeatureTypeFactoryImpl;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;

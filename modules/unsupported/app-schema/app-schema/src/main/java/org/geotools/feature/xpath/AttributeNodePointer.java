@@ -17,8 +17,6 @@
 
 package org.geotools.feature.xpath;
 
-import java.util.Collection;
-
 import org.apache.commons.jxpath.ri.Compiler;
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.compiler.NodeNameTest;

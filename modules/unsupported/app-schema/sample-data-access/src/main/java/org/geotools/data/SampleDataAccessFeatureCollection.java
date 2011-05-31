@@ -37,8 +37,8 @@ import org.opengis.util.ProgressListener;
  * 
  * @author Ben Caradoc-Davies, CSIRO Exploration and Mining
  * @version $Id$
- *
- *
+ * 
+ * 
  * @source $URL$
  * @since 2.6
  */
@@ -61,7 +61,7 @@ public class SampleDataAccessFeatureCollection extends ArrayList<Feature> implem
      */
     public boolean addAll(FeatureCollection<? extends FeatureType, ? extends Feature> resource) {
         boolean changed = false;
-        for (Iterator<? extends Feature> iterator = resource.iterator(); iterator.hasNext();) {
+        for (FeatureIterator<? extends Feature> iterator = resource.features(); iterator.hasNext();) {
             if (this.add(iterator.next())) {
                 changed = true;
             }

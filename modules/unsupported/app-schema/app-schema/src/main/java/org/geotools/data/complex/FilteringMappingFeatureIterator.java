@@ -19,7 +19,6 @@ package org.geotools.data.complex;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.ListIterator;
 
 import org.apache.commons.collections.IteratorUtils;

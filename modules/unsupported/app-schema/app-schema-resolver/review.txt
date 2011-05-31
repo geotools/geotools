@@ -1,0 +1,5 @@
+src/test/resources/test-data/Example01.xml
+and
+src/test/resources/org/example/schemas/wfs20/DescribeFeatureType_Example01_Response.xsd
+are taken from the OGC WFS 2.0 specification.
+

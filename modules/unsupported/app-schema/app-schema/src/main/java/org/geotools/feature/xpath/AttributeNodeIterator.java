@@ -22,11 +22,8 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.jxpath.ri.QName;
-import org.apache.commons.jxpath.ri.compiler.NodeNameTest;
 import org.apache.commons.jxpath.ri.model.NodeIterator;
 import org.apache.commons.jxpath.ri.model.NodePointer;
-import org.geotools.feature.Types;
-import org.geotools.util.Utilities;
 import org.opengis.feature.Attribute;
 import org.opengis.feature.ComplexAttribute;
 import org.opengis.feature.Property;

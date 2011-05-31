@@ -19,7 +19,6 @@ package org.geotools.data.complex;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -27,9 +26,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.geotools.data.joining.JoiningNestedAttributeMapping;
-import org.geotools.data.joining.JoiningQuery;
 
 import javax.xml.namespace.QName;
 
@@ -39,12 +35,13 @@ import org.geotools.data.Query;
 import org.geotools.data.complex.filter.XPath;
 import org.geotools.data.complex.filter.XPath.Step;
 import org.geotools.data.complex.filter.XPath.StepList;
+import org.geotools.data.joining.JoiningNestedAttributeMapping;
+import org.geotools.data.joining.JoiningQuery;
 import org.geotools.factory.Hints;
 import org.geotools.feature.AttributeBuilder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureImpl;
 import org.geotools.feature.FeatureIterator;
-import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.Types;
 import org.geotools.filter.AttributeExpressionImpl;
 import org.geotools.filter.FilterFactoryImpl;

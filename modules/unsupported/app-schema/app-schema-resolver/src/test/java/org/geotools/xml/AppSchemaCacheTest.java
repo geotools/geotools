@@ -25,6 +25,13 @@ import org.geotools.data.DataUtilities;
 import org.junit.Assert;
 import org.junit.Test;
 
+/**
+ * Tests for {@link AppSchemaCache}.
+ * 
+ * @author Ben Caradoc-Davies, CSIRO Earth Science and Resource Engineering
+ *
+ * @source $URL$
+ */
 public class AppSchemaCacheTest {
 
     /**

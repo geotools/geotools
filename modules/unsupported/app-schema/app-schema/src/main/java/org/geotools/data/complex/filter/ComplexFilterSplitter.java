@@ -1,21 +1,28 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2004-2011, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
+
 package org.geotools.data.complex.filter;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
-import org.geotools.data.complex.AttributeMapping;
 import org.geotools.data.complex.FeatureTypeMapping;
-import org.geotools.data.complex.filter.XPath.Step;
 import org.geotools.data.complex.filter.XPath.StepList;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.feature.Types;
-import org.geotools.filter.Filter;
 import org.geotools.filter.FilterCapabilities;
-import org.geotools.filter.IsNullImpl;
 import org.geotools.filter.visitor.PostPreProcessFilterSplittingVisitor;
-import org.opengis.feature.type.Name;
 import org.opengis.filter.Id;
 import org.opengis.filter.expression.Add;
 import org.opengis.filter.expression.BinaryExpression;

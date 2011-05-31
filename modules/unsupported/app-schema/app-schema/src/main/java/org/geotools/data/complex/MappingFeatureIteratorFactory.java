@@ -31,7 +31,6 @@ import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.NestedAttributeExpression;
 import org.geotools.filter.visitor.DefaultFilterVisitor;
 import org.geotools.jdbc.JDBCFeatureSource;
-import org.geotools.jdbc.JoiningJDBCFeatureSource;
 import org.opengis.filter.Filter;
 import org.opengis.filter.Or;
 import org.opengis.filter.expression.PropertyName;

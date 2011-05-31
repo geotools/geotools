@@ -17,16 +17,15 @@
 
 package org.geotools.data.complex.config;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.net.URL;
 import java.util.Set;
+
 import org.geotools.data.complex.FeatureTypeMapping;
 import org.geotools.test.AppSchemaTestSupport;
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 /**
  * 

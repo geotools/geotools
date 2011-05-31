@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
@@ -18,11 +17,14 @@
     <developers>
         <developer>
             <name>Ben Caradoc-Davies</name>
+            <id>bencaradocdavies</id>
             <email>Ben.Caradoc-Davies@csiro.au</email>
             <organization>CSIRO Earth Science and Resource Engineering </organization>
             <roles>
-                <role>packager</role>
+                <role>Module Maintainer</role>
+                <role>Schema Packager</role>
             </roles>
+            <timezone>8</timezone>
         </developer>
     </developers>
 
@@ -42,12 +44,12 @@
             <artifactId>om-2.0</artifactId>
             <version>2.0.0-1</version>
         </dependency>
-     </dependencies>
+    </dependencies>
 
     <build>
-    
+
         <plugins>
-            
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
@@ -63,10 +65,11 @@
                         <phase>generate-resources</phase>
                         <configuration>
                             <tasks>
-                                <property name="srcdir" value="http://schemas.opengis.net/sampling/2.0"/>
-                                <property name="destdir" value="${project.build.outputDirectory}/net/opengis/schemas/sampling/2.0"/>
-                                <mkdir dir="${destdir}"/>
-                                <get src="${srcdir}/samplingFeature.xsd" dest="${destdir}/samplingFeature.xsd"/>
+                                <property name="srcdir" value="http://schemas.opengis.net/sampling/2.0" />
+                                <property name="destdir"
+                                    value="${project.build.outputDirectory}/net/opengis/schemas/sampling/2.0" />
+                                <mkdir dir="${destdir}" />
+                                <get src="${srcdir}/samplingFeature.xsd" dest="${destdir}/samplingFeature.xsd" />
                             </tasks>
                         </configuration>
                         <goals>
@@ -77,7 +80,7 @@
             </plugin>
 
         </plugins>
-    
+
     </build>
 
 </project>

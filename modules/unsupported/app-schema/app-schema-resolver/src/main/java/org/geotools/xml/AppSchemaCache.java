@@ -355,11 +355,15 @@ public class AppSchemaCache {
      * 
      * @param dataDirectory
      *            the candidate file
-     * @return true if it has the files and subdirectories expected of a GeoServer data directory
+     * @return true if it has the files and subdirectories expected of a GeoServer data directory,
+     *         or contains an existing app-schema-cache subdirectory
      */
     static boolean isGeoserverDataDirectory(File dataDirectory) {
         if (dataDirectory.isDirectory() == false) {
             return false;
+        }
+        if ((new File(dataDirectory, GEOSERVER_CACHE_DIRECTORY_NAME)).isDirectory()) {
+            return true;
         }
         for (String filename : GEOSERVER_DATA_DIRECTORY_FILENAMES) {
             File file = new File(dataDirectory, filename);

@@ -1,202 +1,238 @@
-App-Schema
-----------
+Application Schema Support
+--------------------------
 
-The app-schema module allows you to configure geotools to support a predefined application schema (as provided by a standards body).
+The Application Schema Support (app-schema) family of modules support the delivery of complex feature types defined by a GML application schema. Key to the configuration of the app-schema module is the *mapping file*; because this is user input data, it is documented in the GeoServer User Manual:
 
-References:
+*  `Application Schema Support section of the GeoServer User Manual <http://docs.geoserver.org/latest/en/user/data/app-schema/index.html>`_
 
-* `Geoserver docs <http://docs.geoserver.org/trunk/en/user/data/app-schema/index.html>`_
-* `tut_RoadSegment <https://svn.auscope.org/subversion/AuScope/geoserver/config/geoserver-app-schema-tutorial-config/trunk/workspaces/example/tut_RoadSegment/>`_
 
-Configuration
-^^^^^^^^^^^^^
+Application Schema DataAccess
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Much of the provided documentation is expressed in terms of use from GeoServer; however the general approach of starting with a target XSD file and producing a mapping.xml document remains the same.
+Application schema support is provided by the ``gt-app-schema`` module.
 
-1. The following code example can be used to load a mapping.xml file::
-    
-    // pending
-    
-2. One thing that is interesting is the requirement to have your features
-   sources available in a Registry (for the mapping file to look them up and
-   find them).::
-      
-     // pending
-     
-3. In this case the source data is provided by a properties file::
-     
-     _=the_geom:LineString,FID:String,NAME:String,fromNode:Point,toNode:Point
-    RoadSegments.1=LINESTRING (-0.0042 -0.0006, -0.0032 -0.0003, -0.0026 -0.0001, -0.0014 0.0002, 0.0002 0.0007)|102|Route 5|POINT(-0.0042 -0.0006)|POINT(0.0002 0.0007)
-    RoadSegments.2=LINESTRING (0.0002 0.0007, 0.0014 0.001, 0.0028 0.0014)|103|Route 5|POINT(0.0002 0.0007)|POINT(0.0028 0.0014)
-    RoadSegments.3=LINESTRING (0.0028 0.0014, 0.003 0.0024)|104|Route 5|POINT(0.0028 0.0014)|POINT(0.003 0.0024)
-    RoadSegments.4=LINESTRING (0.0002 0.0007, 0.0014 0.001, 0.0028 0.0014, 0.0042 0.0018)|105|Main Street|POINT(0.0002 0.0007)|POINT(0.0042 0.0018)
-    RoadSegments.5=LINESTRING (-0.0014 -0.0024, -0.0014 0.0002)|106|Dirt Road by Green Forest|POINT(-0.0014 -0.0024)|POINT(-0.0014 0.0002)
 
-Target XSD
-''''''''''
+Creating an AppSchemaDataAccess
+'''''''''''''''''''''''''''''''
 
-As indicated you need to have a target XML schema in mind before starting your mapping.::
+Like other data stores, an instance of ``AppSchemaDataAccess`` is constructed by supplying parameters to ``DataAccessFinder.getDataStore``. The parameters map must contain the following:
+
+* ``dbtype`` set to the string ``"app-schema"``
+* ``url`` set to a string containing a ``file:`` or ``jar:file:`` URL for a mapping file
+
+
+Resource Management
+'''''''''''''''''''
+
+* Like all other ``DataAccess`` implementations (including ``DataStore`` implementations), ``AppSchemaDataAccess`` has a ``dispose`` method that must be called to release resources associated with the ``DataAccess``. These may include JDBC connections.
+
+* To implement *feature chaining*, in which properties of features are features themselves, all ``AppSchemaDataAccess`` instances are registered in ``DataAccessRegistry`` so that they can locate each other. As a consequence, when a feature type has been defined once, it cannot be redefined. To remove all ``AppSchemaDataAccess`` instances from the registry, call ``DataAccessRegistry.unregisterAll()``; to remove one call ``DataAccessRegistry.unregister``. Unregistration does not ``dispose`` an ``AppSchemaDataAccess``.
+
+* Parsed schemas are cached by ``AppSchemaXSDRegistry``. To clear the cache, call ``AppSchemaXSDRegistry.getInstance().dispose()``.
+
+
+Schema download
+'''''''''''''''
+
+To enable automatic schema download and caching, create a directory ``app-schema-cache`` in the same directory as the mapping file, or one of its parent directories.
+
+
+Example
+'''''''
+
+This example can be found in the the ``app-schema-example`` module.
+
+The following code uses a mapping file to create three complex features from a property file::
+
+    Map<String, Serializable> params = new HashMap<String, Serializable>();
+    params.put("dbtype", "app-schema");
+    params.put("url", AppSchemaExample.class.getResource("/gsml_MappedFeature.xml").toURI()
+            .toString());
+    DataAccess<FeatureType, Feature> dataAccess = null;
+    try {
+        dataAccess = DataAccessFinder.getDataStore(params);
+        FeatureSource<FeatureType, Feature> source = dataAccess.getFeatureSource(new NameImpl(
+                "urn:cgi:xmlns:CGI:GeoSciML:2.0", "MappedFeature"));
+        FeatureCollection<FeatureType, Feature> features = source.getFeatures();
+        FeatureIterator<Feature> iterator = features.features();
+        try {
+            while (iterator.hasNext()) {
+                Feature f = iterator.next();
+                System.out.println("Feature "
+                        + f.getIdentifier().toString()
+                        + " has gml:name = "
+                        + ((ComplexAttribute) f.getProperty(new NameImpl(GML.name)))
+                                .getProperty("simpleContent").getValue());
+            }
+        } finally {
+            iterator.close();
+        }
+    } finally {
+        if (dataAccess != null) {
+            dataAccess.dispose();
+        }
+    }
+
+The mapping file ``gsml_MappedFeature.xml`` used in the example code above::
 
     <?xml version="1.0" encoding="UTF-8"?>
-    <xs:schema targetNamespace="http://example.org"
-               xmlns:tut="http://example.org"
-               xmlns:gml="http://www.opengis.net/gml"
-               xmlns:xs="http://www.w3.org/2001/XMLSchema"
-               elementFormDefault="qualified"
-               attributeFormDefault="unqualified" version="1.0">
-      <xs:import namespace="http://www.opengis.net/gml"
-        schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/feature.xsd" />
-      <xs:element name="RoadSegment" type="tut:RoadSegmentType" />
-      <xs:complexType name="RoadSegmentType">
-        <xs:complexContent>
-          <xs:extension base="gml:AbstractFeatureType">
-            <xs:sequence>
-              <xs:element name="name" type="xs:string" />
-              <xs:element name="fromToNodes" nillable="false">
-                <xs:complexType>
-                  <xs:sequence>
-                    <xs:element name="fromNode" type="gml:PointPropertyType" nillable="true" />
-                    <xs:element name="toNode" type="gml:PointPropertyType" nillable="true" />
-                  </xs:sequence>
-                  <xs:attribute ref="gml:id" use="required" />
-                </xs:complexType>
-              </xs:element>
-              <xs:element name="the_geom" type="gml:LineStringPropertyType" />
-             <xs:element ref="tut:broadTypeEl"/>          
-            </xs:sequence>
-          </xs:extension>
-        </xs:complexContent>
-      </xs:complexType>
-    
-    <xs:element name="broadTypeEl" type="tut:broadType"/>
-    <xs:complexType name="broadType">
-       <xs:sequence>
-              <xs:element name="name" type="xs:string" maxOccurs="unbounded"/> 
-       </xs:sequence> 	
-    </xs:complexType>
-    </xs:schema>
-
-Mapping File
-''''''''''''
-
-The mapping file goes through the steps of mapping types and attributes in the
-target XSD through to features sources provided at the geotools level.
-
-Here is an example mapping file::
-    
-    <?xml version="1.0" encoding="UTF-8"?>
-    <as:AppSchemaDataAccess
-          xmlns:as="http://www.geotools.org/app-schema"
-          xmlns:ogc="http://www.opengis.net/ogc"
-          xmlns:xs="http://www.w3.org/2001/XMLSchema"
-          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-          xsi:schemaLocation="http://www.geotools.org/app-schema AppSchemaDataAccess.xsd
-                          http://www.opengis.net/ogc http://schemas.opengis.net/filter/1.1.0/expr.xsd">
-      <namespaces>
-        <Namespace><prefix>tut</prefix><uri>http://example.org</uri></Namespace>
-        <Namespace><prefix>gml</prefix><uri>http://www.opengis.net/gml</uri></Namespace>
-      </namespaces>
-      <sourceDataStores>
-        <DataStore>
-          <id>directory1</id>
-          <parameters>
-            <Parameter>
-              <name>directory</name>
-              <!-- path can be relative to this file if starts with file: -->
-              <value>file:./</value>
-            </Parameter>
-          </parameters>
-        </DataStore>
-      </sourceDataStores>
-      <targetTypes>
-        <FeatureType>
-          <schemaUri>RoadSegment.xsd</schemaUri>
-        </FeatureType>
-      </targetTypes>
-      <typeMappings>
-        <FeatureTypeMapping>
-          <sourceDataStore>directory1</sourceDataStore>
-          <sourceType>tut_RoadSegment</sourceType>
-          <targetElement>tut:RoadSegment</targetElement>
-          <groupBy/>
-          <attributeMappings>
-            <AttributeMapping>
-              <targetAttribute>RoadSegment</targetAttribute>
-              <idExpression>
-                <OCQL>getId()</OCQL>
-              </idExpression>
-            </AttributeMapping>
-            <AttributeMapping>
-              <targetAttribute>RoadSegment/gml:name</targetAttribute>
-              <ClientProperty>
-                <name>codeSpace</name>
-                <value>'urn:x-test:classifierScheme:TestAuthority:SDI:transport:v1'</value>
-              </ClientProperty>
-              <sourceExpression>
-                <OCQL>FID</OCQL>
-              </sourceExpression>
-            </AttributeMapping>
-            <AttributeMapping>
-              <targetAttribute>RoadSegment/tut:name</targetAttribute>
-              <sourceExpression>
-                <OCQL>NAME</OCQL>
-              </sourceExpression>
-            </AttributeMapping>
-            <AttributeMapping>
-              <targetAttribute>RoadSegment/tut:fromToNodes</targetAttribute>
-              <idExpression>
-                <OCQL>FID</OCQL>
-              </idExpression>
-            </AttributeMapping>
-            <AttributeMapping>
-              <targetAttribute>RoadSegment/tut:fromToNodes/tut:fromNode</targetAttribute>
-              <sourceExpression>
-                <OCQL>fromNode</OCQL>
-              </sourceExpression>
-            </AttributeMapping>
-            <AttributeMapping>
-              <targetAttribute>RoadSegment/tut:fromToNodes/tut:toNode</targetAttribute>
-              <sourceExpression>
-                <OCQL>toNode</OCQL>
-              </sourceExpression>
-            </AttributeMapping>      
-            <AttributeMapping>
-              <targetAttribute>RoadSegment/tut:the_geom</targetAttribute>
-              <sourceExpression>
-                <OCQL>the_geom</OCQL>
-              </sourceExpression>
-            </AttributeMapping>
-          </attributeMappings>
-        </FeatureTypeMapping>
-      </typeMappings>
+    <as:AppSchemaDataAccess xmlns:as="http://www.geotools.org/app-schema"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.geotools.org/app-schema AppSchemaDataAccess.xsd">
+        <namespaces>
+            <Namespace>
+                <prefix>gml</prefix>
+                <uri>http://www.opengis.net/gml</uri>
+            </Namespace>
+            <Namespace>
+                <prefix>gsml</prefix>
+                <uri>urn:cgi:xmlns:CGI:GeoSciML:2.0</uri>
+            </Namespace>
+        </namespaces>
+        <sourceDataStores>
+            <DataStore>
+                <id>datastore</id>
+                <parameters>
+                    <Parameter>
+                        <name>directory</name>
+                        <value>file:./</value>
+                    </Parameter>
+                </parameters>
+            </DataStore>
+        </sourceDataStores>
+        <targetTypes>
+            <FeatureType>
+                <schemaUri>http://www.geosciml.org/geosciml/2.0/xsd/geosciml.xsd</schemaUri>
+            </FeatureType>
+        </targetTypes>
+        <typeMappings>
+            <FeatureTypeMapping>
+                <sourceDataStore>datastore</sourceDataStore>
+                <sourceType>gsml_MappedFeature</sourceType>
+                <targetElement>gsml:MappedFeature</targetElement>
+                <attributeMappings>
+                    <AttributeMapping>
+                        <targetAttribute>
+                            gsml:MappedFeature
+                        </targetAttribute>
+                        <idExpression>
+                            <OCQL>getId()</OCQL>
+                        </idExpression>
+                    </AttributeMapping>
+                    <AttributeMapping>
+                        <targetAttribute>
+                            gml:name
+                        </targetAttribute>
+                        <sourceExpression>
+                            <OCQL>NAME</OCQL>
+                        </sourceExpression>
+                    </AttributeMapping>
+                    <AttributeMapping>
+                        <targetAttribute>
+                            gsml:shape
+                        </targetAttribute>
+                        <sourceExpression>
+                            <OCQL>SHAPE</OCQL>
+                        </sourceExpression>
+                    </AttributeMapping>
+                    <AttributeMapping>
+                        <targetAttribute>gsml:observationMethod/gsml:CGI_TermValue/gsml:value</targetAttribute>
+                        <sourceExpression>
+                            <OCQL>METHOD</OCQL>
+                        </sourceExpression>
+                    </AttributeMapping>
+                </attributeMappings>
+            </FeatureTypeMapping>
+        </typeMappings>
     </as:AppSchemaDataAccess>
 
-App-Schema-Resolver
-^^^^^^^^^^^^^^^^^^^
 
-The app-schema resolver allows you to bundle schema files into jars (rather then
-have your application resort the the internet every time).
+The property file ``gsml_MappedFeature.properties`` used in the above mapping file (specified in the ``sourceType`` element)::
 
-The codebase also appears to support caching of schema information.
+    _=NAME:String,METHOD:String,SHAPE:Geometry:srid=4283
+    mf.25699=Some basalt|Unknown|POLYGON((143.561948 -38.532217, 143.561012 -38.533360, 143.549986 -38.526470, 143.561948 -38.532217))
+    mf.25764=More basalt|Estimate|POLYGON((143.566412 -38.492157, 143.569803 -38.488559, 143.571572 -38.486718, 143.566412 -38.492157))
+    mf.26106=Some mudstone|Seismic|POLYGON((143.496091 -38.800309, 143.496241 -38.799286, 143.496136 -38.797775, 143.497646 -38.800192, 143.496091 -38.800309))
 
-References:
+This example requires ``gt-app-schema``, ``gt-property``, ``gt-epsg-hsql``, and their dependencies. **Create a directory called app-schema-cache in the same directory as the mapping file to enable automatic schema download.**
 
-*  `App-Schema Geoserver Docs <http://docs.geoserver.org/trunk/en/user/data/app-schema/app-schema-resolution.html#classpath>`_
 
-Code Example
-''''''''''''
+Application Schema Resolver
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-From test case::
+The ``gt-app-schema-resolver`` module supports resolution of GML application schemas obtained from an OASIS Catalog, the Java classpath, or cached network download, or all three.
 
-    Configuration configuration =
-      new AppSchemaConfiguration("urn:cgi:xmlns:CGI:GeoSciML:2.0",
-                                 "http://www.geosciml.org/geosciml/2.0/xsd/geosciml.xsd",
-                                 new AppSchemaResolver());
-    
-    SchemaIndex schemaIndex = Schemas.findSchemas(configuration);
-    
-    Assert.assertEquals(3, schemaIndex.getSchemas().length);
-    String schemaLocation = schemaIndex.getSchemas()[0].getSchemaLocation();
-    Assert.assertTrue(schemaLocation.startsWith("jar:file:"));
-    Assert.assertTrue(schemaLocation.endsWith("geosciml.xsd"));
+This module will resolve any resource type, but it is designed to aid relative imports between XML Schemas; to do this it keeps a reverse-lookup table to convert resolved locations back to their original locations, facilitating correct determination of relative imports and includes. To ensure that this works, use a single instance of ``AppSchemaResolver`` to resolve a schema and all its dependencies.
+
+Optional ``AppSchemaResolver`` constructors arguments allow configuration of permitted resolution methods.
+
+
+OASIS Catalog
+'''''''''''''
+
+The resolver can be configured to use an `OASIS Catalog <http://www.oasis-open.org/committees/entity/spec-2001-08-06.html>`_ to resolve application schema locations. The resolver uses catalog URI semantics to locate application schemas, so ``uri`` or ``rewriteURI`` entries should be present in your catalog.
+
+Example::
+
+    AppSchemaResolver resolver = new AppSchemaResolver(AppSchemaCatalog.build(DataUtilities.fileToURL(new File("/path/to/catalog.xml"))));
+
+
+Classpath
+'''''''''
+
+Schema resolution on the classpath is always enabled. For example, a schema ``http://schemas.example.org/exampleml/exml.xsd`` resolves to ``/org/example/schemas/exampleml/exml.xsd`` on the classpath. To create a resolver with only support for schemas on the classpath, use the default constructor::
+
+    AppSchemaResolver resolver = new AppSchemaResolver();
+
+
+Cache
+'''''
+
+If the resolver is configured to use a cache, schemas not resolved by other methods will be downloaded from the network and stored in the cache directory. For example, an application schema published at ``http://schemas.example.org/exampleml/exml.xsd`` would be downloaded and stored as ``org/example/schemas/exampleml/exml.xsd`` in the cache directory.
+
+Example::
+
+    AppSchemaResolver resolver = new AppSchemaResolver(new AppSchemaCache(new File("/path/to/app-schema-cache"), true));
+
+If downloads are not enabled, a prepopulated cache will still be used, but missing schemas will not be downloaded.
+
+
+AppSchemaConfiguration
+''''''''''''''''''''''
+
+Once you have configured your ``AppSchemaResolver``, you can use it to build an ``AppSchemaConfiguration`` that you can use to configure the GeoTools ``Encoder``::
+
+    Configuration configuration = new AppSchemaConfiguration(
+        "urn:cgi:xmlns:CGI:GeoSciML:2.0",
+        "http://www.geosciml.org/geosciml/2.0/xsd/geosciml.xsd",
+        resolver);
+    // add a GML Configuration
+    configuration.addDependency(new GMLConfiguration());
+
+* If you do not add a GMLConfiguration dependency, Java bindings for GML types will not be found and encoding will not succeed.
+
+* For an example of how to determine which GML version to use, see ``EmfAppSchemaReader`` in ``gt-app-schema``.
+
+
+Sample DataAccess
+^^^^^^^^^^^^^^^^^
+
+The ``gt-sample-data-access`` module supports testing of complex feature support without introducing a dependency on the ``gt-app-schema`` module itself::
+
+    DataAccess<FeatureType, Feature> dataAccess = DataAccessFinder
+            .getDataStore(SampleDataAccessFactory.PARAMS);
+    FeatureSource<FeatureType, Feature> featureSource = dataAccess
+            .getFeatureSource(SampleDataAccessData.MAPPEDFEATURE_TYPE_NAME);
+    FeatureCollection<FeatureType, Feature> featureCollection = featureSource.getFeatures();
+    int count = 0;
+    for (FeatureIterator<Feature> iterator = featureCollection.features(); iterator.hasNext(); iterator
+            .next()) {
+        count++;
+    }
+
+
+Application Schema Packages
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Application Schema Packages collection in ``app-schema-packages`` contains GML application schemas that have been packaged into Maven artifacts to support offline testing. These are manually published to the ``osgeo`` Maven repository. Configuring your Maven project to depend on one of these packages will cause ``AppSchemaResolver`` to resolve references to these schemas on the classpath.
+
 

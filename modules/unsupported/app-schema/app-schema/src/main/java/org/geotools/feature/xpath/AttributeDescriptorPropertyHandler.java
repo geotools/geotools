@@ -25,7 +25,6 @@ import org.geotools.feature.Types;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.ComplexType;
-import org.opengis.feature.type.FeatureType;
 
 /**
  * JXPath property handler that works on AttributeDescriptor/type

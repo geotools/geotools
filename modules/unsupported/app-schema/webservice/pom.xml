@@ -1,165 +1,143 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- =======================================================================    
-        Maven Project Configuration File                                        
-                                                                                
-        The Geotools Project                                                    
-            http://www.geotools.org/                                            
-                                                                                
-        Version: $Id$              
-     ======================================================================= -->
-  <project xmlns="http://maven.apache.org/POM/4.0.0" 
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
-                               http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-  <parent>
-		<groupId>org.geotools</groupId>
-		<artifactId>app-schema</artifactId>
-		<version>8-SNAPSHOT</version>
-   </parent>
+    <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>org.geotools</groupId>
+        <artifactId>app-schema</artifactId>
+        <version>8-SNAPSHOT</version>
+    </parent>
 
-  <!-- =========================================================== -->
-  <!--     Module Description                                      -->
-  <!-- =========================================================== -->
-  <groupId>org.geotools</groupId>
-  <artifactId>gt-webservice</artifactId>
-  <packaging>jar</packaging>
-  <name>Web Service DataAccess</name>
-  <url>http://maven.geotools.fr/reports/modules/unsupported/app-schema/webservice</url>
+    <groupId>org.geotools</groupId>
+    <artifactId>gt-webservice</artifactId>
+    <packaging>jar</packaging>
+    <name>Web Service DataAccess</name>
 
-  <scm>
-    <connection>
-      scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/webservice
-    </connection>
-    <url>http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/webservice</url>
-  </scm>
+    <scm>
+        <connection>scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/webservice</connection>
+        <url>http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/webservice</url>
+    </scm>
 
-  <description>
-    Data source backed by a web service.
-  </description>
+    <description>
+        DataAccess to create complex feature types defined in a GML application schema,
+        providing access to data obtained from a generic web service.
+    </description>
 
-  <licenses>
-    <license>
-      <name>Lesser General Public License (LGPL)</name>
-      <url>http://www.gnu.org/copyleft/lesser.txt</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
+    <developers>
+        <developer>
+            <name>Rini Angreani</name>
+            <id>ang05a</id>
+            <email>Rini.Angreani@csiro.au</email>
+            <organization>CSIRO Earth Science and Resource Engineering</organization>
+            <roles>
+                <role>Module Maintainer</role>
+                <role>Java Developer</role>
+            </roles>
+            <timezone>8</timezone>
+        </developer>
+    </developers>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-data</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-referencing</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-sample-data</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools.xsd</groupId>
+            <artifactId>gt-xsd-wfs</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools.ogc</groupId>
+            <artifactId>net.opengis.wfs</artifactId>
+            <version>${project.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.geotools</groupId>
+                    <artifactId>gt2-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>xpp3</groupId>
+            <artifactId>xpp3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-epsg-hsql</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>commons-httpclient</groupId>
+            <artifactId>commons-httpclient</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+            <version>2.3.13</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-app-schema</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-app-schema</artifactId>
+            <version>${project.version}</version>
+            <classifier>tests</classifier>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools.schemas</groupId>
+            <artifactId>geosciml-2.0</artifactId>
+            <version>2.0.2-4</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
-	<!-- ==================================================== -->
-	<!--     Developers and contributors                      -->
-	<!-- ==================================================== -->
-	<developers></developers>
-	<contributors></contributors>
-	
-	<!-- ==================================================== -->
-	<!--     Dependencies                                     -->
-	<!-- ==================================================== -->
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <includes>
+                    <include>**/*.properties</include>
+                    <include>**/*.xml</include>
+                    <include>**/*.xsd</include>
+                    <include>**/*.ftl</include>
+                    <include>**/META-INF/**</include>
+                </includes>
+            </testResource>
+        </testResources>
+    </build>
 
-  <dependencies>
-    <dependency>
-      <groupId>org.geotools</groupId>
-      <artifactId>gt-data</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.geotools</groupId>
-      <artifactId>gt-referencing</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.geotools</groupId>
-      <artifactId>gt-sample-data</artifactId>
-      <version>${project.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.geotools.xsd</groupId>
-      <artifactId>gt-xsd-wfs</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.geotools.ogc</groupId>
-      <artifactId>net.opengis.wfs</artifactId>
-      <version>${project.version}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.geotools</groupId>
-          <artifactId>gt2-api</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>xpp3</groupId>
-      <artifactId>xpp3</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.geotools</groupId>
-      <artifactId>gt-epsg-hsql</artifactId>
-      <version>${project.version}</version>
-      <scope>test</scope>
-    </dependency>
-	<dependency>
-      <groupId>commons-httpclient</groupId>
-      <artifactId>commons-httpclient</artifactId>
-    </dependency>
-	<dependency>
-		<groupId>org.freemarker</groupId>
-		<artifactId>freemarker</artifactId>
-		<version>2.3.13</version>
-	</dependency>
-	<dependency>
-		<groupId>org.geotools</groupId>
-		<artifactId>gt-app-schema</artifactId>
-		<version>${project.version}</version>
-	</dependency>
-	<dependency>
-		<groupId>org.geotools</groupId>
-		<artifactId>gt-app-schema</artifactId>
-		<version>${project.version}</version>
-		<classifier>tests</classifier>
-		<scope>test</scope>
-	</dependency>
-	<dependency>
-      <groupId>org.geotools.schemas</groupId>
-      <artifactId>geosciml-2.0</artifactId>
-      <version>2.0.2-4</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
-
-	<!-- ==================================================== -->
-	<!--     Compilation (including non-standard plugins)     -->
-	<!-- ==================================================== -->
-	<build>
-	<plugins>
-		<plugin>
-			<groupId>org.apache.maven.plugins</groupId>
-			<artifactId>maven-jar-plugin</artifactId>
-			<executions>
-				<execution>
-					<phase>package</phase>
-					<goals>
-						<goal>test-jar</goal>
-					</goals>
-				</execution>
-			</executions>
-		</plugin>
-	</plugins>
-	<testResources>
-		<testResource>
-			<directory>src/test/resources</directory>
-			<includes>
-				<include>**/*.properties</include>
-				<include>**/*.xml</include>
-				<include>**/*.xsd</include>
-				<include>**/*.ftl</include>
-				<include>**/META-INF/**</include>
-			</includes>
-		</testResource>
-	</testResources>
-	</build>
 </project>

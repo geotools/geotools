@@ -17,9 +17,7 @@
 
 package org.geotools.filter;
 
-import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.feature.Attribute;
-import org.opengis.filter.capability.FunctionName;
 
 public class IDFunctionExpression extends FunctionExpressionImpl {
     public IDFunctionExpression() {

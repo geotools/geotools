@@ -121,7 +121,7 @@ public class AppSchemaConfigurationTest {
             Assert.assertTrue(DataUtilities.urlToFile(new URL(schemaLocation)).exists());
             Assert.assertNotNull(schemaIndex.getElementDeclaration(new QName(
                     "http://schemas.example.org/demo", "GeologicUnit")));
-            // test that relative import can be resolved
+            // test that relative include can be resolved
             Assert.assertNotNull(schemaIndex.getElementDeclaration(new QName(
                     "http://schemas.example.org/demo", "InnerGeologicUnit")));
         } finally {
@@ -190,7 +190,7 @@ public class AppSchemaConfigurationTest {
             // test that cache path is not canonical
             Assert.assertFalse(cacheDirectory.toString().equals(
                     cacheDirectory.getCanonicalFile().toString()));
-            // test that relative import can be resolved despite non-canonical cache path
+            // test that relative include can be resolved despite non-canonical cache path
             Assert.assertNotNull(schemaIndex.getElementDeclaration(new QName(
                     "http://schemas.example.org/demo", "InnerGeologicUnit")));
         } finally {
@@ -230,7 +230,7 @@ public class AppSchemaConfigurationTest {
             Assert.assertTrue(DataUtilities.urlToFile(new URL(schemaLocation)).exists());
             Assert.assertNotNull(schemaIndex.getElementDeclaration(new QName(
                     "http://schemas.example.org/demo", "GeologicUnit")));
-            // test that relative import can be resolved
+            // test that relative include can be resolved
             Assert.assertNotNull(schemaIndex.getElementDeclaration(new QName(
                     "http://schemas.example.org/demo", "InnerGeologicUnit")));
         } finally {

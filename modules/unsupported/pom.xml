@@ -57,11 +57,6 @@
      <!-- ================================================== -->
      <!--     Modules kicked out of the build                -->
      <!-- ================================================== -->
-
-     <!-- These modules have been removed from the build     -->
-     <!-- so as not to clash with the new swing module.      -->
-     <!-- Selected classes will be moved out of these to the -->
-     <!-- new module prior to discarding them                -->
      <profile>
        <id>archive</id>
        <modules>
@@ -117,6 +112,9 @@
      </profile>
      <profile>
        <id>app-schema</id>
+       <activation>
+         <property><name>all</name></property>
+       </activation>
        <modules>
          <module>app-schema</module>
        </modules>
@@ -143,15 +141,12 @@
          <property><name>all</name></property>
        </activation>
        <modules>
-         <module>app-schema</module>
          <module>csv</module>
          <module>epsg-oracle</module>
-         <module>epsg-h2</module>
          <module>jdbc-ng</module>
          <module>postgis</module>
          <module>postgis-versioned</module>
          <module>vpf</module>
-         <module>shapefile-renderer</module>
          <module>matfile5</module>
          <module>sfs</module>
          <module>mark-wkt</module>
@@ -159,6 +154,7 @@
      </profile>
   </profiles>
 
+  <!-- Modules included in a normal build -->
   <modules>
     <module>swing</module>
     <module>process</module>

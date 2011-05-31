@@ -1147,8 +1147,8 @@ O:
 
             if (node instanceof Element) {
                 Element child = (Element) node;
-				start(child, Schemas.getChildElementDeclaration(declaration, 
-						new QName(child.getNamespaceURI(), child.getNodeName())));
+                start(child, declaration != null ? Schemas.getChildElementDeclaration(declaration, 
+                        new QName(child.getNamespaceURI(), child.getNodeName())) : null);
                 end(child);
             }
         }

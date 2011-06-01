@@ -26,6 +26,8 @@ import java.awt.image.SampleModel;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -446,11 +448,14 @@ class RasterLayerResponse {
 
         // creating the final coverage by keeping into account the fact that we
         // can just use the envelope, but we need to use the G2W
+        Map <String, String> properties = new HashMap<String,String>();
+        properties.put(Utils.FIlE_SOURCE_PROPERTY, location);
+        
         return coverageFactory.create(rasterManager.getCoverageIdentifier(),
                 data, new GridGeometry2D(new GeneralGridEnvelope(data, 2),
                         PixelInCell.CELL_CORNER, finalGridToWorldCorner,
                         this.rasterManager.getCoverageCRS(), null), bands,
-                null, null);
+                null, properties);
 
     }
 

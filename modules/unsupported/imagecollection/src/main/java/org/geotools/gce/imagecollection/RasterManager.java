@@ -628,7 +628,10 @@ class RasterManager {
                     final ImageReaderSpi spi = reader.getOriginatingProvider();
                     final int width = reader.getWidth(0);
                     final int height = reader.getHeight(0);
-                    final int numOverviews = reader.getNumImages(false) - 1;
+                    int numOverviews = reader.getNumImages(false) - 1; 
+                    if (numOverviews < 0) {
+                        numOverviews = 0;
+                    }
                     final long lastModified = file.lastModified();
                     final ImageProperty property = new ImageProperty(filePath, width, height, numOverviews, spi, lastModified);
                     imageManager = new ImageManager(property);

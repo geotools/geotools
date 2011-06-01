@@ -1,0 +1,68 @@
+  Module Maintainer: Rini Angreani and Ben Caradoc-Davies
+
+  IP Review:
+
+    * Jody Garnett, June 2011
+
+  STATUS: Under review
+
+  KNOWN ISSUES:
+  
+  (List JIRA issues here; do not need to fix just create the issue)
+
+Contributor Review (taken from pom.xml and source code files):
+
+    * all code provided Rini Angreani was done under LGPL, CSIRO code contribution agreement
+      (not true also mentions Curtin Universtiy of Technology - do we have a code contribution
+       agreement from this university? or was she working for CSIRO at the time...)
+    
+    * Ben Caradoc-Davies was done under LGPL, CSIRO code contribution agreement
+    
+    * Russell Petty, GSV need to ensure individual and organisation (is that geoscience victoria?)
+      have signed contirbution agreement
+    
+    * Tara Athan (who is this?)
+    
+    * Jody Garnett (Geoserver)
+      
+    * src/ checked by Jody Garnett
+
+    * test/
+
+
+* test resources
+  ~~~~~~~~~~~~~~
+
+    * test-data, application schemas and xml files of unknown history, either add information as an
+      xml content, or make a readme for the director
+
+    * commonsSchemas - unknown history
+    
+    * commonsSchemas/getosciml - should credit the committee that made this right?
+    
+    * gsml30 - unknown history
+    
+* test
+  ~~~~
+
+    * org.geotools.data
+    
+    * org.geotools.data.complex - BoreholeTest some of these files are quite old (2004) writen by Gabriel at Axios
+      can we ask him who he did the work for and confirm it was donated correctly.  AttributeCreateOrderListTest
+      is listed as 2004-2011 by Russell Petty, GSV (need to check contribution agreement and I suspect
+      the file was not created in 2004).
+    
+    * org.geotools.data.complex.config - OasisCatalogTest is missing an @author need to check svn.
+      AppSchemaFileDataTest lists Tara Athan (who is this?)
+    
+    * org.geotools.filter - files listed as 2004, this is suspect if Reni wrote them
+    
+    * org.geotools.filter.expression - many files listed as from 2004; this is suspect if Reni wrote
+      them.
+    
+    * org.geotools.test - AppSchemaTestSupport does not have an author
+    
+    * org.geotools.util - InterpolationPropertiesTest is listed as 2004; this is suspect as Ben is the author
+    
+    
+

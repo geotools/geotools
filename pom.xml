@@ -19,10 +19,21 @@
   <!--       modify the build process in certain conditions.       -->
   <!--   Available properties are:                                 -->
   <!--                                                             -->
+  <!--    -Dall               build all the usual suspects the     -->
+  <!--                        core library with any unsupported    -->
+  <!--                        modules or example code used by the  -->
+  <!--                        build box.                           -->
+  <!--                                                             -->
   <!--    -Djdbc.oracle=true  Indicate that the real oracle driver -->
   <!--                        has been installed into the local    -->
   <!--                        repository and should be used.       -->
+  <!--                                                             -->
   <!--   Available profiles are:                                   -->
+  <!--                                                             -->
+  <!--     docs               include demo and docs                -->
+  <!--                                                             -->
+  <!--     pending            Includes modules that are pending    -->
+  <!--                                                             -->
   <!--     extensive.tests    Performs more extensive tests than   -->
   <!--                        the default. Only a few modules      -->
   <!--                        check for this profile.              -->
@@ -45,9 +56,10 @@
   <!--     stress             Profile to active tests which end in -->
   <!--                        "StressTest.java"                    -->
   <!--                                                             -->
-  <!--     pending            Includes modules that are pending    -->
-  <!--                                                             -->
   <!--   Example:                                                  -->
+  <!--       mvn install -Dall                                     -->
+  <!--       mvn eclipse:eclipse -Dall                             -->
+  <!--       mvn -p docs install                                   -->
   <!--       mvn -P extensive.tests install                        -->
   <!--       mvn -P online,stress install                          -->
   <!--       mvn -P site.build site                                -->
@@ -82,6 +94,16 @@
 
   <!-- Profiles set on the command-line overwrite default properties. -->
   <profiles>
+    <profile>
+      <id>docs</id>
+      <activation>
+         <property><name>all</name></property>
+       </activation>
+      <modules>
+        <module>demo</module>
+        <module>docs</module>
+      </modules>
+    </profile>
     <profile>
       <id>extensive.tests</id>
       <properties>
@@ -1376,6 +1398,5 @@
   <modules>
     <module>build</module>
     <module>modules</module>
-    <module>demo</module>
   </modules>
 </project>

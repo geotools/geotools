@@ -926,7 +926,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory
             Description description, Unit<?> unit, org.opengis.style.Stroke stroke,
             org.opengis.style.Fill fill, org.opengis.style.Displacement displacement,
             Expression offset) {
-        return polygonSymbolizer(name, geometry, description, unit, stroke, fill, displacement, offset);
+        return delegate.polygonSymbolizer(name, geometry, description, unit, stroke, fill, displacement, offset);
     }
     
     public RasterSymbolizer rasterSymbolizer(String name, Expression geometry,

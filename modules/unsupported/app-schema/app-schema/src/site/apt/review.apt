@@ -4,6 +4,16 @@
 
     * Jody Garnett, June 2011
 
+    * src/ checked by Jody Garnett, June 2011
+
+    * test/ checked by Jody Garnett 
+    
+    * test/resources checked by Jody Garnett
+
+  Code Review:
+  
+    * Jody Garnett, June 2011
+  
   STATUS: Under review
 
   KNOWN ISSUES:
@@ -16,7 +26,7 @@ Contributor Review (taken from pom.xml and source code files):
       (not true also mentions Curtin Universtiy of Technology - do we have a code contribution
        agreement from this university? or was she working for CSIRO at the time...)
     
-    * Ben Caradoc-Davies was done under LGPL, CSIRO code contribution agreement
+    * all code prvided by Ben Caradoc-Davies was done under LGPL, CSIRO code contribution agreement
     
     * Russell Petty, GSV need to ensure individual and organisation (is that geoscience victoria?)
       have signed contirbution agreement
@@ -24,11 +34,56 @@ Contributor Review (taken from pom.xml and source code files):
     * Tara Athan (who is this?)
     
     * Jody Garnett (Geoserver)
+    
+    * Niels Charlier, Curtin University of Technology as the same issue as Reni, has the university
+      signed anything or was he operating under the direction of CSIRO
+    
+    * @author Justin Deoliveira
+
+* Code Review
+
+    * org.geotools.data.complex.filter - Does ComplexFilterSplitter needs to be updated?)
+
+    * org.geotools.feature - What is this code still doing alive; it should all be deprecated
+       as it is from the experimental branch; please transition so we can have good feedback on the
+       feature model in use today - examples Types, AttributBuilder? ). Or should this be moved
+       to gt-main for general productivity?
+    
+    * org.geotools.feature.type - the factory implementation ComplexFeatureTypeFactoryImpl is not
+      registered in META-INF/services. It should be registered and the library or datastore 
+      configured with a Hint rather than make use of this implementation directly. If it helps
+      this factory could be moved to gt-main and seperated from app-schema.
       
-    * src/ checked by Jody Garnett
+* src
 
-    * test/
+    * org.geotools.data.complex many files are listed as from (c) 2004 even when they were not
+      created then. Please correct using svn history (example PathAttributeList,
+      NestedAttributeMapping, MappingFeatureIteratorFactory). MappingFeatureSource seems interesting
+      in that it is dated 2004/Gabriel but all its component parts appear to be from 2008.
 
+    * org.geotools.data.complex.config - (c) 2004 date range suspect confirm with svn
+
+    * org.geotools.data.complex.filter - (c) 2004 date range suspect confirm with svn.
+
+    * org.geotools.data.complex.xml - (c) 2004 date range suspect confirm with svn
+
+    * org.geotools.data.joining - (c) 2004 date range suspect confirm with svn
+
+    * org.geotools.feature - (c) 2004 date range suspect confirm with svn
+
+    * org.geotools.feature.type - (c) 2004 date range suspect confirm with svn.
+
+    * org.geotools.feature.xpath - (c) 2004 date range suspect confirm with svn
+
+    * org.geotools.filter - (c) 2004 date range suspect confirm with svn
+
+    * org.geotools.filter.expression - (c) 2004 date range suspect confirm with svn
+
+    * org.geotools.gml.producer - (c) 2004 date range suspect confirm with svn
+
+    * org.geotools.jdbc - (c) 2004 date range suspect confirm with svn
+
+    * org.geotools.util - (c) 2004 date range suspect confirm with svn
 
 * test resources
   ~~~~~~~~~~~~~~

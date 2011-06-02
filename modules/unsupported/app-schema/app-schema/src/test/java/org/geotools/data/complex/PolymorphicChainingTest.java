@@ -25,6 +25,7 @@ import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.Types;
 import org.geotools.filter.FilterFactoryImpl;
+import org.geotools.test.AppSchemaTestSupport;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -32,8 +33,9 @@ import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
+import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
+import org.xml.sax.helpers.NamespaceSupport;
 
 import java.net.URL;
 import java.util.*;
@@ -47,16 +49,22 @@ import static org.junit.Assert.*;
  *
  * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/test/java/org/geotools/data/complex/PolymorphicChainingTest.java $
  */
-public class PolymorphicChainingTest {
+public class PolymorphicChainingTest extends AppSchemaTestSupport {
     static final String EX_NS = "urn:example:xmlns:ArtifactML:1.0";
-    
+
     static final Name ARTIFACT = Types.typeName(EX_NS, "Artifact");
 
-    static FilterFactory ff = new FilterFactoryImpl(null);
+    static FilterFactory2 ff = new FilterFactoryImpl(null);
 
     private static final String schemaBase = "/test-data/";
 
     private static FeatureSource<FeatureType, Feature> artifactSource;
+
+    private NamespaceSupport namespaces = new NamespaceSupport();
+
+    public PolymorphicChainingTest() {
+        namespaces.declarePrefix("ex", EX_NS);
+    }
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
@@ -65,11 +73,6 @@ public class PolymorphicChainingTest {
         loadDataAccesses();
         sw.stop();
         System.out.println("Set up time: " + sw.getTimeString());
-    }
-
-    @AfterClass
-    public static void tearDownAfterClass() throws Exception {
-        DataAccessRegistry.unregisterAll();
     }
 
     /**
@@ -96,29 +99,29 @@ public class PolymorphicChainingTest {
      */
     @Test
     public void testMultiMappedFilter() throws Exception {
-        Expression property = ff.property("ex:attributes/ex:Attribute/ex:key");
+        Expression property = ff.property("ex:attributes/ex:Attribute/ex:key", namespaces);
         Filter filter = ff.equals(property, ff.literal("stringKey1"));
         FeatureCollection<FeatureType, Feature> filteredResults = artifactSource.getFeatures(filter);
         List<Feature> retVal = getFeatures(filteredResults);
         assertEquals(0, retVal.size());
-        
-        property = ff.property("ex:attributes/ex:StringAttribute/ex:key");
+
+        property = ff.property("ex:attributes/ex:StringAttribute/ex:key", namespaces);
         filter = ff.equals(property, ff.literal("stringKey1"));
         filteredResults = artifactSource.getFeatures(filter);
         retVal = getFeatures(filteredResults);
         assertEquals(2, retVal.size());
-        
+
         Feature feature = retVal.get(0);
         assertId("a.101", feature);
         feature = retVal.get(1);
         assertId("a.102", feature);
-        
-        property = ff.property("ex:attributes/ex:GeoAttribute/ex:key");
+
+        property = ff.property("ex:attributes/ex:GeoAttribute/ex:key", namespaces);
         filter = ff.equals(property, ff.literal("stringKey1"));
         filteredResults = artifactSource.getFeatures(filter);
         retVal = getFeatures(filteredResults);
         assertEquals(0, retVal.size());
-        
+
 //        property = ff.property("ex:attributes/ex:key");
 //        filter = ff.equals(property, ff.literal("stringKey1"));
 //        filteredResults = artifactSource.getFeatures(filter);
@@ -133,7 +136,7 @@ public class PolymorphicChainingTest {
 
     /**
      * Load all the data accesses.
-     * 
+     *
      * @return
      * @throws Exception
      */

@@ -88,20 +88,20 @@ import org.xml.sax.helpers.NamespaceSupport;
  * that operates against the original FeatureType.
  * <p>
  * Usage:
- * 
+ *
  * <pre>
  * &lt;code&gt;
  *    Filter filterOnTargetType = ...
  *    FeatureTypeMappings schemaMapping = ....
- *                       
+ *
  *    UnMappingFilterVisitor visitor = new UnmappingFilterVisitor(schemaMapping);
  *    Filter filterOnSourceType = (Filter)filterOnTargetType.accept(visitor, null);
- *    
+ *
  * &lt;/code&gt;
  * </pre>
- * 
+ *
  * </p>
- * 
+ *
  * @author Gabriel Roldan, Axios Engineering
  * @author Rini Angreani, Curtin University of Technology
  * @version $Id$
@@ -118,8 +118,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
 
     private FeatureTypeMapping mappings;
 
-    private static final FilterFactory2 ff = (FilterFactory2) CommonFactoryFinder
-            .getFilterFactory(null);
+    private static final FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
 
     /**
      * visit(*Expression) holds the unmapped expression here. Package visible just for unit tests
@@ -131,7 +130,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
     /**
      * Used by methods that visited a filter that produced one or more filters over the surrogate
      * feature type to combine them in an Or filter if necessary.
-     * 
+     *
      * @param combinedFilters
      * @return
      */
@@ -140,23 +139,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
         case 0:
             throw new IllegalArgumentException("No filters to combine");
         case 1:
-            Filter filter = (Filter) combinedFilters.get(0);
-            if (filter instanceof BinaryComparisonOperator) {
-                Expression exp = ((BinaryComparisonOperator) filter).getExpression1();
-                if (exp != null && exp instanceof NestedAttributeExpression) {
-                    filter = new MultiValuedOrImpl(ff, filter,
-                            (NestedAttributeExpression) ((BinaryComparisonOperator) filter)
-                                    .getExpression1());
-                } else {
-                    exp = ((BinaryComparisonOperator) filter).getExpression2();
-                    if (exp != null && exp instanceof NestedAttributeExpression) {
-                        filter = new MultiValuedOrImpl(ff, filter,
-                                (NestedAttributeExpression) ((BinaryComparisonOperator) filter)
-                                        .getExpression2());
-                    }
-                }
-            }
-            return filter;
+            return (Filter) combinedFilters.get(0);
         default:
             return ff.or(combinedFilters);
         }
@@ -165,7 +148,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
     /**
      * Returns a CompareFilter of the same type than <code>filter</code>, but built on the unmapped
      * expressions pointing to the surrogate type attributes.
-     * 
+     *
      * @return the scalar product of the evaluation of both expressions
      */
     public Expression[][] visitBinaryComparisonOperator(BinaryComparisonOperator filter) {
@@ -367,10 +350,6 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
                 for (Iterator uppers = upperExpressions.iterator(); uppers.hasNext();) {
                     Expression roof = (Expression) uppers.next();
                     Filter newFilter = ff.between(prop, floor, roof);
-                    if (prop instanceof NestedAttributeExpression) {
-                        newFilter = new MultiValuedOrImpl(ff, newFilter,
-                                (NestedAttributeExpression) prop);
-                    }
                     combinedFilters.add(newFilter);
                 }
             }
@@ -489,10 +468,6 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
         for (Iterator it = unrolledValues.iterator(); it.hasNext();) {
             Expression sourceValue = (Expression) it.next();
             Filter newFilter = ff.like(sourceValue, literal, wildcard, single, escape);
-            if (sourceValue instanceof NestedAttributeExpression) {
-                newFilter = new MultiValuedOrImpl(ff, newFilter,
-                        (NestedAttributeExpression) sourceValue);
-            }
             combined.add(newFilter);
         }
         Filter unrolled = combineOred(combined);
@@ -508,10 +483,6 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
         for (Iterator it = sourceChecks.iterator(); it.hasNext();) {
             Expression sourceValue = (Expression) it.next();
             Filter newFilter = ff.isNull(sourceValue);
-            if (sourceValue instanceof NestedAttributeExpression) {
-                newFilter = new MultiValuedOrImpl(ff, newFilter,
-                        (NestedAttributeExpression) sourceValue);
-            }
             combined.add(newFilter);
         }
 
@@ -818,7 +789,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
 
         if (matchingMappings.isEmpty() && simplifiedSteps.size() > 1) {
             // means some attributes are probably mapped separately in feature chaining
-            matchingMappings.add(new NestedAttributeExpression(targetXPath, mappings));
+            matchingMappings.add(new NestedAttributeExpression(targetXPath, mappings, expr.getNamespaceContext()));
         }
 
         if (matchingMappings.size() == 0) {

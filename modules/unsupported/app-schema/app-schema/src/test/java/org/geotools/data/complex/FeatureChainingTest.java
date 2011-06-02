@@ -45,16 +45,17 @@ import org.opengis.feature.Property;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
+import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.xml.sax.Attributes;
+import org.xml.sax.helpers.NamespaceSupport;
 
 import com.vividsolutions.jts.util.Stopwatch;
 
 /**
  * This is the tests for feature chaining; nesting complex attributes (feature and non-feature)
  * inside another complex attribute.
- * 
+ *
  * @author Rini Angreani, Curtin University of Technology
  *
  *
@@ -66,6 +67,8 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
 
     public static final String GMLNS = "http://www.opengis.net/gml";
 
+    public static final String XLINKNS = "http://www.w3.org/1999/xlink";
+
     static final Name MAPPED_FEATURE_TYPE = Types.typeName(GSMLNS, "MappedFeatureType");
 
     static final Name MAPPED_FEATURE = Types.typeName(GSMLNS, "MappedFeature");
@@ -73,7 +76,7 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
     static final Name GEOLOGIC_UNIT_TYPE = Types.typeName(GSMLNS, "GeologicUnitType");
 
     static final Name GEOLOGIC_UNIT = Types.typeName(GSMLNS, "GeologicUnit");
-    
+
     static final Name GEOLOGIC_UNIT_NAME = Types.typeName("myGeologicUnit");
 
     static final Name COMPOSITION_PART_TYPE = Types.typeName(GSMLNS, "CompositionPartType");
@@ -86,7 +89,16 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
 
     static final Name CONTROLLED_CONCEPT = Types.typeName(GSMLNS, "ControlledConcept");
 
-    static FilterFactory ff = new FilterFactoryImpl(null);
+    static FilterFactory2 ff = new FilterFactoryImpl(null);
+
+
+    private NamespaceSupport namespaces = new NamespaceSupport();
+
+    public FeatureChainingTest() {
+        namespaces.declarePrefix("gml", GMLNS);
+        namespaces.declarePrefix("gsml", GSMLNS);
+        namespaces.declarePrefix("xlink", XLINKNS);
+    }
 
     /**
      * Map of geological unit values to mapped feature objects based on
@@ -170,7 +182,7 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
 
     /**
      * Test that chaining works
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -285,7 +297,7 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
      * testFeatureChaining() tests one to many relationship, but the many side was on the chaining
      * side ie. geologic unit side (with many composition parts). This is to test that configuring
      * many on the the chained works. We're using composition part -> lithology here.
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -341,7 +353,7 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
      * Test nesting multiple multi valued properties. Both exposure color and outcrop character are
      * multi valued. By making sure that both are nested inside geological unit feature, it's
      * verified that nesting multiple multi valued properties is possible.
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -408,7 +420,7 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
 
     /**
      * Test mapping multi-valued simple properties still works.
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -431,7 +443,7 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
 
     /**
      * Test filtering attributes on nested features.
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -447,7 +459,7 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
         // </ogc:PropertyIsLike>
         // </ogc:Filter>
 
-        Expression property = ff.property("gsml:specification/gsml:GeologicUnit/gml:description");
+        Expression property = ff.property("gsml:specification/gsml:GeologicUnit/gml:description", namespaces);
         Filter filter = ff.like(property,
                 "Olivine basalt, tuff, microgabbro, minor sedimentary rocks");
         FeatureCollection<FeatureType, Feature> filteredResults = mfSource.getFeatures(filter);
@@ -469,7 +481,7 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
         // we're testing that we can get a geologic unit which has a composition part with a
         // significant proportion value
         property = ff
-                .property("gsml:composition/gsml:CompositionPart/gsml:proportion/gsml:CGI_TermValue/gsml:value");
+                .property("gsml:composition/gsml:CompositionPart/gsml:proportion/gsml:CGI_TermValue/gsml:value", namespaces);
         filter = ff.equals(property, ff.literal("significant"));
         filteredResults = guSource.getFeatures(filter);
         assertEquals(2, size(filteredResults));
@@ -483,7 +495,7 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
         /**
          * Test filtering client properties on chained features
          */
-        property = ff.property("gsml:specification/gsml:GeologicUnit/gsml:occurrence/@xlink:href");
+        property = ff.property("gsml:specification/gsml:GeologicUnit/gsml:occurrence/@xlink:href", namespaces);
         filter = ff.like(property, "urn:cgi:feature:MappedFeature:mf1");
         filteredResults = mfSource.getFeatures(filter);
         assertEquals(1, size(filteredResults));
@@ -513,24 +525,24 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
         complexAttribute = (ComplexAttribute) propIterator.next();
         values = complexAttribute.getValue();
         assertEquals(1, values.size());
-        assertEquals("Yaugher Volcanic Group 1", 
+        assertEquals("Yaugher Volcanic Group 1",
                 GML3EncodingUtils.getSimpleContent(complexAttribute));
         // second
         complexAttribute = (ComplexAttribute) propIterator.next();
         values = complexAttribute.getValue();
         assertEquals(1, values.size());
-        assertEquals("Yaugher Volcanic Group 2", 
+        assertEquals("Yaugher Volcanic Group 2",
                 GML3EncodingUtils.getSimpleContent(complexAttribute));
         // third
         complexAttribute = (ComplexAttribute) propIterator.next();
         values = complexAttribute.getValue();
         assertEquals(1, values.size());
-        assertEquals("-Py", 
+        assertEquals("-Py",
                 GML3EncodingUtils.getSimpleContent(complexAttribute));
         /**
          * Same case as above, but the multi-valued property is feature chained
          */
-        property = ff.property("gsml:exposureColor/gsml:CGI_TermValue/gsml:value");
+        property = ff.property("gsml:exposureColor/gsml:CGI_TermValue/gsml:value", namespaces);
         filter = ff.equals(property, ff.literal("Yellow"));
         filteredResults = guSource.getFeatures(filter);
         assertEquals(1, size(filteredResults));
@@ -555,7 +567,7 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
      * Test nesting features of a complex type with simple content. Previously didn't get encoded.
      * Also making sure that a feature type can have multiple FEATURE_LINK to be referred by
      * different types.
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -660,7 +672,7 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
     /**
      * Test chaining multi-valued by reference (xlink:href). It should result with multiple
      * attributes with no nested attributes, but only client property with xlink:href.
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -713,7 +725,7 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
 
     /**
      * Load all the data accesses.
-     * 
+     *
      * @return
      * @throws Exception
      */

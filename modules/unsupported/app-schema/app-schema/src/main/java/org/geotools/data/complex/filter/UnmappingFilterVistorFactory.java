@@ -28,9 +28,6 @@ import org.geotools.data.complex.XmlFeatureTypeMapping;
  */
 public class UnmappingFilterVistorFactory {
     public static UnmappingFilterVisitor getInstance(FeatureTypeMapping mapping) {
-        if (mapping instanceof XmlFeatureTypeMapping) {
-            return new XmlUnmappingFilterVisitor(mapping);
-        }
-        return new UnmappingFilterVisitor(mapping);
+       return new UnmappingFilterVisitor(mapping);
     }
 }

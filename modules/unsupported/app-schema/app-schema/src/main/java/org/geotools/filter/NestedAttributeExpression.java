@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -44,9 +44,9 @@ import org.xml.sax.helpers.NamespaceSupport;
  * This class represents a list of expressions broken up from a single XPath expression that is
  * nested in more than one feature. The purpose is to allow filtering these attributes on the parent
  * feature.
- * 
+ *
  * @author Rini Angreani, CSIRO Earth Science and Resource Engineering
- * 
+ *
  *
  *
  * @source $URL$
@@ -56,23 +56,21 @@ import org.xml.sax.helpers.NamespaceSupport;
 public class NestedAttributeExpression extends AttributeExpressionImpl {
     private FeatureTypeMapping mappings;
 
-    private NamespaceSupport namespaces;
-
     private StepList fullSteps;
 
     /**
      * First constructor
-     * 
+     *
      * @param xpath
      *            Attribute XPath
      * @param expressions
      *            List of broken up expressions
      */
-    public NestedAttributeExpression(String xpath, FeatureTypeMapping mappings) {
+    public NestedAttributeExpression(String xpath, FeatureTypeMapping mappings, NamespaceSupport namespaceSupport) {
         super(xpath);
         this.mappings = mappings;
-        this.namespaces = mappings.getNamespaces();
-        fullSteps = XPath.steps(mappings.getTargetFeature(), this.attPath.toString(), namespaces);
+        this.namespaceSupport = namespaceSupport;
+        fullSteps = XPath.steps(mappings.getTargetFeature(), this.attPath.toString(), namespaceSupport);
     }
 
     /**
@@ -103,7 +101,7 @@ public class NestedAttributeExpression extends AttributeExpressionImpl {
 
         return getValues(0, 0, roots, mappings, null);
     }
-    
+
     private boolean isLastStep(int index) {
         return index == fullSteps.size();
     }
@@ -115,7 +113,7 @@ public class NestedAttributeExpression extends AttributeExpressionImpl {
         if (startIndex > fullSteps.size() || endIndex > fullSteps.size()) {
             return values;
         }
- 
+
         while (startIndex <= endIndex) {
             List<AttributeMapping> attMappings = new ArrayList<AttributeMapping>();
             StepList steps = null;
@@ -124,7 +122,7 @@ public class NestedAttributeExpression extends AttributeExpressionImpl {
                 // exhausted all paths
                 return values;
             }
-            
+
             while (attMappings.isEmpty() && endIndex < fullSteps.size()) {
                 endIndex++;
                 steps = fullSteps.subList(startIndex, endIndex);
@@ -158,7 +156,7 @@ public class NestedAttributeExpression extends AttributeExpressionImpl {
                          // skip element name
                          startIndex++;
                          endIndex = startIndex;
-                         continue;                         
+                         continue;
                      }
                  }
             }
@@ -206,7 +204,6 @@ public class NestedAttributeExpression extends AttributeExpressionImpl {
                                 }
                                 continue;
                             }
-                            namespaces = nestedMapping.getNamespaces();
                             try {
                                 List<Feature> nestedFeatures = getNestedFeatures(root,
                                         nestedMapping, fMapping);
@@ -278,7 +275,7 @@ public class NestedAttributeExpression extends AttributeExpressionImpl {
 
     /**
      * Get nested features from a feature chaining attribute mapping
-     * 
+     *
      * @param root
      *            Root feature being evaluated
      * @param nestedMapping
@@ -318,7 +315,7 @@ public class NestedAttributeExpression extends AttributeExpressionImpl {
     /**
      * Extract the value that might be wrapped in an attribute. If the value is a collection, gets
      * the first value.
-     * 
+     *
      * @param value
      * @return
      */
@@ -348,7 +345,7 @@ public class NestedAttributeExpression extends AttributeExpressionImpl {
 
     /**
      * Find the expression of a client property if the step is one.
-     * 
+     *
      * @param nextRootStep
      *            the step
      * @param fMapping
@@ -370,7 +367,7 @@ public class NestedAttributeExpression extends AttributeExpressionImpl {
                     && (lastStepName.getNamespaceURI() == null || lastStepName.getNamespaceURI()
                             .length() == 0)) {
                 String prefix = lastStepName.getPrefix();
-                String uri = namespaces.getURI(prefix);
+                String uri = namespaceSupport.getURI(prefix);
                 lastStep = Types.typeName(uri, lastStepName.getLocalPart());
             } else {
                 lastStep = Types.toTypeName(lastStepName);

@@ -24,7 +24,6 @@ import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
 import org.geotools.data.complex.config.AppSchemaDataAccessConfigurator;
 import org.geotools.data.complex.filter.ComplexFilterSplitter;
-import org.geotools.data.complex.filter.MultiValuedOrImpl;
 import org.geotools.data.joining.JoiningQuery;
 import org.geotools.filter.FidFilterImpl;
 import org.geotools.filter.FilterCapabilities;
@@ -32,12 +31,11 @@ import org.geotools.filter.NestedAttributeExpression;
 import org.geotools.filter.visitor.DefaultFilterVisitor;
 import org.geotools.jdbc.JDBCFeatureSource;
 import org.opengis.filter.Filter;
-import org.opengis.filter.Or;
 import org.opengis.filter.expression.PropertyName;
 
 /**
  * @author Russell Petty, GSV
- * 
+ *
  *
  *
  * @source $URL$
@@ -47,27 +45,18 @@ import org.opengis.filter.expression.PropertyName;
 public class MappingFeatureIteratorFactory {
     protected static final Logger LOGGER = org.geotools.util.logging.Logging
             .getLogger("org.geotools.data.complex");
-    
-    
+
+
     protected static class CheckIfNestedFilterVisitor extends DefaultFilterVisitor {
-        
+
         public boolean hasNestedAttributes = false;
-        
+
         public Object visit( PropertyName expression, Object data ) {
             if (expression instanceof NestedAttributeExpression) {
                 hasNestedAttributes = true;
             }
             return data;
         }
-        
-        public Object visit( Or filter, Object data ) {
-            if (filter instanceof MultiValuedOrImpl) {
-                hasNestedAttributes = true;
-            }
-            return super.visit(filter, data);
-            
-        }
-        
     }
 
     public static IMappingFeatureIterator getInstance(AppSchemaDataAccess store,
@@ -76,7 +65,7 @@ public class MappingFeatureIteratorFactory {
         if (mapping instanceof XmlFeatureTypeMapping) {
             return new XmlMappingFeatureIterator(store, mapping, query);
         }
-        
+
         if (AppSchemaDataAccessConfigurator.isJoining()) {
             if (!(query instanceof JoiningQuery)) {
                 query = new JoiningQuery(query);
@@ -89,26 +78,26 @@ public class MappingFeatureIteratorFactory {
             else {
                 throw new IllegalArgumentException("Joining Queries only work on JDBC Feature Source!");
             }
-            
+
             IMappingFeatureIterator iterator;
             if (unrolledFilter != null) {
                 query.setFilter(Filter.INCLUDE);
                 Query unrolledQuery = store.unrollQuery(query, mapping);
                 unrolledQuery.setFilter(unrolledFilter);
                 iterator = new DataAccessMappingFeatureIterator(store, mapping, query, false, unrolledQuery);
-                
+
             } else {
-                Filter filter = query.getFilter();            
+                Filter filter = query.getFilter();
                 ComplexFilterSplitter splitter = new ComplexFilterSplitter( capabilities , mapping );
                 filter.accept(splitter, null);
-               
+
                 //--just verifying this for certainty
                 CheckIfNestedFilterVisitor visitor = new CheckIfNestedFilterVisitor();
                 splitter.getFilterPre().accept(visitor, null);
                 if (visitor.hasNestedAttributes) {
                     throw new IllegalArgumentException("Internal Error: filter was not split properly.");
                 }
-                
+
                 query.setFilter(splitter.getFilterPre());
                 filter = splitter.getFilterPost();
                 int maxFeatures = Query.DEFAULT_MAX;
@@ -116,7 +105,7 @@ public class MappingFeatureIteratorFactory {
                     maxFeatures = query.getMaxFeatures();
                     query.setMaxFeatures(Query.DEFAULT_MAX);
                 }
-                iterator = new DataAccessMappingFeatureIterator(store, mapping, query, false);            
+                iterator = new DataAccessMappingFeatureIterator(store, mapping, query, false);
                 if (filter != null && filter != Filter.INCLUDE) {
                     iterator = new PostFilteringMappingFeatureIterator(iterator, filter, maxFeatures);
                 }
@@ -137,10 +126,10 @@ public class MappingFeatureIteratorFactory {
                         && !(filter instanceof FidFilterImpl)) {
                     // normal filters
                     return new DataAccessMappingFeatureIterator(store, mapping, query, true, unrolledQuery);
-                } 
+                }
             }
-    
-            return new DataAccessMappingFeatureIterator(store, mapping, query, false);            
+
+            return new DataAccessMappingFeatureIterator(store, mapping, query, false);
         }
     }
 }

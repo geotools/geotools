@@ -207,6 +207,44 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
     public void setForeignIds(List<Expression> ids) {
         foreignIds = ids;
     }
+    
+    /**
+     * Only used for Joining, to make sure that rows with different foreign id's
+     * aren't interpreted as one feature and merged.
+     */
+    public List<Object> getForeignIdValues() {        
+        if (foreignIds != null) {
+            List<Object> foreignIdValues = new ArrayList<Object>();
+            for (int i = 0; i<foreignIds.size(); i++) {
+                foreignIdValues.add(i, peekNextValue(foreignIds.get(i)));
+            }
+            return foreignIdValues;
+        }
+        return null;
+    }
+    
+    /**
+     * Only used for Joining, to make sure that rows with different foreign id's
+     * aren't interpreted as one feature and merged.
+     */
+    protected boolean checkForeignIdValues(List<Object> foreignIdValues, Feature next) {        
+        if (foreignIds!=null) {
+            for (int i = 0; i < foreignIds.size(); i++) {
+                if (!foreignIds.get(i).evaluate(next).equals(foreignIdValues.get(i))) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    
+    /**
+     * Only used for Joining, to make sure that rows with different foreign id's
+     * aren't interpreted as one feature and merged.
+     */
+    public boolean checkForeignIdValues(List<Object> foreignIdValues) {        
+        return checkForeignIdValues(foreignIdValues, curSrcFeature);
+    }
 
     protected void initialiseSourceFeatures(FeatureTypeMapping mapping, Query query)
             throws IOException {
@@ -612,20 +650,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
 
         while (getSourceFeatureIterator().hasNext()) {
             Feature next = getSourceFeatureIterator().next();
-            boolean isSame = false;
-            if (extractIdForFeature(next).equals(fId)) {
-                isSame = true;
-                if (foreignIds!=null) {
-                    for (int i = 0; i < foreignIds.size(); i++) {
-                        if (!foreignIds.get(i).evaluate(next).equals(foreignIdValues.get(i))) {
-                            isSame = false;
-                            break;
-                        }
-                    }
-                }
-            }
-            
-            if (isSame) {                
+            if (extractIdForFeature(next).equals(fId) && checkForeignIdValues(foreignIdValues, next)) {
                 features.add(next);
             } else {
                 curSrcFeature = next;
@@ -683,15 +708,8 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
         ArrayList<Feature> sources = new ArrayList<Feature>();
         if (isFiltered) {
              setNextFilteredFeature(id, sources);
-        } else {
-            List<Object> foreignIdValues = null;
-            if (foreignIds != null) {
-                foreignIdValues = new ArrayList<Object>();
-                for (int i = 0; i<foreignIds.size(); i++) {
-                    foreignIdValues.add(i, peekNextValue(foreignIds.get(i)));
-                }
-            }
-            setNextFeature(id, foreignIdValues, sources);
+        } else {            
+            setNextFeature(id, getForeignIdValues(), sources);
         }
 
         return sources;

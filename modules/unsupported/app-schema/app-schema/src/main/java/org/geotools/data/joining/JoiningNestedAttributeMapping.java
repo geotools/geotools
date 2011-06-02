@@ -264,18 +264,23 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
         ArrayList<Feature> matchingFeatures = new ArrayList<Feature>();
 
         if (featureIterator!= null) {
-            while (featureIterator.hasNext() && featureIterator.peekNextValue(nestedSourceExpression).equals(foreignKeyValue)) {
+            if (featureIterator.hasNext() && featureIterator.peekNextValue(nestedSourceExpression).equals(foreignKeyValue)) {
+                List<Object> foreignIdValues = featureIterator.getForeignIdValues();
+                
                 matchingFeatures.addAll(featureIterator.skip());
-            }
+
+                while (featureIterator.hasNext() && featureIterator.peekNextValue(nestedSourceExpression).equals(foreignKeyValue)
+                        && featureIterator.checkForeignIdValues(foreignIdValues)) {
+                    matchingFeatures.addAll(featureIterator.skip());
+                }                
+            }     
         }
 
         //skip all others
         for ( Name name : instance.featureIterators.keySet()) {
             DataAccessMappingFeatureIterator fIt = instance.featureIterators.get(name);
             if (fIt != featureIterator) {
-                 while (fIt.hasNext() && fIt.peekNextValue(instance.nestedSourceExpressions.get(name)).equals(foreignKeyValue)) {
-                     fIt.skip();
-                 }
+                skipFeatures(fIt, instance.nestedSourceExpressions.get(name), foreignKeyValue);
              }
          }
         instance.skipped.add(foreignKeyValue);
@@ -324,23 +329,39 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
         ArrayList<Feature> matchingFeatures = new ArrayList<Feature>();
 
         if (featureIterator!= null) {
-            while (featureIterator.hasNext() && featureIterator.peekNextValue(nestedSourceExpression).equals(foreignKeyValue)) {
+            if (featureIterator.hasNext() && featureIterator.peekNextValue(nestedSourceExpression).equals(foreignKeyValue)) {
+                List<Object> foreignIdValues = featureIterator.getForeignIdValues();
+
                 matchingFeatures.add(featureIterator.next());
-            }
+                                
+                while (featureIterator.hasNext() && featureIterator.peekNextValue(nestedSourceExpression).equals(foreignKeyValue)
+                        && featureIterator.checkForeignIdValues(foreignIdValues)) {
+                    matchingFeatures.add(featureIterator.next());
+                }                
+            }            
         }
 
         //skip all others
         for ( Name name : instance.featureIterators.keySet()) {
            DataAccessMappingFeatureIterator fIt = instance.featureIterators.get(name);
            if (fIt != featureIterator) {
-                while (fIt.hasNext() && fIt.peekNextValue(instance.nestedSourceExpressions.get(name)).equals(foreignKeyValue)) {
-                    fIt.skip();
-                }
+               skipFeatures(fIt, instance.nestedSourceExpressions.get(name), foreignKeyValue);
             }
         }
         instance.skipped.add(foreignKeyValue);
 
         return matchingFeatures;
+    }
+    
+    protected void skipFeatures (DataAccessMappingFeatureIterator featureIterator, Expression nestedSourceExpression, Object foreignKeyValue) throws IOException {
+        if (featureIterator.hasNext() && featureIterator.peekNextValue(nestedSourceExpression).equals(foreignKeyValue)) {
+            List<Object> foreignIdValues = featureIterator.getForeignIdValues();
+
+            while (featureIterator.hasNext() && featureIterator.peekNextValue(nestedSourceExpression).equals(foreignKeyValue)
+                    && featureIterator.checkForeignIdValues(foreignIdValues)) {
+                featureIterator.skip();
+            }                
+        } 
     }
 
     /**
@@ -360,9 +381,8 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
         //skip all
         for ( Name name : instance.featureIterators.keySet()) {
             DataAccessMappingFeatureIterator fIt = instance.featureIterators.get(name);
-            while (fIt.hasNext() && fIt.peekNextValue(instance.nestedSourceExpressions.get(name)).equals(foreignKeyValue)) {
-                fIt.skip();
-            }
+            Expression nestedSourceExpression = instance.nestedSourceExpressions.get(name);
+            skipFeatures(fIt, nestedSourceExpression, foreignKeyValue);
         }
 
         instance.skipped.add(foreignKeyValue);

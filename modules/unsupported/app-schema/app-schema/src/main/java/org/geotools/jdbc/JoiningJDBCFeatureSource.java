@@ -70,7 +70,6 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
     private static final Logger LOGGER = Logging.getLogger(JoiningJDBCFeatureSource.class);
     
     private static final String TEMP_FILTER_ALIAS = "temp_alias_used_for_filter"; 
-    private static final String TEMP_JOIN_ALIAS = "temp_alias_used_for_join";
     public static final String FOREIGN_ID = "FOREIGN_ID" ;
     
     public JoiningJDBCFeatureSource(JDBCFeatureSource featureSource) throws IOException {     
@@ -153,6 +152,18 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
         }
     }
     
+    protected void addMultiValuedSort(String tableName, SortBy[] sort , StringBuffer sql, JoiningQuery.Join join ) throws IOException, FilterToSQLException {
+        sql.append(" CASE WHEN ");            
+        FilterToSQL toSQL1 = createFilterToSQL(getDataStore().getSchema(tableName));
+        toSQL1.setFieldEncoder(new JoiningFieldEncoder(tableName));  
+        FilterToSQL toSQL2 = createFilterToSQL(getDataStore().getSchema(join.getJoiningTypeName()));
+        toSQL2.setFieldEncoder(new JoiningFieldEncoder(join.getJoiningTypeName()));
+        sql.append(toSQL2.encodeToString(join.getForeignKeyName()));
+        sql.append(" = ");
+        sql.append(toSQL1.encodeToString(join.getJoiningKeyName()));
+        sql.append(" THEN 0 ELSE 1 END ASC,");
+    }
+    
     /**
      * Creates ORDER BY for joining query, based on all the sortby's that are specified per
      * joining table
@@ -162,37 +173,35 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
      * @throws IOException
      * @throws SQLException
      */
-    protected void sort(JoiningQuery query, StringBuffer sql, String[] aliases) throws IOException, SQLException {
+    protected void sort(JoiningQuery query, StringBuffer sql, String[] aliases) throws IOException, SQLException, FilterToSQLException {
         boolean orderby = false;
         
-        if (query.getJoins() != null) {
-            for (int j = query.getJoins().size() -1; j >= 0 ; j-- ) {
-                JoiningQuery.Join join = query.getJoins().get(j);
-                SortBy[] sort = join.getSortBy();
-            
-                if ((sort != null) && (sort.length > 0)) {
-                    if (!orderby) {
-                        orderby = true;
-                        sql.append(" ORDER BY ");
-                    }    
+        for (int j = query.getJoins() == null? -1 : query.getJoins().size() -1; j >= -1 ; j-- ) {                
+            JoiningQuery.Join join = j<0 ? null : query.getJoins().get(j);
+            SortBy[] sort = j<0? query.getSortBy() : join.getSortBy();
+        
+            if ((sort != null) && (sort.length > 0)) {
+                if (!orderby) {
+                    orderby = true;
+                    sql.append(" ORDER BY ");
+                }    
+                if (j < 0) {
+                    sort(query.getTypeName(), sort, sql, false);
+                    if (query.getJoins()!= null && query.getJoins().size()>0) {
+                        addMultiValuedSort(query.getTypeName(), sort, sql, query.getJoins().get(0));
+                    }
+                } else {
                     if (aliases!=null && aliases[j] != null) {
                         sort(aliases[j] , sort, sql, true);
                     } else {
                         sort(join.getJoiningTypeName() , sort, sql, false);
                     }
+                    if (query.getJoins().size()>j+1) {
+                        addMultiValuedSort(join.getJoiningTypeName(), sort, sql, query.getJoins().get(j+1));
+                    }
                 }
             }
-        }
-        
-        SortBy[] sort = query.getSortBy();
-        
-        if ((sort != null) && (sort.length > 0)) {
-            if (!orderby) {
-                orderby = true;
-                sql.append(" ORDER BY ");
-            }    
-            sort(query.getTypeName(), sort, sql, false);                
-        }
+        }   
         
         if (orderby) {
             sql.setLength(sql.length() - 1);
@@ -248,6 +257,15 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
         
     }
     
+    protected static String createAlias(String typeName, Set<String> tableNames){
+        String alias;
+        int index =0;
+        do {
+            alias = typeName + "_" + ++index;
+        } while (tableNames.contains(alias));
+        return alias;
+    }
+    
     
     /**
      * Generates a 'SELECT p1, p2, ... FROM ... WHERE ...' prepared statement.
@@ -283,28 +301,37 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
         
         if (query.getJoins() != null) {
             
-            if (query.getSortBy()!= null && query.getSortBy().length > 0) {
-                fromclause.append(" INNER JOIN ");
-                getDataStore().encodeTableName(curTypeName, fromclause, query.getHints());
-                fromclause.append(" ").append(TEMP_JOIN_ALIAS);
-                fromclause.append(" ON (");
-                
-                for (int i=0; i < query.getSortBy().length; i++) {
-                    encodeColumnName(query.getSortBy()[i].getPropertyName().getPropertyName(), curTypeName , fromclause, null);            
-                    fromclause.append(" = ");
-                    encodeColumnName2(query.getSortBy()[i].getPropertyName().getPropertyName(), TEMP_JOIN_ALIAS , fromclause, null);
-                    if (i < query.getSortBy().length-1) fromclause.append(" AND ");
-                }
-                fromclause.append(" ) ");
-                
-                tableNames.add(curTypeName);         
-                curTypeName = TEMP_JOIN_ALIAS; 
-            }
-            
+            SortBy[] lastSortBy = query.getSortBy();          
             aliases = new String[query.getJoins().size()];
             
             for (int i=0; i< query.getJoins().size(); i++) {
                 JoiningQuery.Join join = query.getJoins().get(i);
+                
+                if (lastSortBy!= null && lastSortBy.length > 0) {       
+                    tableNames.add(curTypeName);
+                    String temp_alias = createAlias(lastTypeName, tableNames);
+                    
+                    fromclause.append(" INNER JOIN ");
+                    getDataStore().encodeTableName(lastTypeName, fromclause, query.getHints());                    
+                    fromclause.append(" ").append(temp_alias);
+                    fromclause.append(" ON (");
+                    
+                    for (int j=0; j < query.getSortBy().length; j++) {
+                        if (lastTypeName != curTypeName) {
+                           encodeColumnName2(lastSortBy[j].getPropertyName().getPropertyName(), curTypeName , fromclause, null);   
+                        } else {
+                           encodeColumnName(lastSortBy[j].getPropertyName().getPropertyName(), curTypeName , fromclause, null);
+                        }
+                        fromclause.append(" = ");
+                        encodeColumnName2(lastSortBy[j].getPropertyName().getPropertyName(), temp_alias , fromclause, null);
+                        if (j < lastSortBy.length-1) fromclause.append(" AND ");
+                    }
+                    fromclause.append(" ) ");
+                    
+                    curTypeName = temp_alias;                    
+                }
+                lastSortBy = join.getSortBy();
+                
                 fromclause.append(" INNER JOIN ");
                 String alias = null;
                 
@@ -313,10 +340,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
             
                 tableNames.add(curTypeName);                
                 if (tableNames.contains(join.getJoiningTypeName()) ) {
-                   int index =0;
-                    do {
-                        alias = join.getJoiningTypeName() + "_" + ++index;
-                    } while (tableNames.contains(alias));
+                    alias = createAlias(join.getJoiningTypeName(), tableNames);
 
                     aliases[i] = alias;
                     

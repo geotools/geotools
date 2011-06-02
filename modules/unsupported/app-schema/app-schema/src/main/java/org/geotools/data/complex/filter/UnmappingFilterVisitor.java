@@ -318,15 +318,17 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
 
         UnmappingFilterVisitor.LOGGER.finest("fid mapping expression is " + fidExpression);
         Filter unrolled = null;
+        List<Filter> filters=new ArrayList<Filter>();
         try {
             for (Iterator it = fids.iterator(); it.hasNext();) {
                 Identifier fid = (Identifier) it.next();
                 Filter comparison = UnmappingFilterVisitor.ff.equals(fidExpression,
                         UnmappingFilterVisitor.ff.literal(fid.toString()));
                 UnmappingFilterVisitor.LOGGER.finest("Adding unmapped fid filter " + comparison);
-                unrolled = unrolled == null ? comparison : UnmappingFilterVisitor.ff.or(unrolled,
-                        comparison);
+                filters.add(comparison);
             }
+            unrolled=UnmappingFilterVisitor.ff.or(filters);
+            
         } catch (Exception e) {
             UnmappingFilterVisitor.LOGGER.log(Level.SEVERE, "unrolling " + filter, e);
             throw new RuntimeException(e.getMessage());

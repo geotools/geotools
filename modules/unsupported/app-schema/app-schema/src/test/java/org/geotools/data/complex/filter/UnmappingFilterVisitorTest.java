@@ -27,10 +27,12 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.namespace.QName;
 
@@ -51,7 +53,10 @@ import org.geotools.feature.NameImpl;
 import org.geotools.feature.TypeBuilder;
 import org.geotools.feature.Types;
 import org.geotools.feature.type.UniqueNameFeatureTypeFactoryImpl;
+import org.geotools.filter.FidFilterImpl;
 import org.geotools.filter.FilterFactoryImplNamespaceAware;
+import org.geotools.filter.IsEqualsToImpl;
+import org.geotools.filter.OrImpl;
 import org.geotools.gml3.GML;
 import org.geotools.xlink.XLINK;
 import org.junit.AfterClass;
@@ -82,6 +87,7 @@ import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.Multiply;
 import org.opengis.filter.expression.PropertyName;
+import org.opengis.filter.identity.FeatureId;
 import org.opengis.filter.spatial.Intersects;
 import org.xml.sax.helpers.NamespaceSupport;
 
@@ -208,6 +214,39 @@ public class UnmappingFilterVisitorTest {
         assertNotNull(unmappedFeature);
         Object object = unmappedFeature.getProperty("station_no").getValue();
         assertEquals(fid, object);
+    }
+    
+    /**
+     * The type of filter that returns should be in a single Or filter OR(a,b,c) instead 
+     * of ((a OR b) or c)
+     */
+    @Test
+    public void testUnrollFid() throws Exception {
+        Set<FeatureId> fids = new HashSet();
+        String fid1 = "station_no.1";// exists
+        String fid2 = "station_no.500";// doesn't exists
+        fids.add(ff.featureId(fid1));
+        fids.add(ff.featureId(fid2));
+        Id fidFilter = ff.id(fids);
+        Filter unrolled = (Filter) fidFilter.accept(visitor, null);
+        assertNotNull(unrolled);
+        assertTrue(unrolled instanceof OrImpl);
+        List<Filter> filters = ((OrImpl) unrolled).getChildren();
+        assertEquals(2, filters.size());
+        for (Filter f : filters) {
+            assertTrue(f instanceof IsEqualsToImpl);
+        }
+
+        FeatureCollection<SimpleFeatureType, SimpleFeature> results = mapping.getSource()
+                .getFeatures(unrolled);
+        assertEquals(1, getCount(results));
+
+        Iterator<SimpleFeature> features = results.iterator();
+        SimpleFeature unmappedFeature = (SimpleFeature) features.next();
+        results.close(features);
+        assertNotNull(unmappedFeature);
+        Object object = unmappedFeature.getProperty("station_no").getValue();
+        assertEquals(fid1, object);
     }
 
     private int getCount(FeatureCollection features) {

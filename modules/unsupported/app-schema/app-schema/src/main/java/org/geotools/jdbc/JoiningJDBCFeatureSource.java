@@ -259,6 +259,9 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
     
     protected static String createAlias(String typeName, Set<String> tableNames){
         String alias;
+        if (typeName.length() > 20) {
+            typeName = typeName.substring(0, 20);
+        }
         int index =0;
         do {
             alias = typeName + "_" + ++index;

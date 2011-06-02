@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>unsupported</artifactId>
+        <groupId>org.geotools</groupId>
+        <version>8-SNAPSHOT</version>
+    </parent>
+    <groupId>org.geotools</groupId>
+    <artifactId>gt-couchdb</artifactId>
+    <packaging>jar</packaging>
+    <version>8-SNAPSHOT</version>
+    <name>Couchdb Data Store</name>
+    <url>http://maven.apache.org</url>
+    <description>CouchDB DataStore</description>
+    <developers>
+        <developer>
+            <name>Ian Schneider</name>
+            <organization>Opengeo</organization>
+        </developer>
+    </developers>
+    <dependencies>
+        <dependency>
+            <groupId>commons-httpclient</groupId>
+            <artifactId>commons-httpclient</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-geojson</artifactId>
+            <version>8-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>gt-metadata</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>gt-data</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>gt-sample-data</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+    
+</project>

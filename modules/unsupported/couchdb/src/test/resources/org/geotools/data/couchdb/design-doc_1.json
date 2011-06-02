@@ -1,0 +1,21 @@
+/* 
+ * CouchDB/Geocouch desgin document
+ */
+{
+    "spatial": {
+        "counties": "function(doc) { if (doc.featureClass == 'counties' && doc.geometry) { emit(doc.geometry,doc) } }",
+        "countries": "function(doc) { if (doc.featureClass == 'countries' && doc.geometry) { emit(doc.geometry,doc) } }"
+    },
+    "lists" : {
+        "ids": "function(head,req) { var row; while (row= getRow()) { send(row.value + '\n');} }",
+        "query": "function(head,req) { var row, re = new RegExp(req.query.fval), attr = req.query.fname; while (row= getRow()) { if (re.exec(row.value.properties[attr])) send(row.value._id + '\\n');} }"
+    },
+    "views": {
+        "counties": {
+            "map": "function(doc) { if (doc.featureClass == 'counties' && doc.geometry)  emit(doc._id, doc) }"
+        },
+        "countries": {
+            "map": "function(doc) { if (doc.featureClass == 'countries' && doc.geometry)  emit(doc._id, doc) }"
+        }
+    }
+}

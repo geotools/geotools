@@ -283,6 +283,12 @@ public class WFSTransactionComplexTypes {
             attributes.addAttribute(WFSSchema.NAMESPACE.toString(),
                 attrs[3].getName(), null, "string", "ALL");
 
+            final String handle = (String) hints.get("handle");
+            if (handle != null) {
+                attributes.addAttribute(WFSSchema.NAMESPACE.toASCIIString(), "handle", null,
+                        "string", handle);
+            }            
+            
             WFSTransactionState transactionRequest = (WFSTransactionState) value;
 
             output.startElement(element.getNamespace(), element.getName(),

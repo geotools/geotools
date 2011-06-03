@@ -85,6 +85,8 @@ public class WFSTransactionState implements State {
 
     private long latestFid = Long.MAX_VALUE;
 
+    private Transaction transaction;
+
     /** Private - should not be used */
     @SuppressWarnings("unused")
     private WFSTransactionState() {
@@ -104,6 +106,7 @@ public class WFSTransactionState implements State {
     public void setTransaction(Transaction transaction) {
         if (transaction != null) {
             synchronized (actionMap) {
+                this.transaction = transaction;
                 synchronized (fids) {
                     fids.clear();
                 }
@@ -279,6 +282,13 @@ public class WFSTransactionState implements State {
             w = new LogWriterDecorator(w, logger, Level.FINE);
         }
 
+        if(transaction != null && transaction.getProperty("handle") instanceof String){
+            String commitMessageHandle = (String) transaction.getProperty("handle");
+            if(commitMessageHandle != null){
+                hints.put("handle", commitMessageHandle);
+            }
+        }
+        
         DocumentWriter.writeDocument(this, WFSSchema.getInstance(), w, hints);
         w.flush();
         w.close();

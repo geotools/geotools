@@ -131,9 +131,38 @@ public class FunctionImpl extends ExpressionAbstract implements Function {
     }
     
     /**
-     * Gathers up and groups the parameters to the function based on the declared parameters. 
+     * Validates the structure of arguments, basically enforcing java conventions for variable 
+     * level arguments.
      */
-    protected LinkedHashMap<String, Object> prepArguments(Object obj) {
+    private void validateArguments() throws IllegalArgumentException {
+        List<Parameter<?>> args = getFunctionName().getArguments();
+        
+        for (int i = 0; i < args.size(); i++) {
+            Parameter<?> arg = args.get(i);
+            if (arg.getMaxOccurs() == 0) {
+                throw new IllegalArgumentException(String.format("Argument %s has zero max"));
+            }
+            if (arg.getMinOccurs() != 1 || arg.getMaxOccurs() != 1) {
+                //this can only happen for the last argument
+                if (i != args.size()-1) {
+                    throw new IllegalArgumentException(String.format("Argument %s(%d,%d) invalid." +
+                        " Variable arguments must be the last argument of function.", 
+                    arg.getName(), arg.getMinOccurs(), arg.getMaxOccurs()));
+                }
+            }
+        }
+    }
+
+    /**
+     * Gathers up and groups the parameters to the function based on the declared parameters.
+     * <p>
+     * This method calls {@link #validateArguments()} which enforces java style argument conventions
+     * for multi valued parameters. Basically enforcing that only teh last argument in a function 
+     * can be variable.
+     * </p>
+     *
+     */
+    protected LinkedHashMap<String, Object> dispatchArguments(Object obj) {
         LinkedHashMap<String, Object> prepped = new LinkedHashMap<String, Object>();
         
         List<Parameter<?>> args = getFunctionName().getArguments();
@@ -152,9 +181,15 @@ public class FunctionImpl extends ExpressionAbstract implements Function {
             Parameter<?> arg = args.get(Math.min(i, args.size()-1));
             String argName = arg.getName().toString();
 
-            Object o = expr.get(i).evaluate(obj);
-            
-            //TODO: check the argument type and convert if necessary
+            Object o = expr.get(i).evaluate(obj, arg.getType());
+            if (o == null) {
+                if (expr.get(i).evaluate(obj) != null) {
+                    //conversion error
+                    throw new IllegalArgumentException(String.format("Failure converting value for "+
+                      "argument %s. %s could not be converted to %s", arg.getName(), obj.toString(),
+                      arg.getType().getName()));
+                }
+            }
             if (prepped.containsKey(argName)) {
                 if (arg.getMaxOccurs() == 1) {
                     throw new IllegalArgumentException(String.format("Multiple values specified for " +

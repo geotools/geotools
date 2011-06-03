@@ -69,7 +69,6 @@ public class FunctionNameImpl extends OperatorImpl implements FunctionName {
         super( copy );
         this.ret = copy.getReturn();
         this.args = copy.getArguments();
-        validate();
     }
     
     public FunctionNameImpl( String name, Parameter<?> retern, Parameter<?>... arguments) {
@@ -80,7 +79,6 @@ public class FunctionNameImpl extends OperatorImpl implements FunctionName {
         super(name);
         this.ret = retern;
         this.args = arguments;
-        validate();
     }
     
     public int getArgumentCount() {
@@ -132,27 +130,6 @@ public class FunctionNameImpl extends OperatorImpl implements FunctionName {
         }
         return names;
         
-    }
-    
-    /**
-     * Validates the structure of arguments, basically enforcing java conventions for variable 
-     * level arguments.
-     */
-    private void validate() {
-        for (int i = 0; i < args.size(); i++) {
-            Parameter<?> arg = args.get(i);
-            if (arg.getMaxOccurs() == 0) {
-                throw new IllegalArgumentException(String.format("Argument %s has zero max"));
-            }
-            if (arg.getMinOccurs() != 1 || arg.getMaxOccurs() != 1) {
-                //this can only happen for the last argument
-                if (i != args.size()-1) {
-                    throw new IllegalArgumentException(String.format("Argument %s(%d,%d) invalid." +
-                        " Variable arguments must be the last argument of function.", 
-                    arg.getName(), arg.getMinOccurs(), arg.getMaxOccurs()));
-                }
-            }
-        }
     }
 
     private static Parameter<?> generateReturn() {

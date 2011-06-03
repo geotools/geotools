@@ -35,7 +35,7 @@ public class StringInFunction extends FunctionImpl {
 
     @Override
     public Object evaluate(Object object) {
-        LinkedHashMap<String, Object> args = prepArguments(object);
+        LinkedHashMap<String, Object> args = dispatchArguments(object);
         
         String str = (String) args.get("string");
         Boolean matchCase = (Boolean) args.get("matchCase");

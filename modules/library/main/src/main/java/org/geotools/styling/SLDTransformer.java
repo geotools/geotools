@@ -568,6 +568,9 @@ public class SLDTransformer extends TransformerBase {
                 poly.getStroke().accept(this);
             }
 
+            if (poly.getOptions() != null) {
+                encodeVendorOptions(poly.getOptions());
+            }
             end("PolygonSymbolizer");
         }
 
@@ -602,6 +605,9 @@ public class SLDTransformer extends TransformerBase {
 
             if( line.getStroke() != null ){
                 line.getStroke().accept(this);
+            }
+            if (line.getOptions() != null) {
+                encodeVendorOptions(line.getOptions());
             }
             end("LineSymbolizer");
         }
@@ -700,6 +706,10 @@ public class SLDTransformer extends TransformerBase {
             encodeGeometryExpression(ps.getGeometry());
 
             ps.getGraphic().accept(this);
+            
+            if (ps.getOptions() != null) {
+                encodeVendorOptions(ps.getOptions());
+            }
             end("PointSymbolizer");
         }
 

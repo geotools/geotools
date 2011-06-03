@@ -71,9 +71,9 @@ public abstract class RendererBaseTest {
      * @throws Exception
      *             In the event of failure
      */
-    protected static void showRender(String testName, Object renderer, long timeOut,
+    protected static BufferedImage showRender(String testName, Object renderer, long timeOut,
             ReferencedEnvelope bounds) throws Exception {
-        showRender(testName, renderer, timeOut, bounds, null);
+        return showRender(testName, renderer, timeOut, bounds, null);
     }
 
     /**
@@ -92,7 +92,7 @@ public abstract class RendererBaseTest {
      * @throws Exception
      *             In the event of failure
      */
-    protected static void showRender(String testName, Object renderer, long timeOut,
+    protected static BufferedImage showRender(String testName, Object renderer, long timeOut,
             ReferencedEnvelope bounds, RenderListener listener) throws Exception {
         final int w = 300;
         final int h = 300;
@@ -136,7 +136,7 @@ public abstract class RendererBaseTest {
                 frame.dispose();
             } catch (HeadlessException exception) {
                 // The test is running on a machine without X11 display. Ignore.
-                return;
+                return image;
             }
         }
         boolean hasData = false; // All I can seem to check reliably.
@@ -150,6 +150,7 @@ public abstract class RendererBaseTest {
         }
 
         assert (hasData);
+        return image;
     }
 
     /**

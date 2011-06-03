@@ -51,7 +51,6 @@ public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbol
     private Expression label = null;
     private Graphic graphic = null;
     private Expression priority = null;
-    private HashMap<String,String> optionsMap = null; //null=nothing in it
     private Expression abxtract = null;
     private Expression description = null;
     private OtherText otherText = null;
@@ -284,18 +283,11 @@ public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbol
     }
 
     public String getOption(String key) {
-        if (optionsMap == null) {
+        if (options == null) {
             return null;
         }
 
-        return (String) optionsMap.get(key);
-    }
-
-    public Map<String,String> getOptions() {
-        if (optionsMap == null) {
-            optionsMap = new HashMap<String,String>();
-        }
-        return optionsMap;
+        return (String) options.get(key);
     }
 
     public Graphic getGraphic() {
@@ -380,7 +372,6 @@ public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbol
         result = prime * result + ((graphic == null) ? 0 : graphic.hashCode());
         result = prime * result + ((halo == null) ? 0 : halo.hashCode());
         result = prime * result + ((label == null) ? 0 : label.hashCode());
-        result = prime * result + ((optionsMap == null) ? 0 : optionsMap.hashCode());
         result = prime * result + ((otherText == null) ? 0 : otherText.hashCode());
         result = prime * result + ((placement == null) ? 0 : placement.hashCode());
         result = prime * result + ((priority == null) ? 0 : priority.hashCode());
@@ -435,11 +426,6 @@ public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbol
             if (other.label != null)
                 return false;
         } else if (!label.equals(other.label))
-            return false;
-        if (optionsMap == null) {
-            if (other.optionsMap != null)
-                return false;
-        } else if (!optionsMap.equals(other.optionsMap))
             return false;
         if (otherText == null) {
             if (other.otherText != null)

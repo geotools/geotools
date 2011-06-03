@@ -17,6 +17,8 @@
  */
 package org.geotools.styling;
 
+import java.util.Map;
+
 import javax.measure.quantity.Length;
 import javax.measure.unit.Unit;
 
@@ -145,4 +147,16 @@ public interface Symbolizer extends org.opengis.style.Symbolizer{
      */
     void setGeometry(Expression geometry);
     
+    /**
+     * Determines if a vendor option with the specific key has been set on this symbolizer. 
+     */
+    boolean hasOption(String key);
+
+    /**
+     * Map of vendor options for the symbolizer.
+     * <p>
+     * Client code looking for the existence of a single option should use {@link #hasOption(String)}
+     * </p>
+     */
+    Map<String,String> getOptions();
 }

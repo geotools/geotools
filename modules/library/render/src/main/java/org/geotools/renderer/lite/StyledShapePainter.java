@@ -68,20 +68,32 @@ public final class StyledShapePainter {
 
     /** The logger for the rendering module. */
     private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(StyledShapePainter.class.getName());
-    
+
+    /**
+     * the label cache, used to populate the label cache with reserved areas for labelling 
+     * obstacles
+     */
+    LabelCache labelCache;
+
     public StyledShapePainter() {
         // nothing do do, just needs to exist
     }
-    
+
     /**
      * 
      * @deprecated Use the no arguments constructor instead
      */
     @Deprecated
     public StyledShapePainter(LabelCache cache) {
+        this.labelCache = cache;
         // nothing do do
     }
 
+    public void paint(final Graphics2D graphics, final LiteShape2 shape,
+            final Style2D style, final double scale) {
+        paint(graphics, shape, style, scale, false);
+    }
+    
     /**
      * Invoked automatically when a polyline is about to be draw. This
      * implementation paints the polyline according to the rendered style
@@ -98,7 +110,7 @@ public final class StyledShapePainter {
      * @throws TransformException 
      */
     public void paint(final Graphics2D graphics, final LiteShape2 shape,
-            final Style2D style, final double scale) {
+            final Style2D style, final double scale, boolean isLabelObstacle) {
         if (style == null) {
             // TODO: what's going on? Should not be reached...
             LOGGER.severe("ShapePainter has been asked to paint a null style!!");
@@ -132,11 +144,20 @@ public final class StyledShapePainter {
                     citer.currentSegment(coords);
                     
                     markAT.setTransform(temp);
-                    markAT.translate(coords[0] + dx , coords[1] + dy);
+                    
+                    double x = coords[0] + dx;
+                    double y = coords[1] + dy;
+                    markAT.translate(x, y);
                     markAT.rotate(icoStyle.getRotation());
                     graphics.setTransform(markAT);
                     
                     icon.paintIcon(null, graphics, 0, 0);
+                    
+                    if (isLabelObstacle) {
+                        //TODO: rotation?
+                        labelCache.put(
+                            new Rectangle2D.Double(x, y, icon.getIconWidth(), icon.getIconHeight()));
+                    }
                     citer.next();
                 }
             } finally {
@@ -167,6 +188,10 @@ public final class StyledShapePainter {
                         graphics.setComposite(ms2d.getContourComposite());
                         graphics.draw(transformedShape);
                     }
+                    
+                    if (isLabelObstacle) {
+                        labelCache.put(transformedShape.getBounds2D());
+                    }
                     citer.next();
                 }
             }
@@ -181,10 +206,13 @@ public final class StyledShapePainter {
                 iter.currentSegment(coords);
                 renderImage(graphics, coords[0], coords[1],
                         gs2d.getImage(), gs2d.getRotation(), gs2d
-                                .getOpacity());
+                                .getOpacity(), isLabelObstacle);
                 iter.next();
             }
         } else {
+            if (isLabelObstacle) {
+                labelCache.put(shape.getBounds2D());
+            }
             // if the style is a polygon one, process it even if the polyline is
             // not closed (by SLD specification)
             if (style instanceof PolygonStyle2D) {
@@ -219,7 +247,7 @@ public final class StyledShapePainter {
                     // is completely
                     // different in this case
                     if (ls2d.getGraphicStroke() != null) {
-                        drawWithGraphicsStroke(graphics, dashShape(shape, ls2d.getStroke()), ls2d.getGraphicStroke());
+                        drawWithGraphicsStroke(graphics, dashShape(shape, ls2d.getStroke()), ls2d.getGraphicStroke(), isLabelObstacle);
                     } else {
                         Paint paint = ls2d.getContour();
 
@@ -317,7 +345,8 @@ public final class StyledShapePainter {
     }
 
     // draws the image along the path
-    private void drawWithGraphicsStroke(Graphics2D graphics, Shape shape, Style2D graphicStroke) {
+    private void drawWithGraphicsStroke(Graphics2D graphics, Shape shape, Style2D graphicStroke, 
+        boolean isLabelObstacle) {
         PathIterator pi = shape.getPathIterator(null);
         double[] coords = new double[4];
         int type;
@@ -413,7 +442,7 @@ public final class StyledShapePainter {
                     double dist = 0;
     
                     for (dist = remainder; dist < len; dist += imageSize) {
-                        renderGraphicsStroke(graphics, x, y, graphicStroke, rotation, 1);
+                        renderGraphicsStroke(graphics, x, y, graphicStroke, rotation, 1, isLabelObstacle);
                         
                         x += dx;
                         y += dy;
@@ -456,7 +485,7 @@ public final class StyledShapePainter {
      *            DOCUMENT ME!
      */
     private void renderImage(Graphics2D graphics, double x, double y,
-            BufferedImage image, double rotation, float opacity) {
+            BufferedImage image, double rotation, float opacity, boolean isLabelObstacle) {
         if (LOGGER.isLoggable(Level.FINEST)) {
             LOGGER.finest("drawing Image @" + x + "," + y);
         }
@@ -465,7 +494,13 @@ public final class StyledShapePainter {
         markAT.translate(x, y);
         markAT.rotate(rotation);
         markAT.translate(-image.getWidth() / 2.0, -image.getHeight() / 2.0);
-
+        if (isLabelObstacle) {
+            int w = Math.max((int) (image.getWidth() * 1), 1);
+            int h = Math.max((int) (image.getHeight() * 1), 1);
+            
+            labelCache.put(new Rectangle2D.Double(x - w / 2.0, y - h / 2.0, w, h));
+        }
+        
         graphics.setComposite(AlphaComposite.getInstance(
                 AlphaComposite.SRC_OVER, opacity));
 
@@ -484,7 +519,7 @@ public final class StyledShapePainter {
         }
     }
     
-    private void renderGraphicsStroke(Graphics2D graphics, double x, double y, Style2D style, double rotation, float opacity) {
+    private void renderGraphicsStroke(Graphics2D graphics, double x, double y, Style2D style, double rotation, float opacity, boolean isLabelObstacle) {
         if (LOGGER.isLoggable(Level.FINEST)) {
             LOGGER.finest("drawing GraphicsStroke@" + x + "," + y);
         }
@@ -493,7 +528,7 @@ public final class StyledShapePainter {
         
         if(style instanceof GraphicStyle2D) {
             BufferedImage image = ((GraphicStyle2D) style).getImage();
-            renderImage(graphics, x, y, image, rotation, opacity);
+            renderImage(graphics, x, y, image, rotation, opacity, isLabelObstacle);
         } else if(style instanceof MarkStyle2D) {
             // almost like the code in the main paint method, but 
             // here we don't use the mark composite
@@ -510,6 +545,10 @@ public final class StyledShapePainter {
                     graphics.setStroke(ms2d.getStroke());
                     graphics.draw(transformedShape);
                 }
+
+                if (isLabelObstacle) {
+                    labelCache.put(transformedShape.getBounds2D());
+                }
             }
         } else if(style instanceof IconStyle2D) {
             IconStyle2D icons = (IconStyle2D) style;
@@ -518,7 +557,10 @@ public final class StyledShapePainter {
             AffineTransform markAT = new AffineTransform(graphics.getTransform());
             markAT.translate(x, y);
             markAT.rotate(rotation);
-            markAT.translate(-icon.getIconWidth() / 2.0, -icon.getIconHeight() / 2.0);
+            
+            double dx = -icon.getIconWidth() / 2.0;
+            double dy = -icon.getIconHeight() / 2.0;
+            markAT.translate(dx, dy);
 
             AffineTransform temp = graphics.getTransform();
             try {
@@ -526,6 +568,10 @@ public final class StyledShapePainter {
                 icon.paintIcon(null, graphics, 0, 0);
             } finally {
                 graphics.setTransform(temp);
+            }
+            
+            if (isLabelObstacle) {
+                labelCache.put(new Rectangle2D.Double(x+dx,y+dy,icon.getIconWidth(),icon.getIconHeight()));
             }
         }
     }

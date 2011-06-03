@@ -1,5 +1,8 @@
 package org.geotools.styling;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.measure.quantity.Length;
 import javax.measure.unit.Unit;
 
@@ -16,6 +19,8 @@ public abstract class AbstractSymbolizer implements Symbolizer {
 
     protected Unit<Length> unitOfMeasure;
 
+    protected Map<String,String> options;
+    
     protected AbstractSymbolizer() {
     }
 
@@ -84,6 +89,17 @@ public abstract class AbstractSymbolizer implements Symbolizer {
         }
     }
 
+    public boolean hasOption(String key) {
+        return options != null && options.containsKey(key);
+    }
+    
+    public Map<String, String> getOptions() {
+        if (options == null) {
+            options = new HashMap<String,String>();
+        }
+        return options;
+    }
+    
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -92,6 +108,7 @@ public abstract class AbstractSymbolizer implements Symbolizer {
         result = prime * result + ((geometry == null) ? 0 : geometry.hashCode());
         result = prime * result + ((name == null) ? 0 : name.hashCode());
         result = prime * result + ((unitOfMeasure == null) ? 0 : unitOfMeasure.hashCode());
+        result = prime * result + ((options == null) ? 0 : options.hashCode());
         return result;
     }
 
@@ -124,6 +141,12 @@ public abstract class AbstractSymbolizer implements Symbolizer {
                 return false;
         } else if (!unitOfMeasure.equals(other.unitOfMeasure))
             return false;
+        if (options == null) {
+            if (other.options != null && !other.options.isEmpty())
+                return false;
+        } else if (!options.equals(other.options))
+            if (options.isEmpty() && other.options != null) 
+                return false;
         return true;
     }
     

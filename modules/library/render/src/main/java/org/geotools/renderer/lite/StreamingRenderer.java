@@ -266,7 +266,7 @@ public final class StreamingRenderer implements GTRenderer {
     protected LabelCache labelCache = new LabelCacheImpl();
 
     /** The painter class we use to depict shapes onto the screen */
-    private StyledShapePainter painter = new StyledShapePainter();
+    private StyledShapePainter painter = new StyledShapePainter(labelCache);
     private BlockingQueue<RenderingRequest> requests;
 
     private IndexedFeatureResults indexedFeatureResults;
@@ -2502,7 +2502,12 @@ public final class StreamingRenderer implements GTRenderer {
                         shape = new LiteShape2(g, null, null, false);
                     }
                     
-                    requests.put(new PaintShapeRequest(graphics, shape, style, scaleDenominator));
+                    PaintShapeRequest paintShapeRequest = 
+                        new PaintShapeRequest(graphics, shape, style, scaleDenominator);
+                    if (symbolizer.hasOption("labelObstacle")) {
+                        paintShapeRequest.setLabelObstacle(true);
+                    }
+                    requests.put(paintShapeRequest);
                 }
 
             }
@@ -3061,11 +3066,17 @@ public final class StreamingRenderer implements GTRenderer {
 
         double scale;
 
+        boolean labelObstacle = false;
+
         public PaintShapeRequest(Graphics2D graphic, LiteShape2 shape, Style2D style, double scale) {
             this.graphic = graphic;
             this.shape = shape;
             this.style = style;
             this.scale = scale;
+        }
+
+        public void setLabelObstacle(boolean labelObstacle) {
+            this.labelObstacle = labelObstacle;
         }
 
         @Override
@@ -3075,7 +3086,7 @@ public final class StreamingRenderer implements GTRenderer {
             }
             
             try {
-                painter.paint(graphic, shape, style, scale);
+                painter.paint(graphic, shape, style, scale, labelObstacle);
             } catch(Throwable t) {
                 fireErrorEvent(t);
             }

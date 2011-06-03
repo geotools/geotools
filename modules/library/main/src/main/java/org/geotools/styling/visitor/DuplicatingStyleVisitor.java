@@ -658,6 +658,8 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         
         copy.setUnitOfMeasure(ps.getUnitOfMeasure());
         copy.setGraphic( copy( ps.getGraphic() ));
+        copy.getOptions().putAll(ps.getOptions());
+        
         if( STRICT ){
             if( !copy.equals( ps )){
                 throw new IllegalStateException("Was unable to duplicate provided Graphic:"+ps );
@@ -673,6 +675,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         
         copy.setUnitOfMeasure(line.getUnitOfMeasure());
         copy.setStroke( copy( line.getStroke()));
+        copy.getOptions().putAll(line.getOptions());
         
         if( STRICT && !copy.equals( line )){
             throw new IllegalStateException("Was unable to duplicate provided LineSymbolizer:"+line );
@@ -688,6 +691,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         
         copy.setUnitOfMeasure(poly.getUnitOfMeasure());
         copy.setStroke(copy(poly.getStroke()));
+        copy.getOptions().putAll(poly.getOptions());
         
         if( STRICT && !copy.equals( poly )){
             throw new IllegalStateException("Was unable to duplicate provided PolygonSymbolizer:"+poly );

@@ -16,6 +16,8 @@
  */
 package org.geotools.filter.function;
 
+import static org.geotools.filter.capability.FunctionNameImpl.parameter;
+
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -42,15 +44,13 @@ import org.opengis.filter.expression.PropertyName;
  */
 public class PropertyExistsFunction extends FunctionExpressionImpl {
 
-    public static FunctionName NAME = new FunctionNameImpl("PropertyExists","propertyName");
-
+    //public static FunctionName NAME = new FunctionNameImpl("PropertyExists","propertyName");
+    public static FunctionName NAME = new FunctionNameImpl("PropertyExists",
+            parameter("exists", Boolean.class),
+            parameter("propertyName", Object.class));
+    
     public PropertyExistsFunction() {
-        super("PropertyExists");
-        functionName = NAME;
-    }
-
-    public int getArgCount() {
-        return 1;
+        super(NAME);
     }
 
     private String getPropertyName() {

@@ -18,6 +18,10 @@
  */
 package org.geotools.filter;
 
+import static org.geotools.filter.capability.FunctionNameImpl.parameter;
+
+import java.awt.Color;
+
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
@@ -34,14 +38,16 @@ import org.opengis.filter.expression.Expression;
  */
 public class MinFunction extends FunctionExpressionImpl{
     
-    public static FunctionName NAME = new FunctionNameImpl("Min","number","number");
-
+   //public static FunctionName NAME = new FunctionNameImpl("Min","number","number");
+    public static FunctionName NAME = new FunctionNameImpl("Min",
+            parameter("min", Double.class),
+            parameter("number", Number.class),
+            parameter("number", Number.class));
     /**
      * Creates a new instance of MinFunction
      */
     public MinFunction() {
-        super("Min");
-        functionName = NAME;
+        super(NAME);
     }
 
     /**
@@ -59,15 +65,6 @@ public class MinFunction extends FunctionExpressionImpl{
         double second = ((Number) expB.evaluate(feature)).doubleValue();
 
         return new Double(Math.min(first, second));
-    }
-
-    /**
-     * Gets the number of arguments that are set.
-     *
-     * @return the number of args.
-     */
-    public int getArgCount() {
-        return 2;
     }
 
 }

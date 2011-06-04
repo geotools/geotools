@@ -42,6 +42,7 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.identity.FeatureId;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.geometry.DirectPosition;
+import org.opengis.parameter.Parameter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 
@@ -365,25 +366,41 @@ private static void functionList() {
             System.out.print("    ");
             System.out.print(functionName.getName());
             System.out.print("(");
-            int count = functionName.getArgumentCount();
-            if( count < 0 ){
-                count = functionName.getArgumentNames().size();
-            }
-            for (int i = 0; i < count; i++) {
-                if (i > 0) {
+            int i = 0;
+            for (Parameter<?> argument : functionName.getArguments()) {
+                if (i++ > 0) {
                     System.out.print(", ");
+                } 
+                System.out.print(argument.getName());
+                if( argument.getType() == Object.class && argument.isRequired() ){
+                    // no interesting description
                 }
-                String arg = null;
-                if (functionName.getArgumentNames() != null
-                        && i < functionName.getArgumentNames().size()) {
-                    arg = functionName.getArgumentNames().get(i);
+                else {
+                    System.out.print("{");
+                    System.out.print( argument.getType().getName() );
+                    System.out.print(",");
+                    if( argument.isRequired()){
+                        System.out.print("required,");
+                    }
+                    else if( argument.getMinOccurs() == 0 && argument.getMaxOccurs() == 1 ) {
+                        System.out.print("optional,");
+                    }
+                    else {
+                        System.out.print(argument.getMinOccurs());
+                        System.out.print(":");
+                        System.out.print(argument.getMaxOccurs());
+                    }
+                    System.out.print("}");
                 }
-                if (arg == null) {
-                    arg = "arg" + (i + 1); // arg1, arg2, etc...
-                }
-                System.out.print(arg);
             }
-            System.out.println(")");
+            System.out.print(")");
+            System.out.print(":"+functionName.getReturn().getName());
+            if( functionName.getReturn().getType() != Object.class ){
+                System.out.print("{");
+                System.out.print( functionName.getReturn().getType().getName() );
+                System.out.print("}");
+            }
+            System.out.println();
         }
     }
     // functionList end

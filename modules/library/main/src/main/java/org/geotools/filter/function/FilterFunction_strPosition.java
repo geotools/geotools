@@ -16,8 +16,15 @@
  */
 package org.geotools.filter.function;
 
+import static org.geotools.filter.capability.FunctionNameImpl.parameter;
+
+import java.util.Arrays;
+
+import org.geotools.data.Parameter;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
+import org.geotools.text.Text;
+import org.geotools.util.KVP;
 import org.opengis.filter.capability.FunctionName;
 
 /**
@@ -37,16 +44,25 @@ import org.opengis.filter.capability.FunctionName;
  */
 public class FilterFunction_strPosition extends FunctionExpressionImpl {
 
-    public static FunctionName NAME = new FunctionNameImpl("strPosition","string","lookup","forward/backToFront");
-
-    public FilterFunction_strPosition() {
-        super("strPosition");
-        functionName = NAME;
+    //public static FunctionName NAME = new FunctionNameImpl("strPosition","string","lookup","forward/backToFront");
+    public static FunctionName NAME;
+    static {
+        Parameter<String> method = new Parameter<String>(
+                "method",String.class,
+                Text.text("direction"),
+                Text.text("direction to search"),
+                true,1,1,
+                "forward",
+                new KVP(Parameter.OPTIONS,Arrays.asList(new String[]{"forward","backToFront"}))
+        );
+        NAME = new FunctionNameImpl("strPosition",
+            parameter("string", String.class),
+            parameter("string", String.class),
+            parameter("lookup", String.class),
+            method);
     }
-
-    @Override
-    public int getArgCount() {
-        return 3;
+    public FilterFunction_strPosition() {
+        super(NAME);
     }
     
     @Override

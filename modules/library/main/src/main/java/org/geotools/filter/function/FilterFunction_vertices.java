@@ -1,5 +1,7 @@
 package org.geotools.filter.function;
 
+import static org.geotools.filter.capability.FunctionNameImpl.parameter;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,16 +17,13 @@ import com.vividsolutions.jts.geom.MultiPoint;
 
 public class FilterFunction_vertices extends FunctionExpressionImpl {
 
-    public static FunctionName NAME = new FunctionNameImpl("vertices","geometry");
-    
-    public FilterFunction_vertices() {
-        super("vertices");
-        functionName = NAME;
-    }
+    //public static FunctionName NAME = new FunctionNameImpl("vertices","geometry");
+    public static FunctionName NAME = new FunctionNameImpl("vertices",
+            parameter("vertices", MultiPoint.class),
+            parameter("geometry", Geometry.class));
 
-    @Override
-    public int getArgCount() {
-        return 1;
+    public FilterFunction_vertices() {
+        super(NAME);
     }
 
     public Object evaluate(Object feature, Class context) {

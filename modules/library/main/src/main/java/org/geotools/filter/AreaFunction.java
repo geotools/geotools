@@ -30,20 +30,23 @@ import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
 
+import static org.geotools.filter.capability.FunctionNameImpl.*;
 /**
- *
+ * Area of provided geometry.
+ * 
  * @author  James
  *
  * @source $URL$
  */
 public class AreaFunction extends FunctionExpressionImpl { 
     
-    public static FunctionName NAME = new FunctionNameImpl("Area","geometry");
+    public static FunctionName NAME = new FunctionNameImpl("Area",
+            parameter("area",Double.class),
+            parameter("geometry",Geometry.class));
     
     /** Creates a new instance of AreaFunction */
     public AreaFunction() {
-        super("Area");
-        functionName = NAME;
+        super(NAME);
     }
     
     public Object evaluate(Object feature) {

@@ -18,6 +18,8 @@
  */
 package org.geotools.filter;
 
+import static org.geotools.filter.capability.FunctionNameImpl.parameter;
+
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
@@ -33,14 +35,16 @@ import org.opengis.filter.expression.Expression;
  * @deprecated - use org.geotools.filter.function.math.MaxFunction instead
  */
 public class MaxFunction extends FunctionExpressionImpl{
-    public static FunctionName NAME = new FunctionNameImpl("Max","number","number");
-
+    //public static FunctionName NAME = new FunctionNameImpl("Max","number","number");
+    public static FunctionName NAME = new FunctionNameImpl("Max",
+            parameter("max", Double.class),
+            parameter("number", Number.class),
+            parameter("number", Number.class));
     /**
      * Creates a new instance of MinFunction
      */
     public MaxFunction() {
-        super("Max");
-        functionName = NAME;
+        super(NAME);
     }
 
     /**
@@ -58,15 +62,6 @@ public class MaxFunction extends FunctionExpressionImpl{
         double second = ((Number) expB.evaluate(feature)).doubleValue();
 
         return new Double(Math.max(first, second));
-    }
-
-    /**
-     * Gets the number of arguments that are set.
-     *
-     * @return the number of args.
-     */
-    public int getArgCount() {
-        return 2;
     }
 
 }

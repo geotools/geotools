@@ -18,6 +18,8 @@
  */
 package org.geotools.filter.function;
 
+import static org.geotools.filter.capability.FunctionNameImpl.parameter;
+
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
@@ -27,15 +29,15 @@ import java.util.logging.Logger;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.visitor.BoundsVisitor;
 import org.geotools.feature.visitor.CalcResult;
-import org.geotools.filter.AttributeExpression;
-import org.geotools.filter.Expression;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.capability.FunctionNameImpl;
-import org.geotools.filter.visitor.AbstractFilterVisitor;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.filter.capability.FunctionName;
+import org.opengis.filter.expression.Expression;
+
+import com.vividsolutions.jts.geom.Geometry;
 
 
 /**
@@ -54,18 +56,14 @@ public class Collection_BoundsFunction extends FunctionExpressionImpl{
     FeatureCollection<FeatureType, Feature> previousFeatureCollection = null;
     Object bounds = null;
     
-    public static FunctionName NAME = new FunctionNameImpl("Collection_Bounds","geometry");
-
+    public static FunctionName NAME = new FunctionNameImpl("Collection_Bounds",
+            parameter("bounds",Object.class),
+            parameter("geometry",Geometry.class));
     /**
      * Creates a new instance of Collection_BoundsFunction
      */
     public Collection_BoundsFunction() {
-        super("Collection_Bounds");
-        functionName = NAME;
-    }
-
-    public int getArgCount() {
-        return 1;
+        super(NAME);
     }
 
     /**
@@ -87,6 +85,10 @@ public class Collection_BoundsFunction extends FunctionExpressionImpl{
         return boundsVisitor.getResult();
     }
 
+    public void setExpression(Expression e) {
+        setParameters(Collections.singletonList(e));
+    }
+
     /**
      * The provided arguments are evaulated with respect to the
      * FeatureCollection.
@@ -100,39 +102,21 @@ public class Collection_BoundsFunction extends FunctionExpressionImpl{
      * To refer to all 'X': <code>featureMember/asterisk/X</code>
      * </p>
      *
-     * @param args DOCUMENT ME!
+     * @param args Function parameters
      *
-     * @throws IllegalArgumentException DOCUMENT ME!
+     * @throws IllegalArgumentException If parameters do not match FunctionName
      */
     public void setParameters(List args) {
-        super.setParameters(args);
         if (args.size() != 1) {
             throw new IllegalArgumentException(
-                "Require a single argument for unique");
+                "Require a single argument for "+getName());
         }
-
-        //HACK: remove cast once the move to geoapi is complete
-        Expression expr;
-        expr = (Expression) getExpression(0);
-
+        
         // if we see "featureMembers/*/ATTRIBUTE" change to "ATTRIBUTE"
-        expr.accept(new AbstractFilterVisitor() {
-                public void visit(AttributeExpression expression) {
-                    String xpath = expression.getAttributePath();
-
-                    if (xpath.startsWith("featureMembers/*/")) {
-                        xpath = xpath.substring(17);
-                    } else if (xpath.startsWith("featureMember/*/")) {
-                        xpath = xpath.substring(16);
-                    }
-
-                    try {
-                        expression.setAttributePath(xpath);
-                    } catch (IllegalFilterException e) {
-                        // ignore
-                    }
-                }
-            });
+        org.opengis.filter.expression.Expression expr = (org.opengis.filter.expression.Expression) args.get(0);
+        expr = (org.opengis.filter.expression.Expression) expr.accept(new CollectionFeatureMemberFilterVisitor(),null);
+        args.set(0, expr );
+        super.setParameters(args);
     }
 
     @SuppressWarnings("unchecked")
@@ -158,10 +142,6 @@ public class Collection_BoundsFunction extends FunctionExpressionImpl{
 			}
 		}
 		return bounds;
-    }
-
-    public void setExpression(Expression e) {
-        setParameters(Collections.singletonList(e));
     }
 
 }

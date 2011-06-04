@@ -16,9 +16,17 @@
  */
 package org.geotools.filter.function;
 
+import static org.geotools.filter.capability.FunctionNameImpl.parameter;
+
+import java.util.Arrays;
+
+import org.geotools.data.Parameter;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
+import org.geotools.text.Text;
+import org.geotools.util.KVP;
 import org.opengis.filter.capability.FunctionName;
+import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * Function implementing the Symbology Encoding Trim function.
@@ -37,16 +45,25 @@ import org.opengis.filter.capability.FunctionName;
  */
 public class FilterFunction_strTrim2 extends FunctionExpressionImpl {
 
-    public static FunctionName NAME = new FunctionNameImpl("strTrim2","string","leading/trailing/both","character");
-
-    public FilterFunction_strTrim2() {
-        super("strTrim2");
-        functionName = NAME;
+    //public static FunctionName NAME = new FunctionNameImpl("strTrim2","string","leading/trailing/both","character");
+    public static FunctionName NAME;
+    static {
+        Parameter<String> method = new Parameter<String>(
+                "method",String.class,
+                Text.text("method"),
+                Text.text("Method used to trim the provided text"),
+                true,1,1,
+                "both",
+                new KVP(Parameter.OPTIONS,Arrays.asList(new String[]{"leading","trailing","both"}))
+        );
+        NAME = new FunctionNameImpl("strTrim2",
+            parameter("trim", String.class),
+            parameter("string", String.class),
+            method,
+            parameter("character", String.class));
     }
-    
-    @Override
-    public int getArgCount() {
-        return 3;
+    public FilterFunction_strTrim2() {
+        super(NAME);
     }
 
     @Override

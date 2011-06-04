@@ -18,6 +18,8 @@
  */
 package org.geotools.filter.function;
 
+import static org.geotools.filter.capability.FunctionNameImpl.parameter;
+
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
@@ -46,25 +48,23 @@ import org.opengis.filter.capability.FunctionName;
  *
  * @source $URL$
  */
-public class Collection_SumFunction extends FunctionExpressionImpl
-    implements FunctionExpression {
+public class Collection_SumFunction extends FunctionExpressionImpl {
     /** The logger for the filter module. */
     private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(
             "org.geotools.filter.function");
     SimpleFeatureCollection previousFeatureCollection = null;
     Object sum = null;
 
-    public static FunctionName NAME = new FunctionNameImpl("Collection_Sum","expression");
+    //public static FunctionName NAME = new FunctionNameImpl("Collection_Sum","expression");
+    public static FunctionName NAME = new FunctionNameImpl("Collection_Sum",
+            parameter("sum", Object.class),
+            parameter("expression", Object.class));
 
     /**
      * Creates a new instance of Collection_SumFunction
      */
     public Collection_SumFunction() {
-        super("Collection_Sum");
-    }
-
-    public int getArgCount() {
-        return 1;
+        super(NAME);
     }
 
     /**
@@ -104,28 +104,11 @@ public class Collection_SumFunction extends FunctionExpressionImpl
      * @throws IllegalArgumentException DOCUMENT ME!
      */
     public void setParameters(List args) {
-        super.setParameters(args);
-        
-        Expression expr = (Expression) getExpression(0);
-
         // if we see "featureMembers/*/ATTRIBUTE" change to "ATTRIBUTE"
-        expr.accept(new AbstractFilterVisitor() {
-                public void visit(AttributeExpression expression) {
-                    String xpath = expression.getAttributePath();
-
-                    if (xpath.startsWith("featureMembers/*/")) {
-                        xpath = xpath.substring(17);
-                    } else if (xpath.startsWith("featureMember/*/")) {
-                        xpath = xpath.substring(16);
-                    }
-
-                    try {
-                        expression.setAttributePath(xpath);
-                    } catch (IllegalFilterException e) {
-                        // ignore
-                    }
-                }
-            });
+        org.opengis.filter.expression.Expression expr = (org.opengis.filter.expression.Expression) args.get(0);
+        expr = (org.opengis.filter.expression.Expression) expr.accept(new CollectionFeatureMemberFilterVisitor(),null);
+        args.set(0, expr );
+        super.setParameters(args);
     }
 
     public Object evaluate(Object feature) {

@@ -18,24 +18,25 @@
  */
 package org.geotools.filter.function;
 
+import static org.geotools.filter.capability.FunctionNameImpl.parameter;
+
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.visitor.AverageVisitor;
 import org.geotools.feature.visitor.CalcResult;
-import org.geotools.filter.AttributeExpression;
-import org.geotools.filter.Expression;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.capability.FunctionNameImpl;
-import org.geotools.filter.visitor.AbstractFilterVisitor;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.filter.capability.FunctionName;
+import org.opengis.filter.expression.Expression;
 
 
 /**
@@ -44,7 +45,7 @@ import org.opengis.filter.capability.FunctionName;
  * 
  * @author Cory Horner
  * @since 2.2M2
- *
+ * @version 8.0
  * @source $URL$
  */
 public class Collection_AverageFunction extends FunctionExpressionImpl {
@@ -55,14 +56,16 @@ public class Collection_AverageFunction extends FunctionExpressionImpl {
     Object average = null;
     Expression expr;
 
-    public static FunctionName NAME = new FunctionNameImpl("Collection_Average","expression");
+    //public static FunctionName NAME = new FunctionNameImpl("Collection_Average","expression");
+    public static FunctionName NAME = new FunctionNameImpl("Collection_Average",
+            parameter("average",Object.class),
+            parameter("expression",Object.class));
     
     /**
      * Creates a new instance of Collection_AverageFunction
      */
     public Collection_AverageFunction() {
-        super("Collection_Average");
-        functionName = NAME;
+        super(NAME);
     }
 
     public int getArgCount() {
@@ -101,9 +104,9 @@ public class Collection_AverageFunction extends FunctionExpressionImpl {
      * To refer to all 'X': <code>featureMember/asterisk/X</code>
      * </p>
      *
-     * @param args DOCUMENT ME!
+     * @param args function paremeters
      *
-     * @throws IllegalArgumentException DOCUMENT ME!
+     * @throws IllegalArgumentException
      */
     public void setParameters(List params){
         super.setParameters(params);
@@ -111,28 +114,9 @@ public class Collection_AverageFunction extends FunctionExpressionImpl {
             throw new IllegalArgumentException(
                 "Require a single argument for average");
         }
-
-        //HACK: remove cast once completely moved to GeoAPI
-        expr = (Expression)getExpression(0);
-
+        expr = (Expression) getExpression(0);
         // if we see "featureMembers/*/ATTRIBUTE" change to "ATTRIBUTE"
-        expr.accept(new AbstractFilterVisitor() {
-                public void visit(AttributeExpression expression) {
-                    String xpath = expression.getAttributePath();
-
-                    if (xpath.startsWith("featureMembers/*/")) {
-                        xpath = xpath.substring(17);
-                    } else if (xpath.startsWith("featureMember/*/")) {
-                        xpath = xpath.substring(16);
-                    }
-
-                    try {
-                        expression.setAttributePath(xpath);
-                    } catch (IllegalFilterException e) {
-                        // ignore
-                    }
-                }
-            });
+        expr = (Expression) expr.accept(new CollectionFeatureMemberFilterVisitor(),null);
     }
 
     @SuppressWarnings("unchecked")

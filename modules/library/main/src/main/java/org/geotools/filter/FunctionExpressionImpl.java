@@ -16,6 +16,8 @@
  */
 package org.geotools.filter;
 
+import static org.geotools.filter.capability.FunctionNameImpl.parameter;
+
 import java.awt.RenderingHints.Key;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,6 +31,8 @@ import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.ExpressionVisitor;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
+
+import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * Abstract class for a function expression implementation
@@ -50,7 +54,29 @@ public abstract class FunctionExpressionImpl
 
     /** FunctionName provided by subclass; or lazely created */
     protected FunctionName functionName;
-	
+    
+    /**
+     * Preferred constructor to ensure name and functionName match.
+     * <p>
+     * Recommended use:<pre>
+     * import static org.geotools.filter.capability.FunctionNameImpl.*;
+     * public class AreaFunction extends FunctionExpressionImpl { 
+     *     
+     *   public static FunctionName NAME = new FunctionNameImpl("Area",
+     *        parameter("area",Double.class),
+     *        parameter("geometry",Geometry.class));
+     * 
+     * public AreaFunction() {
+     *     super(NAME);
+     * }
+     * </pre>
+     * 
+     * @param functionName FunctionName describing subclass
+     */
+    protected FunctionExpressionImpl(FunctionName functionName){
+        this( functionName.getName(), null );
+        this.functionName = functionName;
+    }
     protected FunctionExpressionImpl(String name ){
         this( name, null );
     }
@@ -114,7 +140,7 @@ public abstract class FunctionExpressionImpl
      */
     public void setParameters(List params) {
         if(params == null){
-            throw new NullPointerException("params can't be null");
+            throw new NullPointerException("Function parameters required");
         }
         final int argCount = getArgCount();
         final int paramsSize = params.size();
@@ -152,7 +178,14 @@ public abstract class FunctionExpressionImpl
      *
      * @return the number of args.
      */
-    public abstract int getArgCount();
+    public int getArgCount(){
+        if( functionName != null && functionName.getArguments() != null){
+            return functionName.getArguments().size();
+        }
+        else {
+            return 0;
+        }
+    }
 
     /**
      * @see org.opengis.filter.expression.Expression#accept(ExpressionVisitor, Object)

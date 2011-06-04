@@ -18,6 +18,8 @@ package org.geotools.brewer.color;
 
 
 //import edu.psu.geovista.colorbrewer.OriginalColor;
+import static org.geotools.filter.capability.FunctionNameImpl.parameter;
+
 import java.awt.Color;
 import java.util.List;
 
@@ -44,25 +46,24 @@ public class PaletteFunction extends FunctionExpressionImpl implements FunctionE
     String paletteName;
     FilterFactory ff;
 
-    public static FunctionName NAME = new FunctionNameImpl("Palette","classifier","paletteName");
-
+    //public static FunctionName NAME = new FunctionNameImpl("Palette","classifier","paletteName");
+    public static FunctionName NAME = new FunctionNameImpl("Palette",
+            parameter("color", Color.class),
+            parameter("classifier", ClassificationFunction.class),
+            parameter("paletteName", String.class));
+    
     /** Creates a new instance of PaletteFunction */
     public PaletteFunction() {
         this(CommonFactoryFinder.getFilterFactory(null));
     }
 
     public PaletteFunction(FilterFactory factory) {
-        super("Palette");
+        super(NAME);
         ff = factory;
-        functionName = NAME;
     }
 
     public void setFilterFactory(FilterFactory factory) {
         ff = factory;
-    }
-
-    public int getArgCount() {
-        return 2;
     }
 
     public void setParameters(List args) {

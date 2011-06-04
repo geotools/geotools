@@ -16,6 +16,8 @@
  */
 package org.geotools.demo.filter.function;
 
+import static org.geotools.filter.capability.FunctionNameImpl.parameter;
+
 import java.awt.Color;
 
 import org.geotools.factory.CommonFactoryFinder;
@@ -63,15 +65,21 @@ public class ColorRampFunction extends FunctionExpressionImpl {
 
     private static FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory(null);
     /** value, min, max, saturation, brightness */
-    public static FunctionName NAME = new FunctionNameImpl("colorramp","value","min","max","saturation","brightness");
-
+    //public static FunctionName NAME = new FunctionNameImpl("colorramp","value","min","max","saturation","brightness");
+    public static FunctionName NAME = new FunctionNameImpl("colorramp",
+            parameter("color", Color.class),
+            parameter("expression", Float.class),
+            parameter("min", Float.class),
+            parameter("max", Float.class),
+            parameter("saturation", Float.class),
+            parameter("brightness", Float.class));
+    
     /**
      * Constructor.
      */
     public ColorRampFunction() {
-        super("colorramp");
-        functionName = NAME;
-    }
+        super(NAME);
+     }
 
     /**
      * Evaluate the function for the given feature and return a colour.
@@ -85,8 +93,8 @@ public class ColorRampFunction extends FunctionExpressionImpl {
         float minValue = getExpression(1).evaluate(feature, Float.class);
         float maxValue = getExpression(2).evaluate(feature, Float.class);
         float saturation = getExpression(3).evaluate(feature, Float.class);
-        float brightness = getExpression(3).evaluate(feature, Float.class);
-
+        float brightness = getExpression(4).evaluate(feature, Float.class);
+        
         return valueToColor(attributeValue, minValue, maxValue, saturation, brightness);
     }
 
@@ -116,16 +124,6 @@ public class ColorRampFunction extends FunctionExpressionImpl {
      */
     private float adjustHue(float hue) {
         return hue * 0.75f + 0.125f;
-    }
-
-    /**
-     * Get the number of arguments.
-     *
-     * @return returns 5 (value, min, max, saturation, brightness)
-     */
-    @Override
-    public int getArgCount() {
-        return 5;
     }
 
 }

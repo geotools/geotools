@@ -387,7 +387,7 @@ import com.vividsolutions.jts.io.WKTReader;
            return _this.getPointN(arg1);
      }
 
-     static public Geometry startPoint(Geometry arg0)
+     static public Point startPoint(Geometry arg0)
      {
            if (!(arg0 instanceof LineString)) return null;
            LineString _this = (LineString) arg0;

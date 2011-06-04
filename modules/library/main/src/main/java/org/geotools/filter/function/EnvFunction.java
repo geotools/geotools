@@ -17,6 +17,9 @@
 
 package org.geotools.filter.function;
 
+import static org.geotools.filter.capability.FunctionNameImpl.parameter;
+
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -123,14 +126,16 @@ public class EnvFunction extends FunctionExpressionImpl {
      */
     private static ConcurrentMap<String, Object> globalLookup = new ConcurrentHashMap<String, Object>();
 
-    public static FunctionName NAME = new FunctionNameImpl("env","variable");
+    //public static FunctionName NAME = new FunctionNameImpl("env","variable");
+    public static FunctionName NAME = new FunctionNameImpl("env",
+            parameter("value", Object.class),
+            parameter("variable", String.class));
 
     /**
      * Create a new instance of this function.
      */
     public EnvFunction() {
-        super("env");
-        functionName = NAME;
+        super(NAME);
     }
 
     /**

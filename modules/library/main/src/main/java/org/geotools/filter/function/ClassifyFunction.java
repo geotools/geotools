@@ -16,43 +16,44 @@
  */
 package org.geotools.filter.function;
 
-import org.geotools.filter.Expression;
+import static org.geotools.filter.capability.FunctionNameImpl.parameter;
+
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Literal;
 
+import com.vividsolutions.jts.geom.Geometry;
+
 public class ClassifyFunction extends FunctionExpressionImpl {
 
     // parameters are expression, classifier
-    public static FunctionName NAME = new FunctionNameImpl("classify","expression","classifier");
-    
+    public static FunctionName NAME = new FunctionNameImpl("classify",
+            parameter("value",Object.class),
+            parameter("expression",Object.class),
+            parameter("classifer",Classifier.class));
+
     public ClassifyFunction() {
-        super("classify");
-        functionName = NAME;
-    }
-    
-    public int getArgCount() {
-        return 2;
+        super(NAME);
     }
 
     public Classifier getClassifier(Object context) {
-        Expression expr = (Expression) getParameters().get(1);
+        org.opengis.filter.expression.Expression expr = getParameters().get(1);
         if (expr instanceof Literal) {
             // this is not good practice! (but the other method doesn't work)
             Literal literal = (Literal) expr;
             return (Classifier) literal.getValue();
         }
-        return (Classifier) expr.evaluate(context, Classifier.class);        
+        return (Classifier) expr.evaluate(context, Classifier.class);
     }
     
-    public Expression getExpression() {
-        return (Expression) getParameters().get(0);
+    public org.opengis.filter.expression.Expression getExpression() {
+        return (org.opengis.filter.expression.Expression) getParameters().get(0);
     }
     
     public Object evaluate(Object feature) {
         Classifier classifier = getClassifier( feature );
-        Expression expression = getExpression();
+        org.opengis.filter.expression.Expression expression = getExpression();
         return new Integer(classifier.classify(expression, feature)); 
     }
 

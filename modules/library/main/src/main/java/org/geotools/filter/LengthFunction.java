@@ -16,6 +16,8 @@
  */
 package org.geotools.filter;
 
+import static org.geotools.filter.capability.FunctionNameImpl.parameter;
+
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
@@ -29,19 +31,15 @@ import org.opengis.filter.expression.Expression;
  * @source $URL$
  */
 public class LengthFunction extends FunctionExpressionImpl {
-    public static FunctionName NAME = new FunctionNameImpl("length","string");
-
+    //public static FunctionName NAME = new FunctionNameImpl("length","string");
+    public static FunctionName NAME = new FunctionNameImpl("length",
+            parameter("length", Integer.class),
+            parameter("string", String.class));
+    
         public LengthFunction(){
-            super("length");
-            functionName = NAME;
+            super(NAME);
         }
         
-	/* (non-Javadoc)
-	 * @see org.geotools.filter.FunctionExpressionImpl#getArgCount()
-	 */
-	public int getArgCount() {
-		return 1;
-	}
 
 	/* (non-Javadoc)
 	 * @see org.geotools.filter.Expression#getValue(org.geotools.feature.Feature)

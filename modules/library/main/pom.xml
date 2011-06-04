@@ -37,8 +37,8 @@
   </scm>
 
   <description>
-    The main module contains the key interfaces and default
-    implementations that are used by other GeoTools modules.
+    The main module contains the default implementations of the data model
+    that are used by other GeoTools modules.
   </description>
 
   <licenses>

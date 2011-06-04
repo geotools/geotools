@@ -37,7 +37,9 @@
   </scm>
 
   <description>
-    Datasource created to read images georeferenced by a world file.
+    Grid coverage reader for image georeferenced by a world file.
+    File format consists of consisting of a plain image and a "sidecar" world file to georeference
+    the image, a and projection file file to indicate the coordinate reference system used.
   </description>
 
   <licenses>

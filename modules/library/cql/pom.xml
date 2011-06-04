@@ -37,7 +37,7 @@
   </scm>
 
   <description>
-    A parser that takes an OGC Common Query Language input string and produces
+    A parser that takes a Constraint Query Language input string and produces
     an equivalent org.opengis.filter.Filter.
   </description>
 

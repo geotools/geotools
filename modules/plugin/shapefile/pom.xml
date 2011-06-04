@@ -37,7 +37,7 @@
   </scm>
 
   <description>
-    (todo)
+    DataStore supporting the ESRI shapefile format.
   </description>
 
   <licenses>

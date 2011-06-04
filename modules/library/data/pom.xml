@@ -37,7 +37,8 @@
   </scm>
 
   <description>
-    Abstract datastore implementation and helper classes.
+    ContentDataStore implementation and support classes for those implementing
+    their own datastore.
   </description>
 
   <licenses>

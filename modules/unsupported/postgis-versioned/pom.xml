@@ -73,6 +73,36 @@
         <role>Module Maintainer</role>
       </roles>
     </developer>
+    <developer>
+      <name>Rob Hranac</name>
+      <id>robhranac</id>
+      <email>robhranac@users.sourceforge.net</email>
+      <organization>VFNY</organization>
+      <roles>
+        <role>Module Maintainer</role>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Chris Holmes</name>
+      <id>cholmesny</id>
+      <email>cholmesny@users.sourceforge.net</email>
+      <organization>TOPP</organization>
+      <roles>
+        <role>Module Maintainer</role>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Justin Deoliveira</name>
+      <id>jdeolive</id>
+      <email>jdeolive@users.sourceforge.net</email>
+      <organization>TOPP</organization>
+      <roles>
+        <role>Module Maintainer</role>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
   </developers>
 
 
@@ -82,15 +112,58 @@
   <dependencies>
     <dependency>
       <groupId>org.geotools</groupId>
-      <artifactId>gt-postgis</artifactId>
+      <artifactId>gt-jdbc</artifactId>
       <version>${project.version}</version>
     </dependency>
-    <!-- Depend on the test code as well -->
     <dependency>
       <groupId>org.geotools</groupId>
-      <artifactId>gt-postgis</artifactId>
+      <artifactId>gt-jdbc</artifactId>
       <version>${project.version}</version>
       <classifier>tests</classifier>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-referencing</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-epsg-wkt</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-sample-data</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <!-- The version number is specified in the parent POM. -->
+    </dependency>
+    <dependency>
+      <groupId>org.postgis</groupId>
+      <artifactId>postgis-driver</artifactId>
+      <!-- The version number is specified in the parent POM. -->
+    </dependency>
+    <dependency>
+      <!-- TODO: this dependency should appears in wkb4j -->
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <!-- The version number is specified in the parent POM. -->
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.easymock</groupId>
+      <artifactId>easymock</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.easymock</groupId>
+      <artifactId>easymockclassextension</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -108,6 +181,20 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
           <excludes>
+            <!-- the following tests either fail, or do not extend PostgisOnlineTestCase -->
+            <exclude>**/Postgis3DTest.java</exclude>
+            <exclude>**/PostgisFeatureCollectionOnlineTest.java</exclude>
+            <exclude>**/PostgisAlternateSchemaOnlineTest.java</exclude>
+            <exclude>**/PostgisDataStoreAPIOnlineTest.java</exclude>
+            <exclude>**/PostgisDataStoreFactoryOnlineTest.java</exclude>
+            <exclude>**/PostgisFeatureReaderOnlineTest.java</exclude>
+            <exclude>**/PostgisFeatureStoreOnlineTest.java</exclude>
+            <exclude>**/PostgisFeatureWriterOnlineTest.java</exclude>
+            <exclude>**/PostgisWithoutGeosOnlineTest.java</exclude>
+            <exclude>**/PostgisAuthorityFactoryOnlineTest.java</exclude>
+            <exclude>${online.skip.pattern}</exclude>
+            <exclude>${stress.skip.pattern}</exclude>
+
             <!-- The following tests are skipped because they do not extend OnlineTestCase -->
             <exclude>**/SupportTableOnlineTest.java</exclude>
             <exclude>**/TransparentUnversionedOnlineTest.java</exclude>

@@ -144,7 +144,6 @@
          <module>csv</module>
          <module>epsg-oracle</module>
          <module>jdbc-ng</module>
-         <module>postgis</module>
          <module>postgis-versioned</module>
          <module>vpf</module>
          <module>matfile5</module>

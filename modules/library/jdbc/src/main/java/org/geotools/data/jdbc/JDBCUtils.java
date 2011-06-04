@@ -27,14 +27,17 @@ import java.util.logging.Logger;
 import org.geotools.data.Transaction;
 
 /**
+ * Utility class helping developers to safely clean up after connections.
+ * <p>
+ * Although this class is not used directly by the org.geotools.jdbc classes
+ * it is used downstream in GeoServer.
+ * </p>
  * @author Sean Geoghegan, Defence Science and Technology Organisation
  * @author $Author: seangeo $
  *
  * @source $URL$
  * @version $Id$
  * Last Modified: $Date: 2003/11/28 08:49:51 $
- * 
- *  @deprecated scheduled for removal in 2.7, use classes in org.geotools.jdbc
  */
 public class JDBCUtils {
 

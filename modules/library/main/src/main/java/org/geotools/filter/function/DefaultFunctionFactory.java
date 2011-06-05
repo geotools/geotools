@@ -58,6 +58,9 @@ public class DefaultFunctionFactory implements FunctionFactory {
         ArrayList<FunctionName> list = new ArrayList<FunctionName>(functionCache().size());
         for (FunctionDescriptor fd : functionCache().values()) {
             list.add(fd.name);
+//            if( "rint".equals(fd.name.getName())){
+//                System.out.println("Listed rint");
+//            }
         }
         return list;
     }
@@ -131,7 +134,9 @@ public class DefaultFunctionFactory implements FunctionFactory {
             FunctionName functionName = getFunctionName( function );
             String name = function.getName();
             FunctionDescriptor fd = new FunctionDescriptor( functionName, function.getClass() );
-            
+//            if("rint".equals(functionName.getName())){
+//                System.out.println("Loaded rint");
+//            }
             // needed to insert justin's name hack here to ensure consistent lookup
             String key = functionName(name);
             functionMap.put( key, fd );

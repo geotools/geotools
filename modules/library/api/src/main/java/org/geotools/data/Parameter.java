@@ -341,4 +341,24 @@ public class Parameter<T> implements org.opengis.parameter.Parameter<T>{
         }
         return level;        
     }
+    
+    public String toString() {
+        StringBuilder build = new StringBuilder();
+        build.append(key);
+        if( type != Object.class ){
+            build.append(":");
+            build.append( type.getSimpleName() );
+        }
+        if( !required ){
+            build.append("{optional}");
+        }
+        if( minOccurs != 1 || maxOccurs != 1){
+            build.append("{");
+            build.append(minOccurs);
+            build.append(":");
+            build.append(maxOccurs);
+            build.append("}");
+        }
+        return build.toString();
+    }
 }

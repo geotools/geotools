@@ -33,6 +33,7 @@ import org.geotools.filter.FunctionExpression;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.FunctionFactory;
 import org.geotools.filter.FunctionImpl;
+import org.geotools.filter.function.DefaultFunctionFactory.FunctionDescriptor;
 import org.geotools.util.logging.Logging;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.capability.FunctionName;
@@ -139,6 +140,11 @@ public class DefaultFunctionFactory implements FunctionFactory {
 //            }
             // needed to insert justin's name hack here to ensure consistent lookup
             String key = functionName(name);
+            if( functionMap.containsKey(key)){
+                // conflicted name - probably a cut and paste error when creating functionName
+                FunctionDescriptor conflict = functionMap.get(key);
+                LOGGER.warning("Function "+key+" clash between "+conflict.clazz.getSimpleName()+" and "+function.getClass().getSimpleName());
+            }
             functionMap.put( key, fd );
         }
         return functionMap;

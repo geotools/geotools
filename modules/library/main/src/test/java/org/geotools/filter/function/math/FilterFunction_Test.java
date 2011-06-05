@@ -1684,7 +1684,7 @@ public class FilterFunction_Test extends TestCase {
         }
     }
 
-    public void Xtestrint() {
+    public void testrint() {
         try {
             FilterFunction_rint rint = (FilterFunction_rint) ff.function("rint", 
                     org.opengis.filter.expression.Expression.NIL);

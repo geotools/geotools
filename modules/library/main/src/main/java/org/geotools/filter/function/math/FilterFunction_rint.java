@@ -28,11 +28,16 @@ public class FilterFunction_rint extends FunctionExpressionImpl {
 
     //public static FunctionName NAME = new FunctionNameImpl("rint", "double");
     public static FunctionName NAME = new FunctionNameImpl("rint",
-            parameter("double", Double.class),
-            parameter("number", Number.class));
+            parameter("rounded", Double.class),
+            parameter("double", Number.class));
     
     public FilterFunction_rint() {
-        super(NAME);
+        super("rint");
+        functionName = NAME;
+    }
+
+    public int getArgCount() {
+        return 1;
     }
 
     public Object evaluate(Object feature) {

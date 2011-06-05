@@ -137,7 +137,11 @@ public class FeatureLayer extends StyleLayer {
      *         is used
      */
     public Query getQuery() {
-        return query;
+        if (query == null) {
+            return Query.ALL;
+        } else {
+            return query;
+        }
     }
 
     /**

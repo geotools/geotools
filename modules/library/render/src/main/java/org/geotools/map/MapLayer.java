@@ -50,6 +50,9 @@ import org.opengis.referencing.operation.TransformException;
  *         http://svn.osgeo.org/geotools/trunk/modules/library/render/src/main/java/org/geotools
  *         /map/MapLayer.java $
  * @version $Id$
+ * @deprecated Use an appropriate Layer such as FeatureLayer, GridCoverageLayer or GridReaderLayer
+ * @since 2.0
+ * @version 8.0
  */
 public class MapLayer {
     /**

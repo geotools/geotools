@@ -29,7 +29,7 @@ import org.geotools.styling.Style;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.TransformException;
 
-public class GridCoverageLayer extends StyleLayer {
+public class GridCoverageLayer extends RasterLayer {
 
     protected GridCoverage2D coverage;
 

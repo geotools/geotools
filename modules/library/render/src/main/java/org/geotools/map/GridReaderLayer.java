@@ -31,11 +31,60 @@ import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.TransformException;
 
-public class GridReaderLayer extends StyleLayer {
+public class GridReaderLayer extends RasterLayer {
 
     protected AbstractGridCoverage2DReader reader;
 
     protected GeneralParameterValue[] params;
+
+    /**
+     * Constructor which adds a new layer and triggers a {@link LayerListEvent}.
+     * 
+     * @param reader
+     *            a reader with the new layer that will be added
+     * @param style
+     * 
+     * @throws SchemaException
+     * @throws FactoryRegistryException
+     * @throws TransformException
+     */
+    public GridReaderLayer(AbstractGridCoverage2DReader reader, Style style) {
+        this( reader, style, null, null );
+    }
+
+    /**
+     * Constructor which adds a new layer and trigger a {@link LayerListEvent}.
+     * 
+     * @param reader
+     *            a reader with the new layer that will be added.
+     * @param style
+     * @param title
+     * @param params
+     *            GeneralParameterValue[] that describe how the {@link AbstractGridCoverage2DReader}
+     *            shall read the images
+     * @throws SchemaException
+     * @throws FactoryRegistryException
+     * @throws TransformException
+     */
+    public GridReaderLayer(AbstractGridCoverage2DReader reader, Style style, String title) {
+        this( reader, style, title, null );
+    }
+
+    /**
+     * Constructor which adds a new layer and trigger a {@link LayerListEvent}.
+     * 
+     * @param reader
+     *            a reader with the new layer that will be added.
+     * @param style
+     * @param title
+     * 
+     * @throws SchemaException
+     * @throws FactoryRegistryException
+     * @throws TransformException
+     */
+    public GridReaderLayer(AbstractGridCoverage2DReader reader, Style style, GeneralParameterValue[] params) {
+        this(reader, style, null, params );
+    }
 
     /**
      * Constructor which adds a new layer and trigger a {@link LayerListEvent}.
@@ -58,6 +107,7 @@ public class GridReaderLayer extends StyleLayer {
         this.reader = reader;
         this.params = params;
     }
+
 
     @Override
     public void dispose() {
@@ -90,40 +140,6 @@ public class GridReaderLayer extends StyleLayer {
             }
         }
         return null;
-    }
-
-    /**
-     * Constructor which adds a new layer and trigger a {@link LayerListEvent}.
-     * 
-     * @param reader
-     *            a reader with the new layer that will be added.
-     * @param style
-     * @param title
-     * 
-     * @throws SchemaException
-     * @throws FactoryRegistryException
-     * @throws TransformException
-     */
-    public GridReaderLayer(AbstractGridCoverage2DReader reader, Style style, String title) {
-        super(style,title);
-        this.reader = reader;
-        this.style = style;
-    }
-
-    /**
-     * Constructor which adds a new layer and triggers a {@link LayerListEvent}.
-     * 
-     * @param reader
-     *            a reader with the new layer that will be added
-     * @param style
-     * 
-     * @throws SchemaException
-     * @throws FactoryRegistryException
-     * @throws TransformException
-     */
-    public GridReaderLayer(AbstractGridCoverage2DReader reader, Style style) {
-        super(style);
-        this.reader = reader;
     }
 
     /**

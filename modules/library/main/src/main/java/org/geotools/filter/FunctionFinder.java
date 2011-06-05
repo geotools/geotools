@@ -126,6 +126,7 @@ public class FunctionFinder {
     public Function findFunction(String name, List<org.opengis.filter.expression.Expression>  parameters, Literal fallback) {
         //try name as is
         Function f = findFunctionInternal(name, parameters, fallback);
+
         if (f == null) {
             //try by trimming "Function" off of name
             if (name.endsWith("Function")) {
@@ -171,12 +172,11 @@ public class FunctionFinder {
         return null;
     }
     
-    private HashMap lookupFunctions() {
+    private HashMap<String,FunctionFactory> lookupFunctions() {
         // get all filter functions via function factory
-        HashMap result = new HashMap();
+        HashMap<String,FunctionFactory> result = new HashMap<String,FunctionFactory>();
         
-        Set<FunctionFactory> functionFactories = 
-            CommonFactoryFinder.getFunctionFactories(null);
+        Set<FunctionFactory> functionFactories = CommonFactoryFinder.getFunctionFactories(null);
         for (FunctionFactory ff : functionFactories) {
             for (FunctionName functionName : ff.getFunctionNames()) {
                 result.put(functionName.getName(), ff);

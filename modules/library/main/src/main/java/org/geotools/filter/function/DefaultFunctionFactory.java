@@ -91,17 +91,16 @@ public class DefaultFunctionFactory implements FunctionFactory {
         if (functionCache == null) {
             synchronized(this) {
                 if (functionCache == null) {
-                    loadFunctions();
+                    functionCache = loadFunctions();
                 }
             }
         }
-        
         return functionCache;
     }
     
     private FunctionName getFunctionName( Function function ){
         String name = function.getName();
-        FunctionName functionName = null; // function.getFunctionName();
+        FunctionName functionName = function.getFunctionName();
         
         if( functionName == null && function instanceof FunctionExpressionImpl){
             functionName = function.getFunctionName();
@@ -123,8 +122,8 @@ public class DefaultFunctionFactory implements FunctionFactory {
         }
         return functionName;
     }
-    private void loadFunctions() {
-        functionCache = new HashMap<String,FunctionDescriptor>();
+    private Map<String,FunctionDescriptor> loadFunctions() {
+        Map<String,FunctionDescriptor> functionMap = new HashMap<String,FunctionDescriptor>();
 
         Set<Function> functions = CommonFactoryFinder.getFunctions(null);
         for (Iterator<Function> i = functions.iterator(); i.hasNext();) {
@@ -135,8 +134,9 @@ public class DefaultFunctionFactory implements FunctionFactory {
             
             // needed to insert justin's name hack here to ensure consistent lookup
             String key = functionName(name);
-            functionCache.put( key, fd );
+            functionMap.put( key, fd );
         }
+        return functionMap;
     }
     
     private String functionName(String name) {

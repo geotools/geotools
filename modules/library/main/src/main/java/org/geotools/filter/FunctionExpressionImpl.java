@@ -218,11 +218,11 @@ public abstract class FunctionExpressionImpl
         StringBuffer sb = new StringBuffer();
         sb.append(getName());
         sb.append("(");
-        List params = getParameters();
+        List<org.opengis.filter.expression.Expression> params = getParameters();
         if(params != null){
             org.opengis.filter.expression.Expression exp;
-            for(Iterator it = params.iterator(); it.hasNext();){
-                exp = (Expression) it.next();
+            for(Iterator<org.opengis.filter.expression.Expression> it = params.iterator(); it.hasNext();){
+                exp = it.next();
                 sb.append("[");
                 sb.append(exp);
                 sb.append("]");

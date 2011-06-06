@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="efeature"
+    nsURI="http://geotools.org/data/efeature/efeature-tests.ecore/1.0" nsPrefix="efeature-tests">
+  <eClassifiers xsi:type="ecore:EClass" name="EFeatureData" eSuperTypes="../../../main/resources/model/efeature.ecore#//EFeature">
+    <eTypeParameters name="A"/>
+    <eTypeParameters name="G">
+      <eBounds eClassifier="ecore:EDataType ../../../main/resources/model/efeature.ecore#//Geometry"/>
+    </eTypeParameters>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="attribute" lowerBound="1">
+      <eGenericType eTypeParameter="#//EFeatureData/A"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="geometry" lowerBound="1">
+      <eGenericType eTypeParameter="#//EFeatureData/G"/>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NonGeoEObject">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="nonGeoAttribute" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="EFeatureCompatibleData">
+    <eTypeParameters name="A"/>
+    <eTypeParameters name="G">
+      <eBounds eClassifier="ecore:EDataType ../../../main/resources/model/efeature.ecore#//Geometry"/>
+    </eTypeParameters>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="ID" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        iD="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="attribute" lowerBound="1">
+      <eGenericType eTypeParameter="#//EFeatureCompatibleData/A"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="geometry" lowerBound="1">
+      <eGenericType eTypeParameter="#//EFeatureCompatibleData/G"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="SRID" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="default" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+</ecore:EPackage>

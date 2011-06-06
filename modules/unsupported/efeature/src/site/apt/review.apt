@@ -1,0 +1,33 @@
+MODULE EXAMPLE
+~~~~~~~~~~~~~~
+
+  Module Maintainer: Kenneth Gulbrandsøy
+
+  IP Review:
+
+    * <REVIEWER 1 NAME> - August 6th, 2006
+
+    * <REVIEWER 2 NAME> - July 24th, 2007: removed dependencies on third party JDBC drivers
+
+    * <REVIEWER 3 NAME> - June 2008: Initial commit as LGPL code
+
+  STATUS: Clean
+
+  This module was added to the GeoTools project by Kenneth Gulbrandsøy under the LGPL license.
+
+* org.geotools.data.efeature.tests.AbstractStandaloneTest
+  ~~~~~~~~~~~~~~~~~~~~
+  
+  Header contains following reference to Eclipse
+  
+--------------------------------------------------------------------------------
+Copyright (c) 2005, 2008 IBM Corporation, Zeligsoft Inc. and others.
+All rights reserved.   This program and the accompanying materials
+are made available under the terms of the Eclipse Public License v1.0
+which accompanies this distribution, and is available at
+http://www.eclipse.org/legal/epl-v10.html 
+--------------------------------------------------------------------------------
+
+  Based on the file:
+  
+  http://dev.eclipse.org/viewcvs/viewvc.cgi/org.eclipse.emf/org.eclipse.emf.transaction/tests/org.eclipse.emf.workspace.tests/src/org/eclipse/emf/workspace/tests/AbstractTest.java?root=Modeling_Project&view=co

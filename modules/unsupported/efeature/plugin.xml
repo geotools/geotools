@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+ <copyright>
+ </copyright>
+
+ $Id$
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.emf.edit.itemProviderAdapterFactories">
+      <factory
+            uri="http://geotools.org/data/efeature/efeature-tests.ecore/1.0"
+            class="org.geotools.data.efeature.tests.provider.EFeatureTestsItemProviderAdapterFactory"
+            supportedTypes=
+              "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
+               org.eclipse.emf.edit.provider.IStructuredItemContentProvider
+               org.eclipse.emf.edit.provider.ITreeItemContentProvider
+               org.eclipse.emf.edit.provider.IItemLabelProvider
+               org.eclipse.emf.edit.provider.IItemPropertySource"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <package
+            uri="http://geotools.org/data/efeature/efeature-tests.ecore/1.0"
+            class="org.geotools.data.efeature.tests.EFeatureTestsPackage"
+            genModel="src/test/resources/model/efeature-tests.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.extension_parser">
+      <parser
+            type="xmi"
+            class="org.geotools.data.efeature.tests.util.EFeatureTestsResourceFactoryImpl"/>
+   </extension>
+
+</plugin>

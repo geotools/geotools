@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/gt-efeature/src/test/java"
+    editDirectory="/gt-efeature/src/test/java" editorDirectory="" modelPluginID="org.geotools.data.efeature.tests"
+    templateDirectory="" runtimeJar="true" redirection="" modelName="EFeatureTest"
+    modelPluginClass="org.geotools.data.efeature.tests.EFeatureTestsPlugin" editPluginClass=""
+    editorPluginClass="" updateClasspath="false" nonNLSMarkers="true" suppressEMFTypes="true"
+    featureMapWrapperClass="" runtimeCompatibility="true" reflectiveDelegation="true"
+    testsDirectory="/gt-efeature/src/test/java" testSuiteClass="org.geotools.data.efeature.tests.unit.EFeatureAllTests"
+    importerID="org.eclipse.emf.importer.ecore" featureDelegation="Reflective" containmentProxies="true"
+    complianceLevel="5.0" suppressGenModelAnnotations="false" copyrightFields="false"
+    editPluginID="org.geotools.data.efeature.tests" editorPluginID="org.geotools.data.efeature.tests"
+    testsPluginID="org.geotools.data.efeature.tests" usedGenPackages="../../../main/resources/model/efeature.genmodel#//efeature"
+    interfaceNamePattern="" runtimePlatform="RCP">
+  <foreignModel>efeature-tests.ecore</foreignModel>
+  <genPackages prefix="EFeatureTests" basePackage="org.geotools.data" resource="XMI"
+      disposableProviderFactory="true" loadInitialization="true" interfacePackageSuffix="tests"
+      metaDataPackageSuffix="tests" classPackageSuffix="tests.impl" utilityPackageSuffix="tests.util"
+      providerPackageSuffix="tests.provider" presentationPackageSuffix="tests.presentation"
+      testsPackageSuffix="tests.unit" generateExampleClass="false" dataTypeConverters="true"
+      multipleEditorPages="false" generateModelWizard="false" contentTypeIdentifier=""
+      fileExtensions="xmi" ecorePackage="efeature-tests.ecore#/">
+    <genClasses image="false" ecoreClass="efeature-tests.ecore#//EFeatureData">
+      <genTypeParameters ecoreTypeParameter="efeature-tests.ecore#//EFeatureData/A"/>
+      <genTypeParameters ecoreTypeParameter="efeature-tests.ecore#//EFeatureData/G"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute efeature-tests.ecore#//EFeatureData/attribute"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute efeature-tests.ecore#//EFeatureData/geometry"/>
+    </genClasses>
+    <genClasses ecoreClass="efeature-tests.ecore#//NonGeoEObject">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute efeature-tests.ecore#//NonGeoEObject/nonGeoAttribute"/>
+    </genClasses>
+    <genClasses ecoreClass="efeature-tests.ecore#//EFeatureCompatibleData">
+      <genTypeParameters ecoreTypeParameter="efeature-tests.ecore#//EFeatureCompatibleData/A"/>
+      <genTypeParameters ecoreTypeParameter="efeature-tests.ecore#//EFeatureCompatibleData/G"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute efeature-tests.ecore#//EFeatureCompatibleData/ID"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute efeature-tests.ecore#//EFeatureCompatibleData/attribute"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute efeature-tests.ecore#//EFeatureCompatibleData/geometry"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute efeature-tests.ecore#//EFeatureCompatibleData/SRID"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute efeature-tests.ecore#//EFeatureCompatibleData/default"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

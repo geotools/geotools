@@ -1,7 +1,31 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2006-2011, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.gce.grassraster;
 
 import static java.lang.Double.NaN;
 
+/**
+ * Support maps for testcases. 
+ * 
+ * <p>These data are all synthetically created
+ * by the author and released into Public Domain.
+ * 
+ * @author Andrea Antonello (www.hydrologis.com)
+ */
 public class TestMaps {
     static double[][] matrix = new double[][]{
             {800.0, 900.0, 1000.0, 1000.0, 1200.0, 1250.0, 1300.0, 1350.0, 1450.0, 1500.0},

@@ -30,7 +30,7 @@ import org.opengis.feature.simple.SimpleFeature;
  */
 public class EFeatureReaderTest extends AbstractStandaloneTest {
     
-    private static boolean binary = false;
+    private static boolean binary = true;
     
     private int eFeatureCount = 20000;
     private EFeatureTestData eData;

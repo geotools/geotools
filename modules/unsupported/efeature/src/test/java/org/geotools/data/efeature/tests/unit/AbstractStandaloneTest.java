@@ -99,7 +99,7 @@ public abstract class AbstractStandaloneTest extends TestCase {
     @BeforeClass
     public final void setUp() throws Exception {
 
-        trace("===> Begin : " + getName()); //$NON-NLS-1$
+        trace("===> Begin : " + getName() + "[" + contentType + "]"); //$NON-NLS-1$
         EFeatureLogFormatter.setMinimal();
         
         File eTestData = org.geotools.test.TestData.file(this,null);

@@ -2716,9 +2716,13 @@ public class ImageWorker {
         if(outStream==null)
             throw new IIOException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1,"stream"));
         
-        iwp.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-        iwp.setCompressionType(compression);        
-        iwp.setCompressionQuality(compressionRate); // We can control quality here.
+        if(compression != null) {
+            iwp.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+            iwp.setCompressionType(compression);        
+            iwp.setCompressionQuality(compressionRate); // We can control quality here.
+        } else {
+            iwp.setCompressionMode(ImageWriteParam.MODE_DEFAULT);
+        }
         if(tileSizeX > 0 && tileSizeY > 0) {
             iwp.setTilingMode(ImageWriteParam.MODE_EXPLICIT);
             iwp.setTiling(tileSizeX, tileSizeY, 0, 0);

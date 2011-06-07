@@ -74,6 +74,12 @@
      <!-- but have not passed our QA and Doc requirements    -->
      <!-- so you may/should consider them risky              -->
      <profile>
+       <id>efeature</id>
+       <modules>
+         <module>efeature</module>
+       </modules>
+     </profile>
+     <profile>
        <id>raster</id>
        <activation>
          <property><name>all</name></property>

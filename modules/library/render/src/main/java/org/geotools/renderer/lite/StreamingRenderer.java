@@ -2023,39 +2023,41 @@ public final class StreamingRenderer implements GTRenderer {
                 
                 // readers will return null if there is no coverage in the area
                 if(coverage != null) {
-                    // Crop will fail if we try to crop outside of the coverage area
-                    GeneralEnvelope cropEnvelope = new GeneralEnvelope(mapExtent);
-                    if(coverage.getEnvelope2D().intersects(cropEnvelope.toRectangle2D())) {
-                        // the resulting coverage might be larger than the readGG envelope, shall we crop it?
-                        final ParameterValueGroup param = CROP.getParameters();
-                        param.parameter("Source").setValue(coverage);
-                        param.parameter("Envelope").setValue(cropEnvelope);
-                        coverage = (GridCoverage2D) PROCESSOR.doOperation(param);
-                    } else {
-                        coverage = null;
-                    }
-                    
-                    if(coverage != null) {
-                        // we might also need to scale the coverage to the desired resolution
-                        MathTransform2D coverageTx = coverage.getGridGeometry().getGridToCRS2D();
-                        if(coverageTx instanceof AffineTransform) {
-                            AffineTransform coverageAt = (AffineTransform) coverageTx;
-                            AffineTransform renderingAt = (AffineTransform) gridGeometry.getGridToCRS2D();
-                            // we adjust the scale only if we have many more pixels than required (30% or more)
-                            final double ratioX = coverageAt.getScaleX() / renderingAt.getScaleX();
-                            final double ratioY = coverageAt.getScaleY() / renderingAt.getScaleY();
-                            if(ratioX < 0.7 && ratioY < 0.7) {
-                                // resolution is too different
-                                final ParameterValueGroup param = SCALE.getParameters();
-                                param.parameter("Source").setValue(coverage);
-                                param.parameter("xScale").setValue(ratioX);
-                                param.parameter("yScale").setValue(ratioY);
-                                final Interpolation interpolation = (Interpolation) java2dHints.get(JAI.KEY_INTERPOLATION);
-                                if(interpolation != null) {
-                                    param.parameter("Interpolation").setValue(interpolation);
+                    if(readGG != null) {
+                        // Crop will fail if we try to crop outside of the coverage area
+                        GeneralEnvelope cropEnvelope = new GeneralEnvelope(readGG.getEnvelope());
+                        if(coverage.getEnvelope2D().intersects(cropEnvelope.toRectangle2D())) {
+                            // the resulting coverage might be larger than the readGG envelope, shall we crop it?
+                            final ParameterValueGroup param = CROP.getParameters();
+                            param.parameter("Source").setValue(coverage);
+                            param.parameter("Envelope").setValue(cropEnvelope);
+                            coverage = (GridCoverage2D) PROCESSOR.doOperation(param);
+                        } else {
+                            coverage = null;
+                        }
+                        
+                        if(coverage != null) {
+                            // we might also need to scale the coverage to the desired resolution
+                            MathTransform2D coverageTx = readGG.getGridToCRS2D();
+                            if(coverageTx instanceof AffineTransform) {
+                                AffineTransform coverageAt = (AffineTransform) coverageTx;
+                                AffineTransform renderingAt = (AffineTransform) gridGeometry.getGridToCRS2D();
+                                // we adjust the scale only if we have many more pixels than required (30% or more)
+                                final double ratioX = coverageAt.getScaleX() / renderingAt.getScaleX();
+                                final double ratioY = coverageAt.getScaleY() / renderingAt.getScaleY();
+                                if(ratioX < 0.7 && ratioY < 0.7) {
+                                    // resolution is too different
+                                    final ParameterValueGroup param = SCALE.getParameters();
+                                    param.parameter("Source").setValue(coverage);
+                                    param.parameter("xScale").setValue(ratioX);
+                                    param.parameter("yScale").setValue(ratioY);
+                                    final Interpolation interpolation = (Interpolation) java2dHints.get(JAI.KEY_INTERPOLATION);
+                                    if(interpolation != null) {
+                                        param.parameter("Interpolation").setValue(interpolation);
+                                    }
+    
+                                    coverage = (GridCoverage2D) PROCESSOR.doOperation(param);
                                 }
-
-                                coverage = (GridCoverage2D) PROCESSOR.doOperation(param);
                             }
                         }
                     }
@@ -2832,8 +2834,10 @@ public final class StreamingRenderer implements GTRenderer {
                 // we have no parameters hence we just use the read grid
                 // geometry to get a coverage
                 coverage = (GridCoverage2D) reader.read(new GeneralParameterValue[] { readGGParam });
-        } else {
+        } else if(readGG != null) {
             coverage = (GridCoverage2D) reader.read(new GeneralParameterValue[] { readGGParam });
+        } else {
+            coverage = (GridCoverage2D) reader.read(null);
         }
         return coverage;
     }

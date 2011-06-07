@@ -28,6 +28,7 @@ import org.geotools.filter.FunctionFactory;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.process.ProcessFactory;
 import org.geotools.process.Processors;
+import org.geotools.process.RenderingProcess;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
@@ -96,7 +97,11 @@ public class ProcessFunctionFactory implements FunctionFactory {
             // wrap the process            
             org.geotools.process.Process process = Processors.createProcess(processName);
             Map<String, Parameter<?>> parameters = Processors.getParameterInfo(processName);
-            return new ProcessFunction(name, args, parameters, process, fallback);
+            if (process instanceof RenderingProcess){
+                return new RenderingProcessFunction(name, args, parameters, (RenderingProcess) process, fallback);
+            } else {
+                return new ProcessFunction(name, args, parameters, process, fallback);
+            }
         }
     }
 
@@ -136,6 +141,14 @@ public class ProcessFunctionFactory implements FunctionFactory {
             // add the parameter function
             functionNames.add(new FunctionNameImpl(ParameterFunction.NAME, -1));
         }
+    }
+    
+    /**
+     * Clears the caches forcing the system to do another lookup
+     */
+    public void clear() {
+        functionNames = null;
+        functionToProcess = null;
     }
 
 }

@@ -1,9 +1,59 @@
-  Module Maintainer: Ben Caradoc-Davies
+Module Maintainer: Ben Caradoc-Davies
 
 Known IP issues:
 
-src/test/resources/test-data/Example01.xml
-and
-src/test/resources/org/example/schemas/wfs20/DescribeFeatureType_Example01_Response.xsd
-are taken from the OGC WFS 2.0 specification.
 
+  Module Maintainer: Ben Caradoc-Davies
+
+  IP Review:
+
+    * Jody Garnett, June 2011
+
+  STATUS: Under review
+
+  KNOWN ISSUES:
+  
+    * GEOT-XXX
+    
+      src/test/resources/test-data/Example01.xml
+      src/test/resources/org/example/schemas/wfs20/DescribeFeatureType_Example01_Response.xsd
+    
+      Are taken from the OGC WFS 2.0 specification.
+  
+Contributor Review (taken from pom.xml and source code files):
+
+    * all code prvided by Ben Caradoc-Davies was done under LGPL, CSIRO code contribution agreement
+    
+    * Niels should be listed in the pom.xml
+    
+  CODE REVIEW
+  
+    * @author tags should not use "," as apaprenty that lists multiple authors
+      we tend to use:
+         
+      INCORRECT: @author Ben Caradoc-Davies, CSIRO Earth Science and Resource Engineering
+      CORRECT: @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
+      
+* src java
+  ~~~~~~~~
+
+    * org.geotools.xml
+    
+* test java
+  ~~~~~~~~~
+
+    * org.geotools.xml - date range is incorrect (ie 2004-2010) I doubt these files were created
+      in 2004?
+  
+* test resources
+  ~~~~~~~~~~~~~~
+  
+    * org.example.schemas.wfs20 - known issue; content from wfs 2.0 specification. Add OGC license
+      to the base of the project folder and we should be good for this one
+    
+    * test-data/cache/org/example/schemas/cache-test attribution missing.
+    * test-data/cache/org/example/schemas/catalog-test attribution missing.
+    * test-data/catalog/catalog-test attribution missing
+    * test-data attribution missing in general (Example01.xml handles attribtue well)
+
+    

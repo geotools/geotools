@@ -1,3 +1,39 @@
+Module Maintainer: Ben Caradoc-Davies
+
+Known IP issues:
+
+
   Module Maintainer: Ben Caradoc-Davies
 
-No known IP issues.
+  IP Review:
+
+    * Jody Garnett, June 2011
+
+  STATUS: Under review
+
+  KNOWN ISSUES:
+  
+    * Incorrect date range provided in headers; please update from svn history
+      
+Contributor Review (taken from pom.xml and source code files):
+
+    * all code prvided by Ben Caradoc-Davies was done under LGPL, CSIRO code contribution agreement
+    
+  CODE REVIEW
+  
+    * @author tags should not use "," as apaprenty that lists multiple authors
+      we tend to use:
+         
+      INCORRECT: @author Ben Caradoc-Davies, CSIRO Earth Science and Resource Engineering
+      CORRECT: @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
+      
+* src java
+  ~~~~~~~~
+
+    * org.geotools.data - date range incorrectly indicates 2004-2010
+    
+* test java
+  ~~~~~~~~~
+
+    * org.geotools.data - date range incorrectly indicates 2004-2010
+  

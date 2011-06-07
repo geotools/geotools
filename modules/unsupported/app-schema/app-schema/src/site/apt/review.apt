@@ -55,7 +55,8 @@ Contributor Review (taken from pom.xml and source code files):
       this factory could be moved to gt-main and seperated from app-schema.
       
 * src
-
+  ~~~
+  
     * org.geotools.data.complex many files are listed as from (c) 2004 even when they were not
       created then. Please correct using svn history (example PathAttributeList,
       NestedAttributeMapping, MappingFeatureIteratorFactory). MappingFeatureSource seems interesting
@@ -118,6 +119,4 @@ Contributor Review (taken from pom.xml and source code files):
     * org.geotools.test - AppSchemaTestSupport does not have an author
     
     * org.geotools.util - InterpolationPropertiesTest is listed as 2004; this is suspect as Ben is the author
-    
-    
 

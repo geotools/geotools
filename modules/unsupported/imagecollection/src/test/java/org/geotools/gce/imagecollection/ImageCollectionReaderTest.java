@@ -18,68 +18,55 @@
 package org.geotools.gce.imagecollection;
 
 import java.awt.Rectangle;
+import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 
+import junit.framework.Assert;
+
+import org.apache.commons.io.FilenameUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
+import org.geotools.data.DataSourceException;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.geometry.GeneralEnvelope;
-import org.geotools.referencing.CRS;
-import org.geotools.referencing.crs.DefaultEngineeringCRS;
+import org.geotools.referencing.factory.epsg.CartesianAuthorityFactory;
+import org.geotools.test.TestData;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.filter.Filter;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
-import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
+ * @author Daniele Romagnoli, GeoSolutions
+ * @author Andrea Aime, GeoSolutions
  * @author Simone Giannecchini, GeoSolutions
- * @author Alessio Fabiani, GeoSolutions
  *
  *
  * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/imagecollection/src/test/java/org/geotools/gce/imagecollection/ImageCollectionReaderTest.java $
  */
-public class ImageCollectionReaderTest {
+public class ImageCollectionReaderTest extends Assert {
 
-    @Test
-    public void emptyTest(){
-        
-    }
-    
     @Test
     public void testReader() throws IllegalArgumentException, IOException,
             NoSuchAuthorityCodeException, CQLException {
 
-        
-        final File file = new File("D:/data/dynamic");
-        // getting a reader
-        final String string = "PATH='../../folder2/subfolder1/a.TIF'";
+        final File file = TestData.file(this, "sample");
+        final String string = "PATH='folder1/world.tif'";
         Filter filter = CQL.toFilter(string);
         
-        try {
-            CoordinateReferenceSystem crs = CRS.decode("EPSG:404001");
-            String s1 =crs.getCoordinateSystem().getAxis(1).getDirection().identifier();
-            String s2 =crs.getCoordinateSystem().getAxis(1).getDirection().name();
-            int i=0;
-            i++;
-        } catch (FactoryException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        
-        ImageCollectionReader reader = new ImageCollectionReader(file);
+        final ImageCollectionReader reader = new ImageCollectionReader(file);
         final ParameterValue<GridGeometry2D> gg =  AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-        final GeneralEnvelope envelope = new GeneralEnvelope(new Rectangle(3000,3000,4000,4000));
-        envelope.setCoordinateReferenceSystem(DefaultEngineeringCRS.CARTESIAN_2D);
-        final Rectangle rasterArea = new Rectangle(3000, 3000, 500, 500);
+        final GeneralEnvelope envelope = new GeneralEnvelope(new Rectangle(1000,-800,1000,400));
+        envelope.setCoordinateReferenceSystem(CartesianAuthorityFactory.GENERIC_2D);
+        final Rectangle rasterArea = new Rectangle(0, 0, 500, 200);
         final GridEnvelope2D range= new GridEnvelope2D(rasterArea);
-        gg.setValue(new GridGeometry2D(range,envelope));
+        gg.setValue(new GridGeometry2D(range, envelope));
         
         final ParameterValue<Filter> ff =  ImageCollectionFormat.FILTER.createValue();
         ff.setValue(filter);
@@ -89,16 +76,38 @@ public class ImageCollectionReaderTest {
         
         GeneralParameterValue[] params = new GeneralParameterValue[] {ff, gg, background};        
         if (reader != null) {
-
             // reading the coverage
             GridCoverage2D coverage = (GridCoverage2D) reader.read(params);
-
-//            if (TestData.isInteractiveTest())
-                coverage.show();System.in.read();
-//            else
-//                coverage.getRenderedImage().getData();
-
+            RenderedImage image = coverage.getRenderedImage();
+            assertTrue(image.getWidth() == 500);
+            assertTrue(image.getHeight() == 200);
         }
+    }
+    
+    @Test
+    public void testForbiddenPath() throws IllegalArgumentException, IOException,
+            NoSuchAuthorityCodeException, CQLException {
 
+        final File file = TestData.file(this, "sample");
+        final String absolutePath = FilenameUtils.separatorsToUnix(file.getAbsolutePath());
+        final String string = "PATH='" + absolutePath + "/folder1/../../forbiddenFolder/classifiedFile.tif'";
+        Filter filter = CQL.toFilter(string);
+        
+        final ImageCollectionReader reader = new ImageCollectionReader(file);
+        final ParameterValue<Filter> ff =  ImageCollectionFormat.FILTER.createValue();
+        ff.setValue(filter);
+        
+        GeneralParameterValue[] params = new GeneralParameterValue[] {ff};        
+        if (reader != null) {
+            // reading the coverage
+        	GridCoverage2D coverage = null;
+        	boolean exception = true;
+        	try {
+        		coverage = (GridCoverage2D) reader.read(params);
+        		exception = false;
+        	} catch (DataSourceException exc){
+        		assertTrue(exception);
+        	}
+        }
     }
 }

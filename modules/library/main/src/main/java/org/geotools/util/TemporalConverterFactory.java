@@ -110,8 +110,7 @@ public class TemporalConverterFactory implements ConverterFactory {
 
                     public Object convert(Object source, Class target) throws Exception {
                         Date date = (Date) source;
-                        return target.getConstructor(new Class[] { Long.TYPE }).newInstance(
-                                new Object[] { new Long(date.getTime()) });
+                        return timeMillisToDate(date.getTime(), target);
                     }
 
                 };
@@ -161,8 +160,7 @@ public class TemporalConverterFactory implements ConverterFactory {
                     public Object convert(Object source, Class target) throws Exception {
                         Calendar calendar = (Calendar) source;
 
-                        return target.getConstructor(new Class[] { Long.TYPE }).newInstance(
-                                new Object[] { new Long(calendar.getTimeInMillis()) });
+                        return timeMillisToDate(calendar.getTimeInMillis(), target);
                     }
                 };
             }
@@ -221,6 +219,38 @@ public class TemporalConverterFactory implements ConverterFactory {
             }
         }
         return null;
+    }
+    
+    /**
+     * Turns a timestamp specified in milliseconds into a date, making sure to shave off
+     * the un-necessary parts when building java.sql time related classes
+     * @param time
+     * @param target
+     * @return
+     */
+    Date timeMillisToDate(long time, Class target) {
+    	if(Timestamp.class.isAssignableFrom(target)) {
+        	return new Timestamp(time);
+        } else if(java.sql.Date.class.isAssignableFrom(target)) {
+        	Calendar cal = Calendar.getInstance();
+        	cal.setTimeInMillis(time);
+        	cal.set(Calendar.HOUR_OF_DAY, 0);
+        	cal.set(Calendar.MINUTE, 0);
+        	cal.set(Calendar.SECOND, 0);
+        	cal.set(Calendar.MILLISECOND, 0);
+         	return new java.sql.Date(cal.getTimeInMillis());
+        } else if(java.sql.Time.class.isAssignableFrom(target)) {
+        	Calendar cal = Calendar.getInstance();
+        	cal.setTimeInMillis(time);
+        	cal.set(Calendar.YEAR, 0);
+        	cal.set(Calendar.MONTH, 0);
+        	cal.set(Calendar.DAY_OF_MONTH, 0);
+         	return new java.sql.Time(cal.getTimeInMillis());
+        } else if(java.util.Date.class.isAssignableFrom(target)) {
+        	return new java.util.Date(time);
+        } else {
+        	throw new IllegalArgumentException("Unsupported target type " + target);
+        }
     }
 
 }

@@ -18,37 +18,88 @@ We follow:
 But what about the header?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The header for all core GeoTools code is::
-   
-   /*
-    *    GeoTools - The Open Source Java GIS Toolkit
-    *    http://geotools.org
-    *
-    *    (C) 2004-2011, Open Source Geospatial Foundation (OSGeo)
-    *
-    *    This library is free software; you can redistribute it and/or
-    *    modify it under the terms of the GNU Lesser General Public
-    *    License as published by the Free Software Foundation;
-    *    version 2.1 of the License.
-    *
-    *    This library is distributed in the hope that it will be useful,
-    *    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    *    Lesser General Public License for more details.
-    */
+Filling in the header boilerplate takes a couple of moments, if the code is being created by you
+strictly for the GeoTools project it should be a simple copy and paste.
 
-The header for all demo code is::
+* The header boilerplate for core GeoTools code is::
    
-   /*
-    *    GeoTools - The Open Source Java GIS Toolkit
-    *    http://geotools.org
-    *
-    *    (C) 2004-2011, Open Source Geospatial Foundation (OSGeo)
-    *
-    *    This file is hereby placed into the Public Domain. This means anyone is
-    *    free to do whatever they wish with this file. Use it well and enjoy!
-    */
+       /*
+        *    GeoTools - The Open Source Java GIS Toolkit
+        *    http://geotools.org
+        *
+        *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
+        *
+        *    This library is free software; you can redistribute it and/or
+        *    modify it under the terms of the GNU Lesser General Public
+        *    License as published by the Free Software Foundation;
+        *    version 2.1 of the License.
+        *
+        *    This library is distributed in the hope that it will be useful,
+        *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+        *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+        *    Lesser General Public License for more details.
+        */
+   
+   The above code reflects a file that was created in 2011 and explicitly contributed to the
+   GeoTools project (the Open Source Geospatial Foundation is our legal entity holding the
+   copywrite). The file is being made avaialble under the LGPL License (whic we include in our
+   project documentation).
 
+* The header for all demo code is::
+   
+       /*
+        *    GeoTools - The Open Source Java GIS Toolkit
+        *    http://geotools.org
+        *
+        *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
+        *
+        *    This file is hereby placed into the Public Domain. This means anyone is
+        *    free to do whatever they wish with this file. Use it well and enjoy!
+        */
+  
+  In this case we are just placing the demo code into the public domain so people can cut and paste
+  the examples into their own code as they are learning.
+
+* Example of Reusing LGPL Published Code
+  
+  A more interesting example is one that has to reflect of code attribution of a number of
+  organisations and the time range they were custodians of the code.::
+  
+       /*
+        *    GeoTools - The Open Source Java GIS Toolkit
+        *    http://geotools.org
+        *    
+        *    (C) 2006-2008, Open Source Geospatial Foundation (OSGeo)
+        *    (C) 2002, Navel Ltd.
+        *
+        *    This library is free software; you can redistribute it and/or
+        *    modify it under the terms of the GNU Lesser General Public
+        *    License as published by the Free Software Foundation;
+        *    version 2.1 of the License.
+        *
+        *    This library is distributed in the hope that it will be useful,
+        *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+        *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+        *    Lesser General Public License for more details.
+        */
+
+  The the above example from the gt-caching module some of the spatial index functionality
+  has been produced ontop of code from Navel Ltd that was published under the LGPL license in 2002.
+  The work was added to GeoTools 2006 - and the last modification was made in 2008.
+
+* Example of Reusing Code under another license
+  
+  The simple rule of thumb here is to not modify the initial header at all; and simply
+  stick the geotools header on top.
+
+  * :download:`DateUtil.java </../../modules/library/main/src/main/java/org/geotools/feature/type/DateUtil.java>`    
+  
+  Based on the license restrictions you may need
+  to add some credits to the GeoTools user guide; and list the license in your jar.
+  
+  * `user guide license <http://docs.geotools.org/latest/userguide/welcome/license.html>`_ lists all licenses
+  * `gt-main license page <http://docs.geotools.org/latest/userguide/library/main/index.html>`_ lists license for DateUtil.java
+  
 Use of Formatting Tools
 ^^^^^^^^^^^^^^^^^^^^^^^^
 

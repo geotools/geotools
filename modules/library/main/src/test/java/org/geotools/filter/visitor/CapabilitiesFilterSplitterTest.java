@@ -334,4 +334,21 @@ public class CapabilitiesFilterSplitterTest extends AbstractCapabilitiesFilterSp
         assertEquals(ff.or(f, ff.id(ids)), visitor.getFilterPre());
     }
 
+    @Test
+    public void testTemporalFilter() {
+        visitor = new CapabilitiesFilterSplitter(simpleLogicalCaps, null, null);
+        
+        Filter f1 = ff.after(ff.property("foo"), ff.literal("2011-06-20"));
+        f1.accept(visitor, null);
+        
+        assertEquals(Filter.INCLUDE, visitor.getFilterPre());
+        assertEquals(f1, visitor.getFilterPost());
+        
+        Filter f2 = ff.equal(ff.property("bar"), ff.literal("hello"), true);
+        Filter f3 = ff.and(f1, f2);
+        f3.accept(visitor, null);
+        
+        assertEquals(f2, visitor.getFilterPre());
+        assertEquals(f1, visitor.getFilterPost());
+    }
 }

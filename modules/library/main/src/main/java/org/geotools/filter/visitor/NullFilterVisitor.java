@@ -56,6 +56,20 @@ import org.opengis.filter.spatial.Intersects;
 import org.opengis.filter.spatial.Overlaps;
 import org.opengis.filter.spatial.Touches;
 import org.opengis.filter.spatial.Within;
+import org.opengis.filter.temporal.After;
+import org.opengis.filter.temporal.AnyInteracts;
+import org.opengis.filter.temporal.Before;
+import org.opengis.filter.temporal.Begins;
+import org.opengis.filter.temporal.BegunBy;
+import org.opengis.filter.temporal.During;
+import org.opengis.filter.temporal.EndedBy;
+import org.opengis.filter.temporal.Ends;
+import org.opengis.filter.temporal.Meets;
+import org.opengis.filter.temporal.MetBy;
+import org.opengis.filter.temporal.OverlappedBy;
+import org.opengis.filter.temporal.TContains;
+import org.opengis.filter.temporal.TEquals;
+import org.opengis.filter.temporal.TOverlaps;
 
 /**
  * Abstract implementation of FilterVisitor simple returns the provided data.
@@ -265,6 +279,62 @@ public abstract class NullFilterVisitor implements FilterVisitor, ExpressionVisi
     }
 
     public Object visit( Subtract expression, Object data ) {
+        return data;
+    }
+    
+    public Object visit(After after, Object data) {
+        return data;
+    }
+
+    public Object visit(AnyInteracts anyInteracts, Object data) {
+        return data;
+    }
+
+    public Object visit(Before before, Object data) {
+        return data;
+    }
+
+    public Object visit(Begins begins, Object data) {
+        return data;
+    }
+
+    public Object visit(BegunBy begunBy, Object data) {
+        return data;
+    }
+
+    public Object visit(During during, Object data) {
+        return data;
+    }
+
+    public Object visit(EndedBy endedBy, Object data) {
+        return data;
+    }
+
+    public Object visit(Ends ends, Object data) {
+        return data;
+    }
+
+    public Object visit(Meets meets, Object data) {
+        return data;
+    }
+
+    public Object visit(MetBy metBy, Object data) {
+        return data;
+    }
+
+    public Object visit(OverlappedBy overlappedBy, Object data) {
+        return data;
+    }
+
+    public Object visit(TContains contains, Object data) {
+        return data;
+    }
+
+    public Object visit(TEquals equals, Object data) {
+        return data;
+    }
+
+    public Object visit(TOverlaps contains, Object data) {
         return data;
     }
 }

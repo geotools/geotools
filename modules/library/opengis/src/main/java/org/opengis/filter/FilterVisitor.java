@@ -21,6 +21,20 @@ import org.opengis.filter.spatial.Intersects;
 import org.opengis.filter.spatial.Overlaps;
 import org.opengis.filter.spatial.Touches;
 import org.opengis.filter.spatial.Within;
+import org.opengis.filter.temporal.After;
+import org.opengis.filter.temporal.AnyInteracts;
+import org.opengis.filter.temporal.Before;
+import org.opengis.filter.temporal.Begins;
+import org.opengis.filter.temporal.BegunBy;
+import org.opengis.filter.temporal.During;
+import org.opengis.filter.temporal.EndedBy;
+import org.opengis.filter.temporal.Ends;
+import org.opengis.filter.temporal.Meets;
+import org.opengis.filter.temporal.MetBy;
+import org.opengis.filter.temporal.OverlappedBy;
+import org.opengis.filter.temporal.TContains;
+import org.opengis.filter.temporal.TEquals;
+import org.opengis.filter.temporal.TOverlaps;
 
 
 /**
@@ -99,4 +113,19 @@ public interface FilterVisitor {
     Object visit(Overlaps filter,   Object extraData);
     Object visit(Touches filter,    Object extraData);
     Object visit(Within filter,     Object extraData);
+    
+    Object visit(After after, Object extraData);
+    Object visit(AnyInteracts anyInteracts, Object extraData);
+    Object visit(Before before, Object extraData);
+    Object visit(Begins begins, Object extraData);
+    Object visit(BegunBy begunBy, Object extraData);
+    Object visit(During during, Object extraData);
+    Object visit(EndedBy endedBy, Object extraData);
+    Object visit(Ends ends, Object extraData);
+    Object visit(Meets meets, Object extraData);
+    Object visit(MetBy metBy, Object extraData);
+    Object visit(OverlappedBy overlappedBy, Object extraData);
+    Object visit(TContains contains, Object extraData);
+    Object visit(TEquals equals, Object extraData);
+    Object visit(TOverlaps contains, Object extraData);
 }

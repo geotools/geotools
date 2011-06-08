@@ -57,6 +57,20 @@ import org.opengis.filter.spatial.Intersects;
 import org.opengis.filter.spatial.Overlaps;
 import org.opengis.filter.spatial.Touches;
 import org.opengis.filter.spatial.Within;
+import org.opengis.filter.temporal.After;
+import org.opengis.filter.temporal.AnyInteracts;
+import org.opengis.filter.temporal.Before;
+import org.opengis.filter.temporal.Begins;
+import org.opengis.filter.temporal.BegunBy;
+import org.opengis.filter.temporal.During;
+import org.opengis.filter.temporal.EndedBy;
+import org.opengis.filter.temporal.Ends;
+import org.opengis.filter.temporal.Meets;
+import org.opengis.filter.temporal.MetBy;
+import org.opengis.filter.temporal.OverlappedBy;
+import org.opengis.filter.temporal.TContains;
+import org.opengis.filter.temporal.TEquals;
+import org.opengis.filter.temporal.TOverlaps;
 
 /**
  * Abstract implementation of FilterVisitor that simply walks the data structure.
@@ -308,4 +322,88 @@ public abstract class DefaultFilterVisitor implements FilterVisitor, ExpressionV
         return data;
     }
 
+    public Object visit(After after, Object data) {
+        data = after.getExpression1().accept(this, data);
+        data = after.getExpression2().accept(this, data);
+        return data;
+    }
+
+    public Object visit(AnyInteracts anyInteracts, Object data) {
+        data = anyInteracts.getExpression1().accept(this, data);
+        data = anyInteracts.getExpression2().accept(this, data);
+        return data;
+    }
+
+    public Object visit(Before before, Object data) {
+        data = before.getExpression1().accept(this, data);
+        data = before.getExpression2().accept(this, data);
+        return data;
+    }
+
+    public Object visit(Begins begins, Object data) {
+        data = begins.getExpression1().accept(this, data);
+        data = begins.getExpression2().accept(this, data);
+        return data;
+    }
+
+    public Object visit(BegunBy begunBy, Object data) {
+        data = begunBy.getExpression1().accept(this, data);
+        data = begunBy.getExpression2().accept(this, data);
+        return data;
+    }
+
+    public Object visit(During during, Object data) {
+        data = during.getExpression1().accept(this, data);
+        data = during.getExpression2().accept(this, data);
+        return data;
+    }
+
+    public Object visit(EndedBy endedBy, Object data) {
+        data = endedBy.getExpression1().accept(this, data);
+        data = endedBy.getExpression2().accept(this, data);
+        return data;
+    }
+
+    public Object visit(Ends ends, Object data) {
+        data = ends.getExpression1().accept(this, data);
+        data = ends.getExpression2().accept(this, data);
+        return data;
+    }
+
+    public Object visit(Meets meets, Object data) {
+        data = meets.getExpression1().accept(this, data);
+        data = meets.getExpression2().accept(this, data);
+        return data;
+    }
+
+    public Object visit(MetBy metBy, Object data) {
+        data = metBy.getExpression1().accept(this, data);
+        data = metBy.getExpression2().accept(this, data);
+        return data;
+    }
+
+    public Object visit(OverlappedBy overlappedBy, Object data) {
+        data = overlappedBy.getExpression1().accept(this, data);
+        data = overlappedBy.getExpression2().accept(this, data);
+        return data;
+    }
+
+    public Object visit(TContains contains, Object data) {
+        data = contains.getExpression1().accept(this, data);
+        data = contains.getExpression2().accept(this, data);
+        return data;
+    }
+
+    public Object visit(TEquals equals, Object data) {
+        data = equals.getExpression1().accept(this, data);
+        data = equals.getExpression2().accept(this, data);
+        return data;
+    }
+
+    public Object visit(TOverlaps contains, Object data) {
+        data = contains.getExpression1().accept(this, data);
+        data = contains.getExpression2().accept(this, data);
+        return data;
+    }
 }
+

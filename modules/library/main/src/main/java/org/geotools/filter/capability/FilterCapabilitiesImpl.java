@@ -20,6 +20,7 @@ import org.opengis.filter.capability.FilterCapabilities;
 import org.opengis.filter.capability.IdCapabilities;
 import org.opengis.filter.capability.ScalarCapabilities;
 import org.opengis.filter.capability.SpatialCapabilities;
+import org.opengis.filter.capability.TemporalCapabilities;
 
 /**
  * Implementation of the FilterCapabilities interface.
@@ -36,6 +37,7 @@ public class FilterCapabilitiesImpl implements FilterCapabilities {
     IdCapabilitiesImpl id;
     ScalarCapabilitiesImpl scalar;
     SpatialCapabiltiesImpl spatial;
+    TemporalCapabilitiesImpl temporal;
     
     public FilterCapabilitiesImpl(){
         this( FilterCapabilities.VERSION_100 );
@@ -49,12 +51,22 @@ public class FilterCapabilitiesImpl implements FilterCapabilities {
         this.id = toIdCapabilitiesImpl(id);
         this.scalar = toScalarCapabilitiesImpl( scalar );
         this.spatial = toSpatialCapabiltiesImpl( spatial );
+        this.temporal = toTemporalCapabilitiesImpl( null );
+    }
+    public FilterCapabilitiesImpl( String version, ScalarCapabilities scalar, 
+        SpatialCapabilities spatial, IdCapabilities id, TemporalCapabilities temporal ) {
+        this.version = version;
+        this.id = toIdCapabilitiesImpl(id);
+        this.scalar = toScalarCapabilitiesImpl( scalar );
+        this.spatial = toSpatialCapabiltiesImpl( spatial );
+        this.temporal = toTemporalCapabilitiesImpl( temporal );
     }
     public FilterCapabilitiesImpl( FilterCapabilities copy ) {
         this.version = copy.getVersion();
         this.id = copy.getIdCapabilities() == null ? null : new IdCapabilitiesImpl( copy.getIdCapabilities() );
         this.scalar = toScalarCapabilitiesImpl( copy.getScalarCapabilities() );
         this.spatial = toSpatialCapabiltiesImpl( copy.getSpatialCapabilities() );
+        this.temporal = toTemporalCapabilitiesImpl( copy.getTemporalCapabilities() );
     }    
     
     private ScalarCapabilitiesImpl toScalarCapabilitiesImpl( ScalarCapabilities scalarCapabilities ) {
@@ -84,7 +96,16 @@ public class FilterCapabilitiesImpl implements FilterCapabilities {
             return (SpatialCapabiltiesImpl) spatialCapabilities;
         }
         return new SpatialCapabiltiesImpl( spatialCapabilities );
-    
+    }
+    private static TemporalCapabilitiesImpl 
+        toTemporalCapabilitiesImpl(TemporalCapabilities temporalCapabilities) {
+        if (temporalCapabilities == null) {
+            return new TemporalCapabilitiesImpl();
+        }
+        if (temporalCapabilities instanceof TemporalCapabilitiesImpl) {
+            return (TemporalCapabilitiesImpl) temporalCapabilities;
+        }
+        return new TemporalCapabilitiesImpl(temporalCapabilities);
     }
     
     /**
@@ -135,6 +156,15 @@ public class FilterCapabilitiesImpl implements FilterCapabilities {
             spatial = new SpatialCapabiltiesImpl();
         }
         return spatial;
+    }
+
+    public void setTemporal(TemporalCapabilitiesImpl temporal) {
+        this.temporal = temporal;
+    }
+
+    public TemporalCapabilities getTemporalCapabilities() {
+        // TODO Auto-generated method stub
+        return null;
     }
     
     public void addAll( FilterCapabilities copy ){

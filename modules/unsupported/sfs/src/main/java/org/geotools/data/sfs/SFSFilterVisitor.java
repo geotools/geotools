@@ -60,6 +60,21 @@ import org.opengis.filter.spatial.Intersects;
 import org.opengis.filter.spatial.Overlaps;
 import org.opengis.filter.spatial.Touches;
 import org.opengis.filter.spatial.Within;
+import org.opengis.filter.temporal.After;
+import org.opengis.filter.temporal.AnyInteracts;
+import org.opengis.filter.temporal.Before;
+import org.opengis.filter.temporal.Begins;
+import org.opengis.filter.temporal.BegunBy;
+import org.opengis.filter.temporal.BinaryTemporalOperator;
+import org.opengis.filter.temporal.During;
+import org.opengis.filter.temporal.EndedBy;
+import org.opengis.filter.temporal.Ends;
+import org.opengis.filter.temporal.Meets;
+import org.opengis.filter.temporal.MetBy;
+import org.opengis.filter.temporal.OverlappedBy;
+import org.opengis.filter.temporal.TContains;
+import org.opengis.filter.temporal.TEquals;
+import org.opengis.filter.temporal.TOverlaps;
 import org.opengis.filter.FilterVisitor;
 
 import com.vividsolutions.jts.geom.Envelope;
@@ -360,6 +375,62 @@ class SFSFilterVisitor implements FilterVisitor {
 
     public Object visit(Within filter, Object extraData) {
         throw new UnsupportedOperationException("visit (Within filter, Object extraData)");
+    }
+
+    public Object visit(After after, Object extraData) {
+        throw new UnsupportedOperationException("visit (After filter, Object extraData)");
+    }
+
+    public Object visit(AnyInteracts anyInteracts, Object extraData) {
+        throw new UnsupportedOperationException("visit (AnyInteracts filter, Object extraData)");
+    }
+
+    public Object visit(Before before, Object extraData) {
+        throw new UnsupportedOperationException("visit (Before filter, Object extraData)");
+    }
+
+    public Object visit(Begins begins, Object extraData) {
+        throw new UnsupportedOperationException("visit (Begins filter, Object extraData)");
+    }
+
+    public Object visit(BegunBy begunBy, Object extraData) {
+        throw new UnsupportedOperationException("visit (BegunBy filter, Object extraData)");
+    }
+
+    public Object visit(During during, Object extraData) {
+        throw new UnsupportedOperationException("visit (During filter, Object extraData)");
+    }
+
+    public Object visit(EndedBy endedBy, Object extraData) {
+        throw new UnsupportedOperationException("visit (EndedBy filter, Object extraData)");
+    }
+
+    public Object visit(Ends ends, Object extraData) {
+        throw new UnsupportedOperationException("visit (Ends filter, Object extraData)");
+    }
+
+    public Object visit(Meets meets, Object extraData) {
+        throw new UnsupportedOperationException("visit (Touches filter, Object extraData)");
+    }
+
+    public Object visit(MetBy metBy, Object extraData) {
+        throw new UnsupportedOperationException("visit (Touches filter, Object extraData)");
+    }
+
+    public Object visit(OverlappedBy overlappedBy, Object extraData) {
+        throw new UnsupportedOperationException("visit (Touches filter, Object extraData)");
+    }
+
+    public Object visit(TContains contains, Object extraData) {
+        throw new UnsupportedOperationException("visit (Touches filter, Object extraData)");
+    }
+
+    public Object visit(TEquals equals, Object extraData) {
+        throw new UnsupportedOperationException("visit (Touches filter, Object extraData)");
+    }
+
+    public Object visit(TOverlaps contains, Object extraData) {
+        throw new UnsupportedOperationException("visit (Touches filter, Object extraData)");
     }
 
     // Private methods:

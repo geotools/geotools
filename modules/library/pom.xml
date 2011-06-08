@@ -48,7 +48,6 @@
     <module>cql</module>
     <module>metadata</module>
     <module>referencing</module>
-    <module>temporal</module>
     <module>coverage</module>
     <module>api</module>
     <module>main</module>

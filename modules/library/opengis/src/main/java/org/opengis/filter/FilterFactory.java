@@ -25,6 +25,8 @@ import org.opengis.filter.capability.ScalarCapabilities;
 import org.opengis.filter.capability.SpatialCapabilities;
 import org.opengis.filter.capability.SpatialOperator;
 import org.opengis.filter.capability.SpatialOperators;
+import org.opengis.filter.capability.TemporalCapabilities;
+import org.opengis.filter.capability.TemporalOperator;
 import org.opengis.filter.expression.Add;
 import org.opengis.filter.expression.Divide;
 import org.opengis.filter.expression.Expression;
@@ -49,6 +51,20 @@ import org.opengis.filter.spatial.Intersects;
 import org.opengis.filter.spatial.Overlaps;
 import org.opengis.filter.spatial.Touches;
 import org.opengis.filter.spatial.Within;
+import org.opengis.filter.temporal.After;
+import org.opengis.filter.temporal.AnyInteracts;
+import org.opengis.filter.temporal.Before;
+import org.opengis.filter.temporal.Begins;
+import org.opengis.filter.temporal.BegunBy;
+import org.opengis.filter.temporal.During;
+import org.opengis.filter.temporal.EndedBy;
+import org.opengis.filter.temporal.Ends;
+import org.opengis.filter.temporal.Meets;
+import org.opengis.filter.temporal.MetBy;
+import org.opengis.filter.temporal.OverlappedBy;
+import org.opengis.filter.temporal.TContains;
+import org.opengis.filter.temporal.TEquals;
+import org.opengis.filter.temporal.TOverlaps;
 import org.opengis.geometry.Geometry;
 
 
@@ -308,6 +324,96 @@ public interface FilterFactory {
     /** Checks if the feature's geometry is completely contained by the specified constant geometry. */
     Within      within(String propertyName, Geometry geometry, MatchAction matchAction);
 
+/////////////////////////////////////////////////////////////////////////////////
+//
+//  TEMPORAL FILTERS
+//
+////////////////////////////////////////////////////////////////////////////////
+
+    /** Checks if one expression is temporally after another */
+    After after(Expression expr1, Expression expr2);
+
+    /** Checks if one expression is temporally after another */
+    After after(Expression expr1, Expression expr2, MatchAction matchAction);
+
+    /** Checks if one expression temporally interacts in any way with another */
+    AnyInteracts anyInteracts(Expression expr1, Expression expr2);
+
+    /** Checks if one expression temporally interacts in any way with another */
+    AnyInteracts anyInteracts(Expression expr1, Expression expr2, MatchAction matchAction);
+
+    /** Checks if one expression is temporally before another */
+    Before before(Expression expr1, Expression expr2);
+
+    /** Checks if one expression is temporally before another */
+    Before before(Expression expr1, Expression expr2, MatchAction matchAction);
+
+    /** Checks if one expression temporally begins another */
+    Begins begins(Expression expr1, Expression expr2);
+
+    /** Checks if one expression temporally begins another */
+    Begins begins(Expression expr1, Expression expr2, MatchAction matchAction);
+
+    /** Checks if one expression is temporally begun by another */
+    BegunBy begunBy(Expression expr1, Expression expr2);
+
+    /** Checks if one expression is temporally begun by another */
+    BegunBy begunBy(Expression expr1, Expression expr2, MatchAction matchAction);
+
+    /** Checks if one expression is temporally during another */
+    During during(Expression expr1, Expression expr2);
+
+    /** Checks if one expression is temporally during another */
+    During during(Expression expr1, Expression expr2, MatchAction matchAction);
+
+    /** Checks if one expression is temporally ended by another */
+    EndedBy endedBy(Expression expr1, Expression expr2);
+
+    /** Checks if one expression is temporally ended by another */
+    EndedBy endedBy(Expression expr1, Expression expr2, MatchAction matchAction);
+
+    /** Checks if one expression temporally ends by another */
+    Ends ends(Expression expr1, Expression expr2);
+
+    /** Checks if one expression temporally ends by another */
+    Ends ends(Expression expr1, Expression expr2, MatchAction matchAction);
+
+    /** Checks if one expression temporally meets another */
+    Meets meets(Expression expr1, Expression expr2);
+
+    /** Checks if one expression temporally meets another */
+    Meets meets(Expression expr1, Expression expr2, MatchAction matchAction);
+
+    /** Checks if one expression is temporally met by another */
+    MetBy metBy(Expression expr1, Expression expr2);
+
+    /** Checks if one expression is temporally met by another */
+    MetBy metBy(Expression expr1, Expression expr2, MatchAction matchAction);
+
+    /** Checks if one expression is temporally overlapped by another */
+    OverlappedBy overlappedBy(Expression expr1, Expression expr2);
+
+    /** Checks if one expression is temporally overlapped by another */
+    OverlappedBy overlappedBy(Expression expr1, Expression expr2, MatchAction matchAction);
+
+    /** Checks if one expression temporally overlaps another */
+    TOverlaps toverlaps(Expression expr1, Expression expr2);
+
+    /** Checks if one expression temporally overlaps another */
+    TOverlaps toverlaps(Expression expr1, Expression expr2, MatchAction matchAction);
+
+    /** Checks if one expression temporally contains another */
+    TContains tcontains(Expression expr1, Expression expr2);
+
+    /** Checks if one expression temporally contains another */
+    TContains tcontains(Expression expr1, Expression expr2, MatchAction matchAction);
+
+    /** Checks if one expression temporally equals another */
+    TEquals tequals(Expression expr1, Expression expr2);
+
+    /** Checks if one expression temporally equals another */
+    TEquals tequals(Expression expr1, Expression expr2, MatchAction matchAction);
+
 ////////////////////////////////////////////////////////////////////////////////
 //
 //  EXPRESSIONS
@@ -374,6 +480,9 @@ public interface FilterFactory {
 
     /** spatial operator */
     SpatialOperator spatialOperator(String name, GeometryOperand[] geometryOperands);
+    
+    /** temporal operator */
+    TemporalOperator temporalOperator(String name);
 
     /** function name */
     FunctionName functionName(String name, int nargs);
@@ -401,7 +510,14 @@ public interface FilterFactory {
     /** id capabilities */
     IdCapabilities idCapabilities(boolean eid, boolean fid);
 
+    /** temporal capabilities */
+    TemporalCapabilities temporalCapabilities(TemporalOperator[] temporalOperators);
+
     /** filter capabilities */
     FilterCapabilities capabilities(String version, ScalarCapabilities scalar,
         SpatialCapabilities spatial, IdCapabilities id);
+    
+    /** filter capabilities */
+    FilterCapabilities capabilities(String version, ScalarCapabilities scalar,
+        SpatialCapabilities spatial, IdCapabilities id, TemporalCapabilities temporal);
 }

@@ -83,6 +83,20 @@ import org.opengis.filter.spatial.Intersects;
 import org.opengis.filter.spatial.Overlaps;
 import org.opengis.filter.spatial.Touches;
 import org.opengis.filter.spatial.Within;
+import org.opengis.filter.temporal.After;
+import org.opengis.filter.temporal.AnyInteracts;
+import org.opengis.filter.temporal.Before;
+import org.opengis.filter.temporal.Begins;
+import org.opengis.filter.temporal.BegunBy;
+import org.opengis.filter.temporal.During;
+import org.opengis.filter.temporal.EndedBy;
+import org.opengis.filter.temporal.Ends;
+import org.opengis.filter.temporal.Meets;
+import org.opengis.filter.temporal.MetBy;
+import org.opengis.filter.temporal.OverlappedBy;
+import org.opengis.filter.temporal.TContains;
+import org.opengis.filter.temporal.TEquals;
+import org.opengis.filter.temporal.TOverlaps;
 
 import com.vividsolutions.jts.geom.Geometry;
 
@@ -1136,6 +1150,50 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         }
         
         return extraData;
+    }
+
+    //temporal filters, not supported
+    public Object visit(After after, Object extraData) {
+        throw new UnsupportedOperationException("Temporal filter After not implemented");
+    }
+    public Object visit(AnyInteracts anyInteracts, Object extraData) {
+        throw new UnsupportedOperationException("Temporal filter AnyInteracts not implemented");
+    }
+    public Object visit(Before before, Object extraData) {
+        throw new UnsupportedOperationException("Temporal filter Before not implemented");
+    }
+    public Object visit(Begins begins, Object extraData) {
+        throw new UnsupportedOperationException("Temporal filter Begins not implemented");
+    }
+    public Object visit(BegunBy begunBy, Object extraData) {
+        throw new UnsupportedOperationException("Temporal filter BegunBy not implemented");
+    }
+    public Object visit(During during, Object extraData) {
+        throw new UnsupportedOperationException("Temporal filter During not implemented");
+    }
+    public Object visit(EndedBy endedBy, Object extraData) {
+        throw new UnsupportedOperationException("Temporal filter EndedBy not implemented");
+    }
+    public Object visit(Ends ends, Object extraData) {
+        throw new UnsupportedOperationException("Temporal filter Ends not implemented");
+    }
+    public Object visit(Meets meets, Object extraData) {
+        throw new UnsupportedOperationException("Temporal filter Meets not implemented");
+    }
+    public Object visit(MetBy metBy, Object extraData) {
+        throw new UnsupportedOperationException("Temporal filter MetBy not implemented");
+    }
+    public Object visit(OverlappedBy overlappedBy, Object extraData) {
+        throw new UnsupportedOperationException("Temporal filter OverlappedBy not implemented");
+    }
+    public Object visit(TContains contains, Object extraData) {
+        throw new UnsupportedOperationException("Temporal filter TContains not implemented");
+    }
+    public Object visit(TEquals equals, Object extraData) {
+        throw new UnsupportedOperationException("Temporal filter TEquals not implemented");
+    }
+    public Object visit(TOverlaps contains, Object extraData) {
+        throw new UnsupportedOperationException("Temporal filter TOverlaps not implemented");
     }
 
     /**

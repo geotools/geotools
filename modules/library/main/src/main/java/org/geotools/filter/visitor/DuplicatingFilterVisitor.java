@@ -63,6 +63,20 @@ import org.opengis.filter.spatial.Intersects;
 import org.opengis.filter.spatial.Overlaps;
 import org.opengis.filter.spatial.Touches;
 import org.opengis.filter.spatial.Within;
+import org.opengis.filter.temporal.After;
+import org.opengis.filter.temporal.AnyInteracts;
+import org.opengis.filter.temporal.Before;
+import org.opengis.filter.temporal.Begins;
+import org.opengis.filter.temporal.BegunBy;
+import org.opengis.filter.temporal.During;
+import org.opengis.filter.temporal.EndedBy;
+import org.opengis.filter.temporal.Ends;
+import org.opengis.filter.temporal.Meets;
+import org.opengis.filter.temporal.MetBy;
+import org.opengis.filter.temporal.OverlappedBy;
+import org.opengis.filter.temporal.TContains;
+import org.opengis.filter.temporal.TEquals;
+import org.opengis.filter.temporal.TOverlaps;
 
 /**
  * Used to duplication Filters and/or Expressions - returned object is a copy.
@@ -76,7 +90,7 @@ import org.opengis.filter.spatial.Within;
  *
  * @source $URL$
  */
-public class DuplicatingFilterVisitor implements FilterVisitor, ExpressionVisitor {
+public class DuplicatingFilterVisitor implements FilterVisitor, ExpressionVisitor{
 
 	protected final FilterFactory2 ff;
 
@@ -336,4 +350,73 @@ public class DuplicatingFilterVisitor implements FilterVisitor, ExpressionVisito
 		return getFactory(extraData).subtract(expr1, expr2);
 	}
 
+        public Object visit(After after, Object extraData) {
+            return getFactory(extraData).after(visit(after.getExpression1(), extraData), 
+                visit(after.getExpression2(), extraData));
+        }
+
+        public Object visit(AnyInteracts anyInteracts, Object extraData) {
+            return getFactory(extraData).anyInteracts(visit(anyInteracts.getExpression1(), extraData), 
+                visit(anyInteracts.getExpression2(), extraData));
+        };
+
+        public Object visit(Before before, Object extraData) {
+            return getFactory(extraData).before(visit(before.getExpression1(), extraData), 
+                visit(before.getExpression2(), extraData));
+        }
+
+        public Object visit(Begins begins, Object extraData) {
+            return getFactory(extraData).begins(visit(begins.getExpression1(), extraData), 
+                visit(begins.getExpression2(), extraData));
+        };
+
+        public Object visit(BegunBy begunBy, Object extraData) {
+            return getFactory(extraData).begunBy(visit(begunBy.getExpression1(), extraData), 
+                visit(begunBy.getExpression2(), extraData));
+        }
+
+        public Object visit(During during, Object extraData) {
+            return getFactory(extraData).during(visit(during.getExpression1(), extraData), 
+                visit(during.getExpression2(), extraData));
+        }
+
+        public Object visit(EndedBy endedBy, Object extraData) {
+            return getFactory(extraData).endedBy(visit(endedBy.getExpression1(), extraData), 
+                visit(endedBy.getExpression2(), extraData));
+        }
+
+        public Object visit(Ends ends, Object extraData) {
+            return getFactory(extraData).ends(visit(ends.getExpression1(), extraData), 
+                visit(ends.getExpression2(), extraData));
+        }
+
+        public Object visit(Meets meets, Object extraData) {
+            return getFactory(extraData).meets(visit(meets.getExpression1(), extraData), 
+                visit(meets.getExpression2(), extraData));
+        }
+
+        public Object visit(MetBy metBy, Object extraData) {
+            return getFactory(extraData).metBy(visit(metBy.getExpression1(), extraData), 
+                visit(metBy.getExpression2(), extraData));
+        }
+
+        public Object visit(OverlappedBy overlappedBy, Object extraData) {
+            return getFactory(extraData).overlappedBy(visit(overlappedBy.getExpression1(), extraData), 
+                visit(overlappedBy.getExpression2(), extraData));
+        }
+
+        public Object visit(TContains contains, Object extraData) {
+            return getFactory(extraData).contains(visit(contains.getExpression1(), extraData), 
+                visit(contains.getExpression2(), extraData));
+        }
+
+        public Object visit(TEquals equals, Object extraData) {
+            return getFactory(extraData).tequals(visit(equals.getExpression1(), extraData), 
+                visit(equals.getExpression2(), extraData));
+        }
+
+        public Object visit(TOverlaps contains, Object extraData) {
+            return getFactory(extraData).tcontains(visit(contains.getExpression1(), extraData), 
+                visit(contains.getExpression2(), extraData));
+        }
 }

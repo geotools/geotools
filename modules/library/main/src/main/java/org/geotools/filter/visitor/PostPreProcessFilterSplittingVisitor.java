@@ -70,6 +70,21 @@ import org.opengis.filter.spatial.Intersects;
 import org.opengis.filter.spatial.Overlaps;
 import org.opengis.filter.spatial.Touches;
 import org.opengis.filter.spatial.Within;
+import org.opengis.filter.temporal.After;
+import org.opengis.filter.temporal.AnyInteracts;
+import org.opengis.filter.temporal.Before;
+import org.opengis.filter.temporal.Begins;
+import org.opengis.filter.temporal.BegunBy;
+import org.opengis.filter.temporal.BinaryTemporalOperator;
+import org.opengis.filter.temporal.During;
+import org.opengis.filter.temporal.EndedBy;
+import org.opengis.filter.temporal.Ends;
+import org.opengis.filter.temporal.Meets;
+import org.opengis.filter.temporal.MetBy;
+import org.opengis.filter.temporal.OverlappedBy;
+import org.opengis.filter.temporal.TContains;
+import org.opengis.filter.temporal.TEquals;
+import org.opengis.filter.temporal.TOverlaps;
 
 
 /**
@@ -904,4 +919,105 @@ public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, Expr
 	        Filter and = ff.and(translated);
 	        return ff.not(and);
 	    }
+
+        
+    public Object visit(After after, Object extraData) {
+        return visit((BinaryTemporalOperator) after, extraData);
+    }
+
+    public Object visit(AnyInteracts anyInteracts, Object extraData) {
+        return visit((BinaryTemporalOperator) anyInteracts, extraData);
+    }
+
+    public Object visit(Before before, Object extraData) {
+        return visit((BinaryTemporalOperator) before, extraData);
+    }
+
+    public Object visit(Begins begins, Object extraData) {
+        return visit((BinaryTemporalOperator) begins, extraData);
+    }
+
+    public Object visit(BegunBy begunBy, Object extraData) {
+        return visit((BinaryTemporalOperator) begunBy, extraData);
+    }
+
+    public Object visit(During during, Object extraData) {
+        return visit((BinaryTemporalOperator) during, extraData);
+    }
+
+    public Object visit(EndedBy endedBy, Object extraData) {
+        return visit((BinaryTemporalOperator) endedBy, extraData);
+    }
+
+    public Object visit(Ends ends, Object extraData) {
+        return visit((BinaryTemporalOperator) ends, extraData);
+    }
+
+    public Object visit(Meets meets, Object extraData) {
+        return visit((BinaryTemporalOperator) meets, extraData);
+    }
+
+    public Object visit(MetBy metBy, Object extraData) {
+        return visit((BinaryTemporalOperator) metBy, extraData);
+    }
+
+    public Object visit(OverlappedBy overlappedBy, Object extraData) {
+        return visit((BinaryTemporalOperator) overlappedBy, extraData);
+    }
+
+    public Object visit(TContains contains, Object extraData) {
+        return visit((BinaryTemporalOperator) contains, extraData);
+    }
+
+    public Object visit(TEquals equals, Object extraData) {
+        return visit((BinaryTemporalOperator) equals, extraData);
+    }
+
+    public Object visit(TOverlaps contains, Object extraData) {
+        return visit((BinaryTemporalOperator) contains, extraData);
+    }
+
+    protected Object visit(BinaryTemporalOperator filter, Object data) {
+        if (original == null)
+            original = filter;
+
+        // supports it as a group -- no need to check the type
+        if (!fcs.supports(filter)) {
+            postStack.push(filter);
+            return null;
+        }
+
+        Expression leftValue = filter.getExpression1();
+        Expression rightValue = filter.getExpression2();
+        
+        int i = postStack.size();
+        if (leftValue == null || rightValue == null) {
+            postStack.push(filter);
+            return null;
+        }
+
+        leftValue.accept(this, null);
+
+        if (i < postStack.size()) {
+            postStack.pop();
+            postStack.push(filter);
+
+            return null;
+        }
+
+        rightValue.accept(this, null);
+
+        if (i < postStack.size()) {
+            preStack.pop(); // left
+            postStack.pop();
+            postStack.push(filter);
+
+            return null;
+        }
+
+        preStack.pop(); // left side
+        preStack.pop(); // right side
+        preStack.push(filter);
+        return null;
+    }
 }

@@ -61,6 +61,21 @@ import org.opengis.filter.spatial.Intersects;
 import org.opengis.filter.spatial.Overlaps;
 import org.opengis.filter.spatial.Touches;
 import org.opengis.filter.spatial.Within;
+import org.opengis.filter.temporal.After;
+import org.opengis.filter.temporal.AnyInteracts;
+import org.opengis.filter.temporal.Before;
+import org.opengis.filter.temporal.Begins;
+import org.opengis.filter.temporal.BegunBy;
+import org.opengis.filter.temporal.BinaryTemporalOperator;
+import org.opengis.filter.temporal.During;
+import org.opengis.filter.temporal.EndedBy;
+import org.opengis.filter.temporal.Ends;
+import org.opengis.filter.temporal.Meets;
+import org.opengis.filter.temporal.MetBy;
+import org.opengis.filter.temporal.OverlappedBy;
+import org.opengis.filter.temporal.TContains;
+import org.opengis.filter.temporal.TEquals;
+import org.opengis.filter.temporal.TOverlaps;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.helpers.AttributesImpl;
 
@@ -545,6 +560,69 @@ public class FilterTransformer extends TransformerBase {
             return extraData;
         }
         
+        public Object visit(After after, Object extraData) {
+            return visit((BinaryTemporalOperator)after, After.NAME, extraData);
+        }
+
+        public Object visit(AnyInteracts anyInteracts, Object extraData) {
+            return visit((BinaryTemporalOperator)anyInteracts, AnyInteracts.NAME, extraData);
+        }
+
+        public Object visit(Before before, Object extraData) {
+            return visit((BinaryTemporalOperator)before, Before.NAME, extraData);
+        }
+
+        public Object visit(Begins begins, Object extraData) {
+            return visit((BinaryTemporalOperator)begins, Begins.NAME, extraData);
+        }
+
+        public Object visit(BegunBy begunBy, Object extraData) {
+            return visit((BinaryTemporalOperator)begunBy, BegunBy.NAME, extraData);
+        }
+
+        public Object visit(During during, Object extraData) {
+            return visit((BinaryTemporalOperator)during, During.NAME, extraData);
+        }
+
+        public Object visit(EndedBy endedBy, Object extraData) {
+            return visit((BinaryTemporalOperator)endedBy, EndedBy.NAME, extraData);
+        }
+
+        public Object visit(Ends ends, Object extraData) {
+            return visit((BinaryTemporalOperator)ends, Ends.NAME, extraData);
+        }
+
+        public Object visit(Meets meets, Object extraData) {
+            return visit((BinaryTemporalOperator)meets, Meets.NAME, extraData);
+        }
+
+        public Object visit(MetBy metBy, Object extraData) {
+            return visit((BinaryTemporalOperator)metBy, MetBy.NAME, extraData);
+        }
+
+        public Object visit(OverlappedBy overlappedBy, Object extraData) {
+            return visit((BinaryTemporalOperator)overlappedBy, OverlappedBy.NAME, extraData);
+        }
+
+        public Object visit(TContains contains, Object extraData) {
+            return visit((BinaryTemporalOperator)contains, TContains.NAME, extraData);
+        }
+
+        public Object visit(TEquals equals, Object extraData) {
+            return visit((BinaryTemporalOperator)equals, TEquals.NAME, extraData);
+        }
+
+        public Object visit(TOverlaps contains, Object extraData) {
+            return visit((BinaryTemporalOperator)contains, TOverlaps.NAME, extraData);
+        }
+        
+        protected Object visit(BinaryTemporalOperator filter, String name, Object data) {
+            start(name);
+            filter.getExpression1().accept(this, data);
+            filter.getExpression2().accept(this, data);
+            end(name);
+            return data;
+        }
     }
     
 }

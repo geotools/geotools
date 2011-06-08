@@ -44,6 +44,21 @@ import org.opengis.filter.spatial.Overlaps;
 import org.opengis.filter.spatial.SpatialOperator;
 import org.opengis.filter.spatial.Touches;
 import org.opengis.filter.spatial.Within;
+import org.opengis.filter.temporal.After;
+import org.opengis.filter.temporal.AnyInteracts;
+import org.opengis.filter.temporal.Before;
+import org.opengis.filter.temporal.Begins;
+import org.opengis.filter.temporal.BegunBy;
+import org.opengis.filter.temporal.BinaryTemporalOperator;
+import org.opengis.filter.temporal.During;
+import org.opengis.filter.temporal.EndedBy;
+import org.opengis.filter.temporal.Ends;
+import org.opengis.filter.temporal.Meets;
+import org.opengis.filter.temporal.MetBy;
+import org.opengis.filter.temporal.OverlappedBy;
+import org.opengis.filter.temporal.TContains;
+import org.opengis.filter.temporal.TEquals;
+import org.opengis.filter.temporal.TOverlaps;
 
 /**
  * Wraps an instanceof of {@link org.geotools.filter.FilterVisitor} in an 
@@ -231,4 +246,64 @@ public class FilterVisitorFilterWrapper implements FilterVisitor {
 		visitGeometryFilter(filter);
 		return extraData;
 	}
+
+    public Object visit(After after, Object extraData) {
+        return visitTemporalFilter((BinaryTemporalOperator) after);
+    }
+
+    public Object visit(AnyInteracts anyInteracts, Object extraData) {
+        return visitTemporalFilter((BinaryTemporalOperator) anyInteracts);
+    }
+
+    public Object visit(Before before, Object extraData) {
+        return visitTemporalFilter((BinaryTemporalOperator) before);
+    }
+
+    public Object visit(Begins begins, Object extraData) {
+        return visitTemporalFilter((BinaryTemporalOperator) begins);
+    }
+
+    public Object visit(BegunBy begunBy, Object extraData) {
+        return visitTemporalFilter((BinaryTemporalOperator) begunBy);
+    }
+
+    public Object visit(During during, Object extraData) {
+        return visitTemporalFilter((BinaryTemporalOperator) during);
+    }
+
+    public Object visit(EndedBy endedBy, Object extraData) {
+        return visitTemporalFilter((BinaryTemporalOperator) endedBy);
+    }
+
+    public Object visit(Ends ends, Object extraData) {
+        return visitTemporalFilter((BinaryTemporalOperator) ends);
+    }
+
+    public Object visit(Meets meets, Object extraData) {
+        return visitTemporalFilter((BinaryTemporalOperator) meets);
+    }
+
+    public Object visit(MetBy metBy, Object extraData) {
+        return visitTemporalFilter((BinaryTemporalOperator) metBy);
+    }
+
+    public Object visit(OverlappedBy overlappedBy, Object extraData) {
+        return visitTemporalFilter((BinaryTemporalOperator) overlappedBy);
+    }
+
+    public Object visit(TContains contains, Object extraData) {
+        return visitTemporalFilter((BinaryTemporalOperator) contains);
+    }
+
+    public Object visit(TEquals equals, Object extraData) {
+        return visitTemporalFilter((BinaryTemporalOperator) equals);
+    }
+
+    public Object visit(TOverlaps contains, Object extraData) {
+        return visitTemporalFilter((BinaryTemporalOperator) contains);
+    }
+
+    protected Object visitTemporalFilter(BinaryTemporalOperator filter) {
+        throw new UnsupportedOperationException("Temporal filters not supported");
+    }
 }

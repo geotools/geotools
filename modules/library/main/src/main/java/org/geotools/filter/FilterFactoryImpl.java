@@ -38,6 +38,8 @@ import org.geotools.filter.capability.ScalarCapabilitiesImpl;
 import org.geotools.filter.capability.SpatialCapabiltiesImpl;
 import org.geotools.filter.capability.SpatialOperatorImpl;
 import org.geotools.filter.capability.SpatialOperatorsImpl;
+import org.geotools.filter.capability.TemporalCapabilitiesImpl;
+import org.geotools.filter.capability.TemporalOperatorImpl;
 import org.geotools.filter.expression.AddImpl;
 import org.geotools.filter.expression.DivideImpl;
 import org.geotools.filter.expression.MultiplyImpl;
@@ -56,6 +58,20 @@ import org.geotools.filter.spatial.IntersectsImpl;
 import org.geotools.filter.spatial.OverlapsImpl;
 import org.geotools.filter.spatial.TouchesImpl;
 import org.geotools.filter.spatial.WithinImpl;
+import org.geotools.filter.temporal.AfterImpl;
+import org.geotools.filter.temporal.AnyInteractsImpl;
+import org.geotools.filter.temporal.BeforeImpl;
+import org.geotools.filter.temporal.BeginsImpl;
+import org.geotools.filter.temporal.BegunByImpl;
+import org.geotools.filter.temporal.DuringImpl;
+import org.geotools.filter.temporal.EndedByImpl;
+import org.geotools.filter.temporal.EndsImpl;
+import org.geotools.filter.temporal.MeetsImpl;
+import org.geotools.filter.temporal.MetByImpl;
+import org.geotools.filter.temporal.OverlappedByImpl;
+import org.geotools.filter.temporal.TContainsImpl;
+import org.geotools.filter.temporal.TEqualsImpl;
+import org.geotools.filter.temporal.TOverlapsImpl;
 import org.geotools.referencing.CRS;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -87,6 +103,8 @@ import org.opengis.filter.capability.ScalarCapabilities;
 import org.opengis.filter.capability.SpatialCapabilities;
 import org.opengis.filter.capability.SpatialOperator;
 import org.opengis.filter.capability.SpatialOperators;
+import org.opengis.filter.capability.TemporalCapabilities;
+import org.opengis.filter.capability.TemporalOperator;
 import org.opengis.filter.expression.Add;
 import org.opengis.filter.expression.Divide;
 import org.opengis.filter.expression.Expression;
@@ -111,6 +129,20 @@ import org.opengis.filter.spatial.Intersects;
 import org.opengis.filter.spatial.Overlaps;
 import org.opengis.filter.spatial.Touches;
 import org.opengis.filter.spatial.Within;
+import org.opengis.filter.temporal.After;
+import org.opengis.filter.temporal.AnyInteracts;
+import org.opengis.filter.temporal.Before;
+import org.opengis.filter.temporal.Begins;
+import org.opengis.filter.temporal.BegunBy;
+import org.opengis.filter.temporal.During;
+import org.opengis.filter.temporal.EndedBy;
+import org.opengis.filter.temporal.Ends;
+import org.opengis.filter.temporal.Meets;
+import org.opengis.filter.temporal.MetBy;
+import org.opengis.filter.temporal.OverlappedBy;
+import org.opengis.filter.temporal.TContains;
+import org.opengis.filter.temporal.TEquals;
+import org.opengis.filter.temporal.TOverlaps;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.geometry.Geometry;
 import org.opengis.parameter.Parameter;
@@ -1169,6 +1201,118 @@ public class FilterFactoryImpl implements FilterFactory {
                 return new SortByImpl( property( propertyName ), order );
         }
 
+    public After after(Expression expr1, Expression expr2) {
+        return new AfterImpl(expr1, expr2);
+    }
+
+    public After after(Expression expr1, Expression expr2, MatchAction matchAction) {
+        return new AfterImpl(expr1, expr2, matchAction);
+    }
+
+    public AnyInteracts anyInteracts(Expression expr1, Expression expr2) {
+        return new AnyInteractsImpl(expr1, expr2);
+    }
+
+    public AnyInteracts anyInteracts(Expression expr1, Expression expr2, MatchAction matchAction) {
+        return new AnyInteractsImpl(expr1, expr2, matchAction);
+    }
+
+    public Before before(Expression expr1, Expression expr2) {
+        return new BeforeImpl(expr1, expr2);
+    }
+
+    public Before before(Expression expr1, Expression expr2, MatchAction matchAction) {
+        return new BeforeImpl(expr1, expr2, matchAction);
+    }
+
+    public Begins begins(Expression expr1, Expression expr2) {
+        return new BeginsImpl(expr1, expr2);
+    }
+
+    public Begins begins(Expression expr1, Expression expr2, MatchAction matchAction) {
+        return new BeginsImpl(expr1, expr2, matchAction);
+    }
+
+    public BegunBy begunBy(Expression expr1, Expression expr2) {
+        return new BegunByImpl(expr1, expr2);
+    }
+
+    public BegunBy begunBy(Expression expr1, Expression expr2, MatchAction matchAction) {
+        return new BegunByImpl(expr1, expr2, matchAction);
+    }
+
+    public During during(Expression expr1, Expression expr2) {
+        return new DuringImpl(expr1, expr2);
+    }
+
+    public During during(Expression expr1, Expression expr2, MatchAction matchAction) {
+        return new DuringImpl(expr1, expr2, matchAction);
+    }
+
+    public EndedBy endedBy(Expression expr1, Expression expr2) {
+        return new EndedByImpl(expr1, expr2);
+    }
+
+    public EndedBy endedBy(Expression expr1, Expression expr2, MatchAction matchAction) {
+        return new EndedByImpl(expr1, expr2, matchAction);
+    }
+
+    public Ends ends(Expression expr1, Expression expr2) {
+        return new EndsImpl(expr1, expr2);
+    }
+
+    public Ends ends(Expression expr1, Expression expr2, MatchAction matchAction) {
+        return new EndsImpl(expr1, expr2, matchAction);
+    }
+
+    public Meets meets(Expression expr1, Expression expr2) {
+        return new MeetsImpl(expr1, expr2);
+    }
+
+    public Meets meets(Expression expr1, Expression expr2, MatchAction matchAction) {
+        return new MeetsImpl(expr1, expr2, matchAction);
+    }
+
+    public MetBy metBy(Expression expr1, Expression expr2) {
+        return new MetByImpl(expr1, expr2);
+    }
+
+    public MetBy metBy(Expression expr1, Expression expr2, MatchAction matchAction) {
+        return new MetByImpl(expr1, expr2, matchAction);
+    }
+
+    public OverlappedBy overlappedBy(Expression expr1, Expression expr2) {
+        return new OverlappedByImpl(expr1, expr2);
+    }
+
+    public OverlappedBy overlappedBy(Expression expr1, Expression expr2, MatchAction matchAction) {
+        return new OverlappedByImpl(expr1, expr2, matchAction);
+    }
+
+    public TContains tcontains(Expression expr1, Expression expr2) {
+        return new TContainsImpl(expr1, expr2);
+    }
+
+    public TContains tcontains(Expression expr1, Expression expr2, MatchAction matchAction) {
+        return new TContainsImpl(expr1, expr2, matchAction);
+    }
+
+    public TEquals tequals(Expression expr1, Expression expr2) {
+        return new TEqualsImpl(expr1, expr2);
+    }
+
+    public TEquals tequals(Expression expr1, Expression expr2, MatchAction matchAction) {
+        return new TEqualsImpl(expr1, expr2, matchAction);
+    }
+
+    public TOverlaps toverlaps(Expression expr1, Expression expr2) {
+        return new TOverlapsImpl(expr1, expr2);
+    }
+
+    public TOverlaps toverlaps(Expression expr1, Expression expr2, MatchAction matchAction) {
+        return new TOverlapsImpl(expr1, expr2, matchAction);
+    }
+
     public org.geotools.filter.Filter and( org.geotools.filter.Filter filter1, org.geotools.filter.Filter filter2 ) {
         return (org.geotools.filter.Filter) and( (Filter) filter1, (Filter) filter2 );         
     } 
@@ -1204,6 +1348,10 @@ public class FilterFactoryImpl implements FilterFactory {
     public SpatialOperator spatialOperator(
             String name, GeometryOperand[] geometryOperands) {
         return new SpatialOperatorImpl( name, geometryOperands );
+    }
+    
+    public TemporalOperator temporalOperator(String name) {
+        return new TemporalOperatorImpl(name); 
     }
 
     public <T> Parameter<T> parameter(String name, Class<T> type, InternationalString title, 
@@ -1245,6 +1393,11 @@ public class FilterFactoryImpl implements FilterFactory {
             IdCapabilities id) {
         return new FilterCapabilitiesImpl( version, scalar, spatial, id );
     }
+
+    public FilterCapabilities capabilities(String version, ScalarCapabilities scalar,
+            SpatialCapabilities spatial, IdCapabilities id, TemporalCapabilities temporal) {
+        return new FilterCapabilitiesImpl(version, scalar, spatial, id, temporal);
+    }
     
     public ScalarCapabilities scalarCapabilities(
             ComparisonOperators comparison, ArithmeticOperators arithmetic,
@@ -1261,6 +1414,8 @@ public class FilterFactoryImpl implements FilterFactory {
     public IdCapabilities idCapabilities(boolean eid, boolean fid) {
         return new IdCapabilitiesImpl( eid, fid );
     }
-  
-        
+
+    public TemporalCapabilities temporalCapabilities(TemporalOperator[] temporalOperators) {
+        return new TemporalCapabilitiesImpl(Arrays.asList(temporalOperators));
+    }
 }

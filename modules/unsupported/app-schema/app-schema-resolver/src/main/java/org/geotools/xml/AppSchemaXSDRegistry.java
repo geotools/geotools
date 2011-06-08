@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2004-2010, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -32,7 +32,7 @@ import org.eclipse.xsd.util.XSDSchemaLocator;
  * two purposes: (1) Reusing schema's that have already been built previously, so that schema
  * content in memory isn't cluttered with multiple versions of the same schema (with respect to .
  * 
- * @author Niels Charlier, Curtin University of Technology
+ * @author Niels Charlier (Curtin University of Technology)
  * 
  *
  *

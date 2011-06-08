@@ -1,5 +1,16 @@
 <?xml version="1.0" ?>
-    <!-- From an annex of a draft of the WFS 2.0 specification -->
+<!--
+    Adapted from Annex B.2.1 Example 1 in OpenGIS Web Feature Service 2.0 Interface Standard 09-025r1 (2011)
+    http://portal.opengeospatial.org/files/?artifact_id=39967
+    See: http://www.opengeospatial.org/standards/wfs
+    Copyright (C) 2011 Open Geospatial Consortium, Inc. All Rights Reserved.
+    http://www.opengeospatial.org/ogc/legal
+    Note that schemas are used under the OGC Software Notice:
+    http://www.opengeospatial.org/ogc/software
+    See: http://www.opengeospatial.org/ogc/legalfaq#DTD
+    This response is documentation related to the schema. The main changes are
+    reformatting and an example host in the schemaLocation
+-->
 <wfs:FeatureCollection timeStamp="2008-09-07T19:00:00" numberReturned="2"
     numberMatched="unknown" xmlns="http://www.someserver.com/myns" xmlns:myns="http://www.someserver.com/myns"
     xmlns:wfs="http://www.opengis.net/wfs/2.0" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"

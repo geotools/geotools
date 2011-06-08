@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2004-2010, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2010-2011, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -50,7 +50,7 @@ import org.geotools.data.DataUtilities;
  * Files are stored according to the Simple HTTP Resource Path (see
  * {@link AppSchemaResolver#getSimpleHttpResourcePath(URI))}.
  * 
- * @author Ben Caradoc-Davies, CSIRO Earth Science and Resource Engineering
+ * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
  *
  *
  * @source $URL$

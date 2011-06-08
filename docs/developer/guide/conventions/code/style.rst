@@ -18,9 +18,18 @@ We follow:
 But what about the header?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Filling in the header boilerplate takes a couple of moments, if the code is being created by you
-strictly for the GeoTools project it should be a simple copy and paste.
+Most of the time all you need to do is update the header boilerplate to include the correct
+dates on the copyright statement, the boilerplate itself covers project name and LGPL license.
 
+* If the code is being created by you strictly for the GeoTools project it should be a simple copy
+  and paste, followed filling in the current year:
+  
+  \(c\) YEAR, Open Source Geospatial Foundation
+
+* If you are updating a file (perhaps fixing a bug) you will need to update the header:
+  
+  \(c\) START-UPDATE, Open Source Geospatial Foundation
+  
 * The header boilerplate for core GeoTools code is::
    
        /*
@@ -40,10 +49,10 @@ strictly for the GeoTools project it should be a simple copy and paste.
         *    Lesser General Public License for more details.
         */
    
-   The above code reflects a file that was created in 2011 and explicitly contributed to the
-   GeoTools project (the Open Source Geospatial Foundation is our legal entity holding the
-   copywrite). The file is being made avaialble under the LGPL License (whic we include in our
-   project documentation).
+  The above code reflects a file that was created in 2011 and explicitly contributed to the
+  GeoTools project (the Open Source Geospatial Foundation is our legal entity holding the
+  copywrite). The file is being made available under the LGPL License (which we include in our
+  project documentation).
 
 * The header for all demo code is::
    
@@ -84,7 +93,7 @@ strictly for the GeoTools project it should be a simple copy and paste.
         */
 
   The the above example from the gt-caching module some of the spatial index functionality
-  has been produced ontop of code from Navel Ltd that was published under the LGPL license in 2002.
+  has been produced using of code from Navel Ltd that was published under the LGPL license in 2002.
   The work was added to GeoTools 2006 - and the last modification was made in 2008.
 
 * Example of Reusing Code under another license

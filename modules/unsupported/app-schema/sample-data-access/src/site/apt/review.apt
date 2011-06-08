@@ -9,11 +9,11 @@ Known IP issues:
 
     * Jody Garnett, June 2011
 
-  STATUS: Under review
+  STATUS: review complete
 
   KNOWN ISSUES:
   
-    * Incorrect date range provided in headers; please update from svn history
+    * Incorrect date range provided in headers; please update from svn history [FIXED]
       
 Contributor Review (taken from pom.xml and source code files):
 
@@ -27,13 +27,15 @@ Contributor Review (taken from pom.xml and source code files):
       INCORRECT: @author Ben Caradoc-Davies, CSIRO Earth Science and Resource Engineering
       CORRECT: @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
       
+      [FIXED]
+      
 * src java
   ~~~~~~~~
 
-    * org.geotools.data - date range incorrectly indicates 2004-2010
+    * org.geotools.data - date range incorrectly indicates 2004-2010 [FIXED]
     
 * test java
   ~~~~~~~~~
 
-    * org.geotools.data - date range incorrectly indicates 2004-2010
+    * org.geotools.data - date range incorrectly indicates 2004-2010 [FIXED]
   

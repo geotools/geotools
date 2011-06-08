@@ -81,9 +81,24 @@ public class TemporalConverterFactoryTest extends TestCase {
 		assertNotNull( date );
 		assertEquals( calendar.getTime(), date );
 	}
-	// java.util.GregorianCalendar[time=?,areFieldsSet=false,areAllFieldsSet=true,lenient=true,zone=sun.util.calendar.ZoneInfo[id="America/Los_Angeles",offset=-28800000,dstSavings=3600000,useDaylight=true,transitions=185,lastRule=java.util.SimpleTimeZone[id=America/Los_Angeles,offset=-28800000,dstSavings=3600000,useDaylight=true,startYear=0,startMode=3,startMonth=2,startDay=8,startDayOfWeek=1,startTime=7200000,startTimeMode=0,endMode=3,endMonth=10,endDay=1,endDayOfWeek=1,endTime=7200000,endTimeMode=0]],firstDayOfWeek=1,minimalDaysInFirstWeek=1,ERA=1,YEAR=2004,MONTH=6,WEEK_OF_YEAR=17,WEEK_OF_MONTH=4,DAY_OF_MONTH=6,DAY_OF_YEAR=116,DAY_OF_WEEK=6,DAY_OF_WEEK_IN_MONTH=4,AM_PM=1,HOUR=3,HOUR_OF_DAY=0,MINUTE=0,SECOND=0,MILLISECOND=468,ZONE_OFFSET=-28800000,DST_OFFSET=3600000]
-	// cachedFixedDate 733157
-	// 
+	
+	
+	/*
+	 * Make sure that additional Milliseconds (cause an offset) do not appear
+	 * after conversion
+	 */
+	public void testCalendarToDateWithMilliseconds() throws Exception {
+		Calendar calendar = Calendar.getInstance();
+		long offset = 123;
+		calendar.set(Calendar.MILLISECOND, (int) offset);
+		assertNotNull(factory.createConverter(Calendar.class, Date.class, null));
+
+		Date date = (Date) factory.createConverter(Calendar.class, Date.class,
+				null).convert(calendar, Date.class);
+		assertNotNull(date);
+
+		assertEquals(calendar.getTime(), date);
+	}
 	
 	public void testCalendarToTime() throws Exception {
 		Calendar calendar = Calendar.getInstance();
@@ -92,7 +107,12 @@ public class TemporalConverterFactoryTest extends TestCase {
 		Time time = (Time) factory.createConverter( Calendar.class, Time.class, null )
 			.convert( calendar, Time.class );
 		assertNotNull( time );
-		assertEquals( new Time( calendar.getTime().getTime() ), time );
+		// need to remove the date part
+		Calendar cal = (Calendar) calendar.clone();
+    	cal.set(Calendar.YEAR, 0);
+    	cal.set(Calendar.MONTH, 0);
+    	cal.set(Calendar.DAY_OF_MONTH, 0);
+		assertEquals(cal.getTimeInMillis(), time.getTime());
 	}
 	
 	public void testCalendarToTimestamp() throws Exception {
@@ -103,6 +123,28 @@ public class TemporalConverterFactoryTest extends TestCase {
 			.convert( calendar, Timestamp.class );
 		assertNotNull( timeStamp );
 		assertEquals( new Timestamp( calendar.getTime().getTime() ), timeStamp );
+	}
+	
+	/**
+	 * Make sure that milliseconds do not get lost after conversion
+	 * 
+	 * @throws Exception
+	 */
+	public void testCalendarToTimestampWithMilliseconds() throws Exception {
+		Calendar calendar = Calendar.getInstance();
+		long offset = 123;
+
+		calendar.set(Calendar.MILLISECOND, (int) offset);
+		assertNotNull(factory.createConverter(Calendar.class, Timestamp.class,
+				null));
+		Calendar calWithMs = (Calendar) calendar.clone();
+
+		Timestamp timeStamp = (Timestamp) factory.createConverter(
+				Calendar.class, Timestamp.class, null).convert(calendar,
+				Timestamp.class);
+		assertNotNull(timeStamp);
+		assertEquals(new Timestamp(calWithMs.getTime().getTime()), timeStamp);
+		assertEquals(new Timestamp(calendar.getTime().getTime()), timeStamp);
 	}
 	
 	public void testDateToCalendar() throws Exception {
@@ -122,8 +164,17 @@ public class TemporalConverterFactoryTest extends TestCase {
 		Time time = (Time) factory.createConverter( Date.class, Time.class, null )
 			.convert( date, Time.class );
 		assertNotNull( time );
-		assertEquals( new Time( date.getTime() ), time );
+		// need to remove the date part
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		cal.setTime(date);
+    	cal.set(Calendar.YEAR, 0);
+    	cal.set(Calendar.MONTH, 0);
+    	cal.set(Calendar.DAY_OF_MONTH, 0);
+		assertEquals(cal.getTimeInMillis(), time.getTime());
 	}
+	
+	
 	
 	public void testDateToTimestamp() throws Exception {
 		Date date = new Date();

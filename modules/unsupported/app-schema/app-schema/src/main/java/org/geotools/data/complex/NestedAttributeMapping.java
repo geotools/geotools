@@ -145,7 +145,7 @@ public class NestedAttributeMapping extends AttributeMapping {
      * @throws IOException
      * @throws IOException
      */
-    public List<Feature> getInputFeatures(Object caller, Object foreignKeyValue, Object feature,  CoordinateReferenceSystem reprojection, List<PropertyName> selectedProperties, boolean includeMandatory)
+    public List<Feature> getInputFeatures(Object caller, Object foreignKeyValue,  List<Object> idValues, Object feature,  CoordinateReferenceSystem reprojection, List<PropertyName> selectedProperties, boolean includeMandatory)
             throws IOException {
         if (isSameSource()) {
             // if linkField is null, this method shouldn't be called because the mapping
@@ -317,7 +317,7 @@ public class NestedAttributeMapping extends AttributeMapping {
      */
     public List<Feature> getFeatures(Object foreignKeyValue,
             CoordinateReferenceSystem reprojection, Feature feature) throws IOException{
-        return getFeatures(null, foreignKeyValue, reprojection, feature, null, true);
+        return getFeatures(null, foreignKeyValue, null, reprojection, feature, null, true);
     }
             
 
@@ -331,7 +331,7 @@ public class NestedAttributeMapping extends AttributeMapping {
      * @return The matching simple features
      * @throws IOException
      */
-    public List<Feature> getFeatures(Object source, Object foreignKeyValue,
+    public List<Feature> getFeatures(Object source, Object foreignKeyValue,  List<Object> idValues, 
             CoordinateReferenceSystem reprojection, Object feature, List<PropertyName> selectedProperties, boolean includeMandatory) throws IOException {
 
         if (isSameSource()) {

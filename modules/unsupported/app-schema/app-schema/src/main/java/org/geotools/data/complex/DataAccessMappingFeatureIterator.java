@@ -37,6 +37,7 @@ import org.geotools.data.complex.filter.XPath.Step;
 import org.geotools.data.complex.filter.XPath.StepList;
 import org.geotools.data.joining.JoiningNestedAttributeMapping;
 import org.geotools.data.joining.JoiningQuery;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
 import org.geotools.feature.AttributeBuilder;
 import org.geotools.feature.FeatureCollection;
@@ -44,7 +45,9 @@ import org.geotools.feature.FeatureImpl;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.Types;
 import org.geotools.filter.AttributeExpressionImpl;
+import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.FilterFactoryImpl;
+import org.geotools.filter.SortByImpl;
 import org.geotools.jdbc.JDBCFeatureSource;
 import org.geotools.jdbc.JoiningJDBCFeatureSource;
 import org.opengis.feature.Attribute;
@@ -60,6 +63,7 @@ import org.opengis.feature.type.Name;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.identity.FeatureId;
+import org.opengis.filter.sort.SortOrder;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.xml.sax.Attributes;
 
@@ -192,12 +196,16 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
         return getSourceFeatureIterator() == null;
     }
 
-    public Object peekNextValue(Expression prop) {
-        Object o = prop.evaluate (curSrcFeature);
+    protected Object peekValue(Object source, Expression prop) {
+        Object o = prop.evaluate (source);
         if (o instanceof Attribute) {
             o = ((Attribute) o).getValue();
         }
         return o;
+    }
+    
+    public Object peekNextValue(Expression prop) {
+        return peekValue(curSrcFeature , prop);
     }
 
     /**
@@ -212,11 +220,11 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
      * Only used for Joining, to make sure that rows with different foreign id's
      * aren't interpreted as one feature and merged.
      */
-    public List<Object> getForeignIdValues() {        
+    public List<Object> getForeignIdValues(Object source) {        
         if (foreignIds != null) {
             List<Object> foreignIdValues = new ArrayList<Object>();
             for (int i = 0; i<foreignIds.size(); i++) {
-                foreignIdValues.add(i, peekNextValue(foreignIds.get(i)));
+                foreignIdValues.add(i, peekValue(source, foreignIds.get(i)));
             }
             return foreignIdValues;
         }
@@ -230,7 +238,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
     protected boolean checkForeignIdValues(List<Object> foreignIdValues, Feature next) {        
         if (foreignIds!=null) {
             for (int i = 0; i < foreignIds.size(); i++) {
-                if (!foreignIds.get(i).evaluate(next).equals(foreignIdValues.get(i))) {
+                if (!peekValue(next, foreignIds.get(i)).equals(foreignIdValues.get(i))) {
                     return false;
                 }
             }
@@ -238,6 +246,24 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
         return true;
     }
     
+    /**
+     * Only used for Joining, to make sure that rows with different foreign id's
+     * aren't interpreted as one feature and merged.
+     */
+    public List<Object> getIdValues(Object source) {   
+        List<Object> ids = new ArrayList<Object>();
+        FilterAttributeExtractor extractor = new FilterAttributeExtractor();
+        mapping.getFeatureIdExpression().accept(extractor, null);
+        for (String att : extractor.getAttributeNameSet()) {
+            ids.add(peekValue(source, CommonFactoryFinder.getFilterFactory2(null).property( att)));
+        }
+        
+        if (foreignIds != null) {
+            ids.addAll(getForeignIdValues(source));
+        }
+        return ids;
+    }
+        
     /**
      * Only used for Joining, to make sure that rows with different foreign id's
      * aren't interpreted as one feature and merged.
@@ -424,10 +450,10 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                         // eg. gsml:GeologicUnit/gsml:occurence/gsml:MappedFeature
                         // and gsml:MappedFeature/gsml:specification/gsml:GeologicUnit
                         nestedFeatures.addAll(((NestedAttributeMapping) attMapping)
-                                .getInputFeatures(this, val, source, reprojection, selectedProperties, includeMandatory));
+                                .getInputFeatures(this, val, getIdValues(source), source, reprojection, selectedProperties, includeMandatory));
                     } else {
                         nestedFeatures.addAll(((NestedAttributeMapping) attMapping).getFeatures(
-                                this, val, reprojection, source, selectedProperties, includeMandatory));
+                                this, val, getIdValues(source), reprojection, source, selectedProperties, includeMandatory));
                     }
                 }
                 values = nestedFeatures;
@@ -436,9 +462,9 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                 // feature type also have a reference back to this type
                 // eg. gsml:GeologicUnit/gsml:occurence/gsml:MappedFeature
                 // and gsml:MappedFeature/gsml:specification/gsml:GeologicUnit
-                values = ((NestedAttributeMapping) attMapping).getInputFeatures(this, values, source, reprojection, selectedProperties, includeMandatory);
+                values = ((NestedAttributeMapping) attMapping).getInputFeatures(this, values, getIdValues(source), source, reprojection, selectedProperties, includeMandatory);
             } else {
-                values = ((NestedAttributeMapping) attMapping).getFeatures(this, values, reprojection,
+                values = ((NestedAttributeMapping) attMapping).getFeatures(this, values, getIdValues(source), reprojection,
                         source, selectedProperties, includeMandatory);
             }
             if (isHRefLink) {
@@ -709,7 +735,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
         if (isFiltered) {
              setNextFilteredFeature(id, sources);
         } else {            
-            setNextFeature(id, getForeignIdValues(), sources);
+            setNextFeature(id, getForeignIdValues(curSrcFeature), sources);
         }
 
         return sources;
@@ -723,11 +749,11 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
 
                 if (value instanceof Collection) {
                     for (Object val : (Collection) value){
-                        ((JoiningNestedAttributeMapping)attMapping).skip(this, val);
+                        ((JoiningNestedAttributeMapping)attMapping).skip(this, val, getIdValues(source));
                     }
                 }
                 else {
-                    ((JoiningNestedAttributeMapping)attMapping).skip(this, value);
+                    ((JoiningNestedAttributeMapping)attMapping).skip(this, value, getIdValues(source));
                 }
             }
         }

@@ -21,6 +21,7 @@ import static org.junit.Assert.*;
 import java.awt.geom.Rectangle2D;
 import java.util.Set;
 
+import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.CRS.AxisOrder;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
@@ -191,6 +192,33 @@ public final class CrsTest {
         assertEquals(transformed.getMinimum(1), firstEnvelope.getMinimum(1), EPS);
         assertEquals(transformed.getMaximum(0), firstEnvelope.getMaximum(0), EPS);
         assertEquals(transformed.getMaximum(1), firstEnvelope.getMaximum(1), EPS);
+    }
+    /** 
+     * Test "densification" during envelope transform in order to avoid clipping(GEOT-3634).
+     */
+    public void XtestEnvelopeTransformClipping() throws Exception {
+        final CoordinateReferenceSystem source = DefaultGeographicCRS.WGS84;
+        final CoordinateReferenceSystem target;
+        target = CRS.parseWKT(
+            "GEOGCS[\"GCS_North_American_1983\","+ 
+            "DATUM[\"North_American_Datum_1983\", "+
+            "SPHEROID[\"GRS_1980\", 6378137.0, 298.257222101]], "+
+            "PRIMEM[\"Greenwich\", 0.0], "+
+            "UNIT[\"degree\", 0.017453292519943295], "+
+            "AXIS[\"Longitude\", EAST], "+
+            "AXIS[\"Latitude\", NORTH]]");       
+        // bounds from geotiff
+        GeneralEnvelope geotiff = new GeneralEnvelope(source);
+        geotiff.add(new DirectPosition2D(source,-179.9,-90.0));
+        geotiff.add(new DirectPosition2D(source,180.0,89.9));
+        
+        Envelope transformed = CRS.transform(geotiff, target );
+        assertNotNull( transformed );
+        assertTrue( "clipped y",transformed.getUpperCorner().getOrdinate(1) > 88.0);
+        assertTrue( "clipped y",transformed.getLowerCorner().getOrdinate(1) < -88.0);
+        assertTrue( "clipped x",transformed.getUpperCorner().getOrdinate(0) > 170.0);
+        assertTrue( "clipped x",transformed.getLowerCorner().getOrdinate(0) < -170.0);
+
     }
 
     /**

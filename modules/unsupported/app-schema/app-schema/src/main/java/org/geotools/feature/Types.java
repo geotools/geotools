@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2005-2011, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -52,8 +52,8 @@ import org.xml.sax.helpers.NamespaceSupport;
  * FIXME: These methods need a Q&A check to confirm correct use of Super TODO: Cannot tell the
  * difference in intent from FeatureTypes
  * 
- * @author Jody Garnett, Refractions Research
- * @author Justin Deoliveira, The Open Planning Project
+ * @author Jody Garnett (Refractions Research)
+ * @author Justin Deoliveira (The Open Planning Project)
  * 
  *
  *

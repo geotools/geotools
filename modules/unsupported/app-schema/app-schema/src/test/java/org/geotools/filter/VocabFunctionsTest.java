@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2009-2011, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -54,8 +54,8 @@ import static org.junit.Assert.fail;
  * RecodeFunction and InterpolateFunction. This also tests the new VocabFunction, using a properties
  * file as the lookup table.
  * 
- * @author Jody Garnett, Geoserver
- * @author Rini Angreani, Curtin University of Technology
+ * @author Jody Garnett (GeoServer)
+ * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
  * 
  *
  *

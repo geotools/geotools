@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2009-2011, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -53,7 +53,7 @@ import org.xml.sax.helpers.NamespaceSupport;
  * nested built features so they can be retrieved when the parent feature is being built. Simple
  * features are also stored for caching if a filter involving these nested features is run.
  * 
- * @author Rini Angreani, Curtin University of Technology
+ * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
  * 
  *
  *

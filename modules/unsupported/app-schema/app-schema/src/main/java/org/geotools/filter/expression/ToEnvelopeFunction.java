@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2009, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2009-2011, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -46,7 +46,7 @@ import com.vividsolutions.jts.geom.Envelope;
  * <li>Option 4 (2D Envelope with crsname): <OCQL>ToEnvelope(minx,maxx,miny,maxy,crsname)</OCQL>
  * </ol>
  * 
- * @author Florence Tan, Curtin University of Technology
+ * @author Florence Tan (Curtin University of Technology)
  * 
  *
  *

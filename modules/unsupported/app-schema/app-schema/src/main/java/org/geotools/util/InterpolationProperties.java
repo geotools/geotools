@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2004-2011, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2009-2011, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -43,8 +43,8 @@ import java.util.regex.Pattern;
  * Interpolation is performed repeatedly, so can values can contain new interpolations. Infinite
  * loops are supported. This is not a feature.
  * 
- * @author Ben Caradoc-Davies, CSIRO Exploration and Mining
- * @author Niels Charlier, Curtin University of Technology
+ * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
+ * @author Niels Charlier (Curtin University of Technology)
  *
  *
  *

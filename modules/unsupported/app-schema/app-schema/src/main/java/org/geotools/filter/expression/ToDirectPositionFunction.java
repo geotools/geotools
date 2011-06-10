@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2009, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2009-2011, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -46,7 +46,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * <li>Expression: name of column pointing to second double value (optional, only for 2D)
  * </ol>
  * 
- * @author Rini Angreani, Curtin University of Technology
+ * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
  *
  *
  *

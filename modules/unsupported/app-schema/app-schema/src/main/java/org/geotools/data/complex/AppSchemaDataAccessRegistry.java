@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2009-2011, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -27,13 +27,14 @@ import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
 
+/**
+ * A registry that stores all app schema data access instances per application. This allows
+ * mappings from different data accesses to be accessed globally.
+ * 
+ * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
+ */
 public class AppSchemaDataAccessRegistry extends DataAccessRegistry {
-    /**
-     * A registry that stores all app schema data access instances per application. This allows
-     * mappings from different data accesses to be accessed globally.
-     * 
-     * @author Rini Angreani, Curtin University of Technology
-     */
+
     private static final long serialVersionUID = -373404928035022963L;
     
     /**

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2004-2009, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2009-2011, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -29,10 +29,7 @@ import java.util.Set;
  * It returns them in an order such that parent elements are created first, and so children
  * elements can be slotted straight into them.
  * 
- * @author Russell Petty, GSV
- *
- *
- *
+ * @author Russell Petty (GeoScience Victoria)
  *
  * @source $URL$
  */

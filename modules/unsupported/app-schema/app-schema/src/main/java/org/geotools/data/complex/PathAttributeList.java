@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2004-2009, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2009-2011, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -25,7 +25,7 @@ import java.util.Map;
 import org.opengis.feature.Attribute;
 
 /**
- * @author Russell Petty, GSV
+ * @author Russell Petty (GeoScience Victoria)
  * @version $Id$
  *
  *

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2004-2011, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -46,7 +46,7 @@ import org.xml.sax.helpers.NamespaceSupport;
 /**
  * Nested attribute mapping used for joining system
  *
- * @author Niels Charlier, Curtin University Of Technology
+ * @author Niels Charlier (Curtin University of Technology)
  *
  */
 public class JoiningNestedAttributeMapping extends NestedAttributeMapping {

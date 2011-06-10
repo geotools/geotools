@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2004-2011, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2009-2011, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -31,7 +31,7 @@ import org.opengis.util.InternationalString;
  * specific complex feature type will have an additional system field called "FEATURE_LINK" that can
  * be used to link the feature type to its parent, i.e. allow the type to be nested.
  * 
- * @author Rini Angreani, Curtin University of Technology 
+ * @author Rini Angreani (CSIRO Earth Science and Resource Engineering) 
  *
  *
  *

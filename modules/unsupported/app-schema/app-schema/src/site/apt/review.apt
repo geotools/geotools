@@ -13,78 +13,112 @@
   Code Review:
   
     * Jody Garnett, June 2011
+    
+    * Responses by Ben identified or in square brackets.
   
-  STATUS: Under review
+  STATUS: Review completed
 
   KNOWN ISSUES:
   
-  (List JIRA issues here; do not need to fix just create the issue)
+  * http://jira.codehaus.org/browse/GEOT-3623: App-Schema Provenance Review
+  
 
 Contributor Review (taken from pom.xml and source code files):
 
     * all code provided Rini Angreani was done under LGPL, CSIRO code contribution agreement
       (not true also mentions Curtin Universtiy of Technology - do we have a code contribution
        agreement from this university? or was she working for CSIRO at the time...)
+       
+        * Ben replies: All Curtin employees before Niels committing to GeoTools obtained a written release
+          from Curtin in which Curtin disavows copyright; they then signed individual contributor agreements
+          to assign copyright to OSGeo and sent these and their releases to OSGeo. This includes Rini's early work.
+          In this case, copyright is not asserted by Curtin, and has been transferred as an individual contribution 
+          to OSGeo. 
     
-    * all code prvided by Ben Caradoc-Davies was done under LGPL, CSIRO code contribution agreement
+    * all code prvided by Ben Caradoc-Davies was done under LGPL, CSIRO code contribution agreement [CORRECT]
     
     * Russell Petty, GSV need to ensure individual and organisation (is that geoscience victoria?)
       have signed contirbution agreement
+      
+        * Ben replies: Russell Petty was a contractor employed by GeoScience Victoria (GSV), a division 
+          of the Department of Primary Industries of Victoria. GSV is Victoria's geologic survey. AuScope
+          funded this activity, and the contract under which this activity was conducted states that all
+          IP generated under it is owned by CSIRO. This is therefore also covered under the CSIRO
+          contributor agreement. The only correction here is to expand the GSV acronym for attribution purposes. 
     
     * Tara Athan (who is this?)
+    
+        * Ben replies: Tara is a community member who contributed patches to address:
+          http://jira.codehaus.org/browse/GEOT-3217: DataAccess shapefile absolute path corrupted
+          She gets an @author tag on the unit test that is mostly her work. Patches to existing modules
+          do not require a contributor agreement.
     
     * Jody Garnett (Geoserver)
     
     * Niels Charlier, Curtin University of Technology as the same issue as Reni, has the university
       signed anything or was he operating under the direction of CSIRO
     
+        * Ben replies: More recent Curtin staff, including Niels, work with us under a contract that
+          assigns all IP to CSIRO. These staff and all CSIRO staff committing to GeoTools are covered
+          by the blanket OSGeo contributor assignment signed by David Gray in 2008; this includes Rini
+          as she is now employed by CSIRO. Because CSIRO has assigned copyright to OSGeo, we should not
+          have a CSIRO copyright statement. Users should not have to approach CSIRO to obtain a copyright release.
+    
     * @author Justin Deoliveira
 
 * Code Review
 
     * org.geotools.data.complex.filter - Does ComplexFilterSplitter needs to be updated?)
+    
+        * Ben replies: added javadoc with @author tag (Niels)
 
     * org.geotools.feature - What is this code still doing alive; it should all be deprecated
        as it is from the experimental branch; please transition so we can have good feedback on the
        feature model in use today - examples Types, AttributBuilder? ). Or should this be moved
        to gt-main for general productivity?
+       
+        * Ben replies: code improvements are outside the scope of the review. This code is still used
+          in app-schema. Future migration to gt-main would be good.
     
     * org.geotools.feature.type - the factory implementation ComplexFeatureTypeFactoryImpl is not
       registered in META-INF/services. It should be registered and the library or datastore 
       configured with a Hint rather than make use of this implementation directly. If it helps
       this factory could be moved to gt-main and seperated from app-schema.
       
+        * Ben replies: code improvements are outside the scope of the review. This code is still used
+          in app-schema. Future migration to gt-main would be good.
+    
 * src
   ~~~
   
     * org.geotools.data.complex many files are listed as from (c) 2004 even when they were not
       created then. Please correct using svn history (example PathAttributeList,
       NestedAttributeMapping, MappingFeatureIteratorFactory). MappingFeatureSource seems interesting
-      in that it is dated 2004/Gabriel but all its component parts appear to be from 2008.
+      in that it is dated 2004/Gabriel but all its component parts appear to be from 2008. [FIXED]
 
-    * org.geotools.data.complex.config - (c) 2004 date range suspect confirm with svn
+    * org.geotools.data.complex.config - (c) 2004 date range suspect confirm with svn [FIXED]
 
-    * org.geotools.data.complex.filter - (c) 2004 date range suspect confirm with svn.
+    * org.geotools.data.complex.filter - (c) 2004 date range suspect confirm with svn. [FIXED]
 
-    * org.geotools.data.complex.xml - (c) 2004 date range suspect confirm with svn
+    * org.geotools.data.complex.xml - (c) 2004 date range suspect confirm with svn [FIXED]
 
-    * org.geotools.data.joining - (c) 2004 date range suspect confirm with svn
+    * org.geotools.data.joining - (c) 2004 date range suspect confirm with svn [FIXED]
 
-    * org.geotools.feature - (c) 2004 date range suspect confirm with svn
+    * org.geotools.feature - (c) 2004 date range suspect confirm with svn [FIXED]
 
-    * org.geotools.feature.type - (c) 2004 date range suspect confirm with svn.
+    * org.geotools.feature.type - (c) 2004 date range suspect confirm with svn. [FIXED]
 
-    * org.geotools.feature.xpath - (c) 2004 date range suspect confirm with svn
+    * org.geotools.feature.xpath - (c) 2004 date range suspect confirm with svn [FIXED]
 
-    * org.geotools.filter - (c) 2004 date range suspect confirm with svn
+    * org.geotools.filter - (c) 2004 date range suspect confirm with svn [FIXED]
 
-    * org.geotools.filter.expression - (c) 2004 date range suspect confirm with svn
+    * org.geotools.filter.expression - (c) 2004 date range suspect confirm with svn [FIXED]
 
-    * org.geotools.gml.producer - (c) 2004 date range suspect confirm with svn
+    * org.geotools.gml.producer - (c) 2004 date range suspect confirm with svn [FIXED]
 
-    * org.geotools.jdbc - (c) 2004 date range suspect confirm with svn
+    * org.geotools.jdbc - (c) 2004 date range suspect confirm with svn [FIXED]
 
-    * org.geotools.util - (c) 2004 date range suspect confirm with svn
+    * org.geotools.util - (c) 2004 date range suspect confirm with svn [FIXED]
 
 * test resources
   ~~~~~~~~~~~~~~
@@ -96,7 +130,44 @@ Contributor Review (taken from pom.xml and source code files):
     
     * commonsSchemas/getosciml - should credit the committee that made this right?
     
+        * Ben replies: added two copyright notices in module root, detailed in test-data/README.txt:
+        
+            Test data copyright
+
+            Unless stated otherwise, all test schemas, test data (such as property files),
+            test mapping files, and related files in test-data are the original work of GeoTools
+            contributors whose copyright has been assigned to OSGeo; these are licensed under the
+            GeoTools licence (LGPL).
+
+            Exceptions:
+
+            Except as noted below, test-data/commonSchemas and test-data/commonSchemas_new contain versions of various
+            OGC schemas. These are used under the OGC Software Notice license.
+
+            test-data/commonSchemas/XMML contains a version of XMML, used under the CSIRO Software Notice license.
+
+            test-data/commonSchemas/geosciml and test-data/commonSchemas_new/GeoSciML contain versions of GeoSciML,
+            copyright the Commission for the Management and Application of Geoscience Information (CGI),
+            a commission of the International Union of Geological Sciences.
+
+            test-data/commonSchemas_new/*.xsd (awdip.xsd, WaterML.xsd, SampleSite.xsd, ObservationProfiles.xsd) were
+            likely added by Rob Atkinson (CSIRO Land and Water) in support of AWDIP GeoServer work. Rob is a
+            contributor; copyright on these schemas has not yet been confirmed.
+
+            test-data/commonSchemas_new/mineralOccurrence and test-data/commonSchemas_new/earthresourceml are
+            EarthResourceML (based on GeoSciML) and built under the aegis of the
+            Australian Government Geoscience Information Committee (GGIC):
+            http://www.geoscience.gov.au/ggic.jsp
+            Copyright ownership unknown. Website: http://www.earthresourceml.org/
+            Schemas are hosted by CSIRO. Contact: Bruce Simons (GeoScience Victoria)
+
+            For further discussion, see:
+            http://jira.codehaus.org/browse/GEOT-3623
+        
+    
     * gsml30 - unknown history
+    
+        * Ben replies: I wrote this test data
     
 * test
   ~~~~
@@ -106,17 +177,20 @@ Contributor Review (taken from pom.xml and source code files):
     * org.geotools.data.complex - BoreholeTest some of these files are quite old (2004) writen by Gabriel at Axios
       can we ask him who he did the work for and confirm it was donated correctly.  AttributeCreateOrderListTest
       is listed as 2004-2011 by Russell Petty, GSV (need to check contribution agreement and I suspect
-      the file was not created in 2004).
+      the file was not created in 2004). [FIXED]
     
     * org.geotools.data.complex.config - OasisCatalogTest is missing an @author need to check svn.
       AppSchemaFileDataTest lists Tara Athan (who is this?)
+      
+        * See above for Tara Athan. OasisCatalogTest is likely by either Gabriel Roldan or Rob Atkinson.
+          It is from the original community-schemas. Not known for sure.
     
-    * org.geotools.filter - files listed as 2004, this is suspect if Reni wrote them
+    * org.geotools.filter - files listed as 2004, this is suspect if Reni wrote them [FIXED]
     
     * org.geotools.filter.expression - many files listed as from 2004; this is suspect if Reni wrote
-      them.
+      them. [FIXED]
     
-    * org.geotools.test - AppSchemaTestSupport does not have an author
+    * org.geotools.test - AppSchemaTestSupport does not have an author [FIXED (Niels)]
     
-    * org.geotools.util - InterpolationPropertiesTest is listed as 2004; this is suspect as Ben is the author
+    * org.geotools.util - InterpolationPropertiesTest is listed as 2004; this is suspect as Ben is the author [FIXED]
 

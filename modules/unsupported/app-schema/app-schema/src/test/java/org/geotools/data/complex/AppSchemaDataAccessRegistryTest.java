@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2009-2011, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -52,7 +52,7 @@ import org.opengis.feature.type.Name;
  * be registered in the registry. Once it's in the registry, its feature type mapping and feature
  * source (simple or mapped) would be accessible globally.
  * 
- * @author Rini Angreani, Curtin Universtiy of Technology
+ * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
  * 
  *
  *

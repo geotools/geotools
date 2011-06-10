@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2009-2011, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -37,7 +37,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * not features. When a non feature is mapped separately in app schema data access, it is regarded
  * as a feature since it would have a feature source.
  * 
- * @author Rini Angreani, Curtin University of Technology
+ * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
  * 
  *
  *

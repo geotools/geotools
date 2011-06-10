@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2004-2010, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2008-2011, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -31,7 +31,7 @@ import org.junit.Test;
 /**
  * This is a test for a class that no longer exists! But the functionality and behaviour survive.
  * 
- * @author Ben Caradoc-Davies, CSIRO Earth Science and Resource Engineering
+ * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
  *
  *
  * @source $URL$

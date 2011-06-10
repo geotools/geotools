@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2004-2011, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -50,7 +50,7 @@ import org.opengis.util.InternationalString;
  * of {@link #equals(Object)}equals(). Unit test coverage is in GeoServer app-schema-test
  * DuplicateTypeTest.
  * 
- * @author Ben Caradoc-Davies, CSIRO Earth Science and Resource Engineering
+ * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
  * @see GEOT-3354
  *
  *

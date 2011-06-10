@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2008-2011, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -65,9 +65,9 @@ import org.opengis.filter.sort.SortOrder;
  * A {@link DataAccess} that maps a "simple" source {@link DataStore} into a source of full Feature
  * features conforming to an application schema.
  * 
- * @author Gabriel Roldan, Axios Engineering
- * @author Ben Caradoc-Davies, CSIRO Exploration and Mining
- * @author Rini Angreani, Curtin University of Technology
+ * @author Gabriel Roldan (Axios Engineering)
+ * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
+ * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
  * @version $Id$
  *
  *

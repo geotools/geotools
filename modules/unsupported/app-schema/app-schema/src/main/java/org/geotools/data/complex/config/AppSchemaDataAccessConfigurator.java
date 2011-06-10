@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2008-2011, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -82,9 +82,9 @@ import org.xml.sax.helpers.NamespaceSupport;
  * objects from a complex datastore's configuration object (
  * {@link org.geotools.data.complex.config.AppSchemaDataAccessDTO}).
  * 
- * @author Gabriel Roldan, Axios Engineering
- * @author Rini Angreani, Curtin University of Technology
- * @author Russell Petty, GSV
+ * @author Gabriel Roldan (Axios Engineering)
+ * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
+ * @author Russell Petty (GeoScience Victoria)
  * @version $Id$
  *
  *

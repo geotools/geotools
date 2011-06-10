@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2004-2011, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2010-2011, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -31,7 +31,7 @@ import org.junit.Test;
 /**
  * To test client properties of app-schema mapping file
  * 
- * @author Jacqui Githaiga, Curtin University of Technology
+ * @author Jacqui Githaiga (Curtin University of Technology)
  *
  *
  * @source $URL$

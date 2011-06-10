@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2004-2009, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2009-2011, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -36,7 +36,7 @@ import static org.junit.Assert.assertNotNull;
 /**
  * Tests for {@link PropertyInterpolationUtils}.
  * 
- * @author Ben Caradoc-Davies, CSIRO Exploration and Mining
+ * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
  *
  *
  *

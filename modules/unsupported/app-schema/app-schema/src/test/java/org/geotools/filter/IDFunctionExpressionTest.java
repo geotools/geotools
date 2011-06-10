@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2011, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -34,7 +34,7 @@ import static org.junit.Assert.assertNotNull;
 
 /**
  * 
- * @author gabriel
+ * @author Gabriel Roldan
  * @deprecated use the following property expression instead: <code>@gml:id</code>
  *
  *

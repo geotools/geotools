@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2010-2011, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -34,7 +34,7 @@ import org.opengis.filter.Filter;
  * query nested features is by applying the filter per simple feature (database row). This is done
  * in hasNext().
  *
- * @author Rini Angreani, CSIRO Earth Science and Resource Engineering
+ * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
  *
  *
  * @source $URL$

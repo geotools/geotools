@@ -239,6 +239,22 @@ public class ThreadedHsqlEpsgFactoryTest {
     }
     
     /**
+     * GEOT-3644, make sure we can decode what we generated
+     * @throws Exception
+     */
+    @Test
+    public void testEncodeAndParse() throws Exception {
+        // a crs with out of standard axis orientation "South along 45 deg East"
+        CoordinateReferenceSystem crs = CRS.decode("EPSG:3413");
+        // format it in a lenient way
+        String wkt = crs.toString();
+        // parse it back, here it did break
+        CoordinateReferenceSystem parsed = CRS.parseWKT(wkt);
+        // also make sure we're getting back the same thing
+        assertTrue(CRS.equalsIgnoreMetadata(crs, parsed));
+    }
+    
+    /**
      * GEOT-3482
      * @throws Exception
      */

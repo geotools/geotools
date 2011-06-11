@@ -31,8 +31,9 @@ import org.opengis.referencing.cs.AxisDirection;
  * @version $Id$
  * @source $URL$
  * @author Martin Desruisseaux
+ * @since 2.7.2
  */
-final class DirectionAlongMeridian implements Comparable, Serializable {
+public final class DirectionAlongMeridian implements Comparable, Serializable {
     /**
      * For cross-version compatibility.
      */

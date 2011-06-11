@@ -17,21 +17,17 @@
 package org.geotools.referencing.crs;
 
 // J2SE dependencies
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Set;
 
-// OpenGIS dependencies
-import org.opengis.metadata.citation.Citation;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import junit.framework.TestCase;
 
-// Geotools dependencies
+import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.NamedIdentifier;
-import org.geotools.metadata.iso.citation.Citations;
-
-// JUnit dependencies
-import junit.framework.TestCase;
+import org.geotools.test.TestData;
+import org.opengis.metadata.citation.Citation;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 
 /**
@@ -70,7 +66,7 @@ public class EPSGTest extends TestCase {
         Set codes = factory.getAuthorityCodes( CoordinateReferenceSystem.class );
 
         assertNotNull( codes );
-        assertEquals( 4770, codes.size() );
+        assertEquals(4664, codes.size() );
     }
 
     /**
@@ -100,7 +96,13 @@ public class EPSGTest extends TestCase {
         NamedIdentifier expected = new NamedIdentifier(Citations.EPSG, "42102");
         assertTrue( crs.getIdentifiers() .contains( expected ));
     }
-    public void testSuccess() throws Exception {
+    
+    public void testDecodeAll() throws Exception {
+        // this test is heavy, only enable with extensive tests
+        if (!TestData.isExtensiveTest()) {
+            return;
+        }
+        
         Set codes = factory.getAuthorityCodes( CoordinateReferenceSystem.class );
         int total = codes.size();
         int count = 0;
@@ -110,12 +112,11 @@ public class EPSGTest extends TestCase {
             String code = (String) i.next();
             try {
                 crs = (CoordinateReferenceSystem) factory.createObject( code );
-                if( crs != null ) count ++;
-            } catch (Throwable e) {
-                System.err.println("WARNING (CRS: "+code+" ):"+e );
+            } catch(Exception e) {
+                e.printStackTrace();
+                fail("Failed to decode " + code + " with error: " + e.getMessage());
             }
         }
-        System.out.println( "success:" + count + "/" + total );
     }
 
 

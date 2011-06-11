@@ -91,6 +91,58 @@ import org.opengis.referencing.operation.TransformException;
  */
 public abstract class AbstractGridCoverage2DReader implements GridCoverageReader {
 
+	/**
+	 * The time domain (comma separated list of values)
+	 */
+	public static final String TIME_DOMAIN = "TIME_DOMAIN";
+	
+	/**
+	 * Time domain resolution (when using min/max/resolution)
+	 */
+	public static final String TIME_DOMAIN_RESOLUTION = "TIME_DOMAIN_RESOLUTION";
+	
+	/**
+	 * If the time domain is available (or if a min/max/resolution approach has been chosen)
+	 */
+	public static final String HAS_TIME_DOMAIN = "HAS_TIME_DOMAIN";
+	
+	/**
+	 * The time domain max value
+	 */
+	public static final String TIME_DOMAIN_MAXIMUM = "TIME_DOMAIN_MAXIMUM";
+
+	/**
+	 * The time domain min value
+	 */
+	public static final String TIME_DOMAIN_MINIMUM = "TIME_DOMAIN_MINIMUM";
+
+	/**
+	 * Whether the elevation is expressed as a full domain or 
+	 * min/max/resolution (true if domain list available)
+	 */
+	public static final String HAS_ELEVATION_DOMAIN = "HAS_ELEVATION_DOMAIN";
+
+	/**
+	 * Elevation domain (comma separated list of values)
+	 */
+	public static final String ELEVATION_DOMAIN = "ELEVATION_DOMAIN";
+	
+	/**
+	 * Elevation domain maximum value
+	 */
+	public static final String ELEVATION_DOMAIN_MAXIMUM = "ELEVATION_DOMAIN_MAXIMUM";
+
+	/**
+	 * Elevation domain minimum value
+	 */
+	public static final String ELEVATION_DOMAIN_MINIMUM = "ELEVATION_DOMAIN_MINIMUM";
+	
+	/**
+	 * Elevation domain resolution
+	 */
+	public static final String ELEVATION_DOMAIN_RESOLUTION = "ELEVATION_DOMAIN_RESOLUTION";
+
+
     /** The {@link Logger} for this {@link AbstractGridCoverage2DReader}. */
     private final static Logger LOGGER = Logging.getLogger("org.geotools.data.coverage.grid");
 

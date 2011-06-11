@@ -109,7 +109,7 @@ import org.opengis.referencing.operation.MathTransform;
  */
 public final class ImageMosaicReader extends AbstractGridCoverage2DReader implements GridCoverageReader, GridCoverageWriter {
 
-        /** Logger. */
+		/** Logger. */
 	private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(ImageMosaicReader.class);
 
 	/**
@@ -734,16 +734,16 @@ public final class ImageMosaicReader extends AbstractGridCoverage2DReader implem
 	public String[] getMetadataNames() {
 	    final String []parentNames = super.getMetadataNames();
             final List<String> metadataNames = new ArrayList<String>();
-            metadataNames.add("TIME_DOMAIN");
-            metadataNames.add("HAS_TIME_DOMAIN");
-            metadataNames.add("TIME_DOMAIN_MINIMUM");
-            metadataNames.add("TIME_DOMAIN_MAXIMUM");
-            metadataNames.add("TIME_DOMAIN_RESOLUTION");
-            metadataNames.add("ELEVATION_DOMAIN");
-            metadataNames.add("ELEVATION_DOMAIN_MINIMUM");
-            metadataNames.add("ELEVATION_DOMAIN_MAXIMUM");
-            metadataNames.add("HAS_ELEVATION_DOMAIN");
-            metadataNames.add("ELEVATION_DOMAIN_RESOLUTION");
+            metadataNames.add(TIME_DOMAIN);
+            metadataNames.add(HAS_TIME_DOMAIN);
+            metadataNames.add(TIME_DOMAIN_MINIMUM);
+            metadataNames.add(TIME_DOMAIN_MAXIMUM);
+            metadataNames.add(TIME_DOMAIN_RESOLUTION);
+            metadataNames.add(ELEVATION_DOMAIN);
+            metadataNames.add(ELEVATION_DOMAIN_MINIMUM);
+            metadataNames.add(ELEVATION_DOMAIN_MAXIMUM);
+            metadataNames.add(HAS_ELEVATION_DOMAIN);
+            metadataNames.add(ELEVATION_DOMAIN_RESOLUTION);
             if(parentNames!=null)
                 metadataNames.addAll(Arrays.asList(parentNames));
             return metadataNames.toArray(new String[metadataNames.size()]);
@@ -755,13 +755,13 @@ public final class ImageMosaicReader extends AbstractGridCoverage2DReader implem
 	    if(superValue!=null)
 	        return superValue;
 	    
-            if (name.equalsIgnoreCase("HAS_ELEVATION_DOMAIN"))
+            if (name.equalsIgnoreCase(HAS_ELEVATION_DOMAIN))
                 return String.valueOf(elevationAttribute != null);
     
-            if (name.equalsIgnoreCase("HAS_TIME_DOMAIN"))
+            if (name.equalsIgnoreCase(HAS_TIME_DOMAIN))
                 return String.valueOf(timeAttribute != null);
     
-            if (name.equalsIgnoreCase("TIME_DOMAIN_RESOLUTION"))
+            if (name.equalsIgnoreCase(TIME_DOMAIN_RESOLUTION))
                 return null;
     
             final boolean getTimeDomain = (timeAttribute != null && name.equalsIgnoreCase("time_domain"));

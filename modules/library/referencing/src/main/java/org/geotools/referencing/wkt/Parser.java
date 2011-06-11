@@ -58,6 +58,7 @@ import org.geotools.referencing.datum.DefaultPrimeMeridian;
 import org.geotools.referencing.datum.DefaultVerticalDatum;
 import org.geotools.referencing.cs.AbstractCS;
 import org.geotools.referencing.cs.DefaultCoordinateSystemAxis;
+import org.geotools.referencing.cs.DirectionAlongMeridian;
 import org.geotools.referencing.factory.ReferencingFactoryContainer;
 import org.geotools.referencing.operation.DefiningConversion;
 import org.geotools.resources.Arguments;
@@ -421,10 +422,17 @@ public class Parser extends MathTransformParser {
             }
         }
         final String  name        = element.pullString     ("name");
-        final Element orientation = element.pullVoidElement("orientation");
+        final Element orientation = element.pullOptionalVoidElement();
+        final AxisDirection direction;
+        if(orientation != null) {
+            direction = directions.get(orientation.keyword.trim().toUpperCase());
+        } else {
+            String directionName = element.pullString("orientation");
+            direction = DirectionAlongMeridian.parse(directionName).getDirection();
+        }
         final Map<String,?> properties = parseAuthority(element, name); // See javadoc
         element.close();
-        final AxisDirection direction = directions.get(orientation.keyword.trim().toUpperCase());
+        
         if (direction == null) {
             throw element.parseFailed(null, Errors.format(ErrorKeys.UNKNOW_TYPE_$1, orientation));
         }
@@ -858,17 +866,27 @@ public class Parser extends MathTransformParser {
         GeodeticDatum        datum = parseDatum    (element, meridian);
         CoordinateSystemAxis axis0 = parseAxis     (element, angularUnit, false);
         CoordinateSystemAxis axis1;
+        CoordinateSystemAxis axis2 = null;
         try {
             if (axis0 != null) {
                 axis1 = parseAxis(element, angularUnit, true);
+                if(axis1 != null) {
+                    axis2 = parseAxis(element, SI.METER, false);
+                } 
             } else {
                 // Those default values are part of WKT specification.
                 axis0 = createAxis(null, "Lon", AxisDirection.EAST,  angularUnit);
                 axis1 = createAxis(null, "Lat", AxisDirection.NORTH, angularUnit);
             }
             element.close();
+            EllipsoidalCS ellipsoidalCS;
+            if(axis2 != null) {
+                ellipsoidalCS = csFactory.createEllipsoidalCS(properties, axis0, axis1, axis2);
+            } else {
+                ellipsoidalCS = csFactory.createEllipsoidalCS(properties, axis0, axis1);
+            }
             return crsFactory.createGeographicCRS(properties, datum,
-                    csFactory.createEllipsoidalCS(properties, axis0, axis1));
+                    ellipsoidalCS);
         } catch (FactoryException exception) {
             throw element.parseFailed(exception, null);
         }

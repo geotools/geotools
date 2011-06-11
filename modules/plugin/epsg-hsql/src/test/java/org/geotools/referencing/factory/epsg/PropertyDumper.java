@@ -44,14 +44,17 @@ public class PropertyDumper {
             try {
                 CoordinateReferenceSystem crs = CRS.decode("EPSG:" + code, true);
                 // use toString, it's more lenient that toWKT
-                props.put(code, crs.toString().replaceAll("\n", "").replaceAll("  ", ""));
+                String wkt = crs.toString().replaceAll("\n", "").replaceAll("  ", "");
+                // make sure we can parse back what we generated
+                CRS.parseWKT(wkt);
+                
+                props.put(code, wkt);
                 
                 diff.remove(code);
                 
             } catch (Exception e) {
                 // we cannot actually decode all codes, but let's list what we can't
-                // System.out.println("# "+code + " -> " + e.getMessage());
-                props.put( "_"+code, e.getMessage() );
+                System.out.println("#"+code + " -> " + e.getMessage());
             }
         }
         props.store(out,"Generated from EPSG database version " + ThreadedHsqlEpsgFactory.VERSION);

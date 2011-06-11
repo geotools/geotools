@@ -495,6 +495,28 @@ public final class Element {
         }
         throw missingParameter(key);
     }
+    
+    /**
+     * Removes and returns the next {@link Element} with no bracket, if available, or
+     * null otherwise.
+
+     * @return The next {@link Element} in the list, with no bracket, or null if none was found
+     * @throws ParseException if no more void element is available.
+     */
+    public Element pullOptionalVoidElement() throws ParseException {
+        final Iterator iterator = list.iterator();
+        while (iterator.hasNext()) {
+            final Object object = iterator.next();
+            if (object instanceof Element) {
+                final Element element = (Element) object;
+                if (element.list == null) {
+                    iterator.remove();
+                    return element;
+                }
+            }
+        }
+        return null;
+    }
 
     /**
      * Returns the next element, or {@code null} if there is no more

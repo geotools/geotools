@@ -177,7 +177,6 @@ in order to make the correct query.
     One quick way to handle this is to treat the screen as a BBox and
     make a request for the contents.
     
-    
     .. image:: /images/filter_screen.png
    
    Using a simple bounding box check is fast, but may retrieve more content then you will end up displaying.::
@@ -501,7 +500,6 @@ As static filter contains no "propertyName" elements; and will evaluate to the s
          ...
     }
 
-
 Filters
 ^^^^^^^
 
@@ -602,4 +600,35 @@ There is a small utility class **Filters** that packages up some common Filter o
   
   Much like *and* and *or* above these methods return a modified
   filter.
-  
+
+Capabilities
+^^^^^^^^^^^^
+
+You can also use the FilterFactory to fill in a filter capabiliies data structure describing
+the abilities of a web or database service.
+
+However we also have a **Capabilities** user class which is helpful both in acting as a "builder"
+when creating a FilterCapabilities data structure; and also in making use of the result.
+
+* Capabilities as a builder::
+
+        Capabilities capabilities = new Capabilities();
+        capabilities.addType( Beyond.class ); // add to SpatialCapabilities
+        capabilities.addType( PropertyIsEqualTo.class ); // add to ScalarCapabilities
+        capabilities.addName( "NullCheck" ); // will enable PropertyIsNull use
+        capabilities.addName( "Mul" ); // will enable hasSimpleArithmatic
+        capabilities.addName( "random" ); // a function returning a random number
+        capabilities.addName( "Length", 1 ); // single argument function
+        capabilities.addName( "toDegrees", "radians" ); // single argument function
+        capabilities.addName( "length", "expression" );
+        
+* Using Capabilities::
+        
+        Capabilities capabilities = new Capabilities( filterCapabilities );
+        
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        Filter filter = ff.between( ff.literal(0), ff.property("x"), ff.literal( 2 ) );        
+        
+        if( capabilities.supports( filter ) ){
+           // native support for "between" available
+        }

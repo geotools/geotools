@@ -51,7 +51,9 @@ Here is the same example using common query language and direct feature access::
 Filter
 ^^^^^^
 
-The filter interface itself is designed to test set membership. That sounds dry - but it is accurate. A filter is used to test features one at a time to determine what you want returned to you. Being a spatial standard the tests are often spatial in nature (like intersects, bounding box).
+The filter interface itself is designed to test set membership. That sounds dry - but it is
+accurate. A filter is used to test features one at a time to determine what you want returned to
+you. Being a spatial standard the tests are often spatial in nature (like intersects, bounding box).
 
 You can think of Filter as similar to an SQL WHERE clause.
 
@@ -68,21 +70,25 @@ You can think of Filter as similar to an SQL WHERE clause.
 CQL
 '''
 
-The common query language is a standard that appeared as part of the OGC Catalog specification. It defines an text syntax similar to SQL for defining Filters.::
+The common query language is a standard that appeared as part of the OGC Catalog specification. It
+defines an text syntax similar to SQL for defining Filters.::
    
    Filter filter = CQL.toFilter("attName >= 5");
    Expression percent = CQL.toExpression("ratio * 100");
 
-In addition to the base standard the GeoTools community has allowed for a couple of extensions available using the ECQL class::
+In addition to the base standard the GeoTools community has allowed for a couple of extensions
+available using the ECQL class::
    
    Filter filter = ECQL.toFilter("area( SHAPE ) BETWEEN 10000 AND 30000");
 
-In this case the idea of comparing an area expression is an extension as the base CQL specification only allows property values to be compared.
+In this case the idea of comparing an area expression is an extension as the base CQL specification
+only allows property values to be compared.
 
 FilterFactory
 '''''''''''''
 
-By using the FilterFactory you can create objects by hand. The FilterFactory interface is limited to strict specification compliance.::
+By using the FilterFactory you can create objects by hand. The FilterFactory interface is limited
+to strict specification compliance.::
    
    FilterFactory ff = CommonFactoryFinder.getFilterFactory( GeoTools.getDefaultHints );
    Filter filter = ff.propertyLessThan( ff.property( "AGE"), ff.literal( 12 ) );
@@ -90,17 +96,20 @@ By using the FilterFactory you can create objects by hand. The FilterFactory int
 FilterFactory2
 ''''''''''''''
 
-In the real world we need to go beyond the specification. FilterFactory2 will let you work with JTS Geometry instances (the specification is only defined to work with ISO Geometry).::
+In the real world we need to go beyond the specification. FilterFactory2 will let you work with JTS
+Geometry instances (the specification is only defined to work with ISO Geometry).::
    
    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2( GeoTools.getDefaultHints );
    Filter filter = ff.contains( ff.property( "THE_GEOM"), ff.literal( geometry ) );
 
-FilterFactory2 also let's you define your filters in a bit more of a free form manner. In the specification all operations must have the PropertyName expression first.
+FilterFactory2 also let's you define your filters in a bit more of a free form manner. In the
+specification all operations must have the PropertyName expression first.
 
 XML
 '''
 
-Remember that Filter is a standard? Well it actually is an XML standard with documents that look like this::
+Remember that Filter is a standard? Well it actually is an XML standard with documents that look
+like this::
    
    <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml">
      <ogc:PropertyIsGreaterThanOrEqualTo>
@@ -148,8 +157,8 @@ To parse a DOM fragement::
 Using Filter
 ''''''''''''
 
-The core filter abstractions are here. This set of interfaces is closed (you cannot make a new filter class and expect it to work).
-
+The core filter abstractions are here. This set of interfaces is closed (you cannot make a new
+filter class and expect it to work).
 
 .. image:: /images/filter_model.PNG
 
@@ -164,7 +173,12 @@ Spatial filters are also available.
 
 .. image:: /images/filter_spatial.PNG
 
-The most common thing todo is use a Filter to evaluate a Feature to see if it is in the set or out of the set.::
+As well as temporal filters.
+
+.. image:: /images/filter_temporal.PNG
+
+The most common thing todo is use a Filter to evaluate a Feature to see if it is in the set or
+out of the set.::
    
    if( filter.evaluate( feature ) ){
        // the feature was "selected" by the filter
@@ -175,12 +189,15 @@ You can also using a Filter on normal Java objects (ie POJOs).
 
 **INCLUDES and EXCLUDES**
 
-There are two constants defined that can be used as Sentinel objects (or placeholders). Both of them represent "I don't have a Filter", but they differ in what client code is supposed to do about it.
+There are two constants defined that can be used as Sentinel objects (or placeholders). Both of
+them represent "I don't have a Filter", but they differ in what client code is supposed to do
+about it.
 
 * Filter.INCLUDES - all content is included in the set. Would return EVERYTHING if used in a Query.
 * Filter.EXCLUDES - don't include any content. Would return an empty Collection if used in a Query.
 
-These values are often used as default values in other data structures - for example the default value for Query.getFilter() is Filter.INCLUDES.
+These values are often used as default values in other data structures - for example the default
+value for Query.getFilter() is Filter.INCLUDES.
 
 * You can check for these values when optimising::
     
@@ -202,10 +219,10 @@ These values are often used as default values in other data structures - for exa
 Expression
 ^^^^^^^^^^
 
-Many of the filters mentioned above are presented as a comparison between two (or more) expressions. Expressions are used to access data held in a Feature (or POJO, or Record, or ...).
+Many of the filters mentioned above are presented as a comparison between two (or more)
+expressions. Expressions are used to access data held in a Feature (or POJO, or Record, or ...).
 
 The core expression abstractions are here - this set is open in that you can define new functions.
-
 
 .. image:: /images/filter_expression.PNG
 
@@ -229,7 +246,8 @@ As an example of conversion here is an expression converting a String to a Color
    Expression expr = ff.literal("#FF0000")
    Color color = expr.evaualte( null, Color.class );
 
-Expressions are so useful that you will see them pop up in many parts of GeoTools. They are used by styles to select which data for portrayal and so forth.
+Expressions are so useful that you will see them pop up in many parts of GeoTools. They are used
+by styles to select which data for portrayal and so forth.
 
 * PropertyName
   
@@ -281,8 +299,8 @@ Expressions are so useful that you will see them pop up in many parts of GeoTool
      NamespaceSupport namespaceSupport2 = propertyName.getNamespaceContext();
       // now namespaceSupport2 == namespaceSupport !
 
-  PropertyName.getNamespaceContext() will return null when the PropertyName expression does not contain or
-  does not support Namespace context information.
+  PropertyName.getNamespaceContext() will return null when the PropertyName expression does not
+  contain or does not support Namespace context information.
 
 * Functions
   
@@ -312,8 +330,8 @@ Expressions are so useful that you will see them pop up in many parts of GeoTool
       FunctionFinder finder = new FunctionFinder(null);
       finder.findFunction("pi", Collections.emptyList(), ff.literal(Math.PI));
   
-  Please note that the literal value provided above is only used when the expression is evaluated in context
-  of a service that does not support the **pi()** function.
+  Please note that the literal value provided above is only used when the expression is evaluated
+  in context of a service that does not support the **pi()** function.
 
 FilterVisitor
 ^^^^^^^^^^^^^
@@ -359,3 +377,22 @@ Here is a quick code example showing the use of a visitor to traverse the data s
   System.out.println("Property Names found "+visitor.found );
 
 For more examples please see gt-main where several visitors are defined for your use.
+
+FilterCapabilities
+^^^^^^^^^^^^^^^^^^
+
+GeoTools is very good about ensuring that your Filters and Expressions perform as expected; however
+it will do what you say (even at a great cost to performance!). Different web services and
+databases have different native capabilities. For any functionality that cannot be provided
+natively GeoTools will perform the work locally in Java. Indeed for simple file formats almost
+everything occurs locally in Java.
+
+The **FilterCapabilities** data structure is used to describe the native abilities of a
+WebFeatureService. We also use this data structure to describe the abilities of the different
+JDBC DataStores for working with Databases. Of special interest is the list of FunctionNames
+supported.
+
+.. image:: /images/filter_capabilities.PNG
+
+This data structure is not commonly used in day to day GeoTools work; it is mostly of interest to
+those implementing support for new web or database services.

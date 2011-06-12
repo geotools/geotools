@@ -293,7 +293,7 @@ public class ReferencedEnvelope extends Envelope implements org.opengis.geometry
      * Make sure that the specified bounding box uses the same CRS than this one.
      * 
      * @param  bbox The other bounding box to test for compatibility.
-     * @throws MismatchedReferenceSystemException if the CRS are incompatibles.
+     * @throws MismatchedReferenceSystemException if the CRS are incompatible.
      */
     private void ensureCompatibleReferenceSystem(final BoundingBox bbox)
         throws MismatchedReferenceSystemException {
@@ -307,7 +307,22 @@ public class ReferencedEnvelope extends Envelope implements org.opengis.geometry
             }
         }
     }
-    
+    /**
+     * Make sure that the specified location uses the same CRS as this one.
+     * @param location
+     * @throws MismatchedReferenceSystemException if the CRS are incompatible.
+     */
+    private void ensureCompatibleReferenceSystem(DirectPosition location) {
+        if (crs != null) {
+            final CoordinateReferenceSystem other = location.getCoordinateReferenceSystem();
+            if (other != null) {
+                if (!CRS.equalsIgnoreMetadata(crs, other)) {
+                    throw new MismatchedReferenceSystemException(Errors.format(
+                            ErrorKeys.MISMATCHED_COORDINATE_REFERENCE_SYSTEM));
+                }
+            }
+        }
+    }
     /**
      * Returns the coordinate reference system associated with this envelope.
      */
@@ -468,6 +483,7 @@ public class ReferencedEnvelope extends Envelope implements org.opengis.geometry
      * @since 2.4
      */
     public boolean contains(DirectPosition pos) {
+        ensureCompatibleReferenceSystem( pos );
         return super.contains(pos.getOrdinate(0), pos.getOrdinate(1));
     }
 

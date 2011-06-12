@@ -1,0 +1,223 @@
+<class-diagram version="1.0.1" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
+  realizations="true" associations="true" dependencies="false" nesting-relationships="true">  
+  <interface id="1" corner="BOTTOM_RIGHT" language="java" name="org.opengis.filter.Filter" project="gt-opengis" 
+    file="/gt-opengis/src/main/java/org/opengis/filter/Filter.java" binary="false">    
+    <position x="181" y="47" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="false">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </interface>  
+  <interface id="15" corner="BOTTOM_RIGHT" language="java" name="org.opengis.filter.MultiValuedFilter" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/filter/MultiValuedFilter.java" binary="false">    
+    <position x="181" y="147" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="false" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="true" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="16" corner="BOTTOM_RIGHT" language="java" name="org.opengis.filter.temporal.BinaryTemporalOperator" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/filter/temporal/BinaryTemporalOperator.java" 
+    binary="false">    
+    <position x="181" y="233" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="false" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="true" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="17" corner="BOTTOM_RIGHT" language="java" name="org.opengis.filter.temporal.After" project="gt-opengis" 
+    file="/gt-opengis/src/main/java/org/opengis/filter/temporal/After.java" binary="false">    
+    <position x="93" y="308" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="false" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="18" corner="BOTTOM_RIGHT" language="java" name="org.opengis.filter.temporal.AnyInteracts" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/filter/temporal/AnyInteracts.java" binary="false">    
+    <position x="93" y="359" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="false" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="19" corner="BOTTOM_RIGHT" language="java" name="org.opengis.filter.temporal.Before" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/filter/temporal/Before.java" binary="false">    
+    <position x="93" y="405" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="false" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="20" corner="BOTTOM_RIGHT" language="java" name="org.opengis.filter.temporal.Begins" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/filter/temporal/Begins.java" binary="false">    
+    <position x="93" y="467" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="false" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="21" corner="BOTTOM_RIGHT" language="java" name="org.opengis.filter.temporal.BegunBy" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/filter/temporal/BegunBy.java" binary="false">    
+    <position x="94" y="527" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="false" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="22" corner="BOTTOM_RIGHT" language="java" name="org.opengis.filter.temporal.During" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/filter/temporal/During.java" binary="false">    
+    <position x="93" y="584" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="false" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="23" corner="BOTTOM_RIGHT" language="java" name="org.opengis.filter.temporal.EndedBy" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/filter/temporal/EndedBy.java" binary="false">    
+    <position x="93" y="639" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="false" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="24" corner="BOTTOM_RIGHT" language="java" name="org.opengis.filter.temporal.Ends" project="gt-opengis" 
+    file="/gt-opengis/src/main/java/org/opengis/filter/temporal/Ends.java" binary="false">    
+    <position x="285" y="309" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="false" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="25" corner="BOTTOM_RIGHT" language="java" name="org.opengis.filter.temporal.Meets" project="gt-opengis" 
+    file="/gt-opengis/src/main/java/org/opengis/filter/temporal/Meets.java" binary="false">    
+    <position x="285" y="360" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="false" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="26" corner="BOTTOM_RIGHT" language="java" name="org.opengis.filter.temporal.MetBy" project="gt-opengis" 
+    file="/gt-opengis/src/main/java/org/opengis/filter/temporal/MetBy.java" binary="false">    
+    <position x="285" y="406" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="false" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="27" corner="BOTTOM_RIGHT" language="java" name="org.opengis.filter.temporal.OverlappedBy" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/filter/temporal/OverlappedBy.java" binary="false">    
+    <position x="290" y="468" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="false" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="28" corner="BOTTOM_RIGHT" language="java" name="org.opengis.filter.temporal.TContains" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/filter/temporal/TContains.java" binary="false">    
+    <position x="285" y="530" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="false" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="29" corner="BOTTOM_RIGHT" language="java" name="org.opengis.filter.temporal.TEquals" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/filter/temporal/TEquals.java" binary="false">    
+    <position x="285" y="585" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="false" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="30" corner="BOTTOM_RIGHT" language="java" name="org.opengis.filter.temporal.TOverlaps" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/filter/temporal/TOverlaps.java" binary="false">    
+    <position x="285" y="640" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="false" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <generalization>    
+    <end type="SOURCE" nodeId="16"/>    
+    <end type="TARGET" nodeId="15"/>  
+  </generalization>  
+  <generalization>    
+    <bendpoint x="183" y="527"/>    
+    <end type="SOURCE" nodeId="28"/>    
+    <end type="TARGET" nodeId="16"/>  
+  </generalization>  
+  <generalization>    
+    <bendpoint x="182" y="585"/>    
+    <end type="SOURCE" nodeId="22"/>    
+    <end type="TARGET" nodeId="16"/>  
+  </generalization>  
+  <generalization>    
+    <bendpoint x="183" y="468"/>    
+    <end type="SOURCE" nodeId="27"/>    
+    <end type="TARGET" nodeId="16"/>  
+  </generalization>  
+  <generalization>    
+    <bendpoint x="182" y="360"/>    
+    <end type="SOURCE" nodeId="18"/>    
+    <end type="TARGET" nodeId="16"/>  
+  </generalization>  
+  <generalization>    
+    <bendpoint x="183" y="309"/>    
+    <end type="SOURCE" nodeId="24"/>    
+    <end type="TARGET" nodeId="16"/>  
+  </generalization>  
+  <generalization>    
+    <bendpoint x="182" y="405"/>    
+    <end type="SOURCE" nodeId="26"/>    
+    <end type="TARGET" nodeId="16"/>  
+  </generalization>  
+  <generalization>    
+    <bendpoint x="183" y="528"/>    
+    <end type="SOURCE" nodeId="21"/>    
+    <end type="TARGET" nodeId="16"/>  
+  </generalization>  
+  <generalization>    
+    <bendpoint x="183" y="584"/>    
+    <end type="SOURCE" nodeId="29"/>    
+    <end type="TARGET" nodeId="16"/>  
+  </generalization>  
+  <generalization>    
+    <bendpoint x="183" y="406"/>    
+    <end type="SOURCE" nodeId="19"/>    
+    <end type="TARGET" nodeId="16"/>  
+  </generalization>  
+  <generalization>    
+    <bendpoint x="183" y="360"/>    
+    <end type="SOURCE" nodeId="25"/>    
+    <end type="TARGET" nodeId="16"/>  
+  </generalization>  
+  <generalization>    
+    <bendpoint x="182" y="309"/>    
+    <end type="SOURCE" nodeId="17"/>    
+    <end type="TARGET" nodeId="16"/>  
+  </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="15"/>    
+    <end type="TARGET" nodeId="1"/>  
+  </generalization>  
+  <generalization>    
+    <bendpoint x="183" y="639"/>    
+    <end type="SOURCE" nodeId="30"/>    
+    <end type="TARGET" nodeId="16"/>  
+  </generalization>  
+  <generalization>    
+    <bendpoint x="183" y="468"/>    
+    <end type="SOURCE" nodeId="20"/>    
+    <end type="TARGET" nodeId="16"/>  
+  </generalization>  
+  <generalization>    
+    <bendpoint x="182" y="639"/>    
+    <end type="SOURCE" nodeId="23"/>    
+    <end type="TARGET" nodeId="16"/>  
+  </generalization>  
+  <classifier-display autosize="true" package="false" initial-value="false" signature="false" visibility="true">    
+    <attributes public="false" package="false" protected="false" private="false"/>    
+    <operations public="false" package="false" protected="false" private="false"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

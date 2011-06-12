@@ -3,7 +3,8 @@
  *    http://geotools.org
  *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
- *
+ *    (C) 2001 Vivid Solutions
+ *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -19,14 +20,17 @@ package org.geotools.geometry;
 import java.awt.geom.Rectangle2D;
 
 import org.opengis.util.Cloneable;
+import org.opengis.geometry.BoundingBox;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.Envelope;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.geometry.MismatchedReferenceSystemException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.cs.AxisDirection;
+import org.opengis.referencing.operation.TransformException;
 
 import org.geotools.util.Utilities;
+import org.geotools.referencing.CRS;
 import org.geotools.resources.i18n.Errors;
 import org.geotools.resources.i18n.ErrorKeys;
 
@@ -53,7 +57,7 @@ import org.geotools.resources.i18n.ErrorKeys;
  * @see org.geotools.geometry.jts.ReferencedEnvelope
  * @see org.opengis.metadata.extent.GeographicBoundingBox
  */
-public class Envelope2D extends Rectangle2D.Double implements Envelope, Cloneable {
+public class Envelope2D extends Rectangle2D.Double implements BoundingBox, Envelope, Cloneable {
     /**
      * Serial number for interoperability with different versions.
      */
@@ -381,5 +385,137 @@ public class Envelope2D extends Rectangle2D.Double implements Envelope, Cloneabl
     @Override
     public String toString() {
         return AbstractEnvelope.toString(this);
+    }
+    // BoundingBox
+    public void setBounds(BoundingBox bounds) {
+        this.crs = bounds.getCoordinateReferenceSystem();
+        this.x=bounds.getMinX();
+        this.y=bounds.getMinY();
+        this.width=bounds.getWidth();
+        this.height=bounds.getHeight();
+    }
+
+    public void include(BoundingBox bounds) {
+        if( crs == null ){
+            this.crs = bounds.getCoordinateReferenceSystem();
+        }
+        else {
+            ensureCompatibleReferenceSystem(bounds);
+        }
+        if (bounds.isEmpty()) {
+            return;
+        }
+        if (isEmpty()) {
+            setBounds(bounds);
+        } else {
+            if (bounds.getMinX() < getMinX()) {
+                this.width = width + (getMinX() - bounds.getMinX());
+                this.x = bounds.getMinX();
+            }
+            if (bounds.getMaxX() > getMaxX()) {
+                this.width = width + (bounds.getMaxX() - getMaxX());
+            }
+            if (bounds.getMinY() < getMinY()) {
+                this.height = height + (getMinY() - bounds.getMinY());
+                this.y = bounds.getMinY();
+            }
+            if (bounds.getMaxY() > getMaxY()) {
+                this.height = height + (bounds.getMaxY() - getMaxY());
+            }
+        }
+    }
+
+    public void include(double x, double y) {
+        if (isEmpty()) {
+            this.x = x;
+            this.y = y;
+            this.width = 0;
+            this.height = 0;
+        } else {
+            if (x < getMinX()) {
+                this.width = width + (getMinX() - x);
+                this.x = x;
+            }
+            if (x > getMaxX()) {
+                this.width = width + (x - getMaxX());
+            }
+            if (y < getMinY()) {
+                this.height = height + (getMinY() - y);
+                this.y = y;
+            }
+            if (y > getMaxY()) {
+                this.height = height + (y - getMaxY());
+            }
+        }
+    }
+
+    public boolean intersects(BoundingBox bounds) {
+        ensureCompatibleReferenceSystem(bounds);
+        if (isEmpty() || bounds.isEmpty()) {
+            return false;
+        }
+        return !(bounds.getMinX() > this.getMaxX() ||
+                bounds.getMaxX() < this.getMinX() ||
+                bounds.getMinY() > this.getMaxY() ||
+                bounds.getMaxY() < this.getMinY());
+    }
+
+    public boolean contains(BoundingBox bounds) {
+        ensureCompatibleReferenceSystem(bounds);
+        if (isEmpty() || bounds.isEmpty()) {
+            return false;
+        }
+        return bounds.getMinX() >= this.getMinX() &&
+            bounds.getMaxX() <= this.getMaxX() &&
+            bounds.getMinY() >= this.getMinY() &&
+            bounds.getMaxY() <= this.getMaxY();
+        }
+
+    public boolean contains(DirectPosition location) {
+        ensureCompatibleReferenceSystem( location );
+        if (isEmpty()){
+            return false;
+        }
+        return location.getOrdinate(0) >= getMinX() &&
+            location.getOrdinate(0) <= getMaxX() &&
+            location.getOrdinate(1) >= getMinY() &&
+            location.getOrdinate(1) <= getMaxY();
+    }
+
+    public BoundingBox toBounds(CoordinateReferenceSystem targetCRS) throws TransformException {
+        Envelope transformed = new GeneralEnvelope( (BoundingBox) this );
+        transformed = CRS.transform( transformed, targetCRS);
+        return new Envelope2D( transformed );
+    }
+    
+    // utility methods
+    /**
+     * Make sure that the specified bounding box uses the same CRS than this one.
+     * 
+     * @param  bbox The other bounding box to test for compatibility.
+     * @throws MismatchedReferenceSystemException if the CRS are incompatibles.
+     */
+    private void ensureCompatibleReferenceSystem(final BoundingBox bbox)
+        throws MismatchedReferenceSystemException {
+        if (crs != null) {
+            final CoordinateReferenceSystem other = bbox.getCoordinateReferenceSystem();
+            if (other != null) {
+                if (!CRS.equalsIgnoreMetadata(crs, other)) {
+                    throw new MismatchedReferenceSystemException(Errors.format(
+                            ErrorKeys.MISMATCHED_COORDINATE_REFERENCE_SYSTEM));
+                }
+            }
+        }
+    }
+    private void ensureCompatibleReferenceSystem(DirectPosition location) {
+        if (crs != null) {
+            final CoordinateReferenceSystem other = location.getCoordinateReferenceSystem();
+            if (other != null) {
+                if (!CRS.equalsIgnoreMetadata(crs, other)) {
+                    throw new MismatchedReferenceSystemException(Errors.format(
+                            ErrorKeys.MISMATCHED_COORDINATE_REFERENCE_SYSTEM));
+                }
+            }
+        }
     }
 }

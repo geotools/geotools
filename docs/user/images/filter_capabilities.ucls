@@ -1,0 +1,208 @@
+<class-diagram version="1.0.1" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
+  realizations="true" associations="true" dependencies="true" nesting-relationships="true">  
+  <interface id="1" corner="BOTTOM_RIGHT" language="java" name="org.opengis.filter.capability.FilterCapabilities" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/filter/capability/FilterCapabilities.java" 
+    binary="false">    
+    <position x="376" y="77" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="true" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="2" corner="BOTTOM_RIGHT" language="java" name="org.opengis.filter.capability.ScalarCapabilities" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/filter/capability/ScalarCapabilities.java" 
+    binary="false">    
+    <position x="177" y="196" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="3" corner="BOTTOM_RIGHT" language="java" name="org.opengis.filter.capability.ComparisonOperators" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/filter/capability/ComparisonOperators.java" 
+    binary="false">    
+    <position x="288" y="282" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="4" corner="BOTTOM_RIGHT" language="java" name="org.opengis.filter.capability.ArithmeticOperators" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/filter/capability/ArithmeticOperators.java" 
+    binary="false">    
+    <position x="109" y="283" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="5" corner="BOTTOM_RIGHT" language="java" name="org.opengis.filter.capability.Functions" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/filter/capability/Functions.java" binary="false">    
+    <position x="109" y="352" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="6" corner="BOTTOM_RIGHT" language="java" name="org.opengis.filter.capability.SpatialCapabilities" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/filter/capability/SpatialCapabilities.java" 
+    binary="false">    
+    <position x="684" y="199" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="7" corner="BOTTOM_RIGHT" language="java" name="org.opengis.filter.capability.SpatialOperators" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/filter/capability/SpatialOperators.java" 
+    binary="false">    
+    <position x="684" y="283" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="8" corner="BOTTOM_RIGHT" language="java" name="org.opengis.filter.capability.IdCapabilities" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/filter/capability/IdCapabilities.java" 
+    binary="false">    
+    <position x="323" y="197" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="9" corner="BOTTOM_RIGHT" language="java" name="org.opengis.filter.capability.TemporalCapabilities" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/filter/capability/TemporalCapabilities.java" 
+    binary="false">    
+    <position x="480" y="198" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="10" corner="BOTTOM_RIGHT" language="java" name="org.opengis.filter.capability.TemporalOperators" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/filter/capability/TemporalOperators.java" 
+    binary="false">    
+    <position x="480" y="287" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="11" corner="BOTTOM_RIGHT" language="java" name="org.opengis.filter.capability.FunctionName" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/filter/capability/FunctionName.java" binary="false">    
+    <position x="110" y="589" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </interface>  
+  <interface id="12" corner="BOTTOM_RIGHT" language="java" name="org.opengis.filter.capability.Operator" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/filter/capability/Operator.java" binary="false">    
+    <position x="288" y="405" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </interface>  
+  <class id="13" corner="BOTTOM_RIGHT" language="java" name="org.opengis.filter.capability.GeometryOperand" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/filter/capability/GeometryOperand.java" 
+    binary="false">    
+    <position x="691" y="724" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="true" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <interface id="14" corner="BOTTOM_RIGHT" language="java" name="org.opengis.filter.capability.SpatialOperator" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/filter/capability/SpatialOperator.java" 
+    binary="false">    
+    <position x="684" y="563" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </interface>  
+  <interface id="15" corner="BOTTOM_RIGHT" language="java" name="org.opengis.filter.capability.TemporalOperator" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/filter/capability/TemporalOperator.java" 
+    binary="false">    
+    <position x="376" y="565" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </interface>  
+  <dependency>    
+    <end type="SOURCE" nodeId="4"/>    
+    <end type="TARGET" nodeId="5"/>  
+  </dependency>  
+  <dependency>    
+    <end type="SOURCE" nodeId="7"/>    
+    <end type="TARGET" nodeId="14"/>  
+  </dependency>  
+  <generalization>    
+    <end type="SOURCE" nodeId="14"/>    
+    <end type="TARGET" nodeId="12"/>  
+  </generalization>  
+  <dependency>    
+    <end type="SOURCE" nodeId="5"/>    
+    <end type="TARGET" nodeId="11"/>  
+  </dependency>  
+  <dependency>    
+    <end type="SOURCE" nodeId="1"/>    
+    <end type="TARGET" nodeId="9"/>  
+  </dependency>  
+  <dependency>    
+    <end type="SOURCE" nodeId="1"/>    
+    <end type="TARGET" nodeId="2"/>  
+  </dependency>  
+  <generalization>    
+    <end type="SOURCE" nodeId="15"/>    
+    <end type="TARGET" nodeId="12"/>  
+  </generalization>  
+  <dependency>    
+    <end type="SOURCE" nodeId="14"/>    
+    <end type="TARGET" nodeId="13"/>  
+  </dependency>  
+  <dependency>    
+    <end type="SOURCE" nodeId="1"/>    
+    <end type="TARGET" nodeId="8"/>  
+  </dependency>  
+  <dependency>    
+    <end type="SOURCE" nodeId="6"/>    
+    <end type="TARGET" nodeId="7"/>  
+  </dependency>  
+  <dependency>    
+    <end type="SOURCE" nodeId="10"/>    
+    <end type="TARGET" nodeId="15"/>  
+  </dependency>  
+  <dependency>    
+    <end type="SOURCE" nodeId="9"/>    
+    <end type="TARGET" nodeId="10"/>  
+  </dependency>  
+  <dependency>    
+    <end type="SOURCE" nodeId="2"/>    
+    <end type="TARGET" nodeId="4"/>  
+  </dependency>  
+  <dependency>    
+    <end type="SOURCE" nodeId="1"/>    
+    <end type="TARGET" nodeId="6"/>  
+  </dependency>  
+  <dependency>    
+    <end type="SOURCE" nodeId="3"/>    
+    <end type="TARGET" nodeId="12"/>  
+  </dependency>  
+  <generalization>    
+    <end type="SOURCE" nodeId="11"/>    
+    <end type="TARGET" nodeId="12"/>  
+  </generalization>  
+  <dependency>    
+    <end type="SOURCE" nodeId="2"/>    
+    <end type="TARGET" nodeId="3"/>  
+  </dependency>  
+  <classifier-display autosize="true" package="true" initial-value="false" signature="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true"/>    
+    <operations public="true" package="true" protected="true" private="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

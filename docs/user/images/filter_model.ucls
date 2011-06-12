@@ -2,15 +2,15 @@
   realizations="true" associations="true" dependencies="false" nesting-relationships="true">  
   <interface id="1" corner="BOTTOM_RIGHT" language="java" name="org.opengis.filter.Filter" project="gt-opengis" 
     file="/gt-opengis/src/main/java/org/opengis/filter/Filter.java" binary="false">    
-    <position x="450" y="490" width="-1" height="-1"/>    
+    <position x="134" y="67" width="-1" height="-1"/>    
     <display autosize="true" package="false" initial-value="false" signature="true" visibility="false">      
-      <attributes public="false" package="false" protected="false" private="false"/>      
+      <attributes public="true" package="false" protected="false" private="false"/>      
       <operations public="true" package="false" protected="false" private="false"/>    
     </display>  
   </interface>  
   <class id="2" corner="BOTTOM_RIGHT" language="java" name="org.opengis.filter.IncludeFilter" project="gt-opengis" 
     file="/gt-opengis/src/main/java/org/opengis/filter/IncludeFilter.java" binary="false">    
-    <position x="542" y="650" width="-1" height="-1"/>    
+    <position x="215" y="280" width="-1" height="-1"/>    
     <display autosize="true" package="false" initial-value="false" signature="false" visibility="false">      
       <attributes public="false" package="false" protected="false" private="false"/>      
       <operations public="false" package="false" protected="false" private="false"/>    
@@ -18,7 +18,7 @@
   </class>  
   <class id="3" corner="BOTTOM_RIGHT" language="java" name="org.opengis.filter.ExcludeFilter" project="gt-opengis" 
     file="/gt-opengis/src/main/java/org/opengis/filter/ExcludeFilter.java" binary="false">    
-    <position x="422" y="650" width="-1" height="-1"/>    
+    <position x="216" y="235" width="-1" height="-1"/>    
     <display autosize="true" package="false" initial-value="false" signature="false" visibility="false">      
       <attributes public="false" package="false" protected="false" private="false"/>      
       <operations public="false" package="false" protected="false" private="false"/>    
@@ -26,7 +26,7 @@
   </class>  
   <interface id="8" corner="BOTTOM_RIGHT" language="java" name="org.opengis.filter.PropertyIsLike" project="gt-opengis" 
     file="/gt-opengis/src/main/java/org/opengis/filter/PropertyIsLike.java" binary="false">    
-    <position x="717" y="562" width="-1" height="-1"/>    
+    <position x="489" y="242" width="-1" height="-1"/>    
     <display autosize="true" package="false" initial-value="false" signature="false" visibility="false">      
       <attributes public="false" package="false" protected="false" private="false"/>      
       <operations public="false" package="false" protected="false" private="false"/>    
@@ -34,7 +34,7 @@
   </interface>  
   <interface id="11" corner="BOTTOM_RIGHT" language="java" name="org.opengis.filter.PropertyIsBetween" 
     project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/filter/PropertyIsBetween.java" binary="false">    
-    <position x="732" y="762" width="-1" height="-1"/>    
+    <position x="504" y="280" width="-1" height="-1"/>    
     <display autosize="true" package="false" initial-value="false" signature="false" visibility="false">      
       <attributes public="false" package="false" protected="false" private="false"/>      
       <operations public="false" package="false" protected="false" private="false"/>    
@@ -43,31 +43,31 @@
   <interface id="12" corner="BOTTOM_RIGHT" language="java" name="org.opengis.filter.BinaryComparisonOperator" 
     project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/filter/BinaryComparisonOperator.java" 
     binary="false">    
-    <position x="761" y="403" width="-1" height="-1"/>    
+    <position x="367" y="362" width="-1" height="-1"/>    
     <display autosize="true" package="false" initial-value="false" signature="false" visibility="false">      
       <attributes public="false" package="false" protected="false" private="false"/>      
-      <operations public="false" package="false" protected="false" private="false"/>    
+      <operations public="true" package="false" protected="false" private="false"/>    
     </display>  
   </interface>  
   <interface id="13" corner="BOTTOM_RIGHT" language="java" name="org.opengis.filter.Id" project="gt-opengis" 
     file="/gt-opengis/src/main/java/org/opengis/filter/Id.java" binary="false">    
-    <position x="711" y="616" width="-1" height="-1"/>    
+    <position x="216" y="172" width="-1" height="-1"/>    
     <display autosize="true" package="false" initial-value="false" signature="false" visibility="false">      
       <attributes public="false" package="false" protected="false" private="false"/>      
-      <operations public="false" package="false" protected="false" private="false"/>    
+      <operations public="true" package="false" protected="false" private="false"/>    
     </display>  
   </interface>  
   <interface id="14" corner="BOTTOM_RIGHT" language="java" name="org.opengis.filter.Not" project="gt-opengis" 
     file="/gt-opengis/src/main/java/org/opengis/filter/Not.java" binary="false">    
-    <position x="711" y="672" width="-1" height="-1"/>    
+    <position x="356" y="-14" width="-1" height="-1"/>    
     <display autosize="true" package="false" initial-value="false" signature="false" visibility="false">      
       <attributes public="false" package="false" protected="false" private="false"/>      
-      <operations public="false" package="false" protected="false" private="false"/>    
+      <operations public="true" package="false" protected="false" private="false"/>    
     </display>  
   </interface>  
   <interface id="15" corner="BOTTOM_RIGHT" language="java" name="org.opengis.filter.Or" project="gt-opengis" 
     file="/gt-opengis/src/main/java/org/opengis/filter/Or.java" binary="false">    
-    <position x="982" y="236" width="-1" height="-1"/>    
+    <position x="566" y="75" width="-1" height="-1"/>    
     <display autosize="true" package="false" initial-value="false" signature="false" visibility="false">      
       <attributes public="false" package="false" protected="false" private="false"/>      
       <operations public="false" package="false" protected="false" private="false"/>    
@@ -75,7 +75,7 @@
   </interface>  
   <interface id="16" corner="BOTTOM_RIGHT" language="java" name="org.opengis.filter.And" project="gt-opengis" 
     file="/gt-opengis/src/main/java/org/opengis/filter/And.java" binary="false">    
-    <position x="981" y="168" width="-1" height="-1"/>    
+    <position x="568" y="31" width="-1" height="-1"/>    
     <display autosize="true" package="false" initial-value="false" signature="false" visibility="false">      
       <attributes public="false" package="false" protected="false" private="false"/>      
       <operations public="false" package="false" protected="false" private="false"/>    
@@ -83,15 +83,15 @@
   </interface>  
   <interface id="17" corner="BOTTOM_RIGHT" language="java" name="org.opengis.filter.BinaryLogicOperator" 
     project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/filter/BinaryLogicOperator.java" binary="false">    
-    <position x="738" y="192" width="-1" height="-1"/>    
+    <position x="382" y="46" width="-1" height="-1"/>    
     <display autosize="true" package="false" initial-value="false" signature="false" visibility="false">      
       <attributes public="false" package="false" protected="false" private="false"/>      
-      <operations public="false" package="false" protected="false" private="false"/>    
+      <operations public="true" package="false" protected="false" private="false"/>    
     </display>  
   </interface>  
   <interface id="18" corner="BOTTOM_RIGHT" language="java" name="org.opengis.filter.FilterFactory" project="gt-opengis" 
     file="/gt-opengis/src/main/java/org/opengis/filter/FilterFactory.java" binary="false">    
-    <position x="457" y="208" width="-1" height="-1"/>    
+    <position x="91" y="391" width="-1" height="-1"/>    
     <display autosize="true" package="false" initial-value="false" signature="false" visibility="false">      
       <attributes public="false" package="false" protected="false" private="false"/>      
       <operations public="false" package="false" protected="false" private="false"/>    
@@ -99,7 +99,7 @@
   </interface>  
   <interface id="19" corner="BOTTOM_RIGHT" language="java" name="org.opengis.filter.FilterFactory2" project="gt-opengis" 
     file="/gt-opengis/src/main/java/org/opengis/filter/FilterFactory2.java" binary="false">    
-    <position x="459" y="277" width="-1" height="-1"/>    
+    <position x="93" y="460" width="-1" height="-1"/>    
     <display autosize="true" package="false" initial-value="false" signature="false" visibility="false">      
       <attributes public="false" package="false" protected="false" private="false"/>      
       <operations public="false" package="false" protected="false" private="false"/>    
@@ -107,7 +107,7 @@
   </interface>  
   <interface id="22" corner="BOTTOM_RIGHT" language="java" name="org.opengis.filter.spatial.SpatialOperator" 
     project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/filter/spatial/SpatialOperator.java" binary="false">    
-    <position x="725" y="292" width="-1" height="-1"/>    
+    <position x="575" y="145" width="-1" height="-1"/>    
     <display autosize="true" package="false" initial-value="false" signature="false" visibility="false">      
       <attributes public="false" package="false" protected="false" private="false"/>      
       <operations public="false" package="false" protected="false" private="false"/>    
@@ -115,15 +115,15 @@
   </interface>  
   <interface id="23" corner="BOTTOM_RIGHT" language="java" name="org.opengis.filter.PropertyIsNull" project="gt-opengis" 
     file="/gt-opengis/src/main/java/org/opengis/filter/PropertyIsNull.java" binary="false">    
-    <position x="716" y="722" width="-1" height="-1"/>    
+    <position x="358" y="105" width="-1" height="-1"/>    
     <display autosize="true" package="false" initial-value="false" signature="false" visibility="false">      
       <attributes public="false" package="false" protected="false" private="false"/>      
-      <operations public="false" package="false" protected="false" private="false"/>    
+      <operations public="true" package="false" protected="false" private="false"/>    
     </display>  
   </interface>  
   <interface id="24" corner="BOTTOM_RIGHT" language="java" name="org.opengis.filter.PropertyIsEqualTo" 
     project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/filter/PropertyIsEqualTo.java" binary="false">    
-    <position x="977" y="490" width="-1" height="-1"/>    
+    <position x="483" y="428" width="-1" height="-1"/>    
     <display autosize="true" package="false" initial-value="false" signature="false" visibility="false">      
       <attributes public="false" package="false" protected="false" private="false"/>      
       <operations public="false" package="false" protected="false" private="false"/>    
@@ -131,7 +131,7 @@
   </interface>  
   <interface id="25" corner="BOTTOM_RIGHT" language="java" name="org.opengis.filter.PropertyIsLessThan" 
     project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/filter/PropertyIsLessThan.java" binary="false">    
-    <position x="983" y="542" width="-1" height="-1"/>    
+    <position x="489" y="480" width="-1" height="-1"/>    
     <display autosize="true" package="false" initial-value="false" signature="false" visibility="false">      
       <attributes public="false" package="false" protected="false" private="false"/>      
       <operations public="false" package="false" protected="false" private="false"/>    
@@ -140,7 +140,7 @@
   <interface id="26" corner="BOTTOM_RIGHT" language="java" name="org.opengis.filter.PropertyIsLessThanOrEqualTo" 
     project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/filter/PropertyIsLessThanOrEqualTo.java" 
     binary="false">    
-    <position x="1020" y="595" width="-1" height="-1"/>    
+    <position x="526" y="533" width="-1" height="-1"/>    
     <display autosize="true" package="false" initial-value="false" signature="false" visibility="false">      
       <attributes public="false" package="false" protected="false" private="false"/>      
       <operations public="false" package="false" protected="false" private="false"/>    
@@ -148,7 +148,7 @@
   </interface>  
   <interface id="27" corner="BOTTOM_RIGHT" language="java" name="org.opengis.filter.PropertyIsNotEqualTo" 
     project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/filter/PropertyIsNotEqualTo.java" binary="false">    
-    <position x="990" y="691" width="-1" height="-1"/>    
+    <position x="496" y="629" width="-1" height="-1"/>    
     <display autosize="true" package="false" initial-value="false" signature="false" visibility="false">      
       <attributes public="false" package="false" protected="false" private="false"/>      
       <operations public="false" package="false" protected="false" private="false"/>    
@@ -156,7 +156,7 @@
   </interface>  
   <interface id="28" corner="BOTTOM_RIGHT" language="java" name="org.opengis.filter.PropertyIsGreaterThan" 
     project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/filter/PropertyIsGreaterThan.java" binary="false">    
-    <position x="992" y="637" width="-1" height="-1"/>    
+    <position x="498" y="575" width="-1" height="-1"/>    
     <display autosize="true" package="false" initial-value="false" signature="false" visibility="false">      
       <attributes public="false" package="false" protected="false" private="false"/>      
       <operations public="false" package="false" protected="false" private="false"/>    
@@ -165,122 +165,128 @@
   <interface id="29" corner="BOTTOM_RIGHT" language="java" name="org.opengis.filter.PropertyIsGreaterThanOrEqualTo" 
     project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/filter/PropertyIsGreaterThanOrEqualTo.java" 
     binary="false">    
-    <position x="1028" y="743" width="-1" height="-1"/>    
+    <position x="534" y="681" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="false" visibility="false">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="30" corner="BOTTOM_RIGHT" language="java" name="org.opengis.filter.MultiValuedFilter" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/filter/MultiValuedFilter.java" binary="false">    
+    <position x="366" y="168" width="-1" height="-1"/>    
+    <display autosize="true" package="false" initial-value="false" signature="false" visibility="false">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="true" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="31" corner="BOTTOM_RIGHT" language="java" name="org.opengis.filter.temporal.BinaryTemporalOperator" 
+    project="gt-opengis" file="/gt-opengis/src/main/java/org/opengis/filter/temporal/BinaryTemporalOperator.java" 
+    binary="false">    
+    <position x="604" y="187" width="-1" height="-1"/>    
     <display autosize="true" package="false" initial-value="false" signature="false" visibility="false">      
       <attributes public="false" package="false" protected="false" private="false"/>      
       <operations public="false" package="false" protected="false" private="false"/>    
     </display>  
   </interface>  
   <generalization>    
-    <bendpoint x="860" y="688"/>    
-    <bendpoint x="860" y="537"/>    
-    <end type="SOURCE" nodeId="27"/>    
-    <end type="TARGET" nodeId="12"/>  
-  </generalization>  
-  <realization>    
-    <bendpoint x="543" y="590"/>    
-    <bendpoint x="448" y="590"/>    
-    <end type="SOURCE" nodeId="2"/>    
-    <end type="TARGET" nodeId="1"/>  
-  </realization>  
-  <generalization>    
-    <bendpoint x="860" y="592"/>    
-    <bendpoint x="860" y="537"/>    
-    <end type="SOURCE" nodeId="26"/>    
-    <end type="TARGET" nodeId="12"/>  
-  </generalization>  
-  <generalization>    
-    <bendpoint x="609" y="615"/>    
-    <bendpoint x="608" y="489"/>    
+    <bendpoint x="134" y="173"/>    
     <end type="SOURCE" nodeId="13"/>    
     <end type="TARGET" nodeId="1"/>  
   </generalization>  
-  <generalization>    
-    <bendpoint x="872" y="169"/>    
-    <bendpoint x="872" y="195"/>    
-    <end type="SOURCE" nodeId="16"/>    
-    <end type="TARGET" nodeId="17"/>  
-  </generalization>  
-  <generalization>    
-    <bendpoint x="861" y="637"/>    
-    <bendpoint x="860" y="537"/>    
-    <end type="SOURCE" nodeId="28"/>    
-    <end type="TARGET" nodeId="12"/>  
-  </generalization>  
-  <generalization>    
-    <bendpoint x="610" y="402"/>    
-    <bendpoint x="609" y="489"/>    
-    <end type="SOURCE" nodeId="12"/>    
-    <end type="TARGET" nodeId="1"/>  
-  </generalization>  
-  <generalization>    
-    <bendpoint x="608" y="722"/>    
-    <bendpoint x="608" y="488"/>    
-    <end type="SOURCE" nodeId="23"/>    
-    <end type="TARGET" nodeId="1"/>  
-  </generalization>  
-  <generalization>    
-    <bendpoint x="873" y="238"/>    
-    <bendpoint x="872" y="195"/>    
-    <end type="SOURCE" nodeId="15"/>    
-    <end type="TARGET" nodeId="17"/>  
-  </generalization>  
   <realization>    
-    <bendpoint x="422" y="591"/>    
-    <bendpoint x="449" y="591"/>    
+    <bendpoint x="133" y="234"/>    
     <end type="SOURCE" nodeId="3"/>    
     <end type="TARGET" nodeId="1"/>  
   </realization>  
   <generalization>    
-    <bendpoint x="861" y="741"/>    
-    <bendpoint x="860" y="538"/>    
+    <bendpoint x="366" y="626"/>    
+    <bendpoint x="366" y="475"/>    
+    <end type="SOURCE" nodeId="27"/>    
+    <end type="TARGET" nodeId="12"/>  
+  </generalization>  
+  <realization>    
+    <bendpoint x="133" y="280"/>    
+    <end type="SOURCE" nodeId="2"/>    
+    <end type="TARGET" nodeId="1"/>  
+  </realization>  
+  <generalization>    
+    <bendpoint x="367" y="679"/>    
+    <bendpoint x="366" y="476"/>    
     <end type="SOURCE" nodeId="29"/>    
     <end type="TARGET" nodeId="12"/>  
   </generalization>  
   <generalization>    
-    <bendpoint x="861" y="538"/>    
-    <end type="SOURCE" nodeId="25"/>    
-    <end type="TARGET" nodeId="12"/>  
-  </generalization>  
-  <generalization>    
-    <bendpoint x="612" y="190"/>    
-    <bendpoint x="608" y="488"/>    
-    <end type="SOURCE" nodeId="17"/>    
+    <end type="SOURCE" nodeId="23"/>    
     <end type="TARGET" nodeId="1"/>  
   </generalization>  
   <generalization>    
-    <bendpoint x="609" y="672"/>    
-    <bendpoint x="608" y="488"/>    
+    <bendpoint x="366" y="530"/>    
+    <bendpoint x="366" y="475"/>    
+    <end type="SOURCE" nodeId="26"/>    
+    <end type="TARGET" nodeId="12"/>  
+  </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="16"/>    
+    <end type="TARGET" nodeId="17"/>  
+  </generalization>  
+  <generalization>    
+    <bendpoint x="367" y="575"/>    
+    <bendpoint x="366" y="475"/>    
+    <end type="SOURCE" nodeId="28"/>    
+    <end type="TARGET" nodeId="12"/>  
+  </generalization>  
+  <generalization>    
+    <bendpoint x="368" y="245"/>    
+    <end type="SOURCE" nodeId="8"/>    
+    <end type="TARGET" nodeId="30"/>  
+  </generalization>  
+  <generalization>    
     <end type="SOURCE" nodeId="14"/>    
     <end type="TARGET" nodeId="1"/>  
   </generalization>  
   <generalization>    
-    <bendpoint x="608" y="561"/>    
-    <bendpoint x="609" y="488"/>    
-    <end type="SOURCE" nodeId="8"/>    
+    <end type="SOURCE" nodeId="17"/>    
     <end type="TARGET" nodeId="1"/>  
   </generalization>  
   <generalization>    
-    <bendpoint x="861" y="490"/>    
-    <bendpoint x="861" y="536"/>    
-    <end type="SOURCE" nodeId="24"/>    
+    <bendpoint x="366" y="479"/>    
+    <end type="SOURCE" nodeId="25"/>    
     <end type="TARGET" nodeId="12"/>  
   </generalization>  
   <generalization>    
-    <bendpoint x="608" y="761"/>    
-    <bendpoint x="608" y="488"/>    
-    <end type="SOURCE" nodeId="11"/>    
-    <end type="TARGET" nodeId="1"/>  
+    <bendpoint x="367" y="428"/>    
+    <bendpoint x="367" y="474"/>    
+    <end type="SOURCE" nodeId="24"/>    
+    <end type="TARGET" nodeId="12"/>  
   </generalization>  
   <generalization>    
     <end type="SOURCE" nodeId="19"/>    
     <end type="TARGET" nodeId="18"/>  
   </generalization>  
   <generalization>    
-    <bendpoint x="610" y="291"/>    
-    <bendpoint x="608" y="489"/>    
-    <end type="SOURCE" nodeId="22"/>    
+    <end type="SOURCE" nodeId="30"/>    
     <end type="TARGET" nodeId="1"/>  
+  </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="12"/>    
+    <end type="TARGET" nodeId="30"/>  
+  </generalization>  
+  <generalization>    
+    <bendpoint x="367" y="282"/>    
+    <end type="SOURCE" nodeId="11"/>    
+    <end type="TARGET" nodeId="30"/>  
+  </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="31"/>    
+    <end type="TARGET" nodeId="30"/>  
+  </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="15"/>    
+    <end type="TARGET" nodeId="17"/>  
+  </generalization>  
+  <generalization>    
+    <end type="SOURCE" nodeId="22"/>    
+    <end type="TARGET" nodeId="30"/>  
   </generalization>  
   <classifier-display autosize="true" package="false" initial-value="false" signature="false" visibility="false">    
     <attributes public="false" package="false" protected="false" private="false"/>    

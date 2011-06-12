@@ -27,8 +27,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
-
-import javax.print.DocFlavor.URL;
+import org.geotools.data.DataTestCase;
 
 import junit.framework.TestCase;
 
@@ -49,9 +48,14 @@ import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 
-public class ExcelDatastoreTest extends TestCase {
+public class ExcelDatastoreTest extends DataTestCase {
 
-    static ExcelDataStore[] eds;
+    public ExcelDatastoreTest(String name) {
+		super(name);
+		// TODO Auto-generated constructor stub
+	}
+
+	static ExcelDataStore[] eds;
 
     static boolean setup = false;
 

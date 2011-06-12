@@ -21,6 +21,7 @@ import java.io.IOException;
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.jdbc.JDBCDataStore;
+import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.BinarySpatialOperator;
@@ -85,5 +86,11 @@ public class PostgisFilterToSQL extends FilterToSQL {
         return helper.visitBinarySpatialOperator(filter, property, geometry,
                 swapped, extraData);
     }
+    
+    GeometryDescriptor getCurrentGeometry() {
+        return currentGeometry;
+    }
+
+
 
 }

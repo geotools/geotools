@@ -18,6 +18,7 @@ package org.geotools.data.postgis;
 
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.jdbc.PreparedFilterToSQL;
+import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.BinarySpatialOperator;
@@ -50,6 +51,10 @@ public class PostgisPSFilterToSql extends PreparedFilterToSQL {
             Object extraData) {
         helper.out = out;
         return helper.visitBinarySpatialOperator(filter, property, geometry, swapped, extraData);
+    }
+    
+    GeometryDescriptor getCurrentGeometry() {
+        return currentGeometry;
     }
 
 }

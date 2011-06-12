@@ -26,7 +26,6 @@ import org.opengis.filter.capability.FunctionName;
 
 public class FilterFunction_floor extends FunctionExpressionImpl {
 
-    //public static FunctionName NAME = new FunctionNameImpl("floor","double");
     public static FunctionName NAME = new FunctionNameImpl("floor",
             parameter("floor", Double.class),
             parameter("double",Double.class));

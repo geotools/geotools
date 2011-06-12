@@ -19,9 +19,11 @@ package org.geotools.data.postgis;
 import java.io.IOException;
 import java.util.Map;
 
+import org.geotools.data.DataAccessFactory.Param;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.SQLDialect;
+import org.geotools.util.KVP;
 
 public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
     
@@ -44,6 +46,18 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
      * Wheter a prepared statements based dialect should be used, or not
      */
     public static final Param PREPARED_STATEMENTS = new Param("preparedStatements", Boolean.class, "Use prepared statements", false, Boolean.FALSE);
+    
+    /**
+     * Enables direct encoding of selected filter functions in sql
+     */
+    public static final Param ENCODE_FUNCTIONS = new Param( "encode functions", Boolean.class,
+            "set to true to have a set of filter functions be translated directly in SQL. " +
+            "Due to differences in the type systems the result might not be the same as evaluating " +
+            "them in memory, including the SQL failing with errors while the in memory version works fine. " +
+            "However this allows to push more of the filter into the database, increasing performance." +
+            "the postgis table.", false, new Boolean(false),
+            new KVP( Param.LEVEL, "advanced"));
+    
     
     @Override
     protected SQLDialect createSQLDialect(JDBCDataStore dataStore) {
@@ -102,12 +116,15 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
         Boolean estimated = (Boolean) ESTIMATED_EXTENTS.lookUp(params);
         dialect.setEstimatedExtentsEnabled(estimated == null || Boolean.TRUE.equals(estimated));
         
+        // check if we can encode functions in sql
+        Boolean encodeFunctions = (Boolean) ENCODE_FUNCTIONS.lookUp(params);
+        dialect.setFunctionEncodingEnabled(encodeFunctions != null && encodeFunctions);
+        
         // setup the ps dialect if need be
         Boolean usePs = (Boolean) PREPARED_STATEMENTS.lookUp(params);
         if(Boolean.TRUE.equals(usePs)) {
             dataStore.setSQLDialect(new PostGISPSDialect(dataStore, dialect));
         }
-        
         
         return dataStore;
     }
@@ -124,6 +141,7 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
         parameters.put(PORT.key, PORT);
         parameters.put(PREPARED_STATEMENTS.key, PREPARED_STATEMENTS);
         parameters.put(MAX_OPEN_PREPARED_STATEMENTS.key, MAX_OPEN_PREPARED_STATEMENTS);
+        parameters.put(ENCODE_FUNCTIONS.key, ENCODE_FUNCTIONS);
     }
     
     @Override

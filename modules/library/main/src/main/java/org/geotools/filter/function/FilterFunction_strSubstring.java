@@ -27,7 +27,6 @@ import org.opengis.filter.capability.FunctionName;
 
 public class FilterFunction_strSubstring extends FunctionExpressionImpl {
 
-    //public static FunctionName NAME = new FunctionNameImpl("strSubstring","string","beginIndex","endIndex");
     public static FunctionName NAME = new FunctionNameImpl("strSubstring",
             parameter("substring", String.class),
             parameter("string", String.class),

@@ -59,7 +59,7 @@ import com.vividsolutions.jts.geom.Geometry;
 public abstract class JDBCTestSupport extends OnlineTestCase {
     static {
         // uncomment to turn up logging
-                
+//                
 //        java.util.logging.ConsoleHandler handler = new java.util.logging.ConsoleHandler();
 //        handler.setLevel(java.util.logging.Level.FINE);
 //        

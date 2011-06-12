@@ -1530,7 +1530,7 @@ public abstract class MapProjection extends AbstractMathTransform
                     new NamedIdentifier(Citations.EPSG,    "Easting at false origin"),
                     new NamedIdentifier(Citations.EPSG,    "Easting at projection centre"),
                     new NamedIdentifier(Citations.GEOTIFF, "FalseEasting"),
-                    new NamedIdentifier(Citations.ESRI,    "false_easting")
+                    new NamedIdentifier(Citations.ESRI,    "False_Easting")
                 },
                 0, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, SI.METER);
 

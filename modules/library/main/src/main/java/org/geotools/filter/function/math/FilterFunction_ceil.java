@@ -26,7 +26,6 @@ import org.opengis.filter.capability.FunctionName;
 
 public class FilterFunction_ceil extends FunctionExpressionImpl {
 
-    //public static FunctionName NAME = new FunctionNameImpl("ceil","double");
     public static FunctionName NAME = new FunctionNameImpl("ceil",
             parameter("ceiling", Double.class),
             parameter("number",Number.class));

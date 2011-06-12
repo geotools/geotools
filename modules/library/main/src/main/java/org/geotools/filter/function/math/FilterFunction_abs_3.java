@@ -26,10 +26,9 @@ import org.opengis.filter.capability.FunctionName;
 
 public class FilterFunction_abs_3 extends FunctionExpressionImpl {
 
-    //public static FunctionName NAME = new FunctionNameImpl("abs_3","float");
     public static FunctionName NAME = new FunctionNameImpl("abs_3",
             parameter("float", Float.class),
-            parameter("number", Number.class));
+            parameter("number", Float.class));
 
     public FilterFunction_abs_3() {
         super("abs_3");

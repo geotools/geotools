@@ -27,14 +27,14 @@ import org.opengis.filter.capability.FunctionName;
 
 public class FilterFunction_strSubstringStart extends FunctionExpressionImpl {
 
-    //public static FunctionName NAME = new FunctionNameImpl("strSubstringStart","string","beginIndex");
     public static FunctionName NAME = new FunctionNameImpl("strSubstringStart",
             parameter("substring", String.class),
             parameter("string", String.class),
             parameter("beginIndex", Integer.class));
-    
+
     public FilterFunction_strSubstringStart() {
-        super(NAME);
+        super("strSubstringStart");
+        functionName = NAME;
     }
 
     public Object evaluate(Object feature) {

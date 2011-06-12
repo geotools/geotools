@@ -26,7 +26,6 @@ import org.opengis.filter.capability.FunctionName;
 
 public class FilterFunction_strToLowerCase extends FunctionExpressionImpl {
 
-    //public static FunctionName NAME = new FunctionNameImpl("strToLowerCase","string");
     public static FunctionName NAME = new FunctionNameImpl("strToLowerCase",
             parameter("lowercase", String.class),
             parameter("string", String.class));

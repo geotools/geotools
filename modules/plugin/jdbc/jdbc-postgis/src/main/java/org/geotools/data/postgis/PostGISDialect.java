@@ -102,6 +102,8 @@ public class PostGISDialect extends BasicSQLDialect {
 
     boolean estimatedExtentsEnabled = false;
     
+    boolean functionEncodingEnabled = false;
+    
     Version version;
 
     public boolean isLooseBBOXEnabled() {
@@ -111,7 +113,6 @@ public class PostGISDialect extends BasicSQLDialect {
     public void setLooseBBOXEnabled(boolean looseBBOXEnabled) {
         this.looseBBOXEnabled = looseBBOXEnabled;
     }
-    
         
     public boolean isEstimatedExtentsEnabled() {
         return estimatedExtentsEnabled;
@@ -120,6 +121,18 @@ public class PostGISDialect extends BasicSQLDialect {
     public void setEstimatedExtentsEnabled(boolean estimatedExtentsEnabled) {
         this.estimatedExtentsEnabled = estimatedExtentsEnabled;
     }
+    
+    public boolean isFunctionEncodingEnabled() {
+        return functionEncodingEnabled;
+    }
+
+    /**
+     * @see PostgisNGDataStoreFactory#ENCODE_FUNCTIONS
+     */
+    public void setFunctionEncodingEnabled(boolean functionEncodingEnabled) {
+        this.functionEncodingEnabled = functionEncodingEnabled;
+    }
+
 
     @Override
     public boolean includeTable(String schemaName, String tableName,
@@ -712,6 +725,7 @@ public class PostGISDialect extends BasicSQLDialect {
     public FilterToSQL createFilterToSQL() {
         PostgisFilterToSQL sql = new PostgisFilterToSQL(this);
         sql.setLooseBBOXEnabled(looseBBOXEnabled);
+        sql.setFunctionEncodingEnabled(functionEncodingEnabled);
         return sql;
     }
     

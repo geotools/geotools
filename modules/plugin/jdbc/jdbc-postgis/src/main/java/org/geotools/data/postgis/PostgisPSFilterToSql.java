@@ -26,6 +26,7 @@ import org.opengis.filter.spatial.BinarySpatialOperator;
 public class PostgisPSFilterToSql extends PreparedFilterToSQL {
     
     FilterToSqlHelper helper;
+    boolean functionEncodingEnabled;
     
     public PostgisPSFilterToSql(PostGISPSDialect dialect) {
         super(dialect);
@@ -42,7 +43,7 @@ public class PostgisPSFilterToSql extends PreparedFilterToSQL {
 
     @Override
     protected FilterCapabilities createFilterCapabilities() {
-        return helper.createFilterCapabilities();
+        return helper.createFilterCapabilities(functionEncodingEnabled);
     }
 
     @Override
@@ -55,6 +56,10 @@ public class PostgisPSFilterToSql extends PreparedFilterToSQL {
     
     GeometryDescriptor getCurrentGeometry() {
         return currentGeometry;
+    }
+
+    public void setFunctionEncodingEnabled(boolean functionEncodingEnabled) {
+        this.functionEncodingEnabled = functionEncodingEnabled;
     }
 
 }

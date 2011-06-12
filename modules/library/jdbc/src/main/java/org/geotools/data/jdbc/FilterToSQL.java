@@ -33,6 +33,8 @@ import org.geotools.factory.Hints;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.FunctionImpl;
 import org.geotools.filter.LikeFilterImpl;
+import org.geotools.filter.function.FilterFunction_strConcat;
+import org.geotools.filter.function.FilterFunction_strEndsWith;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.PrimaryKey;
 import org.geotools.util.ConverterFactory;
@@ -921,6 +923,10 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
     public Object visit(PropertyName expression, Object extraData) throws RuntimeException {
         LOGGER.finer("exporting PropertyName");
         
+        Class target = null;
+        if(extraData instanceof Class) {
+            target = (Class) extraData;
+        }
         try {
             //first evaluate expression against feautre type get the attribute, 
             //  this handles xpath
@@ -933,13 +939,23 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
                 String msg = "Error occured mapping " + expression + " to feature type";
                 LOGGER.log( Level.WARNING, msg, e );
             }
+            String encodedField; 
             if ( attribute != null ) {
-                //use the name of the attribute
-                out.write(fieldEncoder.encode(escapeName(attribute.getLocalName())));
+                encodedField = fieldEncoder.encode(escapeName(attribute.getLocalName()));
+                if(target != null && target.isAssignableFrom(attribute.getType().getBinding())) {
+                    // no need for casting, it's already the right type
+                    target = null;
+                }
+            } else {
+                // fall back to just encoding the property name
+                encodedField = fieldEncoder.encode(escapeName(expression.getPropertyName()));
             }
-            else {
-                //fall back to just encoding the properyt name
-                out.write(fieldEncoder.encode(escapeName(expression.getPropertyName())));
+            
+            // handle destination type if necessary
+            if(target != null) {
+                out.write(cast(encodedField, target));
+            } else {
+                out.write(encodedField);
             }
     		
         } catch (java.io.IOException ioe) {
@@ -947,6 +963,18 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         }
         return extraData;
     }
+
+    /**
+     * Gives the opportunity to subclasses to force the property to the desired type. By default it 
+     * simply writes out the property as-is (the property must be already escaped). 
+     * @param encodedProperty
+     * @param target
+     * @throws IOException
+     */
+    protected String cast(String encodedProperty, Class target) throws IOException {
+        return encodedProperty;
+    }
+
 
     /**
      * Export the contents of a Literal Expresion
@@ -1095,11 +1123,14 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
     }
 
     /**
-     * Writes sql for a function expression.
+     * Writes sql for a function expression. By default it will write the call by using the
+     * same arguments provided to the GeoTools function, subclasses should override on a case
+     * by case basis if this behavior is not the desired one.
      *
      * @param expression a function expression
      *
-     * @throws RuntimeException If an IO error occurs. 
+     * @throws RuntimeException If an IO error occurs.
+     * @see #getFunctionName(Function) 
      */
     public Object visit(Function function, Object extraData) throws RuntimeException {
         try {
@@ -1115,14 +1146,14 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
             encodingFunction = true;
             
             //write the name
-            out.write( function.getName() );
+            out.write( getFunctionName(function) );
             
             //write the arguments
             out.write( "(");
             for ( int i = 0; i < parameters.size(); i++ ) {
                 Expression e = parameters.get( i );
                 
-                Object context = contexts != null ? contexts.get( i ) : extraData; 
+                Object context = function.getFunctionName().getArguments().get(i).getType();
                 e.accept(this, context);
                 
                 if ( i < parameters.size()-1 ) {
@@ -1134,12 +1165,37 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
             
             //reset the encoding function flag
             encodingFunction = false;
-        } 
-        catch (IOException e) {
+        } catch (IOException e) {
             throw new RuntimeException( e );
         }
         
         return extraData;
+    }
+    
+    /**
+     * Returns the n-th parameter of a function, throwing an exception if the parameter is not there
+     * and has been marked as mandatory
+     * @return
+     */
+    protected Expression getParameter(Function function, int idx, boolean mandatory) {
+        final List<Expression> params = function.getParameters();
+        if(params == null || params.size() <= idx) {
+            if(mandatory) {
+                throw new IllegalArgumentException("Missing parameter number " + (idx + 1) 
+                        + "for function " + function.getName() + ", cannot encode in SQL");
+            }
+        }
+        return params.get(idx);
+    }
+
+
+    /**
+     * Maps the function to the native database function name
+     * @param function
+     * @return
+     */
+    protected String getFunctionName(Function function) {
+        return function.getName();
     }
     
     public Object visit(NilExpression expression, Object extraData) {

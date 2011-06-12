@@ -22,6 +22,8 @@ import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.jdbc.JDBCDataStore;
 import org.opengis.feature.type.GeometryDescriptor;
+import org.opengis.filter.expression.Add;
+import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.BinarySpatialOperator;
@@ -32,6 +34,7 @@ import com.vividsolutions.jts.geom.LinearRing;
 public class PostgisFilterToSQL extends FilterToSQL {
 
     FilterToSqlHelper helper;
+    private boolean functionEncodingEnabled;
 
     public PostgisFilterToSQL(PostGISDialect dialect) {
         helper = new FilterToSqlHelper(this);
@@ -76,7 +79,7 @@ public class PostgisFilterToSQL extends FilterToSQL {
 
     @Override
     protected FilterCapabilities createFilterCapabilities() {
-        return helper.createFilterCapabilities();
+        return helper.createFilterCapabilities(functionEncodingEnabled);
     }
 
     protected Object visitBinarySpatialOperator(BinarySpatialOperator filter,
@@ -93,4 +96,35 @@ public class PostgisFilterToSQL extends FilterToSQL {
 
 
 
+    @Override
+    public Object visit(Function function, Object extraData) throws RuntimeException {
+        helper.out = out;
+        try {
+            encodingFunction = true;
+            boolean encoded = helper.visitFunction(function, extraData);
+            encodingFunction = false;
+            
+            if(encoded) {
+               return extraData; 
+            } else {
+                return super.visit(function, extraData);
+            }
+        } catch(IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
+    @Override
+    protected String getFunctionName(Function function) {
+        return helper.getFunctionName(function);
+    }
+    
+    @Override
+    protected String cast(String encodedProperty, Class target) throws IOException {
+        return helper.cast(encodedProperty, target);
+    }
+
+    public void setFunctionEncodingEnabled(boolean functionEncodingEnabled) {
+        this.functionEncodingEnabled = functionEncodingEnabled;
+    }
 }

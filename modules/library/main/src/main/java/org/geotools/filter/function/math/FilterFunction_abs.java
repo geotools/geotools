@@ -26,7 +26,6 @@ import org.opengis.filter.capability.FunctionName;
 
 public class FilterFunction_abs extends FunctionExpressionImpl {
 
-    //public static FunctionName NAME = new FunctionNameImpl("abs","int");
     public static FunctionName NAME = new FunctionNameImpl("abs",
             parameter("abs", Integer.class),
             parameter("int", Integer.class));

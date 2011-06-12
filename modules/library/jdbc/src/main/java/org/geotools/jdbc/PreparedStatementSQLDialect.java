@@ -53,7 +53,7 @@ public abstract class PreparedStatementSQLDialect extends SQLDialect {
      * Prepares the geometry value for a prepared statement.
      * <p>
      * This method should be overridden if the implementation needs to 
-     * wrap the geometry placeholder in the function. The default implementation
+     * wrap the geometry placeholder in the function. The default implementationg
      * just appends the default placeholder: '?'.
      * </p>
      * @param g The geometry value.

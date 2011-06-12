@@ -13,6 +13,7 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.filter.Filter;
+import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.spatial.BBOX;
 import org.opengis.filter.spatial.DWithin;
@@ -62,6 +63,59 @@ public abstract class JDBCGeographyTest extends JDBCTestSupport {
 
         Query q = new Query(tname("geopoint"));
 
+        FeatureReader r = dataStore.getFeatureReader(q, Transaction.AUTO_COMMIT);
+        assertTrue(r.hasNext());
+        while (r.hasNext()) {
+            SimpleFeature f = (SimpleFeature) r.next();
+            assertTrue(f.getAttribute(aname("geo")) instanceof Point);
+        }
+        r.close();
+    }
+    
+    public void testBBoxLargerThanWorld() throws Exception {
+        if (!isGeographySupportAvailable()) {
+            return;
+        }
+
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+        BBOX bbox = ff.bbox("", -200, -200, 200, 200, "EPSG:4326");
+        // should select everything without bombing out
+        Query q = new Query(tname("geopoint"));
+        q.setFilter(bbox);
+        FeatureReader r = dataStore.getFeatureReader(q, Transaction.AUTO_COMMIT);
+        assertTrue(r.hasNext());
+        while (r.hasNext()) {
+            SimpleFeature f = (SimpleFeature) r.next();
+            assertTrue(f.getAttribute(aname("geo")) instanceof Point);
+        }
+        r.close();
+    }
+    
+    public void testOutsideWorld() throws Exception {
+        if (!isGeographySupportAvailable()) {
+            return;
+        }
+
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+        BBOX bbox = ff.bbox("", -300, -40, -200, 40, "EPSG:4326");
+        // should select everything without bombing out
+        Query q = new Query(tname("geopoint"));
+        q.setFilter(bbox);
+        FeatureReader r = dataStore.getFeatureReader(q, Transaction.AUTO_COMMIT);
+        assertFalse(r.hasNext());
+        r.close();
+    }
+    
+    public void testLargerThanHalfWorld() throws Exception {
+        if (!isGeographySupportAvailable()) {
+            return;
+        }
+
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+        BBOX bbox = ff.bbox("", -140, -50, 140, 50, "EPSG:4326");
+        // should select everything without bombing out
+        Query q = new Query(tname("geopoint"));
+        q.setFilter(bbox);
         FeatureReader r = dataStore.getFeatureReader(q, Transaction.AUTO_COMMIT);
         assertTrue(r.hasNext());
         while (r.hasNext()) {

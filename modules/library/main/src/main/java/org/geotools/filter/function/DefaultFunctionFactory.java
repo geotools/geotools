@@ -33,7 +33,6 @@ import org.geotools.filter.FunctionExpression;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.FunctionFactory;
 import org.geotools.filter.FunctionImpl;
-import org.geotools.filter.function.DefaultFunctionFactory.FunctionDescriptor;
 import org.geotools.util.logging.Logging;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.capability.FunctionName;

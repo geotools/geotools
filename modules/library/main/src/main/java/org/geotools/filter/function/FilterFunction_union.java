@@ -26,7 +26,6 @@ import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
 
 import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.MultiPoint;
 
 public class FilterFunction_union extends FunctionExpressionImpl implements
         FunctionExpression {

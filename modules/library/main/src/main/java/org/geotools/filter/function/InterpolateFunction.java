@@ -31,7 +31,6 @@ import org.geotools.text.Text;
 import org.geotools.util.Converters;
 import org.geotools.util.KVP;
 import org.opengis.filter.FilterFactory2;
-
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.ExpressionVisitor;

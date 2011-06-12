@@ -25,8 +25,8 @@ import java.util.logging.Logger;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.FeatureCollection;
-import org.opengis.feature.simple.SimpleFeature;
 import org.geotools.util.logging.Logging;
+import org.opengis.feature.simple.SimpleFeature;
 
 /**
  * Calculate the Jenks' Natural Breaks classification for a featurecollection

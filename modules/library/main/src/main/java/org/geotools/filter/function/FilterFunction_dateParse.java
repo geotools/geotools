@@ -16,9 +16,12 @@
  */
 package org.geotools.filter.function;
 
+import static org.geotools.filter.capability.FunctionNameImpl.parameter;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
@@ -36,16 +39,13 @@ import org.opengis.filter.capability.FunctionName;
  */
 public class FilterFunction_dateParse extends FunctionExpressionImpl {
     
-    public static FunctionName NAME = new FunctionNameImpl("dateParse","format" ,"string");
+    public static FunctionName NAME = new FunctionNameImpl("dateParse",
+            parameter("date", Date.class),
+            parameter("format", String.class),
+            parameter("dateString", String.class));
 
     public FilterFunction_dateParse() {
-        super("dateParse");
-        functionName = NAME;
-    }
-
-    @Override
-    public int getArgCount() {
-        return 2;
+        super(NAME);
     }
 
     public Object evaluate(Object feature) {

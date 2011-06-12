@@ -26,7 +26,6 @@ import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.text.Text;
 import org.geotools.util.KVP;
 import org.opengis.filter.capability.FunctionName;
-import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * Function implementing the Symbology Encoding Trim function.

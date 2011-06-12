@@ -75,6 +75,10 @@ public class FunctionNameImpl extends OperatorImpl implements FunctionName {
         this(name, retern, Arrays.asList(arguments));
     }
     
+    public FunctionNameImpl( String name, Class returnType, Parameter<?>... arguments) {
+        this(name, parameter(name, returnType), Arrays.asList(arguments));
+    }
+    
     public FunctionNameImpl( String name, Parameter<?> retern, List<Parameter<?>> arguments) {
         super(name);
         this.ret = retern;

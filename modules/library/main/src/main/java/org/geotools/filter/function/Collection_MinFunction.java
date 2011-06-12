@@ -29,13 +29,10 @@ import java.util.logging.Logger;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.visitor.CalcResult;
 import org.geotools.feature.visitor.MinVisitor;
-import org.geotools.filter.AttributeExpression;
 import org.geotools.filter.Expression;
-import org.geotools.filter.FunctionExpression;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.capability.FunctionNameImpl;
-import org.geotools.filter.visitor.AbstractFilterVisitor;
 import org.opengis.filter.capability.FunctionName;
 
 

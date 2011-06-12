@@ -16,6 +16,9 @@ package org.geotools.filter.function;
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
+
+import static org.geotools.filter.capability.FunctionNameImpl.parameter;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -30,22 +33,17 @@ import org.opengis.filter.capability.FunctionName;
  * @see SimpleDateFormat
  * @author Andrea Aime - TOPP
  *
- *
- *
  * @source $URL$
  */
 public class FilterFunction_dateFormat extends FunctionExpressionImpl {
     
-    public static FunctionName NAME = new FunctionNameImpl("dateFormat","format" ,"date");
+    public static FunctionName NAME = new FunctionNameImpl("dateFormat",
+            parameter("formatted", String.class),
+            parameter("format", String.class),
+            parameter("date", Date.class));
 
     public FilterFunction_dateFormat() {
-        super("dateFormat");
-        functionName = NAME;
-    }
-
-    @Override
-    public int getArgCount() {
-        return 2;
+        super(NAME);
     }
 
     public Object evaluate(Object feature) {

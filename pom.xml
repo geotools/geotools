@@ -59,7 +59,7 @@
   <!--   Example:                                                  -->
   <!--       mvn install -Dall                                     -->
   <!--       mvn eclipse:eclipse -Dall                             -->
-  <!--       mvn -p docs install                                   -->
+  <!--       mvn -P docs install                                   -->
   <!--       mvn -P extensive.tests install                        -->
   <!--       mvn -P online,stress install                          -->
   <!--       mvn -P site.build site                                -->

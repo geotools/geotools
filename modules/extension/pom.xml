@@ -44,6 +44,7 @@
   <!--     Modules included in the build                           -->
   <!-- =========================================================== -->
   <modules>
+    <module>app-schema</module>
     <module>brewer</module>
     <module>graph</module>
     <module>validation</module>

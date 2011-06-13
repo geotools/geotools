@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>app-schema</artifactId>
+        <groupId>org.geotools</groupId>
+        <version>8-SNAPSHOT</version>
+    </parent>
+
+    <groupId>org.geotools</groupId>
+    <artifactId>gt-sample-data-access</artifactId>
+    <name>Sample DataAccess</name>
+
+    <scm>
+        <connection>scm:svn:http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema/sample-data-access</connection>
+        <url>http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema/sample-data-access</url>
+    </scm>
+
+    <description>DataAccess for testing complex feature integration without introducing app-schema dependency.</description>
+
+    <developers>
+        <developer>
+            <name>Ben Caradoc-Davies</name>
+            <id>bencaradocdavies</id>
+            <email>Ben.Caradoc-Davies@csiro.au</email>
+            <organization>CSIRO Earth Science and Resource Engineering</organization>
+            <roles>
+                <role>Module Maintainer</role>
+                <role>Java Developer</role>
+            </roles>
+            <timezone>8</timezone>
+        </developer>
+    </developers>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-data</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools.xsd</groupId>
+            <artifactId>gt-xsd-gml3</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+
+</project>

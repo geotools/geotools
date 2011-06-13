@@ -6,13 +6,12 @@
 
     <parent>
         <groupId>org.geotools</groupId>
-        <artifactId>app-schema</artifactId>
+        <artifactId>app-schema-unsupported</artifactId>
         <version>8-SNAPSHOT</version>
     </parent>
 
     <groupId>org.geotools</groupId>
     <artifactId>gt-webservice</artifactId>
-    <packaging>jar</packaging>
     <name>Web Service DataAccess</name>
 
     <scm>

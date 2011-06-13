@@ -6,21 +6,21 @@
 
     <parent>
         <groupId>org.geotools</groupId>
-        <artifactId>unsupported</artifactId>
+        <artifactId>extension</artifactId>
         <version>8-SNAPSHOT</version>
     </parent>
 
     <groupId>org.geotools</groupId>
-    <artifactId>app-schema-unsupported</artifactId>
+    <artifactId>app-schema</artifactId>
     <packaging>pom</packaging>
-    <name>Application Schema Support (Unsupported Modules)</name>
+    <name>Application Schema Support</name>
 
     <scm>
-        <connection>scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema</connection>
-        <url>http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema</url>
+        <connection>scm:svn:http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema</connection>
+        <url>http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema</url>
     </scm>
 
-    <description>Modules to support creation of complex feature types defined in a GML application schema (unsupported modules)</description>
+    <description>Modules to support creation of complex feature types defined in a GML application schema</description>
 
     <developers>
         <developer>
@@ -47,13 +47,10 @@
         </developer>
     </developers>
 
-    <profiles>
-        <profile>
-            <id>webservice</id>
-            <modules>
-                <module>webservice</module>
-            </modules>
-        </profile>
-    </profiles>
+    <modules>
+        <module>app-schema</module>
+        <module>app-schema-resolver</module>
+        <module>sample-data-access</module>
+    </modules>
 
 </project>

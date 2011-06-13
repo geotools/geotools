@@ -1,41 +1,52 @@
 Filter
 ------
 
-The filter api defines the first step of a Query, it is used when requesting data from a DataStore or Catalog. The Filter specification itself is maintained by the OGC and is used in a number of their specifications (Catalog, WFS, and so on).
+The filter api defines the first step of a Query, it is used when requesting data from a DataStore
+or Catalog. The Filter specification itself is maintained by the OGC and is used in a number of
+their specifications (Catalog, WFS, and so on).
 
-In practice **Filter** is used to select features that are of interest and the **Expression** to drill in and access information.
-Although this forms a closed set of classes (for interoperability), you can extend the system with your own functions.
+In practice **Filter** is used to select features that are of interest and the **Expression** to
+drill in and access information.
+
+Although this forms a closed set of classes (for interoperability), you can extend the system with
+your own functions.
 
 References:
 
 * http://www.opengeospatial.org/standards/filter
-* :doc:`gt-main filter <../main/filter>` code examples
+* :doc:`gt-main filter detailed code examples </library/main/filter>`
+* :doc:`gt-xml documentation </library/xml/index>`
+* :doc:`gt-cql documentation </library/cql/index>`
 
-Example
-^^^^^^^
+Introduction
+^^^^^^^^^^^^
 
-Here is an example of using filter and expression together::
+The Filer specification defines a the **filter** data structure used to perform selection.
+A subset of this data structure is used to define **expressions** to define, calculate or
+extract information.
+
+* Here is an example of using filter and expression together::
    
-   final FilterFactory ff = CommonFactoryFinder.getFilterFactory( GeoTools.getDefaultHints );
-   Filter filter = ff.propertyLessThan( ff.property( "AGE"), ff.literal( 12 ) );
-   
-   SimpleFeatureCollection features = featureSource.getFeatures( filter );
-   features.accepts( new FeatureVisitor<SimpleFeature>() ){
-      public void visit( SimpleFeature feature ){
-          Expression expression = ff.property( "NAME" );
-          String name = expression.evaulate( feature, String.class );
+       final FilterFactory ff = CommonFactoryFinder.getFilterFactory( null );
+       Filter filter = ff.propertyLessThan( ff.property( "AGE"), ff.literal( 12 ) );
+       
+       SimpleFeatureCollection features = featureSource.getFeatures( filter );
+       features.accepts( new FeatureVisitor<SimpleFeature>() ){
+          public void visit( SimpleFeature feature ){
+              Expression expression = ff.property( "NAME" );
+              String name = expression.evaulate( feature, String.class );
+    
+              System.out.println( feature.getID() + " is named: "+ name );
+          }
+       }, null );
+  
+* There are a couple other ways to access feature content:
 
-          System.out.println( feature.getID() + " is named: "+ name );
-      }
-   }, null );
+  * You can construct a filter or expression using the common query language
+  * You can construct a filter or expression from XML
+  * You can access the feature data structure directly
 
-There are a couple other ways to access feature content:
-
-* You can construct a filter or expression using the common query language
-* You can construct a filter or expression from XML
-* You can access the feature data structure directly
-
-Here is the same example using common query language and direct feature access::
+  Here is the same example using common query language and direct feature access::
 
    Filter filter = CQL.toFilter( "AGE < 12 " );
    
@@ -47,6 +58,40 @@ Here is the same example using common query language and direct feature access::
           System.out.println( feature.getID() + " is named: "+ name );
       }
    }, null );
+
+* You can also make use of a filter "by hand" evaluate against a Feature to test if it is:
+
+  * TRUE: included in the set; or
+  * FALSE: excluded from the set
+  
+  Here is an example of how to evaluate a feature using a filter::
+   
+       if( filter.evaluate( feature ) ){
+           // the feature was "selected" by the filter
+           System.out.println( "Selected "+ feature.getId();
+       }
+  
+* Filters in GeoTools are very forgiving:
+  
+  * Values don't have to be exactly the right type.
+    
+    GeoTools providers a Converters utility class to "type morph" objects into the required class.
+    
+    What this means is you can mix and match types and not worry::
+                
+        // the following should be considered equal   
+        filter = ff.equals( ff.literal("123"), ff.literal(123) );
+
+  * You can use this facility yourself to automatically ask expressions to evaluate to the kind
+    of object you need.::
+        
+        Expression expression = ff.literal("#FFFFFF");
+        Color color = expression.evaluate( feature, Color.class );
+    
+  * You can also use a Filter on normal Java objects (ie POJOs)
+    
+    If you are willing to write custom code you can define your own PropertyAccessor
+    to teach filters how to work with your own data structures
 
 Filter
 ^^^^^^
@@ -124,7 +169,7 @@ To parse an xml stream::
    Parser parser = new Parser( configuration );
    Filter filter = (Filter) parser.parse( inputStream );
 
-To parse a DOM fragement::
+To parse a DOM fragment::
 
    InputSource input = new InputSource( reader );
    
@@ -154,102 +199,183 @@ To parse a DOM fragement::
    }
    System.out.println( "got:"+filter );
 
-Using Filter
-''''''''''''
+For more information, including examples for other versions of the
+filter specification, please review the :doc:`gt-xml filter </library/xml/filter>` documentation.
+
+Basic
+^^^^^
 
 The core filter abstractions are here. This set of interfaces is closed (you cannot make a new
 filter class and expect it to work).
 
 .. image:: /images/filter_model.PNG
 
-Here is an example of each that you can cut and paste into your own code:
+Comparison
+''''''''''
+
+The heart of the filter data model is property comparisons; these filters allow you
+to test the attributes of your feature and select out only those features that
+match:
    
-   .. literalinclude:: /../src/main/java/org/geotools/opengis/FilterExamples.java
-      :language: java
-      :start-after: // start ff example
-      :end-before: // end ff example
+.. literalinclude:: /../src/main/java/org/geotools/opengis/FilterExamples.java
+   :language: java
+   :start-after: // start ff example
+   :end-before: // end ff example
 
-Spatial filters are also available.
+MatchCase
+'''''''''
 
-.. image:: /images/filter_spatial.PNG
+By default property comparison is case sensitive; you can override this default
+when constructing your filter as shown below.
+  
+.. literalinclude:: /../src/main/java/org/geotools/opengis/FilterExamples.java
+   :language: java
+   :start-after: // caseSensitive start
+   :end-before: // caseSensitive end
+  
+This capability was added by the Filter 1.1 specificaiton.
 
-As well as temporal filters.
+MatchAction
+'''''''''''
 
-.. image:: /images/filter_temporal.PNG
+All filters that implement the MultiValuedFilter interface, support filtering on operands that
+return multiple values on evaluation. The way these filters handle multiple values can be modified
+through the 'MatchAction' property.
 
-The most common thing todo is use a Filter to evaluate a Feature to see if it is in the set or
-out of the set.::
-   
-   if( filter.evaluate( feature ) ){
-       // the feature was "selected" by the filter
-       System.out.println( "Selected "+ feature.getId();
-   }
+The property can be retrieved through a simple getter::
 
-You can also using a Filter on normal Java objects (ie POJOs).
+  filter.getMatchAction()
 
-**Multi-Valued Filters**
+MatchAction has three possible values: 
 
-All filters that implement the MultiValuedFilter interface, support filtering on operands that return multiple values on evaluation. 
-The way these filters handle multiple values can be modified through the 'MatchAction' property, which has three possible values: 
+* MatchAction.ANY
 
-* MatchAction.ANY - Evaluates to true if any possible combinations of operands evaluates to true.
-* MatchAction.ALL - Evaluates to true if all possible combinations of operands evaluates to true.
-* MatchAction.ONE - Evaluates to true if exactly one possible combination of values evaluates to true.
-
-The property can be set when creating the filter, for example::
-
-     MultiValuedFilter filter = ff.propertyGreaterThan( ff.property( "child/age"), ff.literal( 12 ), MatchAction.ALL ); 
-
-With child being a multi-valued attribute, this filter tests whether all children are older than 12.
-
-The property can be retrieved through a simple getter.::
-
-     filter.getMatchAction()
-
-When no MatchAction is specified, it is set to the default MatchAction.ANY.
-
-Here is an example that shows the differences between the different MactionActions::
-
-     List<Integer> ages = Arrays.asList( new int[]{ 7, 8, 10, 15 } );
+  When no MatchAction is specified, it is set to the default MatchAction.ANY.
+  
+  Evaluates to true if any possible combinations of operands evaluates to true:
      
-     filter = ff.propertyGreaterThan( ff.literal( ages ), ff.literal(12), Match.Action.ALL );
-     System.out.println( "All: "+ filter.evaluate( null ) ); // prints All: false
+  .. literalinclude:: /../src/main/java/org/geotools/opengis/FilterExamples.java
+     :language: java
+     :start-after: // matchActionAny start
+     :end-before: // matchActionAny end
+  
+* MatchAction.ALL
+  
+  Evaluates to true if all possible combinations of operands evaluates to true.:
 
-     filter = ff.propertyGreaterThan( ff.literal( ages ), ff.literal(12), Match.Action.ANY );
-     System.out.println( "Any: "+ filter.evaluate( null ) ); // prints Any: true 
+  .. literalinclude:: /../src/main/java/org/geotools/opengis/FilterExamples.java
+     :language: java
+     :start-after: // matchActionAll start
+     :end-before: // matchActionAll end
 
-     filter = ff.propertyGreaterThan( ff.literal( ages ), ff.literal(12), Match.Action.ONE );
-     System.out.println( "One: "+ filter.evaluate( null ) ); // prints One: true 
+* MatchAction.ONE
+  
+  Evaluates to true if exactly one possible combination of values evaluates to true:
+  
+  .. literalinclude:: /../src/main/java/org/geotools/opengis/FilterExamples.java
+     :language: java
+     :start-after: // matchActionOne start
+     :end-before: // matchActionOne end
 
-**INCLUDES and EXCLUDES**
+Multiple values are possible in a couple situations: when working with application schemas, or
+working directly with java objects. When an expression is evaluated against rich content
+of this nature child references may return a multi-valued attribue.
+
+As an example this filter tests whether all children are older than 12:
+    
+.. literalinclude:: /../src/main/java/org/geotools/opengis/FilterExamples.java
+   :language: java
+   :start-after: // matchAction start
+   :end-before: // matchAction end
+
+Logical
+'''''''
+
+Filters can be combined using the usual binary logic of AND, OR and NOT.
+
+.. literalinclude:: /../src/main/java/org/geotools/opengis/FilterExamples.java
+   :language: java
+   :start-after: // logical start
+   :end-before: // logical end
+
+INCLUDES and EXCLUDES
+'''''''''''''''''''''
 
 There are two constants defined that can be used as Sentinel objects (or placeholders). Both of
 them represent "I don't have a Filter", but they differ in what client code is supposed to do
 about it.
 
-* Filter.INCLUDES - all content is included in the set. Would return EVERYTHING if used in a Query.
-* Filter.EXCLUDES - don't include any content. Would return an empty Collection if used in a Query.
+* Filter.INCLUDES
+  
+  All content is included in the set. Would return EVERYTHING if used in a Query.
+
+* Filter.EXCLUDES
+  
+  Don't include any content. Would return an empty Collection if used in a Query.
 
 These values are often used as default values in other data structures - for example the default
 value for Query.getFilter() is Filter.INCLUDES.
+
+* These are static constants and do not require a constructor:
+  
+  .. literalinclude:: /../src/main/java/org/geotools/opengis/FilterExamples.java
+     :language: java
+     :start-after: // includeExclude start
+     :end-before: // includeExclude end
 
 * You can check for these values when optimising::
     
     public void draw( Filter filter ){
        if( filter == Filter.EXCLUDES ) return; // draw nothing
        
-        Query query = new DefaultQuery( "roads", filter );
-        FeatureCollection collection = store.getFeatureSource( "roads" ).getFeatures( filter );
-        ...
+       Query query = new DefaultQuery( "roads", filter );
+       FeatureCollection collection = store.getFeatureSource( "roads" ).getFeatures( filter );
+       ...
     }
 
-* However do be careful as it is easy to get confused.::
+  However do be careful as it is easy to get confused.::
      
-     // the following always returns true!
      if( filter == Filter.INCLUDES || filter.evaluate( feature ) ){
          System.out.println( "Selected "+ feature.getId();
      }
 
+Spatial
+^^^^^^^
+
+Spatial filters are also available.
+
+.. image:: /images/filter_spatial.PNG
+
+Here is a quick example showing how to request features within a bounding box.
+
+.. literalinclude:: /../src/main/java/org/geotools/opengis/FilterExamples.java
+    :language: java
+    :start-after: // bbox start
+    :end-before: // bbox end
+
+Please review the :doc:`gt-main filter examples </library/main/filter>` for examples of using
+spatial filters.
+
+Temporal
+^^^^^^^^
+
+Temporal filters have been recently defined by the Filter 2.0 specification and
+are a new addition for GeoTools 8.0.
+
+.. image:: /images/filter_temporal.PNG
+
+The gt-main module supplies some of the implementation classes we will need:
+  
+* DefaultIntant: this is an implementation of Instant used to represent a single point in time.
+* DefaultPeriod: this is an implementation of Period used to reresent a range in time
+  
+Here is an example illustrating their construction and use with temporal filters:
+  
+.. literalinclude:: /../src/main/java/org/geotools/opengis/FilterExamples.java
+   :language: java
+   :start-after: // temporal start
+   :end-before: // temporal end
+ 
 Expression
 ^^^^^^^^^^
 

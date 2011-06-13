@@ -33,13 +33,13 @@ The GeoTools PMC is the formal "Project Steering Committee" for GeoTools:
 
 Current PMC members:
 
-* Andrea Aime ( `aaime <https://jira.codehaus.org/secure/ViewProfile.jspa?name=aaime>`_ )
-* Ben Caradoc-Davies (`bencaradocdavies <https://jira.codehaus.org/secure/ViewProfile.jspa?name=bencaradocdavies>`_ )
-* Christian Mueller (`christian.mueller@nvoe.at <https://jira.codehaus.org/secure/ViewProfile.jspa?name=christian.mueller%40nvoe.at>`_ )
-* Ian Turton ( `ianturton <https://jira.codehaus.org/secure/ViewProfile.jspa?name=ianturton>`_ )
-* Jody Garnett ( `jgarnett <https://jira.codehaus.org/secure/ViewProfile.jspa?name=jgarnett>`_ )
-* Justin Deoliveira ( `jdeolive <https://jira.codehaus.org/secure/ViewProfile.jspa?name=jdeolive>`_ )
-* Simone Giannecchini ( `simboss <https://jira.codehaus.org/secure/ViewProfile.jspa?name=simboss>`_ )
+* Andrea Aime
+* Ben Caradoc-Davies
+* Christian Mueller
+* Ian Turton
+* Jody Garnett
+* Justin Deoliveira
+* Simone Giannecchini
 
 Our thanks to previous PMC members:
     
@@ -74,6 +74,9 @@ PMC members:
 * Keep abreast of project administration communication
   
   * `Issue Tracker "admin" <https://jira.codehaus.org/browse/GEOT/component/10520>`_
+    
+    watchers list: `aaime <https://jira.codehaus.org/secure/ViewProfile.jspa?name=aaime>`_ , `bencaradocdavies <https://jira.codehaus.org/secure/ViewProfile.jspa?name=bencaradocdavies>`_ , `christian.mueller@nvoe.at <https://jira.codehaus.org/secure/ViewProfile.jspa?name=christian.mueller%40nvoe.at>`_ , `ianturton <https://jira.codehaus.org/secure/ViewProfile.jspa?name=ianturton>`_ , `jgarnett <https://jira.codehaus.org/secure/ViewProfile.jspa?name=jgarnett>`_ , `jdeolive <https://jira.codehaus.org/secure/ViewProfile.jspa?name=jdeolive>`_ , `simboss <https://jira.codehaus.org/secure/ViewProfile.jspa?name=simboss>`_
+
   * `Administration List <https://lists.sourceforge.net/lists/listinfo/geotools-administration>`_
 
 Recommended:

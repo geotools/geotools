@@ -904,8 +904,12 @@ public final class ImageMosaicReader extends AbstractGridCoverage2DReader implem
             final FeatureCalc visitor = createExtremaQuery(metadataName,rasterManager.elevationAttribute);
             
             // check result
-            final Double result=(Double) visitor.getResult().getValue();
-            return Double.toString(result);
+            final Object result = visitor.getResult().getValue();
+            if(result instanceof Number) {
+                return result.toString();
+            } else {
+                return null;
+            }
         } catch (IOException e) {
             if(LOGGER.isLoggable(Level.WARNING))
                     LOGGER.log(Level.WARNING,"Unable to compute extrema for ELEVATION_DOMAIN",e);
@@ -924,14 +928,14 @@ public final class ImageMosaicReader extends AbstractGridCoverage2DReader implem
             return null;
         }
         try {
-            final Set<Double> result = extractDomain(elevationAttribute);          
+            final Set<Number> result = extractDomain(elevationAttribute);          
             // check result
             if(result.size()<=0)
-                    return null;
+                    return "";
             
             final StringBuilder buff= new StringBuilder();
-            for(Iterator<Double> it=result.iterator();it.hasNext();){
-                    final double value= (Double) it.next();
+            for(Iterator<Number> it= result.iterator(); it.hasNext();){
+                    final double value= ((Number) it.next()).doubleValue();
                     buff.append(value);
                     if(it.hasNext())
                     	buff.append(",");
@@ -940,7 +944,7 @@ public final class ImageMosaicReader extends AbstractGridCoverage2DReader implem
         } catch (IOException e) {
             if(LOGGER.isLoggable(Level.WARNING))
                     LOGGER.log(Level.WARNING,"Unable to parse attribute: ELEVATION_DOMAIN",e);
-            return null;
+            return "";
         }
     }
 
@@ -976,8 +980,6 @@ public final class ImageMosaicReader extends AbstractGridCoverage2DReader implem
         final Set result = manualSort?
                 new TreeSet(visitor.getUnique()):
                 visitor.getUnique();
-        if(result.size()<=0)
-                return null;
         return result;
     }
 
@@ -996,7 +998,7 @@ public final class ImageMosaicReader extends AbstractGridCoverage2DReader implem
             
             // check result
             if(result.size()<=0)
-                    return null;	
+                    return "";	
                     
             final StringBuilder buff= new StringBuilder();
             final SimpleDateFormat df= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
@@ -1009,7 +1011,7 @@ public final class ImageMosaicReader extends AbstractGridCoverage2DReader implem
         } catch (IOException e) {
             if(LOGGER.isLoggable(Level.WARNING))
                     LOGGER.log(Level.WARNING,"Unable to parse attribute:TIME_DOMAIN",e);
-            return null;
+            return "";
         }
     }
 }

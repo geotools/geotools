@@ -333,6 +333,45 @@ public class ImageMosaicReaderTest extends Assert{
                         "Time-Elevation Test");
 	}	
 	
+	/**
+         * 
+         * @throws IOException
+         * @throws ParseException 
+         * @throws FactoryException 
+         * @throws NoSuchAuthorityCodeException 
+         * @throws MismatchedDimensionException
+         * @throws NoSuchAuthorityCodeException
+         */
+        @Test
+        public void timeIntegerElevation() throws IOException, ParseException, NoSuchAuthorityCodeException, FactoryException {
+                // Check we can have an integer elevation too 
+                TestData.unzipFile(this, "watertemp.zip");
+                final URL timeElevURL = TestData.url(this, "watertemp");
+                System.setProperty("org.geotools.shapefile.datetime", "true");
+                final AbstractGridFormat format = getFormat(timeElevURL);
+                assertNotNull(format);
+                ImageMosaicReader reader = getReader(timeElevURL, format);
+                assertNotNull(format);
+                
+                final String[] metadataNames = reader.getMetadataNames();
+                assertNotNull(metadataNames);
+                assertEquals(metadataNames.length,10);
+                
+                assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
+                final String timeMetadata = reader.getMetadataValue("TIME_DOMAIN");
+                assertNotNull(timeMetadata);
+                assertEquals(2,timeMetadata.split(",").length);
+                assertEquals(timeMetadata.split(",")[0],reader.getMetadataValue("TIME_DOMAIN_MINIMUM"));
+                assertEquals(timeMetadata.split(",")[1],reader.getMetadataValue("TIME_DOMAIN_MAXIMUM"));
+                
+                assertEquals("true", reader.getMetadataValue("HAS_ELEVATION_DOMAIN"));
+                final String elevationMetadata = reader.getMetadataValue("ELEVATION_DOMAIN");
+                assertNotNull(elevationMetadata);
+                assertEquals(2,elevationMetadata.split(",").length);
+                assertEquals("0",reader.getMetadataValue("ELEVATION_DOMAIN_MINIMUM"));
+                assertEquals("100",reader.getMetadataValue("ELEVATION_DOMAIN_MAXIMUM"));
+        }
+	
 	
 	@Test
 	public void imposedBBox() throws IOException, NoSuchAuthorityCodeException, FactoryException {

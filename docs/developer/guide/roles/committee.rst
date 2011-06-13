@@ -17,23 +17,19 @@ maintainers and a general consensus process.
 PMC
 ---
 
-.. sidebar:: Our thanks to previous PMC members:
-    
-    * Andrea Aime
-    * Artur Hefczyc
-    * Cameron Shorter
-    * Chris Holmes
-    * David Blasby
-    * Ian Schneider
-    * Martin Desruisseaux
-    * Micheal Bedward
-    * David Zwiers
-    * Richard Gould
-    * Rob Hranac
-    * Rueben Schulz
+The GeoTools PMC is the formal "Project Steering Committee" for GeoTools:
 
-The GeoTools PMC is the formal "Project Steering Committee" that reports to the board of the Open
-Source Geospatial Foundation on behalf of the library.
+* The Project Management Committee runs the GeoTools project on behalf of the Open Source
+  Geospatial Foundation.
+
+* The PMC is responsible for providing a "GeoTools Officer" to the OSGeo Foundation to act as a
+  point of contact.
+  
+  * Jody Garnett ( `jgarnett <https://jira.codehaus.org/secure/ViewProfile.jspa?name=jgarnett>`_ )
+
+* Other Foundation committees may make request of the project in order to facilitate different
+  initiatives such as promotion, fundraising, education and so forth. The only reliable request
+  has been for a contribution to an annual report.
 
 Current PMC members:
 
@@ -45,6 +41,21 @@ Current PMC members:
 * Justin Deoliveira ( `jdeolive <https://jira.codehaus.org/secure/ViewProfile.jspa?name=jdeolive>`_ )
 * Simone Giannecchini ( `simboss <https://jira.codehaus.org/secure/ViewProfile.jspa?name=simboss>`_ )
 
+Our thanks to previous PMC members:
+    
+* Andrea Aime
+* Artur Hefczyc
+* Cameron Shorter
+* Chris Holmes
+* David Blasby
+* Ian Schneider
+* Martin Desruisseaux
+* Micheal Bedward
+* David Zwiers
+* Richard Gould
+* Rob Hranac
+* Rueben Schulz
+
 Responsibilities
 ^^^^^^^^^^^^^^^^
 
@@ -53,30 +64,17 @@ PMC members:
 * Vote promptly on change management proposals
   
   * :doc:`/guide/procedures/proposal`
+  * respond to request for new modules
 
 * Must be willing to do whatever dirty work is necessary to keep the project moving forward.
 
   * getting releases out on time (within a week of a request, or according to a schedule)
-  * making a representative available to the OSGeo foundation
+  * ensure a representative is made available to the OSGeo foundation
 
 * Keep abreast of project administration communication
   
   * `Issue Tracker "admin" <https://jira.codehaus.org/browse/GEOT/component/10520>`_
   * `Administration List <https://lists.sourceforge.net/lists/listinfo/geotools-administration>`_
-
-Open Source Geospatial Foundation:
-
-* The Project Management Committee runs the GeoTools project on behalf of the Open Source
-  Geospatial Foundation.
-
-* The PMC is responsible for providing a "GeoTools Officer" to the OSGeo Foundation to act as a
-  point of contact.
-  
-  * Jody Garnett ( `jgarnett <https://jira.codehaus.org/secure/ViewProfile.jspa?name=jgarnett>`_ )
-
-* Other Foundation committees may make request of the project in order to facilitate different
-  initiatives such as out reach, fundraising, education and so forth. The only reliable request
-  has been for a contribution to an annual report.
 
 Recommended:
 

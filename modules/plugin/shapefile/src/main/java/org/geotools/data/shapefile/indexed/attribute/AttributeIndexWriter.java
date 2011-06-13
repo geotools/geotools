@@ -78,7 +78,7 @@ public class AttributeIndexWriter {
         this.writeChannel = writeChannel;
         this.attribute = attribute;
         this.cacheSize = cacheSize;
-        reader = new DbaseFileReader(readChannel, false, ShapefileDataStore.DEFAULT_STRING_CHARSET);
+        reader = new DbaseFileReader(readChannel, false, ShapefileDataStore.DEFAULT_STRING_CHARSET, null);
         if (!retrieveAttributeInfos()) {
             throw new IOException("Attribute " + attribute + " not found in dbf file");
         }

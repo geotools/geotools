@@ -25,7 +25,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
-import java.nio.MappedByteBuffer;
 import java.nio.channels.WritableByteChannel;
 import java.nio.charset.Charset;
 import java.text.FieldPosition;
@@ -34,6 +33,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import org.geotools.data.shapefile.StreamLogging;
 import org.geotools.resources.NIOUtilities;
@@ -68,6 +68,7 @@ public class DbaseFileWriter {
     private final byte[][] nullValues;
     private StreamLogging streamLogger = new StreamLogging("Dbase File Writer");
     private Charset charset;
+    private TimeZone timeZone;
     
     /**
      * Create a DbaseFileWriter using the specified header and writing to the
@@ -82,7 +83,23 @@ public class DbaseFileWriter {
      */
     public DbaseFileWriter(DbaseFileHeader header, WritableByteChannel out)
             throws IOException {
-        this(header, out, null);
+        this(header, out, null, null);
+    }
+    
+    /**
+     * Create a DbaseFileWriter using the specified header and writing to the
+     * given channel.
+     * 
+     * @param header
+     *                The DbaseFileHeader to write.
+     * @param out
+     *                The Channel to write to.
+     * @throws IOException
+     *                 If errors occur while initializing.
+     */
+    public DbaseFileWriter(DbaseFileHeader header, WritableByteChannel out, Charset charset)
+            throws IOException {
+        this(header, out, charset, null);
     }
     
 
@@ -98,13 +115,14 @@ public class DbaseFileWriter {
      * @throws IOException
      *                 If errors occur while initializing.
      */
-    public DbaseFileWriter(DbaseFileHeader header, WritableByteChannel out, Charset charset)
+    public DbaseFileWriter(DbaseFileHeader header, WritableByteChannel out, Charset charset, TimeZone timeZone)
             throws IOException {
         header.writeHeader(out);
         this.header = header;
         this.channel = out;
         this.charset = charset == null ? Charset.defaultCharset() : charset;
-        this.formatter = new DbaseFileWriter.FieldFormatter(this.charset);
+        this.timeZone = timeZone == null ? TimeZone.getDefault() : timeZone;
+        this.formatter = new DbaseFileWriter.FieldFormatter(this.charset, this.timeZone);
         streamLogger.open();
 
         // As the 'shapelib' osgeo project does, we use specific values for
@@ -303,16 +321,15 @@ public class DbaseFileWriter {
     /** Utility for formatting Dbase fields. */
     public static class FieldFormatter {
         private StringBuffer buffer = new StringBuffer(255);
-        private NumberFormat numFormat = NumberFormat
-                .getNumberInstance(Locale.US);
-        private Calendar calendar = Calendar.getInstance(Locale.US);
+        private NumberFormat numFormat = NumberFormat.getNumberInstance(Locale.US);
+        private Calendar calendar;
         private final long MILLISECS_PER_DAY = 24*60*60*1000;
 
         private String emptyString;
         private static final int MAXCHARS = 255;
         private Charset charset;
 
-        public FieldFormatter(Charset charset) {
+        public FieldFormatter(Charset charset, TimeZone timeZone) {
             // Avoid grouping on number format
             numFormat.setGroupingUsed(false);
 
@@ -324,6 +341,8 @@ public class DbaseFileWriter {
             }
             
             this.charset = charset;
+            
+            this.calendar = Calendar.getInstance(timeZone, Locale.US);
 
             emptyString = sb.toString();
         }

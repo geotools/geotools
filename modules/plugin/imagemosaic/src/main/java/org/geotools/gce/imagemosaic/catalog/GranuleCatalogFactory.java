@@ -23,6 +23,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -78,6 +79,7 @@ public abstract class GranuleCatalogFactory {
 			if (sourceURL.getProtocol().equalsIgnoreCase("file"))
 				params.put(ShapefileDataStoreFactory.CREATE_SPATIAL_INDEX.key,Boolean.TRUE);
 			params.put(ShapefileDataStoreFactory.MEMORY_MAPPED.key, Boolean.TRUE);
+			params.put(ShapefileDataStoreFactory.DBFTIMEZONE.key, TimeZone.getTimeZone("UTC"));
 			
 			// add other standard params
 			params.put("PathType",configuration.isAbsolutePath()?PathType.ABSOLUTE:PathType.RELATIVE);

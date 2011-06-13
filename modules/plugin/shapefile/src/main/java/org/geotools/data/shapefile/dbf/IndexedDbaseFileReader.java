@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileChannel.MapMode;
 import java.nio.charset.Charset;
+import java.util.TimeZone;
 
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.shapefile.ShpFiles;
@@ -132,13 +133,19 @@ public class IndexedDbaseFileReader extends DbaseFileReader {
     public IndexedDbaseFileReader(ShpFiles shpFiles,
             boolean useMemoryMappedBuffer) throws IOException {
         super(shpFiles, useMemoryMappedBuffer,
-                ShapefileDataStore.DEFAULT_STRING_CHARSET);
+                ShapefileDataStore.DEFAULT_STRING_CHARSET, TimeZone.getDefault());
     }
-
+    
     public IndexedDbaseFileReader(ShpFiles shpFiles,
             boolean useMemoryMappedBuffer, Charset stringCharset)
             throws IOException {
-        super(shpFiles, useMemoryMappedBuffer, stringCharset);
+        super(shpFiles, useMemoryMappedBuffer, stringCharset, TimeZone.getDefault());
+    }
+
+    public IndexedDbaseFileReader(ShpFiles shpFiles,
+            boolean useMemoryMappedBuffer, Charset stringCharset, TimeZone timeZone)
+            throws IOException {
+        super(shpFiles, useMemoryMappedBuffer, stringCharset, timeZone);
     }
 
     public boolean IsRandomAccessEnabled() {

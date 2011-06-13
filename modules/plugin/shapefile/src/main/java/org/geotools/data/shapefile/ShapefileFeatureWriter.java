@@ -25,6 +25,7 @@ import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TimeZone;
 
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
@@ -104,14 +105,17 @@ public class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, 
 
     private Charset dbfCharset;
     
+    private TimeZone dbfTimeZone;
+    
     private GeometryFactory gf = new GeometryFactory();
 
     public ShapefileFeatureWriter(String typeName, ShpFiles shpFiles,
             ShapefileAttributeReader attsReader,  FeatureReader<SimpleFeatureType, SimpleFeature> featureReader,
-            Charset charset)
+            Charset charset, TimeZone timezone)
             throws IOException {
         this.shpFiles = shpFiles;
         this.dbfCharset = charset;
+        this.dbfTimeZone = timezone;
         // set up reader
         this.attReader = attsReader;
         this.featureReader = featureReader;
@@ -146,7 +150,7 @@ public class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, 
 
         dbfHeader = ShapefileDataStore.createDbaseHeader(featureType);
         dbfChannel = storageFiles.get(DBF).getWriteChannel();
-        dbfWriter = new DbaseFileWriter(dbfHeader, dbfChannel, dbfCharset);
+        dbfWriter = new DbaseFileWriter(dbfHeader, dbfChannel, dbfCharset, dbfTimeZone);
 
         if(attReader != null) {
             // don't try to read a shx file we're writing to in parallel

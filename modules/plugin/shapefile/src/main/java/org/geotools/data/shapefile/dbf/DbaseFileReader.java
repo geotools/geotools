@@ -25,10 +25,9 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
-import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.FileChannel.MapMode;
+import java.nio.channels.ReadableByteChannel;
 import java.nio.charset.Charset;
 import java.util.Calendar;
 import java.util.Locale;
@@ -118,11 +117,10 @@ public class DbaseFileReader implements FileReader {
     private final StreamLogging streamLogger = new StreamLogging("Dbase File Reader");
 
     private Charset stringCharset;
-
+    
     private boolean oneBytePerChar;
 
-    private Calendar calendar = 
-        Calendar.getInstance(TimeZone.getTimeZone("UTC"), Locale.US);
+    private Calendar calendar;
 
     private final long MILLISECS_PER_DAY = 24*60*60*1000;
 
@@ -136,19 +134,33 @@ public class DbaseFileReader implements FileReader {
      *                 If an error occurs while initializing.
      */
     public DbaseFileReader(final ShpFiles shapefileFiles,
+            final boolean useMemoryMappedBuffer, final Charset charset, final TimeZone timeZone) throws IOException {
+        final ReadableByteChannel dbfChannel = shapefileFiles.getReadChannel(ShpFileType.DBF, this);
+        init(dbfChannel, useMemoryMappedBuffer, charset, timeZone);
+    }
+    
+    public DbaseFileReader(final ShpFiles shapefileFiles,
             final boolean useMemoryMappedBuffer, final Charset charset) throws IOException {
         final ReadableByteChannel dbfChannel = shapefileFiles.getReadChannel(ShpFileType.DBF, this);
-        init(dbfChannel, useMemoryMappedBuffer, charset);
+        init(dbfChannel, useMemoryMappedBuffer, charset, null);
+    }
+    
+    public DbaseFileReader(final ReadableByteChannel readChannel, final boolean useMemoryMappedBuffer, 
+    		final Charset charset) throws IOException {
+        init(readChannel, useMemoryMappedBuffer, charset, null);
     }
 
-    public DbaseFileReader(final ReadableByteChannel readChannel, final boolean useMemoryMappedBuffer, final Charset charset) throws IOException {
-        init(readChannel, useMemoryMappedBuffer, charset);
+    public DbaseFileReader(final ReadableByteChannel readChannel, final boolean useMemoryMappedBuffer, 
+    		final Charset charset, final TimeZone timeZone) throws IOException {
+        init(readChannel, useMemoryMappedBuffer, charset, timeZone);
     }
 
     private void init(final ReadableByteChannel dbfChannel, final boolean useMemoryMappedBuffer,
-            final Charset charset) throws IOException {
+            final Charset charset, final TimeZone timeZone) throws IOException {
         this.channel = dbfChannel;
-        this.stringCharset = charset;
+        this.stringCharset = charset == null ? Charset.defaultCharset() : charset;
+        TimeZone calTimeZone = timeZone == null ? TimeZone.getDefault() : timeZone;
+        this.calendar = Calendar.getInstance(calTimeZone, Locale.US);
 
         this.useMemoryMappedBuffer = useMemoryMappedBuffer;
         this.randomAccessEnabled = (channel instanceof FileChannel);
@@ -483,12 +495,11 @@ public class DbaseFileReader implements FileReader {
                             final int tempMonth = Integer.parseInt(tempString) - 1;
                             tempString = fastParse(bytes,fieldOffset + 6,2); 
                             final int tempDay = Integer.parseInt(tempString);
-                            final Calendar cal = Calendar.getInstance(Locale.US);
-                            cal.clear();
-                            cal.set(Calendar.YEAR, tempYear);
-                            cal.set(Calendar.MONTH, tempMonth);
-                            cal.set(Calendar.DAY_OF_MONTH, tempDay);
-                            object = cal.getTime();
+                            calendar.clear();
+                            calendar.set(Calendar.YEAR, tempYear);
+                            calendar.set(Calendar.MONTH, tempMonth);
+                            calendar.set(Calendar.DAY_OF_MONTH, tempDay);
+                            object = calendar.getTime();
                         } catch (final NumberFormatException nfe) {
                             // todo: use progresslistener, this isn't a grave error.
                         }
@@ -592,7 +603,7 @@ public class DbaseFileReader implements FileReader {
 
     public static void main(final String[] args) throws Exception {
         final DbaseFileReader reader = new DbaseFileReader(new ShpFiles(args[0]),
-                false, Charset.forName("ISO-8859-1"));
+                false, Charset.forName("ISO-8859-1"), null);
         System.out.println(reader.getHeader());
         int r = 0;
         while (reader.hasNext()) {

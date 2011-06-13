@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -178,7 +179,7 @@ public class DbaseFileTest extends TestCaseSupport {
     }
 
     public void testFieldFormatter() throws Exception {
-        DbaseFileWriter.FieldFormatter formatter = new DbaseFileWriter.FieldFormatter(Charset.defaultCharset());
+        DbaseFileWriter.FieldFormatter formatter = new DbaseFileWriter.FieldFormatter(Charset.defaultCharset(), TimeZone.getDefault());
 
         String stringWithInternationChars = "hello " + '\u20ac';
         // if (verbose) {

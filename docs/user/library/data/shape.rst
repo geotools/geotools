@@ -26,6 +26,10 @@ The following connection parameters are available:
 | "charset"               | Optional: Chartset used to decode strings in the   |
 |                         | DBF file                                           |
 +-------------------------+----------------------------------------------------+
+| "timezone               | Optional: Timezone used to parse dates in the      |
+|                         | DBF file                                           |
++-------------------------+----------------------------------------------------+
+
 
 This information is also in the `javadocs <http://docs.geotools.org/latest/javadocs/org/geotools/data/shapefile/ShapefileDataStoreFactory.html>`_ .
 
@@ -148,6 +152,12 @@ Character Sets
 If you are working with Acerbic, Chinese or Korean character sets you will need to make use of the "charset" connection parameter when setting up your shapefile. The codes used here are the same as documented/defined for the Java Charset class. Indeed you can provide a Chartset or if you provide a String it will be converted to a Charset.
 
 Thanks to the University of Soul for providing and testing this functionality.
+
+Timezone
+''''''''
+
+The store will build dates using the default timezone. If you need to work against metereological data the timezone has normally to be forced to "UTC" instead.
+
 
 Reading PRJ
 ^^^^^^^^^^^

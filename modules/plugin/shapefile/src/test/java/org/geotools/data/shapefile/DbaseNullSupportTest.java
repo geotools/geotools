@@ -10,6 +10,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.TimeZone;
 
 import junit.framework.TestCase;
 
@@ -30,8 +31,10 @@ import org.geotools.data.shapefile.dbf.DbaseFileWriter;
 public class DbaseNullSupportTest extends TestCase {
     /** declare a specific charset for test portability */
     private static final Charset cs;
+    private static final TimeZone tz;
     static {
         cs = Charset.forName("ISO-8859-1");
+        tz = TimeZone.getTimeZone("UTC");
     }
     private static final char[] types = {'C','N','F','L','D'};
     private static final int[] sizes = {5, 9, 20, 1, 8};
@@ -47,7 +50,7 @@ public class DbaseNullSupportTest extends TestCase {
         Date date;
         try {
             // every jvm should support this, so we should never have an error
-            date = new SimpleDateFormat("yyyy-MM-dd").parse("2010-04-01");
+            date = new SimpleDateFormat("yyyy-MM-dd z").parse("2010-04-01 UTC");
         } catch (ParseException e) {
             date = null;
         }
@@ -69,7 +72,7 @@ public class DbaseNullSupportTest extends TestCase {
         FileOutputStream fos = new FileOutputStream(tmp);
         WritableByteChannel channel = fos.getChannel();
         tmp.deleteOnExit();
-        DbaseFileWriter writer = new DbaseFileWriter(header, channel, cs);
+        DbaseFileWriter writer = new DbaseFileWriter(header, channel, cs, tz);
         // write records such that the i-th row has nulls in every column except the i-th column
         for (int row = 0; row < values.length; row++) {
             Object[] current = new Object[values.length];
@@ -80,7 +83,7 @@ public class DbaseNullSupportTest extends TestCase {
         writer.close();
         fos.flush();
         fos.close();
-        DbaseFileReader reader = new DbaseFileReader(new FileInputStream(tmp).getChannel(), false, cs);
+        DbaseFileReader reader = new DbaseFileReader(new FileInputStream(tmp).getChannel(), false, cs, tz);
         assertTrue("Number of records does not match", values.length == reader.getHeader().getNumRecords());
         for (int row = 0; row < values.length; row++) {
             Object[] current = reader.readEntry();

@@ -187,6 +187,40 @@ out of the set.::
 
 You can also using a Filter on normal Java objects (ie POJOs).
 
+**Multi-Valued Filters**
+
+All filters that implement the MultiValuedFilter interface, support filtering on operands that return multiple values on evaluation. 
+The way these filters handle multiple values can be modified through the 'MatchAction' property, which has three possible values: 
+
+* MatchAction.ANY - Evaluates to true if any possible combinations of operands evaluates to true.
+* MatchAction.ALL - Evaluates to true if all possible combinations of operands evaluates to true.
+* MatchAction.ONE - Evaluates to true if exactly one possible combination of values evaluates to true.
+
+The property can be set when creating the filter, for example::
+
+     MultiValuedFilter filter = ff.propertyGreaterThan( ff.property( "child/age"), ff.literal( 12 ), MatchAction.ALL ); 
+
+With child being a multi-valued attribute, this filter tests whether all children are older than 12.
+
+The property can be retrieved through a simple getter.::
+
+     filter.getMatchAction()
+
+When no MatchAction is specified, it is set to the default MatchAction.ANY.
+
+Here is an example that shows the differences between the different MactionActions::
+
+     List<Integer> ages = Arrays.asList( new int[]{ 7, 8, 10, 15 } );
+     
+     filter = ff.propertyGreaterThan( ff.literal( ages ), ff.literal(12), Match.Action.ALL );
+     System.out.println( "All: "+ filter.evaluate( null ) ); // prints All: false
+
+     filter = ff.propertyGreaterThan( ff.literal( ages ), ff.literal(12), Match.Action.ANY );
+     System.out.println( "Any: "+ filter.evaluate( null ) ); // prints Any: true 
+
+     filter = ff.propertyGreaterThan( ff.literal( ages ), ff.literal(12), Match.Action.ONE );
+     System.out.println( "One: "+ filter.evaluate( null ) ); // prints One: true 
+
 **INCLUDES and EXCLUDES**
 
 There are two constants defined that can be used as Sentinel objects (or placeholders). Both of

@@ -44,6 +44,7 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.Id;
 import org.opengis.filter.IncludeFilter;
+import org.opengis.filter.MultiValuedFilter.MatchAction;
 import org.opengis.filter.Not;
 import org.opengis.filter.Or;
 import org.opengis.filter.PropertyIsBetween;
@@ -366,7 +367,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
                 Expression prop = (Expression) exprs.next();
                 for (Iterator uppers = upperExpressions.iterator(); uppers.hasNext();) {
                     Expression roof = (Expression) uppers.next();
-                    Filter newFilter = ff.between(prop, floor, roof);
+                    Filter newFilter = ff.between(prop, floor, roof, filter.getMatchAction());
                     combinedFilters.add(newFilter);
                 }
             }
@@ -384,7 +385,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
         for (int i = 0; i < expressions.length; i++) {
             Expression left = expressions[i][0];
             Expression right = expressions[i][1];
-            Filter unrolled = ff.equals(left, right);
+            Filter unrolled = ff.equal(left, right, filter.isMatchingCase(), filter.getMatchAction());
             combinedFilters.add(unrolled);
         }
 
@@ -400,7 +401,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
         for (int i = 0; i < expressions.length; i++) {
             Expression left = expressions[i][0];
             Expression right = expressions[i][1];
-            Filter unrolled = ff.notEqual(left, right, filter.isMatchingCase());
+            Filter unrolled = ff.notEqual(left, right, filter.isMatchingCase(), filter.getMatchAction());
             combinedFilters.add(unrolled);
         }
 
@@ -416,7 +417,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
         for (int i = 0; i < expressions.length; i++) {
             Expression left = expressions[i][0];
             Expression right = expressions[i][1];
-            Filter unrolled = ff.greater(left, right);
+            Filter unrolled = ff.greater(left, right, filter.isMatchingCase(), filter.getMatchAction());
             combinedFilters.add(unrolled);
         }
 
@@ -432,7 +433,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
         for (int i = 0; i < expressions.length; i++) {
             Expression left = expressions[i][0];
             Expression right = expressions[i][1];
-            Filter unrolled = ff.greaterOrEqual(left, right);
+            Filter unrolled = ff.greaterOrEqual(left, right, filter.isMatchingCase(), filter.getMatchAction());
             combinedFilters.add(unrolled);
         }
 
@@ -448,7 +449,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
         for (int i = 0; i < expressions.length; i++) {
             Expression left = expressions[i][0];
             Expression right = expressions[i][1];
-            Filter unrolled = ff.less(left, right);
+            Filter unrolled = ff.less(left, right, filter.isMatchingCase(), filter.getMatchAction());
             combinedFilters.add(unrolled);
         }
 
@@ -464,7 +465,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
         for (int i = 0; i < expressions.length; i++) {
             Expression left = expressions[i][0];
             Expression right = expressions[i][1];
-            Filter unrolled = ff.lessOrEqual(left, right);
+            Filter unrolled = ff.lessOrEqual(left, right, filter.isMatchingCase(), filter.getMatchAction());
             combinedFilters.add(unrolled);
         }
 
@@ -480,11 +481,13 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
         String wildcard = filter.getWildCard();
         String single = filter.getSingleChar();
         String escape = filter.getEscape();
+        boolean matchCase = filter.isMatchingCase();
+        MatchAction matchAction = filter.getMatchAction();
 
         List combined = new ArrayList(unrolledValues.size());
         for (Iterator it = unrolledValues.iterator(); it.hasNext();) {
             Expression sourceValue = (Expression) it.next();
-            Filter newFilter = ff.like(sourceValue, literal, wildcard, single, escape);
+            Filter newFilter = ff.like(sourceValue, literal, wildcard, single, escape, matchCase, matchAction);
             combined.add(newFilter);
         }
         Filter unrolled = combineOred(combined);
@@ -524,7 +527,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
         for (Iterator it = sourceNames.iterator(); it.hasNext();) {
             Expression sourceName = (Expression) it.next();
             Filter unrolled = ff.bbox(sourceName, filter.getMinX(), filter.getMinY(), filter
-                    .getMaxX(), filter.getMaxY(), filter.getSRS());
+                    .getMaxX(), filter.getMaxY(), filter.getSRS(), filter.getMatchAction());
             combined.add(unrolled);
         }
 
@@ -543,7 +546,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
             Expression right = exps[i][1];
 
             Filter unrolled = ff.beyond(left, right, filter.getDistance(), filter
-                    .getDistanceUnits());
+                    .getDistanceUnits(), filter.getMatchAction());
             combinedFilters.add(unrolled);
         }
 
@@ -560,7 +563,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
             Expression left = exps[i][0];
             Expression right = exps[i][1];
 
-            Filter unrolled = ff.contains(left, right);
+            Filter unrolled = ff.contains(left, right, filter.getMatchAction());
             combinedFilters.add(unrolled);
         }
 
@@ -577,7 +580,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
             Expression left = exps[i][0];
             Expression right = exps[i][1];
 
-            Filter unrolled = ff.crosses(left, right);
+            Filter unrolled = ff.crosses(left, right, filter.getMatchAction());
             combinedFilters.add(unrolled);
         }
 
@@ -594,7 +597,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
             Expression left = exps[i][0];
             Expression right = exps[i][1];
 
-            Filter unrolled = ff.disjoint(left, right);
+            Filter unrolled = ff.disjoint(left, right, filter.getMatchAction());
             combinedFilters.add(unrolled);
         }
 
@@ -612,7 +615,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
             Expression right = exps[i][1];
 
             Filter unrolled = ff.dwithin(left, right, filter.getDistance(), filter
-                    .getDistanceUnits());
+                    .getDistanceUnits(), filter.getMatchAction());
             combinedFilters.add(unrolled);
         }
 
@@ -629,7 +632,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
             Expression left = exps[i][0];
             Expression right = exps[i][1];
 
-            Filter unrolled = ff.equal(left, right);
+            Filter unrolled = ff.equal(left, right, filter.getMatchAction());
             combinedFilters.add(unrolled);
         }
 
@@ -646,7 +649,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
             Expression left = exps[i][0];
             Expression right = exps[i][1];
 
-            Filter unrolled = ff.intersects(left, right);
+            Filter unrolled = ff.intersects(left, right, filter.getMatchAction());
             combinedFilters.add(unrolled);
         }
 
@@ -663,7 +666,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
             Expression left = exps[i][0];
             Expression right = exps[i][1];
 
-            Filter unrolled = ff.overlaps(left, right);
+            Filter unrolled = ff.overlaps(left, right, filter.getMatchAction());
             combinedFilters.add(unrolled);
         }
 
@@ -680,7 +683,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
             Expression left = exps[i][0];
             Expression right = exps[i][1];
 
-            Filter unrolled = ff.touches(left, right);
+            Filter unrolled = ff.touches(left, right, filter.getMatchAction());
             combinedFilters.add(unrolled);
         }
 
@@ -697,7 +700,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
             Expression left = exps[i][0];
             Expression right = exps[i][1];
 
-            Filter unrolled = ff.within(left, right);
+            Filter unrolled = ff.within(left, right, filter.getMatchAction());
             combinedFilters.add(unrolled);
         }
 

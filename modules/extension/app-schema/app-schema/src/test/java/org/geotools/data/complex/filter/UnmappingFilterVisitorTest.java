@@ -77,6 +77,7 @@ import org.opengis.filter.BinaryLogicOperator;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.Id;
+import org.opengis.filter.MultiValuedFilter.MatchAction;
 import org.opengis.filter.Or;
 import org.opengis.filter.PropertyIsBetween;
 import org.opengis.filter.PropertyIsEqualTo;
@@ -400,9 +401,10 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
     @Test
     public void testBetweenFilter() throws Exception {
         PropertyIsBetween bf = ff.between(ff.property("measurement/result"), ff.literal(1), ff
-                .literal(2));
+                .literal(2), MatchAction.ALL);
 
         PropertyIsBetween unrolled = (PropertyIsBetween) bf.accept(visitor, null);
+        assertEquals(MatchAction.ALL, ((PropertyIsBetween) unrolled).getMatchAction());
         Expression att = unrolled.getExpression();
         assertTrue(att instanceof PropertyName);
         String propertyName = ((PropertyName) att).getPropertyName();
@@ -411,13 +413,15 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
 
     @Test
     public void testCompareFilter() throws Exception {
-        PropertyIsEqualTo complexFilter = ff.equals(ff.property("measurement/result"), ff
-                .literal(1.1));
+        PropertyIsEqualTo complexFilter = ff.equal(ff.property("measurement/result"), ff
+                .literal(1.1), true, MatchAction.ALL);
 
         Filter unrolled = (Filter) complexFilter.accept(visitor, null);
         assertNotNull(unrolled);
         assertTrue(unrolled instanceof PropertyIsEqualTo);
         assertNotSame(complexFilter, unrolled);
+        assertTrue(((PropertyIsEqualTo) unrolled).isMatchingCase());
+        assertEquals(MatchAction.ALL, ((PropertyIsEqualTo) unrolled).getMatchAction());
 
         Expression left = ((PropertyIsEqualTo) unrolled).getExpression1();
         Expression right = ((PropertyIsEqualTo) unrolled).getExpression2();
@@ -570,11 +574,12 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
         Expression literalGeom = ff
                 .literal(new GeometryFactory().createPoint(new Coordinate(1, 1)));
 
-        Intersects gf = ff.intersects(ff.property("areaOfInfluence"), literalGeom);
+        Intersects gf = ff.intersects(ff.property("areaOfInfluence"), literalGeom, MatchAction.ALL);
 
         Filter unrolled = (Filter) gf.accept(visitor, null);
         assertTrue(unrolled instanceof Intersects);
         assertNotSame(gf, unrolled);
+        assertEquals(MatchAction.ALL, ((Intersects) unrolled).getMatchAction());
 
         Intersects newFilter = (Intersects) unrolled;
         Expression left = newFilter.getExpression1();
@@ -596,13 +601,15 @@ public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
         final String single = "?";
         final String escape = "\\";
         PropertyIsLike like = ff.like(ff.property("/measurement/determinand_description"),
-                "%n_1_1", wildcard, single, escape);
+                "%n_1_1", wildcard, single, escape, true, MatchAction.ONE);
 
         PropertyIsLike unmapped = (PropertyIsLike) like.accept(visitor, null);
         assertEquals(like.getLiteral(), unmapped.getLiteral());
         assertEquals(like.getWildCard(), unmapped.getWildCard());
         assertEquals(like.getSingleChar(), unmapped.getSingleChar());
         assertEquals(like.getEscape(), unmapped.getEscape());
+        assertEquals(like.isMatchingCase(), unmapped.isMatchingCase());
+        assertEquals(like.getMatchAction(), unmapped.getMatchAction());
 
         Expression unmappedExpr = unmapped.getExpression();
         assertTrue(unmappedExpr instanceof PropertyName);

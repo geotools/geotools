@@ -360,7 +360,10 @@ public class FilterCapabilities {
             return true;
         
         short filterType = Filters.getFilterType( filter );
-
+        if (filterType == 0) {
+            //unknown type
+            return false;
+        }
         return supports(filterType);
     }
 

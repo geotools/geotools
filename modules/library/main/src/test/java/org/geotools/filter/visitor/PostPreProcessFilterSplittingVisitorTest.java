@@ -334,4 +334,15 @@ public class PostPreProcessFilterSplittingVisitorTest extends AbstractPostPrePro
         assertEquals(anded, visitor.getFilterPre());
         assertEquals(Filter.INCLUDE, visitor.getFilterPost());
 	}
+	
+    public void testTemporalFilter() throws Exception {
+        FilterCapabilities caps = new FilterCapabilities();
+        PostPreProcessFilterSplittingVisitor visitor = 
+            new PostPreProcessFilterSplittingVisitor(caps, null, null);
+        
+        Filter f1 = ff.after(ff.property("foo"), ff.literal("2011-06-20"));
+        f1.accept(visitor, null);
+        
+        assertEquals(f1, visitor.getFilterPost());
+    }
 }

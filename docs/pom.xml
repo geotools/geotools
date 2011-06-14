@@ -22,8 +22,7 @@
   <!-- =========================================================== -->
   <groupId>org.geotools</groupId>
   <artifactId>docs</artifactId>
-  <packaging>pom</packaging>
-  <name>Geotools Documentation</name>
+  <name>GeoTools Documentation</name>
   <description>GeoTools website, user and developer guides.</description>
 
   <licenses>

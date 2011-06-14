@@ -1,4 +1,4 @@
-XSD-GML
+XSD-KML
 -------
 
 KML schema and bindings for gt-xml allowing the handling of FeatureCollection

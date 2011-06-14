@@ -15,7 +15,7 @@ Here is an example tempalte to get you started.
    what your user should do to prepair.::
    
         :Author: Jody Garnett
-        :Author: Micheal Bedward
+        :Author: Michael Bedward
         :Thanks: geotools-user list
         :Version: |release|
         :License: Create Commons with attribution

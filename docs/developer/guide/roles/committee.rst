@@ -50,7 +50,7 @@ Our thanks to previous PMC members:
 * David Blasby
 * Ian Schneider
 * Martin Desruisseaux
-* Micheal Bedward
+* Michael Bedward
 * David Zwiers
 * Richard Gould
 * Rob Hranac
@@ -84,7 +84,7 @@ Recommended:
 * It is recommended that PMC members maintain a released module
   
 * Alternatives such documentation or user list have worked for previous PMC members such as
-  Rueben Schulz and Micheal Bedward
+  Rueben Schulz and Michael Bedward
   
 Nominations
 ^^^^^^^^^^^

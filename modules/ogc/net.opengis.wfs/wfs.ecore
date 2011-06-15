@@ -1077,6 +1077,7 @@
         <details key="documentation" value="&#xA;               The vendorId attribute is used to specify the name of&#xA;               vendor who's vendor specific command the client&#xA;               application wishes to execute."/>
       </eAnnotations>
     </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NoSRSType">
     <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">

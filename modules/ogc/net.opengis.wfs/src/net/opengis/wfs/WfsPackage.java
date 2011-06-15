@@ -1843,13 +1843,22 @@ public interface WfsPackage extends EPackage {
 	int NATIVE_TYPE__VENDOR_ID = 1;
 
 	/**
+     * The feature id for the '<em><b>Value</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int NATIVE_TYPE__VALUE = 2;
+
+    /**
      * The number of structural features of the '<em>Native Type</em>' class.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-	int NATIVE_TYPE_FEATURE_COUNT = 2;
+	int NATIVE_TYPE_FEATURE_COUNT = 3;
 
 	/**
      * The meta object id for the '{@link net.opengis.wfs.impl.NoSRSTypeImpl <em>No SRS Type</em>}' class.
@@ -4140,6 +4149,17 @@ public interface WfsPackage extends EPackage {
 	EAttribute getNativeType_VendorId();
 
 	/**
+     * Returns the meta object for the attribute '{@link net.opengis.wfs.NativeType#getValue <em>Value</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Value</em>'.
+     * @see net.opengis.wfs.NativeType#getValue()
+     * @see #getNativeType()
+     * @generated
+     */
+    EAttribute getNativeType_Value();
+
+    /**
      * Returns the meta object for class '{@link net.opengis.wfs.NoSRSType <em>No SRS Type</em>}'.
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -6035,6 +6055,14 @@ public interface WfsPackage extends EPackage {
 		EAttribute NATIVE_TYPE__VENDOR_ID = eINSTANCE.getNativeType_VendorId();
 
 		/**
+         * The meta object literal for the '<em><b>Value</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute NATIVE_TYPE__VALUE = eINSTANCE.getNativeType_Value();
+
+        /**
          * The meta object literal for the '{@link net.opengis.wfs.impl.NoSRSTypeImpl <em>No SRS Type</em>}' class.
          * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->

@@ -1647,6 +1647,11 @@
       </xsd:annotation>
    </xsd:element>
    <xsd:complexType name="NativeType">
+      <!-- start: following was added to be inline with the actual spec -->
+      <xsd:sequence>
+          <xsd:any processContents="lax" namespace="##other" minOccurs="0"/>
+      </xsd:sequence>
+      <!-- end -->
       <xsd:attribute name="vendorId" type="xsd:string" use="required">
          <xsd:annotation>
             <xsd:documentation>

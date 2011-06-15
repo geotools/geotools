@@ -25,6 +25,7 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  * <ul>
  *   <li>{@link net.opengis.wfs.impl.NativeTypeImpl#isSafeToIgnore <em>Safe To Ignore</em>}</li>
  *   <li>{@link net.opengis.wfs.impl.NativeTypeImpl#getVendorId <em>Vendor Id</em>}</li>
+ *   <li>{@link net.opengis.wfs.impl.NativeTypeImpl#getValue <em>Value</em>}</li>
  * </ul>
  * </p>
  *
@@ -81,6 +82,26 @@ public class NativeTypeImpl extends EObjectImpl implements NativeType {
 	protected String vendorId = VENDOR_ID_EDEFAULT;
 
 	/**
+     * The default value of the '{@link #getValue() <em>Value</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getValue()
+     * @generated
+     * @ordered
+     */
+    protected static final String VALUE_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getValue() <em>Value</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getValue()
+     * @generated
+     * @ordered
+     */
+    protected String value = VALUE_EDEFAULT;
+
+    /**
      * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
@@ -167,6 +188,27 @@ public class NativeTypeImpl extends EObjectImpl implements NativeType {
 
 	/**
      * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public String getValue() {
+        return value;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setValue(String newValue) {
+        String oldValue = value;
+        value = newValue;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, WfsPackage.NATIVE_TYPE__VALUE, oldValue, value));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
      */
@@ -176,6 +218,8 @@ public class NativeTypeImpl extends EObjectImpl implements NativeType {
                 return isSafeToIgnore() ? Boolean.TRUE : Boolean.FALSE;
             case WfsPackage.NATIVE_TYPE__VENDOR_ID:
                 return getVendorId();
+            case WfsPackage.NATIVE_TYPE__VALUE:
+                return getValue();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -192,6 +236,9 @@ public class NativeTypeImpl extends EObjectImpl implements NativeType {
                 return;
             case WfsPackage.NATIVE_TYPE__VENDOR_ID:
                 setVendorId((String)newValue);
+                return;
+            case WfsPackage.NATIVE_TYPE__VALUE:
+                setValue((String)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -210,6 +257,9 @@ public class NativeTypeImpl extends EObjectImpl implements NativeType {
             case WfsPackage.NATIVE_TYPE__VENDOR_ID:
                 setVendorId(VENDOR_ID_EDEFAULT);
                 return;
+            case WfsPackage.NATIVE_TYPE__VALUE:
+                setValue(VALUE_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -225,6 +275,8 @@ public class NativeTypeImpl extends EObjectImpl implements NativeType {
                 return isSetSafeToIgnore();
             case WfsPackage.NATIVE_TYPE__VENDOR_ID:
                 return VENDOR_ID_EDEFAULT == null ? vendorId != null : !VENDOR_ID_EDEFAULT.equals(vendorId);
+            case WfsPackage.NATIVE_TYPE__VALUE:
+                return VALUE_EDEFAULT == null ? value != null : !VALUE_EDEFAULT.equals(value);
         }
         return super.eIsSet(featureID);
     }
@@ -242,6 +294,8 @@ public class NativeTypeImpl extends EObjectImpl implements NativeType {
         if (safeToIgnoreESet) result.append(safeToIgnore); else result.append("<unset>");
         result.append(", vendorId: ");
         result.append(vendorId);
+        result.append(", value: ");
+        result.append(value);
         result.append(')');
         return result.toString();
     }

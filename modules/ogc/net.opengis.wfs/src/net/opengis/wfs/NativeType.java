@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.EObject;
  * <ul>
  *   <li>{@link net.opengis.wfs.NativeType#isSafeToIgnore <em>Safe To Ignore</em>}</li>
  *   <li>{@link net.opengis.wfs.NativeType#getVendorId <em>Vendor Id</em>}</li>
+ *   <li>{@link net.opengis.wfs.NativeType#getValue <em>Value</em>}</li>
  * </ul>
  * </p>
  *
@@ -115,5 +116,22 @@ public interface NativeType extends EObject {
      * @generated
      */
 	void setVendorId(String value);
+
+     /**
+      * Arbitrary text content within the native element.
+      * @model
+      */
+     String getValue();
+
+    /**
+     * Sets the value of the '{@link net.opengis.wfs.NativeType#getValue <em>Value</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Value</em>' attribute.
+     * @see #getValue()
+     * @generated
+     */
+    void setValue(String value);
+
 
 } // NativeType

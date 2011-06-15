@@ -1681,6 +1681,15 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
 
 	/**
      * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getNativeType_Value() {
+        return (EAttribute)nativeTypeEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
      * @generated
      */
@@ -2532,6 +2541,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
         nativeTypeEClass = createEClass(NATIVE_TYPE);
         createEAttribute(nativeTypeEClass, NATIVE_TYPE__SAFE_TO_IGNORE);
         createEAttribute(nativeTypeEClass, NATIVE_TYPE__VENDOR_ID);
+        createEAttribute(nativeTypeEClass, NATIVE_TYPE__VALUE);
 
         noSRSTypeEClass = createEClass(NO_SRS_TYPE);
 
@@ -2814,6 +2824,7 @@ public class WfsPackageImpl extends EPackageImpl implements WfsPackage {
         initEClass(nativeTypeEClass, NativeType.class, "NativeType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getNativeType_SafeToIgnore(), theXMLTypePackage.getBoolean(), "safeToIgnore", null, 1, 1, NativeType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getNativeType_VendorId(), theXMLTypePackage.getString(), "vendorId", null, 1, 1, NativeType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getNativeType_Value(), ecorePackage.getEString(), "value", null, 0, 1, NativeType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(noSRSTypeEClass, NoSRSType.class, "NoSRSType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

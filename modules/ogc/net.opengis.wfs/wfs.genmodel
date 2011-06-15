@@ -193,6 +193,7 @@
     <genClasses ecoreClass="wfs.ecore#//NativeType">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//NativeType/safeToIgnore"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//NativeType/vendorId"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute wfs.ecore#//NativeType/value"/>
     </genClasses>
     <genClasses ecoreClass="wfs.ecore#//NoSRSType"/>
     <genClasses ecoreClass="wfs.ecore#//OperationsType">

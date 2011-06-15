@@ -16,7 +16,6 @@ The following modules are provided for your amusement only; you can use these pa
    :maxdepth: 1
    :hidden:
 
-   app-schema
    example
    geojson
    grid
@@ -38,9 +37,6 @@ The following modules are provided for your amusement only; you can use these pa
 
    * - Module
      - Description
-
-   * - :doc:`app-schema`
-     - Provides support for complex features defined by a GML application schema
 
    * - :doc:`example`
      - An example that can be used when creating a new unsupported module

@@ -6,6 +6,7 @@ Extensions build additional functionality on top of the core services of the Geo
 
 .. toctree::
 
+   app-schema
    brewer/index
    graph/index
    ogc/index

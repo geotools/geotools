@@ -21,6 +21,8 @@ Supports access to feature information (ie vector information) from a range of d
 
 DataStore plugins:
 
+* :doc:`/extension/app-schema`
+
 .. toctree::
    :maxdepth: 1
    
@@ -30,8 +32,6 @@ DataStore plugins:
    property
 
 Unsupported plugins:
-
-* :doc:`/unsupported/app-schema`
 
 .. toctree::
    :maxdepth: 1

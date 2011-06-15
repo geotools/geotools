@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2004-2011, Open Source Geospatial Foundation (OSGeo)
  *    (C) 2001 Vivid Solutions
  *    
  *    This library is free software; you can redistribute it and/or
@@ -48,7 +48,7 @@ import org.geotools.resources.i18n.ErrorKeys;
  * context}.
  *
  * @since 2.1
- *
+ * @version 8.0
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
@@ -70,10 +70,29 @@ public class Envelope2D extends Rectangle2D.Double implements BoundingBox, Envel
 
     /**
      * Constructs an initially empty envelope with no CRS.
-     *
+     * <p>
+     * Unlike a normal Envelope2D we set the width and height to -1 so we can tell
+     * the difference between:
+     * <ul>
+     * <li>{@link Envelope2D#isEmpty() width or height is negative inclosing no area
+     * <li>{@link #isNull() envelope as constructed, not yet filled in by user
+     * </ul>
      * @since 2.5
      */
     public Envelope2D() {
+        // set height and width to -1 so that an undefined envelope can be checked by isNull()
+        this.width = -1;
+        this.height = -1;
+    }
+    
+    /**
+     * Constructs an initially empty envelope with the defined CRS.
+     * 
+     * @param crs The coordinate reference system, or {@code null}.
+     */
+    public Envelope2D(final CoordinateReferenceSystem crs) {
+        this();
+        setCoordinateReferenceSystem(crs);
     }
 
     /**
@@ -386,26 +405,26 @@ public class Envelope2D extends Rectangle2D.Double implements BoundingBox, Envel
     public String toString() {
         return AbstractEnvelope.toString(this);
     }
+
     // BoundingBox
     public void setBounds(BoundingBox bounds) {
         this.crs = bounds.getCoordinateReferenceSystem();
-        this.x=bounds.getMinX();
-        this.y=bounds.getMinY();
-        this.width=bounds.getWidth();
-        this.height=bounds.getHeight();
+        this.x = bounds.getMinX();
+        this.y = bounds.getMinY();
+        this.width = bounds.getWidth();
+        this.height = bounds.getHeight();
     }
 
     public void include(BoundingBox bounds) {
-        if( crs == null ){
+        if (crs == null) {
             this.crs = bounds.getCoordinateReferenceSystem();
-        }
-        else {
+        } else {
             ensureCompatibleReferenceSystem(bounds);
         }
         if (bounds.isEmpty()) {
             return;
         }
-        if (isEmpty()) {
+        if (isNull()) {
             setBounds(bounds);
         } else {
             if (bounds.getMinX() < getMinX()) {
@@ -426,7 +445,7 @@ public class Envelope2D extends Rectangle2D.Double implements BoundingBox, Envel
     }
 
     public void include(double x, double y) {
-        if (isEmpty()) {
+        if (isNull()) {
             this.x = x;
             this.y = y;
             this.width = 0;
@@ -449,15 +468,25 @@ public class Envelope2D extends Rectangle2D.Double implements BoundingBox, Envel
         }
     }
 
+    /**
+     * Returns {@code true} if the interior of this bounds intersects the interior of the provided
+     * bounds.
+     * <p>
+     * Note this method conflicts with {@link Rectangle2D#intersects(Rectangle2D)} so you may need
+     * to call it via envelope2d.intersects( (Envelope2D) bounds ) in order to correctly check that
+     * the coordinate reference systems match.
+     * 
+     * @param bounds The bounds to test for intersection.
+     * @return {@code true} if the two bounds intersect.
+     */
     public boolean intersects(BoundingBox bounds) {
         ensureCompatibleReferenceSystem(bounds);
-        if (isEmpty() || bounds.isEmpty()) {
+        if (isNull() || bounds.isEmpty()) {
             return false;
         }
-        return !(bounds.getMinX() > this.getMaxX() ||
-                bounds.getMaxX() < this.getMinX() ||
-                bounds.getMinY() > this.getMaxY() ||
-                bounds.getMaxY() < this.getMinY());
+
+        return !(bounds.getMinX() > this.getMaxX() || bounds.getMaxX() < this.getMinX()
+                || bounds.getMinY() > this.getMaxY() || bounds.getMaxY() < this.getMinY());
     }
 
     public boolean contains(BoundingBox bounds) {
@@ -465,57 +494,64 @@ public class Envelope2D extends Rectangle2D.Double implements BoundingBox, Envel
         if (isEmpty() || bounds.isEmpty()) {
             return false;
         }
-        return bounds.getMinX() >= this.getMinX() &&
-            bounds.getMaxX() <= this.getMaxX() &&
-            bounds.getMinY() >= this.getMinY() &&
-            bounds.getMaxY() <= this.getMaxY();
-        }
+        return bounds.getMinX() >= this.getMinX() && bounds.getMaxX() <= this.getMaxX()
+                && bounds.getMinY() >= this.getMinY() && bounds.getMaxY() <= this.getMaxY();
+    }
 
     public boolean contains(DirectPosition location) {
-        ensureCompatibleReferenceSystem( location );
-        if (isEmpty()){
+        ensureCompatibleReferenceSystem(location);
+        if (isEmpty()) {
             return false;
         }
-        return location.getOrdinate(0) >= getMinX() &&
-            location.getOrdinate(0) <= getMaxX() &&
-            location.getOrdinate(1) >= getMinY() &&
-            location.getOrdinate(1) <= getMaxY();
+        return location.getOrdinate(0) >= getMinX() && location.getOrdinate(0) <= getMaxX()
+                && location.getOrdinate(1) >= getMinY() && location.getOrdinate(1) <= getMaxY();
     }
 
     public BoundingBox toBounds(CoordinateReferenceSystem targetCRS) throws TransformException {
-        Envelope transformed = new GeneralEnvelope( (BoundingBox) this );
-        transformed = CRS.transform( transformed, targetCRS);
-        return new Envelope2D( transformed );
+        Envelope transformed = new GeneralEnvelope((BoundingBox) this);
+        transformed = CRS.transform(transformed, targetCRS);
+        return new Envelope2D(transformed);
     }
-    
+
     // utility methods
     /**
      * Make sure that the specified bounding box uses the same CRS than this one.
      * 
-     * @param  bbox The other bounding box to test for compatibility.
+     * @param bbox The other bounding box to test for compatibility.
      * @throws MismatchedReferenceSystemException if the CRS are incompatibles.
      */
     private void ensureCompatibleReferenceSystem(final BoundingBox bbox)
-        throws MismatchedReferenceSystemException {
+            throws MismatchedReferenceSystemException {
         if (crs != null) {
             final CoordinateReferenceSystem other = bbox.getCoordinateReferenceSystem();
             if (other != null) {
                 if (!CRS.equalsIgnoreMetadata(crs, other)) {
-                    throw new MismatchedReferenceSystemException(Errors.format(
-                            ErrorKeys.MISMATCHED_COORDINATE_REFERENCE_SYSTEM));
+                    throw new MismatchedReferenceSystemException(
+                            Errors.format(ErrorKeys.MISMATCHED_COORDINATE_REFERENCE_SYSTEM));
                 }
             }
         }
     }
+
     private void ensureCompatibleReferenceSystem(DirectPosition location) {
         if (crs != null) {
             final CoordinateReferenceSystem other = location.getCoordinateReferenceSystem();
             if (other != null) {
                 if (!CRS.equalsIgnoreMetadata(crs, other)) {
-                    throw new MismatchedReferenceSystemException(Errors.format(
-                            ErrorKeys.MISMATCHED_COORDINATE_REFERENCE_SYSTEM));
+                    throw new MismatchedReferenceSystemException(
+                            Errors.format(ErrorKeys.MISMATCHED_COORDINATE_REFERENCE_SYSTEM));
                 }
             }
         }
+    }
+
+    /**
+     * Used as a separate test from {@link #isEmpty()} so that we can detect when an envelope has
+     * never been used.
+     * 
+     * @return true if envelope has just been constructed
+     */
+    private boolean isNull() {
+        return (getMinX() == 0 && getMinY() == 0 && getWidth() < 0 && getHeight() < 0);
     }
 }

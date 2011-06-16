@@ -91,13 +91,6 @@ public class MappingFeatureIteratorFactory {
                 ComplexFilterSplitter splitter = new ComplexFilterSplitter( capabilities , mapping );
                 filter.accept(splitter, null);
 
-                //--just verifying this for certainty
-                CheckIfNestedFilterVisitor visitor = new CheckIfNestedFilterVisitor();
-                splitter.getFilterPre().accept(visitor, null);
-                if (visitor.hasNestedAttributes) {
-                    throw new IllegalArgumentException("Internal Error: filter was not split properly.");
-                }
-
                 query.setFilter(splitter.getFilterPre());
                 filter = splitter.getFilterPost();
                 int maxFeatures = Query.DEFAULT_MAX;

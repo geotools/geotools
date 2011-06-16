@@ -32,7 +32,6 @@ import org.geotools.factory.Hints;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.test.TestData;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
@@ -142,7 +141,7 @@ public class GeoTiffReaderTest extends Assert {
      * @throws NoSuchAuthorityCodeException
      */
     @Test
-    @Ignore
+//    @Ignore
     public void testReader() throws 
                     IllegalArgumentException, 
                     IOException,

@@ -77,8 +77,6 @@ public final class GeoTiffException extends IOException {
 
 	private GeoTiffIIOMetadataDecoder metadata = null;
 
-	private GeoKeyEntry[] geoKeys = null;
-
 	/**
 	 * Constructs an instance of <code>GeoTiffException</code> with the
 	 * specified detail message.
@@ -95,17 +93,6 @@ public final class GeoTiffException extends IOException {
 		this.metadata = metadata;
 		if (t != null)
 			this.initCause(t);
-
-		if (metadata != null) {
-			final int numGeoKeys = metadata.getNumGeoKeys();
-			if (numGeoKeys > 0) {
-				geoKeys = new GeoKeyEntry[numGeoKeys];
-
-				for (int i = 0; i < numGeoKeys; i++) {
-					geoKeys[i] = metadata.getGeoKeyRecordByIndex(i);
-				}
-			}
-		}
 	}
 
 	/**
@@ -125,7 +112,7 @@ public final class GeoTiffException extends IOException {
 	 * @return Value of property geoKeys.
 	 */
 	public GeoKeyEntry[] getGeoKeys() {
-		return this.geoKeys;
+    return metadata != null ? (GeoKeyEntry[]) metadata.getGeoKeys().toArray() : null;
 	}
 
 	public String getMessage() {
@@ -196,15 +183,14 @@ public final class GeoTiffException extends IOException {
 		}
 
 		// do all the GeoKeys
-		if (geoKeys != null) {
-			int numTags = geoKeys.length;
-			for (int i = 0; i < numTags; i++) {
-				message.print("GeoKey #" + (i + 1) + ": ");
-				message.println("Key = " + geoKeys[i].getKeyID() + ", Value = "
-						+ metadata.getGeoKey(geoKeys[i].getKeyID()));
-			}
-		}
-		
+    int i = 1;
+    for( GeoKeyEntry geokey : metadata.getGeoKeys() ) {
+      message.print("GeoKey #" + i + ": ");
+      message.println("Key = " + geokey.getKeyID() + ", Value = "
+          + metadata.getGeoKey(geokey.getKeyID()));
+      i++;
+    }
+
 		// print out the localized message
 		Throwable t = getCause();
 		if (t != null)

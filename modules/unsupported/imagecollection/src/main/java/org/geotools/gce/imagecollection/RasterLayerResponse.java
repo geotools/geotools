@@ -42,6 +42,7 @@ import org.geotools.coverage.grid.GeneralGridEnvelope;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridGeometry2D;
+import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.data.DataSourceException;
 import org.geotools.factory.Hints;
@@ -449,7 +450,7 @@ class RasterLayerResponse {
         // creating the final coverage by keeping into account the fact that we
         // can just use the envelope, but we need to use the G2W
         Map <String, String> properties = new HashMap<String,String>();
-        properties.put(Utils.FIlE_SOURCE_PROPERTY, location);
+        properties.put(AbstractGridCoverage2DReader.FILE_SOURCE_PROPERTY, location);
         
         return coverageFactory.create(rasterManager.getCoverageIdentifier(),
                 data, new GridGeometry2D(new GeneralGridEnvelope(data, 2),

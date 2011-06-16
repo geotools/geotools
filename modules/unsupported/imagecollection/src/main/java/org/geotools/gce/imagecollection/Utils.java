@@ -78,8 +78,6 @@ class Utils {
     
     final static RenderedImage DEFAULT_IMAGE;
     
-    public final static String FIlE_SOURCE_PROPERTY = "OriginalFileSource";
-    
     final static FilenameFilter FILE_FILTER = new FilenameFilter() {
         
         //TODO: ADD MORE

@@ -378,6 +378,62 @@ public class Types extends org.geotools.feature.type.Types {
         }
         return match;
     }
+    
+    /**
+     * Returns the set of all descriptors of a complex type, including from supertypes.
+     * 
+     * @param type
+     *            The type, non null.
+     * 
+     * @return The list of all descriptors.
+     */
+    public static List<PropertyDescriptor> descriptors(ComplexType type) {
+        //get list of descriptors from types and all supertypes
+        List<PropertyDescriptor> children = new ArrayList<PropertyDescriptor>();
+        ComplexType loopType = type;
+        while (loopType != null) { 
+            children.addAll(loopType.getDescriptors());
+            loopType = loopType.getSuper() instanceof ComplexType? (ComplexType) loopType.getSuper() : null;
+        }
+        return children;
+    }
+    
+    /**
+     * Find a descriptor, taking in to account supertypes AND substitution groups
+     * 
+     * @param parentType type
+     * @param name name of descriptor
+     * @return descriptor, null if not found
+     */
+    public static PropertyDescriptor findDescriptor( ComplexType parentType, Name name) {
+        //get list of descriptors from types and all supertypes
+        List<PropertyDescriptor> descriptors = descriptors(parentType);
+        
+        //find matching descriptor
+        for (Iterator<PropertyDescriptor> it = descriptors.iterator(); it.hasNext();) {
+            PropertyDescriptor d = it.next(); 
+            if (d.getName().equals(name)) {
+                return d;
+            } 
+        }
+                
+        // nothing found, perhaps polymorphism?? let's loop again
+        for (Iterator<PropertyDescriptor> it = descriptors.iterator(); it.hasNext();) {
+            List<AttributeDescriptor> substitutionGroup = (List<AttributeDescriptor>) it.next().getUserData().get("substitutionGroup");
+            if (substitutionGroup != null){
+                for (Iterator<AttributeDescriptor> it2 = substitutionGroup.iterator(); it2.hasNext();) {
+                    AttributeDescriptor d = it2.next(); 
+                    if (d.getName().equals(name)) { //BINGOOO !!
+                        return d;                            
+                    }
+                }
+            }        
+        }
+        
+        return null;
+    }
+    
+    
 
     /**
      * Determines if <code>parent</code> is a super type of <code>type</code>

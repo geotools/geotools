@@ -16,11 +16,11 @@
  */
 package org.geotools.feature.xpath;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.jxpath.ri.model.NodeIterator;
 import org.apache.commons.jxpath.ri.model.NodePointer;
+import org.geotools.feature.Types;
 import org.opengis.feature.type.ComplexType;
 import org.opengis.feature.type.PropertyDescriptor;
 
@@ -47,7 +47,7 @@ public class FeatureTypeAttributeIterator implements NodeIterator {
      */
     protected ComplexType featureType;
 
-    protected ArrayList<PropertyDescriptor> children;
+    protected List<PropertyDescriptor> children;
 
     /**
      * current position
@@ -59,12 +59,7 @@ public class FeatureTypeAttributeIterator implements NodeIterator {
         this.featureType = featureType;
         
         //get list of descriptors from types and all supertypes
-        List<PropertyDescriptor> children = new ArrayList<PropertyDescriptor>();
-        ComplexType loopType = featureType;
-        while (loopType != null) { 
-            children.addAll(loopType.getDescriptors());
-            loopType = loopType.getSuper() instanceof ComplexType? (ComplexType) loopType.getSuper() : null;
-        }
+        children = Types.descriptors(featureType);
         
         position = 1;
     }

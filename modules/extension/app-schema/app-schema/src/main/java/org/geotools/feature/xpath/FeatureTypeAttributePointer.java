@@ -93,40 +93,8 @@ public class FeatureTypeAttributePointer extends NodePointer {
         attType = (AttributeType) descriptor.getType();        
     }
     
-    @SuppressWarnings("unchecked")
     public PropertyDescriptor getDescriptor() {
-
-        //get list of descriptors from types and all supertypes
-        List<PropertyDescriptor> descriptors = new ArrayList<PropertyDescriptor>();
-        ComplexType loopType = parentType;
-        while (loopType != null) { 
-            descriptors.addAll(loopType.getDescriptors());
-            loopType = loopType.getSuper() instanceof ComplexType? (ComplexType) loopType.getSuper() : null;
-        }
-        
-        //find matching descriptor
-        for (Iterator<PropertyDescriptor> it = descriptors.iterator(); it.hasNext();) {
-            PropertyDescriptor d = it.next(); 
-            if (d.getName().equals(name)) {
-                return d;
-            } 
-        }
-                
-        // nothing found, perhaps polymorphism?? let's loop again
-        for (Iterator<PropertyDescriptor> it = descriptors.iterator(); it.hasNext();) {
-            List<AttributeDescriptor> substitutionGroup = (List<AttributeDescriptor>) it.next().getUserData().get("substitutionGroup");
-            if (substitutionGroup != null){
-                for (Iterator<AttributeDescriptor> it2 = substitutionGroup.iterator(); it2.hasNext();) {
-                    AttributeDescriptor d = it2.next(); 
-                    if (d.getName().equals(name)) { //BINGOOO !!
-                        return d;                            
-                    }
-                }
-            }        
-        }
-              
-        return null;
-        
+        return Types.findDescriptor(parentType, name);        
     }
 
     /**

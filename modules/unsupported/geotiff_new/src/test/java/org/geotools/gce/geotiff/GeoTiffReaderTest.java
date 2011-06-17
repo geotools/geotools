@@ -68,7 +68,7 @@ public class GeoTiffReaderTest extends TestCase {
 	public void testReader() throws IllegalArgumentException, IOException,
 			NoSuchAuthorityCodeException {
 
-		final File file = new File( "C:\\work\\data\\geotiff\\spain\\");
+		final File file = TestData.file(this, ".");
 		final File files[] = file.listFiles();
 		final int numFiles = files.length;
 		final AbstractGridFormat format = new GeoTiffFormat();
@@ -107,14 +107,7 @@ public class GeoTiffReaderTest extends TestCase {
 						buffer.append("GG: ").append(
 								coverage.getGridGeometry().toString()).append("\n");
 					}
-					// display metadata
-					if (org.geotools.TestData.isExtensiveTest()) {
-						IIOMetadataDumper iIOMetadataDumper = new IIOMetadataDumper(
-								((GeoTiffReader) reader).getMetadata()
-										.getRootNode());
-						buffer.append("TIFF metadata: ").append(
-								iIOMetadataDumper.getMetadata()).append("\n");
-					}
+
 					// showing it
 					if (TestData.isInteractiveTest())
 						coverage.show();

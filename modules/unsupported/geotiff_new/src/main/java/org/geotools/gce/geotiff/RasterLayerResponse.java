@@ -18,6 +18,7 @@ package org.geotools.gce.geotiff;
 
 import java.awt.Color;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.image.ColorModel;
 import java.awt.image.IndexColorModel;
@@ -35,6 +36,7 @@ import java.util.logging.Logger;
 
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
+import javax.media.jai.JAI;
 import javax.media.jai.operator.ConstantDescriptor;
 import javax.media.jai.util.ImagingException;
 
@@ -50,10 +52,12 @@ import org.geotools.factory.Hints;
 import org.geotools.gce.geotiff.RasterManager.OverviewLevel;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.image.ImageLayout2;
 import org.geotools.image.ImageWorker;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
+import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.resources.image.ImageUtilities;
 import org.opengis.coverage.ColorInterpretation;
 import org.opengis.coverage.grid.GridCoverage;
@@ -68,6 +72,9 @@ import org.opengis.referencing.operation.TransformException;
  * requestCoverage is called to a reader.
  * 
  * @author Daniele Romagnoli, GeoSolutions
+ * @author Simone Giannecchini, GeoSolutions
+ * 
+ * @todo handle the fact that we have multiple transparent colors
  */
 class RasterLayerResponse{
 	
@@ -314,7 +321,7 @@ class RasterLayerResponse{
 			//
 			// prepare the params for executing a mosaic operation.
 			//
-//			final double[] backgroundValues = request.getBackgroundValues();
+			final double[] backgroundValues = request.getBackgroundValues();
 
 			// select the relevant overview, notice that at this time we have
 			// relaxed a bit the requirement to have the same exact resolution
@@ -346,7 +353,7 @@ class RasterLayerResponse{
 			// base grid to world for the center of pixels
 			final AffineTransform g2w = new AffineTransform((AffineTransform) baseGridToWorld);
 			// move it to the corner
-			g2w.concatenate(Utils.CENTER_TO_CORNER);
+			g2w.concatenate(CoverageUtilities.CENTER_TO_CORNER);
 			
 			//keep into account overviews and subsampling
 			final OverviewLevel level = rasterManager.overviewsController.resolutionsLevels.get(imageChoice);
@@ -396,27 +403,35 @@ class RasterLayerResponse{
 				// if provided (defaulting to 0), as well as the compute raster
 				// bounds, envelope and grid to world.
 				
+			    // create proper layout hint
+			    final ImageLayout2 il= new ImageLayout2();
+			    il.setSampleModel(rasterManager.baseImageType.getSampleModel()).setColorModel(rasterManager.baseImageType.getColorModel());
+			    
+			    final Hints hints = new Hints(rasterManager.getHints());
+			    hints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, il));
+			    
 	
-//				if (backgroundValues == null)
+				if (backgroundValues == null)
 					
 					//we don't have background values available
+				    // TODO use code to suggest NO Data Value
 					return ConstantDescriptor.create(
 									Float.valueOf(rasterBounds.width), 
 									Float.valueOf(rasterBounds.height),
-									new Byte[] { 0 },
-									this.rasterManager.getHints());
-//				else {
-//					
-//					//we have background values available
-//					final Double[] values = new Double[backgroundValues.length];
-//					for (int i = 0; i < values.length; i++)
-//						values[i] = backgroundValues[i];
-//					return ConstantDescriptor.create(
-//									Float.valueOf(rasterBounds.width), 
-//									Float.valueOf(rasterBounds.height),
-//									values, 
-//									this.rasterManager.getHints());
-//				}
+									new Number[]{CoverageUtilities.suggestNoDataValue(rasterManager.baseImageType.getSampleModel().getDataType())},
+									hints);
+				else {
+					
+					//we have background values available
+					final Double[] values = new Double[backgroundValues.length];
+					for (int i = 0; i < values.length; i++)
+						values[i] = backgroundValues[i];
+					return ConstantDescriptor.create(
+									Float.valueOf(rasterBounds.width), 
+									Float.valueOf(rasterBounds.height),
+									values, 
+									hints);
+				}
 			}
 
 		} catch (IOException e) {
@@ -568,17 +583,17 @@ class RasterLayerResponse{
 		return imageChoice;
 	}
 
-	private RenderedImage postProcessRaster(RenderedImage mosaic) {
+	private RenderedImage postProcessRaster(RenderedImage finalImage) {
 		// alpha on the final mosaic
 		if (transparentColor != null) {
 			if (LOGGER.isLoggable(Level.FINE))
 				LOGGER.fine("Support for alpha on final mosaic");
-			final ImageWorker w = new ImageWorker(mosaic);
-			if (mosaic.getSampleModel() instanceof MultiPixelPackedSampleModel)
+			final ImageWorker w = new ImageWorker(finalImage);
+			if (finalImage.getSampleModel() instanceof MultiPixelPackedSampleModel)
 				w.forceComponentColorModel();
 			return w.makeColorTransparent(transparentColor).getRenderedImage();
 	
 		}
-		return mosaic;
+		return finalImage;
 	}
 }

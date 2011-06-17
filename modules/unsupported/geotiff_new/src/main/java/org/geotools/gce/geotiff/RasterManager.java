@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 import javax.imageio.ImageReadParam;
+import javax.imageio.ImageTypeSpecifier;
 
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
@@ -412,6 +413,7 @@ class RasterManager {
 	private String locationAttribute;
 	boolean expandMe;
 	DomainManager domainManager;
+        ImageTypeSpecifier baseImageType;
 
 	public RasterManager(final GeoTiffReader reader) throws DataSourceException {
 
@@ -425,6 +427,8 @@ class RasterManager {
         //get the overviews policy
         extractOverviewPolicy();
         
+        // base image type
+        baseImageType=reader.baseImageType;
         
         coverageEnvelope = reader.getOriginalEnvelope();
         coverageGridrange=reader.getOriginalGridRange();

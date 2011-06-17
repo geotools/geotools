@@ -161,16 +161,6 @@ public class GeoTiffWriterTest extends TestCase {
 		GridCoverageReader reader = format.getReader(tiff);
 		assertNotNull(reader);
 
-		// /////////////////////////////////////////////////////////////////////
-		//
-		// Play with metadata
-		//
-		// /////////////////////////////////////////////////////////////////////
-		IIOMetadataDumper metadataDumper = new IIOMetadataDumper(((GeoTiffReader) reader).getMetadata().getRootNode());
-		if (TestData.isInteractiveTest()) {
-			logger.info(metadataDumper.getMetadata());
-		} else
-			metadataDumper.getMetadata();
 
 		// /////////////////////////////////////////////////////////////////////
 		//

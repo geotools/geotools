@@ -114,6 +114,10 @@ public final class GeoTiffFormat extends AbstractGridFormat implements Format {
 				"SUGGESTED_TILESIZE", String.class, null, "512,512");
 
 		public static final String TILE_SIZE_SEPARATOR = ",";
+
+        /** Control the background values for the output coverage */
+        public static final ParameterDescriptor<double[]> BACKGROUND_VALUES = new DefaultParameterDescriptor<double[]>(
+                "BackgroundValues", double[].class, null, null);
 	
 	/**
 	 * Creates a new instance of GeoTiffFormat

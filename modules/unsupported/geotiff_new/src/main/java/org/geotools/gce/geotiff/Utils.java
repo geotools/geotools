@@ -7,7 +7,6 @@ import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageMetadata;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageWriterSpi;
 
-import java.awt.geom.AffineTransform;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -36,7 +35,6 @@ import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.PrjFileReader;
 import org.geotools.data.WorldFileReader;
-import org.geotools.metadata.iso.spatial.PixelTranslation;
 import org.geotools.util.Utilities;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -46,7 +44,6 @@ import org.jdom.input.DOMBuilder;
 import org.jdom.output.DOMOutputter;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.MathTransform;
 
 /**
@@ -58,34 +55,14 @@ import org.opengis.referencing.operation.MathTransform;
  */
 class Utils {
     	
-	/**
-	 * {@link AffineTransform} that can be used to go from an image datum placed
-	 * at the center of pixels to one that is placed at ULC.
-	 */
-	final static AffineTransform CENTER_TO_CORNER = AffineTransform
-			.getTranslateInstance(PixelTranslation
-					.getPixelTranslation(PixelInCell.CELL_CORNER),
-					PixelTranslation
-							.getPixelTranslation(PixelInCell.CELL_CORNER));
-	/**
-	 * {@link AffineTransform} that can be used to go from an image datum placed
-	 * at the ULC corner of pixels to one that is placed at center.
-	 */
-	final static AffineTransform CORNER_TO_CENTER = AffineTransform
-			.getTranslateInstance(-PixelTranslation
-					.getPixelTranslation(PixelInCell.CELL_CORNER),
-					-PixelTranslation
-							.getPixelTranslation(PixelInCell.CELL_CORNER));
-
-
 	static URL checkSource(Object source) throws MalformedURLException,
 			DataSourceException {
 		URL sourceURL = null;
-		// /////////////////////////////////////////////////////////////////////
+
 		//
 		// Check source
 		//
-		// /////////////////////////////////////////////////////////////////////
+
 		// if it is a URL or a String let's try to see if we can get a file to
 		// check if we have to build the index
 		if (source instanceof URL) {

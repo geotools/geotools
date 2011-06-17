@@ -30,6 +30,7 @@ import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
+import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.resources.geometry.XRectangle2D;
 import org.geotools.resources.image.ImageUtilities;
 import org.opengis.geometry.BoundingBox;
@@ -109,7 +110,7 @@ class RasterGranuleLoader {
 			this.levelToBaseTransform=new AffineTransform2D( XAffineTransform.getScaleInstance(scaleX,scaleY,0,0));
 			
 			final AffineTransform gridToWorldTransform_ = new AffineTransform(levelToBaseTransform);
-			gridToWorldTransform_.preConcatenate(Utils.CENTER_TO_CORNER);
+			gridToWorldTransform_.preConcatenate(CoverageUtilities.CENTER_TO_CORNER);
 			gridToWorldTransform_.preConcatenate(baseGridToWorld);
 			this.gridToWorldTransform=new AffineTransform2D(gridToWorldTransform_);
 			this.width = width;
@@ -360,7 +361,7 @@ class RasterGranuleLoader {
 			
 			// now create the overall transform
 			final AffineTransform tempRaster2Model = new AffineTransform(baseGridToWorld);
-			tempRaster2Model.concatenate(Utils.CENTER_TO_CORNER);
+			tempRaster2Model.concatenate(CoverageUtilities.CENTER_TO_CORNER);
 			if(!XAffineTransform.isIdentity(backToBaseLevelScaleTransform,10E-6))
 				tempRaster2Model.concatenate(backToBaseLevelScaleTransform);
 			if(!XAffineTransform.isIdentity(afterDecimationTranslateTranform,10E-6))

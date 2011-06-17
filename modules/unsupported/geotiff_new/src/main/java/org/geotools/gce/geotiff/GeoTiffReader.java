@@ -38,6 +38,7 @@ package org.geotools.gce.geotiff;
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.SampleModel;
 import java.io.File;
@@ -49,7 +50,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
+import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
+import javax.imageio.ImageTypeSpecifier;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.stream.ImageInputStream;
 import javax.media.jai.PlanarImage;
@@ -122,13 +125,15 @@ public final class GeoTiffReader extends AbstractGridCoverage2DReader implements
 	
 	private RasterManager rasterManager;
 
-    URL sourceURL;
-    
-    boolean expandMe;
+        URL sourceURL;
+        
+        boolean expandMe;
 
 	RasterLayout[] overViewLayouts;
 
 	RasterLayout hrLayout;
+
+	ImageTypeSpecifier baseImageType;
 
 	@Override
         public void dispose() {
@@ -268,6 +273,8 @@ public final class GeoTiffReader extends AbstractGridCoverage2DReader implements
 		//
 		// //
 		reader.setInput(inStream);
+		
+		
 		final IIOMetadata iioMetadata = reader.getImageMetadata(0);
 		CoordinateReferenceSystem foundCrs = null;
 		boolean useWorldFile = false;
@@ -309,7 +316,7 @@ public final class GeoTiffReader extends AbstractGridCoverage2DReader implements
 		
 		if (crs == null){
                     throw new DataSourceException ("Coordinate Reference System is not available");
-        }
+                }
 			
 
 		// //
@@ -328,14 +335,16 @@ public final class GeoTiffReader extends AbstractGridCoverage2DReader implements
 
 		if (!useWorldFile && gtcs != null) {
 		    this.raster2Model = GeoTiffMetadata2CRSAdapter.getRasterToModel(metadata);
-        }
-        else {
-            this.raster2Model = Utils.parseWorldFile(source);
-        }
-		
+        		    
+        		 
+                }
+                else {
+                    this.raster2Model = Utils.parseWorldFile(source);
+                }
+        		
 		if (this.raster2Model == null){
                     throw new DataSourceException ("Raster to Model Transformation is not available");
-        }
+                }
 		
 		final AffineTransform tempTransform = new AffineTransform((AffineTransform) raster2Model);
 		tempTransform.translate(-0.5, -0.5);
@@ -375,6 +384,14 @@ public final class GeoTiffReader extends AbstractGridCoverage2DReader implements
 			}
 		} else
 			overViewResolutions = null;
+		
+		// get sample image
+		final ImageReadParam readParam= reader.getDefaultReadParam();
+		readParam.setSourceRegion(new Rectangle(0,0,4,4));
+		final BufferedImage sampleImage = reader.read(0,readParam);
+		baseImageType = new ImageTypeSpecifier(sampleImage);
+		reader.dispose();
+                
 	}
 
 	/**
@@ -404,15 +421,6 @@ public final class GeoTiffReader extends AbstractGridCoverage2DReader implements
                         return response.iterator().next();
         }
 
-	/**
-	 * Returns the geotiff metadata for this geotiff file.
-	 * 
-	 * @return the metadata
-	 */
-	GeoTiffIIOMetadataDecoder getMetadata() {
-		return metadata;
-	}
-	
 	/**
          * Creates a {@link GridCoverage} for the provided {@link PlanarImage} using
          * the {@link #raster2Model} that was provided for this coverage.

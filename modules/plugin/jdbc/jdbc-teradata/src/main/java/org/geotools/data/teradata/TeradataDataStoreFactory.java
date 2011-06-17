@@ -171,9 +171,6 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
     protected void setupParameters(Map parameters) {
         super.setupParameters(parameters);
         
-        //remove schema, schema always equal to username
-        parameters.remove(SCHEMA.key);
-        
         parameters.put(DBTYPE.key, DBTYPE);
         parameters.put(LOOSEBBOX.key, LOOSEBBOX);
         parameters.put(PORT.key, PORT);

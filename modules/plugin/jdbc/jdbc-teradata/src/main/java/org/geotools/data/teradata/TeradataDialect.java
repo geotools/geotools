@@ -199,21 +199,23 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
     public boolean includeTable(String schemaName, String tableName, Connection cx)
             throws SQLException {
         
-        if (tableName.equalsIgnoreCase("geometry_columns")) {
+        tableName = tableName.toLowerCase();
+        
+        if (tableName.equals("geometry_columns")) {
             return false;
-        } else if (tableName.toLowerCase().startsWith("spatial_ref_sys")) {
+        } else if (tableName.startsWith("spatial_ref_sys")) {
             return false;
-        } else if (tableName.equalsIgnoreCase("geography_columns")) {
+        } else if (tableName.equals("geography_columns")) {
             return false;
-        } else if (tableName.equalsIgnoreCase("tessellation")) {
+        } else if (tableName.equals("tessellation")) {
             return false;
         } else if (tableName.endsWith("_idx")) {
             return false;
         }
-
+        
         // others?
         return dataStore.getDatabaseSchema() == null
-                || dataStore.getDatabaseSchema().equals(schemaName);
+                || dataStore.getDatabaseSchema().equalsIgnoreCase(schemaName);
     }
 
     @Override
@@ -594,7 +596,7 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
             LOGGER.fine(String.format("%s; 1=%s, 2=%s, 3=%s", sql.toString(), schemaName,
                 tableName, columnName));
         }
-
+        
         
         PreparedStatement ps = cx.prepareStatement(sql.toString());
         try {
@@ -615,7 +617,7 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
         finally {
             dataStore.closeSafe(ps);
         }
-
+        
         return null;
     }
     /**

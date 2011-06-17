@@ -215,63 +215,7 @@ public class Types extends org.geotools.feature.type.Types {
         return (PropertyDescriptor) match.get(0);
     }
 
-    /**
-     * Returns the first descriptor matching the given local name within the given type.
-     * 
-     * @param type
-     *            The type, non null.
-     * @param name
-     *            The name, non null.
-     * 
-     * @return The first descriptor, or null if no match.
-     */
-    public static PropertyDescriptor descriptor(ComplexType type, String name,
-            AttributeType actualType) {
-        List match = descriptors(type, name);
-
-        if (match.isEmpty()) {
-            Collection properties = type.getDescriptors();
-            for (Iterator it = properties.iterator(); it.hasNext();) {
-                PropertyDescriptor desc = (PropertyDescriptor) it.next();
-                if (!(desc instanceof AttributeDescriptor)) {
-                    continue;
-                }
-                AttributeDescriptor attDesc = (AttributeDescriptor) desc;
-                AttributeType attType = (AttributeType) attDesc.getType();
-                if (isSuperType(actualType, attType)) {
-                    return attDesc;
-                }
-            }
-            return null;
-        }
-
-        return (PropertyDescriptor) match.get(0);
-    }
-
-    public static PropertyDescriptor descriptor(ComplexType type, Name name,
-            AttributeType actualType) {
-        List match = descriptors(type, name);
-
-        if (match.isEmpty()) {
-            Collection properties = type.getDescriptors();
-            for (Iterator it = properties.iterator(); it.hasNext();) {
-                PropertyDescriptor desc = (PropertyDescriptor) it.next();
-                if (!(desc instanceof AttributeDescriptor)) {
-                    continue;
-                }
-                AttributeDescriptor attDesc = (AttributeDescriptor) desc;
-                AttributeType attType = (AttributeType) attDesc.getType();
-                if (isSuperType(actualType, attType)) {
-                    return attDesc;
-                }
-            }
-            return null;
-        }
-
-        return (PropertyDescriptor) match.get(0);
-    }
-
-    /**
+   /**
      * Returns the first descriptor matching the given name + namespace within the given type.
      * 
      * @param type

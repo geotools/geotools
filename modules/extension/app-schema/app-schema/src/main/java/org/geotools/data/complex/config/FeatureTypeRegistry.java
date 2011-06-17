@@ -120,8 +120,6 @@ public class FeatureTypeRegistry {
     private static Map<Name, AttributeDescriptor> FOUNDATION_DESCRIPTORS = new HashMap<Name, AttributeDescriptor>();
 
     private List<SchemaIndex> schemas;
-    
-    private Set<XSDSchema> schemaSet;
 
     private HashMap<Name, AttributeDescriptor> descriptorRegistry;
 
@@ -153,8 +151,7 @@ public class FeatureTypeRegistry {
         typeRegistry = new HashMap<Name, AttributeType>();
         anonTypeRegistry = new HashMap<Name, AttributeType>();
         processingTypes = new Stack<Name>();
-        schemaSet = new HashSet<XSDSchema>();
-
+        
         if (FOUNDATION_TYPES.isEmpty()) {
             createFoundationTypes();
         }
@@ -166,17 +163,6 @@ public class FeatureTypeRegistry {
 
     public void addSchemas(final SchemaIndex schemaIndex) {
         schemas.add(schemaIndex);
-        for (XSDSchema schema : schemaIndex.getSchemas()) {
-            schemaSet.add(schema);
-            for (XSDSchemaContent content : schema.getContents()) {
-                if (content instanceof XSDSchemaDirective) {
-                    XSDSchemaDirective directive = (XSDSchemaDirective) content;
-                    if (directive.getResolvedSchema() != null) {
-                        schemaSet.add(directive.getResolvedSchema());
-                    }
-                }
-            }
-        }
     }
     
     /**
@@ -337,7 +323,7 @@ public class FeatureTypeRegistry {
             Iterator it = elemDecl.getSubstitutionGroup().iterator();
             while ( it.hasNext()){
                 XSDElementDeclaration sub =  (XSDElementDeclaration)it.next();
-                if (!sub.getName().equals (elemDecl.getName()) && schemaSet.contains(elemDecl.getSchema())) {
+                if (!sub.getName().equals (elemDecl.getName())) {
                    try {
                        substitutionGroup.add( createAttributeDescriptor ( container , sub, minOccurs, maxOccurs, crs, attMappings, false)) ;
                    } catch (Exception e) {

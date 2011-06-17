@@ -433,6 +433,41 @@ public class Types extends org.geotools.feature.type.Types {
         return null;
     }
     
+    /**
+     * Find a descriptor, taking in to account supertypes AND substitution groups
+     * 
+     * @param parentType type
+     * @param name name of descriptor
+     * @return descriptor, null if not found
+     */
+    public static PropertyDescriptor findDescriptor( ComplexType parentType, String name) {
+        //get list of descriptors from types and all supertypes
+        List<PropertyDescriptor> descriptors = descriptors(parentType);
+        
+        //find matching descriptor
+        for (Iterator<PropertyDescriptor> it = descriptors.iterator(); it.hasNext();) {
+            PropertyDescriptor d = it.next(); 
+            if (d.getName().getLocalPart().equals(name)) {
+                return d;
+            } 
+        }
+                
+        // nothing found, perhaps polymorphism?? let's loop again
+        for (Iterator<PropertyDescriptor> it = descriptors.iterator(); it.hasNext();) {
+            List<AttributeDescriptor> substitutionGroup = (List<AttributeDescriptor>) it.next().getUserData().get("substitutionGroup");
+            if (substitutionGroup != null){
+                for (Iterator<AttributeDescriptor> it2 = substitutionGroup.iterator(); it2.hasNext();) {
+                    AttributeDescriptor d = it2.next(); 
+                    if (d.getName().getLocalPart().equals(name)) { //BINGOOO !!
+                        return d;                            
+                    }
+                }
+            }        
+        }
+        
+        return null;
+    }
+    
     
 
     /**

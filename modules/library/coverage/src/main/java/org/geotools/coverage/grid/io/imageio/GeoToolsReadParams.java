@@ -177,8 +177,8 @@ public abstract class GeoToolsReadParams extends ImageReadParam {
 	/**
 	 * Default contructor.
 	 */
-	public GeoToolsReadParams() {
-
+	public GeoToolsReadParams(final ImageReadParam params) {
+	    this.adaptee=params;
 	}
 
 	// Return a deep copy of the array

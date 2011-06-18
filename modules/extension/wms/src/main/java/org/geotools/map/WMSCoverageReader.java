@@ -7,7 +7,6 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -36,12 +35,14 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.ows.ServiceException;
 import org.geotools.referencing.CRS;
 import org.geotools.renderer.lite.RendererUtilities;
+import org.geotools.util.Version;
 import org.opengis.coverage.grid.Format;
 import org.opengis.geometry.Envelope;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.referencing.ReferenceIdentifier;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.crs.GeographicCRS;
 
 /**
  * A grid coverage readers backing onto a WMS server by issuing GetMap
@@ -112,6 +113,11 @@ class WMSCoverageReader extends AbstractGridCoverage2DReader {
      * Last request CRS (used for reprojected GetFeatureInfo)
      */
     CoordinateReferenceSystem requestCRS;
+    
+    /**
+     * Flag telling us if we have to flip geographic bounds before using them
+     */
+    boolean flipGeographic;
 
     /**
      * Builds a new WMS coverage reader
@@ -121,6 +127,12 @@ class WMSCoverageReader extends AbstractGridCoverage2DReader {
      */
     public WMSCoverageReader(WebMapServer wms, Layer layer) {
         this.wms = wms;
+        
+        // check if we need coordinate flipping
+        Version version = new Version(wms.getCapabilities().getVersion());
+        flipGeographic = version.compareTo(new Version("1.3.0")) >= 0;
+
+        // init the reader
         addLayer(layer);
 
         // best guess at the format with a preference for PNG (since it's normally transparent)
@@ -220,6 +232,9 @@ class WMSCoverageReader extends AbstractGridCoverage2DReader {
         }
 
         try {
+            if(LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.fine("Issuing request: " + request.getFinalURL());
+            }
             GetFeatureInfoResponse response = wms.issueRequest(request);
             return response.getInputStream();
         } catch (IOException e) {
@@ -283,10 +298,15 @@ class WMSCoverageReader extends AbstractGridCoverage2DReader {
         // issue the request and wrap response in a grid coverage
         InputStream is = null;
         try {
+            if(LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.fine("Issuing request: " + mapRequest.getFinalURL());
+            }
             GetMapResponse response = wms.issueRequest(mapRequest);
             is = response.getInputStream();
             BufferedImage image = ImageIO.read(is);
-            LOGGER.fine("GetMap completed");
+            if(image == null) {
+                throw (IOException) new IOException("GetMap failed: " + mapRequest.getFinalURL());
+            }
             return gcf.create(layers.get(0).getTitle(), image, gridEnvelope);
         } catch (ServiceException e) {
             throw (IOException) new IOException("GetMap failed").initCause(e);
@@ -346,9 +366,8 @@ class WMSCoverageReader extends AbstractGridCoverage2DReader {
             mapRequest.addLayer(layer);
         }
         mapRequest.setDimensions(width, height);
-        mapRequest.setFormat(URLEncoder.encode(format, "ASCII"));
+        mapRequest.setFormat(format);
         mapRequest.setSRS(requestSrs);
-        mapRequest.setBBox(gridEnvelope);
         if(backgroundColor == null) {
             mapRequest.setTransparent(true);
         } else {
@@ -363,12 +382,29 @@ class WMSCoverageReader extends AbstractGridCoverage2DReader {
         } catch(Exception e) {
             throw new IOException("Could not decode request SRS " + requestSrs);
         }
+        
+        // bbox might need flipping
+        ReferencedEnvelope requestEnvelope = gridEnvelope;
+        if(requestCRS instanceof GeographicCRS && flipGeographic) {
+            requestEnvelope = flipEnvelope(requestEnvelope);
+        }
+        mapRequest.setBBox(requestEnvelope);
+        
         this.mapRequest = mapRequest;
         this.requestedEnvelope = gridEnvelope;
         this.width = width;
         this.height = height;
 
         return gridEnvelope;
+    }
+
+    private ReferencedEnvelope flipEnvelope(ReferencedEnvelope requestEnvelope) {
+        double minx = requestEnvelope.getMinX();
+        double miny = requestEnvelope.getMinY();
+        double maxx = requestEnvelope.getMaxX();
+        double maxy = requestEnvelope.getMaxY();
+        requestEnvelope = new ReferencedEnvelope(miny, maxy, minx, maxx, requestCRS);
+        return requestEnvelope;
     }
 
     public Format getFormat() {
@@ -383,8 +419,14 @@ class WMSCoverageReader extends AbstractGridCoverage2DReader {
      */
     public void updateBounds() {
         ReferencedEnvelope result = reference(layers.get(0).getEnvelope(crs));
+        if(result.getCoordinateReferenceSystem() instanceof GeographicCRS && flipGeographic) {
+            result = flipEnvelope(result);
+        }
         for (int i = 1; i < layers.size(); i++) {
             ReferencedEnvelope layerEnvelope = reference(layers.get(i).getEnvelope(crs));
+            if(layerEnvelope.getCoordinateReferenceSystem() instanceof GeographicCRS && flipGeographic) {
+                layerEnvelope = flipEnvelope(layerEnvelope);
+            }
             result.expandToInclude(layerEnvelope);
         }
 

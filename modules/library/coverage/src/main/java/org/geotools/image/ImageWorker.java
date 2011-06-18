@@ -1109,7 +1109,7 @@ public class ImageWorker {
             forceIndexColorModel(errorDiffusion);
         }
         // All post conditions for this method contract.
-        assert isBytes();
+        // assert isBytes(); // could be less, like binary, 4 bits
         assert isIndexed();
         assert !isTranslucent();
         return this;

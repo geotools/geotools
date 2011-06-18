@@ -16,9 +16,7 @@
  */
 package org.geotools.data.wms;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
-import java.net.URLEncoder;
 
 import org.geotools.data.ows.GetCapabilitiesRequest;
 
@@ -65,26 +63,23 @@ public class WMS1_3_0 extends WMS1_1_1 {
 		}
 	}
 	
-	public static class GetMapRequest extends WMS1_1_1.GetMapRequest {
+    public static class GetMapRequest extends WMS1_1_1.GetMapRequest {
 
-        public GetMapRequest( URL onlineResource) {
+        public GetMapRequest(URL onlineResource) {
             super(onlineResource);
         }
-	    
+
         protected void initVersion() {
             setVersion("1.3.0");
         }
-        
-        
-		public void setFormat(String value) {
-			try {
-				value = URLEncoder.encode(value, "UTF-8");
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
-			}
-			super.setFormat(value);
-		}
-	}
+
+        @Override
+        public void setSRS(String srs) {
+            // in wms 1.3 it's called CRS
+            properties.setProperty("CRS", srs);
+        }
+
+    }
 	
 	public static class GetFeatureInfoRequest extends WMS1_1_1.GetFeatureInfoRequest {
 	    

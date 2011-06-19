@@ -176,6 +176,12 @@ public class DashedShape implements Shape {
          */
         private float dx;
 
+        /**
+         * Both used to reset the dash state when doing a MOVE_TO 
+         */
+        float dashPhase;
+        int baseDashIndex;
+
         public DashedIterator(PathIterator delegate, float[] dashArray, float dashPhase) {
             this.delegate = delegate;
             dashOffsets = new float[dashArray.length];
@@ -190,6 +196,8 @@ public class DashedShape implements Shape {
             for (int i = 0; i < dashArray.length && dashPhase > dashArray[i]; i++) {
                 dashIndex++;
             }
+            this.baseDashIndex = dashIndex;
+            this.dashPhase = dashPhase;
             this.dashOffset = dashPhase;
 
             if (delegate.isDone()) {
@@ -227,24 +235,37 @@ public class DashedShape implements Shape {
         public void next() {
             // have we exhausted the previous segment?
             if (segmentLength == 0) {
-                if (!delegate.isDone()) {
+                if(!delegate.isDone()) {
                     prevCoords[0] = currCoords[0];
                     prevCoords[1] = currCoords[1];
                     lastType = delegate.currentSegment(currCoords);
-                    dx = currCoords[0] - prevCoords[0];
-                    dy = currCoords[1] - prevCoords[1];
-                    segmentLength = (float) sqrt(pow(dx, 2) + pow(dy, 2));
-                    segmentOffset = 0;
-                    delegate.next();
+                    if(lastType == PathIterator.SEG_MOVETO) {
+                        // start over and move to the next value
+                        segmentOffset = 0;
+                        dashOffset = dashPhase;
+                        dashIndex = baseDashIndex;
+                        dashedSegment[0] = currCoords[0];
+                        dashedSegment[1] = currCoords[1];
+                        dashedType = PathIterator.SEG_MOVETO;
+                        dx = 0;
+                        dy = 0;
+                        delegate.next();
+                        // if no segment after move we're done
+                        done = delegate.isDone();
+                    } else { 
+                        // prepare for the next round of dash array application
+                        dx = currCoords[0] - prevCoords[0];
+                        dy = currCoords[1] - prevCoords[1];
+                        segmentLength = (float) sqrt(pow(dx, 2) + pow(dy, 2));
+                        segmentOffset = 0;
+                        delegate.next();
+                    }
                 } else {
                     done = true;
                 }
             }
             // if not done move along the dash array
-            if (!done) {
-                // we treat moveto as a lineto for simplicity, this will result
-                // in a series of moveto instead of a single one. No big deal,
-                // graphic stroking is not meant to be fast
+            if (!done && lastType != PathIterator.SEG_MOVETO) {
                 float dashResidual = dashOffsets[dashIndex] - dashOffset;
                 float segmentResidual = segmentLength - segmentOffset;
                 float residual = min(dashResidual, segmentResidual);

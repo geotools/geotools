@@ -53,7 +53,7 @@ public class LabelOrientationTest extends TestCase {
         
         renderer.setContext(mc);
         
-        RendererBaseTest.showRender("Lines with circl stroke", renderer, TIME, bounds);
+        RendererBaseTest.showRender("Lines with circle stroke", renderer, TIME, bounds);
     }
     
     public void testLabelLineOrientation() throws Exception {

@@ -136,7 +136,7 @@ import org.eclipse.emf.ecore.EReference;
  * 		Copyright (c) 2006 Open Geospatial Consortium, Inc. All Rights Reserved.
  * This XML Schema Document encodes the Exception Report response to all OWS operations.
  * 		Copyright (c) 2006 Open Geospatial Consortium, Inc. All Rights Reserved.
- * This XML Schema  Document encodes the typical Contents section of an OWS service metadata (Capabilities) document. This  Schema can be built upon to define the Contents section for a specific OWS. If the ContentsBaseType in this XML Schema cannot be restricted and extended to define the Contents section for a specific OWS, all other relevant parts defined in owsContents.xsd shall be used by the “ContentsType” in the wxsContents.xsd prepared for the specific OWS.
+ * This XML Schema  Document encodes the typical Contents section of an OWS service metadata (Capabilities) document. This  Schema can be built upon to define the Contents section for a specific OWS. If the ContentsBaseType in this XML Schema cannot be restricted and extended to define the Contents section for a specific OWS, all other relevant parts defined in owsContents.xsd shall be used by the "ContentsType" in the wxsContents.xsd prepared for the specific OWS.
  * 		Copyright (c) 2006 Open Geospatial Consortium, Inc. All Rights Reserved.
  * This XML Schema Document specifies types and elements for input and output of operation data, allowing including multiple data items with each data item either included or referenced. The contents of each type and element specified here can be restricted and/or extended for each use in a specific OWS specification.
  * 		Copyright (c) 2006 Open Geospatial Consortium, Inc. All Rights Reserved.

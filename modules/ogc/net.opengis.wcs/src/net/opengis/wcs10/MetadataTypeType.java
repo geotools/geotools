@@ -27,7 +27,7 @@ public final class MetadataTypeType extends AbstractEnumerator {
 	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
 	 * <!-- begin-model-doc -->
-	 * This metadata uses a profile of ISO TC211Õs Geospatial Metadata Standard 19115.
+	 * This metadata uses a profile of ISO TC211's Geospatial Metadata Standard 19115.
 	 * <!-- end-model-doc -->
 	 * @see #TC211_LITERAL
 	 * @model

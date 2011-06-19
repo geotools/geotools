@@ -13,7 +13,7 @@ package net.opengis.wcs10;
  * <!-- end-user-doc -->
  *
  * <!-- begin-model-doc -->
- * Description of a measured or observed quantity, and list of the “valid” quantity values (values for which measurements are available or “by which” aggregate values are available). The semantic is the URI of the quantity (for example observable or mathematical variable). The refSys attribute is a URI to a reference system, and the refSysLabel is the label used by client to refer the reference system.
+ * Description of a measured or observed quantity, and list of the "valid" quantity values (values for which measurements are available or "by which" aggregate values are available). The semantic is the URI of the quantity (for example observable or mathematical variable). The refSys attribute is a URI to a reference system, and the refSysLabel is the label used by client to refer the reference system.
  * <!-- end-model-doc -->
  *
  * <p>

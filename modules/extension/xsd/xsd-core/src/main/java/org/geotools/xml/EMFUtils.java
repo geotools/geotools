@@ -395,7 +395,7 @@ public class EMFUtils {
      *
      * @param prototype The object to be cloned from.
      * @param factory The factory used to create the clone.
-     * @param deep Flag indicating wether to perform a deep clone.
+     * @param deepFlag indicating wether to perform a deep clone.
      *
      * @return THe cloned object, with all properties the same to the original.
      */

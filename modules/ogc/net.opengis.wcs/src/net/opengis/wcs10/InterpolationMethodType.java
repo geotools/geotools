@@ -18,7 +18,7 @@ import org.eclipse.emf.common.util.AbstractEnumerator;
  * and utility methods for working with them.
  * <!-- end-user-doc -->
  * <!-- begin-model-doc -->
- * Codes that identify interpolation methods. The meanings of these codes are defined in Annex B of ISO 19123: Geographic information Ñ Schema for coverage geometry and functions.
+ * Codes that identify interpolation methods. The meanings of these codes are defined in Annex B of ISO 19123: Geographic information  Schema for coverage geometry and functions.
  * <!-- end-model-doc -->
  * @see net.opengis.wcs10.Wcs10Package#getInterpolationMethodType()
  * @model extendedMetaData="name='InterpolationMethodType'"

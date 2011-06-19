@@ -144,7 +144,7 @@ public interface CoverageOfferingType extends CoverageOfferingBriefType {
 	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
 	 * <!-- begin-model-doc -->
-	 * Specifies whether and how the server can interpolate coverage values over the spatial domain, when a GetCoverage request requires resampling, reprojection, or other generalization. If supportedInterpolations is absent or empty with no default, then clients should assume nearest-neighbor interpolation. If the only interpolation method listed is ‘none’, clients can only retrieve coverages from this layer in its native CRS and at its native resolution.
+	 * Specifies whether and how the server can interpolate coverage values over the spatial domain, when a GetCoverage request requires resampling, reprojection, or other generalization. If supportedInterpolations is absent or empty with no default, then clients should assume nearest-neighbor interpolation. If the only interpolation method listed is "none", clients can only retrieve coverages from this layer in its native CRS and at its native resolution.
 	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>Supported Interpolations</em>' containment reference.
 	 * @see #setSupportedInterpolations(SupportedInterpolationsType)

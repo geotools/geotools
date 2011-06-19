@@ -54,7 +54,7 @@ public interface RangeSetType extends AbstractDescriptionType {
 	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
 	 * <!-- begin-model-doc -->
-	 * Values used when valid values are not available. (The coverage encoding may specify a fixed value for null (e.g. าะ99999ำ or าN/Aำ), but often the choice is up to the provider and must be communicated to the client outside of the coverage itself.)
+	 * Values used when valid values are not available. (The coverage encoding may specify a fixed value for null (e.g. "-99999" or "N/A"), but often the choice is up to the provider and must be communicated to the client outside of the coverage itself.)
 	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>Null Values</em>' containment reference.
 	 * @see #setNullValues(ValueEnumType)

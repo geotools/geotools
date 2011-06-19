@@ -589,7 +589,7 @@ public interface DocumentRoot extends EObject {
 	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
 	 * <!-- begin-model-doc -->
-	 * Database handle for the object.  It is of XML type “ID”, so is constrained to be unique in the XML document within which it occurs.  An external identifier for the object in the form of a URI may be constructed using standard XML and XPointer methods.  This is done by concatenating the URI for the document, a fragment separator “#”, and the value of the id attribute.
+	 * Database handle for the object.  It is of XML type "ID", so is constrained to be unique in the XML document within which it occurs.  An external identifier for the object in the form of a URI may be constructed using standard XML and XPointer methods.  This is done by concatenating the URI for the document, a fragment separator "#", and the value of the id attribute.
 	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>Id</em>' attribute.
 	 * @see #setId(String)
@@ -615,7 +615,7 @@ public interface DocumentRoot extends EObject {
 	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
 	 * <!-- begin-model-doc -->
-	 * Reference to an XML Schema fragment that specifies the content model of the property’s value. This is in conformance with the XML Schema Section 4.14 Referencing Schemas from Elsewhere.
+	 * Reference to an XML Schema fragment that specifies the content model of the propertyi's value. This is in conformance with the XML Schema Section 4.14 Referencing Schemas from Elsewhere.
 	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>Remote Schema</em>' attribute.
 	 * @see #setRemoteSchema(String)

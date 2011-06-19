@@ -94,7 +94,7 @@ public interface FieldType extends DescriptionType {
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
-     * Unordered list of the values used when valid Field values are not available for whatever reason. The coverage encoding itself may specify a fixed value for null (e.g. “–99999” or “N/A”), but often the choice is up to the provider and must be communicated to the client outside the coverage itself. Each null value shall be encoded as a string. The optional codeSpace attribute can reference a definition of the reason why this value is null. 
+     * Unordered list of the values used when valid Field values are not available for whatever reason. The coverage encoding itself may specify a fixed value for null (e.g. "-99999" or "N/A"), but often the choice is up to the provider and must be communicated to the client outside the coverage itself. Each null value shall be encoded as a string. The optional codeSpace attribute can reference a definition of the reason why this value is null. 
      * <!-- end-model-doc -->
      * @return the value of the '<em>Null Value</em>' containment reference list.
      * @see net.opengis.wcs11.Wcs111Package#getFieldType_NullValue()
@@ -109,7 +109,7 @@ public interface FieldType extends DescriptionType {
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * <!-- begin-model-doc -->
-     * Spatial interpolation method(s) that server can apply to this field. One of these interpolation methods shall be used when a GetCoverage operation request requires resampling. When the only interpolation method listed is ‘none’, clients may only retrieve coverages from this coverage in its native CRS at its native resolution. 
+     * Spatial interpolation method(s) that server can apply to this field. One of these interpolation methods shall be used when a GetCoverage operation request requires resampling. When the only interpolation method listed is "none", clients may only retrieve coverages from this coverage in its native CRS at its native resolution. 
      * <!-- end-model-doc -->
      * @return the value of the '<em>Interpolation Methods</em>' containment reference.
      * @see #setInterpolationMethods(InterpolationMethodsType)

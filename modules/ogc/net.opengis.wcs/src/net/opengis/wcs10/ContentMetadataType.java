@@ -184,7 +184,7 @@ public interface ContentMetadataType extends EObject {
 	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
 	 * <!-- begin-model-doc -->
-	 * Reference to an XML Schema fragment that specifies the content model of the property’s value. This is in conformance with the XML Schema Section 4.14 Referencing Schemas from Elsewhere.
+	 * Reference to an XML Schema fragment that specifies the content model of the property's value. This is in conformance with the XML Schema Section 4.14 Referencing Schemas from Elsewhere.
 	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>Remote Schema</em>' attribute.
 	 * @see #setRemoteSchema(String)

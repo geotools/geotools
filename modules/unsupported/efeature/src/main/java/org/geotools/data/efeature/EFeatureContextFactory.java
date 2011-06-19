@@ -221,6 +221,29 @@ public class EFeatureContextFactory implements BufferedFactory {
             //
             eContextInfoMap.put(eContextID, eContextInfo);
             //
+            // -----------------------------------------------------
+            //  Add EFeature as prototype. 
+            // -----------------------------------------------------
+            //  This is an important step. It allows the context to
+            //  filter on any EFeature implementation, and saves
+            //  enables any EFeature implementation to be adapted
+            //  into the context. 
+            // -----------------------------------------------------
+            //
+            EFeaturePackage ePackage = EFeaturePackage.eINSTANCE;
+            eContext.eAdd(ePackage);
+            EFeatureInfo eFeatureInfo = EFeatureInfo.create(eContext, ePackage.getEFeature(), new EFeatureHints());
+            //
+            // -----------------------------------------------------
+            //  Validate structure (required)
+            // -----------------------------------------------------
+            //  This is an important step. If not done, 
+            //  access to methods like getFeatureType() and 
+            //  getSRID() will return null or throw exceptions. 
+            // -----------------------------------------------------
+            //
+            eFeatureInfo.validate(ePackage, null);
+            //
             // Success!
             //
             return eContext;
@@ -305,7 +328,7 @@ public class EFeatureContextFactory implements BufferedFactory {
         if(eContextInfo == null)
         {
             throw new IllegalArgumentException("EFeatureContext instance with ID " 
-                    + eContextID + " was found");
+                    + eContextID + " was not found");
         }
         return eContextInfo;
         

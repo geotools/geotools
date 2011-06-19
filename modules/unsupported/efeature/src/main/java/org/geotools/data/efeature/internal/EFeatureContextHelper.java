@@ -125,6 +125,29 @@ public final class EFeatureContextHelper {
         return eContext;
     }
     
+    /**
+     * Get the {@link EFeatureInfo#isPrototype() prototype} 
+     * {@link EFeatureInfo} instance cached for the {@link EClass} 
+     * defining given {@link EObject}.
+     * </p> 
+     * @param eObject - the {@link EObject} instance
+     * @return a {@link EFeatureInfo} if found, <code>null</code> otherwise.
+     */ 
+    public static final EFeatureInfo ePrototype(EObject eObject) {
+        return eContext.eStructure().eGetFeatureInfo(eObject);
+    }
+    
+    /**
+     * Get the {@link EFeatureInfo#isPrototype() prototype} 
+     * {@link EFeatureInfo} instance cached for given {@link EClass}.
+     * </p> 
+     * @param eClass - the {@link EClass} instance
+     * @return a {@link EFeatureInfo} if found, <code>null</code> otherwise.
+     */ 
+    public static final EFeatureInfo ePrototype(EClass eClass) {
+        return eContext.eStructure().eGetFeatureInfo(eClass);
+    }    
+    
     // ----------------------------------------------------- 
     //  Helper methods
     // -----------------------------------------------------

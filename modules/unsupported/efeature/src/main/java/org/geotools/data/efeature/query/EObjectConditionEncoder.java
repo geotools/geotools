@@ -17,6 +17,9 @@ import org.geotools.data.efeature.DataTypes;
 import org.geotools.data.efeature.EFeature;
 import org.geotools.data.efeature.EFeatureInfo;
 import org.geotools.filter.Capabilities;
+import org.geotools.filter.LiteralExpressionImpl;
+import org.geotools.filter.LiteralTest;
+import org.geotools.filter.function.PropertyExistsFunction;
 import org.geotools.filter.visitor.IsFullySupportedFilterVisitor;
 import org.geotools.filter.visitor.IsSupportedFilterVisitor;
 import org.geotools.util.logging.Logging;
@@ -64,6 +67,20 @@ import org.opengis.filter.spatial.Intersects;
 import org.opengis.filter.spatial.Overlaps;
 import org.opengis.filter.spatial.Touches;
 import org.opengis.filter.spatial.Within;
+import org.opengis.filter.temporal.After;
+import org.opengis.filter.temporal.AnyInteracts;
+import org.opengis.filter.temporal.Before;
+import org.opengis.filter.temporal.Begins;
+import org.opengis.filter.temporal.BegunBy;
+import org.opengis.filter.temporal.During;
+import org.opengis.filter.temporal.EndedBy;
+import org.opengis.filter.temporal.Ends;
+import org.opengis.filter.temporal.Meets;
+import org.opengis.filter.temporal.MetBy;
+import org.opengis.filter.temporal.OverlappedBy;
+import org.opengis.filter.temporal.TContains;
+import org.opengis.filter.temporal.TEquals;
+import org.opengis.filter.temporal.TOverlaps;
 
 /**
  * Encodes a {@link Filter} into an {@link EObjectCondition} statement.
@@ -258,7 +275,12 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
         try {
             eCondition = null;
             eConditionStack.clear();
-            eCondition = (EObjectCondition)filter.accept(this, null);
+            Condition condition = (Condition)filter.accept(this, null);
+            if(condition instanceof EObjectCondition) {
+                eCondition = condition;
+            } else {
+                eCondition = new EObjectConditionAdapter(condition);
+            }
         } catch (Exception ex) {
             LOGGER.warning("Unable to export filter" + ex);
             throw new EFeatureEncoderException("Problem writing filter: " + filter, ex);
@@ -339,13 +361,13 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
      */
     public EAttributeValueIsBetween visit(PropertyIsBetween filter, Object extraData)
             throws RuntimeException {
-
+        //
         // Get all expressions
         //
         Expression expr = filter.getExpression();
         Expression lowerbounds = filter.getLowerBoundary();
         Expression upperbounds = filter.getUpperBoundary();
-
+        //
         // Get expression data type
         //
         Class<?> type;
@@ -353,34 +375,36 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
         if (attType != null) {
             type = attType.getType().getBinding();
         } else {
+            //
             // Assume it's a string
             //
             type = String.class;
         }
-
+        //
         // Check if type is not supported
         //
         if (!DataTypes.supports(type)) {
             throw new RuntimeException("Type " + type + " not supported.");
         }
-
+        //
         // For each expression in filter:
         // 1) Build expression recursively and put onto expression stack
         // 2) Cast expression result to expected type
+        //
         expr.accept(this, false);
         PropertyName name = toType(eExpressionStack.pop(), PropertyName.class,
                 "PropertyIsBetween expression is not a PropertyName");
         lowerbounds.accept(this, type);
-        Literal lower = toType(eExpressionStack.pop(), Literal.class,
+        Literal lower = toLiteral(eExpressionStack.pop(),
                 "PropertyIsBetween lower bound expression is not a Literal");
         upperbounds.accept(this, type);
-        Literal upper = toType(eExpressionStack.pop(), Literal.class,
-                "PropertyIsBetween uppder bound expression is not a Literal");
-
+        Literal upper = toLiteral(eExpressionStack.pop(),
+                "PropertyIsBetween upper bound expression is not a Literal");
+        //
         // Get EAttribute instance from definition
         //
-        EAttribute eAttribute = eFeatureInfo.getEAttribute(name.getPropertyName());
-
+        EAttribute eAttribute = eFeatureInfo.eGetAttribute(name.getPropertyName());
+        //
         // Found attribute?
         //
         if (eAttribute == null) {
@@ -389,15 +413,16 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
         }
 
         try {
+            //
             // Create EObjectCondition instance and push it to condition stack
             //
             EAttributeValueIsBetween eCondition = new EAttributeValueIsBetween(eAttribute, lower,
                     upper);
-
+            //
             // Push to stack
             //
             eConditionStack.push(eCondition);
-
+            //
             // Finished
             //
             return eCondition;
@@ -468,7 +493,7 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
 
         // Get EAttribute instance from definition
         //
-        EAttribute eAttribute = eFeatureInfo.getEAttribute(name.getPropertyName());
+        EAttribute eAttribute = eFeatureInfo.eGetAttribute(name.getPropertyName());
 
         // Found attribute?
         //
@@ -509,7 +534,18 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
      * 
      */
     public Condition visit(org.opengis.filter.Not filter, Object extraData) {
-        return visit((BinaryLogicOperator) filter, "NOT");
+        //
+        // Build filter recursively and put onto condition stack
+        //
+        filter.getFilter().accept(this,extraData);
+        //
+        // Invert condition
+        //
+        eCondition = new Not(eConditionStack.pop());
+        //
+        // Finished
+        //
+        return eCondition;
     }
 
     /**
@@ -578,17 +614,7 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
 
         // Is inverse operator?
         //
-        if (filter instanceof org.opengis.filter.Not) {
-
-            // Build filter recursively and put onto condition stack
-            //
-            list.next().accept(this, extraData);
-
-            // Invert condition
-            //
-            eCondition = new Not(eConditionStack.pop());
-
-        } else if ("OR".equals(operator)) {
+        if ("OR".equals(operator)) {
             while (list.hasNext()) {
 
                 // Build filter recursively and put onto condition stack
@@ -766,18 +792,24 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
     protected Condition visitBinaryComparisonOperator(BinaryComparisonOperator filter,
             Object extraData) throws RuntimeException {
         // LOGGER.finer("exporting SQL ComparisonFilter");
-
+        //
         // Initialize
         //
         Literal value = null;
-        PropertyName name = null;
+        String name = null;
         Condition eCondition = null;
-
+        //
         // Get left and right expression
         //
         Expression left = filter.getExpression1();
         Expression right = filter.getExpression2();
-
+        //
+        // Detect functions
+        //
+        if(left instanceof Function || right instanceof Function) {
+            throw new IllegalArgumentException("Functions are not supported");            
+        }
+        //
         // Detect implicit inner join
         //
         if (left instanceof PropertyName && right instanceof PropertyName) {
@@ -787,18 +819,22 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
         // Verify left expression
         //
         if (left instanceof PropertyName) {
-            name = (PropertyName) left;
+            name = ((PropertyName) left).getPropertyName();
+        } else if (left instanceof PropertyExistsFunction) {
+            name = ((PropertyExistsFunction) left).getParameters().get(0).toString();
         } else if (left instanceof Literal) {
             value = (Literal) left;
         } else {
             throw new IllegalArgumentException("Left argument must be a Literal");
         }
-
+        //
         // Verify right expression
         //
         if (right instanceof PropertyName) {
-            name = (PropertyName) right;
-        } else if (left instanceof Literal) {
+            name = ((PropertyName) right).getPropertyName();
+        } else if (right instanceof PropertyExistsFunction) {
+            name = ((PropertyExistsFunction) right).getParameters().get(0).toString();
+        } else if (right instanceof Literal) {
             value = (Literal) right;
         } else {
             throw new IllegalArgumentException("Right argument must be a Literal");
@@ -806,13 +842,12 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
 
         // Get EAttribute instance from definition
         //
-        EAttribute eAttribute = eFeatureInfo.getEAttribute(name.getPropertyName());
+        EAttribute eAttribute = eFeatureInfo.eGetAttribute(name);
 
         // Found attribute?
         //
         if (eAttribute == null) {
-            throw new IllegalArgumentException("EAttribute " + name.getPropertyName()
-                    + " not found");
+            throw new IllegalArgumentException("EAttribute " + name + " not found");
         }
 
         // Get comparator
@@ -884,7 +919,7 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
 
         // Get EAttribute instance from definition
         //
-        EAttribute eAttribute = eFeatureInfo.getEAttribute(name.getPropertyName());
+        EAttribute eAttribute = eFeatureInfo.eGetAttribute(name.getPropertyName());
 
         // Found attribute?
         //
@@ -926,9 +961,9 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
         // Get identifiers
         //
         Set<Identifier> ids = filter.getIdentifiers();
-
+        //
         // LOGGER.finer("Exporting FID=" + ids);
-
+        //
         // Verify that only one identifier is given
         //
         if (ids.isEmpty()) {
@@ -936,16 +971,17 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
         } else if (ids.size() > 1) {
             throw new RuntimeException("Id filter " + filter + " has more than one identifier");
         }
-
-        // Get id
+        //
+        // Get ID
         //
         Object id = ids.iterator().next().getID();
-
-        // Is id invalid?
+        //
+        // Is ID invalid?
+        //
         if (id == null) {
             throw new NullPointerException("Identifier is null");
         }
-
+        //
         // Get ID EAttribute instance from definition
         //
         EAttribute eAttribute = eFeatureInfo.eIDAttribute();
@@ -954,11 +990,11 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
             // Create EObjectCondition instance and push it
             //
             EAttributeValueIsID eCondition = new EAttributeValueIsID(eAttribute, id.toString());
-
+            //
             // Push to stack
             //
             eConditionStack.push(eCondition);
-
+            //
             // Finished
             //
             return eCondition;
@@ -1188,7 +1224,7 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
 
         // Get EAttribute instance
         //
-        EAttribute eAttribute = eFeatureInfo.getEAttribute(property.getPropertyName());
+        EAttribute eAttribute = eFeatureInfo.eGetAttribute(property.getPropertyName());
 
         // Going through evaluate ensures we get the proper result even
         // if the name has not been specified (convention -> the default geometry)
@@ -1290,11 +1326,11 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
     public Object visit(PropertyName expression, Object toAttribute) throws RuntimeException {
 
         // LOGGER.finer("exporting PropertyName");
-
+        //
         // Get parse flag
         //
         boolean bFlag = (toAttribute instanceof Boolean ? (Boolean) toAttribute : false);
-
+        //
         // First evaluate expression against feature type
         // get the attribute, this handles xpath
         //
@@ -1737,14 +1773,93 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
     // ----------------------------------------------------- 
     //  Private helper methods
     // -----------------------------------------------------
+    
+    
+    public Object visit(After arg0, Object extraData) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
+    public Object visit(AnyInteracts expression, Object extraData) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public Object visit(Before expression, Object extraData) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public Object visit(Begins expression, Object extraData) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public Object visit(BegunBy expression, Object extraData) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public Object visit(During expression, Object extraData) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public Object visit(EndedBy expression, Object extraData) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public Object visit(Ends expression, Object extraData) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public Object visit(Meets expression, Object extraData) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public Object visit(MetBy expression, Object extraData) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public Object visit(OverlappedBy expression, Object extraData) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public Object visit(TContains expression, Object extraData) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public Object visit(TEquals expression, Object extraData) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public Object visit(TOverlaps expression, Object extraData) {
+        // TODO Auto-generated method stub
+        return null;
+    }    
+    
+    // ----------------------------------------------------- 
+    //  Private helper methods
+    // -----------------------------------------------------
+    
     private static <T> T toType(Object object, Class<T> type, String message) {
-        if (!(object instanceof PropertyName)) {
-            throw new RuntimeException(message);
+        if (!type.isInstance(object)) {
+            throw new IllegalArgumentException(message);
         }
         return type.cast(object);
     }
-
+    
+    private static Literal toLiteral(Object object, String message) {
+        return toType(object,Literal.class,message);
+    }
+    
     private static Capabilities createFilterCapabilities() {
 
         // Create Capabilities helper class

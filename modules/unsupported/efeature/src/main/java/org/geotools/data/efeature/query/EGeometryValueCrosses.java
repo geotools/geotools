@@ -10,12 +10,17 @@ public class EGeometryValueCrosses extends EObjectAttributeValueCondition {
 
     public EGeometryValueCrosses(EAttribute eAttribute, Literal geometry, boolean swapped)
             throws EFeatureEncoderException {
-        super(eAttribute, SpatialConditionEncoder.crosses(geometry, swapped));
+        super(eAttribute, SpatialConditionEncoder.crosses(eAttribute.getEAttributeType(), geometry, swapped));
+    }
+
+    public EGeometryValueCrosses(EAttribute eAttribute, Object geometry, boolean swapped)
+            throws EFeatureEncoderException {
+        super(eAttribute, SpatialConditionEncoder.crosses(eAttribute.getEAttributeType(), geometry, swapped));
     }
 
     public EGeometryValueCrosses(EAttribute eAttribute, Geometry geometry, boolean swapped)
             throws EFeatureEncoderException {
-        super(eAttribute, SpatialConditionEncoder.crosses(geometry, swapped));
+        super(eAttribute, SpatialConditionEncoder.crosses(eAttribute.getEAttributeType(), geometry, swapped));
     }
 
 }

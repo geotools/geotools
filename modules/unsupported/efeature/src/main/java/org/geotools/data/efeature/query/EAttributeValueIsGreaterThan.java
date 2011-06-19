@@ -10,22 +10,37 @@ public class EAttributeValueIsGreaterThan extends EObjectAttributeValueCondition
 
     public EAttributeValueIsGreaterThan(EAttribute eAttribute, Literal value)
             throws EFeatureEncoderException {
-        super(eAttribute, ConditionEncoder.greaterThan(value));
+        super(eAttribute, ConditionEncoder.gt(eAttribute.getEAttributeType(),value));
+    }
+
+    public EAttributeValueIsGreaterThan(EAttribute eAttribute, Object value)
+            throws EFeatureEncoderException {
+        super(eAttribute, ConditionEncoder.gt(eAttribute.getEAttributeType(),value));
     }
 
     public EAttributeValueIsGreaterThan(EAttribute eAttribute, Number value)
             throws EFeatureEncoderException {
-        super(eAttribute, ConditionEncoder.greaterThan(value));
+        super(eAttribute, ConditionEncoder.gt(eAttribute.getEAttributeType(),value));
     }
 
     public EAttributeValueIsGreaterThan(EAttribute eAttribute, Date value)
             throws EFeatureEncoderException {
-        super(eAttribute, ConditionEncoder.greaterThan(value));
+        super(eAttribute, ConditionEncoder.gt(eAttribute.getEAttributeType(),value));
+    }
+
+    public EAttributeValueIsGreaterThan(EAttribute eAttribute, Boolean value)
+            throws EFeatureEncoderException {
+        super(eAttribute, ConditionEncoder.gt(eAttribute.getEAttributeType(),value));
+    }
+
+    public EAttributeValueIsGreaterThan(EAttribute eAttribute, Character value)
+            throws EFeatureEncoderException {
+        super(eAttribute, ConditionEncoder.gt(eAttribute.getEAttributeType(),value));
     }
 
     public EAttributeValueIsGreaterThan(EAttribute eAttribute, String value)
             throws EFeatureEncoderException {
-        super(eAttribute, ConditionEncoder.greaterThan(value));
+        super(eAttribute, ConditionEncoder.gt(eAttribute.getEAttributeType(),value));
     }
 
 }

@@ -9,6 +9,16 @@
 see: http://osgeo-org.1803224.n2.nabble.com/eclipse-cross-project-dependencies-td6341944.html
 
 =====================================================================
+ HOWTO: Set EFeature logging configuration file  
+=====================================================================
+
+1. Open a Run/Debug configuration
+2. Goto tab "Arguments"
+3. Enter VM argument
+    
+    -Djava.util.logging.config.file=logging/logging.properties
+    
+=====================================================================
  EFeature DataStore Implementation Comments
 =====================================================================
 

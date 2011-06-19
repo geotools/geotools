@@ -8,7 +8,6 @@ package org.geotools.data.efeature.tests.util;
 
 import org.eclipse.emf.common.util.URI;
 
-import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.emf.ecore.xmi.XMLHelper;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 

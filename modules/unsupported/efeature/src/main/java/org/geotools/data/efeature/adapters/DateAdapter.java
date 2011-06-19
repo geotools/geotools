@@ -1,4 +1,4 @@
-package org.geotools.data.efeature;
+package org.geotools.data.efeature.adapters;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

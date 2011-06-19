@@ -9,13 +9,20 @@ import java.util.Map;
 
 import org.eclipse.emf.query.conditions.IDataTypeAdapter;
 import org.eclipse.emf.query.conditions.booleans.BooleanAdapter;
+import org.eclipse.emf.query.conditions.numbers.NumberAdapter;
 import org.eclipse.emf.query.conditions.numbers.NumberAdapter.ByteAdapter;
 import org.eclipse.emf.query.conditions.numbers.NumberAdapter.DoubleAdapter;
 import org.eclipse.emf.query.conditions.numbers.NumberAdapter.FloatAdapter;
-import org.eclipse.emf.query.conditions.numbers.NumberAdapter.IntegerAdapter;
 import org.eclipse.emf.query.conditions.numbers.NumberAdapter.LongAdapter;
 import org.eclipse.emf.query.conditions.numbers.NumberAdapter.ShortAdapter;
 import org.eclipse.emf.query.conditions.strings.StringAdapter;
+import org.geotools.data.efeature.adapters.IntegerAdapter;
+import org.geotools.data.efeature.adapters.CharacterAdapter;
+import org.geotools.data.efeature.adapters.DateAdapter;
+import org.geotools.data.efeature.adapters.GeometryAdapter;
+import org.geotools.data.efeature.adapters.ObjectAdapter;
+import org.geotools.data.efeature.adapters.WKBAdapter;
+import org.geotools.data.efeature.adapters.WKTAdapter;
 import org.opengis.filter.expression.Literal;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -62,6 +69,14 @@ public class DataTypes
     public static final byte[] WKB_POLYGON_EMPTY = new byte[]{0, 0, 0, 0, 3, 0, 0, 0, 1, 0, 0, 0, 0};
     public static final byte[] WKB_LINESTRING_EMPTY = new byte[]{0, 0, 0, 0, 2, 0, 0, 0, 0};
     public static final byte[] WKB_POINT_EMPTY = new byte[]{}; // Apparently, there is no WKB convention for "POINT EMPTY"
+    
+    /**
+     * Maximum length of empty WKB definition byte array.
+     */
+    public static final int WKB_MAX_EMPTY_COUNT = Math.max(WKB_GEOMETRYCOLLECTION_EMPTY.length, 
+            Math.max(WKB_MULTIPOLYGON_EMPTY.length,Math.max(WKB_MULTILINESTRING_EMPTY.length,
+            Math.max(WKB_MULTIPOINT_EMPTY.length,Math.max(WKB_LINESTRING_EMPTY.length,
+                     WKB_POINT_EMPTY.length)))));
 
     // ----------------------------------------------------- 
     //  Static constructor
@@ -114,6 +129,20 @@ public class DataTypes
                 WKB_POINT_EMPTY, WKB_LINESTRING_EMPTY, WKB_POLYGON_EMPTY, WKB_MULTIPOINT_EMPTY,
                 WKB_MULTILINESTRING_EMPTY, WKB_MULTIPOLYGON_EMPTY, WKB_GEOMETRYCOLLECTION_EMPTY);
 
+        // ----------------------------------------------------- 
+        //  Generic data types
+        // -----------------------------------------------------
+        //
+        // Map Object to all supported data types. 
+        //
+        support(Object.class,ObjectAdapter.DEFAULT);
+        //
+        // Map Object to supported data types. Note that the declaration of this default 
+        // as type Integer actually doesn't matter at all, because the "cast" to (N), in this 
+        // case (Integer), doesn't actually exist (is "erasure" is Number)
+        // 
+        support(Number.class,NumberAdapter.<Integer>getDefault());
+        
     }    
             
     // ----------------------------------------------------- 
@@ -146,7 +175,7 @@ public class DataTypes
     public static <T> List<Class<T>> getSubTypes(Class<T> type) {
         List<Class<T>> types = new ArrayList<Class<T>>();
         for(Class<?> it : typeMap.values()) {
-            if(type.isAssignableFrom(it))
+            if(!type.equals(it) && type.isAssignableFrom(it))
                 types.add((Class<T>)it);
         }            
         return types;
@@ -170,7 +199,7 @@ public class DataTypes
         if(!nameMap.containsKey(type)) {
             return getSubTypes(type).size()>0;
         }
-        return false;
+        return true;
     }
     
     public static IDataTypeAdapter<?> getAdapter(String name) {
@@ -201,6 +230,94 @@ public class DataTypes
         return type.cast(field.get(null));
     }
     
+    public static boolean isArray(Literal value) {
+        return isArray(value.getValue());
+    }
+    
+    public static boolean isArray(Object value) {
+        if(value != null) {
+            return value.getClass().isArray();
+        }
+        return false;
+    }
+    
+    public static Class<?> toType(Literal value) {
+        return toType(value.getValue());
+    }
+    
+    public static Class<?> toType(Object value) {
+        if(value !=null) {
+            Class<?> type = value.getClass();
+            return type.isArray() ? type.getComponentType() : type;
+        }
+        return null;
+    }
+    
+    public static boolean isNumeric(Literal value) {
+        return isNumeric(value.getValue());
+    }
+
+    public static boolean isNumeric(Object value) {        
+        return (value instanceof Number);
+    }
+
+    public static boolean isDate(Literal value) {
+        return isDate(value.getValue());
+    }
+
+    public static boolean isDate(Object value) {
+        return (value instanceof Date);
+    }
+    
+    public static boolean isBoolean(Literal value, boolean parse) {
+        return isBoolean(value.getValue(),parse);
+    }
+
+    public static boolean isBoolean(Object value, boolean parse) {
+        if(value instanceof Boolean) {
+            return true;
+        }
+        else if(parse && (value instanceof String) ) {
+            String s =(String)value; 
+            return s.equalsIgnoreCase("true") || s.equalsIgnoreCase("false");
+        }
+        return false;
+    }
+    
+    public static boolean isCharacter(Literal value) {
+        return isString(value.getValue());
+    }
+
+    public static boolean isCharacter(Object value) {
+        return (value instanceof Character);
+    }
+    
+    public static boolean isString(Literal value) {
+        return isString(value.getValue());
+    }
+
+    public static boolean isString(Object value) {
+        return (value instanceof String);
+    }
+
+    public static boolean isGeometry(Literal value) {
+        return isGeometry(value.getValue());
+    }
+
+    public static boolean isGeometry(Object value) {
+        if(value instanceof Geometry) {
+            return true;
+        }
+        else if(value instanceof Class) {
+            Class<?> cls = (Class<?>)value;
+            if(Geometry.class.isAssignableFrom(cls)) {
+                return true;
+            }
+        }
+        return false;
+    }
+        
+        
     
     // ----------------------------------------------------- 
     //  Private helper methods
@@ -238,46 +355,5 @@ public class DataTypes
         support(wrapper,adapter,unique);
     }
 
-    public static boolean isNumeric(Literal value) {
-        return DataTypes.isNumeric(value.getValue());
-    }
 
-    public static boolean isNumeric(Object value) {
-        return (value instanceof Number);
-    }
-
-    public static boolean isDate(Literal value) {
-        return DataTypes.isDate(value.getValue());
-    }
-
-    public static boolean isDate(Object value) {
-        return (value instanceof Date);
-    }
-
-    public static boolean isString(Literal value) {
-        return DataTypes.isString(value.getValue());
-    }
-
-    public static boolean isString(Object value) {
-        return (value instanceof String);
-    }
-
-    public static boolean isGeometry(Literal value) {
-        return DataTypes.isGeometry(value.getValue());
-    }
-
-    public static boolean isGeometry(Object value) {
-        if(value instanceof Geometry) {
-            return true;
-        }
-        else if(value instanceof Class) {
-            Class<?> cls = (Class<?>)value;
-            if(Geometry.class.isAssignableFrom(cls)) {
-                return true;
-            }
-        }
-        return false;
-    }
-        
-    
 }

@@ -12,54 +12,35 @@
  *   Zeligsoft - Bug 234868
  *
  * </copyright>
- * 
- * 
- *
  */
 package org.geotools.data.efeature.tests.unit;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import junit.framework.TestCase;
 
 import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.domain.EditingDomain;
+import org.geotools.data.efeature.EFeature;
 import org.geotools.data.efeature.internal.EFeatureLogFormatter;
-import org.geotools.util.logging.Logging;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
 /**
- * Abstract test framework for the transaction unit tests.
+ * Abstract test framework for {@link EFeature} tests backed by an {@link Resource}.
  * 
  * @author Christian W. Damus (cdamus)
  * @author Kenneth Gulbrandsøy (kengu)
  */
-public abstract class AbstractStandaloneTest extends TestCase {
+public abstract class AbstractResourceTest extends AbstractEFeatureTest {
 
-    public static boolean isDebugging = true;
+    protected static final String EMPTY_RESOURCE_TEST = "EFeatureEmptyTest";
     
-    /** 
-     * Static logger for all {@link AbstractStandaloneTest} instances 
-     */
-    protected static final Logger LOGGER = Logging.getLogger(AbstractStandaloneTest.class);
-    
-    protected static final int TIME_DELTA = 1;    
-    protected static final int TIME_TOTAL = 2;
-    
-    protected long sTime;
-    protected long dTime;
-
     protected URI eResourceURI;
     
     protected String eTestDataPath;
@@ -82,10 +63,8 @@ public abstract class AbstractStandaloneTest extends TestCase {
     // Constructors
     // -----------------------------------------------------
 
-    protected AbstractStandaloneTest(String name, String contentType, boolean reuse, boolean delete) {
+    protected <T> AbstractResourceTest(String name, String contentType, boolean reuse, boolean delete) {
         super(name);
-        this.sTime = System.currentTimeMillis();
-        this.dTime = sTime;
         this.reuse = reuse;
         this.delete = delete;
         this.contentType = contentType;
@@ -97,14 +76,18 @@ public abstract class AbstractStandaloneTest extends TestCase {
 
     @Override
     @BeforeClass
-    public final void setUp() throws Exception {
-
+    public final void setUp() throws Exception {        
+        //
+        // Notify test start
+        //
         trace("===> Begin : " + getName() + "[" + contentType + "]"); //$NON-NLS-1$
         EFeatureLogFormatter.setMinimal();
-        
+        //
+        // Prepare test data information
+        //
         File eTestData = org.geotools.test.TestData.file(this,null);
         this.eTestDataPath = eTestData.toString();
-        this.eResourcePath = eTestDataPath + "/" + getName()+"."+contentType;
+        this.eResourcePath = eTestDataPath + "/" + createFileName(getName())+"."+contentType;
         //
         // Create EMF resource URI
         //
@@ -139,7 +122,7 @@ public abstract class AbstractStandaloneTest extends TestCase {
             // Create resource data?
             //
             if(createNew) {
-                createTestData(r);
+                createTestData(getName(), r);
                 trace("Resource created",TIME_DELTA);
             }
             //
@@ -163,13 +146,14 @@ public abstract class AbstractStandaloneTest extends TestCase {
         trace("Setup completed",TIME_TOTAL);
         
     }
-
+    
     protected void doSetUp() throws Exception { /*NOP*/}
 
     /**
      * Create new {@link ResourceSet resource set} instance.
      * <p>
-     * Is called by {@link #setUp()}. 
+     * Is called by {@link #setUp()}, and always BEFORE 
+     * {@link #createEditingDomain(ResourceSet)}.
      * </p>
      * @return a {@link ResourceSet} instance
      */
@@ -178,20 +162,35 @@ public abstract class AbstractStandaloneTest extends TestCase {
     /**
      * Create an {@link EditingDomain editing domain} instance
      * <p>
-     * Is called by {@link #setUp()}.
+     * Is called by {@link #setUp()}, and always AFTER
+     * {@link #createResourceSet()}.
      * </p>
      * @return a {@link EditingDomain} instance
      */
     protected abstract EditingDomain createEditingDomain(ResourceSet rset);
     
     /**
+     * Create file name.
+     * <p>
+     * Default implementation is to return 
+     * {@link Class#getSimpleName() implementing class name}. 
+     * Override this method if other name should be used.
+     * @param name - the test name
+     * @return a file name.
+     */
+    protected String createFileName(String name) {
+        return getClass().getSimpleName();
+    }
+    
+    /**
      * This method is called by {@link #setUp()} immediately after 
      * the {@link #eResource} is constructed and just before it is
      * saved to file and reference to it is cached. 
-     * @param eResource
+     * @param name - test name
+     * @param eResource - the test data resource
      * @throws Exception if anything went wrong during data construction
      */
-    protected void createTestData(Resource eResource) throws Exception {
+    protected void createTestData(String name, Resource eResource) throws Exception {
         
     }
 
@@ -208,18 +207,27 @@ public abstract class AbstractStandaloneTest extends TestCase {
             // Then do all the rest.
             //
             if (eResource != null) {
+                //
+                // Persist resource to file?
+                //
+                if(!delete) eResource.save(Collections.EMPTY_MAP);                
+                //
+                // Unload resource?
+                //
                 if (eResource.isLoaded()) {
                     eResource.unload();
                 }
-
+                //
+                // Remove resource?
+                //
                 if (eResource.getResourceSet() != null) {
                     eResource.getResourceSet().getResources().remove(eResource);
                 }
-                eResource = null;
             }               
             
-            //delete(eResourcePath);
-                    
+            //
+            // Reset references
+            //
             eDomain = null;
             eResource = null;
             eResourceURI = null;
@@ -274,40 +282,6 @@ public abstract class AbstractStandaloneTest extends TestCase {
         }
     }        
 
-    protected static void trace(String message) {
-        if (isDebugging) {
-            LOGGER.log(Level.INFO,message);
-        }
-    }
-    
-    protected long dTime() {
-        return dTime = System.currentTimeMillis();
-    }
-    
-    protected void trace(String message, int delta) {
-        if (isDebugging) {
-            long tac = System.currentTimeMillis();
-            if(delta==TIME_DELTA) {
-                message += ", Time: +" + (tac-dTime)/1000.0;
-            } else if(delta==TIME_TOTAL) {
-                message += ", Time: ~" + (tac-sTime)/1000.0;
-            }
-            dTime = tac;
-            trace(message);
-        }
-    }
-    
-
-    /**
-     * Records a failure due to an exception that should not have been thrown.
-     * 
-     * @param e the exception
-     */
-    protected void fail(Exception e) {
-        e.printStackTrace();
-        fail("Should not have thrown: " + e.getLocalizedMessage()); //$NON-NLS-1$
-    }
-
     /**
      * Asserts that we can find an object having the specified name.
      * 
@@ -320,22 +294,7 @@ public abstract class AbstractStandaloneTest extends TestCase {
         assertNotNull("Did not find " + id, find(eResource, id)); //$NON-NLS-1$
     }
 
-    /**
-     * Asserts that we can find an object having the specified id, 
-     * relative to the specified offset object.
-     * 
-     * @param offset - the object from which to start looking 
-     *  (to which the <code>id</code> is relative). This can be a 
-     *  resource or an element
-     * @param id - a slash-delimited qualified id, relative to the 
-     *  provided <code>offset</code>
-     * 
-     * @see #find(Object, String)
-     */
-    protected void assertFound(Object offset, String id) {
-        assertNotNull("Did not find " + id, find(offset, id)); //$NON-NLS-1$
-    }
-
+    
     /**
      * Asserts that we cannot find an object with the specified id.
      * 
@@ -347,23 +306,7 @@ public abstract class AbstractStandaloneTest extends TestCase {
     protected void assertNotFound(String name) {
         assertNull("Found " + name, find(eResource, name)); //$NON-NLS-1$
     }
-
-    /**
-     * Asserts that we cannot find an object having the specified name, relative to the specified
-     * starting object.
-     * 
-     * @param offset - the object from which to start looking 
-     *  (to which the <code>name</code> is relative). This can be a 
-     *  resource or an element
-     * @param id - a slash-delimited qualified id, relative to the 
-     *  provided <code>offset</code>
-     * 
-     * @see #find(Object, String)
-     */
-    protected void assertNotFound(Object offset, String id) {
-        assertNull("Found " + id, find(offset, id)); //$NON-NLS-1$
-    }
-
+    
     /**
      * Finds the object in the test model having the specified qualified name.
      * 
@@ -372,61 +315,6 @@ public abstract class AbstractStandaloneTest extends TestCase {
      */
     protected EObject find(String id) {
         return find(eResource, id);
-    }
-
-    /**
-     * Finds the object in the test model having the specified id, starting from some object.
-     * 
-     * @param offset - the starting object (resource or element)
-     * @param id - a slash-delimited qualified id, relative to the provided <code>offset</code>
-     * @return the matching object, or <code>null</code> if not found
-     */
-    protected EObject find(Object offset, String id) {
-        EObject result = null;
-        Object current = offset;
-
-        String[] ids = tokenize(id);
-
-        for (int i = 0; (current != null) && (i < ids.length); i++) {
-            id = ids[i];
-            result = null;
-
-            for (EObject it : getContents(current)) {
-                if (id.equals(EcoreUtil.getID(it))) {
-                    result = it;
-                    break;
-                }
-            }
-            current = result;
-        }
-
-        return result;
-    }
-
-    /**
-     * Gets the contents of an object.
-     * 
-     * @param object an object, which may be a resource or an element
-     * @return its immediate contents (children)
-     */
-    private List<EObject> getContents(Object object) {
-        if (object instanceof EObject) {
-            return ((EObject) object).eContents();
-        } else if (object instanceof Resource) {
-            return ((Resource) object).getContents();
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
-    /**
-     * Tokenizes a qualified id on the slashes.
-     * 
-     * @param id - a qualified id
-     * @return the parts between the slashes
-     */
-    private String[] tokenize(String id) {
-        return id.split("/"); //$NON-NLS-1$
     }
 
     /**

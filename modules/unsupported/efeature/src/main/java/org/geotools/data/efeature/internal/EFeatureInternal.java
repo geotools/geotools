@@ -22,7 +22,6 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.geotools.data.efeature.EFeature;
 import org.geotools.data.efeature.EFeatureAttribute;
@@ -319,74 +318,9 @@ public class EFeatureInternal {
     
     public void setID(String eNewID) {
         //
-        // Verify current state
+        // Forward
         //
-        verify();
-        //
-        // Get ID factory
-        //
-        EFeatureIDFactory eIDFactory = getStructure().eContext().eIDFactory();
-        //
-        // -------------------------------------------------------
-        //  Notify ID usage to factory?
-        // -------------------------------------------------------
-        //  This is part of the context startup problem solution.
-        //  When constructing EFeatures from XMI, the context is
-        //  unknown. This comes from the fact that values are 
-        //  serialized before instances are added to the resource
-        //  (context). Therefore, a internal context is used 
-        //  instead. This internal context should not not create 
-        //  IDs, since IDs only have meaning in the context that
-        //  that they belong. The ID factory in the internal 
-        //  context does therefore not support creation and 
-        //  usage of IDs (throws OperationUnsupportedException).
-        //
-        if(!(eIDFactory instanceof EFeatureVoidIDFactory)) {
-            //
-            // Tell ID factory of ID usage, a new ID is returned if not unique
-            //
-            eNewID = eIDFactory.useID(eImpl(),eNewID);            
-        }
-        //
-        // Is ID held by this?
-        //
-        if(isIDHolder)
-        {
-            //
-            // Cache old for later use
-            //
-            String eOldID = eID;
-            //
-            // Cache ID in this
-            //
-            eID = eNewID;
-            //
-            // Notify?
-            //
-            if (eImpl().eNotificationRequired())
-                eImpl().eNotify(
-                        new ENotificationImpl(eImpl(), Notification.SET,
-                                EFeaturePackage.EFEATURE__ID, eOldID, eNewID));            
-        } 
-        else {
-            //
-            // Implementation holds the ID value. Get EFeature ID attribute.
-            //
-            EAttribute eAttribute = getStructure().eIDAttribute();
-            //
-            // Since the implementation holds the ID value, the
-            // the eAttribute must be changeable. 
-            //
-            if(!eAttribute.isChangeable()) {
-                throw new IllegalStateException("EAttribute must be " +
-                                "changeable when the eImpl() is the " +
-                                "ID holder.");
-            }
-            //
-            // Update ID attribute value
-            //
-            eImpl().eSet(eAttribute,eNewID);
-        }
+        eSetID(eNewID, true);
     }    
 
     public String getSRID() {
@@ -571,6 +505,87 @@ public class EFeatureInternal {
         return EFeatureContextHelper.eContext(eObject);
     }
     
+    public String eSetID(String eNewID, boolean eSetUsage) {
+        //
+        // Verify current state
+        //
+        verify();
+        //
+        // Tell ID factory of ID usage?
+        //
+        if(eSetUsage) {
+            //
+            // Get ID factory
+            //
+            EFeatureIDFactory eIDFactory = getStructure().eContext().eIDFactory();
+            //
+            // -------------------------------------------------------
+            //  Notify ID usage to factory?
+            // -------------------------------------------------------
+            //  This is part of the context startup problem solution.
+            //  When constructing EFeatures from XMI, the context is
+            //  unknown. This comes from the fact that values are 
+            //  serialized before instances are added to the resource
+            //  (context). Therefore, a internal context is used 
+            //  instead. This internal context should not not create 
+            //  IDs, since IDs only have meaning in the context that
+            //  that they belong. The ID factory in the internal 
+            //  context does therefore not support creation and 
+            //  usage of IDs (throws OperationUnsupportedException).
+            //
+            if(!(eIDFactory instanceof EFeatureVoidIDFactory)) {
+                //
+                // Tell ID factory of ID usage, a new ID is returned if not unique
+                //
+                eNewID = eIDFactory.useID(eImpl(),eNewID);            
+            }
+        }
+        //
+        // Is ID held by this?
+        //
+        if(isIDHolder)
+        {
+            //
+            // Cache old for later use
+            //
+            String eOldID = eID;
+            //
+            // Cache ID in this
+            //
+            eID = eNewID;
+            //
+            // Notify?
+            //
+            if (eImpl().eNotificationRequired())
+                eImpl().eNotify(
+                        new ENotificationImpl(eImpl(), Notification.SET,
+                                EFeaturePackage.EFEATURE__ID, eOldID, eNewID));            
+        } 
+        else {
+            //
+            // Implementation holds the ID value. Get EFeature ID attribute.
+            //
+            EAttribute eAttribute = getStructure().eIDAttribute();
+            //
+            // Since the implementation holds the ID value, the
+            // the eAttribute must be changeable. 
+            //
+            if(!eAttribute.isChangeable()) {
+                throw new IllegalStateException("EAttribute must be " +
+                                "changeable when the eImpl() is the " +
+                                "ID holder.");
+            }
+            //
+            // Update ID attribute value
+            //
+            eImpl().eSet(eAttribute,eNewID);            
+        }
+        //
+        // Finished
+        //
+        return eNewID;
+    }        
+    
     protected static final void validate(EFeatureInfo eStructure, EObject eObject)
             throws IllegalArgumentException {
         //
@@ -752,7 +767,7 @@ public class EFeatureInternal {
             // just discard it (in line with using structures as filters)
             //
             String eName = it.getName().getLocalPart();
-            EAttribute eAttribute = eStructure.getEAttribute(eName);
+            EAttribute eAttribute = eStructure.eGetAttribute(eName);
 
             // EAttribute found in this structure.
             //
@@ -1023,7 +1038,7 @@ public class EFeatureInternal {
 
         public void setValue(Collection<Property> values) {
             for (Property it : values) {
-                EAttribute eAttr = getStructure().getEAttribute(it.getName().getURI());
+                EAttribute eAttr = getStructure().eGetAttribute(it.getName().getURI());
                 eImpl().eSet(eAttr, it.getValue());
             }
         }

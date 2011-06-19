@@ -1,4 +1,4 @@
-package org.geotools.data.efeature;
+package org.geotools.data.efeature.adapters;
 
 import org.eclipse.emf.query.conditions.Condition;
 import org.eclipse.emf.query.conditions.IDataTypeAdapter;

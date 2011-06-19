@@ -39,6 +39,9 @@ public class StringCondition extends org.eclipse.emf.query.conditions.strings.St
     /** The numeric "between" operator. */
     public static RelationalOperator BETWEEN = RelationalOperator.BETWEEN;
 
+    /** The numeric "outside" operator. */
+    public static RelationalOperator OUTSIDE = RelationalOperator.OUTSIDE;
+    
     /** The upper bound of a range condition. */
     protected String upperBound;
 
@@ -77,7 +80,7 @@ public class StringCondition extends org.eclipse.emf.query.conditions.strings.St
      * @since 1.2
      */
     public StringCondition(String str, StringAdapter adapter) {
-        this(str, BETWEEN, adapter);
+        this(str, EQUAL_TO, adapter);
     }
 
     /**
@@ -145,34 +148,34 @@ public class StringCondition extends org.eclipse.emf.query.conditions.strings.St
     /**
      * Initializes me with upper and lower bounds against which to test input values, assuming that
      * they will be {@link String} objects. I am, by default, a {@linkplain #BETWEEN between} test.
-     * 
+     * @param between - if <code>true</code>, use the {@link #BETWEEN} operator. Otherwise use the {@link #OUTSIDE} operator
      * @param lowerBound - the lower bound to test
      * @param upperBound - the upper bound to test
      * 
      * @since 1.2
      */
-    public StringCondition(String lowerBound, String upperBound) {
-        this(lowerBound, true, upperBound, true, StringAdapter.DEFAULT);
+    public StringCondition(boolean between, String lowerBound, String upperBound) {
+        this(between, lowerBound, true, upperBound, true, StringAdapter.DEFAULT);
     }
 
     /**
      * Initializes me with upper and lower bounds against which to test input values, and an adapter
      * to convert those inputs to {@link String} objects.
-     * 
+     * @param between - if <code>true</code>, use the {@link #BETWEEN} operator. Otherwise use the {@link #OUTSIDE} operator
      * @param lowerBound - the lower bound to test
      * @param upperBound - the upper bound to test
      * @param adapter - converts input values to {@link String} objects
      * 
      * @since 1.2
      */
-    public StringCondition(String lowerBound, String upperBound, StringAdapter adapter) {
-        this(lowerBound, true, upperBound, true, adapter);
+    public StringCondition(boolean between, String lowerBound, String upperBound, StringAdapter adapter) {
+        this(between, lowerBound, true, upperBound, true, adapter);
     }
 
     /**
      * Initializes me with upper and lower bounds against which to test input values, assuming that
-     * they will be {@link String} objects. I am, by default, a {@linkplain #BETWEEN between} test.
-     * 
+     * they will be {@link String} objects.
+     * @param between - if <code>true</code>, use the {@link #BETWEEN} operator. Otherwise use the {@link #OUTSIDE} operator
      * @param lowerBound - the lower bound to test
      * @param lowerInclusive - whether the lower bound is inclusive
      * @param upperBound - the upper bound to test
@@ -180,15 +183,15 @@ public class StringCondition extends org.eclipse.emf.query.conditions.strings.St
      * 
      * @since 1.2
      */
-    public StringCondition(String lowerBound, boolean lowerInclusive, String upperBound,
-            boolean upperInclusive) {
-        this(lowerBound, lowerInclusive, upperBound, upperInclusive, StringAdapter.DEFAULT);
+    public StringCondition(boolean between, String lowerBound, boolean lowerInclusive,
+            String upperBound, boolean upperInclusive) {
+        this(between, lowerBound, lowerInclusive, upperBound, upperInclusive, StringAdapter.DEFAULT);
     }
 
     /**
      * Initializes me with upper and lower bounds against which to test input values, and an adapter
      * to convert those inputs to {@link String} objects.
-     * 
+     * @param between - if <code>true</code>, use the {@link #BETWEEN} operator. Otherwise use the {@link #OUTSIDE} operator
      * @param lowerBound - the lower bound to test
      * @param lowerInclusive - whether the lower bound is inclusive
      * @param upperBound - the upper bound to test
@@ -197,15 +200,15 @@ public class StringCondition extends org.eclipse.emf.query.conditions.strings.St
      * 
      * @since 1.2
      */
-    public StringCondition(String lowerBound, boolean lowerInclusive, String upperBound,
-            boolean upperInclusive, StringAdapter adapter) {
+    public StringCondition(boolean between, String lowerBound, boolean lowerInclusive,
+            String upperBound, boolean upperInclusive, StringAdapter adapter) {
         super(lowerBound, adapter);
 
         this.lowerBound = lowerBound;
         this.lowerInclusive = lowerInclusive;
         this.upperBound = upperBound;
         this.upperInclusive = upperInclusive;
-        this.operator = BETWEEN;
+        this.operator = between ? BETWEEN : OUTSIDE;
     }
 
     /**
@@ -308,9 +311,40 @@ public class StringCondition extends org.eclipse.emf.query.conditions.strings.St
      */
     public static StringCondition between(String lowerBound, boolean lowerInclusive,
             String upperBound, boolean upperInclusive) {
-        return new StringCondition(lowerBound, lowerInclusive, upperBound, upperInclusive);
+        return new StringCondition(true, lowerBound, lowerInclusive, upperBound, upperInclusive);
     }
 
+    /**
+     * Obtains a condition checking for values in the range to the specified <tt>lowerBound</tt> and
+     * <tt>upperBound</tt> (inclusive).
+     * 
+     * @param lowerBound the lower bound of numbers to check for (inclusive)
+     * @param upperBound the upper bound of numbers to check for (inclusive)
+     * @return a condition that does the checking
+     * 
+     * @since 1.2
+     */
+    public static StringCondition outside(String lowerBound, String upperBound) {
+        return outside(lowerBound, true, upperBound, true);
+    }
+
+    /**
+     * Obtains a condition checking for values in the range to the specified <tt>lowerBound</tt> and
+     * <tt>upperBound</tt>.
+     * 
+     * @param lowerBound the lower bound of numbers to check for
+     * @param lowerInclusive whether the lower bound is inclusive
+     * @param upperBound the upper bound of numbers to check for
+     * @param upperInclusive whether the upper bound is inclusive
+     * @return a condition that does the checking
+     * 
+     * @since 1.2
+     */
+    public static StringCondition outside(String lowerBound, boolean lowerInclusive,
+            String upperBound, boolean upperInclusive) {
+        return new StringCondition(false, lowerBound, lowerInclusive, upperBound, upperInclusive);
+    }
+    
     /**
      * Tests if the argument's value equals/in-range the initialization str(s)
      * 
@@ -377,6 +411,15 @@ public class StringCondition extends org.eclipse.emf.query.conditions.strings.St
                         : (cond.lowerBound.compareTo(str) < 0))
                         && (cond.upperInclusive ? (cond.upperBound.compareTo(str) >= 0)
                                 : (cond.upperBound.compareTo(str) > 0));
+            };
+        },
+        OUTSIDE {
+            @Override
+            boolean isSatisfied(StringCondition cond, String str) {
+                return (cond.lowerInclusive ? (cond.lowerBound.compareTo(str) >= 0)
+                        : (cond.lowerBound.compareTo(str) > 0))
+                        || (cond.upperInclusive ? (cond.upperBound.compareTo(str) <= 0)
+                                : (cond.upperBound.compareTo(str) < 0));
             };
         };
 

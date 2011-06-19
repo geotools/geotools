@@ -57,6 +57,14 @@ public class EFeatureFolderInfo extends EStructureInfo<EFeatureDataStoreInfo> {
         return eName;
     }
     
+    public String eNsURI() {
+        return eNsURI;
+    }
+
+    public String eDomainID() {
+        return eDomainID;
+    }
+    
     @Override
     protected EFeatureDataStoreInfo eParentInfo(boolean checkIsValid) {
         return eContext(checkIsValid).eStructure().

@@ -20,6 +20,7 @@ import org.geotools.data.efeature.EFeatureFactoryFinder;
 import org.geotools.data.efeature.EFeatureFolderInfo;
 import org.geotools.data.efeature.EFeatureGeometryInfo;
 import org.geotools.data.efeature.EFeatureInfo;
+import org.geotools.data.efeature.EFeaturePackage;
 import org.geotools.data.efeature.EFeatureStatus;
 import org.geotools.data.efeature.EStructureInfo;
 import org.geotools.data.efeature.tests.EFeatureCompatibleData;
@@ -32,7 +33,7 @@ import org.geotools.data.efeature.tests.impl.EFeatureTestsContextHelper;
  * @author kengu - 4. mai 2011  
  *
  */
-public class EFeatureContextTest extends AbstractStandaloneTest {
+public class EFeatureContextTest extends AbstractResourceTest {
 
     private EFeatureTestsContextHelper eContextHelper;
 
@@ -88,7 +89,7 @@ public class EFeatureContextTest extends AbstractStandaloneTest {
      * Constructor with test name.
      */
     public EFeatureContextTest(String name) {
-        super(name, "xmi", true, false);
+        super(name,"xmi", true, false);
     }
 
     /**
@@ -152,27 +153,34 @@ public class EFeatureContextTest extends AbstractStandaloneTest {
     private static void assertStructure(String msg,EFeatureContextInfo eInfo)
     {
         assertNotNull(msg+". EFeatureContextFactory instance not set", eInfo.eContext());
-        assertTrue(msg+". Unexpected EFeatureDomainInfo count", eInfo.eDomainInfoMap().size()==1);
+        assertEquals(msg+". EFeatureDomainInfo count mismatch", 1, eInfo.eDomainInfoMap().size());
         assertStructure(msg, eInfo.eDomainInfoMap().values().iterator().next());
     }
 
     private static void assertStructure(String msg,EFeatureDomainInfo eInfo)
     {
-        assertTrue(msg+". Unexpected EFeatureDataStoreInfo count", eInfo.eDataStoreInfoMap().size()==1);
-        assertStructure(msg, eInfo.eDataStoreInfoMap().values().iterator().next());
+        assertEquals(msg+". EFeatureDataStoreInfo count mismatch", 2, eInfo.eDataStoreInfoMap().size());
+        for(EFeatureDataStoreInfo it : eInfo.eDataStoreInfoMap().values()) {
+            assertStructure(msg, it);
+        }
     }    
 
     private static void assertStructure(String msg,EFeatureDataStoreInfo eInfo)
     {
-        assertTrue(msg+". Unexpected EFeatureFolderInfo count", eInfo.eFolderInfoMap().size()==1);
-        assertStructure(msg, eInfo.eFolderInfoMap().values().iterator().next());
+        assertEquals(msg+". EFeatureFolderInfo count mismatch", 1, eInfo.eFolderInfoMap().size());
+        for(EFeatureFolderInfo it : eInfo.eFolderInfoMap().values()) {
+            assertStructure(msg, it);
+        }
     }
 
     private static void assertStructure(String msg,EFeatureFolderInfo eInfo)
     {
-        assertTrue(msg+". Unexpected EFeatureInfo count", eInfo.eFeatureInfoMap().size()==2);
-        assertStructure(msg, eInfo.eFeatureInfoMap().values().iterator().next());
-    }    
+        int count = (EFeaturePackage.eNS_URI.equals(eInfo.eNsURI()) ? 0 : 2);
+        assertEquals(msg+". EFeatureInfo count mismatch", count, eInfo.eFeatureInfoMap().size());
+        for(EFeatureInfo it : eInfo.eFeatureInfoMap().values()) {
+            assertStructure(msg, it);
+        }
+    }
 
     private static void assertStructure(String msg,EFeatureInfo eInfo)
     {
@@ -189,10 +197,10 @@ public class EFeatureContextTest extends AbstractStandaloneTest {
             acount = 4;
             gcount = 1;            
         }
-        assertEquals(msg+". Unexpected EFeature["+eInfo.eName()+"] property count", pcount, eInfo.eGetAttributeInfoMap(true).size());
-        assertEquals(msg+". Unexpected EFeatureAttributeInfo["+eInfo.eName()+"] count", acount, eInfo.eGetAttributeInfoMap(false).size());
+        assertEquals(msg+". EFeature["+eInfo.eName()+"] property count mismatch", pcount, eInfo.eGetAttributeInfoMap(true).size());
+        assertEquals(msg+". EFeatureAttributeInfo["+eInfo.eName()+"] count mismatch", acount, eInfo.eGetAttributeInfoMap(false).size());
         assertStructure(msg, eInfo.eName(), eInfo.eGetAttributeInfoMap(false).values());
-        assertEquals(msg+". Unexpected EFeatureGeometryInfo["+eInfo.eName()+"] count", gcount, eInfo.eGetGeometryInfoMap().size());
+        assertEquals(msg+". EFeatureGeometryInfo["+eInfo.eName()+"] count mismatch", gcount, eInfo.eGetGeometryInfoMap().size());
         assertStructure(msg, eInfo.eGetGeometryInfoMap().values().iterator().next());
 
     }    
@@ -224,7 +232,7 @@ public class EFeatureContextTest extends AbstractStandaloneTest {
                 s.append(name);
             }
         }    
-        assertTrue(msg+". Missing attributes: " + s.toString(),s.length()==0);
+        assertEquals(msg+". Missing attributes: " + s.toString(),0,s.length());
     }
 
     private static void assertStructure(String msg,EFeatureGeometryInfo eInfo)

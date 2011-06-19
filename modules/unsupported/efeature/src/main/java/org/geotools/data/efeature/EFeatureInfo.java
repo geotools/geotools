@@ -13,12 +13,14 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
+import org.geotools.data.efeature.internal.EFeatureVoidIDFactory;
 import org.geotools.feature.NameImpl;
 import org.geotools.referencing.CRS;
 import org.opengis.feature.Feature;
@@ -40,7 +42,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * @author kengu
  *
  */
-public class EFeatureInfo extends EStructureInfo<EFeatureFolderInfo> {
+public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
             
     /**
      * Mutable property: {@link #getSRID()} </p>
@@ -111,6 +113,11 @@ public class EFeatureInfo extends EStructureInfo<EFeatureFolderInfo> {
     protected WeakReference<EReference> eReference;
 
     protected SimpleFeatureType featureType;
+    
+    /**
+     * Maps {@link #eClass()} attributes to attributes in {@link EFeature}.
+     */
+    protected Map<EAttribute,EAttribute> eAttributeMap = new HashMap<EAttribute, EAttribute>();
 
     /**
      * {@link EAttribute} id to {@link EFeatureAttributeInfo} instance {@link Map}
@@ -134,11 +141,13 @@ public class EFeatureInfo extends EStructureInfo<EFeatureFolderInfo> {
     }
     
     /**
-     * Structure copy constructor.
+     * {@link EFeatureInfo} copy constructor.
      * <p>
-     * This method copies the structure into given context. 
-     * The copied instance is {@link #isDangling() dangling} if the 
-     * no parent structure was found in the new context.
+     * This method copies the structure into given context.
+     * <p> 
+     * If the parent structure is not found in the new context,
+     * the new instance become a 
+     * {@link EStructureInfo#isPrototype() prototype}. 
      * </p>
      * <b>NOTE</b>: This method only adds a one-way reference from 
      * copied instance to given {@link EFeatureContext context}. 
@@ -210,6 +219,7 @@ public class EFeatureInfo extends EStructureInfo<EFeatureFolderInfo> {
         for(EFeatureGeometryInfo it : eFeatureInfo.eGeometryInfoMap.values()) {
             eGeometryInfoMap.put(it.eName,new EFeatureGeometryInfo(it,this));
         }
+        
     }
     
     
@@ -219,10 +229,19 @@ public class EFeatureInfo extends EStructureInfo<EFeatureFolderInfo> {
     
     @Override
     public boolean isAvailable() {
+        // --------------------------------------------------------
+        //  Is available and is a prototype or has at least 
+        //  one geometry defined?
+        // --------------------------------------------------------
+        //  Prototypes must be available since prototypes are used 
+        //  in queries matching all EFeature implementations. If 
+        //  prototypes are unavailable, getFeatureType() returns
+        //  null, which breaks the construction of query instances.
         //
-        // Is available and has at least one geometry defined?
+        //  See EFeatureUtils#toEFeatureQuery(TreeIterator,Filter)
+        // --------------------------------------------------------
         //
-        return super.isAvailable() && !eGeometryInfoMap.isEmpty();
+        return super.isAvailable() && (isPrototype() || !eGeometryInfoMap.isEmpty());
     }
 
     /**
@@ -236,38 +255,7 @@ public class EFeatureInfo extends EStructureInfo<EFeatureFolderInfo> {
     public boolean isRoot() {
         return eIsRoot;
     }
-        
-    /**
-     * Check if this not associated with any {@link #eParentInfo() parent structure}.
-     * <p>
-     * A dangling {@link EFeatureInfo} instance implies thatt this structure only exists 
-     * in current context's EFeatureInfo {@link EFeatureContextInfo#eFeatureInfoCache() cache}.
-     * </p>
-     * Before this can be used 
-     * @return <code>true</code> if dangling.
-     */
-    public boolean isDangling() {
-        return eParentInfo(true)==null;
-    }
             
-    @Override
-    public EFeatureFolderInfo eParentInfo() {
-        //
-        // Try to get structure
-        //
-        EFeatureFolderInfo eInfo = eParentInfo(true);
-        //
-        // Dangling?
-        //
-        if(eInfo==null) {
-            throw new IllegalStateException(eName() + " is danling. No parent exists");
-        }
-        //
-        // Finished
-        //
-        return eInfo;
-    }
-
     /**
      * Get {@link Feature} name.
      * <p>
@@ -346,7 +334,7 @@ public class EFeatureInfo extends EStructureInfo<EFeatureFolderInfo> {
      * Get {@link EFeatureFolderInfo} instance.
      */
     @Override
-    protected EFeatureFolderInfo eParentInfo(boolean checkIsValid) {
+    protected EStructureInfo<?> eParentInfo(boolean checkIsValid) {
         EFeatureDataStoreInfo eInfo = eContext(checkIsValid).
             eStructure().eGetDataStoreInfo(eDomainID, eNsURI);
         if(eInfo!=null) {
@@ -361,7 +349,7 @@ public class EFeatureInfo extends EStructureInfo<EFeatureFolderInfo> {
      * @return an {@link EAttribute} instance
      */
     public EAttribute eIDAttribute() {
-        return getEAttribute(eIDAttributeName);
+        return eGetAttribute(eIDAttributeName);
     }
     
     /**
@@ -370,17 +358,7 @@ public class EFeatureInfo extends EStructureInfo<EFeatureFolderInfo> {
      * @return an {@link EAttribute} instance
      */
     public EAttribute eSRIDAttribute() {
-        return getEAttribute(eSRIDAttributeName);
-    }
-    
-    
-    /**
-     * Get default geometry {@link EAttribute}
-     * 
-     * @return an {@link EAttribute} instance
-     */
-    public EAttribute eDefaultAttribute() {
-        return getEAttribute(eDefaultAttributeName);
+        return eGetAttribute(eSRIDAttributeName);
     }
     
     /**
@@ -391,7 +369,7 @@ public class EFeatureInfo extends EStructureInfo<EFeatureFolderInfo> {
      *         geometries} are defined.
      */
     public EAttribute eDefaultGeometry() {
-        return getEAttribute(eGetDefaultGeometryName());
+        return eGetAttribute(eGetDefaultGeometryName());
     }
     
     
@@ -408,7 +386,11 @@ public class EFeatureInfo extends EStructureInfo<EFeatureFolderInfo> {
                 }
             }
             if (eDefaultGeometryName == null) {
-                eGeometryInfoMap.get(eFirstFound).isDefaultGeometry = true;
+                if( !(eFirstFound==null || eFirstFound.length()==0) ) { 
+                    eGeometryInfoMap.get(eFirstFound).isDefaultGeometry = true;
+                } else {
+                    eFirstFound = EFeatureConstants.DEFAULT_GEOMETRY_NAME;
+                }
                 eDefaultGeometryName = eFirstFound;
             }
         }
@@ -529,7 +511,7 @@ public class EFeatureInfo extends EStructureInfo<EFeatureFolderInfo> {
         return featureType;
     }
 
-    public EAttribute getEAttribute(String eName) {
+    public EAttribute eGetAttribute(String eName) {
         EFeatureAttributeInfo eInfo = eGetAttributeInfo(eName, true);
         if (eInfo != null) {
             return eInfo.eAttribute();
@@ -596,6 +578,32 @@ public class EFeatureInfo extends EStructureInfo<EFeatureFolderInfo> {
         return Collections.unmodifiableMap(eGeometryInfoMap);
     }
     
+    /**
+     * Get {@link EAttribute} mapped to given {@link EAttribute}
+     * @param eAttribute - mapped attribute
+     * @return an {@link EAttribute} if found.
+     * @throws IllegalArgumentException If given attribute is not 
+     * mapping to anything in this structure
+     */
+    public final EAttribute eMappedTo(EAttribute eAttribute) 
+        throws IllegalArgumentException {
+        //
+        // Get mapping from given attribute to implementation
+        //
+        eAttribute = eAttributeMap.get(eAttribute);
+        //
+        // Validate
+        //
+        if(eAttribute==null) {
+            throw new IllegalArgumentException("EAttribute " + 
+                    eAttribute + " is not mapped by " + this);
+        }
+        //
+        // Finished
+        //
+        return eAttribute;
+    }
+        
     /**
      * Validate given {@link EObject object} against this structure.
      * <p>
@@ -793,21 +801,43 @@ public class EFeatureInfo extends EStructureInfo<EFeatureFolderInfo> {
             it.eAdapt(this);
         }        
     }
+    
+    @Override
+    protected void doDetach() {
+        //
+        // Detach from old context
+        //
+        eContext(false).eStructure().doDetach(this);
+    }
 
     @Override
     protected void doDispose() {
-        this.eClass = null;
-        this.eParentClass = null;
-        this.eReference = null;
+        //
+        // Remove from EFeatureInfo cache in given context 
+        // (required to prevent memory leakage)
+        //
+        eContext(false).eStructure().eFeatureInfoCache.detach(this);
+        //
+        // Forward to sub-structures
+        //
         for (EFeatureAttributeInfo it : eGetAttributeInfoMap(true).values()) {
             it.dispose();
         }
-        eAttributeInfoMap.clear();
-        eAttributeInfoMap = null;
-        eGeometryInfoMap.clear();
-        eGeometryInfoMap = null;
-        featureType = null;
-        crs = null;
+        //
+        // Clear collections
+        //
+        this.eAttributeInfoMap.clear();
+        this.eGeometryInfoMap.clear();
+        //
+        // Clear cached references to allow garbage collection
+        //
+        this.eAttributeInfoMap = null;
+        this.eGeometryInfoMap = null;
+        this.featureType = null;
+        this.crs = null;
+        this.eClass = null;
+        this.eParentClass = null;
+        this.eReference = null;
     }
 
     // ----------------------------------------------------- 
@@ -817,23 +847,25 @@ public class EFeatureInfo extends EStructureInfo<EFeatureFolderInfo> {
     /**
      * Create EFeature {@link EFeatureInfo structure} from 
      * given EMF {@link EObject object} when the context is known.
+     * <p>
      * </p>
      * @param eContext - {@link EFeatureContext context} of given object
      * @param eFeature - {@link EFeature} or EFeature compatible EMF {@link EObject object}. 
      * @param eHints - {@link EFeatureInfo} construction hints (ID attribute name etc.)
+     * @throws IllegalArgumentException If anything goes wrong.
      * @see {@link EFeatureHints}
      */
-    public static EFeatureInfo create(EFeatureContext eContext, EObject eFeature, EFeatureHints eHints) {
+    public static EFeatureInfo create(EFeatureContext eContext, 
+            EObject eFeature, EFeatureHints eHints) throws IllegalArgumentException {
         //
         // Get structure information
         //
-        EClass eClass = eFeature.eClass();
+        EClass eClass = (eFeature instanceof EClass ? (EClass)eFeature : eFeature.eClass());
         String eNsURI = EFeatureUtils.eGetNsURI(eClass);        
         //
         // Check cache first
         //
-        EFeatureInfo eInfo = eContext.eStructure().
-            eFeatureInfoCache().get(null, null, eClass);
+        EFeatureInfo eInfo = eContext.eStructure().eGetFeatureInfo(eClass);
         //
         // Does not exist?
         //
@@ -896,8 +928,7 @@ public class EFeatureInfo extends EStructureInfo<EFeatureFolderInfo> {
         //
         // Check cache first
         //
-        EFeatureInfo eInfo = eContext.eStructure().
-            eFeatureInfoCache().get(eDomainID, eFolderName, eClass);
+        EFeatureInfo eInfo = eContext.eStructure().eGetFeatureInfo(eDomainID, eFolderName, eClass);
         //
         // Was not cached?
         //
@@ -927,6 +958,10 @@ public class EFeatureInfo extends EStructureInfo<EFeatureFolderInfo> {
         return eInfo;
     }
     
+    // ----------------------------------------------------- 
+    //  Static Helper methods
+    // -----------------------------------------------------
+        
     /**
      * Define EFeature {@link EFeatureInfo structure} from given information.
      * <p>
@@ -943,10 +978,12 @@ public class EFeatureInfo extends EStructureInfo<EFeatureFolderInfo> {
      * @param eFolderName - the {@link EFeatureFolderInfo folder} instance 
      * @param eClass - {@link EFeature} or EFeature compatible EMF {@link EClass class} . 
      * @return a {@link EFeatureInfo} instance
+     * @throws IllegalArgumentException If anything goes wrong.
      */
     private static EFeatureInfo define(
             EFeatureInfo eInfo, EFeatureContext eContext, 
-            String eNsURI, String eDomainID, String eFolderName, EClass eClass) {
+            String eNsURI, String eDomainID, String eFolderName, EClass eClass) 
+        throws IllegalArgumentException {
         //
         // Set context path
         //        
@@ -963,16 +1000,19 @@ public class EFeatureInfo extends EStructureInfo<EFeatureFolderInfo> {
         //                
         EAttribute eIDAttribute = eGetIDAttribute(eClass,eInfo.eHints);
         eInfo.eIDAttributeName = eIDAttribute.getName();
+        eInfo.eAttributeMap.put(EFeaturePackage.eINSTANCE.getEFeature_ID(),eIDAttribute);
         //
         // Set SRID attribute 
         //                
         EAttribute eSRIDAttribute = eGetSRIDAttribute(eClass, eInfo.eHints);
         eInfo.eSRIDAttributeName = eSRIDAttribute.getName();
+        eInfo.eAttributeMap.put(EFeaturePackage.eINSTANCE.getEFeature_SRID(),eSRIDAttribute);
         //
         // Set default geometry attribute 
         //                
         EAttribute eDefaultAttribute = eGetDefaultAttribute(eClass, eInfo.eHints);
         eInfo.eDefaultAttributeName = eDefaultAttribute.getName();
+        eInfo.eAttributeMap.put(EFeaturePackage.eINSTANCE.getEFeature_Default(),eDefaultAttribute);
         //
         // Create EFeature attribute structures 
         //                        
@@ -980,13 +1020,19 @@ public class EFeatureInfo extends EStructureInfo<EFeatureFolderInfo> {
         eInfo.eAttributeInfoMap = attributes(eInfo, eAttributes);
         eInfo.eGeometryInfoMap = geometries(eInfo, eAttributes);
         //
-        // Register ID attribute with ID factory
+        // Register ID attribute with ID factory?
         //
-        eContext.eIDFactory().add(eClass,eIDAttribute);
+        if( !(eContext.eIDFactory() instanceof EFeatureVoidIDFactory) ) {
+            eContext.eIDFactory().add(eClass,eIDAttribute);
+        }
         //
         // Add to cache
         //
-        eContext.eStructure().doAttach(eInfo);
+        EFeatureStatus eStatus;
+        if((eStatus = eContext.eStructure().doAttach(eInfo)).isFailure()) {
+            throw new IllegalArgumentException("Failed to cache " 
+                    + eInfo.eName() + ": " + eStatus.getMessage());
+        }
         //
         // Finished
         //
@@ -1149,7 +1195,7 @@ public class EFeatureInfo extends EStructureInfo<EFeatureFolderInfo> {
         }
 
         public GeometryDescriptor getGeometryDescriptor() {
-            EFeatureGeometryInfo eInfo = eGeometryInfoMap.get(eDefaultGeometry().getName());
+            EFeatureGeometryInfo eInfo = eGeometryInfoMap.get(eGetDefaultGeometryName());
             return eInfo != null ? eInfo.getDescriptor() : null;
         }
 

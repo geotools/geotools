@@ -64,17 +64,6 @@ public interface EFeatureIDFactory {
     public String getID(EObject eObject);
     
     /**
-     * Get unique {@link EFeature#getID() ID} for given EObject.
-     * @param eURI - an {@link URI} to resource containing {@link EObject} instance
-     * @param eObject - given {@link EObject} instance.
-     * @return an {@link EFeature} {@link EFeature#getID() ID} if found, 
-     * <code>null</code> otherwise.
-     * @throws IllegalArgumentException If the factory does not create IDs for given {@link EObject}
-     * @throws IllegalStateException If given {@link EObject} is added to another EMF {@link Resource}. 
-     */
-    public String getID(URI eURI, EObject eObject);
-    
-    /**
      * Get {@link EObject} to {@link EFeature#getID()} mapping for given {@link URI}
      * @param eURI - given {@link URI}
      * @return a {@link Map} of IDs for given {@link URI}. If this does not contain any
@@ -146,6 +135,7 @@ public interface EFeatureIDFactory {
     
     /**
      * Create a unique {@link EFeature#getID() EFeature ID} for given {@link EObject} instance.
+     * <p>
      * @param eObject - a {@link EFeature} instance or a {@link EObject} containing 
      * {@link EFeature} compatible data. 
      * @return a new ID not already created, or the already created value.
@@ -153,28 +143,7 @@ public interface EFeatureIDFactory {
      * @throws IllegalStateException If given {@link EObject} is not added to an EMF {@link Resource} 
      */
     public String createID(EObject eObject) throws IllegalArgumentException, IllegalStateException;
-    
-//    /**
-//     * Create a unique {@link EFeature#getID() EFeature ID} for given {@link EObject} instance.
-//     * @param eObject - a {@link EFeature} instance or a {@link EObject} containing 
-//     * @param eID - the {@link EAttribute} containing the ID value. 
-//     * @return a new ID not already created, or the already created value.
-//     * @throws IllegalArgumentException If the factory does not create IDs for given {@link EObject}
-//     * @throws IllegalStateException If given {@link EObject} is not added to an EMF {@link Resource} 
-//     */
-//    public String createID(EObject eObject, EAttribute eID) throws IllegalArgumentException, IllegalStateException;  
-//    
-//    /**
-//     * Create a unique {@link EFeature#getID() EFeature ID} for given {@link EObject} instance.
-//     * @param eURI - an {@link URI} to resource containing {@link EObject} instance
-//     * @param eObject - a {@link EFeature} instance or a {@link EObject} containing 
-//     * @param eID - the {@link EAttribute} containing the ID value. 
-//     * @return a new ID not already created, or the already created value.
-//     * @throws IllegalArgumentException If the factory does not create IDs for given {@link EObject}
-//     * @throws IllegalStateException If given {@link EObject} is added to another EMF {@link Resource}. 
-//     */
-//    public String createID(URI eURI, EObject eObject, EAttribute eID) throws IllegalArgumentException, IllegalStateException;  
-    
+       
     /**
      * Use given ID as a unique {@link EFeature#getID() EFeature ID} for given {@link EObject} instance.
      * @param eObject - a {@link EFeature} instance or a {@link EObject} containing 
@@ -184,47 +153,14 @@ public interface EFeatureIDFactory {
      * @throws IllegalArgumentException If the factory does not create IDs for given {@link EObject}
      */
     public String useID(EObject eObject, String eID) throws IllegalArgumentException, IllegalStateException;
-    
-//    /**
-//     * Use given ID as {@link EFeature#getID() EFeature ID} for given {@link EObject} instance.
-//     * @param eObject - a {@link EFeature} instance or a {@link EObject} containing 
-//     * @param eIDAttribute - an {@link EAttribute} containing the {@link EObject} ID value 
-//     * {@link EFeature} compatible data. 
-//     * @param eID - the {@link EObject} ID value. 
-//     * @return same ID if unique, new unique ID otherwise. 
-//     * @throws IllegalArgumentException If the factory does not create IDs for given {@link EObject}
-//     */
-//    public String useID(EObject eObject, EAttribute eIDAttribute, String eID) throws IllegalArgumentException, IllegalStateException;    
-//    
-//    /**
-//     * Create a unique {@link EFeature#getID() EFeature ID} for given {@link EObject} instance.
-//     * @param eURI - an {@link URI} to resource containing given {@link EObject}
-//     * @param eObject - an {@link EFeature} instance or a {@link EObject} containing 
-//     * @param eIDAttribute - an {@link EAttribute} containing the {@link EObject} ID value 
-//     * @param eID - the {@link EObject} ID value. 
-//     * @return same ID if unique, new unique ID otherwise. 
-//     * @throws IllegalArgumentException If the factory does not create IDs for given {@link EObject}
-//     * @throws IllegalStateException If given {@link EObject} is added to another EMF {@link Resource}. 
-//     */
-//    public String useID(URI eURI, EObject eObject, EAttribute eIDAttribute, String eID) throws IllegalArgumentException, IllegalStateException;      
-        
-    /**
-     * Peek at given {@link EFeature#getID() EFeature ID} for given {@link EClass} instance.
-     * @param eURI - an {@link URI} to resource containing {@link EClass} instances
-     * @param eClass - the EClass  
-     * @return an ID if the factory generates IDs for given {@link EClass}.
-     * @throws IllegalArgumentException If the factory does not create IDs for given {@link EFeature} 
-     */
-    public String peekID(URI eURI, EClass eClass) throws IllegalArgumentException;
-    
-    /**
-     * Create a unique {@link EFeature#getID() EFeature ID} for given {@link EAttribute} instance.
-     * @param eURI - an {@link URI} to resource containing {@link EAttribute} instances
-     * @param eID - given {@link EClass} instance  
-     * @return an ID if the factory generates IDs for given {@link EClass}.
-     * @throws IllegalArgumentException If the factory does not create IDs for given {@link EAttribute} 
-     */
-    public String peekID(URI eURI, EAttribute eID) throws IllegalArgumentException;
 
-
+    /**
+     * Dispose ID for given {@link EObject} instance.
+     * @param eObject - a {@link EFeature} instance or a {@link EObject} containing 
+     * {@link EFeature} compatible data. 
+     * @return the objects unique ID
+     * @throws IllegalArgumentException If the factory contains no ID for given {@link EObject}
+     */
+    public String disposeID(EObject eObject) throws IllegalArgumentException;    
+            
 }

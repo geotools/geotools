@@ -8,8 +8,11 @@ import java.util.Map;
 import java.util.logging.Level;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.edit.domain.EditingDomain;
+import org.geotools.data.efeature.internal.EFeatureDelegate;
 import org.geotools.data.efeature.internal.EFeatureInfoCache;
 
 /**
@@ -34,12 +37,6 @@ public class EFeatureContextInfo extends EStructureInfo<EFeatureContextInfo> {
      * {@link EFeatureInfoCache} voter
      */
     protected EFeatureListener<EFeatureInfoCache> eFeatureInfoCacheVoter;
-    
-    /**
-     * Internal variable to respond to cache vote
-     */
-    //private EFeatureInfo eFeatureInfoCacheInProgress;
-    
     
     // ----------------------------------------------------- 
     //  EFeatureContextInfo methods
@@ -89,7 +86,7 @@ public class EFeatureContextInfo extends EStructureInfo<EFeatureContextInfo> {
      * @throws IllegalStateException If {@link #isDisposed() disposed},
      * or in{@link #isValid() valid}.
      */    
-    public boolean isDomain(String eDomainID) {
+    public boolean contains(String eDomainID) {
         verify();
         return synchronize(this).containsKey(eDomainID);
     }
@@ -130,7 +127,7 @@ public class EFeatureContextInfo extends EStructureInfo<EFeatureContextInfo> {
      * @throws IllegalStateException If {@link #isDisposed() disposed},
      * or in{@link #isValid() valid}.
      */
-    public boolean isDataStore(String eNsURI, String eDomainID) {
+    public boolean contains(String eNsURI, String eDomainID) {
         verify();
         EFeatureDomainInfo info = synchronize(this).get(eDomainID);
         if (info != null) {
@@ -138,7 +135,130 @@ public class EFeatureContextInfo extends EStructureInfo<EFeatureContextInfo> {
         }
         return false;
     }
+    
+    /**
+     * Check if a {@link EFeatureInfo} instance is cached for 
+     * the {@link EClass} defining given {@link EObject}.
+     * <p>
+     * This is a convenience method calling {@link #contains(EClass)}
+     * </p> 
+     * @param eObject - the {@link EObject} instance
+     * @return <code>true</code> if given instance is cached
+     * @see {@link #contains(EClass)}
+     */    
+    public boolean contains(EObject eObject) {
+        return eFeatureInfoCache().contains(eObject);
+    }
+    
+    /**
+     * Get the {@link EFeatureInfo} instance cached for the 
+     * {@link EClass} defining given {@link EObject}.
+     * </p> 
+     * @param eObject - the {@link EObject} instance
+     * @return a {@link EFeatureInfo} if found,<code>null</code> otherwise.
+     */         
+    public EFeatureInfo eGetFeatureInfo(EObject eObject) {
+        return eFeatureInfoCache().get(eObject);
+    }
 
+    /**
+     * Get the {@link EFeatureInfo} instance cached for given {@link EClass}.
+     * </p> 
+     * @param eClass - the {@link EClass} instance
+     * @return a {@link EFeatureInfo} if found, <code>null</code> otherwise.
+     */         
+    public EFeatureInfo eGetFeatureInfo(EClass eClass) {
+        return eFeatureInfoCache().get(eClass);
+    }
+    
+    /**
+     * Get the {@link EFeatureInfo} instance cached for given {@link EFeatureDomainInfo domain}, 
+     * {@link EFeatureFolderInfo folder } and {@link EClass class}.
+     * </p> 
+     * @param eDomainID - the {@link EditingDomain} ID
+     * @param eFolder - the {@link EFeatureFolderInfo} name
+     * @param eClass - the {@link EClass} instance
+     * @return a {@link EFeatureInfo} if found, <code>null</code> otherwise.
+     */         
+    public EFeatureInfo eGetFeatureInfo(String eDomainID, String eFolder, EClass eClass) {
+        return eFeatureInfoCache().get(eDomainID, eFolder, eClass);
+    }    
+    
+    /**
+     * Check if a given {@link EFeatureInfo} exists in structure.
+     * <p>
+     * <b>NOTE</b>: This only checks for <i>key equivalence</i>. If two keys are 
+     * equal within the same {@link EFeatureContext}, the two structures must 
+     * by definition be equal.
+     * </p> 
+     * @param eClass - the {@link EClass} instance
+     * @return <code>true</code> if given instance is cached
+     */
+    public boolean contains(EFeatureInfo eInfo) {
+        return eFeatureInfoCache().contains(eInfo.eNsURI,eInfo.eDomainID,eInfo.eFolderName,eInfo.eName());
+    }  
+    
+    /**
+     * Check if a {@link EFeatureInfo#isPrototype() prototype} 
+     * instance is cached for given {@link EClass}.
+     * <p>
+     * Since a {@link EClass}es only contains information 
+     * about the {@link EPackage#getNsURI() eNsURI}
+     * and EFeature {@link EClass#getName() root name}, this method only checks 
+     * for EFeature prototypes (does not belong to any domain or folder).
+     * <p>
+     * <b>NOTE</b>: This only checks for <i>key equivalence</i>. If two keys are 
+     * equal within the same {@link EFeatureContext}, the two structures must 
+     * by definition be equal.
+     * </p> 
+     * @param eClass - the {@link EClass} instance
+     * @return <code>true</code> if given instance is cached
+     */
+    public boolean contains(EClass eClass) {
+        return eFeatureInfoCache().contains(eClass);
+    }    
+
+    /**
+     * Adapt given {@link EObject} into an EFeature.
+     * @param eObject - {@link EObject} to be adapted into this context
+     * @return new {@link EFeature} instance
+     * @throws IllegalArgumentException If adaption failed.
+     */
+    public EFeature eAdapt(EObject eObject) throws IllegalArgumentException {
+        //
+        // Get context
+        //
+        EFeatureContext eContext = eContext();
+        //
+        // Get package
+        //
+        EPackage ePackage = eObject.eClass().getEPackage();
+        //
+        // Verify that package is contained in context
+        //
+        if(!eContext.contains(ePackage)) {
+            throw new IllegalArgumentException("EPackage [" + ePackage.getNsURI() + "] not found");
+        }
+        //
+        // Check if object is in cache
+        //
+        EFeatureInfo  eStructure = eFeatureInfoCache().get(eObject);
+        if(eStructure==null) {
+            //
+            // Create structure in this context
+            //
+            eStructure = EFeatureInfo.create(eContext(), eObject, new EFeatureHints());
+            //
+            // Validate structure
+            //
+            eStructure.validate(ePackage, null);
+        }
+        //
+        // Create an delegate
+        //
+        return new EFeatureDelegate(eStructure, (InternalEObject)eObject);
+    }
+    
     /**
      * Adapt given {@link EFeatureInfo structure} to this {@link EFeatureContext#eContext() context}.
      * @param eInfo - {@link EFeatureInfo} to be adapted into this context
@@ -147,7 +267,7 @@ public class EFeatureContextInfo extends EStructureInfo<EFeatureContextInfo> {
      * @return new {@link EFeatureInfo} instance if 'copy' is <code>true</code>, same otherwise
      * @throws IllegalArgumentException If adaption failed.
      */
-    public EFeatureInfo eAdapt(EFeatureInfo eInfo, boolean copy) {
+    public EFeatureInfo eAdapt(EFeatureInfo eInfo, boolean copy) throws IllegalArgumentException {
         //
         // Get contexts 
         //
@@ -169,7 +289,7 @@ public class EFeatureContextInfo extends EStructureInfo<EFeatureContextInfo> {
             // Check if cached instance exists with same key, use it if it 
             // has same context as this (which is should have)
             //
-            EFeatureInfo eEqual = eFeatureInfoCache.get(EFeatureInfoCache.createKey(eInfo));
+            EFeatureInfo eEqual = eFeatureInfoCache().get(EFeatureInfoCache.createKey(eInfo));
             if(eEqual!=null) {
                 //
                 // Sanity check: Verify that, if found, it belongs to this context.
@@ -323,12 +443,13 @@ public class EFeatureContextInfo extends EStructureInfo<EFeatureContextInfo> {
         //  3) If it fails now, nothing is yet added to 
         //     the context
         // ----------------------------------------------
-        if(!doAttach(eInfo)) {
+        EFeatureStatus eStatus;
+        if((eStatus = doAttach(eInfo)).isFailure()) {
             //
             // Notify 
             //
             throw new IllegalArgumentException("EFeatureInfo " + 
-                    eInfo.eName() + " could not be adapted (not allowed to cache)");            
+                    eInfo.eName() + " could not be adapted: " + eStatus.getMessage());            
         }
         //
         // Get this context
@@ -390,13 +511,10 @@ public class EFeatureContextInfo extends EStructureInfo<EFeatureContextInfo> {
     
     /**
      * Add {@link EFeatureInfo} to cache.
-     * @return <code>true</code> if cached.
+     * @return an {@link EFeatureStatus} instance.
      */
-    protected boolean doAttach(EFeatureInfo eInfo) {
-        //eFeatureInfoCacheInProgress = eInfo;
-        EFeatureStatus eStatus = eFeatureInfoCache.attach(eInfo);
-        //eFeatureInfoCacheInProgress = null;
-        return eStatus.isSuccess();
+    protected EFeatureStatus doAttach(EFeatureInfo eInfo) {
+        return eFeatureInfoCache().attach(eInfo);
     }
     
     /**
@@ -409,9 +527,7 @@ public class EFeatureContextInfo extends EStructureInfo<EFeatureContextInfo> {
         //
         // Try to release from cache.
         //
-        //eFeatureInfoCacheInProgress = eInfo;
-        EFeatureStatus eStatus = eFeatureInfoCache.detach(eInfo);
-        //eFeatureInfoCacheInProgress = null;
+        EFeatureStatus eStatus = eFeatureInfoCache().detach(eInfo);
         //
         // Allowed?
         //
@@ -419,11 +535,15 @@ public class EFeatureContextInfo extends EStructureInfo<EFeatureContextInfo> {
             //
             // Get parent structure
             //
-            EFeatureFolderInfo eFolderInfo = eInfo.eParentInfo(false);
+            EStructureInfo<?> eStructure = eInfo.eParentInfo(false);
             //
             // Found (not dangling)?
             //
-            if(eFolderInfo!=null) {
+            if(eStructure instanceof EFeatureFolderInfo) {
+                //
+                // Cast to EFeatureFolderInfo
+                //
+                EFeatureFolderInfo eFolderInfo = (EFeatureFolderInfo)eStructure;
                 //
                 // Remove object from folder's feature map
                 //
@@ -440,6 +560,9 @@ public class EFeatureContextInfo extends EStructureInfo<EFeatureContextInfo> {
                 if(eRemoved!=null) {
                     eFolderInfo.eFeatureInfoMap.put(eInfo.eName(), eInfo);
                 }
+                //
+                // Break out, try to re-attach to cache...
+                //
             } else {
                 //
                 // Successfully removed dangling structure from context 
@@ -450,9 +573,7 @@ public class EFeatureContextInfo extends EStructureInfo<EFeatureContextInfo> {
         //
         // Try to add again
         //
-        //eFeatureInfoCacheInProgress = eInfo;
-        eStatus = eFeatureInfoCache.attach(eInfo);
-        //eFeatureInfoCacheInProgress = null;
+        eStatus = eFeatureInfoCache().attach(eInfo);
         //
         // Validate state
         //

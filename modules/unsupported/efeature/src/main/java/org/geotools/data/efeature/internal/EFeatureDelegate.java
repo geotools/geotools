@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.resource.Resource.Internal;
 import org.geotools.data.efeature.EFeature;
 import org.geotools.data.efeature.EFeatureAttribute;
 import org.geotools.data.efeature.EFeatureGeometry;
+import org.geotools.data.efeature.EFeatureIDFactory;
 import org.geotools.data.efeature.EFeatureInfo;
 import org.geotools.data.efeature.EFeaturePackage;
 import org.geotools.data.efeature.EFeatureProperty;
@@ -67,6 +68,11 @@ public class EFeatureDelegate implements EFeature, InternalEObject {
      */
     protected WeakReference<EFeatureInternal> eImplRef;
     
+    /**
+     * Cached instance of {@link EFeatureClassDelegate} instance
+     */
+    protected EFeatureClassDelegate eFeatureClassDelegate;
+    
     // ----------------------------------------------------- 
     //  Constructors
     // -----------------------------------------------------
@@ -109,7 +115,29 @@ public class EFeatureDelegate implements EFeature, InternalEObject {
             //
             // Create new internal (owned by this, use hard reference) 
             //            
-            this.eImpl = new EFeatureInternal(eStructure,this);            
+            this.eImpl = new EFeatureInternal(eStructure,this);         
+        }
+        //
+        // Get current ID if set
+        //
+        String eSetID = eImpl().getID();
+        //
+        // Get ID factory from context
+        //
+        EFeatureIDFactory eIDFactory = eStructure.eContext().eIDFactory();
+        //
+        // Set ID as used?
+        //
+        if(!(eSetID==null || eSetID.length()==0)) {
+            //
+            // Set ID as used for this delegate
+            //
+            eIDFactory.useID(this, eSetID);
+        } else {
+            //
+            // Create new ID for this delegate
+            //
+            eSetID = eIDFactory.createID(this);            
         }
     }
 
@@ -117,11 +145,11 @@ public class EFeatureDelegate implements EFeature, InternalEObject {
     //  EFeatureDelegate methods
     // -----------------------------------------------------
     
-    protected InternalEObject eDelegate() {
+    public InternalEObject eDelegate() {
         return eDelegate!=null ? eDelegate.get() : eImpl().eImpl();
     }
     
-    protected EFeatureInternal eImpl() {
+    public EFeatureInternal eImpl() {
         return eImpl!=null ? eImpl : eImplRef.get();
     }
     
@@ -135,7 +163,7 @@ public class EFeatureDelegate implements EFeature, InternalEObject {
     }
     
     public void setID(String value) {
-        eImpl().setID(value);
+        eImpl().eSetID(value,true);
     }
 
     public String getSRID() {
@@ -226,6 +254,9 @@ public class EFeatureDelegate implements EFeature, InternalEObject {
 
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
+        case EFeaturePackage.EFEATURE__ID:
+            setID((String) newValue);
+            return;
         case EFeaturePackage.EFEATURE__SRID:
             setSRID((String) newValue);
             return;
@@ -234,6 +265,9 @@ public class EFeatureDelegate implements EFeature, InternalEObject {
             return;
         case EFeaturePackage.EFEATURE__DEFAULT:
             setDefault((String) newValue);
+            return;
+        case EFeaturePackage.EFEATURE__STRUCTURE:
+            setStructure((EFeatureInfo) newValue);
             return;
         }
         eDelegate().eSet(featureID, newValue);
@@ -249,6 +283,9 @@ public class EFeatureDelegate implements EFeature, InternalEObject {
             return;
         case EFeaturePackage.EFEATURE__DEFAULT:
             setDefault(EFeatureInternal.DEFAULT_EDEFAULT);
+            return;
+        case EFeaturePackage.EFEATURE__STRUCTURE:
+            setStructure(eImpl().eStructure.eContext().eStructure().eGetFeatureInfo(eDelegate()));
             return;
         }
         eDelegate().eUnset(featureID);

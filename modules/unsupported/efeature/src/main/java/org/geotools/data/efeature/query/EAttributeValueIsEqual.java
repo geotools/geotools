@@ -10,22 +10,33 @@ public class EAttributeValueIsEqual extends EObjectAttributeValueCondition {
 
     public EAttributeValueIsEqual(EAttribute eAttribute, Literal value)
             throws EFeatureEncoderException {
-        super(eAttribute, ConditionEncoder.equals(value));
+        super(eAttribute, ConditionEncoder.eq(eAttribute.getEAttributeType(),value));
     }
 
-    public EAttributeValueIsEqual(EAttribute eAttribute, Number value)
+    public EAttributeValueIsEqual(EAttribute eAttribute, Object value)
             throws EFeatureEncoderException {
-        super(eAttribute, ConditionEncoder.equals(value));
+        super(eAttribute, ConditionEncoder.eq(eAttribute.getEAttributeType(),value));
     }
 
     public EAttributeValueIsEqual(EAttribute eAttribute, Date value)
             throws EFeatureEncoderException {
-        super(eAttribute, ConditionEncoder.equals(value));
+        super(eAttribute, ConditionEncoder.eq(eAttribute.getEAttributeType(),value));
     }
 
+    public EAttributeValueIsEqual(EAttribute eAttribute, Boolean value)
+            throws EFeatureEncoderException {
+        super(eAttribute, ConditionEncoder.eq(eAttribute.getEAttributeType(),value));
+    }
+    
     public EAttributeValueIsEqual(EAttribute eAttribute, String value)
             throws EFeatureEncoderException {
-        super(eAttribute, ConditionEncoder.equals(value));
+        super(eAttribute, ConditionEncoder.eq(eAttribute.getEAttributeType(),value));
     }
+    
+    public EAttributeValueIsEqual(EAttribute eAttribute, Character value)
+            throws EFeatureEncoderException {
+        super(eAttribute, ConditionEncoder.eq(eAttribute.getEAttributeType(),value));
+    }
+    
 
 }

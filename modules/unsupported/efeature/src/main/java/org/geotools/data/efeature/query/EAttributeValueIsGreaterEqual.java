@@ -10,22 +10,37 @@ public class EAttributeValueIsGreaterEqual extends EObjectAttributeValueConditio
 
     public EAttributeValueIsGreaterEqual(EAttribute eAttribute, Literal value)
             throws EFeatureEncoderException {
-        super(eAttribute, ConditionEncoder.greaterThanOrEquals(value));
+        super(eAttribute, ConditionEncoder.ge(eAttribute.getEAttributeType(),value));
     }
 
+    public EAttributeValueIsGreaterEqual(EAttribute eAttribute, Object value)
+            throws EFeatureEncoderException {
+        super(eAttribute, ConditionEncoder.ge(eAttribute.getEAttributeType(),value));
+    }
+    
     public EAttributeValueIsGreaterEqual(EAttribute eAttribute, Number value)
             throws EFeatureEncoderException {
-        super(eAttribute, ConditionEncoder.greaterThanOrEquals(value));
+        super(eAttribute, ConditionEncoder.ge(eAttribute.getEAttributeType(),value));
     }
 
     public EAttributeValueIsGreaterEqual(EAttribute eAttribute, Date value)
             throws EFeatureEncoderException {
-        super(eAttribute, ConditionEncoder.greaterThanOrEquals(value));
+        super(eAttribute, ConditionEncoder.ge(eAttribute.getEAttributeType(),value));
+    }
+
+    public EAttributeValueIsGreaterEqual(EAttribute eAttribute, Boolean value)
+            throws EFeatureEncoderException {
+        super(eAttribute, ConditionEncoder.ge(eAttribute.getEAttributeType(),value));
+    }
+
+    public EAttributeValueIsGreaterEqual(EAttribute eAttribute, Character value)
+            throws EFeatureEncoderException {
+        super(eAttribute, ConditionEncoder.ge(eAttribute.getEAttributeType(),value));
     }
 
     public EAttributeValueIsGreaterEqual(EAttribute eAttribute, String value)
             throws EFeatureEncoderException {
-        super(eAttribute, ConditionEncoder.greaterThanOrEquals(value));
+        super(eAttribute, ConditionEncoder.ge(eAttribute.getEAttributeType(),value));
     }
 
 }

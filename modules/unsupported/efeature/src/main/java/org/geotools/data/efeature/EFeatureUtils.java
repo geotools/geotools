@@ -1,7 +1,10 @@
 package org.geotools.data.efeature;
 
+import java.lang.reflect.Array;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
@@ -19,13 +22,15 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.ExtendedMetaData;
 import org.eclipse.emf.query.conditions.eobjects.EObjectCondition;
 import org.eclipse.emf.query.statements.WHERE;
-import org.geotools.data.Query;
+import org.geotools.data.efeature.internal.EFeatureContextHelper;
 import org.geotools.data.efeature.query.EFeatureEncoderException;
 import org.geotools.data.efeature.query.EFeatureFilter;
 import org.geotools.data.efeature.query.EFeatureQuery;
 import org.geotools.data.efeature.query.EObjectConditionEncoder;
+import org.geotools.filter.identity.FeatureIdImpl;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
+import org.opengis.filter.identity.Identifier;
 
 import com.vividsolutions.jts.geom.Geometry;
 
@@ -357,24 +362,57 @@ public class EFeatureUtils {
         return new EObjectCondition() {
             @Override
             public boolean isSatisfied(EObject eObject) {
-                return eClass.isInstance(eObject);
+                boolean bFlag = eClass.isInstance(eObject);
+                return bFlag;
             }
         };
     }
 
     /**
-     * Convert GeoTools {@link Query} to {@link EFeatureQuery} statemen
+     * Convert given GeoTools {@link Filter} to a {@link EFeatureQuery} statement
+     * capable of querying {@link EObject} instances from all {@link EClass}es that
+     * extends the {@link EFeaturePackage#getEFeature() EFeature class}. 
      * 
-     * @param eFeatureInfo - {@link EFeatureInfo} instance
-     * @param eClass - {@link EClass} implementing (or compatible with) {@link EFeature}
      * @param featureType - {@link SimpleFeatureType} instance
-     * @param eObjects - {@link TreeIterator} of objects to by queried
-     * @param filter - GeoTools spatial {@link Filter filter} instance
+     * @param eObjects - {@link TreeIterator} to by queried
+     * @param filter - GeoTools {@link Filter filter} instance
+     * @return a {@link EFeatureQuery} statement
+     * @throws EFeatureEncoderException If filter encoding failed.
+     */
+    public static EFeatureQuery toEFeatureQuery(
+            TreeIterator<EObject> eObjects, Filter filter) 
+        throws EFeatureEncoderException {
+        //
+        // Get prototype structure from internal context
+        //
+        EFeatureInfo eInfo = EFeatureContextHelper.ePrototype(EFeaturePackage.eINSTANCE.getEFeature());
+        //
+        // Forward
+        //
+        return toEFeatureQuery(eInfo,eObjects, filter);
+    }
+    
+    /**
+     * Convert GeoTools {@link Filter} to a {@link EFeatureQuery} statement
+     * capable of querying {@link EObject} instances from the {@link EClass}
+     * defined by given {@link EFeatureInfo structure}.
+     * 
+     * @param eFeatureInfo - filter on {@link EFeatureInfo} instance
+     * @param featureType - {@link SimpleFeatureType} instance
+     * @param eObjects - {@link TreeIterator} to by queried
+     * @param filter - GeoTools {@link Filter filter} instance
      * @return a {@link EFeatureQuery} statement
      * @throws EFeatureEncoderException If filter encoding failed.
      */
     public static EFeatureQuery toEFeatureQuery(EFeatureInfo eFeatureInfo,
             TreeIterator<EObject> eObjects, Filter filter) throws EFeatureEncoderException {
+        //
+        // Do sanity checks
+        //
+        isSane("eFeatureInfo",eFeatureInfo);
+        isSane("eObjects",eObjects);
+        isSane("filter",filter);
+        //
         // Create an EClass filter
         //
         EObjectCondition eClassFilter = createEClassFilter(eFeatureInfo.eClass());
@@ -457,6 +495,35 @@ public class EFeatureUtils {
         t.fillInStackTrace();
         StackTraceElement[] stack = t.getStackTrace();
         return stack[stack.length-2].getMethodName();
+    }
+    
+    public static void isSane(String name, Object object) {
+        if(object==null) {
+            throw new NullPointerException(name + " can not be null");
+        }
+    }
+    
+    public static <T> T[] concat(Class<T> type, T[]... arrays) {
+        int count = 0;
+        for(T[] it : arrays) count += it.length;
+        @SuppressWarnings("unchecked")
+        T[] m = (T[])Array.newInstance(type, count);
+        if(count>0) {
+            count = 0;
+            for(T[] it : arrays) {
+                System.arraycopy(it, 0, m, count, it.length);
+                count += it.length;
+            }
+        }
+        return m;
+     }
+    
+    public static Set<Identifier> toEIDs(Object...eIDs){
+        Set<Identifier> eIDSet = new HashSet<Identifier>(eIDs.length);
+        for(Object eID : eIDs) {
+            eIDSet.add(new FeatureIdImpl(eID.toString()));
+        }
+        return eIDSet;
     }
 
 }

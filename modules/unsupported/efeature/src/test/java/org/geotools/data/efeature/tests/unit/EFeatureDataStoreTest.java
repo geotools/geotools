@@ -24,7 +24,7 @@ import org.opengis.feature.type.Name;
  * @author kengu - 4. mai 2011  
  *
  */
-public class EFeatureDataStoreTest extends AbstractStandaloneTest {
+public class EFeatureDataStoreTest extends AbstractResourceTest {
     
     /** 
      * Static logger for all {@link EFeatureDataStoreTest} instances 

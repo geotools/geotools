@@ -10,12 +10,17 @@ public class EGeometryValueBBox extends EObjectAttributeValueCondition {
 
     public EGeometryValueBBox(EAttribute eAttribute, Literal geometry, boolean swapped)
             throws EFeatureEncoderException {
-        super(eAttribute, SpatialConditionEncoder.bbox(geometry, swapped));
+        super(eAttribute, SpatialConditionEncoder.bbox(eAttribute.getEAttributeType(), geometry, swapped));
     }
 
+    public EGeometryValueBBox(EAttribute eAttribute, Object geometry, boolean swapped)
+            throws EFeatureEncoderException {
+        super(eAttribute, SpatialConditionEncoder.bbox(eAttribute.getEAttributeType(), geometry, swapped));
+    }
+    
     public EGeometryValueBBox(EAttribute eAttribute, Geometry geometry, boolean swapped)
             throws EFeatureEncoderException {
-        super(eAttribute, SpatialConditionEncoder.bbox(geometry, swapped));
+        super(eAttribute, SpatialConditionEncoder.bbox(eAttribute.getEAttributeType(), geometry, swapped));
     }
 
 }

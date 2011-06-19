@@ -10,12 +10,17 @@ public class EGeometryValueOverlaps extends EObjectAttributeValueCondition {
 
     public EGeometryValueOverlaps(EAttribute eAttribute, Literal geometry, boolean swapped)
             throws EFeatureEncoderException {
-        super(eAttribute, SpatialConditionEncoder.overlaps(geometry, swapped));
+        super(eAttribute, SpatialConditionEncoder.overlaps(eAttribute.getEAttributeType(), geometry, swapped));
+    }
+
+    public EGeometryValueOverlaps(EAttribute eAttribute, Object geometry, boolean swapped)
+            throws EFeatureEncoderException {
+        super(eAttribute, SpatialConditionEncoder.overlaps(eAttribute.getEAttributeType(), geometry, swapped));
     }
 
     public EGeometryValueOverlaps(EAttribute eAttribute, Geometry geometry, boolean swapped)
             throws EFeatureEncoderException {
-        super(eAttribute, SpatialConditionEncoder.overlaps(geometry, swapped));
+        super(eAttribute, SpatialConditionEncoder.overlaps(eAttribute.getEAttributeType(), geometry, swapped));
     }
 
 }

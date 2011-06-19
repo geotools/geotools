@@ -21,6 +21,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.WeakHashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAttribute;
@@ -32,6 +34,9 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.geotools.data.efeature.EFeature;
 import org.geotools.data.efeature.EFeatureIDFactory;
 import org.geotools.data.efeature.EFeaturePackage;
+import org.geotools.data.efeature.internal.EFeatureDelegate;
+import org.geotools.util.WeakHashSet;
+import org.geotools.util.logging.Logging;
 
 /**
  * Default implementation of {@link EFeatureIDFactory} instance.
@@ -46,11 +51,42 @@ public class EFeatureIDFactoryImpl implements EFeatureIDFactory {
     
     public static final String DEFAULT_PREFIX = "F";
     
+    private static final Logger LOGGER = Logging.getLogger(EFeatureIDFactoryImpl.class);
+    
     protected String ePrefix;
-    //protected WeakHashMap<EObject,Long> eUnusedIDMap = new WeakHashMap<EObject, Long>();
-    protected HashMap<URI,WeakHashMap<EObject,Long>> eCachedIDMap = new HashMap<URI,WeakHashMap<EObject, Long>>();
-    protected HashMap<URI,Map<EAttribute,Long>> eNextIDMap = new HashMap<URI,Map<EAttribute, Long>>();
-    protected HashMap<EClass,EAttribute> eAttributeMap = new HashMap<EClass, EAttribute>();
+    
+    /**
+     * This map contains a mapping from each EObject to the ID created for it by this factory.
+     */
+    protected Map<URI,WeakHashMap<EObject,Long>> eInverseIDMap = new HashMap<URI,WeakHashMap<EObject, Long>>();
+
+    /**
+     * This map contains a mapping from each ID to each {@link EObject} assigned to it. 
+     * <b>NOTE</b>: Only objects already assigned an ID are allowed to have 
+     * the same ID. This only happens if multiple {@link EObject}s are constructed
+     * from the same EMF {@link Resource}. This occurs when {@link EObject} are queried
+     * multiple times from the resource, and the garbage collector has not yet disposed 
+     * older {@link EObject} instances not longer referenced by any client code. 
+     * A {@link WeakHashSet} is used to ensure that this factory does not prevent the
+     * garbage collection.
+     */
+    protected Map<URI,Map<Long,WeakHashSet<EObject>>> eIDMap = new HashMap<URI,Map<Long, WeakHashSet<EObject>>>();
+    
+    /**
+     * This map contains the next ID for each {@link EAttribute} this factory create IDs for.
+     * It allows for faster creation of unique IDs for each {@link EAttribute} by removing
+     * the step of calculating maximum ID value among existing IDs. 
+     */
+    protected Map<URI,Long> eNextIDMap = new HashMap<URI,Long>();
+    
+    /**
+     * This map ensures that only one {@link EAttribute} per {@link EClass} is allowed 
+     * to be used as an unique ID. This is introduced to reduce the complexity, but could be 
+     * relaxed if necessary. 
+     * 
+     * TODO: Add option to allow multiple ID attribute registrations per {@link EClass}? 
+     */
+    protected Map<EClass,EAttribute> eAttributeMap = new HashMap<EClass, EAttribute>();
     
     // ----------------------------------------------------- 
     //  Constructors
@@ -165,11 +201,11 @@ public class EFeatureIDFactoryImpl implements EFeatureIDFactory {
     }
         
     public boolean contains(URI eURI) {
-        return eCachedIDMap.containsKey(eURI);
+        return eIDMap.containsKey(eURI);
     }
 
     public boolean contains(EObject eObject) {
-        for(Map<EObject,Long> it : eCachedIDMap.values()) { 
+        for(Map<EObject,Long> it : eInverseIDMap.values()) { 
             if(it.containsKey(eObject)) {
                 return true;
             }
@@ -178,12 +214,13 @@ public class EFeatureIDFactoryImpl implements EFeatureIDFactory {
     }
     
     public Map<EObject,String> getIDMap(URI eURI) {
-        Map<EObject,Long> eCachedIDs = eCachedIDMap.get(eURI);
+        Map<EObject,Long> eCachedIDs = eInverseIDMap.get(eURI);
         if(eCachedIDs!=null) {
             WeakHashMap<EObject,String> eIDs = new WeakHashMap<EObject, String>(eCachedIDs.size());
             for(Entry<EObject,Long> it : eCachedIDs.entrySet()) {
                 eIDs.put(it.getKey(), ePrefix + it.getValue());
             }
+            return eIDs;
         }
         return Collections.emptyMap();
     }
@@ -192,45 +229,22 @@ public class EFeatureIDFactoryImpl implements EFeatureIDFactory {
         //
         // Verify EObject
         //
-        verify("eObject", eObject, true, false, true);
+        verify("EObject", eObject, true, false, true);
         //
-        // Locate ID if exists
+        // Get URI
         //
-        for(Map<EObject,Long> it : eCachedIDMap.values()) {
-            Long uniqueID = it.get(eObject);
-            if(uniqueID!=null) {
-                return ePrefix + uniqueID;
-            }
-        }       
-        return null;
-    }
-    
-    public String getID(URI eURI, EObject eObject) {
+        URI eURI = eObject.eResource().getURI();
         //
-        // Verify URI
+        // Forward
         //
-        verify("eURI", eURI, true);
-        //
-        // Verify EObject
-        //
-        verify("eObject", eObject, true, false, true);
-        //
-        // Locate ID if exists
-        //
-        for(Map<EObject,Long> it : eCachedIDMap.values()) {
-            Long uniqueID = it.get(eObject);
-            if(uniqueID!=null) {
-                return ePrefix + uniqueID;
-            }
-        }       
-        return null;
+        return eGetID(eURI,eObject);
     }
     
     public String createID(EObject eObject) throws IllegalArgumentException {
         //
         // Verify EObject
         //
-        verify("eObject", eObject, true, false, true);
+        verify("eObject", eObject, true, true, true);
         //
         // Get ID attribute
         //
@@ -240,335 +254,153 @@ public class EFeatureIDFactoryImpl implements EFeatureIDFactory {
         //
         verify("eAttribute",eAttribute,true);
         //
-        // Get resource
-        //
-        Resource eResource = eObject.eResource();
-        //
-        // Verify
-        //
-        verify("eResource",eResource,true);
-        //
         // Get URI
         //
-        URI eURI = eResource.getURI();        
-        //
-        // Forward to implementation
-        //
-        return createID(eURI, eObject, eObject.eClass(), eAttribute);
-    }
-
-//    public String createID(EObject eObject, EAttribute eID) 
-//        throws IllegalArgumentException, IllegalStateException {
-//        //
-//        // Verify EObject
-//        //
-//        verify("EObject", eObject, true, false, true);
-//        //
-//        // Verify EAttribute
-//        //
-//        verify("EAttribute", eID, true, false, false);
-//        //
-//        // Get attribute class
-//        //
-//        EClass eClass = eID.getEContainingClass(); 
-//        //
-//        // Verify instance of EClass?
-//        //
-//        if( !(eObject==null  || eClass.isInstance(eObject)) ) {
-//            throw new IllegalArgumentException(eObject + 
-//                    " is not an instance of " + eClass);
-//        }        
-//        //
-//        // Get URI
-//        //
-//        URI eURI = eObject.eResource().getURI();        
-//        //
-//        // Forward to implementation
-//        //
-//        return createID(eURI, eObject, eClass, eID);
-//    }    
-//    
-//    public String createID(URI eURI, EObject eObject, EAttribute eID)
-//            throws IllegalArgumentException, IllegalStateException {
-//        //
-//        // Verify URI
-//        //
-//        verify("URI",eURI,true);
-//        //
-//        // Verify EObject
-//        //
-//        verify("EObject", eObject, true, false, true);
-//        //
-//        // Forward
-//        //
-//        return createID(eURI, eObject, eObject.eClass(), eID);
-//    }
-
-    public String peekID(URI eURI, EClass eClass) throws IllegalArgumentException {
-        //
-        // Verify URI
-        //
-        verify("eURI",eURI, true);
-        //
-        // Verify EObject
-        //
-        verify("eClass",eClass, true);
-        //
-        // Get ID attribute
-        //
-        EAttribute eAttribute = eAttributeMap.get(eClass);
+        URI eURI = eObject.eResource().getURI();        
         //
         // Verify
         //
-        verify("eAttribute",eAttribute,true);
+        verify("eURI",eURI,true);
         //
-        // Forward 
-        //        
-        return peekID(eURI, eClass);
-    }
-
-    public String peekID(URI eURI, EAttribute eAttribute)
-            throws IllegalArgumentException {
+        // Get set value
         //
-        // Verify URI
-        //
-        verify("eURI", eURI, true);
-        //
-        // Verify ID EAttribute
-        //
-        verify("eAttribute", eAttribute, true);
+        String eSetID = eGetID(eURI, eObject);
         //
         // Forward to implementation
         //
-        return ePrefix + nextID(eURI, eAttribute);
-    }    
-    
+        String eNewID = (eSetID==null || eSetID.length()==0 ?
+                eCreateID(eURI, eObject, eObject.eClass(), eAttribute) : 
+                    eUseID(eURI, eObject, eAttribute, eSetID, true));
+        //
+        // If EObject is an EFeature, then set ID if not the same as current
+        //
+        return eInverseSet(eObject,eNewID,eSetID);
+        
+    }
+
     public String useID(EObject eObject, String eID) {
         //
         // Verify eObject
         //
-        verify("eObject",eObject,true);
+        verify("eObject",eObject,true,true,true);
         //
-        // Get resource
+        // Get URI
         //
-        Resource eResource = eObject.eResource();
+        URI eURI = eObject.eResource().getURI();
         //
-        // Verify resource
+        // Verify eURI
         //
-        verify("eResource",eResource,true);
+        verify("eURI",eURI,true);
         //
         // Get ID attribute
         //
         EAttribute eAttribute = eAttributeMap.get(eObject.eClass());
         //
-        // Verify
-        //
-        verify("eAttribute",eAttribute,true);
-        //
-        // Forward
-        //
-        return useID(eResource.getURI(), eObject, eAttribute, eID);
-    }
-    
-//    public String useID(EObject eObject, EAttribute eAttribute, String eID) {
-//        //
-//        // Get resource
-//        //
-//        Resource eResource = eObject.eResource();
-//        //
-//        // Verify resource
-//        //
-//        verify("Resource",eResource,true);
-//        //
-//        // Forward
-//        //
-//        return useID(eResource.getURI(), eObject, eAttribute,eID);        
-//    }
-//       
-
-    // ----------------------------------------------------- 
-    //  Helper methods
-    // -----------------------------------------------------
-    
-    protected Long nextID(URI eURI, EAttribute eID) {
-        //
-        // Initialize ID
-        //
-        Long uniqueID = 0L;
-        //
-        // Get map of next IDs
-        //
-        Map<EAttribute,Long> eNextIDs = eNextIDMap.get(eURI);
-        //
-        // Factory is caching IDs?
+        // Get current value
         // 
-        if(eNextIDs!=null) {
-            //
-            // Get next ID for given attribute
-            //
-            uniqueID = eNextIDs.get(eID);
-            if(uniqueID==null) {
-                uniqueID = 1L;
-            }
-            //
-            // Validate against cached IDs
-            //
-            return uniqueID(eURI, null, uniqueID);        
-        }
+        String eSetID = (String)eObject.eGet(eAttribute);
         //
-        // Finished
+        // Check if set
         //
-        return uniqueID++;        
+        boolean eIsSet = !(eSetID==null || eSetID.length()==0);
+        //
+        // ----------------------------------------------------------
+        //  Cache ID as used
+        // ----------------------------------------------------------
+        //  If ID is not set in given object, make sure that ID is 
+        //  unique, if not unique a unique ID is returned. If ID is 
+        //  set in given object, then just mark it as used and return
+        //  it unchanged. See eIDMap for more information.
+        //
+        eID = eUseID(eURI, eObject, eAttribute, eID, eIsSet);
+        //
+        // If EObject is an EFeature, then set ID if not the same as current
+        //
+        return eInverseSet(eObject,eID,eSetID);        
     }
-    
-    /**
-     * Create ID from given information.
-     */
-    protected String createID(URI eURI, EObject eObject, EClass eClass, EAttribute eID) 
-        throws IllegalArgumentException {
+
+    public String disposeID(EObject eObject) {
         //
-        // Initialize unique id to "unknown"
+        // Verify eObject
         //
-        Long uID = 0L;
+        verify("eObject",eObject,true,true,true);
         //
-        // Try to get unique ID as string
+        // Get URI
         //
-        String sID = getID(eObject);
-        //
-        // Get current ID
-        //
-        if( !(sID==null || sID.length()==0) ) {
-            //
-            // Remove prefix
-            //
-            sID = sID.replace(ePrefix, "");
-            //
-            // Convert to long
-            //
-            uID = Long.decode(sID);
-        }
-        //
-        // No unique ID "unknown"?
-        //
-        if(uID==0L) {
-            //
-            // Get map of next IDs
-            //
-            Map<EAttribute,Long> eNextIDs = eNextIDMap.get(eURI);
-            //
-            // Start to create IDs for new resource?
-            // 
-            if(eNextIDs==null) {
-                eNextIDs = new WeakHashMap<EAttribute, Long>();
-                eNextIDMap.put(eURI, eNextIDs);
-            }
-            //
-            // Get current ID for given class
-            //
-            uID = eNextIDs.get(eID);
-            if(uID==null) {
-                uID = 1L;
-            }
-            //
-            // Validate against cached IDs
-            //
-            uID = uniqueID(eURI, eObject, uID);
-            //
-            // Add next unique ID to map
-            //
-            eNextIDs.put(eID, uID+1);
-        } 
-        //
-        // Add to unused IDs map
-        //
-        return cacheID(eURI,eObject,uID);
-        //return ePrefix + uID;
-    }    
-    
-//    protected String unusedID(EObject eObject, Long eID) {
-//        //
-//        // Add to map of unused IDs 
-//        //
-//        eUnusedIDMap.put(eObject,eID);
-//        //
-//        // Finished
-//        //
-//        return ePrefix+eID;
-//    }
-    
-    protected String useID(URI eURI, EObject eObject, EAttribute eAttribute, String eID) {
+        URI eURI = eObject.eResource().getURI();
         //
         // Verify URI
         //
         verify("eURI",eURI,true);
         //
-        // Verify URI
+        // Get ID attribute
         //
-        verify("eObject",eObject,true);
+        EAttribute eAttribute = eAttributeMap.get(eObject.eClass());
         //
-        // Verify ID
+        // Get current ID
+        //
+        String eID = (String)eObject.eGet(eAttribute);
+        //
+        // Verify
         //
         verify("eID",eID,true);
         //
-        // Initialize used ID
+        // Forward
         //
-        String eUsedID = null;
-        //
-        // Remove prefix
-        //
-        eID = eID.replace(ePrefix, "");
-        //
-        // Convert to long
-        //
-        Long uID = Long.decode(eID);
-        //
-        // Ensure that is is unique
-        //
-        uID = uniqueID(eURI, eObject, uID);        
-        //
-        // Cache the ID as used
-        //
-        eUsedID = cacheID(eURI, eObject, uID);
-        //
-        // Finished
-        //
-        return eUsedID;
-    }        
+        return eDisposeID(eURI, eObject, eID);
+    }    
     
-    protected String cacheID(URI eURI, EObject eObject, Long eID) {
+    // ----------------------------------------------------- 
+    //  Helper methods
+    // -----------------------------------------------------
+    
+    protected String eGetID(URI eURI, EObject eObject) {
         //
-        // Get IDs cached for given URI, create it if not found
+        // Get map
         //
-        WeakHashMap<EObject,Long> eCachedIDs = eCachedIDMap.get(eURI);
-        if(eCachedIDs==null) {
-            eCachedIDs = new WeakHashMap<EObject,Long>();
-            eCachedIDMap.put(eURI, eCachedIDs);
-        }        
+        Map<EObject,Long> eIDs = eInverseIDMap.get(eURI);
         //
-        // Add to ID cache
+        // Locate ID if exists?
         //
-        eCachedIDs.put(eObject, eID);
+        if(eIDs!=null) {
+            Long uniqueID = eIDs.get(eObject);
+            if(uniqueID!=null) {
+                return ePrefix + uniqueID;
+            }
+        }       
+        return null;
+    }    
+    
+    protected Long eNextID(URI eURI) {
+        //
+        // Get next unique ID from map
+        //
+        Long uID = eNextIDMap.get(eURI);
+        //
+        // First ID in given resource?
+        // 
+        if(uID==null) uID = 1L;
         //
         // Finished
         //
-        return ePrefix+eID;
+        return uID;
     }
     
     /**
      * Ensure that ID is unique. If not, return one that is.
      * <p>
-     * This method used the {@link #eCachedIDMap} to ensure that 
+     * This method used the {@link #eInverseIDMap} to ensure that 
      * the next ID is is unique
      * @param eObject - {@link EObject} instance
-     * @param uID - proposed ID
      * @param eObject - the object with ID 
+     * @param uID - proposed ID
      * @return actual unique ID
      */
-    protected Long uniqueID(URI eURI, EObject eObject, Long uID) {
+    protected Long eUniqueID(URI eURI, EObject eObject, Long uID) {
         //
         // Get Map of cached ID for given URI
         //
-        Map<EObject,Long> eCachedIDs = eCachedIDMap.get(eURI);        
+        Map<EObject,Long> eCachedIDs = eInverseIDMap.get(eURI);
         //
         // Found cached IDs?
         //
@@ -597,6 +429,213 @@ public class EFeatureIDFactoryImpl implements EFeatureIDFactory {
         return uID;
     }
     
+    /**
+     * Create ID from given information.
+     */
+    protected String eCreateID(URI eURI, EObject eObject, EClass eClass, EAttribute eID) 
+        throws IllegalArgumentException {
+        //
+        // Initialize unique id to "unknown"
+        //
+        Long uID = 0L;
+        //
+        // Try to get unique ID as string
+        //
+        String sID = getID(eObject);
+        //
+        // Get current ID
+        //
+        if( !(sID==null || sID.length()==0) ) {
+            //
+            // Remove prefix
+            //
+            sID = sID.replace(ePrefix, "");
+            //
+            // Convert to long
+            //
+            uID = Long.decode(sID);
+        }
+        //
+        // Current ID is "unknown"?
+        //
+        if(uID==0L) {
+            //
+            // Get next ID from map
+            //
+            uID = eNextIDMap.get(eURI);
+            //
+            // Start to create IDs for new resource?
+            // 
+            if(uID==null) {
+                //
+                // Set first ID in this series
+                //
+                uID = 1L;
+            } else {
+                //
+                // Validate against cached IDs
+                //
+                uID = eUniqueID(eURI, eObject, uID);
+            }
+        } 
+        //
+        // Add to ID maps
+        //
+        return eCacheID(eURI,eObject,uID);
+    }    
+    
+    protected String eUseID(URI eURI, EObject eObject, 
+            EAttribute eAttribute, String eID, boolean eIsSet) {
+        //
+        // Remove prefix
+        //
+        eID = eID.replace(ePrefix, "");
+        //
+        // Convert to long
+        //
+        Long uID = Long.decode(eID);
+        //
+        // Ensure that is is unique?
+        //
+        if(!eIsSet) {
+            uID = eUniqueID(eURI, eObject, uID);
+        }
+        //
+        // Cache the ID as used
+        //
+        return eCacheID(eURI, eObject, uID);
+    }        
+    
+    protected String eCacheID(URI eURI, EObject eObject, Long uID) {
+        //
+        // Get Object cached for given ID, create it if not found
+        //
+        Map<Long,WeakHashSet<EObject>> eCachedIDSets = eIDMap.get(eURI);
+        if(eCachedIDSets==null) {
+            eCachedIDSets = new HashMap<Long,WeakHashSet<EObject>>();
+            eIDMap.put(eURI, eCachedIDSets);
+        } 
+        WeakHashSet<EObject> eObjectSet = eCachedIDSets.get(uID);
+        if(eObjectSet==null) {
+            eObjectSet = new WeakHashSet<EObject>(EObject.class);
+            eCachedIDSets.put(uID, eObjectSet);            
+        }        
+        
+        // 
+        // Add object to hash set
+        //
+        eObjectSet.add(eObject);        
+        
+        //
+        // Get EObjects cached for given URI, create it if not found
+        //
+        WeakHashMap<EObject,Long> eInverseIDs = eInverseIDMap.get(eURI);
+        if(eInverseIDs==null) {
+            eInverseIDs = new WeakHashMap<EObject,Long>();
+            eInverseIDMap.put(eURI, eInverseIDs);
+        }        
+        //
+        // Add to ID cache
+        //
+        eInverseIDs.put(eObject, uID);
+        //
+        // Update next ID?
+        //
+        if(eNextID(eURI)<=uID) {
+            eNextIDMap.put(eURI,uID+1);
+        }
+        //
+        // Finished
+        //
+        return ePrefix+uID;
+    }
+    
+    protected String eInverseSet(EObject eObject, String eNewID, String eSetID) {
+        if((eObject instanceof EFeature)) {
+            if(!eNewID.equals(eSetID)) {
+                if(eObject instanceof EFeatureImpl) {
+                    return ((EFeatureImpl)eObject).eImpl().eSetID(eNewID, false);
+                } else if(eObject instanceof EFeatureDelegate) {
+                    return ((EFeatureDelegate)eObject).eImpl().eSetID(eNewID, false);
+                }
+                //
+                // ------------------------------------------------------
+                //  This is not recommended, but let's try it out ...
+                // ------------------------------------------------------
+                //  Just as implementors or EObject are expected to 
+                //  implement InternalEObject, implementors of EFeature
+                //  are expected to implement EFeatureInternal or 
+                //  EFeatureDelegate. These implementations have guards 
+                //  that break the recursive call sequence 
+                //  EFeature.setID() -> EFeatureIDFactory.useID() -> 
+                //  EFeature.setID(), handles the context startup 
+                //  problem and much more which direct implementors of 
+                //  EFeature must handle them selves.
+                //
+                try {
+                    ((EFeature)eObject).setID(eNewID);
+                } catch (Exception e) {
+                    //
+                    // Notify that this is a unrecoverable errors
+                    //
+                    String msg = "Erroneous implementation of EFeature. " +
+                    		 "Extend EFeatureImpl or use a EFeatureDelegate. ";
+                    //
+                    // Log message as severe. This should give the implementor some additional hints...
+                    //
+                    LOGGER.log(Level.SEVERE, msg + e.getMessage(), e);
+                    //
+                    // Throw it again
+                    //
+                    throw ((IllegalArgumentException)(new IllegalArgumentException(msg).initCause(e)));
+                }
+            }
+        }
+        return eNewID;
+    }
+    
+    protected String eDisposeID(URI eURI, EObject eObject, String eID) 
+        throws IllegalArgumentException {
+        //
+        // Get IDs cached for given URI, create it if not found
+        //
+        WeakHashMap<EObject,Long> eCachedIDs = eInverseIDMap.get(eURI);
+        if(eCachedIDs==null) {
+            //
+            // No IDs created for given resource
+            //
+            throw new IllegalArgumentException("No IDs created for " +
+            		"resource [" + eURI + " ]");
+        }        
+        //
+        // Get ID from cache
+        //
+        Long uID = eCachedIDs.get(eObject);
+        //
+        // ID not found?
+        if(uID == null) {
+            //
+            // No ID created for given object
+            //
+            throw new IllegalArgumentException("No ID created for " + eObject);            
+        }
+        if(eID.equals(ePrefix+uID)) {
+            //
+            // Not same as ID created for given object
+            //
+            throw new IllegalArgumentException("Expected ID " + eID + "," + 
+                    "found " + ePrefix + uID);                        
+        }
+        //
+        // Dispose ID
+        //
+        eCachedIDs.remove(eObject);
+        //
+        // Finished
+        //
+        return eID;
+    }    
+        
     protected void verify(String eType, Object object, boolean isNonNull) {
         if(isNonNull && object==null) {
             throw new NullPointerException(eType + " can not be null");

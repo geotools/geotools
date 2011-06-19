@@ -28,11 +28,11 @@ import org.opengis.feature.simple.SimpleFeature;
  * @author kengu - 4. mai 2011  
  *
  */
-public class EFeatureReaderTest extends AbstractStandaloneTest {
+public class EFeatureReaderTest extends AbstractResourceTest {
     
-    private static boolean binary = true;
+    private static boolean binary = false;
     
-    private int eFeatureCount = 20000;
+    private int eFeatureCount = 200;
     private EFeatureTestData eData;
     private Object[][] eTypeData = new Object[][]{
         {"efeature.EFeatureCompatibleData",EFeatureCompatibleData.class,0},
@@ -152,17 +152,13 @@ public class EFeatureReaderTest extends AbstractStandaloneTest {
     }
         
     @Override
-    protected void createTestData(Resource eResource) throws Exception {
+    protected void createTestData(String name, Resource eResource) throws Exception {
         //
-        // Optimize test speed by selectively creating data
+        // Create data used by all tests
         //
-        if("testFeatureReaders".equals(getName())) 
-        {
-            eData = new EFeatureTestData(eResource);
-            eData.init(10,(Integer)eTypeData[0][2],(Integer)eTypeData[1][2]);
-            eData.save();
-        }
-        //eData.print();
+        eData = new EFeatureTestData(eResource);
+        eData.init(10,(Integer)eTypeData[0][2],(Integer)eTypeData[1][2]);
+        eData.save();
     }
     
     // ----------------------------------------------------- 

@@ -7,6 +7,7 @@
 package org.geotools.data.efeature.tests.unit;
 
 import org.geotools.data.efeature.EFeature;
+import org.geotools.data.efeature.tests.unit.conditions.EAttributeFilterAllTests;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -40,10 +41,10 @@ public class EFeatureAllTests extends TestSuite {
         //
         suite.addTestSuite(DataBuilderTest.class);
         suite.addTestSuite(EFeatureContextTest.class);
-        suite.addTestSuite(EFeatureDataStoreTest.class);
-        suite.addTestSuite(EFeatureReaderTest.class);
-        suite.addTestSuite(EFeatureFilterTest.class);
         suite.addTestSuite(EFeatureQueryTest.class);
+        suite.addTestSuite(EFeatureDataStoreTest.class);
+        suite.addTestSuite(EFeatureReaderTest.class);        
+        suite.addTest(EAttributeFilterAllTests.suite());
         //
         // Ready to execute
         //

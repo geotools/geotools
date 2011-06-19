@@ -36,9 +36,9 @@ import org.geotools.data.efeature.impl.EFeatureIDFactoryImpl;
  * </p>
  * 
  * @see {@link #createID(EObject)} - will throw an {@link UnsupportedOperationException}
- * @see {@link #createID(URI, EObject, EClass, EAttribute)} - will throw an {@link UnsupportedOperationException}
+ * @see {@link #eCreateID(URI, EObject, EClass, EAttribute)} - will throw an {@link UnsupportedOperationException}
  * @see {@link #useID(EObject, String)} - will throw an {@link UnsupportedOperationException}
- * @see {@link #useID(URI, EObject, EAttribute, String)} - will throw an {@link UnsupportedOperationException}
+ * @see {@link #eUseID(URI, EObject, EAttribute, String, boolean)} - will throw an {@link UnsupportedOperationException}
  * 
  * @author kengu - 4. juni 2011
  * 
@@ -54,16 +54,6 @@ public class EFeatureVoidIDFactory extends EFeatureIDFactoryImpl {
     @Override
     public String useID(EObject eObject, String eID) throws UnsupportedOperationException,
             IllegalStateException {
-        throw new UnsupportedOperationException("ID creation not supported");
-    }
-
-    @Override
-    public String peekID(URI eURI, EClass eClass) throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("ID creation not supported");
-    }
-
-    @Override
-    public String peekID(URI eURI, EAttribute eID) throws UnsupportedOperationException {
         throw new UnsupportedOperationException("ID creation not supported");
     }
     

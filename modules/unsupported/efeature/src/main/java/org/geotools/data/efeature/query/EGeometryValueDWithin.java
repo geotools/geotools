@@ -10,12 +10,12 @@ public class EGeometryValueDWithin extends EObjectAttributeValueCondition {
 
     public EGeometryValueDWithin(EAttribute eAttribute, Literal geometry, double distance)
             throws EFeatureEncoderException {
-        super(eAttribute, SpatialConditionEncoder.dwithin(geometry, distance));
+        super(eAttribute, SpatialConditionEncoder.dwithin(eAttribute.getEAttributeType(), geometry, distance));
     }
 
     public EGeometryValueDWithin(EAttribute eAttribute, Geometry geometry, double distance)
             throws EFeatureEncoderException {
-        super(eAttribute, SpatialConditionEncoder.dwithin(geometry, distance));
+        super(eAttribute, SpatialConditionEncoder.dwithin(eAttribute.getEAttributeType(), geometry, distance));
     }
 
 }

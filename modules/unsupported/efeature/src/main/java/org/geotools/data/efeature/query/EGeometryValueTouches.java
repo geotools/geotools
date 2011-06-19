@@ -10,12 +10,17 @@ public class EGeometryValueTouches extends EObjectAttributeValueCondition {
 
     public EGeometryValueTouches(EAttribute eAttribute, Literal geometry, boolean swapped)
             throws EFeatureEncoderException {
-        super(eAttribute, SpatialConditionEncoder.touches(geometry, swapped));
+        super(eAttribute, SpatialConditionEncoder.touches(eAttribute.getEAttributeType(), geometry, swapped));
+    }
+
+    public EGeometryValueTouches(EAttribute eAttribute, Object geometry, boolean swapped)
+            throws EFeatureEncoderException {
+        super(eAttribute, SpatialConditionEncoder.touches(eAttribute.getEAttributeType(), geometry, swapped));
     }
 
     public EGeometryValueTouches(EAttribute eAttribute, Geometry geometry, boolean swapped)
             throws EFeatureEncoderException {
-        super(eAttribute, SpatialConditionEncoder.touches(geometry, swapped));
+        super(eAttribute, SpatialConditionEncoder.touches(eAttribute.getEAttributeType(), geometry, swapped));
     }
 
 }

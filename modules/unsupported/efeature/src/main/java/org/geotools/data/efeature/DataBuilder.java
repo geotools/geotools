@@ -2,6 +2,7 @@ package org.geotools.data.efeature;
 
 import java.util.Date;
 
+import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.query.conditions.IDataTypeAdapter;
 import org.geotools.factory.Hints;
 import org.geotools.util.Converter;
@@ -48,6 +49,14 @@ public class DataBuilder implements ConverterFactory, Converter {
         return DataTypes.isDate(value);
     }
 
+    public static boolean isBoolean(Literal value, boolean parse) {
+        return DataTypes.isBoolean(value,parse);
+    }
+
+    public static boolean isBoolean(Object value, boolean parse) {
+        return DataTypes.isBoolean(value,parse);
+    }
+    
     public static boolean isString(Literal value) {
         return DataTypes.isString(value);
     }
@@ -87,88 +96,129 @@ public class DataBuilder implements ConverterFactory, Converter {
     public static <T> IDataTypeAdapter<T> getAdapter(Class<T> type) {
         return DataTypes.getAdapter(type);
     }
+    
+    public static Object toValue(EDataType type, Literal value) {        
+        return toValue(type,value.getValue());
+    }
+    
+    public static Object toValue(EDataType type, Object value) {
+        //
+        // Get data adapter
+        //
+        IDataTypeAdapter<?> adapter = getAdapter(type.getInstanceClass());
+        //
+        // Try to adapt value into data type (will throw exception if it fails) 
+        //
+        return adapter.adapt(value);
+    }
+    
+    public static <T> T toValue(Class<T> type, Object value) {
+        //
+        // Get data adapter
+        //
+        IDataTypeAdapter<T> adapter = getAdapter(type);
+        //
+        // Do sanity check
+        //
+        if(adapter==null) {
+            throw new IllegalArgumentException(type + " is not supported");
+        }
+        //
+        // Try to adapt value into data type (will throw exception if it fails) 
+        //
+        return adapter.adapt(value);        
+    }
+    
+    public static Number toNumber(Literal value) {
+        return toNumber(value.getValue());
+    }
+    
+    public static Number toNumber(Object value) {
+        return DataTypes.getAdapter(Number.class).adapt(value);
+    }
+    
 
-    public Integer toInteger(Literal value) {
+    public static Integer toInteger(Literal value) {
         return toInteger(value.getValue());
     }
 
-    public Integer toInteger(Object value) {
+    public static Integer toInteger(Object value) {
         return DataTypes.getAdapter(Integer.class).adapt(value);
     }
 
-    public Double toDouble(Literal value) {
+    public static Double toDouble(Literal value) {
         return toDouble(value.getValue());
     }
 
-    public Double toDouble(Object value) {
+    public static Double toDouble(Object value) {
         return DataTypes.getAdapter(Double.class).adapt(value);
     }
 
-    public Long toLong(Literal value) {
+    public static Long toLong(Literal value) {
         return toLong(value.getValue());
     }
 
-    public Long toLong(Object value) {
+    public static Long toLong(Object value) {
         return DataTypes.getAdapter(Long.class).adapt(value);
     }
 
-    public Short toShort(Literal value) {
+    public static Short toShort(Literal value) {
         return toShort(value.getValue());
     }
 
-    public Short toShort(Object value) {
+    public static Short toShort(Object value) {
         return DataTypes.getAdapter(Short.class).adapt(value);
     }
 
-    public Byte toByte(Literal value) {
+    public static Byte toByte(Literal value) {
         return toByte(value.getValue());
     }
 
-    public Byte toByte(Object value) {
+    public static Byte toByte(Object value) {
         return DataTypes.getAdapter(Byte.class).adapt(value);
     }
     
-    public Float toFloat(Literal value) {
+    public static Float toFloat(Literal value) {
         return toFloat(value.getValue());
     }
 
-    public Float toFloat(Object value) {
+    public static Float toFloat(Object value) {
         return DataTypes.getAdapter(Float.class).adapt(value);
     }
 
-    public Boolean toBoolean(Literal value) {
+    public static Boolean toBoolean(Literal value) {
         return toBoolean(value.getValue());
     }
 
-    public Boolean toBoolean(Object value) {
+    public static Boolean toBoolean(Object value) {
         return DataTypes.getAdapter(Boolean.class).adapt(value);
     }
 
-    public Character toCharacter(Literal value) {
+    public static Character toCharacter(Literal value) {
         return toCharacter(value.getValue());
     }
 
-    public Character toCharacter(Object value) {
+    public static Character toCharacter(Object value) {
         return DataTypes.getAdapter(Character.class).adapt(value);
     }
 
-    public String toString(Literal value) {
+    public static String toString(Literal value) {
         return toString(value.getValue());
     }
 
-    public String toString(Object value) {
+    public static String toString(Object value) {
         return DataTypes.getAdapter(String.class).adapt(value);
     }
 
-    public Date toDate(Literal value) {
+    public static Date toDate(Literal value) {
         return toDate(value.getValue());
     }
 
-    public Date toDate(Object value) {
+    public static Date toDate(Object value) {
         return DataTypes.getAdapter(Date.class).adapt(value);
     }
 
-    public Date toDate(String date) {
+    public static Date toDate(String date) {
         return DataTypes.getAdapter(Date.class).adapt(date);
     }
 
@@ -277,10 +327,11 @@ public class DataBuilder implements ConverterFactory, Converter {
     }
 
     public <T> T convert(Object source, Class<T> target) throws Exception {
+        //
         // Use target class name as value type name as default
         //
         String name = target.getName();
-
+        //
         // Is another target value type name supplied?
         //
         if (hints.containsKey(DataTypes.WKT)) {

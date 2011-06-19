@@ -27,7 +27,11 @@ public interface EFeatureContext {
      *  <li>define {@link EObject}s implementing {@link EFeature}</li>
      *  <li>define {@link EObject}s containing {@link Geometry EFeature compatible data}</li>
      * </nl>
+     * <p>
+     * Prototypes does not contain any information about 
+     * {@link EFeatureDomainInfo editing domains} nor {@link EFeatureFolderInfo folders}.
      * </p>
+     * 
      * @see {@link EFeatureInfo#create(EFeatureContext, EObject, EFeatureHints)}   
      */    
     public boolean isPrototype();

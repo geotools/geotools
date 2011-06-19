@@ -3,7 +3,6 @@ package org.geotools.data.efeature;
 import java.lang.ref.WeakReference;
 import java.util.logging.Logger;
 
-import org.eclipse.emf.ecore.EClass;
 import org.geotools.util.WeakHashSet;
 import org.geotools.util.logging.Logging;
 
@@ -62,8 +61,6 @@ public abstract class EStructureInfo<T extends EStructureInfo<?>> {
      * Structure copy constructor.
      * <p>
      * This method copies the structure into given context. 
-     * The copied instance is {@link #isDangling() dangling} if the 
-     * no parent structure was found in the new context.
      * </p>
      * <b>NOTE</b>: This method only adds a one-way reference from 
      * copied instance to given {@link EFeatureContext context}. 
@@ -102,7 +99,7 @@ public abstract class EStructureInfo<T extends EStructureInfo<?>> {
      * 
      * @return a {@link EFeatureContext#eContextID() context ID}.
      */
-    public String eContextID() {
+    public final String eContextID() {
         return eContextID;
     }
     
@@ -112,16 +109,26 @@ public abstract class EStructureInfo<T extends EStructureInfo<?>> {
      * @throws IllegalStateException If {@link #isValid() invalid}, 
      * {@link #isDisposed() disposed} or not found.
      */
-    public EFeatureContext eContext()
+    public final EFeatureContext eContext()
     {
         return eContext(true);
     }
     
     /**
-     * Check if this belongs to a context {@link EFeatureContext#isPrototype() prototype}.
+     * Check if this is a <i>prototype</i>.
+     * <p>
+     * A prototype have an {@link EFeatureContextInfo} as it's
+     * {@link EStructureInfo#eParentInfo() parent structure}.
      */
-    public boolean isPrototype() {
-        return eContext(true).isPrototype();
+    public final boolean isPrototype() {
+        //
+        // If context is an prototype, all structures are prototypes,
+        // else, only EFeatureInfo structure can be prototypes when
+        // the parent structure is the context structure.
+        //
+        return eContext(true).isPrototype() || 
+            (this instanceof EFeatureInfo) &&
+            (eParentInfo(true) instanceof EFeatureContextInfo);
     }
     
     /**
@@ -129,14 +136,15 @@ public abstract class EStructureInfo<T extends EStructureInfo<?>> {
      * @throws IllegalStateException If {@link #isValid() invalid}, 
      * {@link #isDisposed() disposed} or not found.
      */
-    public EFeatureContextFactory eFactory()
+    public final EFeatureContextFactory eFactory()
     {
         return eFactory(true); 
     }
     
-    
-        
-    public T eParentInfo() {
+    /**
+     * Get parent structure.
+     */        
+    public final T eParentInfo() {
         return eParentInfo(true);
     }
     
@@ -244,6 +252,8 @@ public abstract class EStructureInfo<T extends EStructureInfo<?>> {
     
     protected abstract void doInvalidate(boolean deep);
     
+    protected void doDetach() { /*NOP*/ }
+    
     protected void doAdapt() { /*NOP*/ }
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
@@ -323,6 +333,16 @@ public abstract class EStructureInfo<T extends EStructureInfo<?>> {
     }    
     
     protected void eAdapt(EStructureInfo<?> eStructure) {
+        //
+        // Detach from current context?
+        //
+        if(eContext(false)!=eStructure.eContext(false)) {
+            //
+            // Forward to implementation
+            //
+            doDetach();
+        }
+        //
         //
         // Update context information 
         //

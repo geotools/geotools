@@ -41,9 +41,7 @@ public class EFeatureDomainInfo extends EStructureInfo<EFeatureContextInfo> {
         }
         return false;
     }
-    
-    
-    
+        
     /**
      * 
      * @throws IllegalStateException If {@link #isDisposed() disposed},
@@ -117,18 +115,8 @@ public class EFeatureDomainInfo extends EStructureInfo<EFeatureContextInfo> {
         //
         EChange eChange = new EChange();
         Map<String,EFeatureDataStoreInfo> eDataStoreMap = eChange.synchronize(this);                
-//        //
-//        // 2) Update data stores. 
-//        //
-//        if(synchronize(this).size()==0)
-//        {
-//            // Failed
-//            //
-//            return failure(this, eDomainID, 
-//                    "EFeatureContext contains no EditingDomain instances");
-//        }
         //
-        // 3) Validate all domains 
+        // 2) Validate all domains 
         //
         for(EFeatureDataStoreInfo it : eDataStoreMap.values())
         {

@@ -10,11 +10,16 @@ public class EGeometryValueDisjoint extends EObjectAttributeValueCondition {
 
     public EGeometryValueDisjoint(EAttribute eAttribute, Literal geometry, boolean swapped)
             throws EFeatureEncoderException {
-        super(eAttribute, SpatialConditionEncoder.disjoint(geometry, swapped));
+        super(eAttribute, SpatialConditionEncoder.disjoint(eAttribute.getEAttributeType(), geometry, swapped));
+    }
+
+    public EGeometryValueDisjoint(EAttribute eAttribute, Object geometry, boolean swapped)
+            throws EFeatureEncoderException {
+        super(eAttribute, SpatialConditionEncoder.disjoint(eAttribute.getEAttributeType(), geometry, swapped));
     }
 
     public EGeometryValueDisjoint(EAttribute eAttribute, Geometry geometry, boolean swapped)
             throws EFeatureEncoderException {
-        super(eAttribute, SpatialConditionEncoder.disjoint(geometry, swapped));
+        super(eAttribute, SpatialConditionEncoder.disjoint(eAttribute.getEAttributeType(), geometry, swapped));
     }
 }

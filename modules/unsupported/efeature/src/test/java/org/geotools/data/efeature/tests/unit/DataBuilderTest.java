@@ -21,9 +21,9 @@ import java.util.Arrays;
 import org.eclipse.emf.query.conditions.IDataTypeAdapter;
 import org.geotools.data.efeature.DataBuilder;
 import org.geotools.data.efeature.DataTypes;
-import org.geotools.data.efeature.GeometryAdapter;
-import org.geotools.data.efeature.WKBAdapter;
-import org.geotools.data.efeature.WKTAdapter;
+import org.geotools.data.efeature.adapters.GeometryAdapter;
+import org.geotools.data.efeature.adapters.WKBAdapter;
+import org.geotools.data.efeature.adapters.WKTAdapter;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.io.ParseException;

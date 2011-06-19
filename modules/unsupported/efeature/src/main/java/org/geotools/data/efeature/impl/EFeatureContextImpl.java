@@ -22,11 +22,14 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -38,6 +41,7 @@ import org.geotools.data.efeature.EFeatureContextInfo;
 import org.geotools.data.efeature.EFeatureIDFactory;
 import org.geotools.data.efeature.EFeatureInfo;
 import org.geotools.data.efeature.internal.EFeatureVoidIDFactory;
+import org.geotools.util.logging.Logging;
 
 /**
  * Default implementation of {@link EFeatureContext} instance.
@@ -50,7 +54,8 @@ import org.geotools.data.efeature.internal.EFeatureVoidIDFactory;
  *
  */
 public final class EFeatureContextImpl implements EFeatureContext {
-        
+
+    private static final Logger LOGGER = Logging.getLogger(EFeatureContextImpl.class); 
 
     // ----------------------------------------------------- 
     //  EFeatureContext implementation
@@ -232,43 +237,47 @@ public final class EFeatureContextImpl implements EFeatureContext {
                 //
                 if( msg.getEventType() == Notification.ADD ) {
                     Object value = msg.getNewValue();
-                    if(value instanceof EFeature) {
+                    if(value instanceof EObject) {
                         //
-                        // Cast to EFeature
+                        // Implements EFeature?
                         //
-                        EFeature eFeature = (EFeature)value;
-                        //
-                        // ----------------------------------------------------------
-                        //  Claim given EFeature (does nothing if already in context)
-                        // ----------------------------------------------------------
-                        //  This is a very important step: It's part of the context
-                        //  startup problem solution (see EFeatureContextHelper), 
-                        //  and ensures that context-unaware objects become 
-                        //  aware of the context they are added to. Without this 
-                        //  step, EFeature stays context-unaware, preventing 
-                        //  EFeatureReaders from reading them using a context ID
-                        //  known by client code.
-                        // ----------------------------------------------------------
-                        //
-                        eAdapt(eFeature, true);
-                        //
-                        // Get current ID
-                        //
-                        String eID = eFeature.getID();
-                        //
-                        // Resolve unique ID
-                        //
-                        String eNewID;
-                        if( !( eID==null || eID.length()==0 ) ) {
-                            eNewID = eIDFactory.useID(eFeature, eID);
-                        } else {
-                            eNewID = eIDFactory.createID(eFeature);
-                        }
-                        //
-                        // Set new index (not set or was not unique)
-                        //
-                        if(!eNewID.equals(eID)) {
-                            eFeature.setID(eNewID);
+                        if(value instanceof EFeature) {
+                            //
+                            // Cast to EFeature
+                            //
+                            EFeature eFeature = (EFeature)value;
+                            //
+                            // ----------------------------------------------------------
+                            //  Adapt given EFeature (does nothing if already in context)
+                            // ----------------------------------------------------------
+                            //  This is a very important step: It's part of the context
+                            //  startup problem solution (see EFeatureContextHelper), 
+                            //  and ensures that context-unaware objects become 
+                            //  aware of the context they are added to. Without this 
+                            //  step, EFeature stays context-unaware, preventing 
+                            //  EFeatureReaders from reading them using a context ID
+                            //  known by client code.
+                            // ----------------------------------------------------------
+                            //
+                            eAdapt(eFeature, true);
+                            //
+                            // Get current ID
+                            //
+                            String eID = eFeature.getID();
+                            //
+                            // Resolve unique ID
+                            //
+                            if( !( eID==null || eID.length()==0 ) ) {
+                                eIDFactory.useID(eFeature, eID);
+                            } else {
+                                eIDFactory.createID(eFeature);
+                            }
+                            
+                        } else if(eIDFactory.creates((EObject)value)) {
+                            //
+                            // Adapt object directly to context
+                            //
+                            eStructure().eAdapt((EObject)value);
                         }
                     }
                     else if(value instanceof Resource) {
@@ -276,22 +285,40 @@ public final class EFeatureContextImpl implements EFeatureContext {
                     }                
                 } else if( msg.getEventType() == Notification.REMOVE ) {
                     Object value = msg.getOldValue();
-                    if(value instanceof EFeature) {
+                    if(value instanceof EObject) {
                         //
-                        // Cast to EFeature
+                        // Cast to EObject
                         //
-                        //EFeature eFeature = (EFeature)value;
+                        EObject eObject = (EObject)value;
                         // 
-                        // Detach from this context
+                        // ID created for this object?
                         //
+                        if(eIDFactory.contains(eObject)) {
+                            try {
+                                
+                                //
+                                // This should never fail...
+                                //
+                                eIDFactory.disposeID(eObject);
+                                
+                            } catch (IllegalArgumentException e) {
+                                //
+                                // ... but if it does, log a warning ...
+                                //                                
+                                LOGGER.log(Level.WARNING, e.getMessage(), e);
+                                //
+                                // ... and re-throw it
+                                //
+                                throw e;
+                            }
+                        }
                         //eIDFactory.disposeID(eFeature.getID());
                     }
                     else if(value instanceof Resource) {
                         ((Resource)value).eAdapters().remove(this);
                     }                                
                 }
-            } else
-                System.out.println();
+            }
         }
     }    
     

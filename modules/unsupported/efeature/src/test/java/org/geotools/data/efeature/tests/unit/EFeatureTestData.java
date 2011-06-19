@@ -28,12 +28,12 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.query.conditions.eobjects.EObjectCondition;
-import org.eclipse.emf.query.conditions.eobjects.structuralfeatures.EObjectAttributeValueCondition;
-import org.eclipse.emf.query.conditions.numbers.NumberCondition;
-import org.eclipse.emf.query.conditions.strings.StringValue;
 import org.geotools.data.efeature.DataBuilder;
 import org.geotools.data.efeature.DataTypes;
 import org.geotools.data.efeature.EFeature;
+import org.geotools.data.efeature.EFeatureInfo;
+import org.geotools.data.efeature.query.EAttributeValueIsEqual;
+import org.geotools.data.efeature.query.EFeatureEncoderException;
 import org.geotools.data.efeature.tests.EFeatureCompatibleData;
 import org.geotools.data.efeature.tests.EFeatureData;
 import org.geotools.data.efeature.tests.EFeatureTestsFactory;
@@ -471,14 +471,22 @@ public class EFeatureTestData {
     //  Static utility methods
     // -----------------------------------------------------
 
-    public static EObjectCondition newCondition(EAttribute eAttribute, String value)
+    public static EObjectCondition newIsEqual(EAttribute eAttribute, String value, 
+            EFeatureInfo... eFeatureInfo) throws EFeatureEncoderException
     {
-        return new EObjectAttributeValueCondition(eAttribute,new StringValue(value));
+        if(eFeatureInfo.length>0) {
+            eAttribute = eFeatureInfo[0].eMappedTo(eAttribute);
+        }
+        return new EAttributeValueIsEqual(eAttribute,value);
     }
     
-    public static EObjectCondition newCondition(EAttribute eAttribute, Integer value)
+    public static EObjectCondition newIsEqual(EAttribute eAttribute, Integer value, 
+            EFeatureInfo...eFeatureInfo) throws EFeatureEncoderException
     {
-        return new EObjectAttributeValueCondition(eAttribute,new NumberCondition<Integer>(value));
+        if(eFeatureInfo.length>0) {
+            eAttribute = eFeatureInfo[0].eMappedTo(eAttribute);
+        }
+        return new EAttributeValueIsEqual(eAttribute,value);
     }
     
 }

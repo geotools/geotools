@@ -1,8 +1,9 @@
-package org.geotools.data.efeature;
+package org.geotools.data.efeature.query;
 
 import java.util.Date;
 
 import org.eclipse.emf.query.conditions.DataTypeCondition;
+import org.geotools.data.efeature.adapters.DateAdapter;
 
 /**
  * A <code>Condition</code> object that tests for {@link Date} arguments. The arguments being
@@ -41,6 +42,9 @@ public class DateCondition extends DataTypeCondition<Date> {
     /** The numeric "between" operator. */
     public static RelationalOperator BETWEEN = RelationalOperator.BETWEEN;
 
+    /** The numeric "outside" operator. */
+    public static RelationalOperator OUTSIDE = RelationalOperator.OUTSIDE;
+    
     /** The upper bound of a range condition. */
     protected Date upperBound;
 
@@ -79,7 +83,7 @@ public class DateCondition extends DataTypeCondition<Date> {
      * @since 1.2
      */
     public DateCondition(Date date, DateAdapter adapter) {
-        this(date, BETWEEN, adapter);
+        this(date, EQUAL_TO, adapter);
     }
 
     /**
@@ -147,34 +151,34 @@ public class DateCondition extends DataTypeCondition<Date> {
     /**
      * Initializes me with upper and lower bounds against which to test input values, assuming that
      * they will be {@link Date} objects. I am, by default, a {@linkplain #BETWEEN between} test.
-     * 
+     * @param between TODO
      * @param lowerBound - the lower bound to test
      * @param upperBound - the upper bound to test
      * 
      * @since 1.2
      */
-    public DateCondition(Date lowerBound, Date upperBound) {
-        this(lowerBound, true, upperBound, true, DateAdapter.DEFAULT);
+    public DateCondition(boolean between, Date lowerBound, Date upperBound) {
+        this(between, lowerBound, true, upperBound, true, DateAdapter.DEFAULT);
     }
 
     /**
      * Initializes me with upper and lower bounds against which to test input values, and an adapter
      * to convert those inputs to {@link Date} objects.
-     * 
+     * @param between - if <code>true</code>, use the {@link #BETWEEN} operator. Otherwise use the {@link #OUTSIDE} operator
      * @param lowerBound - the lower bound to test
      * @param upperBound - the upper bound to test
      * @param adapter - converts input values to {@link Date} objects
      * 
      * @since 1.2
      */
-    public DateCondition(Date lowerBound, Date upperBound, DateAdapter adapter) {
-        this(lowerBound, true, upperBound, true, adapter);
+    public DateCondition(boolean between, Date lowerBound, Date upperBound, DateAdapter adapter) {
+        this(between, lowerBound, true, upperBound, true, adapter);
     }
 
     /**
      * Initializes me with upper and lower bounds against which to test input values, assuming that
      * they will be {@link Date} objects. I am, by default, a {@linkplain #BETWEEN between} test.
-     * 
+     * @param between - if <code>true</code>, use the {@link #BETWEEN} operator. Otherwise use the {@link #OUTSIDE} operator
      * @param lowerBound - the lower bound to test
      * @param lowerInclusive - whether the lower bound is inclusive
      * @param upperBound - the upper bound to test
@@ -182,15 +186,15 @@ public class DateCondition extends DataTypeCondition<Date> {
      * 
      * @since 1.2
      */
-    public DateCondition(Date lowerBound, boolean lowerInclusive, Date upperBound,
-            boolean upperInclusive) {
-        this(lowerBound, lowerInclusive, upperBound, upperInclusive, DateAdapter.DEFAULT);
+    public DateCondition(boolean between, Date lowerBound, boolean lowerInclusive,
+            Date upperBound, boolean upperInclusive) {
+        this(between, lowerBound, lowerInclusive, upperBound, upperInclusive, DateAdapter.DEFAULT);
     }
 
     /**
      * Initializes me with upper and lower bounds against which to test input values, and an adapter
      * to convert those inputs to {@link Date} objects.
-     * 
+     * @param between - if <code>true</code>, use the {@link #BETWEEN} operator. Otherwise use the {@link #OUTSIDE} operator
      * @param lowerBound - the lower bound to test
      * @param lowerInclusive - whether the lower bound is inclusive
      * @param upperBound - the upper bound to test
@@ -199,15 +203,15 @@ public class DateCondition extends DataTypeCondition<Date> {
      * 
      * @since 1.2
      */
-    public DateCondition(Date lowerBound, boolean lowerInclusive, Date upperBound,
-            boolean upperInclusive, DateAdapter adapter) {
+    public DateCondition(boolean between, Date lowerBound, boolean lowerInclusive,
+            Date upperBound, boolean upperInclusive, DateAdapter adapter) {
         super(lowerBound, adapter);
 
         this.lowerBound = lowerBound;
         this.lowerInclusive = lowerInclusive;
         this.upperBound = upperBound;
         this.upperInclusive = upperInclusive;
-        this.operator = BETWEEN;
+        this.operator = between ? BETWEEN : OUTSIDE;
     }
 
     /**
@@ -310,9 +314,40 @@ public class DateCondition extends DataTypeCondition<Date> {
      */
     public static DateCondition between(Date lowerBound, boolean lowerInclusive, Date upperBound,
             boolean upperInclusive) {
-        return new DateCondition(lowerBound, lowerInclusive, upperBound, upperInclusive);
+        return new DateCondition(true, lowerBound, lowerInclusive, upperBound, upperInclusive);
     }
 
+   /**
+    * Obtains a condition checking for values in the range to the specified <tt>lowerBound</tt> and
+    * <tt>upperBound</tt> (inclusive).
+    * 
+    * @param lowerBound the lower bound of numbers to check for (inclusive)
+    * @param upperBound the upper bound of numbers to check for (inclusive)
+    * @return a condition that does the checking
+    * 
+    * @since 1.2
+    */
+   public static DateCondition outside(Date lowerBound, Date upperBound) {
+       return outside(lowerBound, true, upperBound, true);
+   }
+
+   /**
+    * Obtains a condition checking for values in the range to the specified <tt>lowerBound</tt> and
+    * <tt>upperBound</tt>.
+    * 
+    * @param lowerBound the lower bound of numbers to check for
+    * @param lowerInclusive whether the lower bound is inclusive
+    * @param upperBound the upper bound of numbers to check for
+    * @param upperInclusive whether the upper bound is inclusive
+    * @return a condition that does the checking
+    * 
+    * @since 1.2
+    */
+   public static DateCondition outside(Date lowerBound, boolean lowerInclusive, Date upperBound,
+           boolean upperInclusive) {
+       return new DateCondition(false, lowerBound, lowerInclusive, upperBound, upperInclusive);
+   }
+    
     /**
      * Tests if the argument's value equals/in-range the initialization date(s)
      * 
@@ -388,6 +423,15 @@ public class DateCondition extends DataTypeCondition<Date> {
                         : (cond.lowerBound.compareTo(date) < 0))
                         && (cond.upperInclusive ? (cond.upperBound.compareTo(date) >= 0)
                                 : (cond.upperBound.compareTo(date) > 0));
+            };
+        },
+        OUTSIDE {
+            @Override
+            boolean isSatisfied(DateCondition cond, Date date) {
+                return (cond.lowerInclusive ? (cond.lowerBound.compareTo(date) >= 0)
+                        : (cond.lowerBound.compareTo(date) > 0))
+                        || (cond.upperInclusive ? (cond.upperBound.compareTo(date) <= 0)
+                                : (cond.upperBound.compareTo(date) < 0));
             };
         };
 

@@ -77,7 +77,7 @@ public abstract class RendererBaseTest {
      */
     protected static BufferedImage showRender(String testName, GTRenderer renderer, long timeOut,
             ReferencedEnvelope bounds) throws Exception {
-        showRender(testName, renderer, timeOut, bounds, null);
+        return showRender(testName, renderer, timeOut, bounds, null);
     }
 
     /**
@@ -134,7 +134,7 @@ public abstract class RendererBaseTest {
                 frame.dispose();
             } catch (HeadlessException exception) {
                 // The test is running on a machine without X11 display. Ignore.
-                return;
+                return image;
             }
         }
         boolean hasData = false; // All I can seem to check reliably.
@@ -148,6 +148,8 @@ public abstract class RendererBaseTest {
         }
 
         assert (hasData);
+        
+        return image;
     }
 
     private static BufferedImage renderImage(GTRenderer renderer, ReferencedEnvelope bounds,

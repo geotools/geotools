@@ -30,8 +30,12 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
+import org.geotools.data.FeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.map.DefaultMapContext;
+import org.geotools.map.MapContent;
+import org.geotools.map.MapContext;
 import org.geotools.renderer.GTRenderer;
 import org.geotools.renderer.RenderListener;
 import org.geotools.styling.SLDParser;
@@ -71,7 +75,7 @@ public abstract class RendererBaseTest {
      * @throws Exception
      *             In the event of failure
      */
-    protected static void showRender(String testName, Object renderer, long timeOut,
+    protected static BufferedImage showRender(String testName, GTRenderer renderer, long timeOut,
             ReferencedEnvelope bounds) throws Exception {
         showRender(testName, renderer, timeOut, bounds, null);
     }
@@ -92,15 +96,9 @@ public abstract class RendererBaseTest {
      * @throws Exception
      *             In the event of failure
      */
-    protected static void showRender(String testName, Object renderer, long timeOut,
+    protected static BufferedImage showRender(String testName, GTRenderer renderer, long timeOut,
             ReferencedEnvelope bounds, RenderListener listener) throws Exception {
-        final int w = 300;
-        final int h = 300;
-        final BufferedImage image = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-        Graphics g = image.getGraphics();
-        g.setColor(Color.white);
-        g.fillRect(0, 0, w, h);
-        render(renderer, g, new Rectangle(w, h), bounds, listener);
+        final BufferedImage image = renderImage(renderer, bounds, listener);
 
         final String headless = System.getProperty("java.awt.headless", "false");
         if (!headless.equalsIgnoreCase("true") && TestData.isInteractiveTest()) {
@@ -119,7 +117,7 @@ public abstract class RendererBaseTest {
                     private static final long serialVersionUID = 1L;
 
                     {
-                        setPreferredSize(new Dimension(w, h));
+                        setPreferredSize(new Dimension(image.getWidth(), image.getHeight()));
                     }
 
                     public void paint(Graphics g) {
@@ -141,8 +139,8 @@ public abstract class RendererBaseTest {
         }
         boolean hasData = false; // All I can seem to check reliably.
 
-        for (int y = 0; y < h; y++) {
-            for (int x = 0; x < w; x++) {
+        for (int y = 0; y < image.getHeight(); y++) {
+            for (int x = 0; x < image.getWidth(); x++) {
                 if (image.getRGB(x, y) != 0) {
                     hasData = true;
                 }
@@ -150,6 +148,18 @@ public abstract class RendererBaseTest {
         }
 
         assert (hasData);
+    }
+
+    private static BufferedImage renderImage(GTRenderer renderer, ReferencedEnvelope bounds,
+            RenderListener listener) {
+        int w = 300;
+        int h = 300;
+        final BufferedImage image = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+        Graphics g = image.getGraphics();
+        g.setColor(Color.white);
+        g.fillRect(0, 0, w, h);
+        render(renderer, g, new Rectangle(w, h), bounds, listener);
+        return image;
     }
 
     /**
@@ -166,27 +176,37 @@ public abstract class RendererBaseTest {
      * @param rendererListener
      *            optional rendererListener, may be null
      */
-    private static void render(Object renderingImplementation, Graphics g, Rectangle rect,
-            ReferencedEnvelope bounds, RenderListener rendererListener) {
-        if (renderingImplementation instanceof GTRenderer) {
-            GTRenderer renderer = (GTRenderer) renderingImplementation;
-            try {
+    private static void render(GTRenderer renderer, Graphics g, Rectangle rect,
+        ReferencedEnvelope bounds, RenderListener rendererListener) {
+        try {
+            if (rendererListener != null) {
+                renderer.addRenderListener(rendererListener);
+            }
 
-                if (rendererListener != null) {
-                    renderer.addRenderListener(rendererListener);
-                }
-
-                if (bounds == null) {
-                    renderer.paint((Graphics2D) g, rect, new AffineTransform());
-                } else {
-                    renderer.paint((Graphics2D) g, rect, bounds);
-                }
-            } finally {
-                if (rendererListener != null) {
-                    renderer.removeRenderListener(rendererListener);
-                }
+            if (bounds == null) {
+                renderer.paint((Graphics2D) g, rect, new AffineTransform());
+            } else {
+                renderer.paint((Graphics2D) g, rect, bounds);
+            }
+        } finally {
+            if (rendererListener != null) {
+                renderer.removeRenderListener(rendererListener);
             }
         }
+    }
+    
+    /**
+     * Utility to quickly render a set of vector data on top of a buffered image
+     * @param sources
+     * @param styles
+     * @return
+     * @throws Exception
+     */
+    public static BufferedImage render(MapContext map) throws Exception {
+        StreamingRenderer r = new StreamingRenderer();
+        r.setContext(map);
+
+        return RendererBaseTest.showRender("testPointLabeling", r, 5000, map.getLayerBounds());
     }
 
     /**

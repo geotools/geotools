@@ -31,7 +31,9 @@ import org.geotools.util.logging.Logging;
 
 /**
  * Compares two images using perceptual criterias: the assertions will fail if the images would look
- * different to a human being
+ * different to a human being.
+ * If the tests are run with the <code>org.geotools.image.test.interactive</code> set to true a
+ * interactive image comparator will be shown.
  * 
  * @author Andrea Aime - GeoSolutions
  *

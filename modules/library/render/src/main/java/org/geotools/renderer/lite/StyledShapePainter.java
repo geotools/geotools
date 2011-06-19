@@ -361,6 +361,9 @@ public final class StyledShapePainter {
                     LOGGER.finest("moving to " + coords[0] + "," + coords[1]);
                 }
                 
+                first[0] = coords[0];
+                first[1] = coords[1];
+                
                 remainder = imageSize / 2.0;
                 break;
 
@@ -369,6 +372,7 @@ public final class StyledShapePainter {
                 // draw back to first from previous
                 coords[0] = first[0];
                 coords[1] = first[1];
+                remainder = imageSize / 2.0;
 
                 if (LOGGER.isLoggable(Level.FINEST)) {
                     LOGGER.finest("closing from " + previous[0] + ","

@@ -238,23 +238,6 @@
                 </documentation>
               </annotation>
             </element>  
-            <element name="groupBy" minOccurs="0" maxOccurs="1">
-              <annotation>
-                <documentation>
-                  <![CDATA[
-              This is how we achieve our basic support for multivalued properties. If you have a source featuretype
-              serving features produced by a join query, you have to specify here as many GroupByAttribute
-              elements as attributes needed to make a unique feature from the joined results, so complex datastore
-              will be able of recognizing where a target feature with multiple valued attributes ends.
-            ]]>
-                </documentation>
-              </annotation>
-              <complexType>
-                <sequence>
-                  <element name="GroupByAttribute" type="string" minOccurs="0" maxOccurs="unbounded" />
-                </sequence>
-              </complexType>
-            </element>
             <element name="attributeMappings" minOccurs="0">
               <annotation>
                 <documentation>
@@ -443,8 +426,7 @@
             <![CDATA[ Flag to indicate the target element addressed by this mapping has to be treated as
             a multivalued property. AppSchemaDataAccess will treat all the attribute mappings having this flag
             set to true as multivalued attributes and will create as many instances of it as Features of
-            the surrogate datastore lie inside the group mapping, as defined by the groupBy element in 
-            a FeatureTypeMapping ]]>
+            the surrogate datastore lie inside the FeatureTypeMapping ]]>
           </documentation>
         </annotation>
       </element>

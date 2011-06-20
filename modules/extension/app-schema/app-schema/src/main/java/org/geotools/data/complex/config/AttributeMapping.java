@@ -297,7 +297,7 @@ public class AttributeMapping implements Serializable {
     }
 
     /**
-     * Returns wether this attribute should be treated as a single or multi valued property.
+     * Returns whether this attribute should be treated as a single or multi valued property.
      * 
      * @return <code>true</code> if this attribute corresponds to a multivalued property,
      *         <code>false</code> otherwise.

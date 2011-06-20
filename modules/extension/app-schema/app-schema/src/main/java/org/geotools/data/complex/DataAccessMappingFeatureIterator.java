@@ -47,7 +47,6 @@ import org.geotools.feature.Types;
 import org.geotools.filter.AttributeExpressionImpl;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.FilterFactoryImpl;
-import org.geotools.filter.SortByImpl;
 import org.geotools.jdbc.JDBCFeatureSource;
 import org.geotools.jdbc.JoiningJDBCFeatureSource;
 import org.opengis.feature.Attribute;
@@ -63,7 +62,6 @@ import org.opengis.feature.type.Name;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.identity.FeatureId;
-import org.opengis.filter.sort.SortOrder;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.xml.sax.Attributes;
 
@@ -324,20 +322,16 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
         return exists;
     }
 
-    protected String extractIdForFeature() {
-        return extractIdForFeature(curSrcFeature);
-    }
-
     protected String extractIdForFeature(Feature feature) {
-		if (mapping.getFeatureIdExpression().equals(Expression.NIL)) {
-			if (feature.getIdentifier() == null) {
-				return null;
-			} else {
-				return feature.getIdentifier().getID();
-			}
-		}
-		return mapping.getFeatureIdExpression().evaluate(feature, String.class);
-	}
+        if (mapping.getFeatureIdExpression().equals(Expression.NIL)) {
+            if (feature.getIdentifier() == null) {
+                return null;
+            } else {
+                return feature.getIdentifier().getID();
+            }
+        }
+        return mapping.getFeatureIdExpression().evaluate(feature, String.class);
+    }
 
     protected String extractIdForAttribute(final Expression idExpression, Object sourceInstance) {
         String value = (String) idExpression.evaluate(sourceInstance, String.class);
@@ -392,7 +386,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
      *
      * @return Feature. Target feature sets with simple attributes
      */
-    protected Attribute setAttributeValue(Attribute target, final Object source,
+    protected Attribute setAttributeValue(Attribute target, String id, final Object source,
             final AttributeMapping attMapping, Object values, StepList inputXpath, List<PropertyName> selectedProperties) throws IOException {
 
         final Expression sourceExpression = attMapping.getSourceExpression();
@@ -401,8 +395,8 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
 
         Map<Name, Expression> clientPropsMappings = attMapping.getClientProperties();
         boolean isNestedFeature = attMapping.isNestedAttribute();
-        String id = null;
-        if (Expression.NIL != attMapping.getIdentifierExpression()) {
+        
+        if (id == null && Expression.NIL != attMapping.getIdentifierExpression()) {
             id = extractIdForAttribute(attMapping.getIdentifierExpression(), source);
         }
         if (attMapping.isNestedAttribute()) {
@@ -610,7 +604,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                     setClientProperties(instance, source, mapping.getClientProperties());
                     continue;
                 }
-                setAttributeValue(instance, source, mapping, null, null, selectedProperties.get(mapping));
+                setAttributeValue(instance, null, source, mapping, null, null, selectedProperties.get(mapping));
             }
         }
     }
@@ -799,10 +793,10 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                 // and set them to one built feature
                 if (attMapping.isMultiValued()) {
                     for (Feature source : sources) {
-                        setAttributeValue(target, source, attMapping, null, null, selectedProperties.get(attMapping));
+                        setAttributeValue(target, null, source, attMapping, null, null, selectedProperties.get(attMapping));
                     }
                 } else {
-                    setAttributeValue(target, sources.get(0), attMapping, null, null, selectedProperties.get(attMapping));
+                    setAttributeValue(target, null, sources.get(0), attMapping, null, null, selectedProperties.get(attMapping));
                     // When a feature is not multi-valued but still has multiple rows with the same ID in
                     // a denormalised table, by default app-schema only takes the first row and ignores
                     // the rest (see above). The following line is to make sure that the cursors in the

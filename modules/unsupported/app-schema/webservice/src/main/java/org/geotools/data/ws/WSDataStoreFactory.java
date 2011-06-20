@@ -97,8 +97,8 @@ public class WSDataStoreFactory extends AbstractDataStoreFactory {
         name = "WSDataStoreFactory:TIMEOUT";
         clazz = Integer.class;
         description = "This allows the user to specify a timeout in milliseconds. This param"
-                + " has a default value of 3000ms.";
-        parametersInfo[1] = new WSFactoryParam(name, clazz, description, Integer.valueOf(3000));
+                + " has a default value of unlimited.";
+        parametersInfo[1] = new WSFactoryParam(name, clazz, description, Integer.valueOf(-1));
 
         name = "WSDataStoreFactory:TRY_GZIP";
         clazz = Boolean.class;

@@ -208,6 +208,38 @@ public class XPath {
             }
             return true;
         }
+        
+        /**
+         * Find the first steps matching the xpath within this list, and set an index to it.
+         * 
+         * @param index
+         *            the new index for the matching steps
+         * @param xpath
+         *            the xpath to be searched
+         */
+        public void setIndex(int index, String xpath, String separator) {
+            if (this.toString().contains(xpath)) {
+                for (int i = 0; i < size() - 1; i++) {
+                    String firstString = get(i).toString();
+                    if (xpath.equals(firstString)) {
+                        get(i).setIndex(index);
+                        return;
+                    }
+                    if (xpath.startsWith(firstString)) {
+                        StringBuffer buf = new StringBuffer(firstString);
+                        buf.append(separator);
+                        for (int j = i + 1; j < size() - 1; j++) {
+                            buf.append(get(j).toString());
+                            if (buf.toString().equals(xpath)) {
+                                get(j).setIndex(index);
+                                return;
+                            }
+                            buf.append(separator);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     /**

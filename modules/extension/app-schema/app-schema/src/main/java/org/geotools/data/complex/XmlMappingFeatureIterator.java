@@ -18,7 +18,6 @@
 package org.geotools.data.complex;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -29,13 +28,12 @@ import java.util.logging.Level;
 import org.apache.commons.jxpath.JXPathException;
 import org.geotools.data.Query;
 import org.geotools.data.complex.PathAttributeList.Pair;
-import org.geotools.data.complex.filter.XPath.StepList;
-import org.geotools.data.complex.xml.XmlFeatureCollection;
-import org.geotools.data.complex.xml.XmlResponse;
+import org.geotools.data.complex.filter.XPath.*;
+import org.geotools.data.complex.xml.*;
 import org.geotools.feature.AttributeBuilder;
-import org.geotools.filter.FunctionExpressionImpl;
+import org.geotools.feature.Types;
+import org.geotools.feature.type.ComplexTypeImpl;
 import org.geotools.filter.LiteralExpressionImpl;
-import org.geotools.util.Converters;
 import org.geotools.util.XmlXpathUtilites;
 import org.opengis.feature.Attribute;
 import org.opengis.feature.Feature;
@@ -43,12 +41,14 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Function;
 import org.xml.sax.Attributes;
 
 /**
  * An implementation of AbstractMappingFeatureIterator to handle XML datasources.
  * 
  * @author Russell Petty (GeoScience Victoria)
+ * @author Rini Angreani (CSIRO Earth Science and Resource Engineering) 
  * @version $Id$
  *
  *
@@ -61,7 +61,7 @@ public class XmlMappingFeatureIterator extends DataAccessMappingFeatureIterator 
     /**
      * Constants for manipulating XPath Expressions
      */
-    private static final String XPATH_SEPARATOR = "/";
+    public static final String XPATH_SEPARATOR = "/";
 
     private static final String XPATH_LEFT_INDEX_BRACKET = "[";
 
@@ -91,8 +91,7 @@ public class XmlMappingFeatureIterator extends DataAccessMappingFeatureIterator 
             Query query) throws IOException {
         super(store, mapping, query, false);
 
-        idXpath = mapping.getFeatureIdExpression().equals(Expression.NIL) ? "@id" : mapping
-				.getFeatureIdExpression().toString();
+        setIdXPath();
         
         if (xmlResponse == null) {
             this.xmlResponse = ((XmlFeatureCollection) sourceFeatures).xmlResponse();
@@ -106,8 +105,7 @@ public class XmlMappingFeatureIterator extends DataAccessMappingFeatureIterator 
             Query query, String xpath, String value) throws IOException {
         super(store, mapping, query, false);
 
-        idXpath = mapping.getFeatureIdExpression().equals(Expression.NIL) ? "@id" : mapping
-                                .getFeatureIdExpression().toString();
+        setIdXPath();
 
         if (xmlResponse == null) {
             this.xmlResponse = ((XmlFeatureCollection) sourceFeatures).xmlResponse(xpath, value);
@@ -115,6 +113,11 @@ public class XmlMappingFeatureIterator extends DataAccessMappingFeatureIterator 
 
         List<Integer> ls = xmlResponse.getValidFeatureIndex();
         count = ls.size();
+    }
+    
+    private void setIdXPath() {
+        idXpath = mapping.getFeatureIdExpression().equals(Expression.NIL) ? "@id" : mapping
+                .getFeatureIdExpression().toString();
     }
 
     protected Iterator<SimpleFeature> getSourceFeatureIterator() {
@@ -124,11 +127,23 @@ public class XmlMappingFeatureIterator extends DataAccessMappingFeatureIterator 
     protected boolean isSourceFeatureIteratorNull() {
         return xmlResponse == null;
     }
-
-    protected String extractIdForFeature() {
+    
+    @Override
+    protected String extractIdForAttribute(final Expression idExpression, Object sourceInstance) {
         try {
-            return XmlXpathUtilites.getSingleXPathValue(mapping.getNamespaces(),
-                createIndexedItemXpathString() + XPATH_SEPARATOR + idXpath, xmlResponse.getDoc());
+            if (idExpression instanceof Function) {
+                // special handling for functions
+                XmlXpathFilterData data = new XmlXpathFilterData(namespaces, xmlResponse.getDoc(), -1, 
+                        XmlMappingFeatureIterator.createIndexedItemXpathString(
+                            (XmlFeatureTypeMapping) mapping, xmlResponse, indexCounter));
+                Object value = idExpression.evaluate(data);
+                return (value == null ? "" : value.toString());                 
+            } else {
+                return XmlXpathUtilites.getSingleXPathValue(mapping.getNamespaces(),
+                        createIndexedItemXpathString((XmlFeatureTypeMapping) mapping, xmlResponse,
+                                indexCounter)
+                                + XPATH_SEPARATOR + idXpath, xmlResponse.getDoc());
+            }
         } catch (RuntimeException e) {
             if (e.getCause() instanceof JXPathException) {
                 // only log info since id is not always compulsory
@@ -140,30 +155,26 @@ public class XmlMappingFeatureIterator extends DataAccessMappingFeatureIterator 
         return null;
     }
 
-    private String createIndexedItemXpathString() {
-        String rootXpath = ((XmlFeatureTypeMapping)mapping).itemXpath + XPATH_LEFT_INDEX_BRACKET
+    public static String createIndexedItemXpathString(XmlFeatureTypeMapping mapping,
+            XmlResponse xmlResponse, int indexCounter) {
+        String rootXpath = mapping.itemXpath + XPATH_LEFT_INDEX_BRACKET
                 + xmlResponse.getValidFeatureIndex().get(indexCounter - 1)
                 + XPATH_RIGHT_INDEX_BRACKET;
-        
-        if (((XmlFeatureTypeMapping) mapping).rootAttribute.getInstanceXpath() != null) {
-            rootXpath += XPATH_SEPARATOR
-                    + ((XmlFeatureTypeMapping) mapping).rootAttribute.getInstanceXpath();
+
+        if (mapping.rootAttribute.getInstanceXpath() != null) {
+            rootXpath += XPATH_SEPARATOR + mapping.rootAttribute.getInstanceXpath();
         }
-        
+
         return rootXpath;
     }
 
-    protected String extractIdForAttribute(final Expression idExpression, Object sourceInstance) {
-        String value = (String) idExpression.evaluate(sourceInstance, String.class);
-        return value;
-    }
-
-    protected Feature populateFeatureData(String id) throws IOException {
+    protected Feature populateFeatureData() throws IOException {
 
         final AttributeDescriptor targetNode = mapping.getTargetFeature();
         AttributeBuilder builder = new AttributeBuilder(attf);
         builder.setDescriptor(targetNode);
-        Feature target = (Feature) builder.build(id);
+        Feature target = (Feature) builder.build(extractIdForAttribute(mapping
+                .getFeatureIdExpression(), null));
 
         if (attOrderedTypeList == null) {
             initialiseAttributeLists(mapping.getAttributeMappings());
@@ -176,38 +187,61 @@ public class XmlMappingFeatureIterator extends DataAccessMappingFeatureIterator 
         return target;
     }
 
+    @SuppressWarnings("unchecked")
     private void setAttributeValues(PathAttributeList elements, Feature target) throws IOException {
-        for (AttributeMapping attMapping : ((XmlFeatureTypeMapping)mapping).setterAttributes) {           
-            List<Pair> ls = elements.get(attMapping.getParentLabel());
+        for (AttributeMapping attMapping : ((XmlFeatureTypeMapping)mapping).setterAttributes) {      
+            String parentLabel = attMapping.getParentLabel();
+            List<Pair> ls = elements.get(parentLabel);
             if (ls != null) {
                 final Expression sourceExpression = attMapping.getSourceExpression();
-                
+                final Expression idExpression = attMapping.getIdentifierExpression();
+
                 for (int i = 0; i < ls.size(); i++) {
                     Pair parentPair = ls.get(i);
                     Attribute setterTarget = parentPair.getAttribute();
-
-                    List<String> values = getValue(parentPair.getXpath(), sourceExpression,
-                            setterTarget);
-                    for (int j = 0; j < values.size(); j++) {
-                        String value = values.get(j);
-                        if (LOGGER.isLoggable(Level.FINER)) {
-                            LOGGER.finer("setting target=" + setterTarget.getName()
-                                    + ", targetXpath=" + attMapping.getTargetXPath() + ", value="
-                                    + value);
+                    // find the root attribute mapping from the xpath 
+                    // get the full xpath query including 
+                    StepList xpath = attMapping.getTargetXPath().clone();
+                    Object value = getValue(parentPair.getXpath(), sourceExpression, target);
+                    
+                    xpath.get(0).setIndex(i+1);
+                                                                                                                                         
+                    if (value != null) {
+                        if (value instanceof Collection) {
+                            Collection<Object> values = (Collection) value;
+                            for (Object val : values) {
+                                setValues(val, setterTarget, parentPair, attMapping, target, xpath,
+                                        idExpression);
+                            }
+                        } else {
+                            setValues(value, setterTarget, parentPair, attMapping, target, xpath,
+                                    idExpression);
                         }
-                        
-                        // find setter target in the xpath and set the new index
-                        StepList xpath = attMapping.getTargetXPath().clone();
-                        if (ls.size() > 1) {
-                            xpath.get(0).setIndex(i + 1);
-                        }
-                                    
-                        Attribute att = setAttributeValue(target, null, attMapping, value, xpath, null);
-                        setClientProperties(att, parentPair.getXpath(), attMapping.getClientProperties());
                     }
                 }
             }
         }
+    }
+
+    private void setValues(Object value, Attribute setterTarget, Pair parentPair,
+            AttributeMapping attMapping, Feature target, StepList xpath, Expression idExpression)
+            throws IOException {
+        if (LOGGER.isLoggable(Level.FINER)) {
+            LOGGER.finer("setting target=" + setterTarget.getName() + ", targetXpath="
+                    + attMapping.getTargetXPath() + ", value=" + value);
+        }
+
+        String featureId = getId(idExpression, parentPair, attMapping, "");  
+//        Attribute att = xpathAttributeBuilder.set(target,
+//                xpath, value, featureId, attMapping.getTargetNodeInstance(), false, attMapping
+//                        .getSourceExpression());
+        Attribute att = setAttributeValue(target, featureId, null, attMapping, value, xpath, null);
+        setClientProperties(att, parentPair.getXpath(), attMapping.getClientProperties());
+    }
+    
+    private void setMappedIndex(Attribute att, int index) {
+        att.getUserData().put(ComplexFeatureConstants.MAPPED_ATTRIBUTE_INDEX,
+                index);
     }
     
     @Override
@@ -228,7 +262,8 @@ public class XmlMappingFeatureIterator extends DataAccessMappingFeatureIterator 
             Object propExpr = entry.getValue();
             Object propValue;
             if (propExpr instanceof Expression) {
-                propValue = getValue(String.valueOf(xpathPrefix), (Expression)propExpr, target);
+                propValue = getValue((xpathPrefix == null ? "" : xpathPrefix.toString()),
+                        (Expression) propExpr, target);
             } else {
                 propValue = propExpr;
             }
@@ -258,17 +293,20 @@ public class XmlMappingFeatureIterator extends DataAccessMappingFeatureIterator 
 
     private PathAttributeList populateAttributeList(Feature target) throws IOException {
         PathAttributeList elements = new PathAttributeList();
-        String rootPrefix = createIndexedItemXpathString();
-        elements.put(((XmlFeatureTypeMapping)mapping).rootAttribute.getLabel(), rootPrefix, target);
-        
-        setClientProperties(target, rootPrefix, ((XmlFeatureTypeMapping)mapping).rootAttribute.getClientProperties());
+        String rootPrefix = createIndexedItemXpathString((XmlFeatureTypeMapping) mapping,
+                xmlResponse, indexCounter);
+        elements
+                .put(((XmlFeatureTypeMapping) mapping).rootAttribute.getLabel(), rootPrefix, target);
+
+        setClientProperties(target, rootPrefix, ((XmlFeatureTypeMapping) mapping).rootAttribute
+                .getClientProperties());
 
         // iterator returns the attribute mappings starting from the root of the tree.
         // parents are always returned before children elements.
         Iterator<AttributeMapping> it = attOrderedTypeList.iterator();
         while (it.hasNext()) {
             AttributeMapping attMapping = it.next();
-            final Expression sourceExpression = attMapping.getIdentifierExpression();
+            final Expression idExpression = attMapping.getIdentifierExpression();
 
             List<Pair> ls = elements.get(attMapping.getParentLabel());
             if (ls != null) {
@@ -282,41 +320,97 @@ public class XmlMappingFeatureIterator extends DataAccessMappingFeatureIterator 
                     int count = XmlXpathUtilites.countXPathNodes(mapping.getNamespaces(),
                             countXpath, xmlResponse.getDoc());
                     
-                    createSubFeaturesAndAddToAttributeList(elements, attMapping, sourceExpression,
-                            parentAttribute, count, countXpath);
+                    createSubFeaturesAndAddToAttributeList(elements, attMapping, idExpression,
+                            parentAttribute, count, countXpath, target);
                 }
             }
         }
         return elements;
     }
 
-    private void createSubFeaturesAndAddToAttributeList(PathAttributeList elements,
-            AttributeMapping attMapping, final Expression sourceExpression,
-            Pair parentAttribute, int count, String countXpath) throws IOException {
-
-        for (int j = 1; j <= count; j++) {
-            final String bracketIndex = bracketedIndex(j);
-            final String idPath = setFeatureXpath(attMapping, sourceExpression, parentAttribute,
-                    bracketIndex);
+    private String getId(Expression idExpression, Pair parentAttribute,
+            AttributeMapping attMapping, String bracketIndex) {
+        String featureId = null;     
+        String idPath;
+        if (idExpression instanceof Function) {   
+            // get parent attribute xpath and append this instance xpath + index
+            idPath = parentAttribute.getXpath() + XPATH_SEPARATOR;
+            if (attMapping.getInstanceXpath() != null) {
+                idPath += attMapping.getInstanceXpath() + bracketIndex;
+            }
+            
+            XmlXpathFilterData data = new XmlXpathFilterData(namespaces, xmlResponse.getDoc(), -1,
+                    idPath);
+            featureId = idExpression.evaluate(data, String.class);
+        } else {
+            idPath = setFeatureXpath(attMapping, idExpression, parentAttribute, bracketIndex);
             List<String> featureIdList = getValue(idPath);
-            String featureId = null;
             if (!featureIdList.isEmpty()) {
                 featureId = featureIdList.get(0);
             }
-            StepList sl = attMapping.getTargetXPath().clone();
-            setPathIndex(j, sl);
-//            Attribute subFeature = setAttributeValue(parentAttribute.getAttribute(), featureId, null, attMapping, null, sl);
-            Attribute subFeature = xpathAttributeBuilder.set(parentAttribute.getAttribute(), sl,
-                    null, featureId, attMapping.getTargetNodeInstance(), false, attMapping
-                            .getSourceExpression());               
+        }
+        return featureId;
+    }
+
+    private void createSubFeaturesAndAddToAttributeList(PathAttributeList elements,
+            AttributeMapping attMapping, final Expression idExpression, Pair parentAttribute,
+            int count, String countXpath, Feature target) throws IOException {
+
+        StepList sl = attMapping.getTargetXPath().clone();
+        setPathIndex(parentAttribute.getAttribute(), sl);
+        
+        for (int j = 1; j <= count; j++) {
+            final String bracketIndex = bracketedIndex(j);
+            String featureId = getId(idExpression, parentAttribute, attMapping, bracketIndex);     
+            
+            setLastElementIndex(parentAttribute.getAttribute(), sl, j);
+            
+            Attribute subFeature = xpathAttributeBuilder.set(target,
+                    sl, null, featureId, attMapping.getTargetNodeInstance(), false, attMapping
+                            .getSourceExpression());
+//            Attribute subFeature = setAttributeValue(parentAttribute.getAttribute(), featureId,
+//                    null, attMapping, null, sl, null);
+            
             String xpath = countXpath + bracketIndex;
             setClientProperties(subFeature, xpath, attMapping.getClientProperties());
+            setMappedIndex(subFeature, j);
             elements.put(attMapping.getLabel(), xpath, subFeature);
         }
     }
 
-    private String setFeatureXpath(AttributeMapping attMapping,
-            final Expression sourceExpression, Pair parentAttribute, final String bracketIndex) {
+    /**
+     * Find the last element in the given path and set the index.
+     * 
+     * @param parent
+     *            Parent attribute where the path is going to be set in.
+     * @param sl
+     *            The path to be set.
+     * @param index
+     *            The index for the last element.
+     */
+    private void setLastElementIndex(Attribute parent, StepList sl, int index) {
+        if (!(parent.getType() instanceof ComplexTypeImpl)) {
+            // not a complex type, so just set the first index as a simple type
+            // can't have another complex type as children anyway
+            sl.get(0).setIndex(index);
+            return;
+        }
+        ComplexTypeImpl type = (ComplexTypeImpl) parent.getType();
+        // check the last step first and gradually move to the previous one
+        int lastIndex = sl.size() - 1;
+        Name lastStep = Types.toTypeName(sl.get(lastIndex).getName());
+        while (!Types.isElement(type, lastStep)) {
+            lastIndex--;
+            if (lastIndex < 0) {
+                return;
+            }
+            lastStep = Types.toTypeName(sl.get(lastIndex).getName());
+        }    
+        sl.get(lastIndex).setIndex(index);
+    }
+    
+    private String setFeatureXpath(AttributeMapping attMapping, final Expression sourceExpression,
+            Pair parentAttribute, final String bracketIndex) {
         String xpath;
 
         if (attMapping.getInstanceXpath() == null) {
@@ -328,9 +422,16 @@ public class XmlMappingFeatureIterator extends DataAccessMappingFeatureIterator 
         return xpath;
     }
 
-    private void setPathIndex(int j, StepList sl) {
-        if (j > 1) {
-            sl.get(0).setIndex(j);
+    private void setPathIndex(Attribute att, StepList sl) {
+        Object index = att.getUserData().get(ComplexFeatureConstants.MAPPED_ATTRIBUTE_INDEX);
+        if (index != null) {
+            int mappedIndex = Integer.parseInt(String.valueOf(index));
+            // get prefixed attribute name
+            Name attName = att.getName();
+            String nsPrefix = namespaces.getPrefix(attName.getNamespaceURI());
+            String xpath = nsPrefix + ":" + attName.getLocalPart();
+            // set the index of the attribute in the attribute mapping steps
+            sl.setIndex(mappedIndex, xpath, XPATH_SEPARATOR);
         }
     }
 
@@ -350,35 +451,29 @@ public class XmlMappingFeatureIterator extends DataAccessMappingFeatureIterator 
         return indexCounter > count;
     }
 
-    protected List<String> getValue(Expression expression, String xpathPrefix, Attribute target) {
-        return getValue(xpathPrefix, expression, target);
-    }
-
-    private List<String> getValue(String xpathPrefix, Expression node, Attribute target) {
+    private Object getValue(String xpathPrefix, Expression node, Attribute target) {
         final String EMPTY_STRING = "";
-        String expressionValue = node.toString();
-        boolean isUnsetNode = Expression.NIL.equals(node) || expressionValue.equals("''");
+        String expressionString = node.toString();
+        boolean isUnsetNode = Expression.NIL.equals(node) || expressionString.equals("''");
 
-        if (isUnsetNode || expressionValue.startsWith("'") || node instanceof LiteralExpressionImpl) {
+        if (isUnsetNode || expressionString.startsWith("'")
+                || node instanceof LiteralExpressionImpl) {
             String editedValue = EMPTY_STRING;
-            List<String> ls = new ArrayList<String>(1);
             if (!isUnsetNode) {
-                editedValue = expressionValue.replace("'", "");
+                editedValue = expressionString.replace("'", "");
             }
-            ls.add(editedValue);
-            return ls;
-        } else if (node instanceof FunctionExpressionImpl) {
-            // special handling for functions
-            List<String> ls = new ArrayList<String>(1);
-            Object value = node.evaluate(target);
-            if (value != null) {
-                ls.add(Converters.convert(value, String.class));
-            }
-            return ls;
+            return editedValue;
         } else {
-            expressionValue = xpathPrefix + XPATH_SEPARATOR + expressionValue;
+            if (node instanceof Function) {
+                // special handling for functions
+                XmlXpathFilterData data = new XmlXpathFilterData(namespaces, xmlResponse.getDoc(),
+                        -1, xpathPrefix);
+                return node.evaluate(data);
+            } else if (xpathPrefix.length() > 0) {
+                expressionString = xpathPrefix + XPATH_SEPARATOR + expressionString;
+            }
         }
-        return getValue(expressionValue);
+        return getValue(expressionString);
     }
 
     protected List<String> getValue(String expressionValue) {
@@ -442,6 +537,7 @@ public class XmlMappingFeatureIterator extends DataAccessMappingFeatureIterator 
         return exists;
     }
 
+    @Override
     protected Feature computeNext() throws IOException {
         if (!isHasNextCalled()) {
             // hasNext needs to be called to set nextSrcFeature
@@ -452,9 +548,8 @@ public class XmlMappingFeatureIterator extends DataAccessMappingFeatureIterator 
         setHasNextCalled(false);
         if (isNextSourceFeatureNull()) {
             throw new UnsupportedOperationException("No more features produced!");
-        }
-
-        String id = extractIdForFeature();
-        return populateFeatureData(id);
+        }       
+        Feature f = populateFeatureData();
+        return f;
     }
 }

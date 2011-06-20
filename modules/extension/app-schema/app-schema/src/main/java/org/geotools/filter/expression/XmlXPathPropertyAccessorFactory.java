@@ -31,10 +31,7 @@ import org.xml.sax.helpers.NamespaceSupport;
  * against instances of {@link Feature}.
  * 
  * @author Russell Petty (GeoScience Victoria)
-* 
- *
- *
- *
+ * @author Rini Angreani (CSIRO Earth Science and Resource Engineering) 
  * @source $URL$
  */
 public class XmlXPathPropertyAccessorFactory implements PropertyAccessorFactory {
@@ -86,9 +83,12 @@ public class XmlXPathPropertyAccessorFactory implements PropertyAccessorFactory 
                         + "/n xpathString =" + xpathString + "/n itemXpath =" + itemXpath);
             }
 
-            StringBuffer sb = new StringBuffer(itemXpath)
-                    .append("[" + xmlResponse.getCount() + "]").append(
-                            xpathString.substring(itemXpath.length()));
+            StringBuffer sb = new StringBuffer(itemXpath);
+            int count = xmlResponse.getCount();
+            if (count > -1) {
+                    sb.append("[" + xmlResponse.getCount() + "]");
+            }
+            sb.append(xpathString.substring(itemXpath.length()));
             return sb.toString();
         }
     }

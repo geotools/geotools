@@ -22,11 +22,13 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
 import org.opengis.feature.IllegalAttributeException;
+import org.eclipse.xsd.XSDElementDeclaration;
 import org.geotools.data.complex.config.AppSchemaDataAccessDTO;
 import org.geotools.feature.type.AttributeTypeImpl;
 import org.opengis.feature.Attribute;
@@ -629,6 +631,27 @@ public class Types extends org.geotools.feature.type.Types {
      */
     public static Name toName(QName name) {
         return toTypeName(name);
+    }
+    
+    /**
+     * Return true if an attribute from a type is an element.
+     * 
+     * @param type
+     *            The type to search in.
+     * @param att
+     *            The attribute name.
+     * @return True if the attribute exists in the type and is an element.
+     */
+    public static boolean isElement(ComplexType type, Name att) {
+        PropertyDescriptor descriptor = Types.descriptor(type, att);
+        if (descriptor == null) {
+            return false;
+        }
+        Map<Object, Object> userData = descriptor.getUserData();
+        if (userData.isEmpty()) {
+            return false;
+        }
+        return userData.get(XSDElementDeclaration.class) != null;
     }
 
     public static Name toTypeName(QName name) {

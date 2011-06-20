@@ -33,7 +33,6 @@ import java.util.Set;
 
 import junit.framework.TestCase;
 
-import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
 import org.geotools.data.complex.AppSchemaDataAccess;
@@ -215,7 +214,7 @@ public class XmlDataStoreTest extends TestCase {
 
             Attribute at = attPurposeList.get(0);
             assertEquals("CONSTANT", getValueForAttribute(at));
-            assertEquals(0, at.getUserData().size());
+            assertFalse(at.getUserData().containsKey(Attributes.class));
             
             // ***************************************************************************************
             // Test an attribute with null value (ie unset) but User data is an xpath
@@ -225,7 +224,7 @@ public class XmlDataStoreTest extends TestCase {
 
             at = attGUTypeList.get(0);
             assertEquals("", getValueForAttribute(at));
-            assertEquals(1, at.getUserData().size());
+            assertEquals(1, ((Map<Object, Object>) at.getUserData().get(Attributes.class)).size());
             assertEquals("urn:cgi:classifier:GSV:LithostratigraphicUnitRank:formation",
                     getUserDataForAttribute(at, new NameImpl("http://www.w3.org/1999/xlink", "href")));
             
@@ -265,7 +264,7 @@ public class XmlDataStoreTest extends TestCase {
         assertEquals(1, attDescList.size());
         Attribute at = attDescList.get(0);
         assertEquals("Test description 1", getValueForAttribute(at));
-        assertEquals(0, at.getUserData().size());
+        assertFalse(at.getUserData().containsKey(Attributes.class));
 
         // ***************************************************************************************
         // Test an attribute with two values. Also has userData, set with constants instead of
@@ -293,7 +292,7 @@ public class XmlDataStoreTest extends TestCase {
         assertEquals(1, attDescList.size());
         at = attDescList.get(0);
         assertEquals("Test description 1", getValueForAttribute(at));
-        assertEquals(0, at.getUserData().size());
+        assertFalse(at.getUserData().containsKey(Attributes.class));
 
         attNameList = getAttributesForProperty(feature, "name");
         assertEquals(2, attNameList.size());
@@ -315,7 +314,7 @@ public class XmlDataStoreTest extends TestCase {
         assertEquals(1, attDescList.size());
         at = attDescList.get(0);
         assertEquals("Test description 2", getValueForAttribute(at));
-        assertEquals(0, at.getUserData().size());
+        assertFalse(at.getUserData().containsKey(Attributes.class));
 
         attNameList = getAttributesForProperty(feature, "name");
         assertEquals(2, attNameList.size());

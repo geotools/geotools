@@ -40,8 +40,10 @@ import org.opengis.feature.type.PropertyDescriptor;
 public class ComplexFeatureConstants {
     /**
      * Static attribute name used to link different feature types.
-     */
-    public static final Name FEATURE_CHAINING_LINK_NAME = new NameImpl("FEATURE_LINK");
+     */    
+    public static final String FEATURE_CHAINING_LINK_STRING = "FEATURE_LINK";
+
+    public static final Name FEATURE_CHAINING_LINK_NAME = new NameImpl(FEATURE_CHAINING_LINK_STRING);
 
     /**
      * Static attribute descriptor used to link different feature types. This attribute won't appear

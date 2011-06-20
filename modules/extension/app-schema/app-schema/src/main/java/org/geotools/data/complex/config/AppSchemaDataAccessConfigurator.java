@@ -59,7 +59,6 @@ import org.geotools.data.joining.JoiningNestedAttributeMapping;
 import org.geotools.factory.Hints;
 import org.geotools.feature.Types;
 import org.geotools.filter.AttributeExpressionImpl;
-import org.geotools.filter.FilterFactory;
 import org.geotools.filter.FilterFactoryImplReportInvalidProperty;
 import org.geotools.filter.expression.FeaturePropertyAccessorFactory;
 import org.geotools.filter.text.cql2.CQL;
@@ -73,6 +72,7 @@ import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
+import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.xml.sax.helpers.NamespaceSupport;
@@ -114,8 +114,7 @@ public class AppSchemaDataAccessConfigurator {
     private NamespaceSupport namespaces;
     
     private Map schemaURIs;
-    
-    
+        
     /**
      * Convenience method for "joining" property.
      * @return
@@ -353,12 +352,13 @@ public class AppSchemaDataAccessConfigurator {
             // expression
             final Expression sourceExpression; 
 
-            sourceExpression = (inputXPath == null) ? parseOgcCqlExpression(sourceExpr) : new AttributeExpressionImpl(inputXPath, new Hints(
-                  FeaturePropertyAccessorFactory.NAMESPACE_CONTEXT, this.namespaces));
+            sourceExpression = (inputXPath == null) ? parseOgcCqlExpression(sourceExpr)
+                    : new AttributeExpressionImpl(inputXPath, new Hints(
+                            FeaturePropertyAccessorFactory.NAMESPACE_CONTEXT, this.namespaces));
 
             final AttributeType expectedInstanceOf;
 
-            final Map clientProperties = getClientProperties(attDto, itemXpath);
+            final Map clientProperties = getClientProperties(attDto);
 
             if (expectedInstanceTypeName != null) {
                 Name expectedNodeTypeName = Types.degloseName(expectedInstanceTypeName, namespaces);
@@ -468,7 +468,7 @@ public class AppSchemaDataAccessConfigurator {
      *         mapping)
      * @throws DataSourceException
      */
-    private Map getClientProperties(org.geotools.data.complex.config.AttributeMapping dto, String inputXPath)
+    private Map getClientProperties(org.geotools.data.complex.config.AttributeMapping dto)
             throws DataSourceException {
 
         if (dto.getClientProperties().size() == 0) {
@@ -480,18 +480,8 @@ public class AppSchemaDataAccessConfigurator {
             Map.Entry entry = (Map.Entry) it.next();
             String name = (String) entry.getKey();
             Name qName = Types.degloseName(name, namespaces);
-            String cqlExpression = (String) entry.getValue();
-            
-            final Expression expression;
-            if (inputXPath == null) {
-                expression =  parseOgcCqlExpression(cqlExpression);
-            } else if(cqlExpression.startsWith("'")) {
-                expression = ff.literal(cqlExpression);
-            } else {
-                expression =  new AttributeExpressionImpl(cqlExpression, new Hints(
-                        FeaturePropertyAccessorFactory.NAMESPACE_CONTEXT, this.namespaces));
-            }
-                        
+            String cqlExpression = (String) entry.getValue();            
+            final Expression expression =  parseOgcCqlExpression(cqlExpression);            
             clientProperties.put(qName, expression);
         }
         return clientProperties;

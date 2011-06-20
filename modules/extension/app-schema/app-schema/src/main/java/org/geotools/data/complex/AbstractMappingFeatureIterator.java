@@ -447,8 +447,6 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
 
     protected abstract boolean sourceFeatureIteratorHasNext();
 
-    protected abstract String extractIdForFeature();
-
     protected abstract boolean isNextSourceFeatureNull();
 
     protected abstract Feature populateFeatureData(String id) throws IOException;

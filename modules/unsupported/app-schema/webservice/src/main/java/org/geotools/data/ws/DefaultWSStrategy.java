@@ -56,11 +56,11 @@ public class DefaultWSStrategy implements WSStrategy {
 
     private static final Logger LOGGER = Logging.getLogger("org.geotools.data.ws");
 
-    private static Configuration cfg;
+    private Configuration cfg;
 
-    private static Template requestTemplate;
+    private Template requestTemplate;
 
-    private static final org.geotools.xml.Configuration ws_Configuration = new WFSConfiguration();
+    private final org.geotools.xml.Configuration ws_Configuration = new WFSConfiguration();
 
     public DefaultWSStrategy(URL templateDirectory, String templateName) {
         LOGGER.info("template directory is: " + templateDirectory);

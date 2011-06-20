@@ -73,7 +73,7 @@ public class FeatureTypeMapping {
      */
     private Name mappingName;
 
-	private Expression featureFidMapping;
+    private Expression featureFidMapping;
 
     /**
      * No parameters constructor for use by the digester configuration engine as a JavaBean

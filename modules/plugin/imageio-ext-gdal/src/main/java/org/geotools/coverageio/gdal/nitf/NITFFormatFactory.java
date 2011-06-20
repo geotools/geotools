@@ -38,7 +38,7 @@ import org.opengis.coverage.grid.Format;
 public final class NITFFormatFactory extends BaseGridFormatFactorySPI  implements GridFormatFactorySpi {
 	/** Logger. */
 	private final static Logger LOGGER = org.geotools.util.logging.Logging
-			.getLogger("org.geotools.coverageio.gdal.erdasimg");
+			.getLogger("org.geotools.coverageio.gdal.nitf");
 
 	/**
 	 * Tells me if the coverage plugin to access Erdas imagine is available or

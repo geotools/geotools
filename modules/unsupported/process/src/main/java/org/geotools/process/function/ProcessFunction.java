@@ -31,7 +31,9 @@ import org.geotools.data.Parameter;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.process.Process;
 import org.geotools.process.ProcessException;
+import org.geotools.process.Processors;
 import org.geotools.util.Converters;
+import org.opengis.feature.type.Name;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.ExpressionVisitor;
@@ -56,11 +58,14 @@ class ProcessFunction implements Function {
     Map<String, Parameter<?>> parameters;
 
     Process process;
+
+    Name processName;
     
-    ProcessFunction(String name, List<Expression> inputExpressions,
+    ProcessFunction(String name, Name processName, List<Expression> inputExpressions,
             Map<String, Parameter<?>> parameters, Process process, Literal fallbackValue) {
         super();
         this.name = name;
+        this.processName = processName;
         this.inputExpressions = inputExpressions;
         this.parameters = parameters;
         this.process = process;
@@ -178,17 +183,37 @@ class ProcessFunction implements Function {
                         + t.getMessage(), t);
             }
             
-            if (results.size() > 1) {
-                throw new RuntimeException("The process returned more than one value, "
-                        + "processes wrapped by functions should return just one");
-            }
-
-            // return the sole value returned
-            return results.values().iterator().next();
+            return getResult(results, processInputs);
         } catch (ProcessException e) {
             throw new RuntimeException("Failed to evaluate the process function, error is: "
                     + e.getMessage(), e);
         }
     }
+
+    private Object getResult(Map<String, Object> results, Map<String, Object> processInputs) {
+        if (results.size() == 1) {
+            return results.values().iterator().next();
+        }
+
+        // return the sole value returned
+        Map<String, Parameter<?>> resultInfo = Processors.getResultInfo(processName, processInputs);
+        String primary = getPrimary(resultInfo);
+        return results.get(primary);
+    }
+    
+    private String getPrimary(Map<String, Parameter<?>> resultInfo) {
+        if(resultInfo.size() == 1) {
+            return resultInfo.get(0).getName();
+        } else {
+            for (Parameter<?> param : resultInfo.values()) {
+                if(param.isRequired()) {
+                    return param.getName();
+                }
+            }
+        }
+        return null;
+    }
+    
+    
 
 }

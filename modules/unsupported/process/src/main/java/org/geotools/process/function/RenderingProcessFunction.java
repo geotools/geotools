@@ -27,6 +27,7 @@ import org.geotools.process.Process;
 import org.geotools.process.ProcessException;
 import org.geotools.process.RenderingProcess;
 import org.opengis.coverage.grid.GridGeometry;
+import org.opengis.feature.type.Name;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 
@@ -40,9 +41,9 @@ import org.opengis.filter.expression.Literal;
  */
 class RenderingProcessFunction extends ProcessFunction implements RenderingTransformation {
 
-    public RenderingProcessFunction(String name, List<Expression> inputExpressions,
+    public RenderingProcessFunction(String name, Name processName, List<Expression> inputExpressions,
             Map<String, Parameter<?>> parameters, RenderingProcess process, Literal fallbackValue) {
-        super(name, inputExpressions, parameters, process, fallbackValue);
+        super(name, processName, inputExpressions, parameters, process, fallbackValue);
     }
 
     public Query invertQuery(Query targetQuery, GridGeometry gridGeometry) {

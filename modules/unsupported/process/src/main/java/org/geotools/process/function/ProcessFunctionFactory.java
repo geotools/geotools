@@ -46,6 +46,11 @@ import org.opengis.filter.expression.Literal;
  * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/process/src/main/java/org/geotools/process/function/ProcessFunctionFactory.java $
  */
 public class ProcessFunctionFactory implements FunctionFactory {
+    
+    /**
+     * Parameter used to indicate a certain output is the primary one for the process 
+     */
+    public static final String PRIMARY_OUTPUT = "PRIMARY";
 
     /**
      * Compares process factories by their title
@@ -98,9 +103,9 @@ public class ProcessFunctionFactory implements FunctionFactory {
             org.geotools.process.Process process = Processors.createProcess(processName);
             Map<String, Parameter<?>> parameters = Processors.getParameterInfo(processName);
             if (process instanceof RenderingProcess){
-                return new RenderingProcessFunction(name, args, parameters, (RenderingProcess) process, fallback);
+                return new RenderingProcessFunction(name, processName, args, parameters, (RenderingProcess) process, fallback);
             } else {
-                return new ProcessFunction(name, args, parameters, process, fallback);
+                return new ProcessFunction(name, processName, args, parameters, process, fallback);
             }
         }
     }
@@ -129,7 +134,7 @@ public class ProcessFunctionFactory implements FunctionFactory {
                     Map<String, Parameter<?>> resultInfo = factory.getResultInfo(processName, null);
                     
                     // check there is a single output
-                    if(resultInfo.size() == 1) {
+                    if(getPrimary(resultInfo) != null) {
                         Map<String, Parameter<?>> parameterInfo = factory.getParameterInfo(processName);
                         List<String> argumentNames = new ArrayList<String>(parameterInfo.keySet());
                         functionNames.add(new FunctionNameImpl(functionName, argumentNames));
@@ -143,6 +148,19 @@ public class ProcessFunctionFactory implements FunctionFactory {
         }
     }
     
+    private String getPrimary(Map<String, Parameter<?>> resultInfo) {
+        if(resultInfo.size() == 1) {
+            return resultInfo.values().iterator().next().getName();
+        } else {
+            for (Parameter<?> param : resultInfo.values()) {
+                if(param.isRequired()) {
+                    return param.getName();
+                }
+            }
+        }
+        return null;
+    }
+
     /**
      * Clears the caches forcing the system to do another lookup
      */

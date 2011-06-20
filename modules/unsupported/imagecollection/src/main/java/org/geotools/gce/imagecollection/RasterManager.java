@@ -17,6 +17,7 @@
 package org.geotools.gce.imagecollection;
 
 import java.awt.Rectangle;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.IOException;
@@ -34,18 +35,27 @@ import javax.imageio.stream.ImageInputStream;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
+import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
+import org.geotools.coverage.grid.io.AbstractGridFormat;
+import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverage.grid.io.OverviewPolicy;
+import org.geotools.coverage.grid.io.UnknownFormat;
 import org.geotools.data.DataSourceException;
 import org.geotools.factory.Hints;
+import org.geotools.gce.geotiff.GeoTiffReader;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
+import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.util.SoftValueHashMap;
 import org.geotools.util.Utilities;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.coverage.grid.GridEnvelope;
+import org.opengis.geometry.Envelope;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.MathTransform;
 
 class RasterManager {
@@ -109,13 +119,18 @@ class RasterManager {
     class OverviewsController {
         ArrayList<RasterManager.OverviewLevel> resolutionsLevels = new ArrayList<OverviewLevel>();;
 
-        public OverviewsController(RasterLayout hrLayout) {
+        public OverviewsController(RasterLayout hrLayout, MathTransform grid2world) {
             // notice that we assume what follows:
             // -highest resolution image is at level 0.
             // -all the overviews share the same envelope
             // -the aspect ratio for the overviews is constant
             // -the provided resolutions are taken directly from the grid
-            resolutionsLevels.add(new OverviewLevel(1, highestRes[0], highestRes[1], 0, hrLayout));
+            if (grid2world == null){
+                resolutionsLevels.add(new OverviewLevel(1, highestRes[0], highestRes[1], 0, hrLayout));
+            } else {
+                AffineTransform at = (AffineTransform) grid2world;
+                resolutionsLevels.add(new OverviewLevel(1, XAffineTransform.getScaleX0(at), XAffineTransform.getScaleY0(at), 0, hrLayout));
+            }
 //            if (numberOfOverwies > 0) {
 //                for (int i = 0; i < overviewsResolution.length; i++)
 //                    resolutionsLevels.add(new OverviewLevel(
@@ -308,13 +323,6 @@ class RasterManager {
      */
     class ImageManager {
 
-//        public ImageManager() {
-//            this.property = new ImageProperty();
-//            this.coverageEnvelope = new GeneralEnvelope(new Rectangle2D.Double(0, 0, Integer.MAX_VALUE, Integer.MAX_VALUE));
-//            this.coverageRasterArea = new GridEnvelope2D(0, 0, Integer.MAX_VALUE, Integer.MAX_VALUE);
-//            this.coverageCRS = Utils.DEFAULT_IMAGE_CRS;
-//        }
-        
         public ImageManager(ImageProperty property) {
             this.property = property;
             init();
@@ -352,19 +360,29 @@ class RasterManager {
         private void init() {
             //TODO: Re-enable this code when leveraging on y as DISPLAY_DOWN
             final boolean useDisplayCRS = false;//parent.defaultValues.epsgCode == 404001 ? false : true; 
-            this.coverageEnvelope = new GeneralEnvelope(new Rectangle2D.Double(0, useDisplayCRS? 0 : -property.height, property.width, property.height));
-            this.coverageRasterArea = new GridEnvelope2D(0, 0, property.width, property.height);
-            this.coverageCRS = useDisplayCRS ? Utils.DISPLAY_CRS : Utils.GENERIC2D_CRS;
-            this.coverageEnvelope.setCoordinateReferenceSystem(this.coverageCRS);
-            
-            //TODO: Set Identity
-            this.coverageGridToWorld2D = ProjectiveTransform.create(useDisplayCRS ? Utils.IDENTITY : Utils.IDENTITY_FLIP); 
-            this.coverageFullResolution = new double[]{1.0, 1.0};
-//            final OverviewLevel highestLevel = RasterManager.this.overviewsController.resolutionsLevels.get(0);
-//            coverageFullResolution[0] = highestLevel.resolutionX;
-//            coverageFullResolution[1] = highestLevel.resolutionY;
+            if (!property.isGeoSpatial()){
+                this.coverageCRS = useDisplayCRS ? Utils.DISPLAY_CRS : Utils.GENERIC2D_CRS;
+                this.coverageEnvelope = new GeneralEnvelope(new Rectangle2D.Double(0, useDisplayCRS? 0 : -property.getHeight(), property.getWidth(), property.getHeight()));
+                this.coverageRasterArea = new GridEnvelope2D(0, 0, property.getWidth(), property.getHeight());
+                this.coverageEnvelope.setCoordinateReferenceSystem(this.coverageCRS);
+                this.coverageGridToWorld2D = ProjectiveTransform.create(useDisplayCRS ? Utils.IDENTITY : Utils.IDENTITY_FLIP); 
+                this.coverageFullResolution = new double[]{1.0, 1.0};
+                overviewsController = new OverviewsController(new RasterLayout(0,0, property.getWidth(), property.getHeight()), null);
+            } else {
+                this.coverageEnvelope = property.getEnvelope();
+                this.coverageRasterArea = new GridEnvelope2D(0, 0, property.getWidth(), property.getHeight());
+                this.coverageCRS = this.coverageEnvelope.getCoordinateReferenceSystem();
+                GridToEnvelopeMapper geMapper = new GridToEnvelopeMapper((GridEnvelope)coverageRasterArea, (Envelope)this.coverageEnvelope);
+                geMapper.setPixelAnchor(PixelInCell.CELL_CENTER);
+                this.coverageGridToWorld2D = geMapper.createTransform();
+                overviewsController = new OverviewsController(new RasterLayout(0,0, property.getWidth(), property.getHeight()), this.coverageGridToWorld2D);
+                final OverviewLevel highestLevel= overviewsController.resolutionsLevels.get(0);
+                coverageFullResolution = new double[2];
+                coverageFullResolution[0] = highestLevel.resolutionX;
+                coverageFullResolution[1] = highestLevel.resolutionY;
+            }
             coverageBBox = new ReferencedEnvelope(coverageEnvelope);
-            overviewsController = new OverviewsController(new RasterLayout(0,0,property.width, property.height));
+            
         }
 
     }
@@ -387,7 +405,7 @@ class RasterManager {
      */
     private String coverageIdentifier;
 
-    private double[] highestRes;
+    double[] highestRes;
 
     /** The hints to be used to produce this coverage */
     private Hints hints;
@@ -440,6 +458,13 @@ class RasterManager {
         coverageGridrange = new GridEnvelope2D(imageManager.coverageRasterArea);
         coverageCRS = imageManager.coverageCRS;
         raster2Model = imageManager.coverageGridToWorld2D;
+        if (imageManager.property.isGeoSpatial()){
+            //Updating highestRes
+            OverviewLevel level0 = imageManager.overviewsController.resolutionsLevels.get(0);
+            highestRes[0] = level0.resolutionX;
+            highestRes[1] = level0.resolutionY;
+        }
+        
         
         
 //        coverageEnvelope = reader.getOriginalEnvelope();
@@ -609,35 +634,53 @@ class RasterManager {
         if (filePath.equalsIgnoreCase(Utils.FAKE_IMAGE_PATH)){
             //USING FAKE VALUES
             ImageProperty imageProperty = new ImageProperty();
-            imageProperty.height = parent.defaultValues.maxHeight;
-            imageProperty.width = parent.defaultValues.maxWidth;
+            imageProperty.setHeight(parent.defaultValues.maxHeight);
+            imageProperty.setWidth(parent.defaultValues.maxWidth);
+            if (parent.defaultValues.isGeoSpatial){
+                imageProperty.setGeoSpatial(parent.defaultValues.isGeoSpatial);
+                imageProperty.setEnvelope(parent.defaultValues.envelope);
+            }
             return new ImageManager(imageProperty);
         }
         ImageManager imageManager = null;
         final File file = new File(filePath);
         ImageInputStream stream = null;
         ImageReader reader = null;
+        GeoTiffReader gtReader = null;
         try {
             if (file.exists() && file.canRead()) {
-                stream = ImageIO.createImageInputStream(file);
-                reader = Utils.getReader(stream);
-                if (reader != null) {
-                    reader.setInput(stream);
-                    
-                    // Setting up properties
-                    final ImageReaderSpi spi = reader.getOriginatingProvider();
-                    final int width = reader.getWidth(0);
-                    final int height = reader.getHeight(0);
-                    int numOverviews = reader.getNumImages(false) - 1; 
-                    if (numOverviews < 0) {
-                        numOverviews = 0;
+                
+                if (!parent.defaultValues.isGeoSpatial){
+                    stream = ImageIO.createImageInputStream(file);
+                    reader = Utils.getReader(stream);
+                    if (reader != null) {
+                        reader.setInput(stream);
+                        
+                        // Setting up properties
+                        final ImageReaderSpi spi = reader.getOriginatingProvider();
+                        final int width = reader.getWidth(0);
+                        final int height = reader.getHeight(0);
+                        int numOverviews = reader.getNumImages(false) - 1; 
+                        if (numOverviews < 0) {
+                            numOverviews = 0;
+                        }
+                        final long lastModified = file.lastModified();
+                        final ImageProperty property = new ImageProperty(filePath, width, height, numOverviews, spi, lastModified);
+                        imageManager = new ImageManager(property);
+    
+                    } else {
+                        throw new DataSourceException("Unable to get a reader for the specified path " + filePath);
                     }
-                    final long lastModified = file.lastModified();
-                    final ImageProperty property = new ImageProperty(filePath, width, height, numOverviews, spi, lastModified);
-                    imageManager = new ImageManager(property);
-
                 } else {
-                    throw new DataSourceException("Unable to get a reader for the specified path " + filePath);
+                    gtReader = new GeoTiffReader(file);
+                    GeneralEnvelope envelope = gtReader.getOriginalEnvelope();
+                    GridEnvelope range = gtReader.getOriginalGridRange();
+                    final long lastModified = file.lastModified();
+                    final ImageProperty property = new ImageProperty(filePath, range.getSpan(0), range.getSpan(1),
+                            0, Utils.TIFF_SPI, lastModified);
+                    property.setEnvelope(envelope);
+                    property.setGeoSpatial(true);
+                    imageManager = new ImageManager(property);
                 }
             } else {
                 throw new DataSourceException("The specified path doesn't exist or can't be read: " + filePath);
@@ -659,6 +702,13 @@ class RasterManager {
             if (reader != null) {
                 try {
                     reader.dispose();
+                } catch (Throwable t) {
+
+                }
+            }
+            if (gtReader != null) {
+                try {
+                    gtReader.dispose();
                 } catch (Throwable t) {
 
                 }

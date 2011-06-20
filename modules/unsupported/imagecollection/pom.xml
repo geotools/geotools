@@ -68,6 +68,11 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-geotiff</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
       <groupId>javax.media</groupId>
       <artifactId>jai_imageio</artifactId>
       <scope>provided</scope>  <!-- Users should execute JAI installer. -->

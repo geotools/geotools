@@ -16,6 +16,8 @@
  */
 package org.geotools.gce.imagecollection;
 
+import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
+
 import java.awt.Rectangle;
 import java.awt.Transparency;
 import java.awt.color.ColorSpace;
@@ -77,6 +79,10 @@ class Utils {
     final static String CONFIG_FILE = "config.properties"; 
     
     final static RenderedImage DEFAULT_IMAGE;
+    
+    final static TIFFImageReaderSpi TIFF_SPI = new TIFFImageReaderSpi();
+    
+    final static int IMAGE_EPSG = 404000;
     
     final static FilenameFilter FILE_FILTER = new FilenameFilter() {
         
@@ -141,6 +147,7 @@ class Utils {
         final static String TIME_BETWEEN_CHECKS = "timeBetweenChecks";
         final static String MAX_WIDTH = "maxWidth";
         final static String MAX_HEIGHT = "maxHeight";
+        final static String ENVELOPE = "envelope";
         
     }
     

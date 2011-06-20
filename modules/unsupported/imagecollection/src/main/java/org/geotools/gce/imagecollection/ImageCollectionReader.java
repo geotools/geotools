@@ -43,11 +43,15 @@ import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.referencing.CRS;
 import org.opengis.coverage.ColorInterpretation;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.coverage.grid.GridCoverageReader;
 import org.opengis.parameter.GeneralParameterValue;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.NoSuchAuthorityCodeException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 
 /**
@@ -73,7 +77,11 @@ public final class ImageCollectionReader extends AbstractGridCoverage2DReader im
          */
         long timeBetweenChecks = 1000 * 600;
         
-        int epsgCode = 404000; 
+        int epsgCode = Utils.IMAGE_EPSG; 
+        
+        GeneralEnvelope envelope = null;
+        
+        boolean isGeoSpatial = false;
     }
     
     DefaultsValue defaultValues = new DefaultsValue();
@@ -116,10 +124,10 @@ public final class ImageCollectionReader extends AbstractGridCoverage2DReader im
     }
 
     /**
-     * Creates a new instance of GeoTiffReader
+     * Creates a new instance of ImageCollectionReader
      * 
      * @param input
-     *            the GeoTiff file
+     *            the input folder
      * @throws DataSourceException
      */
     public ImageCollectionReader(Object input) throws DataSourceException {
@@ -128,10 +136,10 @@ public final class ImageCollectionReader extends AbstractGridCoverage2DReader im
     }
 
     /**
-     * Creates a new instance of GeoTiffReader
+     * Creates a new instance of ImageCollectionReader
      * 
      * @param input
-     *            the GeoTiff file
+     *            the input folder
      * @param uHints
      *            user-supplied hints TODO currently are unused
      * @throws DataSourceException
@@ -172,13 +180,7 @@ public final class ImageCollectionReader extends AbstractGridCoverage2DReader im
       originalEnvelope.setCoordinateReferenceSystem(rasterManager.getCoverageCRS());
       crs = rasterManager.getCoverageCRS();
       raster2Model = rasterManager.getRaster2Model();
-        
-//        originalGridRange = new GridEnvelope2D(0, 0, Integer.MAX_VALUE, Integer.MAX_VALUE);
-//        originalEnvelope = new GeneralEnvelope(new Rectangle2D.Double(0, 0, Integer.MAX_VALUE, Integer.MAX_VALUE));
-//        originalEnvelope.setCoordinateReferenceSystem(Utils.DEFAULT_IMAGE_CRS);
-//        crs = Utils.DEFAULT_IMAGE_CRS;
-        
-      highestRes = new double[]{1.0, 1.0};
+      highestRes = rasterManager.highestRes.clone();
         
     }
 
@@ -330,14 +332,54 @@ public final class ImageCollectionReader extends AbstractGridCoverage2DReader im
             }
         }
         
-        
-        //TODO: Re-enable this or modify this once we get support for CRS with y as DISPLAY_DOWN
-//        if (props.containsKey(Utils.ImageCollectionProperties.EPSG_CODE)) {
-//            final String epsgCode = (String) props.get(Utils.ImageCollectionProperties.EPSG_CODE);
-//            if (epsgCode != null && epsgCode.trim().length() > 0) {
-//                this.epsgCode = Integer.parseInt(epsgCode);
-//            }
-//        }
+        //TODO: Modify this once we get support for CRS with y as DISPLAY_DOWN
+        if (props.containsKey(Utils.ImageCollectionProperties.EPSG_CODE)) {
+            final String epsgCode = (String) props.get(Utils.ImageCollectionProperties.EPSG_CODE);
+            if (epsgCode != null && epsgCode.trim().length() > 0) {
+                try {
+                    defaultValues.epsgCode = Integer.parseInt(epsgCode);
+                    if (defaultValues.epsgCode != Utils.IMAGE_EPSG){
+                        defaultValues.isGeoSpatial = true;
+                        CoordinateReferenceSystem crs = CRS.decode("EPSG:" + epsgCode);
+                        boolean envelopeIsSet = false;
+                        String env = null; 
+                        if (props.containsKey(Utils.ImageCollectionProperties.ENVELOPE)) {
+                            env = (String) props.get(Utils.ImageCollectionProperties.ENVELOPE);
+                            final String coords[] = env.trim().split(" ");
+                            if (coords.length == 2){
+                                final String coordsMin[] = coords[0].trim().split(",");
+                                final String coordsMax[] = coords[1].trim().split(",");
+                                if (coordsMin.length == 2 && coordsMax.length == 2){
+                                    GeneralEnvelope envelope = new GeneralEnvelope(
+                                        new double[]{Double.parseDouble(coordsMin[0].trim()),Double.parseDouble(coordsMin[1].trim())},
+                                        new double[]{Double.parseDouble(coordsMax[0].trim()),Double.parseDouble(coordsMax[1].trim())});
+                                    envelope.setCoordinateReferenceSystem(crs);
+                                    defaultValues.envelope = envelope;
+                                    envelopeIsSet = true;
+                                }
+                            }
+                            
+                        }
+                        if ((!envelopeIsSet) && LOGGER.isLoggable(Level.WARNING)){
+                            LOGGER.log(Level.WARNING, "Unable to parse the specified envelope. minx,miny,maxx,maxy coordinates are needed: " + env);
+                        }
+                    }
+                } catch (NumberFormatException nfe){
+                    if (LOGGER.isLoggable(Level.WARNING)){
+                        LOGGER.log(Level.WARNING, "Unable to parse the specified EPSG code: " + epsgCode, nfe);
+                    }
+                } catch (NoSuchAuthorityCodeException e) {
+                    if (LOGGER.isLoggable(Level.WARNING)){
+                        LOGGER.log(Level.WARNING, "Unable to parse the specified EPSG code: " + epsgCode, e);
+                    }
+                } catch (FactoryException e) {
+                    if (LOGGER.isLoggable(Level.WARNING)){
+                        LOGGER.log(Level.WARNING, "Unable to parse the specified EPSG code: " + epsgCode, e);
+                    }
+                }
+                
+            }
+        }
         
         return coverage;
     }

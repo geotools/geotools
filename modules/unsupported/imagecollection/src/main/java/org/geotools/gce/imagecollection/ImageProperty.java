@@ -18,6 +18,8 @@ package org.geotools.gce.imagecollection;
 
 import javax.imageio.spi.ImageReaderSpi;
 
+import org.geotools.geometry.GeneralEnvelope;
+
 /**
  * A simple property container, which store basic image properties such as
  * width, height, absolutePath of the image, ...
@@ -29,13 +31,33 @@ import javax.imageio.spi.ImageReaderSpi;
  * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/imagecollection/src/main/java/org/geotools/gce/imagecollection/ImageProperty.java $
  */
 public class ImageProperty {
-    public int width;
+    private int width;
 
-    public int height;
+    private int height;
 
-    public int numOverviews;
+    private int numOverviews;
 
-    public String path;
+    private String path;
+    
+    private boolean isGeoSpatial;
+    
+    public boolean isGeoSpatial() {
+        return isGeoSpatial;
+    }
+
+    public void setGeoSpatial(boolean isGeoSpatial) {
+        this.isGeoSpatial = isGeoSpatial;
+    }
+
+    public GeneralEnvelope getEnvelope() {
+        return envelope;
+    }
+
+    public void setEnvelope(GeneralEnvelope envelope) {
+        this.envelope = envelope;
+    }
+
+    private GeneralEnvelope envelope;
 
     /** 
      * In case the file has been modified, we need to update the main parameters. This flag

@@ -220,7 +220,7 @@ class RasterLayerResponse {
     public RasterLayerResponse(final RasterLayerRequest request,
             final RasterManager rasterManager) {
         this.request = request;
-        location = request.imageManager.property.path;
+        location = request.imageManager.property.getPath();
         coverageEnvelope = request.imageManager.coverageEnvelope;
         baseGridToWorld = request.imageManager.coverageGridToWorld2D;
         coverageFactory = rasterManager.getCoverageFactory();
@@ -272,7 +272,7 @@ class RasterLayerResponse {
 
         if (request.isEmpty()) {
             throw new DataSourceException("Empty request: " + request.toString());
-        } else if (request.imageManager.property.path.equalsIgnoreCase(Utils.FAKE_IMAGE_PATH)){
+        } else if (request.imageManager.property.getPath().equalsIgnoreCase(Utils.FAKE_IMAGE_PATH)){
             finalGridToWorldCorner = Utils.IDENTITY_2D_FLIP ;
             //TODO Re-enable this when supportin y as DISPLAY_DOWN
 //            finalGridToWorldCorner = rasterManager.parent.defaultValues.epsgCode == 404001 ? Utils.IDENTITY_2D : Utils.IDENTITY_2D_FLIP ;

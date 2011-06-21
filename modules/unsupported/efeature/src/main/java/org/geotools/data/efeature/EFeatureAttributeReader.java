@@ -57,7 +57,7 @@ public class EFeatureAttributeReader implements AttributeReader {
         this.query = gQuery;
         String eFolder = EFeatureUtils.toFolderName(eType);
         String eFeature = EFeatureUtils.toFeatureName(eType);
-        eFolderInfo = eStore.eStoreInfo.eGetFolderInfo(eFolder);
+        eFolderInfo = eStore.ePackageInfo.eGetFolderInfo(eFolder);
         eFeatureInfo = eFolderInfo.eGetFeatureInfo(eFeature);
         this.type = eFeatureInfo.getFeatureType();
         //

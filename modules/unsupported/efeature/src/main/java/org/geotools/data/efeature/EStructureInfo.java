@@ -311,7 +311,7 @@ public abstract class EStructureInfo<T extends EStructureInfo<?>> {
      * Get {@link EFeatureContext} instance counterpart.
      * <p>
      * @param checkIsValid - if <code>true</code>, the method verifies that
-     *  this {@link EFeatureDataStoreInfo structure} is valid. If invalid,
+     *  this {@link EFeaturePackageInfo structure} is valid. If invalid,
      *  an {@link IllegalStateException} is thrown.
      * </p> 
      * @throws IllegalStateException If {@link #isDisposed() disposed} or not found.

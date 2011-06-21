@@ -5,13 +5,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.InternalEObject;
-import org.eclipse.emf.edit.domain.EditingDomain;
 import org.geotools.data.efeature.internal.EFeatureDelegate;
 import org.geotools.data.efeature.internal.EFeatureInfoCache;
 
@@ -23,10 +21,10 @@ import org.geotools.data.efeature.internal.EFeatureInfoCache;
 public class EFeatureContextInfo extends EStructureInfo<EFeatureContextInfo> {
 
     /** 
-     * Map of {@link EFeatureDomainInfo} instance
+     * Map of {@link EFeaturePackageInfo} instance
      */
-    protected Map<String, EFeatureDomainInfo> 
-        eDomainMap = new HashMap<String, EFeatureDomainInfo>();
+    protected Map<String, EFeaturePackageInfo> 
+        ePackageMap = new HashMap<String, EFeaturePackageInfo>();
     
     /**
      * Cached {@link EFeatureInfoCache} for this context.
@@ -45,7 +43,7 @@ public class EFeatureContextInfo extends EStructureInfo<EFeatureContextInfo> {
     @Override
     public boolean isAvailable() {
         if(super.isAvailable()){
-            for (EFeatureDomainInfo it : synchronize(this).values()) {
+            for (EFeaturePackageInfo it : synchronize(this).values()) {
                 if (it.isAvailable())
                     return true;
             }
@@ -54,86 +52,44 @@ public class EFeatureContextInfo extends EStructureInfo<EFeatureContextInfo> {
     }
     
     /**
-     * Get {@link EFeatureDomainInfo} from {@link #eContext()} instance counterpart.
-     * <p> 
-     * @param eDomainID - {@link EFeatureContext#eGetDomain(String) editing domain} id
-     * @return a {@link EFeatureDomainInfo}
-     * @throws IllegalStateException If {@link #isDisposed() disposed},
-     * or in{@link #isValid() valid}.
-     */
-    public EFeatureDomainInfo eGetDomainInfo(String eDomainID)
-    {
-        verify();
-        return synchronize(this).get(eDomainID);
-    }
-    
-    /**
-     * Get {@link EFeatureDomainInfo domain information} mapped to 
-     * {@link EFeatureDomainInfo#eDomainID() domain IDs}
+     * Get {@link EFeaturePackageInfo package information} mapped to 
+     * {@link EFeaturePackageInfo#eNsURI() namespace URIs}
      * <p>  
      * @throws IllegalStateException If {@link #isDisposed() disposed},
      * or in{@link #isValid() valid}.
      */
-    public Map<String, EFeatureDomainInfo> eDomainInfoMap() {
+    public Map<String, EFeaturePackageInfo> ePackageMap() {
         verify();
         return synchronize(this);
     }
 
     /**
-     * Check {@link EFeatureDomainInfo domain information} with given 
-     * {@link EFeatureDomainInfo#eDomainID() domain ID} exists.
-     * <p>  
-     * @throws IllegalStateException If {@link #isDisposed() disposed},
-     * or in{@link #isValid() valid}.
-     */    
-    public boolean contains(String eDomainID) {
-        verify();
-        return synchronize(this).containsKey(eDomainID);
-    }
-
-    /**
-     * 
-     * @param eDomainID
+     * Get {@link EFeaturePackageInfo} with given 
+     * {@link EPackage#getNsURI() namespace URI}.
      * @param eNsURI
-     * @throws IllegalStateException If {@link #isDisposed() disposed},
-     * or in{@link #isValid() valid}.
+     * @throws IllegalArgumentException If not found
+     * @throws IllegalStateException If {@link #isDisposed() disposed}.
      */
-    public EFeatureDataStoreInfo eGetDataStoreInfo(String eDomainID, String eNsURI) {
+    public EFeaturePackageInfo eGetPackageInfo(String eNsURI) {
         verify();
-        EFeatureDomainInfo info = synchronize(this).get(eDomainID);
-        if (info != null) {
-            return info.eGetDataStoreInfo(eNsURI);
+        EFeaturePackageInfo eInfo = synchronize(this).get(eNsURI);
+        if(eInfo==null) {
+            throw new IllegalArgumentException(
+                    "EFeaturePackageInfo [" + eNsURI + "] not found");
         }
-        return null;
+        return eInfo;
     }
     
     /**
-     * 
-     * @param eDomainID
-     * @throws IllegalStateException If {@link #isDisposed() disposed},
-     * or in{@link #isValid() valid}.
-     */
-    public Map<String, EFeatureDataStoreInfo> eGetDataStoreMap(String eDomainID) {
-        verify();
-        return synchronize(this).get(eDomainID).eDataStoreInfoMap();
-    }
-
-    /**
-     * Check if a {@link EFeatureDataStore} is given name space URI
-     * and given editing domain id exists.
+     * Check if a {@link EFeatureDataStore} with with given 
+     * {@link EPackage#getNsURI() namespace URI}.
      * </p> 
      * @param eNsURI - EMF model {@link EPackage package} name space URI
-     * @param eDomainID - EMF model {@link EditingDomain editing domain} id  
-     * @throws IllegalStateException If {@link #isDisposed() disposed},
-     * or in{@link #isValid() valid}.
+     * @throws IllegalStateException If {@link #isDisposed() disposed}.
      */
-    public boolean contains(String eNsURI, String eDomainID) {
+    public boolean contains(String eNsURI) {
         verify();
-        EFeatureDomainInfo info = synchronize(this).get(eDomainID);
-        if (info != null) {
-            return info.isDataStore(eNsURI);
-        }
-        return false;
+        return synchronize(this).get(eNsURI)!=null;
     }
     
     /**
@@ -172,16 +128,15 @@ public class EFeatureContextInfo extends EStructureInfo<EFeatureContextInfo> {
     }
     
     /**
-     * Get the {@link EFeatureInfo} instance cached for given {@link EFeatureDomainInfo domain}, 
-     * {@link EFeatureFolderInfo folder } and {@link EClass class}.
+     * Get the {@link EFeatureInfo} instance cached for  
+     * {@link EFeatureFolderInfo folder} and {@link EClass class}.
      * </p> 
-     * @param eDomainID - the {@link EditingDomain} ID
      * @param eFolder - the {@link EFeatureFolderInfo} name
      * @param eClass - the {@link EClass} instance
      * @return a {@link EFeatureInfo} if found, <code>null</code> otherwise.
      */         
-    public EFeatureInfo eGetFeatureInfo(String eDomainID, String eFolder, EClass eClass) {
-        return eFeatureInfoCache().get(eDomainID, eFolder, eClass);
+    public EFeatureInfo eGetFeatureInfo(String eFolder, EClass eClass) {
+        return eFeatureInfoCache().get(eFolder, eClass);
     }    
     
     /**
@@ -195,7 +150,8 @@ public class EFeatureContextInfo extends EStructureInfo<EFeatureContextInfo> {
      * @return <code>true</code> if given instance is cached
      */
     public boolean contains(EFeatureInfo eInfo) {
-        return eFeatureInfoCache().contains(eInfo.eNsURI,eInfo.eDomainID,eInfo.eFolderName,eInfo.eName());
+        return eFeatureInfoCache().contains(
+                eInfo.eNsURI,eInfo.eFolderName,eInfo.eName());
     }  
     
     /**
@@ -205,7 +161,7 @@ public class EFeatureContextInfo extends EStructureInfo<EFeatureContextInfo> {
      * Since a {@link EClass}es only contains information 
      * about the {@link EPackage#getNsURI() eNsURI}
      * and EFeature {@link EClass#getName() root name}, this method only checks 
-     * for EFeature prototypes (does not belong to any domain or folder).
+     * for EFeature prototypes (does not belong to any folder).
      * <p>
      * <b>NOTE</b>: This only checks for <i>key equivalence</i>. If two keys are 
      * equal within the same {@link EFeatureContext}, the two structures must 
@@ -291,27 +247,13 @@ public class EFeatureContextInfo extends EStructureInfo<EFeatureContextInfo> {
             //
             EFeatureInfo eEqual = eFeatureInfoCache().get(EFeatureInfoCache.createKey(eInfo));
             if(eEqual!=null) {
-                //
-                // Sanity check: Verify that, if found, it belongs to this context.
-                //
-                EFeatureContext eContext = eEqual.eContext(false);
-                if(eContext!=eNewContext) {
-                    //
-                    // This is an indication that something is wrong. Should really 
-                    // not happen. EFeatureInfo instances should always belong to the
-                    // same context as the cache is it attached to. 
-                    //
-                    LOGGER.log(Level.WARNING,"Found EFeatureInfo attached to context " +
-                            eContext.eContextID() + " in EFeatureInfoCache in context " + 
-                            eContextID + ". Is will be adapted to the latter context.");
-                }
                 // -----------------------------------------------------------------
                 //  Use already attached instance it instead of adapting given?
                 // -----------------------------------------------------------------
                 //  This is an optimization, ensuring that adaptation only occurs
                 //  when absolutely required. It leverages the fact that
                 // -----------------------------------------------------------------
-                if(eEqual.eUID == eInfo.eUID) {
+                if(eEqual.eEqualTo(eInfo)) {
                     return eEqual;
                 }
             }
@@ -357,11 +299,11 @@ public class EFeatureContextInfo extends EStructureInfo<EFeatureContextInfo> {
         // Synchronize with EFeatureContext counterpart. 
         //
         EChange eChange = new EChange();
-        Map<String,EFeatureDomainInfo> eDomainMap = eChange.synchronize(this);        
+        Map<String,EFeaturePackageInfo> ePackageMap = eChange.synchronize(this);        
         //
-        // 3) Validate all domains 
+        // 3) Validate all packages 
         //
-        for(EFeatureDomainInfo it : eDomainMap.values())
+        for(EFeaturePackageInfo it : ePackageMap.values())
         {
             EFeatureStatus s;
             if((s = it.validate()).isFailure())
@@ -386,13 +328,13 @@ public class EFeatureContextInfo extends EStructureInfo<EFeatureContextInfo> {
     @Override
     protected void doDispose() {
         eContext = null;
-        eDomainMap.clear();
+        ePackageMap.clear();
     }
 
     @Override
     protected void doInvalidate(boolean deep) { 
         if (deep) {
-            for (EStructureInfo<?> it : eDomainMap.values()) {
+            for (EStructureInfo<?> it : ePackageMap.values()) {
                 it.doInvalidate(true);
             }
         }
@@ -479,7 +421,7 @@ public class EFeatureContextInfo extends EStructureInfo<EFeatureContextInfo> {
             //  Validate the structure from context down
             // ----------------------------------------------
             //  This is an important step because:
-            //  1) It will add create "eURI/eDomain/eFolder"
+            //  1) It will add create "eURI/eFolder"
             //     structures, which given EFeatureInfo 
             //     instance is added to if possible.
             //  2) More to come...
@@ -639,19 +581,23 @@ public class EFeatureContextInfo extends EStructureInfo<EFeatureContextInfo> {
      * Synchronize given {@link EFeatureContextInfo structure}  
      * with it's {@link EFeatureContextFactory factory} counterpart.
      * <p> 
-     * This is required since {@link EditingDomain editing domains} are 
+     * This is required since {@link EPackage packages} are 
      * allowed to be added to and removed from the context.
      * </p>
      * @param eContextInfo - {@link EFeatureContextInfo structure}
      * @return a {@link Map} from {@link EFeatureContextInfo#eContextID() eContexID} to 
      * {@link EFeatureContextInfo} instances.
      */    
-    protected static final Map<String, EFeatureDomainInfo> synchronize(EFeatureContextInfo eContextInfo)
+    protected static final Map<String, EFeaturePackageInfo> synchronize(EFeatureContextInfo eContextInfo)
     {
         EChange eChange  = new EChange();
         eChange.synchronize(eContextInfo);
         return eChange.commit(eContextInfo);
     }
+    
+    // ----------------------------------------------------- 
+    //  Inner classes
+    // -----------------------------------------------------
     
     /**
      * @author kengu - 29. mai 2011
@@ -659,70 +605,75 @@ public class EFeatureContextInfo extends EStructureInfo<EFeatureContextInfo> {
     private static class EChange {
         
         /**
-         * Cached {@link EFeatureDomainInfo} changes  
+         * Cached {@link EFeaturePackageInfo} changes  
          */
-        private Map<String, EFeatureDomainInfo> eMap;
+        private Map<String, EFeaturePackageInfo> eMap;
         
         /**
          * Synchronize given {@link EFeatureContextInfo structure}  
          * with it's {@link EFeatureContextFactory factory} counterpart.
          * <p> 
-         * This is required since {@link EditingDomain editing domains} are 
+         * This is required since {@link EPackage packages} are 
          * allowed to be added to and removed from the context.
          * </p>
          * @param eContextInfo - {@link EFeatureContextInfo structure}
          * @return a {@link Map} from {@link EFeatureContextInfo#eContextID() eContexID} to 
          * {@link EFeatureContextInfo} instances.
          */    
-        public final Map<String, EFeatureDomainInfo> synchronize(EFeatureContextInfo eContextInfo)
+        public final Map<String, EFeaturePackageInfo> synchronize(EFeatureContextInfo eContextInfo)
         {
             //
-            // Ensure thread safe access to domain map 
+            // Ensure thread safe access to package map 
             //
-            synchronized(eContextInfo.eDomainMap) {
+            synchronized(eContextInfo.ePackageMap) {
                 //
-                // Get copy of current domain structure map
+                // Get information
                 //
-                eMap = new HashMap<String, EFeatureDomainInfo>(eContextInfo.eDomainMap);
+                eMap = eContextInfo.ePackageMap;
+                //
+                // Get factory instance and context id 
+                //
+                EFeatureContextFactory eFactory = eContextInfo.eFactory(false);
                 //
                 // Get context instance
                 //
                 EFeatureContext eContext = eContextInfo.eContext(false);
                 //
-                // Get current set of editing domains
+                // Get current set of EPackage NsURIs 
                 //
-                List<String> eDomainIDs = eContext.eDomainIDs();
-                //
-                // Initialize
-                //
-                HashMap<String, EFeatureDomainInfo> 
-                    eNewMap = new HashMap<String, EFeatureDomainInfo>(eDomainIDs.size());           
+                List<String> eNsURIs = eContext.eNsURIs();
                 
-                // Add all domains 
+                // Initialize map of new store structures
                 //
-                for(String eDomainID : eDomainIDs)
+                Map<String, EFeaturePackageInfo> 
+                    eNewMap = new HashMap<String, EFeaturePackageInfo>(eNsURIs.size());        
+                
+                // Add all packages 
+                //
+                for(String eNsURI : eNsURIs)
                 {
                     // Get structure information
                     //
-                    EFeatureDomainInfo eDomainInfo = eMap.get(eDomainID);
+                    EFeaturePackageInfo ePackageInfo = eMap.get(eNsURI);
                     
                     // Not found or overwrite?
                     //
-                    if(eDomainInfo==null)
+                    if(ePackageInfo==null)
                     {
-                        // Create the domain structure
+                        // Create the package structure
                         //
-                        eDomainInfo = EFeatureDomainInfo.create(eContextInfo, eDomainID);
+                        ePackageInfo = EFeaturePackageInfo.create(
+                                eFactory, eContextInfo, eNsURI);
                         
+                        /// Put to map of new structures 
+                        //
+                        eNewMap.put(eNsURI, ePackageInfo);
                     }
-                    /// Put to map of new structures 
-                    //
-                    eNewMap.put(eDomainID, eDomainInfo);
                 }
                 
-                // Remove disposed editing domains
+                // Remove disposed packages
                 //
-                eMap.keySet().retainAll(eDomainIDs);
+                eMap.keySet().retainAll(eNsURIs);
                 
                 // Put new to current map
                 //
@@ -733,19 +684,18 @@ public class EFeatureContextInfo extends EStructureInfo<EFeatureContextInfo> {
                 return Collections.unmodifiableMap(eMap);
             }
         }
-        
+
         /**
          * Commit cached changes to context structure
          *  
          * @param eContextInfo
          */
-        public final Map<String, EFeatureDomainInfo> commit(EFeatureContextInfo eContextInfo) {
-            synchronized(eContextInfo.eDomainMap) {
-                eContextInfo.eDomainMap = eMap;
+        public Map<String, EFeaturePackageInfo> commit(EFeatureContextInfo eContextInfo) {
+            synchronized(eContextInfo.ePackageMap) {
+                eContextInfo.ePackageMap = eMap;
                 return eMap;
             }
         }
     }
-
 
 }

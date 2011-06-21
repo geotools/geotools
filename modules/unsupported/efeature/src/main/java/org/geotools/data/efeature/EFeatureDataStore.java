@@ -57,8 +57,8 @@ public class EFeatureDataStore extends AbstractDataStore {
     
     protected DefaultServiceInfo serviceInfo;
 
-    /** Cached {@link EFeatureDataStoreInfo} instance */
-    protected final EFeatureDataStoreInfo eStoreInfo;
+    /** Cached {@link EFeaturePackageInfo} instance */
+    protected final EFeaturePackageInfo ePackageInfo;
 
     /** Open {@link EFeatureReader}s */
     private Map<String,EFeatureReader> readerMap = Collections
@@ -116,8 +116,8 @@ public class EFeatureDataStore extends AbstractDataStore {
         //
         // Get EFeatureStore information
         //
-        eStoreInfo = EFeatureDataStoreFactory.eDataStoreInfo(eContextID, eDomainID, eNsURI);
-        if (this.eStoreInfo == null) {
+        ePackageInfo = EFeatureDataStoreFactory.ePackageInfo(eContextID, eNsURI);
+        if (this.ePackageInfo == null) {
             throw new IOException("EFeatureDataStore structure not " 
                     + "found in context: '" + eContextID + "/"
                     + eDomainID + "/" + eURI );
@@ -136,7 +136,7 @@ public class EFeatureDataStore extends AbstractDataStore {
     }
     
     public EFeatureContext eContext() {
-        return eStoreInfo.eContext();
+        return ePackageInfo.eContext();
     }
 
     /**
@@ -191,7 +191,7 @@ public class EFeatureDataStore extends AbstractDataStore {
                     Arrays.asList("EFeature", "EMF", "EMF Query", "EMF Transaction")));
             serviceInfo.setDescription( "The EFeature DataStore module adds support " +
             		"for spatial read and write operations to EMF models." );
-            serviceInfo.setSchema( java.net.URI.create( eStoreInfo.eNsURI ) );
+            serviceInfo.setSchema( java.net.URI.create( ePackageInfo.eNsURI ) );
             serviceInfo.setPublisher( java.net.URI.create(PUBLISHER) );
         }
         serviceInfo.setSource( java.net.URI.create(eURI.toString()) );
@@ -199,12 +199,12 @@ public class EFeatureDataStore extends AbstractDataStore {
     }
     
     /**
-     * Get {@link EFeatureDataStoreInfo structure information}.
+     * Get {@link EFeaturePackageInfo structure information}.
      * </p>
-     * @return a {@link EFeatureDataStoreInfo} instance.
+     * @return a {@link EFeaturePackageInfo} instance.
      */
-    public EFeatureDataStoreInfo eStructure() {
-        return eStoreInfo;
+    public EFeaturePackageInfo eStructure() {
+        return ePackageInfo;
     }
     
     /**
@@ -233,7 +233,7 @@ public class EFeatureDataStore extends AbstractDataStore {
      */
     @Override
     public String[] getTypeNames() {
-        return eStoreInfo.getTypeNames(eQuery);
+        return ePackageInfo.getTypeNames(eQuery);
     }
         
     /**
@@ -260,7 +260,7 @@ public class EFeatureDataStore extends AbstractDataStore {
      */
     @Override
     public SimpleFeatureType getSchema(String eType) throws IOException {
-        EFeatureInfo eFeatureInfo = eStoreInfo.eGetFeatureInfo(eType);
+        EFeatureInfo eFeatureInfo = ePackageInfo.eGetFeatureInfo(eType);
         if (eFeatureInfo != null) {
             return eFeatureInfo.getFeatureType();
         }

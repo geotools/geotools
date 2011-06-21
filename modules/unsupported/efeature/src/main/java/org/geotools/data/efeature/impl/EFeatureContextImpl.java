@@ -62,6 +62,7 @@ public final class EFeatureContextImpl implements EFeatureContext {
     // -----------------------------------------------------
     
     private final String eContextID;
+    private final boolean isPrototype;
     private final EFeatureIDFactory eIDFactory;
     private final WeakReference<EFeatureContextFactory> eContextFactory;
     private final ResourceHandler eResourceHandler = new ResourceHandler();
@@ -119,6 +120,7 @@ public final class EFeatureContextImpl implements EFeatureContext {
         //
         this.eContextID = eContextID;
         this.eIDFactory = eIDFactory;
+        this.isPrototype = (eIDFactory instanceof EFeatureVoidIDFactory);
         this.eContextFactory = new WeakReference<EFeatureContextFactory>(eContextFactory);
     }
 
@@ -131,7 +133,7 @@ public final class EFeatureContextImpl implements EFeatureContext {
     }
         
     public boolean isPrototype() {
-        return eStructure().eDomainInfoMap().size()==0;
+        return isPrototype;
     }
 
     public EFeatureContextInfo eStructure() {
@@ -156,7 +158,11 @@ public final class EFeatureContextImpl implements EFeatureContext {
     }
 
     public EditingDomain eGetDomain(String eDomainID) {
-        return eDomainMap.get(eDomainID);
+        EditingDomain eDomain = eDomainMap.get(eDomainID);
+        if(eDomain==null) {
+            throw new IllegalArgumentException("EditingDomain [" + eDomainID + "] not found");
+        }
+        return eDomain;
     }
 
     public Resource eGetResource(String eDomainID, URI eURI, boolean loadOnDemand) {
@@ -172,7 +178,11 @@ public final class EFeatureContextImpl implements EFeatureContext {
     }
 
     public EPackage eGetPackage(String eNsURI) {
-        return ePackageMap.get(eNsURI);
+        EPackage ePackage = ePackageMap.get(eNsURI);
+        if(ePackage==null) {
+            throw new IllegalArgumentException("EPackage [" + eNsURI + "] not found");
+        }
+        return ePackage;
     }
         
     public boolean contains(EPackage ePackage) {

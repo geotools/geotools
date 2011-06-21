@@ -215,7 +215,7 @@ public class EFeatureContextFactory implements BufferedFactory {
             //
             // Create structure info object
             //
-            eContextInfo = EFeatureContextInfo.create(this,eContextID, null);
+            eContextInfo = EFeatureContextInfo.create(this,eContextID, eHints);
             //
             // Map structure to id
             //
@@ -225,14 +225,14 @@ public class EFeatureContextFactory implements BufferedFactory {
             //  Add EFeature as prototype. 
             // -----------------------------------------------------
             //  This is an important step. It allows the context to
-            //  filter on any EFeature implementation, and saves
-            //  enables any EFeature implementation to be adapted
-            //  into the context. 
+            //  filter on any EFeature implementation, and enables 
+            //  _ANY_ EFeature implementation to be adapted into 
+            //  this context. 
             // -----------------------------------------------------
             //
             EFeaturePackage ePackage = EFeaturePackage.eINSTANCE;
             eContext.eAdd(ePackage);
-            EFeatureInfo eFeatureInfo = EFeatureInfo.create(eContext, ePackage.getEFeature(), new EFeatureHints());
+            EFeatureInfo eFeatureInfo = EFeatureInfo.create(eContext, ePackage.getEFeature(), eHints);
             //
             // -----------------------------------------------------
             //  Validate structure (required)

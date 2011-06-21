@@ -56,7 +56,7 @@ public class EFeatureTestsContextHelper {
         //
         this.binary = binary;
         //
-        // Peepare hints
+        // Prepare hints
         //
         EFeatureHints eHints = new EFeatureHints();
         Set<EAttribute> eAttrSet = (Set<EAttribute>)eHints.get(EFeatureHints.EFEATURE_ID_ATTRIBUTE_HINTS);
@@ -157,8 +157,7 @@ public class EFeatureTestsContextHelper {
     }
     
     public EFeatureInfo eGetFeatureInfo(String eType) {
-        return eContext().eStructure().eGetDomainInfo(eDOMAIN_ID).
-            eGetDataStoreInfo(eNS_URI).eGetFeatureInfo(eType);
+        return eContext().eStructure().eGetPackageInfo(eNS_URI).eGetFeatureInfo(eType);
     }
 
 }

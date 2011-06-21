@@ -6,30 +6,26 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.edit.domain.EditingDomain;
 import org.geotools.data.FeatureStore;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
- * {@link EFeatureDataStore} information class implementation.
+ * {@link EPackage} information class implementation.
  * <p>
  * 
  * @author kengu
  * 
  */
-public class EFeatureDataStoreInfo extends EStructureInfo<EFeatureDomainInfo> {
+public class EFeaturePackageInfo extends EStructureInfo<EFeatureContextInfo> {
 
     /** Cached {@link EPackage} name space */
     protected String eNsURI;
 
-    /** Cached {@link EditingDomain} id */
-    protected String eDomainID;
-
-    /** Map of {@link EFeatureDomainInfo} instances */
+    /** Map of {@link EFeatureFolderInfo} instances */
     protected Map<String, EFeatureFolderInfo> eFolderInfoMap;
     
     // ----------------------------------------------------- 
-    //  EFeatureDataStore methods
+    //  EFeaturePackage methods
     // -----------------------------------------------------
     
     @Override
@@ -51,23 +47,9 @@ public class EFeatureDataStoreInfo extends EStructureInfo<EFeatureDomainInfo> {
     {
         return eContext().eGetPackage(eNsURI);
     }
-
-    /**
-     * Get {@link EditingDomain} id. 
-     */
-    public String eDomainID() {
-        return eDomainID;
-    }
-            
-    public EditingDomain eDomain()
-    {
-        EFeatureContext eContext = eContext();
-        return eContext.eGetDomain(eDomainID);
-    }
-    
     @Override
-    protected EFeatureDomainInfo eParentInfo(boolean checkIsValid) {
-        return eContext(checkIsValid).eStructure().eGetDomainInfo(eDomainID);
+    protected EFeatureContextInfo eParentInfo(boolean checkIsValid) {
+        return eContext(checkIsValid).eStructure();
     }    
     
     public EFeatureFolderInfo eGetFolderInfo(String eName) {
@@ -186,7 +168,7 @@ public class EFeatureDataStoreInfo extends EStructureInfo<EFeatureDomainInfo> {
     }
 
     /**
-     * Check if given eType is a {@link SimpleFeatureType} in the {@link EFeatureDataStore} definition.
+     * Check if given eType is a {@link SimpleFeatureType}.
      * <p>
      * {@link SimpleFeatureType} names have the following format:
      * 
@@ -249,7 +231,7 @@ public class EFeatureDataStoreInfo extends EStructureInfo<EFeatureDomainInfo> {
 
     /**
      * Validate given {@link EPackage} instance against 
-     * the {@link EFeatureDataStoreInfo structure} .
+     * the {@link EFeaturePackageInfo structure} .
      */
     public EFeatureStatus validate() {
         //
@@ -271,22 +253,15 @@ public class EFeatureDataStoreInfo extends EStructureInfo<EFeatureDomainInfo> {
             return failure(this, eNsURI, "EFeatureContext with ID: " + eContextID + " not found");
         }
         EFeatureContext eContext = eContext(false);
-        // 
-        // 3) Verify that registry is cached
         //
-        if(!eContext.containsDomain(eDomainID))
-        {
-            return failure(this, eNsURI, "Editing domain with ID: " + eContextID + " not found");
-        }
-        //
-        // 4) Verify name space URI
+        // 3) Verify name space URI
         //
         EPackage ePackage = eContext.eGetPackage(eNsURI);
         if (!this.eNsURI.equals(ePackage.getNsURI())) {
-            return failure(this, eNsURI, "DataStore mismatch: namespace (" + ePackage + ")");
+            return failure(this, eNsURI, "Package mismatch: namespace (" + ePackage + ")");
         }
         //
-        // 5) Verify ALL folders (query == null)
+        // 4) Verify ALL folders (query == null)
         //
         EFeatureStatus s;
         for (String eName : eGetFolderNames(null)) {
@@ -296,7 +271,7 @@ public class EFeatureDataStoreInfo extends EStructureInfo<EFeatureDomainInfo> {
                     return s;
                 }
             } else {
-                return failure(this, eNsURI, "DataStore mismatch: Folder " + eName + " not found");
+                return failure(this, eNsURI, "Package mismatch: Folder " + eName + " not found");
             }
         }
         //
@@ -333,32 +308,31 @@ public class EFeatureDataStoreInfo extends EStructureInfo<EFeatureDomainInfo> {
     // -----------------------------------------------------
     
     /**
-     * Create a {@link EFeatureDataStoreInfo} from {@link EFeatureContext} 
+     * Create a {@link EFeaturePackageInfo} from {@link EFeatureContext} 
      * information cached with given ids.     
-     * @param eDomainInfo - {@link EFeatureDomainInfo} instance
+     * @param eContextInfo - {@link EFeatureContextInfo} instance
      * @param eNsURI - {@link EPackage#getNsURI() name space URI} 
      */
-    protected static EFeatureDataStoreInfo create(EFeatureContextFactory eFactory, 
-            EFeatureDomainInfo eDomainInfo, String eNsURI) 
+    protected static EFeaturePackageInfo create(EFeatureContextFactory eFactory, 
+            EFeatureContextInfo eContextInfo, String eNsURI) 
         throws IllegalArgumentException {
-        EFeatureDataStoreInfo eInfo = new EFeatureDataStoreInfo();
-        eInfo.eHints = eDomainInfo.eHints;
-        eInfo.eContextID = eDomainInfo.eContextID;
-        eInfo.eDomainID = eDomainInfo.eDomainID;
+        EFeaturePackageInfo eInfo = new EFeaturePackageInfo();
+        eInfo.eHints = eContextInfo.eHints;
+        eInfo.eContextID = eContextInfo.eContextID;
         eInfo.eNsURI = eNsURI;
-        eInfo.eFactory = eDomainInfo.eFactory;
-        eInfo.eContext = eDomainInfo.eContext;
+        eInfo.eFactory = eContextInfo.eFactory;
+        eInfo.eContext = eContextInfo.eContext;
         eInfo.eFolderInfoMap = folders(eInfo);
         return eInfo;
     }
     
     /**
-     * Construct {@link EFeatureFolderInfo} instances from {@link EFeatureDataStoreInfo} instance.
+     * Construct {@link EFeatureFolderInfo} instances from {@link EFeaturePackageInfo} instance.
      * <p>     
-     * @param eStoreInfo - {@link EFeatureFolderInfo} instance
+     * @param ePackageInfo - {@link EFeaturePackageInfo} instance
      * @throws IllegalArgumentException If a {@link EPackage} instance was not found.
      */
-    protected static Map<String, EFeatureFolderInfo> folders(EFeatureDataStoreInfo eStoreInfo)
+    protected static Map<String, EFeatureFolderInfo> folders(EFeaturePackageInfo ePackageInfo)
         throws IllegalArgumentException {
         //
         // Prepare
@@ -367,15 +341,15 @@ public class EFeatureDataStoreInfo extends EStructureInfo<EFeatureDomainInfo> {
         //
         // Get context instance
         //
-        EFeatureContext eContext = eStoreInfo.eContext(false);
+        EFeatureContext eContext = ePackageInfo.eContext(false);
         //
         // Get EMF package from name space URI
         //
-        EPackage ePackage = eContext.eGetPackage(eStoreInfo.eNsURI);
+        EPackage ePackage = eContext.eGetPackage(ePackageInfo.eNsURI);
         //
         // Create single folder that contains all EFeature classes.
         //
-        EFeatureFolderInfo eFolderInfo = EFeatureFolderInfo.create(eStoreInfo, ePackage);
+        EFeatureFolderInfo eFolderInfo = EFeatureFolderInfo.create(ePackageInfo, ePackage);
         //
         // Map name to instance
         //

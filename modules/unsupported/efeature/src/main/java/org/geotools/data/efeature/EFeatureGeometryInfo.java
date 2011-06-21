@@ -255,7 +255,6 @@ public class EFeatureGeometryInfo extends EFeatureAttributeInfo {
         // Set context path
         //
         eInfo.eNsURI = eFeatureInfo.eNsURI;
-        eInfo.eDomainID = eFeatureInfo.eDomainID;
         eInfo.eFolderName = eFeatureInfo.eFolderName;
         eInfo.eFeatureName = eFeatureInfo.eName();        
         //

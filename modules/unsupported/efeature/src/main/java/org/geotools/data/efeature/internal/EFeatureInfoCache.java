@@ -1,6 +1,7 @@
 package org.geotools.data.efeature.internal;
 
 import java.util.HashMap;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
@@ -24,12 +25,11 @@ import org.geotools.util.WeakHashSet;
  * The key is constructed from the structure information and has 
  * following format: 
  * <pre>
- * eKey := &lt;eNsURI&gt;/&lt;eDomainID&gt;/&lt;eFolder&gt;/&lt;eFeature&gt;
+ * eKey := &lt;eNsURI&gt;/&lt;eFolder&gt;/&lt;eFeature&gt;
  * 
  * where
  * 
  *  {@link EFeatureInfo#eNsURI() &lt;eNsURI&gt;}        := is the {@link EPackage#getNsURI() EMF package namespace URI} 
- *  {@link EFeatureInfo#eDomainID() &lt;eDomainID&gt;}     := is the {@link EFeatureContext#eGetDomain(String) EMF editing domain ID}
  *  {@link EFeatureInfo#eFolderName() &lt;eFolder&gt;}       := is the {@link EFeatureFolderInfo#eName() folder name}
  *  {@link EFeatureInfo#eName() &lt;eFeature&gt;}      := is the {@link EClass#getName() name} of the {@link EFeature} compatible {@link EClass implementation} 
  * </pre>
@@ -45,10 +45,14 @@ import org.geotools.util.WeakHashSet;
  */
 public final class EFeatureInfoCache {
     
+    /**
+     * {@link EFeatureListener} event type flag
+     */
     public static final int CACHE = 0;
     
     /**
-     * Set of weakly referenced {@link EFeatureInfo} instances
+     * Set of locally unique (in context) structure IDs (keys) 
+     * mapped to {@link EFeatureInfo} instances
      */
     private final HashMap<String, EFeatureInfo> 
         eCache = new HashMap<String, EFeatureInfo>();
@@ -104,7 +108,9 @@ public final class EFeatureInfoCache {
     public final EFeatureStatus attach(EFeatureInfo eInfo) {
         if(contains(eInfo)) return DENIED;
         EFeatureStatus eStatus = vote(eInfo);
-        if(eStatus.isSuccess()) eCache.put(createKey(eInfo),eInfo);
+        if(eStatus.isSuccess()) {
+            eCache.put(createKey(eInfo),eInfo);
+        }
         return eStatus;
     }
     
@@ -146,8 +152,7 @@ public final class EFeatureInfoCache {
      * Since a {@link EClass}es only contains information 
      * about the {@link EPackage#getNsURI() eNsURI}
      * and EFeature {@link EClass#getName() root name}, this method only checks 
-     * for {@link EFeatureInfo structures} instances that does not belong to 
-     * any domain or folder.
+     * for {@link EFeatureInfo structures} instances that does not belong to any folder.
      * <p>
      * <b>NOTE</b>: This only checks for <i>key equivalence</i>. If two keys are 
      * equal within the same {@link EFeatureContext}, the two structures must 
@@ -198,8 +203,8 @@ public final class EFeatureInfoCache {
      * @param eInfo - the {@link EFeatureInfo} instance
      * @return <code>true</code> if instance with given key fragments is cached
      */        
-    public final boolean contains(String eNsURI, String eDomainID, String eFolder, String eFeature) {
-        return eCache.containsKey(createKey(eNsURI, eDomainID, eFolder, eFeature));
+    public final boolean contains(String eNsURI, String eFolder, String eFeature) {
+        return eCache.containsKey(createKey(eNsURI, eFolder, eFeature));
     }
     
     /**
@@ -211,7 +216,7 @@ public final class EFeatureInfoCache {
      * @return a {@link EFeatureInfo} if found,<code>null</code> otherwise.
      */        
     public final EFeatureInfo get(EObject eObject) {
-        return get(null,null,eObject.eClass());
+        return get(eObject.eClass());
     }
     
     /**
@@ -222,10 +227,16 @@ public final class EFeatureInfoCache {
      * @return a {@link EFeatureInfo} if found,<code>null</code> otherwise.
      */        
     public final EFeatureInfo get(EClass eClass) {
-        return get(null,null,eClass);
+        return get(eClass.getEPackage().getName(),eClass);
     }
         
-    public final EFeatureInfo get(String eDomainID, String eFolder, EClass eClass) {
+    /**
+     * 
+     * @param eFolder
+     * @param eClass
+     * @return
+     */
+    public final EFeatureInfo get(String eFolder, EClass eClass) {
         //
         // Get name space URI string
         //
@@ -233,7 +244,7 @@ public final class EFeatureInfoCache {
         //
         // Try to get cached structure
         //
-        EFeatureInfo eInfo = get(eNsURI,eDomainID,eFolder,eClass.getName());
+        EFeatureInfo eInfo = get(eNsURI,eFolder,eClass.getName());
         if(eInfo!=null && EcoreUtil.equals(eInfo.eClass(),eClass)) {
             return eInfo;
         }
@@ -243,15 +254,26 @@ public final class EFeatureInfoCache {
         return null;
     }
 
+    /**
+     * 
+     * @param eKey
+     * @return
+     */
     public final EFeatureInfo get(String eKey) {
         return eCache.get(eKey);
     }
     
-    public final EFeatureInfo get(String eNsURI, String eDomainID, String eFolder, String eFeature) {
-        return get(createKey(eNsURI, eDomainID, eFolder, eFeature));
+    /**
+     * 
+     * @param eNsURI
+     * @param eFolder
+     * @param eFeature
+     * @return
+     */
+    public final EFeatureInfo get(String eNsURI, String eFolder, String eFeature) {
+        return get(createKey(eNsURI, eFolder, eFeature));
     }
     
-
     // ----------------------------------------------------- 
     //  Helper methods
     // -----------------------------------------------------
@@ -262,19 +284,15 @@ public final class EFeatureInfoCache {
     
     public static final String createKey(EClass eClass) {
         String eNsURI = eClass.getEPackage().getNsURI();
-        return createKey(eNsURI,null,null, eClass.getName());
+        return createKey(eNsURI,null,eClass.getName());
     }
     
     public static final String createKey(EFeatureInfo eInfo) {
-        return createKey(eInfo.eNsURI(),eInfo.eDomainID(),eInfo.eFolderName(), eInfo.eName());
+        return createKey(eInfo.eNsURI(),eInfo.eFolderName(),eInfo.eName());
     }
     
-    private static final String createKey(String eNsURI, String eDomainID, String eFolder, String eFeature) {
-        String eKey = eNsURI + "/" +eDomainID + "/" + eFolder + "/" + eFeature;
-        if(eKey.contains("//null")) {
-            System.out.println();
-        }
-        return eKey;
+    private static final String createKey(String eNsURI, String eFolder, String eFeature) {
+        return eNsURI + "/" + eFolder + "/" + eFeature;
     }
     
     /**

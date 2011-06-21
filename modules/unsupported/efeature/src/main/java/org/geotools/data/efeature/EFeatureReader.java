@@ -3,7 +3,6 @@ package org.geotools.data.efeature;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.NoSuchElementException;
-import java.util.WeakHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -49,11 +48,11 @@ public class EFeatureReader implements SimpleFeatureReader {
      */
     private EFeatureAttributeReader eReader;
     
-    /**
-     * Static {@link EFeatureDelegate} cache. 
-     */
-    private static final WeakHashMap<EObject, EFeatureDelegate> 
-        eDelegateMap = new WeakHashMap<EObject, EFeatureDelegate>();
+//    /**
+//     * Static {@link EFeatureDelegate} cache. 
+//     */
+//    private static final WeakHashMap<EObject, EFeatureDelegate> 
+//        eDelegateMap = new WeakHashMap<EObject, EFeatureDelegate>();
 
     // ----------------------------------------------------- 
     //  Constructors
@@ -197,8 +196,8 @@ public class EFeatureReader implements SimpleFeatureReader {
         return getStructure().eFactory();
     }
 
-    protected EFeatureDataStoreInfo getStructure() {
-        return eStore.get().eStoreInfo;
+    protected EFeaturePackageInfo getStructure() {
+        return eStore.get().ePackageInfo;
     }
     
 }

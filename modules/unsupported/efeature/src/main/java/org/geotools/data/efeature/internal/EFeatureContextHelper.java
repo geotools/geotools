@@ -56,7 +56,6 @@ import com.vividsolutions.jts.geom.Geometry;
  * context-unaware construction. Only objects that implements {@link EFeature} 
  * or contains {@link Geometry EFeature compatible data} are added to the 
  * {@link EFeatureInfoCache cache}.
- * cache.
  * <p> 
  * Each {@link EFeatureInternal} instance use the structure returned by the 
  * {@link EFeatureContextHelper helper}, until the actual context is known.
@@ -67,8 +66,8 @@ import com.vividsolutions.jts.geom.Geometry;
  * The {@link EFeatureReader} does this during {@link EObject} iteration.  
  * </p>
  * <b>NOTE</b>: This solution adds some memory overhead since one additional 
- * {@link EFeatureInfo} instance is created per {@link EClass} added to each 
- * {@link EFeatureContext} instance.
+ * {@link EFeatureInfo} instance is created for each unique {@link EClass} added 
+ * to a {@link EFeatureContext context}.
  * </p>
  * 
  * @author kengu - 29. mai 2011 

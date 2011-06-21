@@ -17,8 +17,6 @@ import org.geotools.data.efeature.DataTypes;
 import org.geotools.data.efeature.EFeature;
 import org.geotools.data.efeature.EFeatureInfo;
 import org.geotools.filter.Capabilities;
-import org.geotools.filter.LiteralExpressionImpl;
-import org.geotools.filter.LiteralTest;
 import org.geotools.filter.function.PropertyExistsFunction;
 import org.geotools.filter.visitor.IsFullySupportedFilterVisitor;
 import org.geotools.filter.visitor.IsSupportedFilterVisitor;
@@ -150,15 +148,12 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
      * {@link EObjectConditionEncoder} constructor
      * 
      * @param eFeatureInfo - {@link EFeatureInfo} instance
-     * @param featureType - {@link SimpleFeatureType} instance
-     * @param srid - a spatial reference system ESPG number
      * @param looseBBox -
      */
-    public EObjectConditionEncoder(EFeatureInfo eFeatureInfo, SimpleFeatureType featureType,
-            String srid, boolean looseBBox) {
-        this.srid = srid;
-        this.featureType = featureType;
+    public EObjectConditionEncoder(EFeatureInfo eFeatureInfo, boolean looseBBox) {
         this.eFeatureInfo = eFeatureInfo;
+        this.srid = eFeatureInfo.getSRID();
+        this.featureType = eFeatureInfo.getFeatureType();
         this.looseBBox = looseBBox;
     }
 
@@ -1346,8 +1341,8 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
         // Verify
         //
         if (attribute == null) {
-            throw new NullPointerException("Attribute with name " + expression.getPropertyName()
-                    + " not found");
+            throw new NullPointerException("Attribute with name " +
+            		"[" + expression.getPropertyName() + "] not found");
         }
 
         // Push to stack

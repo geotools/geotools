@@ -434,10 +434,6 @@ public class EFeatureInternal {
         //
         if(this.eStructure!=eStructure) {
             //
-            // Get old unique structure ID
-            //
-            Long eOldUID = (this.eStructure!=null ? this.eStructure.eUID : 0);
-            //
             // ------------------------------------------------------
             //  Validate implementation against structure? 
             // ------------------------------------------------------
@@ -448,7 +444,7 @@ public class EFeatureInternal {
             //  validate this implementation against each unique 
             //  structure once.
             //
-            if(eStructure.eUID !=eOldUID) {
+            if(!eStructure.eEqualTo(this.eStructure)) {
                 validate(eStructure, eImpl());
             } 
             //
@@ -608,7 +604,7 @@ public class EFeatureInternal {
                 eValidSet = new HashSet<Long>();
                 eClassValidatedMap.put(eClass, eValidSet);
             } 
-            if( !eValidSet.contains(eStructure.eUID)) {
+            if( !eValidSet.contains(eStructure.eUID())) {
                 //
                 // Get parent class?
                 //
@@ -626,7 +622,7 @@ public class EFeatureInternal {
                 //
                 // Add to verified structures
                 //
-                eValidSet.add(eStructure.eUID);
+                eValidSet.add(eStructure.eUID());
             }           
         }
     }    

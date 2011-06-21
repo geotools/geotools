@@ -14,8 +14,7 @@ import org.geotools.data.efeature.EFeatureAttributeInfo;
 import org.geotools.data.efeature.EFeatureContext;
 import org.geotools.data.efeature.EFeatureContextFactory;
 import org.geotools.data.efeature.EFeatureContextInfo;
-import org.geotools.data.efeature.EFeatureDataStoreInfo;
-import org.geotools.data.efeature.EFeatureDomainInfo;
+import org.geotools.data.efeature.EFeaturePackageInfo;
 import org.geotools.data.efeature.EFeatureFactoryFinder;
 import org.geotools.data.efeature.EFeatureFolderInfo;
 import org.geotools.data.efeature.EFeatureGeometryInfo;
@@ -153,19 +152,13 @@ public class EFeatureContextTest extends AbstractResourceTest {
     private static void assertStructure(String msg,EFeatureContextInfo eInfo)
     {
         assertNotNull(msg+". EFeatureContextFactory instance not set", eInfo.eContext());
-        assertEquals(msg+". EFeatureDomainInfo count mismatch", 1, eInfo.eDomainInfoMap().size());
-        assertStructure(msg, eInfo.eDomainInfoMap().values().iterator().next());
-    }
-
-    private static void assertStructure(String msg,EFeatureDomainInfo eInfo)
-    {
-        assertEquals(msg+". EFeatureDataStoreInfo count mismatch", 2, eInfo.eDataStoreInfoMap().size());
-        for(EFeatureDataStoreInfo it : eInfo.eDataStoreInfoMap().values()) {
+        assertEquals(msg+". EFeaturePackageInfo count mismatch", 2, eInfo.ePackageMap().size());
+        for(EFeaturePackageInfo it : eInfo.ePackageMap().values()) {
             assertStructure(msg, it);
         }
-    }    
+    }
 
-    private static void assertStructure(String msg,EFeatureDataStoreInfo eInfo)
+    private static void assertStructure(String msg,EFeaturePackageInfo eInfo)
     {
         assertEquals(msg+". EFeatureFolderInfo count mismatch", 1, eInfo.eFolderInfoMap().size());
         for(EFeatureFolderInfo it : eInfo.eFolderInfoMap().values()) {

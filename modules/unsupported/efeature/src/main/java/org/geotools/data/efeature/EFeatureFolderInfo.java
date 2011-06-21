@@ -8,6 +8,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EPackage;
+import org.geotools.data.efeature.internal.EFeatureInfoCache;
 
 
 /**
@@ -17,7 +18,7 @@ import org.eclipse.emf.ecore.EPackage;
  * @author kengu
  * 
  */
-public class EFeatureFolderInfo extends EStructureInfo<EFeatureDataStoreInfo> {
+public class EFeatureFolderInfo extends EStructureInfo<EFeaturePackageInfo> {
 
     /**
      * The {@link EFeature} folder name. An {@link EClass} containing {@link EFeature} or
@@ -27,9 +28,6 @@ public class EFeatureFolderInfo extends EStructureInfo<EFeatureDataStoreInfo> {
     
     /** Cached {@link EPackage#getNsURI() name space URI}  */
     protected String eNsURI;
-
-    /** Cached {@link EditingDomainID} id */
-    protected String eDomainID;        
 
     /**
      * If <code>true</code>, {@link #eName} is an {@link EClass} containing {@link EFeature}s or
@@ -61,14 +59,10 @@ public class EFeatureFolderInfo extends EStructureInfo<EFeatureDataStoreInfo> {
         return eNsURI;
     }
 
-    public String eDomainID() {
-        return eDomainID;
-    }
-    
     @Override
-    protected EFeatureDataStoreInfo eParentInfo(boolean checkIsValid) {
+    protected EFeaturePackageInfo eParentInfo(boolean checkIsValid) {
         return eContext(checkIsValid).eStructure().
-            eGetDataStoreInfo(eDomainID, eNsURI);        
+            eGetPackageInfo(eNsURI);        
     }
 
     public EFeatureInfo eGetFeatureInfo(String eName) {
@@ -164,19 +158,18 @@ public class EFeatureFolderInfo extends EStructureInfo<EFeatureDataStoreInfo> {
     /**
      * Construct {@link EFeatureFolderInfo} instances from {@link EPackage} instance.
      * <p>     
-     * @param eStoreInfo - {@link EFeatureDataStoreInfo} instance
+     * @param eStoreInfo - {@link EFeaturePackageInfo} instance
      * @param ePackage - {@link EPackage} instance containing EFeature and EFeature compatible classes.
      * @throws IllegalArgumentException If a {@link EPackage} instance was not found.
      */
     protected static EFeatureFolderInfo create( 
-            EFeatureDataStoreInfo eStoreInfo, EPackage ePackage) 
+            EFeaturePackageInfo eStoreInfo, EPackage ePackage) 
         throws IllegalArgumentException {
         EFeatureFolderInfo eInfo = new EFeatureFolderInfo();
         eInfo.eName = ePackage.getName();
         eInfo.eNsURI = eStoreInfo.eNsURI;
         eInfo.eHints = eStoreInfo.eHints;
         eInfo.eContextID = eStoreInfo.eContextID;
-        eInfo.eDomainID = eStoreInfo.eDomainID;
         eInfo.eIsObject = false;
         eInfo.eFactory = eStoreInfo.eFactory;
         eInfo.eContext = eStoreInfo.eContext;
@@ -186,11 +179,15 @@ public class EFeatureFolderInfo extends EStructureInfo<EFeatureDataStoreInfo> {
 
     protected static Map<String, EFeatureInfo> features(EFeatureFolderInfo eFolderInfo, EPackage ePackage) {
         //
-        // Prepare
+        // Prepare lists
         //
         EList<EClassifier> eList = ePackage.getEClassifiers();
         Map<String, EFeatureInfo> eFeatureMap = 
-            new HashMap<String, EFeatureInfo>(eList.size());  
+            new HashMap<String, EFeatureInfo>(eList.size());
+        //
+        // Get EFeatureInfo cache
+        //
+        EFeatureInfoCache eCache = eFolderInfo.eContext(false).eStructure().eFeatureInfoCache();
         //
         // Inspect EMF package, adding all EFeature and EFeature compatible classes. 
         //
@@ -201,8 +198,12 @@ public class EFeatureFolderInfo extends EStructureInfo<EFeatureDataStoreInfo> {
             //
             if(EFeatureUtils.isCompatible(it))
             {
-                EFeatureInfo eFeatureInfo = 
-                    EFeatureInfo.create(eFolderInfo, (EClass)it);
+                EClass eClass = (EClass)it;
+                EFeatureInfo eFeatureInfo = eCache.get(eClass);
+                if(eFeatureInfo==null) {
+                    eFeatureInfo = EFeatureInfo.create(eFolderInfo, (EClass)it);
+                }
+                eFeatureInfo = eCache.get(eClass);
                 eFeatureMap.put(eFeatureInfo.eName(), eFeatureInfo);
             }
         }      

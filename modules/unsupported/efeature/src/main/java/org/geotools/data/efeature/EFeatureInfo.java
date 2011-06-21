@@ -4,6 +4,7 @@ import static org.geotools.data.efeature.EFeatureConstants.DEFAULT_SRID;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -11,15 +12,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.zip.Adler32;
 
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.geotools.data.efeature.internal.EFeatureVoidIDFactory;
 import org.geotools.feature.NameImpl;
 import org.geotools.referencing.CRS;
@@ -63,34 +65,17 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
     public static final int DEFAULT_GEOMETRY_NAME = 2;
     
     /**
-     * Static {@link EFeatureInfo#eUID} counter.
+     * @see #eUID()
      */
-    protected long eNexUID = 1;
-    
-    /**
-     * Unique ID which enables efficient <i>{@link EFeatureInfo structure} 
-     * equivalence</i> checking. <b>NOTE</b>: This equivalence is not
-     * the same as <i>{@link Object#equals(Object) Object equivalence}</i>,
-     * it only states that the structure is equal. Since the 
-     * structure is immutable, a single unique value is enough to 
-     * compare two structures for equivalence. Mutable fields like 
-     * {@link #getSRID()} is not part of the structure. It can therefore 
-     * not be assumed that if two structure have the same {@link #eUID}, then
-     * the {@link #getSRID()} are also the same. 
-     */
-    public final long eUID;
+    protected Long eUID;
 
     protected String eNsURI;
 
-    protected String eDomainID;
-    
     protected String eFolderName;
 
     protected String eClassName;
 
     protected String eReferenceName;
-
-    protected String eGeometryListName;
 
     protected String srid = DEFAULT_SRID;
 
@@ -136,9 +121,7 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
     /**
      * Default constructor
      */
-    protected EFeatureInfo() {
-        eUID = eNexUID++;
-    }
+    protected EFeatureInfo() { /*NOP*/ }
     
     /**
      * {@link EFeatureInfo} copy constructor.
@@ -174,7 +157,6 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
         // Copy context path
         //
         this.eNsURI = eFeatureInfo.eNsURI;
-        this.eDomainID = eFeatureInfo.eDomainID;
         this.eFolderName = eFeatureInfo.eFolderName;
         //
         // Copy EClass information
@@ -184,9 +166,9 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
         //
         // Copy parent EClass information (folder is an EClass)
         //                
-        this.eParentClass = new WeakReference<EClass>(eFeatureInfo.eParentClass());        
         this.eReferenceName = eFeatureInfo.eReferenceName;
         this.eReference = new WeakReference<EReference>(eFeatureInfo.eReference());
+        this.eParentClass = new WeakReference<EClass>(eFeatureInfo.eParentClass());
         //
         // Copy ID attribute information
         //                
@@ -226,6 +208,28 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
     // ----------------------------------------------------- 
     //  EFeatureInfo methods
     // -----------------------------------------------------
+    
+    
+    /**
+     * Unique ID which enables efficient <i>{@link EFeatureInfo structure} 
+     * equivalence</i> checking.
+     * <p> 
+     * <b>NOTE</b>: This equivalence is not the same as 
+     * <i>{@link Object#equals(Object) object equivalence}</i>,
+     * it only states that the structure is equal. Since the 
+     * structure is immutable, a single unique value is enough to 
+     * compare two structures for equivalence. Mutable fields like 
+     * {@link #getSRID()} is not part of the structure. It can therefore 
+     * not be assumed that if two structure have the same {@link #eUID}, then
+     * the {@link #getSRID()} are also the same. 
+     * </p>
+     * @throws IllegalStateException  If {@link EStructureInfo#isDisposed() disposed} or 
+     * {@link EStructureInfo#isValid() not valid}.
+     */
+    public Long eUID() {
+        verify(true);
+        return eUID;
+    }
     
     @Override
     public boolean isAvailable() {
@@ -272,10 +276,6 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
         
     public String eNsURI() {
         return eNsURI;
-    }
-
-    public String eDomainID() {
-        return eDomainID;
     }
 
     public String eFolderName() {
@@ -331,16 +331,16 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
     }
     
     /**
-     * Get {@link EFeatureFolderInfo} instance.
+     * Get {@link EStructureInfo structure parent} instance.
      */
     @Override
     protected EStructureInfo<?> eParentInfo(boolean checkIsValid) {
-        EFeatureDataStoreInfo eInfo = eContext(checkIsValid).
-            eStructure().eGetDataStoreInfo(eDomainID, eNsURI);
+        EFeaturePackageInfo eInfo = eContext(checkIsValid).
+            eStructure().eGetPackageInfo(eNsURI);
         if(eInfo!=null) {
             return eInfo.eGetFolderInfo(eFolderName);
         }
-        return null;
+        return eContext(checkIsValid).eStructure();
     }
     
     /**
@@ -622,10 +622,7 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
         //
         // Get parent class?
         //
-        EClass eParent = null; 
-        if (!eIsRoot) {
-            eParent = EFeatureUtils.eGetContainingClass(eObject);
-        }
+        EClass eParent = eIsRoot ? null : EFeatureUtils.eGetContainingClass(eObject);
         //
         // Forward
         //
@@ -745,8 +742,12 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
         // when doDispose() is not called explicitly.
         //
         this.eParentClass = new WeakReference<EClass>(eParent);
-        this.eReference = new WeakReference<EReference>(eReference);
-
+        this.eReference = new WeakReference<EReference>(eReference);        
+        //
+        // Create structure checksum
+        //
+        eUID = checksum();
+        //
         // Confirm that structure is valid
         //
         return structureIsValid(eName());
@@ -770,6 +771,15 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
         return featureIsValid();
     }
 
+    /**
+     * Check if given {@link EFeatureInfo structure} is equal to this 
+     * @param eInfo - given structure
+     * @return <code>true</code> if structures are equal
+     */
+    public boolean eEqualTo(EFeatureInfo eInfo) {
+        return eEqualTo(eInfo,true);
+    }
+    
     // ----------------------------------------------------- 
     //  EStructureInfo implementation
     // -----------------------------------------------------
@@ -839,7 +849,71 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
         this.eParentClass = null;
         this.eReference = null;
     }
+    
+    /**
+     * Check if given {@link EFeatureInfo structure} is equal to this 
+     * @param eInfo - given structure
+     * @return <code>true</code> if structures are equal
+     */
+    protected boolean eEqualTo(EFeatureInfo eInfo, boolean checkIfValid) {
+        verify(checkIfValid);
+        return !(eUID==null || eInfo==null) ? eUID.equals(eInfo.eUID) : false;
+    }
+    
 
+    /**
+     * Calculate structure checksum.
+     * <p>
+     * This method calculates the checksum by repeatedly applying
+     * {@link #eFeatureUID(EStructuralFeature)} on every 
+     * {@link EStructuralFeature} in this structure, concatenating 
+     * them together and finally calculating a checksum from the 
+     * concatenated string of unique feature IDs.
+     * @return a {@link Adler32} checksum for given structure
+     */
+    protected final Long checksum() {
+        //
+        // Prepare array of IDs
+        //
+        List<String> eIDs = new ArrayList<String>();
+        //
+        // Add EFeature ID EAttribute feature ID
+        //
+        eIDs.add(eFeatureUID(eIDAttribute()));
+        //
+        // Add all EAttribute feature IDs
+        //
+        for(EAttribute it : eGetAttributeMap(true).values()) {
+            eIDs.add(eFeatureUID(it));
+        }
+        //
+        // Add reference?
+        //
+        if(!isRoot()){
+            eIDs.add(eFeatureUID(eReference()));
+        }
+        //
+        // Sort array (structure is unordered, order it to ensure equal checksum)
+        //        
+        Collections.sort(eIDs);
+        //
+        // Calculate checksum (Adler32 is much faster then CRC-32 and almost as accurate)
+        //                
+        Adler32 a = new Adler32();
+        a.update(Arrays.toString(eIDs.toArray()).toString().getBytes());
+        //
+        // Finished
+        //
+        return a.getValue();
+    }
+    
+    private static final String eFeatureUID(EStructuralFeature eEFeature) {
+        EClass eClass = eEFeature.getEContainingClass();
+        return EFeatureUtils.eGetNsURI(eClass) 
+            + "/" + eClass.getClassifierID() 
+            + "/" + eEFeature.getFeatureID();
+}
+    
     // ----------------------------------------------------- 
     //  Public construction methods
     // -----------------------------------------------------
@@ -861,7 +935,8 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
         // Get structure information
         //
         EClass eClass = (eFeature instanceof EClass ? (EClass)eFeature : eFeature.eClass());
-        String eNsURI = EFeatureUtils.eGetNsURI(eClass);        
+        EPackage ePackage = eClass.getEPackage();
+        String eNsURI = ePackage.getNsURI();
         //
         // Check cache first
         //
@@ -885,9 +960,9 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
             eInfo.eContext = new WeakReference<EFeatureContext>(eContext);
             eInfo.eFactory = new WeakReference<EFeatureContextFactory>(eContext.eContextFactory());
             //
-            // Defined the structure
+            // Defined the structure using default values
             //
-            eInfo = define(eInfo, eContext, eNsURI, null, null, eClass);
+            eInfo = define(eInfo, eContext, eNsURI, ePackage.getName(), eClass);
         }
         //
         // Finished
@@ -919,7 +994,6 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
         // Get structure information
         //
         String eNsURI = eFolderInfo.eNsURI;
-        String eDomainID = eFolderInfo.eDomainID;
         String eFolderName = eFolderInfo.eName;
         //
         // Get context information
@@ -928,7 +1002,7 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
         //
         // Check cache first
         //
-        EFeatureInfo eInfo = eContext.eStructure().eGetFeatureInfo(eDomainID, eFolderName, eClass);
+        EFeatureInfo eInfo = eContext.eStructure().eGetFeatureInfo(eFolderName, eClass);
         //
         // Was not cached?
         //
@@ -950,7 +1024,7 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
             //
             // Forward
             //
-            eInfo = define(eInfo, eContext, eNsURI, eDomainID, eFolderName, eClass);
+            eInfo = define(eInfo, eContext, eNsURI, eFolderName, eClass);
         }
         //
         // Finished
@@ -974,7 +1048,6 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
      * @param eInfo
      * @param eContext
      * @param eNsURI
-     * @param eDomainID
      * @param eFolderName - the {@link EFeatureFolderInfo folder} instance 
      * @param eClass - {@link EFeature} or EFeature compatible EMF {@link EClass class} . 
      * @return a {@link EFeatureInfo} instance
@@ -982,13 +1055,12 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
      */
     private static EFeatureInfo define(
             EFeatureInfo eInfo, EFeatureContext eContext, 
-            String eNsURI, String eDomainID, String eFolderName, EClass eClass) 
+            String eNsURI, String eFolderName, EClass eClass) 
         throws IllegalArgumentException {
         //
         // Set context path
         //        
         eInfo.eNsURI = eNsURI;
-        eInfo.eDomainID = eDomainID;
         eInfo.eFolderName = eFolderName;
         //
         // Set EClass implementing EFeature 
@@ -1026,12 +1098,14 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
             eContext.eIDFactory().add(eClass,eIDAttribute);
         }
         //
-        // Add to cache
+        // Add to cache?
         //
-        EFeatureStatus eStatus;
-        if((eStatus = eContext.eStructure().doAttach(eInfo)).isFailure()) {
-            throw new IllegalArgumentException("Failed to cache " 
-                    + eInfo.eName() + ": " + eStatus.getMessage());
+        if(!eContext.eStructure().contains(eInfo)) {
+            EFeatureStatus eStatus;
+            if((eStatus = eContext.eStructure().doAttach(eInfo)).isFailure()) {
+                throw new IllegalArgumentException("Failed to cache " 
+                        + eInfo.eName() + ": " + eStatus.getMessage());
+            }
         }
         //
         // Finished

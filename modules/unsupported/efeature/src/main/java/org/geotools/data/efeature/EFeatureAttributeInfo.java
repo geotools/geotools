@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.emf.ecore.EAttribute;
+import org.geotools.data.efeature.internal.EFeatureVoidIDFactory;
 import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.AttributeTypeImpl;
@@ -28,8 +29,6 @@ public class EFeatureAttributeInfo extends EStructureInfo<EFeatureInfo> {
     
     protected String eNsURI;
     
-    protected String eDomainID;
-
     protected String eFolderName;
     
     protected String eFeatureName;
@@ -72,7 +71,6 @@ public class EFeatureAttributeInfo extends EStructureInfo<EFeatureInfo> {
         // Copy context path
         //
         this.eNsURI = eAttributeInfo.eNsURI;
-        this.eDomainID = eAttributeInfo.eDomainID;
         this.eFolderName = eAttributeInfo.eFolderName;
         this.eFeatureName = eAttributeInfo.eName();        
         //
@@ -103,10 +101,6 @@ public class EFeatureAttributeInfo extends EStructureInfo<EFeatureInfo> {
         return eNsURI;
     }
     
-    public String eDomainID() {
-        return eDomainID;
-    }
-        
     public String eFolderName() {
         return eFolderName;
     }
@@ -124,20 +118,20 @@ public class EFeatureAttributeInfo extends EStructureInfo<EFeatureInfo> {
         //
         // Try complete structure first
         //
-        EFeatureDataStoreInfo eStoreInfo = eContextInfo.
-            eGetDataStoreInfo(eDomainID, eNsURI);
+        EFeaturePackageInfo ePackageInfo = eContextInfo.
+            eGetPackageInfo(eNsURI);
         //
         // Full structure exists?
         //
-        if(eStoreInfo!=null) {
-            return eStoreInfo.
+        if(ePackageInfo!=null) {
+            return ePackageInfo.
                 eGetFolderInfo(eFolderName).
                     eGetFeatureInfo(eFeatureName);
         }
         //
         // No it dosn't, try EFeature cache
         //
-        return eContextInfo.eFeatureInfoCache().get(eNsURI, eDomainID, eFolderName, eFeatureName);        
+        return eContextInfo.eFeatureInfoCache().get(eNsURI, eFolderName, eFeatureName);        
     }
 
     public EAttribute eAttribute() {
@@ -183,13 +177,14 @@ public class EFeatureAttributeInfo extends EStructureInfo<EFeatureInfo> {
             //
             EFeatureIDFactory eFactory = eContext(false).eIDFactory();
             //
-            // Verify that the EFeatureID factory instance
+            // Verify that the EFeatureID factory instance exists and 
+            // creates IDs for this attribute
             //
             if(eFactory==null) {
                 return failure(this, eName(), "Attribute mismatch: " +
                         "No EFeatureIDFactory found");            
             }
-            else if(!eFactory.creates(eAttribute)) {
+            else if(!(eFactory instanceof EFeatureVoidIDFactory || eFactory.creates(eAttribute))) {
                 return failure(this, eName(), "Attribute mismatch: " +
                 		"EFeatureIDFactory does not create IDs for attribute " + eName);
             }
@@ -355,7 +350,6 @@ public class EFeatureAttributeInfo extends EStructureInfo<EFeatureInfo> {
         // Set context path
         //
         eInfo.eNsURI = eFeatureInfo.eNsURI;
-        eInfo.eDomainID = eFeatureInfo.eDomainID;
         eInfo.eFolderName = eFeatureInfo.eFolderName;
         eInfo.eFeatureName = eFeatureInfo.eName();        
         //

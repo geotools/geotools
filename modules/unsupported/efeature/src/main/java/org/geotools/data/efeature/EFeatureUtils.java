@@ -419,8 +419,7 @@ public class EFeatureUtils {
         //
         // Create spatial filter
         //
-        EObjectCondition eSpatialFilter = toEObjectCondition(eFeatureInfo,
-                eFeatureInfo.getFeatureType(), true, filter);
+        EObjectCondition eSpatialFilter = toEObjectCondition(eFeatureInfo, true, filter);
         //
         // Create EMF Query WHERE clause
         //
@@ -435,13 +434,14 @@ public class EFeatureUtils {
         return new EFeatureQuery(eObjects, eWhere);
     }
 
-    public static EObjectCondition toEObjectCondition(EFeatureInfo eFeatureInfo,
-            SimpleFeatureType featureType, boolean looseBBox, Filter filter)
+    public static EObjectCondition toEObjectCondition(
+            EFeatureInfo eFeatureInfo,
+            boolean looseBBox, Filter filter)
             throws EFeatureEncoderException {
+        //
         // Create encoder instance
         //
-        EObjectConditionEncoder encoder = new EObjectConditionEncoder(
-                eFeatureInfo, featureType, eFeatureInfo.srid, looseBBox);
+        EObjectConditionEncoder encoder = new EObjectConditionEncoder(eFeatureInfo, looseBBox);
         //
         // Encode filter
         //

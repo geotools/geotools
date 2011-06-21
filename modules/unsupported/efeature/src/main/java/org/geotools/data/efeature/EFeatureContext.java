@@ -28,8 +28,7 @@ public interface EFeatureContext {
      *  <li>define {@link EObject}s containing {@link Geometry EFeature compatible data}</li>
      * </nl>
      * <p>
-     * Prototypes does not contain any information about 
-     * {@link EFeatureDomainInfo editing domains} nor {@link EFeatureFolderInfo folders}.
+     * Prototypes does not contain any information about {@link EFeatureFolderInfo folders}.
      * </p>
      * 
      * @see {@link EFeatureInfo#create(EFeatureContext, EObject, EFeatureHints)}   
@@ -40,20 +39,39 @@ public interface EFeatureContext {
     
     public EFeatureContextInfo eStructure();
     
-    public boolean containsDomain(String eDomainID);
-    
     public List<String> eDomainIDs();
 
-    public EditingDomain eGetDomain(String eDomainID);
+    public boolean containsDomain(String eDomainID);
     
-    public boolean containsPackage(String eNsURI);
+    /**
+     * Get {@link EditingDomain} instance associated with given ID 
+     * @param eDomainID
+     * @return a {@link EditingDomain} instance.
+     * @throws IllegalArgumentException If not found
+     */
+    public EditingDomain eGetDomain(String eDomainID) throws IllegalArgumentException;
+
+    public Resource eGetResource(String eDomainID, URI eURI, boolean loadOnDemand);
     
     public List<String> eNsURIs();
+    
+    public boolean containsPackage(String eNsURI);
 
+    /**
+     * Check if given {@link EPackage package} is contained in context.
+     * @param ePackage - given {@link EPackage} instance
+     * @return <code>true</code> if contained
+     */
+    public boolean contains(EPackage ePackage);
+    
+    /**
+     * Get {@link EPackage} instance with given {@link EPackage#getNsURI() namespace URI} 
+     * @param eNsURI
+     * @return a {@link EPackage} instance.
+     * @throws IllegalArgumentException If not found
+     */    
     public EPackage eGetPackage(String eNsURI);
     
-    public Resource eGetResource(String eDomainID, URI eURI, boolean loadOnDemand);
-
     /**
      * Get {@link EFeatureContextFactory} instance which created this context
      * </p>
@@ -64,13 +82,6 @@ public interface EFeatureContext {
     public EFeatureContextFactory eContextFactory();
     
     /**
-     * Check if given {@link EPackage package} is contained in context.
-     * @param ePackage - given {@link EPackage} instance
-     * @return <code>true</code> if contained
-     */
-    public boolean contains(EPackage ePackage);
-
-    /**
      * Add {@link EPackage} instance to context.
      * <p>
      * @param ePackage - the {@link EPackage} instance
@@ -80,14 +91,6 @@ public interface EFeatureContext {
      * {@link EPackage#getNsURI() EPackage name space URI} is specified
      */
     public EPackage eAdd(EPackage ePackage) throws IllegalArgumentException;
-    
-    /**
-     * Check if given {@link EditingDomain editing domain} with given ID is contained in context.
-     * @param eDomainID - given {@link EditingDomain} id
-     * @param eDomain - given {@link EditingDomain} instance
-     * @return <code>true</code> if contained
-     */
-    public boolean contains(String eDomainID, EditingDomain eDomain);
     
     /**
      * Add {@link EditingDomain} instance to context.
@@ -108,7 +111,8 @@ public interface EFeatureContext {
     /**
      * Claim given {@link EFeature} (from any {@link EFeatureContext context}).
      * @param eFeature - {@link EFeature} instance to be moved into this context
-     * @param copy TODO
+     * @param copy - if <code>true</code>, copy instead of claiming (detaching) 
+     * it from owning context.
      * @return the {@link EFeatureInfo structure} of moved feature, 
      * or <code>null</code> if not moved
      */

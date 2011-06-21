@@ -178,7 +178,7 @@ public class EFeatureDataStoreFactory implements DataStoreFactorySpi {
      *         {@link EFeatureContext}, {@link EditingDomain} or {@link EObject} container
      *         instances.
      * @throws IllegalArgumentException if resolved {@link EObject} container and
-     *         {@link EFeatureDataStoreInfo} does not match.
+     *         {@link EFeaturePackageInfo} does not match.
      */
     public EFeatureDataStore createDataStore(Map<String, Serializable> params) throws IOException,
             IllegalArgumentException {
@@ -224,7 +224,7 @@ public class EFeatureDataStoreFactory implements DataStoreFactorySpi {
      *         {@link EFeatureContext}, {@link EditingDomain} or {@link EObject} container
      *         instances.
      * @throws IllegalArgumentException if resolved {@link EObject} container and
-     *         {@link EFeatureDataStoreInfo} does not match.
+     *         {@link EFeaturePackageInfo} does not match.
      */
     public DataStore createNewDataStore(Map<String, Serializable> params) throws IOException,
             IllegalArgumentException {
@@ -236,18 +236,16 @@ public class EFeatureDataStoreFactory implements DataStoreFactorySpi {
      * Get {@link EFeature} folder names from given {@link EFeatureContext}
      * 
      * @param eContextID - {@link EFeatureContext} instance extension point id
-     * @param eDomainID - {@link EFeatureContext} instance extension point id
      * @param eNsURI - {@link EPackage} defining {@link EObject}s containing {@link EFeature}s or
      *        {@link EFeature} compatible data.
      * @param eQuery - query used to select which {@link EFeature} folders to include
      * @return an array of {@link EFeature} folder names if found, <code>empty</code> array
      *         otherwise.
      */
-    public static String[] getFolderNames(String eContextID, String eDomainID, String eNsURI,
-            String eQuery) {
+    public static String[] getFolderNames(String eContextID, String eNsURI, String eQuery) {
         EFeatureContextInfo eInfo = eGetContextFactory().eStructure(eContextID);
         if (eInfo != null) {
-            EFeatureDataStoreInfo d = eInfo.eGetDataStoreInfo(eDomainID, eNsURI);
+            EFeaturePackageInfo d = eInfo.eGetPackageInfo(eNsURI);
             if (d != null) {
                 return d.eGetFolderNames(eQuery);
             }
@@ -274,82 +272,52 @@ public class EFeatureDataStoreFactory implements DataStoreFactorySpi {
     
 
     /**
-     * Get {@link EFeatureDataStoreInfo} instance with given {@link EFeatureDomainInfo#eDomainID() name space URL} 
-     * from {@link EFeatureContext} with given {@link EFeatureContext#eContextID() ID}. 
+     * Get {@link EFeaturePackageInfo} instance with given 
+     * {@link EFeaturePackageInfo#eNsURI() namespace URL} 
+     * from {@link EFeatureContext} with given 
+     * {@link EFeatureContext#eContextID() ID}. 
      * </p>
      * 
      * @param eContextID - given context {@link EFeatureContext#eContextID() ID}
-     * @param eDomainID - given editing domain {@link EFeatureDomainInfo#eDomainID() ID}
      * @param eNsURI - {@link EPackage} defining {@link EObject}s containing {@link EFeature}s or
      *        {@link EFeature} compatible data.
-     * @return a {@link EFeatureDataStoreInfo} if found.
-     * @throws IllegalArgumentException If no {@link EditingDomain} instance was found.
+     * @return a {@link EFeaturePackageInfo} if found.
+     * @throws IllegalArgumentException If no {@link EFeaturePackageInfo} instance was found.
      */
-    public static EFeatureDataStoreInfo eDataStoreInfo(String eContextID, String eDomainID, String eNsURI) {
+    public static EFeaturePackageInfo ePackageInfo(String eContextID, String eNsURI) {
         EFeatureContextInfo eContextInfo = eGetContextFactory().eStructure(eContextID);
-        EFeatureDataStoreInfo eStoreInfo = (eContextInfo != null ? eContextInfo.eGetDataStoreInfo(eDomainID, eNsURI) : null);
-        if(eStoreInfo!=null)
-        {
-            return eStoreInfo;
-        }
-        // Not found, throw exception
-        //
-        throw new IllegalArgumentException("No EditingDomain cached for " +
-                "eContextID: " + eContextID + ", " +
-                "eDomainID: " + eDomainID);
+        return eContextInfo.eGetPackageInfo(eNsURI);
     }
     
     /**
-     * Get {@link EditingDomain} instance with given {@link EFeatureDomainInfo#eDomainID() ID} 
+     * Get {@link EditingDomain} instance with given ID 
      * from {@link EFeatureContext} with given {@link EFeatureContext#eContextID() ID}. 
      * </p>
      * @param eContextID - given context {@link EFeatureContext#eContextID() ID}
-     * @param eDomainID - given editing domain {@link EFeatureDomainInfo#eDomainID() ID}
+     * @param eDomainID - given {@link EditingDomain} ID
      * @return a {@link EditingDomain} instance if found.
      * @throws IllegalArgumentException If no {@link EditingDomain} instance was found.
      */
     public static EditingDomain eDomain(String eContextID, String eDomainID) {
-        EditingDomain eDomain = null;
         EFeatureContext eContext = eGetContextFactory().eContext(eContextID);
-        eDomain = (eContext != null ? eContext.eGetDomain(eDomainID) : null);
-        if(eDomain!=null)
-        {
-            return eDomain;
-        }
-        // Not found, throw exception
-        //
-        throw new IllegalArgumentException("No EditingDomain cached for " +
-                "eContextID: " + eContextID + ", " +
-                "eDomainID: " + eDomainID);
-            
+        return eContext.eGetDomain(eDomainID);
     }
     
     /**
-     * Get {@link EditingDomain} instance with given {@link EFeatureDomainInfo#eDomainID() ID} 
-     * from {@link EFeatureContext} with given {@link EFeatureContext#eContextID() ID}. 
+     * Get {@link EditingDomain} instance with given ID in the {@link EFeatureContext} 
+     * with given {@link EFeatureContext#eContextID() ID}. 
      * </p>
      * @param eContextID - given context {@link EFeatureContext#eContextID() ID}
-     * @param eDomainID - given editing domain {@link EFeatureDomainInfo#eDomainID() ID}
+     * @param eDomainID - given {@link EditingDomain} ID
      * @return a {@link EditingDomain} instance if found.
      * @throws NullPointerException If 'eContext' is <code>null</code>.
      * @throws IllegalArgumentException If no {@link EditingDomain} instance was found.
      */
-    public static EditingDomain getEditingDomain(EFeatureContext eContext, String eDomainID) {
+    public static EditingDomain eDomain(EFeatureContext eContext, String eDomainID) {
         if(eContext==null) {
             throw new NullPointerException("EFeatureContext can not be 'null'");
         }            
-        EditingDomain eDomain = null;
-        eDomain = (eContext != null ? eContext.eGetDomain(eDomainID) : null);
-        if(eDomain!=null)
-        {
-            return eDomain;
-        }
-        // Not found, throw exception
-        //
-        throw new IllegalArgumentException("No EditingDomain cached for " +
-                "eContextID: " + eContext.eContextID() + ", " +
-                "eDomainID: " + eDomainID);
-            
+        return eContext.eGetDomain(eDomainID);
     }    
     
     /**
@@ -389,8 +357,8 @@ public class EFeatureDataStoreFactory implements DataStoreFactorySpi {
                     if(params.containsKey(EFOLDERS_QUERY)) {
                         if( !(eFolders==null || eFolders.length()==0)) {                        
                             for (String eFolder : dialect.toFolderQueries(eFolders)) {
-                                EFeatureDataStoreInfo info = eDataStoreInfo(eContextID,eDomainID, eNsURI);
-                                if (info == null)
+                                EFeaturePackageInfo eInfo = ePackageInfo(eContextID,eNsURI);
+                                if (eInfo == null)
                                     return false;
                                 String eURIFragment = dialect.getFolderFragment(eFolder);
                                 if (!(eURIFragment == null || eURIFragment.length() == 0)) {

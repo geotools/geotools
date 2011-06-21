@@ -61,6 +61,7 @@ import javax.imageio.ImageIO;
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import javax.imageio.metadata.IIOMetadata;
+import javax.imageio.spi.ImageInputStreamSpi;
 import javax.imageio.stream.ImageInputStream;
 import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
@@ -131,6 +132,12 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
 	private GeoTiffMetadata2CRSAdapter gtcs;
 	
 	private double noData = Double.NaN;
+
+    private File ovrSource;
+
+    private ImageInputStreamSpi ovrInStreamSPI = null;
+
+    private int extOvrImgChoice = -1;
 
 	/**
 	 * Creates a new instance of GeoTiffReader
@@ -203,6 +210,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
 			if (inStream == null)
 				throw new IllegalArgumentException("No input stream for the provided source");
 
+                        checkForExternalOverviews();
 			// /////////////////////////////////////////////////////////////////////
 			//
 			// Informations about multiple levels and such
@@ -235,6 +243,18 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
 				}
 		}
 	}
+	
+    private void checkForExternalOverviews() {
+        if (!(source instanceof File)) {
+            return;
+        }
+        File src = (File) source;
+        ovrSource = new File(src.getParent(), src.getName() + ".ovr");
+        if (!ovrSource.exists()) {
+            return;
+        }
+        ovrInStreamSPI = ImageIOExt.getImageInputStreamSPI(ovrSource);
+    }
 
     /**
      * Collect georeferencing information about this geotiff.
@@ -244,7 +264,8 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
      */
     private void getHRInfo(Hints hints) throws DataSourceException {
         ImageReader reader = null;
-
+        ImageReader ovrReader = null;
+        ImageInputStream ovrStream = null;
         try {
             // //
             //
@@ -328,6 +349,19 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
             highestRes[0] = XAffineTransform.getScaleX0(tempTransform);
             highestRes[1] = XAffineTransform.getScaleY0(tempTransform);
 
+            if (ovrInStreamSPI != null) {
+                ovrReader = readerSPI.createReaderInstance();
+                ovrStream = ovrInStreamSPI.createInputStreamInstance(ovrSource,
+                        ImageIO.getUseCache(), ImageIO.getCacheDirectory());
+                ovrReader.setInput(ovrStream);
+                // this includes the real image as this is a image index, we need to add one.
+                extOvrImgChoice = numOverviews + 1;
+                numOverviews = numOverviews + ovrReader.getNumImages(true);
+                if (numOverviews < extOvrImgChoice)
+                    extOvrImgChoice = -1;
+            }
+            
+            
             // //
             //
             // get information for the successive images
@@ -335,11 +369,18 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
             // //
             if (numOverviews >= 1) {
                 overViewResolutions = new double[numOverviews][2];
-                for (int i = 0; i < numOverviews; i++) {
-                    overViewResolutions[i][0] = (highestRes[0] * this.originalGridRange.getSpan(0))
-                            / reader.getWidth(i + 1);
-                    overViewResolutions[i][1] = (highestRes[1] * this.originalGridRange.getSpan(1))
-                            / reader.getHeight(i + 1);
+                // Internal overviews start at 1, so lastInternalOverview matches numOverviews if no
+                // external.
+                int firstExternalOverview = extOvrImgChoice == -1 ? numOverviews : extOvrImgChoice - 1;
+                double spanRes0 = highestRes[0] * this.originalGridRange.getSpan(0);
+                double spanRes1 = highestRes[1] * this.originalGridRange.getSpan(1);
+                for (int i = 0; i < firstExternalOverview; i++) {
+                    overViewResolutions[i][0] = spanRes0 / reader.getWidth(i + 1);
+                    overViewResolutions[i][1] = spanRes1 / reader.getHeight(i + 1);
+                }
+                for (int i = firstExternalOverview; i < numOverviews; i++) {
+                    overViewResolutions[i][0] = spanRes0 / ovrReader.getWidth(i - firstExternalOverview);
+                    overViewResolutions[i][1] = spanRes1 / ovrReader.getHeight(i - firstExternalOverview);
                 }
             } else
                 overViewResolutions = null;
@@ -349,6 +390,18 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
             if (reader != null)
                 try {
                     reader.dispose();
+                } catch (Throwable t) {
+                }
+                
+            if (ovrReader != null)
+                try {
+                    ovrReader.dispose();
+                } catch (Throwable t) {
+                }
+
+            if (ovrStream != null)
+                try {
+                    ovrStream.close();
                 } catch (Throwable t) {
                 }
 
@@ -443,9 +496,16 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
 //		inStream.close();
 //		reader.reset();
 		final ParameterBlock pbjRead = new ParameterBlock();
-		pbjRead.add(inStreamSPI!=null?inStreamSPI.createInputStreamInstance(source, ImageIO.getUseCache(), ImageIO.getCacheDirectory()):ImageIO.createImageInputStream(source));
-		pbjRead.add(imageChoice);
-		pbjRead.add(Boolean.FALSE);
+        if (extOvrImgChoice >= 0 && imageChoice >= extOvrImgChoice) {
+            pbjRead.add(ovrInStreamSPI.createInputStreamInstance(ovrSource, ImageIO.getUseCache(),
+                    ImageIO.getCacheDirectory()));
+            pbjRead.add(imageChoice - extOvrImgChoice);
+        } else {
+            pbjRead.add(inStreamSPI != null ? inStreamSPI.createInputStreamInstance(source, ImageIO.getUseCache(), 
+                    ImageIO.getCacheDirectory()) : ImageIO.createImageInputStream(source));
+            pbjRead.add(imageChoice);
+        }
+    		pbjRead.add(Boolean.FALSE);
 		pbjRead.add(Boolean.FALSE);
 		pbjRead.add(Boolean.FALSE);
 		pbjRead.add(null);

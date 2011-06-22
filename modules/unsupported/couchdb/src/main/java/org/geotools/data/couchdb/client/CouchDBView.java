@@ -37,8 +37,4 @@ public class CouchDBView extends CouchDBViewSupport {
         return (JSONArray) results.get("rows"); // okay - this is response field name
     }
 
-    public InputStream getStream(int limit) throws IOException, CouchDBException {
-        return getStream(new NameValuePair("limit",Integer.toString(limit)));
-    }
-    
 }

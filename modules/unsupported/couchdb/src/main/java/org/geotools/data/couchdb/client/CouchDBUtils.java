@@ -18,18 +18,12 @@ package org.geotools.data.couchdb.client;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryCollection;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.MultiLineString;
-import com.vividsolutions.jts.geom.MultiPoint;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.regex.Pattern;
+import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geojson.GeoJSONUtil;
 import org.geotools.geojson.geom.GeometryJSON;
@@ -38,6 +32,7 @@ import org.json.simple.JSONObject;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.Name;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
@@ -147,6 +142,9 @@ public final class CouchDBUtils {
     }
 
     public static SimpleFeatureType createFeatureType(JSONObject obj, String name) throws IOException {
+        return createFeatureType(obj,new NameImpl(name));
+    }
+    public static SimpleFeatureType createFeatureType(JSONObject obj, Name name) throws IOException {
 
         JSONObject props = (JSONObject) obj.get("properties");
         JSONObject geom = (JSONObject) obj.get("geometry");

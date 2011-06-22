@@ -19,7 +19,11 @@ package org.geotools.data.couchdb.client;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.commons.httpclient.HttpMethod;
+import org.apache.commons.httpclient.URIException;
+import org.geotools.util.logging.Logging;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
@@ -34,6 +38,7 @@ public final class CouchDBResponse {
     private final IOException exception;
     private final Object json;
     private final boolean isArray;
+    private static final Logger logger =  Logging.getLogger(CouchDBResponse.class);
 
     public CouchDBResponse(HttpMethod request, int result, IOException exception) throws IOException {
         this.request = request;
@@ -62,6 +67,14 @@ public final class CouchDBResponse {
     public void checkOK(String msg) throws CouchDBException {
         if (!isHttpOK()) {
             String fullMsg = msg + "," + getErrorAndReason();
+            try {
+                if (logger.isLoggable(Level.FINE)) {
+                    logger.log(Level.FINE,"Request URI : " + request.getURI());
+                }
+            } catch (URIException ex) {
+                logger.warning("An invalid URI was used " + request.getPath() + 
+                        "," + request.getQueryString());
+            }
             throw new CouchDBException(fullMsg,exception);
         } 
     }
@@ -100,14 +113,6 @@ public final class CouchDBResponse {
         return exception;
     }
     
-    public InputStream getResponseStream() throws IOException {
-        return request.getResponseBodyAsStream();
-    }
-    
-    public String getBody() throws IOException {
-        return request.getResponseBodyAsString();
-    }
-
     public JSONArray getBodyAsJSONArray() throws IOException {
         if (!isArray) {
             throw new IllegalStateException("Response is not an array");
@@ -115,7 +120,7 @@ public final class CouchDBResponse {
         return (JSONArray) json;
     }
 
-    JSONObject getBodyAsJSONObject() throws IOException {
+    public JSONObject getBodyAsJSONObject() throws IOException {
         if (isArray) {
             throw new IllegalStateException("Response is not an object");
         }

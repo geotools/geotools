@@ -16,6 +16,7 @@
  */
 package org.geotools.data.couchdb.client;
 
+import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -23,7 +24,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpConnectionManager;
 import org.apache.commons.httpclient.HttpMethod;
+import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.URI;
 import org.apache.commons.httpclient.URIException;
@@ -54,6 +57,9 @@ import org.json.simple.JSONArray;
  * The Client does not perform any checking of CouchDBResponses for errors. All
  * methods that return CouchDBResponses will never return null.
  * 
+ * A Client instance should always be closed when done to release pooled
+ * connections.
+ * 
  * Notes:
  * * Using older httpclient 3.1, could upgrade to 4.x, but what impact on other
  * libraries
@@ -61,11 +67,11 @@ import org.json.simple.JSONArray;
  * @todo thread safety requirements?
  * @author Ian Schneider (OpenGeo)
  */
-public class CouchDBClient {
+public class CouchDBClient implements Closeable {
     private static final String DEFAULT_CHARSET = "UTF-8";
     private static final String MIME_TYPE_JSON = "application/json";
     private final URI root;
-    private final HttpClient httpClient;
+    private final MultiThreadedHttpConnectionManager manager;
     private final HttpClientParams clientParams;
     private static final Logger logger =  Logging.getLogger(CouchDBClient.class);
 
@@ -80,10 +86,10 @@ public class CouchDBClient {
 
         clientParams = new HttpClientParams();
         clientParams.setParameter(HttpClientParams.USER_AGENT, "gtcouchclient");
-
-        httpClient = new HttpClient(clientParams);
+        
+        manager = new MultiThreadedHttpConnectionManager();
     }
-
+    
     /**
      * Get a list of all database names on the instance.
      * @return non-null List of database names
@@ -255,13 +261,20 @@ public class CouchDBClient {
      */
     private CouchDBResponse executeMethod(HttpMethod method) throws IOException {
         IOException expected = null;
-        int result = -1;
+        int result = -1;            
+        HttpClient client = new HttpClient(clientParams,manager);
         try {
-            result = httpClient.executeMethod(method);
+            result = client.executeMethod(method);
         } catch (IOException ex) {
             expected = ex;
         }
-        CouchDBResponse resp = new CouchDBResponse(method, result, expected);
+        CouchDBResponse resp;
+        try {
+            resp = new CouchDBResponse(method, result, expected);
+        } finally {
+            // @revisit if method doesn't read contents upfront
+            method.releaseConnection();
+        }
         if (logger.isLoggable(Level.FINEST)) {
             logger.finest("Request to : " + method.getPath());
             logger.finest("Response status : " + result);
@@ -276,6 +289,10 @@ public class CouchDBClient {
         } catch (URIException ex) {
             throw new RuntimeException("Error building URL for " + root + " " + path, ex);
         }
+    }
+
+    public void close() throws IOException {
+        manager.shutdown();
     }
     
     // this should support the concept of parent component, otherwise

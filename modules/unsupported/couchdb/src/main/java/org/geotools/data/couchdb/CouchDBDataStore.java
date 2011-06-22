@@ -16,6 +16,8 @@
  */
 package org.geotools.data.couchdb;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.geotools.data.couchdb.client.CouchDBClient;
 import org.geotools.data.couchdb.client.CouchDBException;
 import org.geotools.data.couchdb.client.CouchDBConnection;
@@ -39,10 +41,25 @@ import org.opengis.feature.type.Name;
 public class CouchDBDataStore extends ContentDataStore {
 
     private String couchURL;
-    private String schemaURI;
     private String dbName;
+    private CouchDBClient client;
     private CouchDBConnection dbConn;
 
+    @Override
+    public void dispose() {
+        super.dispose();
+        try {
+            client.close();
+        } catch (IOException ex) {
+            Logger.getLogger(CouchDBDataStore.class.getName()).log(Level.WARNING, "Error closing client", ex);
+        }
+    }
+    
+    public void init() throws Exception {
+        client = new CouchDBClient(couchURL);
+        dbConn = client.openDBConnection(dbName);
+    }
+    
     public CouchDBConnection getConnection() {
         return dbConn;
     }
@@ -50,7 +67,7 @@ public class CouchDBDataStore extends ContentDataStore {
     @Override
     protected List<Name> createTypeNames() throws IOException {
         List<Name> names = new ArrayList<Name>();
-        JSONObject design = dbconn().getDesignDocument();
+        JSONObject design = dbConn.getDesignDocument();
 
         // for now, expect that db is spatial
         // for each spatial view find a normal view with the same name
@@ -62,7 +79,7 @@ public class CouchDBDataStore extends ContentDataStore {
         for (Object key : spatial.keySet()) {
             if (views.containsKey(key)) {
                 // using the dot separator is ok, since dbnames cannot contain dots
-                names.add(new NameImpl(couchURL, dbName + "." + key.toString()));
+                names.add(new NameImpl(dbName + "." + key.toString()));
             }
         }
         return names;
@@ -83,35 +100,13 @@ public class CouchDBDataStore extends ContentDataStore {
         return new CouchDBFeatureStore(entry, null);
     }
 
-    private CouchDBConnection dbconn() throws IOException {
-        if (dbConn == null) {
-            try {
-                dbConn = client().openDBConnection(dbName);
-            } catch (CouchDBException ex) {
-                ex.wrap();
-            }
-        }
-        return dbConn;
-    }
-
-    private CouchDBClient client() {
-        try {
-            return new CouchDBClient(couchURL);
-        } catch (URIException ex) {
-            throw new RuntimeException("Invalid URI for CouchDB", ex);
-        }
-    }
-
     public void setCouchURL(String couchURL) {
         this.couchURL = couchURL;
-        setNamespaceURI(couchURL);
-    }
-
-    public void setSchemaURI(String schemaURI) {
-        this.schemaURI = schemaURI;
     }
 
     public void setDatabaseName(String dbName) {
         this.dbName = dbName;
     }
+    
+    
 }

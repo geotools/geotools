@@ -16,8 +16,6 @@
  */
 package org.geotools.data.couchdb;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.geotools.data.couchdb.client.CouchDBConnectionTest;
 import org.geotools.data.couchdb.client.CouchDBUtils;
 import org.geotools.data.couchdb.client.CouchDBConnection;
@@ -30,6 +28,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
+import org.geotools.data.couchdb.client.CouchDBException;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.data.store.ContentFeatureStore;
 import org.geotools.factory.CommonFactoryFinder;
@@ -73,8 +72,9 @@ public class CouchDBDataStoreTest extends CouchDBTestSupport {
     @Before
     public void setup() throws Exception {
         store = new CouchDBDataStore();
-        store.setCouchURL(getTestHost()); // @todo fixture location, etc.
+        store.setCouchURL(getTestHost());
         store.setDatabaseName(getTestDB());
+        store.init();
     }
     
     @After
@@ -82,21 +82,21 @@ public class CouchDBDataStoreTest extends CouchDBTestSupport {
     }
     
     @Test
-    public void testBrokenDB() {
+    public void testBrokenDB() throws Exception {
         store.setDatabaseName("nonexistent");
         try {
-            store.getFeatureSource("foo");
+            store.init();
             fail("expected exception");
-        } catch (IOException ex) {
+        } catch (CouchDBException ex) {
             assertEquals("Unable to open DB 'nonexistent',not_found,no_db_file", ex.getMessage());
         }
     }
     
     @Test
-    public void testBrokenHost() {
+    public void testBrokenHost() throws Exception {
         store.setCouchURL("http://thisshouldnotexistandifitdoesihateyou.org");
         try {
-            store.getFeatureSource("foo");
+            store.init();
             fail("expected exception");
         } catch (IOException ex) {
             assertEquals("HTTP error", ex.getMessage());

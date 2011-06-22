@@ -32,9 +32,7 @@ public class CouchDBClientTest extends CouchDBTestSupport {
     public void setup() throws Exception {
         deleteIfExists(getTestDB());
     }
-    /**
-     * Test of getDatabaseNames method, of class CouchDBClient.
-     */
+    
     @Test
     public void testGetDatabaseNames() throws Exception {
         List<String> databaseNames = client.getDatabaseNames();

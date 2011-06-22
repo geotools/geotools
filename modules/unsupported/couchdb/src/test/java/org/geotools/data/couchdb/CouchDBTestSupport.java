@@ -52,6 +52,9 @@ public class CouchDBTestSupport extends OnlineTestSupport {
     @After
     public void tearDown() throws Exception {
         debug(false);
+        if (client != null) {
+            client.close();
+        }
     }
     
     protected void debug(boolean on) {
@@ -106,6 +109,7 @@ public class CouchDBTestSupport extends OnlineTestSupport {
     @Override
     protected void connect() throws Exception {
         client = new CouchDBClient(getTestHost());
+        client.getDatabaseNames(); // should fail unless configured correctly
     }
     
 }

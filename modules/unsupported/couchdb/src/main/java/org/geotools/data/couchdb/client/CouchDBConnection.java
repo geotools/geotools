@@ -56,8 +56,9 @@ public class CouchDBConnection extends CouchDBClient.Component {
         return root;
     }
 
-    public void delete() throws IOException {
-        client.delete(root);
+    public void delete() throws IOException, CouchDBException {
+        CouchDBResponse delete = client.delete(root);
+        delete.checkOK("could not delete");
     }
     
     public void postBulk(JSONArray docs) throws IOException, CouchDBException {

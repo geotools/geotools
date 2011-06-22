@@ -17,6 +17,8 @@
 package org.geotools.data.couchdb;
 
 import com.vividsolutions.jts.geom.Envelope;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.geotools.data.couchdb.client.CouchDBUtils;
 import org.geotools.data.couchdb.client.CouchDBSpatialView;
 import org.geotools.data.couchdb.client.CouchDBException;
@@ -27,12 +29,15 @@ import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureStore;
+import org.geotools.feature.NameImpl;
 import org.geotools.filter.visitor.ExtractBoundsFilterVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.Name;
+import org.opengis.geometry.BoundingBox;
 
 /**
  *
@@ -52,12 +57,29 @@ public class CouchDBFeatureStore extends ContentFeatureStore {
 
     @Override
     protected ReferencedEnvelope getBoundsInternal(Query query) throws IOException {
-        // @todo ianschneider understand query
-        
         // there appears to be no way to obtain the bbox from couch documents 
         // (aka features) without getting all the geometry as well.
         // one approach might be to write a view that only returns bbox?
-        throw new UnsupportedOperationException("Not supported yet.");
+        CouchDBSpatialView spatialView = getDataStore().getConnection().spatialView(viewName);
+        Envelope e = getBBox(query);
+        JSONObject results;
+        try {
+            results = spatialView.get(e.getMinX(),e.getMinY(),e.getMaxX(),e.getMaxY());
+        } catch (CouchDBException ex) {
+            throw ex.wrap();
+        }
+        Envelope env  = null;
+        JSONArray rows = (JSONArray) results.get("rows");
+        for (int i = 0; i < rows.size(); i++) {
+            JSONArray bbox = (JSONArray) ((JSONObject) rows.get(i)).get("bbox");
+            if (env == null) {
+                env = new Envelope((Double)bbox.get(0),(Double)bbox.get(1),(Double)bbox.get(2),(Double)bbox.get(3));
+            } else {
+                env.expandToInclude((Double)bbox.get(0),(Double)bbox.get(1));
+                env.expandToInclude((Double)bbox.get(2),(Double)bbox.get(3));
+            }
+        }
+        return new ReferencedEnvelope(env,null);
     }
 
     @Override
@@ -128,7 +150,8 @@ public class CouchDBFeatureStore extends ContentFeatureStore {
         }
         JSONObject row = (JSONObject) res.get(0);
         row = (JSONObject) row.get("value");
-        return CouchDBUtils.createFeatureType(row, getEntry().getName().toString());
+        Name fqn = new NameImpl(getDataStore().getNamespaceURI(),getEntry().getTypeName());
+        return CouchDBUtils.createFeatureType(row, fqn);
     }
     
     @Override

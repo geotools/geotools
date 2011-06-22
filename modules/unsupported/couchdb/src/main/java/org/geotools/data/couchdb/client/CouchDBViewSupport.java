@@ -40,10 +40,4 @@ public abstract class CouchDBViewSupport extends CouchDBClient.Component {
         return resp.getBodyAsJSONObject();
     }
     
-    protected InputStream getStream(NameValuePair... query) throws IOException, CouchDBException {
-        // @todo yuck - shouldn't have to get parent to build uri
-        CouchDBResponse resp = client.get(connection.uri(root),query);
-        return resp.getResponseStream();
-    }
-    
 }

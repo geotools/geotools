@@ -1,53 +1,104 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="1038.11">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 14.0px 0.0px; font: 18.0px Times}
-    p.p2 {margin: 0.0px 0.0px 12.0px 0.0px; font: 12.0px Times}
-    p.p3 {margin: 0.0px 0.0px 14.0px 0.0px; font: 14.0px Times}
-    p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Courier}
-    p.p7 {margin: 0.0px 0.0px 12.0px 0.0px; font: 12.0px Times; min-height: 14.0px}
-    li.li4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times}
-    li.li5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times; min-height: 14.0px}
-    span.s1 {text-decoration: underline ; color: #0101ee}
-    ul.ul1 {list-style-type: disc}
-  </style>
-</head>
-<body>
-<p class="p1"><b>GeoTools @VERSION@</b></p>
-<p class="p2">Thank you for downloading GeoTools @VERSION@. This release was created on: @DATE@.</p>
-<p class="p2">This release contains only a subset of the current GeoTools codebase. The full GeoTools codebase is made up of over 30 modules; Only the modules which are considered to be stable will be included in this release.</p>
-<p class="p2">For more information, and documentation on the GeoTools library please see our <a href="http://docs.codehaus.org/display/GEOTOOLS"><span class="s1">Community Wiki</span></a> or the <a href="http://docs.codehaus.org/display/GEOTDOC"><span class="s1">User Guide</span></a>.</p>
-<p class="p3"><b>NOTE</b></p>
-<p class="p2">The details contained in the rest of this file are provided as a quick start reference. For full details on requirements and build process please see the <a href="http://docs.codehaus.org/display/GEOT/Home"><span class="s1">Developers' Guide</span></a>.</p>
-<p class="p3"><b>REQUIREMENTS</b></p>
-<p class="p2">To use the GeoTools libraries you will need:</p>
-<ul class="ul1">
-  <li class="li4">Java 5 or higher.</li>
-  <li class="li5"><br></li>
-</ul>
-<p class="p2">GeoTools will benefit from the inclusion of Java Advanced Imaging (JAI) and the Java Image IO (JIO) extensions in your JRE. In addition some formats require the ImageIO-Ext additions which explicitly support raster formats such as MRSID and ECW.</p>
-<p class="p2">You can obtain the latest versions of both of these <a href="http://java.sun.com/products/java-media/jai/current.html"><span class="s1">here</span></a>. Detailed instructions can be found <a href="http://docs.codehaus.org/display/GEOTOOLS/Dependencies"><span class="s1">here</span></a>.</p>
-<p class="p3"><b>ORACLE REQUIREMENTS</b></p>
-<p class="p2">In order to use the Oracle module, you need the Oracle JDBC driver from Oracle. Unlike most external libraries used in GeoTools, we cannot redistribute this jar.</p>
-<p class="p2">However, you can obtain them from the Oracle website, free of charge, after registering: - http://otn.oracle.com/software/tech/java/sqlj_jdbc/content.html Please see the developers guide for more information.</p>
-<p class="p3"><b>BUILDING</b></p>
-<p class="p2">In order to build GeoTools you will need a copy of <a href="http://maven.apache.org/download.html"><span class="s1">Maven 2</span></a>. Maven is a project management tool from the Apache group.</p>
-<p class="p2">At the time of writing, the build process was known to work with the Maven 2.1.0 release.</p>
-<p class="p2">Once you have maven installed, you can perform a full build by moving to the GeoTools folder and typing:</p>
-<p class="p6">mvn install</p>
-<p class="p7"><br></p>
-<p class="p2">Please read the <a href="http://docs.codehaus.org/display/GEOT/2.5+Using+Maven"><span class="s1">Developers Guide</span></a> for more information about maven:</p>
-<p class="p3"><b>GETTING INVOLVED</b></p>
-<p class="p2">For general queries the <a href="mailto:geotools-gt2-users@lists.sourceforge.net"><span class="s1">gt2-users mailing list</span></a> is available.</p>
-<p class="p2">If you are interested in the future development of GeoTools then feel free to join the geotools-devel mailing list.We welcome contributions of new modules as well as keen developers who want to work on the project as a whole.</p>
-<p class="p2">You can find out more about the mailing lists and recent news by going to the <a href="http://geotools.org/"><span class="s1">GeoTools Homepage</span></a> and by reading the <a href="http://docs.codehaus.org/display/GEOTOOLS/Home"><span class="s1">GeoTools Guide</span></a>.</p>
-<p class="p2">Good luck and many thanks for your interest in GeoTools,</p>
-<p class="p2"><i>The GeoTools Project Management Committee, Open Source Geospatial Foundation</i></p>
-</body>
-</html>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
+	<TITLE>GeoTools @RELEASE@ README</TITLE>
+	<META NAME="GENERATOR" CONTENT="LibreOffice 3.3  (Linux)">
+	<META NAME="CREATED" CONTENT="0;0">
+	<META NAME="CHANGEDBY" CONTENT="Jody Garnett">
+	<META NAME="CHANGED" CONTENT="20110428;21541200">
+	<META NAME="CocoaVersion" CONTENT="1038.11">
+	<META NAME="CHANGEDBY" CONTENT="Jody Garnett">
+	<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+	<STYLE TYPE="text/css">
+	<!--
+		H1.western { font-family: "Liberation Sans", sans-serif }
+		H2.cjk { font-family: "WenQuanYi Micro Hei" }
+		H2.ctl { font-family: "Lohit Hindi" }
+		H3.western { font-family: "Liberation Sans", sans-serif }
+		H3.cjk { font-family: "WenQuanYi Micro Hei" }
+ 		H3.ctl { font-family: "Lohit Hindi" }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LANG="en-AU" DIR="LTR">
+<a href="http://geotools.org"><img src="geotools-logo.png"></a>
+<H1 CLASS="western">GeoTools @RELEASE@</H1>
+
+<P>Thank you for downloading GeoTools @RELEASE@. This release was
+created on @DATE@.</P>
+
+<P>This release contains only a subset of the current GeoTools code
+base. The full GeoTools code base contains additional unsupported
+modules covering experiments with a range of additional data formats.
+Only the modules which are considered to be stable have been included
+in this release.</P>
+
+<P>The <A HREF="http://docs.geotools.org/latest/userguide/">GeoTools
+User Guide</A> includes the following examples to introduce you
+to GeoTools development:</P>
+<UL>
+	<LI><A HREF="http://docs.geotools.org/stable/userguide/quickstart.html">Quickstart</A></LI>
+	<LI><A HREF="http://docs.geotools.org/stable/userguide/examples/csv2shp.html">CSV 2 SHP Lab</A></LI>
+	<LI><A HREF="http://docs.geotools.org/stable/userguide/examples/crslab.html">CRS Lab</A></LI>
+	<LI><A HREF="http://docs.geotools.org/stable/userguide/examples/querylab.html">Query Lab</A></LI>
+	<LI><A HREF="http://docs.geotools.org/stable/userguide/examples/stylelab.html">Style Lab</A></LI>
+	<LI><A HREF="http://docs.geotools.org/stable/userguide/examples/stylefunctionlab.html">Style Function Lab</A></LI>
+	<LI><A HREF="http://docs.geotools.org/stable/userguide/examples/imagelab.html">Image Lab</A></LI>
+	<LI><A HREF="http://docs.geotools.org/stable/userguide/examples/selectionlab.html">Selection Lab</A></LI>
+</UL>
+<P>
+GeoTools 2.7 <a href="http://docs.geotools.org/stable/tutorials/">tutorials</a> covering GeoTools 2.7 are available FOSS4G 2010 conference.
+
+<P>Welcome to GeoTools development!</P>
+<H2 CLASS="western">Reference</H2>
+<P>For full details on requirements and build process please see the
+<A HREF="http://docs.geotools.org/latest/developer/">Developers'
+Guide</A> (the following is provided as a quick reference only).</P>
+<H3 CLASS="western">Requirements</H3>
+<P>To use the GeoTools libraries you will need:</P>
+<UL>
+	<LI><P>Java 5 or higher</P>
+</UL>
+<P>GeoTools will benefit from the inclusion of Java Advanced Imaging
+(JAI) and the Java Image IO (JIO) extensions in your JRE. In addition
+some formats require the ImageIO-Ext additions which explicitly
+support raster formats such as MRSID and ECW. Detailed instructions
+on configuring your JDK with these optional extensions can be found
+in our developers guide <A HREF="http://docs.geotools.org/latest/developer/guide/building/install/jdk.html">here</A>.</P>
+<H3 CLASS="western">Oracle (Optional)</H3>
+<P>In order to use the gt-oracle or gt-jdbc-oracle modules, you need
+the Oracle JDBC driver from Oracle. Unlike most external libraries
+used in GeoTools, we cannot redistribute this jar.</P>
+<P>However, you can obtain them from the Oracle website, free of
+charge, after registering:</P>
+<UL>
+	<LI><P><A HREF="http://www.oracle.com/technetwork/database/features/jdbc/index.html">http://www.oracle.com/technetwork/database/features/jdbc/</A></P>
+</UL>
+<P>Please see the developers guide for detailed instructions.</P>
+<H3 CLASS="western">Building (Optional)</H3>
+<P>In order to build GeoTools you will need a copy of <A HREF="http://maven.apache.org/download.html">Maven
+2</A>. Maven is a project management tool from the Apache group.</P>
+<P>At the time of writing, the build process was known to work with
+the Maven 2.2.1 release.</P>
+<P>Once you have maven installed, you can perform a full build by
+moving to the GeoTools folder and typing:</P>
+<P STYLE="margin-left: 2cm">mvn install</P>
+<P>Please read the <A HREF="http://docs.geotools.org/latest/developer/guide/building/maven/maven.html">Developers
+Guide</A> for more information about maven:</P>
+<H3 CLASS="western">Getting Involved (Recommended)</H3>
+<P>The <A HREF="mailto:geotools-gt2-users@lists.sourceforge.net">gt2-users
+mailing list</A> is provided for general inquiries, with additional
+<A HREF="http://docs.geotools.org/latest/userguide/welcome/support.html">support
+options</A> are available in the user guide.</P>
+<P>If you are interested in the future development of GeoTools then
+feel free to join the <A HREF="http://docs.geotools.org/latest/developer/guide/communication.html">geotools-devel</A>
+mailing list. We welcome contributions of new modules as well as keen
+developers who want to work on the project as a whole.</P>
+<P>You can find out more about the mailing lists and recent news by
+going to the <A HREF="http://geotools.org/">GeoTools Homepage</A>.</P>
+<P>Good luck and many thanks for your interest in GeoTools,</P>
+<P><I>The GeoTools Project Management Committee, Open Source
+Geospatial Foundation</I></P>
+</BODY>
+</HTML>

@@ -173,7 +173,7 @@ Before You Start
     Then you need to join the geotools project and ask one of the other administrators to give
     you administration rights on the project.
 
-  * Adminstration rights to Geotools Confluence, JIRA and codehaus xircles.
+  * Administration rights to Geotools Confluence, JIRA and codehaus xircles.
     
     The JIRA authority is required to create a new release number for the future, to bump all
     unfinished tasks to that future release, and thereby to collect a list of changes in the

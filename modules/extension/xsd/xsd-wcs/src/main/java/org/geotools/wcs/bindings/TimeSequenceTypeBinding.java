@@ -3,7 +3,6 @@ package org.geotools.wcs.bindings;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.TimeZone;
 
 import javax.xml.namespace.QName;
 
@@ -83,7 +82,7 @@ public class TimeSequenceTypeBinding extends AbstractComplexBinding {
             for (Node timePositionNode : timePositions) {
                 TimePositionType timePosition = Gml4wcsFactory.eINSTANCE.createTimePositionType();
                 Date positionDate = ((Position) timePositionNode.getValue()).getDate();
-                timePosition.setValue(cvtToGmt(positionDate));
+                timePosition.setValue(positionDate);
                 results.getTimePosition().add(timePosition);
             }
 
@@ -100,8 +99,8 @@ public class TimeSequenceTypeBinding extends AbstractComplexBinding {
                     TimePositionType beginPosition = Gml4wcsFactory.eINSTANCE.createTimePositionType();
                     TimePositionType endPosition = Gml4wcsFactory.eINSTANCE.createTimePositionType();
                     
-                    beginPosition.setValue(cvtToGmt(begining.getPosition().getDate()));
-                    endPosition.setValue(cvtToGmt(ending.getPosition().getDate()));
+                    beginPosition.setValue(begining.getPosition().getDate());
+                    endPosition.setValue(ending.getPosition().getDate());
                     
                     timePeriod.setBeginPosition(beginPosition);
                     timePeriod.setEndPosition(endPosition);
@@ -158,29 +157,5 @@ public class TimeSequenceTypeBinding extends AbstractComplexBinding {
         return null;
     }
     
-    /**
-     * 
-     * @param date
-     * @return
-     */
-    private static Date cvtToGmt( Date date )
-    {
-       TimeZone tz = TimeZone.getDefault();
-       Date ret = new Date( date.getTime() - tz.getRawOffset() );
-
-       // if we are now in DST, back off by the delta.  Note that we are checking the GMT date, this is the KEY.
-       if ( tz.inDaylightTime( ret ))
-       {
-          Date dstDate = new Date( ret.getTime() - tz.getDSTSavings() );
-
-          // check to make sure we have not crossed back into standard time
-          // this happens when we are on the cusp of DST (7pm the day before the change for PDT)
-          if ( tz.inDaylightTime( dstDate ))
-          {
-             ret = dstDate;
-          }
-       }
-
-       return ret;
-    }
+ 
 }

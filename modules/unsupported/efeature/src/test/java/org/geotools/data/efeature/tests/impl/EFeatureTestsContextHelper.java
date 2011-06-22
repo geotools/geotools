@@ -65,6 +65,8 @@ public class EFeatureTestsContextHelper {
         eAttrSet.add(EFeatureTestsPackage.eINSTANCE.getEFeatureCompatibleData_SRID());
         eAttrSet = (Set<EAttribute>)eHints.get(EFeatureHints.EFEATURE_DEFAULT_ATTRIBUTE_HINTS);
         eAttrSet.add(EFeatureTestsPackage.eINSTANCE.getEFeatureCompatibleData_Default());
+        Set<String> eStrSet = (Set<String>)eHints.get(EFeatureHints.EFEATURE_DEFAULT_GEOMETRY_NAME_HINT);
+        eStrSet.add("geometry");
         
         //
         // Forward to default implementation

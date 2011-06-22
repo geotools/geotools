@@ -8,8 +8,6 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.edit.domain.EditingDomain;
 import org.geotools.data.efeature.EFeatureAttributeInfo;
 import org.geotools.data.efeature.EFeatureContext;
 import org.geotools.data.efeature.EFeatureContextFactory;
@@ -32,9 +30,7 @@ import org.geotools.data.efeature.tests.impl.EFeatureTestsContextHelper;
  * @author kengu - 4. mai 2011  
  *
  */
-public class EFeatureContextTest extends AbstractResourceTest {
-
-    private EFeatureTestsContextHelper eContextHelper;
+public class EFeatureContextTest extends AbstractEFeatureTest {
 
     // ----------------------------------------------------- 
     //  Tests
@@ -59,13 +55,18 @@ public class EFeatureContextTest extends AbstractResourceTest {
     /** Test SPI. */
     @org.junit.Test
     public void testSPI() {
+        //
+        // Create private context helper with private context factory.
+        //
+        EFeatureTestsContextHelper eHelper = 
+            new EFeatureTestsContextHelper(new EFeatureContextFactory(), false, false);
         EFeatureContextFactory eFactory = EFeatureFactoryFinder.getContextFactory();
         assertNotNull("EFeatureFactoryFinder failure, " + 
                 "default EFeatureContextFactory instance not found", eFactory);
         assertNotNull("SPI failure, EFeatureContextFactory instance not found", eFactory);
-        eFactory = eContextHelper.eContextFactory();
+        eFactory = eHelper.eContextFactory();
         assertNotNull("SPI failure, EFeatureContextFactory instance not found", eFactory);
-        EFeatureContext eContext = eContextHelper.eContext();        
+        EFeatureContext eContext = eHelper.eContext();        
         EFeatureContextInfo eInfo = eContext.eStructure();
         assertState(eInfo,false,false,false);
         assertStatus(eInfo.validate(),EFeatureStatus.SUCCESS);
@@ -88,7 +89,7 @@ public class EFeatureContextTest extends AbstractResourceTest {
      * Constructor with test name.
      */
     public EFeatureContextTest(String name) {
-        super(name,"xmi", true, false);
+        super(name);
     }
 
     /**
@@ -98,28 +99,6 @@ public class EFeatureContextTest extends AbstractResourceTest {
     public static Test suite() {
         return new TestSuite(EFeatureContextTest.class);
     }    
-
-    @Override
-    protected void doSetUp() throws Exception {
-        //
-        // Create default context helper
-        //
-        eContextHelper = new EFeatureTestsContextHelper(false, false);
-    }
-
-    // ----------------------------------------------------- 
-    //  AbstractStandaloneTest implementation
-    // -----------------------------------------------------
-
-    @Override
-    protected ResourceSet createResourceSet() {        
-        return eContextHelper.getResourceSet();
-    }
-
-    @Override
-    protected EditingDomain createEditingDomain(ResourceSet rset) {
-        return eContextHelper.getEditingDomain();
-    }
 
     // ----------------------------------------------------- 
     //  Test assertion methods

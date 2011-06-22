@@ -210,9 +210,16 @@ public class EFeatureContextInfo extends EStructureInfo<EFeatureContextInfo> {
             eStructure.validate(ePackage, null);
         }
         //
+        // Adapt directly? 
+        //
+        if(eObject instanceof EFeature) {
+            ((EFeature)eObject).setStructure(eStructure);
+            return (EFeature)eObject;
+        }
+        //
         // Create an delegate
         //
-        return new EFeatureDelegate(eStructure, (InternalEObject)eObject);
+        return EFeatureDelegate.create(eStructure, (InternalEObject)eObject);        
     }
     
     /**

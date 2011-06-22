@@ -1,8 +1,12 @@
 package org.geotools.data.efeature.tests.unit;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
+import java.util.logging.Level;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -31,7 +35,8 @@ public class EFeatureDataStoreTest extends AbstractResourceTest {
      */
     //private static final Logger LOGGER = Logging.getLogger(EFeatureDataStoreTest.class); 
     
-    private static final String TYPE_NAME = "efeature.EFeatureData";
+    private static final Set<String> TYPE_NAMES = new HashSet<String>(
+            Arrays.asList("efeature.EFeatureData","efeature.EFeatureCompatibleData"));
 
     private ParameterInfoTestData eParams;
     private EFeatureTestsContextHelper eContextHelper;
@@ -56,13 +61,15 @@ public class EFeatureDataStoreTest extends AbstractResourceTest {
         try {
             EFeatureDataStore eStore = eStoreFactory.createDataStore(params);
             String[] typeNames = eStore.getTypeNames();
-            assertEquals("EFeatureDataStore does not contain expected type name",TYPE_NAME,typeNames[0]);
-            Name name = new NameImpl(TYPE_NAME);
-            SimpleFeatureType eTypeI = eStore.eStructure().eGetFeatureInfo(TYPE_NAME).getFeatureType();
-            SimpleFeatureType eTypeN = eStore.getSchema(name);
-            assertTrue("SimpleFeatureTypes are not same instance (Name)",eTypeI==eTypeN);
-            SimpleFeatureType eTypeL = eStore.getSchema(TYPE_NAME);
-            assertTrue("SimpleFeatureTypes are not same instance (Local)",eTypeI==eTypeL);
+            for(String it : typeNames) {
+                assertTrue("EFeatureDataStore does not contain type ["+it+"]",TYPE_NAMES.contains(it));                
+                Name name = new NameImpl(it);
+                SimpleFeatureType eTypeI = eStore.eStructure().eGetFeatureInfo(it).getFeatureType();
+                SimpleFeatureType eTypeN = eStore.getSchema(name);
+                assertTrue("SimpleFeatureTypes are not same instance (Name)",eTypeI==eTypeN);
+                SimpleFeatureType eTypeL = eStore.getSchema(it);
+                assertTrue("SimpleFeatureTypes are not same instance (Local)",eTypeI==eTypeL);
+            }
             eStore.dispose();
         } catch (Exception e) {
             fail(e);

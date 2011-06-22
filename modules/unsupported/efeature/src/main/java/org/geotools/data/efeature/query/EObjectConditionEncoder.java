@@ -1231,8 +1231,14 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
             return visitBinarySpatialOperator(filter, name, eAttribute,
                     (GeometryDescriptor) descriptor, geometry, swapped);
 
+        } else if(descriptor == null){
+            throw new IllegalArgumentException("Attribute '" + 
+                    property.getPropertyName() + "' not found in '" + 
+                    featureType.getTypeName() + "'");
         } else {
-            throw new IllegalArgumentException("AttributeDescriptor does not describe a geometry");
+            throw new IllegalArgumentException("Attribute '" + 
+                    property.getPropertyName() + "' is not a geometry in " + 
+                    featureType.getTypeName() + "'");
         }
 
     }

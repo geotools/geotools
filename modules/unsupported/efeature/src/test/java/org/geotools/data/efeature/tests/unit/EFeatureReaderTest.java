@@ -157,7 +157,7 @@ public class EFeatureReaderTest extends AbstractResourceTest {
         // Create data used by all tests
         //
         eData = new EFeatureTestData(eResource);
-        eData.init(10,(Integer)eTypeData[0][2],(Integer)eTypeData[1][2]);
+        eData.random(10,(Integer)eTypeData[0][2],(Integer)eTypeData[1][2]);
         eData.save();
     }
     

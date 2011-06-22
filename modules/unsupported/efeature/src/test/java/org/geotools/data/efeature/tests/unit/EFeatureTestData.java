@@ -34,6 +34,7 @@ import org.geotools.data.efeature.EFeature;
 import org.geotools.data.efeature.EFeatureInfo;
 import org.geotools.data.efeature.query.EAttributeValueIsEqual;
 import org.geotools.data.efeature.query.EFeatureEncoderException;
+import org.geotools.data.efeature.query.EGeometryValueEquals;
 import org.geotools.data.efeature.tests.EFeatureCompatibleData;
 import org.geotools.data.efeature.tests.EFeatureData;
 import org.geotools.data.efeature.tests.EFeatureTestsFactory;
@@ -111,7 +112,7 @@ public class EFeatureTestData {
      * 
      * @throws Exception If initialization fails for some reason
      */
-    public void init(int ncount, int fcount, int ccount) throws Exception {
+    public void random(int ncount, int fcount, int ccount) throws Exception {
         //
         // Only initialize once 
         //
@@ -206,6 +207,19 @@ public class EFeatureTestData {
             eResource.save(Collections.emptyMap());
         }
     }
+    
+    public <A, G extends Geometry> List<EFeatureData<A, G>> addFeatureData(
+            Class<G> type, A[] attributes, String... wkts) throws Exception {
+        G[] g = geometries(null, type, wkts);
+        return addFeatureData(0, g.length, attributes, g);
+    }
+    
+    public <A, G extends Geometry> List<EFeatureCompatibleData<A, G>> addFeatureCompatibleData(
+            Class<G> type, A[] attributes, String... wkts) throws Exception {
+        G[] g = geometries(null, type, wkts);
+        return addFeatureCompatibleData(0, g.length, attributes, g);
+    }
+    
     
     /**
      * Print data statistics
@@ -488,5 +502,15 @@ public class EFeatureTestData {
         }
         return new EAttributeValueIsEqual(eAttribute,value);
     }
+    
+    public static EObjectCondition newIsEqual(EAttribute eAttribute, Geometry value, 
+            EFeatureInfo...eFeatureInfo) throws EFeatureEncoderException
+    {
+        if(eFeatureInfo.length>0) {
+            eAttribute = eFeatureInfo[0].eMappedTo(eAttribute);
+        }
+        return new EGeometryValueEquals(eAttribute,value,false);
+    }
+    
     
 }

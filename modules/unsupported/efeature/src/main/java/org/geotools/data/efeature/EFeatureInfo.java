@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.zip.Adler32;
 
 import org.eclipse.emf.common.util.EList;
@@ -374,6 +375,19 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
     
     
     public String eGetDefaultGeometryName() {
+        //
+        // 1) Try hints first
+        //
+        //
+        if (eDefaultGeometryName == null) {
+            for(String it : eGetDefaultGeometryNames(eHints)) {
+                if(eGeometryInfoMap.containsKey(it)) {
+                    eDefaultGeometryName = it;
+                }
+            }
+        }
+        // 2) If no hints was found, try to find a geometry attribute
+        //            
         if (eDefaultGeometryName == null) {
             String eFirstFound = null;
             for (Entry<String, EFeatureGeometryInfo> it : eGeometryInfoMap.entrySet()) {
@@ -950,15 +964,19 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
             //
             eInfo = new EFeatureInfo();
             //
-            // Set construction hints
-            //
-            eInfo.eHints = (eHints != null ? eHints : new EFeatureHints());
-            //
             // Set context
             //
             eInfo.eContextID = eContext.eContextID();
             eInfo.eContext = new WeakReference<EFeatureContext>(eContext);
             eInfo.eFactory = new WeakReference<EFeatureContextFactory>(eContext.eContextFactory());
+            //
+            // Set construction hints
+            //
+            eInfo.eHints = (eHints != null ? eHints : new EFeatureHints());
+            //
+            // Get SRID from hints
+            //
+            eInfo.srid = eGetSRID(eInfo.eHints);
             //
             // Defined the structure using default values
             //
@@ -1012,15 +1030,19 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
             //
             eInfo = new EFeatureInfo();
             //
-            // Set construction hints
-            //
-            eInfo.eHints = (eFolderInfo.eHints != null ? eFolderInfo.eHints : new EFeatureHints());
-            //
             // Set context
             //
             eInfo.eFactory = eFolderInfo.eFactory;
             eInfo.eContext = eFolderInfo.eContext;
             eInfo.eContextID = eContext.eContextID();
+            //
+            // Set construction hints
+            //
+            eInfo.eHints = (eFolderInfo.eHints != null ? eFolderInfo.eHints : new EFeatureHints());
+            //
+            // Get SRID from hints
+            //
+            eInfo.srid = eGetSRID(eInfo.eHints);
             //
             // Forward
             //
@@ -1138,11 +1160,11 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
     }
     
     protected static EAttribute eGetAttribute(EClass eClass, EFeatureHints eHints, int eHint) {
-        EAttribute eIDAttribute = null;
+        EAttribute eAttribute = null;
         if(eHints!=null) {
-            eIDAttribute = eHints.eGetAttribute(eClass, eHint);
+            eAttribute = eHints.eGetAttribute(eClass, eHint);
         } 
-        return eIDAttribute;
+        return eAttribute;
     }
     
     protected static String eGetSRID(EFeatureHints eHints) {
@@ -1150,15 +1172,17 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
         if(eHints!=null) {
             eSRID = eHints.get(EFeatureHints.EFEATURE_DEFAULT_SRID_HINT);
         }
-        return eSRID !=null ? eSRID.toString() : EFeatureConstants.DEFAULT_SRID;
+        return eSRID !=null ? eSRID.toString() : DEFAULT_SRID;
     }
 
-    protected static String eGetDefaultGeometryName(EFeatureHints eHints) {
-        Object eDefaultName = null;
+    @SuppressWarnings("unchecked")
+    protected static Set<String> eGetDefaultGeometryNames(EFeatureHints eHints) {
+        Object eNames = null;
         if(eHints!=null) {
-            eDefaultName = eHints.get(EFeatureHints.EFEATURE_DEFAULT_GEOMETRY_NAME_HINT);
+            eNames = eHints.get(EFeatureHints.EFEATURE_DEFAULT_GEOMETRY_NAME_HINT);
         }
-        return eDefaultName !=null ? eDefaultName.toString() : EFeatureConstants.DEFAULT_GEOMETRY_NAME;
+        return eNames !=null ? (Set<String>)eNames : 
+            new HashSet<String>(Arrays.asList(EFeatureConstants.DEFAULT_GEOMETRY_NAME));
     }    
     
     protected static Map<String, EFeatureAttributeInfo> attributes(EFeatureInfo eFeatureInfo,

@@ -168,7 +168,7 @@ public class EFeatureReader implements SimpleFeatureReader {
         //
         // Use EFeatureDelegate
         //
-        return new EFeatureDelegate(eInfo, (InternalEObject)eObject);
+        return EFeatureDelegate.create(eInfo, (InternalEObject)eObject);
 //        EFeatureDelegate eDelegate = eDelegateMap.get(eObject);
 //        if( eDelegate == null ) {
 //            eDelegate = new EFeatureDelegate(eInfo, (InternalEObject)eObject);

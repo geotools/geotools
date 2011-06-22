@@ -216,8 +216,8 @@ public abstract class AbstractEGeometryValueTest extends AbstractEAttributeFilte
     protected static final double DISTANCE = 10.0;
     
     protected static final Object[] POINTS = new Point[]{
-        create(Point.class,"POINT (10 10)"),
-        create(Point.class,"POINT (20 20)")
+        create(Point.class,"POINT (30 30)"),
+        create(Point.class,"POINT (40 40)")
     };
 
     protected static final Object[] LINESTRINGS = new LineString[]{

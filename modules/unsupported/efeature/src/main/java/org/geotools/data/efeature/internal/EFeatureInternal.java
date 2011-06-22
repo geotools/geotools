@@ -478,21 +478,22 @@ public class EFeatureInternal {
     //  Object implementation
     // -----------------------------------------------------
 
-    @Override
-    public String toString() {
-        StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (data: ");
-        result.append(getData());
-        result.append(", structure: ");
-        result.append(eStructure);
-        result.append(')');
-        return result.toString();
-    }
+//    @Override
+//    public String toString() {
+//        StringBuffer result = new StringBuffer(super.toString());
+//        result.append(" (data: ");
+//        result.append(getData());
+//        result.append(", structure: ");
+//        result.append(eStructure);
+//        result.append(')');
+//        return result.toString();
+//    }
     
     // ----------------------------------------------------- 
     //  EFeatureInternal methods
     // -----------------------------------------------------
         
+    
     // ----------------------------------------------------- 
     //  Helper methods
     // -----------------------------------------------------
@@ -947,7 +948,7 @@ public class EFeatureInternal {
             if(eObject instanceof EFeature) {
                 return (EFeature)eObject;
             }
-            return new EFeatureDelegate(eStructure, eImpl());
+            return EFeatureDelegate.create(eStructure, eImpl());
         }
         
         public FeatureId getIdentifier() {
@@ -1206,6 +1207,7 @@ public class EFeatureInternal {
                 p.setValue(newGeometry);
             }
         }
+                
     }
 
     // ----------------------------------------------------- 

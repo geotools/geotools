@@ -117,28 +117,6 @@ public class EFeatureDelegate implements EFeature, InternalEObject {
             //            
             this.eImpl = new EFeatureInternal(eStructure,this);         
         }
-        //
-        // Get current ID if set
-        //
-        String eSetID = eImpl().getID();
-        //
-        // Get ID factory from context
-        //
-        EFeatureIDFactory eIDFactory = eStructure.eContext().eIDFactory();
-        //
-        // Set ID as used?
-        //
-        if(!(eSetID==null || eSetID.length()==0)) {
-            //
-            // Set ID as used for this delegate
-            //
-            eIDFactory.useID(this, eSetID);
-        } else {
-            //
-            // Create new ID for this delegate
-            //
-            eSetID = eIDFactory.createID(this);            
-        }
     }
 
     // ----------------------------------------------------- 
@@ -182,22 +160,12 @@ public class EFeatureDelegate implements EFeature, InternalEObject {
         return eImpl().getGeometryList(valueType);
     }
 
-    @Override
-    public boolean equals(Object arg0) {
-        return eImpl().equals(arg0);
-    }
-
     public Feature getData() {
         return eImpl().getData();
     }
 
     public <V> EFeatureAttributeList<V> getAttributeList(Class<V> valueType) {
         return eImpl().getAttributeList(valueType);
-    }
-
-    @Override
-    public int hashCode() {
-        return eImpl().hashCode();
     }
 
     public void setSRID(String newSRID) {
@@ -483,5 +451,48 @@ public class EFeatureDelegate implements EFeature, InternalEObject {
 
         return eImpl().toString();
     }
+    
+    // ----------------------------------------------------- 
+    //  Helper methods
+    // -----------------------------------------------------
+
+    /**
+     * Create new instance.
+     */
+    public static final EFeatureDelegate create(EFeatureInfo eStructure, InternalEObject eDelegate) {
+        //
+        // Construct new instance
+        //
+        EFeatureDelegate eFeature = new EFeatureDelegate(eStructure, eDelegate);
+        //
+        // Get current ID if set
+        //
+        String eSetID = eFeature.getID();
+        //
+        // Get ID factory from context
+        //
+        EFeatureIDFactory eIDFactory = eStructure.eContext().eIDFactory();
+        //
+        // Set ID as used?
+        //
+        if(!(eSetID==null || eSetID.length()==0)) {
+            //
+            // Set ID as used for this delegate
+            //
+            eIDFactory.useID(eFeature, eSetID);
+        } else {
+            //
+            // Create new ID for this delegate
+            //
+            eSetID = eIDFactory.createID(eFeature);            
+        }
+        //
+        // Finished
+        //
+        return eFeature;
+    }
+    
+    
+    
 
 } // EFeatureDelegate

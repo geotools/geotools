@@ -63,7 +63,8 @@ public class EFeatureHints extends HashMap<Object, Object> {
         put(EFEATURE_DEFAULT_ATTRIBUTE_HINTS, new HashSet<EAttribute>(
                 Arrays.asList(new EAttribute[]{EFeaturePackage.eINSTANCE.getEFeature_Default()})));
         put(EFEATURE_DEFAULT_SRID_HINT,EFeatureConstants.DEFAULT_SRID);
-        put(EFEATURE_DEFAULT_GEOMETRY_NAME_HINT,EFeatureConstants.DEFAULT_GEOMETRY_NAME);
+        put(EFEATURE_DEFAULT_GEOMETRY_NAME_HINT,new HashSet<String>(
+                Arrays.asList(EFeatureConstants.DEFAULT_GEOMETRY_NAME)));
     }
     
     public EAttribute eGetAttribute(EClass eClass, int eHint) {
@@ -83,8 +84,7 @@ public class EFeatureHints extends HashMap<Object, Object> {
             }
         }
         return null;
-    }
-    
+    }    
     
 
 }

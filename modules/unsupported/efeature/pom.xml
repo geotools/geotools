@@ -18,39 +18,6 @@
     <artifactId>unsupported</artifactId>
     <version>8-SNAPSHOT</version>
   </parent>
-
-
-  <!-- =========================================================== -->
-  <!--   Properties and Profiles                                   -->
-  <!--       explanation of their effect.                          -->
-  <!--                                                             -->
-  <!--   Available profiles are:                                   -->
-  <!--                                                             -->
-  <!--     nameOfprofile      Explantion of what the profile does  -->
-  <!--                        for the user.                        -->
-  <!--                                                             -->
-  <!--     Example:           mvn -PnameOfprofile install          -->
-  <!--                                                             -->
-  <!--     Note ...                                                -->
-  <!-- =========================================================== -->
-  <!-- Default setting of properties -->
-  <!--
-  <properties>
-    <nameOfproperty>valueOfsetting</nameOfproperty>
-  </properties>
-  -->
-
-  <!-- Profiles set on the command-line to override default properties. -->
-  <!--
-  <profiles>
-    <profile>
-      <id>nameOfprofile</id>
-      <properties>
-        <nameOfproperty>valueOfsetting</nameOfproperty>
-      </properties>
-    </profile>
-  </profiles>
-  -->
   
 
   <!-- =========================================================== -->
@@ -61,6 +28,7 @@
   <packaging>jar</packaging>
   <name>EFeature DataStore Implementation</name>
   <version>8-SNAPSHOT</version>
+  
   <description>
     The EFeature DataStore module adds support for spatial read and write operations to EMF models. 
   </description>
@@ -69,6 +37,13 @@
     <name>Open Source Geospatial Foundation</name>
     <url>www.osgeo.org</url>
   </organization>
+  
+<!--  <scm>-->
+<!--     <connection>-->
+<!--        scm:svn:http://svn.osgeo.org/geotools/trunk/modules/unsupported/efeature/-->
+<!--     </connection>-->
+<!--     <url>http://svn.osgeo.org/geotools/trunk/modules/unsupported/efeature/</url>-->
+<!--  </scm> -->
   
   <!-- for your project. -->
   <inceptionYear>2011</inceptionYear>
@@ -113,6 +88,11 @@
         <groupId>org.eclipse.emf</groupId>
         <artifactId>query</artifactId>
         <version>1.2.100-v200903190031!</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.equinox</groupId>
+        <artifactId>app</artifactId>
+        <version>1.0.0-v20070606</version>
       </dependency>
       <!-- dependency>
         <groupId>org.eclipse.emf</groupId>
@@ -211,6 +191,12 @@
         <scope>compile</scope>
     </dependency-->    
     <!-- Tests -->
+<!--    <dependency>-->
+<!--        <groupId>junit</groupId>-->
+<!--        <artifactId>junit</artifactId>-->
+<!--        <version>4.4</version>-->
+<!--        <scope>test</scope>-->
+<!--    </dependency>    -->
     <dependency>
         <groupId>org.geotools</groupId>
         <artifactId>gt-sample-data</artifactId>
@@ -218,7 +204,7 @@
         <scope>test</scope>
     </dependency>
   </dependencies>
-
+  
   <!-- =========================================================== -->
   <!--     Build Configuration                                     -->
   <!--         copies all JARs in a single directory.              -->
@@ -232,13 +218,16 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
           <!-- ====    Switch commenting to skip tests    = -->
-          <skip>${allow.test.skip}</skip>
-          <!-- skip>true</skip> -->
+<!--          <skip>${allow.test.skip}</skip> -->
+          <skip>false</skip> 
           <includes>
             <include></include>
           </includes>
           <excludes>
-            <exclude></exclude>
+            <exclude>**/conditions/*.*</exclude>
+            <exclude>**/EFeatureDataTest.java</exclude>
+            <exclude>**/NonGeoEObjectTest.java</exclude>
+            <exclude>**/EFeatureCompatibleDataTest.java</exclude>
           </excludes>
         </configuration>
       </plugin>
@@ -273,8 +262,9 @@
       </plugin>
       -->
     </plugins>
-    
+        
   </build>
   <modules></modules>
+  
+</project>  
 
-  </project>

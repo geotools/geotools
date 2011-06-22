@@ -9,6 +9,7 @@ import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
 import org.eclipse.emf.common.util.TreeIterator;
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -24,9 +25,18 @@ import org.geotools.data.efeature.query.EFeatureFilter;
 import org.geotools.data.efeature.query.EFeatureQuery;
 import org.geotools.data.efeature.tests.EFeatureCompatibleData;
 import org.geotools.data.efeature.tests.EFeatureData;
+import org.geotools.data.efeature.tests.EFeatureTestsPackage;
 import org.geotools.data.efeature.tests.impl.EFeatureTestsContextHelper;
 import org.geotools.filter.text.cql2.CQL;
+import org.geotools.filter.text.ecql.ECQL;
 import org.opengis.filter.Filter;
+
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.io.ParseException;
+import com.vividsolutions.jts.io.WKTReader;
 
 /**
  * 
@@ -34,6 +44,37 @@ import org.opengis.filter.Filter;
  *
  */
 public class EFeatureQueryTest extends AbstractResourceTest {
+    
+    private static final String EFEATURE_QUERY_TEST_RANDOM = "EFeatureQueryTest_random";
+    
+    private static final String EFEATURE_QUERY_TEST_GEOMETRY = "EFeatureQueryTest_geometry";
+    
+    private static WKTReader READER = new WKTReader();
+    
+    private static final String BBOX = "POLYGON ((0 0, 100 0, 100 100, 0 100, 00 00))";
+    
+    private static final Point[] POINTS = new Point[]{
+        create(Point.class,"POINT (30 30)"),
+        create(Point.class,"POINT (40 40)")
+    };
+
+    private static final LineString[] LINESTRINGS = new LineString[]{
+        create(LineString.class,"LINESTRING (20 20, 40 20)")
+    };
+    
+    private static final Polygon[] POLYGONS = new Polygon[]{
+        //
+        // P0 BBOX | INTERSECTS {P1}, TOUCHES {P2}, CONTAINS {P3}
+        //
+        create(Polygon.class,"POLYGON ((10 10, 30 10, 30 30, 10 30, 10 10))"),
+        create(Polygon.class,"POLYGON ((20 20, 40 20, 40 40, 20 40, 20 20))"),
+        create(Polygon.class,"POLYGON ((00 30, 20 30, 20 50, 00 50, 00 30))"),
+        create(Polygon.class,"POLYGON ((15 15, 25 15, 25 25, 15 25, 15 15))"),
+        create(Polygon.class,"POLYGON ((50 10, 70 10, 70 30, 50 30, 50 10))")
+    };    
+    
+    private static final Geometry[] GEOMETRIES = EFeatureUtils.concat(
+            Geometry.class, POINTS,LINESTRINGS,POLYGONS);
     
     private int eFeatureCount = 200;
     private EFeatureTestData eData;
@@ -130,11 +171,12 @@ public class EFeatureQueryTest extends AbstractResourceTest {
             //  EFeatureCompatibleData instance. 
             // ---------------------------------------------------
             //
-            EObjectCondition eCondition = newIsEqual(EFeaturePackage.eINSTANCE.getEFeature_ID(), "F1");
-            eCondition = eCondition.OR(newIsEqual(EFeaturePackage.eINSTANCE.getEFeature_ID(), "F22"));
-            eCondition = eCondition.OR(newIsEqual(EFeaturePackage.eINSTANCE.getEFeature_ID(), "F73"));
-            eCondition = eCondition.OR(newIsEqual(EFeaturePackage.eINSTANCE.getEFeature_ID(), "F100"));
-            eCondition = eCondition.OR(newIsEqual(EFeaturePackage.eINSTANCE.getEFeature_ID(), "F101", eFeatureCompatibleDataInfo));
+            EAttribute eAttribute = EFeaturePackage.eINSTANCE.getEFeature_ID();
+            EObjectCondition eCondition = newIsEqual(eAttribute, "F1");
+            eCondition = eCondition.OR(newIsEqual(eAttribute, "F22"));
+            eCondition = eCondition.OR(newIsEqual(eAttribute, "F73"));
+            eCondition = eCondition.OR(newIsEqual(eAttribute, "F100"));
+            eCondition = eCondition.OR(newIsEqual(eAttribute, "F101", eFeatureCompatibleDataInfo));
             WHERE where = new WHERE(eCondition);
             
             dTime();
@@ -168,7 +210,7 @@ public class EFeatureQueryTest extends AbstractResourceTest {
     }    
     
     @org.junit.Test
-    public void testFeatureCQL() {
+    public void testFeatureLiteralCQL() {
         try {
             
             // -----------------------------------------------
@@ -176,7 +218,7 @@ public class EFeatureQueryTest extends AbstractResourceTest {
             // -----------------------------------------------
             
             Filter filter = CQL.toFilter("default LIKE 'geom' AND " +
-            		"(ID = 'F1' OR ID = 'F22' OR ID = 'F73' OR ID = 'F100')");
+                "(ID = 'F1' OR ID = 'F22' OR ID = 'F73' OR ID = 'F100')");
             
             dTime();
             
@@ -200,6 +242,113 @@ public class EFeatureQueryTest extends AbstractResourceTest {
         }            
     }    
     
+    @org.junit.Test
+    public void testFeatureGeometryMatch() {
+        try {
+            // 
+            // ---------------------------------------------------
+            //  This test assumes that eight EFeatureData 
+            //  instances are added to the resource. The test 
+            //  uses this information to check the matched 
+            //  geometries. 
+            // ---------------------------------------------------
+            //
+            EAttribute eAttribute = EFeatureTestsPackage.eINSTANCE.getEFeatureData_Geometry();
+            EObjectCondition eCondition = newIsEqual(eAttribute, GEOMETRIES[0]);
+            for(int i=1;i<GEOMETRIES.length;i++) {
+                eCondition = eCondition.OR(newIsEqual(eAttribute, GEOMETRIES[i]));
+            }
+            WHERE where = new WHERE(eCondition);
+            
+            dTime();
+            int count = 0;
+            TreeIterator<EObject> eObjects = eResource.getAllContents();                
+            EFeatureFilter eFilter = new EFeatureFilter(eFeatureDataInfo, where);
+            EFeatureQuery eQuery = new EFeatureQuery(eObjects, eFilter);
+            EFeatureIterator it = eQuery.iterator();
+            while(it.hasNext()) {
+                EObject eObject = it.next();
+                assertTrue("EObject " + eObject + " is not an " +
+                        "instance of EFeatureData", eObject instanceof EFeatureData);
+                EFeatureData<?,?> eFeatureData = (EFeatureData<?,?>)eObject;
+                Object a = eFeatureData.getAttribute();
+                Object g = eFeatureData.getGeometry();
+                assertEquals("Unexpected EFeatureData geometry value found",
+                        GEOMETRIES[(Integer)a].toString(),g.toString());
+                count++;
+            }
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            fail(e);
+        }
+    }
+    
+    @org.junit.Test
+    public void testFeatureGeometryCQL() {
+        try {
+         // -----------------------------------------------
+            //  Test OpenGIS Filter -> EMF Where conversion
+            // -----------------------------------------------
+            
+            Filter filter = CQL.toFilter("WITHIN(geometry,"+BBOX+")");
+            
+            dTime();
+            
+            int count = 0;
+            TreeIterator<EObject> eObjects = eResource.getAllContents();                
+            EFeatureQuery eQuery = EFeatureUtils.toEFeatureQuery(eFeatureDataInfo, eObjects, filter);
+            EFeatureIterator it = eQuery.iterator();
+            while(it.hasNext()) {
+                EObject eObject = it.next();
+                assertTrue("EObject " + eObject + " is not an " +
+                        "instance of EFeatureData", eObject instanceof EFeatureData);
+                EFeatureData<?,?> eFeatureData = (EFeatureData<?,?>)eObject;
+                Object a = eFeatureData.getAttribute();
+                Object g = eFeatureData.getGeometry();
+                assertEquals("Unexpected EFeatureData geometry value found",
+                        GEOMETRIES[(Integer)a].toString(),g.toString());
+                count++;
+            }
+            assertEquals("Unexpected number of EFeatureData instances found",GEOMETRIES.length,count);
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            fail(e);
+        }
+    }    
+    
+    @org.junit.Test
+    public void testFeatureGeometryECQL() {
+        try {
+         // -----------------------------------------------
+            //  Test OpenGIS Filter -> EMF Where conversion
+            // -----------------------------------------------
+            
+            Filter filter = ECQL.toFilter("CONTAINS("+BBOX+",geometry)");
+            
+            dTime();
+            
+            int count = 0;
+            TreeIterator<EObject> eObjects = eResource.getAllContents();                
+            EFeatureQuery eQuery = EFeatureUtils.toEFeatureQuery(eFeatureDataInfo, eObjects, filter);
+            EFeatureIterator it = eQuery.iterator();
+            while(it.hasNext()) {
+                EObject eObject = it.next();
+                assertTrue("EObject " + eObject + " is not an " +
+                        "instance of EFeatureData", eObject instanceof EFeatureData);
+                EFeatureData<?,?> eFeatureData = (EFeatureData<?,?>)eObject;
+                Object a = eFeatureData.getAttribute();
+                Object g = eFeatureData.getGeometry();
+                assertEquals("Unexpected EFeatureData geometry value found",
+                        GEOMETRIES[(Integer)a].toString(),g.toString());
+                count++;
+            }
+            assertEquals("Unexpected number of EFeatureData instances found",GEOMETRIES.length,count);
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            fail(e);
+        }
+    }        
+        
     // ----------------------------------------------------- 
     //  TestCase setup
     // -----------------------------------------------------
@@ -234,12 +383,17 @@ public class EFeatureQueryTest extends AbstractResourceTest {
         eContextHelper = new EFeatureTestsContextHelper(true, false);
         eFeatureDataInfo = eContextHelper.eGetFeatureInfo("efeature.EFeatureData");
         eFeatureCompatibleDataInfo = eContextHelper.eGetFeatureInfo("efeature.EFeatureCompatibleData");
-        int fcount = eFeatureCount/2;
-        int gcount = eFeatureCount - fcount;
-        eTypeData[0][2] = eFeatureDataInfo;
-        eTypeData[0][3] = fcount;
-        eTypeData[1][2] = eFeatureCompatibleDataInfo;
-        eTypeData[1][3] = gcount;
+        //
+        // Only initialize if the test expects it to be
+        //
+        if(!getName().startsWith("testFeatureGeometry")) {
+            int fcount = eFeatureCount/2;
+            int gcount = eFeatureCount - fcount;
+            eTypeData[0][2] = eFeatureDataInfo;
+            eTypeData[0][3] = fcount;
+            eTypeData[1][2] = eFeatureCompatibleDataInfo;
+            eTypeData[1][3] = gcount;
+        }
         
     }
     
@@ -264,11 +418,13 @@ public class EFeatureQueryTest extends AbstractResourceTest {
         //
         if("testFeatureQueryEmpty".equals(name)) {
             return EMPTY_RESOURCE_TEST;
+        } else if(name.startsWith("testFeatureGeometry")) {
+            return EFEATURE_QUERY_TEST_GEOMETRY;
         }
         // 
-        // Use default name
+        // All other use random data
         //
-        return super.createFileName(name);
+        return EFEATURE_QUERY_TEST_RANDOM;
     }
 
     @Override
@@ -278,11 +434,24 @@ public class EFeatureQueryTest extends AbstractResourceTest {
         //  Create data used by all tests expecting data
         // ------------------------------------------------
         //
+        //  Is test expecting geometry data?
+        //
+        if(name.startsWith("testFeatureGeometry")) {
+            eData = new EFeatureTestData(eResource);
+            eData.addNonGeoEObjects(eFeatureCount);
+            int count = GEOMETRIES.length;
+            Integer[] a = new Integer[count];
+            for(int i=0;i<count;i++) {
+                a[i] = i;
+            }
+            eData.addFeatureData(0,count,a,GEOMETRIES);
+        }
+        //
         //  Is test expecting an empty resource?
         //
-        if(!"testFeatureQueryEmpty".equals(name)) {
+        else if(!"testFeatureQueryEmpty".equals(name)) {
             eData = new EFeatureTestData(eResource);
-            eData.init(10,(Integer)eTypeData[0][3],(Integer)eTypeData[1][3]);
+            eData.random(10,(Integer)eTypeData[0][3],(Integer)eTypeData[1][3]);
             eData.save();
         }
     }
@@ -291,6 +460,15 @@ public class EFeatureQueryTest extends AbstractResourceTest {
     //  Helper methods
     // -----------------------------------------------------
         
+    protected static final <T extends Geometry> T create(Class<T> type, String wkt) {
+        try {
+            return type.cast(READER.read(wkt));
+        } catch (ParseException e) {
+            fail(e.getMessage());
+        }        
+        return null;
+    }
+    
     // ----------------------------------------------------- 
     //  Test assertion methods
     // -----------------------------------------------------

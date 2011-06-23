@@ -26,9 +26,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
+import java.net.URI;
 import javax.xml.namespace.QName;
-
 import org.geotools.data.DataAccess;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
@@ -47,8 +46,10 @@ import org.geotools.feature.Types;
 import org.geotools.filter.AttributeExpressionImpl;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.FilterFactoryImpl;
+import org.geotools.gml2.bindings.GML2EncodingUtils;
 import org.geotools.jdbc.JDBCFeatureSource;
 import org.geotools.jdbc.JoiningJDBCFeatureSource;
+import org.geotools.referencing.CRS;
 import org.opengis.feature.Attribute;
 import org.opengis.feature.ComplexAttribute;
 import org.opengis.feature.Feature;
@@ -59,6 +60,7 @@ import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
+import org.opengis.filter.Filter;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.identity.FeatureId;
@@ -283,15 +285,45 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
             }
 
         }
+        String version=(String)this.mapping.getTargetFeature().getType().getUserData().get("targetVersion");
+        //might be because top level feature has no geometry
+        if (query.getCoordinateSystemReproject() == null && version!=null) {
+            // figure out the crs the data is in
+            CoordinateReferenceSystem crs=null;
+            try{
+                crs = this.mappedSource.getSchema().getCoordinateReferenceSystem();
+            }catch(UnsupportedOperationException e){
+                //do nothing as mappedSource is a WSFeatureSource
+            }
+            // gather declared CRS
+            CoordinateReferenceSystem declaredCRS = this.getDeclaredCrs(crs, version);
+            CoordinateReferenceSystem target;
+            URI uri=(URI)this.mapping.getTargetFeature().getType().getUserData().get("targetCrs");
+            if (uri != null) {
+                try {
+                    target = CRS.decode(uri.toString());
+                } catch (Exception e) {
+                    String msg = "Unable to support srsName: " + uri;
+                    throw new UnsupportedOperationException(msg, e);
+                }
+            } else {
+                target = declaredCRS;
+            }
+            this.reprojection = target;
 
-        this.reprojection = query.getCoordinateSystemReproject();
+        } else {
+            this.reprojection = query.getCoordinateSystemReproject();
+        }
+
         // we need to disable the max number of features retrieved so we can
         // sort them manually just in case the data is denormalised
         query.setMaxFeatures(Query.DEFAULT_MAX);
         sourceFeatures = mappedSource.getFeatures(query);
         if (reprojection != null) {
             xpathAttributeBuilder.setCRS(reprojection);
-            if (sourceFeatures.getSchema().getGeometryDescriptor() == null) {
+            if (sourceFeatures.getSchema().getGeometryDescriptor() == null
+                    || this.isReprojectionCrsEqual(this.mappedSource.getSchema()
+                            .getCoordinateReferenceSystem(), this.reprojection)) {
                 // VT: No point trying to re-project without any geometry.
                 query.setCoordinateSystemReproject(null);
             }
@@ -685,7 +717,8 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
         FeatureId featureId = namespaceAwareFilterFactory.featureId(fId);
         Query query = new Query();
         if (reprojection != null) {
-            if (sourceFeatures.getSchema().getGeometryDescriptor() != null) {
+            if (sourceFeatures.getSchema().getGeometryDescriptor() != null && !this.isReprojectionCrsEqual(this.mappedSource.getSchema()
+                    .getCoordinateReferenceSystem(),this.reprojection)) {
                 query.setCoordinateSystemReproject(reprojection);
             }
         }
@@ -946,5 +979,34 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
     public boolean isNextFeatureSet() {
         return isNextFeatureSet;
     }
-
+    
+    /**
+     * Returns the declared CRS given the native CRS and the request WFS version
+     * 
+     * @param nativeCRS
+     * @param wfsVersion
+     * @return
+     */
+    private CoordinateReferenceSystem getDeclaredCrs(CoordinateReferenceSystem nativeCRS,
+            String wfsVersion) {
+        try {
+            if(nativeCRS == null)
+                return null;
+            
+            if (wfsVersion.equals("1.0.0")) {
+                return nativeCRS;
+            } else {
+                String code = GML2EncodingUtils.epsgCode(nativeCRS);
+                //it's possible that we can't do the CRS -> code -> CRS conversion...so we'll just return what we have
+                if (code == null) return nativeCRS;
+                return CRS.decode("urn:x-ogc:def:crs:EPSG:6.11.2:" + code);
+            }
+        } catch (Exception e) {
+            throw new UnsupportedOperationException("We have had issues trying to flip axis of " + nativeCRS, e);
+        }
+    }
+    
+    public boolean isReprojectionCrsEqual(CoordinateReferenceSystem source,CoordinateReferenceSystem target) {
+        return CRS.equalsIgnoreMetadata(source,target);
+    }
 }

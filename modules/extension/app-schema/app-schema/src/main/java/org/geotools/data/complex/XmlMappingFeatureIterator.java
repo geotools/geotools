@@ -244,7 +244,6 @@ public class XmlMappingFeatureIterator extends DataAccessMappingFeatureIterator 
                 index);
     }
     
-    @Override
     protected void setClientProperties(final Attribute target, final Object xpathPrefix,
             final Map<Name, Expression> clientProperties) {
         if (target == null) {

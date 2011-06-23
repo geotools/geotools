@@ -77,7 +77,12 @@ public class XmlXPathPropertyAccessorFactory implements PropertyAccessorFactory 
         private String createIndexedXpath(XmlXpathFilterData xmlResponse, String xpathString) {
 
             String itemXpath = xmlResponse.getItemXpath();
-            int position = xpathString.indexOf(itemXpath);
+            // if xpathString is from mapping file, as a function expression or inputattribute
+            // it wouldn't be indexed
+            // however the itemXpath would be indexed as it comes from the node
+            // so need to remove the indexes when doing a search
+            String unindexedXpath = XmlXpathUtilites.removeIndexes(itemXpath);
+            int position = xpathString.indexOf(unindexedXpath);
             if (position != 0) {
                 throw new RuntimeException("xpath passed in does not begin with itemXpath"
                         + "/n xpathString =" + xpathString + "/n itemXpath =" + itemXpath);
@@ -88,7 +93,7 @@ public class XmlXPathPropertyAccessorFactory implements PropertyAccessorFactory 
             if (count > -1) {
                     sb.append("[" + xmlResponse.getCount() + "]");
             }
-            sb.append(xpathString.substring(itemXpath.length()));
+            sb.append(xpathString.substring(unindexedXpath.length()));
             return sb.toString();
         }
     }

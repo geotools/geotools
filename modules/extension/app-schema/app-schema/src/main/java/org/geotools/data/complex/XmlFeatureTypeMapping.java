@@ -37,8 +37,10 @@ import org.geotools.filter.LiteralExpressionImpl;
 import org.opengis.feature.Attribute;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.Name;
+import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
+import org.opengis.filter.expression.PropertyName;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**
@@ -69,7 +71,7 @@ public class XmlFeatureTypeMapping extends FeatureTypeMapping {
     /**
      * Output xpath to input xpath map
      */
-    private Map<String, String> mapping = new HashMap<String, String>();
+    private Map<String, Expression> mapping = new HashMap<String, Expression>();
 
     /**
      * List of labelled AttributeMappings
@@ -84,7 +86,8 @@ public class XmlFeatureTypeMapping extends FeatureTypeMapping {
     AttributeMapping rootAttribute;
 
     private int index = 1;
-
+    
+    private FilterFactory ff =  CommonFactoryFinder.getFilterFactory(null);
     /**
      * Attributes that don't have their own label, therefore are children of another node.
      */
@@ -114,8 +117,8 @@ public class XmlFeatureTypeMapping extends FeatureTypeMapping {
         }
     }
     
-    public List<String> getStringMappingsIgnoreIndex(final StepList targetPath) {
-        List<String> mappings = new ArrayList<String>();
+    public List<Expression> getExpressionsIgnoreIndex(final StepList targetPath) {
+        List<Expression> mappings = new ArrayList<Expression>();
         String path = targetPath.toString();
 
         Collection<String> c = mapping.keySet();
@@ -125,13 +128,12 @@ public class XmlFeatureTypeMapping extends FeatureTypeMapping {
 
         // iterate through HashMap values iterator
         while (itr.hasNext()) {
-
             String listPath = itr.next();
             String unindexedListPath = removeIndexFromPath(listPath);
             if (path.equals(unindexedListPath)) {
                 mappings.add(mapping.get(listPath)); 
             }
-        }
+        } 
         
         if (mappings.isEmpty()) {
             // look in the setter attributes
@@ -141,10 +143,9 @@ public class XmlFeatureTypeMapping extends FeatureTypeMapping {
                 String listPath = att.getTargetXPath().toString();
                 String unindexedListPath = removeIndexFromPath(listPath);
                 if (path.equals(unindexedListPath)) {
-                    mappings.add(att.getSourceExpression().toString());
+                    mappings.add(att.getSourceExpression());
                 }
             }
-
         }
         
         return mappings;
@@ -234,11 +235,11 @@ public class XmlFeatureTypeMapping extends FeatureTypeMapping {
         elements.put(rootAttribute.getLabel(), xpath, null);
         Expression idExpression = rootAttribute.getIdentifierExpression();
         if (!idExpression.equals(Expression.NIL)) {
-            String id;            
+            Expression id;            
             if (!(idExpression instanceof Function) && rootAttribute.getInstanceXpath() != null) {
-                id = rootAttribute.getInstanceXpath() + XPATH_SEPARATOR + idExpression;
+                id = ff.property(rootAttribute.getInstanceXpath() + XPATH_SEPARATOR + idExpression);
             } else {
-                id = idExpression.toString();
+                id = idExpression;
             }                    
             mapping.put("@gml:id", id);    
         }        
@@ -282,8 +283,9 @@ public class XmlFeatureTypeMapping extends FeatureTypeMapping {
                                     + XPATH_SEPARATOR + sourceExpression.toString();
                         }
                         String label = getFullQueryPath(attMapping);
-                        
-                        mapping.put(label + XPATH_PROPERTY_SEPARATOR + "gml:id", xpath);
+
+                        mapping.put(label + XPATH_PROPERTY_SEPARATOR + "gml:id", ff
+                            .property(xpath));
                         
                         StepList sl = attMapping.getTargetXPath();
                         setPathIndex(j, sl);
@@ -302,26 +304,30 @@ public class XmlFeatureTypeMapping extends FeatureTypeMapping {
                 for (int i = 0; i < ls.size(); i++) {
                     Pair parentPair = ls.get(i);
                     final Expression sourceExpression = attMapping.getSourceExpression();
+                    String prefix = parentPair.getXpath();
 
-                    StringBuffer usedXpath = (StringBuffer) getValue(parentPair.getXpath(),
-                            sourceExpression, attMapping);
-                    if (usedXpath != null) {
-                        String label = getFullQueryPath(attMapping);
-                        mapping.put(label, usedXpath.toString());
-                        addClientProperties(attMapping, usedXpath, label);
+                    Expression usedXpath = getValue(prefix, sourceExpression,
+                            attMapping);
+
+                    String label = getFullQueryPath(attMapping);
+                    mapping.put(label, usedXpath);
+                    if (usedXpath instanceof PropertyName) {
+                        // if current source expression is an inputAttribute
+                        // work out the client properties value from the inputAttribute
+                        // xpath, which would already have the parent prefix in it
+                        addClientProperties(attMapping, usedXpath.toString(), label);
                     } else {
-                        usedXpath = new StringBuffer(parentPair.getXpath());
-                        String label = getFullQueryPath(attMapping);
-                        addClientProperties(attMapping, usedXpath, label);
+                        // if source expression is a constant or function
+                        // just add the parent prefix to work out client properties values
+                        addClientProperties(attMapping, prefix, label);
                     }
-
                 }
             }
 
         }
     }
 
-    private void addClientProperties(AttributeMapping attMapping, StringBuffer usedXpath,
+    private void addClientProperties(AttributeMapping attMapping, String prefix,
             String label) {
         Map<Name, Expression> clientProperties = attMapping.getClientProperties();
         if (clientProperties.size() != 0) {
@@ -329,11 +335,9 @@ public class XmlFeatureTypeMapping extends FeatureTypeMapping {
             for (Map.Entry<Name, Expression> entry : clientProperties.entrySet()) {
                 Name propName = entry.getKey();
                 Expression propExpr = entry.getValue();
-                Object xPath = getValue(usedXpath.toString(), propExpr, attMapping);
-                if (xPath != null) {                                    
-                    mapping.put(label + XPATH_PROPERTY_SEPARATOR  + getPropertyNameXpath(propName), 
-                            xPath.toString());                                    
-                }
+                Expression xPath = getValue(prefix, propExpr, attMapping);
+                mapping.put(label + XPATH_PROPERTY_SEPARATOR + getPropertyNameXpath(propName),
+                        xPath);
             }
         }
     }
@@ -360,23 +364,48 @@ public class XmlFeatureTypeMapping extends FeatureTypeMapping {
         }
     }
 
-    protected Object getValue(String xpathPrefix, Expression node, AttributeMapping mapping) {
-        StringBuffer usedXpath = new StringBuffer();
-        String expressionValue = node.toString();
-        if (expressionValue.startsWith("'") || node instanceof LiteralExpressionImpl) {
-            usedXpath.append(xpathPrefix);
-            return null;
-        } else if (node instanceof Function) {
+    protected Expression getValue(String xpathPrefix, Expression node, AttributeMapping mapping) {
+        Expression value = null;
+        if (node instanceof Function) {
+            // function
             Function func = (Function) node;
-            expressionValue = setAsXpathParam(func, mapping).toString();            
-        } else if (xpathPrefix.length() > 0) {
-            expressionValue = xpathPrefix + XPATH_SEPARATOR + expressionValue;
-        }        
-        usedXpath.append(expressionValue);
-        return usedXpath;
+            Expression exp = getAsXpathExpression(func, mapping);
+            if (exp != null) {
+                // this function must be an AsXpath
+                // return the extracted expression
+                value = exp;
+            } else {
+                // not an asXpath, but might have it in the param somewhere
+                // the param would already be turned into the extracted expression
+                // return the function
+                value = func;
+            }
+        } else if (node instanceof LiteralExpressionImpl) {
+            // constant
+            value = node;
+        } else {
+            // input attribute
+            String expressionValue = node.toString();
+            if (xpathPrefix.length() > 0) {
+                value = ff.property(xpathPrefix + XPATH_SEPARATOR + expressionValue);
+            } else {
+                value = node;
+            }
+        }
+        return value;     
     }
     
-    private Expression setAsXpathParam(Function func, AttributeMapping mapping) {
+    /**
+     * Find asXpath in a function, which might be the function itself or a parameter of the
+     * function, and extract the xpath value including itemXpath and instancePath prefixes.
+     * 
+     * @param func
+     *            The function
+     * @param mapping
+     *            The attribute mapping
+     * @return xpath expression or null
+     */
+    private Expression getAsXpathExpression(Function func, AttributeMapping mapping) {
         if (func.getName().equals(AS_XPATH_FUNCTION)) {
             // get original filter xpath
             Expression queryXpath = func.getParameters().get(0);
@@ -393,21 +422,24 @@ public class XmlFeatureTypeMapping extends FeatureTypeMapping {
                     prefix += XPATH_SEPARATOR + instancePath;
                 }
             }
-            Expression fullXpath = CommonFactoryFinder.getFilterFactory(null).literal(
+            Expression fullXpath = ff.property(
                     prefix + XPATH_SEPARATOR + queryXpath);
             return fullXpath;
         } else {  
             List<Expression> params = func.getParameters();
             for (int i = 0; i < params.size(); i++) {
-                Expression param = params.get(0);
+                Expression param = params.get(i);
                 if (param instanceof Function) {
-                    Expression exp = setAsXpathParam((Function) param, mapping);
-                    if (exp instanceof LiteralExpressionImpl) {
-                        params.add(i, exp);
+                    Expression expr = getAsXpathExpression((Function) param, mapping);
+                    if (expr != null) {
+                        // found asXpath and returned an expression
+                        // set as the new parameter
+                        func.getParameters().remove(i);
+                        func.getParameters().add(expr);                       
                     }
                 }
             }
-            return func;
+            return null;
         }
     }
 
@@ -469,16 +501,16 @@ public class XmlFeatureTypeMapping extends FeatureTypeMapping {
 
         while (itr.hasNext()) {
             String key = itr.next();
-            String xPath = mapping.get(key);
-            String xPath2 = removeRelativePaths(xPath);
-            if (!xPath.equals(xPath2)) {
+            Expression xPath = mapping.get(key);
+            Expression xPath2 = removeRelativePaths(xPath);
+            if (!xPath.toString().equals(xPath2.toString())) {
                 mapping.put(key, xPath2);
             }
         }
     }
 
-    private String removeRelativePaths(String xPath) {
-        String xPathTemp = xPath;
+    private PropertyName removeRelativePaths(Expression xPath) {
+        String xPathTemp = xPath.toString();
         final int NOT_FOUND = -1;
         final String RELATIVE_PATH = "/../";
 
@@ -494,7 +526,7 @@ public class XmlFeatureTypeMapping extends FeatureTypeMapping {
             }
             i = xPathTemp.indexOf(RELATIVE_PATH);
         }
-        return xPathTemp;
+        return ff.property(xPathTemp);
     }
     
     /**
@@ -519,38 +551,15 @@ public class XmlFeatureTypeMapping extends FeatureTypeMapping {
         // get the specified mapping
         if (!propertyName.toString().contains("[")) {
             // collect all the mappings for the given property
-            List<String> candidates = getStringMappingsIgnoreIndex(propertyName);
-            expressions = getExpressions(candidates);
-        }
-
-        if (expressions == null || expressions.isEmpty()) {
-            // get specified mapping if indexed or that expressions is not found because it
-            // could be attribute mapping with OCQL containing functions, instead of inputattribute
-            // with xpath
+            expressions = getExpressionsIgnoreIndex(propertyName);
+        } else {
+            // get specified mapping if indexed
             expressions = new ArrayList<Expression>(1);
             AttributeMapping mapping = getStringMapping(propertyName);
-            if (mapping != null) {   
-//TODO handle instancepath and also consider functions
-//                if (mapping.getInstanceXpath() != null) {
-//                    // add prefix
-//                } else {
-                    expressions.add(mapping.getSourceExpression());
-//                }
+            if (mapping != null) {
+                expressions.add(mapping.getSourceExpression());
             }
         }
-        return expressions;
-        
-        
-    }
-
-    private List<Expression> getExpressions(List<String> candidates) {
-        List<Expression> ls = new ArrayList<Expression>(candidates.size());
-        Iterator<String> itr = candidates.iterator();
-        while (itr.hasNext()) {
-            String element = itr.next();
-            Expression ex = CommonFactoryFinder.getFilterFactory2(null).property(element);
-            ls.add(ex);
-        }
-        return ls;
+        return expressions;           
     }
 }

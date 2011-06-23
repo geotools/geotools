@@ -20,6 +20,7 @@ package org.geotools.util;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Scanner;
 
 import org.apache.commons.jxpath.JXPathContext;
 import org.jdom.Document;
@@ -96,12 +97,46 @@ public class XmlXpathUtilites {
             context.registerNamespace(prefix, uri);
         }
     }
+    
+    /**
+     * Remove indexes from an xpath string.
+     * @param xpath xpath string
+     * @return unindexed xpath string
+     */
+    public static String removeIndexes(String xpath) {
+        final String[] partialSteps = xpath.split("[/]");
+        if (partialSteps.length == 0) {
+            return xpath;
+        }
+
+        int startIndex = 0;
+        StringBuffer buf = new StringBuffer();
+
+        for (int i = startIndex; i < partialSteps.length; i++) {
+            String step = partialSteps[i];
+            int start = step.indexOf('[');
+
+            if (start > -1) {
+                int end = step.indexOf(']');
+                Scanner scanner = new Scanner(step.substring(start + 1, end));
+                if (scanner.hasNextInt()) {
+                    // remove index and the brackets
+                    step = step.substring(0, start);
+                }
+            }
+            buf.append(step);
+            if (i < partialSteps.length - 1) {
+                buf.append("/");
+            }
+        }
+        return buf.toString();
+    }
         
     private static List<String> getXPathValues(String xpathString, JXPathContext context) {
 
         List values = null;
         try {
-            values = context.selectNodes(xpathString);        
+            values = context.selectNodes(xpathString);    
         } catch (RuntimeException e) {
             throw new RuntimeException("Error reading xpath " + xpathString, e);
         }

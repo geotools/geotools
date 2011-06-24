@@ -130,21 +130,19 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
             return null;
         }
         
-        if (exprSteps.size() > 1) {
-            List<Expression> matchingMappings = mappings.findMappingsFor(exprSteps);
-    
-            if (matchingMappings.isEmpty()) {
-                postStack.push(expression);
-                return null;
-            } else {
-                for (Expression expr : matchingMappings) {
-                    CapabilitiesExpressionVisitor visitor = new CapabilitiesExpressionVisitor();
-                    expr.accept(visitor, null);
-                    
-                    if (!visitor.isCapable()) {
-                        postStack.push(expression);
-                        return null;
-                    }
+        List<Expression> matchingMappings = mappings.findMappingsFor(exprSteps);
+
+        if (matchingMappings.isEmpty()) {
+            postStack.push(expression);
+            return null;
+        } else {
+            for (Expression expr : matchingMappings) {
+                CapabilitiesExpressionVisitor visitor = new CapabilitiesExpressionVisitor();
+                expr.accept(visitor, null);
+
+                if (!visitor.isCapable()) {
+                    postStack.push(expression);
+                    return null;
                 }
             }
         }

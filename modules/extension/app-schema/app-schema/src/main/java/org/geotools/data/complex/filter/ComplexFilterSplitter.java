@@ -125,6 +125,11 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
         // break into single steps
         StepList exprSteps = XPath.steps(mappings.getTargetFeature(), expression.getPropertyName(), expression.getNamespaceContext());
 
+        if (exprSteps.containsPredicate()) {
+            postStack.push(expression);
+            return null;
+        }
+        
         if (exprSteps.size() > 1) {
             List<Expression> matchingMappings = mappings.findMappingsFor(exprSteps);
     

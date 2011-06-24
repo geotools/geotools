@@ -146,6 +146,16 @@ public class XPath {
             }
             return sb.toString();
         }
+        
+        public boolean containsPredicate() {
+            for (int i=0; i< size(); i++) {
+                if (get(i).getPredicate() != null) {
+                    return true;
+                }
+            }
+            
+            return false;
+        }
 
         public StepList subList(int fromIndex, int toIndex) {
             if (fromIndex < 0)
@@ -249,6 +259,8 @@ public class XPath {
      */
     public static class Step implements Cloneable {
         private int index;
+        
+        private String predicate =  null;
 
         private QName attributeName;
 
@@ -319,6 +331,17 @@ public class XPath {
             this.isXmlAttribute = isXmlAttribute;
             this.isIndexed = isIndexed;
         }
+        
+        public Step(final QName name, boolean isXmlAttribute, final String predicate) {
+            if (name == null) {
+                throw new NullPointerException("name");
+            }
+            this.attributeName = name;
+            this.index = 1;
+            this.isIndexed = false;
+            this.isXmlAttribute = isXmlAttribute;
+            this.predicate = predicate;
+        }
 
         /**
          * Compares this Step with another for equivalence ignoring the steps indexes.
@@ -339,6 +362,10 @@ public class XPath {
 
         public int getIndex() {
             return index;
+        }
+        
+        public String getPredicate() {
+            return predicate;
         }
 
         public boolean isIndexed() {
@@ -361,6 +388,8 @@ public class XPath {
                 // e.g. gml:name[1] doesn't get translated to
                 // gml:name i.e. all gml:name instances
                 sb.append("[").append(index).append("]");
+            } else if (predicate != null) {
+                sb.append("[").append(predicate).append("]");
             }
             return sb.toString();
         }
@@ -371,7 +400,8 @@ public class XPath {
             }
             Step s = (Step) o;
             return attributeName.equals(s.attributeName) && index == s.index
-                    && isXmlAttribute == s.isXmlAttribute;
+                    && isXmlAttribute == s.isXmlAttribute
+                    && predicate == s.predicate;
         }
 
         public int hashCode() {
@@ -379,7 +409,9 @@ public class XPath {
         }
 
         public Step clone() {
-            return new Step(this.attributeName, this.index, this.isXmlAttribute, this.isIndexed);
+            return predicate==null?
+                    new Step(this.attributeName, this.index, this.isXmlAttribute, this.isIndexed):
+                    new Step(this.attributeName, this.isXmlAttribute, this.predicate);
         }
 
         /**
@@ -400,6 +432,34 @@ public class XPath {
             this.index = index;
             isIndexed = true;
         }
+    }
+    
+    /**
+     * Split X-path string in to string steps, ignoring / characters inside [] 
+     * 
+     * @param s x-path string
+     * @return list of string steps
+     */
+    private static List<String> splitPath(String s) {
+        ArrayList<String> parts = new ArrayList<String>();
+        
+        StringBuffer b = new StringBuffer();
+        int insideIndex = 0;
+        for (int pos = 0 ; pos < s.length() ; pos++) {
+            if (s.charAt(pos) == '/' && insideIndex==0) {
+                parts.add(b.toString());
+                b = new StringBuffer();
+            } else {
+                if (s.charAt(pos) == '[') {                
+                    insideIndex++;
+                } else if (s.charAt(pos) == ']') {
+                    insideIndex--;
+                }
+                b.append(s.charAt(pos));
+            }
+        }
+        parts.add(b.toString());
+        return parts;
     }
 
     /**
@@ -446,17 +506,17 @@ public class XPath {
             expression = expression.substring(1);
         }
 
-        final String[] partialSteps = expression.split("[/]");
+        final List<String> partialSteps = splitPath(expression);
 
-        if (partialSteps.length == 0) {
+        if (partialSteps.size() == 0) {
             throw new IllegalArgumentException("no steps provided");
         }
 
         int startIndex = 0;
 
-        for (int i = startIndex; i < partialSteps.length; i++) {
+        for (int i = startIndex; i < partialSteps.size(); i++) {
 
-            String step = partialSteps[i];
+            String step = partialSteps.get(i);
             if ("..".equals(step)) {
                 steps.remove(steps.size() - 1);
             } else if (".".equals(step)) {
@@ -465,15 +525,19 @@ public class XPath {
                 int index = 1;
                 boolean isXmlAttribute = false;
                 boolean isIndexed = false;
+                String predicate = null;
                 String stepName = step;
                 if (step.indexOf('[') != -1) {
                     int start = step.indexOf('[');
                     int end = step.indexOf(']');
                     stepName = step.substring(0, start);
-                    Scanner scanner = new Scanner(step.substring(start + 1, end));
+                    String s = step.substring(start + 1, end);
+                    Scanner scanner = new Scanner(s);
                     if (scanner.hasNextInt()) {
                         index = scanner.nextInt();
                         isIndexed = true;
+                    } else {
+                        predicate = s;
                     }
                 }
                 if (step.charAt(0) == '@') {
@@ -481,7 +545,12 @@ public class XPath {
                     stepName = stepName.substring(1);
                 }
                 QName qName = deglose(stepName, root, namespaces, isXmlAttribute);
-                steps.add(new Step(qName, index, isXmlAttribute, isIndexed));
+                if (predicate == null) {
+                    steps.add(new Step(qName, index, isXmlAttribute, isIndexed));
+                } else {
+                    steps.add(new Step(qName, isXmlAttribute, predicate));
+                }
+                 
             }
             //            
             // if (step.indexOf('[') != -1) {

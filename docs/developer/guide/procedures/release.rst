@@ -436,10 +436,7 @@ Change version number
 Get those SNAPSHOT dependencies out of our build
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-1. At the current time their is one usual suspect - jaitools. Ask them to deploy something 
-   and then update as follows:
-   
-2. BEFORE (under root pom.xml dependency management tag)::
+1. BEFORE (under root pom.xml dependency management tag)::
        
        <dependency>
          <groupId>jfree</groupId>
@@ -447,7 +444,7 @@ Get those SNAPSHOT dependencies out of our build
          <version>1.1.1-SNAPSHOT</version>
        </dependency>
    
-3. AFTER::
+2. AFTER::
        
        <dependency>
          <groupId>jfree</groupId>

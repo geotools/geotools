@@ -53,6 +53,15 @@ public class ColorConverterFactoryTest extends TestCase {
         assertEquals( "1 alpha", new Color( 0,0,255,1), convert(0x010000FF) );
     }
     
+    public void testFromLong() throws Exception {
+//        assertEquals( Color.RED, convert(0xFF0000) );
+        assertEquals( "no alpha", new Color( 0,0,255,255), convert((long) 0x000000FF) );
+        
+        assertEquals( "255 alpha", new Color( 0,0,255,255), convert((long) 0xFF0000FF) );
+        
+        assertEquals( "1 alpha", new Color( 0,0,255,1), convert((long) 0x010000FF) );
+    }
+    
     Color convert( Object value ) throws Exception {
         Converter converter = factory.createConverter( value.getClass(), Color.class, null );
         return (Color) converter.convert( value, Color.class );

@@ -42,35 +42,41 @@ import org.geotools.factory.Hints;
  */
 public class ColorConverterFactory implements ConverterFactory {
 
-	public Converter createConverter(Class source, Class target, Hints hints) {
-	    if ( target.equals( Color.class ) ) {
-			// string to color
-			if ( source.equals( String.class ) ) {
-				return new Converter() {
-					public Object convert(Object source, Class target) throws Exception {
-					    String rgba = (String) source;
-					    try {
-				            return Color.decode(rgba);
-				        } catch (NumberFormatException badRGB) {
-				            // unavailable
-				            return null;
-				        }					    
-					}					
-				};
-			}
-			
-			// integer to color
-			if ( source.equals( Integer.class ) ) {
-				return new Converter() {
-					public Object convert(Object source, Class target) throws Exception {
-					    Integer rgba = (Integer) source;
-					    int alpha = 0xff000000 & rgba;
-					    return new Color(rgba, alpha != 0 );					    
-					}					
-				};
-			}	
-		} else if(target.equals(String.class) && source.equals(Color.class)) {
-		    return new Converter() {
+    public Converter createConverter(Class source, Class target, Hints hints) {
+        if (target.equals(Color.class)) {
+            // string to color
+            if (source.equals(String.class)) {
+                return new Converter() {
+                    public Object convert(Object source, Class target) throws Exception {
+                        String rgba = (String) source;
+                        try {
+                            return Color.decode(rgba);
+                        } catch (NumberFormatException badRGB) {
+                            // unavailable
+                            return null;
+                        }
+                    }
+                };
+            }
+
+            // can we convert the thing to a Integer with a safe conversion?
+            if (Number.class.isAssignableFrom(source)) {
+                return new Converter() {
+                    public Object convert(Object source, Class target) throws Exception {
+                        Number number = (Number) source;
+                        // is it an integral number, and small enough to be an integer?
+                        if (((int) number.doubleValue()) == number.doubleValue() && number.doubleValue() < Integer.MAX_VALUE) {
+                            int rgba = number.intValue();
+                            int alpha = 0xff000000 & rgba;
+                            return new Color(rgba, alpha != 0);
+                        } else {
+                            return null;
+                        }
+                    }
+                };
+            }
+        } else if (target.equals(String.class) && source.equals(Color.class)) {
+            return new Converter() {
                 
                 public <T> T convert(Object source, Class<T> target) throws Exception {
                     Color color = (Color) source;

@@ -34,6 +34,7 @@ import java.nio.channels.WritableByteChannel;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -1159,7 +1160,8 @@ public class ShapefileDataStore extends AbstractFileDataStore {
                        && Boolean.getBoolean("org.geotools.shapefile.datetime"))
             {
                 header.addColumn(colName, '@', fieldLen, 0);
-            } else if (java.util.Date.class.isAssignableFrom(colType)) {
+            } else if (java.util.Date.class.isAssignableFrom(colType) ||
+                    Calendar.class.isAssignableFrom(colType)) {
                 header.addColumn(colName, 'D', fieldLen, 0);
             } else if (colType == Boolean.class) {
                 header.addColumn(colName, 'L', 1, 0);

@@ -170,9 +170,7 @@ public class BBOXImpl extends AbstractPreparedGeometryFilter implements BBOX {
         Envelope envLeft = left.getEnvelopeInternal();
         Envelope envRight = right.getEnvelopeInternal();
 
-        if (envRight.contains(envLeft) || envLeft.contains(envRight)) {
-            return true;
-        } else if (envRight.intersects(envLeft)) {
+        if (envRight.intersects(envLeft)) {
             return left.intersects(right);
         } else {
             return false;
@@ -187,9 +185,7 @@ public class BBOXImpl extends AbstractPreparedGeometryFilter implements BBOX {
         Envelope envLeft = prepped.getGeometry().getEnvelopeInternal();
         Envelope envRight = other.getEnvelopeInternal();
 
-        if (envRight.contains(envLeft) || envLeft.contains(envRight)) {
-            return true;
-        } else if (envRight.intersects(envLeft)) {
+        if(envRight.intersects(envLeft)) {
             return prepped.intersects(other);
         } else {
             return false;

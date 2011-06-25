@@ -723,8 +723,10 @@ public class SimpleFeatureTypeBuilder {
      * </p>
      */
 	public void addAll( AttributeDescriptor[] descriptors ) {
-	    for ( AttributeDescriptor ad : descriptors ) {
-	        add( ad );
+            if (descriptors != null) {
+	        for ( AttributeDescriptor ad : descriptors ) {
+	            add( ad );
+                }
 	    }
 	}
 	

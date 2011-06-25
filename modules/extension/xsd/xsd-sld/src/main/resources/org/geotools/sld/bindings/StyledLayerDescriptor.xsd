@@ -334,7 +334,7 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element ref="ogc:PropertyName"/>
+        <xsd:element ref="ogc:expression"/>
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>

@@ -127,9 +127,14 @@ public class SLDRasterSymbolizerBinding extends AbstractComplexBinding {
         RasterSymbolizer rs = styleFactory.createRasterSymbolizer();
 
         //&lt;xsd:element ref="sld:Geometry" minOccurs="0"/&gt;
-        if (node.hasChild("Geometry")) {
-            PropertyName propertyName = (PropertyName) node.getChildValue("Geometry");
-            rs.setGeometryPropertyName(propertyName.getPropertyName());
+        if(node.hasChild("Geometry")) {
+            Expression geometry = (Expression) node.getChildValue("Geometry");
+            if(geometry instanceof PropertyName) {
+                PropertyName propertyName = (PropertyName) geometry;
+                rs.setGeometryPropertyName(propertyName.getPropertyName());
+            } else {
+                rs.setGeometry(geometry);
+            }
         }
 
         //&lt;xsd:element ref="sld:Opacity" minOccurs="0"/&gt;

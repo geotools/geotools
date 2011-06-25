@@ -17,6 +17,7 @@
 package org.geotools.sld.bindings;
 
 import org.geotools.styling.LineSymbolizer;
+import org.opengis.filter.expression.Function;
 
 
 public class SLDLineSymbolizerBindingTest extends SLDTestSupport {
@@ -31,5 +32,16 @@ public class SLDLineSymbolizerBindingTest extends SLDTestSupport {
         assertNotNull(lineSymbolizer);
 
         assertNotNull(lineSymbolizer.getStroke());
+    }
+    
+    public void testTransform() throws Exception {
+        SLDMockData.transformedLineSymbolizer(document, document);
+
+        LineSymbolizer lineSymbolizer = (LineSymbolizer) parse();
+        assertNotNull(lineSymbolizer);
+        assertNotNull(lineSymbolizer.getStroke());
+        assertNotNull(lineSymbolizer.getGeometry());
+        Function tx = (Function) lineSymbolizer.getGeometry();
+        assertEquals("buffer", tx.getName());
     }
 }

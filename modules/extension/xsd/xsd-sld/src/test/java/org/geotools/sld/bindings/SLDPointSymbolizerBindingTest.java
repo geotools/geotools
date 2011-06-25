@@ -17,6 +17,7 @@
 package org.geotools.sld.bindings;
 
 import org.geotools.styling.PointSymbolizer;
+import org.opengis.filter.expression.Function;
 
 
 public class SLDPointSymbolizerBindingTest extends SLDTestSupport {
@@ -31,5 +32,15 @@ public class SLDPointSymbolizerBindingTest extends SLDTestSupport {
         assertNotNull(ps);
         assertNotNull(ps.getGeometryPropertyName());
         assertNotNull(ps.getGraphic());
+    }
+    
+    public void testTransform() throws Exception {
+        SLDMockData.transformedPointSymbolizer(document, document);
+
+        PointSymbolizer ps = (PointSymbolizer) parse();
+        assertNotNull(ps);
+        assertNotNull(ps.getGeometry());
+        Function tx = (Function) ps.getGeometry();
+        assertEquals("buffer", tx.getName());
     }
 }

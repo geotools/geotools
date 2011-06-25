@@ -16,7 +16,6 @@
  */
 package org.geotools.feature.collection;
 
-import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -61,8 +60,30 @@ public class DecoratingSimpleFeatureCollection implements SimpleFeatureCollectio
     }
 
     public void accepts(org.opengis.feature.FeatureVisitor visitor,
-            org.opengis.util.ProgressListener progress) throws IOException {
-        delegate.accepts(visitor, progress);
+            org.opengis.util.ProgressListener progress) {
+        SimpleFeatureIterator it = features();
+
+        try {
+            Exception exception = null;
+            while (it.hasNext()) {
+                try {
+                    visitor.visit(it.next());
+                } catch (Exception e) {
+                    if (exception != null)
+                        exception = e;
+                }
+            }
+
+            if (exception != null) {
+                if (exception instanceof RuntimeException) {
+                    throw (RuntimeException) exception;
+                } else {
+                    throw new RuntimeException(exception);
+                }
+            }
+        } finally {
+            close(it);
+        }
     }
     
     public boolean add(SimpleFeature o) {

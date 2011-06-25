@@ -541,6 +541,9 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
             build.add(new BigDecimal(new BigInteger(
                     "12345678901234567890123456789"), 2));
             build.add(new BigInteger("12345678901234567890123456789"));
+            GregorianCalendar calendar = new GregorianCalendar();
+            calendar.setTimeInMillis(i);
+            build.add(calendar);
 
             SimpleFeature feature = build.buildFeature(null);
             features.add(feature);
@@ -563,6 +566,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         build.add("j", Long.class);
         build.add("k", BigDecimal.class);
         build.add("l", BigInteger.class);
+        build.add("m", Calendar.class);
 
         return build.buildFeatureType();
     }

@@ -264,7 +264,12 @@ public class DbaseFileWriter {
             break;
         case 'D':
         case 'd':
-            o = formatter.getFieldString((Date)obj);
+            if (obj instanceof java.util.Calendar) {
+                o = formatter.getFieldString(((Calendar) obj).getTime());
+
+            } else {
+                o = formatter.getFieldString((Date) obj);
+            }
             break;
         case '@':
             o = formatter.getFieldStringDateTime((Date)obj);

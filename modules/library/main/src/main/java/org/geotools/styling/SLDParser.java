@@ -1480,10 +1480,11 @@ public class SLDParser {
             LOGGER.finest("processing graphic " + root);
         }
 
-        Graphic graphic = factory.createGraphic(null,null,null,null,null,null);// factory.getDefaultGraphic();
+        Graphic graphic = factory.getDefaultGraphic();
 
         NodeList children = root.getChildNodes();
         final int length = children.getLength();
+        boolean firstGraphic = true;
         for (int i = 0; i < length; i++) {
             Node child = children.item(i);
 
@@ -1500,9 +1501,17 @@ public class SLDParser {
             } else if (childName.equalsIgnoreCase("ExternalGraphic")) {
                 if (LOGGER.isLoggable(Level.FINEST))
                     LOGGER.finest("parsing extgraphic " + child);
-                graphic.addExternalGraphic(parseExternalGraphic(child));
+                if(firstGraphic) {
+                    graphic.graphicalSymbols().clear();
+                    firstGraphic = false;
+                } 
+                graphic.graphicalSymbols().add(parseExternalGraphic(child));
             } else if (childName.equalsIgnoreCase("Mark")) {
-                graphic.addMark(parseMark(child));
+                if(firstGraphic) {
+                    graphic.graphicalSymbols().clear();
+                    firstGraphic = false;
+                } 
+                graphic.graphicalSymbols().add(parseMark(child));
             } else if (childName.equalsIgnoreCase(opacityString)) {
                 graphic.setOpacity(parseCssParameter(child));
             } else if (childName.equalsIgnoreCase("size")) {

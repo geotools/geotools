@@ -129,9 +129,14 @@ public class SLDTextSymbolizerBinding extends AbstractComplexBinding {
         TextSymbolizer ts = styleFactory.createTextSymbolizer();
 
         //&lt;xsd:element ref="sld:Geometry" minOccurs="0"/&gt;
-        if (node.hasChild("Geometry")) {
-            PropertyName propertyName = (PropertyName) node.getChildValue("Geometry");
-            ts.setGeometryPropertyName(propertyName.getPropertyName());
+        if(node.hasChild("Geometry")) {
+            Expression geometry = (Expression) node.getChildValue("Geometry");
+            if(geometry instanceof PropertyName) {
+                PropertyName propertyName = (PropertyName) geometry;
+                ts.setGeometryPropertyName(propertyName.getPropertyName());
+            } else {
+                ts.setGeometry(geometry);
+            }
         }
 
         //&lt;xsd:element ref="sld:Label" minOccurs="0"/&gt;

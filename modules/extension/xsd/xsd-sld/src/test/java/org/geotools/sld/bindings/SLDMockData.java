@@ -157,10 +157,29 @@ public class SLDMockData {
 
         return polygonSymbolizer;
     }
+    
+    static Element transformedPolygonSymbolizer(Document document, Node parent) {
+        Element polygonSymbolizer = element(SLD.POLYGONSYMBOLIZER, document, parent);
+
+        transformedGeometry(document, polygonSymbolizer);
+        stroke(document, polygonSymbolizer);
+        fill(document, polygonSymbolizer);
+
+        return polygonSymbolizer;
+    }
 
     static Element lineSymbolizer(Document document, Node parent) {
         Element lineSymbolizer = element(SLD.LINESYMBOLIZER, document, parent);
 
+        stroke(document, lineSymbolizer);
+
+        return lineSymbolizer;
+    }
+    
+    static Element transformedLineSymbolizer(Document document, Node parent) {
+        Element lineSymbolizer = element(SLD.LINESYMBOLIZER, document, parent);
+
+        transformedGeometry(document, lineSymbolizer);
         stroke(document, lineSymbolizer);
 
         return lineSymbolizer;
@@ -173,6 +192,19 @@ public class SLDMockData {
 
         return geometry;
     }
+    
+    static Element transformedGeometry(Document document, Node parent) {
+        Element geometry = element(SLD.GEOMETRY, document, parent);
+        Element function = element(OGC.Function, document, geometry);
+        function.setAttribute("name", "buffer");
+        Element propertyName = element(OGC.PropertyName, document, function);
+        propertyName.appendChild(document.createTextNode("the_geom"));
+        Element distance = element(OGC.Literal, document, function);
+        distance.appendChild(document.createTextNode("1"));
+
+        return geometry;
+    }
+
 
     static Element channelSelectionRGB(Document document, Node parent) {
         Element channelSelection = element(SLD.CHANNELSELECTION, document, parent);
@@ -313,6 +345,15 @@ public class SLDMockData {
         Element pointSymbolizer = element(SLD.POINTSYMBOLIZER, document, parent);
 
         geometry(document, pointSymbolizer);
+        graphic(document, pointSymbolizer);
+
+        return pointSymbolizer;
+    }
+    
+    static Element transformedPointSymbolizer(Document document, Node parent) {
+        Element pointSymbolizer = element(SLD.POINTSYMBOLIZER, document, parent);
+
+        transformedGeometry(document, pointSymbolizer);
         graphic(document, pointSymbolizer);
 
         return pointSymbolizer;

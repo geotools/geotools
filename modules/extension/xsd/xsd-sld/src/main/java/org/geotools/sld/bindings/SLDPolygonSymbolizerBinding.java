@@ -20,6 +20,8 @@ import org.picocontainer.MutablePicoContainer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import javax.xml.namespace.QName;
+
+import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
 import org.geotools.styling.Fill;
 import org.geotools.styling.PolygonSymbolizer;
@@ -116,9 +118,14 @@ public class SLDPolygonSymbolizerBinding extends AbstractComplexBinding {
         PolygonSymbolizer ps = styleFactory.createPolygonSymbolizer();
 
         //&lt;xsd:element ref="sld:Geometry" minOccurs="0"/&gt;
-        if (node.hasChild(PropertyName.class)) {
-            PropertyName propertyName = (PropertyName) node.getChildValue(PropertyName.class);
-            ps.setGeometryPropertyName(propertyName.getPropertyName());
+        if(node.hasChild("Geometry")) {
+            Expression geometry = (Expression) node.getChildValue("Geometry");
+            if(geometry instanceof PropertyName) {
+                PropertyName propertyName = (PropertyName) geometry;
+                ps.setGeometryPropertyName(propertyName.getPropertyName());
+            } else {
+                ps.setGeometry(geometry);
+            }
         }
 
         //&lt;xsd:element ref="sld:Fill" minOccurs="0"/&gt;

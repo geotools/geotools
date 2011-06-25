@@ -17,6 +17,7 @@
 package org.geotools.sld.bindings;
 
 import org.geotools.styling.PolygonSymbolizer;
+import org.opengis.filter.expression.Function;
 
 
 public class SLDPolygonSymbolizerBindingTest extends SLDTestSupport {
@@ -31,5 +32,17 @@ public class SLDPolygonSymbolizerBindingTest extends SLDTestSupport {
         assertNotNull(ps);
         assertNotNull(ps.getFill());
         assertNotNull(ps.getStroke());
+    }
+    
+    public void testTransform() throws Exception {
+        SLDMockData.transformedPolygonSymbolizer(document, document);
+
+        PolygonSymbolizer ps = (PolygonSymbolizer) parse();
+        assertNotNull(ps);
+        assertNotNull(ps.getFill());
+        assertNotNull(ps.getStroke());
+        assertNotNull(ps.getGeometry());
+        Function tx = (Function) ps.getGeometry();
+        assertEquals("buffer", tx.getName());
     }
 }

@@ -3,20 +3,27 @@ package org.geotools.renderer.lite;
 import static java.awt.RenderingHints.KEY_ANTIALIASING;
 import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.RenderingHints;
 import java.io.File;
 
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.DefaultMapContext;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.style.FontCache;
+import org.geotools.styling.SLD;
+import org.geotools.styling.Stroke;
 import org.geotools.styling.Style;
+import org.geotools.styling.StyleFactory;
+import org.geotools.styling.Symbolizer;
 import org.geotools.test.TestData;
 import org.junit.Before;
 import org.junit.Test;
+import org.opengis.filter.FilterFactory2;
 
 public class FillTest {
     private static final long TIME = 4000;
@@ -139,8 +146,7 @@ public class FillTest {
     
     @Test
     public void testFTSComposition() throws Exception {
-    	
-    	Style bgStyle = RendererBaseTest.loadStyle(this, "fillSolid.sld");
+        Style bgStyle = RendererBaseTest.loadStyle(this, "fillSolid.sld");
         Style fgStyle = RendererBaseTest.loadStyle(this, "fillSolidFTS.sld");
         
         DefaultMapContext mc = new DefaultMapContext(DefaultGeographicCRS.WGS84);
@@ -152,5 +158,22 @@ public class FillTest {
         renderer.setContext(mc);
         
         RendererBaseTest.showRender("FTS composition", renderer, TIME, bounds);
+    }
+    
+    @Test
+    public void testGEOT3111() throws Exception {
+        FilterFactory2 ff2 = CommonFactoryFinder.getFilterFactory2(null);
+        StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
+        Symbolizer sym = sf.createPolygonSymbolizer(Stroke.NULL, sf.createFill(ff2.literal(Color.CYAN)), null);
+        Style style = SLD.wrapSymbolizers(sym);
+        
+        DefaultMapContext mc = new DefaultMapContext(DefaultGeographicCRS.WGS84);
+        mc.addLayer(fs, style);
+        
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setContext(mc);
+        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
+        
+        RendererBaseTest.showRender("TTF decorative", renderer, TIME, bounds);
     }
 }

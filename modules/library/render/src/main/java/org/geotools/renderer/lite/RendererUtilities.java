@@ -749,10 +749,10 @@ public final class RendererUtilities {
     public static double getStyle2DSize(Style2D style) {
         if(style instanceof GraphicStyle2D) {
            final BufferedImage image = ((GraphicStyle2D) style).getImage();
-           return Math.max(image.getWidth(), image.getHeight());
+           return maxSize(image.getWidth(), image.getHeight());
         } else if(style instanceof IconStyle2D) {
            final Icon icon = ((IconStyle2D) style).getIcon();
-           return Math.max(icon.getIconWidth(), icon.getIconHeight());
+           return maxSize(icon.getIconWidth(), icon.getIconHeight());
         } else if(style instanceof LineStyle2D) {
             LineStyle2D ls = ((LineStyle2D) style);
             double gsSize = getStyle2DSize(ls.getGraphicStroke());
@@ -760,9 +760,19 @@ public final class RendererUtilities {
             if(ls.getStroke() instanceof BasicStroke) {
                 strokeSize = ((BasicStroke) ls.getStroke()).getLineWidth();
             }
-            return Math.max(gsSize, strokeSize);
+            return maxSize(gsSize, strokeSize);
         } else {
             return 0;
         }
+    }
+    
+    private static double maxSize(double d1, double d2) {
+        if(Double.isNaN(d1)) {
+            d1 = 0;
+        }
+        if(Double.isNaN(d2)) {
+            d2 = 0;
+        }
+        return Math.max(d1, d2);
     }
 }

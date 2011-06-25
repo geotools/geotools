@@ -550,10 +550,8 @@ public class SLDStyleFactory {
 		// them in order
 		// to recognize which one will be used for rendering
 		List<GraphicalSymbol> symbols = sldGraphic.graphicalSymbols();
-		if (symbols.isEmpty()) {
-			symbols = new ArrayList<GraphicalSymbol>();
-			Mark square = StyleFactoryFinder.createStyleFactory().createMark();
-			symbols.add(square);
+		if (symbols == null || symbols.isEmpty()) {
+			return null;
 		}
 		final int length = symbols.size();
 		ExternalGraphic eg;

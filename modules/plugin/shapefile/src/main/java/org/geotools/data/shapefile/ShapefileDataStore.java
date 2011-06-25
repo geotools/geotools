@@ -16,7 +16,11 @@
  */
 package org.geotools.data.shapefile;
 
-import static org.geotools.data.shapefile.ShpFileType.*;
+import static org.geotools.data.shapefile.ShpFileType.DBF;
+import static org.geotools.data.shapefile.ShpFileType.PRJ;
+import static org.geotools.data.shapefile.ShpFileType.SHP;
+import static org.geotools.data.shapefile.ShpFileType.SHP_XML;
+import static org.geotools.data.shapefile.ShpFileType.SHX;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -36,12 +40,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TimeZone;
 import java.util.logging.Level;
 
 import org.geotools.data.AbstractFileDataStore;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
-import org.geotools.data.DefaultFIDReader;
 import org.geotools.data.EmptyFeatureReader;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureWriter;
@@ -133,6 +137,7 @@ public class ShapefileDataStore extends AbstractFileDataStore {
     protected SimpleFeatureType schema; // read only
     protected boolean useMemoryMappedBuffer = false; // windows is not up to use memory mapping in anger
     protected Charset dbfCharset;
+    protected TimeZone dbfTimeZone = TimeZone.getDefault();
     
     private ServiceInfo info;
 
@@ -203,7 +208,7 @@ public class ShapefileDataStore extends AbstractFileDataStore {
         }
     }
     
-    /**
+	/**
      * this sets the datastore's namespace during construction (so the schema -
      * FeatureType - will have the correct value) You can call this with
      * namespace = null, but I suggest you give it an actual namespace.
@@ -301,6 +306,22 @@ public class ShapefileDataStore extends AbstractFileDataStore {
     public Charset getStringCharset() {
         return dbfCharset;
     }
+    
+    /**
+     * Returns the {@link TimeZone} used to parse dates in the DBF file
+     * @return
+     */
+    public TimeZone getDbftimeZone() {
+		return dbfTimeZone;
+	}
+
+    /**
+     * Sets the {@link TimeZone} used to parse dates in the DBF file
+     * @param dbftimeZone
+     */
+	public void setDbftimeZone(TimeZone dbftimeZone) {
+		this.dbfTimeZone = dbftimeZone;
+	}
 
     /**
      * Latch onto xmlURL if it is there, we may be able to get out of
@@ -558,7 +579,7 @@ public class ShapefileDataStore extends AbstractFileDataStore {
 
         try {
             return new DbaseFileReader(shpFiles, useMemoryMappedBuffer,
-                    dbfCharset);
+                    dbfCharset, dbfTimeZone);
         } catch (IOException e) {
             // could happen if dbf file does not exist
             return null;
@@ -694,7 +715,7 @@ public class ShapefileDataStore extends AbstractFileDataStore {
         }
 
         return new ShapefileFeatureWriter(typeName, shpFiles, attReader,
-                featureReader, dbfCharset);
+                featureReader, dbfCharset, dbfTimeZone);
     }
 
     /**

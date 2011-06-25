@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -333,7 +334,9 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
             	        return false;
             	    }
                     
-            	    tileIndexStore=new ShapefileDataStore(sourceURL);
+            	    ShapefileDataStore store = new ShapefileDataStore(sourceURL);
+            	    store.setDbftimeZone(TimeZone.getTimeZone("UTC"));
+            	    tileIndexStore = store;
             	}
                 final String[] typeNames = tileIndexStore.getTypeNames();
                 if (typeNames.length <= 0)

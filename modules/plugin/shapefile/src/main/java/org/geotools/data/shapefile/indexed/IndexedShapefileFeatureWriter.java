@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.TimeZone;
 import java.util.logging.Level;
 
 import org.geotools.data.DataUtilities;
@@ -53,9 +54,9 @@ class IndexedShapefileFeatureWriter extends ShapefileFeatureWriter implements
     public IndexedShapefileFeatureWriter(String typeName, ShpFiles shpFiles,
             IndexedShapefileAttributeReader attsReader,
              FeatureReader<SimpleFeatureType, SimpleFeature> featureReader, IndexedShapefileDataStore datastore,
-             Charset charset)
+             Charset charset, TimeZone timeZone)
             throws IOException {
-        super(typeName, shpFiles, attsReader, featureReader, charset);
+        super(typeName, shpFiles, attsReader, featureReader, charset, timeZone);
         this.indexedShapefileDataStore = datastore;
         if (!datastore.isLocal()) {
             this.fidWriter = IndexedFidWriter.EMPTY_WRITER;

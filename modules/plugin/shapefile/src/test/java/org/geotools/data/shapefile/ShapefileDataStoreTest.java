@@ -33,6 +33,7 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import org.geotools.TestData;
 import org.geotools.data.DataUtilities;
@@ -838,6 +839,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         URL toURL = file.toURI().toURL();
         
         ShapefileDataStore ds = new ShapefileDataStore(toURL);
+        ds.setDbftimeZone(TimeZone.getTimeZone("UTC"));
         ds.createSchema(DataUtilities.createType("test",
                         "geom:Point,timestamp:java.util.Date,date:java.util.Date,timestamp2:java.util.Date,timestamp3:java.util.Date"));
 
@@ -845,11 +847,11 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         fw = ds.getFeatureWriterAppend(Transaction.AUTO_COMMIT);
         final SimpleFeature sf;
         
-        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd Z");
         
-        Date date = (Date) dateFormatter.parse(str_date);
+        Date date = (Date) dateFormatter.parse(str_date + " GMT");
 
-        Calendar timestampCal = new GregorianCalendar();
+        Calendar timestampCal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
        
         timestampCal.setTime(date);
         

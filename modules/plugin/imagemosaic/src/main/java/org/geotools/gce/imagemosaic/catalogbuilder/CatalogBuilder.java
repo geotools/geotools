@@ -44,6 +44,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.TimeZone;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -1272,6 +1274,7 @@ public class CatalogBuilder implements Runnable {
 			if(file.getProtocol().equalsIgnoreCase("file"))
 				params.put(ShapefileDataStoreFactory.CREATE_SPATIAL_INDEX.key, Boolean.TRUE);
 			params.put(ShapefileDataStoreFactory.MEMORY_MAPPED.key, Boolean.TRUE);
+			params.put(ShapefileDataStoreFactory.DBFTIMEZONE.key, TimeZone.getTimeZone("UTC"));
 			catalog= GranuleCatalogFactory.createGranuleCatalog(params,false,true, Utils.SHAPE_SPI);
 		}
 	

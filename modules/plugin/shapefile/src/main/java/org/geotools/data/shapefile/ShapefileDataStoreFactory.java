@@ -25,6 +25,7 @@ import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.logging.Logger;
 
 import org.geotools.data.DataSourceException;
@@ -129,6 +130,24 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
             return ((Charset) value).name();
         }
     };
+    
+    /**
+     * Optional - timezone to decode dates from the DBF file
+     */
+    public static final Param DBFTIMEZONE = new Param("timezone", TimeZone.class,
+            "time zone used to read dates from the DBF file", false,
+            TimeZone.getDefault(),
+            new KVP(Param.LEVEL,"advanced")) {
+
+    	public Object parse(String text) throws IOException {
+            return TimeZone.getTimeZone(text);
+        }
+
+        public String text(Object value) {
+            return ((TimeZone) value).getID();
+        }
+    };
+
 
     /**
      * Takes a map of parameters which describes how to access a DataStore and
@@ -211,6 +230,7 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
         Boolean cacheMemoryMaps = (Boolean) CACHE_MEMORY_MAPS.lookUp(params);
         URI namespace = (URI) NAMESPACEP.lookUp(params);
         Charset dbfCharset = (Charset) DBFCHARSET.lookUp(params);
+        TimeZone dbfTimeZone = (TimeZone) DBFTIMEZONE.lookUp(params);
         Boolean isCreateSpatialIndex = (Boolean) CREATE_SPATIAL_INDEX
                 .lookUp(params);
         if (isCreateSpatialIndex == null) {
@@ -223,6 +243,9 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
             // this should not happen as Charset.forName("ISO-8859-1") was used
             // as the param default?
             dbfCharset = Charset.forName("ISO-8859-1");
+        }
+        if(dbfTimeZone == null) {
+        	dbfTimeZone = TimeZone.getDefault();
         }
         if (isMemoryMapped == null) {
             assert (true);
@@ -246,13 +269,16 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
             boolean createIndex = isCreateSpatialIndex.booleanValue() && isLocal;
     
             try {
+            	ShapefileDataStore store;
                 if (createIndex) {
-                    return new IndexedShapefileDataStore(url, namespace,
+                    store = new IndexedShapefileDataStore(url, namespace,
                             useMemoryMappedBuffer, cacheMemoryMaps, true, IndexType.QIX, dbfCharset);
                 } else {
-                    return new ShapefileDataStore(url, namespace,
+                    store = new ShapefileDataStore(url, namespace,
                             useMemoryMappedBuffer, cacheMemoryMaps, dbfCharset);
                 }
+                store.setDbftimeZone(dbfTimeZone);
+                return store;
             } catch (MalformedURLException mue) {
                 throw new DataSourceException(
                         "Url for shapefile malformed: " + url, mue);
@@ -324,7 +350,7 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
      */
     public Param[] getParametersInfo() {
         return new Param[] { URLP, NAMESPACEP, CREATE_SPATIAL_INDEX,
-                DBFCHARSET, MEMORY_MAPPED, CACHE_MEMORY_MAPS, FILE_TYPE };
+                DBFCHARSET, DBFTIMEZONE, MEMORY_MAPPED, CACHE_MEMORY_MAPS, FILE_TYPE };
     }
 
     /**

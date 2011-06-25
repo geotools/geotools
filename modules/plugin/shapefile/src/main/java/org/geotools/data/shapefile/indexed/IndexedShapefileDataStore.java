@@ -37,6 +37,7 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TimeZone;
 import java.util.TreeSet;
 import java.util.logging.Level;
 
@@ -858,7 +859,7 @@ public class IndexedShapefileDataStore extends ShapefileDataStore implements
             return null;
         }
 
-        return new IndexedDbaseFileReader(shpFiles, useMemoryMappedBuffer, dbfCharset);
+        return new IndexedDbaseFileReader(shpFiles, useMemoryMappedBuffer, dbfCharset, dbfTimeZone);
     }
 
     //
@@ -973,7 +974,7 @@ public class IndexedShapefileDataStore extends ShapefileDataStore implements
         }
 
         return new IndexedShapefileFeatureWriter(typeName, shpFiles, attReader,
-                featureReader, this, dbfCharset);
+                featureReader, this, dbfCharset, dbfTimeZone);
     }
 
     /**

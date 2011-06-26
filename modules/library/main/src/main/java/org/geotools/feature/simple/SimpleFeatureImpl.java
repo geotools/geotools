@@ -89,35 +89,81 @@ public class SimpleFeatureImpl implements SimpleFeature {
      * @param id
      */
     public SimpleFeatureImpl( List<Object> values, SimpleFeatureType featureType, FeatureId id) {
-        this(values.toArray(), featureType, id, false);
+        this(values.toArray(), featureType, id, false,index(featureType));
     }
     
     /**
-     * Fast construction of a new feature. The object takes owneship of the provided value array,
+     * Fast construction of a new feature. 
+     * <p>
+     * The object takes ownership of the provided value array,
      * do not modify after calling the constructor
+     *</p>
      * @param values
      * @param featureType
      * @param id
      * @param validating
      */
     public SimpleFeatureImpl(Object[] values, SimpleFeatureType featureType, FeatureId id, boolean validating) {
+        this(values, featureType, id, validating, index(featureType));
+    }    
+    
+    /**
+     * Fast construction of a new feature. 
+     * <p>
+     * The object takes ownership of the provided value array,
+     * do not modify after calling the constructor
+     *</p>
+     * @param values
+     * @param featureType
+     * @param id
+     * @param validating
+     * @param index - attribute name to value index mapping
+     */
+    public SimpleFeatureImpl(Object[] values, SimpleFeatureType featureType, 
+            FeatureId id, boolean validating, Map<String,Integer> index) {
         this.id = id;
         this.featureType = featureType;
         this.values = values;
         this.validating = validating;
-        
-        // in the most common case reuse the map cached in the feature type
-        if(featureType instanceof SimpleFeatureTypeImpl) {
-            index = ((SimpleFeatureTypeImpl) featureType).index;
-        } else {
-            // if we're not lucky, rebuild the index completely... 
-            // TODO: create a separate cache for this case?
-            this.index = SimpleFeatureTypeImpl.buildIndex(featureType);
-        }
+        this.index = index;
         
         // if we're self validating, do validation right now
         if(validating)
             validate();
+    }        
+    
+    /**
+     * Generate (or lookup) an "index" mapping attribute to index for the provided FeatureType.
+     * <p>
+     * This method will use the following:
+     * <ul>
+     * <li>SimpleFeatureTypeImpl.index; or
+     * <li>Check getUserData().get("indexLookup");
+     * <li>or call {@link SimpleFeatureTypeImpl#buildIndex(SimpleFeatureType)} to generate the
+     *     required index
+     * </ul>
+     * @param featureType
+     * @return mapping between attribute name to attribute index
+     */
+    @SuppressWarnings("unchecked")
+    private static Map<String,Integer> index(SimpleFeatureType featureType) {
+        // in the most common case reuse the map cached in the feature type
+        if(featureType instanceof SimpleFeatureTypeImpl) {
+            return ((SimpleFeatureTypeImpl) featureType).index;
+        } else {
+            synchronized (featureType) {
+                // if we're not lucky, rebuild the index completely... 
+                Object cache = featureType.getUserData().get("indexLookup");
+                if( cache instanceof Map){
+                    return (Map<String,Integer>) cache;
+                }
+                else {
+                    Map<String,Integer> generatedIndex = SimpleFeatureTypeImpl.buildIndex(featureType);
+                    featureType.getUserData().put("indexLookup", generatedIndex );
+                    return generatedIndex;
+                }
+            }
+        }        
     }
     
     public FeatureId getIdentifier() {

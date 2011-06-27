@@ -38,8 +38,6 @@ import javax.media.jai.ImageLayout;
 import javax.media.jai.Interpolation;
 import javax.media.jai.InterpolationNearest;
 import javax.media.jai.JAI;
-import javax.media.jai.operator.AffineDescriptor;
-import javax.media.jai.operator.ScaleDescriptor;
 
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.GridSampleDimension;
@@ -75,8 +73,6 @@ import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.referencing.operation.TransformException;
 
-import com.sun.media.jai.opimage.RIFUtil;
-import com.sun.media.jai.opimage.TranslateIntOpImage;
 import com.sun.media.jai.util.Rational;
 import com.vividsolutions.jts.geom.Envelope;
 

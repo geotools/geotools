@@ -50,6 +50,7 @@ import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.LiteShape2;
+import org.geotools.image.crop.GTCropDescriptor;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.parameter.DefaultParameterDescriptorGroup;
@@ -170,6 +171,9 @@ public class Crop extends Operation2D {
 			pm = new PrecisionModel();
 		}
 		GFACTORY = new GeometryFactory(pm, 0);
+		
+        // Register manually the GTCrop operation, in web containers JAI registration may fails
+        GTCropDescriptor.register();
 	}
 
     public static final String PARAMNAME_ENVELOPE = "Envelope";
@@ -605,7 +609,7 @@ public class Crop extends Operation2D {
                 pbj.add((float) minY);
                 pbj.add((float) width);
                 pbj.add((float) height);
-                operatioName = "Crop";
+                operatioName = "GTCrop";
             }
             // //
             //

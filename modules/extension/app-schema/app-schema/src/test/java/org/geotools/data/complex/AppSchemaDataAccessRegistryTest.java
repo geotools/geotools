@@ -321,7 +321,7 @@ public class AppSchemaDataAccessRegistryTest extends AppSchemaTestSupport {
      * @throws IOException
      */
     private void unregister(DataAccess dataAccess, Name typeName) throws IOException {
-        DataAccessRegistry.unregister(dataAccess);
+        dataAccess.dispose();
         boolean notFound = false;
         try {
             FeatureTypeMapping mapping = AppSchemaDataAccessRegistry.getMappingByElement(typeName);

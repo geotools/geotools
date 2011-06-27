@@ -78,8 +78,6 @@ public class AppSchemaFileDataTest extends AppSchemaTestSupport {
         copyTestData("ArchSiteNillable.xml", testDir);
         copyTestData("AppSchemaFileDataTest.xml", testDir);
         copyTestData("PointFeatureGeomPropertyfile.properties", new File(testDir, "directory"));
-        // this allows type names to be reused between tests
-        AppSchemaDataAccessRegistry.unregisterAll();
     }
 
     /**
@@ -90,7 +88,7 @@ public class AppSchemaFileDataTest extends AppSchemaTestSupport {
     @After
     public void tearDown() throws IOException {
         FileUtils.deleteDirectory(testDir);
-        AppSchemaDataAccessRegistry.unregisterAll();
+        AppSchemaDataAccessRegistry.unregisterAndDisposeAll();
     }
 
     /**

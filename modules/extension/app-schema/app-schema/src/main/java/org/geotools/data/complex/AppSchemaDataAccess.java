@@ -515,6 +515,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
         for (FeatureTypeMapping mapping : mappings.values()) {
             mapping.getSource().getDataStore().dispose();
         }
+        mappings.clear();
     }
 
     /**

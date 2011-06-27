@@ -29,7 +29,7 @@ public class AppSchemaTestSupport {
     
     @AfterClass
     public static void oneTimeTearDown() throws Exception {
-        DataAccessRegistry.unregisterAll();
+        DataAccessRegistry.unregisterAndDisposeAll();
         AppSchemaDataAccessRegistry.clearAppSchemaProperties();
         AppSchemaXSDRegistry.getInstance().dispose();
     }

@@ -18,9 +18,7 @@
 package org.geotools.data.complex;
 
 import java.io.IOException;
-import java.util.Arrays;
 
-import org.geotools.data.DataAccess;
 import org.geotools.data.FeatureSource;
 import org.geotools.util.InterpolationProperties;
 import org.opengis.feature.Feature;
@@ -34,87 +32,15 @@ import org.opengis.feature.type.Name;
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
  */
 public class AppSchemaDataAccessRegistry extends DataAccessRegistry {
-
-    private static final long serialVersionUID = -373404928035022963L;
     
-    /**
-     * Properties for interpolation / configuration settings
-     */
-    protected static InterpolationProperties properties = null;
+    //NC - this class is only kept for backward compatibility, all the work is done in DataAccessRegistry
+
+    private static final long serialVersionUID = -1517768637801603351L;
     
-    /**
-     * Get App-schema properties
-     * 
-     * @return app-schema properties
-     */
-    public static synchronized InterpolationProperties getAppSchemaProperties() {
-        if (properties == null) {
-            properties = new InterpolationProperties(AppSchemaDataAccessFactory.DBTYPE_STRING);
-        }
-        return properties;
-    }
-    
-    /**
-     * Clean-up properties, mainly used for cleaning up after tests
-     */
-    public static synchronized void clearAppSchemaProperties() {
-        properties = null;
-    }
-
-    /**
-     * Get a feature type mapping from a registered app-schema data access. Please note that this is
-     * only possible for app-schema data access instances.
-     * 
-     * @param featureTypeName
-     * @return feature type mapping
-     * @throws IOException
-     */
-    public static FeatureTypeMapping getMappingByName(Name featureTypeName) throws IOException {
-        if (registry == null) {
-            throw new UnsupportedOperationException("No registered data access found for: "
-                    + featureTypeName.toString());
-        }
-        for (DataAccess<FeatureType, Feature> dataAccess : registry) {
-            if (dataAccess instanceof AppSchemaDataAccess) {
-                if (((AppSchemaDataAccess) dataAccess).hasName(featureTypeName)) {
-                    return ((AppSchemaDataAccess) dataAccess).getMappingByName(featureTypeName);
-                }
-            }
-        }
-        throwDataSourceException(featureTypeName);
-
-        return null;
-    }
-
-    public static FeatureTypeMapping getMappingByElement(Name featureTypeName) throws IOException {
-        if (registry == null) {
-            throw new UnsupportedOperationException("No registered data access found for: "
-                    + featureTypeName.toString());
-        }
-        for (DataAccess<FeatureType, Feature> dataAccess : registry) {
-            if (dataAccess instanceof AppSchemaDataAccess) {
-                if (((AppSchemaDataAccess) dataAccess).hasElement(featureTypeName)) {
-                    return ((AppSchemaDataAccess) dataAccess).getMappingByElement(featureTypeName);
-                }
-            }
-        }
-        throwDataSourceException(featureTypeName);
-
-        return null;
-    }
-
-    /**
-     * Get a feature source for simple features with supplied feature type name.
-     * 
-     * @param featureTypeName
-     * @return feature source
-     * @throws IOException
-     */
-    public static FeatureSource<FeatureType, Feature> getSimpleFeatureSource(Name featureTypeName)
-            throws IOException {
-        return getMappingByElement(featureTypeName).getSource();
-    }
-
+    //-------------------------------------------------------------------------------------
+    // Static short-cut methods for convenience and backward compatibility
+    //-----------------------------------------------------------------------------------
+       
     /**
      * Return true if a type name is mapped in one of the registered app-schema data accesses. If
      * the type mapping has mappingName, then it will be the key that is matched in the search. If
@@ -126,18 +52,36 @@ public class AppSchemaDataAccessRegistry extends DataAccessRegistry {
      * @throws IOException
      */
     public static boolean hasName(Name featureTypeName) throws IOException {
-        if (registry == null) {
-            // nothing's been registered, but it's OK, return false
-            return false;
-        }
-        for (DataAccess<FeatureType, Feature> dataAccess : registry) {
-            if (dataAccess instanceof AppSchemaDataAccess
-                    && (((AppSchemaDataAccess) dataAccess).hasName(featureTypeName) || ((AppSchemaDataAccess) dataAccess)
-                            .hasElement(featureTypeName))) {
-                return true;
-            }
-        }
-        return false;
+        return getInstance().hasAppSchemaAccessName(featureTypeName);
+    }
+    
+    /**
+     * Get a feature type mapping from a registered app-schema data access. Please note that this is
+     * only possible for app-schema data access instances.
+     * 
+     * @param featureTypeName
+     * @return feature type mapping
+     * @throws IOException
+     */
+    public static FeatureTypeMapping getMappingByName(Name featureTypeName) throws IOException {
+        return getInstance().mappingByName(featureTypeName);
+    }
+
+    public static FeatureTypeMapping getMappingByElement(Name featureTypeName) throws IOException {
+        return getInstance().mappingByElement(featureTypeName);
+    }
+
+    /**
+     * Get a feature source for simple features with supplied feature type name.
+     * 
+     * @param featureTypeName
+     * @return feature source
+     * @throws IOException
+     */
+    @SuppressWarnings("unchecked")
+    public static FeatureSource<FeatureType, Feature> getSimpleFeatureSource(Name featureTypeName)
+            throws IOException {
+        return getMappingByElement(featureTypeName).getSource();
     }
 
     /**
@@ -149,18 +93,23 @@ public class AppSchemaDataAccessRegistry extends DataAccessRegistry {
      * @throws IOException
      */
     public static boolean hasTargetElement(Name featureTypeName) throws IOException {
-        if (registry == null) {
-            // nothing's been registered, but it's OK, return false
-            return false;
-        }
-        for (DataAccess<FeatureType, Feature> dataAccess : registry) {
-            if (dataAccess instanceof AppSchemaDataAccess
-                    && Arrays.asList(((AppSchemaDataAccess) dataAccess).getTypeNames()).contains(
-                            featureTypeName)) {
-                return true;
-            }
-        }
-        return false;
+        return getInstance().hasAppSchemaTargetElement(featureTypeName);
+    }
+    
+    /**
+     * Get App-schema properties
+     * 
+     * @return app-schema properties
+     */
+    public static InterpolationProperties getAppSchemaProperties() {
+        return getInstance().getProperties();
+    }
+    
+    /**
+     * Clean-up properties, mainly used for cleaning up after tests
+     */
+    public static void clearAppSchemaProperties() {
+        getInstance().clearProperties();
     }
 
 }

@@ -105,7 +105,7 @@ public class XmlDataStoreTest extends TestCase {
 
     protected void tearDown() throws Exception {
         super.tearDown();
-        DataAccessRegistry.unregisterAll();
+        DataAccessRegistry.unregisterAndDisposeAll();
     }
 
     public void testDataStoreCreated() throws Exception {

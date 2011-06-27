@@ -96,7 +96,7 @@ public class AppSchemaWithBackendDataAccessIntegrationTest extends TestCase {
     }
 
     protected void tearDown() throws Exception {
-        DataAccessRegistry.unregisterAll();
+        DataAccessRegistry.unregisterAndDisposeAll();
         super.tearDown();
     }
 

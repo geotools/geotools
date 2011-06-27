@@ -26,7 +26,7 @@ Resource Management
 
 * Like all other ``DataAccess`` implementations (including ``DataStore`` implementations), ``AppSchemaDataAccess`` has a ``dispose`` method that must be called to release resources associated with the ``DataAccess``. These may include JDBC connections.
 
-* To implement *feature chaining*, in which properties of features are features themselves, all ``AppSchemaDataAccess`` instances are registered in ``DataAccessRegistry`` so that they can locate each other. As a consequence, when a feature type has been defined once, it cannot be redefined. To remove all ``AppSchemaDataAccess`` instances from the registry, call ``DataAccessRegistry.unregisterAll()``; to remove one call ``DataAccessRegistry.unregister``. Unregistration does not ``dispose`` an ``AppSchemaDataAccess``.
+* To implement *feature chaining*, in which properties of features are features themselves, all ``AppSchemaDataAccess`` instances are registered in ``DataAccessRegistry`` so that they can locate each other. As a consequence, when a feature type has been defined once, it cannot be redefined. When calling ``dispose`` on an ``AppSchemaDataAccess`` it is automatically removed from the registry. To dispose and remove all ``AppSchemaDataAccess`` instances from the registry at once, call ``DataAccessRegistry.unregisterAndDisposeAll()``. 
 
 * Parsed schemas are cached by ``AppSchemaXSDRegistry``. To clear the cache, call ``AppSchemaXSDRegistry.getInstance().dispose()``.
 

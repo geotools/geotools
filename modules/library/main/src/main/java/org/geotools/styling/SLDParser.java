@@ -93,6 +93,8 @@ public class SLDParser {
     
     private static final String uomString = "uom";
     
+    private static final String VendorOptionString = "VendorOption";
+    
     private static final Pattern WHITESPACES = Pattern.compile("\\s+", Pattern.MULTILINE);
     private static final Pattern LEADING_WHITESPACES = Pattern.compile("^\\s+");
     private static final Pattern TRAILING_WHITESPACES = Pattern.compile("\\s+$");
@@ -919,6 +921,8 @@ public class SLDParser {
                 symbol.setGeometry(parseGeometry(child));
             } else if (childName.equalsIgnoreCase(strokeString)) {
                 symbol.setStroke(parseStroke(child));
+            } else if (childName.equalsIgnoreCase(VendorOptionString)) {
+                parseVendorOption(symbol, child);
             }
         }
 
@@ -964,6 +968,8 @@ public class SLDParser {
                 symbol.setStroke(parseStroke(child));
             } else if (childName.equalsIgnoreCase(fillSt)) {
                 symbol.setFill(parseFill(child));
+            } else if (childName.equalsIgnoreCase(VendorOptionString)) {
+                parseVendorOption(symbol, child);
             }
         }
 
@@ -1050,7 +1056,7 @@ public class SLDParser {
                     ((TextSymbolizer2) symbol).setOtherText(parseOtherText(child));
             } else if (childName.equalsIgnoreCase("priority")) {
                 symbol.setPriority(parseCssParameter(child));
-            } else if (childName.equalsIgnoreCase("vendoroption")) {
+            } else if (childName.equalsIgnoreCase(VendorOptionString)) {
                 parseVendorOption(symbol, child);
             }
 
@@ -1082,11 +1088,11 @@ public class SLDParser {
      * @param symbol
      * @param child
      */
-    private void parseVendorOption(TextSymbolizer symbol, Node child) {
+    private void parseVendorOption(Symbolizer symbol, Node child) {
         String key = child.getAttributes().getNamedItem("name").getNodeValue();
         String value = getFirstChildValue(child);
 
-        symbol.addToOptions(key, value);
+        symbol.getOptions().put(key, value);
     }
 
     /**
@@ -1468,6 +1474,9 @@ public class SLDParser {
                 symbol.setGeometry(parseGeometry(child));
             } else if (childName.equalsIgnoreCase(graphicSt)) {
                 symbol.setGraphic(parseGraphic(child));
+            }
+            else if (childName.equalsIgnoreCase(VendorOptionString)) {
+                parseVendorOption(symbol, child);
             }
         }
 

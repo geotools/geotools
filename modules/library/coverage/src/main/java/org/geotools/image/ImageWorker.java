@@ -22,6 +22,7 @@ import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.Transparency;
 import java.awt.color.ColorSpace;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.ComponentColorModel;
@@ -59,16 +60,19 @@ import javax.imageio.stream.ImageOutputStream;
 import javax.media.jai.ColorCube;
 import javax.media.jai.IHSColorSpace;
 import javax.media.jai.ImageLayout;
+import javax.media.jai.Interpolation;
 import javax.media.jai.JAI;
 import javax.media.jai.KernelJAI;
 import javax.media.jai.LookupTableJAI;
 import javax.media.jai.ParameterBlockJAI;
+import javax.media.jai.ParameterListDescriptor;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.ROI;
 import javax.media.jai.RenderedOp;
 import javax.media.jai.TileCache;
 import javax.media.jai.operator.AddConstDescriptor;
 import javax.media.jai.operator.AddDescriptor;
+import javax.media.jai.operator.AffineDescriptor;
 import javax.media.jai.operator.AndDescriptor;
 import javax.media.jai.operator.BandCombineDescriptor;
 import javax.media.jai.operator.BandMergeDescriptor;
@@ -86,10 +90,13 @@ import javax.media.jai.operator.NotDescriptor;
 import javax.media.jai.operator.NullDescriptor;
 import javax.media.jai.operator.OrderedDitherDescriptor;
 import javax.media.jai.operator.RescaleDescriptor;
+import javax.media.jai.operator.ScaleDescriptor;
 import javax.media.jai.operator.XorConstDescriptor;
+import javax.media.jai.registry.RenderedRegistryMode;
 
 import org.geotools.factory.Hints;
 import org.geotools.image.io.ImageIOExt;
+import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.resources.Arguments;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
@@ -102,6 +109,7 @@ import com.sun.media.imageioimpl.common.BogusColorSpace;
 import com.sun.media.imageioimpl.common.PackageUtil;
 import com.sun.media.imageioimpl.plugins.gif.GIFImageWriter;
 import com.sun.media.imageioimpl.plugins.jpeg.CLibJPEGImageWriterSpi;
+import com.sun.media.jai.codecimpl.PNGImageEncoder;
 import com.sun.media.jai.util.ImageUtil;
 
 
@@ -123,6 +131,12 @@ import com.sun.media.jai.util.ImageUtil;
  * @author Martin Desruisseaux
  */
 public class ImageWorker {
+    
+    /**
+     * Raster space epsilon
+     */
+    static final float RS_EPS = 1E-02f;
+    
     /**
      * Workaround class for compressing PNG using the default
      * {@link PNGImageEncoder} shipped with the JDK.
@@ -2753,6 +2767,113 @@ public class ImageWorker {
         }
        
 
+    }
+    
+    /**
+     * Performs an affine transform on the image, applying optimization such as affine removal in
+     * case the affine is an identity, affine merging if the affine is applied on top of another
+     * affine, and using optimized operations for integer translates
+     * 
+     * @param tx
+     * @param interpolation
+     * @param bgValues
+     * @return
+     */
+    public ImageWorker affine(AffineTransform tx, Interpolation interpolation, double[] bgValues) {
+        // identity elimination -> check the tx params against the image size to see if
+        // any if likely to actually move the image by at least one pixel
+        int size = Math.max(image.getWidth(), image.getHeight());
+        boolean hasScaleX = Math.abs(tx.getScaleX() - 1) * size > RS_EPS;
+        boolean hasScaleY = Math.abs(tx.getScaleY() - 1) * size > RS_EPS;
+        boolean hasShearX = Math.abs(tx.getShearX()) * size > RS_EPS;
+        boolean hasShearY = Math.abs(tx.getShearY()) * size > RS_EPS;
+        boolean hasTranslateX = Math.abs(tx.getTranslateX()) > RS_EPS; 
+        boolean hasTranslateY = Math.abs(tx.getTranslateY()) > RS_EPS;
+        if(!hasScaleX && !hasScaleY && !hasShearX && !hasShearY && !hasTranslateX && !hasTranslateY) {
+            return this;
+        }
+        
+        // apply defaults to allow for comparisong
+        ParameterListDescriptor pld = new AffineDescriptor().getParameterListDescriptor(RenderedRegistryMode.MODE_NAME);
+        if(interpolation == null) {
+            interpolation = (Interpolation) pld.getParamDefaultValue("interpolation");
+        }
+        if(bgValues == null) {
+            bgValues = (double[]) pld.getParamDefaultValue("backgroundValues");
+        }
+        
+        // affine over affine/scale?
+        RenderedImage source = image;
+        if(image instanceof RenderedOp) {
+            RenderedOp op = (RenderedOp) image;
+            if("Affine".equals(op.getOperationName())) {
+                ParameterBlock paramBlock = op.getParameterBlock();
+                RenderedImage sSource = paramBlock.getRenderedSource(0);
+
+                AffineTransform sTx = (AffineTransform) paramBlock.getObjectParameter(0);
+                Interpolation sInterp = (Interpolation) paramBlock.getObjectParameter(1);
+                double[] sBgValues = (double[]) paramBlock.getObjectParameter(2);
+                
+                if((sInterp == interpolation  && Arrays.equals(sBgValues, bgValues))) {
+                    // we can replace it
+                    AffineTransform concat = new AffineTransform(tx);
+                    concat.concatenate(sTx);
+                    tx = concat;
+                    source = sSource;
+                }
+            } else if("Scale".equals(op.getOperationName())) {
+                ParameterBlock paramBlock = op.getParameterBlock();
+                RenderedImage sSource = paramBlock.getRenderedSource(0);
+
+                float xScale = paramBlock.getFloatParameter(0);
+                float yScale = paramBlock.getFloatParameter(1);
+                float xTrans = paramBlock.getFloatParameter(2);
+                float yTrans = paramBlock.getFloatParameter(3);
+                Interpolation sInterp = (Interpolation)paramBlock.getObjectParameter(4);
+                
+                if(sInterp == interpolation) {
+                    // we can replace it
+                    AffineTransform concat = new AffineTransform(tx);
+                    concat.concatenate(new AffineTransform(xScale, 0, 0, yScale, xTrans, yTrans));
+                    tx = concat;
+                    source = sSource;
+                }
+            }
+        }
+
+        // check again params, we might have combined two transformations sets
+        hasScaleX = Math.abs(tx.getScaleX() - 1) * size > RS_EPS;
+        hasScaleY = Math.abs(tx.getScaleY() - 1) * size > RS_EPS;
+        hasShearX = Math.abs(tx.getShearX()) * size > RS_EPS;
+        hasShearY = Math.abs(tx.getShearY()) * size > RS_EPS;
+        hasTranslateX = Math.abs(tx.getTranslateX()) > RS_EPS; 
+        hasTranslateY = Math.abs(tx.getTranslateY()) > RS_EPS;
+        boolean intTranslateX = Math.abs((tx.getTranslateX() - Math.round(tx.getTranslateX()))) < RS_EPS;
+        boolean intTranslateY = Math.abs((tx.getTranslateY() - Math.round(tx.getTranslateY()))) < RS_EPS;
+        
+        // did it become a identity after the combination?
+        if(!hasScaleX && !hasScaleY && !hasShearX && !hasShearY && !hasTranslateX && !hasTranslateY) {
+            return this;
+        }
+
+        if (!hasShearX && !hasShearY) {
+            if(!hasScaleX && !hasScaleY && intTranslateX && intTranslateY) {
+                // this will do an integer translate, but to get there we need to remove the image layout
+                Hints localHints = new Hints(commonHints);
+                localHints.remove(JAI.KEY_IMAGE_LAYOUT);
+                image = ScaleDescriptor.create(source, 1.0f, 1.0f,
+                        (float) Math.round(tx.getTranslateX()), (float) Math.round(tx.getTranslateY()), interpolation,
+                        localHints);
+            } else {
+                // generic scale
+                image = ScaleDescriptor.create(source, (float) tx.getScaleX(), (float) tx.getScaleY(),
+                        (float) tx.getTranslateX(), (float) tx.getTranslateY(), interpolation,
+                        commonHints);
+            }
+        } else {
+            image = AffineDescriptor.create(source, tx, interpolation, bgValues, commonHints);
+        }
+        return this;
     }
 
     /**

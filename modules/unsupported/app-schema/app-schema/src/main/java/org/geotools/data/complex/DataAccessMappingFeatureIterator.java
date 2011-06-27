@@ -43,6 +43,7 @@ import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.Types;
 import org.geotools.filter.AttributeExpressionImpl;
 import org.geotools.filter.FilterFactoryImpl;
+import org.geotools.gml2.bindings.GML2EncodingUtils;
 import org.geotools.referencing.CRS;
 import org.opengis.feature.Attribute;
 import org.opengis.feature.ComplexAttribute;
@@ -69,7 +70,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * <p>
  * This iterator acts like a one-to-one mapping, producing a Feature of the target type for each
  * feature of the source type.
- * 
+ *
  * @author Gabriel Roldan, Axios Engineering
  * @author Ben Caradoc-Davies, CSIRO Exploration and Mining
  * @author Rini Angreani, Curtin University of Technology
@@ -113,7 +114,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
     }
 
     /**
-     * 
+     *
      * @param store
      * @param mapping
      *            place holder for the target type, the surrogate FeatureSource and the mappings
@@ -258,7 +259,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
 			} else {
 				return feature.getIdentifier().getID();
 			}
-		} 
+		}
 		return mapping.getFeatureIdExpression().evaluate(feature, String.class);
 	}
 
@@ -307,11 +308,11 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
 
     /**
      * Sets the values of grouping attributes.
-     * 
+     *
      * @param sourceFeature
      * @param groupingMappings
      * @param targetFeature
-     * 
+     *
      * @return Feature. Target feature sets with simple attributes
      */
     protected void setAttributeValue(Attribute target, final Feature source,
@@ -452,7 +453,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
     /**
      * Special handling for polymorphic mapping where the value of the attribute determines that
      * this attribute should be a placeholder for an xlink:href.
-     * 
+     *
      * @param xlinkHrefHints
      *            the xlink:href hints holding the URI
      * @param clientPropsMappings
@@ -483,7 +484,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
     /**
      * Special handling for polymorphic mapping. Works out the polymorphic type name by evaluating
      * the function on the feature, then set the relevant sub-type values.
-     * 
+     *
      * @param target
      *            The target feature to be encoded
      * @param id
@@ -536,7 +537,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
      * Set xlink:href client property for multi-valued chained features. This has to be specially
      * handled because we don't want to encode the nested features attributes, since it's already an
      * xLink. Also we need to eliminate duplicates.
-     * 
+     *
      * @param target
      *            The target attribute
      * @param clientPropsMappings
@@ -596,7 +597,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
         if (target.getUserData().containsValue(Attributes.class)) {
             targetAttributes.putAll((Map<? extends Name, ? extends Object>) target.getUserData()
                     .get(Attributes.class));
-        }        
+        }
         for (Map.Entry<Name, Expression> entry : clientProperties.entrySet()) {
             Name propName = entry.getKey();
             Object propExpr = entry.getValue();
@@ -614,7 +615,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
         if (targetAttributes.size() > 0) {
             target.getUserData().put(Attributes.class, targetAttributes);
         }
-        
+
         // with geometry objects, set ID and attributes in geometry object
         if (target instanceof GeometryAttribute
                 && (targetAttributes.size() > 0 || target.getIdentifier() != null)) {
@@ -868,7 +869,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
 
     /**
      * Returns first matching attribute from provided root and xPath.
-     * 
+     *
      * @param root
      *            The root attribute to start searching from
      * @param xpath
@@ -895,7 +896,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
 
     /**
      * Return all matching properties from provided root attribute and xPath.
-     * 
+     *
      * @param root
      *            The root attribute to start searching from
      * @param xpath
@@ -936,7 +937,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
 
     /**
      * Checks if client property has xlink:ref in it, if the attribute is for chained features.
-     * 
+     *
      * @param clientPropsMappings
      *            the client properties mappings
      * @param isNested
@@ -956,10 +957,10 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
     public boolean isNextFeatureSet() {
         return isNextFeatureSet;
     }
-    
+
     /**
      * Returns the declared CRS given the native CRS and the request WFS version
-     * 
+     *
      * @param nativeCRS
      * @param wfsVersion
      * @return
@@ -969,7 +970,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
         try {
             if(nativeCRS == null)
                 return null;
-            
+
             if (wfsVersion.equals("1.0.0")) {
                 return nativeCRS;
             } else {
@@ -982,7 +983,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
             throw new UnsupportedOperationException("We have had issues trying to flip axis of " + nativeCRS, e);
         }
     }
-    
+
     public boolean isReprojectionCrsEqual(CoordinateReferenceSystem source,CoordinateReferenceSystem target) {
         return CRS.equalsIgnoreMetadata(source,target);
     }

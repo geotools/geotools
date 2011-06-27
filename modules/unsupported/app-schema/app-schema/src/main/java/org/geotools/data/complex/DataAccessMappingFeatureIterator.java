@@ -514,6 +514,9 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
             prefixedXpath.add(new Step(new QName(polymorphicTypeName.getNamespaceURI(),
                     polymorphicTypeName.getLocalPart(), this.namespaces
                             .getPrefix(polymorphicTypeName.getNamespaceURI())), 1));
+            if (!fTypeMapping.getFeatureIdExpression().equals (Expression.NIL)) {
+                id = fTypeMapping.getFeatureIdExpression().evaluate(source, String.class);
+            }
             Attribute instance = xpathAttributeBuilder.set(target, prefixedXpath, null, id,
                     attDescriptor.getType(), false, attDescriptor, null);
             setClientProperties(instance, source, clientPropsMappings);

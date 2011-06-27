@@ -604,11 +604,9 @@ public class XPath {
 
                 if (!isLastStep || targetNodeType == null) {
                     if (null == attributeName.getNamespaceURI()) {
-                        currStepDescriptor = (AttributeDescriptor) Types.descriptor(parentType,
-                                attributeName.getLocalPart());
+                        currStepDescriptor = (AttributeDescriptor) Types.findDescriptor(parentType, attributeName.getLocalPart());
                     } else {
-                        currStepDescriptor = (AttributeDescriptor) Types.descriptor(parentType,
-                                attributeName);
+                        currStepDescriptor = (AttributeDescriptor) Types.findDescriptor(parentType, attributeName);
                     }
 
                     if (currStepDescriptor == null) {
@@ -625,11 +623,9 @@ public class XPath {
                 } else {
                     AttributeDescriptor actualDescriptor;
                     if (null == attributeName.getNamespaceURI()) {
-                        actualDescriptor = (AttributeDescriptor) Types.descriptor(parentType,
-                                attributeName.getLocalPart(), targetNodeType);
+                        actualDescriptor = (AttributeDescriptor) Types.findDescriptor(parentType, attributeName.getLocalPart());
                     } else {
-                        actualDescriptor = (AttributeDescriptor) Types.descriptor(parentType,
-                                attributeName, targetNodeType);
+                        actualDescriptor = (AttributeDescriptor) Types.findDescriptor(parentType, attributeName);
                     }
 
                     if (actualDescriptor != null) {

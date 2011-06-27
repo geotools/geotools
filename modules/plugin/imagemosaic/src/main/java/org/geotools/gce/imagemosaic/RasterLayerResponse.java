@@ -1215,13 +1215,10 @@ class RasterLayerResponse{
 	                        return null;
 	                    }
 	                    // crop
-	                    return CropDescriptor.create(
-	                            image, 
-	                            new Float(imageBounds.x), 
-	                            new Float(imageBounds.y), 
-	                            new Float(imageBounds.width), 
-	                            new Float(imageBounds.height), 
-	                            localHints);
+	                    ImageWorker iw = new ImageWorker(image);
+	                    iw.setRenderingHints(localHints);
+	                    iw.crop(imageBounds.x, imageBounds.y, imageBounds.width, imageBounds.height);
+	                    return iw.getRenderedImage();
 	                }
 	                return image;
 	            }

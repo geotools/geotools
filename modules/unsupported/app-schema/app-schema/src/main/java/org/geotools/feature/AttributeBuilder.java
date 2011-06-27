@@ -356,7 +356,7 @@ public class AttributeBuilder {
     public Attribute add(final String id, final Object value, final Name name,
             final AttributeType type) {
         // existence check
-        AttributeDescriptor descriptor = attributeDescriptor(name);
+        AttributeDescriptor descriptor = attributeDescriptor(name, type);
         AttributeType declaredType = (AttributeType) descriptor.getType();
         if (!declaredType.equals(type)) {
             boolean argIsSubType = Types.isSuperType(type, declaredType);
@@ -526,7 +526,23 @@ public class AttributeBuilder {
     }
 
     protected AttributeDescriptor attributeDescriptor(Name name) {
-        PropertyDescriptor descriptor = Types.findDescriptor((ComplexType) type, name);
+        PropertyDescriptor descriptor = Types.descriptor((ComplexType) type, name);
+
+        if (descriptor == null) {
+            String msg = "Could not locate attribute: " + name + " in type: " + type.getName();
+            throw new IllegalArgumentException(msg);
+        }
+
+        if (!(descriptor instanceof AttributeDescriptor)) {
+            String msg = name + " references a non attribute";
+            throw new IllegalArgumentException(msg);
+        }
+
+        return (AttributeDescriptor) descriptor;
+    }
+
+    protected AttributeDescriptor attributeDescriptor(Name name, AttributeType actualType) {
+        PropertyDescriptor descriptor = Types.descriptor((ComplexType) type, name, actualType);
 
         if (descriptor == null) {
             String msg = "Could not locate attribute: " + name + " in type: " + type.getName();

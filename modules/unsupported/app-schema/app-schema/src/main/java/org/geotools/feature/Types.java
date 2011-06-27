@@ -20,8 +20,10 @@ package org.geotools.feature;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
@@ -37,6 +39,8 @@ import org.opengis.feature.type.ComplexType;
 import org.opengis.feature.type.Name;
 import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.feature.type.PropertyType;
+import org.opengis.filter.Filter;
+import org.opengis.filter.identity.Identifier;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**
@@ -56,7 +60,7 @@ import org.xml.sax.helpers.NamespaceSupport;
  *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/main
  *         /java/org/geotools/feature/Types.java $
  */
-public class Types extends org.geotools.feature.type.Types {
+public class Types {
 
     /**
      * Returns The name of attributes defined in the type.
@@ -214,7 +218,63 @@ public class Types extends org.geotools.feature.type.Types {
         return (PropertyDescriptor) match.get(0);
     }
 
-   /**
+    /**
+     * Returns the first descriptor matching the given local name within the given type.
+     * 
+     * @param type
+     *            The type, non null.
+     * @param name
+     *            The name, non null.
+     * 
+     * @return The first descriptor, or null if no match.
+     */
+    public static PropertyDescriptor descriptor(ComplexType type, String name,
+            AttributeType actualType) {
+        List match = descriptors(type, name);
+
+        if (match.isEmpty()) {
+            Collection properties = type.getDescriptors();
+            for (Iterator it = properties.iterator(); it.hasNext();) {
+                PropertyDescriptor desc = (PropertyDescriptor) it.next();
+                if (!(desc instanceof AttributeDescriptor)) {
+                    continue;
+                }
+                AttributeDescriptor attDesc = (AttributeDescriptor) desc;
+                AttributeType attType = (AttributeType) attDesc.getType();
+                if (isSuperType(actualType, attType)) {
+                    return attDesc;
+                }
+            }
+            return null;
+        }
+
+        return (PropertyDescriptor) match.get(0);
+    }
+
+    public static PropertyDescriptor descriptor(ComplexType type, Name name,
+            AttributeType actualType) {
+        List match = descriptors(type, name);
+
+        if (match.isEmpty()) {
+            Collection properties = type.getDescriptors();
+            for (Iterator it = properties.iterator(); it.hasNext();) {
+                PropertyDescriptor desc = (PropertyDescriptor) it.next();
+                if (!(desc instanceof AttributeDescriptor)) {
+                    continue;
+                }
+                AttributeDescriptor attDesc = (AttributeDescriptor) desc;
+                AttributeType attType = (AttributeType) attDesc.getType();
+                if (isSuperType(actualType, attType)) {
+                    return attDesc;
+                }
+            }
+            return null;
+        }
+
+        return (PropertyDescriptor) match.get(0);
+    }
+
+    /**
      * Returns the first descriptor matching the given name + namespace within the given type.
      * 
      * @param type
@@ -321,97 +381,6 @@ public class Types extends org.geotools.feature.type.Types {
         }
         return match;
     }
-    
-    /**
-     * Returns the set of all descriptors of a complex type, including from supertypes.
-     * 
-     * @param type
-     *            The type, non null.
-     * 
-     * @return The list of all descriptors.
-     */
-    public static List<PropertyDescriptor> descriptors(ComplexType type) {
-        //get list of descriptors from types and all supertypes
-        List<PropertyDescriptor> children = new ArrayList<PropertyDescriptor>();
-        ComplexType loopType = type;
-        while (loopType != null) { 
-            children.addAll(loopType.getDescriptors());
-            loopType = loopType.getSuper() instanceof ComplexType? (ComplexType) loopType.getSuper() : null;
-        }
-        return children;
-    }
-    
-    /**
-     * Find a descriptor, taking in to account supertypes AND substitution groups
-     * 
-     * @param parentType type
-     * @param name name of descriptor
-     * @return descriptor, null if not found
-     */
-    public static PropertyDescriptor findDescriptor( ComplexType parentType, Name name) {
-        //get list of descriptors from types and all supertypes
-        List<PropertyDescriptor> descriptors = descriptors(parentType);
-        
-        //find matching descriptor
-        for (Iterator<PropertyDescriptor> it = descriptors.iterator(); it.hasNext();) {
-            PropertyDescriptor d = it.next(); 
-            if (d.getName().equals(name)) {
-                return d;
-            } 
-        }
-                
-        // nothing found, perhaps polymorphism?? let's loop again
-        for (Iterator<PropertyDescriptor> it = descriptors.iterator(); it.hasNext();) {
-            List<AttributeDescriptor> substitutionGroup = (List<AttributeDescriptor>) it.next().getUserData().get("substitutionGroup");
-            if (substitutionGroup != null){
-                for (Iterator<AttributeDescriptor> it2 = substitutionGroup.iterator(); it2.hasNext();) {
-                    AttributeDescriptor d = it2.next(); 
-                    if (d.getName().equals(name)) { //BINGOOO !!
-                        return d;                            
-                    }
-                }
-            }        
-        }
-        
-        return null;
-    }
-    
-    /**
-     * Find a descriptor, taking in to account supertypes AND substitution groups
-     * 
-     * @param parentType type
-     * @param name name of descriptor
-     * @return descriptor, null if not found
-     */
-    public static PropertyDescriptor findDescriptor( ComplexType parentType, String name) {
-        //get list of descriptors from types and all supertypes
-        List<PropertyDescriptor> descriptors = descriptors(parentType);
-        
-        //find matching descriptor
-        for (Iterator<PropertyDescriptor> it = descriptors.iterator(); it.hasNext();) {
-            PropertyDescriptor d = it.next(); 
-            if (d.getName().getLocalPart().equals(name)) {
-                return d;
-            } 
-        }
-                
-        // nothing found, perhaps polymorphism?? let's loop again
-        for (Iterator<PropertyDescriptor> it = descriptors.iterator(); it.hasNext();) {
-            List<AttributeDescriptor> substitutionGroup = (List<AttributeDescriptor>) it.next().getUserData().get("substitutionGroup");
-            if (substitutionGroup != null){
-                for (Iterator<AttributeDescriptor> it2 = substitutionGroup.iterator(); it2.hasNext();) {
-                    AttributeDescriptor d = it2.next(); 
-                    if (d.getName().getLocalPart().equals(name)) { //BINGOOO !!
-                        return d;                            
-                    }
-                }
-            }        
-        }
-        
-        return null;
-    }
-    
-    
 
     /**
      * Determines if <code>parent</code> is a super type of <code>type</code>
@@ -479,6 +448,139 @@ public class Types extends org.geotools.feature.type.Types {
     public static void validate(Attribute attribute) throws IllegalAttributeException {
 
         validate(attribute, attribute.getValue());
+    }
+
+    /**
+     * Validates content against an attribute.
+     * 
+     * @param attribute
+     *            The attribute.
+     * @param attributeContent
+     *            Content of attribute.
+     * 
+     * @throws IllegalAttributeException
+     *             In the event that content violates any restrictions specified by the attribute.
+     */
+    public static void validate(Attribute attribute, Object attributeContent)
+            throws IllegalAttributeException {
+
+        validate(attribute.getType(), attribute, attributeContent, false);
+    }
+
+    public static void validate(AttributeType type, Attribute attribute, Object attributeContent)
+            throws IllegalAttributeException {
+
+        validate(type, attribute, attributeContent, false);
+    }
+
+    protected static void validate(AttributeType type, Attribute attribute,
+            Object attributeContent, boolean isSuper) throws IllegalAttributeException {
+
+        if (type == null) {
+            throw new IllegalAttributeException(attribute.getDescriptor(), "null type");
+        }
+
+        if (attributeContent == null) {
+            if (!attribute.isNillable()) {
+                throw new IllegalAttributeException(attribute.getDescriptor(), type.getName()
+                        + " not nillable");
+            }
+            return;
+        }
+
+        if (type.isIdentified() && attribute.getIdentifier() == null) {
+            throw new NullPointerException(type.getName() + " is identified, null id not accepted");
+        }
+
+        if (!isSuper) {
+
+            // JD: This is an issue with how the xml simpel type hierarchy
+            // maps to our current Java Type hiearchy, the two are inconsitent.
+            // For instance, xs:integer, and xs:int, the later extend the
+            // former, but their associated java bindings, (BigDecimal, and
+            // Integer)
+            // dont.
+            Class clazz = attributeContent.getClass();
+            Class binding = type.getBinding();
+            if (binding != null && !binding.isAssignableFrom(clazz)) {
+                throw new IllegalAttributeException(attribute.getDescriptor(), clazz.getName()
+                        + " is not an acceptable class for " + type.getName()
+                        + " as it is not assignable from " + binding);
+            }
+        }
+
+        if (type.getRestrictions() != null && type.getRestrictions().size() > 0) {
+
+            final Attribute fatt = attribute;
+            Attribute fake = new Attribute() {
+
+                private Map<Object, Object> userData = new HashMap<Object, Object>();
+
+                public AttributeDescriptor getDescriptor() {
+                    return fatt.getDescriptor();
+                }
+
+                public PropertyDescriptor descriptor() {
+                    return fatt.getDescriptor();
+                }
+
+                public org.opengis.feature.type.Name name() {
+                    return fatt.getName();
+                }
+
+                public AttributeType getType() {
+                    return fatt.getType();
+                }
+
+                public boolean isNillable() {
+                    return fatt.isNillable();
+                }
+
+                public Identifier getIdentifier() {
+                    return fatt.getIdentifier();
+                }
+
+                public Object getValue() {
+                    return fatt.getValue();
+                }
+
+                public void setValue(Object newValue) throws IllegalArgumentException {
+                    throw new UnsupportedOperationException("Modification is not supported");
+                }
+
+                public Object operation(Name arg0, List arg1) {
+                    throw new UnsupportedOperationException("Operation is not supported");
+                }
+
+                public Name getName() {
+                    // TODO Auto-generated method stub
+                    return null;
+                }
+
+                public Map<Object, Object> getUserData() {
+                    return userData;
+                }
+
+                public void validate() throws IllegalAttributeException {
+                    // do not care
+                }
+
+            };
+
+            for (Iterator itr = type.getRestrictions().iterator(); itr.hasNext();) {
+                Filter f = (Filter) itr.next();
+                if (!f.evaluate(fake)) {
+                    throw new IllegalAttributeException(attribute.getDescriptor(),
+                            "Attribute instance (" + fake.getIdentifier().toString() + ")"
+                                    + "fails to pass filter: " + f);
+                }
+            }
+        }
+
+        // move up the chain,
+        if (type.getSuper() != null) {
+            validate(type.getSuper(), attribute, attributeContent, true);
+        }
     }
 
     public static void validate(ComplexAttribute attribute) throws IllegalArgumentException {
@@ -702,5 +804,183 @@ public class Types extends org.geotools.feature.type.Types {
         return name;
     }
 
-
+    // /** Wander up getSuper gathering all memberTypes */
+    // public static Set/*<FeatureType>*/ memberTypes(
+    // FeatureCollectionType collectionType) {
+    // Set/*<FeatureType>*/ all = new HashSet/*<FeatureType>*/();
+    // memberTypes(collectionType, all);
+    // return all;
+    // }
+    //
+    // /**
+    // * Collection memberType contributions.
+    // * <p>
+    // * Tail recursion is used so that subclasses "override" contributions made
+    // * by the parent. (This depends on FeatureType identity being completly
+    // * defined by their Name.
+    // * </p>
+    // *
+    // * @param collection
+    // * @param all
+    // */
+    // static void memberTypes(FeatureCollectionType/*<?>*/ collection,
+    // Set/*<FeatureType>*/ all) {
+    // if (collection == null)
+    // return;
+    //
+    // ComplexType superType = (ComplexType) collection.getSuper();
+    // if (superType instanceof FeatureCollectionType) {
+    // memberTypes((FeatureCollectionType) superType, all);
+    // }
+    // featureTypes(collection.getMemberDescriptor(), all); // tail
+    // // recursion
+    // }
+    //
+    // /**
+    // * Process a descriptor for indicated FeatureTypes.
+    // * <p>
+    // * This method should not be used directly, please use memberTypes(
+    // * collection ) as it will also consider types contributed by the
+    // * superclass.
+    // * </p>
+    // *
+    // * @param descriptor
+    // * @param all
+    // */
+    // static void featureTypes(Descriptor descriptor, Set/*<FeatureType>*/ all)
+    // {
+    // if (descriptor instanceof AttributeDescriptor) {
+    // AttributeDescriptor attribute = (AttributeDescriptor) descriptor;
+    // if (attribute.getType() instanceof FeatureType) {
+    // FeatureType type = (FeatureType) attribute.getType();
+    // all.add(type);
+    // }
+    // } else if (descriptor instanceof ChoiceDescriptor) {
+    // ChoiceDescriptor choice = (ChoiceDescriptor) descriptor;
+    // for (Iterator itr = choice.options().iterator(); itr.hasNext();) {
+    // Descriptor option = (Descriptor) itr.next();
+    // featureTypes(option, all);
+    // }
+    // } else if (descriptor instanceof OrderedDescriptor) {
+    // OrderedDescriptor list = (OrderedDescriptor) descriptor;
+    // for (Iterator itr = list.sequence().iterator(); itr.hasNext();) {
+    // Descriptor option = (Descriptor) itr.next();
+    // featureTypes(option, all);
+    // }
+    // } else if (descriptor instanceof OrderedDescriptor) {
+    // OrderedDescriptor list = (OrderedDescriptor) descriptor;
+    // for (Iterator itr = list.sequence().iterator(); itr.hasNext();) {
+    // Descriptor option = (Descriptor) itr.next();
+    // featureTypes(option, all);
+    // }
+    // } else {
+    // // should not occur
+    // }
+    // }
+    //
+    // /**
+    // * This method is about as bad as it gets, we need to wander through
+    // * Descriptor detecting overrides by AttributeType.
+    // * <p>
+    // * Almost makes me thing Descriptor should have the attrribute name, and
+    // the
+    // * Name stuff should be left on AttributeType.
+    // * </p>
+    // *
+    // * @param complex
+    // * @return Descriptor that actually describes what is valid for the
+    // * ComplexType.
+    // */
+    // public static Descriptor schema(ComplexType complex) {
+    // // We need to do this with tail recursion:
+    // // - and sequence, any, choice gets hacked differently ...
+    // return complex.getDescriptor();
+    // }
+    //
+    // /**
+    // * Returns the ancestors of <code>type</code>
+    // *
+    // * @param type
+    // * @return
+    // */
+    // public static List/*<AttributeType>*/ ancestors(AttributeType type) {
+    // List/*<AttributeType>*/ ancestors = new ArrayList();
+    // if (type.getSuper() != null) {
+    // ancestors = new LinkedList/*<AttributeType>*/();
+    // while (type.getSuper() != null) {
+    // AttributeType ancestor = type.getSuper();
+    // ancestors.add(ancestor);
+    // type = ancestor;
+    // }
+    // }
+    // return ancestors;
+    // }
+    //
+    // /**
+    // * Checks wether the ancestors of <code>type</code> have a member named as
+    // * indicated by <code>superType</code>.
+    // * <p>
+    // * WARNING: checking against non qualified <code>superType</code> is
+    // * allowed, though it may result in false positives. This is needed not to
+    // * break compatibility with existing code which checks against Feature
+    // * supertype without GML namespace
+    // * </p>
+    // *
+    // * @param type
+    // * the <code>AttributeType</code> to check its ancestors
+    // * against
+    // * @param superType
+    // * the <code>AttributeType</code> to see if its an ancestor of
+    // * <code>type</code>
+    // * @return <code>true</code> if <code>superType</code> is an ancestor of
+    // * <code>type</code>, false otherwise
+    // */
+    // public static boolean isDescendedFrom(AttributeType type, Name superType)
+    // {
+    // String ns = superType.getNamespaceURI();
+    //				
+    // if (XMLConstants.NULL_NS_URI.equals(ns) || ns == null) {
+    // // WARNING: checking against non qualified type name. This
+    // // is needed not to break compatibility with existing code
+    // // which checks against Feature supertype without GML namespace
+    // for (Iterator itr = ancestors(type).iterator(); itr.hasNext();) {
+    // AttributeType ancestor = (AttributeType) itr.next();
+    // if (ancestor.getName().getLocalPart().equals(superType.getLocalPart())) {
+    // return true;
+    // }
+    // }
+    // } else {
+    // for (Iterator itr = ancestors(type).iterator(); itr.hasNext();) {
+    // AttributeType ancestor = (AttributeType) itr.next();
+    // if (ancestor.getName().equals(superType)) {
+    // return true;
+    // }
+    // }
+    // }
+    // return false;
+    // }
+    //
+    // /**
+    // * Checks wether <code>superType</code> is an ancestor of
+    // * <code>type</code>.
+    // *
+    // * @param type
+    // * the <code>AttributeType</code> to check its ancestors
+    // * against
+    // * @param superType
+    // * the <code>AttributeType</code> to see if its an ancestor of
+    // * <code>type</code>
+    // * @return <code>true</code> if <code>superType</code> is an ancestor of
+    // * <code>type</code>, false otherwise
+    // */
+    // public static boolean isDescendedFrom(AttributeType type,
+    // AttributeType superType) {
+    // for (Iterator itr = ancestors(type).iterator(); itr.hasNext();) {
+    // AttributeType ancestor = (AttributeType) itr.next();
+    // if (ancestor.equals(superType)) {
+    // return true;
+    // }
+    // }
+    // return false;
+    // }
 }

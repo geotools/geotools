@@ -96,9 +96,7 @@ import javax.media.jai.registry.RenderedRegistryMode;
 
 import org.geotools.factory.Hints;
 import org.geotools.image.crop.GTCropDescriptor;
-import org.geotools.image.crop.GTCropCRIF;
 import org.geotools.image.io.ImageIOExt;
-import org.geotools.image.jai.Registry;
 import org.geotools.resources.Arguments;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
@@ -111,7 +109,6 @@ import com.sun.media.imageioimpl.common.BogusColorSpace;
 import com.sun.media.imageioimpl.common.PackageUtil;
 import com.sun.media.imageioimpl.plugins.gif.GIFImageWriter;
 import com.sun.media.imageioimpl.plugins.jpeg.CLibJPEGImageWriterSpi;
-import com.sun.media.jai.codecimpl.PNGImageEncoder;
 import com.sun.media.jai.util.ImageUtil;
 
 
@@ -141,7 +138,7 @@ public class ImageWorker {
     
     /**
      * Workaround class for compressing PNG using the default
-     * {@link PNGImageEncoder} shipped with the JDK.
+     * PNGImageEncoder shipped with the JDK.
      * <p>
      * {@link PNGImageWriter} does not support
      * {@link ImageWriteParam#setCompressionMode(int)} set to

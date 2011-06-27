@@ -800,54 +800,6 @@ public final class GridCoverageRenderer {
                 return null;
         }
 
-        // TODO: optimize translate/scale transformations
-        // TODO: use mosaic to merge with a background respecting alpha and transparency
-        // TODO: check tolerance value
-        // TODO: do we need to pass in any hints?
-        
-        boolean hasScaleX=!(Math.abs(finalRaster2Model.getScaleX()-1) < 1E-2/(finalImage.getWidth()+1-finalImage.getMinX()));
-        boolean hasScaleY=!(Math.abs(finalRaster2Model.getScaleY()-1) < 1E-2/(finalImage.getHeight()+1-finalImage.getMinY()));
-        boolean hasShearX=!(finalRaster2Model.getShearX() == 0.0);
-        boolean hasShearY=!(finalRaster2Model.getShearY() == 0.0);
-        boolean hasTranslateX=!(Math.abs(finalRaster2Model.getTranslateX()) <  1E-2);
-        boolean hasTranslateY=!(Math.abs(finalRaster2Model.getTranslateY()) <  1E-2);
-        boolean isTranslateXInt=!(Math.abs(finalRaster2Model.getTranslateX() - (int) finalRaster2Model.getTranslateX()) <  1E-2);
-        boolean isTranslateYInt=!(Math.abs(finalRaster2Model.getTranslateY() - (int) finalRaster2Model.getTranslateY()) <  1E-2);
-        
-        boolean isIdentity = finalRaster2Model.isIdentity() && !hasScaleX&&!hasScaleY &&!hasTranslateX&&!hasTranslateY;
-        boolean isScale = hasScaleX&&hasScaleY &&!hasShearX&&!hasShearY;
-        
-        // TODO how can we check that the a skew is harmless????
-        if(isIdentity){
-            // TODO check if we are missing anything like tiling or such that comes from hints 
-            return finalImage;
-        }
-        
-        // TOLERANCE ON PIXELS SIZE
-        
-        // Check and see if the affine transform is in fact doing
-        // a Translate operation. That is a scale by 1 and no rotation.
-        // In which case call translate. Note that only integer translate
-        // is applicable. For non-integer translate we'll have to do the
-        // affine.
-        // If the hints contain an ImageLayout hint, we can't use 
-        // TranslateIntOpImage since it isn't capable of dealing with that.
-        // Get ImageLayout from renderHints if any.
-        ImageLayout layout_ = RIFUtil.getImageLayoutHint(hints);                                
-        if ( !hasScaleX &&
-             !hasScaleY  &&
-              !hasShearX&&
-              !hasShearY&&
-              isTranslateXInt&&
-              isTranslateYInt&&
-            layout_ == null) {
-            // It's a integer translate
-            return new TranslateIntOpImage(finalImage,
-            								hints,
-                                           (int) finalRaster2Model.getTranslateX(),
-                                           (int) finalRaster2Model.getTranslateY());
-        }                                
-                          
         // final transformation
         final ImageLayout layout = new ImageLayout(finalImage);
         layout.setTileGridXOffset(0).setTileGridYOffset(0).setTileHeight(tileSizeY).setTileWidth(tileSizeX);
@@ -859,26 +811,12 @@ public final class GridCoverageRenderer {
         //SG add hints for the border extender
         localHints.add(new RenderingHints(JAI.KEY_BORDER_EXTENDER,BorderExtender.createInstance(BorderExtender.BORDER_COPY)));
     	RenderedImage im=null;
-    	try{
-    		// scale ?
-    		if (isScale){
-    			im=ScaleDescriptor.create(	finalImage, 
-    									(float) finalRaster2Model.getScaleX(),
-    									(float) finalRaster2Model.getScaleY(),
-    									(float) finalRaster2Model.getTranslateX(), 
-    									(float) finalRaster2Model.getTranslateY(), 
-    									interpolation, 
-    									localHints);
-    		}else{
-                    // use more general affine (slower)
-                    im = AffineDescriptor.create(
-                            finalImage, 
-                            finalRaster2Model, 
-                            interpolation,
-                            null, 
-                            localHints);
-    		}
-    	}finally{
+    	try {
+    	    ImageWorker iw = new ImageWorker(finalImage);
+    	    iw.setRenderingHints(localHints);
+    	    iw.affine(finalRaster2Model, interpolation, null);
+    	    im = iw.getRenderedImage();
+    	} finally {
     		if(DEBUG)
     			writeRenderedImage(im, "postAffine");
     	}

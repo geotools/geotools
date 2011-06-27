@@ -57,6 +57,8 @@ import org.geotools.gce.imagemosaic.RasterLayerResponse.GranuleLoadingResult;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.image.ImageWorker;
+import org.geotools.image.io.ImageIOExt;
 import org.geotools.image.jai.Registry;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
@@ -766,49 +768,54 @@ public class GranuleDescriptor {
                 if (addBorderExtender) {
                     localHints.add(ImageUtilities.BORDER_EXTENDER_HINTS);
                 }
-                boolean hasScaleX=!(Math.abs(finalRaster2Model.getScaleX()-1) < 1E-2/(raster.getWidth()+1-raster.getMinX()));
-                boolean hasScaleY=!(Math.abs(finalRaster2Model.getScaleY()-1) < 1E-2/(raster.getHeight()+1-raster.getMinY()));
-                boolean hasShearX=!(finalRaster2Model.getShearX() == 0.0);
-                boolean hasShearY=!(finalRaster2Model.getShearY() == 0.0);
-                boolean hasTranslateX=!(Math.abs(finalRaster2Model.getTranslateX()) <  0.01F);
-                boolean hasTranslateY=!(Math.abs(finalRaster2Model.getTranslateY()) <  0.01F);
-                boolean isTranslateXInt=!(Math.abs(finalRaster2Model.getTranslateX() - (int) finalRaster2Model.getTranslateX()) <  0.01F);
-                boolean isTranslateYInt=!(Math.abs(finalRaster2Model.getTranslateY() - (int) finalRaster2Model.getTranslateY()) <  0.01F);
+//                boolean hasScaleX=!(Math.abs(finalRaster2Model.getScaleX()-1) < 1E-2/(raster.getWidth()+1-raster.getMinX()));
+//                boolean hasScaleY=!(Math.abs(finalRaster2Model.getScaleY()-1) < 1E-2/(raster.getHeight()+1-raster.getMinY()));
+//                boolean hasShearX=!(finalRaster2Model.getShearX() == 0.0);
+//                boolean hasShearY=!(finalRaster2Model.getShearY() == 0.0);
+//                boolean hasTranslateX=!(Math.abs(finalRaster2Model.getTranslateX()) <  0.01F);
+//                boolean hasTranslateY=!(Math.abs(finalRaster2Model.getTranslateY()) <  0.01F);
+//                boolean isTranslateXInt=!(Math.abs(finalRaster2Model.getTranslateX() - (int) finalRaster2Model.getTranslateX()) <  0.01F);
+//                boolean isTranslateYInt=!(Math.abs(finalRaster2Model.getTranslateY() - (int) finalRaster2Model.getTranslateY()) <  0.01F);
+//                
+//                boolean isIdentity = finalRaster2Model.isIdentity() && !hasScaleX&&!hasScaleY &&!hasTranslateX&&!hasTranslateY;
                 
-                boolean isIdentity = finalRaster2Model.isIdentity() && !hasScaleX&&!hasScaleY &&!hasTranslateX&&!hasTranslateY;
+                
+//                // TODO how can we check that the a skew is harmelss????
+//                if(isIdentity){
+//                    // TODO check if we are missing anything like tiling or such that comes from hints 
+//                    return new GranuleLoadingResult(raster, granuleLoadingShape, granuleUrl, doFiltering);
+//                }
+//                
+//                // TOLERANCE ON PIXELS SIZE
+//                
+//                // Check and see if the affine transform is in fact doing
+//                // a Translate operation. That is a scale by 1 and no rotation.
+//                // In which case call translate. Note that only integer translate
+//                // is applicable. For non-integer translate we'll have to do the
+//                // affine.
+//                // If the hints contain an ImageLayout hint, we can't use 
+//                // TranslateIntOpImage since it isn't capable of dealing with that.
+//                // Get ImageLayout from renderHints if any.
+//                ImageLayout layout = RIFUtil.getImageLayoutHint(localHints);                                
+//                if ( !hasScaleX &&
+//                     !hasScaleY  &&
+//                      !hasShearX&&
+//                      !hasShearY&&
+//                      isTranslateXInt&&
+//                      isTranslateYInt&&
+//                    layout == null) {
+//                    // It's a integer translate
+//                    return new GranuleLoadingResult(new TranslateIntOpImage(raster,
+//                                                    localHints,
+//                                                   (int) finalRaster2Model.getShearX(),
+//                                                   (int) finalRaster2Model.getShearY()),granuleLoadingShape, granuleUrl, doFiltering);
+//                }
                 
                 
-                // TODO how can we check that the a skew is harmelss????
-                if(isIdentity){
-                    // TODO check if we are missing anything like tiling or such that comes from hints 
-                    return new GranuleLoadingResult(raster, granuleLoadingShape, granuleUrl, doFiltering);
-                }
-                
-                // TOLERANCE ON PIXELS SIZE
-                
-                // Check and see if the affine transform is in fact doing
-                // a Translate operation. That is a scale by 1 and no rotation.
-                // In which case call translate. Note that only integer translate
-                // is applicable. For non-integer translate we'll have to do the
-                // affine.
-                // If the hints contain an ImageLayout hint, we can't use 
-                // TranslateIntOpImage since it isn't capable of dealing with that.
-                // Get ImageLayout from renderHints if any.
-                ImageLayout layout = RIFUtil.getImageLayoutHint(localHints);                                
-                if ( !hasScaleX &&
-                     !hasScaleY  &&
-                      !hasShearX&&
-                      !hasShearY&&
-                      isTranslateXInt&&
-                      isTranslateYInt&&
-                    layout == null) {
-                    // It's a integer translate
-                    return new GranuleLoadingResult(new TranslateIntOpImage(raster,
-                                                    localHints,
-                                                   (int) finalRaster2Model.getShearX(),
-                                                   (int) finalRaster2Model.getShearY()),granuleLoadingShape, granuleUrl, doFiltering);
-                }                                
-				return new GranuleLoadingResult(AffineDescriptor.create(raster, finalRaster2Model, interpolation, request.getBackgroundValues(),localHints), granuleLoadingShape, granuleUrl, doFiltering);
+                ImageWorker iw = new ImageWorker(raster);
+                iw.setRenderingHints(localHints);
+                iw.affine(finalRaster2Model, interpolation, request.getBackgroundValues());
+				return new GranuleLoadingResult(iw.getRenderedImage(), granuleLoadingShape, granuleUrl, doFiltering);
 			}
 		
 		} catch (IllegalStateException e) {

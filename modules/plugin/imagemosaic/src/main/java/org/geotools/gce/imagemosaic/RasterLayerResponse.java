@@ -754,12 +754,12 @@ class RasterLayerResponse{
 		
 	}
 
-	private RenderedImage postProcessRaster(RenderedImage mosaic) {
+	private RenderedImage postProcessRaster(RenderedImage image) {
 		// alpha on the final mosaic
 		if (finalTransparentColor != null) {
 			if (LOGGER.isLoggable(Level.FINE))
 				LOGGER.fine("Support for alpha on final mosaic");
-			return ImageUtilities.maskColor(finalTransparentColor,mosaic);
+			return ImageUtilities.maskColor(finalTransparentColor,image);
 
 		}
 		if (!needsReprojection){
@@ -785,7 +785,7 @@ class RasterLayerResponse{
                         //
                         // we are in raster space here, so 1E-3 is safe
                         if(XAffineTransform.isIdentity(targetWorldToGrid, Utils.AFFINE_IDENTITY_EPS))
-                            return mosaic;
+                            return image;
 		        
 		        // create final image
 		        // TODO this one could be optimized further depending on how the affine is created
@@ -795,22 +795,26 @@ class RasterLayerResponse{
                         // buffered images comes up untiled and this can affect the
                         // performances of the subsequent affine operation.
                         //
-		        final Hints localHints= new Hints(hints);
+                        final Hints localHints= new Hints(hints);
                         if (hints != null && !hints.containsKey(JAI.KEY_BORDER_EXTENDER)) {
                             final Object extender = hints.get(JAI.KEY_BORDER_EXTENDER);
                             if (!(extender != null && extender instanceof BorderExtender)) {
                                 localHints.add(ImageUtilities.EXTEND_BORDER_BY_COPYING);
                             }
                         }
-	        
-                        mosaic = AffineDescriptor.create(mosaic, targetWorldToGrid , interpolation, backgroundValues, localHints);
+                        
+//                         image = AffineDescriptor.create(image, targetWorldToGrid , interpolation, backgroundValues, localHints);
+                        ImageWorker iw = new ImageWorker(image);
+                        iw.setRenderingHints(localHints);
+                        iw.affine(targetWorldToGrid, interpolation, backgroundValues);
+                        image = iw.getRenderedImage();
                     } catch (NoninvertibleTransformException e) {
                         if (LOGGER.isLoggable(Level.SEVERE)){
                             LOGGER.log(Level.SEVERE, "Unable to create the requested mosaic ", e );
                         }
                     }
 		}
-		return mosaic;
+		return image;
 	}
 
 	/**

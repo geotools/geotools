@@ -31,7 +31,9 @@
         <sld:VendorOption name="maxDisplacement">20</sld:VendorOption>
       </sld:TextSymbolizer>
       <sld:LineSymbolizer>
-        <sld:Stroke/>
+        <sld:Stroke>
+           <sld:CssParameter name="stroke">#AAAAAA</sld:CssParameter>
+        </sld:Stroke>
       </sld:LineSymbolizer>
     </sld:Rule>
   </sld:FeatureTypeStyle>

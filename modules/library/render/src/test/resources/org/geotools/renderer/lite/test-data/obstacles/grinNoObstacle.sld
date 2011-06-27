@@ -7,18 +7,11 @@
     <sld:Rule>
       <sld:PointSymbolizer>
         <sld:Graphic>
-          <sld:Mark>
-            <sld:WellKnownName>circle</sld:WellKnownName>
-            <sld:Fill/>
-            <sld:Stroke>
-              <sld:CssParameter name="stroke">#AAAAAA</sld:CssParameter>
-            </sld:Stroke>
-          </sld:Mark>
-          <sld:Size>
-            <ogc:Literal>10</ogc:Literal>
-          </sld:Size>
+          <sld:ExternalGraphic>
+            <sld:OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="file:src/test/resources/org/geotools/renderer/lite/test-data/obstacles/grin.png"/>
+            <sld:Format>image/png</sld:Format>
+          </sld:ExternalGraphic>
         </sld:Graphic>
-        <sld:VendorOption name="labelObstacle"></sld:VendorOption>
       </sld:PointSymbolizer>
     </sld:Rule>
   </sld:FeatureTypeStyle>

@@ -142,6 +142,11 @@
       <artifactId>imageio-ext-gdalnitf</artifactId>
       <!-- The version number is specified in the parent POM. -->
     </dependency>
+	<dependency>
+      <groupId>it.geosolutions.imageio-ext</groupId>
+      <artifactId>imageio-ext-gdalrpftoc</artifactId>
+      <!-- The version number is specified in the parent POM. -->
+    </dependency>
     <dependency>
       <groupId>it.geosolutions.imageio-ext</groupId>
       <artifactId>imageio-ext-imagereadmt</artifactId>

@@ -649,6 +649,11 @@
       </dependency>
       <dependency>
         <groupId>it.geosolutions.imageio-ext</groupId>
+        <artifactId>imageio-ext-gdalrpftoc</artifactId>
+        <version>${imageio.ext.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>it.geosolutions.imageio-ext</groupId>
         <artifactId>imageio-ext-imagereadmt</artifactId>
         <version>${imageio.ext.version}</version>
       </dependency>

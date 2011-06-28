@@ -3,7 +3,7 @@ IMAGEIO-EXT-GDAL
 
   IP Review:
 
-  	* Daniele Romagnoli March 2010
+  	* Daniele Romagnoli June 2011
 
   STATUS: OK
   
@@ -18,7 +18,7 @@ IMAGEIO-EXT-GDAL
 * Important Note
   ~~~~~~~~~~~~~~
   The ECW/JP2KECW plugin shall not be used within a server application to DECODE ECW format.
-  The ECW EULA (read this at https://imageio-ext.dev.java.net/files/documents/7505/124153/ECWEULA.txt)
+  The ECW EULA (read this at http://java.net/downloads/imageio-ext/Licenses/ECWEULA.txt)
   explicitly prohibits that type of use unless you have paid a lincesing fee to Erdas to use ECW SDK on a server.
   In case you don't agree the ECW EULA, stop using the module.
 
@@ -69,3 +69,13 @@ IMAGEIO-EXT-GDAL
     	
           data freely available at:
           http://svn.osgeo.org/gdal/tags/1.7.1/autotest/gdrivers/data/
+          
+          
+  	* RPFTOC data credit:
+
+    	* A.TOC / RPFTOC01.ON2
+    	
+          data freely available at:
+          http://svn.osgeo.org/gdal/tags/1.7.1/autotest/gdrivers/data/
+          
+          

@@ -15,6 +15,7 @@ The JTS Topology Suite is an external project that GeoTools uses to provide an i
    :maxdepth: 1
 
    geometry
+   equals
    relate
    dim9
    operation

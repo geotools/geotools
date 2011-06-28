@@ -156,7 +156,7 @@ public class GeometryTransformer extends TransformerBase {
             //
             // new behavior:
             // <gml:null>unknown</gml:null>
-            if(bounds.isNull()) {
+            if(bounds == null || bounds.isNull()) {
             	encodeNullBounds();
                 
                 return; // we're done!

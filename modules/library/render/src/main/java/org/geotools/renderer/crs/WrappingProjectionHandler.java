@@ -82,8 +82,9 @@ public class WrappingProjectionHandler extends ProjectionHandler {
         // processing
         Envelope env = geometry.getEnvelopeInternal();
         if (env.getWidth() < radius && renderingEnvelope.contains(env)
-                && renderingEnvelope.getWidth() <= radius * 2)
+                && renderingEnvelope.getWidth() <= radius * 2) {
             return geometry;
+        }
 
         // Check if the geometry has wrapped the dateline. Heuristic: we assume
         // anything larger than half of the world might have wrapped it, however,
@@ -118,11 +119,11 @@ public class WrappingProjectionHandler extends ProjectionHandler {
         }
 
         // clone and offset as necessary
+        geomType = accumulate(geoms, geometry, geomType);
         while (min <= renderingEnvelope.getMaxX()) {
             double offset = min - env.getMinX();
             if (Math.abs(offset) < radius) {
-                // in this case we can keep the original geometry
-                geomType = accumulate(geoms, geometry, geomType);
+                // in this case we can keep the original geometry, which is already in
             } else {
                 // in all other cases we make a copy and offset it
                 Geometry offseted = (Geometry) geometry.clone();
@@ -141,7 +142,7 @@ public class WrappingProjectionHandler extends ProjectionHandler {
         
         // if we did not have to actually clone the geometries
         if(geoms.size() == 1) {
-            return geometry;
+            return geoms.get(0);
         }
 
         // rewrap all the clones into a single geometry
@@ -174,13 +175,16 @@ public class WrappingProjectionHandler extends ProjectionHandler {
     private Class accumulate(List<Geometry> geoms, Geometry geometry, Class geomType) {
         for (int i = 0; i < geometry.getNumGeometries(); i++) {
             Geometry g = geometry.getGeometryN(i);
-            Class gtype;
+            Class gtype = null;
             if (g instanceof GeometryCollection) {
                 gtype = accumulate(geoms, g, geomType);
             } else {
-                geoms.add(g);
-                gtype = g.getClass();
+                if(renderingEnvelope.intersects(g.getEnvelopeInternal())) {
+                    geoms.add(g);
+                    gtype = g.getClass();
+                }
             }
+            
             if (geomType == null) {
                 geomType = g.getClass();
             } else if (!g.getClass().equals(geomType)) {

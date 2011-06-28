@@ -163,6 +163,51 @@ public class ProjectionHandlerTest {
         assertEquals(mercatorEnvelope.getMinX(), env.getMinX(), EPS);
         assertEquals(mercatorEnvelope.getMaxX(), env.getMaxX(), EPS);
     }
+    
+    @Test
+    public void testWrapGeometryWGS84() throws Exception {
+        ReferencedEnvelope world = new ReferencedEnvelope(-180, 180, -90, 90, WGS84);
+
+        // a geometry that will cross the dateline and sitting in the same area as the
+        // rendering envelope
+        Geometry g = new WKTReader().read("POLYGON((-178 -90, -178 90, 178 90, 178 -90, -178 -90))");
+        Geometry original = new WKTReader().read("POLYGON((-178 -90, -178 90, 178 90, 178 -90, -178 -90))");
+
+        // make sure the geometry is not wrapped, but it is preserved
+        ProjectionHandler handler = ProjectionHandlerFinder.getHandler(world, true);
+        assertTrue(handler.requiresProcessing(WGS84, g));
+        Geometry preProcessed = handler.preProcess(WGS84, g);
+        // no cutting expected
+        assertTrue(original.equals(preProcessed));
+        // post process
+        Geometry postProcessed = handler.postProcess(g);
+        // check the geometry is in the same area as the rendering envelope
+        assertTrue(original.equals(postProcessed));
+    }
+    
+    @Test
+    public void testWrapGeometryWGS84Duplicate() throws Exception {
+        ReferencedEnvelope world = new ReferencedEnvelope(-200, 200, -90, 90, WGS84);
+
+        // a geometry that will cross the dateline and sitting in the same area as the
+        // rendering envelope
+        Geometry g = new WKTReader().read("POLYGON((-178 -90, -178 90, 178 90, 178 -90, -178 -90))");
+        Geometry original = new WKTReader().read("POLYGON((-178 -90, -178 90, 178 90, 178 -90, -178 -90))");
+
+        // make sure the geometry is not wrapped, but it is preserved
+        ProjectionHandler handler = ProjectionHandlerFinder.getHandler(world, true);
+        assertTrue(handler.requiresProcessing(WGS84, g));
+        Geometry preProcessed = handler.preProcess(WGS84, g);
+        // no cutting expected
+        assertTrue(original.equals(preProcessed));
+        // post process
+        Geometry postProcessed = handler.postProcess(g);
+        // check we have replicated the geometry in both directions
+        Envelope ppEnvelope = postProcessed.getEnvelopeInternal();
+        Envelope expected = new Envelope(-538, 538, -90, 90);
+        assertEquals(expected, ppEnvelope);
+    }
+
 
     @Test
     public void testDuplicateGeometryMercator() throws Exception {

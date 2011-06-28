@@ -75,7 +75,11 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
     public JoiningJDBCFeatureSource(JDBCFeatureSource featureSource) throws IOException {     
         super(featureSource);        
     }
-    
+
+    public JoiningJDBCFeatureSource(JDBCFeatureStore featureStore) throws IOException {     
+        super(featureStore.delegate);
+    }
+
     /**
      * Field Encoder for converting Filters/Expressions to SQL, will encode table name with field 
      *

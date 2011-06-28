@@ -30,6 +30,7 @@ import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.NestedAttributeExpression;
 import org.geotools.filter.visitor.DefaultFilterVisitor;
 import org.geotools.jdbc.JDBCFeatureSource;
+import org.geotools.jdbc.JDBCFeatureStore;
 import org.opengis.filter.Filter;
 import org.opengis.filter.expression.PropertyName;
 
@@ -74,9 +75,10 @@ public class MappingFeatureIteratorFactory {
             FilterCapabilities capabilities = null;
             if (mappedSource instanceof JDBCFeatureSource) {
                 capabilities = ((JDBCFeatureSource) mappedSource).getDataStore().getFilterCapabilities();
-            }
-            else {
-                throw new IllegalArgumentException("Joining Queries only work on JDBC Feature Source!");
+            } else if (mappedSource instanceof JDBCFeatureStore){
+                capabilities = ((JDBCFeatureStore) mappedSource).getDataStore().getFilterCapabilities();
+            } else {
+                throw new IllegalArgumentException("Joining queries are only supported on JDBC data stores");
             }
 
             IMappingFeatureIterator iterator;

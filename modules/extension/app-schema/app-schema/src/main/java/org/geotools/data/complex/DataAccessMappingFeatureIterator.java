@@ -18,6 +18,7 @@
 package org.geotools.data.complex;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -26,8 +27,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.net.URI;
+
 import javax.xml.namespace.QName;
+
 import org.geotools.data.DataAccess;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
@@ -48,6 +50,7 @@ import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.FilterFactoryImpl;
 import org.geotools.gml2.bindings.GML2EncodingUtils;
 import org.geotools.jdbc.JDBCFeatureSource;
+import org.geotools.jdbc.JDBCFeatureStore;
 import org.geotools.jdbc.JoiningJDBCFeatureSource;
 import org.geotools.referencing.CRS;
 import org.opengis.feature.Attribute;
@@ -60,7 +63,6 @@ import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
-import org.opengis.filter.Filter;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.identity.FeatureId;
@@ -280,8 +282,10 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
         if (query instanceof JoiningQuery) {
             if (mappedSource instanceof JDBCFeatureSource) {
                 mappedSource = new JoiningJDBCFeatureSource((JDBCFeatureSource) mappedSource);
+            } else if (mappedSource instanceof JDBCFeatureStore) {
+                mappedSource = new JoiningJDBCFeatureSource((JDBCFeatureStore) mappedSource);
             } else {
-                throw new IllegalArgumentException("Joining Query only works on JDBC Feature Source!");
+                throw new IllegalArgumentException("Joining queries are only supported on JDBC data stores");
             }
 
         }

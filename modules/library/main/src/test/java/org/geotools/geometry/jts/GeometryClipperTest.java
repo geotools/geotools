@@ -50,7 +50,7 @@ public class GeometryClipperTest {
     public void testFullyInside() throws Exception {
         LineString ls = (LineString) wkt.read("LINESTRING(1 1, 2 5, 9 1)");
         LineString clipped = (LineString) clipper.clip(ls, false);
-        assertTrue(ls.equals(clipped));
+        assertTrue(ls.equalsExact(clipped));
         showResult("Fully inside", ls, clipped);
     }
     
@@ -58,7 +58,7 @@ public class GeometryClipperTest {
     public void testInsideBorders() throws Exception {
         LineString ls = (LineString) wkt.read("LINESTRING(0 0, 2 5, 10 0)");
         LineString clipped = (LineString) clipper.clip(ls, false);
-        assertTrue(ls.equals(clipped));
+        assertTrue(ls.equalsExact(clipped));
         showResult("Inside touching borders", ls, clipped);
     }
     
@@ -74,7 +74,7 @@ public class GeometryClipperTest {
     public void testCross() throws Exception {
         LineString ls = (LineString) wkt.read("LINESTRING(-5 -5, 15 15)");
         LineString clipped = (LineString) clipper.clip(ls, false);
-        assertTrue(clipped.equals(wkt.read("LINESTRING(0 0, 10 10)")));
+        assertTrue(clipped.equalsExact(wkt.read("LINESTRING(0 0, 10 10)")));
         showResult("Cross", ls, clipped);
     }
     
@@ -82,7 +82,7 @@ public class GeometryClipperTest {
     public void testTouchLine() throws Exception {
         LineString ls = (LineString) wkt.read("LINESTRING(0 0, 0 10)");
         LineString clipped = (LineString) clipper.clip(ls, false);
-        assertTrue(clipped.equals(ls));
+        assertTrue(clipped.equalsExact(ls));
         showResult("Touch border", ls, clipped);
     }
     
@@ -106,7 +106,7 @@ public class GeometryClipperTest {
     public void testTouchAndCross() throws Exception {
         LineString ls = (LineString) wkt.read("LINESTRING(-5 0, 0 1, -5 2, 5 2, 5 3, -5 3, 0 4)");
         Geometry clipped = clipper.clip(ls, false);
-        assertTrue(clipped.equals(wkt.read("LINESTRING(0 2, 5 2, 5 3, 0 3)")));
+        assertTrue(clipped.equalsExact(wkt.read("LINESTRING(0 2, 5 2, 5 3, 0 3)")));
         showResult("Touch and cross", ls, clipped);
     }
     
@@ -114,7 +114,7 @@ public class GeometryClipperTest {
     public void testTouchAndParallel() throws Exception {
         LineString ls = (LineString) wkt.read("LINESTRING(-5 0, 0 1, -5 2, 0 2, 0 3, -5 3, 0 4)");
         Geometry clipped = clipper.clip(ls, false);
-        assertTrue(clipped.equals(wkt.read("LINESTRING(0 2, 0 3)")));
+        assertTrue(clipped.equalsExact(wkt.read("LINESTRING(0 2, 0 3)")));
         showResult("Touch and parallel", ls, clipped);
     }
     
@@ -122,7 +122,7 @@ public class GeometryClipperTest {
     public void testInsideOut() throws Exception {
         LineString ls = (LineString) wkt.read("LINESTRING(-2 8, 12 8, 12 2, -2 2)");
         MultiLineString clipped = (MultiLineString) clipper.clip(ls, false);
-        assertTrue(clipped.equals(wkt.read("MULTILINESTRING((0 8, 10 8), (10 2, 0 2))")));
+        assertTrue(clipped.equalsExact(wkt.read("MULTILINESTRING((0 8, 10 8), (10 2, 0 2))")));
         showResult("Touch border", ls, clipped);
     }
     
@@ -148,7 +148,7 @@ public class GeometryClipperTest {
     public void testInsidePolygon() throws Exception {
         Geometry g = wkt.read("POINT(5 5)").buffer(2);
         Geometry clipped = clipper.clip(g, false);
-        assertTrue(g.equals(clipped));
+        assertTrue(g.equalsExact(clipped));
         showResult("Polygon inside", g, clipped);
     }
     
@@ -156,7 +156,7 @@ public class GeometryClipperTest {
     public void testOutsidePolygon() throws Exception {
         Geometry g = wkt.read("POINT(5 5)").buffer(10);
         Geometry clipped = clipper.clip(g, false);
-        assertTrue(boundsPoly.equals(clipped));
+        assertTrue(boundsPoly.equalsTopo(clipped));
         showResult("Polygon outside", g, clipped);
     }
     
@@ -164,7 +164,7 @@ public class GeometryClipperTest {
     public void testPolygonCrossingSide() throws Exception {
         Geometry g = wkt.read("POLYGON((-2 2, 2 2, 2 4, -2 4, -2 2))");
         Geometry clipped = clipper.clip(g, false);
-        //assertTrue(clipped.equals(wkt.read("POLYGON((0 2, 2 2, 2 4, 0 4, 0 2))")));
+        //assertTrue(clipped.equalsExact(wkt.read("POLYGON((0 2, 2 2, 2 4, 0 4, 0 2))")));
         showResult("Crossing side", g, clipped);
     }
     
@@ -172,7 +172,7 @@ public class GeometryClipperTest {
     public void testCrossingOtherSide() throws Exception {
         Geometry g = wkt.read("POLYGON((6 2, 12 2, 12 6, 6 6, 6 2))");
         Geometry clipped = clipper.clip(g, false);
-        //assertTrue(clipped.equals(wkt.read("POLYGON((0 2, 10 2, 10 10, 0 10, 0 2))")));
+        //assertTrue(clipped.equalsExact(wkt.read("POLYGON((0 2, 10 2, 10 10, 0 10, 0 2))")));
         showResult("Donut crossing", g, clipped);
     }
     
@@ -180,7 +180,7 @@ public class GeometryClipperTest {
     public void testPolygonCrossingTwoSides() throws Exception {
         Geometry g = wkt.read("POLYGON((-2 2, 2 2, 2 12, -2 12, -2 2))");
         Geometry clipped = clipper.clip(g, false);
-        assertTrue(clipped.equals(wkt.read("POLYGON((0 2, 2 2, 2 10, 0 10, 0 2))")));
+        assertTrue(clipped.equalsExact(wkt.read("POLYGON((0 2, 2 2, 2 10, 0 10, 0 2))")));
         showResult("Crossing two sides", g, clipped);
     }
     
@@ -188,7 +188,7 @@ public class GeometryClipperTest {
     public void testPolygonCrossingThreeSides() throws Exception {
         Geometry g = wkt.read("POLYGON((-2 2, 12 2, 12 12, -2 12, -2 2))");
         Geometry clipped = clipper.clip(g, false);
-        assertTrue(clipped.equals(wkt.read("POLYGON((0 2, 10 2, 10 10, 0 10, 0 2))")));
+        assertTrue(clipped.equalsExact(wkt.read("POLYGON((0 2, 10 2, 10 10, 0 10, 0 2))")));
         showResult("Crossing three sides", g, clipped);
     }
     
@@ -214,7 +214,7 @@ public class GeometryClipperTest {
     public void testDonutCrossingValid() throws Exception {
         Geometry g = wkt.read("POLYGON((6 2, 14 2, 14 8, 6 8, 6 2), (8 4, 12 4, 12 6, 8 6, 8 4))");
         Geometry clipped = clipper.clip(g, true);
-        assertTrue(clipped.equals(wkt.read("POLYGON ((10 2, 6 2, 6 8, 10 8, 10 6, 8 6, 8 4, 10 4, 10 2))")));
+        assertTrue(clipped.equalsExact(wkt.read("POLYGON ((10 2, 6 2, 6 8, 10 8, 10 6, 8 6, 8 4, 10 4, 10 2))")));
         showResult("Donut crossing, valid geom", g, clipped);
     }
     

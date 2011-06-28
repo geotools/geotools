@@ -60,7 +60,7 @@ public class ReprojectingFeatureCollectionTest extends
 			Point p2 = (Point) reprojected.getAttribute( "defaultGeom" );
 			if(p1 != null) {
 			    p1 = (Point) transformer.transform( p1 );
-    			assertTrue( p1.equals( p2 ) );
+    			assertTrue( p1.equalsExact( p2 ) );
 			} else {
 			    assertNull(p2);
 			}
@@ -69,7 +69,7 @@ public class ReprojectingFeatureCollectionTest extends
 			LineString l2 = (LineString) reprojected.getAttribute( "otherGeom" );
 			if(l1 != null) {
 			    l1 = (LineString) transformer.transform( l1 );
-			    assertTrue( l1.equals( l2 ) );
+			    assertTrue( l1.equalsExact( l2 ) );
 			} else {
 			    assertNull(l2);
 			}

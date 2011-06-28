@@ -126,8 +126,8 @@ public abstract class JDBCFeatureCollectionTest extends JDBCTestSupport {
                     f.getAttribute(aname("doubleProperty")));
                 assertEquals(feature.getAttribute(aname("stringProperty")),
                     f.getAttribute(aname("stringProperty")));
-                assertTrue(((Geometry) feature.getAttribute(aname("geometry"))).equals(
-                        (Geometry) f.getAttribute(aname("geometry"))));
+                assertEquals(feature.getAttribute(aname("geometry")),
+                    f.getAttribute(aname("geometry")));
                 found = true;
             }
         }

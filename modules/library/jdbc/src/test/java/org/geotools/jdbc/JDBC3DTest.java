@@ -157,7 +157,7 @@ public abstract class JDBC3DTest extends JDBCTestSupport {
                 .features();
         assertTrue(fi.hasNext());
         SimpleFeature f = fi.next();
-        assertTrue(ls.equals((Geometry) f.getDefaultGeometry()));
+        assertTrue(ls.equalsExact((Geometry) f.getDefaultGeometry()));
         fi.close();
     }
 
@@ -199,7 +199,7 @@ public abstract class JDBC3DTest extends JDBCTestSupport {
         // this unfortunately checks only the first 2d, but at the same time
         // a coordinate by coordinate check is not possible since the ring orientation
         // can be modified by the store
-        assertTrue(poly.equals((Geometry) f.getDefaultGeometry()));
+        assertTrue(poly.equalsTopo((Geometry) f.getDefaultGeometry()));
         
         fr.close();
     }
@@ -251,7 +251,7 @@ public abstract class JDBC3DTest extends JDBCTestSupport {
                 .getCoordinateReferenceSystem());
         assertTrue(fr.hasNext());
         SimpleFeature f = fr.next();
-        assertTrue(expected.equals((Geometry) f.getDefaultGeometry()));
+        assertTrue(expected.equalsExact((Geometry) f.getDefaultGeometry()));
         fr.close();
     }
 

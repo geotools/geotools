@@ -48,10 +48,6 @@ import com.vividsolutions.jts.geom.Polygon;
  * we are able to reduce the amount of overhead in setting up new tests.
  * </p>
  * <p>
- * We have also special cased {@link #assertEquals(Geometry, Geometry)} to work around
- * {@code Geometry.equals( Object )} not working as expected.
- * </p>
- * <p>
  * This code has been made part of the public {@code geotools.jar} to provide
  * a starting point for test cases involving Data constructs.
  * </p>
@@ -344,7 +340,7 @@ public class DataTestCase extends TestCase {
         }
         assertNotNull(expected);
         assertNotNull(actual);
-        assertTrue(expected.equals(actual));
+        assertTrue(expected.equalsExact(actual));
     }
 
     /**
@@ -356,7 +352,7 @@ public class DataTestCase extends TestCase {
         }
         assertNotNull(message, expected);
         assertNotNull(message, actual);
-        assertTrue(message, expected.equals(actual));
+        assertTrue(message, expected.equalsExact(actual));
     }
 
     /**

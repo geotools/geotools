@@ -395,7 +395,7 @@ public class CQLLiteralTest {
             Geometry expectedGeometry;
             expectedGeometry = reader.read(strGeomExpected);
             
-            Assert.assertTrue(expectedGeometry.equals(actualGeometry));
+            Assert.assertTrue(expectedGeometry.equalsTopo(actualGeometry));
 
     }
     

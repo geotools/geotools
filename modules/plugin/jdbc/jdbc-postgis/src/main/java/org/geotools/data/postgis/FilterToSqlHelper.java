@@ -348,7 +348,7 @@ class FilterToSqlHelper {
         if(geometry != null) {
             Geometry g = geometry.evaluate(null, Geometry.class);
             if(g != null) {
-                return JTS.toGeometry(WORLD).equals(g.union());
+                return JTS.toGeometry(WORLD).equalsTopo(g.union());
             }
         }
         return false;

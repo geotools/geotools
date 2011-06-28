@@ -92,7 +92,7 @@ public class DecimatorTest {
         d.decimate(g);
         g.geometryChanged();
         assertTrue(g.isValid());
-        assertTrue(original.equals(g));
+        assertTrue(original.equalsExact(g));
     }
     
     @Test

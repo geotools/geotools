@@ -375,21 +375,7 @@ public abstract class AbstractDataStoreTest extends DataTestCase {
                 }
             } else {
                 if (!feature1.getAttribute(i).equals(otherAtt)) {
-                    if (feature1.getAttribute(i) instanceof Geometry
-                            && otherAtt instanceof Geometry) {
-                        // we need to special case Geometry
-                        // as JTS is broken
-                        // Geometry.equals( Object ) and Geometry.equals( Geometry )
-                        // are different 
-                        // (We should fold this knowledge into AttributeType...)
-                        // 
-                        if (!((Geometry) feature1.getAttribute(i)).equals(
-                                    (Geometry) otherAtt)) {
-                            return false;
-                        }
-                    } else {
-                        return false;
-                    }
+                    return false;
                 }
             }
         }
@@ -440,13 +426,6 @@ public abstract class AbstractDataStoreTest extends DataTestCase {
                 return false;
             } else if ((ev == null) && (av != null)) {
                 return false;
-            } else if (av instanceof Geometry && ev instanceof Geometry) {
-                Geometry ag = (Geometry) av;
-                Geometry eg = (Geometry) ev;
-
-                if (!ag.equals(eg)) {
-                    return false;
-                }
             } else if (!av.equals(ev)) {
                 return false;
             }

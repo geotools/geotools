@@ -1564,20 +1564,10 @@ public class DataUtilities {
                 return false;
             }
         } else {
+            // Note: for JTS Geometry objects this is equivalent
+            // to equalsExact( Geometry )
             if (!att.equals(otherAtt)) {
-                if (att instanceof Geometry && otherAtt instanceof Geometry) {
-                    // we need to special case Geometry
-                    // as JTS is broken
-                    // Geometry.equals( Object ) and Geometry.equals( Geometry )
-                    // are different
-                    // (We should fold this knowledge into AttributeType...)
-                    //
-                    if (!((Geometry) att).equals((Geometry) otherAtt)) {
-                        return false;
-                    }
-                } else {
-                    return false;
-                }
+                return false;
             }
         }
 

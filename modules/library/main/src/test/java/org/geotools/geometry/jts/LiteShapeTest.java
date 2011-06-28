@@ -149,10 +149,10 @@ public class LiteShapeTest extends TestCase {
 	    LineString ls = geomFac.createLineString(cs);
 	    LineString copy = (LineString) ls.clone();
 	    LiteShape2 ltCloning = new LiteShape2(ls, ProjectiveTransform.create(AffineTransform.getScaleInstance(10, 10)), new Decimator(4,4), true);
-	    assertTrue(ls.equals(copy));
+	    assertTrue(ls.equalsExact(copy));
 	    
 	    LiteShape2 ltNotCloning = new LiteShape2(ls, ProjectiveTransform.create(AffineTransform.getScaleInstance(10, 10)), new Decimator(4,4), true, false);
-	    assertFalse(ls.equals(copy));
+	    assertFalse(ls.equalsExact(copy));
 	}
 
 	private LineString makeSampleLineString(final GeometryFactory geomFac,

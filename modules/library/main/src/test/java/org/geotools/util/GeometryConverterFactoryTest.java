@@ -43,7 +43,7 @@ public class GeometryConverterFactoryTest extends TestCase {
 						new Coordinate(0,1), new Coordinate(0,0)
 					}
 				), null
-			).equals( geometry )	
+			).equalsTopo( geometry )	
 		);
 		
 	}
@@ -75,7 +75,7 @@ public class GeometryConverterFactoryTest extends TestCase {
 						new Coordinate(0,1), new Coordinate(0,0)
 					}
 				), null
-			).equals( geometry )	
+			).equalsTopo( geometry )	
 		);
 	}
 	

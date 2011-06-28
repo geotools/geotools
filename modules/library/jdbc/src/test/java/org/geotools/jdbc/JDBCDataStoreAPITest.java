@@ -1632,13 +1632,6 @@ public abstract class JDBCDataStoreAPITest extends JDBCTestSupport {
                 return false;
             } else if ((ev == null) && (av != null)) {
                 return false;
-            } else if (av instanceof Geometry && ev instanceof Geometry) {
-                Geometry ag = (Geometry) av;
-                Geometry eg = (Geometry) ev;
-
-                if (!ag.equals(eg)) {
-                    return false;
-                }
             } else if (!av.equals(ev)) {
                 return false;
             }

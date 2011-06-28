@@ -216,7 +216,7 @@ public abstract class JDBCDataStoreTest extends JDBCTestSupport {
              public void check(int index, SimpleFeature feature) {
                  assertEquals(4, feature.getAttributeCount());
                  Point p = gf.createPoint(new Coordinate(index, index));
-                 assertTrue(p.equals((Geometry) feature.getAttribute(aname("geometry"))));
+                 assertTrue(p.equalsExact((Geometry) feature.getAttribute(aname("geometry"))));
 
                  Number ip = (Number) feature.getAttribute(aname("intProperty"));
                  assertEquals(index, ip.intValue());

@@ -154,7 +154,7 @@ public class CRSTest extends TestCase {
         Polygon polyAfter = (Polygon) JTS.transform(poly1, transform);
         System.out.println( polyAfter );
         
-        assertTrue( poly3.equals( polyAfter ));
+        assertTrue( poly3.equalsTopo( polyAfter ));
         
         Envelope before = poly1.getEnvelopeInternal();
         Envelope expected = poly3.getEnvelopeInternal();
@@ -186,7 +186,7 @@ public class CRSTest extends TestCase {
         Polygon polyAfter = (Polygon) JTS.transform(poly1, transform);
         System.out.println( polyAfter );
         
-        assertTrue( poly3.equals( polyAfter ));
+        assertTrue( poly3.equalsTopo( polyAfter ));
         
         Envelope before = poly1.getEnvelopeInternal();
         Envelope expected = poly3.getEnvelopeInternal();

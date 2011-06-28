@@ -127,10 +127,6 @@ public class GeometryAttributeImpl extends AttributeImpl implements
 		
 		GeometryAttributeImpl att = (GeometryAttributeImpl) o;
 
-		//JD: since Geometry does not implement equals(Object) "properly",( ie
-		// if you dont call equals(Geomtery) two geometries which are equal 
-		// will not be equal) we dont call super.equals()
-		
 		if (!Utilities.equals(descriptor, att.descriptor))
 			return false;
 
@@ -138,9 +134,9 @@ public class GeometryAttributeImpl extends AttributeImpl implements
 			return false;
 
 		if ( value != null && att.value != null ) {
-		    //another lovley jts thing... comparing geometry collections that 
-		    // arent multi point/line/poly throws an exception, so we nee dto 
-		    // that comparison
+		    // another lovley jts thing... comparing geometry collections that 
+		    // arent multi point/line/poly throws an exception, so we need to 
+		    // do that comparison
 		    if ( att.value instanceof GeometryCollection && 
 	            !(att.value instanceof MultiPoint) && 
 	            !(att.value instanceof MultiLineString) &&
@@ -159,7 +155,7 @@ public class GeometryAttributeImpl extends AttributeImpl implements
 		                Geometry g1 = c1.getGeometryN(i);
 		                Geometry g2 = c2.getGeometryN(i);
 		                
-		                if ( !g1.equals(g2) ) {
+		                if ( !g1.equalsExact(g2) ) {
 		                    return false;
 		                }
 		            }
@@ -170,7 +166,7 @@ public class GeometryAttributeImpl extends AttributeImpl implements
 		            return false;
 		        }
 		    }
-		   if ( !((Geometry)value).equals((Geometry)att.value)) {
+		    if ( !((Geometry)value).equalsExact((Geometry)att.value)) {
 				return false;
 			}
 		}

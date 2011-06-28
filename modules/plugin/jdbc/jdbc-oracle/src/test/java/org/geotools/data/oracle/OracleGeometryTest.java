@@ -43,7 +43,7 @@ public class OracleGeometryTest extends JDBCGeometryTest {
         SimpleFeature sf = fi.next();
         assertNotNull(sf.getDefaultGeometry());
         Geometry expected = new WKTReader().read("POLYGON((6 4, 12 4, 12 12, 6 12, 6 4))");
-        assertTrue(expected.equals((Geometry) sf.getDefaultGeometry()));
+        assertTrue(expected.equalsTopo((Geometry) sf.getDefaultGeometry()));
         fi.close();
     }
 }

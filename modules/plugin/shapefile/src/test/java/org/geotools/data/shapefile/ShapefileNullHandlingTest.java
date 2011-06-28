@@ -67,7 +67,7 @@ public class ShapefileNullHandlingTest extends TestCaseSupport {
 	    
 	    Geometry orig = (Geometry) features[1].getDefaultGeometry();
 	    read = (Geometry) features[1].getDefaultGeometry();
-		assertTrue(orig.equals(read));
+		assertTrue(orig.equalsTopo(read));
 		
 		// check the null geometry
 		read = (Geometry) features[2].getDefaultGeometry();
@@ -76,7 +76,7 @@ public class ShapefileNullHandlingTest extends TestCaseSupport {
 		// make sure the third is ok as well
 		orig = (Geometry) features[3].getDefaultGeometry();
 	    read = (Geometry) features[3].getDefaultGeometry();
-		assertTrue(orig.equals(read));
+		assertTrue(orig.equalsTopo(read));
 		
 		store.dispose();
 	}

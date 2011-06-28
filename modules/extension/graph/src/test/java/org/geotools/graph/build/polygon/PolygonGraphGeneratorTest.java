@@ -43,7 +43,7 @@ public class PolygonGraphGeneratorTest extends TestCase {
 				}
 
 				public boolean equal(Polygon p1, Polygon p2) {
-					return p1.equals(p2);
+					return p1.equalsTopo(p2);
 				}
 			
 		};

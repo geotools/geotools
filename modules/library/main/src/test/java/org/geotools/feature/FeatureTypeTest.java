@@ -239,11 +239,6 @@ public class FeatureTypeTest extends DataTestCase {
         Geometry point = gf.createPoint(coords);
         Geometry point2 = gf.createPoint( coords2);
         
-        // JTS does not implement Object equals contract
-        assertTrue( "jts identity", point != point2 );
-        assertTrue( "jts equals1", point.equals( point2 ) );
-        assertTrue( "jts equals", !point.equals( (Object) point2 ) );
-        
         assertDuplicate( "jts duplicate", point, point2 );        
         assertDuplicate( "feature", feature, DataUtilities.duplicate( feature ) );
         assertDuplicate( "point", point, DataUtilities.duplicate( point ) );
@@ -270,16 +265,6 @@ public class FeatureTypeTest extends DataTestCase {
                 );
             }
             //assertNotSame( message, expected, value );
-        }
-        else if (expected instanceof Geometry ){
-            // JTS Geometry does not meet the Obejct equals contract!
-            // So we need to do our assertEquals statement
-            //
-            assertTrue( message, value instanceof Geometry );
-            assertTrue( message, expected instanceof Geometry );
-            Geometry expectedGeom = (Geometry) expected;
-            Geometry actualGeom = (Geometry) value;
-            assertTrue( message, expectedGeom.equals( actualGeom ) );
         } else if (expected instanceof SimpleFeature) {
 	    assertDuplicate(message, ((SimpleFeature)expected).getAttributes(), 
 			    ((SimpleFeature)value).getAttributes());

@@ -36,9 +36,7 @@ public class JTSUtilitiesTest {
 
         LinearRing after = JTSUtilities.reverseRing(before);
 
-        // cannot use assertEquals since JTS has two equals and we need
-        // to hit the .equals(Geometry) one instead of .equals(Object) one
-        assertTrue( after.equals(before.reverse()) );
+        assertTrue( after.equalsTopo(before.reverse()) );
 
         assertEquals(after.getCoordinateN(0), coordinates[3]);
         assertEquals(after.getCoordinateN(1), coordinates[2]);

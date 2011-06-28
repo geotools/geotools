@@ -68,7 +68,7 @@ public class FeatureFlatTest extends TestCase {
         GeometryFactory gf = new GeometryFactory();
         assertTrue(
             "geometry retrieval and match",
-            ((Point) testFeature.getAttribute("testGeometry")).equals(
+            ((Point) testFeature.getAttribute("testGeometry")).equalsExact(
                 gf.createPoint(new Coordinate(1, 2))));
         assertTrue(
             "boolean retrieval and match",

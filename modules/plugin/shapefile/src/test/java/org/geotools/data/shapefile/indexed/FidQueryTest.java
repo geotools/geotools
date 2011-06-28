@@ -124,12 +124,7 @@ public class FidQueryTest extends FIDTestCase {
             for (int i = 0; i < schema.getAttributeCount(); i++) {
                 Object value = feature.getAttribute(i);
                 Object newValue = newFeature.getAttribute(i);
-
-                if (value instanceof Geometry) {
-                    assertTrue(((Geometry) newValue).equals((Geometry) value));
-                } else {
-                    assertEquals(newValue, value);
-                }
+                assertEquals(newValue, value);
             }
             assertFalse(features.hasNext());
         } finally {

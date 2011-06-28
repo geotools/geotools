@@ -58,7 +58,7 @@ public class SimpleFeatureBuilderTest extends TestCase {
 		
 		assertEquals( 3, feature.getAttributeCount() );
 		
-		assertTrue( gf.createPoint( new Coordinate( 0, 0) ).equals( (Geometry) feature.getAttribute( "point" ) ) );
+		assertTrue( gf.createPoint( new Coordinate( 0, 0) ).equals( feature.getAttribute( "point" ) ) );
 		assertEquals( new Integer( 1 ) , feature.getAttribute( "integer" ) );
 		assertEquals( new Float( 2.0 ) , feature.getAttribute( "float" ) );
 	}
@@ -73,7 +73,7 @@ public class SimpleFeatureBuilderTest extends TestCase {
         
         assertEquals( 3, feature.getAttributeCount() );
         
-        assertTrue( gf.createPoint( new Coordinate( 0, 0) ).equals( (Geometry) feature.getAttribute( "point" ) ) );
+        assertTrue( gf.createPoint( new Coordinate( 0, 0) ).equals( feature.getAttribute( "point" ) ) );
         assertEquals( new Integer( 1 ) , feature.getAttribute( "integer" ) );
         assertNull( feature.getAttribute( "float" ) );
 	}
@@ -89,7 +89,7 @@ public class SimpleFeatureBuilderTest extends TestCase {
         
         assertEquals( 3, feature.getAttributeCount() );
         
-        assertTrue( gf.createPoint( new Coordinate( 0, 0) ).equals( (Geometry) feature.getAttribute( 0 ) ) );
+        assertTrue( gf.createPoint( new Coordinate( 0, 0) ).equals( feature.getAttribute( 0 ) ) );
         assertEquals( new Integer( 1 ) , feature.getAttribute( 1 ) );
         assertEquals( new Float( 2.0 ) , feature.getAttribute( 2 ) );
 	}
@@ -105,7 +105,7 @@ public class SimpleFeatureBuilderTest extends TestCase {
         
         assertEquals( 3, feature.getAttributeCount() );
         
-        assertTrue( gf.createPoint( new Coordinate( 0, 0) ).equals( (Geometry) feature.getAttribute( 0 ) ) );
+        assertTrue( gf.createPoint( new Coordinate( 0, 0) ).equals( feature.getAttribute( 0 ) ) );
         assertEquals( new Integer( 1 ) , feature.getAttribute( 1 ) );
         assertEquals( new Float( 2.0 ) , feature.getAttribute( 2 ) );
 	}

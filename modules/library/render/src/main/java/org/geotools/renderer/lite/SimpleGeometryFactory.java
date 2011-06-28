@@ -159,7 +159,7 @@ class SimpleGeometryFactory extends GeometryFactory {
         }
 
         public boolean equals(Geometry g) {
-            return geometry.equals(g);
+            return geometry.equalsTopo(g);
         }
 
         public boolean equals(Object obj) {
@@ -426,7 +426,7 @@ class SimpleGeometryFactory extends GeometryFactory {
         }
 
         public boolean equals(Geometry g) {
-            return lineString.equals(g);
+            return lineString.equalsTopo(g);
         }
 
         public boolean equals(Object obj) {
@@ -724,7 +724,7 @@ class SimpleGeometryFactory extends GeometryFactory {
         }
 
         public boolean equals(Geometry g) {
-            return polygon.equals(g);
+            return polygon.equalsTopo(g);
         }
 
         public boolean equals(Object obj) {
@@ -1002,7 +1002,7 @@ class SimpleGeometryFactory extends GeometryFactory {
         }
 
         public boolean equals(Geometry g) {
-            return point.equals(g);
+            return point.equalsTopo(g);
         }
 
         public boolean equals(Object obj) {

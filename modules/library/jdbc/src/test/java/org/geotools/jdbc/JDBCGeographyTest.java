@@ -146,7 +146,7 @@ public abstract class JDBCGeographyTest extends JDBCTestSupport {
                 Transaction.AUTO_COMMIT);
         while (fr.hasNext()) {
             SimpleFeature f = (SimpleFeature) fr.next();
-            assertTrue(p.equals((Point) f.getDefaultGeometry()));
+            assertEquals(p, f.getDefaultGeometry());
         }
         fr.close();
     }
@@ -174,7 +174,7 @@ public abstract class JDBCGeographyTest extends JDBCTestSupport {
         FeatureReader fr = dataStore.getFeatureReader(q, Transaction.AUTO_COMMIT);
         assertTrue(fr.hasNext());
         f = (SimpleFeature) fr.next();
-        assertTrue(point.equals((Point) f.getDefaultGeometry()));
+        assertEquals(point, f.getDefaultGeometry());
         fr.close();
     }
 

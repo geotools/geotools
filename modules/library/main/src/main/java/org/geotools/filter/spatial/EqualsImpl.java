@@ -46,7 +46,7 @@ public class EqualsImpl extends GeometryFilterImpl implements Equals {
 		Envelope envRight = right.getEnvelopeInternal();
 
 		if (envRight.equals(envLeft))
-			return left.equals(right);
+			return left.equalsExact(right);
 		else
 			return false;
 	}

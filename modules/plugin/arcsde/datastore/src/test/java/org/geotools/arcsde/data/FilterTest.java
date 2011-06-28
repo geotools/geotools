@@ -167,7 +167,7 @@ public class FilterTest {
                     if (value1 instanceof Geometry) {
                         // jts geometry is not my friend
                         assertTrue("Feature[" + i + "]." + name + " geometry",
-                                ((Geometry) value1).equals((Geometry) value2));
+                                ((Geometry) value1).equalsTopo((Geometry) value2));
                     } else {
                         assertEquals("Feature[" + i + "]." + name, value1, value2);
                     }

@@ -430,19 +430,7 @@ public class SimpleFeatureImpl implements SimpleFeature {
                 }
             } else {
                 if (!values[i].equals(otherAtt)) {
-                    if (values[i] instanceof Geometry
-                            && otherAtt instanceof Geometry) {
-                        // we need to special case Geometry
-                        // as JTS is broken Geometry.equals( Object ) 
-                        // and Geometry.equals( Geometry ) are different 
-                        // (We should fold this knowledge into AttributeType...)
-                        if (!((Geometry) values[i]).equals(
-                                    (Geometry) otherAtt)) {
-                            return false;
-                        }
-                    } else {
-                        return false;
-                    }
+                    return false;
                 }
             }
         }

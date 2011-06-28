@@ -64,6 +64,7 @@ import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKBReader;
 import com.vividsolutions.jts.io.WKTReader;
 import com.vividsolutions.jts.io.WKTWriter;
+import java.text.MessageFormat;
 
 public class TeradataDialect extends PreparedStatementSQLDialect {
 
@@ -132,10 +133,21 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
     /** teradata version */
     int tdVersion = -1;
     
-    public TeradataDialect(JDBCDataStore store) {
-        super(store);
-    }
+    /** support LOB workaround */
+    private boolean lobWorkaroundEnabled;
     
+    public TeradataDialect(JDBCDataStore store) {
+        super(store);                   
+    }
+
+    public boolean isLobWorkaroundEnabled() {
+        return lobWorkaroundEnabled;
+    }
+
+    public void setLobWorkaroundEnabled(boolean lobWorkaroundEnabled) {
+        this.lobWorkaroundEnabled = lobWorkaroundEnabled;
+    }
+
     public void setLooseBBOXEnabled(boolean looseBBOXEnabled) {
         this.looseBBOXEnabled = looseBBOXEnabled;
     }
@@ -199,23 +211,21 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
     public boolean includeTable(String schemaName, String tableName, Connection cx)
             throws SQLException {
         
-        tableName = tableName.toLowerCase();
-        
-        if (tableName.equals("geometry_columns")) {
+        if (tableName.equalsIgnoreCase("geometry_columns")) {
             return false;
-        } else if (tableName.startsWith("spatial_ref_sys")) {
+        } else if (tableName.toLowerCase().startsWith("spatial_ref_sys")) {
             return false;
-        } else if (tableName.equals("geography_columns")) {
+        } else if (tableName.equalsIgnoreCase("geography_columns")) {
             return false;
-        } else if (tableName.equals("tessellation")) {
+        } else if (tableName.equalsIgnoreCase("tessellation")) {
             return false;
         } else if (tableName.endsWith("_idx")) {
             return false;
         }
-        
+
         // others?
         return dataStore.getDatabaseSchema() == null
-                || dataStore.getDatabaseSchema().equalsIgnoreCase(schemaName);
+                || dataStore.getDatabaseSchema().equals(schemaName);
     }
 
     @Override
@@ -340,15 +350,15 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
         // see decodeGeometryValue()
         // CASE WHEN CHARACTERS("the_geom") > 16000 THEN NULL ELSE CAST("the_geom" AS VARCHAR(16000)) END  as "the_geom_inline
         // Note: this only applies to TD 13 and up
-        if (tdVersion > 12) {
+        if (tdVersion > 12 && lobWorkaroundEnabled) {
             for (AttributeDescriptor att : featureType.getAttributeDescriptors()) {
                 if (att instanceof GeometryDescriptor) {
-                    sql.append(", CASE WHEN CHARACTERS(");
+                    sql.append(", CASE WHEN CHARACTERS(cast(");
                     encodeColumnName(att.getLocalName(), sql);
-                    sql.append(") > 32000 THEN NULL ELSE CAST (");
+                    sql.append(" as clob)) > 30000 THEN NULL ELSE CAST (");
                     encodeColumnName(att.getLocalName(), sql);
-                    //
-                    sql.append(".ST_AsBinary() AS VARBYTE(32000)) END");
+                    // works but not ideal, assumes rest of attributes consume < 2000 characters in result set
+                    sql.append(" as VARCHAR(30000)) END"); 
                     encodeColumnAlias(att.getLocalName() + "_inline", sql);
                 }
             }
@@ -596,7 +606,7 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
             LOGGER.fine(String.format("%s; 1=%s, 2=%s, 3=%s", sql.toString(), schemaName,
                 tableName, columnName));
         }
-        
+
         
         PreparedStatement ps = cx.prepareStatement(sql.toString());
         try {
@@ -617,7 +627,7 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
         finally {
             dataStore.closeSafe(ps);
         }
-        
+
         return null;
     }
     /**
@@ -903,50 +913,9 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
                     finally {
                         dataStore.closeSafe(ps);
                     }
+
+                    installTriggers(cx,tableName,gd.getLocalName(),indexTableName);
                     
-                    //TODO: create triggers to keep spatial index in sync
-                    /*
-                    "CREATE TRIGGER \"{0}_{1}_mi\" AFTER INSERT ON {12}"
-                    + "  REFERENCING NEW TABLE AS nt"
-                    + "  FOR EACH STATEMENT"
-                    + "  BEGIN ATOMIC"
-                    + "  ("
-                    + "    INSERT INTO {13} SELECT \"{2}\","
-                    + "      sysspatial.tessellate_index("
-                    + "      \"{1}\".ST_Envelope().ST_ExteriorRing().ST_PointN(1).ST_X(), "
-                    + "      \"{1}\".ST_Envelope().ST_ExteriorRing().ST_PointN(1).ST_Y(), "
-                    + "      \"{1}\".ST_Envelope().ST_ExteriorRing().ST_PointN(3).ST_X(), "
-                    + "      \"{1}\".ST_Envelope().ST_ExteriorRing().ST_PointN(3).ST_Y(), "
-                    + "      {3,number,0.0#}, {4,number,0.0#}, {5,number,0.0#}, {6,number,0.0#}, "
-                    + "      {7,number,0}, {8,number,0}, {9,number,0}, {10,number,0.0#}, {11,number,0})"
-                    // + ")"
-                    + "    FROM nt WHERE \"{1}\" IS NOT NULL;"
-                    + "  ) " + "END"
-                    */
-                    
-                    /*"CREATE TRIGGER \"{0}_{1}_mu\" AFTER UPDATE OF \"{1}\" ON {12}"
-                    + "  REFERENCING NEW AS nt"
-                    + "  FOR EACH STATEMENT"
-                    + "  BEGIN ATOMIC"
-                    + "  ("
-                    + "    DELETE FROM {13} WHERE id in (SELECT \"{2}\" from nt); "
-                    + "    INSERT INTO {13} SELECT \"{2}\","
-                    + "    sysspatial.tessellate_index("
-                    + "      \"{1}\".ST_Envelope().ST_ExteriorRing().ST_PointN(1).ST_X(), "
-                    + "      \"{1}\".ST_Envelope().ST_ExteriorRing().ST_PointN(1).ST_Y(), "
-                    + "      \"{1}\".ST_Envelope().ST_ExteriorRing().ST_PointN(3).ST_X(), "
-                    + "      \"{1}\".ST_Envelope().ST_ExteriorRing().ST_PointN(3).ST_Y(), "
-                    + "      {3,number,0.0#}, {4,number,0.0#}, {5,number,0.0#}, {6,number,0.0#}, "
-                    + "      {7,number,0}, {8,number,0}, {9,number,0}, {10,number,0.0#}, {11,number,0})"
-                    + "    FROM nt WHERE \"{1}\" IS NOT NULL;" + "  ) "*/
-                    
-                    /*"CREATE TRIGGER \"{0}_{1}_md\" AFTER DELETE ON {2}"
-                    + "  REFERENCING OLD TABLE AS ot"
-                    + "  FOR EACH STATEMENT"
-                    + "  BEGIN ATOMIC"
-                    + "  ("
-                    + "    DELETE FROM \"{0}_{1}_idx\" WHERE ID IN (SELECT \"{1}\" from ot);"
-                    + "  )" + "END"*/
                 }
                 else {
                     LOGGER.warning("No primary key for " + schemaName + "." + tableName + ". Unable"
@@ -957,7 +926,7 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
             //cx.commit();
         }
     }
-
+    
     public void registerClassToSqlMappings(Map<Class<?>, Integer> mappings) {
         super.registerClassToSqlMappings(mappings);
 
@@ -1081,4 +1050,116 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
             dataStore.closeSafe(ps);
         }
     }
+
+    private static void installInsertTrigger(Connection cx,String tableName, String geomName, String indexTableName) throws SQLException {
+        String referencing = "REFERENCING NEW TABLE AS nt";
+        String triggerAction = "INSERT";
+        String triggerStmt = createTriggerInsert(indexTableName,geomName);
+        installTrigger(cx,tableName,geomName,triggerAction,referencing,triggerStmt);
+    }
+
+    private static void installUpdateTrigger(Connection cx,String tableName, String geomName, String indexTableName) throws SQLException {
+        String referencing = "REFERENCING NEW TABLE AS nt";
+        String triggerAction = "UPDATE";
+        String triggerStmt = "DELETE FROM " + indexTableName + " WHERE ID IN (SELECT ID from nt);\n";
+        triggerStmt = triggerStmt + createTriggerInsert(indexTableName, geomName);
+        installTrigger(cx,tableName,geomName,triggerAction,referencing,triggerStmt);
+    }
+    
+    private static void installDeleteTrigger(Connection cx, String tableName, String geomName,String indexTableName) throws SQLException {
+        String referencing = "REFERENCING OLD TABLE AS ot";
+        String triggerAction = "DELETE";
+        String triggerStmt = "DELETE FROM " + indexTableName + " WHERE ID IN (SELECT ID from ot);\n";
+        installTrigger(cx,tableName,geomName,triggerAction,referencing,triggerStmt);
+    }
+    
+    private static String createTriggerInsert(String indexTable,String geometryName) {
+        String tinsert = "INSERT INTO {0} SELECT \"ID\","
+                + "      sysspatial.tessellate_index("
+                + "      \"{1}\".ST_MBR().Xmin(), "
+                + "      \"{1}\".ST_MBR().Ymin(), "
+                + "      \"{1}\".ST_MBR().Xmax(), "
+                + "      \"{1}\".ST_MBR().Ymax(), "
+                + "      {2,number,0.0#}, {3,number,0.0#}, {4,number,0.0#}, {5,number,0.0#}, "
+                + "      {6,number,0}, {7,number,0}, {8,number,0}, {9,number,0.0#}, {10,number,0})"
+                + " from nt;";
+        int west = -180;
+        int south = -90;
+        int east = 180;
+        int north = 90;
+        int nx = 1000;
+        int ny = 1000;
+        int level = 3;
+        double scale = .01;
+        int shift = 0;
+        return MessageFormat.format(tinsert, 
+            indexTable,geometryName,
+            west,south,east,north,
+            nx,ny,level,scale,shift
+            );
+    }
+
+    private static void installTrigger(Connection cx, String tableName,String geomName, String triggerAction, String referencing, String triggerStmt) throws SQLException {
+        String triggerName = tableName + "_" + geomName + "_m" + triggerAction.substring(0, 1).toLowerCase();
+        String sql = "CREATE TRIGGER " + triggerName + " AFTER " + triggerAction + " ON " + tableName + "\n";
+        sql = sql + referencing + "\n";
+        sql = sql + "FOR EACH STATEMENT BEGIN ATOMIC (\n";
+        sql = sql + triggerStmt + "\n) END;";
+        Statement s = cx.createStatement();
+        LOGGER.fine("trigger SQL : " + sql);
+        try {
+            s.execute(sql);
+        } finally {
+            s.close();
+        }
+    }
+
+    static void installTriggers(Connection cx, String tableName, String geomName, String indexTableName) throws SQLException {
+        /*
+        "CREATE TRIGGER \"{0}_{1}_mi\" AFTER INSERT ON {12}"
+        + "  REFERENCING NEW TABLE AS nt"
+        + "  FOR EACH STATEMENT"
+        + "  BEGIN ATOMIC"
+        + "  ("
+        + "    INSERT INTO {13} SELECT \"{2}\","
+        + "      sysspatial.tessellate_index("
+        + "      \"{1}\".ST_Envelope().ST_ExteriorRing().ST_PointN(1).ST_X(), "
+        + "      \"{1}\".ST_Envelope().ST_ExteriorRing().ST_PointN(1).ST_Y(), "
+        + "      \"{1}\".ST_Envelope().ST_ExteriorRing().ST_PointN(3).ST_X(), "
+        + "      \"{1}\".ST_Envelope().ST_ExteriorRing().ST_PointN(3).ST_Y(), "
+        + "      {3,number,0.0#}, {4,number,0.0#}, {5,number,0.0#}, {6,number,0.0#}, "
+        + "      {7,number,0}, {8,number,0}, {9,number,0}, {10,number,0.0#}, {11,number,0})"
+        // + ")"
+        + "    FROM nt WHERE \"{1}\" IS NOT NULL;"
+        + "  ) " + "END"
+         */
+
+        /*"CREATE TRIGGER \"{0}_{1}_mu\" AFTER UPDATE OF \"{1}\" ON {12}"
+        + "  REFERENCING NEW AS nt"
+        + "  FOR EACH STATEMENT"
+        + "  BEGIN ATOMIC"
+        + "  ("
+        + "    DELETE FROM {13} WHERE id in (SELECT \"{2}\" from nt); "
+        + "    INSERT INTO {13} SELECT \"{2}\","
+        + "    sysspatial.tessellate_index("
+        + "      \"{1}\".ST_Envelope().ST_ExteriorRing().ST_PointN(1).ST_X(), "
+        + "      \"{1}\".ST_Envelope().ST_ExteriorRing().ST_PointN(1).ST_Y(), "
+        + "      \"{1}\".ST_Envelope().ST_ExteriorRing().ST_PointN(3).ST_X(), "
+        + "      \"{1}\".ST_Envelope().ST_ExteriorRing().ST_PointN(3).ST_Y(), "
+        + "      {3,number,0.0#}, {4,number,0.0#}, {5,number,0.0#}, {6,number,0.0#}, "
+        + "      {7,number,0}, {8,number,0}, {9,number,0}, {10,number,0.0#}, {11,number,0})"
+        + "    FROM nt WHERE \"{1}\" IS NOT NULL;" + "  ) "*/
+
+        /*"CREATE TRIGGER \"{0}_{1}_md\" AFTER DELETE ON {2}"
+        + "  REFERENCING OLD TABLE AS ot"
+        + "  FOR EACH STATEMENT"
+        + "  BEGIN ATOMIC"
+        + "  ("
+        + "    DELETE FROM \"{0}_{1}_idx\" WHERE ID IN (SELECT \"{1}\" from ot);"
+        + "  )" + "END"*/
+        installInsertTrigger(cx, tableName, geomName, indexTableName);
+        installUpdateTrigger(cx, tableName, geomName, indexTableName);
+        installDeleteTrigger(cx, tableName, geomName, indexTableName);
+    }
+
 }

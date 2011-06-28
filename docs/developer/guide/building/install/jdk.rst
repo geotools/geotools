@@ -1,7 +1,7 @@
 Java Install
 -------------
 
-As mentioned in the previous section we use a stable (ie old) version of Java to build the GeoTools library.
+As mentioned in the previous section you should use the Java version corresponding to your geotools version.
 
 Java 2 Standard Edition Software Developers Kit
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -10,12 +10,12 @@ Java 2 Standard Edition Software Developers Kit
 2. Use the one click installer
 3. When it asks if you want to install a JRE you can say yes
 
-Be careful with Java 6
-''''''''''''''''''''''
+Use Java 6 starting with geotools 8.0
+'''''''''''''''''''''''''''''''''''''
 
-The API has changed in a few areas so making use of Java 6 for building is a little risky (you may accidentally use a new method).
+Since the API changes from Java version to version, building a geotools version with a newer Java SDK is risky (you may accidentally use a new method).
 
-GeoTools requires a Java 1.5 SDK for versions 2.5 and above; for older versions of java please use GeoTools 2.4.
+GeoTools requires a Java 1.6 SDK for versions 8.0 and above and Java 1.5 SDK for versions 2.5 and above, for older versions of Java please use GeoTools 2.4.
 
 Why JAVA_HOME does not work on Windows
 ''''''''''''''''''''''''''''''''''''''

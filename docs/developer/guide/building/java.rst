@@ -1,11 +1,11 @@
 Java
 =====
 
-GeoTools is written in the Java Programming Language. The library is targeted for Java 5 (to reflect strong Java Enterprise Edition use) with the understanding that many developers are using Java 6.
+GeoTools is written in the Java Programming Language. The library is targeted for Java 6.
 
 Java Runtime Environment:
 
-* Java 6 - while the build process will work; please set code generation to 1.5 levels and avoid the use of new Java 6 methods
+* Java 6 - Geotools 8.0.x and above
 * Java 5 - GeoTools 2.5.x and above
 * Java 1.4 - GeoTools versions 2.4.x and below
 * GeoTools is known to work with JRE provided by IBM, Apple and OpenJDK.
@@ -26,4 +26,4 @@ IDE Settings
 
 When developing GeoTools please change your compile options to:
 
-* Produce 5.0 compliant code
+* Produce 6.0 compliant code 

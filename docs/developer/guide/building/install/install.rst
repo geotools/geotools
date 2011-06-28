@@ -21,11 +21,9 @@ downloading now before proceeding on to the install instructions.
   * http://maven.apache.org/download.html
   * Apache build tool used for GeoTools. Excels at managing dependencies.
 
-* Java 2 Software Developers Kit (Java 5)
+* Java 2 Software Developers Kit (Java 6)
   
   * http://www.oracle.com/technetwork/java/javase/downloads/index.html
-  * Check under "previous releases"
-  * Yes we known J2S2 5.0 End of Service Life Notice has been issued
 
 * Java Advanced Imaging
   
@@ -40,12 +38,19 @@ downloading now before proceeding on to the install instructions.
   * Low-level image Access
 
 * Java ImageIO-Ext:
-  
+
   * http://java.net/projects/imageio-ext/downloads
 
 * Oracle (Optional):
-  
+    
   * Ojdbc14.jar
+
+* DB2 (Optional)
+
+  * DB2 Jdbc Driver
+  * https://www-304.ibm.com/support/docview.wss?uid=swg27016878&wv=1
+  * DB2 Express-C and Spatial Extender
+  * http://www-01.ibm.com/software/data/db2/express/download.html
 
 * ArcSDE (Optional):
   

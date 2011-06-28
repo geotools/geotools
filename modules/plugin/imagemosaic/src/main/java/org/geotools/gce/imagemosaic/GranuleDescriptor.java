@@ -17,9 +17,9 @@
 package org.geotools.gce.imagemosaic;
 
 import it.geosolutions.imageio.utilities.Utilities;
-import jaitools.imageutils.ROIGeometry;
-import jaitools.media.jai.vectorbinarize.VectorBinarizeDescriptor;
-import jaitools.media.jai.vectorbinarize.VectorBinarizeRIF;
+import org.jaitools.imageutils.ROIGeometry;
+import org.jaitools.media.jai.vectorbinarize.VectorBinarizeDescriptor;
+import org.jaitools.media.jai.vectorbinarize.VectorBinarizeRIF;
 
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -525,7 +525,7 @@ public class GranuleDescriptor {
 		final ReferencedEnvelope bbox = inclusionGeometry != null? new ReferencedEnvelope(granuleBBOX.intersection(inclusionGeometry.getEnvelopeInternal()), granuleBBOX.getCoordinateReferenceSystem()):granuleBBOX;
 		boolean doFiltering = false;
                 if (filterMe){
-                    doFiltering = Utils.checkEqualArea(inclusionGeometry, baseGridToWorld, granuleBBOX);
+                    doFiltering = Utils.areaIsDifferent(inclusionGeometry, baseGridToWorld, granuleBBOX);
                 }
 		
 		

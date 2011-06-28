@@ -148,11 +148,11 @@
     
     <!--  JAI Tools -->  
     <dependency>
-       <groupId>com.googlecode.jaitools</groupId>
+       <groupId>org.jaitools</groupId>
        <artifactId>jt-zonalstats</artifactId>
      </dependency>
      <dependency>
-       <groupId>com.googlecode.jaitools</groupId>
+       <groupId>org.jaitools</groupId>
        <artifactId>jt-utils</artifactId>
      </dependency>
     

@@ -16,7 +16,7 @@
  */
 package org.geotools.gce.imagemosaic;
 
-import jaitools.imageutils.ROIGeometry;
+import org.jaitools.imageutils.ROIGeometry;
 
 import java.awt.Color;
 import java.awt.Dimension;

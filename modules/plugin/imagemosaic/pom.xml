@@ -164,11 +164,11 @@
       <artifactId>commons-beanutils</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.googlecode.jaitools</groupId>
+      <groupId>org.jaitools</groupId>
       <artifactId>jt-utils</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.googlecode.jaitools</groupId>
+      <groupId>org.jaitools</groupId>
       <artifactId>jt-vectorbinarize</artifactId>
     </dependency> 
     <dependency>

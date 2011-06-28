@@ -88,7 +88,7 @@ public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup
     private static final Object[] AUTHORITIES = {
             "com.sun.media.jai", Citations.JAI,
             "org.geotools",      Citations.GEOTOOLS,
-            "jaitools.media.jai",Citations.JAI
+            "org.jaitools.media.jai",Citations.JAI
     };
 
     /**

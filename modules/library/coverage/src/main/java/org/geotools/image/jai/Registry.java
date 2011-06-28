@@ -52,7 +52,7 @@ public final class Registry {
     /**
      * The JAITools product name (used to register operations in JAI)
      */
-    public static final String JAI_TOOLS_PRODUCT = "jaitools.media.jai";
+    public static final String JAI_TOOLS_PRODUCT = "org.jaitools.media.jai";
     
     /**
      * The GeoTools product name (used to register operations in JAI)

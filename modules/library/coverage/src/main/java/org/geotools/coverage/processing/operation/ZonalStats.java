@@ -16,9 +16,9 @@
  */
 package org.geotools.coverage.processing.operation;
 
-import jaitools.media.jai.zonalstats.ZonalStatsDescriptor;
-import jaitools.media.jai.zonalstats.ZonalStatsRIF;
-import jaitools.numeric.Statistic;
+import org.jaitools.media.jai.zonalstats.ZonalStatsDescriptor;
+import org.jaitools.media.jai.zonalstats.ZonalStatsRIF;
+import org.jaitools.numeric.Statistic;
 
 import java.awt.image.RenderedImage;
 import java.awt.image.renderable.RenderedImageFactory;
@@ -58,7 +58,7 @@ public class ZonalStats extends AbstractStatisticsOperationJAI {
             OperationRegistry or = JAI.getDefaultInstance().getOperationRegistry();
             or.registerDescriptor(new ZonalStatsDescriptor());
             RenderedImageFactory rif = new ZonalStatsRIF();
-            RIFRegistry.register(or, "ZonalStats", "jaitools.media.jai", rif);
+            RIFRegistry.register(or, "ZonalStats", "org.jaitools.media.jai", rif);
         } catch (Exception e) {
             // if already registered (in other cases error will be thrown anyway)
         }

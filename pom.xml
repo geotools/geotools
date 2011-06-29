@@ -30,7 +30,7 @@
   <!--                                                             -->
   <!--   Available profiles are:                                   -->
   <!--                                                             -->
-  <!--     docs               include demo and docs                -->
+  <!--     docs               include docs                         -->
   <!--                                                             -->
   <!--     pending            Includes modules that are pending    -->
   <!--                                                             -->
@@ -101,7 +101,6 @@
          <property><name>all</name></property>
        </activation>
       <modules>
-        <module>demo</module>
         <module>docs</module>
       </modules>
     </profile>

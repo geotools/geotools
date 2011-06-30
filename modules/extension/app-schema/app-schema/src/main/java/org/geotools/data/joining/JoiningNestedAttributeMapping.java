@@ -205,8 +205,8 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
         for (Instance.Skip toSkip : instance.skipped) {
             while (daFeatureIterator.hasNext()
                     && daFeatureIterator.checkForeignIdValues(toSkip.idValues)
-                    && daFeatureIterator.peekNextValue(nestedSourceExpression).equals(
-                            toSkip.foreignKeyValue)) {
+                    && daFeatureIterator.peekNextValue(nestedSourceExpression).toString().equals(
+                            toSkip.foreignKeyValue.toString())) {
                 daFeatureIterator.skip();
             }
         }
@@ -303,8 +303,8 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
 
         if (featureIterator != null) {
             while (featureIterator.hasNext()
-                    && featureIterator.peekNextValue(nestedSourceExpression)
-                            .equals(foreignKeyValue)
+                    && featureIterator.peekNextValue(nestedSourceExpression).toString()
+                            .equals(foreignKeyValue.toString())
                     && featureIterator.checkForeignIdValues(idValues)) {
                 matchingFeatures.addAll(featureIterator.skip());
             }
@@ -374,8 +374,8 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
 
         if (featureIterator != null) {
             while (featureIterator.hasNext()
-                    && featureIterator.peekNextValue(nestedSourceExpression)
-                            .equals(foreignKeyValue)
+                    && featureIterator.peekNextValue(nestedSourceExpression).toString()
+                            .equals(foreignKeyValue.toString())
                     && featureIterator.checkForeignIdValues(idValues)) {
                 matchingFeatures.add(featureIterator.next());
             }
@@ -398,7 +398,7 @@ public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
             Expression nestedSourceExpression, Object foreignKeyValue, List<Object> idValues)
             throws IOException {
         while (featureIterator.hasNext()
-                && featureIterator.peekNextValue(nestedSourceExpression).equals(foreignKeyValue)
+                && featureIterator.peekNextValue(nestedSourceExpression).toString().equals(foreignKeyValue.toString())
                 && featureIterator.checkForeignIdValues(idValues)) {
             featureIterator.skip();
         }

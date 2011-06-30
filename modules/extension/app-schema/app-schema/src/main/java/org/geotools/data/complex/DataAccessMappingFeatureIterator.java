@@ -240,7 +240,7 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
     protected boolean checkForeignIdValues(List<Object> foreignIdValues, Feature next) {        
         if (foreignIds!=null) {
             for (int i = 0; i < foreignIds.size(); i++) {
-                if (!peekValue(next, foreignIds.get(i)).equals(foreignIdValues.get(i))) {
+                if (!peekValue(next, foreignIds.get(i)).toString().equals(foreignIdValues.get(i).toString())) {
                     return false;
                 }
             }

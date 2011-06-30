@@ -1,38 +1,37 @@
 Testing equality of Geometry objects
 ------------------------------------
 
-JTS has a number of different equals methods for comparing Geometry objects. If you are working with
-large, complex Geometry objects and doing a lot of comparisons, it's important to understand the
-how the various methods differ in order to get the best runtime performance for your application.
+JTS has a number of different equals methods for comparing Geometry objects. If you are doing a lot
+of comparisons with large, complex Geometry objects it's important to understand the differences
+between these methods to get the best runtime performance in your application.
 
 .. Hint::
-   If this page looks too long and scary, the important bit is don't ever
-   use Geometry.equals( Geometry g ) in your code. Instead, use equalsExact or equalsTopo.
+   If this page looks long and scary, the important bit is try never to use 
+   Geometry.equals( Geometry g ) in your code, but use equalsExact or equalsTopo instead.
 
 Geometry.equalsExact( Geometry g )
     This method tests for **structural equality** of Geometry objects. In simple terms, this means
     that they must have the same number of vertices, in the same locations, and in the same order.
-    The latter condition is the tricky one.  For example, if two Polygons have matching vertices
-    but in one they are arranged clockwise while in the other they are counter-clockwise, then they
-    are not **structurally** equal. This situation can easily arise when objects are being stored
-    in, and later retrieved from, data stores.
+    The latter condition is the tricky one.  If two Polygons have matching vertices, but one is
+    arranged clockwise while the other is counter-clockwise, then then this method will return
+    **false**. It's important to know this because vertex order can change when objects are being
+    stored in, and later retrieved from, data stores.
 
 Geometry.equalsExact( Geometry g, double tolerance )
     This is just like the previous method but lets you specify a tolerance for the comparison of
     vertex coordinates.
 
 Geometry.equalsNorm( Geometry g )
-    This method frees you from the vertex order trap. It first *normalizes* the Geometry objects,
-    ie. puts them into a standard or *canonical* form, and then compares them using the equalsExact
-    method. In other words, it is a short-cut for::
+    This method frees you from the vertex order problem mentioned above by *normalizing* the
+    Geometry objects (ie. putting each into a standard or *canonical* form), before comparison. It
+    is equivalent to::
 
       geomA.normalize();
       geomB.normalize();
       boolean result = geomA.equalsExact( geomB );
 
-    For lineal and polygonal objects this means that the order of vertices will be the same. You pay
-    for this in terms of additional computation which, for complex Geometry objects, can be
-    considerable.
+    Vertex order will is guaranteed to be the same, but the price is additional computation which,
+    for complex Geometry objects, can be expensive.
 
 Geometry.equalsTopo( Geometry g )
     This method tests for **topological equality** which is equivalent to drawing the two Geometry

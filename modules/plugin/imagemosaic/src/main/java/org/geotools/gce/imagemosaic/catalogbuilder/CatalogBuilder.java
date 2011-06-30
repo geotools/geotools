@@ -672,6 +672,7 @@ public class CatalogBuilder implements Runnable {
                             else
                                 transaction.commit();
                         } catch (Exception e) {
+                            LOGGER.log(Level.WARNING, "Failure occurred while collecting the granules", e);
                             transaction.rollback();
                         } finally {
                             transaction.close();

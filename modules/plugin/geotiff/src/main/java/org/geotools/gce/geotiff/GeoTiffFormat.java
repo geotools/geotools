@@ -137,7 +137,7 @@ public class GeoTiffFormat extends AbstractGridFormat implements Format {
 		}
 		ImageReader reader = null;
 		ImageInputStream inputStream = null;
-		boolean closeMe=false;
+		boolean closeMe = true;
 		try {
 			if (o instanceof URL) {
 				// /////////////////////////////////////////////////////////////
@@ -151,12 +151,9 @@ public class GeoTiffFormat extends AbstractGridFormat implements Format {
 				// /////////////////////////////////////////////////////////////
 				final URL url = (URL) o;
 				o = DataUtilities.urlToFile(url);
-				
-
-			}
-			else
-				if(o instanceof ImageInputStream)
+			} else if(o instanceof ImageInputStream) {
 					closeMe=false;
+			}
 			// get a stream
 			inputStream = (ImageInputStream) ((o instanceof ImageInputStream) ? o: ImageIO.createImageInputStream(o));
 			if (inputStream == null) {

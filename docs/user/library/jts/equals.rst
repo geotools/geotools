@@ -1,3 +1,5 @@
+.. include:: <isonum.txt>
+
 Testing equality of Geometry objects
 ------------------------------------
 
@@ -6,8 +8,8 @@ of comparisons with large, complex Geometry objects it's important to understand
 between these methods to get the best runtime performance in your application.
 
 .. Hint::
-   If this page looks long and scary, the important bit is try never to use 
-   Geometry.equals( Geometry g ) in your code, but use equalsExact or equalsTopo instead.
+   If this page looks long and scary, the important bit is to always avoid using
+   Geometry.equals(\ |nbsp|\ Geometry\ |nbsp|\ g\ |nbsp|\ ) in your code. Use equalsExact or equalsTopo instead.
 
 Geometry.equalsExact( Geometry g )
     This method tests for **structural equality** of Geometry objects. In simple terms, this means

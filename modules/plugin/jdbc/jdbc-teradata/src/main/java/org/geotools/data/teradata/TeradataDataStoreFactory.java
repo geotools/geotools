@@ -44,6 +44,9 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
      * parameter for database type
      */
     public static final Param DBTYPE = new Param("dbtype", String.class, "Type", true, "teradata");
+    
+    public static final Param LOBWORKAROUND = new Param("LOB Workaround",Boolean.class,
+            "Disable LOB workaround", false, Boolean.FALSE);
 
     /**
      * enables using && in bbox queries
@@ -121,6 +124,9 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
 
         // setup loose bbox
         TeradataDialect dialect = (TeradataDialect) dataStore.getSQLDialect();
+        
+        Boolean lobWorkaround = (Boolean) LOBWORKAROUND.lookUp(params);
+        dialect.setLobWorkaroundEnabled(lobWorkaround == null || !lobWorkaround);
 
         Boolean loose = (Boolean) LOOSEBBOX.lookUp(params);
         dialect.setLooseBBOXEnabled(loose == null || Boolean.TRUE.equals(loose));
@@ -166,13 +172,14 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
         }
         return dataStore;
     }
-
+    
     @Override
     protected void setupParameters(Map parameters) {
         super.setupParameters(parameters);
         
         parameters.put(DBTYPE.key, DBTYPE);
         parameters.put(LOOSEBBOX.key, LOOSEBBOX);
+        parameters.put(LOBWORKAROUND.key, LOBWORKAROUND);
         parameters.put(PORT.key, PORT);
         parameters.put(TESSELLATION_TABLE.key, TESSELLATION_TABLE);
         parameters.put(ESTIMATED_BOUNDS.key, ESTIMATED_BOUNDS);

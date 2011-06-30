@@ -96,7 +96,7 @@ class RasterLayerRequest {
      */
     private boolean empty;
 
-    private Color inputTransparentColor = GeoTiffFormat.INPUT_TRANSPARENT_COLOR.getDefaultValue();;
+    private Color inputTransparentColor = AbstractGridFormat.INPUT_TRANSPARENT_COLOR.getDefaultValue();;
 
     // private Color outputTransparentColor=JP2KFormat.OUTPUT_TRANSPARENT_COLOR.getDefaultValue();;
 
@@ -120,11 +120,7 @@ class RasterLayerRequest {
 
     private Dimension tileDimensions;
 
-    // private boolean multithreadingAllowed;
-
-    // public boolean isMultithreadingAllowed() {
-    // return multithreadingAllowed;
-    // }
+//    private boolean multithreadingAllowed;
 
     /**
      * Build a new {@code CoverageRequest} given a set of input parameters.
@@ -183,8 +179,9 @@ class RasterLayerRequest {
         for (GeneralParameterDescriptor descriptor : parametersDescriptors) {
 
             // we canc get the default vale only with the ParameterDescriptor class
-            if (!(descriptor instanceof ParameterDescriptor))
+            if (!(descriptor instanceof ParameterDescriptor)) {
                 continue;
+            }
 
             // get name and default value
             final ParameterDescriptor desc = (ParameterDescriptor) descriptor;
@@ -231,7 +228,7 @@ class RasterLayerRequest {
                 continue;
             }
 
-            if (name.equals(GeoTiffFormat.INPUT_TRANSPARENT_COLOR.getName())) {
+            if (name.equals(AbstractGridFormat.INPUT_TRANSPARENT_COLOR.getName())) {
                 if (value == null)
                     continue;
                 inputTransparentColor = (Color) value;
@@ -272,12 +269,13 @@ class RasterLayerRequest {
             // }
             //
             //
-            // if (name.equals(GeoTiffFormat.ALLOW_MULTITHREADING.getName())) {
-            // if(value==null)
-            // continue;
-            // multithreadingAllowed = ((Boolean) value).booleanValue();
-            // continue;
-            // }
+//            if (name.equals(GeoTiffFormat.ALLOW_MULTITHREADING.getName())) {
+//                if (value == null) {
+//                    continue;
+//                }
+//                multithreadingAllowed = ((Boolean) value).booleanValue();
+//                continue;
+//            }
 
             // //
             //
@@ -286,15 +284,15 @@ class RasterLayerRequest {
             // and TileHeight are integer values)
             //
             // //
-            if (name.equals(GeoTiffFormat.SUGGESTED_TILE_SIZE.getName())) {
+            if (name.equals(AbstractGridFormat.SUGGESTED_TILE_SIZE.getName())) {
                 final String suggestedTileSize = (String) value;
 
                 // Preliminary checks on parameter value
                 if ((suggestedTileSize != null) && (suggestedTileSize.trim().length() > 0)) {
 
-                    if (suggestedTileSize.contains(GeoTiffFormat.TILE_SIZE_SEPARATOR)) {
+                    if (suggestedTileSize.contains(AbstractGridFormat.TILE_SIZE_SEPARATOR)) {
                         final String[] tilesSize = suggestedTileSize
-                                .split(GeoTiffFormat.TILE_SIZE_SEPARATOR);
+                                .split(AbstractGridFormat.TILE_SIZE_SEPARATOR);
                         if (tilesSize.length == 2) {
                             try {
                                 // Getting suggested tile size
@@ -332,12 +330,10 @@ class RasterLayerRequest {
         // //
         if (name.equals(AbstractGridFormat.READ_GRIDGEOMETRY2D.getName())) {
             final Object value = param.getValue();
-            if (value == null)
-                return;
-            final GridGeometry2D gg = (GridGeometry2D) param.getValue();
-            if (gg == null) {
+            if (value == null) {
                 return;
             }
+            final GridGeometry2D gg = (GridGeometry2D) param.getValue();
 
             requestedBBox = new ReferencedEnvelope((Envelope) gg.getEnvelope2D());
             requestedRasterArea = gg.getGridRange2D().getBounds();
@@ -352,8 +348,9 @@ class RasterLayerRequest {
         // //
         if (name.equals(AbstractGridFormat.USE_JAI_IMAGEREAD.getName())) {
             final Object value = param.getValue();
-            if (value == null)
+            if (value == null) {
                 return;
+            }
             readType = param.booleanValue() ? ReadType.JAI_IMAGEREAD : ReadType.DIRECT_READ;
             return;
         }
@@ -365,16 +362,18 @@ class RasterLayerRequest {
         // //
         if (name.equals(AbstractGridFormat.OVERVIEW_POLICY.getName())) {
             final Object value = param.getValue();
-            if (value == null)
+            if (value == null) {
                 return;
+            }
             overviewPolicy = (OverviewPolicy) param.getValue();
             return;
         }
 
-        if (name.equals(GeoTiffFormat.INPUT_TRANSPARENT_COLOR.getName())) {
+        if (name.equals(AbstractGridFormat.INPUT_TRANSPARENT_COLOR.getName())) {
             final Object value = param.getValue();
-            if (value == null)
+            if (value == null) {
                 return;
+            }
             inputTransparentColor = (Color) param.getValue();
             // paranoiac check on the provided transparent color
             inputTransparentColor = new Color(inputTransparentColor.getRed(),
@@ -406,15 +405,15 @@ class RasterLayerRequest {
         //
         // }
         //
-         if (name.equals(
-         GeoTiffFormat.BACKGROUND_VALUES.getName())) {
-         final Object value = param.getValue();
-         if(value==null)
-         return;
-         backgroundValues = (double[]) param.getValue();
-         return;
-        
-         }
+        if (name.equals(GeoTiffFormat.BACKGROUND_VALUES.getName())) {
+            final Object value = param.getValue();
+            if (value == null) {
+                return;
+            }
+            backgroundValues = (double[]) param.getValue();
+            return;
+
+        }
         //
         // if (name.equals(ImageMosaicFormat.MAX_ALLOWED_TILES.getName())) {
         // final Object value = param.getValue();
@@ -425,13 +424,14 @@ class RasterLayerRequest {
         // }
         //
         //
-        // if (name.equals(GeoTiffFormat.ALLOW_MULTITHREADING.getName())) {
-        // final Object value = param.getValue();
-        // if(value==null)
-        // return;
-        // multithreadingAllowed = ((Boolean) param.getValue()).booleanValue();
-        // return;
-        // }
+//        if (name.equals(GeoTiffFormat.ALLOW_MULTITHREADING.getName())) {
+//            final Object value = param.getValue();
+//            if (value == null) {
+//                return;
+//            }
+//            multithreadingAllowed = ((Boolean) param.getValue()).booleanValue();
+//            return;
+//        }
 
         // //
         //
@@ -440,15 +440,15 @@ class RasterLayerRequest {
         // and TileHeight are integer values)
         //
         // //
-        if (name.equals(GeoTiffFormat.SUGGESTED_TILE_SIZE.getName())) {
+        if (name.equals(AbstractGridFormat.SUGGESTED_TILE_SIZE.getName())) {
             final String suggestedTileSize = (String) param.getValue();
 
             // Preliminary checks on parameter value
             if ((suggestedTileSize != null) && (suggestedTileSize.trim().length() > 0)) {
 
-                if (suggestedTileSize.contains(GeoTiffFormat.TILE_SIZE_SEPARATOR)) {
+                if (suggestedTileSize.contains(AbstractGridFormat.TILE_SIZE_SEPARATOR)) {
                     final String[] tilesSize = suggestedTileSize
-                            .split(GeoTiffFormat.TILE_SIZE_SEPARATOR);
+                            .split(AbstractGridFormat.TILE_SIZE_SEPARATOR);
                     if (tilesSize.length == 2) {
                         try {
                             // Getting suggested tile size
@@ -487,10 +487,8 @@ class RasterLayerRequest {
             //
             requestedBBox = rasterManager.domainManager.coverageBBox;
             cropBBox = rasterManager.domainManager.coverageBBox;
-            requestedRasterArea = (Rectangle) rasterManager.domainManager.coverageRasterArea
-                    .clone();
-            destinationRasterArea = (Rectangle) rasterManager.domainManager.coverageRasterArea
-                    .clone();
+            requestedRasterArea = (Rectangle) rasterManager.domainManager.coverageRasterArea.clone();
+            destinationRasterArea = (Rectangle) rasterManager.domainManager.coverageRasterArea.clone();
             requestedResolution = rasterManager.domainManager.coverageFullResolution.clone();
             // TODO harmonize the various types of transformations
             requestedGridToWorld = (AffineTransform) rasterManager.domainManager.coverageGridToWorld2D;
@@ -506,8 +504,7 @@ class RasterLayerRequest {
 
     private void inspectCoordinateReferenceSystems() throws DataSourceException {
         // get the crs for the requested bbox
-        final CoordinateReferenceSystem requestCRS = CRS.getHorizontalCRS(requestedBBox
-                .getCoordinateReferenceSystem());
+        final CoordinateReferenceSystem requestCRS = CRS.getHorizontalCRS(requestedBBox.getCoordinateReferenceSystem());
 
         //
         // Check if the request CRS is different from the coverage native CRS
@@ -520,9 +517,9 @@ class RasterLayerRequest {
                 throw new DataSourceException("Unable to inspect request CRS", e);
             }
         // now transform the requested envelope to source crs
-        if (destinationToSourceTransform != null && destinationToSourceTransform.isIdentity())
+        if (destinationToSourceTransform != null && destinationToSourceTransform.isIdentity()) {
             destinationToSourceTransform = null;// the CRS is basically the same
-        else if (destinationToSourceTransform instanceof AffineTransform) {
+        } else if (destinationToSourceTransform instanceof AffineTransform) {
             //
             // k, the transformation between the various CRS is not null or the
             // Identity, let's see if it is an affine transform, which case we
@@ -563,8 +560,9 @@ class RasterLayerRequest {
      */
     private void checkReadType() {
 
-        if (readType != ReadType.UNSPECIFIED)
+        if (readType != ReadType.UNSPECIFIED) {
             return;
+        }
         // //
         //
         // Ok, the request did not explicitly set the read type, let's check the
@@ -664,9 +662,10 @@ class RasterLayerRequest {
         }
         // is it empty??
         if (destinationRasterArea.isEmpty()) {
-            if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.log(Level.FINE,
-                        "Requested envelope too small resulting in empty cropped raster region");
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.log(Level.FINE, "Requested envelope too small resulting in empty cropped " +
+                		"raster region");
+            }
             // TODO: Future versions may define a 1x1 rectangle starting
             // from the lower coordinate
             empty = true;
@@ -727,8 +726,9 @@ class RasterLayerRequest {
         //
         computeCropBBOX();
         if (empty || (cropBBox != null && cropBBox.isEmpty())) {
-            if (LOGGER.isLoggable(Level.FINE))
+            if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.log(Level.FINE, "RequestedBBox empty or null");
+            }
             // this means that we do not have anything to load at all!
             empty = true;
             return;
@@ -739,19 +739,18 @@ class RasterLayerRequest {
         //
         computeCropRasterArea();
         if (empty || (destinationRasterArea != null && destinationRasterArea.isEmpty())) {
-            if (LOGGER.isLoggable(Level.FINE))
+            if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.log(Level.FINE, "CropRasterArea empty or null");
+            }
             // this means that we do not have anything to load at all!
             return;
         }
 
         if (LOGGER.isLoggable(Level.FINE)) {
-            StringBuffer sb = new StringBuffer("Adjusted Requested Envelope = ")
-                    .append(requestedBBox.toString()).append("\n")
-                    .append("Requested raster dimension = ").append(requestedRasterArea.toString())
-                    .append("\n").append("Corresponding raster source region = ")
-                    .append(requestedRasterArea.toString());
-            LOGGER.log(Level.FINE, sb.toString());
+            final String loggedMessage = "Adjusted Requested Envelope = " + requestedBBox.toString() + "\n" +
+                "Requested raster dimension = " + requestedRasterArea.toString() + "\n" + 
+                "Corresponding raster source region = " + requestedRasterArea.toString();
+            LOGGER.log(Level.FINE, loggedMessage);
         }
         //
         // Compute the request resolution from the request
@@ -869,8 +868,9 @@ class RasterLayerRequest {
             // leave
             return;
         } catch (Throwable e) {
-            if (LOGGER.isLoggable(Level.INFO))
+            if (LOGGER.isLoggable(Level.INFO)) {
                 LOGGER.log(Level.INFO, "Unable to compute requested resolution", e);
+            }
         }
 
         //
@@ -1067,6 +1067,10 @@ class RasterLayerRequest {
         return requestedRasterScaleFactors != null ? requestedRasterScaleFactors.clone()
                 : requestedRasterScaleFactors;
     }
+    
+//    public boolean isMultithreadingAllowed() {
+//        return multithreadingAllowed;
+//    }
 
     @Override
     public String toString() {

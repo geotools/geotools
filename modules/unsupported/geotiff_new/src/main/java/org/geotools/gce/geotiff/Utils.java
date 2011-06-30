@@ -35,6 +35,7 @@ import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.PrjFileReader;
 import org.geotools.data.WorldFileReader;
+import org.geotools.image.io.ImageIOExt;
 import org.geotools.util.Utilities;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -47,138 +48,124 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 
 /**
- * Sparse utilities for the various classes. I use them to extract
- * complex code from other places.
+ * Sparse utilities for the various classes. I use them to extract complex code
+ * from other places.
  * 
  * @author Simone Giannecchini, GeoSolutions S.A.S.
  * 
  */
 class Utils {
-    	
-	static URL checkSource(Object source) throws MalformedURLException,
-			DataSourceException {
-		URL sourceURL = null;
 
-		//
-		// Check source
-		//
+    static final double EPSILON = 10E-6;
 
-		// if it is a URL or a String let's try to see if we can get a file to
-		// check if we have to build the index
-		if (source instanceof URL) {
-			sourceURL = ((URL) source);
-			source = DataUtilities.urlToFile(sourceURL);
-		} else if (source instanceof String) {
-			// is it a File?
-			final String tempSource = (String) source;
-			File tempFile = new File(tempSource);
-			if (!tempFile.exists()) {
-				// is it a URL
-				try {
-					sourceURL = new URL(tempSource);
-					source = DataUtilities.urlToFile(sourceURL);
-				} catch (MalformedURLException e) {
-					sourceURL = null;
-					source = null;
-				}
-			} else {
-				sourceURL = tempFile.toURI().toURL();
-				source = tempFile;
-			}
-		} 
+    static URL checkSource(Object source) throws MalformedURLException, DataSourceException {
+        URL sourceURL = null;
 
-		// at this point we have tried to convert the thing to a File as hard as
-		// we could, let's see what we can do
-		if (source instanceof File) {
-			final File sourceFile = (File) source;
-			if (!sourceFile.isDirectory())
-				sourceURL = ((File) source).toURI().toURL();
-		} else
-			sourceURL = null;
-		return sourceURL;
-	}
+        //
+        // Check source
+        //
 
-	/**
-	 * Look for an {@link ImageReader} instance that is able to read the
-	 * provided {@link ImageInputStream}, which must be non null.
-	 * 
-	 * <p>
-	 * In case no reader is found, <code>null</code> is returned.
-	 * 
-	 * @param inStream
-	 *            an instance of {@link ImageInputStream} for which we need to
-	 *            find a suitable {@link ImageReader}.
-	 * @return a suitable instance of {@link ImageReader} or <code>null</code>
-	 *         if one cannot be found.
-	 */
-	static ImageReader getReader(final ImageInputStream inStream) {
-	        Utilities.ensureNonNull("inStream", inStream);
-	        try{
-        		// get a reader
-        		inStream.mark();
-        		final Iterator<ImageReader> readersIt = ImageIO
-        				.getImageReaders(inStream);
-        		if (!readersIt.hasNext()) {
-        			return null;
-        		}
-        		return readersIt.next();
-	        }finally{
-	            try {
-                    inStream.reset();
-                } catch (IOException e) {
-                    if(LOGGER.isLoggable(Level.FINE))
-                        LOGGER.log(Level.FINE,e.getLocalizedMessage(),e);
+        // if it is a URL or a String let's try to see if we can get a file to
+        // check if we have to build the index
+        if (source instanceof URL) {
+            sourceURL = ((URL) source);
+            source = DataUtilities.urlToFile(sourceURL);
+        } else if (source instanceof String) {
+            // is it a File?
+            final String tempSource = (String) source;
+            File tempFile = new File(tempSource);
+            if (!tempFile.exists()) {
+                // is it a URL
+                try {
+                    sourceURL = new URL(tempSource);
+                    source = DataUtilities.urlToFile(sourceURL);
+                } catch (MalformedURLException e) {
+                    sourceURL = null;
+                    source = null;
                 }
-	        }
-	}
+            } else {
+                sourceURL = tempFile.toURI().toURL();
+                source = tempFile;
+            }
+        }
 
-	/**
-	 * Retrieves an {@link ImageInputStream} for the provided input {@link File}
-	 * .
-	 * 
-	 * @param file
-	 * @return
-	 * @throws IOException
-	 */
-	static ImageInputStream getInputStream(final File file) throws IOException {
-		final ImageInputStream inStream = ImageIO.createImageInputStream(file);
-		if (inStream == null)
-			return null;
-		return inStream;
-	}
+        // at this point we have tried to convert the thing to a File as hard as
+        // we could, let's see what we can do
+        if (source instanceof File) {
+            final File sourceFile = (File) source;
+            if (!sourceFile.isDirectory()) {
+                sourceURL = ((File) source).toURI().toURL();
+            }
+        } else {
+            sourceURL = null;
+        }
+        return sourceURL;
+    }
 
-	/**
-	 * Checks that a {@link File} is a real file, exists and is readable.
-	 * 
-	 * @param file
-	 *            the {@link File} instance to check. Must not be null.
-	 * 
-	 * @return <code>true</code> in case the file is a real file, exists and is
-	 *         readable; <code>false </code> otherwise.
-	 */
-	static boolean checkFileReadable(final File file) {
-		if (LOGGER.isLoggable(Level.FINE)) {
-			final StringBuilder builder = new StringBuilder();
-			builder.append("Checking file:").append(
-					FilenameUtils.getFullPath(file.getAbsolutePath())).append(
-					"\n");
-			builder.append("canRead:").append(file.canRead()).append("\n");
-			builder.append("isHidden:").append(file.isHidden()).append("\n");
-			builder.append("isFile").append(file.isFile()).append("\n");
-			builder.append("canWrite").append(file.canWrite()).append("\n");
-			LOGGER.fine(builder.toString());
-		}
-		if (!file.exists() || !file.canRead() || !file.isFile())
-			return false;
-		return true;
-	}
+    /**
+     * Look for an {@link ImageReader} instance that is able to read the
+     * provided {@link ImageInputStream}, which must be non null.
+     * 
+     * <p>
+     * In case no reader is found, <code>null</code> is returned.
+     * 
+     * @param inStream
+     *            an instance of {@link ImageInputStream} for which we need to
+     *            find a suitable {@link ImageReader}.
+     * @return a suitable instance of {@link ImageReader} or <code>null</code>
+     *         if one cannot be found.
+     */
+    static ImageReader getReader(final ImageInputStream inStream) {
+        Utilities.ensureNonNull("inStream", inStream);
+        try {
+            // get a reader
+            inStream.mark();
+            final Iterator<ImageReader> readersIt = ImageIO.getImageReaders(inStream);
+            if (!readersIt.hasNext()) {
+                return null;
+            }
+            return readersIt.next();
+        } finally {
+            try {
+                inStream.reset();
+            } catch (IOException e) {
+                if (LOGGER.isLoggable(Level.FINE))
+                    LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
+            }
+        }
+    }
+
+    /**
+     * Checks that a {@link File} is a real file, exists and is readable.
+     * 
+     * @param file
+     *            the {@link File} instance to check. Must not be null.
+     * 
+     * @return <code>true</code> in case the file is a real file, exists and is
+     *         readable; <code>false </code> otherwise.
+     */
+    static boolean checkFileReadable(final File file) {
+        if (LOGGER.isLoggable(Level.FINE)) {
+            final StringBuilder builder = new StringBuilder();
+            builder.append("Checking file:")
+                    .append(FilenameUtils.getFullPath(file.getAbsolutePath())).append("\n")
+                    .append("canRead:").append(file.canRead()).append("\n").append("isHidden:")
+                    .append(file.isHidden()).append("\n").append("isFile").append(file.isFile())
+                    .append("\n").append("canWrite").append(file.canWrite()).append("\n");
+            LOGGER.fine(builder.toString());
+        }
+        if (!file.exists() || !file.canRead() || !file.isFile()) {
+            return false;
+        }
+        return true;
+    }
 
     /**
      * @throws IOException
      */
     static MathTransform parseWorldFile(Object source) throws IOException {
         MathTransform raster2Model = null;
-    
+
         // TODO: Add support for FileImageInputStreamExt
         // TODO: Check for WorldFile on URL beside the actual connection.
         if (source instanceof File) {
@@ -187,28 +174,24 @@ class Utils {
             String filename = sourceFile.getName();
             final int i = filename.lastIndexOf('.');
             filename = (i == -1) ? filename : filename.substring(0, i);
-            
+
             // getting name and extension
-            final String base = (parentPath != null) ? new StringBuilder(
-                    parentPath).append(File.separator).append(filename)
-                    .toString() : filename;
-    
+            final String base = (parentPath != null) ? parentPath + File.separator + filename
+                    : filename;
+
             // We can now construct the baseURL from this string.
-            File file2Parse = new File(new StringBuilder(base).append(".wld")
-                    .toString());
-    
+            File file2Parse = new File(base + ".wld");
+
             if (file2Parse.exists()) {
                 final WorldFileReader reader = new WorldFileReader(file2Parse);
                 raster2Model = reader.getTransform();
             } else {
                 // looking for another extension
-                file2Parse = new File(new StringBuilder(base).append(".tfw")
-                        .toString());
-    
+                file2Parse = new File(base + ".tfw");
+
                 if (file2Parse.exists()) {
                     // parse world file
-                    final WorldFileReader reader = new WorldFileReader(
-                            file2Parse);
+                    final WorldFileReader reader = new WorldFileReader(file2Parse);
                     raster2Model = reader.getTransform();
                 }
             }
@@ -217,12 +200,12 @@ class Utils {
     }
 
     static CoordinateReferenceSystem getCRS(Object source) {
-            CoordinateReferenceSystem crs = null;
+        CoordinateReferenceSystem crs = null;
         if (source instanceof File
                 || (source instanceof URL && (((URL) source).getProtocol() == "file"))) {
             // getting name for the prj file
             final String sourceAsString;
-    
+
             if (source instanceof File) {
                 sourceAsString = ((File) source).getAbsolutePath();
             } else {
@@ -234,19 +217,17 @@ class Utils {
                     sourceAsString = path;
                 }
             }
-    
+
             final int index = sourceAsString.lastIndexOf(".");
-            final StringBuilder base = new StringBuilder(sourceAsString
-                    .substring(0, index)).append(".prj");
-    
+            final String base = sourceAsString.substring(0, index) + ".prj";
+
             // does it exist?
-            final File prjFile = new File(base.toString());
+            final File prjFile = new File(base);
             if (prjFile.exists()) {
                 // it exists then we have top read it
                 PrjFileReader projReader = null;
                 try {
-                    final FileChannel channel = new FileInputStream(prjFile)
-                            .getChannel();
+                    final FileChannel channel = new FileInputStream(prjFile).getChannel();
                     projReader = new PrjFileReader(channel);
                     crs = projReader.getCoordinateReferenceSystem();
                 } catch (FileNotFoundException e) {
@@ -268,20 +249,18 @@ class Utils {
                         } catch (IOException e) {
                             // warn about the error but proceed, it is not fatal
                             // we have at least the default crs to use
-                            LOGGER
-                                    .log(Level.SEVERE, e.getLocalizedMessage(),
-                                            e);
+                            LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
                         }
                 }
-    
+
             }
         }
         return crs;
     }
 
     /** Logger for the {@link GeoTiffReader} class. */
-    private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(GeoTiffReader.class.toString());
-
+    private final static Logger LOGGER = org.geotools.util.logging.Logging
+            .getLogger(GeoTiffReader.class.toString());
 
     /**
      * Creates image metadata which complies to the GeoTIFFWritingUtilities
@@ -299,45 +278,38 @@ class Utils {
      * @throws IIOException
      *             if the metadata cannot be created
      */
-    final static IIOMetadata createGeoTiffIIOMetadata(
-    		ImageWriter writer, ImageTypeSpecifier type,
-    		GeoTiffIIOMetadataEncoder geoTIFFMetadata, ImageWriteParam params)
-    		throws IIOException {
-    	IIOMetadata imageMetadata = writer
-    			.getDefaultImageMetadata(type, params);
-    	imageMetadata = writer
-    			.convertImageMetadata(imageMetadata, type, params);
-    	org.w3c.dom.Element w3cElement = (org.w3c.dom.Element) imageMetadata
-    			.getAsTree(GeoTiffConstants.GEOTIFF_IIO_METADATA_FORMAT_NAME);
-    	final Element element = new DOMBuilder().build(w3cElement);
-    
-    	geoTIFFMetadata.assignTo(element);
-    
-    	final Parent parent = element.getParent();
-    	parent.removeContent(element);
-    
-    	final Document document = new Document(element);
-    
-    	try {
-    		final org.w3c.dom.Document w3cDoc = new DOMOutputter()
-    				.output(document);
-    		final IIOMetadata iioMetadata = new TIFFImageMetadata(
-    				TIFFImageMetadata.parseIFD(w3cDoc.getDocumentElement()
-    						.getFirstChild()));
-    		imageMetadata = iioMetadata;
-    	} catch (JDOMException e) {
-    		throw new IIOException(
-    				"Failed to set GeoTIFFWritingUtilities specific tags.", e);
-    	} catch (IIOInvalidTreeException e) {
-    		throw new IIOException(
-    				"Failed to set GeoTIFFWritingUtilities specific tags.", e);
-    	}
-    
-    	return imageMetadata;
+    final static IIOMetadata createGeoTiffIIOMetadata(ImageWriter writer, ImageTypeSpecifier type,
+            GeoTiffIIOMetadataEncoder geoTIFFMetadata, ImageWriteParam params) throws IIOException {
+        IIOMetadata imageMetadata = writer.getDefaultImageMetadata(type, params);
+        imageMetadata = writer.convertImageMetadata(imageMetadata, type, params);
+        org.w3c.dom.Element w3cElement = (org.w3c.dom.Element) imageMetadata
+                .getAsTree(GeoTiffConstants.GEOTIFF_IIO_METADATA_FORMAT_NAME);
+        final Element element = new DOMBuilder().build(w3cElement);
+
+        geoTIFFMetadata.assignTo(element);
+
+        final Parent parent = element.getParent();
+        parent.removeContent(element);
+
+        final Document document = new Document(element);
+
+        try {
+            final org.w3c.dom.Document w3cDoc = new DOMOutputter().output(document);
+            final IIOMetadata iioMetadata = new TIFFImageMetadata(TIFFImageMetadata.parseIFD(w3cDoc
+                    .getDocumentElement().getFirstChild()));
+            imageMetadata = iioMetadata;
+        } catch (JDOMException e) {
+            throw new IIOException("Failed to set GeoTIFFWritingUtilities specific tags.", e);
+        } catch (IIOInvalidTreeException e) {
+            throw new IIOException("Failed to set GeoTIFFWritingUtilities specific tags.", e);
+        }
+
+        return imageMetadata;
     }
 
     /** factory for getting tiff writers. */
     final static TIFFImageWriterSpi TIFFWRITERFACTORY = new TIFFImageWriterSpi();
+
     /** SPI for creating tiff readers in ImageIO tools */
     final static TIFFImageReaderSpi TIFFREADERFACTORY = new TIFFImageReaderSpi();
 }

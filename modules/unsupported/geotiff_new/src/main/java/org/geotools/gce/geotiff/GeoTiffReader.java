@@ -106,62 +106,61 @@ public final class GeoTiffReader extends AbstractGridCoverage2DReader implements
     private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(GeoTiffReader.class.toString());
 
     /**
-	 * Number of coverages for this reader is 
-	 * 
-	 * @return the number of coverages for this reader.
-	 */
-	@Override
-	public int getGridCoverageCount() {
-		return 1;
-	}
+     * Number of coverages for this reader is
+     * 
+     * @return the number of coverages for this reader.
+     */
+    @Override
+    public int getGridCoverageCount() {
+        return 1;
+    }
 
-	/** Decoder for the GeoTiff metadata. */
-	private GeoTiffIIOMetadataDecoder metadata;
+    /** Decoder for the GeoTiff metadata. */
+    private GeoTiffIIOMetadataDecoder metadata;
 
-	/** Adapter for the GeoTiff crs. */
-	private GeoTiffMetadata2CRSAdapter gtcs;
-	
-	private double noData = Double.NaN;
-	
-	private RasterManager rasterManager;
+    /** Adapter for the GeoTiff crs. */
+    private GeoTiffMetadata2CRSAdapter gtcs;
 
-        URL sourceURL;
-        
-        boolean expandMe;
+    private double noData = Double.NaN;
 
-	RasterLayout[] overViewLayouts;
+    private RasterManager rasterManager;
 
-	RasterLayout hrLayout;
+    URL sourceURL;
 
-	ImageTypeSpecifier baseImageType;
+    boolean expandMe;
 
-	@Override
-        public void dispose() {
-            super.dispose();
-            rasterManager.dispose();
-        }
+    RasterLayout[] overViewLayouts;
+
+    RasterLayout hrLayout;
+
+    ImageTypeSpecifier baseImageType;
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        rasterManager.dispose();
+    }
 
     /**
-	 * Let us retrieve the {@link GridCoverageFactory} that we want to use.
-	 * 
-	 * @return
-	 *                  retrieves the {@link GridCoverageFactory} that we want to use.
-	 */
-	 GridCoverageFactory getGridCoverageFactory(){
-	     return coverageFactory;
-	 }
-	
-	/**
-	 * Creates a new instance of GeoTiffReader
-	 * 
-	 * @param input
-	 *            the GeoTiff file
-	 * @throws DataSourceException
-	 */
-	public GeoTiffReader(Object input) throws DataSourceException {
-		this(input, new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER,Boolean.TRUE));
+     * Let us retrieve the {@link GridCoverageFactory} that we want to use.
+     * 
+     * @return retrieves the {@link GridCoverageFactory} that we want to use.
+     */
+    GridCoverageFactory getGridCoverageFactory() {
+        return coverageFactory;
+    }
 
-	}
+    /**
+     * Creates a new instance of GeoTiffReader
+     * 
+     * @param input
+     *            the GeoTiff file
+     * @throws DataSourceException
+     */
+    public GeoTiffReader(Object input) throws DataSourceException {
+        this(input, new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE));
+
+    }
 
     /**
      * Creates a new instance of GeoTiffReader
@@ -203,14 +202,17 @@ public final class GeoTiffReader extends AbstractGridCoverage2DReader implements
             // information for this coverage
             //
             // /////////////////////////////////////////////////////////////////////
-            if ((source instanceof InputStream) || (source instanceof ImageInputStream))
+            if ((source instanceof InputStream) || (source instanceof ImageInputStream)) {
                 closeMe = false;
-            if (source instanceof ImageInputStream)
+            }
+            if (source instanceof ImageInputStream) {
                 inStream = (ImageInputStream) source;
-            else
+            } else {
                 inStream = ImageIO.createImageInputStream(source);
-            if (inStream == null)
+            }
+            if (inStream == null) {
                 throw new IllegalArgumentException("No input stream for the provided source");
+            }
 
             this.sourceURL = Utils.checkSource(source);
             // /////////////////////////////////////////////////////////////////////
@@ -227,16 +229,18 @@ public final class GeoTiffReader extends AbstractGridCoverage2DReader implements
             // /////////////////////////////////////////////////////////////////////
             coverageName = source instanceof File ? ((File) source).getName() : "geotiff_coverage";
             final int dotIndex = coverageName.lastIndexOf('.');
-            if (dotIndex != -1 && dotIndex != coverageName.length())
+            if (dotIndex != -1 && dotIndex != coverageName.length()) {
                 coverageName = coverageName.substring(0, dotIndex);
+            }
 
             // /////////////////////////////////////////////////////////////////////
             //
             // Freeing streams
             //
             // /////////////////////////////////////////////////////////////////////
-            if (closeMe)
+            if (closeMe) {
                 inStream.close();
+            }
         } catch (IOException e) {
             throw new DataSourceException(e);
         } catch (TransformException e) {
@@ -248,263 +252,259 @@ public final class GeoTiffReader extends AbstractGridCoverage2DReader implements
         rasterManager = new RasterManager(this);
     }
 
-	/**
-	 * 
-	 * @param hints
-	 * @throws IOException
-	 * @throws FactoryException
-	 * @throws TransformException
-	 * @throws MismatchedDimensionException
-	 * @throws DataSourceException
-	 */
-	private void getHRInfo(Hints hints) throws IOException, FactoryException,
-			TransformException, MismatchedDimensionException,
-			DataSourceException {
-		// //
-		//
-		// Get a reader for this format
-		//
-		// //
-		final ImageReader reader = Utils.TIFFREADERFACTORY.createReaderInstance();
+    /**
+     * 
+     * @param hints
+     * @throws IOException
+     * @throws FactoryException
+     * @throws TransformException
+     * @throws MismatchedDimensionException
+     * @throws DataSourceException
+     */
+    private void getHRInfo(Hints hints) throws IOException, FactoryException, TransformException, 
+        MismatchedDimensionException, DataSourceException {
+        // //
+        //
+        // Get a reader for this format
+        //
+        // //
+        final ImageReader reader = Utils.TIFFREADERFACTORY.createReaderInstance();
 
-		// //
-		//
-		// get the METADATA
-		//
-		// //
-		reader.setInput(inStream);
-		
-		
-		final IIOMetadata iioMetadata = reader.getImageMetadata(0);
-		CoordinateReferenceSystem foundCrs = null;
-		boolean useWorldFile = false;
-		
-		try{
-		    metadata = new GeoTiffIIOMetadataDecoder(iioMetadata);
-		    gtcs = new GeoTiffMetadata2CRSAdapter(hints);
-		    if (gtcs != null)
-		    	foundCrs = gtcs.createCoordinateSystem(metadata);
-		    else 
-		        useWorldFile = true;
-		    
-		    if (metadata.hasNoData())
-	                    noData = metadata.getNoData();
-		}catch (IllegalArgumentException iae){
-		    useWorldFile = true;
-		}catch (UnsupportedOperationException uoe){
-		    useWorldFile = true;
-		}
-		
-		
-		// //
-		//
-		// get the CRS INFO
-		//
-		// //
-		final Object tempCRS = this.hints
-				.get(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM);
-		if (tempCRS != null) {
-			this.crs = (CoordinateReferenceSystem) tempCRS;
-			LOGGER.log(Level.WARNING, new StringBuilder(
-					"Using forced coordinate reference system ").append(
-					crs.toWKT()).toString());
-		} else{
-		    if (useWorldFile)
-		        foundCrs = Utils.getCRS(source);
-		    crs = foundCrs;
-		}
-		
-		if (crs == null){
-                    throw new DataSourceException ("Coordinate Reference System is not available");
-                }
-			
+        // //
+        //
+        // get the METADATA
+        //
+        // //
+        reader.setInput(inStream);
 
-		// //
-		//
-		// get the dimension of the hr image and build the model as well as
-		// computing the resolution
-		// //
-		numOverviews = reader.getNumImages(true) - 1;
-		final int hrWidth = reader.getWidth(0);
-		final int hrHeight = reader.getHeight(0);
-		final int hrTileW= reader.getTileWidth(0);
-		final int hrTileH= reader.getTileHeight(0);
-		hrLayout= new RasterLayout(0,0,hrWidth,hrHeight,0,0,hrTileW,hrTileH);
-		final Rectangle actualDim = new Rectangle(0, 0, hrWidth, hrHeight);
-		originalGridRange = new GridEnvelope2D(actualDim);
+        final IIOMetadata iioMetadata = reader.getImageMetadata(0);
+        CoordinateReferenceSystem foundCrs = null;
+        boolean useWorldFile = false;
 
-		if (!useWorldFile && gtcs != null) {
-		    this.raster2Model = GeoTiffMetadata2CRSAdapter.getRasterToModel(metadata);
-        		    
-        		 
-                }
-                else {
-                    this.raster2Model = Utils.parseWorldFile(source);
-                }
-        		
-		if (this.raster2Model == null){
-                    throw new DataSourceException ("Raster to Model Transformation is not available");
-                }
-		
-		final AffineTransform tempTransform = new AffineTransform((AffineTransform) raster2Model);
-		tempTransform.translate(-0.5, -0.5);
-		originalEnvelope = CRS.transform(ProjectiveTransform.create(tempTransform), new GeneralEnvelope(actualDim));
-		originalEnvelope.setCoordinateReferenceSystem(crs);
+        try {
+            metadata = new GeoTiffIIOMetadataDecoder(iioMetadata);
+            gtcs = new GeoTiffMetadata2CRSAdapter(hints);
+            if (gtcs != null) {
+                foundCrs = gtcs.createCoordinateSystem(metadata);
+            } else {
+                useWorldFile = true;
+            }
 
-		// ///
-		// 
-		// setting the higher resolution available for this coverage
-		//
-		// ///
-		highestRes = new double[2];
-		highestRes[0]=XAffineTransform.getScaleX0(tempTransform);
-		highestRes[1]=XAffineTransform.getScaleY0(tempTransform);
-
-		// //
-		//
-		// get information for the successive images
-		//
-		// //
-		
-		if (numOverviews >= 1) {
-			overViewResolutions = new double[numOverviews][2];
-			overViewLayouts= new RasterLayout[numOverviews];
-			for (int i = 0; i < numOverviews; i++) {
-				//getting raster layout
-				final int width=reader.getWidth(i+1);
-				final int height=reader.getHeight(i+1);
-				final int tileW=reader.getTileWidth(i+1);
-				final int tileH=reader.getTileHeight(i+1);
-				
-				overViewLayouts[i]= new RasterLayout(0,0,width,height,0,0,tileW,tileH);
-				
-				//computing resolutions
-				overViewResolutions[i][0] = (highestRes[0]*hrWidth)/width;
-				overViewResolutions[i][1] = (highestRes[1]*hrHeight)/height;
-			}
-		} else
-			overViewResolutions = null;
-		
-		// get sample image
-		final ImageReadParam readParam= reader.getDefaultReadParam();
-		readParam.setSourceRegion(new Rectangle(0,0,4,4));
-		final BufferedImage sampleImage = reader.read(0,readParam);
-		baseImageType = new ImageTypeSpecifier(sampleImage);
-		reader.dispose();
-                
-	}
-
-	/**
-	 * @see org.opengis.coverage.grid.GridCoverageReader#getFormat()
-	 */
-	public Format getFormat() {
-		return new GeoTiffFormat();
-	}
-
-
-	/**
-         * @see org.opengis.coverage.grid.GridCoverageReader#read(org.opengis.parameter.GeneralParameterValue[])
-         */
-	@Override
-        public GridCoverage2D read(GeneralParameterValue[] params) throws IOException {
-
-                if (LOGGER.isLoggable(Level.FINE)) {
-                        LOGGER.fine("Reading image from " + sourceURL.toString());
-                        LOGGER.fine(new StringBuffer("Highest res ").append(highestRes[0])
-                                        .append(" ").append(highestRes[1]).toString());
-                }
-
-                final Collection<GridCoverage2D> response = rasterManager.read(params);
-                if(response.isEmpty())
-                        throw new DataSourceException("Unable to create a coverage for this request ");
-                else
-                        return response.iterator().next();
+            if (metadata.hasNoData()) {
+                noData = metadata.getNoData();
+            }
+        } catch (IllegalArgumentException iae) {
+            useWorldFile = true;
+        } catch (UnsupportedOperationException uoe) {
+            useWorldFile = true;
         }
 
-	/**
-         * Creates a {@link GridCoverage} for the provided {@link PlanarImage} using
-         * the {@link #raster2Model} that was provided for this coverage.
-         * 
-         * <p>
-         * This method is vital when working with coverages that have a raster to
-         * model transformation that is not a simple scale and translate.
-         * 
-         * @param image
-         *            contains the data for the coverage to create.
-          * @param raster2Model
-         *            is the {@link MathTransform} that maps from the raster space
-         *            to the model space.
-         * @return a {@link GridCoverage}
-         * @throws IOException
-         */
-        protected final GridCoverage createCoverage(PlanarImage image,
-                        MathTransform raster2Model) throws IOException {
+        // //
+        //
+        // get the CRS INFO
+        //
+        // //
+        final Object tempCRS = this.hints.get(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM);
+        if (tempCRS != null) {
+            this.crs = (CoordinateReferenceSystem) tempCRS;
+            LOGGER.log(Level.WARNING, "Using forced coordinate reference system " + crs.toWKT());
+        } else {
+            if (useWorldFile) {
+                foundCrs = Utils.getCRS(source);
+            }
+            crs = foundCrs;
+        }
 
-                // creating bands
+        if (crs == null) {
+            throw new DataSourceException("Coordinate Reference System is not available");
+        }
+
+        // //
+        //
+        // get the dimension of the hr image and build the model as well as
+        // computing the resolution
+        // //
+        numOverviews = reader.getNumImages(true) - 1;
+        final int hrWidth = reader.getWidth(0);
+        final int hrHeight = reader.getHeight(0);
+        final int hrTileW = reader.getTileWidth(0);
+        final int hrTileH = reader.getTileHeight(0);
+        hrLayout = new RasterLayout(0, 0, hrWidth, hrHeight, 0, 0, hrTileW, hrTileH);
+        final Rectangle actualDim = new Rectangle(0, 0, hrWidth, hrHeight);
+        originalGridRange = new GridEnvelope2D(actualDim);
+
+        if (!useWorldFile && gtcs != null) {
+            this.raster2Model = GeoTiffMetadata2CRSAdapter.getRasterToModel(metadata);
+        } else {
+            this.raster2Model = Utils.parseWorldFile(source);
+        }
+
+        if (this.raster2Model == null) {
+            throw new DataSourceException("Raster to Model Transformation is not available");
+        }
+
+        final AffineTransform tempTransform = new AffineTransform((AffineTransform) raster2Model);
+        tempTransform.translate(-0.5, -0.5);
+        originalEnvelope = CRS.transform(ProjectiveTransform
+                .create(tempTransform), new GeneralEnvelope(actualDim));
+        originalEnvelope.setCoordinateReferenceSystem(crs);
+
+        // ///
+        //
+        // setting the higher resolution available for this coverage
+        //
+        // ///
+        highestRes = new double[2];
+        highestRes[0] = XAffineTransform.getScaleX0(tempTransform);
+        highestRes[1] = XAffineTransform.getScaleY0(tempTransform);
+
+        // //
+        //
+        // get information for the successive images
+        //
+        // //
+
+        if (numOverviews >= 1) {
+            overViewResolutions = new double[numOverviews][2];
+            overViewLayouts = new RasterLayout[numOverviews];
+            for (int i = 0; i < numOverviews; i++) {
+                // getting raster layout
+                final int width = reader.getWidth(i + 1);
+                final int height = reader.getHeight(i + 1);
+                final int tileW = reader.getTileWidth(i + 1);
+                final int tileH = reader.getTileHeight(i + 1);
+                overViewLayouts[i] = new RasterLayout(0, 0, width, height, 0, 0, tileW, tileH);
+
+                // computing resolutions
+                overViewResolutions[i][0] = (highestRes[0] * hrWidth) / width;
+                overViewResolutions[i][1] = (highestRes[1] * hrHeight) / height;
+            }
+        } else {
+            overViewResolutions = null;
+        }
+
+        // get sample image
+        final ImageReadParam readParam = reader.getDefaultReadParam();
+        readParam.setSourceRegion(new Rectangle(0, 0, 4, 4));
+        final BufferedImage sampleImage = reader.read(0, readParam);
+        baseImageType = new ImageTypeSpecifier(sampleImage);
+        reader.dispose();
+
+    }
+
+    /**
+     * @see org.opengis.coverage.grid.GridCoverageReader#getFormat()
+     */
+    public Format getFormat() {
+        return new GeoTiffFormat();
+    }
+
+    /**
+     * @see org.opengis.coverage.grid.GridCoverageReader#read(org.opengis.parameter.GeneralParameterValue[])
+     */
+    @Override
+    public GridCoverage2D read(GeneralParameterValue[] params)
+            throws IOException {
+
+        if (LOGGER.isLoggable(Level.FINE)) {
+            LOGGER.fine("Reading image from " + sourceURL.toString() + "\n"
+                    + "Highest res " + highestRes[0] + " " + highestRes[1]);
+        }
+
+        final Collection<GridCoverage2D> response = rasterManager.read(params);
+        if (response.isEmpty()) {
+            throw new DataSourceException("Unable to create a coverage for this request ");
+        } else {
+            return response.iterator().next();
+        }
+    }
+
+    /**
+     * Creates a {@link GridCoverage} for the provided {@link PlanarImage} using
+     * the {@link #raster2Model} that was provided for this coverage.
+     * 
+     * <p>
+     * This method is vital when working with coverages that have a raster to
+     * model transformation that is not a simple scale and translate.
+     * 
+     * @param image
+     *            contains the data for the coverage to create.
+     * @param raster2Model
+     *            is the {@link MathTransform} that maps from the raster space
+     *            to the model space.
+     * @return a {@link GridCoverage}
+     * @throws IOException
+     */
+    protected final GridCoverage createCoverage(
+            PlanarImage image, MathTransform raster2Model) throws IOException {
+
+        // creating bands
         final SampleModel sm = image.getSampleModel();
         final ColorModel cm = image.getColorModel();
-                final int numBands = sm.getNumBands();
-                final GridSampleDimension[] bands = new GridSampleDimension[numBands];
-                // setting bands names.
-                
-                Category noDataCategory = null;
-                if (!Double.isNaN(noData)){
-                    noDataCategory = new Category(Vocabulary
-                            .formatInternational(VocabularyKeys.NODATA), new Color[] { new Color(0, 0, 0, 0) }, NumberRange
-                            .create(noData, noData), NumberRange
-                            .create(noData, noData));
-                }
-                
-                for (int i = 0; i < numBands; i++) {
-                        final ColorInterpretation colorInterpretation=TypeMap.getColorInterpretation(cm, i);
-                        if(colorInterpretation==null)
-                               throw new IOException("Unrecognized sample dimension type");
-                        Category[] categories = null;
-                        if (noDataCategory != null)
-                            categories = new Category[]{noDataCategory};
-                        bands[i] = new GridSampleDimension(colorInterpretation.name(),categories,null).geophysics(true);
-                }
-                // creating coverage
-                if (raster2Model != null) {
-                        return coverageFactory.create(coverageName, image, crs,
-                                        raster2Model, bands, null, null);
-                }
-                return coverageFactory.create(coverageName, image, new GeneralEnvelope(
-                                originalEnvelope), bands, null, null);
+        final int numBands = sm.getNumBands();
+        final GridSampleDimension[] bands = new GridSampleDimension[numBands];
+        // setting bands names.
 
+        Category noDataCategory = null;
+        if (!Double.isNaN(noData)) {
+            noDataCategory = new Category(
+                    Vocabulary.formatInternational(VocabularyKeys.NODATA),
+                    new Color[] { new Color(0, 0, 0, 0) }, NumberRange.create(
+                            noData, noData), NumberRange.create(noData, noData));
         }
-	
-	
-         /**
+
+        for (int i = 0; i < numBands; i++) {
+            final ColorInterpretation colorInterpretation = TypeMap.getColorInterpretation(cm, i);
+            if (colorInterpretation == null) {
+                throw new IOException("Unrecognized sample dimension type");
+            }
+            Category[] categories = null;
+            if (noDataCategory != null) {
+                categories = new Category[] { noDataCategory };
+            }
+            bands[i] = new GridSampleDimension(colorInterpretation.name(), categories, null)
+                .geophysics(true);
+        }
+        // creating coverage
+        if (raster2Model != null) {
+            return coverageFactory.create(coverageName, image, crs, raster2Model, 
+                    bands, null, null);
+        }
+        return coverageFactory.create(coverageName, image, new GeneralEnvelope(
+                originalEnvelope), bands, null, null);
+
+    }
+
+    /**
      * Package private accessor for {@link Hints}.
      * 
      * @return this {@link Hints} used by this reader.
      */
-    Hints getHints(){
-            return super.hints;
+    Hints getHints() {
+        return super.hints;
     }
-    
+
     /**
      * Package private accessor for the highest resolution values.
      * 
      * @return the highest resolution values.
      */
-    double[] getHighestRes(){
-            return super.highestRes;
+    double[] getHighestRes() {
+        return super.highestRes;
     }
-    
+
     /**
      * 
      * @return
      */
-    double[][] getOverviewsResolution(){
-            return super.overViewResolutions;
+    double[][] getOverviewsResolution() {
+        return super.overViewResolutions;
     }
-    
-    int getNumberOfOverviews(){
-            return super.numOverviews;
+
+    int getNumberOfOverviews() {
+        return super.numOverviews;
     }
-    
+
     String getName() {
         return super.coverageName;
     }

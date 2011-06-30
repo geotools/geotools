@@ -138,33 +138,12 @@ public final class GeoTiffFormatFactorySpi implements GridFormatFactorySpi {
      */
     public AbstractGridFormat createFormat() {
         if (!isAvailable()) {
-            throw new UnsupportedOperationException(
-                    "The GeoTiff plugin cannot be instantiated");
+            throw new UnsupportedOperationException("The GeoTiff plugin cannot be instantiated");
         }
 
         return new GeoTiffFormat();
     }
 
-//	/**
-//	 * Informs the caller whether the libraries required by the GeoTiff reader
-//	 * are installed or not.
-//	 * 
-//	 * @return availability of the GeoTiff format.
-//	 */
-//	public boolean isAvailable() {
-//		boolean available = true;
-//
-//		// if these classes are here, then the runtime environment has
-//		// access to JAI and the JAI ImageI/O toolbox.
-//		try {
-//			Class.forName("javax.media.jai.JAI");
-//			Class.forName("com.sun.media.jai.operator.ImageReadDescriptor");
-//		} catch (ClassNotFoundException cnf) {
-//			available = false;
-//		}
-//
-//		return available;
-//	}
     /**
      * Informs the caller whether the libraries required by the GeoTiff reader
      * are installed or not.

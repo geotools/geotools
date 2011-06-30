@@ -98,7 +98,7 @@ import org.opengis.referencing.datum.PixelInCell;
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
-public class GridCoverage2D extends AbstractGridCoverage implements RenderedCoverage {
+public class GridCoverage2D extends AbstractGridCoverage {
     /**
      * For compatibility during cross-version serialization.
      */

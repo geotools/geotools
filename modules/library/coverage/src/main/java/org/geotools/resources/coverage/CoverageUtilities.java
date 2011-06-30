@@ -37,7 +37,6 @@ import org.geotools.coverage.Category;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridGeometry2D;
-import org.geotools.coverage.grid.RenderedCoverage;
 import org.geotools.coverage.grid.ViewType;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.Envelope2D;
@@ -280,10 +279,8 @@ public final class CoverageUtilities {
      */
     public static boolean uses(final GridCoverage coverage, final RenderedImage image) {
         if (coverage != null) {
-            if (coverage instanceof RenderedCoverage) {
-                if (((RenderedCoverage) coverage).getRenderedImage() == image) {
-                    return true;
-                }
+            if ( coverage.getRenderedImage() == image) {
+                return true;
             }
             final Collection<GridCoverage> sources = coverage.getSources();
             if (sources != null) {

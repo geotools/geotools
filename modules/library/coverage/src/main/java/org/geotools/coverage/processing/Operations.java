@@ -104,6 +104,36 @@ public class Operations {
     {
         return doOperation("AddConst", source, "constants", constants);
     }
+    
+    /**
+     * Returns the sum between two coverages
+     *
+     * @param source0 The first source coverage.
+     * @param source1 The second source coverage.
+     * @throws CoverageProcessingException if the operation can't be applied.
+     *
+     * @see org.geotools.coverage.processing.operation.Add
+     */
+    public Coverage add(final Coverage source0, final Coverage source1)
+            throws CoverageProcessingException
+    {
+        return doOperation("Add", source0, source1);
+    }
+    
+    /**
+     * Returns the multiplication between two coverages
+     *
+     * @param source0 The first source coverage.
+     * @param source1 The second source coverage.
+     * @throws CoverageProcessingException if the operation can't be applied.
+     *
+     * @see org.geotools.coverage.processing.operation.Multiply
+     */
+    public Coverage multiply(final Coverage source0, final Coverage source1)
+            throws CoverageProcessingException
+    {
+        return doOperation("Multiply", source0, source1);
+    }
 
     /**
      * Subtracts constants (one for each band) from every sample values of the source coverage.
@@ -707,6 +737,29 @@ public class Operations {
         final Operation operation = processor.getOperation(operationName);
         final ParameterValueGroup parameters = operation.getParameters();
         parameters.parameter("Source").setValue(source);
+        return processor.doOperation(parameters);
+    }
+    
+    /**
+     * Applies a process binary operation on two coverages with default parameters.
+     * This is a helper method for implementation of various convenience methods in this class.
+     *
+     * @param  operationName Name of the operation to be applied to the coverage.
+     * @param  source0 The first source coverage.
+     * @param  source1 The second source coverage.
+     * 
+     * @return The result as a coverage.
+     * @throws OperationNotFoundException if there is no operation named {@code operationName}.
+     * @throws CoverageProcessingException if the operation can't be applied.
+     */
+    protected final Coverage doOperation(final String operationName, final Coverage source0, final Coverage source1)
+            throws OperationNotFoundException, CoverageProcessingException
+    {
+        final CoverageProcessor processor = getProcessor();
+        final Operation operation = processor.getOperation(operationName);
+        final ParameterValueGroup parameters = operation.getParameters();
+        parameters.parameter("Source0").setValue(source0);
+        parameters.parameter("Source1").setValue(source1);
         return processor.doOperation(parameters);
     }
 

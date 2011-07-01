@@ -1,5 +1,6 @@
 org.geotools.coverage.processing.operation.Absolute
 org.geotools.coverage.processing.operation.AddConst
+org.geotools.coverage.processing.operation.Add
 org.geotools.coverage.processing.operation.Convolve
 org.geotools.coverage.processing.operation.Crop
 org.geotools.coverage.processing.operation.DivideByConst
@@ -12,6 +13,7 @@ org.geotools.coverage.processing.operation.Log
 org.geotools.coverage.processing.operation.MaxFilter
 org.geotools.coverage.processing.operation.MedianFilter
 org.geotools.coverage.processing.operation.MinFilter
+org.geotools.coverage.processing.operation.Multiply
 org.geotools.coverage.processing.operation.MultiplyConst
 org.geotools.coverage.processing.operation.Recolor
 org.geotools.coverage.processing.operation.Resample

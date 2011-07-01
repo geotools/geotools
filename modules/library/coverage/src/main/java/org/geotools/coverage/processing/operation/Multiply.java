@@ -33,6 +33,8 @@ import org.geotools.util.NumberRange;
  * ...
  * ...
  * result[n-1][m-1] = source0[n-1][m-1] * source1[n-1][m-1]
+ * 
+ * Make sure coverages have same envelope and same resolution before using this operation.
  *
  * <P><STRONG>Name:</STRONG>&nbsp;<CODE>"Multiply"</CODE><BR>
  *    <STRONG>JAI operator:</STRONG>&nbsp;<CODE>"{@linkplain MultiplyDescriptor Multiply}"</CODE><BR>
@@ -63,10 +65,10 @@ import org.geotools.util.NumberRange;
  *
  * @since 8.x
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/coverage/src/main/java/org/geotools/coverage/processing/operation/Multiply.java $
+ * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/modules/library/coverage/src/main/java/org/geotools/coverage/processing/operation/Multiply.java $
  *
- * @see org.geotools.coverage.processing.Operations#add(org.opengis.coverage.Coverage, org.opengis.coverage.Coverage)
- * @see Add
+ * @see org.geotools.coverage.processing.Operations#multiply(org.opengis.coverage.Coverage, org.opengis.coverage.Coverage)
+ * @see Multiply
  *
  */
 public class Multiply extends OperationJAI {
@@ -86,6 +88,9 @@ public class Multiply extends OperationJAI {
      * Returns the expected range of values for the resulting image.
      */
     protected NumberRange deriveRange(final NumberRange[] ranges, final Parameters parameters) {
+        
+        // Note that they will not be exact ranges since this will require really computing
+        // the pixel by pixel operation
         if (ranges != null && ranges.length == 2){
             final NumberRange range0 = ranges[0];
             final NumberRange range1 = ranges[1];

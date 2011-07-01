@@ -152,7 +152,7 @@ public final class GeoTiffFormat extends AbstractGridFormat implements Format {
         }
         ImageReader reader = null;
         ImageInputStream inputStream = null;
-        boolean closeMe = false;
+        boolean closeMe = true;
         try {
             if (o instanceof URL) {
                 // /////////////////////////////////////////////////////////////

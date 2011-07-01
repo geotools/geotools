@@ -102,16 +102,14 @@ enum ReadType {
                     // reader
                     reader.dispose();
                 } catch (Throwable t) {
-                    // swallow the exception, we are just trying to close as
-                    // much stuff as possible
+                    // swallow the exception, we are just trying to close as much stuff as possible
                 }
 
                 try {
                     // instream
                     inStream.close();
                 } catch (Throwable t) {
-                    // swallow the exception, we are just trying to close as
-                    // much stuff as possible
+                    // swallow the exception, we are just trying to close as much stuff as possible
                 }
             }
         }

@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import javax.imageio.ImageIO;
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
@@ -242,21 +243,30 @@ class RasterGranuleLoader {
         if (LOGGER.isLoggable(java.util.logging.Level.FINE)) {
             LOGGER.fine("Loading raster data for rasterGranuleLoader " + this.toString());
         }
+        ImageInputStream inStream = null;
+        int imageChoice = imageIndex;
+        File file = granuleFile;
 
         final ReferencedEnvelope bbox = new ReferencedEnvelope(granuleBBOX);
         // intersection of this tile bound with the current crop bbox
         final ReferencedEnvelope intersection = new ReferencedEnvelope(bbox.intersection(cropBBox),
                 cropBBox.getCoordinateReferenceSystem());
 
-        ImageInputStream inStream = null;
         ImageReader reader = null;
         try {
             //
             // get info about the raster we have to read
             //
-
-            // get a stream
-            inStream = ImageIOExt.createImageInputStream(granuleFile);
+            if (request.rasterManager.parent.extOvrImgChoice >= 0 && 
+                    imageIndex >= request.rasterManager.parent.extOvrImgChoice) {
+                file = request.rasterManager.parent.ovrSource;
+                inStream = request.rasterManager.parent.ovrInStreamSPI.createInputStreamInstance(
+                        file, ImageIO.getUseCache(), ImageIO.getCacheDirectory());
+                imageChoice = imageIndex - request.rasterManager.parent.extOvrImgChoice;
+            } else {
+                inStream = ImageIOExt.createImageInputStream(file);    
+            }
+            
             if (inStream == null) {
                 return null;
             }
@@ -271,7 +281,7 @@ class RasterGranuleLoader {
             }
 
             // get selected level and base level dimensions
-            final Level selectedlevel = getLevel(imageIndex);
+            final Level selectedlevel = getLevel(request, imageIndex);
 
             // now create the crop grid to world which can be used to decide
             // which source area we need to crop in the selected level taking
@@ -313,8 +323,8 @@ class RasterGranuleLoader {
             readParameters.setSourceRegion(sourceArea);
 
             // read
-            RenderedImage raster = request.getReadType().read(readParameters, imageIndex,
-                    granuleFile, selectedlevel.rasterDimensions, tileDimension);
+            RenderedImage raster = request.getReadType().read(readParameters, imageChoice,
+                    file, selectedlevel.rasterDimensions, tileDimension);
             if (raster == null) {
                 return null;
             }
@@ -482,7 +492,7 @@ class RasterGranuleLoader {
 
     }
 
-    Level getLevel(final int index) {
+    Level getLevel(RasterLayerRequest request, final int index) {
         synchronized (granuleLevels) {
             if (granuleLevels.containsKey(Integer.valueOf(index))) {
                 return granuleLevels.get(Integer.valueOf(index));
@@ -491,13 +501,21 @@ class RasterGranuleLoader {
                 // create the base grid to world transformation
                 ImageInputStream inStream = null;
                 ImageReader reader = null;
+                File file = granuleFile; 
+                int imageChoice = index;
                 try {
                     //
                     // get info about the raster we have to read
                     //
-
-                    // get a stream
-                    inStream = ImageIOExt.createImageInputStream(granuleFile);
+                    if (request.rasterManager.parent.extOvrImgChoice >= 0 && 
+                            index >= request.rasterManager.parent.extOvrImgChoice) {
+                        file = request.rasterManager.parent.ovrSource;
+                        inStream = request.rasterManager.parent.ovrInStreamSPI.createInputStreamInstance(
+                                file, ImageIO.getUseCache(), ImageIO.getCacheDirectory());
+                        imageChoice = index - request.rasterManager.parent.extOvrImgChoice;
+                    } else {
+                        inStream = ImageIOExt.createImageInputStream(file);    
+                    }
                     if (inStream == null) {
                         throw new IllegalArgumentException();
                     }
@@ -509,7 +527,7 @@ class RasterGranuleLoader {
                     }
 
                     // get selected level and base level dimensions
-                    final Rectangle levelDimension = ImageUtilities.getDimension(index, inStream,
+                    final Rectangle levelDimension = ImageUtilities.getDimension(imageChoice, inStream,
                             reader);
 
                     final Level baseLevel = granuleLevels.get(0);

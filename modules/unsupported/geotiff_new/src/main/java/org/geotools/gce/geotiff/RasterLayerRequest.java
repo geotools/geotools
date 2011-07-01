@@ -106,7 +106,7 @@ class RasterLayerRequest {
 
     private double[] backgroundValues;
 
-    private RasterManager rasterManager;
+    RasterManager rasterManager;
 
     private MathTransform destinationToSourceTransform;
 

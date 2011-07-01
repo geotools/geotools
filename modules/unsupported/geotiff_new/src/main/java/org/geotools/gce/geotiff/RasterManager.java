@@ -105,9 +105,10 @@ class RasterManager {
     }
 
     class OverviewsController {
-        final ArrayList<RasterManager.OverviewLevel> resolutionsLevels = new ArrayList<OverviewLevel>();
+        ArrayList<RasterManager.OverviewLevel> resolutionsLevels;
 
         public OverviewsController() {
+            resolutionsLevels = new ArrayList<OverviewLevel>();
 
             // notice that we assume what follows:
             // -highest resolution image is at level 0.

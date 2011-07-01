@@ -36,6 +36,7 @@ import java.net.URLDecoder;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.imageio.ImageIO;
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import javax.media.jai.JAI;
@@ -50,6 +51,7 @@ import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.data.DataSourceException;
+import org.geotools.data.DataUtilities;
 import org.geotools.factory.Hints;
 import org.geotools.gce.geotiff.RasterManager.OverviewLevel;
 import org.geotools.geometry.GeneralEnvelope;
@@ -232,20 +234,14 @@ class RasterLayerResponse{
      * @param readerSpi
      *            the Image Reader Service provider interface.
      */
-    public RasterLayerResponse(
-            final RasterLayerRequest request, 
-            final RasterManager rasterManager) {
+    public RasterLayerResponse(final RasterLayerRequest request, final RasterManager rasterManager) {
         this.request = request;
         inputURL = rasterManager.getInputURL();
         File tempFile = null;
-        try {
-            if (inputURL.getProtocol().equalsIgnoreCase("file")) {
-                tempFile = new File(URLDecoder.decode(inputURL.getFile(), "UTF-8"));
-            } else {
-                throw new IllegalArgumentException("unsupported input:" + inputURL.toString());
-            }
-        } catch (UnsupportedEncodingException e) {
-            throw new IllegalArgumentException(e);
+        if (inputURL.getProtocol().equalsIgnoreCase("file")) {
+            tempFile = DataUtilities.urlToFile(inputURL);
+        } else {
+            throw new IllegalArgumentException("unsupported input:" + inputURL.toString());
         }
 
         location = tempFile.getAbsolutePath();

@@ -33,11 +33,14 @@ class PerceptualDiff {
     };
 
     static {
-        try {
-            String result = run(Arrays.asList("perceptualdiff"));
-            AVAILABLE = result.contains("PerceptualDiff");
-        } catch (Exception e) {
-
+        if (Boolean.getBoolean("org.geotools.image.test.enabled")) {
+            try {
+                String result = run(Arrays.asList("perceptualdiff"));
+                AVAILABLE = result.contains("PerceptualDiff");
+            } catch (Exception e) {
+                AVAILABLE = false;
+            }
+        } else {
             AVAILABLE = false;
         }
     }

@@ -40,8 +40,12 @@
   <!--                                                             -->
   <!--     interactive.tests  Allows tests to show up dialogs      -->
   <!--                                                             -->
-  <!--     interactive.image  Image comparisong will show          -->
-  <!--                        comparison dialogs                   -->
+  <!--     image.tests        Run image comparison tests if        --> 
+  <!--                        perceptualdiff in on the path        -->
+  <!--                                                             -->
+  <!--     interactive.image  Image comparison will show           -->
+  <!--                        comparison dialogs (image.tests      -->
+  <!--                        must be set to true)                 -->
   <!--                                                             -->
   <!--     site.build         The main purpose of this build is to -->
   <!--                        create reports. Consequently, a      -->
@@ -79,6 +83,7 @@
     <allow.test.skip>true</allow.test.skip>
     <allow.test.failure.ignore>false</allow.test.failure.ignore>
     <extensive.tests>false</extensive.tests>
+    <image.tests>true</image.tests>
     <interactive.tests>false</interactive.tests>
     <interactive.image>false</interactive.image>
     <online.skip.pattern>**/*OnlineTest.java</online.skip.pattern>
@@ -108,6 +113,12 @@
       <id>extensive.tests</id>
       <properties>
         <extensive.tests>true</extensive.tests>
+      </properties>
+    </profile>
+    <profile>
+      <id>image.tests</id>
+      <properties>
+        <image.tests>true</image.tests>
       </properties>
     </profile>
     <profile>
@@ -399,14 +410,14 @@
       </roles>
     </developer>
     <developer>
-	    <name>Mauricio Pazos</name>
-	    <id>mauricio.pazos</id>
-	    <email>mauricio.pazos@axios.es</email>
-	    <organization>Axios</organization>
-	    <roles>
-		    <role>Java Developer</role>
-		    <role>Module Maintainer</role>
-	    </roles>
+      <name>Mauricio Pazos</name>
+      <id>mauricio.pazos</id>
+      <email>mauricio.pazos@axios.es</email>
+      <organization>Axios</organization>
+      <roles>
+        <role>Java Developer</role>
+        <role>Module Maintainer</role>
+      </roles>
     </developer>
     <developer>
       <name>Christiaan ten Klooster</name>
@@ -583,7 +594,7 @@
       <!-- ImageIO-Ext -->
       <dependency>
         <groupId>it.geosolutions.imageio-ext</groupId>
-  	<artifactId>imageio-ext-tiff</artifactId>
+        <artifactId>imageio-ext-tiff</artifactId>
         <version>${imageio.ext.version}</version>
       </dependency>
       <dependency>
@@ -1148,7 +1159,7 @@
             <exclude>${stress.skip.pattern}</exclude>
             <exclude>${test.exclude.pattern}</exclude>
           </excludes>
-          <argLine>-Xmx${test.maxHeapSize} ${jvm.opts} -Dorg.geotools.test.extensive=${extensive.tests} -Dorg.geotools.test.interactive=${interactive.tests} -Dorg.geotools.image.test.interactive=${interactive.image} -Djava.awt.headless=${java.awt.headless} -Djava.io.tmpdir=${java.io.tmpdir}</argLine>
+          <argLine>-Xmx${test.maxHeapSize} ${jvm.opts} -Dorg.geotools.test.extensive=${extensive.tests} -Dorg.geotools.test.interactive=${interactive.tests} -Dorg.geotools.image.test.enabled=${image.tests} -Dorg.geotools.image.test.interactive=${interactive.image} -Djava.awt.headless=${java.awt.headless} -Djava.io.tmpdir=${java.io.tmpdir}</argLine>
           <!-- Ignores test failure only if we are generating a       -->
           <!-- report for publication on the web site. See the        -->
           <!-- profiles section at the begining of this pom.xml file. -->

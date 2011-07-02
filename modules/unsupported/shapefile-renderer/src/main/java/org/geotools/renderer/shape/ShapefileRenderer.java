@@ -75,6 +75,8 @@ import org.geotools.geometry.jts.LiteShape2;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.index.quadtree.StoreException;
 import org.geotools.map.DefaultMapContext;
+import org.geotools.map.Layer;
+import org.geotools.map.MapContent;
 import org.geotools.map.MapContext;
 import org.geotools.map.MapLayer;
 import org.geotools.referencing.CRS;
@@ -1211,6 +1213,10 @@ public class ShapefileRenderer implements GTRenderer {
         this.caching = caching;
     }
 
+    public MapContent getMapContent() {
+        return new MapContent(context);
+    }
+    
     public MapContext getContext() {
         return context;
     }
@@ -1294,6 +1300,20 @@ public class ShapefileRenderer implements GTRenderer {
     
     public Map getRendererHints() {
         return rendererHints;
+    }
+
+
+    public void setMapContent( MapContent mapContent ) {
+        DefaultMapContext newContext = null;
+
+        if (mapContent != null) {
+            newContext = new DefaultMapContext();
+            newContext.setCoordinateReferenceSystem(mapContent.getCoordinateReferenceSystem());
+            for (Layer layer : mapContent.layers()) {
+                newContext.addLayer(layer);
+            }
+        }
+        setContext( newContext );
     }
 
     public void setContext( MapContext context ) {

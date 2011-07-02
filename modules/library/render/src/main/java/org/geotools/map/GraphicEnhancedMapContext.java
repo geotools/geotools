@@ -36,6 +36,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * </p>
  * 
  * @author Simone Giannecchini, GeoSolutions SAS
+ * 
+ * @deprecated Use a custom subclass of {@link MapContent} instead
  *
  *
  * @source $URL$

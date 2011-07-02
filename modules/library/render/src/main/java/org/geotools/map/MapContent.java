@@ -556,8 +556,11 @@ public class MapContent {
      * @throws IOException
      *             if an IOException occurs while accessing the FeatureSource bounds
      */
-    ReferencedEnvelope getMaxBounds() throws IOException {        
-        CoordinateReferenceSystem mapCrs = getCoordinateReferenceSystem();
+    ReferencedEnvelope getMaxBounds() {        
+        CoordinateReferenceSystem mapCrs = null;
+        if( viewport != null ){
+            mapCrs = viewport.getCoordianteReferenceSystem();
+        }
         ReferencedEnvelope maxBounds = null;
         
         if( layerList != null ){
@@ -565,32 +568,37 @@ public class MapContent {
                 if( layer == null ){
                     continue;
                 }
-                ReferencedEnvelope layerBounds = layer.getBounds();
-                if (layerBounds == null || layerBounds.isEmpty() || layerBounds.isNull()) {
-                    continue;
-                }
-                if (mapCrs == null) {
-                    // crs for the map is not defined; let us start with the first CRS we see then!
-                    maxBounds = new ReferencedEnvelope(layerBounds);
-                    mapCrs = layerBounds.getCoordinateReferenceSystem();
-                    continue;
-                }
-                ReferencedEnvelope normalized;
-                if (CRS.equalsIgnoreMetadata(mapCrs, layerBounds.getCoordinateReferenceSystem())) {
-                    normalized = layerBounds;
-                } else {
-                    try {
-                        normalized = layerBounds.transform(mapCrs, true);
-                    } catch (Exception e) {
-                        LOGGER.log(Level.FINE, "Unable to transform: {0}", e);
+                try {
+                    ReferencedEnvelope layerBounds = layer.getBounds();
+                    if (layerBounds == null || layerBounds.isEmpty() || layerBounds.isNull()) {
                         continue;
                     }
+                    if (mapCrs == null) {
+                        // crs for the map is not defined; let us start with the first CRS we see then!
+                        maxBounds = new ReferencedEnvelope(layerBounds);
+                        mapCrs = layerBounds.getCoordinateReferenceSystem();
+                        continue;
+                    }
+                    ReferencedEnvelope normalized;
+                    if (CRS.equalsIgnoreMetadata(mapCrs, layerBounds.getCoordinateReferenceSystem())) {
+                        normalized = layerBounds;
+                    } else {
+                        try {
+                            normalized = layerBounds.transform(mapCrs, true);
+                        } catch (Exception e) {
+                            LOGGER.log(Level.FINE, "Unable to transform: {0}", e);
+                            continue;
+                        }
+                    }
+                    if( maxBounds == null ){
+                        maxBounds = normalized;
+                    }
+                    else {
+                        maxBounds.expandToInclude(normalized);
+                    }
                 }
-                if( maxBounds == null ){
-                    maxBounds = normalized;
-                }
-                else {
-                    maxBounds.expandToInclude(normalized);
+                catch (Throwable eek){
+                    LOGGER.warning("Unable to determine bounds of "+layer+":"+eek );
                 }
             }
         }
@@ -605,15 +613,30 @@ public class MapContent {
     //
 
     /**
-     * Viewport describing the area visiable on screen.
+     * Viewport describing the area visible on screen.
      * <p>
      * Applications may create multiple viewports (perhaps to render tiles of content); the viewport
      * recorded here is intended for interactive applications where it is helpful to have a single
      * viewport representing what the user is seeing on screen.
+     * <p>
+     * With that in mind; if the user has not already supplied a viewport one will be created:
+     * <ul>
+     * <li>The viewport will be configured to show the extent of the current layers as provided by
+     * {@link #getMaxBounds()}.</li>
+     * <li>The viewport will have an empty {@link MapViewport#getBounds()} if no layers have been
+     * added yet.</li>
+     * </ul>
+     * @return MapViewport describing how to draw this map
      */
     public synchronized MapViewport getViewport() {
         if (viewport == null) {
-            viewport = new MapViewport();
+            if( layerList == null || layerList.isEmpty() ){
+                viewport = new MapViewport();
+            }
+            else {
+                ReferencedEnvelope maxBounds = getMaxBounds();
+                viewport = new MapViewport( maxBounds );
+            }
         }
         return viewport;
     }

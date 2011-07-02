@@ -23,6 +23,7 @@ import java.awt.geom.AffineTransform;
 import java.util.Map;
 
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.map.MapContent;
 import org.geotools.map.MapContext;
 
 import com.vividsolutions.jts.geom.Envelope;
@@ -110,14 +111,34 @@ public interface GTRenderer {
     /**
      * Map content to render.
      * @param context
+     * 
+     * @deprecated The {@code MapContext} class is being phased out. 
+     * Please use {@link #setMapContent}.
      */
     public void setContext( MapContext context );
+
+    /**
+     * Sets the {@code MapContent} which contains the data to be rendered.
+     * 
+     * @param mapContent the map content
+     */
+    public void setMapContent( MapContent mapContent);
     
     /**
      * Map content being rendered.
      * @return Map content being rendered.
+     * 
+     * @deprecated The {@code MapContext} class is being phased out. 
+     * Please use {@link #getMapContent}.
      */
     public  MapContext getContext();
+
+    /**
+     * Gets the {@code MapContent} instance which contains the data being rendered.
+     * 
+     * @return the {@code MapContent} instance
+     */
+    public MapContent getMapContent();
     
     /**
      * Renders features based on the map layers and their styles as specified

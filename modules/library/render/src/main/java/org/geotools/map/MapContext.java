@@ -60,6 +60,7 @@ import com.vividsolutions.jts.geom.Envelope;
  *         http://svn.osgeo.org/geotools/trunk/modules/library/render/src/main/java/org/geotools
  *         /map/MapContext.java $
  * @version $Id$
+ * @deprecated This class is being phased out, please use {@link MapContent}.
  */
 public class MapContext extends MapContent {
     
@@ -70,7 +71,21 @@ public class MapContext extends MapContent {
     public MapContext() {
         this((CoordinateReferenceSystem) null);
     }
-
+    /**
+     * Creates a context from the provided map content.
+     * <p>
+     * This method is used to prevent duplication in classes supporting deprecated getMapContext()
+     * methods.
+     * 
+     * @param content MapContent to be represented
+     */
+    public MapContext( MapContent content ){
+        this(content.getCoordinateReferenceSystem());
+        for (Layer layer : content.layers()) {
+            addLayer(layer);
+        }
+        this.setAreaOfInterest( content.getViewport().getBounds());
+    }
     /**
      * Creates a default empty map context
      * 
@@ -558,12 +573,15 @@ public class MapContext extends MapContent {
     }
 
     /**
-     * Gets the current area of interest provided by {@link #getBounds()}.
+     * Gets the current area of interest provided by {@link #getViewport()#getBounds()}.
+     * 
+     * If the viewport has not been created, it will be filled in by default
+     * based on the layer bounds provided by {@link #getMaxBounds()}.
      * 
      * @return Current area of interest
      */
     public ReferencedEnvelope getAreaOfInterest() {
-        return getBounds();
+        return getViewport().getBounds(); 
     }
 
     /**

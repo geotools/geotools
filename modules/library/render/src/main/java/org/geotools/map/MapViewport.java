@@ -10,6 +10,8 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.event.MapBoundsEvent;
 import org.geotools.map.event.MapBoundsListener;
 import org.geotools.map.event.MapBoundsEvent.Type;
+import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.logging.Logging;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -37,6 +39,17 @@ public class MapViewport {
 
     private CopyOnWriteArrayList<MapBoundsListener> boundsListeners;
 
+    public MapViewport(){
+        bounds = new ReferencedEnvelope(CRS.getEnvelope(DefaultGeographicCRS.WGS84));
+        screenArea = new Rectangle(800, (int)((bounds.getHeight()/bounds.getWidth())*800));
+    }
+    public MapViewport(ReferencedEnvelope bounds){
+        this.bounds = bounds;
+        if( bounds != null ){
+            screenArea = new Rectangle(800, (int)((bounds.getHeight()/bounds.getWidth())*800));
+        }
+    }
+    
     /**
      * Used by client application to track the bounds of this viewport.
      * 
@@ -44,7 +57,11 @@ public class MapViewport {
      */
     public void addMapBoundsListener(MapBoundsListener listener) {
         if (boundsListeners == null) {
-            boundsListeners = new CopyOnWriteArrayList<MapBoundsListener>();
+            synchronized ( this ){
+                if( boundsListeners == null ){
+                    boundsListeners = new CopyOnWriteArrayList<MapBoundsListener>();
+                }
+            }
         }
         if (!boundsListeners.contains(listener)) {
             boundsListeners.add(listener);

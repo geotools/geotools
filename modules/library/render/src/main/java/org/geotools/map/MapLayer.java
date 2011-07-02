@@ -249,29 +249,29 @@ public class MapLayer {
      */
     @SuppressWarnings("unchecked")
     public FeatureSource getFeatureSource() {
-        if (internal instanceof FeatureLayer) {
-            FeatureLayer layer = (FeatureLayer) internal;
-            return layer.getFeatureSource();
-        }
-        else {
-            FeatureSource source = (FeatureSource) internal.getUserData().get("source");
-            if( source == null ){
-                if (internal instanceof GridCoverageLayer) {
-                    GridCoverageLayer layer = (GridCoverageLayer) internal;
-                    SimpleFeatureCollection featureCollection = layer.toFeatureCollection();
-                    source = DataUtilities.source(featureCollection);
-                    layer.getUserData().put("source", source ); 
-                }
-                if (internal instanceof GridReaderLayer) {
-                    GridReaderLayer layer = (GridReaderLayer) internal;
-                    SimpleFeatureCollection featureCollection = layer.toFeatureCollection();
-                    source = DataUtilities.source(featureCollection);
-                    layer.getUserData().put("source", source ); 
-                }
-            }
-            return source;
-        }
-
+        return internal.getFeatureSource();        
+//        if (internal instanceof FeatureLayer) {
+//            FeatureLayer layer = (FeatureLayer) internal;
+//            return layer.getFeatureSource();
+//        }
+//        else {
+//            FeatureSource source = (FeatureSource) internal.getUserData().get("source");
+//            if( source == null ){
+//                if (internal instanceof GridCoverageLayer) {
+//                    GridCoverageLayer layer = (GridCoverageLayer) internal;
+//                    SimpleFeatureCollection featureCollection = layer.toFeatureCollection();
+//                    source = DataUtilities.source(featureCollection);
+//                    layer.getUserData().put("source", source ); 
+//                }
+//                if (internal instanceof GridReaderLayer) {
+//                    GridReaderLayer layer = (GridReaderLayer) internal;
+//                    SimpleFeatureCollection featureCollection = layer.toFeatureCollection();
+//                    source = DataUtilities.source(featureCollection);
+//                    layer.getUserData().put("source", source ); 
+//                }
+//            }
+//            return source;
+//        }
     }
 
     /**
@@ -289,19 +289,20 @@ public class MapLayer {
      * @return The style (SLD).
      */
     public Style getStyle(){
-        if (internal instanceof FeatureLayer) {
-            FeatureLayer layer = (FeatureLayer) internal;
-            return layer.getStyle();
-        }
-        if (internal instanceof GridCoverageLayer) {
-            GridCoverageLayer layer = (GridCoverageLayer) internal;
-            return layer.getStyle();
-        }
-        if (internal instanceof GridReaderLayer) {
-            GridReaderLayer layer = (GridReaderLayer) internal;
-            return layer.getStyle();
-        }
-        return null;
+        return internal.getStyle();
+//        if (internal instanceof FeatureLayer) {
+//            FeatureLayer layer = (FeatureLayer) internal;
+//            return layer.getStyle();
+//        }
+//        if (internal instanceof GridCoverageLayer) {
+//            GridCoverageLayer layer = (GridCoverageLayer) internal;
+//            return layer.getStyle();
+//        }
+//        if (internal instanceof GridReaderLayer) {
+//            GridReaderLayer layer = (GridReaderLayer) internal;
+//            return layer.getStyle();
+//        }
+//        return null;
     }
 
     /**
@@ -314,18 +315,18 @@ public class MapLayer {
         if (style == null) {
             throw new NullPointerException("Style required");
         }
-        else if (internal instanceof FeatureLayer) {
-            FeatureLayer layer = (FeatureLayer) internal;
+        else if (internal instanceof StyleLayer) {
+            StyleLayer layer = (StyleLayer) internal;
             layer.setStyle(style);
         }
-        else if (internal instanceof GridCoverageLayer) {
-            GridCoverageLayer layer = (GridCoverageLayer) internal;
-            layer.setStyle(style);
-        }
-        else if (internal instanceof GridReaderLayer) {
-            GridReaderLayer layer = (GridReaderLayer) internal;
-            layer.setStyle(style);
-        }
+//        else if (internal instanceof GridCoverageLayer) {
+//            GridCoverageLayer layer = (GridCoverageLayer) internal;
+//            layer.setStyle(style);
+//        }
+//        else if (internal instanceof GridReaderLayer) {
+//            GridReaderLayer layer = (GridReaderLayer) internal;
+//            layer.setStyle(style);
+//        }
         else {
             throw new IllegalStateException("Style not supported by "+internal);
         }
@@ -416,17 +417,25 @@ public class MapLayer {
      *         external modification
      */
     public Query getQuery(){
-        if( internal instanceof FeatureLayer ){
-            FeatureLayer layer = (FeatureLayer) internal;
-            Query query = layer.getQuery();
-            if( query == null || query == Query.ALL){
-                return Query.ALL;
-            }
-            else {
-                return new Query( query );
-            }
+        Query query = internal.getQuery();
+        if( query == null || query == Query.ALL ){
+            return Query.ALL;
         }
-        return Query.ALL;
+        else {
+            // note query is already a copy 
+            return query;
+        }
+//        if( internal instanceof FeatureLayer ){
+//            FeatureLayer layer = (FeatureLayer) internal;
+//            Query query = layer.getQuery();
+//            if( query == null || query == Query.ALL){
+//                return Query.ALL;
+//            }
+//            else {
+//                return new Query( query );
+//            }
+//        }
+//        return Query.ALL;
     }
 
     /**
@@ -443,6 +452,9 @@ public class MapLayer {
      * It is desirable to not include attributes at all but let the renderer
      * decide which attributes are actually needed to perform its required operation.
      * </p>
+     * <p>
+     * WARNING: We do not check if your query is suitable for the layer {@code FeatureSource}
+     * you may accidentally return no features; resulting in an "empty" layer.
      * 
      * @param query
      *            the full filter for this layer.
@@ -450,9 +462,6 @@ public class MapLayer {
      * @throws NullPointerException
      *             if no query is passed on. If you want to reset a definition query, pass it
      *             {@link Query.ALL} instead of <code>null</code>
-     * 
-     * @task TODO: test that the query filter is siutable for the layer's <code>FeatureSource</code>
-     *       schema
      * 
      * @see org.geotools.map.FeatureLayer#setQuery(org.geotools.data.Query)
      */
@@ -463,6 +472,9 @@ public class MapLayer {
         if( internal instanceof FeatureLayer ){
             FeatureLayer layer = (FeatureLayer) internal;
             layer.setQuery( new Query(query));
+        }
+        else {
+            throw new IllegalStateException("Query not supported by "+ internal );
         }
     }
 

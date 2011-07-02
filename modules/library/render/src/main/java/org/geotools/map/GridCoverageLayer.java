@@ -28,13 +28,25 @@ import org.geotools.resources.coverage.FeatureUtilities;
 import org.geotools.styling.Style;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.TransformException;
-
+/**
+ * Layer used to draw a raster {@link GridCoverage}.
+ * <p>
+ * Direct access to the {@link GridCoverage} is available using {@link #getCoverage()}, the
+ * outline of the raster is also available via {@link #toFeatureCollection()} for vector based
+ * rendering systems.
+ * @author Jody Garnett
+ * @version 8.0
+ * @since 2.7
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/render/src/main/java/org/geotools/map/GridCoverageLayer.java $
+ */
 public class GridCoverageLayer extends RasterLayer {
-
+    /**
+     * Grid Coverage to be drawn.
+     */
     protected GridCoverage2D coverage;
 
     /**
-     * Add a new layer and trigger a {@link LayerListEvent}.
+     * Create layer to draw the provided grid coverage.
      * 
      * @param coverage
      *            The new layer that has been added.
@@ -47,7 +59,12 @@ public class GridCoverageLayer extends RasterLayer {
         super(style);
         this.coverage = coverage;
     }
-
+    /**
+     * Create layer to draw the provided grid coverage.
+     * @param coverage
+     * @param style
+     * @param title
+     */
     public GridCoverageLayer(GridCoverage2D coverage, Style style, String title) {
         super(style,title);
         this.coverage = coverage;
@@ -68,11 +85,18 @@ public class GridCoverageLayer extends RasterLayer {
         }
         super.dispose();
     }
-
+    /**
+     * Access to the grid coverage being drawn.
+     * @return grid coverage being drawn.
+     */
     public GridCoverage2D getCoverage() {
         return coverage;
     }
-
+    /**
+     * Layer bounds generated from the grid coverage.
+     * 
+     * @return layer bounds generated from the grid coverage.
+     */
     public ReferencedEnvelope getBounds() {
         if (coverage != null) {
             CoordinateReferenceSystem crs = coverage.getCoordinateReferenceSystem();
@@ -85,7 +109,7 @@ public class GridCoverageLayer extends RasterLayer {
         }
         return null;
     }
-
+    
     public SimpleFeatureCollection toFeatureCollection() {
         SimpleFeatureCollection collection;
         try {

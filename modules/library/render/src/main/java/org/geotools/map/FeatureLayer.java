@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ * 
+ *    (C) 2010-2011, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.map;
 
 import java.io.IOException;
@@ -29,7 +45,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * Please note that a StyleLayerDescriptor (defined by SLD) document is usually used to describe the
  * rendering requirements for an entire Map; while a Style (defined by SE) is focused on a single
  * layer of content
- *
+ * @since 2.7
+ * @version 8.0
  * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/render/src/main/java/org/geotools/map/FeatureLayer.java $
  */
 public class FeatureLayer extends StyleLayer {
@@ -112,8 +129,8 @@ public class FeatureLayer extends StyleLayer {
      * 
      * @return feature source for the contents of this layer
      */
-    @SuppressWarnings({ "rawtypes" })
-    public FeatureSource getFeatureSource() {
+    @Override
+    public FeatureSource<?,?> getFeatureSource() {
         return featureSource;
     }
 
@@ -169,7 +186,12 @@ public class FeatureLayer extends StyleLayer {
     @Override
     public ReferencedEnvelope getBounds() {
         try {
-            ReferencedEnvelope bounds = featureSource.getBounds();
+            ReferencedEnvelope bounds;
+            if(query != null) {
+                bounds = featureSource.getBounds(query);
+            } else {
+                bounds = featureSource.getBounds();
+            }
             if( bounds != null ){
                 FeatureType schema = featureSource.getSchema();
                 CoordinateReferenceSystem schemaCrs = schema.getCoordinateReferenceSystem();

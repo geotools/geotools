@@ -50,6 +50,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/library/render/src/main/java/org/geotools
  *         /map/DefaultMapContext.java $
+ *         
+ * @deprecated Use {@link MapContent} instead
  */
 public class DefaultMapContext extends MapContext {
 
@@ -496,17 +498,6 @@ public class DefaultMapContext extends MapContext {
     public MapLayer getLayer(int index) throws IndexOutOfBoundsException {
         Layer layer = layers().get(index);
         return new DefaultMapLayer(layer);
-    }
-
-    /**
-     * Gets the current area of interest. If no area of interest is set, the default is to fall back
-     * on the layer bounds
-     * 
-     * @return Current area of interest
-     * 
-     */
-    public ReferencedEnvelope getAreaOfInterest() {
-        return getBounds();        
     }
 
     /**

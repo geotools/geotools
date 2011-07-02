@@ -81,8 +81,11 @@ import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.geometry.jts.LiteCoordinateSequenceFactory;
 import org.geotools.geometry.jts.LiteShape2;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.map.Layer;
+import org.geotools.map.MapContent;
 import org.geotools.map.MapContext;
 import org.geotools.map.MapLayer;
+import org.geotools.map.StyleLayer;
 import org.geotools.parameter.Parameter;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
@@ -104,6 +107,7 @@ import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.Rule;
+import org.geotools.styling.Style;
 import org.geotools.styling.StyleAttributeExtractor;
 import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
@@ -210,10 +214,10 @@ public final class StreamingRenderer implements GTRenderer {
     private static final Operation SCALE = PROCESSOR.getOperation("Scale");
 
     /**
-     * Context which contains the layers and the bounding box which needs to be
+     * The MapContent instance which contains the layers and the bounding box which needs to be
      * rendered.
      */
-    private MapContext context;
+    private MapContent mapContent;
 
     /**
      * Flag which determines if the renderer is interactive or not. An
@@ -608,7 +612,8 @@ public final class StreamingRenderer implements GTRenderer {
      */
     public void paint(Graphics2D graphics, Rectangle paintArea,
             Envelope mapArea, AffineTransform worldToScreen) {
-        paint( graphics, paintArea, new ReferencedEnvelope(mapArea, context.getCoordinateReferenceSystem()),
+        paint( graphics, paintArea, new ReferencedEnvelope(mapArea, 
+                mapContent.getCoordinateReferenceSystem()),
                 worldToScreen);
     }
 
@@ -749,16 +754,15 @@ public final class StreamingRenderer implements GTRenderer {
             // styles
             //
             // ////////////////////////////////////////////////////////////////////
-            final MapLayer[] layers = context.getLayers();
             labelCache.start();
             if(labelCache instanceof LabelCacheImpl) {
                 ((LabelCacheImpl) labelCache).setLabelRenderingMode(LabelRenderingMode.valueOf(getTextRenderingMethod()));
             }
-            final int layersNumber = layers.length;
+            final int layersNumber = mapContent.layers().size();
             MapLayer currLayer;
             for (int i = 0; i < layersNumber; i++) // DJB: for each layer (ie. one
             {
-                currLayer = layers[i];
+                currLayer = new MapLayer(mapContent.layers().get(i));
     
                 if (!currLayer.isVisible()) {
                     // Only render layer when layer is visible
@@ -1554,7 +1558,8 @@ public final class StreamingRenderer implements GTRenderer {
      * @param typeDescription The type description that has to be matched
      * @return ArrayList<LiteFeatureTypeStyle>
      */
-    private ArrayList<LiteFeatureTypeStyle> createLiteFeatureTypeStyles(FeatureTypeStyle[] featureStyles, 
+    private ArrayList<LiteFeatureTypeStyle> createLiteFeatureTypeStyles(
+            List<FeatureTypeStyle> featureStyles, 
             Object typeDescription, Graphics2D graphics) throws IOException {
         ArrayList<LiteFeatureTypeStyle> result = new ArrayList<LiteFeatureTypeStyle>();
 
@@ -1564,10 +1569,7 @@ public final class StreamingRenderer implements GTRenderer {
         LiteFeatureTypeStyle lfts;
         BufferedImage image;
 
-        final int length = featureStyles.length;
-        for (int i = 0; i < length; i++) {
-            FeatureTypeStyle fts = featureStyles[i];
-
+        for (FeatureTypeStyle fts : featureStyles) {
             if (typeDescription == null || typeDescription.toString().indexOf( fts.getFeatureTypeName() ) == -1) 
                 continue; 
 
@@ -1588,11 +1590,11 @@ public final class StreamingRenderer implements GTRenderer {
             }
             
             // nothing to render, don't do anything!!
-            if ((ruleList.size() == 0) && (elseRuleList.size() == 0))
+            if ((ruleList.isEmpty()) && (elseRuleList.isEmpty()))
                 continue; 
 
             // first fts, we can reuse the graphics directly
-            if (result.size() == 0 || !isOptimizedFTSRenderingEnabled()) {
+            if (result.isEmpty() || !isOptimizedFTSRenderingEnabled()) {
                 lfts = new LiteFeatureTypeStyle(graphics, ruleList, elseRuleList, fts.getTransformation());
             } else {
                 lfts = new LiteFeatureTypeStyle(new DelayedBackbufferGraphic(graphics, screenSize), 
@@ -1615,7 +1617,7 @@ public final class StreamingRenderer implements GTRenderer {
      * @return ArrayList<LiteFeatureTypeStyle>
      */
     private ArrayList<LiteFeatureTypeStyle> createLiteFeatureTypeStyles(
-            FeatureTypeStyle[] featureStyles, FeatureType ftype,
+            List<FeatureTypeStyle> featureStyles, FeatureType ftype,
             Graphics2D graphics) throws IOException {
         if (LOGGER.isLoggable(Level.FINE))
             LOGGER.fine("creating rules for scale denominator - "
@@ -1633,11 +1635,11 @@ public final class StreamingRenderer implements GTRenderer {
                 List elseRuleList = splittedRules[1];
 
                 // if none, skip it
-                if ((ruleList.size() == 0) && (elseRuleList.size() == 0))
+                if ((ruleList.isEmpty()) && (elseRuleList.isEmpty()))
                     continue; 
 
                 // we can optimize this one!
-                if (result.size() == 0 || !isOptimizedFTSRenderingEnabled()) {
+                if (result.isEmpty() || !isOptimizedFTSRenderingEnabled()) {
                     lfts = new LiteFeatureTypeStyle(graphics, ruleList,
                             elseRuleList, fts.getTransformation());
                 } else {
@@ -1726,20 +1728,26 @@ public final class StreamingRenderer implements GTRenderer {
      */
     public int getMaxBackBufferMemory(int width, int height) {
         int maxBuffers = 0;
-        for (MapLayer layer : context.getLayers()) {
+        for (Layer layer : mapContent.layers()) {
             if (!layer.isVisible()) {
                 // Only render layer when layer is visible
                 continue;
             }
 
-            // skip layers that do have only one fts
-            if(layer.getStyle().getFeatureTypeStyles().length < 2)
+            // Skip layers that do not have multiple FeatureTypeStyles
+            if (!(layer instanceof StyleLayer)) {
                 continue;
+            } 
+
+            StyleLayer styleLayer = (StyleLayer) layer;
+            
+            if (styleLayer.getStyle().featureTypeStyles().size() < 2) continue;
 
             // count how many lite feature type styles are active
             int currCount = 0;
-            FeatureType ftype = layer.getFeatureSource().getSchema();
-            for (FeatureTypeStyle fts : layer.getStyle().getFeatureTypeStyles()) {
+            MapLayer mapLayer = new MapLayer(layer);
+            FeatureType ftype = mapLayer.getFeatureSource().getSchema();
+            for (FeatureTypeStyle fts : styleLayer.getStyle().featureTypeStyles()) {
                 if (isFeatureTypeStyleActive(ftype, fts)) {
                     // get applicable rules at the current scale
                     List[] splittedRules = splitRules(fts);
@@ -1747,7 +1755,7 @@ public final class StreamingRenderer implements GTRenderer {
                     List elseRuleList = splittedRules[1];
 
                     // if none, skip this fts
-                    if ((ruleList.size() == 0) && (elseRuleList.size() == 0))
+                    if ((ruleList.isEmpty()) && (elseRuleList.isEmpty()))
                         continue; 
 
                     currCount++;
@@ -1851,11 +1859,10 @@ public final class StreamingRenderer implements GTRenderer {
      * @throws IOException
      * @throws IllegalFilterException
      */
-    final private void processStylers(final Graphics2D graphics,
+    private void processStylers(final Graphics2D graphics,
             MapLayer currLayer, AffineTransform at,
             CoordinateReferenceSystem destinationCrs, Envelope mapArea,
             Rectangle screenSize, String layerId) throws Exception {
-
         /*
          * DJB: changed this a wee bit so that it now does the layer query AFTER
          * it has evaluated the rules for scale inclusion. This makes it so that
@@ -1867,9 +1874,8 @@ public final class StreamingRenderer implements GTRenderer {
         // Preparing feature information and styles
         //
         // /////////////////////////////////////////////////////////////////////
-        final FeatureTypeStyle[] featureStylers = currLayer.getStyle().getFeatureTypeStyles();
-
-        final FeatureSource featureSource =  currLayer.getFeatureSource();
+        final Style style = currLayer.getStyle();
+        final FeatureSource featureSource = currLayer.getFeatureSource();
 
         final CoordinateReferenceSystem sourceCrs;
         final NumberRange scaleRange = NumberRange.create(scaleDenominator,scaleDenominator);
@@ -1882,12 +1888,12 @@ public final class StreamingRenderer implements GTRenderer {
             final GeometryDescriptor geometryAttribute = schema.getGeometryDescriptor();
             sourceCrs = geometryAttribute.getType().getCoordinateReferenceSystem();
             if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine("Processing " + featureStylers.length + " stylers for " +
-                                currLayer.getFeatureSource().getSchema().getName());
+                LOGGER.fine("Processing " + style.featureTypeStyles().size() + 
+                        " stylers for " + featureSource.getSchema().getName());
             }
 
-            lfts = createLiteFeatureTypeStyles(featureStylers,schema, graphics);
-            if(lfts.size() == 0)
+            lfts = createLiteFeatureTypeStyles(style.featureTypeStyles(), schema, graphics);
+            if(lfts.isEmpty())
                 return;
             
             applyUnitRescale(lfts);
@@ -1951,10 +1957,11 @@ public final class StreamingRenderer implements GTRenderer {
             collection = queryLayer( currLayer, currLayer.getSource() );
 
             sourceCrs = null;
-            lfts = createLiteFeatureTypeStyles( featureStylers, source.describe(), graphics );
+            lfts = createLiteFeatureTypeStyles( 
+                    style.featureTypeStyles(), source.describe(), graphics );
             applyUnitRescale(lfts);
             
-            if (lfts.size() == 0) return; // nothing to do
+            if (lfts.isEmpty()) return; // nothing to do
 
             // finally, perform rendering
             if(isOptimizedFTSRenderingEnabled() && lfts.size() > 1) {
@@ -2372,7 +2379,7 @@ public final class StreamingRenderer implements GTRenderer {
      * @param fts
      * @param layerId 
      */
-    final private void process(RenderableFeature rf, LiteFeatureTypeStyle fts,
+    private void process(RenderableFeature rf, LiteFeatureTypeStyle fts,
             NumberRange scaleRange, AffineTransform at,
             CoordinateReferenceSystem destinationCrs, String layerId)
             throws Exception {
@@ -2427,7 +2434,7 @@ public final class StreamingRenderer implements GTRenderer {
      * @throws TransformException
      * @throws FactoryException
      */
-    final private void processSymbolizers(final Graphics2D graphics,
+    private void processSymbolizers(final Graphics2D graphics,
             final RenderableFeature drawMe, final List<Symbolizer> symbolizers,
             NumberRange scaleRange, AffineTransform at,
             CoordinateReferenceSystem destinationCrs, String layerId)
@@ -2753,22 +2760,38 @@ public final class StreamingRenderer implements GTRenderer {
         return rendererHints;
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * {@inheritDoc}
      * 
-     * @see org.geotools.renderer.GTRenderer#setContext(org.geotools.map.MapContext)
+     * @deprecated The {@code MapContext} class is being phased out. 
+     * Please use {@link #setMapContent}.
      */
     public void setContext(MapContext context) {
-        this.context = context;
+        // MapContext isA MapContent
+        mapContent = context;
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * {@inheritDoc}
      * 
-     * @see org.geotools.renderer.GTRenderer#getContext()
+     * @deprecated The {@code MapContext} class is being phased out. 
+     * Please use {@link #setMapContent}.
      */
     public MapContext getContext() {
-        return context;
+        if(mapContent instanceof MapContext) {
+            return (MapContext) mapContent;
+        } else {
+            MapContext context = new MapContext( mapContent );
+            return context;
+        }
+    }
+
+    public void setMapContent(MapContent mapContent) {
+        this.mapContent = mapContent;
+    }
+
+    public MapContent getMapContent() {
+        return mapContent;
     }
 
     public boolean isCanTransform() {
@@ -2937,9 +2960,9 @@ public final class StreamingRenderer implements GTRenderer {
                         // when computing the centroid
                         Shape first = getTransformedShape(g, sa);
                         if(first != null) {
-                        	return getTransformedShape(RendererUtilities.getCentroid(g), null);
+                                return getTransformedShape(RendererUtilities.getCentroid(g), null);
                         } else {
-                        	return null;
+                                return null;
                         }
                     } else {
                         return getTransformedShape(RendererUtilities.getCentroid(g), sa);
@@ -2967,7 +2990,7 @@ public final class StreamingRenderer implements GTRenderer {
             return -1;
         }
 
-        private final LiteShape2 getTransformedShape(Geometry originalGeom, SymbolizerAssociation sa) throws TransformException,
+        private LiteShape2 getTransformedShape(Geometry originalGeom, SymbolizerAssociation sa) throws TransformException,
         FactoryException {
             int idx = getGeometryIndex(originalGeom);
             if(idx != -1) {

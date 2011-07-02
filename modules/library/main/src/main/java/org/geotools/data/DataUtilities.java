@@ -58,6 +58,7 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureLocking;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
+import org.geotools.data.store.ArrayDataStore;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
 import org.geotools.feature.AttributeTypeBuilder;
@@ -1017,30 +1018,14 @@ public class DataUtilities {
             featureType = featureArray[0].getFeatureType();
         }
 
-        DataStore arrayStore = new AbstractDataStore() {
-            public String[] getTypeNames() {
-                return new String[] { featureType.getTypeName() };
-            }
+        DataStore arrayStore = new ArrayDataStore(featureArray);
 
-            public SimpleFeatureType getSchema(String typeName) throws IOException {
-                if ((typeName != null) && typeName.equals(featureType.getTypeName())) {
-                    return featureType;
-                }
-
-                throw new IOException(typeName + " not available");
-            }
-
-            protected FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(
-                    String typeName) throws IOException {
-                return reader(featureArray);
-            }
-        };
-
+        String typeName = featureType.getTypeName();
         try {
-            return arrayStore.getFeatureSource(arrayStore.getTypeNames()[0]);
+            return arrayStore.getFeatureSource(typeName);
         } catch (IOException e) {
-            throw new RuntimeException("Something is wrong with the geotools code, "
-                    + "this exception should not happen", e);
+            throw new IllegalStateException("Unable to find "+typeName+" ArrayDataStore in an inconsistent" +
+            		"state", e);
         }
     }
 

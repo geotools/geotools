@@ -31,14 +31,30 @@ import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.TransformException;
 
+/**
+ * Layer used to draw a raster {@link AbstractGridCoverage2DReader}.
+ * <p>
+ * Direct access to the {@link AbstractGridCoverage2DReader} is available using {@link #getReader()}, the
+ * outline of the raster is also available via {@link #toFeatureCollection()} for vector based
+ * rendering systems.
+ * @author Jody Garnett
+ * @version 8.0
+ * @since 2.7
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/render/src/main/java/org/geotools/map/GridReaderLayer.java $
+ */
 public class GridReaderLayer extends RasterLayer {
-
+    /**
+     * Grid coverage reader allowing direct access to raster content.
+     */
     protected AbstractGridCoverage2DReader reader;
-
+    
+    /**
+     * Optional parameters to control the rendering process.
+     */
     protected GeneralParameterValue[] params;
 
     /**
-     * Constructor which adds a new layer and triggers a {@link LayerListEvent}.
+     * Create a lyaer to draw the provided grid coverage reader.
      * 
      * @param reader
      *            a reader with the new layer that will be added
@@ -53,7 +69,7 @@ public class GridReaderLayer extends RasterLayer {
     }
 
     /**
-     * Constructor which adds a new layer and trigger a {@link LayerListEvent}.
+     * Create a layer to draw the provided grid coverage reader.
      * 
      * @param reader
      *            a reader with the new layer that will be added.
@@ -71,7 +87,7 @@ public class GridReaderLayer extends RasterLayer {
     }
 
     /**
-     * Constructor which adds a new layer and trigger a {@link LayerListEvent}.
+     * Create a layer with optional parameters to control the rendering process.
      * 
      * @param reader
      *            a reader with the new layer that will be added.
@@ -87,7 +103,7 @@ public class GridReaderLayer extends RasterLayer {
     }
 
     /**
-     * Constructor which adds a new layer and trigger a {@link LayerListEvent}.
+     * Create layer title and optional parameters used to control the rendering process.
      * 
      * @param reader
      *            a reader with the new layer that will be added.
@@ -158,32 +174,6 @@ public class GridReaderLayer extends RasterLayer {
      */
     public GeneralParameterValue[] getParams() {
         return params;
-    }
-
-    /**
-     * Getter for property style.
-     * 
-     * @return Value of property style.
-     */
-    public Style getStyle() {
-        return style;
-    }
-
-    /**
-     * Setter for property style.
-     * 
-     * @param style
-     *            New value of property style.
-     * 
-     * @throws NullPointerException
-     *             DOCUMENT ME!
-     */
-    public void setStyle(Style style) {
-        if (style == null) {
-            throw new NullPointerException();
-        }
-        this.style = style;
-        fireMapLayerListenerLayerChanged(MapLayerEvent.STYLE_CHANGED);
     }
 
     public SimpleFeatureCollection toFeatureCollection() {

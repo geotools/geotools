@@ -1,15 +1,42 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ * 
+ *    (C) 2010-2011, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.map;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.geotools.data.DataUtilities;
+import org.geotools.data.FeatureSource;
+import org.geotools.data.Query;
+import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.event.MapLayerEvent;
 import org.geotools.map.event.MapLayerListener;
+import org.geotools.styling.Style;
+import org.geotools.styling.StyleFactory;
 import org.geotools.util.logging.Logging;
+import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.style.FeatureTypeStyle;
 
 /**
  * A Layer to be rendered.
@@ -17,6 +44,8 @@ import org.geotools.util.logging.Logging;
  * Layers usually represent a single dataset; and arranged into a z-order by a Map for display.
  *
  * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/render/src/main/java/org/geotools/map/Layer.java $
+ * @since 2.7
+ * @version 8.0
  */
 public abstract class Layer {
 
@@ -298,7 +327,99 @@ public abstract class Layer {
      */
     protected void connectDataListener(boolean listen) {
     }
+    
+    //
+    // Support for feature based rendering systems
+    //
+    // Rather than ask feature based rendering systems such as KML to do a lot of instanceof checks
+    // and casts the following methods are provided returning NullObjects.
+    //
+    /**
+     * Get the style for this layer. If style has not been set, then null is returned.
+     * <p>
+     * This is an optional method that is used to support feature based rendering systems
+     * such as as KML.
+     * <p>
+     * Please note that feature based renders can be very flexible; as an example
+     * raster content is asked to return the outline of each raster - in the event
+     * that the user has supplied a style drawing the raster as a Polygon outlines.
+     * 
+     * @return The style (SLD).
+     */
+    public synchronized Style getStyle(){
+        // using user data to cache this placeholder so we don't have to create it each time
+        Style style = (Style) getUserData().get("style");
+        if( style == null ){
+            StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
+            
+            // create a style that does nothing
+            List<FeatureTypeStyle> featureTypeStyles = new ArrayList<FeatureTypeStyle>();
+            style = sf.style( title, null, false, featureTypeStyles, null );
+            
+            getUserData().put("style", style);
+        }
+        return style;
+    }
 
+    /**
+     * Used to access the feature collection for this layer; if available.
+     * <p>
+     * This is an optional method that is used to support feature based rendering systems such as as
+     * KML.
+     * <p>
+     * Please note that feature based renders can be very flexible; as an example raster content is
+     * asked to return the outline of each raster - in the event that the user has supplied a style
+     * drawing the raster as a Polygon outlines.
+     * <p>
+     * Override: Implementors should override this method to provide access to a feature
+     * representation of the layer contents if available. For DirectLayers displaying abstract
+     * concepts like a scale bar this may not be possible (however for some that display a grid this
+     * may in fact be possible).
+     * 
+     * @return The features for this layer, or an an empty ArrayFeatureSource if not available.
+     */
+    public synchronized FeatureSource<?, ?> getFeatureSource() {
+        // using user data to cache this placeholder so we don't have to create it each time
+        SimpleFeatureSource source = (SimpleFeatureSource) getUserData().get("source");
+        if( source == null ){
+            // will use FeatureTypes.EMPTY
+            source = DataUtilities.source( new SimpleFeature[0] );
+            getUserData().put("source", source);
+        }
+        return source;
+    }
+
+    /**
+     * The definition query (including filter) for this layer, or {@link Query.ALL} if no
+     * definition query has been provided by the user.
+     * <p>
+     * This is an optional method that is used to support feature based rendering systems
+     * such as as KML.
+     * <p>
+     * Please note that feature based renders can be very flexible; as an example
+     * raster content is asked to return the outline of each raster - in the event
+     * that the user has supplied a style drawing the raster as a Polygon outlines.
+     * <p>
+     * Implementors should take care to return a copy of their internal Query to be safe
+     * from modificaiton:<pre>
+     * if( query == null || query == Query.ALL ){
+     *     return Query.ALL;
+     * }
+     * else {
+     *     return new Query( query );
+     * }
+     * </pre>
+     * <p>
+     * @return the definition query established for this layer. If not set, just returns
+     *         {@link Query.ALL}, if set, returns a copy of the actual query object to avoid
+     *         external modification
+     */
+    public Query getQuery(){
+        // when overriding this method please be sure to return a copy of your internal Query
+        // as shown in the javadocs
+        return Query.ALL;
+    }
+    
     //
     @Override
     public String toString() {

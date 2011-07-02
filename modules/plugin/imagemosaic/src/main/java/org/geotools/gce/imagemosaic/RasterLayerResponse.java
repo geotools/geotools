@@ -402,7 +402,7 @@ class RasterLayerResponse{
 
         public void visit(GranuleDescriptor granuleDescriptor, Object o) {
             // don't collect more than the specified amount of granules
-            if(granulesNumber>request.getMaximumNumberOfGranules()) {
+            if(granulesNumber >= request.getMaximumNumberOfGranules()) {
                 return;
             }
             

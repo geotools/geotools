@@ -16,13 +16,16 @@
  */
 package org.geotools.data.efeature.internal;
 
-import java.lang.ref.WeakReference;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.InternalEObject;
+import org.geotools.data.Transaction;
 import org.geotools.data.efeature.EFeature;
+import org.geotools.data.efeature.EFeatureInfo;
+import org.geotools.data.efeature.EFeatureUtils;
 import org.geotools.data.efeature.ESimpleFeature;
 import org.opengis.feature.Feature;
 import org.opengis.feature.GeometryAttribute;
@@ -48,8 +51,9 @@ import org.opengis.geometry.BoundingBox;
  */
 public class ESimpleFeatureDelegate implements ESimpleFeature {
     
-    private WeakReference<EObject> eObject;
-    private WeakReference<SimpleFeature> feature;
+    private EObject eObject;
+    private SimpleFeature feature;
+    private EFeatureInfo eStructure;
 
     // ----------------------------------------------------- 
     //  Constructors
@@ -59,159 +63,270 @@ public class ESimpleFeatureDelegate implements ESimpleFeature {
      * This constructor creates a {@link ESimpleFeature} instance that
      * delegates to given objects.
      */
-    public ESimpleFeatureDelegate(EObject eObject, SimpleFeature feature) {
-        this.eObject = new WeakReference<EObject>(eObject);
-        this.feature = new WeakReference<SimpleFeature>(feature);
+    public ESimpleFeatureDelegate(EFeatureInfo eStructure, EObject eObject, SimpleFeature feature) {
+        this.feature = feature;
+        this.eObject = eObject;
+        this.eStructure = eStructure;
     }
 
     // ----------------------------------------------------- 
     //  ESimpleFeature implementation
     // -----------------------------------------------------
     
+    @Override
     public EObject eObject() {
-        EObject eObject = this.eObject.get();
         if(eObject instanceof EFeatureDelegate) {
-            eObject = ((EFeatureDelegate)eObject).eDelegate.get();
+            return ((EFeatureDelegate)eObject).eImpl;
         }
         return eObject;
     }
     
+    @Override
     public EFeature eFeature() {
-        EObject eObject = eObject();
+        //
+        // Return delegate if not a EFeature implementation  
+        //
         if(eObject instanceof EFeature) {
-            return (EFeature)eObject;
+            return (EFeature)eObject();
         }
-        return null;
+        return new EFeatureDelegate(eStructure, (InternalEObject)eObject, false);
     }    
+
+    @Override
+    public boolean isDetached() {
+        return eStructure.eHints().eValuesDetached();
+    }
+
+    @Override
+    public boolean isSingleton() {
+        return eStructure.eHints().eSingletonFeatures();
+    }
     
+    @Override
+    public List<Object> read() throws IllegalStateException {
+        return read(Transaction.AUTO_COMMIT);
+    }
+    
+    @Override
+    public List<Object> read(Transaction transaction) throws IllegalStateException {
+        //
+        // Decide if feature values is allowed to be updated from backing store
+        //
+        if(!isDetached()) {
+            throw new IllegalStateException("ESimpleFeature " 
+                    + getType().getTypeName() + " is not detached");
+        }
+        //
+        // Read values from eImpl()
+        //
+        List<Object> eValues = EFeatureUtils.eGetFeatureValues(eStructure, eObject, transaction);
+        //
+        // Update feature values
+        //
+        feature.setAttributes(eValues);        
+        //
+        // Finished
+        //
+        return eValues;
+    }
+
+    @Override
+    public List<Object> write() throws IllegalStateException {
+        return write(Transaction.AUTO_COMMIT);
+    }
+    
+    @Override
+    public List<Object> write(Transaction transaction) throws IllegalStateException {            
+        //
+        // Decide if feature values is allowed to be updated from backing store
+        //
+        if(!isDetached()) {
+            throw new IllegalStateException("ESimpleFeature " 
+                    + getType().getTypeName() + " is not detached");
+        }
+        //
+        // Get feature values
+        //
+        List<Object> eValues = feature.getAttributes();
+        //
+        // Write values to eImpl()
+        //
+        EFeatureUtils.eSetFeatureValues(eStructure, eObject, eValues, transaction);
+        //
+        // Finished
+        //
+        return eValues;            
+    }
+
+    @Override
+    public boolean isReleased() {
+        return eObject == null;
+    }
+
+    @Override
+    public void release() {
+        eObject = null;
+    }    
     // ----------------------------------------------------- 
     //  SimpleFeature implementation
     // -----------------------------------------------------
     
+    @Override
     public FeatureId getIdentifier() {
         return getFeature().getIdentifier();
     }
 
+    @Override
     public AttributeDescriptor getDescriptor() {
         return getFeature().getDescriptor();
     }
 
+    @Override
     public BoundingBox getBounds() {
         return getFeature().getBounds();
     }
 
+    @Override
     public String getID() {
         return getFeature().getID();
     }
 
+    @Override
     public SimpleFeatureType getType() {
         return getFeature().getType();
     }
 
+    @Override
     public SimpleFeatureType getFeatureType() {
         return getFeature().getFeatureType();
     }
 
+    @Override
     public void setValue(Object newValue) {
         getFeature().setValue(newValue);
     }
 
+    @Override
     public List<Object> getAttributes() {
         return getFeature().getAttributes();
     }
 
+    @Override
     public GeometryAttribute getDefaultGeometryProperty() {
         return getFeature().getDefaultGeometryProperty();
     }
 
+    @Override
     public void setValue(Collection<Property> values) {
         getFeature().setValue(values);
     }
 
+    @Override
     public void setAttributes(List<Object> values) {
         getFeature().setAttributes(values);
     }
 
+    @Override
     public void setDefaultGeometryProperty(GeometryAttribute geometryAttribute) {
         getFeature().setDefaultGeometryProperty(geometryAttribute);
     }
 
+    @Override
     public Collection<? extends Property> getValue() {
         return getFeature().getValue();
     }
 
+    @Override
     public Collection<Property> getProperties(Name name) {
         return getFeature().getProperties(name);
     }
 
+    @Override
     public void setAttributes(Object[] values) {
         getFeature().setAttributes(values);
     }
 
+    @Override
     public Name getName() {
         return getFeature().getName();
     }
 
+    @Override
     public Property getProperty(Name name) {
         return getFeature().getProperty(name);
     }
 
+    @Override
     public Object getAttribute(String name) {
         return getFeature().getAttribute(name);
     }
 
+    @Override
     public boolean isNillable() {
         return getFeature().isNillable();
     }
 
+    @Override
     public void setAttribute(String name, Object value) {
         getFeature().setAttribute(name, value);
     }
 
+    @Override
     public Map<Object, Object> getUserData() {
         return getFeature().getUserData();
     }
 
+    @Override
     public Object getAttribute(Name name) {
         return getFeature().getAttribute(name);
     }
 
+    @Override
     public Collection<Property> getProperties(String name) {
         return getFeature().getProperties(name);
     }
 
+    @Override
     public void setAttribute(Name name, Object value) {
         getFeature().setAttribute(name, value);
     }
 
+    @Override
     public Collection<Property> getProperties() {
         return getFeature().getProperties();
     }
 
+    @Override
     public Property getProperty(String name) {
         return getFeature().getProperty(name);
     }
 
+    @Override
     public Object getAttribute(int index) throws IndexOutOfBoundsException {
         return getFeature().getAttribute(index);
     }
 
+    @Override
     public void setAttribute(int index, Object value) throws IndexOutOfBoundsException {
         getFeature().setAttribute(index, value);
     }
 
+    @Override
     public void validate() throws IllegalAttributeException {
         getFeature().validate();
     }
 
+    @Override
     public int getAttributeCount() {
         return getFeature().getAttributeCount();
     }
 
+    @Override
     public Object getDefaultGeometry() {
         return getFeature().getDefaultGeometry();
     }
 
+    @Override
     public void setDefaultGeometry(Object geometry) {
         getFeature().setDefaultGeometry(geometry);
     }
@@ -221,7 +336,7 @@ public class ESimpleFeatureDelegate implements ESimpleFeature {
     // -----------------------------------------------------
     
     protected SimpleFeature getFeature() {
-        return feature.get();
+        return feature;
     }    
 
 }

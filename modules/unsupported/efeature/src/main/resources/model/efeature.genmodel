@@ -9,13 +9,14 @@
     importerID="org.eclipse.emf.importer.ecore" featureDelegation="Reflective" containmentProxies="true"
     complianceLevel="5.0" suppressGenModelAnnotations="false" copyrightFields="false"
     providerRootExtendsClass="" editPluginID="" editorPluginID="" testsPluginID=""
-    interfaceNamePattern="">
+    interfaceNamePattern="" runtimePlatform="RCP">
   <foreignModel>efeature.ecore</foreignModel>
   <genPackages prefix="EFeature" basePackage="org.geotools.data" disposableProviderFactory="true"
-      loadInitialization="true" contentTypeIdentifier="" fileExtensions="" ecorePackage="efeature.ecore#/">
+      contentTypeIdentifier="" fileExtensions="" ecorePackage="efeature.ecore#/">
     <genDataTypes ecoreDataType="efeature.ecore#//Feature"/>
     <genDataTypes ecoreDataType="efeature.ecore#//Property"/>
     <genDataTypes ecoreDataType="efeature.ecore#//Attribute"/>
+    <genDataTypes ecoreDataType="efeature.ecore#//Transaction"/>
     <genDataTypes ecoreDataType="efeature.ecore#//GeometryAttribute"/>
     <genDataTypes ecoreDataType="efeature.ecore#//Geometry"/>
     <genDataTypes ecoreDataType="efeature.ecore#//EStructureInfo"/>
@@ -38,9 +39,8 @@
     </genDataTypes>
     <genClasses ecoreClass="efeature.ecore#//EFeature">
       <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute efeature.ecore#//EFeature/ID"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute efeature.ecore#//EFeature/SRID"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute efeature.ecore#//EFeature/data"/>
-      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute efeature.ecore#//EFeature/simple"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute efeature.ecore#//EFeature/SRID"/>
       <genFeatures createChild="false" propertyCategory="" propertyDescription=""
           ecoreFeature="ecore:EAttribute efeature.ecore#//EFeature/default"/>
       <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute efeature.ecore#//EFeature/structure"/>
@@ -51,6 +51,13 @@
       <genOperations ecoreOperation="efeature.ecore#//EFeature/getGeometryList">
         <genParameters ecoreParameter="efeature.ecore#//EFeature/getGeometryList/valueType"/>
         <genTypeParameters ecoreTypeParameter="efeature.ecore#//EFeature/getGeometryList/V"/>
+      </genOperations>
+      <genOperations ecoreOperation="efeature.ecore#//EFeature/getData">
+        <genParameters ecoreParameter="efeature.ecore#//EFeature/getData/transaction"/>
+      </genOperations>
+      <genOperations ecoreOperation="efeature.ecore#//EFeature/setData">
+        <genParameters ecoreParameter="efeature.ecore#//EFeature/setData/newData"/>
+        <genParameters ecoreParameter="efeature.ecore#//EFeature/setData/transaction"/>
       </genOperations>
     </genClasses>
   </genPackages>

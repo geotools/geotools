@@ -130,14 +130,17 @@ public class EFeatureIDFactoryImpl implements EFeatureIDFactory {
     //  EFeatureIDFactory implementation
     // -----------------------------------------------------
     
+    @Override
     public String getPrefix() {
         return ePrefix;
     }
         
+    @Override
     public EAttribute add(EObject eObject) throws IllegalArgumentException {
-        return add(eObject.eClass());
+        return add(eImpl(eObject).eClass());
     }
 
+    @Override
     public EAttribute add(EClass eClass) throws IllegalArgumentException {
         // 
         // Check if have ID attribute?        
@@ -169,6 +172,7 @@ public class EFeatureIDFactoryImpl implements EFeatureIDFactory {
         return eAtt;
     }
 
+    @Override
     public void add(EClass eClass, EAttribute eID) {
         EAttribute eAtt = eAttributeMap.get(eClass);
         if(eAtt!=null) {
@@ -188,31 +192,38 @@ public class EFeatureIDFactoryImpl implements EFeatureIDFactory {
         }        
     }    
         
+    @Override
     public boolean creates(EObject eObject) {
-        return creates(eObject.eClass());
+        return creates(eImpl(eObject).eClass());
     }
 
+    @Override
     public boolean creates(EClass eClass) {
         return eAttributeMap.containsKey(eClass);
     }
     
+    @Override
     public boolean creates(EAttribute eAttribute) {
         return eAttributeMap.containsValue(eAttribute);
     }
         
+    @Override
     public boolean contains(URI eURI) {
         return eIDMap.containsKey(eURI);
     }
 
+    @Override
     public boolean contains(EObject eObject) {
+        EObject eImpl = eImpl(eObject);
         for(Map<EObject,Long> it : eInverseIDMap.values()) { 
-            if(it.containsKey(eObject)) {
+            if(it.containsKey(eImpl)) {
                 return true;
             }
         }
         return false;
     }
     
+    @Override
     public Map<EObject,String> getIDMap(URI eURI) {
         Map<EObject,Long> eCachedIDs = eInverseIDMap.get(eURI);
         if(eCachedIDs!=null) {
@@ -225,30 +236,40 @@ public class EFeatureIDFactoryImpl implements EFeatureIDFactory {
         return Collections.emptyMap();
     }
     
+    @Override
     public String getID(EObject eObject) {
+        //
+        // Get implementation (strips away EFeatureDelegates)
+        //
+        EObject eImpl = eImpl(eObject);
         //
         // Verify EObject
         //
-        verify("EObject", eObject, true, false, true);
+        verify("EObject", eImpl, true, false, true);
         //
         // Get URI
         //
-        URI eURI = eObject.eResource().getURI();
+        URI eURI = eImpl.eResource().getURI();
         //
         // Forward
         //
-        return eGetID(eURI,eObject);
+        return eGetID(eURI,eImpl);
     }
     
+    @Override
     public String createID(EObject eObject) throws IllegalArgumentException {
+        //
+        // Get implementation (strips away EFeatureDelegates)
+        //
+        EObject eImpl = eImpl(eObject);
         //
         // Verify EObject
         //
-        verify("eObject", eObject, true, true, true);
+        verify("eObject", eImpl, true, true, true);
         //
         // Get ID attribute
         //
-        EAttribute eAttribute = eAttributeMap.get(eObject.eClass());
+        EAttribute eAttribute = eAttributeMap.get(eImpl.eClass());
         //
         // Verify
         //
@@ -256,7 +277,7 @@ public class EFeatureIDFactoryImpl implements EFeatureIDFactory {
         //
         // Get URI
         //
-        URI eURI = eObject.eResource().getURI();        
+        URI eURI = eImpl.eResource().getURI();        
         //
         // Verify
         //
@@ -264,29 +285,35 @@ public class EFeatureIDFactoryImpl implements EFeatureIDFactory {
         //
         // Get set value
         //
-        String eSetID = eGetID(eURI, eObject);
+        String eSetID = eGetID(eURI, eImpl);
         //
         // Forward to implementation
         //
         String eNewID = (eSetID==null || eSetID.length()==0 ?
-                eCreateID(eURI, eObject, eObject.eClass(), eAttribute) : 
-                    eUseID(eURI, eObject, eAttribute, eSetID, true));
+                eCreateID(eURI, eImpl, eImpl.eClass(), eAttribute) : 
+                    eUseID(eURI, eImpl, eAttribute, eSetID, true));
         //
-        // If EObject is an EFeature, then set ID if not the same as current
+        // If EObject is an EFeature, then set ID. 
+        // Otherwise, throw an IllegalArgumentException
         //
         return eInverseSet(eObject,eNewID,eSetID);
         
     }
 
+    @Override
     public String useID(EObject eObject, String eID) {
+        //
+        // Get implementation (strips away EFeatureDelegates)
+        //
+        EObject eImpl = eImpl(eObject);
         //
         // Verify eObject
         //
-        verify("eObject",eObject,true,true,true);
+        verify("eObject",eImpl,true,true,true);
         //
         // Get URI
         //
-        URI eURI = eObject.eResource().getURI();
+        URI eURI = eImpl.eResource().getURI();
         //
         // Verify eURI
         //
@@ -294,11 +321,11 @@ public class EFeatureIDFactoryImpl implements EFeatureIDFactory {
         //
         // Get ID attribute
         //
-        EAttribute eAttribute = eAttributeMap.get(eObject.eClass());
+        EAttribute eAttribute = eAttributeMap.get(eImpl.eClass());
         //
         // Get current value
         // 
-        String eSetID = (String)eObject.eGet(eAttribute);
+        String eSetID = (String)eImpl.eGet(eAttribute);
         //
         // Check if set
         //
@@ -312,22 +339,28 @@ public class EFeatureIDFactoryImpl implements EFeatureIDFactory {
         //  set in given object, then just mark it as used and return
         //  it unchanged. See eIDMap for more information.
         //
-        eID = eUseID(eURI, eObject, eAttribute, eID, eIsSet);
+        eID = eUseID(eURI, eImpl, eAttribute, eID, eIsSet);
         //
-        // If EObject is an EFeature, then set ID if not the same as current
+        // If EObject is an EFeature, then set ID. 
+        // Otherwise, throw an IllegalArgumentException
         //
         return eInverseSet(eObject,eID,eSetID);        
     }
 
+    @Override
     public String disposeID(EObject eObject) {
+        //
+        // Get implementation (strips away EFeatureDelegates)
+        //
+        EObject eImpl = eImpl(eObject);
         //
         // Verify eObject
         //
-        verify("eObject",eObject,true,true,true);
+        verify("eObject",eImpl,true,true,true);
         //
         // Get URI
         //
-        URI eURI = eObject.eResource().getURI();
+        URI eURI = eImpl.eResource().getURI();
         //
         // Verify URI
         //
@@ -335,11 +368,11 @@ public class EFeatureIDFactoryImpl implements EFeatureIDFactory {
         //
         // Get ID attribute
         //
-        EAttribute eAttribute = eAttributeMap.get(eObject.eClass());
+        EAttribute eAttribute = eAttributeMap.get(eImpl.eClass());
         //
         // Get current ID
         //
-        String eID = (String)eObject.eGet(eAttribute);
+        String eID = (String)eImpl.eGet(eAttribute);
         //
         // Verify
         //
@@ -347,14 +380,14 @@ public class EFeatureIDFactoryImpl implements EFeatureIDFactory {
         //
         // Forward
         //
-        return eDisposeID(eURI, eObject, eID);
+        return eDisposeID(eURI, eImpl, eID);
     }    
     
     // ----------------------------------------------------- 
     //  Helper methods
     // -----------------------------------------------------
     
-    protected String eGetID(URI eURI, EObject eObject) {
+    protected String eGetID(URI eURI, EObject eImpl) {
         //
         // Get map
         //
@@ -363,7 +396,7 @@ public class EFeatureIDFactoryImpl implements EFeatureIDFactory {
         // Locate ID if exists?
         //
         if(eIDs!=null) {
-            Long uniqueID = eIDs.get(eObject);
+            Long uniqueID = eIDs.get(eImpl);
             if(uniqueID!=null) {
                 return ePrefix + uniqueID;
             }
@@ -391,12 +424,12 @@ public class EFeatureIDFactoryImpl implements EFeatureIDFactory {
      * <p>
      * This method used the {@link #eInverseIDMap} to ensure that 
      * the next ID is is unique
-     * @param eObject - {@link EObject} instance
-     * @param eObject - the object with ID 
+     * @param eImpl - {@link EObject} instance
+     * @param eImpl - the object with ID 
      * @param uID - proposed ID
      * @return actual unique ID
      */
-    protected Long eUniqueID(URI eURI, EObject eObject, Long uID) {
+    protected Long eUniqueID(URI eURI, EObject eImpl, Long uID) {
         //
         // Get Map of cached ID for given URI
         //
@@ -408,7 +441,7 @@ public class EFeatureIDFactoryImpl implements EFeatureIDFactory {
             //
             // Check if an equal ID value is already cached for given object
             //
-            if(uID.equals(eCachedIDs.get(eObject))) 
+            if(uID.equals(eCachedIDs.get(eImpl))) 
                 return uID;
             //
             // Initialize upper bounds for safe exit
@@ -432,7 +465,7 @@ public class EFeatureIDFactoryImpl implements EFeatureIDFactory {
     /**
      * Create ID from given information.
      */
-    protected String eCreateID(URI eURI, EObject eObject, EClass eClass, EAttribute eID) 
+    protected String eCreateID(URI eURI, EObject eImpl, EClass eClass, EAttribute eID) 
         throws IllegalArgumentException {
         //
         // Initialize unique id to "unknown"
@@ -441,7 +474,7 @@ public class EFeatureIDFactoryImpl implements EFeatureIDFactory {
         //
         // Try to get unique ID as string
         //
-        String sID = getID(eObject);
+        String sID = getID(eImpl);
         //
         // Get current ID
         //
@@ -475,16 +508,16 @@ public class EFeatureIDFactoryImpl implements EFeatureIDFactory {
                 //
                 // Validate against cached IDs
                 //
-                uID = eUniqueID(eURI, eObject, uID);
+                uID = eUniqueID(eURI, eImpl, uID);
             }
         } 
         //
         // Add to ID maps
         //
-        return eCacheID(eURI,eObject,uID);
+        return eCacheID(eURI,eImpl,uID);
     }    
     
-    protected String eUseID(URI eURI, EObject eObject, 
+    protected String eUseID(URI eURI, EObject eImpl, 
             EAttribute eAttribute, String eID, boolean eIsSet) {
         //
         // Remove prefix
@@ -498,15 +531,21 @@ public class EFeatureIDFactoryImpl implements EFeatureIDFactory {
         // Ensure that is is unique?
         //
         if(!eIsSet) {
-            uID = eUniqueID(eURI, eObject, uID);
+            uID = eUniqueID(eURI, eImpl, uID);
         }
         //
         // Cache the ID as used
         //
-        return eCacheID(eURI, eObject, uID);
+        return eCacheID(eURI, eImpl, uID);
     }        
     
-    protected String eCacheID(URI eURI, EObject eObject, Long uID) {
+    protected String eCacheID(URI eURI, EObject eImpl, Long uID) {
+        //
+        // Ensure that EFeatureDelegates are not cached
+        //
+        if(eImpl instanceof EFeatureDelegate) {
+            throw new IllegalArgumentException("IDs can not be associated with EFeatureDelegate instances");
+        }        
         //
         // Get Object cached for given ID, create it if not found
         //
@@ -519,13 +558,11 @@ public class EFeatureIDFactoryImpl implements EFeatureIDFactory {
         if(eObjectSet==null) {
             eObjectSet = new WeakHashSet<EObject>(EObject.class);
             eCachedIDSets.put(uID, eObjectSet);            
-        }        
-        
+        }                
         // 
         // Add object to hash set
         //
-        eObjectSet.add(eObject);        
-        
+        eObjectSet.add(eImpl);                
         //
         // Get EObjects cached for given URI, create it if not found
         //
@@ -537,7 +574,7 @@ public class EFeatureIDFactoryImpl implements EFeatureIDFactory {
         //
         // Add to ID cache
         //
-        eInverseIDs.put(eObject, uID);
+        eInverseIDs.put(eImpl, uID);
         //
         // Update next ID?
         //
@@ -554,13 +591,13 @@ public class EFeatureIDFactoryImpl implements EFeatureIDFactory {
         if((eObject instanceof EFeature)) {
             if(!eNewID.equals(eSetID)) {
                 if(eObject instanceof EFeatureImpl) {
-                    return ((EFeatureImpl)eObject).eImpl().eSetID(eNewID, false);
+                    return ((EFeatureImpl)eObject).eInternal().eSetID(eNewID, false);
                 } else if(eObject instanceof EFeatureDelegate) {
-                    return ((EFeatureDelegate)eObject).eImpl().eSetID(eNewID, false);
+                    return ((EFeatureDelegate)eObject).eInternal().eSetID(eNewID, false);
                 }
                 //
                 // ------------------------------------------------------
-                //  This is not recommended, but let's try it out ...
+                //  !!! EFeature not implemented !!!
                 // ------------------------------------------------------
                 //  Just as implementors or EObject are expected to 
                 //  implement InternalEObject, implementors of EFeature
@@ -570,7 +607,10 @@ public class EFeatureIDFactoryImpl implements EFeatureIDFactory {
                 //  EFeature.setID() -> EFeatureIDFactory.useID() -> 
                 //  EFeature.setID(), handles the context startup 
                 //  problem and much more which direct implementors of 
-                //  EFeature must handle them selves.
+                //  EFeature must handle themselves. Try
+                //
+                //
+                //  This will probably fail, but let's try it out anyway ...
                 //
                 try {
                     ((EFeature)eObject).setID(eNewID);
@@ -578,8 +618,8 @@ public class EFeatureIDFactoryImpl implements EFeatureIDFactory {
                     //
                     // Notify that this is a unrecoverable errors
                     //
-                    String msg = "Erroneous implementation of EFeature. " +
-                    		 "Extend EFeatureImpl or use a EFeatureDelegate. ";
+                    String msg = "EFeature is implemented correctly. " +
+                    		 "Extend EFeatureImpl or use a EFeatureDelegate instead. ";
                     //
                     // Log message as severe. This should give the implementor some additional hints...
                     //
@@ -590,8 +630,12 @@ public class EFeatureIDFactoryImpl implements EFeatureIDFactory {
                     throw ((IllegalArgumentException)(new IllegalArgumentException(msg).initCause(e)));
                 }
             }
+            return eNewID;
         }
-        return eNewID;
+        //
+        // This should never happen...
+        //
+        throw new IllegalArgumentException("'" + eObject + " does not implement EFeature");
     }
     
     protected String eDisposeID(URI eURI, EObject eObject, String eID) 
@@ -659,6 +703,13 @@ public class EFeatureIDFactoryImpl implements EFeatureIDFactory {
             return ((ENamedElement)eObject).getName();
         }
         return eObject.toString();
+    }
+    
+    protected EObject eImpl(EObject eObject) {
+        if(eObject instanceof EFeatureDelegate) {
+            eObject = ((EFeatureDelegate)eObject).eImpl();
+        }
+        return eObject;
     }
 
 }

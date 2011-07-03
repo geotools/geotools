@@ -32,15 +32,19 @@
         </eGenericType>
       </eParameters>
     </eOperations>
+    <eOperations name="getData" lowerBound="1" eType="#//Feature">
+      <eParameters name="transaction" lowerBound="1" eType="#//Transaction"/>
+    </eOperations>
+    <eOperations name="setData" lowerBound="1" eType="#//Feature">
+      <eParameters name="newData" lowerBound="1" eType="#//Feature"/>
+      <eParameters name="transaction" lowerBound="1" eType="#//Transaction"/>
+    </eOperations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="ID" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         volatile="true" defaultValueLiteral="" iD="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="data" lowerBound="1" eType="#//Feature"
+        transient="true" derived="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="SRID" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         volatile="true" defaultValueLiteral="EPSG:4326"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="data" lowerBound="1" eType="#//Feature"
-        volatile="true" transient="true" derived="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="simple" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" changeable="false"
-        volatile="true" transient="true" defaultValueLiteral="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="default" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" volatile="true"
         defaultValueLiteral="geom">
@@ -55,6 +59,8 @@
       serializable="false"/>
   <eClassifiers xsi:type="ecore:EDataType" name="Property" instanceClassName="org.opengis.feature.Property"/>
   <eClassifiers xsi:type="ecore:EDataType" name="Attribute" instanceClassName="org.opengis.feature.Attribute"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="Transaction" instanceClassName="org.geotools.data.Transaction"
+      serializable="false"/>
   <eClassifiers xsi:type="ecore:EDataType" name="GeometryAttribute" instanceClassName="org.opengis.feature.GeometryAttribute"
       serializable="false"/>
   <eClassifiers xsi:type="ecore:EDataType" name="Geometry" instanceClassName="com.vividsolutions.jts.geom.Geometry"/>

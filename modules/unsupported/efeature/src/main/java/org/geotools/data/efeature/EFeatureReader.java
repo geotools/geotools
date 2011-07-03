@@ -1,5 +1,8 @@
 package org.geotools.data.efeature;
 
+import static org.geotools.data.efeature.EFeatureHints.EFEATURE_VALUES_DETACHED;
+import static org.geotools.data.efeature.EFeatureHints.EFEATURE_SINGLETON_FEATURES;
+
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.NoSuchElementException;
@@ -10,9 +13,11 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.geotools.data.Query;
+import org.geotools.data.Transaction;
 import org.geotools.data.efeature.internal.EFeatureDelegate;
 import org.geotools.data.efeature.internal.ESimpleFeatureDelegate;
 import org.geotools.data.simple.SimpleFeatureReader;
+import org.geotools.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
@@ -34,26 +39,30 @@ public class EFeatureReader implements SimpleFeatureReader {
     /**
      * Cached {@link EFeatureInfo} instance
      */
-    private final EFeatureInfo eFeatureInfo;
-
-    /**
-     * Cached {@link EFeatureDataStore} instance. Reference must be reset when the this reader is closed
-     * to prevent memory leakage.
-     */
-    private WeakReference<EFeatureDataStore> eStore;
+    protected final EFeatureInfo eStructure;
 
     /**
      * Cached {@link EFeatureAttributeReader} instance. Must be closed when this reader is closed to
      * prevent memory leakage.
      */
-    private EFeatureAttributeReader eReader;
+    protected final EFeatureAttributeReader eReader;
     
-//    /**
-//     * Static {@link EFeatureDelegate} cache. 
-//     */
-//    private static final WeakHashMap<EObject, EFeatureDelegate> 
-//        eDelegateMap = new WeakHashMap<EObject, EFeatureDelegate>();
-
+    /**
+     * Cached {@link EFeatureDataStore} instance. Reference must be reset when the this reader is closed
+     * to prevent memory leakage.
+     */
+    protected WeakReference<EFeatureDataStore> eStore;
+    
+    /**
+     * Cached {@link Transaction}. Can contain locking information
+     */
+    protected final Transaction eTx;
+    
+    /**
+     * Cached Query hints
+     */
+    protected Hints hints;
+    
     // ----------------------------------------------------- 
     //  Constructors
     // -----------------------------------------------------
@@ -80,33 +89,90 @@ public class EFeatureReader implements SimpleFeatureReader {
      */
     protected EFeatureReader(EFeatureDataStore eStore, String eType, Query query) throws IOException {
         this.eStore = new WeakReference<EFeatureDataStore>(eStore);
-        this.eFeatureInfo = eStore.eStructure().eGetFeatureInfo(eType);
+        this.eStructure = eStore.eStructure().eGetFeatureInfo(eType);
         this.eReader = new EFeatureAttributeReader(eStore, eType, query);
+        this.eTx = Transaction.AUTO_COMMIT;
+        this.hints = query.getHints();
     }
+    
+    /**
+     * The {@link EFeatureReader} constructor.
+     * 
+     * @param eStore - {@link EFeatureDataStore} instance containing {@link EFeature} resource
+     *        information
+     * @param eType - {@link SimpleFeatureType} name.
+     *        <p>
+     *        {@link SimpleFeatureType} names have the following
+     * 
+     *        <pre>
+     * eName=&lt;eFolder&gt;.&lt;eReference&gt;
+     * 
+     * where
+     * 
+     * eFolder = {@link EFeature} folder name
+     * eReference = {@link EFeature} reference name
+     * </pre>
+     * 
+     * @throws IOException
+     */
+    protected EFeatureReader(EFeatureDataStore eStore, String eType, Query query, Transaction eTx) throws IOException {
+        this.eStore = new WeakReference<EFeatureDataStore>(eStore);
+        this.eStructure = eStore.eStructure().eGetFeatureInfo(eType);
+        this.eReader = new EFeatureAttributeReader(eStore, eType, query);
+        this.eTx = eTx;
+        this.hints = query.getHints();
+    }
+    
+    // ----------------------------------------------------- 
+    //  EFeatureReader implementation
+    // -----------------------------------------------------
     
     public void reset() throws IOException {
         this.eReader.reset();
     }
 
+    @Override
     public void close() throws IOException {
         this.eReader.close();
-        this.eReader = null;
         EFeatureDataStore eStore = this.eStore.get();
         if(eStore!=null) eStore.onCloseReader(this);
         this.eStore = null;
     }
+    
+    public EFeatureInfo eStructure() {
+        return eStructure;
+    }
 
+    public EFeatureDataStore eDataStore() {
+        return eStore.get();
+    }
+    
+    @Override
     public SimpleFeatureType getFeatureType() {
         return eReader.getFeatureType();
     }
 
+    @Override
     public boolean hasNext() throws IOException {
         return eReader.hasNext();
     }
 
-    public ESimpleFeature next() throws IOException, IllegalArgumentException,
-    NoSuchElementException {
+    @Override
+    public ESimpleFeature next() throws IOException, 
+        IllegalArgumentException, NoSuchElementException {
+        
+        //
+        // Sanity check
+        //
+        if (!hasNext()) { 
+            throw new NoSuchElementException();
+        }
+        
         try {
+            //
+            // Access to EFeatureInfo hints must be synchronized (thread safe)
+            //
+            eStructure.eLock();
             //
             // Initialize
             //
@@ -118,11 +184,11 @@ public class EFeatureReader implements SimpleFeatureReader {
             //
             // Adapt given object to EFeature structure
             //
-            eObject = adapt(eFeatureInfo,eObject);
+            eObject = eAdapt(eStructure,eObject,hints);
             //
             // Get feature from EFeature
             //
-            feature = ((EFeature)eObject).getData();            
+            feature = eData((EFeature)eObject,hints);
             //
             // Implements ESimpleFeature?
             //
@@ -140,41 +206,85 @@ public class EFeatureReader implements SimpleFeatureReader {
                 // startup problem etc.), a WARNING message is issued telling them that
                 // the this operation may be unsafe. 
                 //
-                LOGGER.log(Level.WARNING,"Non-standard Feature " +
-                		"implementation found. Unpredictable behavior may occur");
+                LOGGER.log(Level.WARNING,"Non-standard Feature implementation " +
+                		"found. Unpredictable behavior may occur.");
                 //
                 // Forward ESimpleFeature delegate
                 //
-                return new ESimpleFeatureDelegate(eObject,(SimpleFeature)feature);
+                return new ESimpleFeatureDelegate(eStructure, eObject,(SimpleFeature)feature);
             }
 
-
         } finally {
+            //
+            // Release lock on structure
+            //
+            eStructure.eUnlock();
             //
             // Progress to next feature
             //
             eReader.next();
         }        
     }
-    
-    protected static EFeature adapt(EFeatureInfo eInfo, EObject eObject) {
+        
+    protected static EFeature eAdapt(EFeatureInfo eStructure, EObject eObject, Hints hints) {
         //
-        // Adapt directly? 
+        // Get EFeatureHints for given structure 
         //
-        if(eObject instanceof EFeature) {
-            ((EFeature)eObject).setStructure(eInfo);
-            return (EFeature)eObject;
+        EFeatureHints eHints = eStructure.eHints();
+        //
+        // Override current hints 
+        //
+        Object eDetatchedValues = eHints.replace(hints,EFEATURE_VALUES_DETACHED);
+        Object eSingletonFeatures = eHints.replace(hints,EFEATURE_SINGLETON_FEATURES);
+        try {
+            //
+            // Adapt directly? 
+            //
+            if(eObject instanceof EFeature) {
+                ((EFeature)eObject).setStructure(eStructure);
+                return (EFeature)eObject;
+            }
+            //
+            // Create new delegate and return it
+            //
+            return EFeatureDelegate.create(eStructure, (InternalEObject)eObject, true);
+            
+        } finally {
+            //
+            // Restore old hint states 
+            //
+            eHints.restore(EFEATURE_VALUES_DETACHED,eDetatchedValues);
+            eHints.restore(EFEATURE_SINGLETON_FEATURES,eSingletonFeatures);
         }
+    }
+    
+    protected static ESimpleFeature eData(EFeature eFeature, Hints hints) {
         //
-        // Use EFeatureDelegate
+        // Get EFeatureHints for given structure 
         //
-        return EFeatureDelegate.create(eInfo, (InternalEObject)eObject);
-//        EFeatureDelegate eDelegate = eDelegateMap.get(eObject);
-//        if( eDelegate == null ) {
-//            eDelegate = new EFeatureDelegate(eInfo, (InternalEObject)eObject);
-//            eDelegateMap.put(eObject,eDelegate);
-//        }
-//        return eDelegate;
+        EFeatureHints eHints = eFeature.getStructure().eHints();
+        //
+        // Override current hints 
+        //
+        Object eDetatchedValues = eHints.replace(hints,EFEATURE_VALUES_DETACHED);
+        Object eSingletonFeatures = eHints.replace(hints,EFEATURE_SINGLETON_FEATURES);
+        try {
+            //
+            // Get ESimpleFeature instance
+            //
+            Feature data = eFeature.getData();
+            //
+            // Finished
+            //
+            return (ESimpleFeature)data;
+            
+        } finally {
+            //
+            // Restore old hint states 
+            //
+            eHints.restore(EFEATURE_VALUES_DETACHED,eDetatchedValues);
+            eHints.restore(EFEATURE_SINGLETON_FEATURES,eSingletonFeatures);
+        }
     }
 
     /**

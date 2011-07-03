@@ -44,6 +44,7 @@ public class EFeatureAllTests extends TestSuite {
         suite.addTestSuite(EFeatureQueryTest.class);
         suite.addTestSuite(EFeatureDataStoreTest.class);
         suite.addTestSuite(EFeatureReaderTest.class);        
+        suite.addTestSuite(EFeatureHintsTest.class);        
         suite.addTest(EAttributeFilterAllTests.suite());
         //
         // Ready to execute

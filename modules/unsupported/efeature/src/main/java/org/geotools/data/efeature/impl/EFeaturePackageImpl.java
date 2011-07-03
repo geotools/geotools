@@ -6,34 +6,39 @@
  */
 package org.geotools.data.efeature.impl;
 
-import java.io.IOException;
-import java.net.URL;
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.common.util.WrappedException;
+import com.vividsolutions.jts.geom.Geometry;
+import java.util.List;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EDataType;
+import org.eclipse.emf.ecore.EGenericType;
+import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.ETypeParameter;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
+import org.geotools.data.Transaction;
+import org.geotools.data.efeature.EFeature;
+import org.geotools.data.efeature.EFeatureAttribute;
+import org.geotools.data.efeature.EFeatureAttributeInfo;
 import org.geotools.data.efeature.EFeatureFactory;
+import org.geotools.data.efeature.EFeatureGeometry;
+import org.geotools.data.efeature.EFeatureGeometryInfo;
+import org.geotools.data.efeature.EFeatureInfo;
 import org.geotools.data.efeature.EFeaturePackage;
+import org.geotools.data.efeature.EFeatureProperty;
+import org.geotools.data.efeature.EStructureInfo;
+import org.opengis.feature.Attribute;
+import org.opengis.feature.Feature;
+import org.opengis.feature.GeometryAttribute;
+import org.opengis.feature.Property;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Package</b>. <!-- end-user-doc -->
  * @generated
  */
 public class EFeaturePackageImpl extends EPackageImpl implements EFeaturePackage {
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    protected String packageFilename = "efeature.ecore";
-
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated
@@ -57,6 +62,13 @@ public class EFeaturePackageImpl extends EPackageImpl implements EFeaturePackage
      * @generated
      */
     private EDataType attributeEDataType = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EDataType transactionEDataType = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -155,6 +167,8 @@ public class EFeaturePackageImpl extends EPackageImpl implements EFeaturePackage
      * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @see #eNS_URI
+     * @see #createPackageContents()
+     * @see #initializePackageContents()
      * @generated
      */
     public static EFeaturePackage init() {
@@ -165,11 +179,11 @@ public class EFeaturePackageImpl extends EPackageImpl implements EFeaturePackage
 
         isInited = true;
 
-        // Load packages
-        theEFeaturePackage.loadPackage();
+        // Create package meta-data objects
+        theEFeaturePackage.createPackageContents();
 
-        // Fix loaded packages
-        theEFeaturePackage.fixPackageContents();
+        // Initialize created meta-data
+        theEFeaturePackage.initializePackageContents();
 
         // Mark meta-data to indicate it can't be changed
         theEFeaturePackage.freeze();
@@ -184,10 +198,8 @@ public class EFeaturePackageImpl extends EPackageImpl implements EFeaturePackage
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getEFeature() {
-        if (eFeatureEClass == null) {
-            eFeatureEClass = (EClass)EPackage.Registry.INSTANCE.getEPackage(EFeaturePackage.eNS_URI).getEClassifiers().get(0);
-        }
         return eFeatureEClass;
     }
 
@@ -196,58 +208,54 @@ public class EFeaturePackageImpl extends EPackageImpl implements EFeaturePackage
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getEFeature_ID() {
-        return (EAttribute)getEFeature().getEStructuralFeatures().get(0);
+        return (EAttribute)eFeatureEClass.getEStructuralFeatures().get(0);
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getEFeature_SRID() {
-        return (EAttribute)getEFeature().getEStructuralFeatures().get(1);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * @generated
-     */
+    @Override
     public EAttribute getEFeature_Data() {
-        return (EAttribute)getEFeature().getEStructuralFeatures().get(2);
+        return (EAttribute)eFeatureEClass.getEStructuralFeatures().get(1);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated
      */
-    public EAttribute getEFeature_Simple() {
-        return (EAttribute)getEFeature().getEStructuralFeatures().get(3);
+    @Override
+    public EAttribute getEFeature_SRID() {
+        return (EAttribute)eFeatureEClass.getEStructuralFeatures().get(2);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getEFeature_Default() {
-        return (EAttribute)getEFeature().getEStructuralFeatures().get(4);
+        return (EAttribute)eFeatureEClass.getEStructuralFeatures().get(3);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getEFeature_Structure() {
-        return (EAttribute)getEFeature().getEStructuralFeatures().get(5);
+        return (EAttribute)eFeatureEClass.getEStructuralFeatures().get(4);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getEFeatureProperty() {
-        if (eFeaturePropertyEDataType == null) {
-            eFeaturePropertyEDataType = (EDataType)EPackage.Registry.INSTANCE.getEPackage(EFeaturePackage.eNS_URI).getEClassifiers().get(12);
-        }
         return eFeaturePropertyEDataType;
     }
 
@@ -255,10 +263,8 @@ public class EFeaturePackageImpl extends EPackageImpl implements EFeaturePackage
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getEFeatureAttribute() {
-        if (eFeatureAttributeEDataType == null) {
-            eFeatureAttributeEDataType = (EDataType)EPackage.Registry.INSTANCE.getEPackage(EFeaturePackage.eNS_URI).getEClassifiers().get(13);
-        }
         return eFeatureAttributeEDataType;
     }
 
@@ -266,10 +272,8 @@ public class EFeaturePackageImpl extends EPackageImpl implements EFeaturePackage
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getEFeatureGeometry() {
-        if (eFeatureGeometryEDataType == null) {
-            eFeatureGeometryEDataType = (EDataType)EPackage.Registry.INSTANCE.getEPackage(EFeaturePackage.eNS_URI).getEClassifiers().get(14);
-        }
         return eFeatureGeometryEDataType;
     }
 
@@ -277,10 +281,8 @@ public class EFeaturePackageImpl extends EPackageImpl implements EFeaturePackage
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getEStructuralFeature() {
-        if (eStructuralFeatureEDataType == null) {
-            eStructuralFeatureEDataType = (EDataType)EPackage.Registry.INSTANCE.getEPackage(EFeaturePackage.eNS_URI).getEClassifiers().get(10);
-        }
         return eStructuralFeatureEDataType;
     }
 
@@ -288,10 +290,8 @@ public class EFeaturePackageImpl extends EPackageImpl implements EFeaturePackage
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getFeature() {
-        if (featureEDataType == null) {
-            featureEDataType = (EDataType)EPackage.Registry.INSTANCE.getEPackage(EFeaturePackage.eNS_URI).getEClassifiers().get(1);
-        }
         return featureEDataType;
     }
 
@@ -299,10 +299,8 @@ public class EFeaturePackageImpl extends EPackageImpl implements EFeaturePackage
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getProperty() {
-        if (propertyEDataType == null) {
-            propertyEDataType = (EDataType)EPackage.Registry.INSTANCE.getEPackage(EFeaturePackage.eNS_URI).getEClassifiers().get(2);
-        }
         return propertyEDataType;
     }
 
@@ -310,21 +308,27 @@ public class EFeaturePackageImpl extends EPackageImpl implements EFeaturePackage
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getAttribute() {
-        if (attributeEDataType == null) {
-            attributeEDataType = (EDataType)EPackage.Registry.INSTANCE.getEPackage(EFeaturePackage.eNS_URI).getEClassifiers().get(3);
-        }
         return attributeEDataType;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    @Override
+    public EDataType getTransaction() {
+        return transactionEDataType;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getGeometryAttribute() {
-        if (geometryAttributeEDataType == null) {
-            geometryAttributeEDataType = (EDataType)EPackage.Registry.INSTANCE.getEPackage(EFeaturePackage.eNS_URI).getEClassifiers().get(4);
-        }
         return geometryAttributeEDataType;
     }
 
@@ -332,10 +336,8 @@ public class EFeaturePackageImpl extends EPackageImpl implements EFeaturePackage
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getGeometry() {
-        if (geometryEDataType == null) {
-            geometryEDataType = (EDataType)EPackage.Registry.INSTANCE.getEPackage(EFeaturePackage.eNS_URI).getEClassifiers().get(5);
-        }
         return geometryEDataType;
     }
 
@@ -343,10 +345,8 @@ public class EFeaturePackageImpl extends EPackageImpl implements EFeaturePackage
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getEStructureInfo() {
-        if (eStructureInfoEDataType == null) {
-            eStructureInfoEDataType = (EDataType)EPackage.Registry.INSTANCE.getEPackage(EFeaturePackage.eNS_URI).getEClassifiers().get(6);
-        }
         return eStructureInfoEDataType;
     }
 
@@ -354,10 +354,8 @@ public class EFeaturePackageImpl extends EPackageImpl implements EFeaturePackage
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getEFeatureInfo() {
-        if (eFeatureInfoEDataType == null) {
-            eFeatureInfoEDataType = (EDataType)EPackage.Registry.INSTANCE.getEPackage(EFeaturePackage.eNS_URI).getEClassifiers().get(7);
-        }
         return eFeatureInfoEDataType;
     }
 
@@ -365,10 +363,8 @@ public class EFeaturePackageImpl extends EPackageImpl implements EFeaturePackage
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getEFeatureAttributeInfo() {
-        if (eFeatureAttributeInfoEDataType == null) {
-            eFeatureAttributeInfoEDataType = (EDataType)EPackage.Registry.INSTANCE.getEPackage(EFeaturePackage.eNS_URI).getEClassifiers().get(8);
-        }
         return eFeatureAttributeInfoEDataType;
     }
 
@@ -376,10 +372,8 @@ public class EFeaturePackageImpl extends EPackageImpl implements EFeaturePackage
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getEFeatureGeometryInfo() {
-        if (eFeatureGeometryInfoEDataType == null) {
-            eFeatureGeometryInfoEDataType = (EDataType)EPackage.Registry.INSTANCE.getEPackage(EFeaturePackage.eNS_URI).getEClassifiers().get(9);
-        }
         return eFeatureGeometryInfoEDataType;
     }
 
@@ -387,10 +381,8 @@ public class EFeaturePackageImpl extends EPackageImpl implements EFeaturePackage
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EDataType getList() {
-        if (listEDataType == null) {
-            listEDataType = (EDataType)EPackage.Registry.INSTANCE.getEPackage(EFeaturePackage.eNS_URI).getEClassifiers().get(11);
-        }
         return listEDataType;
     }
 
@@ -398,6 +390,7 @@ public class EFeaturePackageImpl extends EPackageImpl implements EFeaturePackage
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EFeatureFactory getEFeatureFactory() {
         return (EFeatureFactory)getEFactoryInstance();
     }
@@ -407,65 +400,165 @@ public class EFeaturePackageImpl extends EPackageImpl implements EFeaturePackage
      * <!-- end-user-doc -->
      * @generated
      */
-    private boolean isLoaded = false;
+    private boolean isCreated = false;
 
     /**
-     * Laods the package and any sub-packages from their serialized form.
+     * Creates the meta-model objects for the package.  This method is
+     * guarded to have no affect on any invocation but its first.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    public void loadPackage() {
-        if (isLoaded) return;
-        isLoaded = true;
+    public void createPackageContents() {
+        if (isCreated) return;
+        isCreated = true;
 
-        URL url = getClass().getResource(packageFilename);
-        if (url == null) {
-            throw new RuntimeException("Missing serialized package: " + packageFilename);
-        }
-        URI uri = URI.createURI(url.toString());
-        Resource resource = new EcoreResourceFactoryImpl().createResource(uri);
-        try {
-            resource.load(null);
-        }
-        catch (IOException exception) {
-            throw new WrappedException(exception);
-        }
-        initializeFromLoadedEPackage(this, (EPackage)resource.getContents().get(0));
+        // Create classes and their features
+        eFeatureEClass = createEClass(EFEATURE);
+        createEAttribute(eFeatureEClass, EFEATURE__ID);
+        createEAttribute(eFeatureEClass, EFEATURE__DATA);
+        createEAttribute(eFeatureEClass, EFEATURE__SRID);
+        createEAttribute(eFeatureEClass, EFEATURE__DEFAULT);
+        createEAttribute(eFeatureEClass, EFEATURE__STRUCTURE);
+
+        // Create data types
+        featureEDataType = createEDataType(FEATURE);
+        propertyEDataType = createEDataType(PROPERTY);
+        attributeEDataType = createEDataType(ATTRIBUTE);
+        transactionEDataType = createEDataType(TRANSACTION);
+        geometryAttributeEDataType = createEDataType(GEOMETRY_ATTRIBUTE);
+        geometryEDataType = createEDataType(GEOMETRY);
+        eStructureInfoEDataType = createEDataType(ESTRUCTURE_INFO);
+        eFeatureInfoEDataType = createEDataType(EFEATURE_INFO);
+        eFeatureAttributeInfoEDataType = createEDataType(EFEATURE_ATTRIBUTE_INFO);
+        eFeatureGeometryInfoEDataType = createEDataType(EFEATURE_GEOMETRY_INFO);
+        eStructuralFeatureEDataType = createEDataType(ESTRUCTURAL_FEATURE);
+        listEDataType = createEDataType(LIST);
+        eFeaturePropertyEDataType = createEDataType(EFEATURE_PROPERTY);
+        eFeatureAttributeEDataType = createEDataType(EFEATURE_ATTRIBUTE);
+        eFeatureGeometryEDataType = createEDataType(EFEATURE_GEOMETRY);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private boolean isInitialized = false;
+
+    /**
+     * Complete the initialization of the package and its meta-model.  This
+     * method is guarded to have no affect on any invocation but its first.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void initializePackageContents() {
+        if (isInitialized) return;
+        isInitialized = true;
+
+        // Initialize package
+        setName(eNAME);
+        setNsPrefix(eNS_PREFIX);
+        setNsURI(eNS_URI);
+
+        // Create type parameters
+        addETypeParameter(listEDataType, "T");
+        addETypeParameter(eFeaturePropertyEDataType, "V");
+        ETypeParameter eFeaturePropertyEDataType_T = addETypeParameter(eFeaturePropertyEDataType, "T");
+        addETypeParameter(eFeatureAttributeEDataType, "V");
+        ETypeParameter eFeatureGeometryEDataType_V = addETypeParameter(eFeatureGeometryEDataType, "V");
+
+        // Set bounds for type parameters
+        EGenericType g1 = createEGenericType(this.getProperty());
+        eFeaturePropertyEDataType_T.getEBounds().add(g1);
+        g1 = createEGenericType(this.getGeometry());
+        eFeatureGeometryEDataType_V.getEBounds().add(g1);
+
+        // Add supertypes to classes
+
+        // Initialize classes and features; add operations and parameters
+        initEClass(eFeatureEClass, EFeature.class, "EFeature", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEAttribute(getEFeature_ID(), ecorePackage.getEString(), "ID", "", 1, 1, EFeature.class, !IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getEFeature_Data(), this.getFeature(), "data", null, 1, 1, EFeature.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+        initEAttribute(getEFeature_SRID(), ecorePackage.getEString(), "SRID", "EPSG:4326", 1, 1, EFeature.class, !IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getEFeature_Default(), ecorePackage.getEString(), "default", "geom", 1, 1, EFeature.class, !IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getEFeature_Structure(), this.getEFeatureInfo(), "structure", null, 1, 1, EFeature.class, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+
+        EOperation op = addEOperation(eFeatureEClass, null, "getAttributeList", 1, 1, IS_UNIQUE, IS_ORDERED);
+        ETypeParameter t1 = addETypeParameter(op, "V");
+        g1 = createEGenericType(ecorePackage.getEJavaClass());
+        EGenericType g2 = createEGenericType(t1);
+        g1.getETypeArguments().add(g2);
+        addEParameter(op, g1, "valueType", 0, 1, IS_UNIQUE, IS_ORDERED);
+        g1 = createEGenericType(this.getList());
+        g2 = createEGenericType(this.getEFeatureAttribute());
+        g1.getETypeArguments().add(g2);
+        EGenericType g3 = createEGenericType(t1);
+        g2.getETypeArguments().add(g3);
+        initEOperation(op, g1);
+
+        op = addEOperation(eFeatureEClass, null, "getGeometryList", 1, 1, IS_UNIQUE, IS_ORDERED);
+        t1 = addETypeParameter(op, "V");
+        g1 = createEGenericType(this.getGeometry());
+        t1.getEBounds().add(g1);
+        g1 = createEGenericType(ecorePackage.getEJavaClass());
+        g2 = createEGenericType(t1);
+        g1.getETypeArguments().add(g2);
+        addEParameter(op, g1, "valueType", 0, 1, IS_UNIQUE, IS_ORDERED);
+        g1 = createEGenericType(this.getList());
+        g2 = createEGenericType(this.getEFeatureGeometry());
+        g1.getETypeArguments().add(g2);
+        g3 = createEGenericType(t1);
+        g2.getETypeArguments().add(g3);
+        initEOperation(op, g1);
+
+        op = addEOperation(eFeatureEClass, this.getFeature(), "getData", 1, 1, IS_UNIQUE, IS_ORDERED);
+        addEParameter(op, this.getTransaction(), "transaction", 1, 1, IS_UNIQUE, IS_ORDERED);
+
+        op = addEOperation(eFeatureEClass, this.getFeature(), "setData", 1, 1, IS_UNIQUE, IS_ORDERED);
+        addEParameter(op, this.getFeature(), "newData", 1, 1, IS_UNIQUE, IS_ORDERED);
+        addEParameter(op, this.getTransaction(), "transaction", 1, 1, IS_UNIQUE, IS_ORDERED);
+
+        // Initialize data types
+        initEDataType(featureEDataType, Feature.class, "Feature", !IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+        initEDataType(propertyEDataType, Property.class, "Property", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+        initEDataType(attributeEDataType, Attribute.class, "Attribute", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+        initEDataType(transactionEDataType, Transaction.class, "Transaction", !IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+        initEDataType(geometryAttributeEDataType, GeometryAttribute.class, "GeometryAttribute", !IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+        initEDataType(geometryEDataType, Geometry.class, "Geometry", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+        initEDataType(eStructureInfoEDataType, EStructureInfo.class, "EStructureInfo", !IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+        initEDataType(eFeatureInfoEDataType, EFeatureInfo.class, "EFeatureInfo", !IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+        initEDataType(eFeatureAttributeInfoEDataType, EFeatureAttributeInfo.class, "EFeatureAttributeInfo", !IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+        initEDataType(eFeatureGeometryInfoEDataType, EFeatureGeometryInfo.class, "EFeatureGeometryInfo", !IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+        initEDataType(eStructuralFeatureEDataType, EStructuralFeature.class, "EStructuralFeature", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+        initEDataType(listEDataType, List.class, "List", !IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+        initEDataType(eFeaturePropertyEDataType, EFeatureProperty.class, "EFeatureProperty", !IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+        initEDataType(eFeatureAttributeEDataType, EFeatureAttribute.class, "EFeatureAttribute", !IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+        initEDataType(eFeatureGeometryEDataType, EFeatureGeometry.class, "EFeatureGeometry", !IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+
+        // Create resource
         createResource(eNS_URI);
+
+        // Create annotations
+        // http://www.eclipse.org/emf/2002/GenModel
+        createGenModelAnnotations();
     }
 
     /**
+     * Initializes the annotations for <b>http://www.eclipse.org/emf/2002/GenModel</b>.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    private boolean isFixed = false;
-
-    /**
-     * Fixes up the loaded package, to make it appear as if it had been programmatically built.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public void fixPackageContents() {
-        if (isFixed) return;
-        isFixed = true;
-        fixEClassifiers();
-    }
-
-    /**
-     * Sets the instance class on the given classifier.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    protected void fixInstanceClass(EClassifier eClassifier) {
-        if (eClassifier.getInstanceClassName() == null) {
-            eClassifier.setInstanceClassName("org.geotools.data.efeature." + eClassifier.getName());
-            setGeneratedClassName(eClassifier);
-        }
+    protected void createGenModelAnnotations() {
+        String source = "http://www.eclipse.org/emf/2002/GenModel";		
+        addAnnotation
+          (getEFeature_Default(), 
+           source, 
+           new String[] {
+             "Doumentation", "Name of default EFeatureGeometry"
+           });
     }
 
 } // EFeaturePackageImpl

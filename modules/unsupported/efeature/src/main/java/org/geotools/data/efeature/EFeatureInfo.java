@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.zip.Adler32;
 
 import org.eclipse.emf.common.util.EList;
@@ -23,8 +24,13 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.geotools.data.Transaction;
+import org.geotools.data.efeature.impl.ESimpleFeatureImpl;
 import org.geotools.data.efeature.internal.EFeatureVoidIDFactory;
+import org.geotools.factory.Hints.Key;
 import org.geotools.feature.NameImpl;
+import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.referencing.CRS;
 import org.opengis.feature.Feature;
 import org.opengis.feature.Property;
@@ -54,7 +60,7 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
      *      geometry descriptors}
      * @see {@link EStructureInfo#addListener(EStructureInfoListener)} - listen for SRID changes.
      */
-    public static final int SRID = 1;
+    public static final int SRID = EFeaturePackage.EFEATURE__SRID;
 
     /**
      * Mutable property: {@link #eGetDefaultGeometryName()} </p>
@@ -100,13 +106,33 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
 
     protected SimpleFeatureType featureType;
     
+    protected SimpleFeatureBuilder builder;
+
+    /**
+     * Map of name to all geometry {@link EAttribute}s.
+     * (optimization)
+     */
+    protected Map<String,EAttribute> eGeometryMap;
+        
+    /**
+     * Map of name to all non-geometry {@link EAttribute}s.
+     * (optimization)
+     */
+    protected Map<String,EAttribute> eAttributeMap;
+        
+    /**
+     * Map of name to all non-geometry {@link EAttribute}s.
+     * (optimization)
+     */
+    protected Map<String,EAttribute> eAllAttributeMap;
+        
     /**
      * Maps {@link #eClass()} attributes to attributes in {@link EFeature}.
      */
-    protected Map<EAttribute,EAttribute> eAttributeMap = new HashMap<EAttribute, EAttribute>();
+    protected Map<EAttribute,EAttribute> eMappingMap = new HashMap<EAttribute, EAttribute>();
 
     /**
-     * {@link EAttribute} id to {@link EFeatureAttributeInfo} instance {@link Map}
+     * {@link EAttribute} id to non-geometry {@link EFeatureAttributeInfo} instance {@link Map}
      */
     protected Map<String, EFeatureAttributeInfo> eAttributeInfoMap;
 
@@ -114,6 +140,12 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
      * {@link EFeatureGeometry} id to {@link EFeatureGeometryInfo} instance {@link Map}
      */
     public Map<String, EFeatureGeometryInfo> eGeometryInfoMap;
+    
+    /**
+     * {@link EAttribute} id to all {@link EFeatureAttributeInfo} instances {@link Map}
+     * (optimization)
+     */
+    protected Map<String, EFeatureAttributeInfo> eAllAttributeInfoMap;
     
     // ----------------------------------------------------- 
     //  Constructors
@@ -141,75 +173,80 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
      * nor adds the {@link EClass#getEIDAttribute()} to the 
      * {@link EFeatureContext#eIDFactory()}. This must be done manually.
      * </p>  
-     * @param eFeatureInfo - copy from this {@link EFeatureInfo} instance
+     * @param eInfo - copy from this {@link EFeatureInfo} instance
      * @param eContextInfo - copy into this context
      * @see {@link EFeatureContextInfo#doAdapt(EFeatureInfo, boolean)}
      */
-    protected EFeatureInfo(EFeatureInfo eFeatureInfo, EFeatureContextInfo eContextInfo) {
+    protected EFeatureInfo(EFeatureInfo eInfo, EFeatureContextInfo eContextInfo) {
         //
         // Forward (copies context, state and hints)
         //
-        super(eFeatureInfo, eContextInfo);        
+        super(eInfo, eContextInfo);        
         //
         // Mark as being structural equal to given structure
         //
-        this.eUID = eFeatureInfo.eUID;
+        this.eUID = eInfo.eUID;
         //
         // Copy context path
         //
-        this.eNsURI = eFeatureInfo.eNsURI;
-        this.eFolderName = eFeatureInfo.eFolderName;
+        this.eNsURI = eInfo.eNsURI;
+        this.eFolderName = eInfo.eFolderName;
         //
         // Copy EClass information
         //        
-        this.eClassName = eFeatureInfo.eClassName;
-        this.eClass = new WeakReference<EClass>(eFeatureInfo.eClass());
+        this.eClassName = eInfo.eClassName;
+        this.eClass = new WeakReference<EClass>(eInfo.eClass());
         //
         // Copy parent EClass information (folder is an EClass)
         //                
-        this.eReferenceName = eFeatureInfo.eReferenceName;
-        this.eReference = new WeakReference<EReference>(eFeatureInfo.eReference());
-        this.eParentClass = new WeakReference<EClass>(eFeatureInfo.eParentClass());
+        this.eReferenceName = eInfo.eReferenceName;
+        this.eReference = new WeakReference<EReference>(eInfo.eReference());
+        this.eParentClass = new WeakReference<EClass>(eInfo.eParentClass());
         //
         // Copy ID attribute information
         //                
-        this.eIDAttributeName = eFeatureInfo.eIDAttributeName;
+        this.eIDAttributeName = eInfo.eIDAttributeName;
         //
         // Copy SRID attribute information
         //                
-        this.eSRIDAttributeName = eFeatureInfo.eSRIDAttributeName;
+        this.eSRIDAttributeName = eInfo.eSRIDAttributeName;
         //
         // Copy default geometry attribute information
         //                
-        this.eDefaultAttributeName = eFeatureInfo.eDefaultAttributeName;
+        this.eDefaultAttributeName = eInfo.eDefaultAttributeName;
         //
         // Copy other attributes 
         //
-        this.isAvailable = eFeatureInfo.isAvailable;        
+        this.isAvailable = eInfo.isAvailable;        
         //
-        // Prepare to add attributes
+        // Prepare new hash maps
         //
-        this.eAttributeInfoMap = 
-            new HashMap<String, EFeatureAttributeInfo>(eFeatureInfo.eAttributeInfoMap.size());
-        this.eGeometryInfoMap = 
-            new HashMap<String, EFeatureGeometryInfo>(eFeatureInfo.eGeometryInfoMap.size());
+        this.eGeometryInfoMap = EFeatureUtils.newMap(eInfo.eGeometryInfoMap);
+        this.eAttributeInfoMap = EFeatureUtils.newMap(eInfo.eAttributeInfoMap);
         //
-        // Loop over all attributes and copy them
+        // Loop over all attribute structures, copy them and add to maps
         //
-        for(EFeatureAttributeInfo it : eFeatureInfo.eAttributeInfoMap.values()) {
-            eAttributeInfoMap.put(it.eName,new EFeatureAttributeInfo(it,this));
+        for(EFeatureAttributeInfo it : eInfo.eAttributeInfoMap.values()) {
+            it = new EFeatureAttributeInfo(it,this);
+            eAttributeInfoMap.put(it.eName,it);
         }
-        for(EFeatureGeometryInfo it : eFeatureInfo.eGeometryInfoMap.values()) {
-            eGeometryInfoMap.put(it.eName,new EFeatureGeometryInfo(it,this));
+        for(EFeatureGeometryInfo it : eInfo.eGeometryInfoMap.values()) {
+            it = new EFeatureGeometryInfo(it,this);
+            eGeometryInfoMap.put(it.eName,it);
         }
-        
+        //
+        // Pass mappings directly (is copied when made immutable below)
+        //
+        eMappingMap = eInfo.eMappingMap;
+        //
+        // Optimize structure lookup methods
+        //
+        eOptimize(this);
+        //
+        // Make structure immutable (it is allowed to not be modified)
+        //
+        eImmutable(this);
     }
-    
-    
-    // ----------------------------------------------------- 
-    //  EFeatureInfo methods
-    // -----------------------------------------------------
-    
     
     /**
      * Unique ID which enables efficient <i>{@link EFeatureInfo structure} 
@@ -458,7 +495,7 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
     }
 
     /**
-     * Set spatial reference ID.
+     * Set spatial reference ID for all {@link EFeature} instances
      */
     public CoordinateReferenceSystem setSRID(String newSRID) throws IllegalArgumentException {
         final String oldSRID = getSRID();
@@ -515,12 +552,20 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
     }    
 
     public CoordinateReferenceSystem getCoordinateReferenceSystem() {
+        if(crs==null) {
+            try {
+                crs = CRSCache.decode(this, true);
+            } catch (Exception e) {
+                LOGGER.log(Level.WARNING, e.getMessage(), e);
+                throw new RuntimeException("Failed to decode SRID",e);
+            }
+        }
         return crs;
     }
 
     public SimpleFeatureType getFeatureType() {
         if (isAvailable() && featureType == null) {
-            featureType = new SimpleFeatureDelegate();
+            featureType = new InnerSimpleFeatureTypeImpl();
         }
         return featureType;
     }
@@ -553,25 +598,22 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
         return eDefaultGeometryName != null ? eDefaultGeometryName.equals(eName) : false;
     }
 
-    public Map<String, EFeatureAttributeInfo> eGetAttributeInfoMap(boolean all) {
-        Map<String, EFeatureAttributeInfo> map = new HashMap<String, EFeatureAttributeInfo>();
-        map.putAll(eAttributeInfoMap);
-        if (all) {
-            map.putAll(eGeometryInfoMap);
-        }
-        return Collections.unmodifiableMap(map);
+    public List<EAttribute> eGetAttributeList(boolean all) {        
+        Collection<EAttribute> eItems =
+            (all ? eAllAttributeMap.values() : eAttributeMap.values());
+        List<EAttribute> eList = new ArrayList<EAttribute>(eItems);
+        return Collections.unmodifiableList(eList);
     }
-
+    
+    public List<EAttribute> eGetGeometryList() {        
+        Collection<EAttribute> eItems = eGeometryMap.values();
+        List<EAttribute> eList = new ArrayList<EAttribute>(eItems);
+        return Collections.unmodifiableList(eList);
+    }
+    
+    
     public Map<String, EAttribute> eGetAttributeMap(boolean all) {
-        Map<String, EAttribute> eFoundMap = new HashMap<String, EAttribute>();
-        Map<String, EAttribute> eAttrMap = EFeatureUtils.eGetAttributeMap(eClass());
-        for (String eName : eAttrMap.keySet()) {
-            if (eAttributeInfoMap.containsKey(eName) || all && eGeometryInfoMap.containsKey(eName)) {
-                eFoundMap.put(eName, eAttrMap.get(eName));
-            }
-        }
-
-        return Collections.unmodifiableMap(eFoundMap);
+        return (all ? eAttributeMap : eAllAttributeMap);
     }
 
     public Map<String, EAttribute> eGetAttributeMap(String[] eNames, boolean all) {
@@ -584,12 +626,38 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
                 eFoundMap.put(eName, eAttrMap.get(eName));
             }
         }
-
         return Collections.unmodifiableMap(eFoundMap);
+    }
+    
+    public List<EFeatureAttributeInfo> eGetAttributeInfoList(boolean all) {
+        Collection<EFeatureAttributeInfo> eItems =
+            (all ? eAllAttributeInfoMap.values() : eAttributeInfoMap.values());
+        List<EFeatureAttributeInfo> eList = new ArrayList<EFeatureAttributeInfo>(eItems);
+        return Collections.unmodifiableList(eList);
+    }
+    
+    public List<EFeatureGeometryInfo> eGetGeometryInfoList() {
+        Collection<EFeatureGeometryInfo> eItems = eGeometryInfoMap.values();
+        List<EFeatureGeometryInfo> eList = new ArrayList<EFeatureGeometryInfo>(eItems);
+        return Collections.unmodifiableList(eList);
+    }
+    
+    
+    public Map<String, EFeatureAttributeInfo> eGetAttributeInfoMap(boolean all) {
+        return (all ? eAllAttributeInfoMap : eAttributeInfoMap);
     }
 
     public Map<String, EFeatureGeometryInfo> eGetGeometryInfoMap() {
         return Collections.unmodifiableMap(eGeometryInfoMap);
+    }
+
+    /**
+     * Check if a mapping for given {@link EStructuralFeature} exists
+     * @param eAttribute - mapped attribute
+     * @return an <code>true</code> if a mapping is found
+     */
+    public final boolean eMappingExists(EStructuralFeature eFeature) {
+        return eMappingMap.containsKey(eFeature);
     }
     
     /**
@@ -604,7 +672,7 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
         //
         // Get mapping from given attribute to implementation
         //
-        eAttribute = eAttributeMap.get(eAttribute);
+        eAttribute = eMappingMap.get(eAttribute);
         //
         // Validate
         //
@@ -794,6 +862,40 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
         return eEqualTo(eInfo,true);
     }
     
+    /**
+     * Get {@link EFeature#getID() ID} of given EObject
+     * @param eObject - an {@link EObject} instance
+     */
+    public String toID(EObject eObject) {
+        return (String)eObject.eGet(eIDAttribute());
+    }
+    
+    /**
+     * Create {@link ESimpleFeatureImpl} instance from given object.
+     * @param eObject - an {@link EObject} instance
+     * @param transaction TODO
+     */
+    public ESimpleFeatureImpl toFeature(EObject eObject, Transaction transaction) {
+        return new ESimpleFeatureImpl(this,eObject, transaction);
+    }
+    
+    public Map<String, Integer> eGetAttributeIndex() {
+        return ((InnerSimpleFeatureTypeImpl)getFeatureType()).index;
+    }
+    
+    public EObject eNewInstance() {
+        return EcoreUtil.create(eClass());
+    }
+    
+    // ----------------------------------------------------- 
+    //  Object methods
+    // -----------------------------------------------------
+    
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "[" + eContextID + "]";
+    }
+    
     // ----------------------------------------------------- 
     //  EStructureInfo implementation
     // -----------------------------------------------------
@@ -809,7 +911,7 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
         // Do a deep invalidation?
         //
         if (deep) {
-            for (EStructureInfo<?> it : eGetAttributeInfoMap(true).values()) {
+            for (EStructureInfo<?> it : eGetAttributeInfoList(true)) {
                 it.doInvalidate(true);
             }
         }
@@ -821,7 +923,7 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
         // 
         // Update ALL attributes (includes geometry structures)
         // 
-        for(EFeatureAttributeInfo it : eGetAttributeInfoMap(true).values()) {
+        for(EFeatureAttributeInfo it : eGetAttributeInfoList(true)) {
             it.eAdapt(this);
         }        
     }
@@ -844,24 +946,32 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
         //
         // Forward to sub-structures
         //
-        for (EFeatureAttributeInfo it : eGetAttributeInfoMap(true).values()) {
+        for (EFeatureAttributeInfo it : eGetAttributeInfoList(true)) {
             it.dispose();
         }
         //
-        // Clear collections
-        //
-        this.eAttributeInfoMap.clear();
+        // Clear maps
+        //        
+        this.eGeometryMap.clear();
+        this.eAttributeMap.clear();
+        this.eAllAttributeMap.clear();
         this.eGeometryInfoMap.clear();
+        this.eAttributeInfoMap.clear();
+        this.eAllAttributeInfoMap.clear();
         //
         // Clear cached references to allow garbage collection
         //
-        this.eAttributeInfoMap = null;
-        this.eGeometryInfoMap = null;
-        this.featureType = null;
         this.crs = null;
         this.eClass = null;
         this.eParentClass = null;
         this.eReference = null;
+        this.featureType = null;
+        this.eGeometryMap = null;
+        this.eAttributeMap = null;
+        this.eAllAttributeMap = null;
+        this.eGeometryInfoMap = null;
+        this.eAttributeInfoMap = null;
+        this.eAllAttributeInfoMap = null;
     }
     
     /**
@@ -872,8 +982,7 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
     protected boolean eEqualTo(EFeatureInfo eInfo, boolean checkIfValid) {
         verify(checkIfValid);
         return !(eUID==null || eInfo==null) ? eUID.equals(eInfo.eUID) : false;
-    }
-    
+    }    
 
     /**
      * Calculate structure checksum.
@@ -921,12 +1030,17 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
         return a.getValue();
     }
     
+    /**
+     * Create EFeature unique ID from given {@link EStructuralFeature feature}
+     * @param eEFeature {@link EStructuralFeature} instance
+     * @return a unique ID
+     */
     private static final String eFeatureUID(EStructuralFeature eEFeature) {
         EClass eClass = eEFeature.getEContainingClass();
         return EFeatureUtils.eGetNsURI(eClass) 
             + "/" + eClass.getClassifierID() 
             + "/" + eEFeature.getFeatureID();
-}
+    }
     
     // ----------------------------------------------------- 
     //  Public construction methods
@@ -1053,7 +1167,7 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
         //
         return eInfo;
     }
-    
+
     // ----------------------------------------------------- 
     //  Static Helper methods
     // -----------------------------------------------------
@@ -1094,25 +1208,25 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
         //                
         EAttribute eIDAttribute = eGetIDAttribute(eClass,eInfo.eHints);
         eInfo.eIDAttributeName = eIDAttribute.getName();
-        eInfo.eAttributeMap.put(EFeaturePackage.eINSTANCE.getEFeature_ID(),eIDAttribute);
+        eInfo.eMappingMap.put(EFeaturePackage.eINSTANCE.getEFeature_ID(),eIDAttribute);
         //
         // Set SRID attribute 
         //                
         EAttribute eSRIDAttribute = eGetSRIDAttribute(eClass, eInfo.eHints);
         eInfo.eSRIDAttributeName = eSRIDAttribute.getName();
-        eInfo.eAttributeMap.put(EFeaturePackage.eINSTANCE.getEFeature_SRID(),eSRIDAttribute);
+        eInfo.eMappingMap.put(EFeaturePackage.eINSTANCE.getEFeature_SRID(),eSRIDAttribute);
         //
         // Set default geometry attribute 
         //                
         EAttribute eDefaultAttribute = eGetDefaultAttribute(eClass, eInfo.eHints);
         eInfo.eDefaultAttributeName = eDefaultAttribute.getName();
-        eInfo.eAttributeMap.put(EFeaturePackage.eINSTANCE.getEFeature_Default(),eDefaultAttribute);
+        eInfo.eMappingMap.put(EFeaturePackage.eINSTANCE.getEFeature_Default(),eDefaultAttribute);
         //
         // Create EFeature attribute structures 
         //                        
         EList<EAttribute> eAttributes = eClass.getEAllAttributes();
         eInfo.eAttributeInfoMap = attributes(eInfo, eAttributes);
-        eInfo.eGeometryInfoMap = geometries(eInfo, eAttributes);
+        eInfo.eGeometryInfoMap = geometries(eInfo, eAttributes);        
         //
         // Register ID attribute with ID factory?
         //
@@ -1130,13 +1244,21 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
             }
         }
         //
+        // Optimize structure lookup methods
+        //
+        eOptimize(eInfo);
+        //
+        // Make immutable (this method also optimizes lookup)
+        // 
+        eImmutable(eInfo);
+        //
         // Finished
         //
         return eInfo;
     }    
     
     protected static EAttribute eGetIDAttribute(EClass eClass, EFeatureHints eHints) {
-        EAttribute eIDAttribute = eGetAttribute(eClass, eHints, EFeatureHints.EFEATURE_ID_ATTRIBUTE_HINTS);
+        EAttribute eIDAttribute = eGetAttribute(eClass, eHints, EFeatureHints.EFEATURE_ID_ATTRIBUTES);
         if(eIDAttribute == null) {
             eIDAttribute = eClass.getEIDAttribute();            
         }
@@ -1144,7 +1266,7 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
     }
     
     protected static EAttribute eGetSRIDAttribute(EClass eClass, EFeatureHints eHints) {
-        EAttribute eIDAttribute = eGetAttribute(eClass, eHints, EFeatureHints.EFEATURE_SRID_ATTRIBUTE_HINTS);
+        EAttribute eIDAttribute = eGetAttribute(eClass, eHints, EFeatureHints.EFEATURE_SRID_ATTRIBUTES);
         if(eIDAttribute == null) {
             eIDAttribute = EFeaturePackage.eINSTANCE.getEFeature_SRID();            
         }
@@ -1152,14 +1274,14 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
     }
     
     protected static EAttribute eGetDefaultAttribute(EClass eClass, EFeatureHints eHints) {
-        EAttribute eIDAttribute = eGetAttribute(eClass, eHints, EFeatureHints.EFEATURE_DEFAULT_ATTRIBUTE_HINTS);
+        EAttribute eIDAttribute = eGetAttribute(eClass, eHints, EFeatureHints.EFEATURE_DEFAULT_ATTRIBUTES);
         if(eIDAttribute == null) {
             eIDAttribute = EFeaturePackage.eINSTANCE.getEFeature_Default();            
         }
         return eIDAttribute;
     }
     
-    protected static EAttribute eGetAttribute(EClass eClass, EFeatureHints eHints, int eHint) {
+    protected static EAttribute eGetAttribute(EClass eClass, EFeatureHints eHints, Key eHint) {
         EAttribute eAttribute = null;
         if(eHints!=null) {
             eAttribute = eHints.eGetAttribute(eClass, eHint);
@@ -1179,7 +1301,7 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
     protected static Set<String> eGetDefaultGeometryNames(EFeatureHints eHints) {
         Object eNames = null;
         if(eHints!=null) {
-            eNames = eHints.get(EFeatureHints.EFEATURE_DEFAULT_GEOMETRY_NAME_HINT);
+            eNames = eHints.get(EFeatureHints.EFEATURE_DEFAULT_GEOMETRY_NAMES);
         }
         return eNames !=null ? (Set<String>)eNames : 
             new HashSet<String>(Arrays.asList(EFeatureConstants.DEFAULT_GEOMETRY_NAME));
@@ -1190,8 +1312,7 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
         //
         // Prepare
         //
-        Map<String, EFeatureAttributeInfo> eAttributeMap = 
-            new HashMap<String, EFeatureAttributeInfo>(eAttributes.size());
+        Map<String, EFeatureAttributeInfo> eAttributeMap = EFeatureUtils.newMap(eAttributes.size());
         //
         // Get name of EAttribute ID
         //
@@ -1209,7 +1330,7 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
                         eFeatureInfo, eName.equals(eID), it));
             }
         }
-        return Collections.unmodifiableMap(eAttributeMap);
+        return eAttributeMap;
     }
 
     protected static Map<String, EFeatureGeometryInfo> geometries(EFeatureInfo eFeatureInfo,
@@ -1220,8 +1341,7 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
         String eDefault = null;
         String srid = eFeatureInfo.srid;
         CoordinateReferenceSystem crs = eFeatureInfo.crs;
-        Map<String, EFeatureGeometryInfo> eGeometryMap = 
-            new HashMap<String, EFeatureGeometryInfo>(eAttributes.size());
+        Map<String, EFeatureGeometryInfo> eGeometryMap = EFeatureUtils.newMap(eAttributes.size());
         //
         // Inspect EMF attributes, adding all with geometry values. 
         //                
@@ -1249,7 +1369,7 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
                 eGeometryMap.put(eName, eGeometryInfo);
             }
         }
-        return Collections.unmodifiableMap(eGeometryMap);
+        return eGeometryMap;
     }
 
     protected final EFeatureStatus featureIsValid() {
@@ -1257,84 +1377,175 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
     }
 
     protected final EFeatureStatus featureIsInvalid() {
-        return failure(this, eName(), "Feature is invalid: " + getClass().getSimpleName() 
+        return failure(this, eName(), "Feature is invalid: " 
+                + getClass().getSimpleName() 
                 + " [" + eName() + "]");
+    }
+    
+    /**
+     * Optimizes structure lookup.
+     * <p>
+     * @param eStructure
+     */
+    protected static void eOptimize(EFeatureInfo eStructure) {
+        //
+        // Get collection sizes
+        //
+        int gsize = eStructure.eGeometryInfoMap.size();
+        int asize = eStructure.eAttributeInfoMap.size();
+        int tsize = asize + gsize;
+        //
+        // ------------------------------------------------
+        //  1) Prepare optimized lookup 
+        // ------------------------------------------------
+        //
+        eStructure.eGeometryMap = EFeatureUtils.newMap(gsize);
+        eStructure.eAttributeMap = EFeatureUtils.newMap(asize);
+        eStructure.eAllAttributeMap = EFeatureUtils.newMap(tsize);
+        eStructure.eAllAttributeInfoMap = EFeatureUtils.newMap(tsize);
+        //
+        // ------------------------------------------------
+        //  2) Build lookup maps and collections 
+        // ------------------------------------------------
+        //
+        for(EFeatureGeometryInfo it : eStructure.eGeometryInfoMap.values()) {
+            String eName = it.eName;
+            EAttribute eAttribute = it.eAttribute();
+            eStructure.eGeometryMap.put(eName,eAttribute);
+            eStructure.eAllAttributeMap.put(eName,eAttribute);
+            eStructure.eAllAttributeInfoMap.put(eName, it);
+        }
+        for(EFeatureAttributeInfo it : eStructure.eAttributeInfoMap.values()) {
+            String eName = it.eName;
+            EAttribute eAttribute = it.eAttribute();
+            eStructure.eAttributeMap.put(eName,eAttribute);
+            eStructure.eAllAttributeMap.put(eName,eAttribute);
+            eStructure.eAllAttributeInfoMap.put(eName, it);
+        }        
+    }
+    
+    /**
+     * Make given {@link EFeatureInfo structure} immutable.
+     * <p>
+     * {@link EFeature} is highly optimized, which depends on the 
+     * structure being immutable. Note that EMF meta models might 
+     * change over time (dynamic EMF). Each time a {@link EClass}
+     * change (attribute, containment, cross reference etc),
+     * the EMF meta model and structure might get out of sync.
+     * Change is tracked by the structure. If any change is detected,
+     * the structure is invalidated. If {@link #validate(EPackage, EClass)} 
+     * fails, the whole structure must be recreated.
+     * <p/>
+     * TODO Add tracking of EMF meta model changes and implement
+     * synchronization mechanisms that update affected structures.
+     * Note that this implies that checksums must be recalculated,
+     * and that any cached values derived from the structure in live 
+     * {@link EFeature} instances must be invalidated.
+     */
+    protected static void eImmutable(EFeatureInfo eStructure) {                
+        //
+        // Make copied lists and maps unmodifiable (structure is immutable)
+        //
+        eStructure.eMappingMap = Collections.unmodifiableMap(eStructure.eMappingMap);    
+        eStructure.eGeometryMap = Collections.unmodifiableMap(eStructure.eGeometryMap);
+        eStructure.eAttributeMap = Collections.unmodifiableMap(eStructure.eAttributeMap);
+        eStructure.eAllAttributeMap = Collections.unmodifiableMap(eStructure.eAllAttributeMap);
+        eStructure.eGeometryInfoMap = Collections.unmodifiableMap(eStructure.eGeometryInfoMap);
+        eStructure.eAttributeInfoMap = Collections.unmodifiableMap(eStructure.eAttributeInfoMap);
+        eStructure.eAllAttributeInfoMap = Collections.unmodifiableMap(eStructure.eAllAttributeInfoMap);
+        //
+        // TODO Add invalidation adapter tracking changes in the EMF meta model 
+        //
     }
     
     // ----------------------------------------------------- 
     //  SimpleFeatureDescriptor implementation
     // -----------------------------------------------------
 
-    private class SimpleFeatureDelegate implements SimpleFeatureType {
+    private class InnerSimpleFeatureTypeImpl implements SimpleFeatureType {
+        
         private Map<String, Integer> index;
 
         private Map<Object, Object> userData;
 
-        private Collection<PropertyDescriptor> descriptors;
+        private List<PropertyDescriptor> descriptors;
 
         private Class<?> binding = Collection.class;
 
-        public SimpleFeatureDelegate() {
+        public InnerSimpleFeatureTypeImpl() {
             index = buildIndex(this);
         }
 
+        @Override
         public boolean isIdentified() {
             // Features are always identified
             //
             return true;
         }
 
+        @Override
         public Name getName() {
             return new NameImpl(EFeatureInfo.this.eName());
         }
 
+        @Override
         public boolean isAbstract() {
             return false;
         }
 
+        @Override
         public GeometryDescriptor getGeometryDescriptor() {
             EFeatureGeometryInfo eInfo = eGeometryInfoMap.get(eGetDefaultGeometryName());
             return eInfo != null ? eInfo.getDescriptor() : null;
         }
 
+        @Override
         public CoordinateReferenceSystem getCoordinateReferenceSystem() {
-            return crs;
+            return EFeatureInfo.this.getCoordinateReferenceSystem();
         }
 
+        @Override
         @SuppressWarnings("unchecked")
         public Class<Collection<Property>> getBinding() {
             return (Class<Collection<Property>>) binding;
         }
 
+        @Override
         public Collection<PropertyDescriptor> getDescriptors() {
             if(descriptors==null) {
-                descriptors = new HashSet<PropertyDescriptor>();
-                for (EFeatureAttributeInfo it : eGetAttributeInfoMap(true).values()) {
+                List<EFeatureAttributeInfo> eList = eGetAttributeInfoList(true);
+                descriptors = new ArrayList<PropertyDescriptor>(eList.size());
+                for (EFeatureAttributeInfo it : eList) {
                     descriptors.add(it.getDescriptor());
                 }
-                descriptors = Collections.unmodifiableList(new ArrayList<PropertyDescriptor>(descriptors));
+                descriptors = Collections.unmodifiableList(descriptors);
             }
             return descriptors;
         }
 
+        @Override
         public boolean isInline() {
             // Apparently not in use, return false
             //
             return false;
         }
 
+        @Override
         public AttributeType getSuper() {
             return null;
         }
 
+        @Override
         public List<Filter> getRestrictions() {
             return Collections.emptyList();
         }
 
+        @Override
         public InternationalString getDescription() {
             return null;
         }
 
+        @Override
         public Map<Object, Object> getUserData() {
             if (userData == null) {
                 userData = new HashMap<Object, Object>();
@@ -1342,26 +1553,29 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
             return userData;
         }
 
+        @Override
         public String getTypeName() {
             return getName().getLocalPart();
         }
 
+        @Override
         @SuppressWarnings({ "rawtypes", "unchecked" })
         public List<AttributeDescriptor> getAttributeDescriptors() {
             return (List) getDescriptors();
         }
 
+        @Override
         public List<AttributeType> getTypes() {
             synchronized (this) {
                 List<AttributeType> types = new ArrayList<AttributeType>();
-                for (EFeatureAttributeInfo it : eGetAttributeInfoMap(true).values()) {
+                for (EFeatureAttributeInfo it : eGetAttributeInfoList(true)) {
                     types.add(it.getDescriptor().getType());
                 }
                 return types;
             }
-
         }
 
+        @Override
         public AttributeType getType(Name name) {
             AttributeDescriptor attribute = getDescriptor(name);
             if (attribute != null) {
@@ -1370,6 +1584,7 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
             return null;
         }
 
+        @Override
         public AttributeType getType(String name) {
             AttributeDescriptor attribute = getDescriptor(name);
             if (attribute != null) {
@@ -1378,23 +1593,28 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
             return null;
         }
 
+        @Override
         public AttributeType getType(int index) {
             return getTypes().get(index);
         }
 
+        @Override
         public AttributeDescriptor getDescriptor(Name eName) {
             return getDescriptor(eName.getURI());
         }
 
+        @Override
         public AttributeDescriptor getDescriptor(String eName) {
             EFeatureAttributeInfo eInfo = eGetAttributeInfo(eName, true);
             return (eInfo != null ? eInfo.getDescriptor() : null);
         }
 
+        @Override
         public AttributeDescriptor getDescriptor(int index) {
             return getAttributeDescriptors().get(index);
         }
 
+        @Override
         public int indexOf(Name name) {
             if (name.getNamespaceURI() == null) {
                 return indexOf(name.getLocalPart());
@@ -1410,6 +1630,7 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
             return -1;
         }
 
+        @Override
         public int indexOf(String name) {
             Integer idx = index.get(name);
             if (idx != null) {
@@ -1419,6 +1640,7 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
             }
         }
 
+        @Override
         public int getAttributeCount() {
             return getAttributeDescriptors().size();
         }
@@ -1429,7 +1651,7 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
          * @param featureType
          * @return
          */
-        private Map<String, Integer> buildIndex(SimpleFeatureDelegate featureType) {
+        private Map<String, Integer> buildIndex(InnerSimpleFeatureTypeImpl featureType) {
             // build an index of attribute name to index
             Map<String, Integer> index = new HashMap<String, Integer>();
             int i = 0;
@@ -1439,11 +1661,8 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
             if (featureType.getGeometryDescriptor() != null) {
                 index.put(null, index.get(featureType.getGeometryDescriptor().getLocalName()));
             }
-            return index;
+            return Collections.unmodifiableMap(index);
         }
-        
-        
-
     }    
 
 }

@@ -30,8 +30,6 @@ public class EFeatureAttributeReader implements AttributeReader {
 
     private final EFeatureInfo eFeatureInfo;
 
-    private final Query query;
-
     private EFeatureQuery eQuery;
 
     private EObject eNext;
@@ -46,15 +44,14 @@ public class EFeatureAttributeReader implements AttributeReader {
      * 
      * @param eStore - {@link EFeatureDataStore} instance
      * @param eType - {@link SimpleFeatureType} name
-     * @param gQuery - GeoTools {@link Query} instance
+     * @param query - GeoTools {@link Query} instance
      * @throws IOException
      */
     public EFeatureAttributeReader(EFeatureDataStore eStore, 
-            String eType, Query gQuery) throws IOException {
+            String eType, Query query) throws IOException {
         //
         // Initialize reader
         //
-        this.query = gQuery;
         String eFolder = EFeatureUtils.toFolderName(eType);
         String eFeature = EFeatureUtils.toFeatureName(eType);
         eFolderInfo = eStore.ePackageInfo.eGetFolderInfo(eFolder);
@@ -86,7 +83,7 @@ public class EFeatureAttributeReader implements AttributeReader {
         // Convert GeoTools query to EFeatureQuery statement
         //
         try {
-            eQuery = EFeatureUtils.toEFeatureQuery(eFeatureInfo, eObjects, gQuery.getFilter());
+            eQuery = EFeatureUtils.toEFeatureQuery(eFeatureInfo, eObjects, query.getFilter());
         } catch (EFeatureEncoderException ex) {
             throw (IOException) new IOException("Failed to create EFeatureQuery").initCause(ex);
         }
@@ -101,12 +98,14 @@ public class EFeatureAttributeReader implements AttributeReader {
         return type;
     }
 
+    @Override
     public int getAttributeCount() {
         return type.getAttributeCount();
     }
 
+    @Override
     public AttributeDescriptor getAttributeType(int index) throws ArrayIndexOutOfBoundsException {
-        return type.getAttributeDescriptors().get(index);
+        return type.getDescriptor(index);
     }
 
     public void reset() {
@@ -114,6 +113,7 @@ public class EFeatureAttributeReader implements AttributeReader {
         this.eIterator = null;
     }
     
+    @Override
     public void close() throws IOException {
         this.eNext = null;
         this.eIterator = null;
@@ -122,6 +122,7 @@ public class EFeatureAttributeReader implements AttributeReader {
         this.eAttributes.clear();
     }
 
+    @Override
     public boolean hasNext() throws IOException {
         if (eNext != null) {
             return true;
@@ -137,6 +138,7 @@ public class EFeatureAttributeReader implements AttributeReader {
         return eNext != null;
     }
 
+    @Override
     public void next() throws IOException {
         if (hasNext()) {
             eNext = null;
@@ -149,6 +151,7 @@ public class EFeatureAttributeReader implements AttributeReader {
         return eNext;
     }
 
+    @Override
     public Object read(int index) throws IOException, ArrayIndexOutOfBoundsException {
 
         if (eNext == null) {

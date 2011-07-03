@@ -34,6 +34,7 @@ public abstract class CharacterAdapter implements IDataTypeAdapter<Character> {
      */
     public abstract Character toCharacter(Object object);
 
+    @Override
     public Character adapt(Object value) {
         return toCharacter(value);
     }

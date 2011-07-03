@@ -231,6 +231,14 @@
           </excludes>
         </configuration>
       </plugin>
+      <plugin>
+	   <artifactId>maven-compiler-plugin</artifactId>
+	   <version>2.0.2</version>
+	   <configuration>
+	       <source>1.6</source>
+	       <target>1.6</target>
+	   </configuration>
+      </plugin>      
       
       <!-- ====    Testing          ============================== -->
       <!-- ====    Code Formatting  ============================== -->

@@ -67,6 +67,7 @@ public class EFeatureCompatibleDataImpl<A, G extends Geometry> extends EObjectIm
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public A getAttribute() {
         return (A)eGet(EFeatureTestsPackage.Literals.EFEATURE_COMPATIBLE_DATA__ATTRIBUTE, true);
     }
@@ -76,6 +77,7 @@ public class EFeatureCompatibleDataImpl<A, G extends Geometry> extends EObjectIm
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setAttribute(A newAttribute) {
         eSet(EFeatureTestsPackage.Literals.EFEATURE_COMPATIBLE_DATA__ATTRIBUTE, newAttribute);
     }
@@ -85,6 +87,7 @@ public class EFeatureCompatibleDataImpl<A, G extends Geometry> extends EObjectIm
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public G getGeometry() {
         return (G)eGet(EFeatureTestsPackage.Literals.EFEATURE_COMPATIBLE_DATA__GEOMETRY, true);
     }
@@ -94,6 +97,7 @@ public class EFeatureCompatibleDataImpl<A, G extends Geometry> extends EObjectIm
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setGeometry(G newGeometry) {
         eSet(EFeatureTestsPackage.Literals.EFEATURE_COMPATIBLE_DATA__GEOMETRY, newGeometry);
     }
@@ -103,6 +107,7 @@ public class EFeatureCompatibleDataImpl<A, G extends Geometry> extends EObjectIm
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getSRID() {
         return (String)eGet(EFeatureTestsPackage.Literals.EFEATURE_COMPATIBLE_DATA__SRID, true);
     }
@@ -112,6 +117,7 @@ public class EFeatureCompatibleDataImpl<A, G extends Geometry> extends EObjectIm
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setSRID(String newSRID) {
         eSet(EFeatureTestsPackage.Literals.EFEATURE_COMPATIBLE_DATA__SRID, newSRID);
     }
@@ -121,6 +127,7 @@ public class EFeatureCompatibleDataImpl<A, G extends Geometry> extends EObjectIm
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getDefault() {
         return (String)eGet(EFeatureTestsPackage.Literals.EFEATURE_COMPATIBLE_DATA__DEFAULT, true);
     }
@@ -130,6 +137,7 @@ public class EFeatureCompatibleDataImpl<A, G extends Geometry> extends EObjectIm
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setDefault(String newDefault) {
         eSet(EFeatureTestsPackage.Literals.EFEATURE_COMPATIBLE_DATA__DEFAULT, newDefault);
     }
@@ -139,6 +147,7 @@ public class EFeatureCompatibleDataImpl<A, G extends Geometry> extends EObjectIm
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public String getID() {
         return (String)eGet(EFeatureTestsPackage.Literals.EFEATURE_COMPATIBLE_DATA__ID, true);
     }
@@ -148,6 +157,7 @@ public class EFeatureCompatibleDataImpl<A, G extends Geometry> extends EObjectIm
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setID(String newID) {
         eSet(EFeatureTestsPackage.Literals.EFEATURE_COMPATIBLE_DATA__ID, newID);
     }

@@ -56,6 +56,7 @@ public abstract class DateAdapter implements IDataTypeAdapter<Date> {
      */
     public abstract Date toDate(Object object);
 
+    @Override
     public Date adapt(Object value) {
         return toDate(value);
     }

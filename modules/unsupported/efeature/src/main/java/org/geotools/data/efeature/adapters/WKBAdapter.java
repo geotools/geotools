@@ -76,6 +76,7 @@ public abstract class WKBAdapter implements IDataTypeAdapter<byte[]> {
      * @param object - the object to adapt to a WKB byte array 
      * @return a WKB byte array
      */
+    @Override
     public byte[] adapt(Object value) {
         return toWKB(value);
     }

@@ -30,7 +30,7 @@ public final class EFeatureValueGetter implements IEStructuralFeatureValueGetter
     // -----------------------------------------------------
     
     /**
-     * @param eAttributeMap
+     * @param eMappingMap
      */
     public EFeatureValueGetter(EFeatureInfo...eFeatureInfos) {
         this.eAttributeMap = create(eFeatureInfos);
@@ -40,6 +40,7 @@ public final class EFeatureValueGetter implements IEStructuralFeatureValueGetter
     //  IEStructuralFeatureValueGetter implementation
     // -----------------------------------------------------
     
+    @Override
     public EObject resolve(EObject eObject) {
         //  
         // Do nothing, just return the same object
@@ -47,6 +48,7 @@ public final class EFeatureValueGetter implements IEStructuralFeatureValueGetter
         return eObject;
     }
 
+    @Override
     public Object eGet(EObject eObject, EStructuralFeature eFeature, boolean resolve) {
         //
         // Prepare information
@@ -79,6 +81,7 @@ public final class EFeatureValueGetter implements IEStructuralFeatureValueGetter
         return eObject.eGet(eFeature);
     }
 
+    @Override
     public List<EObject> eContents(EObject eObject, EObjectCondition eCondition) {
         //
         // TODO Implement content filtering

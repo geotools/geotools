@@ -35,6 +35,7 @@ public interface EFeatureAttribute<V> extends EFeatureProperty<V, Attribute> {
      * 
      * @return the value of the '<em>Structure</em>' attribute.
      */
+    @Override
     public EFeatureAttributeInfo getStructure();
 
 } // EFeatureAttribute

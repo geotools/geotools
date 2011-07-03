@@ -61,6 +61,7 @@ public class NonGeoEObjectImpl extends EObjectImpl implements NonGeoEObject {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public int getNonGeoAttribute() {
         return (Integer)eGet(EFeatureTestsPackage.Literals.NON_GEO_EOBJECT__NON_GEO_ATTRIBUTE, true);
     }
@@ -70,6 +71,7 @@ public class NonGeoEObjectImpl extends EObjectImpl implements NonGeoEObject {
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setNonGeoAttribute(int newNonGeoAttribute) {
         eSet(EFeatureTestsPackage.Literals.NON_GEO_EOBJECT__NON_GEO_ATTRIBUTE, newNonGeoAttribute);
     }

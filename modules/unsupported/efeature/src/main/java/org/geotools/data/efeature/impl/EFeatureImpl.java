@@ -8,6 +8,7 @@ package org.geotools.data.efeature.impl;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
+import org.geotools.data.Transaction;
 import org.geotools.data.efeature.EFeature;
 import org.geotools.data.efeature.EFeatureContext;
 import org.geotools.data.efeature.EFeatureInfo;
@@ -33,9 +34,8 @@ import com.vividsolutions.jts.geom.Geometry;
  * The following features are implemented:
  * <ul>
  *   <li>{@link org.geotools.data.efeature.impl.EFeatureImpl#getID <em>ID</em>}</li>
- *   <li>{@link org.geotools.data.efeature.impl.EFeatureImpl#getSRID <em>SRID</em>}</li>
  *   <li>{@link org.geotools.data.efeature.impl.EFeatureImpl#getData <em>Data</em>}</li>
- *   <li>{@link org.geotools.data.efeature.impl.EFeatureImpl#isSimple <em>Simple</em>}</li>
+ *   <li>{@link org.geotools.data.efeature.impl.EFeatureImpl#getSRID <em>SRID</em>}</li>
  *   <li>{@link org.geotools.data.efeature.impl.EFeatureImpl#getDefault <em>Default</em>}</li>
  *   <li>{@link org.geotools.data.efeature.impl.EFeatureImpl#getStructure <em>Structure</em>}</li>
  * </ul>
@@ -55,16 +55,6 @@ public abstract class EFeatureImpl extends EObjectImpl implements EFeature {
     protected static final String ID_EDEFAULT = "";
 
     /**
-     * The default value of the '{@link #getSRID() <em>SRID</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see #getSRID()
-     * @generated NOT 
-     * @ordered
-     */
-    protected static final String SRID_EDEFAULT = "EPSG:4326";
-
-    /**
      * The default value of the '{@link #getData() <em>Data</em>}' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -73,6 +63,16 @@ public abstract class EFeatureImpl extends EObjectImpl implements EFeature {
      * @ordered
      */
     protected static final Feature DATA_EDEFAULT = null;
+
+    /**
+     * The default value of the '{@link #getSRID() <em>SRID</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getSRID()
+     * @generated NOT 
+     * @ordered
+     */
+    protected static final String SRID_EDEFAULT = "EPSG:4326";
 
     /**
      * The default value of the '{@link #isSimple() <em>Simple</em>}' attribute.
@@ -168,7 +168,7 @@ public abstract class EFeatureImpl extends EObjectImpl implements EFeature {
     //  EFeatureImpl methods
     // -----------------------------------------------------
 
-    public EFeatureInternal eImpl() {
+    public EFeatureInternal eInternal() {
         return eInternal;
     }
 
@@ -179,6 +179,7 @@ public abstract class EFeatureImpl extends EObjectImpl implements EFeature {
     /**
      * @generated NOT
      */
+    @Override
     public String getID() {
         return eInternal.getID();
     }
@@ -186,6 +187,7 @@ public abstract class EFeatureImpl extends EObjectImpl implements EFeature {
     /**
      * @generated NOT
      */
+    @Override
     public void setID(String newID) {
         eInternal.setID(newID);
     }
@@ -193,6 +195,7 @@ public abstract class EFeatureImpl extends EObjectImpl implements EFeature {
     /**
      * @generated NOT
      */
+    @Override
     public String getSRID() {
         return eInternal.getSRID();
     }
@@ -200,6 +203,7 @@ public abstract class EFeatureImpl extends EObjectImpl implements EFeature {
     /**
      * @generated NOT
      */
+    @Override
     public void setSRID(String newSRID) {
         eInternal.setSRID(newSRID);
     }
@@ -207,27 +211,40 @@ public abstract class EFeatureImpl extends EObjectImpl implements EFeature {
     /**
      * @generated NOT
      */
+    @Override
     public Feature getData() {
-        return eInternal.getData();
+        return getData(Transaction.AUTO_COMMIT);
     }
+
 
     /**
      * @generated NOT
      */
+    @Override
+    public Feature getData(Transaction transaction) {
+        return eInternal.getData(transaction, true);
+    }
+    
+    /**
+     * @generated NOT
+     */
+    @Override
     public void setData(Feature newData) {
-        eInternal.setData(newData);
+        setData(newData, Transaction.AUTO_COMMIT);
     }
 
     /**
      * @generated NOT
      */
-    public boolean isSimple() {
-        return eInternal.isSimple();
+    @Override
+    public Feature setData(Feature newData, Transaction transaction) {
+        return eInternal.setData(newData, transaction);
     }
-
+    
     /**
      * @generated NOT
      */
+    @Override
     public String getDefault() {
         return getStructure().eGetDefaultGeometryName();
     }
@@ -235,6 +252,7 @@ public abstract class EFeatureImpl extends EObjectImpl implements EFeature {
     /**
      * @generated NOT
      */
+    @Override
     public void setDefault(String newDefault) {
         eInternal.setDefault(newDefault);
     }
@@ -242,6 +260,7 @@ public abstract class EFeatureImpl extends EObjectImpl implements EFeature {
     /**
      * @generated NOT
      */
+    @Override
     public EFeatureInfo getStructure() {
         return eInternal.getStructure();
     }
@@ -249,6 +268,7 @@ public abstract class EFeatureImpl extends EObjectImpl implements EFeature {
     /**
      * @generated NOT
      */
+    @Override
     public void setStructure(EFeatureInfo eStructure) {
         eInternal.setStructure(eStructure);
     }
@@ -256,6 +276,7 @@ public abstract class EFeatureImpl extends EObjectImpl implements EFeature {
     /**
      * @generated NOT
      */
+    @Override
     public <V> EFeatureAttributeList<V> getAttributeList(Class<V> valueType) {
         return eInternal.getAttributeList(valueType);
     }
@@ -263,6 +284,7 @@ public abstract class EFeatureImpl extends EObjectImpl implements EFeature {
     /**
      * @generated NOT
      */
+    @Override
     public <V extends Geometry> EFeatureGeometryList<V> getGeometryList(Class<V> valueType) {
         return eInternal.getGeometryList(valueType);
     }

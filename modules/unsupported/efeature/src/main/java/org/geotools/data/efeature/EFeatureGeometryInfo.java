@@ -173,10 +173,11 @@ public class EFeatureGeometryInfo extends EFeatureAttributeInfo {
         @Override
         public GeometryType getType() {
             if (isAvailable() && type == null) {
+                //
                 // Get value instance class
                 //
                 final Class<?> cls = eAttribute().getEAttributeType().getInstanceClass();
-
+                //
                 // Create anonymous attribute type implementation
                 //
                 type = new GeometryTypeDelegate(getName(), cls, eIsID, false,
@@ -186,6 +187,7 @@ public class EFeatureGeometryInfo extends EFeatureAttributeInfo {
             return type;
         }
 
+        @Override
         public CoordinateReferenceSystem getCoordinateReferenceSystem() {
             return isAvailable() ? getType().getCoordinateReferenceSystem() : null;
         }
@@ -209,6 +211,7 @@ public class EFeatureGeometryInfo extends EFeatureAttributeInfo {
             this.binding = binding;
         }
 
+        @Override
         public CoordinateReferenceSystem getCoordinateReferenceSystem() {
             return crs;
         }

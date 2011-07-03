@@ -8,7 +8,7 @@ package org.geotools.data.efeature;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
-
+import org.geotools.data.Transaction;
 import org.opengis.feature.Property;
 
 /**
@@ -33,6 +33,11 @@ import org.opengis.feature.Property;
  */
 public interface EFeatureProperty<V, T extends Property> {
 
+    /**
+     * Get property name
+     */
+    public String getName();
+    
     /**
      * Get the {@link Property feature property} instance wrapped by this class instance.
      * 
@@ -87,14 +92,61 @@ public interface EFeatureProperty<V, T extends Property> {
      * @return the value of the '<em>Structure</em>' attribute.
      */
     public EStructureInfo<?> getStructure();
-
+    
+    /**
+     * Check if the value of this property is detached
+     * from {@link #eObject()}.
+     * @return <code>true</code> if value is detached.
+     * @see {@link EFeatureHints#EFEATURE_VALUES_DETACHED}
+     */
+    public boolean isDetached();
+    
+    /**
+     * Read values from {@link #eObject()}.
+     * <p>
+     * This is a convenience method which forwards to 
+     * {@link #write(Transaction)} using {@link Transaction#AUTO_COMMIT}.
+     * </p>
+     * @return value just read into this property
+     * @throws IllegalStateException If value is not {@link #isDetached() detached}
+     */
+    public V read() throws IllegalStateException;
+    
+    /**
+     * Read values from {@link #eObject()}.
+     * @param transaction {@link Transaction} instance 
+     * @return value just read into this property
+     * @throws IllegalStateException If value is not {@link #isDetached() detached}
+     */
+    public V read(Transaction transaction) throws IllegalStateException;
+    
+    
+    /**
+     * Write value to {@link #eObject()}
+     * <p>
+     * This is a convenience method which forwards to 
+     * {@link #write(Transaction)} using {@link Transaction#AUTO_COMMIT}.
+     * </p>
+     * @return value just written to {@link #eObject()}
+     * @throws IllegalStateException If value is not {@link #isDetached() detached}
+     */
+    public V write() throws IllegalStateException;
+    
+    /**
+     * Write value to {@link #eObject()}
+     * @param transaction {@link Transaction} instance 
+     * @return value just written to {@link #eObject()}
+     * @throws IllegalStateException If value is not {@link #isDetached() detached}
+     */
+    public V write(Transaction transaction) throws IllegalStateException;
+    
     /**
      * Get the {@link EObject} with the {@link EStructuralFeature structural feature} containing the
      * {@link #getData() feature property}
      * 
      * @return the value of the '<em>Container</em>' attribute.
      */
-    public EObject getContainer();
+    public EObject eObject();
 
     /**
      * Get the {@link EStructuralFeature structural feature} containing the {@link #getData()

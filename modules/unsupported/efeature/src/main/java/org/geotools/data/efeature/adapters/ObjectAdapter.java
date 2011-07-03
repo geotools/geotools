@@ -33,6 +33,7 @@ public class ObjectAdapter implements IDataTypeAdapter<Object> {
     /** Hide constructor */
     private ObjectAdapter() { /*NOP*/};
 
+    @Override
     public Object adapt(Object value) {
         
         if(DataTypes.isNumeric(value)) {

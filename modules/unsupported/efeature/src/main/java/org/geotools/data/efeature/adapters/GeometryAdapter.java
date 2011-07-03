@@ -88,6 +88,7 @@ public abstract class GeometryAdapter implements IDataTypeAdapter<Geometry> {
      * @param object - the object to adapt to a {@link Geometry} instance 
      * @return a {@link Geometry}
      */
+    @Override
     public Geometry adapt(Object value) throws IllegalArgumentException {
         return toGeometry(value);
     }

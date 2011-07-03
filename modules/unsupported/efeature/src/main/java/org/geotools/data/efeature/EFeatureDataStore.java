@@ -65,8 +65,8 @@ public class EFeatureDataStore extends AbstractDataStore {
             .synchronizedMap(new HashMap<String,EFeatureReader>());
 
     /** Open {@link EFeatureWriter}s */
-    private Map<String,EFeatureReader> writerMap = Collections
-    .synchronizedMap(new HashMap<String,EFeatureReader>());
+    private Map<String,EFeatureWriter> writerMap = Collections
+        .synchronizedMap(new HashMap<String,EFeatureWriter>());
 
     /**
      * A {@link EFeature} {@link DataStore} implementation class.
@@ -86,7 +86,7 @@ public class EFeatureDataStore extends AbstractDataStore {
         //
         // Forward using same context factory as EFeatureDataStoreFactory
         //
-        this(EFeatureDataStoreFactory.eGetContextFactory().eContext(eContextID),eDomainID,eNsURI,eURI,eQuery);                
+        this(EFeatureDataStoreFactory.eGetContextFactory().eContext(eContextID),eDomainID,eNsURI,eURI,eQuery);
     }
     
     /**
@@ -259,7 +259,7 @@ public class EFeatureDataStore extends AbstractDataStore {
      * @see {@link #getTypeNames()} - the eType naming convention is described here 
      */
     @Override
-    public SimpleFeatureType getSchema(String eType) throws IOException {
+    public SimpleFeatureType getSchema(String eType) {
         EFeatureInfo eFeatureInfo = ePackageInfo.eGetFeatureInfo(eType);
         if (eFeatureInfo != null) {
             return eFeatureInfo.getFeatureType();
@@ -276,7 +276,7 @@ public class EFeatureDataStore extends AbstractDataStore {
      * @throws IOException
      */
     public EFeatureReader getFeatureReader(Query query) throws IOException {
-        return (EFeatureReader)super.getFeatureReader(query, Transaction.AUTO_COMMIT);
+        return getFeatureReader(query, Transaction.AUTO_COMMIT);
     }    
 
     @Override
@@ -309,7 +309,7 @@ public class EFeatureDataStore extends AbstractDataStore {
         return Collections.unmodifiableCollection(readerMap.values());
     }
     
-    public final Collection<EFeatureReader> getWriters() {
+    public final Collection<EFeatureWriter> getWriters() {
         return Collections.unmodifiableCollection(writerMap.values());
     }    
 
@@ -336,8 +336,8 @@ public class EFeatureDataStore extends AbstractDataStore {
         //
         // Dispose all writers
         //
-        Collection<EFeatureReader> writers = Collections.unmodifiableCollection(this.writerMap.values());
-        for(EFeatureReader it : writers) {
+        Collection<EFeatureWriter> writers = Collections.unmodifiableCollection(this.writerMap.values());
+        for(EFeatureWriter it : writers) {
             try {
                 it.close();
             } catch (IOException e) {
@@ -363,7 +363,7 @@ public class EFeatureDataStore extends AbstractDataStore {
             EFeatureReader reader = readerMap.get(eKey);
             if(reader==null) {
                 reader = new EFeatureReader(this, eType, query);
-                readerMap.put(eKey,reader);                
+                readerMap.put(eKey,reader);
             }
             return reader;
         }

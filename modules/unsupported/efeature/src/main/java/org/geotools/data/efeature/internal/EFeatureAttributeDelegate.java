@@ -10,10 +10,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.emf.ecore.EAttribute;
-import org.eclipse.emf.ecore.EObject;
 import org.geotools.data.efeature.EFeatureAttribute;
 import org.geotools.data.efeature.EFeatureAttributeInfo;
-import org.geotools.data.efeature.EFeatureInfo;
 import org.geotools.data.efeature.EFeatureStatus;
 import org.opengis.feature.Attribute;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -28,6 +26,12 @@ import org.opengis.filter.identity.Identifier;
  */
 public class EFeatureAttributeDelegate<V> extends
         EFeaturePropertyDelegate<V, Attribute, EAttribute> implements EFeatureAttribute<V> {
+    
+    /**
+     * Cached value when detached
+     */
+    protected V eValue;
+    
 
     // ----------------------------------------------------- 
     //  Constructors
@@ -37,18 +41,12 @@ public class EFeatureAttributeDelegate<V> extends
     /**
      * Default constructor.
      * <p>
-     * 
-     * @param eContainer - {@link EObject} instance owning the {@link #getStructuralFeature()
-     *        feature attribute}.
-     * @param eAttribute - {@link EAttribute} containing the feature {@link #getData() property
-     *        data}.
+     * @param eInternal - 
+     * @param eName - 
      * @param valueType - {@link #getValue() property value} type.
-     * @param eStructure - {@link EFeatureAttributeInfo} defining the {@link #getStructure()
-     *        structure} of this feature attribute.
      */
-    public EFeatureAttributeDelegate(EObject eContainer, EAttribute eAttribute, Class<V> valueType,
-            EFeatureAttributeInfo eStructure) {
-        super(eContainer, eAttribute, Attribute.class, valueType, eStructure);
+    public EFeatureAttributeDelegate(EFeatureInternal eInternal, String eName, Class<V> valueType) {
+        super(eInternal, eName, Attribute.class, valueType);
     }
 
     // ----------------------------------------------------- 
@@ -57,7 +55,7 @@ public class EFeatureAttributeDelegate<V> extends
 
     @Override
     public EFeatureAttributeInfo getStructure() {
-        return (EFeatureAttributeInfo) eStructure;
+        return (EFeatureAttributeInfo) getStructure();
     }
 
     @Override
@@ -71,7 +69,7 @@ public class EFeatureAttributeDelegate<V> extends
         if (!(s = getStructure().validate(data)).isSuccess()) {
             throw new IllegalArgumentException(s.getMessage());
         }
-        return valueType.cast(data.getValue());
+        return eValueType.cast(data.getValue());
     }
 
     @Override
@@ -83,7 +81,7 @@ public class EFeatureAttributeDelegate<V> extends
 
         // Is valid, cast to value type
         //
-        return valueType.cast(data.getValue());
+        return eValueType.cast(eData.getValue());
     }
 
     // ----------------------------------------------------- 
@@ -97,40 +95,48 @@ public class EFeatureAttributeDelegate<V> extends
          */
         private Map<Object, Object> userData;
 
+        @Override
         public Identifier getIdentifier() {
             return null;
         }
 
+        @Override
         public Name getName() {
             return getType().getName();
         }
 
+        @Override
         public boolean isNillable() {
             return getDescriptor().isNillable();
         }
 
+        @Override
         public AttributeType getType() {
             return getDescriptor().getType();
         }
 
+        @Override
         public AttributeDescriptor getDescriptor() {
             return getStructure().getDescriptor();
         }
 
+        @Override
         public Object getValue() {
             return EFeatureAttributeDelegate.this.getValue();
         }
 
+        @Override
         public void setValue(Object newValue) {
             // Cast to value type
             //
-            V value = valueType.cast(newValue);
+            V value = eValueType.cast(newValue);
             //
             // Update delegate
             //
             EFeatureAttributeDelegate.this.setValue(value);
         }
 
+        @Override
         public Map<Object, Object> getUserData() {
             if (userData == null) {
                 userData = new HashMap<Object, Object>();
@@ -138,50 +144,11 @@ public class EFeatureAttributeDelegate<V> extends
             return userData;
         }
 
+        @Override
         public void validate() throws IllegalArgumentException {
             EFeatureAttributeDelegate.this.validate(getValue());
         }
 
-    }
-
-    // ----------------------------------------------------- 
-    //  Static helper methods
-    // -----------------------------------------------------
-
-    /**
-     * Create new {@link EFeatureAttribute} instance
-     * 
-     * @param <V> - generic value type
-     * @param eContainer - value container
-     * @param eName - EAttribute name
-     * @param type - value class
-     * @param eInfo - {@link EFeatureInfo} instance
-     * @return a {@link EFeatureAttribute} instance
-     */
-    public static <V> EFeatureAttribute<V> create(EObject eContainer, String eName, Class<V> type,
-            EFeatureInfo eInfo) {
-        // Get EFeatureAttribute structure
-        //
-        EFeatureAttributeInfo eAttributeInfo = eInfo.eGetAttributeInfo(eName, false);
-        //
-        // Found attribute?
-        //
-        if (eAttributeInfo != null) {
-            // Get EAttribute delegate
-            //
-            EAttribute eAttribute = eAttributeInfo.eAttribute();
-            Class<?> actualType = eAttribute.getEAttributeType().getInstanceClass();
-            if (type.isAssignableFrom(actualType)) {
-                // Create delegate
-                //
-                return new EFeatureAttributeDelegate<V>(eContainer, eAttribute, type,
-                        eAttributeInfo);
-            }
-        }
-
-        // Not found, return null;
-        //
-        return null;
     }
 
 } // EFeatureAttributeDelegate

@@ -10,6 +10,7 @@ import com.vividsolutions.jts.geom.Geometry;
 import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
+import org.geotools.data.Transaction;
 import org.geotools.referencing.CRS;
 
 import org.opengis.feature.Feature;
@@ -23,9 +24,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * The following features are supported:
  * <ul>
  *   <li>{@link org.geotools.data.efeature.EFeature#getID <em>ID</em>}</li>
- *   <li>{@link org.geotools.data.efeature.EFeature#getSRID <em>SRID</em>}</li>
  *   <li>{@link org.geotools.data.efeature.EFeature#getData <em>Data</em>}</li>
- *   <li>{@link org.geotools.data.efeature.EFeature#isSimple <em>Simple</em>}</li>
+ *   <li>{@link org.geotools.data.efeature.EFeature#getSRID <em>SRID</em>}</li>
  *   <li>{@link org.geotools.data.efeature.EFeature#getDefault <em>Default</em>}</li>
  *   <li>{@link org.geotools.data.efeature.EFeature#getStructure <em>Structure</em>}</li>
  * </ul>
@@ -112,22 +112,6 @@ public interface EFeature extends EObject {
     void setSRID(String value);
 
     /**
-     * Returns the value of the '<em><b>Simple</b></em>' attribute.
-     * The default value is <code>"true"</code>.
-     * <!-- begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Simple</em>' attribute isn't clear, there really should be more of
-     * a description here...
-     * </p>
-     * <!-- end-user-doc -->
-     * @return the value of the '<em>Simple</em>' attribute.
-     * @see org.geotools.data.efeature.EFeaturePackage#getEFeature_Simple()
-     * @model default="true" required="true" transient="true" changeable="false" volatile="true"
-     * @generated
-     */
-    boolean isSimple();
-
-    /**
      * Returns the value of the '<em><b>Data</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <p>
@@ -138,7 +122,7 @@ public interface EFeature extends EObject {
      * @return the value of the '<em>Data</em>' attribute.
      * @see #setData(Feature)
      * @see org.geotools.data.efeature.EFeaturePackage#getEFeature_Data()
-     * @model dataType="org.geotools.data.efeature.Feature" required="true" transient="true" volatile="true" derived="true"
+     * @model dataType="org.geotools.data.efeature.Feature" required="true" transient="true" derived="true"
      * @generated
      */
     Feature getData();
@@ -229,5 +213,21 @@ public interface EFeature extends EObject {
      * @generated
      */
     <V extends Geometry> List<EFeatureGeometry<V>> getGeometryList(Class<V> valueType);
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @model dataType="org.geotools.data.efeature.Feature" required="true" transactionDataType="org.geotools.data.efeature.Transaction" transactionRequired="true"
+     * @generated
+     */
+    Feature getData(Transaction transaction);
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @model dataType="org.geotools.data.efeature.Feature" required="true" newDataDataType="org.geotools.data.efeature.Feature" newDataRequired="true" transactionDataType="org.geotools.data.efeature.Transaction" transactionRequired="true"
+     * @generated
+     */
+    Feature setData(Feature newData, Transaction transaction);
 
 } // EFeature

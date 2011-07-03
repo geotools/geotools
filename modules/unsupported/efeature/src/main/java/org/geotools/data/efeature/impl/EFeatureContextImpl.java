@@ -128,35 +128,43 @@ public final class EFeatureContextImpl implements EFeatureContext {
     //  EFeatureContext implementation
     // -----------------------------------------------------
     
+    @Override
     public String eContextID() {
         return eContextID;
     }
         
+    @Override
     public boolean isPrototype() {
         return isPrototype;
     }
 
+    @Override
     public EFeatureContextInfo eStructure() {
         return eContextFactory().eStructure(eContextID);
     }
 
+    @Override
     public EFeatureIDFactory eIDFactory() {
         return eIDFactory;
     }
     
+    @Override
     public EFeatureContextFactory eContextFactory() {
         return eContextFactory.get();
     }
     
 
+    @Override
     public boolean containsDomain(String eDomainID) {
         return eDomainMap.containsKey(eDomainID);
     }
 
+    @Override
     public List<String> eDomainIDs() {
         return Collections.unmodifiableList(new ArrayList<String>(eDomainMap.keySet()));
     }
 
+    @Override
     public EditingDomain eGetDomain(String eDomainID) {
         EditingDomain eDomain = eDomainMap.get(eDomainID);
         if(eDomain==null) {
@@ -165,18 +173,22 @@ public final class EFeatureContextImpl implements EFeatureContext {
         return eDomain;
     }
 
+    @Override
     public Resource eGetResource(String eDomainID, URI eURI, boolean loadOnDemand) {
         return eGetDomain(eDomainID).getResourceSet().getResource(eURI, loadOnDemand);
     }
 
+    @Override
     public boolean containsPackage(String eNsURI) {
         return ePackageMap.containsKey(eNsURI);
     }
 
+    @Override
     public List<String> eNsURIs() {
         return Collections.unmodifiableList(new ArrayList<String>(ePackageMap.keySet()));
     }
 
+    @Override
     public EPackage eGetPackage(String eNsURI) {
         EPackage ePackage = ePackageMap.get(eNsURI);
         if(ePackage==null) {
@@ -185,10 +197,12 @@ public final class EFeatureContextImpl implements EFeatureContext {
         return ePackage;
     }
         
+    @Override
     public boolean contains(EPackage ePackage) {
         return ePackageMap.containsKey(ePackage.getNsURI());
     }
 
+    @Override
     public EPackage eAdd(EPackage ePackage) throws IllegalArgumentException {
         String eNsURI = ePackage.getNsURI();
         if(!(eNsURI==null || eNsURI.length()==0)) {
@@ -201,6 +215,7 @@ public final class EFeatureContextImpl implements EFeatureContext {
         return eDomainMap.containsKey(eDomainID);
     }
 
+    @Override
     public EditingDomain eAdd(String eDomainID, EditingDomain eDomain) throws IllegalArgumentException {
         if(!(eDomainID==null || eDomainID.length()==0)) {
             ResourceSet eSet = eDomain.getResourceSet(); 
@@ -210,6 +225,7 @@ public final class EFeatureContextImpl implements EFeatureContext {
         throw new IllegalArgumentException("EditingDomain ID must be specified.");
     }
     
+    @Override
     public EFeatureInfo eAdapt(EFeature eFeature, boolean copy) {
         //
         // Forward to structure

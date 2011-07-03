@@ -62,6 +62,7 @@ public class EFeatureDataImpl<A, G extends Geometry> extends EFeatureImpl implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public A getAttribute() {
         return (A)eGet(EFeatureTestsPackage.Literals.EFEATURE_DATA__ATTRIBUTE, true);
     }
@@ -71,6 +72,7 @@ public class EFeatureDataImpl<A, G extends Geometry> extends EFeatureImpl implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setAttribute(A newAttribute) {
         eSet(EFeatureTestsPackage.Literals.EFEATURE_DATA__ATTRIBUTE, newAttribute);
     }
@@ -80,6 +82,7 @@ public class EFeatureDataImpl<A, G extends Geometry> extends EFeatureImpl implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public G getGeometry() {
         return (G)eGet(EFeatureTestsPackage.Literals.EFEATURE_DATA__GEOMETRY, true);
     }
@@ -89,6 +92,7 @@ public class EFeatureDataImpl<A, G extends Geometry> extends EFeatureImpl implem
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public void setGeometry(G newGeometry) {
         eSet(EFeatureTestsPackage.Literals.EFEATURE_DATA__GEOMETRY, newGeometry);
     }

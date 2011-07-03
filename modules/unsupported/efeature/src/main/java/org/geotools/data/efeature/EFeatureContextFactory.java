@@ -353,6 +353,7 @@ public class EFeatureContextFactory implements BufferedFactory {
         return eContext;
     }
 
+    @Override
     public Map<Key, ?> getImplementationHints() {
         //
         // TODO: Add hints for controlling cache size etc.

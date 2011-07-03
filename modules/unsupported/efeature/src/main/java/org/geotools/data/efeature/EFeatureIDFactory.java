@@ -161,6 +161,6 @@ public interface EFeatureIDFactory {
      * @return the objects unique ID
      * @throws IllegalArgumentException If the factory contains no ID for given {@link EObject}
      */
-    public String disposeID(EObject eObject) throws IllegalArgumentException;    
+    public String disposeID(EObject eObject) throws IllegalArgumentException;
             
 }

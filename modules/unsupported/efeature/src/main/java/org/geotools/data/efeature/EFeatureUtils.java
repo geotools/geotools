@@ -1,8 +1,12 @@
 package org.geotools.data.efeature;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -22,12 +26,16 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.ExtendedMetaData;
 import org.eclipse.emf.query.conditions.eobjects.EObjectCondition;
 import org.eclipse.emf.query.statements.WHERE;
+import org.geotools.data.Transaction;
 import org.geotools.data.efeature.internal.EFeatureContextHelper;
+import org.geotools.data.efeature.internal.EFeatureInternal;
 import org.geotools.data.efeature.query.EFeatureEncoderException;
 import org.geotools.data.efeature.query.EFeatureFilter;
 import org.geotools.data.efeature.query.EFeatureQuery;
 import org.geotools.data.efeature.query.EObjectConditionEncoder;
 import org.geotools.filter.identity.FeatureIdImpl;
+import org.opengis.feature.Feature;
+import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.identity.Identifier;
@@ -81,47 +89,58 @@ public class EFeatureUtils {
         
         return new EFeatureStatus() {
 
+            @Override
             public int getType() {
                 return type;
             }
 
+            @Override
             public Object getSource() {
                 return source;
             }
 
+            @Override
             public String getMessage() {
                 return message;
             }
 
+            @Override
             public Throwable getCause() {
                 return (cause instanceof Throwable ? (Throwable)cause : null);
             }
             
+            @Override
             public StackTraceElement[] getStackTrace() {
                 return (cause instanceof Throwable ? ((Throwable)cause).getStackTrace() : (StackTraceElement[])cause);
             }
             
 
+            @Override
             public boolean isType(int match) {
                 return type == match;
             }
 
+            @Override
             public boolean isSuccess() {
                 return isType(SUCCESS);
             }
 
+            @Override
             public boolean isWarning() {
                 return isType(WARNING);
             }
 
+            @Override
             public boolean isFailure() {
                 return isType(FAILURE);
             }
 
+            @Override
             public EFeatureStatus clone(String message) {
                 return newStatus(source, type, message, cause);
             }
             
+            @Override
             public EFeatureStatus clone(String message, Object cause) {
                 return newStatus(source, type, message, cause);
             }
@@ -427,7 +446,7 @@ public class EFeatureUtils {
         //
         // Create EFeature filter
         //
-        EFeatureFilter eWhere = new EFeatureFilter(eFeatureInfo, where);
+        EFeatureFilter eWhere = new EFeatureFilter(where);
         //
         // Create query instance
         //
@@ -524,6 +543,113 @@ public class EFeatureUtils {
             eIDSet.add(new FeatureIdImpl(eID.toString()));
         }
         return eIDSet;
+    }        
+    
+    /**
+     * Get {@link ESimpleFeature} values in immutable order.
+     * </p> 
+     * @param eStructure
+     * @param eObject
+     * @param transaction 
+     * @return a ordered list of a{@link ESimpleFeature} values
+     */
+    public static List<Object> eGetFeatureValues(
+            EFeatureInfo eStructure, EObject eObject, Transaction transaction) {
+        //
+        // Get internal EFeature implementation
+        //
+        EFeatureInternal eInternal = EFeatureInternal.eInternal(eStructure, eObject);
+        //
+        // Enter modification mode
+        //
+        eInternal.enter(transaction);
+        //
+        // Try to get values
+        //        
+        try {
+            List<Object> eList = new ArrayList<Object>();
+            for(EAttribute it : eStructure.eGetAttributeList(true)) {
+                eList.add(eObject.eGet(it));
+            }
+            return Collections.unmodifiableList(eList);
+        } finally {
+            //
+            // Leave modification mode
+            //
+            eInternal.leave();
+        }    
+    }
+    
+    /**
+     * Set {@link ESimpleFeature} values in immutable order.
+     * </p>
+     * @param eStructure
+     * @param eObject
+     * @param eValues
+     */
+    public static void eSetFeatureValues(
+            EFeatureInfo eStructure, EObject eObject, 
+            List<Object> eValues, Transaction transaction) {
+        //
+        // Get internal EFeature implementation
+        //
+        EFeatureInternal eInternal = EFeatureInternal.eInternal(eStructure, eObject);
+        //
+        // Enter modification mode
+        //
+        eInternal.enter(transaction);
+        //
+        // Try to set values
+        //        
+        try {
+            int i=0;
+            for(EAttribute it : eStructure.eGetAttributeList(true)) {
+                eObject.eSet(it,eValues.get(i++));            
+            }
+        } finally {
+            //
+            // Leave modification mode
+            //
+            eInternal.leave();
+        }
+    }    
+    
+    /**
+     * Convert Feature to list of values
+     * @param feature
+     * @return a list of feature values
+     */
+    public static List<Object> toFeatureValues(Feature feature) {
+        Collection<Property> properties = feature.getProperties();
+        List<Object> values = new ArrayList<Object>(properties.size());
+        for(Property it : feature.getProperties()) {
+            values.add(it.getValue());
+        }
+        return values;
+    }
+
+    public final static <K,V> Map<K,V> newMap(int...sizes) {
+        int size = 0;
+        for(int it : sizes) size += it;
+        return new HashMap<K, V>(size);
+    }
+
+    public final static <K,V> Map<K,V> newMap(Map<K,V> fromMap, int...sizes) {
+        int size = fromMap.size();
+        for(int it : sizes) size += it;
+        return newMap(size);
+    }
+    
+    public final static <V> List<V> newList(int...sizes) {
+        int size = 0;
+        for(int it : sizes) size += it;
+        return new ArrayList<V>(size);
+    }
+    
+    public final static <V> List<V> newList(List<V> fromList, int...sizes) {
+        int size = fromList.size();
+        for(int it : sizes) size += it;
+        return newList(size);
     }
 
 }

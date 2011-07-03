@@ -260,22 +260,27 @@ public class EFeatureAttributeInfo extends EStructureInfo<EFeatureInfo> {
     protected class AttributeDescriptorDelegate implements AttributeDescriptor {
         private AttributeType attributeType;
 
+        @Override
         public Name getName() {
             return new NameImpl(eName);
         }
 
+        @Override
         public int getMinOccurs() {
             return eAttribute == null ? -1 : limit(eAttribute().getLowerBound());
         }
 
+        @Override
         public int getMaxOccurs() {
             return eAttribute == null ? -1 : limit(eAttribute().getUpperBound());
         }
 
+        @Override
         public boolean isNillable() {
             return eAttribute == null ? false : !eAttribute().isRequired();
         }
 
+        @Override
         public Map<Object, Object> getUserData() {
             if (userData == null) {
                 userData = new HashMap<Object, Object>();
@@ -283,6 +288,7 @@ public class EFeatureAttributeInfo extends EStructureInfo<EFeatureInfo> {
             return userData;
         }
 
+        @Override
         public AttributeType getType() {
             if (isAvailable() && attributeType == null) {
                 //
@@ -304,18 +310,26 @@ public class EFeatureAttributeInfo extends EStructureInfo<EFeatureInfo> {
             return attributeType;
         }
 
+        @Override
         public String getLocalName() {
             return getName().getLocalPart();
         }
 
+        @Override
         public Object getDefaultValue() {
             return null;
         }
     }
 
     // ----------------------------------------------------- 
-    //  Protected EFeatureAttributeInfo helper methods
+    //  Object methods
     // -----------------------------------------------------
+    
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "[" + eName + "]";
+    }
+    
     
     // ----------------------------------------------------- 
     //  Helper methods

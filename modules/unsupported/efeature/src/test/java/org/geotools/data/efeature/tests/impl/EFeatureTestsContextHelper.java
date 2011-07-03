@@ -59,13 +59,13 @@ public class EFeatureTestsContextHelper {
         // Prepare hints
         //
         EFeatureHints eHints = new EFeatureHints();
-        Set<EAttribute> eAttrSet = (Set<EAttribute>)eHints.get(EFeatureHints.EFEATURE_ID_ATTRIBUTE_HINTS);
+        Set<EAttribute> eAttrSet = (Set<EAttribute>)eHints.get(EFeatureHints.EFEATURE_ID_ATTRIBUTES);
         eAttrSet.add(EFeatureTestsPackage.eINSTANCE.getEFeatureCompatibleData_ID());
-        eAttrSet = (Set<EAttribute>)eHints.get(EFeatureHints.EFEATURE_SRID_ATTRIBUTE_HINTS);
+        eAttrSet = (Set<EAttribute>)eHints.get(EFeatureHints.EFEATURE_SRID_ATTRIBUTES);
         eAttrSet.add(EFeatureTestsPackage.eINSTANCE.getEFeatureCompatibleData_SRID());
-        eAttrSet = (Set<EAttribute>)eHints.get(EFeatureHints.EFEATURE_DEFAULT_ATTRIBUTE_HINTS);
+        eAttrSet = (Set<EAttribute>)eHints.get(EFeatureHints.EFEATURE_DEFAULT_ATTRIBUTES);
         eAttrSet.add(EFeatureTestsPackage.eINSTANCE.getEFeatureCompatibleData_Default());
-        Set<String> eStrSet = (Set<String>)eHints.get(EFeatureHints.EFEATURE_DEFAULT_GEOMETRY_NAME_HINT);
+        Set<String> eStrSet = (Set<String>)eHints.get(EFeatureHints.EFEATURE_DEFAULT_GEOMETRY_NAMES);
         eStrSet.add("geometry");
         
         //

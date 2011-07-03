@@ -80,15 +80,6 @@ public interface EFeatureTestsPackage extends EPackage {
     int EFEATURE_DATA__ID = EFeaturePackage.EFEATURE__ID;
 
     /**
-     * The feature id for the '<em><b>SRID</b></em>' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
-    int EFEATURE_DATA__SRID = EFeaturePackage.EFEATURE__SRID;
-
-    /**
      * The feature id for the '<em><b>Data</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -98,13 +89,13 @@ public interface EFeatureTestsPackage extends EPackage {
     int EFEATURE_DATA__DATA = EFeaturePackage.EFEATURE__DATA;
 
     /**
-     * The feature id for the '<em><b>Simple</b></em>' attribute.
+     * The feature id for the '<em><b>SRID</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int EFEATURE_DATA__SIMPLE = EFeaturePackage.EFEATURE__SIMPLE;
+    int EFEATURE_DATA__SRID = EFeaturePackage.EFEATURE__SRID;
 
     /**
      * The feature id for the '<em><b>Default</b></em>' attribute.

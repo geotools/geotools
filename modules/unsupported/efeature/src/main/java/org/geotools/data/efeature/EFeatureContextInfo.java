@@ -219,7 +219,7 @@ public class EFeatureContextInfo extends EStructureInfo<EFeatureContextInfo> {
         //
         // Create an delegate
         //
-        return EFeatureDelegate.create(eStructure, (InternalEObject)eObject);        
+        return EFeatureDelegate.create(eStructure, (InternalEObject)eObject, true);
     }
     
     /**
@@ -539,6 +539,7 @@ public class EFeatureContextInfo extends EStructureInfo<EFeatureContextInfo> {
         if(eFeatureInfoCacheVoter==null) {
             eFeatureInfoCacheVoter = new EFeatureListener<EFeatureInfoCache>() {
                 
+                @Override
                 public boolean onChange(EFeatureInfoCache source, int property, Object oldValue,
                         Object newValue) {
                     // 

@@ -37,7 +37,8 @@ public class EFeatureTestsResourceFactoryImpl extends ResourceFactoryImpl {
     }
 
     /**
-     * Creates an instance of the resource. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Creates an instance of the resource.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated
      */
     public Resource createResourceGen(URI uri) {

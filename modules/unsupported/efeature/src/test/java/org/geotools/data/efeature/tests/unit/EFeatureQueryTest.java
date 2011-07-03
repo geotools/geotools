@@ -100,10 +100,9 @@ public class EFeatureQueryTest extends AbstractResourceTest {
             
             for(Object[] type : eTypeData) {
                 String eType = type[0].toString();                
-                EFeatureInfo eInfo = (EFeatureInfo)type[2];
                 int count = 0;
                 TreeIterator<EObject> eObjects = eResource.getAllContents();                
-                EFeatureFilter eFilter = new EFeatureFilter(eInfo, where);
+                EFeatureFilter eFilter = new EFeatureFilter(where);
                 EFeatureQuery eQuery = new EFeatureQuery(eObjects, eFilter);
                 EFeatureIterator it = eQuery.iterator();
                 while(it.hasNext()) {
@@ -136,10 +135,9 @@ public class EFeatureQueryTest extends AbstractResourceTest {
             
             for(Object[] type : eTypeData) {
                 String eType = type[0].toString();                
-                EFeatureInfo eInfo = (EFeatureInfo)type[2];
                 int count = 0;
                 TreeIterator<EObject> eObjects = eResource.getAllContents();                
-                EFeatureFilter eFilter = new EFeatureFilter(eInfo, where);
+                EFeatureFilter eFilter = new EFeatureFilter(where);
                 EFeatureQuery eQuery = new EFeatureQuery(eObjects, eFilter);
                 EFeatureIterator it = eQuery.iterator();
                 while(it.hasNext()) {
@@ -183,10 +181,9 @@ public class EFeatureQueryTest extends AbstractResourceTest {
             
             for(Object[] type : eTypeData) {
                 String eType = type[0].toString();                
-                EFeatureInfo eInfo = (EFeatureInfo)type[2];
                 int count = 0;
                 TreeIterator<EObject> eObjects = eResource.getAllContents();                
-                EFeatureFilter eFilter = new EFeatureFilter(eInfo, where);
+                EFeatureFilter eFilter = new EFeatureFilter(where);
                 EFeatureQuery eQuery = new EFeatureQuery(eObjects, eFilter);
                 EFeatureIterator it = eQuery.iterator();
                 while(it.hasNext()) {
@@ -263,7 +260,7 @@ public class EFeatureQueryTest extends AbstractResourceTest {
             dTime();
             int count = 0;
             TreeIterator<EObject> eObjects = eResource.getAllContents();                
-            EFeatureFilter eFilter = new EFeatureFilter(eFeatureDataInfo, where);
+            EFeatureFilter eFilter = new EFeatureFilter(where);
             EFeatureQuery eQuery = new EFeatureQuery(eObjects, eFilter);
             EFeatureIterator it = eQuery.iterator();
             while(it.hasNext()) {

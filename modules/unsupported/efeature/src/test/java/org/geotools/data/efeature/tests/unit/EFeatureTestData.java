@@ -269,7 +269,7 @@ public class EFeatureTestData {
      * @param offset TODO
      * @param attrClass - attribute data class
      * @param geoClass - geometry data class
-     * @param data - array of data
+     * @param eData - array of data
      * @param <A> - Attribute data type 
      * @param <G> - Geometry data type
      * @return
@@ -292,7 +292,7 @@ public class EFeatureTestData {
      * @param offset TODO
      * @param attrClass - attribute data class
      * @param geoClass - geometry data class
-     * @param data - array of data
+     * @param eData - array of data
      * @param <A> - Attribute data type 
      * @param <G> - Geometry data type
      * @return

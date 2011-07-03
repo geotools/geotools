@@ -73,6 +73,7 @@ public abstract class WKTAdapter implements IDataTypeAdapter<String> {
      * @param object - the object to adapt to a WKT {@link String} 
      * @return a WKT {@link String}
      */
+    @Override
     public String adapt(Object value) {
         return toWKT(value);
     }

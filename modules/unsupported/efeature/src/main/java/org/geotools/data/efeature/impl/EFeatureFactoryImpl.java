@@ -250,6 +250,7 @@ public class EFeatureFactoryImpl extends EFactoryImpl implements EFeatureFactory
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EFeaturePackage getEFeaturePackage() {
         return (EFeaturePackage)getEPackage();
     }

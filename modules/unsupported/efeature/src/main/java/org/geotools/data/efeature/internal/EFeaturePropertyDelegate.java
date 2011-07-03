@@ -8,8 +8,11 @@ package org.geotools.data.efeature.internal;
 
 import java.lang.ref.WeakReference;
 
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.geotools.data.Transaction;
+import org.geotools.data.efeature.EFeatureAttributeInfo;
 import org.geotools.data.efeature.EFeatureProperty;
 import org.geotools.data.efeature.EStructureInfo;
 import org.opengis.feature.Property;
@@ -21,96 +24,147 @@ import org.opengis.feature.Property;
  */
 public abstract class EFeaturePropertyDelegate<V, T extends Property, S extends EStructuralFeature>
         implements EFeatureProperty<V, T> {
-
+    
     /**
-     * Cached {@link EObject} instance containing the {@link Property#getValue() property value}.
+     * Cached {@link EFeatureInternal} instance containing the {@link Property#getValue() property value}.
      * <p>
-     * The {@link #eContainer delegate} is stored as a {@link WeakReference weak reference} so it is
-     * not prevented from being finalized and garbage collected. This ensure that no memory leakage
-     * occur each time a delegate is removed from the implementing EMF model.
+     * The {@link #eObject delegate} is stored as a {@link WeakReference weak reference} so it is
+     * not prevented from being finalized and garbage collected.
      */
-    protected WeakReference<EObject> eContainer;
-
+    protected WeakReference<EFeatureInternal> eInternal;
+    
     /**
      * Cached {@link Property property data} instance
      */
-    protected T data;
+    protected T eData;
 
     /**
      * The actual data class.
      */
-    protected Class<T> dataType;
+    protected Class<T> eDataType;
 
     /**
      * The actual value class.
      */
-    protected Class<V> valueType;
+    protected Class<V> eValueType;
 
+    protected WeakReference<EStructureInfo<?>> eStructure;
+    
     /**
-     * Cached {@link EStructureInfo property structure}.
+     * The id of the {@link EStructuralFeature structural feature} 
+     * of the {@link #eObject implementation} which contains 
+     * the {@link #getData() property data}
      */
-    protected EStructureInfo<?> eStructure;
-
+    protected WeakReference<EStructuralFeature> eStructuralFeature;
+    
     /**
-     * The id of the {@link EStructuralFeature structural feature} of the {@link #eContainer
-     * delegate} which contains the {@link #getData() property data}
+     * Cached value when {@link #isDetached() detached} 
      */
-    protected WeakReference<S> eStructuralFeature;
+    protected V eValue;
+    
+    /**
+     * Transaction used when not explicitly specified by client
+     */
+    protected Transaction eTx;
+    
+    // ----------------------------------------------------- 
+    //  Constructors
+    // -----------------------------------------------------
 
     /**
      * Default constructor.
      * <p>
-     * 
-     * @param eContainer - {@link EObject} instance owning the {@link #getStructuralFeature()
-     *        feature property}.
-     * @param eStructuralFeature - {@link EStructuralFeature} containing the feature
-     *        {@link #getData() property data}.
-     * @param valueType - {@link #getData() data} type.
+     * @param eInternal
+     * @param eStructuralFeature
+     * @param dataType - {@link #getData() data} type.
      * @param valueType - {@link #getValue() value} type.
      */
-    protected EFeaturePropertyDelegate(EObject eContainer, S eStructuralFeature, Class<T> dataType,
-            Class<V> valueType, EStructureInfo<?> eStructure) {
-        super();
-        this.dataType = dataType;
-        this.valueType = valueType;
-        this.eContainer = new WeakReference<EObject>(eContainer);
-        this.eStructuralFeature = new WeakReference<S>(eStructuralFeature);
+    protected EFeaturePropertyDelegate(EFeatureInternal eInternal, 
+            String eName, Class<T> dataType, Class<V> valueType) {
+        //
+        // Forward
+        //
+        super();        
+        //
+        // Get EFeatureAttribute structure
+        //
+        EFeatureAttributeInfo eStructure = eInternal.eStructure.eGetAttributeInfo(eName, true);
+        //
+        // EAttribute not found?
+        //
+        if (eStructure == null) {
+            throw new IllegalArgumentException("EStructuralFeature '" + eName + "'" + " not found");
+        }
+        //
+        // Do value type sanity check 
+        //
+        EAttribute eAttribute = eStructure.eAttribute();
+        Class<?> actualType = eAttribute.getEAttributeType().getInstanceClass();
+        if (!valueType.isAssignableFrom(actualType)) {
+            //
+            // Not correct type
+            //
+            throw new IllegalArgumentException("Value type '" + 
+                    valueType.getName() + "'" + " mismatch");
+        }
+        //
+        // Construct delegate
+        //            
+        this.eDataType = dataType;
+        this.eValueType = valueType;
+        this.eInternal = new WeakReference<EFeatureInternal>(eInternal);
+        this.eStructure = new WeakReference<EStructureInfo<?>>(eStructure);
+        this.eStructuralFeature = new WeakReference<EStructuralFeature>(eAttribute);
+        
     }
 
+    // ----------------------------------------------------- 
+    //  EFeatureProperty implementation
+    // -----------------------------------------------------
+
+    @Override
+    public String getName() {
+        return getStructuralFeature().getName();
+    }
+        
     /**
-     * Check if delegate is disposed.
+     * Check if EFeaturePropertyDelegate is disposed.
      * <p>
      * 
-     * @return <code>true</code> if delegate is disposed.
+     * @return <code>true</code> if EFeaturePropertyDelegate is disposed.
      */
     public final boolean isDisposed() {
-        return eContainer.get() == null || eStructuralFeature.get() == null;
+        return eInternal.get() == null 
+            || eStructure.get() == null 
+            || eStructuralFeature.get() == null;
     }
 
     /**
      * @throws IllegalStateException If delegate is {@link #isDisposed() disposed}.
      */
+    @Override
     public final T getData() {
         if (isDisposed()) {
             throw new NullPointerException("Data can not be set to null");
         }
 
-        if (data == null) {
-            data = create();
+        if (eData == null) {
+            eData = create();
         }
-        return data;
+        return eData;
     }
 
     /**
      * @throws IllegalStateException If delegate is {@link #isDisposed() disposed}.
      */
+    @Override
     public final void setData(T newData) {
         // Sanity checks
         //
         if (newData == null) {
             throw new NullPointerException("Data can not be set to null");
         } else if (isDisposed()) {
-            throw new NullPointerException("Delegate is disposed");
+            throw new NullPointerException("EFeaturePropertyDelegate is disposed");
         }
 
         // Validate data and return new value
@@ -120,66 +174,142 @@ public abstract class EFeaturePropertyDelegate<V, T extends Property, S extends 
         //
         // Set new value
         //
-        eContainer.get().eSet(eStructuralFeature.get(), newValue);
-
+        eObject().eSet(eStructuralFeature.get(), newValue);
     }
 
+    @Override
     public final Class<T> getDataType() {
-        return dataType;
+        return eDataType;
     }
 
+    @Override
     public final Class<V> getValueType() {
-        return valueType;
+        return eValueType;
+    }
+    
+    @Override
+    public boolean isDetached() {
+        return eStructure().eHints().eValuesDetached();
     }
 
     /**
      * @throws IllegalStateException If delegate is {@link #isDisposed() disposed}.
      */
+    @Override
     public final V getValue() {
-        return valueType.cast(eContainer().eGet(eStructuralFeature()));
+        return isDetached() ? eValue : eValueType.cast(eObject().eGet(eStructuralFeature()));
     }
 
     /**
      * @throws IllegalStateException If delegate is {@link #isDisposed() disposed}.
      * @throws NullPointerException If new value is <code>null</code>.
      */
+    @Override
     public final void setValue(V newValue) {
         if (newValue == null && !getData().isNillable()) {
             throw new NullPointerException("Value can not be set to null");
         }
-        V value = valueType.cast(newValue);
-        eContainer().eSet(eStructuralFeature(), value);
+        V value = eValueType.cast(newValue);
+        if(isDetached()) {
+            eValue = newValue;
+        } else {
+            eObject().eSet(eStructuralFeature(), value);
+        }
+    }
+    
+    @Override
+    public V read() throws IllegalStateException {
+        return read(eTx);
+    }
+
+    @Override
+    public V read(Transaction transaction) throws IllegalStateException {
+        //
+        // TODO Implement read lock check
+        //
+        if(isDetached()) {
+            eValueType.cast(eObject().eGet(eStructuralFeature()));
+        }
+        //
+        // Finished
+        //
+        return getValue();
+    }
+
+    @Override
+    public V write() throws IllegalStateException {
+        return write(eTx);
+    }
+
+    @Override
+    public V write(Transaction transaction) throws IllegalStateException {            
+        //
+        // Decide if value is allowed to be updated from backing store
+        //
+        if(!isDetached()) {
+            throw new IllegalStateException("EFeatureProperty " 
+                    + getName() + " is not detached");
+        }
+        //
+        // TODO Implement write lock check
+        //
+        eObject().eSet(eStructuralFeature(), eValue);
+        //
+        // Finished
+        //
+        return eValue;
+    }
+
+    /**
+     * @throws IllegalStateException 
+     *  If {@link EFeatureInternal internal implementation} 
+     *  is {@link #isDisposed() disposed}.
+     */
+    @Override
+    public final EObject eObject() {        
+        return eInternal().eImpl();
     }
 
     /**
      * @throws IllegalStateException If delegate is {@link #isDisposed() disposed}.
      */
-    public final EObject getContainer() {
-        return eContainer();
-    }
-
-    /**
-     * @throws IllegalStateException If delegate is {@link #isDisposed() disposed}.
-     */
+    @Override
     public final EStructuralFeature getStructuralFeature() {
         return eStructuralFeature();
     }
 
+    @Override
     public EStructureInfo<?> getStructure() {
-        return eStructure;
+        return eStructure();
     }
 
     @Override
     public String toString() {
         StringBuffer result = new StringBuffer(super.toString());
         result.append(" (valueType: ");
-        result.append(valueType);
+        result.append(eValueType);
         result.append(", dataType: ");
-        result.append(dataType);
+        result.append(eDataType);
         result.append(')');
         return result.toString();
     }
-
+    
+    // ----------------------------------------------------- 
+    //  EFeaturePropertyDelegate methods 
+    // -----------------------------------------------------
+        
+    /**
+     * @throws IllegalStateException 
+     *  If {@link EFeatureInternal internal implementation} 
+     *  is {@link #isDisposed() disposed}.
+     */
+    public final EFeatureInternal eInternal() {
+        if (isDisposed()) {
+            throw new IllegalStateException("EFeatureInternal instance is disposed");
+        }
+        return eInternal.get();
+    }
+        
     // ----------------------------------------------------- 
     //  Abstract EFeaturePropertyDelegate methods 
     // -----------------------------------------------------
@@ -209,25 +339,25 @@ public abstract class EFeaturePropertyDelegate<V, T extends Property, S extends 
     //  EFeaturePropertyDelegate helper methods
     // -----------------------------------------------------
 
-
     /**
      * @throws IllegalStateException If delegate is {@link #isDisposed() disposed}.
      */
-    protected final EObject eContainer() {
+    protected final EStructureInfo<?> eStructure() {
         if (isDisposed()) {
-            throw new IllegalStateException("Delegate is disposed");
+            throw new IllegalStateException("EFeaturePropertyDelegate is disposed");
         }
-        return eContainer.get();
+        return eStructure.get();
     }
-
+    
     /**
      * @throws IllegalStateException If delegate is {@link #isDisposed() disposed}.
      */
     protected final EStructuralFeature eStructuralFeature() {
         if (isDisposed()) {
-            throw new IllegalStateException("Delegate is disposed");
+            throw new IllegalStateException("EFeaturePropertyDelegate is disposed");
         }
         return eStructuralFeature.get();
     }
+    
 
 } // EFeaturePropertyDelegate

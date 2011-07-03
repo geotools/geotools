@@ -125,14 +125,17 @@ public class EFeatureDataStoreFactory implements DataStoreFactorySpi {
     //  EFeatureDataStoreFactory methods
     // -----------------------------------------------------
     
+    @Override
     public String getDisplayName() {
         return "EGeometryFeature Data Store";
     }
 
+    @Override
     public String getDescription() {
         return "Allows access to EMF EObject instances containing JTS Geometry data";
     }
     
+    @Override
     public Param[] getParametersInfo() {
         return new Param[] { EFEATURE_CONTEXT_ID_PARAM, EDITING_DOMAIN_ID_PARAM,
                 EPACKAGE_NS_URI_PARAM, ERESOURCE_URI_PARAM, EFOLDERS_QUERY_PARAM};
@@ -149,16 +152,19 @@ public class EFeatureDataStoreFactory implements DataStoreFactorySpi {
      *         able to create {@link EFeatureDataStore}s.
      * 
      */
+    @Override
     public boolean isAvailable() {
         return eGetContextFactory().isAvailable();
     }
 
+    @Override
     public Map<Key, ?> getImplementationHints() {
         // TODO: Add hints for CRS etc.
         //
         return Collections.emptyMap();
     }
 
+    @Override
     public boolean canProcess(Map<String, Serializable> params) {
         return canProcess(DIALECT,params);
     }
@@ -180,6 +186,7 @@ public class EFeatureDataStoreFactory implements DataStoreFactorySpi {
      * @throws IllegalArgumentException if resolved {@link EObject} container and
      *         {@link EFeaturePackageInfo} does not match.
      */
+    @Override
     public EFeatureDataStore createDataStore(Map<String, Serializable> params) throws IOException,
             IllegalArgumentException {
 
@@ -226,6 +233,7 @@ public class EFeatureDataStoreFactory implements DataStoreFactorySpi {
      * @throws IllegalArgumentException if resolved {@link EObject} container and
      *         {@link EFeaturePackageInfo} does not match.
      */
+    @Override
     public DataStore createNewDataStore(Map<String, Serializable> params) throws IOException,
             IllegalArgumentException {
         return createDataStore(params);

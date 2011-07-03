@@ -55,6 +55,7 @@ public interface EFeatureGeometry<V extends Geometry> extends
      * 
      * @return the value of the '<em>Structure</em>' attribute.
      */
+    @Override
     public EFeatureGeometryInfo getStructure();
 
 } // EGeometry

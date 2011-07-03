@@ -75,6 +75,7 @@ public class EFeatureTestsFactoryImpl extends EFactoryImpl implements EFeatureTe
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public <A, G extends Geometry> EFeatureData<A, G> createEFeatureData() {
         EFeatureDataImpl<A, G> eFeatureData = new EFeatureDataImpl<A, G>();
         return eFeatureData;
@@ -85,6 +86,7 @@ public class EFeatureTestsFactoryImpl extends EFactoryImpl implements EFeatureTe
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public NonGeoEObject createNonGeoEObject() {
         NonGeoEObjectImpl nonGeoEObject = new NonGeoEObjectImpl();
         return nonGeoEObject;
@@ -95,6 +97,7 @@ public class EFeatureTestsFactoryImpl extends EFactoryImpl implements EFeatureTe
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public <A, G extends Geometry> EFeatureCompatibleData<A, G> createEFeatureCompatibleData() {
         EFeatureCompatibleDataImpl<A, G> eFeatureCompatibleData = new EFeatureCompatibleDataImpl<A, G>();
         return eFeatureCompatibleData;
@@ -105,6 +108,7 @@ public class EFeatureTestsFactoryImpl extends EFactoryImpl implements EFeatureTe
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EFeatureTestsPackage getEFeatureTestsPackage() {
         return (EFeatureTestsPackage)getEPackage();
     }

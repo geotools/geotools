@@ -1,6 +1,9 @@
 package org.geotools.data.efeature.internal;
 
-import java.lang.ref.WeakReference;
+import static org.geotools.data.efeature.internal.EFeatureInternal.DATA_EDEFAULT;
+import static org.geotools.data.efeature.internal.EFeatureInternal.DEFAULT_EDEFAULT;
+import static org.geotools.data.efeature.internal.EFeatureInternal.SRID_EDEFAULT;
+
 import java.lang.reflect.InvocationTargetException;
 
 import org.eclipse.emf.common.notify.Adapter;
@@ -9,6 +12,7 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
@@ -19,18 +23,18 @@ import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.Resource.Internal;
+import org.geotools.data.Transaction;
 import org.geotools.data.efeature.EFeature;
-import org.geotools.data.efeature.EFeatureAttribute;
-import org.geotools.data.efeature.EFeatureGeometry;
+import org.geotools.data.efeature.EFeatureHints;
 import org.geotools.data.efeature.EFeatureIDFactory;
 import org.geotools.data.efeature.EFeatureInfo;
 import org.geotools.data.efeature.EFeaturePackage;
-import org.geotools.data.efeature.EFeatureProperty;
+import org.geotools.data.efeature.EFeatureStatus;
+import org.geotools.data.efeature.ESimpleFeature;
 import org.geotools.data.efeature.impl.EFeatureImpl;
 import org.geotools.data.efeature.util.EFeatureAttributeList;
 import org.geotools.data.efeature.util.EFeatureGeometryList;
 import org.opengis.feature.Feature;
-import org.opengis.feature.Property;
 
 import com.vividsolutions.jts.geom.Geometry;
 
@@ -38,40 +42,65 @@ import com.vividsolutions.jts.geom.Geometry;
  * {@link EFeature} delegate class.
  * <p>
  * This class implements {@link EFeature} by delegating to a
- * EMF {@link InternalEObject object}. The object is mapped to
- * {@link EFeature} by applying a {@link EFeatureInfo structure} 
- * to it.
+ * EMF {@link InternalEObject object}. The object is mapped to 
+ * {@link EFeature} by applying a {@link EFeatureInfo structure} to it.
  * <p>
- * It is only able to delegate to a {@link InternalEObject object} 
- * if it's {@link EFeatureInfo#validate(EObject) structure is valid}.  
+ * <b>Limitations</b>
+ * <p>
+ * <nl>
+ *      <li>It is only able to delegate to a {@link InternalEObject object} 
+ *              if it's {@link EFeatureInfo#validate(EObject) structure is valid}.
+ *      </li> 
+ *      <li>Getter and setter methods unique to {@link InternalEObject} interface,
+ *              delegates to {@link EFeature} only (see below). 
+ *      </li> 
+ * </nl> 
+ * <p>
+ * <b>InternalEObject</b>
+ * <p>
+ * The methods:
+ * <nl>
+ *      <li>{@link InternalEObject#eGet(int, boolean, boolean)} </li> 
+ *      <li>{@link InternalEObject#eIsSet(int)} </li> 
+ *      <li>{@link InternalEObject#eSet(int, Object)} </li> 
+ *      <li>{@link InternalEObject#eUnset(int)} </li> 
+ * </nl>
+ * <p>
+ * do not supply any {@link EClass} information. Because the {@link EClass} of 
+ * {@link #eImpl()} can not in general be assumed to be a subtype of 
+ * {@link EFeaturePackage#EFEATURE}, it is impossible to decide which {@link EClass} 
+ * given feature ID belongs to. As a result, all these methods assume
+ * that feature IDs belong to {@link EFeature} only.
  * </p>
+ * @author kengu - 3. juli 2011 
  */
 public class EFeatureDelegate implements EFeature, InternalEObject {
 
     /**
      * Cached {@link InternalEObject} which this delegates to.
-     * It is cached using a weak reference which allows garbage 
-     * collections when references objects is no longer in use.
+     * It is cached using a strong reference prevents garbage 
+     * collection to occur until all references to this delegate 
+     * is released.
      */
-    protected WeakReference<InternalEObject> eDelegate;
+    protected InternalEObject eImpl;
     
     /**
      * Cached {@link EFeatureInternal} which this delegates to.
      */
-    protected EFeatureInternal eImpl;
+    protected EFeatureInternal eInternal;
     
     /**
-     * Cached {@link EFeatureInternal} which this delegates to.
+     * Cached {@link EFeatureDelegate} singleton instance. 
      * <p>
-     * It is cached using a weak reference which allows garbage 
-     * collections when references objects is no longer in use.
+     * This {@link ThreadLocal thread local variable} allow 
+     * multiple threads to work on {@link EFeatureDelegate} 
+     * singletons without the risk of any memory inconsistencies.
+     * </p>
+     * @see {@link EFeatureHints#EFEATURE_SINGLETON_FEATURES}
      */
-    protected WeakReference<EFeatureInternal> eImplRef;
-    
-    /**
-     * Cached instance of {@link EFeatureClassDelegate} instance
-     */
-    protected EFeatureClassDelegate eFeatureClassDelegate;
+    protected static ThreadLocal<EFeatureDelegate> 
+        eSingleton = new ThreadLocal<EFeatureDelegate>();
+
     
     // ----------------------------------------------------- 
     //  Constructors
@@ -86,49 +115,31 @@ public class EFeatureDelegate implements EFeature, InternalEObject {
      * If invalid, a {@link IllegalArgumentException} is thrown.
      * </p>
      * @param eStructure - {@link EFeatureInfo structure} instance.
-     * @param eDelegate - {@link EObject} instance which implements {@link EFeature}.
+     * @param eImpl - {@link EObject} instance which implements {@link EFeature}.
+     * @param eTrusted - if <code>true</code>, the constructor trusts that 'eStructure'
+     * is a valid structure for 'eImpl'. Use this when option to optimize construction
+     * when 'eImpl' is already validated against given 'eStructure'.  
      * @throws IllegalArgumentException If the {@link EFeatureInfo structure} of this feature
      *         {@link EFeatureInfo#validate(EPackage, EClass) fails to validate}.
      */
-    public EFeatureDelegate(EFeatureInfo eStructure, InternalEObject eDelegate)
+    public EFeatureDelegate(EFeatureInfo eStructure, InternalEObject eImpl, boolean eTrusted)
             throws IllegalArgumentException {
         //
-        // Is known implementation?
+        // Forward
         //
-        if(eDelegate instanceof EFeatureImpl) {
-            //
-            //  Get internal from EFeatureImpl
-            //                        
-            this.eImplRef = new WeakReference<EFeatureInternal>(((EFeatureImpl)eDelegate).eImpl());            
-        } 
-        else if(eDelegate instanceof EFeatureDelegate) {
-            //
-            //  Get internal from delegate
-            //                        
-            this.eImplRef = new WeakReference<EFeatureInternal>(((EFeatureDelegate)eDelegate).eImpl());            
-        } 
-        else {
-            //
-            // Save delegate 
-            //            
-            this.eDelegate = new WeakReference<InternalEObject>(eDelegate);
-            //
-            // Create new internal (owned by this, use hard reference) 
-            //            
-            this.eImpl = new EFeatureInternal(eStructure,this);         
-        }
+        eReplace(eStructure, eImpl, eTrusted);
     }
 
     // ----------------------------------------------------- 
     //  EFeatureDelegate methods
     // -----------------------------------------------------
     
-    public InternalEObject eDelegate() {
-        return eDelegate!=null ? eDelegate.get() : eImpl().eImpl();
+    public InternalEObject eImpl() {
+        return eImpl;
     }
     
-    public EFeatureInternal eImpl() {
-        return eImpl!=null ? eImpl : eImplRef.get();
+    public EFeatureInternal eInternal() {
+        return eInternal;
     }
     
     // ----------------------------------------------------- 
@@ -136,90 +147,99 @@ public class EFeatureDelegate implements EFeature, InternalEObject {
     // -----------------------------------------------------
     
     
+    @Override
     public String getID() {
-        return eImpl().getID();
+        return eInternal().getID();
     }
     
+    @Override
     public void setID(String value) {
-        eImpl().eSetID(value,true);
+        eInternal().eSetID(value,true);
     }
 
+    @Override
     public String getSRID() {
-        return eImpl().getSRID();
+        return eInternal().getSRID();
     }
 
+    @Override
     public String getDefault() {
-        return eImpl().getDefault();
+        return eInternal().getDefault();
     }
 
+    @Override
     public EFeatureInfo getStructure() {
-        return eImpl().getStructure();
+        return eInternal().getStructure();
     }
 
+    @Override
     public <V extends Geometry> EFeatureGeometryList<V> getGeometryList(Class<V> valueType) {
-        return eImpl().getGeometryList(valueType);
+        return eInternal().getGeometryList(valueType);
     }
 
-    public Feature getData() {
-        return eImpl().getData();
+    @Override
+    public ESimpleFeature getData() {
+        return eInternal().getData(Transaction.AUTO_COMMIT, true);
     }
 
+    @Override
+    public ESimpleFeature getData(Transaction transaction) {
+        return eInternal().getData(transaction, true);
+    }
+    
+    @Override
     public <V> EFeatureAttributeList<V> getAttributeList(Class<V> valueType) {
-        return eImpl().getAttributeList(valueType);
+        return eInternal().getAttributeList(valueType);
     }
 
+    @Override
     public void setSRID(String newSRID) {
-        eImpl().setSRID(newSRID);
+        eInternal().setSRID(newSRID);
     }
 
+    @Override
     public void setData(Feature newData) {
-        eImpl().setData(newData);
+        eInternal().setData(newData, Transaction.AUTO_COMMIT);
     }
-
-    public boolean isSimple() {
-        return eImpl().isSimple();
+    
+    @Override
+    public ESimpleFeature setData(Feature newData, Transaction transaction) {
+        return eInternal().setData(newData, transaction);
     }
+    
 
+    @Override
     public void setDefault(String newDefault) {
-        eImpl().setDefault(newDefault);
+        eInternal().setDefault(newDefault);
     }
 
+    @Override
     public void setStructure(EFeatureInfo eStructure) {
-        eImpl().setStructure(eStructure);
-    }
-
-    public EFeatureProperty<?, ? extends Property> newProperty(String eName, Class<?> type) {
-        return eImpl().newProperty(eName, type);
-    }
-
-    public <V> EFeatureAttribute<V> newAttribute(String eName, Class<V> type) {
-        return eImpl().newAttribute(eName, type);
-    }
-
-    public <T extends Geometry> EFeatureGeometry<T> newGeometry(String eName, Class<T> type) {
-        return eImpl().newGeometry(eName, type);
+        eInternal().setStructure(eStructure);
     }
 
     // ----------------------------------------------------- 
     //  InternalEObject delegate implementation
     // -----------------------------------------------------
 
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
+        case EFeaturePackage.EFEATURE__ID:
+            return getID();
         case EFeaturePackage.EFEATURE__SRID:
             return getSRID();
         case EFeaturePackage.EFEATURE__DATA:
             return getData();
-        case EFeaturePackage.EFEATURE__SIMPLE:
-            return isSimple();
         case EFeaturePackage.EFEATURE__DEFAULT:
             return getDefault();
         case EFeaturePackage.EFEATURE__STRUCTURE:
             return getStructure();
         }
-        return eDelegate().eGet(featureID, resolve, coreType);
+        return eImpl().eGet(featureID, resolve, coreType);
     }
 
+    @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
         case EFeaturePackage.EFEATURE__ID:
@@ -238,205 +258,355 @@ public class EFeatureDelegate implements EFeature, InternalEObject {
             setStructure((EFeatureInfo) newValue);
             return;
         }
-        eDelegate().eSet(featureID, newValue);
+        eImpl().eSet(featureID, newValue);
     }
 
+    @Override
     public void eUnset(int featureID) {
         switch (featureID) {
+        case EFeaturePackage.EFEATURE__ID:
+            setID(null);
         case EFeaturePackage.EFEATURE__SRID:
-            setSRID(EFeatureInternal.SRID_EDEFAULT);
+            setSRID(SRID_EDEFAULT);
             return;
         case EFeaturePackage.EFEATURE__DATA:
-            setData(EFeatureInternal.DATA_EDEFAULT);
+            setData(DATA_EDEFAULT);
             return;
         case EFeaturePackage.EFEATURE__DEFAULT:
-            setDefault(EFeatureInternal.DEFAULT_EDEFAULT);
+            setDefault(DEFAULT_EDEFAULT);
             return;
         case EFeaturePackage.EFEATURE__STRUCTURE:
-            setStructure(eImpl().eStructure.eContext().eStructure().eGetFeatureInfo(eDelegate()));
+            setStructure(eInternal().eStructure.eContext().eStructure().eGetFeatureInfo(eImpl()));
             return;
         }
-        eDelegate().eUnset(featureID);
+        eImpl().eUnset(featureID);
     }
 
+    @Override
     public boolean eIsSet(int featureID) {
-        return eDelegate().eIsSet(featureID);
+        switch (featureID) {
+        case EFeaturePackage.EFEATURE__ID:
+            return getID() != null;
+        case EFeaturePackage.EFEATURE__DATA:
+            return DATA_EDEFAULT == null ? getData() != null : !DATA_EDEFAULT.equals(getData());
+        case EFeaturePackage.EFEATURE__SRID:
+            return SRID_EDEFAULT == null ? getSRID() != null : !SRID_EDEFAULT.equals(getSRID());
+        case EFeaturePackage.EFEATURE__DEFAULT:
+            return DEFAULT_EDEFAULT == null ? getDefault() != null : !DEFAULT_EDEFAULT.equals(getDefault());
+        case EFeaturePackage.EFEATURE__STRUCTURE:
+            return getStructure() != null;
+        }
+        return eImpl().eIsSet(featureID);
     }
 
+    @Override
     public EList<Adapter> eAdapters() {
-        return eDelegate().eAdapters();
+        return eImpl().eAdapters();
     }
 
+    @Override
     public boolean eDeliver() {
-        return eDelegate().eDeliver();
+        return eImpl().eDeliver();
     }
 
+    @Override
     public boolean eNotificationRequired() {
-        return eDelegate().eNotificationRequired();
+        return eImpl().eNotificationRequired();
     }
 
+    @Override
     public void eSetDeliver(boolean deliver) {
-        eDelegate().eSetDeliver(deliver);
+        eImpl().eSetDeliver(deliver);
     }
 
+    @Override
     public void eNotify(Notification notification) {
-        eDelegate().eNotify(notification);
+        eImpl().eNotify(notification);
     }
 
+    @Override
     public String eURIFragmentSegment(EStructuralFeature eFeature, EObject eObject) {
-        return eDelegate().eURIFragmentSegment(eFeature, eObject);
+        return eImpl().eURIFragmentSegment(eFeature, eObject);
     }
 
+    @Override
     public EObject eObjectForURIFragmentSegment(String uriFragmentSegment) {
-        return eDelegate().eObjectForURIFragmentSegment(uriFragmentSegment);
+        return eImpl().eObjectForURIFragmentSegment(uriFragmentSegment);
     }
 
+    @Override
     public void eSetClass(EClass eClass) {
-        eDelegate().eSetClass(eClass);
+        eImpl().eSetClass(eClass);
     }
 
+    @Override
     public EClass eClass() {
-        return eDelegate().eClass();
+        return eImpl().eClass();
     }
 
+    @Override
     public Setting eSetting(EStructuralFeature feature) {
-        return eDelegate().eSetting(feature);
+        return eImpl().eSetting(feature);
     }
 
+    @Override
     public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
-        return eDelegate().eBaseStructuralFeatureID(derivedFeatureID, baseClass);
+        return eImpl().eBaseStructuralFeatureID(derivedFeatureID, baseClass);
     }
 
+    @Override
     public Resource eResource() {
-        return eDelegate().eResource();
+        return eImpl().eResource();
     }
 
+    @Override
     public int eContainerFeatureID() {
-        return eDelegate().eContainerFeatureID();
+        return eImpl().eContainerFeatureID();
     }
 
+    @Override
     public EObject eContainer() {
-        return eDelegate().eContainer();
+        return eImpl().eContainer();
     }
 
+    @Override
     public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
-        return eDelegate().eDerivedStructuralFeatureID(baseFeatureID, baseClass);
+        return eImpl().eDerivedStructuralFeatureID(baseFeatureID, baseClass);
     }
 
+    @Override
     public int eDerivedOperationID(int baseOperationID, Class<?> baseClass) {
-        return eDelegate().eDerivedOperationID(baseOperationID, baseClass);
+        return eImpl().eDerivedOperationID(baseOperationID, baseClass);
     }
 
+    @Override
     public EStructuralFeature eContainingFeature() {
-        return eDelegate().eContainingFeature();
+        return eImpl().eContainingFeature();
     }
 
+    @Override
     public NotificationChain eSetResource(Internal resource, NotificationChain notifications) {
-        return eDelegate().eSetResource(resource, notifications);
+        return eImpl().eSetResource(resource, notifications);
     }
 
+    @Override
     public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID,
             Class<?> baseClass, NotificationChain notifications) {
-        return eDelegate().eInverseAdd(otherEnd, featureID, baseClass, notifications);
+        return eImpl().eInverseAdd(otherEnd, featureID, baseClass, notifications);
     }
 
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID,
             Class<?> baseClass, NotificationChain notifications) {
-        return eDelegate().eInverseRemove(otherEnd, featureID, baseClass, notifications);
+        return eImpl().eInverseRemove(otherEnd, featureID, baseClass, notifications);
     }
 
+    @Override
     public EReference eContainmentFeature() {
-        return eDelegate().eContainmentFeature();
+        return eImpl().eContainmentFeature();
     }
 
+    @Override
     public NotificationChain eBasicSetContainer(InternalEObject newContainer,
             int newContainerFeatureID, NotificationChain notifications) {
-        return eDelegate().eBasicSetContainer(newContainer, newContainerFeatureID, notifications);
+        return eImpl().eBasicSetContainer(newContainer, newContainerFeatureID, notifications);
     }
 
+    @Override
     public NotificationChain eBasicRemoveFromContainer(NotificationChain notifications) {
-        return eDelegate().eBasicRemoveFromContainer(notifications);
+        return eImpl().eBasicRemoveFromContainer(notifications);
     }
 
+    @Override
     public URI eProxyURI() {
-        return eDelegate().eProxyURI();
+        return eImpl().eProxyURI();
     }
 
+    @Override
     public EList<EObject> eContents() {
-        return eDelegate().eContents();
+        return eImpl().eContents();
     }
 
+    @Override
     public void eSetProxyURI(URI uri) {
-        eDelegate().eSetProxyURI(uri);
+        eImpl().eSetProxyURI(uri);
     }
 
+    @Override
     public EObject eResolveProxy(InternalEObject proxy) {
-        return eDelegate().eResolveProxy(proxy);
+        return eImpl().eResolveProxy(proxy);
     }
 
+    @Override
     public InternalEObject eInternalContainer() {
-        return eDelegate().eInternalContainer();
+        return eImpl().eInternalContainer();
     }
 
+    @Override
     public TreeIterator<EObject> eAllContents() {
-        return eDelegate().eAllContents();
+        return eImpl().eAllContents();
     }
 
+    @Override
     public Internal eInternalResource() {
-        return eDelegate().eInternalResource();
+        return eImpl().eInternalResource();
     }
 
+    @Override
     public Internal eDirectResource() {
-        return eDelegate().eDirectResource();
+        return eImpl().eDirectResource();
     }
 
+    @Override
     public boolean eIsProxy() {
-        return eDelegate().eIsProxy();
+        return eImpl().eIsProxy();
     }
 
+    @Override
     public EStore eStore() {
-        return eDelegate().eStore();
+        return eImpl().eStore();
     }
 
+    @Override
     public void eSetStore(EStore store) {
-        eDelegate().eSetStore(store);
+        eImpl().eSetStore(store);
     }
 
+    @Override
     public EList<EObject> eCrossReferences() {
-        return eDelegate().eCrossReferences();
+        return eImpl().eCrossReferences();
     }
 
+    @Override
     public Object eGet(EStructuralFeature feature) {
-        return eDelegate().eGet(feature);
+        return eGet(feature, true);
     }
 
+    @Override
     public Object eGet(EStructuralFeature feature, boolean resolve) {
-        return eDelegate().eGet(feature, resolve);
+        //
+        // 1) Check unmappable features first
+        //
+        if(feature == EFeaturePackage.eINSTANCE.getEFeature_Data()) {
+            return getData();
+        } else if(feature == EFeaturePackage.eINSTANCE.getEFeature_Structure()) {
+            return getData();
+        } 
+        //
+        // 2) Then check structure mappings, replacing feature with mapped 
+        //
+        EFeatureInfo eStructure = eInternal().eStructure;
+        if(eStructure.eMappingExists(feature))  {
+            feature = eStructure.eMappedTo((EAttribute)feature);
+        }
+        //
+        // Forward to implementation
+        //
+        return eImpl().eGet(feature, resolve);
     }
 
+    @Override
+    public Object eGet(EStructuralFeature feature, boolean resolve, boolean coreType) {
+        //
+        // 1) Check unmappable features first
+        //
+        if(feature == EFeaturePackage.eINSTANCE.getEFeature_Data()) {
+            return getData();
+        } else if(feature == EFeaturePackage.eINSTANCE.getEFeature_Structure()) {
+            return getData();
+        } 
+        //
+        // 2) Then check structure mappings, replacing feature with mapped 
+        //
+        EFeatureInfo eStructure = eInternal().eStructure;
+        if(eStructure.eMappingExists(feature))  {
+            feature = eStructure.eMappedTo((EAttribute)feature);
+        }
+        //
+        // Forward to implementation
+        //
+        return eImpl().eGet(feature, resolve, coreType);
+    }
+
+    
+    @Override
     public void eSet(EStructuralFeature feature, Object newValue) {
-        eDelegate().eSet(feature, newValue);
+        //
+        // 1) Check unmappable features first
+        //
+        if(feature == EFeaturePackage.eINSTANCE.getEFeature_Data()) {
+            setData((Feature)newValue);
+        } else if(feature == EFeaturePackage.eINSTANCE.getEFeature_Structure()) {
+            setStructure((EFeatureInfo)newValue);
+        } 
+        //
+        // 2) Then check structure mappings, replacing feature with mapped 
+        //
+        EFeatureInfo eStructure = eInternal().eStructure;
+        if(eStructure.eMappingExists(feature))  {
+            feature = eStructure.eMappedTo((EAttribute)feature);
+        }
+        //
+        // Forward to implementation
+        //        
+        eImpl().eSet(feature, newValue);
     }
 
+    @Override
     public boolean eIsSet(EStructuralFeature feature) {
-        return eDelegate().eIsSet(feature);
+        //
+        // 1) Check unmappable features first
+        //
+        if(feature == EFeaturePackage.eINSTANCE.getEFeature_Data()) {
+            return getData()!=null;
+        } else if(feature == EFeaturePackage.eINSTANCE.getEFeature_Structure()) {
+            return getStructure()!=null;
+        } 
+        //
+        // 2) Then check structure mappings, replacing feature with mapped 
+        //
+        EFeatureInfo eStructure = eInternal().eStructure;
+        if(eStructure.eMappingExists(feature))  {
+            feature = eStructure.eMappedTo((EAttribute)feature);
+        }
+        //
+        // Forward to implementation
+        //
+        return eImpl().eIsSet(feature);
     }
 
+    @Override
     public void eUnset(EStructuralFeature feature) {
-        eDelegate().eUnset(feature);
+        //
+        // 1) Check unmappable features first
+        //
+        if(feature == EFeaturePackage.eINSTANCE.getEFeature_Data()) {
+            throw new IllegalStateException("'Data' can not be unset");
+        } else if(feature == EFeaturePackage.eINSTANCE.getEFeature_Structure()) {
+            throw new IllegalStateException("'Structure' can not be unset");
+        } 
+        //
+        // 2) Then check structure mappings, replacing feature with mapped 
+        //
+        EFeatureInfo eStructure = eInternal().eStructure;
+        if(eStructure.eMappingExists(feature))  {
+            feature = eStructure.eMappedTo((EAttribute)feature);
+        }
+        //
+        // Forward to implementation
+        //
+        eImpl().eUnset(feature);
     }
 
-    public Object eGet(EStructuralFeature eFeature, boolean resolve, boolean coreType) {
-        return eDelegate().eGet(eFeature, resolve, coreType);
-    }
-
+    @Override
     public Object eInvoke(EOperation operation, EList<?> arguments)
-    throws InvocationTargetException {
-        return eDelegate().eInvoke(operation, arguments);
+        throws InvocationTargetException {
+        return eImpl().eInvoke(operation, arguments);
     }
 
+    @Override
     public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
-        return eDelegate().eInvoke(operationID, arguments);
+        return eImpl().eInvoke(operationID, arguments);
     }
 
     // ----------------------------------------------------- 
@@ -449,25 +619,108 @@ public class EFeatureDelegate implements EFeature, InternalEObject {
         if (eIsProxy())
             return super.toString();
 
-        return eImpl().toString();
+        return eInternal().toString();
     }
     
     // ----------------------------------------------------- 
-    //  Helper methods
+    //  Public helper methods
     // -----------------------------------------------------
 
     /**
-     * Create new instance.
+     * Create new {@link EFeatureDelegate} instance
+     * <p>
+     * If structure {@link EFeatureInfo#eHints() hints} indicate
+     * {@link EFeatureHints#EFEATURE_SINGLETON_FEATURES singletons} should be 
+     * used, a {@link ThreadLocal thread local} singleton {@link EFeatureDelegate}
+     * instance is returned. Otherwise, a new instance is returned.
+     * <p> 
+     * This hint optimize memory usage and runtime speed, but should only be used
+     * with read operations from {@link #eImpl()}.
+     * </p>
+     * @param eStructure - EFeature {@link EFeatureInfo structure}.
+     * @param eImpl - new {@link InternalEObject} implementation which this delegates to 
+     * @param eTrusted - if <code>true</code>, the method will not validate structure against implementation.
+     * @throws IllegalArgumentException If implementation does not validate 
+     * against given structure
      */
-    public static final EFeatureDelegate create(EFeatureInfo eStructure, InternalEObject eDelegate) {
+    public static final EFeatureDelegate create(EFeatureInfo eStructure, InternalEObject eImpl, boolean eTrusted) {
+        return create(eStructure, eImpl, eTrusted, eStructure.eHints().eSingletonFeatures());
+    }
+    
+    /**
+     * Create new {@link EFeatureDelegate} instance
+     * </p>
+     * @param eStructure - EFeature {@link EFeatureInfo structure}.
+     * @param eImpl - new {@link InternalEObject} implementation which this delegates to 
+     * @param eTrusted - if <code>true</code>, the method will not validate structure against implementation.
+     * @param eSingletonFeatures - if <code>true</code>, {@link ThreadLocal thread local} singleton instance is returned
+     * @throws IllegalArgumentException If implementation does not validate 
+     * against given structure
+     */
+    public static final EFeatureDelegate create(EFeatureInfo eStructure, 
+            InternalEObject eImpl, boolean eTrusted, boolean eSingletonFeatures) {
+        //
+        // Initialize
+        //
+        EFeatureDelegate eDelegate;
+        //
+        // Is EFeatureDelegate a singleton?
+        //
+        if(eSingletonFeatures) {
+            //
+            // Get singleton instance
+            //
+            eDelegate = eSingleton.get();
+            //
+            // No singleton instance found?
+            //
+            if(eDelegate==null) {
+                //
+                // Create new delegate
+                //
+                eDelegate = EFeatureDelegate.create(eStructure, (InternalEObject)eImpl, eTrusted, false);
+                //
+                // Update thread local variable
+                //
+                eSingleton.set(eDelegate);
+            } 
+            //
+            // Adapt directly? (replaces current delegate) 
+            //
+            else if(eImpl instanceof EFeatureDelegate) {
+                //
+                // Cast to EFeatureDelegate
+                //
+                eDelegate = (EFeatureDelegate)eImpl;
+                //
+                // Replace structure
+                //
+                eDelegate.setStructure(eStructure);
+                //
+                // Update thread local variable
+                //
+                eSingleton.set(eDelegate);
+            } 
+            //
+            // Replace implementation of singleton delegate
+            //
+            else {
+                //
+                // Replace implementation
+                //
+                eDelegate.eReplace(eStructure, (InternalEObject)eImpl, eTrusted);
+            }
+        } 
         //
         // Construct new instance
         //
-        EFeatureDelegate eFeature = new EFeatureDelegate(eStructure, eDelegate);
+        else {        
+            eDelegate = new EFeatureDelegate(eStructure, eImpl, eTrusted);
+        }        
         //
         // Get current ID if set
         //
-        String eSetID = eFeature.getID();
+        String eSetID = eDelegate.getID();
         //
         // Get ID factory from context
         //
@@ -479,19 +732,113 @@ public class EFeatureDelegate implements EFeature, InternalEObject {
             //
             // Set ID as used for this delegate
             //
-            eIDFactory.useID(eFeature, eSetID);
+            eIDFactory.useID(eDelegate, eSetID);
         } else {
             //
             // Create new ID for this delegate
             //
-            eSetID = eIDFactory.createID(eFeature);            
+            eSetID = eIDFactory.createID(eDelegate);
         }
         //
         // Finished
         //
-        return eFeature;
+        return eDelegate;
     }
     
+    // ----------------------------------------------------- 
+    //  Protected helper methods
+    // -----------------------------------------------------
+    
+    /**
+     * Replace current delegation
+     * <p>
+     * @param eStructure - EFeature {@link EFeatureInfo structure}.
+     * @param eImpl - new {@link EObject} implementation which this delegates to 
+     * @param eTrusted - if <code>true</code>, the method will not validate 
+     * structure against implementation.
+     * @throws IllegalArgumentException If implementation does not validate 
+     * against given structure
+     */
+    protected void eReplace(EFeatureInfo eStructure, InternalEObject eImpl, boolean eTrusted) {
+        //
+        // Validate structure?
+        //
+        if(!eTrusted) {
+            EFeatureStatus eStatus;
+            if((eStatus = eStructure.validate(eImpl)).isFailure()) {
+                throw new IllegalArgumentException(
+                        "EObject implementation is not valid. " +
+                        eStatus.getMessage(), eStatus.getCause());
+            }
+        }
+        //
+        // Is known implementation?
+        //
+        if(eImpl instanceof EFeatureImpl) {
+            //
+            // --------------------------------------------
+            //  This is a copy operation.
+            // --------------------------------------------
+            //
+            // Cache strong reference to implementation, 
+            // ensuring that it is not garbage collected 
+            // until this delegate is.  
+            //            
+            this.eImpl = eImpl;
+            //
+            // Get internal EFeature implementation from EFeatureImpl
+            //                        
+            this.eInternal = ((EFeatureImpl)eImpl).eInternal();            
+            //
+            // Update structure
+            //
+            setStructure(eStructure);        
+        } 
+        else if(eImpl instanceof EFeatureDelegate) {
+            //
+            // --------------------------------------------
+            //  This is a copy operation.
+            // --------------------------------------------
+            //
+            // Cache strong reference to EObject implementation, 
+            // ensuring that it is not garbage collected until 
+            // this delegate is. This acts like a copy constructor.
+            //            
+            this.eImpl = ((EFeatureDelegate)eImpl).eImpl();
+            //
+            // Get internal EFeature implementation from delegate
+            //                        
+            this.eInternal = ((EFeatureDelegate)eImpl).eInternal();            
+            //
+            // Update structure
+            //
+            setStructure(eStructure);        
+        } 
+        else {
+            //
+            // Cache strong reference to EObject implementation, 
+            // ensuring that it is not garbage collected until 
+            // this delegate is.
+            //            
+            this.eImpl = eImpl;
+            //
+            // --------------------------------------------
+            //  This is the replace operation.
+            // --------------------------------------------
+            //
+            if(this.eInternal==null) {
+                //
+                // Create internal implementation
+                //
+                this.eInternal = new EFeatureInternal(eStructure,this);
+            } else {
+                //
+                // Update structure
+                //
+                setStructure(eStructure);        
+            }                
+        }
+    }
     
     
 

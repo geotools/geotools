@@ -15,12 +15,11 @@
     interfaceNamePattern="" runtimePlatform="RCP">
   <foreignModel>efeature-tests.ecore</foreignModel>
   <genPackages prefix="EFeatureTests" basePackage="org.geotools.data" resource="XMI"
-      disposableProviderFactory="true" loadInitialization="true" interfacePackageSuffix="tests"
-      metaDataPackageSuffix="tests" classPackageSuffix="tests.impl" utilityPackageSuffix="tests.util"
-      providerPackageSuffix="tests.provider" presentationPackageSuffix="tests.presentation"
-      testsPackageSuffix="tests.unit" generateExampleClass="false" dataTypeConverters="true"
-      multipleEditorPages="false" generateModelWizard="false" contentTypeIdentifier=""
-      fileExtensions="xmi" ecorePackage="efeature-tests.ecore#/">
+      disposableProviderFactory="true" interfacePackageSuffix="tests" metaDataPackageSuffix="tests"
+      classPackageSuffix="tests.impl" utilityPackageSuffix="tests.util" providerPackageSuffix="tests.provider"
+      presentationPackageSuffix="tests.presentation" testsPackageSuffix="tests.unit"
+      generateExampleClass="false" dataTypeConverters="true" multipleEditorPages="false"
+      generateModelWizard="false" contentTypeIdentifier="" fileExtensions="xmi" ecorePackage="efeature-tests.ecore#/">
     <genClasses image="false" ecoreClass="efeature-tests.ecore#//EFeatureData">
       <genTypeParameters ecoreTypeParameter="efeature-tests.ecore#//EFeatureData/A"/>
       <genTypeParameters ecoreTypeParameter="efeature-tests.ecore#//EFeatureData/G"/>

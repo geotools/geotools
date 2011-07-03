@@ -68,9 +68,8 @@ public class EFeatureDataItemProvider
             super.getPropertyDescriptors(object);
 
             addIDPropertyDescriptor(object);
-            addSRIDPropertyDescriptor(object);
             addDataPropertyDescriptor(object);
-            addSimplePropertyDescriptor(object);
+            addSRIDPropertyDescriptor(object);
             addDefaultPropertyDescriptor(object);
             addStructurePropertyDescriptor(object);
             addAttributePropertyDescriptor(object);
@@ -119,28 +118,6 @@ public class EFeatureDataItemProvider
                  false,
                  false,
                  ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-                 null,
-                 null));
-    }
-
-    /**
-     * This adds a property descriptor for the Simple feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    protected void addSimplePropertyDescriptor(Object object) {
-        itemPropertyDescriptors.add
-            (createItemPropertyDescriptor
-                (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-                 getResourceLocator(),
-                 getString("_UI_EFeature_simple_feature"), //$NON-NLS-1$
-                 getString("_UI_PropertyDescriptor_description", "_UI_EFeature_simple_feature", "_UI_EFeature_type"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                 EFeaturePackage.Literals.EFEATURE__SIMPLE,
-                 false,
-                 false,
-                 false,
-                 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
                  null,
                  null));
     }
@@ -282,9 +259,8 @@ public class EFeatureDataItemProvider
 
         switch (notification.getFeatureID(EFeatureData.class)) {
             case EFeatureTestsPackage.EFEATURE_DATA__ID:
-            case EFeatureTestsPackage.EFEATURE_DATA__SRID:
             case EFeatureTestsPackage.EFEATURE_DATA__DATA:
-            case EFeatureTestsPackage.EFEATURE_DATA__SIMPLE:
+            case EFeatureTestsPackage.EFEATURE_DATA__SRID:
             case EFeatureTestsPackage.EFEATURE_DATA__DEFAULT:
             case EFeatureTestsPackage.EFEATURE_DATA__STRUCTURE:
             case EFeatureTestsPackage.EFEATURE_DATA__ATTRIBUTE:

@@ -37,6 +37,7 @@ public class EFeatureIterator implements TreeIterator<EObject> {
         this.it = from;
     }
 
+    @Override
     public boolean hasNext() {
         if (eNext == null || it.hasNext()) {
             eNext = next();
@@ -86,6 +87,7 @@ public class EFeatureIterator implements TreeIterator<EObject> {
         return eObject;
     }
 
+    @Override
     public EObject next() {
         try {
             return eNext != null ? eNext : peek();
@@ -98,10 +100,12 @@ public class EFeatureIterator implements TreeIterator<EObject> {
     /**
      * Remove is not supported by this iterator
      */
+    @Override
     public void remove() {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public void prune() {
         it.prune();
     }

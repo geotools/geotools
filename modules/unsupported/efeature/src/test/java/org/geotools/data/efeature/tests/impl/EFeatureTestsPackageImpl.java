@@ -6,28 +6,21 @@
  */
 package org.geotools.data.efeature.tests.impl;
 
-import java.io.IOException;
-
-import java.net.URL;
-
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.common.util.WrappedException;
-
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EPackage;
 
+import org.eclipse.emf.ecore.ETypeParameter;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
-
-import org.eclipse.emf.ecore.resource.Resource;
-
-import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 
 import org.geotools.data.efeature.EFeaturePackage;
 
+import org.geotools.data.efeature.tests.EFeatureCompatibleData;
+import org.geotools.data.efeature.tests.EFeatureData;
 import org.geotools.data.efeature.tests.EFeatureTestsFactory;
 import org.geotools.data.efeature.tests.EFeatureTestsPackage;
+import org.geotools.data.efeature.tests.NonGeoEObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -36,13 +29,6 @@ import org.geotools.data.efeature.tests.EFeatureTestsPackage;
  * @generated
  */
 public class EFeatureTestsPackageImpl extends EPackageImpl implements EFeatureTestsPackage {
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    protected String packageFilename = "efeature.ecore"; //$NON-NLS-1$
-
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -98,6 +84,8 @@ public class EFeatureTestsPackageImpl extends EPackageImpl implements EFeatureTe
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @see #eNS_URI
+     * @see #createPackageContents()
+     * @see #initializePackageContents()
      * @generated
      */
     public static EFeatureTestsPackage init() {
@@ -111,11 +99,11 @@ public class EFeatureTestsPackageImpl extends EPackageImpl implements EFeatureTe
         // Initialize simple dependencies
         EFeaturePackage.eINSTANCE.eClass();
 
-        // Load packages
-        theEFeatureTestsPackage.loadPackage();
+        // Create package meta-data objects
+        theEFeatureTestsPackage.createPackageContents();
 
-        // Fix loaded packages
-        theEFeatureTestsPackage.fixPackageContents();
+        // Initialize created meta-data
+        theEFeatureTestsPackage.initializePackageContents();
 
         // Mark meta-data to indicate it can't be changed
         theEFeatureTestsPackage.freeze();
@@ -131,10 +119,8 @@ public class EFeatureTestsPackageImpl extends EPackageImpl implements EFeatureTe
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getEFeatureData() {
-        if (eFeatureDataEClass == null) {
-            eFeatureDataEClass = (EClass)EPackage.Registry.INSTANCE.getEPackage(EFeatureTestsPackage.eNS_URI).getEClassifiers().get(0);
-        }
         return eFeatureDataEClass;
     }
 
@@ -143,8 +129,9 @@ public class EFeatureTestsPackageImpl extends EPackageImpl implements EFeatureTe
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getEFeatureData_Attribute() {
-        return (EAttribute)getEFeatureData().getEStructuralFeatures().get(0);
+        return (EAttribute)eFeatureDataEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -152,8 +139,9 @@ public class EFeatureTestsPackageImpl extends EPackageImpl implements EFeatureTe
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getEFeatureData_Geometry() {
-        return (EAttribute)getEFeatureData().getEStructuralFeatures().get(1);
+        return (EAttribute)eFeatureDataEClass.getEStructuralFeatures().get(1);
     }
 
     /**
@@ -161,10 +149,8 @@ public class EFeatureTestsPackageImpl extends EPackageImpl implements EFeatureTe
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getNonGeoEObject() {
-        if (nonGeoEObjectEClass == null) {
-            nonGeoEObjectEClass = (EClass)EPackage.Registry.INSTANCE.getEPackage(EFeatureTestsPackage.eNS_URI).getEClassifiers().get(1);
-        }
         return nonGeoEObjectEClass;
     }
 
@@ -173,8 +159,9 @@ public class EFeatureTestsPackageImpl extends EPackageImpl implements EFeatureTe
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getNonGeoEObject_NonGeoAttribute() {
-        return (EAttribute)getNonGeoEObject().getEStructuralFeatures().get(0);
+        return (EAttribute)nonGeoEObjectEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -182,10 +169,8 @@ public class EFeatureTestsPackageImpl extends EPackageImpl implements EFeatureTe
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EClass getEFeatureCompatibleData() {
-        if (eFeatureCompatibleDataEClass == null) {
-            eFeatureCompatibleDataEClass = (EClass)EPackage.Registry.INSTANCE.getEPackage(EFeatureTestsPackage.eNS_URI).getEClassifiers().get(2);
-        }
         return eFeatureCompatibleDataEClass;
     }
 
@@ -194,8 +179,9 @@ public class EFeatureTestsPackageImpl extends EPackageImpl implements EFeatureTe
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getEFeatureCompatibleData_Attribute() {
-        return (EAttribute)getEFeatureCompatibleData().getEStructuralFeatures().get(1);
+        return (EAttribute)eFeatureCompatibleDataEClass.getEStructuralFeatures().get(1);
     }
 
     /**
@@ -203,8 +189,9 @@ public class EFeatureTestsPackageImpl extends EPackageImpl implements EFeatureTe
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getEFeatureCompatibleData_Geometry() {
-        return (EAttribute)getEFeatureCompatibleData().getEStructuralFeatures().get(2);
+        return (EAttribute)eFeatureCompatibleDataEClass.getEStructuralFeatures().get(2);
     }
 
     /**
@@ -212,8 +199,9 @@ public class EFeatureTestsPackageImpl extends EPackageImpl implements EFeatureTe
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getEFeatureCompatibleData_SRID() {
-        return (EAttribute)getEFeatureCompatibleData().getEStructuralFeatures().get(3);
+        return (EAttribute)eFeatureCompatibleDataEClass.getEStructuralFeatures().get(3);
     }
 
     /**
@@ -221,8 +209,9 @@ public class EFeatureTestsPackageImpl extends EPackageImpl implements EFeatureTe
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getEFeatureCompatibleData_Default() {
-        return (EAttribute)getEFeatureCompatibleData().getEStructuralFeatures().get(4);
+        return (EAttribute)eFeatureCompatibleDataEClass.getEStructuralFeatures().get(4);
     }
 
     /**
@@ -230,8 +219,9 @@ public class EFeatureTestsPackageImpl extends EPackageImpl implements EFeatureTe
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EAttribute getEFeatureCompatibleData_ID() {
-        return (EAttribute)getEFeatureCompatibleData().getEStructuralFeatures().get(0);
+        return (EAttribute)eFeatureCompatibleDataEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -239,6 +229,7 @@ public class EFeatureTestsPackageImpl extends EPackageImpl implements EFeatureTe
      * <!-- end-user-doc -->
      * @generated
      */
+    @Override
     public EFeatureTestsFactory getEFeatureTestsFactory() {
         return (EFeatureTestsFactory)getEFactoryInstance();
     }
@@ -248,66 +239,97 @@ public class EFeatureTestsPackageImpl extends EPackageImpl implements EFeatureTe
      * <!-- end-user-doc -->
      * @generated
      */
-    private boolean isLoaded = false;
+    private boolean isCreated = false;
 
     /**
-     * Laods the package and any sub-packages from their serialized form.
+     * Creates the meta-model objects for the package.  This method is
+     * guarded to have no affect on any invocation but its first.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    public void loadPackage() {
-        if (isLoaded) return;
-        isLoaded = true;
+    public void createPackageContents() {
+        if (isCreated) return;
+        isCreated = true;
 
-        URL url = getClass().getResource(packageFilename);
-        if (url == null) {
-            throw new RuntimeException("Missing serialized package: " + packageFilename); //$NON-NLS-1$
-        }
-        URI uri = URI.createURI(url.toString());
-        Resource resource = new EcoreResourceFactoryImpl().createResource(uri);
-        try {
-            resource.load(null);
-        }
-        catch (IOException exception) {
-            throw new WrappedException(exception);
-        }
-        initializeFromLoadedEPackage(this, (EPackage)resource.getContents().get(0));
+        // Create classes and their features
+        eFeatureDataEClass = createEClass(EFEATURE_DATA);
+        createEAttribute(eFeatureDataEClass, EFEATURE_DATA__ATTRIBUTE);
+        createEAttribute(eFeatureDataEClass, EFEATURE_DATA__GEOMETRY);
+
+        nonGeoEObjectEClass = createEClass(NON_GEO_EOBJECT);
+        createEAttribute(nonGeoEObjectEClass, NON_GEO_EOBJECT__NON_GEO_ATTRIBUTE);
+
+        eFeatureCompatibleDataEClass = createEClass(EFEATURE_COMPATIBLE_DATA);
+        createEAttribute(eFeatureCompatibleDataEClass, EFEATURE_COMPATIBLE_DATA__ID);
+        createEAttribute(eFeatureCompatibleDataEClass, EFEATURE_COMPATIBLE_DATA__ATTRIBUTE);
+        createEAttribute(eFeatureCompatibleDataEClass, EFEATURE_COMPATIBLE_DATA__GEOMETRY);
+        createEAttribute(eFeatureCompatibleDataEClass, EFEATURE_COMPATIBLE_DATA__SRID);
+        createEAttribute(eFeatureCompatibleDataEClass, EFEATURE_COMPATIBLE_DATA__DEFAULT);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private boolean isInitialized = false;
+
+    /**
+     * Complete the initialization of the package and its meta-model.  This
+     * method is guarded to have no affect on any invocation but its first.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void initializePackageContents() {
+        if (isInitialized) return;
+        isInitialized = true;
+
+        // Initialize package
+        setName(eNAME);
+        setNsPrefix(eNS_PREFIX);
+        setNsURI(eNS_URI);
+
+        // Obtain other dependent packages
+        EFeaturePackage theEFeaturePackage = (EFeaturePackage)EPackage.Registry.INSTANCE.getEPackage(EFeaturePackage.eNS_URI);
+
+        // Create type parameters
+        ETypeParameter eFeatureDataEClass_A = addETypeParameter(eFeatureDataEClass, "A"); //$NON-NLS-1$
+        ETypeParameter eFeatureDataEClass_G = addETypeParameter(eFeatureDataEClass, "G"); //$NON-NLS-1$
+        ETypeParameter eFeatureCompatibleDataEClass_A = addETypeParameter(eFeatureCompatibleDataEClass, "A"); //$NON-NLS-1$
+        ETypeParameter eFeatureCompatibleDataEClass_G = addETypeParameter(eFeatureCompatibleDataEClass, "G"); //$NON-NLS-1$
+
+        // Set bounds for type parameters
+        EGenericType g1 = createEGenericType(theEFeaturePackage.getGeometry());
+        eFeatureDataEClass_G.getEBounds().add(g1);
+        g1 = createEGenericType(theEFeaturePackage.getGeometry());
+        eFeatureCompatibleDataEClass_G.getEBounds().add(g1);
+
+        // Add supertypes to classes
+        eFeatureDataEClass.getESuperTypes().add(theEFeaturePackage.getEFeature());
+
+        // Initialize classes and features; add operations and parameters
+        initEClass(eFeatureDataEClass, EFeatureData.class, "EFeatureData", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+        g1 = createEGenericType(eFeatureDataEClass_A);
+        initEAttribute(getEFeatureData_Attribute(), g1, "attribute", null, 1, 1, EFeatureData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+        g1 = createEGenericType(eFeatureDataEClass_G);
+        initEAttribute(getEFeatureData_Geometry(), g1, "geometry", null, 1, 1, EFeatureData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+
+        initEClass(nonGeoEObjectEClass, NonGeoEObject.class, "NonGeoEObject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+        initEAttribute(getNonGeoEObject_NonGeoAttribute(), ecorePackage.getEInt(), "nonGeoAttribute", null, 0, 1, NonGeoEObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+
+        initEClass(eFeatureCompatibleDataEClass, EFeatureCompatibleData.class, "EFeatureCompatibleData", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+        initEAttribute(getEFeatureCompatibleData_ID(), ecorePackage.getEString(), "ID", null, 1, 1, EFeatureCompatibleData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+        g1 = createEGenericType(eFeatureCompatibleDataEClass_A);
+        initEAttribute(getEFeatureCompatibleData_Attribute(), g1, "attribute", null, 1, 1, EFeatureCompatibleData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+        g1 = createEGenericType(eFeatureCompatibleDataEClass_G);
+        initEAttribute(getEFeatureCompatibleData_Geometry(), g1, "geometry", null, 1, 1, EFeatureCompatibleData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+        initEAttribute(getEFeatureCompatibleData_SRID(), ecorePackage.getEString(), "SRID", null, 1, 1, EFeatureCompatibleData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+        initEAttribute(getEFeatureCompatibleData_Default(), ecorePackage.getEString(), "default", null, 1, 1, EFeatureCompatibleData.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+
+        // Create resource
         createResource(eNS_URI);
-    }
-
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    private boolean isFixed = false;
-
-    /**
-     * Fixes up the loaded package, to make it appear as if it had been programmatically built.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public void fixPackageContents() {
-        if (isFixed) return;
-        isFixed = true;
-        fixEClassifiers();
-    }
-
-    /**
-     * Sets the instance class on the given classifier.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    protected void fixInstanceClass(EClassifier eClassifier) {
-        if (eClassifier.getInstanceClassName() == null) {
-            eClassifier.setInstanceClassName("org.geotools.data.efeature.tests." + eClassifier.getName()); //$NON-NLS-1$
-            setGeneratedClassName(eClassifier);
-        }
     }
 
 } //EFeatureTestsPackageImpl

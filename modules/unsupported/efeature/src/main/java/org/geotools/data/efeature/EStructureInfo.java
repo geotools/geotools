@@ -1,6 +1,9 @@
 package org.geotools.data.efeature;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Logger;
 
 import org.geotools.util.WeakHashSet;
@@ -23,12 +26,18 @@ public abstract class EStructureInfo<T extends EStructureInfo<?>> {
     protected boolean isAvailable = true;
     
     /**
+     * Create fair reentrant lock, ensuring that the longest waiting thread
+     * is granted access once current thread released the object
+     */
+    protected ReentrantLock eLock = new ReentrantLock(true);
+    
+    
+    /**
      * Set of weakly referenced {@link EStructureInfo} listeners
      */
     @SuppressWarnings("rawtypes")
     protected WeakHashSet<EFeatureListener> 
-        eListeners = new WeakHashSet<EFeatureListener>(
-            EFeatureListener.class);
+        eListeners = new WeakHashSet<EFeatureListener>(EFeatureListener.class);
 
     /**
      * Cached {@link EFeatureStatus#SUCCESS success status}.
@@ -173,6 +182,13 @@ public abstract class EStructureInfo<T extends EStructureInfo<?>> {
     }
 
     /**
+     * Get {@link EFeatureHints hints} 
+     */
+    public EFeatureHints eHints() {
+        return eHints;
+    }
+        
+    /**
      * Check if {@link EStructureInfo structure} is valid.
      * <p>
      * 
@@ -226,7 +242,7 @@ public abstract class EStructureInfo<T extends EStructureInfo<?>> {
      * point, the listener is automatically removed from this object.
      * </p>
      */
-    public final void addListener(EFeatureListener<EStructureInfo<?>> eListener) {
+    public final void addListener(EFeatureListener<?> eListener) {
         eListeners.add(eListener);
     }
 
@@ -238,9 +254,23 @@ public abstract class EStructureInfo<T extends EStructureInfo<?>> {
      * point, the listener is automatically removed from this object.
      * </p>
      */
-    public final void removeListener(EFeatureListener<EStructureInfo<?>> eListener) {
+    public final void removeListener(EFeatureListener<?> eListener) {
         eListeners.remove(eListener);
     }
+    
+    public void eNotify(Object source, int property, Object oldValue, Object newValue) {
+        for(EFeatureListener<Object> it : eListeners) {
+            it.onChange(source, property, oldValue, newValue);
+        }
+    }
+    
+    public void eLock() {
+        eLock.lock();
+    }
+    
+    public void eUnlock() {
+        eLock.unlock();
+    }       
 
     // ----------------------------------------------------- 
     //  EStructureInfo implementation methods
@@ -258,7 +288,11 @@ public abstract class EStructureInfo<T extends EStructureInfo<?>> {
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
     protected void fireOnChange(int property, Object oldValue, Object newValue) {
-        for (EFeatureListener it : eListeners) {
+        //
+        // Make a copy of current list, allowing concurrent modifications
+        //
+        List<EFeatureListener> eList = new ArrayList<EFeatureListener>(eListeners);
+        for (EFeatureListener it : eList) {
             it.onChange(this, property, oldValue, newValue);
         }
     }
@@ -354,10 +388,6 @@ public abstract class EStructureInfo<T extends EStructureInfo<?>> {
         doAdapt();
     }
 
-    // ----------------------------------------------------- 
-    //  Static EStructureInfo helper methods
-    // -----------------------------------------------------
-    
     /**
      * Verify that state is available
      */
@@ -377,6 +407,10 @@ public abstract class EStructureInfo<T extends EStructureInfo<?>> {
             throw new IllegalStateException(this + " is not valid. Please validate the structure.");
     }    
 
+    // ----------------------------------------------------- 
+    //  Static EStructureInfo helper methods
+    // -----------------------------------------------------
+    
     protected static EFeatureStatus failure(Object source, String context, String message) {
         StackTraceElement[] stack = EFeatureUtils.getStackTrace(1);
         StackTraceElement trace = stack[0];

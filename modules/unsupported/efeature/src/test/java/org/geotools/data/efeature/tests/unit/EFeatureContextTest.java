@@ -160,8 +160,8 @@ public class EFeatureContextTest extends AbstractEFeatureTest {
         int acount = 0;
         int gcount = 0;
         if(EFeatureData.class.getSimpleName().equals(eInfo.eName())) {
-            pcount = 8;
-            acount = 7;
+            pcount = 7;
+            acount = 6;
             gcount = 1;
         } 
         else if(EFeatureCompatibleData.class.getSimpleName().equals(eInfo.eName())) {
@@ -169,9 +169,9 @@ public class EFeatureContextTest extends AbstractEFeatureTest {
             acount = 4;
             gcount = 1;            
         }
-        assertEquals(msg+". EFeature["+eInfo.eName()+"] property count mismatch", pcount, eInfo.eGetAttributeInfoMap(true).size());
-        assertEquals(msg+". EFeatureAttributeInfo["+eInfo.eName()+"] count mismatch", acount, eInfo.eGetAttributeInfoMap(false).size());
-        assertStructure(msg, eInfo.eName(), eInfo.eGetAttributeInfoMap(false).values());
+        assertEquals(msg+". EFeature["+eInfo.eName()+"] property count mismatch", pcount, eInfo.eGetAttributeInfoList(true).size());
+        assertEquals(msg+". EFeatureAttributeInfo["+eInfo.eName()+"] count mismatch", acount, eInfo.eGetAttributeInfoList(false).size());
+        assertStructure(msg, eInfo.eName(), eInfo.eGetAttributeInfoList(false));
         assertEquals(msg+". EFeatureGeometryInfo["+eInfo.eName()+"] count mismatch", gcount, eInfo.eGetGeometryInfoMap().size());
         assertStructure(msg, eInfo.eGetGeometryInfoMap().values().iterator().next());
 
@@ -183,7 +183,6 @@ public class EFeatureContextTest extends AbstractEFeatureTest {
         if(EFeatureData.class.getSimpleName().equals(eName)) {
             exists.put("SRID", false);
             exists.put("data", false);
-            exists.put("simple", false);
             exists.put("default", false);
             exists.put("structure", false);
             exists.put("attribute", false);

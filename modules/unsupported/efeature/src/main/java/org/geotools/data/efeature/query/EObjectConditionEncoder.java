@@ -317,6 +317,7 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
      * 
      * @see {@link FilterVisitor#visit(ExcludeFilter, Object)}
      */
+    @Override
     public Condition visit(ExcludeFilter filter, Object extraData) {
         eConditionStack.add(EObjectCondition.E_FALSE);
         return eConditionStack.peek();
@@ -334,6 +335,7 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
      * @see {@link FilterVisitor#visit(IncludeFilter, Object)}
      * 
      */
+    @Override
     public Condition visit(IncludeFilter filter, Object extraData) {
         eConditionStack.add(EObjectCondition.E_TRUE);
         return eConditionStack.peek();
@@ -354,6 +356,7 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
      * 
      * @throws RuntimeException If one or more expressions are not supported
      */
+    @Override
     public EAttributeValueIsBetween visit(PropertyIsBetween filter, Object extraData)
             throws RuntimeException {
         //
@@ -446,6 +449,7 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
      * @throws RuntimeException If one or more expressions are not supported
      * 
      */
+    @Override
     public EAttributeValueIsLike visit(PropertyIsLike filter, Object extraData) {
         // Get LIKE clause information
         //
@@ -528,6 +532,7 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
      * @throws RuntimeException If one or more expressions are not supported
      * 
      */
+    @Override
     public Condition visit(org.opengis.filter.Not filter, Object extraData) {
         //
         // Build filter recursively and put onto condition stack
@@ -553,6 +558,7 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
      * 
      * @return a {@link Condition} instance
      */
+    @Override
     public Condition visit(org.opengis.filter.And filter, Object extraData) {
         return visit((BinaryLogicOperator) filter, "AND");
     }
@@ -569,6 +575,7 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
      * @throws RuntimeException If one or more expressions are not supported
      * 
      */
+    @Override
     public Condition visit(org.opengis.filter.Or filter, Object extraData) {
         return visit((BinaryLogicOperator) filter, "OR");
     }
@@ -673,6 +680,7 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
      * 
      * @throws RuntimeException If one or more expressions are not supported
      */
+    @Override
     public Condition visit(PropertyIsEqualTo filter, Object extraData) {
         return visitBinaryComparisonOperator(filter, PropertyIsEqualTo.NAME);
     }
@@ -690,6 +698,7 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
      * @throws RuntimeException If one or more expressions are not supported
      * 
      */
+    @Override
     public Condition visit(PropertyIsGreaterThanOrEqualTo filter, Object extraData) {
         return visitBinaryComparisonOperator(filter, PropertyIsGreaterThanOrEqualTo.NAME);
     }
@@ -707,6 +716,7 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
      * @throws RuntimeException If one or more expressions are not supported
      * 
      */
+    @Override
     public Condition visit(PropertyIsGreaterThan filter, Object extraData) {
         return visitBinaryComparisonOperator(filter, PropertyIsGreaterThan.NAME);
     }
@@ -723,6 +733,7 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
      * @throws RuntimeException If one or more expressions are not supported
      * 
      */
+    @Override
     public Condition visit(PropertyIsLessThan filter, Object extraData) {
         return visitBinaryComparisonOperator(filter, PropertyIsLessThan.NAME);
     }
@@ -740,6 +751,7 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
      * @throws RuntimeException If one or more expressions are not supported
      * 
      */
+    @Override
     public Condition visit(PropertyIsLessThanOrEqualTo filter, Object extraData) {
         return visitBinaryComparisonOperator(filter, PropertyIsLessThanOrEqualTo.NAME);
     }
@@ -757,6 +769,7 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
      * @throws RuntimeException If one or more expressions are not supported
      * 
      */
+    @Override
     public Object visit(PropertyIsNotEqualTo filter, Object extraData) {
         visitBinaryComparisonOperator(filter, PropertyIsNotEqualTo.NAME);
         return extraData;
@@ -895,6 +908,7 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
      * @throws RuntimeException If one expression is not supported
      * 
      */
+    @Override
     public EAttributeValueIsNull visit(PropertyIsNull filter, Object extraData)
             throws RuntimeException {
         // LOGGER.finer("exporting NullFilter");
@@ -951,6 +965,7 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
      * @throws RuntimeException - if no or more than one {@link Identifier identifier}s are given.
      * 
      */
+    @Override
     public EAttributeValueIsID visit(Id filter, Object extraData) {
 
         // Get identifiers
@@ -1011,6 +1026,7 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
      * @throws RuntimeException If one or more expressions are not supported
      * 
      */
+    @Override
     public Condition visit(BBOX filter, Object extraData) {
         return visitBinarySpatialOperator(filter, BBOX.NAME);
     }
@@ -1027,6 +1043,7 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
      * @throws RuntimeException If one or more expressions are not supported
      * 
      */
+    @Override
     public Condition visit(Beyond filter, Object extraData) {
         return visitBinarySpatialOperator(filter, Beyond.NAME);
     }
@@ -1043,6 +1060,7 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
      * @throws RuntimeException If one or more expressions are not supported
      * 
      */
+    @Override
     public Condition visit(Contains filter, Object extraData) {
         return visitBinarySpatialOperator(filter, Contains.NAME);
     }
@@ -1059,6 +1077,7 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
      * @throws RuntimeException If one or more expressions are not supported
      * 
      */
+    @Override
     public Condition visit(Crosses filter, Object extraData) {
         return visitBinarySpatialOperator(filter, Crosses.NAME);
     }
@@ -1075,6 +1094,7 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
      * @throws RuntimeException If one or more expressions are not supported
      * 
      */
+    @Override
     public Condition visit(Disjoint filter, Object extraData) {
         return visitBinarySpatialOperator(filter, Disjoint.NAME);
     }
@@ -1091,6 +1111,7 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
      * @throws RuntimeException If one or more expressions are not supported
      * 
      */
+    @Override
     public Condition visit(DWithin filter, Object extraData) {
         return visitBinarySpatialOperator(filter, DWithin.NAME);
     }
@@ -1107,6 +1128,7 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
      * @throws RuntimeException If one or more expressions are not supported
      * 
      */
+    @Override
     public Condition visit(Equals filter, Object extraData) {
         return visitBinarySpatialOperator(filter, Equals.NAME);
     }
@@ -1123,6 +1145,7 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
      * @throws RuntimeException If one or more expressions are not supported
      * 
      */
+    @Override
     public Condition visit(Intersects filter, Object extraData) {
         return visitBinarySpatialOperator(filter, Intersects.NAME);
     }
@@ -1139,6 +1162,7 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
      * @throws RuntimeException If one or more expressions are not supported
      * 
      */
+    @Override
     public Condition visit(Overlaps filter, Object extraData) {
         return visitBinarySpatialOperator(filter, Overlaps.NAME);
     }
@@ -1155,6 +1179,7 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
      * @throws RuntimeException If one or more expressions are not supported
      * 
      */
+    @Override
     public Object visit(Touches filter, Object extraData) {
         return visitBinarySpatialOperator(filter, Touches.NAME);
     }
@@ -1171,6 +1196,7 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
      * @throws RuntimeException If one or more expressions are not supported
      * 
      */
+    @Override
     public Condition visit(Within filter, Object extraData) {
         return visitBinarySpatialOperator(filter, Within.NAME);
     }
@@ -1301,6 +1327,7 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
         throw new IllegalArgumentException("Spatial operation " + name + " is not supported");
     }
 
+    @Override
     public Object visitNullFilter(Object extraData) {
         return extraData;
     }
@@ -1324,6 +1351,7 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
      * @throws RuntimeException If {@link #getFeatureType()} does not define a
      *         {@link AttributeDescriptor} with given property name.
      */
+    @Override
     public Object visit(PropertyName expression, Object toAttribute) throws RuntimeException {
 
         // LOGGER.finer("exporting PropertyName");
@@ -1373,6 +1401,7 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
      *         flag
      * 
      */
+    @Override
     public Object visit(Literal expression, Object toValue) {
 
         // Initialize
@@ -1413,6 +1442,7 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
     /**
      * Binary expression ADD is not supported.
      */
+    @Override
     public Object visit(Add expression, Object extraData) {
         throw new IllegalArgumentException("Binary expression ADD is not supported");
         // return visit((BinaryExpression)expression, "+", extraData);
@@ -1421,6 +1451,7 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
     /**
      * Binary expression DIVIDE is not supported.
      */
+    @Override
     public Object visit(Divide expression, Object extraData) {
         throw new IllegalArgumentException("Binary expression DIVIDE is not supported");
         // return visit((BinaryExpression)expression, "/", extraData);
@@ -1429,6 +1460,7 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
     /**
      * Binary expression MULTIPLY is not supported.
      */
+    @Override
     public Object visit(Multiply expression, Object extraData) {
         throw new IllegalArgumentException("Binary expression MULTIPLY is not supported");
         // return visit((BinaryExpression)expression, "*", extraData);
@@ -1437,6 +1469,7 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
     /**
      * Binary expression SUBSTRACT is not supported.
      */
+    @Override
     public Object visit(Subtract expression, Object extraData) {
         throw new IllegalArgumentException("Binary expression SUBSTRACT is not supported");
         // return visit((BinaryExpression)expression, "-", extraData);
@@ -1467,6 +1500,7 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
     /**
      * {@link Function}s are not supported.
      */
+    @Override
     public Object visit(Function function, Object extraData) throws RuntimeException {
 
         throw new IllegalArgumentException("Functions are not not supported");
@@ -1511,6 +1545,7 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
         // return extraData;
     }
 
+    @Override
     public NilExpression visit(NilExpression expression, Object toValue) {
 
         // Get parse flag
@@ -1776,71 +1811,85 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
     // -----------------------------------------------------
     
     
+    @Override
     public Object visit(After arg0, Object extraData) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    @Override
     public Object visit(AnyInteracts expression, Object extraData) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    @Override
     public Object visit(Before expression, Object extraData) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    @Override
     public Object visit(Begins expression, Object extraData) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    @Override
     public Object visit(BegunBy expression, Object extraData) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    @Override
     public Object visit(During expression, Object extraData) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    @Override
     public Object visit(EndedBy expression, Object extraData) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    @Override
     public Object visit(Ends expression, Object extraData) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    @Override
     public Object visit(Meets expression, Object extraData) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    @Override
     public Object visit(MetBy expression, Object extraData) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    @Override
     public Object visit(OverlappedBy expression, Object extraData) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    @Override
     public Object visit(TContains expression, Object extraData) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    @Override
     public Object visit(TEquals expression, Object extraData) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    @Override
     public Object visit(TOverlaps expression, Object extraData) {
         // TODO Auto-generated method stub
         return null;

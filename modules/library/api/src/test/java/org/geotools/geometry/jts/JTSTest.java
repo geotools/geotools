@@ -107,7 +107,7 @@ public class JTSTest extends JTSTestBase {
 
     @Test
     public void toGeometry_Envelope() {
-        Envelope refEnv = new ReferencedEnvelope(-10, 10, -5, 5, null);
+        Envelope refEnv = new Envelope(-10, 10, -5, 5);
         Geometry geom = JTS.toGeometry(refEnv);
         assertTrue(geom instanceof com.vividsolutions.jts.geom.Polygon);
         
@@ -117,6 +117,20 @@ public class JTSTest extends JTSTestBase {
         assertEquals(-5.0, geomEnv.getMinY(), TOL);
         assertEquals(5.0, geomEnv.getMaxY(), TOL);
     }
+    
+    @Test
+    public void toGeometry_ReferencedEnvelope() {
+        ReferencedEnvelope refEnv = new ReferencedEnvelope(-10, 10, -5, 5, DefaultGeographicCRS.WGS84);
+        Geometry geom = JTS.toGeometry(refEnv);
+        assertTrue(geom instanceof com.vividsolutions.jts.geom.Polygon);
+        
+        Envelope geomEnv = geom.getEnvelopeInternal();
+        assertEquals(-10.0, geomEnv.getMinX(), TOL);
+        assertEquals(10.0, geomEnv.getMaxX(), TOL);
+        assertEquals(-5.0, geomEnv.getMinY(), TOL);
+        assertEquals(5.0, geomEnv.getMaxY(), TOL);
+    }
+
 
     @Test
     public void toEnvelope() {

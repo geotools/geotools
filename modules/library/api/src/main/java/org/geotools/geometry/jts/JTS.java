@@ -802,7 +802,7 @@ public final class JTS {
      * @since 2.4
      */
     public static Polygon toGeometry(ReferencedEnvelope bbox) {
-        return toGeometry((BoundingBox) new GeometryFactory());
+        return toGeometry((BoundingBox) bbox, new GeometryFactory());
     }
 
     /**

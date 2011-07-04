@@ -648,37 +648,23 @@ public class RasterTestData {
             int maxLevels;
 
             maxLevels = 2;
-            extent = new SeExtent(0, 0, 256, 256);
+            extent = new SeExtent(256, 0, 512, 256);
             imageWidth = 228;
             imageHeight = 228;
             addRasterToCatalog(session, tableName, crs, numberOfBands, imageWidth, imageHeight,
                     pixelType, maxLevels, extent);
 
             maxLevels = 3;
-            extent = new SeExtent(512, 512, 768, 768);
+            extent = new SeExtent(0, 256, 256, 512);
             imageWidth = 456;
             imageHeight = 456;
             addRasterToCatalog(session, tableName, crs, numberOfBands, imageWidth, imageHeight,
                     pixelType, maxLevels, extent);
 
             maxLevels = 3;
-            extent = new SeExtent(512, 0, 768, 256);
+            extent = new SeExtent(256, 256, 512, 512);
             imageWidth = 532;
             imageHeight = 532;
-            addRasterToCatalog(session, tableName, crs, numberOfBands, imageWidth, imageHeight,
-                    pixelType, maxLevels, extent);
-
-            maxLevels = 3;
-            extent = new SeExtent(0, 512, 256, 768);
-            imageWidth = 1024;
-            imageHeight = 1024;
-            addRasterToCatalog(session, tableName, crs, numberOfBands, imageWidth, imageHeight,
-                    pixelType, maxLevels, extent);
-
-            maxLevels = 3;
-            extent = new SeExtent(256, 256, 512, 512);
-            imageWidth = 99;
-            imageHeight = 99;
             addRasterToCatalog(session, tableName, crs, numberOfBands, imageWidth, imageHeight,
                     pixelType, maxLevels, extent);
         } finally {

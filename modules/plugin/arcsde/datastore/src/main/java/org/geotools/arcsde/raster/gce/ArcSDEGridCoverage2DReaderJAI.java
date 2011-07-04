@@ -77,7 +77,6 @@ import org.opengis.coverage.grid.GridCoverageReader;
 import org.opengis.coverage.grid.GridEnvelope;
 import org.opengis.geometry.Envelope;
 import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.parameter.ParameterNotFoundException;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -90,12 +89,12 @@ import org.opengis.referencing.operation.TransformException;
  * @author Gabriel Roldan (OpenGeo)
  * @since 2.5.4
  * @version $Id$
- *
+ * 
  * @source $URL$
  *         http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/main/java/org
  *         /geotools/arcsde/gce/ArcSDEGridCoverage2DReaderJAI.java $
  */
-@SuppressWarnings({ "deprecation", "nls" })
+@SuppressWarnings("nls")
 public final class ArcSDEGridCoverage2DReaderJAI extends AbstractGridCoverage2DReader {
 
     private static final Logger LOGGER = Logging.getLogger("org.geotools.arcsde.gce");
@@ -206,10 +205,10 @@ public final class ArcSDEGridCoverage2DReaderJAI extends AbstractGridCoverage2DR
         final GridEnvelope requestedDim;
         final OverviewPolicy overviewPolicy;
         {
-            final ReadParameters opParams = parseReadParams(getOriginalEnvelope(), params);
+            final ReadParameters opParams = parseReadParams(params);
             overviewPolicy = opParams.overviewPolicy;
             requestedEnvelope = opParams.requestedEnvelope;
-            requestedDim = new GridEnvelope2D(opParams.dim);
+            requestedDim = opParams.dim;
         }
 
         /*
@@ -643,20 +642,19 @@ public final class ArcSDEGridCoverage2DReaderJAI extends AbstractGridCoverage2DR
     static class ReadParameters {
         GeneralEnvelope requestedEnvelope;
 
-        Rectangle dim;
+        GridEnvelope dim;
 
         OverviewPolicy overviewPolicy;
     }
 
-    private static ArcSDEGridCoverage2DReaderJAI.ReadParameters parseReadParams(
-            final GeneralEnvelope coverageEnvelope, final GeneralParameterValue[] params)
-            throws IllegalArgumentException {
+    private ArcSDEGridCoverage2DReaderJAI.ReadParameters parseReadParams(
+            final GeneralParameterValue[] params) throws IllegalArgumentException {
         if (params == null) {
             throw new IllegalArgumentException("No GeneralParameterValue given to read operation");
         }
 
         GeneralEnvelope reqEnvelope = null;
-        Rectangle dim = null;
+        GridEnvelope dim = null;
         OverviewPolicy overviewPolicy = null;
 
         // /////////////////////////////////////////////////////////////////////
@@ -671,6 +669,7 @@ public final class ArcSDEGridCoverage2DReaderJAI extends AbstractGridCoverage2DR
                 final GridGeometry2D gg = (GridGeometry2D) param.getValue();
                 reqEnvelope = new GeneralEnvelope((Envelope) gg.getEnvelope2D());
 
+                final GeneralEnvelope coverageEnvelope = getOriginalEnvelope();
                 CoordinateReferenceSystem nativeCrs = coverageEnvelope
                         .getCoordinateReferenceSystem();
                 CoordinateReferenceSystem requestCrs = reqEnvelope.getCoordinateReferenceSystem();
@@ -682,7 +681,7 @@ public final class ArcSDEGridCoverage2DReaderJAI extends AbstractGridCoverage2DR
                     reqEnvelope = new GeneralEnvelope(nativeCrsEnv);
                 }
 
-                dim = gg.getGridRange2D().getBounds();
+                dim = gg.getGridRange2D();
                 continue;
             }
             if (name.equals(AbstractGridFormat.OVERVIEW_POLICY.getName().toString())) {
@@ -691,19 +690,37 @@ public final class ArcSDEGridCoverage2DReaderJAI extends AbstractGridCoverage2DR
             }
         }
 
-        if (dim == null && reqEnvelope == null) {
-            throw new ParameterNotFoundException("Parameter is mandatory and shall provide "
-                    + "the extent and dimension to request", AbstractGridFormat.READ_GRIDGEOMETRY2D
-                    .getName().toString());
+        if (reqEnvelope == null && dim == null) {
+            reqEnvelope = getOriginalEnvelope();
+            dim = getOriginalGridRange();
         }
 
-        if (!reqEnvelope.intersects(coverageEnvelope, true)) {
+        if (reqEnvelope == null) {
+            reqEnvelope = getOriginalEnvelope();
+        }
+        if (dim == null) {
+            final GeneralEnvelope adjustedGRange;
+            try {
+                MathTransform gridToWorld = getOriginalGridToWorld(PixelInCell.CELL_CENTER);
+                MathTransform worldToGrid = gridToWorld.inverse();
+                adjustedGRange = CRS.transform(worldToGrid, reqEnvelope);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+            int xmin = (int) Math.floor(adjustedGRange.getMinimum(0));
+            int ymin = (int) Math.floor(adjustedGRange.getMinimum(1));
+            int xmax = (int) Math.ceil(adjustedGRange.getMaximum(0));
+            int ymax = (int) Math.ceil(adjustedGRange.getMaximum(1));
+            dim = new GridEnvelope2D(xmin, ymin, xmax - xmin, ymax - ymin);
+        }
+
+        if (!reqEnvelope.intersects(getOriginalEnvelope(), true)) {
             throw new IllegalArgumentException(
                     "The requested extend does not overlap the coverage extent: "
-                            + coverageEnvelope);
+                            + getOriginalEnvelope());
         }
 
-        if (dim.width <= 0 || dim.height <= 0) {
+        if (dim.getSpan(0) <= 0 || dim.getSpan(1) <= 0) {
             throw new IllegalArgumentException("The requested coverage dimension can't be null: "
                     + dim);
         }
@@ -713,11 +730,6 @@ public final class ArcSDEGridCoverage2DReaderJAI extends AbstractGridCoverage2DR
             LOGGER.finer("No overview policy requested, defaulting to " + overviewPolicy);
         }
         LOGGER.fine("Overview policy is " + overviewPolicy);
-
-        LOGGER.fine("Reading raster for " + dim.getWidth() + "x" + dim.getHeight()
-                + " requested dim and " + reqEnvelope.getMinimum(0) + ","
-                + reqEnvelope.getMaximum(0) + " - " + reqEnvelope.getMinimum(1)
-                + reqEnvelope.getMaximum(1) + " requested extent");
 
         ArcSDEGridCoverage2DReaderJAI.ReadParameters parsedParams = new ArcSDEGridCoverage2DReaderJAI.ReadParameters();
         parsedParams.requestedEnvelope = reqEnvelope;

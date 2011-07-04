@@ -71,7 +71,6 @@ import com.esri.sde.sdk.client.SeRaster;
  * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/plugin/arcsde/datastore/src/test/java/org/geotools/arcsde/raster/gce/ArcSDEGridCoverage2DReaderJAIOnlineTest.java $
  */
 @SuppressWarnings({ "deprecation", "nls" })
-@Ignore
 public class ArcSDEGridCoverage2DReaderJAIOnlineTest {
 
     private static final String RASTER_TEST_DEBUG_TO_DISK = "raster.test.debugToDisk";
@@ -616,6 +615,10 @@ public class ArcSDEGridCoverage2DReaderJAIOnlineTest {
     }
 
     private void writeToDisk(GridCoverage2D coverage, String fileName) throws Exception {
+        if (!DEBUG) {
+            LOGGER.fine("DEBUG == false, not writing image to disk");
+            return;
+        }
         Object destination;
         {
             String directory = System.getProperty("user.home");

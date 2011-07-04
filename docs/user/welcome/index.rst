@@ -7,9 +7,11 @@ Welcome to the Geotools Users Guide. This space serves as a reference to the Geo
 .. toctree::
    :maxdepth: 1
    
+   geotools
    license
    support
-   geotools
+   architecture
+   use
    api
    create
    factory

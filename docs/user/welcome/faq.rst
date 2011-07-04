@@ -59,6 +59,7 @@ by your application by only including the plug-ins you requrie.
 * raster formats
   
   * geotiff
+  * grassraster
   * gtopo30
   * image - world plus image files using common image formats such as JPEG, TIFF, GIF and PNG
   * imageio-ext-gdal (allows access to additional GDAL formats thanks to the ImageIO project)
@@ -83,13 +84,11 @@ Perhaps one of the unsupported modules or plugins may have what you need. These 
 are supplied by the community and do not yet meet the quality expected by the library:
 
 There are also some "unsupported" formats that are either popular or under development:
+
 * app-schema (under development) - allows the remapping and combining of one or more data sources into a provided application schema
-* directory (under development)
 * dfx
 * edigeo
 * geojson
-* grassraster (under development)
-* oracle-spatial
 * wfs
 
 The current authoritative list of plugins is of course the source code: 

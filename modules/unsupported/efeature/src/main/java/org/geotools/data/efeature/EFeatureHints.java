@@ -18,6 +18,7 @@ package org.geotools.data.efeature;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.emf.common.util.EList;
@@ -89,8 +90,12 @@ public class EFeatureHints extends Hints {
      */    
     public static final Key EFEATURE_SINGLETON_FEATURES = new Key(Boolean.class);
 
+    // ----------------------------------------------------- 
+    //  Constructors
+    // -----------------------------------------------------
+    
     /**
-     * Default {@link EFeature} Hints
+     * Default {@link EFeatureHints} constructor 
      */
     public EFeatureHints() {
         super();
@@ -107,8 +112,23 @@ public class EFeatureHints extends Hints {
         put(EFEATURE_DEFAULT_GEOMETRY_NAMES,new HashSet<String>(
                 Arrays.asList(EFeatureConstants.DEFAULT_GEOMETRY_NAME)));
         put(EFEATURE_VALUES_DETACHED,new Boolean(false));
-        put(EFEATURE_SINGLETON_FEATURES,new Boolean(true));
+        put(EFEATURE_SINGLETON_FEATURES,new Boolean(false));
+                
     }
+    
+    /**
+     * {@link EFeatureHints} copy constructor
+     */
+    public EFeatureHints(Map<?,?> eHints) {
+        this();
+        if(eHints!=null) putAll(eHints);
+    }
+    
+    
+    // ----------------------------------------------------- 
+    //  EFeatureHints methods
+    // -----------------------------------------------------
+
     
     public EAttribute eGetAttribute(EClass eClass, Key eHint) {
         Object eHints = get(eHint);
@@ -134,9 +154,17 @@ public class EFeatureHints extends Hints {
         return v instanceof Boolean && (Boolean)v;
     }
     
+    public Boolean eSetValuesDetached(boolean eValuesDetached) {
+        return (Boolean)put(EFEATURE_VALUES_DETACHED,eValuesDetached);
+    }
+        
     public boolean eSingletonFeatures() {
         Object v = get(EFEATURE_SINGLETON_FEATURES);        
         return v instanceof Boolean && (Boolean)v;
+    }
+
+    public Boolean eSetSingletonFeatures(boolean eSingletonFeatures) {
+        return (Boolean)put(EFEATURE_SINGLETON_FEATURES,eSingletonFeatures);
     }
     
     public Object replace(Hints hints, Key key) {

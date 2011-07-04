@@ -21,12 +21,12 @@ import org.geotools.data.efeature.EFeatureDataStoreFactory;
 import org.geotools.data.efeature.EFeatureFactoryFinder;
 import org.geotools.data.efeature.EFeatureHints;
 import org.geotools.data.efeature.EFeatureInfo;
-import org.geotools.data.efeature.EFeaturePackage;
 import org.geotools.data.efeature.EFeatureReader;
 import org.geotools.data.efeature.EFeatureUtils;
 import org.geotools.data.efeature.ESimpleFeature;
 import org.geotools.data.efeature.tests.EFeatureTestsPackage;
 import org.geotools.data.efeature.tests.impl.EFeatureTestsContextHelper;
+import org.geotools.factory.Hints;
 import org.opengis.filter.Filter;
 
 /**
@@ -38,7 +38,7 @@ public class EFeatureHintsTest extends AbstractResourceTest {
     
     private static boolean binary = false;
     
-    private int eFeatureCount = 6;
+    private int eFeatureCount = 12;
     private EFeatureTestData eData;
     
     private ParameterInfoTestData eParams;
@@ -51,6 +51,11 @@ public class EFeatureHintsTest extends AbstractResourceTest {
 
     @org.junit.Test
     public void testSingletonHint() {
+        testSingletonHint(false);
+        testSingletonHint(true);
+    }
+    
+    public void testSingletonHint(boolean eDetached) {
         EFeatureDataStore eStore;
         Map<String,Serializable> params;
         try {
@@ -63,42 +68,54 @@ public class EFeatureHintsTest extends AbstractResourceTest {
             //
             params = eParams.createParams(eResourceURI.toString(), null);
             eStore = eStoreFactory.createDataStore(params);
+            Hints hints = new Hints();
+            hints.put(EFeatureHints.EFEATURE_SINGLETON_FEATURES, false);
+            hints.put(EFeatureHints.EFEATURE_VALUES_DETACHED, false);
             //
             // Loop over types
             //
             for(String eType : new String[]{"efeature.EFeatureData","efeature.EFeatureCompatibleData"}) {
                 //
-                // Prepare EFeatureReader
+                // Prepare loop objects
                 //
                 Query query = new Query(eType,Filter.INCLUDE);
+                query.setHints(hints);
                 EFeatureReader eReader = eStore.getFeatureReader(query);
+                EFeatureHints eHints = eReader.eHints();
+                eHints.eSetValuesDetached(eDetached);
                 //
-                // Test unique ESimpleFeature mode
+                // -------------------------------------------------------
+                //  A.1) Test instance ESimpleFeature mode (attached)
+                // -------------------------------------------------------
                 //
                 query.getHints().put(EFeatureHints.EFEATURE_SINGLETON_FEATURES, false);
                 ESimpleFeature f1 = eReader.next();
                 ESimpleFeature f2 = eReader.next();
-                assertNotSame("Features are same instances ["+eType+",EFEATURE_SINGLETON_FEATURES==false]", f1,f2);
-                assertNotSame("EObjects are same instances ["+eType+",EFEATURE_SINGLETON_FEATURES==false]", f1.eObject(),f2.eObject());
-                assertNotSame("EFeatures are same instances ["+eType+",EFEATURE_SINGLETON_FEATURES==false]", f1.eFeature(),f2.eFeature());
+                assertNotSame("Features are same instances ["+eType+",detached:="+eDetached+",singleton:=false]", f1,f2);
+                assertNotSame("EObjects are same instances ["+eType+",detached:="+eDetached+",singleton:=false]", f1.eObject(),f2.eObject());
+                assertNotSame("EFeatures are same instances ["+eType+",detached:="+eDetached+",singleton:=false]", f1.eFeature(),f2.eFeature());
                 //
-                // Test unique ESimpleFeature mode
+                // -------------------------------------------------------
+                //  A.2) Test singleton ESimpleFeature mode
+                // -------------------------------------------------------
                 //
-                query.getHints().put(EFeatureHints.EFEATURE_SINGLETON_FEATURES, true);
+                eHints.eSetSingletonFeatures(true);
                 f1 = eReader.next();
                 f2 = eReader.next();
-                assertSame("Features are not same instances ["+eType+",EFEATURE_SINGLETON_FEATURES==true]", f1,f2);
-                assertSame("EObjects are not same instances ["+eType+",EFEATURE_SINGLETON_FEATURES==true]", f1.eObject(),f2.eObject());
-                assertSame("EFeatures are not same instances ["+eType+",EFEATURE_SINGLETON_FEATURES==true]", f1.eFeature(),f2.eFeature());
+                assertSame("Features are not same instances ["+eType+",detached:="+eDetached+",singleton:=true]", f1,f2);
+                assertSame("EObjects are not same instances ["+eType+",detached:="+eDetached+",singleton:=true]", f1.eObject(),f2.eObject());
+                assertSame("EFeatures are not same instances ["+eType+",detached:="+eDetached+",singleton:=true]", f1.eFeature(),f2.eFeature());
                 //
-                // Test unique ESimpleFeature mode again, this time ensuring hint is honored 
+                // -----------------------------------------------------------------------------
+                //  A.3) Test instance ESimpleFeature mode again, this time ensuring hint resets
+                // -----------------------------------------------------------------------------
                 //
-                query.getHints().put(EFeatureHints.EFEATURE_SINGLETON_FEATURES, false);
+                eHints.eSetSingletonFeatures(false);
                 f1 = eReader.next();
                 f2 = eReader.next();
-                assertNotSame("Features are same instances [transitive,"+eType+",EFEATURE_SINGLETON_FEATURES==false]", f1,f2);
-                assertNotSame("EObjects are same instances [transitive,"+eType+",EFEATURE_SINGLETON_FEATURES==false]", f1.eObject(),f2.eObject());
-                assertNotSame("EFeatures are same instances [transitive,"+eType+",EFEATURE_SINGLETON_FEATURES==false]", f1.eFeature(),f2.eFeature());
+                assertNotSame("Features are same instances [transitive,"+eType+",detached:="+eDetached+",singleton:=false]", f1,f2);
+                assertNotSame("EObjects are same instances [transitive,"+eType+",detached:="+eDetached+",singleton:=false]", f1.eObject(),f2.eObject());
+                assertNotSame("EFeatures are same instances [transitive,"+eType+",detached:="+eDetached+",singleton:=false]", f1.eFeature(),f2.eFeature());
                 //
                 // Dispose data store
                 //
@@ -108,59 +125,87 @@ public class EFeatureHintsTest extends AbstractResourceTest {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             fail(e);
         }
-    }
+    }    
     
     @org.junit.Test
     public void testDetachedHint() {
+        testDetachedHint(true);
+        testDetachedHint(false);
+    }
+    
+    public void testDetachedHint(boolean eSingleton) {
         EFeatureDataStore eStore;
         Map<String,Serializable> params;
         try {
             //
-            // Measure test duration
-            //
-            dTime();
-            //
-            // Prepare store
+            // Prepare common objects
             //
             params = eParams.createParams(eResourceURI.toString(), null);
             eStore = eStoreFactory.createDataStore(params);
+            Hints hints = new Hints();
+            hints.put(EFeatureHints.EFEATURE_SINGLETON_FEATURES, false);
+            hints.put(EFeatureHints.EFEATURE_VALUES_DETACHED, false);
             //
             // Loop over types
             //
             for(String eType : new String[]{"efeature.EFeatureData","efeature.EFeatureCompatibleData"}) {
                 //
-                // Prepare EFeatureReader
+                // Prepare loop objects
                 //
                 Query query = new Query(eType,Filter.INCLUDE);
+                query.setHints(hints);
                 EFeatureReader eReader = eStore.getFeatureReader(query);
-                //
-                // Test ESimpleFeature values attached mode
-                //
-                query.getHints().put(EFeatureHints.EFEATURE_VALUES_DETACHED, false);
-                //
-                // Collect test information. 
-                //
-                ESimpleFeature f1 = eReader.next();
-                EFeature eFeature = f1.eFeature();
-                EFeatureInfo eStructure = eFeature.getStructure();
-                List<Object> eValues = f1.getAttributes();
-                //
-                // Assert that ESimpleFeature and EObject contains the same Feature values
-                //
-                assertTrue("Features values are not same ["+eType+",EFEATURE_VALUES_DETACHED==false]", 
-                        eValues.equals(EFeatureUtils.eGetFeatureValues(eStructure, eFeature, Transaction.AUTO_COMMIT)));
-                //
-                // Change value and assert again, this time expecting a difference
-                //
+                EFeatureHints eHints = eReader.eHints();
+                eHints.eSetSingletonFeatures(eSingleton);
                 EAttribute eAttr = ("efeature.EFeatureData".equals(eType) ? 
                         EFeatureTestsPackage.eINSTANCE.getEFeatureData_Attribute() :
                             EFeatureTestsPackage.eINSTANCE.getEFeatureCompatibleData_Attribute());
-                eFeature.eSet(eAttr, 10L);
-                if("efeature.EFeatureCompatibleData".equals(eType)) {
-                    Object eData = eFeature.eGet(EFeaturePackage.eINSTANCE.getEFeature_Data());
-                }
-                eValues = f1.getAttributes();
-                assertTrue("Features values are same ["+eType+",EFEATURE_VALUES_DETACHED==false]", 
+                //
+                // --------------------------------------------------------------------
+                //  1) Test attached ESimpleFeature values mode (establishes base line)
+                // --------------------------------------------------------------------
+                //
+                ESimpleFeature feature = eReader.next();
+                EFeature eFeature = feature.eFeature();
+                EFeatureInfo eStructure = eFeature.getStructure();
+                List<Object> eValues = feature.getAttributes();
+                assertTrue("Feature and EObject values not same [1,"+eType+",singleton:="+eSingleton+",detached:=false]", 
+                        eValues.equals(EFeatureUtils.eGetFeatureValues(eStructure, eFeature, Transaction.AUTO_COMMIT)));
+                //
+                // --------------------------------------------------------------------
+                //  2) Test that feature and EObject both change values
+                // --------------------------------------------------------------------
+                //
+                Long v = 1L*(int)(Math.random()*10000);
+                eFeature.eSet(eAttr, v);
+                eValues = feature.getAttributes();
+                assertTrue("Feature and EObject values not same [2,"+eType+",singleton:="+eSingleton+",detached:=false]", 
+                        eValues.equals(EFeatureUtils.eGetFeatureValues(eStructure, eFeature, Transaction.AUTO_COMMIT)));
+                //
+                // ---------------------------------------------------------------------
+                //  3) Test detached ESimpleFeature values mode (establishes base line)
+                // ---------------------------------------------------------------------
+                //
+                eHints.eSetValuesDetached(true);
+                feature = eReader.next();
+                System.out.println(feature);
+                eFeature = feature.eFeature();
+                System.out.println(eFeature);
+                String eID = eFeature.getID();
+                System.out.println(eID);
+                eStructure = eFeature.getStructure();
+                eValues = feature.getAttributes();
+                assertTrue("Feature and EObject values not same [3,"+eType+",singleton:="+eSingleton+",detached:=true]", 
+                        eValues.equals(EFeatureUtils.eGetFeatureValues(eStructure, eFeature, Transaction.AUTO_COMMIT)));
+                //
+                // --------------------------------------------------------------------
+                //  4) Test that ESimpleValues values does not change
+                // --------------------------------------------------------------------
+                //
+                v = 1L*(int)(Math.random()*10000);
+                eFeature.eSet(eAttr, v);
+                eValues = feature.getAttributes();
+                assertFalse("Feature and EObject values same [4,"+eType+",singleton:="+eSingleton+",detached:=true]", 
                         eValues.equals(EFeatureUtils.eGetFeatureValues(eStructure, eFeature, Transaction.AUTO_COMMIT)));
                 //
                 // Dispose data store

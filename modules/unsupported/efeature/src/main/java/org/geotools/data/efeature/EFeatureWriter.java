@@ -28,7 +28,6 @@ import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureWriter;
 import org.opengis.feature.IllegalAttributeException;
-import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
@@ -74,7 +73,7 @@ public class EFeatureWriter implements SimpleFeatureWriter {
     }
 
     @Override
-    public SimpleFeature next() throws IOException {
+    public ESimpleFeature next() throws IOException {
         if (eReader == null) {
             throw new IOException("Writer has been closed");
         }
@@ -109,7 +108,7 @@ public class EFeatureWriter implements SimpleFeatureWriter {
                 //
                 // Finished
                 //
-                return eGetData(eFeature);
+                return (ESimpleFeature)eFeature.getData(eReader.eTx);
             }
         } catch (IllegalAttributeException e) {
             String message = "Problem creating feature "
@@ -183,11 +182,7 @@ public class EFeatureWriter implements SimpleFeatureWriter {
     protected EFeature eNewInstance() {
         EFeatureInfo eStructure = eReader.eStructure;
         EObject eObject = eStructure.eNewInstance();        
-        return EFeatureReader.eAdapt(eStructure, eObject,eReader.hints);
-    }
-    
-    protected SimpleFeature eGetData(EFeature eFeature) {
-        return EFeatureReader.eData(eFeature, eReader.hints);
+        return EFeatureReader.eAdapt(eStructure, eObject,eReader.eHints);
     }
     
     protected void eSetValues(EObject eObject, List<Object> eValues) {

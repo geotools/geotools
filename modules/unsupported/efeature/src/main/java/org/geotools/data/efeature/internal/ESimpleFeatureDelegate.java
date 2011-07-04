@@ -24,6 +24,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.geotools.data.Transaction;
 import org.geotools.data.efeature.EFeature;
+import org.geotools.data.efeature.EFeatureHints;
 import org.geotools.data.efeature.EFeatureInfo;
 import org.geotools.data.efeature.EFeatureUtils;
 import org.geotools.data.efeature.ESimpleFeature;
@@ -54,6 +55,8 @@ public class ESimpleFeatureDelegate implements ESimpleFeature {
     private EObject eObject;
     private SimpleFeature feature;
     private EFeatureInfo eStructure;
+    private EFeatureHints eHints;
+
 
     // ----------------------------------------------------- 
     //  Constructors
@@ -63,10 +66,11 @@ public class ESimpleFeatureDelegate implements ESimpleFeature {
      * This constructor creates a {@link ESimpleFeature} instance that
      * delegates to given objects.
      */
-    public ESimpleFeatureDelegate(EFeatureInfo eStructure, EObject eObject, SimpleFeature feature) {
+    public ESimpleFeatureDelegate(EFeatureInfo eStructure, EObject eObject, SimpleFeature feature, EFeatureHints eHints) {
         this.feature = feature;
         this.eObject = eObject;
         this.eStructure = eStructure;
+        this.eHints = eHints == null ? new EFeatureHints(eStructure.eHints()) : eHints;
     }
 
     // ----------------------------------------------------- 
@@ -89,17 +93,17 @@ public class ESimpleFeatureDelegate implements ESimpleFeature {
         if(eObject instanceof EFeature) {
             return (EFeature)eObject();
         }
-        return new EFeatureDelegate(eStructure, (InternalEObject)eObject, false);
+        return new EFeatureDelegate(eStructure, (InternalEObject)eObject, false, eHints);
     }    
 
     @Override
     public boolean isDetached() {
-        return eStructure.eHints().eValuesDetached();
+        return eHints.eValuesDetached();
     }
 
     @Override
     public boolean isSingleton() {
-        return eStructure.eHints().eSingletonFeatures();
+        return eHints.eSingletonFeatures();
     }
     
     @Override

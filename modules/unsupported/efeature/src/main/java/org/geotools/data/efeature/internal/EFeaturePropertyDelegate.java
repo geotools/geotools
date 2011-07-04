@@ -47,9 +47,12 @@ public abstract class EFeaturePropertyDelegate<V, T extends Property, S extends 
      * The actual value class.
      */
     protected Class<V> eValueType;
-
-    protected WeakReference<EStructureInfo<?>> eStructure;
     
+    /**
+     * Cached {@link EFeatureAttributeInfo}
+     */
+    protected EFeatureAttributeInfo eStructure;
+
     /**
      * The id of the {@link EStructuralFeature structural feature} 
      * of the {@link #eObject implementation} which contains 
@@ -63,9 +66,9 @@ public abstract class EFeaturePropertyDelegate<V, T extends Property, S extends 
     protected V eValue;
     
     /**
-     * Transaction used when not explicitly specified by client
+     * Flag indication that detached value should be updated
      */
-    protected Transaction eTx;
+    protected Boolean eInitDetached = true;
     
     // ----------------------------------------------------- 
     //  Constructors
@@ -88,11 +91,11 @@ public abstract class EFeaturePropertyDelegate<V, T extends Property, S extends 
         //
         // Get EFeatureAttribute structure
         //
-        EFeatureAttributeInfo eStructure = eInternal.eStructure.eGetAttributeInfo(eName, true);
+        this.eStructure = eInternal.eStructure.eGetAttributeInfo(eName, true);
         //
         // EAttribute not found?
         //
-        if (eStructure == null) {
+        if (this.eStructure == null) {
             throw new IllegalArgumentException("EStructuralFeature '" + eName + "'" + " not found");
         }
         //
@@ -113,7 +116,6 @@ public abstract class EFeaturePropertyDelegate<V, T extends Property, S extends 
         this.eDataType = dataType;
         this.eValueType = valueType;
         this.eInternal = new WeakReference<EFeatureInternal>(eInternal);
-        this.eStructure = new WeakReference<EStructureInfo<?>>(eStructure);
         this.eStructuralFeature = new WeakReference<EStructuralFeature>(eAttribute);
         
     }
@@ -135,7 +137,6 @@ public abstract class EFeaturePropertyDelegate<V, T extends Property, S extends 
      */
     public final boolean isDisposed() {
         return eInternal.get() == null 
-            || eStructure.get() == null 
             || eStructuralFeature.get() == null;
     }
 
@@ -189,7 +190,7 @@ public abstract class EFeaturePropertyDelegate<V, T extends Property, S extends 
     
     @Override
     public boolean isDetached() {
-        return eStructure().eHints().eValuesDetached();
+        return eInternal().eHints.eValuesDetached();
     }
 
     /**
@@ -197,7 +198,35 @@ public abstract class EFeaturePropertyDelegate<V, T extends Property, S extends 
      */
     @Override
     public final V getValue() {
-        return isDetached() ? eValue : eValueType.cast(eObject().eGet(eStructuralFeature()));
+        //
+        // Detached?
+        //
+        if(isDetached()) {
+            //
+            // Initialize detached value?
+            //
+            if(eInitDetached) {
+                return read();
+            } 
+            //
+            // Finished
+            //    
+            return eValue;
+            
+        } else {
+            //
+            // Release value
+            //
+            eValue = null;
+            //
+            // Set trigger for detached initialization
+            //
+            eInitDetached = true;
+            //
+            // Value is attached, read it from structure
+            //
+            return eValueType.cast(eObject().eGet(eStructuralFeature()));
+        }
     }
 
     /**
@@ -219,16 +248,26 @@ public abstract class EFeaturePropertyDelegate<V, T extends Property, S extends 
     
     @Override
     public V read() throws IllegalStateException {
-        return read(eTx);
+        return read(eInternal().eTx);
     }
 
     @Override
     public V read(Transaction transaction) throws IllegalStateException {
         //
-        // TODO Implement read lock check
+        // Check if detached 
         //
         if(isDetached()) {
-            eValueType.cast(eObject().eGet(eStructuralFeature()));
+            //
+            // TODO Implement read lock check
+            //
+            //
+            // Read value from object only when detached
+            //
+            eValue = eValueType.cast(eObject().eGet(eStructuralFeature()));
+            //
+            // Flag that detached initialization is completed
+            //
+            eInitDetached = false;
         }
         //
         // Finished
@@ -238,7 +277,7 @@ public abstract class EFeaturePropertyDelegate<V, T extends Property, S extends 
 
     @Override
     public V write() throws IllegalStateException {
-        return write(eTx);
+        return write(eInternal().eTx);
     }
 
     @Override
@@ -280,7 +319,7 @@ public abstract class EFeaturePropertyDelegate<V, T extends Property, S extends 
 
     @Override
     public EStructureInfo<?> getStructure() {
-        return eStructure();
+        return eStructure;
     }
 
     @Override
@@ -339,14 +378,8 @@ public abstract class EFeaturePropertyDelegate<V, T extends Property, S extends 
     //  EFeaturePropertyDelegate helper methods
     // -----------------------------------------------------
 
-    /**
-     * @throws IllegalStateException If delegate is {@link #isDisposed() disposed}.
-     */
-    protected final EStructureInfo<?> eStructure() {
-        if (isDisposed()) {
-            throw new IllegalStateException("EFeaturePropertyDelegate is disposed");
-        }
-        return eStructure.get();
+    protected final void eSetInitDetachedValues() {
+        eInitDetached=true;
     }
     
     /**

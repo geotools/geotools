@@ -1,8 +1,5 @@
 package org.geotools.data.efeature;
 
-import static org.geotools.data.efeature.EFeatureHints.EFEATURE_VALUES_DETACHED;
-import static org.geotools.data.efeature.EFeatureHints.EFEATURE_SINGLETON_FEATURES;
-
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.NoSuchElementException;
@@ -14,10 +11,10 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
+import org.geotools.data.efeature.impl.EFeatureImpl;
 import org.geotools.data.efeature.internal.EFeatureDelegate;
 import org.geotools.data.efeature.internal.ESimpleFeatureDelegate;
 import org.geotools.data.simple.SimpleFeatureReader;
-import org.geotools.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
@@ -61,7 +58,7 @@ public class EFeatureReader implements SimpleFeatureReader {
     /**
      * Cached Query hints
      */
-    protected Hints hints;
+    protected EFeatureHints eHints;
     
     // ----------------------------------------------------- 
     //  Constructors
@@ -73,10 +70,10 @@ public class EFeatureReader implements SimpleFeatureReader {
      * @param eStore - {@link EFeatureDataStore} instance containing {@link EFeature} resource
      *        information
      * @param eType - {@link SimpleFeatureType} name.
-     *        <p>
-     *        {@link SimpleFeatureType} names have the following
+     * <p>
+     * {@link SimpleFeatureType} names have the following format:
      * 
-     *        <pre>
+     * <pre>
      * eName=&lt;eFolder&gt;.&lt;eReference&gt;
      * 
      * where
@@ -88,11 +85,7 @@ public class EFeatureReader implements SimpleFeatureReader {
      * @throws IOException
      */
     protected EFeatureReader(EFeatureDataStore eStore, String eType, Query query) throws IOException {
-        this.eStore = new WeakReference<EFeatureDataStore>(eStore);
-        this.eStructure = eStore.eStructure().eGetFeatureInfo(eType);
-        this.eReader = new EFeatureAttributeReader(eStore, eType, query);
-        this.eTx = Transaction.AUTO_COMMIT;
-        this.hints = query.getHints();
+        this(eStore, eType, query, Transaction.AUTO_COMMIT);
     }
     
     /**
@@ -101,10 +94,10 @@ public class EFeatureReader implements SimpleFeatureReader {
      * @param eStore - {@link EFeatureDataStore} instance containing {@link EFeature} resource
      *        information
      * @param eType - {@link SimpleFeatureType} name.
-     *        <p>
-     *        {@link SimpleFeatureType} names have the following
+     * <p>
+     * {@link SimpleFeatureType} names have the following format:
      * 
-     *        <pre>
+     * <pre>
      * eName=&lt;eFolder&gt;.&lt;eReference&gt;
      * 
      * where
@@ -116,16 +109,34 @@ public class EFeatureReader implements SimpleFeatureReader {
      * @throws IOException
      */
     protected EFeatureReader(EFeatureDataStore eStore, String eType, Query query, Transaction eTx) throws IOException {
+        //
+        // Cache references
+        //
         this.eStore = new WeakReference<EFeatureDataStore>(eStore);
         this.eStructure = eStore.eStructure().eGetFeatureInfo(eType);
         this.eReader = new EFeatureAttributeReader(eStore, eType, query);
         this.eTx = eTx;
-        this.hints = query.getHints();
+        //
+        // Copy query hints
+        //
+        if(query.getHints() instanceof EFeatureHints) {
+            this.eHints = new EFeatureHints(query.getHints());            
+        }else {
+            this.eHints = new EFeatureHints(this.eStructure.eHints);            
+            this.eHints.add(query.getHints());
+        }
     }
     
     // ----------------------------------------------------- 
     //  EFeatureReader implementation
     // -----------------------------------------------------
+    
+    /**
+     * Get {@link EFeatureHints}.
+     */
+    public EFeatureHints eHints() {
+        return eHints;
+    }
     
     public void reset() throws IOException {
         this.eReader.reset();
@@ -184,11 +195,11 @@ public class EFeatureReader implements SimpleFeatureReader {
             //
             // Adapt given object to EFeature structure
             //
-            eObject = eAdapt(eStructure,eObject,hints);
+            EFeature eFeature = eAdapt(eStructure, eObject, eHints);
             //
             // Get feature from EFeature
             //
-            feature = eData((EFeature)eObject,hints);
+            feature = eFeature.getData(eTx);
             //
             // Implements ESimpleFeature?
             //
@@ -211,7 +222,7 @@ public class EFeatureReader implements SimpleFeatureReader {
                 //
                 // Forward ESimpleFeature delegate
                 //
-                return new ESimpleFeatureDelegate(eStructure, eObject,(SimpleFeature)feature);
+                return new ESimpleFeatureDelegate(eStructure, eFeature, (SimpleFeature)feature, eHints);
             }
 
         } finally {
@@ -226,67 +237,34 @@ public class EFeatureReader implements SimpleFeatureReader {
         }        
     }
         
-    protected static EFeature eAdapt(EFeatureInfo eStructure, EObject eObject, Hints hints) {
+    protected static EFeature eAdapt(EFeatureInfo eStructure, EObject eObject, EFeatureHints eHints) {
         //
-        // Get EFeatureHints for given structure 
+        // Adapt directly? 
         //
-        EFeatureHints eHints = eStructure.eHints();
-        //
-        // Override current hints 
-        //
-        Object eDetatchedValues = eHints.replace(hints,EFEATURE_VALUES_DETACHED);
-        Object eSingletonFeatures = eHints.replace(hints,EFEATURE_SINGLETON_FEATURES);
-        try {
+        if(eObject instanceof EFeature) {
             //
-            // Adapt directly? 
+            // Replace
             //
-            if(eObject instanceof EFeature) {
-                ((EFeature)eObject).setStructure(eStructure);
-                return (EFeature)eObject;
+            if(eObject instanceof EFeatureImpl) {
+                ((EFeatureImpl)eObject).eInternal().eReplace(eStructure,(EFeature)eObject,eHints, true);
             }
             //
-            // Create new delegate and return it
+            // TODO: Do we need this? Is never called in current implementation...
             //
-            return EFeatureDelegate.create(eStructure, (InternalEObject)eObject, true);
-            
-        } finally {
-            //
-            // Restore old hint states 
-            //
-            eHints.restore(EFEATURE_VALUES_DETACHED,eDetatchedValues);
-            eHints.restore(EFEATURE_SINGLETON_FEATURES,eSingletonFeatures);
-        }
-    }
-    
-    protected static ESimpleFeature eData(EFeature eFeature, Hints hints) {
-        //
-        // Get EFeatureHints for given structure 
-        //
-        EFeatureHints eHints = eFeature.getStructure().eHints();
-        //
-        // Override current hints 
-        //
-        Object eDetatchedValues = eHints.replace(hints,EFEATURE_VALUES_DETACHED);
-        Object eSingletonFeatures = eHints.replace(hints,EFEATURE_SINGLETON_FEATURES);
-        try {
-            //
-            // Get ESimpleFeature instance
-            //
-            Feature data = eFeature.getData();
+            else if(eObject instanceof EFeatureDelegate) {
+                ((EFeatureDelegate)eObject).eInternal().eReplace(eStructure,(EFeature)eObject,eHints, true);
+            }
             //
             // Finished
             //
-            return (ESimpleFeature)data;
-            
-        } finally {
-            //
-            // Restore old hint states 
-            //
-            eHints.restore(EFEATURE_VALUES_DETACHED,eDetatchedValues);
-            eHints.restore(EFEATURE_SINGLETON_FEATURES,eSingletonFeatures);
+            return (EFeature)eObject;
         }
+        //
+        // Create new delegate and return it
+        //
+        return EFeatureDelegate.create(eStructure, (InternalEObject)eObject, true, eHints);
     }
-
+    
     /**
      * Get current {@link EFeature} id.
      * 

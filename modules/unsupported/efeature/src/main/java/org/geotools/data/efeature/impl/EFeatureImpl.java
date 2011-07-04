@@ -222,7 +222,7 @@ public abstract class EFeatureImpl extends EObjectImpl implements EFeature {
      */
     @Override
     public Feature getData(Transaction transaction) {
-        return eInternal.getData(transaction, true);
+        return eInternal.getData(transaction);
     }
     
     /**

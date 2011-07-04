@@ -119,15 +119,16 @@ public class EFeatureDelegate implements EFeature, InternalEObject {
      * @param eTrusted - if <code>true</code>, the constructor trusts that 'eStructure'
      * is a valid structure for 'eImpl'. Use this when option to optimize construction
      * when 'eImpl' is already validated against given 'eStructure'.  
+     * @param eHints TODO
      * @throws IllegalArgumentException If the {@link EFeatureInfo structure} of this feature
      *         {@link EFeatureInfo#validate(EPackage, EClass) fails to validate}.
      */
-    public EFeatureDelegate(EFeatureInfo eStructure, InternalEObject eImpl, boolean eTrusted)
-            throws IllegalArgumentException {
+    public EFeatureDelegate(EFeatureInfo eStructure, InternalEObject eImpl, 
+            boolean eTrusted, EFeatureHints eHints) throws IllegalArgumentException {
         //
         // Forward
         //
-        eReplace(eStructure, eImpl, eTrusted);
+        eReplace(eStructure, eImpl, eTrusted, eHints);
     }
 
     // ----------------------------------------------------- 
@@ -179,12 +180,12 @@ public class EFeatureDelegate implements EFeature, InternalEObject {
 
     @Override
     public ESimpleFeature getData() {
-        return eInternal().getData(Transaction.AUTO_COMMIT, true);
+        return eInternal().getData(Transaction.AUTO_COMMIT);
     }
 
     @Override
     public ESimpleFeature getData(Transaction transaction) {
-        return eInternal().getData(transaction, true);
+        return eInternal().getData(transaction);
     }
     
     @Override
@@ -644,7 +645,7 @@ public class EFeatureDelegate implements EFeature, InternalEObject {
      * against given structure
      */
     public static final EFeatureDelegate create(EFeatureInfo eStructure, InternalEObject eImpl, boolean eTrusted) {
-        return create(eStructure, eImpl, eTrusted, eStructure.eHints().eSingletonFeatures());
+        return create(eStructure, eImpl, eTrusted, eStructure.eHints());
     }
     
     /**
@@ -653,12 +654,13 @@ public class EFeatureDelegate implements EFeature, InternalEObject {
      * @param eStructure - EFeature {@link EFeatureInfo structure}.
      * @param eImpl - new {@link InternalEObject} implementation which this delegates to 
      * @param eTrusted - if <code>true</code>, the method will not validate structure against implementation.
-     * @param eSingletonFeatures - if <code>true</code>, {@link ThreadLocal thread local} singleton instance is returned
+     * @param eHints - if {@link EFeatureHints#EFEATURE_SINGLETON_FEATURES} is <code>true</code>, 
+     * a {@link ThreadLocal thread local} singleton instance is returned
      * @throws IllegalArgumentException If implementation does not validate 
      * against given structure
      */
     public static final EFeatureDelegate create(EFeatureInfo eStructure, 
-            InternalEObject eImpl, boolean eTrusted, boolean eSingletonFeatures) {
+            InternalEObject eImpl, boolean eTrusted, EFeatureHints eHints) {
         //
         // Initialize
         //
@@ -666,7 +668,7 @@ public class EFeatureDelegate implements EFeature, InternalEObject {
         //
         // Is EFeatureDelegate a singleton?
         //
-        if(eSingletonFeatures) {
+        if(eHints.eSingletonFeatures()) {
             //
             // Get singleton instance
             //
@@ -678,7 +680,7 @@ public class EFeatureDelegate implements EFeature, InternalEObject {
                 //
                 // Create new delegate
                 //
-                eDelegate = EFeatureDelegate.create(eStructure, (InternalEObject)eImpl, eTrusted, false);
+                eDelegate = new EFeatureDelegate(eStructure, eImpl, eTrusted, eHints);
                 //
                 // Update thread local variable
                 //
@@ -695,11 +697,7 @@ public class EFeatureDelegate implements EFeature, InternalEObject {
                 //
                 // Replace structure
                 //
-                eDelegate.setStructure(eStructure);
-                //
-                // Update thread local variable
-                //
-                eSingleton.set(eDelegate);
+                eDelegate.eReplace(eStructure, eDelegate.eImpl, false, eHints);
             } 
             //
             // Replace implementation of singleton delegate
@@ -708,14 +706,27 @@ public class EFeatureDelegate implements EFeature, InternalEObject {
                 //
                 // Replace implementation
                 //
-                eDelegate.eReplace(eStructure, (InternalEObject)eImpl, eTrusted);
+                eDelegate.eReplace(eStructure, (InternalEObject)eImpl, eTrusted, eHints);
             }
         } 
+        //
+        // Adapt directly? (returns same current delegate) 
+        //
+        else if(eImpl instanceof EFeatureDelegate) {
+            //
+            // Cast to EFeatureDelegate
+            //
+            eDelegate = (EFeatureDelegate)eImpl;
+            //
+            // Replace structure
+            //
+            eDelegate.eReplace(eStructure, eDelegate.eImpl, false, eHints);
+        }
         //
         // Construct new instance
         //
         else {        
-            eDelegate = new EFeatureDelegate(eStructure, eImpl, eTrusted);
+            eDelegate = new EFeatureDelegate(eStructure, eImpl, eTrusted, eHints);
         }        
         //
         // Get current ID if set
@@ -750,16 +761,40 @@ public class EFeatureDelegate implements EFeature, InternalEObject {
     // -----------------------------------------------------
     
     /**
+     * Replace current hints
+     * <p>
+     * @param eHints - {@link EFeatureHints} instance. If <code>null</code>,
+     * {@link EFeatureInfo#eHints() structure hints} is used instead.
+     */
+    protected void eReplace(EFeatureHints eHints) {
+        //
+        // Verify state
+        //
+        if(eInternal==null) {
+            throw new IllegalStateException("EFeatureDelegate is not created");
+        }
+        //
+        // Ensure hints exists
+        //
+        eHints = (eHints==null ? new EFeatureHints(eInternal.eStructure.eHints()) : eHints);        
+        //
+        // Replace hints
+        //
+        this.eInternal.eReplace(eHints, true);     
+    }
+    /**
      * Replace current delegation
      * <p>
      * @param eStructure - EFeature {@link EFeatureInfo structure}.
      * @param eImpl - new {@link EObject} implementation which this delegates to 
      * @param eTrusted - if <code>true</code>, the method will not validate 
      * structure against implementation.
+     * @param eHints - {@link EFeatureHints} instance. If <code>null</code>,
+     * {@link EFeatureInfo#eHints() structure hints} is used instead.
      * @throws IllegalArgumentException If implementation does not validate 
      * against given structure
      */
-    protected void eReplace(EFeatureInfo eStructure, InternalEObject eImpl, boolean eTrusted) {
+    protected void eReplace(EFeatureInfo eStructure, InternalEObject eImpl, boolean eTrusted, EFeatureHints eHints) {
         //
         // Validate structure?
         //
@@ -772,12 +807,16 @@ public class EFeatureDelegate implements EFeature, InternalEObject {
             }
         }
         //
+        // Ensure hints exists
+        //
+        eHints = (eHints==null ? new EFeatureHints(eStructure.eHints()) : eHints);
+        //
         // Is known implementation?
         //
         if(eImpl instanceof EFeatureImpl) {
             //
             // --------------------------------------------
-            //  This is a copy operation.
+            //  This is a replace (copy) operation.
             // --------------------------------------------
             //
             // Cache strong reference to implementation, 
@@ -790,14 +829,14 @@ public class EFeatureDelegate implements EFeature, InternalEObject {
             //                        
             this.eInternal = ((EFeatureImpl)eImpl).eInternal();            
             //
-            // Update structure
+            // Replace implementation
             //
-            setStructure(eStructure);        
+            this.eInternal.eReplace(eStructure, this, eHints, true);     
         } 
         else if(eImpl instanceof EFeatureDelegate) {
             //
             // --------------------------------------------
-            //  This is a copy operation.
+            //  This is a replace (copy) operation.
             // --------------------------------------------
             //
             // Cache strong reference to EObject implementation, 
@@ -808,34 +847,37 @@ public class EFeatureDelegate implements EFeature, InternalEObject {
             //
             // Get internal EFeature implementation from delegate
             //                        
-            this.eInternal = ((EFeatureDelegate)eImpl).eInternal();            
+            this.eInternal = ((EFeatureDelegate)eImpl).eInternal();
             //
-            // Update structure
+            // Replace implementation
             //
-            setStructure(eStructure);        
+            this.eInternal.eReplace(eStructure, this, eHints, true);
         } 
         else {
             //
             // Cache strong reference to EObject implementation, 
             // ensuring that it is not garbage collected until 
-            // this delegate is.
+            // this delegate is 
+            //
+            // (EFeatureInternal only has a weak reference).
             //            
             this.eImpl = eImpl;
             //
             // --------------------------------------------
-            //  This is the replace operation.
+            //  This is the replace (or create) operation.
             // --------------------------------------------
             //
             if(this.eInternal==null) {
                 //
                 // Create internal implementation
                 //
-                this.eInternal = new EFeatureInternal(eStructure,this);
-            } else {
+                this.eInternal = new EFeatureInternal(eStructure, this, eHints);
+            } 
+            else {
                 //
-                // Update structure
+                // Replace implementation
                 //
-                setStructure(eStructure);        
+                this.eInternal.eReplace(eStructure, this, eHints, true);
             }                
         }
     }

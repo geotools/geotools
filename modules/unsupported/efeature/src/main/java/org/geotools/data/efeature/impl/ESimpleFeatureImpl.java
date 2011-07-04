@@ -115,7 +115,7 @@ public class ESimpleFeatureImpl extends SimpleFeatureImpl implements ESimpleFeat
         if(eObject instanceof EFeature) {
             return (EFeature)eObject();
         }
-        return new EFeatureDelegate(eStructure, (InternalEObject)eObject, true);
+        return new EFeatureDelegate(eStructure, (InternalEObject)eObject, true, null);
     }   
     
     @Override

@@ -135,7 +135,7 @@ public final class ESimpleFeatureAdapter {
             //
             // Finished
             //
-            return (eData = eInternal.getData(transaction, true));
+            return (eData = eInternal.getData(transaction));
 
         } finally {
             //

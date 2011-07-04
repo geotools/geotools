@@ -486,7 +486,10 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements
 
         final Collection<GridCoverage2D> response = rasterManager.read(params);
         if (response.isEmpty()) {
-            throw new DataSourceException("Unable to create a coverage for this request ");
+            if (LOGGER.isLoggable(Level.FINE)){
+                LOGGER.fine("The response is empty. ==> returning a null GridCoverage");
+            }
+            return null;
         } else {
             return response.iterator().next();
         }

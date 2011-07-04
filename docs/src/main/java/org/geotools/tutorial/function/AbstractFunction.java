@@ -1,6 +1,5 @@
 package org.geotools.tutorial.function;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 

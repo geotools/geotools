@@ -236,7 +236,7 @@ implementation efforts from. When making your own Factories this is a good examp
 
    This is not part of GeoTools (yet) - it just shows the approach used:
 
-   .. literalinclude:: /../src/main/java/org/geotools/tutorial/function/ExampleFinder.java
+   .. literalinclude:: /../src/main/java/org/geotools/tutorial/function/AbstractFunction.java
       :language: java
 
 2. Here is a sample use.

@@ -5,13 +5,10 @@ GeoTools is an open source (LGPL) Java code library which provides standards com
 the manipulation of geospatial data, for example to implement Geographic Information Systems.
 The GeoTools library data structures are based on Open Geospatial Consortium (OGC) specifications.
 
-Geotools is used by a number of projects including web services, command line tools and desktop
-applications.
-
 .. image:: /images/geotools.png
 
-The GeoTools library forms a software "stack" allowing you to add just enough GeoTools into your
-next project to get the job done.
+GeoTools is used by a number of projects including web services, command line tools and desktop
+applications.
 
 Core Features
 -------------
@@ -73,7 +70,7 @@ Supported Formats
 
 * Vector formats and data access
   
-   app-schema, arcsde, csv, dxf, edigeo, excel, geojson, org, property, shapefile, wfs
+  app-schema, arcsde, csv, dxf, edigeo, excel, geojson, org, property, shapefile, wfs
 
 * XML Bindings
 

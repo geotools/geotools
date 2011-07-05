@@ -135,7 +135,7 @@ class RasterManager {
             // basic initialization
             //
             coverageGeographicBBox = ImageUtilities.getWGS84ReferencedEnvelope(coverageEnvelope);
-            coverageGeographicCRS2D = coverageGeographicBBox==null?coverageGeographicBBox.getCoordinateReferenceSystem():null;
+            coverageGeographicCRS2D = coverageGeographicBBox!=null?coverageGeographicBBox.getCoordinateReferenceSystem():null;
 
             //
             // Get the original envelope 2d and its spatial reference system

@@ -556,7 +556,7 @@ public class MapContent {
      * @throws IOException
      *             if an IOException occurs while accessing the FeatureSource bounds
      */
-    ReferencedEnvelope getMaxBounds() {        
+    public ReferencedEnvelope getMaxBounds() {        
         CoordinateReferenceSystem mapCrs = null;
         if( viewport != null ){
             mapCrs = viewport.getCoordianteReferenceSystem();

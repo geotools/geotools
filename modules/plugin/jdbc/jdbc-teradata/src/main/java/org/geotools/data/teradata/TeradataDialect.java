@@ -469,7 +469,8 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
     
     public void encodePrimaryKey(String column, StringBuffer sql) {
        encodeColumnName(column, sql);
-       sql.append(" PRIMARY KEY not null generated always as identity (start with 0) integer");
+//       sql.append(" PRIMARY KEY not null generated always as identity (start with 0) integer");
+       sql.append(" PRIMARY KEY not null integer");
     }
 
     public Integer getGeometrySRID(String schemaName, String tableName,
@@ -874,8 +875,28 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
                     .getPrimaryKey(dataStore, schemaName, tableName, cx);
                 if (!(pkey instanceof NullPrimaryKey)) {
                     String indexTableName = tableName + "_" + gd.getLocalName() + "_idx";
+                    String hashIndex = indexTableName + "_idx";
                     
-                    StringBuffer sb = new StringBuffer("DROP TABLE ");
+                    // drop index hash index if exists
+                    StringBuffer sb = new StringBuffer("DROP HASH INDEX ");
+                    encodeTableName(schemaName, hashIndex, sb);
+                    
+                    sql = sb.toString();
+                    LOGGER.fine(sql);
+                    
+                    try {
+                        ps = cx.prepareStatement(sql);
+                        ps.execute();
+                    }
+                    catch(SQLException e) {
+                        //ignore
+                    }
+                    finally {
+                        dataStore.closeSafe(ps);
+                    }
+                    
+                    // drop index table if exists
+                    sb = new StringBuffer("DROP TABLE ");
                     encodeTableName(schemaName, indexTableName, sb);
                     
                     sql = sb.toString();
@@ -892,6 +913,7 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
                         dataStore.closeSafe(ps);
                     }
 
+                    // create index table
                     sb = new StringBuffer("CREATE MULTISET TABLE ");
                     encodeTableName(schemaName, indexTableName, sb);
                     sb.append("( ");
@@ -900,21 +922,37 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
                         encodeColumnName(col.getName(), sb);
                         
                         String typeName = lookupSqlTypeName(cx, schemaName, tableName, col.getName());
-                        sb.append(" ").append(typeName).append(", ");
+                        sb.append(" ").append(typeName).append(" NOT NULL, ");
                     }
-                    sb.append("cellid INTEGER) PRIMARY INDEX (cellid)");
+                    if (!pkey.getColumns().isEmpty()) {
+                        // @todo only looking at first primary key
+                        // more multiply keyed tables, this at least ensures some speed
+                        sb.append("cellid INTEGER NOT NULL)");
+                        sb.append("PRIMARY INDEX (");
+                        encodeColumnName(pkey.getColumns().get(0).getName(), sb);
+                        sb.append(")");
+                    }
                     sql = sb.toString();
                     LOGGER.fine(sql);
-
-                    ps = cx.prepareStatement(sql);
                     try {
-                        ps.execute();
-                    }
-                    finally {
+                       ps = cx.prepareStatement(sql);
+                       ps.execute();
+                    } finally {
                         dataStore.closeSafe(ps);
                     }
 
-                    installTriggers(cx,tableName,gd.getLocalName(),indexTableName);
+                    // create hash
+                    sb = new StringBuffer("CREATE HASH INDEX " + hashIndex + " (cellid) ON " + indexTableName + " ORDER BY (cellid)");
+                    sql = sb.toString();
+                    LOGGER.fine(sql);
+                    try {
+                        ps = cx.prepareStatement(sql);
+                        ps.execute();
+                    } finally {
+                        dataStore.closeSafe(ps);
+                    }
+
+                    installTriggers(cx,tableName,gd.getLocalName(),indexTableName,pkey.getColumns());
                     
                 }
                 else {
@@ -1050,31 +1088,56 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
             dataStore.closeSafe(ps);
         }
     }
+    
+    private void encodeWhereStatement(StringBuffer buf,List<PrimaryKeyColumn> ids,String table) {
+        buf.append(" WHERE ");
+        for (int i = 0; i < ids.size(); i++) {
+            encodeColumnName(ids.get(i).getName(), buf);
+            buf.append('=');
+            buf.append(table).append('.');
+            encodeColumnName(ids.get(i).getName(), buf);
+            if (i + 1 < ids.size()) {
+                buf.append(" AND ");
+            }
+        }
+        buf.append(" ");
+    }
 
-    private static void installInsertTrigger(Connection cx,String tableName, String geomName, String indexTableName) throws SQLException {
+    private void installInsertTrigger(Connection cx,String tableName, String geomName, String indexTableName, List<PrimaryKeyColumn> primaryKeys) throws SQLException {
         String referencing = "REFERENCING NEW TABLE AS nt";
         String triggerAction = "INSERT";
-        String triggerStmt = createTriggerInsert(indexTableName,geomName);
+        String triggerStmt = createTriggerInsert(indexTableName,geomName,primaryKeys);
         installTrigger(cx,tableName,geomName,triggerAction,referencing,triggerStmt);
     }
 
-    private static void installUpdateTrigger(Connection cx,String tableName, String geomName, String indexTableName) throws SQLException {
+    private void installUpdateTrigger(Connection cx,String tableName, String geomName, String indexTableName, List<PrimaryKeyColumn> primaryKeys) throws SQLException {
         String referencing = "REFERENCING NEW TABLE AS nt";
         String triggerAction = "UPDATE";
-        String triggerStmt = "DELETE FROM " + indexTableName + " WHERE ID IN (SELECT ID from nt);\n";
-        triggerStmt = triggerStmt + createTriggerInsert(indexTableName, geomName);
-        installTrigger(cx,tableName,geomName,triggerAction,referencing,triggerStmt);
+        StringBuffer buf = new StringBuffer("DELETE FROM " + indexTableName);
+        encodeWhereStatement(buf, primaryKeys, "nt");
+        buf.append(';');
+        buf.append(createTriggerInsert(indexTableName, geomName, primaryKeys));
+        installTrigger(cx,tableName,geomName,triggerAction,referencing,buf.toString());
     }
     
-    private static void installDeleteTrigger(Connection cx, String tableName, String geomName,String indexTableName) throws SQLException {
+    private void installDeleteTrigger(Connection cx, String tableName, String geomName,String indexTableName, List<PrimaryKeyColumn> primaryKeys) throws SQLException {
         String referencing = "REFERENCING OLD TABLE AS ot";
         String triggerAction = "DELETE";
-        String triggerStmt = "DELETE FROM " + indexTableName + " WHERE ID IN (SELECT ID from ot);\n";
-        installTrigger(cx,tableName,geomName,triggerAction,referencing,triggerStmt);
+        StringBuffer buf = new StringBuffer("DELETE FROM " + indexTableName);
+        encodeWhereStatement(buf, primaryKeys, "ot");
+        buf.append(';');
+        installTrigger(cx,tableName,geomName,triggerAction,referencing,buf.toString());
     }
     
-    private static String createTriggerInsert(String indexTable,String geometryName) {
-        String tinsert = "INSERT INTO {0} SELECT \"ID\","
+    private String createTriggerInsert(String indexTable,String geometryName,List<PrimaryKeyColumn> primaryKeys) {
+        StringBuffer buf = new StringBuffer();
+        for (int i = 0; i < primaryKeys.size(); i++) {
+            encodeColumnName(primaryKeys.get(i).getName(), buf);
+            if (i + 1 < primaryKeys.size()) {
+                buf.append(',');
+            }
+        }
+        String tinsert = "INSERT INTO {0} SELECT " + buf.toString() + ","
                 + "      sysspatial.tessellate_index("
                 + "      \"{1}\".ST_MBR().Xmin(), "
                 + "      \"{1}\".ST_MBR().Ymin(), "
@@ -1082,7 +1145,7 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
                 + "      \"{1}\".ST_MBR().Ymax(), "
                 + "      {2,number,0.0#}, {3,number,0.0#}, {4,number,0.0#}, {5,number,0.0#}, "
                 + "      {6,number,0}, {7,number,0}, {8,number,0}, {9,number,0.0#}, {10,number,0})"
-                + " from nt;";
+                + " from nt WHERE {1} IS NOT NULL;";
         int west = -180;
         int south = -90;
         int east = 180;
@@ -1099,7 +1162,7 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
             );
     }
 
-    private static void installTrigger(Connection cx, String tableName,String geomName, String triggerAction, String referencing, String triggerStmt) throws SQLException {
+    private void installTrigger(Connection cx, String tableName,String geomName, String triggerAction, String referencing, String triggerStmt) throws SQLException {
         String triggerName = tableName + "_" + geomName + "_m" + triggerAction.substring(0, 1).toLowerCase();
         String sql = "CREATE TRIGGER " + triggerName + " AFTER " + triggerAction + " ON " + tableName + "\n";
         sql = sql + referencing + "\n";
@@ -1114,7 +1177,7 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
         }
     }
 
-    static void installTriggers(Connection cx, String tableName, String geomName, String indexTableName) throws SQLException {
+    void installTriggers(Connection cx, String tableName, String geomName, String indexTableName, List<PrimaryKeyColumn> primaryKeys) throws SQLException {
         /*
         "CREATE TRIGGER \"{0}_{1}_mi\" AFTER INSERT ON {12}"
         + "  REFERENCING NEW TABLE AS nt"
@@ -1157,9 +1220,10 @@ public class TeradataDialect extends PreparedStatementSQLDialect {
         + "  ("
         + "    DELETE FROM \"{0}_{1}_idx\" WHERE ID IN (SELECT \"{1}\" from ot);"
         + "  )" + "END"*/
-        installInsertTrigger(cx, tableName, geomName, indexTableName);
-        installUpdateTrigger(cx, tableName, geomName, indexTableName);
-        installDeleteTrigger(cx, tableName, geomName, indexTableName);
+        installInsertTrigger(cx, tableName, geomName, indexTableName, primaryKeys);
+        installUpdateTrigger(cx, tableName, geomName, indexTableName, primaryKeys);
+        installDeleteTrigger(cx, tableName, geomName, indexTableName, primaryKeys);
+        LOGGER.info("Installed triggers on " + tableName + " to update " + indexTableName);
     }
 
 }

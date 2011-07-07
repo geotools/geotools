@@ -88,11 +88,19 @@ import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
  */
 public class GeoTiffWriteParams extends GeoToolsWriteParams {
 
-	/**
-	 * Default constructor.
-	 */
-	public GeoTiffWriteParams() {
-		super(new TIFFImageWriteParam(Locale.getDefault()));
-	}
+    /**
+     * Default constructor.
+     */
+    public GeoTiffWriteParams() {
+        super(new TIFFImageWriteParam(Locale.getDefault()));
+    }
+
+    public void setForceToBigTIFF(final boolean forceToBigTIFF) {
+        ((TIFFImageWriteParam) adaptee).setForceToBigTIFF(forceToBigTIFF);
+    }
+
+    public boolean isForceToBigTIFF() {
+        return ((TIFFImageWriteParam) adaptee).isForceToBigTIFF();
+    }
 
 }

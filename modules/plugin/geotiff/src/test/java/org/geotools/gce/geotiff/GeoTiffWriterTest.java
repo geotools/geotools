@@ -19,7 +19,9 @@ package org.geotools.gce.geotiff;
 import it.geosolutions.imageio.plugins.tiff.BaselineTIFFTagSet;
 
 import java.awt.geom.AffineTransform;
+import java.awt.image.RenderedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.logging.Logger;
@@ -31,6 +33,7 @@ import junit.framework.Assert;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
+import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
 import org.geotools.coverage.grid.io.imageio.IIOMetadataDumper;
 import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffIIOMetadataDecoder;
 import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffIIOMetadataEncoder.TagSet;
@@ -387,7 +390,74 @@ public class GeoTiffWriterTest extends Assert {
         assertTrue(copyrightInfo.equalsIgnoreCase(readCopyright));
         
         reader.dispose();
-
-        
     }
+    
+    @Test
+    public void testWriteBigTiff() throws Exception {
+
+        String files[] = new String[]{"geo.tiff", "no_crs_no_envelope.tif"};
+        
+        int i=0;
+        for (String file : files){
+            final File input = TestData.file(GeoTiffReaderTest.class, file);
+            final AbstractGridFormat format = new GeoTiffFormat();
+            assertTrue(format.accepts(input));
+    
+            // getting a reader
+            GeoTiffReader reader = new GeoTiffReader(input);
+    
+            // reading the coverage
+            GridCoverage2D coverage = (GridCoverage2D) reader.read(null);
+    
+            // check coverage and crs
+            assertNotNull(coverage);
+            assertNotNull(coverage.getCoordinateReferenceSystem());
+            reader.dispose();
+    
+            // get a writer
+            final File output = new File(TestData.file(GeoTiffReaderTest.class, "."), "bigtiff" + i + ".tif");
+            GeoTiffWriter writer = new GeoTiffWriter(output);
+            
+            GeoTiffWriteParams params = new GeoTiffWriteParams();
+            params.setForceToBigTIFF(true);
+            ParameterValue<GeoToolsWriteParams> value = GeoTiffFormat.GEOTOOLS_WRITE_PARAMS.createValue();
+            value.setValue(params);
+            
+            writer.write(coverage, new GeneralParameterValue[]{value});
+            writer.dispose();
+            coverage.dispose(true);
+            
+            // getting a reader
+            reader = new GeoTiffReader(output);
+            RenderedImage ri = reader.read(null).getRenderedImage();
+            assertEquals(ri.getWidth(), i == 0 ? 120 : 12);
+            assertEquals(ri.getHeight(), i == 0 ? 120 : 12);
+            reader.dispose();
+            
+            FileInputStream fis = null;
+            try {
+                fis = new FileInputStream(output);
+            
+                byte[] bytes = new byte[6];
+                fis.read(bytes);
+                if (bytes[0] == 77 && bytes[1] == 77){
+                    //Big Endian Case
+                    assertEquals(bytes[3], 43); //43 is the magic number of BigTiff
+                } else {
+                    //Little Endian Case
+                    assertEquals(bytes[4], 43); //43 is the magic number of BigTiff
+                }
+            } finally {
+                if (fis != null){
+                    try {
+                        fis.close();
+                    } catch (Throwable t){
+                        
+                    }
+                }
+            }
+            i++;
+        }
+    }
+    
 }

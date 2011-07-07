@@ -16,6 +16,7 @@
  */
 package org.geotools.gce.geotiff;
 
+import it.geosolutions.imageio.plugins.tiff.TIFFImageWriteParam;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageMetadata;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageWriterSpi;
 
@@ -227,6 +228,7 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements
 		final AffineTransform tr = (AffineTransform) gg.getGridToCRS2D();
 		final CoordinateReferenceSystem crs = gg.getCoordinateReferenceSystem2D();
 		final double inNoData = getCandidateNoData(gc);
+
 		
 		// /////////////////////////////////////////////////////////////////////
 		//
@@ -415,7 +417,10 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements
 			throw new NullPointerException("Some input parameters are null");
 		}
 		final ImageWriteParam params = gtParams.getAdaptee();
-		
+		if (params instanceof TIFFImageWriteParam && gtParams instanceof GeoTiffWriteParams){
+		    TIFFImageWriteParam param = (TIFFImageWriteParam) params;
+		    param.setForceToBigTIFF(((GeoTiffWriteParams)gtParams).isForceToBigTIFF());
+		}
 		//
 		// GETTING READER AND METADATA
 		//

@@ -21,7 +21,7 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.spatial.BBOX;
 
 /**
- * Test the LOB workaround directly
+ * Test the LOB workaround and triggers directly. 
  * @author Ian Schneider
  */
 public class TeradataDialectTest extends JDBCTestSupport {
@@ -33,7 +33,7 @@ public class TeradataDialectTest extends JDBCTestSupport {
         
         org.geotools.util.logging.Logging.getLogger("org.geotools.jdbc").setLevel(level);
     }
-
+    
     @Override
     protected void setUpInternal() throws Exception {
         super.setUpInternal();
@@ -82,14 +82,10 @@ public class TeradataDialectTest extends JDBCTestSupport {
             coords++;
         }
         geom.append(")");
-        try {
-            PreparedStatement ps = dataStore.getDataSource().getConnection().prepareStatement("INSERT INTO \"ft3\" VALUES(?,new ST_Geometry(?),0,0.0,'zero')");
+        PreparedStatement ps = dataStore.getDataSource().getConnection().prepareStatement("INSERT INTO \"ft3\" VALUES(?,new ST_Geometry(?),0,0.0,'zero')");
             ps.setInt(1, cnt++);
-            ps.setCharacterStream(2, new StringReader(geom.toString()), geom.length());
-            ps.execute();
-        } catch (Throwable t) {
-            t.printStackTrace();
-        }
+        ps.setCharacterStream(2, new StringReader(geom.toString()), geom.length());
+        ps.execute();
         return coords;
     }
 
@@ -127,8 +123,8 @@ public class TeradataDialectTest extends JDBCTestSupport {
             runSafe("DROP TRIGGER \"ft3_geometry_mi\"");
             runSafe("DROP TRIGGER \"ft3_geometry_mu\"");
             runSafe("DROP TRIGGER \"ft3_geometry_md\"");
-            run("DROP HASH INDEX \"ft3_geometry_idx_idx\"");
-            run("DROP TABLE \"ft3_geometry_idx\"");
+            runSafe("DROP HASH INDEX \"ft3_geometry_idx_idx\"");
+            runSafe("DROP TABLE \"ft3_geometry_idx\"");
             runSafe("DROP TABLE \"ft3\"");
 
             run("CREATE TABLE \"ft3\"(" //

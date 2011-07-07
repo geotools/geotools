@@ -20,6 +20,7 @@ import com.vividsolutions.jts.geom.Geometry;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
+import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.jdbc.JDBCDataStoreTest;
 import org.geotools.jdbc.JDBCTestSetup;
@@ -34,6 +35,53 @@ public class TeradataDataStoreTest extends JDBCDataStoreTest {
 
     protected JDBCTestSetup createTestSetup() {
         return new TeradataTestSetup();
+    }
+    
+    public void testConcurrentWriters() throws Exception {
+        final boolean[] errors = {false};
+        Thread[] t = new Thread[8];
+        
+        SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
+        builder.setName(tname("ft2"));
+        builder.setNamespaceURI(dataStore.getNamespaceURI());
+        builder.setCRS(CRS.decode("EPSG:4326"));
+        builder.add(aname("geometry"), Geometry.class);
+        builder.add(aname("intProperty"), Integer.class);
+        builder.add(aname("stringProperty"), String.class);
+
+        SimpleFeatureType featureType = builder.buildFeatureType();
+        dataStore.createSchema(featureType);
+        for (int i = 0; i < t.length; i++) {
+            final int id = i+1;
+            t[i] = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    for (int j = 0; j < 50; j++) {
+                        try {
+                            FeatureWriter w = dataStore.getFeatureWriter(tname("ft2"), Transaction.AUTO_COMMIT);
+                            while (w.hasNext()) {
+                                w.next();
+                            }
+                            SimpleFeature f = (SimpleFeature) w.next();
+                            f.setAttribute(1, new Integer( (id * 100) + j));
+                            f.setAttribute(2, "one");
+                            w.write();
+                            w.close();
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                            errors[0] = true;
+                        }
+                    }
+                }
+            });
+            t[i].start();
+        }
+        for (int i = 0; i < t.length; i++) {
+            t[i].join();
+        }
+        ContentFeatureSource featureSource = dataStore.getFeatureSource(tname("ft2"));
+        int size = featureSource.getFeatures().size();
+        if (errors[0]) fail();
     }
 
     public void testCreateSchemaWithCaseSensitivity() throws Exception {

@@ -401,6 +401,16 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
         }
 
         this.layerTable = layerTable;
+        resetMapLayerTable();
+    }
+    
+    private void resetMapLayerTable() {
+        if (layerTable != null && context != null) {
+            layerTable.clear();
+            for (MapLayer layer : context.getLayers()) {
+                layerTable.onAddLayer(layer);
+            }
+        }
     }
 
     /**
@@ -490,6 +500,7 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
                 }
 
                 setFullExtent();
+                resetMapLayerTable();
             }
 
             if (renderer != null) {

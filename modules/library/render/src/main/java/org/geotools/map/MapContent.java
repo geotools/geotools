@@ -21,6 +21,7 @@ import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -242,41 +243,41 @@ public class MapContent {
             layerListener = new MapLayerListener() {
                 public void layerShown(MapLayerEvent event) {
                     Layer layer = (Layer) event.getSource();
-                    int index = layerList.indexOf(layer);
+                    int index = layers().indexOf(layer);
                     fireLayerEvent(layer, index, event);
                 }
 
                 public void layerSelected(MapLayerEvent event) {
                     Layer layer = (Layer) event.getSource();
-                    int index = layerList.indexOf(layer);
+                    int index = layers().indexOf(layer);
                     fireLayerEvent(layer, index, event);
                 }
 
                 public void layerHidden(MapLayerEvent event) {
                     Layer layer = (Layer) event.getSource();
-                    int index = layerList.indexOf(layer);
+                    int index = layers().indexOf(layer);
                     fireLayerEvent(layer, index, event);
                 }
 
                 public void layerDeselected(MapLayerEvent event) {
                     Layer layer = (Layer) event.getSource();
-                    int index = layerList.indexOf(layer);
+                    int index = layers().indexOf(layer);
                     fireLayerEvent(layer, index, event);
                 }
 
                 public void layerChanged(MapLayerEvent event) {
                     Layer layer = (Layer) event.getSource();
-                    int index = layerList.indexOf(layer);
+                    int index = layers().indexOf(layer);
                     fireLayerEvent(layer, index, event);
                 }
             };
         }
         if (listen) {
-            for (Layer layer : layerList) {
+            for (Layer layer : layers()) {
                 layer.addMapLayerListener(layerListener);
             }
         } else {
-            for (Layer layer : layerList) {
+            for (Layer layer : layers()) {
                 layer.removeMapLayerListener(layerListener);
             }
         }
@@ -327,10 +328,11 @@ public class MapContent {
      *            the layer new position
      */
     public void moveLayer(int sourcePosition, int destPosition) {
-        Layer destLayer = layerList.get(destPosition);
-        Layer sourceLayer = layerList.get(sourcePosition);
-        layerList.set(destPosition, sourceLayer);
-        layerList.set(sourcePosition, destLayer);
+        List<Layer> layers = layers();
+        Layer destLayer = layers.get(destPosition);
+        Layer sourceLayer = layers.get(sourcePosition);
+        layers.set(destPosition, sourceLayer);
+        layers.set(sourcePosition, destLayer);
     }
 
     /**
@@ -493,7 +495,7 @@ public class MapContent {
         }
         return layerList;
     }
-
+    
     protected void fireLayerAdded(Layer element, int fromIndex, int toIndex) {
         if (mapListeners == null) {
             return;
@@ -556,42 +558,39 @@ public class MapContent {
      * @throws IOException
      *             if an IOException occurs while accessing the FeatureSource bounds
      */
-    public ReferencedEnvelope getMaxBounds() throws IOException {        
+    public ReferencedEnvelope getMaxBounds() throws IOException {
         CoordinateReferenceSystem mapCrs = getCoordinateReferenceSystem();
         ReferencedEnvelope maxBounds = null;
-        
-        if( layerList != null ){
-            for (Layer layer : layerList) {
-                if( layer == null ){
+
+        for (Layer layer : layers()) {
+            if (layer == null) {
+                continue;
+            }
+            ReferencedEnvelope layerBounds = layer.getBounds();
+            if (layerBounds == null || layerBounds.isEmpty() || layerBounds.isNull()) {
+                continue;
+            }
+            if (mapCrs == null) {
+                // crs for the map is not defined; let us start with the first CRS we see then!
+                maxBounds = new ReferencedEnvelope(layerBounds);
+                mapCrs = layerBounds.getCoordinateReferenceSystem();
+                continue;
+            }
+            ReferencedEnvelope normalized;
+            if (CRS.equalsIgnoreMetadata(mapCrs, layerBounds.getCoordinateReferenceSystem())) {
+                normalized = layerBounds;
+            } else {
+                try {
+                    normalized = layerBounds.transform(mapCrs, true);
+                } catch (Exception e) {
+                    LOGGER.log(Level.FINE, "Unable to transform: {0}", e);
                     continue;
                 }
-                ReferencedEnvelope layerBounds = layer.getBounds();
-                if (layerBounds == null || layerBounds.isEmpty() || layerBounds.isNull()) {
-                    continue;
-                }
-                if (mapCrs == null) {
-                    // crs for the map is not defined; let us start with the first CRS we see then!
-                    maxBounds = new ReferencedEnvelope(layerBounds);
-                    mapCrs = layerBounds.getCoordinateReferenceSystem();
-                    continue;
-                }
-                ReferencedEnvelope normalized;
-                if (CRS.equalsIgnoreMetadata(mapCrs, layerBounds.getCoordinateReferenceSystem())) {
-                    normalized = layerBounds;
-                } else {
-                    try {
-                        normalized = layerBounds.transform(mapCrs, true);
-                    } catch (Exception e) {
-                        LOGGER.log(Level.FINE, "Unable to transform: {0}", e);
-                        continue;
-                    }
-                }
-                if( maxBounds == null ){
-                    maxBounds = normalized;
-                }
-                else {
-                    maxBounds.expandToInclude(normalized);
-                }
+            }
+            if (maxBounds == null) {
+                maxBounds = normalized;
+            } else {
+                maxBounds.expandToInclude(normalized);
             }
         }
         if (maxBounds == null && mapCrs != null) {

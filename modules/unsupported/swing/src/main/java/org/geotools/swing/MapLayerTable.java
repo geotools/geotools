@@ -137,6 +137,15 @@ public class MapLayerTable extends JPanel {
     }
 
     /**
+     * Removes all items from the table. This is called by 
+     * {@code JMapPane} or other clients and is not intended for
+     * general use.
+     */
+    public void clear() {
+        listModel.clear();
+    }
+
+    /**
      * Called by the constructor. This method lays out the components that
      * make up the MapLayerTable and registers a mouse listener.
      */

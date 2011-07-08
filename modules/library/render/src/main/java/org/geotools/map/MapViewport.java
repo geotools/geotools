@@ -2,8 +2,6 @@ package org.geotools.map;
 
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.NoninvertibleTransformException;
-import java.awt.geom.Point2D;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -12,9 +10,12 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.event.MapBoundsEvent;
 import org.geotools.map.event.MapBoundsListener;
 import org.geotools.map.event.MapBoundsEvent.Type;
+import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.logging.Logging;
+import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.operation.TransformException;
 
 /**
  * Represents the area of a map to be displayed.
@@ -32,64 +33,23 @@ public class MapViewport {
     /** The logger for the map module. */
     static protected final Logger LOGGER = Logging.getLogger("org.geotools.map");
 
-    /* 
-     * The current display area expressed in window coordinates 
-     * (e.g. the visible rectangle of a JMapPane). The area can
-     * include slack space beyond the edges of the map layers.
-     */
     private Rectangle screenArea;
     
-    /*
-     * The current dispay area in world coordinates. The area can
-     * include slack space beyond the edges of the map layers.
-     */
     private ReferencedEnvelope bounds;
-
-    /*
-     * Transform to convert screen (window, image) coordinates to corresponding
-     * world coordinates.
-     */
-    private AffineTransform screenToWorld;
-
-    /*
-     * Transform to convert world coordinates to corresponding screen (window,
-     * image) coordinates.
-     */
-    private AffineTransform worldToScreen;
 
     private CopyOnWriteArrayList<MapBoundsListener> boundsListeners;
 
-    /**
-     * Creates a new view port. The viewport bounds, in both screen and world coordinates,
-     * will be empty rectangles and a default coordinate reference system (WGS84) will
-     * be set.
-     */
     public MapViewport(){
-        setEmptyBounds();
+        bounds = new ReferencedEnvelope(CRS.getEnvelope(DefaultGeographicCRS.WGS84));
+        screenArea = new Rectangle(800, (int)((bounds.getHeight()/bounds.getWidth())*800));
     }
-
-    /**
-     * Creates a new view port with the specified display area in world coordinates.
-     * If {@code bounds} is {@code null} any current bounds are cleared and 
-     * {@link #isEmpty()} will return {@code true}.
-     * 
-     * @param requestedBounds display area in world coordinates
-     */
-    public MapViewport(ReferencedEnvelope requestedBounds){
-        if (requestedBounds == null || requestedBounds.isEmpty()) { 
-            setEmptyBounds();
-            
-        } else if (screenArea.isEmpty()) {
-            // just store the requested bounds for later use when
-            // the screen area is set
-            this.bounds = new ReferencedEnvelope(requestedBounds);
-            
-        } else {
-            // screen area is non-empty
-            setTransformsAndCorrectedBounds(requestedBounds);
+    public MapViewport(ReferencedEnvelope bounds){
+        this.bounds = bounds;
+        if( bounds != null ){
+            screenArea = new Rectangle(800, (int)((bounds.getHeight()/bounds.getWidth())*800));
         }
     }
-
+    
     /**
      * Used by client application to track the bounds of this viewport.
      * 
@@ -98,7 +58,9 @@ public class MapViewport {
     public void addMapBoundsListener(MapBoundsListener listener) {
         if (boundsListeners == null) {
             synchronized ( this ){
-                boundsListeners = new CopyOnWriteArrayList<MapBoundsListener>();
+                if( boundsListeners == null ){
+                    boundsListeners = new CopyOnWriteArrayList<MapBoundsListener>();
+                }
             }
         }
         if (!boundsListeners.contains(listener)) {
@@ -113,87 +75,16 @@ public class MapViewport {
     }
 
     /**
-     * Checks if the view port bounds are empty (undefined). This will be
-     * {@code true} if either or both of the world bounds and screen bounds
-     * are empty.
-     * 
-     * @return {@code true} if empty
-     */
-    public boolean isEmpty() {
-        return screenArea.isEmpty() || bounds.isEmpty();
-    }
-    
-    /**
-     * Gets the display area in world coordinates.
+     * The extent of the map to render (this is the main attribute of the map viewport).
      * <p>
-     * Note Well: this only covers spatial extent; you may wish to use the user data map
+     * Note Well: The bounds should match your screen aspect ratio (or the map will appear
+     * squashed). Please note this only covers spatial extent; you may wish to use the user data map
      * to record the current viewport time or elevation.
-     * 
-     * @return a copy of the current bounds
      */
     public ReferencedEnvelope getBounds() {
-        return new ReferencedEnvelope(bounds);
+        return bounds;
     }
 
-    /**
-     * Sets the display area in world coordinates. If {@code bounds} is not
-     * {@code null} or empty, and the current screen area is not empty,
-     * the viewport's coordinate transforms will be recalculated.
-     * <p>
-     * Note: subsequent calls to {@link #getBounds()} can, and usually will,
-     * return a larger envelope than the one passed to this method, because
-     * the bounds are enlarged as necessary to have the same aspect-ratio
-     * as the current viewport screen area.
-     * 
-     * @param requestedBounds the requested bounds (may be {@code null}
-     */
-    public void setBounds(ReferencedEnvelope requestedBounds) {
-        ReferencedEnvelope old = this.bounds;
-        if (requestedBounds == null || requestedBounds.isEmpty()) {
-            this.bounds = new ReferencedEnvelope(this.bounds.getCoordinateReferenceSystem());
-            setDefaultTransforms();
-            
-        } else {
-            setTransformsAndCorrectedBounds(requestedBounds);
-        }
-        
-        // Note the bounds communicated by the event are the actual world bounds
-        // rather than the user-requested bounds (unless empty)
-        fireMapBoundsListenerMapBoundsChanged(Type.BOUNDS, old, this.bounds);
-    }
-
-    /**
-     * Screen area to render into when drawing.
-     * @return screen area to render into when drawing.
-     */
-    public Rectangle getScreenArea() {
-        return screenArea;
-    }
-
-    /**
-     * Sets the display area in screen (window, image) coordinates.
-     * 
-     * @param screenArea display area in screen coordinates (may be {@code null})
-     */
-    public void setScreenArea(Rectangle screenArea) {
-        if (screenArea == null) {
-            this.screenArea = new Rectangle();
-            setDefaultTransforms();
-            
-        } else {
-            Rectangle old = this.screenArea;
-            
-            // defensive copy
-            this.screenArea = new Rectangle(screenArea);
-            
-            // If the screen area was empty previously, set the transforms
-            // (setTransforms checks for empty world bounds)
-            if (old.isEmpty()) {
-                setTransformsAndCorrectedBounds(bounds);
-            }
-        }
-    }
-    
     /**
      * The coordinate reference system used for rendering the map.
      * <p>
@@ -261,100 +152,30 @@ public class MapViewport {
         }
     }
 
-    /**
-     * Gets the current screen to world coordinate transform. If 
-     * the display area is empty the identity transform is returned.
-     * 
-     * @return a copy of the current screen to world transform
-     */
-    public AffineTransform getScreenToWorld() {
-        return new AffineTransform(screenToWorld);
+    public void setBounds(ReferencedEnvelope bounds) {
+        ReferencedEnvelope old = this.bounds;
+        this.bounds = bounds;
+        fireMapBoundsListenerMapBoundsChanged(Type.BOUNDS, old, bounds);
     }
 
     /**
-     * Gets the current world to screen coordinate transform. If 
-     * the display area is empty the identity transform is returned.
-     * 
-     * @return a copy of the current world to screen transform
+     * Screen area to render into when drawing.
+     * @return screen area to render into when drawing.
      */
-    public AffineTransform getWorldToScreen() {
-        return new AffineTransform(worldToScreen);
+    public Rectangle getScreenArea() {
+        return screenArea;
     }
-
+    
     /**
-     * Sets the screen and world bounds to empty rectangles and the 
-     * coordinate reference system to WGS84.
+     * Screen area to render into when drawing.
+     * @param screenArea
      */
-    private void setEmptyBounds() {
-        bounds = new ReferencedEnvelope(DefaultGeographicCRS.WGS84);
-        screenArea = new Rectangle();
-        setDefaultTransforms();
+    public void setScreenArea(Rectangle screenArea) {
+        // we could consider updating the bounds to have the correct aspect ratio
+        // matching this screen area?
+        this.screenArea = screenArea;
     }
-
-    /**
-     * Sets the transforms to the default identity transforms.
-     */
-    private void setDefaultTransforms() {
-        screenToWorld = new AffineTransform();
-        worldToScreen = new AffineTransform();
-    }
-
-    /**
-     * Calculates the affine transforms used to convert between screen
-     * and world coordinates. Transforms are calculated such that the
-     * requested world bounds are centred in the screen area.
-     * 
-     * @param requestedBounds the requested bounds in world coordinates
-     */
-    private void setTransformsAndCorrectedBounds(ReferencedEnvelope requestedBounds) {
-        if (!( requestedBounds.isEmpty() || screenArea.isEmpty() )) {
-            double xscale = screenArea.getWidth() / bounds.getWidth();
-            double yscale = screenArea.getHeight() / bounds.getHeight();
-
-            double scale = Math.min(xscale, yscale);
-
-            double xoff = bounds.getMedian(0) * scale - screenArea.getCenterX();
-            double yoff = bounds.getMedian(1) * scale + screenArea.getCenterY();
-
-            worldToScreen = new AffineTransform(scale, 0, 0, -scale, -xoff, yoff);
-            try {
-                screenToWorld = worldToScreen.createInverse();
-
-            } catch (NoninvertibleTransformException ex) {
-                throw new RuntimeException("Unable to create coordinate transforms.", ex);
-            }
-            
-            setCorrectedBounds();
-        }
-    }
-
-    /**
-     * Calculates the actual display area in world coordinates based on the
-     * viewport's screen area and transforms. The resulting envelope, which will
-     * have the same aspect ratio as the screen area, is then stored in the
-     * {@code bounds} field.
-     */
-    private void setCorrectedBounds() {
-        if (!screenArea.isEmpty()) {
-            Point2D p0 = new Point2D.Double(screenArea.getMinX(), screenArea.getMinY());
-            Point2D p1 = new Point2D.Double(screenArea.getMaxX(), screenArea.getMaxY());
-            screenToWorld.transform(p0, p0);
-            screenToWorld.transform(p1, p1);
-
-            bounds = new ReferencedEnvelope(
-                    Math.min(p0.getX(), p1.getX()),
-                    Math.max(p0.getX(), p1.getX()),
-                    Math.min(p0.getY(), p1.getY()),
-                    Math.max(p0.getY(), p1.getY()),
-                    bounds.getCoordinateReferenceSystem());
-        }
-    }
-
-    /**
-     * @todo MB: Not sure if this method should be used.
-     * 
-     * @param transform 
-     */
+    
     public void transform(AffineTransform transform) {
         ReferencedEnvelope old = this.bounds;
 

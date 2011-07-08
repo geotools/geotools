@@ -490,16 +490,20 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
                 this.context.addMapLayerListListener(this);
                 this.context.addMapBoundsListener(this);
 
-                // set all layers as selected by default for the info tool
-                for (MapLayer layer : context.getLayers()) {
-                    layer.setSelected(true);
-                    if( layer instanceof ComponentListener){
-                        addComponentListener( (ComponentListener) layer );
-                    }
-                }
-
-                setFullExtent();
                 resetMapLayerTable();
+
+                if (context.getLayerCount() > 0) {
+                    // set all layers as selected by default for the info tool
+                    for (MapLayer layer : context.getLayers()) {
+                        layer.setSelected(true);
+                        if (layer instanceof ComponentListener) {
+                            addComponentListener((ComponentListener) layer);
+                        }
+                    }
+
+                    setFullExtent();
+                    doSetDisplayArea(fullExtent);
+                }
             }
 
             if (renderer != null) {
@@ -508,6 +512,8 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
 
             MapPaneEvent ev = new MapPaneEvent(this, MapPaneEvent.Type.NEW_CONTEXT);
             publishEvent(ev);
+            
+            drawBaseImage(false);
         }
     }
 
@@ -524,7 +530,13 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
      * @return the display area in world coordinates as a new {@code ReferencedEnvelope}
      */
     public ReferencedEnvelope getDisplayArea() {
-        return new ReferencedEnvelope(currentDisplayArea);
+        if (currentDisplayArea == null) {
+            // return empty envelope
+            return new ReferencedEnvelope();
+        } else {
+            // return copy of envelope
+            return new ReferencedEnvelope(currentDisplayArea);
+        }
     }
 
     private void calculateDisplayArea() {
@@ -836,7 +848,7 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
         }
         
         if (acceptRepaintRequests) {
-            if (createNewImage) {
+            if (baseImage == null || createNewImage) {
                 baseImage = new BufferedImage(
                         currentPaintArea.width + 1, currentPaintArea.height + 1,
                         BufferedImage.TYPE_INT_ARGB);
@@ -849,12 +861,14 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
                 clearLabelCache.set(true);
             }
 
-            if (renderingExecutor.submit(currentDisplayArea, currentPaintArea, baseImageGraphics)) {
-                MapPaneEvent ev = new MapPaneEvent(this, MapPaneEvent.Type.RENDERING_STARTED);
-                publishEvent(ev);
-                
-            } else {
-                onRenderingRejected();
+            if (renderer != null && context != null && context.getLayerCount() > 0) {
+                if (renderingExecutor.submit(currentDisplayArea, currentPaintArea, baseImageGraphics)) {
+                    MapPaneEvent ev = new MapPaneEvent(this, MapPaneEvent.Type.RENDERING_STARTED);
+                    publishEvent(ev);
+
+                } else {
+                    onRenderingRejected();
+                }
             }
         }
 

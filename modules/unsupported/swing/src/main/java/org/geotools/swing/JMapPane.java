@@ -871,8 +871,6 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
                 }
             }
         }
-
-        return;
     }
 
     /**

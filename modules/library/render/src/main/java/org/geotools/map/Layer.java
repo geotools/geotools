@@ -148,7 +148,7 @@ public abstract class Layer {
         if (listenerList == null) {
             return;
         }
-        MapLayerEvent event = new MapLayerEvent(this, MapLayerEvent.VISIBILITY_CHANGED);
+        MapLayerEvent event = new MapLayerEvent(this, MapLayerEvent.SELECTION_CHANGED);
         for (MapLayerListener mapListener : listenerList) {
             try {
                 mapListener.layerSelected(event);
@@ -170,7 +170,7 @@ public abstract class Layer {
         if (listenerList == null) {
             return;
         }
-        MapLayerEvent event = new MapLayerEvent(this, MapLayerEvent.VISIBILITY_CHANGED);
+        MapLayerEvent event = new MapLayerEvent(this, MapLayerEvent.SELECTION_CHANGED);
         for (MapLayerListener mapListener : listenerList) {
             try {
                 mapListener.layerDeselected(event);

@@ -525,7 +525,13 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
      * @return the display area in world coordinates as a new {@code ReferencedEnvelope}
      */
     public ReferencedEnvelope getDisplayArea() {
-        return new ReferencedEnvelope(currentDisplayArea);
+        if (currentDisplayArea == null) {
+            // return empty envelope
+            return new ReferencedEnvelope();
+        } else {
+            // return copy of envelope
+            return new ReferencedEnvelope(currentDisplayArea);
+        }
     }
 
     private void calculateDisplayArea() {

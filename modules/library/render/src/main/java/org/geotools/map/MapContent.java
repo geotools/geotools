@@ -628,12 +628,7 @@ public class MapContent {
      */
     public synchronized MapViewport getViewport() {
         if (viewport == null) {
-            ReferencedEnvelope maxBounds = getMaxBounds();
-            if (maxBounds == null || maxBounds.isEmpty()) {
-                viewport = new MapViewport();
-            } else {
-                viewport = new MapViewport( maxBounds );
-            }
+            viewport = new MapViewport( getMaxBounds() );
         }
         return viewport;
     }

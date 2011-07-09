@@ -31,7 +31,12 @@ public abstract class Layer {
     /**
      * Flag to mark the layer as visible when being rendered
      */
-    protected boolean visible = true;
+    protected boolean visible;
+    
+    /**
+     * Flag to mark the layer as selected (for general use by clients)
+     */
+    protected boolean selected;
 
     /**
      * Map of application supplied information.
@@ -159,6 +164,8 @@ public abstract class Layer {
      * Note you should dispose() a layer after use.
      */
     protected Layer() {
+        visible = true;
+        selected = true;
     }
 
     @Override
@@ -202,24 +209,58 @@ public abstract class Layer {
     }
 
     /**
-     * Determine whether this layer is visible on a map pane or whether the layer is hidden.
+     * Determines whether this layer is visible or hidden.
      * 
-     * @return <code>true</code> if the layer is visible, or <code>false</code> if the layer is
-     *         hidden.
+     * @return {@code true} if the layer is visible, or {@code false} if hidden
      */
     public boolean isVisible() {
         return visible;
     }
 
     /**
-     * Specify whether this layer is visible on a map pane or whether the layer is hidden. A
+     * Sets whether the layer is to be shown or hidden when rendering.
      * {@link LayerEvent} is fired if the visibility changed.
      * 
-     * @param visible
-     *            Show the layer if <code>true</code>, or hide the layer if <code>false</code>
+     * @param visible {@code true} to show the layer; {@code false} to hide it
      */
     public void setVisible(boolean visible) {
-        this.visible = visible;
+        if (visible != this.visible) {
+            this.visible = visible;
+            if (visible) {
+                fireMapLayerListenerLayerShown();
+            } else {
+                fireMapLayerListenerLayerHidden();
+            }
+        }
+            
+    }
+    
+    /**
+     * Determines whether this layer is selected. Selection status can be
+     * used by clients such as {@code JMapPane} for selective processing
+     * of layers.
+     * 
+     * @return {@code true} if the layer is selected, or {@code false} otherwise
+     */
+    public boolean isSelected() {
+        return selected;
+    }
+    
+    /**
+     * Sets layer selection status. This can be used by clients such as {@code JMapPane}
+     * for selective processing of layers.
+     * 
+     * @param selected new selection status.
+     */
+    public void setSelected(boolean selected) {
+        if (selected != this.selected) {
+            this.selected = selected;
+            if (selected) {
+                fireMapLayerListenerLayerSelected();
+            } else {
+                fireMapLayerListenerLayerDeselected();
+            }
+        }
     }
 
     /**

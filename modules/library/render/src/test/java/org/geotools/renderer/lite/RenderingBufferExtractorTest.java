@@ -22,6 +22,8 @@ import java.net.URL;
 
 import static org.junit.Assert.*;
 
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.function.EnvFunction;
 import org.geotools.styling.Graphic;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.Rule;
@@ -30,9 +32,13 @@ import org.geotools.styling.StyleBuilder;
 import org.geotools.styling.Symbolizer;
 import org.geotools.test.TestData;
 import org.junit.Test;
+import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.expression.Add;
+import org.opengis.filter.expression.Function;
 
 public class RenderingBufferExtractorTest {
     StyleBuilder sb = new StyleBuilder();
+    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
 
     @Test
     public void testNoStroke() {
@@ -126,6 +132,55 @@ public class RenderingBufferExtractorTest {
         rbe.visit(r);
         assertEquals(12, rbe.getBuffer());
         assertTrue(!rbe.isEstimateAccurate());
+    }
+    
+    @Test
+    public void testEnvironmentWidth() {
+        Symbolizer ls = sb.createLineSymbolizer(sb.createStroke(sb.colorExpression(Color.BLACK), 
+                ff.function("env", ff.literal("thickness"), ff.literal(10))));
+        Rule r = sb.createRule(new Symbolizer[] { ls});
+        MetaBufferEstimator rbe = new MetaBufferEstimator();
+        
+        // no env variable, fall back on the default value
+        rbe.visit(r);
+        assertEquals(10, rbe.getBuffer());
+        assertTrue(rbe.isEstimateAccurate());
+        
+        // set the env variable
+        EnvFunction.setLocalValue("thickness", 15);
+        try {
+            rbe.visit(r);
+            assertEquals(15, rbe.getBuffer());
+            assertTrue(rbe.isEstimateAccurate());
+        } finally {
+            EnvFunction.clearLocalValues();
+        }
+    }
+    
+    @Test
+    public void testConstantFunction() {
+        Function cos = ff.function("cos", ff.literal(Math.toRadians(Math.PI)));
+        Symbolizer ls = sb.createLineSymbolizer(sb.createStroke(sb.colorExpression(Color.BLACK), cos));
+        Rule r = sb.createRule(new Symbolizer[] { ls });
+        MetaBufferEstimator rbe = new MetaBufferEstimator();
+
+        // cos(pi) == 1
+        rbe.visit(r);
+        assertEquals(1, rbe.getBuffer());
+        assertTrue(rbe.isEstimateAccurate());
+    }
+    
+    @Test
+    public void testMath() {
+        Add add = ff.add(ff.literal("5"), ff.literal("-2"));
+        Symbolizer ls = sb.createLineSymbolizer(sb.createStroke(sb.colorExpression(Color.BLACK), add));
+        Rule r = sb.createRule(new Symbolizer[] { ls });
+        MetaBufferEstimator rbe = new MetaBufferEstimator();
+        
+        // 5-2 = 3
+        rbe.visit(r);
+        assertEquals(3, rbe.getBuffer());
+        assertTrue(rbe.isEstimateAccurate());
     }
 
     @Test

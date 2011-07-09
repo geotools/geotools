@@ -43,7 +43,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * When both world and screen bounds are defined, the viewport calculates {@code AffineTransforms}
  * to convert the coordinates of one bounds to those of the other. It can also optionally adjust
  * the world bounds to maintain an identical aspect ratio with the screen bounds. Note however
- * that aspect ratio correction should not be enabled when the viewport is used with a service
+ * that aspect ratio adjustment should not be enabled when the viewport is used with a service
  * such as WMS which mandates that specified screen and world bounds must be honoured exactly,
  * regardless of the resulting aspect ratio differences.
  * 
@@ -84,27 +84,27 @@ public class MapViewport {
 
     private CopyOnWriteArrayList<MapBoundsListener> boundsListeners;
 
-    private boolean correctAspectRatio;
+    private boolean matchingAspectRatio;
 
     /**
      * Creates a new view port. The viewport bounds, in both screen and world coordinates,
      * will be empty rectangles, a default coordinate reference system (WGS84) will
-     * be set, and aspect ratio correction will not be enabled.
+     * be set, and aspect ratio matching will not be enabled.
      */
     public MapViewport(){
         this(null);
     }
     
     /**
-     * Creates a new view port with aspect ratio correction enabled or disabled according
-     * to {@code correctAspectRatio}. The viewport bounds, in both screen and world coordinates,
+     * Creates a new view port with aspect ratio matching enabled or disabled according
+     * to {@code matchAspectRatio}. The viewport bounds, in both screen and world coordinates,
      * will be empty rectangles and a default coordinate reference system (WGS84) will
      * be set.
      * 
-     * @param correctAspectRatio whether to enable aspect ratio correction
+     * @param matchAspectRatio whether to enable aspect ratio matching
      */
-    public MapViewport(boolean correctAspectRatio) {
-        this(null, correctAspectRatio);
+    public MapViewport(boolean matchAspectRatio) {
+        this(null, matchAspectRatio);
     }
 
     /**
@@ -112,7 +112,7 @@ public class MapViewport {
      * The input envelope is copied so subsequent changes to it will not affect the
      * viewport.
      * <p>
-     * The initial screen area will be empty and aspect ratio correction will not
+     * The initial screen area will be empty and aspect ratio matching will not
      * be enabled.
      * 
      * @param bounds display area in world coordinates (may be {@code null})
@@ -126,15 +126,15 @@ public class MapViewport {
      * The input envelope is copied so subsequent changes to it will not affect the
      * viewport.
      * <p>
-     * The initial screen area will be empty and aspect ratio correction will be enabled
-     * or disabled according to {@code correctAspectRatio}.
+     * The initial screen area will be empty and aspect ratio matching will be enabled
+     * or disabled according to {@code matchAspectRatio}.
      * 
      * @param bounds display area in world coordinates (may be {@code null})
-     * @param correctAspectRatio whether to enable aspect ratio correction
+     * @param matchAspectRatio whether to enable aspect ratio matching
      */
-    public MapViewport(ReferencedEnvelope bounds, boolean correctAspectRatio) {
+    public MapViewport(ReferencedEnvelope bounds, boolean matchAspectRatio) {
         this.screenArea = new Rectangle();
-        this.correctAspectRatio = correctAspectRatio;
+        this.matchingAspectRatio = matchAspectRatio;
         
         if (bounds == null || bounds.isEmpty()) { 
             setEmptyBounds();
@@ -147,27 +147,26 @@ public class MapViewport {
     }
     
     /**
-     * Sets whether to enable aspect ratio correction. If the setting is
-     * changed when both screen and world bounds are defined, the 
-     * coordinate transforms will be recalculated and, for {@code enabled == true},
-     * the world bounds will be adjusted as necessary.
+     * Sets whether to adjust input world bounds to match the aspect
+     * ratio of the screen area.
      * 
-     * @param enabled whether to enable aspect ratio correction
+     * @param enabled whether to enable aspect ratio adjustment
      */
-    public void setCorrectAspectRatio(boolean enabled) {
-        if (enabled != correctAspectRatio) {
-            correctAspectRatio = enabled;
+    public void setMatchingAspectRatio(boolean enabled) {
+        if (enabled != matchingAspectRatio) {
+            matchingAspectRatio = enabled;
             doSetBounds(bounds);
         }
     }
     
     /**
-     * Queries whether aspect ratio correction is enabled.
+     * Queries whether input worlds bounds will be adjusted to match the
+     * aspect ratio of the screen area.
      * 
      * @return {@code true} if enabled
      */
-    public boolean getCorrectAspectRatio() {
-        return correctAspectRatio;
+    public boolean isMatchingAspectRatio() {
+        return matchingAspectRatio;
     }
 
     /**
@@ -222,7 +221,7 @@ public class MapViewport {
      * transforms will be set. The viewport's existing coordinate reference system
      * will be preserved.
      * <p>
-     * If {@code bounds} is not empty, and aspect ratio correction is enabled,
+     * If {@code bounds} is not empty, and aspect ratio matching is enabled,
      * the coordinate transforms will be calculated to centre the requested bounds
      * in the current screen area (if defined), after which the world bounds will
      * be adjusted (enlarged) as required to match the screen area's aspect ratio.
@@ -258,20 +257,20 @@ public class MapViewport {
      * @param screenArea display area in screen coordinates (may be {@code null})
      */
     public void setScreenArea(Rectangle screenArea) {
-        if (screenArea == null) {
+        if (screenArea == null || screenArea.isEmpty()) {
             this.screenArea = new Rectangle();
             setDefaultTransforms();
             
         } else {
-            Rectangle old = this.screenArea;
+            boolean wasEmpty = this.screenArea.isEmpty();
             
             // defensive copy
             this.screenArea = new Rectangle(screenArea);
             
-            // If the screen area was empty previously, set the transforms
-            // (setTransforms checks for empty world bounds)
-            if (old.isEmpty()) {
+            if (wasEmpty) {
                 doSetBounds(bounds);
+            } else if (!bounds.isEmpty()) {
+                bounds = calculateActualBounds();
             }
         }
     }
@@ -382,27 +381,28 @@ public class MapViewport {
 
     /**
      * Calculates the affine transforms used to convert between screen
-     * and world coordinates. If aspect ratio correction is enabled, the
+     * and world coordinates. If aspect ratio matching is enabled, the
      * transforms will be calculated to centre the requested bounds in the
      * screen area, after which the bounds will be adjusted if necessary to have
-     * the same aspect ratio as the screen area. If aspect ratio correction is not
+     * the same aspect ratio as the screen area. If aspect ratio matching is not
      * enabled, no such centering and adjustment happen, and the resulting world 
      * bounds will be equal to the requested bounds.
      * 
      * @param requestedBounds requested display area in world coordinates
      */
     private void doSetBounds(ReferencedEnvelope requestedBounds) {
-        if (correctAspectRatio) {
+        if (matchingAspectRatio && !screenArea.isEmpty()) {
             calculateCenteringTransforms(requestedBounds);
-            adjustBounds();
+            bounds = calculateActualBounds();
+            
         } else {
-            calculateUncorrectedTransforms(requestedBounds);
-            this.bounds = new ReferencedEnvelope(requestedBounds);
+            calculateSimpleTransforms(requestedBounds);
+            bounds = new ReferencedEnvelope(requestedBounds);
         }
     }
     
     /**
-     * Calculates transforms suitable for aspect ratio correction. The requested
+     * Calculates transforms suitable for aspect ratio matching. The requested
      * world bounds will be centred in the screen area.
      * 
      * @param requestedBounds requested display area in world coordinates
@@ -428,16 +428,17 @@ public class MapViewport {
     }
     
     /**
-     * Calculates transforms suitable for no aspect ratio correction.
+     * Calculates transforms suitable for no aspect ratio matching.
      * 
      * @param requestedBounds requested display area in world coordinates
      */
-    private void calculateUncorrectedTransforms(ReferencedEnvelope requestedBounds) {
+    private void calculateSimpleTransforms(ReferencedEnvelope requestedBounds) {
         if (!( requestedBounds.isEmpty() || screenArea.isEmpty() )) {
             double xscale = screenArea.getWidth() / requestedBounds.getWidth();
             double yscale = screenArea.getHeight() / requestedBounds.getHeight();
             double scale = Math.min(xscale, yscale);
-            worldToScreen = new AffineTransform(scale, 0, 0, -scale, 0, 0);
+            worldToScreen = new AffineTransform(scale, 0, 0, -scale, 
+                    -requestedBounds.getMinX(), requestedBounds.getMaxY());
             try {
                 screenToWorld = worldToScreen.createInverse();
 
@@ -448,16 +449,19 @@ public class MapViewport {
     }
 
     /**
-     * Adjusts the world bounds to match the aspect ratio of the screen area (if defined).
+     * Calculates the world bounds of the current screen area.
      */
-    private void adjustBounds() {
-        if (!( screenArea.isEmpty() )) {
+    private ReferencedEnvelope calculateActualBounds() {
+        if (screenArea.isEmpty()) {
+            throw new IllegalStateException("Screen area is empty");
+            
+        } else {
             Point2D p0 = new Point2D.Double(screenArea.getMinX(), screenArea.getMinY());
             Point2D p1 = new Point2D.Double(screenArea.getMaxX(), screenArea.getMaxY());
             screenToWorld.transform(p0, p0);
             screenToWorld.transform(p1, p1);
 
-            bounds = new ReferencedEnvelope(
+            return new ReferencedEnvelope(
                     Math.min(p0.getX(), p1.getX()),
                     Math.max(p0.getX(), p1.getX()),
                     Math.min(p0.getY(), p1.getY()),

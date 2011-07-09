@@ -409,13 +409,13 @@ public class MapViewport {
      */
     private void calculateCenteringTransforms(ReferencedEnvelope requestedBounds) {
         if (!( requestedBounds.isEmpty() || screenArea.isEmpty() )) {
-            double xscale = screenArea.getWidth() / bounds.getWidth();
-            double yscale = screenArea.getHeight() / bounds.getHeight();
+            double xscale = screenArea.getWidth() / requestedBounds.getWidth();
+            double yscale = screenArea.getHeight() / requestedBounds.getHeight();
 
             double scale = Math.min(xscale, yscale);
 
-            double xoff = bounds.getMedian(0) * scale - screenArea.getCenterX();
-            double yoff = bounds.getMedian(1) * scale + screenArea.getCenterY();
+            double xoff = requestedBounds.getMedian(0) * scale - screenArea.getCenterX();
+            double yoff = requestedBounds.getMedian(1) * scale + screenArea.getCenterY();
 
             worldToScreen = new AffineTransform(scale, 0, 0, -scale, -xoff, yoff);
             try {
@@ -434,8 +434,8 @@ public class MapViewport {
      */
     private void calculateUncorrectedTransforms(ReferencedEnvelope requestedBounds) {
         if (!( requestedBounds.isEmpty() || screenArea.isEmpty() )) {
-            double xscale = screenArea.getWidth() / bounds.getWidth();
-            double yscale = screenArea.getHeight() / bounds.getHeight();
+            double xscale = screenArea.getWidth() / requestedBounds.getWidth();
+            double yscale = screenArea.getHeight() / requestedBounds.getHeight();
             double scale = Math.min(xscale, yscale);
             worldToScreen = new AffineTransform(scale, 0, 0, -scale, 0, 0);
             try {
@@ -451,7 +451,7 @@ public class MapViewport {
      * Adjusts the world bounds to match the aspect ratio of the screen area (if defined).
      */
     private void adjustBounds() {
-        if (!screenArea.isEmpty()) {
+        if (!( screenArea.isEmpty() )) {
             Point2D p0 = new Point2D.Double(screenArea.getMinX(), screenArea.getMinY());
             Point2D p1 = new Point2D.Double(screenArea.getMaxX(), screenArea.getMaxY());
             screenToWorld.transform(p0, p0);

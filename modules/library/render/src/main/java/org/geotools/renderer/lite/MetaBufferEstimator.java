@@ -59,11 +59,13 @@ import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.UserLayer;
-import org.opengis.feature.Feature;
 import org.opengis.filter.Filter;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
+import org.opengis.filter.expression.VolatileFunction;
 import org.opengis.style.GraphicalSymbol;
+
+import com.sun.org.apache.xpath.internal.functions.Function;
 
 /**
  * Parses a style or part of it and returns the size of the largest stroke and the biggest point symbolizer whose width is specified with a literal expression.<br> Also provides an indication whether the stroke width is accurate, or if a non literal width has been found.
@@ -75,6 +77,28 @@ import org.opengis.style.GraphicalSymbol;
 public class MetaBufferEstimator extends FilterAttributeExtractor implements StyleVisitor {
     /** The logger for the rendering module. */
     private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.rendering");
+    
+    VolatileFilterAttributeExtractor attributeExtractor = new VolatileFilterAttributeExtractor();
+
+    static class VolatileFilterAttributeExtractor extends FilterAttributeExtractor {
+        boolean usingVolatileFunctions;
+
+        public void clear() {
+            super.clear();
+            usingVolatileFunctions = false;
+        }
+
+        public Object visit(org.opengis.filter.expression.Function expression, Object data) {
+            if (expression instanceof VolatileFunction) {
+                usingVolatileFunctions = true;
+            }
+            return super.visit(expression, data);
+        };
+        
+        public boolean isStable() {
+            return !usingVolatileFunctions && getAttributeNameSet().isEmpty();
+        }
+    };
 
     /**
      * @uml.property  name="estimateAccurate"
@@ -160,20 +184,9 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
      */
     public void visit(Stroke stroke) {
         try {
-            if (stroke.getWidth() != null) {
-                if (stroke.getWidth() instanceof Literal) {
-                    Literal lw = (Literal) stroke.getWidth();
-                    final Number val = (Number) lw.evaluate(null, Double.class);
-                    if(val != null) {
-                        int iw = (int) Math.ceil(val.doubleValue());
-                        if (iw > buffer)
-                            buffer = iw;
-                    } else {
-                        estimateAccurate = false;
-                    }
-                } else {
-                    estimateAccurate = false;
-                }
+            Expression width = stroke.getWidth();
+            if (width != null) {
+                evaluateWidth(width);
             }
         } catch (ClassCastException e) {
             estimateAccurate = false;
@@ -266,16 +279,9 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
      */
     public void visit(Graphic gr) {
         try {
-            if (gr.getSize() instanceof Literal) {
-                Literal lw = (Literal) gr.getSize();
-                final Number val = (Number) lw.evaluate(null, Double.class);
-                if(val != null) {
-                    int iw = (int) Math.ceil((val).doubleValue());
-                    if (iw > buffer)
-                        buffer = iw;
-                } else {
-                    estimateAccurate = false;
-                }
+            Expression grSize = gr.getSize();
+            if (grSize != null) {
+                evaluateWidth(grSize);
             } else {
                 for (GraphicalSymbol gs : gr.graphicalSymbols()) {
                     if(gs instanceof ExternalGraphic) {
@@ -328,6 +334,24 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
             estimateAccurate = false;
             LOGGER.log(Level.INFO, "Error occured during the graphic size estimation, " +
             		"meta buffer estimate cannot be performed", e);
+        }
+    }
+
+    private void evaluateWidth(Expression width) {
+        attributeExtractor.clear();
+        width.accept(attributeExtractor, null);
+        if (attributeExtractor.isStable()) {
+            Double result = width.evaluate(null, Double.class);
+            if(result != null) {
+                int size = (int) Math.ceil(result);
+                if (size > buffer) {
+                    buffer = size;
+                }
+            } else {
+                estimateAccurate = false;
+            }
+        } else {
+            estimateAccurate = false;
         }
     }
 
@@ -420,33 +444,28 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
         // nothing to do here
     }
 
-	public void visit(ContrastEnhancement contrastEnhancement) {
-		// TODO Auto-generated method stub
-		
-	}
+    public void visit(ContrastEnhancement contrastEnhancement) {
+        // nothing to do here
+    }
 
-	public void visit(ImageOutline outline) {
-	       outline.accept(this);
-		
-	}
+    public void visit(ImageOutline outline) {
+        outline.accept(this);
 
-	public void visit(ChannelSelection cs) {
-	 // nothing to do here
-		
-	}
+    }
 
-	public void visit(OverlapBehavior ob) {
-	    // nothing to do here
-		
-	}
+    public void visit(ChannelSelection cs) {
+        // nothing to do here
+    }
 
-	public void visit(SelectedChannelType sct) {
-	 // nothing to do here
-		
-	}
+    public void visit(OverlapBehavior ob) {
+        // nothing to do here
+    }
 
-	public void visit(ShadedRelief sr) {
-	 // nothing to do here
-		
-	}
+    public void visit(SelectedChannelType sct) {
+        // nothing to do here
+    }
+
+    public void visit(ShadedRelief sr) {
+        // nothing to do here
+    }
 }

@@ -89,23 +89,34 @@ public class MapViewportTest {
 
 
     @Test
-    public void setBoundsWithAspectCorrection() {
-        MapViewport vp = new MapViewport();
-        vp.setCorrectAspectRatio(true);
-        vp.setScreenArea(SCREEN_2_1);
-        vp.setBounds(WORLD);
-        
+    public void setBoundsWithAspectCorrection_2_1() {
         double w = WORLD.getWidth();
         ReferencedEnvelope expected = new ReferencedEnvelope(
                 WORLD.getMinX() - w/2, WORLD.getMaxX() + w/2,
                 WORLD.getMinY(), WORLD.getMaxY(),
                 WORLD.getCoordinateReferenceSystem());
-        
-        System.out.println(expected);
-        
-        ReferencedEnvelope actual = vp.getBounds();
-        System.out.println(actual);
 
-        assertTrue( expected.boundsEquals2D(actual, TOL) );
+        assertAspectCorrection(SCREEN_2_1, expected);
+    }
+
+    @Test
+    public void setBoundsWithAspectCorrection_1_2() {
+        double h = WORLD.getHeight();
+        ReferencedEnvelope expected = new ReferencedEnvelope(
+                WORLD.getMinX(), WORLD.getMaxX(),
+                WORLD.getMinY() - h/2, WORLD.getMaxY() + h/2,
+                WORLD.getCoordinateReferenceSystem());
+        
+        assertAspectCorrection(SCREEN_1_2, expected);
+    }
+    
+    private void assertAspectCorrection(Rectangle screenArea, ReferencedEnvelope expectedBounds) {
+        MapViewport vp = new MapViewport();
+        vp.setCorrectAspectRatio(true);
+        
+        vp.setScreenArea(screenArea);
+        vp.setBounds(WORLD);
+        
+        assertTrue( expectedBounds.boundsEquals2D(vp.getBounds(), TOL) );
     }
 }

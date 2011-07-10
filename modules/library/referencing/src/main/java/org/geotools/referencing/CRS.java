@@ -16,67 +16,84 @@
  */
 package org.geotools.referencing;
 
-import java.util.Set;
-import java.util.Map;
-import java.util.HashSet;
-import java.util.StringTokenizer;
-import java.util.NoSuchElementException;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Set;
+import java.util.StringTokenizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.opengis.metadata.extent.Extent;
-import org.opengis.metadata.extent.BoundingPolygon;
-import org.opengis.metadata.extent.GeographicExtent;
-import org.opengis.metadata.extent.GeographicBoundingBox;
-import org.opengis.metadata.citation.Citation;
-import org.opengis.referencing.*;
-import org.opengis.referencing.crs.*;
-import org.opengis.referencing.datum.*;
-import org.opengis.referencing.operation.*;
-import org.opengis.referencing.cs.AxisDirection;
-import org.opengis.referencing.cs.EllipsoidalCS;
-import org.opengis.referencing.cs.CartesianCS;
-import org.opengis.referencing.cs.CoordinateSystem;
-import org.opengis.referencing.cs.CoordinateSystemAxis;
-import org.opengis.referencing.operation.CoordinateOperation;
-import org.opengis.referencing.operation.CoordinateOperationFactory;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.TransformException;
-import org.opengis.geometry.Geometry;
-import org.opengis.geometry.Envelope;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.geometry.MismatchedReferenceSystemException;
-
-import org.geotools.factory.GeoTools;
-import org.geotools.factory.Hints;
 import org.geotools.factory.Factory;
 import org.geotools.factory.FactoryNotFoundException;
 import org.geotools.factory.FactoryRegistryException;
+import org.geotools.factory.GeoTools;
+import org.geotools.factory.Hints;
 import org.geotools.geometry.Envelope2D;
-import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.GeneralDirectPosition;
+import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.metadata.iso.extent.GeographicBoundingBoxImpl;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.referencing.cs.DefaultEllipsoidalCS;
 import org.geotools.referencing.cs.DefaultCoordinateSystemAxis;
+import org.geotools.referencing.cs.DefaultEllipsoidalCS;
 import org.geotools.referencing.factory.AbstractAuthorityFactory;
 import org.geotools.referencing.factory.IdentifiedObjectFinder;
 import org.geotools.referencing.operation.DefaultMathTransformFactory;
 import org.geotools.referencing.operation.projection.MapProjection;
 import org.geotools.referencing.operation.transform.IdentityTransform;
 import org.geotools.referencing.wkt.Formattable;
-import org.geotools.resources.geometry.XRectangle2D;
 import org.geotools.resources.CRSUtilities;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.resources.geometry.XRectangle2D;
 import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.util.Version;
+import org.geotools.resources.i18n.Errors;
 import org.geotools.util.GenericName;
-import org.geotools.util.logging.Logging;
 import org.geotools.util.UnsupportedImplementationException;
+import org.geotools.util.Version;
+import org.geotools.util.logging.Logging;
+import org.opengis.geometry.DirectPosition;
+import org.opengis.geometry.Envelope;
+import org.opengis.geometry.Geometry;
+import org.opengis.geometry.MismatchedDimensionException;
+import org.opengis.geometry.MismatchedReferenceSystemException;
+import org.opengis.metadata.citation.Citation;
+import org.opengis.metadata.extent.BoundingPolygon;
+import org.opengis.metadata.extent.Extent;
+import org.opengis.metadata.extent.GeographicBoundingBox;
+import org.opengis.metadata.extent.GeographicExtent;
+import org.opengis.referencing.AuthorityFactory;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.IdentifiedObject;
+import org.opengis.referencing.NoSuchAuthorityCodeException;
+import org.opengis.referencing.ReferenceIdentifier;
+import org.opengis.referencing.crs.CRSAuthorityFactory;
+import org.opengis.referencing.crs.CompoundCRS;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.crs.GeneralDerivedCRS;
+import org.opengis.referencing.crs.GeographicCRS;
+import org.opengis.referencing.crs.ProjectedCRS;
+import org.opengis.referencing.crs.SingleCRS;
+import org.opengis.referencing.crs.TemporalCRS;
+import org.opengis.referencing.crs.VerticalCRS;
+import org.opengis.referencing.cs.AxisDirection;
+import org.opengis.referencing.cs.CartesianCS;
+import org.opengis.referencing.cs.CoordinateSystem;
+import org.opengis.referencing.cs.CoordinateSystemAxis;
+import org.opengis.referencing.cs.EllipsoidalCS;
+import org.opengis.referencing.datum.Datum;
+import org.opengis.referencing.datum.Ellipsoid;
+import org.opengis.referencing.datum.GeodeticDatum;
+import org.opengis.referencing.operation.CoordinateOperation;
+import org.opengis.referencing.operation.CoordinateOperationFactory;
+import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.MathTransform2D;
+import org.opengis.referencing.operation.NoninvertibleTransformException;
+import org.opengis.referencing.operation.TransformException;
 
 
 /**
@@ -116,6 +133,9 @@ import org.geotools.util.UnsupportedImplementationException;
  * @tutorial http://docs.codehaus.org/display/GEOTOOLS/Coordinate+Transformation+Services+for+Geotools+2.1
  */
 public final class CRS {
+    
+    static final Logger LOGGER = Logging.getLogger(CRS.class);
+    
     /**
      * Enumeration describing axis order for geographic coordinate reference systems.
      */
@@ -869,6 +889,28 @@ search:             if (DefaultCoordinateSystemAxis.isCompassDirection(axis.getD
      * @since 2.5
      */
     public static String toSRS(final CoordinateReferenceSystem crs) {
+        boolean forcedLonLat = false;
+        try {
+            forcedLonLat = Boolean.getBoolean("org.geotools.referencing.forceXY") || 
+                Boolean.TRUE.equals(Hints.getSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER));
+        } catch(Exception e) {
+            // all right it was a best effort attempt
+            LOGGER.log(Level.FINE, "Failed to determine if we are in forced lon/lat mode", e);
+        }
+        if (forcedLonLat && CRS.getAxisOrder(crs, false) == AxisOrder.NORTH_EAST) {
+            try {
+                // not usual axis order, check if we can have a EPSG code
+                Integer code = CRS.lookupEpsgCode(crs, false);
+                if (code != null) {
+                    return "urn:ogc:def:crs:EPSG::" + code;
+                }
+            } catch (Exception e) {
+                // all right it was a best effort attempt
+                LOGGER.log(Level.FINE, "Failed to determine EPSG code", e);
+            }
+        }
+        
+        // fall back on simple lookups
         if( crs == null ){
             return null;
         }
@@ -903,7 +945,7 @@ search:             if (DefaultCoordinateSystemAxis.isCompassDirection(axis.getD
             // like : "couldnt decode SRS - EPSG:EPSG:4326. currently
             // only supporting EPSG #"; looks like they only needs the
             // SRID. adjust
-            final int index = srsName.indexOf(':');
+            final int index = srsName.lastIndexOf(':');
             if (index > 0) {
                 //LOGGER.info("Reducing CRS name [" + srsName+ "] to its SRID");
                 srsName = srsName.substring(index + 1).trim();

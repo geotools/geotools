@@ -32,9 +32,20 @@ public abstract class JDBCVirtualTableTest extends JDBCTestSupport {
     @Override
     protected void connect() throws Exception {
         super.connect();
+        
+        // a plain view without specs, used to check we guess the geometry field properly
+        StringBuffer sb = new StringBuffer();
+        sb.append("select * from ");
+        if (dbSchemaName!=null) {
+            dialect.encodeSchemaName(dbSchemaName, sb);
+            sb.append(".");
+        }
+        dialect.encodeTableName(tname("river"), sb);
+        VirtualTable vt = new VirtualTable("riverFull", sb.toString());
+        dataStore.addVirtualTable(vt);
     
         // a first vt with a condition, computing a new field
-        StringBuffer sb = new StringBuffer();
+        sb = new StringBuffer();
         sb.append("select ");
         dialect.encodeColumnName(aname("id"), sb);
         sb.append(", ");
@@ -54,7 +65,7 @@ public abstract class JDBCVirtualTableTest extends JDBCTestSupport {
         sb.append(" where ");
         dialect.encodeColumnName(aname("flow"), sb);
         sb.append(" > 4");
-        VirtualTable vt = new VirtualTable("riverReduced", sb.toString());
+        vt = new VirtualTable("riverReduced", sb.toString());
         vt.addGeometryMetadatata("geom", LineString.class, 4326);
         dataStore.addVirtualTable(vt);
         
@@ -86,6 +97,13 @@ public abstract class JDBCVirtualTableTest extends JDBCTestSupport {
         vt.addParameter(new VirtualTableParameter("mul", "1", new RegexpValidator("[\\d\\.e\\+-]+")));
         vt.addParameter(new VirtualTableParameter("where", ""));
         dataStore.addVirtualTable(vt);
+    }
+    
+    public void testGuessGeometry() throws Exception {
+        SimpleFeatureType type = dataStore.getSchema("riverFull");
+        assertNotNull(type);
+        
+        assertNotNull(type.getGeometryDescriptor());
     }
 
     public void testRiverReducedSchema() throws Exception {

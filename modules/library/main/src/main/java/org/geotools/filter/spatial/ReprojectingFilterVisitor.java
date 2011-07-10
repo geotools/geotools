@@ -2,7 +2,7 @@
  * This code is licensed under the GPL 2.0 license, available at the root
  * application directory.
  */
-package org.geotools.data.wfs.v1_1_0;
+package org.geotools.filter.spatial;
 
 import java.util.List;
 
@@ -10,8 +10,8 @@ import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
-import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.FilterFactory2;
@@ -35,6 +35,7 @@ import org.opengis.filter.spatial.Intersects;
 import org.opengis.filter.spatial.Overlaps;
 import org.opengis.filter.spatial.Touches;
 import org.opengis.filter.spatial.Within;
+import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -47,16 +48,12 @@ import com.vividsolutions.jts.geom.Geometry;
  * always a {@link Literal}
  * 
  * @author Andrea Aime - The Open Planning Project
- * @todo: this class is copied from GeoServer, and it seems it would be good to port it to GeoTools
- *
- *
- *
- * @source $URL$
+ * 
  */
 public class ReprojectingFilterVisitor extends DuplicatingFilterVisitor {
-    SimpleFeatureType featureType;
+    FeatureType featureType;
 
-    public ReprojectingFilterVisitor(FilterFactory2 factory, SimpleFeatureType featureType) {
+    public ReprojectingFilterVisitor(FilterFactory2 factory, FeatureType featureType) {
         super(factory);
         this.featureType = featureType;
     }
@@ -90,7 +87,13 @@ public class ReprojectingFilterVisitor extends DuplicatingFilterVisitor {
             double miny = filter.getMinY();
             double maxx = filter.getMaxX();
             double maxy = filter.getMaxY();
-            CoordinateReferenceSystem crs = CRS.decode(srs);
+            // parse the srs, it might be a code or a WKT definition
+            CoordinateReferenceSystem crs;
+            try {
+                crs = CRS.decode(srs);
+            } catch (NoSuchAuthorityCodeException e) {
+                crs = CRS.parseWKT(srs);
+            }
 
             // grab the property data
             String propertyName = filter.getPropertyName();
@@ -104,7 +107,14 @@ public class ReprojectingFilterVisitor extends DuplicatingFilterVisitor {
                 miny = envelope.getMinY();
                 maxx = envelope.getMaxX();
                 maxy = envelope.getMaxY();
-                srs = targetCrs.getIdentifiers().iterator().next().toString();
+
+                // set the srs. If we have a code we use it, otherwise we use a WKT definition
+                if (targetCrs.getIdentifiers().isEmpty()) {
+                    // fall back to WKT
+                    srs = targetCrs.toString();
+                } else {
+                    srs = targetCrs.getIdentifiers().iterator().next().toString();
+                }
             }
 
             return getFactory(extraData).bbox(propertyName, minx, miny, maxx, maxy, srs);
@@ -461,11 +471,7 @@ public class ReprojectingFilterVisitor extends DuplicatingFilterVisitor {
         public String getName() {
             return delegate.getName();
         }
-        
-        public FunctionName getFunctionName() {
-            return delegate.getFunctionName();
-        }
-        
+
         public List<Expression> getParameters() {
             return delegate.getParameters();
         }
@@ -486,6 +492,10 @@ public class ReprojectingFilterVisitor extends DuplicatingFilterVisitor {
 
         public Literal getFallbackValue() {
             return null;
+        }
+
+        public FunctionName getFunctionName() {
+            return delegate.getFunctionName();
         }
     }
 

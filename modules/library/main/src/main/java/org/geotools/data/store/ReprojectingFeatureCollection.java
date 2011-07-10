@@ -26,6 +26,7 @@ import org.geotools.data.FeatureReader;
 import org.geotools.data.collection.DelegateFeatureReader;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.FeatureTypes;
@@ -34,12 +35,15 @@ import org.geotools.feature.collection.DecoratingFeatureCollection;
 import org.geotools.feature.collection.DecoratingSimpleFeatureCollection;
 import org.geotools.feature.collection.DelegateFeatureIterator;
 import org.geotools.feature.collection.DelegateSimpleFeatureIterator;
+import org.geotools.filter.spatial.DefaultCRSFilterVisitor;
+import org.geotools.filter.spatial.ReprojectingFilterVisitor;
 import org.geotools.geometry.jts.GeometryCoordinateSequenceTransformer;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
+import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -57,6 +61,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * @source $URL$
  */
 public class ReprojectingFeatureCollection extends DecoratingSimpleFeatureCollection {
+    static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2(null);
 
     /**
      * The transform to the target coordinate reference system
@@ -166,26 +171,19 @@ public class ReprojectingFeatureCollection extends DecoratingSimpleFeatureCollec
     }
 
     public SimpleFeatureCollection subCollection(Filter filter) {
-        Filter unFilter = unFilter(filter);
-        return new ReprojectingFeatureCollection(delegate
-                .subCollection(unFilter), target);
-        // TODO: return new delegate.subCollection( filter ).reproject( target
-        // );
-    }
-
-    /**
-     * Takes any literal geometry in the provided filter and backprojects it
-     * 
-     * @param FilterFactory
-     * @param MathTransform
-     */
-    private Filter unFilter(Filter filter) {
-        // need: filterFactory
-        // need: inverse of our transform
-        // FilterVisitor fv = new ReprojectingFilterVisitor(ff, transform);
-        // filter.accept(fv, null);
-        // TODO: create FilterVisitor that backproject literal geometry
-        return filter;
+        // reproject the filter to the delegate native crs
+        CoordinateReferenceSystem crs = getSchema().getCoordinateReferenceSystem();
+        CoordinateReferenceSystem crsDelegate = delegate.getSchema().getCoordinateReferenceSystem();
+        if(crs != null) {
+            DefaultCRSFilterVisitor defaulter = new DefaultCRSFilterVisitor(FF, crs);
+            filter = (Filter) filter.accept(defaulter, null);
+            if(crsDelegate != null && !CRS.equalsIgnoreMetadata(crs, crsDelegate)) {
+                ReprojectingFilterVisitor reprojector = new ReprojectingFilterVisitor(FF, delegate.getSchema());
+                filter = (Filter) filter.accept(reprojector, null);
+            }
+        }
+        
+        return new ReprojectingFeatureCollection(delegate.subCollection(filter), target);
     }
 
     public SimpleFeatureCollection sort(SortBy order) {

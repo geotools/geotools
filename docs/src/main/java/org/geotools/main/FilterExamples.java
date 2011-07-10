@@ -4,12 +4,9 @@ import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -23,7 +20,6 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureCollections;
 import org.geotools.filter.FunctionFactory;
-import org.geotools.filter.FunctionFinder;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.geometry.DirectPosition2D;
@@ -33,9 +29,6 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.swing.JMapFrame;
 import org.geotools.swing.event.MapMouseEvent;
-import org.geotools.temporal.object.DefaultInstant;
-import org.geotools.temporal.object.DefaultPeriod;
-import org.geotools.temporal.object.DefaultPosition;
 import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
@@ -46,14 +39,11 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.identity.FeatureId;
-import org.opengis.filter.temporal.After;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.parameter.Parameter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
-import org.opengis.temporal.Instant;
-import org.opengis.temporal.Period;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Point;
@@ -241,7 +231,7 @@ SimpleFeatureCollection click1(MapMouseEvent ev) throws Exception {
     java.awt.Point screenPos = ev.getPoint();
     
     Rectangle screenRect = new Rectangle(screenPos.x - 1, screenPos.y - 1, 3, 3);
-    CoordinateReferenceSystem worldCRS = mapFrame.getMapContext().getCoordinateReferenceSystem();
+    CoordinateReferenceSystem worldCRS = mapFrame.getMapContent().getCoordinateReferenceSystem();
     // Transform the screen rectangle into bounding box in the coordinate reference system of our
     // map context.
     AffineTransform screenToWorld = mapFrame.getMapPane().getScreenToWorldTransform();

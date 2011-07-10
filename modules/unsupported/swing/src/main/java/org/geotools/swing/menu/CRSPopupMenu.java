@@ -101,12 +101,12 @@ public class CRSPopupMenu extends JPopupMenu {
     /**
      * {@inheritDoc}
      * The menu items will only be enabled when both the {@code JMapPane} associated with
-     * this menu, and its {@code MapContext}, are non-null.
+     * this menu, and its {@code MapContent}, are non-null.
      *
      */
     @Override
     public void show(Component invoker, int x, int y) {
-        boolean enabled = (mapPane != null && mapPane.getMapContext() != null);
+        boolean enabled = (mapPane != null && mapPane.getMapContent() != null);
         for (Component c : getComponents()) {
             if (c instanceof JMenuItem) {
                 c.setEnabled(enabled);
@@ -119,8 +119,8 @@ public class CRSPopupMenu extends JPopupMenu {
      * Action method for the "Set CRS" item in the CRS label pop-up menu
      */
     private void setCRS() {
-        if (mapPane != null && mapPane.getMapContext() != null) {
-            CoordinateReferenceSystem crs = mapPane.getMapContext().getCoordinateReferenceSystem();
+        if (mapPane != null && mapPane.getMapContent() != null) {
+            CoordinateReferenceSystem crs = mapPane.getMapContent().getCoordinateReferenceSystem();
             String initialSelection = null;
             try {
                 if (crs != null) {
@@ -136,7 +136,7 @@ public class CRSPopupMenu extends JPopupMenu {
 
             if (newCRS != null && (crs == null || !CRS.equalsIgnoreMetadata(crs, newCRS))) {
                 try {
-                    mapPane.getMapContext().setCoordinateReferenceSystem(newCRS);
+                    mapPane.getMapContent().getViewport().setCoordinateReferenceSystem(newCRS);
 
                 } catch (Exception ex) {
                     ExceptionMonitor.show(this, ex, "Failed to set the display CRS");
@@ -149,8 +149,8 @@ public class CRSPopupMenu extends JPopupMenu {
      * Action method for the "Set CRS" item in the CRS label pop-up menu
      */
     private void showCRS() {
-        if (mapPane != null && mapPane.getMapContext() != null) {
-            CoordinateReferenceSystem crs = mapPane.getMapContext().getCoordinateReferenceSystem();
+        if (mapPane != null && mapPane.getMapContent() != null) {
+            CoordinateReferenceSystem crs = mapPane.getMapContent().getCoordinateReferenceSystem();
             String wkt = crs.toWKT();
             JTextReporter reporter = new JTextReporter("Coordinate reference system");
             reporter.append(wkt);

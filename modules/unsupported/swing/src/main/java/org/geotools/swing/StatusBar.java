@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2009-2011, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -34,7 +34,6 @@ import net.miginfocom.swing.MigLayout;
 
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.map.MapContext;
 import org.geotools.swing.event.MapMouseAdapter;
 import org.geotools.swing.event.MapMouseEvent;
 import org.geotools.swing.event.MapMouseListener;
@@ -67,7 +66,6 @@ public class StatusBar extends JPanel {
     private static final ResourceBundle stringRes = ResourceBundle.getBundle("org/geotools/swing/Text");
 
     private JMapPane mapPane;
-    private MapContext context;
     private MapMouseListener mouseListener;
     private MapPaneAdapter mapPaneListener;
 
@@ -83,8 +81,7 @@ public class StatusBar extends JPanel {
 
     /**
      * Default constructor.
-     * {@linkplain #setMapPane} must be
-     * called subsequently for the status bar to receive mouse events.
+     * {@link#setMapPane} must be called subsequently.
      */
     public StatusBar() {
         this(null);
@@ -93,26 +90,35 @@ public class StatusBar extends JPanel {
     /**
      * Constructor. Links the status bar to the specified map pane.
      *
-     * @param pane the map pane that will send mouse events to this
-     * status bar
+     * @param pane the map pane
      */
     public StatusBar(JMapPane pane) {
         createListeners();
         initComponents();
 
         if (pane != null) {
-            setMapPane(pane);
+            doSetMapPane(pane);
         }
     }
 
     /**
-     * Register this status bar to receive mouse events from
-     * the given map pane
+     * Associates this status bar with a map pane.
      *
      * @param newPane the map pane
-     * @throws IllegalArgumentException if pane is null
+     * @throws IllegalArgumentException if pane is {@code null}
      */
     public void setMapPane(final JMapPane newPane) {
+        doSetMapPane(newPane);
+    }
+
+    /**
+     * Helper for {@link #setMapPane(JMapPane)}. This is just defined so that
+     * it can be called from the constructor without a warning from the compiler
+     * about calling a public overridable method.
+     * 
+     * @param newPane the map pane
+     */
+    private void doSetMapPane(final JMapPane newPane) {
         if (newPane == null) {
             throw new IllegalArgumentException(stringRes.getString("arg_null_error"));
         }
@@ -124,7 +130,6 @@ public class StatusBar extends JPanel {
 
             newPane.addMouseListener(mouseListener);
             newPane.addMapPaneListener(mapPaneListener);
-            context = newPane.getMapContext();
             mapPane = newPane;
 
             crsMenu.setMapPane(mapPane);

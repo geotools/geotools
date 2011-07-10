@@ -6,8 +6,9 @@ import org.geotools.data.CachingFeatureSource;
 import org.geotools.data.FileDataStore;
 import org.geotools.data.FileDataStoreFinder;
 import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.map.DefaultMapContext;
-import org.geotools.map.MapContext;
+import org.geotools.map.FeatureLayer;
+import org.geotools.map.Layer;
+import org.geotools.map.MapContent;
 import org.geotools.swing.JMapFrame;
 import org.geotools.swing.data.JFileDataStoreChooser;
 
@@ -39,9 +40,10 @@ public class QuickstartCache {
         CachingFeatureSource cache = new CachingFeatureSource(featureSource);
 
         // Create a map context and add our shapefile to it
-        MapContext map = new DefaultMapContext();
+        MapContent map = new MapContent();
         map.setTitle("Using cached features");
-        map.addLayer(cache, null);
+        Layer layer = new FeatureLayer(cache, null);
+        map.addLayer(layer);
 
         // Now display the map
         JMapFrame.showMap(map);

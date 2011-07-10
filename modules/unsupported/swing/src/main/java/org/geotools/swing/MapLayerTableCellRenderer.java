@@ -29,8 +29,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
-
-import org.geotools.map.MapLayer;
+import org.geotools.map.Layer;
 
 /**
  * A custom list cell renderer for items in the JList used by {@linkplain MapLayerTable}
@@ -257,7 +256,7 @@ public class MapLayerTableCellRenderer extends JPanel implements ListCellRendere
             boolean isSelected, // is the cell selected
             boolean cellHasFocus) // the list and the cell have the focus
     {
-        MapLayer layer = (MapLayer)value;
+        Layer layer = (Layer)value;
         String name = layer.getTitle();
         if (name == null || name.trim().length() == 0) {
             name = layer.getFeatureSource().getName().getLocalPart();

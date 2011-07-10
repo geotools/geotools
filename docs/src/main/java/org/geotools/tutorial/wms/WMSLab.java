@@ -37,14 +37,14 @@ public class WMSLab extends JFrame {
             JOptionPane.showMessageDialog(null, "Could not connect - check url");
             System.exit(0);
         }
-        MapContext mapcontext = new DefaultMapContext();
-        mapcontext.setTitle( wms.getCapabilities().getService().getTitle() );
+        MapContext mapcontent = new DefaultMapContext();
+        mapcontent.setTitle( wms.getCapabilities().getService().getTitle() );
         
         for( Layer wmsLayer : wmsLayers ){
             WMSMapLayer displayLayer = new WMSMapLayer(wms, wmsLayer );
-            mapcontext.addLayer( displayLayer );
+            mapcontent.addLayer(displayLayer);
         }
         // Now display the map
-        JMapFrame.showMap(mapcontext);
+        JMapFrame.showMap(mapcontent);
     }
 }

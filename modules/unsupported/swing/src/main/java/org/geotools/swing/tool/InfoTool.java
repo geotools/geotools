@@ -34,16 +34,16 @@ import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.map.MapContext;
-import org.geotools.map.MapLayer;
+import org.geotools.map.Layer;
+import org.geotools.map.MapContent;
 import org.geotools.swing.JTextReporter;
 import org.geotools.swing.TextReporterListener;
 import org.geotools.swing.event.MapMouseEvent;
-import org.geotools.swing.utils.MapLayerUtils;
 import org.opengis.feature.Feature;
 import org.opengis.feature.Property;
 
 import com.vividsolutions.jts.geom.Geometry;
+import org.geotools.map.RasterLayer;
 
 /**
  * A cursor tool to retrieve information about features that the user clicks
@@ -89,7 +89,7 @@ public class InfoTool extends CursorTool implements TextReporterListener {
 
     private JTextReporter reporter;
 
-    private WeakHashMap<MapLayer, InfoToolHelper> helperTable;
+    private WeakHashMap<Layer, InfoToolHelper> helperTable;
 
     /**
      * Constructor
@@ -105,16 +105,16 @@ public class InfoTool extends CursorTool implements TextReporterListener {
 
         cursor = tk.createCustomCursor(cursorIcon.getImage(), CURSOR_HOTSPOT, TOOL_TIP);
 
-        helperTable = new WeakHashMap<MapLayer, InfoToolHelper>();
+        helperTable = new WeakHashMap<Layer, InfoToolHelper>();
     }
 
     /**
-     * Respond to a mouse click by querying each of the {@code MapLayers}. The
+     * Respond to a mouse click by querying each of the {@code Layers}. The
      * details of features lying within the threshold distance of the mouse
      * position are reported on screen using a {@code JTextReporter} dialog.
      * <p>
      * <b>Implementation note:</b> An instance of {@code InfoToolHelper} is created
-     * and cached for each of the {@code MapLayers}. The helpers are created using
+     * and cached for each of the {@code Layers}. The helpers are created using
      * reflection to avoid direct references to grid coverage classes here that would
      * required JAI (Java Advanced Imaging) to be on the classpath even when only
      * vector layers are being used.
@@ -129,8 +129,8 @@ public class InfoTool extends CursorTool implements TextReporterListener {
         DirectPosition2D pos = ev.getMapPosition();
         report(pos);
 
-        MapContext context = getMapPane().getMapContext();
-        for (MapLayer layer : context.getLayers()) {
+        MapContent content = getMapPane().getMapContent();
+        for (Layer layer : content.layers()) {
             if (layer.isSelected()) {
                 InfoToolHelper helper = null;
 
@@ -145,11 +145,11 @@ public class InfoTool extends CursorTool implements TextReporterListener {
                 
                 helper = helperTable.get(layer);
                 if (helper == null) {
-                    if (MapLayerUtils.isGridLayer(layer)) {
+                    if (layer instanceof RasterLayer) {
                         try {
                             Class<?> clazz = Class.forName("org.geotools.swing.tool.GridLayerHelper");
-                            Constructor<?> ctor = clazz.getConstructor(MapContext.class, MapLayer.class);
-                            helper = (InfoToolHelper) ctor.newInstance(context, layer);
+                            Constructor<?> ctor = clazz.getConstructor(MapContent.class, Layer.class);
+                            helper = (InfoToolHelper) ctor.newInstance(content, layer);
                             helperTable.put(layer, helper);
 
                         } catch (Exception ex) {
@@ -159,8 +159,8 @@ public class InfoTool extends CursorTool implements TextReporterListener {
                     } else {
                         try {
                             Class<?> clazz = Class.forName("org.geotools.swing.tool.VectorLayerHelper");
-                            Constructor<?> ctor = clazz.getConstructor(MapContext.class, MapLayer.class);
-                            helper = (InfoToolHelper) ctor.newInstance(context, layer);
+                            Constructor<?> ctor = clazz.getConstructor(MapContent.class, Layer.class);
+                            helper = (InfoToolHelper) ctor.newInstance(content, layer);
                             helperTable.put(layer, helper);
 
                         } catch (Exception ex) {

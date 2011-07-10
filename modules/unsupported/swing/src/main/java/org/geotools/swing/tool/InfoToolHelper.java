@@ -21,14 +21,14 @@ import java.lang.ref.WeakReference;
 import java.util.logging.Logger;
 
 import org.geotools.geometry.DirectPosition2D;
-import org.geotools.map.MapContext;
+import org.geotools.map.MapContent;
 import org.geotools.referencing.CRS;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 
 /**
  * Abstract base class for helper classes used by {@code InfoTool} to query
- * {@code MapLayers}. The primary reason for having this class is to avoid
+ * {@code Layers}. The primary reason for having this class is to avoid
  * loading grid coverage classes unless they are really needed, and thus
  * avoid the need for users to have JAI in the classpath when working with
  * vector data.
@@ -48,7 +48,7 @@ import org.opengis.referencing.operation.MathTransform;
 public abstract class InfoToolHelper<T> {
     private static final Logger LOGGER = Logger.getLogger(VectorLayerHelper.class.getName());
 
-    private final WeakReference<MapContext> contextRef;
+    private final WeakReference<MapContent> contentRef;
     private CoordinateReferenceSystem dataCRS;
     private boolean transformRequired;
     private boolean transformFailed;
@@ -57,12 +57,12 @@ public abstract class InfoToolHelper<T> {
     /**
      * Protected constructor.
      *
-     * @param context the map context
+     * @param content the map content
      * @param dataCRS the coordinate reference system of the feature data that will be queried
      *        by this helper
      */
-    protected InfoToolHelper(MapContext context, CoordinateReferenceSystem dataCRS) {
-        this.contextRef = new WeakReference<MapContext>(context);
+    protected InfoToolHelper(MapContent content, CoordinateReferenceSystem dataCRS) {
+        this.contentRef = new WeakReference<MapContent>(content);
         setCRS(dataCRS);
     }
 
@@ -80,9 +80,9 @@ public abstract class InfoToolHelper<T> {
     public abstract T getInfo(DirectPosition2D pos, Object ...params) throws Exception;
 
     /**
-     * Query if this helper has a reference to a {@code MapContext} and {@code MapLayer}.
+     * Query if this helper has a reference to a {@code MapContent} and {@code Layer}.
      * <p>
-     * Helpers only hold a {@linkplain WeakReference} to the map context and layer
+     * Helpers only hold a {@linkplain WeakReference} to the map content and layer
      * with which they are working to avoid blocking garbage collection when layers are
      * discarded. If this method returns {@code false} the helper should be re-created.
      * <pre><code>
@@ -98,7 +98,7 @@ public abstract class InfoToolHelper<T> {
      * } else {
      *     // (Re-)create the helper
      *     // Note: example only; this obviously depends on your use case
-     *     helper = new VectorLayerHelper(context, layer);
+     *     helper = new VectorLayerHelper(content, layer);
      * }
      * </code></pre>
      *
@@ -107,13 +107,13 @@ public abstract class InfoToolHelper<T> {
     public abstract boolean isValid();
 
     /**
-     * Get the {@code MapContext} associated with this helper. The helper maintains
-     * only a {@linkplain WeakReference} to the context.
+     * Get the {@code MapContent} associated with this helper. The helper maintains
+     * only a {@linkplain WeakReference} to the content.
      *
-     * @return the map context or null if it is no longer current.
+     * @return the map content or null if it is no longer current.
      */
-    public MapContext getMapContext() {
-        return contextRef != null ? contextRef.get() : null;
+    public MapContent getMapContent() {
+        return contentRef != null ? contentRef.get() : null;
     }
 
     /**
@@ -127,24 +127,24 @@ public abstract class InfoToolHelper<T> {
     }
 
     /**
-     * Get the {@code MathTransform} to reproject data from the coordinate system of
-     * the {@code MapContext's} to that of the {@code MapLayer}.
+     * Get the {@code MathTransform} to re-project data from the coordinate system of
+     * the {@code MapContent} to that of the {@code Layer}.
      *
      * @return the transform or {@code null} if either the layer's coordinate system is the same
-     *         as that of the map context, or either has a {@code null} CRS.
+     *         as that of the map content, or either has a {@code null} CRS.
      */
     public MathTransform getTransform() {
         if (transform == null && !transformFailed && dataCRS != null) {
-            MapContext context = getMapContext();
-            if (context == null) {
-                throw new IllegalStateException("map context should not be null");
+            MapContent content = getMapContent();
+            if (content == null) {
+                throw new IllegalStateException("null map content");
             }
 
-            CoordinateReferenceSystem contextCRS = context.getCoordinateReferenceSystem();
+            CoordinateReferenceSystem contentCRS = content.getCoordinateReferenceSystem();
             try {
-                transform = CRS.findMathTransform(contextCRS, dataCRS, true);
+                transform = CRS.findMathTransform(contentCRS, dataCRS, true);
             } catch (Exception ex) {
-                LOGGER.warning("Can't transform map context to map layer CRS");
+                LOGGER.warning("Can't transform map content to layer CRS");
                 transformFailed = true;
             }
         }
@@ -161,14 +161,14 @@ public abstract class InfoToolHelper<T> {
     protected void setCRS(CoordinateReferenceSystem crs) {
         this.dataCRS = crs;
 
-        MapContext context = getMapContext();
-        if (context == null) {
-            throw new IllegalStateException("map context should not be null");
+        MapContent content = getMapContent();
+        if (content == null) {
+            throw new IllegalStateException("null map content");
         }
 
-        final CoordinateReferenceSystem contextCRS = context.getCoordinateReferenceSystem();
+        final CoordinateReferenceSystem contentCRS = content.getCoordinateReferenceSystem();
         transformRequired = false;
-        if (contextCRS != null && crs != null && !CRS.equalsIgnoreMetadata(contextCRS, dataCRS)) {
+        if (contentCRS != null && crs != null && !CRS.equalsIgnoreMetadata(contentCRS, dataCRS)) {
             transformRequired = true;
         }
     }

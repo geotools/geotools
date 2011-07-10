@@ -27,8 +27,8 @@ import org.geotools.geometry.jts.Geometries;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.map.MapContext;
-import org.geotools.map.MapLayer;
+import org.geotools.map.Layer;
+import org.geotools.map.MapContent;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.GeometryDescriptor;
@@ -42,11 +42,11 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 
 /**
- * Helper class used by {@code InfoTool} to query {@code MapLayers}
+ * Helper class used by {@code InfoTool} to query {@code Layers}
  * with vector feature data.
  * <p>
  * Implementation note: this class keeps only a weak reference to
- * the {@code MapLayer} it is working with to avoid memory leaks if
+ * the {@code Layer} it is working with to avoid memory leaks if
  * the layer is deleted.
  *
  * @see InfoTool
@@ -63,23 +63,20 @@ public class VectorLayerHelper extends InfoToolHelper<FeatureCollection> {
 
     private static final GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory(null);
     private static final FilterFactory2 filterFactory = CommonFactoryFinder.getFilterFactory2(null);
-    private final WeakReference<MapLayer> layerRef;
+    private final WeakReference<Layer> layerRef;
     private final String attrName;
     private final boolean isPolygonGeometry;
 
     /**
-     * Create a new helper to work with a {@code MapLayer} that has vector feature data.
+     * Create a new helper to work with a {@code Layer} that has vector feature data.
      *
+     * @param content the map content
      * @param layer the map layer
-     *
-     * @param geomAttributeName the name of the geometry attribute for {@code Features}
-     *
-     * @param geomClass the geometry class
      */
-    public VectorLayerHelper(MapContext context, MapLayer layer) {
-        super(context, layer.getFeatureSource().getSchema().getCoordinateReferenceSystem());
+    public VectorLayerHelper(MapContent content, Layer layer) {
+        super(content, layer.getFeatureSource().getSchema().getCoordinateReferenceSystem());
 
-        this.layerRef = new WeakReference<MapLayer>(layer);
+        this.layerRef = new WeakReference<Layer>(layer);
 
         final GeometryDescriptor geomDesc = layer.getFeatureSource().getSchema().getGeometryDescriptor();
         this.attrName = geomDesc.getLocalName();
@@ -93,17 +90,17 @@ public class VectorLayerHelper extends InfoToolHelper<FeatureCollection> {
      * {@inheritDoc}
      */
     public boolean isValid() {
-        return getMapContext() != null && layerRef != null && layerRef.get() != null;
+        return getMapContent() != null && layerRef != null && layerRef.get() != null;
     }
 
     /**
-     * Get the {@code MapLayer} that this helper is working with.
+     * Get the {@code Layer} that this helper is working with.
      *
-     * @return the {@code MapLayer} or null if the original layer is no longer valid
+     * @return the {@code Layer} or null if the original layer is no longer valid
      *
      * @see #isValid()
      */
-    public MapLayer getMapLayer() {
+    public Layer getLayer() {
         return layerRef != null ? layerRef.get() : null;
     }
 
@@ -128,7 +125,7 @@ public class VectorLayerHelper extends InfoToolHelper<FeatureCollection> {
     public FeatureCollection getInfo(DirectPosition2D pos, Object... params) throws IOException {
 
         FeatureCollection<? extends FeatureType, ? extends Feature> collection = null;
-        MapLayer layer = layerRef.get();
+        Layer layer = layerRef.get();
 
         if (layer != null) {
             Filter filter = null;
@@ -151,7 +148,7 @@ public class VectorLayerHelper extends InfoToolHelper<FeatureCollection> {
             }
 
             DefaultQuery query = new DefaultQuery(null, filter);
-            query.setCoordinateSystemReproject(getMapContext().getCoordinateReferenceSystem());
+            query.setCoordinateSystemReproject(getMapContent().getCoordinateReferenceSystem());
             collection = layer.getFeatureSource().getFeatures(query);
         }
 
@@ -175,8 +172,8 @@ public class VectorLayerHelper extends InfoToolHelper<FeatureCollection> {
     }
 
     private ReferencedEnvelope createSearchEnv(DirectPosition2D pos, double radius) {
-        final CoordinateReferenceSystem contextCRS = getMapContext().getCoordinateReferenceSystem();
-        ReferencedEnvelope env = new ReferencedEnvelope(pos.x - radius, pos.x + radius, pos.y - radius, pos.y + radius, contextCRS);
+        final CoordinateReferenceSystem contentCRS = getMapContent().getCoordinateReferenceSystem();
+        ReferencedEnvelope env = new ReferencedEnvelope(pos.x - radius, pos.x + radius, pos.y - radius, pos.y + radius, contentCRS);
         if (isTransformRequired()) {
             CoordinateReferenceSystem layerCRS = layerRef.get().getFeatureSource().getSchema().getCoordinateReferenceSystem();
             try {

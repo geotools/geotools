@@ -19,22 +19,24 @@ package org.geotools.swing.tool;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
-import org.geotools.feature.FeatureIterator;
 import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.map.MapContext;
-import org.geotools.map.MapLayer;
-import org.geotools.swing.utils.MapLayerUtils;
-import org.opengis.feature.Feature;
+import org.geotools.map.GridCoverageLayer;
+import org.geotools.map.GridReaderLayer;
+import org.geotools.map.MapContent;
+import org.geotools.map.RasterLayer;
+
 import org.opengis.geometry.DirectPosition;
 import org.opengis.referencing.operation.MathTransform;
 
 /**
- * Helper class used by {@code InfoTool} to query {@code MapLayers}
+ * Helper class used by {@code InfoTool} to query {@code Layers}
  * with raster feature data ({@code GridCoverage2D} or {@code AbstractGridCoverage2DReader}).
  *
  * @see InfoTool
@@ -48,42 +50,45 @@ import org.opengis.referencing.operation.MathTransform;
  * @version $URL$
  */
 public class GridLayerHelper extends InfoToolHelper<List<Number>> {
-    protected final WeakReference<GridCoverage2D> covRef;
+
+    private enum SourceType {
+        COVERAGE,
+        READER;
+    }
+    
+    private final WeakReference<Object> sourceRef;
+    private final SourceType sourceType;
 
     /**
      * Create a new helper to work with the given raster data source.
      *
-     * @param context the {@code MapContext} associated with this helper
+     * @param content the {@code MapContent} associated with this helper
      * @param rasterSource an instance of either
      *        {@code GridCoverage2D} or {@code AbstractGridCoverage2DReader
      */
-    public GridLayerHelper(MapContext context, MapLayer layer) {
-        super(context, null);
+    public GridLayerHelper(MapContent content, RasterLayer layer) {
+        super(content, null);
 
-        Object rasterSource = null;
+        Object source = null;
         try {
-            FeatureIterator<? extends Feature> iter = layer.getFeatureSource().getFeatures().features();
-            String gridAttrName = MapLayerUtils.getGridAttributeName(layer);
-            rasterSource = iter.next().getProperty(gridAttrName).getValue();
-        } catch (Exception ex) {
-            throw new IllegalStateException("Unable to access raster feature data", ex);
-        }
-
-        GridCoverage2D cov = null;
-        try {
-            if (AbstractGridCoverage2DReader.class.isAssignableFrom(rasterSource.getClass())) {
-                cov = ((AbstractGridCoverage2DReader) rasterSource).read(null);
+            if (layer instanceof GridCoverageLayer) {
+                sourceType = SourceType.COVERAGE;
+                sourceRef = new WeakReference<Object>(((GridCoverageLayer)layer).getCoverage());
+                
+            } else if (layer instanceof GridReaderLayer) {
+                sourceType = SourceType.READER;
+                sourceRef = new WeakReference<Object>(((GridReaderLayer)layer).getReader());
+                
             } else {
-                cov = (GridCoverage2D) rasterSource;
+                throw new IllegalArgumentException("Unrecognized raster layer type");
             }
-
-            this.covRef = new WeakReference<GridCoverage2D>(cov);
+            
 
         } catch (Exception ex) {
             throw new IllegalArgumentException(ex);
         }
 
-        setCRS(cov.getCoordinateReferenceSystem());
+        setCRS(layer.getBounds().getCoordinateReferenceSystem());
     }
 
     /**
@@ -99,37 +104,62 @@ public class GridLayerHelper extends InfoToolHelper<List<Number>> {
      * @throws Exception if the grid coverage could not be queried
      */
     @Override
-    public List<Number> getInfo(DirectPosition2D pos, Object ...params) 
+    public List<Number> getInfo(DirectPosition2D pos, Object... params)
             throws Exception {
-        
+
         List<Number> list = new ArrayList<Number>();
 
         if (isValid()) {
-            GridCoverage2D cov = covRef.get();
-            ReferencedEnvelope env = new ReferencedEnvelope(cov.getEnvelope2D());
-            DirectPosition2D trPos = getTransformed(pos);
-            if (env.contains(trPos)) {
-                Object objArray = cov.evaluate(trPos);
-                Number[] bandValues = asNumberArray(objArray);
-                if (bandValues != null) {
-                    for (Number value : bandValues) {
-                        list.add(value);
+            switch (sourceType) {
+                case COVERAGE: {
+                    GridCoverage2D source = (GridCoverage2D) sourceRef.get();
+                    ReferencedEnvelope env = new ReferencedEnvelope(source.getEnvelope2D());
+                    DirectPosition2D trPos = getTransformed(pos);
+                    if (env.contains(trPos)) {
+                        Object objArray = source.evaluate(trPos);
+                        Number[] bandValues = asNumberArray(objArray);
+                        if (bandValues != null) {
+                            list.addAll(Arrays.asList(bandValues));
+                        }
                     }
                 }
+                break;
+
+                case READER: {
+                    AbstractGridCoverage2DReader reader = (AbstractGridCoverage2DReader) sourceRef.get();
+                    GeneralEnvelope genEnv = reader.getOriginalEnvelope();
+                    DirectPosition2D trPos = getTransformed(pos);
+                    if (genEnv.contains(trPos)) {
+                        Number[] bandValues = getGridReaderValues(trPos);
+                        if (bandValues != null) {
+                            list.addAll(Arrays.asList(bandValues));
+                        }
+                    }
+                }
+                break;
             }
         }
-
+        
         return list;
     }
-
+   
     /**
      * {@inheritDoc}
      */
     @Override
     public boolean isValid() {
-        return (getMapContext() != null && covRef != null && covRef.get() != null);
+        return (getMapContent() != null && sourceRef != null && sourceRef.get() != null);
     }
 
+    /**
+     * TODO: WRITE METHOD !
+     * 
+     * @param trPos
+     * @return 
+     */
+    private Number[] getGridReaderValues(DirectPosition2D trPos) {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
 
     /**
      * Convert the Object returned by {@linkplain GridCoverage2D#evaluate(DirectPosition)} into
@@ -175,11 +205,11 @@ public class GridLayerHelper extends InfoToolHelper<List<Number>> {
 
     /**
      * Transform the query position into the coordinate reference system of the
-     * data (if different to that of the {@code MapContext}).
+     * data (if different to that of the {@code MapContent}).
      *
-     * @param pos query position in {@code MapContext} coordinates
+     * @param pos query position in {@code MapContent} coordinates
      *
-     * @return query position in data ({@code MapLayer}) coordinates
+     * @return query position in data ({@code Layer}) coordinates
      */
     private DirectPosition2D getTransformed(DirectPosition2D pos) {
         if (isTransformRequired()) {

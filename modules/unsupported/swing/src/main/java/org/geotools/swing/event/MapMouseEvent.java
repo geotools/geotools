@@ -64,7 +64,7 @@ public final class MapMouseEvent extends MouseEvent {
         AffineTransform tr = pane.getScreenToWorldTransform();
         geoCoords = new DirectPosition2D(event.getX(), event.getY());
         tr.transform(geoCoords, geoCoords);
-        geoCoords.setCoordinateReferenceSystem(pane.getMapContext().getCoordinateReferenceSystem());
+        geoCoords.setCoordinateReferenceSystem(pane.getMapContent().getCoordinateReferenceSystem());
     }
 
     /**

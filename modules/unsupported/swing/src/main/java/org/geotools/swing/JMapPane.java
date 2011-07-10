@@ -28,8 +28,6 @@ import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.NoninvertibleTransformException;
-import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.util.HashMap;
@@ -48,8 +46,8 @@ import javax.swing.event.MouseInputAdapter;
 
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.map.MapContext;
-import org.geotools.map.MapLayer;
+import org.geotools.map.MapContent;
+import org.geotools.map.Layer;
 import org.geotools.map.event.MapBoundsEvent;
 import org.geotools.map.event.MapBoundsListener;
 import org.geotools.map.event.MapLayerEvent;
@@ -65,11 +63,12 @@ import org.geotools.swing.event.MapPaneListener;
 import org.geotools.swing.tool.CursorTool;
 import org.geotools.swing.tool.MapToolManager;
 import org.opengis.geometry.Envelope;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
- * A map display pane that works with a GTRenderer and
- * MapContext to display features. It supports the use of tool classes
- * to implement, for example, mouse-controlled zooming and panning.
+ * A map display pane that works with a renderer ({@code StreamingRenderer} by default)
+ * to display map layers contained in a {@code MapContent} instance. It supports the 
+ * use of tool classes to implement, for example, mouse-controlled zooming and panning.
  * <p>
  * Rendering is performed on a background thread and is managed by
  * the {@linkplain RenderingExecutor} class.
@@ -109,9 +108,6 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
      * to it when the pane is shown.
      */
     private ReferencedEnvelope pendingDisplayArea;
-
-    /* Current display area */
-    private ReferencedEnvelope currentDisplayArea;
 
     /*
      * This field is used to cache the full extent of the combined map
@@ -174,16 +170,13 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
     }
 
     private DragBox dragBox;
-    private MapContext context;
+    private MapContent mapContent;
     private GTRenderer renderer;
     private LabelCache labelCache;
     private RenderingExecutor renderingExecutor;
     private MapToolManager toolManager;
     private MapLayerTable layerTable;
     private Set<MapPaneListener> listeners = new HashSet<MapPaneListener>();
-    private AffineTransform worldToScreen;
-    private AffineTransform screenToWorld;
-    private Rectangle currentPaintArea;
     private BufferedImage baseImage;
     private Graphics2D baseImageGraphics;
     private Point imageOrigin;
@@ -193,21 +186,24 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
 
 
     /**
-     * Constructor - creates an instance of JMapPane with no map
-     * context or renderer initially
+     * Creates a new map pane. 
      */
     public JMapPane() {
         this(null, null);
     }
 
     /**
-     * Constructor - creates an instance of JMapPane with the given
-     * renderer and map context.
+     * Creates a new map pane with the given renderer and map content.
+     * Either or both of {@code renderer} and {@code content} may be
+     * {@code null} when the {@link #setRenderer(GTRenderer)} and 
+     * {@link #setMapContent(MapContent)} methods are to be called 
+     * subsequently.
      *
-     * @param renderer a renderer object
-     * @param context an instance of MapContext
+     * @param renderer the renderer to use for drawing layers
+     * @param content the {@code MapContent} instance containing layers to 
+     *     display
      */
-    public JMapPane(GTRenderer renderer, MapContext context) {
+    public JMapPane(GTRenderer renderer, MapContent content) {
         imageOrigin = new Point(0, 0);
 
         acceptRepaintRequests = true;
@@ -215,7 +211,7 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
         clearLabelCache = new AtomicBoolean();
 
         /*
-         * We use a Timer object to avoid rendering delays and
+         * An interval is set for delayed painting to avoid
          * flickering when the user is drag-resizing the parent
          * container of this map pane.
          *
@@ -226,7 +222,7 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
         resizingPaintDelay = DEFAULT_RESIZING_PAINT_DELAY;
 
         doSetRenderer(renderer);
-        doSetMapContext(context);
+        doSetMapContent(content);
 
         renderingExecutor = new RenderingExecutor(this);
 
@@ -268,7 +264,6 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
                 if ((he.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
                     if (isShowing() && baseImage == null) {
                         onShownOrResized();
-                        //repaint();
                     }
                 }
             }
@@ -297,13 +292,9 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
     }
 
     private void setForNewSize() {
-        currentPaintArea = getVisibleRect();
-
-        // allow a single pixel margin at the right and bottom edges
-        currentPaintArea.width -= 1;
-        currentPaintArea.height -= 1;
-
-        if (context != null && context.getLayerCount() > 0) {
+        if (mapContent != null) {
+            mapContent.getViewport().setScreenArea(getVisibleRect());
+            
             if (fullExtent == null) {
                 setFullExtent();
             }
@@ -325,9 +316,10 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
     }
 
     /**
-     * Set the current cursor tool
+     * Sets the current cursor tool. A {@code null} argument means no
+     * current cursor tool.
      *
-     * @param tool the tool to set; null means no active cursor tool
+     * @param tool the tool to set or {@code null}
      */
     public void setCursorTool(CursorTool tool) {
         if (tool == null) {
@@ -343,10 +335,10 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
     }
 
     /**
-     * Register an object that wishes to receive {@code MapMouseEvent}s
-     * such as a {@linkplain org.geotools.swing.StatusBar}
+     * Registers an object that wishes to receive {@code MapMouseEvent}s
+     * such as a {@linkplain StatusBar}.
      *
-     * @param listener an object that implements {@code MapMouseListener}
+     * @param listener the listener to add
      * @throws IllegalArgumentException if listener is null
      * @see MapMouseListener
      */
@@ -359,7 +351,7 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
     }
 
     /**
-     * Unregister the {@code MapMouseListener} object.
+     * Unregisters the {@code MapMouseListener} object.
      *
      * @param listener the listener to remove
      * @throws IllegalArgumentException if listener is null
@@ -373,9 +365,9 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
     }
 
     /**
-     * Register an object that wishes to receive {@code MapPaneEvent}s
+     * Registers an object that wishes to receive {@code MapPaneEvent}s.
      *
-     * @param listener an object that implements {@code MapPaneListener}
+     * @param listener the listener to add
      * @see MapPaneListener
      */
     public void addMapPaneListener(MapPaneListener listener) {
@@ -387,7 +379,7 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
     }
 
     /**
-     * Register a {@linkplain MapLayerTable} object to be receive
+     * Registers a {@linkplain MapLayerTable} object to be receive
      * layer change events from this map pane and to control layer
      * ordering, visibility and selection.
      *
@@ -405,25 +397,25 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
     }
     
     private void resetMapLayerTable() {
-        if (layerTable != null && context != null) {
+        if (layerTable != null && mapContent != null) {
             layerTable.clear();
-            for (MapLayer layer : context.getLayers()) {
+            for (Layer layer : mapContent.layers()) {
                 layerTable.onAddLayer(layer);
             }
         }
     }
 
     /**
-     * Get the renderer being used by this map pane
+     * Gets the renderer used by this map pane.
      *
-     * @return live reference to the renderer being used
+     * @return the renderer
      */
     public GTRenderer getRenderer() {
         return renderer;
     }
 
     /**
-     * Set the renderer for this map pane.
+     * Sets the renderer to be used by this map pane.
      *
      * @param renderer the renderer to use
      */
@@ -447,8 +439,8 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
                 }
                 renderer.setRendererHints(hints);
 
-                if (this.context != null) {
-                    renderer.setContext(this.context);
+                if (mapContent != null) {
+                    renderer.setMapContent(mapContent);
                 }
 
             }
@@ -458,45 +450,51 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
     }
 
     /**
-     * Get the map context associated with this map pane
-     * @return a live reference to the current map context
+     * Gets the {@code MapConent} instance containing the layers
+     * being displayed by this map pane.
+     * 
+     * @return the map content
      */
-    public MapContext getMapContext() {
-        return context;
+    public MapContent getMapContent() {
+        return mapContent;
     }
 
     /**
-     * Set the map context for this map pane to display
-     * @param context the map context
+     * Sets the {@code MapContent} instance containing the layers
+     * to display.
+     * 
+     * @param content the map content
      */
-    public void setMapContext(MapContext context) {
-        doSetMapContext(context);
+    public void setMapContent(MapContent content) {
+        doSetMapContent(content);
     }
     
-    private void doSetMapContext(MapContext context) {
-        if (this.context != context) {
+    private void doSetMapContent(MapContent newMapContent) {
+        if (mapContent != newMapContent) {
 
-            if (this.context != null) {
-                this.context.removeMapLayerListListener(this);
-                for( MapLayer layer : this.context.getLayers() ){
+            if (mapContent != null) {
+                mapContent.removeMapLayerListListener(this);
+                for( Layer layer : mapContent.layers() ){
                     if( layer instanceof ComponentListener){
                         removeComponentListener( (ComponentListener) layer );
                     }
                 }
             }
 
-            this.context = context;
+            mapContent = newMapContent;
+            mapContent.getViewport().setMatchingAspectRatio(acceptRepaintRequests);
 
-            if (context != null) {
-                this.context.addMapLayerListListener(this);
-                this.context.addMapBoundsListener(this);
+            if (mapContent != null) {
+                mapContent.addMapLayerListListener(this);
+                mapContent.addMapBoundsListener(this);
 
                 resetMapLayerTable();
-
-                if (context.getLayerCount() > 0) {
+                
+                if (!mapContent.layers().isEmpty()) {
                     // set all layers as selected by default for the info tool
-                    for (MapLayer layer : context.getLayers()) {
+                    for (Layer layer : mapContent.layers()) {
                         layer.setSelected(true);
+
                         if (layer instanceof ComponentListener) {
                             addComponentListener((ComponentListener) layer);
                         }
@@ -508,7 +506,7 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
             }
 
             if (renderer != null) {
-                renderer.setContext(this.context);
+                renderer.setMapContent(mapContent);
             }
 
             MapPaneEvent ev = new MapPaneEvent(this, MapPaneEvent.Type.NEW_CONTEXT);
@@ -519,70 +517,34 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
     }
 
     /**
-     * Return a (copy of) the currently displayed map area.
-     * <p>
-     * Note, this will not always be the same as the envelope returned by
-     * {@code MapContext.getAreaOfInterest()}. For example, when the
-     * map is displayed at the full extent of all layers
-     * {@code MapContext.getAreaOfInterest()} will return the union of the
-     * layer bounds while this method will return an evnelope that can
-     * included extra space beyond the bounds of the layers.
-     *
-     * @return the display area in world coordinates as a new {@code ReferencedEnvelope}
+     * Gets the current display area in world coordinates. This is a
+     * short-cut for {@code mapPane.getMapContent().getViewport().getBounds()}.
+     * If a MapContent object has not yet been associated with the map pane, an
+     * empty {@code ReferencedEnvelope} is returned.
+     * 
+     * @return the display area in world coordinates
      */
     public ReferencedEnvelope getDisplayArea() {
-        if (currentDisplayArea == null) {
-            // return empty envelope
-            return new ReferencedEnvelope();
+        if (mapContent != null) {
+            return mapContent.getViewport().getBounds();
         } else {
-            // return copy of envelope
-            return new ReferencedEnvelope(currentDisplayArea);
-        }
-    }
-
-    private void calculateDisplayArea() {
-        if (currentPaintArea != null && screenToWorld != null) {
-            Point2D p0 = new Point2D.Double(currentPaintArea.getMinX(), currentPaintArea.getMinY());
-            Point2D p1 = new Point2D.Double(currentPaintArea.getMaxX(), currentPaintArea.getMaxY());
-            screenToWorld.transform(p0, p0);
-            screenToWorld.transform(p1, p1);
-
-            currentDisplayArea = new ReferencedEnvelope(
-                    Math.min(p0.getX(), p1.getX()),
-                    Math.max(p0.getX(), p1.getX()),
-                    Math.min(p0.getY(), p1.getY()),
-                    Math.max(p0.getY(), p1.getY()),
-                    context.getCoordinateReferenceSystem());
+            return new ReferencedEnvelope();
         }
     }
 
     /**
-     * Sets the area to display. Does nothing if the MapContext has not been set.
-     * <p>
-     * The map area that ends up being displayed will often be larger than the requested
-     * display area. For instance, if the square area is requested, but the map pane's
-     * screen area is a rectangle with width greater than height, then the displayed area
-     * will be centred on the requested square but include additional area on each side.
-     * <p>
-     * You can pass any GeoAPI Envelope implementation to this method such as
-     * ReferenedEnvelope or Envelope2D.
-     * <p>
-     * Note: This method does <b>not</b> check that the requested area overlaps
-     * the bounds of the current map layers.
-     *
-     * @param envelope the bounds of the map to display
-     *
-     * @throws IllegalStateException if a map context is not set
+     * 
      */
     public void setDisplayArea(Envelope envelope) {
-        if (context != null) {
+        if (mapContent != null) {
             /*
              * If the pane has not been displayed yet or is zero size then
              * just record the requested display area and defer setting transforms
              * etc.
              */
-            if (currentPaintArea == null || currentPaintArea.isEmpty()) {
+            if (!isShowing()) {
                 pendingDisplayArea = new ReferencedEnvelope(envelope);
+                
             } else {
                 doSetDisplayArea(envelope);
                 clearLabelCache.set(true);
@@ -602,15 +564,28 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
      * @param envelope requested display area
      */
     private void doSetDisplayArea(Envelope envelope) {
-        assert (context != null && currentPaintArea != null && !currentPaintArea.isEmpty());
-
+        if (mapContent == null) {
+            throw new IllegalStateException("No MapContent instance set");
+        }
+        
         if (equalsFullExtent(envelope)) {
-            setTransforms(fullExtent, currentPaintArea);
+            mapContent.getViewport().setBounds(fullExtent);
+            
         } else {
-            setTransforms(envelope, currentPaintArea);
+            CoordinateReferenceSystem crs = envelope.getCoordinateReferenceSystem();
+            if (crs == null) {
+                // assume that it is the current CRS
+                crs = mapContent.getCoordinateReferenceSystem();
+            }
+            
+            ReferencedEnvelope refEnv = new ReferencedEnvelope(
+                    envelope.getMinimum(0), envelope.getMaximum(0),
+                    envelope.getMinimum(1), envelope.getMaximum(1),
+                    crs);
+                    
+            mapContent.getViewport().setBounds(refEnv);
         }
 
-        calculateDisplayArea();
         MapPaneEvent ev = new MapPaneEvent(this, MapPaneEvent.Type.DISPLAY_AREA_CHANGED);
         publishEvent(ev);
     }
@@ -771,13 +746,14 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
 
     /**
      * Get a (copy of) the screen to world coordinate transform
-     * being used by this map pane.
+     * being used by this map pane. This method is a short-cut for
+     * {@code mapPane.getMapContent().getViewport().getScreenToWorld()}.
      *
      * @return a copy of the screen to world coordinate transform
      */
     public AffineTransform getScreenToWorldTransform() {
-        if (screenToWorld != null) {
-            return new AffineTransform(screenToWorld);
+        if (mapContent != null) {
+            return mapContent.getViewport().getScreenToWorld();
         } else {
             return null;
         }
@@ -785,16 +761,20 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
 
     /**
      * Get a (copy of) the world to screen coordinate transform
-     * being used by this map pane. This method can be
-     * used to determine the current drawing scale...
-     * <pre>{@code
+     * being used by this map pane. This method is a short-cut for
+     * {@code mapPane.getMapContent().getViewport().getWorldToScreen()}.
+     * <p>
+     * The returned {@code AffineTransform} can be used to determine the 
+     * current drawing scale...
+     * <pre><code>
      * double scale = mapPane.getWorldToScreenTransform().getScaleX();
-     * }</pre>
+     * </code></pre>
+     * 
      * @return a copy of the world to screen coordinate transform
      */
     public AffineTransform getWorldToScreenTransform() {
-        if (worldToScreen != null) {
-            return new AffineTransform(worldToScreen);
+        if (mapContent != null) {
+            return mapContent.getViewport().getWorldToScreen();
         } else {
             return null;
         }
@@ -844,26 +824,24 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
     }
 
     private void drawBaseImage(boolean createNewImage) {
-        if (currentPaintArea == null) {
-            return;
-        }
-        
-        if (acceptRepaintRequests) {
+        if (mapContent != null
+                && !mapContent.getViewport().isEmpty()
+                && acceptRepaintRequests) {
+            
+            Rectangle r = getVisibleRect();
             if (baseImage == null || createNewImage) {
-                baseImage = new BufferedImage(
-                        currentPaintArea.width + 1, currentPaintArea.height + 1,
-                        BufferedImage.TYPE_INT_ARGB);
+                baseImage = new BufferedImage(r.width, r.height, BufferedImage.TYPE_INT_ARGB);
 
                 if (baseImageGraphics != null) {
                     baseImageGraphics.dispose();
                 }
-                
+
                 baseImageGraphics = baseImage.createGraphics();
                 clearLabelCache.set(true);
             }
 
-            if (renderer != null && context != null && context.getLayerCount() > 0) {
-                if (renderingExecutor.submit(currentDisplayArea, currentPaintArea, baseImageGraphics)) {
+            if (renderer != null && mapContent != null && !mapContent.layers().isEmpty()) {
+                if (renderingExecutor.submit(mapContent, baseImageGraphics)) {
                     MapPaneEvent ev = new MapPaneEvent(this, MapPaneEvent.Type.RENDERING_STARTED);
                     publishEvent(ev);
 
@@ -934,9 +912,9 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
         int dx = imageOrigin.x;
         int dy = imageOrigin.y;
         DirectPosition2D newPos = new DirectPosition2D(dx, dy);
-        screenToWorld.transform(newPos, newPos);
+        mapContent.getViewport().getScreenToWorld().transform(newPos, newPos);
 
-        ReferencedEnvelope env = new ReferencedEnvelope(currentDisplayArea);
+        ReferencedEnvelope env = new ReferencedEnvelope(mapContent.getViewport().getBounds());
         env.translate(env.getMinimum(0) - newPos.x, env.getMaximum(1) - newPos.y);
         doSetDisplayArea(env);
 
@@ -950,11 +928,11 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
      * used, adds the new layer to the table.
      */
     public void layerAdded(MapLayerListEvent event) {
+        Layer layer = event.getElement();
+        
         if (layerTable != null) {
-            layerTable.onAddLayer(event.getLayer());
+            layerTable.onAddLayer(layer);
         }
-        MapLayer layer = event.getLayer();
-        layer.setSelected(true);
 
         if( layer instanceof ComponentListener ){
             addComponentListener( (ComponentListener) layer );
@@ -962,7 +940,7 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
 
         boolean atFullExtent = equalsFullExtent(getDisplayArea());
         setFullExtent();
-        if (context.getLayerCount() == 1 || atFullExtent) {
+        if (mapContent.layers().size() == 1 || atFullExtent) {
             reset();
         }
 
@@ -974,7 +952,7 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
      * Called when a map layer has been removed
      */
     public void layerRemoved(MapLayerListEvent event) {
-        MapLayer layer = event.getLayer();
+        Layer layer = event.getElement();
         if (layerTable != null) {
             layerTable.onRemoveLayer(layer);
         }
@@ -983,8 +961,8 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
             addComponentListener( (ComponentListener) layer );
         }
 
-        if (context.getLayerCount() == 0) {
-            clearFields();
+        if (mapContent.layers().isEmpty()) {
+            fullExtent = null;
         } else {
             setFullExtent();
         }
@@ -999,7 +977,7 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
      */
     public void layerChanged(MapLayerListEvent event) {
         if (layerTable != null) {
-            layerTable.repaint(event.getLayer());
+            layerTable.repaint(event.getElement());
         }
 
         int reason = event.getMapLayerEvent().getReason();
@@ -1048,9 +1026,9 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
      * through other methods.
      */
     private void setFullExtent() {
-        if (context != null && context.getLayerCount() > 0) {
+        if (mapContent != null && !mapContent.layers().isEmpty()) {
             try {
-                fullExtent = context.getLayerBounds();
+                fullExtent = mapContent.getMaxBounds();
 
                 /*
                  * Guard agains degenerate envelopes (e.g. empty
@@ -1058,7 +1036,7 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
                  */
                 if (fullExtent == null ) {
                     // set arbitrary bounds centred on 0,0
-                    fullExtent = new ReferencedEnvelope(-1, 1, -1, 1, context.getCoordinateReferenceSystem());
+                    fullExtent = new ReferencedEnvelope(-1, 1, -1, 1, mapContent.getCoordinateReferenceSystem());
 
                 } else {
                     double w = fullExtent.getWidth();
@@ -1080,7 +1058,7 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
                         ymax = y + 1.0;
                     }
 
-                    fullExtent = new ReferencedEnvelope(xmin, xmax, ymin, ymax, context.getCoordinateReferenceSystem());
+                    fullExtent = new ReferencedEnvelope(xmin, xmax, ymin, ymax, mapContent.getCoordinateReferenceSystem());
                 }
 
             } catch (Exception ex) {
@@ -1088,37 +1066,6 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
             }
         } else {
             fullExtent = null;
-        }
-    }
-
-    /**
-     * Calculate the affine transforms used to convert between
-     * world and pixel coordinates. The calculations here are very
-     * basic and assume a cartesian reference system.
-     * <p>
-     * Tne transform is calculated such that {@code envelope} will
-     * be centred in the display
-     *
-     * @param envelope the current map extent (world coordinates)
-     * @param paintArea the current map pane extent (screen units)
-     */
-    private void setTransforms(final Envelope envelope, final Rectangle paintArea) {
-        ReferencedEnvelope refEnv = new ReferencedEnvelope(envelope);
-
-        double xscale = paintArea.getWidth() / refEnv.getWidth();
-        double yscale = paintArea.getHeight() / refEnv.getHeight();
-
-        double scale = Math.min(xscale, yscale);
-
-        double xoff = refEnv.getMedian(0) * scale - paintArea.getCenterX();
-        double yoff = refEnv.getMedian(1) * scale + paintArea.getCenterY();
-
-        worldToScreen = new AffineTransform(scale, 0, 0, -scale, -xoff, yoff);
-        try {
-            screenToWorld = worldToScreen.createInverse();
-
-        } catch (NoninvertibleTransformException ex) {
-            throw new RuntimeException("Unable to create coordinate transforms.", ex);
         }
     }
 
@@ -1160,15 +1107,6 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
                     break;
             }
         }
-    }
-
-    /**
-     * This method is called if all layers are removed from the context.
-     */
-    private void clearFields() {
-        fullExtent = null;
-        worldToScreen = null;
-        screenToWorld = null;
     }
 
 }

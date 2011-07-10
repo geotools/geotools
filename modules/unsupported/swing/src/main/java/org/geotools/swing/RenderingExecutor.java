@@ -32,7 +32,7 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.map.MapContent;
 import org.geotools.renderer.GTRenderer;
 import org.geotools.renderer.RenderListener;
 import org.opengis.feature.simple.SimpleFeature;
@@ -115,23 +115,20 @@ public class RenderingExecutor {
      */
     private class Task implements Callable<TaskResult>, RenderListener {
 
-        private final ReferencedEnvelope envelope;
-        private final Rectangle paintArea;
+        private final MapContent mapContent;
         private final Graphics2D graphics;
 
         private boolean cancelled;
         private boolean failed;
 
         /**
-         * Constructor. Creates a new rendering task
+         * Creates a new rendering task.
          *
-         * @param envelope map area to render (world coordinates)
-         * @param paintArea drawing area (image or display coordinates)
-         * @param graphics graphics object used to draw into the image or display
+         * @param mapContent the map content
+         * @param graphics graphics object to be used for drawing
          */
-        public Task(final ReferencedEnvelope envelope, final Rectangle paintArea, final Graphics2D graphics) {
-            this.envelope = envelope;
-            this.paintArea = paintArea;
+        public Task(MapContent mapContent, final Graphics2D graphics) {
+            this.mapContent = mapContent;
             this.graphics = graphics;
             this.cancelled = false;
             failed = false;
@@ -148,17 +145,19 @@ public class RenderingExecutor {
                 GTRenderer renderer = mapPane.getRenderer();
                 try {
                     renderer.addRenderListener(this);
+                    
+                    Rectangle drawingArea = mapContent.getViewport().getScreenArea();
 
                     Composite composite = graphics.getComposite();
-                    //graphics.setComposite(AlphaComposite.Src);
-                    //graphics.setBackground(Color.WHITE);
                     graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR, 0.0f));
-                    graphics.fill(paintArea);
+                    graphics.fill(drawingArea);
                     graphics.setComposite(composite);
 
                     numFeatures = 0;
 
-                    renderer.paint(graphics, mapPane.getVisibleRect(), envelope, mapPane.getWorldToScreenTransform());
+                    renderer.paint(graphics, drawingArea, 
+                            mapContent.getViewport().getBounds(), 
+                            mapContent.getViewport().getWorldToScreen());
 
                 } finally {
                     renderer.removeRenderListener(this);
@@ -250,13 +249,23 @@ public class RenderingExecutor {
      * this new task will be accepted; otherwise it will be rejected (ie. there
      * is no task queue).
      *
-     * @param envelope the map area (world coordinates) to be rendered
-     * @param graphics the graphics object to draw on
+     * @param mapContent the map content holding 
+     * @param graphics graphics object to be used for drawing
      *
      * @return true if the rendering task was accepted; false if it was
      *         rejected
      */
-    public synchronized boolean submit(ReferencedEnvelope envelope, Rectangle paintArea, Graphics2D graphics) {
+    public synchronized boolean submit(MapContent mapContent, Graphics2D graphics) {
+        if (mapContent == null) {
+            throw new IllegalArgumentException("mapContent must not be null");
+        }
+        if (graphics == null) {
+            throw new IllegalArgumentException("graphics must not be null");
+        }
+        if (mapContent.getViewport().isEmpty()) {
+            throw new IllegalArgumentException("The viewport must not be empty");
+        }
+        
         if (!isRunning() || cancelLatch.getCount() > 0) {
             try {
                 // wait for any cancelled task to finish its shutdown
@@ -265,7 +274,7 @@ public class RenderingExecutor {
                 return false;
             }
 
-            task = new Task(envelope, paintArea, graphics);
+            task = new Task(mapContent, graphics);
             taskRunning.set(true);
             taskResult = taskExecutor.submit(task);
             watcher = watchExecutor.scheduleAtFixedRate(new Runnable() {

@@ -35,7 +35,8 @@ import javax.swing.JScrollPane;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
-import org.geotools.map.MapLayer;
+import org.geotools.map.Layer;
+import org.geotools.map.StyleLayer;
 import org.geotools.styling.Style;
 import org.geotools.swing.control.DnDList;
 import org.geotools.swing.control.DnDListModel;
@@ -64,8 +65,8 @@ public class MapLayerTable extends JPanel {
     private static final ResourceBundle stringRes = ResourceBundle.getBundle("org/geotools/swing/Text");
 
     private JMapPane pane;
-    private DnDListModel<MapLayer> listModel;
-    private DnDList<MapLayer> list;
+    private DnDListModel<Layer> listModel;
+    private DnDList<Layer> list;
     private JScrollPane scrollPane;
     
     /* For detecting mouse double-clicks */
@@ -92,7 +93,7 @@ public class MapLayerTable extends JPanel {
      */
     public MapLayerTable(JMapPane pane) {
         init();
-        setMapPane(pane);
+        doSetMapPane(pane);
     }
 
     /**
@@ -101,6 +102,17 @@ public class MapLayerTable extends JPanel {
      * @param pane the map pane
      */
     public void setMapPane(JMapPane pane) {
+        doSetMapPane(pane);
+    }
+
+    /**
+     * Helper for {@link #setMapPane(JMapPane). This is just defined so that 
+     * it can be called from the constructor without a warning from the compiler
+     * about calling a public overridable method.
+     * 
+     * @param pane the map pane
+     */
+    private void doSetMapPane(JMapPane pane) {
         this.pane = pane;
         pane.setMapLayerTable(this);
     }
@@ -112,7 +124,7 @@ public class MapLayerTable extends JPanel {
      *
      * @param layer the map layer
      */
-    public void onAddLayer(MapLayer layer) {
+    public void onAddLayer(Layer layer) {
         listModel.insertItem(0, layer);
     }
 
@@ -123,7 +135,7 @@ public class MapLayerTable extends JPanel {
      *
      * @param layer the map layer
      */
-    void onRemoveLayer(MapLayer layer) {
+    void onRemoveLayer(Layer layer) {
         listModel.removeItem(layer);
     }
 
@@ -132,7 +144,7 @@ public class MapLayerTable extends JPanel {
      *
      * @param layer the map layer
      */
-    public void repaint(MapLayer layer) {
+    public void repaint(Layer layer) {
         int index = listModel.indexOf(layer);
         list.repaint(list.getCellBounds(index, index));
     }
@@ -151,8 +163,8 @@ public class MapLayerTable extends JPanel {
      * make up the MapLayerTable and registers a mouse listener.
      */
     private void init() {
-        listModel = new DnDListModel<MapLayer>();
-        list = new DnDList<MapLayer>(listModel) {
+        listModel = new DnDListModel<Layer>();
+        list = new DnDList<Layer>(listModel) {
             private static final long serialVersionUID = 1289744440656016412L;
             /*
              * We override setToolTipText to provide tool tips
@@ -287,11 +299,13 @@ public class MapLayerTable extends JPanel {
         if (item >= 0) {
             Rectangle r = list.getCellBounds(item, item);
             if (r.contains(ev.getPoint())) {
-                MapLayer layer = listModel.getElementAt(item);
+                Layer layer = listModel.getElementAt(item);
                 Point p = new Point(ev.getPoint().x, ev.getPoint().y - r.y);
 
                 if (MapLayerTableCellRenderer.hitSelectionLabel(p)) {
-                    layer.setSelected(!layer.isSelected());
+                    Boolean selected = (Boolean) layer.getUserData().get("selected");
+                    if (selected == null) selected = Boolean.FALSE;
+                    layer.getUserData().put("selected", !selected);
 
                 } else if (MapLayerTableCellRenderer.hitVisibilityLabel(p)) {
                     layer.setVisible(!layer.isVisible());
@@ -316,10 +330,13 @@ public class MapLayerTable extends JPanel {
      *
      * @param layer the layer to be styled
      */
-    private void doSetStyle(MapLayer layer) {
-        Style style = JSimpleStyleDialog.showDialog(this, layer);
-        if (style != null) {
-            layer.setStyle(style);
+    private void doSetStyle(Layer layer) {
+        if (layer instanceof StyleLayer) {
+            StyleLayer styleLayer = (StyleLayer) layer;
+            Style style = JSimpleStyleDialog.showDialog(this, styleLayer);
+            if (style != null) {
+                styleLayer.setStyle(style);
+            }
         }
     }
 
@@ -328,7 +345,7 @@ public class MapLayerTable extends JPanel {
      *
      * @param layer the layer to be renamed
      */
-    private void doSetLayerName(MapLayer layer) {
+    private void doSetLayerName(Layer layer) {
         String name = JOptionPane.showInputDialog(stringRes.getString("new_layer_name_message"));
         if (name != null && name.trim().length() > 0) {
             layer.setTitle(name.trim());
@@ -340,7 +357,7 @@ public class MapLayerTable extends JPanel {
      *
      * @param layer the layer to remove
      */
-    private void doRemoveLayer(MapLayer layer) {
+    private void doRemoveLayer(Layer layer) {
         if (confirmRemove) {
             int confirm = JOptionPane.showConfirmDialog(null,
                     stringRes.getString("confirm_remove_layer_message"),
@@ -352,7 +369,7 @@ public class MapLayerTable extends JPanel {
             }
         }
 
-        pane.getMapContext().removeLayer(layer);
+        pane.getMapContent().removeLayer(layer);
     }
 
     /**
@@ -365,18 +382,17 @@ public class MapLayerTable extends JPanel {
     private void onReorderLayers(ListDataEvent ev) {
         pane.setRepaint(false);
         for (int pos = ev.getIndex0(); pos <= ev.getIndex1(); pos++) {
-            MapLayer layer = listModel.getElementAt(pos);
+            Layer layer = listModel.getElementAt(pos);
 
             /*
              * MapLayerTable stores layers in the reverse order to
              * DefaultMapContext (see comment in javadocs for this class)
              */
             int newContextPos = listModel.getSize() - pos - 1;
-
-            int curContextPos = pane.getMapContext().indexOf(layer);
+            int curContextPos = pane.getMapContent().layers().indexOf(layer);
 
             if (curContextPos != newContextPos) {
-                pane.getMapContext().moveLayer(curContextPos, newContextPos);
+                pane.getMapContent().moveLayer(curContextPos, newContextPos);
             }
         }
         pane.setRepaint(true);
@@ -384,8 +400,8 @@ public class MapLayerTable extends JPanel {
     }
 
     private void onShowAllLayers() {
-        if (pane != null && pane.getMapContext() != null) {
-            for (MapLayer layer : pane.getMapContext().getLayers()) {
+        if (pane != null && pane.getMapContent() != null) {
+            for (Layer layer : pane.getMapContent().layers()) {
                 if (!layer.isVisible()) {
                     layer.setVisible(true);
                 }
@@ -394,8 +410,8 @@ public class MapLayerTable extends JPanel {
     }
 
     private void onHideAllLayers() {
-        if (pane != null && pane.getMapContext() != null) {
-            for (MapLayer layer : pane.getMapContext().getLayers()) {
+        if (pane != null && pane.getMapContent() != null) {
+            for (Layer layer : pane.getMapContent().layers()) {
                 if (layer.isVisible()) {
                     layer.setVisible(false);
                 }
@@ -404,20 +420,22 @@ public class MapLayerTable extends JPanel {
     }
 
     private void onSelectAllLayers() {
-        if (pane != null && pane.getMapContext() != null) {
-            for (MapLayer layer : pane.getMapContext().getLayers()) {
-                if (!layer.isSelected()) {
-                    layer.setSelected(true);
+        if (pane != null && pane.getMapContent() != null) {
+            for (Layer layer : pane.getMapContent().layers()) {
+                Boolean selected = (Boolean) layer.getUserData().get("selected");
+                if (selected == null || !selected) {
+                    layer.getUserData().put("selected", Boolean.TRUE);
                 }
             }
         }
     }
 
     private void onUnselectAllLayers() {
-        if (pane != null && pane.getMapContext() != null) {
-            for (MapLayer layer : pane.getMapContext().getLayers()) {
-                if (layer.isSelected()) {
-                    layer.setSelected(false);
+        if (pane != null && pane.getMapContent() != null) {
+            for (Layer layer : pane.getMapContent().layers()) {
+                Boolean selected = (Boolean) layer.getUserData().get("selected");
+                if (selected == null || selected) {
+                    layer.getUserData().put("selected", Boolean.FALSE);
                 }
             }
         }

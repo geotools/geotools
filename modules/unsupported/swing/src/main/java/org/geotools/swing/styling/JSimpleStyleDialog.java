@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2009-2011, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -23,6 +23,7 @@ import java.awt.Dialog;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -47,7 +48,8 @@ import net.miginfocom.swing.MigLayout;
 
 import org.geotools.data.AbstractDataStore;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.map.MapLayer;
+import org.geotools.map.RasterLayer;
+import org.geotools.map.StyleLayer;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Font;
 import org.geotools.styling.LineSymbolizer;
@@ -58,7 +60,6 @@ import org.geotools.styling.SLD;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.Symbolizer;
-import org.geotools.swing.utils.MapLayerUtils;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
@@ -75,7 +76,7 @@ import com.vividsolutions.jts.geom.Polygon;
 /**
  * A dialog to prompt the user for feature style choices. It has a number of static
  * {@code showDialog} methods to work with different sources ({@code SimpleFeatureType},
- * {@code MapLayer}, {@code DataStore}. Each of these displays a dialog and then creates
+ * {@code Layer}, {@code DataStore}). Each of these displays a dialog and then creates
  * a new {@code Style} instance.
  * <p>
  * Examples of use:
@@ -85,11 +86,11 @@ import com.vividsolutions.jts.geom.Polygon;
  * ShapefileDataStore shapefile = ...
  * Style style = JSimpleStyleDialog.showDialog(parentGUIComponent, shapefile);
  * if (style != null) {
- *    // create a map layer using this style
+ *    // create a layer using this style
  * }
  *
- * // Use with an existing MapLayer
- * MapLayer layer = ...
+ * // Use with an existing Layer
+ * Layer layer = ...
  * Style style = JSimpleStyleDialog.showDialog(parentGUIComponent, layer);
  * if (style != null) {
  *     layer.setStyle( style );
@@ -148,9 +149,7 @@ public class JSimpleStyleDialog extends JDialog {
 
             this.classes = new HashSet< Class<? extends Geometry> >();
             if (classes != null) {
-                for (Class<? extends Geometry> clazz : classes) {
-                    this.classes.add(clazz);
-                }
+                this.classes.addAll(Arrays.asList(classes));
             }
         }
 
@@ -206,7 +205,7 @@ public class JSimpleStyleDialog extends JDialog {
 
     /**
      * Static convenience method: displays a {@code JSimpleStyleDialog} to prompt
-     * the user for style preferences to use with the given {@code MapLayer}. The
+     * the user for style preferences to use with the given {@code StyleLayer}. The
      * layer's existing style, if any, will be used to initialize the dialog.
      *
      * @param parent parent component (may be null)
@@ -214,11 +213,11 @@ public class JSimpleStyleDialog extends JDialog {
      *
      * @return a new Style instance or null if the user cancels the dialog
      */
-    public static Style showDialog(Component parent, MapLayer layer) {
+    public static Style showDialog(Component parent, StyleLayer layer) {
         /*
          * Grid coverages and readers are not supported yet...
          */
-        if (MapLayerUtils.isGridLayer(layer)) {
+        if (layer instanceof RasterLayer) {
             JOptionPane.showMessageDialog(null,
                     "Sorry, styling for for grid coverages is not working yet",
                     "Style dialog",
@@ -626,7 +625,7 @@ public class JSimpleStyleDialog extends JDialog {
         panel.add(label, "skip, split 2");
 
         final Object[] marks = new Object[ WELL_KNOWN_SYMBOL_NAMES.length ];
-        for (int i = 0; i < marks.length; i++) { marks[i] = WELL_KNOWN_SYMBOL_NAMES[i]; }
+        Arrays.fill(marks, WELL_KNOWN_SYMBOL_NAMES);
         pointSymbolCBox = new JComboBox(marks);
         pointSymbolCBox.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {

@@ -198,7 +198,7 @@ public class SelectionLab {
         Rectangle2D worldRect = screenToWorld.createTransformedShape(screenRect).getBounds2D();
         ReferencedEnvelope bbox = new ReferencedEnvelope(
                 worldRect,
-                mapFrame.getMapContext().getCoordinateReferenceSystem());
+                mapFrame.getMapContent().getCoordinateReferenceSystem());
 
         /*
          * Create a Filter to select features that intersect with
@@ -257,7 +257,7 @@ public class SelectionLab {
             style = createSelectedStyle(IDs);
         }
 
-        Layer layer = mapFrame.getMapContext().layers().get(0);
+        Layer layer = mapFrame.getMapContent().layers().get(0);
         ((FeatureLayer) layer).setStyle(style);
         mapFrame.getMapPane().repaint();
     }

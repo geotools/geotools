@@ -31,10 +31,9 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.map.DefaultMapContext;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.Layer;
-import org.geotools.map.MapContext;
+import org.geotools.map.MapContent;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Fill;
 import org.geotools.styling.Graphic;
@@ -124,10 +123,11 @@ public class SelectionLab {
          * Create the JMapFrame and set it to display the shapefile's features
          * with a default line and colour style
          */
-        MapContext map = new DefaultMapContext();
+        MapContent map = new MapContent();
         map.setTitle("Feature selection tool example");
         Style style = createDefaultStyle();
-        map.addLayer(featureSource, style);
+        Layer layer = new FeatureLayer(featureSource, style);
+        map.addLayer(layer);
         mapFrame = new JMapFrame(map);
         mapFrame.enableToolBar(true);
         mapFrame.enableStatusBar(true);

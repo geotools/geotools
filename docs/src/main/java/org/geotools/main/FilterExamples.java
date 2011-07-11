@@ -232,8 +232,8 @@ SimpleFeatureCollection click1(MapMouseEvent ev) throws Exception {
     
     Rectangle screenRect = new Rectangle(screenPos.x - 1, screenPos.y - 1, 3, 3);
     CoordinateReferenceSystem worldCRS = mapFrame.getMapContent().getCoordinateReferenceSystem();
-    // Transform the screen rectangle into bounding box in the coordinate reference system of our
-    // map context.
+    // Transform the screen rectangle into a bounding box in the 
+    // coordinate reference system of our map content.
     AffineTransform screenToWorld = mapFrame.getMapPane().getScreenToWorldTransform();
     Rectangle2D worldRect = screenToWorld.createTransformedShape(screenRect).getBounds2D();
     ReferencedEnvelope worldBBox = new ReferencedEnvelope(worldRect, worldCRS);

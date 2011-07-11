@@ -39,7 +39,7 @@ public class QuickstartCache {
 
         CachingFeatureSource cache = new CachingFeatureSource(featureSource);
 
-        // Create a map context and add our shapefile to it
+        // Create a map content and add our shapefile to it
         MapContent map = new MapContent();
         map.setTitle("Using cached features");
         Layer layer = new FeatureLayer(cache, null);

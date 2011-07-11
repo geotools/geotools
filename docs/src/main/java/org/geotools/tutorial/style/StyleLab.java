@@ -17,8 +17,9 @@ import org.geotools.data.FeatureSource;
 import org.geotools.data.FileDataStore;
 import org.geotools.data.FileDataStoreFinder;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.map.DefaultMapContext;
-import org.geotools.map.MapContext;
+import org.geotools.map.FeatureLayer;
+import org.geotools.map.Layer;
+import org.geotools.map.MapContent;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Fill;
 import org.geotools.styling.Graphic;
@@ -70,16 +71,17 @@ public class StyleLab {
         FileDataStore store = FileDataStoreFinder.getDataStore(file);
         FeatureSource featureSource = store.getFeatureSource();
 
-        // Create a map context and add our shapefile to it
-        MapContext map = new DefaultMapContext();
+        // Create a map content and add our shapefile to it
+        MapContent map = new MapContent();
         map.setTitle("StyleLab");
 
         // Create a basic Style to render the features
         Style style = createStyle(file, featureSource);
 
         // Add the features and the associated Style object to
-        // the MapContext as a new MapLayer
-        map.addLayer(featureSource, style);
+        // the MapContent as a new Layer
+        Layer layer = new FeatureLayer(featureSource, style);
+        map.addLayer(layer);
 
         // Now display the map
         JMapFrame.showMap(map);

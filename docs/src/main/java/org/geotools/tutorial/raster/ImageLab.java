@@ -31,8 +31,11 @@ import org.geotools.data.FileDataStoreFinder;
 import org.geotools.data.Parameter;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.map.DefaultMapContext;
-import org.geotools.map.MapContext;
+import org.geotools.map.FeatureLayer;
+import org.geotools.map.GridReaderLayer;
+import org.geotools.map.Layer;
+import org.geotools.map.MapContent;
+import org.geotools.map.StyleLayer;
 import org.geotools.styling.ChannelSelection;
 import org.geotools.styling.ContrastEnhancement;
 import org.geotools.styling.RasterSymbolizer;
@@ -114,11 +117,15 @@ public class ImageLab {
         // Create a basic style with yellow lines and no fill
         Style shpStyle = SLD.createPolygonStyle(Color.YELLOW, null, 0.0f);
 
-        // Set up a MapContext with the two layers
-        final MapContext map = new DefaultMapContext();
+        // Set up a MapContent with the two layers
+        final MapContent map = new MapContent();
         map.setTitle("ImageLab");
-        map.addLayer(reader, rasterStyle);
-        map.addLayer(shapefileSource, shpStyle);
+        
+        Layer rasterLayer = new GridReaderLayer(reader, rasterStyle);
+        map.addLayer(rasterLayer);
+        
+        Layer shpLayer = new FeatureLayer(shapefileSource, shpStyle);
+        map.addLayer(shpLayer);
 
         // Create a JMapFrame with a menu to choose the display style for the
         frame = new JMapFrame(map);
@@ -136,7 +143,7 @@ public class ImageLab {
             public void action(ActionEvent e) throws Throwable {
                 Style style = createGreyscaleStyle();
                 if (style != null) {
-                    map.getLayer(0).setStyle(style);
+                    ((StyleLayer) map.layers().get(0)).setStyle(style);
                     frame.repaint();
                 }
             }
@@ -146,7 +153,7 @@ public class ImageLab {
             public void action(ActionEvent e) throws Throwable {
                 Style style = createRGBStyle();
                 if (style != null) {
-                    map.getLayer(0).setStyle(style);
+                    ((StyleLayer) map.layers().get(0)).setStyle(style);
                     frame.repaint();
                 }
            }

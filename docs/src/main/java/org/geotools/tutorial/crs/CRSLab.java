@@ -34,9 +34,12 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.JTS;
-import org.geotools.map.DefaultMapContext;
-import org.geotools.map.MapContext;
+import org.geotools.map.FeatureLayer;
+import org.geotools.map.Layer;
+import org.geotools.map.MapContent;
 import org.geotools.referencing.CRS;
+import org.geotools.styling.SLD;
+import org.geotools.styling.Style;
 import org.geotools.swing.JMapFrame;
 import org.geotools.swing.ProgressWindow;
 import org.geotools.swing.action.SafeAction;
@@ -59,7 +62,7 @@ public class CRSLab {
 
     private File sourceFile;
     private SimpleFeatureSource featureSource;
-    private MapContext map;
+    private MapContent map;
 
     public static void main(String[] args) throws Exception {
         CRSLab lab = new CRSLab();
@@ -85,8 +88,10 @@ public class CRSLab {
         featureSource = store.getFeatureSource();
 
         // Create a map context and add our shapefile to it
-        map = new DefaultMapContext();
-        map.addLayer(featureSource, null);
+        map = new MapContent();
+        Style style = SLD.createSimpleStyle(featureSource.getSchema());
+        Layer layer = new FeatureLayer(featureSource, style);
+        map.layers().add(layer);
 
         // Create a JMapFrame with custom toolbar buttons
         JMapFrame mapFrame = new JMapFrame(map);

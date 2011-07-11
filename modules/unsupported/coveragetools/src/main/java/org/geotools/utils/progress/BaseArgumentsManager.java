@@ -34,6 +34,7 @@ import org.apache.commons.cli2.builder.DefaultOptionBuilder;
 import org.apache.commons.cli2.commandline.Parser;
 import org.apache.commons.cli2.option.GroupImpl;
 import org.apache.commons.cli2.util.HelpFormatter;
+import org.geotools.utils.CoverageToolsConstants;
 
 /**
  * @author Simone Giannecchini, GeoSolutions.
@@ -44,11 +45,6 @@ import org.apache.commons.cli2.util.HelpFormatter;
  * @source $URL$
  */
 public abstract class BaseArgumentsManager extends ProgressManager {
-	/**
-	 * Default tile cache size.
-	 */
-	public static final long DEFAULT_TILE_CACHE_SIZE = 128 * 1024 * 1024;
-
 	/**
 	 * Default priority for the underlying {@link Thread}.
 	 */
@@ -82,7 +78,9 @@ public abstract class BaseArgumentsManager extends ProgressManager {
 	private final Option tileCacheSizeOpt;
 
 	/** Default tile cache size. */
-	private long tileCacheSize = DEFAULT_TILE_CACHE_SIZE;
+	private long tileCacheSize = CoverageToolsConstants.DEFAULT_TILE_CACHE_SIZE;
+	
+	private TileCache tileCache ;
 
 	/**
 	 * Default priority for the underlying {@link Thread}.
@@ -93,13 +91,8 @@ public abstract class BaseArgumentsManager extends ProgressManager {
 
 	private String version;
 
-	/**
-	 * Default imageio caching behaviour.
-	 */
-	public final boolean DEFAULT_IMAGEIO_CACHING_BEHAVIOUR = false;
-
 	/** ImageIO caching behvaiour controller. */
-	private boolean useImageIOCache = DEFAULT_IMAGEIO_CACHING_BEHAVIOUR;
+	private boolean useImageIOCache = CoverageToolsConstants.DEFAULT_IMAGEIO_CACHING_BEHAVIOUR;
 
 	/**
 	 * 
@@ -324,5 +317,13 @@ public abstract class BaseArgumentsManager extends ProgressManager {
 	public void setPriority(int priority) {
 		this.priority = priority;
 	}
+
+    public TileCache getTileCache() {
+        return tileCache;
+    }
+
+    public void setTileCache(TileCache tileCache) {
+        this.tileCache = tileCache;
+    }
 
 }

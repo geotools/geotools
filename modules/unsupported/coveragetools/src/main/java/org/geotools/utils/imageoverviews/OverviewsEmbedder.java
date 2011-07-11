@@ -22,7 +22,6 @@ import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageWriter;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageWriterSpi;
 
 import java.awt.RenderingHints;
-import java.awt.image.RenderedImage;
 import java.awt.image.renderable.ParameterBlock;
 import java.io.File;
 import java.io.FileFilter;
@@ -43,21 +42,19 @@ import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.ImageOutputStream;
 import javax.media.jai.BorderExtender;
 import javax.media.jai.ImageLayout;
-import javax.media.jai.Interpolation;
 import javax.media.jai.InterpolationBicubic;
 import javax.media.jai.InterpolationBilinear;
 import javax.media.jai.InterpolationNearest;
 import javax.media.jai.JAI;
-import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.RenderedOp;
 import javax.media.jai.TileCache;
 
 import org.apache.commons.cli2.Option;
 import org.apache.commons.cli2.validation.InvalidArgumentException;
 import org.apache.commons.cli2.validation.Validator;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.geotools.image.io.ImageIOExt;
-import org.geotools.resources.image.ImageUtilities;
 import org.geotools.utils.CoverageToolsConstants;
 import org.geotools.utils.WriteProgressListenerAdapter;
 import org.geotools.utils.progress.BaseArgumentsManager;
@@ -92,7 +89,9 @@ import org.geotools.utils.progress.ProcessingEventListener;
  */
 public class OverviewsEmbedder extends BaseArgumentsManager implements Runnable, ProcessingEventListener {
 
-	public static enum SubsampleAlgorithm{
+	private static final TIFFImageWriterSpi TIFF_IMAGE_WRITER_SPI = new TIFFImageWriterSpi();
+
+    public static enum SubsampleAlgorithm{
 
 		Nearest, Bilinear, Bicubic, Average, Filtered; 
 
@@ -231,6 +230,10 @@ public class OverviewsEmbedder extends BaseArgumentsManager implements Runnable,
 	private String sourcePath;
 
 	private String compressionScheme = null;
+	
+	private boolean external=false;
+	
+	private Option externalOpt;
 
 	private double compressionRatio = CoverageToolsConstants.DEFAULT_COMPRESSION_RATIO;
 
@@ -250,7 +253,6 @@ public class OverviewsEmbedder extends BaseArgumentsManager implements Runnable,
 	 * 
 	 * 
 	 */
-	@SuppressWarnings("unchecked")
 	public OverviewsEmbedder() {
 		super(NAME, VERSION);
 		// /////////////////////////////////////////////////////////////////////
@@ -288,6 +290,13 @@ public class OverviewsEmbedder extends BaseArgumentsManager implements Runnable,
 						.create()).withDescription(
 				"tile dimensions as a couple width,height in pixels")
 				.withRequired(false).create();
+		
+                externalOpt = optionBuilder.withShortName("ext").withLongName(
+                    "external_overviews").withArgument(
+                    argumentBuilder.withName("extt").withMinimum(0).withMaximum(1)
+                                    .create()).withDescription(
+                    "create external overviews")
+                .withRequired(false).create();		
 
 		scaleFactorOpt = optionBuilder
 				.withShortName("f")
@@ -366,7 +375,7 @@ public class OverviewsEmbedder extends BaseArgumentsManager implements Runnable,
 											throw new InvalidArgumentException(
 													"Only one scaling algorithm at a time can be chosen");
 										final SubsampleAlgorithm algorithm=SubsampleAlgorithm.valueOf((String)args.get(0)); 
-										if (algorithm!=null)
+										if (algorithm==null)
 											throw new InvalidArgumentException(
 													new StringBuilder(
 															"The scaling algorithm ")
@@ -437,6 +446,7 @@ public class OverviewsEmbedder extends BaseArgumentsManager implements Runnable,
 		addOption(wildcardOpt);
 		addOption(compressionTypeOpt);
 		addOption(compressionRatioOpt);
+		addOption(externalOpt);
 
 		// /////////////////////////////////////////////////////////////////////
 		//
@@ -444,96 +454,6 @@ public class OverviewsEmbedder extends BaseArgumentsManager implements Runnable,
 		//
 		// /////////////////////////////////////////////////////////////////////
 		finishInitialization();
-	}
-
-	/**
-	 * This method retiles the original image using a specified tile width and
-	 * height.
-	 * 
-	 * @param Original
-	 *            image to be tiled or retiled.
-	 * @param tileWidth
-	 *            Tile width.
-	 * @param tileHeight
-	 *            Tile height.
-	 * @param tileGrdiOffseX
-	 * @param tileGrdiOffseY
-	 * @param interpolation
-	 *            Interpolation method used.
-	 * 
-	 * @return RenderedOp containing the chain to obtain the tiled image.
-	 */
-	private static ImageLayout createTiledLayout(
-			final int tileWidth, 
-			final int tileHeight,
-			final int tileGrdiOffseX, 
-			final int tileGrdiOffseY) {
-
-		// //
-		//
-		// creating a new layout for this image
-		// using tiling
-		//
-		// //
-		ImageLayout layout = new ImageLayout();
-
-		// //
-		//
-		// changing parameters related to the tiling
-		//
-		//
-		// //
-		layout.setTileGridXOffset(tileGrdiOffseX);
-		layout.setTileGridYOffset(tileGrdiOffseY);
-		layout.setValid(ImageLayout.TILE_GRID_X_OFFSET_MASK);
-		layout.setValid(ImageLayout.TILE_GRID_Y_OFFSET_MASK);
-		layout.setTileWidth(tileWidth);
-		layout.setTileHeight(tileHeight);
-		layout.setValid(ImageLayout.TILE_HEIGHT_MASK);
-		layout.setValid(ImageLayout.TILE_WIDTH_MASK);
-
-		return layout;
-	}
-
-	/**
-	 * This methods built up a RenderedOp for subsampling an image in order to
-	 * create various previes. I wanted to use the filtered subsample but It was
-	 * giving me problems in the native libraries therefore I am doing a two
-	 * steps downsampling:
-	 * 
-	 * Step 1: low pass filtering.
-	 * 
-	 * Step 2: Subsampling.
-	 * 
-	 * @param src
-	 *            Image to subsample.
-	 * @param scaleTC 
-	 * @param scale
-	 *            Scale factor.
-	 * @param interpolation
-	 *            Interpolation method used.
-	 * @param tileHints
-	 *            Hints provided.
-	 * 
-	 * @return The subsampled RenderedOp.
-	 */
-	private RenderedOp subsample(RenderedOp src, TileCache scaleTC, final Interpolation interpolation) {
-		final RenderingHints newHints = new RenderingHints(JAI.KEY_TILE_CACHE,scaleTC);
-		newHints.add(ImageUtilities.DONT_REPLACE_INDEX_COLOR_MODEL);
-		newHints.add(new RenderingHints(JAI.KEY_BORDER_EXTENDER, this.borderExtender));
-		
-		// using filtered subsample operator to do a subsampling
-		final ParameterBlockJAI pb = new ParameterBlockJAI("filteredsubsample");
-		pb.addSource(src);
-		pb.setParameter("scaleX", new Integer(downsampleStep));
-		pb.setParameter("scaleY", new Integer(downsampleStep));
-		pb.setParameter("qsFilterArray", new float[] { 1.0f });
-		pb.setParameter("Interpolation", interpolation);
-		// remember to add the hint to avoid replacement of the original
-		// IndexColorModel
-		// in future versions we might want to make this parametrix XXX TODO
-		// @task
-		return JAI.create("filteredsubsample", pb, newHints);
 	}
 
 	public int getDownsampleStep() {
@@ -569,72 +489,6 @@ public class OverviewsEmbedder extends BaseArgumentsManager implements Runnable,
 		this.tileW = tileWidth;
 	}
 
-	/**
-	 * Creating the scale operation using the FilteredSubSample operation with a
-	 * null filter, which basically does not do any filtering. This is a hint I
-	 * found on the JAI mailing list, a SUN engineer suggested to use this
-	 * instead of scale since it uses a integer factor which is easier for the
-	 * library to handle than a float scale factor like Scale operation is
-	 * using.
-	 * 
-	 * @param src
-	 *            Source image to be scaled.
-	 * @param scaleTC 
-	 * @param factor
-	 *            Scale factor.
-	 * @param interpolation
-	 *            Interpolation used.
-	 * @param hints
-	 *            Hints provided to this method.
-	 * 
-	 * @return The scaled image.
-	 */
-	private RenderedOp filteredSubsample(RenderedImage src, TileCache scaleTC) {
-		final RenderingHints newHints = new RenderingHints(JAI.KEY_TILE_CACHE,scaleTC);
-		newHints.add(ImageUtilities.DONT_REPLACE_INDEX_COLOR_MODEL);
-		
-		// using filtered subsample operator to do a subsampling
-		final ParameterBlockJAI pb = new ParameterBlockJAI("filteredsubsample");
-		pb.addSource(src);
-		pb.setParameter("scaleX", new Integer(downsampleStep));
-		pb.setParameter("scaleY", new Integer(downsampleStep));
-		pb.setParameter("qsFilterArray", lowPassFilter);
-		pb.setParameter("Interpolation", new InterpolationNearest());
-		return JAI.create("filteredsubsample", pb,newHints);
-	}
-
-	/**
-	 * Creating the scale operation using the FilteredSubSample operation with a
-	 * null filter, which basically does not do any filtering. This is a hint I
-	 * found on the JAI mailing list, a SUN engineer suggested to use this
-	 * instead of scale since it uses a integer factor which is easier for the
-	 * library to handle than a float scale factor like Scale operation is
-	 * using.
-	 * 
-	 * @param src
-	 *            Source image to be scaled.
-	 * @param scaleTC 
-	 * @param factor
-	 *            Scale factor.
-	 * @param interpolation
-	 *            Interpolation used.
-	 * @param hints
-	 *            Hints provided to this method.
-	 * 
-	 * @return The scaled image.
-	 */
-	private RenderedOp scaleAverage(RenderedImage src, TileCache scaleTC) {
-		final RenderingHints newHints = new RenderingHints(JAI.KEY_TILE_CACHE,scaleTC);
-		newHints.add(ImageUtilities.DONT_REPLACE_INDEX_COLOR_MODEL);
-		newHints.add(new RenderingHints(JAI.KEY_BORDER_EXTENDER, this.borderExtender));
-		// using filtered subsample operator to do a subsampling
-		final ParameterBlockJAI pb = new ParameterBlockJAI("SubsampleAverage");
-		pb.addSource(src);
-		pb.setParameter("scaleX", new Double(1.0 / downsampleStep));
-		pb.setParameter("scaleY", new Double(1.0 / downsampleStep));
-		return JAI.create("SubsampleAverage", pb, newHints);
-	}
-
 	public void setBorderExtender(BorderExtender borderExtender) {
 		this.borderExtender = borderExtender;
 	}
@@ -648,8 +502,7 @@ public class OverviewsEmbedder extends BaseArgumentsManager implements Runnable,
 		this.lowPassFilter = lowPassFilter;
 	}
 
-public void run() {
-
+	public void run() {
 		//
 		// CHECK INPUT DIRECTORIES/FILES
 		//
@@ -686,7 +539,7 @@ public void run() {
 			}
 
 		} else
-			files = new File[] { file };
+		    files = new File[] { file };
 		
 		if(files==null||files.length==0)
 		{
@@ -718,15 +571,16 @@ public void run() {
 			ImageWriter writer =null;
 			ImageOutputStream streamOut=null;
 			TileCache baseTC= null;			
-			TileCache scaleTC=null;
 			RenderedOp currentImage = null;
 			RenderedOp newImage=null;				
 			try{
 
+			        File localFile=files[fileBeingProcessed];
+			        
 				//
 				// get a stream
 				//
-				stream = ImageIO.createImageInputStream(files[fileBeingProcessed]);
+			        stream = ImageIO.createImageInputStream(localFile);
 				if(stream==null)
 				{
 					
@@ -772,7 +626,6 @@ public void run() {
 				// tiling the image if needed
 				int actualTileW = reader.getTileWidth(0);
 				int actualTileH = reader.getTileHeight(0);
-				final int numImages = reader.getNumImages(true);
 				if (!reader.isImageTiled(0)||
 						(reader.isImageTiled(0) && (actualTileH != tileH  && tileH != -1)|| (actualTileW != tileW && tileW != -1))) {
 
@@ -782,7 +635,7 @@ public void run() {
 					}
 					fireEvent(message.toString(),
 							((fileBeingProcessed * 100.0) / numFiles));
-					layout = createTiledLayout(tileW, tileH, 0, 0);
+					layout = Utils.createTiledLayout(tileW, tileH, 0, 0);
 				}
 				stream.reset();
 				reader.reset();
@@ -791,7 +644,11 @@ public void run() {
 				//
 				// output image stream
 				//
-				streamOut = ImageIOExt.createImageOutputStream(null, files[fileBeingProcessed]);
+                                if(external){
+                                    // create a sibling file
+                                    localFile= new File(localFile.getParent(),FilenameUtils.getBaseName(localFile.getAbsolutePath())+".tif.ovr");
+                                }				
+				streamOut = ImageIOExt.createImageOutputStream(null, localFile);
 				if (streamOut == null) {
 					message = new StringBuilder(
 							"Unable to acquire an ImageOutputStream for the file ")
@@ -810,32 +667,32 @@ public void run() {
 				// the first image `
 				//
 				// getting a writer for this reader
-				writer = new TIFFImageWriterSpi().createWriterInstance();//ImageIO.getImageWriter(reader);
+				writer = TIFF_IMAGE_WRITER_SPI.createWriterInstance();
 				writer.setOutput(streamOut);
 				writer.addIIOWriteProgressListener(writeProgressListener);
 				writer.addIIOWriteWarningListener(writeProgressListener);
 				ImageWriteParam param = writer.getDefaultWriteParam();
 
-				// can we tile this image? (TIFF or JPEG2K)
-				if (!(param.canWriteTiles())) {
-					message = new StringBuilder("This format do not support tiling!");
-					if (LOGGER.isLoggable(Level.SEVERE)) {
-						LOGGER.severe(message.toString());
-					}
-					fireEvent(message.toString(),((fileBeingProcessed * 100.0) / numFiles));
-					break;
-				}
-
-				// can we write a sequence for these images?
-				if (!(writer.canInsertImage(numImages))) {
-					message = new StringBuilder("This format do not support overviews!");
-					if (LOGGER.isLoggable(Level.SEVERE)) {
-						LOGGER.severe(message.toString());
-					}
-					fireEvent(message.toString(),((fileBeingProcessed * 100.0) / numFiles));
-					break;
-
-				}
+//				// can we tile this image? (TIFF or JPEG2K)
+//				if (!(param.canWriteTiles())) {
+//					message = new StringBuilder("This format do not support tiling!");
+//					if (LOGGER.isLoggable(Level.SEVERE)) {
+//						LOGGER.severe(message.toString());
+//					}
+//					fireEvent(message.toString(),((fileBeingProcessed * 100.0) / numFiles));
+//					break;
+//				}
+//
+//				// can we write a sequence for these images?
+//				if (!(writer.canInsertImage(numImages))) {
+//					message = new StringBuilder("This format do not support embedded overviews, proceeding with external!");
+//					if (LOGGER.isLoggable(Level.SEVERE)) {
+//						LOGGER.severe(message.toString());
+//					}
+//					fireEvent(message.toString(),((fileBeingProcessed * 100.0) / numFiles));
+//					break;
+//
+//				}
 
 				//
 				// setting tiling on the first image using writing parameters
@@ -858,15 +715,15 @@ public void run() {
 				// creating the image to use for the successive
 				// subsampling
 				//
-				final long tilecacheSize=this.getTileCacheSize()<=0?DEFAULT_TILE_CACHE_SIZE:super.getTileCacheSize();
-				baseTC= JAI.createTileCache();
-				baseTC.setMemoryCapacity(tilecacheSize/2);
-				baseTC.setMemoryThreshold(1.0f);
-
-				
-				scaleTC= JAI.createTileCache();
-				scaleTC.setMemoryCapacity(tilecacheSize/2);
-				scaleTC.setMemoryThreshold(1.0f);
+				if(this.getTileCacheSize()<=0){
+                                    baseTC= JAI.getDefaultInstance().getTileCache();
+				}else{
+				    final long tilecacheSize=super.getTileCacheSize();
+				    baseTC= JAI.createTileCache();
+				    baseTC.setMemoryCapacity(tilecacheSize);
+				    baseTC.setMemoryThreshold(0.75f);   
+				}
+							
 				
 				final RenderingHints newHints = new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout);
 				newHints.add(new RenderingHints(JAI.KEY_TILE_CACHE,baseTC));
@@ -888,6 +745,7 @@ public void run() {
 					LOGGER.fine(message.toString());
 				}
 				fireEvent(message.toString(),((fileBeingProcessed * 100.0) / numFiles));
+				int i=0;
 				for (overviewInProcess = 0; overviewInProcess < numSteps; overviewInProcess++) {
 
 					message = new StringBuilder("Subsampling step ").append(overviewInProcess).append(" of image  ").append(fileBeingProcessed);
@@ -906,19 +764,19 @@ public void run() {
 					final SubsampleAlgorithm algorithm=SubsampleAlgorithm.valueOf(scaleAlgorithm);
 					switch (algorithm) {
 					case Average:
-						newImage = scaleAverage(currentImage,scaleTC);
+						newImage = Utils.scaleAverage(currentImage,baseTC,downsampleStep,borderExtender);
 						break;
 					case Filtered:
-						newImage = filteredSubsample(currentImage,scaleTC);
+						newImage = Utils.filteredSubsample(currentImage,baseTC,downsampleStep,lowPassFilter);
 						break;
 					case Bilinear:
-						newImage = subsample(currentImage,scaleTC,new InterpolationBilinear());
+						newImage = Utils.subsample(currentImage,baseTC,new InterpolationBilinear(),downsampleStep,borderExtender);
 						break;	
 					case Bicubic:
-						newImage = subsample(currentImage,scaleTC,new InterpolationBicubic(2));
+						newImage = Utils.subsample(currentImage,baseTC,new InterpolationBicubic(2),downsampleStep,borderExtender);
 						break;
 					case Nearest:
-						newImage = subsample(currentImage,scaleTC, new InterpolationNearest());
+						newImage = Utils.subsample(currentImage,baseTC, new InterpolationNearest(),downsampleStep,borderExtender);
 						break;						
 					default:
 						throw new IllegalArgumentException("Invalid scaling algorithm "+scaleAlgorithm);//cannot get here
@@ -928,14 +786,16 @@ public void run() {
 					
 					//set relevant metadata
 					IIOMetadata imageMetadata = null;                                        
-                    if (writer instanceof TIFFImageWriter){
-                       imageMetadata = writer.getDefaultImageMetadata(new ImageTypeSpecifier(newImage), param);
-                       if (imageMetadata != null)
-                            ((TIFFImageMetadata)imageMetadata).addShortOrLongField(BaselineTIFFTagSet.TAG_NEW_SUBFILE_TYPE, BaselineTIFFTagSet.NEW_SUBFILE_TYPE_REDUCED_RESOLUTION);
-                    }
-                    // write out
-                    writer.writeInsert(-1, new IIOImage(newImage, null, imageMetadata), param);
-
+                                        if (writer instanceof TIFFImageWriter){
+                                           imageMetadata = writer.getDefaultImageMetadata(new ImageTypeSpecifier(newImage), param);
+                                           if (imageMetadata != null)
+                                                ((TIFFImageMetadata)imageMetadata).addShortOrLongField(BaselineTIFFTagSet.TAG_NEW_SUBFILE_TYPE, BaselineTIFFTagSet.NEW_SUBFILE_TYPE_REDUCED_RESOLUTION);
+                                        }
+                                        // write out
+                                        if(!external || i>0)
+                                            writer.writeInsert(-1, new IIOImage(newImage, null, imageMetadata), param);
+                                        else
+                                            writer.write(null,new IIOImage(newImage, null, imageMetadata), param);
 					message = new StringBuilder("Step ").append(
 							overviewInProcess).append(" of image  ").append(
 							fileBeingProcessed).append(" done!");
@@ -949,11 +809,9 @@ public void run() {
 					baseTC.flush();
 					
 					// switching caches and images
-					final TileCache appo= baseTC;
-					baseTC=scaleTC;
-					scaleTC=appo;
 					currentImage = newImage;
 
+					i++;
 
 				}
 				
@@ -975,11 +833,6 @@ public void run() {
 				    try{
 				        baseTC.flush();
 				    } catch (Exception e) {
-                                    }
-				if(scaleTC!=null)
-                                    try{
-                                        scaleTC.flush();
-                                    } catch (Exception e) {
                                     }
 				
 				//
@@ -1014,12 +867,19 @@ public void run() {
                                     if (LOGGER.isLoggable(Level.FINE))
                                                 LOGGER.log(Level.FINE,e.getLocalizedMessage(),e);
                                 }
-                                                
+                                              
+                                try {
+                                    if(newImage!=null)
+                                        newImage.dispose();
+                                } catch (Throwable e) {
+                                    if (LOGGER.isLoggable(Level.FINE))
+                                                LOGGER.log(Level.FINE,e.getLocalizedMessage(),e);
+                                }
 
-				if(newImage!=null)
-					newImage.dispose();
+
 				try {
-					stream.close();				
+				    if(stream!=null)
+                                        stream.close();				
 					
 				} catch (Throwable e) {
 					if(LOGGER.isLoggable(Level.FINE))
@@ -1069,7 +929,11 @@ public void run() {
 			final String tileDim = (String) getOptionValue(tileDimOpt);
 			final String[] pairs = tileDim.split(",");
 			tileW = Integer.parseInt(pairs[0]);
-			tileH = Integer.parseInt(pairs[1]);
+			if(pairs.length>1){
+			    tileH = Integer.parseInt(pairs[1]);
+			} else {
+			    tileH=tileW;
+			}
 		}
 		// //
 		//
@@ -1087,6 +951,15 @@ public void run() {
 		if (hasOption(wildcardOpt))
 			wildcardString = (String) getOptionValue(wildcardOpt);
 
+	        // //
+                //
+                // external overviews
+                //
+                // //
+                if (hasOption(externalOpt))
+                        external = Boolean.parseBoolean((String)getOptionValue(externalOpt));
+                
+                
 		// //
 		//
 		// scaling algorithm (default to nearest neighbour)

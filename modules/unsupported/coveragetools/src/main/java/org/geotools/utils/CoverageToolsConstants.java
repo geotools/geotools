@@ -18,6 +18,7 @@ package org.geotools.utils;
 
 import javax.media.jai.BorderExtender;
 import javax.media.jai.Interpolation;
+import javax.media.jai.JAI;
 
 import org.geotools.coverage.processing.operation.FilteredSubsample;
 import org.geotools.coverage.processing.operation.Scale;
@@ -60,5 +61,19 @@ public class CoverageToolsConstants {
 	 * Default number of resolution steps.. 
 	 */
 	public static final int DEFAULT_RESOLUTION_STEPS = 5;
+	
+	       /** Tile width. */
+	public static final int TILE_WIDTH = (int) JAI.getDefaultTileSize().getWidth();
+
+        /** Tile height. */
+	public static final  int TILE_HEIGHT = (int) JAI.getDefaultTileSize().getHeight();
+        /**
+         * Default tile cache size.
+         */
+        public static final long DEFAULT_TILE_CACHE_SIZE = 128 * 1024 * 1024;
+        /**
+         * Default imageio caching behaviour.
+         */
+        public final static boolean DEFAULT_IMAGEIO_CACHING_BEHAVIOUR = false;
 
 }

@@ -14,7 +14,7 @@ GTRenderer is actually an interface; currently there are two implementations:
 Here is how to drawn an outputArea rectangle::
   
   GTRenderer draw = new StreamingRenderer();
-  draw.setContext(map);
+  draw.setMapContent(map);
   
   draw.paint(g2d, outputArea, map.getLayerBounds() );
 
@@ -80,7 +80,7 @@ The following example is taken from uDig::
     
     // call your GTRenderer here
     GTRenderer draw = new StreamingRenderer();
-    draw.setContext(map);
+    draw.setMapContent(map);
     
     draw.paint(graphics, outputArea, map.getLayerBounds() );
     
@@ -115,43 +115,39 @@ Image
 You can also ask Java to make you a Graphics2D for a BufferedImage in memory. After drawing into this
 image you can write it out to disk.
 
-Here is an example from Oliver on the email list::
+Here is an example from Oliver on the email list (modified slightly to use current GeoTools classes)::
   
-  public void saveImage(MapContext map, String file){ 
-  
-    GTRenderer renderer = new StreamingRenderer();
-    renderer.setContext( map );
-    
-    Rectangle imageBounds=null;
-    try{
-        ReferencedEnvelope mapBounds=map.getLayerBounds();
+    public void saveImage(final MapContent map, final String file, final int imageWidth) {
 
-        double heightToWidth = mapBounds.getSpan(1) / mapBounds.getSpan(0);
-        int imageWidth = 600;
+        GTRenderer renderer = new StreamingRenderer();
+        renderer.setMapContent(map);
 
-        imageBounds = new Rectangle(
-                0, 0, imageWidth, (int) Math.round(imageWidth * heightToWidth));
-    }catch(Exception e){
-        
-    } 
-    
-    //Rectangle imageSize = new Rectangle(600,600);
-    
-    BufferedImage image = new BufferedImage(imageBounds.width, imageBounds.height,      BufferedImage.TYPE_INT_RGB); //darker red fill
+        Rectangle imageBounds = null;
+        ReferencedEnvelope mapBounds = null;
+        try {
+            mapBounds = map.getMaxBounds();
+            double heightToWidth = mapBounds.getSpan(1) / mapBounds.getSpan(0);
+            imageBounds = new Rectangle(
+                    0, 0, imageWidth, (int) Math.round(imageWidth * heightToWidth));
 
-    Graphics2D gr = image.createGraphics();
-    gr.setPaint(Color.WHITE);
-    gr.fill(imageBounds);
-    
-    try {
-        renderer.paint(gr, imageBounds, map.getAreaOfInterest());
-  
-        
-        File fileToSave = new File(file);
-        ImageIO.write(image, "jpeg", fileToSave);
-    }catch(IOException e){
-        
-    }    
-  }
+        } catch (Exception e) {
+            // failed to access map layers
+            throw new RuntimeException(e);
+        }
 
-Note the above example depends on the map area of interest having the same aspect ratio as the imageSize. You can calculate this yourself; or there may be a helper method in ScaleUtils.
+        BufferedImage image = new BufferedImage(imageBounds.width, imageBounds.height, BufferedImage.TYPE_INT_RGB); 
+
+        Graphics2D gr = image.createGraphics();
+        gr.setPaint(Color.WHITE);
+        gr.fill(imageBounds);
+
+        try {
+            renderer.paint(gr, imageBounds, mapBounds);
+            File fileToSave = new File(file);
+            ImageIO.write(image, "jpeg", fileToSave);
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+

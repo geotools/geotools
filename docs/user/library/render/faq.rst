@@ -23,12 +23,11 @@ This standard is divided into two parts:
 * Symbology Encoding 1.1 covers the definition of a feature type style
   controlling how a rendering engine draws features.
 
-Q: What is a MapContext
-^^^^^^^^^^^^^^^^^^^^^^^
+Q: What is a MapContent?
+^^^^^^^^^^^^^^^^^^^^^^^^
 
-This module actually defines a new data structure - MapContext. A  
-MapContext is made up of a series of MapLayers which are drawn in
-order.
+A MapContent object holds one or more Layers which are rendered in the
+order that they were added.
 
 This is not part of the formal gt-opengis module because it is not
 considered finished, done, or complete. The GeoTools community is

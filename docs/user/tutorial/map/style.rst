@@ -298,7 +298,7 @@ __ udigdata_
 Things to try
 ==============
 
-In Geometry and CRS tutorial we saw how to change the Coordinate Reference System of a MapContext.
+In Geometry and CRS tutorial we saw how to change the Coordinate Reference System of a MapContent.
 Try the following:
 
 * Modify this application so that you can change the CRS in which the features are displayed.

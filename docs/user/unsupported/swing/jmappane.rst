@@ -10,15 +10,15 @@ JMapFrame packages up a JMapPane for a quick visual display. In GeoTools we ofte
 
 * Here is how to show a map::
     
-    MapContext context = new MapContext();
+    MapContent content = new MapContent();
     
     // add map layers here
     
     // Title will be used as the title for JMapFrame
-    context.setTitle("The Map is Back");
+    content.setTitle("The Map is Back");
     
     // Show the Map to the user
-    JMapFrame.showMap( context );
+    JMapFrame.showMap( content );
   
   The resulting map is displayed in a simple frame.
   
@@ -31,7 +31,7 @@ JMapFrame packages up a JMapPane for a quick visual display. In GeoTools we ofte
   To prevent this (say if you are using JMapFrame for debugging) please use the
   following::
     
-    JMapFrame show = new JMapFrame( context );
+    JMapFrame show = new JMapFrame( content );
     show.setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );
     show.setVisible(true);
 
@@ -41,7 +41,7 @@ JMapFrame packages up a JMapPane for a quick visual display. In GeoTools we ofte
   
   To turn additional features on::
     
-    JMapFrame show = new JMapFrame( context );
+    JMapFrame show = new JMapFrame( content );
     
     // list layers and set them as visible + selected
     show.enableLayerTable( true );  
@@ -63,7 +63,7 @@ JMapFrame packages up a JMapPane for a quick visual display. In GeoTools we ofte
 JMapPane
 ^^^^^^^^
 
-JMapPane is a simple map display panel (derived from Swing's JPanel) that works with a GTRenderer and MapContext to display features. It supports the use of tool classes to implement, for example, mouse-controlled zooming and panning
+JMapPane is a simple map display panel (derived from Swing's JPanel) that works with a GTRenderer and MapContent to display features. It supports the use of tool classes to implement, for example, mouse-controlled zooming and panning
 
 * JMapPane is used in our tutorials in order to offer a chance to learn the library
   in a visual fashion. For more information on the rendering process please review
@@ -73,8 +73,9 @@ JMapPane is a simple map display panel (derived from Swing's JPanel) that works 
   do things. The code is very simple; it maintains the following
   information:
   
-  * MapContext - defines contents of the map; the list of layers to
-    display in the correct order
+  * MapContent - defines contents of the map (the list of layers to
+    display in the correct order)
+
   * MapArea - the area of the world to display
   
   With this information in mind the paint method of the JPanel 
@@ -92,9 +93,9 @@ This snippet shows the typical way of constructing and initializing a JMapPane::
   // set a renderer to use with the map pane
   mapPane.setRenderer( new StreamingRenderer() );
   
-  // set the map context that contains the layers to be displayed
-  MapContext context = ...
-  mapPane.setMapContext( context );
+  // set the map content that contains the layers to be displayed
+  MapContent content = ...
+  mapPane.setMapContent( content );
 
 Display Area
 ''''''''''''
@@ -145,10 +146,10 @@ The zoom Action classes in the code above are each associated with a map pane Cu
 Example
 '''''''
 
-1. You will need to define your own MapContext (defining what
+1. You will need to define your own MapContent (defining what
    layers to display) prior to using a JMapPane::
     
-     private static void showMap(MapContext map) throws IOException {
+     private static void showMap(MapContent map) throws IOException {
         final JMapPane mapPane = new JMapPane(new StreamingRenderer(), map);
         mapPane.setMapArea(map.getLayerBounds());
         JFrame frame = new JFrame("ImageLab2");

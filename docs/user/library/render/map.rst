@@ -36,7 +36,7 @@ Examples:
 
 * Direct access to layer information is provided::
   
-    MapContent content = mapFrame.getMapContext();
+    MapContent content = mapFrame.getMapContent();
     if( content.layers().get(0) instanceof FeatureLayer ){
         FeatureLayer selectionLayer = (FeatureLayer) content.layers().get(0);
         selectLayer.setStyle( style );
@@ -44,7 +44,7 @@ Examples:
 
 * Zoom out to show all content::
     
-        MapContent content = mapFrame.getMapContext();
+        MapContent content = mapFrame.getMapContent();
         MapViewport viewport = content.getMapViewport();
         ReferencedEnvelope maxBounds = null;
         CoordinateReferenceSystem mapCRS = viewport.getCoordianteReferenceSystem();

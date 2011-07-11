@@ -124,7 +124,7 @@ constructor are:
 Displaying the map
 ------------------
 
-To display the map on screen we create a **MapContext**, add the image and the shapefile to it,
+To display the map on screen we create a **MapContent**, add the image and the shapefile to it,
 and pass it to a **JMapFrame**.
 
 1. Rather than using the static JMapFrame.showMap method, as we have in previous examples, we create a

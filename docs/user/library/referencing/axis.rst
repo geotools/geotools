@@ -8,7 +8,8 @@ This is most often phrased as the question "What axis is X?" on our mailing list
 Using Transform
 ^^^^^^^^^^^^^^^
 
-In the normal course of events you will set up a series of math transforms to map from your data representation to the screen.
+In the normal course of events you will set up a series of math transforms to map from your data representation to the
+screen.
 
 World to Screen
 '''''''''''''''
@@ -61,7 +62,8 @@ It is often easier to treat the problem in two steps:
 Screen to World
 '''''''''''''''
 
-The above instructions seem to cause some confusion; it may be easier to take the inverse of your world2screen transform (usually you have one around since you were using it for drawing).::
+The above instructions seem to cause some confusion; it may be easier to take the inverse of your world2screen transform
+(usually you have one around since you were using it for drawing).::
   
   AffineTransform world2screen =
      RendererUtilities.worldToScreenTransform(mapContext.getLayerBounds(),
@@ -73,11 +75,14 @@ The above instructions seem to cause some confusion; it may be easier to take th
 Avoid Assumptions
 ^^^^^^^^^^^^^^^^^
 
-This is a problem when you run into code that would like to assume that each DirectPosition contains data in (x,y) order (ie matching the screen).
+This is a problem when you run into code that would like to assume that each DirectPosition contains data in (x,y) order
+(ie matching the screen).
 
 There exist many methods that are almost helpful:
 
-* getHorizontalCRS return the GeographicCRS or ProjectedCRS part, or a DerivedCRS based on the above, that applies to the Earth's surface (ie real geophysical meaning - not the first two axis).
+* getHorizontalCRS return the GeographicCRS or ProjectedCRS part, or a DerivedCRS based on the above, that applies to
+  the Earth's surface (ie real geophysical meaning - not the first two axis).
+
 * You would still need to account for axis direction and polar coordinates on your own time.
 
 A really common assumption for Java developers is to treat Geometry in exactly the same manner as Java2D Shape::
@@ -92,7 +97,9 @@ A really common assumption for Java developers is to treat Geometry in exactly t
 This code can be improved in several ways:
 
 * "x" is assumed to be ordinate(0), "y" is assumed to be ordinate(1)
-* A complicated transform is being performed by hand, "y" is inverted to match screen orientation, a transform is specified using dx and dy offsets and the entire result is scaled
+
+* A complicated transform is being performed by hand, "y" is inverted to match screen orientation, a transform is
+  specified using dx and dy offsets and the entire result is scaled
 
 This code will fail when presented with:
 
@@ -100,7 +107,8 @@ This code will fail when presented with:
 * data in which the direction of the axis is not what was expected
 * data that was collected in polar coordinates
 
-Please note that some GeoTools classes, such as CRSUtiities.getCRS2D, often make use of this assumption; blinding returning the first 2 dimensions no matter what they are.
+Please note that some GeoTools classes, such as CRSUtiities.getCRS2D, often make use of this assumption; blinding
+returning the first 2 dimensions no matter what they are.
 
 Quick Fix
 '''''''''
@@ -183,4 +191,6 @@ This code will fail when presented with:
 * data in which the direction of the axis is not what was expected
 * data that was collected in polar coordinates
 
-Please note that you will still miss out on a lot of data, we have only looked for AxisDirection that match our assumptions (ie that the data is across an increasing - such as EAST). We are missing out on other data that is obviously across but is decreasing - such as WEST.
+Please note that you will still miss out on a lot of data, we have only looked for AxisDirection that match our
+assumptions (ie that the data is across an increasing - such as EAST). We are missing out on other data that is
+obviously across but is decreasing - such as WEST.

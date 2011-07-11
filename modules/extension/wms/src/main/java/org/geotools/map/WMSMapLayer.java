@@ -35,6 +35,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @author Andrea Aime - OpenGeo
  *
  * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/extension/wms/src/main/java/org/geotools/map/WMSMapLayer.java $
+ * 
+ * @deprecated Please use {@linkplain WMSLayer} instead
  */
 public class WMSMapLayer extends MapLayer {
     

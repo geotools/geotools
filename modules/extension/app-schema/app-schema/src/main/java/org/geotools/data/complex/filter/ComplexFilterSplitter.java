@@ -123,7 +123,7 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
     public Object visit(PropertyName expression, Object notUsed) {
         
         // break into single steps
-        StepList exprSteps = XPath.steps(mappings.getTargetFeature(), expression.getPropertyName(), expression.getNamespaceContext());
+        StepList exprSteps = XPath.steps(mappings.getTargetFeature(), expression.getPropertyName(), this.mappings.getNamespaces());
 
         if (exprSteps.containsPredicate()) {
             postStack.push(expression);

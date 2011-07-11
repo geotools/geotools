@@ -809,7 +809,7 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
 
         if (matchingMappings.isEmpty() && simplifiedSteps.size() > 1) {
             // means some attributes are probably mapped separately in feature chaining
-            matchingMappings.add(new NestedAttributeExpression(targetXPath, mappings, expr.getNamespaceContext()));
+            matchingMappings.add(new NestedAttributeExpression(targetXPath, mappings, this.mappings.getNamespaces()));
         }
 
         if (matchingMappings.size() == 0) {

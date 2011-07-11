@@ -364,4 +364,8 @@ public class MappingFeatureCollection implements FeatureCollection<FeatureType, 
         throw new UnsupportedOperationException();
     }
 
+    public Query getQuery() {
+        return this.query;
+    }
+
 }

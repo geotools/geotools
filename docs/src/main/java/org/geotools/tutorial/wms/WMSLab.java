@@ -8,9 +8,8 @@ import javax.swing.JOptionPane;
 
 import org.geotools.data.ows.Layer;
 import org.geotools.data.wms.WebMapServer;
-import org.geotools.map.DefaultMapContext;
-import org.geotools.map.MapContext;
-import org.geotools.map.WMSMapLayer;
+import org.geotools.map.MapContent;
+import org.geotools.map.WMSLayer;
 import org.geotools.swing.JMapFrame;
 import org.geotools.swing.wms.WMSChooser;
 import org.geotools.swing.wms.WMSLayerChooser;
@@ -37,11 +36,11 @@ public class WMSLab extends JFrame {
             JOptionPane.showMessageDialog(null, "Could not connect - check url");
             System.exit(0);
         }
-        MapContext mapcontent = new DefaultMapContext();
+        MapContent mapcontent = new MapContent();
         mapcontent.setTitle( wms.getCapabilities().getService().getTitle() );
         
         for( Layer wmsLayer : wmsLayers ){
-            WMSMapLayer displayLayer = new WMSMapLayer(wms, wmsLayer );
+            WMSLayer displayLayer = new WMSLayer(wms, wmsLayer );
             mapcontent.addLayer(displayLayer);
         }
         // Now display the map

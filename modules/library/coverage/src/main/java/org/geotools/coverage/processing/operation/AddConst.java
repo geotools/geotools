@@ -63,7 +63,7 @@ import org.geotools.coverage.processing.OperationJAI;
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  *
- * @see org.geotools.coverage.processing.Operations#add
+ * @see org.geotools.coverage.processing.Operations#add(org.opengis.coverage.Coverage, double[])
  * @see AddConstDescriptor
  *
  * @todo Should operates on {@code sampleToGeophysics} transform when possible.

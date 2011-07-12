@@ -407,10 +407,13 @@ public class MapContent {
                 }
 
                 @Override
-                public boolean addIfAbsent(Layer e) {
-                    boolean added = super.addIfAbsent(e);
+                public boolean addIfAbsent(Layer element) {
+                    boolean added = super.addIfAbsent(element);
                     if (added) {
-                        fireLayerAdded(e, size() - 1, size() - 1);
+                        if (layerListener != null) {
+                            element.addMapLayerListener(layerListener);
+                        }
+                        fireLayerAdded(element, size() - 1, size() - 1);
                     }
                     return added;
                 }

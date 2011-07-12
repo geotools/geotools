@@ -482,7 +482,7 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
             }
 
             mapContent = newMapContent;
-            mapContent.getViewport().setMatchingAspectRatio(acceptRepaintRequests);
+            mapContent.getViewport().setMatchingAspectRatio(true);
 
             if (mapContent != null) {
                 mapContent.addMapLayerListListener(this);

@@ -48,7 +48,6 @@
       <groupId>javax.media</groupId>
       <artifactId>jai_core</artifactId>
       <!-- The version number is specified in the parent POM. -->
-      <scope>provided</scope>  <!-- Users should execute JAI installer. -->
     </dependency>
   </dependencies>
 

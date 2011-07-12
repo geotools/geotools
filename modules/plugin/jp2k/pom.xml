@@ -107,13 +107,11 @@
       <groupId>javax.media</groupId>
       <artifactId>jai_codec</artifactId>
       <!-- The version number is specified in the parent POM. -->
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>javax.media</groupId>
       <artifactId>jai_imageio</artifactId>
       <!-- The version number is specified in the parent POM. -->
-      <scope>provided</scope>
     </dependency>
      <dependency>
       <groupId>commons-io</groupId>

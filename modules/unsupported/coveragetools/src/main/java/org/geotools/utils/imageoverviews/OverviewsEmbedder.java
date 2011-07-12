@@ -62,10 +62,6 @@ import org.geotools.utils.progress.ExceptionEvent;
 import org.geotools.utils.progress.ProcessingEvent;
 import org.geotools.utils.progress.ProcessingEventListener;
 
-import com.sun.media.jai.util.SunTileCache;
-
-import tilecachetool.TCTool;
-
 
 /**
  * <pre>
@@ -522,7 +518,6 @@ public class OverviewsEmbedder extends BaseArgumentsManager implements Runnable,
             //
             TileCache baseTC= JAI.getDefaultInstance().getTileCache();
 
-            final TCTool tc= new TCTool((SunTileCache)baseTC);
             if(baseTC==null){
                 localTileCache=true;
                 final long tilecacheSize=super.getTileCacheSize();

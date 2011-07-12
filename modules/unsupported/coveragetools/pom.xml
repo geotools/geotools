@@ -114,9 +114,15 @@
     </dependency>
     <dependency>
       <groupId>commons-io</groupId>
-      <artifactId>commons-io</artifactId>
+      <artifactId>commons-io</artifactId>      
       <version>1.4</version>
     </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-sample-data</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency> 
   </dependencies>
 
 

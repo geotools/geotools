@@ -243,7 +243,8 @@ public class FidFilterImpl extends AbstractFilterImpl implements FidFilter {
 		
 		
             //NC - updated, using attributeexpressionimpl will be easiest, don't have to copy and paste lots of code				
-            return fids.contains(CommonFactoryFinder.getFilterFactory(null).property("@id").evaluate(feature));		
+            Object evaluate = CommonFactoryFinder.getFilterFactory(null).property("@id").evaluate(feature);
+            return evaluate == null? false : fids.contains(evaluate);		
 	}
 	
     /**

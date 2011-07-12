@@ -105,6 +105,7 @@ public class OverviewsEmbedder extends BaseArgumentsManager implements Runnable,
 	 */
 	private class OverviewsEmbedderWriteProgressListener extends
 			WriteProgressListenerAdapter {
+	    private int lastProgress=0;
 
 		/*
 		 * (non-Javadoc)
@@ -126,10 +127,15 @@ public class OverviewsEmbedder extends BaseArgumentsManager implements Runnable,
 		 *      float)
 		 */
 		public void imageProgress(ImageWriter source, float percentageDone) {
-			OverviewsEmbedder.this.fireEvent(new StringBuilder(
-					"Writing out overview ").append(overviewInProcess + 1)
-					.toString(), (overviewInProcess / numSteps + percentageDone
-					/ (100 * numSteps)) * 100.0);
+		    final int tempValue=(int)(percentageDone/5.0);
+		        if(tempValue>lastProgress){
+		            lastProgress=tempValue;
+                            OverviewsEmbedder.this.fireEvent(
+                                    new StringBuilder("Writing out overview ").append(overviewInProcess + 1)
+                                            .toString(), (overviewInProcess / numSteps + percentageDone
+                                            / (100 * numSteps)) * 100.0);
+		        }
+
 		}
 
 		/*

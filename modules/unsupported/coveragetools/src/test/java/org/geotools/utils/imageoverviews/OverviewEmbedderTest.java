@@ -64,6 +64,7 @@ public class OverviewEmbedderTest {
         oe.setDownsampleStep(2);
         oe.setNumSteps(5);
         oe.setScaleAlgorithm(OverviewsEmbedder.SubsampleAlgorithm.Average.toString());
+        // use default 
         oe.setTileCache(JAI.getDefaultInstance().getTileCache());
         oe.setTileWidth(256);
         oe.setTileHeight(256);

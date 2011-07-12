@@ -30,12 +30,10 @@ import java.io.Serializable;
  * @todo there is some duplication with the ImageCollectionReader
  */
 class RasterLayout extends Object implements Cloneable, Serializable {
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
-	/** The image's minimum X coordinate. */
+    private static final long serialVersionUID = 1L;
+
+    /** The image's minimum X coordinate. */
     int minX = 0;
 
     /** The image's minimum Y coordinate. */

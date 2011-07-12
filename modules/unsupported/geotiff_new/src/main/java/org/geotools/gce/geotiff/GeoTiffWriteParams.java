@@ -86,13 +86,21 @@ import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
  *
  * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/geotiff_new/src/main/java/org/geotools/gce/geotiff/GeoTiffWriteParams.java $
  */
-public final class GeoTiffWriteParams extends GeoToolsWriteParams {
+public class GeoTiffWriteParams extends GeoToolsWriteParams {
 
-	/**
-	 * Default constructor.
-	 */
-	public GeoTiffWriteParams() {
-		super(new TIFFImageWriteParam(Locale.getDefault()));
-	}
+    /**
+     * Default constructor.
+     */
+    public GeoTiffWriteParams() {
+        super(new TIFFImageWriteParam(Locale.getDefault()));
+    }
+
+    public void setForceToBigTIFF(final boolean forceToBigTIFF) {
+        ((TIFFImageWriteParam) adaptee).setForceToBigTIFF(forceToBigTIFF);
+    }
+
+    public boolean isForceToBigTIFF() {
+        return ((TIFFImageWriteParam) adaptee).isForceToBigTIFF();
+    }
 
 }

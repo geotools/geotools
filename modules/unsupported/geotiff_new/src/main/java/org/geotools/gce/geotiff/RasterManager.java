@@ -371,7 +371,7 @@ class RasterManager {
             // basic initialization
             //
             coverageGeographicBBox = new ReferencedEnvelope(CRS.transform(CRS.findMathTransform(
-                    coverageEnvelope.getCoordinateReferenceSystem(), DefaultGeographicCRS.WGS84,
+                    coverageEnvelope.getCoordinateReferenceSystem(), Utils.WGS84,
                     true), coverageEnvelope));
             coverageGeographicCRS2D = coverageGeographicBBox.getCoordinateReferenceSystem();
 

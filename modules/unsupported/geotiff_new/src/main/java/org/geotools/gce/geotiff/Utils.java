@@ -35,7 +35,7 @@ import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.PrjFileReader;
 import org.geotools.data.WorldFileReader;
-import org.geotools.image.io.ImageIOExt;
+import org.geotools.referencing.CRS;
 import org.geotools.util.Utilities;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -44,6 +44,7 @@ import org.jdom.Parent;
 import org.jdom.input.DOMBuilder;
 import org.jdom.output.DOMOutputter;
 import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 
@@ -56,7 +57,27 @@ import org.opengis.referencing.operation.MathTransform;
  */
 class Utils {
 
+    /** Logger for the {@link Utils} class. */
+    private final static Logger LOGGER = org.geotools.util.logging.Logging
+            .getLogger(Utils.class.toString());
+    
     static final double EPSILON = 10E-6;
+    
+    static CoordinateReferenceSystem WGS84;
+    
+    static {
+        try {
+            WGS84 = CRS.decode("EPSG:4326", true);
+        } catch (NoSuchAuthorityCodeException e) {
+            if (LOGGER.isLoggable(Level.WARNING)){
+                LOGGER.log(Level.WARNING, "Unable to decode the EPSG:4326 crs." + e.getLocalizedMessage(), e);
+            }
+        } catch (FactoryException e) {
+            if (LOGGER.isLoggable(Level.WARNING)){
+                LOGGER.log(Level.WARNING, "Unable to decode the EPSG:4326 crs." + e.getLocalizedMessage(), e);
+            }
+        }
+    }
 
     static URL checkSource(Object source) throws MalformedURLException, DataSourceException {
         URL sourceURL = null;
@@ -257,10 +278,6 @@ class Utils {
         }
         return crs;
     }
-
-    /** Logger for the {@link GeoTiffReader} class. */
-    private final static Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger(GeoTiffReader.class.toString());
 
     /**
      * Creates image metadata which complies to the GeoTIFFWritingUtilities

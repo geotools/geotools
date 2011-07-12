@@ -46,6 +46,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -65,6 +69,7 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
+import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffIIOMetadataDecoder;
 import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffMetadata2CRSAdapter;
 import org.geotools.data.DataSourceException;
@@ -298,28 +303,11 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements
             reader.setInput(inStream);
     
             final IIOMetadata iioMetadata = reader.getImageMetadata(0);
-            CoordinateReferenceSystem foundCrs = null;
-            boolean useWorldFile = false;
             GeoTiffIIOMetadataDecoder metadata = null; 
 
-            try {
-                metadata = new GeoTiffIIOMetadataDecoder(iioMetadata);
-                gtcs = new GeoTiffMetadata2CRSAdapter(hints);
-                if (gtcs != null) {
-                    foundCrs = gtcs.createCoordinateSystem(metadata);
-                } else {
-                    useWorldFile = true;
-                }
-    
-                if (metadata.hasNoData()) {
-                    noData = metadata.getNoData();
-                }
-            } catch (IllegalArgumentException iae) {
-                useWorldFile = true;
-            } catch (UnsupportedOperationException uoe) {
-                useWorldFile = true;
-            }
-
+            metadata = new GeoTiffIIOMetadataDecoder(iioMetadata);
+            gtcs = new GeoTiffMetadata2CRSAdapter(hints);
+            
             // //
             //
             // get the CRS INFO
@@ -328,18 +316,25 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements
             final Object tempCRS = this.hints.get(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM);
             if (tempCRS != null) {
                 this.crs = (CoordinateReferenceSystem) tempCRS;
-                LOGGER.log(Level.WARNING, "Using forced coordinate reference system " + crs.toWKT());
+                if (LOGGER.isLoggable(Level.FINE))
+                    LOGGER.log(Level.FINE, "Using forced coordinate reference system");
             } else {
-                if (useWorldFile) {
-                    foundCrs = Utils.getCRS(source);
-                }
-                crs = foundCrs;
+                // check metadata first
+                if (metadata.hasGeoKey()&& gtcs != null)
+                    crs = gtcs.createCoordinateSystem(metadata);
+
+                if (crs == null)
+                    crs = Utils.getCRS(source);
+            }
+
+            if (crs == null){
+            if(LOGGER.isLoggable(Level.WARNING))
+                LOGGER.warning("Coordinate Reference System is not available");
+                crs = AbstractGridFormat.getDefaultCRS();
             }
     
-            if (crs == null) {
-                throw new DataSourceException("Coordinate Reference System is not available");
-            }
-    
+            if (metadata.hasNoData())
+                noData = metadata.getNoData();
             // //
             //
             // get the dimension of the hr image and build the model as well as
@@ -353,8 +348,8 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements
             hrLayout = new RasterLayout(0, 0, hrWidth, hrHeight, 0, 0, hrTileW, hrTileH);
             final Rectangle actualDim = new Rectangle(0, 0, hrWidth, hrHeight);
             originalGridRange = new GridEnvelope2D(actualDim);
-    
-            if (!useWorldFile && gtcs != null) {
+
+            if (gtcs != null&& metadata!=null&& (metadata.hasModelTrasformation()||(metadata.hasPixelScales()&&metadata.hasTiePoints()))) {
                 this.raster2Model = GeoTiffMetadata2CRSAdapter.getRasterToModel(metadata);
             } else {
                 this.raster2Model = Utils.parseWorldFile(source);
@@ -433,7 +428,6 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements
             readParam.setSourceRegion(new Rectangle(0, 0, 4, 4));
             final BufferedImage sampleImage = reader.read(0, readParam);
             baseImageType = new ImageTypeSpecifier(sampleImage);
-            reader.dispose();
         } catch (Throwable e) {
             throw new DataSourceException(e);
         } finally {
@@ -496,23 +490,81 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements
     }
 
     /**
-     * Creates a {@link GridCoverage} for the provided {@link PlanarImage} using
-     * the {@link #raster2Model} that was provided for this coverage.
+     * Returns the geotiff metadata for this geotiff file.
      * 
-     * <p>
-     * This method is vital when working with coverages that have a raster to
-     * model transformation that is not a simple scale and translate.
-     * 
-     * @param image
-     *            contains the data for the coverage to create.
-     * @param raster2Model
-     *            is the {@link MathTransform} that maps from the raster space
-     *            to the model space.
-     * @return a {@link GridCoverage}
-     * @throws IOException
+     * @return the metadata
      */
-    protected final GridCoverage createCoverage(
-            PlanarImage image, MathTransform raster2Model) throws IOException {
+    public GeoTiffIIOMetadataDecoder getMetadata() {
+        GeoTiffIIOMetadataDecoder metadata = null;
+        ImageReader reader = null;
+        boolean closeMe = true;
+        ImageInputStream stream = null;
+        
+        try {
+            if ((source instanceof InputStream)|| (source instanceof ImageInputStream)){
+                closeMe = false;
+            }
+            if (source instanceof ImageInputStream ) {
+                    stream =(ImageInputStream) source;
+            } else {
+                inStreamSPI = ImageIOExt.getImageInputStreamSPI(source);
+                if (inStreamSPI == null) {
+                    throw new IllegalArgumentException("No input stream for the provided source");
+                }
+                stream = inStreamSPI.createInputStreamInstance(source, ImageIO.getUseCache(), ImageIO.getCacheDirectory());
+            }
+            if (stream == null) {
+                    throw new IllegalArgumentException("No input stream for the provided source");
+            }
+            stream.mark();
+            reader = Utils.TIFFREADERFACTORY.createReaderInstance();
+            reader.setInput(stream);
+            final IIOMetadata iioMetadata = reader.getImageMetadata(0);
+            metadata = new GeoTiffIIOMetadataDecoder(iioMetadata);
+        } catch (IOException e) {
+            if (LOGGER.isLoggable(Level.SEVERE)) {
+                LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            }
+        } finally {
+            if (reader != null)
+                try {
+                    reader.dispose();
+                } catch (Throwable t) {
+                }
+
+            if (stream != null){
+                try {
+                    stream.reset();
+                } catch (Throwable t) {
+                }
+                if (closeMe){
+                    try {
+                        stream.close();
+                    } catch (Throwable t) {
+                    }
+                }
+            }
+        }
+        return metadata;
+    }
+	
+	/**
+         * Creates a {@link GridCoverage} for the provided {@link PlanarImage} using
+         * the {@link #raster2Model} that was provided for this coverage.
+         * 
+         * <p>
+         * This method is vital when working with coverages that have a raster to
+         * model transformation that is not a simple scale and translate.
+         * 
+         * @param image
+         *            contains the data for the coverage to create.
+         * @param raster2Model
+         *            is the {@link MathTransform} that maps from the raster space
+         *            to the model space.
+         * @return a {@link GridCoverage}
+         * @throws IOException
+         */
+        protected final GridCoverage2D createCoverage(PlanarImage image, MathTransform raster2Model) throws IOException {
 
         // creating bands
         final SampleModel sm = image.getSampleModel();
@@ -522,13 +574,16 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements
         // setting bands names.
 
         Category noDataCategory = null;
+        final Map<String, Double> properties = new HashMap<String, Double>();        
         if (!Double.isNaN(noData)) {
             noDataCategory = new Category(
                     Vocabulary.formatInternational(VocabularyKeys.NODATA),
                     new Color[] { new Color(0, 0, 0, 0) }, NumberRange.create(
                             noData, noData), NumberRange.create(noData, noData));
+            properties.put("GC_NODATA", new Double(noData));
         }
-
+        
+        Set<String> bandNames = new HashSet<String>();
         for (int i = 0; i < numBands; i++) {
             final ColorInterpretation colorInterpretation = TypeMap.getColorInterpretation(cm, i);
             if (colorInterpretation == null) {
@@ -538,8 +593,12 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements
             if (noDataCategory != null) {
                 categories = new Category[] { noDataCategory };
             }
-            bands[i] = new GridSampleDimension(colorInterpretation.name(), categories, null)
-                .geophysics(true);
+                String bandName = colorInterpretation.name();
+                // make sure we create no duplicate band names
+                if(colorInterpretation == ColorInterpretation.UNDEFINED || bandNames.contains(bandName)) {
+                    bandName = "Band" + (i + 1);
+                } 
+                bands[i] = new GridSampleDimension(bandName,categories,null).geophysics(true);
         }
         // creating coverage
         if (raster2Model != null) {

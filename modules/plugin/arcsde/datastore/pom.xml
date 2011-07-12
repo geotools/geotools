@@ -129,17 +129,14 @@
     <dependency>
 			<groupId>javax.media</groupId>
 			<artifactId>jai_core</artifactId>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>javax.media</groupId>
 			<artifactId>jai_codec</artifactId>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>javax.media</groupId>
 			<artifactId>jai_imageio</artifactId>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.geotools</groupId>

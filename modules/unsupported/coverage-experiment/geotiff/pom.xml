@@ -107,7 +107,6 @@
     <dependency>
       <groupId>javax.media</groupId>
       <artifactId>jai_imageio</artifactId>
-      <scope>provided</scope>  <!-- Users should execute JAI installer. -->
     </dependency>
     <dependency>
       <groupId>commons-collections</groupId>

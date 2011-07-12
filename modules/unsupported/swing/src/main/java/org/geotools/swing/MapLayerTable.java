@@ -303,9 +303,7 @@ public class MapLayerTable extends JPanel {
                 Point p = new Point(ev.getPoint().x, ev.getPoint().y - r.y);
 
                 if (MapLayerTableCellRenderer.hitSelectionLabel(p)) {
-                    Boolean selected = (Boolean) layer.getUserData().get("selected");
-                    if (selected == null) selected = Boolean.FALSE;
-                    layer.getUserData().put("selected", !selected);
+                    layer.setSelected(!layer.isSelected());
 
                 } else if (MapLayerTableCellRenderer.hitVisibilityLabel(p)) {
                     layer.setVisible(!layer.isVisible());
@@ -422,9 +420,8 @@ public class MapLayerTable extends JPanel {
     private void onSelectAllLayers() {
         if (pane != null && pane.getMapContent() != null) {
             for (Layer layer : pane.getMapContent().layers()) {
-                Boolean selected = (Boolean) layer.getUserData().get("selected");
-                if (selected == null || !selected) {
-                    layer.getUserData().put("selected", Boolean.TRUE);
+                if (!layer.isSelected()) {
+                    layer.setSelected(true);
                 }
             }
         }
@@ -433,9 +430,8 @@ public class MapLayerTable extends JPanel {
     private void onUnselectAllLayers() {
         if (pane != null && pane.getMapContent() != null) {
             for (Layer layer : pane.getMapContent().layers()) {
-                Boolean selected = (Boolean) layer.getUserData().get("selected");
-                if (selected == null || selected) {
-                    layer.getUserData().put("selected", Boolean.FALSE);
+                if (layer.isSelected()) {
+                    layer.setSelected(false);
                 }
             }
         }

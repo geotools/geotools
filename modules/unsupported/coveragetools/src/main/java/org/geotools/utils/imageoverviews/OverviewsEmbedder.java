@@ -62,6 +62,10 @@ import org.geotools.utils.progress.ExceptionEvent;
 import org.geotools.utils.progress.ProcessingEvent;
 import org.geotools.utils.progress.ProcessingEventListener;
 
+import com.sun.media.jai.util.SunTileCache;
+
+import tilecachetool.TCTool;
+
 
 /**
  * <pre>
@@ -127,14 +131,15 @@ public class OverviewsEmbedder extends BaseArgumentsManager implements Runnable,
 		 *      float)
 		 */
 		public void imageProgress(ImageWriter source, float percentageDone) {
+		    //trying to reduce the amount of information we spit out since it slows us down
 		    final int tempValue=(int)(percentageDone/5.0);
-		        if(tempValue>lastProgress){
-		            lastProgress=tempValue;
-                            OverviewsEmbedder.this.fireEvent(
-                                    new StringBuilder("Writing out overview ").append(overviewInProcess + 1)
-                                            .toString(), (overviewInProcess / numSteps + percentageDone
-                                            / (100 * numSteps)) * 100.0);
-		        }
+                    if (tempValue > lastProgress) {
+                        lastProgress = tempValue;
+                        OverviewsEmbedder.this.fireEvent(
+                                new StringBuilder("Writing out overview ").append(overviewInProcess + 1)
+                                        .toString(), (overviewInProcess / numSteps + percentageDone
+                                        / (100 * numSteps)) * 100.0);
+                    }
 
 		}
 
@@ -146,9 +151,9 @@ public class OverviewsEmbedder extends BaseArgumentsManager implements Runnable,
 		 */
 		public void imageStarted(ImageWriter source, int imageIndex) {
 			OverviewsEmbedder.this.fireEvent(new StringBuilder(
-					"Completed writing out overview number ").append(
+					"Starting writing out overview number ").append(
 					overviewInProcess + 1).toString(), (overviewInProcess)
-					/ numSteps * 100.0);
+					/ (numSteps * 100.0));
 		}
 
 		/*
@@ -509,6 +514,23 @@ public class OverviewsEmbedder extends BaseArgumentsManager implements Runnable,
 	}
 
 	public void run() {
+	    // did we create a local private tile cache or not?
+	    boolean localTileCache= false;
+            //
+            // creating the image to use for the successive
+            // subsampling
+            //
+            TileCache baseTC= JAI.getDefaultInstance().getTileCache();
+
+            final TCTool tc= new TCTool((SunTileCache)baseTC);
+            if(baseTC==null){
+                localTileCache=true;
+                final long tilecacheSize=super.getTileCacheSize();
+                baseTC= JAI.createTileCache();
+                baseTC.setMemoryCapacity(tilecacheSize);
+                baseTC.setMemoryThreshold(0.75f);   
+            }	    
+	    
 		//
 		// CHECK INPUT DIRECTORIES/FILES
 		//
@@ -575,8 +597,7 @@ public class OverviewsEmbedder extends BaseArgumentsManager implements Runnable,
 
 			ImageInputStream stream=null;
 			ImageWriter writer =null;
-			ImageOutputStream streamOut=null;
-			TileCache baseTC= null;			
+			ImageOutputStream streamOut=null;	
 			RenderedOp currentImage = null;
 			RenderedOp newImage=null;				
 			try{
@@ -679,26 +700,6 @@ public class OverviewsEmbedder extends BaseArgumentsManager implements Runnable,
 				writer.addIIOWriteWarningListener(writeProgressListener);
 				ImageWriteParam param = writer.getDefaultWriteParam();
 
-//				// can we tile this image? (TIFF or JPEG2K)
-//				if (!(param.canWriteTiles())) {
-//					message = new StringBuilder("This format do not support tiling!");
-//					if (LOGGER.isLoggable(Level.SEVERE)) {
-//						LOGGER.severe(message.toString());
-//					}
-//					fireEvent(message.toString(),((fileBeingProcessed * 100.0) / numFiles));
-//					break;
-//				}
-//
-//				// can we write a sequence for these images?
-//				if (!(writer.canInsertImage(numImages))) {
-//					message = new StringBuilder("This format do not support embedded overviews, proceeding with external!");
-//					if (LOGGER.isLoggable(Level.SEVERE)) {
-//						LOGGER.severe(message.toString());
-//					}
-//					fireEvent(message.toString(),((fileBeingProcessed * 100.0) / numFiles));
-//					break;
-//
-//				}
 
 				//
 				// setting tiling on the first image using writing parameters
@@ -717,18 +718,7 @@ public class OverviewsEmbedder extends BaseArgumentsManager implements Runnable,
 					param.setCompressionQuality((float) this.compressionRatio);
 				}
 
-				//
-				// creating the image to use for the successive
-				// subsampling
-				//
-				if(this.getTileCacheSize()<=0){
-                                    baseTC= JAI.getDefaultInstance().getTileCache();
-				}else{
-				    final long tilecacheSize=super.getTileCacheSize();
-				    baseTC= JAI.createTileCache();
-				    baseTC.setMemoryCapacity(tilecacheSize);
-				    baseTC.setMemoryThreshold(0.75f);   
-				}
+
 							
 				
 				final RenderingHints newHints = new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout);
@@ -752,6 +742,9 @@ public class OverviewsEmbedder extends BaseArgumentsManager implements Runnable,
 				}
 				fireEvent(message.toString(),((fileBeingProcessed * 100.0) / numFiles));
 				int i=0;
+				//
+				// OVERVIEWS CYLE
+				//
 				for (overviewInProcess = 0; overviewInProcess < numSteps; overviewInProcess++) {
 
 					message = new StringBuilder("Subsampling step ").append(overviewInProcess).append(" of image  ").append(fileBeingProcessed);
@@ -810,11 +803,9 @@ public class OverviewsEmbedder extends BaseArgumentsManager implements Runnable,
 					}
 					fireEvent(message.toString(),
 							((fileBeingProcessed * 100.0) / numFiles));
-
-					// flushing cache on the old image which we are not going to use anymore
-					baseTC.flush();
-					
-					// switching caches and images
+			
+					// switching images
+					currentImage.dispose(); //dispose old image
 					currentImage = newImage;
 
 					i++;
@@ -834,8 +825,8 @@ public class OverviewsEmbedder extends BaseArgumentsManager implements Runnable,
 			}finally{
 				// clean up
 				
-				// clean caches
-				if(baseTC!=null)
+				// clean caches if they are local
+				if(localTileCache&&baseTC!=null)
 				    try{
 				        baseTC.flush();
 				    } catch (Exception e) {
@@ -843,13 +834,6 @@ public class OverviewsEmbedder extends BaseArgumentsManager implements Runnable,
 				
 				//
 				// free everything
-				try {
-					if(streamOut!=null)
-					    streamOut.flush();
-				} catch (Throwable e) {
-					if(LOGGER.isLoggable(Level.FINE))
-						LOGGER.log(Level.FINE,e.getLocalizedMessage(),e);
-				}
 				try {
 				    if(streamOut!=null)
                                         streamOut.close();

@@ -960,6 +960,7 @@ public class FilterTest extends TestCase {
         ff = fac.id(Collections.singleton(fac.featureId(testFeature.getID())));
         assertTrue(ff.evaluate(testFeature));
         assertFalse(ff.evaluate(null));
+        assertFalse(ff.evaluate(new Object()));
     }
     
     

@@ -126,7 +126,7 @@ public class InfoTool extends CursorTool implements TextReporterListener {
      */
     @Override
     public void onMouseClicked(MapMouseEvent ev) {
-        DirectPosition2D pos = ev.getMapPosition();
+        DirectPosition2D pos = ev.getWorldPos();
         report(pos);
 
         MapContent content = getMapPane().getMapContent();

@@ -81,7 +81,7 @@ public class ZoomOutTool extends AbstractZoomTool {
     @Override
     public void onMouseClicked(MapMouseEvent ev) {
         Rectangle paneArea = getMapPane().getVisibleRect();
-        DirectPosition2D mapPos = ev.getMapPosition();
+        DirectPosition2D mapPos = ev.getWorldPos();
 
         double scale = getMapPane().getWorldToScreenTransform().getScaleX();
         double newScale = scale / zoom;

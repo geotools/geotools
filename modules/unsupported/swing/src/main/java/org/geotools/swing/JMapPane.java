@@ -33,7 +33,6 @@ import java.awt.image.RenderedImage;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -80,14 +79,10 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @author Michael Bedward
  * @author Ian Turton
  * @since 2.6
- *
- *
  * @source $URL$
  * @version $Id$
  */
-public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsListener {
-
-    private static final ResourceBundle stringRes = ResourceBundle.getBundle("org/geotools/swing/Text");
+public class JMapPane extends JPanel implements MapPane, MapLayerListListener, MapBoundsListener {
 
     /**
      * Default delay (milliseconds) before the map will be redrawn when resizing
@@ -342,40 +337,45 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
      * @throws IllegalArgumentException if listener is null
      * @see MapMouseListener
      */
+    @Override
     public void addMouseListener(MapMouseListener listener) {
         if (listener == null) {
-            throw new IllegalArgumentException(stringRes.getString("arg_null_error"));
+            throw new IllegalArgumentException("listener must not be null");
         }
 
         toolManager.addMouseListener(listener);
     }
 
     /**
-     * Unregisters the {@code MapMouseListener} object.
-     *
-     * @param listener the listener to remove
-     * @throws IllegalArgumentException if listener is null
+     * {@inheritDoc}
      */
+    @Override
     public void removeMouseListener(MapMouseListener listener) {
-        if (listener == null) {
-            throw new IllegalArgumentException(stringRes.getString("arg_null_error"));
+        if (listener != null) {
+            toolManager.removeMouseListener(listener);
         }
-
-        toolManager.removeMouseListener(listener);
     }
 
     /**
-     * Registers an object that wishes to receive {@code MapPaneEvent}s.
-     *
-     * @param listener the listener to add
-     * @see MapPaneListener
+     * {@inheritDoc}
      */
+    @Override
     public void addMapPaneListener(MapPaneListener listener) {
         if (listener == null) {
-            throw new IllegalArgumentException(stringRes.getString("arg_null_error"));
+            throw new IllegalArgumentException("listener must not be null");
         }
 
         listeners.add(listener);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void removeMapPaneListener(MapPaneListener listener) {
+        if (listener != null) {
+            listeners.remove(listener);
+        }
     }
 
     /**
@@ -389,7 +389,7 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
      */
     public void setMapLayerTable(MapLayerTable layerTable) {
         if (layerTable == null) {
-            throw new IllegalArgumentException(stringRes.getString("arg_null_error"));
+            throw new IllegalArgumentException("layerTable must not be null");
         }
 
         this.layerTable = layerTable;
@@ -406,21 +406,19 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
     }
 
     /**
-     * Gets the renderer used by this map pane.
-     *
-     * @return the renderer
+     * {@inheritDoc}
      */
-    public GTRenderer getRenderer() {
-        return renderer;
+    @Override
+    public void setRenderer(GTRenderer renderer) {
+        doSetRenderer(renderer);
     }
 
     /**
-     * Sets the renderer to be used by this map pane.
-     *
-     * @param renderer the renderer to use
+     * {@inheritDoc}
      */
-    public void setRenderer(GTRenderer renderer) {
-        doSetRenderer(renderer);
+    @Override
+    public GTRenderer getRenderer() {
+        return renderer;
     }
 
     private void doSetRenderer(GTRenderer renderer) {
@@ -450,25 +448,21 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
     }
 
     /**
-     * Gets the {@code MapConent} instance containing the layers
-     * being displayed by this map pane.
-     * 
-     * @return the map content
+     * {@inheritDoc}
      */
-    public MapContent getMapContent() {
-        return mapContent;
-    }
-
-    /**
-     * Sets the {@code MapContent} instance containing the layers
-     * to display.
-     * 
-     * @param content the map content
-     */
+    @Override
     public void setMapContent(MapContent content) {
         doSetMapContent(content);
     }
     
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MapContent getMapContent() {
+        return mapContent;
+    }
+
     private void doSetMapContent(MapContent newMapContent) {
         if (mapContent != newMapContent) {
 
@@ -517,13 +511,9 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
     }
 
     /**
-     * Gets the current display area in world coordinates. This is a
-     * short-cut for {@code mapPane.getMapContent().getViewport().getBounds()}.
-     * If a MapContent object has not yet been associated with the map pane, an
-     * empty {@code ReferencedEnvelope} is returned.
-     * 
-     * @return the display area in world coordinates
+     * {@inheritDoc}
      */
+    @Override
     public ReferencedEnvelope getDisplayArea() {
         if (mapContent != null) {
             return mapContent.getViewport().getBounds();
@@ -533,26 +523,25 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
     }
 
     /**
-     * 
+     * {@inheritDoc}
      */
+    @Override
     public void setDisplayArea(Envelope envelope) {
-        if (mapContent != null) {
-            /*
-             * If the pane has not been displayed yet or is zero size then
-             * just record the requested display area and defer setting transforms
-             * etc.
-             */
-            if (!isShowing()) {
-                pendingDisplayArea = new ReferencedEnvelope(envelope);
-                
-            } else {
-                doSetDisplayArea(envelope);
-                clearLabelCache.set(true);
-                drawBaseImage(false);
-            }
+        if (envelope == null) {
+            throw new IllegalArgumentException("envelope must not be null");
+        }
+        /*
+         * If the pane has not been displayed yet or is zero size then
+         * just record the requested display area and defer setting transforms
+         * etc.
+         */
+        if (!isShowing() || getVisibleRect().isEmpty()) {
+            pendingDisplayArea = new ReferencedEnvelope(envelope);
 
         } else {
-            throw new IllegalStateException("Map context must be set before setting the display area");
+            doSetDisplayArea(envelope);
+            clearLabelCache.set(true);
+            drawBaseImage(false);
         }
     }
 
@@ -646,9 +635,9 @@ public class JMapPane extends JPanel implements MapLayerListListener, MapBoundsL
     }
 
     /**
-     * Reset the map area to include the full extent of all
-     * layers and redraw the display
+     * {@inheritDoc}
      */
+    @Override
     public void reset() {
         if (fullExtent != null) {
             setDisplayArea(fullExtent);

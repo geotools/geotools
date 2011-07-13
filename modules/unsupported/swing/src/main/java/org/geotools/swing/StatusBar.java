@@ -260,7 +260,7 @@ public class StatusBar extends JPanel {
 
             @Override
             public void onMouseMoved(MapMouseEvent ev) {
-                displayCoords(ev.getMapPosition());
+                displayCoords(ev.getWorldPos());
             }
 
             @Override

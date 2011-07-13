@@ -91,7 +91,7 @@ public class ZoomInTool extends AbstractZoomTool {
     @Override
     public void onMouseClicked(MapMouseEvent e) {
         Rectangle paneArea = getMapPane().getVisibleRect();
-        DirectPosition2D mapPos = e.getMapPosition();
+        DirectPosition2D mapPos = e.getWorldPos();
 
         double scale = getMapPane().getWorldToScreenTransform().getScaleX();
         double newScale = scale * zoom;
@@ -114,7 +114,7 @@ public class ZoomInTool extends AbstractZoomTool {
     @Override
     public void onMousePressed(MapMouseEvent ev) {
         startDragPos = new DirectPosition2D();
-        startDragPos.setLocation(ev.getMapPosition());
+        startDragPos.setLocation(ev.getWorldPos());
     }
 
     /**
@@ -139,7 +139,7 @@ public class ZoomInTool extends AbstractZoomTool {
     public void onMouseReleased(MapMouseEvent ev) {
         if (dragged && !ev.getPoint().equals(startDragPos)) {
             Envelope2D env = new Envelope2D();
-            env.setFrameFromDiagonal(startDragPos, ev.getMapPosition());
+            env.setFrameFromDiagonal(startDragPos, ev.getWorldPos());
             dragged = false;
             getMapPane().setDisplayArea(env);
         }

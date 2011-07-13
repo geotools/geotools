@@ -28,8 +28,8 @@ import org.opengis.geometry.Envelope;
  *
  * @author Michael Bedward
  * @since 8.0
- * @source $URL: $
- * @version $Id: $
+ * @source $URL$
+ * @version $Id$
  */
 public interface MapPane {
 

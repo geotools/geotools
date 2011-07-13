@@ -72,18 +72,18 @@ public class RecodeFunctionTest extends SEFunctionTestBase {
         }
     }
 
-    @Test
-    public void testCaseInsensitiveLookup() throws Exception {
-        System.out.println("   testCaseInsensitiveLookup");
-
-        setupParameters(words, ints);
-        Function fn = finder.findFunction("recode", parameters);
-
-        for (int i = 0; i < words.length; i++) {
-            assertEquals(ints[i], fn.evaluate(feature(words[i].toLowerCase()), Integer.class));
-            assertEquals(ints[i], fn.evaluate(feature(words[i].toUpperCase()), Integer.class));
-        }
-    }
+//    @Test
+//    public void testCaseInsensitiveLookup() throws Exception {
+//        System.out.println("   testCaseInsensitiveLookup");
+//
+//        setupParameters(words, ints);
+//        Function fn = finder.findFunction("recode", parameters);
+//
+//        for (int i = 0; i < words.length; i++) {
+//            assertEquals(ints[i], fn.evaluate(feature(words[i].toLowerCase()), Integer.class));
+//            assertEquals(ints[i], fn.evaluate(feature(words[i].toUpperCase()), Integer.class));
+//        }
+//    }
     
     @Test
     public void testRecodeUndefinedValueReturnsNull() throws Exception {

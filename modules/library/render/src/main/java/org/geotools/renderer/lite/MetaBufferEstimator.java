@@ -62,10 +62,7 @@ import org.geotools.styling.UserLayer;
 import org.opengis.filter.Filter;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
-import org.opengis.filter.expression.VolatileFunction;
 import org.opengis.style.GraphicalSymbol;
-
-import com.sun.org.apache.xpath.internal.functions.Function;
 
 /**
  * Parses a style or part of it and returns the size of the largest stroke and the biggest point symbolizer whose width is specified with a literal expression.<br> Also provides an indication whether the stroke width is accurate, or if a non literal width has been found.
@@ -78,27 +75,7 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
     /** The logger for the rendering module. */
     private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.rendering");
     
-    VolatileFilterAttributeExtractor attributeExtractor = new VolatileFilterAttributeExtractor();
-
-    static class VolatileFilterAttributeExtractor extends FilterAttributeExtractor {
-        boolean usingVolatileFunctions;
-
-        public void clear() {
-            super.clear();
-            usingVolatileFunctions = false;
-        }
-
-        public Object visit(org.opengis.filter.expression.Function expression, Object data) {
-            if (expression instanceof VolatileFunction) {
-                usingVolatileFunctions = true;
-            }
-            return super.visit(expression, data);
-        };
-        
-        public boolean isStable() {
-            return !usingVolatileFunctions && getAttributeNameSet().isEmpty();
-        }
-    };
+    FilterAttributeExtractor attributeExtractor = new FilterAttributeExtractor();
 
     /**
      * @uml.property  name="estimateAccurate"
@@ -340,7 +317,7 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
     private void evaluateWidth(Expression width) {
         attributeExtractor.clear();
         width.accept(attributeExtractor, null);
-        if (attributeExtractor.isStable()) {
+        if (attributeExtractor.isConstantExpression()) {
             Double result = width.evaluate(null, Double.class);
             if(result != null) {
                 int size = (int) Math.ceil(result);

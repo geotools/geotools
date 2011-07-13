@@ -24,19 +24,36 @@ import org.geotools.filter.visitor.DefaultFilterVisitor;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.expression.PropertyName;
+import org.opengis.filter.expression.VolatileFunction;
 
 
 
 /**
  * A simple visitor that extracts every attribute used by a filter or an expression
- *
- * @author wolf
+ * <p>
+ * Access to this class is available via:
+ * <ul>
+ * <li>DataUtilities.attributeNames( Filter )</li>
+ * <li>DataUtilities.attributeNames( Filter, FeatureType )</li>
+ * <li>DataUtilities.attributeNames( Expression )</li>
+ * <li>DataUtilities.attributeNames( Expression, FeatureType )</li>
+ * </ul>
+ * 
+ * The class can also be used to determine if an expression is "static", that is, 
+ * despite a complex structure does not use attribute or volatile functions, and can
+ * be thus replaced by a constant: for this use case refer to the 
+ * {@link #isConstantExpression()} method
+ * 
+ * @author Andrea Aime - GeoSolutions
  *
  * @source $URL$
  */
 public class FilterAttributeExtractor extends DefaultFilterVisitor {
     /** Last set visited */
     protected Set<String> attributeNames = new HashSet<String>();
+    protected Set<PropertyName> propertyNames = new HashSet<PropertyName>();
+    protected boolean usingVolatileFunctions;
+
     /** feature type to evaluate against */
     protected SimpleFeatureType featureType;
 
@@ -78,6 +95,7 @@ public class FilterAttributeExtractor extends DefaultFilterVisitor {
      */
     public void clear() {
         attributeNames = new HashSet<String>();
+        usingVolatileFunctions = false;
     }
 
     public Object visit( PropertyName expression, Object data ) {
@@ -101,5 +119,22 @@ public class FilterAttributeExtractor extends DefaultFilterVisitor {
         }
 
         return attributeNames;
+    }
+    
+    public Object visit(org.opengis.filter.expression.Function expression, Object data) {
+        if (expression instanceof VolatileFunction) {
+            usingVolatileFunctions = true;
+        }
+        return super.visit(expression, data);
+    };
+    
+    /**
+     * Returns true if the last visited expression is a constant, that is, does not
+     * depend on any attribute and does not use any {@link VolatileFunction} 
+     * 
+     * @return
+     */
+    public boolean isConstantExpression() {
+        return !usingVolatileFunctions && getAttributeNameSet().isEmpty();
     }
 }

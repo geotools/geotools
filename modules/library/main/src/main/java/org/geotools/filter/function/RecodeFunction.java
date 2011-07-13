@@ -19,9 +19,12 @@ package org.geotools.filter.function;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.FilterAttributeExtractor;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
@@ -58,6 +61,14 @@ public class RecodeFunction implements Function {
     private static final FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
 
     private final List<Expression> parameters;
+    
+    private boolean staticTable = true;
+    
+    volatile private Map fastLookup = null;
+    
+    private Class lastKeyType = null;
+    
+    private Class lastContextType = null;
 
     private final Literal fallback;
 
@@ -92,6 +103,27 @@ public class RecodeFunction implements Function {
     public RecodeFunction(List<Expression> parameters, Literal fallback) {
         this.parameters = parameters;
         this.fallback = fallback;
+        
+        // check inputs
+        if (parameters.size() % 2 != 1 && parameters.size() != 0) {
+            throw new IllegalArgumentException(
+                    "There must be an equal number of lookup data and return values");
+        }
+        
+        // see if the table is full of attribute independent expressions
+        FilterAttributeExtractor extractor = new FilterAttributeExtractor();
+        for (int i = 1; i < parameters.size(); i++) {
+            Expression expression = parameters.get(i);
+            if(expression != null) {
+                extractor.clear();
+                expression.accept(extractor, null);
+                if(!extractor.isConstantExpression()) {
+                    staticTable = false;
+                    break;
+                }
+            }
+        }
+        
     }
 
     public String getName() {
@@ -111,14 +143,40 @@ public class RecodeFunction implements Function {
     }
 
     public <T> T evaluate(Object object, Class<T> context) {
-        if (parameters.size() % 2 != 1) {
-            throw new IllegalArgumentException(
-                    "There must be an equal number of lookup data and return values");
-        }
-
         final Expression lookupExp = parameters.get(0);
         final List<Expression> pairList = parameters.subList(1, parameters.size());
 
+        // fast lookup path
+        if(staticTable) {
+            Object lookup = lookupExp.evaluate(object);
+            if(lookup != null) {
+                if(fastLookup == null) {
+                    synchronized (this) {
+                        if(fastLookup == null) {
+                            // build the fast lookup map
+                            fastLookup = new HashMap();
+                            lastKeyType = lookup.getClass();
+                            lastContextType = context;
+                            for (int i = 0; i < pairList.size(); i += 2) {
+                                Object key = pairList.get(i).evaluate(object, lastKeyType);
+                                Object value = pairList.get(i + 1).evaluate(object, context);
+                                fastLookup.put(key, value);
+                            }
+                        }
+                    }
+                }
+                
+                if(fastLookup != null && lookup.getClass() == lastKeyType && context == lastContextType) {
+                    T result = (T) fastLookup.get(lookup);
+                    if(result == null) {
+                        System.out.println("humm");
+                    }
+                    return result;
+                } 
+            }
+        }
+            
+        // dynamic evaluation path
         for (int i = 0; i < pairList.size(); i += 2) {
             Expression keyExpr = pairList.get(i);
             Expression valueExpr = pairList.get(i + 1);

@@ -734,11 +734,7 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
     }
 
     /**
-     * Get a (copy of) the screen to world coordinate transform
-     * being used by this map pane. This method is a short-cut for
-     * {@code mapPane.getMapContent().getViewport().getScreenToWorld()}.
-     *
-     * @return a copy of the screen to world coordinate transform
+     * {@inheritDoc}
      */
     public AffineTransform getScreenToWorldTransform() {
         if (mapContent != null) {
@@ -749,17 +745,7 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
     }
 
     /**
-     * Get a (copy of) the world to screen coordinate transform
-     * being used by this map pane. This method is a short-cut for
-     * {@code mapPane.getMapContent().getViewport().getWorldToScreen()}.
-     * <p>
-     * The returned {@code AffineTransform} can be used to determine the 
-     * current drawing scale...
-     * <pre><code>
-     * double scale = mapPane.getWorldToScreenTransform().getScaleX();
-     * </code></pre>
-     * 
-     * @return a copy of the world to screen coordinate transform
+     * {@inheritDoc}
      */
     public AffineTransform getWorldToScreenTransform() {
         if (mapContent != null) {

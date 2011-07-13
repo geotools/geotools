@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2008-2011, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -24,6 +24,7 @@ import java.awt.Toolkit;
 import java.util.ResourceBundle;
 
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.Envelope2D;
@@ -80,7 +81,7 @@ public class ZoomOutTool extends AbstractZoomTool {
      */
     @Override
     public void onMouseClicked(MapMouseEvent ev) {
-        Rectangle paneArea = getMapPane().getVisibleRect();
+        Rectangle paneArea = ((JComponent) getMapPane()).getVisibleRect();
         DirectPosition2D mapPos = ev.getWorldPos();
 
         double scale = getMapPane().getWorldToScreenTransform().getScaleX();

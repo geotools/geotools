@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2008-2011, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -18,9 +18,8 @@
 package org.geotools.swing.tool;
 
 import java.awt.Cursor;
-import java.util.ResourceBundle;
 
-import org.geotools.swing.JMapPane;
+import org.geotools.swing.MapPane;
 import org.geotools.swing.event.MapMouseAdapter;
 
 /**
@@ -30,24 +29,21 @@ import org.geotools.swing.event.MapMouseAdapter;
  * @author Michael Bedward
  * @since 2.6
  *
- *
  * @source $URL$
  * @version $Id$
  */
 public abstract class CursorTool extends MapMouseAdapter {
 
-    private static final ResourceBundle stringRes = ResourceBundle.getBundle("org/geotools/swing/Text");
-
-    private JMapPane mapPane;
+    private MapPane mapPane;
 
     /**
      * Set the map pane that this cursor tool is associated with
      * @param pane the map pane
      * @throws IllegalArgumentException if mapPane is null
      */
-    public void setMapPane(JMapPane pane) {
+    public void setMapPane(MapPane pane) {
         if (pane == null) {
-            throw new IllegalArgumentException(stringRes.getString("arg_null_error"));
+            throw new IllegalArgumentException("pane arg must not be null");
         }
 
         this.mapPane = pane;
@@ -58,7 +54,7 @@ public abstract class CursorTool extends MapMouseAdapter {
      *
      * @return the map pane
      */
-    public JMapPane getMapPane() {
+    public MapPane getMapPane() {
         return mapPane;
     }
 

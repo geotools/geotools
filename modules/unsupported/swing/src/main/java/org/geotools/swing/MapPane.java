@@ -16,6 +16,7 @@
  */
 package org.geotools.swing;
 
+import java.awt.geom.AffineTransform;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.MapContent;
 import org.geotools.renderer.GTRenderer;
@@ -80,12 +81,34 @@ public interface MapPane {
      * @throws IllegalArgumentException if {@code envelope} is {@code null]
      */
     void setDisplayArea(Envelope envelope);
-
+    
     /**
      * Reset the map area to include the full extent of all
      * layers and redraw the display
      */
     void reset();
+    
+    /**
+     * Gets the screen to world coordinate transform. This is a short-cut for
+     * {@code mapPane.getMapContent().getViewport().getScreenToWorld()}.
+     *
+     * @return the screen to world coordinate transform
+     */
+    AffineTransform getScreenToWorldTransform();
+
+    /**
+     * Gets the world to screen coordinate transform. This is a short-cut for
+     * {@code mapPane.getMapContent().getViewport().getWorldToScreen()}.
+     * <p>
+     * The returned {@code AffineTransform} can be used to determine the 
+     * current drawing scale...
+     * <pre><code>
+     * double scale = mapPane.getWorldToScreenTransform().getScaleX();
+     * </code></pre>
+     *
+     * @return the world to screen coordinate transform
+     */
+    AffineTransform getWorldToScreenTransform();
 
     /**
      * Adds a listener to receive {@link org.geotools.swing.event.MapPaneEvent}s.

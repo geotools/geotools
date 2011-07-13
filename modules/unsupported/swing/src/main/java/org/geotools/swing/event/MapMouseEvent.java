@@ -16,6 +16,7 @@
  */
 package org.geotools.swing.event;
 
+import java.awt.Component;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.geom.AffineTransform;
@@ -23,7 +24,7 @@ import java.awt.geom.Rectangle2D;
 
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.swing.JMapPane;
+import org.geotools.swing.MapPane;
 
 /**
  * A {@code MouseEvent} with methods to retrieve position in world coordinates.
@@ -44,8 +45,8 @@ public final class MapMouseEvent extends MouseEvent {
      * @param pane the source map pane
      * @param event the source mouse event
      */
-    public MapMouseEvent(JMapPane pane, MouseEvent event) {
-        super(pane, event.getID(), event.getWhen(), event.getModifiers(), event
+    public MapMouseEvent(MapPane pane, MouseEvent event) {
+        super((Component) pane, event.getID(), event.getWhen(), event.getModifiers(), event
                 .getX(), event.getY(), event.getClickCount(), event.isPopupTrigger(), event
                 .getButton());
 
@@ -60,8 +61,8 @@ public final class MapMouseEvent extends MouseEvent {
      * @param pane the source map pane
      * @param event the source mouse wheel event
      */
-    public MapMouseEvent(JMapPane pane, MouseWheelEvent event) {        
-        super(pane, event.getID(), event.getWhen(), event.getModifiers(), event
+    public MapMouseEvent(MapPane pane, MouseWheelEvent event) {        
+        super((Component) pane, event.getID(), event.getWhen(), event.getModifiers(), event
                 .getX(), event.getY(), event.getClickCount(), event.isPopupTrigger());
 
         worldCoords = calculateWorldPos(pane, event);
@@ -73,8 +74,8 @@ public final class MapMouseEvent extends MouseEvent {
      * Gets the source map pane for this event.
      */
     @Override
-    public JMapPane getSource() {
-        return (JMapPane) super.getSource();
+    public MapPane getSource() {
+        return (MapPane) super.getSource();
     }
     
     /**
@@ -158,7 +159,7 @@ public final class MapMouseEvent extends MouseEvent {
                 getY() - (widthPixels / 2),
                 widthPixels, widthPixels);
         
-        JMapPane pane = getSource();
+        MapPane pane = getSource();
         Rectangle2D worldRect = pane.getScreenToWorldTransform().createTransformedShape(
                 screenRect).getBounds2D();
         
@@ -173,7 +174,7 @@ public final class MapMouseEvent extends MouseEvent {
      * @param event source mouse event
      * @return position in world coordinates
      */
-    private DirectPosition2D calculateWorldPos(JMapPane pane, MouseEvent event) {
+    private DirectPosition2D calculateWorldPos(MapPane pane, MouseEvent event) {
         AffineTransform tr = pane.getScreenToWorldTransform();
         DirectPosition2D pos = new DirectPosition2D(event.getX(), event.getY());
         tr.transform(pos, pos);

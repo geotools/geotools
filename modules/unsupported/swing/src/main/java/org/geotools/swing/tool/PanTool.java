@@ -24,6 +24,8 @@ import java.util.ResourceBundle;
 
 import javax.swing.ImageIcon;
 
+import org.geotools.swing.JMapPane;
+
 import org.geotools.swing.event.MapMouseEvent;
 
 /**
@@ -88,7 +90,7 @@ public class PanTool extends CursorTool {
         if (panning) {
             Point pos = ev.getPoint();
             if (!pos.equals(panePos)) {
-                getMapPane().moveImage(pos.x - panePos.x, pos.y - panePos.y);
+                ((JMapPane) getMapPane()).moveImage(pos.x - panePos.x, pos.y - panePos.y);
                 panePos = pos;
             }
         }

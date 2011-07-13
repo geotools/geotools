@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2008-2011, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -20,12 +20,12 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.util.HashSet;
-import java.util.ResourceBundle;
 import java.util.Set;
 
 import javax.swing.event.MouseInputListener;
 
 import org.geotools.swing.JMapPane;
+import org.geotools.swing.MapPane;
 import org.geotools.swing.event.MapMouseEvent;
 import org.geotools.swing.event.MapMouseListener;
 
@@ -43,9 +43,7 @@ import org.geotools.swing.event.MapMouseListener;
  */
 public class MapToolManager implements MouseInputListener, MouseWheelListener {
 
-    private static final ResourceBundle stringRes = ResourceBundle.getBundle("org/geotools/swing/Text");
-
-    private JMapPane mapPane;
+    private MapPane mapPane;
     private Set<MapMouseListener> listeners = new HashSet<MapMouseListener>();
     private CursorTool cursorTool;
 
@@ -54,7 +52,7 @@ public class MapToolManager implements MouseInputListener, MouseWheelListener {
      * 
      * @param pane the map pane that owns this listener
      */
-    public MapToolManager(JMapPane pane) {
+    public MapToolManager(MapPane pane) {
         this.mapPane = pane;
     }
 
@@ -75,7 +73,7 @@ public class MapToolManager implements MouseInputListener, MouseWheelListener {
      */
     public boolean setCursorTool(CursorTool tool) {
         if (tool == null) {
-            throw new IllegalArgumentException(stringRes.getString("arg_null_error"));
+            throw new IllegalArgumentException("tool must not be null");
         }
 
         if (cursorTool != null) {
@@ -106,7 +104,7 @@ public class MapToolManager implements MouseInputListener, MouseWheelListener {
      */
     public boolean addMouseListener(MapMouseListener listener) {
         if (listener == null) {
-            throw new IllegalArgumentException(stringRes.getString("arg_null_error"));
+            throw new IllegalArgumentException("listener must not be null");
         }
 
         return listeners.add(listener);
@@ -117,14 +115,13 @@ public class MapToolManager implements MouseInputListener, MouseWheelListener {
      *
      * @param listener the listener to remove
      * @return true if successful; false otherwise
-     * @throws IllegalArgumentException if the tool argument is null
      */
     public boolean removeMouseListener(MapMouseListener listener) {
-        if (listener == null) {
-            throw new IllegalArgumentException(stringRes.getString("arg_null_error"));
+        if (listener != null) {
+            return listeners.remove(listener);
+        } else {
+            return false;
         }
-
-        return listeners.remove(listener);
     }
 
     public void mouseClicked(MouseEvent e) {

@@ -63,24 +63,8 @@ import org.opengis.filter.identity.Identifier;
  * @source $URL$
  */
 public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
-	
-	VolatileFilterAttributeExtractor attributeExtractor;
-	
-	static class VolatileFilterAttributeExtractor extends FilterAttributeExtractor {
-		boolean usingVolatileFunctions;
 
-		public void clear() {
-			super.clear();
-			usingVolatileFunctions = false;
-		}
-		
-		public Object visit(org.opengis.filter.expression.Function expression, Object data) {
-			if(expression instanceof VolatileFunction) {
-				usingVolatileFunctions = true;
-			}
-			return super.visit(expression, data);
-		};
-	};
+    FilterAttributeExtractor attributeExtractor;
 
     /**
      * Defines a simple means of assessing whether a feature id in an {@link Id} filter is
@@ -246,36 +230,36 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
     }
     
     public Object visit(Not filter, Object extraData) {
-    	if(filter.getFilter() instanceof Not) {
-    		// simplify out double negation
-    		Not inner = (Not) filter.getFilter();
-    		return inner.getFilter().accept(this, extraData);
-    	} else {
-    		return super.visit(filter, extraData);
-    	}
+        if (filter.getFilter() instanceof Not) {
+            // simplify out double negation
+            Not inner = (Not) filter.getFilter();
+            return inner.getFilter().accept(this, extraData);
+        } else {
+            return super.visit(filter, extraData);
+        }
     }
-    
+
     public Object visit(org.opengis.filter.expression.Function function, Object extraData) {
-    	// can't optimize out volatile functions
-    	if(function instanceof VolatileFunction) {
-    		return super.visit(function, extraData);
-    	}
-    	
-    	// stable function, is it using attributes?
-    	if(attributeExtractor == null) {
-    		attributeExtractor = new VolatileFilterAttributeExtractor();
-    	} else {
-    		attributeExtractor.clear();
-    	}
-    	function.accept(attributeExtractor, null);
-    	
-    	// if so  we can replace it with a literal
-    	if(attributeExtractor.getAttributeNameSet().isEmpty() && !attributeExtractor.usingVolatileFunctions) {
-    		Object result = function.evaluate(null);
-    		return ff.literal(result);
-    	} else {
-    		return super.visit(function, extraData);
-    	}
+        // can't optimize out volatile functions
+        if (function instanceof VolatileFunction) {
+            return super.visit(function, extraData);
+        }
+
+        // stable function, is it using attributes?
+        if (attributeExtractor == null) {
+            attributeExtractor = new FilterAttributeExtractor();
+        } else {
+            attributeExtractor.clear();
+        }
+        function.accept(attributeExtractor, null);
+
+        // if so we can replace it with a literal
+        if (attributeExtractor.isConstantExpression()) {
+            Object result = function.evaluate(null);
+            return ff.literal(result);
+        } else {
+            return super.visit(function, extraData);
+        }
     }
     
     

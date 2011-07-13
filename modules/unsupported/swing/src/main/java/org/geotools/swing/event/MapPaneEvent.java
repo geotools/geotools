@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2008-2011, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -19,7 +19,7 @@ package org.geotools.swing.event;
 
 import java.util.EventObject;
 
-import org.geotools.swing.JMapPane;
+import org.geotools.swing.MapPane;
 
 /**
  * An event class used by {@code JMapPane} to signal changes of
@@ -91,7 +91,7 @@ public class MapPaneEvent extends EventObject {
      * @param source the map pane issuing this event
      * @param type the type of event
      */
-    public MapPaneEvent(JMapPane source, Type type) {
+    public MapPaneEvent(MapPane source, Type type) {
         super(source);
         this.type = type;
     }
@@ -104,7 +104,7 @@ public class MapPaneEvent extends EventObject {
      * @param type the type of event
      * @param data the event data
      */
-    public MapPaneEvent(JMapPane source, Type type, Object data) {
+    public MapPaneEvent(MapPane source, Type type, Object data) {
         super(source);
         this.type = type;
         this.data = data;

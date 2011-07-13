@@ -27,6 +27,7 @@ import org.geotools.map.MapContent;
 import org.geotools.renderer.GTRenderer;
 import org.geotools.renderer.lite.StreamingRenderer;
 import org.geotools.swing.MapPane;
+import org.geotools.swing.tool.CursorTool;
 import org.geotools.swing.tool.MapToolManager;
 import org.opengis.geometry.Envelope;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -121,6 +122,11 @@ class MockPane extends Component implements MapPane {
         if (listener != null) {
             toolManager.removeMouseListener(listener);
         }
+    }
+
+    @Override
+    public void setCursorTool(CursorTool tool) {
+        // empty method
     }
 
 }

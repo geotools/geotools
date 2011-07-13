@@ -24,12 +24,13 @@ import java.util.ResourceBundle;
 
 import javax.swing.ImageIcon;
 
+import org.geotools.swing.MapPane;
 import org.geotools.swing.JMapPane;
 
 import org.geotools.swing.event.MapMouseEvent;
 
 /**
- * A map panning tool for JMapPane.  Allows the user to drag the map
+ * A map panning tool for MapPane.  Allows the user to drag the map
  * with the mouse.
  * 
  * @author Michael Bedward
@@ -82,7 +83,7 @@ public class PanTool extends CursorTool {
     }
 
     /**
-     * Respond to a mouse dragged event. Calls {@link org.geotools.swing.JMapPane#moveImage()}
+     * Respond to a mouse dragged event. Calls {@link org.geotools.swing.MapPane#moveImage()}
      * @param ev the mouse event
      */
     @Override

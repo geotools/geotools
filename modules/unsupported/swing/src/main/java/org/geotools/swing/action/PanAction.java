@@ -19,7 +19,7 @@ package org.geotools.swing.action;
 
 import java.awt.event.ActionEvent;
 
-import org.geotools.swing.JMapPane;
+import org.geotools.swing.MapPane;
 import org.geotools.swing.tool.PanTool;
 
 /**
@@ -40,7 +40,7 @@ public class PanAction extends MapAction {
      * 
      * @param mapPane the map pane being serviced by this action
      */
-    public PanAction(JMapPane mapPane) {
+    public PanAction(MapPane mapPane) {
         this(mapPane, false);
     }
 
@@ -51,7 +51,7 @@ public class PanAction extends MapAction {
      * @param mapPane the map pane being serviced by this action
      * @param showToolName set to true for the control to display the tool name
      */
-    public PanAction(JMapPane mapPane, boolean showToolName) {
+    public PanAction(MapPane mapPane, boolean showToolName) {
         String toolName = showToolName ? PanTool.TOOL_NAME : null;
         super.init(mapPane, toolName, PanTool.TOOL_TIP, PanTool.ICON_IMAGE);
     }

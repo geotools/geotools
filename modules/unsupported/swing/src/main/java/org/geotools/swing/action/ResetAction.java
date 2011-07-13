@@ -18,13 +18,14 @@
 package org.geotools.swing.action;
 
 import java.awt.event.ActionEvent;
+import java.util.ResourceBundle;
 
-import org.geotools.swing.JMapPane;
+import org.geotools.swing.MapPane;
 
 
 /**
  * An action for connect a control (probably a JButton) to
- * the JMapPane.reset() method which sets the bounds of the
+ * the MapPane.reset() method which sets the bounds of the
  * map area to include the full extent of all map layers
  * 
  * @author Michael Bedward
@@ -36,9 +37,13 @@ import org.geotools.swing.JMapPane;
  */
 public class ResetAction extends MapAction {
     /** Name for this tool */
-    public static final String TOOL_NAME = java.util.ResourceBundle.getBundle("org/geotools/swing/Text").getString("tool_name_reset");
+    public static final String TOOL_NAME = 
+            ResourceBundle.getBundle("org/geotools/swing/Text").getString("tool_name_reset");
+    
     /** Tool tip text */
-    public static final String TOOL_TIP = java.util.ResourceBundle.getBundle("org/geotools/swing/Text").getString("tool_tip_reset");
+    public static final String TOOL_TIP = 
+            ResourceBundle.getBundle("org/geotools/swing/Text").getString("tool_tip_reset");
+    
     /** Icon for the control */
     public static final String ICON_IMAGE = "/org/geotools/swing/icons/mActionZoomFullExtent.png";
     
@@ -47,7 +52,7 @@ public class ResetAction extends MapAction {
      * 
      * @param mapPane the map pane being serviced by this action
      */
-    public ResetAction(JMapPane mapPane) {
+    public ResetAction(MapPane mapPane) {
         this(mapPane, false);
     }
 
@@ -58,7 +63,7 @@ public class ResetAction extends MapAction {
      * @param mapPane the map pane being serviced by this action
      * @param showToolName set to true for the control to display the tool name
      */
-    public ResetAction(JMapPane mapPane, boolean showToolName) {
+    public ResetAction(MapPane mapPane, boolean showToolName) {
         String toolName = showToolName ? TOOL_NAME : null;
         
         String iconImagePath = null;

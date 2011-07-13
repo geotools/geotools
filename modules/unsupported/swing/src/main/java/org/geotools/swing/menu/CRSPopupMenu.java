@@ -29,12 +29,12 @@ import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.CRS;
 import org.geotools.swing.ExceptionMonitor;
 import org.geotools.swing.JCRSChooser;
-import org.geotools.swing.JMapPane;
 import org.geotools.swing.JTextReporter;
+import org.geotools.swing.MapPane;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
- * A pop-up menu that can be used with {@code JMapPane} for coordinate
+ * A pop-up menu that can be used with a {@code MapPane} for coordinate
  * reference system operations. It has the following items:
  * <ul>
  * <li> Set the CRS for the map pane
@@ -51,11 +51,11 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 public class CRSPopupMenu extends JPopupMenu {
 
     private static final ResourceBundle stringRes = ResourceBundle.getBundle("org/geotools/swing/Text");
-    private JMapPane mapPane;
+    private MapPane mapPane;
 
     /**
      * Creates a CRS pop-up menu.
-     * Use {@linkplain #setMapPane(org.geotools.swing.JMapPane) later to
+     * Use {@linkplain #setMapPane(MapPane) later to
      * associate this menu with a map pane.
      */
     public CRSPopupMenu() {
@@ -63,11 +63,11 @@ public class CRSPopupMenu extends JPopupMenu {
     }
 
     /**
-     * Creates a CRS pop-up menu to wotk with the given map pane
+     * Creates a CRS pop-up menu to work with the given map pane.
      *
-     * @param mapPane an instance of JMapPane, or {@code null}
+     * @param mapPane an instance of MapPane, or {@code null}
      */
-    public CRSPopupMenu(JMapPane mapPane) {
+    public CRSPopupMenu(MapPane mapPane) {
         super("CRS options");
 
         this.mapPane = mapPane;
@@ -90,18 +90,18 @@ public class CRSPopupMenu extends JPopupMenu {
     }
 
     /**
-     * Set the map pane that this menu will service
+     * Sets the map pane.
      *
-     * @param mapPane an instance of JMapPane, or {@code null}
+     * @param mapPane the map pane
      */
-    public void setMapPane(JMapPane mapPane) {
+    public void setMapPane(MapPane mapPane) {
         this.mapPane = mapPane;
     }
 
     /**
      * {@inheritDoc}
-     * The menu items will only be enabled when both the {@code JMapPane} associated with
-     * this menu, and its {@code MapContent}, are non-null.
+     * The menu items will only be enabled when both the {@code MapPane} associated with
+     * this menu, and its {@code MapContent}, are set.
      *
      */
     @Override
@@ -132,7 +132,8 @@ public class CRSPopupMenu extends JPopupMenu {
             }
 
             CoordinateReferenceSystem newCRS = JCRSChooser.showDialog(
-                    mapPane, null, "Choose a projection for the map display", initialSelection);
+                    (Component) mapPane, null, 
+                    "Choose a projection for the map display", initialSelection);
 
             if (newCRS != null && (crs == null || !CRS.equalsIgnoreMetadata(crs, newCRS))) {
                 try {

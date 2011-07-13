@@ -22,6 +22,7 @@ import org.geotools.map.MapContent;
 import org.geotools.renderer.GTRenderer;
 import org.geotools.swing.event.MapMouseListener;
 import org.geotools.swing.event.MapPaneListener;
+import org.geotools.swing.tool.CursorTool;
 import org.opengis.geometry.Envelope;
 
 /**
@@ -143,4 +144,12 @@ public interface MapPane {
      */
     void removeMouseListener(MapMouseListener listener);
 
+    /**
+     * Sets the current cursor tool. A {@code null} argument means no
+     * current cursor tool.
+     *
+     * @param tool the tool to set or {@code null}
+     */
+    void setCursorTool(CursorTool tool);
+    
 }

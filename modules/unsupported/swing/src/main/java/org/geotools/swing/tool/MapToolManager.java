@@ -24,14 +24,13 @@ import java.util.Set;
 
 import javax.swing.event.MouseInputListener;
 
-import org.geotools.swing.JMapPane;
 import org.geotools.swing.MapPane;
 import org.geotools.swing.event.MapMouseEvent;
 import org.geotools.swing.event.MapMouseListener;
 
 /**
- * Receives mouse events from a JMapPane instance, converts them to
- * JMapPaneMouseEvents, and sends these to the active map pane 
+ * Receives mouse events from a MapPane instance, converts them to
+ * MapPaneMouseEvents, and sends these to the active map pane 
  * tools.
  * 
  * @author Michael Bedward
@@ -96,7 +95,7 @@ public class MapToolManager implements MouseInputListener, MouseWheelListener {
     }
 
     /**
-     * Add a listener for JMapPaneMouseEvents
+     * Add a listener for MapPaneMouseEvents
      *
      * @param listener the listener to add
      * @return true if successful; false otherwise

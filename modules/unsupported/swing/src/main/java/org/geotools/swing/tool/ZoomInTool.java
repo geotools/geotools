@@ -32,7 +32,7 @@ import org.geotools.geometry.Envelope2D;
 import org.geotools.swing.event.MapMouseEvent;
 
 /**
- * A zoom-in tool for JMapPane.
+ * A zoom-in tool.
  * <p>
  * For mouse clicks, the display will be zoomed-in such that the 
  * map centre is the position of the mouse click and the map
@@ -131,8 +131,7 @@ public class ZoomInTool extends AbstractZoomTool {
     /**
      * If the mouse was dragged, determines the bounds of the
      * box that the user defined and passes this to the mapPane's
-     * {@link org.geotools.swing.JMapPane#setDisplayArea(org.opengis.geometry.Envelope) }
-     * method
+     * {@code setDisplayArea} method.
      *
      * @param ev the mouse event
      */

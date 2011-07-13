@@ -311,10 +311,7 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
     }
 
     /**
-     * Sets the current cursor tool. A {@code null} argument means no
-     * current cursor tool.
-     *
-     * @param tool the tool to set or {@code null}
+     * {@inheritDoc}
      */
     public void setCursorTool(CursorTool tool) {
         if (tool == null) {
@@ -330,14 +327,8 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
     }
 
     /**
-     * Registers an object that wishes to receive {@code MapMouseEvent}s
-     * such as a {@linkplain StatusBar}.
-     *
-     * @param listener the listener to add
-     * @throws IllegalArgumentException if listener is null
-     * @see MapMouseListener
+     * {@inheritDoc}
      */
-    @Override
     public void addMouseListener(MapMouseListener listener) {
         if (listener == null) {
             throw new IllegalArgumentException("listener must not be null");
@@ -349,7 +340,6 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
     /**
      * {@inheritDoc}
      */
-    @Override
     public void removeMouseListener(MapMouseListener listener) {
         if (listener != null) {
             toolManager.removeMouseListener(listener);
@@ -359,7 +349,6 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
     /**
      * {@inheritDoc}
      */
-    @Override
     public void addMapPaneListener(MapPaneListener listener) {
         if (listener == null) {
             throw new IllegalArgumentException("listener must not be null");
@@ -371,7 +360,6 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
     /**
      * {@inheritDoc}
      */
-    @Override
     public void removeMapPaneListener(MapPaneListener listener) {
         if (listener != null) {
             listeners.remove(listener);
@@ -408,7 +396,6 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
     /**
      * {@inheritDoc}
      */
-    @Override
     public void setRenderer(GTRenderer renderer) {
         doSetRenderer(renderer);
     }
@@ -416,7 +403,6 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
     /**
      * {@inheritDoc}
      */
-    @Override
     public GTRenderer getRenderer() {
         return renderer;
     }
@@ -450,7 +436,6 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
     /**
      * {@inheritDoc}
      */
-    @Override
     public void setMapContent(MapContent content) {
         doSetMapContent(content);
     }
@@ -458,7 +443,6 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
     /**
      * {@inheritDoc}
      */
-    @Override
     public MapContent getMapContent() {
         return mapContent;
     }
@@ -513,7 +497,6 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
     /**
      * {@inheritDoc}
      */
-    @Override
     public ReferencedEnvelope getDisplayArea() {
         if (mapContent != null) {
             return mapContent.getViewport().getBounds();
@@ -525,7 +508,6 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
     /**
      * {@inheritDoc}
      */
-    @Override
     public void setDisplayArea(Envelope envelope) {
         if (envelope == null) {
             throw new IllegalArgumentException("envelope must not be null");
@@ -637,7 +619,6 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
     /**
      * {@inheritDoc}
      */
-    @Override
     public void reset() {
         if (fullExtent != null) {
             setDisplayArea(fullExtent);

@@ -22,7 +22,7 @@ import java.util.EventObject;
 import org.geotools.swing.MapPane;
 
 /**
- * An event class used by {@code JMapPane} to signal changes of
+ * An event class used by {@code MapPane} to signal changes of
  * state to listeners.
  *
  * @see MapPaneListener

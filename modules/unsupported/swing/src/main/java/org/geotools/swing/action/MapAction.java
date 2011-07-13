@@ -21,7 +21,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
 
-import org.geotools.swing.JMapPane;
+import org.geotools.swing.MapPane;
 
 
 /**
@@ -38,7 +38,7 @@ import org.geotools.swing.JMapPane;
 public abstract class MapAction extends AbstractAction {
     private static final long serialVersionUID = 2400755645451641127L;
 
-    private JMapPane mapPane;
+    private MapPane mapPane;
 
     /**
      * Called by sub-classes to set the map pane field and initialize
@@ -49,7 +49,7 @@ public abstract class MapAction extends AbstractAction {
      * @param toolTip brief tool description for GUI tool tip
      * @param iconImage path to the icon to display on the control
      */
-    protected void init(JMapPane mapPane, String toolName, String toolTip, String iconImage) {
+    protected void init(MapPane mapPane, String toolName, String toolTip, String iconImage) {
         this.mapPane = mapPane;
 
         if (toolName != null) {
@@ -68,7 +68,7 @@ public abstract class MapAction extends AbstractAction {
      *
      * @return the map pane
      */
-    public JMapPane getMapPane() {
+    public MapPane getMapPane() {
         return mapPane;
     }
 }

@@ -18,7 +18,7 @@
 package org.geotools.swing.event;
 
 /**
- * Interface for classes that listen to JMapPaneMouseEvents
+ * Interface for classes that listen to MapMouseEvents
  *
  * @author Michael Bedward
  * @since 2.6
@@ -28,11 +28,6 @@ package org.geotools.swing.event;
  * @version $Id$
  */
 public interface MapMouseListener {
-    
-    /**
-     * Set the JMapPane instance for this tool
-     */
-    //public void setMapPane(JMapPane pane);
     
     /**
      * Respond to a mouse click event received from the map pane

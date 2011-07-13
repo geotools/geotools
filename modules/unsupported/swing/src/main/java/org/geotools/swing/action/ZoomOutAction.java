@@ -19,7 +19,7 @@ package org.geotools.swing.action;
 
 import java.awt.event.ActionEvent;
 
-import org.geotools.swing.JMapPane;
+import org.geotools.swing.MapPane;
 import org.geotools.swing.tool.ZoomOutTool;
 
 /**
@@ -41,7 +41,7 @@ public class ZoomOutAction extends MapAction {
      * 
      * @param mapPane the map pane being serviced by this action
      */
-    public ZoomOutAction(JMapPane mapPane) {
+    public ZoomOutAction(MapPane mapPane) {
         this(mapPane, false);
     }
 
@@ -52,7 +52,7 @@ public class ZoomOutAction extends MapAction {
      * @param mapPane the map pane being serviced by this action
      * @param showToolName set to true for the control to display the tool name
      */
-    public ZoomOutAction(JMapPane mapPane, boolean showToolName) {
+    public ZoomOutAction(MapPane mapPane, boolean showToolName) {
         String toolName = showToolName ? ZoomOutTool.TOOL_NAME : null;
         super.init(mapPane, toolName, ZoomOutTool.TOOL_TIP, ZoomOutTool.ICON_IMAGE);
     }

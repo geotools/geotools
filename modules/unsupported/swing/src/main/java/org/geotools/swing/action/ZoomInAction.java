@@ -19,7 +19,7 @@ package org.geotools.swing.action;
 
 import java.awt.event.ActionEvent;
 
-import org.geotools.swing.JMapPane;
+import org.geotools.swing.MapPane;
 import org.geotools.swing.tool.ZoomInTool;
 
 /**
@@ -41,7 +41,7 @@ public class ZoomInAction extends MapAction {
      * 
      * @param mapPane the map pane being serviced by this action
      */
-    public ZoomInAction(JMapPane mapPane) {
+    public ZoomInAction(MapPane mapPane) {
         this(mapPane, false);
     }
 
@@ -52,7 +52,7 @@ public class ZoomInAction extends MapAction {
      * @param mapPane the map pane being serviced by this action
      * @param showToolName set to true for the control to display the tool name
      */
-    public ZoomInAction(JMapPane mapPane, boolean showToolName) {
+    public ZoomInAction(MapPane mapPane, boolean showToolName) {
         String toolName = showToolName ? ZoomInTool.TOOL_NAME : null;
         super.init(mapPane, toolName, ZoomInTool.TOOL_TIP, ZoomInTool.ICON_IMAGE);
     }

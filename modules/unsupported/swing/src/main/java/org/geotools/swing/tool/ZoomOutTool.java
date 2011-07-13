@@ -31,7 +31,7 @@ import org.geotools.geometry.Envelope2D;
 import org.geotools.swing.event.MapMouseEvent;
 
 /**
- * A zoom-out tool for JMapPane.
+ * A zoom-out tool.
  * <p>
  * For mouse clicks, the display will be zoomed-out such that the 
  * map centre is the position of the mouse click and the map

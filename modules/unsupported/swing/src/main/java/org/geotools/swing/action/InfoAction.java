@@ -22,7 +22,7 @@ package org.geotools.swing.action;
  */
 import java.awt.event.ActionEvent;
 
-import org.geotools.swing.JMapPane;
+import org.geotools.swing.MapPane;
 import org.geotools.swing.tool.InfoTool;
 
 /**
@@ -43,7 +43,7 @@ public class InfoAction extends MapAction {
      *
      * @param mapPane the map pane being serviced by this action
      */
-    public InfoAction(JMapPane mapPane) {
+    public InfoAction(MapPane mapPane) {
         this(mapPane, false);
     }
 
@@ -54,7 +54,7 @@ public class InfoAction extends MapAction {
      * @param mapPane the map pane being serviced by this action
      * @param showToolName set to true for the control to display the tool name
      */
-    public InfoAction(JMapPane mapPane, boolean showToolName) {
+    public InfoAction(MapPane mapPane, boolean showToolName) {
         String toolName = showToolName ? InfoTool.TOOL_NAME : null;
         super.init(mapPane, toolName, InfoTool.TOOL_TIP, InfoTool.ICON_IMAGE);
     }

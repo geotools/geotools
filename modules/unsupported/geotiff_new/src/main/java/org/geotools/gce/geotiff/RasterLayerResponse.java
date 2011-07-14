@@ -17,6 +17,7 @@
 package org.geotools.gce.geotiff;
 
 import it.geosolutions.imageio.imageioimpl.EnhancedImageReadParam;
+import jaitools.imageutils.ImageLayout2;
 
 import java.awt.Color;
 import java.awt.Rectangle;
@@ -29,14 +30,11 @@ import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Constructor;
 import java.net.URL;
-import java.net.URLDecoder;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.imageio.ImageIO;
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import javax.media.jai.JAI;
@@ -62,7 +60,6 @@ import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.resources.image.ImageUtilities;
-import org.jaitools.imageutils.ImageLayout2;
 import org.opengis.coverage.ColorInterpretation;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.geometry.BoundingBox;

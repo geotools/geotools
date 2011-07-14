@@ -54,6 +54,7 @@ import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.ReferenceIdentifier;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.crs.SingleCRS;
 import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransform2D;
@@ -119,6 +120,8 @@ class RasterLayerRequest {
     private GeneralEnvelope approximateRequestedBBoInNativeCRS;
 
     private Dimension tileDimensions;
+
+    private SingleCRS requestCRS;
 
 //    private boolean multithreadingAllowed;
 
@@ -504,7 +507,7 @@ class RasterLayerRequest {
 
     private void inspectCoordinateReferenceSystems() throws DataSourceException {
         // get the crs for the requested bbox
-        final CoordinateReferenceSystem requestCRS = CRS.getHorizontalCRS(requestedBBox.getCoordinateReferenceSystem());
+        requestCRS = CRS.getHorizontalCRS(requestedBBox.getCoordinateReferenceSystem());
 
         //
         // Check if the request CRS is different from the coverage native CRS
@@ -527,14 +530,14 @@ class RasterLayerRequest {
             //
             // we should not have any problems with regards to BBOX reprojection
 
-            // update the requested grid to world transformation by pre concatenating the
-            // destination to source transform
-            requestedGridToWorld.preConcatenate((AffineTransform) destinationToSourceTransform);
+            // update the requested grid to world transformation by pre concatenating the destination to source transform
+            AffineTransform mutableTransform = (AffineTransform) requestedGridToWorld.clone();
+            mutableTransform.preConcatenate((AffineTransform) destinationToSourceTransform);
 
             // update the requested envelope
             try {
                 final MathTransform tempTransform = PixelTranslation.translate(
-                        ProjectiveTransform.create(requestedGridToWorld), PixelInCell.CELL_CENTER,
+                        ProjectiveTransform.create(mutableTransform), PixelInCell.CELL_CENTER,
                         PixelInCell.CELL_CORNER);
                 requestedBBox = new ReferencedEnvelope(CRS.transform(tempTransform,
                         new GeneralEnvelope(requestedRasterArea)));
@@ -884,8 +887,8 @@ class RasterLayerRequest {
     private void computeCropBBOX() throws DataSourceException {
 
         // get the crs for the requested bbox
-        final CoordinateReferenceSystem requestCRS = CRS.getHorizontalCRS(requestedBBox
-                .getCoordinateReferenceSystem());
+        if(requestCRS == null)
+            requestCRS = CRS.getHorizontalCRS(requestedBBox.getCoordinateReferenceSystem());
         try {
 
             //

@@ -16,6 +16,7 @@
  */
 package org.geotools.gce.imagemosaic;
 
+import jaitools.imageutils.ImageLayout2;
 import jaitools.imageutils.ROIGeometry;
 
 import java.awt.Color;
@@ -58,9 +59,8 @@ import javax.media.jai.ROIShape;
 import javax.media.jai.RenderedOp;
 import javax.media.jai.TileCache;
 import javax.media.jai.TileScheduler;
-import javax.media.jai.operator.AffineDescriptor;
 import javax.media.jai.operator.ConstantDescriptor;
-import javax.media.jai.operator.CropDescriptor;
+import javax.media.jai.operator.FormatDescriptor;
 import javax.media.jai.operator.MosaicDescriptor;
 
 import org.apache.commons.io.FilenameUtils;
@@ -1063,12 +1063,26 @@ class RasterLayerResponse{
 
                         final Number[] values = Utils.getBackgroundValues(rasterManager.defaultSM, backgroundValues);
                         // create a constant image with a proper layout
-                        return ConstantDescriptor.create(
+                        final RenderedImage finalImage = ConstantDescriptor.create(
                                 Float.valueOf(rasterBounds.width),
                                 Float.valueOf(rasterBounds.height),
                                 values,
-                                rasterManager.defaultImageLayout!=null?new RenderingHints(JAI.KEY_IMAGE_LAYOUT,rasterManager.defaultImageLayout):null);
-			
+                                null);
+                        if(rasterManager.defaultCM!=null){
+                            final ImageLayout2 il= new ImageLayout2();
+                            il.setColorModel(rasterManager.defaultCM);
+                            Dimension tileSize= request.getTileDimensions();
+                            if(tileSize==null){
+                                tileSize=JAI.getDefaultTileSize();
+                            } 
+                            il.setSampleModel(rasterManager.defaultCM.createCompatibleSampleModel(tileSize.width, tileSize.height));
+                            il.setTileGridXOffset(0).setTileGridYOffset(0).setTileWidth((int)tileSize.getWidth()).setTileHeight((int)tileSize.getHeight());
+                            return FormatDescriptor.create(
+                                    finalImage,
+                                    Integer.valueOf(il.getSampleModel(null).getDataType()),
+                                    new RenderingHints(JAI.KEY_IMAGE_LAYOUT,il));
+                        }
+                        return finalImage;
 
 		} catch (IOException e) {
 			throw new DataSourceException("Unable to create this mosaic", e);

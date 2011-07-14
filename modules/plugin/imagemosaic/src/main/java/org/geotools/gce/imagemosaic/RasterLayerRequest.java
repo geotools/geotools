@@ -99,6 +99,8 @@ class RasterLayerRequest {
     /** The region of the  */
     private Rectangle destinationRasterArea;
     
+    private CoordinateReferenceSystem requestCRS;
+    
     private boolean footprintManagement;
     
     private int defaultArtifactsFilterThreshold = Integer.MIN_VALUE;;
@@ -750,7 +752,7 @@ class RasterLayerRequest {
 
     private void inspectCoordinateReferenceSystems() throws DataSourceException {
     	// get the crs for the requested bbox
-        final CoordinateReferenceSystem requestCRS = CRS.getHorizontalCRS(requestedBBox.getCoordinateReferenceSystem());
+        requestCRS = CRS.getHorizontalCRS(requestedBBox.getCoordinateReferenceSystem());
 
 
         	//
@@ -776,12 +778,13 @@ class RasterLayerRequest {
 	            // we should not have any problems with regards to BBOX reprojection
             		
             	// update the requested grid to world transformation by pre concatenating the destination to source transform
-            	requestedGridToWorld.preConcatenate((AffineTransform) destinationToSourceTransform);
+                AffineTransform mutableTransform = (AffineTransform) requestedGridToWorld.clone();
+                mutableTransform.preConcatenate((AffineTransform) destinationToSourceTransform);
             	
             	//update the requested envelope
             	try {
             		final MathTransform tempTransform = PixelTranslation.translate(
-            				ProjectiveTransform.create(requestedGridToWorld), 
+            				ProjectiveTransform.create(mutableTransform), 
             				PixelInCell.CELL_CENTER,
             				PixelInCell.CELL_CORNER);
 					requestedBBox=new ReferencedEnvelope(
@@ -1133,7 +1136,8 @@ class RasterLayerRequest {
     private void computeCropBBOX() throws DataSourceException  {
 
     	// get the crs for the requested bbox
-        final CoordinateReferenceSystem requestCRS = CRS.getHorizontalCRS(requestedBBox.getCoordinateReferenceSystem());
+        if(requestCRS == null)
+            requestCRS = CRS.getHorizontalCRS(requestedBBox.getCoordinateReferenceSystem());
         try {
 
         	//

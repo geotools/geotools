@@ -16,8 +16,6 @@
  */
 package org.geotools.gce.imagemosaic;
 
-import org.jaitools.imageutils.ROIGeometry;
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -58,9 +56,8 @@ import javax.media.jai.ROIShape;
 import javax.media.jai.RenderedOp;
 import javax.media.jai.TileCache;
 import javax.media.jai.TileScheduler;
-import javax.media.jai.operator.AffineDescriptor;
 import javax.media.jai.operator.ConstantDescriptor;
-import javax.media.jai.operator.CropDescriptor;
+import javax.media.jai.operator.FormatDescriptor;
 import javax.media.jai.operator.MosaicDescriptor;
 
 import org.apache.commons.io.FilenameUtils;
@@ -97,6 +94,8 @@ import org.geotools.resources.image.ImageUtilities;
 import org.geotools.util.DateRange;
 import org.geotools.util.NumberRange;
 import org.geotools.util.SimpleInternationalString;
+import org.jaitools.imageutils.ImageLayout2;
+import org.jaitools.imageutils.ROIGeometry;
 import org.opengis.coverage.ColorInterpretation;
 import org.opengis.coverage.SampleDimension;
 import org.opengis.coverage.SampleDimensionType;
@@ -743,13 +742,10 @@ class RasterLayerResponse{
 		// assemble granules
 		final RenderedImage mosaic = prepareResponse();
 		
-
 		//postproc
 		RenderedImage finalRaster = postProcessRaster(mosaic);
-		
 		//create the coverage
 		gridCoverage = prepareCoverage(finalRaster);
-		
 		//freeze
 		frozen = true;
 		
@@ -1064,11 +1060,26 @@ class RasterLayerResponse{
 
                         final Number[] values = Utils.getBackgroundValues(rasterManager.defaultSM, backgroundValues);
                         // create a constant image with a proper layout
-                        return ConstantDescriptor.create(
+                        final RenderedImage finalImage = ConstantDescriptor.create(
                                 Float.valueOf(rasterBounds.width),
                                 Float.valueOf(rasterBounds.height),
                                 values,
-                                rasterManager.defaultImageLayout!=null?new RenderingHints(JAI.KEY_IMAGE_LAYOUT,rasterManager.defaultImageLayout):null);
+                                null);
+                        if(rasterManager.defaultCM!=null){
+                            final ImageLayout2 il= new ImageLayout2();
+                            il.setColorModel(rasterManager.defaultCM);
+                            Dimension tileSize= request.getTileDimensions();
+                            if(tileSize==null){
+                                tileSize=JAI.getDefaultTileSize();
+                            } 
+                            il.setSampleModel(rasterManager.defaultCM.createCompatibleSampleModel(tileSize.width, tileSize.height));
+                            il.setTileGridXOffset(0).setTileGridYOffset(0).setTileWidth((int)tileSize.getWidth()).setTileHeight((int)tileSize.getHeight());
+                            return FormatDescriptor.create(
+                                    finalImage,
+                                    Integer.valueOf(il.getSampleModel(null).getDataType()),
+                                    new RenderingHints(JAI.KEY_IMAGE_LAYOUT,il));
+                        }
+                        return finalImage;
 			
 
 		} catch (IOException e) {

@@ -14,6 +14,7 @@ import java.sql.Statement;
 import java.sql.Blob;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.sql.Types;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -28,7 +29,7 @@ import org.geotools.jdbc.PreparedFilterToSQL;
 import org.geotools.jdbc.PreparedStatementSQLDialect;
 import org.geotools.referencing.CRS;
 import org.geotools.util.Converters;
-import org.hsqldb.Types;
+//import org.hsqldb.Types;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
@@ -113,7 +114,7 @@ public class IngresDialect extends PreparedStatementSQLDialect {
         WKBReader reader = wkbReader.get();
         if(reader == null) {
             reader = new WKBReader(factory);
-            wkbReader.set(reader);
+            wkbReader.set(reader); 
         }
         try {
         	byte bytes[] = rs.getBytes(column);
@@ -121,7 +122,7 @@ public class IngresDialect extends PreparedStatementSQLDialect {
         	if(bytes == null) {
         		return null;
         	}
-            Geometry geom = (Geometry) new WKBReader().read(bytes);
+            Geometry geom = (Geometry) reader.read(bytes);
             return geom;
         }
         catch (Exception e) {
@@ -162,7 +163,7 @@ public class IngresDialect extends PreparedStatementSQLDialect {
     @Override
     public void prepareGeometryValue(Geometry g, int srid, Class binding,
             StringBuffer sql) {
-    	sql.append("GeomFromWKB(?, " + srid + ")");
+       sql.append("GeomFromWKB(?, " + srid + ")");
     }
 
     @Override
@@ -539,5 +540,16 @@ public class IngresDialect extends PreparedStatementSQLDialect {
     @Override
     public String getGeometryTypeName(Integer type) {
         return "geometry";
+    }
+
+    @Override
+    public void initializeConnection( Connection cx ) throws SQLException {
+        Statement st = cx.createStatement();
+        st.execute("set lockmode session where level=mvcc");
+    }
+    
+    @Override
+    public int getDefaultVarcharSize() {
+        return 1;
     }
 }

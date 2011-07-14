@@ -9,4 +9,14 @@ public class IngresDataStoreAPITest extends JDBCDataStoreAPITest {
 	protected JDBCDataStoreAPITestSetup createTestSetup() {
 		return new IngresDataStoreAPITestSetup(new IngresTestSetup());
 	}
+
+    @Override
+    public void testGetFeatureWriterConcurrency() throws Exception {
+        // skip, does not work with Ingres
+    }
+
+    @Override
+    public void testTransactionIsolation() throws Exception {
+        // skip, does not work with Ingres
+    }
 }

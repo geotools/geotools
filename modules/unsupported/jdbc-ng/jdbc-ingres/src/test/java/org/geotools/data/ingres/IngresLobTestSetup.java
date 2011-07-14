@@ -17,12 +17,13 @@ public class IngresLobTestSetup extends JDBCLobTestSetup {
         
         Connection con = getDataSource().getConnection();
         con.prepareStatement("create table \"testlob\" (\"fid\" int primary key, " +
-        		"\"blob_field\" LONG BYTE, \"clob_field\" LONG VARCHAR)").execute();
+        		"\"blob_field\" LONG BYTE, \"clob_field\" LONG VARCHAR, \"raw_field\" LONG BYTE)").execute();
         
-        PreparedStatement ps =con.prepareStatement( "INSERT INTO \"testlob\" (\"fid\",\"blob_field\",\"clob_field\")  VALUES (?,?,?)");
+        PreparedStatement ps =con.prepareStatement( "INSERT INTO \"testlob\" (\"fid\",\"blob_field\",\"clob_field\",\"raw_field\")  VALUES (?,?,?,?)");
         ps.setInt(1, 1);
         ps.setBytes(2, new byte[] {1,2,3,4,5});
         ps.setString(3, "small clob");
+        ps.setBytes(4, new byte[] {6,7,8,9,10});
         ps.execute();
         ps.close();
         con.close();               

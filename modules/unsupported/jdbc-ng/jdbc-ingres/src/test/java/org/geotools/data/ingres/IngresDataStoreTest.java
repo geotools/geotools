@@ -39,11 +39,6 @@ public class IngresDataStoreTest extends JDBCDataStoreTest {
         return new IngresTestSetup();
     }
     
-    public void testCreateSchema() throws Exception {
-    	//fails because of the SELECT * FROM TABLE clause
-    	//The createSchema function does work however
-    }
-    
     public void testCreateSchemaWithConstraints() throws Exception {
     	//fails because Ingres truncates on too long varchar, it doesn't fail
     	//otherwise this test passes 100%

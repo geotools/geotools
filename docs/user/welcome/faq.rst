@@ -96,6 +96,67 @@ The current authoritative list of plugins is of course the source code:
 * http://svn.osgeo.org/geotools/trunk/modules/plugin/
 * http://svn.osgeo.org/geotools/trunk/modules/unsupported/
 
+GeoTools versions
+^^^^^^^^^^^^^^^^^
+
+Q. How are GeoTools versions organized?
+'''''''''''''''''''''''''''''''''''''''
+
+Like many open source projects, GeoTools has a *development* version and one or more *stable* versions active at any
+given time. By active, we mean that the project developers are working on new features, improvements and bug fixes.
+
+Source code for the stable branch(es) can be found in the *branches* folder of the GeoTools subversion repository. For
+example, at the time of writing the active stable branch is `branches/2.7.x <http://svn.osgeo.org/geotools/branches/2.7.x/>`_.
+
+Formal releases are based on a stable branch. The source code for a formal release is archived in the *tags* folder of
+the subversion repository. For example, the version 2.7.1 sources can be found in
+`tags/2.7.1 <http://svn.osgeo.org/geotools/tags/2.7.1/>`_.
+
+Source code for the development version are in the `trunk <http://svn.osgeo.org/geotools/trunk/>`_ folder. This is the
+bleeding edge code where the latest features are being worked on. Eventually this code will become the next stable
+branch.
+
+Commencing with GeoTools version 8, a major.minor.patch numbering system applies. 
+
+major
+    An increment of the major identifier (e.g. from version 8.x.y to 9.0.0) indicates substantial changes that can break
+    binary compatibility with previous versions.
+
+minor
+    An increment in the minor identifier (e.g. from version 8.0.y to 8.1.y) indicates new features and/or improvements
+    that do not break binary compatibility with the previous version.
+
+patch
+    An increment in the patch identifier (e.g. from version 8.0.0 to 8.0.1) indicates fixes and minor tweaks since the
+    previous version.
+
+Q. What is a SNAPSHOT version and how do I use it?
+''''''''''''''''''''''''''''''''''''''''''''''''''
+
+A snapshot is the GeoTools code that the developers are actively working on. Usually there will be two active snapshots:
+one associated with the most recent formal release (e.g GeoTools 2.7-SNAPSHOT) and a second for the development version
+(e.g. GeoTools 8-SNAPSHOT). At times there will also be snapshot releases for an earlier stable branch that is still
+being maintained (e.g. GeoTools 2.6-SNAPSHOT).
+
+New snapshot jars are built nightly and deployed to a repository separate from the one used for formal releases. If you
+are using Maven as your build tool you can work with a snapshot release by adding the following to your pom.xml::
+
+    <repository>
+        <id>opengeo</id>
+        <name>OpenGeo Maven Repository</name>
+        <url>http://repo.opengeo.org/</url>
+        <snapshots>
+            <enabled>true</enabled>
+        </snapshots>
+    </repository>
+
+You can now build your project against a snapshot release by setting it as the your version property as shown here::
+
+    <properties>
+        <geotools.version>2.7-SNAPSHOT</geotools.version>
+    </properties>
+
+
 Common License Questions
 ^^^^^^^^^^^^^^^^^^^^^^^^
 

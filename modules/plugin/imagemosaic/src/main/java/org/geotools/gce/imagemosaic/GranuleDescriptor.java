@@ -66,6 +66,8 @@ import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.resources.geometry.XRectangle2D;
+import org.geotools.resources.i18n.ErrorKeys;
+import org.geotools.resources.i18n.Errors;
 import org.geotools.resources.image.ImageUtilities;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.geometry.BoundingBox;
@@ -485,7 +487,8 @@ public class GranuleDescriptor {
 		// If the granuleDescriptor is not there, dump a message and continue
 		final URL rasterFile = pathType.resolvePath(parentLocation, granuleLocation);
 		if (rasterFile == null) {
-			return;
+	                throw new IllegalArgumentException(Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2,"granuleLocation",granuleLocation));		    
+			
 		}
 		if (LOGGER.isLoggable(Level.FINE))
 			LOGGER.fine("File found "+granuleLocation);

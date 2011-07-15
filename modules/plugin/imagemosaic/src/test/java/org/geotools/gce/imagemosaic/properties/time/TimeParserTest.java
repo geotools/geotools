@@ -22,7 +22,11 @@ import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
-
+/**
+ * 
+ * @author Simone Giannecchini, GeoSolutions SAS
+ *
+ */
 public class TimeParserTest extends Assert {
 
 	@Test

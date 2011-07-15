@@ -696,24 +696,31 @@ class FilterToCQL implements FilterVisitor, ExpressionVisitor {
         
         return output;
     }
+    
     public Object visit(After after, Object extraData) {
         throw new UnsupportedOperationException("Temporal filter After not implemented");
     }
+    
     public Object visit(AnyInteracts anyInteracts, Object extraData) {
         throw new UnsupportedOperationException("Temporal filter AnyInteracts not implemented");
     }
+    
     public Object visit(Before before, Object extraData) {
         throw new UnsupportedOperationException("Temporal filter Before not implemented");
     }
+    
     public Object visit(Begins begins, Object extraData) {
         throw new UnsupportedOperationException("Temporal filter Begins not implemented");
     }
+    
     public Object visit(BegunBy begunBy, Object extraData) {
         throw new UnsupportedOperationException("Temporal filter BegunBy not implemented");
     }
+    
     public Object visit(During during, Object extraData) {
         throw new UnsupportedOperationException("Temporal filter During not implemented");
     }
+    
     public Object visit(EndedBy endedBy, Object extraData) {
         throw new UnsupportedOperationException("Temporal filter EndedBy not implemented");
     }
@@ -738,4 +745,5 @@ class FilterToCQL implements FilterVisitor, ExpressionVisitor {
     public Object visit(TOverlaps contains, Object extraData) {
         throw new UnsupportedOperationException("Temporal filter TOverlaps not implemented");
     }
+    
 }

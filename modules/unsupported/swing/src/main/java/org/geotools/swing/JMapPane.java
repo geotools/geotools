@@ -298,7 +298,7 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
                 doSetDisplayArea(pendingDisplayArea);
                 pendingDisplayArea = null;
 
-            } else {
+            } else if (mapContent.getViewport().getBounds().isEmpty()) {
                 doSetDisplayArea(fullExtent);
             }
 

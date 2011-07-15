@@ -27,6 +27,7 @@ import org.geotools.TestData;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollector;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollectorFinder;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
+import org.geotools.gce.imagemosaic.properties.string.StringFileNameExtractorSPI;
 import org.geotools.gce.imagemosaic.properties.time.TimestampFileNameExtractorSPI;
 import org.junit.After;
 import org.junit.Assert;
@@ -62,11 +63,35 @@ public class PropertiesCollectorTest extends Assert {
             final Set<PropertiesCollectorSPI> spis = PropertiesCollectorFinder.getPropertiesCollectorSPI();
             assertNotNull(spis);
             assertTrue(!spis.isEmpty());
-            assertEquals(7,spis.size());
+            assertEquals(8,spis.size());
 
     
         }
 	
+        @Test
+        public void testString() throws IOException{
+                
+                // get the spi
+                final Set<PropertiesCollectorSPI> spis = PropertiesCollectorFinder.getPropertiesCollectorSPI();
+                assertNotNull(spis);
+                assertTrue(!spis.isEmpty());
+                URL testUrl = TestData.url(this,"time_geotiff/stringregex.properties");
+                // test a regex
+                PropertiesCollectorSPI spi;
+                final Iterator<PropertiesCollectorSPI> iterator = spis.iterator();
+                while (iterator.hasNext()){
+                    spi = iterator.next();
+                    if (spi instanceof StringFileNameExtractorSPI){
+                        final PropertiesCollector pc = spi.create(testUrl, Arrays.asList("string_attr"));
+                        pc.collect(TestData.file(this,"time_geotiff/world.200401.3x5400x2700.tiff"));
+                        return;
+                    }
+                }
+                
+                assertTrue(false);
+                
+        }
+        
 	@Test
 	public void testTime() throws IOException{
 		
@@ -83,10 +108,10 @@ public class PropertiesCollectorTest extends Assert {
 		    if (spi instanceof TimestampFileNameExtractorSPI){
 		        final PropertiesCollector pc = spi.create(testUrl, Arrays.asList("time_attr"));
 	                pc.collect(TestData.file(this,"time_geotiff/world.200401.3x5400x2700.tiff"));
-	                break;
+	                return;
 		    }
 		}
-		
+		assertTrue(false);
 	}
 
 }

@@ -341,7 +341,7 @@ public class Utils {
 	 * Cached instance of {@link URLImageInputStreamSpi} for creating
 	 * {@link ImageInputStream} instances.
 	 */
-	private static ImageInputStreamSpi cachedStreamSPI = new URLImageInputStreamSpi();
+	private static ImageInputStreamSpi CACHED_STREAM_SPI = new URLImageInputStreamSpi();
 	
 	/**
 	 * Creates a mosaic for the provided input parameters.
@@ -891,6 +891,7 @@ public class Utils {
 	 * @throws IOException
 	 */
 	static ImageInputStream getInputStream(final File file) throws IOException {
+        Utilities.ensureNonNull("file", file);
 		final ImageInputStream inStream = ImageIO.createImageInputStream(file);
 		if (inStream == null)
 			return null;
@@ -905,7 +906,8 @@ public class Utils {
 	 * @throws IOException
 	 */
 	static ImageInputStream getInputStream(final URL url) throws IOException {
-		final ImageInputStream inStream = cachedStreamSPI
+        Utilities.ensureNonNull("url", url);
+		final ImageInputStream inStream = CACHED_STREAM_SPI
 				.createInputStreamInstance(url, ImageIO.getUseCache(), ImageIO
 						.getCacheDirectory());
 		if (inStream == null)
@@ -1530,9 +1532,9 @@ public class Utils {
          * Check if the provided granule's footprint covers the same area of the granule's bbox.
          * @param granuleFootprint the granule Footprint
          * @param granuleBBOX the granule bbox
-         * @return {@code true} in case the footprint is covering the full granule's bbox. 
+         * @return {@code true} in case the footprint isn't covering the full granule's bbox. 
          */
-        static boolean checkEqualArea(
+        static boolean areaIsDifferent(
                 final Geometry granuleFootprint,
                 final AffineTransform baseGridToWorld,
                 final ReferencedEnvelope granuleBBOX) {

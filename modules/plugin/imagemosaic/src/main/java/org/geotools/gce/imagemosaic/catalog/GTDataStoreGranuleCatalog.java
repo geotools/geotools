@@ -565,15 +565,21 @@ class GTDataStoreGranuleCatalog extends AbstractGranuleCatalog {
 				// get the feature
 				final SimpleFeature sf = it.next();
 				
-				// create the granule descriptor
-				final GranuleDescriptor granule= new GranuleDescriptor(
-						sf,
-						suggestedSPI,
-						pathType,
-						locationAttribute,
-						parentLocation, 
-						heterogeneous);
-				retVal.add(granule);
+				try {
+        				// create the granule descriptor
+        				final GranuleDescriptor granule = new GranuleDescriptor(
+        						sf,
+        						suggestedSPI,
+        						pathType,
+        						locationAttribute,
+        						parentLocation, 
+        						heterogeneous);
+
+                                        retVal.add(granule);
+				} catch (Throwable t) {
+                                    if(LOGGER.isLoggable(Level.SEVERE))
+                                        LOGGER.log(Level.SEVERE,"Skipping granule " + sf.toString(), t);
+                                }
 			}
 			return retVal;
 

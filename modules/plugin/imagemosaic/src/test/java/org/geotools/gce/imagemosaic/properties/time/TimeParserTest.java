@@ -21,13 +21,15 @@ import java.util.Date;
 import java.util.List;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
-
+/**
+ * 
+ * @author Simone Giannecchini, GeoSolutions SAS
+ *
+ */
 public class TimeParserTest extends Assert {
 
 	@Test
-	@Ignore
 	public void testParserOnCurrentTime() throws ParseException, InterruptedException {
 		TimeParser parser = new TimeParser();
 		long now = System.currentTimeMillis();
@@ -39,7 +41,6 @@ public class TimeParserTest extends Assert {
 	}
 	
 	@Test
-	@Ignore
 	public void testParserOnNullTime() throws ParseException{
 		TimeParser parser = new TimeParser();
 		List<Date> time = parser.parse(null);
@@ -47,7 +48,6 @@ public class TimeParserTest extends Assert {
 	}
 	
 	@Test
-	@Ignore
 	public void testParserOnTimeInstant() throws ParseException {
 		TimeParser parser = new TimeParser();
 		final String timeInstant = "2011-10-10T10:11:12.000Z";

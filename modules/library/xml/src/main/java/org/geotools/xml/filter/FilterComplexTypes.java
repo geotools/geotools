@@ -1439,6 +1439,7 @@ public class FilterComplexTypes {
             case org.geotools.filter.ExpressionType.LITERAL_DOUBLE:
             case org.geotools.filter.ExpressionType.LITERAL_INTEGER:
             case org.geotools.filter.ExpressionType.LITERAL_STRING:
+            case org.geotools.filter.ExpressionType.LITERAL_LONG:
                 output.characters(me.getLiteral().toString());
 
                 break;

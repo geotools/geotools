@@ -10,11 +10,11 @@ import java.util.Set;
 
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.data.store.EmptyFeatureCollection;
 import org.geotools.data.store.FilteringIterator;
 import org.geotools.data.store.ReTypingIterator;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
-import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.collection.AbstractFeatureCollection;
@@ -47,21 +47,25 @@ import org.opengis.filter.spatial.Within;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.index.SpatialIndex;
 import com.vividsolutions.jts.index.strtree.STRtree;
 
 /**
  * A caching feature source for fast data access.
  * <p>
  * This feature source is used as a wrapper offering a spatial index, for a quick
- * user interface experience at the cost of memory.
+ * user interface experience at the cost of memory, all data returned by the last query 
+ * will be loaded in a in memory spatial index.
+ * <p>This class is meant as an example, it is not tested enough to be considered production
+ * worthy
  *
- * @source $URL: http://svn.osgeo.org/geotools/branches/2.7.x/build/maven/javadoc/../../../modules/unsupported/swing/src/main/java/org/geotools/data/CachingFeatureSource.java $
+ * @author Andrea Aime - GeoSolutions
+ *
+ * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swing/src/main/java/org/geotools/data/CachingFeatureSource.java $
  */
 public class CachingFeatureSource implements SimpleFeatureSource {
     private SimpleFeatureSource wrapped;
 
-    private SpatialIndex index;
+    private STRtree index;
 
     private boolean dirty;
 
@@ -82,18 +86,16 @@ public class CachingFeatureSource implements SimpleFeatureSource {
     public CachingFeatureSource( FeatureSource original) throws IOException {
         this( DataUtilities.simple( original ));
     }
+    
     public CachingFeatureSource(SimpleFeatureSource original) throws IOException {
         this.wrapped = original;
         this.originalBounds = original.getBounds();
         if (originalBounds == null)
             originalBounds = new Envelope(-Double.MAX_VALUE, Double.MAX_VALUE, -Double.MAX_VALUE,
                     Double.MAX_VALUE);
-
     }
 
     private void fillCache(Query query) throws IOException {
-        System.out.println("Refilling cache from " + query);
-        
         Query cloned = new DefaultQuery(query);
         cloned.getHints().remove(Hints.GEOMETRY_DISTANCE);
         
@@ -158,31 +160,20 @@ public class CachingFeatureSource implements SimpleFeatureSource {
                     + "'");
         }
 
-        if (index == null || dirty || !isSubQuery(query)) {
-            fillCache(query);
-        }
-
         return getFeatureCollection(query, getEnvelope(query.getFilter()));
     }
 
     private SimpleFeatureCollection getFeatureCollection(Query query, Envelope bounds) throws IOException {
         try {
-            SimpleFeatureType alternate = cachedSchema;
+            SimpleFeatureType base = wrapped.getSchema();
+            SimpleFeatureType alternate = base;
             if (query.getPropertyNames() != Query.ALL_NAMES) {
-                alternate = SimpleFeatureTypeBuilder.retype(cachedSchema, query.getPropertyNames());
-                if (alternate.equals(cachedSchema))
-                    alternate = cachedSchema;
+                alternate = SimpleFeatureTypeBuilder.retype(base, query.getPropertyNames());
+                if (alternate.equals(base))
+                    alternate = base;
             }
 
-            Filter f ;
-            if (query.getFilter() != null && query.getFilter().equals(Filter.EXCLUDE)) {
-                f = null;
-            } else {
-                f = query.getFilter();
-            }
-
-            List featureList = index.query(bounds);
-            return new CachingFeatureCollection(featureList, cachedSchema, alternate, f);
+            return new CachingFeatureCollection(bounds, base, alternate, query);
         } catch (Exception e) {
             throw new DataSourceException(
                     "Error occurred extracting features from the spatial index", e);
@@ -337,59 +328,63 @@ public class CachingFeatureSource implements SimpleFeatureSource {
     }
     
     /**
-     * A custom feature collection to avoid the {@link DefaultFeatureCollection} nasty overhead
+     * A custom feature collection directly peeking on the feature source spatial index
      * 
-     * @author aaime
+     * @author Andrea Aime - Geosolutions
      */
-    static final class CachingFeatureCollection extends AbstractFeatureCollection {
+    final class CachingFeatureCollection extends AbstractFeatureCollection {
 
-        private List<SimpleFeature> features;
         private SimpleFeatureType sourceSchema;
         private SimpleFeatureType targetSchema;
-        private Filter filter;
-        /** Cached bounds */
-        private ReferencedEnvelope bounds = null;
+        private Query query;
+        private ReferencedEnvelope queryBounds = null;
         
-        protected CachingFeatureCollection(List<SimpleFeature> features, SimpleFeatureType sourceSchema, 
-                SimpleFeatureType targetSchema, Filter filter) {
+        protected CachingFeatureCollection(Envelope queryBounds, SimpleFeatureType sourceSchema, 
+                SimpleFeatureType targetSchema, Query query) {
             super(targetSchema);
-            this.features = features;
             this.sourceSchema = sourceSchema;
             this.targetSchema = targetSchema;
-            this.filter = filter;
+            this.query = query;
         }
         
         @Override
         public int size() {
-            return features.size();
+            try {
+                return getCount(query);
+            } catch(Exception e) {
+                throw new RuntimeException("Failed to count features", e);
+            }
         }
         @Override
         public synchronized ReferencedEnvelope getBounds() {
-            if( bounds == null ){
-                bounds = calculateBounds();
+            try {
+                return CachingFeatureSource.this.getBounds(query);
+            } catch(Exception e) {
+                throw new RuntimeException("Failed to count features", e);
             }
-            return bounds;
         }
-        /**
-         * Calculate bounds from features
-         * @return 
-         */
-        private ReferencedEnvelope calculateBounds() {
-            ReferencedEnvelope extent = new ReferencedEnvelope();
-            for( SimpleFeature feature : features ){
-                if( feature == null ) continue;
-                ReferencedEnvelope bbox = ReferencedEnvelope.reference( feature.getBounds() );
-                if( bbox == null || bbox.isEmpty() || bbox.isNull() ) continue;
-                extent.expandToInclude( bbox );
-            }
-            return extent;
-        }
+        
         
         @Override
         protected Iterator openIterator() {
+            List features;
+            synchronized (CachingFeatureSource.this) {
+                try {
+                    if (index == null || dirty || !isSubQuery(query)) {
+                        fillCache(query);
+                    }
+                    if(queryBounds != null) {
+                        features = index.query(queryBounds);
+                    } else {
+                        features = index.query((Envelope) index.getRoot().getBounds());
+                    }
+                } catch(Exception e) {
+                    throw new RuntimeException("Failed to get data", e);
+                }
+            }
             Iterator it = features.iterator();
-            if(filter != null) {
-               it = new FilteringIterator<Feature>(it, filter); 
+            if(query.getFilter() != null && Filter.INCLUDE.equals(query.getFilter())) {
+                it = new FilteringIterator<Feature>(it, query.getFilter());
             }
             if(targetSchema != sourceSchema) {
                 it = new ReTypingIterator(it, sourceSchema, targetSchema);
@@ -400,6 +395,29 @@ public class CachingFeatureSource implements SimpleFeatureSource {
         @Override
         protected void closeIterator(Iterator close) {
             // nothing to do there
+        }
+        
+        @Override
+        public SimpleFeatureCollection subCollection(Filter filter) {
+            // get the new target envelope
+            Envelope filterEnvelope = getEnvelope(filter);
+            Envelope subEnvelope = queryBounds;
+            if(filterEnvelope != null) {
+                subEnvelope = subEnvelope.intersection(queryBounds);
+            }
+            if(subEnvelope.isNull()) {
+                return new EmptyFeatureCollection(targetSchema);
+            }
+            
+            // mix filters
+            Query subQuery = new Query(query);
+            Filter baseFilter = query.getFilter();
+            if(baseFilter != null && !Filter.INCLUDE.equals(baseFilter)) {
+                Filter mixed = ff.and(baseFilter, filter);
+                subQuery.setFilter(mixed); 
+            }
+            
+            return new CachingFeatureCollection(subEnvelope, sourceSchema, targetSchema, subQuery);
         }
         
     }

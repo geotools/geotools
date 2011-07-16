@@ -22,6 +22,9 @@ import java.util.Collections;
 import java.util.List;
 
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.FilterAttributeExtractor;
+import org.geotools.filter.capability.FunctionNameImpl;
+import org.geotools.util.Converters;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.capability.FunctionName;
@@ -72,7 +75,15 @@ public class CategorizeFunction implements Function {
     
     private final List<Expression> parameters;
     private final Literal fallback;
-    
+    /**
+     * True if all expressions in the param set are static values
+     */
+    private boolean staticTable = true;
+    double[] thresholds;
+    Expression[] values;
+    volatile Object[] convertedValues;
+    private Class convertedValuesContext;
+    private String belongsTo;
     
     /**
      * Make the instance of FunctionName available in
@@ -112,6 +123,57 @@ public class CategorizeFunction implements Function {
     public CategorizeFunction(List<Expression> parameters, Literal fallback) {
         this.parameters = parameters;
         this.fallback = fallback;
+        
+        // check for valid structure, we need lookup, value, [threshold, value]*, [thresholdInclusion]
+        if(parameters.size() % 2 != 0) {
+            // in this case the last value must be either succeeding or preceding, as a literal
+            Expression lastParameter = parameters.get(parameters.size() - 1);
+            String lastValue = lastParameter.evaluate(null, String.class);
+            
+            if (PRECEDING.equalsIgnoreCase(lastValue)) {
+                belongsTo = PRECEDING;
+            } else if (SUCCEEDING.equalsIgnoreCase(lastValue)) {
+                belongsTo = SUCCEEDING;
+            } else {
+                throw new IllegalArgumentException("The valid structure of a categorize function call is " +
+                		"\"lookup, value, [threshold, value]*, [succeeding|preceding]\", " +
+                		"yet there is a odd number of parameters and the last value is not succeeding nor preceeding");
+            }
+        }
+        
+        // see if the table is full of attribute independent expressions
+        FilterAttributeExtractor extractor = new FilterAttributeExtractor();
+        thresholds = new double[(parameters.size() - 1) / 2];
+        values = new Expression[thresholds.length + 1];
+        for (int i = 1; i < parameters.size(); i++) {
+            Expression expression = parameters.get(i);
+            if(expression != null) {
+                extractor.clear();
+                expression.accept(extractor, null);
+                if(!extractor.isConstantExpression()) {
+                    staticTable = false;
+                    thresholds = null;
+                    break;
+                } else { 
+                    if(i % 2 == 0) {
+                        Double threshold = expression.evaluate(null, Double.class);
+                        if(threshold == null) {
+                            staticTable = false;
+                            thresholds = null;
+                            break;
+                        } else {
+                            thresholds[i / 2 - 1] = threshold;
+                        }
+                    } else {
+                        values[i / 2] = expression; 
+                    }
+                }
+            }
+        }
+        // allow for binary search
+        if(thresholds != null) {
+            Arrays.sort(thresholds);
+        }
     }
 
     public String getName() {
@@ -132,9 +194,51 @@ public class CategorizeFunction implements Function {
 
     public <T> T evaluate(Object object, Class<T> context) {
         final Expression lookupExp = parameters.get(0);
-        final String belongsTo = queryThreshdoldBelongsTo(object);
-        Expression currentExp = parameters.get(1);
+        
+        // check the value we're looking for
+        Double value = lookupExp.evaluate(object, Double.class);
+        if(value == null) {
+            value = Converters.convert(object, Double.class);
+        }
+        
+        if(value != null && staticTable) {
+            int expIdx = Arrays.binarySearch(thresholds, value);
+            int valIdx;
+            if(expIdx >= 0) {
+                // right at the threshold
+                if (PRECEDING.equals(belongsTo)) {
+                    valIdx = expIdx;
+                } else {
+                    valIdx = expIdx + 1;
+                }
+            } else {
+                // between threshold values, get the next value
+                valIdx = -expIdx - 1;
+            }
+            
+            // do we have a pre-converted set of values as well?
+            if(convertedValues == null) {
+                synchronized (this) {
+                    if(convertedValues == null) {
+                        convertedValues = new Object[values.length];
+                        for (int i = 0; i < convertedValues.length; i++) {
+                            convertedValues[i] = values[i].evaluate(object, context);
+                        }
+                        convertedValuesContext = context;
+                    }
+                }
+            }
+            
+            // if we can use the pre-converted go for it, otherwise dynamic eval
+            if(convertedValuesContext == context) {
+                return (T) convertedValues[valIdx];
+            } else {
+                return values[valIdx].evaluate(object, context);
+            }
+        }
 
+        // generic evaluation path, slow
+        Expression currentExp = parameters.get(1);
         final List<Expression> splits;
         if (parameters.size() == 2) {
             return currentExp.evaluate(object, context);
@@ -149,73 +253,19 @@ public class CategorizeFunction implements Function {
             Expression threshholdExp = splits.get(i);
             Expression rangedExp = splits.get(i + 1);
             
-            
-            String lookupValue = lookupExp.evaluate(object, String.class);
-            
-            //we deal with a raster data
-            if(lookupValue.equalsIgnoreCase(RASTER_DATA)){
-                Double bandValue = new Double(object.toString());
-                Double threshholdValue = threshholdExp.evaluate(object, Double.class);
-                
-                if (PRECEDING.equals(belongsTo)) {
-                    if(bandValue > threshholdValue){
-                        currentExp = rangedExp;
-                    }else{
-                        break;
-                    }
-                } else {
-                    if(bandValue >= threshholdValue){
-                        currentExp = rangedExp;
-                    }else{
-                        break;
-                    }
-                }
+            Filter isIncludedInThreshold;
+            if (PRECEDING.equals(belongsTo)) {
+                isIncludedInThreshold = ff.greater(lookupExp, threshholdExp);
+            } else {
+                isIncludedInThreshold = ff.greaterOrEqual(lookupExp, threshholdExp);
             }
-            //we deal with something else, a mistake ? can it happen ?
-            else{
-                Filter isIncludedInThreshold;
-                if (PRECEDING.equals(belongsTo)) {
-                    isIncludedInThreshold = ff.greater(lookupExp, threshholdExp);
-                } else {
-                    isIncludedInThreshold = ff.greaterOrEqual(lookupExp, threshholdExp);
-                }
-                if (isIncludedInThreshold.evaluate(object)) {
-                    currentExp = rangedExp;
-                } else {
-                    break;
-                }
+            if (isIncludedInThreshold.evaluate(object)) {
+                currentExp = rangedExp;
+            } else {
+                break;
             }
-            
         }
         return currentExp.evaluate(object, context);
-    }
-
-    /**
-     * There is no great way to check if the last parameter
-     * is intended to be the optional ThreshholdBelongsTo
-     * or not (since it is an optional parameter).
-     * <p>
-     * We can figure out if "succeeding" or "preceding" is
-     * being provided by checking the number of parameters.
-     * @param object
-     * @return PRECEDING or SUCCEEDING after checking if any information was provided.
-     */
-    private String queryThreshdoldBelongsTo(Object object) {
-        if (parameters.size() == 2 && parameters.size() % 2 == 0) {
-            return SUCCEEDING; // user has not specified anything
-        }
-        
-        Expression lastParameter = parameters.get(parameters.size() - 1);
-        String lastValue = lastParameter.evaluate(object, String.class);
-        
-        if (PRECEDING.equalsIgnoreCase(lastValue)) {
-            return PRECEDING;
-        } else if (SUCCEEDING.equalsIgnoreCase(lastValue)) {
-            return SUCCEEDING;
-        } else {
-            // warning?
-            return SUCCEEDING; // default
-        }
     }
 
     public Literal getFallbackValue() {

@@ -1478,14 +1478,10 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
 
         @Override
         public boolean isIdentified() {
+            //
             // Features are always identified
             //
             return true;
-        }
-
-        @Override
-        public Name getName() {
-            return new NameImpl(EFeatureInfo.this.eName());
         }
 
         @Override
@@ -1552,7 +1548,50 @@ public class EFeatureInfo extends EStructureInfo<EStructureInfo<?>> {
             }
             return userData;
         }
+        
 
+        /**
+         * Get EFeature {@link SimpleFeatureType type} name.
+         * <p>
+         * EFeature type names have the following format:
+         * 
+         * <pre>
+         * eType=&lt;eFolder&gt;.&lt;eFeature&gt;
+         * 
+         * where
+         * 
+         * eFolder = {@link EFeature} folder name
+         * eFeature = {@link EFeature} class | reference name
+         * </pre>
+         * <p>
+         * The name is located in {@link Name#getLocalPart()}
+         * </p>
+         * @return a SimpleFeatureType {@link Name}
+         */
+        @Override
+        public Name getName() {
+            String eFolder = EFeatureInfo.this.eFolderName;
+            String eFeature = EFeatureInfo.this.eName();
+            return new NameImpl(eFolder+"."+eFeature);
+        }
+        
+
+        /**
+         * Get EFeature {@link SimpleFeatureType type} name.
+         * <p>
+         * EFeature type names have the following format:
+         * 
+         * <pre>
+         * eType=&lt;eFolder&gt;.&lt;eFeature&gt;
+         * 
+         * where
+         * 
+         * eFolder = {@link EFeature} folder name
+         * eFeature = {@link EFeature} class | reference name
+         * </pre>
+         * 
+         * @return a {@link SimpleFeatureType} name
+         */
         @Override
         public String getTypeName() {
             return getName().getLocalPart();

@@ -528,8 +528,103 @@ public class ESimpleFeatureInternal implements ESimpleFeature {
             p.setValue(newGeometry);
         }
     }
-                    
+    
+    // ----------------------------------------------------- 
+    //  Object equality implementation
+    // -----------------------------------------------------
 
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 31 * hash + getID().hashCode();
+        hash = 31 * hash + getFeatureType().hashCode();
+        for(Object it : getAttributes()) {
+            hash = (null == it ? 0 : it.hashCode());
+        }
+        return hash;
+    }
+               
+    @Override
+    public boolean equals(Object obj) {
+        //
+        // Sanity checks
+        //
+        if (obj == null) {
+            return false;
+        }
+        //
+        // Same as this?
+        //
+        if (obj == this) {
+            return true;
+        }
+        //
+        // Not same implementation?
+        //        
+        if (!(obj instanceof ESimpleFeatureInternal)) {
+            return false;
+        }
+        //
+        // Cast to ESimpleFeatureInternal
+        //
+        ESimpleFeatureInternal eFeature = (ESimpleFeatureInternal)obj;
+        //
+        // Get this feature ID
+        //
+        String eID = getID();
+        //
+        // This check shouldn't really be necessary since
+        // by contract, all features should have an ID.
+        //
+        if (getID() == null) {
+            if (eFeature.getIdentifier() != null) {
+                return false;
+            }
+        }
+        //
+        // Is not same feature ID?
+        //
+        if (!eID.equals(eFeature.getIdentifier())) {
+            return false;
+        }
+        //
+        // Is not same feature type. 
+        //
+        if (!eFeature.getFeatureType().equals(getFeatureType())) {
+            return false;
+        }
+        //
+        // Get attribute values
+        //
+        List<Object> values = getAttributes();
+        //
+        // Check all values for inequality
+        //
+        for (int i = 0, count = values.size(); i < count; i++) {
+            //
+            // Get attribute values
+            //
+            Object v1 = values.get(i);
+            Object v2 = eFeature.getAttribute(i);
+            //
+            // Do a guarded check
+            //
+            if (v1 == null) {
+                if (v2 != null) {
+                    return false;
+                }
+            } else {
+                if (!v1.equals(v2)) {
+                    return false;
+                }
+            }
+        }
+        //
+        // All values are equal
+        //
+        return true;        
+    }
+    
     // ----------------------------------------------------- 
     //  Helper methods
     // -----------------------------------------------------

@@ -356,15 +356,15 @@ public class EFeatureIDFactoryImpl implements EFeatureIDFactory {
         //
         // Verify eObject
         //
-        verify("eObject",eImpl,true,true,true);
-        //
-        // Get URI
-        //
-        URI eURI = eImpl.eResource().getURI();
-        //
-        // Verify URI
-        //
-        verify("eURI",eURI,true);
+        verify("eObject",eImpl,true,true,false);
+//        //
+//        // Get URI
+//        //
+//        URI eURI = eImpl.eResource().getURI();
+//        //
+//        // Verify URI
+//        //
+//        verify("eURI",eURI,true);
         //
         // Get ID attribute
         //
@@ -380,7 +380,7 @@ public class EFeatureIDFactoryImpl implements EFeatureIDFactory {
         //
         // Forward
         //
-        return eDisposeID(eURI, eImpl, eID);
+        return eDisposeID(eImpl, eID);
     }    
     
     // ----------------------------------------------------- 
@@ -638,10 +638,39 @@ public class EFeatureIDFactoryImpl implements EFeatureIDFactory {
         throw new IllegalArgumentException("'" + eObject + " does not implement EFeature");
     }
     
-    protected String eDisposeID(URI eURI, EObject eObject, String eID) 
+    protected String eDisposeID(EObject eObject, String eID) 
         throws IllegalArgumentException {
         //
-        // Get IDs cached for given URI, create it if not found
+        // Remove prefix
+        //
+        eID = eID.replace(ePrefix, "");
+        //
+        // Convert to long
+        //
+        Long uID = Long.decode(eID);        
+        //
+        // Find URI
+        //
+        URI eURI = null;
+        for(Entry<URI,Map<Long,WeakHashSet<EObject>>> it : eIDMap.entrySet()) {
+            WeakHashSet<EObject> eSet = it.getValue().get(uID);
+            if(eSet!=null && eSet.contains(eObject)) {
+                eURI = it.getKey();
+            }
+        }
+        //
+        // Verify that URI was found
+        //
+        if(eURI==null) {
+            //
+            // No IDs created for given resource
+            //
+            throw new IllegalArgumentException("Object " 
+                    + eObject.getClass().getSimpleName() 
+                    + "[" + eID + " ] not found");
+        }    
+        //
+        // Verify that URI was 
         //
         WeakHashMap<EObject,Long> eCachedIDs = eInverseIDMap.get(eURI);
         if(eCachedIDs==null) {
@@ -654,7 +683,7 @@ public class EFeatureIDFactoryImpl implements EFeatureIDFactory {
         //
         // Get ID from cache
         //
-        Long uID = eCachedIDs.get(eObject);
+        uID = eCachedIDs.get(eObject);
         //
         // ID not found?
         if(uID == null) {

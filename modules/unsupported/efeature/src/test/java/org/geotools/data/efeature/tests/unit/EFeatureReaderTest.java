@@ -47,7 +47,7 @@ public class EFeatureReaderTest extends AbstractResourceTest {
     // -----------------------------------------------------
 
     @org.junit.Test
-    public void testFeatureReaders() {
+    public void testFeatureReader() {
         EFeatureDataStore eStore;
         Map<String,Serializable> params;
         try {

@@ -55,7 +55,7 @@ public class EFeatureAttributeDelegate<V> extends
 
     @Override
     public EFeatureAttributeInfo getStructure() {
-        return (EFeatureAttributeInfo) getStructure();
+        return getStructure();
     }
 
     @Override

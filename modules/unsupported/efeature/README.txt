@@ -1,10 +1,12 @@
 =====================================================================
- Setting eclipse project references using Maven 
+ Setting eclipse project references using mvn eclipse:eclipse
 =====================================================================
 
+1. Disable Maven 
+
 > cd ../trunk
-> mvn eclipse:clean -Dall
-> mvn eclipse:eclipse -Dall
+> mvn eclipse:clean -Dall -Defeature
+> mvn eclipse:eclipse -Dall -Defeature
 
 see: http://osgeo-org.1803224.n2.nabble.com/eclipse-cross-project-dependencies-td6341944.html
 
@@ -65,9 +67,9 @@ class is defined. The plug-in IS NOT part of the Maven artifact.
   1. Open file src/test/resources/model/efeature-tests.genmodel
   2. R-Clk on "EFeatureTest" (root) -> select "Generate All"
 
-====================================================================
+=====================================================================
  EFeatureTest Build Troubleshooting
-====================================================================
+=====================================================================
 
   1. "Generate All" produces many errors
   --------------------------------------
@@ -82,10 +84,60 @@ class is defined. The plug-in IS NOT part of the Maven artifact.
     
   2. Unit tests fails with error: 
   "java.io.FileNotFoundException: Can not locate test-data for "null"
-  -------------------------------------------------------------------
+  --------------------------------------------------------------------
   
   The reason is that the folder is not built (for some reason). This
   can be verified by inspection of target/test-classes/.../tests. Is
   missing, just force a build of this folder. F.ex by renaming it to
   "test-data1" and then rename it back again to "test-data". 
   
+======================================================================
+ EFeature Ideas
+======================================================================
+  
+  Adding support for thread safe commits in stand-alone applications
+  --------------------------------------------------------------------
+  
+  EMF does support this through EMF transaction. EMF transaction 
+  however, requires the Eclipse Platform on the class path, which is 
+  very restrictive because EFeature can only be run on the Eclipse 
+  platform. A alternative to is to combine GT feature locking 
+  capabilities with a EMF ChangeRecorder. This however, will only be 
+  thread safe if all access to locked EObject is performed from GT 
+  transaction aware client code. Hence, locked EObjects is still 
+  accessible (read and write) by EMF dependent client code not aware
+  of (or don't care about) the transaction.     
+  
+  The algorithm could be something like this:
+  
+    1) On begin:
+        
+        - lock all features to prevent access from other transactions 
+        - create a temporary transaction resource
+        - add this resource to a ChangeRecorder
+          
+        
+    2) On next: 
+    
+        - make copy of EObject
+        - return copy to client code
+
+    3) On next: 
+    
+        - make copy of EObject
+        - return copy to client code
+         
+    *** Every change is recorded by the ChangeRecorder ***
+    
+    4) On Commit:
+
+        - apply and revert changes to transaction resource
+          (this produces a forward delta ChangeDescrition)
+        - add all changed EObjects to old resource
+        - apply changes from forward delta 
+            
+            
+  NOTES: EMF 2.7.0 (releases with Eclipse 3.7) adds forward delta
+         support to ChangeRecorder class. 
+         
+     

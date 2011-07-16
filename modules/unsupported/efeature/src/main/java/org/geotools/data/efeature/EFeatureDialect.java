@@ -14,6 +14,10 @@ import org.opengis.feature.simple.SimpleFeature;
 
 public class EFeatureDialect {
 
+    // ----------------------------------------------------- 
+    //  Public property names
+    // -----------------------------------------------------
+    
     /**
      * {@link EFeatureContext} instance ID.
      * <p>
@@ -63,7 +67,18 @@ public class EFeatureDialect {
      * </pre>
      */
     public static final String EFOLDERS_QUERY = "eFolders";
+    
+    /**
+     * A boolean flag indication if {@link EFeature}s can be 
+     * written ({@link EFeatureWriter#UPDATE} | 
+     * {@link EFeatureWriter#APPEND}).  
+     */
+    public static final String EFEATURE_WRITABLE = "eWritable";
 
+    // ----------------------------------------------------- 
+    //  EFeatureDialog methods
+    // -----------------------------------------------------
+    
     /**
      * Create connection parameter {@link Map} from required parameter values
      * 

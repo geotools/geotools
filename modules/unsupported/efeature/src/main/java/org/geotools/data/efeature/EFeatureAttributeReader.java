@@ -38,23 +38,28 @@ public class EFeatureAttributeReader implements AttributeReader {
 
     private Map<String, EAttribute> eAttributes = Collections
             .synchronizedMap(new WeakHashMap<String, EAttribute>());
+    
+    // ----------------------------------------------------- 
+    //  Constructors
+    // -----------------------------------------------------
+
 
     /**
      * The {@link EFeatureAttributeReader} constructor
      * 
-     * @param eStore - {@link EFeatureDataStore} instance
-     * @param eType - {@link SimpleFeatureType} name
+     * @param eDataStore - {@link EFeatureDataStore} instance
      * @param query - GeoTools {@link Query} instance
      * @throws IOException
      */
-    public EFeatureAttributeReader(EFeatureDataStore eStore, 
-            String eType, Query query) throws IOException {
+    public EFeatureAttributeReader(EFeatureDataStore eDataStore, 
+            Query query) throws IOException {
         //
         // Initialize reader
         //
+        String eType = query.getTypeName();
         String eFolder = EFeatureUtils.toFolderName(eType);
         String eFeature = EFeatureUtils.toFeatureName(eType);
-        eFolderInfo = eStore.ePackageInfo.eGetFolderInfo(eFolder);
+        eFolderInfo = eDataStore.ePackageInfo.eGetFolderInfo(eFolder);
         eFeatureInfo = eFolderInfo.eGetFeatureInfo(eFeature);
         this.type = eFeatureInfo.getFeatureType();
         //
@@ -78,7 +83,7 @@ public class EFeatureAttributeReader implements AttributeReader {
         //
         // Get objects as tree iterator (enables lazy loading)  
         //
-        TreeIterator<EObject> eObjects = eStore.eResource().getAllContents();
+        TreeIterator<EObject> eObjects = eDataStore.eResource().getAllContents();
         //
         // Convert GeoTools query to EFeatureQuery statement
         //
@@ -88,6 +93,10 @@ public class EFeatureAttributeReader implements AttributeReader {
             throw (IOException) new IOException("Failed to create EFeatureQuery").initCause(ex);
         }
     }
+    
+    // ----------------------------------------------------- 
+    //  EFeatureAttributeReader methods
+    // -----------------------------------------------------
     
     /**
      * Get {@link SimpleFeatureType} instance.
@@ -173,6 +182,11 @@ public class EFeatureAttributeReader implements AttributeReader {
     public String getAttributeName(int index) {
         return getAttributeType(index).getLocalName();
     }
+    
+    // ----------------------------------------------------- 
+    //  Helper methods
+    // -----------------------------------------------------
+
 
     /**
      * Get current {@link EFeature} id

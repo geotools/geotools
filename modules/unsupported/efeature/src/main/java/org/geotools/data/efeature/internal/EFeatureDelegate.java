@@ -706,7 +706,7 @@ public class EFeatureDelegate implements EFeature, InternalEObject {
                 //
                 // Replace implementation
                 //
-                eDelegate.eReplace(eStructure, (InternalEObject)eImpl, eTrusted, eHints);
+                eDelegate.eReplace(eStructure, eImpl, eTrusted, eHints);
             }
         } 
         //

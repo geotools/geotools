@@ -133,6 +133,11 @@
     </dependency>    
     <dependency>
         <groupId>org.geotools</groupId>
+        <artifactId>gt-data</artifactId>
+        <version>${project.version}</version>
+    </dependency>
+    <dependency>
+        <groupId>org.geotools</groupId>
         <artifactId>gt-cql</artifactId>
         <version>${project.version}</version>
     </dependency>
@@ -158,6 +163,13 @@
     <dependency>
         <groupId>org.eclipse.emf</groupId>
         <artifactId>ecore-xmi</artifactId>
+        <version>2.2.3</version>
+        <type>jar</type>
+        <scope>compile</scope>
+    </dependency>    
+    <dependency>
+        <groupId>org.eclipse.emf</groupId>
+        <artifactId>ecore-change</artifactId>
         <version>2.2.3</version>
         <type>jar</type>
         <scope>compile</scope>

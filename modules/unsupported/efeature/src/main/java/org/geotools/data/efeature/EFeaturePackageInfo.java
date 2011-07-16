@@ -168,7 +168,7 @@ public class EFeaturePackageInfo extends EStructureInfo<EFeatureContextInfo> {
     }
 
     /**
-     * Check if given eType is a {@link SimpleFeatureType}.
+     * Get {@link EFeature} with given name.
      * <p>
      * {@link SimpleFeatureType} names have the following format:
      * 

@@ -48,7 +48,7 @@ public class EFeatureReader implements SimpleFeatureReader {
      * Cached {@link EFeatureDataStore} instance. Reference must be reset when the this reader is closed
      * to prevent memory leakage.
      */
-    protected WeakReference<EFeatureDataStore> eStore;
+    protected WeakReference<EFeatureDataStore> eDataStore;
     
     /**
      * Cached {@link Transaction}. Can contain locking information
@@ -67,9 +67,10 @@ public class EFeatureReader implements SimpleFeatureReader {
     /**
      * The {@link EFeatureReader} constructor.
      * 
-     * @param eStore - {@link EFeatureDataStore} instance containing {@link EFeature} resource
+     * @param eDataStore - {@link EFeatureDataStore} instance containing {@link EFeature} resource
      *        information
-     * @param eType - {@link SimpleFeatureType} name.
+     * @param query - {@link Query} instance. Note that {@link Query#getTypeName()}
+     * is expected to be a name of a {@link SimpleFeatureType} in given data store. 
      * <p>
      * {@link SimpleFeatureType} names have the following format:
      * 
@@ -81,19 +82,19 @@ public class EFeatureReader implements SimpleFeatureReader {
      * eFolder = {@link EFeature} folder name
      * eReference = {@link EFeature} reference name
      * </pre>
-     * 
      * @throws IOException
      */
-    protected EFeatureReader(EFeatureDataStore eStore, String eType, Query query) throws IOException {
-        this(eStore, eType, query, Transaction.AUTO_COMMIT);
+    protected EFeatureReader(EFeatureDataStore eDataStore, Query query) throws IOException {
+        this(eDataStore, query, Transaction.AUTO_COMMIT);
     }
     
     /**
      * The {@link EFeatureReader} constructor.
      * 
-     * @param eStore - {@link EFeatureDataStore} instance containing {@link EFeature} resource
+     * @param eDataStore - {@link EFeatureDataStore} instance containing {@link EFeature} resource
      *        information
-     * @param eType - {@link SimpleFeatureType} name.
+     * @param query - {@link Query} instance. Note that {@link Query#getTypeName()}
+     * is expected to be a name of a {@link SimpleFeatureType} in given data store. 
      * <p>
      * {@link SimpleFeatureType} names have the following format:
      * 
@@ -108,19 +109,19 @@ public class EFeatureReader implements SimpleFeatureReader {
      * 
      * @throws IOException
      */
-    protected EFeatureReader(EFeatureDataStore eStore, String eType, Query query, Transaction eTx) throws IOException {
+    protected EFeatureReader(EFeatureDataStore eDataStore, Query query, Transaction eTx) throws IOException {
         //
         // Cache references
         //
-        this.eStore = new WeakReference<EFeatureDataStore>(eStore);
-        this.eStructure = eStore.eStructure().eGetFeatureInfo(eType);
-        this.eReader = new EFeatureAttributeReader(eStore, eType, query);
+        this.eDataStore = new WeakReference<EFeatureDataStore>(eDataStore);
+        this.eStructure = eDataStore.eStructure().eGetFeatureInfo(query.getTypeName());
+        this.eReader = new EFeatureAttributeReader(eDataStore, query);
         this.eTx = eTx;
         //
         // Copy query hints
         //
         if(query.getHints() instanceof EFeatureHints) {
-            this.eHints = new EFeatureHints(query.getHints());            
+            this.eHints = new EFeatureHints(query.getHints());
         }else {
             this.eHints = new EFeatureHints(this.eStructure.eHints);            
             this.eHints.add(query.getHints());
@@ -138,6 +139,10 @@ public class EFeatureReader implements SimpleFeatureReader {
         return eHints;
     }
     
+    /**
+     * Reset current iterator.
+     * @throws IOException
+     */
     public void reset() throws IOException {
         this.eReader.reset();
     }
@@ -145,9 +150,7 @@ public class EFeatureReader implements SimpleFeatureReader {
     @Override
     public void close() throws IOException {
         this.eReader.close();
-        EFeatureDataStore eStore = this.eStore.get();
-        if(eStore!=null) eStore.onCloseReader(this);
-        this.eStore = null;
+        this.eDataStore = null;
     }
     
     public EFeatureInfo eStructure() {
@@ -155,7 +158,7 @@ public class EFeatureReader implements SimpleFeatureReader {
     }
 
     public EFeatureDataStore eDataStore() {
-        return eStore.get();
+        return eDataStore.get();
     }
     
     @Override
@@ -285,7 +288,7 @@ public class EFeatureReader implements SimpleFeatureReader {
     }
 
     protected EFeaturePackageInfo getStructure() {
-        return eStore.get().ePackageInfo;
+        return eDataStore.get().ePackageInfo;
     }
     
 }

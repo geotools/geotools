@@ -334,7 +334,20 @@ public class ESimpleFeatureDelegate implements ESimpleFeature {
     public void setDefaultGeometry(Object geometry) {
         getFeature().setDefaultGeometry(geometry);
     }
-    
+
+    // ----------------------------------------------------- 
+    //  Object equality implementation
+    // -----------------------------------------------------
+
+    @Override
+    public int hashCode() {
+        return feature.hashCode();        
+    }
+               
+    @Override
+    public boolean equals(Object obj) {
+        return feature.equals(obj);        
+    }    
     // ----------------------------------------------------- 
     //  Helper methods
     // -----------------------------------------------------

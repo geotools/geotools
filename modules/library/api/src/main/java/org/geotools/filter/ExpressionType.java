@@ -50,7 +50,7 @@ public interface ExpressionType {
      *  Defines a literal expression with a declared long type.
      *  @since 2.4
      **/
-    public static final short LITERAL_LONG = 100;
+    public static final short LITERAL_LONG = 99;
 
     /* Types implemented by ExpressionMath. */
     /** Defines a math expression for adding. */
@@ -79,7 +79,7 @@ public interface ExpressionType {
     public static final short ATTRIBUTE_GEOMETRY = 112;
 
     /** Defines an attribute expression with a declared string type. */
-    public static final short ATTRIBUTE_UNDECLARED = 100;
+    public static final short ATTRIBUTE_UNDECLARED = 115;
 
     /** Defines an attribute expression with a declared string type. */
     public static final short ATTRIBUTE = 113;

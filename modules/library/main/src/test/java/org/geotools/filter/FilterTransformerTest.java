@@ -28,10 +28,10 @@ import org.opengis.filter.identity.FeatureId;
 
 
 public class FilterTransformerTest extends TestCase {
+    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
     FilterTransformer transform = new FilterTransformer();
     
     public void testIdEncode() throws Exception {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
         HashSet<FeatureId> set = new LinkedHashSet<FeatureId>();
         set.add( ff.featureId("FID.1"));
         set.add( ff.featureId("FID.2"));        
@@ -41,5 +41,17 @@ public class FilterTransformerTest extends TestCase {
         assertNotNull( "got xml", output );
         String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><ogc:FeatureId xmlns=\"http://www.opengis.net/ogc\" xmlns:ogc=\"http://www.opengis.net/ogc\" xmlns:gml=\"http://www.opengis.net/gml\" fid=\"FID.1\"/><ogc:FeatureId fid=\"FID.2\"/>";
         assertEquals( "expected id filters", xml, output );
+    }
+    
+    public void testEncodeLong() throws Exception {
+        Filter filter = ff.greater(ff.property("MYATT"), ff.literal(50000000l));
+        String output = transform.transform( filter );
+        assertNotNull( "got xml", output );
+        String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><ogc:PropertyIsGreaterThan " +
+        		"xmlns=\"http://www.opengis.net/ogc\" xmlns:ogc=\"http://www.opengis.net/ogc\" " +
+        		"xmlns:gml=\"http://www.opengis.net/gml\">" +
+        		"<ogc:PropertyName>MYATT</ogc:PropertyName>" +
+        		"<ogc:Literal>50000000</ogc:Literal></ogc:PropertyIsGreaterThan>";
+        assertEquals(xml, output);
     }
 }

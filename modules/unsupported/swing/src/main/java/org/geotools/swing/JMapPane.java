@@ -20,8 +20,10 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.Transparency;
 import java.awt.event.ComponentListener;
 import java.awt.event.HierarchyBoundsAdapter;
 import java.awt.event.HierarchyEvent;
@@ -82,13 +84,19 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @source $URL$
  * @version $Id$
  */
-public class JMapPane extends JPanel implements MapPane, MapLayerListListener, MapBoundsListener {
+public class JMapPane extends JPanel implements MapPane, MapLayerListListener, MapBoundsListener,
+        RenderingExecutorListener {
 
     /**
      * Default delay (milliseconds) before the map will be redrawn when resizing
      * the pane. This is to avoid flickering while drag-resizing.
      */
     public static final int DEFAULT_RESIZING_PAINT_DELAY = 500;  // delay in milliseconds
+
+    /**
+     * Default background color (white).
+     */
+    public static final Color DEFAULT_BACKGROUND_COLOR = Color.WHITE;
 
     private ScheduledExecutorService paneTaskExecutor = Executors.newSingleThreadScheduledExecutor();
     private Future<?> resizedFuture;
@@ -175,7 +183,7 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
     private BufferedImage baseImage;
     private Graphics2D baseImageGraphics;
     private Point imageOrigin;
-
+    
     private AtomicBoolean baseImageMoved;
     private AtomicBoolean clearLabelCache;
 
@@ -200,6 +208,7 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
      */
     public JMapPane(GTRenderer renderer, MapContent content) {
         imageOrigin = new Point(0, 0);
+        setBackground(DEFAULT_BACKGROUND_COLOR);
 
         acceptRepaintRequests = true;
         baseImageMoved = new AtomicBoolean();
@@ -219,7 +228,7 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
         doSetRenderer(renderer);
         doSetMapContent(content);
 
-        renderingExecutor = new RenderingExecutor(this);
+        renderingExecutor = new SingleTaskRenderingExecutor();
 
         toolManager = new MapToolManager(this);
 
@@ -786,7 +795,9 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
             
             Rectangle r = getVisibleRect();
             if (baseImage == null || createNewImage) {
-                baseImage = new BufferedImage(r.width, r.height, BufferedImage.TYPE_INT_ARGB);
+                baseImage = GraphicsEnvironment.getLocalGraphicsEnvironment().
+                        getDefaultScreenDevice().getDefaultConfiguration().
+                        createCompatibleImage(r.width, r.height, Transparency.TRANSLUCENT);
 
                 if (baseImageGraphics != null) {
                     baseImageGraphics.dispose();
@@ -794,70 +805,59 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
 
                 baseImageGraphics = baseImage.createGraphics();
                 clearLabelCache.set(true);
+                
+            } else {
+                baseImageGraphics.setBackground(getBackground());
+                baseImageGraphics.clearRect(0, 0, r.width, r.height);
             }
 
             if (renderer != null && mapContent != null && !mapContent.layers().isEmpty()) {
-                if (renderingExecutor.submit(mapContent, baseImageGraphics)) {
-                    MapPaneEvent ev = new MapPaneEvent(this, MapPaneEvent.Type.RENDERING_STARTED);
-                    publishEvent(ev);
-
-                } else {
-                    onRenderingRejected();
-                }
+                renderingExecutor.submit(mapContent, renderer, baseImageGraphics, this);
             }
         }
     }
 
     /**
-     * Called by the {@linkplain JMapPane.RenderingTask} when rendering has been completed
+     * {@inheritDoc}
+     * Publishes a {@linkplain MapPaneEvent} of type
+     * {@code MapPaneEvent.Type.RENDERING_STARTED} to listeners.
+     */
+    public void onRenderingStarted(RenderingExecutorEvent ev) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+    
+
+    /**
+     * {@inheritDoc}
      * Publishes a {@linkplain MapPaneEvent} of type
      * {@code MapPaneEvent.Type.RENDERING_STOPPED} to listeners.
-     *
-     * @see MapPaneListener#onRenderingStopped(org.geotools.swing.event.MapPaneEvent)
      */
-    public void onRenderingCompleted() {
+    public void onRenderingCompleted(RenderingExecutorEvent event) {
         if (clearLabelCache.get()) {
             labelCache.clear();
         }
 
         clearLabelCache.set(false);
         repaint();
-
-        MapPaneEvent ev = new MapPaneEvent(this, MapPaneEvent.Type.RENDERING_STOPPED);
-        publishEvent(ev);
+        publishEvent(new MapPaneEvent(this, MapPaneEvent.Type.RENDERING_STOPPED));
     }
 
     /**
-     * Called by the {@linkplain JMapPane.RenderingTask} when rendering was cancelled.
+     * {@inheritDoc}
      * Publishes a {@linkplain MapPaneEvent} of type
      * {@code MapPaneEvent.Type.RENDERING_STOPPED} to listeners.
-     *
-     * @see MapPaneListener#onRenderingStopped(org.geotools.swing.event.MapPaneEvent)
      */
-    public void onRenderingCancelled() {
-        MapPaneEvent ev = new MapPaneEvent(this, MapPaneEvent.Type.RENDERING_STOPPED);
-        publishEvent(ev);
+    public void onRenderingCancelled(RenderingExecutorEvent event) {
+        publishEvent(new MapPaneEvent(this, MapPaneEvent.Type.RENDERING_STOPPED));
     }
 
     /**
-     * Called by the {@linkplain JMapPane.RenderingTask} when rendering failed.
+     * {@inheritDoc}
      * Publishes a {@linkplain MapPaneEvent} of type
      * {@code MapPaneEvent.Type.RENDERING_STOPPED} to listeners.
-     *
-     * @see MapPaneListener#onRenderingStopped(org.geotools.swing.event.MapPaneEvent)
      */
-    public void onRenderingFailed() {
-        MapPaneEvent ev = new MapPaneEvent(this, MapPaneEvent.Type.RENDERING_STOPPED);
-        publishEvent(ev);
-    }
-
-    /**
-     * Called when a rendering request has been rejected. This will be common, such as
-     * when the user pauses during drag-resizing of the map pane. The base implementation
-     * does nothing. It is provided for sub-classes to override if required.
-     */
-    public void onRenderingRejected() {
-        // do nothing
+    public void onRenderingFailed(RenderingExecutorEvent ev) {
+        publishEvent(new MapPaneEvent(this, MapPaneEvent.Type.RENDERING_STOPPED));
     }
 
     /**

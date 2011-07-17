@@ -60,7 +60,7 @@ import com.vividsolutions.jts.index.strtree.STRtree;
  *
  * @author Andrea Aime - GeoSolutions
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swing/src/main/java/org/geotools/data/CachingFeatureSource.java $
+ * @source $URL$
  */
 public class CachingFeatureSource implements SimpleFeatureSource {
     private SimpleFeatureSource wrapped;

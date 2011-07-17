@@ -43,7 +43,7 @@ import org.geotools.swing.wizard.JPage;
  *
  *
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swing/src/main/java/org/geotools/swing/data/JDataChoosePage.java $
+ * @source $URL$
  */
 public class JDataChoosePage extends JPage {
     /**

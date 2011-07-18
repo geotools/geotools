@@ -871,7 +871,7 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
      * {@code MapPaneEvent.Type.RENDERING_STARTED} to listeners.
      */
     public void onRenderingStarted(RenderingExecutorEvent ev) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        publishEvent(new MapPaneEvent(this, MapPaneEvent.Type.RENDERING_STARTED));
     }
     
 

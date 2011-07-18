@@ -68,8 +68,15 @@ public interface RenderingExecutor {
      *     or {@link #TASK_REJECTED}
      * 
      * @throws IllegalArgumentException if any arguments are {@code null}
+     * @throws IllegalStateException if called after the executor has been shut down
      */
      long submit(MapContent mapContent, GTRenderer renderer, Graphics2D graphics,
              RenderingExecutorListener listener);
+
+     /**
+      * Stops any current rendering tasks and cleans up resources. After calling
+      * this method the executor is no longer usable.
+      */
+     void shutdown();
     
 }

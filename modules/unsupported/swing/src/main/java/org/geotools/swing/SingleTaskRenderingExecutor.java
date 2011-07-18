@@ -90,9 +90,7 @@ public class SingleTaskRenderingExecutor implements RenderingExecutor {
     private ScheduledFuture<?> watcher;
 
     /**
-     * Constructor. Creates a new executor to service the specified map pane.
-     *
-     * @param mapPane the map pane to be serviced
+     * Creates a new executor.
      */
     public SingleTaskRenderingExecutor() {
         taskExecutor = Executors.newSingleThreadExecutor();
@@ -102,18 +100,14 @@ public class SingleTaskRenderingExecutor implements RenderingExecutor {
     }
 
     /**
-     * Get the interval for polling the result of a rendering task
-     *
-     * @return polling interval in milliseconds
+     * {@inheritDoc}
      */
     public long getPollingInterval() {
         return pollingInterval;
     }
 
     /**
-     * Set the interval for polling the result of a rendering task
-     *
-     * @param interval interval in milliseconds (values {@code <=} 0 are ignored)
+     * {@inheritDoc}
      */
     public void setPollingInterval(long interval) {
         if (interval > 0) {
@@ -129,6 +123,10 @@ public class SingleTaskRenderingExecutor implements RenderingExecutor {
     public synchronized long submit(MapContent mapContent, GTRenderer renderer,
             Graphics2D graphics,
             RenderingExecutorListener listener) {
+        
+        if (taskExecutor.isShutdown()) {
+            throw new IllegalStateException("Calling submit after the executor has been shutdown");
+        }
         
         if (mapContent == null) {
             throw new IllegalArgumentException("mapContent must not be null");
@@ -168,6 +166,23 @@ public class SingleTaskRenderingExecutor implements RenderingExecutor {
             return RenderingExecutor.TASK_REJECTED;
         }
         
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void shutdown() {
+        if (taskExecutor != null && !taskExecutor.isShutdown()) {
+            cancelTask();
+            try {
+                cancelLatch.await();
+            } catch (InterruptedException ex) {
+                throw new RuntimeException(ex);
+            }
+
+            taskExecutor.shutdown();
+            watchExecutor.shutdown();
+        }
     }
 
     /**

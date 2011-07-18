@@ -114,7 +114,8 @@ public class JSimpleStyleDialog extends JDialog {
      * Well known text names for symbol options
      * @todo these must be defined somwhere else ?
      */
-    public static final String WELL_KNOWN_SYMBOL_NAMES[] = {"Circle", "Square", "Cross", "X", "Triangle", "Star"};
+    public static final String WELL_KNOWN_SYMBOL_NAMES[] = {
+        "Circle", "Square", "Cross", "X", "Triangle", "Star"};
 
     public static final Color DEFAULT_LINE_COLOR = Color.BLACK;
     public static final Color DEFAULT_FILL_COLOR = Color.WHITE;
@@ -552,7 +553,7 @@ public class JSimpleStyleDialog extends JDialog {
         label = new JLabel("Width");
         panel.add(label, "split 2");
 
-        Object[] widths = new Object[5];
+        Integer[] widths = new Integer[5];
         for (int i = 1; i <= widths.length; i++) { widths[i-1] = Integer.valueOf(i); }
         final JComboBox lineWidthCBox = new JComboBox(widths);
         lineWidthCBox.addActionListener(new ActionListener() {
@@ -610,12 +611,14 @@ public class JSimpleStyleDialog extends JDialog {
         label = new JLabel("Size");
         panel.add(label, "gapbefore indent, split 2");
 
-        Object[] sizes = new Object[10];
-        for (int i = 1; i <= sizes.length; i++) { sizes[i-1] = Integer.valueOf(i*5); }
+        Number[] sizes = new Number[10];
+        for (int i = 1; i <= sizes.length; i++) {
+            sizes[i - 1] = Integer.valueOf(i * 5);
+        }
         pointSizeCBox = new JComboBox(sizes);
         pointSizeCBox.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                pointSize = ((Number)pointSizeCBox.getModel().getSelectedItem()).intValue();
+                pointSize = ((Number) pointSizeCBox.getModel().getSelectedItem()).intValue();
             }
         });
         panel.add(pointSizeCBox);
@@ -624,12 +627,10 @@ public class JSimpleStyleDialog extends JDialog {
         label = new JLabel("Symbol");
         panel.add(label, "skip, split 2");
 
-        final Object[] marks = new Object[ WELL_KNOWN_SYMBOL_NAMES.length ];
-        Arrays.fill(marks, WELL_KNOWN_SYMBOL_NAMES);
-        pointSymbolCBox = new JComboBox(marks);
+        pointSymbolCBox = new JComboBox(WELL_KNOWN_SYMBOL_NAMES);
         pointSymbolCBox.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                pointSymbolName = marks[pointSymbolCBox.getSelectedIndex()].toString();
+                pointSymbolName = WELL_KNOWN_SYMBOL_NAMES[pointSymbolCBox.getSelectedIndex()].toString();
             }
         });
         panel.add(pointSymbolCBox, "wrap");

@@ -1,5 +1,5 @@
-Wizard
-------
+Wizard classes
+--------------
 
 Wizards are dialogs that prompt for user inputs, possibly with a sequence of dialog pages (think Next and Back buttons). They also provide validation of the inputs.
 

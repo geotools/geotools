@@ -1,127 +1,84 @@
-JMapPane
---------
+JMapPane canvas class
+---------------------
 
-MapPane serves as an example of a simple Swing widget that can display a map, and provide limited interaction.
-
-JMapFrame
-^^^^^^^^^
-
-JMapFrame packages up a JMapPane for a quick visual display. In GeoTools we often use this class to in our example code to show results.
-
-* Here is how to show a map::
-    
-    MapContent content = new MapContent();
-    
-    // add map layers here
-    
-    // Title will be used as the title for JMapFrame
-    content.setTitle("The Map is Back");
-    
-    // Show the Map to the user
-    JMapFrame.showMap( content );
+JMapPane is a spatially-aware canvas component derived from Swing's **JPanel** class. It works with the GeoTools rendering
+system to display features. The following snippet shows a typical way of setting up a JMapPane::
   
-  The resulting map is displayed in a simple frame.
-  
-  
-  .. image:: /images/jmapframe1.jpg
-     :scale: 60
-
-* Please note that when the user closes the JMapFrame the application will exit.
-  
-  To prevent this (say if you are using JMapFrame for debugging) please use the
-  following::
-    
-    JMapFrame show = new JMapFrame( content );
-    show.setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );
-    show.setVisible(true);
-
-* Turning on additional tools
-  
-  By default JMapFrame only shows the JMapPane and is not very exciting.
-  
-  To turn additional features on::
-    
-    JMapFrame show = new JMapFrame( content );
-    
-    // list layers and set them as visible + selected
-    show.enableLayerTable( true );  
-    
-    // zoom in, zoom out, pan, show all
-    show.enableToolBar( true ); 
-    
-    // location of cursor and bounds of current 
-    show.enableStatusBar( true ); 
-    
-    // display
-    show.setVisible( true );
-  
-  Here is JMapFrame with toolbar, status bar and layer table.
-  
-  .. image:: /images/jmapframe2.jpg
-     :scale: 60
-
-JMapPane
-^^^^^^^^
-
-JMapPane is a simple map display panel (derived from Swing's JPanel) that works with a GTRenderer and MapContent to display features. It supports the use of tool classes to implement, for example, mouse-controlled zooming and panning
-
-* JMapPane is used in our tutorials in order to offer a chance to learn the library
-  in a visual fashion. For more information on the rendering process please review
-  the gt-render module.
-
-* Please keep in mind that this is an unsupported example of how to
-  do things. The code is very simple; it maintains the following
-  information:
-  
-  * MapContent - defines contents of the map (the list of layers to
-    display in the correct order)
-
-  * MapArea - the area of the world to display
-  
-  With this information in mind the paint method of the JPanel 
-  calls the normal GeoTools renderer to draw a map as the
-  background of the widget. To control the appearance of the
-  Map you will need to look at how styles work etc...
-
-Within GeoTools, JMapPane is used in the JMapFrame widget, but you can also use it directly in your own code or as the starting point for a more specialised GUI components.
-
-This snippet shows the typical way of constructing and initializing a JMapPane::
-  
-  JMapPane mapPane = new JMapPane();
-  mapPane.setBackgroundColor(Color.WHITE);
-  
-  // set a renderer to use with the map pane
-  mapPane.setRenderer( new StreamingRenderer() );
-  
-  // set the map content that contains the layers to be displayed
-  MapContent content = ...
-  mapPane.setMapContent( content );
-
-Display Area
-''''''''''''
-
-Here is how to set or query the current display bounds (in world coordinates)::
-  
-  import org.opengis.geometry.Envelope;
-  
+  // Create a MapContent instance and add one or more layers to it
+  MapContent map = new MapContent();
   ...
   
-  // get the current display bounds
-  Envelope bounds = mapPane.getEnvelope();
-  
-  // set a new area to display
-  CoordinateReferenceSystem crs = ...
-  double minX = ...
-  double maxX = ...
-  double minY = ...
-  double maxY = ...
-  Envelope newBounds = new ReferencedEnvelope(minX, maxX, minY, maxY, crs);
-  
-  // this will set the new bounds and cause the map pane to repaint
-  mapPane.setEnvelope(newBounds);
+  // Create a renderer which will draw the features
+  GTRenderer renderer = new StreamingRenderer();
 
-Linking toolbar buttons
-'''''''''''''''''''''''
+  // Create the map pane to work with this renderer and map content.
+  // When first shown on screen it will display the layers.
+  JMapPane mapPane = new JMapPane(renderer, map);
+
+You can also set, or even replace, the renderer and/or map content objects of an existing map pane::
+
+  JMapPane mapPane = new JMapPane();
+  mapPane.setRenderer( new StreamingRenderer() );
+  mapPane.setMapContent( myMap );
+
+Display area and map scale
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+By default, JMapPane displays the full extent of layers in the associated MapContent when it is first shown on screen.
+You can set a specific area to display, in world coordinates, before and/or after showing the pane::
+
+  // Set an area of the map to display. This will cause the map pane
+  // to repaint.
+  ReferencedEnvelope bounds = new ReferencedEnvelope(minX, maxX, minY, maxY, crs);
+  mapPane.setDisplayArea( bounds );
+
+You can query the current area displayed::
+
+  ReferencedEnvelope currentArea = mapPane.getDisplayArea();
+
+How map position and scale are calculated
+'''''''''''''''''''''''''''''''''''''''''
+
+JMapPane uses `MapViewport <http://docs.geotools.org/latest/javadocs/org/geotools/map/MapViewport.html>`_ for display
+area calculations. When you specify an area to display, in world coordinates, the area is first centred in the map pane
+and then, if necessary, it is made either taller or wider to match the *aspect ratio* (width to height) of the pane's
+screen area as illustrated below. For this reason, the envelope returned by the *getDisplayArea* method will generally
+be larger than one previously passed to *setDisplayArea*.
+
+.. image:: /images/jmappane-displayarea.png
+
+When the pane is resized on screen, the scale of the map and its position relative to the pane remain constant.
+
+Internally, world (map) coordinates are related to screen (pixel) coordinates with AffineTransforms (see the 
+`AffineTransform tutorial </tutorial/advanced/affinetransform.html>`_ for an introduction). You can access the
+transforms directly via the *getWorldToScreen()* and *getScreenToWorld()* methods. This can be useful if you wish to
+draw on top of the map pane or calculate the current map scale::
+
+  // Find the current map scale (map unit to screen pixel)
+  AffineTransform tr = mapPane.getWorldToScreen();
+  double scale = tr.getScaleX();  
+  // Note: tr.getScaleY() would return the same value
+
+Handling mouse events
+^^^^^^^^^^^^^^^^^^^^^
+
+The swing module provides spatially-aware mouse event and listener classes which you can use to track the position of
+the mouse cursor in both screen and world coordinates. To listen to map pane mouse events, implement the
+**MapMouseListener** interface or, for simple cases, extend the **MapMouseAdapter** class which has empty
+implementations of all of the inteface methods. A listening object receives **MapMouseEvents** which extend Swing's
+standard MouseEvent class to add world position data. 
+
+This example prints the world position of mouse clicks to the console as well as notifying when the mouse enters or
+exits the map pane.
+
+.. literalinclude:: /../src/main/java/org/geotools/swing/JMapPaneExamples.java
+   :language: java
+   :start-after: // mouselistener start
+   :end-before: // mouselistener end
+
+
+Linking to Action clsses for interactive use
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The swing module includes a small selection of Action classes that make it easy to create toobar buttons or other controls for zooming, panning and resetting the map display.
 
@@ -224,4 +181,6 @@ You will find ready to go actions that also change the map state::
     }
   
   I imagine we can set up a "tool" to respect mousewheel events; perhaps you would like to submit a patch?
+
+
 

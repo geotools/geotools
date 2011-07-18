@@ -1,5 +1,5 @@
-Dialog
-------
+Dialog classes
+--------------
 
 JFileDataStoreChooser
 ^^^^^^^^^^^^^^^^^^^^^

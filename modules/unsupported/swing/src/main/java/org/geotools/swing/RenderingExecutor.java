@@ -79,4 +79,10 @@ public interface RenderingExecutor {
       */
      void shutdown();
     
+     /**
+      * Checks whether {@link #shutdown()} has been called.
+      * 
+      * @return {@code true} if the executor has been shut down
+      */
+     boolean isShutdown();
 }

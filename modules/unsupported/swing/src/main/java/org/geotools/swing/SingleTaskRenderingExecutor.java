@@ -184,6 +184,13 @@ public class SingleTaskRenderingExecutor implements RenderingExecutor {
             watchExecutor.shutdown();
         }
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isShutdown() {
+        return taskExecutor.isShutdown();
+    }    
 
     /**
      * Cancel the current rendering task if one is running

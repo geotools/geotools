@@ -26,6 +26,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.geotools.map.MapContent;
 import org.geotools.renderer.GTRenderer;
@@ -88,6 +89,7 @@ public class SingleTaskRenderingExecutor implements RenderingExecutor {
     private Future<RenderingTask.Status> taskFuture;
     private RenderingExecutorListener listener;
     private ScheduledFuture<?> watcher;
+    private AtomicBoolean notifiedStart;
 
     /**
      * Creates a new executor.
@@ -97,6 +99,7 @@ public class SingleTaskRenderingExecutor implements RenderingExecutor {
         watchExecutor = Executors.newSingleThreadScheduledExecutor(new DaemonThreadFactory());
         pollingInterval = DEFAULT_POLLING_INTERVAL;
         cancelLatch = new CountDownLatch(0);
+        notifiedStart = new AtomicBoolean();
     }
 
     /**
@@ -152,6 +155,7 @@ public class SingleTaskRenderingExecutor implements RenderingExecutor {
 
             task = new RenderingTask(mapContent, renderer, graphics);
             this.listener = listener;
+            notifiedStart.set(false);
             taskFuture = taskExecutor.submit(task);
             
             watcher = watchExecutor.scheduleAtFixedRate(new Runnable() {
@@ -201,12 +205,24 @@ public class SingleTaskRenderingExecutor implements RenderingExecutor {
             cancelLatch = new CountDownLatch(1);
         }
     }
-
+    
+    private void notifyStarted(boolean force) {
+        if (!notifiedStart.get() && (force || task.isRunning())) {
+            RenderingExecutorEvent event = new RenderingExecutorEvent(this, task.getId());
+            listener.onRenderingStarted(event);
+            notifiedStart.set(true);
+        }
+    }
+    
     private void pollTaskResult() {
         if (!taskFuture.isDone()) {
+            notifyStarted(false);
             return;
         }
 
+        // call again in case the task was so quick we missed the start
+        notifyStarted(true);
+        
         RenderingTask.Status result = RenderingTask.Status.PENDING;
 
         try {

@@ -25,6 +25,7 @@ import java.awt.geom.Rectangle2D;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.swing.MockMapPane;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -33,7 +34,10 @@ import static org.junit.Assert.*;
 /**
  * Unit tests for MapMouseEvent.
  * 
- * @author michael
+ * @author Michael Bedward
+ * @since 8.0
+ * @source $URL$
+ * @version $Id$
  */
 public class MapMouseEventTest {
     
@@ -49,7 +53,7 @@ public class MapMouseEventTest {
     private static final int x = SCREEN.width / 2;
     private static final int y = SCREEN.height / 2;
 
-    private static final MockPane pane = new MockPane();
+    private static final MockMapPane pane = new MockMapPane();
     
     @Before
     public void setup() {

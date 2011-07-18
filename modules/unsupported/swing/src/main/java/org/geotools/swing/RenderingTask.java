@@ -93,6 +93,7 @@ public class RenderingTask implements Callable<RenderingTask.Status>, RenderList
         if (!isCancelled()) {
             try {
                 renderer.addRenderListener(this);
+                running.set(true);
                 renderer.paint(graphics, 
                         mapContent.getViewport().getScreenArea(), 
                         mapContent.getViewport().getBounds(), 

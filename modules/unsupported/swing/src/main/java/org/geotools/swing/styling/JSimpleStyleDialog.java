@@ -23,12 +23,8 @@ import java.awt.Dialog;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -66,12 +62,7 @@ import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.filter.expression.Expression;
 
 import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.MultiLineString;
-import com.vividsolutions.jts.geom.MultiPoint;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
+import org.geotools.geometry.jts.Geometries;
 
 /**
  * A dialog to prompt the user for feature style choices. It has a number of static
@@ -126,48 +117,7 @@ public class JSimpleStyleDialog extends JDialog {
     
     private static int COLOR_ICON_SIZE = 16;
 
-    /**
-     * Constants for the geometry type that the style
-     * preferences apply to
-     */
-    public static enum GeomType {
-        UNDEFINED("undefined type", (Class<? extends Geometry>)null),
-        POINT("point", Point.class), 
-        LINE("line", LineString.class, MultiLineString.class),
-        POLYGON("polygon", Polygon.class, MultiPolygon.class);
-
-        private String desc;
-        private Set<Class<? extends Geometry>> classes;
-
-        /**
-         * Private constructor.
-         *
-         * @param desc brief description for {@code toString} method
-         * @param classes {@code Geometry} classes that this type corresponds to
-         */
-        private GeomType(String desc, Class<? extends Geometry> ...classes) {
-            this.desc = desc;
-
-            this.classes = new HashSet< Class<? extends Geometry> >();
-            if (classes != null) {
-                this.classes.addAll(Arrays.asList(classes));
-            }
-        }
-
-        /**
-         * Get the {@code Geometry} classes that correspond to this type
-         * @return an unmodifiable set of classes
-         */
-        public Set<Class<? extends Geometry>> getClasses() {
-            return Collections.unmodifiableSet(classes);
-        }
-
-        @Override
-        public String toString() {
-            return desc;
-        }
-    }
-    private GeomType geomType;
+    private Geometries geomType;
 
     private static enum SourceType {
         DATA_STORE,
@@ -317,6 +267,7 @@ public class JSimpleStyleDialog extends JDialog {
         if (dialog.completed()) {
             switch (dialog.getGeomType()) {
                 case POLYGON:
+                case MULTIPOLYGON:
                     style = SLD.createPolygonStyle(
                             dialog.getLineColor(),
                             dialog.getFillColor(),
@@ -325,7 +276,8 @@ public class JSimpleStyleDialog extends JDialog {
                             dialog.getLabelFont());
                     break;
 
-                case LINE:
+                case LINESTRING:
+                case MULTILINESTRING:
                     style = SLD.createLineStyle(
                             dialog.getLineColor(),
                             dialog.getLineWidth(),
@@ -334,6 +286,7 @@ public class JSimpleStyleDialog extends JDialog {
                     break;
 
                 case POINT:
+                case MULTIPOINT:
                     style = SLD.createPointStyle(
                             dialog.getPointSymbolName(),
                             dialog.getLineColor(),
@@ -403,7 +356,7 @@ public class JSimpleStyleDialog extends JDialog {
         labelField = null;
         labelFont = sf.getDefaultFont();
 
-        geomType = GeomType.UNDEFINED;
+        geomType = null;
         completed = false;
 
         try {
@@ -425,13 +378,12 @@ public class JSimpleStyleDialog extends JDialog {
     }
 
     /**
-     * Get the {@linkplain GeomType} constant for the selected
-     * feature type. If the user cancelled the dialog this will
-     * be {@linkplain GeomType#UNDEFINED}.
+     * Gets the geometry type of the selected feature type. 
+     * Returns {@code null} if the user cancelled the dialog.
      *
-     * @return GeomType constant
+     * @return the geometry type
      */
-    public GeomType getGeomType() {
+    public Geometries getGeomType() {
         return geomType;
     }
 
@@ -690,7 +642,7 @@ public class JSimpleStyleDialog extends JDialog {
         btn = new JButton("Cancel");
         btn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                geomType = GeomType.UNDEFINED;
+                geomType = null;
                 setVisible(false);
             }
         });
@@ -706,27 +658,29 @@ public class JSimpleStyleDialog extends JDialog {
     private void setType() {
 
         GeometryDescriptor desc = schema.getGeometryDescriptor();
-        Class<?> clazz = desc.getType().getBinding();
+        Class<? extends Geometry> clazz = (Class<? extends Geometry>) desc.getType().getBinding();
+        geomType = Geometries.getForBinding(clazz);
 
         String labelText = schema.getTypeName();
 
-        if (Polygon.class.isAssignableFrom(clazz) ||
-                MultiPolygon.class.isAssignableFrom(clazz)) {
-            geomType = GeomType.POLYGON;
-            labelText = labelText + " (polygon)";
-
-        } else if (LineString.class.isAssignableFrom(clazz) ||
-                MultiLineString.class.isAssignableFrom(clazz)) {
-            geomType = GeomType.LINE;
-            labelText = labelText + " (line)";
-
-        } else if (Point.class.isAssignableFrom(clazz) ||
-                MultiPoint.class.isAssignableFrom(clazz)) {
-            geomType = GeomType.POINT;
-            labelText = labelText + " (point)";
-
-        } else {
-            throw new UnsupportedOperationException("No style method for " + clazz.getName());
+        switch (geomType) {
+            case POLYGON:
+            case MULTIPOLYGON:
+                labelText = labelText + " (polygon)";
+                break;
+                
+            case LINESTRING:
+            case MULTILINESTRING:
+                labelText = labelText + " (line)";
+                break;
+                
+            case POINT:
+            case MULTIPOINT:
+                labelText = labelText + " (point)";
+                break;
+                
+            default:
+                throw new UnsupportedOperationException("No style method for " + clazz.getName());
         }
 
         typeLabel.setText(labelText);
@@ -739,11 +693,12 @@ public class JSimpleStyleDialog extends JDialog {
                     break;
 
                 case FILL:
-                    c.setEnabled(geomType != GeomType.LINE);
+                    c.setEnabled(geomType != Geometries.LINESTRING && 
+                            geomType != Geometries.MULTILINESTRING);
                     break;
 
                 case POINT:
-                    c.setEnabled(geomType == GeomType.POINT);
+                    c.setEnabled(geomType == Geometries.POINT || geomType == Geometries.MULTIPOINT);
                     break;
             }
         }
@@ -769,8 +724,6 @@ public class JSimpleStyleDialog extends JDialog {
      * @param style style to display
      */
     private void setStyle(Style style) {
-        assert(geomType != GeomType.UNDEFINED);
-
         FeatureTypeStyle featureTypeStyle = null;
         Rule rule = null;
         Symbolizer symbolizer = null;
@@ -839,18 +792,21 @@ public class JSimpleStyleDialog extends JDialog {
 
         switch (geomType) {
             case POLYGON:
+            case MULTIPOLYGON:
                 PolygonSymbolizer polySym = (PolygonSymbolizer) sym;
                 setLineColorItems( SLD.color(polySym.getStroke()) );
                 setFillColorItems( SLD.color(polySym.getFill()) );
                 setFillOpacityItems( SLD.opacity(polySym.getFill()) );
                 break;
 
-            case LINE:
+            case LINESTRING:
+            case MULTILINESTRING:
                 LineSymbolizer lineSym = (LineSymbolizer) sym;
                 setLineColorItems( SLD.color(lineSym) );
                 break;
 
             case POINT:
+            case MULTIPOINT:
                 PointSymbolizer pointSym = (PointSymbolizer) sym;
                 setLineColorItems( SLD.pointColor(pointSym) );
                 setFillColorItems( SLD.pointFill(pointSym) );
@@ -860,14 +816,14 @@ public class JSimpleStyleDialog extends JDialog {
         }
     }
 
-    private boolean isValidSymbolizer(Symbolizer sym, GeomType type) {
+    private boolean isValidSymbolizer(Symbolizer sym, Geometries type) {
         if (sym != null) {
             if (sym instanceof PolygonSymbolizer) {
-                return type == GeomType.POLYGON;
+                return type == Geometries.POLYGON || type == Geometries.MULTIPOLYGON;
             } else if (sym instanceof LineSymbolizer) {
-                return type == GeomType.LINE;
+                return type == Geometries.LINESTRING || type == Geometries.MULTILINESTRING;
             } else if (sym instanceof PointSymbolizer) {
-                return type == GeomType.POINT;
+                return type == Geometries.POINT || type == Geometries.MULTIPOINT;
             }
         }
 

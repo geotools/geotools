@@ -207,6 +207,24 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
      *     display
      */
     public JMapPane(GTRenderer renderer, MapContent content) {
+        this(renderer, content, null);
+    }
+    
+    /**
+     * Creates a new map pane with the given renderer and map content.
+     * Either or both of {@code renderer} and {@code content} may be
+     * {@code null} when the {@link #setRenderer(GTRenderer)} and 
+     * {@link #setMapContent(MapContent)} methods are to be called 
+     * subsequently. If {@code executor} is {@code null}, a default
+     * rendering executor (an instance of {@linkplain SingleTaskRenderingExecutor})
+     * will be set.
+     *
+     * @param renderer the renderer to use for drawing layers
+     * @param content the {@code MapContent} instance containing layers to 
+     *     display
+     * @param executor the rendering executor
+     */
+    public JMapPane(GTRenderer renderer, MapContent content, RenderingExecutor executor) {
         imageOrigin = new Point(0, 0);
         setBackground(DEFAULT_BACKGROUND_COLOR);
 
@@ -227,8 +245,7 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
 
         doSetRenderer(renderer);
         doSetMapContent(content);
-
-        renderingExecutor = new SingleTaskRenderingExecutor();
+        doSetRenderingExecutor(executor);
 
         toolManager = new MapToolManager(this);
 
@@ -416,11 +433,11 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
         return renderer;
     }
 
-    private void doSetRenderer(GTRenderer renderer) {
-        if (renderer != null) {
+    private void doSetRenderer(GTRenderer newRenderer) {
+        if (newRenderer != null) {
             Map<Object, Object> hints;
-            if (renderer instanceof StreamingRenderer) {
-                hints = renderer.getRendererHints();
+            if (newRenderer instanceof StreamingRenderer) {
+                hints = newRenderer.getRendererHints();
                 if (hints == null) {
                     hints = new HashMap<Object, Object>();
                 }
@@ -430,17 +447,48 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
                     labelCache = new LabelCacheImpl();
                     hints.put(StreamingRenderer.LABEL_CACHE_KEY, labelCache);
                 }
-                renderer.setRendererHints(hints);
+                newRenderer.setRendererHints(hints);
 
                 if (mapContent != null) {
-                    renderer.setMapContent(mapContent);
+                    newRenderer.setMapContent(mapContent);
                 }
 
             }
         }
 
-        this.renderer = renderer;
+        renderer = newRenderer;
     }
+    
+    /**
+     * Sets the rendering executor. If {@code executor} is {@code null},
+     * the default {@linkplain SingleTaskRenderingExecutor} will be set.
+     * 
+     * @param newExecutor the rendering executor
+     */
+    public void setRenderingExecutor(RenderingExecutor executor) {
+        doSetRenderingExecutor(executor);
+    }
+    
+    /**
+     * Gets the rendering executor.
+     * 
+     * @return the rendering executor
+     */
+    public RenderingExecutor getRenderingExecutor() {
+        return renderingExecutor;
+    }
+    
+    private void doSetRenderingExecutor(RenderingExecutor newExecutor) {
+        if (newExecutor == null) {
+            newExecutor = new SingleTaskRenderingExecutor();
+        }
+        
+        if (renderingExecutor != null) {
+            renderingExecutor.shutdown();
+        }
+        
+        renderingExecutor = newExecutor;
+    }    
 
     /**
      * {@inheritDoc}

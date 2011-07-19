@@ -169,7 +169,32 @@ public class SingleTaskRenderingExecutor implements RenderingExecutor {
         } else {
             return RenderingExecutor.TASK_REJECTED;
         }
-        
+    }
+    
+    /**
+     * {@inheritDoc}
+     * Since this task can only ever have a single task running, 
+     * and no tasks queued, this method simply checks if the running
+     * task has the specified ID value and, if so, cancels it.
+     */
+    public synchronized void cancel(long taskId) {
+        if (isRunningTask() && task.getId() == taskId) {
+            task.cancel();
+            cancelLatch = new CountDownLatch(1);
+        }
+    }
+    
+    /**
+     * {@inheritDoc} 
+     * Since this task can only ever have a single task running, and 
+     * no tasks queued, this method simply checks for a running task 
+     * and, if one exists, cancels it.
+     */
+    public synchronized void cancelAll() {
+        if (isRunningTask()) {
+            task.cancel();
+            cancelLatch = new CountDownLatch(1);
+        }
     }
     
     /**
@@ -177,7 +202,7 @@ public class SingleTaskRenderingExecutor implements RenderingExecutor {
      */
     public void shutdown() {
         if (taskExecutor != null && !taskExecutor.isShutdown()) {
-            cancelTask();
+            cancelAll();
             try {
                 cancelLatch.await();
             } catch (InterruptedException ex) {
@@ -194,18 +219,17 @@ public class SingleTaskRenderingExecutor implements RenderingExecutor {
      */
     public boolean isShutdown() {
         return taskExecutor.isShutdown();
-    }    
-
-    /**
-     * Cancel the current rendering task if one is running
-     */
-    public synchronized void cancelTask() {
-        if (task != null && taskFuture != null && !taskFuture.isDone()) {
-            task.cancel();
-            cancelLatch = new CountDownLatch(1);
-        }
     }
     
+    /**
+     * Checks if the executor is presently running a rendering task.
+     * 
+     * @return {@code true} if running a task
+     */
+    public boolean isRunningTask() {
+        return (task != null && taskFuture != null && !taskFuture.isDone());
+    }
+
     private void notifyStarted(boolean force) {
         if (!notifiedStart.get() && (force || task.isRunning())) {
             RenderingExecutorEvent event = new RenderingExecutorEvent(this, task.getId());
@@ -224,7 +248,6 @@ public class SingleTaskRenderingExecutor implements RenderingExecutor {
         notifyStarted(true);
         
         RenderingTask.Status result = RenderingTask.Status.PENDING;
-
         try {
             result = taskFuture.get();
         } catch (Exception ex) {

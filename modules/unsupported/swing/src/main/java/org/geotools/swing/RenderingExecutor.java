@@ -72,6 +72,15 @@ public interface RenderingExecutor {
      */
      long submit(MapContent mapContent, GTRenderer renderer, Graphics2D graphics,
              RenderingExecutorListener listener);
+     
+     /**
+      * Cancels a specific rendering task.
+      * 
+      * @param taskId the ID value of the task
+      */
+     void cancel(long taskId);
+     
+     void cancelAll();
 
      /**
       * Stops any current rendering tasks and cleans up resources. After calling

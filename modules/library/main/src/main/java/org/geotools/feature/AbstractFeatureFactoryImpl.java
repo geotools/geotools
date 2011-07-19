@@ -90,25 +90,25 @@ public abstract class AbstractFeatureFactoryImpl implements FeatureFactory {
     }
 	
 	public Attribute createAttribute( Object value, AttributeDescriptor descriptor, String id ) {
-		return new AttributeImpl(value,descriptor,ff.gmlObjectId(id));
+		return new AttributeImpl(value,descriptor, id == null? null : ff.gmlObjectId(id));
 	}
 	
 	public GeometryAttribute createGeometryAttribute(
 		Object value, GeometryDescriptor descriptor, String id, CoordinateReferenceSystem crs
 	) {
 	
-		return new GeometryAttributeImpl(value,descriptor,ff.gmlObjectId(id));
+		return new GeometryAttributeImpl(value,descriptor, id == null? null : ff.gmlObjectId(id));
 	}
 	
 	public ComplexAttribute createComplexAttribute( 
 		Collection value, AttributeDescriptor descriptor, String id
 	) {
-		return new ComplexAttributeImpl(value, descriptor, ff.gmlObjectId(id) );
+		return new ComplexAttributeImpl(value, descriptor, id == null? null : ff.gmlObjectId(id) );
 	}
 
 	public ComplexAttribute createComplexAttribute( Collection value, ComplexType type, String id ) 
 	{
-		return new ComplexAttributeImpl(value, type, ff.gmlObjectId(id) );
+		return new ComplexAttributeImpl(value, type, id == null? null : ff.gmlObjectId(id) );
 	}
 	
 	public Feature createFeature(Collection value, AttributeDescriptor descriptor, String id) {

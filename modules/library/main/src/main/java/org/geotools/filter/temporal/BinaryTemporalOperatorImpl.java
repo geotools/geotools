@@ -78,4 +78,40 @@ public abstract class BinaryTemporalOperatorImpl implements BinaryTemporalOperat
     }
     
     protected abstract boolean doEvaluate(RelativePosition pos);
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((e1 == null) ? 0 : e1.hashCode());
+        result = prime * result + ((e2 == null) ? 0 : e2.hashCode());
+        result = prime * result + ((matchAction == null) ? 0 : matchAction.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        BinaryTemporalOperatorImpl other = (BinaryTemporalOperatorImpl) obj;
+        if (e1 == null) {
+            if (other.e1 != null)
+                return false;
+        } else if (!e1.equals(other.e1))
+            return false;
+        if (e2 == null) {
+            if (other.e2 != null)
+                return false;
+        } else if (!e2.equals(other.e2))
+            return false;
+        if (matchAction != other.matchAction)
+            return false;
+        return true;
+    }
+
+    
 }

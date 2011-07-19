@@ -36,8 +36,12 @@ import org.geotools.renderer.GTRenderer;
 import org.geotools.renderer.RenderListener;
 
 /**
- *
- * @author michael
+ * A simple mock GTRenderer.
+ * 
+ * @author Michael Bedward
+ * @since 8.0
+ * @source $URL$
+ * @version $Id$
  */
 public class MockRenderer implements GTRenderer {
     private MapContent mapContent;
@@ -46,6 +50,10 @@ public class MockRenderer implements GTRenderer {
     
     private CountDownLatch paintLatch = new CountDownLatch(0);
     private Lock lock = new ReentrantLock();
+    
+    public MockRenderer() {
+        this(null);
+    }
     
     public MockRenderer(MapContent mapContent) {
         this.mapContent = mapContent;
@@ -103,6 +111,7 @@ public class MockRenderer implements GTRenderer {
 
     @Override
     public void setContext(MapContext context) {
+        throw new UnsupportedOperationException("Should not be called");
     }
 
     @Override

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2011, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -435,24 +435,24 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
 
     private void doSetRenderer(GTRenderer newRenderer) {
         if (newRenderer != null) {
-            Map<Object, Object> hints;
+            Map<Object, Object> hints = newRenderer.getRendererHints();
+            if (hints == null) {
+                hints = new HashMap<Object, Object>();
+            }
+            
             if (newRenderer instanceof StreamingRenderer) {
-                hints = newRenderer.getRendererHints();
-                if (hints == null) {
-                    hints = new HashMap<Object, Object>();
-                }
                 if (hints.containsKey(StreamingRenderer.LABEL_CACHE_KEY)) {
                     labelCache = (LabelCache) hints.get(StreamingRenderer.LABEL_CACHE_KEY);
                 } else {
                     labelCache = new LabelCacheImpl();
                     hints.put(StreamingRenderer.LABEL_CACHE_KEY, labelCache);
                 }
-                newRenderer.setRendererHints(hints);
+            }
+            
+            newRenderer.setRendererHints(hints);
 
-                if (mapContent != null) {
-                    newRenderer.setMapContent(mapContent);
-                }
-
+            if (mapContent != null) {
+                newRenderer.setMapContent(mapContent);
             }
         }
 

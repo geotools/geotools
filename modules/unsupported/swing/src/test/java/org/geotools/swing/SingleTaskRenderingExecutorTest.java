@@ -17,9 +17,6 @@
 
 package org.geotools.swing;
 
-
-import org.geotools.map.MapContent;
-
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;

@@ -15,20 +15,26 @@
  *    Lesser General Public License for more details.
  */
 
-package org.geotools.swing;
+package org.geotools.swing.testutils;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-    
+import org.geotools.swing.RenderingExecutorEvent;
+import org.geotools.swing.RenderingExecutorListener;
 
 
 /**
- *
- * @author michael
+ * A RenderingExecutorListener that can be set to expect specified events
+ * and test if they are received.
+ * 
+ * @author Michael Bedward
+ * @since 8.0
+ * @source $URL$
+ * @version $Id$
  */
-public class WaitingListener implements RenderingExecutorListener {
+public class WaitingRenderingExecutorListener implements RenderingExecutorListener {
 
     public static enum EventType {
         STARTED,
@@ -41,7 +47,7 @@ public class WaitingListener implements RenderingExecutorListener {
     private CountDownLatch[] latches;
     private AtomicBoolean[] flags;
 
-    public WaitingListener() {
+    public WaitingRenderingExecutorListener() {
         latches = new CountDownLatch[NTYPES];
         flags = new AtomicBoolean[NTYPES];
         for (int i = 0; i < NTYPES; i++) {

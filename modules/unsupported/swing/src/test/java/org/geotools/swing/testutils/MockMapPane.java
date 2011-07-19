@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.swing;
+package org.geotools.swing.testutils;
 
 import java.awt.Component;
 import java.awt.Rectangle;
@@ -26,6 +26,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.MapContent;
 import org.geotools.renderer.GTRenderer;
 import org.geotools.renderer.lite.StreamingRenderer;
+import org.geotools.swing.MapPane;
 import org.geotools.swing.event.MapMouseListener;
 import org.geotools.swing.event.MapPaneListener;
 import org.geotools.swing.tool.CursorTool;

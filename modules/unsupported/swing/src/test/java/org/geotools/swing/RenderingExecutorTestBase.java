@@ -1,22 +1,40 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
  */
+
 package org.geotools.swing;
 
+import org.geotools.swing.testutils.MockRenderer;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.MapContent;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.swing.testutils.WaitingRenderingExecutorListener;
 
-import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
- *
- * @author michael
+ * Base class for RenderingExecutor tests.
+ * 
+ * @author Michael Bedward
+ * @since 8.0
+ * @source $URL$
+ * @version $Id$
  */
 public abstract class RenderingExecutorTestBase {
 
@@ -30,13 +48,13 @@ public abstract class RenderingExecutorTestBase {
     protected RenderingExecutor executor;
     protected Graphics2D graphics;
     protected BufferedImage image;
-    protected WaitingListener listener;
+    protected WaitingRenderingExecutorListener listener;
     protected MapContent mapContent;
     protected MockRenderer renderer;
     
     protected void setup() {
         executor = new SingleTaskRenderingExecutor();
-        listener = new WaitingListener();
+        listener = new WaitingRenderingExecutorListener();
         mapContent = new MapContent();
         mapContent.getViewport().setBounds(WORLD);
         mapContent.getViewport().setScreenArea(PANE);

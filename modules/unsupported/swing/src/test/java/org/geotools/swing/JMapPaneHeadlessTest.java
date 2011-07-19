@@ -16,8 +16,11 @@
  */
 package org.geotools.swing;
 
+import org.geotools.swing.testutils.MockRenderer;
 import org.geotools.renderer.GTRenderer;
 import org.geotools.map.MapContent;
+
+import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -26,12 +29,16 @@ import static org.junit.Assert.*;
  * 
  * @author Michael Bedward
  * @since 8.0
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swing/src/test/java/org/geotools/swing/MultiRepTestRunner.java $
- * @version $Id: MultiRepTestRunner.java 37668 2011-07-19 07:17:25Z mbedward $
+ * @source $URL$
+ * @version $Id$
  */
 public class JMapPaneHeadlessTest {
+    private JMapPane pane;
     
-    private JMapPane pane = new JMapPane();
+    @Before
+    public void setup() {
+        pane = new JMapPane();
+    }
     
     @Test
     public void defaultRenderingExecutorCreated() {
@@ -60,5 +67,14 @@ public class JMapPaneHeadlessTest {
         pane.setMapContent(mapContent);
         
         assertTrue(renderer.getMapContent() == mapContent);
+    }
+    
+    @Test
+    public void setRendererEvent() {
+        
+        
+        GTRenderer renderer = new MockRenderer();
+        pane.setRenderer(renderer);
+        
     }
 }

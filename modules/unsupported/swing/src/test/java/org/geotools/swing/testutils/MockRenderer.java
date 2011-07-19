@@ -15,7 +15,7 @@
  *    Lesser General Public License for more details.
  */
 
-package org.geotools.swing;
+package org.geotools.swing.testutils;
 
 import com.vividsolutions.jts.geom.Envelope;
 import java.awt.Graphics2D;
@@ -28,6 +28,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+
 import org.geotools.factory.Hints;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.MapContent;

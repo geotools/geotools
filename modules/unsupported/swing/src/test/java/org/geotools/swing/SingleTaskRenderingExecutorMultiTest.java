@@ -19,6 +19,9 @@ package org.geotools.swing;
 
 import java.util.Random;
 
+import org.geotools.swing.testutils.MultiRepTestRunner;
+import org.geotools.swing.testutils.WaitingRenderingExecutorListener;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -53,18 +56,18 @@ public class SingleTaskRenderingExecutorMultiTest extends RenderingExecutorTestB
     @Test
     public void submitAndGetStartedEvent() {
         createSubmitObjects();
-        listener.setExpected(WaitingListener.EventType.STARTED);
+        listener.setExpected(WaitingRenderingExecutorListener.EventType.STARTED);
         executor.submit(mapContent, renderer, graphics, listener);
-        boolean gotEvent = listener.await(WaitingListener.EventType.STARTED, WAIT_TIMEOUT);
+        boolean gotEvent = listener.await(WaitingRenderingExecutorListener.EventType.STARTED, WAIT_TIMEOUT);
         assertTrue(gotEvent);
     }
     
     @Test
     public void submitAndGetCompletedEvent() {
         createSubmitObjects();
-        listener.setExpected(WaitingListener.EventType.COMPLETED);
+        listener.setExpected(WaitingRenderingExecutorListener.EventType.COMPLETED);
         executor.submit(mapContent, renderer, graphics, listener);
-        boolean gotEvent = listener.await(WaitingListener.EventType.COMPLETED, WAIT_TIMEOUT);
+        boolean gotEvent = listener.await(WaitingRenderingExecutorListener.EventType.COMPLETED, WAIT_TIMEOUT);
         assertTrue(gotEvent);
     }
 
@@ -77,15 +80,15 @@ public class SingleTaskRenderingExecutorMultiTest extends RenderingExecutorTestB
         renderer.setPaintTime(time);
         renderer.setVerbose(false);
         
-        listener.setExpected(WaitingListener.EventType.STARTED);
-        listener.setExpected(WaitingListener.EventType.CANCELLED);
+        listener.setExpected(WaitingRenderingExecutorListener.EventType.STARTED);
+        listener.setExpected(WaitingRenderingExecutorListener.EventType.CANCELLED);
         
         long id = executor.submit(mapContent, renderer, graphics, listener);
-        assertTrue(listener.await(WaitingListener.EventType.STARTED, WAIT_TIMEOUT));
+        assertTrue(listener.await(WaitingRenderingExecutorListener.EventType.STARTED, WAIT_TIMEOUT));
         
         executor.cancel(id);
-        boolean gotCancel = listener.await(WaitingListener.EventType.CANCELLED, WAIT_TIMEOUT);
-        assertTrue(gotCancel || listener.gotEvent(WaitingListener.EventType.COMPLETED));
+        boolean gotCancel = listener.await(WaitingRenderingExecutorListener.EventType.CANCELLED, WAIT_TIMEOUT);
+        assertTrue(gotCancel || listener.gotEvent(WaitingRenderingExecutorListener.EventType.COMPLETED));
     }
 
 }

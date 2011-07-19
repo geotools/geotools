@@ -25,7 +25,7 @@ import java.awt.geom.Rectangle2D;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.swing.MockMapPane;
+import org.geotools.swing.testutils.MockMapPane;
 
 import org.junit.Before;
 import org.junit.Test;

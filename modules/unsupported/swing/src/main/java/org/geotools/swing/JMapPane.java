@@ -544,7 +544,7 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
                 renderer.setMapContent(mapContent);
             }
 
-            MapPaneEvent ev = new MapPaneEvent(this, MapPaneEvent.Type.NEW_CONTENT);
+            MapPaneEvent ev = new MapPaneEvent(this, MapPaneEvent.Type.NEW_MAPCONTENT);
             publishEvent(ev);
             
             drawBaseImage(false);
@@ -1082,7 +1082,7 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
     private void publishEvent(MapPaneEvent ev) {
         for (MapPaneListener listener : listeners) {
             switch (ev.getType()) {
-                case NEW_CONTENT:
+                case NEW_MAPCONTENT:
                     listener.onNewContent(ev);
                     break;
 

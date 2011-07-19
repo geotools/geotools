@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2008-2011, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -23,6 +23,7 @@ import java.util.logging.Logger;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.map.MapContent;
 import org.geotools.referencing.CRS;
+import org.geotools.util.logging.Logging;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 
@@ -46,7 +47,7 @@ import org.opengis.referencing.operation.MathTransform;
  * @version $URL$
  */
 public abstract class InfoToolHelper<T> {
-    private static final Logger LOGGER = Logger.getLogger(VectorLayerHelper.class.getName());
+    private static final Logger LOGGER = Logging.getLogger("org.geotools.swing");
 
     private final WeakReference<MapContent> contentRef;
     private CoordinateReferenceSystem dataCRS;
@@ -63,7 +64,7 @@ public abstract class InfoToolHelper<T> {
      */
     protected InfoToolHelper(MapContent content, CoordinateReferenceSystem dataCRS) {
         this.contentRef = new WeakReference<MapContent>(content);
-        setCRS(dataCRS);
+        doSetCRS(dataCRS);
     }
 
     /**
@@ -159,6 +160,10 @@ public abstract class InfoToolHelper<T> {
      * @param crs data coordinate reference system
      */
     protected void setCRS(CoordinateReferenceSystem crs) {
+        doSetCRS(crs);
+    }
+
+    private void doSetCRS(CoordinateReferenceSystem crs) {
         this.dataCRS = crs;
 
         MapContent content = getMapContent();
@@ -172,6 +177,5 @@ public abstract class InfoToolHelper<T> {
             transformRequired = true;
         }
     }
-
 }
 

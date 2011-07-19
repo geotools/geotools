@@ -40,13 +40,14 @@ public class WaitingListener implements RenderingExecutorListener {
     }
 
     public boolean await(EventType type, long timeoutMillis) {
-        if (latches[type.ordinal()] == null) {
+        CountDownLatch latch = latches[type.ordinal()];
+        if (latch == null) {
             throw new IllegalStateException("latch not set for " + type);
         }
 
         boolean result = false;
         try {
-            result = latches[type.ordinal()].await(timeoutMillis, TimeUnit.MILLISECONDS);
+            result = latch.await(timeoutMillis, TimeUnit.MILLISECONDS);
         } catch (InterruptedException ex) {
             // do nothing
         } finally {

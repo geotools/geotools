@@ -17,13 +17,8 @@
 
 package org.geotools.swing;
 
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
-import org.geotools.geometry.jts.ReferencedEnvelope;
 
 import org.geotools.map.MapContent;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -34,29 +29,14 @@ import static org.junit.Assert.*;
  *
  * @author Michael Bedward
  * @since 8.0
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swing/src/main/java/org/geotools/swing/RenderingExecutor.java $
- * @version $Id: RenderingExecutor.java 37658 2011-07-18 09:18:52Z mbedward $
+ * @source $URL$
+ * @version $Id$
  */
-public class SingleTaskRenderingExecutorTest {
-    
-    private RenderingExecutor executor;
-    private WaitingListener listener;
-    private MapContent mapContent;
-    private BufferedImage image;
-    private Graphics2D graphics;
-    
-    private static final ReferencedEnvelope WORLD = 
-            new ReferencedEnvelope(150, 152, -33, -35, DefaultGeographicCRS.WGS84);
-    
-    private static final Rectangle PANE = new Rectangle(200, 150);
+public class SingleTaskRenderingExecutorTest extends RenderingExecutorTestBase {
     
     @Before
     public void setup() {
-        executor = new SingleTaskRenderingExecutor();
-        listener = new WaitingListener();
-        mapContent = new MapContent();
-        mapContent.getViewport().setBounds(WORLD);
-        mapContent.getViewport().setScreenArea(PANE);
+        super.setup();
     }
     
     @Test
@@ -69,8 +49,8 @@ public class SingleTaskRenderingExecutorTest {
     @Test(expected=IllegalStateException.class)
     public void submitAfterShutdown() {
         executor.shutdown();
-        createImage();
-        executor.submit(new MapContent(), new MockRenderer(), graphics, listener);
+        createSubmitObjects();
+        executor.submit(mapContent, renderer, graphics, listener);
     }
     
     @Test
@@ -87,29 +67,6 @@ public class SingleTaskRenderingExecutorTest {
         // should be ignored
         executor.setPollingInterval(-1);
         assertEquals(poll, executor.getPollingInterval());
-    }
-    
-    @Test
-    public void submitAndGetStartedEvent() {
-        createImage();
-        listener.setExpected(WaitingListener.EventType.STARTED);
-        executor.submit(mapContent, new MockRenderer(), graphics, listener);
-        boolean gotEvent = listener.await(WaitingListener.EventType.STARTED, 1000);
-        assertTrue(gotEvent);
-    }
-    
-    @Test
-    public void submitAndGetCompletedEvent() {
-        createImage();
-        listener.setExpected(WaitingListener.EventType.COMPLETED);
-        executor.submit(mapContent, new MockRenderer(), graphics, listener);
-        boolean gotEvent = listener.await(WaitingListener.EventType.COMPLETED, 1000);
-        assertTrue(gotEvent);
-    }
-    
-    private void createImage() {
-        image = new BufferedImage(PANE.width, PANE.height, BufferedImage.TYPE_INT_ARGB);
-        graphics = image.createGraphics();
     }
     
 }

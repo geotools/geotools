@@ -17,8 +17,8 @@
 
 package org.geotools.swing;
 
-import org.junit.Ignore;
 import java.util.Random;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -50,7 +50,6 @@ public class SingleTaskRenderingExecutorMultiTest extends RenderingExecutorTestB
         executor.shutdown();
     }
     
-    @Ignore
     @Test
     public void submitAndGetStartedEvent() {
         createSubmitObjects();
@@ -60,7 +59,6 @@ public class SingleTaskRenderingExecutorMultiTest extends RenderingExecutorTestB
         assertTrue(gotEvent);
     }
     
-    @Ignore
     @Test
     public void submitAndGetCompletedEvent() {
         createSubmitObjects();

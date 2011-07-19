@@ -28,7 +28,7 @@ The temporal schemas cover two interrelated topics and provide basic schema comp
 		<complexContent>
 			<extension base="gml:AbstractTimeObjectType">
 				<sequence>
-					<!--element name="relatedTime" type="gml:RelatedTimeType" minOccurs="0" maxOccurs="unbounded"/-->
+					<element name="relatedTime" type="gml:RelatedTimeType" minOccurs="0" maxOccurs="unbounded"/>
 				</sequence>
 			</extension>
 		</complexContent>

@@ -3,9 +3,13 @@ package org.geotools.maven.xmlcodegen;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -159,6 +163,17 @@ public abstract class AbstractGeneratorMojo extends AbstractMojo {
      * @parameter expression="true"
      */
     boolean includeGML;
+    
+    /**
+     * Treat all relative schema references (include and import) as relative to the schema (XSD)
+     * resource in which they are found, rather than looking for them in compiled classes or
+     * schemaLookupDirectories. This requires all included/imported schemas to be present in the
+     * expected relative filesystem location. The main advantage of this approach is that it
+     * supports schema files that have cyclic dependencies (e.g. GML 3.2).
+     * 
+     * @parameter expression="false"
+     */
+    boolean relativeSchemaReference;
     
     protected XSDSchema schema() {
     
@@ -341,12 +356,34 @@ public abstract class AbstractGeneratorMojo extends AbstractMojo {
 		//parse the schema
 		XSDSchema xsdSchema = null;
 		try {
-			getLog().info( "Parsing schema: " + schemaLocation );
-			xsdSchema = 
-				Schemas.parse( 
-					schemaLocation.getAbsolutePath(),
-					new XSDSchemaLocator[]{ locator } , new XSDSchemaLocationResolver[]{ locationResolver }
-				);
+			getLog().info("Parsing schema: " + schemaLocation);
+			if (relativeSchemaReference) {
+				xsdSchema = Schemas.parse(schemaLocation.getAbsolutePath(), Collections.EMPTY_LIST,
+						Collections.singletonList(new XSDSchemaLocationResolver() {
+							public String resolveSchemaLocation(XSDSchema xsdSchema,
+									String namespaceURI, String schemaLocationURI) {
+								try {
+									URI contextUri = new URI(xsdSchema.getSchemaLocation());
+									if (contextUri.isOpaque()) {
+										// probably a jar:file: URL, which is opaque and thus not
+										// supported by URI.resolve()
+										URL contextUrl = new URL(xsdSchema.getSchemaLocation());
+										return (new URL(contextUrl, schemaLocationURI)).toString();
+									} else {
+										return contextUri.resolve(schemaLocationURI).toString();
+									}
+								} catch (URISyntaxException e) {
+									throw new RuntimeException(e);
+								} catch (MalformedURLException e) {
+									throw new RuntimeException(e);
+								}
+							}
+						}));
+			} else {
+				xsdSchema = Schemas.parse(schemaLocation.getAbsolutePath(),
+						new XSDSchemaLocator[] { locator },
+						new XSDSchemaLocationResolver[] { locationResolver });
+			}
 			
 			if ( xsdSchema == null ) {
 				throw new NullPointerException();

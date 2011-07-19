@@ -640,6 +640,10 @@ If provided, the aggregationType attribute shall have the value "sequence".</doc
 			<element ref="gml:Ring"/>
 		</sequence>
 	</complexType>
+	<element name="Row" type="gml:PointGrid_rows_RowType" />
+	<complexType name="PointGrid_rows_RowType">
+		<group ref="gml:geometricPositionListGroup" />
+	</complexType>
 	<group name="PointGrid">
 		<annotation>
 			<documentation>A gml:PointGrid group contains or references points or positions which are organised into sequences or grids. All rows shall have the same number of positions (columns).</documentation>
@@ -648,11 +652,7 @@ If provided, the aggregationType attribute shall have the value "sequence".</doc
 			<element name="rows">
 				<complexType>
 					<sequence>
-						<element name="Row" maxOccurs="unbounded">
-							<complexType name="PointGrid_rows_RowType">
-								<group ref="gml:geometricPositionListGroup"/>
-							</complexType>
-						</element>
+						<element ref="gml:Row" maxOccurs="unbounded"/>
 					</sequence>
 				</complexType>
 			</element>

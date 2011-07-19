@@ -1,7 +1,7 @@
 Code Generation
 ^^^^^^^^^^^^^^^
 
-The gt2-xmlcodegen maven plugin provides a code generator which can be used to generate bindings and other classes used in the geotools xml framework. The code generator feeds off a single schema file and generates a number of java classes.
+The xmlcodegen maven plugin provides a code generator which can be used to generate bindings and other classes used in the geotools xml framework. The code generator feeds off a single schema file and generates a number of java classes.
 
 Plugin Configuration
 ''''''''''''''''''''
@@ -160,6 +160,12 @@ Many configuration parameters are shared between the above goals. The following 
      
      <overwriteExistingFiles>true</overwriteExistingFiles>
 
+* relativeSchemaReference (default false)
+
+  Treat all relative schema references (include and import) as relative to the schema (XSD) resource in which they are found, rather than looking for them in compiled classes or ``schemaLookupDirectories``. This requires all included/imported schemas to be present in the expected relative filesystem location. The main advantage of this approach is that it supports schema files that have cyclic dependencies (e.g. GML 3.2)::
+
+      <relativeSchemaReference>true</relativeSchemaReference>
+
 **Generate Configuration**
 
 The following configuration parameters apply only to the **generate** goal:
@@ -240,7 +246,15 @@ The following configuration parameters apply only to the generateSchema goal:
 
 * followComplexTypes (default false)
   
-  Controls whether the contents of complex xml types are processed during schema generation. Setting this parameter to true will cause the generator to create geotools types which model exactly their corresponding xml schema types in term of base types and composition.
+  Controls whether the contents of complex xml types are processed during schema generation. Setting this parameter to true will cause the generator to create geotools types which model exactly their corresponding xml schema types in term of base types and composition::
+
+      <followComplexTypes>true</followComplexTypes>
+
+* cyclicTypeSupport (default false)
+
+  Support complex xml types that are cyclically defined, such as ``gmd:CI_CitationType`` from GML 3.2. Types in the generated Schema file will be defined using ``AbstractLazyAttributeType`` and ``AbstractLazyComplexType`` from ``gt-main``. A ``main()`` method is also included in the generated Schema class to aid testing. This option is best used with ``followComplexTypes`` set to ``true``, although if you are working with a multi-package schema such as GML 3.2, you will likely need to bootstrap with ``followComplexTypes`` set to ``false`` to generate skeleton Schema files that you can import before recreating them all with ``followComplexTypes`` set to ``true``::
+
+      <cyclicTypeSupport>true</cyclicTypeSupport>
 
 * imports (default none)
   

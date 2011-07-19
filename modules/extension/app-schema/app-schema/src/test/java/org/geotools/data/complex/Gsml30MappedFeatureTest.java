@@ -18,6 +18,7 @@
 package org.geotools.data.complex;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -30,23 +31,38 @@ import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.NameImpl;
 import org.geotools.gml3.v3_2.GML;
+import org.geotools.gml3.v3_2.gco.GCO;
+import org.geotools.gml3.v3_2.gmd.GMD;
 import org.geotools.test.AppSchemaTestSupport;
 import org.junit.Assert;
 import org.junit.Test;
+import org.opengis.feature.Attribute;
 import org.opengis.feature.ComplexAttribute;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
 
+/**
+ * Test app-schema with GeoSciML 3.0rc1, a GML 3.2 application schema.
+ * 
+ * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
+ */
 public class Gsml30MappedFeatureTest extends AppSchemaTestSupport {
 
     private static final String TEST_DATA = "/test-data/gsml30/";
 
-    private static final Name MAPPED_FEATURE = new NameImpl(
-            "urn:cgi:xmlns:CGI:GeoSciML-Core:3.0.0", "MappedFeature");
+    /**
+     * GeoSciML 3.0 Core namespace.
+     */
+    private static final String GSML = "urn:cgi:xmlns:CGI:GeoSciML-Core:3.0.0";
+
+    /**
+     * gsml:MappedFeature, the type under test.
+     */
+    private static final Name MAPPED_FEATURE = new NameImpl(GSML, "MappedFeature");
 
     @Test
-    public void countFeatures() throws Exception {
+    public void features() throws Exception {
         Map<String, Serializable> params = new HashMap<String, Serializable>();
         params.put("dbtype", "app-schema");
         URL url = getClass().getResource(TEST_DATA + "Gsml30MappedFeature.xml");
@@ -61,7 +77,6 @@ public class Gsml30MappedFeatureTest extends AppSchemaTestSupport {
             FeatureSource<FeatureType, Feature> source = dataAccess
                     .getFeatureSource(MAPPED_FEATURE);
             FeatureCollection<FeatureType, Feature> features = source.getFeatures();
-            //
             FeatureIterator<Feature> iterator = features.features();
             Map<String, Feature> featureMap = new LinkedHashMap<String, Feature>();
             try {
@@ -73,6 +88,7 @@ public class Gsml30MappedFeatureTest extends AppSchemaTestSupport {
                 iterator.close();
             }
             Assert.assertEquals(2, featureMap.size());
+            // test gml:name
             Assert.assertEquals(
                     "First",
                     ((ComplexAttribute) featureMap.get("mf.1").getProperty(
@@ -83,6 +99,17 @@ public class Gsml30MappedFeatureTest extends AppSchemaTestSupport {
                     ((ComplexAttribute) featureMap.get("mf.2").getProperty(
                             new NameImpl(GML.NAMESPACE, "name"))).getProperty(
                             new NameImpl("simpleContent")).getValue());
+            // test gsml:resolutionScale/gmd:MD_RepresentativeFraction/gmd:denominator/gco:Integer
+            for (int i = 1; i <= 2; i++) {
+                Assert.assertEquals(
+                        BigInteger.valueOf(250000),
+                        ((Attribute) ((ComplexAttribute) ((ComplexAttribute) ((ComplexAttribute) featureMap
+                                .get("mf." + i).getProperty(new NameImpl(GSML, "resolutionScale")))
+                                .getProperty(new NameImpl(GMD.NAMESPACE,
+                                        "MD_RepresentativeFraction"))).getProperty(new NameImpl(
+                                GMD.NAMESPACE, "denominator"))).getProperty(new NameImpl(
+                                GCO.NAMESPACE, "Integer"))).getValue());
+            }
         } finally {
             if (dataAccess != null) {
                 dataAccess.dispose();

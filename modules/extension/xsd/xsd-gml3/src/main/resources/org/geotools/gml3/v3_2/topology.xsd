@@ -100,7 +100,7 @@ A node may optionally be realised by a 0-dimensional geometric primitive (gml:po
       <extension base="gml:AbstractTopoPrimitiveType">
         <sequence>
           <element name="container" type="gml:TopoSolidPropertyType" minOccurs="0"/>
-          <!--element ref="gml:directedNode" minOccurs="2" maxOccurs="2"/-->
+          <element ref="gml:directedNode" minOccurs="2" maxOccurs="2"/>
           <element ref="gml:directedFace" minOccurs="0" maxOccurs="unbounded"/>
           <element ref="gml:curveProperty" minOccurs="0"/>
         </sequence>
@@ -134,9 +134,9 @@ An edge may optionally be realised by a 1-dimensional geometric primitive (gml:c
     <complexContent>
       <extension base="gml:AbstractTopoPrimitiveType">
         <sequence>
-          <!--element name="isolated" type="gml:NodePropertyType" minOccurs="0" maxOccurs="unbounded"/>
+          <element name="isolated" type="gml:NodePropertyType" minOccurs="0" maxOccurs="unbounded"/>
           <element ref="gml:directedEdge" maxOccurs="unbounded"/>
-          <element ref="gml:directedTopoSolid" minOccurs="0" maxOccurs="2"/-->
+          <element ref="gml:directedTopoSolid" minOccurs="0" maxOccurs="2"/>
           <element ref="gml:surfaceProperty" minOccurs="0"/>
         </sequence>
         <attributeGroup ref="gml:AggregationAttributeGroup"/>
@@ -173,7 +173,7 @@ A face may optionally be realised by a 2-dimensional geometric primitive (gml:su
     <complexContent>
       <extension base="gml:AbstractTopoPrimitiveType">
         <sequence>
-          <!--element name="isolated" type="gml:NodeOrEdgePropertyType" minOccurs="0" maxOccurs="unbounded"/-->
+          <element name="isolated" type="gml:NodeOrEdgePropertyType" minOccurs="0" maxOccurs="unbounded"/>
           <element ref="gml:directedFace" maxOccurs="unbounded"/>
           <element ref="gml:solidProperty" minOccurs="0"/>
         </sequence>
@@ -314,9 +314,9 @@ If provided, the aggregationType attribute shall have the value "sequence".</doc
     <complexContent>
       <extension base="gml:AbstractTopologyType">
         <sequence>
-          <!--element ref="gml:maximalComplex"/>
+          <element ref="gml:maximalComplex"/>
           <element ref="gml:superComplex" minOccurs="0" maxOccurs="unbounded"/>
-          <element ref="gml:subComplex" minOccurs="0" maxOccurs="unbounded"/-->
+          <element ref="gml:subComplex" minOccurs="0" maxOccurs="unbounded"/>
           <element ref="gml:topoPrimitiveMember" minOccurs="0" maxOccurs="unbounded"/>
           <element ref="gml:topoPrimitiveMembers" minOccurs="0"/>
         </sequence>

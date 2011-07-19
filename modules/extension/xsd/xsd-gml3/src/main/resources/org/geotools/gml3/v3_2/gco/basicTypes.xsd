@@ -108,8 +108,7 @@
 	<!--================================================-->
 	<!-- ================== Measure ===================== -->
 	<!-- ........................................................................ -->
-	<!--xs:element name="Measure" type="gml:MeasureType"/-->
-	<xs:element name="Measure" type="xs:double"/>
+	<xs:element name="Measure" type="gml:MeasureType"/>
 	<!-- ........................................................................ -->
 	<xs:complexType name="Measure_PropertyType">
 		<xs:sequence minOccurs="0">
@@ -119,8 +118,7 @@
 	</xs:complexType>
 	<!-- =========================================================================== -->
 	<!-- ........................................................................ -->
-	<!--xs:element name="Length" type="gml:LengthType" substitutionGroup="gco:Measure"/-->
-	<xs:element name="Length" type="xs:double" substitutionGroup="gco:Measure"/>
+	<xs:element name="Length" type="gml:LengthType" substitutionGroup="gco:Measure"/>
 	<!-- ........................................................................ -->
 	<xs:complexType name="Length_PropertyType">
 		<xs:sequence minOccurs="0">
@@ -130,8 +128,7 @@
 	</xs:complexType>
 	<!-- =========================================================================== -->
 	<!-- ........................................................................ -->
-	<!--xs:element name="Angle" type="gml:AngleType" substitutionGroup="gco:Measure"/-->
-	<xs:element name="Angle" type="xs:double" substitutionGroup="gco:Measure"/>
+	<xs:element name="Angle" type="gml:AngleType" substitutionGroup="gco:Measure"/>
 	<!-- ........................................................................ -->
 	<xs:complexType name="Angle_PropertyType">
 		<xs:sequence minOccurs="0">
@@ -141,8 +138,7 @@
 	</xs:complexType>
 	<!-- =========================================================================== -->
 	<!-- ........................................................................ -->
-	<!--xs:element name="Scale" type="gml:ScaleType" substitutionGroup="gco:Measure"/-->
-	<xs:element name="Scale" type="xs:double" substitutionGroup="gco:Measure"/>
+	<xs:element name="Scale" type="gml:ScaleType" substitutionGroup="gco:Measure"/>
 	<!-- ........................................................................ -->
 	<xs:complexType name="Scale_PropertyType">
 		<xs:sequence minOccurs="0">
@@ -152,8 +148,7 @@
 	</xs:complexType>
 	<!-- =========================================================================== -->
 	<!-- ........................................................................ -->
-	<!--xs:element name="Distance" type="gml:LengthType" substitutionGroup="gco:Length"/-->
-	<xs:element name="Distance" type="xs:double" substitutionGroup="gco:Length"/>
+	<xs:element name="Distance" type="gml:LengthType" substitutionGroup="gco:Length"/>
 	<!-- ........................................................................ -->
 	<xs:complexType name="Distance_PropertyType">
 		<xs:sequence minOccurs="0">
@@ -183,8 +178,7 @@
 	</xs:complexType>
 	<!-- =========================================================================== -->
 	<!-- ........................................................................ -->
-	<!--xs:element name="AbstractGenericName" type="gml:CodeType" abstract="true"/-->
-	<xs:element name="AbstractGenericName" type="xs:string" abstract="true"/>
+	<xs:element name="AbstractGenericName" type="gml:CodeType" abstract="true"/>
 	<!-- ........................................................................ -->
 	<xs:complexType name="GenericName_PropertyType">
 		<xs:sequence minOccurs="0">
@@ -194,8 +188,7 @@
 	</xs:complexType>
 	<!-- =========================================================================== -->
 	<!-- ........................................................................ -->
-	<!--xs:element name="LocalName" type="gml:CodeType" substitutionGroup="gco:AbstractGenericName"/-->
-	<xs:element name="LocalName" type="xs:string" substitutionGroup="gco:AbstractGenericName"/>
+	<xs:element name="LocalName" type="gml:CodeType" substitutionGroup="gco:AbstractGenericName"/>
 	<!-- ........................................................................ -->
 	<xs:complexType name="LocalName_PropertyType">
 		<xs:sequence minOccurs="0">
@@ -205,8 +198,7 @@
 	</xs:complexType>
 	<!-- =========================================================================== -->
 	<!-- ........................................................................ -->
-	<!--xs:element name="ScopedName" type="gml:CodeType" substitutionGroup="gco:AbstractGenericName"/-->
-	<xs:element name="ScopedName" type="xs:string" substitutionGroup="gco:AbstractGenericName"/>
+	<xs:element name="ScopedName" type="gml:CodeType" substitutionGroup="gco:AbstractGenericName"/>
 	<!-- ........................................................................ -->
 	<xs:complexType name="ScopedName_PropertyType">
 		<xs:sequence minOccurs="0">
@@ -220,8 +212,7 @@
 	<!-- ........................................................................ -->
 	<xs:complexType name="UomAngle_PropertyType">
 		<xs:sequence minOccurs="0">
-			<!--xs:element ref="gml:UnitDefinition"/-->
-			<xs:element name="UnitDefinition" type="xs:anyType"/>
+			<xs:element ref="gml:UnitDefinition"/>
 		</xs:sequence>
 		<xs:attributeGroup ref="gco:ObjectReference"/>
 		<xs:attribute ref="gco:nilReason"/>
@@ -231,8 +222,7 @@
 	<!-- ........................................................................ -->
 	<xs:complexType name="UomLength_PropertyType">
 		<xs:sequence minOccurs="0">
-			<!--xs:element ref="gml:UnitDefinition"/-->
-			<xs:element name="UnitDefinition" type="xs:anyType"/>
+			<xs:element ref="gml:UnitDefinition"/>
 		</xs:sequence>
 		<xs:attributeGroup ref="gco:ObjectReference"/>
 		<xs:attribute ref="gco:nilReason"/>
@@ -242,8 +232,7 @@
 	<!-- ........................................................................ -->
 	<xs:complexType name="UomScale_PropertyType">
 		<xs:sequence minOccurs="0">
-			<!--xs:element ref="gml:UnitDefinition"/-->
-			<xs:element name="UnitDefinition" type="xs:anyType"/>
+			<xs:element ref="gml:UnitDefinition"/>
 		</xs:sequence>
 		<xs:attributeGroup ref="gco:ObjectReference"/>
 		<xs:attribute ref="gco:nilReason"/>
@@ -253,8 +242,7 @@
 	<!-- ........................................................................ -->
 	<xs:complexType name="UnitOfMeasure_PropertyType">
 		<xs:sequence minOccurs="0">
-			<!--xs:element ref="gml:UnitDefinition"/-->
-			<xs:element name="UnitDefinition" type="xs:anyType"/>
+			<xs:element ref="gml:UnitDefinition"/>
 		</xs:sequence>
 		<xs:attributeGroup ref="gco:ObjectReference"/>
 		<xs:attribute ref="gco:nilReason"/>
@@ -264,8 +252,7 @@
 	<!-- ........................................................................ -->
 	<xs:complexType name="UomArea_PropertyType">
 		<xs:sequence minOccurs="0">
-			<!--xs:element ref="gml:UnitDefinition"/-->
-			<xs:element name="UnitDefinition" type="xs:anyType"/>
+			<xs:element ref="gml:UnitDefinition"/>
 		</xs:sequence>
 		<xs:attributeGroup ref="gco:ObjectReference"/>
 		<xs:attribute ref="gco:nilReason"/>
@@ -275,8 +262,7 @@
 	<!-- ........................................................................ -->
 	<xs:complexType name="UomVelocity_PropertyType">
 		<xs:sequence minOccurs="0">
-			<!--xs:element ref="gml:UnitDefinition"/-->
-			<xs:element name="UnitDefinition" type="xs:anyType"/>
+			<xs:element ref="gml:UnitDefinition"/>
 		</xs:sequence>
 		<xs:attributeGroup ref="gco:ObjectReference"/>
 		<xs:attribute ref="gco:nilReason"/>
@@ -286,8 +272,7 @@
 	<!-- ........................................................................ -->
 	<xs:complexType name="UomTime_PropertyType">
 		<xs:sequence minOccurs="0">
-			<!--xs:element ref="gml:UnitDefinition"/-->
-			<xs:element name="UnitDefinition" type="xs:anyType"/>
+			<xs:element ref="gml:UnitDefinition"/>
 		</xs:sequence>
 		<xs:attributeGroup ref="gco:ObjectReference"/>
 		<xs:attribute ref="gco:nilReason"/>
@@ -297,8 +282,7 @@
 	<!-- ........................................................................ -->
 	<xs:complexType name="UomVolume_PropertyType">
 		<xs:sequence minOccurs="0">
-			<!--xs:element ref="gml:UnitDefinition"/-->
-			<xs:element name="UnitDefinition" type="xs:anyType"/>
+			<xs:element ref="gml:UnitDefinition"/>
 		</xs:sequence>
 		<xs:attributeGroup ref="gco:ObjectReference"/>
 		<xs:attribute ref="gco:nilReason"/>

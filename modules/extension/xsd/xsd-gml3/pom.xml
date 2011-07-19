@@ -127,11 +127,11 @@
         <artifactId>xmlcodegen</artifactId>
         <configuration>
           <schemaLocation>gml.xsd</schemaLocation>
-	      <schemaSourceDirectory>${basedir}/src/main/resources/org/geotools/gml3/v3_2</schemaSourceDirectory>
-          <schemaLookupDirectories>
+	      <schemaSourceDirectory>${basedir}/src/main/resources/org/geotools/gml3/v3_2/</schemaSourceDirectory>
+          <!--schemaLookupDirectories>
             <schemaLookupDirectory>${basedir}/../xsd-core/src/main/resources/org/geotools/xlink</schemaLookupDirectory>
-            <!--schemaLookupDirectory>${basedir}/src/main/resources/org/geotools/gml3/</schemaLookupDirectory>
-            <schemaLookupDirectory>${basedir}/src/main/resources/org/geotools/gml3/smil</schemaLookupDirectory-->
+            <!- -schemaLookupDirectory>${basedir}/src/main/resources/org/geotools/gml3/</schemaLookupDirectory>
+            <schemaLookupDirectory>${basedir}/src/main/resources/org/geotools/gml3/smil</schemaLookupDirectory- ->
             <schemaLookupDirectory>${basedir}/src/main/resources/org/geotools/gml3/v3_2</schemaLookupDirectory>
             <schemaLookupDirectory>${basedir}/src/main/resources/org/geotools/gml3/v3_2/gmd</schemaLookupDirectory>
             <schemaLookupDirectory>${basedir}/src/main/resources/org/geotools/gml3/v3_2/gts</schemaLookupDirectory>
@@ -139,7 +139,7 @@
             <schemaLookupDirectory>${basedir}/src/main/resources/org/geotools/gml3/v3_2/gsr</schemaLookupDirectory>
             <schemaLookupDirectory>${basedir}/src/main/resources/org/geotools/gml3/v3_2/gss</schemaLookupDirectory>
             <schemaLookupDirectory>${basedir}/src/main/resources/org/geotools/gml3/v3_2/gmx</schemaLookupDirectory>
-          </schemaLookupDirectories>
+          </schemaLookupDirectories-->
           <generateConfiguration>false</generateConfiguration>
           <generateBindingConfiguration>false</generateBindingConfiguration>
           <generateBindingInterface>false</generateBindingInterface>
@@ -150,16 +150,21 @@
           <imports>
             <import>org.geotools.xs.XSSchema</import>
             <import>org.geotools.xlink.XLINKSchema</import>
-            <import>org.geotools.gml3.v3_2.gco.GCOSchema</import>
-            <import>org.geotools.gml3.v3_2.gsr.GSRSchema</import>
-            <import>org.geotools.gml3.v3_2.gts.GTSSchema</import>
-            <import>org.geotools.gml3.v3_2.gmd.GMDSchema</import>
             <!--import>org.geotools.gml3.v3_2.GMLSchema</import-->
-            <!--import>org.geotools.gml3.smil.SMIL20Schema</import>
-            <import>org.geotools.gml3.smil.SMIL20LANGSchema</import-->
+            <import>org.geotools.gml3.v3_2.gco.GCOSchema</import>
+            <import>org.geotools.gml3.v3_2.gmd.GMDSchema</import>
+            <import>org.geotools.gml3.v3_2.gmx.GMXSchema</import>
+            <import>org.geotools.gml3.v3_2.gsr.GSRSchema</import>
+            <import>org.geotools.gml3.v3_2.gss.GSSSchema</import>
+            <import>org.geotools.gml3.v3_2.gts.GTSSchema</import>
+            <!--import>org.geotools.gml3.smil.SMIL20Schema</import-->
+            <!--import>org.geotools.gml3.smil.SMIL20LANGSchema</import-->
           </imports>
           <followComplexTypes>true</followComplexTypes>
+          <relativeSchemaReference>true</relativeSchemaReference>
+          <cyclicTypeSupport>true</cyclicTypeSupport>
           <includeGML>false</includeGML>
+          <printRecursionPaths>true</printRecursionPaths>
           <!--includes>
 	      <include>AbstractFeatureType</include>
 	      <include>AbstractFeatureCollectionType</include>
@@ -270,7 +275,6 @@
                     <binding>com.vividsolutions.jts.geom.Polygon</binding>
                 </typeBinding>
             </typeBindings>
-            <printRecursionPaths>true</printRecursionPaths>
         </configuration>
       </plugin>
 

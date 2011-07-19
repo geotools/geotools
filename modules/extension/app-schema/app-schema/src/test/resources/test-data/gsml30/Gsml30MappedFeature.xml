@@ -4,21 +4,25 @@
     xsi:schemaLocation="http://www.geotools.org/app-schema ../AppSchemaDataAccess.xsd">
     <namespaces>
         <Namespace>
-            <prefix>gsml30-core</prefix>
-            <uri>urn:cgi:xmlns:CGI:GeoSciML-Core:3.0.0</uri>
+            <prefix>gco</prefix>
+            <uri>http://www.isotc211.org/2005/gco</uri>
         </Namespace>
         <Namespace>
-            <prefix>gml32</prefix>
+            <prefix>gmd</prefix>
+            <uri>http://www.isotc211.org/2005/gmd</uri>
+        </Namespace>
+        <Namespace>
+            <prefix>gml</prefix>
             <uri>http://www.opengis.net/gml/3.2</uri>
         </Namespace>
         <Namespace>
-            <prefix>xlink</prefix>
-            <uri>http://www.w3.org/1999/xlink</uri>
+            <prefix>gsml</prefix>
+            <uri>urn:cgi:xmlns:CGI:GeoSciML-Core:3.0.0</uri>
         </Namespace>
     </namespaces>
     <sourceDataStores>
         <DataStore>
-            <id>Gsml30MappedFeature</id>
+            <id>datastore</id>
             <parameters>
                 <Parameter>
                     <name>directory</name>
@@ -34,30 +38,36 @@
     </targetTypes>
     <typeMappings>
         <FeatureTypeMapping>
-            <sourceDataStore>Gsml30MappedFeature</sourceDataStore>
+            <sourceDataStore>datastore</sourceDataStore>
             <sourceType>Gsml30MappedFeature</sourceType>
             <targetElement>
-                gsml30-core:MappedFeature
+                gsml:MappedFeature
             </targetElement>
             <attributeMappings>
                 <AttributeMapping>
                     <targetAttribute>
-                        gsml30-core:MappedFeature
+                        gsml:MappedFeature
                     </targetAttribute>
                     <idExpression>
                         <OCQL>getId()</OCQL>
                     </idExpression>
                 </AttributeMapping>
                 <AttributeMapping>
-                    <targetAttribute>gml32:name</targetAttribute>
+                    <targetAttribute>gml:name</targetAttribute>
                     <sourceExpression>
                         <OCQL>NAME</OCQL>
                     </sourceExpression>
                 </AttributeMapping>
                 <AttributeMapping>
-                    <targetAttribute>gsml30-core:shape</targetAttribute>
+                    <targetAttribute>gsml:shape</targetAttribute>
                     <sourceExpression>
                         <OCQL>SHAPE</OCQL>
+                    </sourceExpression>
+                </AttributeMapping>
+                <AttributeMapping>
+                    <targetAttribute>gsml:resolutionScale/gmd:MD_RepresentativeFraction/gmd:denominator/gco:Integer</targetAttribute>
+                    <sourceExpression>
+                        <OCQL>250000</OCQL>
                     </sourceExpression>
                 </AttributeMapping>
             </attributeMappings>

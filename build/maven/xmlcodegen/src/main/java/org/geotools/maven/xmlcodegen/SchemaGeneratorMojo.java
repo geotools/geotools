@@ -67,12 +67,26 @@ public class SchemaGeneratorMojo extends AbstractGeneratorMojo {
 	 */
 	private TypeBinding[] typeBindings;
 	
+	/**
+	 * Support types that are cyclically defined, such as gmd:CI_CitationType from GML 3.2. Types in
+	 * generated Schema file will be defined using AbstractLazyAttributeType and
+	 * AbstractLazyComplexType.
+	 * 
+	 * @parameter expression="false"
+	 */
+	boolean cyclicTypeSupport;
+	
 	public void execute() throws MojoExecutionException, MojoFailureException {
     	XSDSchema schema = schema();
     	if ( schema == null ) 
     		return;
     	
-    	SchemaGenerator generator = new SchemaGenerator(schema);
+    	SchemaGenerator generator;
+    	if (cyclicTypeSupport) {
+    	    generator = new CycleSchemaGenerator(schema);
+    	} else {
+    	    generator = new SchemaGenerator(schema);
+    	}
         
     	generator.setComplexTypes( includeComplexTypes );
         generator.setSimpleTypes( includeSimpleTypes );

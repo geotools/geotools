@@ -93,8 +93,8 @@ A temporal topological complex is a set of connected temporal topological primit
 		<complexContent>
 			<extension base="gml:AbstractTimeTopologyPrimitiveType">
 				<sequence>
-					<!--element name="start" type="gml:TimeNodePropertyType"/>
-					<element name="end" type="gml:TimeNodePropertyType"/-->
+					<element name="start" type="gml:TimeNodePropertyType"/>
+					<element name="end" type="gml:TimeNodePropertyType"/>
 					<element name="extent" type="gml:TimePeriodPropertyType" minOccurs="0"/>
 				</sequence>
 			</extension>

@@ -42,6 +42,7 @@ import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.DistanceBufferOperator;
 import org.opengis.filter.spatial.Intersects;
+import org.opengis.filter.temporal.Before;
 
 /**
  * ECQL Test Case.
@@ -169,7 +170,7 @@ public final class ECQLTest  {
 
         Filter filter = ECQL.toFilter("ATTR1 BEFORE 2006-12-31T01:30:00Z");
 
-        Assert.assertTrue( filter instanceof PropertyIsLessThan);
+        Assert.assertTrue( filter instanceof Before);
     }
 
     /**

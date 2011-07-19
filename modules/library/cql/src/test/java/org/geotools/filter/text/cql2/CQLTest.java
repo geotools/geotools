@@ -46,6 +46,7 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.Disjoint;
 import org.opengis.filter.spatial.DistanceBufferOperator;
+import org.opengis.filter.temporal.Before;
 
 
 
@@ -136,7 +137,7 @@ public class CQLTest {
 
         Filter filter = CQL.toFilter("DATE BEFORE 2006-12-31T01:30:00Z");
 
-        Assert.assertTrue( filter instanceof PropertyIsLessThan);
+        Assert.assertTrue( filter instanceof Before);
     }
 
     /**

@@ -45,5 +45,6 @@ final class CQLFilterBuilder extends AbstractFilterBuilder {
         super(cqlSource, filterFactory);
 
     }
+
     
 }

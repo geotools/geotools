@@ -16,12 +16,19 @@
  */
 package org.geotools.filter.text.commons;
 
+import java.util.Date;
 import java.util.EmptyStackException;
 import java.util.Stack;
 
 import org.geotools.filter.text.cql2.CQLException;
+import org.geotools.temporal.object.DefaultInstant;
+import org.geotools.temporal.object.DefaultPeriod;
+import org.geotools.temporal.object.DefaultPosition;
+import org.opengis.filter.Filter;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
+import org.opengis.temporal.Period;
+import org.opengis.temporal.Position;
 
 import com.vividsolutions.jts.geom.Geometry;
 
@@ -110,13 +117,13 @@ public final class BuildResultStack {
         }
     }
 
-    public org.opengis.filter.Filter popFilter() throws CQLException {
+    public Filter popFilter() throws CQLException {
         Result item = null;
 
         try {
             item = stack.pop();
 
-            return (org.opengis.filter.Filter) item.getBuilt();
+            return (Filter) item.getBuilt();
         } catch (ClassCastException cce) {
             throw new CQLException("Expecting Filter",
                 item.getToken(), cce, this.cqlSource);
@@ -125,13 +132,36 @@ public final class BuildResultStack {
         }
     }
 
-    public PeriodNode popPeriod() throws CQLException {
+    public PeriodNode popPeriodNode() throws CQLException {
         Result item = null;
 
         try {
             item = stack.pop();
 
             return (PeriodNode) item.getBuilt();
+        } catch (ClassCastException cce) {
+            throw new CQLException("Expecting Period",
+                item.getToken(), cce, this.cqlSource);
+        } catch (EmptyStackException ese) {
+            throw new CQLException("No items on stack");
+        }
+    }
+    public Period popPeriod() throws CQLException {
+        Result item = null;
+
+        try {
+            item = stack.pop();
+
+            PeriodNode periodNode = (PeriodNode) item.getBuilt();
+            Literal begin = periodNode.getBeginning();
+            Literal end = periodNode.getEnding();
+            
+    		Position ip1 = new DefaultPosition((Date) begin.getValue());
+    		Position ip2 = new DefaultPosition((Date) end.getValue());
+    		Period period = new DefaultPeriod(new DefaultInstant(ip1),new DefaultInstant(ip2 ));
+            
+            return period;
+            
         } catch (ClassCastException cce) {
             throw new CQLException("Expecting Period",
                 item.getToken(), cce, this.cqlSource);

@@ -25,6 +25,9 @@ import java.util.Map;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
+import org.geotools.temporal.object.DefaultInstant;
+import org.geotools.temporal.object.DefaultPeriod;
+import org.geotools.temporal.object.DefaultPosition;
 import org.opengis.filter.And;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
@@ -38,6 +41,11 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
+import org.opengis.filter.temporal.After;
+import org.opengis.filter.temporal.Before;
+import org.opengis.filter.temporal.During;
+import org.opengis.temporal.Instant;
+import org.opengis.temporal.Period;
 
 /**
  *
@@ -215,12 +223,12 @@ public class FilterCQLSample {
         {
             // ---------------------------------------
             // Result filter for BEFORE tests
-            Filter beforeFilter = null;
+            Before beforeFilter = null;
 
             try {
                 SimpleDateFormat dateFormatter = new SimpleDateFormat(DATE_TIME_FORMATTER);
                 Date dateTime = dateFormatter.parse(FIRST_DATE);
-                beforeFilter = FACTORY.less(FACTORY.property("ATTR1"), FACTORY.literal(dateTime));
+                beforeFilter = FACTORY.before(FACTORY.property("ATTR1"), FACTORY.literal(dateTime));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -241,25 +249,15 @@ public class FilterCQLSample {
             SAMPLES.put(FILTER_BEFORE_PERIOD_DATE_AND_MONTHS, beforeFilter);
 
             {
-                // create during whith period during and date
-                Filter duringFilter = null;
-
-                Date lastDate = null;
-
+                // create before with date and period
                 try {
-                    SimpleDateFormat dateFormatter = new SimpleDateFormat(DATE_TIME_FORMATTER);
+                    Date lastDate = strToDate(LAST_DATE);
+                    Date firstDate = subtractDuration(lastDate, DURATION_DATE, DURATION_TIME);
 
-                    lastDate = dateFormatter.parse(LAST_DATE);
-
-                    Date firstDate = subtractDuration(lastDate);
-
-                    // creates an And filter firstDate <= prop <= lastDate
-                    final String propName = "ATTR1";
-
-                    duringFilter = FACTORY.less(FACTORY.property(propName),
+                    Before before = FACTORY.before(FACTORY.property("ATTR1"),
                             FACTORY.literal(firstDate));
 
-                    SAMPLES.put(FILTER_BEFORE_PERIOD_YMD_HMS_DATE, duringFilter);
+                    SAMPLES.put(FILTER_BEFORE_PERIOD_YMD_HMS_DATE, before);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -269,13 +267,13 @@ public class FilterCQLSample {
         {
             // ---------------------------------------
             // Result filter for AFTER tests
-            Filter afterFilter = null;
+            After afterFilter = null;
 
             try {
                 SimpleDateFormat dateFormatter = new SimpleDateFormat(DATE_TIME_FORMATTER);
                 
                 Date dateTime = dateFormatter.parse(LAST_DATE);
-                afterFilter = FACTORY.greater(FACTORY.property("ATTR1"), FACTORY.literal(dateTime));
+                afterFilter = FACTORY.after(FACTORY.property("ATTR1"), FACTORY.literal(dateTime));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -286,39 +284,37 @@ public class FilterCQLSample {
 
             // sample for period with date and duration
             try {
+
+                Date firstDate = strToDate(FIRST_DATE);
+
                 Date lastDate;
-
-                SimpleDateFormat dateFormatter = new SimpleDateFormat(DATE_TIME_FORMATTER);
-
-                Date firstDate = dateFormatter.parse(FIRST_DATE);
-
-                // Days
+                //adds Days
                 CALENDAR.setTime(firstDate);
 
                 int days = Integer.parseInt(DURATION_DATE);
                 CALENDAR.add(Calendar.DATE, days);
                 lastDate = CALENDAR.getTime();
 
-                afterFilter = FACTORY.greater(FACTORY.property("ATTR1"), FACTORY.literal(lastDate));
+                afterFilter = FACTORY.after(FACTORY.property("ATTR1"), FACTORY.literal(lastDate));
 
                 SAMPLES.put(FILTER_AFTER_PERIOD_DATE_DAYS, afterFilter);
 
-                // Years
+                //adds Years
                 int years = Integer.parseInt(DURATION_DATE);
                 CALENDAR.setTime(firstDate);
                 CALENDAR.add(Calendar.YEAR, years);
                 lastDate = CALENDAR.getTime();
-                afterFilter = FACTORY.greater(FACTORY.property("ATTR1"), FACTORY.literal(lastDate));
+                afterFilter = FACTORY.after(FACTORY.property("ATTR1"), FACTORY.literal(lastDate));
 
                 SAMPLES.put(FILTER_AFTER_PERIOD_DATE_YEARS, afterFilter);
 
-                // Months
+                //adds Months
                 CALENDAR.setTime(firstDate);
 
                 int months = Integer.parseInt(DURATION_DATE);
                 CALENDAR.add(Calendar.MONTH, months);
                 lastDate = CALENDAR.getTime();
-                afterFilter = FACTORY.greater(FACTORY.property("ATTR1"), FACTORY.literal(lastDate));
+                afterFilter = FACTORY.after(FACTORY.property("ATTR1"), FACTORY.literal(lastDate));
 
                 SAMPLES.put(FILTER_AFTER_PERIOD_DATE_MONTH, afterFilter);
 
@@ -330,7 +326,7 @@ public class FilterCQLSample {
                 CALENDAR.add(Calendar.YEAR, duration);
                 CALENDAR.add(Calendar.MONTH, duration);
                 lastDate = CALENDAR.getTime();
-                afterFilter = FACTORY.greater(FACTORY.property("ATTR1"), FACTORY.literal(lastDate));
+                afterFilter = FACTORY.after(FACTORY.property("ATTR1"), FACTORY.literal(lastDate));
 
                 SAMPLES.put(FILTER_AFTER_PERIOD_DATE_YEARS_MONTH, afterFilter);
 
@@ -341,7 +337,7 @@ public class FilterCQLSample {
                 CALENDAR.add(Calendar.HOUR, hours);
                 lastDate = CALENDAR.getTime();
 
-                afterFilter = FACTORY.greater(FACTORY.property("ATTR1"), FACTORY.literal(lastDate));
+                afterFilter = FACTORY.after(FACTORY.property("ATTR1"), FACTORY.literal(lastDate));
 
                 SAMPLES.put(FILTER_AFTER_PERIOD_DATE_HOURS, afterFilter);
 
@@ -352,7 +348,7 @@ public class FilterCQLSample {
                 CALENDAR.add(Calendar.MINUTE, minutes);
                 lastDate = CALENDAR.getTime();
 
-                afterFilter = FACTORY.greater(FACTORY.property("ATTR1"), FACTORY.literal(lastDate));
+                afterFilter = FACTORY.after(FACTORY.property("ATTR1"), FACTORY.literal(lastDate));
 
                 SAMPLES.put(FILTER_AFTER_PERIOD_DATE_MINUTES, afterFilter);
 
@@ -363,14 +359,14 @@ public class FilterCQLSample {
                 CALENDAR.add(Calendar.SECOND, seconds);
                 lastDate = CALENDAR.getTime();
 
-                afterFilter = FACTORY.greater(FACTORY.property("ATTR1"), FACTORY.literal(lastDate));
+                afterFilter = FACTORY.after(FACTORY.property("ATTR1"), FACTORY.literal(lastDate));
 
                 SAMPLES.put(FILTER_AFTER_PERIOD_DATE_SECONDS, afterFilter);
 
                 // date and duration YMD_HMS
-                lastDate = addDuration(firstDate);
+                lastDate = addDuration(firstDate, DURATION_DATE, DURATION_TIME);
 
-                afterFilter = FACTORY.greater(FACTORY.property("ATTR1"), FACTORY.literal(lastDate));
+                afterFilter = FACTORY.after(FACTORY.property("ATTR1"), FACTORY.literal(lastDate));
 
                 SAMPLES.put(FILTER_AFTER_PERIOD_DATE_YMD_HMS, afterFilter);
             } catch (ParseException e) {
@@ -382,18 +378,9 @@ public class FilterCQLSample {
         // Result filter for DURING tests
         try {
             // During with period between dates
-            Filter duringFilter = null;
-
-            SimpleDateFormat dateFormatter = new SimpleDateFormat(DATE_TIME_FORMATTER);
-
-            final Date firstDate = dateFormatter.parse(FIRST_DATE);
-            final Date lastDate = dateFormatter.parse(LAST_DATE);
-            final String propName = "ATTR1";
-
-            duringFilter = FACTORY.and(FACTORY.lessOrEqual(FACTORY.literal(firstDate),
-                        FACTORY.property(propName)),
-                    FACTORY.lessOrEqual(FACTORY.property(propName), FACTORY.literal(lastDate)));
-
+			Period period = createPeriod(FIRST_DATE, LAST_DATE);
+			During duringFilter = FACTORY.during(FACTORY.property("ATTR1"), FACTORY.literal(period) );
+            		
             SAMPLES.put(FILTER_DURING_PERIOD_BETWEEN_DATES, duringFilter);
         } catch (ParseException e) {
             e.printStackTrace();
@@ -402,40 +389,28 @@ public class FilterCQLSample {
         try {
             // creates during with period between date and duration
             {
-                Filter duringFilter = null;
-                SimpleDateFormat dateFormatter = new SimpleDateFormat(DATE_TIME_FORMATTER);
-
-                final Date firstDate = dateFormatter.parse(FIRST_DATE);
+                final Date firstDate = strToDate(FIRST_DATE);
 
                 // date and duration YMD_HMS
-                Date lastDate = addDuration(firstDate);
+                final Date lastDate = addDuration(firstDate, DURATION_DATE, DURATION_TIME);
 
                 // creates an And filter firstDate <= prop <= lastDate
-                final String propName = "ATTR1";
+                Period period = createPeriod(firstDate, lastDate);
 
-                duringFilter = FACTORY.and(FACTORY.lessOrEqual(FACTORY.literal(firstDate),
-                            FACTORY.property(propName)),
-                        FACTORY.lessOrEqual(FACTORY.property(propName), FACTORY.literal(lastDate)));
+                During duringFilter = FACTORY.during(FACTORY.property("ATTR1"),FACTORY.literal( period ));
 
                 SAMPLES.put(FILTER_DURING_PERIOD_DATE_YMD_HMS, duringFilter);
             }
 
             {
-                // create during whith period during and date
-                Filter duringFilter = null;
+                // create during with period during and date
+                final Date lastDate = strToDate(LAST_DATE);
 
-                SimpleDateFormat dateFormatter = new SimpleDateFormat(DATE_TIME_FORMATTER);
+                Date firstDate = subtractDuration(lastDate, DURATION_DATE, DURATION_TIME);
 
-                final Date lastDate = dateFormatter.parse(LAST_DATE);
+                Period period = createPeriod(firstDate, lastDate);
 
-                Date firstDate = subtractDuration(lastDate);
-
-                // creates an And filter firstDate <= prop <= lastDate
-                final String propName = "ATTR1";
-
-                duringFilter = FACTORY.and(FACTORY.lessOrEqual(FACTORY.literal(firstDate),
-                            FACTORY.property(propName)),
-                        FACTORY.lessOrEqual(FACTORY.property(propName), FACTORY.literal(lastDate)));
+                During duringFilter = FACTORY.during(FACTORY.property("ATTR1"),FACTORY.literal( period ));
 
                 SAMPLES.put(FILTER_DURING_PERIOD_YMD_HMS_DATE, duringFilter);
             }
@@ -446,29 +421,28 @@ public class FilterCQLSample {
         // ------------------------------------------------
         // result filter for Before or During test
         try {
-            Filter filter = null;
-            SimpleDateFormat dateFormatter = new SimpleDateFormat(DATE_TIME_FORMATTER);
 
-            final Date lastDate = dateFormatter.parse(LAST_DATE);
-            final String propName = "ATTR1";
+            final Date firstDate = strToDate(FIRST_DATE);
+            final Date lastDate = strToDate(LAST_DATE);
 
-            filter = FACTORY.lessOrEqual(FACTORY.property(propName), FACTORY.literal(lastDate));
+            final PropertyName property = FACTORY.property("ATTR1");
+            
+            Or filter = buildBeforeOrDuringFilter(property, firstDate, lastDate);
+            
             SAMPLES.put(FILTER_BEFORE_OR_DURING_PERIOD_BETWEEN_DATES, filter);
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
         try {
-            Filter filter = null;
+        	// Period: duration / date
             
-            SimpleDateFormat dateFormatter = new SimpleDateFormat(DATE_TIME_FORMATTER);
+            final Date lastDate = strToDate(LAST_DATE);
+            final Date firstDate = subtractDuration(lastDate, DURATION_DATE, DURATION_TIME);
+            
+            final PropertyName property = FACTORY.property("ATTR1");
 
-            final Date lastDate = dateFormatter.parse(LAST_DATE);
-
-            // creates a filter prop <= lastDate
-            final String propName = "ATTR1";
-
-            filter = FACTORY.lessOrEqual(FACTORY.property(propName), FACTORY.literal(lastDate));
+            Or filter = buildBeforeOrDuringFilter(property, firstDate, lastDate);
 
             SAMPLES.put(FILTER_BEFORE_OR_DURING_PERIOD_YMD_HMS_DATE, filter);
         } catch (ParseException e) {
@@ -476,18 +450,14 @@ public class FilterCQLSample {
         }
 
         try {
-            Filter filter = null;
+        	// Period: date / duration
+            final Date firstDate = strToDate(FIRST_DATE);
 
-            SimpleDateFormat dateFormatter = new SimpleDateFormat(DATE_TIME_FORMATTER);
+            Date lastDate = addDuration(firstDate, DURATION_DATE, DURATION_TIME);
 
-            final Date firstDate = dateFormatter.parse(FIRST_DATE);
+            final PropertyName property = FACTORY.property("ATTR1");
 
-            Date lastDate = addDuration(firstDate);
-
-            // creates a filter prop <= lastDate
-            final String propName = "ATTR1";
-
-            filter = FACTORY.lessOrEqual(FACTORY.property(propName), FACTORY.literal(lastDate));
+            Or filter = buildBeforeOrDuringFilter(property, firstDate, lastDate);
 
             SAMPLES.put(FILTER_BEFORE_OR_DURING_PERIOD_DATE_YMD_HMS, filter);
         } catch (ParseException e) {
@@ -498,14 +468,12 @@ public class FilterCQLSample {
         // DURING OR AFTER samples
         try {
             // period: first date / last date
-            Filter filter = null;
+            final PropertyName property= FACTORY.property("ATTR1");
 
-            SimpleDateFormat dateFormatter = new SimpleDateFormat(DATE_TIME_FORMATTER);
+            Period period = createPeriod(FIRST_DATE, LAST_DATE);
 
-            final Date firstDate = dateFormatter.parse(FIRST_DATE);
-            final String propName = "ATTR1";
-
-            filter = FACTORY.greaterOrEqual(FACTORY.property(propName), FACTORY.literal(firstDate));
+            Or filter = buildDuringOrAfterFilter(property, period);
+			
             SAMPLES.put(FILTER_DURING_OR_AFTER_PERIOD_BETWEEN_DATES, filter);
         } catch (ParseException e) {
             e.printStackTrace();
@@ -513,16 +481,15 @@ public class FilterCQLSample {
 
         try {
             // period: duration / last date
-            Filter filter = null;
+            final Date lastDate = strToDate(LAST_DATE);
 
-            SimpleDateFormat dateFormatter = new SimpleDateFormat(DATE_TIME_FORMATTER);
+            final Date firstDate = subtractDuration(lastDate, DURATION_DATE, DURATION_TIME);
+            final Period period = createPeriod(firstDate, lastDate);
+            
+            final PropertyName property= FACTORY.property("ATTR1");
+            
+			Or filter = buildDuringOrAfterFilter(property, period);
 
-            final Date lastDate = dateFormatter.parse(LAST_DATE);
-            Date firstDate = subtractDuration(lastDate);
-
-            final String propName = "ATTR1";
-
-            filter = FACTORY.greaterOrEqual(FACTORY.property(propName), FACTORY.literal(firstDate));
             SAMPLES.put(FILTER_DURING_OR_AFTER_PERIOD_YMD_HMS_DATE, filter);
         } catch (ParseException e) {
             e.printStackTrace();
@@ -530,16 +497,14 @@ public class FilterCQLSample {
 
         try {
             // period: first date / duration
-            Filter filter = null;
+            final Date firstDate = strToDate(FIRST_DATE);
+            Date lastDate = addDuration(firstDate, DURATION_DATE, DURATION_TIME);
+            final PropertyName property= FACTORY.property("ATTR1");
 
-            SimpleDateFormat dateFormatter = new SimpleDateFormat(DATE_TIME_FORMATTER);
-
-            final Date firstDate = dateFormatter.parse(FIRST_DATE);
-
-            final String propName = "ATTR1";
-
-            filter = FACTORY.greaterOrEqual(FACTORY.property(propName), FACTORY.literal(firstDate));
-            SAMPLES.put(FILTER_DURING_OR_AFTER_PERIOD_DATE_YMD_HMS, filter);
+            Period period = createPeriod(firstDate, lastDate);
+			Or filter = buildDuringOrAfterFilter(property, period);
+            SAMPLES.put(FILTER_DURING_OR_AFTER_PERIOD_DATE_YMD_HMS, filter);        
+            
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -673,26 +638,66 @@ public class FilterCQLSample {
         }
     } // end static initialization
 
+	private static Or buildDuringOrAfterFilter(final PropertyName property, Period period)
+			throws ParseException {
+		During during = FACTORY.during(property, FACTORY.literal(period));
+
+		final Date lastDate = strToDate(FIRST_DATE);
+		
+		After after = FACTORY.after(property, FACTORY.literal(lastDate));
+		Or filter = FACTORY.or(during, after);
+		return filter;
+	}
+
     protected FilterCQLSample() {
         // factory class
     }
 
-    /**
+    private static Or buildBeforeOrDuringFilter(
+    		final PropertyName property,
+    		final Date firstDate, 
+    		final Date lastDate) {
+    	Before before = FACTORY.before(property, FACTORY.literal(firstDate));
+    	
+    	Period period = createPeriod(firstDate, lastDate);
+    	During during  = FACTORY.during(property, FACTORY.literal(period));
+    	Or filter = FACTORY.or(before, during  );
+    	return filter;
+	}
+
+
+    private static Date strToDate(String firstDate) throws ParseException {
+        SimpleDateFormat dateFormatter = new SimpleDateFormat(DATE_TIME_FORMATTER);
+        return dateFormatter.parse(firstDate);
+	}
+
+	private static Period createPeriod(String firstDate, String lastDate) throws ParseException {
+		
+		return new DefaultPeriod(dateToInstant(firstDate),  dateToInstant(lastDate));
+	}
+
+	private static Period createPeriod(Date firstDate, Date lastDate) {
+        Instant i1 = new DefaultInstant(new DefaultPosition(firstDate));
+        Instant i2 = new DefaultInstant(new DefaultPosition(lastDate));
+		return new DefaultPeriod(i1, i2);
+	}
+
+	/**
      * Add duration to date
      *
      * @param firstDate
      * @return
      * @throws NumberFormatException
      */
-    private static Date addDuration(final Date date) {
+    private static Date addDuration(final Date date, final String durationDate, final String durationTime) {
         CALENDAR.setTime(date);
 
-        int durDate = Integer.parseInt(DURATION_DATE);
+        int durDate = Integer.parseInt(durationDate);
         CALENDAR.add(Calendar.YEAR, durDate);
         CALENDAR.add(Calendar.MONTH, durDate);
         CALENDAR.add(Calendar.DATE, durDate);
 
-        int durTime = Integer.parseInt(DURATION_TIME);
+        int durTime = Integer.parseInt(durationTime);
         CALENDAR.add(Calendar.HOUR, durTime);
         CALENDAR.add(Calendar.MINUTE, durTime);
         CALENDAR.add(Calendar.SECOND, durTime);
@@ -703,21 +708,24 @@ public class FilterCQLSample {
     }
 
     /**
-     * Substract duration to date
+     * Subtract duration to date
      *
      * @param lastDate
      *            a Date
+     * @param durationDate
+     * @param durationTime
+     *            
      * @return Date
      */
-    private static Date subtractDuration(final Date lastDate) {
+    private static Date subtractDuration(final Date lastDate, final String durationDate, final String durationTime) {
         CALENDAR.setTime(lastDate);
 
-        int durDate = -1 * Integer.parseInt(DURATION_DATE);
+        int durDate = -1 * Integer.parseInt(durationDate);
         CALENDAR.add(Calendar.YEAR, durDate);
         CALENDAR.add(Calendar.MONTH, durDate);
         CALENDAR.add(Calendar.DATE, durDate);
 
-        int durTime = -1 * Integer.parseInt(DURATION_TIME);
+        int durTime = -1 * Integer.parseInt(durationTime);
         CALENDAR.add(Calendar.HOUR, durTime);
         CALENDAR.add(Calendar.MINUTE, durTime);
         CALENDAR.add(Calendar.SECOND, durTime);
@@ -733,6 +741,23 @@ public class FilterCQLSample {
         assert (sample != null) : "There is not a sample for " + sampleRequested;
 
         return sample;
+    }
+    
+    private static Instant dateToInstant(String strDate) throws ParseException{
+
+    	SimpleDateFormat dateFormatter = new SimpleDateFormat(DATE_TIME_FORMATTER);
+
+        Date date;
+		try {
+			date = dateFormatter.parse(strDate);
+		} catch (ParseException e) {
+			e.printStackTrace();
+			throw e;
+		}
+
+        Instant instant = new DefaultInstant(new DefaultPosition(date));
+
+        return instant;
     }
     
 }

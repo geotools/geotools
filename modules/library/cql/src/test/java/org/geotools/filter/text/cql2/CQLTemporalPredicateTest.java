@@ -31,6 +31,7 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.PropertyIsLessThan;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
+import org.opengis.filter.temporal.Before;
 
 /**
  * Test for Temporal Predicate
@@ -44,7 +45,7 @@ import org.opengis.filter.expression.Literal;
 public class CQLTemporalPredicateTest {
     
     private final Language language;
-
+    
     /**
      * New instance of CQLTemporalPredicateTest
      */
@@ -158,7 +159,7 @@ public class CQLTemporalPredicateTest {
                 
         Filter resultFilter = CompilerUtil.parseFilter(this.language, "ZONE_VALID_FROM BEFORE 2008-09-09T17:00:00Z");
 
-        BinaryComparisonOperator comparation = (BinaryComparisonOperator) resultFilter;
+        Before comparation = (Before) resultFilter;
 
         // date test
         Expression expr2 = comparation.getExpression2();
@@ -190,9 +191,9 @@ public class CQLTemporalPredicateTest {
         Filter resultFilter = CompilerUtil.parseFilter(this.language,predicate);
 
         Assert.assertTrue("PropertyIsLessThan filter was expected",
-            resultFilter instanceof PropertyIsLessThan);
+            resultFilter instanceof Before);
 
-        PropertyIsLessThan lessFilter = (PropertyIsLessThan) resultFilter;
+        Before lessFilter = (Before) resultFilter;
         Expression property = lessFilter.getExpression1();
 
         Assert.assertEquals(propExpected, property.toString());

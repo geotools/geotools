@@ -32,6 +32,7 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.Not;
+import org.opengis.filter.Or;
 import org.opengis.filter.PropertyIsBetween;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.PropertyIsGreaterThan;
@@ -47,6 +48,10 @@ import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.BinarySpatialOperator;
 import org.opengis.filter.spatial.DistanceBufferOperator;
+import org.opengis.filter.temporal.After;
+import org.opengis.filter.temporal.Before;
+import org.opengis.filter.temporal.During;
+import org.opengis.temporal.Period;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
@@ -87,19 +92,6 @@ public abstract class AbstractFilterBuilder {
 
     protected final String cqlSource;
 
-    protected FilterFactory getFilterFactory(){
-        return this.filterFactory;
-    }
-    
-    protected final BuildResultStack getResultStack(){
-        return this.resultStack;
-    }
-    
-    protected final String getStatement(){
-        return this.cqlSource;
-    }
-    
-    
     /**
      * New instance of FilterBuilder
      * @param cqlSource 
@@ -116,6 +108,35 @@ public abstract class AbstractFilterBuilder {
 
     }
 
+    protected FilterFactory getFilterFactory(){
+        return this.filterFactory;
+    }
+    
+    protected final BuildResultStack getResultStack(){
+        return this.resultStack;
+    }
+    
+    protected final String getStatement(){
+        return this.cqlSource;
+    }
+    /**
+     * Adds in the result stack the partial result associated to node.
+     * @param built partial result
+     * @param token 
+     * @param type node associated to partial result
+     */
+    public void pushResult(final Result result) {
+    
+        this.resultStack.push(result);
+    }
+
+    public Result peekResult() {
+
+        return this.resultStack.peek();
+    }
+    
+    
+
     public Filter getFilter() throws CQLException {
         return resultStack.popFilter();
     }
@@ -130,7 +151,7 @@ public abstract class AbstractFilterBuilder {
         List<Filter> results = new ArrayList<Filter>(size);
 
         for (int i = 0; i < size; i++) {
-            Result item = resultStack.popResult();
+            Result item = this.resultStack.popResult();
             Filter result = (Filter)item.getBuilt();
             results.add(0, result);
         }
@@ -140,16 +161,16 @@ public abstract class AbstractFilterBuilder {
 
     public BinaryExpression buildAddExpression() throws CQLException {
         
-        Expression right = resultStack.popExpression();
-        Expression left = resultStack.popExpression();
+        Expression right = this.resultStack.popExpression();
+        Expression left = this.resultStack.popExpression();
 
         return filterFactory.add(left, right);
     }
 
     public BinaryExpression buildSubtractExression() throws CQLException {
-        Expression right = resultStack
+        Expression right = this.resultStack
                 .popExpression();
-        Expression left = resultStack
+        Expression left = this.resultStack
                 .popExpression();
 
         return filterFactory.subtract(left, right);
@@ -157,24 +178,24 @@ public abstract class AbstractFilterBuilder {
 
     public BinaryExpression buildMultiplyExpression() throws CQLException {
         
-        Expression right = resultStack.popExpression();
-        Expression left = resultStack.popExpression();
+        Expression right = this.resultStack.popExpression();
+        Expression left = this.resultStack.popExpression();
         
         return filterFactory.multiply(left, right);
     }
 
     public BinaryExpression buildDivideExpression() throws CQLException {
         
-        Expression right = resultStack.popExpression();
-        Expression left = resultStack.popExpression();
+        Expression right = this.resultStack.popExpression();
+        Expression left = this.resultStack.popExpression();
 
         return  filterFactory.divide(left, right);
     }
 
     public Filter buildAndFilter() throws CQLException {
         
-        Filter right = resultStack.popFilter();
-        Filter left = resultStack.popFilter();
+        Filter right = this.resultStack.popFilter();
+        Filter left = this.resultStack.popFilter();
 
         Filter logicFilter = null;
         if (Filter.INCLUDE.equals(right)) {
@@ -192,8 +213,8 @@ public abstract class AbstractFilterBuilder {
     }
 
     public Filter buildOrFilter() throws CQLException {
-        Filter right = resultStack.popFilter();
-        Filter left = resultStack.popFilter();
+        Filter right = this.resultStack.popFilter();
+        Filter left = this.resultStack.popFilter();
 
         Filter logicFilter = null;
         if (Filter.INCLUDE.equals(right) || Filter.INCLUDE.equals(left)) {
@@ -211,7 +232,7 @@ public abstract class AbstractFilterBuilder {
 
     public Filter buildNotFilter() throws CQLException {
         
-        Filter right = resultStack.popFilter();
+        Filter right = this.resultStack.popFilter();
 
         Filter logicFilter = null;
         
@@ -240,9 +261,9 @@ public abstract class AbstractFilterBuilder {
         final String ESCAPE = "\\";
 
         try {
-            org.opengis.filter.expression.Expression pattern = resultStack
+            org.opengis.filter.expression.Expression pattern = this.resultStack
                     .popExpression();
-            org.opengis.filter.expression.Expression expr = resultStack
+            org.opengis.filter.expression.Expression expr = this.resultStack
                     .popExpression();
 
             PropertyIsLike f = filterFactory.like(expr, pattern.toString(),
@@ -262,7 +283,7 @@ public abstract class AbstractFilterBuilder {
      */
     public PropertyIsNull buildPropertyIsNull() throws CQLException {
         try {
-            org.opengis.filter.expression.Expression property = resultStack
+            org.opengis.filter.expression.Expression property = this.resultStack
                     .popExpression();
 
             PropertyIsNull filter = filterFactory.isNull(property);
@@ -285,11 +306,11 @@ public abstract class AbstractFilterBuilder {
      */
     public PropertyIsBetween buildBetween() throws CQLException {
         try {
-            org.opengis.filter.expression.Expression sup = resultStack
+            org.opengis.filter.expression.Expression sup = this.resultStack
                     .popExpression();
-            org.opengis.filter.expression.Expression inf = resultStack
+            org.opengis.filter.expression.Expression inf = this.resultStack
                     .popExpression();
-            org.opengis.filter.expression.Expression expr = resultStack
+            org.opengis.filter.expression.Expression expr = this.resultStack
                     .popExpression();
 
             PropertyIsBetween filter = filterFactory.between(expr, inf, sup);
@@ -319,7 +340,7 @@ public abstract class AbstractFilterBuilder {
      */
     public PropertyIsEqualTo buildPropertyExists() throws CQLException {
 
-        PropertyName property = resultStack.popPropertyName();
+        PropertyName property = this.resultStack.popPropertyName();
 
         org.opengis.filter.expression.Expression[] args = new org.opengis.filter.expression.Expression[1];
         args[0] = filterFactory.literal(property);
@@ -333,29 +354,33 @@ public abstract class AbstractFilterBuilder {
         return propExistsFilter;
     }
 
-    /**
-     * Creates a literal with date time
-     * 
-     * @param n
-     *            with date time
-     * @return Literal
-     * @throws CQLException
-     */
-    public Literal buildDateTimeExpression(final IToken token)
-            throws CQLException {
-        
-        try {
-            
-          DateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
-            
-            Date dateTime = formatter.parse(token.toString());
-            Literal literalDate = filterFactory.literal(dateTime);
+	/**
+	 * Creates a literal with date time
+	 * 
+	 * @param n
+	 *            with date time
+	 * @return Literal
+	 * @throws CQLException
+	 */
+	public Literal buildDateTimeExpression(final IToken token)
+			throws CQLException {
+		return asLiteralDate(token.toString());
+	}
 
-            return literalDate;
-        } catch (java.text.ParseException e) {
-            throw new CQLException("Unsupported date time format: " + e.getMessage(), this.cqlSource);
-        }
-    }
+	private Literal asLiteralDate(final String strDate) throws CQLException {
+		try {
+
+			DateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
+
+			Date dateTime = formatter.parse(strDate);
+			Literal literalDate = filterFactory.literal(dateTime);
+
+			return literalDate;
+		} catch (java.text.ParseException e) {
+			throw new CQLException("Unsupported date time format: "
+					+ e.getMessage(), this.cqlSource);
+		}
+	}
 
     public Not buildNotFilter(Filter eq) {
         return filterFactory.not(eq);
@@ -420,13 +445,13 @@ public abstract class AbstractFilterBuilder {
             // retrieves all part of identifier from result stack
             ArrayList<String> arrayParts = new ArrayList<String>();
 
-            while (resultStack.size() > 0) {
-                Result r = resultStack.peek();
+            while (this.resultStack.size() > 0) {
+                Result r = this.resultStack.peek();
                 
                 if (r.getNodeType() != nodeIdentifier) {
                     break; 
                 }
-                String part = resultStack.popIdentifierPart();
+                String part = this.resultStack.popIdentifierPart();
                 part = removeFirstAndLastDoubleQuote(part);
                 arrayParts.add(part);
             }
@@ -487,7 +512,7 @@ public abstract class AbstractFilterBuilder {
 
 	public PropertyName buildSimpleAttribute() throws CQLException {
         // Only retrieve the identifier built before
-        String identifier = resultStack.popIdentifier();
+        String identifier = this.resultStack.popIdentifier();
         PropertyName property = filterFactory.property(identifier);
 
         return property;
@@ -506,14 +531,14 @@ public abstract class AbstractFilterBuilder {
         ArrayList<String> arrayIdentifiers = new ArrayList<String>();
 
         // precondition: stack has one or more simple attributes
-        while (resultStack.size() > 0) {
-            Result r = resultStack.peek();
+        while (this.resultStack.size() > 0) {
+            Result r = this.resultStack.peek();
 
             if (r.getNodeType() !=nodeSimpleAttr ) {
                 break;
             }
 
-            PropertyName simpleAttribute = resultStack.popPropertyName();
+            PropertyName simpleAttribute = this.resultStack.popPropertyName();
 
             arrayIdentifiers.add(simpleAttribute.getPropertyName());
         }
@@ -547,7 +572,7 @@ public abstract class AbstractFilterBuilder {
         Literal tolerance = null;
 
         try {
-            tolerance = resultStack.popLiteral();
+            tolerance = this.resultStack.popLiteral();
 
             return tolerance;
         } catch (NumberFormatException e) {
@@ -557,19 +582,18 @@ public abstract class AbstractFilterBuilder {
 
     public BinarySpatialOperator buildSpatialEqualFilter() throws CQLException {
  
-        Literal geom = resultStack.popLiteral();
+        Literal geom = this.resultStack.popLiteral();
 
-        Expression property = resultStack.popExpression();
+        Expression property = this.resultStack.popExpression();
 
         FilterFactory2 ff = (FilterFactory2) filterFactory; // TODO this cast must be removed. It depends of Geometry implementation 
 
         return ff.equal(property, geom);
     }
-
     public BinarySpatialOperator buildSpatialDisjointFilter() throws CQLException {
-        Literal geom = resultStack.popLiteral();
+        Literal geom = this.resultStack.popLiteral();
 
-        Expression property = resultStack.popExpression();
+        Expression property = this.resultStack.popExpression();
 
         FilterFactory2 ff = (FilterFactory2) filterFactory; // TODO this cast must be removed. It depends of Geometry implementation 
 
@@ -578,9 +602,9 @@ public abstract class AbstractFilterBuilder {
 
     public BinarySpatialOperator buildSpatialIntersectsFilter() throws CQLException {
         
-        Literal geom = resultStack.popLiteral();
+        Literal geom = this.resultStack.popLiteral();
 
-        Expression property = resultStack.popExpression();
+        Expression property = this.resultStack.popExpression();
 
         FilterFactory2 ff = (FilterFactory2) filterFactory; // TODO this cast must be removed. It depends of Geometry implementation 
 
@@ -588,9 +612,9 @@ public abstract class AbstractFilterBuilder {
     }
 
     public BinarySpatialOperator buildSpatialTouchesFilter() throws CQLException {
-        Literal geom = resultStack.popLiteral();
+        Literal geom = this.resultStack.popLiteral();
 
-        Expression property = resultStack.popExpression();
+        Expression property = this.resultStack.popExpression();
 
         FilterFactory2 ff = (FilterFactory2) filterFactory; // TODO this cast must be removed. It depends of Geometry implementation 
 
@@ -598,9 +622,9 @@ public abstract class AbstractFilterBuilder {
     }
 
     public BinarySpatialOperator buildSpatialCrossesFilter() throws CQLException {
-        Literal geom = resultStack.popLiteral();
+        Literal geom = this.resultStack.popLiteral();
 
-        Expression property = resultStack.popExpression();
+        Expression property = this.resultStack.popExpression();
 
         FilterFactory2 ff = (FilterFactory2) filterFactory; // TODO this cast must be removed. It depends of Geometry implementation 
 
@@ -609,9 +633,9 @@ public abstract class AbstractFilterBuilder {
 
     public BinarySpatialOperator buildSpatialWithinFilter() throws CQLException {
 
-        Literal geom = resultStack.popLiteral();
+        Literal geom = this.resultStack.popLiteral();
 
-        Expression property = resultStack.popExpression();
+        Expression property = this.resultStack.popExpression();
 
         FilterFactory2 ff = (FilterFactory2) filterFactory; // TODO this cast must be removed. It depends of Geometry implementation 
 
@@ -620,9 +644,9 @@ public abstract class AbstractFilterBuilder {
 
     public BinarySpatialOperator buildSpatialContainsFilter() throws CQLException {
 
-        Literal geom = resultStack.popLiteral();
+        Literal geom = this.resultStack.popLiteral();
 
-        Expression property = resultStack.popExpression();
+        Expression property = this.resultStack.popExpression();
 
         FilterFactory2 ff = (FilterFactory2) filterFactory; // TODO this cast must be removed. It depends of Geometry implementation 
 
@@ -632,9 +656,9 @@ public abstract class AbstractFilterBuilder {
 
     public BinarySpatialOperator buildSpatialOverlapsFilter() throws CQLException {
 
-        Literal geom = resultStack.popLiteral();
+        Literal geom = this.resultStack.popLiteral();
 
-        Expression property = resultStack.popExpression();
+        Expression property = this.resultStack.popExpression();
 
         FilterFactory2 ff = (FilterFactory2) filterFactory; // TODO this cast must be removed. It depends of Geometry implementation 
 
@@ -648,19 +672,19 @@ public abstract class AbstractFilterBuilder {
     public org.opengis.filter.spatial.BBOX buildBBoxWithCRS()
             throws CQLException {
             
-            String crs = resultStack.popStringValue();
+            String crs = this.resultStack.popStringValue();
             assert crs != null;
 
             return buildBbox(crs);
     }
     private org.opengis.filter.spatial.BBOX buildBbox(final String crs) throws CQLException{
         
-        double maxY = resultStack.popDoubleValue();
-        double maxX = resultStack.popDoubleValue();
-        double minY = resultStack.popDoubleValue();
-        double minX = resultStack.popDoubleValue();
+        double maxY = this.resultStack.popDoubleValue();
+        double maxX = this.resultStack.popDoubleValue();
+        double minY = this.resultStack.popDoubleValue();
+        double minX = this.resultStack.popDoubleValue();
 
-        PropertyName property = resultStack.popPropertyName();
+        PropertyName property = this.resultStack.popPropertyName();
         String strProperty = property.getPropertyName();
 
         org.opengis.filter.spatial.BBOX bbox = filterFactory.bbox(
@@ -670,13 +694,13 @@ public abstract class AbstractFilterBuilder {
 
     public DistanceBufferOperator buildSpatialDWithinFilter() throws CQLException {
 
-        String unit = resultStack.popStringValue();
+        String unit = this.resultStack.popStringValue();
 
-        double tolerance = resultStack.popDoubleValue();
+        double tolerance = this.resultStack.popDoubleValue();
 
-        Expression geom = resultStack.popExpression();
+        Expression geom = this.resultStack.popExpression();
 
-        Expression property = resultStack.popExpression();
+        Expression property = this.resultStack.popExpression();
         
         FilterFactory2  ff = (FilterFactory2) filterFactory; // TODO this cast must be removed. It depends of Geometry implementation 
 
@@ -685,13 +709,13 @@ public abstract class AbstractFilterBuilder {
 
     public DistanceBufferOperator buildSpatialBeyondFilter() throws CQLException {
         
-        String unit = resultStack.popStringValue();
+        String unit = this.resultStack.popStringValue();
 
-        double tolerance = resultStack.popDoubleValue();
+        double tolerance = this.resultStack.popDoubleValue();
 
-        Expression geom = resultStack.popExpression();
+        Expression geom = this.resultStack.popExpression();
 
-        Expression property = resultStack.popExpression();
+        Expression property = this.resultStack.popExpression();
         
         FilterFactory2  ff = (FilterFactory2) filterFactory; // TODO this cast must be removed. It depends of Geometry implementation 
 
@@ -706,9 +730,9 @@ public abstract class AbstractFilterBuilder {
      * @throws CQLException
      */
     public PeriodNode buildPeriodBetweenDates() throws CQLException {
-        org.opengis.filter.expression.Literal end = resultStack.popLiteral();
+        org.opengis.filter.expression.Literal end = this.resultStack.popLiteral();
 
-        org.opengis.filter.expression.Literal begin = resultStack.popLiteral();
+        org.opengis.filter.expression.Literal begin = this.resultStack.popLiteral();
 
         PeriodNode period = PeriodNode.createPeriodDateAndDate(begin, end);
 
@@ -722,9 +746,9 @@ public abstract class AbstractFilterBuilder {
      * @throws CQLException
      */
     public PeriodNode buildPeriodDurationAndDate() throws CQLException {
-        Literal date = resultStack.popLiteral();
+        Literal date = this.resultStack.popLiteral();
 
-        Literal duration = resultStack.popLiteral();
+        Literal duration = this.resultStack.popLiteral();
 
         PeriodNode period = PeriodNode.createPeriodDurationAndDate(duration,
                 date, filterFactory);
@@ -739,9 +763,9 @@ public abstract class AbstractFilterBuilder {
      * @throws CQLException
      */
     public PeriodNode buildPeriodDateAndDuration() throws CQLException {
-        Literal duration = resultStack.popLiteral();
+        Literal duration = this.resultStack.popLiteral();
 
-        Literal date = resultStack.popLiteral();
+        Literal date = this.resultStack.popLiteral();
 
         PeriodNode period = PeriodNode.createPeriodDateAndDuration(date,
                 duration, filterFactory);
@@ -773,14 +797,14 @@ public abstract class AbstractFilterBuilder {
     public And buildPropertyBetweenDates() throws CQLException {
         
         // retrieves date and duration of expression
-        Result node = resultStack.popResult();
+        Result node = this.resultStack.popResult();
         PeriodNode period = (PeriodNode) node.getBuilt();
 
         Literal begin = period.getBeginning();
         Literal end = period.getEnding();
 
         // creates and filter firstDate<= property <= lastDate
-        Expression property = resultStack.popExpression();
+        Expression property = this.resultStack.popExpression();
 
         And filter = filterFactory.and(filterFactory.lessOrEqual(begin,
                 property), filterFactory.lessOrEqual(property, end));
@@ -796,7 +820,7 @@ public abstract class AbstractFilterBuilder {
      */
     public PropertyIsGreaterThanOrEqualTo buildPropertyIsGTEFirstDate()
             throws CQLException {
-        Result node = resultStack.popResult();
+        Result node = this.resultStack.popResult();
         PeriodNode period = (PeriodNode) node.getBuilt();
 
         org.opengis.filter.expression.Literal begin = period.getBeginning();
@@ -819,12 +843,12 @@ public abstract class AbstractFilterBuilder {
      */
     public PropertyIsGreaterThan buildPropertyIsGTLastDate()
             throws CQLException {
-        Result node = resultStack.popResult();
+        Result node = this.resultStack.popResult();
         PeriodNode period = (PeriodNode) node.getBuilt();
 
         org.opengis.filter.expression.Literal date = period.getEnding();
 
-        org.opengis.filter.expression.Expression property = resultStack
+        org.opengis.filter.expression.Expression property = this.resultStack
                 .popExpression();
 
         PropertyIsGreaterThan filter = filterFactory.greater(property, date);
@@ -837,11 +861,11 @@ public abstract class AbstractFilterBuilder {
      * @throws CQLException
      */
     public PropertyIsLessThan buildPropertyIsLTFirsDate() throws CQLException {
-        PeriodNode period = resultStack.popPeriod();
+        PeriodNode period = this.resultStack.popPeriodNode();
 
         org.opengis.filter.expression.Literal date = period.getBeginning();
 
-        org.opengis.filter.expression.Expression property = resultStack
+        org.opengis.filter.expression.Expression property = this.resultStack
                 .popExpression();
 
         PropertyIsLessThan filter = filterFactory.less(property, date);
@@ -856,11 +880,11 @@ public abstract class AbstractFilterBuilder {
      */
     public PropertyIsLessThanOrEqualTo buildPropertyIsLTELastDate()
             throws CQLException {
-        PeriodNode period = resultStack.popPeriod();
+        PeriodNode period = this.resultStack.popPeriodNode();
 
         org.opengis.filter.expression.Literal date = period.getEnding();
 
-        org.opengis.filter.expression.Expression property = resultStack
+        org.opengis.filter.expression.Expression property = this.resultStack
                 .popExpression();
 
         PropertyIsLessThanOrEqualTo filter = filterFactory.lessOrEqual(
@@ -876,8 +900,8 @@ public abstract class AbstractFilterBuilder {
      */
     public PropertyIsEqualTo buildEquals() throws CQLException {
 
-        Expression right = resultStack.popExpression();
-        Expression left = resultStack.popExpression();
+        Expression right = this.resultStack.popExpression();
+        Expression left = this.resultStack.popExpression();
 
         return filterFactory.equals(left, right);
     }
@@ -888,8 +912,8 @@ public abstract class AbstractFilterBuilder {
      * @throws CQLException
      */
     public PropertyIsGreaterThan buildGreater() throws CQLException {
-        Expression right = resultStack.popExpression();
-        Expression left = resultStack.popExpression();
+        Expression right = this.resultStack.popExpression();
+        Expression left = this.resultStack.popExpression();
         return filterFactory.greater(left, right);
     }
 
@@ -900,8 +924,8 @@ public abstract class AbstractFilterBuilder {
      */
     public PropertyIsLessThan buildLess() throws CQLException {
 
-        Expression right = resultStack.popExpression();
-        Expression left = resultStack.popExpression();
+        Expression right = this.resultStack.popExpression();
+        Expression left = this.resultStack.popExpression();
         return filterFactory.less(left, right);
     }
 
@@ -911,8 +935,8 @@ public abstract class AbstractFilterBuilder {
      * @throws CQLException
      */
     public PropertyIsGreaterThanOrEqualTo buildGreaterOrEqual() throws CQLException {
-        Expression right = resultStack.popExpression();
-        Expression left = resultStack.popExpression();
+        Expression right = this.resultStack.popExpression();
+        Expression left = this.resultStack.popExpression();
         return filterFactory.greaterOrEqual(left, right);
     }
 
@@ -922,8 +946,8 @@ public abstract class AbstractFilterBuilder {
      */
     public PropertyIsLessThanOrEqualTo buildLessOrEqual() throws CQLException {
         
-        Expression right = resultStack.popExpression();
-        Expression left = resultStack.popExpression();
+        Expression right = this.resultStack.popExpression();
+        Expression left = this.resultStack.popExpression();
 
         return filterFactory.lessOrEqual(left, right);
     }
@@ -1020,7 +1044,7 @@ public abstract class AbstractFilterBuilder {
     }
 
     /**
-     * Return the Envelop
+     * Returns the Envelop
      * @param token
      * @return Literal
      */
@@ -1095,22 +1119,22 @@ public abstract class AbstractFilterBuilder {
         // is preceded by an argument node. Finally extracts the function name
         List<Expression> argList = new LinkedList<Expression>();
 
-        while (!resultStack.empty()) {
-            Result node = resultStack.peek();
+        while (!this.resultStack.empty()) {
+            Result node = this.resultStack.peek();
 
             if (node.getNodeType() == functionNode ) {
                 // gets the function's name
-                Result funcNameNode = resultStack.popResult();
+                Result funcNameNode = this.resultStack.popResult();
                 functionName = funcNameNode.getToken().toString();
 
                 break;
             }
 
             // ejects the argument node
-            resultStack.popResult();
+            this.resultStack.popResult();
 
             // extracts the argument value
-            Expression arg = resultStack.popExpression();
+            Expression arg = this.resultStack.popExpression();
             argList.add(arg);
         }
 
@@ -1137,19 +1161,120 @@ public abstract class AbstractFilterBuilder {
     }
 
     /**
-     * Adds in the result stack the partial result associated to node.
-     * @param built partial result
-     * @param token 
-     * @param type node associated to partial result
+     * Build an After date filter
+     * 
+     * @return After
+     * @throws CQLException
      */
-    public void pushResult(final Result result) {
+	public After buildAfterDate() throws CQLException {
+        
+		Expression right = this.resultStack.popExpression();
+        Expression left = this.resultStack.popExpression();
+        
+        After filter =  this.filterFactory.after(left, right);
+        
+        return filter;
+	}
+	
+	/**
+	 * Builds an after period filter
+	 * 
+	 * @return after
+	 * @throws CQLException
+	 */
+    public After buildAfterPeriod() 
+            throws CQLException {
+        Result node = this.resultStack.popResult();
+        PeriodNode period = (PeriodNode) node.getBuilt();
+
+        Literal date = period.getEnding();
+
+        Expression property = this.resultStack.popExpression();
+
+        After filter = filterFactory.after(property, date);
+
+        return filter;
+    }	
     
-        resultStack.push(result);
+    public Before buildBeforeDate() throws CQLException {
+    
+		Expression right = this.resultStack.popExpression();
+        Expression left = this.resultStack.popExpression();
+        
+        Before filter =  this.filterFactory.before(left, right);
+        
+        return filter;
     }
+    
+    public Before buildBeforePeriod() 
+            throws CQLException {
+        Result node = this.resultStack.popResult();
+        PeriodNode period = (PeriodNode) node.getBuilt();
 
-    public Result peekResult() {
+        Literal date = period.getEnding();
 
-        return resultStack.peek();
+        Expression property = this.resultStack.popExpression();
+
+        Before filter = filterFactory.before(property, date);
+
+        return filter;
+    }	
+    
+    public During buildDuringPeriod() throws CQLException {
+        
+        // retrieves date and duration from expression
+		Period period = this.resultStack.popPeriod();
+
+        Expression property = this.resultStack.popExpression();
+
+        During filter = this.filterFactory.during(property, this.filterFactory.literal(period));
+
+        return filter;
+    }    
+    
+    /**
+     * Builds an Or filter composed of During and After. 
+     * 
+     * @return Or filter
+     * @throws CQLException
+     */
+    public Or buildDuringOrAfter() throws CQLException{
+
+        Period period = this.resultStack.popPeriod();
+        
+        PropertyName property = this.resultStack.popPropertyName();
+
+        // makes the after filter
+        After right = this.filterFactory.after(property, filterFactory.literal(period.getEnding()));
+        
+        // makes the during filter
+        During left = this.filterFactory.during(property, this.filterFactory.literal(period));
+
+    	Or filter = this.filterFactory.or(left, right);
+    	
+    	return filter;
+    }
+    /**
+     * Builds an Or filter composed of Before and During filters. 
+     * 
+     * @return Or filter
+     * @throws CQLException
+     */
+    public Or buildBeforeOrDuring() throws CQLException{
+
+        Period period = this.resultStack.popPeriod();
+        
+        PropertyName property = this.resultStack.popPropertyName();
+
+        // makes the after filter
+        Before right = this.filterFactory.before(property, filterFactory.literal(period.getBeginning()));
+        
+        // makes the during filter
+        During left = this.filterFactory.during(property, this.filterFactory.literal(period));
+        
+        Or filter = this.filterFactory.or(right, left);
+        
+        return filter;
     }
 
 }

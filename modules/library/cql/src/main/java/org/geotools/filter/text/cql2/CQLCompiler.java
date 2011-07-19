@@ -16,14 +16,9 @@
  */
 package org.geotools.filter.text.cql2;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.util.List;
 
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.Hints;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.text.commons.ICompiler;
 import org.geotools.filter.text.commons.IToken;
@@ -37,9 +32,13 @@ import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.Not;
+import org.opengis.filter.Or;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.spatial.BinarySpatialOperator;
 import org.opengis.filter.spatial.DistanceBufferOperator;
+import org.opengis.filter.temporal.After;
+import org.opengis.filter.temporal.Before;
+import org.opengis.filter.temporal.During;
 
 
 /**
@@ -324,19 +323,19 @@ public class CQLCompiler extends CQLParser implements ICompiler{
             return this.builder.buildPeriodDurationAndDate();
 
         case JJTTPBEFORE_DATETIME_NODE:
-            return buildTemporalPredicateBefore();
+            return buildBeforePredicate();
 
         case JJTTPAFTER_DATETIME_NODE:
-            return buildTemporalPredicateAfter();
+            return buildAfterPredicate();
 
         case JJTTPDURING_PERIOD_NODE:
-            return buildTemporalPredicateDuring();
+            return buildDuring();
 
         case JJTTPBEFORE_OR_DURING_PERIOD_NODE:
-            return buildTemporalPredicateBeforeOrDuring();
+            return buildBeforeOrDuring();
 
         case JJTTPDURING_OR_AFTER_PERIOD_NODE:
-            return buildTemporalPredicateDuringOrAfter();
+            return buildDuringOrAfter();
 
             // ----------------------------------------
             // existence predicate actions
@@ -570,9 +569,9 @@ public class CQLCompiler extends CQLParser implements ICompiler{
     }
 
 
-    private org.opengis.filter.Filter buildTemporalPredicateBeforeOrDuring()
+    private Or buildBeforeOrDuring()
             throws CQLException {
-        org.opengis.filter.Filter filter = null;
+        Or filter = null;
 
         Result node = this.builder.peekResult();
 
@@ -580,7 +579,7 @@ public class CQLCompiler extends CQLParser implements ICompiler{
         case JJTPERIOD_BETWEEN_DATES_NODE:
         case JJTPERIOD_WITH_DATE_DURATION_NODE:
         case JJTPERIOD_WITH_DURATION_DATE_NODE:
-            filter = this.builder.buildPropertyIsLTELastDate();
+            filter = this.builder.buildBeforeOrDuring();
             break;
 
         default:
@@ -592,9 +591,9 @@ public class CQLCompiler extends CQLParser implements ICompiler{
         return filter;
     }
 
-    private org.opengis.filter.Filter buildTemporalPredicateDuringOrAfter()
+    private Or buildDuringOrAfter()
             throws CQLException {
-        org.opengis.filter.Filter filter = null;
+        Or filter = null;
 
         Result node = this.builder.peekResult();
 
@@ -602,7 +601,7 @@ public class CQLCompiler extends CQLParser implements ICompiler{
         case JJTPERIOD_BETWEEN_DATES_NODE:
         case JJTPERIOD_WITH_DATE_DURATION_NODE:
         case JJTPERIOD_WITH_DURATION_DATE_NODE:
-            filter = this.builder.buildPropertyIsGTEFirstDate();
+            filter = this.builder.buildDuringOrAfter();
 
             break;
 
@@ -614,37 +613,29 @@ public class CQLCompiler extends CQLParser implements ICompiler{
 
         return filter;
     }
-
-
-
-
 
     /**
      * Build the convenient filter for before date and before period filters
      * 
-     * @param nodeType
-     * 
-     * @return Filter
+     * @return Before
      * @throws CQLException
      */
-    private org.opengis.filter.Filter buildTemporalPredicateBefore()
+    private Before buildBeforePredicate()
             throws CQLException {
-        org.opengis.filter.Filter filter = null;
+        Before filter = null;
 
         // analyzes if the last build is period or date
         Result node = this.builder.peekResult();
 
         switch (node.getNodeType()) {
         case JJTDATETIME_NODE:
-            filter = buildBinaryComparasionOperator(JJTCOMPARISONPREDICATE_LT_NODE);
-
+            filter = this.builder.buildBeforeDate();
             break;
 
         case JJTPERIOD_BETWEEN_DATES_NODE:
         case JJTPERIOD_WITH_DATE_DURATION_NODE:
         case JJTPERIOD_WITH_DURATION_DATE_NODE:
-            filter = this.builder.buildPropertyIsLTFirsDate();
-
+            filter = this.builder.buildBeforePeriod();
             break;
 
         default:
@@ -652,7 +643,6 @@ public class CQLCompiler extends CQLParser implements ICompiler{
                     "unexpeted date time expression in temporal predicate.",
                     node.getToken(), this.source);
         }
-
         return filter;
     }
 
@@ -662,8 +652,8 @@ public class CQLCompiler extends CQLParser implements ICompiler{
      * @return Filter
      * @throws CQLException
      */
-    private Object buildTemporalPredicateDuring() throws CQLException {
-        org.opengis.filter.Filter filter = null;
+    private During buildDuring() throws CQLException {
+        During filter = null;
 
         // determines if the node is period or date
         Result node = this.builder.peekResult();
@@ -672,8 +662,7 @@ public class CQLCompiler extends CQLParser implements ICompiler{
         case JJTPERIOD_BETWEEN_DATES_NODE:
         case JJTPERIOD_WITH_DATE_DURATION_NODE:
         case JJTPERIOD_WITH_DURATION_DATE_NODE:
-            filter = this.builder.buildPropertyBetweenDates();
-
+            filter = this.builder.buildDuringPeriod();
             break;
 
         default:
@@ -692,24 +681,22 @@ public class CQLCompiler extends CQLParser implements ICompiler{
      * @return a filter
      * @throws CQLException
      */
-    private org.opengis.filter.Filter buildTemporalPredicateAfter()
+    private After buildAfterPredicate()
             throws CQLException {
-        org.opengis.filter.Filter filter = null;
+        After filter = null;
 
         // determines if the node is period or date
         Result result = this.builder.peekResult();
 
         switch (result.getNodeType()) {
         case JJTDATETIME_NODE:
-            filter = buildBinaryComparasionOperator(JJTCOMPARISONPREDICATE_GT_NODE);
-
+        	filter = this.builder.buildAfterDate();
             break;
 
         case JJTPERIOD_BETWEEN_DATES_NODE:
         case JJTPERIOD_WITH_DURATION_DATE_NODE:
         case JJTPERIOD_WITH_DATE_DURATION_NODE:
-            filter = this.builder.buildPropertyIsGTLastDate();
-
+            filter = this.builder.buildAfterPeriod();
             break;
 
         default:

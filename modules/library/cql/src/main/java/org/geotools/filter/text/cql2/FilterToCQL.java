@@ -18,6 +18,7 @@ package org.geotools.filter.text.cql2;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -77,6 +78,7 @@ import org.opengis.filter.temporal.OverlappedBy;
 import org.opengis.filter.temporal.TContains;
 import org.opengis.filter.temporal.TEquals;
 import org.opengis.filter.temporal.TOverlaps;
+import org.opengis.temporal.Period;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.io.WKTWriter;
@@ -132,31 +134,26 @@ class FilterToCQL implements FilterVisitor, ExpressionVisitor {
         output.append("1 = 1");
         return output;
     }
+
     public Object visit(And filter, Object extraData) {
-        LOGGER.finer("exporting And filter");
+    	LOGGER.finer("exporting And filter");
+    	
+    	StringBuffer output = asStringBuffer(extraData);
+		List<Filter> children = filter.getChildren();
+		if (children != null) {
+			output.append("(");
+			for (Iterator<Filter> i = children.iterator(); i.hasNext();) {
+				Filter child = i.next();
+				child.accept(this, output);
+				if (i.hasNext()) {
+					output.append(" AND ");
+				}
+			}
+			output.append(")");
+		}
+		return output;
+	}
 
-        StringBuffer output = asStringBuffer(extraData);
-        List<Filter> children = filter.getChildren();
-        if( children != null ){
-            output.append("(");
-            for( Iterator<Filter> i=children.iterator(); i.hasNext(); ){
-                Filter child = i.next();
-                child.accept(this, output);
-                /*if(comparisonHasDate(child) ){
-
-                	// FIXME during should be built
-                	throw new UnsupportedOperationException("work in progress: DURING requires implementation!");
-
-                } else {*/
-                    if (i.hasNext()) {
-                        output.append(" AND ");
-                    }
-               // }
-            }
-            output.append(")");
-        }
-        return output;
-    }
 	/**
      * Encoding an Id filter is not supported by CQL.
      * <p>
@@ -220,6 +217,7 @@ class FilterToCQL implements FilterVisitor, ExpressionVisitor {
         
         return output;
     }
+    
     public Object visit(PropertyIsNotEqualTo filter, Object extraData) {
         LOGGER.finer("exporting PropertyIsNotEqualTo");
         StringBuffer output = asStringBuffer(extraData);
@@ -228,46 +226,33 @@ class FilterToCQL implements FilterVisitor, ExpressionVisitor {
         propertyName.accept(this, output);
         output.append(" != ");
         filter.getExpression2().accept(this, output);
-        
+      
         return output;
     }
-    public Object visit(PropertyIsGreaterThan filter, Object extraData) {
-        StringBuffer output = asStringBuffer(extraData);
-        if( comparisonHasDate( filter )){
-            return after( filter, output);
-        }
-        LOGGER.finer("exporting PropertyIsGreaterThan");
 
-        PropertyName propertyName = (PropertyName) filter.getExpression1();
-        propertyName.accept(this, output);
-        output.append(" > ");
-        filter.getExpression2().accept(this, output);
-        
-        return output;
-    }
     
     /**
      * Checks if the comparison filter has a literal date.
      * @param filter
      * @return true if the comparison has a literal date , false in other case.
      */
-    private boolean comparisonHasDate( Filter filter) {
-    	
-    	if(!(filter instanceof BinaryComparisonOperator)){
-    		return false;
-    		
-    	}
-    	BinaryComparisonOperator  comparison  = (BinaryComparisonOperator) filter;
-    	boolean bool;
-        if( comparison.getExpression2() instanceof Literal){
-            Literal literal = (Literal) comparison.getExpression2();
-            bool =  literal.getValue() instanceof Date;
-        } else {
-            Literal literal = (Literal) comparison.getExpression1();
-            bool =  literal.getValue() instanceof Date;
-        }
-        return bool;
-	}
+//FIXME    private boolean comparisonHasDate( Filter filter) {
+//    	
+//    	if(!(filter instanceof BinaryComparisonOperator)){
+//    		return false;
+//    		
+//    	}
+//    	BinaryComparisonOperator  comparison  = (BinaryComparisonOperator) filter;
+//    	boolean bool;
+//        if( comparison.getExpression2() instanceof Literal){
+//            Literal literal = (Literal) comparison.getExpression2();
+//            bool =  literal.getValue() instanceof Date;
+//        } else {
+//            Literal literal = (Literal) comparison.getExpression1();
+//            bool =  literal.getValue() instanceof Date;
+//        }
+//        return bool;
+//	}
     
     
     /**
@@ -276,109 +261,77 @@ class FilterToCQL implements FilterVisitor, ExpressionVisitor {
      * I am tempted to do the SimpleFeature look aisde in order to guess
      * what kind of type I am working with.
      */
-    private StringBuffer after( PropertyIsGreaterThan filter, StringBuffer output ){
-        LOGGER.finer("exporting AFTER");
+// FIXME    private StringBuffer after( PropertyIsGreaterThan filter, StringBuffer output ){
+//        LOGGER.finer("exporting AFTER");
+//        
+//        Object expr1 = filter.getExpression1();
+//        if( expr1 instanceof PropertyName){
+//        	PropertyName propertyName = (PropertyName) expr1;
+//        	propertyName.accept(this, output);
+//        	output.append(" AFTER ");
+//            filter.getExpression2().accept(this, output);        
+//        }else { 
+//        	PropertyName propertyName = (PropertyName) filter.getExpression2();
+//            propertyName.accept(this, output);
+//            output.append(" BEFORE ");
+//            filter.getExpression1().accept(this, output);        
+//        }
+//        return output;
+//        
+//    }
+
+    
+    public Object visit(PropertyIsGreaterThan filter, Object extraData) {
         
-        Object expr1 = filter.getExpression1();
-        if( expr1 instanceof PropertyName){
-        	PropertyName propertyName = (PropertyName) expr1;
-        	propertyName.accept(this, output);
-        	output.append(" AFTER ");
-            filter.getExpression2().accept(this, output);        
-        }else { 
-        	PropertyName propertyName = (PropertyName) filter.getExpression2();
-            propertyName.accept(this, output);
-            output.append(" BEFORE ");
-            filter.getExpression1().accept(this, output);        
-        }
-        return output;
-        
+        LOGGER.finer("exporting PropertyIsGreaterThan");
+        return buildComparison(filter, extraData, ">", "<");
     }
     
     public Object visit(PropertyIsGreaterThanOrEqualTo filter, Object extraData) {
         LOGGER.finer("exporting PropertyIsGreaterThanOrEqualTo");
-        StringBuffer output = asStringBuffer(extraData);
+        return buildComparison(filter, extraData, ">=", "<=");
+    }
+	/**
+	 * Builds a comparison predicate inserting the operato1 or operator2 taking into 
+	 * account the PropertyName position in the comparison filter.
+	 * 
+	 * @param filter	
+	 * @param extraData
+	 * @param operator1	an operator
+	 * @param operator2 the opposite to the operator1
+	 * @return SringBuffer
+	 */
+	private Object buildComparison(
+						BinaryComparisonOperator filter,
+						Object extraData, 
+						String operator1, String operator2) {
+       
+		StringBuffer output = asStringBuffer(extraData);
         
         Object expr1 = filter.getExpression1();
-        if( expr1 instanceof PropertyName){
-            PropertyName propertyName = (PropertyName) filter.getExpression1();
-            propertyName.accept(this, output);
-            output.append(" >= ");
-            filter.getExpression2().accept(this, output);
-        } else { 
-            PropertyName propertyName = (PropertyName) filter.getExpression2();
-            propertyName.accept(this, output);
-            output.append(" <= ");
-            filter.getExpression1().accept(this, output);
+        if (expr1 instanceof PropertyName) {
+        	PropertyName propertyName = (PropertyName) filter.getExpression1();
+        	propertyName.accept(this, output);
+        	output.append(" ").append(operator1).append(" ");
+        	filter.getExpression2().accept(this, output);
+        } else {
+        	PropertyName propertyName = (PropertyName) filter.getExpression2();
+        	propertyName.accept(this, output);
+        	output.append(" ").append(operator2).append(" ");
+        	filter.getExpression1().accept(this, output);
         }
-        
         return output;
-    }
-    
+	}
     
     public Object visit(PropertyIsLessThan filter, Object extraData) {
     	
         LOGGER.finer("exporting PropertyIsLessThan");
-        StringBuffer output = asStringBuffer(extraData);
-        
-        Object expr1 = filter.getExpression1();
-        if( expr1 instanceof PropertyName){
-	        PropertyName propertyName = (PropertyName) expr1;
-	    	propertyName.accept(this, output);
-	
-	        Literal expression2 = (Literal)filter.getExpression2();
-	        Object literalValue = expression2.getValue();
-	        
-	        if( literalValue instanceof Date){
-	
-	            output.append(" BEFORE ");
-	            filter.getExpression2().accept(this, output);
-	        	
-	        } else {
-	            output.append(" < ");
-	            filter.getExpression2().accept(this, output);
-	        	
-	        }
-        } else {
-	        PropertyName propertyName = (PropertyName) filter.getExpression2();
-	    	propertyName.accept(this, output);
-	
-	        Literal expression2 = (Literal)expr1;
-	        Object literalValue = expression2.getValue();
-	        
-	        if( literalValue instanceof Date){
-	
-	            output.append(" AFTER ");
-	            filter.getExpression1().accept(this, output);
-	        	
-	        } else {
-	            output.append(" > ");
-	            filter.getExpression1().accept(this, output);
-	        	
-	        }
-        }
-        
-        return output;
+        return buildComparison(filter, extraData, "<", ">");
     }
     
     public Object visit(PropertyIsLessThanOrEqualTo filter, Object extraData) {
         LOGGER.finer("exporting PropertyIsLessThanOrEqualTo");
-        StringBuffer output = asStringBuffer(extraData);
-        
-        Object expr1 = filter.getExpression1();
-        if( expr1 instanceof PropertyName){
-            PropertyName propertyName = (PropertyName) filter.getExpression1();
-            propertyName.accept(this, output);
-            output.append(" <= ");
-            filter.getExpression2().accept(this, output);
-        } else { 
-            PropertyName propertyName = (PropertyName) filter.getExpression2();
-            propertyName.accept(this, output);
-            output.append(" >= ");
-            filter.getExpression1().accept(this, output);
-        }
-        
-        return output;
+        return buildComparison(filter, extraData, "<=", ">=");
     }
     
     public Object visit(PropertyIsLike filter, Object extraData) {
@@ -698,52 +651,125 @@ class FilterToCQL implements FilterVisitor, ExpressionVisitor {
     }
     
     public Object visit(After after, Object extraData) {
-        throw new UnsupportedOperationException("Temporal filter After not implemented");
-    }
-    
-    public Object visit(AnyInteracts anyInteracts, Object extraData) {
-        throw new UnsupportedOperationException("Temporal filter AnyInteracts not implemented");
+    	
+        StringBuffer output = asStringBuffer(extraData);
+
+        PropertyName propertyName = (PropertyName) after.getExpression1();
+    	propertyName.accept(this, output);
+
+        output.append(" AFTER ");
+        
+        Literal expr2 = (Literal) after.getExpression2();
+        expr2.accept(this, output);
+
+        return output;
     }
     
     public Object visit(Before before, Object extraData) {
-        throw new UnsupportedOperationException("Temporal filter Before not implemented");
-    }
-    
-    public Object visit(Begins begins, Object extraData) {
-        throw new UnsupportedOperationException("Temporal filter Begins not implemented");
-    }
-    
-    public Object visit(BegunBy begunBy, Object extraData) {
-        throw new UnsupportedOperationException("Temporal filter BegunBy not implemented");
+        StringBuffer output = asStringBuffer(extraData);
+
+        PropertyName propertyName = (PropertyName) before.getExpression1();
+    	propertyName.accept(this, output);
+
+        output.append(" BEFORE ");
+        
+        Literal expr2 = (Literal) before.getExpression2();
+        expr2.accept(this, output);
+
+        return output;
     }
     
     public Object visit(During during, Object extraData) {
-        throw new UnsupportedOperationException("Temporal filter During not implemented");
+
+    	StringBuffer output = asStringBuffer(extraData);
+
+        PropertyName propertyName = (PropertyName) during.getExpression1();
+    	propertyName.accept(this, output);
+
+        output.append(" DURING ");
+        
+        Literal expr2 = (Literal) during.getExpression2();
+        Period period = (Period) expr2.getValue();
+        
+        String strBeginningData = dateToCQLDate( period.getBeginning().getPosition().getDate() );
+		String strEndingDate = dateToCQLDate( period.getEnding().getPosition().getDate() );
+		output.append(strBeginningData).append("/").append(strEndingDate);
+
+        return output;
+    }
+    
+    private String dateToCQLDate(Date date){
+
+    	StringBuffer cqlDate = new StringBuffer();
+	    Calendar cal = Calendar.getInstance();
+	    cal.setTime(date);
+
+    	// builds the string date
+	    int years = cal.get(Calendar.YEAR);
+	    String strYear = String.format("%04d", years);
+    	cqlDate.append(strYear).append("-");
+    	
+	    int month = cal.get(Calendar.MONTH)+1;
+	    String strMonth = String.format("%02d", month);
+    	cqlDate.append(strMonth).append("-");
+
+	    int day = cal.get(Calendar.DAY_OF_MONTH);
+	    String strDay = String.format("%02d", day);
+    	cqlDate.append(strDay);
+    	
+    	// builds the string time
+    	cqlDate.append("T");
+	    int hour = cal.get(Calendar.HOUR);
+	    String strHour = String.format("%02d", hour);
+    	cqlDate.append(strHour).append(":");
+    	
+	    int minute = cal.get(Calendar.MINUTE);
+	    String strMinute = String.format("%02d", minute);
+    	cqlDate.append(strMinute).append(":");
+
+	    int second = cal.get(Calendar.SECOND);
+	    String strSecond = String.format("%02d", second);
+    	cqlDate.append(strSecond).append("Z"); // TODO it is a bug in the cql specification. Zulu zone shouldn't be only one of various possibles zone times. 
+
+    	return cqlDate.toString();
+    }
+
+    public Object visit(AnyInteracts anyInteracts, Object extraData) {
+        throw new UnsupportedOperationException("Temporal filter AnyInteracts has not a CQL expression"); 
+    }
+    
+    
+    public Object visit(Begins begins, Object extraData) {
+        throw new UnsupportedOperationException("Temporal filter Begins has not a CQL expression"); 
+    }
+    
+    public Object visit(BegunBy begunBy, Object extraData) {
+        throw new UnsupportedOperationException("Temporal filter BegunBy has not a CQL expression"); 
     }
     
     public Object visit(EndedBy endedBy, Object extraData) {
-        throw new UnsupportedOperationException("Temporal filter EndedBy not implemented");
+        throw new UnsupportedOperationException("Temporal filter EndedBy has not a CQL expression"); 
     }
     public Object visit(Ends ends, Object extraData) {
-        throw new UnsupportedOperationException("Temporal filter Ends not implemented");
+        throw new UnsupportedOperationException("Temporal filter Ends has not a CQL expression"); 
     }
     public Object visit(Meets meets, Object extraData) {
-        throw new UnsupportedOperationException("Temporal filter Meets not implemented");
+        throw new UnsupportedOperationException("Temporal filter Meets has not a CQL expression"); 
     }
     public Object visit(MetBy metBy, Object extraData) {
-        throw new UnsupportedOperationException("Temporal filter MetBy not implemented");
+        throw new UnsupportedOperationException("Temporal filter MetBy has not a CQL expression"); 
     }
     public Object visit(OverlappedBy overlappedBy, Object extraData) {
-        throw new UnsupportedOperationException("Temporal filter OverlappedBy not implemented");
+        throw new UnsupportedOperationException("Temporal filter OverlappedBy not implemented"); 
     }
     public Object visit(TContains contains, Object extraData) {
-        throw new UnsupportedOperationException("Temporal filter TContains not implemented");
+        throw new UnsupportedOperationException("Temporal filter TContains has not a CQL expression");
     }
     public Object visit(TEquals equals, Object extraData) {
-        throw new UnsupportedOperationException("Temporal filter TEquals not implemented");
+        throw new UnsupportedOperationException("Temporal filter TEquals has not a CQL expression"); 
     }
     public Object visit(TOverlaps contains, Object extraData) {
-        throw new UnsupportedOperationException("Temporal filter TOverlaps not implemented");
+        throw new UnsupportedOperationException("Temporal filter TOverlaps has not a CQL expression"); 
     }
     
 }

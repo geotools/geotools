@@ -20,12 +20,13 @@ import static org.junit.Assert.*;
  */
 public abstract class RenderingExecutorTestBase {
 
-    public RenderingExecutorTestBase() {
-    }
-
+    protected static final ReferencedEnvelope WORLD = 
+            new ReferencedEnvelope(150, 152, -33, -35, DefaultGeographicCRS.WGS84);
+    
     protected static final Rectangle PANE = new Rectangle(200, 150);
+    
     protected static final long WAIT_TIMEOUT = 500;
-    protected static final ReferencedEnvelope WORLD = new ReferencedEnvelope(150, 152, -33, -35, DefaultGeographicCRS.WGS84);
+    
     protected RenderingExecutor executor;
     protected Graphics2D graphics;
     protected BufferedImage image;

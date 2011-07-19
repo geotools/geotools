@@ -47,7 +47,7 @@ public class SingleTaskRenderingExecutorMultiTest extends RenderingExecutorTestB
     
     @After
     public void cleanup() {
-        executor.shutdown();
+        //executor.shutdown();
     }
     
     @Test
@@ -55,7 +55,7 @@ public class SingleTaskRenderingExecutorMultiTest extends RenderingExecutorTestB
         createSubmitObjects();
         listener.setExpected(WaitingListener.EventType.STARTED);
         executor.submit(mapContent, renderer, graphics, listener);
-        boolean gotEvent = listener.await(WaitingListener.EventType.STARTED, 50000);//WAIT_TIMEOUT);
+        boolean gotEvent = listener.await(WaitingListener.EventType.STARTED, WAIT_TIMEOUT);
         assertTrue(gotEvent);
     }
     
@@ -73,17 +73,19 @@ public class SingleTaskRenderingExecutorMultiTest extends RenderingExecutorTestB
         createSubmitObjects();
         
         // set random painting time
-        long time = (long) (WAIT_TIMEOUT * 2 * rand.nextDouble());
+        long time = (long) (WAIT_TIMEOUT * 0.5 * rand.nextDouble());
         renderer.setPaintTime(time);
         renderer.setVerbose(false);
         
+        listener.setExpected(WaitingListener.EventType.STARTED);
         listener.setExpected(WaitingListener.EventType.CANCELLED);
         
         long id = executor.submit(mapContent, renderer, graphics, listener);
-        executor.cancel(id);
+        assertTrue(listener.await(WaitingListener.EventType.STARTED, WAIT_TIMEOUT));
         
-        boolean gotEvent = listener.await(WaitingListener.EventType.CANCELLED, WAIT_TIMEOUT);
-        assertTrue(gotEvent);
+        executor.cancel(id);
+        boolean gotCancel = listener.await(WaitingListener.EventType.CANCELLED, WAIT_TIMEOUT);
+        assertTrue(gotCancel || listener.gotEvent(WaitingListener.EventType.COMPLETED));
     }
 
 }

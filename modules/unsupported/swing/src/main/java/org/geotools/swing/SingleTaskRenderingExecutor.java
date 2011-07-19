@@ -175,13 +175,9 @@ public class SingleTaskRenderingExecutor implements RenderingExecutor {
      * task has the specified ID value and, if so, cancels it.
      */
     public synchronized void cancel(long taskId) {
-        // Allow for the possibility that cancel has been called before the 
-        // task has started running
         if (hasUnfinishedTask(taskId)) {
             task.cancel();
             cancelLatch = new CountDownLatch(1);
-        } else {
-            throw new RuntimeException("no task");
         }
     }
     
@@ -225,7 +221,7 @@ public class SingleTaskRenderingExecutor implements RenderingExecutor {
      */
     private boolean hasUnfinishedTask(long taskId) {
         return (task != null && task.getId() == taskId &&
-                (taskFuture == null || !taskFuture.isDone()));
+                taskFuture != null && !taskFuture.isDone());
     }
     
     /**
@@ -235,7 +231,7 @@ public class SingleTaskRenderingExecutor implements RenderingExecutor {
      * @return {@code true} if a task exists and is unfinished
      */
     private boolean hasUnfinishedTask() {
-        return (task != null && (taskFuture == null || !taskFuture.isDone()));
+        return (task != null && taskFuture != null && !taskFuture.isDone());
     }
 
     private void notifyStarted(boolean force) {
@@ -264,6 +260,8 @@ public class SingleTaskRenderingExecutor implements RenderingExecutor {
         } catch (Exception ex) {
             throw new IllegalStateException("When getting rendering result", ex);
         }
+        
+        taskFuture = null;
 
         /*
          * We zero the cancel latch here because it's possible that the job
@@ -273,9 +271,6 @@ public class SingleTaskRenderingExecutor implements RenderingExecutor {
          */
         cancelLatch.countDown();
         
-        task = null;
-        taskFuture = null;
-
         RenderingExecutorEvent event = new RenderingExecutorEvent(this, taskId);
         switch (result) {
             case CANCELLED:

@@ -8,18 +8,21 @@ Swing
       
       faq
 
-The **gt-swing** module contains GUI and utility classes which are based on the Java Swing library. They include
-JMapFrame, a simple viewer with optional toolbar and layer list control. Its main use is to provide the visual
-components for the GeoTools `tutorial applications <../../tutorial/index.html>`_. You can also use it for basic display purposes
-in your own projects, or use the classes as a starting point for your own custom components. If you are unfamiliar with
-the Swing library, the Oracle `Swing tutorial <http://download.oracle.com/javase/tutorial/uiswing/>`_ is a good place to
-start.
+The **gt-swing** module contains GUI and utility classes which are based on the Java Swing library. Its main use is to
+provide the visual components for the GeoTools `tutorial applications <../../tutorial/index.html>`_. You can also use it
+for basic display purposes in your own projects, or use the classes as a starting point for your own custom components.
+If you are unfamiliar with the Swing library, the Oracle `Swing tutorial
+<http://download.oracle.com/javase/tutorial/uiswing/>`_ is a good place to start.
 
-Please keep in mind that this module is not a fully-featured GUI widget set for geo-spatial applications, nor is it
-intended to be. The focus of the GeoTools project is on accessing and manipulating geospatial data, not user interface
-components. If you are interested in building a fully-featured GIS application that's great and GeoTools is here to help
-you. But we are not If you are looking for a fully-featured, extendible desktop GIS application based on GeoTools, see
-`uDig <http://udig.refractions.net/>`_ which uses `SWT <http://www.eclipse.org/swt/>`_ rather than Swing.
+This module is not intended to be a fully-featured GUI widget set for geo-spatial applications. The focus of the
+GeoTools project is on handling geospatial data, not developing user interface components. If you want to build a GIS
+application with all the GUI bells and whistles that's great and GeoTools is here to help you, but we can't do it for
+you. 
+
+.. tip::
+        For a ready-made, fully-featured, extendible desktop GIS application based on
+        GeoTools, see `uDig <http://udig.refractions.net/>`_ which is based on `SWT
+        <http://www.eclipse.org/swt/>`_ rather than Swing.
 
 Overview
 --------

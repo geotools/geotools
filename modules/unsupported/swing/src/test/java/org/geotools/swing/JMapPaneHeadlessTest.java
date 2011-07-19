@@ -16,9 +16,12 @@
  */
 package org.geotools.swing;
 
-import org.geotools.swing.testutils.MockRenderer;
 import org.geotools.renderer.GTRenderer;
 import org.geotools.map.MapContent;
+import org.geotools.swing.event.MapPaneEvent.Type;
+
+import org.geotools.swing.testutils.MockRenderer;
+import org.geotools.swing.testutils.WaitingMapPaneListener;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -33,11 +36,15 @@ import static org.junit.Assert.*;
  * @version $Id$
  */
 public class JMapPaneHeadlessTest {
+    private static final long WAIT_TIMEOUT = 500;
+    
     private JMapPane pane;
+    private WaitingMapPaneListener listener;
     
     @Before
     public void setup() {
         pane = new JMapPane();
+        listener = new WaitingMapPaneListener();
     }
     
     @Test
@@ -71,10 +78,23 @@ public class JMapPaneHeadlessTest {
     
     @Test
     public void setRendererEvent() {
-        
+        pane.addMapPaneListener(listener);
+        listener.setExpected(Type.NEW_RENDERER);
         
         GTRenderer renderer = new MockRenderer();
         pane.setRenderer(renderer);
         
+        assertTrue(listener.await(Type.NEW_RENDERER, WAIT_TIMEOUT));
+    }
+    
+    @Test
+    public void setMapContentEvent() {
+        pane.addMapPaneListener(listener);
+        listener.setExpected(Type.NEW_MAPCONTENT);
+        
+        MapContent mapContent = new MapContent();
+        pane.setMapContent(mapContent);
+        
+        assertTrue(listener.await(Type.NEW_MAPCONTENT, WAIT_TIMEOUT));
     }
 }

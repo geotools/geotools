@@ -455,8 +455,10 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
                 newRenderer.setMapContent(mapContent);
             }
         }
-
+        
         renderer = newRenderer;
+        MapPaneEvent event = new MapPaneEvent(this, MapPaneEvent.Type.NEW_RENDERER, renderer);
+        publishEvent(event);
     }
     
     /**
@@ -543,9 +545,10 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
             if (renderer != null) {
                 renderer.setMapContent(mapContent);
             }
-
-            MapPaneEvent ev = new MapPaneEvent(this, MapPaneEvent.Type.NEW_MAPCONTENT);
-            publishEvent(ev);
+            
+            MapPaneEvent event = new MapPaneEvent(
+                    this, MapPaneEvent.Type.NEW_MAPCONTENT, mapContent);
+            publishEvent(event);
             
             drawBaseImage(false);
         }

@@ -42,7 +42,7 @@ public class MapPaneEvent extends EventObject {
         /**
          * A new {@code MapContent} has been set for the map pane.
          */
-        NEW_CONTENT,
+        NEW_MAPCONTENT,
 
         /**
          * A new renderer has been set for the map pane.
@@ -70,13 +70,6 @@ public class MapPaneEvent extends EventObject {
          * The map pane has stopped rendering features.
          */
         RENDERING_STOPPED,
-
-        /**
-         * The map pane is rendering features. The event
-         * will carry data that can be retrieved as a floating
-         * point value between 0 and 1.
-         */
-        RENDERING_PROGRESS;
     }
 
     /** Type of mappane event */

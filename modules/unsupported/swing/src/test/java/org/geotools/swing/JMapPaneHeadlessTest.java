@@ -41,12 +41,23 @@ public class JMapPaneHeadlessTest {
     }
     
     @Test
-    public void rendererLinkedToMapContent() {
+    public void settingRendererLinksToMapContent() {
         MapContent mapContent = new MapContent();
         pane.setMapContent(mapContent);
         
         GTRenderer renderer = new MockRenderer();
         pane.setRenderer(renderer);
+        
+        assertTrue(renderer.getMapContent() == mapContent);
+    }
+    
+    @Test
+    public void settingMapContentLinksToRenderer() {
+        GTRenderer renderer = new MockRenderer();
+        pane.setRenderer(renderer);
+        
+        MapContent mapContent = new MapContent();
+        pane.setMapContent(mapContent);
         
         assertTrue(renderer.getMapContent() == mapContent);
     }

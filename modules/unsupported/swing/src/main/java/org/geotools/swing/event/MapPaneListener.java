@@ -18,67 +18,57 @@
 package org.geotools.swing.event;
 
 /**
- * Implemented by classes that wish to receive MapPaneEvents
+ * An event class for map pane events.
  *
  * @author Michael Bedward
  * @since 2.6
- *
- *
  * @source $URL$
  * @version $Id$
  */
 public interface MapPaneListener {
 
     /**
-     * Called by the map pane when a new map context has been set
+     * Called when a new {@code MapContent} instance has been set for 
+     * the map pane.
      *
      * @param ev the event
      */
-    public void onNewContext(MapPaneEvent ev);
+    void onNewContent(MapPaneEvent ev);
 
     /**
-     * Called by the map pane when a new renderer has been set
+     * Called when a new renderer has been set for the map pane.
      *
      * @param ev the event
      */
-    public void onNewRenderer(MapPaneEvent ev);
+    void onNewRenderer(MapPaneEvent ev);
 
     /**
-     * Called by the map pane when it has been resized
+     * Called when the map pane has been resized.
      *
      * @param ev the event
      */
-    public void onResized(MapPaneEvent ev);
+    void onResized(MapPaneEvent ev);
 
     /**
-     * Called by the map pane when its display area has been
-     * changed e.g. by zooming or panning
+     * Called the display area (world bounds) has changed.
      *
      * @param ev the event
      */
-    public void onDisplayAreaChanged(MapPaneEvent ev);
+    void onDisplayAreaChanged(MapPaneEvent ev);
 
     /**
-     * Called by the map pane when it has started rendering features
+     * Called when a rendering task has started.
      * 
      * @param ev the event
      */
-    public void onRenderingStarted(MapPaneEvent ev);
+    void onRenderingStarted(MapPaneEvent ev);
 
     /**
-     * Called by the map pane when it has stopped rendering features
+     * Called when a rendering task has stopped. This includes
+     * normal completion, cancellation or failure.
      *
      * @param ev the event
      */
-    public void onRenderingStopped(MapPaneEvent ev);
-
-    /**
-     * Called by the map pane when it is rendering features. The
-     * event will be carrying data: a floating point value between
-     * 0 and 1 indicating rendering progress.
-     * 
-     * @param ev the event
-     */
-    public void onRenderingProgress(MapPaneEvent ev);
+    void onRenderingStopped(MapPaneEvent ev);
 
 }

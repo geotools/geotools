@@ -23,7 +23,6 @@ import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Rectangle2D;
-import java.util.ResourceBundle;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -63,9 +62,9 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @version $Id$
  */
 public class StatusBar extends JPanel {
-    private static final ResourceBundle stringRes = ResourceBundle.getBundle("org/geotools/swing/Text");
-
-    private JMapPane mapPane;
+    private static final String NO_CRS = "CRS undefined";
+    
+    private MapPane mapPane;
     private MapMouseListener mouseListener;
     private MapPaneAdapter mapPaneListener;
 
@@ -80,19 +79,19 @@ public class StatusBar extends JPanel {
 
 
     /**
-     * Default constructor.
-     * {@link#setMapPane} must be called subsequently.
+     * Creates a new instance. {@linkplain #setMapPane} must be called 
+     * subsequently.
      */
     public StatusBar() {
         this(null);
     }
 
     /**
-     * Constructor. Links the status bar to the specified map pane.
+     * Creates a new instance linked to the specified MapPane.
      *
      * @param pane the map pane
      */
-    public StatusBar(JMapPane pane) {
+    public StatusBar(MapPane pane) {
         createListeners();
         initComponents();
 
@@ -107,20 +106,19 @@ public class StatusBar extends JPanel {
      * @param newPane the map pane
      * @throws IllegalArgumentException if pane is {@code null}
      */
-    public void setMapPane(final JMapPane newPane) {
+    public void setMapPane(MapPane newPane) {
         doSetMapPane(newPane);
     }
 
     /**
-     * Helper for {@link #setMapPane(JMapPane)}. This is just defined so that
-     * it can be called from the constructor without a warning from the compiler
-     * about calling a public overridable method.
+     * Helper for {@link #setMapPane(MapPane)} which can be called from
+     * the constructor without raising a compiler warning.
      * 
      * @param newPane the map pane
      */
-    private void doSetMapPane(final JMapPane newPane) {
+    private void doSetMapPane(final MapPane newPane) {
         if (newPane == null) {
-            throw new IllegalArgumentException(stringRes.getString("arg_null_error"));
+            throw new IllegalArgumentException("newPane must not be null");
         }
 
         if (mapPane != newPane) {
@@ -137,23 +135,23 @@ public class StatusBar extends JPanel {
     }
 
     /**
-     * Clear the map coordinate display
+     * Clears the map coordinate display.
      */
     public void clearCoords() {
         coordsLabel.setText("");
     }
 
     /**
-     * Clear the map bounds display
+     * Clears the map bounds display.
      */
     public void clearBounds() {
         boundsLabel.setText("");
     }
 
     /**
-     * Format and display the coordinates of the given position
+     * Displays position coordinates.
      *
-     * @param mapPos mouse cursor position (world coords)
+     * @param mapPos mouse cursor position in world coordinates
      */
     public void displayCoords(DirectPosition2D mapPos) {
         if (mapPos != null) {
@@ -162,7 +160,8 @@ public class StatusBar extends JPanel {
     }
 
     /**
-     * Display the bounding coordinates of the given envelope
+     * Displays the bounding coordinates.
+     * 
      * @param bounds the bounds to display
      */
     public void displayBounds(Envelope bounds) {
@@ -176,12 +175,13 @@ public class StatusBar extends JPanel {
     }
 
     /**
-     * Display the name of the coordinate reference system
+     * Displays the name of the coordinate reference system.
+     * 
      * @param crs the CRS to display
      */
     public void displayCRS(CoordinateReferenceSystem crs) {
         if (crs == null) {
-            crsBtn.setText(stringRes.getString("crs_undefined"));
+            crsBtn.setText(NO_CRS);
         } else {
             crsBtn.setText(crs.getName().toString());
         }
@@ -234,14 +234,14 @@ public class StatusBar extends JPanel {
 
         add(boundsLabel, constraint);
 
-        crsBtn = new JButton(stringRes.getString("crs_undefined"));
+        crsBtn = new JButton(NO_CRS);
         crsBtn.setFont(font);
 
         rect = getFontMetrics(font).getStringBounds("X", graphics);
 
         constraint = String.format("height %d!", (int)rect.getHeight() + 6);
 
-        crsBtn.setToolTipText(stringRes.getString("tool_tip_statusbar_crs"));
+        crsBtn.setToolTipText("Set or display the map projection");
         crsMenu = new CRSPopupMenu();
         crsBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -253,11 +253,10 @@ public class StatusBar extends JPanel {
     }
 
     /**
-     * Initialize the mouse and map bounds listeners
+     * Initializes the mouse and map bounds listeners.
      */
     private void createListeners() {
         mouseListener = new MapMouseAdapter() {
-
             @Override
             public void onMouseMoved(MapMouseEvent ev) {
                 displayCoords(ev.getWorldPos());
@@ -270,7 +269,6 @@ public class StatusBar extends JPanel {
         };
 
         mapPaneListener = new MapPaneAdapter() {
-
             @Override
             public void onDisplayAreaChanged(MapPaneEvent ev) {
                 ReferencedEnvelope env = mapPane.getDisplayArea();
@@ -300,13 +298,6 @@ public class StatusBar extends JPanel {
                 renderLabel.setText("");
                 renderLabel.setIcon(null);
             }
-
-            @Override
-            public void onRenderingProgress(MapPaneEvent ev) {
-                float progress = ((Number) ev.getData()).floatValue();
-                System.out.println("render progress: " + progress);
-            }
-
         };
     }
 

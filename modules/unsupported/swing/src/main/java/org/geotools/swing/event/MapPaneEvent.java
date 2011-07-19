@@ -40,12 +40,12 @@ public class MapPaneEvent extends EventObject {
      */
     public static enum Type {
         /**
-         * The map pane has set a new context.
+         * A new {@code MapContent} has been set for the map pane.
          */
-        NEW_CONTEXT,
+        NEW_CONTENT,
 
         /**
-         * The map pane has set a new renderer.
+         * A new renderer has been set for the map pane.
          */
         NEW_RENDERER,
 

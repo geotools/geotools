@@ -202,10 +202,10 @@ public class ThreadedEpsgFactory extends DeferredAuthorityFactory
         }
         // in case of negative timeout, we don't release the data source and backing store
         if(timeout > 0) {
-            LOGGER.log(Level.INFO, "Setting the EPSG factory " + getClass().getName() + " to a " + timeout + "ms timeout");
+            LOGGER.log(Level.FINE, "Setting the EPSG factory " + getClass().getName() + " to a " + timeout + "ms timeout");
             setTimeout(timeout); // Close the connection after 1 second of inactivity.
         } else {
-            LOGGER.log(Level.INFO, "The EPSG factory " + getClass().getName() + " will not timeout");
+            LOGGER.log(Level.FINE, "The EPSG factory " + getClass().getName() + " will not timeout");
         }
     }
 
@@ -405,7 +405,7 @@ public class ThreadedEpsgFactory extends DeferredAuthorityFactory
         if (ALLOW_REGISTRATION && context != null) {
             try {
                 context.bind(datasourceName, source);
-                record = Loggings.format(Level.INFO,
+                record = Loggings.format(Level.FINE,
                         LoggingKeys.CREATED_DATASOURCE_ENTRY_$1, datasourceName);
             } catch (NamingException exception) {
                 record = Loggings.format(Level.WARNING,

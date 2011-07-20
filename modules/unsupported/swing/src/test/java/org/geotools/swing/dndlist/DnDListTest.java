@@ -17,15 +17,18 @@
 
 package org.geotools.swing.dndlist;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.fail;
-
 import java.awt.GraphicsEnvironment;
+
+import javax.swing.RepaintManager;
 
 import org.geotools.swing.control.DnDList;
 import org.geotools.swing.control.DnDListModel;
+
+import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
+
+import org.junit.BeforeClass;
 import org.junit.Test;
+import static org.junit.Assert.*;
 
 public class DnDListTest {
 
@@ -33,6 +36,17 @@ public class DnDListTest {
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment(); 
         return ge.isHeadless();
     }
+    
+    /**
+     * Temporary hack prior to setting up proper fest-swing tests.
+     */
+    @BeforeClass
+    public static void setupOnce() {
+        RepaintManager rm = new RepaintManager();
+        FailOnThreadViolationRepaintManager.setCurrentManager(rm);
+    }
+    
+    
     @Test
     public void testDnDList() {
         if( isHeadless() ) return;

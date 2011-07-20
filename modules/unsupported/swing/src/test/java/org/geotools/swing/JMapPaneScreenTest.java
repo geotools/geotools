@@ -17,18 +17,23 @@
 package org.geotools.swing;
 
 import java.awt.Rectangle;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
+import java.awt.Dimension;
 import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
 
-import org.geotools.swing.event.MapPaneEvent;
+import org.geotools.swing.event.MapPaneEvent.Type;
+import org.geotools.swing.event.MapPaneListener;
+import org.geotools.swing.testutils.WaitingMapPaneListener;
 
 import org.geotools.swing.testutils.GraphicsTestRunner;
-import org.geotools.swing.testutils.WaitingMapPaneListener;
+
+import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
+import org.fest.swing.edt.GuiActionRunner;
+import org.fest.swing.edt.GuiQuery;
+import org.fest.swing.fixture.FrameFixture;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.junit.Assert.*;
@@ -43,78 +48,62 @@ import static org.junit.Assert.*;
  */
 @RunWith(GraphicsTestRunner.class)
 public class JMapPaneScreenTest {
-    private static final long WAIT_TIMEOUT = 2000;
+    private static final long WAIT_TIMEOUT = 1000;
     private static final int WIDTH = 200;
-    private static final int HEIGHT = 100;
+    private static final int HEIGHT = 150;
     
     private JMapPane mapPane;
     private WaitingMapPaneListener listener;
-    private JFrame frame;
-    private CountDownLatch setupLatch;
+
+    private FrameFixture window;
+    
+    @BeforeClass 
+    public static void setUpOnce() {
+        FailOnThreadViolationRepaintManager.install();
+    }
     
     @Before
     public void setup() {
         listener = new WaitingMapPaneListener();
-        setupLatch = new CountDownLatch(1);
-        doCreateAndShow(WIDTH, HEIGHT);
+        
+        TestFrame frame = GuiActionRunner.execute(new GuiQuery<TestFrame>(){
+            @Override
+            protected TestFrame executeInEDT() throws Throwable {
+                return new TestFrame(listener);
+            }
+        });
+        
+        window = new FrameFixture(frame);
+        window.show();
     }
     
     @After
     public void cleanup() {
-        doCleanup();
+        window.cleanUp();
     }
     
     @Test
-    public void resizingPaneFiresEvent() throws Exception {
-        assertTrue(setupLatch.await(WAIT_TIMEOUT, TimeUnit.MILLISECONDS));
+    public void foo() {
+        listener.setExpected(Type.PANE_RESIZED);
+        window.resizeTo(new Dimension(WIDTH * 2, HEIGHT * 2));
+        assertTrue( listener.await(Type.PANE_RESIZED, WAIT_TIMEOUT) );
         
-        mapPane.addMapPaneListener(listener);
-        listener.setExpected(MapPaneEvent.Type.PANE_RESIZED);
+        Object obj = listener.getEvent(Type.PANE_RESIZED).getData();
+        assertNotNull(obj);
+        assertTrue(obj instanceof Rectangle);
         
-        final int w = WIDTH / 2;
-        final int h = HEIGHT * 2;
-        doSetSize(w, h);
-        assertTrue(listener.await(MapPaneEvent.Type.PANE_RESIZED, WAIT_TIMEOUT));
-        
-        MapPaneEvent event = listener.getEvent(MapPaneEvent.Type.PANE_RESIZED);
-        Object o = event.getData();
-        assertNotNull(o);
-        assert(o instanceof Rectangle);
-        
-        Rectangle r = (Rectangle) o;
+        Rectangle r = (Rectangle) obj;
         assertEquals(mapPane.getVisibleRect(), r);
     }
-
-    private void doSetSize(final int w, final int h) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                frame.setSize(w, h);
-            }
-        });
-    }
-
-    private void doCreateAndShow(final int w, final int h) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                frame = new JFrame();
-                
-                mapPane = new JMapPane();
-                frame.add(mapPane);
-                frame.setSize(w, h);
-                frame.setVisible(true);
-                
-                setupLatch.countDown();
-            }
-        });
-    }
-
-    private void doCleanup() {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                frame.setVisible(false);
-                frame.dispose();
-            }
-        });
-    }
     
+    class TestFrame extends JFrame {
+        
+        public TestFrame(MapPaneListener listener) {
+            mapPane = new JMapPane();
+            add(mapPane);
+            setSize(WIDTH, HEIGHT);
+            mapPane.addMapPaneListener(listener);
+        }
+        
+    }
 }

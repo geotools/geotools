@@ -16,8 +16,14 @@
  */
 package org.geotools.swing;
 
+import javax.swing.RepaintManager;
+import org.junit.BeforeClass;
 import java.awt.Rectangle;
 
+import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
+import org.fest.swing.edt.GuiActionRunner;
+import org.fest.swing.edt.GuiQuery;
+import org.fest.swing.fixture.ContainerFixture;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.map.FeatureLayer;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -57,10 +63,19 @@ public class JMapPaneHeadlessTest {
     private WaitingMapPaneListener listener;
     private JMapPane mapPane;
     
+    @BeforeClass
+    public static void setupOnce() {
+        FailOnThreadViolationRepaintManager.install();
+    }
     
     @Before
     public void setup() {
-        mapPane = new JMapPane();
+        mapPane = GuiActionRunner.execute(new GuiQuery<JMapPane>() {
+            @Override
+            protected JMapPane executeInEDT() throws Throwable {
+                return new JMapPane();
+            }
+        });
         listener = new WaitingMapPaneListener();
     }
     

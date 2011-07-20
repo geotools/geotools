@@ -16,14 +16,19 @@
  */
 package org.geotools.swing;
 
+import org.geotools.map.FeatureLayer;
 import java.awt.Rectangle;
+import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.MapContent;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.renderer.GTRenderer;
+import org.geotools.styling.SLD;
+import org.geotools.styling.Style;
 import org.geotools.swing.event.MapPaneEvent.Type;
 
 import org.geotools.swing.testutils.MockRenderer;
+import org.geotools.swing.testutils.TestData;
 import org.geotools.swing.testutils.WaitingMapPaneListener;
 
 import org.junit.Before;
@@ -125,6 +130,20 @@ public class JMapPaneHeadlessTest {
     @Test
     public void getDisplayArea_NoAreaSet() {
         assertTrue(mapPane.getDisplayArea().isEmpty());
+    }
+    
+    @Test
+    public void displayAreaIsSetFromMapContent() {
+        MapContent mapContent = new MapContent();
+        SimpleFeatureCollection fc = TestData.singlePolygonFeatureCollection(WORLD);
+        Style style = SLD.createSimpleStyle(fc.getSchema());
+        mapContent.addLayer(new FeatureLayer(fc, style));
+        
+        mapPane.setMapContent(mapContent);
+        
+        // Since no screen area has been set the map pane's bounds should
+        // be equal to the feature collection bounds
+        assertTrue(WORLD.boundsEquals2D(mapPane.getDisplayArea(), TOL));
     }
 
     /**

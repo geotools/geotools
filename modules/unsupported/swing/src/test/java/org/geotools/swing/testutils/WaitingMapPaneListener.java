@@ -31,8 +31,8 @@ import org.geotools.swing.event.MapPaneListener;
  * 
  * @author Michael Bedward
  * @since 8.0
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/swing/src/test/java/org/geotools/swing/testutils/WaitingRenderingExecutorListener.java $
- * @version $Id: WaitingRenderingExecutorListener.java 37675 2011-07-19 12:34:04Z mbedward $
+ * @source $URL$
+ * @version $Id$
  */
 public class WaitingMapPaneListener implements MapPaneListener {
     private static final int NTYPES = MapPaneEvent.Type.values().length;

@@ -44,7 +44,7 @@ import org.opengis.filter.temporal.Before;
  */
 public class CQLTemporalPredicateTest {
     
-    private final Language language;
+    protected final Language language;
     
     /**
      * New instance of CQLTemporalPredicateTest
@@ -100,7 +100,7 @@ public class CQLTemporalPredicateTest {
         Assert.assertNotNull("not null expected", resultFilter);
 
         expected = FilterCQLSample.getSample(FilterCQLSample.FILTER_BEFORE_DATE);
-        Assert.assertEquals("less filter ", expected, resultFilter);
+        Assert.assertEquals(expected, resultFilter);
 
         // ATTR1 BEFORE 2006-11-31T01:30:00Z/2006-12-31T01:30:00Z                                             
         resultFilter = CompilerUtil.parseFilter(this.language,FilterCQLSample.FILTER_BEFORE_PERIOD_BETWEEN_DATES);
@@ -190,8 +190,7 @@ public class CQLTemporalPredicateTest {
         String predicate = prop + " BEFORE P10Y10M10DT5H5M5S/2006-11-30T01:30:00Z ";
         Filter resultFilter = CompilerUtil.parseFilter(this.language,predicate);
 
-        Assert.assertTrue("PropertyIsLessThan filter was expected",
-            resultFilter instanceof Before);
+        Assert.assertTrue(resultFilter instanceof Before);
 
         Before lessFilter = (Before) resultFilter;
         Expression property = lessFilter.getExpression1();

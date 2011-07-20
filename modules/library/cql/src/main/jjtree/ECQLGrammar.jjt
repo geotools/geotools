@@ -378,7 +378,8 @@ void Predicate() #void:
 {
         IdPredicateDeprecated() // TODO deprecated syntax
     |   IdPredicate()
-    |   LOOKAHEAD(InPredicate()) InPredicate() 
+    |   LOOKAHEAD(InPredicate()) InPredicate()
+    |   LOOKAHEAD(TemporalPredicate()) TemporalPredicate() 
     |   Expression()  
         (
                 LOOKAHEAD(2) likePredicate()
@@ -386,7 +387,6 @@ void Predicate() #void:
             |   LOOKAHEAD(2) ExistencePredicate() 
             |   LOOKAHEAD(2) NullPredicate() 
             |   LOOKAHEAD(2) BetweenPredicate()     
-            |   LOOKAHEAD(2) TemporalPredicate() 
             |   ComparisonPredicate() 
         )
         
@@ -726,10 +726,24 @@ void NullPredicate() :
 void TemporalPredicate() #void:
 {}
 {
-		<BEFORE> TemporalPredicateBefore() 	
-	|   <AFTER>	 TemporalPredicateAfter()	
-	|	<DURING> TemporalPredicateDuring()	
+    TemporalPredicateHead() TemporalPredicateTail()
+   
 	
+}
+
+void TemporalPredicateHead() #void:
+{}
+{
+        Attribute()
+   |    DateTime()
+}
+
+void TemporalPredicateTail() #void:
+{}
+{
+        <BEFORE> TemporalPredicateBefore()  
+    |   <AFTER>  TemporalPredicateAfter()   
+    |   <DURING> TemporalPredicateDuring()  
 }
 
 void TemporalPredicateBefore()#void:
@@ -745,7 +759,7 @@ void TemporalPredicateAfter() #TPAfter_DateTime_Node:
 		DateTimeExpression()
 }
 
-void TemporalPredicateDuring()#void:
+void TemporalPredicateDuring() #void:
 {}
 {
 		Period() 				#TPDuring_Period_Node
@@ -755,7 +769,7 @@ void TemporalPredicateDuring()#void:
 /*
  * <date-time expression ::= <date-time> | <period>
  */
-void DateTimeExpression()#void:
+void DateTimeExpression() #void:
 {}
 {
 		LOOKAHEAD(2) Period() 	
@@ -783,11 +797,12 @@ void PeriodTail()#void:
 	|	DateTime()	#Period_Between_Dates_Node	
 }
 
-void DateTime()#DateTime_Node: 
+void DateTime() #DateTime_Node: 
 {}
 {
 	<DATE_TIME> 
 }
+
 
 /*
  * <duration> ::= "P" <dur-date> | <dur-time>

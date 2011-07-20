@@ -53,6 +53,9 @@ public class ECQLExamples {
                 System.out.println("3 - like pattern using String 'aabbcc' LIKE '%bb%'");
                 System.out.println("4 - Comparison: (under18YearsOld * 19541453 / 100 ) < (over65YearsOld * 19541453 / 100 )");
                 System.out.println("5 - population Between 10000 and 20000");
+                System.out.println("6 - 2006-11-30T01:00:00Z AFTER 2006-11-30T01:30:00Z");
+                System.out.println("7 - 2006-11-30T01:00:00Z BEFORE 2006-11-30T01:30:00Z");
+                
                 
                 System.out.println("0 - quite");
                 System.out.print(">");
@@ -78,6 +81,12 @@ public class ECQLExamples {
                 case 5:
                     betweenPredicate();
                     break;
+                case 6:
+                    afterPredicate();
+                    break;
+                case 7:
+                    beforePredicate();
+                    break;
                     
                 default:
                     System.out.println("invalid option");
@@ -92,7 +101,25 @@ public class ECQLExamples {
     }
 
 
-    /**
+    private static void afterPredicate() throws Exception{
+        Filter filter = ECQL.toFilter("2006-11-30T01:00:00Z AFTER 2006-11-30T01:30:00Z");
+		prittyPrintFilter(filter);
+		
+        Boolean result = filter.evaluate(null);
+        System.out.println("Result of filter evaluation: " + result);
+		
+	}
+    private static void beforePredicate() throws Exception{
+        Filter filter = ECQL.toFilter("2006-11-30T01:00:00Z BEFORE 2006-11-30T01:30:00Z");
+		prittyPrintFilter(filter);
+		
+        Boolean result = filter.evaluate(null);
+        System.out.println("Result of filter evaluation: " + result);
+		
+	}
+
+
+	/**
      * Retrieves the features from a data store using the filter
      * 
      * @param filter
@@ -237,7 +264,8 @@ public class ECQLExamples {
                 "cityName:String," + 
                 "over65YearsOld:Double,"+ 
                 "under18YearsOld:Double," +
-                "population:Integer" 
+                "population:Integer" +
+                "earthQuake: Date"
         );
         SimpleFeatureBuilder featureBuilder = new SimpleFeatureBuilder(type);
 

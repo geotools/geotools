@@ -16,8 +16,8 @@
  */
 package org.geotools.swing;
 
-import org.geotools.renderer.GTRenderer;
 import org.geotools.map.MapContent;
+import org.geotools.renderer.GTRenderer;
 import org.geotools.swing.event.MapPaneEvent.Type;
 
 import org.geotools.swing.testutils.MockRenderer;

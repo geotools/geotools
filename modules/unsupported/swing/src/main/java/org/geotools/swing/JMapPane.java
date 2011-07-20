@@ -553,7 +553,7 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
             drawBaseImage(false);
         }
     }
-
+    
     /**
      * {@inheritDoc}
      */
@@ -994,6 +994,7 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
         }
 
         if (reason != MapLayerEvent.SELECTION_CHANGED) {
+            clearLabelCache.set(true);
             drawBaseImage(false);
         }
 

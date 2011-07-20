@@ -560,6 +560,8 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
     public ReferencedEnvelope getDisplayArea() {
         if (mapContent != null) {
             return mapContent.getViewport().getBounds();
+        } else if (pendingDisplayArea != null) {
+            return new ReferencedEnvelope(pendingDisplayArea);
         } else {
             return new ReferencedEnvelope();
         }
@@ -572,12 +574,8 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
         if (envelope == null) {
             throw new IllegalArgumentException("envelope must not be null");
         }
-        /*
-         * If the pane has not been displayed yet or is zero size then
-         * just record the requested display area and defer setting transforms
-         * etc.
-         */
-        if (!isShowing() || getVisibleRect().isEmpty()) {
+
+        if (mapContent == null) {
             pendingDisplayArea = new ReferencedEnvelope(envelope);
 
         } else {

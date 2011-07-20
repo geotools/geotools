@@ -88,7 +88,7 @@ public class SingleTaskRenderingExecutorMultiTest extends RenderingExecutorTestB
         
         executor.cancel(id);
         boolean gotCancel = listener.await(WaitingRenderingExecutorListener.EventType.CANCELLED, WAIT_TIMEOUT);
-        assertTrue(gotCancel || listener.gotEvent(WaitingRenderingExecutorListener.EventType.COMPLETED));
+        assertTrue(gotCancel || listener.eventReceived(WaitingRenderingExecutorListener.EventType.COMPLETED));
     }
 
 }

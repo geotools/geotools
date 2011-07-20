@@ -328,12 +328,17 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
                 doSetDisplayArea(fullExtent);
             }
 
+        }
+        
+        publishEvent( new MapPaneEvent(this, 
+                MapPaneEvent.Type.PANE_RESIZED,
+                getVisibleRect()) );
+        
+        if (mapContent != null) {
             acceptRepaintRequests = true;
             drawBaseImage(true);
-
-            MapPaneEvent ev = new MapPaneEvent(this, MapPaneEvent.Type.PANE_RESIZED);
-            publishEvent(ev);
         }
+
     }
 
     /**
@@ -575,11 +580,8 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
             throw new IllegalArgumentException("envelope must not be null");
         }
 
-        if (mapContent == null) {
-            pendingDisplayArea = new ReferencedEnvelope(envelope);
-
-        } else {
-            doSetDisplayArea(envelope);
+        doSetDisplayArea(envelope);
+        if (mapContent != null) {
             clearLabelCache.set(true);
             drawBaseImage(false);
         }
@@ -593,30 +595,33 @@ public class JMapPane extends JPanel implements MapPane, MapLayerListListener, M
      * @param envelope requested display area
      */
     private void doSetDisplayArea(Envelope envelope) {
-        if (mapContent == null) {
-            throw new IllegalStateException("No MapContent instance set");
-        }
-        
-        if (equalsFullExtent(envelope)) {
-            mapContent.getViewport().setBounds(fullExtent);
-            
-        } else {
-            CoordinateReferenceSystem crs = envelope.getCoordinateReferenceSystem();
-            if (crs == null) {
-                // assume that it is the current CRS
-                crs = mapContent.getCoordinateReferenceSystem();
+        if (mapContent != null) {
+            if (equalsFullExtent(envelope)) {
+                mapContent.getViewport().setBounds(fullExtent);
+
+            } else {
+                CoordinateReferenceSystem crs = envelope.getCoordinateReferenceSystem();
+                if (crs == null) {
+                    // assume that it is the current CRS
+                    crs = mapContent.getCoordinateReferenceSystem();
+                }
+
+                ReferencedEnvelope refEnv = new ReferencedEnvelope(
+                        envelope.getMinimum(0), envelope.getMaximum(0),
+                        envelope.getMinimum(1), envelope.getMaximum(1),
+                        crs);
+
+                mapContent.getViewport().setBounds(refEnv);
             }
             
-            ReferencedEnvelope refEnv = new ReferencedEnvelope(
-                    envelope.getMinimum(0), envelope.getMaximum(0),
-                    envelope.getMinimum(1), envelope.getMaximum(1),
-                    crs);
-                    
-            mapContent.getViewport().setBounds(refEnv);
+        } else {
+            pendingDisplayArea = new ReferencedEnvelope(envelope);
         }
 
-        MapPaneEvent ev = new MapPaneEvent(this, MapPaneEvent.Type.DISPLAY_AREA_CHANGED);
-        publishEvent(ev);
+        // Publish the resulting display area with the event
+        publishEvent( new MapPaneEvent(this, 
+                MapPaneEvent.Type.DISPLAY_AREA_CHANGED,
+                getDisplayArea()) );
     }
 
 

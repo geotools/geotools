@@ -52,8 +52,7 @@ public class TestData {
         }
         
         typeBuilder.setName("rectangle");
-        typeBuilder.setCRS(env.getCoordinateReferenceSystem());
-        typeBuilder.add("shape", Polygon.class);
+        typeBuilder.add("shape", Polygon.class, env.getCoordinateReferenceSystem());
         typeBuilder.add("label", String.class);
         final SimpleFeatureType TYPE = typeBuilder.buildFeatureType();
         

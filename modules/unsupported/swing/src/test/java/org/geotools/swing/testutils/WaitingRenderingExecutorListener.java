@@ -55,10 +55,23 @@ public class WaitingRenderingExecutorListener implements RenderingExecutorListen
         }
     }
     
+    /**
+     * Sets the listener to expect an event of the specified type.
+     * 
+     * @param type event type
+     */
     public void setExpected(EventType type) {
         latches[type.ordinal()] = new CountDownLatch(1);
     }
 
+    /**
+     * Waits of an event of the specified type to be received.
+     * 
+     * @param type event type
+     * @param timeoutMillis maximum waiting time
+     * 
+     * @return {@code true} if the event was received
+     */
     public boolean await(EventType type, long timeoutMillis) {
         CountDownLatch latch = latches[type.ordinal()];
         if (latch == null) {
@@ -94,7 +107,14 @@ public class WaitingRenderingExecutorListener implements RenderingExecutorListen
         catchEvent(EventType.FAILED.ordinal());
     }
     
-    public boolean gotEvent(EventType type) {
+    /**
+     * Checks if an event of the specified type has been received.
+     * 
+     * @param type event type
+     * 
+     * @return {@code true} if an event of this type has been received
+     */
+    public boolean eventReceived(EventType type) {
         boolean b = flags[type.ordinal()].get();
         return b;
     }

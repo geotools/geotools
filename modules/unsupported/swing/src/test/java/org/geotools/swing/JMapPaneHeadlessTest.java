@@ -16,16 +16,17 @@
  */
 package org.geotools.swing;
 
-import org.geotools.map.FeatureLayer;
 import java.awt.Rectangle;
+
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.map.FeatureLayer;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.MapContent;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.renderer.GTRenderer;
 import org.geotools.styling.SLD;
 import org.geotools.styling.Style;
-import org.geotools.swing.event.MapPaneEvent.Type;
+import org.geotools.swing.event.MapPaneEvent;
 
 import org.geotools.swing.testutils.MockRenderer;
 import org.geotools.swing.testutils.TestData;
@@ -44,17 +45,18 @@ import static org.junit.Assert.*;
  * @version $Id$
  */
 public class JMapPaneHeadlessTest {
+    
     private static final long WAIT_TIMEOUT = 500;
-    
-    private static final double TOL = 1.0e-6;
-    
-    private static final ReferencedEnvelope WORLD = 
-            new ReferencedEnvelope(-10, 10, -5, 5, DefaultEngineeringCRS.CARTESIAN_2D);
+    private static final double TOL = 1.0E-6;
     
     private static final Rectangle PANE = new Rectangle(100, 100);
     
-    private JMapPane mapPane;
+    private static final ReferencedEnvelope WORLD =
+            new ReferencedEnvelope(-10, 10, -5, 5, DefaultEngineeringCRS.CARTESIAN_2D);
+    
     private WaitingMapPaneListener listener;
+    private JMapPane mapPane;
+    
     
     @Before
     public void setup() {
@@ -92,25 +94,37 @@ public class JMapPaneHeadlessTest {
     }
     
     @Test
-    public void setRendererEvent() {
+    public void setRendererFiresEvent() {
         mapPane.addMapPaneListener(listener);
-        listener.setExpected(Type.NEW_RENDERER);
+        listener.setExpected(MapPaneEvent.Type.NEW_RENDERER);
         
         GTRenderer renderer = new MockRenderer();
         mapPane.setRenderer(renderer);
         
-        assertTrue(listener.await(Type.NEW_RENDERER, WAIT_TIMEOUT));
+        assertTrue(listener.await(MapPaneEvent.Type.NEW_RENDERER, WAIT_TIMEOUT));
+        
+        MapPaneEvent event = listener.getEvent(MapPaneEvent.Type.NEW_RENDERER);
+        Object o = event.getData();
+        assertNotNull(o);
+        assertTrue(o instanceof GTRenderer);
+        assertTrue(o == renderer);
     }
     
     @Test
-    public void setMapContentEvent() {
+    public void setMapContentFiresEvent() {
         mapPane.addMapPaneListener(listener);
-        listener.setExpected(Type.NEW_MAPCONTENT);
+        listener.setExpected(MapPaneEvent.Type.NEW_MAPCONTENT);
         
         MapContent mapContent = new MapContent();
         mapPane.setMapContent(mapContent);
         
-        assertTrue(listener.await(Type.NEW_MAPCONTENT, WAIT_TIMEOUT));
+        assertTrue(listener.await(MapPaneEvent.Type.NEW_MAPCONTENT, WAIT_TIMEOUT));
+        
+        MapPaneEvent event = listener.getEvent(MapPaneEvent.Type.NEW_MAPCONTENT);
+        Object o = event.getData();
+        assertNotNull(o);
+        assertTrue(o instanceof MapContent);
+        assertTrue(o == mapContent);
     }
     
     @Test
@@ -133,6 +147,34 @@ public class JMapPaneHeadlessTest {
     }
     
     @Test
+    public void setDisplayAreaFiresEvent_WithMapContent() {
+        mapPane.setMapContent(new MapContent());
+        mapPane.addMapPaneListener(listener);
+        listener.setExpected(MapPaneEvent.Type.DISPLAY_AREA_CHANGED);
+        
+        mapPane.setDisplayArea(WORLD);
+        assertTrue(listener.await(MapPaneEvent.Type.DISPLAY_AREA_CHANGED, WAIT_TIMEOUT));
+    }
+    
+    @Test
+    public void setDisplayAreaFiresEvent_NoMapContent() {
+        mapPane.addMapPaneListener(listener);
+        listener.setExpected(MapPaneEvent.Type.DISPLAY_AREA_CHANGED);
+        
+        mapPane.setDisplayArea(WORLD);
+        assertTrue(listener.await(MapPaneEvent.Type.DISPLAY_AREA_CHANGED, WAIT_TIMEOUT));
+        
+        MapPaneEvent event = listener.getEvent(MapPaneEvent.Type.DISPLAY_AREA_CHANGED);
+        assertNotNull(event.getData());
+        assertTrue(event.getData() instanceof ReferencedEnvelope);
+        
+        // Since no screen area has been set the envelope sent via the
+        // event should be equal to that passed to setDisplayArea
+        ReferencedEnvelope eventEnv = (ReferencedEnvelope) event.getData();
+        assertTrue(WORLD.boundsEquals2D(eventEnv, TOL));
+    }
+    
+    @Test
     public void displayAreaIsSetFromMapContent() {
         MapContent mapContent = new MapContent();
         SimpleFeatureCollection fc = TestData.singlePolygonFeatureCollection(WORLD);
@@ -145,7 +187,7 @@ public class JMapPaneHeadlessTest {
         // be equal to the feature collection bounds
         assertTrue(WORLD.boundsEquals2D(mapPane.getDisplayArea(), TOL));
     }
-
+    
     /**
      * Compare requested display area (world bounds) to realized display area.
      * 

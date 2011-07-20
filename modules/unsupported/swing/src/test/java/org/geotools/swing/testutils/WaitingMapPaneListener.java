@@ -22,6 +22,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.geotools.swing.event.MapPaneEvent;
+import org.geotools.swing.event.MapPaneEvent.Type;
 import org.geotools.swing.event.MapPaneListener;
 
 
@@ -38,19 +39,35 @@ public class WaitingMapPaneListener implements MapPaneListener {
     private static final int NTYPES = MapPaneEvent.Type.values().length;
     private CountDownLatch[] latches;
     private AtomicBoolean[] flags;
+    private MapPaneEvent[] events;
 
     public WaitingMapPaneListener() {
         latches = new CountDownLatch[NTYPES];
+        events = new MapPaneEvent[NTYPES];
+        
         flags = new AtomicBoolean[NTYPES];
         for (int i = 0; i < NTYPES; i++) {
             flags[i] = new AtomicBoolean(false);
         }
     }
     
+    /**
+     * Sets the listener to expect an event of the specified type.
+     * 
+     * @param type event type
+     */
     public void setExpected(MapPaneEvent.Type type) {
         latches[type.ordinal()] = new CountDownLatch(1);
     }
 
+    /**
+     * Waits of an event of the specified type to be received.
+     * 
+     * @param type event type
+     * @param timeoutMillis maximum waiting time
+     * 
+     * @return {@code true} if the event was received
+     */
     public boolean await(MapPaneEvent.Type type, long timeoutMillis) {
         CountDownLatch latch = latches[type.ordinal()];
         if (latch == null) {
@@ -68,40 +85,61 @@ public class WaitingMapPaneListener implements MapPaneListener {
     }
 
     public void onNewContent(MapPaneEvent ev) {
-        catchEvent(MapPaneEvent.Type.NEW_MAPCONTENT.ordinal());
+        catchEvent(MapPaneEvent.Type.NEW_MAPCONTENT.ordinal(), ev);
     }
 
     public void onNewRenderer(MapPaneEvent ev) {
-        catchEvent(MapPaneEvent.Type.NEW_RENDERER.ordinal());
+        catchEvent(MapPaneEvent.Type.NEW_RENDERER.ordinal(), ev);
     }
 
     public void onResized(MapPaneEvent ev) {
-        catchEvent(MapPaneEvent.Type.PANE_RESIZED.ordinal());
+        catchEvent(MapPaneEvent.Type.PANE_RESIZED.ordinal(), ev);
     }
 
     public void onDisplayAreaChanged(MapPaneEvent ev) {
-        catchEvent(MapPaneEvent.Type.DISPLAY_AREA_CHANGED.ordinal());
+        catchEvent(MapPaneEvent.Type.DISPLAY_AREA_CHANGED.ordinal(), ev);
     }
 
     public void onRenderingStarted(MapPaneEvent ev) {
-        catchEvent(MapPaneEvent.Type.RENDERING_STARTED.ordinal());
+        catchEvent(MapPaneEvent.Type.RENDERING_STARTED.ordinal(), ev);
     }
 
     public void onRenderingStopped(MapPaneEvent ev) {
-        catchEvent(MapPaneEvent.Type.RENDERING_STOPPED.ordinal());
+        catchEvent(MapPaneEvent.Type.RENDERING_STOPPED.ordinal(), ev);
     }
     
-    public boolean gotEvent(MapPaneEvent.Type type) {
+    /**
+     * Checks if an event of the specified type has been received.
+     * 
+     * @param type event type
+     * 
+     * @return {@code true} if an event of this type has been received
+     */
+    public boolean eventReceived(MapPaneEvent.Type type) {
         return flags[type.ordinal()].get();
     }
 
-    private void catchEvent(int k) {
+    /**
+     * Retrieves the more recent event of the specified type received
+     * by this listener.
+     * 
+     * @param type event type
+     * 
+     * @return the most recent event or {@code null} if none received
+     */
+    public MapPaneEvent getEvent(Type type) {
+        return events[type.ordinal()];
+    }
+
+    private void catchEvent(int k, MapPaneEvent event) {
         flags[k].set(true);
+        events[k] = event;
         
         CountDownLatch latch = latches[k];
         if (latch != null) {
             latch.countDown();
         }
+        
     }
 
 }
